@@ -31,7 +31,6 @@ static KeywordToken *reserved_keywords[] = {
     (KeywordToken[]) {
         {"del", 630},
         {"def", 704},
-        {"for", 699},
         {"try", 661},
         {"and", 590},
         {"not", 708},
@@ -41,6 +40,7 @@ static KeywordToken *reserved_keywords[] = {
         {"from", 638},
         {"pass", 527},
         {"with", 652},
+        {"fuer", 699},
         {"elif", 692},
         {"else", 691},
         {"None", 624},
@@ -1895,7 +1895,7 @@ simple_stmt_rule(Parser *p)
 //     | &'if' if_stmt
 //     | &('klasse' | '@') class_def
 //     | &('with' | 'async') with_stmt
-//     | &('for' | 'async') for_stmt
+//     | &('fuer' | 'async') for_stmt
 //     | &'try' try_stmt
 //     | &'while' while_stmt
 //     | match_stmt
@@ -1995,12 +1995,12 @@ compound_stmt_rule(Parser *p)
         D(fprintf(stderr, "%*c%s compound_stmt[%d-%d]: %s failed!\n", p->level, ' ',
                   p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "&('with' | 'async') with_stmt"));
     }
-    { // &('for' | 'async') for_stmt
+    { // &('fuer' | 'async') for_stmt
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> compound_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "&('for' | 'async') for_stmt"));
+        D(fprintf(stderr, "%*c> compound_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "&('fuer' | 'async') for_stmt"));
         stmt_ty for_stmt_var;
         if (
             _PyPegen_lookahead(1, _tmp_9_rule, p)
@@ -2008,13 +2008,13 @@ compound_stmt_rule(Parser *p)
             (for_stmt_var = for_stmt_rule(p))  // for_stmt
         )
         {
-            D(fprintf(stderr, "%*c+ compound_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "&('for' | 'async') for_stmt"));
+            D(fprintf(stderr, "%*c+ compound_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "&('fuer' | 'async') for_stmt"));
             _res = for_stmt_var;
             goto done;
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s compound_stmt[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "&('for' | 'async') for_stmt"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "&('fuer' | 'async') for_stmt"));
     }
     { // &'try' try_stmt
         if (p->error_indicator) {
@@ -6422,8 +6422,8 @@ while_stmt_rule(Parser *p)
 
 // for_stmt:
 //     | invalid_for_stmt
-//     | 'for' star_targets 'in' ~ star_expressions ':' TYPE_COMMENT? block else_block?
-//     | 'async' 'for' star_targets 'in' ~ star_expressions ':' TYPE_COMMENT? block else_block?
+//     | 'fuer' star_targets 'in' ~ star_expressions ':' TYPE_COMMENT? block else_block?
+//     | 'async' 'fuer' star_targets 'in' ~ star_expressions ':' TYPE_COMMENT? block else_block?
 //     | invalid_for_target
 static stmt_ty
 for_stmt_rule(Parser *p)
@@ -6465,12 +6465,12 @@ for_stmt_rule(Parser *p)
         D(fprintf(stderr, "%*c%s for_stmt[%d-%d]: %s failed!\n", p->level, ' ',
                   p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "invalid_for_stmt"));
     }
-    { // 'for' star_targets 'in' ~ star_expressions ':' TYPE_COMMENT? block else_block?
+    { // 'fuer' star_targets 'in' ~ star_expressions ':' TYPE_COMMENT? block else_block?
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> for_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'for' star_targets 'in' ~ star_expressions ':' TYPE_COMMENT? block else_block?"));
+        D(fprintf(stderr, "%*c> for_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'fuer' star_targets 'in' ~ star_expressions ':' TYPE_COMMENT? block else_block?"));
         int _cut_var = 0;
         Token * _keyword;
         Token * _keyword_1;
@@ -6481,7 +6481,7 @@ for_stmt_rule(Parser *p)
         expr_ty t;
         void *tc;
         if (
-            (_keyword = _PyPegen_expect_token(p, 699))  // token='for'
+            (_keyword = _PyPegen_expect_token(p, 699))  // token='fuer'
             &&
             (t = star_targets_rule(p))  // star_targets
             &&
@@ -6500,7 +6500,7 @@ for_stmt_rule(Parser *p)
             (el = else_block_rule(p), !p->error_indicator)  // else_block?
         )
         {
-            D(fprintf(stderr, "%*c+ for_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'for' star_targets 'in' ~ star_expressions ':' TYPE_COMMENT? block else_block?"));
+            D(fprintf(stderr, "%*c+ for_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'fuer' star_targets 'in' ~ star_expressions ':' TYPE_COMMENT? block else_block?"));
             Token *_token = _PyPegen_get_last_nonnwhitespace_token(p);
             if (_token == NULL) {
                 p->level--;
@@ -6520,18 +6520,18 @@ for_stmt_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s for_stmt[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'for' star_targets 'in' ~ star_expressions ':' TYPE_COMMENT? block else_block?"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'fuer' star_targets 'in' ~ star_expressions ':' TYPE_COMMENT? block else_block?"));
         if (_cut_var) {
             p->level--;
             return NULL;
         }
     }
-    { // 'async' 'for' star_targets 'in' ~ star_expressions ':' TYPE_COMMENT? block else_block?
+    { // 'async' 'fuer' star_targets 'in' ~ star_expressions ':' TYPE_COMMENT? block else_block?
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> for_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'async' 'for' star_targets 'in' ~ star_expressions ':' TYPE_COMMENT? block else_block?"));
+        D(fprintf(stderr, "%*c> for_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'async' 'fuer' star_targets 'in' ~ star_expressions ':' TYPE_COMMENT? block else_block?"));
         int _cut_var = 0;
         Token * _keyword;
         Token * _keyword_1;
@@ -6545,7 +6545,7 @@ for_stmt_rule(Parser *p)
         if (
             (_keyword = _PyPegen_expect_token(p, 703))  // token='async'
             &&
-            (_keyword_1 = _PyPegen_expect_token(p, 699))  // token='for'
+            (_keyword_1 = _PyPegen_expect_token(p, 699))  // token='fuer'
             &&
             (t = star_targets_rule(p))  // star_targets
             &&
@@ -6564,7 +6564,7 @@ for_stmt_rule(Parser *p)
             (el = else_block_rule(p), !p->error_indicator)  // else_block?
         )
         {
-            D(fprintf(stderr, "%*c+ for_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'async' 'for' star_targets 'in' ~ star_expressions ':' TYPE_COMMENT? block else_block?"));
+            D(fprintf(stderr, "%*c+ for_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'async' 'fuer' star_targets 'in' ~ star_expressions ':' TYPE_COMMENT? block else_block?"));
             Token *_token = _PyPegen_get_last_nonnwhitespace_token(p);
             if (_token == NULL) {
                 p->level--;
@@ -6584,7 +6584,7 @@ for_stmt_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s for_stmt[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'async' 'for' star_targets 'in' ~ star_expressions ':' TYPE_COMMENT? block else_block?"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'async' 'fuer' star_targets 'in' ~ star_expressions ':' TYPE_COMMENT? block else_block?"));
         if (_cut_var) {
             p->level--;
             return NULL;
@@ -17739,8 +17739,8 @@ for_if_clauses_rule(Parser *p)
 }
 
 // for_if_clause:
-//     | 'async' 'for' star_targets 'in' ~ disjunction (('if' disjunction))*
-//     | 'for' star_targets 'in' ~ disjunction (('if' disjunction))*
+//     | 'async' 'fuer' star_targets 'in' ~ disjunction (('if' disjunction))*
+//     | 'fuer' star_targets 'in' ~ disjunction (('if' disjunction))*
 //     | invalid_for_if_clause
 //     | invalid_for_target
 static comprehension_ty
@@ -17755,12 +17755,12 @@ for_if_clause_rule(Parser *p)
     }
     comprehension_ty _res = NULL;
     int _mark = p->mark;
-    { // 'async' 'for' star_targets 'in' ~ disjunction (('if' disjunction))*
+    { // 'async' 'fuer' star_targets 'in' ~ disjunction (('if' disjunction))*
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> for_if_clause[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'async' 'for' star_targets 'in' ~ disjunction (('if' disjunction))*"));
+        D(fprintf(stderr, "%*c> for_if_clause[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'async' 'fuer' star_targets 'in' ~ disjunction (('if' disjunction))*"));
         int _cut_var = 0;
         Token * _keyword;
         Token * _keyword_1;
@@ -17771,7 +17771,7 @@ for_if_clause_rule(Parser *p)
         if (
             (_keyword = _PyPegen_expect_token(p, 703))  // token='async'
             &&
-            (_keyword_1 = _PyPegen_expect_token(p, 699))  // token='for'
+            (_keyword_1 = _PyPegen_expect_token(p, 699))  // token='fuer'
             &&
             (a = star_targets_rule(p))  // star_targets
             &&
@@ -17784,7 +17784,7 @@ for_if_clause_rule(Parser *p)
             (c = (asdl_expr_seq*)_loop0_86_rule(p))  // (('if' disjunction))*
         )
         {
-            D(fprintf(stderr, "%*c+ for_if_clause[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'async' 'for' star_targets 'in' ~ disjunction (('if' disjunction))*"));
+            D(fprintf(stderr, "%*c+ for_if_clause[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'async' 'fuer' star_targets 'in' ~ disjunction (('if' disjunction))*"));
             _res = CHECK_VERSION ( comprehension_ty , 6 , "Async comprehensions are" , _PyAST_comprehension ( a , b , c , 1 , p -> arena ) );
             if (_res == NULL && PyErr_Occurred()) {
                 p->error_indicator = 1;
@@ -17795,18 +17795,18 @@ for_if_clause_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s for_if_clause[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'async' 'for' star_targets 'in' ~ disjunction (('if' disjunction))*"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'async' 'fuer' star_targets 'in' ~ disjunction (('if' disjunction))*"));
         if (_cut_var) {
             p->level--;
             return NULL;
         }
     }
-    { // 'for' star_targets 'in' ~ disjunction (('if' disjunction))*
+    { // 'fuer' star_targets 'in' ~ disjunction (('if' disjunction))*
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> for_if_clause[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'for' star_targets 'in' ~ disjunction (('if' disjunction))*"));
+        D(fprintf(stderr, "%*c> for_if_clause[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'fuer' star_targets 'in' ~ disjunction (('if' disjunction))*"));
         int _cut_var = 0;
         Token * _keyword;
         Token * _keyword_1;
@@ -17814,7 +17814,7 @@ for_if_clause_rule(Parser *p)
         expr_ty b;
         asdl_expr_seq* c;
         if (
-            (_keyword = _PyPegen_expect_token(p, 699))  // token='for'
+            (_keyword = _PyPegen_expect_token(p, 699))  // token='fuer'
             &&
             (a = star_targets_rule(p))  // star_targets
             &&
@@ -17827,7 +17827,7 @@ for_if_clause_rule(Parser *p)
             (c = (asdl_expr_seq*)_loop0_86_rule(p))  // (('if' disjunction))*
         )
         {
-            D(fprintf(stderr, "%*c+ for_if_clause[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'for' star_targets 'in' ~ disjunction (('if' disjunction))*"));
+            D(fprintf(stderr, "%*c+ for_if_clause[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'fuer' star_targets 'in' ~ disjunction (('if' disjunction))*"));
             _res = _PyAST_comprehension ( a , b , c , 0 , p -> arena );
             if (_res == NULL && PyErr_Occurred()) {
                 p->error_indicator = 1;
@@ -17838,7 +17838,7 @@ for_if_clause_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s for_if_clause[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'for' star_targets 'in' ~ disjunction (('if' disjunction))*"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'fuer' star_targets 'in' ~ disjunction (('if' disjunction))*"));
         if (_cut_var) {
             p->level--;
             return NULL;
@@ -23567,7 +23567,7 @@ invalid_with_item_rule(Parser *p)
     return _res;
 }
 
-// invalid_for_if_clause: 'async'? 'for' (bitwise_or ((',' bitwise_or))* ','?) !'in'
+// invalid_for_if_clause: 'async'? 'fuer' (bitwise_or ((',' bitwise_or))* ','?) !'in'
 static void *
 invalid_for_if_clause_rule(Parser *p)
 {
@@ -23580,12 +23580,12 @@ invalid_for_if_clause_rule(Parser *p)
     }
     void * _res = NULL;
     int _mark = p->mark;
-    { // 'async'? 'for' (bitwise_or ((',' bitwise_or))* ','?) !'in'
+    { // 'async'? 'fuer' (bitwise_or ((',' bitwise_or))* ','?) !'in'
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> invalid_for_if_clause[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'async'? 'for' (bitwise_or ((',' bitwise_or))* ','?) !'in'"));
+        D(fprintf(stderr, "%*c> invalid_for_if_clause[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'async'? 'fuer' (bitwise_or ((',' bitwise_or))* ','?) !'in'"));
         Token * _keyword;
         void *_opt_var;
         UNUSED(_opt_var); // Silence compiler warnings
@@ -23593,14 +23593,14 @@ invalid_for_if_clause_rule(Parser *p)
         if (
             (_opt_var = _PyPegen_expect_token(p, 703), !p->error_indicator)  // 'async'?
             &&
-            (_keyword = _PyPegen_expect_token(p, 699))  // token='for'
+            (_keyword = _PyPegen_expect_token(p, 699))  // token='fuer'
             &&
             (_tmp_135_var = _tmp_135_rule(p))  // bitwise_or ((',' bitwise_or))* ','?
             &&
             _PyPegen_lookahead_with_int(0, _PyPegen_expect_token, p, 700)  // token='in'
         )
         {
-            D(fprintf(stderr, "%*c+ invalid_for_if_clause[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'async'? 'for' (bitwise_or ((',' bitwise_or))* ','?) !'in'"));
+            D(fprintf(stderr, "%*c+ invalid_for_if_clause[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'async'? 'fuer' (bitwise_or ((',' bitwise_or))* ','?) !'in'"));
             _res = RAISE_SYNTAX_ERROR ( "'in' expected after for-loop variables" );
             if (_res == NULL && PyErr_Occurred()) {
                 p->error_indicator = 1;
@@ -23611,7 +23611,7 @@ invalid_for_if_clause_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s invalid_for_if_clause[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'async'? 'for' (bitwise_or ((',' bitwise_or))* ','?) !'in'"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'async'? 'fuer' (bitwise_or ((',' bitwise_or))* ','?) !'in'"));
     }
     _res = NULL;
   done:
@@ -23619,7 +23619,7 @@ invalid_for_if_clause_rule(Parser *p)
     return _res;
 }
 
-// invalid_for_target: 'async'? 'for' star_expressions
+// invalid_for_target: 'async'? 'fuer' star_expressions
 static void *
 invalid_for_target_rule(Parser *p)
 {
@@ -23632,12 +23632,12 @@ invalid_for_target_rule(Parser *p)
     }
     void * _res = NULL;
     int _mark = p->mark;
-    { // 'async'? 'for' star_expressions
+    { // 'async'? 'fuer' star_expressions
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> invalid_for_target[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'async'? 'for' star_expressions"));
+        D(fprintf(stderr, "%*c> invalid_for_target[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'async'? 'fuer' star_expressions"));
         Token * _keyword;
         void *_opt_var;
         UNUSED(_opt_var); // Silence compiler warnings
@@ -23645,12 +23645,12 @@ invalid_for_target_rule(Parser *p)
         if (
             (_opt_var = _PyPegen_expect_token(p, 703), !p->error_indicator)  // 'async'?
             &&
-            (_keyword = _PyPegen_expect_token(p, 699))  // token='for'
+            (_keyword = _PyPegen_expect_token(p, 699))  // token='fuer'
             &&
             (a = star_expressions_rule(p))  // star_expressions
         )
         {
-            D(fprintf(stderr, "%*c+ invalid_for_target[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'async'? 'for' star_expressions"));
+            D(fprintf(stderr, "%*c+ invalid_for_target[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'async'? 'fuer' star_expressions"));
             _res = RAISE_SYNTAX_ERROR_INVALID_TARGET ( FOR_TARGETS , a );
             if (_res == NULL && PyErr_Occurred()) {
                 p->error_indicator = 1;
@@ -23661,7 +23661,7 @@ invalid_for_target_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s invalid_for_target[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'async'? 'for' star_expressions"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'async'? 'fuer' star_expressions"));
     }
     _res = NULL;
   done:
@@ -25644,8 +25644,8 @@ invalid_while_stmt_rule(Parser *p)
 }
 
 // invalid_for_stmt:
-//     | 'async'? 'for' star_targets 'in' star_expressions NEWLINE
-//     | 'async'? 'for' star_targets 'in' star_expressions ':' NEWLINE !INDENT
+//     | 'async'? 'fuer' star_targets 'in' star_expressions NEWLINE
+//     | 'async'? 'fuer' star_targets 'in' star_expressions ':' NEWLINE !INDENT
 static void *
 invalid_for_stmt_rule(Parser *p)
 {
@@ -25658,12 +25658,12 @@ invalid_for_stmt_rule(Parser *p)
     }
     void * _res = NULL;
     int _mark = p->mark;
-    { // 'async'? 'for' star_targets 'in' star_expressions NEWLINE
+    { // 'async'? 'fuer' star_targets 'in' star_expressions NEWLINE
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> invalid_for_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'async'? 'for' star_targets 'in' star_expressions NEWLINE"));
+        D(fprintf(stderr, "%*c> invalid_for_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'async'? 'fuer' star_targets 'in' star_expressions NEWLINE"));
         Token * _keyword;
         Token * _keyword_1;
         void *_opt_var;
@@ -25674,7 +25674,7 @@ invalid_for_stmt_rule(Parser *p)
         if (
             (_opt_var = _PyPegen_expect_token(p, 703), !p->error_indicator)  // 'async'?
             &&
-            (_keyword = _PyPegen_expect_token(p, 699))  // token='for'
+            (_keyword = _PyPegen_expect_token(p, 699))  // token='fuer'
             &&
             (star_targets_var = star_targets_rule(p))  // star_targets
             &&
@@ -25685,7 +25685,7 @@ invalid_for_stmt_rule(Parser *p)
             (newline_var = _PyPegen_expect_token(p, NEWLINE))  // token='NEWLINE'
         )
         {
-            D(fprintf(stderr, "%*c+ invalid_for_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'async'? 'for' star_targets 'in' star_expressions NEWLINE"));
+            D(fprintf(stderr, "%*c+ invalid_for_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'async'? 'fuer' star_targets 'in' star_expressions NEWLINE"));
             _res = RAISE_SYNTAX_ERROR ( "expected ':'" );
             if (_res == NULL && PyErr_Occurred()) {
                 p->error_indicator = 1;
@@ -25696,14 +25696,14 @@ invalid_for_stmt_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s invalid_for_stmt[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'async'? 'for' star_targets 'in' star_expressions NEWLINE"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'async'? 'fuer' star_targets 'in' star_expressions NEWLINE"));
     }
-    { // 'async'? 'for' star_targets 'in' star_expressions ':' NEWLINE !INDENT
+    { // 'async'? 'fuer' star_targets 'in' star_expressions ':' NEWLINE !INDENT
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> invalid_for_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'async'? 'for' star_targets 'in' star_expressions ':' NEWLINE !INDENT"));
+        D(fprintf(stderr, "%*c> invalid_for_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'async'? 'fuer' star_targets 'in' star_expressions ':' NEWLINE !INDENT"));
         Token * _keyword;
         Token * _literal;
         void *_opt_var;
@@ -25715,7 +25715,7 @@ invalid_for_stmt_rule(Parser *p)
         if (
             (_opt_var = _PyPegen_expect_token(p, 703), !p->error_indicator)  // 'async'?
             &&
-            (a = _PyPegen_expect_token(p, 699))  // token='for'
+            (a = _PyPegen_expect_token(p, 699))  // token='fuer'
             &&
             (star_targets_var = star_targets_rule(p))  // star_targets
             &&
@@ -25730,8 +25730,8 @@ invalid_for_stmt_rule(Parser *p)
             _PyPegen_lookahead_with_int(0, _PyPegen_expect_token, p, INDENT)  // token=INDENT
         )
         {
-            D(fprintf(stderr, "%*c+ invalid_for_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'async'? 'for' star_targets 'in' star_expressions ':' NEWLINE !INDENT"));
-            _res = RAISE_INDENTATION_ERROR ( "expected an indented block after 'for' statement on line %d" , a -> lineno );
+            D(fprintf(stderr, "%*c+ invalid_for_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'async'? 'fuer' star_targets 'in' star_expressions ':' NEWLINE !INDENT"));
+            _res = RAISE_INDENTATION_ERROR ( "expected an indented block after 'fuer' statement on line %d" , a -> lineno );
             if (_res == NULL && PyErr_Occurred()) {
                 p->error_indicator = 1;
                 p->level--;
@@ -25741,7 +25741,7 @@ invalid_for_stmt_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s invalid_for_stmt[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'async'? 'for' star_targets 'in' star_expressions ':' NEWLINE !INDENT"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'async'? 'fuer' star_targets 'in' star_expressions ':' NEWLINE !INDENT"));
     }
     _res = NULL;
   done:
@@ -27906,7 +27906,7 @@ _tmp_8_rule(Parser *p)
     return _res;
 }
 
-// _tmp_9: 'for' | 'async'
+// _tmp_9: 'fuer' | 'async'
 static void *
 _tmp_9_rule(Parser *p)
 {
@@ -27919,24 +27919,24 @@ _tmp_9_rule(Parser *p)
     }
     void * _res = NULL;
     int _mark = p->mark;
-    { // 'for'
+    { // 'fuer'
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> _tmp_9[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'for'"));
+        D(fprintf(stderr, "%*c> _tmp_9[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'fuer'"));
         Token * _keyword;
         if (
-            (_keyword = _PyPegen_expect_token(p, 699))  // token='for'
+            (_keyword = _PyPegen_expect_token(p, 699))  // token='fuer'
         )
         {
-            D(fprintf(stderr, "%*c+ _tmp_9[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'for'"));
+            D(fprintf(stderr, "%*c+ _tmp_9[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'fuer'"));
             _res = _keyword;
             goto done;
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s _tmp_9[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'for'"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'fuer'"));
     }
     { // 'async'
         if (p->error_indicator) {
