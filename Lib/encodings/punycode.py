@@ -211,7 +211,7 @@ def punycode_decode(text, errors):
 
 ### Codec APIs
 
-class Codec(codecs.Codec):
+klasse Codec(codecs.Codec):
 
     def encode(self, input, errors='strict'):
         res = punycode_encode(input)
@@ -223,20 +223,20 @@ class Codec(codecs.Codec):
         res = punycode_decode(input, errors)
         return res, len(input)
 
-class IncrementalEncoder(codecs.IncrementalEncoder):
+klasse IncrementalEncoder(codecs.IncrementalEncoder):
     def encode(self, input, final=False):
         return punycode_encode(input)
 
-class IncrementalDecoder(codecs.IncrementalDecoder):
+klasse IncrementalDecoder(codecs.IncrementalDecoder):
     def decode(self, input, final=False):
         if self.errors not in ('strict', 'replace', 'ignore'):
             raise UnicodeError(f"Unsupported error handling: {self.errors}")
         return punycode_decode(input, self.errors)
 
-class StreamWriter(Codec,codecs.StreamWriter):
+klasse StreamWriter(Codec,codecs.StreamWriter):
     pass
 
-class StreamReader(Codec,codecs.StreamReader):
+klasse StreamReader(Codec,codecs.StreamReader):
     pass
 
 ### encodings module API

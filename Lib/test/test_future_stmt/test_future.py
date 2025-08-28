@@ -18,7 +18,7 @@ def get_error_location(msg):
     mo = rx.search(str(msg))
     return mo.group(1, 2)
 
-class FutureTest(unittest.TestCase):
+klasse FutureTest(unittest.TestCase):
 
     def check_syntax_error(self, err, basename,
                            *,
@@ -202,7 +202,7 @@ class FutureTest(unittest.TestCase):
         """
         self.assertSyntaxError(code, lineno=2)
 
-class AnnotationsFutureTestCase(unittest.TestCase):
+klasse AnnotationsFutureTestCase(unittest.TestCase):
     template = dedent(
         """
         from __future__ import annotations
@@ -214,7 +214,7 @@ class AnnotationsFutureTestCase(unittest.TestCase):
             ...
         async def g2(arg: {ann}) -> None:
             ...
-        class H:
+        klasse H:
             var: {ann}
             object.attr: {ann}
         var: {ann}
@@ -510,8 +510,8 @@ class AnnotationsFutureTestCase(unittest.TestCase):
         # annotations`, because it could try to evaluate `*Ts` as an expression,
         # which on its own isn't value syntax.
         namespace = self._exec_future(dedent("""\
-        class StarredC: pass
-        class C:
+        klasse StarredC: pass
+        klasse C:
           def __iter__(self):
             yield StarredC()
         c = C()

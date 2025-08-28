@@ -7,7 +7,7 @@ import unittest
 from unittest import TestCase
 
 
-class ParallelTestCase(TestCase):
+klasse ParallelTestCase(TestCase):
     def __init__(self, test_case: TestCase, num_threads: int):
         self.test_case = test_case
         self.num_threads = num_threads

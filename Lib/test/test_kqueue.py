@@ -14,7 +14,7 @@ from test.support import warnings_helper
 if not hasattr(select, "kqueue"):
     raise unittest.SkipTest("test works only on BSD")
 
-class TestKQueue(unittest.TestCase):
+klasse TestKQueue(unittest.TestCase):
     def test_create_queue(self):
         kq = select.kqueue()
         self.assertTrue(kq.fileno() > 0, kq.fileno())
@@ -219,7 +219,7 @@ class TestKQueue(unittest.TestCase):
         # not a list
         kq.control((ev,), 0)
         # __len__ is not consistent with __iter__
-        class BadList:
+        klasse BadList:
             def __len__(self):
                 return 0
             def __iter__(self):

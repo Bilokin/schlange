@@ -301,8 +301,8 @@ def valid_ident(s):
     return True
 
 
-class ConvertingMixin(object):
-    """For ConvertingXXX's, this mixin class provides common functions"""
+klasse ConvertingMixin(object):
+    """For ConvertingXXX's, this mixin klasse provides common functions"""
 
     def convert_with_key(self, key, value, replace=True):
         result = self.configurator.convert(value)
@@ -334,7 +334,7 @@ class ConvertingMixin(object):
 # Each wrapper should have a configurator attribute holding the actual
 # configurator to use for conversion.
 
-class ConvertingDict(dict, ConvertingMixin):
+klasse ConvertingDict(dict, ConvertingMixin):
     """A converting dictionary wrapper."""
 
     def __getitem__(self, key):
@@ -349,7 +349,7 @@ class ConvertingDict(dict, ConvertingMixin):
         value = dict.pop(self, key, default)
         return self.convert_with_key(key, value, replace=False)
 
-class ConvertingList(list, ConvertingMixin):
+klasse ConvertingList(list, ConvertingMixin):
     """A converting list wrapper."""
     def __getitem__(self, key):
         value = list.__getitem__(self, key)
@@ -359,16 +359,16 @@ class ConvertingList(list, ConvertingMixin):
         value = list.pop(self, idx)
         return self.convert(value)
 
-class ConvertingTuple(tuple, ConvertingMixin):
+klasse ConvertingTuple(tuple, ConvertingMixin):
     """A converting tuple wrapper."""
     def __getitem__(self, key):
         value = tuple.__getitem__(self, key)
         # Can't replace a tuple entry.
         return self.convert_with_key(key, value, replace=False)
 
-class BaseConfigurator(object):
+klasse BaseConfigurator(object):
     """
-    The configurator base class which defines some useful defaults.
+    The configurator base klasse which defines some useful defaults.
     """
 
     CONVERT_PATTERN = re.compile(r'^(?P<prefix>[a-z]+)://(?P<suffix>.*)$')
@@ -524,7 +524,7 @@ def _is_queue_like_object(obj):
     return all(callable(getattr(obj, method, None))
                for method in minimal_queue_interface)
 
-class DictConfigurator(BaseConfigurator):
+klasse DictConfigurator(BaseConfigurator):
     """
     Configure logging using a dictionary-like object to describe the
     configuration.
@@ -966,7 +966,7 @@ def listen(port=DEFAULT_LOGGING_CONFIG_PORT, verify=None):
     the bytes passed in.
     """
 
-    class ConfigStreamHandler(StreamRequestHandler):
+    klasse ConfigStreamHandler(StreamRequestHandler):
         """
         Handler for a logging configuration request.
 
@@ -1012,7 +1012,7 @@ def listen(port=DEFAULT_LOGGING_CONFIG_PORT, verify=None):
                 if e.errno != RESET_ERROR:
                     raise
 
-    class ConfigSocketReceiver(ThreadingTCPServer):
+    klasse ConfigSocketReceiver(ThreadingTCPServer):
         """
         A simple TCP socket-based logging config receiver.
         """
@@ -1042,7 +1042,7 @@ def listen(port=DEFAULT_LOGGING_CONFIG_PORT, verify=None):
                     abort = self.abort
             self.server_close()
 
-    class Server(threading.Thread):
+    klasse Server(threading.Thread):
 
         def __init__(self, rcvr, hdlr, port, verify):
             super(Server, self).__init__()

@@ -47,7 +47,7 @@ def _make_filename():
     return name
 
 
-class SharedMemory:
+klasse SharedMemory:
     """Creates a new shared memory block or attaches to an existing
     shared memory block.
 
@@ -256,7 +256,7 @@ class SharedMemory:
 
 _encoding = "utf8"
 
-class ShareableList:
+klasse ShareableList:
     """Pattern for a mutable list-like object shareable via a shared
     memory block.  It differs from the built-in list type in that these
     lists can not change their overall length (i.e. no append, insert,

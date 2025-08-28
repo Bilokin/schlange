@@ -31,7 +31,7 @@ def setUpModule():
 
 
 
-class TortureBase(TestEmailBase):
+klasse TortureBase(TestEmailBase):
     def _msgobj(self, filename):
         fp = openfile(filename)
         try:
@@ -42,7 +42,7 @@ class TortureBase(TestEmailBase):
 
 
 
-class TestCrispinTorture(TortureBase):
+klasse TestCrispinTorture(TortureBase):
     # Mark Crispin's torture test from the SquirrelMail project
     def test_mondo_message(self):
         eq = self.assertEqual

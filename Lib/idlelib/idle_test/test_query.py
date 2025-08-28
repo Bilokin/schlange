@@ -2,7 +2,7 @@
 
 Non-gui tests for Query, SectionName, ModuleName, and HelpSource use
 dummy versions that extract the non-gui methods and add other needed
-attributes.  GUI tests create an instance of each class and simulate
+attributes.  GUI tests create an instance of each klasse and simulate
 entries and button clicks.  Subclass tests only target the new code in
 the subclass definition.
 
@@ -21,10 +21,10 @@ from idlelib.idle_test.mock_tk import Var
 
 # NON-GUI TESTS
 
-class QueryTest(unittest.TestCase):
+klasse QueryTest(unittest.TestCase):
     "Test Query base class."
 
-    class Dummy_Query:
+    klasse Dummy_Query:
         # Test the following Query methods.
         entry_ok = query.Query.entry_ok
         ok = query.Query.ok
@@ -72,10 +72,10 @@ class QueryTest(unittest.TestCase):
         self.assertEqual((dialog.result, dialog.destroyed), (None, True))
 
 
-class SectionNameTest(unittest.TestCase):
+klasse SectionNameTest(unittest.TestCase):
     "Test SectionName subclass of Query."
 
-    class Dummy_SectionName:
+    klasse Dummy_SectionName:
         entry_ok = query.SectionName.entry_ok  # Function being tested.
         used_names = ['used']
         def __init__(self, dummy_entry):
@@ -105,10 +105,10 @@ class SectionNameTest(unittest.TestCase):
         self.assertEqual(dialog.entry_error['text'], '')
 
 
-class ModuleNameTest(unittest.TestCase):
+klasse ModuleNameTest(unittest.TestCase):
     "Test ModuleName subclass of Query."
 
-    class Dummy_ModuleName:
+    klasse Dummy_ModuleName:
         entry_ok = query.ModuleName.entry_ok  # Function being tested.
         text0 = ''
         def __init__(self, dummy_entry):
@@ -141,10 +141,10 @@ class ModuleNameTest(unittest.TestCase):
         self.assertEqual(dialog.entry_error['text'], '')
 
 
-class GotoTest(unittest.TestCase):
+klasse GotoTest(unittest.TestCase):
     "Test Goto subclass of Query."
 
-    class Dummy_ModuleName:
+    klasse Dummy_ModuleName:
         entry_ok = query.Goto.entry_ok  # Function being tested.
         def __init__(self, dummy_entry):
             self.entry = Var(value=dummy_entry)
@@ -170,10 +170,10 @@ class GotoTest(unittest.TestCase):
 
 # 3 HelpSource test classes each test one method.
 
-class HelpsourceBrowsefileTest(unittest.TestCase):
+klasse HelpsourceBrowsefileTest(unittest.TestCase):
     "Test browse_file method of ModuleName subclass of Query."
 
-    class Dummy_HelpSource:
+    klasse Dummy_HelpSource:
         browse_file = query.HelpSource.browse_file
         pathvar = Var()
 
@@ -195,10 +195,10 @@ class HelpsourceBrowsefileTest(unittest.TestCase):
                 self.assertEqual(dialog.pathvar.get(), result)
 
 
-class HelpsourcePathokTest(unittest.TestCase):
+klasse HelpsourcePathokTest(unittest.TestCase):
     "Test path_ok method of HelpSource subclass of Query."
 
-    class Dummy_HelpSource:
+    klasse Dummy_HelpSource:
         path_ok = query.HelpSource.path_ok
         def __init__(self, dummy_path):
             self.path = Var(value=dummy_path)
@@ -240,10 +240,10 @@ class HelpsourcePathokTest(unittest.TestCase):
                 self.assertEqual(dialog.path_error['text'], '')
 
 
-class HelpsourceEntryokTest(unittest.TestCase):
+klasse HelpsourceEntryokTest(unittest.TestCase):
     "Test entry_ok method of HelpSource subclass of Query."
 
-    class Dummy_HelpSource:
+    klasse Dummy_HelpSource:
         entry_ok = query.HelpSource.entry_ok
         entry_error = {}
         path_error = {}
@@ -265,10 +265,10 @@ class HelpsourceEntryokTest(unittest.TestCase):
 
 # 2 CustomRun test classes each test one method.
 
-class CustomRunCLIargsokTest(unittest.TestCase):
+klasse CustomRunCLIargsokTest(unittest.TestCase):
     "Test cli_ok method of the CustomRun subclass of Query."
 
-    class Dummy_CustomRun:
+    klasse Dummy_CustomRun:
         cli_args_ok = query.CustomRun.cli_args_ok
         def __init__(self, dummy_entry):
             self.entry = Var(value=dummy_entry)
@@ -292,10 +292,10 @@ class CustomRunCLIargsokTest(unittest.TestCase):
         self.assertEqual(dialog.entry_error['text'], '')
 
 
-class CustomRunEntryokTest(unittest.TestCase):
+klasse CustomRunEntryokTest(unittest.TestCase):
     "Test entry_ok method of the CustomRun subclass of Query."
 
-    class Dummy_CustomRun:
+    klasse Dummy_CustomRun:
         entry_ok = query.CustomRun.entry_ok
         entry_error = {}
         restartvar = Var()
@@ -315,7 +315,7 @@ class CustomRunEntryokTest(unittest.TestCase):
 
 # GUI TESTS
 
-class QueryGuiTest(unittest.TestCase):
+klasse QueryGuiTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -358,7 +358,7 @@ class QueryGuiTest(unittest.TestCase):
         self.assertTrue(dialog.destroy.called)
 
 
-class SectionnameGuiTest(unittest.TestCase):
+klasse SectionnameGuiTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -376,7 +376,7 @@ class SectionnameGuiTest(unittest.TestCase):
         root.destroy()
 
 
-class ModulenameGuiTest(unittest.TestCase):
+klasse ModulenameGuiTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -393,7 +393,7 @@ class ModulenameGuiTest(unittest.TestCase):
         root.destroy()
 
 
-class GotoGuiTest(unittest.TestCase):
+klasse GotoGuiTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -409,7 +409,7 @@ class GotoGuiTest(unittest.TestCase):
         root.destroy()
 
 
-class HelpsourceGuiTest(unittest.TestCase):
+klasse HelpsourceGuiTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -429,7 +429,7 @@ class HelpsourceGuiTest(unittest.TestCase):
         root.destroy()
 
 
-class CustomRunGuiTest(unittest.TestCase):
+klasse CustomRunGuiTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):

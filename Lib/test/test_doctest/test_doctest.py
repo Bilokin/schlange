@@ -44,7 +44,7 @@ def sample_func(v):
     """
     return v+v
 
-class SampleClass:
+klasse SampleClass:
     """
     >>> print(1)
     1
@@ -123,7 +123,7 @@ class SampleClass:
         """
         return "hello"
 
-    class NestedClass:
+    klasse NestedClass:
         """
         >>> x = SampleClass.NestedClass(5)
         >>> y = x.square()
@@ -141,7 +141,7 @@ class SampleClass:
         def get(self):
             return self.val
 
-class SampleNewStyleClass(object):
+klasse SampleNewStyleClass(object):
     r"""
     >>> print('1\n2\n3')
     1
@@ -176,7 +176,7 @@ class SampleNewStyleClass(object):
 def test_Example(): r"""
 Unit tests for the `Example` class.
 
-Example is a simple container class that holds:
+Example is a simple container klasse that holds:
   - `source`: A source string.
   - `want`: An expected output string.
   - `exc_msg`: An expected exception message string (or None if no
@@ -444,7 +444,7 @@ Compare `DocTestCase`:
 
 """
 
-class test_DocTestFinder:
+klasse test_DocTestFinder:
     def basics(): r"""
 Unit tests for the `DocTestFinder` class.
 
@@ -771,7 +771,7 @@ and 'int' is a type.
 """
 
 
-class TestDocTest(unittest.TestCase):
+klasse TestDocTest(unittest.TestCase):
 
     def test_run(self):
         test = '''
@@ -803,7 +803,7 @@ class TestDocTest(unittest.TestCase):
         self.assertEqual((x, y), (2, 3))
 
 
-class TestDocTestFinder(unittest.TestCase):
+klasse TestDocTestFinder(unittest.TestCase):
 
     def test_issue35753(self):
         # This import of `call` should trigger issue35753 when
@@ -888,7 +888,7 @@ given arguments:
     ('x+y\n', '5\n', 9)
 """
 
-class test_DocTestRunner:
+klasse test_DocTestRunner:
     def basics(): r"""
 Unit tests for the `DocTestRunner` class.
 
@@ -2174,7 +2174,7 @@ if not hasattr(sys, 'gettrace') or not sys.gettrace():
     def test_pdb_set_trace_nested():
         """This illustrates more-demanding use of set_trace with nested functions.
 
-        >>> class C(object):
+        >>> klasse C(object):
         ...     def calls_set_trace(self):
         ...         y = 1
         ...         import pdb; pdb.set_trace()
@@ -2741,7 +2741,7 @@ def test_trailing_space_in_test():
       foo \n
     """
 
-class Wrapper:
+klasse Wrapper:
     def __init__(self, func):
         self.func = func
         functools.update_wrapper(self, func)
@@ -3102,7 +3102,7 @@ Tests for error reporting in the testfile() function.
     TestResults(failed=4, attempted=5)
 """
 
-class TestImporter(importlib.abc.MetaPathFinder):
+klasse TestImporter(importlib.abc.MetaPathFinder):
 
     def find_spec(self, fullname, path, target=None):
         return importlib.util.spec_from_file_location(fullname, path, loader=self)
@@ -3117,7 +3117,7 @@ class TestImporter(importlib.abc.MetaPathFinder):
     def create_module(self, spec):
         return None
 
-class TestHook:
+klasse TestHook:
 
     def __init__(self, pathdir):
         self.sys_path = sys.path[:]

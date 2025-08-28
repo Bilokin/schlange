@@ -91,7 +91,7 @@ def add_key_examples(f):
     return f
 
 
-class ZoneInfoTest(ZoneInfoTestBase):
+klasse ZoneInfoTest(ZoneInfoTestBase):
     module = py_zoneinfo
 
     @hypothesis.given(key=valid_keys())
@@ -128,11 +128,11 @@ class ZoneInfoTest(ZoneInfoTestBase):
         self.assertEqual(dt_zi.tzname(), "UTC")
 
 
-class CZoneInfoTest(ZoneInfoTest):
+klasse CZoneInfoTest(ZoneInfoTest):
     module = c_zoneinfo
 
 
-class ZoneInfoPickleTest(ZoneInfoTestBase):
+klasse ZoneInfoPickleTest(ZoneInfoTestBase):
     module = py_zoneinfo
 
     def setUp(self):
@@ -206,11 +206,11 @@ class ZoneInfoPickleTest(ZoneInfoTestBase):
         self.assertIsNot(zi_2, zi_cache)
 
 
-class CZoneInfoPickleTest(ZoneInfoPickleTest):
+klasse CZoneInfoPickleTest(ZoneInfoPickleTest):
     module = c_zoneinfo
 
 
-class ZoneInfoCacheTest(ZoneInfoTestBase):
+klasse ZoneInfoCacheTest(ZoneInfoTestBase):
     module = py_zoneinfo
 
     @hypothesis.given(key=valid_keys())
@@ -230,11 +230,11 @@ class ZoneInfoCacheTest(ZoneInfoTestBase):
         self.assertIsNot(zi_0, zi_1)
 
 
-class CZoneInfoCacheTest(ZoneInfoCacheTest):
+klasse CZoneInfoCacheTest(ZoneInfoCacheTest):
     klass = c_zoneinfo.ZoneInfo
 
 
-class PythonCConsistencyTest(unittest.TestCase):
+klasse PythonCConsistencyTest(unittest.TestCase):
     """Tests that the C and Python versions do the same thing."""
 
     def _is_ambiguous(self, dt):

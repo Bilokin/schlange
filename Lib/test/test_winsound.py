@@ -38,7 +38,7 @@ safe_MessageBeep = sound_func(winsound.MessageBeep)
 safe_PlaySound = sound_func(winsound.PlaySound)
 
 
-class BeepTest(unittest.TestCase):
+klasse BeepTest(unittest.TestCase):
 
     def test_errors(self):
         self.assertRaises(TypeError, winsound.Beep)
@@ -57,7 +57,7 @@ class BeepTest(unittest.TestCase):
         safe_Beep(duration=75, frequency=2000)
 
 
-class MessageBeepTest(unittest.TestCase):
+klasse MessageBeepTest(unittest.TestCase):
 
     def tearDown(self):
         time.sleep(0.5)
@@ -98,7 +98,7 @@ class MessageBeepTest(unittest.TestCase):
         safe_MessageBeep(type=winsound.MB_OK)
 
 
-class PlaySoundTest(unittest.TestCase):
+klasse PlaySoundTest(unittest.TestCase):
 
     def test_errors(self):
         self.assertRaises(TypeError, winsound.PlaySound)

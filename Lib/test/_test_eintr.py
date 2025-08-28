@@ -44,8 +44,8 @@ def kill_on_error(proc):
 
 
 @unittest.skipUnless(hasattr(signal, "setitimer"), "requires setitimer()")
-class EINTRBaseTest(unittest.TestCase):
-    """ Base class for EINTR tests. """
+klasse EINTRBaseTest(unittest.TestCase):
+    """ Base klasse for EINTR tests. """
 
     # delay for initial signal delivery
     signal_delay = 0.1
@@ -87,7 +87,7 @@ class EINTRBaseTest(unittest.TestCase):
 
 
 @unittest.skipUnless(hasattr(signal, "setitimer"), "requires setitimer()")
-class OSEINTRTest(EINTRBaseTest):
+klasse OSEINTRTest(EINTRBaseTest):
     """ EINTR tests for the os module. """
 
     def new_sleep_process(self):
@@ -203,7 +203,7 @@ class OSEINTRTest(EINTRBaseTest):
 
 
 @unittest.skipUnless(hasattr(signal, "setitimer"), "requires setitimer()")
-class SocketEINTRTest(EINTRBaseTest):
+klasse SocketEINTRTest(EINTRBaseTest):
     """ EINTR tests for the socket module. """
 
     @unittest.skipUnless(hasattr(socket, 'socketpair'), 'needs socketpair()')
@@ -388,7 +388,7 @@ class SocketEINTRTest(EINTRBaseTest):
 
 
 @unittest.skipUnless(hasattr(signal, "setitimer"), "requires setitimer()")
-class TimeEINTRTest(EINTRBaseTest):
+klasse TimeEINTRTest(EINTRBaseTest):
     """ EINTR tests for the time module. """
 
     def test_sleep(self):
@@ -404,7 +404,7 @@ class TimeEINTRTest(EINTRBaseTest):
 # is vulnerable to a race condition between the child and the parent processes.
 @unittest.skipUnless(hasattr(signal, 'pthread_sigmask'),
                      'need signal.pthread_sigmask()')
-class SignalEINTRTest(EINTRBaseTest):
+klasse SignalEINTRTest(EINTRBaseTest):
     """ EINTR tests for the signal module. """
 
     def check_sigwait(self, wait_func):
@@ -449,7 +449,7 @@ class SignalEINTRTest(EINTRBaseTest):
 
 
 @unittest.skipUnless(hasattr(signal, "setitimer"), "requires setitimer()")
-class SelectEINTRTest(EINTRBaseTest):
+klasse SelectEINTRTest(EINTRBaseTest):
     """ EINTR tests for the select module. """
 
     def test_select(self):
@@ -505,7 +505,7 @@ class SelectEINTRTest(EINTRBaseTest):
         self.check_elapsed_time(dt)
 
 
-class FCNTLEINTRTest(EINTRBaseTest):
+klasse FCNTLEINTRTest(EINTRBaseTest):
     def _lock(self, lock_func, lock_name):
         self.addCleanup(os_helper.unlink, os_helper.TESTFN)
         rd1, wr1 = os.pipe()

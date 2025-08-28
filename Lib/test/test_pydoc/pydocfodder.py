@@ -8,7 +8,7 @@ def global_func(x, y):
 def global_func2(x, y):
     """Module global function 2"""
 
-class A:
+klasse A:
     "A class."
 
     def A_method(self):
@@ -29,7 +29,7 @@ class A:
         "Method defined in A, B, C and D."
 
     def A_classmethod(cls, x):
-        "A class method defined in A."
+        "A klasse method defined in A."
     A_classmethod = classmethod(A_classmethod)
 
     def A_staticmethod(x, y):
@@ -47,7 +47,7 @@ class A:
 
     A_int_alias = int
 
-class B(A):
+klasse B(A):
     "A class, derived from A."
 
     def AB_method(self):
@@ -69,7 +69,7 @@ class B(A):
 
     @classmethod
     def B_classmethod(cls, x):
-        "A class method defined in B."
+        "A klasse method defined in B."
 
     global_func = global_func  # same name
     global_func_alias = global_func
@@ -91,7 +91,7 @@ class B(A):
 B.B_classmethod_ref = B.B_classmethod
 
 
-class C(A):
+klasse C(A):
     "A class, derived from A."
 
     def AC_method(self):
@@ -111,7 +111,7 @@ class C(A):
     def CD_method(self):
         "Method defined in C and D."
 
-class D(B, C):
+klasse D(B, C):
     """A class, derived from B and C.
     """
 
@@ -132,7 +132,7 @@ class D(B, C):
     def D_method(self):
         "Method defined in D."
 
-class FunkyProperties(object):
+klasse FunkyProperties(object):
     """From SF bug 472347, by Roeland Rengelink.
 
     Property getters etc may not be vanilla functions or methods,
@@ -142,19 +142,19 @@ class FunkyProperties(object):
     def __init__(self):
         self.desc = {'x':0}
 
-    class get_desc:
+    klasse get_desc:
         def __init__(self, attr):
             self.attr = attr
         def __call__(self, inst):
             print('Get called', self, inst)
             return inst.desc[self.attr]
-    class set_desc:
+    klasse set_desc:
         def __init__(self, attr):
             self.attr = attr
         def __call__(self, inst, val):
             print('Set called', self, inst, val)
             inst.desc[self.attr] = val
-    class del_desc:
+    klasse del_desc:
         def __init__(self, attr):
             self.attr = attr
         def __call__(self, inst):

@@ -11,7 +11,7 @@ IGNORECASE = os.path.normcase('P') == os.path.normcase('p')
 NORMSEP = os.path.normcase('\\') == os.path.normcase('/')
 
 
-class FnmatchTestCase(unittest.TestCase):
+klasse FnmatchTestCase(unittest.TestCase):
 
     def check_match(self, filename, pattern, should_match=True, fn=fnmatch):
         if should_match:
@@ -214,7 +214,7 @@ class FnmatchTestCase(unittest.TestCase):
             check('.', '[a-z--/A-Z]')
 
 
-class TranslateTestCase(unittest.TestCase):
+klasse TranslateTestCase(unittest.TestCase):
 
     def test_translate(self):
         import re
@@ -316,7 +316,7 @@ class TranslateTestCase(unittest.TestCase):
         self.assertListEqual(star_indices, [3, 8])
 
 
-class FilterTestCase(unittest.TestCase):
+klasse FilterTestCase(unittest.TestCase):
 
     def test_filter(self):
         self.assertEqual(filter(['Python', 'Ruby', 'Perl', 'Tcl'], 'P*'),
@@ -341,7 +341,7 @@ class FilterTestCase(unittest.TestCase):
                          ['usr/bin', 'usr\\lib'] if NORMSEP else ['usr\\lib'])
 
 
-class FilterFalseTestCase(unittest.TestCase):
+klasse FilterFalseTestCase(unittest.TestCase):
 
     def test_filterfalse(self):
         actual = filterfalse(['Python', 'Ruby', 'Perl', 'Tcl'], 'P*')

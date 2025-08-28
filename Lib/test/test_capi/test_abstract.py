@@ -9,31 +9,31 @@ from _testcapi import PY_SSIZE_T_MIN, PY_SSIZE_T_MAX
 
 NULL = None
 
-class StrSubclass(str):
+klasse StrSubclass(str):
     pass
 
-class BytesSubclass(bytes):
+klasse BytesSubclass(bytes):
     pass
 
-class WithStr:
+klasse WithStr:
     def __init__(self, value):
         self.value = value
     def __str__(self):
         return self.value
 
-class WithRepr:
+klasse WithRepr:
     def __init__(self, value):
         self.value = value
     def __repr__(self):
         return self.value
 
-class WithBytes:
+klasse WithBytes:
     def __init__(self, value):
         self.value = value
     def __bytes__(self):
         return self.value
 
-class TestObject:
+klasse TestObject:
     @property
     def evil(self):
         raise RuntimeError('do not get evil')
@@ -44,19 +44,19 @@ class TestObject:
     def evil(self):
         raise RuntimeError('do not del evil')
 
-class ProxyGetItem:
+klasse ProxyGetItem:
     def __init__(self, obj):
         self.obj = obj
     def __getitem__(self, key):
         return self.obj[key]
 
-class ProxySetItem:
+klasse ProxySetItem:
     def __init__(self, obj):
         self.obj = obj
     def __setitem__(self, key, value):
         self.obj[key] = value
 
-class ProxyDelItem:
+klasse ProxyDelItem:
     def __init__(self, obj):
         self.obj = obj
     def __delitem__(self, key):
@@ -68,7 +68,7 @@ def gen():
     yield 'c'
 
 
-class CAPITest(unittest.TestCase):
+klasse CAPITest(unittest.TestCase):
     def assertTypedEqual(self, actual, expected):
         self.assertIs(type(actual), type(expected))
         self.assertEqual(actual, expected)
@@ -660,14 +660,14 @@ class CAPITest(unittest.TestCase):
         self.assertRaises(SystemError, delitemstring, NULL, b'a')
 
     def test_mapping_keys_valuesitems(self):
-        class Mapping1(dict):
+        klasse Mapping1(dict):
             def keys(self):
                 return list(super().keys())
             def values(self):
                 return list(super().values())
             def items(self):
                 return list(super().items())
-        class Mapping2(dict):
+        klasse Mapping2(dict):
             def keys(self):
                 return tuple(super().keys())
             def values(self):
@@ -697,7 +697,7 @@ class CAPITest(unittest.TestCase):
         self.assertRaises(SystemError, _testlimitedcapi.mapping_values, NULL)
         self.assertRaises(SystemError, _testlimitedcapi.mapping_items, NULL)
 
-        class BadMapping:
+        klasse BadMapping:
             def keys(self):
                 return None
             def values(self):
@@ -860,7 +860,7 @@ class CAPITest(unittest.TestCase):
                 self.assertEqual(data, data_copy)
 
         # Custom class:
-        class Custom:
+        klasse Custom:
             def __setitem__(self, index, value):
                 self.index = index
                 self.value = value
@@ -896,7 +896,7 @@ class CAPITest(unittest.TestCase):
                 self.assertEqual(data, data_copy)
 
         # Custom class:
-        class Custom:
+        klasse Custom:
             def __delitem__(self, index):
                 self.index = index
 
@@ -1046,7 +1046,7 @@ class CAPITest(unittest.TestCase):
                     items.append(item)
                 self.assertEqual(items, list(data))
 
-        class Broken:
+        klasse Broken:
             def __init__(self):
                 self.count = 0
 
@@ -1078,7 +1078,7 @@ class CAPITest(unittest.TestCase):
             PyIter_NextItem(10)
 
     def test_object_setattr_null_exc(self):
-        class Obj:
+        klasse Obj:
             pass
         obj = Obj()
         obj.attr = 123

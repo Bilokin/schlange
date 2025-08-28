@@ -14,7 +14,7 @@ if not support.has_fork_support:
 if not hasattr(os, 'wait3'):
     raise unittest.SkipTest("os.wait3 not defined")
 
-class Wait3Test(ForkWait):
+klasse Wait3Test(ForkWait):
     def wait_impl(self, cpid, *, exitcode):
         # This many iterations can be required, since some previously run
         # tests (e.g. test_ctypes) could have spawned a lot of children

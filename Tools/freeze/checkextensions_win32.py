@@ -28,7 +28,7 @@ try:
 except ImportError:
     win32api = None # User has already been warned
 
-class CExtension:
+klasse CExtension:
     """An abstraction of an extension implemented in C/C++
     """
     def __init__(self, name, sourceFiles):

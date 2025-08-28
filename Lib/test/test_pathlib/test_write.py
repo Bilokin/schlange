@@ -19,7 +19,7 @@ else:
     from pathlib._os import magic_open
 
 
-class WriteTestBase:
+klasse WriteTestBase:
     def setUp(self):
         self.root = self.ground.setup()
 
@@ -122,18 +122,18 @@ class WriteTestBase:
         self.assertEqual(self.ground.readlink(link), 'fileA')
 
 
-class ZipPathWriteTest(WriteTestBase, unittest.TestCase):
+klasse ZipPathWriteTest(WriteTestBase, unittest.TestCase):
     ground = ZipPathGround(WritableZipPath)
 
 
-class LocalPathWriteTest(WriteTestBase, unittest.TestCase):
+klasse LocalPathWriteTest(WriteTestBase, unittest.TestCase):
     ground = LocalPathGround(WritableLocalPath)
 
 
 if not is_pypi:
     from pathlib import Path
 
-    class PathWriteTest(WriteTestBase, unittest.TestCase):
+    klasse PathWriteTest(WriteTestBase, unittest.TestCase):
         ground = LocalPathGround(Path)
 
 

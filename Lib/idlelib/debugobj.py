@@ -18,7 +18,7 @@ myrepr = Repr()
 myrepr.maxstring = 100
 myrepr.maxother = 100
 
-class ObjectTreeItem(TreeItem):
+klasse ObjectTreeItem(TreeItem):
     def __init__(self, labeltext, object_, setfunction=None):
         self.labeltext = labeltext
         self.object = object_
@@ -58,7 +58,7 @@ class ObjectTreeItem(TreeItem):
             sublist.append(item)
         return sublist
 
-class ClassTreeItem(ObjectTreeItem):
+klasse ClassTreeItem(ObjectTreeItem):
     def IsExpandable(self):
         return True
     def GetSubList(self):
@@ -71,11 +71,11 @@ class ClassTreeItem(ObjectTreeItem):
         sublist.insert(0, item)
         return sublist
 
-class AtomicObjectTreeItem(ObjectTreeItem):
+klasse AtomicObjectTreeItem(ObjectTreeItem):
     def IsExpandable(self):
         return False
 
-class SequenceTreeItem(ObjectTreeItem):
+klasse SequenceTreeItem(ObjectTreeItem):
     def IsExpandable(self):
         return len(self.object) > 0
     def keys(self):
@@ -93,7 +93,7 @@ class SequenceTreeItem(ObjectTreeItem):
             sublist.append(item)
         return sublist
 
-class DictTreeItem(SequenceTreeItem):
+klasse DictTreeItem(SequenceTreeItem):
     def keys(self):
         # TODO return sorted(self.object)
         keys = list(self.object)

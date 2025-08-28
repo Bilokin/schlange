@@ -15,7 +15,7 @@ def capture(*args, **kwargs):
     return args, kwargs
 
 
-class MyObject(object):
+klasse MyObject(object):
     def my_method(self):
         pass
 
@@ -29,17 +29,17 @@ def raiser(exception, msg='std'):
     raise exception(msg)
 
 
-class FalseyBoolException(Exception):
+klasse FalseyBoolException(Exception):
     def __bool__(self):
         return False
 
 
-class FalseyLenException(Exception):
+klasse FalseyLenException(Exception):
     def __len__(self):
         return 0
 
 
-class ExecutorTest:
+klasse ExecutorTest:
 
     # Executor.shutdown() and context manager usage is tested by
     # ExecutorShutdownTest.

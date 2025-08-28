@@ -132,7 +132,7 @@ def _decode_uu(encoded):
     return b''.join(decoded_lines)
 
 
-class Message:
+klasse Message:
     """Basic message object.
 
     A message object is defined as something that has a bunch of RFC 2822
@@ -980,7 +980,7 @@ class Message:
     from email.iterators import walk
 
 
-class MIMEPart(Message):
+klasse MIMEPart(Message):
 
     def __init__(self, policy=None):
         if policy is None:
@@ -1203,7 +1203,7 @@ class MIMEPart(Message):
         self._payload = None
 
 
-class EmailMessage(MIMEPart):
+klasse EmailMessage(MIMEPart):
 
     def set_content(self, *args, **kw):
         super().set_content(*args, **kw)

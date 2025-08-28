@@ -35,7 +35,7 @@ def hexescape(char):
 
 
 def fakehttp(fakedata, mock_close=False):
-    class FakeSocket(io.BytesIO):
+    klasse FakeSocket(io.BytesIO):
         io_refs = 1
 
         def sendall(self, data):
@@ -60,7 +60,7 @@ def fakehttp(fakedata, mock_close=False):
             if self.io_refs == 0:
                 io.BytesIO.close(self)
 
-    class FakeHTTPConnection(http.client.HTTPConnection):
+    klasse FakeHTTPConnection(http.client.HTTPConnection):
 
         # buffer to store data for verification in urlopen tests.
         buf = None
@@ -81,7 +81,7 @@ def fakehttp(fakedata, mock_close=False):
     return FakeHTTPConnection
 
 
-class FakeHTTPMixin(object):
+klasse FakeHTTPMixin(object):
     def fakehttp(self, fakedata, mock_close=False):
         fake_http_class = fakehttp(fakedata, mock_close=mock_close)
         self._connection_class = http.client.HTTPConnection
@@ -91,7 +91,7 @@ class FakeHTTPMixin(object):
         http.client.HTTPConnection = self._connection_class
 
 
-class urlopen_FileTests(unittest.TestCase):
+klasse urlopen_FileTests(unittest.TestCase):
     """Test urlopen() opening a temporary file.
 
     Try to test as much functionality as possible so as to cut down on reliance
@@ -192,7 +192,7 @@ class urlopen_FileTests(unittest.TestCase):
             self.assertEqual(e.exception.reason, 'file:// scheme is supported only on localhost')
 
 
-class ProxyTests(unittest.TestCase):
+klasse ProxyTests(unittest.TestCase):
 
     def setUp(self):
         # Records changes to env vars
@@ -263,7 +263,7 @@ class ProxyTests(unittest.TestCase):
         self.assertFalse(bypass('newdomain.com:1234\n'))
 
 
-class ProxyTests_withOrderedEnv(unittest.TestCase):
+klasse ProxyTests_withOrderedEnv(unittest.TestCase):
 
     def setUp(self):
         # We need to test conditions, where variable order _is_ significant
@@ -299,7 +299,7 @@ class ProxyTests_withOrderedEnv(unittest.TestCase):
         self.assertEqual('http://somewhere:3128', proxies['http'])
 
 
-class urlopen_HttpTests(unittest.TestCase, FakeHTTPMixin):
+klasse urlopen_HttpTests(unittest.TestCase, FakeHTTPMixin):
     """Test urlopen() opening a fake http connection."""
 
     def check_read(self, ver):
@@ -513,7 +513,7 @@ Connection: close
         self.assertTrue(e.exception.reason)
 
 
-class urlopen_DataTests(unittest.TestCase):
+klasse urlopen_DataTests(unittest.TestCase):
     """Test urlopen() opening a data URL."""
 
     def setUp(self):
@@ -591,7 +591,7 @@ class urlopen_DataTests(unittest.TestCase):
         self.assertRaises(ValueError,urllib.request.urlopen,'data:;base64,Cg=')
 
 
-class urlretrieve_FileTests(unittest.TestCase):
+klasse urlretrieve_FileTests(unittest.TestCase):
     """Test urllib.urlretrieve() on local files"""
 
     def setUp(self):
@@ -730,7 +730,7 @@ class urlretrieve_FileTests(unittest.TestCase):
         self.assertEqual(report[2][1], 8192)
 
 
-class urlretrieve_HttpTests(unittest.TestCase, FakeHTTPMixin):
+klasse urlretrieve_HttpTests(unittest.TestCase, FakeHTTPMixin):
     """Test urllib.urlretrieve() using fake http connections"""
 
     def test_short_content_raises_ContentTooShortError(self):
@@ -775,7 +775,7 @@ FF
                 self.unfakehttp()
 
 
-class QuotingTests(unittest.TestCase):
+klasse QuotingTests(unittest.TestCase):
     r"""Tests for urllib.quote() and urllib.quote_plus()
 
     According to RFC 3986 (Uniform Resource Identifiers), to escape a
@@ -980,7 +980,7 @@ class QuotingTests(unittest.TestCase):
                          "using quote_plus(): %r != %r" % (expect, result))
 
 
-class UnquotingTests(unittest.TestCase):
+klasse UnquotingTests(unittest.TestCase):
     """Tests for unquote() and unquote_plus()
 
     See the doc string for quoting_Tests for details on quoting and such.
@@ -1193,7 +1193,7 @@ class UnquotingTests(unittest.TestCase):
                          "using unquote(): %r != %r" % (expect, result))
 
 
-class urlencode_Tests(unittest.TestCase):
+klasse urlencode_Tests(unittest.TestCase):
     """Tests for urlencode()"""
 
     def help_inputtype(self, given, test_type):
@@ -1388,7 +1388,7 @@ class urlencode_Tests(unittest.TestCase):
                                         encoding="latin-1")
         self.assertEqual(expect, result)
 
-class Pathname_Tests(unittest.TestCase):
+klasse Pathname_Tests(unittest.TestCase):
     """Test pathname2url() and url2pathname()"""
 
     def test_basic(self):
@@ -1655,7 +1655,7 @@ class Pathname_Tests(unittest.TestCase):
         url = urllib.parse.quote(url, encoding=encoding, errors=errors)
         self.assertEqual(urllib.request.url2pathname(url), os_helper.FS_NONASCII)
 
-class Utility_Tests(unittest.TestCase):
+klasse Utility_Tests(unittest.TestCase):
     """Testcase to test the various utility functions in the urllib."""
 
     def test_thishost(self):
@@ -1663,7 +1663,7 @@ class Utility_Tests(unittest.TestCase):
         self.assertIsInstance(urllib.request.thishost(), tuple)
 
 
-class RequestTests(unittest.TestCase):
+klasse RequestTests(unittest.TestCase):
     """Unit tests for urllib.request.Request."""
 
     def test_default_values(self):

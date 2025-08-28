@@ -47,7 +47,7 @@ SUFFIXES_DOCUMENTATION = frozenset({".rst", ".md"})
 
 
 @dataclass(kw_only=True, slots=True)
-class Outputs:
+klasse Outputs:
     run_ci_fuzz: bool = False
     run_docs: bool = False
     run_tests: bool = False

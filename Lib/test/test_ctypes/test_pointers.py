@@ -24,7 +24,7 @@ python_types = [int, int, int, int, int, int,
                 int, int, int, int, float, float]
 
 
-class PointersTestCase(unittest.TestCase):
+klasse PointersTestCase(unittest.TestCase):
     def tearDown(self):
         _pointer_type_cache_fallback.clear()
 
@@ -47,7 +47,7 @@ class PointersTestCase(unittest.TestCase):
 
     def test_pointer_crash(self):
 
-        class A(POINTER(c_ulong)):
+        klasse A(POINTER(c_ulong)):
             pass
 
         POINTER(c_ulong)(c_ulong(22))
@@ -142,7 +142,7 @@ class PointersTestCase(unittest.TestCase):
         self.assertIs(p2._type_, p1)
 
     def test_other(self):
-        class Table(Structure):
+        klasse Table(Structure):
             _fields_ = [("a", c_int),
                         ("b", c_int),
                         ("c", c_int)]
@@ -217,7 +217,7 @@ class PointersTestCase(unittest.TestCase):
             null_ptr[0] = 1
 
     def test_set_pointer_to_null_and_read(self):
-        class Bar(Structure):
+        klasse Bar(Structure):
             _fields_ = [("values", POINTER(c_int))]
 
         bar = Bar()
@@ -298,7 +298,7 @@ class PointersTestCase(unittest.TestCase):
         int_ptr = POINTER(c_int)
         float_ptr = POINTER(c_float)
         try:
-            class C(c_int):
+            klasse C(c_int):
                 pass
 
             t1 = POINTER(c_int)
@@ -335,7 +335,7 @@ class PointersTestCase(unittest.TestCase):
             p1.set_type(int)
 
     def test_pointer_type_attribute_is_none(self):
-        class Cls(Structure):
+        klasse Cls(Structure):
             _fields_ = (
                 ('a', c_int),
                 ('b', c_float),
@@ -348,7 +348,7 @@ class PointersTestCase(unittest.TestCase):
         self.assertIs(Cls.__pointer_type__, p)
 
     def test_arbitrary_pointer_type_attribute(self):
-        class Cls(Structure):
+        klasse Cls(Structure):
             _fields_ = (
                 ('a', c_int),
                 ('b', c_float),
@@ -378,7 +378,7 @@ class PointersTestCase(unittest.TestCase):
     def test_pointer_types_factory(self):
         """Shouldn't leak"""
         def factory():
-            class Cls(Structure):
+            klasse Cls(Structure):
                 _fields_ = (
                     ('a', c_int),
                     ('b', c_float),
@@ -404,13 +404,13 @@ class PointersTestCase(unittest.TestCase):
         self.assertEqual(len(ws_ptr), 0, ws_ptr)
 
 
-class PointerTypeCacheTestCase(unittest.TestCase):
+klasse PointerTypeCacheTestCase(unittest.TestCase):
     # dummy tests to check warnings and base behavior
     def tearDown(self):
         _pointer_type_cache_fallback.clear()
 
     def test_deprecated_cache_with_not_ctypes_type(self):
-        class C:
+        klasse C:
             pass
 
         with self.assertWarns(DeprecationWarning):
@@ -433,7 +433,7 @@ class PointerTypeCacheTestCase(unittest.TestCase):
             self.assertEqual(_pointer_type_cache[123], 456)
 
     def test_deprecated_cache_with_ctypes_type(self):
-        class C(Structure):
+        klasse C(Structure):
             _fields_ = [("a", c_int),
                         ("b", c_int),
                         ("c", c_int)]
@@ -463,7 +463,7 @@ class PointerTypeCacheTestCase(unittest.TestCase):
 
     def test_repeated_set_type(self):
         # Regression test for gh-133290
-        class C(Structure):
+        klasse C(Structure):
             _fields_ = [('a', c_int)]
         ptr = POINTER(C)
         # Read _type_ several times to warm up cache

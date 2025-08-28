@@ -21,7 +21,7 @@ URL = 'https://www.example.com'
 CMD_NAME = 'test'
 
 
-class PopenMock(mock.MagicMock):
+klasse PopenMock(mock.MagicMock):
 
     def poll(self):
         return 0
@@ -31,12 +31,12 @@ class PopenMock(mock.MagicMock):
 
 
 @requires_subprocess()
-class CommandTestMixin:
+klasse CommandTestMixin:
 
     def _test(self, meth, *, args=[URL], kw={}, options, arguments):
         """Given a web browser instance method name along with arguments and
         keywords for same (which defaults to the single argument URL), creates
-        a browser instance from the class pointed to by self.browser, calls the
+        a browser instance from the klasse pointed to by self.browser, calls the
         indicated instance method with the indicated arguments, and compares
         the resulting options and arguments passed to Popen by the browser
         instance against the 'options' and 'args' lists.  Options are compared
@@ -57,7 +57,7 @@ class CommandTestMixin:
         self.assertEqual(popen_args, arguments)
 
 
-class GenericBrowserCommandTest(CommandTestMixin, unittest.TestCase):
+klasse GenericBrowserCommandTest(CommandTestMixin, unittest.TestCase):
 
     browser_class = webbrowser.GenericBrowser
 
@@ -67,7 +67,7 @@ class GenericBrowserCommandTest(CommandTestMixin, unittest.TestCase):
                    arguments=[URL])
 
 
-class BackgroundBrowserCommandTest(CommandTestMixin, unittest.TestCase):
+klasse BackgroundBrowserCommandTest(CommandTestMixin, unittest.TestCase):
 
     browser_class = webbrowser.BackgroundBrowser
 
@@ -77,7 +77,7 @@ class BackgroundBrowserCommandTest(CommandTestMixin, unittest.TestCase):
                    arguments=[URL])
 
 
-class ChromeCommandTest(CommandTestMixin, unittest.TestCase):
+klasse ChromeCommandTest(CommandTestMixin, unittest.TestCase):
 
     browser_class = webbrowser.Chrome
 
@@ -111,7 +111,7 @@ class ChromeCommandTest(CommandTestMixin, unittest.TestCase):
                        kw=dict(new=999))
 
 
-class EdgeCommandTest(CommandTestMixin, unittest.TestCase):
+klasse EdgeCommandTest(CommandTestMixin, unittest.TestCase):
 
     browser_class = webbrowser.Edge
 
@@ -136,7 +136,7 @@ class EdgeCommandTest(CommandTestMixin, unittest.TestCase):
                    arguments=[URL])
 
 
-class MozillaCommandTest(CommandTestMixin, unittest.TestCase):
+klasse MozillaCommandTest(CommandTestMixin, unittest.TestCase):
 
     browser_class = webbrowser.Mozilla
 
@@ -161,7 +161,7 @@ class MozillaCommandTest(CommandTestMixin, unittest.TestCase):
                    arguments=['-new-tab', URL])
 
 
-class EpiphanyCommandTest(CommandTestMixin, unittest.TestCase):
+klasse EpiphanyCommandTest(CommandTestMixin, unittest.TestCase):
 
     browser_class = webbrowser.Epiphany
 
@@ -186,7 +186,7 @@ class EpiphanyCommandTest(CommandTestMixin, unittest.TestCase):
                    arguments=[URL])
 
 
-class OperaCommandTest(CommandTestMixin, unittest.TestCase):
+klasse OperaCommandTest(CommandTestMixin, unittest.TestCase):
 
     browser_class = webbrowser.Opera
 
@@ -211,7 +211,7 @@ class OperaCommandTest(CommandTestMixin, unittest.TestCase):
                    arguments=[URL])
 
 
-class ELinksCommandTest(CommandTestMixin, unittest.TestCase):
+klasse ELinksCommandTest(CommandTestMixin, unittest.TestCase):
 
     browser_class = webbrowser.Elinks
 
@@ -236,7 +236,7 @@ class ELinksCommandTest(CommandTestMixin, unittest.TestCase):
 
 
 @unittest.skipUnless(sys.platform == "ios", "Test only applicable to iOS")
-class IOSBrowserTest(unittest.TestCase):
+klasse IOSBrowserTest(unittest.TestCase):
     def _obj_ref(self, *args):
         # Construct a string representation of the arguments that can be used
         # as a proxy for object instance references
@@ -302,7 +302,7 @@ class IOSBrowserTest(unittest.TestCase):
         self._test('open_new_tab')
 
 
-class MockPopenPipe:
+klasse MockPopenPipe:
     def __init__(self, cmd, mode):
         self.cmd = cmd
         self.mode = mode
@@ -319,7 +319,7 @@ class MockPopenPipe:
 
 @unittest.skipUnless(sys.platform == "darwin", "macOS specific test")
 @requires_subprocess()
-class MacOSXOSAScriptTest(unittest.TestCase):
+klasse MacOSXOSAScriptTest(unittest.TestCase):
 
     def setUp(self):
         # Ensure that 'BROWSER' is not set to 'open' or something else.
@@ -371,7 +371,7 @@ class MacOSXOSAScriptTest(unittest.TestCase):
         self.assertIn('open location "https://python.org"', script)
 
 
-class BrowserRegistrationTest(unittest.TestCase):
+klasse BrowserRegistrationTest(unittest.TestCase):
 
     def setUp(self):
         # Ensure we don't alter the real registered browser details
@@ -385,7 +385,7 @@ class BrowserRegistrationTest(unittest.TestCase):
         webbrowser._browsers = self._saved_browsers
 
     def _check_registration(self, preferred):
-        class ExampleBrowser:
+        klasse ExampleBrowser:
             pass
 
         expected_tryorder = []
@@ -434,13 +434,13 @@ class BrowserRegistrationTest(unittest.TestCase):
         ck_o.assert_not_called()
 
 
-class ImportTest(unittest.TestCase):
+klasse ImportTest(unittest.TestCase):
     def test_register(self):
         webbrowser = import_helper.import_fresh_module('webbrowser')
         self.assertIsNone(webbrowser._tryorder)
         self.assertFalse(webbrowser._browsers)
 
-        class ExampleBrowser:
+        klasse ExampleBrowser:
             pass
         webbrowser.register('Example1', ExampleBrowser)
         self.assertTrue(webbrowser._tryorder)
@@ -503,7 +503,7 @@ class ImportTest(unittest.TestCase):
             self.assertEqual(webbrowser.get().name, sys.executable)
 
 
-class CliTest(unittest.TestCase):
+klasse CliTest(unittest.TestCase):
     def test_parse_args(self):
         for command, url, new_win in [
             # No optional arguments

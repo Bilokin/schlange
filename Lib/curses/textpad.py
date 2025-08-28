@@ -16,7 +16,7 @@ def rectangle(win, uly, ulx, lry, lrx):
     win.addch(lry, lrx, curses.ACS_LRCORNER)
     win.addch(lry, ulx, curses.ACS_LLCORNER)
 
-class Textbox:
+klasse Textbox:
     """Editing widget using the interior of a window object.
      Supports the following Emacs-like key bindings:
 

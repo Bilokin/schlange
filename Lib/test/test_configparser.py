@@ -9,7 +9,7 @@ from test import support
 from test.support import os_helper
 
 
-class SortedDict(collections.UserDict):
+klasse SortedDict(collections.UserDict):
 
     def items(self):
         return sorted(self.data.items())
@@ -32,7 +32,7 @@ class SortedDict(collections.UserDict):
     __iter__ = iterkeys
 
 
-class CfgParserTestCaseClass:
+klasse CfgParserTestCaseClass:
     allow_no_value = False
     delimiters = ('=', ':')
     comment_prefixes = (';', '#')
@@ -65,7 +65,7 @@ class CfgParserTestCaseClass:
         return cf
 
 
-class BasicTestCase(CfgParserTestCaseClass):
+klasse BasicTestCase(CfgParserTestCaseClass):
 
     def basic_test(self, cf):
         E = ['Commented Bar',
@@ -719,7 +719,7 @@ boolean {0[0]} NO
                              "option1{eq}foo\n".format(eq=self.delimiters[0]))
         # Check that we don't get an exception when setting values in
         # an existing section using strings:
-        class mystr(str):
+        klasse mystr(str):
             pass
         cf.set("sect", "option1", "splat")
         cf.set("sect", "option1", mystr("splat"))
@@ -900,12 +900,12 @@ boolean {0[0]} NO
         self.assertEqual(cf['DEFAULT']['test'], 'test')
 
 
-class StrictTestCase(BasicTestCase, unittest.TestCase):
+klasse StrictTestCase(BasicTestCase, unittest.TestCase):
     config_class = configparser.RawConfigParser
     strict = True
 
 
-class ConfigParserTestCase(BasicTestCase, unittest.TestCase):
+klasse ConfigParserTestCase(BasicTestCase, unittest.TestCase):
     config_class = configparser.ConfigParser
 
     def test_interpolation(self):
@@ -994,7 +994,7 @@ class ConfigParserTestCase(BasicTestCase, unittest.TestCase):
         self.assertAlmostEqual(cf[self.default_section].getfloat('a'), 5.25)
 
 
-class ConfigParserTestCaseNoInterpolation(BasicTestCase, unittest.TestCase):
+klasse ConfigParserTestCaseNoInterpolation(BasicTestCase, unittest.TestCase):
     config_class = configparser.ConfigParser
     interpolation = None
     ini = textwrap.dedent("""
@@ -1022,14 +1022,14 @@ class ConfigParserTestCaseNoInterpolation(BasicTestCase, unittest.TestCase):
         self.assertIsNone(cf.read_string(""))
 
     def test_none_as_default_interpolation(self):
-        class CustomConfigParser(configparser.ConfigParser):
+        klasse CustomConfigParser(configparser.ConfigParser):
             _DEFAULT_INTERPOLATION = None
 
         cf = CustomConfigParser()
         cf.read_string(self.ini)
         self.assertMatchesIni(cf)
 
-class ConfigParserTestCaseInvalidInterpolationType(unittest.TestCase):
+klasse ConfigParserTestCaseInvalidInterpolationType(unittest.TestCase):
     def test_error_on_wrong_type_for_interpolation(self):
         for value in [configparser.ExtendedInterpolation,  42,  "a string"]:
             with self.subTest(value=value):
@@ -1037,17 +1037,17 @@ class ConfigParserTestCaseInvalidInterpolationType(unittest.TestCase):
                     configparser.ConfigParser(interpolation=value)
 
 
-class ConfigParserTestCaseNonStandardDelimiters(ConfigParserTestCase):
+klasse ConfigParserTestCaseNonStandardDelimiters(ConfigParserTestCase):
     delimiters = (':=', '$')
     comment_prefixes = ('//', '"')
     inline_comment_prefixes = ('//', '"')
 
 
-class ConfigParserTestCaseNonStandardDefaultSection(ConfigParserTestCase):
+klasse ConfigParserTestCaseNonStandardDefaultSection(ConfigParserTestCase):
     default_section = 'general'
 
 
-class MultilineValuesTestCase(BasicTestCase, unittest.TestCase):
+klasse MultilineValuesTestCase(BasicTestCase, unittest.TestCase):
     config_class = configparser.ConfigParser
     wonderful_spam = ("I'm having spam spam spam spam "
                       "spam spam spam beaked beans spam "
@@ -1076,7 +1076,7 @@ class MultilineValuesTestCase(BasicTestCase, unittest.TestCase):
                          self.wonderful_spam.replace('\t\n', '\n'))
 
 
-class RawConfigParserTestCase(BasicTestCase, unittest.TestCase):
+klasse RawConfigParserTestCase(BasicTestCase, unittest.TestCase):
     config_class = configparser.RawConfigParser
 
     def test_interpolation(self):
@@ -1127,13 +1127,13 @@ class RawConfigParserTestCase(BasicTestCase, unittest.TestCase):
         self.assertAlmostEqual(cf[self.default_section]['a'], 5.2)
 
 
-class RawConfigParserTestCaseNonStandardDelimiters(RawConfigParserTestCase):
+klasse RawConfigParserTestCaseNonStandardDelimiters(RawConfigParserTestCase):
     delimiters = (':=', '$')
     comment_prefixes = ('//', '"')
     inline_comment_prefixes = ('//', '"')
 
 
-class RawConfigParserTestSambaConf(CfgParserTestCaseClass, unittest.TestCase):
+klasse RawConfigParserTestSambaConf(CfgParserTestCaseClass, unittest.TestCase):
     config_class = configparser.RawConfigParser
     comment_prefixes = ('#', ';', '----')
     inline_comment_prefixes = ('//',)
@@ -1153,7 +1153,7 @@ class RawConfigParserTestSambaConf(CfgParserTestCaseClass, unittest.TestCase):
         self.assertEqual(cf.get("global", "hosts allow"), "127.")
         self.assertEqual(cf.get("tmp", "echo command"), "cat %s; rm %s")
 
-class ConfigParserTestCaseExtendedInterpolation(BasicTestCase, unittest.TestCase):
+klasse ConfigParserTestCaseExtendedInterpolation(BasicTestCase, unittest.TestCase):
     config_class = configparser.ConfigParser
     interpolation = configparser.ExtendedInterpolation()
     default_section = 'common'
@@ -1324,11 +1324,11 @@ class ConfigParserTestCaseExtendedInterpolation(BasicTestCase, unittest.TestCase
             cf['interpolation fail']['case6'] = "BLACK $ABBATH"
 
 
-class ConfigParserTestCaseNoValue(ConfigParserTestCase):
+klasse ConfigParserTestCaseNoValue(ConfigParserTestCase):
     allow_no_value = True
 
 
-class NoValueAndExtendedInterpolation(CfgParserTestCaseClass):
+klasse NoValueAndExtendedInterpolation(CfgParserTestCaseClass):
     interpolation = configparser.ExtendedInterpolation()
     allow_no_value = True
 
@@ -1355,21 +1355,21 @@ class NoValueAndExtendedInterpolation(CfgParserTestCaseClass):
         self.assertEqual(cf["dummy"]["b"], "None")
 
 
-class ConfigParserNoValueAndExtendedInterpolationTest(
+klasse ConfigParserNoValueAndExtendedInterpolationTest(
     NoValueAndExtendedInterpolation,
     unittest.TestCase,
 ):
     config_class = configparser.ConfigParser
 
 
-class RawConfigParserNoValueAndExtendedInterpolationTest(
+klasse RawConfigParserNoValueAndExtendedInterpolationTest(
     NoValueAndExtendedInterpolation,
     unittest.TestCase,
 ):
     config_class = configparser.RawConfigParser
 
 
-class ConfigParserTestCaseTrickyFile(CfgParserTestCaseClass, unittest.TestCase):
+klasse ConfigParserTestCaseTrickyFile(CfgParserTestCaseClass, unittest.TestCase):
     config_class = configparser.ConfigParser
     delimiters = {'='}
     comment_prefixes = {'#'}
@@ -1414,7 +1414,7 @@ class ConfigParserTestCaseTrickyFile(CfgParserTestCaseClass, unittest.TestCase):
             cf.read(tricky, encoding='ascii')
 
 
-class Issue7005TestCase(unittest.TestCase):
+klasse Issue7005TestCase(unittest.TestCase):
     """Test output when None is set() as a value and allow_no_value == False.
 
     http://bugs.python.org/issue7005
@@ -1443,7 +1443,7 @@ class Issue7005TestCase(unittest.TestCase):
         self.assertEqual(output, self.expected_output)
 
 
-class SortedTestCase(RawConfigParserTestCase):
+klasse SortedTestCase(RawConfigParserTestCase):
     dict_type = SortedDict
 
     def test_sorted(self):
@@ -1466,7 +1466,7 @@ class SortedTestCase(RawConfigParserTestCase):
                          "o4 = 1\n\n")
 
 
-class CompatibleTestCase(CfgParserTestCaseClass, unittest.TestCase):
+klasse CompatibleTestCase(CfgParserTestCaseClass, unittest.TestCase):
     config_class = configparser.RawConfigParser
     comment_prefixes = '#;'
     inline_comment_prefixes = ';'
@@ -1488,7 +1488,7 @@ class CompatibleTestCase(CfgParserTestCaseClass, unittest.TestCase):
         self.assertEqual(cf.get('Commented Bar', 'quirk'),
                          'this;is not a comment')
 
-class CopyTestCase(BasicTestCase, unittest.TestCase):
+klasse CopyTestCase(BasicTestCase, unittest.TestCase):
     config_class = configparser.ConfigParser
 
     def fromstring(self, string, defaults=None):
@@ -1507,7 +1507,7 @@ class CopyTestCase(BasicTestCase, unittest.TestCase):
         return cf_copy
 
 
-class FakeFile:
+klasse FakeFile:
     def __init__(self):
         file_path = support.findfile("cfgparser.1", subdir="configdata")
         with open(file_path, encoding="utf-8") as f:
@@ -1528,7 +1528,7 @@ def readline_generator(f):
         line = f.readline()
 
 
-class ReadFileTestCase(unittest.TestCase):
+klasse ReadFileTestCase(unittest.TestCase):
     def test_file(self):
         file_paths = [support.findfile("cfgparser.1", subdir="configdata")]
         try:
@@ -1635,7 +1635,7 @@ class ReadFileTestCase(unittest.TestCase):
 
 
 
-class CoverageOneHundredTestCase(unittest.TestCase):
+klasse CoverageOneHundredTestCase(unittest.TestCase):
     """Covers edge cases in the codebase."""
 
     def test_duplicate_option_error(self):
@@ -1717,7 +1717,7 @@ class CoverageOneHundredTestCase(unittest.TestCase):
             parser['s2'].getdecimal('two')
 
 
-class ExceptionPicklingTestCase(unittest.TestCase):
+klasse ExceptionPicklingTestCase(unittest.TestCase):
     """Tests for issue #13760: ConfigParser exceptions are not picklable."""
 
     def test_error(self):
@@ -1872,7 +1872,7 @@ class ExceptionPicklingTestCase(unittest.TestCase):
             self.assertEqual(repr(e1), repr(e2))
 
 
-class InlineCommentStrippingTestCase(unittest.TestCase):
+klasse InlineCommentStrippingTestCase(unittest.TestCase):
     """Tests for issue #14590: ConfigParser doesn't strip inline comment when
     delimiter occurs earlier without preceding space.."""
 
@@ -1908,7 +1908,7 @@ class InlineCommentStrippingTestCase(unittest.TestCase):
         self.assertEqual(s['k3'], 'v3;#//still v3# and still v3')
 
 
-class ExceptionContextTestCase(unittest.TestCase):
+klasse ExceptionContextTestCase(unittest.TestCase):
     """ Test that implementation details doesn't leak
     through raising exceptions. """
 
@@ -1962,7 +1962,7 @@ class ExceptionContextTestCase(unittest.TestCase):
         self.assertIs(cm.exception.__suppress_context__, True)
 
 
-class ConvertersTestCase(BasicTestCase, unittest.TestCase):
+klasse ConvertersTestCase(BasicTestCase, unittest.TestCase):
     """Introduced in 3.5, issue #18159."""
 
     config_class = configparser.ConfigParser
@@ -2044,7 +2044,7 @@ class ConvertersTestCase(BasicTestCase, unittest.TestCase):
             del cfg.converters[None]
 
 
-class BlatantOverrideConvertersTestCase(unittest.TestCase):
+klasse BlatantOverrideConvertersTestCase(unittest.TestCase):
     """What if somebody overrode a getboolean()? We want to make sure that in
     this case the automatic converters do not kick in."""
 
@@ -2067,7 +2067,7 @@ class BlatantOverrideConvertersTestCase(unittest.TestCase):
         self.assertIsNotNone(cfg.converters['len'])
 
     def test_inheritance(self):
-        class StrangeConfigParser(configparser.ConfigParser):
+        klasse StrangeConfigParser(configparser.ConfigParser):
             gettysburg = 'a historic borough in south central Pennsylvania'
 
             def getboolean(self, section, option, *, raw=False, vars=None,
@@ -2155,7 +2155,7 @@ class BlatantOverrideConvertersTestCase(unittest.TestCase):
             self.assertEqual(cfg['two'].getlen('one'), 5)
 
 
-class SectionlessTestCase(unittest.TestCase):
+klasse SectionlessTestCase(unittest.TestCase):
 
     def fromstring(self, string):
         cfg = configparser.ConfigParser(allow_unnamed_section=True)
@@ -2233,7 +2233,7 @@ class SectionlessTestCase(unittest.TestCase):
         self.assertEqual('2', cfg[configparser.UNNAMED_SECTION]['b'])
 
 
-class InvalidInputTestCase(unittest.TestCase):
+klasse InvalidInputTestCase(unittest.TestCase):
     """Tests for issue #65697, where configparser will write configs
     it parses back differently. Ex: keys containing delimiters or
     matching the section pattern"""
@@ -2257,7 +2257,7 @@ class InvalidInputTestCase(unittest.TestCase):
         output.close()
 
 
-class MiscTestCase(unittest.TestCase):
+klasse MiscTestCase(unittest.TestCase):
     def test__all__(self):
         support.check__all__(self, configparser, not_exported={"Error"})
 

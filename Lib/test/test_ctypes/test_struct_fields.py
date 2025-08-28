@@ -6,7 +6,7 @@ from ._support import Py_TPFLAGS_IMMUTABLETYPE, StructCheckMixin
 
 NOTHING = object()
 
-class FieldsTestBase(StructCheckMixin):
+klasse FieldsTestBase(StructCheckMixin):
     # Structure/Union classes must get 'finalized' sooner or
     # later, when one of these things happen:
     #
@@ -22,41 +22,41 @@ class FieldsTestBase(StructCheckMixin):
         self.assertEqual(getattr(cls, "_fields_", NOTHING), expected)
 
     def test_1_A(self):
-        class X(self.cls):
+        klasse X(self.cls):
             pass
         self.assertEqual(sizeof(X), 0) # not finalized
         X._fields_ = [] # finalized
         self.assert_final_fields(X, expected=[])
 
     def test_1_B(self):
-        class X(self.cls):
+        klasse X(self.cls):
             _fields_ = [] # finalized
         self.assert_final_fields(X, expected=[])
 
     def test_2(self):
-        class X(self.cls):
+        klasse X(self.cls):
             pass
         X()
         self.assert_final_fields(X)
 
     def test_3(self):
-        class X(self.cls):
+        klasse X(self.cls):
             pass
-        class Y(self.cls):
+        klasse Y(self.cls):
             _fields_ = [("x", X)] # finalizes X
         self.assert_final_fields(X)
 
     def test_4(self):
-        class X(self.cls):
+        klasse X(self.cls):
             pass
-        class Y(X):
+        klasse Y(X):
             pass
         self.assert_final_fields(X)
         Y._fields_ = []
         self.assert_final_fields(X)
 
     def test_5(self):
-        class X(self.cls):
+        klasse X(self.cls):
             _fields_ = (("char", c_char * 5),)
 
         x = X(b'#' * 5)
@@ -67,13 +67,13 @@ class FieldsTestBase(StructCheckMixin):
         self.assertRaises(TypeError, CField)
 
     def test_gh99275(self):
-        class BrokenStructure(self.cls):
+        klasse BrokenStructure(self.cls):
             def __init_subclass__(cls, **kwargs):
                 cls._fields_ = []  # This line will fail, `stginfo` is not ready
 
         with self.assertRaisesRegex(TypeError,
                                     'ctypes state is not initialized'):
-            class Subclass(BrokenStructure): ...
+            klasse Subclass(BrokenStructure): ...
 
     def test_invalid_byte_size_raises_gh132470(self):
         with self.assertRaisesRegex(ValueError, r"does not match type size"):
@@ -93,15 +93,15 @@ class FieldsTestBase(StructCheckMixin):
 
         max_field_size = sys.maxsize
 
-        class X(Structure):
+        klasse X(Structure):
             _fields_ = [('char', c_char),]
         self.check_struct(X)
 
-        class Y(Structure):
+        klasse Y(Structure):
             _fields_ = [('largeField', X * max_field_size)]
         self.check_struct(Y)
 
-        class Z(Structure):
+        klasse Z(Structure):
             _fields_ = [('largeField', c_char * max_field_size)]
         self.check_struct(Z)
 
@@ -115,17 +115,17 @@ class FieldsTestBase(StructCheckMixin):
         self.assertEqual(sizeof(Z), max_field_size)
 
         with self.assertRaises(OverflowError):
-            class TooBig(Structure):
+            klasse TooBig(Structure):
                 _fields_ = [('largeField', X * (max_field_size + 1))]
         with self.assertRaises(OverflowError):
-            class TooBig(Structure):
+            klasse TooBig(Structure):
                 _fields_ = [('largeField', c_char * (max_field_size + 1))]
 
         # Also test around edge case for the bit_size calculation
         for size in (max_field_size // 8 - 1,
                      max_field_size // 8,
                      max_field_size // 8 + 1):
-            class S(Structure):
+            klasse S(Structure):
                 _fields_ = [('largeField', c_char * size),]
             self.check_struct(S)
             self.assertEqual(S.largeField.bit_size, size * 8)
@@ -134,18 +134,18 @@ class FieldsTestBase(StructCheckMixin):
     # __set__ and __get__ should raise a TypeError in case their self
     # argument is not a ctype instance.
     def test___set__(self):
-        class MyCStruct(self.cls):
+        klasse MyCStruct(self.cls):
             _fields_ = (("field", c_int),)
         self.assertRaises(TypeError,
                           MyCStruct.field.__set__, 'wrong type self', 42)
 
     def test___get__(self):
-        class MyCStruct(self.cls):
+        klasse MyCStruct(self.cls):
             _fields_ = (("field", c_int),)
         self.assertRaises(TypeError,
                           MyCStruct.field.__get__, 'wrong type self', 42)
 
-class StructFieldsTestCase(unittest.TestCase, FieldsTestBase):
+klasse StructFieldsTestCase(unittest.TestCase, FieldsTestBase):
     cls = Structure
 
     def test_cfield_type_flags(self):
@@ -154,7 +154,7 @@ class StructFieldsTestCase(unittest.TestCase, FieldsTestBase):
     def test_cfield_inheritance_hierarchy(self):
         self.assertEqual(CField.mro(), [CField, object])
 
-class UnionFieldsTestCase(unittest.TestCase, FieldsTestBase):
+klasse UnionFieldsTestCase(unittest.TestCase, FieldsTestBase):
     cls = Union
 
 

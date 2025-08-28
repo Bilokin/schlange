@@ -123,7 +123,7 @@ help_entries = (  # (help_label,  help_doc)
     )
 
 
-class DemoWindow(object):
+klasse DemoWindow(object):
 
     def __init__(self, filename=None):
         self.root = root = turtle._root = Tk()
@@ -236,9 +236,9 @@ class DemoWindow(object):
         return text_frame
 
     def makeGraphFrame(self, root):
-        # t._Screen is a singleton class instantiated or retrieved
+        # t._Screen is a singleton klasse instantiated or retrieved
         # by calling Screen.  Since tdemo canvas needs a different
-        # configuration, we manually set class attributes before
+        # configuration, we manually set klasse attributes before
         # calling Screen and manually call superclass init after.
         turtle._Screen._root = root
 

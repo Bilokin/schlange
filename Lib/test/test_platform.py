@@ -79,7 +79,7 @@ IN VALID=value
 """
 
 
-class PlatformTest(unittest.TestCase):
+klasse PlatformTest(unittest.TestCase):
     def clear_caches(self):
         platform._platform_cache.clear()
         platform._sys_version_cache.clear()
@@ -751,7 +751,7 @@ class PlatformTest(unittest.TestCase):
         self.assertEqual(len(info["SPECIALS"]), 5)
 
 
-class CommandLineTest(unittest.TestCase):
+klasse CommandLineTest(unittest.TestCase):
     def setUp(self):
         platform.invalidate_caches()
         self.addCleanup(platform.invalidate_caches)

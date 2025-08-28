@@ -10,7 +10,7 @@ from test.support.os_helper import (TESTFN, skip_unless_symlink,
                                     can_symlink, create_empty_file, change_cwd)
 
 
-class GlobTests(unittest.TestCase):
+klasse GlobTests(unittest.TestCase):
     dir_fd = None
 
     def norm(self, *parts):

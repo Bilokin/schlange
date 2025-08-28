@@ -1,4 +1,4 @@
-"""A call-tip window class for Tkinter/IDLE.
+"""A call-tip window klasse for Tkinter/IDLE.
 
 After tooltip.py, which uses ideas gleaned from PySol.
 Used by calltip.py.
@@ -16,7 +16,7 @@ CHECKHIDE_TIME = 100  # milliseconds
 MARK_RIGHT = "calltipwindowregion_right"
 
 
-class CalltipWindow(TooltipBase):
+klasse CalltipWindow(TooltipBase):
     """A call-tip widget for tkinter text widgets."""
 
     def __init__(self, text_widget):

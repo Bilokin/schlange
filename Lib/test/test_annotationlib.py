@@ -35,12 +35,12 @@ def times_three(fn):
     return wrapper
 
 
-class MyClass:
+klasse MyClass:
     def __repr__(self):
         return "my repr"
 
 
-class TestFormat(unittest.TestCase):
+klasse TestFormat(unittest.TestCase):
     def test_enum(self):
         self.assertEqual(Format.VALUE.value, 1)
         self.assertEqual(Format.VALUE, 1)
@@ -55,7 +55,7 @@ class TestFormat(unittest.TestCase):
         self.assertEqual(Format.STRING, 4)
 
 
-class TestForwardRefFormat(unittest.TestCase):
+klasse TestForwardRefFormat(unittest.TestCase):
     def test_closure(self):
         def inner(arg: x):
             pass
@@ -124,7 +124,7 @@ class TestForwardRefFormat(unittest.TestCase):
 
     def test_partially_nonexistent_union(self):
         # Test unions with '|' syntax equal unions with typing.Union[] with some forwardrefs
-        class UnionForwardrefs:
+        klasse UnionForwardrefs:
             pipe: str | undefined
             union: Union[str, undefined]
 
@@ -145,7 +145,7 @@ class TestForwardRefFormat(unittest.TestCase):
         )
 
 
-class TestStringFormat(unittest.TestCase):
+klasse TestStringFormat(unittest.TestCase):
     def test_closure(self):
         x = 0
 
@@ -451,29 +451,29 @@ class TestStringFormat(unittest.TestCase):
         )
 
 
-class TestGetAnnotations(unittest.TestCase):
+klasse TestGetAnnotations(unittest.TestCase):
     def test_builtin_type(self):
         self.assertEqual(get_annotations(int), {})
         self.assertEqual(get_annotations(object), {})
 
     def test_custom_metaclass(self):
-        class Meta(type):
+        klasse Meta(type):
             pass
 
-        class C(metaclass=Meta):
+        klasse C(metaclass=Meta):
             x: int
 
         self.assertEqual(get_annotations(C), {"x": int})
 
     def test_missing_dunder_dict(self):
-        class NoDict(type):
+        klasse NoDict(type):
             @property
             def __dict__(cls):
                 raise AttributeError
 
             b: str
 
-        class C1(metaclass=NoDict):
+        klasse C1(metaclass=NoDict):
             a: int
 
         self.assertEqual(get_annotations(C1), {"a": int})
@@ -537,7 +537,7 @@ class TestGetAnnotations(unittest.TestCase):
             get_annotations(f1, format=2)
 
     def test_custom_object_with_annotations(self):
-        class C:
+        klasse C:
             def __init__(self):
                 self.__annotations__ = {"x": int, "y": str}
 
@@ -904,7 +904,7 @@ class TestGetAnnotations(unittest.TestCase):
         )
 
     def test_non_dict_annotations(self):
-        class WeirdAnnotations:
+        klasse WeirdAnnotations:
             @property
             def __annotations__(self):
                 return "not a dict"
@@ -922,7 +922,7 @@ class TestGetAnnotations(unittest.TestCase):
                 get_annotations(wa, format=format)
 
     def test_annotations_on_custom_object(self):
-        class HasAnnotations:
+        klasse HasAnnotations:
             @property
             def __annotations__(self):
                 return {"x": int}
@@ -934,7 +934,7 @@ class TestGetAnnotations(unittest.TestCase):
         self.assertEqual(get_annotations(ha, format=Format.STRING), {"x": "int"})
 
     def test_raising_annotations_on_custom_object(self):
-        class HasRaisingAnnotations:
+        klasse HasRaisingAnnotations:
             @property
             def __annotations__(self):
                 return {"x": undefined}
@@ -951,7 +951,7 @@ class TestGetAnnotations(unittest.TestCase):
         self.assertEqual(get_annotations(hra, format=Format.VALUE), {"x": float})
 
     def test_forwardref_prefers_annotations(self):
-        class HasBoth:
+        klasse HasBoth:
             @property
             def __annotations__(self):
                 return {"x": int}
@@ -969,7 +969,7 @@ class TestGetAnnotations(unittest.TestCase):
         def f(x: int):
             pass
 
-        class OnlyAnnotate:
+        klasse OnlyAnnotate:
             @property
             def __annotate__(self):
                 return f.__annotate__
@@ -983,10 +983,10 @@ class TestGetAnnotations(unittest.TestCase):
         )
 
     def test_no_annotations(self):
-        class CustomClass:
+        klasse CustomClass:
             pass
 
-        class MyCallable:
+        klasse MyCallable:
             def __call__(self):
                 pass
 
@@ -1173,7 +1173,7 @@ class TestGetAnnotations(unittest.TestCase):
     def test_partial_evaluation_cell(self):
         obj = object()
 
-        class RaisesAttributeError:
+        klasse RaisesAttributeError:
             attriberr: obj.missing
 
         anno = get_annotations(RaisesAttributeError, format=Format.FORWARDREF)
@@ -1187,7 +1187,7 @@ class TestGetAnnotations(unittest.TestCase):
         )
 
 
-class TestCallEvaluateFunction(unittest.TestCase):
+klasse TestCallEvaluateFunction(unittest.TestCase):
     def test_evaluation(self):
         def evaluate(format, exc=NotImplementedError):
             if format > 2:
@@ -1206,15 +1206,15 @@ class TestCallEvaluateFunction(unittest.TestCase):
         )
 
 
-class MetaclassTests(unittest.TestCase):
+klasse MetaclassTests(unittest.TestCase):
     def test_annotated_meta(self):
-        class Meta(type):
+        klasse Meta(type):
             a: int
 
-        class X(metaclass=Meta):
+        klasse X(metaclass=Meta):
             pass
 
-        class Y(metaclass=Meta):
+        klasse Y(metaclass=Meta):
             b: float
 
         self.assertEqual(get_annotations(Meta), {"a": int})
@@ -1227,13 +1227,13 @@ class MetaclassTests(unittest.TestCase):
         self.assertEqual(Y.__annotate__(Format.VALUE), {"b": float})
 
     def test_unannotated_meta(self):
-        class Meta(type):
+        klasse Meta(type):
             pass
 
-        class X(metaclass=Meta):
+        klasse X(metaclass=Meta):
             a: str
 
-        class Y(X):
+        klasse Y(X):
             pass
 
         self.assertEqual(get_annotations(Meta), {})
@@ -1250,22 +1250,22 @@ class MetaclassTests(unittest.TestCase):
         # https://discuss.python.org/t/pep-749-implementing-pep-649/54974/38
 
         def make_classes():
-            class Meta(type):
+            klasse Meta(type):
                 a: int
                 expected_annotations = {"a": int}
 
-            class A(type, metaclass=Meta):
+            klasse A(type, metaclass=Meta):
                 b: float
                 expected_annotations = {"b": float}
 
-            class B(metaclass=A):
+            klasse B(metaclass=A):
                 c: str
                 expected_annotations = {"c": str}
 
-            class C(B):
+            klasse C(B):
                 expected_annotations = {}
 
-            class D(metaclass=Meta):
+            klasse D(metaclass=Meta):
                 expected_annotations = {}
 
             return Meta, A, B, C, D
@@ -1290,9 +1290,9 @@ class MetaclassTests(unittest.TestCase):
                             self.assertIs(annotate_func, None)
 
 
-class TestGetAnnotateFromClassNamespace(unittest.TestCase):
+klasse TestGetAnnotateFromClassNamespace(unittest.TestCase):
     def test_with_metaclass(self):
-        class Meta(type):
+        klasse Meta(type):
             def __new__(mcls, name, bases, ns):
                 annotate = annotationlib.get_annotate_from_class_namespace(ns)
                 expected = ns["expected_annotate"]
@@ -1303,14 +1303,14 @@ class TestGetAnnotateFromClassNamespace(unittest.TestCase):
                         self.assertIsNone(annotate)
                 return super().__new__(mcls, name, bases, ns)
 
-        class HasAnnotations(metaclass=Meta):
+        klasse HasAnnotations(metaclass=Meta):
             expected_annotate = True
             a: int
 
-        class NoAnnotations(metaclass=Meta):
+        klasse NoAnnotations(metaclass=Meta):
             expected_annotate = False
 
-        class CustomAnnotate(metaclass=Meta):
+        klasse CustomAnnotate(metaclass=Meta):
             expected_annotate = True
             def __annotate__(format):
                 return {}
@@ -1318,16 +1318,16 @@ class TestGetAnnotateFromClassNamespace(unittest.TestCase):
         code = """
             from __future__ import annotations
 
-            class HasFutureAnnotations(metaclass=Meta):
+            klasse HasFutureAnnotations(metaclass=Meta):
                 expected_annotate = False
                 a: int
         """
         exec(textwrap.dedent(code), {"Meta": Meta})
 
 
-class TestTypeRepr(unittest.TestCase):
+klasse TestTypeRepr(unittest.TestCase):
     def test_type_repr(self):
-        class Nested:
+        klasse Nested:
             pass
 
         def nested():
@@ -1352,7 +1352,7 @@ class TestTypeRepr(unittest.TestCase):
         self.assertEqual(type_repr(MyClass()), "my repr")
 
 
-class TestAnnotationsToString(unittest.TestCase):
+klasse TestAnnotationsToString(unittest.TestCase):
     def test_annotations_to_string(self):
         self.assertEqual(annotations_to_string({}), {})
         self.assertEqual(annotations_to_string({"x": int}), {"x": "int"})
@@ -1362,16 +1362,16 @@ class TestAnnotationsToString(unittest.TestCase):
         )
 
 
-class A:
+klasse A:
     pass
 
 TypeParamsAlias1 = int
 
-class TypeParamsSample[TypeParamsAlias1, TypeParamsAlias2]:
+klasse TypeParamsSample[TypeParamsAlias1, TypeParamsAlias2]:
     TypeParamsAlias2 = str
 
 
-class TestForwardRefClass(unittest.TestCase):
+klasse TestForwardRefClass(unittest.TestCase):
     def test_forwardref_instance_type_error(self):
         fr = ForwardRef("int")
         with self.assertRaises(TypeError):
@@ -1401,7 +1401,7 @@ class TestForwardRefClass(unittest.TestCase):
         c2 = ForwardRef("C")
         c2_gth = ForwardRef("C")
 
-        class C:
+        klasse C:
             pass
 
         def foo(a: c1_gth, b: c2_gth):
@@ -1453,7 +1453,7 @@ class TestForwardRefClass(unittest.TestCase):
         def namespace2():
             a = ForwardRef("A")
 
-            class A:
+            klasse A:
                 pass
 
             def fun(x: a):
@@ -1577,7 +1577,7 @@ class TestForwardRefClass(unittest.TestCase):
         )
 
     def test_evaluate_with_type_params(self):
-        class Gen[T]:
+        klasse Gen[T]:
             alias = int
 
         with self.assertRaises(NameError):
@@ -1684,7 +1684,7 @@ class TestForwardRefClass(unittest.TestCase):
             fr.evaluate()
 
 
-class TestAnnotationLib(unittest.TestCase):
+klasse TestAnnotationLib(unittest.TestCase):
     def test__all__(self):
         support.check__all__(self, annotationlib)
 

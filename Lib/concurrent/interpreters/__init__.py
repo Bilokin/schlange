@@ -32,7 +32,7 @@ Uncaught in the interpreter:
 {formatted}
 """.strip()
 
-class ExecutionFailed(InterpreterError):
+klasse ExecutionFailed(InterpreterError):
     """An unhandled exception happened during execution.
 
     This is raised from Interpreter.exec() and Interpreter.call().
@@ -87,7 +87,7 @@ def get_main():
 
 _known = weakref.WeakValueDictionary()
 
-class Interpreter:
+klasse Interpreter:
     """A single Python interpreter.
 
     Attributes:

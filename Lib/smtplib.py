@@ -67,17 +67,17 @@ _MAXCHALLENGE = 5  # Maximum number of AUTH challenges sent
 OLDSTYLE_AUTH = re.compile(r"auth=(.*)", re.I)
 
 # Exception classes used by this module.
-class SMTPException(OSError):
-    """Base class for all exceptions raised by this module."""
+klasse SMTPException(OSError):
+    """Base klasse for all exceptions raised by this module."""
 
-class SMTPNotSupportedError(SMTPException):
+klasse SMTPNotSupportedError(SMTPException):
     """The command or option is not supported by the SMTP server.
 
     This exception is raised when an attempt is made to run a command or a
     command with an option which is not supported by the server.
     """
 
-class SMTPServerDisconnected(SMTPException):
+klasse SMTPServerDisconnected(SMTPException):
     """Not connected to any SMTP server.
 
     This exception is raised when the server unexpectedly disconnects,
@@ -85,8 +85,8 @@ class SMTPServerDisconnected(SMTPException):
     connecting it to a server.
     """
 
-class SMTPResponseException(SMTPException):
-    """Base class for all exceptions that include an SMTP error code.
+klasse SMTPResponseException(SMTPException):
+    """Base klasse for all exceptions that include an SMTP error code.
 
     These exceptions are generated in some instances when the SMTP
     server returns an error code.  The error code is stored in the
@@ -99,7 +99,7 @@ class SMTPResponseException(SMTPException):
         self.smtp_error = msg
         self.args = (code, msg)
 
-class SMTPSenderRefused(SMTPResponseException):
+klasse SMTPSenderRefused(SMTPResponseException):
     """Sender address refused.
 
     In addition to the attributes set by on all SMTPResponseException
@@ -112,7 +112,7 @@ class SMTPSenderRefused(SMTPResponseException):
         self.sender = sender
         self.args = (code, msg, sender)
 
-class SMTPRecipientsRefused(SMTPException):
+klasse SMTPRecipientsRefused(SMTPException):
     """All recipient addresses refused.
 
     The errors for each recipient are accessible through the attribute
@@ -125,16 +125,16 @@ class SMTPRecipientsRefused(SMTPException):
         self.args = (recipients,)
 
 
-class SMTPDataError(SMTPResponseException):
+klasse SMTPDataError(SMTPResponseException):
     """The SMTP server didn't accept the data."""
 
-class SMTPConnectError(SMTPResponseException):
+klasse SMTPConnectError(SMTPResponseException):
     """Error during connection establishment."""
 
-class SMTPHeloError(SMTPResponseException):
+klasse SMTPHeloError(SMTPResponseException):
     """The server refused our HELO reply."""
 
-class SMTPAuthenticationError(SMTPResponseException):
+klasse SMTPAuthenticationError(SMTPResponseException):
     """Authentication error.
 
     Most probably the server didn't accept the username/password
@@ -194,8 +194,8 @@ else:
     _have_ssl = True
 
 
-class SMTP:
-    """This class manages a connection to an SMTP or ESMTP server.
+klasse SMTP:
+    """This klasse manages a connection to an SMTP or ESMTP server.
     SMTP Objects:
         SMTP objects have the following attributes:
             helo_resp
@@ -1012,9 +1012,9 @@ class SMTP:
 
 if _have_ssl:
 
-    class SMTP_SSL(SMTP):
+    klasse SMTP_SSL(SMTP):
         """ This is a subclass derived from SMTP that connects over an SSL
-        encrypted socket (to use this class you need a socket module that was
+        encrypted socket (to use this klasse you need a socket module that was
         compiled with SSL support). If host is not specified, '' (the local
         host) is used. If port is omitted, the standard SMTP-over-SSL port
         (465) is used.  local_hostname and source_address have the same meaning
@@ -1049,7 +1049,7 @@ if _have_ssl:
 #
 LMTP_PORT = 2003
 
-class LMTP(SMTP):
+klasse LMTP(SMTP):
     """LMTP - Local Mail Transfer Protocol
 
     The LMTP protocol, which is very similar to ESMTP, is heavily based

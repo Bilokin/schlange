@@ -72,25 +72,25 @@ __all__ = ["copyfileobj", "copyfile", "copymode", "copystat", "copy", "copy2",
            "SameFileError"]
            # disk_usage is added later, if available on the platform
 
-class Error(OSError):
+klasse Error(OSError):
     pass
 
-class SameFileError(Error):
+klasse SameFileError(Error):
     """Raised when source and destination are the same file."""
 
-class SpecialFileError(OSError):
+klasse SpecialFileError(OSError):
     """Raised when trying to do a kind of operation (e.g. copying) which is
     not supported on a special file (e.g. a named pipe)"""
 
 
-class ReadError(OSError):
+klasse ReadError(OSError):
     """Raised when an archive cannot be read"""
 
-class RegistryError(Exception):
+klasse RegistryError(Exception):
     """Raised when a registry operation with the archiving
     and unpacking registries fails"""
 
-class _GiveupOnFastCopy(Exception):
+klasse _GiveupOnFastCopy(Exception):
     """Raised as a signal to fallback on using raw read()/write()
     file copy when fast-copy functions fail to do so.
     """

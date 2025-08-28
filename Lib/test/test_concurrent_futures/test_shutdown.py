@@ -21,7 +21,7 @@ def sleep_and_print(t, msg):
     sys.stdout.flush()
 
 
-class ExecutorShutdownTest:
+klasse ExecutorShutdownTest:
     def test_run_after_shutdown(self):
         self.executor.shutdown()
         self.assertRaises(RuntimeError,
@@ -161,7 +161,7 @@ class ExecutorShutdownTest:
             signal.signal(signal.SIGALRM, old_handler)
 
 
-class ThreadPoolShutdownTest(ThreadPoolMixin, ExecutorShutdownTest, BaseTestCase):
+klasse ThreadPoolShutdownTest(ThreadPoolMixin, ExecutorShutdownTest, BaseTestCase):
     def test_threads_terminate(self):
         def acquire_lock(lock):
             lock.acquire()
@@ -261,7 +261,7 @@ class ThreadPoolShutdownTest(ThreadPoolMixin, ExecutorShutdownTest, BaseTestCase
         self.assertIn(out.strip(), [b"apple", b""])
 
 
-class ProcessPoolShutdownTest(ExecutorShutdownTest):
+klasse ProcessPoolShutdownTest(ExecutorShutdownTest):
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_processes_terminate(self):
         def acquire_lock(lock):

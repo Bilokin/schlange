@@ -112,7 +112,7 @@ def truediv(a, b):
     return -result if negative else result
 
 
-class LongTest(unittest.TestCase):
+klasse LongTest(unittest.TestCase):
 
     # Get quasi-random long consisting of ndigits digits (in base BASE).
     # quasi == the most-significant digit will not be 0, and the number
@@ -380,7 +380,7 @@ class LongTest(unittest.TestCase):
 
     def test_conversion(self):
 
-        class JustLong:
+        klasse JustLong:
             # test that __long__ no longer used in 3.x
             def __long__(self):
                 return 42
@@ -534,9 +534,9 @@ class LongTest(unittest.TestCase):
         # We're mostly concerned with that mixing floats and ints does the
         # right stuff, even when ints are too large to fit in a float.
         # The safest way to check the results is to use an entirely different
-        # method, which we do here via a skeletal rational class (which
+        # method, which we do here via a skeletal rational klasse (which
         # represents all Python ints and floats exactly).
-        class Rat:
+        klasse Rat:
             def __init__(self, value):
                 if isinstance(value, int):
                     self.n = value
@@ -1387,7 +1387,7 @@ class LongTest(unittest.TestCase):
         self.assertRaises(OverflowError, (1).to_bytes, 0, 'big')
 
         # gh-98783
-        class SubStr(str):
+        klasse SubStr(str):
             pass
         self.assertEqual((0).to_bytes(1, SubStr('big')), b'\x00')
         self.assertEqual((0).to_bytes(0, SubStr('little')), b'')
@@ -1521,7 +1521,7 @@ class LongTest(unittest.TestCase):
         }
         check(tests4, 'little', signed=False)
 
-        class myint(int):
+        klasse myint(int):
             pass
 
         self.assertIs(type(myint.from_bytes(b'\x00', 'big')), myint)
@@ -1558,7 +1558,7 @@ class LongTest(unittest.TestCase):
         self.assertRaises(TypeError, myint.from_bytes, 0, 'big')
         self.assertRaises(TypeError, int.from_bytes, 0, 'big', True)
 
-        class myint2(int):
+        klasse myint2(int):
             def __new__(cls, value):
                 return int.__new__(cls, value + 1)
 
@@ -1566,7 +1566,7 @@ class LongTest(unittest.TestCase):
         self.assertIs(type(i), myint2)
         self.assertEqual(i, 2)
 
-        class myint3(int):
+        klasse myint3(int):
             def __init__(self, value):
                 self.foo = 'bar'
 
@@ -1575,14 +1575,14 @@ class LongTest(unittest.TestCase):
         self.assertEqual(i, 1)
         self.assertEqual(getattr(i, 'foo', 'none'), 'bar')
 
-        class ValidBytes:
+        klasse ValidBytes:
             def __bytes__(self):
                 return b'\x01'
-        class InvalidBytes:
+        klasse InvalidBytes:
             def __bytes__(self):
                 return 'abc'
-        class MissingBytes: ...
-        class RaisingBytes:
+        klasse MissingBytes: ...
+        klasse RaisingBytes:
             def __bytes__(self):
                 1 / 0
 
@@ -1592,7 +1592,7 @@ class LongTest(unittest.TestCase):
         self.assertRaises(ZeroDivisionError, int.from_bytes, RaisingBytes())
 
         # gh-98783
-        class SubStr(str):
+        klasse SubStr(str):
             pass
         self.assertEqual(int.from_bytes(b'', SubStr('big')), 0)
         self.assertEqual(int.from_bytes(b'\x00', SubStr('little')), 0)
@@ -1613,7 +1613,7 @@ class LongTest(unittest.TestCase):
         # http://bugs.python.org/issue14630: A bug in _PyLong_Copy meant that
         # ob_digit[0] was being incorrectly accessed for instances of a
         # subclass of int, with value 0.
-        class Integer(int):
+        klasse Integer(int):
             def __new__(cls, value=0):
                 self = int.__new__(cls, value)
                 self.foo = 'foo'
@@ -1631,7 +1631,7 @@ class LongTest(unittest.TestCase):
                 self.assertEqual(type(value >> shift), int)
 
     def test_as_integer_ratio(self):
-        class myint(int):
+        klasse myint(int):
             pass
         tests = [10, 0, -10, 1, sys.maxsize + 1, True, False, myint(42)]
         for value in tests:
@@ -1678,7 +1678,7 @@ class LongTest(unittest.TestCase):
                 )
 
         # Same test for a subclass of int.
-        class MyInt(int):
+        klasse MyInt(int):
             pass
 
         self.assertEqual(MyInt.__itemsize__, sys.int_info.sizeof_digit)

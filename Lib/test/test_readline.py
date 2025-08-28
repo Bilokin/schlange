@@ -42,7 +42,7 @@ def setUpModule():
 @unittest.skipUnless(hasattr(readline, "clear_history"),
                      "The history update test cannot be run because the "
                      "clear_history method is not available.")
-class TestHistoryManipulation (unittest.TestCase):
+klasse TestHistoryManipulation (unittest.TestCase):
     """
     These tests were added to check that the libedit emulation on OSX and the
     "real" readline have the same interface for history manipulation. That's
@@ -172,7 +172,7 @@ class TestHistoryManipulation (unittest.TestCase):
         self.assertIn(readline.get_current_history_length(), (2, 3))
 
 
-class TestReadline(unittest.TestCase):
+klasse TestReadline(unittest.TestCase):
 
     @unittest.skipIf(readline._READLINE_VERSION < 0x0601 and not is_editline,
                      "not supported in this library version")
@@ -415,7 +415,7 @@ readline.write_history_file(history_file)
 
 
 @unittest.skipUnless(support.Py_GIL_DISABLED, 'these tests can only possibly fail with GIL disabled')
-class FreeThreadingTest(unittest.TestCase):
+klasse FreeThreadingTest(unittest.TestCase):
     @threading_helper.reap_threads
     @threading_helper.requires_working_threading()
     def test_free_threading(self):

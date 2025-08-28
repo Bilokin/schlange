@@ -6,7 +6,7 @@
 from test import multibytecodec_support
 import unittest
 
-class Test_CP949(multibytecodec_support.TestBase, unittest.TestCase):
+klasse Test_CP949(multibytecodec_support.TestBase, unittest.TestCase):
     encoding = 'cp949'
     tstring = multibytecodec_support.load_teststring('cp949')
     codectests = (
@@ -18,7 +18,7 @@ class Test_CP949(multibytecodec_support.TestBase, unittest.TestCase):
         (b"abc\x80\x80\xc1\xc4", "ignore",  "abc\uc894"),
     )
 
-class Test_EUCKR(multibytecodec_support.TestBase, unittest.TestCase):
+klasse Test_EUCKR(multibytecodec_support.TestBase, unittest.TestCase):
     encoding = 'euc_kr'
     tstring = multibytecodec_support.load_teststring('euc_kr')
     codectests = (
@@ -49,7 +49,7 @@ class Test_EUCKR(multibytecodec_support.TestBase, unittest.TestCase):
         (b"\xc1\xc4", "strict", "\uc894"),
     )
 
-class Test_JOHAB(multibytecodec_support.TestBase, unittest.TestCase):
+klasse Test_JOHAB(multibytecodec_support.TestBase, unittest.TestCase):
     encoding = 'johab'
     tstring = multibytecodec_support.load_teststring('johab')
     codectests = (

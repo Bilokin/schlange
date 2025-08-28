@@ -115,10 +115,10 @@ STDLIB_DIR = os.path.dirname(TEST_HOME_DIR)
 REPO_ROOT = os.path.dirname(STDLIB_DIR)
 
 
-class Error(Exception):
-    """Base class for regression test exceptions."""
+klasse Error(Exception):
+    """Base klasse for regression test exceptions."""
 
-class TestFailed(Error):
+klasse TestFailed(Error):
     """Test failed."""
     def __init__(self, msg, *args, stats=None):
         self.msg = msg
@@ -128,17 +128,17 @@ class TestFailed(Error):
     def __str__(self):
         return self.msg
 
-class TestFailedWithDetails(TestFailed):
+klasse TestFailedWithDetails(TestFailed):
     """Test failed."""
     def __init__(self, msg, errors, failures, stats):
         self.errors = errors
         self.failures = failures
         super().__init__(msg, errors, failures, stats=stats)
 
-class TestDidNotRun(Error):
+klasse TestDidNotRun(Error):
     """Test did not run any subtests."""
 
-class ResourceDenied(unittest.SkipTest):
+klasse ResourceDenied(unittest.SkipTest):
     """Test skipped because it requested a disallowed resource.
 
     This is raised when a test calls requires() for a resource that
@@ -234,7 +234,7 @@ def _is_gui_available():
         import ctypes.wintypes
         UOI_FLAGS = 1
         WSF_VISIBLE = 0x0001
-        class USEROBJECTFLAGS(ctypes.Structure):
+        klasse USEROBJECTFLAGS(ctypes.Structure):
             _fields_ = [("fInherit", ctypes.wintypes.BOOL),
                         ("fReserved", ctypes.wintypes.BOOL),
                         ("dwFlags", ctypes.wintypes.DWORD)]
@@ -1124,7 +1124,7 @@ def set_memlimit(limit: str) -> None:
     max_memuse = memlimit
 
 
-class _MemoryWatchdog:
+klasse _MemoryWatchdog:
     """An object which periodically watches the process' memory consumption
     and prints it out.
     """
@@ -1516,7 +1516,7 @@ def optim_args_from_interpreter_flags():
     return subprocess._optim_args_from_interpreter_flags()
 
 
-class Matcher(object):
+klasse Matcher(object):
 
     _partial_matches = ('msg', 'message')
 
@@ -1572,7 +1572,7 @@ def skip_if_buggy_ucrt_strfptime(test):
             _buggy_ucrt = False
     return unittest.skip("buggy MSVC UCRT strptime/strftime")(test) if _buggy_ucrt else test
 
-class PythonSymlink:
+klasse PythonSymlink:
     """Creates a symlink for the current Python executable"""
     def __init__(self, link=None):
         from .os_helper import TESTFN
@@ -1703,11 +1703,11 @@ def check__all__(test_case, module, name_of_module=None, extra=(),
         import unittest
         from test import support
 
-        class MiscTestCase(unittest.TestCase):
+        klasse MiscTestCase(unittest.TestCase):
             def test__all__(self):
                 support.check__all__(self, foo)
 
-        class OtherTestCase(unittest.TestCase):
+        klasse OtherTestCase(unittest.TestCase):
             def test__all__(self):
                 extra = {'BAR_CONST', 'FOO_CONST'}
                 not_exported = {'baz'}  # Undocumented name.
@@ -1756,7 +1756,7 @@ def suppress_msvcrt_asserts(verbose=False):
                 msvcrt.CrtSetReportMode(m, 0)
 
 
-class SuppressCrashReport:
+klasse SuppressCrashReport:
     """Try to prevent a crash report from popping up.
 
     On Windows, don't display the Windows Error Reporting dialog.  On UNIX,
@@ -1953,7 +1953,7 @@ def _check_tracemalloc():
 def check_free_after_iterating(test, iter, cls, args=()):
     done = False
     def wrapper():
-        class A(cls):
+        klasse A(cls):
             def __del__(self):
                 nonlocal done
                 done = True
@@ -2052,11 +2052,11 @@ def disable_faulthandler():
             faulthandler.enable(file=fd, all_threads=True)
 
 
-class SaveSignals:
+klasse SaveSignals:
     """
     Save and restore signal handlers.
 
-    This class is only able to save/restore signal handlers registered
+    This klasse is only able to save/restore signal handlers registered
     by the Python signal module: see bpo-13285 for "external" signal
     handlers.
     """
@@ -2107,7 +2107,7 @@ def with_mimalloc():
     return _testcapi.WITH_MIMALLOC
 
 
-class _ALWAYS_EQ:
+klasse _ALWAYS_EQ:
     """
     Object that is equal to anything.
     """
@@ -2118,7 +2118,7 @@ class _ALWAYS_EQ:
 
 ALWAYS_EQ = _ALWAYS_EQ()
 
-class _NEVER_EQ:
+klasse _NEVER_EQ:
     """
     Object that is not equal to anything.
     """
@@ -2132,7 +2132,7 @@ class _NEVER_EQ:
 NEVER_EQ = _NEVER_EQ()
 
 @functools.total_ordering
-class _LARGEST:
+klasse _LARGEST:
     """
     Object that is greater than anything (except itself).
     """
@@ -2144,7 +2144,7 @@ class _LARGEST:
 LARGEST = _LARGEST()
 
 @functools.total_ordering
-class _SMALLEST:
+klasse _SMALLEST:
     """
     Object that is less than anything (except itself).
     """
@@ -2202,7 +2202,7 @@ def collision_stats(nbins, nballs):
         return float(collisions), float(var.sqrt())
 
 
-class catch_unraisable_exception:
+klasse catch_unraisable_exception:
     """
     Context manager catching unraisable exception using sys.unraisablehook.
 
@@ -2628,7 +2628,7 @@ def sleeping_retry(timeout, err_msg=None, /,
         delay = min(delay * 2, max_delay)
 
 
-class Stopwatch:
+klasse Stopwatch:
     """Context manager to roughly time a CPU-bound operation.
 
     Disables GC. Uses perf_counter, which is a clock with the highest
@@ -2993,7 +2993,7 @@ def get_signal_name(exitcode):
 
     return None
 
-class BrokenIter:
+klasse BrokenIter:
     def __init__(self, init_raises=False, next_raises=False, iter_raises=False):
         if init_raises:
             1/0
@@ -3100,7 +3100,7 @@ def _support_remote_exec_only_impl():
 def support_remote_exec_only(test):
     return _support_remote_exec_only_impl()(test)
 
-class EqualToForwardRef:
+klasse EqualToForwardRef:
     """Helper to ease use of annotationlib.ForwardRef in tests.
 
     This checks only attributes that can be set using the constructor.

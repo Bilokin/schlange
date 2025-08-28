@@ -5,7 +5,7 @@ from test.support import import_helper
 pwd = import_helper.import_module('pwd')
 
 @unittest.skipUnless(hasattr(pwd, 'getpwall'), 'Does not have getpwall()')
-class PwdTest(unittest.TestCase):
+klasse PwdTest(unittest.TestCase):
 
     def test_values(self):
         entries = pwd.getpwall()

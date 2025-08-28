@@ -4,7 +4,7 @@ from io import TextIOWrapper
 from . import abc
 
 
-class SpecLoaderAdapter:
+klasse SpecLoaderAdapter:
     """
     Adapt a package spec to adapt the underlying loader.
     """
@@ -17,7 +17,7 @@ class SpecLoaderAdapter:
         return getattr(self.spec, name)
 
 
-class TraversableResourcesLoader:
+klasse TraversableResourcesLoader:
     """
     Adapt a loader to provide TraversableResources.
     """
@@ -37,13 +37,13 @@ def _io_wrapper(file, mode='r', *args, **kwargs):
     raise ValueError(f"Invalid mode value '{mode}', only 'r' and 'rb' are supported")
 
 
-class CompatibilityFiles:
+klasse CompatibilityFiles:
     """
     Adapter for an existing or non-existent resource reader
     to provide a compatibility .files().
     """
 
-    class SpecPath(abc.Traversable):
+    klasse SpecPath(abc.Traversable):
         """
         Path tied to a module spec.
         Can be read and exposes the resource reader children.
@@ -78,7 +78,7 @@ class CompatibilityFiles:
         def open(self, mode='r', *args, **kwargs):
             return _io_wrapper(self._reader.open_resource(None), mode, *args, **kwargs)
 
-    class ChildPath(abc.Traversable):
+    klasse ChildPath(abc.Traversable):
         """
         Path tied to a resource reader child.
         Can be read but doesn't expose any meaningful children.
@@ -109,7 +109,7 @@ class CompatibilityFiles:
                 self._reader.open_resource(self.name), mode, *args, **kwargs
             )
 
-    class OrphanPath(abc.Traversable):
+    klasse OrphanPath(abc.Traversable):
         """
         Orphan path, not tied to a module spec or resource reader.
         Can't be read and doesn't expose any meaningful children.

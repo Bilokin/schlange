@@ -6,7 +6,7 @@
 from test import multibytecodec_support
 import unittest
 
-class Test_Big5(multibytecodec_support.TestBase, unittest.TestCase):
+klasse Test_Big5(multibytecodec_support.TestBase, unittest.TestCase):
     encoding = 'big5'
     tstring = multibytecodec_support.load_teststring('big5')
     codectests = (

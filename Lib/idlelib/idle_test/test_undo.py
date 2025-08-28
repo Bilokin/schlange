@@ -11,7 +11,7 @@ from tkinter import Text, Tk
 from idlelib.percolator import Percolator
 
 
-class UndoDelegatorTest(unittest.TestCase):
+klasse UndoDelegatorTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):

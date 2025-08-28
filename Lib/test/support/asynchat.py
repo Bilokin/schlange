@@ -30,9 +30,9 @@
 # CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 # ======================================================================
 
-r"""A class supporting chat-style (command/response) protocols.
+r"""A klasse supporting chat-style (command/response) protocols.
 
-This class adds support for 'chat' style protocols - where one side
+This klasse adds support for 'chat' style protocols - where one side
 sends a 'command', and the other sends a response (examples would be
 the common internet protocols - smtp, nntp, ftp, etc..).
 
@@ -56,7 +56,7 @@ from collections import deque
 from test.support import asyncore
 
 
-class async_chat(asyncore.dispatcher):
+klasse async_chat(asyncore.dispatcher):
     """This is an abstract class.  You must derive from this class, and add
     the two methods collect_incoming_data() and found_terminator()"""
 
@@ -275,7 +275,7 @@ class async_chat(asyncore.dispatcher):
         self.producer_fifo.clear()
 
 
-class simple_producer:
+klasse simple_producer:
 
     def __init__(self, data, buffer_size=512):
         self.data = data

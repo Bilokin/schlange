@@ -11,7 +11,7 @@ from enum import IntEnum, auto, _simple_enum
 _INFSTR = "1e" + repr(sys.float_info.max_10_exp + 1)
 
 @_simple_enum(IntEnum)
-class _Precedence:
+klasse _Precedence:
     """Precedence table that originated from python grammar."""
 
     NAMED_EXPR = auto()      # <target> := <expr1>
@@ -46,8 +46,8 @@ _SINGLE_QUOTES = ("'", '"')
 _MULTI_QUOTES = ('"""', "'''")
 _ALL_QUOTES = (*_SINGLE_QUOTES, *_MULTI_QUOTES)
 
-class Unparser(NodeVisitor):
-    """Methods in this class recursively traverse an AST and
+klasse Unparser(NodeVisitor):
+    """Methods in this klasse recursively traverse an AST and
     output source code for the abstract syntax; original formatting
     is disregarded."""
 

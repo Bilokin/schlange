@@ -2,7 +2,7 @@
 
 This module encapsulates the interface provided by the internal special
 attributes (co_*, im_*, tb_*, etc.) in a friendlier fashion.
-It also provides some help for examining source code and class layout.
+It also provides some help for examining source code and klasse layout.
 
 Here are some of the useful functions provided by this module:
 
@@ -451,7 +451,7 @@ def isroutine(object):
             or isinstance(object, functools._singledispatchmethod_get))
 
 def isabstract(object):
-    """Return true if the object is an abstract base class (ABC)."""
+    """Return true if the object is an abstract base klasse (ABC)."""
     if not isinstance(object, type):
         return False
     if object.__flags__ & TPFLAGS_IS_ABSTRACT:
@@ -552,7 +552,7 @@ def classify_class_attrs(cls):
                'method'          any other flavor of method or descriptor
                'data'            not a method
 
-        2. The class which defined this attribute (a class).
+        2. The klasse which defined this attribute (a class).
 
         3. The object as obtained by calling getattr; if this fails, or if the
            resulting object does not live anywhere in the class' mro (including
@@ -560,8 +560,8 @@ def classify_class_attrs(cls):
            dict (found by walking the mro).
 
     If one of the items in dir(cls) is stored in the metaclass it will now
-    be discovered and not have None be listed as the class in which it was
-    defined.  Any items whose home class cannot be discovered are skipped.
+    be discovered and not have None be listed as the klasse in which it was
+    defined.  Any items whose home klasse cannot be discovered are skipped.
     """
 
     mro = getmro(cls)
@@ -589,7 +589,7 @@ def classify_class_attrs(cls):
         # class's dict.
         #
         # Getting an obj from the __dict__ sometimes reveals more than
-        # using getattr.  Static and class methods are dramatic examples.
+        # using getattr.  Static and klasse methods are dramatic examples.
         homecls = None
         get_obj = None
         dict_obj = None
@@ -651,7 +651,7 @@ def classify_class_attrs(cls):
         processed.add(name)
     return result
 
-# ----------------------------------------------------------- class helpers
+# ----------------------------------------------------------- klasse helpers
 
 def getmro(cls):
     "Return tuple of base classes (including cls) in method resolution order."
@@ -942,7 +942,7 @@ def getmodule(object, _filename=None):
             return builtin
 
 
-class ClassFoundException(Exception):
+klasse ClassFoundException(Exception):
     pass
 
 
@@ -1050,9 +1050,9 @@ def getcomments(object):
                 comments[-1:] = []
             return ''.join(comments)
 
-class EndOfBlock(Exception): pass
+klasse EndOfBlock(Exception): pass
 
-class BlockFinder:
+klasse BlockFinder:
     """Provide a tokeneater() method to detect the end of a code block."""
     def __init__(self):
         self.indent = 0
@@ -1158,7 +1158,7 @@ def getsource(object):
     lines, lnum = getsourcelines(object)
     return ''.join(lines)
 
-# --------------------------------------------------- class tree extraction
+# --------------------------------------------------- klasse tree extraction
 def walktree(classes, children, parent):
     """Recursive helper function for getclasstree()."""
     results = []
@@ -1174,9 +1174,9 @@ def getclasstree(classes, unique=False):
 
     Where a nested list appears, it contains classes derived from the class
     whose entry immediately precedes the list.  Each entry is a 2-tuple
-    containing a class and a tuple of its base classes.  If the 'unique'
+    containing a klasse and a tuple of its base classes.  If the 'unique'
     argument is true, exactly one entry appears in the returned structure
-    for each class in the given list.  Otherwise, classes using multiple
+    for each klasse in the given list.  Otherwise, classes using multiple
     inheritance and their descendants will appear multiple times."""
     children = {}
     roots = []
@@ -1539,7 +1539,7 @@ def getclosurevars(func):
 
 _Traceback = namedtuple('_Traceback', 'filename lineno function code_context index')
 
-class Traceback(_Traceback):
+klasse Traceback(_Traceback):
     def __new__(cls, filename, lineno, function, code_context, index, *, positions=None):
         instance = super().__new__(cls, filename, lineno, function, code_context, index)
         instance.positions = positions
@@ -1611,7 +1611,7 @@ def getlineno(frame):
     return frame.f_lineno
 
 _FrameInfo = namedtuple('_FrameInfo', ('frame',) + Traceback._fields)
-class FrameInfo(_FrameInfo):
+klasse FrameInfo(_FrameInfo):
     def __new__(cls, frame, filename, lineno, function, code_context, index, *, positions=None):
         instance = super().__new__(cls, frame, filename, lineno, function, code_context, index)
         instance.positions = positions
@@ -2191,7 +2191,7 @@ def _signature_fromstr(cls, obj, s, skip_bound_arg=True):
             return ast.Constant(value)
         raise ValueError
 
-    class RewriteSymbolics(ast.NodeTransformer):
+    klasse RewriteSymbolics(ast.NodeTransformer):
         def visit_Attribute(self, node):
             a = []
             n = node
@@ -2513,7 +2513,7 @@ def _signature_from_callable(obj, *,
                                        skip_bound_arg=skip_bound_arg)
 
     if isinstance(obj, type):
-        # obj is a class or a metaclass
+        # obj is a klasse or a metaclass
 
         # First, let's see if it has an overloaded __call__ defined
         # in its metaclass
@@ -2538,10 +2538,10 @@ def _signature_from_callable(obj, *,
             follow_wrapper_chains=follow_wrapper_chains,
         )
 
-        # Go through the MRO and see if any class has user-defined
+        # Go through the MRO and see if any klasse has user-defined
         # pure Python __new__ or __init__ method
         for base in obj.__mro__:
-            # Now we check if the 'obj' class has an own '__new__' method
+            # Now we check if the 'obj' klasse has an own '__new__' method
             if new is not None and '__new__' in base.__dict__:
                 sig = _get_signature_of(new)
                 if skip_bound_arg:
@@ -2557,18 +2557,18 @@ def _signature_from_callable(obj, *,
         for base in obj.__mro__[:-1]:
             # Since '__text_signature__' is implemented as a
             # descriptor that extracts text signature from the
-            # class docstring, if 'obj' is derived from a builtin
+            # klasse docstring, if 'obj' is derived from a builtin
             # class, its own '__text_signature__' may be 'None'.
             # Therefore, we go through the MRO (except the last
-            # class in there, which is 'object') to find the first
-            # class with non-empty text signature.
+            # klasse in there, which is 'object') to find the first
+            # klasse with non-empty text signature.
             try:
                 text_sig = base.__text_signature__
             except AttributeError:
                 pass
             else:
                 if text_sig:
-                    # If 'base' class has a __text_signature__ attribute:
+                    # If 'base' klasse has a __text_signature__ attribute:
                     # return a signature based on it
                     return _signature_fromstr(sigcls, base, text_sig)
 
@@ -2581,7 +2581,7 @@ def _signature_from_callable(obj, *,
             if follow_wrapper_chains:
                 obj_init = unwrap(obj_init)
                 obj_new = unwrap(obj_new)
-            # We have a class (not metaclass), but no user-defined
+            # We have a klasse (not metaclass), but no user-defined
             # __init__ or __new__ for it
             if obj_init is object.__init__ and obj_new is object.__new__:
                 # Return a signature of 'object' builtin.
@@ -2607,15 +2607,15 @@ def _signature_from_callable(obj, *,
     raise ValueError('callable {!r} is not supported by signature'.format(obj))
 
 
-class _void:
+klasse _void:
     """A private marker - used in Parameter & Signature."""
 
 
-class _empty:
+klasse _empty:
     """Marker object for Signature.empty and Parameter.empty."""
 
 
-class _ParameterKind(enum.IntEnum):
+klasse _ParameterKind(enum.IntEnum):
     POSITIONAL_ONLY = 'positional-only'
     POSITIONAL_OR_KEYWORD = 'positional or keyword'
     VAR_POSITIONAL = 'variadic positional'
@@ -2639,7 +2639,7 @@ _KEYWORD_ONLY            = _ParameterKind.KEYWORD_ONLY
 _VAR_KEYWORD             = _ParameterKind.VAR_KEYWORD
 
 
-class Parameter:
+klasse Parameter:
     """Represents a parameter in a function signature.
 
     Has the following public attributes:
@@ -2803,7 +2803,7 @@ class Parameter:
                 self._annotation == other._annotation)
 
 
-class BoundArguments:
+klasse BoundArguments:
     """Result of `Signature.bind` call.  Holds the mapping of arguments
     to the function's parameters.
 
@@ -2933,7 +2933,7 @@ class BoundArguments:
         return '<{} ({})>'.format(self.__class__.__name__, ', '.join(args))
 
 
-class Signature:
+klasse Signature:
     """A Signature object represents the overall signature of a function.
     It stores a Parameter object for each parameter accepted by the
     function, as well as information specific to the function itself.
@@ -3318,7 +3318,7 @@ def signature(obj, *, follow_wrapped=True, globals=None, locals=None, eval_str=F
                                    annotation_format=annotation_format)
 
 
-class BufferFlags(enum.IntFlag):
+klasse BufferFlags(enum.IntFlag):
     SIMPLE = 0x0
     WRITABLE = 0x1
     FORMAT = 0x4

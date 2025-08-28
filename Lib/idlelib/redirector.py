@@ -1,6 +1,6 @@
 from tkinter import TclError
 
-class WidgetRedirector:
+klasse WidgetRedirector:
     """Support for redirecting arbitrary widget subcommands.
 
     Some Tk operations don't normally pass through tkinter.  For example, if a
@@ -68,7 +68,7 @@ class WidgetRedirector:
 
         Registration adds an operation: function pair to ._operations.
         It also adds a widget function attribute that masks the tkinter
-        class instance method.  Method masking operates independently
+        klasse instance method.  Method masking operates independently
         from command dispatch.
 
         If a second function is registered for the same operation, the
@@ -81,7 +81,7 @@ class WidgetRedirector:
     def unregister(self, operation):
         '''Return the function for the operation, or None.
 
-        Deleting the instance attribute unmasks the class attribute.
+        Deleting the instance attribute unmasks the klasse attribute.
         '''
         if operation in self._operations:
             function = self._operations[operation]
@@ -117,7 +117,7 @@ class WidgetRedirector:
             return ""
 
 
-class OriginalCommand:
+klasse OriginalCommand:
     '''Callable for original tk command that has been redirected.
 
     Returned by .register; can be used in the function registered.

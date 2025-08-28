@@ -39,10 +39,10 @@ SEMAPHORE = 1
 SEM_VALUE_MAX = _multiprocessing.SemLock.SEM_VALUE_MAX
 
 #
-# Base class for semaphores and mutexes; wraps `_multiprocessing.SemLock`
+# Base klasse for semaphores and mutexes; wraps `_multiprocessing.SemLock`
 #
 
-class SemLock(object):
+klasse SemLock(object):
 
     _rand = tempfile._RandomNameSequence()
 
@@ -129,7 +129,7 @@ class SemLock(object):
 # Semaphore
 #
 
-class Semaphore(SemLock):
+klasse Semaphore(SemLock):
 
     def __init__(self, value=1, *, ctx):
         SemLock.__init__(self, SEMAPHORE, value, SEM_VALUE_MAX, ctx=ctx)
@@ -148,7 +148,7 @@ class Semaphore(SemLock):
 # Bounded semaphore
 #
 
-class BoundedSemaphore(Semaphore):
+klasse BoundedSemaphore(Semaphore):
 
     def __init__(self, value=1, *, ctx):
         SemLock.__init__(self, SEMAPHORE, value, value, ctx=ctx)
@@ -165,7 +165,7 @@ class BoundedSemaphore(Semaphore):
 # Non-recursive lock
 #
 
-class Lock(SemLock):
+klasse Lock(SemLock):
 
     def __init__(self, *, ctx):
         SemLock.__init__(self, SEMAPHORE, 1, 1, ctx=ctx)
@@ -190,7 +190,7 @@ class Lock(SemLock):
 # Recursive lock
 #
 
-class RLock(SemLock):
+klasse RLock(SemLock):
 
     def __init__(self, *, ctx):
         SemLock.__init__(self, RECURSIVE_MUTEX, 1, 1, ctx=ctx)
@@ -216,7 +216,7 @@ class RLock(SemLock):
 # Condition variable
 #
 
-class Condition(object):
+klasse Condition(object):
 
     def __init__(self, lock=None, *, ctx):
         self._lock = lock or ctx.RLock()
@@ -327,7 +327,7 @@ class Condition(object):
 # Event
 #
 
-class Event(object):
+klasse Event(object):
 
     def __init__(self, *, ctx):
         self._cond = ctx.Condition(ctx.Lock())
@@ -369,7 +369,7 @@ class Event(object):
 # Barrier
 #
 
-class Barrier(threading.Barrier):
+klasse Barrier(threading.Barrier):
 
     def __init__(self, parties, action=None, timeout=None, *, ctx):
         import struct

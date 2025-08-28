@@ -45,7 +45,7 @@ TEST_TOOL3 = 4
 def nth_line(func, offset):
     return func.__code__.co_firstlineno + offset
 
-class MonitoringBasicTest(unittest.TestCase):
+klasse MonitoringBasicTest(unittest.TestCase):
 
     def tearDown(self):
         sys.monitoring.free_tool_id(TEST_TOOL)
@@ -120,7 +120,7 @@ class MonitoringBasicTest(unittest.TestCase):
         sys.monitoring.free_tool_id(TEST_TOOL)
 
 
-class MonitoringTestBase:
+klasse MonitoringTestBase:
 
     def setUp(self):
         # Check that a previous test hasn't left monitoring on.
@@ -142,11 +142,11 @@ class MonitoringTestBase:
         sys.monitoring.free_tool_id(TEST_TOOL3)
 
 
-class MonitoringCountTest(MonitoringTestBase, unittest.TestCase):
+klasse MonitoringCountTest(MonitoringTestBase, unittest.TestCase):
 
     def check_event_count(self, func, event, expected):
 
-        class Counter:
+        klasse Counter:
             def __init__(self):
                 self.count = 0
             def __call__(self, *args):
@@ -270,7 +270,7 @@ nested_call.events = [
 
 PY_CALLABLES = (types.FunctionType, types.MethodType)
 
-class MonitoringEventsBase(MonitoringTestBase):
+klasse MonitoringEventsBase(MonitoringTestBase):
 
     def gather_events(self, func):
         events = []
@@ -301,7 +301,7 @@ class MonitoringEventsBase(MonitoringTestBase):
             expected = func.events
         self.assertEqual(events, expected)
 
-class MonitoringEventsTest(MonitoringEventsBase, unittest.TestCase):
+klasse MonitoringEventsTest(MonitoringEventsBase, unittest.TestCase):
 
     def test_just_pass(self):
         self.check_events(just_pass)
@@ -327,7 +327,7 @@ DOWN_EVENTS = (E.PY_START, E.PY_RESUME)
 
 from test.profilee import testfunc
 
-class SimulateProfileTest(MonitoringEventsBase, unittest.TestCase):
+klasse SimulateProfileTest(MonitoringEventsBase, unittest.TestCase):
 
     def test_balanced(self):
         events = self.gather_events(testfunc)
@@ -369,7 +369,7 @@ class SimulateProfileTest(MonitoringEventsBase, unittest.TestCase):
         self.assertEqual(len(seen), 9)
 
 
-class CounterWithDisable:
+klasse CounterWithDisable:
 
     def __init__(self):
         self.disable = False
@@ -381,7 +381,7 @@ class CounterWithDisable:
             return sys.monitoring.DISABLE
 
 
-class RecorderWithDisable:
+klasse RecorderWithDisable:
 
     def __init__(self, events):
         self.disable = False
@@ -393,7 +393,7 @@ class RecorderWithDisable:
             return sys.monitoring.DISABLE
 
 
-class MontoringDisableAndRestartTest(MonitoringTestBase, unittest.TestCase):
+klasse MontoringDisableAndRestartTest(MonitoringTestBase, unittest.TestCase):
 
     def test_disable(self):
         try:
@@ -434,7 +434,7 @@ class MontoringDisableAndRestartTest(MonitoringTestBase, unittest.TestCase):
             sys.monitoring.restart_events()
 
 
-class MultipleMonitorsTest(MonitoringTestBase, unittest.TestCase):
+klasse MultipleMonitorsTest(MonitoringTestBase, unittest.TestCase):
 
     def test_two_same(self):
         try:
@@ -568,7 +568,7 @@ class MultipleMonitorsTest(MonitoringTestBase, unittest.TestCase):
             self.assertEqual(sys.monitoring._all_events(), {})
 
 
-class LineMonitoringTest(MonitoringTestBase, unittest.TestCase):
+klasse LineMonitoringTest(MonitoringTestBase, unittest.TestCase):
 
     def test_lines_single(self):
         try:
@@ -708,7 +708,7 @@ class LineMonitoringTest(MonitoringTestBase, unittest.TestCase):
 
         self.check_lines(f, [1,3,5,4,2,4])
 
-class TestDisable(MonitoringTestBase, unittest.TestCase):
+klasse TestDisable(MonitoringTestBase, unittest.TestCase):
 
     def gen(self, cond):
         for i in range(10):
@@ -752,7 +752,7 @@ class TestDisable(MonitoringTestBase, unittest.TestCase):
                 sys.monitoring.register_callback(TEST_TOOL, event, None)
 
 
-class ExceptionRecorder:
+klasse ExceptionRecorder:
 
     event_type = E.RAISE
 
@@ -762,7 +762,7 @@ class ExceptionRecorder:
     def __call__(self, code, offset, exc):
         self.events.append(("raise", type(exc)))
 
-class CheckEvents(MonitoringTestBase, unittest.TestCase):
+klasse CheckEvents(MonitoringTestBase, unittest.TestCase):
 
     def get_events(self, func, tool, recorders):
         try:
@@ -799,39 +799,39 @@ class CheckEvents(MonitoringTestBase, unittest.TestCase):
             self.assertEqual(r[1], h[1])
 
 
-class StopiterationRecorder(ExceptionRecorder):
+klasse StopiterationRecorder(ExceptionRecorder):
 
     event_type = E.STOP_ITERATION
 
-class ReraiseRecorder(ExceptionRecorder):
+klasse ReraiseRecorder(ExceptionRecorder):
 
     event_type = E.RERAISE
 
     def __call__(self, code, offset, exc):
         self.events.append(("reraise", type(exc)))
 
-class UnwindRecorder(ExceptionRecorder):
+klasse UnwindRecorder(ExceptionRecorder):
 
     event_type = E.PY_UNWIND
 
     def __call__(self, code, offset, exc):
         self.events.append(("unwind", type(exc), code.co_name))
 
-class ExceptionHandledRecorder(ExceptionRecorder):
+klasse ExceptionHandledRecorder(ExceptionRecorder):
 
     event_type = E.EXCEPTION_HANDLED
 
     def __call__(self, code, offset, exc):
         self.events.append(("handled", type(exc)))
 
-class ThrowRecorder(ExceptionRecorder):
+klasse ThrowRecorder(ExceptionRecorder):
 
     event_type = E.PY_THROW
 
     def __call__(self, code, offset, exc):
         self.events.append(("throw", type(exc)))
 
-class CallRecorder:
+klasse CallRecorder:
 
     event_type = E.CALL
 
@@ -841,7 +841,7 @@ class CallRecorder:
     def __call__(self, code, offset, func, arg):
         self.events.append(("call", func.__name__, arg))
 
-class ReturnRecorder:
+klasse ReturnRecorder:
 
     event_type = E.PY_RETURN
 
@@ -852,7 +852,7 @@ class ReturnRecorder:
         self.events.append(("return", code.co_name, val))
 
 
-class ExceptionMonitoringTest(CheckEvents):
+klasse ExceptionMonitoringTest(CheckEvents):
 
     exception_recorders = (
         ExceptionRecorder,
@@ -1049,7 +1049,7 @@ class ExceptionMonitoringTest(CheckEvents):
 
     @requires_specialization_ft
     def test_no_unwind_for_shim_frame(self):
-        class ValueErrorRaiser:
+        klasse ValueErrorRaiser:
             def __init__(self):
                 raise ValueError()
 
@@ -1079,7 +1079,7 @@ class ExceptionMonitoringTest(CheckEvents):
 
         self.assertEqual(events, expected)
 
-class LineRecorder:
+klasse LineRecorder:
 
     event_type = E.LINE
 
@@ -1090,7 +1090,7 @@ class LineRecorder:
     def __call__(self, code, line):
         self.events.append(("line", code.co_name, line - code.co_firstlineno))
 
-class CEventRecorder:
+klasse CEventRecorder:
 
     def __init__(self, events):
         self.events = events
@@ -1098,19 +1098,19 @@ class CEventRecorder:
     def __call__(self, code, offset, func, arg):
         self.events.append((self.event_name, func.__name__, arg))
 
-class CReturnRecorder(CEventRecorder):
+klasse CReturnRecorder(CEventRecorder):
 
     event_type = E.C_RETURN
     event_name = "C return"
 
-class CRaiseRecorder(CEventRecorder):
+klasse CRaiseRecorder(CEventRecorder):
 
     event_type = E.C_RAISE
     event_name = "C raise"
 
 MANY_RECORDERS = ExceptionRecorder, CallRecorder, LineRecorder, CReturnRecorder, CRaiseRecorder
 
-class TestManyEvents(CheckEvents):
+klasse TestManyEvents(CheckEvents):
 
     def test_simple(self):
 
@@ -1169,7 +1169,7 @@ class TestManyEvents(CheckEvents):
             ('line', 'get_events', 11),
             ('call', 'set_events', 2)])
 
-class InstructionRecorder:
+klasse InstructionRecorder:
 
     event_type = E.INSTRUCTION
 
@@ -1184,7 +1184,7 @@ class InstructionRecorder:
 
 LINE_AND_INSTRUCTION_RECORDERS = InstructionRecorder, LineRecorder
 
-class TestLineAndInstructionEvents(CheckEvents):
+klasse TestLineAndInstructionEvents(CheckEvents):
     maxDiff = None
 
     def test_simple(self):
@@ -1323,7 +1323,7 @@ class TestLineAndInstructionEvents(CheckEvents):
         sys.monitoring.set_events(TEST_TOOL, 0)
         self.assertGreater(len(events), 0)
 
-class TestInstallIncrementally(MonitoringTestBase, unittest.TestCase):
+klasse TestInstallIncrementally(MonitoringTestBase, unittest.TestCase):
 
     def check_events(self, func, must_include, tool=TEST_TOOL, recorders=(ExceptionRecorder,)):
         try:
@@ -1391,7 +1391,7 @@ class TestInstallIncrementally(MonitoringTestBase, unittest.TestCase):
 
 LOCAL_RECORDERS = CallRecorder, LineRecorder, CReturnRecorder, CRaiseRecorder
 
-class TestLocalEvents(MonitoringTestBase, unittest.TestCase):
+klasse TestLocalEvents(MonitoringTestBase, unittest.TestCase):
 
     def check_events(self, func, expected, tool=TEST_TOOL, recorders=()):
         try:
@@ -1470,7 +1470,7 @@ def line_from_offset(code, offset):
             return line - code.co_firstlineno
     return -1
 
-class JumpRecorder:
+klasse JumpRecorder:
 
     event_type = E.JUMP
     name = "jump"
@@ -1484,22 +1484,22 @@ class JumpRecorder:
         self.events.append((self.name, code.co_name, from_line, to_line))
 
 
-class BranchRecorder(JumpRecorder):
+klasse BranchRecorder(JumpRecorder):
 
     event_type = E.BRANCH
     name = "branch"
 
-class BranchRightRecorder(JumpRecorder):
+klasse BranchRightRecorder(JumpRecorder):
 
     event_type = E.BRANCH_RIGHT
     name = "branch right"
 
-class BranchLeftRecorder(JumpRecorder):
+klasse BranchLeftRecorder(JumpRecorder):
 
     event_type = E.BRANCH_LEFT
     name = "branch left"
 
-class JumpOffsetRecorder:
+klasse JumpOffsetRecorder:
 
     event_type = E.JUMP
     name = "jump"
@@ -1510,12 +1510,12 @@ class JumpOffsetRecorder:
     def __call__(self, code, from_, to):
         self.events.append((self.name, code.co_name, from_, to))
 
-class BranchLeftOffsetRecorder(JumpOffsetRecorder):
+klasse BranchLeftOffsetRecorder(JumpOffsetRecorder):
 
     event_type = E.BRANCH_LEFT
     name = "branch left"
 
-class BranchRightOffsetRecorder(JumpOffsetRecorder):
+klasse BranchRightOffsetRecorder(JumpOffsetRecorder):
 
     event_type = E.BRANCH_RIGHT
     name = "branch right"
@@ -1528,7 +1528,7 @@ FLOW_AND_LINE_RECORDERS = JumpRecorder, BranchRecorder, LineRecorder, ExceptionR
 BRANCHES_RECORDERS = BranchLeftRecorder, BranchRightRecorder
 BRANCH_OFFSET_RECORDERS = BranchLeftOffsetRecorder, BranchRightOffsetRecorder
 
-class TestBranchAndJumpEvents(CheckEvents):
+klasse TestBranchAndJumpEvents(CheckEvents):
     maxDiff = None
 
     def test_loop(self):
@@ -1598,7 +1598,7 @@ class TestBranchAndJumpEvents(CheckEvents):
 
     def test_except_star(self):
 
-        class Foo:
+        klasse Foo:
             def meth(self):
                 pass
 
@@ -1732,7 +1732,7 @@ class TestBranchAndJumpEvents(CheckEvents):
         self.assertEqual(func("true"), 1)
 
 
-class TestBranchConsistency(MonitoringTestBase, unittest.TestCase):
+klasse TestBranchConsistency(MonitoringTestBase, unittest.TestCase):
 
     def check_branches(self, run_func, test_func=None, tool=TEST_TOOL, recorders=BRANCH_OFFSET_RECORDERS):
         if test_func is None:
@@ -1789,7 +1789,7 @@ class TestBranchConsistency(MonitoringTestBase, unittest.TestCase):
 
     def test_except_star(self):
 
-        class Foo:
+        klasse Foo:
             def meth(self):
                 pass
 
@@ -1835,7 +1835,7 @@ class TestBranchConsistency(MonitoringTestBase, unittest.TestCase):
         self.check_branches(func, foo)
 
 
-class TestLoadSuperAttr(CheckEvents):
+klasse TestLoadSuperAttr(CheckEvents):
     RECORDERS = CallRecorder, LineRecorder, CRaiseRecorder, CReturnRecorder
 
     def _exec(self, co):
@@ -1868,11 +1868,11 @@ class TestLoadSuperAttr(CheckEvents):
 
     def _super_method_call(self, optimized=False):
         codestr = """
-            class A:
+            klasse A:
                 def method(self, x):
                     return x
 
-            class B(A):
+            klasse B(A):
                 def method(self, x):
                     return super(
                     ).method(
@@ -1912,11 +1912,11 @@ class TestLoadSuperAttr(CheckEvents):
 
     def _super_method_call_error(self, optimized=False):
         codestr = """
-            class A:
+            klasse A:
                 def method(self, x):
                     return x
 
-            class B(A):
+            klasse B(A):
                 def method(self, x):
                     return super(
                         x,
@@ -1963,10 +1963,10 @@ class TestLoadSuperAttr(CheckEvents):
 
     def _super_attr(self, optimized=False):
         codestr = """
-            class A:
+            klasse A:
                 x = 1
 
-            class B(A):
+            klasse B(A):
                 def method(self):
                     return super(
                     ).x
@@ -2000,7 +2000,7 @@ class TestLoadSuperAttr(CheckEvents):
 
     def test_vs_other_type_call(self):
         code_template = textwrap.dedent("""
-            class C:
+            klasse C:
                 def method(self):
                     return {cls}().__repr__{call}
             c = C()
@@ -2050,7 +2050,7 @@ class TestLoadSuperAttr(CheckEvents):
                 )
 
 
-class TestSetGetEvents(MonitoringTestBase, unittest.TestCase):
+klasse TestSetGetEvents(MonitoringTestBase, unittest.TestCase):
 
     def test_global(self):
         sys.monitoring.set_events(TEST_TOOL, E.PY_START)
@@ -2077,7 +2077,7 @@ class TestSetGetEvents(MonitoringTestBase, unittest.TestCase):
         sys.monitoring.set_local_events(TEST_TOOL2, code, 0)
         self.assertEqual(sys.monitoring.get_local_events(TEST_TOOL2, code), 0)
 
-class TestUninitialized(unittest.TestCase, MonitoringTestBase):
+klasse TestUninitialized(unittest.TestCase, MonitoringTestBase):
 
     @staticmethod
     def f():
@@ -2086,7 +2086,7 @@ class TestUninitialized(unittest.TestCase, MonitoringTestBase):
     def test_get_local_events_uninitialized(self):
         self.assertEqual(sys.monitoring.get_local_events(TEST_TOOL, self.f.__code__), 0)
 
-class TestRegressions(MonitoringTestBase, unittest.TestCase):
+klasse TestRegressions(MonitoringTestBase, unittest.TestCase):
 
     def test_105162(self):
         caught = None
@@ -2123,7 +2123,7 @@ class TestRegressions(MonitoringTestBase, unittest.TestCase):
 
     def test_108390(self):
 
-        class Foo:
+        klasse Foo:
             def __init__(self, set_event):
                 if set_event:
                     sys.monitoring.set_events(TEST_TOOL, E.PY_RESUME)
@@ -2195,7 +2195,7 @@ class TestRegressions(MonitoringTestBase, unittest.TestCase):
         sys.monitoring.set_local_events(0, foo.__code__, 0)
 
 
-class TestOptimizer(MonitoringTestBase, unittest.TestCase):
+klasse TestOptimizer(MonitoringTestBase, unittest.TestCase):
 
     def test_for_loop(self):
         def test_func(x):
@@ -2210,7 +2210,7 @@ class TestOptimizer(MonitoringTestBase, unittest.TestCase):
         sys.monitoring.set_local_events(TEST_TOOL, code, 0)
         self.assertEqual(sys.monitoring.get_local_events(TEST_TOOL, code), 0)
 
-class TestTier2Optimizer(CheckEvents):
+klasse TestTier2Optimizer(CheckEvents):
 
     def test_monitoring_already_opimized_loop(self):
         def test_func(recorder):
@@ -2235,7 +2235,7 @@ class TestTier2Optimizer(CheckEvents):
             sys.monitoring.set_events(TEST_TOOL, 0)
         self.assertGreater(len(events), 250)
 
-class TestMonitoringAtShutdown(unittest.TestCase):
+klasse TestMonitoringAtShutdown(unittest.TestCase):
 
     def test_monitoring_live_at_shutdown(self):
         # gh-115832: An object destructor running during the final GC of
@@ -2245,9 +2245,9 @@ class TestMonitoringAtShutdown(unittest.TestCase):
         script_helper.run_test_script(script)
 
 
-class TestCApiEventGeneration(MonitoringTestBase, unittest.TestCase):
+klasse TestCApiEventGeneration(MonitoringTestBase, unittest.TestCase):
 
-    class Scope:
+    klasse Scope:
         def __init__(self, *args):
             self.args = args
 
@@ -2286,7 +2286,7 @@ class TestCApiEventGeneration(MonitoringTestBase, unittest.TestCase):
 
 
     def check_event_count(self, event, func, args, expected, callback_raises=None):
-        class Counter:
+        klasse Counter:
             def __init__(self, callback_raises):
                 self.callback_raises = callback_raises
                 self.count = 0

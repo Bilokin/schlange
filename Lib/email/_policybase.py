@@ -24,12 +24,12 @@ def validate_header_name(name):
         raise ValueError(
             f"Header field name contains invalid characters: {name!r}")
 
-class _PolicyBase:
+klasse _PolicyBase:
 
     """Policy Object basic framework.
 
-    This class is useless unless subclassed.  A subclass should define
-    class attributes with defaults for any values that are to be
+    This klasse is useless unless subclassed.  A subclass should define
+    klasse attributes with defaults for any values that are to be
     managed by the Policy object.  The constructor will then allow
     non-default values to be set for these attributes at instance
     creation time.  The instance will be callable, taking these same
@@ -50,7 +50,7 @@ class _PolicyBase:
     def __init__(self, **kw):
         """Create new Policy, possibly overriding some defaults.
 
-        See class docstring for a list of overridable attributes.
+        See klasse docstring for a list of overridable attributes.
 
         """
         for name, value in kw.items():
@@ -118,7 +118,7 @@ def _extend_docstrings(cls):
     return cls
 
 
-class Policy(_PolicyBase, metaclass=abc.ABCMeta):
+klasse Policy(_PolicyBase, metaclass=abc.ABCMeta):
 
     r"""Controls for how messages are interpreted and formatted.
 
@@ -163,7 +163,7 @@ class Policy(_PolicyBase, metaclass=abc.ABCMeta):
                            them. This is used when the message is being
                            serialized by a generator. Default: False.
 
-    message_factory     -- the class to use to create new message objects.
+    message_factory     -- the klasse to use to create new message objects.
                            If the value is None, the default is Message.
 
     verify_generated_headers
@@ -286,7 +286,7 @@ class Policy(_PolicyBase, metaclass=abc.ABCMeta):
 
 
 @_extend_docstrings
-class Compat32(Policy):
+klasse Compat32(Policy):
 
     """+
     This particular policy is the backward compatibility Policy.  It
@@ -379,7 +379,7 @@ class Compat32(Policy):
             # Assume it is a Header-like object.
             h = value
         if h is not None:
-            # The Header class interprets a value of None for maxlinelen as the
+            # The Header klasse interprets a value of None for maxlinelen as the
             # default value of 78, as recommended by RFC 2822.
             maxlinelen = 0
             if self.max_line_length is not None:

@@ -10,7 +10,7 @@ from idlelib.idle_test.mock_idle import Func
 from unittest import mock
 
 
-class OutputWindowTest(unittest.TestCase):
+klasse OutputWindowTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -138,7 +138,7 @@ class OutputWindowTest(unittest.TestCase):
         del w.flist.gotofileline, w.showerror
 
 
-class ModuleFunctionTest(unittest.TestCase):
+klasse ModuleFunctionTest(unittest.TestCase):
 
     @classmethod
     def setUp(cls):

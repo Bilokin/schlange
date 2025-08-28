@@ -133,7 +133,7 @@ def _coerce_args(*args):
     return _decode_args(args) + (_encode_result,)
 
 # Result objects are more helpful than simple tuples
-class _ResultMixinStr(object):
+klasse _ResultMixinStr(object):
     """Standard approach to encoding parsed results from str to bytes"""
     __slots__ = ()
 
@@ -141,7 +141,7 @@ class _ResultMixinStr(object):
         return self._encoded_counterpart(*(x.encode(encoding, errors) for x in self))
 
 
-class _ResultMixinBytes(object):
+klasse _ResultMixinBytes(object):
     """Standard approach to decoding parsed results from bytes to str"""
     __slots__ = ()
 
@@ -149,7 +149,7 @@ class _ResultMixinBytes(object):
         return self._decoded_counterpart(*(x.decode(encoding, errors) for x in self))
 
 
-class _NetlocResultMixinBase(object):
+klasse _NetlocResultMixinBase(object):
     """Shared methods for the parsed result objects containing a netloc element"""
     __slots__ = ()
 
@@ -187,7 +187,7 @@ class _NetlocResultMixinBase(object):
     __class_getitem__ = classmethod(types.GenericAlias)
 
 
-class _NetlocResultMixinStr(_NetlocResultMixinBase, _ResultMixinStr):
+klasse _NetlocResultMixinStr(_NetlocResultMixinBase, _ResultMixinStr):
     __slots__ = ()
 
     @property
@@ -217,7 +217,7 @@ class _NetlocResultMixinStr(_NetlocResultMixinBase, _ResultMixinStr):
         return hostname, port
 
 
-class _NetlocResultMixinBytes(_NetlocResultMixinBase, _ResultMixinBytes):
+klasse _NetlocResultMixinBytes(_NetlocResultMixinBase, _ResultMixinBytes):
     __slots__ = ()
 
     @property
@@ -320,7 +320,7 @@ _ParseResultBase.fragment.__doc__ = _SplitResultBase.fragment.__doc__
 ResultBase = _NetlocResultMixinStr
 
 # Structured result objects for string data
-class DefragResult(_DefragResultBase, _ResultMixinStr):
+klasse DefragResult(_DefragResultBase, _ResultMixinStr):
     __slots__ = ()
     def geturl(self):
         if self.fragment:
@@ -328,18 +328,18 @@ class DefragResult(_DefragResultBase, _ResultMixinStr):
         else:
             return self.url
 
-class SplitResult(_SplitResultBase, _NetlocResultMixinStr):
+klasse SplitResult(_SplitResultBase, _NetlocResultMixinStr):
     __slots__ = ()
     def geturl(self):
         return urlunsplit(self)
 
-class ParseResult(_ParseResultBase, _NetlocResultMixinStr):
+klasse ParseResult(_ParseResultBase, _NetlocResultMixinStr):
     __slots__ = ()
     def geturl(self):
         return urlunparse(self)
 
 # Structured result objects for bytes data
-class DefragResultBytes(_DefragResultBase, _ResultMixinBytes):
+klasse DefragResultBytes(_DefragResultBase, _ResultMixinBytes):
     __slots__ = ()
     def geturl(self):
         if self.fragment:
@@ -347,12 +347,12 @@ class DefragResultBytes(_DefragResultBase, _ResultMixinBytes):
         else:
             return self.url
 
-class SplitResultBytes(_SplitResultBase, _NetlocResultMixinBytes):
+klasse SplitResultBytes(_SplitResultBase, _NetlocResultMixinBytes):
     __slots__ = ()
     def geturl(self):
         return urlunsplit(self)
 
-class ParseResultBytes(_ParseResultBase, _NetlocResultMixinBytes):
+klasse ParseResultBytes(_ParseResultBase, _NetlocResultMixinBytes):
     __slots__ = ()
     def geturl(self):
         return urlunparse(self)
@@ -876,7 +876,7 @@ _ALWAYS_SAFE = frozenset(b'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 _ALWAYS_SAFE_BYTES = bytes(_ALWAYS_SAFE)
 
 
-class _Quoter(dict):
+klasse _Quoter(dict):
     """A mapping from bytes numbers (in range(0,256)) to strings.
 
     String values are percent-encoded byte values, unless the key < 128, and

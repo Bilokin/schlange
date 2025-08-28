@@ -5,7 +5,7 @@ from test.test_json import PyTest, CTest
 from test import support
 
 
-class TestDecode:
+klasse TestDecode:
     def test_decimal(self):
         rval = self.loads('1.1', parse_float=decimal.Decimal)
         self.assertIsInstance(rval, decimal.Decimal)
@@ -131,5 +131,5 @@ class TestDecode:
                 self.loads('1' * (maxdigits + 1))
 
 
-class TestPyDecode(TestDecode, PyTest): pass
-class TestCDecode(TestDecode, CTest): pass
+klasse TestPyDecode(TestDecode, PyTest): pass
+klasse TestCDecode(TestDecode, CTest): pass

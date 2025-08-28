@@ -15,22 +15,22 @@ from . import locks
 from . import mixins
 
 
-class QueueEmpty(Exception):
+klasse QueueEmpty(Exception):
     """Raised when Queue.get_nowait() is called on an empty Queue."""
     pass
 
 
-class QueueFull(Exception):
+klasse QueueFull(Exception):
     """Raised when the Queue.put_nowait() method is called on a full Queue."""
     pass
 
 
-class QueueShutDown(Exception):
+klasse QueueShutDown(Exception):
     """Raised when putting on to or getting from a shut-down Queue."""
     pass
 
 
-class Queue(mixins._LoopBoundMixin):
+klasse Queue(mixins._LoopBoundMixin):
     """A queue, useful for coordinating producer and consumer coroutines.
 
     If maxsize is less than or equal to zero, the queue size is infinite. If it
@@ -278,7 +278,7 @@ class Queue(mixins._LoopBoundMixin):
                 putter.set_result(None)
 
 
-class PriorityQueue(Queue):
+klasse PriorityQueue(Queue):
     """A subclass of Queue; retrieves entries in priority order (lowest first).
 
     Entries are typically tuples of the form: (priority number, data).
@@ -294,7 +294,7 @@ class PriorityQueue(Queue):
         return heappop(self._queue)
 
 
-class LifoQueue(Queue):
+klasse LifoQueue(Queue):
     """A subclass of Queue that retrieves most recently added entries first."""
 
     def _init(self, maxsize):

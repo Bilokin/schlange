@@ -16,7 +16,7 @@ def reply_with(line):
     _reply_data = line
 
 
-class MockFile:
+klasse MockFile:
     """Mock file object returned by MockSocket.makefile().
     """
     def __init__(self, lines):
@@ -32,7 +32,7 @@ class MockFile:
         pass
 
 
-class MockSocket:
+klasse MockSocket:
     """Mock socket object used by the smtplib tests.
     """
     def __init__(self, family=None):

@@ -20,7 +20,7 @@ import idlelib.sidebar
 from idlelib.sidebar import get_end_linenumber, get_lineno
 
 
-class Dummy_editwin:
+klasse Dummy_editwin:
     def __init__(self, text):
         self.text = text
         self.text_frame = self.text.master
@@ -35,7 +35,7 @@ class Dummy_editwin:
         return int(float(self.text.index(index)))
 
 
-class LineNumbersTest(unittest.TestCase):
+klasse LineNumbersTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -391,7 +391,7 @@ class LineNumbersTest(unittest.TestCase):
         assert_colors_are_equal(orig_colors)
 
 
-class ShellSidebarTest(unittest.TestCase):
+klasse ShellSidebarTest(unittest.TestCase):
     root: tk.Tk = None
     shell: PyShell = None
 

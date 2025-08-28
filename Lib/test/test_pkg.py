@@ -43,7 +43,7 @@ def fixdir(lst):
 # from package import * (defined in __init__)
 
 
-class TestPkg(unittest.TestCase):
+klasse TestPkg(unittest.TestCase):
 
     def setUp(self):
         self.root = None

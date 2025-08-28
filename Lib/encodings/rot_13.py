@@ -10,25 +10,25 @@ import codecs
 
 ### Codec APIs
 
-class Codec(codecs.Codec):
+klasse Codec(codecs.Codec):
     def encode(self, input, errors='strict'):
         return (str.translate(input, rot13_map), len(input))
 
     def decode(self, input, errors='strict'):
         return (str.translate(input, rot13_map), len(input))
 
-class IncrementalEncoder(codecs.IncrementalEncoder):
+klasse IncrementalEncoder(codecs.IncrementalEncoder):
     def encode(self, input, final=False):
         return str.translate(input, rot13_map)
 
-class IncrementalDecoder(codecs.IncrementalDecoder):
+klasse IncrementalDecoder(codecs.IncrementalDecoder):
     def decode(self, input, final=False):
         return str.translate(input, rot13_map)
 
-class StreamWriter(Codec,codecs.StreamWriter):
+klasse StreamWriter(Codec,codecs.StreamWriter):
     pass
 
-class StreamReader(Codec,codecs.StreamReader):
+klasse StreamReader(Codec,codecs.StreamReader):
     pass
 
 ### encodings module API

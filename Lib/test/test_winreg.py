@@ -52,7 +52,7 @@ test_data = [
 
 
 @cpython_only
-class HeapTypeTests(unittest.TestCase):
+klasse HeapTypeTests(unittest.TestCase):
     def test_have_gc(self):
         self.assertTrue(gc.is_tracked(HKEYType))
 
@@ -61,7 +61,7 @@ class HeapTypeTests(unittest.TestCase):
             HKEYType.foo = "bar"
 
 
-class BaseWinregTests(unittest.TestCase):
+klasse BaseWinregTests(unittest.TestCase):
 
     def setUp(self):
         # Make sure that the test key is absent when the test
@@ -210,7 +210,7 @@ class BaseWinregTests(unittest.TestCase):
             self.assertTrue(okey.handle != 0)
 
 
-class LocalWinregTests(BaseWinregTests):
+klasse LocalWinregTests(BaseWinregTests):
 
     def test_registry_works(self):
         self._test_all(HKEY_CURRENT_USER)
@@ -265,7 +265,7 @@ class LocalWinregTests(BaseWinregTests):
         # available"
         done = False
 
-        class VeryActiveThread(threading.Thread):
+        klasse VeryActiveThread(threading.Thread):
             def run(self):
                 with CreateKey(HKEY_CURRENT_USER, test_key_name) as key:
                     use_short = True
@@ -412,7 +412,7 @@ class LocalWinregTests(BaseWinregTests):
 
 
 @unittest.skipUnless(REMOTE_NAME, "Skipping remote registry tests")
-class RemoteWinregTests(BaseWinregTests):
+klasse RemoteWinregTests(BaseWinregTests):
 
     def test_remote_registry_works(self):
         remote_key = ConnectRegistry(REMOTE_NAME, HKEY_CURRENT_USER)
@@ -420,7 +420,7 @@ class RemoteWinregTests(BaseWinregTests):
 
 
 @unittest.skipUnless(WIN64_MACHINE, "x64 specific registry tests")
-class Win64WinregTests(BaseWinregTests):
+klasse Win64WinregTests(BaseWinregTests):
 
     def test_named_arguments(self):
         self._test_named_args(HKEY_CURRENT_USER, test_key_name)

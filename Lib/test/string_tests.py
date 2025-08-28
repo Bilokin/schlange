@@ -9,13 +9,13 @@ from collections import UserList
 import random
 
 
-class Sequence:
+klasse Sequence:
     def __init__(self, seq='wxyz'): self.seq = seq
     def __len__(self): return len(self.seq)
     def __getitem__(self, i): return self.seq[i]
 
 
-class BaseTest:
+klasse BaseTest:
     # These tests are for buffers of values (bytes) and not
     # specific to character interpretation, used for bytes objects
     # and various string implementations
@@ -65,7 +65,7 @@ class BaseTest:
         # this doesn't happen with subclasses
         if obj is realresult:
             try:
-                class subtype(self.__class__.type2test):
+                klasse subtype(self.__class__.type2test):
                     pass
             except TypeError:
                 pass  # Skip this if we can't subclass
@@ -1113,7 +1113,7 @@ class BaseTest:
         self.checkraises(TypeError, 'abc', 'splitlines', 42, 42)
 
 
-class StringLikeTest(BaseTest):
+klasse StringLikeTest(BaseTest):
     # This testcase contains tests that can be used in all
     # stringlike classes. Currently this is str and UserString.
 
@@ -1325,7 +1325,7 @@ class StringLikeTest(BaseTest):
             self.checkequal(((('a' * i) + '-') * i)[:-1], '-', 'join',
                  ('a' * i,) * i)
 
-        class LiesAboutLengthSeq(Sequence):
+        klasse LiesAboutLengthSeq(Sequence):
             def __init__(self): self.seq = ['a', 'b', 'c']
             def __len__(self): return 8
 
@@ -1395,7 +1395,7 @@ class StringLikeTest(BaseTest):
         self.checkraises(OverflowError, '%.*f', '__mod__',
                          (sys.maxsize + 1, 1. / 7))
 
-        class X(object): pass
+        klasse X(object): pass
         self.checkraises(TypeError, 'abc', '__mod__', X())
 
     @support.cpython_only
@@ -1531,7 +1531,7 @@ class StringLikeTest(BaseTest):
         self.checkequal(10, "...\u043c......<", "find", "<")
 
 
-class MixinStrUnicodeTest:
+klasse MixinStrUnicodeTest:
     # Additional tests that only work with str.
 
     def test_bug1001011(self):
@@ -1540,7 +1540,7 @@ class MixinStrUnicodeTest:
         # Make sure that it is of the appropriate type.
         # Check the optimisation still occurs for standard objects.
         t = self.type2test
-        class subclass(t):
+        klasse subclass(t):
             pass
         s1 = subclass("abcd")
         s2 = t().join([s1])

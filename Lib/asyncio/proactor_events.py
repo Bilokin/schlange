@@ -43,9 +43,9 @@ def _set_socket_extra(transport, sock):
             transport._extra['peername'] = None
 
 
-class _ProactorBasePipeTransport(transports._FlowControlMixin,
+klasse _ProactorBasePipeTransport(transports._FlowControlMixin,
                                  transports.BaseTransport):
-    """Base class for pipe and socket transports."""
+    """Base klasse for pipe and socket transports."""
 
     def __init__(self, loop, sock, protocol, waiter=None,
                  extra=None, server=None):
@@ -178,7 +178,7 @@ class _ProactorBasePipeTransport(transports._FlowControlMixin,
         return size
 
 
-class _ProactorReadPipeTransport(_ProactorBasePipeTransport,
+klasse _ProactorReadPipeTransport(_ProactorBasePipeTransport,
                                  transports.ReadTransport):
     """Transport for read pipes."""
 
@@ -325,7 +325,7 @@ class _ProactorReadPipeTransport(_ProactorBasePipeTransport,
                 self._data_received(data, length)
 
 
-class _ProactorBaseWritePipeTransport(_ProactorBasePipeTransport,
+klasse _ProactorBaseWritePipeTransport(_ProactorBasePipeTransport,
                                       transports.WriteTransport):
     """Transport for write pipes."""
 
@@ -435,7 +435,7 @@ class _ProactorBaseWritePipeTransport(_ProactorBasePipeTransport,
         self._empty_waiter = None
 
 
-class _ProactorWritePipeTransport(_ProactorBaseWritePipeTransport):
+klasse _ProactorWritePipeTransport(_ProactorBaseWritePipeTransport):
     def __init__(self, *args, **kw):
         super().__init__(*args, **kw)
         self._read_fut = self._loop._proactor.recv(self._sock, 16)
@@ -457,7 +457,7 @@ class _ProactorWritePipeTransport(_ProactorBaseWritePipeTransport):
             self.close()
 
 
-class _ProactorDatagramTransport(_ProactorBasePipeTransport,
+klasse _ProactorDatagramTransport(_ProactorBasePipeTransport,
                                  transports.DatagramTransport):
     max_size = 256 * 1024
     _header_size = 8
@@ -588,7 +588,7 @@ class _ProactorDatagramTransport(_ProactorBasePipeTransport,
                 self._protocol.datagram_received(data, addr)
 
 
-class _ProactorDuplexPipeTransport(_ProactorReadPipeTransport,
+klasse _ProactorDuplexPipeTransport(_ProactorReadPipeTransport,
                                    _ProactorBaseWritePipeTransport,
                                    transports.Transport):
     """Transport for duplex pipes."""
@@ -600,7 +600,7 @@ class _ProactorDuplexPipeTransport(_ProactorReadPipeTransport,
         raise NotImplementedError
 
 
-class _ProactorSocketTransport(_ProactorReadPipeTransport,
+klasse _ProactorSocketTransport(_ProactorReadPipeTransport,
                                _ProactorBaseWritePipeTransport,
                                transports.Transport):
     """Transport for connected sockets."""
@@ -626,7 +626,7 @@ class _ProactorSocketTransport(_ProactorReadPipeTransport,
             self._sock.shutdown(socket.SHUT_WR)
 
 
-class BaseProactorEventLoop(base_events.BaseEventLoop):
+klasse BaseProactorEventLoop(base_events.BaseEventLoop):
 
     def __init__(self, proactor):
         super().__init__()

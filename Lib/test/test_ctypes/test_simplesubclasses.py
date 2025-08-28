@@ -4,14 +4,14 @@ from ._support import (_CData, PyCSimpleType, Py_TPFLAGS_DISALLOW_INSTANTIATION,
                        Py_TPFLAGS_IMMUTABLETYPE)
 
 
-class MyInt(c_int):
+klasse MyInt(c_int):
     def __eq__(self, other):
         if type(other) != MyInt:
             return NotImplementedError
         return self.value == other.value
 
 
-class Test(unittest.TestCase):
+klasse Test(unittest.TestCase):
     def test_inheritance_hierarchy(self):
         self.assertEqual(_SimpleCData.mro(), [_SimpleCData, _CData, object])
 
@@ -36,7 +36,7 @@ class Test(unittest.TestCase):
                     obj = cls()
 
         # Cannot call the metaclass __init__ more than once
-        class T(_SimpleCData):
+        klasse T(_SimpleCData):
             _type_ = "i"
         with self.assertRaisesRegex(SystemError, "already initialized"):
             PyCSimpleType.__init__(T, 'ptr', (), {})
@@ -81,7 +81,7 @@ class Test(unittest.TestCase):
         self.assertEqual(type(args[-1]), int)
 
     def test_int_struct(self):
-        class X(Structure):
+        klasse X(Structure):
             _fields_ = [("x", MyInt)]
 
         self.assertEqual(X().x, MyInt())

@@ -15,7 +15,7 @@ import _threading_local
 threading_helper.requires_working_threading(module=True)
 
 
-class Weak(object):
+klasse Weak(object):
     pass
 
 def target(local, weaklist):
@@ -24,7 +24,7 @@ def target(local, weaklist):
     weaklist.append(weakref.ref(weak))
 
 
-class BaseLocalTest:
+klasse BaseLocalTest:
 
     def test_local_refs(self):
         self._local_refs(20)
@@ -59,7 +59,7 @@ class BaseLocalTest:
         # is created but not correctly set on the object.
         # The first member set may be bogus.
         import time
-        class Local(self._local):
+        klasse Local(self._local):
             def __init__(self):
                 time.sleep(0.01)
         local = Local()
@@ -75,7 +75,7 @@ class BaseLocalTest:
 
     def test_derived_cycle_dealloc(self):
         # http://bugs.python.org/issue6990
-        class Local(self._local):
+        klasse Local(self._local):
             pass
         locals = None
         passed = False
@@ -114,7 +114,7 @@ class BaseLocalTest:
 
     def test_arguments(self):
         # Issue 1522237
-        class MyLocal(self._local):
+        klasse MyLocal(self._local):
             def __init__(self, *args, **kwargs):
                 pass
 
@@ -143,7 +143,7 @@ class BaseLocalTest:
                 # This is expected -- we haven't set obj.x in this thread yet!
                 self._failed = ""  # passed
             else:
-                self._failed = ('Incorrectly got value %r from class %r\n' %
+                self._failed = ('Incorrectly got value %r from klasse %r\n' %
                                 (foo, c))
                 sys.stderr.write(self._failed)
 
@@ -163,7 +163,7 @@ class BaseLocalTest:
         self._test_one_class(self._local)
 
     def test_threading_local_subclass(self):
-        class LocalSubclass(self._local):
+        klasse LocalSubclass(self._local):
             """To test that subclasses behave properly."""
         self._test_one_class(LocalSubclass)
 
@@ -180,12 +180,12 @@ class BaseLocalTest:
         self._test_dict_attribute(self._local)
 
     def test_dict_attribute_subclass(self):
-        class LocalSubclass(self._local):
+        klasse LocalSubclass(self._local):
             """To test that subclasses behave properly."""
         self._test_dict_attribute(LocalSubclass)
 
     def test_cycle_collection(self):
-        class X:
+        klasse X:
             pass
 
         x = X()
@@ -210,12 +210,12 @@ class BaseLocalTest:
 
     @support.cpython_only
     def test_error(self):
-        class Loop(self._local):
+        klasse Loop(self._local):
             attr = 1
 
         # Trick the "if name == '__dict__':" test of __setattr__()
         # to always be true
-        class NameCompareTrue:
+        klasse NameCompareTrue:
             def __eq__(self, other):
                 return True
 
@@ -224,10 +224,10 @@ class BaseLocalTest:
             loop.__setattr__(NameCompareTrue(), 2)
 
 
-class ThreadLocalTest(unittest.TestCase, BaseLocalTest):
+klasse ThreadLocalTest(unittest.TestCase, BaseLocalTest):
     _local = _thread._local
 
-class PyThreadingLocalTest(unittest.TestCase, BaseLocalTest):
+klasse PyThreadingLocalTest(unittest.TestCase, BaseLocalTest):
     _local = _threading_local.local
 
 

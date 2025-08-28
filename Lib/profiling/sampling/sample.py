@@ -113,7 +113,7 @@ def _run_with_sync(original_cmd):
 
 
 
-class SampleProfiler:
+klasse SampleProfiler:
     def __init__(self, pid, sample_interval_usec, all_threads):
         self.pid = pid
         self.sample_interval_usec = sample_interval_usec

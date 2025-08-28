@@ -31,7 +31,7 @@
 
 # executive, temporary decision: [tab] and [C-i] are distinct, but
 # [meta-key] is identified with [esc key].  We demand that any console
-# class does quite a lot towards emulating a unix terminal.
+# klasse does quite a lot towards emulating a unix terminal.
 
 from __future__ import annotations
 
@@ -45,7 +45,7 @@ if False:
     from .types import EventTuple
 
 
-class InputTranslator(ABC):
+klasse InputTranslator(ABC):
     @abstractmethod
     def push(self, evt: EventTuple) -> None:
         pass
@@ -59,7 +59,7 @@ class InputTranslator(ABC):
         return True
 
 
-class KeymapTranslator(InputTranslator):
+klasse KeymapTranslator(InputTranslator):
     def __init__(self, keymap, verbose=False, invalid_cls=None, character_cls=None):
         self.verbose = verbose
         from .keymap import compile_keymap, parse_keys

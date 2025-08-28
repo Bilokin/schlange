@@ -5,7 +5,7 @@ from test.support import import_helper
 _ctypes_test = import_helper.import_module("_ctypes_test")
 
 
-class SlicesTestCase(unittest.TestCase):
+klasse SlicesTestCase(unittest.TestCase):
     def test_getslice_cint(self):
         a = (c_int * 100)(*range(1100, 1200))
         b = list(range(1100, 1200))
@@ -103,7 +103,7 @@ class SlicesTestCase(unittest.TestCase):
         dll = CDLL(_ctypes_test.__file__)
         s = b"abcdefghijklmnopqrstuvwxyz"
 
-        class allocated_c_char_p(c_char_p):
+        klasse allocated_c_char_p(c_char_p):
             pass
 
         dll.my_free.restype = None

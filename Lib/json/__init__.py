@@ -279,7 +279,7 @@ def load(fp, *, cls=None, object_hook=None, parse_float=None,
     ``object_hook`` is an optional function that will be called with the
     result of any object literal decode (a ``dict``). The return value of
     ``object_hook`` will be used instead of the ``dict``. This feature
-    can be used to implement custom decoders (e.g. JSON-RPC class hinting).
+    can be used to implement custom decoders (e.g. JSON-RPC klasse hinting).
 
     ``object_pairs_hook`` is an optional function that will be called with the
     result of any object literal decoded with an ordered list of pairs.  The
@@ -304,7 +304,7 @@ def loads(s, *, cls=None, object_hook=None, parse_float=None,
     ``object_hook`` is an optional function that will be called with the
     result of any object literal decode (a ``dict``). The return value of
     ``object_hook`` will be used instead of the ``dict``. This feature
-    can be used to implement custom decoders (e.g. JSON-RPC class hinting).
+    can be used to implement custom decoders (e.g. JSON-RPC klasse hinting).
 
     ``object_pairs_hook`` is an optional function that will be called with the
     result of any object literal decoded with an ordered list of pairs.  The

@@ -19,7 +19,7 @@ __all__ = [
 ]
 
 
-class Format(enum.IntEnum):
+klasse Format(enum.IntEnum):
     VALUE = 1
     VALUE_WITH_FAKE_GLOBALS = 2
     FORWARDREF = 3
@@ -50,7 +50,7 @@ _SLOTS = (
 )
 
 
-class ForwardRef:
+klasse ForwardRef:
     """Wrapper that holds a forward reference.
 
     Constructor arguments:
@@ -59,7 +59,7 @@ class ForwardRef:
       Must be a string, not a module object.
     * owner: The owning object (module, class, or function).
     * is_argument: Does nothing, retained for compatibility.
-    * is_class: True if the forward reference was created in class scope.
+    * is_class: True if the forward reference was created in klasse scope.
 
     """
 
@@ -303,7 +303,7 @@ class ForwardRef:
 _Template = type(t"")
 
 
-class _Stringifier:
+klasse _Stringifier:
     # Must match the slots on ForwardRef, so we can turn an instance of one into an
     # instance of the other in place.
     __slots__ = _SLOTS
@@ -586,7 +586,7 @@ def _template_to_ast(template):
     return ast.TemplateStr(values=values)
 
 
-class _StringifierDict(dict):
+klasse _StringifierDict(dict):
     def __init__(self, namespace, *, globals=None, owner=None, is_class=False, format):
         super().__init__(namespace)
         self.namespace = namespace
@@ -817,7 +817,7 @@ def _stringify_single(anno):
 
 
 def get_annotate_from_class_namespace(obj):
-    """Retrieve the annotate function from a class namespace dictionary.
+    """Retrieve the annotate function from a klasse namespace dictionary.
 
     Return None if the namespace does not contain an annotate function.
     This is useful in metaclass ``__new__`` methods to retrieve the annotate function.
@@ -876,7 +876,7 @@ def get_annotations(
       * If obj is a module, globals defaults to obj.__dict__.
       * If obj is a class, globals defaults to
         sys.modules[obj.__module__].__dict__ and locals
-        defaults to the obj class namespace.
+        defaults to the obj klasse namespace.
       * If obj is a callable, globals defaults to obj.__globals__,
         although if obj is a wrapped function (using
         functools.update_wrapper()) it is first unwrapped.

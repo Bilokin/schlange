@@ -19,7 +19,7 @@ else:
     bits = architecture()[0][:2]
 
 
-class AboutDialog(Toplevel):
+klasse AboutDialog(Toplevel):
     """Modal about dialog for idle
 
     """

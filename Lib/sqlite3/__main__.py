@@ -2,7 +2,7 @@
 
 Apart from using 'argparse' for the command-line interface,
 this module implements the REPL as a thin wrapper around
-the InteractiveConsole class from the 'code' stdlib module.
+the InteractiveConsole klasse from the 'code' stdlib module.
 """
 import sqlite3
 import sys
@@ -41,7 +41,7 @@ def execute(c, sql, suppress_errors=True, theme=theme_no_color):
             sys.exit(1)
 
 
-class SqliteInteractiveConsole(InteractiveConsole):
+klasse SqliteInteractiveConsole(InteractiveConsole):
     """A simple SQLite REPL."""
 
     def __init__(self, connection, use_color=False):

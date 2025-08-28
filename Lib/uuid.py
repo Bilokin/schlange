@@ -92,7 +92,7 @@ bytes_ = bytes  # The built-in bytes type
 
 
 @_simple_enum(Enum)
-class SafeUUID:
+klasse SafeUUID:
     safe = 0
     unsafe = -1
     unknown = None
@@ -111,8 +111,8 @@ _RFC_4122_VERSION_7_FLAGS = ((7 << 76) | (0x8000 << 48))
 _RFC_4122_VERSION_8_FLAGS = ((8 << 76) | (0x8000 << 48))
 
 
-class UUID:
-    """Instances of the UUID class represent UUIDs as specified in RFC 4122.
+klasse UUID:
+    """Instances of the UUID klasse represent UUIDs as specified in RFC 4122.
     UUID objects are immutable, hashable, and usable as dictionary keys.
     Converting a UUID to a string with str() yields something in the form
     '12345678-1234-1234-1234-123456789abc'.  The UUID constructor accepts

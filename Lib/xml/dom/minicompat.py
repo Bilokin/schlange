@@ -20,7 +20,7 @@ should not be imported; use xml.dom.minidom instead.
 #                    as efficiently as possible in both Python 2.2+
 #                    and older versions.  For example:
 #
-#                        class MyClass(GetattrMagic):
+#                        klasse MyClass(GetattrMagic):
 #                            def _get_myattr(self):
 #                                return something
 #
@@ -47,7 +47,7 @@ import xml.dom
 StringTypes = (str,)
 
 
-class NodeList(list):
+klasse NodeList(list):
     __slots__ = ()
 
     def item(self, index):
@@ -71,7 +71,7 @@ class NodeList(list):
         self[:] = state
 
 
-class EmptyNodeList(tuple):
+klasse EmptyNodeList(tuple):
     __slots__ = ()
 
     def __add__(self, other):

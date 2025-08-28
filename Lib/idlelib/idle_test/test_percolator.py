@@ -7,7 +7,7 @@ requires('gui')
 from tkinter import Text, Tk, END
 
 
-class MyFilter(Delegator):
+klasse MyFilter(Delegator):
     def __init__(self):
         Delegator.__init__(self, None)
 
@@ -31,7 +31,7 @@ class MyFilter(Delegator):
         pass
 
 
-class PercolatorTest(unittest.TestCase):
+klasse PercolatorTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):

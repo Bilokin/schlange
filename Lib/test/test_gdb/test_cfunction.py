@@ -12,7 +12,7 @@ def setUpModule():
 @unittest.skipIf(support.python_is_optimized(),
                  "Python was compiled with optimizations")
 @support.requires_resource('cpu')
-class CFunctionTests(DebuggerTests):
+klasse CFunctionTests(DebuggerTests):
     def check(self, func_name, cmd):
         # Verify with "py-bt":
         gdb_output = self.get_stack_trace(

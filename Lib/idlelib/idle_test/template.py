@@ -6,7 +6,7 @@ from test.support import requires
 from tkinter import Tk
 
 
-class Test(unittest.TestCase):
+klasse Test(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):

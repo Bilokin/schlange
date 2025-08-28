@@ -11,17 +11,17 @@ from test._code_definitions import *
 #######################################
 # classes
 
-class Spam:
+klasse Spam:
     # minimal
     pass
 
 
-class SpamOkay:
+klasse SpamOkay:
     def okay(self):
         return True
 
 
-class SpamFull:
+klasse SpamFull:
 
     a: object
     b: object
@@ -59,16 +59,16 @@ class SpamFull:
         return True
 
 
-class SubSpamFull(SpamFull):
+klasse SubSpamFull(SpamFull):
     ...
 
 
-class SubTuple(tuple):
+klasse SubTuple(tuple):
     ...
 
 
 def class_eggs_inner():
-    class EggsNested:
+    klasse EggsNested:
         ...
     return EggsNested
 EggsNested = class_eggs_inner()
@@ -100,11 +100,11 @@ CLASSES = {
 #######################################
 # exceptions
 
-class MimimalError(Exception):
+klasse MimimalError(Exception):
     pass
 
 
-class RichError(Exception):
+klasse RichError(Exception):
     def __init__(self, msg, value=None):
         super().__init__(msg, value)
         self.msg = msg

@@ -8,7 +8,7 @@ from test.test_unittest.test_result import BufferedWriter
 
 
 @support.force_not_colorized_test_class
-class Test_TestProgram(unittest.TestCase):
+klasse Test_TestProgram(unittest.TestCase):
 
     def test_discovery_from_dotted_path(self):
         loader = unittest.TestLoader()
@@ -31,7 +31,7 @@ class Test_TestProgram(unittest.TestCase):
         result = object()
         test = object()
 
-        class FakeRunner(object):
+        klasse FakeRunner(object):
             def run(self, test):
                 self.test = test
                 return result
@@ -55,7 +55,7 @@ class Test_TestProgram(unittest.TestCase):
         self.assertEqual(runner.test, test)
         self.assertEqual(program.verbosity, 2)
 
-    class FooBar(unittest.TestCase):
+    klasse FooBar(unittest.TestCase):
         def testPass(self):
             pass
         def testFail(self):
@@ -72,10 +72,10 @@ class Test_TestProgram(unittest.TestCase):
         def testUnexpectedSuccess(self):
             pass
 
-    class Empty(unittest.TestCase):
+    klasse Empty(unittest.TestCase):
         pass
 
-    class TestLoader(unittest.TestLoader):
+    klasse TestLoader(unittest.TestLoader):
         """Test loader that returns a suite containing the supplied testcase."""
 
         def __init__(self, testcase):
@@ -90,7 +90,7 @@ class Test_TestProgram(unittest.TestCase):
                 [self.loadTestsFromTestCase(self.testcase)])
 
     def test_defaultTest_with_string(self):
-        class FakeRunner(object):
+        klasse FakeRunner(object):
             def run(self, test):
                 self.test = test
                 return True
@@ -105,7 +105,7 @@ class Test_TestProgram(unittest.TestCase):
         self.assertEqual(('test.test_unittest',), program.testNames)
 
     def test_defaultTest_with_iterable(self):
-        class FakeRunner(object):
+        klasse FakeRunner(object):
             def run(self, test):
                 self.test = test
                 return True
@@ -192,7 +192,7 @@ class Test_TestProgram(unittest.TestCase):
         self.assertIn('\nNO TESTS RAN\n', out)
 
 
-class InitialisableProgram(unittest.TestProgram):
+klasse InitialisableProgram(unittest.TestProgram):
     exit = False
     result = None
     verbosity = 1
@@ -208,7 +208,7 @@ class InitialisableProgram(unittest.TestProgram):
 
 RESULT = object()
 
-class FakeRunner(object):
+klasse FakeRunner(object):
     initArgs = None
     test = None
     raiseError = 0
@@ -225,7 +225,7 @@ class FakeRunner(object):
 
 
 @support.requires_subprocess()
-class TestCommandLineArgs(unittest.TestCase):
+klasse TestCommandLineArgs(unittest.TestCase):
 
     def setUp(self):
         self.program = InitialisableProgram()
@@ -288,7 +288,7 @@ class TestCommandLineArgs(unittest.TestCase):
     def testWarning(self):
         """Test the warnings argument"""
         # see #10535
-        class FakeTP(unittest.TestProgram):
+        klasse FakeTP(unittest.TestProgram):
             def parseArgs(self, *args, **kw): pass
             def runTests(self, *args, **kw): pass
         warnoptions = sys.warnoptions[:]

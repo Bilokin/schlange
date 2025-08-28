@@ -23,7 +23,7 @@ def tearDownModule():
     asyncio.events._set_event_loop_policy(None)
 
 
-class LockTests(unittest.IsolatedAsyncioTestCase):
+klasse LockTests(unittest.IsolatedAsyncioTestCase):
 
     async def test_repr(self):
         lock = asyncio.Lock()
@@ -282,7 +282,7 @@ class LockTests(unittest.IsolatedAsyncioTestCase):
         self.assertFalse(lock.locked())
 
 
-class EventTests(unittest.IsolatedAsyncioTestCase):
+klasse EventTests(unittest.IsolatedAsyncioTestCase):
 
     def test_repr(self):
         ev = asyncio.Event()
@@ -390,7 +390,7 @@ class EventTests(unittest.IsolatedAsyncioTestCase):
         self.assertTrue(t.result())
 
 
-class ConditionTests(unittest.IsolatedAsyncioTestCase):
+klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
 
     async def test_wait(self):
         cond = asyncio.Condition()
@@ -908,7 +908,7 @@ class ConditionTests(unittest.IsolatedAsyncioTestCase):
             condition.notify_all()
         await c[1]
 
-class SemaphoreTests(unittest.IsolatedAsyncioTestCase):
+klasse SemaphoreTests(unittest.IsolatedAsyncioTestCase):
 
     def test_initial_value_zero(self):
         sem = asyncio.Semaphore(0)
@@ -1250,7 +1250,7 @@ class SemaphoreTests(unittest.IsolatedAsyncioTestCase):
         await asyncio.gather(*tasks)
         self.assertEqual([1, 2, 3, 4], result)
 
-class BarrierTests(unittest.IsolatedAsyncioTestCase):
+klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
 
     async def asyncSetUp(self):
         await super().asyncSetUp()

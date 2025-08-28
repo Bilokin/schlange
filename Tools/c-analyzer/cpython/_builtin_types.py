@@ -94,7 +94,7 @@ def _parse_line(line):
     return name, isdecl, kind
 
 
-class BuiltinTypeDecl(namedtuple('BuiltinTypeDecl', 'file lno name kind')):
+klasse BuiltinTypeDecl(namedtuple('BuiltinTypeDecl', 'file lno name kind')):
 
     KINDS = {
         'static',
@@ -156,7 +156,7 @@ class BuiltinTypeDecl(namedtuple('BuiltinTypeDecl', 'file lno name kind')):
         return not self.internal and not self.private
 
 
-class BuiltinTypeInfo(namedtuple('BuiltinTypeInfo', 'file lno name static decl')):
+klasse BuiltinTypeInfo(namedtuple('BuiltinTypeInfo', 'file lno name static decl')):
 
     @classmethod
     def from_line(cls, line, filename, lno, *, decls=None):

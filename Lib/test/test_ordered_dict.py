@@ -31,7 +31,7 @@ def replaced_module(name, replacement):
         sys.modules[name] = original_module
 
 
-class OrderedDictTests:
+klasse OrderedDictTests:
 
     def test_init(self):
         OrderedDict = self.OrderedDict
@@ -113,7 +113,7 @@ class OrderedDictTests:
 
     def test_init_calls(self):
         calls = []
-        class Spam:
+        klasse Spam:
             def keys(self):
                 calls.append('keys')
                 return ()
@@ -125,11 +125,11 @@ class OrderedDictTests:
         self.assertEqual(calls, ['keys'])
 
     def test_overridden_init(self):
-        # Sync-up pure Python OD class with C class where
+        # Sync-up pure Python OD klasse with C klasse where
         # a consistent internal state is created in __new__
         # rather than __init__.
         OrderedDict = self.OrderedDict
-        class ODNI(OrderedDict):
+        klasse ODNI(OrderedDict):
             def __init__(*args, **kwargs):
                 pass
         od = ODNI()
@@ -267,7 +267,7 @@ class OrderedDictTests:
         self.assertEqual(od.pop(k, 12345), 12345)
 
         # make sure pop still works when __missing__ is defined
-        class Missing(OrderedDict):
+        klasse Missing(OrderedDict):
             def __missing__(self, key):
                 return 0
         m = Missing(a=1)
@@ -416,7 +416,7 @@ class OrderedDictTests:
         self.assertEqual(od.setdefault('g', default=9), 9)
 
         # make sure setdefault still works when __missing__ is defined
-        class Missing(OrderedDict):
+        klasse Missing(OrderedDict):
             def __missing__(self, key):
                 return 0
         self.assertEqual(Missing().setdefault(5, 9), 9)
@@ -484,7 +484,7 @@ class OrderedDictTests:
     def test_override_update(self):
         OrderedDict = self.OrderedDict
         # Verify that subclasses can override update() without breaking __init__()
-        class MyOD(OrderedDict):
+        klasse MyOD(OrderedDict):
             def update(self, *args, **kwds):
                 raise Exception()
         items = [('a', 1), ('c', 3), ('b', 2)]
@@ -507,7 +507,7 @@ class OrderedDictTests:
         # should not crash Python.
         OrderedDict = self.OrderedDict
         deleted = []
-        class MyOD(OrderedDict):
+        klasse MyOD(OrderedDict):
             def __del__(self):
                 deleted.append(self.i)
         obj = None
@@ -521,7 +521,7 @@ class OrderedDictTests:
     def test_delitem_hash_collision(self):
         OrderedDict = self.OrderedDict
 
-        class Key:
+        klasse Key:
             def __init__(self, hash):
                 self._hash = hash
                 self.value = str(id(self))
@@ -560,7 +560,7 @@ class OrderedDictTests:
     def test_issue24347(self):
         OrderedDict = self.OrderedDict
 
-        class Key:
+        klasse Key:
             def __hash__(self):
                 return randrange(100000)
 
@@ -582,7 +582,7 @@ class OrderedDictTests:
     def test_issue24348(self):
         OrderedDict = self.OrderedDict
 
-        class Key:
+        klasse Key:
             def __hash__(self):
                 return 1
 
@@ -672,7 +672,7 @@ class OrderedDictTests:
     def test_reference_loop(self):
         # Issue 25935
         OrderedDict = self.OrderedDict
-        class A:
+        klasse A:
             od = OrderedDict()
         A.od[A] = None
         r = weakref.ref(A)
@@ -742,7 +742,7 @@ class OrderedDictTests:
         self.assertTrue(gc.is_tracked(next(it)))
 
 
-class _TriggerSideEffectOnEqual:
+klasse _TriggerSideEffectOnEqual:
     count = 0   # number of calls to __eq__
     trigger = 1 # count value when to trigger side effect
 
@@ -759,13 +759,13 @@ class _TriggerSideEffectOnEqual:
     def side_effect(self):
         raise NotImplementedError
 
-class PurePythonOrderedDictTests(OrderedDictTests, unittest.TestCase):
+klasse PurePythonOrderedDictTests(OrderedDictTests, unittest.TestCase):
 
     module = py_coll
     OrderedDict = py_coll.OrderedDict
 
     def test_issue119004_attribute_error(self):
-        class Key(_TriggerSideEffectOnEqual):
+        klasse Key(_TriggerSideEffectOnEqual):
             def side_effect(self):
                 del dict1[TODEL]
 
@@ -780,7 +780,7 @@ class PurePythonOrderedDictTests(OrderedDictTests, unittest.TestCase):
         self.assertDictEqual(dict2, dict.fromkeys((0, Key(), 4.2)))
 
 
-class CPythonBuiltinDictTests(unittest.TestCase):
+klasse CPythonBuiltinDictTests(unittest.TestCase):
     """Builtin dict preserves insertion order.
 
     Reuse some of tests in OrderedDict selectively.
@@ -799,14 +799,14 @@ for method in (
 del method
 
 
-class CPythonOrderedDictSideEffects:
+klasse CPythonOrderedDictSideEffects:
 
     def check_runtime_error_issue119004(self, dict1, dict2):
         msg = re.escape("OrderedDict mutated during iteration")
         self.assertRaisesRegex(RuntimeError, msg, operator.eq, dict1, dict2)
 
     def test_issue119004_change_size_by_clear(self):
-        class Key(_TriggerSideEffectOnEqual):
+        klasse Key(_TriggerSideEffectOnEqual):
             def side_effect(self):
                 dict1.clear()
 
@@ -818,7 +818,7 @@ class CPythonOrderedDictSideEffects:
         self.assertDictEqual(dict2, dict.fromkeys((0, Key(), 4.2)))
 
     def test_issue119004_change_size_by_delete_key(self):
-        class Key(_TriggerSideEffectOnEqual):
+        klasse Key(_TriggerSideEffectOnEqual):
             def side_effect(self):
                 del dict1[TODEL]
 
@@ -831,7 +831,7 @@ class CPythonOrderedDictSideEffects:
         self.assertDictEqual(dict2, dict.fromkeys((0, Key(), 4.2)))
 
     def test_issue119004_change_linked_list_by_clear(self):
-        class Key(_TriggerSideEffectOnEqual):
+        klasse Key(_TriggerSideEffectOnEqual):
             def side_effect(self):
                 dict1.clear()
                 dict1['a'] = dict1['b'] = 'c'
@@ -844,7 +844,7 @@ class CPythonOrderedDictSideEffects:
         self.assertDictEqual(dict2, dict.fromkeys((0, Key(), 4.2)))
 
     def test_issue119004_change_linked_list_by_delete_key(self):
-        class Key(_TriggerSideEffectOnEqual):
+        klasse Key(_TriggerSideEffectOnEqual):
             def side_effect(self):
                 del dict1[TODEL]
                 dict1['a'] = 'c'
@@ -858,7 +858,7 @@ class CPythonOrderedDictSideEffects:
         self.assertDictEqual(dict2, dict.fromkeys((0, Key(), 4.2)))
 
     def test_issue119004_change_size_by_delete_key_in_dict_eq(self):
-        class Key(_TriggerSideEffectOnEqual):
+        klasse Key(_TriggerSideEffectOnEqual):
             trigger = 0
             def side_effect(self):
                 del dict1[TODEL]
@@ -875,7 +875,7 @@ class CPythonOrderedDictSideEffects:
 
 
 @unittest.skipUnless(c_coll, 'requires the C version of the collections module')
-class CPythonOrderedDictTests(OrderedDictTests,
+klasse CPythonOrderedDictTests(OrderedDictTests,
                               CPythonOrderedDictSideEffects,
                               unittest.TestCase):
 
@@ -971,38 +971,38 @@ class CPythonOrderedDictTests(OrderedDictTests,
         gc.collect()
 
 
-class PurePythonOrderedDictSubclassTests(PurePythonOrderedDictTests):
+klasse PurePythonOrderedDictSubclassTests(PurePythonOrderedDictTests):
 
     module = py_coll
-    class OrderedDict(py_coll.OrderedDict):
+    klasse OrderedDict(py_coll.OrderedDict):
         pass
 
 
-class CPythonOrderedDictSubclassTests(CPythonOrderedDictTests):
+klasse CPythonOrderedDictSubclassTests(CPythonOrderedDictTests):
 
     module = c_coll
-    class OrderedDict(c_coll.OrderedDict):
+    klasse OrderedDict(c_coll.OrderedDict):
         pass
 
 
-class PurePythonOrderedDictWithSlotsCopyingTests(unittest.TestCase):
+klasse PurePythonOrderedDictWithSlotsCopyingTests(unittest.TestCase):
 
     module = py_coll
-    class OrderedDict(py_coll.OrderedDict):
+    klasse OrderedDict(py_coll.OrderedDict):
         __slots__ = ('x', 'y')
     test_copying = OrderedDictTests.test_copying
 
 
 @unittest.skipUnless(c_coll, 'requires the C version of the collections module')
-class CPythonOrderedDictWithSlotsCopyingTests(unittest.TestCase):
+klasse CPythonOrderedDictWithSlotsCopyingTests(unittest.TestCase):
 
     module = c_coll
-    class OrderedDict(c_coll.OrderedDict):
+    klasse OrderedDict(c_coll.OrderedDict):
         __slots__ = ('x', 'y')
     test_copying = OrderedDictTests.test_copying
 
 
-class PurePythonGeneralMappingTests(mapping_tests.BasicTestMappingProtocol):
+klasse PurePythonGeneralMappingTests(mapping_tests.BasicTestMappingProtocol):
 
     @classmethod
     def setUpClass(cls):
@@ -1014,7 +1014,7 @@ class PurePythonGeneralMappingTests(mapping_tests.BasicTestMappingProtocol):
 
 
 @unittest.skipUnless(c_coll, 'requires the C version of the collections module')
-class CPythonGeneralMappingTests(mapping_tests.BasicTestMappingProtocol):
+klasse CPythonGeneralMappingTests(mapping_tests.BasicTestMappingProtocol):
 
     @classmethod
     def setUpClass(cls):
@@ -1025,11 +1025,11 @@ class CPythonGeneralMappingTests(mapping_tests.BasicTestMappingProtocol):
         self.assertRaises(KeyError, d.popitem)
 
 
-class PurePythonSubclassMappingTests(mapping_tests.BasicTestMappingProtocol):
+klasse PurePythonSubclassMappingTests(mapping_tests.BasicTestMappingProtocol):
 
     @classmethod
     def setUpClass(cls):
-        class MyOrderedDict(py_coll.OrderedDict):
+        klasse MyOrderedDict(py_coll.OrderedDict):
             pass
         cls.type2test = MyOrderedDict
 
@@ -1039,11 +1039,11 @@ class PurePythonSubclassMappingTests(mapping_tests.BasicTestMappingProtocol):
 
 
 @unittest.skipUnless(c_coll, 'requires the C version of the collections module')
-class CPythonSubclassMappingTests(mapping_tests.BasicTestMappingProtocol):
+klasse CPythonSubclassMappingTests(mapping_tests.BasicTestMappingProtocol):
 
     @classmethod
     def setUpClass(cls):
-        class MyOrderedDict(c_coll.OrderedDict):
+        klasse MyOrderedDict(c_coll.OrderedDict):
             pass
         cls.type2test = MyOrderedDict
 
@@ -1052,7 +1052,7 @@ class CPythonSubclassMappingTests(mapping_tests.BasicTestMappingProtocol):
         self.assertRaises(KeyError, d.popitem)
 
 
-class SimpleLRUCache:
+klasse SimpleLRUCache:
 
     def __init__(self, size):
         super().__init__()
@@ -1077,7 +1077,7 @@ class SimpleLRUCache:
         super().__delitem__(key)
 
 
-class SimpleLRUCacheTests:
+klasse SimpleLRUCacheTests:
 
     def test_add_after_full(self):
         c = self.type2test(2)
@@ -1119,18 +1119,18 @@ class SimpleLRUCacheTests:
         self.assertEqual(list(c), [1, 3, 2])
 
 
-class PySimpleLRUCacheTests(SimpleLRUCacheTests, unittest.TestCase):
+klasse PySimpleLRUCacheTests(SimpleLRUCacheTests, unittest.TestCase):
 
-    class type2test(SimpleLRUCache, py_coll.OrderedDict):
+    klasse type2test(SimpleLRUCache, py_coll.OrderedDict):
         pass
 
 
 @unittest.skipUnless(c_coll, 'requires the C version of the collections module')
-class CSimpleLRUCacheTests(SimpleLRUCacheTests, unittest.TestCase):
+klasse CSimpleLRUCacheTests(SimpleLRUCacheTests, unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        class type2test(SimpleLRUCache, c_coll.OrderedDict):
+        klasse type2test(SimpleLRUCache, c_coll.OrderedDict):
             pass
         cls.type2test = type2test
 

@@ -25,7 +25,7 @@ import _io    # noqa: F401
 import _pyio  # noqa: F401
 
 @unittest.skipUnless(os.name == 'posix', 'tests requires a posix system.')
-class TestFileIOSignalInterrupt:
+klasse TestFileIOSignalInterrupt:
     def setUp(self):
         self._process = None
 
@@ -183,14 +183,14 @@ class TestFileIOSignalInterrupt:
                         expected=b'hello\nworld!\n'))
 
 
-class CTestFileIOSignalInterrupt(TestFileIOSignalInterrupt, unittest.TestCase):
+klasse CTestFileIOSignalInterrupt(TestFileIOSignalInterrupt, unittest.TestCase):
     modname = '_io'
 
-class PyTestFileIOSignalInterrupt(TestFileIOSignalInterrupt, unittest.TestCase):
+klasse PyTestFileIOSignalInterrupt(TestFileIOSignalInterrupt, unittest.TestCase):
     modname = '_pyio'
 
 
-class TestBufferedIOSignalInterrupt(TestFileIOSignalInterrupt):
+klasse TestBufferedIOSignalInterrupt(TestFileIOSignalInterrupt):
     def _generate_infile_setup_code(self):
         """Returns the infile = ... line of code to make a BufferedReader."""
         return ('import %s as io ;infile = io.open(sys.stdin.fileno(), "rb") ;'
@@ -205,14 +205,14 @@ class TestBufferedIOSignalInterrupt(TestFileIOSignalInterrupt):
                         read_method_name='read',
                         expected=b'hello\nworld!\n'))
 
-class CTestBufferedIOSignalInterrupt(TestBufferedIOSignalInterrupt, unittest.TestCase):
+klasse CTestBufferedIOSignalInterrupt(TestBufferedIOSignalInterrupt, unittest.TestCase):
     modname = '_io'
 
-class PyTestBufferedIOSignalInterrupt(TestBufferedIOSignalInterrupt, unittest.TestCase):
+klasse PyTestBufferedIOSignalInterrupt(TestBufferedIOSignalInterrupt, unittest.TestCase):
     modname = '_pyio'
 
 
-class TestTextIOSignalInterrupt(TestFileIOSignalInterrupt):
+klasse TestTextIOSignalInterrupt(TestFileIOSignalInterrupt):
     def _generate_infile_setup_code(self):
         """Returns the infile = ... line of code to make a TextIOWrapper."""
         return ('import %s as io ;'
@@ -244,10 +244,10 @@ class TestTextIOSignalInterrupt(TestFileIOSignalInterrupt):
                         read_method_name='read',
                         expected="hello\nworld!\n"))
 
-class CTestTextIOSignalInterrupt(TestTextIOSignalInterrupt, unittest.TestCase):
+klasse CTestTextIOSignalInterrupt(TestTextIOSignalInterrupt, unittest.TestCase):
     modname = '_io'
 
-class PyTestTextIOSignalInterrupt(TestTextIOSignalInterrupt, unittest.TestCase):
+klasse PyTestTextIOSignalInterrupt(TestTextIOSignalInterrupt, unittest.TestCase):
     modname = '_pyio'
 
 

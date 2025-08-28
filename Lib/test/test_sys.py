@@ -40,7 +40,7 @@ def requires_subinterpreters(meth):
 
 DICT_KEY_STRUCT_FORMAT = 'n2BI2n'
 
-class DisplayHookTest(unittest.TestCase):
+klasse DisplayHookTest(unittest.TestCase):
 
     def test_original_displayhook(self):
         dh = sys.__displayhook__
@@ -87,7 +87,7 @@ class DisplayHookTest(unittest.TestCase):
             self.assertRaises(ValueError, eval, code)
 
     def test_gh130163(self):
-        class X:
+        klasse X:
             def __repr__(self):
                 sys.stdout = io.StringIO()
                 support.gc_collect()
@@ -98,7 +98,7 @@ class DisplayHookTest(unittest.TestCase):
             sys.displayhook(X())  # should not crash
 
 
-class ActiveExceptionTests(unittest.TestCase):
+klasse ActiveExceptionTests(unittest.TestCase):
     def test_exc_info_no_exception(self):
         self.assertEqual(sys.exc_info(), (None, None, None))
 
@@ -162,7 +162,7 @@ class ActiveExceptionTests(unittest.TestCase):
         self.assertIs(exc, e)
 
 
-class ExceptHookTest(unittest.TestCase):
+klasse ExceptHookTest(unittest.TestCase):
 
     @force_not_colorized
     def test_original_excepthook(self):
@@ -205,7 +205,7 @@ class ExceptHookTest(unittest.TestCase):
     # Python/pythonrun.c::PyErr_PrintEx() is tricky.
 
 
-class SysModuleTest(unittest.TestCase):
+klasse SysModuleTest(unittest.TestCase):
 
     def tearDown(self):
         test.support.reap_children()
@@ -776,7 +776,7 @@ class SysModuleTest(unittest.TestCase):
         # We don't want them in the interned dict and if they aren't
         # actually interned, we don't want to create the appearance
         # that they are by allowing intern() to succeed.
-        class S(str):
+        klasse S(str):
             def __hash__(self):
                 return 123
 
@@ -1166,7 +1166,7 @@ class SysModuleTest(unittest.TestCase):
         code = """if 1:
             import sys
 
-            class AtExit:
+            klasse AtExit:
                 is_finalizing = sys.is_finalizing
                 print = print
 
@@ -1184,7 +1184,7 @@ class SysModuleTest(unittest.TestCase):
         # sys.flags and sys.float_info were wiped during shutdown.
         code = """if 1:
             import sys
-            class A:
+            klasse A:
                 def __del__(self, sys=sys):
                     print(sys.flags)
                     print(sys.float_info)
@@ -1199,7 +1199,7 @@ class SysModuleTest(unittest.TestCase):
         code = """if 1:
             import struct, sys
 
-            class C:
+            klasse C:
                 def __init__(self):
                     self.pack = struct.pack
                 def __del__(self):
@@ -1311,7 +1311,7 @@ class SysModuleTest(unittest.TestCase):
         self.assertGreater(len(all_objects), 0)
 
         # sys.getobjects(0, MyType)
-        class MyType:
+        klasse MyType:
             pass
         size = 100
         my_objects = [MyType() for _ in range(size)]
@@ -1341,7 +1341,7 @@ class SysModuleTest(unittest.TestCase):
 
 @test.support.cpython_only
 @force_not_colorized
-class UnraisableHookTest(unittest.TestCase):
+klasse UnraisableHookTest(unittest.TestCase):
     def test_original_unraisablehook(self):
         _testcapi = import_helper.import_module('_testcapi')
         from _testcapi import err_writeunraisable, err_formatunraisable
@@ -1377,17 +1377,17 @@ class UnraisableHookTest(unittest.TestCase):
 
     def test_original_unraisablehook_err(self):
         # bpo-22836: PyErr_WriteUnraisable() should give sensible reports
-        class BrokenDel:
+        klasse BrokenDel:
             def __del__(self):
                 exc = ValueError("del is broken")
                 # The following line is included in the traceback report:
                 raise exc
 
-        class BrokenStrException(Exception):
+        klasse BrokenStrException(Exception):
             def __str__(self):
                 raise Exception("str() is broken")
 
-        class BrokenExceptionDel:
+        klasse BrokenExceptionDel:
             def __del__(self):
                 exc = BrokenStrException()
                 # The following line is included in the traceback report:
@@ -1422,9 +1422,9 @@ class UnraisableHookTest(unittest.TestCase):
         # unless it is one of the hard-coded exclusions.
         _testcapi = import_helper.import_module('_testcapi')
         from _testcapi import err_writeunraisable
-        class A:
-            class B:
-                class X(Exception):
+        klasse A:
+            klasse B:
+                klasse X(Exception):
                     pass
 
         for moduleName in 'builtins', '__main__', 'some_module':
@@ -1498,7 +1498,7 @@ class UnraisableHookTest(unittest.TestCase):
 
 
 @test.support.cpython_only
-class SizeofTest(unittest.TestCase):
+klasse SizeofTest(unittest.TestCase):
 
     def setUp(self):
         self.P = struct.calcsize('P')
@@ -1519,25 +1519,25 @@ class SizeofTest(unittest.TestCase):
         self.assertEqual(sys.getsizeof([]), vsize('Pn') + gc_header_size)
 
     def test_errors(self):
-        class BadSizeof:
+        klasse BadSizeof:
             def __sizeof__(self):
                 raise ValueError
         self.assertRaises(ValueError, sys.getsizeof, BadSizeof())
 
-        class InvalidSizeof:
+        klasse InvalidSizeof:
             def __sizeof__(self):
                 return None
         self.assertRaises(TypeError, sys.getsizeof, InvalidSizeof())
         sentinel = ["sentinel"]
         self.assertIs(sys.getsizeof(InvalidSizeof(), sentinel), sentinel)
 
-        class FloatSizeof:
+        klasse FloatSizeof:
             def __sizeof__(self):
                 return 4.5
         self.assertRaises(TypeError, sys.getsizeof, FloatSizeof())
         self.assertIs(sys.getsizeof(FloatSizeof(), sentinel), sentinel)
 
-        class OverflowSizeof(int):
+        klasse OverflowSizeof(int):
             def __sizeof__(self):
                 return int(self)
         self.assertEqual(sys.getsizeof(OverflowSizeof(sys.maxsize)),
@@ -1635,7 +1635,7 @@ class SizeofTest(unittest.TestCase):
         # dictionary-itemiterator
         check(iter({}.items()), size('P2nPn'))
         # dictproxy
-        class C(object): pass
+        klasse C(object): pass
         check(C.__dict__, size('P'))
         # BaseException
         check(BaseException(), size('6Pb'))
@@ -1671,7 +1671,7 @@ class SizeofTest(unittest.TestCase):
         # function
         def func(): pass
         check(func, size('16Pi'))
-        class c():
+        klasse c():
             @staticmethod
             def foo():
                 pass
@@ -1723,7 +1723,7 @@ class SizeofTest(unittest.TestCase):
         # object
         check(object(), size(''))
         # property (descriptor object)
-        class C(object):
+        klasse C(object):
             def getx(self): return self.__x
             def setx(self, value): self.__x = value
             def delx(self): del self.__x
@@ -1785,7 +1785,7 @@ class SizeofTest(unittest.TestCase):
                   '1PIP'                # Specializer cache
                   + typeid              # heap type id (free-threaded only)
                   )
-        class newstyleclass(object): pass
+        klasse newstyleclass(object): pass
         # Separate block for PyDictKeysObject with 8 keys and 5 entries
         check(newstyleclass, s + calcsize(DICT_KEY_STRUCT_FORMAT) + 64 + 42*calcsize("2P"))
         # dict with shared keys
@@ -1850,23 +1850,23 @@ class SizeofTest(unittest.TestCase):
         # check all subclassable types defined in Objects/ that allow
         # non-empty __slots__
         check = self.check_slots
-        class BA(bytearray):
+        klasse BA(bytearray):
             __slots__ = 'a', 'b', 'c'
         check(BA(), bytearray(), '3P')
-        class D(dict):
+        klasse D(dict):
             __slots__ = 'a', 'b', 'c'
         check(D(x=[]), {'x': []}, '3P')
-        class L(list):
+        klasse L(list):
             __slots__ = 'a', 'b', 'c'
         check(L(), [], '3P')
-        class S(set):
+        klasse S(set):
             __slots__ = 'a', 'b', 'c'
         check(S(), set(), '3P')
-        class FS(frozenset):
+        klasse FS(frozenset):
             __slots__ = 'a', 'b', 'c'
         check(FS(), frozenset(), '3P')
         from collections import OrderedDict
-        class OD(OrderedDict):
+        klasse OD(OrderedDict):
             __slots__ = 'a', 'b', 'c'
         check(OD(x=[]), OrderedDict(x=[]), '3P')
 
@@ -1939,7 +1939,7 @@ class SizeofTest(unittest.TestCase):
         # for more details.
         code = textwrap.dedent('''
             import sys
-            class MyStderr:
+            klasse MyStderr:
                 def write(self, s):
                     sys.stderr = None
             sys.stderr = MyStderr()
@@ -1951,7 +1951,7 @@ class SizeofTest(unittest.TestCase):
 
 @test.support.support_remote_exec_only
 @test.support.cpython_only
-class TestRemoteExec(unittest.TestCase):
+klasse TestRemoteExec(unittest.TestCase):
     def tearDown(self):
         test.support.reap_children()
 
@@ -2201,7 +2201,7 @@ this is invalid python code
         self.assertIn(b"Remote debugging is not enabled", err)
         self.assertEqual(out, b"")
 
-class TestSysJIT(unittest.TestCase):
+klasse TestSysJIT(unittest.TestCase):
 
     def test_jit_is_available(self):
         available = sys._jit.is_available()

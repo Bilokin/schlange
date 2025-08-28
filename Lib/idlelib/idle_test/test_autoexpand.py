@@ -6,12 +6,12 @@ from test.support import requires
 from tkinter import Text, Tk
 
 
-class DummyEditwin:
+klasse DummyEditwin:
     # AutoExpand.__init__ only needs .text
     def __init__(self, text):
         self.text = text
 
-class AutoExpandTest(unittest.TestCase):
+klasse AutoExpandTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):

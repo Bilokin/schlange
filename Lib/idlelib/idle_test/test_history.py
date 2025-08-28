@@ -13,7 +13,7 @@ line1 = 'a = 7'
 line2 = 'b = a'
 
 
-class StoreTest(unittest.TestCase):
+klasse StoreTest(unittest.TestCase):
     '''Tests History.__init__ and History.store with mock Text'''
 
     @classmethod
@@ -55,7 +55,7 @@ class StoreTest(unittest.TestCase):
         self.assertIsNone(self.history.pointer)
 
 
-class TextWrapper:
+klasse TextWrapper:
     def __init__(self, master):
         self.text = tkText(master=master)
         self._bell = False
@@ -65,7 +65,7 @@ class TextWrapper:
         self._bell = True
 
 
-class FetchTest(unittest.TestCase):
+klasse FetchTest(unittest.TestCase):
     '''Test History.fetch with wrapped tk.Text.
     '''
     @classmethod

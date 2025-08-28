@@ -5,19 +5,19 @@ import sys
 import unittest
 from test import support
 
-class PropertyBase(Exception):
+klasse PropertyBase(Exception):
     pass
 
-class PropertyGet(PropertyBase):
+klasse PropertyGet(PropertyBase):
     pass
 
-class PropertySet(PropertyBase):
+klasse PropertySet(PropertyBase):
     pass
 
-class PropertyDel(PropertyBase):
+klasse PropertyDel(PropertyBase):
     pass
 
-class BaseClass(object):
+klasse BaseClass(object):
     def __init__(self):
         self._spam = 5
 
@@ -34,7 +34,7 @@ class BaseClass(object):
     def spam(self):
         del self._spam
 
-class SubClass(BaseClass):
+klasse SubClass(BaseClass):
 
     @BaseClass.spam.getter
     def spam(self):
@@ -49,25 +49,25 @@ class SubClass(BaseClass):
     def spam(self):
         raise PropertyDel(self._spam)
 
-class PropertyDocBase(object):
+klasse PropertyDocBase(object):
     _spam = 1
     def _get_spam(self):
         return self._spam
     spam = property(_get_spam, doc="spam spam spam")
 
-class PropertyDocSub(PropertyDocBase):
+klasse PropertyDocSub(PropertyDocBase):
     @PropertyDocBase.spam.getter
     def spam(self):
         """The decorator does not use this doc string"""
         return self._spam
 
-class PropertySubNewGetter(BaseClass):
+klasse PropertySubNewGetter(BaseClass):
     @BaseClass.spam.getter
     def spam(self):
         """new docstring"""
         return 5
 
-class PropertyNewGetter(object):
+klasse PropertyNewGetter(object):
     @property
     def spam(self):
         """original docstring"""
@@ -77,7 +77,7 @@ class PropertyNewGetter(object):
         """new docstring"""
         return 8
 
-class PropertyTests(unittest.TestCase):
+klasse PropertyTests(unittest.TestCase):
     def test_property_decorator_baseclass(self):
         # see #1620
         base = BaseClass()
@@ -130,7 +130,7 @@ class PropertyTests(unittest.TestCase):
 
     def test_property___isabstractmethod__descriptor(self):
         for val in (True, False, [], [1], '', '1'):
-            class C(object):
+            klasse C(object):
                 def foo(self):
                     pass
                 foo.__isabstractmethod__ = val
@@ -139,12 +139,12 @@ class PropertyTests(unittest.TestCase):
 
         # check that the property's __isabstractmethod__ descriptor does the
         # right thing when presented with a value that fails truth testing:
-        class NotBool(object):
+        klasse NotBool(object):
             def __bool__(self):
                 raise ValueError()
             __len__ = __bool__
         with self.assertRaises(ValueError):
-            class C(object):
+            klasse C(object):
                 def foo(self):
                     pass
                 foo.__isabstractmethod__ = NotBool()
@@ -162,7 +162,7 @@ class PropertyTests(unittest.TestCase):
     @unittest.skipIf(sys.flags.optimize >= 2,
                      "Docstrings are omitted with -O2 and above")
     def test_property_decorator_doc_writable(self):
-        class PropertyWritableDoc(object):
+        klasse PropertyWritableDoc(object):
 
             @property
             def spam(self):
@@ -208,7 +208,7 @@ class PropertyTests(unittest.TestCase):
         def setter(self, value):
             pass
 
-        class A:
+        klasse A:
             @property
             def foo(self):
                 return 1
@@ -243,7 +243,7 @@ class PropertyTests(unittest.TestCase):
         ):
             property(1).__name__
 
-        class Err:
+        klasse Err:
             def __getattr__(self, attr):
                 raise RuntimeError('fail')
 
@@ -271,11 +271,11 @@ class PropertyTests(unittest.TestCase):
         # instance.  As a result, the code below was
         # causing a segfault.
 
-        class pro(property):
+        klasse pro(property):
             def __new__(typ, *args, **kwargs):
                 return "abcdef"
 
-        class A:
+        klasse A:
             pass
 
         p = property.__new__(pro)
@@ -283,17 +283,17 @@ class PropertyTests(unittest.TestCase):
         np = p.getter(lambda self: 1)
 
 # Issue 5890: subclasses of property do not preserve method __doc__ strings
-class PropertySub(property):
+klasse PropertySub(property):
     """This is a subclass of property"""
 
-class PropertySubWoDoc(property):
+klasse PropertySubWoDoc(property):
     pass
 
-class PropertySubSlots(property):
+klasse PropertySubSlots(property):
     """This is a subclass of property that defines __slots__"""
     __slots__ = ()
 
-class PropertySubclassTests(unittest.TestCase):
+klasse PropertySubclassTests(unittest.TestCase):
 
     @support.requires_docstrings
     def test_slots_docstring_copy_exception(self):
@@ -303,7 +303,7 @@ class PropertySubclassTests(unittest.TestCase):
         # as part of https://bugs.python.org/issue5890 which allowed docs to
         # be set via property subclasses in the first place.
         with self.assertRaises(AttributeError):
-            class Foo(object):
+            klasse Foo(object):
                 @PropertySubSlots
                 def spam(self):
                     """Trying to copy this docstring will raise an exception"""
@@ -311,7 +311,7 @@ class PropertySubclassTests(unittest.TestCase):
 
     def test_property_with_slots_no_docstring(self):
         # https://github.com/python/cpython/issues/98963#issuecomment-1574413319
-        class slotted_prop(property):
+        klasse slotted_prop(property):
             __slots__ = ("foo",)
 
         p = slotted_prop()  # no AttributeError
@@ -327,7 +327,7 @@ class PropertySubclassTests(unittest.TestCase):
                      "Docstrings are omitted with -O2 and above")
     def test_property_with_slots_docstring_silently_dropped(self):
         # https://github.com/python/cpython/issues/98963#issuecomment-1574413319
-        class slotted_prop(property):
+        klasse slotted_prop(property):
             __slots__ = ("foo",)
 
         p = slotted_prop(doc="what's up")  # no AttributeError
@@ -346,7 +346,7 @@ class PropertySubclassTests(unittest.TestCase):
                      "Docstrings are omitted with -O2 and above")
     def test_property_with_slots_and_doc_slot_docstring_present(self):
         # https://github.com/python/cpython/issues/98963#issuecomment-1574413319
-        class slotted_prop(property):
+        klasse slotted_prop(property):
             __slots__ = ("foo", "__doc__")
 
         p = slotted_prop(doc="what's up")
@@ -389,12 +389,12 @@ class PropertySubclassTests(unittest.TestCase):
                              "Getter overrides explicit property docstring (%s)" % ps.__name__)
 
             doc = ps(getter_wo_doc, None, None, None).__doc__
-            self.assertIsNone(doc, "Property class doc appears in instance __doc__ (%s)" % ps.__name__)
+            self.assertIsNone(doc, "Property klasse doc appears in instance __doc__ (%s)" % ps.__name__)
 
     @unittest.skipIf(sys.flags.optimize >= 2,
                      "Docstrings are omitted with -O2 and above")
     def test_docstring_copy(self):
-        class Foo(object):
+        klasse Foo(object):
             @PropertySub
             def spam(self):
                 """spam wrapped in property subclass"""
@@ -470,7 +470,7 @@ class PropertySubclassTests(unittest.TestCase):
         self.assertEqual(property(doc="explicit doc").__doc__, "explicit doc")
         self.assertEqual(PropertySub(doc="explicit doc").__doc__, "explicit doc")
 
-        class Foo:
+        klasse Foo:
             spam = PropertySub(doc="spam explicit doc")
 
             @spam.getter
@@ -489,7 +489,7 @@ class PropertySubclassTests(unittest.TestCase):
         # If a property's getter has no __doc__ then the property's doc should
         # be None; test that this is consistent with subclasses as well; see
         # GH-2487
-        class NoDoc:
+        klasse NoDoc:
             @property
             def __doc__(self):
                 raise AttributeError
@@ -500,7 +500,7 @@ class PropertySubclassTests(unittest.TestCase):
     @unittest.skipIf(sys.flags.optimize >= 2,
                      "Docstrings are omitted with -O2 and above")
     def test_property_setter_copies_getter_docstring(self):
-        class Foo(object):
+        klasse Foo(object):
             def __init__(self): self._spam = 1
             @PropertySub
             def spam(self):
@@ -517,7 +517,7 @@ class PropertySubclassTests(unittest.TestCase):
         self.assertEqual(
             Foo.spam.__doc__,
             "spam wrapped in property subclass")
-        class FooSub(Foo):
+        klasse FooSub(Foo):
             @Foo.spam.setter
             def spam(self, value):
                 """another ignored docstring"""
@@ -534,7 +534,7 @@ class PropertySubclassTests(unittest.TestCase):
                      "Docstrings are omitted with -O2 and above")
     def test_property_new_getter_new_docstring(self):
 
-        class Foo(object):
+        klasse Foo(object):
             @PropertySub
             def spam(self):
                 """a docstring"""
@@ -544,12 +544,12 @@ class PropertySubclassTests(unittest.TestCase):
                 """a new docstring"""
                 return 2
         self.assertEqual(Foo.spam.__doc__, "a new docstring")
-        class FooBase(object):
+        klasse FooBase(object):
             @PropertySub
             def spam(self):
                 """a docstring"""
                 return 1
-        class Foo2(FooBase):
+        klasse Foo2(FooBase):
             @FooBase.spam.getter
             def spam(self):
                 """a new docstring"""
@@ -557,7 +557,7 @@ class PropertySubclassTests(unittest.TestCase):
         self.assertEqual(Foo.spam.__doc__, "a new docstring")
 
 
-class _PropertyUnreachableAttribute:
+klasse _PropertyUnreachableAttribute:
     msg_format = None
     obj = None
     cls = None
@@ -582,17 +582,17 @@ class _PropertyUnreachableAttribute:
             del self.obj.foo
 
 
-class PropertyUnreachableAttributeWithName(_PropertyUnreachableAttribute, unittest.TestCase):
+klasse PropertyUnreachableAttributeWithName(_PropertyUnreachableAttribute, unittest.TestCase):
     msg_format = r"^property 'foo' of 'PropertyUnreachableAttributeWithName\.cls' object {}$"
 
-    class cls:
+    klasse cls:
         foo = property()
 
 
-class PropertyUnreachableAttributeNoName(_PropertyUnreachableAttribute, unittest.TestCase):
+klasse PropertyUnreachableAttributeNoName(_PropertyUnreachableAttribute, unittest.TestCase):
     msg_format = r"^property of 'PropertyUnreachableAttributeNoName\.cls' object {}$"
 
-    class cls:
+    klasse cls:
         pass
 
     cls.foo = property()

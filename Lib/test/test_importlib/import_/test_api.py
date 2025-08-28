@@ -10,7 +10,7 @@ PKG_NAME = 'fine'
 SUBMOD_NAME = 'fine.bogus'
 
 
-class BadSpecFinderLoader:
+klasse BadSpecFinderLoader:
     @classmethod
     def find_spec(cls, fullname, path=None, target=None):
         if fullname == SUBMOD_NAME:
@@ -27,14 +27,14 @@ class BadSpecFinderLoader:
             raise ImportError('I cannot be loaded!')
 
 
-class BadLoaderFinder:
+klasse BadLoaderFinder:
     @classmethod
     def load_module(cls, fullname):
         if fullname == SUBMOD_NAME:
             raise ImportError('I cannot be loaded!')
 
 
-class APITest:
+klasse APITest:
 
     """Test API-specific details for __import__ (e.g. raising the right
     exception when passing in an int for the module name)."""
@@ -93,7 +93,7 @@ class APITest:
                 self.assertEqual(cm.exception.name, SUBMOD_NAME)
 
 
-class OldAPITests(APITest):
+klasse OldAPITests(APITest):
     bad_finder_loader = BadLoaderFinder
 
     def test_raises_ModuleNotFoundError(self):
@@ -132,7 +132,7 @@ class OldAPITests(APITest):
  ) = util.test_both(OldAPITests, __import__=util.__import__)
 
 
-class SpecAPITests(APITest):
+klasse SpecAPITests(APITest):
     bad_finder_loader = BadSpecFinderLoader
 
 

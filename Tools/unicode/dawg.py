@@ -15,14 +15,14 @@ from collections import defaultdict
 from functools import cached_property
 
 
-# This class represents a node in the directed acyclic word graph (DAWG). It
+# This klasse represents a node in the directed acyclic word graph (DAWG). It
 # has a list of edges to other nodes. It has functions for testing whether it
 # is equivalent to another node. Nodes are equivalent if they have identical
 # edges, and each identical edge leads to identical states. The __hash__ and
 # __eq__ functions allow it to be used as a key in a python dictionary.
 
 
-class DawgNode:
+klasse DawgNode:
 
     def __init__(self, dawg):
         self.id = dawg.next_id
@@ -71,7 +71,7 @@ class DawgNode:
         return count
 
 
-class Dawg:
+klasse Dawg:
     def __init__(self):
         self.previous_word = ""
         self.next_id = 0

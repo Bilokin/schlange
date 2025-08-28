@@ -56,7 +56,7 @@ else:
     overload = lambda func: None
 
 
-class InvalidTerminal(RuntimeError):
+klasse InvalidTerminal(RuntimeError):
     pass
 
 
@@ -119,7 +119,7 @@ try:
 except AttributeError:
     # this is exactly the minimum necessary to support what we
     # do with poll objects
-    class MinimalPoll:
+    klasse MinimalPoll:
         def __init__(self):
             pass
 
@@ -136,7 +136,7 @@ except AttributeError:
     poll = MinimalPoll  # type: ignore[assignment]
 
 
-class UnixConsole(Console):
+klasse UnixConsole(Console):
     def __init__(
         self,
         f_in: IO[bytes] | int = 0,

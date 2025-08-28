@@ -6,7 +6,7 @@ import unittest
 import warnings
 
 
-class CallingOrder:
+klasse CallingOrder:
 
     """Calls to the importers on sys.meta_path happen in order that they are
     specified in the sequence, starting with the first importer
@@ -51,7 +51,7 @@ class CallingOrder:
  ) = util.test_both(CallingOrder, __import__=util.__import__)
 
 
-class CallSignature:
+klasse CallSignature:
 
     """If there is no __path__ entry on the parent module, then 'path' is None
     [no path]. Otherwise, the value for __path__ is passed in for the 'path'
@@ -100,7 +100,7 @@ class CallSignature:
                 self.assertEqual(args[0], mod_name)
                 self.assertIs(args[1], path)
 
-class CallSignoreSuppressImportWarning(CallSignature):
+klasse CallSignoreSuppressImportWarning(CallSignature):
 
     def test_no_path(self):
         with warnings.catch_warnings():
@@ -113,7 +113,7 @@ class CallSignoreSuppressImportWarning(CallSignature):
             super().test_no_path()
 
 
-class CallSignaturePEP451(CallSignature):
+klasse CallSignaturePEP451(CallSignature):
     mock_modules = util.mock_spec
     finder_name = 'find_spec'
 

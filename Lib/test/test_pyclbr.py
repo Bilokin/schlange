@@ -16,7 +16,7 @@ from test.test_importlib import util as test_importlib_util
 StaticMethodType = type(staticmethod(lambda: None))
 ClassMethodType = type(classmethod(lambda c: None))
 
-# Here we test the python class browser code.
+# Here we test the python klasse browser code.
 #
 # The main function in this suite, 'testModule', compares the output
 # of pyclbr with the introspected members of a module.  Because pyclbr
@@ -46,7 +46,7 @@ def temporary_main_spec():
         main_mod.__spec__ = original_spec
 
 
-class PyclbrTest(TestCase):
+klasse PyclbrTest(TestCase):
 
     def assertListEq(self, l1, l2, ignore):
         ''' succeed iff {l1} - {ignore} == {l2} - {ignore} '''
@@ -187,14 +187,14 @@ class PyclbrTest(TestCase):
             def f1(a,b,c):
                 def f2(a=1, b=2, c=3): pass
                 return f1(a,b,d)
-            class c1: pass
-        class C0:
+            klasse c1: pass
+        klasse C0:
             "Test class."
             def F1():
                 "Method."
                 return 'return'
-            class C1():
-                class C2:
+            klasse C1():
+                klasse C2:
                     "Class nested within nested class."
                     def F3(): return 1+1
 
@@ -259,7 +259,7 @@ class PyclbrTest(TestCase):
         cm('test.test_pyclbr')
 
 
-class ReadmoduleTests(TestCase):
+klasse ReadmoduleTests(TestCase):
 
     def setUp(self):
         self._modules = pyclbr._modules.copy()

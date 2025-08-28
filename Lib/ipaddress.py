@@ -17,11 +17,11 @@ IPV4LENGTH = 32
 IPV6LENGTH = 128
 
 
-class AddressValueError(ValueError):
+klasse AddressValueError(ValueError):
     """A Value Error related to the address."""
 
 
-class NetmaskValueError(ValueError):
+klasse NetmaskValueError(ValueError):
     """A Value Error related to the netmask."""
 
 
@@ -380,7 +380,7 @@ def get_mixed_type_key(obj):
     return NotImplemented
 
 
-class _IPAddressBase:
+klasse _IPAddressBase:
 
     """The mother class."""
 
@@ -556,11 +556,11 @@ class _IPAddressBase:
 _address_fmt_re = None
 
 @functools.total_ordering
-class _BaseAddress(_IPAddressBase):
+klasse _BaseAddress(_IPAddressBase):
 
     """A generic IP object.
 
-    This IP class contains the version independent methods which are
+    This IP klasse contains the version independent methods which are
     used by single IP addresses.
     """
 
@@ -664,10 +664,10 @@ class _BaseAddress(_IPAddressBase):
 
 
 @functools.total_ordering
-class _BaseNetwork(_IPAddressBase):
+klasse _BaseNetwork(_IPAddressBase):
     """A generic IP network object.
 
-    This IP class contains the version independent methods which are
+    This IP klasse contains the version independent methods which are
     used by networks.
     """
 
@@ -1123,7 +1123,7 @@ class _BaseNetwork(_IPAddressBase):
                 self.broadcast_address.is_loopback)
 
 
-class _BaseConstants:
+klasse _BaseConstants:
 
     _private_networks = []
 
@@ -1131,7 +1131,7 @@ class _BaseConstants:
 _BaseNetwork._constants = _BaseConstants
 
 
-class _BaseV4:
+klasse _BaseV4:
 
     """Base IPv4 object.
 
@@ -1263,7 +1263,7 @@ class _BaseV4:
         reverse_octets = str(self).split('.')[::-1]
         return '.'.join(reverse_octets) + '.in-addr.arpa'
 
-class IPv4Address(_BaseV4, _BaseAddress):
+klasse IPv4Address(_BaseV4, _BaseAddress):
 
     """Represent and manipulate single IPv4 Addresses."""
 
@@ -1413,7 +1413,7 @@ class IPv4Address(_BaseV4, _BaseAddress):
         return IPv6Address(f'::ffff:{self}')
 
 
-class IPv4Interface(IPv4Address):
+klasse IPv4Interface(IPv4Address):
 
     def __init__(self, address):
         addr, mask = self._split_addr_prefix(address)
@@ -1484,9 +1484,9 @@ class IPv4Interface(IPv4Address):
         return self._ip == 0 and self.network.is_unspecified
 
 
-class IPv4Network(_BaseV4, _BaseNetwork):
+klasse IPv4Network(_BaseV4, _BaseNetwork):
 
-    """This class represents and manipulates 32-bit IPv4 network + addresses..
+    """This klasse represents and manipulates 32-bit IPv4 network + addresses..
 
     Attributes: [examples for IPv4Network('192.0.2.0/27')]
         .network_address: IPv4Address('192.0.2.0')
@@ -1566,7 +1566,7 @@ class IPv4Network(_BaseV4, _BaseNetwork):
                 not self.is_private)
 
 
-class _IPv4Constants:
+klasse _IPv4Constants:
     _linklocal_network = IPv4Network('169.254.0.0/16')
 
     _loopback_network = IPv4Network('127.0.0.0/8')
@@ -1608,7 +1608,7 @@ IPv4Address._constants = _IPv4Constants
 IPv4Network._constants = _IPv4Constants
 
 
-class _BaseV6:
+klasse _BaseV6:
 
     """Base IPv6 object.
 
@@ -1911,7 +1911,7 @@ class _BaseV6:
             raise AddressValueError('Invalid IPv6 address: "%r"' % ip_str)
         return addr, scope_id
 
-class IPv6Address(_BaseV6, _BaseAddress):
+klasse IPv6Address(_BaseV6, _BaseAddress):
 
     """Represent and manipulate single IPv6 Addresses."""
 
@@ -2203,7 +2203,7 @@ class IPv6Address(_BaseV6, _BaseAddress):
         return IPv4Address((self._ip >> 80) & 0xFFFFFFFF)
 
 
-class IPv6Interface(IPv6Address):
+klasse IPv6Interface(IPv6Address):
 
     def __init__(self, address):
         addr, mask = self._split_addr_prefix(address)
@@ -2278,9 +2278,9 @@ class IPv6Interface(IPv6Address):
         return super().is_loopback and self.network.is_loopback
 
 
-class IPv6Network(_BaseV6, _BaseNetwork):
+klasse IPv6Network(_BaseV6, _BaseNetwork):
 
-    """This class represents and manipulates 128-bit IPv6 networks.
+    """This klasse represents and manipulates 128-bit IPv6 networks.
 
     Attributes: [examples for IPv6('2001:db8::1000/124')]
         .network_address: IPv6Address('2001:db8::1000')
@@ -2370,7 +2370,7 @@ class IPv6Network(_BaseV6, _BaseNetwork):
                 self.broadcast_address.is_site_local)
 
 
-class _IPv6Constants:
+klasse _IPv6Constants:
 
     _linklocal_network = IPv6Network('fe80::/10')
 

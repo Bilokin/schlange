@@ -136,8 +136,8 @@ def RLock():
         return _PyRLock()
     return _CRLock()
 
-class _RLock:
-    """This class implements reentrant lock objects.
+klasse _RLock:
+    """This klasse implements reentrant lock objects.
 
     A reentrant lock must be released by the thread that acquired it. Once a
     thread has acquired a reentrant lock, the same thread may acquire it
@@ -268,7 +268,7 @@ class _RLock:
 _PyRLock = _RLock
 
 
-class Condition:
+klasse Condition:
     """Class that implements a condition variable.
 
     A condition variable allows one or more threads to wait until they are
@@ -345,7 +345,7 @@ class Condition:
         When the underlying lock is an RLock, it is not released using its
         release() method, since this may not actually unlock the lock when it
         was acquired multiple times recursively. Instead, an internal interface
-        of the RLock class is used, which really unlocks it even when it has
+        of the RLock klasse is used, which really unlocks it even when it has
         been recursively acquired several times. Another internal interface is
         then used to restore the recursion level when the lock is reacquired.
 
@@ -449,8 +449,8 @@ class Condition:
         self.notify_all()
 
 
-class Semaphore:
-    """This class implements semaphore objects.
+klasse Semaphore:
+    """This klasse implements semaphore objects.
 
     Semaphores manage a counter representing the number of release() calls minus
     the number of acquire() calls, plus an initial value. The acquire() method
@@ -536,7 +536,7 @@ class Semaphore:
         self.release()
 
 
-class BoundedSemaphore(Semaphore):
+klasse BoundedSemaphore(Semaphore):
     """Implements a bounded semaphore.
 
     A bounded semaphore checks to make sure its current value doesn't exceed its
@@ -581,7 +581,7 @@ class BoundedSemaphore(Semaphore):
             self._cond.notify(n)
 
 
-class Event:
+klasse Event:
     """Class implementing event objects.
 
     Events manage a flag that can be set to true with the set() method and reset
@@ -590,7 +590,7 @@ class Event:
 
     """
 
-    # After Tim Peters' event class (without is_posted())
+    # After Tim Peters' event klasse (without is_posted())
 
     def __init__(self):
         self._cond = Condition(Lock())
@@ -664,7 +664,7 @@ class Event:
 
 
 # A barrier class.  Inspired in part by the pthread_barrier_* api and
-# the CyclicBarrier class from Java.  See
+# the CyclicBarrier klasse from Java.  See
 # http://sourceware.org/pthreads-win32/manual/pthread_barrier_init.html and
 # http://java.sun.com/j2se/1.5.0/docs/api/java/util/concurrent/
 #        CyclicBarrier.html
@@ -674,7 +674,7 @@ class Event:
 # since the previous cycle.  In addition, a 'resetting' state exists which is
 # similar to 'draining' except that threads leave with a BrokenBarrierError,
 # and a 'broken' state in which all threads get the exception.
-class Barrier:
+klasse Barrier:
     """Implements a Barrier.
 
     Useful for synchronizing a fixed number of threads at known synchronization
@@ -837,7 +837,7 @@ class Barrier:
         return self._state == -2
 
 # exception raised by the Barrier class
-class BrokenBarrierError(RuntimeError):
+klasse BrokenBarrierError(RuntimeError):
     pass
 
 
@@ -856,12 +856,12 @@ _limbo = {}
 _dangling = WeakSet()
 
 
-# Main class for threads
+# Main klasse for threads
 
-class Thread:
-    """A class that represents a thread of control.
+klasse Thread:
+    """A klasse that represents a thread of control.
 
-    This class can be safely subclassed in a limited fashion. There are two ways
+    This klasse can be safely subclassed in a limited fashion. There are two ways
     to specify the activity: by passing a callable object to the constructor, or
     by overriding the run() method in a subclass.
 
@@ -874,7 +874,7 @@ class Thread:
         """This constructor should always be called with keyword arguments. Arguments are:
 
         *group* should be None; reserved for future extension when a ThreadGroup
-        class is implemented.
+        klasse is implemented.
 
         *target* is the callable object to be invoked by the run()
         method. Defaults to None, meaning nothing is called.
@@ -896,7 +896,7 @@ class Thread:
         context, pass the value from contextvars.copy_context().
 
         If a subclass overrides the constructor, it must make sure to invoke
-        the base class constructor (Thread.__init__()) before doing anything
+        the base klasse constructor (Thread.__init__()) before doing anything
         else to the thread.
 
         """
@@ -1348,9 +1348,9 @@ def _make_invoke_excepthook():
     return invoke_excepthook
 
 
-# The timer class was contributed by Itamar Shtull-Trauring
+# The timer klasse was contributed by Itamar Shtull-Trauring
 
-class Timer(Thread):
+klasse Timer(Thread):
     """Call a function after a specified number of seconds:
 
             t = Timer(30.0, f, args=None, kwargs=None)
@@ -1378,9 +1378,9 @@ class Timer(Thread):
         self.finished.set()
 
 
-# Special thread class to represent the main thread
+# Special thread klasse to represent the main thread
 
-class _MainThread(Thread):
+klasse _MainThread(Thread):
 
     def __init__(self):
         Thread.__init__(self, name="MainThread", daemon=False)
@@ -1398,9 +1398,9 @@ class _MainThread(Thread):
 _thread_local_info = local()
 
 
-class _DeleteDummyThreadOnDel:
+klasse _DeleteDummyThreadOnDel:
     '''
-    Helper class to remove a dummy thread from threading._active on __del__.
+    Helper klasse to remove a dummy thread from threading._active on __del__.
     '''
 
     def __init__(self, dummy_thread):
@@ -1420,14 +1420,14 @@ class _DeleteDummyThreadOnDel:
                 _active.pop(self._tident, None)
 
 
-# Dummy thread class to represent threads not started here.
+# Dummy thread klasse to represent threads not started here.
 # These should be added to `_active` and removed automatically
 # when they die, although they can't be waited for.
 # Their purpose is to return *something* from current_thread().
 # They are marked as daemon threads so we won't wait for them
 # when we exit (conform previous semantics).
 
-class _DummyThread(Thread):
+klasse _DummyThread(Thread):
 
     def __init__(self):
         Thread.__init__(self, name=_newname("Dummy-%d"),

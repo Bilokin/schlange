@@ -95,7 +95,7 @@ handle_events_unix_console_height_3 = partial(
 @patch("termios.tcsetattr", lambda a, b, c: None)
 @patch("os.write")
 @force_not_colorized_test_class
-class TestConsole(TestCase):
+klasse TestConsole(TestCase):
     def test_simple_addition(self, _os_write):
         code = "12+34"
         events = code_to_events(code)

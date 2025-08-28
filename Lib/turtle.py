@@ -73,15 +73,15 @@ Roughly it has the following features added:
 - A scrollable Canvas class. The default scrollable Canvas can be
   extended interactively as needed while playing around with the turtle(s).
 
-- A TurtleScreen class with methods controlling background color or
+- A TurtleScreen klasse with methods controlling background color or
   background image, window and canvas size and other properties of the
   TurtleScreen.
 
 - There is a method, setworldcoordinates(), to install a user defined
   coordinate-system for the TurtleScreen.
 
-- The implementation uses a 2-vector class named Vec2D, derived from tuple.
-  This class is public, so it can be imported by the application programmer,
+- The implementation uses a 2-vector klasse named Vec2D, derived from tuple.
+  This klasse is public, so it can be imported by the application programmer,
   which makes certain types of computations very natural and compact.
 
 - Appearance of the TurtleScreen and the Turtles at startup/import can be
@@ -230,7 +230,7 @@ except Exception:
     print ("No configfile read, reason unknown")
 
 
-class Vec2D(tuple):
+klasse Vec2D(tuple):
     """A 2 dimensional vector class, used as a helper class
     for implementing turtle graphics.
     May be useful for turtle graphics programs also.
@@ -324,8 +324,8 @@ def __forwardmethods(fromClass, toClass, toPart, exclude = ()):
         setattr(fromClass, method, d[method])   ### NEWU!
 
 
-class ScrolledCanvas(TK.Frame):
-    """Modeled after the scrolled canvas class from Grayons's Tkinter book.
+klasse ScrolledCanvas(TK.Frame):
+    """Modeled after the scrolled canvas klasse from Grayons's Tkinter book.
 
     Used as the default canvas, which pops up automatically when
     using turtle graphics functions or the Turtle class.
@@ -426,8 +426,8 @@ class ScrolledCanvas(TK.Frame):
 __forwardmethods(ScrolledCanvas, TK.Canvas, '_canvas')
 
 
-class _Root(TK.Tk):
-    """Root class for Screen based on Tkinter."""
+klasse _Root(TK.Tk):
+    """Root klasse for Screen based on Tkinter."""
     def __init__(self):
         TK.Tk.__init__(self)
 
@@ -453,12 +453,12 @@ class _Root(TK.Tk):
 Canvas = TK.Canvas
 
 
-class TurtleScreenBase(object):
+klasse TurtleScreenBase(object):
     """Provide the basic graphics functionality.
        Interface between Tkinter and turtle.py.
 
        To port turtle.py to some different graphics toolkit
-       a corresponding TurtleScreenBase class has to be implemented.
+       a corresponding TurtleScreenBase klasse has to be implemented.
     """
 
     def _blankimage(self):
@@ -847,7 +847,7 @@ class TurtleScreenBase(object):
 ##############################################################################
 
 
-class Terminator (Exception):
+klasse Terminator (Exception):
     """Will be raised in TurtleScreen.update, if _RUNNING becomes False.
 
     This stops execution of a turtle graphics script.
@@ -856,12 +856,12 @@ class Terminator (Exception):
     pass
 
 
-class TurtleGraphicsError(Exception):
+klasse TurtleGraphicsError(Exception):
     """Some TurtleGraphics Error
     """
 
 
-class Shape(object):
+klasse Shape(object):
     """Data structure modeling shapes.
 
     attribute _type is one of "polygon", "image", "compound"
@@ -905,7 +905,7 @@ class Shape(object):
         self._data.append([poly, fill, outline])
 
 
-class Tbuffer(object):
+klasse Tbuffer(object):
     """Ring buffer used as undobuffer for RawTurtle objects."""
     def __init__(self, bufsize=10):
         self.bufsize = bufsize
@@ -943,7 +943,7 @@ class Tbuffer(object):
 
 
 
-class TurtleScreen(TurtleScreenBase):
+klasse TurtleScreen(TurtleScreenBase):
     """Provides screen oriented methods like bgcolor etc.
 
     Only relies upon the methods of TurtleScreenBase and NOT
@@ -1552,7 +1552,7 @@ class TurtleScreen(TurtleScreenBase):
     addshape = register_shape
     onkeyrelease = onkey
 
-class TNavigator(object):
+klasse TNavigator(object):
     """Navigation part of the RawTurtle.
     Implements methods for turtle movement.
     """
@@ -1659,7 +1659,7 @@ class TNavigator(object):
         self._position = end
 
     def teleport(self, x=None, y=None, *, fill_gap: bool = False) -> None:
-        """To be overwritten by child class RawTurtle.
+        """To be overwritten by child klasse RawTurtle.
         Includes no TPen references."""
         new_x = x if x is not None else self._position[0]
         new_y = y if y is not None else self._position[1]
@@ -2070,7 +2070,7 @@ class TNavigator(object):
     seth = setheading
 
 
-class TPen(object):
+klasse TPen(object):
     """Drawing part of the RawTurtle.
     Implements drawing properties.
     """
@@ -2345,7 +2345,7 @@ class TPen(object):
             return self._color(self._fillcolor)
 
     def teleport(self, x=None, y=None, *, fill_gap: bool = False) -> None:
-        """To be overwritten by child class RawTurtle.
+        """To be overwritten by child klasse RawTurtle.
         Includes no TNavigator references.
         """
         pendown = self.isdown()
@@ -2539,7 +2539,7 @@ class TPen(object):
     ht = hideturtle
 
 
-class _TurtleImage(object):
+klasse _TurtleImage(object):
     """Helper class: Datatype to store Turtle attributes
     """
 
@@ -2570,7 +2570,7 @@ class _TurtleImage(object):
                                           screen._shapes[shapeIndex]._data]
 
 
-class RawTurtle(TPen, TNavigator):
+klasse RawTurtle(TPen, TNavigator):
     """Animation part of the RawTurtle.
     Puts RawTurtle upon a TurtleScreen and provides tools for
     its animation.
@@ -3679,7 +3679,7 @@ class RawTurtle(TPen, TNavigator):
         btn --  number of the mouse-button defaults to 1 (left mouse button).
 
         Example (for a MyTurtle instance named joe):
-        >>> class MyTurtle(Turtle):
+        >>> klasse MyTurtle(Turtle):
         ...     def glow(self,x,y):
         ...             self.fillcolor("red")
         ...     def unglow(self,x,y):
@@ -3791,7 +3791,7 @@ def Screen():
         Turtle._screen = _Screen()
     return Turtle._screen
 
-class _Screen(TurtleScreen):
+klasse _Screen(TurtleScreen):
 
     _root = None
     _canvas = None
@@ -3919,7 +3919,7 @@ class _Screen(TurtleScreen):
         except AttributeError:
             exit(0)
 
-class Turtle(RawTurtle):
+klasse Turtle(RawTurtle):
     """RawTurtle auto-creating (scrolled) canvas.
 
     When a Turtle object is created or a function derived from some
@@ -4041,7 +4041,7 @@ def getmethparlist(ob):
     return str(func_sig), call_text
 
 def _turtle_docrevise(docstr):
-    """To reduce docstrings from RawTurtle class for functions
+    """To reduce docstrings from RawTurtle klasse for functions
     """
     import re
     if docstr is None:
@@ -4053,7 +4053,7 @@ def _turtle_docrevise(docstr):
     return newdocstr
 
 def _screen_docrevise(docstr):
-    """To reduce docstrings from TurtleScreen class for functions
+    """To reduce docstrings from TurtleScreen klasse for functions
     """
     import re
     if docstr is None:

@@ -64,7 +64,7 @@ def run_pty(script, input=b"dummy input\r", env=None):
 ## Fake stdin (for testing interactive debugging)
 ######################################################################
 
-class FakeInput:
+klasse FakeInput:
     """
     A fake input stream for pdb's interactive debugger.  Whenever a
     line is read, print it (to simulate the user typing it), and then

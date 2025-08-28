@@ -1,6 +1,6 @@
 import unittest
 
-class LongExpText(unittest.TestCase):
+klasse LongExpText(unittest.TestCase):
     def test_longexp(self):
         REPS = 65580
         l = eval("[" + "2," * REPS + "]")

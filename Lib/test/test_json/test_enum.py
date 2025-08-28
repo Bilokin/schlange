@@ -7,7 +7,7 @@ BIG = 1<<32
 HUGE = 1<<64
 REALLY_HUGE = 1<<96
 
-class BigNum(IntEnum):
+klasse BigNum(IntEnum):
     small = SMALL
     big = BIG
     huge = HUGE
@@ -17,7 +17,7 @@ E = 2.718281
 PI = 3.141593
 TAU = 2 * PI
 
-class FloatNum(float, Enum):
+klasse FloatNum(float, Enum):
     e = E
     pi = PI
     tau = TAU
@@ -26,12 +26,12 @@ INF = float('inf')
 NEG_INF = float('-inf')
 NAN = float('nan')
 
-class WierdNum(float, Enum):
+klasse WierdNum(float, Enum):
     inf = INF
     neg_inf = NEG_INF
     nan = NAN
 
-class TestEnum:
+klasse TestEnum:
 
     def test_floats(self):
         for enum in FloatNum:
@@ -116,5 +116,5 @@ class TestEnum:
         self.assertEqual(nd['j'], NEG_INF)
         self.assertTrue(isnan(nd['n']))
 
-class TestPyEnum(TestEnum, PyTest): pass
-class TestCEnum(TestEnum, CTest): pass
+klasse TestPyEnum(TestEnum, PyTest): pass
+klasse TestCEnum(TestEnum, CTest): pass

@@ -58,7 +58,7 @@ SHORT_MAX = 0x7fff
                  "$TERM=%r, calling initscr() may cause exit" % term)
 @unittest.skipIf(sys.platform == "cygwin",
                  "cygwin's curses mostly just hangs")
-class TestCurses(unittest.TestCase):
+klasse TestCurses(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -1069,7 +1069,7 @@ class TestCurses(unittest.TestCase):
     def test_userptr_segfault(self):
         w = curses.newwin(10, 10)
         panel = curses.panel.new_panel(w)
-        class A:
+        klasse A:
             def __del__(self):
                 panel.set_userptr(None)
         panel.set_userptr(A())
@@ -1220,7 +1220,7 @@ class TestCurses(unittest.TestCase):
         box._insert_printable_char('a')
 
 
-class MiscTests(unittest.TestCase):
+klasse MiscTests(unittest.TestCase):
 
     @requires_curses_func('update_lines_cols')
     def test_update_lines_cols(self):
@@ -1256,7 +1256,7 @@ class MiscTests(unittest.TestCase):
         self.assertIsInstance(r, bool)
 
 
-class TestAscii(unittest.TestCase):
+klasse TestAscii(unittest.TestCase):
 
     def test_controlnames(self):
         for name in curses.ascii.controlnames:
@@ -1361,7 +1361,7 @@ def lorem_ipsum(win):
         win.addstr(y, 0, line[:maxx - (y == maxy - 1)])
 
 
-class TextboxTest(unittest.TestCase):
+klasse TextboxTest(unittest.TestCase):
     def setUp(self):
         self.mock_win = MagicMock(spec=curses.window)
         self.mock_win.getyx.return_value = (1, 1)

@@ -80,7 +80,7 @@ def reindent(src, indent):
     return src.replace("\n", "\n" + " " * indent)
 
 
-class Timer:
+klasse Timer:
     """Class for timing execution speed of small code snippets.
 
     The constructor takes a statement to be timed, an additional
@@ -100,7 +100,7 @@ class Timer:
 
     def __init__(self, stmt="pass", setup="pass", timer=default_timer,
                  globals=None):
-        """Constructor.  See class doc string."""
+        """Constructor.  See klasse doc string."""
         self.timer = timer
         local_ns = {}
         global_ns = _globals() if globals is None else globals

@@ -18,7 +18,7 @@ from test.support import import_helper
 _ctypes_test = import_helper.import_module("_ctypes_test")
 
 
-class SimpleTypesTestCase(unittest.TestCase):
+klasse SimpleTypesTestCase(unittest.TestCase):
     def setUp(self):
         try:
             from _ctypes import set_conversion_mode
@@ -37,12 +37,12 @@ class SimpleTypesTestCase(unittest.TestCase):
 
     def test_subclasses(self):
         # ctypes 0.9.5 and before did overwrite from_param in SimpleType_new
-        class CVOIDP(c_void_p):
+        klasse CVOIDP(c_void_p):
             def from_param(cls, value):
                 return value * 2
             from_param = classmethod(from_param)
 
-        class CCHARP(c_char_p):
+        klasse CCHARP(c_char_p):
             def from_param(cls, value):
                 return value * 4
             from_param = classmethod(from_param)
@@ -51,7 +51,7 @@ class SimpleTypesTestCase(unittest.TestCase):
         self.assertEqual(CCHARP.from_param("abc"), "abcabcabcabc")
 
     def test_subclasses_c_wchar_p(self):
-        class CWCHARP(c_wchar_p):
+        klasse CWCHARP(c_wchar_p):
             def from_param(cls, value):
                 return value * 3
             from_param = classmethod(from_param)
@@ -131,7 +131,7 @@ class SimpleTypesTestCase(unittest.TestCase):
         self.assertRaises(TypeError, LPINT.from_param, pointer(c_short(42)))
 
     def test_byref_pointer(self):
-        # The from_param class method of POINTER(typ) classes accepts what is
+        # The from_param klasse method of POINTER(typ) classes accepts what is
         # returned by byref(obj), it type(obj) == typ
         LPINT = POINTER(c_int)
 
@@ -173,7 +173,7 @@ class SimpleTypesTestCase(unittest.TestCase):
         # TypeError: has no from_param method
         self.assertRaises(TypeError, setattr, func, "argtypes", (object,))
 
-        class Adapter:
+        klasse Adapter:
             def from_param(cls, obj):
                 return None
 
@@ -181,7 +181,7 @@ class SimpleTypesTestCase(unittest.TestCase):
         self.assertEqual(func(None), None)
         self.assertEqual(func(object()), None)
 
-        class Adapter:
+        klasse Adapter:
             def from_param(cls, obj):
                 return obj
 
@@ -190,7 +190,7 @@ class SimpleTypesTestCase(unittest.TestCase):
         self.assertRaises(ArgumentError, func, object())
         self.assertEqual(func(c_void_p(42)), 42)
 
-        class Adapter:
+        klasse Adapter:
             def from_param(cls, obj):
                 raise ValueError(obj)
 
@@ -211,14 +211,14 @@ class SimpleTypesTestCase(unittest.TestCase):
         # __setstate__ should neither raise a SystemError nor crash in case
         # of a bad __dict__.
 
-        class BadStruct(Structure):
+        klasse BadStruct(Structure):
             @property
             def __dict__(self):
                 pass
         with self.assertRaises(TypeError):
             BadStruct().__setstate__({}, b'foo')
 
-        class WorseStruct(Structure):
+        klasse WorseStruct(Structure):
             @property
             def __dict__(self):
                 1/0
@@ -251,7 +251,7 @@ class SimpleTypesTestCase(unittest.TestCase):
     @test.support.cpython_only
     def test_from_param_result_refcount(self):
         # Issue #99952
-        class X(Structure):
+        klasse X(Structure):
             """This struct size is <= sizeof(void*)."""
             _fields_ = [("a", c_void_p)]
 
@@ -274,7 +274,7 @@ class SimpleTypesTestCase(unittest.TestCase):
 
         self.assertEqual(trace, [1, 2, 3, 4, 5])
 
-        class Y(Structure):
+        klasse Y(Structure):
             """This struct size is > sizeof(void*)."""
             _fields_ = [("a", c_void_p), ("b", c_void_p)]
 

@@ -16,7 +16,7 @@ __all__ = ['Popen']
 # Wrapper for an fd used while launching a process
 #
 
-class _DupFd(object):
+klasse _DupFd(object):
     def __init__(self, ind):
         self.ind = ind
     def detach(self):
@@ -26,7 +26,7 @@ class _DupFd(object):
 # Start child process using a server process
 #
 
-class Popen(popen_fork.Popen):
+klasse Popen(popen_fork.Popen):
     method = 'forkserver'
     DupFd = _DupFd
 

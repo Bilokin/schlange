@@ -10,7 +10,7 @@ from typing import Protocol
 # from jaraco.path 3.7.1
 
 
-class Symlink(str):
+klasse Symlink(str):
     """
     A string indicating the target of a symlink.
     """
@@ -20,7 +20,7 @@ FilesSpec = Dict[str, Union[str, bytes, Symlink, 'FilesSpec']]
 
 
 @runtime_checkable
-class TreeMaker(Protocol):
+klasse TreeMaker(Protocol):
     def __truediv__(self, *args, **kwargs): ...  # pragma: no cover
 
     def mkdir(self, **kwargs): ...  # pragma: no cover

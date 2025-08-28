@@ -237,7 +237,7 @@ def call(obj, /, *args, **kwargs):
 
 # Generalized Lookup Objects **************************************************#
 
-class attrgetter:
+klasse attrgetter:
     """
     Return a callable object that fetches the given attribute(s) from its operand.
     After f = attrgetter('name'), the call f(r) returns r.name.
@@ -276,7 +276,7 @@ class attrgetter:
     def __reduce__(self):
         return self.__class__, self._attrs
 
-class itemgetter:
+klasse itemgetter:
     """
     Return a callable object that fetches the given item(s) from its operand.
     After f = itemgetter(2), the call f(r) returns r[2].
@@ -307,7 +307,7 @@ class itemgetter:
     def __reduce__(self):
         return self.__class__, self._items
 
-class methodcaller:
+klasse methodcaller:
     """
     Return a callable object that calls the given method on its operand.
     After f = methodcaller('name'), the call f(r) returns r.name().

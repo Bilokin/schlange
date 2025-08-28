@@ -15,7 +15,7 @@ from idlelib import browser
 from idlelib.tree import TreeNode
 
 
-class PathBrowserTest(unittest.TestCase):
+klasse PathBrowserTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -59,7 +59,7 @@ class PathBrowserTest(unittest.TestCase):
         del pb.top.destroy, pb.node.destroy
 
 
-class DirBrowserTreeItemTest(unittest.TestCase):
+klasse DirBrowserTreeItemTest(unittest.TestCase):
 
     def test_DirBrowserTreeItem(self):
         # Issue16226 - make sure that getting a sublist works
@@ -72,7 +72,7 @@ class DirBrowserTreeItemTest(unittest.TestCase):
         self.assertEqual(d.ispackagedir(dir + '/Icons'), False)
 
 
-class PathBrowserTreeItemTest(unittest.TestCase):
+klasse PathBrowserTreeItemTest(unittest.TestCase):
 
     def test_PathBrowserTreeItem(self):
         p = pathbrowser.PathBrowserTreeItem()

@@ -76,7 +76,7 @@ try:
 
     _warnings_defaults = True
 
-    class _Lock:
+    klasse _Lock:
         def __enter__(self):
             _acquire_lock()
             return self

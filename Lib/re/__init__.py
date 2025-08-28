@@ -141,7 +141,7 @@ __version__ = "2.2.1"
 
 @enum.global_enum
 @enum._simple_enum(enum.IntFlag, boundary=enum.KEEP)
-class RegexFlag:
+klasse RegexFlag:
     NOFLAG = 0
     ASCII = A = _compiler.SRE_FLAG_ASCII # assume ascii "locale"
     IGNORECASE = I = _compiler.SRE_FLAG_IGNORECASE # ignore case
@@ -176,7 +176,7 @@ def search(pattern, string, flags=0):
     a Match object, or None if no match was found."""
     return _compile(pattern, flags).search(string)
 
-class _ZeroSentinel(int):
+klasse _ZeroSentinel(int):
     pass
 _zero_sentinel = _ZeroSentinel()
 
@@ -388,7 +388,7 @@ copyreg.pickle(Pattern, _pickle, _compile)
 # --------------------------------------------------------------------
 # experimental stuff (see python-dev discussions for details)
 
-class Scanner:
+klasse Scanner:
     def __init__(self, lexicon, flags=0):
         from ._constants import BRANCH, SUBPATTERN
         if isinstance(flags, RegexFlag):

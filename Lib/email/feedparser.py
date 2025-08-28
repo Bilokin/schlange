@@ -43,7 +43,7 @@ boundaryendRE = re.compile(
 NeedMoreData = object()
 
 
-class BufferedSubFile(object):
+klasse BufferedSubFile(object):
     """A file-ish object that can have new data loaded into it.
 
     You can also push and pop line-matching predicates onto a stack.  When the
@@ -133,7 +133,7 @@ class BufferedSubFile(object):
         return line
 
 
-class FeedParser:
+klasse FeedParser:
     """A feed-style parser of email."""
 
     def __init__(self, _factory=None, *, policy=compat32):
@@ -530,7 +530,7 @@ class FeedParser:
             self._cur.set_raw(*self.policy.header_source_parse(lastvalue))
 
 
-class BytesFeedParser(FeedParser):
+klasse BytesFeedParser(FeedParser):
     """Like FeedParser, but feed accepts bytes."""
 
     def feed(self, data):

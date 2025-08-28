@@ -39,10 +39,10 @@ L = [
         ("\u0200", ValueError)
 ]
 
-class IntSubclass(int):
+klasse IntSubclass(int):
     pass
 
-class IntTestCases(unittest.TestCase):
+klasse IntTestCases(unittest.TestCase):
 
     def test_basic(self):
         self.assertEqual(int(314), 314)
@@ -313,7 +313,7 @@ class IntTestCases(unittest.TestCase):
             int('0', 5.0)
 
     def test_int_base_indexable(self):
-        class MyIndexable(object):
+        klasse MyIndexable(object):
             def __init__(self, value):
                 self.value = value
             def __index__(self):
@@ -332,9 +332,9 @@ class IntTestCases(unittest.TestCase):
     def test_non_numeric_input_types(self):
         # Test possible non-numeric types for the argument x, including
         # subclasses of the explicitly documented accepted types.
-        class CustomStr(str): pass
-        class CustomBytes(bytes): pass
-        class CustomByteArray(bytearray): pass
+        klasse CustomStr(str): pass
+        klasse CustomBytes(bytes): pass
+        klasse CustomByteArray(bytearray): pass
 
         factories = [
             bytes,
@@ -376,42 +376,42 @@ class IntTestCases(unittest.TestCase):
 
     def test_intconversion(self):
         # Test __int__()
-        class ClassicMissingMethods:
+        klasse ClassicMissingMethods:
             pass
         self.assertRaises(TypeError, int, ClassicMissingMethods())
 
-        class MissingMethods(object):
+        klasse MissingMethods(object):
             pass
         self.assertRaises(TypeError, int, MissingMethods())
 
-        class Foo0:
+        klasse Foo0:
             def __int__(self):
                 return 42
 
         self.assertEqual(int(Foo0()), 42)
 
-        class Classic:
+        klasse Classic:
             pass
         for base in (object, Classic):
-            class IntOverridesTrunc(base):
+            klasse IntOverridesTrunc(base):
                 def __int__(self):
                     return 42
                 def __trunc__(self):
                     return -12
             self.assertEqual(int(IntOverridesTrunc()), 42)
 
-            class JustTrunc(base):
+            klasse JustTrunc(base):
                 def __trunc__(self):
                     return 42
             with self.assertRaises(TypeError):
                 int(JustTrunc())
 
     def test_int_subclass_with_index(self):
-        class MyIndex(int):
+        klasse MyIndex(int):
             def __index__(self):
                 return 42
 
-        class BadIndex(int):
+        klasse BadIndex(int):
             def __index__(self):
                 return 42.0
 
@@ -422,11 +422,11 @@ class IntTestCases(unittest.TestCase):
         self.assertEqual(int(BadIndex()), 0)
 
     def test_int_subclass_with_int(self):
-        class MyInt(int):
+        klasse MyInt(int):
             def __int__(self):
                 return 42
 
-        class BadInt(int):
+        klasse BadInt(int):
             def __int__(self):
                 return 42.0
 
@@ -439,19 +439,19 @@ class IntTestCases(unittest.TestCase):
         self.assertRaises(TypeError, int, my_int)
 
     def test_int_returns_int_subclass(self):
-        class BadIndex:
+        klasse BadIndex:
             def __index__(self):
                 return True
 
-        class BadIndex2(int):
+        klasse BadIndex2(int):
             def __index__(self):
                 return True
 
-        class BadInt:
+        klasse BadInt:
             def __int__(self):
                 return True
 
-        class BadInt2(int):
+        klasse BadInt2(int):
             def __int__(self):
                 return True
 
@@ -526,7 +526,7 @@ class IntTestCases(unittest.TestCase):
             self.assertEqual(val, 1)
             self.assertIs(type(val), int)
 
-class IntStrDigitLimitsTests(unittest.TestCase):
+klasse IntStrDigitLimitsTests(unittest.TestCase):
 
     int_class = int  # Override this in subclasses to reuse the suite.
 
@@ -733,11 +733,11 @@ class IntStrDigitLimitsTests(unittest.TestCase):
             self.assertEqual(before_value, after_value)
 
 
-class IntSubclassStrDigitLimitsTests(IntStrDigitLimitsTests):
+klasse IntSubclassStrDigitLimitsTests(IntStrDigitLimitsTests):
     int_class = IntSubclass
 
 
-class PyLongModuleTests(unittest.TestCase):
+klasse PyLongModuleTests(unittest.TestCase):
     # Tests of the functions in _pylong.py.  Those get used when the
     # number of digits in the input values are large enough.
 
@@ -878,7 +878,7 @@ class PyLongModuleTests(unittest.TestCase):
         # I don't think anyone has enough RAM to build a string long enough
         # for this function to complain. So lie about the string length.
 
-        class LyingStr(str):
+        klasse LyingStr(str):
             def __len__(self):
                 return int((1 << 47) / _pylong._LOG_10_BASE_256)
 

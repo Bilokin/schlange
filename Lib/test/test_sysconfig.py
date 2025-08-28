@@ -37,7 +37,7 @@ import _osx_support
 HAS_USER_BASE = sysconfig._HAS_USER_BASE
 
 
-class TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
+klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
 
     def setUp(self):
         super(TestSysConfig, self).setUp()
@@ -738,7 +738,7 @@ class TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
         self.assertEqual(config_vars['platbase'], sys.exec_prefix)
 
 
-class MakefileTests(unittest.TestCase):
+klasse MakefileTests(unittest.TestCase):
 
     @unittest.skipIf(sys.platform.startswith('win'),
                      'Test is not Windows compatible')
@@ -770,7 +770,7 @@ class MakefileTests(unittest.TestCase):
         })
 
 
-class DeprecationTests(unittest.TestCase):
+klasse DeprecationTests(unittest.TestCase):
     def deprecated(self, removal_version, deprecation_msg=None, error=Exception, error_msg=None):
         if sys.version_info >= removal_version:
             return self.assertRaises(error, msg=error_msg)

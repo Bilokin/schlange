@@ -16,7 +16,7 @@ import unittest
 from ctypes import Structure, POINTER, c_char_p, c_int
 
 
-class ObjectsTestCase(unittest.TestCase):
+klasse ObjectsTestCase(unittest.TestCase):
     def assertSame(self, a, b):
         self.assertEqual(id(a), id(b))
 
@@ -35,7 +35,7 @@ class ObjectsTestCase(unittest.TestCase):
         self.assertSame(cs._objects, s)
 
     def test_simple_struct(self):
-        class X(Structure):
+        klasse X(Structure):
             _fields_ = [("a", c_int), ("b", c_int)]
 
         a = 421234
@@ -47,10 +47,10 @@ class ObjectsTestCase(unittest.TestCase):
         self.assertEqual(x._objects, None)
 
     def test_embedded_structs(self):
-        class X(Structure):
+        klasse X(Structure):
             _fields_ = [("a", c_int), ("b", c_int)]
 
-        class Y(Structure):
+        klasse Y(Structure):
             _fields_ = [("x", X), ("y", X)]
 
         y = Y()
@@ -63,10 +63,10 @@ class ObjectsTestCase(unittest.TestCase):
         self.assertEqual(y._objects, {"0": {}, "1": {}})
 
     def test_xxx(self):
-        class X(Structure):
+        klasse X(Structure):
             _fields_ = [("a", c_char_p), ("b", c_char_p)]
 
-        class Y(Structure):
+        klasse Y(Structure):
             _fields_ = [("x", X), ("y", X)]
 
         s1 = b"Hello, World"
@@ -82,7 +82,7 @@ class ObjectsTestCase(unittest.TestCase):
         self.assertEqual(y._objects, {"0": {"0": s1, "1": s2}})
 
     def test_ptr_struct(self):
-        class X(Structure):
+        klasse X(Structure):
             _fields_ = [("data", POINTER(c_int))]
 
         A = c_int*4

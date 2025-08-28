@@ -18,7 +18,7 @@ from .util import (
     create_executor_tests, setup_module)
 
 
-class EventfulGCObj():
+klasse EventfulGCObj():
     def __init__(self, mgr):
         self.event = mgr.Event()
 
@@ -41,7 +41,7 @@ def _put_wait_put(queue, event):
     queue.put('finished')
 
 
-class ProcessPoolExecutorTest(ExecutorTest):
+klasse ProcessPoolExecutorTest(ExecutorTest):
 
     @unittest.skipUnless(sys.platform=='win32', 'Windows-only process limit')
     def test_max_workers_too_large(self):
@@ -171,7 +171,7 @@ class ProcessPoolExecutorTest(ExecutorTest):
                 self.executor_type(1, mp_context=context, max_tasks_per_child=3)
             return
         # not using self.executor as we need to control construction.
-        # arguably this could go in another class w/o that mixin.
+        # arguably this could go in another klasse w/o that mixin.
         executor = self.executor_type(
                 1, mp_context=context, max_tasks_per_child=3)
         f1 = executor.submit(os.getpid)
@@ -194,7 +194,7 @@ class ProcessPoolExecutorTest(ExecutorTest):
 
     def test_max_tasks_per_child_defaults_to_spawn_context(self):
         # not using self.executor as we need to control construction.
-        # arguably this could go in another class w/o that mixin.
+        # arguably this could go in another klasse w/o that mixin.
         executor = self.executor_type(1, max_tasks_per_child=3)
         self.assertEqual(executor._mp_context.get_start_method(), "spawn")
 
@@ -203,7 +203,7 @@ class ProcessPoolExecutorTest(ExecutorTest):
         if context.get_start_method(allow_none=False) == "fork":
             raise unittest.SkipTest("Incompatible with the fork start method.")
         # not using self.executor as we need to control construction.
-        # arguably this could go in another class w/o that mixin.
+        # arguably this could go in another klasse w/o that mixin.
         executor = self.executor_type(
                 3, mp_context=context, max_tasks_per_child=1)
         futures = []

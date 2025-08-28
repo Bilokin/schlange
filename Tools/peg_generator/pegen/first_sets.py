@@ -32,7 +32,7 @@ argparser = argparse.ArgumentParser(
 argparser.add_argument("grammar_file", help="The grammar file")
 
 
-class FirstSetCalculator(GrammarVisitor):
+klasse FirstSetCalculator(GrammarVisitor):
     def __init__(self, rules: Dict[str, Rule]) -> None:
         self.rules = rules
         self.nullables = compute_nullables(rules)

@@ -12,7 +12,7 @@ first parameter of X must be 'parent' or 'master'.  When called, the
 first argument will be the root window.  X must create a child
 Toplevel(parent/master) (or subclass thereof).  The Toplevel may be a
 test widget or dialog, in which case the callable is the corresponding
-class.  Or the Toplevel may contain the widget to be tested or set up a
+klasse.  Or the Toplevel may contain the widget to be tested or set up a
 context in which a test widget is invoked.  In this latter case, the
 callable is a wrapper function that sets up the Toplevel and other
 objects.  Wrapper function names, such as _editor_window', should start

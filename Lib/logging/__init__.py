@@ -283,7 +283,7 @@ else:
 #   The logging record
 #---------------------------------------------------------------------------
 
-class LogRecord(object):
+klasse LogRecord(object):
     """
     A LogRecord instance represents an event being logged.
 
@@ -401,7 +401,7 @@ class LogRecord(object):
         return msg
 
 #
-#   Determine which class to use when instantiating log records.
+#   Determine which klasse to use when instantiating log records.
 #
 _logRecordFactory = LogRecord
 
@@ -441,7 +441,7 @@ _str_formatter = StrFormatter()
 del StrFormatter
 
 
-class PercentStyle(object):
+klasse PercentStyle(object):
 
     default_format = '%(message)s'
     asctime_format = '%(asctime)s'
@@ -474,7 +474,7 @@ class PercentStyle(object):
             raise ValueError('Formatting field not found in record: %s' % e)
 
 
-class StrFormatStyle(PercentStyle):
+klasse StrFormatStyle(PercentStyle):
     default_format = '{message}'
     asctime_format = '{asctime}'
     asctime_search = '{asctime'
@@ -508,7 +508,7 @@ class StrFormatStyle(PercentStyle):
             raise ValueError('invalid format: no fields')
 
 
-class StringTemplateStyle(PercentStyle):
+klasse StringTemplateStyle(PercentStyle):
     default_format = '${message}'
     asctime_format = '${asctime}'
     asctime_search = '${asctime}'
@@ -551,7 +551,7 @@ _STYLES = {
     '$': (StringTemplateStyle, '${levelname}:${name}:${message}'),
 }
 
-class Formatter(object):
+klasse Formatter(object):
     """
     Formatter instances are used to convert a LogRecord to text.
 
@@ -733,7 +733,7 @@ class Formatter(object):
 #
 _defaultFormatter = Formatter()
 
-class BufferingFormatter(object):
+klasse BufferingFormatter(object):
     """
     A formatter suitable for formatting a number of records.
     """
@@ -775,12 +775,12 @@ class BufferingFormatter(object):
 #   Filter classes and functions
 #---------------------------------------------------------------------------
 
-class Filter(object):
+klasse Filter(object):
     """
     Filter instances are used to perform arbitrary filtering of LogRecords.
 
     Loggers and Handlers can optionally use Filter instances to filter
-    records as desired. The base filter class only allows events which are
+    records as desired. The base filter klasse only allows events which are
     below a certain point in the logger hierarchy. For example, a filter
     initialized with "A.B" will allow events logged by loggers "A.B",
     "A.B.C", "A.B.C.D", "A.B.D" etc. but not "A.BB", "B.A.B" etc. If
@@ -812,9 +812,9 @@ class Filter(object):
             return False
         return (record.name[self.nlen] == ".")
 
-class Filterer(object):
+klasse Filterer(object):
     """
-    A base class for loggers and handlers which allows them to share
+    A base klasse for loggers and handlers which allows them to share
     common code.
     """
     def __init__(self):
@@ -919,7 +919,7 @@ def getHandlerNames():
     return frozenset(_handlers)
 
 
-class Handler(Filterer):
+klasse Handler(Filterer):
     """
     Handler instances dispatch logging events to specific destinations.
 
@@ -1108,10 +1108,10 @@ class Handler(Filterer):
         level = getLevelName(self.level)
         return '<%s (%s)>' % (self.__class__.__name__, level)
 
-class StreamHandler(Handler):
+klasse StreamHandler(Handler):
     """
-    A handler class which writes logging records, appropriately formatted,
-    to a stream. Note that this class does not close the stream, as
+    A handler klasse which writes logging records, appropriately formatted,
+    to a stream. Note that this klasse does not close the stream, as
     sys.stdout or sys.stderr may be used.
     """
 
@@ -1187,9 +1187,9 @@ class StreamHandler(Handler):
     __class_getitem__ = classmethod(GenericAlias)
 
 
-class FileHandler(StreamHandler):
+klasse FileHandler(StreamHandler):
     """
-    A handler class which writes formatted logging records to disk files.
+    A handler klasse which writes formatted logging records to disk files.
     """
     def __init__(self, filename, mode='a', encoding=None, delay=False, errors=None):
         """
@@ -1269,9 +1269,9 @@ class FileHandler(StreamHandler):
         return '<%s %s (%s)>' % (self.__class__.__name__, self.baseFilename, level)
 
 
-class _StderrHandler(StreamHandler):
+klasse _StderrHandler(StreamHandler):
     """
-    This class is like a StreamHandler using sys.stderr, but always uses
+    This klasse is like a StreamHandler using sys.stderr, but always uses
     whatever sys.stderr is currently set to rather than the value of
     sys.stderr at handler construction time.
     """
@@ -1293,10 +1293,10 @@ lastResort = _defaultLastResort
 #   Manager classes and functions
 #---------------------------------------------------------------------------
 
-class PlaceHolder(object):
+klasse PlaceHolder(object):
     """
     PlaceHolder instances are used in the Manager logger hierarchy to take
-    the place of nodes for which no loggers have been defined. This class is
+    the place of nodes for which no loggers have been defined. This klasse is
     intended for internal use only and not as part of the public API.
     """
     def __init__(self, alogger):
@@ -1313,12 +1313,12 @@ class PlaceHolder(object):
             self.loggerMap[alogger] = None
 
 #
-#   Determine which class to use when instantiating loggers.
+#   Determine which klasse to use when instantiating loggers.
 #
 
 def setLoggerClass(klass):
     """
-    Set the class to be used when instantiating a logger. The class should
+    Set the klasse to be used when instantiating a logger. The klasse should
     define __init__() such that only a name argument is required, and the
     __init__() should call Logger.__init__()
     """
@@ -1331,11 +1331,11 @@ def setLoggerClass(klass):
 
 def getLoggerClass():
     """
-    Return the class to be used when instantiating a logger.
+    Return the klasse to be used when instantiating a logger.
     """
     return _loggerClass
 
-class Manager(object):
+klasse Manager(object):
     """
     There is [under normal circumstances] just one Manager instance, which
     holds the hierarchy of loggers.
@@ -1392,7 +1392,7 @@ class Manager(object):
 
     def setLoggerClass(self, klass):
         """
-        Set the class to be used when instantiating a logger with this Manager.
+        Set the klasse to be used when instantiating a logger with this Manager.
         """
         if klass != Logger:
             if not issubclass(klass, Logger):
@@ -1460,9 +1460,9 @@ class Manager(object):
 #   Logger classes and functions
 #---------------------------------------------------------------------------
 
-class Logger(Filterer):
+klasse Logger(Filterer):
     """
-    Instances of the Logger class represent a single logging channel. A
+    Instances of the Logger klasse represent a single logging channel. A
     "logging channel" indicates an area of an application. Exactly how an
     "area" is defined is up to the application developer. Since an
     application can have any number of areas, logging channels are identified
@@ -1827,7 +1827,7 @@ class Logger(Filterer):
         return getLogger, (self.name,)
 
 
-class RootLogger(Logger):
+klasse RootLogger(Logger):
     """
     A root logger is not that different to any other logger, except that
     it must have a logging level and there is only one instance of it in
@@ -1844,7 +1844,7 @@ class RootLogger(Logger):
 
 _loggerClass = Logger
 
-class LoggerAdapter(object):
+klasse LoggerAdapter(object):
     """
     An adapter for loggers which makes it easier to specify contextual
     information in logging output.
@@ -2280,7 +2280,7 @@ atexit.register(shutdown)
 
 # Null handler
 
-class NullHandler(Handler):
+klasse NullHandler(Handler):
     """
     This handler does nothing. It's intended to be used to avoid the
     "No handlers could be found for logger XXX" one-off warning. This is

@@ -14,7 +14,7 @@ SMALL_SAMPLE = b"""<?xml version="1.0"?>
 </html>"""
 
 
-class XMLBuilderTest(unittest.TestCase):
+klasse XMLBuilderTest(unittest.TestCase):
     def test_entity_resolver(self):
         body = (
             b"HTTP/1.1 200 OK\r\nContent-Type: text/xml; charset=utf-8\r\n\r\n"

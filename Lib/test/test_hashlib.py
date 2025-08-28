@@ -99,7 +99,7 @@ DEPRECATED_STRING_PARAMETER = re.escape(
 )
 
 
-class HashLibTestCase(unittest.TestCase):
+klasse HashLibTestCase(unittest.TestCase):
     supported_hash_names = ( 'md5', 'MD5', 'sha1', 'SHA1',
                              'sha224', 'SHA224', 'sha256', 'SHA256',
                              'sha384', 'SHA384', 'sha512', 'SHA512',
@@ -1172,7 +1172,7 @@ class HashLibTestCase(unittest.TestCase):
                         hash_type.value = False
 
 
-class KDFTests(unittest.TestCase):
+klasse KDFTests(unittest.TestCase):
 
     pbkdf2_test_vectors = [
         (b'password', b'salt', 1, None),
@@ -1307,7 +1307,7 @@ class KDFTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             hashlib.file_digest(None, "sha256")
 
-        class NonBlocking:
+        klasse NonBlocking:
             def readinto(self, buf):
                 return None
             def readable(self):
@@ -1319,7 +1319,7 @@ class KDFTests(unittest.TestCase):
 
 @unittest.skipUnless(hasattr(hashlib, 'scrypt'), 'requires OpenSSL 1.1+')
 @unittest.skipIf(get_fips_mode(), reason="scrypt is blocked in FIPS mode")
-class TestScrypt(unittest.TestCase):
+klasse TestScrypt(unittest.TestCase):
 
     scrypt_test_vectors = [
         (b'', b'', 16, 1, 1, unhexlify('77d6576238657b203b19ca42c18a0497f16b4844e3074ae8dfdffa3fede21442fcd0069ded0948f8326a753a0fc81f17e8d3e0fb2e0d3628cf35e20c38d18906')),

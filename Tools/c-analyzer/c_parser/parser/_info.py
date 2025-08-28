@@ -3,7 +3,7 @@
 from ..info import KIND, ParsedItem, FileInfo
 
 
-class TextInfo:
+klasse TextInfo:
 
     def __init__(self, text, start=None, end=None):
         # immutable:
@@ -42,7 +42,7 @@ class TextInfo:
         self.end = lno
 
 
-class SourceInfo:
+klasse SourceInfo:
 
     _ready = False
 

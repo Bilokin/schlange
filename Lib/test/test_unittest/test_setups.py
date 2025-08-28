@@ -8,7 +8,7 @@ def resultFactory(*_):
     return unittest.TestResult()
 
 
-class TestSetups(unittest.TestCase):
+klasse TestSetups(unittest.TestCase):
 
     def getRunner(self):
         return unittest.TextTestRunner(resultclass=resultFactory,
@@ -30,7 +30,7 @@ class TestSetups(unittest.TestCase):
         return runner.run(realSuite)
 
     def test_setup_class(self):
-        class Test(unittest.TestCase):
+        klasse Test(unittest.TestCase):
             setUpCalled = 0
             @classmethod
             def setUpClass(cls):
@@ -48,7 +48,7 @@ class TestSetups(unittest.TestCase):
         self.assertEqual(len(result.errors), 0)
 
     def test_teardown_class(self):
-        class Test(unittest.TestCase):
+        klasse Test(unittest.TestCase):
             tearDownCalled = 0
             @classmethod
             def tearDownClass(cls):
@@ -66,7 +66,7 @@ class TestSetups(unittest.TestCase):
         self.assertEqual(len(result.errors), 0)
 
     def test_teardown_class_two_classes(self):
-        class Test(unittest.TestCase):
+        klasse Test(unittest.TestCase):
             tearDownCalled = 0
             @classmethod
             def tearDownClass(cls):
@@ -77,7 +77,7 @@ class TestSetups(unittest.TestCase):
             def test_two(self):
                 pass
 
-        class Test2(unittest.TestCase):
+        klasse Test2(unittest.TestCase):
             tearDownCalled = 0
             @classmethod
             def tearDownClass(cls):
@@ -96,7 +96,7 @@ class TestSetups(unittest.TestCase):
         self.assertEqual(len(result.errors), 0)
 
     def test_error_in_setupclass(self):
-        class BrokenTest(unittest.TestCase):
+        klasse BrokenTest(unittest.TestCase):
             @classmethod
             def setUpClass(cls):
                 raise TypeError('foo')
@@ -114,7 +114,7 @@ class TestSetups(unittest.TestCase):
                     'setUpClass (%s.%s)' % (__name__, BrokenTest.__qualname__))
 
     def test_error_in_teardown_class(self):
-        class Test(unittest.TestCase):
+        klasse Test(unittest.TestCase):
             tornDown = 0
             @classmethod
             def tearDownClass(cls):
@@ -125,7 +125,7 @@ class TestSetups(unittest.TestCase):
             def test_two(self):
                 pass
 
-        class Test2(unittest.TestCase):
+        klasse Test2(unittest.TestCase):
             tornDown = 0
             @classmethod
             def tearDownClass(cls):
@@ -147,7 +147,7 @@ class TestSetups(unittest.TestCase):
                     'tearDownClass (%s.%s)' % (__name__, Test.__qualname__))
 
     def test_class_not_torndown_when_setup_fails(self):
-        class Test(unittest.TestCase):
+        klasse Test(unittest.TestCase):
             tornDown = False
             @classmethod
             def setUpClass(cls):
@@ -163,7 +163,7 @@ class TestSetups(unittest.TestCase):
         self.assertFalse(Test.tornDown)
 
     def test_class_not_setup_or_torndown_when_skipped(self):
-        class Test(unittest.TestCase):
+        klasse Test(unittest.TestCase):
             classSetUp = False
             tornDown = False
             @classmethod
@@ -183,7 +183,7 @@ class TestSetups(unittest.TestCase):
     def test_setup_teardown_order_with_pathological_suite(self):
         results = []
 
-        class Module1(object):
+        klasse Module1(object):
             @staticmethod
             def setUpModule():
                 results.append('Module1.setUpModule')
@@ -191,7 +191,7 @@ class TestSetups(unittest.TestCase):
             def tearDownModule():
                 results.append('Module1.tearDownModule')
 
-        class Module2(object):
+        klasse Module2(object):
             @staticmethod
             def setUpModule():
                 results.append('Module2.setUpModule')
@@ -199,7 +199,7 @@ class TestSetups(unittest.TestCase):
             def tearDownModule():
                 results.append('Module2.tearDownModule')
 
-        class Test1(unittest.TestCase):
+        klasse Test1(unittest.TestCase):
             @classmethod
             def setUpClass(cls):
                 results.append('setup 1')
@@ -211,7 +211,7 @@ class TestSetups(unittest.TestCase):
             def testTwo(self):
                 results.append('Test1.testTwo')
 
-        class Test2(unittest.TestCase):
+        klasse Test2(unittest.TestCase):
             @classmethod
             def setUpClass(cls):
                 results.append('setup 2')
@@ -223,7 +223,7 @@ class TestSetups(unittest.TestCase):
             def testTwo(self):
                 results.append('Test2.testTwo')
 
-        class Test3(unittest.TestCase):
+        klasse Test3(unittest.TestCase):
             @classmethod
             def setUpClass(cls):
                 results.append('setup 3')
@@ -263,13 +263,13 @@ class TestSetups(unittest.TestCase):
                           'teardown 3', 'Module2.tearDownModule'])
 
     def test_setup_module(self):
-        class Module(object):
+        klasse Module(object):
             moduleSetup = 0
             @staticmethod
             def setUpModule():
                 Module.moduleSetup += 1
 
-        class Test(unittest.TestCase):
+        klasse Test(unittest.TestCase):
             def test_one(self):
                 pass
             def test_two(self):
@@ -283,7 +283,7 @@ class TestSetups(unittest.TestCase):
         self.assertEqual(len(result.errors), 0)
 
     def test_error_in_setup_module(self):
-        class Module(object):
+        klasse Module(object):
             moduleSetup = 0
             moduleTornDown = 0
             @staticmethod
@@ -294,7 +294,7 @@ class TestSetups(unittest.TestCase):
             def tearDownModule():
                 Module.moduleTornDown += 1
 
-        class Test(unittest.TestCase):
+        klasse Test(unittest.TestCase):
             classSetUp = False
             classTornDown = False
             @classmethod
@@ -308,7 +308,7 @@ class TestSetups(unittest.TestCase):
             def test_two(self):
                 pass
 
-        class Test2(unittest.TestCase):
+        klasse Test2(unittest.TestCase):
             def test_one(self):
                 pass
             def test_two(self):
@@ -328,7 +328,7 @@ class TestSetups(unittest.TestCase):
         self.assertEqual(str(error), 'setUpModule (Module)')
 
     def test_testcase_with_missing_module(self):
-        class Test(unittest.TestCase):
+        klasse Test(unittest.TestCase):
             def test_one(self):
                 pass
             def test_two(self):
@@ -340,13 +340,13 @@ class TestSetups(unittest.TestCase):
         self.assertEqual(result.testsRun, 2)
 
     def test_teardown_module(self):
-        class Module(object):
+        klasse Module(object):
             moduleTornDown = 0
             @staticmethod
             def tearDownModule():
                 Module.moduleTornDown += 1
 
-        class Test(unittest.TestCase):
+        klasse Test(unittest.TestCase):
             def test_one(self):
                 pass
             def test_two(self):
@@ -360,14 +360,14 @@ class TestSetups(unittest.TestCase):
         self.assertEqual(len(result.errors), 0)
 
     def test_error_in_teardown_module(self):
-        class Module(object):
+        klasse Module(object):
             moduleTornDown = 0
             @staticmethod
             def tearDownModule():
                 Module.moduleTornDown += 1
                 raise TypeError('foo')
 
-        class Test(unittest.TestCase):
+        klasse Test(unittest.TestCase):
             classSetUp = False
             classTornDown = False
             @classmethod
@@ -381,7 +381,7 @@ class TestSetups(unittest.TestCase):
             def test_two(self):
                 pass
 
-        class Test2(unittest.TestCase):
+        klasse Test2(unittest.TestCase):
             def test_one(self):
                 pass
             def test_two(self):
@@ -400,7 +400,7 @@ class TestSetups(unittest.TestCase):
         self.assertEqual(str(error), 'tearDownModule (Module)')
 
     def test_skiptest_in_setupclass(self):
-        class Test(unittest.TestCase):
+        klasse Test(unittest.TestCase):
             @classmethod
             def setUpClass(cls):
                 raise unittest.SkipTest('foo')
@@ -418,13 +418,13 @@ class TestSetups(unittest.TestCase):
                     'setUpClass (%s.%s)' % (__name__, Test.__qualname__))
 
     def test_skiptest_in_setupmodule(self):
-        class Test(unittest.TestCase):
+        klasse Test(unittest.TestCase):
             def test_one(self):
                 pass
             def test_two(self):
                 pass
 
-        class Module(object):
+        klasse Module(object):
             @staticmethod
             def setUpModule():
                 raise unittest.SkipTest('foo')
@@ -442,7 +442,7 @@ class TestSetups(unittest.TestCase):
     def test_suite_debug_executes_setups_and_teardowns(self):
         ordering = []
 
-        class Module(object):
+        klasse Module(object):
             @staticmethod
             def setUpModule():
                 ordering.append('setUpModule')
@@ -450,7 +450,7 @@ class TestSetups(unittest.TestCase):
             def tearDownModule():
                 ordering.append('tearDownModule')
 
-        class Test(unittest.TestCase):
+        klasse Test(unittest.TestCase):
             @classmethod
             def setUpClass(cls):
                 ordering.append('setUpClass')
@@ -469,7 +469,7 @@ class TestSetups(unittest.TestCase):
         self.assertEqual(ordering, expectedOrder)
 
     def test_suite_debug_propagates_exceptions(self):
-        class Module(object):
+        klasse Module(object):
             @staticmethod
             def setUpModule():
                 if phase == 0:
@@ -479,7 +479,7 @@ class TestSetups(unittest.TestCase):
                 if phase == 1:
                     raise Exception('tearDownModule')
 
-        class Test(unittest.TestCase):
+        klasse Test(unittest.TestCase):
             @classmethod
             def setUpClass(cls):
                 if phase == 2:

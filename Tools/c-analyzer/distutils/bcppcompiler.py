@@ -18,8 +18,8 @@ from distutils.ccompiler import \
      CCompiler, gen_preprocess_options
 from distutils.dep_util import newer
 
-class BCPPCompiler(CCompiler) :
-    """Concrete class that implements an interface to the Borland C/C++
+klasse BCPPCompiler(CCompiler) :
+    """Concrete klasse that implements an interface to the Borland C/C++
     compiler, as defined by the CCompiler abstract class.
     """
 
@@ -32,7 +32,7 @@ class BCPPCompiler(CCompiler) :
     # though, so it's worth thinking about.
     executables = {}
 
-    # Private class data (need to distinguish C from C++ source for compiler)
+    # Private klasse data (need to distinguish C from C++ source for compiler)
     _c_extensions = ['.c']
     _cpp_extensions = ['.cc', '.cpp', '.cxx']
 

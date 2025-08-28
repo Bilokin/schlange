@@ -15,7 +15,7 @@ from tokenize import open, detect_encoding
 # Remove when we have proper tests that use both.
 
 
-class IOBindingTest(unittest.TestCase):
+klasse IOBindingTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -65,7 +65,7 @@ def _extension_in_filetypes(extension):
     )
 
 
-class FiletypesTest(unittest.TestCase):
+klasse FiletypesTest(unittest.TestCase):
     def test_python_source_files(self):
         for extension in util.py_extensions:
             with self.subTest(extension=extension):

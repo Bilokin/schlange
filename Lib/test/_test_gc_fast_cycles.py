@@ -4,13 +4,13 @@ import _testinternalcapi
 import gc
 import unittest
 
-class IncrementalGCTests(unittest.TestCase):
+klasse IncrementalGCTests(unittest.TestCase):
 
     # Use small increments to emulate longer running process in a shorter time
     @support.gc_threshold(200, 10)
     def test_incremental_gc_handles_fast_cycle_creation(self):
 
-        class LinkedList:
+        klasse LinkedList:
 
             #Use slots to reduce number of implicit objects
             __slots__ = "next", "prev", "surprise"

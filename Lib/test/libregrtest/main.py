@@ -30,7 +30,7 @@ from .utils import (
     EXIT_TIMEOUT)
 
 
-class Regrtest:
+klasse Regrtest:
     """Execute a test suite.
 
     This also parses command-line options and modifies its behavior

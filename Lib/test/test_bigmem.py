@@ -68,7 +68,7 @@ ucs4_char_size = 4
 pointer_size = 4 if sys.maxsize < 2**32 else 8
 
 
-class BaseStrTest:
+klasse BaseStrTest:
 
     def _test_capitalize(self, size):
         _ = self.from_latin1
@@ -573,7 +573,7 @@ class BaseStrTest:
         self.assertNotEqual(h1, hash(s))
 
 
-class StrTest(unittest.TestCase, BaseStrTest):
+klasse StrTest(unittest.TestCase, BaseStrTest):
 
     def from_latin1(self, s):
         return s
@@ -763,7 +763,7 @@ class StrTest(unittest.TestCase, BaseStrTest):
         self.assertEqual(s.count(_('z')), repeats * 3)
 
 
-class BytesTest(unittest.TestCase, BaseStrTest):
+klasse BytesTest(unittest.TestCase, BaseStrTest):
 
     def from_latin1(self, s):
         return s.encode("latin-1")
@@ -786,7 +786,7 @@ class BytesTest(unittest.TestCase, BaseStrTest):
         self._test_swapcase(size)
 
 
-class BytearrayTest(unittest.TestCase, BaseStrTest):
+klasse BytearrayTest(unittest.TestCase, BaseStrTest):
 
     def from_latin1(self, s):
         return bytearray(s.encode("latin-1"))
@@ -811,7 +811,7 @@ class BytearrayTest(unittest.TestCase, BaseStrTest):
     test_hash = None
     test_split_large = None
 
-class TupleTest(unittest.TestCase):
+klasse TupleTest(unittest.TestCase):
 
     # Tuples have a small, fixed-sized head and an array of pointers to
     # data.  Since we're testing 64-bit addressing, we can assume that the
@@ -945,7 +945,7 @@ class TupleTest(unittest.TestCase):
     def test_repr_large(self, size):
         return self.basic_test_repr(size)
 
-class ListTest(unittest.TestCase):
+klasse ListTest(unittest.TestCase):
 
     # Like tuples, lists have a small, fixed-sized head and an array of
     # pointers to data, so 8 bytes per size. Also like tuples, we make the
@@ -1249,7 +1249,7 @@ class ListTest(unittest.TestCase):
         self.assertEqual(l[-10:], [5] * 10)
 
 
-class DictTest(unittest.TestCase):
+klasse DictTest(unittest.TestCase):
 
     @bigmemtest(size=357913941, memuse=160)
     def test_dict(self, size):
@@ -1258,7 +1258,7 @@ class DictTest(unittest.TestCase):
         d[size] = 1
 
 
-class ImmortalityTest(unittest.TestCase):
+klasse ImmortalityTest(unittest.TestCase):
 
     @bigmemtest(size=_2G, memuse=pointer_size * 9/8)
     def test_stickiness(self, size):

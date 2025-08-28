@@ -42,7 +42,7 @@ def send_signals():
 
 
 @threading_helper.requires_working_threading()
-class ThreadSignals(unittest.TestCase):
+klasse ThreadSignals(unittest.TestCase):
 
     def test_signals(self):
         with threading_helper.wait_threads_exit():

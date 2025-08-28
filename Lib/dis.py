@@ -181,7 +181,7 @@ def pretty_flags(flags):
         names.append(hex(flags))
     return ", ".join(names)
 
-class _Unknown:
+klasse _Unknown:
     def __repr__(self):
         return "<unknown>"
 
@@ -330,7 +330,7 @@ _Instruction.cache_info.__doc__ = "list of (name, size, data), one for each cach
 _ExceptionTableEntryBase = collections.namedtuple("_ExceptionTableEntryBase",
     "start end target depth lasti")
 
-class _ExceptionTableEntry(_ExceptionTableEntryBase):
+klasse _ExceptionTableEntry(_ExceptionTableEntryBase):
     pass
 
 _OPNAME_WIDTH = 20
@@ -357,7 +357,7 @@ def _get_jump_target(op, arg, offset):
         target = None
     return target
 
-class Instruction(_Instruction):
+klasse Instruction(_Instruction):
     """Details for a bytecode operation.
 
        Defined fields:
@@ -437,7 +437,7 @@ class Instruction(_Instruction):
         return output.getvalue()
 
 
-class Formatter:
+klasse Formatter:
 
     def __init__(self, file=None, lineno_width=0, offset_width=0, label_width=0,
                  line_offset=0, show_caches=False, *, show_positions=False):
@@ -553,7 +553,7 @@ class Formatter:
                 print(f"  L{start} to L{end} -> L{target} [{entry.depth}]{lasti}", file=file)
 
 
-class ArgResolver:
+klasse ArgResolver:
     def __init__(self, co_consts=None, names=None, varname_from_oparg=None, labels_map=None):
         self.co_consts = co_consts
         self.names = names
@@ -1031,7 +1031,7 @@ def _find_store_names(co):
             yield names[arg]
 
 
-class Bytecode:
+klasse Bytecode:
     """The bytecode operations of a piece of code
 
     Instantiate this with a function, method, other compiled object, string of

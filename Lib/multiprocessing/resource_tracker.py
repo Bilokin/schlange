@@ -52,11 +52,11 @@ if os.name == 'posix':
     _CLEANUP_FUNCS['shared_memory'] = _posixshmem.shm_unlink
 
 
-class ReentrantCallError(RuntimeError):
+klasse ReentrantCallError(RuntimeError):
     pass
 
 
-class ResourceTracker(object):
+klasse ResourceTracker(object):
 
     def __init__(self):
         self._lock = threading.RLock()

@@ -24,38 +24,38 @@ ZERO_DIVISION = (
     (1, 0+0j),
 )
 
-class WithIndex:
+klasse WithIndex:
     def __init__(self, value):
         self.value = value
     def __index__(self):
         return self.value
 
-class WithFloat:
+klasse WithFloat:
     def __init__(self, value):
         self.value = value
     def __float__(self):
         return self.value
 
-class ComplexSubclass(complex):
+klasse ComplexSubclass(complex):
     pass
 
-class OtherComplexSubclass(complex):
+klasse OtherComplexSubclass(complex):
     pass
 
-class MyInt:
+klasse MyInt:
     def __init__(self, value):
         self.value = value
 
     def __int__(self):
         return self.value
 
-class WithComplex:
+klasse WithComplex:
     def __init__(self, value):
         self.value = value
     def __complex__(self):
         return self.value
 
-class ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
+klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
     def assertAlmostEqual(self, a, b):
         if isinstance(a, complex):
@@ -570,10 +570,10 @@ class ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertRaises(TypeError, complex, WithComplex(1), object())
         self.assertRaises(TypeError, complex, WithComplex(None), object())
 
-        class EvilExc(Exception):
+        klasse EvilExc(Exception):
             pass
 
-        class evilcomplex:
+        klasse evilcomplex:
             def __complex__(self):
                 raise EvilExc
 
@@ -599,7 +599,7 @@ class ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertRaises(TypeError, complex, WithIndex(None), 1.5)
         self.assertRaises(TypeError, complex, 1.5, WithIndex(None))
 
-        class MyInt:
+        klasse MyInt:
             def __int__(self):
                 return 42
 
@@ -607,19 +607,19 @@ class ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertRaises(TypeError, complex, MyInt(), 1.5)
         self.assertRaises(TypeError, complex, 1.5, MyInt())
 
-        class complex0(complex):
+        klasse complex0(complex):
             """Test usage of __complex__() when inheriting from 'complex'"""
             def __complex__(self):
                 return 42j
 
-        class complex1(complex):
+        klasse complex1(complex):
             """Test usage of __complex__() with a __new__() method"""
             def __new__(self, value=0j):
                 return complex.__new__(self, 2*value)
             def __complex__(self):
                 return self
 
-        class complex2(complex):
+        klasse complex2(complex):
             """Make sure that __complex__() calls fail if anything other than a
             complex is returned"""
             def __complex__(self):

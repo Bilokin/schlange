@@ -32,15 +32,15 @@ def last_cb():
     pass
 
 
-class ReachableCode(Exception):
+klasse ReachableCode(Exception):
     """Exception to raise to indicate that some code was reached.
 
     Use this exception if using mocks is not a good alternative.
     """
 
 
-class SimpleEvilEventLoop(asyncio.base_events.BaseEventLoop):
-    """Base class for UAF and other evil stuff requiring an evil event loop."""
+klasse SimpleEvilEventLoop(asyncio.base_events.BaseEventLoop):
+    """Base klasse for UAF and other evil stuff requiring an evil event loop."""
 
     def get_debug(self):  # to suppress tracebacks
         return False
@@ -51,7 +51,7 @@ class SimpleEvilEventLoop(asyncio.base_events.BaseEventLoop):
             self.close()
 
 
-class DuckFuture:
+klasse DuckFuture:
     # Class that does not inherit from Future but aims to be duck-type
     # compatible with it.
 
@@ -102,7 +102,7 @@ class DuckFuture:
         return self.result()
 
 
-class DuckTests(test_utils.TestCase):
+klasse DuckTests(test_utils.TestCase):
 
     def setUp(self):
         super().setUp()
@@ -120,7 +120,7 @@ class DuckTests(test_utils.TestCase):
         self.assertIs(g, f)
 
 
-class BaseFutureTests:
+klasse BaseFutureTests:
 
     def _new_future(self,  *args, **kwargs):
         return self.cls(*args, **kwargs)
@@ -136,7 +136,7 @@ class BaseFutureTests:
         self.assertIsInstance(future, GenericAlias)
 
     def test_isfuture(self):
-        class MyFuture:
+        klasse MyFuture:
             _asyncio_future_blocking = None
 
             def __init__(self):
@@ -313,7 +313,7 @@ class BaseFutureTests:
         self.assertIsInstance(cause, stop_iteration_class)
 
     def test_stop_iteration_subclass_exception(self):
-        class MyStopIteration(StopIteration):
+        klasse MyStopIteration(StopIteration):
             pass
 
         self.test_stop_iteration_exception(MyStopIteration)
@@ -720,7 +720,7 @@ class BaseFutureTests:
         self.assertRaises(TypeError, fi.throw, list)
 
     def test_future_del_collect(self):
-        class Evil:
+        klasse Evil:
             def __del__(self):
                 gc.collect()
 
@@ -753,7 +753,7 @@ class BaseFutureTests:
 
 @unittest.skipUnless(hasattr(futures, '_CFuture'),
                      'requires the C _asyncio module')
-class CFutureTests(BaseFutureTests, test_utils.TestCase):
+klasse CFutureTests(BaseFutureTests, test_utils.TestCase):
     try:
         cls = futures._CFuture
     except AttributeError:
@@ -787,9 +787,9 @@ class CFutureTests(BaseFutureTests, test_utils.TestCase):
 
 @unittest.skipUnless(hasattr(futures, '_CFuture'),
                      'requires the C _asyncio module')
-class CSubFutureTests(BaseFutureTests, test_utils.TestCase):
+klasse CSubFutureTests(BaseFutureTests, test_utils.TestCase):
     try:
-        class CSubFuture(futures._CFuture):
+        klasse CSubFuture(futures._CFuture):
             pass
 
         cls = CSubFuture
@@ -797,11 +797,11 @@ class CSubFutureTests(BaseFutureTests, test_utils.TestCase):
         cls = None
 
 
-class PyFutureTests(BaseFutureTests, test_utils.TestCase):
+klasse PyFutureTests(BaseFutureTests, test_utils.TestCase):
     cls = futures._PyFuture
 
 
-class BaseFutureDoneCallbackTests():
+klasse BaseFutureDoneCallbackTests():
 
     def setUp(self):
         super().setUp()
@@ -959,7 +959,7 @@ class BaseFutureDoneCallbackTests():
         for _ in range(63):
             fut.add_done_callback(id)
 
-        class evil:
+        klasse evil:
             def __eq__(self, other):
                 fut.remove_done_callback(id)
                 return False
@@ -975,7 +975,7 @@ class BaseFutureDoneCallbackTests():
         for _ in range(63):
             fut.add_done_callback(id)
 
-        class evil:
+        klasse evil:
             def __eq__(self, other):
                 fut.remove_done_callback(other)
 
@@ -1006,7 +1006,7 @@ class BaseFutureDoneCallbackTests():
         max_extra_cbs = 100
         extra_cbs = 0
 
-        class evil:
+        klasse evil:
             def __eq__(self, other):
                 nonlocal extra_cbs
                 extra_cbs += 1
@@ -1055,11 +1055,11 @@ class BaseFutureDoneCallbackTests():
 
         fut = self._new_future()
 
-        class cb_pad:
+        klasse cb_pad:
             def __eq__(self, other):
                 return True
 
-        class evil(cb_pad):
+        klasse evil(cb_pad):
             def __eq__(self, other):
                 fut.remove_done_callback(None)
                 return NotImplemented
@@ -1070,7 +1070,7 @@ class BaseFutureDoneCallbackTests():
     def test_use_after_free_on_fut_callback_0_with_evil__getattribute__(self):
         # see: https://github.com/python/cpython/issues/125984
 
-        class EvilEventLoop(SimpleEvilEventLoop):
+        klasse EvilEventLoop(SimpleEvilEventLoop):
             def call_soon(self, *args, **kwargs):
                 super().call_soon(*args, **kwargs)
                 raise ReachableCode
@@ -1094,7 +1094,7 @@ class BaseFutureDoneCallbackTests():
     def test_use_after_free_on_fut_context_0_with_evil__getattribute__(self):
         # see: https://github.com/python/cpython/issues/125984
 
-        class EvilEventLoop(SimpleEvilEventLoop):
+        klasse EvilEventLoop(SimpleEvilEventLoop):
             def call_soon(self, *args, **kwargs):
                 super().call_soon(*args, **kwargs)
                 raise ReachableCode
@@ -1120,7 +1120,7 @@ class BaseFutureDoneCallbackTests():
 
 @unittest.skipUnless(hasattr(futures, '_CFuture'),
                      'requires the C _asyncio module')
-class CFutureDoneCallbackTests(BaseFutureDoneCallbackTests,
+klasse CFutureDoneCallbackTests(BaseFutureDoneCallbackTests,
                                test_utils.TestCase):
 
     def _new_future(self):
@@ -1129,23 +1129,23 @@ class CFutureDoneCallbackTests(BaseFutureDoneCallbackTests,
 
 @unittest.skipUnless(hasattr(futures, '_CFuture'),
                      'requires the C _asyncio module')
-class CSubFutureDoneCallbackTests(BaseFutureDoneCallbackTests,
+klasse CSubFutureDoneCallbackTests(BaseFutureDoneCallbackTests,
                                   test_utils.TestCase):
 
     def _new_future(self):
-        class CSubFuture(futures._CFuture):
+        klasse CSubFuture(futures._CFuture):
             pass
         return CSubFuture(loop=self.loop)
 
 
-class PyFutureDoneCallbackTests(BaseFutureDoneCallbackTests,
+klasse PyFutureDoneCallbackTests(BaseFutureDoneCallbackTests,
                                 test_utils.TestCase):
 
     def _new_future(self):
         return futures._PyFuture(loop=self.loop)
 
 
-class BaseFutureInheritanceTests:
+klasse BaseFutureInheritanceTests:
 
     def _get_future_cls(self):
         raise NotImplementedError
@@ -1159,7 +1159,7 @@ class BaseFutureInheritanceTests:
         # See https://bugs.python.org/issue38785 for the context
         cls = self._get_future_cls()
 
-        class MyFut(cls):
+        klasse MyFut(cls):
             def __init__(self, *args, **kwargs):
                 # don't call super().__init__()
                 pass
@@ -1172,7 +1172,7 @@ class BaseFutureInheritanceTests:
             fut.get_loop()
 
 
-class PyFutureInheritanceTests(BaseFutureInheritanceTests,
+klasse PyFutureInheritanceTests(BaseFutureInheritanceTests,
                                test_utils.TestCase):
     def _get_future_cls(self):
         return futures._PyFuture
@@ -1180,7 +1180,7 @@ class PyFutureInheritanceTests(BaseFutureInheritanceTests,
 
 @unittest.skipUnless(hasattr(futures, '_CFuture'),
                      'requires the C _asyncio module')
-class CFutureInheritanceTests(BaseFutureInheritanceTests,
+klasse CFutureInheritanceTests(BaseFutureInheritanceTests,
                               test_utils.TestCase):
     def _get_future_cls(self):
         return futures._CFuture

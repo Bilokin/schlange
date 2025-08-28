@@ -783,7 +783,7 @@ def merge_old_version(version, new, old):
                         # for older versions
                         pass
                     else:
-                        class Difference(Exception):pass
+                        klasse Difference(Exception):pass
                         raise Difference(hex(i), k, old.table[i], new.table[i])
     new.changed.append((version, list(zip(bidir_changes, category_changes,
                                           decimal_changes, mirrored_changes,
@@ -825,7 +825,7 @@ def expand_range(char_range: str) -> Iterator[int]:
         yield char
 
 
-class UcdFile:
+klasse UcdFile:
     '''
     A file in the standard format of the UCD.
 
@@ -858,7 +858,7 @@ class UcdFile:
 
 
 @dataclasses.dataclass
-class UcdRecord:
+klasse UcdRecord:
     # 15 fields from UnicodeData.txt .  See:
     #   https://www.unicode.org/reports/tr44/#UnicodeData.txt
     codepoint: str
@@ -902,7 +902,7 @@ def from_row(row: List[str]) -> UcdRecord:
 
 # load a unicode-data file from disk
 
-class UnicodeData:
+klasse UnicodeData:
     # table: List[Optional[UcdRecord]]  # index is codepoint; None means unassigned
 
     def __init__(self, version, cjk_check=True):
@@ -1075,7 +1075,7 @@ class UnicodeData:
 
 # stuff to deal with arrays of unsigned integers
 
-class Array:
+klasse Array:
 
     def __init__(self, name, data):
         self.name = name

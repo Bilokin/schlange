@@ -9,7 +9,7 @@ from collections import defaultdict
 def foobar():
     return list
 
-class TestDefaultDict(unittest.TestCase):
+klasse TestDefaultDict(unittest.TestCase):
 
     def test_basic(self):
         d1 = defaultdict()
@@ -127,7 +127,7 @@ class TestDefaultDict(unittest.TestCase):
 
     def test_recursive_repr(self):
         # Issue2045: stack overflow when default_factory is a bound method
-        class sub(defaultdict):
+        klasse sub(defaultdict):
             def __init__(self):
                 self.default_factory = self._factory
             def _factory(self):

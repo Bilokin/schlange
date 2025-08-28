@@ -5,7 +5,7 @@ import email.message
 from ._text import FoldedCase
 
 
-class Message(email.message.Message):
+klasse Message(email.message.Message):
     multiple_use_keys = set(
         map(
             FoldedCase,

@@ -75,7 +75,7 @@ def unpack_exception(packed):
     return exc;
 
 
-class CapturingResults:
+klasse CapturingResults:
 
     STDIO = dedent("""\
         with open({w_pipe}, 'wb', buffering=0) as _spipe_{stream}:
@@ -305,9 +305,9 @@ class CapturingResults:
             return self._final
 
 
-class CapturedResults(namedtuple('CapturedResults', 'stdout stderr exc')):
+klasse CapturedResults(namedtuple('CapturedResults', 'stdout stderr exc')):
 
-    class Proxy:
+    klasse Proxy:
         def __init__(self, capturing):
             self._capturing = capturing
         def _finish(self):
@@ -380,7 +380,7 @@ def _running(interp):
     t.join()
 
 
-class TestBase(unittest.TestCase):
+klasse TestBase(unittest.TestCase):
 
     def tearDown(self):
         clean_up_interpreters()

@@ -21,7 +21,7 @@ def tearDownModule():
     macosx._tk_type = orig_tktype
 
 
-class InitTktypeTest(unittest.TestCase):
+klasse InitTktypeTest(unittest.TestCase):
     "Test _init_tk_type."
 
     @classmethod
@@ -48,7 +48,7 @@ class InitTktypeTest(unittest.TestCase):
                 self.assertIn(macosx._tk_type, types)
 
 
-class IsTypeTkTest(unittest.TestCase):
+klasse IsTypeTkTest(unittest.TestCase):
     "Test each of the four isTypeTk predecates."
     isfuncs = ((macosx.isAquaTk, ('carbon', 'cocoa')),
                (macosx.isCarbonTk, ('carbon')),
@@ -76,7 +76,7 @@ class IsTypeTkTest(unittest.TestCase):
                                      (func())
 
 
-class SetupTest(unittest.TestCase):
+klasse SetupTest(unittest.TestCase):
     "Test setupApp."
 
     @classmethod

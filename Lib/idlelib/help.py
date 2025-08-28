@@ -40,7 +40,7 @@ from idlelib.colorizer import color_config
 
 ## IDLE Help ##
 
-class HelpParser(HTMLParser):
+klasse HelpParser(HTMLParser):
     """Render help.html into a text widget.
 
     The overridden handle_xyz methods handle a subset of html tags.
@@ -159,7 +159,7 @@ class HelpParser(HTMLParser):
             self.text.insert('end', d, (self.tags, self.chartags))
 
 
-class HelpText(Text):
+klasse HelpText(Text):
     "Display help.html."
     def __init__(self, parent, filename):
         "Configure tags and feed file to parser."
@@ -203,7 +203,7 @@ class HelpText(Text):
                 return name
 
 
-class HelpFrame(Frame):
+klasse HelpFrame(Frame):
     "Display html text, scrollbar, and toc."
     def __init__(self, parent, filename):
         Frame.__init__(self, parent)
@@ -231,7 +231,7 @@ class HelpFrame(Frame):
         return toc
 
 
-class HelpWindow(Toplevel):
+klasse HelpWindow(Toplevel):
     "Display frame with rendered html."
     def __init__(self, parent, filename, title):
         Toplevel.__init__(self, parent)

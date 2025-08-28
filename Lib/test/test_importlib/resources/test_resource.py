@@ -4,7 +4,7 @@ from . import util
 from importlib import resources, import_module
 
 
-class ResourceTests:
+klasse ResourceTests:
     # Subclasses are expected to set the `data` attribute.
 
     def test_is_file_exists(self):
@@ -21,11 +21,11 @@ class ResourceTests:
         self.assertTrue(target.is_dir())
 
 
-class ResourceDiskTests(ResourceTests, util.DiskSetup, unittest.TestCase):
+klasse ResourceDiskTests(ResourceTests, util.DiskSetup, unittest.TestCase):
     pass
 
 
-class ResourceZipTests(ResourceTests, util.ZipSetup, unittest.TestCase):
+klasse ResourceZipTests(ResourceTests, util.ZipSetup, unittest.TestCase):
     pass
 
 
@@ -33,7 +33,7 @@ def names(traversable):
     return {item.name for item in traversable.iterdir()}
 
 
-class ResourceLoaderTests(util.DiskSetup, unittest.TestCase):
+klasse ResourceLoaderTests(util.DiskSetup, unittest.TestCase):
     def test_resource_contents(self):
         package = util.create_package(
             file=self.data, path=self.data.__file__, contents=['A', 'B', 'C']
@@ -65,7 +65,7 @@ class ResourceLoaderTests(util.DiskSetup, unittest.TestCase):
         self.assertFalse(resources.files(package).joinpath('Z').is_file())
 
 
-class ResourceCornerCaseTests(util.DiskSetup, unittest.TestCase):
+klasse ResourceCornerCaseTests(util.DiskSetup, unittest.TestCase):
     def test_package_has_no_reader_fallback(self):
         """
         Test odd ball packages which:
@@ -85,7 +85,7 @@ class ResourceCornerCaseTests(util.DiskSetup, unittest.TestCase):
         self.assertFalse(resources.files(module).joinpath('A').is_file())
 
 
-class ResourceFromZipsTest01(util.ZipSetup, unittest.TestCase):
+klasse ResourceFromZipsTest01(util.ZipSetup, unittest.TestCase):
     def test_is_submodule_resource(self):
         submodule = import_module('data01.subdirectory')
         self.assertTrue(resources.files(submodule).joinpath('binary.file').is_file())
@@ -116,7 +116,7 @@ class ResourceFromZipsTest01(util.ZipSetup, unittest.TestCase):
         assert not data.parent.exists()
 
 
-class ResourceFromZipsTest02(util.ZipSetup, unittest.TestCase):
+klasse ResourceFromZipsTest02(util.ZipSetup, unittest.TestCase):
     MODULE = 'data02'
 
     def test_unrelated_contents(self):
@@ -134,7 +134,7 @@ class ResourceFromZipsTest02(util.ZipSetup, unittest.TestCase):
         )
 
 
-class DeletingZipsTest(util.ZipSetup, unittest.TestCase):
+klasse DeletingZipsTest(util.ZipSetup, unittest.TestCase):
     """Having accessed resources in a zip file should not keep an open
     reference to the zip.
     """
@@ -166,7 +166,7 @@ class DeletingZipsTest(util.ZipSetup, unittest.TestCase):
         resources.files('data01').joinpath('utf-8.file').read_text(encoding='utf-8')
 
 
-class ResourceFromNamespaceTests:
+klasse ResourceFromNamespaceTests:
     def test_is_submodule_resource(self):
         self.assertTrue(
             resources.files(import_module('namespacedata01'))
@@ -216,7 +216,7 @@ class ResourceFromNamespaceTests:
         self.assertEqual(contents, {'binary.file'})
 
 
-class ResourceFromNamespaceDiskTests(
+klasse ResourceFromNamespaceDiskTests(
     util.DiskSetup,
     ResourceFromNamespaceTests,
     unittest.TestCase,
@@ -224,7 +224,7 @@ class ResourceFromNamespaceDiskTests(
     MODULE = 'namespacedata01'
 
 
-class ResourceFromNamespaceZipTests(
+klasse ResourceFromNamespaceZipTests(
     util.ZipSetup,
     ResourceFromNamespaceTests,
     unittest.TestCase,

@@ -92,7 +92,7 @@ def get_current_interpid(*extra):
     return (interpid, *extra)
 
 
-class InterpretersMixin(InterpreterPoolMixin):
+klasse InterpretersMixin(InterpreterPoolMixin):
 
     def pipe(self):
         r, w = os.pipe()
@@ -101,7 +101,7 @@ class InterpretersMixin(InterpreterPoolMixin):
         return r, w
 
 
-class PickleShenanigans:
+klasse PickleShenanigans:
     """Succeeds with pickle.dumps(), but fails with pickle.loads()"""
     def __init__(self, value):
         if value == 1:
@@ -111,7 +111,7 @@ class PickleShenanigans:
         return (self.__class__, (1,))
 
 
-class InterpreterPoolExecutorTest(
+klasse InterpreterPoolExecutorTest(
             InterpretersMixin, ExecutorTest, BaseTestCase):
 
     @unittest.expectedFailure
@@ -214,7 +214,7 @@ class InterpreterPoolExecutorTest(
             fut.result()
 
     def test_init_instance_method(self):
-        class Spam:
+        klasse Spam:
             def initializer(self):
                 raise NotImplementedError
         spam = Spam()
@@ -289,7 +289,7 @@ class InterpreterPoolExecutorTest(
             fut.result()
 
     def test_submit_local_instance(self):
-        class Spam:
+        klasse Spam:
             def __init__(self):
                 self.value = True
 
@@ -299,7 +299,7 @@ class InterpreterPoolExecutorTest(
             fut.result()
 
     def test_submit_instance_method(self):
-        class Spam:
+        klasse Spam:
             def run(self):
                 return True
         spam = Spam()
@@ -514,7 +514,7 @@ class InterpreterPoolExecutorTest(
         self.assertStartsWith(self.executor.submit(get_thread_name).result(),
                               "InterpreterPoolExecutor-"[:15])
 
-class AsyncioTest(InterpretersMixin, testasyncio_utils.TestCase):
+klasse AsyncioTest(InterpretersMixin, testasyncio_utils.TestCase):
 
     @classmethod
     def setUpClass(cls):

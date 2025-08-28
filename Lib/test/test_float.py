@@ -29,27 +29,27 @@ NAN = float("nan")
 test_dir = os.path.dirname(__file__) or os.curdir
 format_testfile = os.path.join(test_dir, 'mathdata', 'formatfloat_testcases.txt')
 
-class FloatSubclass(float):
+klasse FloatSubclass(float):
     pass
 
-class OtherFloatSubclass(float):
+klasse OtherFloatSubclass(float):
     pass
 
-class MyIndex:
+klasse MyIndex:
     def __init__(self, value):
         self.value = value
 
     def __index__(self):
         return self.value
 
-class MyInt:
+klasse MyInt:
     def __init__(self, value):
         self.value = value
 
     def __int__(self):
         return self.value
 
-class FloatLike:
+klasse FloatLike:
     def __init__(self, value):
         self.value = value
 
@@ -57,7 +57,7 @@ class FloatLike:
         return self.value
 
 
-class GeneralFloatCases(unittest.TestCase):
+klasse GeneralFloatCases(unittest.TestCase):
 
     def test_float(self):
         self.assertEqual(float(3.14), 3.14)
@@ -117,9 +117,9 @@ class GeneralFloatCases(unittest.TestCase):
     def test_non_numeric_input_types(self):
         # Test possible non-numeric types for the argument x, including
         # subclasses of the explicitly documented accepted types.
-        class CustomStr(str): pass
-        class CustomBytes(bytes): pass
-        class CustomByteArray(bytearray): pass
+        klasse CustomStr(str): pass
+        klasse CustomBytes(bytes): pass
+        klasse CustomByteArray(bytearray): pass
 
         factories = [
             bytes,
@@ -206,24 +206,24 @@ class GeneralFloatCases(unittest.TestCase):
 
     def test_floatconversion(self):
         # Make sure that calls to __float__() work properly
-        class Foo2(float):
+        klasse Foo2(float):
             def __float__(self):
                 return 42.
 
-        class Foo3(float):
+        klasse Foo3(float):
             def __new__(cls, value=0.):
                 return float.__new__(cls, 2*value)
 
             def __float__(self):
                 return self
 
-        class Foo4(float):
+        klasse Foo4(float):
             def __float__(self):
                 return 42
 
         # Issue 5759: __float__ not called on str subclasses (though it is on
         # unicode subclasses).
-        class FooStr(str):
+        klasse FooStr(str):
             def __float__(self):
                 return float(str(self)) + 1
 
@@ -256,7 +256,7 @@ class GeneralFloatCases(unittest.TestCase):
             float(x='3.14')
 
     def test_keywords_in_subclass(self):
-        class subclass(float):
+        klasse subclass(float):
             pass
         u = subclass(2.5)
         self.assertIs(type(u), subclass)
@@ -264,7 +264,7 @@ class GeneralFloatCases(unittest.TestCase):
         with self.assertRaises(TypeError):
             subclass(x=0)
 
-        class subclass_with_init(float):
+        klasse subclass_with_init(float):
             def __init__(self, arg, newarg=None):
                 self.newarg = newarg
         u = subclass_with_init(2.5, newarg=3)
@@ -272,7 +272,7 @@ class GeneralFloatCases(unittest.TestCase):
         self.assertEqual(float(u), 2.5)
         self.assertEqual(u.newarg, 3)
 
-        class subclass_with_new(float):
+        klasse subclass_with_new(float):
             def __new__(cls, arg, newarg=None):
                 self = super().__new__(cls, arg)
                 self.newarg = newarg
@@ -643,17 +643,17 @@ class GeneralFloatCases(unittest.TestCase):
     def test_hash_nan(self):
         value = float('nan')
         self.assertEqual(hash(value), object.__hash__(value))
-        class H:
+        klasse H:
             def __hash__(self):
                 return 42
-        class F(float, H):
+        klasse F(float, H):
             pass
         value = F('nan')
         self.assertEqual(hash(value), object.__hash__(value))
 
 
 @unittest.skipUnless(hasattr(float, "__getformat__"), "requires __getformat__")
-class FormatFunctionsTestCase(unittest.TestCase):
+klasse FormatFunctionsTestCase(unittest.TestCase):
     def test_getformat(self):
         self.assertIn(float.__getformat__('double'),
                       ['unknown', 'IEEE, big-endian', 'IEEE, little-endian'])
@@ -678,7 +678,7 @@ LE_FLOAT_NAN = bytes(reversed(BE_FLOAT_NAN))
 # is accident (today).
 # let's also try to guarantee that -0.0 and 0.0 don't get confused.
 
-class IEEEFormatTestCase(unittest.TestCase):
+klasse IEEEFormatTestCase(unittest.TestCase):
 
     @support.requires_IEEE_754
     def test_double_specials_do_unpack(self):
@@ -703,7 +703,7 @@ class IEEEFormatTestCase(unittest.TestCase):
         self.assertEqual(struct.pack("<f", 3.40282356e38), struct.pack("<f", FLT_MAX))
         self.assertEqual(struct.pack("<f", -3.40282356e38), struct.pack("<f", -FLT_MAX))
 
-class FormatTestCase(unittest.TestCase):
+klasse FormatTestCase(unittest.TestCase):
 
     def test_format(self):
         # these should be rewritten to use both format(x, spec) and
@@ -840,7 +840,7 @@ class FormatTestCase(unittest.TestCase):
         self.assertEqual(format(-123.34, '00.10e'), '-1.2334000000e+02')
         self.assertEqual(format(-123.34, '00.10g'), '-123.34')
 
-class ReprTestCase(unittest.TestCase):
+klasse ReprTestCase(unittest.TestCase):
     def test_repr(self):
         with open(os.path.join(os.path.split(__file__)[0],
                   'mathdata',
@@ -905,7 +905,7 @@ class ReprTestCase(unittest.TestCase):
             self.assertEqual(repr(float(negs)), str(float(negs)))
 
 @support.requires_IEEE_754
-class RoundTestCase(unittest.TestCase, FloatsAreIdenticalMixin):
+klasse RoundTestCase(unittest.TestCase, FloatsAreIdenticalMixin):
 
     def test_inf_nan(self):
         self.assertRaises(OverflowError, round, INF)
@@ -1035,7 +1035,7 @@ class RoundTestCase(unittest.TestCase, FloatsAreIdenticalMixin):
 
 # Beginning with Python 2.6 float has cross platform compatible
 # ways to create and represent inf and nan
-class InfNanTest(unittest.TestCase):
+klasse InfNanTest(unittest.TestCase):
     def test_inf_from_str(self):
         self.assertTrue(isinf(float("inf")))
         self.assertTrue(isinf(float("+inf")))
@@ -1136,7 +1136,7 @@ class InfNanTest(unittest.TestCase):
 
 fromHex = float.fromhex
 toHex = float.hex
-class HexFloatTestCase(FloatsAreIdenticalMixin, unittest.TestCase):
+klasse HexFloatTestCase(FloatsAreIdenticalMixin, unittest.TestCase):
     MAX = fromHex('0x.fffffffffffff8p+1024')  # max normal
     MIN = fromHex('0x1p-1022')                # min normal
     TINY = fromHex('0x0.0000000000001p-1022') # min subnormal
@@ -1562,7 +1562,7 @@ class HexFloatTestCase(FloatsAreIdenticalMixin, unittest.TestCase):
                 self.identical(x, fromHex(toHex(x)))
 
     def test_subclass(self):
-        class F(float):
+        klasse F(float):
             def __new__(cls, value):
                 return float.__new__(cls, value + 1)
 
@@ -1570,7 +1570,7 @@ class HexFloatTestCase(FloatsAreIdenticalMixin, unittest.TestCase):
         self.assertIs(type(f), F)
         self.assertEqual(f, 2.5)
 
-        class F2(float):
+        klasse F2(float):
             def __init__(self, value):
                 self.foo = 'bar'
 

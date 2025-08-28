@@ -70,7 +70,7 @@ TEST_INTERRUPTED = textwrap.dedent("""
     """)
 
 
-class ParseArgsTestCase(unittest.TestCase):
+klasse ParseArgsTestCase(unittest.TestCase):
     """
     Test regrtest's argument parsing, function _parse_args().
     """
@@ -503,13 +503,13 @@ class ParseArgsTestCase(unittest.TestCase):
 
 
 @dataclasses.dataclass(slots=True)
-class Rerun:
+klasse Rerun:
     name: str
     match: str | None
     success: bool
 
 
-class BaseTestCase(unittest.TestCase):
+klasse BaseTestCase(unittest.TestCase):
     TEST_UNIQUE_ID = 1
     TESTNAME_PREFIX = 'test_regrtest_'
     TESTNAME_REGEX = r'test_[a-zA-Z0-9_]+'
@@ -529,7 +529,7 @@ class BaseTestCase(unittest.TestCase):
             code = textwrap.dedent("""
                     import unittest
 
-                    class Tests(unittest.TestCase):
+                    klasse Tests(unittest.TestCase):
                         def test_empty_test(self):
                             pass
                 """)
@@ -781,7 +781,7 @@ class BaseTestCase(unittest.TestCase):
         return proc.stdout
 
 
-class CheckActualTests(BaseTestCase):
+klasse CheckActualTests(BaseTestCase):
     def test_finds_expected_number_of_tests(self):
         """
         Check that regrtest appears to find the expected set of tests.
@@ -806,7 +806,7 @@ class CheckActualTests(BaseTestCase):
 
 
 @support.force_not_colorized_test_class
-class ProgramsTestCase(BaseTestCase):
+klasse ProgramsTestCase(BaseTestCase):
     """
     Test various ways to run the Python test suite. Use options close
     to options used on the buildbot.
@@ -923,7 +923,7 @@ class ProgramsTestCase(BaseTestCase):
 
 
 @support.force_not_colorized_test_class
-class ArgsTestCase(BaseTestCase):
+klasse ArgsTestCase(BaseTestCase):
     """
     Test arguments of the Python test suite.
     """
@@ -936,7 +936,7 @@ class ArgsTestCase(BaseTestCase):
         code = textwrap.dedent("""
             import unittest
 
-            class PassingTests(unittest.TestCase):
+            klasse PassingTests(unittest.TestCase):
                 def test_test1(self):
                     pass
 
@@ -971,7 +971,7 @@ class ArgsTestCase(BaseTestCase):
         code = textwrap.dedent("""
             import unittest
 
-            class FailingTest(unittest.TestCase):
+            klasse FailingTest(unittest.TestCase):
                 def test_failing(self):
                     self.fail("bug")
         """)
@@ -990,7 +990,7 @@ class ArgsTestCase(BaseTestCase):
             code = textwrap.dedent("""
                         from test import support; support.requires(%r)
                         import unittest
-                        class PassingTest(unittest.TestCase):
+                        klasse PassingTest(unittest.TestCase):
                             def test_pass(self):
                                 pass
                     """ % resource)
@@ -1173,7 +1173,7 @@ class ArgsTestCase(BaseTestCase):
             import builtins
             import unittest
 
-            class ForeverTester(unittest.TestCase):
+            klasse ForeverTester(unittest.TestCase):
                 def test_run(self):
                     # Store the state in the builtins module, because the test
                     # module is reload at each run
@@ -1234,7 +1234,7 @@ class ArgsTestCase(BaseTestCase):
 
             GLOBAL_LIST = []
 
-            class RefLeakTest(unittest.TestCase):
+            klasse RefLeakTest(unittest.TestCase):
                 def test_leak(self):
                     GLOBAL_LIST.append(object())
         """)
@@ -1254,7 +1254,7 @@ class ArgsTestCase(BaseTestCase):
 
             GLOBAL_LIST = []
 
-            class RefLeakTest(unittest.TestCase):
+            klasse RefLeakTest(unittest.TestCase):
                 def test1(self):
                     pass
 
@@ -1294,7 +1294,7 @@ class ArgsTestCase(BaseTestCase):
             import os
             import unittest
 
-            class FDLeakTest(unittest.TestCase):
+            klasse FDLeakTest(unittest.TestCase):
                 def test_leak(self):
                     fd = os.open(__file__, os.O_RDONLY)
                     # bug: never close the file descriptor
@@ -1313,7 +1313,7 @@ class ArgsTestCase(BaseTestCase):
         code = textwrap.dedent("""
             import unittest
 
-            class Tests(unittest.TestCase):
+            klasse Tests(unittest.TestCase):
                 def test_method1(self):
                     pass
                 def test_method2(self):
@@ -1353,7 +1353,7 @@ class ArgsTestCase(BaseTestCase):
         code = textwrap.dedent("""
             import unittest
 
-            class Tests(unittest.TestCase):
+            klasse Tests(unittest.TestCase):
                 def test_method1(self):
                     pass
                 def test_method2(self):
@@ -1387,7 +1387,7 @@ class ArgsTestCase(BaseTestCase):
         code = textwrap.dedent("""
             import unittest
 
-            class Tests(unittest.TestCase):
+            klasse Tests(unittest.TestCase):
                 def test_method1(self):
                     pass
                 def test_method2(self):
@@ -1428,7 +1428,7 @@ class ArgsTestCase(BaseTestCase):
         code = textwrap.dedent("""
             import unittest
 
-            class Tests(unittest.TestCase):
+            klasse Tests(unittest.TestCase):
                 def test_env_changed(self):
                     open("env_changed", "w").close()
         """)
@@ -1459,7 +1459,7 @@ class ArgsTestCase(BaseTestCase):
         code = textwrap.dedent("""
             import unittest
 
-            class Tests(unittest.TestCase):
+            klasse Tests(unittest.TestCase):
                 def test_succeed(self):
                     return
 
@@ -1488,7 +1488,7 @@ class ArgsTestCase(BaseTestCase):
 
             marker_filename = {marker_filename!r}
 
-            class Tests(unittest.TestCase):
+            klasse Tests(unittest.TestCase):
                 def test_succeed(self):
                     return
 
@@ -1524,7 +1524,7 @@ class ArgsTestCase(BaseTestCase):
         code = textwrap.dedent("""
             import unittest
 
-            class ExampleTests(unittest.TestCase):
+            klasse ExampleTests(unittest.TestCase):
                 @classmethod
                 def setUpClass(self):
                     raise RuntimeError('Fail')
@@ -1547,7 +1547,7 @@ class ArgsTestCase(BaseTestCase):
         code = textwrap.dedent("""
             import unittest
 
-            class ExampleTests(unittest.TestCase):
+            klasse ExampleTests(unittest.TestCase):
                 @classmethod
                 def tearDownClass(self):
                     raise RuntimeError('Fail')
@@ -1573,7 +1573,7 @@ class ArgsTestCase(BaseTestCase):
             def setUpModule():
                 raise RuntimeError('Fail')
 
-            class ExampleTests(unittest.TestCase):
+            klasse ExampleTests(unittest.TestCase):
                 def test_success(self):
                     return
         """)
@@ -1595,7 +1595,7 @@ class ArgsTestCase(BaseTestCase):
             def tearDownModule():
                 raise RuntimeError('Fail')
 
-            class ExampleTests(unittest.TestCase):
+            klasse ExampleTests(unittest.TestCase):
                 def test_success(self):
                     return
         """)
@@ -1614,7 +1614,7 @@ class ArgsTestCase(BaseTestCase):
         code = textwrap.dedent("""
             import unittest
 
-            class ExampleTests(unittest.TestCase):
+            klasse ExampleTests(unittest.TestCase):
                 def setUp(self):
                     raise RuntimeError('Fail')
 
@@ -1636,7 +1636,7 @@ class ArgsTestCase(BaseTestCase):
         code = textwrap.dedent("""
             import unittest
 
-            class ExampleTests(unittest.TestCase):
+            klasse ExampleTests(unittest.TestCase):
                 def tearDown(self):
                     raise RuntimeError('Fail')
 
@@ -1658,7 +1658,7 @@ class ArgsTestCase(BaseTestCase):
         code = textwrap.dedent("""
             import unittest
 
-            class ExampleTests(unittest.IsolatedAsyncioTestCase):
+            klasse ExampleTests(unittest.IsolatedAsyncioTestCase):
                 async def asyncSetUp(self):
                     raise RuntimeError('Fail')
 
@@ -1679,7 +1679,7 @@ class ArgsTestCase(BaseTestCase):
         code = textwrap.dedent("""
             import unittest
 
-            class ExampleTests(unittest.IsolatedAsyncioTestCase):
+            klasse ExampleTests(unittest.IsolatedAsyncioTestCase):
                 async def asyncTearDown(self):
                     raise RuntimeError('Fail')
 
@@ -1700,7 +1700,7 @@ class ArgsTestCase(BaseTestCase):
         code = textwrap.dedent("""
             import unittest
 
-            class Tests(unittest.TestCase):
+            klasse Tests(unittest.TestCase):
                 def test_bug(self):
                     pass
         """)
@@ -1716,7 +1716,7 @@ class ArgsTestCase(BaseTestCase):
         code = textwrap.dedent("""
             import unittest
 
-            class Tests(unittest.TestCase):
+            klasse Tests(unittest.TestCase):
                 def test_skipped(self):
                     self.skipTest("because")
         """)
@@ -1730,7 +1730,7 @@ class ArgsTestCase(BaseTestCase):
         code = textwrap.dedent("""
             import unittest
 
-            class Tests(unittest.TestCase):
+            klasse Tests(unittest.TestCase):
                 def test_bug(self):
                     pass
         """)
@@ -1747,7 +1747,7 @@ class ArgsTestCase(BaseTestCase):
         code = textwrap.dedent("""
             import unittest
 
-            class Tests(unittest.TestCase):
+            klasse Tests(unittest.TestCase):
                 def test_bug(self):
                     pass
         """)
@@ -1755,7 +1755,7 @@ class ArgsTestCase(BaseTestCase):
         other_code = textwrap.dedent("""
             import unittest
 
-            class Tests(unittest.TestCase):
+            klasse Tests(unittest.TestCase):
                 def test_other_bug(self):
                     pass
         """)
@@ -1778,11 +1778,11 @@ class ArgsTestCase(BaseTestCase):
             import unittest
 
             @_testcapi.with_tp_del
-            class Garbage:
+            klasse Garbage:
                 def __tp_del__(self):
                     pass
 
-            class Tests(unittest.TestCase):
+            klasse Tests(unittest.TestCase):
                 def test_garbage(self):
                     # create an uncollectable object
                     obj = Garbage()
@@ -1807,7 +1807,7 @@ class ArgsTestCase(BaseTestCase):
             except ImportError:
                 faulthandler = None
 
-            class Tests(unittest.TestCase):
+            klasse Tests(unittest.TestCase):
                 # test hangs and so should be stopped by the timeout
                 def test_sleep(self):
                     # we want to test regrtest multiprocessing timeout,
@@ -1834,13 +1834,13 @@ class ArgsTestCase(BaseTestCase):
             import weakref
             from test.support import captured_stderr
 
-            class MyObject:
+            klasse MyObject:
                 pass
 
             def weakref_callback(obj):
                 raise Exception("weakref callback bug")
 
-            class Tests(unittest.TestCase):
+            klasse Tests(unittest.TestCase):
                 def test_unraisable_exc(self):
                     obj = MyObject()
                     ref = weakref.ref(obj, weakref_callback)
@@ -1869,13 +1869,13 @@ class ArgsTestCase(BaseTestCase):
             import unittest
             from test.support import captured_stderr
 
-            class MyObject:
+            klasse MyObject:
                 pass
 
             def func_bug():
                 raise Exception("bug in thread")
 
-            class Tests(unittest.TestCase):
+            klasse Tests(unittest.TestCase):
                 def test_threading_excepthook(self):
                     with captured_stderr() as stderr:
                         thread = threading.Thread(target=func_bug)
@@ -1902,13 +1902,13 @@ class ArgsTestCase(BaseTestCase):
             import unittest
             from test import support
 
-            class MyObject:
+            klasse MyObject:
                 pass
 
             def func_bug():
                 raise Exception("bug in thread")
 
-            class Tests(unittest.TestCase):
+            klasse Tests(unittest.TestCase):
                 def test_print_warning(self):
                     print("msg1: stdout")
                     support.print_warning("msg2: print_warning")
@@ -1966,7 +1966,7 @@ class ArgsTestCase(BaseTestCase):
             import tempfile
             import unittest
 
-            class FileTests(unittest.TestCase):
+            klasse FileTests(unittest.TestCase):
                 def test_leak_tmp_file(self):
                     filename = os.path.join(tempfile.gettempdir(), 'mytmpfile')
                     with open(filename, "wb") as fp:
@@ -2016,7 +2016,7 @@ class ArgsTestCase(BaseTestCase):
             import sys
             import unittest
 
-            class Tests(unittest.TestCase):
+            klasse Tests(unittest.TestCase):
                 def test_pass(self):
                     pass
 
@@ -2079,7 +2079,7 @@ class ArgsTestCase(BaseTestCase):
             import random
             import unittest
 
-            class RandomSeedTest(unittest.TestCase):
+            klasse RandomSeedTest(unittest.TestCase):
                 def test_randint(self):
                     numbers = [random.randint(0, 1000) for _ in range(10)]
                     print(f"Random numbers: {numbers}")
@@ -2117,7 +2117,7 @@ class ArgsTestCase(BaseTestCase):
             import sys
             import unittest
 
-            class WorkerTests(unittest.TestCase):
+            klasse WorkerTests(unittest.TestCase):
                 def test_dev_mode(self):
                     self.assertTrue(sys.flags.dev_mode)
         """)
@@ -2170,7 +2170,7 @@ class ArgsTestCase(BaseTestCase):
             # WASI/WASM buildbots don't use -E option
             use_environment = (support.is_emscripten or support.is_wasi)
 
-            class WorkerTests(unittest.TestCase):
+            klasse WorkerTests(unittest.TestCase):
                 @unittest.skipUnless(config_get is None, 'need config_get()')
                 def test_config(self):
                     config = config_get()
@@ -2228,7 +2228,7 @@ class ArgsTestCase(BaseTestCase):
             import unittest
             from test import support
 
-            class CrashTests(unittest.TestCase):
+            klasse CrashTests(unittest.TestCase):
                 def test_crash(self):
                     print("just before crash!", flush=True)
 
@@ -2258,7 +2258,7 @@ class ArgsTestCase(BaseTestCase):
             import unittest
             from test import support
 
-            class VerboseTests(unittest.TestCase):
+            klasse VerboseTests(unittest.TestCase):
                 def test_pass(self):
                     print("SPAM SPAM SPAM")
         """)
@@ -2280,7 +2280,7 @@ class ArgsTestCase(BaseTestCase):
         code = textwrap.dedent(r"""
             import unittest
 
-            class VerboseTests(unittest.TestCase):
+            klasse VerboseTests(unittest.TestCase):
                 def test_failed(self):
                     print("abc \x1b def")
                     self.fail()
@@ -2317,7 +2317,7 @@ class ArgsTestCase(BaseTestCase):
         code = textwrap.dedent(r"""
             import unittest
 
-            class NonASCIITests(unittest.TestCase):
+            klasse NonASCIITests(unittest.TestCase):
                 def test_docstring(self):
                     '''docstring:\u20ac'''
 
@@ -2358,7 +2358,7 @@ class ArgsTestCase(BaseTestCase):
         self.assertEqual(len(tests), len(pgo_tests) - 1)
 
 
-class TestUtils(unittest.TestCase):
+klasse TestUtils(unittest.TestCase):
     def test_format_duration(self):
         self.assertEqual(utils.format_duration(0),
                          '0 ms')
@@ -2413,7 +2413,7 @@ class TestUtils(unittest.TestCase):
             'resources: all,tzdata')
 
     def test_match_test(self):
-        class Test:
+        klasse Test:
             def __init__(self, test_id):
                 self.test_id = test_id
 
@@ -2553,7 +2553,7 @@ class TestUtils(unittest.TestCase):
 from test.libregrtest.results import TestResults
 
 
-class TestColorized(unittest.TestCase):
+klasse TestColorized(unittest.TestCase):
     def test_test_result_get_state(self):
         # Arrange
         green = _colorize.ANSIColors.GREEN

@@ -1,5 +1,5 @@
 """
-MultiCall - a class which inherits its methods from a Tkinter widget (Text, for
+MultiCall - a klasse which inherits its methods from a Tkinter widget (Text, for
 example), but enables multiple calls of functions per virtual event - all
 matching events will be called, not only the most specific one. This is done
 by wrapping the event functions - event_add, event_delete and event_info.
@@ -62,7 +62,7 @@ _modifier_names = {name: number
 # 'Exception ignored' messages.  See http://bugs.python.org/issue20167
 APPLICATION_GONE = "application has been destroyed"
 
-# A binder is a class which binds functions to one type of event. It has two
+# A binder is a klasse which binds functions to one type of event. It has two
 # methods: bind and unbind, which get a function and a parsed sequence, as
 # returned by _parse_sequence(). There are two types of binders:
 # _SimpleBinder handles event types with no modifiers and no detail.
@@ -70,7 +70,7 @@ APPLICATION_GONE = "application has been destroyed"
 # _ComplexBinder handles event types with modifiers and a detail.
 # A Python function is called each time an event is generated.
 
-class _SimpleBinder:
+klasse _SimpleBinder:
     def __init__(self, type, widget, widgetinst):
         self.type = type
         self.sequence = '<'+_types[type][0]+'>'
@@ -150,8 +150,8 @@ for s in _states:
             r |= _modifier_masks[i]
     _state_codes.append(r)
 
-class _ComplexBinder:
-    # This class binds many functions, and only unbinds them when it is deleted.
+klasse _ComplexBinder:
+    # This klasse binds many functions, and only unbinds them when it is deleted.
     # self.handlerids is the list of seqs and ids of binded handler functions.
     # The binded functions sit in a dictionary of lists of lists, which maps
     # a detail (or None) and a state into a list of functions.
@@ -312,14 +312,14 @@ def _triplet_to_sequence(triplet):
 
 _multicall_dict = {}
 def MultiCallCreator(widget):
-    """Return a MultiCall class which inherits its methods from the
-    given widget class (for example, Tkinter.Text). This is used
+    """Return a MultiCall klasse which inherits its methods from the
+    given widget klasse (for example, Tkinter.Text). This is used
     instead of a templating mechanism.
     """
     if widget in _multicall_dict:
         return _multicall_dict[widget]
 
-    class MultiCall (widget):
+    klasse MultiCall (widget):
         assert issubclass(widget, tkinter.Misc)
 
         def __init__(self, *args, **kwargs):

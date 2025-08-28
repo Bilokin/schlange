@@ -14,7 +14,7 @@ from _testcapi import (_test_structmembersType_OldAPI,
     )
 
 
-class Index:
+klasse Index:
     def __init__(self, value):
         self.value = value
     def __index__(self):
@@ -43,7 +43,7 @@ def _make_test_object(cls):
                )
 
 
-class ReadWriteTests:
+klasse ReadWriteTests:
     def setUp(self):
         self.ts = _make_test_object(self.cls)
 
@@ -175,10 +175,10 @@ class ReadWriteTests:
         self.assertRaises(TypeError, setattr, ts, "T_CHAR", bytearray(b"b"))
         self.assertRaises(TypeError, delattr, ts, "T_STRING_INPLACE")
 
-class ReadWriteTests_OldAPI(ReadWriteTests, unittest.TestCase):
+klasse ReadWriteTests_OldAPI(ReadWriteTests, unittest.TestCase):
     cls = _test_structmembersType_OldAPI
 
-class ReadWriteTests_NewAPI(ReadWriteTests, unittest.TestCase):
+klasse ReadWriteTests_NewAPI(ReadWriteTests, unittest.TestCase):
     cls = _test_structmembersType_NewAPI
 
 

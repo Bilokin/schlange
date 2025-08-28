@@ -9,8 +9,8 @@ from test.test_unittest.support import LoggingResult, TestEquality
 ### Support code for Test_TestSuite
 ################################################################
 
-class Test(object):
-    class Foo(unittest.TestCase):
+klasse Test(object):
+    klasse Foo(unittest.TestCase):
         def test_1(self): pass
         def test_2(self): pass
         def test_3(self): pass
@@ -22,7 +22,7 @@ def _mk_TestSuite(*names):
 ################################################################
 
 
-class Test_TestSuite(unittest.TestCase, TestEquality):
+klasse Test_TestSuite(unittest.TestCase, TestEquality):
 
     ### Set up attributes needed by inherited tests
     ################################################################
@@ -145,7 +145,7 @@ class Test_TestSuite(unittest.TestCase, TestEquality):
     # Presumably an empty TestSuite (even if it contains other empty
     # TestSuite instances) returns 0?
     def test_countTestCases_zero_nested(self):
-        class Test1(unittest.TestCase):
+        klasse Test1(unittest.TestCase):
             def test(self):
                 pass
 
@@ -172,7 +172,7 @@ class Test_TestSuite(unittest.TestCase, TestEquality):
     #
     # Make sure this holds for nested TestSuite instances, too
     def test_countTestCases_nested(self):
-        class Test1(unittest.TestCase):
+        klasse Test1(unittest.TestCase):
             def test1(self): pass
             def test2(self): pass
 
@@ -219,7 +219,7 @@ class Test_TestSuite(unittest.TestCase, TestEquality):
         events = []
         result = LoggingResult(events)
 
-        class LoggingCase(unittest.TestCase):
+        klasse LoggingCase(unittest.TestCase):
             def run(self, result):
                 events.append('run %s' % self._testMethodName)
 
@@ -234,7 +234,7 @@ class Test_TestSuite(unittest.TestCase, TestEquality):
 
     # "Add a TestCase ... to the suite"
     def test_addTest__TestCase(self):
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def test(self): pass
 
         test = Foo('test')
@@ -250,7 +250,7 @@ class Test_TestSuite(unittest.TestCase, TestEquality):
 
     # "Add a ... TestSuite to the suite"
     def test_addTest__TestSuite(self):
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def test(self): pass
 
         suite_2 = unittest.TestSuite([Foo('test')])
@@ -270,7 +270,7 @@ class Test_TestSuite(unittest.TestCase, TestEquality):
     # "This is equivalent to iterating over tests, calling addTest() for
     # each element"
     def test_addTests(self):
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def test_1(self): pass
             def test_2(self): pass
 
@@ -357,7 +357,7 @@ class Test_TestSuite(unittest.TestCase, TestEquality):
         if not unittest.BaseTestSuite._cleanup:
             raise unittest.SkipTest("Suite cleanup is disabled")
 
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def test_nothing(self):
                 pass
 
@@ -382,7 +382,7 @@ class Test_TestSuite(unittest.TestCase, TestEquality):
         self.assert_garbage_collect_test_after_run(unittest.TestSuite)
 
     def test_basetestsuite(self):
-        class Test(unittest.TestCase):
+        klasse Test(unittest.TestCase):
             wasSetUp = False
             wasTornDown = False
             @classmethod
@@ -395,7 +395,7 @@ class Test_TestSuite(unittest.TestCase, TestEquality):
                 pass
             def testFail(self):
                 fail
-        class Module(object):
+        klasse Module(object):
             wasSetUp = False
             wasTornDown = False
             @staticmethod
@@ -426,7 +426,7 @@ class Test_TestSuite(unittest.TestCase, TestEquality):
 
 
     def test_overriding_call(self):
-        class MySuite(unittest.TestSuite):
+        klasse MySuite(unittest.TestSuite):
             called = False
             def __call__(self, *args, **kw):
                 self.called = True

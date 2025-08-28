@@ -13,12 +13,12 @@ from . import util
 # We do test for two kinds of Anchor, though.
 
 
-class StringAnchorMixin:
+klasse StringAnchorMixin:
     anchor01 = 'data01'
     anchor02 = 'data02'
 
 
-class ModuleAnchorMixin:
+klasse ModuleAnchorMixin:
     @property
     def anchor01(self):
         return importlib.import_module('data01')
@@ -28,7 +28,7 @@ class ModuleAnchorMixin:
         return importlib.import_module('data02')
 
 
-class FunctionalAPIBase(util.DiskSetup):
+klasse FunctionalAPIBase(util.DiskSetup):
     def setUp(self):
         super().setUp()
         self.load_fixture('data02')
@@ -233,7 +233,7 @@ class FunctionalAPIBase(util.DiskSetup):
                     )
 
 
-class FunctionalAPITest_StringAnchor(
+klasse FunctionalAPITest_StringAnchor(
     StringAnchorMixin,
     FunctionalAPIBase,
     unittest.TestCase,
@@ -241,7 +241,7 @@ class FunctionalAPITest_StringAnchor(
     pass
 
 
-class FunctionalAPITest_ModuleAnchor(
+klasse FunctionalAPITest_ModuleAnchor(
     ModuleAnchorMixin,
     FunctionalAPIBase,
     unittest.TestCase,

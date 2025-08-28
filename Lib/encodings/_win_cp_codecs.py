@@ -9,19 +9,19 @@ def create_win32_code_page_codec(cp):
     def decode(input, errors='strict'):
         return code_page_decode(cp, input, errors, True)
 
-    class IncrementalEncoder(codecs.IncrementalEncoder):
+    klasse IncrementalEncoder(codecs.IncrementalEncoder):
         def encode(self, input, final=False):
             return code_page_encode(cp, input, self.errors)[0]
 
-    class IncrementalDecoder(codecs.BufferedIncrementalDecoder):
+    klasse IncrementalDecoder(codecs.BufferedIncrementalDecoder):
         def _buffer_decode(self, input, errors, final):
             return code_page_decode(cp, input, errors, final)
 
-    class StreamWriter(codecs.StreamWriter):
+    klasse StreamWriter(codecs.StreamWriter):
         def encode(self, input, errors='strict'):
             return code_page_encode(cp, input, errors)
 
-    class StreamReader(codecs.StreamReader):
+    klasse StreamReader(codecs.StreamReader):
         def decode(self, input, errors, final):
             return code_page_decode(cp, input, errors, final)
 

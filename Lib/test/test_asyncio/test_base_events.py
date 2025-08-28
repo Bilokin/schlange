@@ -24,7 +24,7 @@ import warnings
 MOCK_ANY = mock.ANY
 
 
-class CustomError(Exception):
+klasse CustomError(Exception):
     pass
 
 
@@ -54,7 +54,7 @@ def patch_socket(f):
                       new_callable=mock_socket_module)(f)
 
 
-class BaseEventTests(test_utils.TestCase):
+klasse BaseEventTests(test_utils.TestCase):
 
     def test_ipaddr_info(self):
         UNSPEC = socket.AF_UNSPEC
@@ -174,7 +174,7 @@ class BaseEventTests(test_utils.TestCase):
 
 
 
-class BaseEventLoopTests(test_utils.TestCase):
+klasse BaseEventLoopTests(test_utils.TestCase):
 
     def setUp(self):
         super().setUp()
@@ -238,7 +238,7 @@ class BaseEventLoopTests(test_utils.TestCase):
         self.assertFalse(self.loop._ready)
 
     def test_set_default_executor(self):
-        class DummyExecutor(concurrent.futures.ThreadPoolExecutor):
+        klasse DummyExecutor(concurrent.futures.ThreadPoolExecutor):
             def submit(self, fn, *args, **kwargs):
                 raise NotImplementedError(
                     'cannot submit into a dummy executor')
@@ -262,7 +262,7 @@ class BaseEventLoopTests(test_utils.TestCase):
     def test_shutdown_default_executor_timeout(self):
         event = threading.Event()
 
-        class DummyExecutor(concurrent.futures.ThreadPoolExecutor):
+        klasse DummyExecutor(concurrent.futures.ThreadPoolExecutor):
             def shutdown(self, wait=True, *, cancel_futures=False):
                 if wait:
                     event.wait()
@@ -532,7 +532,7 @@ class BaseEventLoopTests(test_utils.TestCase):
             other_loop.run_until_complete, task)
 
     def test_run_until_complete_loop_orphan_future_close_loop(self):
-        class ShowStopper(SystemExit):
+        klasse ShowStopper(SystemExit):
             pass
 
         async def foo(delay):
@@ -709,7 +709,7 @@ class BaseEventLoopTests(test_utils.TestCase):
     def test_default_exc_handler_broken(self):
         _context = None
 
-        class Loop(base_events.BaseEventLoop):
+        klasse Loop(base_events.BaseEventLoop):
 
             _selector = mock.Mock()
             _process_events = mock.Mock()
@@ -765,7 +765,7 @@ class BaseEventLoopTests(test_utils.TestCase):
     def test_set_task_factory(self):
         self.loop._process_events = mock.Mock()
 
-        class MyTask(asyncio.Task):
+        klasse MyTask(asyncio.Task):
             pass
 
         async def coro():
@@ -820,13 +820,13 @@ class BaseEventLoopTests(test_utils.TestCase):
         self.assertEqual(stdout.rstrip(), b'True')
 
     def test_create_task(self):
-        class MyTask(asyncio.Task):
+        klasse MyTask(asyncio.Task):
             pass
 
         async def test():
             pass
 
-        class EventLoop(base_events.BaseEventLoop):
+        klasse EventLoop(base_events.BaseEventLoop):
             def create_task(self, coro):
                 return MyTask(coro, loop=loop)
 
@@ -1080,7 +1080,7 @@ class BaseEventLoopTests(test_utils.TestCase):
     @patch_socket
     def test_create_connection_happy_eyeballs(self, m_socket):
 
-        class MyProto(asyncio.Protocol):
+        klasse MyProto(asyncio.Protocol):
             pass
 
         async def getaddrinfo(*args, **kw):
@@ -1112,7 +1112,7 @@ class BaseEventLoopTests(test_utils.TestCase):
     @patch_socket
     def test_create_connection_happy_eyeballs_ipv4_only(self, m_socket):
 
-        class MyProto(asyncio.Protocol):
+        klasse MyProto(asyncio.Protocol):
             pass
 
         async def getaddrinfo(*args, **kw):
@@ -1142,7 +1142,7 @@ class BaseEventLoopTests(test_utils.TestCase):
             loop.close()
 
 
-class MyProto(asyncio.Protocol):
+klasse MyProto(asyncio.Protocol):
     done = None
 
     def __init__(self, create_future=False):
@@ -1176,7 +1176,7 @@ class MyProto(asyncio.Protocol):
             self.done.set_result(None)
 
 
-class MyDatagramProto(asyncio.DatagramProtocol):
+klasse MyDatagramProto(asyncio.DatagramProtocol):
     done = None
 
     def __init__(self, create_future=False, loop=None):
@@ -1208,7 +1208,7 @@ class MyDatagramProto(asyncio.DatagramProtocol):
             self.done.set_result(None)
 
 
-class BaseEventLoopWithSelectorTests(test_utils.TestCase):
+klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
 
     def setUp(self):
         super().setUp()
@@ -1224,7 +1224,7 @@ class BaseEventLoopWithSelectorTests(test_utils.TestCase):
     @patch_socket
     def test_create_connection_multiple_errors(self, m_socket):
 
-        class MyProto(asyncio.Protocol):
+        klasse MyProto(asyncio.Protocol):
             pass
 
         async def getaddrinfo(*args, **kw):
@@ -1663,7 +1663,7 @@ class BaseEventLoopWithSelectorTests(test_utils.TestCase):
         self.loop.sock_connect.return_value.set_result(None)
         self.loop._make_ssl_transport = mock.Mock()
 
-        class _SelectorTransportMock:
+        klasse _SelectorTransportMock:
             _sock = None
 
             def get_extra_info(self, key):
@@ -1816,7 +1816,7 @@ class BaseEventLoopWithSelectorTests(test_utils.TestCase):
     @patch_socket
     def test_create_server_cant_bind(self, m_socket):
 
-        class Err(OSError):
+        klasse Err(OSError):
             strerror = 'error'
 
         m_socket.getaddrinfo.return_value = [
@@ -1914,7 +1914,7 @@ class BaseEventLoopWithSelectorTests(test_utils.TestCase):
 
     @patch_socket
     def test_create_datagram_endpoint_cant_bind(self, m_socket):
-        class Err(OSError):
+        klasse Err(OSError):
             pass
 
         m_socket.getaddrinfo = socket.getaddrinfo
@@ -1964,7 +1964,7 @@ class BaseEventLoopWithSelectorTests(test_utils.TestCase):
             self.loop.run_until_complete(protocol.done)
 
     def test_create_datagram_endpoint_sock_sockopts(self):
-        class FakeSock:
+        klasse FakeSock:
             type = socket.SOCK_DGRAM
 
         fut = self.loop.create_datagram_endpoint(
@@ -2156,7 +2156,7 @@ class BaseEventLoopWithSelectorTests(test_utils.TestCase):
                          "took .* seconds$")
 
 
-class RunningLoopTests(unittest.TestCase):
+klasse RunningLoopTests(unittest.TestCase):
 
     def test_running_loop_within_a_loop(self):
         async def runner(loop):
@@ -2173,11 +2173,11 @@ class RunningLoopTests(unittest.TestCase):
             outer_loop.close()
 
 
-class BaseLoopSockSendfileTests(test_utils.TestCase):
+klasse BaseLoopSockSendfileTests(test_utils.TestCase):
 
     DATA = b"12345abcde" * 16 * 1024  # 160 KiB
 
-    class MyProto(asyncio.Protocol):
+    klasse MyProto(asyncio.Protocol):
 
         def __init__(self, loop):
             self.started = False
@@ -2353,7 +2353,7 @@ class BaseLoopSockSendfileTests(test_utils.TestCase):
             self.run_loop(self.loop.sock_sendfile(sock, self.file, -1))
 
 
-class TestSelectorUtils(test_utils.TestCase):
+klasse TestSelectorUtils(test_utils.TestCase):
     def check_set_nodelay(self, sock):
         opt = sock.getsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY)
         self.assertFalse(opt)

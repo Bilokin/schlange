@@ -19,7 +19,7 @@ DEFAULT_REPEAT = 5
 # number of loops during testing, but this would require changing the signature
 # of some functions that use the default as a default argument.
 
-class FakeTimer:
+klasse FakeTimer:
     BASE_TIME = 42.0
     def __init__(self, seconds_per_increment=1.0):
         self.count = 0
@@ -41,7 +41,7 @@ class FakeTimer:
         self.saved_timer = timer
         return self
 
-class TestTimeit(unittest.TestCase):
+klasse TestTimeit(unittest.TestCase):
 
     def tearDown(self):
         try:

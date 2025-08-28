@@ -28,7 +28,7 @@ def THEME(**kwargs):
     return _colorize.get_theme(**kwargs).syntax
 
 
-class Span(NamedTuple):
+klasse Span(NamedTuple):
     """Span indexing that's inclusive on both ends."""
 
     start: int
@@ -53,7 +53,7 @@ class Span(NamedTuple):
         )
 
 
-class ColorSpan(NamedTuple):
+klasse ColorSpan(NamedTuple):
     span: Span
     tag: str
 

@@ -61,7 +61,7 @@ def findfiles(folder, pattern, recursive):
             break
 
 
-class GrepDialog(SearchDialogBase):
+klasse GrepDialog(SearchDialogBase):
     "Dialog for searching multiple files."
 
     title = "Find in Files Dialog"

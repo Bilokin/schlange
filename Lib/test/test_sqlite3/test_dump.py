@@ -7,7 +7,7 @@ from .util import MemoryDatabaseMixin
 from .util import requires_virtual_table
 
 
-class DumpTests(MemoryDatabaseMixin, unittest.TestCase):
+klasse DumpTests(MemoryDatabaseMixin, unittest.TestCase):
 
     def test_table_dump(self):
         expected_sqls = [
@@ -173,7 +173,7 @@ class DumpTests(MemoryDatabaseMixin, unittest.TestCase):
 
     def test_unorderable_row(self):
         # iterdump() should be able to cope with unorderable row types (issue #15545)
-        class UnorderableRow:
+        klasse UnorderableRow:
             def __init__(self, cursor, row):
                 self.row = row
             def __getitem__(self, index):

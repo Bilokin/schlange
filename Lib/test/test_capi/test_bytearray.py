@@ -6,17 +6,17 @@ from _testcapi import PY_SSIZE_T_MIN, PY_SSIZE_T_MAX
 
 NULL = None
 
-class ByteArraySubclass(bytearray):
+klasse ByteArraySubclass(bytearray):
     pass
 
-class BytesLike:
+klasse BytesLike:
     def __init__(self, value):
         self.value = value
     def __bytes__(self):
         return self.value
 
 
-class CAPITest(unittest.TestCase):
+klasse CAPITest(unittest.TestCase):
     def test_check(self):
         # Test PyByteArray_Check()
         check = _testlimitedcapi.bytearray_check

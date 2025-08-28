@@ -28,7 +28,7 @@ TRIPLETS = [(0, 0, 0), (0, 0, 1), (0, 0, 2),
 
 # Helper classes
 
-class BasicIterClass:
+klasse BasicIterClass:
     def __init__(self, n):
         self.n = n
         self.i = 0
@@ -41,13 +41,13 @@ class BasicIterClass:
     def __iter__(self):
         return self
 
-class IteratingSequenceClass:
+klasse IteratingSequenceClass:
     def __init__(self, n):
         self.n = n
     def __iter__(self):
         return BasicIterClass(self.n)
 
-class IteratorProxyClass:
+klasse IteratorProxyClass:
     def __init__(self, i):
         self.i = i
     def __next__(self):
@@ -55,7 +55,7 @@ class IteratorProxyClass:
     def __iter__(self):
         return self
 
-class SequenceClass:
+klasse SequenceClass:
     def __init__(self, n):
         self.n = n
     def __getitem__(self, i):
@@ -64,29 +64,29 @@ class SequenceClass:
         else:
             raise IndexError
 
-class SequenceProxyClass:
+klasse SequenceProxyClass:
     def __init__(self, s):
         self.s = s
     def __getitem__(self, i):
         return self.s[i]
 
-class UnlimitedSequenceClass:
+klasse UnlimitedSequenceClass:
     def __getitem__(self, i):
         return i
 
-class DefaultIterClass:
+klasse DefaultIterClass:
     pass
 
-class NoIterClass:
+klasse NoIterClass:
     def __getitem__(self, i):
         return i
     __iter__ = None
 
-class BadIterableClass:
+klasse BadIterableClass:
     def __iter__(self):
         raise ZeroDivisionError
 
-class CallableIterClass:
+klasse CallableIterClass:
     def __init__(self):
         self.i = 0
     def __call__(self):
@@ -96,7 +96,7 @@ class CallableIterClass:
             raise IndexError # Emergency stop
         return i
 
-class EmptyIterClass:
+klasse EmptyIterClass:
     def __len__(self):
         return 0
     def __getitem__(self, i):
@@ -104,7 +104,7 @@ class EmptyIterClass:
 
 # Main test suite
 
-class TestCase(unittest.TestCase):
+klasse TestCase(unittest.TestCase):
 
     # Helper to check that an iterator returns a given sequence
     def check_iterator(self, it, seq, pickle=True):
@@ -186,19 +186,19 @@ class TestCase(unittest.TestCase):
         res = [(i, j, k) for i in seq for j in seq for k in seq]
         self.assertEqual(res, TRIPLETS)
 
-    # Test a class with __iter__ in a for loop
+    # Test a klasse with __iter__ in a for loop
     def test_iter_class_for(self):
         self.check_for_loop(IteratingSequenceClass(10), list(range(10)))
 
-    # Test a class with __iter__ with explicit iter()
+    # Test a klasse with __iter__ with explicit iter()
     def test_iter_class_iter(self):
         self.check_iterator(iter(IteratingSequenceClass(10)), list(range(10)))
 
-    # Test for loop on a sequence class without __iter__
+    # Test for loop on a sequence klasse without __iter__
     def test_seq_class_for(self):
         self.check_for_loop(SequenceClass(10), list(range(10)))
 
-    # Test iter() on a sequence class without __iter__
+    # Test iter() on a sequence klasse without __iter__
     def test_seq_class_iter(self):
         self.check_iterator(iter(SequenceClass(10)), list(range(10)))
 
@@ -261,7 +261,7 @@ class TestCase(unittest.TestCase):
         def run(builtin_name, item, sentinel=None):
             it = iter(item) if sentinel is None else iter(item, sentinel)
 
-            class CustomStr:
+            klasse CustomStr:
                 def __init__(self, name, iterator):
                     self.name = name
                     self.iterator = iterator
@@ -321,9 +321,9 @@ class TestCase(unittest.TestCase):
                     del builtins_dict[key]
                 builtins_dict[key] = func
 
-    # Test a new_style class with __iter__ but no next() method
+    # Test a new_style klasse with __iter__ but no next() method
     def test_new_style_iter_class(self):
-        class IterClass(object):
+        klasse IterClass(object):
             def __iter__(self):
                 return self
         self.assertRaises(TypeError, iter, IterClass())
@@ -394,7 +394,7 @@ class TestCase(unittest.TestCase):
 
     # Test exception propagation through sequence iterator
     def test_exception_sequence(self):
-        class MySequenceClass(SequenceClass):
+        klasse MySequenceClass(SequenceClass):
             def __getitem__(self, i):
                 if i == 10:
                     raise RuntimeError
@@ -410,7 +410,7 @@ class TestCase(unittest.TestCase):
 
     # Test for StopIteration from __getitem__
     def test_stop_sequence(self):
-        class MySequenceClass(SequenceClass):
+        klasse MySequenceClass(SequenceClass):
             def __getitem__(self, i):
                 if i == 10:
                     raise StopIteration
@@ -541,7 +541,7 @@ class TestCase(unittest.TestCase):
         self.assertRaises(TypeError, filter, None, list)
         self.assertRaises(TypeError, filter, None, 42)
 
-        class Boolean:
+        klasse Boolean:
             def __init__(self, truth):
                 self.truth = truth
             def __bool__(self):
@@ -549,11 +549,11 @@ class TestCase(unittest.TestCase):
         bTrue = Boolean(True)
         bFalse = Boolean(False)
 
-        class Seq:
+        klasse Seq:
             def __init__(self, *args):
                 self.vals = args
             def __iter__(self):
-                class SeqIter:
+                klasse SeqIter:
                     def __init__(self, vals):
                         self.vals = vals
                         self.i = 0
@@ -653,7 +653,7 @@ class TestCase(unittest.TestCase):
         self.assertEqual(list(d.items()), list(zip(d, d.values())))
 
         # Generate all ints starting at constructor arg.
-        class IntsFrom:
+        klasse IntsFrom:
             def __init__(self, start):
                 self.i = start
 
@@ -686,17 +686,17 @@ class TestCase(unittest.TestCase):
         self.assertEqual(list(zip(range(5))), [(i,) for i in range(5)])
 
         # Classes that lie about their lengths.
-        class NoGuessLen5:
+        klasse NoGuessLen5:
             def __getitem__(self, i):
                 if i >= 5:
                     raise IndexError
                 return i
 
-        class Guess3Len5(NoGuessLen5):
+        klasse Guess3Len5(NoGuessLen5):
             def __len__(self):
                 return 3
 
-        class Guess30Len5(NoGuessLen5):
+        klasse Guess30Len5(NoGuessLen5):
             def __len__(self):
                 return 30
 
@@ -716,9 +716,9 @@ class TestCase(unittest.TestCase):
 
     def test_unicode_join_endcase(self):
 
-        # This class inserts a Unicode object into its argument's natural
+        # This klasse inserts a Unicode object into its argument's natural
         # iteration, in the 3rd position.
-        class OhPhooey:
+        klasse OhPhooey:
             def __init__(self, seq):
                 self.it = iter(seq)
                 self.i = 0
@@ -895,7 +895,7 @@ class TestCase(unittest.TestCase):
             f.writelines({})
 
             # Try a big chunk too.
-            class Iterator:
+            klasse Iterator:
                 def __init__(self, start, finish):
                     self.start = start
                     self.finish = finish
@@ -911,7 +911,7 @@ class TestCase(unittest.TestCase):
                 def __iter__(self):
                     return self
 
-            class Whatever:
+            klasse Whatever:
                 def __init__(self, start, finish):
                     self.start = start
                     self.finish = finish
@@ -990,7 +990,7 @@ class TestCase(unittest.TestCase):
 
     @cpython_only
     def test_ref_counting_behavior(self):
-        class C(object):
+        klasse C(object):
             count = 0
             def __new__(cls):
                 cls.count += 1
@@ -1089,7 +1089,7 @@ class TestCase(unittest.TestCase):
 
     def test_3720(self):
         # Avoid a crash, when an iterator deletes its next() method.
-        class BadIterator(object):
+        klasse BadIterator(object):
             def __iter__(self):
                 return self
             def __next__(self):

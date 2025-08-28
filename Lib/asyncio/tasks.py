@@ -53,7 +53,7 @@ def all_tasks(loop=None):
             if futures._get_loop(t) is loop and not t.done()}
 
 
-class Task(futures._PyFuture):  # Inherit Python Task implementation
+klasse Task(futures._PyFuture):  # Inherit Python Task implementation
                                 # from a Python Future implementation.
 
     """A coroutine wrapped in a Future."""
@@ -551,7 +551,7 @@ async def _cancel_and_wait(fut):
         fut.remove_done_callback(cb)
 
 
-class _AsCompletedIterator:
+klasse _AsCompletedIterator:
     """Iterator of awaitables representing tasks of asyncio.as_completed.
 
     As an asynchronous iterator, iteration yields futures as they finish. As a
@@ -736,7 +736,7 @@ def ensure_future(coro_or_future, *, loop=None):
         raise
 
 
-class _GatheringFuture(futures.Future):
+klasse _GatheringFuture(futures.Future):
     """Helper for gather().
 
     This overrides cancel() to cancel all the children and act more

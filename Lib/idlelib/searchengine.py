@@ -16,7 +16,7 @@ def get(root):
     return root._searchengine
 
 
-class SearchEngine:
+klasse SearchEngine:
     """Handles searching a text widget for Find, Replace, and Grep."""
 
     def __init__(self, root):
@@ -90,7 +90,7 @@ class SearchEngine:
         return prog
 
     def report_error(self, pat, msg, col=None):
-        # Derived class could override this with something fancier
+        # Derived klasse could override this with something fancier
         msg = "Error: " + str(msg)
         if pat:
             msg = msg + "\nPattern: " + str(pat)

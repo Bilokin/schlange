@@ -18,11 +18,11 @@ except AttributeError:
     CALLBACK_FUNCTYPE = CFUNCTYPE
 
 
-class POINT(Structure):
+klasse POINT(Structure):
     _fields_ = [("x", c_int), ("y", c_int)]
 
 
-class BasicWrapTestCase(unittest.TestCase):
+klasse BasicWrapTestCase(unittest.TestCase):
     def wrap(self, param):
         return param
 
@@ -162,7 +162,7 @@ class BasicWrapTestCase(unittest.TestCase):
         self.assertEqual(got, expected)
 
     def test_struct_return_2H(self):
-        class S2H(Structure):
+        klasse S2H(Structure):
             _fields_ = [("x", c_short),
                         ("y", c_short)]
         dll.ret_2h_func.restype = S2H
@@ -176,7 +176,7 @@ class BasicWrapTestCase(unittest.TestCase):
         self.assertEqual((inp.x, inp.y), (99, 88))
 
     def test_struct_return_8H(self):
-        class S8I(Structure):
+        klasse S8I(Structure):
             _fields_ = [("a", c_int),
                         ("b", c_int),
                         ("c", c_int),
@@ -194,7 +194,7 @@ class BasicWrapTestCase(unittest.TestCase):
 
     @skip_if_sanitizer('requires deep stack', thread=True)
     def test_recursive_as_param(self):
-        class A:
+        klasse A:
             pass
 
         a = A()
@@ -211,15 +211,15 @@ class BasicWrapTestCase(unittest.TestCase):
                     c_type.from_param(a)
 
 
-class AsParamWrapper:
+klasse AsParamWrapper:
     def __init__(self, param):
         self._as_parameter_ = param
 
-class AsParamWrapperTestCase(BasicWrapTestCase):
+klasse AsParamWrapperTestCase(BasicWrapTestCase):
     wrap = AsParamWrapper
 
 
-class AsParamPropertyWrapper:
+klasse AsParamPropertyWrapper:
     def __init__(self, param):
         self._param = param
 
@@ -227,11 +227,11 @@ class AsParamPropertyWrapper:
         return self._param
     _as_parameter_ = property(getParameter)
 
-class AsParamPropertyWrapperTestCase(BasicWrapTestCase):
+klasse AsParamPropertyWrapperTestCase(BasicWrapTestCase):
     wrap = AsParamPropertyWrapper
 
 
-class AsParamNestedWrapperTestCase(BasicWrapTestCase):
+klasse AsParamNestedWrapperTestCase(BasicWrapTestCase):
     """Test that _as_parameter_ is evaluated recursively.
 
     The _as_parameter_ attribute can be another object which

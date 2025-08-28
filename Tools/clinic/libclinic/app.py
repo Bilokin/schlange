@@ -34,7 +34,7 @@ parsers: dict[str, Callable[[Clinic], Parser]] = {
 }
 
 
-class Clinic:
+klasse Clinic:
 
     presets_text = """
 preset block
@@ -263,7 +263,7 @@ impl_definition block
                 parent = cls = parent.classes[field]
             else:
                 fullname = ".".join(fields[idx:])
-                fail(f"Parent class or module {fullname!r} does not exist.")
+                fail(f"Parent klasse or module {fullname!r} does not exist.")
 
         return module, cls
 

@@ -36,7 +36,7 @@ def get_tb():
 
 TRACEBACK_CODE = get_tb().tb_frame.f_code
 
-class _C:
+klasse _C:
     def __init__(self, x):
         self.x = x == 1
 
@@ -944,7 +944,7 @@ dis_extended_arg_quick_code = """\
 """% (extended_arg_quick.__code__.co_firstlineno,
       extended_arg_quick.__code__.co_firstlineno + 1,)
 
-class DisTestBase(unittest.TestCase):
+klasse DisTestBase(unittest.TestCase):
     "Common utilities for DisTests and TestDisTraceback"
 
     def strip_addresses(self, text):
@@ -968,7 +968,7 @@ class DisTestBase(unittest.TestCase):
         self.assertEqual(got, expected)
 
 
-class DisTests(DisTestBase):
+klasse DisTests(DisTestBase):
 
     maxDiff = None
 
@@ -1444,7 +1444,7 @@ class DisTests(DisTestBase):
         self.assertEqual(assem_op, assem_cache)
 
 
-class DisWithFileTests(DisTests):
+klasse DisWithFileTests(DisTests):
 
     # Run the tests again, using the file arg instead of print
     def get_disassembly(self, func, lasti=-1, wrapper=True, **kwargs):
@@ -1611,7 +1611,7 @@ Variable names:
    0: a
    1: d"""
 
-class CodeInfoTests(unittest.TestCase):
+klasse CodeInfoTests(unittest.TestCase):
     test_pairs = [
       (dis.code_info, code_info_code_info),
       (tricky, code_info_tricky),
@@ -1959,14 +1959,14 @@ expected_opinfo_simple = [
 ]
 
 
-class InstructionTestCase(BytecodeTestCase):
+klasse InstructionTestCase(BytecodeTestCase):
 
     def assertInstructionsEqual(self, instrs_1, instrs_2, /):
         instrs_1 = [instr_1._replace(positions=None, cache_info=None) for instr_1 in instrs_1]
         instrs_2 = [instr_2._replace(positions=None, cache_info=None) for instr_2 in instrs_2]
         self.assertEqual(instrs_1, instrs_2)
 
-class InstructionTests(InstructionTestCase):
+klasse InstructionTests(InstructionTestCase):
 
     def __init__(self, *args):
         super().__init__(*args)
@@ -2187,7 +2187,7 @@ class InstructionTests(InstructionTestCase):
         self.assertEqual(f(opcode.opmap["CALL_INTRINSIC_1"], 2, *args), (2, 'INTRINSIC_IMPORT_STAR'))
 
     def test_custom_arg_resolver(self):
-        class MyArgResolver(dis.ArgResolver):
+        klasse MyArgResolver(dis.ArgResolver):
             def offset_from_jump_arg(self, op, arg, offset):
                 return arg + 1
 
@@ -2287,7 +2287,7 @@ class InstructionTests(InstructionTestCase):
 
 # get_instructions has its own tests above, so can rely on it to validate
 # the object oriented API
-class BytecodeTests(InstructionTestCase, DisTestBase):
+klasse BytecodeTests(InstructionTestCase, DisTestBase):
 
     def test_instantiation(self):
         # Test with function, method, code string and code object
@@ -2349,7 +2349,7 @@ class BytecodeTests(InstructionTestCase, DisTestBase):
         for instr, positions in zip(bytecode, bytecode.codeobj.co_positions()):
             assert instr.positions == positions
 
-class TestBytecodeTestCase(BytecodeTestCase):
+klasse TestBytecodeTestCase(BytecodeTestCase):
     def test_assert_not_in_with_op_not_in_bytecode(self):
         code = compile("a = 1", "<string>", "exec")
         self.assertInBytecode(code, "LOAD_SMALL_INT", 1)
@@ -2367,7 +2367,7 @@ class TestBytecodeTestCase(BytecodeTestCase):
         with self.assertRaises(AssertionError):
             self.assertNotInBytecode(code, "LOAD_SMALL_INT", 1)
 
-class TestFinderMethods(unittest.TestCase):
+klasse TestFinderMethods(unittest.TestCase):
     def test__find_imports(self):
         cases = [
             ("import a.b.c", ('a.b.c', 0, None)),
@@ -2418,7 +2418,7 @@ class TestFinderMethods(unittest.TestCase):
         self.assertEqual(offsets, [0, 2])
 
 
-class TestDisTraceback(DisTestBase):
+klasse TestDisTraceback(DisTestBase):
     def setUp(self) -> None:
         try:  # We need to clean up existing tracebacks
             del sys.last_exc
@@ -2455,7 +2455,7 @@ class TestDisTraceback(DisTestBase):
         self.do_disassembly_compare(self.get_disassembly(tb), dis_traceback)
 
 
-class TestDisTracebackWithFile(TestDisTraceback):
+klasse TestDisTracebackWithFile(TestDisTraceback):
     # Run the `distb` tests again, using the file arg instead of print
     def get_disassembly(self, tb):
         output = io.StringIO()
@@ -2489,7 +2489,7 @@ def _unroll_caches_as_Instructions(instrs, show_caches=False):
                                 False, None, None, instr.positions)
 
 
-class TestDisCLI(unittest.TestCase):
+klasse TestDisCLI(unittest.TestCase):
 
     def setUp(self):
         self.filename = tempfile.mktemp()

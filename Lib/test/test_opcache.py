@@ -26,7 +26,7 @@ def have_dict_key_versions():
     return _testinternalcapi.get_next_dict_keys_version() < limit
 
 
-class TestBase(unittest.TestCase):
+klasse TestBase(unittest.TestCase):
     def assert_specialized(self, f, opname):
         instructions = dis.get_instructions(f, adaptive=True)
         opnames = {instruction.opname for instruction in instructions}
@@ -38,18 +38,18 @@ class TestBase(unittest.TestCase):
         self.assertNotIn(opname, opnames)
 
 
-class TestLoadSuperAttrCache(unittest.TestCase):
+klasse TestLoadSuperAttrCache(unittest.TestCase):
     def test_descriptor_not_double_executed_on_spec_fail(self):
         calls = []
-        class Descriptor:
+        klasse Descriptor:
             def __get__(self, instance, owner):
                 calls.append((instance, owner))
                 return lambda: 1
 
-        class C:
+        klasse C:
             d = Descriptor()
 
-        class D(C):
+        klasse D(C):
             def f(self):
                 return super().d()
 
@@ -62,12 +62,12 @@ class TestLoadSuperAttrCache(unittest.TestCase):
         self.assertEqual(calls, [(d, D)])
 
 
-class TestLoadAttrCache(unittest.TestCase):
+klasse TestLoadAttrCache(unittest.TestCase):
     def test_descriptor_added_after_optimization(self):
-        class Descriptor:
+        klasse Descriptor:
             pass
 
-        class C:
+        klasse C:
             def __init__(self):
                 self.x = 1
             x = Descriptor()
@@ -85,13 +85,13 @@ class TestLoadAttrCache(unittest.TestCase):
         self.assertEqual(f(o), 2)
 
     def test_metaclass_descriptor_added_after_optimization(self):
-        class Descriptor:
+        klasse Descriptor:
             pass
 
-        class Metaclass(type):
+        klasse Metaclass(type):
             attribute = Descriptor()
 
-        class Class(metaclass=Metaclass):
+        klasse Class(metaclass=Metaclass):
             attribute = True
 
         def __get__(self, instance, owner):
@@ -113,12 +113,12 @@ class TestLoadAttrCache(unittest.TestCase):
             self.assertFalse(f())
 
     def test_metaclass_descriptor_shadows_class_attribute(self):
-        class Metaclass(type):
+        klasse Metaclass(type):
             @property
             def attribute(self):
                 return True
 
-        class Class(metaclass=Metaclass):
+        klasse Class(metaclass=Metaclass):
             attribute = False
 
         def f():
@@ -128,10 +128,10 @@ class TestLoadAttrCache(unittest.TestCase):
             self.assertTrue(f())
 
     def test_metaclass_set_descriptor_after_optimization(self):
-        class Metaclass(type):
+        klasse Metaclass(type):
             pass
 
-        class Class(metaclass=Metaclass):
+        klasse Class(metaclass=Metaclass):
             attribute = True
 
         @property
@@ -150,12 +150,12 @@ class TestLoadAttrCache(unittest.TestCase):
             self.assertFalse(f())
 
     def test_metaclass_del_descriptor_after_optimization(self):
-        class Metaclass(type):
+        klasse Metaclass(type):
             @property
             def attribute(self):
                 return True
 
-        class Class(metaclass=Metaclass):
+        klasse Class(metaclass=Metaclass):
             attribute = False
 
         def f():
@@ -170,7 +170,7 @@ class TestLoadAttrCache(unittest.TestCase):
             self.assertFalse(f())
 
     def test_type_descriptor_shadows_attribute_method(self):
-        class Class:
+        klasse Class:
             mro = None
 
         def f():
@@ -180,7 +180,7 @@ class TestLoadAttrCache(unittest.TestCase):
             self.assertIsNone(f())
 
     def test_type_descriptor_shadows_attribute_member(self):
-        class Class:
+        klasse Class:
             __base__ = None
 
         def f():
@@ -190,7 +190,7 @@ class TestLoadAttrCache(unittest.TestCase):
             self.assertIs(f(), object)
 
     def test_type_descriptor_shadows_attribute_getset(self):
-        class Class:
+        klasse Class:
             __name__ = "Spam"
 
         def f():
@@ -200,11 +200,11 @@ class TestLoadAttrCache(unittest.TestCase):
             self.assertEqual(f(), "Class")
 
     def test_metaclass_getattribute(self):
-        class Metaclass(type):
+        klasse Metaclass(type):
             def __getattribute__(self, name):
                 return True
 
-        class Class(metaclass=Metaclass):
+        klasse Class(metaclass=Metaclass):
             attribute = False
 
         def f():
@@ -214,17 +214,17 @@ class TestLoadAttrCache(unittest.TestCase):
             self.assertTrue(f())
 
     def test_metaclass_swap(self):
-        class OldMetaclass(type):
+        klasse OldMetaclass(type):
             @property
             def attribute(self):
                 return True
 
-        class NewMetaclass(type):
+        klasse NewMetaclass(type):
             @property
             def attribute(self):
                 return False
 
-        class Class(metaclass=OldMetaclass):
+        klasse Class(metaclass=OldMetaclass):
             pass
 
         def f():
@@ -239,10 +239,10 @@ class TestLoadAttrCache(unittest.TestCase):
             self.assertFalse(f())
 
     def test_load_shadowing_slot_should_raise_type_error(self):
-        class Class:
+        klasse Class:
             __slots__ = ("slot",)
 
-        class Sneaky:
+        klasse Sneaky:
             __slots__ = ("shadowed",)
             shadowing = Class.slot
 
@@ -257,10 +257,10 @@ class TestLoadAttrCache(unittest.TestCase):
                 f(o)
 
     def test_store_shadowing_slot_should_raise_type_error(self):
-        class Class:
+        klasse Class:
             __slots__ = ("slot",)
 
-        class Sneaky:
+        klasse Sneaky:
             __slots__ = ("shadowed",)
             shadowing = Class.slot
 
@@ -274,10 +274,10 @@ class TestLoadAttrCache(unittest.TestCase):
                 f(o)
 
     def test_load_borrowed_slot_should_not_crash(self):
-        class Class:
+        klasse Class:
             __slots__ = ("slot",)
 
-        class Sneaky:
+        klasse Sneaky:
             borrowed = Class.slot
 
         def f(o):
@@ -290,10 +290,10 @@ class TestLoadAttrCache(unittest.TestCase):
                 f(o)
 
     def test_store_borrowed_slot_should_not_crash(self):
-        class Class:
+        klasse Class:
             __slots__ = ("slot",)
 
-        class Sneaky:
+        klasse Sneaky:
             borrowed = Class.slot
 
         def f(o):
@@ -306,12 +306,12 @@ class TestLoadAttrCache(unittest.TestCase):
                 f(o)
 
 
-class TestLoadMethodCache(unittest.TestCase):
+klasse TestLoadMethodCache(unittest.TestCase):
     def test_descriptor_added_after_optimization(self):
-        class Descriptor:
+        klasse Descriptor:
             pass
 
-        class Class:
+        klasse Class:
             attribute = Descriptor()
 
         def __get__(self, instance, owner):
@@ -339,13 +339,13 @@ class TestLoadMethodCache(unittest.TestCase):
             self.assertFalse(f())
 
     def test_metaclass_descriptor_added_after_optimization(self):
-        class Descriptor:
+        klasse Descriptor:
             pass
 
-        class Metaclass(type):
+        klasse Metaclass(type):
             attribute = Descriptor()
 
-        class Class(metaclass=Metaclass):
+        klasse Class(metaclass=Metaclass):
             def attribute():
                 return True
 
@@ -368,12 +368,12 @@ class TestLoadMethodCache(unittest.TestCase):
             self.assertFalse(f())
 
     def test_metaclass_descriptor_shadows_class_attribute(self):
-        class Metaclass(type):
+        klasse Metaclass(type):
             @property
             def attribute(self):
                 return lambda: True
 
-        class Class(metaclass=Metaclass):
+        klasse Class(metaclass=Metaclass):
             def attribute():
                 return False
 
@@ -384,10 +384,10 @@ class TestLoadMethodCache(unittest.TestCase):
             self.assertTrue(f())
 
     def test_metaclass_set_descriptor_after_optimization(self):
-        class Metaclass(type):
+        klasse Metaclass(type):
             pass
 
-        class Class(metaclass=Metaclass):
+        klasse Class(metaclass=Metaclass):
             def attribute():
                 return True
 
@@ -407,12 +407,12 @@ class TestLoadMethodCache(unittest.TestCase):
             self.assertFalse(f())
 
     def test_metaclass_del_descriptor_after_optimization(self):
-        class Metaclass(type):
+        klasse Metaclass(type):
             @property
             def attribute(self):
                 return lambda: True
 
-        class Class(metaclass=Metaclass):
+        klasse Class(metaclass=Metaclass):
             def attribute():
                 return False
 
@@ -428,7 +428,7 @@ class TestLoadMethodCache(unittest.TestCase):
             self.assertFalse(f())
 
     def test_type_descriptor_shadows_attribute_method(self):
-        class Class:
+        klasse Class:
             def mro():
                 return ["Spam", "eggs"]
 
@@ -439,7 +439,7 @@ class TestLoadMethodCache(unittest.TestCase):
             self.assertEqual(f(), ["Spam", "eggs"])
 
     def test_type_descriptor_shadows_attribute_member(self):
-        class Class:
+        klasse Class:
             def __base__():
                 return "Spam"
 
@@ -450,11 +450,11 @@ class TestLoadMethodCache(unittest.TestCase):
             self.assertNotEqual(f(), "Spam")
 
     def test_metaclass_getattribute(self):
-        class Metaclass(type):
+        klasse Metaclass(type):
             def __getattribute__(self, name):
                 return lambda: True
 
-        class Class(metaclass=Metaclass):
+        klasse Class(metaclass=Metaclass):
             def attribute():
                 return False
 
@@ -465,17 +465,17 @@ class TestLoadMethodCache(unittest.TestCase):
             self.assertTrue(f())
 
     def test_metaclass_swap(self):
-        class OldMetaclass(type):
+        klasse OldMetaclass(type):
             @property
             def attribute(self):
                 return lambda: True
 
-        class NewMetaclass(type):
+        klasse NewMetaclass(type):
             @property
             def attribute(self):
                 return lambda: False
 
-        class Class(metaclass=OldMetaclass):
+        klasse Class(metaclass=OldMetaclass):
             pass
 
         def f():
@@ -490,12 +490,12 @@ class TestLoadMethodCache(unittest.TestCase):
             self.assertFalse(f())
 
 
-class InitTakesArg:
+klasse InitTakesArg:
     def __init__(self, arg):
         self.arg = arg
 
 
-class TestCallCache(TestBase):
+klasse TestCallCache(TestBase):
     def test_too_many_defaults_0(self):
         def f():
             pass
@@ -526,7 +526,7 @@ class TestCallCache(TestBase):
     @requires_jit_disabled
     @requires_specialization_ft
     def test_assign_init_code(self):
-        class MyClass:
+        klasse MyClass:
             def __init__(self):
                 pass
 
@@ -572,14 +572,14 @@ def make_deferred_ref_count_obj():
     """Create an object that uses deferred reference counting.
 
     Only objects that use deferred refence counting may be stored in inline
-    caches in free-threaded builds. This constructs a new class named Foo,
+    caches in free-threaded builds. This constructs a new klasse named Foo,
     which uses deferred reference counting.
     """
     return type("Foo", (object,), {})
 
 
 @threading_helper.requires_working_threading()
-class TestRacesDoNotCrash(TestBase):
+klasse TestRacesDoNotCrash(TestBase):
     # Careful with these. Bigger numbers have a higher chance of catching bugs,
     # but you can also burn through a *ton* of type/dict/function versions:
     ITEMS = 1000
@@ -622,7 +622,7 @@ class TestRacesDoNotCrash(TestBase):
     @requires_specialization_ft
     def test_binary_subscr_getitem(self):
         def get_items():
-            class C:
+            klasse C:
                 __getitem__ = lambda self, item: None
 
             items = []
@@ -730,7 +730,7 @@ class TestRacesDoNotCrash(TestBase):
     @requires_specialization_ft
     def test_load_attr_class(self):
         def get_items():
-            class C:
+            klasse C:
                 a = make_deferred_ref_count_obj()
 
             items = []
@@ -760,10 +760,10 @@ class TestRacesDoNotCrash(TestBase):
     @requires_specialization_ft
     def test_load_attr_class_with_metaclass_check(self):
         def get_items():
-            class Meta(type):
+            klasse Meta(type):
                 pass
 
-            class C(metaclass=Meta):
+            klasse C(metaclass=Meta):
                 a = make_deferred_ref_count_obj()
 
             items = []
@@ -793,7 +793,7 @@ class TestRacesDoNotCrash(TestBase):
     @requires_specialization_ft
     def test_load_attr_getattribute_overridden(self):
         def get_items():
-            class C:
+            klasse C:
                 __getattribute__ = lambda self, name: None
 
             items = []
@@ -823,7 +823,7 @@ class TestRacesDoNotCrash(TestBase):
     @requires_specialization_ft
     def test_load_attr_instance_value(self):
         def get_items():
-            class C:
+            klasse C:
                 pass
 
             items = []
@@ -847,7 +847,7 @@ class TestRacesDoNotCrash(TestBase):
     @requires_specialization_ft
     def test_load_attr_method_lazy_dict(self):
         def get_items():
-            class C(Exception):
+            klasse C(Exception):
                 m = lambda self: None
 
             items = []
@@ -877,7 +877,7 @@ class TestRacesDoNotCrash(TestBase):
     @requires_specialization_ft
     def test_load_attr_method_no_dict(self):
         def get_items():
-            class C:
+            klasse C:
                 __slots__ = ()
                 m = lambda self: None
 
@@ -908,7 +908,7 @@ class TestRacesDoNotCrash(TestBase):
     @requires_specialization_ft
     def test_load_attr_method_with_values(self):
         def get_items():
-            class C:
+            klasse C:
                 m = lambda self: None
 
             items = []
@@ -963,7 +963,7 @@ class TestRacesDoNotCrash(TestBase):
     @requires_specialization_ft
     def test_load_attr_property(self):
         def get_items():
-            class C:
+            klasse C:
                 a = property(lambda self: None)
 
             items = []
@@ -993,7 +993,7 @@ class TestRacesDoNotCrash(TestBase):
     @requires_specialization_ft
     def test_load_attr_slot(self):
         def get_items():
-            class C:
+            klasse C:
                 __slots__ = ["a", "b"]
 
             items = []
@@ -1020,7 +1020,7 @@ class TestRacesDoNotCrash(TestBase):
     @requires_specialization_ft
     def test_load_attr_with_hint(self):
         def get_items():
-            class C:
+            klasse C:
                 pass
 
             items = []
@@ -1071,7 +1071,7 @@ class TestRacesDoNotCrash(TestBase):
     @requires_specialization
     def test_store_attr_instance_value(self):
         def get_items():
-            class C:
+            klasse C:
                 pass
 
             items = []
@@ -1094,7 +1094,7 @@ class TestRacesDoNotCrash(TestBase):
     @requires_specialization
     def test_store_attr_with_hint(self):
         def get_items():
-            class C:
+            klasse C:
                 pass
 
             items = []
@@ -1165,11 +1165,11 @@ class TestRacesDoNotCrash(TestBase):
         opname = "UNPACK_SEQUENCE_LIST"
         self.assert_races_do_not_crash(opname, get_items, read, write)
 
-class C:
+klasse C:
     pass
 
 @requires_specialization
-class TestInstanceDict(unittest.TestCase):
+klasse TestInstanceDict(unittest.TestCase):
 
     def setUp(self):
         c = C()
@@ -1257,7 +1257,7 @@ class TestInstanceDict(unittest.TestCase):
         )
 
     def test_dict_dematerialization_subclass(self):
-        class D(dict): pass
+        klasse D(dict): pass
         c = C()
         c.a = 1
         c.b = 2
@@ -1282,7 +1282,7 @@ class TestInstanceDict(unittest.TestCase):
               0   | 'b' | 'value'
               1   | 'b' | NULL
             """
-            class A:
+            klasse A:
                 pass
             a = A()
             a.a = 1
@@ -1293,7 +1293,7 @@ class TestInstanceDict(unittest.TestCase):
             d['b'] = "value"
             return d
 
-        class NoInlineAorB:
+        klasse NoInlineAorB:
             pass
         for i in range(ord('c'), ord('z')):
             setattr(NoInlineAorB(), chr(i), i)
@@ -1318,7 +1318,7 @@ class TestInstanceDict(unittest.TestCase):
         self.assertEqual(test_obj.b, 0)
 
 
-class TestSpecializer(TestBase):
+klasse TestSpecializer(TestBase):
 
     @cpython_only
     @requires_specialization_ft
@@ -1445,7 +1445,7 @@ class TestSpecializer(TestBase):
     def test_load_super_attr(self):
         """Ensure that LOAD_SUPER_ATTR is specialized as expected."""
 
-        class A:
+        klasse A:
             def __init__(self):
                 meth = super().__init__
                 super().__init__()
@@ -1512,7 +1512,7 @@ class TestSpecializer(TestBase):
                 except StopIteration:
                     break
 
-        class CM:
+        klasse CM:
             async def __aenter__(self):
                 return self
 
@@ -1547,7 +1547,7 @@ class TestSpecializer(TestBase):
     @cpython_only
     @requires_specialization_ft
     def test_store_attr_slot(self):
-        class C:
+        klasse C:
             __slots__ = ['x']
 
         def set_slot(n):
@@ -1568,7 +1568,7 @@ class TestSpecializer(TestBase):
     @cpython_only
     @requires_specialization_ft
     def test_store_attr_instance_value(self):
-        class C:
+        klasse C:
             pass
 
         @reset_code
@@ -1590,7 +1590,7 @@ class TestSpecializer(TestBase):
     @cpython_only
     @requires_specialization_ft
     def test_store_attr_with_hint(self):
-        class C:
+        klasse C:
             pass
 
         c = C()
@@ -1763,7 +1763,7 @@ class TestSpecializer(TestBase):
         self.assert_no_opcode(binary_subscr_str_int, "BINARY_OP")
 
         def binary_subscr_getitems():
-            class C:
+            klasse C:
                 def __init__(self, val):
                     self.val = val
                 def __getitem__(self, item):

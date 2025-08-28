@@ -4,11 +4,11 @@ from pegen import grammar
 from pegen.grammar import Alt, GrammarVisitor, Rhs, Rule
 
 
-class ValidationError(Exception):
+klasse ValidationError(Exception):
     pass
 
 
-class GrammarValidator(GrammarVisitor):
+klasse GrammarValidator(GrammarVisitor):
     def __init__(self, grammar: grammar.Grammar) -> None:
         self.grammar = grammar
         self.rulename: Optional[str] = None
@@ -19,7 +19,7 @@ class GrammarValidator(GrammarVisitor):
         self.rulename = None
 
 
-class SubRuleValidator(GrammarValidator):
+klasse SubRuleValidator(GrammarValidator):
     def visit_Rhs(self, node: Rhs) -> None:
         for index, alt in enumerate(node.alts):
             alts_to_consider = node.alts[index + 1 :]
@@ -34,7 +34,7 @@ class SubRuleValidator(GrammarValidator):
             )
 
 
-class RaiseRuleValidator(GrammarValidator):
+klasse RaiseRuleValidator(GrammarValidator):
     def visit_Alt(self, node: Alt) -> None:
         if self.rulename and self.rulename.startswith('invalid'):
             # raising is allowed in invalid rules

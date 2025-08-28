@@ -99,13 +99,13 @@ __all__ = [
 # ____________________________________________________________
 
 @dataclass
-class ReadlineConfig:
+klasse ReadlineConfig:
     readline_completer: Completer | None = None
     completer_delims: frozenset[str] = frozenset(" \t\n`~!@#$%^&*()-=+[{]}\\|;:'\",<>/?")
     module_completer: ModuleCompleter = field(default_factory=make_default_module_completer)
 
 @dataclass(kw_only=True)
-class ReadlineAlikeReader(historical_reader.HistoricalReader, CompletingReader):
+klasse ReadlineAlikeReader(historical_reader.HistoricalReader, CompletingReader):
     # Class fields
     assume_immutable_completions = False
     use_brackets = False
@@ -272,7 +272,7 @@ def _should_auto_indent(buffer: list[str], pos: int) -> bool:
     return last_char == ":"
 
 
-class maybe_accept(commands.Command):
+klasse maybe_accept(commands.Command):
     def do(self) -> None:
         r: ReadlineAlikeReader
         r = self.reader  # type: ignore[assignment]
@@ -319,7 +319,7 @@ class maybe_accept(commands.Command):
             r.insert("\n")
 
 
-class backspace_dedent(commands.Command):
+klasse backspace_dedent(commands.Command):
     def do(self) -> None:
         r = self.reader
         b = r.buffer
@@ -345,7 +345,7 @@ class backspace_dedent(commands.Command):
 
 
 @dataclass(slots=True)
-class _ReadlineWrapper:
+klasse _ReadlineWrapper:
     f_in: int = -1
     f_out: int = -1
     reader: ReadlineAlikeReader | None = field(default=None, repr=False)

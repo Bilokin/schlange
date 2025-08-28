@@ -122,7 +122,7 @@ def save_raw_data(data: RawData, json_output: TextIO):
 
 
 @dataclass(frozen=True)
-class Doc:
+klasse Doc:
     text: str
     doc: str
 
@@ -139,13 +139,13 @@ class Doc:
         )
 
 
-class Count(int):
+klasse Count(int):
     def markdown(self) -> str:
         return format(self, ",d")
 
 
 @dataclass(frozen=True)
-class Ratio:
+klasse Ratio:
     num: int
     den: int | None = None
     percentage: bool = True
@@ -171,7 +171,7 @@ class Ratio:
             return f"{self.num / self.den:,.02f}"
 
 
-class DiffRatio(Ratio):
+klasse DiffRatio(Ratio):
     def __init__(self, base: int | str, head: int | str):
         if isinstance(base, str) or isinstance(head, str):
             super().__init__(0, 0)
@@ -179,7 +179,7 @@ class DiffRatio(Ratio):
             super().__init__(head - base, base)
 
 
-class OpcodeStats:
+klasse OpcodeStats:
     """
     Manages the data related to specific set of opcodes, e.g. tier1 (with prefix
     "opcode") or tier2 (with prefix "uops").
@@ -363,7 +363,7 @@ class OpcodeStats:
         return counts
 
 
-class Stats:
+klasse Stats:
     def __init__(self, data: RawData):
         self._data = data
 
@@ -612,7 +612,7 @@ class Stats:
         ]
 
 
-class JoinMode(enum.Enum):
+klasse JoinMode(enum.Enum):
     # Join using the first column as a key
     SIMPLE = 0
     # Join using the first column as a key, and indicate the change in the
@@ -626,7 +626,7 @@ class JoinMode(enum.Enum):
     CHANGE_NO_SORT = 3
 
 
-class Table:
+klasse Table:
     """
     A Table defines how to convert a set of Stats into a specific set of rows
     displaying some aspect of the data.
@@ -709,7 +709,7 @@ class Table:
             return cols, rows
 
 
-class Section:
+klasse Section:
     """
     A Section defines a section of the output document.
     """

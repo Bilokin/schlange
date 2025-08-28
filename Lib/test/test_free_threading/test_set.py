@@ -7,7 +7,7 @@ from test.support import threading_helper
 
 
 @threading_helper.requires_working_threading()
-class TestSet(TestCase):
+klasse TestSet(TestCase):
     def test_repr_clear(self):
         """Test repr() of a set while another thread is calling clear()"""
         NUM_ITERS = 10

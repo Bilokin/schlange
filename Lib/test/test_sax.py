@@ -51,7 +51,7 @@ requires_nonascii_filenames = unittest.skipUnless(
 
 ns_uri = "http://www.python.org/xml-ns/saxtest/"
 
-class XmlTestBase(unittest.TestCase):
+klasse XmlTestBase(unittest.TestCase):
     def verify_empty_attrs(self, attrs):
         self.assertRaises(KeyError, attrs.getValue, "attr")
         self.assertRaises(KeyError, attrs.getValueByQName, "attr")
@@ -121,7 +121,7 @@ def make_xml_file(doc, encoding, decl_encoding=...):
         f.write(xml_str(doc, decl_encoding))
 
 
-class ParseTest(unittest.TestCase):
+klasse ParseTest(unittest.TestCase):
     data = '<money value="$\xa3\u20ac\U0001017b">$\xa3\u20ac\U0001017b</money>'
 
     def tearDown(self):
@@ -245,7 +245,7 @@ class ParseTest(unittest.TestCase):
         with self.assertRaises(SAXException):
             self.check_parseString(xml_bytes(self.data, 'iso-8859-1', None))
 
-class MakeParserTest(unittest.TestCase):
+klasse MakeParserTest(unittest.TestCase):
     def test_make_parser2(self):
         # Creating parsers several times in a row should succeed.
         # Testing this because there have been failures of this kind
@@ -298,7 +298,7 @@ class MakeParserTest(unittest.TestCase):
 #
 # ===========================================================================
 
-class SaxutilsTest(unittest.TestCase):
+klasse SaxutilsTest(unittest.TestCase):
     # ===== escape
     def test_escape_basic(self):
         self.assertEqual(escape("Donald Duck & Co"), "Donald Duck &amp; Co")
@@ -350,7 +350,7 @@ class SaxutilsTest(unittest.TestCase):
         p = make_parser(['xml.parsers.no_such_parser'])
 
 
-class PrepareInputSourceTest(unittest.TestCase):
+klasse PrepareInputSourceTest(unittest.TestCase):
 
     def setUp(self):
         self.file = os_helper.TESTFN
@@ -433,7 +433,7 @@ class PrepareInputSourceTest(unittest.TestCase):
 
 # ===== XMLGenerator
 
-class XmlgenTest:
+klasse XmlgenTest:
     def test_xmlgen_basic(self):
         result = self.ioclass()
         gen = XMLGenerator(result)
@@ -786,7 +786,7 @@ class XmlgenTest:
         self.assertEqual(result.getvalue(),
             self.xml('<foo a="1.0">Hello</foo><bar b="2.0"></bar>')[len(self.xml('')):])
 
-class StringXmlgenTest(XmlgenTest, unittest.TestCase):
+klasse StringXmlgenTest(XmlgenTest, unittest.TestCase):
     ioclass = StringIO
 
     def xml(self, doc, encoding='iso-8859-1'):
@@ -794,15 +794,15 @@ class StringXmlgenTest(XmlgenTest, unittest.TestCase):
 
     test_xmlgen_unencodable = None
 
-class BytesXmlgenTest(XmlgenTest, unittest.TestCase):
+klasse BytesXmlgenTest(XmlgenTest, unittest.TestCase):
     ioclass = BytesIO
 
     def xml(self, doc, encoding='iso-8859-1'):
         return ('<?xml version="1.0" encoding="%s"?>\n%s' %
                 (encoding, doc)).encode(encoding, 'xmlcharrefreplace')
 
-class WriterXmlgenTest(BytesXmlgenTest):
-    class ioclass(list):
+klasse WriterXmlgenTest(BytesXmlgenTest):
+    klasse ioclass(list):
         write = list.append
         closed = False
 
@@ -816,7 +816,7 @@ class WriterXmlgenTest(BytesXmlgenTest):
         def getvalue(self):
             return b''.join(self)
 
-class StreamWriterXmlgenTest(XmlgenTest, unittest.TestCase):
+klasse StreamWriterXmlgenTest(XmlgenTest, unittest.TestCase):
     def ioclass(self):
         raw = BytesIO()
         writer = codecs.getwriter('ascii')(raw, 'xmlcharrefreplace')
@@ -827,7 +827,7 @@ class StreamWriterXmlgenTest(XmlgenTest, unittest.TestCase):
         return ('<?xml version="1.0" encoding="%s"?>\n%s' %
                 (encoding, doc)).encode('ascii', 'xmlcharrefreplace')
 
-class StreamReaderWriterXmlgenTest(XmlgenTest, unittest.TestCase):
+klasse StreamReaderWriterXmlgenTest(XmlgenTest, unittest.TestCase):
     fname = os_helper.TESTFN + '-codecs'
 
     def ioclass(self):
@@ -853,7 +853,7 @@ class StreamReaderWriterXmlgenTest(XmlgenTest, unittest.TestCase):
 start = b'<?xml version="1.0" encoding="iso-8859-1"?>\n'
 
 
-class XMLFilterBaseTest(unittest.TestCase):
+klasse XMLFilterBaseTest(unittest.TestCase):
     def test_filter_basic(self):
         result = BytesIO()
         gen = XMLGenerator(result)
@@ -878,7 +878,7 @@ class XMLFilterBaseTest(unittest.TestCase):
 with open(TEST_XMLFILE_OUT, 'rb') as f:
     xml_test_out = f.read()
 
-class ExpatReaderTest(XmlTestBase):
+klasse ExpatReaderTest(XmlTestBase):
 
     # ===== XMLReader support
 
@@ -945,7 +945,7 @@ class ExpatReaderTest(XmlTestBase):
 
     # ===== DTDHandler support
 
-    class TestDTDHandler:
+    klasse TestDTDHandler:
 
         def __init__(self):
             self._notations = []
@@ -958,7 +958,7 @@ class ExpatReaderTest(XmlTestBase):
             self._entities.append((name, publicId, systemId, ndata))
 
 
-    class TestEntityRecorder:
+    klasse TestEntityRecorder:
         def __init__(self):
             self.entities = []
 
@@ -1016,7 +1016,7 @@ class ExpatReaderTest(XmlTestBase):
 
     # ===== EntityResolver support
 
-    class TestEntityResolver:
+    klasse TestEntityResolver:
 
         def resolveEntity(self, publicId, systemId):
             inpsrc = InputSource()
@@ -1057,7 +1057,7 @@ class ExpatReaderTest(XmlTestBase):
 
     # ===== Attributes support
 
-    class AttrGatherer(ContentHandler):
+    klasse AttrGatherer(ContentHandler):
 
         def startElement(self, name, attrs):
             self._attrs = attrs
@@ -1314,7 +1314,7 @@ class ExpatReaderTest(XmlTestBase):
 #
 # ===========================================================================
 
-class ErrorReportingTest(unittest.TestCase):
+klasse ErrorReportingTest(unittest.TestCase):
     def test_expat_inpsource_location(self):
         parser = create_parser()
         parser.setContentHandler(ContentHandler()) # do nothing
@@ -1353,7 +1353,7 @@ class ErrorReportingTest(unittest.TestCase):
         str(SAXParseException("message", None,
                               self.DummyLocator(None, None)))
 
-    class DummyLocator:
+    klasse DummyLocator:
         def __init__(self, lineno, colno):
             self._lineno = lineno
             self._colno = colno
@@ -1376,7 +1376,7 @@ class ErrorReportingTest(unittest.TestCase):
 #
 # ===========================================================================
 
-class XmlReaderTest(XmlTestBase):
+klasse XmlReaderTest(XmlTestBase):
 
     # ===== AttributesImpl
     def test_attrs_empty(self):
@@ -1409,7 +1409,7 @@ class XmlReaderTest(XmlTestBase):
         self.assertEqual(attrs.getQNameByName((ns_uri, "attr")), "ns:attr")
 
 
-class LexicalHandlerTest(unittest.TestCase):
+klasse LexicalHandlerTest(unittest.TestCase):
     def setUp(self):
         self.parser = None
 
@@ -1465,7 +1465,7 @@ class LexicalHandlerTest(unittest.TestCase):
         self.comments = []
 
     def test_handlers(self):
-        class TestLexicalHandler(LexicalHandler):
+        klasse TestLexicalHandler(LexicalHandler):
             def __init__(self, test_harness, *args, **kwargs):
                 super().__init__(*args, **kwargs)
                 self.test_harness = test_harness
@@ -1498,7 +1498,7 @@ class LexicalHandlerTest(unittest.TestCase):
         self.assertEqual(f' {self.specified_comment[0]} ', self.comments[0])
 
 
-class CDATAHandlerTest(unittest.TestCase):
+klasse CDATAHandlerTest(unittest.TestCase):
     def setUp(self):
         self.parser = None
         self.specified_chars = []
@@ -1521,7 +1521,7 @@ class CDATAHandlerTest(unittest.TestCase):
         self.in_cdata = False
 
     def test_handlers(self):
-        class TestLexicalHandler(LexicalHandler):
+        klasse TestLexicalHandler(LexicalHandler):
             def __init__(self, test_harness, *args, **kwargs):
                 super().__init__(*args, **kwargs)
                 self.test_harness = test_harness
@@ -1532,7 +1532,7 @@ class CDATAHandlerTest(unittest.TestCase):
             def endCDATA(self):
                 self.test_harness.in_cdata = False
 
-        class TestCharHandler(ContentHandler):
+        klasse TestCharHandler(ContentHandler):
             def __init__(self, test_harness, *args, **kwargs):
                 super().__init__(*args, **kwargs)
                 self.test_harness = test_harness
@@ -1558,7 +1558,7 @@ class CDATAHandlerTest(unittest.TestCase):
         self.assertEqual(self.char_index, 2)
 
 
-class TestModuleAll(unittest.TestCase):
+klasse TestModuleAll(unittest.TestCase):
     def test_all(self):
         extra = (
             'ContentHandler',

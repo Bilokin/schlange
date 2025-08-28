@@ -37,7 +37,7 @@ except ImportError:
     pty = None
 
 
-class ReplTestCase(TestCase):
+klasse ReplTestCase(TestCase):
     def setUp(self):
         if not has_subprocess_support:
             raise SkipTest("test module requires subprocess")
@@ -149,7 +149,7 @@ class ReplTestCase(TestCase):
         return output, exit_code
 
 
-class TestCursorPosition(TestCase):
+klasse TestCursorPosition(TestCase):
     def prepare_reader(self, events):
         console = FakeConsole(events)
         config = ReadlineConfig(readline_completer=None)
@@ -444,7 +444,7 @@ class TestCursorPosition(TestCase):
         self.assertEqual(reader.cxy, (1, 1))
 
 
-class TestPyReplAutoindent(TestCase):
+klasse TestPyReplAutoindent(TestCase):
     def prepare_reader(self, events):
         console = FakeConsole(events)
         config = ReadlineConfig(readline_completer=None)
@@ -619,7 +619,7 @@ class TestPyReplAutoindent(TestCase):
         self.assertEqual(output, output_code)
 
 
-class TestPyReplOutput(ScreenEqualMixin, TestCase):
+klasse TestPyReplOutput(ScreenEqualMixin, TestCase):
     def prepare_reader(self, events):
         console = FakeConsole(events)
         config = ReadlineConfig(readline_completer=None)
@@ -835,7 +835,7 @@ class TestPyReplOutput(ScreenEqualMixin, TestCase):
         self.assert_screen_equal(reader, "import os", clean=True)
 
 
-class TestPyReplCompleter(TestCase):
+klasse TestPyReplCompleter(TestCase):
     def prepare_reader(self, events, namespace):
         console = FakeConsole(events)
         config = ReadlineConfig()
@@ -910,7 +910,7 @@ class TestPyReplCompleter(TestCase):
     @patch("_pyrepl.readline._ReadlineWrapper.get_reader")
     @patch("sys.stderr", new_callable=io.StringIO)
     def test_completion_with_warnings(self, mock_stderr, mock_get_reader):
-        class Dummy:
+        klasse Dummy:
             @property
             def test_func(self):
                 import warnings
@@ -928,7 +928,7 @@ class TestPyReplCompleter(TestCase):
         self.assertEqual(mock_stderr.getvalue(), "")
 
 
-class TestPyReplModuleCompleter(TestCase):
+klasse TestPyReplModuleCompleter(TestCase):
     def setUp(self):
         import importlib
         # Make iter_modules() search only the standard library.
@@ -1204,7 +1204,7 @@ class TestPyReplModuleCompleter(TestCase):
             with self.subTest(code=code):
                 self.assertEqual(actual, None)
 
-class TestPasteEvent(TestCase):
+klasse TestPasteEvent(TestCase):
     def prepare_reader(self, events):
         console = FakeConsole(events)
         config = ReadlineConfig(readline_completer=None)
@@ -1364,7 +1364,7 @@ class TestPasteEvent(TestCase):
 
 
 @skipUnless(pty, "requires pty")
-class TestDumbTerminal(ReplTestCase):
+klasse TestDumbTerminal(ReplTestCase):
     def test_dumb_terminal_exits_cleanly(self):
         env = os.environ.copy()
         env.pop('PYTHON_BASIC_REPL', None)
@@ -1378,7 +1378,7 @@ class TestDumbTerminal(ReplTestCase):
 
 @skipUnless(pty, "requires pty")
 @skipIf((os.environ.get("TERM") or "dumb") == "dumb", "can't use pyrepl in dumb terminal")
-class TestMain(ReplTestCase):
+klasse TestMain(ReplTestCase):
     def setUp(self):
         # Cleanup from PYTHON* variables to isolate from local
         # user settings, see #121359.  Such variables should be

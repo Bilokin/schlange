@@ -67,7 +67,7 @@ multiline_sig = [
 
 # line 68
 def func69():
-    class cls70:
+    klasse cls70:
         def func71():
             pass
     return cls70
@@ -79,7 +79,7 @@ def func77(): pass
 extra79 = 'stop'
 
 # line 81
-class cls82:
+klasse cls82:
     def func83(): pass
 (extra84, stuff84) = 'xy'
 extra85 = 'stop'
@@ -91,7 +91,7 @@ def func88():
 
 # line 92
 def f():
-    class X:
+    klasse X:
         def g():
             "doc"
             return 42
@@ -114,7 +114,7 @@ def keyword_only_arg(*, arg):
 def func114():
     return 115
 
-class ClassWithMethod:
+klasse ClassWithMethod:
     def method(self):
         pass
 
@@ -132,57 +132,57 @@ def real():
     return 20
 
 #line 134
-class cls135:
+klasse cls135:
     def func136():
         def func137():
             never_reached1
             never_reached2
 
 # line 141
-class cls142:
+klasse cls142:
     a = """
-class cls149:
+klasse cls149:
     ...
 """
 
 # line 148
-class cls149:
+klasse cls149:
 
     def func151(self):
         pass
 
 '''
-class cls160:
+klasse cls160:
     pass
 '''
 
 # line 159
-class cls160:
+klasse cls160:
 
     def func162(self):
         pass
 
 # line 165
-class cls166:
+klasse cls166:
     a = '''
-    class cls175:
+    klasse cls175:
         ...
     '''
 
 # line 172
-class cls173:
+klasse cls173:
 
-    class cls175:
+    klasse cls175:
         pass
 
 # line 178
-class cls179:
+klasse cls179:
     pass
 
 # line 182
-class cls183:
+klasse cls183:
 
-    class cls185:
+    klasse cls185:
 
         def func186(self):
             pass
@@ -193,54 +193,54 @@ def class_decorator(cls):
 # line 193
 @class_decorator
 @class_decorator
-class cls196:
+klasse cls196:
 
     @class_decorator
     @class_decorator
-    class cls200:
+    klasse cls200:
         pass
 
-class cls203:
-    class cls204:
-        class cls205:
+klasse cls203:
+    klasse cls204:
+        klasse cls205:
             pass
-    class cls207:
-        class cls205:
+    klasse cls207:
+        klasse cls205:
             pass
 
 # line 211
 def func212():
-    class cls213:
+    klasse cls213:
         pass
     return cls213
 
 # line 217
-class cls213:
+klasse cls213:
     def func219(self):
-        class cls220:
+        klasse cls220:
             pass
         return cls220
 
 # line 224
 async def func225():
-    class cls226:
+    klasse cls226:
         pass
     return cls226
 
 # line 230
-class cls226:
+klasse cls226:
     async def func232(self):
-        class cls233:
+        klasse cls233:
             pass
         return cls233
 
 if True:
-    class cls238:
-        class cls239:
+    klasse cls238:
+        klasse cls239:
             '''if clause cls239'''
 else:
-    class cls238:
-        class cls239:
+    klasse cls238:
+        klasse cls239:
             '''else clause 239'''
             pass
 
@@ -293,45 +293,45 @@ nested_lambda = (
 
 # line 294
 if True:
-    class cls296:
+    klasse cls296:
         def f():
             pass
 else:
-    class cls296:
+    klasse cls296:
         def g():
             pass
 
 # line 304
 if False:
-    class cls310:
+    klasse cls310:
         def f():
             pass
 else:
-    class cls310:
+    klasse cls310:
         def g():
             pass
 
 # line 314
-class ClassWithCodeObject:
+klasse ClassWithCodeObject:
     import sys
     code = sys._getframe(0).f_code
 
 import enum
 
 # line 321
-class enum322(enum.Enum):
+klasse enum322(enum.Enum):
     A = 'a'
 
 # line 325
-class enum326(enum.IntEnum):
+klasse enum326(enum.IntEnum):
     A = 1
 
 # line 329
-class flag330(enum.Flag):
+klasse flag330(enum.Flag):
     A = 1
 
 # line 333
-class flag334(enum.IntFlag):
+klasse flag334(enum.IntFlag):
     A = 1
 
 # line 337
@@ -343,7 +343,7 @@ simple_flag341 = enum.IntFlag('simple_flag341', 'A')
 import typing
 
 # line 345
-class nt346(typing.NamedTuple):
+klasse nt346(typing.NamedTuple):
     x: int
     y: int
 
@@ -351,7 +351,7 @@ class nt346(typing.NamedTuple):
 nt351 = typing.NamedTuple('nt351', (('x', int), ('y', int)))
 
 # line 353
-class td354(typing.TypedDict):
+klasse td354(typing.TypedDict):
     x: int
     y: int
 
@@ -362,7 +362,7 @@ import dataclasses
 
 # line 363
 @dataclasses.dataclass
-class dc364:
+klasse dc364:
     x: int
     y: int
 

@@ -21,7 +21,7 @@ def wait_and_raise(e):
     raise Exception('this is an exception')
 
 
-class WaitTests:
+klasse WaitTests:
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_20369(self):
         # See https://bugs.python.org/issue20369
@@ -180,7 +180,7 @@ class WaitTests:
         future.result()  # wait for job to finish
 
 
-class ThreadPoolWaitTests(ThreadPoolMixin, WaitTests, BaseTestCase):
+klasse ThreadPoolWaitTests(ThreadPoolMixin, WaitTests, BaseTestCase):
 
     def test_pending_calls_race(self):
         # Issue #14406: multi-threaded race condition when waiting on all

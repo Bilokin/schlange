@@ -10,7 +10,7 @@ from concurrent import interpreters
 from .utils import TestBase
 
 
-class StressTests(TestBase):
+klasse StressTests(TestBase):
 
     # In these tests we generally want a lot of interpreters,
     # but not so many that any test takes too long.

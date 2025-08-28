@@ -45,10 +45,10 @@ from tkinter import simpledialog
 # GUI framework classes
 ##############################################################################
 
-class BaseGUITestRunner(object):
-    """Subclass this class to create a GUI TestRunner that uses a specific
-    windowing toolkit. The class takes care of running tests in the correct
-    manner, and making callbacks to the derived class to obtain information
+klasse BaseGUITestRunner(object):
+    """Subclass this klasse to create a GUI TestRunner that uses a specific
+    windowing toolkit. The klasse takes care of running tests in the correct
+    manner, and making callbacks to the derived klasse to obtain information
     or signal that events have occurred.
     """
     def __init__(self, *args, **kwargs):
@@ -152,7 +152,7 @@ class BaseGUITestRunner(object):
         pass
 
 
-class GUITestResult(unittest.TestResult):
+klasse GUITestResult(unittest.TestResult):
     """A TestResult that makes callbacks to its associated GUI TestRunner.
     Used by BaseGUITestRunner. Need not be created directly.
     """
@@ -185,8 +185,8 @@ class GUITestResult(unittest.TestResult):
         self.callback.notifyTestStarted(test)
 
 
-class RollbackImporter:
-    """This tricky little class is used to make sure that modules under test
+klasse RollbackImporter:
+    """This tricky little klasse is used to make sure that modules under test
     will be reloaded the next time they are imported.
     """
     def __init__(self):
@@ -203,7 +203,7 @@ class RollbackImporter:
 # Tkinter GUI
 ##############################################################################
 
-class DiscoverSettingsDialog(simpledialog.Dialog):
+klasse DiscoverSettingsDialog(simpledialog.Dialog):
     """
     Dialog box for prompting test discovery settings
     """
@@ -241,7 +241,7 @@ class DiscoverSettingsDialog(simpledialog.Dialog):
         self.top_level_dir = self.dirVar.get()
         self.test_file_glob_pattern = self.testPatternVar.get()
 
-class TkTestRunner(BaseGUITestRunner):
+klasse TkTestRunner(BaseGUITestRunner):
     """An implementation of BaseGUITestRunner using Tkinter.
     """
     def initGUI(self, root, initialTestName):
@@ -430,7 +430,7 @@ class TkTestRunner(BaseGUITestRunner):
         window.destroy()
 
 
-class ProgressBar(tk.Frame):
+klasse ProgressBar(tk.Frame):
     """A simple progress bar that shows a percentage progress in
     the given colour."""
 

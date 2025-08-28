@@ -7,7 +7,7 @@ from tkinter import Tcl, TclError
 
 test_support.requires('gui')
 
-class TkLoadTest(unittest.TestCase):
+klasse TkLoadTest(unittest.TestCase):
 
     @unittest.skipIf('DISPLAY' not in os.environ, 'No $DISPLAY set.')
     def testLoadTk(self):

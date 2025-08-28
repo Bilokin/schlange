@@ -24,7 +24,7 @@ else:
     rmtree = os_helper.rmtree
 
 
-class LocalPathGround:
+klasse LocalPathGround:
     can_symlink = can_symlink
 
     def __init__(self, path_cls):
@@ -90,7 +90,7 @@ class LocalPathGround:
             return f.read()
 
 
-class LocalPathInfo(PathInfo):
+klasse LocalPathInfo(PathInfo):
     """
     Simple implementation of PathInfo for a local path
     """
@@ -134,9 +134,9 @@ class LocalPathInfo(PathInfo):
         return self._is_symlink
 
 
-class ReadableLocalPath(_ReadablePath, LexicalPath):
+klasse ReadableLocalPath(_ReadablePath, LexicalPath):
     """
-    Simple implementation of a ReadablePath class for local filesystem paths.
+    Simple implementation of a ReadablePath klasse for local filesystem paths.
     """
     __slots__ = ('info',)
     __fspath__ = LexicalPath.__vfspath__
@@ -155,9 +155,9 @@ class ReadableLocalPath(_ReadablePath, LexicalPath):
         return self.with_segments(os.readlink(self))
 
 
-class WritableLocalPath(_WritablePath, LexicalPath):
+klasse WritableLocalPath(_WritablePath, LexicalPath):
     """
-    Simple implementation of a WritablePath class for local filesystem paths.
+    Simple implementation of a WritablePath klasse for local filesystem paths.
     """
 
     __slots__ = ()

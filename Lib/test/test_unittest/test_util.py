@@ -2,13 +2,13 @@ import unittest
 from unittest.util import safe_repr, sorted_list_difference, unorderable_list_difference
 
 
-class TestUtil(unittest.TestCase):
+klasse TestUtil(unittest.TestCase):
     def test_safe_repr(self):
-        class RaisingRepr:
+        klasse RaisingRepr:
             def __repr__(self):
                 raise ValueError("Invalid repr()")
 
-        class LongRepr:
+        klasse LongRepr:
             def __repr__(self):
                 return 'x' * 100
 

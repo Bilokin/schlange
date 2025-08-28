@@ -9,7 +9,7 @@ from typing import (
 )
 
 
-class TypeParamsInvalidTest(unittest.TestCase):
+klasse TypeParamsInvalidTest(unittest.TestCase):
     def test_name_collisions(self):
         check_syntax_error(self, 'type TA1[A, **A] = None', "duplicate type parameter 'A'")
         check_syntax_error(self, 'type T[A, *A] = None', "duplicate type parameter 'A'")
@@ -23,7 +23,7 @@ class TypeParamsInvalidTest(unittest.TestCase):
 
     def test_name_non_collision_03(self):
         ns = run_code("""
-            class Outer[A]:
+            klasse Outer[A]:
                 type TA1[A] = None
             """
         )
@@ -32,7 +32,7 @@ class TypeParamsInvalidTest(unittest.TestCase):
         self.assertIsNot(outer_A, inner_A)
 
 
-class TypeParamsAccessTest(unittest.TestCase):
+klasse TypeParamsAccessTest(unittest.TestCase):
     def test_alias_access_01(self):
         ns = run_code("type TA1[A, B] = dict[A, B]")
         alias = ns["TA1"]
@@ -51,7 +51,7 @@ class TypeParamsAccessTest(unittest.TestCase):
 
     def test_alias_access_03(self):
         ns = run_code("""
-            class Outer[A]:
+            klasse Outer[A]:
                 def inner[B](self):
                     type TA1[C] = TA1[A, B] | int
                     return TA1
@@ -69,7 +69,7 @@ class TypeParamsAccessTest(unittest.TestCase):
         self.assertEqual(alias.__value__, alias[A, B] | int)
 
 
-class TypeParamsAliasValueTest(unittest.TestCase):
+klasse TypeParamsAliasValueTest(unittest.TestCase):
     def test_alias_value_01(self):
         type TA1 = int
 
@@ -88,7 +88,7 @@ class TypeParamsAliasValueTest(unittest.TestCase):
         self.assertEqual(TA2.__type_params__, ())
 
     def test_alias_value_02(self):
-        class Parent[A]:
+        klasse Parent[A]:
             type TA1[B] = dict[A, B]
 
         self.assertIsInstance(Parent.TA1, TypeAliasType)
@@ -189,7 +189,7 @@ class TypeParamsAliasValueTest(unittest.TestCase):
             ExprException.__value__
 
 
-class TypeAliasConstructorTest(unittest.TestCase):
+klasse TypeAliasConstructorTest(unittest.TestCase):
     def test_basic(self):
         TA = TypeAliasType("TA", int)
         self.assertEqual(TA.__name__, "TA")
@@ -285,14 +285,14 @@ class TypeAliasConstructorTest(unittest.TestCase):
             TypeAliasType("TA", list, type_params=42)
 
 
-class TypeAliasTypeTest(unittest.TestCase):
+klasse TypeAliasTypeTest(unittest.TestCase):
     def test_immutable(self):
         with self.assertRaises(TypeError):
             TypeAliasType.whatever = "not allowed"
 
     def test_no_subclassing(self):
         with self.assertRaisesRegex(TypeError, "not an acceptable base type"):
-            class MyAlias(TypeAliasType):
+            klasse MyAlias(TypeAliasType):
                 pass
 
     def test_union(self):
@@ -322,7 +322,7 @@ class TypeAliasTypeTest(unittest.TestCase):
         unpacked = (*Alias,)[0]
         self.assertEqual(unpacked, Unpack[Alias])
 
-        class Foo[*Ts]:
+        klasse Foo[*Ts]:
             pass
 
         x = Foo[str, *Alias]
@@ -341,7 +341,7 @@ type ConstrainedGenericAlias[LongName: (str, bytes)] = list[LongName]
 type AllTypesAlias[A, *B, **C] = Callable[C, A] | tuple[*B]
 
 
-class TypeAliasPickleTest(unittest.TestCase):
+klasse TypeAliasPickleTest(unittest.TestCase):
     def test_pickling(self):
         things_to_test = [
             SimpleAlias,
@@ -396,9 +396,9 @@ class TypeAliasPickleTest(unittest.TestCase):
                         pickle.dumps(thing, protocol=proto)
 
 
-class TypeParamsExoticGlobalsTest(unittest.TestCase):
+klasse TypeParamsExoticGlobalsTest(unittest.TestCase):
     def test_exec_with_unusual_globals(self):
-        class customdict(dict):
+        klasse customdict(dict):
             def __missing__(self, key):
                 return key
 

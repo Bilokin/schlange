@@ -1,4 +1,4 @@
-class Delegator:
+klasse Delegator:
 
     def __init__(self, delegate=None):
         self.delegate = delegate

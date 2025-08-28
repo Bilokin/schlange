@@ -6,7 +6,7 @@ from . import events
 _global_lock = threading.Lock()
 
 
-class _LoopBoundMixin:
+klasse _LoopBoundMixin:
     _loop = None
 
     def _get_loop(self):

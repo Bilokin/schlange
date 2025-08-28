@@ -18,7 +18,7 @@ work. One should use importlib as the public-facing version of this module.
 
 # When editing this code be aware that code executed at import time CANNOT
 # reference any injected objects! This includes not only global code but also
-# anything specified at the class level.
+# anything specified at the klasse level.
 
 def _object_name(obj):
     try:
@@ -52,14 +52,14 @@ def _new_module(name):
 # Module-level locking ########################################################
 
 # For a list that can have a weakref to it.
-class _List(list):
+klasse _List(list):
     __slots__ = ("__weakref__",)
 
 
 # Copied from weakref.py with some simplifications and modifications unique to
 # bootstrapping importlib. Many methods were simply deleting for simplicity, so if they
 # are needed in the future they may work if simply copied back in.
-class _WeakValueDictionary:
+klasse _WeakValueDictionary:
 
     def __init__(self):
         self_weakref = _weakref.ref(self)
@@ -67,7 +67,7 @@ class _WeakValueDictionary:
         # Inlined to avoid issues with inheriting from _weakref.ref before _weakref is
         # set by _setup(). Since there's only one instance of this class, this is
         # not expensive.
-        class KeyedRef(_weakref.ref):
+        klasse KeyedRef(_weakref.ref):
 
             __slots__ = "key",
 
@@ -153,7 +153,7 @@ _module_locks = {}
 _blocking_on = None
 
 
-class _BlockingOnManager:
+klasse _BlockingOnManager:
     """A context manager responsible to updating ``_blocking_on``."""
     def __init__(self, thread_id, lock):
         self.thread_id = thread_id
@@ -175,7 +175,7 @@ class _BlockingOnManager:
         self.blocked_on.remove(self.lock)
 
 
-class _DeadlockError(RuntimeError):
+klasse _DeadlockError(RuntimeError):
     pass
 
 
@@ -223,7 +223,7 @@ def _has_deadlocked(target_id, *, seen_ids, candidate_ids, blocking_on):
     return False
 
 
-class _ModuleLock:
+klasse _ModuleLock:
     """A recursive lock implementation which is able to detect deadlocks
     (e.g. thread 1 trying to take locks A then B, and thread 2 trying to
     take locks B then A).
@@ -389,7 +389,7 @@ class _ModuleLock:
         return f'_ModuleLock({self.name!r}) at {id(self)}'
 
 
-class _DummyModuleLock:
+klasse _DummyModuleLock:
     """A simple _ModuleLock equivalent for Python builds without
     multi-threading support."""
 
@@ -410,7 +410,7 @@ class _DummyModuleLock:
         return f'_DummyModuleLock({self.name!r}) at {id(self)}'
 
 
-class _ModuleLockManager:
+klasse _ModuleLockManager:
 
     def __init__(self, name):
         self._name = name
@@ -562,7 +562,7 @@ def _module_repr(module):
         return f'<module {name!r} from {filename!r}>'
 
 
-class ModuleSpec:
+klasse ModuleSpec:
     """The specification for a module, used for loading.
 
     A module's spec is the source for information about the module.  For
@@ -971,11 +971,11 @@ def _load(spec):
 
 # Loaders #####################################################################
 
-class BuiltinImporter:
+klasse BuiltinImporter:
 
     """Meta path import for built-in modules.
 
-    All methods are either class or static methods to avoid the need to
+    All methods are either klasse or static methods to avoid the need to
     instantiate the class.
 
     """
@@ -1023,11 +1023,11 @@ class BuiltinImporter:
     load_module = classmethod(_load_module_shim)
 
 
-class FrozenImporter:
+klasse FrozenImporter:
 
     """Meta path import for frozen modules.
 
-    All methods are either class or static methods to avoid the need to
+    All methods are either klasse or static methods to avoid the need to
     instantiate the class.
 
     """
@@ -1218,7 +1218,7 @@ class FrozenImporter:
 
 # Import itself ###############################################################
 
-class _ImportLockContext:
+klasse _ImportLockContext:
 
     """Context manager for the import lock."""
 

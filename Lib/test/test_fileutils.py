@@ -9,7 +9,7 @@ from test.support import import_helper
 _testcapi = import_helper.import_module('_testinternalcapi')
 
 
-class PathTests(unittest.TestCase):
+klasse PathTests(unittest.TestCase):
 
     def test_capi_normalize_path(self):
         if os.name == 'nt':

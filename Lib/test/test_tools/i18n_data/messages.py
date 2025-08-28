@@ -63,7 +63,7 @@ def test():
     [_("nested string")]
 
 
-class Foo:
+klasse Foo:
     def bar(self):
         return _("baz")
 

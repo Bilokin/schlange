@@ -6,13 +6,13 @@ def is_instance(obj, klass):
     return issubclass(type(obj), klass)
 
 
-class SomeClass(object):
+klasse SomeClass(object):
     class_attribute = None
 
     def wibble(self): pass
 
 
-class X(object):
+klasse X(object):
     pass
 
 # A standin for weurkzeug.local.LocalProxy - issue 119600
@@ -20,7 +20,7 @@ def _inaccessible(*args, **kwargs):
     raise AttributeError
 
 
-class OpaqueProxy:
+klasse OpaqueProxy:
     __getattribute__ = _inaccessible
 
 

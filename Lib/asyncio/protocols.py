@@ -6,8 +6,8 @@ __all__ = (
 )
 
 
-class BaseProtocol:
-    """Common base class for protocol interfaces.
+klasse BaseProtocol:
+    """Common base klasse for protocol interfaces.
 
     Usually user implements protocols that derived from BaseProtocol
     like Protocol or ProcessProtocol.
@@ -63,11 +63,11 @@ class BaseProtocol:
         """
 
 
-class Protocol(BaseProtocol):
+klasse Protocol(BaseProtocol):
     """Interface for stream protocol.
 
     The user should implement this interface.  They can inherit from
-    this class but don't need to.  The implementations here do
+    this klasse but don't need to.  The implementations here do
     nothing (they don't raise exceptions).
 
     When the user wants to requests a transport, they pass a protocol
@@ -106,7 +106,7 @@ class Protocol(BaseProtocol):
         """
 
 
-class BufferedProtocol(BaseProtocol):
+klasse BufferedProtocol(BaseProtocol):
     """Interface for stream protocol with manual buffer control.
 
     Event methods, such as `create_server` and `create_connection`,
@@ -159,7 +159,7 @@ class BufferedProtocol(BaseProtocol):
         """
 
 
-class DatagramProtocol(BaseProtocol):
+klasse DatagramProtocol(BaseProtocol):
     """Interface for datagram protocol."""
 
     __slots__ = ()
@@ -174,7 +174,7 @@ class DatagramProtocol(BaseProtocol):
         """
 
 
-class SubprocessProtocol(BaseProtocol):
+klasse SubprocessProtocol(BaseProtocol):
     """Interface for protocol for subprocess calls."""
 
     __slots__ = ()

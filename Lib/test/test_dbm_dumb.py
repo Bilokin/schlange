@@ -23,7 +23,7 @@ def _delete_files():
         except OSError:
             pass
 
-class DumbDBMTestCase(unittest.TestCase):
+klasse DumbDBMTestCase(unittest.TestCase):
     _dict = {b'0': b'',
              b'a': b'Python:',
              b'b': b'Programming',

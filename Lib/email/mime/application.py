@@ -10,7 +10,7 @@ from email import encoders
 from email.mime.nonmultipart import MIMENonMultipart
 
 
-class MIMEApplication(MIMENonMultipart):
+klasse MIMEApplication(MIMENonMultipart):
     """Class for generating application/* MIME documents."""
 
     def __init__(self, _data, _subtype='octet-stream',

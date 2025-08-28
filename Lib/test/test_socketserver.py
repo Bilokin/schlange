@@ -61,7 +61,7 @@ def simple_subprocess(testcase):
         test.support.wait_process(pid, exitcode=72)
 
 
-class SocketServerTest(unittest.TestCase):
+klasse SocketServerTest(unittest.TestCase):
     """Test all socket servers."""
 
     def setUp(self):
@@ -89,12 +89,12 @@ class SocketServerTest(unittest.TestCase):
             return fn
 
     def make_server(self, addr, svrcls, hdlrbase):
-        class MyServer(svrcls):
+        klasse MyServer(svrcls):
             def handle_error(self, request, client_address):
                 self.close_request(request)
                 raise
 
-        class MyHandler(hdlrbase):
+        klasse MyHandler(hdlrbase):
             def handle(self):
                 line = self.rfile.readline()
                 self.wfile.write(line)
@@ -246,10 +246,10 @@ class SocketServerTest(unittest.TestCase):
     def test_shutdown(self):
         # Issue #2302: shutdown() should always succeed in making an
         # other thread leave serve_forever().
-        class MyServer(socketserver.TCPServer):
+        klasse MyServer(socketserver.TCPServer):
             pass
 
-        class MyHandler(socketserver.StreamRequestHandler):
+        klasse MyHandler(socketserver.StreamRequestHandler):
             pass
 
         threads = []
@@ -269,7 +269,7 @@ class SocketServerTest(unittest.TestCase):
             s.server_close()
 
     def test_close_immediately(self):
-        class MyServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
+        klasse MyServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
             pass
 
         server = MyServer((HOST, 0), lambda: None)
@@ -292,7 +292,7 @@ class SocketServerTest(unittest.TestCase):
         self.assertEqual(-1, server.socket.fileno())
 
 
-class ErrorHandlerTest(unittest.TestCase):
+klasse ErrorHandlerTest(unittest.TestCase):
     """Test that the servers pass normal exceptions from the handler to
     handle_error(), and that exiting exceptions like SystemExit and
     KeyboardInterrupt are not passed."""
@@ -338,7 +338,7 @@ class ErrorHandlerTest(unittest.TestCase):
             self.assertEqual(log.read(), expected)
 
 
-class BaseErrorTestServer(socketserver.TCPServer):
+klasse BaseErrorTestServer(socketserver.TCPServer):
     def __init__(self, exception):
         self.exception = exception
         super().__init__((HOST, 0), BadHandler)
@@ -358,14 +358,14 @@ class BaseErrorTestServer(socketserver.TCPServer):
         pass
 
 
-class BadHandler(socketserver.BaseRequestHandler):
+klasse BadHandler(socketserver.BaseRequestHandler):
     def handle(self):
         with open(os_helper.TESTFN, 'a') as log:
             log.write('Handler called\n')
         raise self.server.exception('Test error')
 
 
-class ThreadingErrorTestServer(socketserver.ThreadingMixIn,
+klasse ThreadingErrorTestServer(socketserver.ThreadingMixIn,
         BaseErrorTestServer):
     def __init__(self, *pos, **kw):
         self.done = threading.Event()
@@ -380,13 +380,13 @@ class ThreadingErrorTestServer(socketserver.ThreadingMixIn,
 
 
 if HAVE_FORKING:
-    class ForkingErrorTestServer(socketserver.ForkingMixIn, BaseErrorTestServer):
+    klasse ForkingErrorTestServer(socketserver.ForkingMixIn, BaseErrorTestServer):
         pass
 
 
-class SocketWriterTest(unittest.TestCase):
+klasse SocketWriterTest(unittest.TestCase):
     def test_basics(self):
-        class Handler(socketserver.StreamRequestHandler):
+        klasse Handler(socketserver.StreamRequestHandler):
             def handle(self):
                 self.server.wfile = self.wfile
                 self.server.wfile_fileno = self.wfile.fileno()
@@ -407,7 +407,7 @@ class SocketWriterTest(unittest.TestCase):
         # not truncate sends when interrupted by a Unix signal
         pthread_kill = test.support.get_attribute(signal, 'pthread_kill')
 
-        class Handler(socketserver.StreamRequestHandler):
+        klasse Handler(socketserver.StreamRequestHandler):
             def handle(self):
                 self.server.sent1 = self.wfile.write(b'write data\n')
                 # Should be sent immediately, without requiring flush()
@@ -461,7 +461,7 @@ class SocketWriterTest(unittest.TestCase):
         self.assertEqual(received2, test.support.SOCK_MAX_SIZE - 100)
 
 
-class MiscTestCase(unittest.TestCase):
+klasse MiscTestCase(unittest.TestCase):
 
     def test_all(self):
         # objects defined in the module should be in __all__
@@ -477,7 +477,7 @@ class MiscTestCase(unittest.TestCase):
         # Issue #26309: BaseServer should call shutdown_request even if
         # verify_request is False
 
-        class MyServer(socketserver.TCPServer):
+        klasse MyServer(socketserver.TCPServer):
             def verify_request(self, request, client_address):
                 return False
 
@@ -500,7 +500,7 @@ class MiscTestCase(unittest.TestCase):
         due to the saving of every request thread. Ensure that
         not all threads are kept forever.
         """
-        class MyServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
+        klasse MyServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
             pass
 
         server = MyServer((HOST, 0), socketserver.StreamRequestHandler)

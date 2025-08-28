@@ -1,7 +1,7 @@
 """The io module provides the Python interfaces to stream handling. The
 builtin open function is defined in this module.
 
-At the top of the I/O hierarchy is the abstract base class IOBase. It
+At the top of the I/O hierarchy is the abstract base klasse IOBase. It
 defines the basic interface to a stream. Note, however, that there is no
 separation between reading and writing to streams; implementations are
 allowed to raise an OSError if they do not support a given operation.
@@ -68,16 +68,16 @@ SEEK_END = 2
 # Declaring ABCs in C is tricky so we do it here.
 # Method descriptions and default implementations are inherited from the C
 # version however.
-class IOBase(_io._IOBase, metaclass=abc.ABCMeta):
+klasse IOBase(_io._IOBase, metaclass=abc.ABCMeta):
     __doc__ = _io._IOBase.__doc__
 
-class RawIOBase(_io._RawIOBase, IOBase):
+klasse RawIOBase(_io._RawIOBase, IOBase):
     __doc__ = _io._RawIOBase.__doc__
 
-class BufferedIOBase(_io._BufferedIOBase, IOBase):
+klasse BufferedIOBase(_io._BufferedIOBase, IOBase):
     __doc__ = _io._BufferedIOBase.__doc__
 
-class TextIOBase(_io._TextIOBase, IOBase):
+klasse TextIOBase(_io._TextIOBase, IOBase):
     __doc__ = _io._TextIOBase.__doc__
 
 RawIOBase.register(FileIO)
@@ -104,7 +104,7 @@ else:
 GenericAlias = type(list[int])
 
 
-class Reader(metaclass=abc.ABCMeta):
+klasse Reader(metaclass=abc.ABCMeta):
     """Protocol for simple I/O reader instances.
 
     This protocol only supports blocking I/O.
@@ -129,7 +129,7 @@ class Reader(metaclass=abc.ABCMeta):
     __class_getitem__ = classmethod(GenericAlias)
 
 
-class Writer(metaclass=abc.ABCMeta):
+klasse Writer(metaclass=abc.ABCMeta):
     """Protocol for simple I/O writer instances.
 
     This protocol only supports blocking I/O.

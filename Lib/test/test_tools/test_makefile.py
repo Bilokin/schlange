@@ -15,7 +15,7 @@ if not os.path.exists(MAKEFILE) or not os.path.isfile(MAKEFILE):
     raise unittest.SkipTest('Makefile could not be found')
 
 
-class TestMakefile(unittest.TestCase):
+klasse TestMakefile(unittest.TestCase):
     def list_test_dirs(self):
         result = []
         found_testsubdirs = False

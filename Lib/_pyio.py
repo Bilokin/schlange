@@ -68,7 +68,7 @@ def text_encoding(encoding, stacklevel=2):
 # Wrapper for builtins.open
 #
 # Trick so that open() won't become a bound method when stored
-# as a class variable (as dbm.dumb does).
+# as a klasse variable (as dbm.dumb does).
 #
 # See init_set_builtins_open() in Python/pylifecycle.c.
 @staticmethod
@@ -180,7 +180,7 @@ def open(file, mode="r", buffering=-1, encoding=None, errors=None,
     through which the standard file operations such as reading and writing
     are performed. When open() is used to open a file in a text mode ('w',
     'r', 'wt', 'rt', etc.), it returns a TextIOWrapper. When used to open
-    a file in a binary mode, the returned class varies: in read binary
+    a file in a binary mode, the returned klasse varies: in read binary
     mode, it returns a BufferedReader; in write binary and append binary
     modes, it returns a BufferedWriter, and in read/write mode, it returns
     a BufferedRandom.
@@ -299,15 +299,15 @@ except AttributeError:
 try:
     UnsupportedOperation = io.UnsupportedOperation
 except AttributeError:
-    class UnsupportedOperation(OSError, ValueError):
+    klasse UnsupportedOperation(OSError, ValueError):
         pass
 
 
-class IOBase(metaclass=abc.ABCMeta):
+klasse IOBase(metaclass=abc.ABCMeta):
 
-    """The abstract base class for all I/O classes.
+    """The abstract base klasse for all I/O classes.
 
-    This class provides dummy implementations for many methods that
+    This klasse provides dummy implementations for many methods that
     derived classes can override selectively; the default implementations
     represent a file that cannot be read, written or seeked.
 
@@ -589,9 +589,9 @@ class IOBase(metaclass=abc.ABCMeta):
 io.IOBase.register(IOBase)
 
 
-class RawIOBase(IOBase):
+klasse RawIOBase(IOBase):
 
-    """Base class for raw binary I/O."""
+    """Base klasse for raw binary I/O."""
 
     # The read() method is implemented by calling readinto(); derived
     # classes that want to support read() only need to implement
@@ -650,9 +650,9 @@ class RawIOBase(IOBase):
 io.RawIOBase.register(RawIOBase)
 
 
-class BufferedIOBase(IOBase):
+klasse BufferedIOBase(IOBase):
 
-    """Base class for buffered IO objects.
+    """Base klasse for buffered IO objects.
 
     The main difference with RawIOBase is that the read() method
     supports omitting the size argument, and does not have a default
@@ -756,7 +756,7 @@ class BufferedIOBase(IOBase):
 io.BufferedIOBase.register(BufferedIOBase)
 
 
-class _BufferedIOMixin(BufferedIOBase):
+klasse _BufferedIOMixin(BufferedIOBase):
 
     """A mixin implementation of BufferedIOBase with an underlying raw stream.
 
@@ -867,7 +867,7 @@ class _BufferedIOMixin(BufferedIOBase):
         return self.raw.isatty()
 
 
-class BytesIO(BufferedIOBase):
+klasse BytesIO(BufferedIOBase):
 
     """Buffered I/O implementation using an in-memory bytes buffer."""
 
@@ -1028,7 +1028,7 @@ class BytesIO(BufferedIOBase):
         return True
 
 
-class BufferedReader(_BufferedIOMixin):
+klasse BufferedReader(_BufferedIOMixin):
 
     """BufferedReader(raw[, buffer_size])
 
@@ -1161,7 +1161,7 @@ class BufferedReader(_BufferedIOMixin):
                 min(size, len(self._read_buf) - self._read_pos))
 
     # Implementing readinto() and readinto1() is not strictly necessary (we
-    # could rely on the base class that provides an implementation in terms of
+    # could rely on the base klasse that provides an implementation in terms of
     # read() and read1()). We do it anyway to keep the _pyio implementation
     # similar to the io implementation (which implements the methods for
     # performance reasons).
@@ -1228,7 +1228,7 @@ class BufferedReader(_BufferedIOMixin):
             self._reset_read_buf()
             return pos
 
-class BufferedWriter(_BufferedIOMixin):
+klasse BufferedWriter(_BufferedIOMixin):
 
     """A buffer for a writeable sequential RawIO object.
 
@@ -1333,7 +1333,7 @@ class BufferedWriter(_BufferedIOMixin):
                 self.raw.close()
 
 
-class BufferedRWPair(BufferedIOBase):
+klasse BufferedRWPair(BufferedIOBase):
 
     """A buffered reader and writer object together.
 
@@ -1406,7 +1406,7 @@ class BufferedRWPair(BufferedIOBase):
         return self.writer.closed
 
 
-class BufferedRandom(BufferedWriter, BufferedReader):
+klasse BufferedRandom(BufferedWriter, BufferedReader):
 
     """A buffered interface to random access streams.
 
@@ -1491,7 +1491,7 @@ def _new_buffersize(bytes_read):
     return bytes_read + addend
 
 
-class FileIO(RawIOBase):
+klasse FileIO(RawIOBase):
     _fd = -1
     _created = False
     _readable = False
@@ -1884,11 +1884,11 @@ class FileIO(RawIOBase):
             return 'wb'
 
 
-class TextIOBase(IOBase):
+klasse TextIOBase(IOBase):
 
-    """Base class for text I/O.
+    """Base klasse for text I/O.
 
-    This class provides a character and line based interface to stream
+    This klasse provides a character and line based interface to stream
     I/O.
     """
 
@@ -1951,7 +1951,7 @@ class TextIOBase(IOBase):
 io.TextIOBase.register(TextIOBase)
 
 
-class IncrementalNewlineDecoder(codecs.IncrementalDecoder):
+klasse IncrementalNewlineDecoder(codecs.IncrementalDecoder):
     r"""Codec used when reading a file in universal newlines mode.  It wraps
     another incremental decoder, translating \r\n and \r into \n.  It also
     records the types of newlines encountered.  When used with
@@ -2036,7 +2036,7 @@ class IncrementalNewlineDecoder(codecs.IncrementalDecoder):
                )[self.seennl]
 
 
-class TextIOWrapper(TextIOBase):
+klasse TextIOWrapper(TextIOBase):
 
     r"""Character and line based layer over a BufferedIOBase object, buffer.
 
@@ -2719,7 +2719,7 @@ class TextIOWrapper(TextIOBase):
             dealloc_warn(source)
 
 
-class StringIO(TextIOWrapper):
+klasse StringIO(TextIOWrapper):
     """Text I/O implementation using an in-memory buffer.
 
     The initial_value argument sets the value of object.  The newline

@@ -83,7 +83,7 @@ def _parameterize(*parameters):
     return support.subTests('kwargs', parameters, _do_cleanups=True)
 
 
-class NtpathTestCase(unittest.TestCase):
+klasse NtpathTestCase(unittest.TestCase):
     def assertPathEqual(self, path1, path2):
         if path1 == path2 or _norm(path1) == _norm(path2):
             return
@@ -93,7 +93,7 @@ class NtpathTestCase(unittest.TestCase):
         self.assertIn(_norm(path), _norm(pathset))
 
 
-class TestNtpath(NtpathTestCase):
+klasse TestNtpath(NtpathTestCase):
     def test_splitext(self):
         tester('ntpath.splitext("foo.ext")', ('foo', '.ext'))
         tester('ntpath.splitext("/foo/foo.ext")', ('/foo/foo', '.ext'))
@@ -1593,12 +1593,12 @@ class TestNtpath(NtpathTestCase):
         self.assertFalse(ntpath.isdevdrive(os_helper.TESTFN))
 
 
-class NtCommonTest(test_genericpath.CommonTest, unittest.TestCase):
+klasse NtCommonTest(test_genericpath.CommonTest, unittest.TestCase):
     pathmodule = ntpath
     attributes = ['relpath']
 
 
-class PathLikeTests(NtpathTestCase):
+klasse PathLikeTests(NtpathTestCase):
 
     path = ntpath
 

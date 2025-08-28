@@ -4,7 +4,7 @@ from test.support import os_helper
 
 temp_filename = os_helper.TESTFN
 
-class NetrcTestCase(unittest.TestCase):
+klasse NetrcTestCase(unittest.TestCase):
 
     def make_nrc(self, test_data):
         test_data = textwrap.dedent(test_data)

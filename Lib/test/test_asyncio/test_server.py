@@ -14,7 +14,7 @@ def tearDownModule():
     asyncio.events._set_event_loop_policy(None)
 
 
-class BaseStartServer(func_tests.FunctionalTestCaseMixin):
+klasse BaseStartServer(func_tests.FunctionalTestCaseMixin):
 
     def new_loop(self):
         raise NotImplementedError
@@ -69,7 +69,7 @@ class BaseStartServer(func_tests.FunctionalTestCaseMixin):
             self.loop.run_until_complete(srv.serve_forever())
 
 
-class SelectorStartServerTests(BaseStartServer, unittest.TestCase):
+klasse SelectorStartServerTests(BaseStartServer, unittest.TestCase):
 
     def new_loop(self):
         return asyncio.SelectorEventLoop()
@@ -122,7 +122,7 @@ class SelectorStartServerTests(BaseStartServer, unittest.TestCase):
                 self.loop.run_until_complete(srv.serve_forever())
 
 
-class TestServer2(unittest.IsolatedAsyncioTestCase):
+klasse TestServer2(unittest.IsolatedAsyncioTestCase):
 
     async def test_wait_closed_basic(self):
         async def serve(rd, wr):
@@ -268,7 +268,7 @@ class TestServer2(unittest.IsolatedAsyncioTestCase):
 
 
 # Test the various corner cases of Unix server socket removal
-class UnixServerCleanupTests(unittest.IsolatedAsyncioTestCase):
+klasse UnixServerCleanupTests(unittest.IsolatedAsyncioTestCase):
     @socket_helper.skip_unless_bind_unix_socket
     async def test_unix_server_addr_cleanup(self):
         # Default scenario
@@ -342,7 +342,7 @@ class UnixServerCleanupTests(unittest.IsolatedAsyncioTestCase):
 
 
 @unittest.skipUnless(hasattr(asyncio, 'ProactorEventLoop'), 'Windows only')
-class ProactorStartServerTests(BaseStartServer, unittest.TestCase):
+klasse ProactorStartServerTests(BaseStartServer, unittest.TestCase):
 
     def new_loop(self):
         return asyncio.ProactorEventLoop()

@@ -28,7 +28,7 @@ UserWarning: Test
 shellmsg = idlemsg + ">>> "
 
 
-class RunWarnTest(unittest.TestCase):
+klasse RunWarnTest(unittest.TestCase):
 
     @unittest.skipIf(running_in_idle, "Does not work when run within Idle.")
     def test_showwarnings(self):
@@ -46,7 +46,7 @@ class RunWarnTest(unittest.TestCase):
             self.assertEqual(idlemsg.splitlines(), f.getvalue().splitlines())
 
 
-class ShellWarnTest(unittest.TestCase):
+klasse ShellWarnTest(unittest.TestCase):
 
     @unittest.skipIf(running_in_idle, "Does not work when run within Idle.")
     def test_showwarnings(self):

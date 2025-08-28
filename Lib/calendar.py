@@ -30,14 +30,14 @@ error = ValueError
 # Exceptions raised for bad input
 # This is trick for backward compatibility. Since 3.13, we will raise IllegalMonthError instead of
 # IndexError for bad month number(out of 1-12). But we can't remove IndexError for backward compatibility.
-class IllegalMonthError(ValueError, IndexError):
+klasse IllegalMonthError(ValueError, IndexError):
     def __init__(self, month):
         self.month = month
     def __str__(self):
         return "bad month number %r; must be 1-12" % self.month
 
 
-class IllegalWeekdayError(ValueError):
+klasse IllegalWeekdayError(ValueError):
     def __init__(self, weekday):
         self.weekday = weekday
     def __str__(self):
@@ -59,7 +59,7 @@ def __getattr__(name):
 
 # Constants for months
 @global_enum
-class Month(IntEnum):
+klasse Month(IntEnum):
     JANUARY = 1
     FEBRUARY = 2
     MARCH = 3
@@ -76,7 +76,7 @@ class Month(IntEnum):
 
 # Constants for days
 @global_enum
-class Day(IntEnum):
+klasse Day(IntEnum):
     MONDAY = 0
     TUESDAY = 1
     WEDNESDAY = 2
@@ -94,7 +94,7 @@ mdays = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 # that, but supply localized names.  Note that the values are computed
 # fresh on each call, in case the user changes locale between calls.
 
-class _localized_month:
+klasse _localized_month:
 
     _months = [datetime.date(2001, i+1, 1).strftime for i in range(12)]
     _months.insert(0, lambda x: "")
@@ -113,7 +113,7 @@ class _localized_month:
         return 13
 
 
-class _localized_day:
+klasse _localized_day:
 
     # January 1, 2001, was a Monday.
     _days = [datetime.date(2001, 1, i+1).strftime for i in range(7)]
@@ -210,9 +210,9 @@ def _nextmonth(year, month):
         return year, month+1
 
 
-class Calendar(object):
+klasse Calendar(object):
     """
-    Base calendar class. This class doesn't do any formatting. It simply
+    Base calendar class. This klasse doesn't do any formatting. It simply
     provides data to subclasses.
     """
 
@@ -346,7 +346,7 @@ class Calendar(object):
         return [months[i:i+width] for i in range(0, len(months), width) ]
 
 
-class TextCalendar(Calendar):
+klasse TextCalendar(Calendar):
     """
     Subclass of Calendar that outputs a calendar as a simple plain text
     similar to the UNIX program cal.
@@ -466,7 +466,7 @@ class TextCalendar(Calendar):
         print(self.formatyear(theyear, w, l, c, m), end='')
 
 
-class HTMLCalendar(Calendar):
+klasse HTMLCalendar(Calendar):
     """
     This calendar returns complete HTML pages.
     """
@@ -477,19 +477,19 @@ class HTMLCalendar(Calendar):
     # CSS classes for the day <th>s
     cssclasses_weekday_head = cssclasses
 
-    # CSS class for the days before and after current month
+    # CSS klasse for the days before and after current month
     cssclass_noday = "noday"
 
-    # CSS class for the month's head
+    # CSS klasse for the month's head
     cssclass_month_head = "month"
 
-    # CSS class for the month
+    # CSS klasse for the month
     cssclass_month = "month"
 
-    # CSS class for the year's table head
+    # CSS klasse for the year's table head
     cssclass_year_head = "year"
 
-    # CSS class for the whole year table
+    # CSS klasse for the whole year table
     cssclass_year = "year"
 
     def formatday(self, day, weekday):
@@ -603,7 +603,7 @@ class HTMLCalendar(Calendar):
         return ''.join(v).encode(encoding, "xmlcharrefreplace")
 
 
-class different_locale:
+klasse different_locale:
     def __init__(self, locale):
         self.locale = locale
         self.oldlocale = None
@@ -626,9 +626,9 @@ def _get_default_locale():
     return locale
 
 
-class LocaleTextCalendar(TextCalendar):
+klasse LocaleTextCalendar(TextCalendar):
     """
-    This class can be passed a locale name in the constructor and will return
+    This klasse can be passed a locale name in the constructor and will return
     month and weekday names in the specified locale.
     """
 
@@ -647,9 +647,9 @@ class LocaleTextCalendar(TextCalendar):
             return super().formatmonthname(theyear, themonth, width, withyear)
 
 
-class LocaleHTMLCalendar(HTMLCalendar):
+klasse LocaleHTMLCalendar(HTMLCalendar):
     """
-    This class can be passed a locale name in the constructor and will return
+    This klasse can be passed a locale name in the constructor and will return
     month and weekday names in the specified locale.
     """
     def __init__(self, firstweekday=0, locale=None):
@@ -667,7 +667,7 @@ class LocaleHTMLCalendar(HTMLCalendar):
             return super().formatmonthname(theyear, themonth, withyear)
 
 
-class _CLIDemoCalendar(TextCalendar):
+klasse _CLIDemoCalendar(TextCalendar):
     def __init__(self, highlight_day=None, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.highlight_day = highlight_day
@@ -771,7 +771,7 @@ class _CLIDemoCalendar(TextCalendar):
         return ''.join(v)
 
 
-class _CLIDemoLocaleCalendar(LocaleTextCalendar, _CLIDemoCalendar):
+klasse _CLIDemoLocaleCalendar(LocaleTextCalendar, _CLIDemoCalendar):
     def __init__(self, highlight_day=None, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.highlight_day = highlight_day

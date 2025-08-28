@@ -1,6 +1,6 @@
 """distutils.ccompiler
 
-Contains CCompiler, an abstract base class that defines the interface
+Contains CCompiler, an abstract base klasse that defines the interface
 for the Distutils compiler abstraction model."""
 
 import sys, os, re
@@ -9,12 +9,12 @@ from distutils.errors import (
 )
 from distutils.util import split_quoted
 
-class CCompiler:
-    """Abstract base class to define the interface that must be implemented
+klasse CCompiler:
+    """Abstract base klasse to define the interface that must be implemented
     by real compiler classes.  Also has some utility methods used by
     several compiler classes.
 
-    The basic idea behind a compiler abstraction class is that each
+    The basic idea behind a compiler abstraction klasse is that each
     instance can be used for all the compile/link steps in building a
     single project.  Thus, attributes common to all of those compile and
     link steps -- include directories, macros to define, libraries to link
@@ -23,7 +23,7 @@ class CCompiler:
     attributes may be varied on a per-compilation or per-link basis.
     """
 
-    # 'compiler_type' is a class attribute that identifies this class.  It
+    # 'compiler_type' is a klasse attribute that identifies this class.  It
     # keeps code that wants to know what kind of compiler it's dealing with
     # from having to import all possible compiler classes just to do an
     # 'isinstance'.  In concrete CCompiler subclasses, 'compiler_type'
@@ -38,7 +38,7 @@ class CCompiler:
     #     e.g. warning, optimization, debugging flags.  Perhaps this
     #     should be the domain of concrete compiler abstraction classes
     #     (UnixCCompiler, MSVCCompiler, etc.) -- or perhaps the base
-    #     class should have methods for the common ones.
+    #     klasse should have methods for the common ones.
     #   * can't completely override the include or library searchg
     #     path, ie. no "cc -I -Idir1 -Idir2" or "cc -L -Ldir1 -Ldir2".
     #     I'm not sure how widely supported this is even by Unix
@@ -119,7 +119,7 @@ class CCompiler:
         """Define the executables (and options for them) that will be run
         to perform the various stages of compilation.  The exact set of
         executables that may be specified here depends on the compiler
-        class (via the 'executables' class attribute), but most will have:
+        klasse (via the 'executables' klasse attribute), but most will have:
           compiler      the C/C++ compiler
           linker_so     linker used to create shared objects and libraries
           linker_exe    linker used to create binary executables
@@ -135,7 +135,7 @@ class CCompiler:
 
         # Note that some CCompiler implementation classes will define class
         # attributes 'cpp', 'cc', etc. with hard-coded executable names;
-        # this is appropriate when a compiler class is for exactly one
+        # this is appropriate when a compiler klasse is for exactly one
         # compiler/OS combination (eg. MSVCCompiler).  Other compiler
         # classes (UnixCCompiler, in particular) are driven by information
         # discovered at run-time, since there are many different ways to do
@@ -143,7 +143,7 @@ class CCompiler:
 
         for key in kwargs:
             if key not in self.executables:
-                raise ValueError("unknown executable '%s' for class %s" %
+                raise ValueError("unknown executable '%s' for klasse %s" %
                       (key, self.__class__.__name__))
             self.set_executable(key, kwargs[key])
 
@@ -416,7 +416,7 @@ def new_compiler(plat=None, compiler=None, verbose=0, dry_run=0, force=0):
               module_name)
     except KeyError:
         raise DistutilsModuleError(
-               "can't compile C/C++ code: unable to find class '%s' "
+               "can't compile C/C++ code: unable to find klasse '%s' "
                "in module '%s'" % (class_name, module_name))
 
     # XXX The None is necessary to preserve backwards compatibility

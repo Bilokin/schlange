@@ -54,7 +54,7 @@ def _run_object_doctest(obj, module):
 
 
 
-class ZipSupportTests(unittest.TestCase):
+klasse ZipSupportTests(unittest.TestCase):
     # This used to use the ImportHooksBaseTestCase to restore
     # the state of the import related information
     # in the sys module after each test. However, that restores
@@ -186,7 +186,7 @@ class ZipSupportTests(unittest.TestCase):
 
     def test_doctest_main_issue4197(self):
         test_src = textwrap.dedent("""\
-                    class Test:
+                    klasse Test:
                         ">>> 'line 2'"
                         pass
 

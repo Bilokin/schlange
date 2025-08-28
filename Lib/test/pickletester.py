@@ -75,7 +75,7 @@ def identity(x):
     return x
 
 
-class UnseekableIO(io.BytesIO):
+klasse UnseekableIO(io.BytesIO):
     def peek(self, *args):
         raise NotImplementedError
 
@@ -89,7 +89,7 @@ class UnseekableIO(io.BytesIO):
         raise io.UnsupportedOperation
 
 
-class MinimalIO(object):
+klasse MinimalIO(object):
     """
     A file-like object that doesn't support readinto().
     """
@@ -111,7 +111,7 @@ class MinimalIO(object):
 #     finally:
 #         e.restore()
 
-class ExtensionSaver:
+klasse ExtensionSaver:
     # Remember current registration for code (if any), and remove it (if
     # there is one).
     def __init__(self, code):
@@ -132,15 +132,15 @@ class ExtensionSaver:
         if pair is not None:
             copyreg.add_extension(pair[0], pair[1], code)
 
-class C:
+klasse C:
     def __eq__(self, other):
         return self.__dict__ == other.__dict__
 
-class D(C):
+klasse D(C):
     def __init__(self, arg):
         pass
 
-class E(C):
+klasse E(C):
     def __getinitargs__(self):
         return ()
 
@@ -153,11 +153,11 @@ __main__.E = E
 E.__module__ = "__main__"
 
 # Simple mutable object.
-class Object:
+klasse Object:
     pass
 
 # Hashable immutable key object containing unheshable mutable data.
-class K:
+klasse K:
     def __init__(self, value):
         self.value = value
 
@@ -165,11 +165,11 @@ class K:
         # Shouldn't support the recursion itself
         return K, (self.value,)
 
-class myint(int):
+klasse myint(int):
     def __init__(self, x):
         self.str = str(x)
 
-class initarg(C):
+klasse initarg(C):
 
     def __init__(self, a, b):
         self.a = a
@@ -178,13 +178,13 @@ class initarg(C):
     def __getinitargs__(self):
         return self.a, self.b
 
-class metaclass(type):
+klasse metaclass(type):
     pass
 
-class use_metaclass(object, metaclass=metaclass):
+klasse use_metaclass(object, metaclass=metaclass):
     pass
 
-class pickling_metaclass(type):
+klasse pickling_metaclass(type):
     def __eq__(self, other):
         return (type(self) == type(other) and
                 self.reduce_args == other.reduce_args)
@@ -198,7 +198,7 @@ def create_dynamic_class(name, bases):
     return result
 
 
-class ZeroCopyBytes(bytes):
+klasse ZeroCopyBytes(bytes):
     readonly = True
     c_contiguous = True
     f_contiguous = True
@@ -226,7 +226,7 @@ class ZeroCopyBytes(bytes):
                 return cls(obj)
 
 
-class ZeroCopyBytearray(bytearray):
+klasse ZeroCopyBytearray(bytearray):
     readonly = False
     c_contiguous = True
     f_contiguous = True
@@ -256,7 +256,7 @@ class ZeroCopyBytearray(bytearray):
 
 if _testbuffer is not None:
 
-    class PicklableNDArray:
+    klasse PicklableNDArray:
         # A not-really-zero-copy picklable ndarray, as the ndarray()
         # constructor doesn't allow for it
 
@@ -830,7 +830,7 @@ def create_data():
     return x
 
 
-class AbstractUnpickleTests:
+klasse AbstractUnpickleTests:
     # Subclass must define self.loads.
 
     _testdata = create_data()
@@ -1305,7 +1305,7 @@ class AbstractUnpickleTests:
 
     def test_custom_find_class(self):
         def loads(data):
-            class Unpickler(self.unpickler):
+            klasse Unpickler(self.unpickler):
                 def find_class(self, module_name, global_name):
                     return (module_name, global_name)
             return Unpickler(io.BytesIO(data)).load()
@@ -1314,7 +1314,7 @@ class AbstractUnpickleTests:
         self.assertEqual(loads(b'\x8c\x04math\x8c\x03log\x93.'), ('math', 'log'))
 
         def loads(data):
-            class Unpickler(self.unpickler):
+            klasse Unpickler(self.unpickler):
                 @staticmethod
                 def find_class(module_name, global_name):
                     return (module_name, global_name)
@@ -1324,7 +1324,7 @@ class AbstractUnpickleTests:
         self.assertEqual(loads(b'\x8c\x04math\x8c\x03log\x93.'), ('math', 'log'))
 
         def loads(data):
-            class Unpickler(self.unpickler):
+            klasse Unpickler(self.unpickler):
                 @classmethod
                 def find_class(cls, module_name, global_name):
                     return (module_name, global_name)
@@ -1334,7 +1334,7 @@ class AbstractUnpickleTests:
         self.assertEqual(loads(b'\x8c\x04math\x8c\x03log\x93.'), ('math', 'log'))
 
         def loads(data):
-            class Unpickler(self.unpickler):
+            klasse Unpickler(self.unpickler):
                 pass
             def find_class(module_name, global_name):
                 return (module_name, global_name)
@@ -1416,7 +1416,7 @@ class AbstractUnpickleTests:
         # slots dict = True
         self.check_unpickling_error(error, base + b'}\x88\x86b.')
 
-        class BadKey1:
+        klasse BadKey1:
             count = 1
             def __hash__(self):
                 if not self.count:
@@ -1622,7 +1622,7 @@ class AbstractUnpickleTests:
         locking_import_module = dedent("""
         import locker
         locker.barrier.wait()
-        class ToBeUnpickled(object):
+        klasse ToBeUnpickled(object):
             pass
         """)
 
@@ -1673,7 +1673,7 @@ class AbstractUnpickleTests:
             [ToBeUnpickled] * 2)
 
 
-class AbstractPicklingErrorTests:
+klasse AbstractPicklingErrorTests:
     # Subclass must define self.dumps, self.pickler.
 
     def test_bad_reduce_result(self):
@@ -1799,7 +1799,7 @@ class AbstractPicklingErrorTests:
                     'when serializing test.pickletester.REX object'])
 
     def test_unpickleable_newobj_class(self):
-        class LocalREX(REX): pass
+        klasse LocalREX(REX): pass
         obj = LocalREX((copyreg.__newobj__, (LocalREX,)))
         for proto in protocols:
             with self.subTest(proto=proto):
@@ -1921,7 +1921,7 @@ class AbstractPicklingErrorTests:
                     'when serializing test.pickletester.REX object'])
 
     def test_unpickleable_newobj_ex_class(self):
-        class LocalREX(REX): pass
+        klasse LocalREX(REX): pass
         obj = LocalREX((copyreg.__newobj_ex__, (LocalREX, (), {})))
         for proto in protocols:
             with self.subTest(proto=proto):
@@ -2288,8 +2288,8 @@ class AbstractPicklingErrorTests:
     def test_nested_lookup_error(self):
         # Nested name does not exist
         global TestGlobal
-        class TestGlobal:
-            class A:
+        klasse TestGlobal:
+            klasse A:
                 pass
         obj = REX('TestGlobal.A.B.C')
         obj.__module__ = __name__
@@ -2317,7 +2317,7 @@ class AbstractPicklingErrorTests:
     def test_wrong_object_lookup_error(self):
         # Name is bound to different object
         global TestGlobal
-        class TestGlobal:
+        klasse TestGlobal:
             pass
         obj = REX('TestGlobal')
         obj.__module__ = __name__
@@ -2418,11 +2418,11 @@ class AbstractPicklingErrorTests:
     def test_evil_pickler_mutating_collection(self):
         # https://github.com/python/cpython/issues/92930
         global Clearer
-        class Clearer:
+        klasse Clearer:
             pass
 
         def check(collection):
-            class EvilPickler(self.pickler):
+            klasse EvilPickler(self.pickler):
                 def persistent_id(self, obj):
                     if isinstance(obj, Clearer):
                         collection.clear()
@@ -2466,7 +2466,7 @@ class AbstractPicklingErrorTests:
         check(-2**1000, (OverflowError, struct.error))
 
 
-class AbstractPickleTests:
+klasse AbstractPickleTests:
     # Subclass must define self.dumps, self.loads.
 
     optimized = False
@@ -3228,7 +3228,7 @@ class AbstractPickleTests:
                 self.assertEqual(x.__dict__, y.__dict__, detail)
 
     def test_newobj_overridden_new(self):
-        # Test that Python class with C implemented __new__ is pickleable
+        # Test that Python klasse with C implemented __new__ is pickleable
         for proto in protocols:
             x = MyIntWithNew2(1)
             x.foo = 42
@@ -3708,7 +3708,7 @@ class AbstractPickleTests:
 
     @support.skip_if_pgo_task
     def test_framed_write_sizes_with_delayed_writer(self):
-        class ChunkAccumulator:
+        klasse ChunkAccumulator:
             """Accumulate pickler output in a list of raw chunks."""
             def __init__(self):
                 self.chunks = []
@@ -3774,10 +3774,10 @@ class AbstractPickleTests:
 
     def test_nested_names(self):
         global Nested
-        class Nested:
-            class A:
-                class B:
-                    class C:
+        klasse Nested:
+            klasse A:
+                klasse B:
+                    klasse C:
                         pass
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
             for obj in [Nested.A, Nested.A.B, Nested.A.B.C]:
@@ -3787,7 +3787,7 @@ class AbstractPickleTests:
 
     def test_recursive_nested_names(self):
         global Recursive
-        class Recursive:
+        klasse Recursive:
             pass
         Recursive.mod = sys.modules[Recursive.__module__]
         Recursive.__qualname__ = 'Recursive.mod.Recursive'
@@ -3799,7 +3799,7 @@ class AbstractPickleTests:
 
     def test_recursive_nested_names2(self):
         global Recursive
-        class Recursive:
+        klasse Recursive:
             pass
         Recursive.ref = Recursive
         Recursive.__qualname__ = 'Recursive.ref'
@@ -3811,7 +3811,7 @@ class AbstractPickleTests:
 
     def test_py_methods(self):
         global PyMethodsTest
-        class PyMethodsTest:
+        klasse PyMethodsTest:
             @staticmethod
             def cheese():
                 return "cheese"
@@ -3822,7 +3822,7 @@ class AbstractPickleTests:
             def biscuits(self):
                 assert isinstance(self, PyMethodsTest)
                 return "biscuits"
-            class Nested:
+            klasse Nested:
                 "Nested class"
                 @staticmethod
                 def ketchup():
@@ -3860,7 +3860,7 @@ class AbstractPickleTests:
 
         descriptors = (
             PyMethodsTest.__dict__['cheese'],  # static method descriptor
-            PyMethodsTest.__dict__['wine'],  # class method descriptor
+            PyMethodsTest.__dict__['wine'],  # klasse method descriptor
         )
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
             for descr in descriptors:
@@ -3869,8 +3869,8 @@ class AbstractPickleTests:
 
     def test_c_methods(self):
         global Subclass
-        class Subclass(tuple):
-            class Nested(str):
+        klasse Subclass(tuple):
+            klasse Nested(str):
                 pass
 
         c_methods = (
@@ -3886,7 +3886,7 @@ class AbstractPickleTests:
             ({1, 2}.__contains__, (2,)),
             # unbound "coexist" method
             (set.__contains__, ({1, 2}, 2)),
-            # built-in class method
+            # built-in klasse method
             (dict.fromkeys, (("a", 1), ("b", 2))),
             # built-in static method
             (bytearray.maketrans, (b"abc", b"xyz")),
@@ -3904,7 +3904,7 @@ class AbstractPickleTests:
 
         descriptors = (
             bytearray.__dict__['maketrans'],  # built-in static method descriptor
-            dict.__dict__['fromkeys'],  # built-in class method descriptor
+            dict.__dict__['fromkeys'],  # built-in klasse method descriptor
         )
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
             for descr in descriptors:
@@ -4105,7 +4105,7 @@ class AbstractPickleTests:
         from random import getrandbits
 
         global Bad
-        class Bad:
+        klasse Bad:
             def __eq__(self, other):
                 return ENABLED
             def __hash__(self):
@@ -4131,7 +4131,7 @@ class AbstractPickleTests:
                     self.assertIn(expected, str(e))
 
 
-class BigmemPickleTests:
+klasse BigmemPickleTests:
 
     # Binary protocols can serialize longs of up to 2 GiB-1
 
@@ -4260,33 +4260,33 @@ class BigmemPickleTests:
 
 # Test classes for reduce_ex
 
-class R:
+klasse R:
     def __init__(self, reduce=None):
         self.reduce = reduce
     def __reduce__(self, proto):
         return self.reduce
 
-class REX:
+klasse REX:
     def __init__(self, reduce_ex=None):
         self.reduce_ex = reduce_ex
     def __reduce_ex__(self, proto):
         return self.reduce_ex
 
-class REX_one(object):
+klasse REX_one(object):
     """No __reduce_ex__ here, but inheriting it from object"""
     _reduce_called = 0
     def __reduce__(self):
         self._reduce_called = 1
         return REX_one, ()
 
-class REX_two(object):
+klasse REX_two(object):
     """No __reduce__ here, but inheriting it from object"""
     _proto = None
     def __reduce_ex__(self, proto):
         self._proto = proto
         return REX_two, ()
 
-class REX_three(object):
+klasse REX_three(object):
     _proto = None
     def __reduce_ex__(self, proto):
         self._proto = proto
@@ -4294,22 +4294,22 @@ class REX_three(object):
     def __reduce__(self):
         raise TestFailed("This __reduce__ shouldn't be called")
 
-class REX_four(object):
-    """Calling base class method should succeed"""
+klasse REX_four(object):
+    """Calling base klasse method should succeed"""
     _proto = None
     def __reduce_ex__(self, proto):
         self._proto = proto
         return object.__reduce_ex__(self, proto)
 
-class REX_five(object):
+klasse REX_five(object):
     """This one used to fail with infinite recursion"""
     _reduce_called = 0
     def __reduce__(self):
         self._reduce_called = 1
         return object.__reduce__(self)
 
-class REX_six(object):
-    """This class is used to check the 4th argument (list iterator) of
+klasse REX_six(object):
+    """This klasse is used to check the 4th argument (list iterator) of
     the reduce protocol.
     """
     def __init__(self, items=None):
@@ -4321,8 +4321,8 @@ class REX_six(object):
     def __reduce__(self):
         return type(self), (), None, iter(self.items), None
 
-class REX_seven(object):
-    """This class is used to check the 5th argument (dict iterator) of
+klasse REX_seven(object):
+    """This klasse is used to check the 5th argument (dict iterator) of
     the reduce protocol.
     """
     def __init__(self, table=None):
@@ -4334,8 +4334,8 @@ class REX_seven(object):
     def __reduce__(self):
         return type(self), (), None, None, iter(self.table.items())
 
-class REX_state(object):
-    """This class is used to check the 3th argument (state) of
+klasse REX_state(object):
+    """This klasse is used to check the 3th argument (state) of
     the reduce protocol.
     """
     def __init__(self, state=None):
@@ -4347,65 +4347,65 @@ class REX_state(object):
     def __reduce__(self):
         return type(self), (), self.state
 
-class REX_None:
+klasse REX_None:
     """ Setting __reduce_ex__ to None should fail """
     __reduce_ex__ = None
 
-class R_None:
+klasse R_None:
     """ Setting __reduce__ to None should fail """
     __reduce__ = None
 
-class C_None_setstate:
+klasse C_None_setstate:
     """  Setting __setstate__ to None should fail """
     def __getstate__(self):
         return 1
 
     __setstate__ = None
 
-class CustomError(Exception):
+klasse CustomError(Exception):
     pass
 
-class Unpickleable:
+klasse Unpickleable:
     def __reduce__(self):
         raise CustomError
 
 UNPICKLEABLE = Unpickleable()
 
-class UnpickleableCallable(Unpickleable):
+klasse UnpickleableCallable(Unpickleable):
     def __call__(self, *args, **kwargs):
         pass
 
 
 # Test classes for newobj
 
-class MyInt(int):
+klasse MyInt(int):
     sample = 1
 
-class MyFloat(float):
+klasse MyFloat(float):
     sample = 1.0
 
-class MyComplex(complex):
+klasse MyComplex(complex):
     sample = 1.0 + 0.0j
 
-class MyStr(str):
+klasse MyStr(str):
     sample = "hello"
 
-class MyUnicode(str):
+klasse MyUnicode(str):
     sample = "hello \u1234"
 
-class MyTuple(tuple):
+klasse MyTuple(tuple):
     sample = (1, 2, 3)
 
-class MyList(list):
+klasse MyList(list):
     sample = [1, 2, 3]
 
-class MyDict(dict):
+klasse MyDict(dict):
     sample = {"a": 1, "b": 2}
 
-class MySet(set):
+klasse MySet(set):
     sample = {"a", "b"}
 
-class MyFrozenSet(frozenset):
+klasse MyFrozenSet(frozenset):
     sample = frozenset({"a", "b"})
 
 myclasses = [MyInt, MyFloat,
@@ -4413,46 +4413,46 @@ myclasses = [MyInt, MyFloat,
              MyStr, MyUnicode,
              MyTuple, MyList, MyDict, MySet, MyFrozenSet]
 
-class MyIntWithNew(int):
+klasse MyIntWithNew(int):
     def __new__(cls, value):
         raise AssertionError
 
-class MyIntWithNew2(MyIntWithNew):
+klasse MyIntWithNew2(MyIntWithNew):
     __new__ = int.__new__
 
 
-class SlotList(MyList):
+klasse SlotList(MyList):
     __slots__ = ["foo"]
 
 # Ruff "redefined while unused" false positive here due to `global` variables
 # being assigned (and then restored) from within test methods earlier in the file
-class SimpleNewObj(int):  # noqa: F811
+klasse SimpleNewObj(int):  # noqa: F811
     def __init__(self, *args, **kwargs):
         # raise an error, to make sure this isn't called
         raise TypeError("SimpleNewObj.__init__() didn't expect to get called")
     def __eq__(self, other):
         return int(self) == int(other) and self.__dict__ == other.__dict__
 
-class ComplexNewObj(SimpleNewObj):
+klasse ComplexNewObj(SimpleNewObj):
     def __getnewargs__(self):
         return ('%X' % self, 16)
 
-class ComplexNewObjEx(SimpleNewObj):
+klasse ComplexNewObjEx(SimpleNewObj):
     def __getnewargs_ex__(self):
         return ('%X' % self,), {'base': 16}
 
-class BadGetattr:
+klasse BadGetattr:
     def __getattr__(self, key):
         self.foo
 
-class NoNew:
+klasse NoNew:
     def __getattribute__(self, name):
         if name == '__new__':
             raise AttributeError
         return super().__getattribute__(name)
 
 
-class AbstractPickleModuleTests:
+klasse AbstractPickleModuleTests:
 
     def test_dump_closed_file(self):
         f = open(TESTFN, "wb")
@@ -4508,10 +4508,10 @@ class AbstractPickleModuleTests:
     def test_bad_init(self):
         # Test issue3664 (pickle can segfault from a badly initialized Pickler).
         # Override initialization without calling __init__() of the superclass.
-        class BadPickler(self.Pickler):
+        klasse BadPickler(self.Pickler):
             def __init__(self): pass
 
-        class BadUnpickler(self.Unpickler):
+        klasse BadUnpickler(self.Unpickler):
             def __init__(self): pass
 
         self.assertRaises(pickle.PicklingError, BadPickler().dump, 0)
@@ -4526,44 +4526,44 @@ class AbstractPickleModuleTests:
             raise CustomError
 
         # File without read and readline
-        class F:
+        klasse F:
             pass
         self.assertRaises((AttributeError, TypeError), self.Unpickler, F())
 
         # File without read
-        class F:
+        klasse F:
             readline = raises_oserror
         self.assertRaises((AttributeError, TypeError), self.Unpickler, F())
 
         # File without readline
-        class F:
+        klasse F:
             read = raises_oserror
         self.assertRaises((AttributeError, TypeError), self.Unpickler, F())
 
         # File with bad read
-        class F:
+        klasse F:
             read = bad_property
             readline = raises_oserror
         self.assertRaises(CustomError, self.Unpickler, F())
 
         # File with bad readline
-        class F:
+        klasse F:
             readline = bad_property
             read = raises_oserror
         self.assertRaises(CustomError, self.Unpickler, F())
 
         # File with bad readline, no read
-        class F:
+        klasse F:
             readline = bad_property
         self.assertRaises(CustomError, self.Unpickler, F())
 
         # File with bad read, no readline
-        class F:
+        klasse F:
             read = bad_property
         self.assertRaises((AttributeError, CustomError), self.Unpickler, F())
 
         # File with bad peek
-        class F:
+        klasse F:
             peek = bad_property
             read = raises_oserror
             readline = raises_oserror
@@ -4573,7 +4573,7 @@ class AbstractPickleModuleTests:
             pass
 
         # File with bad readinto
-        class F:
+        klasse F:
             readinto = bad_property
             read = raises_oserror
             readline = raises_oserror
@@ -4584,12 +4584,12 @@ class AbstractPickleModuleTests:
 
     def test_pickler_bad_file(self):
         # File without write
-        class F:
+        klasse F:
             pass
         self.assertRaises(TypeError, self.Pickler, F())
 
         # File with bad write
-        class F:
+        klasse F:
             @property
             def write(self):
                 raise CustomError
@@ -4637,9 +4637,9 @@ class AbstractPickleModuleTests:
         self.check_dumps_loads_oob_buffers(dumps, loads)
 
 
-class AbstractPersistentPicklerTests:
+klasse AbstractPersistentPicklerTests:
 
-    # This class defines persistent_id() and persistent_load()
+    # This klasse defines persistent_id() and persistent_load()
     # functions that should be used by the pickler.  All even integers
     # are pickled using persistent ids.
 
@@ -4677,7 +4677,7 @@ class AbstractPersistentPicklerTests:
             self.assertEqual(self.load_false_count, 1)
 
 
-class AbstractIdentityPersistentPicklerTests:
+klasse AbstractIdentityPersistentPicklerTests:
 
     def persistent_id(self, obj):
         return obj
@@ -4712,7 +4712,7 @@ class AbstractIdentityPersistentPicklerTests:
                          'persistent IDs in protocol 0 must be ASCII strings')
 
 
-class AbstractPicklerUnpicklerObjectTests:
+klasse AbstractPicklerUnpicklerObjectTests:
 
     pickler_class = None
     unpickler_class = None
@@ -4875,7 +4875,7 @@ class AbstractPicklerUnpicklerObjectTests:
         obj = object()
 
         f = io.BytesIO()
-        class MyPickler(self.pickler_class):
+        klasse MyPickler(self.pickler_class):
             pass
         pickler = MyPickler(f)
         pickler.dump(obj)
@@ -4894,11 +4894,11 @@ class AbstractPicklerUnpicklerObjectTests:
 
 REDUCE_A = 'reduce_A'
 
-class AAA(object):
+klasse AAA(object):
     def __reduce__(self):
         return str, (REDUCE_A,)
 
-class BBB(object):
+klasse BBB(object):
     def __init__(self):
         # Add an instance attribute to enable state-saving routines at pickling
         # time.
@@ -4921,7 +4921,7 @@ def setstate_bbb(obj, state):
 
 
 
-class AbstractCustomPicklerClass:
+klasse AbstractCustomPicklerClass:
     """Pickler implementing a reducing hook using reducer_override."""
     def reducer_override(self, obj):
         obj_name = getattr(obj, "__name__", None)
@@ -4945,7 +4945,7 @@ class AbstractCustomPicklerClass:
 
         return NotImplemented
 
-class AbstractHookTests:
+klasse AbstractHookTests:
     def test_pickler_hook(self):
         # test the ability of a custom, user-defined CPickler subclass to
         # override the default reducing routines of any type using the method
@@ -4960,7 +4960,7 @@ class AbstractHookTests:
         def h():
             pass
 
-        class MyClass:
+        klasse MyClass:
             pass
 
         for proto in range(0, pickle.HIGHEST_PROTOCOL + 1):
@@ -5014,7 +5014,7 @@ class AbstractHookTests:
                 self.assertIsNone(wr())
 
 
-class AbstractDispatchTableTests:
+klasse AbstractDispatchTableTests:
 
     def test_default_dispatch_table(self):
         # No dispatch_table attribute by default
@@ -5028,7 +5028,7 @@ class AbstractDispatchTableTests:
         # A dispatch_table attribute can be specified class-wide
         dt = self.get_dispatch_table()
 
-        class MyPickler(self.pickler_class):
+        klasse MyPickler(self.pickler_class):
             dispatch_table = dt
 
         def dumps(obj, protocol=None):

@@ -176,13 +176,13 @@ def set%s(self, value):
 '''
 
 prop_cache = {}
-class_cache = weakref.WeakKeyDictionary()
+klasse_cache = weakref.WeakKeyDictionary()
 
 #
 # Synchronized wrappers
 #
 
-class SynchronizedBase(object):
+klasse SynchronizedBase(object):
 
     def __init__(self, obj, lock=None, ctx=None):
         self._obj = obj
@@ -214,11 +214,11 @@ class SynchronizedBase(object):
         return '<%s wrapper for %s>' % (type(self).__name__, self._obj)
 
 
-class Synchronized(SynchronizedBase):
+klasse Synchronized(SynchronizedBase):
     value = make_property('value')
 
 
-class SynchronizedArray(SynchronizedBase):
+klasse SynchronizedArray(SynchronizedBase):
 
     def __len__(self):
         return len(self._obj)
@@ -240,6 +240,6 @@ class SynchronizedArray(SynchronizedBase):
             self._obj[start:stop] = values
 
 
-class SynchronizedString(SynchronizedArray):
+klasse SynchronizedString(SynchronizedArray):
     value = make_property('value')
     raw = make_property('raw')

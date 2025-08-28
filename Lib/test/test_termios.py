@@ -12,7 +12,7 @@ termios = import_module('termios')
 
 
 @unittest.skipUnless(hasattr(os, 'openpty'), "need os.openpty()")
-class TestFunctions(unittest.TestCase):
+klasse TestFunctions(unittest.TestCase):
 
     def setUp(self):
         self.master_fd, self.fd = os.openpty()
@@ -260,7 +260,7 @@ class TestFunctions(unittest.TestCase):
         self.assertRaises(TypeError, termios.tcsetwinsize, self.fd)
 
 
-class TestModule(unittest.TestCase):
+klasse TestModule(unittest.TestCase):
     def test_constants(self):
         self.assertIsInstance(termios.B0, int)
         self.assertIsInstance(termios.B38400, int)

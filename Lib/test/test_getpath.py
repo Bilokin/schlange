@@ -15,7 +15,7 @@ except FileNotFoundError:
     SOURCE = get_getpath_codeobject()
 
 
-class MockGetPathTests(unittest.TestCase):
+klasse MockGetPathTests(unittest.TestCase):
     def __init__(self, *a, **kw):
         super().__init__(*a, **kw)
         self.maxDiff = None
@@ -938,7 +938,7 @@ DEFAULT_CONFIG = dict(
     use_site=1,
 )
 
-class MockNTNamespace(dict):
+klasse MockNTNamespace(dict):
     def __init__(self, *a, argv0=None, config=None, **kw):
         self.update(DEFAULT_NAMESPACE)
         self["config"] = DEFAULT_CONFIG.copy()
@@ -1049,7 +1049,7 @@ class MockNTNamespace(dict):
             print(message)
 
 
-class MockWinreg:
+klasse MockWinreg:
     HKEY_LOCAL_MACHINE = "HKLM"
     HKEY_CURRENT_USER = "HKCU"
 
@@ -1114,7 +1114,7 @@ class MockWinreg:
             raise OSError()
 
 
-class MockPosixNamespace(dict):
+klasse MockPosixNamespace(dict):
     def __init__(self, *a, argv0=None, config=None, **kw):
         self.update(DEFAULT_NAMESPACE)
         self["config"] = DEFAULT_CONFIG.copy()

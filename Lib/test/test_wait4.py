@@ -14,7 +14,7 @@ if not support.has_fork_support:
 support.get_attribute(os, 'wait4')
 
 
-class Wait4Test(ForkWait):
+klasse Wait4Test(ForkWait):
     def wait_impl(self, cpid, *, exitcode):
         option = os.WNOHANG
         if sys.platform.startswith('aix'):

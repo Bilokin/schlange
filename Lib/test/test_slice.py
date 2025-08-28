@@ -62,7 +62,7 @@ def slice_indices(slice, length):
 
 # Class providing an __index__ method.  Used for testing slice.indices.
 
-class MyIndexable(object):
+klasse MyIndexable(object):
     def __init__(self, value):
         self.value = value
 
@@ -70,7 +70,7 @@ class MyIndexable(object):
         return self.value
 
 
-class SliceTest(unittest.TestCase):
+klasse SliceTest(unittest.TestCase):
 
     def test_constructor(self):
         self.assertRaises(TypeError, slice)
@@ -101,10 +101,10 @@ class SliceTest(unittest.TestCase):
         self.assertNotEqual(s1, (1, 2, 3))
         self.assertNotEqual(s1, "")
 
-        class Exc(Exception):
+        klasse Exc(Exception):
             pass
 
-        class BadCmp(object):
+        klasse BadCmp(object):
             def __eq__(self, other):
                 raise Exc
 
@@ -139,7 +139,7 @@ class SliceTest(unittest.TestCase):
         self.assertEqual(s.stop, 2)
         self.assertEqual(s.step, 3)
 
-        class AnyClass:
+        klasse AnyClass:
             pass
 
         obj = AnyClass()
@@ -224,7 +224,7 @@ class SliceTest(unittest.TestCase):
         with self.assertRaises(TypeError):
             slice(0, 10, 1).indices(5.0)
 
-        # ... but it should be fine to use a custom class that provides index.
+        # ... but it should be fine to use a custom klasse that provides index.
         self.assertEqual(slice(0, 10, 1).indices(5), (0, 5, 1))
         self.assertEqual(slice(MyIndexable(0), 10, 1).indices(5), (0, 5, 1))
         self.assertEqual(slice(0, MyIndexable(10), 1).indices(5), (0, 5, 1))
@@ -233,7 +233,7 @@ class SliceTest(unittest.TestCase):
 
     def test_setslice_without_getslice(self):
         tmp = []
-        class X(object):
+        klasse X(object):
             def __setitem__(self, i, k):
                 tmp.append((i, k))
 
@@ -287,7 +287,7 @@ class SliceTest(unittest.TestCase):
         self.assertIsNot(s.step, c.step)
 
     def test_cycle(self):
-        class myobj(): pass
+        klasse myobj(): pass
         o = myobj()
         o.s = slice(o)
         w = weakref.ref(o)

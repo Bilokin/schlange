@@ -5,7 +5,7 @@ doctests = """
 
 Setup
 
-    >>> class AClass:
+    >>> klasse AClass:
     ...    def __init__(self):
     ...        self._setitem_name = None
     ...        self._setitem_val = None
@@ -25,7 +25,7 @@ Setup
     ...        self._setitem_name = None
     ...        self._delitem_name = name
     ...
-    >>> class ParameterisedA:
+    >>> klasse ParameterisedA:
     ...    def __init__(self, name):
     ...        self._name = name
     ...    def __repr__(self):
@@ -33,12 +33,12 @@ Setup
     ...    def __iter__(self):
     ...        for p in self._name:
     ...            yield p
-    >>> class B:
+    >>> klasse B:
     ...    def __iter__(self):
     ...        yield StarredB()
     ...    def __repr__(self):
     ...        return "B"
-    >>> class StarredB:
+    >>> klasse StarredB:
     ...    def __repr__(self):
     ...        return "StarredB"
     >>> A = AClass()

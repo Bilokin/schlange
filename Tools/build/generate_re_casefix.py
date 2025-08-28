@@ -31,7 +31,7 @@ _EXTRA_CASES = {{
 def uname(i):
     return unicodedata.name(chr(i), r'U+%04X' % i)
 
-class hexint(int):
+klasse hexint(int):
     def __repr__(self):
         return '%#06x' % self
 

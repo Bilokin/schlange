@@ -16,7 +16,7 @@ def run_in_tk_mainloop(delay=1):
     The delay argument is passed into root.after(...) calls as the number
     of ms to wait before passing execution back to the generator function.
 
-    This also assumes that the test class has a .root attribute,
+    This also assumes that the test klasse has a .root attribute,
     which is a tkinter.Tk object.
 
     For example (from test_sidebar.py):

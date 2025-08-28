@@ -45,7 +45,7 @@ alist = [{'astring': 'foo@bar.baz.spam',
                         datetime.datetime(2005, 2, 10, 11, 41, 23)),
           }]
 
-class XMLRPCTestCase(unittest.TestCase):
+klasse XMLRPCTestCase(unittest.TestCase):
 
     def test_dump_load(self):
         dump = xmlrpclib.dumps((alist,))
@@ -115,7 +115,7 @@ class XMLRPCTestCase(unittest.TestCase):
         self.assertIsInstance(s, str)
 
     def test_newstyle_class(self):
-        class T(object):
+        klasse T(object):
             pass
         t = T()
         t.x = 100
@@ -321,7 +321,7 @@ class XMLRPCTestCase(unittest.TestCase):
             self.assertTrue(has_ssl)
 
     def test_keepalive_disconnect(self):
-        class RequestHandler(http.server.BaseHTTPRequestHandler):
+        klasse RequestHandler(http.server.BaseHTTPRequestHandler):
             protocol_version = "HTTP/1.1"
             handled = False
 
@@ -360,8 +360,8 @@ class XMLRPCTestCase(unittest.TestCase):
             self.assertEqual(p.method(), 5)
 
 
-class SimpleXMLRPCDispatcherTestCase(unittest.TestCase):
-    class DispatchExc(Exception):
+klasse SimpleXMLRPCDispatcherTestCase(unittest.TestCase):
+    klasse DispatchExc(Exception):
         """Raised inside the dispatched functions when checking for
         chained exceptions"""
 
@@ -390,7 +390,7 @@ class SimpleXMLRPCDispatcherTestCase(unittest.TestCase):
 
         exp_params = 1, 2, 3
 
-        class DispatchedClass:
+        klasse DispatchedClass:
             def dispatched_func(self, *params):
                 raise SimpleXMLRPCDispatcherTestCase.DispatchExc(params)
 
@@ -410,7 +410,7 @@ class SimpleXMLRPCDispatcherTestCase(unittest.TestCase):
         exp_method = 'method'
         exp_params = 1, 2, 3
 
-        class TestInstance:
+        klasse TestInstance:
             def _dispatch(self, method, params):
                 raise SimpleXMLRPCDispatcherTestCase.DispatchExc(
                     method, params)
@@ -447,13 +447,13 @@ class SimpleXMLRPCDispatcherTestCase(unittest.TestCase):
             dispatcher._dispatch('method', ('param',))
 
 
-class HelperTestCase(unittest.TestCase):
+klasse HelperTestCase(unittest.TestCase):
     def test_escape(self):
         self.assertEqual(xmlrpclib.escape("a&b"), "a&amp;b")
         self.assertEqual(xmlrpclib.escape("a<b"), "a&lt;b")
         self.assertEqual(xmlrpclib.escape("a>b"), "a&gt;b")
 
-class FaultTestCase(unittest.TestCase):
+klasse FaultTestCase(unittest.TestCase):
     def test_repr(self):
         f = xmlrpclib.Fault(42, 'Test Fault')
         self.assertEqual(repr(f), "<Fault 42: 'Test Fault'>")
@@ -476,7 +476,7 @@ class FaultTestCase(unittest.TestCase):
                           xmlrpc.server.resolve_dotted_attribute, str, '__add')
         self.assertTrue(xmlrpc.server.resolve_dotted_attribute(str, 'title'))
 
-class DateTimeTestCase(unittest.TestCase):
+klasse DateTimeTestCase(unittest.TestCase):
     def test_default(self):
         with mock.patch('time.localtime') as localtime_mock:
             time_struct = time.struct_time(
@@ -577,7 +577,7 @@ class DateTimeTestCase(unittest.TestCase):
         self.assertTrue(dtime >= SMALLEST)
 
 
-class BinaryTestCase(unittest.TestCase):
+klasse BinaryTestCase(unittest.TestCase):
 
     # XXX What should str(Binary(b"\xff")) return?  I'm choosing "\xff"
     # for now (i.e. interpreting the binary data as Latin-1-encoded
@@ -610,7 +610,7 @@ ADDR = PORT = URL = None
 # Second when the server has been shutdown.  The user must clear
 # the event after it has been set the first time to catch the second set.
 def http_server(evt, numrequests, requestHandler=None, encoding=None):
-    class TestInstanceClass:
+    klasse TestInstanceClass:
         def div(self, x, y):
             return x // y
 
@@ -618,12 +618,12 @@ def http_server(evt, numrequests, requestHandler=None, encoding=None):
             if name == 'div':
                 return 'This is the div function'
 
-        class Fixture:
+        klasse Fixture:
             @staticmethod
             def getData():
                 return '42'
 
-    class MyXMLRPCServer(xmlrpc.server.SimpleXMLRPCServer):
+    klasse MyXMLRPCServer(xmlrpc.server.SimpleXMLRPCServer):
         def get_request(self):
             # Ensure the socket is always non-blocking.  On Linux, socket
             # attributes are not inherited like they are on *BSD and Windows.
@@ -674,7 +674,7 @@ def http_server(evt, numrequests, requestHandler=None, encoding=None):
         evt.set()
 
 def http_multi_server(evt, numrequests, requestHandler=None):
-    class TestInstanceClass:
+    klasse TestInstanceClass:
         def div(self, x, y):
             return x // y
 
@@ -686,7 +686,7 @@ def http_multi_server(evt, numrequests, requestHandler=None):
         '''This is my function'''
         return True
 
-    class MyXMLRPCServer(xmlrpc.server.MultiPathXMLRPCServer):
+    klasse MyXMLRPCServer(xmlrpc.server.MultiPathXMLRPCServer):
         def get_request(self):
             # Ensure the socket is always non-blocking.  On Linux, socket
             # attributes are not inherited like they are on *BSD and Windows.
@@ -696,10 +696,10 @@ def http_multi_server(evt, numrequests, requestHandler=None):
 
     if not requestHandler:
         requestHandler = xmlrpc.server.SimpleXMLRPCRequestHandler
-    class MyRequestHandler(requestHandler):
+    klasse MyRequestHandler(requestHandler):
         rpc_paths = []
 
-    class BrokenDispatcher:
+    klasse BrokenDispatcher:
         def _marshaled_dispatch(self, data, dispatch_method=None, path=None):
             raise RuntimeError("broken dispatcher")
 
@@ -778,7 +778,7 @@ def make_request_and_skipIf(condition, reason):
         return make_request_and_skip
     return decorator
 
-class BaseServerTestCase(unittest.TestCase):
+klasse BaseServerTestCase(unittest.TestCase):
     requestHandler = None
     request_count = 1
     threadFunc = staticmethod(http_server)
@@ -805,7 +805,7 @@ class BaseServerTestCase(unittest.TestCase):
         # disable traceback reporting
         xmlrpc.server.SimpleXMLRPCServer._send_traceback_header = False
 
-class SimpleServerTestCase(BaseServerTestCase):
+klasse SimpleServerTestCase(BaseServerTestCase):
     def test_simple1(self):
         try:
             p = xmlrpclib.ServerProxy(URL)
@@ -1004,7 +1004,7 @@ class SimpleServerTestCase(BaseServerTestCase):
                          (None, None))
 
 
-class SimpleServerEncodingTestCase(BaseServerTestCase):
+klasse SimpleServerEncodingTestCase(BaseServerTestCase):
     @staticmethod
     def threadFunc(evt, numrequests, requestHandler=None, encoding=None):
         http_server(evt, numrequests, requestHandler, 'iso-8859-15')
@@ -1024,7 +1024,7 @@ class SimpleServerEncodingTestCase(BaseServerTestCase):
                 self.fail("%s\n%s" % (e, getattr(e, "headers", "")))
 
 
-class MultiPathServerTestCase(BaseServerTestCase):
+klasse MultiPathServerTestCase(BaseServerTestCase):
     threadFunc = staticmethod(http_multi_server)
     request_count = 2
     def test_path1(self):
@@ -1085,10 +1085,10 @@ class MultiPathServerTestCase(BaseServerTestCase):
 
 #A test case that verifies that a server using the HTTP/1.1 keep-alive mechanism
 #does indeed serve subsequent requests on the same connection
-class BaseKeepaliveServerTestCase(BaseServerTestCase):
+klasse BaseKeepaliveServerTestCase(BaseServerTestCase):
     #a request handler that supports keep-alive and logs requests into a
     #class variable
-    class RequestHandler(xmlrpc.server.SimpleXMLRPCRequestHandler):
+    klasse RequestHandler(xmlrpc.server.SimpleXMLRPCRequestHandler):
         parentClass = xmlrpc.server.SimpleXMLRPCRequestHandler
         protocol_version = 'HTTP/1.1'
         myRequests = []
@@ -1109,7 +1109,7 @@ class BaseKeepaliveServerTestCase(BaseServerTestCase):
 
 #A test case that verifies that a server using the HTTP/1.1 keep-alive mechanism
 #does indeed serve subsequent requests on the same connection
-class KeepaliveServerTestCase1(BaseKeepaliveServerTestCase):
+klasse KeepaliveServerTestCase1(BaseKeepaliveServerTestCase):
     def test_two(self):
         p = xmlrpclib.ServerProxy(URL)
         #do three requests.
@@ -1128,7 +1128,7 @@ class KeepaliveServerTestCase1(BaseKeepaliveServerTestCase):
 
 #test special attribute access on the serverproxy, through the __call__
 #function.
-class KeepaliveServerTestCase2(BaseKeepaliveServerTestCase):
+klasse KeepaliveServerTestCase2(BaseKeepaliveServerTestCase):
     #ask for two keepalive requests to be handled.
     request_count=2
 
@@ -1163,10 +1163,10 @@ class KeepaliveServerTestCase2(BaseKeepaliveServerTestCase):
 #A test case that verifies that gzip encoding works in both directions
 #(for a request and the response)
 @unittest.skipIf(gzip is None, 'requires gzip')
-class GzipServerTestCase(BaseServerTestCase):
+klasse GzipServerTestCase(BaseServerTestCase):
     #a request handler that supports keep-alive and logs requests into a
     #class variable
-    class RequestHandler(xmlrpc.server.SimpleXMLRPCRequestHandler):
+    klasse RequestHandler(xmlrpc.server.SimpleXMLRPCRequestHandler):
         parentClass = xmlrpc.server.SimpleXMLRPCRequestHandler
         protocol_version = 'HTTP/1.1'
 
@@ -1176,7 +1176,7 @@ class GzipServerTestCase(BaseServerTestCase):
             return self.parentClass.do_POST(self)
     requestHandler = RequestHandler
 
-    class Transport(xmlrpclib.Transport):
+    klasse Transport(xmlrpclib.Transport):
         #custom transport, stores the response length for our perusal
         fake_gzip = False
         def parse_response(self, response):
@@ -1231,7 +1231,7 @@ class GzipServerTestCase(BaseServerTestCase):
 
 
 @unittest.skipIf(gzip is None, 'requires gzip')
-class GzipUtilTestCase(unittest.TestCase):
+klasse GzipUtilTestCase(unittest.TestCase):
 
     def test_gzip_decode_limit(self):
         max_gzip_decode = 20 * 1024 * 1024
@@ -1250,8 +1250,8 @@ class GzipUtilTestCase(unittest.TestCase):
         xmlrpclib.gzip_decode(encoded, max_decode=-1)
 
 
-class HeadersServerTestCase(BaseServerTestCase):
-    class RequestHandler(xmlrpc.server.SimpleXMLRPCRequestHandler):
+klasse HeadersServerTestCase(BaseServerTestCase):
+    klasse RequestHandler(xmlrpc.server.SimpleXMLRPCRequestHandler):
         test_headers = None
 
         def do_POST(self):
@@ -1312,7 +1312,7 @@ class HeadersServerTestCase(BaseServerTestCase):
 
 
 #Test special attributes of the ServerProxy object
-class ServerProxyTestCase(unittest.TestCase):
+klasse ServerProxyTestCase(unittest.TestCase):
     def setUp(self):
         unittest.TestCase.setUp(self)
         # Actual value of the URL doesn't matter if it is a string in
@@ -1331,7 +1331,7 @@ class ServerProxyTestCase(unittest.TestCase):
 
 # This is a contrived way to make a failure occur on the server side
 # in order to test the _send_traceback_header flag on the server
-class FailingMessageClass(http.client.HTTPMessage):
+klasse FailingMessageClass(http.client.HTTPMessage):
     def get(self, key, failobj=None):
         key = key.lower()
         if key == 'content-length':
@@ -1339,7 +1339,7 @@ class FailingMessageClass(http.client.HTTPMessage):
         return super().get(key, failobj)
 
 
-class FailingServerTestCase(unittest.TestCase):
+klasse FailingServerTestCase(unittest.TestCase):
     def setUp(self):
         self.evt = threading.Event()
         # start server thread to handle requests
@@ -1430,7 +1430,7 @@ def captured_stdout(encoding='utf-8'):
         sys.stdout = orig_stdout
 
 
-class CGIHandlerTestCase(unittest.TestCase):
+klasse CGIHandlerTestCase(unittest.TestCase):
     def setUp(self):
         self.cgi = xmlrpc.server.CGIXMLRPCRequestHandler()
 
@@ -1498,7 +1498,7 @@ class CGIHandlerTestCase(unittest.TestCase):
             len(content))
 
 
-class UseBuiltinTypesTestCase(unittest.TestCase):
+klasse UseBuiltinTypesTestCase(unittest.TestCase):
 
     def test_use_builtin_types(self):
         # SimpleXMLRPCDispatcher.__init__ accepts use_builtin_types, which

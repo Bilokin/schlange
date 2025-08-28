@@ -29,7 +29,7 @@ from unittest.mock import patch
 SKIP_CORO_TESTS = False
 
 
-class PdbTestInput(object):
+klasse PdbTestInput(object):
     """Context manager that makes testing Pdb in doctests easier."""
 
     def __init__(self, input):
@@ -659,7 +659,7 @@ def test_pdb_break_anywhere():
 def test_pdb_pp_repr_exc():
     """Test that do_p/do_pp do not swallow exceptions.
 
-    >>> class BadRepr:
+    >>> klasse BadRepr:
     ...     def __repr__(self):
     ...         raise Exception('repr_exc')
     >>> obj = BadRepr()
@@ -826,7 +826,7 @@ def test_pdb_whatis_command():
     >>> def myfunc():
     ...     pass
 
-    >>> class MyClass:
+    >>> klasse MyClass:
     ...    def mymethod(self):
     ...        pass
 
@@ -926,7 +926,7 @@ def test_pdb_display_command():
 def test_pdb_alias_command():
     """Test alias command
 
-    >>> class A:
+    >>> klasse A:
     ...     def __init__(self):
     ...         self.attr1 = 10
     ...         self.attr2 = 'str'
@@ -1746,7 +1746,7 @@ def test_pdb_return_to_different_file():
 
     >>> import pprint
 
-    >>> class A:
+    >>> klasse A:
     ...    def __repr__(self):
     ...        return 'A'
 
@@ -3400,7 +3400,7 @@ def test_pdb_issue_gh_65052():
     """See GH-65052
 
     args, retval and display should not crash if the object is not displayable
-    >>> class A:
+    >>> klasse A:
     ...     def __new__(cls):
     ...         import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
     ...         return object.__new__(cls)
@@ -3450,7 +3450,7 @@ def test_pdb_issue_gh_65052():
 
 @support.force_not_colorized_test_class
 @support.requires_subprocess()
-class PdbTestCase(unittest.TestCase):
+klasse PdbTestCase(unittest.TestCase):
     def tearDown(self):
         os_helper.unlink(os_helper.TESTFN)
 
@@ -3867,7 +3867,7 @@ def bœr():
 
     def test_pdbrc_alias(self):
         script = textwrap.dedent("""
-            class A:
+            klasse A:
                 def __init__(self):
                     self.attr = 1
             a = A()
@@ -3885,7 +3885,7 @@ def bœr():
 
     def test_pdbrc_semicolon(self):
         script = textwrap.dedent("""
-            class A:
+            klasse A:
                 def __init__(self):
                     self.attr = 1
             a = A()
@@ -3901,7 +3901,7 @@ def bœr():
 
     def test_pdbrc_commands(self):
         script = textwrap.dedent("""
-            class A:
+            klasse A:
                 def __init__(self):
                     self.attr = 1
             a = A()
@@ -4540,7 +4540,7 @@ def bœr():
             self.assertIn('break in bar', stdout)
 
 
-class ChecklineTests(unittest.TestCase):
+klasse ChecklineTests(unittest.TestCase):
     def setUp(self):
         linecache.clearcache()  # Pdb.checkline() uses linecache.getline()
 
@@ -4578,7 +4578,7 @@ class ChecklineTests(unittest.TestCase):
 
 
 @support.requires_subprocess()
-class PdbTestInline(unittest.TestCase):
+klasse PdbTestInline(unittest.TestCase):
     @unittest.skipIf(sys.flags.safe_path,
                      'PYTHONSAFEPATH changes default sys.path')
     def _run_script(self, script, commands,
@@ -4690,7 +4690,7 @@ class PdbTestInline(unittest.TestCase):
 
 
 @support.force_colorized_test_class
-class PdbTestColorize(unittest.TestCase):
+klasse PdbTestColorize(unittest.TestCase):
     def setUp(self):
         self._original_can_colorize = _colorize.can_colorize
         # Force colorize to be enabled because we are sending data
@@ -4725,7 +4725,7 @@ class PdbTestColorize(unittest.TestCase):
 
 @support.force_not_colorized_test_class
 @support.requires_subprocess()
-class TestREPLSession(unittest.TestCase):
+klasse TestREPLSession(unittest.TestCase):
     def test_return_from_inline_mode_to_REPL(self):
         # GH-124703: Raise BdbQuit when exiting pdb in REPL session.
         # This allows the REPL session to continue.
@@ -4748,7 +4748,7 @@ class TestREPLSession(unittest.TestCase):
 
 @support.force_not_colorized_test_class
 @support.requires_subprocess()
-class PdbTestReadline(unittest.TestCase):
+klasse PdbTestReadline(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):

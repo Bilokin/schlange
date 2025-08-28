@@ -5,14 +5,14 @@ from test.support import import_helper
 _ctypes_test = import_helper.import_module("_ctypes_test")
 
 
-class CHECKED(c_int):
+klasse CHECKED(c_int):
     def _check_retval_(value):
         # Receives a CHECKED instance.
         return str(value.value)
     _check_retval_ = staticmethod(_check_retval_)
 
 
-class Test(unittest.TestCase):
+klasse Test(unittest.TestCase):
     def test_checkretval(self):
         dll = CDLL(_ctypes_test.__file__)
         self.assertEqual(42, dll._testfunc_p_p(42))

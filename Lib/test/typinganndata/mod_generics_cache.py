@@ -8,12 +8,12 @@ default_b: Optional['B'] = None
 T = TypeVar('T')
 
 
-class A(Generic[T]):
+klasse A(Generic[T]):
     some_b: 'B'
 
 
-class B(Generic[T]):
-    class A(Generic[T]):
+klasse B(Generic[T]):
+    klasse A(Generic[T]):
         pass
 
     my_inner_a1: 'B.A'

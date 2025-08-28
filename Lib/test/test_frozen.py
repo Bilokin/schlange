@@ -16,7 +16,7 @@ import unittest
 from test.support import captured_stdout, import_helper
 
 
-class TestFrozen(unittest.TestCase):
+klasse TestFrozen(unittest.TestCase):
     def test_frozen(self):
         name = '__hello__'
         if name in sys.modules:

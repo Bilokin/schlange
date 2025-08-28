@@ -34,7 +34,7 @@ def make_server():
             "can be used by POSTing to /RPC2. Try self.add, too.")
 
         # Create and register classes and functions
-        class TestClass(object):
+        klasse TestClass(object):
             def test_method(self, arg):
                 """Test method's docs. This method truly does very little."""
                 self.arg = arg
@@ -54,7 +54,7 @@ def make_server():
             """ Use function annotations. """
             return x
 
-        class ClassWithAnnotation:
+        klasse ClassWithAnnotation:
             def method_annotation(self, x: bytes):
                 return x.decode()
 
@@ -67,7 +67,7 @@ def make_server():
         serv.server_close()
         raise
 
-class DocXMLRPCHTTPGETServer(unittest.TestCase):
+klasse DocXMLRPCHTTPGETServer(unittest.TestCase):
     def setUp(self):
         # Enable server feedback
         DocXMLRPCServer._send_traceback_header = True

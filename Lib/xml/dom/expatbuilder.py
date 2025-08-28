@@ -57,7 +57,7 @@ _typeinfo_map = {
     "NMTOKENS": minidom.TypeInfo(None, "nmtokens"),
     }
 
-class ElementInfo(object):
+klasse ElementInfo(object):
     __slots__ = '_attr_info', '_model', 'tagName'
 
     def __init__(self, tagName, model=None):
@@ -130,7 +130,7 @@ def _parse_ns_name(builder, name):
     return intern(uri, uri), localname, prefix, qname
 
 
-class ExpatBuilder:
+klasse ExpatBuilder:
     """Document builder that uses Expat to build a ParsedXML.DOM document
     instance."""
 
@@ -450,7 +450,7 @@ class ExpatBuilder:
 # where allowed.
 _ALLOWED_FILTER_RETURNS = (FILTER_ACCEPT, FILTER_REJECT, FILTER_SKIP)
 
-class FilterVisibilityController(object):
+klasse FilterVisibilityController(object):
     """Wrapper around a DOMBuilderFilter which implements the checks
     to make the whatToShow filter attribute work."""
 
@@ -508,7 +508,7 @@ class FilterVisibilityController(object):
         }
 
 
-class FilterCrutch(object):
+klasse FilterCrutch(object):
     __slots__ = '_builder', '_level', '_old_start', '_old_end'
 
     def __init__(self, builder):
@@ -520,7 +520,7 @@ class FilterCrutch(object):
         parser.StartElementHandler = self.start_element_handler
         parser.EndElementHandler = self.end_element_handler
 
-class Rejecter(FilterCrutch):
+klasse Rejecter(FilterCrutch):
     __slots__ = ()
 
     def __init__(self, builder):
@@ -548,7 +548,7 @@ class Rejecter(FilterCrutch):
         else:
             self._level = self._level - 1
 
-class Skipper(FilterCrutch):
+klasse Skipper(FilterCrutch):
     __slots__ = ()
 
     def start_element_handler(self, *args):
@@ -588,7 +588,7 @@ _FRAGMENT_BUILDER_TEMPLATE = (
     % _FRAGMENT_BUILDER_INTERNAL_SYSTEM_ID)
 
 
-class FragmentBuilder(ExpatBuilder):
+klasse FragmentBuilder(ExpatBuilder):
     """Builder which constructs document fragments given XML source
     text and a context node.
 
@@ -705,8 +705,8 @@ class FragmentBuilder(ExpatBuilder):
                 self, context, base, systemId, publicId)
 
 
-class Namespaces:
-    """Mix-in class for builders; adds support for namespaces."""
+klasse Namespaces:
+    """Mix-in klasse for builders; adds support for namespaces."""
 
     def _initNamespaces(self):
         # list of (prefix, uri) ns declarations.  Namespace attrs are
@@ -800,7 +800,7 @@ class Namespaces:
             self._finish_end_element(curNode)
 
 
-class ExpatBuilderNS(Namespaces, ExpatBuilder):
+klasse ExpatBuilderNS(Namespaces, ExpatBuilder):
     """Document builder that supports namespaces."""
 
     def reset(self):
@@ -808,7 +808,7 @@ class ExpatBuilderNS(Namespaces, ExpatBuilder):
         self._initNamespaces()
 
 
-class FragmentBuilderNS(Namespaces, FragmentBuilder):
+klasse FragmentBuilderNS(Namespaces, FragmentBuilder):
     """Fragment builder that supports namespaces."""
 
     def reset(self):
@@ -845,11 +845,11 @@ class FragmentBuilderNS(Namespaces, FragmentBuilder):
         return attrs
 
 
-class ParseEscape(Exception):
+klasse ParseEscape(Exception):
     """Exception raised to short-circuit parsing in InternalSubsetExtractor."""
     pass
 
-class InternalSubsetExtractor(ExpatBuilder):
+klasse InternalSubsetExtractor(ExpatBuilder):
     """XML processor which can rip out the internal document type subset."""
 
     subset = None

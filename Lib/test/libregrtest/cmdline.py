@@ -143,7 +143,7 @@ Pattern examples:
 """
 
 
-class Namespace(argparse.Namespace):
+klasse Namespace(argparse.Namespace):
     def __init__(self, **kwargs) -> None:
         self.ci = False
         self.testdir = None
@@ -191,19 +191,19 @@ class Namespace(argparse.Namespace):
         super().__init__(**kwargs)
 
 
-class _ArgParser(argparse.ArgumentParser):
+klasse _ArgParser(argparse.ArgumentParser):
 
     def error(self, message):
         super().error(message + "\nPass -h or --help for complete help.")
 
 
-class FilterAction(argparse.Action):
+klasse FilterAction(argparse.Action):
     def __call__(self, parser, namespace, value, option_string=None):
         items = getattr(namespace, self.dest)
         items.append((value, self.const))
 
 
-class FromFileFilterAction(argparse.Action):
+klasse FromFileFilterAction(argparse.Action):
     def __call__(self, parser, namespace, value, option_string=None):
         items = getattr(namespace, self.dest)
         with open(value, encoding='utf-8') as fp:

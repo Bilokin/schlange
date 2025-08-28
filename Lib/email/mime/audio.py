@@ -10,7 +10,7 @@ from email import encoders
 from email.mime.nonmultipart import MIMENonMultipart
 
 
-class MIMEAudio(MIMENonMultipart):
+klasse MIMEAudio(MIMENonMultipart):
     """Class for generating audio/* MIME documents."""
 
     def __init__(self, _audiodata, _subtype=None,

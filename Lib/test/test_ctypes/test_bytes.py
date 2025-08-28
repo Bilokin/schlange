@@ -6,7 +6,7 @@ from ctypes import Structure, c_char, c_char_p, c_wchar, c_wchar_p
 from ._support import StructCheckMixin
 
 
-class BytesTest(unittest.TestCase, StructCheckMixin):
+klasse BytesTest(unittest.TestCase, StructCheckMixin):
     def test_c_char(self):
         x = c_char(b"x")
         self.assertRaises(TypeError, c_char, "x")
@@ -39,7 +39,7 @@ class BytesTest(unittest.TestCase, StructCheckMixin):
         self.assertRaises(TypeError, c_wchar_p, b"foo bar")
 
     def test_struct(self):
-        class X(Structure):
+        klasse X(Structure):
             _fields_ = [("a", c_char * 3)]
         self.check_struct(X)
 
@@ -49,7 +49,7 @@ class BytesTest(unittest.TestCase, StructCheckMixin):
         self.assertEqual(type(x.a), bytes)
 
     def test_struct_W(self):
-        class X(Structure):
+        klasse X(Structure):
             _fields_ = [("a", c_wchar * 3)]
         self.check_struct(X)
 
@@ -60,7 +60,7 @@ class BytesTest(unittest.TestCase, StructCheckMixin):
 
     @unittest.skipUnless(sys.platform == "win32", 'Windows-specific test')
     def test_BSTR(self):
-        class BSTR(_SimpleCData):
+        klasse BSTR(_SimpleCData):
             _type_ = "X"
 
         BSTR("abc")

@@ -190,7 +190,7 @@ METHODDEF_PROTOTYPE_IFNDEF: Final[str] = libclinic.normalize_snippet("""
 """)
 
 
-class ParseArgsCodeGen:
+klasse ParseArgsCodeGen:
     func: Function
     codegen: CodeGen
     limited_capi: bool = False

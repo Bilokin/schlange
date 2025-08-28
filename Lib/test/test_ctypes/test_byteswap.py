@@ -24,14 +24,14 @@ def bin(s):
 #
 # For Structures and Unions, these types are created on demand.
 
-class Test(unittest.TestCase, StructCheckMixin):
+klasse Test(unittest.TestCase, StructCheckMixin):
     def test_slots(self):
-        class BigPoint(BigEndianStructure):
+        klasse BigPoint(BigEndianStructure):
             __slots__ = ()
             _fields_ = [("x", c_int), ("y", c_int)]
         self.check_struct(BigPoint)
 
-        class LowPoint(LittleEndianStructure):
+        klasse LowPoint(LittleEndianStructure):
             __slots__ = ()
             _fields_ = [("x", c_int), ("y", c_int)]
         self.check_struct(LowPoint)
@@ -200,7 +200,7 @@ class Test(unittest.TestCase, StructCheckMixin):
         # these fields do not support different byte order:
         for typ in c_wchar, c_void_p, POINTER(c_int):
             with self.assertRaises(TypeError):
-                class T(BigEndianStructure if sys.byteorder == "little" else LittleEndianStructure):
+                klasse T(BigEndianStructure if sys.byteorder == "little" else LittleEndianStructure):
                     _fields_ = fields + [("x", typ)]
                 self.check_struct(T)
 
@@ -219,12 +219,12 @@ class Test(unittest.TestCase, StructCheckMixin):
                 LittleEndianStructure,
                 Structure,
             ):
-                class NestedStructure(nested):
+                klasse NestedStructure(nested):
                     _fields_ = [("x", c_uint32),
                                 ("y", c_uint32)]
                 self.check_struct(NestedStructure)
 
-                class TestStructure(parent):
+                klasse TestStructure(parent):
                     _fields_ = [("point", NestedStructure)]
                 self.check_struct(TestStructure)
 
@@ -247,7 +247,7 @@ class Test(unittest.TestCase, StructCheckMixin):
             base = LittleEndianStructure
             fmt = "<bxhid"
 
-        class S(base):
+        klasse S(base):
             _fields_ = [("b", c_byte),
                         ("h", c_short),
                         ("i", c_int),
@@ -266,7 +266,7 @@ class Test(unittest.TestCase, StructCheckMixin):
             base = LittleEndianStructure
             fmt = "<b h xi xd"
 
-        class S(base):
+        klasse S(base):
             _pack_ = 1
             _layout_ = "ms"
             _fields_ = [("b", c_byte),
@@ -294,7 +294,7 @@ class Test(unittest.TestCase, StructCheckMixin):
             base = LittleEndianStructure
             fmt = ">b h xi xd"
 
-        class S(Structure):
+        klasse S(Structure):
             _pack_ = 1
             _layout_ = "ms"
             _fields_ = [("b", c_byte),
@@ -341,7 +341,7 @@ class Test(unittest.TestCase, StructCheckMixin):
         # these fields do not support different byte order:
         for typ in c_wchar, c_void_p, POINTER(c_int):
             with self.assertRaises(TypeError):
-                class T(BigEndianUnion if sys.byteorder == "little" else LittleEndianUnion):
+                klasse T(BigEndianUnion if sys.byteorder == "little" else LittleEndianUnion):
                     _fields_ = fields + [("x", typ)]
                 self.check_union(T)
 
@@ -359,12 +359,12 @@ class Test(unittest.TestCase, StructCheckMixin):
                 LittleEndianUnion,
                 Union,
             ):
-                class NestedStructure(nested):
+                klasse NestedStructure(nested):
                     _fields_ = [("x", c_uint32),
                                 ("y", c_uint32)]
                 self.check_struct(NestedStructure)
 
-                class TestUnion(parent):
+                klasse TestUnion(parent):
                     _fields_ = [("point", NestedStructure)]
                 self.check_union(TestUnion)
 
@@ -383,15 +383,15 @@ class Test(unittest.TestCase, StructCheckMixin):
             _Structure = LittleEndianStructure
             _Union = LittleEndianUnion
 
-        class S1(_Structure):
+        klasse S1(_Structure):
             _fields_ = [("a", c_byte), ("b", c_byte)]
         self.check_struct(S1)
 
-        class U1(_Union):
+        klasse U1(_Union):
             _fields_ = [("s1", S1), ("ab", c_short)]
         self.check_union(U1)
 
-        class S2(_Structure):
+        klasse S2(_Structure):
             _fields_ = [("u1", U1), ("c", c_byte)]
         self.check_struct(S2)
 

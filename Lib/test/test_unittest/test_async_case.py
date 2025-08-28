@@ -7,7 +7,7 @@ from test.support import force_not_colorized
 support.requires_working_socket(module=True)
 
 
-class MyException(Exception):
+klasse MyException(Exception):
     pass
 
 
@@ -15,7 +15,7 @@ def tearDownModule():
     asyncio.events._set_event_loop_policy(None)
 
 
-class TestCM:
+klasse TestCM:
     def __init__(self, ordering, enter_result=None):
         self.ordering = ordering
         self.enter_result = enter_result
@@ -28,12 +28,12 @@ class TestCM:
         self.ordering.append('exit')
 
 
-class LacksEnterAndExit:
+klasse LacksEnterAndExit:
     pass
-class LacksEnter:
+klasse LacksEnter:
     async def __aexit__(self, *exc_info):
         pass
-class LacksExit:
+klasse LacksExit:
     async def __aenter__(self):
         pass
 
@@ -41,7 +41,7 @@ class LacksExit:
 VAR = contextvars.ContextVar('VAR', default=())
 
 
-class TestAsyncCase(unittest.TestCase):
+klasse TestAsyncCase(unittest.TestCase):
     maxDiff = None
 
     def setUp(self):
@@ -61,7 +61,7 @@ class TestAsyncCase(unittest.TestCase):
                     'cleanup3',
                     'cleanup2',
                     'cleanup1']
-        class Test(unittest.IsolatedAsyncioTestCase):
+        klasse Test(unittest.IsolatedAsyncioTestCase):
             def setUp(self):
                 self.assertEqual(events, [])
                 events.append('setUp')
@@ -145,7 +145,7 @@ class TestAsyncCase(unittest.TestCase):
         self.assertEqual(cvar, tuple(expected))
 
     def test_exception_in_setup(self):
-        class Test(unittest.IsolatedAsyncioTestCase):
+        klasse Test(unittest.IsolatedAsyncioTestCase):
             async def asyncSetUp(self):
                 events.append('asyncSetUp')
                 self.addAsyncCleanup(self.on_cleanup)
@@ -182,7 +182,7 @@ class TestAsyncCase(unittest.TestCase):
         self.assertEqual(events, ['asyncSetUp', 'cleanup'])
 
     def test_exception_in_test(self):
-        class Test(unittest.IsolatedAsyncioTestCase):
+        klasse Test(unittest.IsolatedAsyncioTestCase):
             async def asyncSetUp(self):
                 events.append('asyncSetUp')
 
@@ -218,7 +218,7 @@ class TestAsyncCase(unittest.TestCase):
         self.assertEqual(events, ['asyncSetUp', 'test', 'cleanup'])
 
     def test_exception_in_tear_down(self):
-        class Test(unittest.IsolatedAsyncioTestCase):
+        klasse Test(unittest.IsolatedAsyncioTestCase):
             async def asyncSetUp(self):
                 events.append('asyncSetUp')
 
@@ -255,7 +255,7 @@ class TestAsyncCase(unittest.TestCase):
 
     @force_not_colorized
     def test_exception_in_tear_clean_up(self):
-        class Test(unittest.IsolatedAsyncioTestCase):
+        klasse Test(unittest.IsolatedAsyncioTestCase):
             async def asyncSetUp(self):
                 events.append('asyncSetUp')
 
@@ -298,10 +298,10 @@ class TestAsyncCase(unittest.TestCase):
 
     def test_deprecation_of_return_val_from_test(self):
         # Issue 41322 - deprecate return of value that is not None from a test
-        class Nothing:
+        klasse Nothing:
             def __eq__(self, o):
                 return o is None
-        class Test(unittest.IsolatedAsyncioTestCase):
+        klasse Test(unittest.IsolatedAsyncioTestCase):
             async def test1(self):
                 return 1
             async def test2(self):
@@ -333,7 +333,7 @@ class TestAsyncCase(unittest.TestCase):
     def test_cleanups_interleave_order(self):
         events = []
 
-        class Test(unittest.IsolatedAsyncioTestCase):
+        klasse Test(unittest.IsolatedAsyncioTestCase):
             async def test_func(self):
                 self.addAsyncCleanup(self.on_sync_cleanup, 1)
                 self.addAsyncCleanup(self.on_async_cleanup, 2)
@@ -355,7 +355,7 @@ class TestAsyncCase(unittest.TestCase):
 
     def test_base_exception_from_async_method(self):
         events = []
-        class Test(unittest.IsolatedAsyncioTestCase):
+        klasse Test(unittest.IsolatedAsyncioTestCase):
             async def test_base(self):
                 events.append("test_base")
                 raise BaseException()
@@ -381,7 +381,7 @@ class TestAsyncCase(unittest.TestCase):
 
     def test_cancellation_hanging_tasks(self):
         cancelled = False
-        class Test(unittest.IsolatedAsyncioTestCase):
+        klasse Test(unittest.IsolatedAsyncioTestCase):
             async def test_leaking_task(self):
                 async def coro():
                     nonlocal cancelled
@@ -401,7 +401,7 @@ class TestAsyncCase(unittest.TestCase):
     def test_enterAsyncContext(self):
         events = []
 
-        class Test(unittest.IsolatedAsyncioTestCase):
+        klasse Test(unittest.IsolatedAsyncioTestCase):
             async def test_func(slf):
                 slf.addAsyncCleanup(events.append, 'cleanup1')
                 cm = TestCM(events, 42)
@@ -415,7 +415,7 @@ class TestAsyncCase(unittest.TestCase):
         self.assertEqual(events, ['enter', 'test', 'cleanup2', 'exit', 'cleanup1'])
 
     def test_enterAsyncContext_arg_errors(self):
-        class Test(unittest.IsolatedAsyncioTestCase):
+        klasse Test(unittest.IsolatedAsyncioTestCase):
             async def test_func(slf):
                 with self.assertRaisesRegex(TypeError, 'asynchronous context manager'):
                     await slf.enterAsyncContext(LacksEnterAndExit())
@@ -429,7 +429,7 @@ class TestAsyncCase(unittest.TestCase):
         self.assertTrue(output.wasSuccessful())
 
     def test_debug_cleanup_same_loop(self):
-        class Test(unittest.IsolatedAsyncioTestCase):
+        klasse Test(unittest.IsolatedAsyncioTestCase):
             async def asyncSetUp(self):
                 async def coro():
                     await asyncio.sleep(0)
@@ -478,7 +478,7 @@ class TestAsyncCase(unittest.TestCase):
         # Make sure the default event loop is not used
         asyncio.set_event_loop(None)
 
-        class TestCase1(unittest.IsolatedAsyncioTestCase):
+        klasse TestCase1(unittest.IsolatedAsyncioTestCase):
             def setUp(self):
                 asyncio.events._get_event_loop_policy().get_event_loop()
 
@@ -492,7 +492,7 @@ class TestAsyncCase(unittest.TestCase):
     def test_loop_factory(self):
         asyncio.events._set_event_loop_policy(None)
 
-        class TestCase1(unittest.IsolatedAsyncioTestCase):
+        klasse TestCase1(unittest.IsolatedAsyncioTestCase):
             loop_factory = asyncio.EventLoop
 
             async def test_demo1(self):

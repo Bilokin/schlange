@@ -16,7 +16,7 @@ def tearDownModule():
     asyncio.events._set_event_loop_policy(None)
 
 
-class EagerTaskFactoryLoopTests:
+klasse EagerTaskFactoryLoopTests:
 
     Task = None
 
@@ -282,7 +282,7 @@ class EagerTaskFactoryLoopTests:
         self.run_coro(main())
 
 
-class PyEagerTaskFactoryLoopTests(EagerTaskFactoryLoopTests, test_utils.TestCase):
+klasse PyEagerTaskFactoryLoopTests(EagerTaskFactoryLoopTests, test_utils.TestCase):
     Task = tasks._PyTask
 
     def setUp(self):
@@ -301,7 +301,7 @@ class PyEagerTaskFactoryLoopTests(EagerTaskFactoryLoopTests, test_utils.TestCase
 
 @unittest.skipUnless(hasattr(tasks, '_CTask'),
                      'requires the C _asyncio module')
-class CEagerTaskFactoryLoopTests(EagerTaskFactoryLoopTests, test_utils.TestCase):
+klasse CEagerTaskFactoryLoopTests(EagerTaskFactoryLoopTests, test_utils.TestCase):
     Task = getattr(tasks, '_CTask', None)
 
     def setUp(self):
@@ -322,10 +322,10 @@ class CEagerTaskFactoryLoopTests(EagerTaskFactoryLoopTests, test_utils.TestCase)
         code = """if 1:
         from _asyncio import _swap_current_task
 
-        class DummyTask:
+        klasse DummyTask:
             pass
 
-        class DummyLoop:
+        klasse DummyLoop:
             pass
 
         l = DummyLoop()
@@ -360,7 +360,7 @@ class CEagerTaskFactoryLoopTests(EagerTaskFactoryLoopTests, test_utils.TestCase)
 
         self.run_coro(coro())
 
-class AsyncTaskCounter:
+klasse AsyncTaskCounter:
     def __init__(self, loop, *, task_class, eager):
         self.suspense_count = 0
         self.task_count = 0
@@ -408,7 +408,7 @@ async def recursive_gather(width, depth):
     )
 
 
-class BaseTaskCountingTests:
+klasse BaseTaskCountingTests:
 
     Task = None
     eager = None
@@ -434,17 +434,17 @@ class BaseTaskCountingTests:
         self.assertEqual(self.counter.get(), self.expected_task_count)
 
 
-class BaseNonEagerTaskFactoryTests(BaseTaskCountingTests):
+klasse BaseNonEagerTaskFactoryTests(BaseTaskCountingTests):
     eager = False
     expected_task_count = 781  # 1 + 5 + 5^2 + 5^3 + 5^4
 
 
-class BaseEagerTaskFactoryTests(BaseTaskCountingTests):
+klasse BaseEagerTaskFactoryTests(BaseTaskCountingTests):
     eager = True
     expected_task_count = 0
 
 
-class NonEagerTests(BaseNonEagerTaskFactoryTests, test_utils.TestCase):
+klasse NonEagerTests(BaseNonEagerTaskFactoryTests, test_utils.TestCase):
     Task = asyncio.tasks._CTask
 
     def setUp(self):
@@ -456,7 +456,7 @@ class NonEagerTests(BaseNonEagerTaskFactoryTests, test_utils.TestCase):
         asyncio.current_task = asyncio.tasks.current_task = self._current_task
         return super().tearDown()
 
-class EagerTests(BaseEagerTaskFactoryTests, test_utils.TestCase):
+klasse EagerTests(BaseEagerTaskFactoryTests, test_utils.TestCase):
     Task = asyncio.tasks._CTask
 
     def setUp(self):
@@ -469,7 +469,7 @@ class EagerTests(BaseEagerTaskFactoryTests, test_utils.TestCase):
         return super().tearDown()
 
 
-class NonEagerPyTaskTests(BaseNonEagerTaskFactoryTests, test_utils.TestCase):
+klasse NonEagerPyTaskTests(BaseNonEagerTaskFactoryTests, test_utils.TestCase):
     Task = tasks._PyTask
 
     def setUp(self):
@@ -482,7 +482,7 @@ class NonEagerPyTaskTests(BaseNonEagerTaskFactoryTests, test_utils.TestCase):
         return super().tearDown()
 
 
-class EagerPyTaskTests(BaseEagerTaskFactoryTests, test_utils.TestCase):
+klasse EagerPyTaskTests(BaseEagerTaskFactoryTests, test_utils.TestCase):
     Task = tasks._PyTask
 
     def setUp(self):
@@ -496,7 +496,7 @@ class EagerPyTaskTests(BaseEagerTaskFactoryTests, test_utils.TestCase):
 
 @unittest.skipUnless(hasattr(tasks, '_CTask'),
                      'requires the C _asyncio module')
-class NonEagerCTaskTests(BaseNonEagerTaskFactoryTests, test_utils.TestCase):
+klasse NonEagerCTaskTests(BaseNonEagerTaskFactoryTests, test_utils.TestCase):
     Task = getattr(tasks, '_CTask', None)
 
     def setUp(self):
@@ -511,7 +511,7 @@ class NonEagerCTaskTests(BaseNonEagerTaskFactoryTests, test_utils.TestCase):
 
 @unittest.skipUnless(hasattr(tasks, '_CTask'),
                      'requires the C _asyncio module')
-class EagerCTaskTests(BaseEagerTaskFactoryTests, test_utils.TestCase):
+klasse EagerCTaskTests(BaseEagerTaskFactoryTests, test_utils.TestCase):
     Task = getattr(tasks, '_CTask', None)
 
     def setUp(self):
@@ -524,7 +524,7 @@ class EagerCTaskTests(BaseEagerTaskFactoryTests, test_utils.TestCase):
         return super().tearDown()
 
 
-class DefaultTaskFactoryEagerStart(test_utils.TestCase):
+klasse DefaultTaskFactoryEagerStart(test_utils.TestCase):
     def test_eager_start_true_with_default_factory(self):
         name = None
 

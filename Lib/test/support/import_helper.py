@@ -185,7 +185,7 @@ def import_fresh_module(name, fresh=(), blocked=(), *,
             sys.modules.update(orig_modules)
 
 
-class CleanImport(object):
+klasse CleanImport(object):
     """Context manager to force import to return a new module reference.
 
     This is useful for testing module-level behaviours, such as
@@ -223,7 +223,7 @@ class CleanImport(object):
         self._frozen_modules.__exit__(*ignore_exc)
 
 
-class DirsOnSysPath(object):
+klasse DirsOnSysPath(object):
     """Context manager to temporarily add directories to sys.path.
 
     This makes a copy of sys.path, appends any directories given

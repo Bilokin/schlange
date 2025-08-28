@@ -10,7 +10,7 @@ def tearDownModule():
     asyncio.events._set_event_loop_policy(None)
 
 
-class ProtocolsAbsTests(unittest.TestCase):
+klasse ProtocolsAbsTests(unittest.TestCase):
 
     def test_base_protocol(self):
         f = mock.Mock()

@@ -182,7 +182,7 @@ def requires_subinterpreters(meth):
                            'subinterpreters required')(meth)
 
 
-class ModuleSnapshot(types.SimpleNamespace):
+klasse ModuleSnapshot(types.SimpleNamespace):
     """A representation of a module for testing.
 
     Fields:
@@ -346,7 +346,7 @@ class ModuleSnapshot(types.SimpleNamespace):
 
 
 @force_not_colorized_test_class
-class ImportTests(unittest.TestCase):
+klasse ImportTests(unittest.TestCase):
 
     def setUp(self):
         remove_files(TESTFN)
@@ -651,7 +651,7 @@ class ImportTests(unittest.TestCase):
         # Issue 4236
         testfn = script_helper.make_script('', TESTFN, textwrap.dedent("""\
             import sys
-            class C:
+            klasse C:
                def __del__(self):
                   import importlib
             sys.argv.insert(0, C())
@@ -708,7 +708,7 @@ class ImportTests(unittest.TestCase):
     def test_from_import_AttributeError(self):
         # Issue #24492: trying to import an attribute that raises an
         # AttributeError should lead to an ImportError.
-        class AlwaysAttributeError:
+        klasse AlwaysAttributeError:
             def __getattr__(self, _):
                 raise AttributeError
 
@@ -867,7 +867,7 @@ from os import this_will_never_exist
     def test_non_module_from_import_error(self):
         prefix = """
 import sys
-class NotAModule: ...
+klasse NotAModule: ...
 nm = NotAModule()
 nm.symbol = 123
 sys.modules["not_a_module"] = nm
@@ -1045,7 +1045,7 @@ from not_a_module import symbol
                 f.write("""
 import fractions
 fractions.shadowing_module
-class substr(str):
+klasse substr(str):
     __hash__ = None
 fractions.__name__ = substr('fractions')
 try:
@@ -1061,7 +1061,7 @@ except TypeError as e:
                 f.write("""
 import fractions
 fractions.shadowing_module
-class substr(str):
+klasse substr(str):
     __hash__ = None
 fractions.__name__ = substr('fractions')
 try:
@@ -1238,20 +1238,20 @@ os.does_not_exist
 
     def test_create_dynamic_null(self):
         with self.assertRaisesRegex(ValueError, 'embedded null character'):
-            class Spec:
+            klasse Spec:
                 name = "a\x00b"
                 origin = "abc"
             _imp.create_dynamic(Spec())
 
         with self.assertRaisesRegex(ValueError, 'embedded null character'):
-            class Spec2:
+            klasse Spec2:
                 name = "abc"
                 origin = "a\x00b"
             _imp.create_dynamic(Spec2())
 
 
 @skip_if_dont_write_bytecode
-class FilePermissionTests(unittest.TestCase):
+klasse FilePermissionTests(unittest.TestCase):
     # tests for file mode on cached .pyc files
 
     @unittest.skipUnless(os.name == 'posix',
@@ -1340,7 +1340,7 @@ class FilePermissionTests(unittest.TestCase):
             self.assertEqual(m.x, 'rewritten')
 
 
-class PycRewritingTests(unittest.TestCase):
+klasse PycRewritingTests(unittest.TestCase):
     # Test that the `co_filename` attribute on code objects always points
     # to the right file, even when various things happen (e.g. both the .py
     # and the .pyc file are renamed).
@@ -1429,7 +1429,7 @@ func_filename = func.__code__.co_filename
         self.assertEqual(mod.constant.co_filename, foreign_code.co_filename)
 
 
-class PathsTests(unittest.TestCase):
+klasse PathsTests(unittest.TestCase):
     SAMPLES = ('test', 'test\u00e4\u00f6\u00fc\u00df', 'test\u00e9\u00e8',
                'test\u00b0\u00b3\u00b2')
     path = TESTFN
@@ -1483,7 +1483,7 @@ class PathsTests(unittest.TestCase):
         unload("test_unc_path")
 
 
-class RelativeImportTests(unittest.TestCase):
+klasse RelativeImportTests(unittest.TestCase):
 
     def tearDown(self):
         unload("test.relimport")
@@ -1580,7 +1580,7 @@ class RelativeImportTests(unittest.TestCase):
             self.assertEqual(submodule.attr, 'submodule')
 
 
-class OverridingImportBuiltinTests(unittest.TestCase):
+klasse OverridingImportBuiltinTests(unittest.TestCase):
     def test_override_builtin(self):
         # Test that overriding builtins.__import__ can bypass sys.modules.
         import os
@@ -1600,7 +1600,7 @@ class OverridingImportBuiltinTests(unittest.TestCase):
             self.assertEqual(foo(), os)
 
 
-class PycacheTests(unittest.TestCase):
+klasse PycacheTests(unittest.TestCase):
     # Test the various PEP 3147/488-related behaviors.
 
     def _clean(self):
@@ -1762,7 +1762,7 @@ class PycacheTests(unittest.TestCase):
         self.assertEqual(m.x, 5)
 
 
-class TestSymbolicallyLinkedPackage(unittest.TestCase):
+klasse TestSymbolicallyLinkedPackage(unittest.TestCase):
     package_name = 'sample'
     tagged = package_name + '-tagged'
 
@@ -1809,7 +1809,7 @@ class TestSymbolicallyLinkedPackage(unittest.TestCase):
 
 
 @cpython_only
-class ImportlibBootstrapTests(unittest.TestCase):
+klasse ImportlibBootstrapTests(unittest.TestCase):
     # These tests check that importlib is bootstrapped.
 
     def test_frozen_importlib(self):
@@ -1842,7 +1842,7 @@ class ImportlibBootstrapTests(unittest.TestCase):
 
 
 @cpython_only
-class GetSourcefileTests(unittest.TestCase):
+klasse GetSourcefileTests(unittest.TestCase):
 
     """Test importlib._bootstrap_external._get_sourcefile() as used by the C API.
 
@@ -1875,7 +1875,7 @@ class GetSourcefileTests(unittest.TestCase):
         self.assertEqual(_get_sourcefile(path), path)
 
 
-class ImportTracebackTests(unittest.TestCase):
+klasse ImportTracebackTests(unittest.TestCase):
 
     def setUp(self):
         os.mkdir(TESTFN)
@@ -2051,7 +2051,7 @@ class ImportTracebackTests(unittest.TestCase):
                                        __isolated=False)
 
 
-class CircularImportTests(unittest.TestCase):
+klasse CircularImportTests(unittest.TestCase):
 
     """See the docstrings of the modules being imported for the purpose of the
     test."""
@@ -2182,7 +2182,7 @@ class CircularImportTests(unittest.TestCase):
             unwritable.x = 42
 
 
-class SubinterpImportTests(unittest.TestCase):
+klasse SubinterpImportTests(unittest.TestCase):
 
     RUN_KWARGS = dict(
         allow_fork=False,
@@ -2540,7 +2540,7 @@ class SubinterpImportTests(unittest.TestCase):
         self.assertIsNot(excsnap, None)
 
 
-class TestSinglePhaseSnapshot(ModuleSnapshot):
+klasse TestSinglePhaseSnapshot(ModuleSnapshot):
     """A representation of a single-phase init module for testing.
 
     Fields from ModuleSnapshot:
@@ -2680,7 +2680,7 @@ class TestSinglePhaseSnapshot(ModuleSnapshot):
 
 
 @requires_singlephase_init
-class SinglephaseInitTests(unittest.TestCase):
+klasse SinglephaseInitTests(unittest.TestCase):
 
     NAME = '_testsinglephase'
 
@@ -3363,7 +3363,7 @@ class SinglephaseInitTests(unittest.TestCase):
 
 
 @cpython_only
-class TestMagicNumber(unittest.TestCase):
+klasse TestMagicNumber(unittest.TestCase):
     def test_magic_number_endianness(self):
         magic_number_bytes = _imp.pyc_magic_number_token.to_bytes(4, 'little')
         self.assertEqual(magic_number_bytes[2:], b'\r\n')

@@ -37,7 +37,7 @@ else:
 
 
 
-class MockFrameInfo:
+klasse MockFrameInfo:
     """Mock FrameInfo for testing since the real one isn't accessible."""
 
     def __init__(self, filename, lineno, funcname):
@@ -111,7 +111,7 @@ def close_and_unlink(file):
     unlink(file.name)
 
 
-class TestSampleProfilerComponents(unittest.TestCase):
+klasse TestSampleProfilerComponents(unittest.TestCase):
     """Unit tests for individual profiler components."""
 
     def test_mock_frame_info_with_empty_and_unicode_values(self):
@@ -467,7 +467,7 @@ class TestSampleProfilerComponents(unittest.TestCase):
         self.assertEqual(func1_stats[3], 2.0)  # ct (cumulative time)
 
 
-class TestSampleProfiler(unittest.TestCase):
+klasse TestSampleProfiler(unittest.TestCase):
     """Test the SampleProfiler class."""
 
     def test_sample_profiler_initialization(self):
@@ -663,7 +663,7 @@ class TestSampleProfiler(unittest.TestCase):
 
 
 @force_not_colorized_test_class
-class TestPrintSampledStats(unittest.TestCase):
+klasse TestPrintSampledStats(unittest.TestCase):
     """Test the print_sampled_stats function."""
 
     def setUp(self):
@@ -1129,7 +1129,7 @@ class TestPrintSampledStats(unittest.TestCase):
     sys.platform == "linux" and not PROCESS_VM_READV_SUPPORTED,
     "Test only runs on Linux with process_vm_readv support",
 )
-class TestRecursiveFunctionProfiling(unittest.TestCase):
+klasse TestRecursiveFunctionProfiling(unittest.TestCase):
     """Test profiling of recursive functions and complex call patterns."""
 
     def test_recursive_function_call_counting(self):
@@ -1376,7 +1376,7 @@ class TestRecursiveFunctionProfiling(unittest.TestCase):
 
 @requires_subprocess()
 @skip_if_not_supported
-class TestSampleProfilerIntegration(unittest.TestCase):
+klasse TestSampleProfilerIntegration(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.test_script = '''
@@ -1657,7 +1657,7 @@ if __name__ == "__main__":
     sys.platform == "linux" and not PROCESS_VM_READV_SUPPORTED,
     "Test only runs on Linux with process_vm_readv support",
 )
-class TestSampleProfilerErrorHandling(unittest.TestCase):
+klasse TestSampleProfilerErrorHandling(unittest.TestCase):
     def test_invalid_pid(self):
         with self.assertRaises((OSError, RuntimeError)):
             profiling.sampling.sample.sample(-1, duration_sec=1)
@@ -1751,7 +1751,7 @@ class TestSampleProfilerErrorHandling(unittest.TestCase):
 
 
 
-class TestSampleProfilerCLI(unittest.TestCase):
+klasse TestSampleProfilerCLI(unittest.TestCase):
     def _setup_sync_mocks(self, mock_socket, mock_popen):
         """Helper to set up socket and process mocks for coordinator tests."""
         # Mock the sync socket with context manager support

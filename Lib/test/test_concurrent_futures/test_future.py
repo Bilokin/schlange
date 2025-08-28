@@ -14,7 +14,7 @@ from .util import (
     BaseTestCase, create_future, setup_module)
 
 
-class FutureTests(BaseTestCase):
+klasse FutureTests(BaseTestCase):
     def test_done_callback_with_result(self):
         callback_result = None
         def fn(callback_future):

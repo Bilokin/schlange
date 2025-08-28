@@ -33,7 +33,7 @@ from .util import memory_database, cx_limit
 from .util import MemoryDatabaseMixin
 
 
-class RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
+klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
 
     def test_pragma_user_version(self):
         # This used to crash pysqlite because this pragma command returns NULL for the column name
@@ -130,7 +130,7 @@ class RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
 
     def test_bind_mutating_list(self):
         # Issue41662: Crash when mutate a list of parameters during iteration.
-        class X:
+        klasse X:
             def __conform__(self, protocol):
                 parameters.clear()
                 return "..."
@@ -158,7 +158,7 @@ class RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
 
     def test_set_isolation_level(self):
         # See issue 27881.
-        class CustomStr(str):
+        klasse CustomStr(str):
             def upper(self):
                 return None
             def __del__(self):
@@ -188,10 +188,10 @@ class RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
 
     def test_cursor_constructor_call_check(self):
         """
-        Verifies that cursor methods check whether base class __init__ was
+        Verifies that cursor methods check whether base klasse __init__ was
         called.
         """
-        class Cursor(sqlite.Cursor):
+        klasse Cursor(sqlite.Cursor):
             def __init__(self, con):
                 pass
 
@@ -206,15 +206,15 @@ class RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
         """
         The Python 3.0 port of the module didn't cope with values of subclasses of str.
         """
-        class MyStr(str): pass
+        klasse MyStr(str): pass
         self.con.execute("select ?", (MyStr("abc"),))
 
     def test_connection_constructor_call_check(self):
         """
-        Verifies that connection methods check whether base class __init__ was
+        Verifies that connection methods check whether base klasse __init__ was
         called.
         """
-        class Connection(sqlite.Connection):
+        klasse Connection(sqlite.Connection):
             def __init__(self, name):
                 pass
 
@@ -395,7 +395,7 @@ class RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
             del self.con.isolation_level
 
     def test_bpo37347(self):
-        class Printer:
+        klasse Printer:
             def log(self, *args):
                 return sqlite.SQLITE_OK
 
@@ -465,7 +465,7 @@ class RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
             self.assertEqual(steps, values)
 
 
-class RecursiveUseOfCursors(unittest.TestCase):
+klasse RecursiveUseOfCursors(unittest.TestCase):
     # GH-80254: sqlite3 should not segfault for recursive use of cursors.
     msg = "Recursive use of cursors not allowed"
 

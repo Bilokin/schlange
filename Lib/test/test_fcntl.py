@@ -19,7 +19,7 @@ fcntl = import_module('fcntl')
 
 
 
-class BadFile:
+klasse BadFile:
     def __init__(self, fn):
         self.fn = fn
     def fileno(self):
@@ -40,7 +40,7 @@ def try_lockf_on_other_process(fname, cmd):
     fcntl.lockf(f, fcntl.LOCK_UN)
     f.close()
 
-class TestFcntl(unittest.TestCase):
+klasse TestFcntl(unittest.TestCase):
 
     def setUp(self):
         self.f = None

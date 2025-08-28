@@ -10,15 +10,15 @@ import os
 import sys
 import codecs
 
-class LazyImportTest(unittest.TestCase):
+klasse LazyImportTest(unittest.TestCase):
     @cpython_only
     def test_lazy_import(self):
         ensure_lazy_imports("locale", {"re", "warnings"})
 
 
-class BaseLocalizedTest(unittest.TestCase):
+klasse BaseLocalizedTest(unittest.TestCase):
     #
-    # Base class for tests using a real locale
+    # Base klasse for tests using a real locale
     #
 
     @classmethod
@@ -59,9 +59,9 @@ class BaseLocalizedTest(unittest.TestCase):
             print("testing with %r..." % self.enUS_locale, end=' ', flush=True)
 
 
-class BaseCookedTest(unittest.TestCase):
+klasse BaseCookedTest(unittest.TestCase):
     #
-    # Base class for tests using cooked localeconv() values
+    # Base klasse for tests using cooked localeconv() values
     #
 
     def setUp(self):
@@ -70,7 +70,7 @@ class BaseCookedTest(unittest.TestCase):
     def tearDown(self):
         locale._override_localeconv = {}
 
-class CCookedTest(BaseCookedTest):
+klasse CCookedTest(BaseCookedTest):
     # A cooked "C" locale
 
     cooked_values = {
@@ -94,7 +94,7 @@ class CCookedTest(BaseCookedTest):
         'thousands_sep': ''
     }
 
-class EnUSCookedTest(BaseCookedTest):
+klasse EnUSCookedTest(BaseCookedTest):
     # A cooked "en_US" locale
 
     cooked_values = {
@@ -119,7 +119,7 @@ class EnUSCookedTest(BaseCookedTest):
     }
 
 
-class FrFRCookedTest(BaseCookedTest):
+klasse FrFRCookedTest(BaseCookedTest):
     # A cooked "fr_FR" locale with a space character as decimal separator
     # and a non-ASCII currency symbol.
 
@@ -145,7 +145,7 @@ class FrFRCookedTest(BaseCookedTest):
     }
 
 
-class BaseFormattingTest(object):
+klasse BaseFormattingTest(object):
     #
     # Utility functions for formatting tests
     #
@@ -158,7 +158,7 @@ class BaseFormattingTest(object):
         self.assertEqual(locale.currency(value, **format_opts), out)
 
 
-class EnUSNumberFormatting(BaseFormattingTest):
+klasse EnUSNumberFormatting(BaseFormattingTest):
     # XXX there is a grouping + padding bug when the thousands separator
     # is empty but the grouping array contains values (e.g. Solaris 10)
 
@@ -231,7 +231,7 @@ class EnUSNumberFormatting(BaseFormattingTest):
         self._test_format_string("extra: %ii", 3, out='extra: 3i')
 
 
-class TestLocaleFormatString(unittest.TestCase):
+klasse TestLocaleFormatString(unittest.TestCase):
     """General tests on locale.format_string"""
 
     def test_percent_escape(self):
@@ -249,7 +249,7 @@ class TestLocaleFormatString(unittest.TestCase):
 
 
 
-class TestNumberFormatting(BaseLocalizedTest, EnUSNumberFormatting):
+klasse TestNumberFormatting(BaseLocalizedTest, EnUSNumberFormatting):
     # Test number formatting with a real English locale.
 
     locale_type = locale.LC_NUMERIC
@@ -259,7 +259,7 @@ class TestNumberFormatting(BaseLocalizedTest, EnUSNumberFormatting):
         EnUSNumberFormatting.setUp(self)
 
 
-class TestEnUSNumberFormatting(EnUSCookedTest, EnUSNumberFormatting):
+klasse TestEnUSNumberFormatting(EnUSCookedTest, EnUSNumberFormatting):
     # Test number formatting with a cooked "en_US" locale.
 
     def setUp(self):
@@ -273,7 +273,7 @@ class TestEnUSNumberFormatting(EnUSCookedTest, EnUSNumberFormatting):
             grouping=True, international=True)
 
 
-class TestCNumberFormatting(CCookedTest, BaseFormattingTest):
+klasse TestCNumberFormatting(CCookedTest, BaseFormattingTest):
     # Test number formatting with a cooked "C" locale.
 
     def test_grouping(self):
@@ -283,7 +283,7 @@ class TestCNumberFormatting(CCookedTest, BaseFormattingTest):
         self._test_format_string("%9.2f", 12345.67, grouping=True, out=' 12345.67')
 
 
-class TestFrFRNumberFormatting(FrFRCookedTest, BaseFormattingTest):
+klasse TestFrFRNumberFormatting(FrFRCookedTest, BaseFormattingTest):
     # Test number formatting with a cooked "fr_FR" locale.
 
     def test_decimal_point(self):
@@ -325,7 +325,7 @@ class TestFrFRNumberFormatting(FrFRCookedTest, BaseFormattingTest):
             grouping=True, international=True)
 
 
-class TestCollation(unittest.TestCase):
+klasse TestCollation(unittest.TestCase):
     # Test string collation functions
 
     def test_strcoll(self):
@@ -342,7 +342,7 @@ class TestCollation(unittest.TestCase):
         self.assertRaises(ValueError, locale.strxfrm, 'a\0')
 
 
-class TestEnUSCollation(BaseLocalizedTest, TestCollation):
+klasse TestEnUSCollation(BaseLocalizedTest, TestCollation):
     # Test string collation functions with a real English locale
 
     locale_type = locale.LC_ALL
@@ -373,7 +373,7 @@ class TestEnUSCollation(BaseLocalizedTest, TestCollation):
         self.assertLess(locale.strxfrm('à'), locale.strxfrm('b'))
 
 
-class NormalizeTest(unittest.TestCase):
+klasse NormalizeTest(unittest.TestCase):
     def check(self, localename, expected):
         self.assertEqual(locale.normalize(localename), expected, msg=localename)
 
@@ -488,7 +488,7 @@ class NormalizeTest(unittest.TestCase):
         self.check('jp_jp', 'ja_JP.eucJP')
 
 
-class TestRealLocales(unittest.TestCase):
+klasse TestRealLocales(unittest.TestCase):
     def setUp(self):
         oldlocale = locale.setlocale(locale.LC_CTYPE)
         self.addCleanup(locale.setlocale, locale.LC_CTYPE, oldlocale)
@@ -635,7 +635,7 @@ class TestRealLocales(unittest.TestCase):
         self.assertEqual(locale.getlocale(locale.LC_CTYPE), localetuple)
 
 
-class TestMiscellaneous(unittest.TestCase):
+klasse TestMiscellaneous(unittest.TestCase):
     def test_defaults_UTF8(self):
         # Issue #18378: on (at least) macOS setting LC_CTYPE to "UTF-8" is
         # valid. Furthermore LC_CTYPE=UTF is used by the UTF-8 locale coercing
@@ -710,7 +710,7 @@ class TestMiscellaneous(unittest.TestCase):
             locale.setlocale(locale.LC_ALL, (b'not', b'valid'))
 
 
-class BaseDelocalizeTest(BaseLocalizedTest):
+klasse BaseDelocalizeTest(BaseLocalizedTest):
 
     def _test_delocalize(self, value, out):
         self.assertEqual(locale.delocalize(value), out)
@@ -722,7 +722,7 @@ class BaseDelocalizeTest(BaseLocalizedTest):
         self.assertEqual(locale.atoi(value), out)
 
 
-class TestEnUSDelocalize(EnUSCookedTest, BaseDelocalizeTest):
+klasse TestEnUSDelocalize(EnUSCookedTest, BaseDelocalizeTest):
 
     def test_delocalize(self):
         self._test_delocalize('50000.00', '50000.00')
@@ -737,7 +737,7 @@ class TestEnUSDelocalize(EnUSCookedTest, BaseDelocalizeTest):
         self._test_atoi('50,000', 50000)
 
 
-class TestCDelocalizeTest(CCookedTest, BaseDelocalizeTest):
+klasse TestCDelocalizeTest(CCookedTest, BaseDelocalizeTest):
 
     def test_delocalize(self):
         self._test_delocalize('50000.00', '50000.00')
@@ -749,7 +749,7 @@ class TestCDelocalizeTest(CCookedTest, BaseDelocalizeTest):
         self._test_atoi('50000', 50000)
 
 
-class TestfrFRDelocalizeTest(FrFRCookedTest, BaseDelocalizeTest):
+klasse TestfrFRDelocalizeTest(FrFRCookedTest, BaseDelocalizeTest):
 
     def test_delocalize(self):
         self._test_delocalize('50000,00', '50000.00')
@@ -764,13 +764,13 @@ class TestfrFRDelocalizeTest(FrFRCookedTest, BaseDelocalizeTest):
         self._test_atoi('50 000', 50000)
 
 
-class BaseLocalizeTest(BaseLocalizedTest):
+klasse BaseLocalizeTest(BaseLocalizedTest):
 
     def _test_localize(self, value, out, grouping=False):
         self.assertEqual(locale.localize(value, grouping=grouping), out)
 
 
-class TestEnUSLocalize(EnUSCookedTest, BaseLocalizeTest):
+klasse TestEnUSLocalize(EnUSCookedTest, BaseLocalizeTest):
 
     def test_localize(self):
         self._test_localize('50000.00', '50000.00')
@@ -778,13 +778,13 @@ class TestEnUSLocalize(EnUSCookedTest, BaseLocalizeTest):
             '{0:.16f}'.format(Decimal('1.15')), '1.1500000000000000')
 
 
-class TestCLocalize(CCookedTest, BaseLocalizeTest):
+klasse TestCLocalize(CCookedTest, BaseLocalizeTest):
 
     def test_localize(self):
         self._test_localize('50000.00', '50000.00')
 
 
-class TestfrFRLocalize(FrFRCookedTest, BaseLocalizeTest):
+klasse TestfrFRLocalize(FrFRCookedTest, BaseLocalizeTest):
 
     def test_localize(self):
         self._test_localize('50000.00', '50000,00')

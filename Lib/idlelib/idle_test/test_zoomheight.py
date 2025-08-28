@@ -8,7 +8,7 @@ from tkinter import Tk
 from idlelib.editor import EditorWindow
 
 
-class Test(unittest.TestCase):
+klasse Test(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):

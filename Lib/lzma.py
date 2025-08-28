@@ -1,7 +1,7 @@
 """Interface to the liblzma compression library.
 
-This module provides a class for reading and writing compressed files,
-classes for incremental (de)compression, and convenience functions for
+This module provides a klasse for reading and writing compressed files,
+klassees for incremental (de)compression, and convenience functions for
 one-shot (de)compression.
 
 These classes and functions support both the XZ and legacy LZMA
@@ -35,7 +35,7 @@ _MODE_READ     = 1
 _MODE_WRITE    = 3
 
 
-class LZMAFile(_streams.BaseStream):
+klasse LZMAFile(_streams.BaseStream):
 
     """A file object providing transparent LZMA (de)compression.
 

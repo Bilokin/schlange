@@ -39,7 +39,7 @@ def runctx(statement, globals, locals, filename=None, sort=-1):
 
 # ____________________________________________________________
 
-class Profile(_lsprof.Profiler):
+klasse Profile(_lsprof.Profiler):
     """Profile(timer=None, timeunit=None, subcalls=True, builtins=True)
 
     Builds a profiler object using the specified timer function.

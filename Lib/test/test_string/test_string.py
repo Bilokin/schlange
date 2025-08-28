@@ -6,13 +6,13 @@ from test.support import cpython_only
 from test.support.import_helper import ensure_lazy_imports
 
 
-class LazyImportTest(unittest.TestCase):
+klasse LazyImportTest(unittest.TestCase):
     @cpython_only
     def test_lazy_import(self):
         ensure_lazy_imports("base64", {"re", "collections"})
 
 
-class ModuleTest(unittest.TestCase):
+klasse ModuleTest(unittest.TestCase):
 
     def test_attrs(self):
         # While the exact order of the items in these attributes is not
@@ -93,7 +93,7 @@ class ModuleTest(unittest.TestCase):
 
     def test_name_lookup(self):
         fmt = string.Formatter()
-        class AnyAttr:
+        klasse AnyAttr:
             def __getattr__(self, attr):
                 return attr
         x = AnyAttr()
@@ -118,7 +118,7 @@ class ModuleTest(unittest.TestCase):
             fmt.format("{.foo.bar:{[1].qux}}", namespace, widths), 'baz ')
 
     def test_auto_numbering_reenterability(self):
-        class ReenteringFormatter(string.Formatter):
+        klasse ReenteringFormatter(string.Formatter):
             def format_field(self, value, format_spec):
                 if format_spec.isdigit() and int(format_spec) > 0:
                     return self.format('{:{}}!', value, int(format_spec) - 1)
@@ -129,7 +129,7 @@ class ModuleTest(unittest.TestCase):
         self.assertEqual(fmt.format('{.a:{}}', x, 3), 'X!!!')
 
     def test_override_get_value(self):
-        class NamespaceFormatter(string.Formatter):
+        klasse NamespaceFormatter(string.Formatter):
             def __init__(self, namespace={}):
                 string.Formatter.__init__(self)
                 self.namespace = namespace
@@ -149,7 +149,7 @@ class ModuleTest(unittest.TestCase):
 
 
     def test_override_format_field(self):
-        class CallFormatter(string.Formatter):
+        klasse CallFormatter(string.Formatter):
             def format_field(self, value, format_spec):
                 return format(value(), format_spec)
 
@@ -158,7 +158,7 @@ class ModuleTest(unittest.TestCase):
 
 
     def test_override_convert_field(self):
-        class XFormatter(string.Formatter):
+        klasse XFormatter(string.Formatter):
             def convert_field(self, value, conversion):
                 if conversion == 'x':
                     return None
@@ -169,7 +169,7 @@ class ModuleTest(unittest.TestCase):
 
 
     def test_override_parse(self):
-        class BarFormatter(string.Formatter):
+        klasse BarFormatter(string.Formatter):
             # returns an iterable that contains tuples of the form:
             # (literal_text, field_name, format_spec, conversion)
             def parse(self, format_string):
@@ -185,7 +185,7 @@ class ModuleTest(unittest.TestCase):
         self.assertEqual(fmt.format('*|+0:^10s|*', 'foo'), '*   foo    *')
 
     def test_check_unused_args(self):
-        class CheckAllUsedFormatter(string.Formatter):
+        klasse CheckAllUsedFormatter(string.Formatter):
             def check_unused_args(self, used_args, args, kwargs):
                 # Track which arguments actually got used
                 unused_args = set(kwargs.keys())
@@ -217,10 +217,10 @@ class ModuleTest(unittest.TestCase):
 
 # Template tests (formerly housed in test_pep292.py)
 
-class Bag:
+klasse Bag:
     pass
 
-class Mapping:
+klasse Mapping:
     def __getitem__(self, name):
         obj = self
         for part in name.split('.'):
@@ -231,7 +231,7 @@ class Mapping:
         return obj
 
 
-class TestTemplate(unittest.TestCase):
+klasse TestTemplate(unittest.TestCase):
     def test_regular_templates(self):
         s = Template('$who likes to eat a bag of $what worth $$100')
         self.assertEqual(s.substitute(dict(who='tim', what='ham')),
@@ -315,7 +315,7 @@ class TestTemplate(unittest.TestCase):
         raises(ValueError, s.substitute, dict(who='tim'))
 
     def test_idpattern_override(self):
-        class PathPattern(Template):
+        klasse PathPattern(Template):
             idpattern = r'[_a-z][._a-z0-9]*'
         m = Mapping()
         m.bag = Bag()
@@ -326,7 +326,7 @@ class TestTemplate(unittest.TestCase):
         self.assertEqual(s.substitute(m), 'tim likes to eat a bag of ham')
 
     def test_flags_override(self):
-        class MyPattern(Template):
+        klasse MyPattern(Template):
             flags = 0
         s = MyPattern('$wHO likes ${WHAT} for ${meal}')
         d = dict(wHO='tim', WHAT='ham', meal='dinner', w='fred')
@@ -336,7 +336,7 @@ class TestTemplate(unittest.TestCase):
     def test_idpattern_override_inside_outside(self):
         # bpo-1198569: Allow the regexp inside and outside braces to be
         # different when deriving from Template.
-        class MyPattern(Template):
+        klasse MyPattern(Template):
             idpattern = r'[a-z]+'
             braceidpattern = r'[A-Z]+'
             flags = 0
@@ -347,7 +347,7 @@ class TestTemplate(unittest.TestCase):
     def test_idpattern_override_inside_outside_invalid_unbraced(self):
         # bpo-1198569: Allow the regexp inside and outside braces to be
         # different when deriving from Template.
-        class MyPattern(Template):
+        klasse MyPattern(Template):
             idpattern = r'[a-z]+'
             braceidpattern = r'[A-Z]+'
             flags = 0
@@ -358,7 +358,7 @@ class TestTemplate(unittest.TestCase):
         self.assertRaises(ValueError, s.substitute, m)
 
     def test_pattern_override(self):
-        class MyPattern(Template):
+        klasse MyPattern(Template):
             pattern = r"""
             (?P<escaped>@{2})                   |
             @(?P<named>[_a-z][._a-z0-9]*)       |
@@ -373,7 +373,7 @@ class TestTemplate(unittest.TestCase):
         s = MyPattern('@bag.foo.who likes to eat a bag of @bag.what')
         self.assertEqual(s.substitute(m), 'tim likes to eat a bag of ham')
 
-        class BadPattern(Template):
+        klasse BadPattern(Template):
             pattern = r"""
             (?P<badname>.*)                     |
             (?P<escaped>@{2})                   |
@@ -386,7 +386,7 @@ class TestTemplate(unittest.TestCase):
         self.assertRaises(ValueError, s.safe_substitute, {})
 
     def test_braced_override(self):
-        class MyTemplate(Template):
+        klasse MyTemplate(Template):
             pattern = r"""
             \$(?:
               (?P<escaped>$)                     |
@@ -403,7 +403,7 @@ class TestTemplate(unittest.TestCase):
         self.assertEqual(val, 'PyCon in Cleveland')
 
     def test_braced_override_safe(self):
-        class MyTemplate(Template):
+        klasse MyTemplate(Template):
             pattern = r"""
             \$(?:
               (?P<escaped>$)                     |
@@ -425,7 +425,7 @@ class TestTemplate(unittest.TestCase):
         # pattern can't trigger (always has at least '$')
         # So we craft a pattern that is always invalid
         # with no leading data.
-        class MyTemplate(Template):
+        klasse MyTemplate(Template):
             pattern = r"""
               (?P<invalid>) |
               unreachable(
@@ -485,7 +485,7 @@ class TestTemplate(unittest.TestCase):
     def test_delimiter_override(self):
         eq = self.assertEqual
         raises = self.assertRaises
-        class AmpersandTemplate(Template):
+        klasse AmpersandTemplate(Template):
             delimiter = '&'
         s = AmpersandTemplate('this &gift is for &{who} &&')
         eq(s.substitute(gift='bud', who='you'), 'this bud is for you &')
@@ -496,7 +496,7 @@ class TestTemplate(unittest.TestCase):
         raises(ValueError, s.substitute, dict(gift='bud', who='you'))
         eq(s.safe_substitute(), 'this &gift is for &{who} &')
 
-        class PieDelims(Template):
+        klasse PieDelims(Template):
             delimiter = '@'
         s = PieDelims('@who likes to eat a bag of @{what} worth $100')
         self.assertEqual(s.substitute(dict(who='tim', what='ham')),
@@ -512,7 +512,7 @@ class TestTemplate(unittest.TestCase):
 
         # if the pattern has an unrecognized capture group,
         # it should raise ValueError like substitute and safe_substitute do
-        class BadPattern(Template):
+        klasse BadPattern(Template):
             pattern = r"""
             (?P<badname>.*)                  |
             (?P<escaped>@{2})                   |
@@ -542,7 +542,7 @@ class TestTemplate(unittest.TestCase):
 
         # if the pattern has an unrecognized capture group,
         # it should raise ValueError like substitute and safe_substitute do
-        class BadPattern(Template):
+        klasse BadPattern(Template):
             pattern = r"""
             (?P<badname>.*)                  |
             (?P<escaped>@{2})                   |

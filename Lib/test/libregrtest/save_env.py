@@ -10,7 +10,7 @@ from test.support import os_helper
 from .utils import print_warning
 
 
-class SkipTestEnvironment(Exception):
+klasse SkipTestEnvironment(Exception):
     pass
 
 
@@ -22,7 +22,7 @@ class SkipTestEnvironment(Exception):
 # There are a few things we can save and restore to mitigate this, and
 # the following context manager handles this task.
 
-class saved_test_environment:
+klasse saved_test_environment:
     """Save bits of the test environment and restore them at block exit.
 
         with saved_test_environment(test_name, verbose, quiet):

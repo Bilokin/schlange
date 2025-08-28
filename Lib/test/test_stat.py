@@ -10,7 +10,7 @@ from test.support.os_helper import TESTFN
 c_stat = import_fresh_module('stat', fresh=['_stat'])
 py_stat = import_fresh_module('stat', blocked=['_stat'])
 
-class TestFilemode:
+klasse TestFilemode:
     statmod = None
 
     file_flags = {'SF_APPEND', 'SF_ARCHIVED', 'SF_IMMUTABLE', 'SF_NOUNLINK',
@@ -322,11 +322,11 @@ class TestFilemode:
 
 
 @unittest.skipIf(c_stat is None, 'need _stat extension')
-class TestFilemodeCStat(TestFilemode, unittest.TestCase):
+klasse TestFilemodeCStat(TestFilemode, unittest.TestCase):
     statmod = c_stat
 
 
-class TestFilemodePyStat(TestFilemode, unittest.TestCase):
+klasse TestFilemodePyStat(TestFilemode, unittest.TestCase):
     statmod = py_stat
 
 

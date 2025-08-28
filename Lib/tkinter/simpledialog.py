@@ -14,7 +14,7 @@ It contains the following public symbols:
 
 SimpleDialog -- A simple but flexible modal dialog box
 
-Dialog -- a base class for dialogs
+Dialog -- a base klasse for dialogs
 
 askinteger -- get an integer from the user
 
@@ -28,7 +28,7 @@ from tkinter import _get_temp_root, _destroy_temp_root
 from tkinter import messagebox
 
 
-class SimpleDialog:
+klasse SimpleDialog:
 
     def __init__(self, master,
                  text='', buttons=[], default=None, cancel=None,
@@ -86,11 +86,11 @@ class SimpleDialog:
         self.root.quit()
 
 
-class Dialog(Toplevel):
+klasse Dialog(Toplevel):
 
     '''Class to open dialogs.
 
-    This class is intended as a base class for custom dialogs
+    This klasse is intended as a base klasse for custom dialogs
     '''
 
     def __init__(self, parent, title = None):
@@ -267,7 +267,7 @@ def _setup_dialog(w):
 # --------------------------------------------------------------------
 # convenience dialogues
 
-class _QueryDialog(Dialog):
+klasse _QueryDialog(Dialog):
 
     def __init__(self, title, prompt,
                  initialvalue=None,
@@ -334,7 +334,7 @@ class _QueryDialog(Dialog):
         return 1
 
 
-class _QueryInteger(_QueryDialog):
+klasse _QueryInteger(_QueryDialog):
     errormessage = "Not an integer."
 
     def getresult(self):
@@ -356,7 +356,7 @@ def askinteger(title, prompt, **kw):
     return d.result
 
 
-class _QueryFloat(_QueryDialog):
+klasse _QueryFloat(_QueryDialog):
     errormessage = "Not a floating-point value."
 
     def getresult(self):
@@ -378,7 +378,7 @@ def askfloat(title, prompt, **kw):
     return d.result
 
 
-class _QueryString(_QueryDialog):
+klasse _QueryString(_QueryDialog):
     def __init__(self, *args, **kw):
         if "show" in kw:
             self.__show = kw["show"]

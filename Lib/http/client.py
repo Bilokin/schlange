@@ -48,7 +48,7 @@ This diagram presents the following rules:
      partially read response body
 
 Note: this enforcement is applied by the HTTPConnection class. The
-      HTTPResponse class does not enforce this state machine, which
+      HTTPResponse klasse does not enforce this state machine, which
       implies sophisticated clients may accelerate the request/response
       pipeline. Caution should be taken, though: accelerating the states
       beyond the above pattern may imply knowledge of the server's
@@ -180,7 +180,7 @@ def _strip_ipv6_iface(enc_name: bytes) -> bytes:
         enc_name += b']'
     return enc_name
 
-class HTTPMessage(email.message.Message):
+klasse HTTPMessage(email.message.Message):
 
     # The getallmatchingheaders() method was only used by the CGI handler
     # that was removed in Python 3.15. However, since the public API was not
@@ -250,7 +250,7 @@ def parse_headers(fp, _class=HTTPMessage, *, _max_headers=None):
     return _parse_header_lines(headers, _class)
 
 
-class HTTPResponse(io.BufferedIOBase):
+klasse HTTPResponse(io.BufferedIOBase):
 
     # See RFC 2616 sec 19.6 and RFC 1945 sec 6 for details.
 
@@ -439,7 +439,7 @@ class HTTPResponse(io.BufferedIOBase):
 
     # These implementations are for the benefit of io.BufferedReader.
 
-    # XXX This class should probably be revised to act more like
+    # XXX This klasse should probably be revised to act more like
     # the "raw stream" that BufferedReader expects.
 
     def flush(self):
@@ -764,7 +764,7 @@ class HTTPResponse(io.BufferedIOBase):
     # For compatibility with old-style urllib responses.
 
     def info(self):
-        '''Returns an instance of the class mimetools.Message containing
+        '''Returns an instance of the klasse mimetools.Message containing
         meta-information associated with the URL.
 
         When the method is HTTP, these headers are those returned by
@@ -819,7 +819,7 @@ def _create_https_context(http_version):
     return context
 
 
-class HTTPConnection:
+klasse HTTPConnection:
 
     _http_vsn = 11
     _http_vsn_str = 'HTTP/1.1'
@@ -1458,8 +1458,8 @@ try:
 except ImportError:
     pass
 else:
-    class HTTPSConnection(HTTPConnection):
-        "This class allows communication via SSL."
+    klasse HTTPSConnection(HTTPConnection):
+        "This klasse allows communication via SSL."
 
         default_port = HTTPS_PORT
 
@@ -1490,29 +1490,29 @@ else:
 
     __all__.append("HTTPSConnection")
 
-class HTTPException(Exception):
+klasse HTTPException(Exception):
     # Subclasses that define an __init__ must call Exception.__init__
     # or define self.args.  Otherwise, str() will fail.
     pass
 
-class NotConnected(HTTPException):
+klasse NotConnected(HTTPException):
     pass
 
-class InvalidURL(HTTPException):
+klasse InvalidURL(HTTPException):
     pass
 
-class UnknownProtocol(HTTPException):
+klasse UnknownProtocol(HTTPException):
     def __init__(self, version):
         self.args = version,
         self.version = version
 
-class UnknownTransferEncoding(HTTPException):
+klasse UnknownTransferEncoding(HTTPException):
     pass
 
-class UnimplementedFileMode(HTTPException):
+klasse UnimplementedFileMode(HTTPException):
     pass
 
-class IncompleteRead(HTTPException):
+klasse IncompleteRead(HTTPException):
     def __init__(self, partial, expected=None):
         self.args = partial,
         self.partial = partial
@@ -1526,31 +1526,31 @@ class IncompleteRead(HTTPException):
                                         len(self.partial), e)
     __str__ = object.__str__
 
-class ImproperConnectionState(HTTPException):
+klasse ImproperConnectionState(HTTPException):
     pass
 
-class CannotSendRequest(ImproperConnectionState):
+klasse CannotSendRequest(ImproperConnectionState):
     pass
 
-class CannotSendHeader(ImproperConnectionState):
+klasse CannotSendHeader(ImproperConnectionState):
     pass
 
-class ResponseNotReady(ImproperConnectionState):
+klasse ResponseNotReady(ImproperConnectionState):
     pass
 
-class BadStatusLine(HTTPException):
+klasse BadStatusLine(HTTPException):
     def __init__(self, line):
         if not line:
             line = repr(line)
         self.args = line,
         self.line = line
 
-class LineTooLong(HTTPException):
+klasse LineTooLong(HTTPException):
     def __init__(self, line_type):
         HTTPException.__init__(self, "got more than %d bytes when reading %s"
                                      % (_MAXLINE, line_type))
 
-class RemoteDisconnected(ConnectionResetError, BadStatusLine):
+klasse RemoteDisconnected(ConnectionResetError, BadStatusLine):
     def __init__(self, *pos, **kw):
         BadStatusLine.__init__(self, "")
         ConnectionResetError.__init__(self, *pos, **kw)

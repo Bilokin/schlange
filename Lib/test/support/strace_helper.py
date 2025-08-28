@@ -16,14 +16,14 @@ _returncode_regex = re.compile(
 
 
 @dataclass
-class StraceEvent:
+klasse StraceEvent:
     syscall: str
     args: list[str]
     returncode: str
 
 
 @dataclass
-class StraceResult:
+klasse StraceResult:
     strace_returncode: int
     python_returncode: int
 

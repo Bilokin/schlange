@@ -2,7 +2,7 @@ import sys
 import unittest
 import test_regrtest_b.util
 
-class Test(unittest.TestCase):
+klasse Test(unittest.TestCase):
     def test(self):
         test_regrtest_b.util  # does not fail
         self.assertNotIn('test_regrtest_a', sys.modules)

@@ -34,7 +34,7 @@ if not supports_trampoline_profiling():
     raise unittest.SkipTest("perf trampoline profiling not supported")
 
 
-class TestPerfTrampoline(unittest.TestCase):
+klasse TestPerfTrampoline(unittest.TestCase):
     def setUp(self):
         super().setUp()
         self.perf_files = set(pathlib.Path("/tmp/").glob("perf-*.map"))
@@ -355,7 +355,7 @@ def run_perf(cwd, *args, use_jit=False, **env_vars):
     return proc.stdout, proc.stderr
 
 
-class TestPerfProfilerMixin:
+klasse TestPerfProfilerMixin:
     def run_perf(self, script_dir, perf_mode, script):
         raise NotImplementedError()
 
@@ -415,7 +415,7 @@ class TestPerfProfilerMixin:
     is_unwinding_reliable_with_frame_pointers(),
     "Unwinding is unreliable with frame pointers",
 )
-class TestPerfProfiler(unittest.TestCase, TestPerfProfilerMixin):
+klasse TestPerfProfiler(unittest.TestCase, TestPerfProfilerMixin):
     def run_perf(self, script_dir, script, activate_trampoline=True):
         if activate_trampoline:
             return run_perf(script_dir, sys.executable, "-Xperf", script)
@@ -531,7 +531,7 @@ def _is_perf_version_at_least(major, minor):
 @unittest.skipUnless(
     _is_perf_version_at_least(6, 6), "perf command may not work due to a perf bug"
 )
-class TestPerfProfilerWithDwarf(unittest.TestCase, TestPerfProfilerMixin):
+klasse TestPerfProfilerWithDwarf(unittest.TestCase, TestPerfProfilerMixin):
     def run_perf(self, script_dir, script, activate_trampoline=True):
         if activate_trampoline:
             return run_perf(

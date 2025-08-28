@@ -12,7 +12,7 @@ from ._support import Py_TPFLAGS_DISALLOW_INSTANTIATION, Py_TPFLAGS_IMMUTABLETYP
 
 
 @unittest.skipUnless(sys.platform == "win32", 'Windows-specific test')
-class FunctionCallTestCase(unittest.TestCase):
+klasse FunctionCallTestCase(unittest.TestCase):
     @unittest.skipUnless('MSC' in sys.version, "SEH only supported by MSC")
     @unittest.skipIf(sys.executable.lower().endswith('_d.exe'),
                      "SEH not enabled in debug builds")
@@ -33,13 +33,13 @@ class FunctionCallTestCase(unittest.TestCase):
 
 
 @unittest.skipUnless(sys.platform == "win32", 'Windows-specific test')
-class ReturnStructSizesTestCase(unittest.TestCase):
+klasse ReturnStructSizesTestCase(unittest.TestCase):
     def test_sizes(self):
         _ctypes_test = import_helper.import_module("_ctypes_test")
         dll = CDLL(_ctypes_test.__file__)
         for i in range(1, 11):
             fields = [ (f"f{f}", c_char) for f in range(1, i + 1)]
-            class S(Structure):
+            klasse S(Structure):
                 _fields_ = fields
             f = getattr(dll, f"TestSize{i}")
             f.restype = S
@@ -51,7 +51,7 @@ class ReturnStructSizesTestCase(unittest.TestCase):
 
 
 @unittest.skipUnless(sys.platform == "win32", 'Windows-specific test')
-class TestWintypes(unittest.TestCase):
+klasse TestWintypes(unittest.TestCase):
     def test_HWND(self):
         from ctypes import wintypes
         self.assertEqual(sizeof(wintypes.HWND), sizeof(c_void_p))
@@ -82,7 +82,7 @@ class TestWintypes(unittest.TestCase):
 
 
 @unittest.skipUnless(sys.platform == "win32", 'Windows-specific test')
-class TestWinError(unittest.TestCase):
+klasse TestWinError(unittest.TestCase):
     def test_winerror(self):
         # see Issue 16169
         ERROR_INVALID_PARAMETER = 87
@@ -105,13 +105,13 @@ class TestWinError(unittest.TestCase):
         self.assertEqual(e.winerror, ERROR_INVALID_PARAMETER)
 
 
-class Structures(unittest.TestCase):
+klasse Structures(unittest.TestCase):
     def test_struct_by_value(self):
-        class POINT(Structure):
+        klasse POINT(Structure):
             _fields_ = [("x", c_long),
                         ("y", c_long)]
 
-        class RECT(Structure):
+        klasse RECT(Structure):
             _fields_ = [("left", c_long),
                         ("top", c_long),
                         ("right", c_long),

@@ -64,8 +64,8 @@ def check_output(cmd, encoding=None):
         )
     return out, err
 
-class BaseTest(unittest.TestCase):
-    """Base class for venv tests."""
+klasse BaseTest(unittest.TestCase):
+    """Base klasse for venv tests."""
     maxDiff = 80 * 50
 
     def setUp(self):
@@ -111,7 +111,7 @@ class BaseTest(unittest.TestCase):
             result = f.read()
         return result
 
-class BasicTest(BaseTest):
+klasse BasicTest(BaseTest):
     """Test venv module functionality."""
 
     def isdir(self, *args):
@@ -795,7 +795,7 @@ class BasicTest(BaseTest):
         bzrignore_name = ".bzrignore"
         contents = "# For Bazaar.\n*\n"
 
-        class BzrEnvBuilder(venv.EnvBuilder):
+        klasse BzrEnvBuilder(venv.EnvBuilder):
             def create_bzr_ignore_file(self, context):
                 gitignore_path = os.path.join(context.env_dir, bzrignore_name)
                 with open(gitignore_path, 'w', encoding='utf-8') as file:
@@ -897,7 +897,7 @@ class BasicTest(BaseTest):
 
 
 @requireVenvCreate
-class EnsurePipTest(BaseTest):
+klasse EnsurePipTest(BaseTest):
     """Test venv module installation of pip."""
     def assert_pip_not_installed(self):
         out, err = check_output([self.envpy(real_env_dir=True), '-c',

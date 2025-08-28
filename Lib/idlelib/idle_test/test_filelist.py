@@ -5,7 +5,7 @@ import unittest
 from test.support import requires
 from tkinter import Tk
 
-class FileListTest(unittest.TestCase):
+klasse FileListTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):

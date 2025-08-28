@@ -4,7 +4,7 @@ from ._functools import method_cache
 
 
 # from jaraco.text 3.5
-class FoldedCase(str):
+klasse FoldedCase(str):
     """
     A case insensitive string class; behaves just like str
     except compares equal when the only variation is case.

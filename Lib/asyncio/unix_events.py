@@ -51,7 +51,7 @@ def waitstatus_to_exitcode(status):
         return status
 
 
-class _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
+klasse _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
     """Unix event loop.
 
     Adds signal handling and UNIX Domain Socket support to SelectorEventLoop.
@@ -481,7 +481,7 @@ class _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
                              '%r: %r', path, err)
 
 
-class _UnixReadPipeTransport(transports.ReadTransport):
+klasse _UnixReadPipeTransport(transports.ReadTransport):
 
     max_size = 256 * 1024  # max bytes we read in one event loop iteration
 
@@ -625,7 +625,7 @@ class _UnixReadPipeTransport(transports.ReadTransport):
             self._loop = None
 
 
-class _UnixWritePipeTransport(transports._FlowControlMixin,
+klasse _UnixWritePipeTransport(transports._FlowControlMixin,
                               transports.WriteTransport):
 
     def __init__(self, loop, pipe, protocol, waiter=None, extra=None):
@@ -830,7 +830,7 @@ class _UnixWritePipeTransport(transports._FlowControlMixin,
             self._loop = None
 
 
-class _UnixSubprocessTransport(base_subprocess.BaseSubprocessTransport):
+klasse _UnixSubprocessTransport(base_subprocess.BaseSubprocessTransport):
 
     def _start(self, args, shell, stdin, stdout, stderr, bufsize, **kwargs):
         stdin_w = None
@@ -854,7 +854,7 @@ class _UnixSubprocessTransport(base_subprocess.BaseSubprocessTransport):
                 stdin_w.close()
 
 
-class _PidfdChildWatcher:
+klasse _PidfdChildWatcher:
     """Child watcher implementation using Linux's pid file descriptors.
 
     This child watcher polls process file descriptors (pidfds) to await child
@@ -890,7 +890,7 @@ class _PidfdChildWatcher:
         os.close(pidfd)
         callback(pid, returncode, *args)
 
-class _ThreadedChildWatcher:
+klasse _ThreadedChildWatcher:
     """Threaded child watcher implementation.
 
     The watcher uses a thread per process
@@ -962,7 +962,7 @@ def can_use_pidfd():
     return True
 
 
-class _UnixDefaultEventLoopPolicy(events._BaseDefaultEventLoopPolicy):
+klasse _UnixDefaultEventLoopPolicy(events._BaseDefaultEventLoopPolicy):
     """UNIX event loop policy"""
     _loop_factory = _UnixSelectorEventLoop
 

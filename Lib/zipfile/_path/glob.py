@@ -4,7 +4,7 @@ import re
 _default_seps = os.sep + str(os.altsep) * bool(os.altsep)
 
 
-class Translator:
+klasse Translator:
     """
     >>> Translator('xyz')
     Traceback (most recent call last):

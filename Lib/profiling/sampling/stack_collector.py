@@ -4,7 +4,7 @@ import os
 from .collector import Collector
 
 
-class StackTraceCollector(Collector):
+klasse StackTraceCollector(Collector):
     def __init__(self):
         self.call_trees = []
         self.function_samples = collections.defaultdict(int)
@@ -21,7 +21,7 @@ class StackTraceCollector(Collector):
                     self.function_samples[frame] += 1
 
 
-class CollapsedStackCollector(StackTraceCollector):
+klasse CollapsedStackCollector(StackTraceCollector):
     def export(self, filename):
         stack_counter = collections.Counter()
         for call_tree in self.call_trees:

@@ -26,7 +26,7 @@ ABSENT_STRING = terminfo.ABSENT_STRING
 CANCELLED_STRING = terminfo.CANCELLED_STRING
 
 
-class TestCursesCompatibility(unittest.TestCase):
+klasse TestCursesCompatibility(unittest.TestCase):
     """Test that PyREPL's curses implementation matches the standard curses behavior.
 
     Python's `curses` doesn't allow calling `setupterm()` again with a different

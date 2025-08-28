@@ -10,7 +10,7 @@ def first(iterable):
     return next(filter(lambda x: x is not None, iterable), None)
 
 
-class Test(TestEmailBase):
+klasse Test(TestEmailBase):
 
     policy = policy.default
 
@@ -36,7 +36,7 @@ class Test(TestEmailBase):
 
 
 @parameterize
-class TestEmailMessageBase:
+klasse TestEmailMessageBase:
 
     policy = policy.default
 
@@ -496,7 +496,7 @@ class TestEmailMessageBase:
         iter_parts = list(m.iter_parts()) if _is_multipart_msg(msg) else []
         self.assertEqual(iter_parts, parts)
 
-    class _TestContentManager:
+    klasse _TestContentManager:
         def get_content(self, msg, *args, **kw):
             return msg, args, kw
         def set_content(self, msg, *args, **kw):
@@ -661,7 +661,7 @@ class TestEmailMessageBase:
             getattr(m, method)()
             self.assertEqual(m.get_payload(0).policy.content_manager, 'foo')
 
-    class _TestSetContentManager:
+    klasse _TestSetContentManager:
         def set_content(self, msg, content, *args, **kw):
             msg['Content-Type'] = 'text/plain'
             msg.set_payload(content)
@@ -695,8 +695,8 @@ class TestEmailMessageBase:
             # Otherwise we don't guess.
             self.assertIsNone(part['Content-Disposition'])
 
-    class _TestSetRaisingContentManager:
-        class CustomError(Exception):
+    klasse _TestSetRaisingContentManager:
+        klasse CustomError(Exception):
             pass
         def set_content(self, msg, content, *args, **kw):
             raise self.CustomError('test')
@@ -778,7 +778,7 @@ class TestEmailMessageBase:
         self.assertEqual(expected, payload)
 
 
-class TestEmailMessage(TestEmailMessageBase, TestEmailBase):
+klasse TestEmailMessage(TestEmailMessageBase, TestEmailBase):
     message = EmailMessage
 
     def test_set_content_adds_MIME_Version(self):
@@ -788,7 +788,7 @@ class TestEmailMessage(TestEmailMessageBase, TestEmailBase):
         m.set_content(content_manager=cm)
         self.assertEqual(m['MIME-Version'], '1.0')
 
-    class _MIME_Version_adding_CM:
+    klasse _MIME_Version_adding_CM:
         def set_content(self, msg, *args, **kw):
             msg['MIME-Version'] = '1.0'
 
@@ -1065,7 +1065,7 @@ class TestEmailMessage(TestEmailMessageBase, TestEmailBase):
         self.assertEqual(m.get_payload(decode=True), payload)
 
 
-class TestMIMEPart(TestEmailMessageBase, TestEmailBase):
+klasse TestMIMEPart(TestEmailMessageBase, TestEmailBase):
     # Doing the full test run here may seem a bit redundant, since the two
     # classes are almost identical.  But what if they drift apart?  So we do
     # the full tests so that any future drift doesn't introduce bugs.

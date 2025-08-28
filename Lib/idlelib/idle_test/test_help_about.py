@@ -16,7 +16,7 @@ from platform import python_version
 About = help_about.AboutDialog
 
 
-class LiveDialogTest(unittest.TestCase):
+klasse LiveDialogTest(unittest.TestCase):
     """Simulate user clicking buttons other than [Close].
 
     Test that invoked textview has text from source.
@@ -86,7 +86,7 @@ class LiveDialogTest(unittest.TestCase):
                 dialog._current_textview.destroy()
 
 
-class DefaultTitleTest(unittest.TestCase):
+klasse DefaultTitleTest(unittest.TestCase):
     "Test default title."
 
     @classmethod
@@ -110,7 +110,7 @@ class DefaultTitleTest(unittest.TestCase):
                          f' ({help_about.bits} bit)')
 
 
-class CloseTest(unittest.TestCase):
+klasse CloseTest(unittest.TestCase):
     """Simulate user clicking [Close] button"""
 
     @classmethod
@@ -134,8 +134,8 @@ class CloseTest(unittest.TestCase):
             self.dialog.winfo_class()
 
 
-class Dummy_about_dialog:
-    # Dummy class for testing file display functions.
+klasse Dummy_about_dialog:
+    # Dummy klasse for testing file display functions.
     idle_credits = About.show_idle_credits
     idle_readme = About.show_readme
     idle_news = About.show_idle_news
@@ -144,7 +144,7 @@ class Dummy_about_dialog:
     _utest = True
 
 
-class DisplayFileTest(unittest.TestCase):
+klasse DisplayFileTest(unittest.TestCase):
     """Test functions that display files.
 
     While somewhat redundant with gui-based test_file_dialog,

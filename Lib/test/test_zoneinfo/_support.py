@@ -59,7 +59,7 @@ def set_zoneinfo_module(module):
         sys.modules.pop("zoneinfo")
 
 
-class ZoneInfoTestBase(unittest.TestCase):
+klasse ZoneInfoTestBase(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.klass = cls.module.ZoneInfo

@@ -18,13 +18,13 @@ def zlib_decode(input, errors='strict'):
     assert errors == 'strict'
     return (zlib.decompress(input), len(input))
 
-class Codec(codecs.Codec):
+klasse Codec(codecs.Codec):
     def encode(self, input, errors='strict'):
         return zlib_encode(input, errors)
     def decode(self, input, errors='strict'):
         return zlib_decode(input, errors)
 
-class IncrementalEncoder(codecs.IncrementalEncoder):
+klasse IncrementalEncoder(codecs.IncrementalEncoder):
     def __init__(self, errors='strict'):
         assert errors == 'strict'
         self.errors = errors
@@ -40,7 +40,7 @@ class IncrementalEncoder(codecs.IncrementalEncoder):
     def reset(self):
         self.compressobj = zlib.compressobj()
 
-class IncrementalDecoder(codecs.IncrementalDecoder):
+klasse IncrementalDecoder(codecs.IncrementalDecoder):
     def __init__(self, errors='strict'):
         assert errors == 'strict'
         self.errors = errors
@@ -56,10 +56,10 @@ class IncrementalDecoder(codecs.IncrementalDecoder):
     def reset(self):
         self.decompressobj = zlib.decompressobj()
 
-class StreamWriter(Codec, codecs.StreamWriter):
+klasse StreamWriter(Codec, codecs.StreamWriter):
     charbuffertype = bytes
 
-class StreamReader(Codec, codecs.StreamReader):
+klasse StreamReader(Codec, codecs.StreamReader):
     charbuffertype = bytes
 
 ### encodings module API

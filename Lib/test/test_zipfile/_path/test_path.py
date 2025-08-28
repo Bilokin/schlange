@@ -16,8 +16,8 @@ from ._itertools import Counter
 from ._test_params import Invoked, parameterize
 
 
-class jaraco:
-    class itertools:
+klasse jaraco:
+    klasse itertools:
         Counter = Counter
 
 
@@ -82,7 +82,7 @@ alpharep_generators = [
 pass_alpharep = parameterize(['alpharep'], alpharep_generators)
 
 
-class TestPath(unittest.TestCase):
+klasse TestPath(unittest.TestCase):
     def setUp(self):
         self.fixtures = contextlib.ExitStack()
         self.addCleanup(self.fixtures.close)
@@ -344,7 +344,7 @@ class TestPath(unittest.TestCase):
 
     @pass_alpharep
     def test_subclass(self, alpharep):
-        class Subclass(zipfile.Path):
+        klasse Subclass(zipfile.Path):
             pass
 
         root = Subclass(alpharep)
@@ -658,7 +658,7 @@ class TestPath(unittest.TestCase):
         assert isinstance(zf, Traversable)
 
 
-class DirtyZipInfo(zipfile.ZipInfo):
+klasse DirtyZipInfo(zipfile.ZipInfo):
     """
     Bypass name sanitization.
     """

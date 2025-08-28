@@ -41,7 +41,7 @@ with test_tools.imports_under_tool("peg_generator"):
 sys.path.insert(0, tmp_dir)
 import parse
 
-class Tests(unittest.TestCase):
+klasse Tests(unittest.TestCase):
 
     def check_input_strings_for_grammar(
         self,
@@ -70,7 +70,7 @@ unittest.main()
 
 
 @support.requires_subprocess()
-class TestCParser(unittest.TestCase):
+klasse TestCParser(unittest.TestCase):
 
     _has_run = False
 

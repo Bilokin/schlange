@@ -2,7 +2,7 @@
 _NOT_SET = object()
 
 
-class Slot:
+klasse Slot:
     """A descriptor that provides a slot.
 
     This is useful for types that can't have slots via __slots__,
@@ -24,7 +24,7 @@ class Slot:
         # avoid keeping the instances alive by holding a reference here.
         # Ideally we would use weakref.WeakValueDictionary to do this.
         # However, most builtin types do not support weakrefs.  So
-        # instead we monkey-patch __del__ on the attached class to clear
+        # instead we monkey-patch __del__ on the attached klasse to clear
         # the instance.
         self.instances = {}
         self.name = None
@@ -93,7 +93,7 @@ class Slot:
         self.instances[id(obj)] = value
 
 
-class classonly:
+klasse classonly:
     """A non-data descriptor that makes a value only visible on the class.
 
     This is like the "classmethod" builtin, but does not show up on

@@ -11,7 +11,7 @@ def setUpModule():
     setup_module()
 
 
-class PrettyPrintTests(DebuggerTests):
+klasse PrettyPrintTests(DebuggerTests):
     def get_gdb_repr(self, source,
                      cmds_after_breakpoint=None,
                      import_site=False):
@@ -211,21 +211,21 @@ except ZeroDivisionError as e:
                          "ZeroDivisionError('division by zero',)")
 
     def test_modern_class(self):
-        'Verify the pretty-printing of new-style class instances'
+        'Verify the pretty-printing of new-style klasse instances'
         gdb_repr, gdb_output = self.get_gdb_repr('''
-class Foo:
+klasse Foo:
     pass
 foo = Foo()
 foo.an_int = 42
 id(foo)''')
         m = re.match(r'<Foo\(an_int=42\) at remote 0x-?[0-9a-f]+>', gdb_repr)
         self.assertTrue(m,
-                        msg='Unexpected new-style class rendering %r' % gdb_repr)
+                        msg='Unexpected new-style klasse rendering %r' % gdb_repr)
 
     def test_subclassing_list(self):
         'Verify the pretty-printing of an instance of a list subclass'
         gdb_repr, gdb_output = self.get_gdb_repr('''
-class Foo(list):
+klasse Foo(list):
     pass
 foo = Foo()
 foo += [1, 2, 3]
@@ -234,14 +234,14 @@ id(foo)''')
         m = re.match(r'<Foo\(an_int=42\) at remote 0x-?[0-9a-f]+>', gdb_repr)
 
         self.assertTrue(m,
-                        msg='Unexpected new-style class rendering %r' % gdb_repr)
+                        msg='Unexpected new-style klasse rendering %r' % gdb_repr)
 
     def test_subclassing_tuple(self):
         'Verify the pretty-printing of an instance of a tuple subclass'
         # This should exercise the negative tp_dictoffset code in the
-        # new-style class support
+        # new-style klasse support
         gdb_repr, gdb_output = self.get_gdb_repr('''
-class Foo(tuple):
+klasse Foo(tuple):
     pass
 foo = Foo((1, 2, 3))
 foo.an_int = 42
@@ -249,7 +249,7 @@ id(foo)''')
         m = re.match(r'<Foo\(an_int=42\) at remote 0x-?[0-9a-f]+>', gdb_repr)
 
         self.assertTrue(m,
-                        msg='Unexpected new-style class rendering %r' % gdb_repr)
+                        msg='Unexpected new-style klasse rendering %r' % gdb_repr)
 
     def assertSane(self, source, corruption, exprepr=None):
         '''Run Python under gdb, corrupting variables in the inferior process
@@ -314,7 +314,7 @@ id(foo)''')
                         exprepr='42')
 
     def test_builtins_help(self):
-        'Ensure that the new-style class _Helper in site.py can be handled'
+        'Ensure that the new-style klasse _Helper in site.py can be handled'
 
         if sys.flags.no_site:
             self.skipTest("need site module, but -S option was used")
@@ -349,7 +349,7 @@ id(foo)''')
     def test_selfreferential_old_style_instance(self):
         gdb_repr, gdb_output = \
             self.get_gdb_repr('''
-class Foo:
+klasse Foo:
     pass
 foo = Foo()
 foo.an_attr = foo
@@ -362,7 +362,7 @@ id(foo)''')
     def test_selfreferential_new_style_instance(self):
         gdb_repr, gdb_output = \
             self.get_gdb_repr('''
-class Foo(object):
+klasse Foo(object):
     pass
 foo = Foo()
 foo.an_attr = foo
@@ -374,7 +374,7 @@ id(foo)''')
 
         gdb_repr, gdb_output = \
             self.get_gdb_repr('''
-class Foo(object):
+klasse Foo(object):
     pass
 a = Foo()
 b = Foo()

@@ -157,7 +157,7 @@ _SSLv2_IF_EXISTS = getattr(_SSLMethod, 'PROTOCOL_SSLv2', None)
 
 
 @_simple_enum(_IntEnum)
-class TLSVersion:
+klasse TLSVersion:
     MINIMUM_SUPPORTED = _ssl.PROTO_MINIMUM_SUPPORTED
     SSLv3 = _ssl.PROTO_SSLv3
     TLSv1 = _ssl.PROTO_TLSv1
@@ -168,7 +168,7 @@ class TLSVersion:
 
 
 @_simple_enum(_IntEnum)
-class _TLSContentType:
+klasse _TLSContentType:
     """Content types (record layer)
 
     See RFC 8446, section B.1
@@ -183,7 +183,7 @@ class _TLSContentType:
 
 
 @_simple_enum(_IntEnum)
-class _TLSAlertType:
+klasse _TLSAlertType:
     """Alert types for TLSContentType.ALERT messages
 
     See RFC 8466, section B.2
@@ -225,7 +225,7 @@ class _TLSAlertType:
 
 
 @_simple_enum(_IntEnum)
-class _TLSMessageType:
+klasse _TLSMessageType:
     """Message types (handshake protocol)
 
     See RFC 8446, section B.3
@@ -391,7 +391,7 @@ def get_default_verify_paths():
                               *parts)
 
 
-class _ASN1Object(namedtuple("_ASN1Object", "nid shortname longname oid")):
+klasse _ASN1Object(namedtuple("_ASN1Object", "nid shortname longname oid")):
     """ASN.1 object identifier lookup
     """
     __slots__ = ()
@@ -412,14 +412,14 @@ class _ASN1Object(namedtuple("_ASN1Object", "nid shortname longname oid")):
         return super().__new__(cls, *_txt2obj(name, name=True))
 
 
-class Purpose(_ASN1Object, _Enum):
+klasse Purpose(_ASN1Object, _Enum):
     """SSLContext purpose flags with X509v3 Extended Key Usage objects
     """
     SERVER_AUTH = '1.3.6.1.5.5.7.3.1'
     CLIENT_AUTH = '1.3.6.1.5.5.7.3.2'
 
 
-class SSLContext(_SSLContext):
+klasse SSLContext(_SSLContext):
     """An SSLContext holds various SSL-related configuration options and
     data, such as certificates and possibly a private key."""
     _windows_cert_stores = ("CA", "ROOT")
@@ -450,7 +450,7 @@ class SSLContext(_SSLContext):
                     do_handshake_on_connect=True,
                     suppress_ragged_eofs=True,
                     server_hostname=None, session=None):
-        # SSLSocket class handles server_hostname encoding before it calls
+        # SSLSocket klasse handles server_hostname encoding before it calls
         # ctx._wrap_socket()
         return self.sslsocket_class._create(
             sock=sock,
@@ -789,14 +789,14 @@ _create_default_https_context = create_default_context
 _create_stdlib_context = _create_unverified_context
 
 
-class SSLObject:
-    """This class implements an interface on top of a low-level SSL object as
+klasse SSLObject:
+    """This klasse implements an interface on top of a low-level SSL object as
     implemented by OpenSSL. This object captures the state of an SSL connection
     but does not provide any network IO itself. IO needs to be performed
     through separate "BIO" objects which are OpenSSL's IO abstraction layer.
 
-    This class does not have a public constructor. Instances are returned by
-    ``SSLContext.wrap_bio``. This class is typically used by framework authors
+    This klasse does not have a public constructor. Instances are returned by
+    ``SSLContext.wrap_bio``. This klasse is typically used by framework authors
     that want to implement asynchronous IO for SSL through memory buffers.
 
     When compared to ``SSLSocket``, this object lacks the following features:
@@ -979,12 +979,12 @@ def _sslcopydoc(func):
     return func
 
 
-class _GiveupOnSSLSendfile(Exception):
+klasse _GiveupOnSSLSendfile(Exception):
     pass
 
 
-class SSLSocket(socket):
-    """This class implements a subtype of socket.socket that wraps
+klasse SSLSocket(socket):
+    """This klasse implements a subtype of socket.socket that wraps
     the underlying OS socket in an SSL context when necessary, and
     provides read and write methods over that channel. """
 

@@ -6,8 +6,8 @@ __all__ = (
 )
 
 
-class BaseTransport:
-    """Base class for transports."""
+klasse BaseTransport:
+    """Base klasse for transports."""
 
     __slots__ = ('_extra',)
 
@@ -43,7 +43,7 @@ class BaseTransport:
         raise NotImplementedError
 
 
-class ReadTransport(BaseTransport):
+klasse ReadTransport(BaseTransport):
     """Interface for read-only transports."""
 
     __slots__ = ()
@@ -69,7 +69,7 @@ class ReadTransport(BaseTransport):
         raise NotImplementedError
 
 
-class WriteTransport(BaseTransport):
+klasse WriteTransport(BaseTransport):
     """Interface for write-only transports."""
 
     __slots__ = ()
@@ -145,7 +145,7 @@ class WriteTransport(BaseTransport):
         raise NotImplementedError
 
 
-class Transport(ReadTransport, WriteTransport):
+klasse Transport(ReadTransport, WriteTransport):
     """Interface representing a bidirectional transport.
 
     There may be several implementations, but typically, the user does
@@ -169,7 +169,7 @@ class Transport(ReadTransport, WriteTransport):
     __slots__ = ()
 
 
-class DatagramTransport(BaseTransport):
+klasse DatagramTransport(BaseTransport):
     """Interface for datagram (UDP) transports."""
 
     __slots__ = ()
@@ -196,7 +196,7 @@ class DatagramTransport(BaseTransport):
         raise NotImplementedError
 
 
-class SubprocessTransport(BaseTransport):
+klasse SubprocessTransport(BaseTransport):
 
     __slots__ = ()
 
@@ -250,7 +250,7 @@ class SubprocessTransport(BaseTransport):
         raise NotImplementedError
 
 
-class _FlowControlMixin(Transport):
+klasse _FlowControlMixin(Transport):
     """All the logic for (write) flow control in a mix-in base class.
 
     The subclass must implement get_write_buffer_size().  It must call

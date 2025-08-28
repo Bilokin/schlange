@@ -12,13 +12,13 @@ from . import exceptions
 from . import tasks
 from . import constants
 
-class _State(enum.Enum):
+klasse _State(enum.Enum):
     CREATED = "created"
     INITIALIZED = "initialized"
     CLOSED = "closed"
 
 
-class Runner:
+klasse Runner:
     """A context manager that controls event loop life cycle.
 
     The context manager always creates a new event loop,
@@ -44,7 +44,7 @@ class Runner:
 
     """
 
-    # Note: the class is final, it is not intended for inheritance.
+    # Note: the klasse is final, it is not intended for inheritance.
 
     def __init__(self, *, debug=None, loop_factory=None):
         self._state = _State.CREATED

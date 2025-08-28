@@ -7,7 +7,7 @@ from tkinter import Tk
 from idlelib.editor import EditorWindow
 
 
-class ScriptBindingTest(unittest.TestCase):
+klasse ScriptBindingTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):

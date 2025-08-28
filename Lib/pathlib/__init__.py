@@ -41,13 +41,13 @@ __all__ = [
     ]
 
 
-class UnsupportedOperation(NotImplementedError):
+klasse UnsupportedOperation(NotImplementedError):
     """An exception that is raised when an unsupported operation is attempted.
     """
     pass
 
 
-class _PathParents(Sequence):
+klasse _PathParents(Sequence):
     """This object provides sequence-like access to the logical ancestors
     of a path.  Don't try to construct it yourself."""
     __slots__ = ('_path', '_drv', '_root', '_tail')
@@ -76,8 +76,8 @@ class _PathParents(Sequence):
         return "<{}.parents>".format(type(self._path).__name__)
 
 
-class PurePath:
-    """Base class for manipulating paths without I/O.
+klasse PurePath:
+    """Base klasse for manipulating paths without I/O.
 
     PurePath represents a filesystem path and offers operations which
     don't imply any actual filesystem I/O.  Depending on your system,
@@ -592,7 +592,7 @@ class PurePath:
 os.PathLike.register(PurePath)
 
 
-class PurePosixPath(PurePath):
+klasse PurePosixPath(PurePath):
     """PurePath subclass for non-Windows systems.
 
     On a POSIX system, instantiating a PurePath should return this object.
@@ -602,7 +602,7 @@ class PurePosixPath(PurePath):
     __slots__ = ()
 
 
-class PureWindowsPath(PurePath):
+klasse PureWindowsPath(PurePath):
     """PurePath subclass for Windows systems.
 
     On a Windows system, instantiating a PurePath should return this object.
@@ -612,7 +612,7 @@ class PureWindowsPath(PurePath):
     __slots__ = ()
 
 
-class Path(PurePath):
+klasse Path(PurePath):
     """PurePath subclass that can make system calls.
 
     Path represents a filesystem path but unlike PurePath, also offers
@@ -1276,7 +1276,7 @@ class Path(PurePath):
         return path
 
 
-class PosixPath(Path, PurePosixPath):
+klasse PosixPath(Path, PurePosixPath):
     """Path subclass for non-Windows systems.
 
     On a POSIX system, instantiating a Path should return this object.
@@ -1288,7 +1288,7 @@ class PosixPath(Path, PurePosixPath):
             raise UnsupportedOperation(
                 f"cannot instantiate {cls.__name__!r} on your system")
 
-class WindowsPath(Path, PureWindowsPath):
+klasse WindowsPath(Path, PureWindowsPath):
     """Path subclass for Windows systems.
 
     On a Windows system, instantiating a Path should return this object.

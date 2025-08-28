@@ -41,14 +41,14 @@ else:
         return func
 
 
-class Indexable:
+klasse Indexable:
     def __init__(self, value=0):
         self.value = value
     def __index__(self):
         return self.value
 
 
-class BaseBytesTest:
+klasse BaseBytesTest:
 
     def assertTypedEqual(self, actual, expected):
         self.assertIs(type(actual), type(expected))
@@ -103,7 +103,7 @@ class BaseBytesTest:
         self.assertEqual(list(b), list(range(256))[1::2])
 
         # Sequence without __iter__.
-        class S:
+        klasse S:
             def __getitem__(self, i):
                 return (1, 2, 3)[i]
         b = self.type2test(S())
@@ -127,14 +127,14 @@ class BaseBytesTest:
 
     def test_from_mutating_list(self):
         # Issue #34973: Crash in bytes constructor with mutating list.
-        class X:
+        klasse X:
             def __index__(self):
                 a.clear()
                 return 42
         a = [X(), X()]
         self.assertEqual(bytes(a), b'*')
 
-        class Y:
+        klasse Y:
             def __index__(self):
                 if len(a) < 1000:
                     a.append(self)
@@ -157,7 +157,7 @@ class BaseBytesTest:
 
         # Issues #29159 and #34974.
         # Fallback when __index__ raises a TypeError
-        class B(bytes):
+        klasse B(bytes):
             def __index__(self):
                 raise TypeError
 
@@ -175,7 +175,7 @@ class BaseBytesTest:
 
     def test_constructor_type_errors(self):
         self.assertRaises(TypeError, self.type2test, 0.0)
-        class C:
+        klasse C:
             pass
         self.assertRaises(TypeError, self.type2test, ["0"])
         self.assertRaises(TypeError, self.type2test, [0.0])
@@ -218,13 +218,13 @@ class BaseBytesTest:
     def test_constructor_exceptions(self):
         # Issue #34974: bytes and bytearray constructors replace unexpected
         # exceptions.
-        class BadInt:
+        klasse BadInt:
             def __index__(self):
                 1/0
         self.assertRaises(ZeroDivisionError, self.type2test, BadInt())
         self.assertRaises(ZeroDivisionError, self.type2test, [BadInt()])
 
-        class BadIterable:
+        klasse BadIterable:
             def __iter__(self):
                 1/0
         self.assertRaises(ZeroDivisionError, self.type2test, BadIterable())
@@ -772,7 +772,7 @@ class BaseBytesTest:
         check(b'%i%b %*.*b', (10, b'3', 5, 3, b'abc',), b'103   abc')
         check(b'%c', b'a', b'a')
 
-        class PseudoFloat:
+        klasse PseudoFloat:
             def __init__(self, value):
                 self.value = float(value)
             def __int__(self):
@@ -1065,7 +1065,7 @@ class BaseBytesTest:
         self.assertEqual(_testlimitedcapi.sequence_getitem(obj, 0), 42)
 
 
-class BytesTest(BaseBytesTest, unittest.TestCase):
+klasse BytesTest(BaseBytesTest, unittest.TestCase):
     type2test = bytes
 
     def test__bytes__(self):
@@ -1073,7 +1073,7 @@ class BytesTest(BaseBytesTest, unittest.TestCase):
         self.assertEqual(foo.__bytes__(), foo)
         self.assertEqual(type(foo.__bytes__()), self.type2test)
 
-        class bytes_subclass(bytes):
+        klasse bytes_subclass(bytes):
             pass
 
         bar = bytes_subclass(b'bar\x00foo')
@@ -1098,18 +1098,18 @@ class BytesTest(BaseBytesTest, unittest.TestCase):
         self.assertEqual(bytes(WithBytes(b'abc')), b'abc')
         self.assertEqual(BytesSubclass(WithBytes(b'abc')), BytesSubclass(b'abc'))
 
-        class NoBytes: pass
+        klasse NoBytes: pass
         self.assertRaises(TypeError, bytes, NoBytes())
         self.assertRaises(TypeError, bytes, WithBytes('abc'))
         self.assertRaises(TypeError, bytes, WithBytes(None))
-        class IndexWithBytes:
+        klasse IndexWithBytes:
             def __bytes__(self):
                 return b'a'
             def __index__(self):
                 return 42
         self.assertEqual(bytes(IndexWithBytes()), b'a')
         # Issue #25766
-        class StrWithBytes(str):
+        klasse StrWithBytes(str):
             def __new__(cls, value):
                 self = str.__new__(cls, '\u20ac')
                 self.value = value
@@ -1133,7 +1133,7 @@ class BytesTest(BaseBytesTest, unittest.TestCase):
         self.assertTypedEqual(BytesSubclass(WithBytes(OtherBytesSubclass(b'abc'))),
                               BytesSubclass(b'abc'))
 
-        class BytesWithBytes(bytes):
+        klasse BytesWithBytes(bytes):
             def __new__(cls, value):
                 self = bytes.__new__(cls, b'\xa4')
                 self.value = value
@@ -1266,7 +1266,7 @@ class BytesTest(BaseBytesTest, unittest.TestCase):
                          b'')
 
     def test_bytes_blocking(self):
-        class IterationBlocked(list):
+        klasse IterationBlocked(list):
             __bytes__ = None
         i = [0, 1, 2, 3]
         self.assertEqual(bytes(i), b'\x00\x01\x02\x03')
@@ -1275,7 +1275,7 @@ class BytesTest(BaseBytesTest, unittest.TestCase):
         # At least in CPython, because bytes.__new__ and the C API
         # PyBytes_FromObject have different fallback rules, integer
         # fallback is handled specially, so test separately.
-        class IntBlocked(int):
+        klasse IntBlocked(int):
             __bytes__ = None
         self.assertEqual(bytes(3), b'\0\0\0')
         self.assertRaises(TypeError, bytes, IntBlocked(3))
@@ -1284,12 +1284,12 @@ class BytesTest(BaseBytesTest, unittest.TestCase):
         # subclasses differently from other buffer-interface classes,
         # an implementation may well special-case them (as CPython 2.x
         # str did), so test them separately.
-        class BytesSubclassBlocked(bytes):
+        klasse BytesSubclassBlocked(bytes):
             __bytes__ = None
         self.assertEqual(bytes(b'ab'), b'ab')
         self.assertRaises(TypeError, bytes, BytesSubclassBlocked(b'ab'))
 
-        class BufferBlocked(bytearray):
+        klasse BufferBlocked(bytearray):
             __bytes__ = None
         ba, bb = bytearray(b'ab'), BufferBlocked(b'ab')
         self.assertEqual(bytes(ba), b'ab')
@@ -1306,7 +1306,7 @@ class BytesTest(BaseBytesTest, unittest.TestCase):
         self.assertEqual(id(a), id(1 * a))
         self.assertNotEqual(id(a), id(a * 2))
 
-        class SubBytes(bytes):
+        klasse SubBytes(bytes):
             pass
 
         s = SubBytes(b'qwerty()')
@@ -1318,7 +1318,7 @@ class BytesTest(BaseBytesTest, unittest.TestCase):
         self.assertNotEqual(id(s), id(s * 2))
 
 
-class ByteArrayTest(BaseBytesTest, unittest.TestCase):
+klasse ByteArrayTest(BaseBytesTest, unittest.TestCase):
     type2test = bytearray
 
     _testlimitedcapi = import_helper.import_module('_testlimitedcapi')
@@ -1903,7 +1903,7 @@ class ByteArrayTest(BaseBytesTest, unittest.TestCase):
         # that reallocates the internal buffer
         # See gh-91153
 
-        class Boom:
+        klasse Boom:
             def __index__(self):
                 b.clear()
                 return 0
@@ -1922,7 +1922,7 @@ class ByteArrayTest(BaseBytesTest, unittest.TestCase):
         # gh-91153 continued
         # Ensure buffer is not broken even if length is correct
 
-        class MutatesOnIndex:
+        klasse MutatesOnIndex:
             def __init__(self):
                 self.ba = bytearray(0x180)
 
@@ -1952,7 +1952,7 @@ class ByteArrayTest(BaseBytesTest, unittest.TestCase):
             self.assertEqual(instance.new_ba, bytearray(0x180), "Wrong object altered")
 
 
-class AssortedBytesTest(unittest.TestCase):
+klasse AssortedBytesTest(unittest.TestCase):
     #
     # Test various combinations of bytes and bytearray
     #
@@ -2115,7 +2115,7 @@ class AssortedBytesTest(unittest.TestCase):
     # the rest that make sense (the code can be cleaned up to use modern
     # unittest methods at the same time).
 
-class BytearrayPEP3137Test(unittest.TestCase):
+klasse BytearrayPEP3137Test(unittest.TestCase):
     def marshal(self, x):
         return bytearray(x)
 
@@ -2142,7 +2142,7 @@ class BytearrayPEP3137Test(unittest.TestCase):
         self.assertIsNot(val, newval)
 
 
-class FixedStringTest(test.string_tests.BaseTest):
+klasse FixedStringTest(test.string_tests.BaseTest):
     def fixtype(self, obj):
         if isinstance(obj, str):
             return self.type2test(obj.encode("utf-8"))
@@ -2150,14 +2150,14 @@ class FixedStringTest(test.string_tests.BaseTest):
 
     contains_bytes = True
 
-class ByteArrayAsStringTest(FixedStringTest, unittest.TestCase):
+klasse ByteArrayAsStringTest(FixedStringTest, unittest.TestCase):
     type2test = bytearray
 
-class BytesAsStringTest(FixedStringTest, unittest.TestCase):
+klasse BytesAsStringTest(FixedStringTest, unittest.TestCase):
     type2test = bytes
 
 
-class SubclassTest:
+klasse SubclassTest:
 
     def test_basic(self):
         self.assertIsSubclass(self.type2test, self.basetype)
@@ -2229,7 +2229,7 @@ class SubclassTest:
         self.assertEqual(b, b'\x1a\x2b\x30')
         self.assertIs(type(b), self.type2test)
 
-        class B1(self.basetype):
+        klasse B1(self.basetype):
             def __new__(cls, value):
                 me = self.basetype.__new__(cls, value)
                 me.foo = 'bar'
@@ -2240,7 +2240,7 @@ class SubclassTest:
         self.assertIs(type(b), B1)
         self.assertEqual(b.foo, 'bar')
 
-        class B2(self.basetype):
+        klasse B2(self.basetype):
             def __init__(me, *args, **kwargs):
                 if self.basetype is not bytes:
                     self.basetype.__init__(me, *args, **kwargs)
@@ -2252,33 +2252,33 @@ class SubclassTest:
         self.assertEqual(b.foo, 'bar')
 
 
-class ByteArraySubclass(bytearray):
-    class Nested(bytearray):
+klasse ByteArraySubclass(bytearray):
+    klasse Nested(bytearray):
         pass
-    class Ŭñıçöđë(bytearray):
+    klasse Ŭñıçöđë(bytearray):
         pass
 
-class ByteArraySubclassWithSlots(bytearray):
+klasse ByteArraySubclassWithSlots(bytearray):
     __slots__ = ('x', 'y', '__dict__')
 
-class BytesSubclass(bytes):
+klasse BytesSubclass(bytes):
     pass
 
-class OtherBytesSubclass(bytes):
+klasse OtherBytesSubclass(bytes):
     pass
 
-class WithBytes:
+klasse WithBytes:
     def __init__(self, value):
         self.value = value
     def __bytes__(self):
         return self.value
 
-class ByteArraySubclassTest(SubclassTest, unittest.TestCase):
+klasse ByteArraySubclassTest(SubclassTest, unittest.TestCase):
     basetype = bytearray
     type2test = ByteArraySubclass
 
     def test_init_override(self):
-        class subclass(bytearray):
+        klasse subclass(bytearray):
             def __init__(me, newarg=1, *args, **kwargs):
                 bytearray.__init__(me, *args, **kwargs)
         x = subclass(4, b"abcd")
@@ -2287,16 +2287,16 @@ class ByteArraySubclassTest(SubclassTest, unittest.TestCase):
         x = subclass(newarg=4, source=b"abcd")
         self.assertEqual(x, b"abcd")
 
-class ByteArraySubclassWithSlotsTest(SubclassTest, unittest.TestCase):
+klasse ByteArraySubclassWithSlotsTest(SubclassTest, unittest.TestCase):
     basetype = bytearray
     type2test = ByteArraySubclassWithSlots
 
-class BytesSubclassTest(SubclassTest, unittest.TestCase):
+klasse BytesSubclassTest(SubclassTest, unittest.TestCase):
     basetype = bytes
     type2test = BytesSubclass
 
 
-class FreeThreadingTest(unittest.TestCase):
+klasse FreeThreadingTest(unittest.TestCase):
     @unittest.skipUnless(support.Py_GIL_DISABLED, 'this test can only possibly fail with GIL disabled')
     @threading_helper.reap_threads
     @threading_helper.requires_working_threading()

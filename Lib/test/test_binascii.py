@@ -16,7 +16,7 @@ a2b_functions = ['a2b_base64', 'a2b_hex', 'a2b_qp', 'a2b_uu',
 all_functions = a2b_functions + b2a_functions + ['crc32', 'crc_hqx']
 
 
-class BinASCIITest(unittest.TestCase):
+klasse BinASCIITest(unittest.TestCase):
 
     type2test = bytes
     # Create binary test data
@@ -496,19 +496,19 @@ class BinASCIITest(unittest.TestCase):
             binascii.b2a_hex(noncontig_writable)
 
 
-class ArrayBinASCIITest(BinASCIITest):
+klasse ArrayBinASCIITest(BinASCIITest):
     def type2test(self, s):
         return array.array('B', list(s))
 
 
-class BytearrayBinASCIITest(BinASCIITest):
+klasse BytearrayBinASCIITest(BinASCIITest):
     type2test = bytearray
 
 
-class MemoryviewBinASCIITest(BinASCIITest):
+klasse MemoryviewBinASCIITest(BinASCIITest):
     type2test = memoryview
 
-class ChecksumBigBufferTestCase(unittest.TestCase):
+klasse ChecksumBigBufferTestCase(unittest.TestCase):
     """bpo-38256 - check that inputs >=4 GiB are handled correctly."""
 
     @bigmemtest(size=_4G + 4, memuse=1, dry_run=False)

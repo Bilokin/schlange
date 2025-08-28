@@ -89,7 +89,7 @@ def write_all(fd, data):
 
 # Marginal testing of pty suite. Cannot do extensive 'do or fail' testing
 # because pty code is not too portable.
-class PtyTest(unittest.TestCase):
+klasse PtyTest(unittest.TestCase):
     def setUp(self):
         old_sighup = signal.signal(signal.SIGHUP, self.handle_sighup)
         self.addCleanup(signal.signal, signal.SIGHUP, old_sighup)
@@ -319,7 +319,7 @@ class PtyTest(unittest.TestCase):
         with open(TESTFN, 'rb') as f:
             self.assertEqual(f.read(), b'hi there\r\n')
 
-class SmallPtyTests(unittest.TestCase):
+klasse SmallPtyTests(unittest.TestCase):
     """These tests don't spawn children or hang."""
 
     def setUp(self):

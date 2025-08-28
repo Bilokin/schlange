@@ -13,7 +13,7 @@ stretched to rectangles by shapesize()
 """
 from turtle import *
 
-class Disc(Turtle):
+klasse Disc(Turtle):
     def __init__(self, n):
         Turtle.__init__(self, shape="square", visible=False)
         self.pu()
@@ -21,7 +21,7 @@ class Disc(Turtle):
         self.fillcolor(n/6., 0, 1-n/6.)
         self.st()
 
-class Tower(list):
+klasse Tower(list):
     "Hanoi tower, a subclass of built-in type list"
     def __init__(self, x):
         "create an empty tower. x is x-position of peg"

@@ -36,7 +36,7 @@ def resolve_stdlib_file(name, ispkg=False):
         return os.path.join(STDLIB_DIR, *name.split('.')) + '.py'
 
 
-class ExecModuleTests(abc.LoaderTests):
+klasse ExecModuleTests(abc.LoaderTests):
 
     def exec_module(self, name, origname=None):
         with import_helper.frozen_modules():
@@ -123,7 +123,7 @@ class ExecModuleTests(abc.LoaderTests):
  ) = util.test_both(ExecModuleTests, machinery=machinery)
 
 
-class InspectLoaderTests:
+klasse InspectLoaderTests:
 
     """Tests for the InspectLoader methods for FrozenImporter."""
 

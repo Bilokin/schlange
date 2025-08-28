@@ -136,7 +136,7 @@ foo#bar\nbaz|foo|baz|
 áéíóú|áéíóú|
 """
 
-class ShlexTest(unittest.TestCase):
+klasse ShlexTest(unittest.TestCase):
     def setUp(self):
         self.data = [x.split("|")[:-1]
                      for x in data.splitlines()]

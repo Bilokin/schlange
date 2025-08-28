@@ -19,7 +19,7 @@ def tearDownModule():
     asyncio.events._set_event_loop_policy(None)
 
 
-class PipeTests(unittest.TestCase):
+klasse PipeTests(unittest.TestCase):
 
     def test_pipe_overlapped(self):
         h1, h2 = windows_utils.pipe(overlapped=(True, True))
@@ -78,7 +78,7 @@ class PipeTests(unittest.TestCase):
             raise RuntimeError('expected ERROR_INVALID_HANDLE')
 
 
-class PopenTests(unittest.TestCase):
+klasse PopenTests(unittest.TestCase):
 
     def test_popen(self):
         command = r"""if 1:

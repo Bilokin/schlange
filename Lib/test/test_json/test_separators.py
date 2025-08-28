@@ -2,7 +2,7 @@ import textwrap
 from test.test_json import PyTest, CTest
 
 
-class TestSeparators:
+klasse TestSeparators:
     def test_separators(self):
         h = [['blorpie'], ['whoops'], [], 'd-shtaeou', 'd-nthiouh', 'i-vhbjkhnth',
              {'nifty': 87}, {'field': 'yes', 'morefield': False} ]
@@ -46,5 +46,5 @@ class TestSeparators:
         self.assertRaises(TypeError, self.dumps, h, separators=(b', ', b': '))
 
 
-class TestPySeparators(TestSeparators, PyTest): pass
-class TestCSeparators(TestSeparators, CTest): pass
+klasse TestPySeparators(TestSeparators, PyTest): pass
+klasse TestCSeparators(TestSeparators, CTest): pass

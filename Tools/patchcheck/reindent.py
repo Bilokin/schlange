@@ -171,7 +171,7 @@ def _rstrip(line, JUNK='\n \t'):
     return line[:i]
 
 
-class Reindenter:
+klasse Reindenter:
 
     def __init__(self, f):
         self.find_stmt = 1  # next token begins a fresh stmt?

@@ -102,7 +102,7 @@ parse_qs_test_cases = [
     (b"%81=%A9", {b'\x81': [b'\xa9']}),
 ]
 
-class UrlParseTestCase(unittest.TestCase):
+klasse UrlParseTestCase(unittest.TestCase):
 
     def checkRoundtrips(self, url, parsed, split, url2=None):
         if url2 is None:
@@ -1321,7 +1321,7 @@ class UrlParseTestCase(unittest.TestCase):
         # we cannot rely on ordering here
         assert set(result.split('&')) == {'a=1', 'a=2', 'b=3', 'b=4', 'b=5'}
 
-        class Trivial:
+        klasse Trivial:
             def __str__(self):
                 return 'trivial'
 
@@ -1525,9 +1525,9 @@ class UrlParseTestCase(unittest.TestCase):
                         with self.assertRaises(ValueError):
                             urllib.parse.urlsplit(url)
 
-class Utility_Tests(unittest.TestCase):
+klasse Utility_Tests(unittest.TestCase):
     """Testcase to test the various utility functions in the urllib."""
-    # In Python 2 this test class was in test_urllib.
+    # In Python 2 this test klasse was in test_urllib.
 
     def test_splittype(self):
         splittype = urllib.parse._splittype
@@ -1678,7 +1678,7 @@ class Utility_Tests(unittest.TestCase):
         self.assertEqual(url, 'scheme://host/path')
 
 
-class DeprecationTest(unittest.TestCase):
+klasse DeprecationTest(unittest.TestCase):
     def test_splittype_deprecation(self):
         with self.assertWarns(DeprecationWarning) as cm:
             urllib.parse.splittype('')

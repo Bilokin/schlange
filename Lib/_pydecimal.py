@@ -94,7 +94,7 @@ MIN_ETINY = MIN_EMIN - (MAX_PREC-1)
 
 # Errors
 
-class DecimalException(ArithmeticError):
+klasse DecimalException(ArithmeticError):
     """Base exception class.
 
     Used exceptions derive from this.
@@ -117,7 +117,7 @@ class DecimalException(ArithmeticError):
         pass
 
 
-class Clamped(DecimalException):
+klasse Clamped(DecimalException):
     """Exponent of a 0 changed to fit bounds.
 
     This occurs and signals clamped if the exponent of a result has been
@@ -129,7 +129,7 @@ class Clamped(DecimalException):
     number of zero digits are appended to the coefficient ("fold-down").
     """
 
-class InvalidOperation(DecimalException):
+klasse InvalidOperation(DecimalException):
     """An invalid operation was performed.
 
     Various bad things cause this:
@@ -158,7 +158,7 @@ class InvalidOperation(DecimalException):
             return ans._fix_nan(context)
         return _NaN
 
-class ConversionSyntax(InvalidOperation):
+klasse ConversionSyntax(InvalidOperation):
     """Trying to convert badly formed string.
 
     This occurs and signals invalid-operation if a string is being
@@ -168,7 +168,7 @@ class ConversionSyntax(InvalidOperation):
     def handle(self, context, *args):
         return _NaN
 
-class DivisionByZero(DecimalException, ZeroDivisionError):
+klasse DivisionByZero(DecimalException, ZeroDivisionError):
     """Division by 0.
 
     This occurs and signals division-by-zero if division of a finite number
@@ -184,7 +184,7 @@ class DivisionByZero(DecimalException, ZeroDivisionError):
     def handle(self, context, sign, *args):
         return _SignedInfinity[sign]
 
-class DivisionImpossible(InvalidOperation):
+klasse DivisionImpossible(InvalidOperation):
     """Cannot perform the division adequately.
 
     This occurs and signals invalid-operation if the integer result of a
@@ -195,7 +195,7 @@ class DivisionImpossible(InvalidOperation):
     def handle(self, context, *args):
         return _NaN
 
-class DivisionUndefined(InvalidOperation, ZeroDivisionError):
+klasse DivisionUndefined(InvalidOperation, ZeroDivisionError):
     """Undefined result of division.
 
     This occurs and signals invalid-operation if division by zero was
@@ -206,7 +206,7 @@ class DivisionUndefined(InvalidOperation, ZeroDivisionError):
     def handle(self, context, *args):
         return _NaN
 
-class Inexact(DecimalException):
+klasse Inexact(DecimalException):
     """Had to round, losing information.
 
     This occurs and signals inexact whenever the result of an operation is
@@ -218,7 +218,7 @@ class Inexact(DecimalException):
     operation (or sequence of operations) was inexact.
     """
 
-class InvalidContext(InvalidOperation):
+klasse InvalidContext(InvalidOperation):
     """Invalid context.  Unknown rounding, for example.
 
     This occurs and signals invalid-operation if an invalid context was
@@ -232,7 +232,7 @@ class InvalidContext(InvalidOperation):
     def handle(self, context, *args):
         return _NaN
 
-class Rounded(DecimalException):
+klasse Rounded(DecimalException):
     """Number got rounded (not  necessarily changed during rounding).
 
     This occurs and signals rounded whenever the result of an operation is
@@ -244,7 +244,7 @@ class Rounded(DecimalException):
     operation (or sequence of operations) caused a loss of precision.
     """
 
-class Subnormal(DecimalException):
+klasse Subnormal(DecimalException):
     """Exponent < Emin before rounding.
 
     This occurs and signals subnormal whenever the result of a conversion or
@@ -255,7 +255,7 @@ class Subnormal(DecimalException):
     or operation (or sequence of operations) yielded a subnormal result.
     """
 
-class Overflow(Inexact, Rounded):
+klasse Overflow(Inexact, Rounded):
     """Numerical overflow.
 
     This occurs and signals overflow if the adjusted exponent of a result
@@ -293,7 +293,7 @@ class Overflow(Inexact, Rounded):
                              context.Emax-context.prec+1)
 
 
-class Underflow(Inexact, Rounded, Subnormal):
+klasse Underflow(Inexact, Rounded, Subnormal):
     """Numerical underflow with result rounded to 0.
 
     This occurs and signals underflow if a result is inexact and the
@@ -308,7 +308,7 @@ class Underflow(Inexact, Rounded, Subnormal):
     In all cases, Inexact, Rounded, and Subnormal will also be raised.
     """
 
-class FloatOperation(DecimalException, TypeError):
+klasse FloatOperation(DecimalException, TypeError):
     """Enable stricter semantics for mixing floats and Decimals.
 
     If the signal is not trapped (default), mixing floats and Decimals is
@@ -440,14 +440,14 @@ def IEEEContext(bits, /):
     return ctx
 
 
-##### Decimal class #######################################################
+##### Decimal klasse #######################################################
 
 # Do not subclass Decimal from numbers.Real and do not register it as such
 # (because Decimals are not interoperable with floats).  See the notes in
 # numbers.py for more detail.
 
-class Decimal(object):
-    """Floating-point class for decimal arithmetic."""
+klasse Decimal(object):
+    """Floating-point klasse for decimal arithmetic."""
 
     __slots__ = ('_exp','_int','_sign', '_is_special')
     # Generally, the value of the Decimal instance is given by
@@ -3550,9 +3550,9 @@ class Decimal(object):
         return ans
 
     def number_class(self, context=None):
-        """Returns an indication of the class of self.
+        """Returns an indication of the klasse of self.
 
-        The class is one of the following strings:
+        The klasse is one of the following strings:
           sNaN
           NaN
           -Infinity
@@ -3815,10 +3815,10 @@ def _dec_from_triple(sign, coefficient, exponent, special=False):
 _numbers.Number.register(Decimal)
 
 
-##### Context class #######################################################
+##### Context klasse #######################################################
 
-class _ContextManager(object):
-    """Context manager class to support localcontext().
+klasse _ContextManager(object):
+    """Context manager klasse to support localcontext().
 
       Sets a copy of the supplied context in __enter__() and restores
       the previous decimal context in __exit__()
@@ -3832,7 +3832,7 @@ class _ContextManager(object):
     def __exit__(self, t, v, tb):
         setcontext(self.saved_context)
 
-class Context(object):
+klasse Context(object):
     """Contains the context for a Decimal instance.
 
     Contains:
@@ -5038,9 +5038,9 @@ class Context(object):
         return a.normalize(context=self)
 
     def number_class(self, a):
-        """Returns an indication of the class of the operand.
+        """Returns an indication of the klasse of the operand.
 
-        The class is one of the following strings:
+        The klasse is one of the following strings:
           -sNaN
           -NaN
           -Infinity
@@ -5577,7 +5577,7 @@ class Context(object):
     # the method name changed, but we provide also the old one, for compatibility
     to_integral = to_integral_value
 
-class _WorkRep(object):
+klasse _WorkRep(object):
     __slots__ = ('sign','int','exp')
     # sign: 0 or 1
     # int:  int
@@ -5813,7 +5813,7 @@ def _dlog(c, e, p):
     # error in sum < 11+27 = 38; error after division < 0.38 + 0.5 < 1
     return _div_nearest(f_log_ten + log_d, 100)
 
-class _Log10Memoize(object):
+klasse _Log10Memoize(object):
     """Class to compute, store, and allow retrieval of, digits of the
     constant log(10) = 2.302585....  This constant is needed by
     Decimal.ln, Decimal.log10, Decimal.exp and Decimal.__pow__."""

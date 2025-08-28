@@ -24,7 +24,7 @@ __all__ = ['stop']
 if sys.platform == 'win32':
     __all__ += ['DupSocket']
 
-    class DupSocket(object):
+    klasse DupSocket(object):
         '''Picklable wrapper for a socket.'''
         def __init__(self, sock):
             new_sock = sock.dup()
@@ -42,7 +42,7 @@ if sys.platform == 'win32':
 else:
     __all__ += ['DupFd']
 
-    class DupFd(object):
+    klasse DupFd(object):
         '''Wrapper for fd which can be used at any time.'''
         def __init__(self, fd):
             new_fd = os.dup(fd)
@@ -58,7 +58,7 @@ else:
                 return reduction.recv_handle(conn)
 
 
-class _ResourceSharer(object):
+klasse _ResourceSharer(object):
     '''Manager for resources using background thread.'''
     def __init__(self):
         self._key = 0

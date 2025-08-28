@@ -11,7 +11,7 @@ from importlib.resources._adapters import (
 from . import util
 
 
-class CompatibilityFilesTests(unittest.TestCase):
+klasse CompatibilityFilesTests(unittest.TestCase):
     @property
     def package(self):
         bytes_data = io.BytesIO(b'Hello, world!')
@@ -91,7 +91,7 @@ class CompatibilityFilesTests(unittest.TestCase):
         self.assertIsInstance(spec.loader.get_resource_reader(None), CompatibilityFiles)
 
 
-class CompatibilityFilesNoReaderTests(unittest.TestCase):
+klasse CompatibilityFilesNoReaderTests(unittest.TestCase):
     @property
     def package(self):
         return util.create_package_from_loader(None)

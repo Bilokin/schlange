@@ -33,7 +33,7 @@ by Format->Untabify Region and specify the number of columns used by each tab.
 """
 
 
-class ScriptBinding:
+klasse ScriptBinding:
 
     def __init__(self, editwin):
         self.editwin = editwin

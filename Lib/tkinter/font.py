@@ -23,7 +23,7 @@ def nametofont(name, root=None):
     return Font(name=name, exists=True, root=root)
 
 
-class Font:
+klasse Font:
     """Represents a named font.
 
     Constructor options are:

@@ -21,7 +21,7 @@ def make_default_module_completer() -> ModuleCompleter:
     return ModuleCompleter(namespace={'__package__': None})
 
 
-class ModuleCompleter:
+klasse ModuleCompleter:
     """A completer for Python import statements.
 
     Examples:
@@ -174,7 +174,7 @@ class ModuleCompleter:
         return self._global_cache
 
 
-class ImportParser:
+klasse ImportParser:
     """
     Parses incomplete import statements that are
     suitable for autocomplete suggestions.
@@ -322,17 +322,17 @@ class ImportParser:
             self.tokens.pop_name()
 
 
-class ParseError(Exception):
+klasse ParseError(Exception):
     pass
 
 
 @dataclass(frozen=True)
-class Result:
+klasse Result:
     from_name: str | None = None
     name: str | None = None
 
 
-class TokenQueue:
+klasse TokenQueue:
     """Provides helper functions for working with a sequence of tokens."""
 
     def __init__(self, tokens: list[TokenInfo]) -> None:

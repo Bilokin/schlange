@@ -50,7 +50,7 @@ def add_default_legacy_c_converter(cls: CConverterClassT) -> CConverterClassT:
     return cls
 
 
-class CConverterAutoRegister(type):
+klasse CConverterAutoRegister(type):
     def __init__(
         cls, name: str, bases: tuple[type[object], ...], classdict: dict[str, Any]
     ) -> None:
@@ -58,7 +58,7 @@ class CConverterAutoRegister(type):
         add_c_converter(converter_cls)
         add_default_legacy_c_converter(converter_cls)
 
-class CConverter(metaclass=CConverterAutoRegister):
+klasse CConverter(metaclass=CConverterAutoRegister):
     """
     For the init function, self, name, function, and default
     must be keyword-or-positional parameters.  All other
@@ -215,7 +215,7 @@ class CConverter(metaclass=CConverterAutoRegister):
     # Add a custom __getattr__ method to improve the error message
     # if somebody tries to access self.function in converter_init().
     #
-    # mypy will assume arbitrary access is okay for a class with a __getattr__ method,
+    # mypy will assume arbitrary access is okay for a klasse with a __getattr__ method,
     # and that's not what we want,
     # so put it inside an `if not TYPE_CHECKING` block
     if not TYPE_CHECKING:

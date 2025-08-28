@@ -9,21 +9,21 @@ import contextlib
 from test import support
 
 
-class Foo:
+klasse Foo:
     pass
 
-class RefCycle:
+klasse RefCycle:
     def __init__(self):
         self.cycle = self
 
-class WeakSetSubclass(WeakSet):
+klasse WeakSetSubclass(WeakSet):
     pass
 
-class WeakSetWithSlots(WeakSet):
+klasse WeakSetWithSlots(WeakSet):
     __slots__ = ('x', 'y')
 
 
-class TestWeakSet(unittest.TestCase):
+klasse TestWeakSet(unittest.TestCase):
 
     def setUp(self):
         # need to keep references to them
@@ -178,7 +178,7 @@ class TestWeakSet(unittest.TestCase):
 
     def test_subclass_with_custom_hash(self):
         # Bug #1257731
-        class H(WeakSet):
+        klasse H(WeakSet):
             def __hash__(self):
                 return int(id(self) & 0x7fffffff)
         s=H()

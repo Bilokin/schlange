@@ -23,7 +23,7 @@ __all__ = [
 ]
 
 
-class ItemInterpreterDestroyed(ChannelError,
+klasse ItemInterpreterDestroyed(ChannelError,
                                _crossinterp.ItemInterpreterDestroyed):
     """Raised from get() and get_nowait()."""
 
@@ -74,8 +74,8 @@ def list_all():
     return channels
 
 
-class _ChannelEnd:
-    """The base class for RecvChannel and SendChannel."""
+klasse _ChannelEnd:
+    """The base klasse for RecvChannel and SendChannel."""
 
     _end = None
 
@@ -124,7 +124,7 @@ class _ChannelEnd:
 _NOT_SET = object()
 
 
-class RecvChannel(_ChannelEnd):
+klasse RecvChannel(_ChannelEnd):
     """The receiving end of a cross-interpreter channel."""
 
     _end = 'recv'
@@ -174,7 +174,7 @@ class RecvChannel(_ChannelEnd):
         _channels.close(self._id, recv=True)
 
 
-class SendChannel(_ChannelEnd):
+klasse SendChannel(_ChannelEnd):
     """The sending end of a cross-interpreter channel."""
 
     _end = 'send'

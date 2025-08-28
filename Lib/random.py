@@ -100,8 +100,8 @@ _ONE = 1
 _sha512 = None
 
 
-class Random(_random.Random):
-    """Random number generator base class used by bound module functions.
+klasse Random(_random.Random):
+    """Random number generator base klasse used by bound module functions.
 
     Used to instantiate instances of Random to get generators that don't
     share state.
@@ -886,7 +886,7 @@ class Random(_random.Random):
 ## --------------- Operating System Random Source  ------------------
 
 
-class SystemRandom(Random):
+klasse SystemRandom(Random):
     """Alternate random number generator using sources provided
     by the operating system (such as /dev/urandom on Unix or
     CryptGenRandom on Windows).

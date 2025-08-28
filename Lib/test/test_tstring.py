@@ -3,7 +3,7 @@ import unittest
 from test.test_string._support import TStringBaseCase, fstring
 
 
-class TestTString(unittest.TestCase, TStringBaseCase):
+klasse TestTString(unittest.TestCase, TStringBaseCase):
     def test_string_representation(self):
         # Test __repr__
         t = t"Hello"
@@ -49,7 +49,7 @@ class TestTString(unittest.TestCase, TStringBaseCase):
         self.assertEqual(fstring(t), "Square: 25")
 
         # Test attribute access in expressions
-        class Person:
+        klasse Person:
             def __init__(self, name):
                 self.name = name
 

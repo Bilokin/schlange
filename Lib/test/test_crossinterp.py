@@ -374,7 +374,7 @@ def missing_defs_module(modname, *, prep=False):
             yield modname
 
 
-class _GetXIDataTests(unittest.TestCase):
+klasse _GetXIDataTests(unittest.TestCase):
 
     MODE = None
 
@@ -517,7 +517,7 @@ class _GetXIDataTests(unittest.TestCase):
         return mode
 
 
-class PickleTests(_GetXIDataTests):
+klasse PickleTests(_GetXIDataTests):
 
     MODE = 'pickle'
 
@@ -851,7 +851,7 @@ class PickleTests(_GetXIDataTests):
         self.assert_roundtrip_equal(exceptions)
 
 
-class MarshalTests(_GetXIDataTests):
+klasse MarshalTests(_GetXIDataTests):
 
     MODE = 'marshal'
 
@@ -1039,7 +1039,7 @@ class MarshalTests(_GetXIDataTests):
         ])
 
 
-class CodeTests(_GetXIDataTests):
+klasse CodeTests(_GetXIDataTests):
 
     MODE = 'code'
 
@@ -1072,7 +1072,7 @@ class CodeTests(_GetXIDataTests):
         ])
 
 
-class ShareableFuncTests(_GetXIDataTests):
+klasse ShareableFuncTests(_GetXIDataTests):
 
     MODE = 'func'
 
@@ -1106,7 +1106,7 @@ class ShareableFuncTests(_GetXIDataTests):
         ])
 
 
-class PureShareableScriptTests(_GetXIDataTests):
+klasse PureShareableScriptTests(_GetXIDataTests):
 
     MODE = 'script-pure'
 
@@ -1122,7 +1122,7 @@ class PureShareableScriptTests(_GetXIDataTests):
         """if True:
             def spam(x):
                 return x
-            class Spam:
+            klasse Spam:
                 def eggs(self):
                     return 42
             x = Spam().eggs()
@@ -1209,7 +1209,7 @@ class PureShareableScriptTests(_GetXIDataTests):
         ])
 
 
-class ShareableScriptTests(PureShareableScriptTests):
+klasse ShareableScriptTests(PureShareableScriptTests):
 
     MODE = 'script'
 
@@ -1226,7 +1226,7 @@ class ShareableScriptTests(PureShareableScriptTests):
         ], expecttype=types.CodeType)
 
 
-class ShareableFallbackTests(_GetXIDataTests):
+klasse ShareableFallbackTests(_GetXIDataTests):
 
     MODE = 'fallback'
 
@@ -1262,7 +1262,7 @@ class ShareableFallbackTests(_GetXIDataTests):
             ])
 
 
-class ShareableTypeTests(_GetXIDataTests):
+klasse ShareableTypeTests(_GetXIDataTests):
 
     MODE = 'xidata'
 

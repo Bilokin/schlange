@@ -14,11 +14,11 @@ BOTTOM = 0
 TOP = 1000
 ITERS = 100
 
-class A:
+klasse A:
     attr = 1
 
 @threading_helper.requires_working_threading()
-class TestType(TestCase):
+klasse TestType(TestCase):
     def test_attr_cache(self):
         def read(id0):
             for _ in range(ITERS):
@@ -42,7 +42,7 @@ class TestType(TestCase):
             pool.shutdown(wait=True)
 
     def test_attr_cache_consistency(self):
-        class C:
+        klasse C:
             x = 0
 
         def writer_func():
@@ -62,10 +62,10 @@ class TestType(TestCase):
         self.run_one(writer_func, reader_func)
 
     def test_attr_cache_consistency_subclass(self):
-        class C:
+        klasse C:
             x = 0
 
-        class D(C):
+        klasse D(C):
             pass
 
         def writer_func():
@@ -87,10 +87,10 @@ class TestType(TestCase):
     def test___class___modification(self):
         loops = 200
 
-        class Foo:
+        klasse Foo:
             pass
 
-        class Bar:
+        klasse Bar:
             pass
 
         thing = Foo()
@@ -113,12 +113,12 @@ class TestType(TestCase):
             thread.join()
 
     def test_object_class_change(self):
-        class Base:
+        klasse Base:
             def __init__(self):
                 self.attr = 123
-        class ClassA(Base):
+        klasse ClassA(Base):
             pass
-        class ClassB(Base):
+        klasse ClassB(Base):
             pass
 
         obj = ClassA()
@@ -128,7 +128,7 @@ class TestType(TestCase):
 
 
     def test_name_change(self):
-        class Foo:
+        klasse Foo:
             pass
 
         def writer():

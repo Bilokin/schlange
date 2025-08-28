@@ -6,7 +6,7 @@ import unittest
 import dbm.ndbm
 from dbm.ndbm import error
 
-class DbmTestCase(unittest.TestCase):
+klasse DbmTestCase(unittest.TestCase):
 
     def setUp(self):
         self.filename = os_helper.TESTFN

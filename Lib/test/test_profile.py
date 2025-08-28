@@ -18,7 +18,7 @@ from test.profilee import testfunc, timer
 from test.support.script_helper import assert_python_failure, assert_python_ok
 
 
-class ProfileTest(unittest.TestCase):
+klasse ProfileTest(unittest.TestCase):
 
     profilerclass = profile.Profile
     profilermodule = profile

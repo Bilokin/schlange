@@ -51,7 +51,7 @@ chunked_end = "\r\n"
 
 HOST = socket_helper.HOST
 
-class FakeSocket:
+klasse FakeSocket:
     def __init__(self, text, fileclass=io.BytesIO, host=None, port=None):
         if isinstance(text, str):
             text = text.encode("ascii")
@@ -84,7 +84,7 @@ class FakeSocket:
     def setsockopt(self, level, optname, value):
         pass
 
-class EPipeSocket(FakeSocket):
+klasse EPipeSocket(FakeSocket):
 
     def __init__(self, text, pipe_trigger):
         # When sendall() is called with pipe_trigger, raise EPIPE.
@@ -99,7 +99,7 @@ class EPipeSocket(FakeSocket):
     def close(self):
         pass
 
-class NoEOFBytesIO(io.BytesIO):
+klasse NoEOFBytesIO(io.BytesIO):
     """Like BytesIO, but raises AssertionError on EOF.
 
     This is used below to test that http.client doesn't try to read
@@ -117,7 +117,7 @@ class NoEOFBytesIO(io.BytesIO):
             raise AssertionError('caller tried to read past EOF')
         return data
 
-class FakeSocketHTTPConnection(client.HTTPConnection):
+klasse FakeSocketHTTPConnection(client.HTTPConnection):
     """HTTPConnection subclass using FakeSocket; counts connect() calls"""
 
     def __init__(self, *args):
@@ -134,12 +134,12 @@ class FakeSocketHTTPConnection(client.HTTPConnection):
     def create_connection(self, *pos, **kw):
         return FakeSocket(*self.fake_socket_args)
 
-class HeaderTests(TestCase):
+klasse HeaderTests(TestCase):
     def test_auto_headers(self):
         # Some headers are added automatically, but should not be added by
         # .request() if they are explicitly set.
 
-        class HeaderCountingBuffer(list):
+        klasse HeaderCountingBuffer(list):
             def __init__(self):
                 self.count = {}
             def append(self, item):
@@ -166,7 +166,7 @@ class HeaderTests(TestCase):
 
     def test_content_length_0(self):
 
-        class ContentLengthChecker(list):
+        klasse ContentLengthChecker(list):
             def __init__(self):
                 list.__init__(self)
                 self.content_length = None
@@ -433,7 +433,7 @@ class HeaderTests(TestCase):
             response = conn.getresponse()
             response.read()
 
-class HttpMethodTests(TestCase):
+klasse HttpMethodTests(TestCase):
     def test_invalid_method_names(self):
         methods = (
             'GET\r',
@@ -455,7 +455,7 @@ class HttpMethodTests(TestCase):
                 conn.request(method=method, url="/")
 
 
-class TransferEncodingTest(TestCase):
+klasse TransferEncodingTest(TestCase):
     expected_body = b"It's just a flesh wound"
 
     def test_endheaders_chunked(self):
@@ -583,13 +583,13 @@ class TransferEncodingTest(TestCase):
         return b''.join(body)
 
 
-class BasicTest(TestCase):
+klasse BasicTest(TestCase):
     def test_dir_with_added_behavior_on_status(self):
         # see issue40084
         self.assertTrue({'description', 'name', 'phrase', 'value'} <= set(dir(HTTPStatus(404))))
 
     def test_simple_httpstatus(self):
-        class CheckedHTTPStatus(enum.IntEnum):
+        klasse CheckedHTTPStatus(enum.IntEnum):
             """HTTP status codes and reason phrases
 
             Status codes from the following RFCs are all observed:
@@ -1068,7 +1068,7 @@ class BasicTest(TestCase):
             yield None
             yield 'data_two'
 
-        class UpdatingFile(io.TextIOBase):
+        klasse UpdatingFile(io.TextIOBase):
             mode = 'r'
             d = data()
             def read(self, blocksize=-1):
@@ -1362,7 +1362,7 @@ class BasicTest(TestCase):
         # Test that the socket is not leaked if getresponse() fails
         conn = client.HTTPConnection('example.com')
         response = None
-        class Response(client.HTTPResponse):
+        klasse Response(client.HTTPResponse):
             def __init__(self, *pos, **kw):
                 nonlocal response
                 response = self  # Avoid garbage collector closing the socket
@@ -1516,7 +1516,7 @@ class BasicTest(TestCase):
         It should be possible to override the default validation
         behavior in putrequest (bpo-38216).
         """
-        class UnsafeHTTPConnection(client.HTTPConnection):
+        klasse UnsafeHTTPConnection(client.HTTPConnection):
             def _validate_path(self, url):
                 pass
 
@@ -1525,7 +1525,7 @@ class BasicTest(TestCase):
         conn.putrequest('GET', '/\x00')
 
     def test_putrequest_override_host_validation(self):
-        class UnsafeHTTPConnection(client.HTTPConnection):
+        klasse UnsafeHTTPConnection(client.HTTPConnection):
             def _validate_host(self, url):
                 pass
 
@@ -1541,7 +1541,7 @@ class BasicTest(TestCase):
         to transmit bytes in another encoding even if invalid
         (bpo-36274).
         """
-        class UnsafeHTTPConnection(client.HTTPConnection):
+        klasse UnsafeHTTPConnection(client.HTTPConnection):
             def _encode_request(self, str_url):
                 return str_url.encode('utf-8')
 
@@ -1550,7 +1550,7 @@ class BasicTest(TestCase):
         conn.putrequest('GET', '/☃')
 
 
-class ExtendedReadTest(TestCase):
+klasse ExtendedReadTest(TestCase):
     """
     Test peek(), read1(), readline()
     """
@@ -1682,12 +1682,12 @@ class ExtendedReadTest(TestCase):
         self.assertLessEqual(0, len(p))
 
 
-class ExtendedReadTestContentLengthKnown(ExtendedReadTest):
+klasse ExtendedReadTestContentLengthKnown(ExtendedReadTest):
     _header, _body = ExtendedReadTest.lines.split('\r\n\r\n', 1)
     lines = _header + f'\r\nContent-Length: {len(_body)}\r\n\r\n' + _body
 
 
-class ExtendedReadTestChunked(ExtendedReadTest):
+klasse ExtendedReadTestChunked(ExtendedReadTest):
     """
     Test peek(), read1(), readline() in chunked mode
     """
@@ -1709,9 +1709,9 @@ class ExtendedReadTestChunked(ExtendedReadTest):
     )
 
 
-class Readliner:
+klasse Readliner:
     """
-    a simple readline class that uses an arbitrary read function and buffering
+    a simple readline klasse that uses an arbitrary read function and buffering
     """
     def __init__(self, readfunc):
         self.readfunc = readfunc
@@ -1743,7 +1743,7 @@ class Readliner:
             raise
 
 
-class OfflineTest(TestCase):
+klasse OfflineTest(TestCase):
     def test_all(self):
         # Documented objects defined in the module should be in __all__
         expected = {"responses"}  # Allowlist documented dict() object
@@ -1832,7 +1832,7 @@ class OfflineTest(TestCase):
                 self.assertHasAttr(client, const)
 
 
-class SourceAddressTest(TestCase):
+klasse SourceAddressTest(TestCase):
     def setUp(self):
         self.serv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.port = socket_helper.bind_port(self.serv)
@@ -1863,7 +1863,7 @@ class SourceAddressTest(TestCase):
         # for an ssl_wrapped connect() to actually return from.
 
 
-class TimeoutTest(TestCase):
+klasse TimeoutTest(TestCase):
     PORT = None
 
     def setUp(self):
@@ -1909,7 +1909,7 @@ class TimeoutTest(TestCase):
         httpConn.close()
 
 
-class PersistenceTest(TestCase):
+klasse PersistenceTest(TestCase):
 
     def test_reuse_reconnect(self):
         # Should reuse or reconnect depending on header from server
@@ -1981,7 +1981,7 @@ class PersistenceTest(TestCase):
         self.assertEqual(conn.connections, 2)
 
 
-class HTTPSTest(TestCase):
+klasse HTTPSTest(TestCase):
 
     def setUp(self):
         if not hasattr(client, 'HTTPSConnection'):
@@ -2166,7 +2166,7 @@ class HTTPSTest(TestCase):
         self.assertTrue(h._context.post_handshake_auth)
 
 
-class RequestBodyTest(TestCase):
+klasse RequestBodyTest(TestCase):
     """Test cases where a request includes a message body."""
 
     def setUp(self):
@@ -2262,7 +2262,7 @@ class RequestBodyTest(TestCase):
             self.assertEqual(b'5\r\nbody\xc1\r\n0\r\n\r\n', f.read())
 
 
-class HTTPResponseTest(TestCase):
+klasse HTTPResponseTest(TestCase):
 
     def setUp(self):
         body = "HTTP/1.1 200 Ok\r\nMy-Header: first-value\r\nMy-Header: \
@@ -2297,7 +2297,7 @@ class HTTPResponseTest(TestCase):
         header = self.resp.getheader('No-Such-Header',default=42)
         self.assertEqual(header, 42)
 
-class TunnelTests(TestCase):
+klasse TunnelTests(TestCase):
     def setUp(self):
         response_text = (
             'HTTP/1.1 200 OK\r\n\r\n' # Reply to CONNECT

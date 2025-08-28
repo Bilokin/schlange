@@ -16,7 +16,7 @@ def via_reduce(x, y, steps):
     return functools.reduce(nextafter, [y] * steps, x)
 
 
-class NextafterTests(unittest.TestCase):
+klasse NextafterTests(unittest.TestCase):
     @requires_IEEE_754
     @hypothesis.given(
         x=floats(),

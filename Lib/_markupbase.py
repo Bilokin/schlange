@@ -20,8 +20,8 @@ _msmarkedsectionclose = re.compile(r']\s*>')
 del re
 
 
-class ParserBase:
-    """Parser base class which provides some common support methods used
+klasse ParserBase:
+    """Parser base klasse which provides some common support methods used
     by the SGML/HTML and XHTML parsers."""
 
     def __init__(self):

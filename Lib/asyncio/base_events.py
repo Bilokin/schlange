@@ -204,7 +204,7 @@ def _check_ssl_socket(sock):
         raise TypeError("Socket cannot be of type SSLSocket")
 
 
-class _SendfileFallbackProtocol(protocols.Protocol):
+klasse _SendfileFallbackProtocol(protocols.Protocol):
     def __init__(self, transp):
         if not isinstance(transp, transports._FlowControlMixin):
             raise TypeError("transport should be _FlowControlMixin instance")
@@ -272,7 +272,7 @@ class _SendfileFallbackProtocol(protocols.Protocol):
             self._proto.resume_writing()
 
 
-class Server(events.AbstractServer):
+klasse Server(events.AbstractServer):
 
     def __init__(self, loop, sockets, protocol_factory, ssl_context, backlog,
                  ssl_handshake_timeout, ssl_shutdown_timeout=None):
@@ -414,7 +414,7 @@ class Server(events.AbstractServer):
         await waiter
 
 
-class BaseEventLoop(events.AbstractEventLoop):
+klasse BaseEventLoop(events.AbstractEventLoop):
 
     def __init__(self):
         self._timer_cancelled_count = 0
@@ -853,7 +853,7 @@ class BaseEventLoop(events.AbstractEventLoop):
     def _check_thread(self):
         """Check that the current thread is the thread running the event loop.
 
-        Non-thread-safe methods of this class make this assumption and will
+        Non-thread-safe methods of this klasse make this assumption and will
         likely behave incorrectly when the assumption is violated.
 
         Should only be called when (self._debug == True).  The caller is

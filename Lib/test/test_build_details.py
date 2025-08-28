@@ -8,7 +8,7 @@ import unittest
 from test.support import is_android, is_apple_mobile, is_wasm32
 
 
-class FormatTestsBase:
+klasse FormatTestsBase:
     @property
     def contents(self):
         """Install details file contents. Should be overriden by subclasses."""
@@ -92,7 +92,7 @@ needs_installed_python = unittest.skipIf(
 
 @unittest.skipIf(os.name != 'posix', 'Feature only implemented on POSIX right now')
 @unittest.skipIf(is_wasm32, 'Feature not available on WebAssembly builds')
-class CPythonBuildDetailsTests(unittest.TestCase, FormatTestsBase):
+klasse CPythonBuildDetailsTests(unittest.TestCase, FormatTestsBase):
     """Test CPython's install details file implementation."""
 
     @property

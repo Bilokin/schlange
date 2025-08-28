@@ -15,7 +15,7 @@ import weakref
 from test.support import LARGEST, SMALLEST
 
 
-class BaseTestCase(unittest.TestCase):
+klasse BaseTestCase(unittest.TestCase):
     # One big change in ipaddress over the original ipaddr module is
     # error reporting that tries to assume users *don't know the rules*
     # for what constitutes an RFC compliant IP address
@@ -69,7 +69,7 @@ class BaseTestCase(unittest.TestCase):
         self.assertEqual(self.factory(lhs), self.factory(rhs))
 
 
-class CommonTestMixin:
+klasse CommonTestMixin:
 
     def test_empty_address(self):
         with self.assertAddressError("Address cannot be empty"):
@@ -94,7 +94,7 @@ class CommonTestMixin:
                 self.assertEqual(y, x)
 
 
-class CommonTestMixin_v4(CommonTestMixin):
+klasse CommonTestMixin_v4(CommonTestMixin):
 
     def test_leading_zeros(self):
         # bpo-36384: no leading zeros to avoid ambiguity with octal notation
@@ -143,7 +143,7 @@ class CommonTestMixin_v4(CommonTestMixin):
         assertBadLength(5)
 
 
-class CommonTestMixin_v6(CommonTestMixin):
+klasse CommonTestMixin_v6(CommonTestMixin):
 
     def test_leading_zeros(self):
         self.assertInstancesEqual("0000::0000", "::")
@@ -192,7 +192,7 @@ class CommonTestMixin_v6(CommonTestMixin):
         with self.assertAddressError('Invalid IPv6 address: "%r"', address):
             self.factory(address)
 
-class AddressTestCase_v4(BaseTestCase, CommonTestMixin_v4):
+klasse AddressTestCase_v4(BaseTestCase, CommonTestMixin_v4):
     factory = ipaddress.IPv4Address
 
     def test_format(self):
@@ -312,7 +312,7 @@ class AddressTestCase_v4(BaseTestCase, CommonTestMixin_v4):
                          ipaddress.IPv4Address('192.168.1.1'))
 
 
-class AddressTestCase_v6(BaseTestCase, CommonTestMixin_v6):
+klasse AddressTestCase_v6(BaseTestCase, CommonTestMixin_v6):
     factory = ipaddress.IPv6Address
 
     def test_format(self):
@@ -576,7 +576,7 @@ class AddressTestCase_v6(BaseTestCase, CommonTestMixin_v6):
         self.assertEqual(addr, copy.deepcopy(addr))
 
 
-class NetmaskTestMixin_v4(CommonTestMixin_v4):
+klasse NetmaskTestMixin_v4(CommonTestMixin_v4):
     """Input validation on interfaces and networks is very similar"""
 
     def test_no_mask(self):
@@ -665,11 +665,11 @@ class NetmaskTestMixin_v4(CommonTestMixin_v4):
         self.pickle_test('192.0.2.0')     # IPV4LENGTH
 
 
-class InterfaceTestCase_v4(BaseTestCase, NetmaskTestMixin_v4):
+klasse InterfaceTestCase_v4(BaseTestCase, NetmaskTestMixin_v4):
     factory = ipaddress.IPv4Interface
 
 
-class NetworkTestCase_v4(BaseTestCase, NetmaskTestMixin_v4):
+klasse NetworkTestCase_v4(BaseTestCase, NetmaskTestMixin_v4):
     factory = ipaddress.IPv4Network
 
     def test_subnet_of(self):
@@ -723,7 +723,7 @@ class NetworkTestCase_v4(BaseTestCase, NetmaskTestMixin_v4):
                 ipaddress.IPv4Network('10.0.0.0/30'))
 
 
-class NetmaskTestMixin_v6(CommonTestMixin_v6):
+klasse NetmaskTestMixin_v6(CommonTestMixin_v6):
     """Input validation on interfaces and networks is very similar"""
 
     def test_no_mask(self):
@@ -828,11 +828,11 @@ class NetmaskTestMixin_v6(CommonTestMixin_v6):
         self.pickle_test('2001:db8::1000%scope')      # IPV6LENGTH
 
 
-class InterfaceTestCase_v6(BaseTestCase, NetmaskTestMixin_v6):
+klasse InterfaceTestCase_v6(BaseTestCase, NetmaskTestMixin_v6):
     factory = ipaddress.IPv6Interface
 
 
-class NetworkTestCase_v6(BaseTestCase, NetmaskTestMixin_v6):
+klasse NetworkTestCase_v6(BaseTestCase, NetmaskTestMixin_v6):
     factory = ipaddress.IPv6Network
 
     def test_subnet_of(self):
@@ -879,7 +879,7 @@ class NetworkTestCase_v6(BaseTestCase, NetmaskTestMixin_v6):
                 self.factory('2000:aaa::/56')))
 
 
-class FactoryFunctionErrors(BaseTestCase):
+klasse FactoryFunctionErrors(BaseTestCase):
 
     def assertFactoryError(self, factory, kind):
         """Ensure a clean ValueError with the expected message"""
@@ -898,7 +898,7 @@ class FactoryFunctionErrors(BaseTestCase):
         self.assertFactoryError(ipaddress.ip_network, "network")
 
 
-class ComparisonTests(unittest.TestCase):
+klasse ComparisonTests(unittest.TestCase):
 
     v4addr = ipaddress.IPv4Address(1)
     v4net = ipaddress.IPv4Network(1)
@@ -1079,7 +1079,7 @@ class ComparisonTests(unittest.TestCase):
         self.assertRaises(TypeError, v6net_scoped.__gt__, v4net)
 
 
-class IpaddrUnitTest(unittest.TestCase):
+klasse IpaddrUnitTest(unittest.TestCase):
 
     def setUp(self):
         self.ipv4_address = ipaddress.IPv4Address('1.2.3.4')
@@ -1916,7 +1916,7 @@ class IpaddrUnitTest(unittest.TestCase):
         ip2 = ipaddress.ip_address('1.1.1.255')
 
         # summarize works only for IPv4 & IPv6
-        class IPv7Address(ipaddress.IPv6Address):
+        klasse IPv7Address(ipaddress.IPv6Address):
             @property
             def version(self):
                 return 7

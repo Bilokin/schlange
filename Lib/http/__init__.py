@@ -4,7 +4,7 @@ __all__ = ['HTTPStatus', 'HTTPMethod']
 
 
 @_simple_enum(IntEnum)
-class HTTPStatus:
+klasse HTTPStatus:
     """HTTP status codes and reason phrases
 
     Status codes from the following RFCs are all observed:
@@ -185,7 +185,7 @@ class HTTPStatus:
 
 
 @_simple_enum(StrEnum)
-class HTTPMethod:
+klasse HTTPMethod:
     """HTTP methods and descriptions
 
     Methods from the following RFCs are all observed:

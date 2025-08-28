@@ -3,7 +3,7 @@
 import unittest
 
 
-class ABC(type):
+klasse ABC(type):
 
     def __instancecheck__(cls, inst):
         """Implement isinstance(inst, cls)."""
@@ -16,15 +16,15 @@ class ABC(type):
         return any(c in candidates for c in sub.mro())
 
 
-class Integer(metaclass=ABC):
+klasse Integer(metaclass=ABC):
     __subclass__ = {int}
 
 
-class SubInt(Integer):
+klasse SubInt(Integer):
     pass
 
 
-class TypeChecksTest(unittest.TestCase):
+klasse TypeChecksTest(unittest.TestCase):
 
     def testIsSubclassInternal(self):
         self.assertEqual(Integer.__subclasscheck__(int), True)

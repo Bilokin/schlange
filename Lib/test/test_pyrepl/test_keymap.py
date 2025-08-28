@@ -4,7 +4,7 @@ import unittest
 from _pyrepl.keymap import _keynames, _escapes, parse_keys, compile_keymap, KeySpecError
 
 
-class TestParseKeys(unittest.TestCase):
+klasse TestParseKeys(unittest.TestCase):
     def test_single_character(self):
         """Ensure that single ascii characters or single digits are parsed as single characters."""
         test_cases = [(key, [key]) for key in string.ascii_letters + string.digits]
@@ -74,7 +74,7 @@ class TestParseKeys(unittest.TestCase):
                 parse_keys(test_keys)
 
 
-class TestCompileKeymap(unittest.TestCase):
+klasse TestCompileKeymap(unittest.TestCase):
     def test_empty_keymap(self):
         keymap = {}
         result = compile_keymap(keymap)

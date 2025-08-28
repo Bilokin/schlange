@@ -32,7 +32,7 @@ _AUTHKEY_LEN = 32  # <= PIPEBUF so it fits a single write to an empty pipe.
 # Forkserver class
 #
 
-class ForkServer(object):
+klasse ForkServer(object):
 
     def __init__(self):
         self._forkserver_authkey = None

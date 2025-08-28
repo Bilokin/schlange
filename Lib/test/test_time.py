@@ -31,7 +31,7 @@ MS_TO_NS = 10 ** 6
 SEC_TO_NS = 10 ** 9
 NS_TO_SEC = 10 ** 9
 
-class _PyTime(enum.IntEnum):
+klasse _PyTime(enum.IntEnum):
     # Round towards minus infinity (-inf)
     ROUND_FLOOR = 0
     # Round towards infinity (+inf)
@@ -55,7 +55,7 @@ ROUNDING_MODES = (
 )
 
 
-class TimeTestCase(unittest.TestCase):
+klasse TimeTestCase(unittest.TestCase):
 
     def setUp(self):
         self.t = time.time()
@@ -649,14 +649,14 @@ class TimeTestCase(unittest.TestCase):
         self.assertRaises(ValueError, time.get_clock_info, 'xxx')
 
 
-class TestLocale(unittest.TestCase):
+klasse TestLocale(unittest.TestCase):
     @support.run_with_locale('LC_ALL', 'fr_FR', '')
     def test_bug_3061(self):
         # This should not cause an exception
         time.strftime("%B", (2009,2,1,0,0,0,0,0,0))
 
 
-class _TestAsctimeYear:
+klasse _TestAsctimeYear:
     _format = '%d'
 
     def yearstr(self, y):
@@ -667,7 +667,7 @@ class _TestAsctimeYear:
         self.assertEqual(self.yearstr(12345), '12345')
         self.assertEqual(self.yearstr(123456789), '123456789')
 
-class _TestStrftimeYear:
+klasse _TestStrftimeYear:
 
     # Issue 13305:  For years < 1000, the value is not always
     # padded to 4 digits across platforms.  The C standard
@@ -715,7 +715,7 @@ class _TestStrftimeYear:
     del skip_if_not_supported
 
 
-class _Test4dYear:
+klasse _Test4dYear:
     _format = '%d'
 
     def test_year(self, fmt=None, func=None):
@@ -747,14 +747,14 @@ class _Test4dYear:
             self.yearstr(-TIME_MAXYEAR - 1)
 
 
-class TestAsctime4dyear(_TestAsctimeYear, _Test4dYear, unittest.TestCase):
+klasse TestAsctime4dyear(_TestAsctimeYear, _Test4dYear, unittest.TestCase):
     pass
 
-class TestStrftime4dyear(_TestStrftimeYear, _Test4dYear, unittest.TestCase):
+klasse TestStrftime4dyear(_TestStrftimeYear, _Test4dYear, unittest.TestCase):
     pass
 
 
-class TestPytime(unittest.TestCase):
+klasse TestPytime(unittest.TestCase):
     @skip_if_buggy_ucrt_strfptime
     @unittest.skipUnless(time._STRUCT_TM_ITEMS == 11, "needs tm_zone support")
     def test_localtime_timezone(self):
@@ -812,9 +812,9 @@ class TestPytime(unittest.TestCase):
 
 @unittest.skipIf(_testcapi is None, 'need the _testinternalcapi module')
 @unittest.skipIf(_testinternalcapi is None, 'need the _testinternalcapi module')
-class CPyTimeTestCase:
+klasse CPyTimeTestCase:
     """
-    Base class to test the C _PyTime_t API.
+    Base klasse to test the C _PyTime_t API.
     """
     OVERFLOW_SECONDS = None
 
@@ -939,7 +939,7 @@ class CPyTimeTestCase:
         return int(d)
 
 
-class TestCPyTime(CPyTimeTestCase, unittest.TestCase):
+klasse TestCPyTime(CPyTimeTestCase, unittest.TestCase):
     """
     Test the C _PyTime_t API.
     """
@@ -1094,7 +1094,7 @@ class TestCPyTime(CPyTimeTestCase, unittest.TestCase):
                                 NS_TO_SEC)
 
 
-class TestOldPyTime(CPyTimeTestCase, unittest.TestCase):
+klasse TestOldPyTime(CPyTimeTestCase, unittest.TestCase):
     """
     Test the old C _PyTime_t API: _PyTime_ObjectToXXX() functions.
     """
@@ -1161,7 +1161,7 @@ class TestOldPyTime(CPyTimeTestCase, unittest.TestCase):
                 _PyTime_ObjectToTimespec(float('nan'), time_rnd)
 
 @unittest.skipUnless(sys.platform == "darwin", "test weak linking on macOS")
-class TestTimeWeaklinking(unittest.TestCase):
+klasse TestTimeWeaklinking(unittest.TestCase):
     # These test cases verify that weak linking support on macOS works
     # as expected. These cases only test new behaviour introduced by weak linking,
     # regular behaviour is tested by the normal test cases.

@@ -33,7 +33,7 @@ def mock_get_command_stdout(data):
     return get_command_stdout
 
 
-class BaseTestUUID:
+klasse BaseTestUUID:
     uuid = None
 
     def test_nil_uuid(self):
@@ -78,7 +78,7 @@ class BaseTestUUID:
         self.assertIsNone(max_uuid.version)
 
     def test_safe_uuid_enum(self):
-        class CheckedSafeUUID(enum.Enum):
+        klasse CheckedSafeUUID(enum.Enum):
             safe = 0
             unsafe = -1
             unknown = None
@@ -1142,7 +1142,7 @@ class BaseTestUUID:
         self.assertIs(strong, weak())
 
 
-class CommandLineTestCases:
+klasse CommandLineTestCases:
     uuid = None  # to be defined in subclasses
 
     def do_test_standalone_uuid(self, version):
@@ -1245,12 +1245,12 @@ class CommandLineTestCases:
         self.do_test_standalone_uuid(8)
 
 
-class TestUUIDWithoutExtModule(CommandLineTestCases, BaseTestUUID, unittest.TestCase):
+klasse TestUUIDWithoutExtModule(CommandLineTestCases, BaseTestUUID, unittest.TestCase):
     uuid = py_uuid
 
 
 @unittest.skipUnless(c_uuid, 'requires the C _uuid module')
-class TestUUIDWithExtModule(CommandLineTestCases, BaseTestUUID, unittest.TestCase):
+klasse TestUUIDWithExtModule(CommandLineTestCases, BaseTestUUID, unittest.TestCase):
     uuid = c_uuid
 
     def check_has_stable_libuuid_extractable_node(self):
@@ -1280,7 +1280,7 @@ class TestUUIDWithExtModule(CommandLineTestCases, BaseTestUUID, unittest.TestCas
         self.assertEqual(n_a, n_b)
 
 
-class BaseTestInternals:
+klasse BaseTestInternals:
     _uuid = py_uuid
 
     def check_parse_mac(self, aix):
@@ -1469,11 +1469,11 @@ eth0      Link encap:Ethernet  HWaddr 12:34:56:78:90:ab
         node2 = self.uuid._random_getnode()
         self.assertNotEqual(node2, node, '%012x' % node)
 
-class TestInternalsWithoutExtModule(BaseTestInternals, unittest.TestCase):
+klasse TestInternalsWithoutExtModule(BaseTestInternals, unittest.TestCase):
     uuid = py_uuid
 
 @unittest.skipUnless(c_uuid, 'requires the C _uuid module')
-class TestInternalsWithExtModule(BaseTestInternals, unittest.TestCase):
+klasse TestInternalsWithExtModule(BaseTestInternals, unittest.TestCase):
     uuid = c_uuid
 
     @unittest.skipUnless(os.name == 'posix', 'requires Posix')

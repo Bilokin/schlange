@@ -7,7 +7,7 @@ from datetime import datetime
 
 ttinfo = namedtuple('ttinfo', ['tt_gmtoff', 'tt_isdst', 'tt_abbrind'])
 
-class TZInfo:
+klasse TZInfo:
     def __init__(self, transitions, type_indices, ttis, abbrs):
         self.transitions = transitions
         self.type_indices = type_indices

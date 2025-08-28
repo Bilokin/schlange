@@ -111,7 +111,7 @@ def removesuffix(base: str, suffix: str) -> str:
         return base[:len(base) - len(suffix)]
     return base
 
-class Printer:
+klasse Printer:
 
     def __init__(self, file: TextIO) -> None:
         self.level = 0

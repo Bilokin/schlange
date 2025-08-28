@@ -19,7 +19,7 @@ colors = {overrides.get(k, k[0].lower()): v for k, v in default_theme.syntax.ite
 
 
 @force_not_colorized_test_class
-class TestReader(ScreenEqualMixin, TestCase):
+klasse TestReader(ScreenEqualMixin, TestCase):
     def test_calc_screen_wrap_simple(self):
         events = code_to_events(10 * "a")
         reader, _ = handle_events_narrow_console(events)
@@ -359,7 +359,7 @@ class TestReader(ScreenEqualMixin, TestCase):
         self.assertEqual(reader.pos, 7)
 
 @force_colorized_test_class
-class TestReaderInColor(ScreenEqualMixin, TestCase):
+klasse TestReaderInColor(ScreenEqualMixin, TestCase):
     def test_syntax_highlighting_basic(self):
         code = dedent(
             """\

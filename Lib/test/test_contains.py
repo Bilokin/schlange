@@ -3,19 +3,19 @@ import unittest
 from test.support import NEVER_EQ
 
 
-class base_set:
+klasse base_set:
     def __init__(self, el):
         self.el = el
 
-class myset(base_set):
+klasse myset(base_set):
     def __contains__(self, el):
         return self.el == el
 
-class seq(base_set):
+klasse seq(base_set):
     def __getitem__(self, n):
         return [self.el][n]
 
-class TestContains(unittest.TestCase):
+klasse TestContains(unittest.TestCase):
     def test_common_tests(self):
         a = base_set(1)
         b = myset(1)
@@ -53,10 +53,10 @@ class TestContains(unittest.TestCase):
         self.assertNotIn(16, a)
         self.assertNotIn(a, a)
 
-        class Deviant1:
+        klasse Deviant1:
             """Behaves strangely when compared
 
-            This class is designed to make sure that the contains code
+            This klasse is designed to make sure that the contains code
             works when the list is modified during the check.
             """
             aList = list(range(15))
@@ -84,14 +84,14 @@ class TestContains(unittest.TestCase):
 
     def test_block_fallback(self):
         # blocking fallback with __contains__ = None
-        class ByContains(object):
+        klasse ByContains(object):
             def __contains__(self, other):
                 return False
         c = ByContains()
-        class BlockContains(ByContains):
+        klasse BlockContains(ByContains):
             """Is not a container
 
-            This class is a perfectly good iterable (as tested by
+            This klasse is a perfectly good iterable (as tested by
             list(bc)), as well as inheriting from a perfectly good
             container, but __contains__ = None prevents the usual
             fallback to iteration in the container protocol. That

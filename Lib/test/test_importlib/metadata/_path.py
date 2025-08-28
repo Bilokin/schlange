@@ -6,7 +6,7 @@ from typing import Dict, Protocol, Union
 from typing import runtime_checkable
 
 
-class Symlink(str):
+klasse Symlink(str):
     """
     A string indicating the target of a symlink.
     """
@@ -16,7 +16,7 @@ FilesSpec = Dict[str, Union[str, bytes, Symlink, 'FilesSpec']]  # type: ignore
 
 
 @runtime_checkable
-class TreeMaker(Protocol):
+klasse TreeMaker(Protocol):
     def __truediv__(self, *args, **kwargs): ...  # pragma: no cover
 
     def mkdir(self, **kwargs): ...  # pragma: no cover
@@ -86,7 +86,7 @@ def _(content: Symlink, path):
     path.symlink_to(content)
 
 
-class Recording:
+klasse Recording:
     """
     A TreeMaker object that records everything that would be written.
 

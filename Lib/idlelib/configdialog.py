@@ -42,7 +42,7 @@ reloadables = (AutoComplete, CodeContext, ParenMatch, FormatParagraph,
                Squeezer)
 
 
-class ConfigDialog(Toplevel):
+klasse ConfigDialog(Toplevel):
     """Config dialog for IDLE.
     """
 
@@ -232,7 +232,7 @@ class ConfigDialog(Toplevel):
             klass.reload()
 
 
-# class TabPage(Frame):  # A template for Page classes.
+# klasse TabPage(Frame):  # A template for Page classes.
 #     def __init__(self, master):
 #         super().__init__(master)
 #         self.create_page_tab()
@@ -278,7 +278,7 @@ font_sample_text = (
     )
 
 
-class FontPage(Frame):
+klasse FontPage(Frame):
 
     def __init__(self, master, highpage):
         super().__init__(master)
@@ -448,7 +448,7 @@ class FontPage(Frame):
         self.highlight_sample['font'] = new_font
 
 
-class HighPage(Frame):
+klasse HighPage(Frame):
 
     def __init__(self, master, extpage):
         super().__init__(master)
@@ -1108,7 +1108,7 @@ class HighPage(Frame):
         self.set_theme_type()
 
 
-class KeysPage(Frame):
+klasse KeysPage(Frame):
 
     def __init__(self, master, extpage):
         super().__init__(master)
@@ -1542,7 +1542,7 @@ class KeysPage(Frame):
         self.set_keys_type()
 
 
-class WinPage(Frame):
+klasse WinPage(Frame):
 
     def __init__(self, master):
         super().__init__(master)
@@ -1752,7 +1752,7 @@ class WinPage(Frame):
                 'extensions', 'FormatParagraph', 'max-width', type='int'))
 
 
-class ShedPage(Frame):
+klasse ShedPage(Frame):
 
     def __init__(self, master):
         super().__init__(master)
@@ -1885,7 +1885,7 @@ class ShedPage(Frame):
                 'extensions', 'CodeContext', 'maxlines', type='int'))
 
 
-class ExtPage(Frame):
+klasse ExtPage(Frame):
     def __init__(self, master):
         super().__init__(master)
         self.ext_defaultCfg = idleConf.defaultCfg['extensions']
@@ -2080,7 +2080,7 @@ class ExtPage(Frame):
             self.ext_userCfg.Save()
 
 
-class HelpFrame(LabelFrame):
+klasse HelpFrame(LabelFrame):
 
     def __init__(self, master, **cfg):
         super().__init__(master, **cfg)
@@ -2214,7 +2214,7 @@ class HelpFrame(LabelFrame):
         self.set_add_delete_state()
 
 
-class VarTrace:
+klasse VarTrace:
     """Maintain Tk variables trace state."""
 
     def __init__(self):
@@ -2357,7 +2357,7 @@ def is_int(s):
         return False
 
 
-class VerticalScrolledFrame(Frame):
+klasse VerticalScrolledFrame(Frame):
     """A pure Tkinter vertically scrollable frame.
 
     * Use the 'interior' attribute to place widgets inside the scrollable frame

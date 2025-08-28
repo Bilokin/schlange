@@ -8,7 +8,7 @@ from importlib.readers import MultiplexedPath, NamespaceReader
 from . import util
 
 
-class MultiplexedPathTest(util.DiskSetup, unittest.TestCase):
+klasse MultiplexedPathTest(util.DiskSetup, unittest.TestCase):
     MODULE = 'namespacedata01'
 
     def setUp(self):
@@ -107,7 +107,7 @@ class MultiplexedPathTest(util.DiskSetup, unittest.TestCase):
         )
 
 
-class NamespaceReaderTest(util.DiskSetup, unittest.TestCase):
+klasse NamespaceReaderTest(util.DiskSetup, unittest.TestCase):
     MODULE = 'namespacedata01'
 
     def test_init_error(self):

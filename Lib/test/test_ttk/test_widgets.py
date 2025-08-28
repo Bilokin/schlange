@@ -14,7 +14,7 @@ from test.test_tkinter.widget_tests import (add_configure_tests,
 requires('gui')
 
 
-class StandardTtkOptionsTests(StandardOptionsTests):
+klasse StandardTtkOptionsTests(StandardOptionsTests):
 
     def test_configure_class(self):
         widget = self.create()
@@ -68,7 +68,7 @@ class StandardTtkOptionsTests(StandardOptionsTests):
                               allow_empty=(tk_version >= (8, 7)))
 
 
-class WidgetTest(AbstractTkTest, unittest.TestCase):
+klasse WidgetTest(AbstractTkTest, unittest.TestCase):
     """Tests methods available in every ttk widget."""
 
     def setUp(self):
@@ -124,13 +124,13 @@ class WidgetTest(AbstractTkTest, unittest.TestCase):
         self.assertEqual(self.widget.state(), ('active', ))
 
 
-class AbstractToplevelTest(AbstractWidgetTest, PixelSizeTests):
+klasse AbstractToplevelTest(AbstractWidgetTest, PixelSizeTests):
     _rounds_pixels = False
     _clipped = {}
 
 
 @add_configure_tests(StandardTtkOptionsTests)
-class FrameTest(AbstractToplevelTest, unittest.TestCase):
+klasse FrameTest(AbstractToplevelTest, unittest.TestCase):
     OPTIONS = (
         'borderwidth', 'class', 'cursor', 'height',
         'padding', 'relief', 'style', 'takefocus',
@@ -142,7 +142,7 @@ class FrameTest(AbstractToplevelTest, unittest.TestCase):
 
 
 @add_configure_tests(StandardTtkOptionsTests)
-class LabelFrameTest(AbstractToplevelTest, unittest.TestCase):
+klasse LabelFrameTest(AbstractToplevelTest, unittest.TestCase):
     OPTIONS = (
         'borderwidth', 'class', 'cursor', 'height',
         'labelanchor', 'labelwidget',
@@ -167,7 +167,7 @@ class LabelFrameTest(AbstractToplevelTest, unittest.TestCase):
         label.destroy()
 
 
-class AbstractLabelTest(AbstractWidgetTest):
+klasse AbstractLabelTest(AbstractWidgetTest):
     _allow_empty_justify = True
     _rounds_pixels = False
     _clipped = {}
@@ -203,7 +203,7 @@ class AbstractLabelTest(AbstractWidgetTest):
 
 
 @add_configure_tests(StandardTtkOptionsTests)
-class LabelTest(AbstractLabelTest, unittest.TestCase):
+klasse LabelTest(AbstractLabelTest, unittest.TestCase):
     OPTIONS = (
         'anchor', 'background', 'borderwidth',
         'class', 'compound', 'cursor', 'font', 'foreground',
@@ -221,7 +221,7 @@ class LabelTest(AbstractLabelTest, unittest.TestCase):
 
 
 @add_configure_tests(StandardTtkOptionsTests)
-class ButtonTest(AbstractLabelTest, unittest.TestCase):
+klasse ButtonTest(AbstractLabelTest, unittest.TestCase):
     OPTIONS = (
         'class', 'command', 'compound', 'cursor', 'default',
         'image', 'justify', 'padding', 'state', 'style',
@@ -246,7 +246,7 @@ class ButtonTest(AbstractLabelTest, unittest.TestCase):
 
 
 @add_configure_tests(StandardTtkOptionsTests)
-class CheckbuttonTest(AbstractLabelTest, unittest.TestCase):
+klasse CheckbuttonTest(AbstractLabelTest, unittest.TestCase):
     OPTIONS = (
         'class', 'command', 'compound', 'cursor',
         'image', 'justify',
@@ -333,7 +333,7 @@ class CheckbuttonTest(AbstractLabelTest, unittest.TestCase):
 
 
 @add_configure_tests(IntegerSizeTests, StandardTtkOptionsTests)
-class EntryTest(AbstractWidgetTest, unittest.TestCase):
+klasse EntryTest(AbstractWidgetTest, unittest.TestCase):
     OPTIONS = (
         'background', 'class', 'cursor',
         'exportselection', 'font', 'foreground',
@@ -463,7 +463,7 @@ class EntryTest(AbstractWidgetTest, unittest.TestCase):
 
 
 @add_configure_tests(IntegerSizeTests, StandardTtkOptionsTests)
-class ComboboxTest(EntryTest, unittest.TestCase):
+klasse ComboboxTest(EntryTest, unittest.TestCase):
     OPTIONS = (
         'background', 'class', 'cursor', 'exportselection',
         'font', 'foreground', 'height', 'invalidcommand',
@@ -596,7 +596,7 @@ class ComboboxTest(EntryTest, unittest.TestCase):
 
 
 @add_configure_tests(IntegerSizeTests, StandardTtkOptionsTests)
-class PanedWindowTest(AbstractWidgetTest, unittest.TestCase):
+klasse PanedWindowTest(AbstractWidgetTest, unittest.TestCase):
     OPTIONS = (
         'class', 'cursor', 'height',
         'orient', 'style', 'takefocus', 'width',
@@ -734,7 +734,7 @@ class PanedWindowTest(AbstractWidgetTest, unittest.TestCase):
 
 
 @add_configure_tests(StandardTtkOptionsTests)
-class RadiobuttonTest(AbstractLabelTest, unittest.TestCase):
+klasse RadiobuttonTest(AbstractLabelTest, unittest.TestCase):
     OPTIONS = (
         'class', 'command', 'compound', 'cursor',
         'image', 'justify',
@@ -788,7 +788,7 @@ class RadiobuttonTest(AbstractLabelTest, unittest.TestCase):
         self.assertEqual(str(cbtn['variable']), str(cbtn2['variable']))
 
 
-class MenubuttonTest(AbstractLabelTest, unittest.TestCase):
+klasse MenubuttonTest(AbstractLabelTest, unittest.TestCase):
     OPTIONS = (
         'class', 'compound', 'cursor', 'direction',
         'image', 'justify', 'menu', 'padding', 'state', 'style',
@@ -813,7 +813,7 @@ class MenubuttonTest(AbstractLabelTest, unittest.TestCase):
 
 
 @add_configure_tests(StandardTtkOptionsTests)
-class ScaleTest(AbstractWidgetTest, unittest.TestCase):
+klasse ScaleTest(AbstractWidgetTest, unittest.TestCase):
     OPTIONS = (
         'class', 'command', 'cursor', 'from', 'length',
         'orient', 'state', 'style', 'takefocus', 'to', 'value', 'variable',
@@ -922,7 +922,7 @@ class ScaleTest(AbstractWidgetTest, unittest.TestCase):
 
 
 @add_configure_tests(StandardTtkOptionsTests)
-class ProgressbarTest(AbstractWidgetTest, unittest.TestCase):
+klasse ProgressbarTest(AbstractWidgetTest, unittest.TestCase):
     OPTIONS = (
         'anchor', 'class', 'cursor', 'font', 'foreground', 'justify',
         'orient', 'length',
@@ -976,7 +976,7 @@ class ProgressbarTest(AbstractWidgetTest, unittest.TestCase):
 @unittest.skipIf(sys.platform == 'darwin',
                  'ttk.Scrollbar is special on MacOSX')
 @add_configure_tests(StandardTtkOptionsTests)
-class ScrollbarTest(AbstractWidgetTest, unittest.TestCase):
+klasse ScrollbarTest(AbstractWidgetTest, unittest.TestCase):
     OPTIONS = (
         'class', 'command', 'cursor', 'orient', 'style', 'takefocus',
     )
@@ -989,7 +989,7 @@ class ScrollbarTest(AbstractWidgetTest, unittest.TestCase):
 
 
 @add_configure_tests(StandardTtkOptionsTests)
-class NotebookTest(AbstractWidgetTest, unittest.TestCase):
+klasse NotebookTest(AbstractWidgetTest, unittest.TestCase):
     OPTIONS = (
         'class', 'cursor', 'height', 'padding', 'style', 'takefocus', 'width',
     )
@@ -1225,7 +1225,7 @@ class NotebookTest(AbstractWidgetTest, unittest.TestCase):
 
 
 @add_configure_tests(IntegerSizeTests, StandardTtkOptionsTests)
-class SpinboxTest(EntryTest, unittest.TestCase):
+klasse SpinboxTest(EntryTest, unittest.TestCase):
     OPTIONS = (
         'background', 'class', 'command', 'cursor', 'exportselection',
         'font', 'foreground', 'format', 'from',  'increment',
@@ -1402,7 +1402,7 @@ class SpinboxTest(EntryTest, unittest.TestCase):
 
 
 @add_configure_tests(StandardTtkOptionsTests)
-class TreeviewTest(AbstractWidgetTest, unittest.TestCase):
+klasse TreeviewTest(AbstractWidgetTest, unittest.TestCase):
     OPTIONS = (
         'class', 'columns', 'cursor', 'displaycolumns',
         'height', 'padding', 'selectmode', 'selecttype', 'show', 'striped',
@@ -1972,7 +1972,7 @@ class TreeviewTest(AbstractWidgetTest, unittest.TestCase):
 
 
 @add_configure_tests(StandardTtkOptionsTests)
-class SeparatorTest(AbstractWidgetTest, unittest.TestCase):
+klasse SeparatorTest(AbstractWidgetTest, unittest.TestCase):
     OPTIONS = (
         'class', 'cursor', 'orient', 'style', 'takefocus',
         # 'state'?
@@ -1986,7 +1986,7 @@ class SeparatorTest(AbstractWidgetTest, unittest.TestCase):
 
 
 @add_configure_tests(StandardTtkOptionsTests)
-class SizegripTest(AbstractWidgetTest, unittest.TestCase):
+klasse SizegripTest(AbstractWidgetTest, unittest.TestCase):
     OPTIONS = (
         'class', 'cursor', 'style', 'takefocus',
         # 'state'?
@@ -1998,7 +1998,7 @@ class SizegripTest(AbstractWidgetTest, unittest.TestCase):
         return ttk.Sizegrip(self.root, **kwargs)
 
 
-class DefaultRootTest(AbstractDefaultRootTest, unittest.TestCase):
+klasse DefaultRootTest(AbstractDefaultRootTest, unittest.TestCase):
 
     def test_frame(self):
         self._test_widget(ttk.Frame)

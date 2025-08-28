@@ -41,7 +41,7 @@ from pegen.grammar import (
 )
 
 
-class RuleCollectorVisitor(GrammarVisitor):
+klasse RuleCollectorVisitor(GrammarVisitor):
     """Visitor that invokes a provided callmaker visitor with just the NamedItem nodes"""
 
     def __init__(self, rules: Dict[str, Rule], callmakervisitor: GrammarVisitor) -> None:
@@ -55,7 +55,7 @@ class RuleCollectorVisitor(GrammarVisitor):
         self.callmaker.visit(item)
 
 
-class KeywordCollectorVisitor(GrammarVisitor):
+klasse KeywordCollectorVisitor(GrammarVisitor):
     """Visitor that collects all the keywords and soft keywords in the Grammar"""
 
     def __init__(self, gen: "ParserGenerator", keywords: Dict[str, int], soft_keywords: Set[str]):
@@ -72,7 +72,7 @@ class KeywordCollectorVisitor(GrammarVisitor):
                 return self.soft_keywords.add(node.value.replace('"', ""))
 
 
-class RuleCheckingVisitor(GrammarVisitor):
+klasse RuleCheckingVisitor(GrammarVisitor):
     def __init__(self, rules: Dict[str, Rule], tokens: Set[str]):
         self.rules = rules
         self.tokens = tokens
@@ -97,7 +97,7 @@ class RuleCheckingVisitor(GrammarVisitor):
         self.visit(node.item)
 
 
-class ParserGenerator:
+klasse ParserGenerator:
     callmakervisitor: GrammarVisitor
 
     def __init__(self, grammar: Grammar, tokens: Set[str], file: Optional[IO[Text]]):
@@ -228,7 +228,7 @@ class ParserGenerator:
         return name
 
 
-class NullableVisitor(GrammarVisitor):
+klasse NullableVisitor(GrammarVisitor):
     def __init__(self, rules: Dict[str, Rule]) -> None:
         self.rules = rules
         self.visited: Set[Any] = set()
@@ -305,7 +305,7 @@ def compute_nullables(rules: Dict[str, Rule]) -> Set[Any]:
     return nullable_visitor.nullables
 
 
-class InitialNamesVisitor(GrammarVisitor):
+klasse InitialNamesVisitor(GrammarVisitor):
     def __init__(self, rules: Dict[str, Rule]) -> None:
         self.rules = rules
         self.nullables = compute_nullables(rules)

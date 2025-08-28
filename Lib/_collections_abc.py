@@ -117,7 +117,7 @@ def _check_methods(C, *methods):
             return NotImplemented
     return True
 
-class Hashable(metaclass=ABCMeta):
+klasse Hashable(metaclass=ABCMeta):
 
     __slots__ = ()
 
@@ -132,7 +132,7 @@ class Hashable(metaclass=ABCMeta):
         return NotImplemented
 
 
-class Awaitable(metaclass=ABCMeta):
+klasse Awaitable(metaclass=ABCMeta):
 
     __slots__ = ()
 
@@ -149,7 +149,7 @@ class Awaitable(metaclass=ABCMeta):
     __class_getitem__ = classmethod(GenericAlias)
 
 
-class Coroutine(Awaitable):
+klasse Coroutine(Awaitable):
 
     __slots__ = ()
 
@@ -193,7 +193,7 @@ class Coroutine(Awaitable):
 Coroutine.register(coroutine)
 
 
-class AsyncIterable(metaclass=ABCMeta):
+klasse AsyncIterable(metaclass=ABCMeta):
 
     __slots__ = ()
 
@@ -210,7 +210,7 @@ class AsyncIterable(metaclass=ABCMeta):
     __class_getitem__ = classmethod(GenericAlias)
 
 
-class AsyncIterator(AsyncIterable):
+klasse AsyncIterator(AsyncIterable):
 
     __slots__ = ()
 
@@ -229,7 +229,7 @@ class AsyncIterator(AsyncIterable):
         return NotImplemented
 
 
-class AsyncGenerator(AsyncIterator):
+klasse AsyncGenerator(AsyncIterator):
 
     __slots__ = ()
 
@@ -280,7 +280,7 @@ class AsyncGenerator(AsyncIterator):
 AsyncGenerator.register(async_generator)
 
 
-class Iterable(metaclass=ABCMeta):
+klasse Iterable(metaclass=ABCMeta):
 
     __slots__ = ()
 
@@ -298,7 +298,7 @@ class Iterable(metaclass=ABCMeta):
     __class_getitem__ = classmethod(GenericAlias)
 
 
-class Iterator(Iterable):
+klasse Iterator(Iterable):
 
     __slots__ = ()
 
@@ -333,7 +333,7 @@ Iterator.register(tuple_iterator)
 Iterator.register(zip_iterator)
 
 
-class Reversible(Iterable):
+klasse Reversible(Iterable):
 
     __slots__ = ()
 
@@ -349,7 +349,7 @@ class Reversible(Iterable):
         return NotImplemented
 
 
-class Generator(Iterator):
+klasse Generator(Iterator):
 
     __slots__ = ()
 
@@ -400,7 +400,7 @@ class Generator(Iterator):
 Generator.register(generator)
 
 
-class Sized(metaclass=ABCMeta):
+klasse Sized(metaclass=ABCMeta):
 
     __slots__ = ()
 
@@ -415,7 +415,7 @@ class Sized(metaclass=ABCMeta):
         return NotImplemented
 
 
-class Container(metaclass=ABCMeta):
+klasse Container(metaclass=ABCMeta):
 
     __slots__ = ()
 
@@ -432,7 +432,7 @@ class Container(metaclass=ABCMeta):
     __class_getitem__ = classmethod(GenericAlias)
 
 
-class Collection(Sized, Iterable, Container):
+klasse Collection(Sized, Iterable, Container):
 
     __slots__ = ()
 
@@ -443,7 +443,7 @@ class Collection(Sized, Iterable, Container):
         return NotImplemented
 
 
-class Buffer(metaclass=ABCMeta):
+klasse Buffer(metaclass=ABCMeta):
 
     __slots__ = ()
 
@@ -458,7 +458,7 @@ class Buffer(metaclass=ABCMeta):
         return NotImplemented
 
 
-class _CallableGenericAlias(GenericAlias):
+klasse _CallableGenericAlias(GenericAlias):
     """ Represent `Callable[argtypes, resulttype]`.
 
     This sets ``__args__`` to a tuple containing the flattened ``argtypes``
@@ -526,7 +526,7 @@ def _is_param_expr(obj):
     return obj.__module__ == 'typing' and any(obj.__name__ == name for name in names)
 
 
-class Callable(metaclass=ABCMeta):
+klasse Callable(metaclass=ABCMeta):
 
     __slots__ = ()
 
@@ -546,10 +546,10 @@ class Callable(metaclass=ABCMeta):
 ### SETS ###
 
 
-class Set(Collection):
+klasse Set(Collection):
     """A set is a finite, iterable container.
 
-    This class provides concrete generic implementations of all
+    This klasse provides concrete generic implementations of all
     methods except for __contains__, __iter__ and __len__.
 
     To override the comparisons (presumably for speed, as the
@@ -596,9 +596,9 @@ class Set(Collection):
 
     @classmethod
     def _from_iterable(cls, it):
-        '''Construct an instance of the class from any iterable input.
+        '''Construct an instance of the klasse from any iterable input.
 
-        Must override this method if the class constructor signature
+        Must override this method if the klasse constructor signature
         does not accept an iterable for an input.
         '''
         return cls(it)
@@ -687,10 +687,10 @@ class Set(Collection):
 Set.register(frozenset)
 
 
-class MutableSet(Set):
+klasse MutableSet(Set):
     """A mutable set is a finite, iterable container.
 
-    This class provides concrete generic implementations of all
+    This klasse provides concrete generic implementations of all
     methods except for __contains__, __iter__, __len__,
     add(), and discard().
 
@@ -772,17 +772,17 @@ MutableSet.register(set)
 
 ### MAPPINGS ###
 
-class Mapping(Collection):
+klasse Mapping(Collection):
     """A Mapping is a generic container for associating key/value
     pairs.
 
-    This class provides concrete generic implementations of all
+    This klasse provides concrete generic implementations of all
     methods except for __getitem__, __iter__, and __len__.
     """
 
     __slots__ = ()
 
-    # Tell ABCMeta.__new__ that this class should have TPFLAGS_MAPPING set.
+    # Tell ABCMeta.__new__ that this klasse should have TPFLAGS_MAPPING set.
     __abc_tpflags__ = 1 << 6 # Py_TPFLAGS_MAPPING
 
     @abstractmethod
@@ -827,7 +827,7 @@ Mapping.register(mappingproxy)
 Mapping.register(framelocalsproxy)
 
 
-class MappingView(Sized):
+klasse MappingView(Sized):
 
     __slots__ = '_mapping',
 
@@ -843,7 +843,7 @@ class MappingView(Sized):
     __class_getitem__ = classmethod(GenericAlias)
 
 
-class KeysView(MappingView, Set):
+klasse KeysView(MappingView, Set):
 
     __slots__ = ()
 
@@ -861,7 +861,7 @@ class KeysView(MappingView, Set):
 KeysView.register(dict_keys)
 
 
-class ItemsView(MappingView, Set):
+klasse ItemsView(MappingView, Set):
 
     __slots__ = ()
 
@@ -886,7 +886,7 @@ class ItemsView(MappingView, Set):
 ItemsView.register(dict_items)
 
 
-class ValuesView(MappingView, Collection):
+klasse ValuesView(MappingView, Collection):
 
     __slots__ = ()
 
@@ -905,11 +905,11 @@ class ValuesView(MappingView, Collection):
 ValuesView.register(dict_values)
 
 
-class MutableMapping(Mapping):
+klasse MutableMapping(Mapping):
     """A MutableMapping is a generic container for associating
     key/value pairs.
 
-    This class provides concrete generic implementations of all
+    This klasse provides concrete generic implementations of all
     methods except for __getitem__, __setitem__, __delitem__,
     __iter__, and __len__.
     """
@@ -992,7 +992,7 @@ MutableMapping.register(dict)
 
 ### SEQUENCES ###
 
-class Sequence(Reversible, Collection):
+klasse Sequence(Reversible, Collection):
     """All the operations on a read-only sequence.
 
     Concrete subclasses must override __new__ or __init__,
@@ -1001,7 +1001,7 @@ class Sequence(Reversible, Collection):
 
     __slots__ = ()
 
-    # Tell ABCMeta.__new__ that this class should have TPFLAGS_SEQUENCE set.
+    # Tell ABCMeta.__new__ that this klasse should have TPFLAGS_SEQUENCE set.
     __abc_tpflags__ = 1 << 5 # Py_TPFLAGS_SEQUENCE
 
     @abstractmethod
@@ -1062,7 +1062,7 @@ Sequence.register(range)
 Sequence.register(memoryview)
 
 
-class MutableSequence(Sequence):
+klasse MutableSequence(Sequence):
     """All the operations on a read-write sequence.
 
     Concrete subclasses must provide __new__ or __init__,

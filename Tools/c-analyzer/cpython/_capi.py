@@ -178,7 +178,7 @@ GROUPINGS = {
 }
 
 
-class CAPIItem(namedtuple('CAPIItem', 'file lno name kind level')):
+klasse CAPIItem(namedtuple('CAPIItem', 'file lno name kind level')):
 
     @classmethod
     def from_line(cls, line, filename, lno, prev=None):

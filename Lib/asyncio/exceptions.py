@@ -7,18 +7,18 @@ __all__ = ('BrokenBarrierError',
            'SendfileNotAvailableError')
 
 
-class CancelledError(BaseException):
+klasse CancelledError(BaseException):
     """The Future or Task was cancelled."""
 
 
 TimeoutError = TimeoutError  # make local alias for the standard exception
 
 
-class InvalidStateError(Exception):
+klasse InvalidStateError(Exception):
     """The operation is not allowed in this state."""
 
 
-class SendfileNotAvailableError(RuntimeError):
+klasse SendfileNotAvailableError(RuntimeError):
     """Sendfile syscall is not available.
 
     Raised if OS does not support sendfile syscall for given socket or
@@ -26,7 +26,7 @@ class SendfileNotAvailableError(RuntimeError):
     """
 
 
-class IncompleteReadError(EOFError):
+klasse IncompleteReadError(EOFError):
     """
     Incomplete read error. Attributes:
 
@@ -44,7 +44,7 @@ class IncompleteReadError(EOFError):
         return type(self), (self.partial, self.expected)
 
 
-class LimitOverrunError(Exception):
+klasse LimitOverrunError(Exception):
     """Reached the buffer limit while looking for a separator.
 
     Attributes:
@@ -58,5 +58,5 @@ class LimitOverrunError(Exception):
         return type(self), (self.args[0], self.consumed)
 
 
-class BrokenBarrierError(RuntimeError):
+klasse BrokenBarrierError(RuntimeError):
     """Barrier is broken by barrier.abort() call."""

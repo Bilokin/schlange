@@ -56,7 +56,7 @@ inited = False
 _db = None
 
 
-class MimeTypes:
+klasse MimeTypes:
     """MIME-types datastore.
 
     This datastore can handle information from mime.types-style files

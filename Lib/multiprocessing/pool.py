@@ -1,5 +1,5 @@
 #
-# Module providing the `Pool` class for managing a process pool
+# Module providing the `Pool` klasse for managing a process pool
 #
 # multiprocessing/pool.py
 #
@@ -54,13 +54,13 @@ def starmapstar(args):
 # Hack to embed stringification of remote traceback in local traceback
 #
 
-class RemoteTraceback(Exception):
+klasse RemoteTraceback(Exception):
     def __init__(self, tb):
         self.tb = tb
     def __str__(self):
         return self.tb
 
-class ExceptionWithTraceback:
+klasse ExceptionWithTraceback:
     def __init__(self, exc, tb):
         tb = traceback.format_exception(type(exc), exc, tb)
         tb = ''.join(tb)
@@ -77,7 +77,7 @@ def rebuild_exc(exc, tb):
 # Code run by worker processes
 #
 
-class MaybeEncodingError(Exception):
+klasse MaybeEncodingError(Exception):
     """Wraps possible unpickleable errors, so they can be
     safely sent through the socket."""
 
@@ -147,9 +147,9 @@ def _helper_reraises_exception(ex):
 # Class representing a process pool
 #
 
-class _PoolCache(dict):
+klasse _PoolCache(dict):
     """
-    Class that implements a cache for the Pool class that will notify
+    Class that implements a cache for the Pool klasse that will notify
     the pool management threads every time the cache is emptied. The
     notification is done by the use of a queue that is provided when
     instantiating the cache.
@@ -170,7 +170,7 @@ class _PoolCache(dict):
         if not self:
             self.notifier.put(None)
 
-class Pool(object):
+klasse Pool(object):
     '''
     Class which supports an async version of applying functions to arguments.
     '''
@@ -742,7 +742,7 @@ class Pool(object):
 # Class whose instances are returned by `Pool.apply_async()`
 #
 
-class ApplyResult(object):
+klasse ApplyResult(object):
 
     def __init__(self, pool, callback, error_callback):
         self._pool = pool
@@ -791,7 +791,7 @@ AsyncResult = ApplyResult       # create alias -- see #17805
 # Class whose instances are returned by `Pool.map_async()`
 #
 
-class MapResult(ApplyResult):
+klasse MapResult(ApplyResult):
 
     def __init__(self, pool, chunksize, length, callback, error_callback):
         ApplyResult.__init__(self, pool, callback,
@@ -834,7 +834,7 @@ class MapResult(ApplyResult):
 # Class whose instances are returned by `Pool.imap()`
 #
 
-class IMapIterator(object):
+klasse IMapIterator(object):
 
     def __init__(self, pool):
         self._pool = pool
@@ -903,7 +903,7 @@ class IMapIterator(object):
 # Class whose instances are returned by `Pool.imap_unordered()`
 #
 
-class IMapUnorderedIterator(IMapIterator):
+klasse IMapUnorderedIterator(IMapIterator):
 
     def _set(self, i, obj):
         with self._cond:
@@ -918,7 +918,7 @@ class IMapUnorderedIterator(IMapIterator):
 #
 #
 
-class ThreadPool(Pool):
+klasse ThreadPool(Pool):
     _wrap_exception = False
 
     @staticmethod

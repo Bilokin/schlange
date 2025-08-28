@@ -11,7 +11,7 @@ from test.test_email import TestEmailBase, parameterize
 
 
 @parameterize
-class TestGeneratorBase:
+klasse TestGeneratorBase:
 
     policy = policy.default
 
@@ -289,7 +289,7 @@ class TestGeneratorBase:
         self.assertEqual(s.getvalue(), self.typ(expected))
 
 
-class TestGenerator(TestGeneratorBase, TestEmailBase):
+klasse TestGenerator(TestGeneratorBase, TestEmailBase):
 
     msgfunc = staticmethod(message_from_string)
     genclass = Generator
@@ -314,7 +314,7 @@ class TestGenerator(TestGeneratorBase, TestEmailBase):
 
     def test_verify_generated_headers(self):
         """gh-121650: by default the generator prevents header injection"""
-        class LiteralHeader(str):
+        klasse LiteralHeader(str):
             name = 'Header'
             def fold(self, **kwargs):
                 return self
@@ -336,7 +336,7 @@ class TestGenerator(TestGeneratorBase, TestEmailBase):
                     message.as_string()
 
 
-class TestBytesGenerator(TestGeneratorBase, TestEmailBase):
+klasse TestBytesGenerator(TestGeneratorBase, TestEmailBase):
 
     msgfunc = staticmethod(message_from_bytes)
     genclass = BytesGenerator

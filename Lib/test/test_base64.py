@@ -9,13 +9,13 @@ from test.support import script_helper
 from test.support.import_helper import ensure_lazy_imports
 
 
-class LazyImportTest(unittest.TestCase):
+klasse LazyImportTest(unittest.TestCase):
     @cpython_only
     def test_lazy_import(self):
         ensure_lazy_imports("base64", {"re", "getopt"})
 
 
-class LegacyBase64TestCase(unittest.TestCase):
+klasse LegacyBase64TestCase(unittest.TestCase):
 
     # Legacy API is not as permissive as the modern API
     def check_type_errors(self, f):
@@ -97,7 +97,7 @@ class LegacyBase64TestCase(unittest.TestCase):
         self.assertRaises(TypeError, base64.encode, StringIO('YWJj\n'), StringIO())
 
 
-class BaseXYTestCase(unittest.TestCase):
+klasse BaseXYTestCase(unittest.TestCase):
 
     # Modern API completely ignores exported dimension and format data and
     # treats any buffer as a stream of bytes
@@ -854,7 +854,7 @@ class BaseXYTestCase(unittest.TestCase):
         self.assertEqual(b16encode(b"foobar"), b"666F6F626172")
 
 
-class TestMain(unittest.TestCase):
+klasse TestMain(unittest.TestCase):
     def tearDown(self):
         if os.path.exists(os_helper.TESTFN):
             os.unlink(os_helper.TESTFN)

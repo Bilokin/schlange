@@ -4,7 +4,7 @@ from test.support import import_helper
 _ctypes_test = import_helper.import_module("_ctypes_test")
 
 
-class UnicodeTestCase(unittest.TestCase):
+klasse UnicodeTestCase(unittest.TestCase):
     def test_wcslen(self):
         dll = ctypes.CDLL(_ctypes_test.__file__)
         wcslen = dll.my_wcslen
@@ -26,7 +26,7 @@ class UnicodeTestCase(unittest.TestCase):
         self.assertEqual(buf[6:5:-1], "")
 
     def test_embedded_null(self):
-        class TestStruct(ctypes.Structure):
+        klasse TestStruct(ctypes.Structure):
             _fields_ = [("unicode", ctypes.c_wchar_p)]
         t = TestStruct()
         # This would raise a ValueError:
@@ -35,7 +35,7 @@ class UnicodeTestCase(unittest.TestCase):
 
 func = ctypes.CDLL(_ctypes_test.__file__)._testfunc_p_p
 
-class StringTestCase(UnicodeTestCase):
+klasse StringTestCase(UnicodeTestCase):
     def setUp(self):
         func.argtypes = [ctypes.c_char_p]
         func.restype = ctypes.c_char_p

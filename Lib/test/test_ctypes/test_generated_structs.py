@@ -29,7 +29,7 @@ TEST_PATTERN = 0xae7596db
 
 # ctypes erases the difference between `c_int` and e.g.`c_int16`.
 # To keep it, we'll use custom subclasses with the C name stashed in `_c_name`:
-class c_bool(ctypes.c_bool):
+klasse c_bool(ctypes.c_bool):
     _c_name = '_Bool'
 
 # To do it for all the other types, use some metaprogramming:
@@ -70,31 +70,31 @@ def register(name=None, set_name=False):
     return decorator
 
 @register()
-class SingleInt(Structure):
+klasse SingleInt(Structure):
     _fields_ = [('a', c_int)]
 
 @register()
-class SingleInt_Union(Union):
+klasse SingleInt_Union(Union):
     _fields_ = [('a', c_int)]
 
 
 @register()
-class SingleU32(Structure):
+klasse SingleU32(Structure):
     _fields_ = [('a', c_uint32)]
 
 
 @register()
-class SimpleStruct(Structure):
+klasse SimpleStruct(Structure):
     _fields_ = [('x', c_int32), ('y', c_int8), ('z', c_uint16)]
 
 
 @register()
-class SimpleUnion(Union):
+klasse SimpleUnion(Union):
     _fields_ = [('x', c_int32), ('y', c_int8), ('z', c_uint16)]
 
 
 @register()
-class ManyTypes(Structure):
+klasse ManyTypes(Structure):
     _fields_ = [
         ('i8', c_int8), ('u8', c_uint8),
         ('i16', c_int16), ('u16', c_uint16),
@@ -104,7 +104,7 @@ class ManyTypes(Structure):
 
 
 @register()
-class ManyTypesU(Union):
+klasse ManyTypesU(Union):
     _fields_ = [
         ('i8', c_int8), ('u8', c_uint8),
         ('i16', c_int16), ('u16', c_uint16),
@@ -114,7 +114,7 @@ class ManyTypesU(Union):
 
 
 @register()
-class Nested(Structure):
+klasse Nested(Structure):
     _fields_ = [
         ('a', SimpleStruct), ('b', SimpleUnion), ('anon', SimpleStruct),
     ]
@@ -122,28 +122,28 @@ class Nested(Structure):
 
 
 @register()
-class Packed1(Structure):
+klasse Packed1(Structure):
     _fields_ = [('a', c_int8), ('b', c_int64)]
     _pack_ = 1
     _layout_ = 'ms'
 
 
 @register()
-class Packed2(Structure):
+klasse Packed2(Structure):
     _fields_ = [('a', c_int8), ('b', c_int64)]
     _pack_ = 2
     _layout_ = 'ms'
 
 
 @register()
-class Packed3(Structure):
+klasse Packed3(Structure):
     _fields_ = [('a', c_int8), ('b', c_int64)]
     _pack_ = 4
     _layout_ = 'ms'
 
 
 @register()
-class Packed4(Structure):
+klasse Packed4(Structure):
     def _maybe_skip():
         # `_pack_` enables MSVC-style packing, but keeps platform-specific
         # alignments.
@@ -161,13 +161,13 @@ class Packed4(Structure):
     _layout_ = 'ms'
 
 @register()
-class X86_32EdgeCase(Structure):
+klasse X86_32EdgeCase(Structure):
     # On a Pentium, long long (int64) is 32-bit aligned,
     # so these are packed tightly.
     _fields_ = [('a', c_int32), ('b', c_int64), ('c', c_int32)]
 
 @register()
-class MSBitFieldExample(Structure):
+klasse MSBitFieldExample(Structure):
     # From https://learn.microsoft.com/en-us/cpp/c-language/c-bit-fields
     _fields_ = [
         ('a', c_uint, 4),
@@ -175,7 +175,7 @@ class MSBitFieldExample(Structure):
         ('c', c_uint, 7)]
 
 @register()
-class MSStraddlingExample(Structure):
+klasse MSStraddlingExample(Structure):
     # From https://learn.microsoft.com/en-us/cpp/c-language/c-bit-fields
     _fields_ = [
         ('first', c_uint, 9),
@@ -184,7 +184,7 @@ class MSStraddlingExample(Structure):
         ('last', c_uint, 18)]
 
 @register()
-class IntBits(Structure):
+klasse IntBits(Structure):
     _fields_ = [("A", c_int, 1),
                 ("B", c_int, 2),
                 ("C", c_int, 3),
@@ -196,7 +196,7 @@ class IntBits(Structure):
                 ("I", c_int, 9)]
 
 @register()
-class Bits(Structure):
+klasse Bits(Structure):
     _fields_ = [*IntBits._fields_,
 
                 ("M", c_short, 1),
@@ -208,7 +208,7 @@ class Bits(Structure):
                 ("S", c_short, 7)]
 
 @register()
-class IntBits_MSVC(Structure):
+klasse IntBits_MSVC(Structure):
     _layout_ = "ms"
     _fields_ = [("A", c_int, 1),
                 ("B", c_int, 2),
@@ -221,7 +221,7 @@ class IntBits_MSVC(Structure):
                 ("I", c_int, 9)]
 
 @register()
-class Bits_MSVC(Structure):
+klasse Bits_MSVC(Structure):
     _layout_ = "ms"
     _fields_ = [*IntBits_MSVC._fields_,
 
@@ -235,7 +235,7 @@ class Bits_MSVC(Structure):
 
 # Skipped for now -- we don't always match the alignment
 #@register()
-class IntBits_Union(Union):
+klasse IntBits_Union(Union):
     _fields_ = [("A", c_int, 1),
                 ("B", c_int, 2),
                 ("C", c_int, 3),
@@ -248,7 +248,7 @@ class IntBits_Union(Union):
 
 # Skipped for now -- we don't always match the alignment
 #@register()
-class BitsUnion(Union):
+klasse BitsUnion(Union):
     _fields_ = [*IntBits_Union._fields_,
 
                 ("M", c_short, 1),
@@ -260,13 +260,13 @@ class BitsUnion(Union):
                 ("S", c_short, 7)]
 
 @register()
-class I64Bits(Structure):
+klasse I64Bits(Structure):
     _fields_ = [("a", c_int64, 1),
                 ("b", c_int64, 62),
                 ("c", c_int64, 1)]
 
 @register()
-class U64Bits(Structure):
+klasse U64Bits(Structure):
     _fields_ = [("a", c_uint64, 1),
                 ("b", c_uint64, 62),
                 ("c", c_uint64, 1)]
@@ -276,47 +276,47 @@ for n in 8, 16, 32, 64:
         ctype = globals()[f'c_{signedness}int{n}']
 
         @register(f'Struct331_{signedness}{n}', set_name=True)
-        class _cls(Structure):
+        klasse _cls(Structure):
             _fields_ = [("a", ctype, 3),
                         ("b", ctype, 3),
                         ("c", ctype, 1)]
 
         @register(f'Struct1x1_{signedness}{n}', set_name=True)
-        class _cls(Structure):
+        klasse _cls(Structure):
             _fields_ = [("a", ctype, 1),
                         ("b", ctype, n-2),
                         ("c", ctype, 1)]
 
         @register(f'Struct1nx1_{signedness}{n}', set_name=True)
-        class _cls(Structure):
+        klasse _cls(Structure):
             _fields_ = [("a", ctype, 1),
                         ("full", ctype),
                         ("b", ctype, n-2),
                         ("c", ctype, 1)]
 
         @register(f'Struct3xx_{signedness}{n}', set_name=True)
-        class _cls(Structure):
+        klasse _cls(Structure):
             _fields_ = [("a", ctype, 3),
                         ("b", ctype, n-2),
                         ("c", ctype, n-2)]
 
 @register()
-class Mixed1(Structure):
+klasse Mixed1(Structure):
     _fields_ = [("a", c_byte, 4),
                 ("b", c_int, 4)]
 
 @register()
-class Mixed2(Structure):
+klasse Mixed2(Structure):
     _fields_ = [("a", c_byte, 4),
                 ("b", c_int32, 32)]
 
 @register()
-class Mixed3(Structure):
+klasse Mixed3(Structure):
     _fields_ = [("a", c_byte, 4),
                 ("b", c_ubyte, 4)]
 
 @register()
-class Mixed4(Structure):
+klasse Mixed4(Structure):
     _fields_ = [("a", c_short, 4),
                 ("b", c_short, 4),
                 ("c", c_int, 24),
@@ -325,50 +325,50 @@ class Mixed4(Structure):
                 ("f", c_int, 24)]
 
 @register()
-class Mixed5(Structure):
+klasse Mixed5(Structure):
     _fields_ = [('A', c_uint, 1),
                 ('B', c_ushort, 16)]
 
 @register()
-class Mixed6(Structure):
+klasse Mixed6(Structure):
     _fields_ = [('A', c_ulonglong, 1),
                 ('B', c_uint, 32)]
 
 @register()
-class Mixed7(Structure):
+klasse Mixed7(Structure):
     _fields_ = [("A", c_uint32),
                 ('B', c_uint32, 20),
                 ('C', c_uint64, 24)]
 
 @register()
-class Mixed8_a(Structure):
+klasse Mixed8_a(Structure):
     _fields_ = [("A", c_uint32),
                 ("B", c_uint32, 32),
                 ("C", c_ulonglong, 1)]
 
 @register()
-class Mixed8_b(Structure):
+klasse Mixed8_b(Structure):
     _fields_ = [("A", c_uint32),
                 ("B", c_uint32),
                 ("C", c_ulonglong, 1)]
 
 @register()
-class Mixed9(Structure):
+klasse Mixed9(Structure):
     _fields_ = [("A", c_uint8),
                 ("B", c_uint32, 1)]
 
 @register()
-class Mixed10(Structure):
+klasse Mixed10(Structure):
     _fields_ = [("A", c_uint32, 1),
                 ("B", c_uint64, 1)]
 
 @register()
-class Example_gh_95496(Structure):
+klasse Example_gh_95496(Structure):
     _fields_ = [("A", c_uint32, 1),
                 ("B", c_uint64, 1)]
 
 @register()
-class Example_gh_84039_bad(Structure):
+klasse Example_gh_84039_bad(Structure):
     _pack_ = 1
     _layout_ = 'ms'
     _fields_ = [("a0", c_uint8, 1),
@@ -383,7 +383,7 @@ class Example_gh_84039_bad(Structure):
                 ("b1", c_uint16, 12)]
 
 @register()
-class Example_gh_84039_good_a(Structure):
+klasse Example_gh_84039_good_a(Structure):
     _pack_ = 1
     _layout_ = 'ms'
     _fields_ = [("a0", c_uint8, 1),
@@ -396,7 +396,7 @@ class Example_gh_84039_good_a(Structure):
                 ("a7", c_uint8, 1)]
 
 @register()
-class Example_gh_84039_good(Structure):
+klasse Example_gh_84039_good(Structure):
     _pack_ = 1
     _layout_ = 'ms'
     _fields_ = [("a", Example_gh_84039_good_a),
@@ -404,7 +404,7 @@ class Example_gh_84039_good(Structure):
                 ("b1", c_uint16, 12)]
 
 @register()
-class Example_gh_73939(Structure):
+klasse Example_gh_73939(Structure):
     _pack_ = 1
     _layout_ = 'ms'
     _fields_ = [("P", c_uint16),
@@ -419,13 +419,13 @@ class Example_gh_73939(Structure):
                 ("R2", c_uint32, 2)]
 
 @register()
-class Example_gh_86098(Structure):
+klasse Example_gh_86098(Structure):
     _fields_ = [("a", c_uint8, 8),
                 ("b", c_uint8, 8),
                 ("c", c_uint32, 16)]
 
 @register()
-class Example_gh_86098_pack(Structure):
+klasse Example_gh_86098_pack(Structure):
     _pack_ = 1
     _layout_ = 'ms'
     _fields_ = [("a", c_uint8, 8),
@@ -433,15 +433,15 @@ class Example_gh_86098_pack(Structure):
                 ("c", c_uint32, 16)]
 
 @register()
-class AnonBitfields(Structure):
-    class X(Structure):
+klasse AnonBitfields(Structure):
+    klasse X(Structure):
         _fields_ = [("a", c_byte, 4),
                     ("b", c_ubyte, 4)]
     _anonymous_ = ["_"]
     _fields_ = [("_", X), ('y', c_byte)]
 
 
-class GeneratedTest(unittest.TestCase, StructCheckMixin):
+klasse GeneratedTest(unittest.TestCase, StructCheckMixin):
     def test_generated_data(self):
         """Check that a ctypes struct/union matches its C equivalent.
 
@@ -589,7 +589,7 @@ def unpack_field_desc(f_name, f_tp, f_bits=None):
     return f_name, f_tp, f_bits
 
 @dataclass
-class FieldInfo:
+klasse FieldInfo:
     """Information about a (possibly nested) struct/union field"""
     name: str
     tp: type

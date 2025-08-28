@@ -24,7 +24,7 @@ else:
     hasattr(ctypes.util, "dllist"),
     "ctypes.util.dllist is not available on this platform",
 )
-class ListSharedLibraries(unittest.TestCase):
+klasse ListSharedLibraries(unittest.TestCase):
 
     def test_lists_system(self):
         dlls = ctypes.util.dllist()

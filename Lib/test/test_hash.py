@@ -47,7 +47,7 @@ def skip_unless_internalhash(test):
     return test if ok else unittest.skip(msg)(test)
 
 
-class HashEqualityTestCase(unittest.TestCase):
+klasse HashEqualityTestCase(unittest.TestCase):
 
     def same_hash(self, *objlist):
         # Hash each object given and fail if
@@ -90,28 +90,28 @@ class HashEqualityTestCase(unittest.TestCase):
 
 
 _default_hash = object.__hash__
-class DefaultHash(object): pass
+klasse DefaultHash(object): pass
 
 _FIXED_HASH_VALUE = 42
-class FixedHash(object):
+klasse FixedHash(object):
     def __hash__(self):
         return _FIXED_HASH_VALUE
 
-class OnlyEquality(object):
+klasse OnlyEquality(object):
     def __eq__(self, other):
         return self is other
 
-class OnlyInequality(object):
+klasse OnlyInequality(object):
     def __ne__(self, other):
         return self is not other
 
-class InheritedHashWithEquality(FixedHash, OnlyEquality): pass
-class InheritedHashWithInequality(FixedHash, OnlyInequality): pass
+klasse InheritedHashWithEquality(FixedHash, OnlyEquality): pass
+klasse InheritedHashWithInequality(FixedHash, OnlyInequality): pass
 
-class NoHash(object):
+klasse NoHash(object):
     __hash__ = None
 
-class HashInheritanceTestCase(unittest.TestCase):
+klasse HashInheritanceTestCase(unittest.TestCase):
     default_expected = [object(),
                         DefaultHash(),
                         OnlyInequality(),
@@ -148,14 +148,14 @@ class HashInheritanceTestCase(unittest.TestCase):
 
 
 # Issue #4701: Check that some builtin types are correctly hashable
-class DefaultIterSeq(object):
+klasse DefaultIterSeq(object):
     seq = range(10)
     def __len__(self):
         return len(self.seq)
     def __getitem__(self, index):
         return self.seq[index]
 
-class HashBuiltinsTestCase(unittest.TestCase):
+klasse HashBuiltinsTestCase(unittest.TestCase):
     hashes_to_check = [enumerate(range(10)),
                        iter(DefaultIterSeq()),
                        iter(lambda: 0, 0),
@@ -166,7 +166,7 @@ class HashBuiltinsTestCase(unittest.TestCase):
         for obj in self.hashes_to_check:
             self.assertEqual(hash(obj), _default_hash(obj))
 
-class HashRandomizationTests:
+klasse HashRandomizationTests:
 
     # Each subclass should define a field "repr_", containing the repr() of
     # an object to be tested
@@ -194,7 +194,7 @@ class HashRandomizationTests:
         run2 = self.get_hash(self.repr_, seed='random')
         self.assertNotEqual(run1, run2)
 
-class StringlikeHashRandomizationTests(HashRandomizationTests):
+klasse StringlikeHashRandomizationTests(HashRandomizationTests):
     repr_ = None
     repr_long = None
 
@@ -288,7 +288,7 @@ class StringlikeHashRandomizationTests(HashRandomizationTests):
         self.assertEqual(self.get_hash(self.repr_long, seed=42), h)
 
 
-class StrHashRandomizationTests(StringlikeHashRandomizationTests,
+klasse StrHashRandomizationTests(StringlikeHashRandomizationTests,
                                 unittest.TestCase):
     repr_ = repr('abc')
     repr_long = repr('abcdefghijk')
@@ -305,7 +305,7 @@ class StrHashRandomizationTests(StringlikeHashRandomizationTests,
         h = self.get_expected_hash(4, 6)
         self.assertEqual(self.get_hash(self.repr_ucs2, seed=42), h)
 
-class BytesHashRandomizationTests(StringlikeHashRandomizationTests,
+klasse BytesHashRandomizationTests(StringlikeHashRandomizationTests,
                                   unittest.TestCase):
     repr_ = repr(b'abc')
     repr_long = repr(b'abcdefghijk')
@@ -314,7 +314,7 @@ class BytesHashRandomizationTests(StringlikeHashRandomizationTests,
     def test_empty_string(self):
         self.assertEqual(hash(b""), 0)
 
-class MemoryviewHashRandomizationTests(StringlikeHashRandomizationTests,
+klasse MemoryviewHashRandomizationTests(StringlikeHashRandomizationTests,
                                        unittest.TestCase):
     repr_ = "memoryview(b'abc')"
     repr_long = "memoryview(b'abcdefghijk')"
@@ -323,21 +323,21 @@ class MemoryviewHashRandomizationTests(StringlikeHashRandomizationTests,
     def test_empty_string(self):
         self.assertEqual(hash(memoryview(b"")), 0)
 
-class DatetimeTests(HashRandomizationTests):
+klasse DatetimeTests(HashRandomizationTests):
     def get_hash_command(self, repr_):
         return 'import datetime; print(hash(%s))' % repr_
 
-class DatetimeDateTests(DatetimeTests, unittest.TestCase):
+klasse DatetimeDateTests(DatetimeTests, unittest.TestCase):
     repr_ = repr(datetime.date(1066, 10, 14))
 
-class DatetimeDatetimeTests(DatetimeTests, unittest.TestCase):
+klasse DatetimeDatetimeTests(DatetimeTests, unittest.TestCase):
     repr_ = repr(datetime.datetime(1, 2, 3, 4, 5, 6, 7))
 
-class DatetimeTimeTests(DatetimeTests, unittest.TestCase):
+klasse DatetimeTimeTests(DatetimeTests, unittest.TestCase):
     repr_ = repr(datetime.time(0))
 
 
-class HashDistributionTestCase(unittest.TestCase):
+klasse HashDistributionTestCase(unittest.TestCase):
 
     def test_hash_distribution(self):
         # check for hash collision

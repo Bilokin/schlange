@@ -23,7 +23,7 @@ def decode(input, errors='strict'):
     (output, consumed) = codecs.utf_8_decode(input, errors, True)
     return (output, consumed+prefix)
 
-class IncrementalEncoder(codecs.IncrementalEncoder):
+klasse IncrementalEncoder(codecs.IncrementalEncoder):
     def __init__(self, errors='strict'):
         codecs.IncrementalEncoder.__init__(self, errors)
         self.first = 1
@@ -46,7 +46,7 @@ class IncrementalEncoder(codecs.IncrementalEncoder):
     def setstate(self, state):
         self.first = state
 
-class IncrementalDecoder(codecs.BufferedIncrementalDecoder):
+klasse IncrementalDecoder(codecs.BufferedIncrementalDecoder):
     def __init__(self, errors='strict'):
         codecs.BufferedIncrementalDecoder.__init__(self, errors)
         self.first = 1
@@ -82,7 +82,7 @@ class IncrementalDecoder(codecs.BufferedIncrementalDecoder):
         codecs.BufferedIncrementalDecoder.setstate(self, state)
         self.first = state[1]
 
-class StreamWriter(codecs.StreamWriter):
+klasse StreamWriter(codecs.StreamWriter):
     def reset(self):
         codecs.StreamWriter.reset(self)
         try:
@@ -94,7 +94,7 @@ class StreamWriter(codecs.StreamWriter):
         self.encode = codecs.utf_8_encode
         return encode(input, errors)
 
-class StreamReader(codecs.StreamReader):
+klasse StreamReader(codecs.StreamReader):
     def reset(self):
         codecs.StreamReader.reset(self)
         try:

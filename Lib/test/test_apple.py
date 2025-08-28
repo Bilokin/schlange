@@ -8,7 +8,7 @@ if not is_apple:
 
 
 # Test redirection of stdout and stderr to the Apple system log.
-class TestAppleSystemLogOutput(unittest.TestCase):
+klasse TestAppleSystemLogOutput(unittest.TestCase):
     maxDiff = None
 
     def assert_writes(self, output):
@@ -107,7 +107,7 @@ class TestAppleSystemLogOutput(unittest.TestCase):
     def test_nonstandard_str(self):
         # String subclasses are accepted, but they should be converted
         # to a standard str without calling any of their methods.
-        class CustomStr(str):
+        klasse CustomStr(str):
             def splitlines(self, *args, **kwargs):
                 raise AssertionError()
 

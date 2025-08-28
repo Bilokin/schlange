@@ -60,7 +60,7 @@ SOURCE_CODES = {
 }
 
 
-class TemporaryPyFile:
+klasse TemporaryPyFile:
     """Create a temporary python source code file."""
 
     def __init__(self, source_code='', directory=None):
@@ -79,7 +79,7 @@ class TemporaryPyFile:
         unlink(self.file_path)
 
 
-class TestFormatWitnesses(TestCase):
+klasse TestFormatWitnesses(TestCase):
     """Testing `tabnanny.format_witnesses()`."""
 
     def test_format_witnesses(self):
@@ -96,7 +96,7 @@ class TestFormatWitnesses(TestCase):
                 self.assertEqual(tabnanny.format_witnesses(words), expected)
 
 
-class TestErrPrint(TestCase):
+klasse TestErrPrint(TestCase):
     """Testing `tabnanny.errprint()`."""
 
     def test_errprint(self):
@@ -116,7 +116,7 @@ class TestErrPrint(TestCase):
                     self.assertEqual(stderr.getvalue() , expected)
 
 
-class TestNannyNag(TestCase):
+klasse TestNannyNag(TestCase):
     def test_all_methods(self):
         """Asserting behaviour of `tabnanny.NannyNag` exception."""
         tests = [
@@ -143,7 +143,7 @@ class TestNannyNag(TestCase):
                 self.assertEqual(expected['line'], line)
 
 
-class TestCheck(TestCase):
+klasse TestCheck(TestCase):
     """Testing tabnanny.check()."""
 
     def setUp(self):
@@ -259,7 +259,7 @@ class TestCheck(TestCase):
                     self.verify_tabnanny_check(tmp_dir, err=err)
 
 
-class TestProcessTokens(TestCase):
+klasse TestProcessTokens(TestCase):
     """Testing `tabnanny.process_tokens()`."""
 
     @mock.patch('tabnanny.NannyNag')
@@ -289,7 +289,7 @@ class TestProcessTokens(TestCase):
                             tabnanny.process_tokens(tokens)
 
 
-class TestCommandLine(TestCase):
+klasse TestCommandLine(TestCase):
     """Tests command line interface of `tabnanny`."""
 
     def validate_cmd(self, *args, stdout="", stderr="", partial=False, expect_failure=False):

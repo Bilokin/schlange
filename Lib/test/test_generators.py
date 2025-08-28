@@ -23,7 +23,7 @@ except ImportError:
 @unittest.skipUnless(_testcapi is not None and
                      hasattr(_testcapi, "raise_SIGINT_then_send_None"),
                      "needs _testcapi.raise_SIGINT_then_send_None")
-class SignalAndYieldFromTest(unittest.TestCase):
+klasse SignalAndYieldFromTest(unittest.TestCase):
 
     def generator1(self):
         return (yield from self.generator2())
@@ -47,7 +47,7 @@ class SignalAndYieldFromTest(unittest.TestCase):
         self.assertEqual(exc.value, "PASSED")
 
 
-class FinalizationTest(unittest.TestCase):
+klasse FinalizationTest(unittest.TestCase):
 
     def test_frame_resurrect(self):
         # A generator frame can be resurrected by a generator's finalization.
@@ -135,7 +135,7 @@ class FinalizationTest(unittest.TestCase):
         self.assertIsInstance(resurrected[0].gi_code, types.CodeType)
 
 
-class GeneratorTest(unittest.TestCase):
+klasse GeneratorTest(unittest.TestCase):
 
     def test_name(self):
         def func():
@@ -217,7 +217,7 @@ class GeneratorTest(unittest.TestCase):
             gc.set_threshold(*thresholds)
             gc.callbacks.pop()
 
-        class Sneaky:
+        klasse Sneaky:
             def __del__(self):
                 inspect.stack()
 
@@ -270,7 +270,7 @@ class GeneratorTest(unittest.TestCase):
 
     def test_genexpr_only_calls_dunder_iter_once(self):
 
-        class Iterator:
+        klasse Iterator:
 
             def __init__(self):
                 self.val = 0
@@ -283,7 +283,7 @@ class GeneratorTest(unittest.TestCase):
 
             # No __iter__ method
 
-        class C:
+        klasse C:
 
             def __iter__(self):
                 return Iterator()
@@ -291,7 +291,7 @@ class GeneratorTest(unittest.TestCase):
         self.assertEqual([1,2], list(i for i in C()))
 
 
-class ModifyUnderlyingIterableTest(unittest.TestCase):
+klasse ModifyUnderlyingIterableTest(unittest.TestCase):
     iterables = [
         range(0),
         range(20),
@@ -363,7 +363,7 @@ class ModifyUnderlyingIterableTest(unittest.TestCase):
         self.process_tests(get_generator_genfunc)
 
 
-class ExceptionTest(unittest.TestCase):
+klasse ExceptionTest(unittest.TestCase):
     # Tests for the issue #23353: check that the currently handled exception
     # is correctly saved/restored in PyEval_EvalFrameEx().
 
@@ -492,7 +492,7 @@ class ExceptionTest(unittest.TestCase):
         self.assertIsNone(sys.exception())
 
     def test_except_throw_bad_exception(self):
-        class E(Exception):
+        klasse E(Exception):
             def __new__(cls, *args, **kwargs):
                 return cls
 
@@ -572,7 +572,7 @@ class ExceptionTest(unittest.TestCase):
         self.assertEqual(cm.exception.value.value, 2)
 
 
-class GeneratorCloseTest(unittest.TestCase):
+klasse GeneratorCloseTest(unittest.TestCase):
 
     def test_close_no_return_value(self):
         def f():
@@ -656,7 +656,7 @@ class GeneratorCloseTest(unittest.TestCase):
     def test_close_releases_frame_locals(self):
         # See gh-118272
 
-        class Foo:
+        klasse Foo:
             pass
 
         f = Foo()
@@ -675,7 +675,7 @@ class GeneratorCloseTest(unittest.TestCase):
 
 
 # See https://github.com/python/cpython/issues/125723
-class GeneratorDeallocTest(unittest.TestCase):
+klasse GeneratorDeallocTest(unittest.TestCase):
     def test_frame_outlives_generator(self):
         def g1():
             a = 42
@@ -690,7 +690,7 @@ class GeneratorDeallocTest(unittest.TestCase):
             obj.frame = sys._getframe()
             yield
 
-        class ObjectWithFrame():
+        klasse ObjectWithFrame():
             def __init__(self):
                 self.frame = None
 
@@ -757,7 +757,7 @@ class GeneratorDeallocTest(unittest.TestCase):
                 self.assertEqual(l['a'], 42)
 
 
-class GeneratorThrowTest(unittest.TestCase):
+klasse GeneratorThrowTest(unittest.TestCase):
 
     def test_exception_context_with_yield(self):
         def f():
@@ -856,7 +856,7 @@ class GeneratorThrowTest(unittest.TestCase):
             gen.throw(ValueError)
 
 
-class GeneratorStackTraceTest(unittest.TestCase):
+klasse GeneratorStackTraceTest(unittest.TestCase):
 
     def check_stack_names(self, frame, expected):
         names = []
@@ -907,7 +907,7 @@ class GeneratorStackTraceTest(unittest.TestCase):
 
     def test_throw_with_yield_from_custom_generator(self):
 
-        class CustomGen:
+        klasse CustomGen:
             def __init__(self, test):
                 self.test = test
             def throw(self, *args):
@@ -925,7 +925,7 @@ class GeneratorStackTraceTest(unittest.TestCase):
         gen.throw(RuntimeError)
 
 
-class YieldFromTests(unittest.TestCase):
+klasse YieldFromTests(unittest.TestCase):
     def test_generator_gi_yieldfrom(self):
         def a():
             self.assertEqual(inspect.getgeneratorstate(gen_b), inspect.GEN_RUNNING)
@@ -1169,7 +1169,7 @@ Specification: Try/Except/Finally
 Guido's binary tree example.
 
     >>> # A binary tree class.
-    >>> class Tree:
+    >>> klasse Tree:
     ...
     ...     def __init__(self, label, left=None, right=None):
     ...         self.label = label
@@ -1358,7 +1358,7 @@ Sent: Friday, June 29, 2001 12:16 PM
 To: python-list@python.org
 Subject: Re: PEP 255: Simple Generators
 
->>> class disjointSet:
+>>> klasse disjointSet:
 ...     def __init__(self, name):
 ...         self.name = name
 ...         self.parent = None
@@ -1528,7 +1528,7 @@ namespace renaming trick.  The *pretty* part is that the times() and merge()
 functions can be reused as-is, because they only assume their stream
 arguments are iterable -- a LazyList is the same as a generator to times().
 
->>> class LazyList:
+>>> klasse LazyList:
 ...     def __init__(self, g):
 ...         self.sofar = []
 ...         self.fetch = g.__next__
@@ -1604,7 +1604,7 @@ In python, we have to explicitly maintain a list of already computed results
 and abandon genuine recursivity.
 
 This is what had been attempted above with the LazyList class. One problem
-with that class is that it keeps a list of all of the generated results and
+with that klasse is that it keeps a list of all of the generated results and
 therefore continually grows. This partially defeats the goal of the generator
 concept, viz. produce the results only as needed instead of producing them
 all and thereby wasting memory.
@@ -1769,7 +1769,7 @@ These are fine:
 
 >>> def f():
 ...     if 0:
-...         class C:
+...         klasse C:
 ...             def __init__(self):
 ...                 yield 1
 ...             def f(self):
@@ -1983,7 +1983,7 @@ def flat_conjoin(gs):  # rename to conjoin to run tests with this instead
 
 # A conjoin-based N-Queens solver.
 
-class Queens:
+klasse Queens:
     def __init__(self, n):
         self.n = n
         rangen = range(n)
@@ -2038,7 +2038,7 @@ class Queens:
 # constructor, a 200x200 Knight's Tour was found quickly -- note that we're
 # creating 10s of thousands of generators then!), and is lengthy.
 
-class Knights:
+klasse Knights:
     def __init__(self, m, n, hard=0):
         self.m, self.n = m, n
 
@@ -2755,7 +2755,7 @@ would trigger if it starts being uncleanable again.
 
 >>> import itertools
 >>> def leak():
-...     class gen:
+...     klasse gen:
 ...         def __iter__(self):
 ...             return self
 ...         def __next__(self):
@@ -2795,7 +2795,7 @@ printing warnings and to doublecheck that we actually tested what we wanted
 to test.
 
 >>> from test import support
->>> class Leaker:
+>>> klasse Leaker:
 ...     def __del__(self):
 ...         def invoke(message):
 ...             raise RuntimeError(message)

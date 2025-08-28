@@ -50,7 +50,7 @@ complex_nans = [complex(x, y) for x, y in [
         (INF, NAN)
         ]]
 
-class CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
+klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
     # list of all functions in cmath
     test_functions = [getattr(cmath, fname) for fname in [
             'acos', 'acosh', 'asin', 'asinh', 'atan', 'atanh',
@@ -164,37 +164,37 @@ class CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
         # Now we introduce a variety of classes whose instances might
         # end up being passed to the cmath functions
 
-        # usual case: new-style class implementing __complex__
-        class MyComplex:
+        # usual case: new-style klasse implementing __complex__
+        klasse MyComplex:
             def __init__(self, value):
                 self.value = value
             def __complex__(self):
                 return self.value
 
         # classes for which __complex__ raises an exception
-        class SomeException(Exception):
+        klasse SomeException(Exception):
             pass
-        class MyComplexException:
+        klasse MyComplexException:
             def __complex__(self):
                 raise SomeException
 
         # some classes not providing __float__ or __complex__
-        class NeitherComplexNorFloat(object):
+        klasse NeitherComplexNorFloat(object):
             pass
-        class Index:
+        klasse Index:
             def __int__(self): return 2
             def __index__(self): return 2
-        class MyInt:
+        klasse MyInt:
             def __int__(self): return 2
 
         # other possible combinations of __float__ and __complex__
         # that should work
-        class FloatAndComplex:
+        klasse FloatAndComplex:
             def __float__(self):
                 return flt_arg
             def __complex__(self):
                 return cx_arg
-        class JustFloat:
+        klasse JustFloat:
             def __float__(self):
                 return flt_arg
 
@@ -540,7 +540,7 @@ class CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
             self.assertComplexesAreIdentical(cmath.atanh(z), z)
 
 
-class IsCloseTests(test_math.IsCloseTests):
+klasse IsCloseTests(test_math.IsCloseTests):
     isclose = cmath.isclose
 
     def test_reject_complex_tolerances(self):

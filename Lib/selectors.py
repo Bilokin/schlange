@@ -57,7 +57,7 @@ SelectorKey.data.__doc__ = ('''Optional opaque data associated to this file obje
 For example, this could be used to store a per-client session ID.''')
 
 
-class _SelectorMapping(Mapping):
+klasse _SelectorMapping(Mapping):
     """Mapping of file objects to selector keys."""
 
     def __init__(self, selector):
@@ -81,7 +81,7 @@ class _SelectorMapping(Mapping):
         return iter(self._selector._fd_to_key)
 
 
-class BaseSelector(metaclass=ABCMeta):
+klasse BaseSelector(metaclass=ABCMeta):
     """Selector abstract base class.
 
     A selector supports registering file objects to be monitored for specific
@@ -92,7 +92,7 @@ class BaseSelector(metaclass=ABCMeta):
     for example to store context information, a callback, etc.
 
     A selector can use various implementations (select(), poll(), epoll()...)
-    depending on the platform. The default `Selector` class uses the most
+    depending on the platform. The default `Selector` klasse uses the most
     efficient implementation on the current platform.
     """
 
@@ -207,7 +207,7 @@ class BaseSelector(metaclass=ABCMeta):
         self.close()
 
 
-class _BaseSelectorImpl(BaseSelector):
+klasse _BaseSelectorImpl(BaseSelector):
     """Base selector implementation."""
 
     def __init__(self):
@@ -278,7 +278,7 @@ class _BaseSelectorImpl(BaseSelector):
 
 
 
-class SelectSelector(_BaseSelectorImpl):
+klasse SelectSelector(_BaseSelectorImpl):
     """Select-based selector."""
 
     def __init__(self):
@@ -327,8 +327,8 @@ class SelectSelector(_BaseSelectorImpl):
         return ready
 
 
-class _PollLikeSelector(_BaseSelectorImpl):
-    """Base class shared between poll, epoll and devpoll selectors."""
+klasse _PollLikeSelector(_BaseSelectorImpl):
+    """Base klasse shared between poll, epoll and devpoll selectors."""
     _selector_cls = None
     _EVENT_READ = None
     _EVENT_WRITE = None
@@ -411,7 +411,7 @@ class _PollLikeSelector(_BaseSelectorImpl):
 
 if hasattr(select, 'poll'):
 
-    class PollSelector(_PollLikeSelector):
+    klasse PollSelector(_PollLikeSelector):
         """Poll-based selector."""
         _selector_cls = select.poll
         _EVENT_READ = select.POLLIN
@@ -423,7 +423,7 @@ if hasattr(select, 'epoll'):
     _NOT_EPOLLIN = ~select.EPOLLIN
     _NOT_EPOLLOUT = ~select.EPOLLOUT
 
-    class EpollSelector(_PollLikeSelector):
+    klasse EpollSelector(_PollLikeSelector):
         """Epoll-based selector."""
         _selector_cls = select.epoll
         _EVENT_READ = select.EPOLLIN
@@ -469,7 +469,7 @@ if hasattr(select, 'epoll'):
 
 if hasattr(select, 'devpoll'):
 
-    class DevpollSelector(_PollLikeSelector):
+    klasse DevpollSelector(_PollLikeSelector):
         """Solaris /dev/poll selector."""
         _selector_cls = select.devpoll
         _EVENT_READ = select.POLLIN
@@ -485,7 +485,7 @@ if hasattr(select, 'devpoll'):
 
 if hasattr(select, 'kqueue'):
 
-    class KqueueSelector(_BaseSelectorImpl):
+    klasse KqueueSelector(_BaseSelectorImpl):
         """Kqueue-based selector."""
 
         def __init__(self):

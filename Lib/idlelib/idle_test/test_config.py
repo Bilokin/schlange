@@ -35,7 +35,7 @@ def tearDownModule():
     idlelib.testing = False
 
 
-class IdleConfParserTest(unittest.TestCase):
+klasse IdleConfParserTest(unittest.TestCase):
     """Test that IdleConfParser works"""
 
     config = """
@@ -94,7 +94,7 @@ class IdleConfParserTest(unittest.TestCase):
         self.assertEqual(parser.GetOptionList('Foo Bar'), ['foo'])
 
 
-class IdleUserConfParserTest(unittest.TestCase):
+klasse IdleUserConfParserTest(unittest.TestCase):
     """Test that IdleUserConfParser works"""
 
     def new_parser(self, path=''):
@@ -177,7 +177,7 @@ class IdleUserConfParserTest(unittest.TestCase):
             self.assertFalse(os.path.exists(path))
 
 
-class IdleConfTest(unittest.TestCase):
+klasse IdleConfTest(unittest.TestCase):
     """Test for idleConf"""
 
     @classmethod
@@ -586,7 +586,7 @@ class IdleConfTest(unittest.TestCase):
             ['<Alt-Key-n>', '<Meta-Key-n>'])
 
 
-class CurrentColorKeysTest(unittest.TestCase):
+klasse CurrentColorKeysTest(unittest.TestCase):
     """ Test colorkeys function with user config [Theme] and [Keys] patterns.
 
         colorkeys = config.IdleConf.current_colors_and_keys
@@ -697,7 +697,7 @@ class CurrentColorKeysTest(unittest.TestCase):
         userkeys.remove_section('Custom Keys')
 
 
-class ChangesTest(unittest.TestCase):
+klasse ChangesTest(unittest.TestCase):
 
     empty = {'main':{}, 'highlight':{}, 'keys':{}, 'extensions':{}}
 
@@ -783,7 +783,7 @@ class ChangesTest(unittest.TestCase):
         self.assertEqual(changes, self.empty)
 
 
-class WarningTest(unittest.TestCase):
+klasse WarningTest(unittest.TestCase):
 
     def test_warn(self):
         Equal = self.assertEqual

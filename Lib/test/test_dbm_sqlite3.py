@@ -21,7 +21,7 @@ if hasattr(os, 'geteuid'):
     root_in_posix = (os.geteuid() == 0)
 
 
-class _SQLiteDbmTests(unittest.TestCase):
+klasse _SQLiteDbmTests(unittest.TestCase):
 
     def setUp(self):
         self.filename = os_helper.TESTFN
@@ -33,7 +33,7 @@ class _SQLiteDbmTests(unittest.TestCase):
             os_helper.unlink(self.filename + suffix)
 
 
-class URI(unittest.TestCase):
+klasse URI(unittest.TestCase):
 
     def test_uri_substitutions(self):
         dataset = (
@@ -65,7 +65,7 @@ class URI(unittest.TestCase):
                 self.assertEndsWith(_normalize_uri(path), normalized)
 
 
-class ReadOnly(_SQLiteDbmTests):
+klasse ReadOnly(_SQLiteDbmTests):
 
     def setUp(self):
         super().setUp()
@@ -98,7 +98,7 @@ class ReadOnly(_SQLiteDbmTests):
 
 
 @unittest.skipIf(root_in_posix, "test is meanless with root privilege")
-class ReadOnlyFilesystem(unittest.TestCase):
+klasse ReadOnlyFilesystem(unittest.TestCase):
 
     def setUp(self):
         self.test_dir = os_helper.TESTFN
@@ -141,7 +141,7 @@ class ReadOnlyFilesystem(unittest.TestCase):
                 self.assertNotIn(b"newkey", db)
 
 
-class ReadWrite(_SQLiteDbmTests):
+klasse ReadWrite(_SQLiteDbmTests):
 
     def setUp(self):
         super().setUp()
@@ -187,7 +187,7 @@ class ReadWrite(_SQLiteDbmTests):
             self.db[b"key"] = None
 
 
-class Misuse(_SQLiteDbmTests):
+klasse Misuse(_SQLiteDbmTests):
 
     def setUp(self):
         super().setUp()
@@ -259,7 +259,7 @@ class Misuse(_SQLiteDbmTests):
                 db = dbm_sqlite3.open("", flag="c")
 
 
-class DataTypes(_SQLiteDbmTests):
+klasse DataTypes(_SQLiteDbmTests):
 
     dataset = (
         # (raw, coerced)
@@ -299,7 +299,7 @@ class DataTypes(_SQLiteDbmTests):
         self.assertEqual(self.db.keys(), [b"10"])
 
 
-class CorruptDatabase(_SQLiteDbmTests):
+klasse CorruptDatabase(_SQLiteDbmTests):
     """Verify that database exceptions are raised as dbm.sqlite3.error."""
 
     def setUp(self):

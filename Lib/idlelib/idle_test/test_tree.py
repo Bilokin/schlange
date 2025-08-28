@@ -7,7 +7,7 @@ requires('gui')
 from tkinter import Tk, EventType, SCROLL
 
 
-class TreeTest(unittest.TestCase):
+klasse TreeTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -29,17 +29,17 @@ class TreeTest(unittest.TestCase):
         node.expand()
 
 
-class TestScrollEvent(unittest.TestCase):
+klasse TestScrollEvent(unittest.TestCase):
 
     def test_wheel_event(self):
-        # Fake widget class containing `yview` only.
-        class _Widget:
+        # Fake widget klasse containing `yview` only.
+        klasse _Widget:
             def __init__(widget, *expected):
                 widget.expected = expected
             def yview(widget, *args):
                 self.assertTupleEqual(widget.expected, args)
         # Fake event class
-        class _Event:
+        klasse _Event:
             pass
         #        (type, delta, num, amount)
         tests = ((EventType.MouseWheel, 120, -1, -5),

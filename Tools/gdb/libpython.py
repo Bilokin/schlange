@@ -114,7 +114,7 @@ UNABLE_READ_INFO_PYTHON_FRAME = 'Unable to read information on python frame'
 EVALFRAME = '_PyEval_EvalFrameDefault'
 
 
-class NullPyObjectPtr(RuntimeError):
+klasse NullPyObjectPtr(RuntimeError):
     pass
 
 
@@ -130,10 +130,10 @@ def safe_range(val):
     # threshold in case the data was corrupted
     return range(safety_limit(int(val)))
 
-class StringTruncated(RuntimeError):
+klasse StringTruncated(RuntimeError):
     pass
 
-class TruncatedStringIO(object):
+klasse TruncatedStringIO(object):
     '''Similar to io.StringIO, but can truncate the output by raising a
     StringTruncated exception'''
     def __init__(self, maxlen=None):
@@ -152,7 +152,7 @@ class TruncatedStringIO(object):
     def getvalue(self):
         return self._val
 
-class PyObjectPtr(object):
+klasse PyObjectPtr(object):
     """
     Class wrapping a gdb.Value that's either a (PyObject*) within the
     inferior process, or some subclass pointer e.g. (PyBytesObject*)
@@ -277,7 +277,7 @@ class PyObjectPtr(object):
         Py_ReprLeave
         '''
 
-        class FakeRepr(object):
+        klasse FakeRepr(object):
             """
             Class representing a non-descript PyObject* value in the inferior
             process for when we don't have a custom scraper, intended to have
@@ -379,7 +379,7 @@ class PyObjectPtr(object):
     @classmethod
     def from_pyobject_ptr(cls, gdbval):
         '''
-        Try to locate the appropriate derived class dynamically, and cast
+        Try to locate the appropriate derived klasse dynamically, and cast
         the pointer accordingly.
         '''
         try:
@@ -399,10 +399,10 @@ class PyObjectPtr(object):
     def as_address(self):
         return int(self._gdbval)
 
-class PyVarObjectPtr(PyObjectPtr):
+klasse PyVarObjectPtr(PyObjectPtr):
     _typename = 'PyVarObject'
 
-class ProxyAlreadyVisited(object):
+klasse ProxyAlreadyVisited(object):
     '''
     Placeholder proxy to use when protecting against infinite recursion due to
     loops in the object graph.
@@ -438,7 +438,7 @@ def _write_instance_repr(out, visited, name, pyop_attrdict, address):
     out.write(' at remote 0x%x>' % address)
 
 
-class InstanceProxy(object):
+klasse InstanceProxy(object):
 
     def __init__(self, cl_name, attrdict, address):
         self.cl_name = cl_name
@@ -466,7 +466,7 @@ def _PyObject_VAR_SIZE(typeobj, nitems):
            ).cast(_PyObject_VAR_SIZE._type_size_t)
 _PyObject_VAR_SIZE._type_size_t = None
 
-class HeapTypeObjectPtr(PyObjectPtr):
+klasse HeapTypeObjectPtr(PyObjectPtr):
     _typename = 'PyObject'
 
     def get_attr_dict(self):
@@ -563,7 +563,7 @@ class HeapTypeObjectPtr(PyObjectPtr):
         _write_instance_repr(out, visited,
                              self.safe_tp_name(), pyop_attrs, self.as_address())
 
-class ProxyException(Exception):
+klasse ProxyException(Exception):
     def __init__(self, tp_name, args):
         self.tp_name = tp_name
         self.args = args
@@ -571,7 +571,7 @@ class ProxyException(Exception):
     def __repr__(self):
         return '%s%r' % (self.tp_name, self.args)
 
-class PyBaseExceptionObjectPtr(PyObjectPtr):
+klasse PyBaseExceptionObjectPtr(PyObjectPtr):
     """
     Class wrapping a gdb.Value that's a PyBaseExceptionObject* i.e. an exception
     within the process being debugged.
@@ -597,7 +597,7 @@ class PyBaseExceptionObjectPtr(PyObjectPtr):
         out.write(self.safe_tp_name())
         self.write_field_repr('args', out, visited)
 
-class PyClassObjectPtr(PyObjectPtr):
+klasse PyClassObjectPtr(PyObjectPtr):
     """
     Class wrapping a gdb.Value that's a PyClassObject* i.e. a <classobj>
     instance within the process being debugged.
@@ -605,14 +605,14 @@ class PyClassObjectPtr(PyObjectPtr):
     _typename = 'PyClassObject'
 
 
-class BuiltInFunctionProxy(object):
+klasse BuiltInFunctionProxy(object):
     def __init__(self, ml_name):
         self.ml_name = ml_name
 
     def __repr__(self):
         return "<built-in function %s>" % self.ml_name
 
-class BuiltInMethodProxy(object):
+klasse BuiltInMethodProxy(object):
     def __init__(self, ml_name, pyop_m_self):
         self.ml_name = ml_name
         self.pyop_m_self = pyop_m_self
@@ -624,7 +624,7 @@ class BuiltInMethodProxy(object):
                    self.pyop_m_self.as_address())
                 )
 
-class PyCFunctionObjectPtr(PyObjectPtr):
+klasse PyCFunctionObjectPtr(PyObjectPtr):
     """
     Class wrapping a gdb.Value that's a PyCFunctionObject*
     (see Include/methodobject.h and Objects/methodobject.c)
@@ -703,7 +703,7 @@ def parse_location_table(firstlineno, linetable):
         addr = end_addr
 
 
-class PyCodeArrayPtr:
+klasse PyCodeArrayPtr:
     def __init__(self, gdbval):
         self._gdbval = gdbval
 
@@ -712,7 +712,7 @@ class PyCodeArrayPtr:
         return self._gdbval["entries"][index]
 
 
-class PyCodeObjectPtr(PyObjectPtr):
+klasse PyCodeObjectPtr(PyObjectPtr):
     """
     Class wrapping a gdb.Value that's a PyCodeObject* i.e. a <code> instance
     within the process being debugged.
@@ -750,7 +750,7 @@ def items_from_keys_and_values(keys, values):
             pyop_key = PyObjectPtr.from_pyobject_ptr(ep['me_key'])
             yield (pyop_key, pyop_value)
 
-class PyKeysValuesPair:
+klasse PyKeysValuesPair:
 
     def __init__(self, keys, values):
         self.keys = keys
@@ -767,7 +767,7 @@ class PyKeysValuesPair:
             result[proxy_key] = proxy_value
         return result
 
-class PyDictObjectPtr(PyObjectPtr):
+klasse PyDictObjectPtr(PyObjectPtr):
     """
     Class wrapping a gdb.Value that's a PyDictObject* i.e. a dict instance
     within the process being debugged.
@@ -852,7 +852,7 @@ class PyDictObjectPtr(PyObjectPtr):
         return ent_addr, dk_nentries
 
 
-class PyListObjectPtr(PyObjectPtr):
+klasse PyListObjectPtr(PyObjectPtr):
     _typename = 'PyListObject'
 
     def __getitem__(self, i):
@@ -885,7 +885,7 @@ class PyListObjectPtr(PyObjectPtr):
             element.write_repr(out, visited)
         out.write(']')
 
-class PyLongObjectPtr(PyObjectPtr):
+klasse PyLongObjectPtr(PyObjectPtr):
     _typename = 'PyLongObject'
 
     def proxyval(self, visited):
@@ -941,7 +941,7 @@ class PyLongObjectPtr(PyObjectPtr):
         out.write("%s" % proxy)
 
 
-class PyBoolObjectPtr(PyLongObjectPtr):
+klasse PyBoolObjectPtr(PyLongObjectPtr):
     """
     Class wrapping a gdb.Value that's a PyBoolObject* i.e. one of the two
     <bool> instances (Py_True/Py_False) within the process being debugged.
@@ -952,7 +952,7 @@ class PyBoolObjectPtr(PyLongObjectPtr):
         else:
             return False
 
-class PyNoneStructPtr(PyObjectPtr):
+klasse PyNoneStructPtr(PyObjectPtr):
     """
     Class wrapping a gdb.Value that's a PyObject* pointing to the
     singleton (we hope) _Py_NoneStruct with ob_type PyNone_Type
@@ -962,7 +962,7 @@ class PyNoneStructPtr(PyObjectPtr):
     def proxyval(self, visited):
         return None
 
-class PyFrameObjectPtr(PyObjectPtr):
+klasse PyFrameObjectPtr(PyObjectPtr):
     _typename = 'PyFrameObject'
 
     def __init__(self, gdbval, cast_to=None):
@@ -1040,7 +1040,7 @@ class PyFrameObjectPtr(PyObjectPtr):
             return
         return self._frame.print_traceback()
 
-class PyFramePtr:
+klasse PyFramePtr:
 
     def __init__(self, gdbval):
         self._gdbval = gdbval
@@ -1258,7 +1258,7 @@ class PyFramePtr:
         # No truncation occurred:
         return out.getvalue()
 
-class PySetObjectPtr(PyObjectPtr):
+klasse PySetObjectPtr(PyObjectPtr):
     _typename = 'PySetObject'
 
     @classmethod
@@ -1320,7 +1320,7 @@ class PySetObjectPtr(PyObjectPtr):
             out.write(')')
 
 
-class PyBytesObjectPtr(PyObjectPtr):
+klasse PyBytesObjectPtr(PyObjectPtr):
     _typename = 'PyBytesObject'
 
     def __str__(self):
@@ -1363,7 +1363,7 @@ class PyBytesObjectPtr(PyObjectPtr):
                 out.write(byte)
         out.write(quote)
 
-class PyTupleObjectPtr(PyObjectPtr):
+klasse PyTupleObjectPtr(PyObjectPtr):
     _typename = 'PyTupleObject'
 
     def __getitem__(self, i):
@@ -1399,7 +1399,7 @@ class PyTupleObjectPtr(PyObjectPtr):
         else:
             out.write(')')
 
-class PyTypeObjectPtr(PyObjectPtr):
+klasse PyTypeObjectPtr(PyObjectPtr):
     _typename = 'PyTypeObject'
 
 
@@ -1411,7 +1411,7 @@ def _unichr_is_printable(char):
     return unicodedata.category(char) not in ("C", "Z")
 
 
-class PyUnicodeObjectPtr(PyObjectPtr):
+klasse PyUnicodeObjectPtr(PyObjectPtr):
     _typename = 'PyUnicodeObject'
 
     def proxyval(self, visited):
@@ -1541,7 +1541,7 @@ class PyUnicodeObjectPtr(PyObjectPtr):
         out.write(quote)
 
 
-class wrapperobject(PyObjectPtr):
+klasse wrapperobject(PyObjectPtr):
     _typename = 'wrapperobject'
 
     def safe_name(self):
@@ -1590,7 +1590,7 @@ def stringify(val):
         return pformat(val)
 
 
-class PyObjectPtrPrinter:
+klasse PyObjectPtrPrinter:
     "Prints a (PyObject*)"
 
     def __init__ (self, gdbval):
@@ -1653,7 +1653,7 @@ register (gdb.current_objfile ())
 # from build to build
 # See http://bugs.python.org/issue8279?#msg102276
 
-class Frame(object):
+klasse Frame(object):
     '''
     Wrapper for gdb.Frame, adding various methods
     '''
@@ -1899,7 +1899,7 @@ class Frame(object):
             else:
                 sys.stdout.write('  (not a python frame)\n')
 
-class PyList(gdb.Command):
+klasse PyList(gdb.Command):
     '''List the current Python source code, if any
 
     Use
@@ -2013,7 +2013,7 @@ def move_in_stack(move_up):
         print('Unable to find a newer python frame')
 
 
-class PyUp(gdb.Command):
+klasse PyUp(gdb.Command):
     'Select and print all python stack frame in the same eval loop starting from the one that called this one (if any)'
     def __init__(self):
         gdb.Command.__init__ (self,
@@ -2025,7 +2025,7 @@ class PyUp(gdb.Command):
     def invoke(self, args, from_tty):
         move_in_stack(move_up=True)
 
-class PyDown(gdb.Command):
+klasse PyDown(gdb.Command):
     'Select and print all python stack frame in the same eval loop starting from the one called this one (if any)'
     def __init__(self):
         gdb.Command.__init__ (self,
@@ -2042,7 +2042,7 @@ if hasattr(gdb.Frame, 'select'):
     PyUp()
     PyDown()
 
-class PyBacktraceFull(gdb.Command):
+klasse PyBacktraceFull(gdb.Command):
     'Display the current python frame and all the frames within its call stack (if any)'
     def __init__(self):
         gdb.Command.__init__ (self,
@@ -2064,7 +2064,7 @@ class PyBacktraceFull(gdb.Command):
 
 PyBacktraceFull()
 
-class PyBacktrace(gdb.Command):
+klasse PyBacktrace(gdb.Command):
     'Display the current python frame and all the frames within its call stack (if any)'
     def __init__(self):
         gdb.Command.__init__ (self,
@@ -2087,7 +2087,7 @@ class PyBacktrace(gdb.Command):
 
 PyBacktrace()
 
-class PyPrint(gdb.Command):
+klasse PyPrint(gdb.Command):
     'Look up the given python variable name, and print it'
     def __init__(self):
         gdb.Command.__init__ (self,
@@ -2121,7 +2121,7 @@ class PyPrint(gdb.Command):
 
 PyPrint()
 
-class PyLocals(gdb.Command):
+klasse PyLocals(gdb.Command):
     'Look up the given python variable name, and print it'
     def __init__(self):
         gdb.Command.__init__ (self,

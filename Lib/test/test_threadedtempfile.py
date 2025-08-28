@@ -31,7 +31,7 @@ FILES_PER_THREAD = 50
 startEvent = threading.Event()
 
 
-class TempFileGreedy(threading.Thread):
+klasse TempFileGreedy(threading.Thread):
     error_count = 0
     ok_count = 0
 
@@ -49,7 +49,7 @@ class TempFileGreedy(threading.Thread):
                 self.ok_count += 1
 
 
-class ThreadedTempFileTest(unittest.TestCase):
+klasse ThreadedTempFileTest(unittest.TestCase):
     @support.bigmemtest(size=NUM_THREADS, memuse=60*2**20, dry_run=False)
     def test_main(self, size):
         threads = [TempFileGreedy() for i in range(NUM_THREADS)]

@@ -29,23 +29,23 @@ except ImportError:
     INT_MAX = 2**31 - 1
 
 
-class NaiveException(Exception):
+klasse NaiveException(Exception):
     def __init__(self, x):
         self.x = x
 
-class SlottedNaiveException(Exception):
+klasse SlottedNaiveException(Exception):
     __slots__ = ('x',)
     def __init__(self, x):
         self.x = x
 
-class BrokenStrException(Exception):
+klasse BrokenStrException(Exception):
     def __str__(self):
         raise Exception("str() is broken")
 
 # XXX This is not really enough, each *operation* should be tested!
 
 
-class ExceptionTests(unittest.TestCase):
+klasse ExceptionTests(unittest.TestCase):
 
     def raise_catch(self, exc, excname):
         with self.subTest(exc=exc, excname=excname):
@@ -343,11 +343,11 @@ class ExceptionTests(unittest.TestCase):
         # test that setting an exception at the C level works even if the
         # exception object can't be constructed.
 
-        class BadException(Exception):
+        klasse BadException(Exception):
             def __init__(self_):
                 raise RuntimeError("can't instantiate BadException")
 
-        class InvalidException:
+        klasse InvalidException:
             pass
 
         @unittest.skipIf(_testcapi is None, "requires _testcapi")
@@ -636,7 +636,7 @@ class ExceptionTests(unittest.TestCase):
         self.assertIsInstance(e, IndexError)
         self.assertEqual(e.__traceback__, tb)
 
-        class MyException(Exception):
+        klasse MyException(Exception):
             pass
 
         e = MyException().with_traceback(tb)
@@ -696,7 +696,7 @@ class ExceptionTests(unittest.TestCase):
         self.assertIsNone(e.__context__)
         self.assertIsNone(e.__cause__)
 
-        class MyException(OSError):
+        klasse MyException(OSError):
             pass
 
         e = MyException()
@@ -726,7 +726,7 @@ class ExceptionTests(unittest.TestCase):
         # but user-defined subclasses can if they want
         self.assertRaises(TypeError, BaseException, a=1)
 
-        class DerivedException(BaseException):
+        klasse DerivedException(BaseException):
             def __init__(self, fancy_arg):
                 BaseException.__init__(self)
                 self.fancy_arg = fancy_arg
@@ -779,10 +779,10 @@ class ExceptionTests(unittest.TestCase):
         # Make sure exception state is cleaned up as soon as the except
         # block is left. See #2507
 
-        class MyException(Exception):
+        klasse MyException(Exception):
             def __init__(self, obj):
                 self.obj = obj
-        class MyObj:
+        klasse MyObj:
             pass
 
         def inner_raising_func():
@@ -881,7 +881,7 @@ class ExceptionTests(unittest.TestCase):
         self.assertIsNone(obj)
 
         # Inside an exception-silencing "with" block
-        class Context:
+        klasse Context:
             def __enter__(self):
                 return self
             def __exit__ (self, exc_type, exc_value, exc_tb):
@@ -1027,10 +1027,10 @@ class ExceptionTests(unittest.TestCase):
     def _check_generator_cleanup_exc_state(self, testfunc):
         # Issue #12791: exception state is cleaned up as soon as a generator
         # is closed (reference cycles are broken).
-        class MyException(Exception):
+        klasse MyException(Exception):
             def __init__(self, obj):
                 self.obj = obj
-        class MyObj:
+        klasse MyObj:
             pass
 
         def raising_gen():
@@ -1090,7 +1090,7 @@ class ExceptionTests(unittest.TestCase):
     def test_3114(self):
         # Bug #3114: in its destructor, MyObject retrieves a pointer to
         # obsolete and/or deallocated objects.
-        class MyObject:
+        klasse MyObject:
             def __del__(self):
                 nonlocal e
                 e = sys.exception()
@@ -1103,11 +1103,11 @@ class ExceptionTests(unittest.TestCase):
         self.assertIsNone(e)
 
     def test_raise_does_not_create_context_chain_cycle(self):
-        class A(Exception):
+        klasse A(Exception):
             pass
-        class B(Exception):
+        klasse B(Exception):
             pass
-        class C(Exception):
+        klasse C(Exception):
             pass
 
         # Create a context chain:
@@ -1164,11 +1164,11 @@ class ExceptionTests(unittest.TestCase):
     def test_no_hang_on_context_chain_cycle2(self):
         # See issue 25782. Cycle at head of context chain.
 
-        class A(Exception):
+        klasse A(Exception):
             pass
-        class B(Exception):
+        klasse B(Exception):
             pass
-        class C(Exception):
+        klasse C(Exception):
             pass
 
         # Context cycle:
@@ -1200,15 +1200,15 @@ class ExceptionTests(unittest.TestCase):
     def test_no_hang_on_context_chain_cycle3(self):
         # See issue 25782. Longer context chain with cycle.
 
-        class A(Exception):
+        klasse A(Exception):
             pass
-        class B(Exception):
+        klasse B(Exception):
             pass
-        class C(Exception):
+        klasse C(Exception):
             pass
-        class D(Exception):
+        klasse D(Exception):
             pass
-        class E(Exception):
+        klasse E(Exception):
             pass
 
         # Context cycle:
@@ -1375,7 +1375,7 @@ class ExceptionTests(unittest.TestCase):
         # side-effects mutate the underlying 'object' attribute.
         # See https://github.com/python/cpython/issues/128974.
 
-        class Evil(str):
+        klasse Evil(str):
             def __str__(self):
                 side_effect(exc)
                 return self
@@ -1401,10 +1401,10 @@ class ExceptionTests(unittest.TestCase):
     def test_badisinstance(self):
         # Bug #2542: if issubclass(e, MyException) raises an exception,
         # it should be ignored
-        class Meta(type):
+        klasse Meta(type):
             def __subclasscheck__(cls, subclass):
                 raise ValueError()
-        class MyException(Exception, metaclass=Meta):
+        klasse MyException(Exception, metaclass=Meta):
             pass
 
         with captured_stderr() as stderr:
@@ -1463,7 +1463,7 @@ class ExceptionTests(unittest.TestCase):
             from _testinternalcapi import get_recursion_depth
             from test import support
 
-            class MyException(Exception): pass
+            klasse MyException(Exception): pass
 
             def setrecursionlimit(depth):
                 while 1:
@@ -1583,7 +1583,7 @@ class ExceptionTests(unittest.TestCase):
         # Fatal Python error message mentions MemoryError.
         code = """if 1:
             import _testcapi
-            class C(): pass
+            klasse C(): pass
             def recurse(cnt):
                 cnt -= 1
                 if cnt:
@@ -1642,7 +1642,7 @@ class ExceptionTests(unittest.TestCase):
         self.assertIsSubclass(error3, error2)
 
         # test with explicit base tuple
-        class C(object):
+        klasse C(object):
             pass
         error4 = _testcapi.make_exception_with_doc("_testcapi.error4", doc4,
                                                    (error3, C))
@@ -1663,7 +1663,7 @@ class ExceptionTests(unittest.TestCase):
         # Issue #5437: preallocated MemoryError instances should not keep
         # traceback objects alive.
         from _testcapi import raise_memoryerror
-        class C:
+        klasse C:
             pass
         wr = None
         def inner():
@@ -1684,7 +1684,7 @@ class ExceptionTests(unittest.TestCase):
     @no_tracing
     def test_recursion_error_cleanup(self):
         # Same test as above, but with "recursion exceeded" errors
-        class C:
+        klasse C:
             pass
         wr = None
         def inner():
@@ -1710,7 +1710,7 @@ class ExceptionTests(unittest.TestCase):
 
     def test_unraisable(self):
         # Issue #22836: PyErr_WriteUnraisable() should give sensible reports
-        class BrokenDel:
+        klasse BrokenDel:
             def __del__(self):
                 exc = ValueError("del is broken")
                 # The following line is included in the traceback report:
@@ -1756,7 +1756,7 @@ class ExceptionTests(unittest.TestCase):
     def test_memory_error_in_PyErr_PrintEx(self):
         code = """if 1:
             import _testcapi
-            class C(): pass
+            klasse C(): pass
             _testcapi.set_nomemory(0, %d)
             C()
         """
@@ -1771,10 +1771,10 @@ class ExceptionTests(unittest.TestCase):
 
     def test_yield_in_nested_try_excepts(self):
         #Issue #25612
-        class MainError(Exception):
+        klasse MainError(Exception):
             pass
 
-        class SubError(Exception):
+        klasse SubError(Exception):
             pass
 
         def main():
@@ -1850,7 +1850,7 @@ class ExceptionTests(unittest.TestCase):
         # subclass object. Finally, it checks that creating a new MemoryError
         # succeeds, proving that the freelist is not corrupted.
 
-        class TestException(MemoryError):
+        klasse TestException(MemoryError):
             pass
 
         try:
@@ -1910,7 +1910,7 @@ class ExceptionTests(unittest.TestCase):
             exc2 = None
 
 
-class NameErrorTests(unittest.TestCase):
+klasse NameErrorTests(unittest.TestCase):
     def test_name_error_has_name(self):
         try:
             bluch
@@ -1952,7 +1952,7 @@ class NameErrorTests(unittest.TestCase):
 
     def test_gh_111654(self):
         def f():
-            class TestClass:
+            klasse TestClass:
                 TestClass
 
         self.assertRaises(NameError, f)
@@ -1960,7 +1960,7 @@ class NameErrorTests(unittest.TestCase):
     # Note: name suggestion tests live in `test_traceback`.
 
 
-class AttributeErrorTests(unittest.TestCase):
+klasse AttributeErrorTests(unittest.TestCase):
     def test_attributes(self):
         # Setting 'attr' should not be a problem.
         exc = AttributeError('Ouch!')
@@ -1973,7 +1973,7 @@ class AttributeErrorTests(unittest.TestCase):
         self.assertIs(exc.obj, sentinel)
 
     def test_getattr_has_name_and_obj(self):
-        class A:
+        klasse A:
             blech = None
 
         obj = A()
@@ -1989,7 +1989,7 @@ class AttributeErrorTests(unittest.TestCase):
             self.assertEqual(obj, exc.obj)
 
     def test_getattr_has_name_and_obj_for_method(self):
-        class A:
+        klasse A:
             def blech(self):
                 return
 
@@ -2003,7 +2003,7 @@ class AttributeErrorTests(unittest.TestCase):
     # Note: name suggestion tests live in `test_traceback`.
 
 
-class ImportErrorTests(unittest.TestCase):
+klasse ImportErrorTests(unittest.TestCase):
 
     def test_attributes(self):
         # Setting 'name' and 'path' should not be a problem.
@@ -2134,7 +2134,7 @@ def run_script(source):
     _rc, _out, err = script_helper.assert_python_failure('-Wd', '-X', 'utf8', TESTFN)
     return err.decode('utf-8').splitlines()
 
-class AssertionErrorTests(unittest.TestCase):
+klasse AssertionErrorTests(unittest.TestCase):
     def tearDown(self):
         unlink(TESTFN)
 
@@ -2269,7 +2269,7 @@ class AssertionErrorTests(unittest.TestCase):
 
 
 @support.force_not_colorized_test_class
-class SyntaxErrorTests(unittest.TestCase):
+klasse SyntaxErrorTests(unittest.TestCase):
     maxDiff = None
 
     @force_not_colorized
@@ -2365,7 +2365,7 @@ class SyntaxErrorTests(unittest.TestCase):
 
     @force_not_colorized
     def test_subclass(self):
-        class MySyntaxError(SyntaxError):
+        klasse MySyntaxError(SyntaxError):
             pass
 
         try:
@@ -2516,7 +2516,7 @@ class SyntaxErrorTests(unittest.TestCase):
         self.assertRaises(TypeError, SyntaxError, "bad bad", args)
 
 
-class TestInvalidExceptionMatcher(unittest.TestCase):
+klasse TestInvalidExceptionMatcher(unittest.TestCase):
     def test_except_star_invalid_exception_type(self):
         with self.assertRaises(TypeError):
             try:
@@ -2531,7 +2531,7 @@ class TestInvalidExceptionMatcher(unittest.TestCase):
                 pass
 
 
-class PEP626Tests(unittest.TestCase):
+klasse PEP626Tests(unittest.TestCase):
 
     def lineno_after_raise(self, f, *expected):
         try:
@@ -2610,7 +2610,7 @@ class PEP626Tests(unittest.TestCase):
         self.lineno_after_raise(in_finally_except, 4)
 
     def test_lineno_after_with(self):
-        class Noop:
+        klasse Noop:
             def __enter__(self):
                 return self
             def __exit__(self, *args):
@@ -2629,7 +2629,7 @@ class PEP626Tests(unittest.TestCase):
         self.lineno_after_raise(f, None)
 
     def test_lineno_after_raise_in_with_exit(self):
-        class ExitFails:
+        klasse ExitFails:
             def __enter__(self):
                 return self
             def __exit__(self, *args):

@@ -6,7 +6,7 @@ if not hasattr(os, "openpty"):
     raise unittest.SkipTest("os.openpty() not available.")
 
 
-class OpenptyTest(unittest.TestCase):
+klasse OpenptyTest(unittest.TestCase):
     def test(self):
         master, slave = os.openpty()
         self.addCleanup(os.close, master)

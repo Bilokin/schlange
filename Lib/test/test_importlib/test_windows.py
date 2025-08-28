@@ -85,7 +85,7 @@ def setup_module(machinery, name, path=None):
 
 
 @unittest.skipUnless(sys.platform.startswith('win'), 'requires Windows')
-class WindowsRegistryFinderTests:
+klasse WindowsRegistryFinderTests:
     # The module name is process-specific, allowing for
     # simultaneous runs of the same test on a single machine.
     test_module = "spamham{}".format(os.getpid())
@@ -138,7 +138,7 @@ class WindowsRegistryFinderTests:
  ) = test_util.test_both(WindowsRegistryFinderTests, machinery=machinery)
 
 @unittest.skipUnless(sys.platform.startswith('win'), 'requires Windows')
-class WindowsExtensionSuffixTests:
+klasse WindowsExtensionSuffixTests:
     def test_tagged_suffix(self):
         suffixes = self.machinery.EXTENSION_SUFFIXES
         abi_flags = "t" if support.Py_GIL_DISABLED else ""
@@ -163,7 +163,7 @@ class WindowsExtensionSuffixTests:
 
 
 @unittest.skipUnless(sys.platform.startswith('win'), 'requires Windows')
-class WindowsBootstrapPathTests(unittest.TestCase):
+klasse WindowsBootstrapPathTests(unittest.TestCase):
     def check_join(self, expected, *inputs):
         from importlib._bootstrap_external import _path_join
         actual = _path_join(*inputs)

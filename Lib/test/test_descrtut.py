@@ -13,7 +13,7 @@ import doctest
 import unittest
 
 
-class defaultdict(dict):
+klasse defaultdict(dict):
     def __init__(self, default=None):
         dict.__init__(self)
         self.default = default
@@ -101,7 +101,7 @@ just like classic classes:
     >>>
 """ % {'modname': __name__}
 
-class defaultdict2(dict):
+klasse defaultdict2(dict):
     __slots__ = ['default']
 
     def __init__(self, default=None):
@@ -237,13 +237,13 @@ This is just like it is for user-defined classes.
 
 test_4 = """
 
-Static methods and class methods
+Static methods and klasse methods
 
 The new introspection API makes it possible to add static methods and class
 methods. Static methods are easy to describe: they behave pretty much like
 static methods in C++ or Java. Here's an example:
 
-    >>> class C:
+    >>> klasse C:
     ...
     ...     @staticmethod
     ...     def foo(x, y):
@@ -258,7 +258,7 @@ static methods in C++ or Java. Here's an example:
 Class methods use a similar pattern to declare methods that receive an
 implicit first argument that is the *class* for which they are invoked.
 
-    >>> class C:
+    >>> klasse C:
     ...     @classmethod
     ...     def foo(cls, y):
     ...         print("classmethod", cls, y)
@@ -269,7 +269,7 @@ implicit first argument that is the *class* for which they are invoked.
     >>> c.foo(1)
     classmethod <class '%(modname)s.C'> 1
 
-    >>> class D(C):
+    >>> klasse D(C):
     ...     pass
 
     >>> D.foo(1)
@@ -279,12 +279,12 @@ implicit first argument that is the *class* for which they are invoked.
     classmethod <class '%(modname)s.D'> 1
 
 This prints "classmethod __main__.D 1" both times; in other words, the
-class passed as the first argument of foo() is the class involved in the
-call, not the class involved in the definition of foo().
+klasse passed as the first argument of foo() is the klasse involved in the
+call, not the klasse involved in the definition of foo().
 
 But notice this:
 
-    >>> class E(C):
+    >>> klasse E(C):
     ...     @classmethod
     ...     def foo(cls, y): # override C.foo
     ...         print("E.foo() called")
@@ -298,11 +298,11 @@ But notice this:
     E.foo() called
     classmethod <class '%(modname)s.C'> 1
 
-In this example, the call to C.foo() from E.foo() will see class C as its
-first argument, not class E. This is to be expected, since the call
-specifies the class C. But it stresses the difference between these class
+In this example, the call to C.foo() from E.foo() will see klasse C as its
+first argument, not klasse E. This is to be expected, since the call
+specifies the klasse C. But it stresses the difference between these class
 methods and methods defined in metaclasses (where an upcall to a metamethod
-would pass the target class as an explicit first argument).
+would pass the target klasse as an explicit first argument).
 """ % {'modname': __name__}
 
 test_5 = """
@@ -310,7 +310,7 @@ test_5 = """
 Attributes defined by get/set methods
 
 
-    >>> class property(object):
+    >>> klasse property(object):
     ...
     ...     def __init__(self, get, set=None):
     ...         self.__get = get
@@ -324,10 +324,10 @@ Attributes defined by get/set methods
     ...             raise AttributeError("this attribute is read-only")
     ...         return self.__set(inst, value)
 
-Now let's define a class with an attribute x defined by a pair of methods,
+Now let's define a klasse with an attribute x defined by a pair of methods,
 getx() and setx():
 
-    >>> class C(object):
+    >>> klasse C(object):
     ...
     ...     def __init__(self):
     ...         self.__x = 0
@@ -358,7 +358,7 @@ Hmm -- property is builtin now, so let's try it that way too.
     >>> property
     <class 'property'>
 
-    >>> class C(object):
+    >>> klasse C(object):
     ...     def __init__(self):
     ...         self.__x = 0
     ...     def getx(self):
@@ -385,48 +385,48 @@ Method resolution order
 
 This example is implicit in the writeup.
 
->>> class A:    # implicit new-style class
+>>> klasse A:    # implicit new-style class
 ...     def save(self):
 ...         print("called A.save()")
->>> class B(A):
+>>> klasse B(A):
 ...     pass
->>> class C(A):
+>>> klasse C(A):
 ...     def save(self):
 ...         print("called C.save()")
->>> class D(B, C):
+>>> klasse D(B, C):
 ...     pass
 
 >>> D().save()
 called C.save()
 
->>> class A(object):  # explicit new-style class
+>>> klasse A(object):  # explicit new-style class
 ...     def save(self):
 ...         print("called A.save()")
->>> class B(A):
+>>> klasse B(A):
 ...     pass
->>> class C(A):
+>>> klasse C(A):
 ...     def save(self):
 ...         print("called C.save()")
->>> class D(B, C):
+>>> klasse D(B, C):
 ...     pass
 
 >>> D().save()
 called C.save()
 """
 
-class A(object):
+klasse A(object):
     def m(self):
         return "A"
 
-class B(A):
+klasse B(A):
     def m(self):
         return "B" + super(B, self).m()
 
-class C(A):
+klasse C(A):
     def m(self):
         return "C" + super(C, self).m()
 
-class D(C, B):
+klasse D(C, B):
     def m(self):
         return "D" + super(D, self).m()
 
@@ -443,21 +443,21 @@ test_8 = """
 
 Backwards incompatibilities
 
->>> class A:
+>>> klasse A:
 ...     def foo(self):
 ...         print("called A.foo()")
 
->>> class B(A):
+>>> klasse B(A):
 ...     pass
 
->>> class C(A):
+>>> klasse C(A):
 ...     def foo(self):
 ...         B.foo(self)
 
 >>> C().foo()
 called A.foo()
 
->>> class C(A):
+>>> klasse C(A):
 ...     def foo(self):
 ...         A.foo(self)
 >>> C().foo()

@@ -10,7 +10,7 @@ if support.is_wasi:
     raise unittest.SkipTest("Cannot create socket on WASI")
 
 
-class TestResponse(unittest.TestCase):
+klasse TestResponse(unittest.TestCase):
 
     def setUp(self):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

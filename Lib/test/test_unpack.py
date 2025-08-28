@@ -39,7 +39,7 @@ Unpack string... fun!
 
 Unpack generic sequence
 
-    >>> class Seq:
+    >>> klasse Seq:
     ...     def __getitem__(self, i):
     ...         if i >= 0 and i < 3: return i
     ...         raise IndexError
@@ -99,10 +99,10 @@ Unpacking sequence too long
 Unpacking a sequence where the test for too long raises a different kind of
 error
 
-    >>> class BozoError(Exception):
+    >>> klasse BozoError(Exception):
     ...     pass
     ...
-    >>> class BadSeq:
+    >>> klasse BadSeq:
     ...     def __getitem__(self, i):
     ...         if i >= 0 and i < 3:
     ...             return i
@@ -170,7 +170,7 @@ Unpacking unbalanced dict
 
 Ensure that custom `__len__()` is NOT called when showing the error message
 
-    >>> class LengthTooLong:
+    >>> klasse LengthTooLong:
     ...     def __len__(self):
     ...         return 5
     ...     def __getitem__(self, i):
@@ -183,7 +183,7 @@ Ensure that custom `__len__()` is NOT called when showing the error message
 
 For evil cases like these as well, no actual count to be shown
 
-    >>> class BadLength:
+    >>> klasse BadLength:
     ...     def __len__(self):
     ...         return 1
     ...     def __getitem__(self, i):
@@ -202,7 +202,7 @@ def load_tests(loader, tests, pattern):
     return tests
 
 
-class TestCornerCases(unittest.TestCase):
+klasse TestCornerCases(unittest.TestCase):
     def test_extended_oparg_not_ignored(self):
         # https://github.com/python/cpython/issues/91625
         target = "(" + "y,"*400 + ")"

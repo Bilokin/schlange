@@ -10,7 +10,7 @@ _ctypes_test = import_helper.import_module("_ctypes_test")
 dll = CDLL(_ctypes_test.__file__)
 
 
-class X(Structure):
+klasse X(Structure):
     _fields_ = [("a", c_int), ("b", c_double)]
     init_called = 0
     def __init__(self, *args, **kw):
@@ -18,10 +18,10 @@ class X(Structure):
         self.x = 42
 
 
-class Y(X):
+klasse Y(X):
     _fields_ = [("str", c_char_p)]
 
-class PickleTest:
+klasse PickleTest:
     def dumps(self, item):
         return pickle.dumps(item, self.proto)
 

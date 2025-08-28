@@ -35,7 +35,7 @@ def ext_decompress(data):
     else:
         return bz2.decompress(data)
 
-class BaseTest(unittest.TestCase):
+klasse BaseTest(unittest.TestCase):
     "Base for other testcases."
 
     TEXT_LINES = [
@@ -87,7 +87,7 @@ class BaseTest(unittest.TestCase):
         unlink(self.filename)
 
 
-class BZ2FileTest(BaseTest):
+klasse BZ2FileTest(BaseTest):
     "Test the BZ2File class."
 
     def createTempFile(self, streams=1, suffix=b""):
@@ -818,7 +818,7 @@ class BZ2FileTest(BaseTest):
             self.assertEqual(f.tell(), LENGTH)
 
 
-class BZ2CompressorTest(BaseTest):
+klasse BZ2CompressorTest(BaseTest):
     def testCompress(self):
         bz2c = BZ2Compressor()
         self.assertRaises(TypeError, bz2c.compress)
@@ -869,7 +869,7 @@ class BZ2CompressorTest(BaseTest):
                 pickle.dumps(BZ2Compressor(), proto)
 
 
-class BZ2DecompressorTest(BaseTest):
+klasse BZ2DecompressorTest(BaseTest):
     def test_Constructor(self):
         self.assertRaises(TypeError, BZ2Decompressor, 42)
 
@@ -1036,7 +1036,7 @@ class BZ2DecompressorTest(BaseTest):
                          decompress(bytes()), b'')
 
 
-class CompressDecompressTest(BaseTest):
+klasse CompressDecompressTest(BaseTest):
     def testCompress(self):
         data = bz2.compress(self.TEXT)
         self.assertEqual(ext_decompress(data), self.TEXT)
@@ -1076,7 +1076,7 @@ class CompressDecompressTest(BaseTest):
         self.assertEqual(text, self.TEXT * 5)
 
 
-class OpenTest(BaseTest):
+klasse OpenTest(BaseTest):
     "Test the open function."
 
     def open(self, *args, **kwargs):

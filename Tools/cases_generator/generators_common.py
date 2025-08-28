@@ -16,7 +16,7 @@ from parser import Stmt, SimpleStmt, BlockStmt, IfStmt, ForStmt, WhileStmt, Macr
 from stack import PRINT_STACKS
 DEBUG = False
 
-class TokenIterator:
+klasse TokenIterator:
 
     look_ahead: Token | None
     iterator: Iterator[Token]
@@ -102,7 +102,7 @@ NON_ESCAPING_DEALLOCS = {
     "_PyUnicode_ExactDealloc",
 }
 
-class Emitter:
+klasse Emitter:
     out: CWriter
     labels: dict[str, Label]
     _replacers: dict[str, ReplacementFunctionType]

@@ -8,7 +8,7 @@ from os.path import abspath, dirname, join
 from tkinter import Tk
 
 
-class IdleDocTest(unittest.TestCase):
+klasse IdleDocTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):

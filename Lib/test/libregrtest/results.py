@@ -22,7 +22,7 @@ EXITCODE_RERUN_FAIL = 5
 EXITCODE_INTERRUPTED = 130   # 128 + signal.SIGINT=2
 
 
-class TestResults:
+klasse TestResults:
     def __init__(self) -> None:
         self.bad: TestList = []
         self.good: TestList = []

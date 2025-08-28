@@ -48,9 +48,9 @@ SYSLOG_TCP_PORT             = 514
 
 _MIDNIGHT = 24 * 60 * 60  # number of seconds in a day
 
-class BaseRotatingHandler(logging.FileHandler):
+klasse BaseRotatingHandler(logging.FileHandler):
     """
-    Base class for handlers that rotate log files at a certain point.
+    Base klasse for handlers that rotate log files at a certain point.
     Not meant to be instantiated directly.  Instead, use RotatingFileHandler
     or TimedRotatingFileHandler.
     """
@@ -122,7 +122,7 @@ class BaseRotatingHandler(logging.FileHandler):
         else:
             self.rotator(source, dest)
 
-class RotatingFileHandler(BaseRotatingHandler):
+klasse RotatingFileHandler(BaseRotatingHandler):
     """
     Handler for logging to a set of files, which switches from one file
     to the next when the current file reaches a certain size.
@@ -208,7 +208,7 @@ class RotatingFileHandler(BaseRotatingHandler):
                 return True
         return False
 
-class TimedRotatingFileHandler(BaseRotatingHandler):
+klasse TimedRotatingFileHandler(BaseRotatingHandler):
     """
     Handler for logging to a file, rotating the log file at certain timed
     intervals.
@@ -457,7 +457,7 @@ class TimedRotatingFileHandler(BaseRotatingHandler):
             self.stream = self._open()
         self.rolloverAt = self.computeRollover(currentTime)
 
-class WatchedFileHandler(logging.FileHandler):
+klasse WatchedFileHandler(logging.FileHandler):
     """
     A handler for logging to a file, which watches the file
     to see if it has changed while in use. This can happen because of
@@ -540,9 +540,9 @@ class WatchedFileHandler(logging.FileHandler):
         logging.FileHandler.emit(self, record)
 
 
-class SocketHandler(logging.Handler):
+klasse SocketHandler(logging.Handler):
     """
-    A handler class which writes logging records, in pickle format, to
+    A handler klasse which writes logging records, in pickle format, to
     a streaming socket. The socket is kept open across logging calls.
     If the peer resets it, an attempt is made to reconnect on the next call.
     The pickle which is sent is that of the LogRecord's attribute dictionary
@@ -704,9 +704,9 @@ class SocketHandler(logging.Handler):
                 sock.close()
             logging.Handler.close(self)
 
-class DatagramHandler(SocketHandler):
+klasse DatagramHandler(SocketHandler):
     """
-    A handler class which writes logging records, in pickle format, to
+    A handler klasse which writes logging records, in pickle format, to
     a datagram socket.  The pickle which is sent is that of the LogRecord's
     attribute dictionary (__dict__), so that the receiver does not need to
     have the logging module installed in order to process the logging event.
@@ -746,9 +746,9 @@ class DatagramHandler(SocketHandler):
             self.createSocket()
         self.sock.sendto(s, self.address)
 
-class SysLogHandler(logging.Handler):
+klasse SysLogHandler(logging.Handler):
     """
-    A handler class which sends formatted logging records to a syslog
+    A handler klasse which sends formatted logging records to a syslog
     server. Based on Sam Rushing's syslog module:
     http://www.nightmare.com/squirl/python-ext/misc/syslog.py
     Contributed by Nicolas Untz (after which minor refactoring changes
@@ -1025,9 +1025,9 @@ class SysLogHandler(logging.Handler):
         except Exception:
             self.handleError(record)
 
-class SMTPHandler(logging.Handler):
+klasse SMTPHandler(logging.Handler):
     """
-    A handler class which sends an SMTP email for each logging event.
+    A handler klasse which sends an SMTP email for each logging event.
     """
     def __init__(self, mailhost, fromaddr, toaddrs, subject,
                  credentials=None, secure=None, timeout=5.0):
@@ -1121,9 +1121,9 @@ class SMTPHandler(logging.Handler):
         except Exception:
             self.handleError(record)
 
-class NTEventLogHandler(logging.Handler):
+klasse NTEventLogHandler(logging.Handler):
     """
-    A handler class which sends events to the NT Event Log. Adds a
+    A handler klasse which sends events to the NT Event Log. Adds a
     registry entry for the specified application name. If no dllname is
     provided, win32service.pyd (which contains some basic message
     placeholders) is used. Note that use of these placeholders will make
@@ -1228,9 +1228,9 @@ class NTEventLogHandler(logging.Handler):
         #self._welu.RemoveSourceFromRegistry(self.appname, self.logtype)
         logging.Handler.close(self)
 
-class HTTPHandler(logging.Handler):
+klasse HTTPHandler(logging.Handler):
     """
-    A class which sends records to a web server, using either GET or
+    A klasse which sends records to a web server, using either GET or
     POST semantics.
     """
     def __init__(self, host, url, method="GET", secure=False, credentials=None,
@@ -1318,9 +1318,9 @@ class HTTPHandler(logging.Handler):
         except Exception:
             self.handleError(record)
 
-class BufferingHandler(logging.Handler):
+klasse BufferingHandler(logging.Handler):
     """
-  A handler class which buffers logging records in memory. Whenever each
+  A handler klasse which buffers logging records in memory. Whenever each
   record is added to the buffer, a check is made to see if the buffer should
   be flushed. If it should, then flush() is expected to do what's needed.
     """
@@ -1372,9 +1372,9 @@ class BufferingHandler(logging.Handler):
         finally:
             logging.Handler.close(self)
 
-class MemoryHandler(BufferingHandler):
+klasse MemoryHandler(BufferingHandler):
     """
-    A handler class which buffers logging records in memory, periodically
+    A handler klasse which buffers logging records in memory, periodically
     flushing them to a target handler. Flushing occurs whenever the buffer
     is full, or when an event of a certain severity or greater is seen.
     """
@@ -1440,14 +1440,14 @@ class MemoryHandler(BufferingHandler):
                 BufferingHandler.close(self)
 
 
-class QueueHandler(logging.Handler):
+klasse QueueHandler(logging.Handler):
     """
     This handler sends events to a queue. Typically, it would be used together
     with a multiprocessing Queue to centralise logging to file in one process
     (in a multi-process application), so as to avoid file write contention
     between processes.
 
-    This code is new in Python 3.2, but this class can be copy pasted into
+    This code is new in Python 3.2, but this klasse can be copy pasted into
     user code for use with earlier Python versions.
     """
 
@@ -1514,9 +1514,9 @@ class QueueHandler(logging.Handler):
             self.handleError(record)
 
 
-class QueueListener(object):
+klasse QueueListener(object):
     """
-    This class implements an internal threaded listener which watches for
+    This klasse implements an internal threaded listener which watches for
     LogRecords being added to a queue, removes them and passes them to a
     list of handlers for processing.
     """

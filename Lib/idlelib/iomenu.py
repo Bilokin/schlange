@@ -17,7 +17,7 @@ encoding = 'utf-8'
 errors = 'surrogatepass' if sys.platform == 'win32' else 'surrogateescape'
 
 
-class IOBinding:
+klasse IOBinding:
 # One instance per editor Window so methods know which to save, close.
 # Open returns focus to self.editwin if aborted.
 # EditorWindow.open_module, others, belong here.
@@ -403,7 +403,7 @@ def _io_binding(parent):  # htest #
     x, y = map(int, parent.geometry().split('+')[1:])
     top.geometry("+%d+%d" % (x, y + 175))
 
-    class MyEditWin:
+    klasse MyEditWin:
         def __init__(self, text):
             self.text = text
             self.flist = None

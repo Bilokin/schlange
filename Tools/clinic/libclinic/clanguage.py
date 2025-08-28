@@ -31,7 +31,7 @@ def c_id(name: str) -> str:
         return f'&_Py_ID({name})'
 
 
-class CLanguage(Language):
+klasse CLanguage(Language):
 
     body_prefix   = "#"
     language      = 'C'

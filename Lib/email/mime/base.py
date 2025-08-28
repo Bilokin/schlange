@@ -2,7 +2,7 @@
 # Author: Barry Warsaw
 # Contact: email-sig@python.org
 
-"""Base class for MIME specializations."""
+"""Base klasse for MIME specializations."""
 
 __all__ = ['MIMEBase']
 
@@ -11,8 +11,8 @@ import email.policy
 from email import message
 
 
-class MIMEBase(message.Message):
-    """Base class for MIME specializations."""
+klasse MIMEBase(message.Message):
+    """Base klasse for MIME specializations."""
 
     def __init__(self, _maintype, _subtype, *, policy=None, **_params):
         """This constructor adds a Content-Type: and a MIME-Version: header.

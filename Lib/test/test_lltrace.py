@@ -16,7 +16,7 @@ def example():
 
 
 @unittest.skipUnless(support.Py_DEBUG, "lltrace requires Py_DEBUG")
-class TestLLTrace(unittest.TestCase):
+klasse TestLLTrace(unittest.TestCase):
 
     def run_code(self, code):
         code = textwrap.dedent(code).strip()

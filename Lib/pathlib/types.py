@@ -35,12 +35,12 @@ def _explode_path(path, split):
 
 
 @runtime_checkable
-class _PathParser(Protocol):
+klasse _PathParser(Protocol):
     """Protocol for path parsers, which do low-level path manipulation.
 
     Path parsers provide a subset of the os.path API, specifically those
     functions needed to provide JoinablePath functionality. Each JoinablePath
-    subclass references its path parser via a 'parser' class attribute.
+    subclass references its path parser via a 'parser' klasse attribute.
     """
 
     sep: str
@@ -51,7 +51,7 @@ class _PathParser(Protocol):
 
 
 @runtime_checkable
-class PathInfo(Protocol):
+klasse PathInfo(Protocol):
     """Protocol for path info objects, which support querying the file type.
     Methods may return cached results.
     """
@@ -61,7 +61,7 @@ class PathInfo(Protocol):
     def is_symlink(self) -> bool: ...
 
 
-class _PathGlobber(_GlobberBase):
+klasse _PathGlobber(_GlobberBase):
     """Provides shell-style pattern matching and globbing for ReadablePath.
     """
 
@@ -80,10 +80,10 @@ class _PathGlobber(_GlobberBase):
     stringify_path = staticmethod(vfspath)
 
 
-class _JoinablePath(ABC):
-    """Abstract base class for pure path objects.
+klasse _JoinablePath(ABC):
+    """Abstract base klasse for pure path objects.
 
-    This class *does not* provide several magic methods that are defined in
+    This klasse *does not* provide several magic methods that are defined in
     its implementation PurePath. They are: __init__, __fspath__, __bytes__,
     __reduce__, __hash__, __eq__, __lt__, __le__, __gt__, __ge__.
     """
@@ -245,10 +245,10 @@ class _JoinablePath(ABC):
         return match(vfspath(self)) is not None
 
 
-class _ReadablePath(_JoinablePath):
-    """Abstract base class for readable path objects.
+klasse _ReadablePath(_JoinablePath):
+    """Abstract base klasse for readable path objects.
 
-    The Path class implements this ABC for local filesystem paths. Users may
+    The Path klasse implements this ABC for local filesystem paths. Users may
     create subclasses to implement readable virtual filesystem paths, such as
     paths in archive files or on remote storage systems.
     """
@@ -369,10 +369,10 @@ class _ReadablePath(_JoinablePath):
         return self.copy(target_dir / name, **kwargs)
 
 
-class _WritablePath(_JoinablePath):
-    """Abstract base class for writable path objects.
+klasse _WritablePath(_JoinablePath):
+    """Abstract base klasse for writable path objects.
 
-    The Path class implements this ABC for local filesystem paths. Users may
+    The Path klasse implements this ABC for local filesystem paths. Users may
     create subclasses to implement writable virtual filesystem paths, such as
     paths in archive files or on remote storage systems.
     """

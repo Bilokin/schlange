@@ -87,7 +87,7 @@ def save_restore_converters(testcase):
                         return_converters.copy())
 
 
-class ClinicWholeFileTest(TestCase):
+klasse ClinicWholeFileTest(TestCase):
     maxDiff = None
 
     def expect_failure(self, raw, errmsg, *, filename=None, lineno=None):
@@ -282,7 +282,7 @@ class ClinicWholeFileTest(TestCase):
     def test_no_access_to_members_in_converter_init(self):
         raw = """
             /*[python input]
-            class Custom_converter(CConverter):
+            klasse Custom_converter(CConverter):
                 converter = "some_c_function"
                 def converter_init(self):
                     self.function.noaccess
@@ -318,7 +318,7 @@ class ClinicWholeFileTest(TestCase):
         err = "Badly formed annotation for 'm.f': 'Custom'"
         block = """
             /*[python input]
-            class Custom_return_converter(CReturnConverter):
+            klasse Custom_return_converter(CReturnConverter):
                 def __init__(self):
                     raise ValueError("abc")
             [python start generated code]*/
@@ -387,11 +387,11 @@ class ClinicWholeFileTest(TestCase):
         self.expect_failure(block, err, lineno=2)
 
     def test_class_already_got_one(self):
-        err = "Already defined class 'C'!"
+        err = "Already defined klasse 'C'!"
         block = """
             /*[clinic input]
-            class C "" ""
-            class C "" ""
+            klasse C "" ""
+            klasse C "" ""
             [clinic start generated code]*/
         """
         self.expect_failure(block, err, lineno=3)
@@ -400,7 +400,7 @@ class ClinicWholeFileTest(TestCase):
         err = "Can't nest a module inside a class!"
         block = """
             /*[clinic input]
-            class C "" ""
+            klasse C "" ""
             module C.m
             [clinic start generated code]*/
         """
@@ -613,7 +613,7 @@ class ClinicWholeFileTest(TestCase):
     def test_validate_cloned_init(self):
         block = """
             /*[clinic input]
-            class C "void *" ""
+            klasse C "void *" ""
             C.meth
               a: int
             [clinic start generated code]*/
@@ -628,7 +628,7 @@ class ClinicWholeFileTest(TestCase):
     def test_validate_cloned_new(self):
         block = """
             /*[clinic input]
-            class C "void *" ""
+            klasse C "void *" ""
             C.meth
               a: int
             [clinic start generated code]*/
@@ -636,7 +636,7 @@ class ClinicWholeFileTest(TestCase):
             C.__new__ = C.meth
             [clinic start generated code]*/
         """
-        err = "'__new__' must be a class method"
+        err = "'__new__' must be a klasse method"
         self.expect_failure(block, err, lineno=7)
 
     def test_no_c_basename_cloned(self):
@@ -672,7 +672,7 @@ class ClinicWholeFileTest(TestCase):
     def test_cloned_with_illegal_c_basename(self):
         block = """
             /*[clinic input]
-            class C "void *" ""
+            klasse C "void *" ""
             foo1
             [clinic start generated code]*/
 
@@ -749,7 +749,7 @@ class ClinicWholeFileTest(TestCase):
             self.clinic.parse(raw)
 
 
-class ParseFileUnitTest(TestCase):
+klasse ParseFileUnitTest(TestCase):
     def expect_parsing_failure(
         self, *, filename, expected_error, verify=True, output=None
     ):
@@ -774,7 +774,7 @@ class ParseFileUnitTest(TestCase):
                 self.expect_parsing_failure(filename=filename, expected_error=errmsg)
 
 
-class ClinicGroupPermuterTest(TestCase):
+klasse ClinicGroupPermuterTest(TestCase):
     def _test(self, l, m, r, output):
         computed = permute_optional_groups(l, m, r)
         self.assertEqual(output, computed)
@@ -822,7 +822,7 @@ class ClinicGroupPermuterTest(TestCase):
         self.assertRaises(ValueError, fn)
 
 
-class ClinicLinearFormatTest(TestCase):
+klasse ClinicLinearFormatTest(TestCase):
     def _test(self, input, output, **kwargs):
         computed = libclinic.linear_format(input, **kwargs)
         self.assertEqual(output, computed)
@@ -887,14 +887,14 @@ class ClinicLinearFormatTest(TestCase):
                                     marker="not allowed!")
 
 
-class InertParser:
+klasse InertParser:
     def __init__(self, clinic):
         pass
 
     def parse(self, block):
         pass
 
-class CopyParser:
+klasse CopyParser:
     def __init__(self, clinic):
         pass
 
@@ -902,7 +902,7 @@ class CopyParser:
         block.output = block.input
 
 
-class ClinicBlockParserTest(TestCase):
+klasse ClinicBlockParserTest(TestCase):
     def _test(self, input, output):
         language = CLanguage(None)
 
@@ -963,7 +963,7 @@ xyz
 """)
 
 
-class ClinicParserTest(TestCase):
+klasse ClinicParserTest(TestCase):
 
     def parse(self, text):
         c = _make_clinic()
@@ -1631,7 +1631,7 @@ class ClinicParserTest(TestCase):
     def test_init_with_no_parameters(self):
         function = self.parse_function("""
             module foo
-            class foo.Bar "unused" "notneeded"
+            klasse foo.Bar "unused" "notneeded"
             foo.Bar.__init__
 
             Docstring
@@ -1691,19 +1691,19 @@ class ClinicParserTest(TestCase):
     def test_fulldisplayname_class(self):
         dataset = (
             ("T", """
-                class T "void *" ""
+                klasse T "void *" ""
                 T.__init__
             """),
             ("m.T", """
                 module m
-                class m.T "void *" ""
+                klasse m.T "void *" ""
                 @classmethod
                 m.T.__new__
             """),
             ("m.T.C", """
                 module m
-                class m.T "void *" ""
-                class m.T.C "void *" ""
+                klasse m.T "void *" ""
+                klasse m.T.C "void *" ""
                 m.T.C.__init__
             """),
         )
@@ -1721,18 +1721,18 @@ class ClinicParserTest(TestCase):
                 m.func
             """),
             ("T.meth", """
-                class T "void *" ""
+                klasse T "void *" ""
                 T.meth
             """),
             ("m.T.meth", """
                 module m
-                class m.T "void *" ""
+                klasse m.T "void *" ""
                 m.T.meth
             """),
             ("m.T.C.meth", """
                 module m
-                class m.T "void *" ""
-                class m.T.C "void *" ""
+                klasse m.T "void *" ""
+                klasse m.T.C "void *" ""
                 m.T.C.meth
             """),
         )
@@ -2274,7 +2274,7 @@ class ClinicParserTest(TestCase):
     def test_slot_methods_cannot_access_defining_class(self):
         block = """
             module foo
-            class Foo "" ""
+            klasse Foo "" ""
             Foo.__init__
                 cls: defining_class
                 a: object
@@ -2284,10 +2284,10 @@ class ClinicParserTest(TestCase):
             self.parse_function(block)
 
     def test_new_must_be_a_class_method(self):
-        err = "'__new__' must be a class method!"
+        err = "'__new__' must be a klasse method!"
         block = """
             module foo
-            class Foo "" ""
+            klasse Foo "" ""
             Foo.__new__
         """
         self.expect_failure(block, err, lineno=2)
@@ -2303,7 +2303,7 @@ class ClinicParserTest(TestCase):
             with self.subTest(annotation=annotation, invalid_kind=invalid_kind):
                 block = f"""
                     module foo
-                    class Foo "" ""
+                    klasse Foo "" ""
                     {annotation}
                     Foo.__init__
                 """
@@ -2312,7 +2312,7 @@ class ClinicParserTest(TestCase):
 
     def test_init_cannot_define_a_return_type(self):
         block = """
-            class Foo "" ""
+            klasse Foo "" ""
             Foo.__init__ -> long
         """
         expected_error = "__init__ methods cannot define a return type"
@@ -2324,7 +2324,7 @@ class ClinicParserTest(TestCase):
             with self.subTest(annotation=annotation):
                 block = f"""
                     module foo
-                    class Foo "" ""
+                    klasse Foo "" ""
                     {annotation}
                     Foo.property -> int
                 """
@@ -2333,7 +2333,7 @@ class ClinicParserTest(TestCase):
 
                 block = f"""
                    module foo
-                   class Foo "" ""
+                   klasse Foo "" ""
                    {annotation}
                    Foo.property
                        obj: int
@@ -2345,7 +2345,7 @@ class ClinicParserTest(TestCase):
     def test_setter_docstring(self):
         block = """
             module foo
-            class Foo "" ""
+            klasse Foo "" ""
             @setter
             Foo.property
 
@@ -2363,7 +2363,7 @@ class ClinicParserTest(TestCase):
             with self.subTest(annotation=annotation):
                 block = f"""
                     module foo
-                    class Foo "" ""
+                    klasse Foo "" ""
                     {annotation}
                     {annotation}
                     Foo.property -> int
@@ -2377,7 +2377,7 @@ class ClinicParserTest(TestCase):
             with self.subTest(dup=dup):
                 block = f"""
                     module foo
-                    class Foo "" ""
+                    klasse Foo "" ""
                     {dup[0]}
                     {dup[1]}
                     Foo.property -> int
@@ -2492,7 +2492,7 @@ class ClinicParserTest(TestCase):
     def test_cannot_convert_special_method(self):
         err = "'__len__' is a special method and cannot be converted"
         block = """
-            class T "" ""
+            klasse T "" ""
             T.__len__
         """
         self.expect_failure(block, err, lineno=1)
@@ -2531,7 +2531,7 @@ class ClinicParserTest(TestCase):
         self.expect_failure(block, err, lineno=1)
 
     def test_parent_class_or_module_does_not_exist(self):
-        err = "Parent class or module 'baz' does not exist"
+        err = "Parent klasse or module 'baz' does not exist"
         block = """
             module m
             baz.func
@@ -2594,7 +2594,7 @@ class ClinicParserTest(TestCase):
     def test_kind_defining_class(self):
         function = self.parse_function("""
             module m
-            class m.C "PyObject *" ""
+            klasse m.C "PyObject *" ""
             m.C.meth
                 cls: defining_class
         """, signatures_in_block=3, function_index=2)
@@ -2611,7 +2611,7 @@ class ClinicParserTest(TestCase):
         self.expect_failure(block, err, lineno=2)
 
 
-class ClinicExternalTest(TestCase):
+klasse ClinicExternalTest(TestCase):
     maxDiff = None
 
     def setUp(self):
@@ -2959,7 +2959,7 @@ except ImportError:
     ac_tester = None
 
 @unittest.skipIf(ac_tester is None, "_testclinic is missing")
-class ClinicFunctionalTest(unittest.TestCase):
+klasse ClinicFunctionalTest(unittest.TestCase):
     locals().update((name, getattr(ac_tester, name))
                     for name in dir(ac_tester) if name.startswith('test_'))
 
@@ -3938,7 +3938,7 @@ class ClinicFunctionalTest(unittest.TestCase):
         self.assertRaises(TypeError, fn, a="a", b="b", c="c", d="d", e="e", f="f", g="g")
 
 
-class LimitedCAPIOutputTests(unittest.TestCase):
+klasse LimitedCAPIOutputTests(unittest.TestCase):
 
     def setUp(self):
         self.clinic = _make_clinic(limited_capi=True)
@@ -3984,7 +3984,7 @@ except ImportError:
     _testclinic_limited = None
 
 @unittest.skipIf(_testclinic_limited is None, "_testclinic_limited is missing")
-class LimitedCAPIFunctionalTest(unittest.TestCase):
+klasse LimitedCAPIFunctionalTest(unittest.TestCase):
     locals().update((name, getattr(_testclinic_limited, name))
                     for name in dir(_testclinic_limited) if name.startswith('test_'))
 
@@ -4026,10 +4026,10 @@ class LimitedCAPIFunctionalTest(unittest.TestCase):
         # test 'file descriptor' converter: call PyObject_AsFileDescriptor()
         get_fd = _testclinic_limited.get_file_descriptor
 
-        class MyInt(int):
+        klasse MyInt(int):
             pass
 
-        class MyFile:
+        klasse MyFile:
             def __init__(self, fd):
                 self._fd = fd
             def fileno(self):
@@ -4057,7 +4057,7 @@ class LimitedCAPIFunctionalTest(unittest.TestCase):
             get_fd(None)
 
 
-class PermutationTests(unittest.TestCase):
+klasse PermutationTests(unittest.TestCase):
     """Test permutation support functions."""
 
     def test_permute_left_option_groups(self):
@@ -4163,7 +4163,7 @@ class PermutationTests(unittest.TestCase):
                 self.assertEqual(actual, expected)
 
 
-class FormatHelperTests(unittest.TestCase):
+klasse FormatHelperTests(unittest.TestCase):
 
     def test_strip_leading_and_trailing_blank_lines(self):
         dataset = (
@@ -4297,7 +4297,7 @@ class FormatHelperTests(unittest.TestCase):
         self.assertEqual(out, expected)
 
 
-class ClinicReprTests(unittest.TestCase):
+klasse ClinicReprTests(unittest.TestCase):
     def test_Block_repr(self):
         block = Block("foo")
         expected_repr = "<clinic.Block 'text' input='foo' output=None>"

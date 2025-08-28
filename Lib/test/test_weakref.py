@@ -26,12 +26,12 @@ ref_from_del = None
 # when the interpreter shuts down.
 _global_var = 'foobar'
 
-class C:
+klasse C:
     def method(self):
         pass
 
 
-class Callable:
+klasse Callable:
     bar = None
 
     def __call__(self, x):
@@ -46,7 +46,7 @@ def create_bound_method():
     return C().method
 
 
-class Object:
+klasse Object:
     def __init__(self, arg):
         self.arg = arg
     def __repr__(self):
@@ -67,12 +67,12 @@ class Object:
         return 5
 
 
-class RefCycle:
+klasse RefCycle:
     def __init__(self):
         self.cycle = self
 
 
-class TestBase(unittest.TestCase):
+klasse TestBase(unittest.TestCase):
 
     def setUp(self):
         self.cbcalled = 0
@@ -103,7 +103,7 @@ def collect_in_thread(period=0.005):
             t.join()
 
 
-class ReferencesTestCase(TestBase):
+klasse ReferencesTestCase(TestBase):
 
     def test_basic_ref(self):
         self.check_basic_ref(C)
@@ -136,7 +136,7 @@ class ReferencesTestCase(TestBase):
                          rf'<weakref at 0x[0-9a-fA-F]+; dead>')
 
         # test type with __name__
-        class WithName:
+        klasse WithName:
             @property
             def __name__(self):
                 return "custom_name"
@@ -152,7 +152,7 @@ class ReferencesTestCase(TestBase):
         self.assertRegex(repr(ref2), regex)
 
     def test_repr_failure_gh99184(self):
-        class MyConfig(dict):
+        klasse MyConfig(dict):
             def __getattr__(self, x):
                 return self[x]
 
@@ -327,7 +327,7 @@ class ReferencesTestCase(TestBase):
 
     def test_proxy_unicode(self):
         # See bug 5037
-        class C(object):
+        klasse C(object):
             def __str__(self):
                 return "string"
             def __bytes__(self):
@@ -337,7 +337,7 @@ class ReferencesTestCase(TestBase):
         self.assertEqual(bytes(weakref.proxy(instance)), b"bytes")
 
     def test_proxy_index(self):
-        class C:
+        klasse C:
             def __index__(self):
                 return 10
         o = C()
@@ -345,7 +345,7 @@ class ReferencesTestCase(TestBase):
         self.assertEqual(operator.index(p), 10)
 
     def test_proxy_div(self):
-        class C:
+        klasse C:
             def __floordiv__(self, other):
                 return 42
             def __ifloordiv__(self, other):
@@ -357,7 +357,7 @@ class ReferencesTestCase(TestBase):
         self.assertEqual(p, 21)
 
     def test_proxy_matmul(self):
-        class C:
+        klasse C:
             def __matmul__(self, other):
                 return 1729
             def __rmatmul__(self, other):
@@ -447,7 +447,7 @@ class ReferencesTestCase(TestBase):
 
     def test_proxy_deletion(self):
         # Test clearing of SF bug #762891
-        class Foo:
+        klasse Foo:
             result = None
             def __delitem__(self, accessor):
                 self.result = accessor
@@ -458,7 +458,7 @@ class ReferencesTestCase(TestBase):
 
     def test_proxy_bool(self):
         # Test clearing of SF bug #1170766
-        class List(list): pass
+        klasse List(list): pass
         lyst = List()
         self.assertEqual(bool(weakref.proxy(lyst)), bool(lyst))
 
@@ -468,7 +468,7 @@ class ReferencesTestCase(TestBase):
 
         obj = None
 
-        class MyObj:
+        klasse MyObj:
             def __iter__(self):
                 nonlocal obj
                 del obj
@@ -488,7 +488,7 @@ class ReferencesTestCase(TestBase):
             yield from arr
         it = iterator_func()
 
-        class IteratesWeakly:
+        klasse IteratesWeakly:
             def __iter__(self):
                 return weakref.proxy(it)
 
@@ -503,7 +503,7 @@ class ReferencesTestCase(TestBase):
 
         not_an_iterator = lambda: 0
 
-        class A:
+        klasse A:
             def __iter__(self):
                 return weakref.proxy(not_an_iterator)
         a = A()
@@ -513,7 +513,7 @@ class ReferencesTestCase(TestBase):
             list(a)
 
     def test_proxy_reversed(self):
-        class MyObj:
+        klasse MyObj:
             def __len__(self):
                 return 3
             def __reversed__(self):
@@ -523,7 +523,7 @@ class ReferencesTestCase(TestBase):
         self.assertEqual("".join(reversed(weakref.proxy(obj))), "cba")
 
     def test_proxy_hash(self):
-        class MyObj:
+        klasse MyObj:
             def __hash__(self):
                 return 42
 
@@ -531,7 +531,7 @@ class ReferencesTestCase(TestBase):
         with self.assertRaises(TypeError):
             hash(weakref.proxy(obj))
 
-        class MyObj:
+        klasse MyObj:
             __hash__ = None
 
         obj = MyObj()
@@ -587,7 +587,7 @@ class ReferencesTestCase(TestBase):
                      "list of refs does not match for int")
 
     def test_newstyle_number_ops(self):
-        class F(float):
+        klasse F(float):
             pass
         f = F(2.0)
         p = weakref.proxy(f)
@@ -597,7 +597,7 @@ class ReferencesTestCase(TestBase):
     def test_callbacks_protected(self):
         # Callbacks protected from already-set exceptions?
         # Regression test for SF bug #478534.
-        class BogusError(Exception):
+        klasse BogusError(Exception):
             pass
         data = {}
         def remove(k):
@@ -632,7 +632,7 @@ class ReferencesTestCase(TestBase):
 
         import gc
 
-        class C(object):
+        klasse C(object):
             pass
 
         c = C()
@@ -655,17 +655,17 @@ class ReferencesTestCase(TestBase):
         # with c2 execute (there are none in this 2nd half of the test, btw).
         # subtype_dealloc goes on to call the base classes' deallocs too,
         # so any gc triggered by weakref callbacks associated with anything
-        # torn down by a base class dealloc can also trigger double
+        # torn down by a base klasse dealloc can also trigger double
         # deallocation of c2.
         del c2
 
     def test_callback_in_cycle(self):
         import gc
 
-        class J(object):
+        klasse J(object):
             pass
 
-        class II(object):
+        klasse II(object):
             def acallback(self, ignore):
                 self.J
 
@@ -686,14 +686,14 @@ class ReferencesTestCase(TestBase):
         # it does that is pretty accidental.  The exact order in which we
         # built up these things manages to provoke gc into running tp_clear
         # in just the right order (I last).  Calling tp_clear on II leaves
-        # behind an insane class object (its __mro__ becomes NULL).  Calling
+        # behind an insane klasse object (its __mro__ becomes NULL).  Calling
         # tp_clear on J breaks its self-cycle, but J doesn't get deleted
         # just then because of the strong reference from I.J.  Calling
         # tp_clear on I starts to clear I's __dict__, and just happens to
         # clear I.J first -- I.wr is still intact.  That removes the last
         # reference to J, which triggers the weakref callback.  The callback
         # tries to do "self.J", and instances of new-style classes look up
-        # attributes ("J") in the class dict first.  The class (II) wants to
+        # attributes ("J") in the klasse dict first.  The klasse (II) wants to
         # search II.__mro__, but that's NULL.   The result was a segfault in
         # a release build, and an assert failure in a debug build.
         del I, J, II
@@ -708,7 +708,7 @@ class ReferencesTestCase(TestBase):
         # c1 from c2, but not vice-versa.  The result was that c2's __dict__
         # got tp_clear'ed by the time the c2.cb callback got invoked.
 
-        class C:
+        klasse C:
             def cb(self, ignore):
                 self.me
                 self.c1
@@ -727,19 +727,19 @@ class ReferencesTestCase(TestBase):
         import gc
 
         # Like test_callback_reachable_one_way, except c2 and c1 have different
-        # classes.  c2's class (C) isn't reachable from c1 then, so protecting
+        # classes.  c2's klasse (C) isn't reachable from c1 then, so protecting
         # objects reachable from the dying object (c1) isn't enough to stop
-        # c2's class (C) from getting tp_clear'ed before c2.cb is invoked.
+        # c2's klasse (C) from getting tp_clear'ed before c2.cb is invoked.
         # The result was a segfault (C.__mro__ was NULL when the callback
         # tried to look up self.me).
 
-        class C(object):
+        klasse C(object):
             def cb(self, ignore):
                 self.me
                 self.c1
                 self.wr
 
-        class D:
+        klasse D:
             pass
 
         c1, c2 = D(), C()
@@ -764,7 +764,7 @@ class ReferencesTestCase(TestBase):
         # at all (and so nothing actually gets resurrected).
 
         alist = []
-        class C(object):
+        klasse C(object):
             def __init__(self, value):
                 self.attribute = value
 
@@ -805,7 +805,7 @@ class ReferencesTestCase(TestBase):
         def safe_callback(ignore):
             alist.append("safe_callback called")
 
-        class C(object):
+        klasse C(object):
             def cb(self, ignore):
                 alist.append("cb called")
 
@@ -845,7 +845,7 @@ class ReferencesTestCase(TestBase):
         thresholds = gc.get_threshold()
         gc.set_threshold(1, 1, 1)
         gc.collect()
-        class A:
+        klasse A:
             pass
 
         def callback(*args):
@@ -871,7 +871,7 @@ class ReferencesTestCase(TestBase):
         # A weakref created in an object's __del__() would crash the
         # interpreter when the weakref was cleaned up since it would refer to
         # non-existent memory.  This test should not segfault the interpreter.
-        class Target(object):
+        klasse Target(object):
             def __del__(self):
                 global ref_from_del
                 ref_from_del = weakref.ref(self)
@@ -888,7 +888,7 @@ class ReferencesTestCase(TestBase):
 
     def test_classes(self):
         # Check that classes are weakrefable.
-        class A(object):
+        klasse A(object):
             pass
         l = []
         weakref.ref(int)
@@ -971,7 +971,7 @@ class ReferencesTestCase(TestBase):
         # deallocation chain, the trashcan mechanism could delay clearing
         # of the weakref and make the target object visible from outside
         # code even though its refcount had dropped to 0.  A crash ensued.
-        class C:
+        klasse C:
             def __init__(self, parent):
                 if not parent:
                     return
@@ -1012,7 +1012,7 @@ class ReferencesTestCase(TestBase):
             ref1.__callback__ = lambda ref: None
 
     def test_callback_gcs(self):
-        class ObjectWithDel(Object):
+        klasse ObjectWithDel(Object):
             def __del__(self): pass
         x = ObjectWithDel(1)
         ref1 = weakref.ref(x, lambda ref: support.gc_collect())
@@ -1027,7 +1027,7 @@ class ReferencesTestCase(TestBase):
         import _testcapi
         import weakref
 
-        class TestObj:
+        klasse TestObj:
             pass
 
         def callback(obj):
@@ -1050,7 +1050,7 @@ class ReferencesTestCase(TestBase):
         # 2. weakrefs without callbacks have not been cleared
         errors = []
         def test():
-            class Class:
+            klasse Class:
                 def __init__(self):
                     self._self = self
                     self.wr1 = weakref.ref(Class, lambda x: None)
@@ -1071,10 +1071,10 @@ class ReferencesTestCase(TestBase):
         self.assertEqual(errors, [])
 
 
-class SubclassableWeakrefTestCase(TestBase):
+klasse SubclassableWeakrefTestCase(TestBase):
 
     def test_subclass_refs(self):
-        class MyRef(weakref.ref):
+        klasse MyRef(weakref.ref):
             def __init__(self, ob, callback=None, value=42):
                 self.value = value
                 super().__init__(ob, callback)
@@ -1092,7 +1092,7 @@ class SubclassableWeakrefTestCase(TestBase):
         self.assertTrue(mr.called)
 
     def test_subclass_refs_dont_replace_standard_refs(self):
-        class MyRef(weakref.ref):
+        klasse MyRef(weakref.ref):
             pass
         o = Object(42)
         r1 = MyRef(o)
@@ -1109,7 +1109,7 @@ class SubclassableWeakrefTestCase(TestBase):
         self.assertIn(r3, refs[1:])
 
     def test_subclass_refs_dont_conflate_callbacks(self):
-        class MyRef(weakref.ref):
+        klasse MyRef(weakref.ref):
             pass
         o = Object(42)
         r1 = MyRef(o, id)
@@ -1120,7 +1120,7 @@ class SubclassableWeakrefTestCase(TestBase):
         self.assertIn(r2, refs)
 
     def test_subclass_refs_with_slots(self):
-        class MyRef(weakref.ref):
+        klasse MyRef(weakref.ref):
             __slots__ = "slot1", "slot2"
             def __new__(type, ob, callback, slot1, slot2):
                 return weakref.ref.__new__(type, ob, callback)
@@ -1143,7 +1143,7 @@ class SubclassableWeakrefTestCase(TestBase):
         # deleting the weakref will delete the object. In this case,
         # the callback must not be called, because the ref object is
         # being deleted.
-        class MyRef(weakref.ref):
+        klasse MyRef(weakref.ref):
             pass
 
         # Use a local callback, for "regrtest -R::"
@@ -1175,11 +1175,11 @@ class SubclassableWeakrefTestCase(TestBase):
         self.assertEqual(self.cbcalled, 0)
 
 
-class WeakMethodTestCase(unittest.TestCase):
+klasse WeakMethodTestCase(unittest.TestCase):
 
     def _subclass(self):
         """Return an Object subclass overriding `some_method`."""
-        class C(Object):
+        klasse C(Object):
             def some_method(self):
                 return 6
         return C
@@ -1312,7 +1312,7 @@ class WeakMethodTestCase(unittest.TestCase):
         self.assertRaises(TypeError, hash, c)
 
 
-class MappingTestCase(TestBase):
+klasse MappingTestCase(TestBase):
 
     COUNT = 10
 
@@ -1897,7 +1897,7 @@ class MappingTestCase(TestBase):
         d = weakref.WeakKeyDictionary()
         mutate = False
 
-        class C(object):
+        klasse C(object):
             def __init__(self, i):
                 self.value = i
             def __hash__(self):
@@ -1998,11 +1998,11 @@ class MappingTestCase(TestBase):
         # `deepcopy` should be either True or False.
         exc = []
 
-        class DummyKey:
+        klasse DummyKey:
             def __init__(self, ctr):
                 self.ctr = ctr
 
-        class DummyValue:
+        klasse DummyValue:
             def __init__(self, ctr):
                 self.ctr = ctr
 
@@ -2090,14 +2090,14 @@ class MappingTestCase(TestBase):
 
 from test import mapping_tests
 
-class WeakValueDictionaryTestCase(mapping_tests.BasicTestMappingProtocol):
+klasse WeakValueDictionaryTestCase(mapping_tests.BasicTestMappingProtocol):
     """Check that WeakValueDictionary conforms to the mapping protocol"""
     __ref = {"key1":Object(1), "key2":Object(2), "key3":Object(3)}
     type2test = weakref.WeakValueDictionary
     def _reference(self):
         return self.__ref.copy()
 
-class WeakKeyDictionaryTestCase(mapping_tests.BasicTestMappingProtocol):
+klasse WeakKeyDictionaryTestCase(mapping_tests.BasicTestMappingProtocol):
     """Check that WeakKeyDictionary conforms to the mapping protocol"""
     __ref = {Object("key1"):1, Object("key2"):2, Object("key3"):3}
     type2test = weakref.WeakKeyDictionary
@@ -2105,9 +2105,9 @@ class WeakKeyDictionaryTestCase(mapping_tests.BasicTestMappingProtocol):
         return self.__ref.copy()
 
 
-class FinalizeTestCase(unittest.TestCase):
+klasse FinalizeTestCase(unittest.TestCase):
 
-    class A:
+    klasse A:
         pass
 
     def _collect_if_necessary(self):
@@ -2216,7 +2216,7 @@ class FinalizeTestCase(unittest.TestCase):
 
     def test_all_freed(self):
         # we want a weakrefable subclass of weakref.finalize
-        class MyFinalizer(weakref.finalize):
+        klasse MyFinalizer(weakref.finalize):
             pass
 
         a = self.A()
@@ -2268,7 +2268,7 @@ class FinalizeTestCase(unittest.TestCase):
         self.assertTrue(b'ZeroDivisionError' in err)
 
 
-class ModuleTestCase(unittest.TestCase):
+klasse ModuleTestCase(unittest.TestCase):
     def test_names(self):
         for name in ('ReferenceType', 'ProxyType', 'CallableProxyType',
                      'WeakMethod', 'WeakSet', 'WeakKeyDictionary', 'WeakValueDictionary'):
@@ -2283,7 +2283,7 @@ libreftest = """ Doctest for examples in the library reference: weakref.rst
 
 >>> from test.support import gc_collect
 >>> import weakref
->>> class Dict(dict):
+>>> klasse Dict(dict):
 ...     pass
 ...
 >>> obj = Dict(red=1, green=2, blue=3)   # this object is weak referencable
@@ -2292,7 +2292,7 @@ libreftest = """ Doctest for examples in the library reference: weakref.rst
 True
 
 >>> import weakref
->>> class Object:
+>>> klasse Object:
 ...     pass
 ...
 >>> o = Object()
@@ -2306,7 +2306,7 @@ True
 None
 
 >>> import weakref
->>> class ExtendedRef(weakref.ref):
+>>> klasse ExtendedRef(weakref.ref):
 ...     def __init__(self, ob, callback=None, **annotations):
 ...         super().__init__(ob, callback)
 ...         self.__counter = 0
@@ -2322,7 +2322,7 @@ None
 ...             ob = (ob, self.__counter)
 ...         return ob
 ...
->>> class A:   # not in docs from here, just testing the ExtendedRef
+>>> klasse A:   # not in docs from here, just testing the ExtendedRef
 ...     pass
 ...
 >>> a = A()

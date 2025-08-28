@@ -118,7 +118,7 @@ import warnings
 header_re = re.compile(r'^[a-zA-Z][a-zA-Z0-9\-_]*$')
 bad_header_value_re = re.compile(r'[\000-\037]')
 
-class WSGIWarning(Warning):
+klasse WSGIWarning(Warning):
     """
     Raised in response to WSGI-spec-related warnings
     """
@@ -188,7 +188,7 @@ def validator(application):
 
     return lint_app
 
-class InputWrapper:
+klasse InputWrapper:
 
     def __init__(self, wsgi_input):
         self.input = wsgi_input
@@ -220,7 +220,7 @@ class InputWrapper:
     def close(self):
         assert_(0, "input.close() must not be called")
 
-class ErrorWrapper:
+klasse ErrorWrapper:
 
     def __init__(self, wsgi_errors):
         self.errors = wsgi_errors
@@ -239,7 +239,7 @@ class ErrorWrapper:
     def close(self):
         assert_(0, "errors.close() must not be called")
 
-class WriteWrapper:
+klasse WriteWrapper:
 
     def __init__(self, wsgi_writer):
         self.writer = wsgi_writer
@@ -248,7 +248,7 @@ class WriteWrapper:
         assert_(type(s) is bytes)
         self.writer(s)
 
-class PartialIteratorWrapper:
+klasse PartialIteratorWrapper:
 
     def __init__(self, wsgi_iterator):
         self.iterator = wsgi_iterator
@@ -257,7 +257,7 @@ class PartialIteratorWrapper:
         # We want to make sure __iter__ is called
         return IteratorWrapper(self.iterator, None)
 
-class IteratorWrapper:
+klasse IteratorWrapper:
 
     def __init__(self, wsgi_iterator, check_start_response):
         self.original_iterator = wsgi_iterator

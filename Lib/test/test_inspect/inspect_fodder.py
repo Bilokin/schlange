@@ -18,7 +18,7 @@ def eggs(x, y):
     q = y / 0
 
 # line 20
-class StupidGit:
+klasse StupidGit:
     """A longer,
 
     indented
@@ -51,7 +51,7 @@ class StupidGit:
         pass
 
 # line 53
-class MalodorousPervert(StupidGit):
+klasse MalodorousPervert(StupidGit):
     def abuse(self, a, b, c):
         pass
 
@@ -61,10 +61,10 @@ class MalodorousPervert(StupidGit):
 
 Tit = MalodorousPervert
 
-class ParrotDroppings:
+klasse ParrotDroppings:
     pass
 
-class FesteringGob(MalodorousPervert, ParrotDroppings):
+klasse FesteringGob(MalodorousPervert, ParrotDroppings):
     def abuse(self, a, b, c):
         pass
 
@@ -81,7 +81,7 @@ try:
 except BaseException as e:
     tb = e.__traceback__
 
-class Callable:
+klasse Callable:
     def __call__(self, *args):
         return args
 
@@ -93,7 +93,7 @@ custom_method = Callable().as_method_of(42)
 del Callable
 
 # line 95
-class WhichComments:
+klasse WhichComments:
   # line 97
     # before f
     def f(self):

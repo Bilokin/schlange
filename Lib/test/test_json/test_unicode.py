@@ -3,7 +3,7 @@ from collections import OrderedDict
 from test.test_json import PyTest, CTest
 
 
-class TestUnicode:
+klasse TestUnicode:
     # test_encoding1 and test_encoding2 from 2.x are irrelevant (only str
     # is supported as input, not bytes).
 
@@ -99,5 +99,5 @@ class TestUnicode:
                          OrderedDict(p))
 
 
-class TestPyUnicode(TestUnicode, PyTest): pass
-class TestCUnicode(TestUnicode, CTest): pass
+klasse TestPyUnicode(TestUnicode, PyTest): pass
+klasse TestCUnicode(TestUnicode, CTest): pass

@@ -10,7 +10,7 @@ import warnings
 from test.support import threading_helper
 
 
-class TestBase(unittest.TestCase):
+klasse TestBase(unittest.TestCase):
     pass
 
 
@@ -36,7 +36,7 @@ def do_race(func1, func2):
 
 
 @threading_helper.requires_working_threading()
-class TestRaces(TestBase):
+klasse TestRaces(TestBase):
     def test_racing_cell_set(self):
         """Test cell object gettr/settr properties."""
 
@@ -101,7 +101,7 @@ class TestRaces(TestBase):
     def test_racing_load_super_attr(self):
         """Test (un)specialization of LOAD_SUPER_ATTR opcode."""
 
-        class C:
+        klasse C:
             def __init__(self):
                 try:
                     super().__init__
@@ -135,7 +135,7 @@ class TestRaces(TestBase):
 
         seq = [1]
 
-        class C:
+        klasse C:
             def __bool__(self):
                 return False
 
@@ -155,7 +155,7 @@ class TestRaces(TestBase):
         do_race(access, mutate)
 
     def test_racing_store_attr_slot(self):
-        class C:
+        klasse C:
             __slots__ = ['x', '__dict__']
 
         c = C()
@@ -188,7 +188,7 @@ class TestRaces(TestBase):
         do_race(set_slot, set_getattribute)
 
     def test_racing_store_attr_instance_value(self):
-        class C:
+        klasse C:
             pass
 
         c = C()
@@ -212,7 +212,7 @@ class TestRaces(TestBase):
         do_race(read, mutate)
 
     def test_racing_store_attr_with_hint(self):
-        class C:
+        klasse C:
             pass
 
         c = C()
@@ -238,7 +238,7 @@ class TestRaces(TestBase):
         do_race(read, mutate)
 
     def make_shared_key_dict(self):
-        class C:
+        klasse C:
             pass
 
         a = C()
@@ -247,7 +247,7 @@ class TestRaces(TestBase):
 
     def test_racing_store_attr_dict(self):
         """Test STORE_ATTR with various dictionary types."""
-        class C:
+        klasse C:
             pass
 
         c = C()
@@ -288,7 +288,7 @@ class TestRaces(TestBase):
 
 
 @threading_helper.requires_working_threading()
-class TestWarningsRaces(TestBase):
+klasse TestWarningsRaces(TestBase):
     def setUp(self):
         self.saved_filters = warnings.filters[:]
         warnings.resetwarnings()

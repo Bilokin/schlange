@@ -3,7 +3,7 @@
 from idlelib.config import idleConf
 
 
-class History:
+klasse History:
     ''' Implement Idle Shell history mechanism.
 
     store - Store source statement (called from pyshell.resetoutput).

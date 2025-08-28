@@ -11,15 +11,15 @@ def dump(obj):
     return re.sub(r"(..)", r"\1-", h)[:-1]
 
 
-class Value(Structure):
+klasse Value(Structure):
     _fields_ = [("val", c_byte)]
 
 
-class Container(Structure):
+klasse Container(Structure):
     _fields_ = [("pvalues", POINTER(Value))]
 
 
-class Test(unittest.TestCase):
+klasse Test(unittest.TestCase):
     def test(self):
         # create an array of 4 values
         val_array = (Value * 4)()

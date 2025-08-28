@@ -16,7 +16,7 @@ import re
 import string
 
 
-class AutoExpand:
+klasse AutoExpand:
     wordchars = string.ascii_letters + string.digits + "_"
 
     def __init__(self, editwin):

@@ -23,7 +23,7 @@ from test.support.numbers import (
     INVALID_UNDERSCORE_LITERALS,
 )
 
-class TokenTests(unittest.TestCase):
+klasse TokenTests(unittest.TestCase):
 
     from test.support import check_syntax_error
     from test.support.warnings_helper import check_syntax_warning
@@ -264,7 +264,7 @@ the \'lazy\' dog.\n\
 var_annot_global: int # a global annotated is necessary for test_var_annot
 
 
-class GrammarTests(unittest.TestCase):
+klasse GrammarTests(unittest.TestCase):
 
     from test.support import check_syntax_error
     from test.support.warnings_helper import check_syntax_warning
@@ -356,8 +356,8 @@ class GrammarTests(unittest.TestCase):
         except Exception as e:
             self.assertIs(type(e), NameError)
 
-        # class semantics
-        class C:
+        # klasse semantics
+        klasse C:
             __foo: int
             s: str = "attr"
             z = 2
@@ -365,26 +365,26 @@ class GrammarTests(unittest.TestCase):
                 self.x: int = x
         self.assertEqual(C.__annotations__, {'_C__foo': int, 's': str})
         with self.assertRaises(NameError):
-            class CBad:
+            klasse CBad:
                 no_such_name_defined.attr: int = 0
         with self.assertRaises(NameError):
-            class Cbad2(C):
+            klasse Cbad2(C):
                 x: int
                 x.y: list = []
 
     def test_annotations_inheritance(self):
         # Check that annotations are not inherited by derived classes
-        class A:
+        klasse A:
             attr: int
-        class B(A):
+        klasse B(A):
             pass
-        class C(A):
+        klasse C(A):
             attr: str
-        class D:
+        klasse D:
             attr2: int
-        class E(A, D):
+        klasse E(A, D):
             pass
-        class F(C, A):
+        klasse F(C, A):
             pass
         self.assertEqual(A.__annotations__, {"attr": int})
         self.assertEqual(B.__annotations__, {})
@@ -632,10 +632,10 @@ class GrammarTests(unittest.TestCase):
                           {'b': 1, 'c': 2, 'e': 3, 'f': int, 'g': 6, 'h': 7, 'j': 9,
                            'k': 11, 'return': 12})
         # Check for issue #20625 -- annotations mangling
-        class Spam:
+        klasse Spam:
             def f(self, *, __kw: 1):
                 pass
-        class Ham(Spam): pass
+        klasse Ham(Spam): pass
         self.assertEqual(Spam.f.__annotations__, {'_Spam__kw': 1})
         self.assertEqual(Ham.f.__annotations__, {'_Spam__kw': 1})
         # Check for SF Bug #1697248 - mixing decorators and a return annotation
@@ -1193,7 +1193,7 @@ class GrammarTests(unittest.TestCase):
         # Not allowed at top level
         check_syntax_error(self, "yield")
         check_syntax_error(self, "yield from")
-        # Not allowed at class scope
+        # Not allowed at klasse scope
         check_syntax_error(self, "class foo:yield 1")
         check_syntax_error(self, "class foo:yield from ()")
         # Check annotation refleak on SyntaxError
@@ -1363,7 +1363,7 @@ class GrammarTests(unittest.TestCase):
         for i in 1, 2, 3: pass
         for i, j, k in (): pass
         else: pass
-        class Squares:
+        klasse Squares:
             def __init__(self, max):
                 self.max = max
                 self.sofar = []
@@ -1700,12 +1700,12 @@ class GrammarTests(unittest.TestCase):
 
     def test_classdef(self):
         # 'class' NAME ['(' [testlist] ')'] ':' suite
-        class B: pass
-        class B2(): pass
-        class C1(B): pass
-        class C2(B): pass
-        class D(C1, C2, B): pass
-        class C:
+        klasse B: pass
+        klasse B2(): pass
+        klasse C1(B): pass
+        klasse C2(B): pass
+        klasse D(C1, C2, B): pass
+        klasse C:
             def meth1(self): pass
             def meth2(self, arg): pass
             def meth3(self, a1, a2): pass
@@ -1715,21 +1715,21 @@ class GrammarTests(unittest.TestCase):
         # decorated: decorators (classdef | funcdef)
         def class_decorator(x): return x
         @class_decorator
-        class G: pass
+        klasse G: pass
 
         # Test expressions as decorators (PEP 614):
         @False or class_decorator
-        class H: pass
+        klasse H: pass
         @d := class_decorator
-        class I: pass
+        klasse I: pass
         @lambda c: class_decorator(c)
-        class J: pass
+        klasse J: pass
         @[..., class_decorator, ...][1]
-        class K: pass
+        klasse K: pass
         @class_decorator(class_decorator)(class_decorator)
-        class L: pass
+        klasse L: pass
         @[class_decorator][0].__call__.__call__
-        class M: pass
+        klasse M: pass
 
     def test_dictcomps(self):
         # dictorsetmaker: ( (test ':' test (comp_for |
@@ -1856,7 +1856,7 @@ class GrammarTests(unittest.TestCase):
         self.assertEqual(list(x for x, in [(7,), (8,), (9,)]), [7, 8, 9])
 
     def test_with_statement(self):
-        class manager(object):
+        klasse manager(object):
             def __enter__(self):
                 return (1, 2)
             def __exit__(self, *args):
@@ -1963,7 +1963,7 @@ class GrammarTests(unittest.TestCase):
     def test_matrix_mul(self):
         # This is not intended to be a comprehensive test, rather just to be few
         # samples of the @ operator in test_grammar.py.
-        class M:
+        klasse M:
             def __matmul__(self, o):
                 return 4
             def __imatmul__(self, o):
@@ -1996,9 +1996,9 @@ class GrammarTests(unittest.TestCase):
         self.assertTrue(bool(test2.__code__.co_flags & inspect.CO_COROUTINE))
 
     def test_async_for(self):
-        class Done(Exception): pass
+        klasse Done(Exception): pass
 
-        class AIter:
+        klasse AIter:
             def __aiter__(self):
                 return self
             async def __anext__(self):
@@ -2019,9 +2019,9 @@ class GrammarTests(unittest.TestCase):
             foo().send(None)
 
     def test_async_with(self):
-        class Done(Exception): pass
+        klasse Done(Exception): pass
 
-        class manager:
+        klasse manager:
             async def __aenter__(self):
                 return (1, 2)
             async def __aexit__(self, *exc):

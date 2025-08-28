@@ -118,7 +118,7 @@ parser.add_argument(
 
 
 @enum.unique
-class ModuleState(enum.Enum):
+klasse ModuleState(enum.Enum):
     # Makefile state "yes"
     BUILTIN = "builtin"
     SHARED = "shared"
@@ -133,12 +133,12 @@ class ModuleState(enum.Enum):
         return self.value in {"builtin", "shared"}
 
 
-class ModuleInfo(NamedTuple):
+klasse ModuleInfo(NamedTuple):
     name: str
     state: ModuleState
 
 
-class ModuleChecker:
+klasse ModuleChecker:
     pybuilddir_txt = "pybuilddir.txt"
 
     setup_files = (

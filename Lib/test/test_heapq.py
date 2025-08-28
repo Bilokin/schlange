@@ -17,7 +17,7 @@ func_names = ['heapify', 'heappop', 'heappush', 'heappushpop', 'heapreplace']
 # Add max-heap variants
 func_names += [func + '_max' for func in func_names]
 
-class TestModules(TestCase):
+klasse TestModules(TestCase):
     def test_py_functions(self):
         for fname in func_names:
             self.assertEqual(getattr(py_heapq, fname).__module__, 'heapq')
@@ -36,7 +36,7 @@ def load_tests(loader, tests, ignore):
     # it through import_fresh_module seems to confuse it), so we specifically
     # create a finder which returns the doctests from the merge method.
 
-    class HeapqMergeDocTestFinder:
+    klasse HeapqMergeDocTestFinder:
         def find(self, *args, **kwargs):
             dtf = doctest.DocTestFinder()
             return dtf.find(py_heapq.merge)
@@ -45,7 +45,7 @@ def load_tests(loader, tests, ignore):
                                         test_finder=HeapqMergeDocTestFinder()))
     return tests
 
-class TestHeap:
+klasse TestHeap:
 
     def test_push_pop(self):
         # 1) Push 256 random numbers and pop them off, verifying all's OK.
@@ -348,7 +348,7 @@ class TestHeap:
             list(self.module.merge(iterable(), iterable()))
 
     def test_merge_stability(self):
-        class Int(int):
+        klasse Int(int):
             pass
         inputs = [[], [], [], []]
         for i in range(20000):
@@ -387,12 +387,12 @@ class TestHeap:
             data = [comp(x) for x in data]
             self.module.heapify(data)
             return [self.module.heappop(data).x for i in range(len(data))]
-        class LT:
+        klasse LT:
             def __init__(self, x):
                 self.x = x
             def __lt__(self, other):
                 return self.x > other.x
-        class LE:
+        klasse LE:
             def __init__(self, x):
                 self.x = x
             def __le__(self, other):
@@ -403,23 +403,23 @@ class TestHeap:
         self.assertRaises(TypeError, data, LE)
 
 
-class TestHeapPython(TestHeap, TestCase):
+klasse TestHeapPython(TestHeap, TestCase):
     module = py_heapq
 
 
 @skipUnless(c_heapq, 'requires _heapq')
-class TestHeapC(TestHeap, TestCase):
+klasse TestHeapC(TestHeap, TestCase):
     module = c_heapq
 
 
 #==============================================================================
 
-class LenOnly:
-    "Dummy sequence class defining __len__ but not __getitem__."
+klasse LenOnly:
+    "Dummy sequence klasse defining __len__ but not __getitem__."
     def __len__(self):
         return 10
 
-class CmpErr:
+klasse CmpErr:
     "Dummy element that always raises an error during comparison"
     def __eq__(self, other):
         raise ZeroDivisionError
@@ -430,14 +430,14 @@ def R(seqn):
     for i in seqn:
         yield i
 
-class G:
+klasse G:
     'Sequence using __getitem__'
     def __init__(self, seqn):
         self.seqn = seqn
     def __getitem__(self, i):
         return self.seqn[i]
 
-class I:
+klasse I:
     'Sequence using iterator protocol'
     def __init__(self, seqn):
         self.seqn = seqn
@@ -450,7 +450,7 @@ class I:
         self.i += 1
         return v
 
-class Ig:
+klasse Ig:
     'Sequence using iterator protocol defined with a generator'
     def __init__(self, seqn):
         self.seqn = seqn
@@ -459,7 +459,7 @@ class Ig:
         for val in self.seqn:
             yield val
 
-class X:
+klasse X:
     'Missing __getitem__ and __iter__'
     def __init__(self, seqn):
         self.seqn = seqn
@@ -470,7 +470,7 @@ class X:
         self.i += 1
         return v
 
-class N:
+klasse N:
     'Iterator missing __next__()'
     def __init__(self, seqn):
         self.seqn = seqn
@@ -478,7 +478,7 @@ class N:
     def __iter__(self):
         return self
 
-class E:
+klasse E:
     'Test propagation of exceptions'
     def __init__(self, seqn):
         self.seqn = seqn
@@ -488,7 +488,7 @@ class E:
     def __next__(self):
         3 // 0
 
-class S:
+klasse S:
     'Test immediate stop'
     def __init__(self, seqn):
         pass
@@ -503,7 +503,7 @@ def L(seqn):
     return chain(map(lambda x:x, R(Ig(G(seqn)))))
 
 
-class SideEffectLT:
+klasse SideEffectLT:
     def __init__(self, value, heap):
         self.value = value
         self.heap = heap
@@ -513,7 +513,7 @@ class SideEffectLT:
         return self.value < other.value
 
 
-class TestErrorHandling:
+klasse TestErrorHandling:
 
     def test_non_sequence(self):
         for f in (self.module.heapify, self.module.heappop,
@@ -589,7 +589,7 @@ class TestErrorHandling:
     def test_comparison_operator_modifying_heap(self):
         # See bpo-39421: Strong references need to be taken
         # when comparing objects as they can alter the heap
-        class EvilClass(int):
+        klasse EvilClass(int):
             def __lt__(self, o):
                 heap.clear()
                 return NotImplemented
@@ -600,12 +600,12 @@ class TestErrorHandling:
 
     def test_comparison_operator_modifying_heap_two_heaps(self):
 
-        class h(int):
+        klasse h(int):
             def __lt__(self, o):
                 list2.clear()
                 return NotImplemented
 
-        class g(int):
+        klasse g(int):
             def __lt__(self, o):
                 list1.clear()
                 return NotImplemented
@@ -629,11 +629,11 @@ class TestErrorHandling:
         self.assertRaises((IndexError, RuntimeError), self.module.heappush_max, list2, h(1))
 
 
-class TestErrorHandlingPython(TestErrorHandling, TestCase):
+klasse TestErrorHandlingPython(TestErrorHandling, TestCase):
     module = py_heapq
 
 @skipUnless(c_heapq, 'requires _heapq')
-class TestErrorHandlingC(TestErrorHandling, TestCase):
+klasse TestErrorHandlingC(TestErrorHandling, TestCase):
     module = c_heapq
 
 

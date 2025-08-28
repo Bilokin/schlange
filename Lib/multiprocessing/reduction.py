@@ -30,7 +30,7 @@ HAVE_SEND_HANDLE = (sys.platform == 'win32' or
 # Pickler subclass
 #
 
-class ForkingPickler(pickle.Pickler):
+klasse ForkingPickler(pickle.Pickler):
     '''Pickler subclass used by multiprocessing.'''
     _extra_reducers = {}
     _copyreg_dispatch_table = copyreg.dispatch_table
@@ -101,7 +101,7 @@ if sys.platform == 'win32':
         '''Receive a handle over a local connection.'''
         return conn.recv().detach()
 
-    class DupHandle(object):
+    klasse DupHandle(object):
         '''Picklable wrapper for a handle.'''
         def __init__(self, handle, access, pid=None):
             if pid is None:
@@ -208,7 +208,7 @@ def _reduce_method(m):
         return getattr, (m.__class__, m.__func__.__name__)
     else:
         return getattr, (m.__self__, m.__func__.__name__)
-class _C:
+klasse _C:
     def f(self):
         pass
 register(type(_C().f), _reduce_method)
@@ -248,8 +248,8 @@ else:
     register(socket.socket, _reduce_socket)
 
 
-class AbstractReducer(metaclass=ABCMeta):
-    '''Abstract base class for use in implementing a Reduction class
+klasse AbstractReducer(metaclass=ABCMeta):
+    '''Abstract base klasse for use in implementing a Reduction class
     suitable for use in replacing the standard reduction mechanism
     used in multiprocessing.'''
     ForkingPickler = ForkingPickler

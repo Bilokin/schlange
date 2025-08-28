@@ -27,7 +27,7 @@ MODNAME = '%s.PTModule' % __name__
 
 
 def _get_proxy(obj, get_only=True):
-    class Proxy(object):
+    klasse Proxy(object):
         def __getattr__(self, name):
             return getattr(obj, name)
     if not get_only:
@@ -45,7 +45,7 @@ something  = sentinel.Something
 something_else  = sentinel.SomethingElse
 
 
-class Foo(object):
+klasse Foo(object):
     def __init__(self, a): pass
     def f(self, a): pass
     def g(self): pass
@@ -57,7 +57,7 @@ class Foo(object):
     @classmethod
     def class_method(cls): pass
 
-    class Bar(object):
+    klasse Bar(object):
         def a(self): pass
 
 foo_name = '%s.Foo' % __name__
@@ -66,7 +66,7 @@ foo_name = '%s.Foo' % __name__
 def function(a, b=Foo): pass
 
 
-class Container(object):
+klasse Container(object):
     def __init__(self):
         self.values = {}
 
@@ -84,7 +84,7 @@ class Container(object):
 
 
 
-class PatchTest(unittest.TestCase):
+klasse PatchTest(unittest.TestCase):
 
     def assertNotCallable(self, obj, magic=True):
         MockClass = NonCallableMagicMock
@@ -97,7 +97,7 @@ class PatchTest(unittest.TestCase):
 
 
     def test_single_patchobject(self):
-        class Something(object):
+        klasse Something(object):
             attribute = sentinel.Original
 
         @patch.object(Something, 'attribute', sentinel.Patched)
@@ -114,7 +114,7 @@ class PatchTest(unittest.TestCase):
             patch.object('Something', 'do_something')
 
     def test_patchobject_with_none(self):
-        class Something(object):
+        klasse Something(object):
             attribute = sentinel.Original
 
         @patch.object(Something, 'attribute', None)
@@ -127,7 +127,7 @@ class PatchTest(unittest.TestCase):
 
 
     def test_multiple_patchobject(self):
-        class Something(object):
+        klasse Something(object):
             attribute = sentinel.Original
             next_attribute = sentinel.Original2
 
@@ -217,7 +217,7 @@ class PatchTest(unittest.TestCase):
 
 
     def test_patchobject_with_default_mock(self):
-        class Test(object):
+        klasse Test(object):
             something = sentinel.Original
             something2 = sentinel.Original2
 
@@ -407,7 +407,7 @@ class PatchTest(unittest.TestCase):
 
 
     def test_patch_with_static_methods(self):
-        class Foo(object):
+        klasse Foo(object):
             @staticmethod
             def woot():
                 return sentinel.Static
@@ -431,7 +431,7 @@ class PatchTest(unittest.TestCase):
 
 
     def test_patch_slots(self):
-        class Foo(object):
+        klasse Foo(object):
             __slots__ = ('Foo',)
 
         foo = Foo()
@@ -446,10 +446,10 @@ class PatchTest(unittest.TestCase):
 
 
     def test_patchobject_class_decorator(self):
-        class Something(object):
+        klasse Something(object):
             attribute = sentinel.Original
 
-        class Foo(object):
+        klasse Foo(object):
             def test_method(other_self):
                 self.assertEqual(Something.attribute, sentinel.Patched,
                                  "unpatched")
@@ -468,10 +468,10 @@ class PatchTest(unittest.TestCase):
 
 
     def test_patch_class_decorator(self):
-        class Something(object):
+        klasse Something(object):
             attribute = sentinel.Original
 
-        class Foo(object):
+        klasse Foo(object):
 
             test_class_attr = 'whatever'
 
@@ -494,7 +494,7 @@ class PatchTest(unittest.TestCase):
 
 
     def test_patchobject_twice(self):
-        class Something(object):
+        klasse Something(object):
             attribute = sentinel.Original
             next_attribute = sentinel.Original2
 
@@ -833,7 +833,7 @@ class PatchTest(unittest.TestCase):
         d = {'spam': 'eggs'}
         original = d.copy()
 
-        class Test(object):
+        klasse Test(object):
             def test_first(self):
                 this.assertEqual(d, {'foo': 'bar'})
             def test_second(self):
@@ -860,9 +860,9 @@ class PatchTest(unittest.TestCase):
 
 
     def test_get_only_proxy(self):
-        class Something(object):
+        klasse Something(object):
             foo = 'foo'
-        class SomethingElse:
+        klasse SomethingElse:
             foo = 'foo'
 
         for thing in Something, SomethingElse, Something(), SomethingElse:
@@ -878,9 +878,9 @@ class PatchTest(unittest.TestCase):
 
 
     def test_get_set_delete_proxy(self):
-        class Something(object):
+        klasse Something(object):
             foo = 'foo'
-        class SomethingElse:
+        klasse SomethingElse:
             foo = 'foo'
 
         for thing in Something, SomethingElse, Something(), SomethingElse:
@@ -937,13 +937,13 @@ class PatchTest(unittest.TestCase):
 
 
     def test_autospec(self):
-        class Boo(object):
+        klasse Boo(object):
             def __init__(self, a): pass
             def f(self, a): pass
             def g(self): pass
             foo = 'bar'
 
-            class Bar(object):
+            klasse Bar(object):
                 def a(self): pass
 
         def _test(mock):
@@ -1048,7 +1048,7 @@ class PatchTest(unittest.TestCase):
 
     def test_autospec_staticmethod_signature(self):
         # Patched methods which are decorated with @staticmethod should have the same signature
-        class Foo:
+        klasse Foo:
             @staticmethod
             def static_method(a, b=10, *, c): pass
 
@@ -1063,7 +1063,7 @@ class PatchTest(unittest.TestCase):
 
     def test_autospec_classmethod_signature(self):
         # Patched methods which are decorated with @classmethod should have the same signature
-        class Foo:
+        klasse Foo:
             @classmethod
             def class_method(cls, a, b=10, *, c): pass
 
@@ -1086,7 +1086,7 @@ class PatchTest(unittest.TestCase):
 
 
     def test_autospec_with_object(self):
-        class Bar(Foo):
+        klasse Bar(Foo):
             extra = []
 
         patcher = patch(foo_name, autospec=Bar)
@@ -1163,7 +1163,7 @@ class PatchTest(unittest.TestCase):
 
 
     def test_new_callable_keyword_arguments(self):
-        class Bar(object):
+        klasse Bar(object):
             kwargs = None
             def __init__(self, **kwargs):
                 Bar.kwargs = kwargs
@@ -1178,7 +1178,7 @@ class PatchTest(unittest.TestCase):
 
 
     def test_new_callable_spec(self):
-        class Bar(object):
+        klasse Bar(object):
             kwargs = None
             def __init__(self, **kwargs):
                 Bar.kwargs = kwargs
@@ -1234,7 +1234,7 @@ class PatchTest(unittest.TestCase):
 
 
     def test_new_callable_inherit_for_mocks(self):
-        class MockSub(Mock):
+        klasse MockSub(Mock):
             pass
 
         MockClasses = (
@@ -1253,7 +1253,7 @@ class PatchTest(unittest.TestCase):
 
 
     def test_new_callable_inherit_non_mock(self):
-        class NotAMock(object):
+        klasse NotAMock(object):
             def __init__(self, spec):
                 self.spec = spec
 
@@ -1271,7 +1271,7 @@ class PatchTest(unittest.TestCase):
     def test_new_callable_class_decorating(self):
         test = self
         original = Foo
-        class SomeTest(object):
+        klasse SomeTest(object):
 
             def _test(self, mock_foo):
                 test.assertIsNot(Foo, original)
@@ -1439,7 +1439,7 @@ class PatchTest(unittest.TestCase):
         original_f = Foo.f
         original_g = Foo.g
 
-        class SomeTest(object):
+        klasse SomeTest(object):
 
             def _test(self, f, foo):
                 test.assertIs(Foo, original_foo)
@@ -1497,7 +1497,7 @@ class PatchTest(unittest.TestCase):
 
 
     def test_patch_multiple_new_callable(self):
-        class Thing(object):
+        klasse Thing(object):
             pass
 
         patcher = patch.multiple(
@@ -1635,7 +1635,7 @@ class PatchTest(unittest.TestCase):
 
     @patch('unittest.mock.patch.TEST_PREFIX', 'foo')
     def test_patch_test_prefix(self):
-        class Foo(object):
+        klasse Foo(object):
             thing = 'original'
 
             def foo_one(self):
@@ -1658,7 +1658,7 @@ class PatchTest(unittest.TestCase):
 
     @patch('unittest.mock.patch.TEST_PREFIX', 'bar')
     def test_patch_dict_test_prefix(self):
-        class Foo(object):
+        klasse Foo(object):
             def bar_one(self):
                 return dict(the_dict)
             def bar_two(self):
@@ -1745,10 +1745,10 @@ class PatchTest(unittest.TestCase):
         self.assertEqual(squizz.squozz, 3)
 
     def test_patch_propagates_exc_on_exit(self):
-        class holder:
+        klasse holder:
             exc_info = None, None, None
 
-        class custom_patch(_patch):
+        klasse custom_patch(_patch):
             def __exit__(self, etype=None, val=None, tb=None):
                 _patch.__exit__(self, etype, val, tb)
                 holder.exc_info = etype, val, tb
@@ -1946,11 +1946,11 @@ class PatchTest(unittest.TestCase):
 
     def test_stopall_lifo(self):
         stopped = []
-        class thing(object):
+        klasse thing(object):
             one = two = three = None
 
         def get_patch(attribute):
-            class mypatch(_patch):
+            klasse mypatch(_patch):
                 def stop(self):
                     stopped.append(attribute)
                     return super(mypatch, self).stop()
@@ -2078,7 +2078,7 @@ class PatchTest(unittest.TestCase):
 
 
     def test_invalid_target(self):
-        class Foo:
+        klasse Foo:
             pass
 
         for target in ['', 12, Foo()]:

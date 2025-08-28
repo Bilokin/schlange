@@ -4,7 +4,7 @@ import unittest
 from idlelib import util
 
 
-class UtilTest(unittest.TestCase):
+klasse UtilTest(unittest.TestCase):
     def test_extensions(self):
         for extension in {'.pyi', '.py', '.pyw'}:
             self.assertIn(extension, util.py_extensions)

@@ -429,7 +429,7 @@ if (os.name == "posix" and
     import ctypes
     if hasattr((_libc := ctypes.CDLL(None)), "dl_iterate_phdr"):
 
-        class _dl_phdr_info(ctypes.Structure):
+        klasse _dl_phdr_info(ctypes.Structure):
             _fields_ = [
                 ("dlpi_addr", ctypes.c_void_p),
                 ("dlpi_name", ctypes.c_char_p),

@@ -53,25 +53,25 @@ def duplicate_string(text):
     """
     return text.encode().decode()
 
-class StrSubclass(str):
+klasse StrSubclass(str):
     pass
 
-class OtherStrSubclass(str):
+klasse OtherStrSubclass(str):
     pass
 
-class WithStr:
+klasse WithStr:
     def __init__(self, value):
         self.value = value
     def __str__(self):
         return self.value
 
-class WithRepr:
+klasse WithRepr:
     def __init__(self, value):
         self.value = value
     def __repr__(self):
         return self.value
 
-class StrTest(string_tests.StringLikeTest,
+klasse StrTest(string_tests.StringLikeTest,
         string_tests.MixinStrUnicodeTest,
         unittest.TestCase):
 
@@ -90,7 +90,7 @@ class StrTest(string_tests.StringLikeTest,
         # if the original is returned make sure that
         # this doesn't happen with subclasses
         if realresult is object:
-            class usub(str):
+            klasse usub(str):
                 def __repr__(self):
                     return 'usub(%r)' % str.__repr__(self)
             object = usub(object)
@@ -263,7 +263,7 @@ class StrTest(string_tests.StringLikeTest,
         self.checkequal(0, 'a' * 10, 'count', 'a\U00100304')
         self.checkequal(0, '\u0102' * 10, 'count', '\u0102\U00100304')
         # test subclass
-        class MyStr(str):
+        klasse MyStr(str):
             pass
         self.checkequal(3, MyStr('aaa'), 'count', 'a')
 
@@ -547,7 +547,7 @@ class StrTest(string_tests.StringLikeTest,
     def test_join(self):
         string_tests.StringLikeTest.test_join(self)
 
-        class MyWrapper:
+        klasse MyWrapper:
             def __init__(self, sval): self.sval = sval
             def __str__(self): return self.sval
 
@@ -611,7 +611,7 @@ class StrTest(string_tests.StringLikeTest,
         self.assertEqual(id(a), id(1 * a))
         self.assertNotEqual(id(a), id(a * 2))
 
-        class SubStr(str):
+        klasse SubStr(str):
             pass
 
         s = SubStr('qwerty()')
@@ -1093,34 +1093,34 @@ class StrTest(string_tests.StringLikeTest,
                          "The year is 2007")
 
         # classes we'll use for testing
-        class C:
+        klasse C:
             def __init__(self, x=100):
                 self._x = x
             def __format__(self, spec):
                 return spec
 
-        class D:
+        klasse D:
             def __init__(self, x):
                 self.x = x
             def __format__(self, spec):
                 return str(self.x)
 
-        # class with __str__, but no __format__
-        class E:
+        # klasse with __str__, but no __format__
+        klasse E:
             def __init__(self, x):
                 self.x = x
             def __str__(self):
                 return 'E(' + self.x + ')'
 
-        # class with __repr__, but no __format__ or __str__
-        class F:
+        # klasse with __repr__, but no __format__ or __str__
+        klasse F:
             def __init__(self, x):
                 self.x = x
             def __repr__(self):
                 return 'F(' + self.x + ')'
 
-        # class with __format__ that forwards to string, for some format_spec's
-        class G:
+        # klasse with __format__ that forwards to string, for some format_spec's
+        klasse G:
             def __init__(self, x):
                 self.x = x
             def __str__(self):
@@ -1130,22 +1130,22 @@ class StrTest(string_tests.StringLikeTest,
                     return 'G(' + self.x + ')'
                 return object.__format__(self, format_spec)
 
-        class I(datetime.date):
+        klasse I(datetime.date):
             def __format__(self, format_spec):
                 return self.strftime(format_spec)
 
-        class J(int):
+        klasse J(int):
             def __format__(self, format_spec):
                 return int.__format__(self * 2, format_spec)
 
-        class M:
+        klasse M:
             def __init__(self, x):
                 self.x = x
             def __repr__(self):
                 return 'M(' + self.x + ')'
             __str__ = None
 
-        class N:
+        klasse N:
             def __init__(self, x):
                 self.x = x
             def __repr__(self):
@@ -1409,13 +1409,13 @@ class StrTest(string_tests.StringLikeTest,
         self.assertEqual('a{{b'.format_map({}), 'a{b')
 
         # using mappings
-        class Mapping(dict):
+        klasse Mapping(dict):
             def __missing__(self, key):
                 return key
         self.assertEqual('{hello}'.format_map(Mapping()), 'hello')
         self.assertEqual('{a} {world}'.format_map(Mapping(a='hello')), 'hello world')
 
-        class InternalMapping:
+        klasse InternalMapping:
             def __init__(self):
                 self.mapping = {'a': 'hello'}
             def __getitem__(self, key):
@@ -1423,7 +1423,7 @@ class StrTest(string_tests.StringLikeTest,
         self.assertEqual('{a}'.format_map(InternalMapping()), 'hello')
 
 
-        class C:
+        klasse C:
             def __init__(self, x=100):
                 self._x = x
             def __format__(self, spec):
@@ -1446,7 +1446,7 @@ class StrTest(string_tests.StringLikeTest,
         self.assertRaises(ValueError, '{}'.format_map, 'a')
         self.assertRaises(ValueError, '{a} {}'.format_map, {"a" : 2, "b" : 1})
 
-        class BadMapping:
+        klasse BadMapping:
             def __getitem__(self, key):
                 return 1/0
         self.assertRaises(KeyError, '{a}'.format_map, {})
@@ -1469,7 +1469,7 @@ class StrTest(string_tests.StringLikeTest,
             result = format_string.format(2.34)
 
     def test_format_auto_numbering(self):
-        class C:
+        klasse C:
             def __init__(self, x=100):
                 self._x = x
             def __format__(self, spec):
@@ -1538,7 +1538,7 @@ class StrTest(string_tests.StringLikeTest,
         self.assertEqual('%i %*.*s' % (10, 5,3,'abc',), '10   abc')
         self.assertEqual('%i%s %*.*s' % (10, 3, 5, 3, 'abc',), '103   abc')
         self.assertEqual('%c' % 'a', 'a')
-        class Wrapper:
+        klasse Wrapper:
             def __str__(self):
                 return '\u1234'
         self.assertEqual('%s' % Wrapper(), '\u1234')
@@ -1556,14 +1556,14 @@ class StrTest(string_tests.StringLikeTest,
         self.assertEqual('%.2s' % "a\xe9\u20ac", 'a\xe9')
 
         #issue 19995
-        class PseudoInt:
+        klasse PseudoInt:
             def __init__(self, value):
                 self.value = int(value)
             def __int__(self):
                 return self.value
             def __index__(self):
                 return self.value
-        class PseudoFloat:
+        klasse PseudoFloat:
             def __init__(self, value):
                 self.value = float(value)
             def __int__(self):
@@ -1590,7 +1590,7 @@ class StrTest(string_tests.StringLikeTest,
         self.assertRaisesRegex(TypeError, '%d format: a real number is required, not complex', operator.mod, '%d', 1j)
         self.assertRaisesRegex(TypeError, r'%c requires an int or a unicode character, not .*\.PseudoFloat', operator.mod, '%c', pi)
 
-        class RaisingNumber:
+        klasse RaisingNumber:
             def __int__(self):
                 raise RuntimeError('int')  # should not be `TypeError`
             def __index__(self):
@@ -1607,13 +1607,13 @@ class StrTest(string_tests.StringLikeTest,
     def test_formatting_with_enum(self):
         # issue18780
         import enum
-        class Float(float, enum.Enum):
+        klasse Float(float, enum.Enum):
             # a mixed-in type will use the name for %s etc.
             PI = 3.1415926
-        class Int(enum.IntEnum):
+        klasse Int(enum.IntEnum):
             # IntEnum uses the value and not the name for %s etc.
             IDES = 15
-        class Str(enum.StrEnum):
+        klasse Str(enum.StrEnum):
             # StrEnum uses the value and not the name for %s etc.
             ABC = 'abc'
         # Testing Unicode formatting strings...
@@ -1649,7 +1649,7 @@ class StrTest(string_tests.StringLikeTest,
     def test_issue28598_strsubclass_rhs(self):
         # A subclass of str with an __rmod__ method should be able to hook
         # into the % operator
-        class SubclassedStr(str):
+        klasse SubclassedStr(str):
             def __rmod__(self, other):
                 return 'Success, self.__rmod__({!r}) was called'.format(other)
         self.assertEqual('lhs %% %r' % SubclassedStr('rhs'),
@@ -1701,7 +1701,7 @@ class StrTest(string_tests.StringLikeTest,
             'strings are converted to unicode'
         )
 
-        class StringCompat:
+        klasse StringCompat:
             def __init__(self, x):
                 self.x = x
             def __str__(self):
@@ -2406,7 +2406,7 @@ class StrTest(string_tests.StringLikeTest,
 
     def test_conversion(self):
         # Make sure __str__() works properly
-        class StrWithStr(str):
+        klasse StrWithStr(str):
             def __new__(cls, value):
                 self = str.__new__(cls, "")
                 self.value = value
@@ -2439,7 +2439,7 @@ class StrTest(string_tests.StringLikeTest,
                               StrSubclass('<abc>'))
 
     def test_unicode_repr(self):
-        class s1:
+        klasse s1:
             def __repr__(self):
                 return '\\n'
 
@@ -2503,7 +2503,7 @@ class StrTest(string_tests.StringLikeTest,
                 self.assertRaises(MemoryError, alloc)
 
     def test_format_subclass(self):
-        class S(str):
+        klasse S(str):
             def __str__(self):
                 return '__str__ overridden'
         s = S('xxx')
@@ -2511,11 +2511,11 @@ class StrTest(string_tests.StringLikeTest,
         self.assertEqual("{}".format(s), '__str__ overridden')
 
     def test_subclass_add(self):
-        class S(str):
+        klasse S(str):
             def __add__(self, o):
                 return "3"
         self.assertEqual(S("4") + S("5"), "3")
-        class S(str):
+        klasse S(str):
             def __iadd__(self, o):
                 return "3"
         s = S("1")
@@ -2710,7 +2710,7 @@ class StrTest(string_tests.StringLikeTest,
             str(b"x", "utf-8", "strict", errors="ignore")
 
 
-class StringModuleTest(unittest.TestCase):
+klasse StringModuleTest(unittest.TestCase):
     def test_formatter_parser(self):
         def parse(format):
             return list(_string.formatter_parser(format))
@@ -2764,7 +2764,7 @@ class StringModuleTest(unittest.TestCase):
 
         name = StrSubclass("name")
         name2 = StrSubclass("name2")
-        class Bag:
+        klasse Bag:
             pass
 
         o = Bag()

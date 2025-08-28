@@ -23,7 +23,7 @@ except ImportError:
     _testcapi = None
 
 
-class GenericTests(unittest.TestCase):
+klasse GenericTests(unittest.TestCase):
 
     def test_enums(self):
         for name in dir(signal):
@@ -74,7 +74,7 @@ class GenericTests(unittest.TestCase):
 
 
 @unittest.skipIf(sys.platform == "win32", "Not valid on Windows")
-class PosixTests(unittest.TestCase):
+klasse PosixTests(unittest.TestCase):
     def trivial_signal_handler(self, *args):
         pass
 
@@ -104,7 +104,7 @@ class PosixTests(unittest.TestCase):
     def test_no_repr_is_called_on_signal_handler(self):
         # See https://github.com/python/cpython/issues/112559.
 
-        class MyArgument:
+        klasse MyArgument:
             def __init__(self):
                 self.repr_count = 0
 
@@ -181,7 +181,7 @@ class PosixTests(unittest.TestCase):
 
 
 @unittest.skipUnless(sys.platform == "win32", "Windows specific")
-class WindowsSignalTests(unittest.TestCase):
+klasse WindowsSignalTests(unittest.TestCase):
 
     def test_valid_signals(self):
         s = signal.valid_signals()
@@ -229,7 +229,7 @@ class WindowsSignalTests(unittest.TestCase):
         self.assertEqual(process.returncode, STATUS_CONTROL_C_EXIT)
 
 
-class WakeupFDTests(unittest.TestCase):
+klasse WakeupFDTests(unittest.TestCase):
 
     def test_invalid_call(self):
         # First parameter is positional-only
@@ -311,7 +311,7 @@ class WakeupFDTests(unittest.TestCase):
 
 
 @unittest.skipIf(sys.platform == "win32", "Not valid on Windows")
-class WakeupSignalTests(unittest.TestCase):
+klasse WakeupSignalTests(unittest.TestCase):
     @unittest.skipIf(_testcapi is None, 'need _testcapi')
     def check_wakeup(self, test_body, *signals, ordered=True):
         # use a subprocess to have only one thread
@@ -413,7 +413,7 @@ class WakeupSignalTests(unittest.TestCase):
             TIMEOUT_FULL = 10
             TIMEOUT_HALF = 5
 
-            class InterruptSelect(Exception):
+            klasse InterruptSelect(Exception):
                 pass
 
             def handler(signum, frame):
@@ -447,7 +447,7 @@ class WakeupSignalTests(unittest.TestCase):
             TIMEOUT_FULL = 10
             TIMEOUT_HALF = 5
 
-            class InterruptSelect(Exception):
+            klasse InterruptSelect(Exception):
                 pass
 
             def handler(signum, frame):
@@ -495,7 +495,7 @@ class WakeupSignalTests(unittest.TestCase):
 
 
 @unittest.skipUnless(hasattr(socket, 'socketpair'), 'need socket.socketpair')
-class WakeupSocketSignalTests(unittest.TestCase):
+klasse WakeupSocketSignalTests(unittest.TestCase):
 
     @unittest.skipIf(_testcapi is None, 'need _testcapi')
     def test_socket(self):
@@ -694,7 +694,7 @@ class WakeupSocketSignalTests(unittest.TestCase):
 @unittest.skipUnless(hasattr(signal, 'siginterrupt'), "needs signal.siginterrupt()")
 @support.requires_subprocess()
 @unittest.skipUnless(hasattr(os, "pipe"), "requires os.pipe()")
-class SiginterruptTest(unittest.TestCase):
+klasse SiginterruptTest(unittest.TestCase):
 
     def readpipe_interrupted(self, interrupt, timeout=support.SHORT_TIMEOUT):
         """Perform a read during which a signal will arrive.  Return True if the
@@ -782,7 +782,7 @@ class SiginterruptTest(unittest.TestCase):
 @unittest.skipIf(sys.platform == "win32", "Not valid on Windows")
 @unittest.skipUnless(hasattr(signal, 'getitimer') and hasattr(signal, 'setitimer'),
                          "needs signal.getitimer() and signal.setitimer()")
-class ItimerTest(unittest.TestCase):
+klasse ItimerTest(unittest.TestCase):
     def setUp(self):
         self.hndl_called = False
         self.hndl_count = 0
@@ -877,7 +877,7 @@ class ItimerTest(unittest.TestCase):
         self.assertEqual(self.hndl_called, True)
 
 
-class PendingSignalsTests(unittest.TestCase):
+klasse PendingSignalsTests(unittest.TestCase):
     """
     Test pthread_sigmask(), pthread_kill(), sigpending() and sigwait()
     functions.
@@ -1216,7 +1216,7 @@ class PendingSignalsTests(unittest.TestCase):
                                 (exitcode, stdout))
 
 
-class StressTest(unittest.TestCase):
+klasse StressTest(unittest.TestCase):
     """
     Stress signal delivery, especially when a signal arrives in
     the middle of recomputing the signal state or executing
@@ -1408,7 +1408,7 @@ class StressTest(unittest.TestCase):
             t.join()
 
 
-class RaiseSignalTest(unittest.TestCase):
+klasse RaiseSignalTest(unittest.TestCase):
 
     def test_sigint(self):
         with self.assertRaises(KeyboardInterrupt):
@@ -1441,7 +1441,7 @@ class RaiseSignalTest(unittest.TestCase):
         # See https://github.com/python/cpython/issues/102397
         code = """if 1:
         import _thread
-        class Foo():
+        klasse Foo():
             def __del__(self):
                 _thread.interrupt_main()
 
@@ -1453,7 +1453,7 @@ class RaiseSignalTest(unittest.TestCase):
 
 
 
-class PidfdSignalTest(unittest.TestCase):
+klasse PidfdSignalTest(unittest.TestCase):
 
     @unittest.skipUnless(
         hasattr(signal, "pidfd_send_signal"),

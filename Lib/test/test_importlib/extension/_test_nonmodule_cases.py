@@ -7,7 +7,7 @@ machinery = util.import_importlib('importlib.machinery')
 from test.test_importlib.extension.test_loader import MultiPhaseExtensionModuleTests
 
 
-class NonModuleExtensionTests:
+klasse NonModuleExtensionTests:
     setUp = MultiPhaseExtensionModuleTests.setUp
     load_module_by_name = MultiPhaseExtensionModuleTests.load_module_by_name
 

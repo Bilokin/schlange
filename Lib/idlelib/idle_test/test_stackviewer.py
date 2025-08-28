@@ -8,7 +8,7 @@ from tkinter import Tk
 from idlelib.tree import TreeNode, ScrolledCanvas
 
 
-class StackBrowserTest(unittest.TestCase):
+klasse StackBrowserTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):

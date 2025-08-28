@@ -20,7 +20,7 @@
 import termios
 
 
-class TermState:
+klasse TermState:
     def __init__(self, tuples):
         (
             self.iflag,
@@ -57,7 +57,7 @@ def tcsetattr(fd, when, attrs):
     termios.tcsetattr(fd, when, attrs.as_list())
 
 
-class Term(TermState):
+klasse Term(TermState):
     TS__init__ = TermState.__init__
 
     def __init__(self, fd=0):

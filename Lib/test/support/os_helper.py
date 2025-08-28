@@ -634,7 +634,7 @@ def fs_is_case_insensitive(directory):
             return False
 
 
-class FakePath:
+klasse FakePath:
     """Simple implementation of the path protocol.
     """
     def __init__(self, path):
@@ -735,7 +735,7 @@ else:
         yield
 
 
-class EnvironmentVarGuard(collections.abc.MutableMapping):
+klasse EnvironmentVarGuard(collections.abc.MutableMapping):
     """Class to help protect the environment variable properly.
 
     Can be used as a context manager.

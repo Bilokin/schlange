@@ -14,7 +14,7 @@ py_operator = import_helper.import_fresh_module('operator',
 c_operator = import_helper.import_fresh_module('operator',
                                                fresh=['_operator'])
 
-class Seq1:
+klasse Seq1:
     def __init__(self, lst):
         self.lst = lst
     def __len__(self):
@@ -28,7 +28,7 @@ class Seq1:
     def __rmul__(self, other):
         return other * self.lst
 
-class Seq2(object):
+klasse Seq2(object):
     def __init__(self, lst):
         self.lst = lst
     def __len__(self):
@@ -42,12 +42,12 @@ class Seq2(object):
     def __rmul__(self, other):
         return other * self.lst
 
-class BadIterable:
+klasse BadIterable:
     def __iter__(self):
         raise ZeroDivisionError
 
 
-class OperatorTestCase:
+klasse OperatorTestCase:
     def test___all__(self):
         operator = self.module
         actual_all = set(operator.__all__)
@@ -84,7 +84,7 @@ class OperatorTestCase:
 
     def test_eq(self):
         operator = self.module
-        class C(object):
+        klasse C(object):
             def __eq__(self, other):
                 raise SyntaxError
         self.assertRaises(TypeError, operator.eq)
@@ -98,7 +98,7 @@ class OperatorTestCase:
 
     def test_ne(self):
         operator = self.module
-        class C(object):
+        klasse C(object):
             def __ne__(self, other):
                 raise SyntaxError
         self.assertRaises(TypeError, operator.ne)
@@ -245,7 +245,7 @@ class OperatorTestCase:
         operator = self.module
         self.assertRaises(TypeError, operator.matmul)
         self.assertRaises(TypeError, operator.matmul, 42, 42)
-        class M:
+        klasse M:
             def __matmul__(self, other):
                 return other - 1
         self.assertEqual(M() @ 42, 41)
@@ -315,7 +315,7 @@ class OperatorTestCase:
 
     def test_truth(self):
         operator = self.module
-        class C(object):
+        klasse C(object):
             def __bool__(self):
                 raise SyntaxError
         self.assertRaises(TypeError, operator.truth)
@@ -369,7 +369,7 @@ class OperatorTestCase:
 
     def test_attrgetter(self):
         operator = self.module
-        class A:
+        klasse A:
             pass
         a = A()
         a.name = 'arthur'
@@ -391,7 +391,7 @@ class OperatorTestCase:
         self.assertEqual(operator.attrgetter('x','z','y')(record), ('X', 'Z', 'Y'))
         self.assertRaises(TypeError, operator.attrgetter, ('x', (), 'y'))
 
-        class C(object):
+        klasse C(object):
             def __getattr__(self, name):
                 raise SyntaxError
         self.assertRaises(SyntaxError, operator.attrgetter('foo'), C())
@@ -431,7 +431,7 @@ class OperatorTestCase:
         f = operator.itemgetter(10)
         self.assertRaises(IndexError, f, a)
 
-        class C(object):
+        klasse C(object):
             def __getitem__(self, name):
                 raise SyntaxError
         self.assertRaises(SyntaxError, operator.itemgetter(42), C())
@@ -464,7 +464,7 @@ class OperatorTestCase:
         self.assertEqual(operator.itemgetter(slice(2, 4))(t), ('c', 'd'))
 
         # interesting sequences
-        class T(tuple):
+        klasse T(tuple):
             'Tuple subclass'
             pass
         self.assertEqual(operator.itemgetter(0)(T('abc')), 'a')
@@ -475,7 +475,7 @@ class OperatorTestCase:
         operator = self.module
         self.assertRaises(TypeError, operator.methodcaller)
         self.assertRaises(TypeError, operator.methodcaller, 12)
-        class A:
+        klasse A:
             def foo(self, *args, **kwds):
                 return args[0] + args[1]
             def bar(self, f=42):
@@ -513,7 +513,7 @@ class OperatorTestCase:
 
     def test_inplace(self):
         operator = self.module
-        class C(object):
+        klasse C(object):
             def __iadd__     (self, other): return "iadd"
             def __iand__     (self, other): return "iand"
             def __ifloordiv__(self, other): return "ifloordiv"
@@ -553,7 +553,7 @@ class OperatorTestCase:
 
     def test_index(self):
         operator = self.module
-        class X:
+        klasse X:
             def __index__(self):
                 return 1
 
@@ -572,7 +572,7 @@ class OperatorTestCase:
 
     def test_not_(self):
         operator = self.module
-        class C:
+        klasse C:
             def __bool__(self):
                 raise SyntaxError
         self.assertRaises(TypeError, operator.not_)
@@ -584,7 +584,7 @@ class OperatorTestCase:
 
     def test_length_hint(self):
         operator = self.module
-        class X(object):
+        klasse X(object):
             def __init__(self, value):
                 self.value = value
 
@@ -607,7 +607,7 @@ class OperatorTestCase:
         with self.assertRaises(LookupError):
             operator.length_hint(X(LookupError))
 
-        class Y: pass
+        klasse Y: pass
 
         msg = "'str' object cannot be interpreted as an integer"
         with self.assertRaisesRegex(TypeError, msg):
@@ -661,16 +661,16 @@ class OperatorTestCase:
         self.assertEqual(str(sig), '(obj, /)')
 
 
-class PyOperatorTestCase(OperatorTestCase, unittest.TestCase):
+klasse PyOperatorTestCase(OperatorTestCase, unittest.TestCase):
     module = py_operator
 
 @unittest.skipUnless(c_operator, 'requires _operator')
-class COperatorTestCase(OperatorTestCase, unittest.TestCase):
+klasse COperatorTestCase(OperatorTestCase, unittest.TestCase):
     module = c_operator
 
 
 @support.thread_unsafe("swaps global operator module")
-class OperatorPickleTestCase:
+klasse OperatorPickleTestCase:
     def copy(self, obj, proto):
         with support.swap_item(sys.modules, 'operator', self.module):
             pickled = pickle.dumps(obj, proto)
@@ -679,7 +679,7 @@ class OperatorPickleTestCase:
 
     def test_attrgetter(self):
         attrgetter = self.module.attrgetter
-        class A:
+        klasse A:
             pass
         a = A()
         a.x = 'X'
@@ -722,7 +722,7 @@ class OperatorPickleTestCase:
 
     def test_methodcaller(self):
         methodcaller = self.module.methodcaller
-        class A:
+        klasse A:
             def foo(self, *args, **kwds):
                 return args[0] + args[1]
             def bar(self, f=42):
@@ -751,22 +751,22 @@ class OperatorPickleTestCase:
                 # Can't test repr consistently with multiple keyword args
                 self.assertEqual(f2(a), f(a))
 
-class PyPyOperatorPickleTestCase(OperatorPickleTestCase, unittest.TestCase):
+klasse PyPyOperatorPickleTestCase(OperatorPickleTestCase, unittest.TestCase):
     module = py_operator
     module2 = py_operator
 
 @unittest.skipUnless(c_operator, 'requires _operator')
-class PyCOperatorPickleTestCase(OperatorPickleTestCase, unittest.TestCase):
+klasse PyCOperatorPickleTestCase(OperatorPickleTestCase, unittest.TestCase):
     module = py_operator
     module2 = c_operator
 
 @unittest.skipUnless(c_operator, 'requires _operator')
-class CPyOperatorPickleTestCase(OperatorPickleTestCase, unittest.TestCase):
+klasse CPyOperatorPickleTestCase(OperatorPickleTestCase, unittest.TestCase):
     module = c_operator
     module2 = py_operator
 
 @unittest.skipUnless(c_operator, 'requires _operator')
-class CCOperatorPickleTestCase(OperatorPickleTestCase, unittest.TestCase):
+klasse CCOperatorPickleTestCase(OperatorPickleTestCase, unittest.TestCase):
     module = c_operator
     module2 = c_operator
 

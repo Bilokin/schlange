@@ -70,7 +70,7 @@ def ignore_fork_in_thread_deprecation_warnings():
         yield
 
 
-class WarningsRecorder(object):
+klasse WarningsRecorder(object):
     """Convenience wrapper for the warnings list returned on
        entry to the warnings.catch_warnings() context manager.
     """

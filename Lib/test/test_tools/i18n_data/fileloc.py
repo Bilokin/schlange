@@ -10,7 +10,7 @@ _('bar'), _('bar')
 
 
 # Duplicate docstrings
-class A:
+klasse A:
     """docstring"""
 
 

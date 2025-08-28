@@ -10,17 +10,17 @@ from test.support import force_not_colorized
 from _pyrepl.console import InteractiveColoredConsole
 from _pyrepl.simple_interact import _more_lines
 
-class TestSimpleInteract(unittest.TestCase):
+klasse TestSimpleInteract(unittest.TestCase):
     def test_multiple_statements(self):
         namespace = {}
         code = dedent("""\
-        class A:
+        klasse A:
             def foo(self):
 
 
                 pass
 
-        class B:
+        klasse B:
             def bar(self):
                 pass
 
@@ -175,7 +175,7 @@ SyntaxError: duplicate parameter 'x' in function definition"""
         self.assertEqual(f.getvalue(), "True\n")
 
 
-class TestMoreLines(unittest.TestCase):
+klasse TestMoreLines(unittest.TestCase):
     def test_invalid_syntax_single_line(self):
         namespace = {}
         code = "if foo"
@@ -236,7 +236,7 @@ class TestMoreLines(unittest.TestCase):
         from dataclasses import dataclass
 
         @dataclass
-        class Point:
+        klasse Point:
             x: float
             y: float""")
         console = InteractiveColoredConsole(namespace, filename="<stdin>")
@@ -248,7 +248,7 @@ class TestMoreLines(unittest.TestCase):
         from dataclasses import dataclass
 
         @dataclass
-        class Point:
+        klasse Point:
             x: float
             y: float
         """)
@@ -276,7 +276,7 @@ class TestMoreLines(unittest.TestCase):
         self.assertTrue(_more_lines(console, code))
 
 
-class TestWarnings(unittest.TestCase):
+klasse TestWarnings(unittest.TestCase):
     def test_pep_765_warning(self):
         """
         Test that a SyntaxWarning emitted from the

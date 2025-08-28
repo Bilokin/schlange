@@ -13,7 +13,7 @@ from test.support import channels
 from .utils import _run_output, TestBase
 
 
-class LowLevelTests(TestBase):
+klasse LowLevelTests(TestBase):
 
     # The behaviors in the low-level module is important in as much
     # as it is exercised by the high-level module.  Therefore the
@@ -31,7 +31,7 @@ class LowLevelTests(TestBase):
         importlib.reload(channels)
 
 
-class TestChannels(TestBase):
+klasse TestChannels(TestBase):
 
     def test_create(self):
         r, s = channels.create()
@@ -95,7 +95,7 @@ class TestChannels(TestBase):
         self.assertTrue(safter)
 
 
-class TestRecvChannelAttrs(TestBase):
+klasse TestRecvChannelAttrs(TestBase):
 
     def test_id_type(self):
         rch, _ = channels.create()
@@ -128,7 +128,7 @@ class TestRecvChannelAttrs(TestBase):
                 self.assertEqual(unpickled, ch)
 
 
-class TestSendChannelAttrs(TestBase):
+klasse TestSendChannelAttrs(TestBase):
 
     def test_id_type(self):
         _, sch = channels.create()
@@ -161,7 +161,7 @@ class TestSendChannelAttrs(TestBase):
                 self.assertEqual(unpickled, ch)
 
 
-class TestSendRecv(TestBase):
+klasse TestSendRecv(TestBase):
 
     def test_send_recv_main(self):
         r, s = channels.create()

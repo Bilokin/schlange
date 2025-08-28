@@ -17,9 +17,9 @@ util = test_util.import_importlib('importlib.util')
 
 
 ##### Inheritance ##############################################################
-class InheritanceTests:
+klasse InheritanceTests:
 
-    """Test that the specified class is a subclass/superclass of the expected
+    """Test that the specified klasse is a subclass/superclass of the expected
     classes."""
 
     subclasses = []
@@ -46,12 +46,12 @@ class InheritanceTests:
             self.assertIsSubclass(subclass, self.__test)
 
     def test_superclasses(self):
-        # Test that the class inherits from the expected superclasses.
+        # Test that the klasse inherits from the expected superclasses.
         for superclass in self.superclasses:
             self.assertIsSubclass(self.__test, superclass)
 
 
-class MetaPathFinder(InheritanceTests):
+klasse MetaPathFinder(InheritanceTests):
     superclass_names = []
     subclass_names = ['BuiltinImporter', 'FrozenImporter', 'PathFinder',
                       'WindowsRegistryFinder']
@@ -62,7 +62,7 @@ class MetaPathFinder(InheritanceTests):
  ) = test_util.test_both(MetaPathFinder, abc=abc)
 
 
-class PathEntryFinder(InheritanceTests):
+klasse PathEntryFinder(InheritanceTests):
     superclass_names = []
     subclass_names = ['FileFinder']
 
@@ -72,7 +72,7 @@ class PathEntryFinder(InheritanceTests):
  ) = test_util.test_both(PathEntryFinder, abc=abc)
 
 
-class ResourceLoader(InheritanceTests):
+klasse ResourceLoader(InheritanceTests):
     superclass_names = ['Loader']
 
 
@@ -81,7 +81,7 @@ class ResourceLoader(InheritanceTests):
  ) = test_util.test_both(ResourceLoader, abc=abc)
 
 
-class InspectLoader(InheritanceTests):
+klasse InspectLoader(InheritanceTests):
     superclass_names = ['Loader']
     subclass_names = ['BuiltinImporter', 'FrozenImporter', 'ExtensionFileLoader']
 
@@ -91,7 +91,7 @@ class InspectLoader(InheritanceTests):
  ) = test_util.test_both(InspectLoader, abc=abc)
 
 
-class ExecutionLoader(InheritanceTests):
+klasse ExecutionLoader(InheritanceTests):
     superclass_names = ['InspectLoader']
     subclass_names = ['ExtensionFileLoader']
 
@@ -101,7 +101,7 @@ class ExecutionLoader(InheritanceTests):
  ) = test_util.test_both(ExecutionLoader, abc=abc)
 
 
-class FileLoader(InheritanceTests):
+klasse FileLoader(InheritanceTests):
     superclass_names = ['ResourceLoader', 'ExecutionLoader']
     subclass_names = ['SourceFileLoader', 'SourcelessFileLoader']
 
@@ -111,7 +111,7 @@ class FileLoader(InheritanceTests):
  ) = test_util.test_both(FileLoader, abc=abc)
 
 
-class SourceLoader(InheritanceTests):
+klasse SourceLoader(InheritanceTests):
     superclass_names = ['ResourceLoader', 'ExecutionLoader']
     subclass_names = ['SourceFileLoader']
 
@@ -132,7 +132,7 @@ def make_abc_subclasses(base_class, name=None, inst=False, **kwargs):
             for cls in test_util.split_frozen(base_class, base, **kwargs)}
 
 
-class ABCTestHarness:
+klasse ABCTestHarness:
 
     @property
     def ins(self):
@@ -143,12 +143,12 @@ class ABCTestHarness:
         return ins
 
 
-class MetaPathFinder:
+klasse MetaPathFinder:
 
     pass
 
 
-class MetaPathFinderDefaultsTests(ABCTestHarness):
+klasse MetaPathFinderDefaultsTests(ABCTestHarness):
 
     SPLIT = make_abc_subclasses(MetaPathFinder)
 
@@ -162,12 +162,12 @@ class MetaPathFinderDefaultsTests(ABCTestHarness):
  ) = test_util.test_both(MetaPathFinderDefaultsTests)
 
 
-class PathEntryFinder:
+klasse PathEntryFinder:
 
     pass
 
 
-class PathEntryFinderDefaultsTests(ABCTestHarness):
+klasse PathEntryFinderDefaultsTests(ABCTestHarness):
 
     SPLIT = make_abc_subclasses(PathEntryFinder)
 
@@ -181,12 +181,12 @@ class PathEntryFinderDefaultsTests(ABCTestHarness):
  ) = test_util.test_both(PathEntryFinderDefaultsTests)
 
 
-class Loader:
+klasse Loader:
 
     pass
 
 
-class LoaderDefaultsTests(ABCTestHarness):
+klasse LoaderDefaultsTests(ABCTestHarness):
 
     SPLIT = make_abc_subclasses(Loader)
 
@@ -213,13 +213,13 @@ class LoaderDefaultsTests(ABCTestHarness):
  ) = test_util.test_both(LoaderDefaultsTests)
 
 
-class ResourceLoader(Loader):
+klasse ResourceLoader(Loader):
 
     def get_data(self, path):
         return super().get_data(path)
 
 
-class ResourceLoaderDefaultsTests(ABCTestHarness):
+klasse ResourceLoaderDefaultsTests(ABCTestHarness):
 
     SPLIT = make_abc_subclasses(ResourceLoader)
 
@@ -233,7 +233,7 @@ class ResourceLoaderDefaultsTests(ABCTestHarness):
  ) = test_util.test_both(ResourceLoaderDefaultsTests)
 
 
-class InspectLoader(Loader):
+klasse InspectLoader(Loader):
 
     def is_package(self, fullname):
         return super().is_package(fullname)
@@ -245,7 +245,7 @@ class InspectLoader(Loader):
 SPLIT_IL = make_abc_subclasses(InspectLoader)
 
 
-class InspectLoaderDefaultsTests(ABCTestHarness):
+klasse InspectLoaderDefaultsTests(ABCTestHarness):
 
     SPLIT = SPLIT_IL
 
@@ -263,7 +263,7 @@ class InspectLoaderDefaultsTests(ABCTestHarness):
  ) = test_util.test_both(InspectLoaderDefaultsTests)
 
 
-class ExecutionLoader(InspectLoader):
+klasse ExecutionLoader(InspectLoader):
 
     def get_filename(self, fullname):
         return super().get_filename(fullname)
@@ -272,7 +272,7 @@ class ExecutionLoader(InspectLoader):
 SPLIT_EL = make_abc_subclasses(ExecutionLoader)
 
 
-class ExecutionLoaderDefaultsTests(ABCTestHarness):
+klasse ExecutionLoaderDefaultsTests(ABCTestHarness):
 
     SPLIT = SPLIT_EL
 
@@ -286,7 +286,7 @@ class ExecutionLoaderDefaultsTests(ABCTestHarness):
  ) = test_util.test_both(InspectLoaderDefaultsTests)
 
 
-class ResourceReader:
+klasse ResourceReader:
 
     def open_resource(self, *args, **kwargs):
         return super().open_resource(*args, **kwargs)
@@ -302,11 +302,11 @@ class ResourceReader:
 
 
 ##### MetaPathFinder concrete methods ##########################################
-class MetaPathFinderFindModuleTests:
+klasse MetaPathFinderFindModuleTests:
 
     @classmethod
     def finder(cls, spec):
-        class MetaPathSpecFinder(cls.abc.MetaPathFinder):
+        klasse MetaPathSpecFinder(cls.abc.MetaPathFinder):
 
             def find_spec(self, fullname, path, target=None):
                 self.called_for = fullname, path
@@ -344,10 +344,10 @@ class MetaPathFinderFindModuleTests:
 
 
 ##### Loader concrete methods ##################################################
-class LoaderLoadModuleTests:
+klasse LoaderLoadModuleTests:
 
     def loader(self):
-        class SpecLoader(self.abc.Loader):
+        klasse SpecLoader(self.abc.Loader):
             found = None
             def exec_module(self, module):
                 self.found = module
@@ -397,7 +397,7 @@ class LoaderLoadModuleTests:
 
 
 ##### InspectLoader concrete methods ###########################################
-class InspectLoaderSourceToCodeTests:
+klasse InspectLoaderSourceToCodeTests:
 
     def source_to_module(self, data, path=None):
         """Help with source_to_code() tests."""
@@ -445,7 +445,7 @@ class InspectLoaderSourceToCodeTests:
                          InspectLoaderSubclass=SPLIT_IL)
 
 
-class InspectLoaderGetCodeTests:
+klasse InspectLoaderGetCodeTests:
 
     def test_get_code(self):
         # Test success.
@@ -478,7 +478,7 @@ class InspectLoaderGetCodeTests:
                          InspectLoaderSubclass=SPLIT_IL)
 
 
-class InspectLoaderLoadModuleTests:
+klasse InspectLoaderLoadModuleTests:
 
     """Test InspectLoader.load_module()."""
 
@@ -532,7 +532,7 @@ class InspectLoaderLoadModuleTests:
 
 
 ##### ExecutionLoader concrete methods #########################################
-class ExecutionLoaderGetCodeTests:
+klasse ExecutionLoaderGetCodeTests:
 
     def mock_methods(self, *, get_source=False, get_filename=False):
         source_mock_context, filename_mock_context = None, None
@@ -596,7 +596,7 @@ class ExecutionLoaderGetCodeTests:
 
 
 ##### SourceLoader concrete methods ############################################
-class SourceOnlyLoader:
+klasse SourceOnlyLoader:
 
     # Globals that should be defined for all modules.
     source = (b"_ = '::'.join([__name__, __file__, __cached__, __package__, "
@@ -617,7 +617,7 @@ class SourceOnlyLoader:
 SPLIT_SOL = make_abc_subclasses(SourceOnlyLoader, 'SourceLoader')
 
 
-class SourceLoader(SourceOnlyLoader):
+klasse SourceLoader(SourceOnlyLoader):
 
     source_mtime = 1
 
@@ -658,7 +658,7 @@ class SourceLoader(SourceOnlyLoader):
 SPLIT_SL = make_abc_subclasses(SourceLoader, util=util, init=init)
 
 
-class SourceLoaderTestHarness:
+klasse SourceLoaderTestHarness:
 
     def setUp(self, *, is_package=True, **kwargs):
         self.package = 'pkg'
@@ -696,7 +696,7 @@ class SourceLoaderTestHarness:
         self.verify_module(module)
 
 
-class SourceOnlyLoaderTests(SourceLoaderTestHarness):
+klasse SourceOnlyLoaderTests(SourceLoaderTestHarness):
     """Test importlib.abc.SourceLoader for source-only loading."""
 
     def test_get_source(self):
@@ -777,7 +777,7 @@ class SourceOnlyLoaderTests(SourceLoaderTestHarness):
 
 
 @unittest.skipIf(sys.dont_write_bytecode, "sys.dont_write_bytecode is true")
-class SourceLoaderBytecodeTests(SourceLoaderTestHarness):
+klasse SourceLoaderBytecodeTests(SourceLoaderTestHarness):
 
     """Test importlib.abc.SourceLoader's use of bytecode.
 
@@ -836,7 +836,7 @@ class SourceLoaderBytecodeTests(SourceLoaderTestHarness):
 
     def test_dont_write_bytecode(self):
         # Bytecode is not written if sys.dont_write_bytecode is true.
-        # Can assume it is false already thanks to the skipIf class decorator.
+        # Can assume it is false already thanks to the skipIf klasse decorator.
         try:
             sys.dont_write_bytecode = True
             self.loader.bytecode_path = "<does not exist>"
@@ -875,7 +875,7 @@ class SourceLoaderBytecodeTests(SourceLoaderTestHarness):
                          loader_mock=SPLIT_SL)
 
 
-class SourceLoaderGetSourceTests:
+klasse SourceLoaderGetSourceTests:
 
     """Tests for importlib.abc.SourceLoader.get_source()."""
 
@@ -914,12 +914,12 @@ class SourceLoaderGetSourceTests:
                          SourceOnlyLoaderMock=SPLIT_SOL)
 
 
-class SourceLoaderDeprecationWarningsTests(unittest.TestCase):
+klasse SourceLoaderDeprecationWarningsTests(unittest.TestCase):
     """Tests SourceLoader deprecation warnings."""
 
     def test_deprecated_path_mtime(self):
         from importlib.abc import SourceLoader
-        class DummySourceLoader(SourceLoader):
+        klasse DummySourceLoader(SourceLoader):
             def get_data(self, path):
                 return b''
 

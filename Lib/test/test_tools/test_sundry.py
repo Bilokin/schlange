@@ -13,7 +13,7 @@ from test.test_tools import scriptsdir, import_tool, skip_if_missing
 
 skip_if_missing()
 
-class TestSundryScripts(unittest.TestCase):
+klasse TestSundryScripts(unittest.TestCase):
     # import logging registers "atfork" functions which keep indirectly the
     # logging module dictionary alive. Mock the function to be able to unload
     # cleanly the logging module.

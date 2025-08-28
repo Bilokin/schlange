@@ -57,7 +57,7 @@ visible = False
 def patch_screen():
     """Patch turtle._Screen for testing without a display.
 
-    We must patch the _Screen class itself instead of the _Screen
+    We must patch the _Screen klasse itself instead of the _Screen
     instance because instantiating it requires a display.
     """
     return unittest.mock.patch(
@@ -69,7 +69,7 @@ def patch_screen():
     )
 
 
-class TurtleConfigTest(unittest.TestCase):
+klasse TurtleConfigTest(unittest.TestCase):
 
     def get_cfg_file(self, cfg_str):
         self.addCleanup(os_helper.unlink, os_helper.TESTFN)
@@ -140,7 +140,7 @@ class TurtleConfigTest(unittest.TestCase):
         })
 
 
-class VectorComparisonMixin:
+klasse VectorComparisonMixin:
 
     def assertVectorsAlmostEqual(self, vec1, vec2):
         if len(vec1) != len(vec2):
@@ -150,7 +150,7 @@ class VectorComparisonMixin:
                 i, j, msg='values at index {} do not match'.format(idx))
 
 
-class Multiplier:
+klasse Multiplier:
 
     def __mul__(self, other):
         return f'M*{other}'
@@ -159,7 +159,7 @@ class Multiplier:
         return f'{other}*M'
 
 
-class TestVec2D(VectorComparisonMixin, unittest.TestCase):
+klasse TestVec2D(VectorComparisonMixin, unittest.TestCase):
 
     def test_constructor(self):
         vec = Vec2D(0.5, 2)
@@ -277,7 +277,7 @@ class TestVec2D(VectorComparisonMixin, unittest.TestCase):
                 self.assertVectorsAlmostEqual(got, expected)
 
 
-class TestTNavigator(VectorComparisonMixin, unittest.TestCase):
+klasse TestTNavigator(VectorComparisonMixin, unittest.TestCase):
 
     def setUp(self):
         self.nav = turtle.TNavigator()
@@ -446,7 +446,7 @@ class TestTNavigator(VectorComparisonMixin, unittest.TestCase):
         self.assertAlmostEqual(self.nav.distance(another_turtle), 10000)
 
 
-class TestTPen(unittest.TestCase):
+klasse TestTPen(unittest.TestCase):
 
     def test_pendown_and_penup(self):
 
@@ -481,7 +481,7 @@ class TestTPen(unittest.TestCase):
             self.assertTrue(tpen.isdown())
 
 
-class TestTurtleScreen(unittest.TestCase):
+klasse TestTurtleScreen(unittest.TestCase):
     def test_save_raises_if_wrong_extension(self) -> None:
         screen = unittest.mock.Mock()
 
@@ -565,7 +565,7 @@ class TestTurtleScreen(unittest.TestCase):
         s.update.assert_called_once()
 
 
-class TestTurtle(unittest.TestCase):
+klasse TestTurtle(unittest.TestCase):
     def setUp(self):
         with patch_screen():
             self.turtle = turtle.Turtle()
@@ -636,7 +636,7 @@ class TestTurtle(unittest.TestCase):
         self.assertFalse(self.turtle._creatingPoly)
 
 
-class TestModuleLevel(unittest.TestCase):
+klasse TestModuleLevel(unittest.TestCase):
     def test_all_signatures(self):
         import inspect
 

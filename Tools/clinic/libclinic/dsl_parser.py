@@ -109,7 +109,7 @@ StateKeeper = Callable[[str], None]
 ConverterArgs = dict[str, Any]
 
 
-class ParamState(enum.IntEnum):
+klasse ParamState(enum.IntEnum):
     """Parameter parsing state.
 
      [ [ a, b, ] c, ] d, e, f=3, [ g, h, [ i ] ]   <- line
@@ -140,7 +140,7 @@ class ParamState(enum.IntEnum):
     RIGHT_SQUARE_AFTER = 6
 
 
-class FunctionNames(NamedTuple):
+klasse FunctionNames(NamedTuple):
     full_name: str
     c_basename: str
 
@@ -169,7 +169,7 @@ def eval_ast_expr(
     return fn()
 
 
-class IndentStack:
+klasse IndentStack:
     def __init__(self) -> None:
         self.indents: list[int] = []
         self.margin: str | None = None
@@ -243,7 +243,7 @@ class IndentStack:
         return line[indent:]
 
 
-class DSLParser:
+klasse DSLParser:
     function: Function | None
     state: StateKeeper
     keyword_only: bool
@@ -328,7 +328,7 @@ class DSLParser:
 
         parent = cls or module
         if name in parent.classes:
-            fail(f"Already defined class {name!r}!")
+            fail(f"Already defined klasse {name!r}!")
 
         c = Class(name, module, cls, typedef, type_object)
         parent.classes[name] = c
@@ -587,7 +587,7 @@ class DSLParser:
         if name == '__init__' and (self.kind is not CALLABLE or not cls):
             fail(f"{name!r} must be a normal method; got '{self.kind}'!")
         if name == '__new__' and (self.kind is not CLASS_METHOD or not cls):
-            fail("'__new__' must be a class method!")
+            fail("'__new__' must be a klasse method!")
         if self.kind in {GETTER, SETTER} and not cls:
             fail("@getter and @setter must be methods")
 
@@ -950,7 +950,7 @@ class DSLParser:
                     # we can only represent very simple data values in C.
                     # detect whether default is okay, via a denylist
                     # of disallowed ast nodes.
-                    class DetectBadNodes(ast.NodeVisitor):
+                    klasse DetectBadNodes(ast.NodeVisitor):
                         bad = False
                         def bad_node(self, node: ast.AST) -> None:
                             self.bad = True
@@ -1444,7 +1444,7 @@ class DSLParser:
                     # for __init__.  (it can't be, __init__ doesn't
                     # have a docstring.)  if this is an __init__
                     # (or __new__), then this signature is for
-                    # calling the class to construct a new instance.
+                    # calling the klasse to construct a new instance.
                     p_lines.append('$')
 
                 if p.is_vararg():

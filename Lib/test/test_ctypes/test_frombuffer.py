@@ -6,14 +6,14 @@ from ctypes import (Structure, Union, Array, sizeof,
                     c_char, c_int)
 
 
-class X(Structure):
+klasse X(Structure):
     _fields_ = [("c_int", c_int)]
     init_called = False
     def __init__(self):
         self._init_called = True
 
 
-class Test(unittest.TestCase):
+klasse Test(unittest.TestCase):
     def test_from_buffer(self):
         a = array.array("i", range(16))
         x = (c_int * 16).from_buffer(a)

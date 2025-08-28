@@ -7,7 +7,7 @@ _opcode = import_module("_opcode")
 from _opcode import stack_effect
 
 
-class OpListTests(unittest.TestCase):
+klasse OpListTests(unittest.TestCase):
     def check_bool_function_result(self, func, ops, expected):
         for op in ops:
             if isinstance(op, str):
@@ -62,7 +62,7 @@ class OpListTests(unittest.TestCase):
         check_function(self, _opcode.has_exc, dis.hasexc)
 
 
-class StackEffectTests(unittest.TestCase):
+klasse StackEffectTests(unittest.TestCase):
     def test_stack_effect(self):
         self.assertEqual(stack_effect(dis.opmap['POP_TOP']), -1)
         self.assertEqual(stack_effect(dis.opmap['BUILD_SLICE'], 2), -1)
@@ -114,7 +114,7 @@ class StackEffectTests(unittest.TestCase):
                     self.assertEqual(nojump, common)
 
 
-class SpecializationStatsTests(unittest.TestCase):
+klasse SpecializationStatsTests(unittest.TestCase):
     def test_specialization_stats(self):
         stat_names = ["success", "failure", "hit", "deferred", "miss", "deopt"]
         specialized_opcodes = [

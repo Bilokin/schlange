@@ -7,7 +7,7 @@ from test.support import BrokenIter
 g = "Global variable"
 
 
-class DictComprehensionTest(unittest.TestCase):
+klasse DictComprehensionTest(unittest.TestCase):
 
     def test_basics(self):
         expected = {0: 10, 1: 11, 2: 12, 3: 13, 4: 14, 5: 15, 6: 16, 7: 17,

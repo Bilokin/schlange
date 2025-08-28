@@ -36,7 +36,7 @@ def init_streams(android_log_write, stdout_prio, stderr_prio):
         stderr_prio, "python.stderr", sys.stderr.fileno())
 
 
-class TextLogStream(io.TextIOWrapper):
+klasse TextLogStream(io.TextIOWrapper):
     def __init__(self, prio, tag, fileno=None, **kwargs):
         # The default is surrogateescape for stdout and backslashreplace for
         # stderr, but in the context of an Android log, readability is more
@@ -102,7 +102,7 @@ class TextLogStream(io.TextIOWrapper):
         return True
 
 
-class BinaryLogStream(io.RawIOBase):
+klasse BinaryLogStream(io.RawIOBase):
     def __init__(self, prio, tag, fileno=None):
         self.prio = prio
         self.tag = tag
@@ -152,7 +152,7 @@ BUCKET_SIZE = 128 * 1024
 PER_MESSAGE_OVERHEAD = 28
 
 
-class Logcat:
+klasse Logcat:
     def __init__(self, android_log_write):
         self.android_log_write = android_log_write
         self._lock = RLock()

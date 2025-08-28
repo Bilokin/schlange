@@ -12,7 +12,7 @@ import string
 
 # === Unit tests ===
 
-class Compare_Digest_Tests(unittest.TestCase):
+klasse Compare_Digest_Tests(unittest.TestCase):
     """Test secrets.compare_digest function."""
 
     def test_equal(self):
@@ -48,7 +48,7 @@ class Compare_Digest_Tests(unittest.TestCase):
         self.assertIsInstance(secrets.compare_digest("abc", "xyz"), bool)
 
 
-class Random_Tests(unittest.TestCase):
+klasse Random_Tests(unittest.TestCase):
     """Test wrappers around SystemRandom methods."""
 
     def test_randbits(self):
@@ -73,7 +73,7 @@ class Random_Tests(unittest.TestCase):
         self.assertRaises(ValueError, secrets.randbelow, -1)
 
 
-class Token_Tests(unittest.TestCase):
+klasse Token_Tests(unittest.TestCase):
     """Test token functions."""
 
     def test_token_defaults(self):

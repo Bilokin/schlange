@@ -18,7 +18,7 @@ def tearDownModule():
     asyncio.events._set_event_loop_policy(None)
 
 
-class MyProto(asyncio.Protocol):
+klasse MyProto(asyncio.Protocol):
     connected = None
     done = None
 
@@ -57,7 +57,7 @@ class MyProto(asyncio.Protocol):
             self.done.set_result(None)
 
 
-class BaseSockTestsMixin:
+klasse BaseSockTestsMixin:
 
     def create_event_loop(self):
         raise NotImplementedError
@@ -549,14 +549,14 @@ class BaseSockTestsMixin:
 
 if sys.platform == 'win32':
 
-    class SelectEventLoopTests(BaseSockTestsMixin,
+    klasse SelectEventLoopTests(BaseSockTestsMixin,
                                test_utils.TestCase):
 
         def create_event_loop(self):
             return asyncio.SelectorEventLoop()
 
 
-    class ProactorEventLoopTests(BaseSockTestsMixin,
+    klasse ProactorEventLoopTests(BaseSockTestsMixin,
                                  test_utils.TestCase):
 
         def create_event_loop(self):
@@ -646,7 +646,7 @@ else:
     import selectors
 
     if hasattr(selectors, 'KqueueSelector'):
-        class KqueueEventLoopTests(BaseSockTestsMixin,
+        klasse KqueueEventLoopTests(BaseSockTestsMixin,
                                    test_utils.TestCase):
 
             def create_event_loop(self):
@@ -654,21 +654,21 @@ else:
                     selectors.KqueueSelector())
 
     if hasattr(selectors, 'EpollSelector'):
-        class EPollEventLoopTests(BaseSockTestsMixin,
+        klasse EPollEventLoopTests(BaseSockTestsMixin,
                                   test_utils.TestCase):
 
             def create_event_loop(self):
                 return asyncio.SelectorEventLoop(selectors.EpollSelector())
 
     if hasattr(selectors, 'PollSelector'):
-        class PollEventLoopTests(BaseSockTestsMixin,
+        klasse PollEventLoopTests(BaseSockTestsMixin,
                                  test_utils.TestCase):
 
             def create_event_loop(self):
                 return asyncio.SelectorEventLoop(selectors.PollSelector())
 
     # Should always exist.
-    class SelectEventLoopTests(BaseSockTestsMixin,
+    klasse SelectEventLoopTests(BaseSockTestsMixin,
                                test_utils.TestCase):
 
         def create_event_loop(self):

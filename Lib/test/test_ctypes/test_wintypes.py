@@ -8,7 +8,7 @@ from ctypes import POINTER, cast, c_int16
 from ctypes import wintypes
 
 
-class WinTypesTest(unittest.TestCase):
+klasse WinTypesTest(unittest.TestCase):
     def test_variant_bool(self):
         # reads 16-bits from memory, anything non-zero is True
         for true_value in (1, 32767, 32768, 65535, 65537):

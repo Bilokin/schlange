@@ -163,7 +163,7 @@ def build_menu(
 # choices).
 
 
-class complete(commands.Command):
+klasse complete(commands.Command):
     def do(self) -> None:
         r: CompletingReader
         r = self.reader  # type: ignore[assignment]
@@ -203,7 +203,7 @@ class complete(commands.Command):
                     r.dirty = True
 
 
-class self_insert(commands.self_insert):
+klasse self_insert(commands.self_insert):
     def do(self) -> None:
         r: CompletingReader
         r = self.reader  # type: ignore[assignment]
@@ -225,7 +225,7 @@ class self_insert(commands.self_insert):
 
 
 @dataclass
-class CompletingReader(Reader):
+klasse CompletingReader(Reader):
     """Adds completion support"""
 
     ### Class variables

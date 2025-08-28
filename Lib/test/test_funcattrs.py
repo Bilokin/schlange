@@ -8,7 +8,7 @@ from test import support
 
 def global_function():
     def inner_function():
-        class LocalClass:
+        klasse LocalClass:
             pass
         global inner_global_function
         def inner_global_function():
@@ -19,9 +19,9 @@ def global_function():
     return lambda: inner_function
 
 
-class FuncAttrsTest(unittest.TestCase):
+klasse FuncAttrsTest(unittest.TestCase):
     def setUp(self):
-        class F:
+        klasse F:
             def a(self):
                 pass
         def b():
@@ -45,7 +45,7 @@ class FuncAttrsTest(unittest.TestCase):
             self.fail("shouldn't be able to del %s" % name)
 
 
-class FunctionPropertiesTest(FuncAttrsTest):
+klasse FunctionPropertiesTest(FuncAttrsTest):
     # Include the external setUp method that is common to all tests
     def test_module(self):
         self.assertEqual(self.b.__module__, __name__)
@@ -294,7 +294,7 @@ class FunctionPropertiesTest(FuncAttrsTest):
                       "remove requirement")
 
 
-class InstancemethodAttrTest(FuncAttrsTest):
+klasse InstancemethodAttrTest(FuncAttrsTest):
 
     def test___class__(self):
         self.assertEqual(self.fi.a.__self__.__class__, self.F)
@@ -324,7 +324,7 @@ class InstancemethodAttrTest(FuncAttrsTest):
         self.cannot_set_attr(self.fi.id, 'unknown_attr', 2, AttributeError)
 
 
-class ArbitraryFunctionAttrTest(FuncAttrsTest):
+klasse ArbitraryFunctionAttrTest(FuncAttrsTest):
     def test_set_attr(self):
         self.b.known_attr = 7
         self.assertEqual(self.b.known_attr, 7)
@@ -354,7 +354,7 @@ class ArbitraryFunctionAttrTest(FuncAttrsTest):
                           "AttributeError")
 
 
-class FunctionDictsTest(FuncAttrsTest):
+klasse FunctionDictsTest(FuncAttrsTest):
     def test_setting_dict_to_invalid(self):
         self.cannot_set_attr(self.b, '__dict__', None, TypeError)
         from collections import UserDict
@@ -395,7 +395,7 @@ class FunctionDictsTest(FuncAttrsTest):
         self.assertEqual(d[self.b], value)
 
 
-class FunctionDocstringTest(FuncAttrsTest):
+klasse FunctionDocstringTest(FuncAttrsTest):
     def test_set_docstring_attr(self):
         self.assertEqual(self.b.__doc__, None)
         docstr = "A test method that does nothing"
@@ -430,7 +430,7 @@ def empty_cell(empty=True):
     return f.__closure__[0]
 
 
-class CellTest(unittest.TestCase):
+klasse CellTest(unittest.TestCase):
     def test_comparison(self):
         # These tests are here simply to exercise the comparison code;
         # their presence should not be interpreted as providing any
@@ -443,7 +443,7 @@ class CellTest(unittest.TestCase):
         self.assertTrue(cell(True) > empty_cell())
 
 
-class StaticMethodAttrsTest(unittest.TestCase):
+klasse StaticMethodAttrsTest(unittest.TestCase):
     def test_func_attribute(self):
         def f():
             pass
@@ -455,7 +455,7 @@ class StaticMethodAttrsTest(unittest.TestCase):
         self.assertTrue(s.__func__ is f)
 
 
-class BuiltinFunctionPropertiesTest(unittest.TestCase):
+klasse BuiltinFunctionPropertiesTest(unittest.TestCase):
     # XXX Not sure where this should really go since I can't find a
     # test module specifically for builtin_function_or_method.
 

@@ -1,5 +1,5 @@
 # Stub out only the subset of the interface that we actually use in our tests.
-class StubClass:
+klasse StubClass:
     def __init__(self, *args, **kwargs):
         self.__stub_args = args
         self.__stub_kwargs = kwargs
@@ -27,7 +27,7 @@ class StubClass:
 def stub_factory(klass, name, *, with_repr=None, _seen={}):
     if (klass, name) not in _seen:
 
-        class Stub(klass):
+        klasse Stub(klass):
             def __init__(self, *args, **kwargs):
                 super().__init__()
                 self.__stub_args = args

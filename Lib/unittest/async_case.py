@@ -7,12 +7,12 @@ from .case import TestCase
 
 __unittest = True
 
-class IsolatedAsyncioTestCase(TestCase):
+klasse IsolatedAsyncioTestCase(TestCase):
     # Names intentionally have a long prefix
     # to reduce a chance of clashing with user-defined attributes
     # from inherited test case
     #
-    # The class doesn't call loop.run_until_complete(self.setUp()) and family
+    # The klasse doesn't call loop.run_until_complete(self.setUp()) and family
     # but uses a different approach:
     # 1. create a long-running task that reads self.setUp()
     #    awaitable from queue along with a future

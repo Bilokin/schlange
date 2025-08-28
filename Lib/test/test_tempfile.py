@@ -37,7 +37,7 @@ else:
 # in order of their appearance in the file.  Testing which requires
 # threads is not done here.
 
-class TestLowLevelInternals(unittest.TestCase):
+klasse TestLowLevelInternals(unittest.TestCase):
     def test_infer_return_type_singles(self):
         self.assertIs(str, tempfile._infer_return_type(''))
         self.assertIs(bytes, tempfile._infer_return_type(b''))
@@ -81,7 +81,7 @@ class TestLowLevelInternals(unittest.TestCase):
 
 # Common functionality.
 
-class BaseTestCase(unittest.TestCase):
+klasse BaseTestCase(unittest.TestCase):
 
     str_check = re.compile(r"^[a-z0-9_-]{8}$")
     b_check = re.compile(br"^[a-z0-9_-]{8}$")
@@ -128,7 +128,7 @@ class BaseTestCase(unittest.TestCase):
                         % (nbase, check.pattern))
 
 
-class TestExports(BaseTestCase):
+klasse TestExports(BaseTestCase):
     def test_exports(self):
         # There are no surprising symbols in the tempfile module
         dict = tempfile.__dict__
@@ -158,7 +158,7 @@ class TestExports(BaseTestCase):
                         "unexpected keys: %s" % unexp)
 
 
-class TestRandomNameSequence(BaseTestCase):
+klasse TestRandomNameSequence(BaseTestCase):
     """Test the internal iterator object _RandomNameSequence."""
 
     def setUp(self):
@@ -221,7 +221,7 @@ class TestRandomNameSequence(BaseTestCase):
 
 
 
-class TestCandidateTempdirList(BaseTestCase):
+klasse TestCandidateTempdirList(BaseTestCase):
     """Test the internal function _candidate_tempdir_list."""
 
     def test_nonempty_list(self):
@@ -263,7 +263,7 @@ class TestCandidateTempdirList(BaseTestCase):
 
 # We test _get_default_tempdir some more by testing gettempdir.
 
-class TestGetDefaultTempdir(BaseTestCase):
+klasse TestGetDefaultTempdir(BaseTestCase):
     """Test _get_default_tempdir()."""
 
     def test_no_files_left_behind(self):
@@ -295,7 +295,7 @@ class TestGetDefaultTempdir(BaseTestCase):
                     self.assertEqual(os.listdir(our_temp_directory), [])
 
 
-class TestGetCandidateNames(BaseTestCase):
+klasse TestGetCandidateNames(BaseTestCase):
     """Test the internal function _get_candidate_names."""
 
     def test_retval(self):
@@ -327,7 +327,7 @@ def _mock_candidate_names(*names):
                              lambda: iter(names))
 
 
-class TestBadTempdir:
+klasse TestBadTempdir:
     def test_read_only_directory(self):
         with _inside_empty_temp_dir():
             oldmode = mode = os.stat(tempfile.tempdir).st_mode
@@ -358,10 +358,10 @@ class TestBadTempdir:
                     self.make_temp()
 
 
-class TestMkstempInner(TestBadTempdir, BaseTestCase):
+klasse TestMkstempInner(TestBadTempdir, BaseTestCase):
     """Test the internal function _mkstemp_inner."""
 
-    class mkstemped:
+    klasse mkstemped:
         _bflags = tempfile._bin_openflags
         _tflags = tempfile._text_openflags
         _close = os.close
@@ -535,7 +535,7 @@ class TestMkstempInner(TestBadTempdir, BaseTestCase):
             self.assertEndsWith(name, 'bbb')
 
 
-class TestGetTempPrefix(BaseTestCase):
+klasse TestGetTempPrefix(BaseTestCase):
     """Test gettempprefix()."""
 
     def test_sane_template(self):
@@ -567,7 +567,7 @@ class TestGetTempPrefix(BaseTestCase):
             os.rmdir(d)
 
 
-class TestGetTempDir(BaseTestCase):
+klasse TestGetTempDir(BaseTestCase):
     """Test gettempdir()."""
 
     def test_directory_exists(self):
@@ -613,7 +613,7 @@ class TestGetTempDir(BaseTestCase):
             os_helper.rmdir(case_sensitive_tempdir)
 
 
-class TestMkstemp(BaseTestCase):
+klasse TestMkstemp(BaseTestCase):
     """Test mkstemp()."""
 
     def do_create(self, dir=None, pre=None, suf=None):
@@ -707,7 +707,7 @@ class TestMkstemp(BaseTestCase):
             tempfile.tempdir = orig_tempdir
 
 
-class TestMkdtemp(TestBadTempdir, BaseTestCase):
+klasse TestMkdtemp(TestBadTempdir, BaseTestCase):
     """Test mkdtemp()."""
 
     def make_temp(self):
@@ -878,7 +878,7 @@ class TestMkdtemp(TestBadTempdir, BaseTestCase):
             os.rmdir(path)
 
 
-class TestMktemp(BaseTestCase):
+klasse TestMktemp(BaseTestCase):
     """Test mktemp()."""
 
     # For safety, all use of mktemp must occur in a private directory.
@@ -893,7 +893,7 @@ class TestMktemp(BaseTestCase):
             self.dir = None
         super().tearDown()
 
-    class mktemped:
+    klasse mktemped:
         _unlink = os.unlink
         _bflags = tempfile._bin_openflags
 
@@ -940,7 +940,7 @@ class TestMktemp(BaseTestCase):
 # We test _TemporaryFileWrapper by testing NamedTemporaryFile.
 
 
-class TestNamedTemporaryFile(BaseTestCase):
+klasse TestNamedTemporaryFile(BaseTestCase):
     """Test NamedTemporaryFile()."""
 
     def do_create(self, dir=None, pre="", suf="", delete=True):
@@ -1170,7 +1170,7 @@ class TestNamedTemporaryFile(BaseTestCase):
 
     # How to test the mode and bufsize parameters?
 
-class TestSpooledTemporaryFile(BaseTestCase):
+klasse TestSpooledTemporaryFile(BaseTestCase):
     """Test SpooledTemporaryFile()."""
 
     def do_create(self, max_size=0, dir=None, pre="", suf=""):
@@ -1519,7 +1519,7 @@ class TestSpooledTemporaryFile(BaseTestCase):
 
 if tempfile.NamedTemporaryFile is not tempfile.TemporaryFile:
 
-    class TestTemporaryFile(BaseTestCase):
+    klasse TestTemporaryFile(BaseTestCase):
         """Test TemporaryFile()."""
 
         def test_basic(self):
@@ -1596,7 +1596,7 @@ if tempfile.NamedTemporaryFile is not tempfile.TemporaryFile:
 
 
 # Helper for test_del_on_shutdown
-class NulledModules:
+klasse NulledModules:
     def __init__(self, *modules):
         self.refs = [mod.__dict__ for mod in modules]
         self.contents = [ref.copy() for ref in self.refs]
@@ -1612,7 +1612,7 @@ class NulledModules:
             d.update(c)
 
 
-class TestTemporaryDirectory(BaseTestCase):
+klasse TestTemporaryDirectory(BaseTestCase):
     """Test TemporaryDirectory()."""
 
     def do_create(self, dir=None, pre="", suf="", recurse=1, dirs=1, files=1,

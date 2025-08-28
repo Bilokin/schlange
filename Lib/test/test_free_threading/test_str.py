@@ -7,7 +7,7 @@ from unittest import TestCase
 from test.support import threading_helper
 
 @threading_helper.requires_working_threading()
-class TestStr(TestCase):
+klasse TestStr(TestCase):
     def test_racing_join_extend(self):
         '''Test joining a string being extended by another thread'''
         l = []

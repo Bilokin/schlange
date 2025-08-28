@@ -144,7 +144,7 @@ def _make_launch_script(script_dir, script_basename, module_name, path=None):
     importlib.invalidate_caches()
     return to_return
 
-class MultiProcessingCmdLineMixin():
+klasse MultiProcessingCmdLineMixin():
     maxDiff = None # Show full tracebacks on subprocess failure
 
     def setUp(self):
@@ -281,15 +281,15 @@ class MultiProcessingCmdLineMixin():
 
 # Test all supported start methods (setupClass skips as appropriate)
 
-class SpawnCmdLineTest(MultiProcessingCmdLineMixin, unittest.TestCase):
+klasse SpawnCmdLineTest(MultiProcessingCmdLineMixin, unittest.TestCase):
     start_method = 'spawn'
     main_in_children_source = test_source_main_skipped_in_children
 
-class ForkCmdLineTest(MultiProcessingCmdLineMixin, unittest.TestCase):
+klasse ForkCmdLineTest(MultiProcessingCmdLineMixin, unittest.TestCase):
     start_method = 'fork'
     main_in_children_source = test_source
 
-class ForkServerCmdLineTest(MultiProcessingCmdLineMixin, unittest.TestCase):
+klasse ForkServerCmdLineTest(MultiProcessingCmdLineMixin, unittest.TestCase):
     start_method = 'forkserver'
     main_in_children_source = test_source_main_skipped_in_children
 

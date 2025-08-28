@@ -28,7 +28,7 @@ CERT_fakehostname = os.path.join(here, 'certdata', 'keycert2.pem')
 
 # Loopback http server infrastructure
 
-class LoopbackHttpServer(http.server.HTTPServer):
+klasse LoopbackHttpServer(http.server.HTTPServer):
     """HTTP server w/ a few modifications that make it useful for
     loopback testing purposes.
     """
@@ -54,7 +54,7 @@ class LoopbackHttpServer(http.server.HTTPServer):
 
         return (request, client_address)
 
-class LoopbackHttpServerThread(threading.Thread):
+klasse LoopbackHttpServerThread(threading.Thread):
     """Stoppable thread that runs a loopback http server."""
 
     def __init__(self, request_handler):
@@ -81,7 +81,7 @@ class LoopbackHttpServerThread(threading.Thread):
 
 # Authentication infrastructure
 
-class DigestAuthHandler:
+klasse DigestAuthHandler:
     """Handler for performing digest authentication."""
 
     def __init__(self):
@@ -202,7 +202,7 @@ class DigestAuthHandler:
             return True
 
 
-class BasicAuthHandler(http.server.BaseHTTPRequestHandler):
+klasse BasicAuthHandler(http.server.BaseHTTPRequestHandler):
     """Handler for performing basic authentication."""
     # Server side values
     USER = 'testUser'
@@ -246,7 +246,7 @@ class BasicAuthHandler(http.server.BaseHTTPRequestHandler):
 
 # Proxy test infrastructure
 
-class FakeProxyHandler(http.server.BaseHTTPRequestHandler):
+klasse FakeProxyHandler(http.server.BaseHTTPRequestHandler):
     """This is a 'fake proxy' that makes it look like the entire
     internet has gone down due to a sudden zombie invasion.  It main
     utility is in providing us with authentication support for
@@ -279,7 +279,7 @@ class FakeProxyHandler(http.server.BaseHTTPRequestHandler):
 
 # Test cases
 
-class BasicAuthTests(unittest.TestCase):
+klasse BasicAuthTests(unittest.TestCase):
     USER = "testUser"
     PASSWD = "testPass"
     INCORRECT_PASSWD = "Incorrect"
@@ -322,7 +322,7 @@ class BasicAuthTests(unittest.TestCase):
 
 
 @hashlib_helper.requires_hashdigest("md5", openssl=True)
-class ProxyAuthTests(unittest.TestCase):
+klasse ProxyAuthTests(unittest.TestCase):
     URL = "http://localhost"
 
     USER = "tester"
@@ -401,7 +401,7 @@ class ProxyAuthTests(unittest.TestCase):
 
 def GetRequestHandler(responses):
 
-    class FakeHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
+    klasse FakeHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
 
         server_version = "TestHTTP/"
         requests = []
@@ -442,7 +442,7 @@ def GetRequestHandler(responses):
     return FakeHTTPRequestHandler
 
 
-class TestUrlopen(unittest.TestCase):
+klasse TestUrlopen(unittest.TestCase):
     """Tests urllib.request.urlopen using the network.
 
     These tests are not exhaustive.  Assuming that testing using files does a

@@ -4,10 +4,10 @@ from test.support import force_not_colorized
 from test.test_unittest.support import LoggingResult
 
 
-class Test_TestSkipping(unittest.TestCase):
+klasse Test_TestSkipping(unittest.TestCase):
 
     def test_skipping(self):
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def defaultTestResult(self):
                 return LoggingResult(events)
             def test_skip_me(self):
@@ -27,7 +27,7 @@ class Test_TestSkipping(unittest.TestCase):
         self.assertEqual(result.testsRun, 1)
 
         # Try letting setUp skip the test now.
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def defaultTestResult(self):
                 return LoggingResult(events)
             def setUp(self):
@@ -49,7 +49,7 @@ class Test_TestSkipping(unittest.TestCase):
         self.assertEqual(result.testsRun, 1)
 
     def test_skipping_subtests(self):
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def defaultTestResult(self):
                 return LoggingResult(events)
             def test_skip_me(self):
@@ -87,7 +87,7 @@ class Test_TestSkipping(unittest.TestCase):
         op_table = ((unittest.skipUnless, False, True),
                     (unittest.skipIf, True, False))
         for deco, do_skip, dont_skip in op_table:
-            class Foo(unittest.TestCase):
+            klasse Foo(unittest.TestCase):
                 def defaultTestResult(self):
                     return LoggingResult(events)
 
@@ -125,7 +125,7 @@ class Test_TestSkipping(unittest.TestCase):
 
     def test_skip_class(self):
         @unittest.skip("testing")
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def defaultTestResult(self):
                 return LoggingResult(events)
             def test_1(self):
@@ -149,10 +149,10 @@ class Test_TestSkipping(unittest.TestCase):
 
     def test_skip_non_unittest_class(self):
         @unittest.skip("testing")
-        class Mixin:
+        klasse Mixin:
             def test_1(self):
                 record.append(1)
-        class Foo(Mixin, unittest.TestCase):
+        klasse Foo(Mixin, unittest.TestCase):
             pass
         record = []
         result = unittest.TestResult()
@@ -163,7 +163,7 @@ class Test_TestSkipping(unittest.TestCase):
         self.assertEqual(record, [])
 
     def test_skip_in_setup(self):
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def setUp(self):
                 self.skipTest("skip")
             def test_skip_me(self):
@@ -176,7 +176,7 @@ class Test_TestSkipping(unittest.TestCase):
         self.assertEqual(result.skipped, [(test, "skip")])
 
     def test_skip_in_cleanup(self):
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def test_skip_me(self):
                 pass
             def tearDown(self):
@@ -189,7 +189,7 @@ class Test_TestSkipping(unittest.TestCase):
         self.assertEqual(result.skipped, [(test, "skip")])
 
     def test_failure_and_skip_in_cleanup(self):
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def test_skip_me(self):
                 self.fail("fail")
             def tearDown(self):
@@ -202,7 +202,7 @@ class Test_TestSkipping(unittest.TestCase):
         self.assertEqual(result.skipped, [(test, "skip")])
 
     def test_skipping_and_fail_in_cleanup(self):
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def test_skip_me(self):
                 self.skipTest("skip")
             def tearDown(self):
@@ -215,7 +215,7 @@ class Test_TestSkipping(unittest.TestCase):
         self.assertEqual(result.skipped, [(test, "skip")])
 
     def test_expected_failure(self):
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             @unittest.expectedFailure
             def test_die(self):
                 self.fail("help me!")
@@ -232,7 +232,7 @@ class Test_TestSkipping(unittest.TestCase):
 
     def test_expected_failure_with_wrapped_class(self):
         @unittest.expectedFailure
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def test_1(self):
                 self.assertTrue(False)
 
@@ -248,12 +248,12 @@ class Test_TestSkipping(unittest.TestCase):
         self.assertTrue(result.wasSuccessful())
 
     def test_expected_failure_with_wrapped_subclass(self):
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def test_1(self):
                 self.assertTrue(False)
 
         @unittest.expectedFailure
-        class Bar(Foo):
+        klasse Bar(Foo):
             pass
 
         events = []
@@ -270,7 +270,7 @@ class Test_TestSkipping(unittest.TestCase):
     def test_expected_failure_subtests(self):
         # A failure in any subtest counts as the expected failure of the
         # whole test.
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             @unittest.expectedFailure
             def test_die(self):
                 with self.subTest():
@@ -296,7 +296,7 @@ class Test_TestSkipping(unittest.TestCase):
 
     @force_not_colorized
     def test_expected_failure_and_fail_in_cleanup(self):
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             @unittest.expectedFailure
             def test_die(self):
                 self.fail("help me!")
@@ -315,7 +315,7 @@ class Test_TestSkipping(unittest.TestCase):
         self.assertFalse(result.wasSuccessful())
 
     def test_expected_failure_and_skip_in_cleanup(self):
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             @unittest.expectedFailure
             def test_die(self):
                 self.fail("help me!")
@@ -334,7 +334,7 @@ class Test_TestSkipping(unittest.TestCase):
         self.assertTrue(result.wasSuccessful())
 
     def test_unexpected_success(self):
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             @unittest.expectedFailure
             def test_die(self):
                 pass
@@ -352,7 +352,7 @@ class Test_TestSkipping(unittest.TestCase):
     def test_unexpected_success_subtests(self):
         # Success in all subtests counts as the unexpected success of
         # the whole test.
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             @unittest.expectedFailure
             def test_die(self):
                 with self.subTest():
@@ -376,7 +376,7 @@ class Test_TestSkipping(unittest.TestCase):
 
     @force_not_colorized
     def test_unexpected_success_and_fail_in_cleanup(self):
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             @unittest.expectedFailure
             def test_die(self):
                 pass
@@ -395,7 +395,7 @@ class Test_TestSkipping(unittest.TestCase):
         self.assertFalse(result.wasSuccessful())
 
     def test_unexpected_success_and_skip_in_cleanup(self):
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             @unittest.expectedFailure
             def test_die(self):
                 pass
@@ -414,7 +414,7 @@ class Test_TestSkipping(unittest.TestCase):
         self.assertTrue(result.wasSuccessful())
 
     def test_skip_doesnt_run_setup(self):
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             wasSetUp = False
             wasTornDown = False
             def setUp(self):
@@ -439,7 +439,7 @@ class Test_TestSkipping(unittest.TestCase):
                 return func(*a)
             return inner
 
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             @decorator
             @unittest.skip('testing')
             def test_1(self):
@@ -452,7 +452,7 @@ class Test_TestSkipping(unittest.TestCase):
         self.assertEqual(result.skipped, [(test, "testing")])
 
     def test_skip_without_reason(self):
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             @unittest.skip
             def test_1(self):
                 pass
@@ -464,7 +464,7 @@ class Test_TestSkipping(unittest.TestCase):
         self.assertEqual(result.skipped, [(test, "")])
 
     def test_debug_skipping(self):
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def setUp(self):
                 events.append("setUp")
             def tearDown(self):
@@ -492,7 +492,7 @@ class Test_TestSkipping(unittest.TestCase):
 
     def test_debug_skipping_class(self):
         @unittest.skip("testing")
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def setUp(self):
                 events.append("setUp")
             def tearDown(self):
@@ -508,7 +508,7 @@ class Test_TestSkipping(unittest.TestCase):
         self.assertEqual(events, [])
 
     def test_debug_skipping_subtests(self):
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def setUp(self):
                 events.append("setUp")
             def tearDown(self):

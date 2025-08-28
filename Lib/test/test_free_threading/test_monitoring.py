@@ -14,7 +14,7 @@ from threading import Thread, _PyRLock, Barrier
 from unittest import TestCase
 
 
-class InstrumentationMultiThreadedMixin:
+klasse InstrumentationMultiThreadedMixin:
     thread_count = 10
     func_count = 50
     fib = 12
@@ -77,7 +77,7 @@ class InstrumentationMultiThreadedMixin:
         self.after_test()
 
 
-class MonitoringTestMixin:
+klasse MonitoringTestMixin:
     def setUp(self):
         for i in range(6):
             if monitoring.get_tool(i) is None:
@@ -90,7 +90,7 @@ class MonitoringTestMixin:
 
 
 @threading_helper.requires_working_threading()
-class SetPreTraceMultiThreaded(InstrumentationMultiThreadedMixin, TestCase):
+klasse SetPreTraceMultiThreaded(InstrumentationMultiThreadedMixin, TestCase):
     """Sets tracing one time after the threads have started"""
 
     def setUp(self):
@@ -109,7 +109,7 @@ class SetPreTraceMultiThreaded(InstrumentationMultiThreadedMixin, TestCase):
 
 
 @threading_helper.requires_working_threading()
-class MonitoringMultiThreaded(
+klasse MonitoringMultiThreaded(
     MonitoringTestMixin, InstrumentationMultiThreadedMixin, TestCase
 ):
     """Uses sys.monitoring and repeatedly toggles instrumentation on and off"""
@@ -143,7 +143,7 @@ class MonitoringMultiThreaded(
 
 
 @threading_helper.requires_working_threading()
-class SetTraceMultiThreaded(InstrumentationMultiThreadedMixin, TestCase):
+klasse SetTraceMultiThreaded(InstrumentationMultiThreadedMixin, TestCase):
     """Uses sys.settrace and repeatedly toggles instrumentation on and off"""
 
     def setUp(self):
@@ -169,7 +169,7 @@ class SetTraceMultiThreaded(InstrumentationMultiThreadedMixin, TestCase):
 
 
 @threading_helper.requires_working_threading()
-class SetProfileMultiThreaded(InstrumentationMultiThreadedMixin, TestCase):
+klasse SetProfileMultiThreaded(InstrumentationMultiThreadedMixin, TestCase):
     """Uses sys.setprofile and repeatedly toggles instrumentation on and off"""
 
     def setUp(self):
@@ -195,7 +195,7 @@ class SetProfileMultiThreaded(InstrumentationMultiThreadedMixin, TestCase):
 
 
 @threading_helper.requires_working_threading()
-class SetProfileAllThreadsMultiThreaded(InstrumentationMultiThreadedMixin, TestCase):
+klasse SetProfileAllThreadsMultiThreaded(InstrumentationMultiThreadedMixin, TestCase):
     """Uses threading.setprofile_all_threads and repeatedly toggles instrumentation on and off"""
 
     def setUp(self):
@@ -220,7 +220,7 @@ class SetProfileAllThreadsMultiThreaded(InstrumentationMultiThreadedMixin, TestC
         self.set = not self.set
 
 
-class SetProfileAllMultiThreaded(TestCase):
+klasse SetProfileAllMultiThreaded(TestCase):
     def test_profile_all_threads(self):
         done = threading.Event()
 
@@ -253,7 +253,7 @@ class SetProfileAllMultiThreaded(TestCase):
             t.join()
 
 
-class TraceBuf:
+klasse TraceBuf:
     def __init__(self):
         self.traces = []
         self.traces_lock = threading.Lock()
@@ -264,7 +264,7 @@ class TraceBuf:
 
 
 @threading_helper.requires_working_threading()
-class MonitoringMisc(MonitoringTestMixin, TestCase):
+klasse MonitoringMisc(MonitoringTestMixin, TestCase):
     def register_callback(self, barrier):
         barrier.wait()
 

@@ -60,7 +60,7 @@ def get_innermost_context(exc):
     return (type(exc), exc.args, depth)
 
 
-class Dummy:
+klasse Dummy:
 
     def __repr__(self):
         return '<Dummy>'
@@ -69,7 +69,7 @@ class Dummy:
         pass
 
 
-class CoroLikeObject:
+klasse CoroLikeObject:
     def send(self, v):
         raise StopIteration(42)
 
@@ -83,7 +83,7 @@ class CoroLikeObject:
         return self
 
 
-class BaseTaskTests:
+klasse BaseTaskTests:
 
     Task = None
     Future = None
@@ -135,7 +135,7 @@ class BaseTaskTests:
         self.assertEqual('my new message', cm.exception.args[0])
 
     def test_task_del_collect(self):
-        class Evil:
+        klasse Evil:
             def __del__(self):
                 gc.collect()
 
@@ -263,7 +263,7 @@ class BaseTaskTests:
         self.assertIs(t, t_orig)
 
     def test_ensure_future_awaitable(self):
-        class Aw:
+        klasse Aw:
             def __init__(self, coro):
                 self.coro = coro
             def __await__(self):
@@ -279,7 +279,7 @@ class BaseTaskTests:
         self.assertEqual(fut.result(), 'ok')
 
     def test_ensure_future_task_awaitable(self):
-        class Aw:
+        klasse Aw:
             def __await__(self):
                 return asyncio.sleep(0, result='ok').__await__()
 
@@ -1881,7 +1881,7 @@ class BaseTaskTests:
     def test_step_result_future(self):
         # If coroutine returns future, task waits on this future.
 
-        class Fut(asyncio.Future):
+        klasse Fut(asyncio.Future):
             def __init__(self, *args, **kwds):
                 self.cb_added = False
                 super().__init__(*args, **kwds)
@@ -2337,7 +2337,7 @@ class BaseTaskTests:
     def test_task_not_crash_without_finalization(self):
         Task = self.__class__.Task
 
-        class Subclass(Task):
+        klasse Subclass(Task):
             def __del__(self):
                 pass
 
@@ -2778,7 +2778,7 @@ class BaseTaskTests:
 
     def test_proper_refcounts(self):
         # see: https://github.com/python/cpython/issues/126083
-        class Break:
+        klasse Break:
             def __str__(self):
                 raise RuntimeError("break")
 
@@ -2806,7 +2806,7 @@ def add_subclass_tests(cls):
     if BaseTask is None or BaseFuture is None:
         return cls
 
-    class CommonFuture:
+    klasse CommonFuture:
         def __init__(self, *args, **kwargs):
             self.calls = collections.defaultdict(lambda: 0)
             super().__init__(*args, **kwargs)
@@ -2815,10 +2815,10 @@ def add_subclass_tests(cls):
             self.calls['add_done_callback'] += 1
             return super().add_done_callback(*args, **kwargs)
 
-    class Task(CommonFuture, BaseTask):
+    klasse Task(CommonFuture, BaseTask):
         pass
 
-    class Future(CommonFuture, BaseFuture):
+    klasse Future(CommonFuture, BaseFuture):
         pass
 
     def test_subclasses_ctask_cfuture(self):
@@ -2857,7 +2857,7 @@ def add_subclass_tests(cls):
     return cls
 
 
-class SetMethodsTest:
+klasse SetMethodsTest:
 
     def test_set_result_causes_invalid_state(self):
         Future = type(self).Future
@@ -2884,7 +2884,7 @@ class SetMethodsTest:
         coro.close()
 
     def test_set_exception_causes_invalid_state(self):
-        class MyExc(Exception):
+        klasse MyExc(Exception):
             pass
 
         Future = type(self).Future
@@ -2913,7 +2913,7 @@ class SetMethodsTest:
 @unittest.skipUnless(hasattr(futures, '_CFuture') and
                      hasattr(tasks, '_CTask'),
                      'requires the C _asyncio module')
-class CTask_CFuture_Tests(BaseTaskTests, SetMethodsTest,
+klasse CTask_CFuture_Tests(BaseTaskTests, SetMethodsTest,
                           test_utils.TestCase):
 
     Task = getattr(tasks, '_CTask', None)
@@ -2947,7 +2947,7 @@ class CTask_CFuture_Tests(BaseTaskTests, SetMethodsTest,
                      hasattr(tasks, '_CTask'),
                      'requires the C _asyncio module')
 @add_subclass_tests
-class CTask_CFuture_SubclassTests(BaseTaskTests, test_utils.TestCase):
+klasse CTask_CFuture_SubclassTests(BaseTaskTests, test_utils.TestCase):
 
     Task = getattr(tasks, '_CTask', None)
     Future = getattr(futures, '_CFuture', None)
@@ -2958,7 +2958,7 @@ class CTask_CFuture_SubclassTests(BaseTaskTests, test_utils.TestCase):
 @unittest.skipUnless(hasattr(tasks, '_CTask'),
                      'requires the C _asyncio module')
 @add_subclass_tests
-class CTaskSubclass_PyFuture_Tests(BaseTaskTests, test_utils.TestCase):
+klasse CTaskSubclass_PyFuture_Tests(BaseTaskTests, test_utils.TestCase):
 
     Task = getattr(tasks, '_CTask', None)
     Future = futures._PyFuture
@@ -2969,7 +2969,7 @@ class CTaskSubclass_PyFuture_Tests(BaseTaskTests, test_utils.TestCase):
 @unittest.skipUnless(hasattr(futures, '_CFuture'),
                      'requires the C _asyncio module')
 @add_subclass_tests
-class PyTask_CFutureSubclass_Tests(BaseTaskTests, test_utils.TestCase):
+klasse PyTask_CFutureSubclass_Tests(BaseTaskTests, test_utils.TestCase):
 
     Future = getattr(futures, '_CFuture', None)
     Task = tasks._PyTask
@@ -2979,7 +2979,7 @@ class PyTask_CFutureSubclass_Tests(BaseTaskTests, test_utils.TestCase):
 
 @unittest.skipUnless(hasattr(tasks, '_CTask'),
                      'requires the C _asyncio module')
-class CTask_PyFuture_Tests(BaseTaskTests, test_utils.TestCase):
+klasse CTask_PyFuture_Tests(BaseTaskTests, test_utils.TestCase):
 
     Task = getattr(tasks, '_CTask', None)
     Future = futures._PyFuture
@@ -2989,7 +2989,7 @@ class CTask_PyFuture_Tests(BaseTaskTests, test_utils.TestCase):
 
 @unittest.skipUnless(hasattr(futures, '_CFuture'),
                      'requires the C _asyncio module')
-class PyTask_CFuture_Tests(BaseTaskTests, test_utils.TestCase):
+klasse PyTask_CFuture_Tests(BaseTaskTests, test_utils.TestCase):
 
     Task = tasks._PyTask
     Future = getattr(futures, '_CFuture', None)
@@ -2997,7 +2997,7 @@ class PyTask_CFuture_Tests(BaseTaskTests, test_utils.TestCase):
     current_task = staticmethod(tasks._py_current_task)
 
 
-class PyTask_PyFuture_Tests(BaseTaskTests, SetMethodsTest,
+klasse PyTask_PyFuture_Tests(BaseTaskTests, SetMethodsTest,
                             test_utils.TestCase):
 
     Task = tasks._PyTask
@@ -3007,7 +3007,7 @@ class PyTask_PyFuture_Tests(BaseTaskTests, SetMethodsTest,
 
 
 @add_subclass_tests
-class PyTask_PyFuture_SubclassTests(BaseTaskTests, test_utils.TestCase):
+klasse PyTask_PyFuture_SubclassTests(BaseTaskTests, test_utils.TestCase):
     Task = tasks._PyTask
     Future = futures._PyFuture
     all_tasks = staticmethod(tasks._py_all_tasks)
@@ -3015,10 +3015,10 @@ class PyTask_PyFuture_SubclassTests(BaseTaskTests, test_utils.TestCase):
 
 @unittest.skipUnless(hasattr(tasks, '_CTask'),
                      'requires the C _asyncio module')
-class CTask_Future_Tests(test_utils.TestCase):
+klasse CTask_Future_Tests(test_utils.TestCase):
 
     def test_foobar(self):
-        class Fut(asyncio.Future):
+        klasse Fut(asyncio.Future):
             @property
             def get_loop(self):
                 raise AttributeError
@@ -3039,7 +3039,7 @@ class CTask_Future_Tests(test_utils.TestCase):
         self.assertEqual(res, 'spam')
 
 
-class BaseTaskIntrospectionTests:
+klasse BaseTaskIntrospectionTests:
     _register_task = None
     _unregister_task = None
     _enter_task = None
@@ -3047,7 +3047,7 @@ class BaseTaskIntrospectionTests:
     all_tasks = None
 
     def test__register_task_1(self):
-        class TaskLike:
+        klasse TaskLike:
             @property
             def _loop(self):
                 return loop
@@ -3064,7 +3064,7 @@ class BaseTaskIntrospectionTests:
         self._unregister_task(task)
 
     def test__register_task_2(self):
-        class TaskLike:
+        klasse TaskLike:
             def get_loop(self):
                 return loop
 
@@ -3080,7 +3080,7 @@ class BaseTaskIntrospectionTests:
         self._unregister_task(task)
 
     def test__register_task_3(self):
-        class TaskLike:
+        klasse TaskLike:
             def get_loop(self):
                 return loop
 
@@ -3168,7 +3168,7 @@ class BaseTaskIntrospectionTests:
         self.assertEqual(self.all_tasks(loop), set())
 
 
-class PyIntrospectionTests(test_utils.TestCase, BaseTaskIntrospectionTests):
+klasse PyIntrospectionTests(test_utils.TestCase, BaseTaskIntrospectionTests):
     _register_task = staticmethod(tasks._py_register_task)
     _unregister_task = staticmethod(tasks._py_unregister_task)
     _enter_task = staticmethod(tasks._py_enter_task)
@@ -3179,7 +3179,7 @@ class PyIntrospectionTests(test_utils.TestCase, BaseTaskIntrospectionTests):
 
 @unittest.skipUnless(hasattr(tasks, '_c_register_task'),
                      'requires the C _asyncio module')
-class CIntrospectionTests(test_utils.TestCase, BaseTaskIntrospectionTests):
+klasse CIntrospectionTests(test_utils.TestCase, BaseTaskIntrospectionTests):
     if hasattr(tasks, '_c_register_task'):
         _register_task = staticmethod(tasks._c_register_task)
         _unregister_task = staticmethod(tasks._c_unregister_task)
@@ -3191,7 +3191,7 @@ class CIntrospectionTests(test_utils.TestCase, BaseTaskIntrospectionTests):
         _register_task = _unregister_task = _enter_task = _leave_task = None
 
 
-class BaseCurrentLoopTests:
+klasse BaseCurrentLoopTests:
     current_task = None
 
     def setUp(self):
@@ -3221,7 +3221,7 @@ class BaseCurrentLoopTests:
         self.assertIsNone(self.current_task(loop=self.loop))
 
 
-class PyCurrentLoopTests(BaseCurrentLoopTests, test_utils.TestCase):
+klasse PyCurrentLoopTests(BaseCurrentLoopTests, test_utils.TestCase):
     current_task = staticmethod(tasks._py_current_task)
 
     def new_task(self, coro):
@@ -3231,7 +3231,7 @@ class PyCurrentLoopTests(BaseCurrentLoopTests, test_utils.TestCase):
 @unittest.skipUnless(hasattr(tasks, '_CTask') and
                      hasattr(tasks, '_c_current_task'),
                      'requires the C _asyncio module')
-class CCurrentLoopTests(BaseCurrentLoopTests, test_utils.TestCase):
+klasse CCurrentLoopTests(BaseCurrentLoopTests, test_utils.TestCase):
     if hasattr(tasks, '_c_current_task'):
         current_task = staticmethod(tasks._c_current_task)
     else:
@@ -3241,7 +3241,7 @@ class CCurrentLoopTests(BaseCurrentLoopTests, test_utils.TestCase):
         return getattr(tasks, '_CTask')(coro, loop=self.loop)
 
 
-class GenericTaskTests(test_utils.TestCase):
+klasse GenericTaskTests(test_utils.TestCase):
 
     def test_future_subclass(self):
         self.assertIsSubclass(asyncio.Task, asyncio.Future)
@@ -3265,7 +3265,7 @@ class GenericTaskTests(test_utils.TestCase):
                 self.fail('_asyncio module is missing')
 
 
-class GatherTestsBase:
+klasse GatherTestsBase:
 
     def setUp(self):
         super().setUp()
@@ -3367,7 +3367,7 @@ class GatherTestsBase:
         self.assertEqual(stdout.rstrip(), b'True')
 
 
-class FutureGatherTests(GatherTestsBase, test_utils.TestCase):
+klasse FutureGatherTests(GatherTestsBase, test_utils.TestCase):
 
     def wrap_futures(self, *futures):
         return futures
@@ -3459,7 +3459,7 @@ class FutureGatherTests(GatherTestsBase, test_utils.TestCase):
         cb.assert_called_once_with(fut)
 
 
-class CoroutineGatherTests(GatherTestsBase, test_utils.TestCase):
+klasse CoroutineGatherTests(GatherTestsBase, test_utils.TestCase):
 
     def wrap_futures(self, *futures):
         coros = []
@@ -3583,7 +3583,7 @@ class CoroutineGatherTests(GatherTestsBase, test_utils.TestCase):
             self.one_loop.call_exception_handler.assert_not_called()
 
 
-class RunCoroutineThreadsafeTests(test_utils.TestCase):
+klasse RunCoroutineThreadsafeTests(test_utils.TestCase):
     """Test case for asyncio.run_coroutine_threadsafe."""
 
     def setUp(self):
@@ -3681,7 +3681,7 @@ class RunCoroutineThreadsafeTests(test_utils.TestCase):
         self.assertEqual(context['exception'], exc_context.exception)
 
 
-class SleepTests(test_utils.TestCase):
+klasse SleepTests(test_utils.TestCase):
     def setUp(self):
         super().setUp()
         self.loop = asyncio.new_event_loop()
@@ -3710,7 +3710,7 @@ class SleepTests(test_utils.TestCase):
         self.assertEqual(result, 11)
 
 
-class CompatibilityTests(test_utils.TestCase):
+klasse CompatibilityTests(test_utils.TestCase):
     # Tests for checking a bridge between old-styled coroutines
     # and async/await syntax
 

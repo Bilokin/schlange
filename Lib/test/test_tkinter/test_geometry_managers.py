@@ -15,7 +15,7 @@ EXPECTED_FLOAT_OR_EMPTY_ERRMSG = 'expected floating-point number (or "" )?but go
 EXPECTED_SCREEN_DISTANCE_ERRMSG = '(bad|expected) screen distance (but got )?"{}"'
 EXPECTED_SCREEN_DISTANCE_OR_EMPTY_ERRMSG = '(bad|expected) screen distance (or "" but got )?"{}"'
 
-class PackTest(AbstractWidgetTest, unittest.TestCase):
+klasse PackTest(AbstractWidgetTest, unittest.TestCase):
 
     test_keys = None
 
@@ -281,7 +281,7 @@ class PackTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(pack.pack_slaves(), [a, b])
 
 
-class PlaceTest(AbstractWidgetTest, unittest.TestCase):
+klasse PlaceTest(AbstractWidgetTest, unittest.TestCase):
 
     test_keys = None
 
@@ -486,7 +486,7 @@ class PlaceTest(AbstractWidgetTest, unittest.TestCase):
             foo.place_slaves(0)
 
 
-class GridTest(AbstractWidgetTest, unittest.TestCase):
+klasse GridTest(AbstractWidgetTest, unittest.TestCase):
 
     test_keys = None
 

@@ -16,7 +16,7 @@ import operator
 import sys
 
 
-class BytesTest(unittest.TestCase):
+klasse BytesTest(unittest.TestCase):
 
     @bigaddrspacetest
     def test_concat(self):
@@ -53,7 +53,7 @@ class BytesTest(unittest.TestCase):
             x = None
 
 
-class StrTest(unittest.TestCase):
+klasse StrTest(unittest.TestCase):
 
     unicodesize = 4
 

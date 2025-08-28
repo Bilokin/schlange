@@ -49,7 +49,7 @@ def c_wbuffer(init):
     return (c_wchar * n)(*init)
 
 
-class CharPointersTestCase(unittest.TestCase):
+klasse CharPointersTestCase(unittest.TestCase):
     def setUp(self):
         func = testdll._testfunc_p_p
         func.restype = c_long
@@ -157,7 +157,7 @@ class CharPointersTestCase(unittest.TestCase):
         func = testdll._testfunc_p_p
         func.restype = c_void_p
 
-        class X:
+        klasse X:
             _as_parameter_ = None
 
         func.argtypes = c_void_p,
@@ -167,7 +167,7 @@ class CharPointersTestCase(unittest.TestCase):
         self.assertEqual(None, func(X()))
 
 
-class WCharPointersTestCase(unittest.TestCase):
+klasse WCharPointersTestCase(unittest.TestCase):
     def setUp(self):
         func = testdll._testfunc_p_p
         func.restype = c_int
@@ -208,7 +208,7 @@ class WCharPointersTestCase(unittest.TestCase):
         self.assertEqual("a", func(byref(ca))[0])
 
 
-class ArrayTest(unittest.TestCase):
+klasse ArrayTest(unittest.TestCase):
     def test(self):
         func = testdll._testfunc_ai8
         func.restype = POINTER(c_int)

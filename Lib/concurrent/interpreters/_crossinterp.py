@@ -1,11 +1,11 @@
 """Common code between queues and channels."""
 
 
-class ItemInterpreterDestroyed(Exception):
+klasse ItemInterpreterDestroyed(Exception):
     """Raised when trying to get an item whose interpreter was destroyed."""
 
 
-class classonly:
+klasse classonly:
     """A non-data descriptor that makes a value only visible on the class.
 
     This is like the "classmethod" builtin, but does not show up on
@@ -29,7 +29,7 @@ class classonly:
         return self.getter(None, cls)
 
 
-class UnboundItem:
+klasse UnboundItem:
     """Represents a cross-interpreter item no longer bound to an interpreter.
 
     An item is unbound when the interpreter that added it to the

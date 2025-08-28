@@ -44,7 +44,7 @@ def setup_test_dir():
     os.mkdir(dirname)
 
 
-class AnyDBMTestCase:
+klasse AnyDBMTestCase:
     _dict = {'a': b'Python:',
              'b': b'Programming',
              'c': b'the',
@@ -245,7 +245,7 @@ class AnyDBMTestCase:
         setup_test_dir()
 
 
-class WhichDBTestCase(unittest.TestCase):
+klasse WhichDBTestCase(unittest.TestCase):
     def test_whichdb(self):
         self.addCleanup(setattr, dbm, '_defaultmod', dbm._defaultmod)
         _bytes_fname = os.fsencode(_fname)

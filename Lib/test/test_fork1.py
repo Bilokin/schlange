@@ -19,7 +19,7 @@ if not support.has_fork_support:
     raise unittest.SkipTest("test module requires working os.fork")
 
 
-class ForkTest(ForkWait):
+klasse ForkTest(ForkWait):
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_threaded_import_lock_fork(self):
         """Check fork() in main thread works while a subthread is doing an import"""

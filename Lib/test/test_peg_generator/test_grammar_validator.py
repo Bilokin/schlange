@@ -9,7 +9,7 @@ with test_tools.imports_under_tool("peg_generator"):
     from pegen.grammar import Grammar
 
 
-class TestPegen(unittest.TestCase):
+klasse TestPegen(unittest.TestCase):
     def test_rule_with_no_collision(self) -> None:
         grammar_source = """
         start: bad_rule

@@ -7,12 +7,12 @@ from enum import Enum, StrEnum, auto
 import sys
 from _remote_debugging import RemoteUnwinder, FrameInfo
 
-class NodeType(Enum):
+klasse NodeType(Enum):
     COROUTINE = 1
     TASK = 2
 
 
-class CycleFoundException(Exception):
+klasse CycleFoundException(Exception):
     """Raised when there is a cycle when drawing the call tree."""
     def __init__(
             self,
@@ -233,7 +233,7 @@ def _get_awaited_by_tasks(pid: int) -> list:
         sys.exit(1)
 
 
-class TaskTableOutputFormat(StrEnum):
+klasse TaskTableOutputFormat(StrEnum):
     table = auto()
     csv = auto()
     bsv = auto()

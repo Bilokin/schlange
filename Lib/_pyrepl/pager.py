@@ -9,7 +9,7 @@ import sys
 # types
 if False:
     from typing import Protocol
-    class Pager(Protocol):
+    klasse Pager(Protocol):
         def __call__(self, text: str, title: str = "") -> None:
             ...
 

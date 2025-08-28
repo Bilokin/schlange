@@ -7,7 +7,7 @@ the style of RFC 822.
 Intrinsic defaults can be specified by passing them into the
 ConfigParser constructor as a dictionary.
 
-class:
+klasse:
 
 ConfigParser -- responsible for parsing a list of
                     configuration files, and managing the parsed database.
@@ -173,8 +173,8 @@ MAX_INTERPOLATION_DEPTH = 10
 
 
 # exception classes
-class Error(Exception):
-    """Base class for ConfigParser exceptions."""
+klasse Error(Exception):
+    """Base klasse for ConfigParser exceptions."""
 
     def __init__(self, msg=''):
         self.message = msg
@@ -186,7 +186,7 @@ class Error(Exception):
     __str__ = __repr__
 
 
-class NoSectionError(Error):
+klasse NoSectionError(Error):
     """Raised when no section matches a requested option."""
 
     def __init__(self, section):
@@ -195,7 +195,7 @@ class NoSectionError(Error):
         self.args = (section, )
 
 
-class DuplicateSectionError(Error):
+klasse DuplicateSectionError(Error):
     """Raised when a section is repeated in an input source.
 
     Possible repetitions that raise this exception are: multiple creation
@@ -221,7 +221,7 @@ class DuplicateSectionError(Error):
         self.args = (section, source, lineno)
 
 
-class DuplicateOptionError(Error):
+klasse DuplicateOptionError(Error):
     """Raised by strict parsers when an option is repeated in an input source.
 
     Current implementation raises this exception only when an option is found
@@ -248,7 +248,7 @@ class DuplicateOptionError(Error):
         self.args = (section, option, source, lineno)
 
 
-class NoOptionError(Error):
+klasse NoOptionError(Error):
     """A requested option was not found."""
 
     def __init__(self, option, section):
@@ -259,8 +259,8 @@ class NoOptionError(Error):
         self.args = (option, section)
 
 
-class InterpolationError(Error):
-    """Base class for interpolation-related exceptions."""
+klasse InterpolationError(Error):
+    """Base klasse for interpolation-related exceptions."""
 
     def __init__(self, option, section, msg):
         Error.__init__(self, msg)
@@ -269,7 +269,7 @@ class InterpolationError(Error):
         self.args = (option, section, msg)
 
 
-class InterpolationMissingOptionError(InterpolationError):
+klasse InterpolationMissingOptionError(InterpolationError):
     """A string substitution required a setting which was not available."""
 
     def __init__(self, option, section, rawval, reference):
@@ -281,7 +281,7 @@ class InterpolationMissingOptionError(InterpolationError):
         self.args = (option, section, rawval, reference)
 
 
-class InterpolationSyntaxError(InterpolationError):
+klasse InterpolationSyntaxError(InterpolationError):
     """Raised when the source text contains invalid syntax.
 
     Current implementation raises this exception when the source text into
@@ -289,7 +289,7 @@ class InterpolationSyntaxError(InterpolationError):
     """
 
 
-class InterpolationDepthError(InterpolationError):
+klasse InterpolationDepthError(InterpolationError):
     """Raised when substitutions are nested too deeply."""
 
     def __init__(self, option, section, rawval):
@@ -302,7 +302,7 @@ class InterpolationDepthError(InterpolationError):
         self.args = (option, section, rawval)
 
 
-class ParsingError(Error):
+klasse ParsingError(Error):
     """Raised when a configuration file does not follow legal syntax."""
 
     def __init__(self, source, *args):
@@ -334,7 +334,7 @@ class ParsingError(Error):
 
 
 
-class MissingSectionHeaderError(ParsingError):
+klasse MissingSectionHeaderError(ParsingError):
     """Raised when a key-value pair is found before any section header."""
 
     def __init__(self, filename, lineno, line):
@@ -348,7 +348,7 @@ class MissingSectionHeaderError(ParsingError):
         self.args = (filename, lineno, line)
 
 
-class MultilineContinuationError(ParsingError):
+klasse MultilineContinuationError(ParsingError):
     """Raised when a key without value is followed by continuation line"""
     def __init__(self, filename, lineno, line):
         Error.__init__(
@@ -362,19 +362,19 @@ class MultilineContinuationError(ParsingError):
         self.args = (filename, lineno, line)
 
 
-class UnnamedSectionDisabledError(Error):
+klasse UnnamedSectionDisabledError(Error):
     """Raised when an attempt to use UNNAMED_SECTION is made with the
     feature disabled."""
     def __init__(self):
         Error.__init__(self, "Support for UNNAMED_SECTION is disabled.")
 
 
-class _UnnamedSection:
+klasse _UnnamedSection:
 
     def __repr__(self):
         return "<UNNAMED_SECTION>"
 
-class InvalidWriteError(Error):
+klasse InvalidWriteError(Error):
     """Raised when attempting to write data that the parser would read back differently.
     ex: writing a key which begins with the section header pattern would read back as a
     new section """
@@ -392,7 +392,7 @@ UNNAMED_SECTION = _UnnamedSection()
 _UNSET = object()
 
 
-class Interpolation:
+klasse Interpolation:
     """Dummy interpolation that passes the value through with no changes."""
 
     def before_get(self, parser, section, option, value, defaults):
@@ -408,7 +408,7 @@ class Interpolation:
         return value
 
 
-class BasicInterpolation(Interpolation):
+klasse BasicInterpolation(Interpolation):
     """Interpolation as implemented in the classic ConfigParser.
 
     The option values can contain format strings which refer to other values in
@@ -480,7 +480,7 @@ class BasicInterpolation(Interpolation):
                     "found: %r" % (rest,))
 
 
-class ExtendedInterpolation(Interpolation):
+klasse ExtendedInterpolation(Interpolation):
     """Advanced variant of interpolation, supports the syntax used by
     `zc.buildout`. Enables interpolation between sections."""
 
@@ -556,7 +556,7 @@ class ExtendedInterpolation(Interpolation):
                     "found: %r" % (rest,))
 
 
-class _ReadState:
+klasse _ReadState:
     elements_added : set[str]
     cursect : dict[str, str] | None = None
     sectname : str | None = None
@@ -570,7 +570,7 @@ class _ReadState:
         self.errors = list()
 
 
-class _Line(str):
+klasse _Line(str):
     __slots__ = 'clean', 'has_comments'
 
     def __new__(cls, val, *args, **kwargs):
@@ -582,7 +582,7 @@ class _Line(str):
         self.has_comments = trimmed != self.clean
 
 
-class _CommentSpec:
+klasse _CommentSpec:
     def __init__(self, full_prefixes, inline_prefixes):
         full_patterns = (
             # prefix at the beginning of a line
@@ -603,7 +603,7 @@ class _CommentSpec:
         return _Line(text, self)
 
 
-class RawConfigParser(MutableMapping):
+klasse RawConfigParser(MutableMapping):
     """ConfigParser that does not do interpolation."""
 
     # Regular expressions for parsing section headers and options
@@ -1253,7 +1253,7 @@ class RawConfigParser(MutableMapping):
         return self._converters
 
 
-class ConfigParser(RawConfigParser):
+klasse ConfigParser(RawConfigParser):
     """ConfigParser implementing interpolation."""
 
     _DEFAULT_INTERPOLATION = BasicInterpolation()
@@ -1285,7 +1285,7 @@ class ConfigParser(RawConfigParser):
             self._interpolation = hold_interpolation
 
 
-class SectionProxy(MutableMapping):
+klasse SectionProxy(MutableMapping):
     """A proxy for a single section from a parser."""
 
     def __init__(self, parser, name):
@@ -1355,10 +1355,10 @@ class SectionProxy(MutableMapping):
                      fallback=fallback, **kwargs)
 
 
-class ConverterMapping(MutableMapping):
+klasse ConverterMapping(MutableMapping):
     """Enables reuse of get*() methods between the parser and section proxies.
 
-    If a parser class implements a getter directly, the value for the given
+    If a parser klasse implements a getter directly, the value for the given
     key will be ``None``. The presence of the converter name here enables
     section proxies to find and use the implementation on the parser class.
     """
@@ -1372,7 +1372,7 @@ class ConverterMapping(MutableMapping):
             m = self.GETTERCRE.match(getter)
             if not m or not callable(getattr(self._parser, getter)):
                 continue
-            self._data[m.group('name')] = None   # See class docstring.
+            self._data[m.group('name')] = None   # See klasse docstring.
 
     def __getitem__(self, key):
         return self._data[key]

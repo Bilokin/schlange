@@ -15,11 +15,11 @@ pulldom -- DOM builder supporting on-demand tree-building for selected
 """
 
 
-class Node:
+klasse Node:
     """Class giving the NodeType constants."""
     __slots__ = ()
 
-    # DOM implementations may use this as a base class for their own
+    # DOM implementations may use this as a base klasse for their own
     # Node implementations.  If they don't, the constants defined here
     # should still be used as the canonical definitions as they match
     # the values given in the W3C recommendation.  Client code can
@@ -59,8 +59,8 @@ INVALID_ACCESS_ERR             = 15
 VALIDATION_ERR                 = 16
 
 
-class DOMException(Exception):
-    """Abstract base class for DOM exceptions.
+klasse DOMException(Exception):
+    """Abstract base klasse for DOM exceptions.
     Exceptions with specific codes are specializations of this class."""
 
     def __init__(self, *args, **kw):
@@ -73,55 +73,55 @@ class DOMException(Exception):
         return self.code
 
 
-class IndexSizeErr(DOMException):
+klasse IndexSizeErr(DOMException):
     code = INDEX_SIZE_ERR
 
-class DomstringSizeErr(DOMException):
+klasse DomstringSizeErr(DOMException):
     code = DOMSTRING_SIZE_ERR
 
-class HierarchyRequestErr(DOMException):
+klasse HierarchyRequestErr(DOMException):
     code = HIERARCHY_REQUEST_ERR
 
-class WrongDocumentErr(DOMException):
+klasse WrongDocumentErr(DOMException):
     code = WRONG_DOCUMENT_ERR
 
-class InvalidCharacterErr(DOMException):
+klasse InvalidCharacterErr(DOMException):
     code = INVALID_CHARACTER_ERR
 
-class NoDataAllowedErr(DOMException):
+klasse NoDataAllowedErr(DOMException):
     code = NO_DATA_ALLOWED_ERR
 
-class NoModificationAllowedErr(DOMException):
+klasse NoModificationAllowedErr(DOMException):
     code = NO_MODIFICATION_ALLOWED_ERR
 
-class NotFoundErr(DOMException):
+klasse NotFoundErr(DOMException):
     code = NOT_FOUND_ERR
 
-class NotSupportedErr(DOMException):
+klasse NotSupportedErr(DOMException):
     code = NOT_SUPPORTED_ERR
 
-class InuseAttributeErr(DOMException):
+klasse InuseAttributeErr(DOMException):
     code = INUSE_ATTRIBUTE_ERR
 
-class InvalidStateErr(DOMException):
+klasse InvalidStateErr(DOMException):
     code = INVALID_STATE_ERR
 
-class SyntaxErr(DOMException):
+klasse SyntaxErr(DOMException):
     code = SYNTAX_ERR
 
-class InvalidModificationErr(DOMException):
+klasse InvalidModificationErr(DOMException):
     code = INVALID_MODIFICATION_ERR
 
-class NamespaceErr(DOMException):
+klasse NamespaceErr(DOMException):
     code = NAMESPACE_ERR
 
-class InvalidAccessErr(DOMException):
+klasse InvalidAccessErr(DOMException):
     code = INVALID_ACCESS_ERR
 
-class ValidationErr(DOMException):
+klasse ValidationErr(DOMException):
     code = VALIDATION_ERR
 
-class UserDataHandler:
+klasse UserDataHandler:
     """Class giving the operation constants for UserDataHandler.handle()."""
 
     # Based on DOM Level 3 (WD 9 April 2002)

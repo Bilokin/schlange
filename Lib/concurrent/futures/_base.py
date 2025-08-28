@@ -36,21 +36,21 @@ _STATE_TO_DESCRIPTION_MAP = {
 # Logger for internal use by the futures package.
 LOGGER = logging.getLogger("concurrent.futures")
 
-class Error(Exception):
-    """Base class for all future-related exceptions."""
+klasse Error(Exception):
+    """Base klasse for all future-related exceptions."""
     pass
 
-class CancelledError(Error):
+klasse CancelledError(Error):
     """The Future was cancelled."""
     pass
 
 TimeoutError = TimeoutError  # make local alias for the standard exception
 
-class InvalidStateError(Error):
+klasse InvalidStateError(Error):
     """The operation is not allowed in this state."""
     pass
 
-class _Waiter(object):
+klasse _Waiter(object):
     """Provides the event that wait() and as_completed() block on."""
     def __init__(self):
         self.event = threading.Event()
@@ -65,7 +65,7 @@ class _Waiter(object):
     def add_cancelled(self, future):
         self.finished_futures.append(future)
 
-class _AsCompletedWaiter(_Waiter):
+klasse _AsCompletedWaiter(_Waiter):
     """Used by as_completed()."""
 
     def __init__(self):
@@ -87,7 +87,7 @@ class _AsCompletedWaiter(_Waiter):
             super(_AsCompletedWaiter, self).add_cancelled(future)
             self.event.set()
 
-class _FirstCompletedWaiter(_Waiter):
+klasse _FirstCompletedWaiter(_Waiter):
     """Used by wait(return_when=FIRST_COMPLETED)."""
 
     def add_result(self, future):
@@ -102,7 +102,7 @@ class _FirstCompletedWaiter(_Waiter):
         super().add_cancelled(future)
         self.event.set()
 
-class _AllCompletedWaiter(_Waiter):
+klasse _AllCompletedWaiter(_Waiter):
     """Used by wait(return_when=FIRST_EXCEPTION and ALL_COMPLETED)."""
 
     def __init__(self, num_pending_calls, stop_on_exception):
@@ -132,7 +132,7 @@ class _AllCompletedWaiter(_Waiter):
         super().add_cancelled(future)
         self._decrement_pending_calls()
 
-class _AcquireFutures(object):
+klasse _AcquireFutures(object):
     """A context manager that does an ordered acquire of Future conditions."""
 
     def __init__(self, futures):
@@ -316,7 +316,7 @@ def _result_or_cancel(fut, timeout=None):
         del fut
 
 
-class Future(object):
+klasse Future(object):
     """Represents the result of an asynchronous computation."""
 
     def __init__(self):
@@ -587,8 +587,8 @@ class Future(object):
 
     __class_getitem__ = classmethod(types.GenericAlias)
 
-class Executor(object):
-    """This is an abstract base class for concrete asynchronous executors."""
+klasse Executor(object):
+    """This is an abstract base klasse for concrete asynchronous executors."""
 
     def submit(self, fn, /, *args, **kwargs):
         """Submits a callable to be executed with the given arguments.
@@ -695,7 +695,7 @@ class Executor(object):
         return False
 
 
-class BrokenExecutor(RuntimeError):
+klasse BrokenExecutor(RuntimeError):
     """
     Raised when a executor has become non-functional after a severe failure.
     """

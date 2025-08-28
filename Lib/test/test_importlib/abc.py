@@ -1,7 +1,7 @@
 import abc
 
 
-class FinderTests(metaclass=abc.ABCMeta):
+klasse FinderTests(metaclass=abc.ABCMeta):
 
     """Basic tests for a finder to pass."""
 
@@ -38,7 +38,7 @@ class FinderTests(metaclass=abc.ABCMeta):
         pass
 
 
-class LoaderTests(metaclass=abc.ABCMeta):
+klasse LoaderTests(metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     def test_module(self):

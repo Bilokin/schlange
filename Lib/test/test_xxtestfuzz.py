@@ -5,7 +5,7 @@ import unittest
 _xxtestfuzz = import_helper.import_module('_xxtestfuzz')
 
 
-class TestFuzzer(unittest.TestCase):
+klasse TestFuzzer(unittest.TestCase):
     """To keep our https://github.com/google/oss-fuzz API working."""
 
     def test_sample_input_smoke_test(self):

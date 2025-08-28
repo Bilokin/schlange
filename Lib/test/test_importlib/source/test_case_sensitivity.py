@@ -12,7 +12,7 @@ import unittest
 
 
 @util.case_insensitive_tests
-class CaseSensitivityTest(util.CASEOKTestBase):
+klasse CaseSensitivityTest(util.CASEOKTestBase):
 
     """PEP 235 dictates that on case-preserving, case-insensitive file systems
     that imports are case-sensitive unless the PYTHONCASEOK environment
@@ -62,7 +62,7 @@ class CaseSensitivityTest(util.CASEOKTestBase):
             self.assertIn(self.name, insensitive.get_filename(self.name))
 
 
-class CaseSensitivityTestPEP451(CaseSensitivityTest):
+klasse CaseSensitivityTestPEP451(CaseSensitivityTest):
     def find(self, finder):
         found = finder.find_spec(self.name)
         return found.loader if found is not None else found

@@ -62,7 +62,7 @@ def default_error_handler():
     pass
 
 
-class DummyDTPHandler(asynchat.async_chat):
+klasse DummyDTPHandler(asynchat.async_chat):
     dtp_conn_closed = False
 
     def __init__(self, conn, baseclass):
@@ -99,7 +99,7 @@ class DummyDTPHandler(asynchat.async_chat):
         self.close()
 
 
-class DummyFTPHandler(asynchat.async_chat):
+klasse DummyFTPHandler(asynchat.async_chat):
 
     dtp_handler = DummyDTPHandler
 
@@ -276,7 +276,7 @@ class DummyFTPHandler(asynchat.async_chat):
         self.push('125 setlongretr ok')
 
 
-class DummyFTPServer(asyncore.dispatcher, threading.Thread):
+klasse DummyFTPServer(asyncore.dispatcher, threading.Thread):
 
     handler = DummyFTPHandler
 
@@ -332,7 +332,7 @@ if ssl is not None:
     CERTFILE = os.path.join(os.path.dirname(__file__), "certdata", "keycert3.pem")
     CAFILE = os.path.join(os.path.dirname(__file__), "certdata", "pycacert.pem")
 
-    class SSLConnection(asyncore.dispatcher):
+    klasse SSLConnection(asyncore.dispatcher):
         """An asyncore.dispatcher subclass supporting TLS/SSL."""
 
         _ssl_accepting = False
@@ -437,7 +437,7 @@ if ssl is not None:
                 self.close()
 
 
-    class DummyTLS_DTPHandler(SSLConnection, DummyDTPHandler):
+    klasse DummyTLS_DTPHandler(SSLConnection, DummyDTPHandler):
         """A DummyDTPHandler subclass supporting TLS/SSL."""
 
         def __init__(self, conn, baseclass):
@@ -446,7 +446,7 @@ if ssl is not None:
                 self.secure_connection()
 
 
-    class DummyTLS_FTPHandler(SSLConnection, DummyFTPHandler):
+    klasse DummyTLS_FTPHandler(SSLConnection, DummyFTPHandler):
         """A DummyFTPHandler subclass supporting TLS/SSL."""
 
         dtp_handler = DummyTLS_DTPHandler
@@ -486,11 +486,11 @@ if ssl is not None:
                 self.push("502 Unrecognized PROT type (use C or P).")
 
 
-    class DummyTLS_FTPServer(DummyFTPServer):
+    klasse DummyTLS_FTPServer(DummyFTPServer):
         handler = DummyTLS_FTPHandler
 
 
-class TestFTPClass(TestCase):
+klasse TestFTPClass(TestCase):
 
     def setUp(self, encoding=DEFAULT_ENCODING):
         self.server = DummyFTPServer((HOST, 0), encoding=encoding)
@@ -860,7 +860,7 @@ class TestFTPClass(TestCase):
 
 
 @skipUnless(socket_helper.IPV6_ENABLED, "IPv6 not enabled")
-class TestIPv6Environment(TestCase):
+klasse TestIPv6Environment(TestCase):
 
     def setUp(self):
         self.server = DummyFTPServer((HOSTv6, 0),
@@ -905,7 +905,7 @@ class TestIPv6Environment(TestCase):
 
 @skipUnless(ssl, "SSL not available")
 @requires_subprocess()
-class TestTLS_FTPClassMixin(TestFTPClass):
+klasse TestTLS_FTPClassMixin(TestFTPClass):
     """Repeat TestFTPClass tests starting the TLS layer for both control
     and data connections first.
     """
@@ -922,8 +922,8 @@ class TestTLS_FTPClassMixin(TestFTPClass):
 
 @skipUnless(ssl, "SSL not available")
 @requires_subprocess()
-class TestTLS_FTPClass(TestCase):
-    """Specific TLS_FTP class tests."""
+klasse TestTLS_FTPClass(TestCase):
+    """Specific TLS_FTP klasse tests."""
 
     def setUp(self, encoding=DEFAULT_ENCODING):
         self.server = DummyTLS_FTPServer((HOST, 0), encoding=encoding)
@@ -1044,7 +1044,7 @@ class TestTLS_FTPClass(TestCase):
             pass
 
 
-class TestTimeouts(TestCase):
+klasse TestTimeouts(TestCase):
 
     def setUp(self):
         self.evt = threading.Event()
@@ -1145,7 +1145,7 @@ class TestTimeouts(TestCase):
         ftp.close()
 
 
-class MiscTestCase(TestCase):
+klasse MiscTestCase(TestCase):
     def test__all__(self):
         not_exported = {
             'MSG_OOB', 'FTP_PORT', 'MAXLINE', 'CRLF', 'B_CRLF', 'Error',

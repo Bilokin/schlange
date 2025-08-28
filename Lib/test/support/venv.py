@@ -9,7 +9,7 @@ import tempfile
 import venv
 
 
-class VirtualEnvironment:
+klasse VirtualEnvironment:
     def __init__(self, prefix, **venv_create_args):
         self._logger = logging.getLogger(self.__class__.__name__)
         venv.create(prefix, **venv_create_args)
@@ -70,7 +70,7 @@ class VirtualEnvironment:
             return result
 
 
-class VirtualEnvironmentMixin:
+klasse VirtualEnvironmentMixin:
     def venv(self, name=None, **venv_create_args):
         venv_name = self.id()
         if name:

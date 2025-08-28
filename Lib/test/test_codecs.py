@@ -43,7 +43,7 @@ def is_code_page_present(cp):
     MAX_LEADBYTES = 12  # 5 ranges, 2 bytes ea., 0 term.
     MAX_DEFAULTCHAR = 2 # single or double byte
     MAX_PATH = 260
-    class CPINFOEXW(Structure):
+    klasse CPINFOEXW(Structure):
         _fields_ = [("MaxCharSize", UINT),
                     ("DefaultChar", BYTE*MAX_DEFAULTCHAR),
                     ("LeadByte", BYTE*MAX_LEADBYTES),
@@ -56,7 +56,7 @@ def is_code_page_present(cp):
     info = CPINFOEXW()
     return GetCPInfoEx(cp, 0, info)
 
-class Queue(object):
+klasse Queue(object):
     """
     queue: write bytes at one end, read bytes from the other end
     """
@@ -77,7 +77,7 @@ class Queue(object):
             return s
 
 
-class MixInCheckStateHandling:
+klasse MixInCheckStateHandling:
     def check_state_handling_decode(self, encoding, u, s):
         for i in range(len(s)+1):
             d = codecs.getincrementaldecoder(encoding)()
@@ -111,7 +111,7 @@ class MixInCheckStateHandling:
             self.assertEqual(s, part1+part2)
 
 
-class ReadTest(MixInCheckStateHandling):
+klasse ReadTest(MixInCheckStateHandling):
     def check_partial(self, input, partialresults):
         # get a StreamReader for the encoding and feed the bytestring version
         # of input to the reader byte by byte. Read everything available from
@@ -451,7 +451,7 @@ class ReadTest(MixInCheckStateHandling):
             self.assertEqual(dec.decode(data[i:]), '\uDC02')
 
 
-class UTF32Test(ReadTest, unittest.TestCase):
+klasse UTF32Test(ReadTest, unittest.TestCase):
     encoding = "utf-32"
     if sys.byteorder == 'little':
         ill_formed_sequence = b"\x80\xdc\x00\x00"
@@ -547,7 +547,7 @@ class UTF32Test(ReadTest, unittest.TestCase):
                          codecs.utf_32_decode(encoded_be)[0])
 
 
-class UTF32LETest(ReadTest, unittest.TestCase):
+klasse UTF32LETest(ReadTest, unittest.TestCase):
     encoding = "utf-32-le"
     ill_formed_sequence = b"\x80\xdc\x00\x00"
 
@@ -593,7 +593,7 @@ class UTF32LETest(ReadTest, unittest.TestCase):
                          codecs.utf_32_le_decode(encoded)[0])
 
 
-class UTF32BETest(ReadTest, unittest.TestCase):
+klasse UTF32BETest(ReadTest, unittest.TestCase):
     encoding = "utf-32-be"
     ill_formed_sequence = b"\x00\x00\xdc\x80"
 
@@ -639,7 +639,7 @@ class UTF32BETest(ReadTest, unittest.TestCase):
                          codecs.utf_32_be_decode(encoded)[0])
 
 
-class UTF16Test(ReadTest, unittest.TestCase):
+klasse UTF16Test(ReadTest, unittest.TestCase):
     encoding = "utf-16"
     if sys.byteorder == 'little':
         ill_formed_sequence = b"\x80\xdc"
@@ -738,7 +738,7 @@ class UTF16Test(ReadTest, unittest.TestCase):
                           str(cm.exception))
 
 
-class UTF16LETest(ReadTest, unittest.TestCase):
+klasse UTF16LETest(ReadTest, unittest.TestCase):
     encoding = "utf-16-le"
     ill_formed_sequence = b"\x80\xdc"
 
@@ -782,7 +782,7 @@ class UTF16LETest(ReadTest, unittest.TestCase):
         self.assertEqual(b'\x00\xd8\x03\xde'.decode(self.encoding),
                          "\U00010203")
 
-class UTF16BETest(ReadTest, unittest.TestCase):
+klasse UTF16BETest(ReadTest, unittest.TestCase):
     encoding = "utf-16-be"
     ill_formed_sequence = b"\xdc\x80"
 
@@ -826,7 +826,7 @@ class UTF16BETest(ReadTest, unittest.TestCase):
         self.assertEqual(b'\xd8\x00\xde\x03'.decode(self.encoding),
                          "\U00010203")
 
-class UTF8Test(ReadTest, unittest.TestCase):
+klasse UTF8Test(ReadTest, unittest.TestCase):
     encoding = "utf-8"
     ill_formed_sequence = b"\xed\xb2\x80"
     ill_formed_sequence_replace = "\ufffd" * 3
@@ -920,7 +920,7 @@ class UTF8Test(ReadTest, unittest.TestCase):
                 self.assertRaises(UnicodeDecodeError, dec.decode, data)
 
 
-class UTF7Test(ReadTest, unittest.TestCase):
+klasse UTF7Test(ReadTest, unittest.TestCase):
     encoding = "utf-7"
 
     def test_ascii(self):
@@ -1054,7 +1054,7 @@ class UTF7Test(ReadTest, unittest.TestCase):
                 self.assertEqual(raw.decode('utf-7', 'replace'), expected)
 
 
-class UTF16ExTest(unittest.TestCase):
+klasse UTF16ExTest(unittest.TestCase):
 
     def test_errors(self):
         self.assertRaises(UnicodeDecodeError, codecs.utf_16_ex_decode, b"\xff", "strict", 0, True)
@@ -1062,7 +1062,7 @@ class UTF16ExTest(unittest.TestCase):
     def test_bad_args(self):
         self.assertRaises(TypeError, codecs.utf_16_ex_decode)
 
-class ReadBufferTest(unittest.TestCase):
+klasse ReadBufferTest(unittest.TestCase):
 
     def test_array(self):
         import array
@@ -1078,7 +1078,7 @@ class ReadBufferTest(unittest.TestCase):
         self.assertRaises(TypeError, codecs.readbuffer_encode)
         self.assertRaises(TypeError, codecs.readbuffer_encode, 42)
 
-class UTF8SigTest(UTF8Test, unittest.TestCase):
+klasse UTF8SigTest(UTF8Test, unittest.TestCase):
     encoding = "utf-8-sig"
     BOM = codecs.BOM_UTF8
 
@@ -1164,7 +1164,7 @@ class UTF8SigTest(UTF8Test, unittest.TestCase):
             self.assertEqual(got, unistring)
 
 
-class EscapeDecodeTest(unittest.TestCase):
+klasse EscapeDecodeTest(unittest.TestCase):
     def test_empty(self):
         self.assertEqual(codecs.escape_decode(b""), (b"", 0))
         self.assertEqual(codecs.escape_decode(bytearray()), (b"", 0))
@@ -1352,7 +1352,7 @@ for i in punycode_testcases:
         print(repr(i))
 
 
-class PunycodeTest(unittest.TestCase):
+klasse PunycodeTest(unittest.TestCase):
     def test_encode(self):
         for uni, puny in punycode_testcases:
             # Need to convert both strings to lower case, since
@@ -1554,7 +1554,7 @@ nameprep_tests = [
     ]
 
 
-class NameprepTest(unittest.TestCase):
+klasse NameprepTest(unittest.TestCase):
     def test_nameprep(self):
         from encodings.idna import nameprep
         for pos, (orig, prepped) in enumerate(nameprep_tests):
@@ -1574,7 +1574,7 @@ class NameprepTest(unittest.TestCase):
                     raise support.TestFailed("Test 3.%d: %s" % (pos+1, str(e)))
 
 
-class IDNACodecTest(unittest.TestCase):
+klasse IDNACodecTest(unittest.TestCase):
 
     invalid_decode_testcases = [
         (b"\xFFpython.org", UnicodeDecodeError("idna", b"\xFFpython.org", 0, 1, "")),
@@ -1763,7 +1763,7 @@ class IDNACodecTest(unittest.TestCase):
                 b"python.org".decode, "idna", errors)
 
 
-class CodecsModuleTest(unittest.TestCase):
+klasse CodecsModuleTest(unittest.TestCase):
 
     def test_decode(self):
         self.assertEqual(codecs.decode(b'\xe4\xf6\xfc', 'latin-1'),
@@ -1956,7 +1956,7 @@ class CodecsModuleTest(unittest.TestCase):
                 self.assertFalse(unpickled_codec_info._is_text_encoding)
 
 
-class StreamReaderTest(unittest.TestCase):
+klasse StreamReaderTest(unittest.TestCase):
 
     def setUp(self):
         self.reader = codecs.getreader('utf-8')
@@ -1981,7 +1981,7 @@ class StreamReaderTest(unittest.TestCase):
                     pickle.dumps(f, proto)
 
 
-class StreamWriterTest(unittest.TestCase):
+klasse StreamWriterTest(unittest.TestCase):
 
     def setUp(self):
         self.writer = codecs.getwriter('utf-8')
@@ -2001,7 +2001,7 @@ class StreamWriterTest(unittest.TestCase):
                     pickle.dumps(f, proto)
 
 
-class StreamReaderWriterTest(unittest.TestCase):
+klasse StreamReaderWriterTest(unittest.TestCase):
 
     def setUp(self):
         self.reader = codecs.getreader('latin1')
@@ -2022,7 +2022,7 @@ class StreamReaderWriterTest(unittest.TestCase):
                     pickle.dumps(f, proto)
 
 
-class EncodedFileTest(unittest.TestCase):
+klasse EncodedFileTest(unittest.TestCase):
 
     def test_basic(self):
         f = io.BytesIO(b'\xed\x95\x9c\n\xea\xb8\x80')
@@ -2153,7 +2153,7 @@ broken_unicode_with_stateful = [
 ]
 
 
-class BasicUnicodeTest(unittest.TestCase, MixInCheckStateHandling):
+klasse BasicUnicodeTest(unittest.TestCase, MixInCheckStateHandling):
     def test_basics(self):
         s = "abc123"  # all codecs should be able to encode these
         for encoding in all_unicode_encodings:
@@ -2315,7 +2315,7 @@ class BasicUnicodeTest(unittest.TestCase, MixInCheckStateHandling):
                 self.check_state_handling_encode(encoding, u, u.encode(encoding))
 
 
-class CharmapTest(unittest.TestCase):
+klasse CharmapTest(unittest.TestCase):
     def test_decode_with_string_map(self):
         self.assertEqual(
             codecs.charmap_decode(b"\x00\x01\x02", "strict", "abc"),
@@ -2563,7 +2563,7 @@ class CharmapTest(unittest.TestCase):
         )
 
 
-class WithStmtTest(unittest.TestCase):
+klasse WithStmtTest(unittest.TestCase):
     def test_encodedfile(self):
         f = io.BytesIO(b"\xc3\xbc")
         with codecs.EncodedFile(f, "latin-1", "utf-8") as ef:
@@ -2578,7 +2578,7 @@ class WithStmtTest(unittest.TestCase):
             self.assertEqual(srw.read(), "\xfc")
 
 
-class TypesTest(unittest.TestCase):
+klasse TypesTest(unittest.TestCase):
     def test_decode_unicode(self):
         # Most decoders don't accept unicode input
         decoders = [
@@ -2619,7 +2619,7 @@ class TypesTest(unittest.TestCase):
                          (r"\x5c\x55\x30\x30\x31\x31\x30\x30\x30\x30", 10))
 
 
-class UnicodeEscapeTest(ReadTest, unittest.TestCase):
+klasse UnicodeEscapeTest(ReadTest, unittest.TestCase):
     encoding = "unicode-escape"
 
     test_lone_surrogates = None
@@ -2768,7 +2768,7 @@ class UnicodeEscapeTest(ReadTest, unittest.TestCase):
             ]
         )
 
-class RawUnicodeEscapeTest(ReadTest, unittest.TestCase):
+klasse RawUnicodeEscapeTest(ReadTest, unittest.TestCase):
     encoding = "raw-unicode-escape"
 
     test_lone_surrogates = None
@@ -2851,7 +2851,7 @@ class RawUnicodeEscapeTest(ReadTest, unittest.TestCase):
         )
 
 
-class EscapeEncodeTest(unittest.TestCase):
+klasse EscapeEncodeTest(unittest.TestCase):
 
     def test_escape_encode(self):
         tests = [
@@ -2871,7 +2871,7 @@ class EscapeEncodeTest(unittest.TestCase):
         self.assertRaises(TypeError, codecs.escape_encode, bytearray(b'spam'))
 
 
-class SurrogateEscapeTest(unittest.TestCase):
+klasse SurrogateEscapeTest(unittest.TestCase):
 
     def test_utf8(self):
         # Bad byte
@@ -2905,7 +2905,7 @@ class SurrogateEscapeTest(unittest.TestCase):
                          b"\xe4\xeb\xef\xf6\xfc")
 
 
-class BomTest(unittest.TestCase):
+klasse BomTest(unittest.TestCase):
     def test_seek0(self):
         data = "1234567890"
         tests = ("utf-16",
@@ -2993,7 +2993,7 @@ else:
     transform_aliases["bz2_codec"] = ["bz2"]
 
 
-class TransformCodecTest(unittest.TestCase):
+klasse TransformCodecTest(unittest.TestCase):
 
     def test_basics(self):
         binput = bytes(range(256))
@@ -3140,7 +3140,7 @@ def _get_test_codec(codec_name):
     return _TEST_CODECS.get(codec_name)
 
 
-class ExceptionNotesTest(unittest.TestCase):
+klasse ExceptionNotesTest(unittest.TestCase):
 
     def setUp(self):
         self.codec_name = 'exception_notes_test'
@@ -3200,24 +3200,24 @@ class ExceptionNotesTest(unittest.TestCase):
 
     def test_raise_grandchild_subclass_exact_size(self):
         msg = "This should be noted"
-        class MyRuntimeError(RuntimeError):
+        klasse MyRuntimeError(RuntimeError):
             __slots__ = ()
         self.check_note(MyRuntimeError(msg), msg, MyRuntimeError)
 
     def test_raise_subclass_with_weakref_support(self):
         msg = "This should be noted"
-        class MyRuntimeError(RuntimeError):
+        klasse MyRuntimeError(RuntimeError):
             pass
         self.check_note(MyRuntimeError(msg), msg, MyRuntimeError)
 
     def test_init_override(self):
-        class CustomInit(RuntimeError):
+        klasse CustomInit(RuntimeError):
             def __init__(self):
                 pass
         self.check_note(CustomInit, "")
 
     def test_new_override(self):
-        class CustomNew(RuntimeError):
+        klasse CustomNew(RuntimeError):
             def __new__(cls):
                 return super().__new__(cls)
         self.check_note(CustomNew, "")
@@ -3279,7 +3279,7 @@ class ExceptionNotesTest(unittest.TestCase):
 
 @unittest.skipUnless(sys.platform == 'win32',
                      'code pages are specific to Windows')
-class CodePageTest(unittest.TestCase):
+klasse CodePageTest(unittest.TestCase):
     CP_UTF8 = 65001
 
     def test_invalid_code_page(self):
@@ -3574,7 +3574,7 @@ class CodePageTest(unittest.TestCase):
         self.assertEqual(decoded[0][-11:], '56\ud1000123456\ud100')
 
 
-class ASCIITest(unittest.TestCase):
+klasse ASCIITest(unittest.TestCase):
     def test_encode(self):
         self.assertEqual('abc123'.encode('ascii'), b'abc123')
 
@@ -3613,7 +3613,7 @@ class ASCIITest(unittest.TestCase):
                                  expected)
 
 
-class Latin1Test(unittest.TestCase):
+klasse Latin1Test(unittest.TestCase):
     def test_encode(self):
         for data, expected in (
             ('abc', b'abc'),
@@ -3650,7 +3650,7 @@ class Latin1Test(unittest.TestCase):
                 self.assertEqual(data.decode('latin1'), expected)
 
 
-class StreamRecoderTest(unittest.TestCase):
+klasse StreamRecoderTest(unittest.TestCase):
     def test_writelines(self):
         bio = io.BytesIO()
         codec = codecs.lookup('ascii')
@@ -3719,7 +3719,7 @@ class StreamRecoderTest(unittest.TestCase):
 
 
 @unittest.skipIf(_testinternalcapi is None, 'need _testinternalcapi module')
-class LocaleCodecTest(unittest.TestCase):
+klasse LocaleCodecTest(unittest.TestCase):
     """
     Test indirectly _Py_DecodeUTF8Ex() and _Py_EncodeUTF8Ex().
     """
@@ -3832,7 +3832,7 @@ class LocaleCodecTest(unittest.TestCase):
         self.assertEqual(str(cm.exception), 'unsupported error handler')
 
 
-class Rot13Test(unittest.TestCase):
+klasse Rot13Test(unittest.TestCase):
     """Test the educational ROT-13 codec."""
     def test_encode(self):
         ciphertext = codecs.encode("Caesar liked ciphers", 'rot-13')
@@ -3853,7 +3853,7 @@ class Rot13Test(unittest.TestCase):
         self.assertEqual(plaintext, 'green Nerf rail gun')
 
 
-class Rot13UtilTest(unittest.TestCase):
+klasse Rot13UtilTest(unittest.TestCase):
     """Test the ROT-13 codec via rot13 function,
     i.e. the user has done something like:
     $ echo "Hello World" | python -m encodings.rot_13
@@ -3870,7 +3870,7 @@ class Rot13UtilTest(unittest.TestCase):
             'To be, or not to be, that is the question')
 
 
-class CodecNameNormalizationTest(unittest.TestCase):
+klasse CodecNameNormalizationTest(unittest.TestCase):
     """Test codec name normalization"""
     def test_codecs_lookup(self):
         FOUND = (1, 2, 3, 4)

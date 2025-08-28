@@ -11,7 +11,7 @@ def method_cache(method, cache_wrapper=None):
     underscore-prefixed protected property on first call and returns that
     subsequently.
 
-    >>> class MyClass:
+    >>> klasse MyClass:
     ...     calls = 0
     ...
     ...     @method_cache

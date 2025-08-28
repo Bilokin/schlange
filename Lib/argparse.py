@@ -43,7 +43,7 @@ The module contains the following public classes:
         the type= argument of add_argument() calls. Deprecated since
         Python 3.14.
 
-    - Action -- The base class for parser actions. Typically actions are
+    - Action -- The base klasse for parser actions. Typically actions are
         selected by passing strings like 'store_true' or 'append_const' to
         the action= argument of add_argument(). However, for greater
         customization of ArgumentParser actions, subclasses of Action may
@@ -106,8 +106,8 @@ _UNRECOGNIZED_ARGS_ATTR = '_unrecognized_args'
 # Utility functions and classes
 # =============================
 
-class _AttributeHolder(object):
-    """Abstract base class that provides __repr__.
+klasse _AttributeHolder(object):
+    """Abstract base klasse that provides __repr__.
 
     The __repr__ method returns a string in the format::
         ClassName(attr=name, attr=name, ...)
@@ -154,11 +154,11 @@ def _copy_items(items):
 # ===============
 
 
-class HelpFormatter(object):
+klasse HelpFormatter(object):
     """Formatter for generating usage messages and argument help strings.
 
-    Only the name of this class is considered a public API. All the methods
-    provided by the class are considered an implementation detail.
+    Only the name of this klasse is considered a public API. All the methods
+    provided by the klasse are considered an implementation detail.
     """
 
     def __init__(
@@ -215,7 +215,7 @@ class HelpFormatter(object):
         assert self._current_indent >= 0, 'Indent decreased below 0.'
         self._level -= 1
 
-    class _Section(object):
+    klasse _Section(object):
 
         def __init__(self, formatter, parent, heading=None):
             self.formatter = formatter
@@ -711,33 +711,33 @@ class HelpFormatter(object):
         return action.dest
 
 
-class RawDescriptionHelpFormatter(HelpFormatter):
+klasse RawDescriptionHelpFormatter(HelpFormatter):
     """Help message formatter which retains any formatting in descriptions.
 
-    Only the name of this class is considered a public API. All the methods
-    provided by the class are considered an implementation detail.
+    Only the name of this klasse is considered a public API. All the methods
+    provided by the klasse are considered an implementation detail.
     """
 
     def _fill_text(self, text, width, indent):
         return ''.join(indent + line for line in text.splitlines(keepends=True))
 
 
-class RawTextHelpFormatter(RawDescriptionHelpFormatter):
+klasse RawTextHelpFormatter(RawDescriptionHelpFormatter):
     """Help message formatter which retains formatting of all help text.
 
-    Only the name of this class is considered a public API. All the methods
-    provided by the class are considered an implementation detail.
+    Only the name of this klasse is considered a public API. All the methods
+    provided by the klasse are considered an implementation detail.
     """
 
     def _split_lines(self, text, width):
         return text.splitlines()
 
 
-class ArgumentDefaultsHelpFormatter(HelpFormatter):
+klasse ArgumentDefaultsHelpFormatter(HelpFormatter):
     """Help message formatter which adds default values to argument help.
 
-    Only the name of this class is considered a public API. All the methods
-    provided by the class are considered an implementation detail.
+    Only the name of this klasse is considered a public API. All the methods
+    provided by the klasse are considered an implementation detail.
     """
 
     def _get_help_string(self, action):
@@ -754,12 +754,12 @@ class ArgumentDefaultsHelpFormatter(HelpFormatter):
 
 
 
-class MetavarTypeHelpFormatter(HelpFormatter):
+klasse MetavarTypeHelpFormatter(HelpFormatter):
     """Help message formatter which uses the argument 'type' as the default
     metavar value (instead of the argument 'dest')
 
-    Only the name of this class is considered a public API. All the methods
-    provided by the class are considered an implementation detail.
+    Only the name of this klasse is considered a public API. All the methods
+    provided by the klasse are considered an implementation detail.
     """
 
     def _get_default_metavar_for_optional(self, action):
@@ -796,7 +796,7 @@ def _get_action_name(argument):
         return None
 
 
-class ArgumentError(Exception):
+klasse ArgumentError(Exception):
     """An error from creating or using an argument (optional or positional).
 
     The string value of this exception is the message, augmented with
@@ -816,7 +816,7 @@ class ArgumentError(Exception):
                              argument_name=self.argument_name)
 
 
-class ArgumentTypeError(Exception):
+klasse ArgumentTypeError(Exception):
     """An error from trying to convert a command line string to a type."""
     pass
 
@@ -825,7 +825,7 @@ class ArgumentTypeError(Exception):
 # Action classes
 # ==============
 
-class Action(_AttributeHolder):
+klasse Action(_AttributeHolder):
     """Information about how to convert command line strings to Python objects.
 
     Action objects are used by an ArgumentParser to represent the information
@@ -923,7 +923,7 @@ class Action(_AttributeHolder):
         raise NotImplementedError('.__call__() not defined')
 
 
-class BooleanOptionalAction(Action):
+klasse BooleanOptionalAction(Action):
     def __init__(self,
                  option_strings,
                  dest,
@@ -961,7 +961,7 @@ class BooleanOptionalAction(Action):
         return ' | '.join(self.option_strings)
 
 
-class _StoreAction(Action):
+klasse _StoreAction(Action):
 
     def __init__(self,
                  option_strings,
@@ -998,7 +998,7 @@ class _StoreAction(Action):
         setattr(namespace, self.dest, values)
 
 
-class _StoreConstAction(Action):
+klasse _StoreConstAction(Action):
 
     def __init__(self,
                  option_strings,
@@ -1023,7 +1023,7 @@ class _StoreConstAction(Action):
         setattr(namespace, self.dest, self.const)
 
 
-class _StoreTrueAction(_StoreConstAction):
+klasse _StoreTrueAction(_StoreConstAction):
 
     def __init__(self,
                  option_strings,
@@ -1042,7 +1042,7 @@ class _StoreTrueAction(_StoreConstAction):
             default=default)
 
 
-class _StoreFalseAction(_StoreConstAction):
+klasse _StoreFalseAction(_StoreConstAction):
 
     def __init__(self,
                  option_strings,
@@ -1061,7 +1061,7 @@ class _StoreFalseAction(_StoreConstAction):
             deprecated=deprecated)
 
 
-class _AppendAction(Action):
+klasse _AppendAction(Action):
 
     def __init__(self,
                  option_strings,
@@ -1101,7 +1101,7 @@ class _AppendAction(Action):
         setattr(namespace, self.dest, items)
 
 
-class _AppendConstAction(Action):
+klasse _AppendConstAction(Action):
 
     def __init__(self,
                  option_strings,
@@ -1130,7 +1130,7 @@ class _AppendConstAction(Action):
         setattr(namespace, self.dest, items)
 
 
-class _CountAction(Action):
+klasse _CountAction(Action):
 
     def __init__(self,
                  option_strings,
@@ -1155,7 +1155,7 @@ class _CountAction(Action):
         setattr(namespace, self.dest, count + 1)
 
 
-class _HelpAction(Action):
+klasse _HelpAction(Action):
 
     def __init__(self,
                  option_strings,
@@ -1176,7 +1176,7 @@ class _HelpAction(Action):
         parser.exit()
 
 
-class _VersionAction(Action):
+klasse _VersionAction(Action):
 
     def __init__(self,
                  option_strings,
@@ -1205,9 +1205,9 @@ class _VersionAction(Action):
         parser.exit()
 
 
-class _SubParsersAction(Action):
+klasse _SubParsersAction(Action):
 
-    class _ChoicesPseudoAction(Action):
+    klasse _ChoicesPseudoAction(Action):
 
         def __init__(self, name, aliases, help):
             metavar = dest = name
@@ -1323,7 +1323,7 @@ class _SubParsersAction(Action):
                 setattr(namespace, _UNRECOGNIZED_ARGS_ATTR, [])
             getattr(namespace, _UNRECOGNIZED_ARGS_ATTR).extend(arg_strings)
 
-class _ExtendAction(_AppendAction):
+klasse _ExtendAction(_AppendAction):
     def __call__(self, parser, namespace, values, option_string=None):
         items = getattr(namespace, self.dest, None)
         items = _copy_items(items)
@@ -1334,7 +1334,7 @@ class _ExtendAction(_AppendAction):
 # Type classes
 # ==============
 
-class FileType(object):
+klasse FileType(object):
     """Deprecated factory for creating file object types
 
     Instances of FileType are typically passed as type= arguments to the
@@ -1395,7 +1395,7 @@ class FileType(object):
 # Optional and Positional Parsing
 # ===========================
 
-class Namespace(_AttributeHolder):
+klasse Namespace(_AttributeHolder):
     """Simple object for storing attributes.
 
     Implements equality by attribute names and values, and provides a simple
@@ -1415,7 +1415,7 @@ class Namespace(_AttributeHolder):
         return key in self.__dict__
 
 
-class _ActionsContainer(object):
+klasse _ActionsContainer(object):
 
     def __init__(self,
                  description,
@@ -1548,7 +1548,7 @@ class _ActionsContainer(object):
             raise TypeError(f'{type_func!r} is not callable')
 
         if type_func is FileType:
-            raise TypeError(f'{type_func!r} is a FileType class object, '
+            raise TypeError(f'{type_func!r} is a FileType klasse object, '
                             f'instance of it must be passed')
 
         # raise an error if the metavar does not match the type
@@ -1600,7 +1600,7 @@ class _ActionsContainer(object):
         title_group_map = {}
         for group in self._action_groups:
             if group.title in title_group_map:
-                # This branch could happen if a derived class added
+                # This branch could happen if a derived klasse added
                 # groups with duplicated titles in __init__
                 msg = f'cannot merge actions - two groups are named {group.title!r}'
                 raise ValueError(msg)
@@ -1749,7 +1749,7 @@ class _ActionsContainer(object):
                 raise ValueError('badly formed help string') from exc
 
 
-class _ArgumentGroup(_ActionsContainer):
+klasse _ArgumentGroup(_ActionsContainer):
 
     def __init__(self, container, title=None, description=None, **kwargs):
         if 'prefix_chars' in kwargs:
@@ -1793,7 +1793,7 @@ class _ArgumentGroup(_ActionsContainer):
     def add_argument_group(self, *args, **kwargs):
         raise ValueError('argument groups cannot be nested')
 
-class _MutuallyExclusiveGroup(_ArgumentGroup):
+klasse _MutuallyExclusiveGroup(_ArgumentGroup):
 
     def __init__(self, container, required=False):
         super(_MutuallyExclusiveGroup, self).__init__(container)
@@ -1837,7 +1837,7 @@ def _prog_name(prog=None):
     return f'{py} {arg0}'
 
 
-class ArgumentParser(_AttributeHolder, _ActionsContainer):
+klasse ArgumentParser(_AttributeHolder, _ActionsContainer):
     """Object for parsing command line strings into Python objects.
 
     Keyword Arguments:
@@ -1847,7 +1847,7 @@ class ArgumentParser(_AttributeHolder, _ActionsContainer):
         - description -- A description of what the program does
         - epilog -- Text following the argument descriptions
         - parents -- Parsers whose arguments should be copied into this one
-        - formatter_class -- HelpFormatter class for printing help messages
+        - formatter_class -- HelpFormatter klasse for printing help messages
         - prefix_chars -- Characters that prefix optional arguments
         - fromfile_prefix_chars -- Characters that prefix files containing
             additional arguments
@@ -1947,7 +1947,7 @@ class ArgumentParser(_AttributeHolder, _ActionsContainer):
         if self._subparsers is not None:
             raise ValueError('cannot have multiple subparser arguments')
 
-        # add the parser class to the arguments if it's not present
+        # add the parser klasse to the arguments if it's not present
         kwargs.setdefault('parser_class', type(self))
 
         if 'title' in kwargs or 'description' in kwargs:

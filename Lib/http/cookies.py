@@ -142,7 +142,7 @@ _spacejoin = ' '.join
 #
 # Define an exception visible to External modules
 #
-class CookieError(Exception):
+klasse CookieError(Exception):
     pass
 
 
@@ -233,12 +233,12 @@ def _getdate(future=0, weekdayname=_weekdayname, monthname=_monthname):
            (weekdayname[wd], day, monthname[month], year, hh, mm, ss)
 
 
-class Morsel(dict):
-    """A class to hold ONE (key, value) pair.
+klasse Morsel(dict):
+    """A klasse to hold ONE (key, value) pair.
 
-    In a cookie, each such pair may have several attributes, so this class is
+    In a cookie, each such pair may have several attributes, so this klasse is
     used to keep the attributes associated with the appropriate key,value pair.
-    This class also includes a coded_value attribute, which is used to hold
+    This klasse also includes a coded_value attribute, which is used to hold
     the network representation of the value.
     """
     # RFC 2109 lists these attributes as reserved:
@@ -440,11 +440,11 @@ _CookiePattern = re.compile(r"""
     """, re.ASCII | re.VERBOSE)    # re.ASCII may be removed if safe.
 
 
-# At long last, here is the cookie class.  Using this class is almost just like
+# At long last, here is the cookie class.  Using this klasse is almost just like
 # using a dictionary.  See this module's docstring for example usage.
 #
-class BaseCookie(dict):
-    """A container class for a set of Morsels."""
+klasse BaseCookie(dict):
+    """A container klasse for a set of Morsels."""
 
     def value_decode(self, val):
         """real_value, coded_value = value_decode(STRING)
@@ -583,7 +583,7 @@ class BaseCookie(dict):
                 M = self[key]
 
 
-class SimpleCookie(BaseCookie):
+klasse SimpleCookie(BaseCookie):
     """
     SimpleCookie supports strings as cookie values.  When setting
     the value using the dictionary assignment notation, SimpleCookie

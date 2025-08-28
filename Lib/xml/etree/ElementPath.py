@@ -347,7 +347,7 @@ ops = {
 
 _cache = {}
 
-class _SelectorContext:
+klasse _SelectorContext:
     parent_map = None
     def __init__(self, root):
         self.root = root

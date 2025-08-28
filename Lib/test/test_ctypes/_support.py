@@ -29,7 +29,7 @@ def is_underaligned(ctype):
     return ctypes.alignment(ctype) < ctypes.sizeof(ctype)
 
 
-class StructCheckMixin:
+klasse StructCheckMixin:
     def check_struct(self, structure):
         """Assert that a structure is well-formed"""
         self._check_struct_or_union(structure, is_struct=True)

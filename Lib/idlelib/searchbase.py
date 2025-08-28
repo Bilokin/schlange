@@ -5,7 +5,7 @@ from tkinter.ttk import Frame, Entry, Label, Button, Checkbutton, Radiobutton
 from tkinter.simpledialog import _setup_dialog
 
 
-class SearchDialogBase:
+klasse SearchDialogBase:
     '''Create most of a 3 or 4 row, 3 column search dialog.
 
     The left and wide middle column contain:
@@ -18,7 +18,7 @@ class SearchDialogBase:
     (make_button, create_command_buttons).
     These are bound to functions that execute the command.
 
-    Except for command buttons, this base class is not limited to items
+    Except for command buttons, this base klasse is not limited to items
     common to all three subclasses.  Rather, it is the Find dialog minus
     the "Find Next" command, its execution function, and the
     default_command attribute needed in create_widgets. The other
@@ -40,7 +40,7 @@ class SearchDialogBase:
         row (of grid): 0 in create_widgets(), +1 in make_entry/frame().
         default_command: set in subclasses, used in create_widgets().
 
-        title (of dialog): class attribute, override in subclasses.
+        title (of dialog): klasse attribute, override in subclasses.
         icon (of dialog): ditto, use unclear if cannot minimize dialog.
         '''
         self.root = root
@@ -185,7 +185,7 @@ class SearchDialogBase:
         b.lower()
 
 
-class _searchbase(SearchDialogBase):  # htest #
+klasse _searchbase(SearchDialogBase):  # htest #
     "Create auto-opening dialog with no text connection."
 
     def __init__(self, parent):

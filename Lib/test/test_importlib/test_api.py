@@ -14,7 +14,7 @@ import types
 import unittest
 
 
-class ImportModuleTests:
+klasse ImportModuleTests:
 
     """Test importlib.import_module."""
 
@@ -100,7 +100,7 @@ class ImportModuleTests:
      ImportModuleTests, init=init, util=util, machinery=machinery)
 
 
-class FindLoaderTests:
+klasse FindLoaderTests:
 
     FakeMetaFinder = None
 
@@ -162,9 +162,9 @@ class FindLoaderTests:
         self.assertIsNone(self.util.find_spec('nevergoingtofindthismodule'))
 
 
-class FindLoaderPEP451Tests(FindLoaderTests):
+klasse FindLoaderPEP451Tests(FindLoaderTests):
 
-    class FakeMetaFinder:
+    klasse FakeMetaFinder:
         @staticmethod
         def find_spec(name, path=None, target=None):
             return machinery['Source'].ModuleSpec(name, (name, path))
@@ -176,7 +176,7 @@ class FindLoaderPEP451Tests(FindLoaderTests):
      FindLoaderPEP451Tests, init=init, util=util, machinery=machinery)
 
 
-class ReloadTests:
+klasse ReloadTests:
 
     def test_reload_modules(self):
         for mod in ('tokenize', 'time', 'marshal'):
@@ -376,11 +376,11 @@ class ReloadTests:
      ReloadTests, init=init, util=util, machinery=machinery)
 
 
-class InvalidateCacheTests:
+klasse InvalidateCacheTests:
 
     def test_method_called(self):
         # If defined the method should be called.
-        class InvalidatingNullFinder:
+        klasse InvalidatingNullFinder:
             def __init__(self, *ignored):
                 self.called = False
             def invalidate_caches(self):
@@ -411,7 +411,7 @@ class InvalidateCacheTests:
      InvalidateCacheTests, init=init, util=util, machinery=machinery)
 
 
-class FrozenImportlibTests(unittest.TestCase):
+klasse FrozenImportlibTests(unittest.TestCase):
 
     def test_no_frozen_importlib(self):
         # Should be able to import w/o _frozen_importlib being defined.
@@ -423,7 +423,7 @@ class FrozenImportlibTests(unittest.TestCase):
                             'FrozenImporter')
 
 
-class StartupTests:
+klasse StartupTests:
 
     def test_everyone_has___loader__(self):
         # Issue #17098: all modules should have __loader__ defined.
@@ -452,7 +452,7 @@ class StartupTests:
  ) = test_util.test_both(StartupTests, machinery=machinery)
 
 
-class TestModuleAll(unittest.TestCase):
+klasse TestModuleAll(unittest.TestCase):
     def test_machinery(self):
         extra = (
             # from importlib._bootstrap and importlib._bootstrap_external
@@ -491,7 +491,7 @@ class TestModuleAll(unittest.TestCase):
         support.check__all__(self, util['Source'], extra=extra)
 
 
-class TestDeprecations(unittest.TestCase):
+klasse TestDeprecations(unittest.TestCase):
     def test_machinery_deprecated_attributes(self):
         from importlib import machinery
         attributes = (

@@ -24,7 +24,7 @@ def clear_type_cache():
 
 @support.cpython_only
 @unittest.skipIf(_clear_type_cache is None, "requires sys._clear_type_cache")
-class TypeCacheTests(unittest.TestCase):
+klasse TypeCacheTests(unittest.TestCase):
     def test_tp_version_tag_unique(self):
         """tp_version_tag should be unique assuming no overflow, even after
         clearing type cache.
@@ -54,7 +54,7 @@ class TypeCacheTests(unittest.TestCase):
                          msg=f"{all_version_tags} contains non-unique versions")
 
     def test_type_assign_version(self):
-        class C:
+        klasse C:
             x = 5
 
         self.assertEqual(type_assign_version(C), 1)
@@ -68,7 +68,7 @@ class TypeCacheTests(unittest.TestCase):
 
     def test_type_assign_specific_version(self):
         """meta-test for type_assign_specific_version_unsafe"""
-        class C:
+        klasse C:
             pass
 
         type_assign_version(C)
@@ -86,7 +86,7 @@ class TypeCacheTests(unittest.TestCase):
         clear_type_cache()
 
     def test_per_class_limit(self):
-        class C:
+        klasse C:
             x = 0
 
         type_assign_version(C)
@@ -100,14 +100,14 @@ class TypeCacheTests(unittest.TestCase):
 
     def test_119462(self):
 
-        class Holder:
+        klasse Holder:
             value = None
 
             @classmethod
             def set_value(cls):
                 cls.value = object()
 
-        class HolderSub(Holder):
+        klasse HolderSub(Holder):
             pass
 
         for _ in range(1050):
@@ -115,7 +115,7 @@ class TypeCacheTests(unittest.TestCase):
             HolderSub.value
 
 @support.cpython_only
-class TypeCacheWithSpecializationTests(unittest.TestCase):
+klasse TypeCacheWithSpecializationTests(unittest.TestCase):
     def tearDown(self):
         clear_type_cache()
 
@@ -146,7 +146,7 @@ class TypeCacheWithSpecializationTests(unittest.TestCase):
 
     @requires_specialization
     def test_class_load_attr_specialization_user_type(self):
-        class A:
+        klasse A:
             def foo(self):
                 pass
 
@@ -179,7 +179,7 @@ class TypeCacheWithSpecializationTests(unittest.TestCase):
 
     @requires_specialization
     def test_property_load_attr_specialization_user_type(self):
-        class G:
+        klasse G:
             @property
             def x(self):
                 return 9
@@ -201,7 +201,7 @@ class TypeCacheWithSpecializationTests(unittest.TestCase):
 
     @requires_specialization
     def test_store_attr_specialization_user_type(self):
-        class B:
+        klasse B:
             __slots__ = ("bar",)
 
         self._assign_valid_version_or_skip(B)
@@ -221,7 +221,7 @@ class TypeCacheWithSpecializationTests(unittest.TestCase):
 
     @requires_specialization_ft
     def test_class_call_specialization_user_type(self):
-        class F:
+        klasse F:
             def __init__(self):
                 pass
 
@@ -242,7 +242,7 @@ class TypeCacheWithSpecializationTests(unittest.TestCase):
 
     @requires_specialization
     def test_to_bool_specialization_user_type(self):
-        class H:
+        klasse H:
             pass
 
         self._assign_valid_version_or_skip(H)

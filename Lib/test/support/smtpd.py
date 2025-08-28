@@ -50,13 +50,13 @@ and if remoteport is not given, then 25 is used.
 # has a hierarchy of classes which implement the backend functionality for the
 # smtpd.  A number of classes are provided:
 #
-#   SMTPServer - the base class for the backend.  Raises NotImplementedError
+#   SMTPServer - the base klasse for the backend.  Raises NotImplementedError
 #   if you try to use it.
 #
 #   DebuggingServer - simply prints each message it receives on stdout.
 #
 #   PureProxy - Proxies all messages to a real smtpd which does final
-#   delivery.  One known problem with this class is that it doesn't handle
+#   delivery.  One known problem with this klasse is that it doesn't handle
 #   SMTP errors from the backend server at all.  This should be fixed
 #   (contributions are welcome!).
 #
@@ -89,7 +89,7 @@ program = sys.argv[0]
 __version__ = 'Python SMTP proxy version 0.3'
 
 
-class Devnull:
+klasse Devnull:
     def write(self, msg): pass
     def flush(self): pass
 
@@ -107,7 +107,7 @@ def usage(code, msg=''):
     sys.exit(code)
 
 
-class SMTPChannel(asynchat.async_chat):
+klasse SMTPChannel(asynchat.async_chat):
     COMMAND = 0
     DATA = 1
 
@@ -298,12 +298,12 @@ class SMTPChannel(asynchat.async_chat):
             "set 'addr' instead", DeprecationWarning, 2)
         self.addr = value
 
-    # Overrides base class for convenience.
+    # Overrides base klasse for convenience.
     def push(self, msg):
         asynchat.async_chat.push(self, bytes(
             msg + '\r\n', 'utf-8' if self.require_SMTPUTF8 else 'ascii'))
 
-    # Implementation of base class abstract method
+    # Implementation of base klasse abstract method
     def collect_incoming_data(self, data):
         limit = None
         if self.smtp_state == self.COMMAND:
@@ -319,7 +319,7 @@ class SMTPChannel(asynchat.async_chat):
         else:
             self.received_lines.append(data)
 
-    # Implementation of base class abstract method
+    # Implementation of base klasse abstract method
     def found_terminator(self):
         line = self._emptystring.join(self.received_lines)
         print('Data:', repr(line), file=DEBUGSTREAM)
@@ -616,8 +616,8 @@ class SMTPChannel(asynchat.async_chat):
         self.push('502 EXPN not implemented')
 
 
-class SMTPServer(asyncore.dispatcher):
-    # SMTPChannel class to use for managing client connections
+klasse SMTPServer(asyncore.dispatcher):
+    # SMTPChannel klasse to use for managing client connections
     channel_class = SMTPChannel
 
     def __init__(self, localaddr, remoteaddr,
@@ -694,7 +694,7 @@ class SMTPServer(asyncore.dispatcher):
         raise NotImplementedError
 
 
-class DebuggingServer(SMTPServer):
+klasse DebuggingServer(SMTPServer):
 
     def _print_message_content(self, peer, data):
         inheaders = 1
@@ -724,7 +724,7 @@ class DebuggingServer(SMTPServer):
         print('------------ END MESSAGE ------------')
 
 
-class PureProxy(SMTPServer):
+klasse PureProxy(SMTPServer):
     def __init__(self, *args, **kwargs):
         if 'enable_SMTPUTF8' in kwargs and kwargs['enable_SMTPUTF8']:
             raise ValueError("PureProxy does not support SMTPUTF8.")
@@ -769,7 +769,7 @@ class PureProxy(SMTPServer):
         return refused
 
 
-class Options:
+klasse Options:
     setuid = True
     classname = 'PureProxy'
     size_limit = None

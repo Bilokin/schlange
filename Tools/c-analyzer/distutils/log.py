@@ -1,6 +1,6 @@
 """A simple log mechanism styled after PEP 282."""
 
-# The class here is styled after PEP 282 so that it could later be
+# The klasse here is styled after PEP 282 so that it could later be
 # replaced with a standard Python logging implementation.
 
 DEBUG = 1
@@ -11,7 +11,7 @@ FATAL = 5
 
 import sys
 
-class Log:
+klasse Log:
 
     def __init__(self, threshold=WARN):
         self.threshold = threshold

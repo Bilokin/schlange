@@ -4,14 +4,14 @@ This program draws two fractal-curve-designs:
 (1) A hilbert curve (in a box)
 (2) A combination of Koch-curves.
 
-The CurvesTurtle class and the fractal-curve-
+The CurvesTurtle klasse and the fractal-curve-
 methods are taken from the PythonCard example
 scripts for turtle-graphics.
 """
 from turtle import *
 from time import sleep, perf_counter as clock
 
-class CurvesTurtle(Pen):
+klasse CurvesTurtle(Pen):
     # example derived from
     # Turtle Geometry: The Computer as a Medium for Exploring Mathematics
     # by Harold Abelson and Andrea diSessa

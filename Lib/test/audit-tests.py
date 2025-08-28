@@ -10,7 +10,7 @@ import os
 import sys
 
 
-class TestHook:
+klasse TestHook:
     """Used in standard hook tests to collect any logged events.
 
     Should be used in a with block to ensure that it has no impact
@@ -136,7 +136,7 @@ def test_marshal():
 def test_pickle():
     import pickle
 
-    class PicklePrint:
+    klasse PicklePrint:
         def __reduce_ex__(self, p):
             return str, ("Pwned!",)
 
@@ -155,13 +155,13 @@ def test_pickle():
 
 
 def test_monkeypatch():
-    class A:
+    klasse A:
         pass
 
-    class B:
+    klasse B:
         pass
 
-    class C(A):
+    klasse C(A):
         pass
 
     a = A()
@@ -177,7 +177,7 @@ def test_monkeypatch():
         C.__init__ = B.__init__
         # Catch attribute addition
         C.new_attr = 123
-        # Catch class changes
+        # Catch klasse changes
         a.__class__ = B
 
     actual = [(a[0], a[1]) for e, a in hook.seen if e == "object.__setattr__"]
@@ -512,7 +512,7 @@ def test_threading():
     lock = _thread.allocate_lock()
     lock.acquire()
 
-    class test_func:
+    klasse test_func:
         def __repr__(self): return "<test_func>"
         def __call__(self):
             sys.audit("test.test_func")
@@ -529,7 +529,7 @@ def test_threading_abort():
     # Ensures that aborting PyThreadState_New raises the correct exception
     import _thread
 
-    class ThreadNewAbortError(Exception):
+    klasse ThreadNewAbortError(Exception):
         pass
 
     def hook(event, args):

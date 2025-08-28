@@ -621,7 +621,7 @@ def _divide_and_round(a, b):
     return q
 
 
-class timedelta:
+klasse timedelta:
     """Represent the difference between two datetime objects.
 
     Supported operators:
@@ -956,7 +956,7 @@ timedelta.max = timedelta(days=999999999, hours=23, minutes=59, seconds=59,
                           microseconds=999999)
 timedelta.resolution = timedelta(microseconds=1)
 
-class date:
+klasse date:
     """Concrete date type.
 
     Constructors:
@@ -1298,8 +1298,8 @@ date.max = date(9999, 12, 31)
 date.resolution = timedelta(days=1)
 
 
-class tzinfo:
-    """Abstract base class for time zone info objects.
+klasse tzinfo:
+    """Abstract base klasse for time zone info objects.
 
     Subclasses must override the tzname(), utcoffset() and dst() methods.
     """
@@ -1359,7 +1359,7 @@ class tzinfo:
         return (self.__class__, args, self.__getstate__())
 
 
-class IsoCalendarDate(tuple):
+klasse IsoCalendarDate(tuple):
 
     def __new__(cls, year, week, weekday, /):
         return super().__new__(cls, (year, week, weekday))
@@ -1378,7 +1378,7 @@ class IsoCalendarDate(tuple):
 
     def __reduce__(self):
         # This code is intended to pickle the object without making the
-        # class public. See https://bugs.python.org/msg352381
+        # klasse public. See https://bugs.python.org/msg352381
         return (tuple, (tuple(self),))
 
     def __repr__(self):
@@ -1390,7 +1390,7 @@ _IsoCalendarDate = IsoCalendarDate
 del IsoCalendarDate
 _tzinfo_class = tzinfo
 
-class time:
+klasse time:
     """Time with time zone.
 
     Constructors:
@@ -1764,7 +1764,7 @@ time.max = time(23, 59, 59, 999999)
 time.resolution = timedelta(microseconds=1)
 
 
-class datetime(date):
+klasse datetime(date):
     """A combination of a date and a time.
 
     The year, month and day arguments are required. tzinfo may be None, or an
@@ -2423,7 +2423,7 @@ def _isoweek1monday(year):
     return week1monday
 
 
-class timezone(tzinfo):
+klasse timezone(tzinfo):
     """Fixed offset from UTC implementation of tzinfo."""
 
     __slots__ = '_offset', '_name'
@@ -2628,7 +2628,7 @@ _EPOCH = datetime(1970, 1, 1, tzinfo=timezone.utc)
 # we have an equivalent time, and are almost done.  The insecurity here is
 # at the start of daylight time.  Picture US Eastern for concreteness.  The wall
 # time jumps from 1:59 to 3:00, and wall hours of the form 2:MM don't make good
-# sense then.  The docs ask that an Eastern tzinfo class consider such a time to
+# sense then.  The docs ask that an Eastern tzinfo klasse consider such a time to
 # be EDT (because it's "after 2"), which is a redundant spelling of 1:MM EST
 # on the day DST starts.  We want to return the 1:MM EST spelling because that's
 # the only spelling that makes sense on the local wall clock.
@@ -2673,7 +2673,7 @@ _EPOCH = datetime(1970, 1, 1, tzinfo=timezone.utc)
 #
 #     z'.n - z'.o = x.n                           [8]
 #
-# If so, we're done.  If not, the tzinfo class is insane, according to the
+# If so, we're done.  If not, the tzinfo klasse is insane, according to the
 # assumptions we've made.  This also requires a bit of proof.  As before, let's
 # compute the difference between the LHS and RHS of [8] (and skipping some of
 # the justifications for the kinds of substitutions we've done several times
@@ -2721,7 +2721,7 @@ _EPOCH = datetime(1970, 1, 1, tzinfo=timezone.utc)
 # two possible dst() outcomes, one zero and the other non-zero).  Therefore
 # z' must be in standard time, and is the spelling we want in this case.
 #
-# Note again that z' is not UTC-equivalent as far as the hybrid tzinfo class is
+# Note again that z' is not UTC-equivalent as far as the hybrid tzinfo klasse is
 # concerned (because it takes z' as being in standard time rather than the
 # daylight time we intend here), but returning it gives the real-life "local
 # clock repeats an hour" behavior when mapping the "unspellable" UTC hour into

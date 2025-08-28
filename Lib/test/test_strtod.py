@@ -83,7 +83,7 @@ def strtod(s, mant_dig=53, min_exp = -1021, max_exp = 1024):
 
 TEST_SIZE = 10
 
-class StrtodTests(unittest.TestCase):
+klasse StrtodTests(unittest.TestCase):
     def check_strtod(self, s):
         """Compare the result of Python's builtin correctly rounded
         string->float conversion (using float) to a pure Python

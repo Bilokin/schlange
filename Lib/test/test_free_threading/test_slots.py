@@ -17,10 +17,10 @@ def run_in_threads(targets):
 
 
 @threading_helper.requires_working_threading()
-class TestSlots(TestCase):
+klasse TestSlots(TestCase):
 
     def test_object(self):
-        class Spam:
+        klasse Spam:
             __slots__ = [
                 "eggs",
             ]

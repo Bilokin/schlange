@@ -52,7 +52,7 @@ Unpack short sequence
 
 Unpack generic sequence
 
-    >>> class Seq:
+    >>> klasse Seq:
     ...     def __getitem__(self, i):
     ...         if i >= 0 and i < 3: return i
     ...         raise IndexError
@@ -211,7 +211,7 @@ Now for some failures
 Make sure the raised errors are right for keyword argument unpackings
 
     >>> from collections.abc import MutableMapping
-    >>> class CrazyDict(MutableMapping):
+    >>> klasse CrazyDict(MutableMapping):
     ...     def __init__(self):
     ...         self.d = {}
     ...
@@ -298,10 +298,10 @@ Unpacking sequence too short and target appears last
 Unpacking a sequence where the test for too long raises a different kind of
 error
 
-    >>> class BozoError(Exception):
+    >>> klasse BozoError(Exception):
     ...     pass
     ...
-    >>> class BadSeq:
+    >>> klasse BadSeq:
     ...     def __getitem__(self, i):
     ...         if i >= 0 and i < 3:
     ...             return i

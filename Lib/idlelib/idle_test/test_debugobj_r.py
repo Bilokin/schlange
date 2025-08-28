@@ -4,13 +4,13 @@ from idlelib import debugobj_r
 import unittest
 
 
-class WrappedObjectTreeItemTest(unittest.TestCase):
+klasse WrappedObjectTreeItemTest(unittest.TestCase):
 
     def test_getattr(self):
         ti = debugobj_r.WrappedObjectTreeItem(list)
         self.assertEqual(ti.append, list.append)
 
-class StubObjectTreeItemTest(unittest.TestCase):
+klasse StubObjectTreeItemTest(unittest.TestCase):
 
     def test_init(self):
         ti = debugobj_r.StubObjectTreeItem('socket', 1111)

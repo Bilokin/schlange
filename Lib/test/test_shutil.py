@@ -169,7 +169,7 @@ def _maxdataOK():
         return True
 
 
-class BaseTest:
+klasse BaseTest:
 
     def mkdtemp(self, prefix=None):
         """Create a temporary directory that will be cleaned up.
@@ -181,7 +181,7 @@ class BaseTest:
         return d
 
 
-class TestRmTree(BaseTest, unittest.TestCase):
+klasse TestRmTree(BaseTest, unittest.TestCase):
 
     def test_rmtree_works_on_bytes(self):
         tmp = self.mkdtemp()
@@ -561,7 +561,7 @@ class TestRmTree(BaseTest, unittest.TestCase):
             os.mkdir(d)
             try:
                 real_open = os.open
-                class Called(Exception): pass
+                klasse Called(Exception): pass
                 def _raiser(*args, **kwargs):
                     raise Called
                 os.open = _raiser
@@ -747,7 +747,7 @@ class TestRmTree(BaseTest, unittest.TestCase):
             shutil.rmtree(TESTFN)
 
 
-class TestCopyTree(BaseTest, unittest.TestCase):
+klasse TestCopyTree(BaseTest, unittest.TestCase):
 
     def test_copytree_simple(self):
         src_dir = self.mkdtemp()
@@ -1099,7 +1099,7 @@ class TestCopyTree(BaseTest, unittest.TestCase):
         rv = shutil.copytree(src_dir, dst_dir)
         self.assertEqual(['pol'], os.listdir(rv))
 
-class TestCopy(BaseTest, unittest.TestCase):
+klasse TestCopy(BaseTest, unittest.TestCase):
 
     ### shutil.copymode
 
@@ -1612,7 +1612,7 @@ class TestCopy(BaseTest, unittest.TestCase):
         self.assertRaises(err, shutil.copyfile, dir2, src_dir)
 
 
-class TestArchives(BaseTest, unittest.TestCase):
+klasse TestArchives(BaseTest, unittest.TestCase):
 
     ### shutil.make_archive
 
@@ -2195,7 +2195,7 @@ class TestArchives(BaseTest, unittest.TestCase):
         self.assertEqual(get_unpack_formats(), formats)
 
 
-class TestMisc(BaseTest, unittest.TestCase):
+klasse TestMisc(BaseTest, unittest.TestCase):
 
     @unittest.skipUnless(hasattr(shutil, 'disk_usage'),
                          "disk_usage not available on this platform")
@@ -2308,7 +2308,7 @@ class TestMisc(BaseTest, unittest.TestCase):
 
 
 @support.requires_subprocess()
-class TestWhich(BaseTest, unittest.TestCase):
+klasse TestWhich(BaseTest, unittest.TestCase):
 
     def setUp(self):
         temp_dir = self.mkdtemp(prefix="Tmp")
@@ -2694,7 +2694,7 @@ class TestWhich(BaseTest, unittest.TestCase):
                              self.filepath)
 
 
-class TestWhichBytes(TestWhich):
+klasse TestWhichBytes(TestWhich):
     def setUp(self):
         TestWhich.setUp(self)
         self.dir = os.fsencode(self.dir)
@@ -2707,7 +2707,7 @@ class TestWhichBytes(TestWhich):
     to_text_type = staticmethod(os.fsencode)
 
 
-class TestMove(BaseTest, unittest.TestCase):
+klasse TestMove(BaseTest, unittest.TestCase):
 
     def setUp(self):
         filename = "foo"
@@ -2976,9 +2976,9 @@ class TestMove(BaseTest, unittest.TestCase):
                 os_helper.rmtree(TESTFN_DST)
 
 
-class TestCopyFile(unittest.TestCase):
+klasse TestCopyFile(unittest.TestCase):
 
-    class Faux(object):
+    klasse Faux(object):
         _entered = False
         _exited_with = None
         _raised = False
@@ -3068,7 +3068,7 @@ class TestCopyFile(unittest.TestCase):
         self.assertTrue(srcfile._raised)
 
 
-class TestCopyFileObj(unittest.TestCase):
+klasse TestCopyFileObj(unittest.TestCase):
     FILESIZE = 2 * 1024 * 1024
 
     @classmethod
@@ -3142,7 +3142,7 @@ class TestCopyFileObj(unittest.TestCase):
         self.assert_files_eq(fname, TESTFN2)
 
 
-class _ZeroCopyFileTest(object):
+klasse _ZeroCopyFileTest(object):
     """Tests common to all zero-copy APIs."""
     FILESIZE = (10 * 1024 * 1024)  # 10 MiB
     FILEDATA = b""
@@ -3241,7 +3241,7 @@ class _ZeroCopyFileTest(object):
                 self.assertRaises(OSError, self.zerocopy_fun, src, dst)
 
 
-class _ZeroCopyFileLinuxTest(_ZeroCopyFileTest):
+klasse _ZeroCopyFileLinuxTest(_ZeroCopyFileTest):
     BLOCKSIZE_INDEX = None
 
     def test_non_regular_file_src(self):
@@ -3337,7 +3337,7 @@ class _ZeroCopyFileLinuxTest(_ZeroCopyFileTest):
 
 @unittest.skipIf(not SUPPORTS_SENDFILE, 'os.sendfile() not supported')
 @unittest.mock.patch.object(shutil, "_USE_CP_COPY_FILE_RANGE", False)
-class TestZeroCopySendfile(_ZeroCopyFileLinuxTest, unittest.TestCase):
+klasse TestZeroCopySendfile(_ZeroCopyFileLinuxTest, unittest.TestCase):
     PATCHPOINT = "os.sendfile"
     BLOCKSIZE_INDEX = 3
 
@@ -3367,7 +3367,7 @@ class TestZeroCopySendfile(_ZeroCopyFileLinuxTest, unittest.TestCase):
 
 
 @unittest.skipUnless(shutil._USE_CP_COPY_FILE_RANGE, "os.copy_file_range() not supported")
-class TestZeroCopyCopyFileRange(_ZeroCopyFileLinuxTest, unittest.TestCase):
+klasse TestZeroCopyCopyFileRange(_ZeroCopyFileLinuxTest, unittest.TestCase):
     PATCHPOINT = "os.copy_file_range"
     BLOCKSIZE_INDEX = 2
 
@@ -3390,14 +3390,14 @@ class TestZeroCopyCopyFileRange(_ZeroCopyFileLinuxTest, unittest.TestCase):
 
 
 @unittest.skipIf(not MACOS, 'macOS only')
-class TestZeroCopyMACOS(_ZeroCopyFileTest, unittest.TestCase):
+klasse TestZeroCopyMACOS(_ZeroCopyFileTest, unittest.TestCase):
     PATCHPOINT = "posix._fcopyfile"
 
     def zerocopy_fun(self, src, dst):
         return shutil._fastcopy_fcopyfile(src, dst, posix._COPYFILE_DATA)
 
 
-class TestGetTerminalSize(unittest.TestCase):
+klasse TestGetTerminalSize(unittest.TestCase):
     def test_does_not_crash(self):
         """Check if get_terminal_size() returns a meaningful value.
 
@@ -3475,7 +3475,7 @@ class TestGetTerminalSize(unittest.TestCase):
             self.assertEqual(size.lines, 40)
 
 
-class PublicAPITests(unittest.TestCase):
+klasse PublicAPITests(unittest.TestCase):
     """Ensures that the correct values are exposed in the public API."""
 
     def test_module_all_attribute(self):

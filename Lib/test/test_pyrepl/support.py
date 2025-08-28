@@ -9,7 +9,7 @@ from _pyrepl.simple_interact import _strip_final_indent
 from _pyrepl.utils import unbracket, ANSI_ESCAPE_SEQUENCE
 
 
-class ScreenEqualMixin:
+klasse ScreenEqualMixin:
     def assert_screen_equal(
         self, reader: ReadlineAlikeReader, expected: str, clean: bool = False
     ):
@@ -114,7 +114,7 @@ handle_events_narrow_console = partial(
 )
 
 
-class FakeConsole(Console):
+klasse FakeConsole(Console):
     def __init__(self, events, encoding="utf-8") -> None:
         self.events = iter(events)
         self.encoding = encoding

@@ -132,14 +132,14 @@ Verify clearing of SF bug #733667
     >>> g(1, 2, 3, *(4, 5))
     1 (2, 3, 4, 5) {}
 
-    >>> class Nothing: pass
+    >>> klasse Nothing: pass
     ...
     >>> g(*Nothing())
     Traceback (most recent call last):
       ...
     TypeError: test.test_extcall.g() argument after * must be an iterable, not Nothing
 
-    >>> class Nothing:
+    >>> klasse Nothing:
     ...     def __len__(self): return 5
     ...
 
@@ -148,7 +148,7 @@ Verify clearing of SF bug #733667
       ...
     TypeError: test.test_extcall.g() argument after * must be an iterable, not Nothing
 
-    >>> class Nothing():
+    >>> klasse Nothing():
     ...     def __len__(self): return 5
     ...     def __getitem__(self, i):
     ...         if i<3: return i
@@ -158,7 +158,7 @@ Verify clearing of SF bug #733667
     >>> g(*Nothing())
     0 (1, 2) {}
 
-    >>> class Nothing:
+    >>> klasse Nothing:
     ...     def __init__(self): self.c = 0
     ...     def __iter__(self): return self
     ...     def __next__(self):
@@ -187,7 +187,7 @@ right error message? (Also check with other iterables.)
       ...
     TypeError: myerror
 
-    >>> class BrokenIterable1:
+    >>> klasse BrokenIterable1:
     ...     def __iter__(self):
     ...         raise TypeError('myerror')
     ...
@@ -200,7 +200,7 @@ right error message? (Also check with other iterables.)
       ...
     TypeError: myerror
 
-    >>> class BrokenIterable2:
+    >>> klasse BrokenIterable2:
     ...     def __iter__(self):
     ...         yield 0
     ...         raise TypeError('myerror')
@@ -214,7 +214,7 @@ right error message? (Also check with other iterables.)
       ...
     TypeError: myerror
 
-    >>> class BrokenSequence:
+    >>> klasse BrokenSequence:
     ...     def __getitem__(self, idx):
     ...         raise TypeError('myerror')
     ...
@@ -339,7 +339,7 @@ not function
 Test a kwargs mapping with duplicated keys.
 
     >>> from collections.abc import Mapping
-    >>> class MultiDict(Mapping):
+    >>> klasse MultiDict(Mapping):
     ...     def __init__(self, items):
     ...         self._items = items
     ...
@@ -384,7 +384,7 @@ Test a kwargs mapping with duplicated keys.
 
 Call with dict subtype:
 
-    >>> class MyDict(dict):
+    >>> klasse MyDict(dict):
     ...     pass
 
     >>> def s1(**kwargs):
@@ -417,7 +417,7 @@ Another helper function
     >>> len(a), len(b), b == d
     (3, 512, True)
 
-    >>> class Foo:
+    >>> klasse Foo:
     ...     def method(self, arg1, arg2):
     ...         return arg1+arg2
 
@@ -450,7 +450,7 @@ TypeError if te dictionary is not empty
 A corner case of keyword dictionary items being deleted during
 the function call setup. See <http://bugs.python.org/issue2016>.
 
-    >>> class Name(str):
+    >>> klasse Name(str):
     ...     def __eq__(self, other):
     ...         try:
     ...              del x[self]

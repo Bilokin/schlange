@@ -14,7 +14,7 @@ OtherCallback = ctypes.CFUNCTYPE(ctypes.c_int, ctypes.c_int, ctypes.c_ulonglong)
 dll = ctypes.CDLL(_ctypes_test.__file__)
 
 @thread_unsafe('not thread safe')
-class RefcountTestCase(unittest.TestCase):
+klasse RefcountTestCase(unittest.TestCase):
     @support.refcount_test
     def test_1(self):
         f = dll._testfunc_callback_i_if
@@ -54,7 +54,7 @@ class RefcountTestCase(unittest.TestCase):
         gc.collect()
         self.assertEqual(sys.getrefcount(func), orig_refcount)
 
-        class X(ctypes.Structure):
+        klasse X(ctypes.Structure):
             _fields_ = [("a", OtherCallback)]
         x = X()
         x.a = OtherCallback(func)
@@ -83,7 +83,7 @@ class RefcountTestCase(unittest.TestCase):
         self.assertEqual(sys.getrefcount(func), orig_refcount)
 
 @thread_unsafe('not thread safe')
-class AnotherLeak(unittest.TestCase):
+klasse AnotherLeak(unittest.TestCase):
     def test_callback(self):
         proto = ctypes.CFUNCTYPE(ctypes.c_int, ctypes.c_int, ctypes.c_int)
         def func(a, b):
@@ -110,7 +110,7 @@ class AnotherLeak(unittest.TestCase):
                     func()
 
 
-class ModuleIsolationTest(unittest.TestCase):
+klasse ModuleIsolationTest(unittest.TestCase):
     def test_finalize(self):
         # check if gc_decref() succeeds
         script = (
@@ -123,7 +123,7 @@ class ModuleIsolationTest(unittest.TestCase):
         script_helper.assert_python_ok("-c", script)
 
 
-class PyObjectRestypeTest(unittest.TestCase):
+klasse PyObjectRestypeTest(unittest.TestCase):
     def test_restype_py_object_with_null_return(self):
         # Test that a function which returns a NULL PyObject *
         # without setting an exception does not crash.

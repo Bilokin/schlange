@@ -20,7 +20,7 @@ testcfg = {
 }
 code_sample = """\
 
-class C1:
+klasse C1:
     # Class comment.
     def __init__(self, a, b):
         self.a = a
@@ -35,7 +35,7 @@ class C1:
 """
 
 
-class DummyEditwin:
+klasse DummyEditwin:
     def __init__(self, root, frame, text):
         self.root = root
         self.top = root
@@ -50,7 +50,7 @@ class DummyEditwin:
         self.label = kwargs['label']
 
 
-class CodeContextTest(unittest.TestCase):
+klasse CodeContextTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -411,7 +411,7 @@ class CodeContextTest(unittest.TestCase):
         assert_colors_are_equal(orig_colors)
 
 
-class HelperFunctionText(unittest.TestCase):
+klasse HelperFunctionText(unittest.TestCase):
 
     def test_get_spaces_firstword(self):
         get = codecontext.get_spaces_firstword

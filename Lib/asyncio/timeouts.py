@@ -14,7 +14,7 @@ __all__ = (
 )
 
 
-class _State(enum.Enum):
+klasse _State(enum.Enum):
     CREATED = "created"
     ENTERED = "active"
     EXPIRING = "expiring"
@@ -22,10 +22,10 @@ class _State(enum.Enum):
     EXITED = "finished"
 
 
-class Timeout:
+klasse Timeout:
     """Asynchronous context manager for cancelling overdue coroutines.
 
-    Use `timeout()` or `timeout_at()` rather than instantiating this class directly.
+    Use `timeout()` or `timeout_at()` rather than instantiating this klasse directly.
     """
 
     def __init__(self, when: float | None) -> None:

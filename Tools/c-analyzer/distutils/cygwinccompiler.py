@@ -2,7 +2,7 @@
 
 Provides the CygwinCCompiler class, a subclass of UnixCCompiler that
 handles the Cygwin port of the GNU C compiler to Windows.  It also contains
-the Mingw32CCompiler class which handles the mingw32 port of GCC (same as
+the Mingw32CCompiler klasse which handles the mingw32 port of GCC (same as
 cygwin in no-cygwin mode).
 """
 
@@ -80,7 +80,7 @@ def get_msvcr():
             raise ValueError("Unknown MS Compiler version %s " % msc_ver)
 
 
-class CygwinCCompiler(UnixCCompiler):
+klasse CygwinCCompiler(UnixCCompiler):
     """ Handles the Cygwin port of the GNU C compiler to Windows.
     """
     compiler_type = 'cygwin'
@@ -152,7 +152,7 @@ class CygwinCCompiler(UnixCCompiler):
 
 
 # the same as cygwin plus some additional parameters
-class Mingw32CCompiler(CygwinCCompiler):
+klasse Mingw32CCompiler(CygwinCCompiler):
     """ Handles the Mingw32 port of the GNU C compiler to Windows.
     """
     compiler_type = 'mingw32'

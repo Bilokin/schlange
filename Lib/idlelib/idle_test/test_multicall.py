@@ -6,7 +6,7 @@ from test.support import requires
 from tkinter import Tk, Text
 
 
-class MultiCallTest(unittest.TestCase):
+klasse MultiCallTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):

@@ -5,7 +5,7 @@ from email import errors
 from email import policy
 from test.test_email import TestEmailBase, parameterize
 
-class TestTokens(TestEmailBase):
+klasse TestTokens(TestEmailBase):
 
     # EWWhiteSpaceTerminal
 
@@ -17,7 +17,7 @@ class TestTokens(TestEmailBase):
         self.assertEqual(x.token_type, 'fws')
 
 
-class TestParserMixin:
+klasse TestParserMixin:
 
     def _assert_results(self, tl, rest, string, value, defects, remainder,
                         comments=None):
@@ -42,7 +42,7 @@ class TestParserMixin:
         return tl
 
 
-class TestParser(TestParserMixin, TestEmailBase):
+klasse TestParser(TestParserMixin, TestEmailBase):
 
     # _wsp_splitter
 
@@ -2870,7 +2870,7 @@ class TestParser(TestParserMixin, TestEmailBase):
 
 
 @parameterize
-class Test_parse_mime_parameters(TestParserMixin, TestEmailBase):
+klasse Test_parse_mime_parameters(TestParserMixin, TestEmailBase):
 
     def mime_parameters_as_value(self,
                                  value,
@@ -2985,7 +2985,7 @@ class Test_parse_mime_parameters(TestParserMixin, TestEmailBase):
     }
 
 @parameterize
-class Test_parse_mime_version(TestParserMixin, TestEmailBase):
+klasse Test_parse_mime_version(TestParserMixin, TestEmailBase):
 
     def mime_version_as_value(self,
                               value,
@@ -3045,7 +3045,7 @@ class Test_parse_mime_version(TestParserMixin, TestEmailBase):
 
 
 
-class TestFolding(TestEmailBase):
+klasse TestFolding(TestEmailBase):
 
     policy = policy.default
 

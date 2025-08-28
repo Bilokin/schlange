@@ -3,7 +3,7 @@ from ctypes import (create_string_buffer, create_unicode_buffer,
                     sizeof, byref, c_char, c_wchar)
 
 
-class StringArrayTestCase(unittest.TestCase):
+klasse StringArrayTestCase(unittest.TestCase):
     def test(self):
         BUF = c_char * 4
 
@@ -59,7 +59,7 @@ class StringArrayTestCase(unittest.TestCase):
             del buf.raw
 
 
-class WStringArrayTestCase(unittest.TestCase):
+klasse WStringArrayTestCase(unittest.TestCase):
     def test(self):
         BUF = c_wchar * 4
 
@@ -83,7 +83,7 @@ class WStringArrayTestCase(unittest.TestCase):
         self.assertEqual(w.value, u)
 
 
-class WStringTestCase(unittest.TestCase):
+klasse WStringTestCase(unittest.TestCase):
     def test_wchar(self):
         c_wchar("x")
         repr(byref(c_wchar("x")))

@@ -5,7 +5,7 @@ import io
 import pickle
 
 
-class UnseekableIO(io.FileIO):
+klasse UnseekableIO(io.FileIO):
     def tell(self):
         raise io.UnsupportedOperation
 
@@ -13,7 +13,7 @@ class UnseekableIO(io.FileIO):
         raise io.UnsupportedOperation
 
 
-class AudioTests:
+klasse AudioTests:
     close_fd = False
 
     def setUp(self):
@@ -50,7 +50,7 @@ class AudioTests:
             self.assertEqual(pickle.loads(dump), params)
 
 
-class AudioWriteTests(AudioTests):
+klasse AudioWriteTests(AudioTests):
 
     def create_file(self, testfile):
         f = self.fout = self.module.open(testfile, 'wb')
@@ -247,7 +247,7 @@ class AudioWriteTests(AudioTests):
             self.check_file(testfile, self.nframes - 1, self.frames[:-framesize])
 
 
-class AudioTestsWithSourceFile(AudioTests):
+klasse AudioTestsWithSourceFile(AudioTests):
 
     @classmethod
     def setUpClass(cls):

@@ -14,7 +14,7 @@ import _winapi
 import msvcrt
 
 
-class TestFileOperations(unittest.TestCase):
+klasse TestFileOperations(unittest.TestCase):
     def test_locking(self):
         with open(TESTFN, "w") as f:
             self.addCleanup(os_helper.unlink, TESTFN)
@@ -60,7 +60,7 @@ c = '\u5b57'  # unicode CJK char (meaning 'character') for 'wide-char' tests
 c_encoded = b'\x57\x5b' # utf-16-le (which windows internally used) encoded char for this CJK char
 
 
-class TestConsoleIO(unittest.TestCase):
+klasse TestConsoleIO(unittest.TestCase):
     # CREATE_NEW_CONSOLE creates a "popup" window.
     @requires_resource('gui')
     def run_in_separated_process(self, code):
@@ -108,7 +108,7 @@ class TestConsoleIO(unittest.TestCase):
         msvcrt.putwch(c)
 
 
-class TestOther(unittest.TestCase):
+klasse TestOther(unittest.TestCase):
     def test_heap_min(self):
         try:
             msvcrt.heapmin()

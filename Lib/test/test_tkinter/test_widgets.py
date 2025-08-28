@@ -24,7 +24,7 @@ EXPECTED_SCREEN_DISTANCE_OR_EMPTY_ERRMSG = '(bad|expected) screen distance (or "
 def float_round(x):
     return float(round(x))
 
-class AbstractToplevelTest(AbstractWidgetTest, PixelSizeTests):
+klasse AbstractToplevelTest(AbstractWidgetTest, PixelSizeTests):
     if tk_version < (9, 0):
         _no_round = {'padx', 'pady'}
     else:
@@ -71,7 +71,7 @@ class AbstractToplevelTest(AbstractWidgetTest, PixelSizeTests):
 
 
 @add_configure_tests(StandardOptionsTests)
-class ToplevelTest(AbstractToplevelTest, unittest.TestCase):
+klasse ToplevelTest(AbstractToplevelTest, unittest.TestCase):
     OPTIONS = (
         'background', 'backgroundimage', 'borderwidth',
         'class', 'colormap', 'container', 'cursor', 'height',
@@ -114,7 +114,7 @@ class ToplevelTest(AbstractToplevelTest, unittest.TestCase):
 
 
 @add_configure_tests(StandardOptionsTests)
-class FrameTest(AbstractToplevelTest, unittest.TestCase):
+klasse FrameTest(AbstractToplevelTest, unittest.TestCase):
     OPTIONS = (
         'background', 'backgroundimage', 'borderwidth',
         'class', 'colormap', 'container', 'cursor', 'height',
@@ -132,7 +132,7 @@ class FrameTest(AbstractToplevelTest, unittest.TestCase):
 
 
 @add_configure_tests(StandardOptionsTests)
-class LabelFrameTest(AbstractToplevelTest, unittest.TestCase):
+klasse LabelFrameTest(AbstractToplevelTest, unittest.TestCase):
     OPTIONS = (
         'background', 'borderwidth',
         'class', 'colormap', 'container', 'cursor',
@@ -164,7 +164,7 @@ class LabelFrameTest(AbstractToplevelTest, unittest.TestCase):
         label.destroy()
 
 # Label, Button, Checkbutton, Radiobutton, MenuButton
-class AbstractLabelTest(AbstractWidgetTest, IntegerSizeTests):
+klasse AbstractLabelTest(AbstractWidgetTest, IntegerSizeTests):
     _rounds_pixels = False
     if tk_version < (9, 0):
         _clipped = {}
@@ -173,7 +173,7 @@ class AbstractLabelTest(AbstractWidgetTest, IntegerSizeTests):
                     'padx', 'pady'}
 
 @add_configure_tests(StandardOptionsTests)
-class LabelTest(AbstractLabelTest, unittest.TestCase):
+klasse LabelTest(AbstractLabelTest, unittest.TestCase):
     OPTIONS = (
         'activebackground', 'activeforeground', 'anchor',
         'background', 'bitmap', 'borderwidth', 'compound', 'cursor',
@@ -189,7 +189,7 @@ class LabelTest(AbstractLabelTest, unittest.TestCase):
 
 
 @add_configure_tests(StandardOptionsTests)
-class ButtonTest(AbstractLabelTest, unittest.TestCase):
+klasse ButtonTest(AbstractLabelTest, unittest.TestCase):
     OPTIONS = (
         'activebackground', 'activeforeground', 'anchor',
         'background', 'bitmap', 'borderwidth',
@@ -210,7 +210,7 @@ class ButtonTest(AbstractLabelTest, unittest.TestCase):
 
 
 @add_configure_tests(StandardOptionsTests)
-class CheckbuttonTest(AbstractLabelTest, unittest.TestCase):
+klasse CheckbuttonTest(AbstractLabelTest, unittest.TestCase):
     OPTIONS = (
         'activebackground', 'activeforeground', 'anchor',
         'background', 'bitmap', 'borderwidth',
@@ -264,7 +264,7 @@ class CheckbuttonTest(AbstractLabelTest, unittest.TestCase):
         self.assertEqual(v.get(), 0)
 
 @add_configure_tests(StandardOptionsTests)
-class RadiobuttonTest(AbstractLabelTest, unittest.TestCase):
+klasse RadiobuttonTest(AbstractLabelTest, unittest.TestCase):
     OPTIONS = (
         'activebackground', 'activeforeground', 'anchor',
         'background', 'bitmap', 'borderwidth',
@@ -287,7 +287,7 @@ class RadiobuttonTest(AbstractLabelTest, unittest.TestCase):
 
 
 @add_configure_tests(StandardOptionsTests)
-class MenubuttonTest(AbstractLabelTest, unittest.TestCase):
+klasse MenubuttonTest(AbstractLabelTest, unittest.TestCase):
     OPTIONS = (
         'activebackground', 'activeforeground', 'anchor',
         'background', 'bitmap', 'borderwidth',
@@ -345,7 +345,7 @@ class MenubuttonTest(AbstractLabelTest, unittest.TestCase):
         self.checkIntegerParam(widget, 'width', 402, -402, 0, conv=str)
 
 
-class OptionMenuTest(MenubuttonTest, unittest.TestCase):
+klasse OptionMenuTest(MenubuttonTest, unittest.TestCase):
 
     def create(self, default='b', values=('a', 'b', 'c'), **kwargs):
         return tkinter.OptionMenu(self.root, None, default, *values, **kwargs)
@@ -360,7 +360,7 @@ class OptionMenuTest(MenubuttonTest, unittest.TestCase):
         self.assertIs(self.root.children["option_menu"], widget)
 
 @add_configure_tests(IntegerSizeTests, StandardOptionsTests)
-class EntryTest(AbstractWidgetTest, unittest.TestCase):
+klasse EntryTest(AbstractWidgetTest, unittest.TestCase):
     _rounds_pixels = (tk_version < (9, 0))
     if tk_version < (9, 0):
         _clipped = {'highlightthickness'}
@@ -467,7 +467,7 @@ class EntryTest(AbstractWidgetTest, unittest.TestCase):
 
 
 @add_configure_tests(StandardOptionsTests)
-class SpinboxTest(EntryTest, unittest.TestCase):
+klasse SpinboxTest(EntryTest, unittest.TestCase):
     OPTIONS = (
         'activebackground', 'background', 'borderwidth',
         'buttonbackground', 'buttoncursor', 'buttondownrelief', 'buttonuprelief',
@@ -604,7 +604,7 @@ class SpinboxTest(EntryTest, unittest.TestCase):
 
 
 @add_configure_tests(StandardOptionsTests)
-class TextTest(AbstractWidgetTest, unittest.TestCase):
+klasse TextTest(AbstractWidgetTest, unittest.TestCase):
     OPTIONS = (
         'autoseparators', 'background', 'blockcursor', 'borderwidth',
         'cursor', 'endline', 'exportselection',
@@ -746,7 +746,7 @@ class TextTest(AbstractWidgetTest, unittest.TestCase):
 
 
 @add_configure_tests(PixelSizeTests, StandardOptionsTests)
-class CanvasTest(AbstractWidgetTest, unittest.TestCase):
+klasse CanvasTest(AbstractWidgetTest, unittest.TestCase):
     OPTIONS = (
         'background', 'borderwidth',
         'closeenough', 'confine', 'cursor', 'height',
@@ -1010,7 +1010,7 @@ class CanvasTest(AbstractWidgetTest, unittest.TestCase):
 
 
 @add_configure_tests(IntegerSizeTests, StandardOptionsTests)
-class ListboxTest(AbstractWidgetTest, unittest.TestCase):
+klasse ListboxTest(AbstractWidgetTest, unittest.TestCase):
     OPTIONS = (
         'activestyle', 'background', 'borderwidth', 'cursor',
         'disabledforeground', 'exportselection',
@@ -1153,7 +1153,7 @@ class ListboxTest(AbstractWidgetTest, unittest.TestCase):
 
 
 @add_configure_tests(PixelSizeTests, StandardOptionsTests)
-class ScaleTest(AbstractWidgetTest, unittest.TestCase):
+klasse ScaleTest(AbstractWidgetTest, unittest.TestCase):
     OPTIONS = (
         'activebackground', 'background', 'bigincrement', 'borderwidth',
         'command', 'cursor', 'digits', 'font', 'foreground', 'from',
@@ -1223,7 +1223,7 @@ class ScaleTest(AbstractWidgetTest, unittest.TestCase):
 
 
 @add_configure_tests(PixelSizeTests, StandardOptionsTests)
-class ScrollbarTest(AbstractWidgetTest, unittest.TestCase):
+klasse ScrollbarTest(AbstractWidgetTest, unittest.TestCase):
     OPTIONS = (
         'activebackground', 'activerelief',
         'background', 'borderwidth',
@@ -1279,7 +1279,7 @@ class ScrollbarTest(AbstractWidgetTest, unittest.TestCase):
 
 
 @add_configure_tests(StandardOptionsTests)
-class PanedWindowTest(AbstractWidgetTest, unittest.TestCase):
+klasse PanedWindowTest(AbstractWidgetTest, unittest.TestCase):
     OPTIONS = (
         'background', 'borderwidth', 'cursor',
         'handlepad', 'handlesize', 'height',
@@ -1459,7 +1459,7 @@ class PanedWindowTest(AbstractWidgetTest, unittest.TestCase):
 
 
 @add_configure_tests(StandardOptionsTests)
-class MenuTest(AbstractWidgetTest, unittest.TestCase):
+klasse MenuTest(AbstractWidgetTest, unittest.TestCase):
     OPTIONS = (
         'activebackground', 'activeborderwidth', 'activeforeground',
         'activerelief', 'background', 'borderwidth', 'cursor',
@@ -1538,7 +1538,7 @@ class MenuTest(AbstractWidgetTest, unittest.TestCase):
 
 
 @add_configure_tests(PixelSizeTests, StandardOptionsTests)
-class MessageTest(AbstractWidgetTest, unittest.TestCase):
+klasse MessageTest(AbstractWidgetTest, unittest.TestCase):
     OPTIONS = (
         'anchor', 'aspect', 'background', 'borderwidth',
         'cursor', 'font', 'foreground',
@@ -1579,7 +1579,7 @@ class MessageTest(AbstractWidgetTest, unittest.TestCase):
         self.checkParam(widget, 'width', -402, expected=expected)
 
 
-class DefaultRootTest(AbstractDefaultRootTest, unittest.TestCase):
+klasse DefaultRootTest(AbstractDefaultRootTest, unittest.TestCase):
 
     def test_frame(self):
         self._test_widget(tkinter.Frame)

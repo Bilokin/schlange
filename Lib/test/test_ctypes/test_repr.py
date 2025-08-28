@@ -8,17 +8,17 @@ subclasses = []
 for base in [c_byte, c_short, c_int, c_long, c_longlong,
         c_ubyte, c_ushort, c_uint, c_ulong, c_ulonglong,
         c_float, c_double, c_longdouble, c_bool]:
-    class X(base):
+    klasse X(base):
         pass
     subclasses.append(X)
 
 
-class X(c_char):
+klasse X(c_char):
     pass
 
 
 # This test checks if the __repr__ is correct for subclasses of simple types
-class ReprTest(unittest.TestCase):
+klasse ReprTest(unittest.TestCase):
     def test_numbers(self):
         for typ in subclasses:
             base = typ.__bases__[0]

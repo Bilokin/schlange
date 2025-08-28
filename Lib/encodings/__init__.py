@@ -37,7 +37,7 @@ _unknown = '--unknown--'
 _import_tail = ['*']
 _aliases = aliases.aliases
 
-class CodecRegistryError(LookupError, SystemError):
+klasse CodecRegistryError(LookupError, SystemError):
     pass
 
 def normalize_encoding(encoding):

@@ -48,7 +48,7 @@ def _sphinx_version():
     return release
 
 
-class EditorWindow:
+klasse EditorWindow:
     from idlelib.percolator import Percolator
     from idlelib.colorizer import ColorDelegator, color_config
     from idlelib.undo import UndoDelegator
@@ -1618,7 +1618,7 @@ def get_line_indent(line, tabwidth):
     return m.end(), len(m.group().expandtabs(tabwidth))
 
 
-class IndentSearcher:
+klasse IndentSearcher:
     "Manage initial indent guess, returned by run method."
 
     def __init__(self, text):

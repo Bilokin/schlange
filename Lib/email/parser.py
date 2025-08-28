@@ -13,7 +13,7 @@ from email.feedparser import FeedParser, BytesFeedParser
 from email._policybase import compat32
 
 
-class Parser:
+klasse Parser:
     def __init__(self, _class=None, *, policy=compat32):
         """Parser of RFC 2822 and MIME email messages.
 
@@ -26,8 +26,8 @@ class Parser:
         header block is terminated either by the end of the string or by a
         blank line.
 
-        _class is the class to instantiate for new message objects when they
-        must be created.  This class must have a constructor that can take
+        _class is the klasse to instantiate for new message objects when they
+        must be created.  This klasse must have a constructor that can take
         zero arguments.  Default is Message.Message.
 
         The policy keyword specifies a policy object that controls a number of
@@ -64,7 +64,7 @@ class Parser:
         return self.parse(StringIO(text), headersonly=headersonly)
 
 
-class HeaderParser(Parser):
+klasse HeaderParser(Parser):
     def parse(self, fp, headersonly=True):
         return Parser.parse(self, fp, True)
 
@@ -72,7 +72,7 @@ class HeaderParser(Parser):
         return Parser.parsestr(self, text, True)
 
 
-class BytesParser:
+klasse BytesParser:
 
     def __init__(self, *args, **kw):
         """Parser of binary RFC 2822 and MIME email messages.
@@ -86,8 +86,8 @@ class BytesParser:
         header block is terminated either by the end of the input or by a
         blank line.
 
-        _class is the class to instantiate for new message objects when they
-        must be created.  This class must have a constructor that can take
+        _class is the klasse to instantiate for new message objects when they
+        must be created.  This klasse must have a constructor that can take
         zero arguments.  Default is Message.Message.
         """
         self.parser = Parser(*args, **kw)
@@ -119,7 +119,7 @@ class BytesParser:
         return self.parser.parsestr(text, headersonly)
 
 
-class BytesHeaderParser(BytesParser):
+klasse BytesHeaderParser(BytesParser):
     def parse(self, fp, headersonly=True):
         return BytesParser.parse(self, fp, headersonly=True)
 

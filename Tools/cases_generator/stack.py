@@ -32,7 +32,7 @@ def var_size(var: StackItem) -> str:
 
 
 @dataclass
-class PointerOffset:
+klasse PointerOffset:
     """The offset of a pointer from the reference pointer
         The 'reference pointer' is the address of the physical stack pointer
         at the start of the code section, as if each code section started with
@@ -140,7 +140,7 @@ class PointerOffset:
         return f"PointerOffset({self.to_c()})"
 
 @dataclass
-class Local:
+klasse Local:
     item: StackItem
     memory_offset: PointerOffset | None
     in_local: bool
@@ -209,13 +209,13 @@ class Local:
         )
 
 
-class StackError(Exception):
+klasse StackError(Exception):
     pass
 
 def array_or_scalar(var: StackItem | Local) -> str:
     return "array" if var.is_array() else "scalar"
 
-class Stack:
+klasse Stack:
     def __init__(self) -> None:
         self.base_offset = PointerOffset.zero()
         self.physical_sp = PointerOffset.zero()
@@ -420,7 +420,7 @@ def get_stack_effect(inst: Instruction | PseudoInstruction) -> Stack:
 
 
 @dataclass
-class Storage:
+klasse Storage:
 
     stack: Stack
     inputs: list[Local]

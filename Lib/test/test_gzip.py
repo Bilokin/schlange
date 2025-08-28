@@ -35,7 +35,7 @@ data2 = b"""/* zlibmodule.c -- gzip-compatible data compression */
 TEMPDIR = os.path.abspath(os_helper.TESTFN) + '-gzdir'
 
 
-class UnseekableIO(io.BytesIO):
+klasse UnseekableIO(io.BytesIO):
     def seekable(self):
         return False
 
@@ -46,7 +46,7 @@ class UnseekableIO(io.BytesIO):
         raise io.UnsupportedOperation
 
 
-class BaseTest(unittest.TestCase):
+klasse BaseTest(unittest.TestCase):
     filename = os_helper.TESTFN
 
     def setUp(self):
@@ -56,7 +56,7 @@ class BaseTest(unittest.TestCase):
         os_helper.unlink(self.filename)
 
 
-class TestGzip(BaseTest):
+klasse TestGzip(BaseTest):
     def write_and_read_back(self, data, mode='b'):
         b_data = bytes(data)
         with gzip.GzipFile(self.filename, 'w'+mode) as f:
@@ -856,7 +856,7 @@ class TestGzip(BaseTest):
     def test_flush_modes(self):
         # Make sure the argument to flush is properly passed to the
         # zlib.compressobj; see issue GH-105808.
-        class FakeCompressor:
+        klasse FakeCompressor:
             def __init__(self):
                 self.modes = []
             def compress(self, data):
@@ -905,7 +905,7 @@ class TestGzip(BaseTest):
                 self.assertIsNone(cm.unraisable)
 
 
-class TestOpen(BaseTest):
+klasse TestOpen(BaseTest):
     def test_binary_modes(self):
         uncompressed = data1 * 50
 
@@ -1057,7 +1057,7 @@ def create_and_remove_directory(directory):
     return decorator
 
 
-class TestCommandLine(unittest.TestCase):
+klasse TestCommandLine(unittest.TestCase):
     data = b'This is a simple test with gzip'
 
     @requires_subprocess()

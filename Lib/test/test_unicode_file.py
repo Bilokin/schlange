@@ -22,7 +22,7 @@ def remove_if_exists(filename):
     if os.path.exists(filename):
         os.unlink(filename)
 
-class TestUnicodeFiles(unittest.TestCase):
+klasse TestUnicodeFiles(unittest.TestCase):
     # The 'do_' functions are the actual tests.  They generally assume the
     # file already exists etc.
 

@@ -23,7 +23,7 @@ def do_call(results, func, args, kwargs):
         raise  # re-raise
 
 
-class WorkerContext(_thread.WorkerContext):
+klasse WorkerContext(_thread.WorkerContext):
 
     @classmethod
     def prepare(cls, initializer, initargs):
@@ -92,13 +92,13 @@ class WorkerContext(_thread.WorkerContext):
             raise exc from wrapper
 
 
-class BrokenInterpreterPool(_thread.BrokenThreadPool):
+klasse BrokenInterpreterPool(_thread.BrokenThreadPool):
     """
     Raised when a worker thread in an InterpreterPoolExecutor failed initializing.
     """
 
 
-class InterpreterPoolExecutor(_thread.ThreadPoolExecutor):
+klasse InterpreterPoolExecutor(_thread.ThreadPoolExecutor):
 
     BROKEN = BrokenInterpreterPool
 

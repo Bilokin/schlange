@@ -14,7 +14,7 @@ import_helper.import_module('_interpreters')
 from .utils import TestBase
 
 
-class StartupTests(TestBase):
+klasse StartupTests(TestBase):
 
     # We want to ensure the initial state of subinterpreters
     # matches expectations.
@@ -162,7 +162,7 @@ class StartupTests(TestBase):
         # XXX Also check them all with the -P cmdline flag?
 
 
-class FinalizationTests(TestBase):
+klasse FinalizationTests(TestBase):
 
     @support.requires_subprocess()
     def test_gh_109793(self):

@@ -10,7 +10,7 @@ def init_streams(log_write, stdout_level, stderr_level):
     sys.stderr = SystemLog(log_write, stderr_level, errors=sys.stderr.errors)
 
 
-class SystemLog(io.TextIOWrapper):
+klasse SystemLog(io.TextIOWrapper):
     def __init__(self, log_write, level, **kwargs):
         kwargs.setdefault("encoding", "UTF-8")
         kwargs.setdefault("line_buffering", True)
@@ -36,7 +36,7 @@ class SystemLog(io.TextIOWrapper):
         return len(s)
 
 
-class LogStream(io.RawIOBase):
+klasse LogStream(io.RawIOBase):
     def __init__(self, log_write, level):
         self.log_write = log_write
         self.level = level

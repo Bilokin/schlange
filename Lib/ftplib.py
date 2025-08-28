@@ -1,4 +1,4 @@
-"""An FTP client class and some helper functions.
+"""An FTP client klasse and some helper functions.
 
 Based on RFC 959: File Transfer Protocol (FTP), by J. Postel and J. Reynolds
 
@@ -54,11 +54,11 @@ MAXLINE = 8192
 
 
 # Exception raised when an error or invalid response is received
-class Error(Exception): pass
-class error_reply(Error): pass          # unexpected [123]xx reply
-class error_temp(Error): pass           # 4xx errors
-class error_perm(Error): pass           # 5xx errors
-class error_proto(Error): pass          # response does not begin with [1-5]
+klasse Error(Exception): pass
+klasse error_reply(Error): pass          # unexpected [123]xx reply
+klasse error_temp(Error): pass           # 4xx errors
+klasse error_perm(Error): pass           # 5xx errors
+klasse error_proto(Error): pass          # response does not begin with [1-5]
 
 
 # All exceptions (hopefully) that may be raised here and that aren't
@@ -70,11 +70,11 @@ all_errors = (Error, OSError, EOFError)
 CRLF = '\r\n'
 B_CRLF = b'\r\n'
 
-# The class itself
-class FTP:
+# The klasse itself
+klasse FTP:
     '''An FTP client class.
 
-    To create a connection, call the class using these arguments:
+    To create a connection, call the klasse using these arguments:
             host, user, passwd, acct, timeout, source_address, encoding
 
     The first four arguments are all strings, and have default value ''.
@@ -109,7 +109,7 @@ class FTP:
     def __init__(self, host='', user='', passwd='', acct='',
                  timeout=_GLOBAL_DEFAULT_TIMEOUT, source_address=None, *,
                  encoding='utf-8'):
-        """Initialization method (called by class instantiation).
+        """Initialization method (called by klasse instantiation).
         Initialize host to localhost, port to standard ftp port.
         Optional arguments are host (for connect()),
         and user, passwd, acct (for login()).
@@ -674,7 +674,7 @@ except ImportError:
 else:
     _SSLSocket = ssl.SSLSocket
 
-    class FTP_TLS(FTP):
+    klasse FTP_TLS(FTP):
         '''A FTP subclass which adds TLS support to FTP as described
         in RFC-4217.
 

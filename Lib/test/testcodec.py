@@ -9,7 +9,7 @@ import codecs
 
 ### Codec APIs
 
-class Codec(codecs.Codec):
+klasse Codec(codecs.Codec):
 
     def encode(self,input,errors='strict'):
 
@@ -19,10 +19,10 @@ class Codec(codecs.Codec):
 
         return codecs.charmap_decode(input,errors,decoding_map)
 
-class StreamWriter(Codec,codecs.StreamWriter):
+klasse StreamWriter(Codec,codecs.StreamWriter):
     pass
 
-class StreamReader(Codec,codecs.StreamReader):
+klasse StreamReader(Codec,codecs.StreamReader):
     pass
 
 ### encodings module API

@@ -71,7 +71,7 @@ def testfunction(self):
     return self
 
 
-class InstanceMethod:
+klasse InstanceMethod:
     id = _testcapi.instancemethod(id)
     testfunction = _testcapi.instancemethod(testfunction)
 
@@ -80,7 +80,7 @@ CURRENT_THREAD_REGEX = r'Current thread.*:\n' if not support.Py_GIL_DISABLED els
 
 
 @support.force_not_colorized_test_class
-class CAPITest(unittest.TestCase):
+klasse CAPITest(unittest.TestCase):
 
     def test_instancemethod(self):
         inst = InstanceMethod()
@@ -127,14 +127,14 @@ class CAPITest(unittest.TestCase):
     @unittest.skipUnless(_posixsubprocess, '_posixsubprocess required for this test.')
     def test_seq_bytes_to_charp_array(self):
         # Issue #15732: crash in _PySequence_BytesToCharpArray()
-        class Z(object):
+        klasse Z(object):
             def __len__(self):
                 return 1
         with self.assertRaisesRegex(TypeError, 'indexing'):
             _posixsubprocess.fork_exec(
                           1,Z(),True,(1, 2),5,6,7,8,9,10,11,12,13,14,True,True,17,False,19,20,21,22)
         # Issue #15736: overflow in _PySequence_BytesToCharpArray()
-        class Z(object):
+        klasse Z(object):
             def __len__(self):
                 return sys.maxsize
             def __getitem__(self, i):
@@ -144,7 +144,7 @@ class CAPITest(unittest.TestCase):
 
     @unittest.skipUnless(_posixsubprocess, '_posixsubprocess required for this test.')
     def test_subprocess_fork_exec(self):
-        class Z(object):
+        klasse Z(object):
             def __len__(self):
                 return 1
 
@@ -426,9 +426,9 @@ class CAPITest(unittest.TestCase):
 
     def do_test_trashcan_python_class(self, base):
         # Check that the trashcan mechanism works properly for a Python
-        # subclass of a class using the trashcan (this specific test assumes
-        # that the base class "base" behaves like list)
-        class PyList(base):
+        # subclass of a klasse using the trashcan (this specific test assumes
+        # that the base klasse "base" behaves like list)
+        klasse PyList(base):
             # Count the number of PyList instances to verify that there is
             # no memory leak
             num = 0
@@ -462,7 +462,7 @@ class CAPITest(unittest.TestCase):
         self.assertEqual(_testcapi.NullTpDocType.__doc__, None)
 
     def test_subclass_of_heap_gc_ctype_with_tpdealloc_decrefs_once(self):
-        class HeapGcCTypeSubclass(_testcapi.HeapGcCType):
+        klasse HeapGcCTypeSubclass(_testcapi.HeapGcCType):
             def __init__(self):
                 self.value2 = 20
                 super().__init__()
@@ -479,12 +479,12 @@ class CAPITest(unittest.TestCase):
         self.assertEqual(type_refcnt - 1, sys.getrefcount(HeapGcCTypeSubclass))
 
     def test_subclass_of_heap_gc_ctype_with_del_modifying_dunder_class_only_decrefs_once(self):
-        class A(_testcapi.HeapGcCType):
+        klasse A(_testcapi.HeapGcCType):
             def __init__(self):
                 self.value2 = 20
                 super().__init__()
 
-        class B(A):
+        klasse B(A):
             def __init__(self):
                 super().__init__()
 
@@ -550,7 +550,7 @@ class CAPITest(unittest.TestCase):
 
     def test_sublclassing_managed_dict(self):
 
-        class C(_testcapi.HeapCTypeWithManagedDict):
+        klasse C(_testcapi.HeapCTypeWithManagedDict):
             pass
 
         i = C()
@@ -585,7 +585,7 @@ class CAPITest(unittest.TestCase):
 
     def test_sublclassing_managed_weakref(self):
 
-        class C(_testcapi.HeapCTypeWithManagedWeakref):
+        klasse C(_testcapi.HeapCTypeWithManagedWeakref):
             pass
 
         inst = C()
@@ -594,10 +594,10 @@ class CAPITest(unittest.TestCase):
 
     def test_sublclassing_managed_both(self):
 
-        class C1(_testcapi.HeapCTypeWithManagedWeakref, _testcapi.HeapCTypeWithManagedDict):
+        klasse C1(_testcapi.HeapCTypeWithManagedWeakref, _testcapi.HeapCTypeWithManagedDict):
             pass
 
-        class C2(_testcapi.HeapCTypeWithManagedDict, _testcapi.HeapCTypeWithManagedWeakref):
+        klasse C2(_testcapi.HeapCTypeWithManagedDict, _testcapi.HeapCTypeWithManagedWeakref):
             pass
 
         for cls in (C1, C2):
@@ -730,7 +730,7 @@ class CAPITest(unittest.TestCase):
     def test_heaptype_base_with_custom_metaclass(self):
         metaclass = _testcapi.HeapCTypeMetaclassCustomNew
 
-        class Base(metaclass=metaclass):
+        klasse Base(metaclass=metaclass):
             pass
 
         # Class creation from C
@@ -754,10 +754,10 @@ class CAPITest(unittest.TestCase):
                 with self.subTest(weakref_cls=weakref_cls, dict_cls=dict_cls):
 
                     with self.assertRaises(TypeError):
-                        class Both1(weakref_cls, dict_cls):
+                        klasse Both1(weakref_cls, dict_cls):
                             pass
                     with self.assertRaises(TypeError):
-                        class Both2(dict_cls, weakref_cls):
+                        klasse Both2(dict_cls, weakref_cls):
                             pass
 
     def test_multiple_inheritance_ctypes_with_weakref_or_dict_and_other_builtin(self):
@@ -768,16 +768,16 @@ class CAPITest(unittest.TestCase):
                 with self.subTest(dict_cls=dict_cls, weakref_cls=weakref_cls):
 
                     with self.assertRaises(TypeError):
-                        class C1(dict_cls, list):
+                        klasse C1(dict_cls, list):
                             pass
 
                     with self.assertRaises(TypeError):
-                        class C2(weakref_cls, list):
+                        klasse C2(weakref_cls, list):
                             pass
 
-                    class C3(_testcapi.HeapCTypeWithManagedDict, list):
+                    klasse C3(_testcapi.HeapCTypeWithManagedDict, list):
                         pass
-                    class C4(_testcapi.HeapCTypeWithManagedWeakref, list):
+                    klasse C4(_testcapi.HeapCTypeWithManagedWeakref, list):
                         pass
 
                     inst = C3()
@@ -791,11 +791,11 @@ class CAPITest(unittest.TestCase):
                     for cls in (_testcapi.HeapCTypeWithManagedDict,
                                 _testcapi.HeapCTypeWithManagedWeakref):
                         for cls2 in (dict_cls, weakref_cls):
-                            class S(cls, cls2):
+                            klasse S(cls, cls2):
                                 pass
-                        class B1(C3, cls):
+                        klasse B1(C3, cls):
                             pass
-                        class B2(C4, cls):
+                        klasse B2(C4, cls):
                             pass
 
     def test_pytype_fromspec_with_repeated_slots(self):
@@ -805,7 +805,7 @@ class CAPITest(unittest.TestCase):
                     _testcapi.create_type_from_repeated_slots(variant)
 
     def test_immutable_type_with_mutable_base(self):
-        class MutableBase: ...
+        klasse MutableBase: ...
 
         with self.assertRaisesRegex(TypeError, 'Creating immutable type'):
             _testcapi.make_immutable_type_with_base(MutableBase)
@@ -814,7 +814,7 @@ class CAPITest(unittest.TestCase):
         from _testcapi import pynumber_tobase
         small_number = 123
         large_number = 2**64
-        class IDX:
+        klasse IDX:
             def __init__(self, val):
                 self.val = val
             def __index__(self):
@@ -884,7 +884,7 @@ class CAPITest(unittest.TestCase):
 
     def test_clear_managed_dict(self):
 
-        class C:
+        klasse C:
             def __init__(self):
                 self.a = 1
 
@@ -897,7 +897,7 @@ class CAPITest(unittest.TestCase):
         self.assertEqual(c.__dict__, {})
 
     def test_unstable_gc_new_with_extra_data(self):
-        class Data(_testcapi.ObjExtraData):
+        klasse Data(_testcapi.ObjExtraData):
             __slots__ = ('x', 'y')
 
         d = Data()
@@ -917,7 +917,7 @@ class CAPITest(unittest.TestCase):
 
 
 @requires_limited_api
-class TestHeapTypeRelative(unittest.TestCase):
+klasse TestHeapTypeRelative(unittest.TestCase):
     """Test API for extending opaque types (PEP 697)"""
 
     @requires_limited_api
@@ -995,7 +995,7 @@ class TestHeapTypeRelative(unittest.TestCase):
 
     def test_heaptype_invalid_inheritance(self):
         with self.assertRaises(SystemError,
-                               msg="Cannot extend variable-size class without "
+                               msg="Cannot extend variable-size klasse without "
                                + "Py_TPFLAGS_ITEMS_AT_END"):
             _testlimitedcapi.subclass_heaptype(int, -8, 0)
 
@@ -1118,7 +1118,7 @@ class TestHeapTypeRelative(unittest.TestCase):
             _testcapi.pyobject_getitemdata(0)
 
 
-class TestPendingCalls(unittest.TestCase):
+klasse TestPendingCalls(unittest.TestCase):
 
     # See the comment in ceval.c (at the "handle_eval_breaker" label)
     # about when pending calls get run.  This is especially relevant
@@ -1179,7 +1179,7 @@ class TestPendingCalls(unittest.TestCase):
         #do every callback on a separate thread
         n = 32 #total callbacks
         threads = []
-        class foo(object):pass
+        klasse foo(object):pass
         context = foo()
         context.l = []
         context.n = 2 #submits per thread
@@ -1255,7 +1255,7 @@ class TestPendingCalls(unittest.TestCase):
             self.pendingcalls_wait(l, added)
             self.assertEqual(added, maxpending)
 
-    class PendingTask(types.SimpleNamespace):
+    klasse PendingTask(types.SimpleNamespace):
 
         _add_pending = _testinternalcapi.pending_threadfunc
 
@@ -1642,7 +1642,7 @@ class TestPendingCalls(unittest.TestCase):
             self.assertEqual(actual, int(interpid))
 
 
-class SubinterpreterTest(unittest.TestCase):
+klasse SubinterpreterTest(unittest.TestCase):
 
     @unittest.skipUnless(hasattr(os, "pipe"), "requires os.pipe()")
     def test_subinterps(self):
@@ -1951,7 +1951,7 @@ class SubinterpreterTest(unittest.TestCase):
 
 
 @requires_subinterpreters
-class InterpreterConfigTests(unittest.TestCase):
+klasse InterpreterConfigTests(unittest.TestCase):
 
     supported = {
         'isolated': types.SimpleNamespace(
@@ -2206,7 +2206,7 @@ class InterpreterConfigTests(unittest.TestCase):
 
 
 @requires_subinterpreters
-class InterpreterIDTests(unittest.TestCase):
+klasse InterpreterIDTests(unittest.TestCase):
 
     def add_interp_cleanup(self, interpid):
         def ensure_destroyed():
@@ -2228,7 +2228,7 @@ class InterpreterIDTests(unittest.TestCase):
 
     def test_conversion_coerced(self):
         convert = _testinternalcapi.normalize_interp_id
-        class MyInt(str):
+        klasse MyInt(str):
             def __index__(self):
                 return 10
         interpid = convert(MyInt())
@@ -2460,7 +2460,7 @@ class InterpreterIDTests(unittest.TestCase):
             0, get_refcount(interpid))
 
 
-class TestStaticTypes(unittest.TestCase):
+klasse TestStaticTypes(unittest.TestCase):
 
     _has_run = False
 
@@ -2495,7 +2495,7 @@ class TestStaticTypes(unittest.TestCase):
             self.assertIs(type(cls), type(object));
 
 
-class TestThreadState(unittest.TestCase):
+klasse TestThreadState(unittest.TestCase):
 
     @threading_helper.reap_threads
     @threading_helper.requires_working_threading()
@@ -2523,7 +2523,7 @@ class TestThreadState(unittest.TestCase):
     @threading_helper.requires_working_threading()
     def test_thread_gilstate_in_clear(self):
         # See https://github.com/python/cpython/issues/119585
-        class C:
+        klasse C:
             def __del__(self):
                 _testcapi.gilstate_ensure_release()
 
@@ -2565,7 +2565,7 @@ def get_test_funcs(mod, exclude_prefix=None):
     return funcs
 
 
-class Test_testcapi(unittest.TestCase):
+klasse Test_testcapi(unittest.TestCase):
     locals().update(get_test_funcs(_testcapi))
 
     # Suppress warning from PyUnicode_FromUnicode().
@@ -2577,24 +2577,24 @@ class Test_testcapi(unittest.TestCase):
         self.assertEqual(_testcapi.Py_Version, sys.hexversion)
 
 
-class Test_testlimitedcapi(unittest.TestCase):
+klasse Test_testlimitedcapi(unittest.TestCase):
     locals().update(get_test_funcs(_testlimitedcapi))
 
 
-class Test_testinternalcapi(unittest.TestCase):
+klasse Test_testinternalcapi(unittest.TestCase):
     locals().update(get_test_funcs(_testinternalcapi,
                                    exclude_prefix='test_lock_'))
 
 
 @threading_helper.requires_working_threading()
-class Test_PyLock(unittest.TestCase):
+klasse Test_PyLock(unittest.TestCase):
     locals().update((name, getattr(_testinternalcapi, name))
                     for name in dir(_testinternalcapi)
                     if name.startswith('test_lock_'))
 
 
 @unittest.skipIf(_testmultiphase is None, "test requires _testmultiphase module")
-class Test_ModuleStateAccess(unittest.TestCase):
+klasse Test_ModuleStateAccess(unittest.TestCase):
     """Test access to module start (PEP 573)"""
 
     # The C part of the tests lives in _testmultiphase, in a module called
@@ -2617,14 +2617,14 @@ class Test_ModuleStateAccess(unittest.TestCase):
 
     def test_subclass_get_module(self):
         """PyType_GetModule for defining_class"""
-        class StateAccessType_Subclass(self.module.StateAccessType):
+        klasse StateAccessType_Subclass(self.module.StateAccessType):
             pass
 
         instance = StateAccessType_Subclass()
         self.assertIs(instance.get_defining_module(), self.module)
 
     def test_subclass_get_module_with_super(self):
-        class StateAccessType_Subclass(self.module.StateAccessType):
+        klasse StateAccessType_Subclass(self.module.StateAccessType):
             def get_defining_module(self):
                 return super().get_defining_module()
 
@@ -2678,15 +2678,15 @@ class Test_ModuleStateAccess(unittest.TestCase):
             instance.getmodulebydef_bad_def()
 
     def test_get_module_static_in_mro(self):
-        # Here, the class PyType_GetModuleByDef is looking for
+        # Here, the klasse PyType_GetModuleByDef is looking for
         # appears in the MRO after a static type (Exception).
         # see bpo-46433
-        class Subclass(BaseException, self.module.StateAccessType):
+        klasse Subclass(BaseException, self.module.StateAccessType):
             pass
         self.assertIs(Subclass().get_defining_module(), self.module)
 
 
-class TestInternalFrameApi(unittest.TestCase):
+klasse TestInternalFrameApi(unittest.TestCase):
 
     @staticmethod
     def func():
@@ -2712,7 +2712,7 @@ class TestInternalFrameApi(unittest.TestCase):
 
 SUFFICIENT_TO_DEOPT_AND_SPECIALIZE = 100
 
-class Test_Pep523API(unittest.TestCase):
+klasse Test_Pep523API(unittest.TestCase):
 
     def do_test(self, func, names):
         actual_calls = []
@@ -2731,7 +2731,7 @@ class Test_Pep523API(unittest.TestCase):
             self.assertEqual(expected, actual)
 
     def test_inlined_binary_subscr(self):
-        class C:
+        klasse C:
             def __getitem__(self, other):
                 return None
         def func():
@@ -2766,11 +2766,11 @@ class Test_Pep523API(unittest.TestCase):
         self.do_test(func, names)
 
     def test_inlined_load_attr(self):
-        class C:
+        klasse C:
             @property
             def a(self):
                 return 42
-        class D:
+        klasse D:
             def __getattribute__(self, name):
                 return 42
         def func():
@@ -2791,14 +2791,14 @@ class Test_Pep523API(unittest.TestCase):
 
 
 @unittest.skipUnless(support.Py_GIL_DISABLED, 'need Py_GIL_DISABLED')
-class TestPyThreadId(unittest.TestCase):
+klasse TestPyThreadId(unittest.TestCase):
     def test_py_thread_id(self):
         # gh-112535: Test _Py_ThreadId(): make sure that thread identifiers
         # in a few threads are unique
         py_thread_id = _testinternalcapi.py_thread_id
         short_sleep = 0.010
 
-        class GetThreadId(threading.Thread):
+        klasse GetThreadId(threading.Thread):
             def __init__(self):
                 super().__init__()
                 self.get_lock = threading.Lock()
@@ -2844,7 +2844,7 @@ class TestPyThreadId(unittest.TestCase):
         self.assertEqual(len(set(py_thread_ids)), len(py_thread_ids),
                          py_thread_ids)
 
-class TestVersions(unittest.TestCase):
+klasse TestVersions(unittest.TestCase):
     full_cases = (
         (3, 4, 1, 0xA, 2, 0x030401a2),
         (3, 10, 0, 0xF, 0, 0x030a00f0),
@@ -2889,7 +2889,7 @@ class TestVersions(unittest.TestCase):
                 self.assertEqual(result, expected)
 
 
-class TestCEval(unittest.TestCase):
+klasse TestCEval(unittest.TestCase):
    def test_ceval_decref(self):
         code = textwrap.dedent("""
             import _testcapi

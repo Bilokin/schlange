@@ -5,7 +5,7 @@ _testcapi = import_helper.import_module('_testcapi')
 _testinternalcapi = import_helper.import_module('_testinternalcapi')
 
 
-class TestUnstableCAPI(unittest.TestCase):
+klasse TestUnstableCAPI(unittest.TestCase):
     def test_immortal(self):
         # Not extensive
         known_immortals = (True, False, None, 0, ())
@@ -22,7 +22,7 @@ class TestUnstableCAPI(unittest.TestCase):
         # CRASHES _testcapi.is_immortal(NULL)
 
 
-class TestInternalCAPI(unittest.TestCase):
+klasse TestInternalCAPI(unittest.TestCase):
 
     def test_immortal_builtins(self):
         for obj in range(-5, 256):

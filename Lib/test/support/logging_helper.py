@@ -1,6 +1,6 @@
 import logging.handlers
 
-class TestHandler(logging.handlers.BufferingHandler):
+klasse TestHandler(logging.handlers.BufferingHandler):
     def __init__(self, matcher):
         # BufferingHandler takes a "capacity" argument
         # so as to know when to flush. As we're overriding

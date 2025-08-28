@@ -9,7 +9,7 @@ from .support import is_pypi
 from .support.lexical_path import LexicalPosixPath
 
 
-class JoinTestBase:
+klasse JoinTestBase:
     def test_join(self):
         P = self.cls
         p = P('//a')
@@ -32,18 +32,18 @@ class JoinTestBase:
         self.assertEqual(pp, P('/c'))
 
 
-class LexicalPosixPathJoinTest(JoinTestBase, unittest.TestCase):
+klasse LexicalPosixPathJoinTest(JoinTestBase, unittest.TestCase):
     cls = LexicalPosixPath
 
 
 if not is_pypi:
     from pathlib import PurePosixPath, PosixPath
 
-    class PurePosixPathJoinTest(JoinTestBase, unittest.TestCase):
+    klasse PurePosixPathJoinTest(JoinTestBase, unittest.TestCase):
         cls = PurePosixPath
 
     if os.name != 'nt':
-        class PosixPathJoinTest(JoinTestBase, unittest.TestCase):
+        klasse PosixPathJoinTest(JoinTestBase, unittest.TestCase):
             cls = PosixPath
 
 

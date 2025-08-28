@@ -213,10 +213,10 @@ if sys.platform.lower().startswith("win"):
     __all__.append("errorTab")
 
 
-class _GiveupOnSendfile(Exception): pass
+klasse _GiveupOnSendfile(Exception): pass
 
 
-class socket(_socket.socket):
+klasse socket(_socket.socket):
 
     """A subclass of _socket.socket adding the makefile() method."""
 
@@ -246,7 +246,7 @@ class socket(_socket.socket):
             self.close()
 
     def __repr__(self):
-        """Wrap __repr__() to reveal the real class name and socket
+        """Wrap __repr__() to reveal the real klasse name and socket
         address(es).
         """
         closed = getattr(self, '_closed', False)
@@ -689,11 +689,11 @@ if defined on the platform; otherwise, the default is AF_INET.
 
 _blocking_errnos = { EAGAIN, EWOULDBLOCK }
 
-class SocketIO(io.RawIOBase):
+klasse SocketIO(io.RawIOBase):
 
     """Raw I/O implementation for stream sockets.
 
-    This class supports the makefile() method on sockets.  It provides
+    This klasse supports the makefile() method on sockets.  It provides
     the raw I/O interface on top of a socket object.
     """
 

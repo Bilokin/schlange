@@ -18,7 +18,7 @@ from test.support.script_helper import assert_python_ok
 from test import mapping_tests
 
 
-class ClearTest(unittest.TestCase):
+klasse ClearTest(unittest.TestCase):
     """
     Tests for frame.clear().
     """
@@ -42,7 +42,7 @@ class ClearTest(unittest.TestCase):
             tb = tb.tb_next
 
     def test_clear_locals(self):
-        class C:
+        klasse C:
             pass
         c = C()
         wr = weakref.ref(c)
@@ -58,7 +58,7 @@ class ClearTest(unittest.TestCase):
 
     def test_clear_locals_after_f_locals_access(self):
         # see gh-113939
-        class C:
+        klasse C:
             pass
 
         wr = None
@@ -78,7 +78,7 @@ class ClearTest(unittest.TestCase):
             self.assertIsNone(wr())
 
     def test_clear_does_not_clear_specials(self):
-        class C:
+        klasse C:
             pass
         c = C()
         exc = self.outer(c=c)
@@ -167,7 +167,7 @@ class ClearTest(unittest.TestCase):
     def test_clear_refcycles(self):
         # .clear() doesn't leave any refcycle behind
         with support.disable_gc():
-            class C:
+            klasse C:
                 pass
             c = C()
             wr = weakref.ref(c)
@@ -178,7 +178,7 @@ class ClearTest(unittest.TestCase):
             self.assertIs(None, wr())
 
 
-class FrameAttrsTest(unittest.TestCase):
+klasse FrameAttrsTest(unittest.TestCase):
 
     def make_frames(self):
         def outer():
@@ -273,7 +273,7 @@ class FrameAttrsTest(unittest.TestCase):
             raise AssertionError('coroutine did not exit')
 
 
-class ReprTest(unittest.TestCase):
+klasse ReprTest(unittest.TestCase):
     """
     Tests for repr(frame).
     """
@@ -312,9 +312,9 @@ class ReprTest(unittest.TestCase):
                          r"^<frame at 0x[0-9a-fA-F]+, file %s, line %d, code inner>$"
                          % (file_repr, offset + 5))
 
-class TestFrameLocals(unittest.TestCase):
+klasse TestFrameLocals(unittest.TestCase):
     def test_scope(self):
-        class A:
+        klasse A:
             x = 1
             sys._getframe().f_locals['x'] = 2
             sys._getframe().f_locals['y'] = 2
@@ -515,10 +515,10 @@ class TestFrameLocals(unittest.TestCase):
         self.assertEqual(kind, "mapping")
 
     def _x_stringlikes(self):
-        class StringSubclass(str):
+        klasse StringSubclass(str):
             pass
 
-        class ImpostorX:
+        klasse ImpostorX:
             def __hash__(self):
                 return hash('x')
 
@@ -561,10 +561,10 @@ class TestFrameLocals(unittest.TestCase):
                 f(obj)
 
     def test_proxy_key_unhashables(self):
-        class StringSubclass(str):
+        klasse StringSubclass(str):
             __hash__ = None
 
-        class ObjectSubclass:
+        klasse ObjectSubclass:
             __hash__ = None
 
         proxy = sys._getframe().f_locals
@@ -614,7 +614,7 @@ class TestFrameLocals(unittest.TestCase):
         self.assertEqual(f(), 2)
 
 
-class FrameLocalsProxyMappingTests(mapping_tests.TestHashMappingProtocol):
+klasse FrameLocalsProxyMappingTests(mapping_tests.TestHashMappingProtocol):
     """Test that FrameLocalsProxy behaves like a Mapping (with exceptions)"""
 
     def _f(*args, **kwargs):
@@ -677,7 +677,7 @@ class FrameLocalsProxyMappingTests(mapping_tests.TestHashMappingProtocol):
         pass
 
 
-class TestFrameCApi(unittest.TestCase):
+klasse TestFrameCApi(unittest.TestCase):
     def test_basic(self):
         x = 1
         ctypes = import_helper.import_module('ctypes')
@@ -710,7 +710,7 @@ class TestFrameCApi(unittest.TestCase):
         self.assertEqual(x, 2)
 
 
-class TestIncompleteFrameAreInvisible(unittest.TestCase):
+klasse TestIncompleteFrameAreInvisible(unittest.TestCase):
 
     def test_issue95818(self):
         # See GH-95818 for details
@@ -718,7 +718,7 @@ class TestIncompleteFrameAreInvisible(unittest.TestCase):
             import gc
 
             gc.set_threshold(1,1,1)
-            class GCHello:
+            klasse GCHello:
                 def __del__(self):
                     print("Destroyed from gc")
 
@@ -738,7 +738,7 @@ class TestIncompleteFrameAreInvisible(unittest.TestCase):
     @threading_helper.requires_working_threading()
     def test_sneaky_frame_object_teardown(self):
 
-        class SneakyDel:
+        klasse SneakyDel:
             def __del__(self):
                 """
                 Stash a reference to the entire stack for walking later.
@@ -750,7 +750,7 @@ class TestIncompleteFrameAreInvisible(unittest.TestCase):
                 nonlocal sneaky_frame_object
                 sneaky_frame_object = sys._getframe()
 
-        class SneakyThread(threading.Thread):
+        klasse SneakyThread(threading.Thread):
             """
             A separate thread isn't needed to make this code crash, but it does
             make crashes more consistent, since it means sneaky_frame_object is
@@ -776,7 +776,7 @@ class TestIncompleteFrameAreInvisible(unittest.TestCase):
             sneaky_frame_object = sneaky_frame_object.f_back
 
     def test_entry_frames_are_invisible_during_teardown(self):
-        class C:
+        klasse C:
             """A weakref'able class."""
 
         def f():

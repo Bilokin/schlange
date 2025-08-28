@@ -8,7 +8,7 @@ Or, at the shell command line outside of Python:
 
 Run "pydoc <name>" to show documentation on something.  <name> may be
 the name of a function, module, package, or a dotted reference to a
-class or function within a module or module in a package.  If the
+klasse or function within a module or module in a package.  If the
 argument contains a path segment delimiter (e.g. slash on Unix,
 backslash on Windows) it is treated as the path to a Python source file.
 
@@ -235,14 +235,14 @@ def _getargspec(object):
     return None
 
 def classname(object, modname):
-    """Get a class name and qualify it with a module name if necessary."""
+    """Get a klasse name and qualify it with a module name if necessary."""
     name = object.__name__
     if object.__module__ != modname:
         name = object.__module__ + '.' + name
     return name
 
 def parentname(object, modname):
-    """Get a name of the enclosing class (qualified it with a module name
+    """Get a name of the enclosing klasse (qualified it with a module name
     if necessary) or module."""
     if '.' in object.__qualname__:
         name = object.__qualname__.rpartition('.')[0]
@@ -450,7 +450,7 @@ def synopsis(filename, cache={}):
         cache[filename] = (mtime, result)
     return result
 
-class ErrorDuringImport(Exception):
+klasse ErrorDuringImport(Exception):
     """Errors that occurred while trying to import something to document it."""
     def __init__(self, filename, exc_info):
         if not isinstance(exc_info, tuple):
@@ -531,7 +531,7 @@ def safeimport(path, forceload=0, cache={}):
 
 # ---------------------------------------------------- formatter base class
 
-class Doc:
+klasse Doc:
 
     PYTHONDOCS = os.environ.get("PYTHONDOCS",
                                 "https://docs.python.org/%d.%d/library"
@@ -589,7 +589,7 @@ class Doc:
 
 # -------------------------------------------- HTML documentation generator
 
-class HTMLRepr(Repr):
+klasse HTMLRepr(Repr):
     """Class for safely making an HTML representation of a Python object."""
     def __init__(self):
         Repr.__init__(self)
@@ -631,8 +631,8 @@ class HTMLRepr(Repr):
 
     repr_unicode = repr_string
 
-class HTMLDoc(Doc):
-    """Formatter class for HTML documentation."""
+klasse HTMLDoc(Doc):
+    """Formatter klasse for HTML documentation."""
 
     # ------------------------------------------- HTML formatting utilities
 
@@ -723,7 +723,7 @@ class HTMLDoc(Doc):
         return classname(object, modname)
 
     def parentlink(self, object, modname):
-        """Make a link for the enclosing class or module."""
+        """Make a link for the enclosing klasse or module."""
         link = None
         name, module = object.__name__, sys.modules.get(object.__module__)
         if hasattr(module, name) and getattr(module, name) is object:
@@ -806,7 +806,7 @@ class HTMLDoc(Doc):
     # ---------------------------------------------- type-specific routines
 
     def formattree(self, tree, modname, parent=None):
-        """Produce HTML for a class tree as given by inspect.getclasstree()."""
+        """Produce HTML for a klasse tree as given by inspect.getclasstree()."""
         result = ''
         for entry in tree:
             if isinstance(entry, tuple):
@@ -943,7 +943,7 @@ class HTMLDoc(Doc):
 
     def docclass(self, object, name=None, mod=None, funcs={}, classes={},
                  *ignored):
-        """Produce HTML documentation for a class object."""
+        """Produce HTML documentation for a klasse object."""
         realname = object.__name__
         name = name or realname
         bases = object.__bases__
@@ -951,8 +951,8 @@ class HTMLDoc(Doc):
         contents = []
         push = contents.append
 
-        # Cute little class to pump out a horizontal rule between sections.
-        class HorizontalRule:
+        # Cute little klasse to pump out a horizontal rule between sections.
+        klasse HorizontalRule:
             def __init__(self):
                 self.needone = 0
             def maybe(self):
@@ -1118,7 +1118,7 @@ class HTMLDoc(Doc):
             if imself is cl:
                 imfunc = getattr(object, '__func__', None)
             elif inspect.isclass(imself):
-                note = ' class method of %s' % self.classlink(imself, mod)
+                note = ' klasse method of %s' % self.classlink(imself, mod)
             else:
                 note = ' method of %s instance' % self.classlink(
                     imself.__class__, mod)
@@ -1224,7 +1224,7 @@ class HTMLDoc(Doc):
 
 # -------------------------------------------- text documentation generator
 
-class TextRepr(Repr):
+klasse TextRepr(Repr):
     """Class for safely making a text representation of a Python object."""
     def __init__(self):
         Repr.__init__(self)
@@ -1256,8 +1256,8 @@ class TextRepr(Repr):
         except:
             return '<%s instance>' % x.__class__.__name__
 
-class TextDoc(Doc):
-    """Formatter class for text documentation."""
+klasse TextDoc(Doc):
+    """Formatter klasse for text documentation."""
 
     # ------------------------------------------- text formatting utilities
 
@@ -1282,7 +1282,7 @@ class TextDoc(Doc):
     # ---------------------------------------------- type-specific routines
 
     def formattree(self, tree, modname, parent=None, prefix=''):
-        """Render in text a class tree as returned by inspect.getclasstree()."""
+        """Render in text a klasse tree as returned by inspect.getclasstree()."""
         result = ''
         for entry in tree:
             if isinstance(entry, tuple):
@@ -1399,7 +1399,7 @@ location listed above.
         return result
 
     def docclass(self, object, name=None, mod=None, *ignored):
-        """Produce text documentation for a given class object."""
+        """Produce text documentation for a given klasse object."""
         realname = object.__name__
         name = name or realname
         bases = object.__bases__
@@ -1410,7 +1410,7 @@ location listed above.
         if name == realname:
             title = 'class ' + self.bold(realname)
         else:
-            title = self.bold(name) + ' = class ' + realname
+            title = self.bold(name) + ' = klasse ' + realname
         if bases:
             parents = map(makename, bases)
             title = title + '(%s)' % ', '.join(parents)
@@ -1453,8 +1453,8 @@ location listed above.
                      ' other subclasses')
             push('')
 
-        # Cute little class to pump out a horizontal rule between sections.
-        class HorizontalRule:
+        # Cute little klasse to pump out a horizontal rule between sections.
+        klasse HorizontalRule:
             def __init__(self):
                 self.needone = 0
             def maybe(self):
@@ -1566,7 +1566,7 @@ location listed above.
             if imself is cl:
                 imfunc = getattr(object, '__func__', None)
             elif inspect.isclass(imself):
-                note = ' class method of %s' % classname(imself, mod)
+                note = ' klasse method of %s' % classname(imself, mod)
             else:
                 note = ' method of %s instance' % classname(
                     imself.__class__, mod)
@@ -1657,7 +1657,7 @@ location listed above.
             line += '\n' + self.indent(str(doc)) + '\n'
         return line
 
-class _PlainTextDoc(TextDoc):
+klasse _PlainTextDoc(TextDoc):
     """Subclass of TextDoc which overrides string styling"""
     def bold(self, text):
         return text
@@ -1840,7 +1840,7 @@ def _introdoc():
         enter "q", "quit" or "exit".
     ''')
 
-class Helper:
+klasse Helper:
 
     # These dictionaries map a topic name to either an alias, or a tuple
     # (label, seealso-items).  The "label" is the label of the corresponding
@@ -2240,7 +2240,7 @@ for modules whose name or summary contain the string "spam".
 
 help = Helper()
 
-class ModuleScanner:
+klasse ModuleScanner:
     """An interruptible scanner that searches module synopses."""
 
     def run(self, callback, key=None, completer=None, onerror=None):
@@ -2376,7 +2376,7 @@ def _start_server(urlhandler, hostname, port):
     import select
     import threading
 
-    class DocHandler(http.server.BaseHTTPRequestHandler):
+    klasse DocHandler(http.server.BaseHTTPRequestHandler):
 
         def do_GET(self):
             """Process a request from an HTML browser.
@@ -2398,7 +2398,7 @@ def _start_server(urlhandler, hostname, port):
             # Don't log messages.
             pass
 
-    class DocServer(http.server.HTTPServer):
+    klasse DocServer(http.server.HTTPServer):
 
         def __init__(self, host, port, callback):
             self.host = host
@@ -2419,7 +2419,7 @@ def _start_server(urlhandler, hostname, port):
             if self.callback:
                 self.callback(self)
 
-    class ServerThread(threading.Thread):
+    klasse ServerThread(threading.Thread):
 
         def __init__(self, urlhandler, host, port):
             self.urlhandler = urlhandler
@@ -2477,7 +2477,7 @@ def _url_handler(url, content_type="text/html"):
     If the content_type is 'text/html', then the result of
     get_html_page(url) is returned.
     """
-    class _HTMLDoc(HTMLDoc):
+    klasse _HTMLDoc(HTMLDoc):
 
         def page(self, title, contents):
             """Format an HTML page."""
@@ -2785,7 +2785,7 @@ def _adjust_cli_sys_path():
 def cli():
     """Command-line interface (looks at sys.argv to decide what to do)."""
     import getopt
-    class BadUsage(Exception): pass
+    klasse BadUsage(Exception): pass
 
     _adjust_cli_sys_path()
 
@@ -2842,7 +2842,7 @@ def cli():
 {cmd} <name> ...
     Show text documentation on something.  <name> may be the name of a
     Python keyword, topic, function, module, or package, or a dotted
-    reference to a class or function within a module or module in a
+    reference to a klasse or function within a module or module in a
     package.  If <name> contains a '{sep}', it is used as the path to a
     Python source file to document. If name is 'keywords', 'topics',
     or 'modules', a listing of these things is displayed.

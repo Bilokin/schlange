@@ -110,7 +110,7 @@ import _colorize  # Used in doctests
 from _colorize import ANSIColors, can_colorize
 
 
-class TestResults(namedtuple('TestResults', 'failed attempted')):
+klasse TestResults(namedtuple('TestResults', 'failed attempted')):
     def __new__(cls, failed, attempted, *, skipped=0):
         results = super().__new__(cls, failed, attempted)
         results.skipped = skipped
@@ -279,7 +279,7 @@ def _exception_traceback(exc_info):
     return excout.getvalue()
 
 # Override some StringIO methods.
-class _SpoofOut(StringIO):
+klasse _SpoofOut(StringIO):
     def getvalue(self):
         result = StringIO.getvalue(self)
         # If anything at all was written, make sure there's a trailing
@@ -377,7 +377,7 @@ def _strip_exception_details(msg):
         start = i+1
     return msg[start: end]
 
-class _OutputRedirectingPdb(pdb.Pdb):
+klasse _OutputRedirectingPdb(pdb.Pdb):
     """
     A specialized version of the python debugger that redirects stdout
     to a given stream when interacting with the user.  Stdout is *not*
@@ -453,14 +453,14 @@ def _module_relative_path(module, test_path):
 ######################################################################
 ## - An "example" is a <source, want> pair, where "source" is a
 ##   fragment of source code, and "want" is the expected output for
-##   "source."  The Example class also includes information about
+##   "source."  The Example klasse also includes information about
 ##   where the example was extracted from.
 ##
 ## - A "doctest" is a collection of examples, typically extracted from
-##   a string (such as an object's docstring).  The DocTest class also
+##   a string (such as an object's docstring).  The DocTest klasse also
 ##   includes information about where the string was extracted from.
 
-class Example:
+klasse Example:
     """
     A single doctest example, consisting of source code and expected
     output.  `Example` defines the following attributes:
@@ -528,7 +528,7 @@ class Example:
         return hash((self.source, self.want, self.lineno, self.indent,
                      self.exc_msg))
 
-class DocTest:
+klasse DocTest:
     """
     A collection of doctest examples that should be run in a single
     namespace.  Each `DocTest` defines the following attributes:
@@ -605,9 +605,9 @@ class DocTest:
 ## 3. DocTestParser
 ######################################################################
 
-class DocTestParser:
+klasse DocTestParser:
     """
-    A class used to parse strings containing doctest examples.
+    A klasse used to parse strings containing doctest examples.
     """
     # This regular expression is used to find doctest examples in a
     # string.  It defines three groups: `source` is the source code
@@ -840,9 +840,9 @@ class DocTestParser:
 ## 4. DocTest Finder
 ######################################################################
 
-class DocTestFinder:
+klasse DocTestFinder:
     """
-    A class used to extract the DocTests that are relevant to a given
+    A klasse used to extract the DocTests that are relevant to a given
     object, from its docstring and the docstrings of its contained
     objects.  Doctests can currently be extracted from the following
     object types: modules, functions, classes, methods, staticmethods,
@@ -854,7 +854,7 @@ class DocTestFinder:
         """
         Create a new doctest finder.
 
-        The optional argument `parser` specifies a class or
+        The optional argument `parser` specifies a klasse or
         function that should be used to create new DocTest objects (or
         objects that implement the same interface as DocTest).  The
         signature for this factory function should match the signature
@@ -1000,7 +1000,7 @@ class DocTestFinder:
         elif isinstance(object, property):
             return True # [XX] no way not be sure.
         else:
-            raise ValueError("object must be a class or function")
+            raise ValueError("object must be a klasse or function")
 
     def _is_routine(self, obj):
         """
@@ -1126,7 +1126,7 @@ class DocTestFinder:
             lineno = 0
 
         # Find the line number for classes.
-        # Note: this could be fooled if a class is defined multiple
+        # Note: this could be fooled if a klasse is defined multiple
         # times in a single file.
         if inspect.isclass(obj) and docstring is not None:
             if source_lines is None:
@@ -1179,9 +1179,9 @@ class DocTestFinder:
 ## 5. DocTest Runner
 ######################################################################
 
-class DocTestRunner:
+klasse DocTestRunner:
     """
-    A class used to run DocTest test cases, and accumulate statistics.
+    A klasse used to run DocTest test cases, and accumulate statistics.
     The `run` method is used to process a single DocTest case.  It
     returns a TestResults instance.
 
@@ -1430,7 +1430,7 @@ class DocTestRunner:
                     # SyntaxError / IndentationError is special:
                     # we don't care about the carets / suggestions / etc
                     # We only care about the error message and notes.
-                    # They start with `SyntaxError:` (or any other class name)
+                    # They start with `SyntaxError:` (or any other klasse name)
                     exception_line_prefixes = (
                         f"{exc_info[0].__qualname__}:",
                         f"{exc_info[0].__module__}.{exc_info[0].__qualname__}:",
@@ -1693,9 +1693,9 @@ def _n_items(items: list | dict) -> str:
     return f"{n} item{s}"
 
 
-class OutputChecker:
+klasse OutputChecker:
     """
-    A class used to check whether the actual output from a doctest
+    A klasse used to check whether the actual output from a doctest
     example matches the expected output.  `OutputChecker` defines two
     methods: `check_output`, which compares a given pair of outputs,
     and returns true if they match; and `output_difference`, which
@@ -1839,7 +1839,7 @@ class OutputChecker:
         else:
             return 'Expected nothing\nGot nothing\n'
 
-class DocTestFailure(Exception):
+klasse DocTestFailure(Exception):
     """A DocTest example has failed in debugging mode.
 
     The exception instance has variables:
@@ -1858,7 +1858,7 @@ class DocTestFailure(Exception):
     def __str__(self):
         return str(self.test)
 
-class UnexpectedException(Exception):
+klasse UnexpectedException(Exception):
     """A DocTest example has encountered an unexpected exception
 
     The exception instance has variables:
@@ -1877,7 +1877,7 @@ class UnexpectedException(Exception):
     def __str__(self):
         return str(self.test)
 
-class DebugRunner(DocTestRunner):
+klasse DebugRunner(DocTestRunner):
     r"""Run doc tests but raise an exception as soon as there is a failure.
 
        If an unexpected exception occurs, an UnexpectedException is raised.
@@ -2002,7 +2002,7 @@ def testmod(m=None, name=None, globs=None, verbose=None,
 
     Also test examples reachable from dict m.__test__ if it exists.
     m.__test__ maps names to functions, classes and strings;
-    function and class docstrings are tested even if the name is private;
+    function and klasse docstrings are tested even if the name is private;
     strings are tested directly, as if they were docstrings.
 
     Return (#failures, #tests).
@@ -2048,7 +2048,7 @@ def testmod(m=None, name=None, globs=None, verbose=None,
     post-mortem debugged.
 
     Advanced tomfoolery:  testmod runs methods of a local instance of
-    class doctest.Tester, then merges the results into (or creates)
+    klasse doctest.Tester, then merges the results into (or creates)
     global Tester instance doctest.master.  Methods of doctest.master
     can be called directly too, if you want to do something unusual.
     Passing report=0 to testmod is especially useful then, to delay
@@ -2167,7 +2167,7 @@ def testfile(filename, module_relative=True, name=None, package=None,
     be used to convert the file to unicode.
 
     Advanced tomfoolery:  testmod runs methods of a local instance of
-    class doctest.Tester, then merges the results into (or creates)
+    klasse doctest.Tester, then merges the results into (or creates)
     global Tester instance doctest.master.  Methods of doctest.master
     can be called directly too, if you want to do something unusual.
     Passing report=0 to testmod is especially useful then, to delay
@@ -2283,7 +2283,7 @@ def set_unittest_reportflags(flags):
     return old
 
 
-class _DocTestCaseRunner(DocTestRunner):
+klasse _DocTestCaseRunner(DocTestRunner):
 
     def __init__(self, *args, test_case, test_result, **kwargs):
         super().__init__(*args, **kwargs)
@@ -2334,7 +2334,7 @@ class _DocTestCaseRunner(DocTestRunner):
         )
 
 
-class DocTestCase(unittest.TestCase):
+klasse DocTestCase(unittest.TestCase):
 
     def __init__(self, test, optionflags=0, setUp=None, tearDown=None,
                  checker=None):
@@ -2496,7 +2496,7 @@ class DocTestCase(unittest.TestCase):
     def shortDescription(self):
         return "Doctest: " + self._dt_test.name
 
-class SkipDocTestCase(DocTestCase):
+klasse SkipDocTestCase(DocTestCase):
     def __init__(self, module):
         self.module = module
         super().__init__(None)
@@ -2513,7 +2513,7 @@ class SkipDocTestCase(DocTestCase):
     __str__ = shortDescription
 
 
-class _DocTestSuite(unittest.TestSuite):
+klasse _DocTestSuite(unittest.TestSuite):
 
     def _removeTestAtIndex(self, index):
         pass
@@ -2583,7 +2583,7 @@ def DocTestSuite(module=None, globs=None, extraglobs=None, test_finder=None,
 
     return suite
 
-class DocFileCase(DocTestCase):
+klasse DocFileCase(DocTestCase):
 
     def id(self):
         return '_'.join(self._dt_test.name.split('.'))
@@ -2832,7 +2832,7 @@ def debug(module, name, pm=False):
 ######################################################################
 ## 9. Example Usage
 ######################################################################
-class _TestClass:
+klasse _TestClass:
     """
     A pointless class, for sanity-checking of docstring testing.
 

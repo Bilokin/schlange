@@ -92,7 +92,7 @@ def read_environ():
     return environ
 
 
-class BaseHandler:
+klasse BaseHandler:
     """Manage the invocation of a WSGI application"""
 
     # Configuration parameters; can override per-subclass or per-instance
@@ -437,7 +437,7 @@ class BaseHandler:
         raise NotImplementedError
 
 
-class SimpleHandler(BaseHandler):
+klasse SimpleHandler(BaseHandler):
     """Handler that's just initialized with streams, environment, etc.
 
     This handler subclass is intended for synchronous HTTP/1.0 origin servers,
@@ -484,7 +484,7 @@ class SimpleHandler(BaseHandler):
         self._flush = self.stdout.flush
 
 
-class BaseCGIHandler(SimpleHandler):
+klasse BaseCGIHandler(SimpleHandler):
 
     """CGI-like systems using input/output/error streams and environ mapping
 
@@ -493,9 +493,9 @@ class BaseCGIHandler(SimpleHandler):
         handler = BaseCGIHandler(inp,out,err,env)
         handler.run(app)
 
-    This handler class is useful for gateway protocols like ReadyExec and
+    This handler klasse is useful for gateway protocols like ReadyExec and
     FastCGI, that have usable input/output/error streams and an environment
-    mapping.  It's also the base class for CGIHandler, which just uses
+    mapping.  It's also the base klasse for CGIHandler, which just uses
     sys.stdin, os.environ, and so on.
 
     The constructor also takes keyword arguments 'multithread' and
@@ -508,7 +508,7 @@ class BaseCGIHandler(SimpleHandler):
     origin_server = False
 
 
-class CGIHandler(BaseCGIHandler):
+klasse CGIHandler(BaseCGIHandler):
 
     """CGI-based invocation via sys.stdin/stdout/stderr and os.environ
 
@@ -516,7 +516,7 @@ class CGIHandler(BaseCGIHandler):
 
         CGIHandler().run(app)
 
-    The difference between this class and BaseCGIHandler is that it always
+    The difference between this klasse and BaseCGIHandler is that it always
     uses 'wsgi.run_once' of 'True', 'wsgi.multithread' of 'False', and
     'wsgi.multiprocess' of 'True'.  It does not take any initialization
     parameters, but always uses 'sys.stdin', 'os.environ', and friends.
@@ -538,7 +538,7 @@ class CGIHandler(BaseCGIHandler):
         )
 
 
-class IISCGIHandler(BaseCGIHandler):
+klasse IISCGIHandler(BaseCGIHandler):
     """CGI-based invocation with workaround for IIS path bug
 
     This handler should be used in preference to CGIHandler when deploying on
@@ -561,7 +561,7 @@ class IISCGIHandler(BaseCGIHandler):
     # rarely uses it because there is still no UI for it.)
 
     # There is no way for CGI code to tell whether the option was set, so a
-    # separate handler class is provided.
+    # separate handler klasse is provided.
     def __init__(self):
         environ= read_environ()
         path = environ.get('PATH_INFO', '')

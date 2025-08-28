@@ -26,7 +26,7 @@ def test_concurrent_iteration(iterator, number_of_threads):
 
     barrier.reset()
 
-class ItertoolsThreading(unittest.TestCase):
+klasse ItertoolsThreading(unittest.TestCase):
 
     @threading_helper.reap_threads
     def test_combinations(self):

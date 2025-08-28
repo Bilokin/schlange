@@ -13,7 +13,7 @@ import warnings
 import zipimport
 
 
-class FinderTests:
+klasse FinderTests:
 
     """Tests for PathFinder."""
 
@@ -118,7 +118,7 @@ class FinderTests:
                 sys.modules['email'] = email
 
     def test_finder_with_find_spec(self):
-        class TestFinder:
+        klasse TestFinder:
             spec = None
             def find_spec(self, fullname, target=None):
                 return self.spec
@@ -182,7 +182,7 @@ class FinderTests:
 
     def test_invalidate_caches_finders(self):
         # Finders with an invalidate_caches() method have it called.
-        class FakeFinder:
+        klasse FakeFinder:
             def __init__(self):
                 self.called = False
 
@@ -203,7 +203,7 @@ class FinderTests:
         self.assertEqual(len(cache), 0)
 
     def test_invalidate_caches_clear_out_relative_path(self):
-        class FakeFinder:
+        klasse FakeFinder:
             def invalidate_caches(self):
                 pass
 
@@ -213,7 +213,7 @@ class FinderTests:
         self.assertEqual(cache, {})
 
 
-class FindModuleTests(FinderTests):
+klasse FindModuleTests(FinderTests):
     def find(self, *args, **kwargs):
         spec = self.machinery.PathFinder.find_spec(*args, **kwargs)
         return None if spec is None else spec.loader
@@ -227,7 +227,7 @@ class FindModuleTests(FinderTests):
 ) = util.test_both(FindModuleTests, importlib=importlib, machinery=machinery)
 
 
-class FindSpecTests(FinderTests):
+klasse FindSpecTests(FinderTests):
     def find(self, *args, **kwargs):
         return self.machinery.PathFinder.find_spec(*args, **kwargs)
     def check_found(self, found, importer):
@@ -239,10 +239,10 @@ class FindSpecTests(FinderTests):
  ) = util.test_both(FindSpecTests, importlib=importlib, machinery=machinery)
 
 
-class PathEntryFinderTests:
+klasse PathEntryFinderTests:
 
     def test_finder_with_failing_find_spec(self):
-        class Finder:
+        klasse Finder:
             path_location = 'test_finder_with_find_spec'
             def __init__(self, path):
                 if path != self.path_location:

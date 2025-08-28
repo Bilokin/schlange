@@ -58,7 +58,7 @@ def declare_variables(uop: Uop, out: CWriter) -> None:
         declare_variable(var, uop, seen, out)
 
 
-class Tier2Emitter(Emitter):
+klasse Tier2Emitter(Emitter):
 
     def __init__(self, out: CWriter, labels: dict[str, Label]):
         super().__init__(out, labels)

@@ -16,7 +16,7 @@ def normalize_text(text):
     return text.strip()
 
 
-class PythonInfo:
+klasse PythonInfo:
     def __init__(self):
         self.info = {}
 

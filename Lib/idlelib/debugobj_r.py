@@ -6,7 +6,7 @@ def remote_object_tree_item(item):
     rpc.objecttable[oid] = wrapper
     return oid
 
-class WrappedObjectTreeItem:
+klasse WrappedObjectTreeItem:
     # Lives in PYTHON subprocess
 
     def __init__(self, item):
@@ -20,7 +20,7 @@ class WrappedObjectTreeItem:
         sub_list = self.__item._GetSubList()
         return list(map(remote_object_tree_item, sub_list))
 
-class StubObjectTreeItem:
+klasse StubObjectTreeItem:
     # Lives in IDLE process
 
     def __init__(self, sockio, oid):

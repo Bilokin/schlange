@@ -80,7 +80,7 @@ BOM64_BE = BOM_UTF32_BE
 
 ### Codec base classes (defining the API)
 
-class CodecInfo(tuple):
+klasse CodecInfo(tuple):
     """Codec details when looking up the codec registry"""
 
     # Private API to allow Python 3.4 to denylist the known non-Unicode
@@ -114,7 +114,7 @@ class CodecInfo(tuple):
     def __getnewargs__(self):
         return tuple(self)
 
-class Codec:
+klasse Codec:
 
     """ Defines the interface for stateless encoders/decoders.
 
@@ -180,7 +180,7 @@ class Codec:
         """
         raise NotImplementedError
 
-class IncrementalEncoder(object):
+klasse IncrementalEncoder(object):
     """
     An IncrementalEncoder encodes an input in multiple steps. The input can
     be passed piece by piece to the encode() method. The IncrementalEncoder
@@ -220,7 +220,7 @@ class IncrementalEncoder(object):
         returned by getstate().
         """
 
-class BufferedIncrementalEncoder(IncrementalEncoder):
+klasse BufferedIncrementalEncoder(IncrementalEncoder):
     """
     This subclass of IncrementalEncoder can be used as the baseclass for an
     incremental encoder if the encoder must keep some of the output in a
@@ -254,7 +254,7 @@ class BufferedIncrementalEncoder(IncrementalEncoder):
     def setstate(self, state):
         self.buffer = state or ""
 
-class IncrementalDecoder(object):
+klasse IncrementalDecoder(object):
     """
     An IncrementalDecoder decodes an input in multiple steps. The input can
     be passed piece by piece to the decode() method. The IncrementalDecoder
@@ -303,7 +303,7 @@ class IncrementalDecoder(object):
         setstate((b"", 0)) must be equivalent to reset().
         """
 
-class BufferedIncrementalDecoder(IncrementalDecoder):
+klasse BufferedIncrementalDecoder(IncrementalDecoder):
     """
     This subclass of IncrementalDecoder can be used as the baseclass for an
     incremental decoder if the decoder must be able to handle incomplete
@@ -340,13 +340,13 @@ class BufferedIncrementalDecoder(IncrementalDecoder):
         self.buffer = state[0]
 
 #
-# The StreamWriter and StreamReader class provide generic working
+# The StreamWriter and StreamReader klasse provide generic working
 # interfaces which can be used to implement new encoding submodules
 # very easily. See encodings/utf_8.py for an example on how this is
 # done.
 #
 
-class StreamWriter(Codec):
+klasse StreamWriter(Codec):
 
     def __init__(self, stream, errors='strict'):
 
@@ -422,7 +422,7 @@ class StreamWriter(Codec):
 
 ###
 
-class StreamReader(Codec):
+klasse StreamReader(Codec):
 
     charbuffertype = str
 
@@ -674,7 +674,7 @@ class StreamReader(Codec):
 
 ###
 
-class StreamReaderWriter:
+klasse StreamReaderWriter:
 
     """ StreamReaderWriter instances allow wrapping streams which
         work in both read and write modes.
@@ -764,7 +764,7 @@ class StreamReaderWriter:
 
 ###
 
-class StreamRecoder:
+klasse StreamRecoder:
 
     """ StreamRecoder instances translate data from one encoding to another.
 
@@ -995,7 +995,7 @@ def getdecoder(encoding):
 def getincrementalencoder(encoding):
 
     """ Lookup up the codec for the given encoding and return
-        its IncrementalEncoder class or factory function.
+        its IncrementalEncoder klasse or factory function.
 
         Raises a LookupError in case the encoding cannot be found
         or the codecs doesn't provide an incremental encoder.
@@ -1009,7 +1009,7 @@ def getincrementalencoder(encoding):
 def getincrementaldecoder(encoding):
 
     """ Lookup up the codec for the given encoding and return
-        its IncrementalDecoder class or factory function.
+        its IncrementalDecoder klasse or factory function.
 
         Raises a LookupError in case the encoding cannot be found
         or the codecs doesn't provide an incremental decoder.
@@ -1023,7 +1023,7 @@ def getincrementaldecoder(encoding):
 def getreader(encoding):
 
     """ Lookup up the codec for the given encoding and return
-        its StreamReader class or factory function.
+        its StreamReader klasse or factory function.
 
         Raises a LookupError in case the encoding cannot be found.
 
@@ -1033,7 +1033,7 @@ def getreader(encoding):
 def getwriter(encoding):
 
     """ Lookup up the codec for the given encoding and return
-        its StreamWriter class or factory function.
+        its StreamWriter klasse or factory function.
 
         Raises a LookupError in case the encoding cannot be found.
 

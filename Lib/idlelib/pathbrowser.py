@@ -6,7 +6,7 @@ from idlelib.browser import ModuleBrowser, ModuleBrowserTreeItem
 from idlelib.tree import TreeItem
 
 
-class PathBrowser(ModuleBrowser):
+klasse PathBrowser(ModuleBrowser):
 
     def __init__(self, master, *, _htest=False, _utest=False):
         """
@@ -26,7 +26,7 @@ class PathBrowser(ModuleBrowser):
         return PathBrowserTreeItem()
 
 
-class PathBrowserTreeItem(TreeItem):
+klasse PathBrowserTreeItem(TreeItem):
 
     def GetText(self):
         return "sys.path"
@@ -39,7 +39,7 @@ class PathBrowserTreeItem(TreeItem):
         return sublist
 
 
-class DirBrowserTreeItem(TreeItem):
+klasse DirBrowserTreeItem(TreeItem):
 
     def __init__(self, dir, packages=[]):
         self.dir = dir

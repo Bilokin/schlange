@@ -5,7 +5,7 @@ GOOD_SERIALS = ("alpha", "beta", "candidate", "final")
 
 features = __future__.all_feature_names
 
-class FutureTest(unittest.TestCase):
+klasse FutureTest(unittest.TestCase):
 
     def test_names(self):
         # Verify that all_feature_names appears correct.

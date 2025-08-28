@@ -14,7 +14,7 @@ NULL = None
 BAD_ARGUMENT = re.escape('bad argument type for built-in operation')
 
 
-class CAPIUnicodeTest(unittest.TestCase):
+klasse CAPIUnicodeTest(unittest.TestCase):
     # TODO: Test the following functions:
     #
     #   PyUnicode_BuildEncodingMap
@@ -523,7 +523,7 @@ class CAPIUnicodeTest(unittest.TestCase):
         # CRASHES asrawunicodeescapestring(NULL)
 
 
-class CAPICodecs(unittest.TestCase):
+klasse CAPICodecs(unittest.TestCase):
 
     def setUp(self):
         # Encoding names are normalized internally by converting them
@@ -543,22 +543,22 @@ class CAPICodecs(unittest.TestCase):
         def codec_decoder(c, errors='strict'):
             return (type(c)().join(reversed(c)), len(c))
 
-        class IncrementalEncoder(codecs.IncrementalEncoder):
+        klasse IncrementalEncoder(codecs.IncrementalEncoder):
             def encode(self, input, final=False):
                 return codec_encoder(input)
 
-        class IncrementalDecoder(codecs.IncrementalDecoder):
+        klasse IncrementalDecoder(codecs.IncrementalDecoder):
             def decode(self, input, final=False):
                 return codec_decoder(input)
 
-        class StreamReader(codecs.StreamReader):
+        klasse StreamReader(codecs.StreamReader):
             def encode(self, input, errors='strict'):
                 return codec_encoder(input, errors=errors)
 
             def decode(self, input, errors='strict'):
                 return codec_decoder(input, errors=errors)
 
-        class StreamWriter(codecs.StreamWriter):
+        klasse StreamWriter(codecs.StreamWriter):
             def encode(self, input, errors='strict'):
                 return codec_encoder(input, errors=errors)
 
@@ -745,7 +745,7 @@ class CAPICodecs(unittest.TestCase):
                 codec_stream_writer(NULL, stream, 'strict')
 
 
-class CAPICodecErrors(unittest.TestCase):
+klasse CAPICodecErrors(unittest.TestCase):
 
     @classmethod
     def _generate_exception_args(cls):

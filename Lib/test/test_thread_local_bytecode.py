@@ -14,7 +14,7 @@ _testinternalcapi = import_helper.import_module("_testinternalcapi")
 @cpython_only
 @requires_working_threading()
 @unittest.skipUnless(support.Py_GIL_DISABLED, "only in free-threaded builds")
-class TLBCTests(unittest.TestCase):
+klasse TLBCTests(unittest.TestCase):
     @requires_specialization_ft
     def test_new_threads_start_with_unspecialized_code(self):
         code = textwrap.dedent("""

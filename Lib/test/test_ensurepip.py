@@ -12,7 +12,7 @@ import ensurepip
 import ensurepip._uninstall
 
 
-class TestPackages(unittest.TestCase):
+klasse TestPackages(unittest.TestCase):
     def touch(self, directory, filename):
         fullname = os.path.join(directory, filename)
         open(fullname, "wb").close()
@@ -52,7 +52,7 @@ class TestPackages(unittest.TestCase):
                     self.assertEqual(pip_filename, bundled_wheel_path.name)
 
 
-class EnsurepipMixin:
+klasse EnsurepipMixin:
 
     def setUp(self):
         run_pip_patch = unittest.mock.patch("ensurepip._run_pip")
@@ -72,7 +72,7 @@ class EnsurepipMixin:
         self.os_environ = patched_os.environ = os.environ.copy()
 
 
-class TestBootstrap(EnsurepipMixin, unittest.TestCase):
+klasse TestBootstrap(EnsurepipMixin, unittest.TestCase):
 
     def test_basic_bootstrapping(self):
         ensurepip.bootstrap()
@@ -190,7 +190,7 @@ def fake_pip(version=ensurepip.version()):
     if version is None:
         pip = None
     else:
-        class FakePip():
+        klasse FakePip():
             __version__ = version
         pip = FakePip()
     sentinel = object()
@@ -204,7 +204,7 @@ def fake_pip(version=ensurepip.version()):
         else:
             sys.modules["pip"] = orig_pip
 
-class TestUninstall(EnsurepipMixin, unittest.TestCase):
+klasse TestUninstall(EnsurepipMixin, unittest.TestCase):
 
     def test_uninstall_skipped_when_not_installed(self):
         with fake_pip(None):
@@ -281,7 +281,7 @@ class TestUninstall(EnsurepipMixin, unittest.TestCase):
 
 EXPECTED_VERSION_OUTPUT = "pip " + ensurepip.version()
 
-class TestBootstrappingMainFunction(EnsurepipMixin, unittest.TestCase):
+klasse TestBootstrappingMainFunction(EnsurepipMixin, unittest.TestCase):
 
     def test_bootstrap_version(self):
         with test.support.captured_stdout() as stdout:
@@ -312,7 +312,7 @@ class TestBootstrappingMainFunction(EnsurepipMixin, unittest.TestCase):
         self.assertEqual(exit_code, 2)
 
 
-class TestUninstallationMainFunction(EnsurepipMixin, unittest.TestCase):
+klasse TestUninstallationMainFunction(EnsurepipMixin, unittest.TestCase):
 
     def test_uninstall_version(self):
         with test.support.captured_stdout() as stdout:

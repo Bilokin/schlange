@@ -40,7 +40,7 @@ HoleKind: typing.TypeAlias = typing.Literal[
 ]
 
 
-class COFFRelocation(typing.TypedDict):
+klasse COFFRelocation(typing.TypedDict):
     """A COFF object file relocation record."""
 
     Type: dict[typing.Literal["Value"], HoleKind]
@@ -48,7 +48,7 @@ class COFFRelocation(typing.TypedDict):
     Offset: int
 
 
-class ELFRelocation(typing.TypedDict):
+klasse ELFRelocation(typing.TypedDict):
     """An ELF object file relocation record."""
 
     Addend: int
@@ -57,7 +57,7 @@ class ELFRelocation(typing.TypedDict):
     Type: dict[typing.Literal["Value"], HoleKind]
 
 
-class MachORelocation(typing.TypedDict):
+klasse MachORelocation(typing.TypedDict):
     """A Mach-O object file relocation record."""
 
     Offset: int
@@ -66,22 +66,22 @@ class MachORelocation(typing.TypedDict):
     Type: dict[typing.Literal["Value"], HoleKind]
 
 
-class _COFFSymbol(typing.TypedDict):
+klasse _COFFSymbol(typing.TypedDict):
     Name: str
     Value: int
 
 
-class _ELFSymbol(typing.TypedDict):
+klasse _ELFSymbol(typing.TypedDict):
     Name: dict[typing.Literal["Name"], str]
     Value: int
 
 
-class _MachOSymbol(typing.TypedDict):
+klasse _MachOSymbol(typing.TypedDict):
     Name: dict[typing.Literal["Name"], str]
     Value: int
 
 
-class COFFSection(typing.TypedDict):
+klasse COFFSection(typing.TypedDict):
     """A COFF object file section."""
 
     Characteristics: dict[
@@ -94,7 +94,7 @@ class COFFSection(typing.TypedDict):
     Symbols: list[dict[typing.Literal["Symbol"], _COFFSymbol]]
 
 
-class ELFSection(typing.TypedDict):
+klasse ELFSection(typing.TypedDict):
     """An ELF object file section."""
 
     Flags: dict[typing.Literal["Flags"], list[dict[typing.Literal["Name"], str]]]
@@ -106,7 +106,7 @@ class ELFSection(typing.TypedDict):
     Type: dict[typing.Literal["Name"], str]
 
 
-class MachOSection(typing.TypedDict):
+klasse MachOSection(typing.TypedDict):
     """A Mach-O object file section."""
 
     Address: int

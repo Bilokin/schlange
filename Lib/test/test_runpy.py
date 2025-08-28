@@ -72,7 +72,7 @@ example_namespace =  {
 }
 example_namespace.update(implicit_namespace)
 
-class CodeExecutionMixin:
+klasse CodeExecutionMixin:
     # Issue #15230 (run_path not handling run_name correctly) highlighted a
     # problem with the way arguments were being passed from higher level APIs
     # down to lower level code. This mixin makes it easier to ensure full
@@ -151,7 +151,7 @@ class CodeExecutionMixin:
         self.assertIs(sys.modules.get(run_name, sentinel), saved_mod)
 
 
-class ExecutionLayerTestCase(unittest.TestCase, CodeExecutionMixin):
+klasse ExecutionLayerTestCase(unittest.TestCase, CodeExecutionMixin):
     """Unit tests for runpy._run_code and runpy._run_module_code"""
 
     def test_run_code(self):
@@ -190,7 +190,7 @@ class ExecutionLayerTestCase(unittest.TestCase, CodeExecutionMixin):
         self.check_code_execution(create_ns, expected_ns)
 
 # TODO: Use self.addCleanup to get rid of a lot of try-finally blocks
-class RunModuleTestCase(unittest.TestCase, CodeExecutionMixin):
+klasse RunModuleTestCase(unittest.TestCase, CodeExecutionMixin):
     """Unit tests for runpy.run_module"""
 
     def expect_import_error(self, mod_name):
@@ -597,7 +597,7 @@ from ..uncle.cousin import nephew
         self.assertEqual(len(expected_packages), 0, expected_packages)
         self.assertEqual(len(expected_modules), 0, expected_modules)
 
-class RunPathTestCase(unittest.TestCase, CodeExecutionMixin):
+klasse RunPathTestCase(unittest.TestCase, CodeExecutionMixin):
     """Unit tests for runpy.run_path"""
 
     def _make_test_script(self, script_dir, script_basename,
@@ -765,7 +765,7 @@ s = "non-ASCII: h\xe9"
 
 
 @force_not_colorized_test_class
-class TestExit(unittest.TestCase):
+klasse TestExit(unittest.TestCase):
     STATUS_CONTROL_C_EXIT = 0xC000013A
     EXPECTED_CODE = (
         STATUS_CONTROL_C_EXIT

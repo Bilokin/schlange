@@ -63,7 +63,7 @@ JSON = r'''
 ,"rosebud"]
 '''
 
-class TestPass1:
+klasse TestPass1:
     def test_parse(self):
         # test in/out equivalence and parsing
         res = self.loads(JSON)
@@ -71,5 +71,5 @@ class TestPass1:
         self.assertEqual(res, self.loads(out))
 
 
-class TestPyPass1(TestPass1, PyTest): pass
-class TestCPass1(TestPass1, CTest): pass
+klasse TestPyPass1(TestPass1, PyTest): pass
+klasse TestCPass1(TestPass1, CTest): pass

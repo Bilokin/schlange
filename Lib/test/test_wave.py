@@ -8,12 +8,12 @@ import sys
 import wave
 
 
-class WaveTest(audiotests.AudioWriteTests,
+klasse WaveTest(audiotests.AudioWriteTests,
                audiotests.AudioTestsWithSourceFile):
     module = wave
 
 
-class WavePCM8Test(WaveTest, unittest.TestCase):
+klasse WavePCM8Test(WaveTest, unittest.TestCase):
     sndfilename = 'pluck-pcm8.wav'
     sndfilenframes = 3307
     nchannels = 2
@@ -30,7 +30,7 @@ class WavePCM8Test(WaveTest, unittest.TestCase):
       """)
 
 
-class WavePCM16Test(WaveTest, unittest.TestCase):
+klasse WavePCM16Test(WaveTest, unittest.TestCase):
     sndfilename = 'pluck-pcm16.wav'
     sndfilenframes = 3307
     nchannels = 2
@@ -51,7 +51,7 @@ class WavePCM16Test(WaveTest, unittest.TestCase):
         frames = wave._byteswap(frames, 2)
 
 
-class WavePCM24Test(WaveTest, unittest.TestCase):
+klasse WavePCM24Test(WaveTest, unittest.TestCase):
     sndfilename = 'pluck-pcm24.wav'
     sndfilenframes = 3307
     nchannels = 2
@@ -78,7 +78,7 @@ class WavePCM24Test(WaveTest, unittest.TestCase):
         frames = wave._byteswap(frames, 3)
 
 
-class WavePCM24ExtTest(WaveTest, unittest.TestCase):
+klasse WavePCM24ExtTest(WaveTest, unittest.TestCase):
     sndfilename = 'pluck-pcm24-ext.wav'
     sndfilenframes = 3307
     nchannels = 2
@@ -105,7 +105,7 @@ class WavePCM24ExtTest(WaveTest, unittest.TestCase):
         frames = wave._byteswap(frames, 3)
 
 
-class WavePCM32Test(WaveTest, unittest.TestCase):
+klasse WavePCM32Test(WaveTest, unittest.TestCase):
     sndfilename = 'pluck-pcm32.wav'
     sndfilenframes = 3307
     nchannels = 2
@@ -132,13 +132,13 @@ class WavePCM32Test(WaveTest, unittest.TestCase):
         frames = wave._byteswap(frames, 4)
 
 
-class MiscTestCase(unittest.TestCase):
+klasse MiscTestCase(unittest.TestCase):
     def test__all__(self):
         not_exported = {'WAVE_FORMAT_PCM', 'WAVE_FORMAT_EXTENSIBLE', 'KSDATAFORMAT_SUBTYPE_PCM'}
         support.check__all__(self, wave, not_exported=not_exported)
 
 
-class WaveLowLevelTest(unittest.TestCase):
+klasse WaveLowLevelTest(unittest.TestCase):
 
     def test_read_no_chunks(self):
         b = b'SPAM'

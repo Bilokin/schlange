@@ -112,7 +112,7 @@ def list_sort_worst_case(size: int, rand: random.Random) -> list[float]:
 # Benchmark
 # =========
 
-class Benchmark:
+klasse Benchmark:
     def __init__(self, name: str, size: int, seed: int) -> None:
         self._name = name
         self._size = size

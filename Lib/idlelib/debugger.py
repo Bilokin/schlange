@@ -26,7 +26,7 @@ from idlelib.scrolledlist import ScrolledList
 from idlelib.window import ListedToplevel
 
 
-class Idb(bdb.Bdb):
+klasse Idb(bdb.Bdb):
     "Supply user_line and user_exception functions for Bdb."
 
     def __init__(self, gui):
@@ -82,10 +82,10 @@ def _frame2message(frame):
     return message
 
 
-class Debugger:
+klasse Debugger:
     """The debugger interface.
 
-    This class handles the drawing of the debugger window and
+    This klasse handles the drawing of the debugger window and
     the interactions with the underlying debugger session.
     """
     vstack = None
@@ -421,7 +421,7 @@ class Debugger:
                 continue
 
 
-class StackViewer(ScrolledList):
+klasse StackViewer(ScrolledList):
     "Code stack viewer for debugger GUI."
 
     def __init__(self, master, flist, gui):
@@ -505,7 +505,7 @@ class StackViewer(ScrolledList):
                 edit.gotoline(lineno)
 
 
-class NamespaceViewer:
+klasse NamespaceViewer:
     "Global/local namespace viewer for debugger GUI."
 
     def __init__(self, master, title, odict=None):  # XXX odict never passed.

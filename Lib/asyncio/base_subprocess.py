@@ -10,7 +10,7 @@ from . import transports
 from .log import logger
 
 
-class BaseSubprocessTransport(transports.SubprocessTransport):
+klasse BaseSubprocessTransport(transports.SubprocessTransport):
 
     def __init__(self, loop, protocol, args, shell,
                  stdin, stdout, stderr, bufsize,
@@ -275,7 +275,7 @@ class BaseSubprocessTransport(transports.SubprocessTransport):
             self._protocol = None
 
 
-class WriteSubprocessPipeProto(protocols.BaseProtocol):
+klasse WriteSubprocessPipeProto(protocols.BaseProtocol):
 
     def __init__(self, proc, fd):
         self.proc = proc
@@ -301,7 +301,7 @@ class WriteSubprocessPipeProto(protocols.BaseProtocol):
         self.proc._protocol.resume_writing()
 
 
-class ReadSubprocessPipeProto(WriteSubprocessPipeProto,
+klasse ReadSubprocessPipeProto(WriteSubprocessPipeProto,
                               protocols.Protocol):
 
     def data_received(self, data):

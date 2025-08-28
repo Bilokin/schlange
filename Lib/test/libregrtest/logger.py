@@ -10,7 +10,7 @@ if MS_WINDOWS:
     from .win_utils import WindowsLoadTracker
 
 
-class Logger:
+klasse Logger:
     def __init__(self, results: TestResults, quiet: bool, pgo: bool):
         self.start_time = time.perf_counter()
         self.test_count_text = ''

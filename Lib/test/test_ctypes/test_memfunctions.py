@@ -10,7 +10,7 @@ from ctypes import (POINTER, sizeof, cast,
                     addressof, byref)
 
 
-class MemFunctionsTest(unittest.TestCase):
+klasse MemFunctionsTest(unittest.TestCase):
     def test_overflow(self):
         # string_at and wstring_at must use the Python calling
         # convention (which acquires the GIL and checks the Python

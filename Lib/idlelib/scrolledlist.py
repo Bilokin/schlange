@@ -4,7 +4,7 @@ from tkinter.ttk import Frame, Scrollbar
 from idlelib import macosx
 
 
-class ScrolledList:
+klasse ScrolledList:
 
     default = "(None)"
 
@@ -133,7 +133,7 @@ def _scrolled_list(parent):  # htest #
     x, y = map(int, parent.geometry().split('+')[1:])
     top.geometry("+%d+%d" % (x+200, y + 175))
 
-    class MyScrolledList(ScrolledList):
+    klasse MyScrolledList(ScrolledList):
         def fill_menu(self): self.menu.add_command(label="right click")
         def on_select(self, index): print("select", self.get(index))
         def on_double(self, index): print("double", self.get(index))

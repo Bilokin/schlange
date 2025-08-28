@@ -19,9 +19,9 @@ from ._support import StructCheckMixin
 _ctypes_test = import_helper.import_module("_ctypes_test")
 
 
-class StructureTestCase(unittest.TestCase, StructCheckMixin):
+klasse StructureTestCase(unittest.TestCase, StructCheckMixin):
     def test_packed(self):
-        class X(Structure):
+        klasse X(Structure):
             _fields_ = [("a", c_byte),
                         ("b", c_longlong)]
             _pack_ = 1
@@ -31,7 +31,7 @@ class StructureTestCase(unittest.TestCase, StructCheckMixin):
         self.assertEqual(sizeof(X), 9)
         self.assertEqual(X.b.offset, 1)
 
-        class X(Structure):
+        klasse X(Structure):
             _fields_ = [("a", c_byte),
                         ("b", c_longlong)]
             _pack_ = 2
@@ -43,7 +43,7 @@ class StructureTestCase(unittest.TestCase, StructCheckMixin):
         longlong_size = struct.calcsize("q")
         longlong_align = struct.calcsize("bq") - longlong_size
 
-        class X(Structure):
+        klasse X(Structure):
             _fields_ = [("a", c_byte),
                         ("b", c_longlong)]
             _pack_ = 4
@@ -52,7 +52,7 @@ class StructureTestCase(unittest.TestCase, StructCheckMixin):
         self.assertEqual(sizeof(X), min(4, longlong_align) + longlong_size)
         self.assertEqual(X.b.offset, min(4, longlong_align))
 
-        class X(Structure):
+        klasse X(Structure):
             _fields_ = [("a", c_byte),
                         ("b", c_longlong)]
             _pack_ = 8
@@ -63,7 +63,7 @@ class StructureTestCase(unittest.TestCase, StructCheckMixin):
         self.assertEqual(X.b.offset, min(8, longlong_align))
 
         with self.assertRaises(ValueError):
-            class X(Structure):
+            klasse X(Structure):
                 _fields_ = [("a", "b"), ("b", "q")]
                 _pack_ = -1
                 _layout_ = "ms"
@@ -73,19 +73,19 @@ class StructureTestCase(unittest.TestCase, StructCheckMixin):
         # Issue 15989
         import _testcapi
         with self.assertRaises(ValueError):
-            class X(Structure):
+            klasse X(Structure):
                 _fields_ = [("a", c_byte)]
                 _pack_ = _testcapi.INT_MAX + 1
                 _layout_ = "ms"
 
         with self.assertRaises(ValueError):
-            class X(Structure):
+            klasse X(Structure):
                 _fields_ = [("a", c_byte)]
                 _pack_ = _testcapi.UINT_MAX + 2
                 _layout_ = "ms"
 
     def test_initializers(self):
-        class Person(Structure):
+        klasse Person(Structure):
             _fields_ = [("name", c_char*6),
                         ("age", c_int)]
 
@@ -101,7 +101,7 @@ class StructureTestCase(unittest.TestCase, StructCheckMixin):
         self.assertRaises(ValueError, Person, b"1234567", 5)
 
     def test_conflicting_initializers(self):
-        class POINT(Structure):
+        klasse POINT(Structure):
             _fields_ = [("phi", c_float), ("rho", c_float)]
         self.check_struct(POINT)
         # conflicting positional and keyword args
@@ -112,7 +112,7 @@ class StructureTestCase(unittest.TestCase, StructCheckMixin):
         self.assertRaises(TypeError, POINT, 2, 3, 4)
 
     def test_keyword_initializers(self):
-        class POINT(Structure):
+        klasse POINT(Structure):
             _fields_ = [("x", c_int), ("y", c_int)]
         self.check_struct(POINT)
         pt = POINT(1, 2)
@@ -123,12 +123,12 @@ class StructureTestCase(unittest.TestCase, StructCheckMixin):
 
     def test_nested_initializers(self):
         # test initializing nested structures
-        class Phone(Structure):
+        klasse Phone(Structure):
             _fields_ = [("areacode", c_char*6),
                         ("number", c_char*12)]
         self.check_struct(Phone)
 
-        class Person(Structure):
+        klasse Person(Structure):
             _fields_ = [("name", c_char * 12),
                         ("phone", Phone),
                         ("age", c_int)]
@@ -142,7 +142,7 @@ class StructureTestCase(unittest.TestCase, StructCheckMixin):
         self.assertEqual(p.age, 5)
 
     def test_structures_with_wchar(self):
-        class PersonW(Structure):
+        klasse PersonW(Structure):
             _fields_ = [("name", c_wchar * 12),
                         ("age", c_int)]
         self.check_struct(PersonW)
@@ -158,12 +158,12 @@ class StructureTestCase(unittest.TestCase, StructCheckMixin):
         self.assertRaises(ValueError, PersonW, "1234567890123")
 
     def test_init_errors(self):
-        class Phone(Structure):
+        klasse Phone(Structure):
             _fields_ = [("areacode", c_char*6),
                         ("number", c_char*12)]
         self.check_struct(Phone)
 
-        class Person(Structure):
+        klasse Person(Structure):
             _fields_ = [("name", c_char * 12),
                         ("phone", Phone),
                         ("age", c_int)]
@@ -188,19 +188,19 @@ class StructureTestCase(unittest.TestCase, StructCheckMixin):
 
     def test_positional_args(self):
         # see also http://bugs.python.org/issue5042
-        class W(Structure):
+        klasse W(Structure):
             _fields_ = [("a", c_int), ("b", c_int)]
         self.check_struct(W)
 
-        class X(W):
+        klasse X(W):
             _fields_ = [("c", c_int)]
         self.check_struct(X)
 
-        class Y(X):
+        klasse Y(X):
             pass
         self.check_struct(Y)
 
-        class Z(Y):
+        klasse Z(Y):
             _fields_ = [("d", c_int), ("e", c_int), ("f", c_int)]
         self.check_struct(Z)
 
@@ -215,7 +215,7 @@ class StructureTestCase(unittest.TestCase, StructCheckMixin):
     def test_pass_by_value(self):
         # This should mirror the Test structure
         # in Modules/_ctypes/_ctypes_test.c
-        class Test(Structure):
+        klasse Test(Structure):
             _fields_ = [
                 ('first', c_ulong),
                 ('second', c_ulong),
@@ -243,7 +243,7 @@ class StructureTestCase(unittest.TestCase, StructCheckMixin):
 
         finalizer_calls = []
 
-        class Test(Structure):
+        klasse Test(Structure):
             _fields_ = [
                 ('first', c_ulong),
                 ('second', c_ulong),
@@ -276,7 +276,7 @@ class StructureTestCase(unittest.TestCase, StructCheckMixin):
         self.assertEqual(finalizer_calls, ["called"])
 
     def test_pass_by_value_in_register(self):
-        class X(Structure):
+        klasse X(Structure):
             _fields_ = [
                 ('first', c_uint),
                 ('second', c_uint)
@@ -303,7 +303,7 @@ class StructureTestCase(unittest.TestCase, StructCheckMixin):
         # Regression tests for gh-62260
 
         # The call to atan2() should succeed if the
-        # class fields were correctly cloned in the
+        # klasse fields were correctly cloned in the
         # subclasses. Otherwise, it will segfault.
         if sys.platform == 'win32':
             libm = CDLL(find_library('msvcrt.dll'))
@@ -322,14 +322,14 @@ class StructureTestCase(unittest.TestCase, StructCheckMixin):
         # This test case calls
         # PyCStructUnionType_update_stginfo() for each
         # _fields_ assignment, and PyCStgInfo_clone()
-        # for the Mid and Vector class definitions.
-        class Base(Structure):
+        # for the Mid and Vector klasse definitions.
+        klasse Base(Structure):
             _fields_ = [('y', c_double),
                         ('x', c_double)]
-        class Mid(Base):
+        klasse Mid(Base):
             pass
         Mid._fields_ = []
-        class Vector(Mid): pass
+        klasse Vector(Mid): pass
         self._test_issue18060(Vector)
 
     @unittest.skipIf(_architecture() == ('64bit', 'WindowsPE'), "can't test Windows x64 build")
@@ -338,12 +338,12 @@ class StructureTestCase(unittest.TestCase, StructCheckMixin):
         # This test case calls
         # PyCStructUnionType_update_stginfo() for each
         # _fields_ assignment.
-        class Base(Structure):
+        klasse Base(Structure):
             _fields_ = [('y', c_double),
                         ('x', c_double)]
-        class Mid(Base):
+        klasse Mid(Base):
             _fields_ = []
-        class Vector(Mid):
+        klasse Vector(Mid):
             _fields_ = []
         self._test_issue18060(Vector)
 
@@ -353,11 +353,11 @@ class StructureTestCase(unittest.TestCase, StructCheckMixin):
         # This test case calls
         # PyCStructUnionType_update_stginfo() for each
         # _fields_ assignment.
-        class Base(Structure):
+        klasse Base(Structure):
             _fields_ = [('y', c_double)]
-        class Mid(Base):
+        klasse Mid(Base):
             _fields_ = []
-        class Vector(Mid):
+        klasse Vector(Mid):
             _fields_ = [('x', c_double)]
         self._test_issue18060(Vector)
 
@@ -368,43 +368,43 @@ class StructureTestCase(unittest.TestCase, StructCheckMixin):
         dll = CDLL(_ctypes_test.__file__)
 
         # These should mirror the structures in Modules/_ctypes/_ctypes_test.c
-        class Test2(Structure):
+        klasse Test2(Structure):
             _fields_ = [
                 ('data', c_ubyte * 16),
             ]
         self.check_struct(Test2)
 
-        class Test3AParent(Structure):
+        klasse Test3AParent(Structure):
             _fields_ = [
                 ('data', c_float * 2),
             ]
         self.check_struct(Test3AParent)
 
-        class Test3A(Test3AParent):
+        klasse Test3A(Test3AParent):
             _fields_ = [
                 ('more_data', c_float * 2),
             ]
         self.check_struct(Test3A)
 
-        class Test3B(Structure):
+        klasse Test3B(Structure):
             _fields_ = [
                 ('data', c_double * 2),
             ]
         self.check_struct(Test3B)
 
-        class Test3C(Structure):
+        klasse Test3C(Structure):
             _fields_ = [
                 ("data", c_double * 4)
             ]
         self.check_struct(Test3C)
 
-        class Test3D(Structure):
+        klasse Test3D(Structure):
             _fields_ = [
                 ("data", c_double * 8)
             ]
         self.check_struct(Test3D)
 
-        class Test3E(Structure):
+        klasse Test3E(Structure):
             _fields_ = [
                 ("data", c_double * 9)
             ]
@@ -501,7 +501,7 @@ class StructureTestCase(unittest.TestCase, StructCheckMixin):
 
     def test_38368(self):
         # Regression test for gh-82549
-        class U(Union):
+        klasse U(Union):
             _fields_ = [
                 ('f1', c_uint8 * 16),
                 ('f2', c_uint16 * 8),
@@ -530,28 +530,28 @@ class StructureTestCase(unittest.TestCase, StructCheckMixin):
 
         # These should mirror the structures in Modules/_ctypes/_ctypes_test.c
 
-        class Nested1(Structure):
+        klasse Nested1(Structure):
             _fields_ = [
                 ('an_int', c_int),
                 ('another_int', c_int),
             ]
         self.check_struct(Nested1)
 
-        class Test4(Union):
+        klasse Test4(Union):
             _fields_ = [
                 ('a_long', c_long),
                 ('a_struct', Nested1),
             ]
         self.check_struct(Test4)
 
-        class Nested2(Structure):
+        klasse Nested2(Structure):
             _fields_ = [
                 ('an_int', c_int),
                 ('a_union', Test4),
             ]
         self.check_struct(Nested2)
 
-        class Test5(Structure):
+        klasse Test5(Structure):
             _fields_ = [
                 ('an_int', c_int),
                 ('nested', Nested2),
@@ -615,7 +615,7 @@ class StructureTestCase(unittest.TestCase, StructCheckMixin):
 
         # These should mirror the structures in Modules/_ctypes/_ctypes_test.c
 
-        class Test6(Structure):
+        klasse Test6(Structure):
             _fields_ = [
                 ('A', c_int, 1),
                 ('B', c_int, 2),
@@ -651,7 +651,7 @@ class StructureTestCase(unittest.TestCase, StructCheckMixin):
         self.assertEqual(test6.C, 0)
         self.assertEqual(test6.D, 0)
 
-        class Test7(Structure):
+        klasse Test7(Structure):
             _fields_ = [
                 ('A', c_uint, 1),
                 ('B', c_uint, 2),
@@ -676,7 +676,7 @@ class StructureTestCase(unittest.TestCase, StructCheckMixin):
         self.assertEqual(test7.D, 0)
 
         # for a union with bitfields, the union check happens first
-        class Test8(Union):
+        klasse Test8(Union):
             _fields_ = [
                 ('A', c_int, 1),
                 ('B', c_int, 2),
@@ -696,20 +696,20 @@ class StructureTestCase(unittest.TestCase, StructCheckMixin):
 
     def test_do_not_share_pointer_type_cache_via_stginfo_clone(self):
         # This test case calls PyCStgInfo_clone()
-        # for the Mid and Vector class definitions
+        # for the Mid and Vector klasse definitions
         # and checks that pointer_type cache not shared
         # between subclasses.
-        class Base(Structure):
+        klasse Base(Structure):
             _fields_ = [('y', c_double),
                         ('x', c_double)]
         base_ptr = POINTER(Base)
 
-        class Mid(Base):
+        klasse Mid(Base):
             pass
         Mid._fields_ = []
         mid_ptr = POINTER(Mid)
 
-        class Vector(Mid):
+        klasse Vector(Mid):
             pass
 
         vector_ptr = POINTER(Vector)

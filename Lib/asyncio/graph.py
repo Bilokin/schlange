@@ -26,12 +26,12 @@ __all__ = (
 
 
 @dataclasses.dataclass(frozen=True, slots=True)
-class FrameCallGraphEntry:
+klasse FrameCallGraphEntry:
     frame: types.FrameType
 
 
 @dataclasses.dataclass(frozen=True, slots=True)
-class FutureCallGraph:
+klasse FutureCallGraph:
     future: futures.Future
     call_stack: tuple["FrameCallGraphEntry", ...]
     awaited_by: tuple["FutureCallGraph", ...]

@@ -5,7 +5,7 @@ XXX TO DO:
 - reparse when source changed (maybe just a button would be OK?)
     (or recheck on window popup)
 - add popup menu with more options (e.g. doc strings, base classes, imports)
-- add base classes to class browser tree
+- add base classes to klasse browser tree
 """
 
 import os
@@ -37,7 +37,7 @@ def transform_children(child_dict, modname=None):
 
     The dictionary maps names to pyclbr information objects.
     Filter out imported objects.
-    Augment class names with bases.
+    Augment klasse names with bases.
     The insertion order of the dictionary is assumed to have been in line
     number order, so sorting is not necessary.
 
@@ -64,10 +64,10 @@ def transform_children(child_dict, modname=None):
     return obs
 
 
-class ModuleBrowser:
+klasse ModuleBrowser:
     """Browse module classes and functions in IDLE.
     """
-    # This class is also the base class for pathbrowser.PathBrowser.
+    # This klasse is also the base klasse for pathbrowser.PathBrowser.
     # Init and close are inherited, other methods are overridden.
     # PathBrowser.__init__ does not call __init__ below.
 
@@ -141,7 +141,7 @@ class ModuleBrowser:
         return ModuleBrowserTreeItem(self.path)
 
 
-class ModuleBrowserTreeItem(TreeItem):
+klasse ModuleBrowserTreeItem(TreeItem):
     """Browser tree for Python module.
 
     Uses TreeItem as the basis for the structure of the tree.
@@ -193,7 +193,7 @@ class ModuleBrowserTreeItem(TreeItem):
         return transform_children(tree, name)
 
 
-class ChildBrowserTreeItem(TreeItem):
+klasse ChildBrowserTreeItem(TreeItem):
     """Browser tree for child nodes within the module.
 
     Uses TreeItem as the basis for the structure of the tree.
@@ -244,10 +244,10 @@ def _module_browser(parent): # htest #
     else:
         file = __file__
         # Add nested objects for htest.
-        class Nested_in_func(TreeNode):
+        klasse Nested_in_func(TreeNode):
             def nested_in_class(): pass
         def closure():
-            class Nested_in_closure: pass
+            klasse Nested_in_closure: pass
     ModuleBrowser(parent, file, _htest=True)
 
 

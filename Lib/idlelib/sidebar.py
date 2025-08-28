@@ -64,8 +64,8 @@ def temp_enable_text_widget(text):
         text.configure(state=tk.DISABLED)
 
 
-class BaseSideBar:
-    """A base class for sidebars using Text."""
+klasse BaseSideBar:
+    """A base klasse for sidebars using Text."""
     def __init__(self, editwin):
         self.editwin = editwin
         self.parent = editwin.text_frame
@@ -262,7 +262,7 @@ class BaseSideBar:
         self.main_widget.bind('<B1-Enter>', b1_enter_handler)
 
 
-class EndLineDelegator(Delegator):
+klasse EndLineDelegator(Delegator):
     """Generate callbacks with the current end line number.
 
     The provided callback is called after every insert and delete.
@@ -280,7 +280,7 @@ class EndLineDelegator(Delegator):
         self.changed_callback(get_end_linenumber(self.delegate))
 
 
-class LineNumbers(BaseSideBar):
+klasse LineNumbers(BaseSideBar):
     """Line numbers support for editor windows."""
     def __init__(self, editwin):
         super().__init__(editwin)
@@ -360,7 +360,7 @@ class LineNumbers(BaseSideBar):
         return 'break'
 
 
-class WrappedLineHeightChangeDelegator(Delegator):
+klasse WrappedLineHeightChangeDelegator(Delegator):
     def __init__(self, callback):
         """
         callback - Callable, will be called when an insert, delete or replace
@@ -401,7 +401,7 @@ class WrappedLineHeightChangeDelegator(Delegator):
         self.callback()
 
 
-class ShellSidebar(BaseSideBar):
+klasse ShellSidebar(BaseSideBar):
     """Sidebar for the PyShell window, for prompts etc."""
     def __init__(self, editwin):
         self.canvas = None

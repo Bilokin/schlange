@@ -18,11 +18,11 @@ _testcapi = import_helper.import_module('_testcapi')
 
 NULL = None
 
-class CustomError(Exception):
+klasse CustomError(Exception):
     pass
 
 
-class Test_Exceptions(unittest.TestCase):
+klasse Test_Exceptions(unittest.TestCase):
 
     def test_exception(self):
         raised_exception = ValueError("5")
@@ -92,7 +92,7 @@ class Test_Exceptions(unittest.TestCase):
         code = textwrap.dedent('''\
             import _testcapi
 
-            class Foo:
+            klasse Foo:
                 def foo(self):
                     _testcapi.function_set_warning()
                 def __del__(self):
@@ -109,7 +109,7 @@ class Test_Exceptions(unittest.TestCase):
         ])
 
 
-class Test_FatalError(unittest.TestCase):
+klasse Test_FatalError(unittest.TestCase):
 
     def check_fatal_error(self, code, expected, not_expected=()):
         with support.SuppressCrashReport():
@@ -152,7 +152,7 @@ class Test_FatalError(unittest.TestCase):
         self.check_fatal_error(code, expected)
 
 
-class Test_ErrSetAndRestore(unittest.TestCase):
+klasse Test_ErrSetAndRestore(unittest.TestCase):
 
     def test_err_set_raised(self):
         with self.assertRaises(ValueError):
@@ -209,18 +209,18 @@ class Test_ErrSetAndRestore(unittest.TestCase):
             _testcapi.exc_set_object(OSError, PermissionError(24))
         self.assertEqual(e.exception.args, (24,))
 
-        class Meta(type):
+        klasse Meta(type):
             def __subclasscheck__(cls, sub):
                 1/0
 
-        class Broken(Exception, metaclass=Meta):
+        klasse Broken(Exception, metaclass=Meta):
             pass
 
         with self.assertRaises(ZeroDivisionError) as e:
             _testcapi.exc_set_object(Broken, Broken())
 
     def test_set_object_and_fetch(self):
-        class Broken(Exception):
+        klasse Broken(Exception):
             def __init__(self, *arg):
                 raise ValueError("Broken __init__")
 
@@ -229,7 +229,7 @@ class Test_ErrSetAndRestore(unittest.TestCase):
         self.assertEqual(exc.__notes__[0],
                          "Normalization failed: type=Broken args='abcd'")
 
-        class BadArg:
+        klasse BadArg:
             def __repr__(self):
                 raise TypeError('Broken arg type')
 
@@ -421,15 +421,15 @@ class Test_ErrSetAndRestore(unittest.TestCase):
         # CRASHES formatunraisable(NULL, NULL)
 
 
-class TestUnicodeTranslateError(UnicodeTranslateError):
+klasse TestUnicodeTranslateError(UnicodeTranslateError):
     # UnicodeTranslateError takes 4 arguments instead of 5,
-    # so we just make a UnicodeTranslateError class that is
+    # so we just make a UnicodeTranslateError klasse that is
     # compatible with the UnicodeError.__init__.
     def __init__(self, encoding, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
 
-class TestUnicodeError(unittest.TestCase):
+klasse TestUnicodeError(unittest.TestCase):
 
     def _check_no_crash(self, exc):
         # ensure that the __str__() method does not crash
@@ -571,7 +571,7 @@ class TestUnicodeError(unittest.TestCase):
                 self._check_no_crash(exc)
 
 
-class Test_PyUnstable_Exc_PrepReraiseStar(ExceptionIsLikeMixin, unittest.TestCase):
+klasse Test_PyUnstable_Exc_PrepReraiseStar(ExceptionIsLikeMixin, unittest.TestCase):
 
     def setUp(self):
         super().setUp()

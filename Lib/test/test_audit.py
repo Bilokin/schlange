@@ -15,7 +15,7 @@ if not hasattr(sys, "addaudithook") or not hasattr(sys, "audit"):
 AUDIT_TESTS_PY = support.findfile("audit-tests.py")
 
 
-class AuditTest(unittest.TestCase):
+klasse AuditTest(unittest.TestCase):
     maxDiff = None
 
     @support.requires_subprocess()

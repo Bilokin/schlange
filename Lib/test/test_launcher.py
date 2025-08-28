@@ -146,7 +146,7 @@ def is_installed(tag):
     return False
 
 
-class PreservePyIni:
+klasse PreservePyIni:
     def __init__(self, path, content):
         self.path = Path(path)
         self.content = content
@@ -166,7 +166,7 @@ class PreservePyIni:
             self.path.write_bytes(self._preserved)
 
 
-class RunPyMixin:
+klasse RunPyMixin:
     py_exe = None
 
     @classmethod
@@ -292,7 +292,7 @@ class RunPyMixin:
             shutil.rmtree(venv)
 
 
-class TestLauncher(unittest.TestCase, RunPyMixin):
+klasse TestLauncher(unittest.TestCase, RunPyMixin):
     @classmethod
     def setUpClass(cls):
         with winreg.CreateKey(winreg.HKEY_CURRENT_USER, rf"Software\Python") as key:

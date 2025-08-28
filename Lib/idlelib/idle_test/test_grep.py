@@ -13,7 +13,7 @@ import os
 import re
 
 
-class Dummy_searchengine:
+klasse Dummy_searchengine:
     '''GrepDialog.__init__ calls parent SearchDiabolBase which attaches the
     passed in SearchEngine instance as attribute 'engine'. Only a few of the
     many possible self.engine.x attributes are needed here.
@@ -24,7 +24,7 @@ class Dummy_searchengine:
 searchengine = Dummy_searchengine()
 
 
-class Dummy_grep:
+klasse Dummy_grep:
     # Methods tested
     #default_command = GrepDialog.default_command
     grep_it = grep.GrepDialog.grep_it
@@ -37,7 +37,7 @@ class Dummy_grep:
 _grep = Dummy_grep()
 
 
-class FindfilesTest(unittest.TestCase):
+klasse FindfilesTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -115,7 +115,7 @@ class FindfilesTest(unittest.TestCase):
         self.assertIn(self.realpath, filelist)
 
 
-class Grep_itTest(unittest.TestCase):
+klasse Grep_itTest(unittest.TestCase):
     # Test captured reports with 0 and some hits.
     # Should test file names, but Windows reports have mixed / and \ separators
     # from incomplete replacement, so 'later'.
@@ -146,9 +146,9 @@ class Grep_itTest(unittest.TestCase):
         self.assertStartsWith(lines[4], '(Hint:')
 
 
-class Default_commandTest(unittest.TestCase):
+klasse Default_commandTest(unittest.TestCase):
     # To write this, move outwin import to top of GrepDialog
-    # so it can be replaced by captured_stdout in class setup/teardown.
+    # so it can be replaced by captured_stdout in klasse setup/teardown.
     pass
 
 

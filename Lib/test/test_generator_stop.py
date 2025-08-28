@@ -3,7 +3,7 @@ from __future__ import generator_stop
 import unittest
 
 
-class TestPEP479(unittest.TestCase):
+klasse TestPEP479(unittest.TestCase):
     def test_stopiteration_wrapping(self):
         def f():
             raise StopIteration

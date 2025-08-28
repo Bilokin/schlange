@@ -44,7 +44,7 @@ except ImportError:
 
 support.requires_working_socket(module=True)
 
-class NoLogRequestHandler:
+klasse NoLogRequestHandler:
     def log_message(self, *args):
         # don't write log messages to stderr
         pass
@@ -53,7 +53,7 @@ class NoLogRequestHandler:
         return ''
 
 
-class DummyRequestHandler(NoLogRequestHandler, SimpleHTTPRequestHandler):
+klasse DummyRequestHandler(NoLogRequestHandler, SimpleHTTPRequestHandler):
     pass
 
 
@@ -71,7 +71,7 @@ def create_https_server(
     )
 
 
-class TestSSLDisabled(unittest.TestCase):
+klasse TestSSLDisabled(unittest.TestCase):
     def test_https_server_raises_runtime_error(self):
         with import_helper.isolated_modules():
             sys.modules['ssl'] = None
@@ -80,7 +80,7 @@ class TestSSLDisabled(unittest.TestCase):
                 create_https_server(certfile)
 
 
-class TestServerThread(threading.Thread):
+klasse TestServerThread(threading.Thread):
     def __init__(self, test_object, request_handler, tls=None):
         threading.Thread.__init__(self)
         self.request_handler = request_handler
@@ -109,7 +109,7 @@ class TestServerThread(threading.Thread):
         self.join()
 
 
-class BaseTestCase(unittest.TestCase):
+klasse BaseTestCase(unittest.TestCase):
 
     # Optional tuple (certfile, keyfile, password) to use for HTTPS servers.
     tls = None
@@ -134,8 +134,8 @@ class BaseTestCase(unittest.TestCase):
         return self.connection.getresponse()
 
 
-class BaseHTTPServerTestCase(BaseTestCase):
-    class request_handler(NoLogRequestHandler, BaseHTTPRequestHandler):
+klasse BaseHTTPServerTestCase(BaseTestCase):
+    klasse request_handler(NoLogRequestHandler, BaseHTTPRequestHandler):
         protocol_version = 'HTTP/1.1'
         default_request_version = 'HTTP/1.1'
 
@@ -367,7 +367,7 @@ def certdata_file(*path):
 
 
 @unittest.skipIf(ssl is None, "requires ssl")
-class BaseHTTPSServerTestCase(BaseTestCase):
+klasse BaseHTTPSServerTestCase(BaseTestCase):
     CERTFILE = certdata_file("keycert.pem")
     ONLYCERT = certdata_file("ssl_cert.pem")
     ONLYKEY = certdata_file("ssl_key.pem")
@@ -430,8 +430,8 @@ class BaseHTTPSServerTestCase(BaseTestCase):
                     create_https_server(certfile, keyfile, password)
 
 
-class RequestHandlerLoggingTestCase(BaseTestCase):
-    class request_handler(BaseHTTPRequestHandler):
+klasse RequestHandlerLoggingTestCase(BaseTestCase):
+    klasse request_handler(BaseHTTPRequestHandler):
         protocol_version = 'HTTP/1.1'
         default_request_version = 'HTTP/1.1'
 
@@ -465,8 +465,8 @@ class RequestHandlerLoggingTestCase(BaseTestCase):
         self.assertEndsWith(lines[1], '"ERROR / HTTP/1.1" 404 -')
 
 
-class SimpleHTTPServerTestCase(BaseTestCase):
-    class request_handler(NoLogRequestHandler, SimpleHTTPRequestHandler):
+klasse SimpleHTTPServerTestCase(BaseTestCase):
+    klasse request_handler(NoLogRequestHandler, SimpleHTTPRequestHandler):
         pass
 
     def setUp(self):
@@ -824,7 +824,7 @@ class SimpleHTTPServerTestCase(BaseTestCase):
                          self.tempdir_name + "/?hi=1")
 
 
-class SocketlessRequestHandler(SimpleHTTPRequestHandler):
+klasse SocketlessRequestHandler(SimpleHTTPRequestHandler):
     def __init__(self, directory=None):
         request = mock.Mock()
         request.makefile.return_value = BytesIO()
@@ -844,13 +844,13 @@ class SocketlessRequestHandler(SimpleHTTPRequestHandler):
         pass
 
 
-class RejectingSocketlessRequestHandler(SocketlessRequestHandler):
+klasse RejectingSocketlessRequestHandler(SocketlessRequestHandler):
     def handle_expect_100(self):
         self.send_error(HTTPStatus.EXPECTATION_FAILED)
         return False
 
 
-class AuditableBytesIO:
+klasse AuditableBytesIO:
 
     def __init__(self):
         self.datas = []
@@ -866,7 +866,7 @@ class AuditableBytesIO:
         return len(self.datas)
 
 
-class BaseHTTPRequestHandlerTestCase(unittest.TestCase):
+klasse BaseHTTPRequestHandlerTestCase(unittest.TestCase):
     """Test the functionality of the BaseHTTPServer.
 
        Test the support for the Expect 100-continue header.
@@ -898,7 +898,7 @@ class BaseHTTPRequestHandlerTestCase(unittest.TestCase):
         self.assertIsNotNone(match)
 
     def test_unprintable_not_logged(self):
-        # We call the method from the class directly as our Socketless
+        # We call the method from the klasse directly as our Socketless
         # Handler subclass overrode it... nice for everything BUT this test.
         self.handler.client_address = ('127.0.0.1', 1337)
         log_message = BaseHTTPRequestHandler.log_message
@@ -1122,7 +1122,7 @@ class BaseHTTPRequestHandlerTestCase(unittest.TestCase):
         self.assertEqual(self.handler.date_time_string(timestamp=now), expected)
 
 
-class SimpleHTTPRequestHandlerTestCase(unittest.TestCase):
+klasse SimpleHTTPRequestHandlerTestCase(unittest.TestCase):
     """ Test url parsing """
     def setUp(self):
         self.translated_1 = os.path.join(os.getcwd(), 'filename')
@@ -1212,7 +1212,7 @@ class SimpleHTTPRequestHandlerTestCase(unittest.TestCase):
             self.assertEqual(path, self.translated_3)
 
 
-class MiscTestCase(unittest.TestCase):
+klasse MiscTestCase(unittest.TestCase):
     def test_all(self):
         expected = []
         denylist = {'executable', 'nobody_uid', 'test'}
@@ -1225,7 +1225,7 @@ class MiscTestCase(unittest.TestCase):
         self.assertCountEqual(server.__all__, expected)
 
 
-class ScriptTestCase(unittest.TestCase):
+klasse ScriptTestCase(unittest.TestCase):
 
     def mock_server_class(self):
         return mock.MagicMock(
@@ -1285,7 +1285,7 @@ class ScriptTestCase(unittest.TestCase):
             self.assertEqual(mock_server.address_family, socket.AF_INET)
 
 
-class CommandLineTestCase(unittest.TestCase):
+klasse CommandLineTestCase(unittest.TestCase):
     default_port = 8000
     default_bind = None
     default_protocol = 'HTTP/1.0'
@@ -1455,7 +1455,7 @@ class CommandLineTestCase(unittest.TestCase):
         self.assertIn('error', stderr.getvalue())
 
 
-class CommandLineRunTimeTestCase(unittest.TestCase):
+klasse CommandLineRunTimeTestCase(unittest.TestCase):
     served_data = os.urandom(32)
     served_filename = 'served_filename'
     tls_cert = certdata_file('ssl_cert.pem')

@@ -14,7 +14,7 @@ T_IV2 = InitVar[int]
 T_IV3 = InitVar
 
 @dataclass
-class CV:
+klasse CV:
     T_CV4 = ClassVar
     cv0: ClassVar[int] = 20
     cv1: ClassVar = 30
@@ -23,7 +23,7 @@ class CV:
     not_cv4: T_CV4  # When using string annotations, this field is not recognized as a ClassVar.
 
 @dataclass
-class IV:
+klasse IV:
     T_IV4 = InitVar
     iv0: InitVar[int]
     iv1: InitVar

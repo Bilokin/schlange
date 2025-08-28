@@ -33,9 +33,9 @@ def _register(abstract_cls, *classes):
             abstract_cls.register(frozen_cls)
 
 
-class MetaPathFinder(metaclass=abc.ABCMeta):
+klasse MetaPathFinder(metaclass=abc.ABCMeta):
 
-    """Abstract base class for import finders on sys.meta_path."""
+    """Abstract base klasse for import finders on sys.meta_path."""
 
     # We don't define find_spec() here since that would break
     # hasattr checks we do to support backward compatibility.
@@ -49,9 +49,9 @@ _register(MetaPathFinder, machinery.BuiltinImporter, machinery.FrozenImporter,
           machinery.PathFinder, machinery.WindowsRegistryFinder)
 
 
-class PathEntryFinder(metaclass=abc.ABCMeta):
+klasse PathEntryFinder(metaclass=abc.ABCMeta):
 
-    """Abstract base class for path entry finders used by PathFinder."""
+    """Abstract base klasse for path entry finders used by PathFinder."""
 
     def invalidate_caches(self):
         """An optional method for clearing the finder's cache, if any.
@@ -61,9 +61,9 @@ class PathEntryFinder(metaclass=abc.ABCMeta):
 _register(PathEntryFinder, machinery.FileFinder)
 
 
-class ResourceLoader(Loader):
+klasse ResourceLoader(Loader):
 
-    """Abstract base class for loaders which can return data from their
+    """Abstract base klasse for loaders which can return data from their
     back-end storage to facilitate reading data to perform an import.
 
     This ABC represents one of the optional protocols specified by PEP 302.
@@ -80,9 +80,9 @@ class ResourceLoader(Loader):
         raise OSError
 
 
-class InspectLoader(Loader):
+klasse InspectLoader(Loader):
 
-    """Abstract base class for loaders which support inspection about the
+    """Abstract base klasse for loaders which support inspection about the
     modules they can load.
 
     This ABC represents one of the optional protocols specified by PEP 302.
@@ -133,9 +133,9 @@ class InspectLoader(Loader):
 _register(InspectLoader, machinery.BuiltinImporter, machinery.FrozenImporter, machinery.NamespaceLoader)
 
 
-class ExecutionLoader(InspectLoader):
+klasse ExecutionLoader(InspectLoader):
 
-    """Abstract base class for loaders that wish to support the execution of
+    """Abstract base klasse for loaders that wish to support the execution of
     modules as scripts.
 
     This ABC represents one of the optional protocols specified in PEP 302.
@@ -174,18 +174,18 @@ _register(
 )
 
 
-class FileLoader(_bootstrap_external.FileLoader, ResourceLoader, ExecutionLoader):
+klasse FileLoader(_bootstrap_external.FileLoader, ResourceLoader, ExecutionLoader):
 
-    """Abstract base class partially implementing the ResourceLoader and
+    """Abstract base klasse partially implementing the ResourceLoader and
     ExecutionLoader ABCs."""
 
 _register(FileLoader, machinery.SourceFileLoader,
             machinery.SourcelessFileLoader)
 
 
-class SourceLoader(_bootstrap_external.SourceLoader, ResourceLoader, ExecutionLoader):
+klasse SourceLoader(_bootstrap_external.SourceLoader, ResourceLoader, ExecutionLoader):
 
-    """Abstract base class for loading source code (and optionally any
+    """Abstract base klasse for loading source code (and optionally any
     corresponding bytecode).
 
     To support loading from source code, the abstractmethods inherited from

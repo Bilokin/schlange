@@ -19,7 +19,7 @@ size = 2_500_000_000
 TESTFN2 = TESTFN + '2'
 
 
-class LargeFileTest:
+klasse LargeFileTest:
 
     def setUp(self):
         if os.path.exists(TESTFN):
@@ -51,7 +51,7 @@ class LargeFileTest:
         unlink(TESTFN2)
 
 
-class TestFileMethods(LargeFileTest):
+klasse TestFileMethods(LargeFileTest):
     """Test that each file function works as expected for large
     (i.e. > 2 GiB) files.
     """
@@ -185,7 +185,7 @@ def skip_no_disk_space(path, required):
     return decorator
 
 
-class TestCopyfile(LargeFileTest, unittest.TestCase):
+klasse TestCopyfile(LargeFileTest, unittest.TestCase):
     open = staticmethod(io.open)
 
     # Exact required disk space would be (size * 2), but let's give it a
@@ -205,7 +205,7 @@ class TestCopyfile(LargeFileTest, unittest.TestCase):
 
 
 @unittest.skipIf(not hasattr(os, 'sendfile'), 'sendfile not supported')
-class TestSocketSendfile(LargeFileTest, unittest.TestCase):
+klasse TestSocketSendfile(LargeFileTest, unittest.TestCase):
     open = staticmethod(io.open)
     timeout = SHORT_TIMEOUT
 
@@ -295,11 +295,11 @@ def setUpModule():
             unlink(TESTFN)
 
 
-class CLargeFileTest(TestFileMethods, unittest.TestCase):
+klasse CLargeFileTest(TestFileMethods, unittest.TestCase):
     open = staticmethod(io.open)
 
 
-class PyLargeFileTest(TestFileMethods, unittest.TestCase):
+klasse PyLargeFileTest(TestFileMethods, unittest.TestCase):
     open = staticmethod(pyio.open)
 
 

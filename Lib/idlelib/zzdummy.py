@@ -23,7 +23,7 @@ def format_selection(format_line):
     return apply
 
 
-class ZzDummy:
+klasse ZzDummy:
     """Prepend or remove initial text from selected lines."""
 
     # Extend the format menu.
@@ -42,7 +42,7 @@ class ZzDummy:
 
     @classmethod
     def reload(cls):
-        "Load class variables from config."
+        "Load klasse variables from config."
         cls.ztext = idleConf.GetOption('extensions', 'ZzDummy', 'z-text')
 
     @format_selection

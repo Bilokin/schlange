@@ -8,7 +8,7 @@ import xml.dom
 from xml.dom.minicompat import *
 
 
-class EmptyNodeListTestCase(unittest.TestCase):
+klasse EmptyNodeListTestCase(unittest.TestCase):
     """Tests for the EmptyNodeList class."""
 
     def test_emptynodelist_item(self):
@@ -40,7 +40,7 @@ class EmptyNodeListTestCase(unittest.TestCase):
         self.assertEqual(node_list, [1,2])
 
 
-class NodeListTestCase(unittest.TestCase):
+klasse NodeListTestCase(unittest.TestCase):
     """Tests for the NodeList class."""
 
     def test_nodelist_item(self):

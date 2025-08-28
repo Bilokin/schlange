@@ -30,7 +30,7 @@ __all__ = [
 linesep_splitter = re.compile(r'\n|\r\n?')
 
 @_extend_docstrings
-class EmailPolicy(Policy):
+klasse EmailPolicy(Policy):
 
     """+
     PROVISIONAL
@@ -105,15 +105,15 @@ class EmailPolicy(Policy):
 
     def header_max_count(self, name):
         """+
-        The implementation for this class returns the max_count attribute from
-        the specialized header class that would be used to construct a header
+        The implementation for this klasse returns the max_count attribute from
+        the specialized header klasse that would be used to construct a header
         of type 'name'.
         """
         return self.header_factory[name].max_count
 
     # The logic of the next three methods is chosen such that it is possible to
     # switch a Message object between a Compat32 policy and a policy derived
-    # from this class and have the results stay consistent.  This allows a
+    # from this klasse and have the results stay consistent.  This allows a
     # Message object constructed with this policy to be passed to a library
     # that only handles Compat32 objects, or to receive such an object and
     # convert it to use the newer style by just changing its policy.  It is
@@ -231,7 +231,7 @@ class EmailPolicy(Policy):
 
 
 default = EmailPolicy()
-# Make the default policy use the class default header_factory
+# Make the default policy use the klasse default header_factory
 del default.header_factory
 strict = default.clone(raise_on_defect=True)
 SMTP = default.clone(linesep='\r\n')

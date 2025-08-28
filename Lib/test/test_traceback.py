@@ -47,7 +47,7 @@ colors = {
 LEVENSHTEIN_DATA_FILE = Path(__file__).parent / 'levenshtein_examples.json'
 
 
-class TracebackCases(unittest.TestCase):
+klasse TracebackCases(unittest.TestCase):
     # For now, a very minimal set of tests.  I want to be sure that
     # formatting of SyntaxErrors works based on changes for 2.1.
     def setUp(self):
@@ -221,7 +221,7 @@ class TracebackCases(unittest.TestCase):
         self.assertEqual(lst, ['KeyboardInterrupt\n'])
 
     def test_format_exception_only_bad__str__(self):
-        class X(Exception):
+        klasse X(Exception):
             def __str__(self):
                 1/0
         err = traceback.format_exception_only(X, X())
@@ -478,7 +478,7 @@ class TracebackCases(unittest.TestCase):
             import sys
             import traceback
 
-            class PrintExceptionAtExit(object):
+            klasse PrintExceptionAtExit(object):
                 def __init__(self):
                     try:
                         x = 1 / 0
@@ -576,7 +576,7 @@ class TracebackCases(unittest.TestCase):
             '(exc, /, value=<implicit>, *, show_group=False, **kwargs)')
 
 
-class PurePythonExceptionFormattingMixin:
+klasse PurePythonExceptionFormattingMixin:
     def get_exception(self, callable, slice_start=0, slice_end=-1):
         try:
             callable()
@@ -588,7 +588,7 @@ class PurePythonExceptionFormattingMixin:
     callable_line = get_exception.__code__.co_firstlineno + 2
 
 
-class CAPIExceptionFormattingMixin:
+klasse CAPIExceptionFormattingMixin:
     LEGACY = 0
 
     def get_exception(self, callable, slice_start=0, slice_end=-1):
@@ -603,11 +603,11 @@ class CAPIExceptionFormattingMixin:
 
     callable_line = get_exception.__code__.co_firstlineno + 3
 
-class CAPIExceptionFormattingLegacyMixin(CAPIExceptionFormattingMixin):
+klasse CAPIExceptionFormattingLegacyMixin(CAPIExceptionFormattingMixin):
     LEGACY = 1
 
 @requires_debug_ranges()
-class TracebackErrorLocationCaretTestBase:
+klasse TracebackErrorLocationCaretTestBase:
     """
     Tests for printing code error expressions as part of PEP 657
     """
@@ -1101,7 +1101,7 @@ class TracebackErrorLocationCaretTestBase:
 
     def test_caret_for_call_multiline(self):
         def f_with_call():
-            class C:
+            klasse C:
                 def y(self, a):
                     def f(b):
                         raise RuntimeError("fail")
@@ -1371,7 +1371,7 @@ class TracebackErrorLocationCaretTestBase:
         def applydecs_class():
             @dec_error
             @dec_fine
-            class A: pass
+            klasse A: pass
         result_lines = self.get_exception(applydecs_class)
         lineno_applydescs_class = applydecs_class.__code__.co_firstlineno
         expected_error = (
@@ -1740,7 +1740,7 @@ class TracebackErrorLocationCaretTestBase:
         ]
         self.assertEqual(result_lines, expected)
 
-class TestKeywordTypoSuggestions(unittest.TestCase):
+klasse TestKeywordTypoSuggestions(unittest.TestCase):
     TYPO_CASES = [
         ("with block ad something:\n  pass", "and"),
         ("fur a in b:\n  pass", "for"),
@@ -1786,7 +1786,7 @@ class TestKeywordTypoSuggestions(unittest.TestCase):
 
 @requires_debug_ranges()
 @force_not_colorized_test_class
-class PurePythonTracebackErrorCaretTests(
+klasse PurePythonTracebackErrorCaretTests(
     PurePythonExceptionFormattingMixin,
     TracebackErrorLocationCaretTestBase,
     unittest.TestCase,
@@ -1800,7 +1800,7 @@ class PurePythonTracebackErrorCaretTests(
 @cpython_only
 @requires_debug_ranges()
 @force_not_colorized_test_class
-class CPythonTracebackErrorCaretTests(
+klasse CPythonTracebackErrorCaretTests(
     CAPIExceptionFormattingMixin,
     TracebackErrorLocationCaretTestBase,
     unittest.TestCase,
@@ -1812,7 +1812,7 @@ class CPythonTracebackErrorCaretTests(
 @cpython_only
 @requires_debug_ranges()
 @force_not_colorized_test_class
-class CPythonTracebackLegacyErrorCaretTests(
+klasse CPythonTracebackLegacyErrorCaretTests(
     CAPIExceptionFormattingLegacyMixin,
     TracebackErrorLocationCaretTestBase,
     unittest.TestCase,
@@ -1822,7 +1822,7 @@ class CPythonTracebackLegacyErrorCaretTests(
     """
 
 
-class TracebackFormatMixin:
+klasse TracebackFormatMixin:
     DEBUG_RANGES = True
 
     def some_exception(self):
@@ -2143,7 +2143,7 @@ class TracebackFormatMixin:
     def test_unhashable(self):
         from _testcapi import exception_print
 
-        class UnhashableException(Exception):
+        klasse UnhashableException(Exception):
             def __eq__(self, other):
                 return True
 
@@ -2226,12 +2226,12 @@ boundaries = re.compile(
     '(%s|%s)' % (re.escape(cause_message), re.escape(context_message)))
 
 @force_not_colorized_test_class
-class TestTracebackFormat(unittest.TestCase, TracebackFormatMixin):
+klasse TestTracebackFormat(unittest.TestCase, TracebackFormatMixin):
     pass
 
 @cpython_only
 @force_not_colorized_test_class
-class TestFallbackTracebackFormat(unittest.TestCase, TracebackFormatMixin):
+klasse TestFallbackTracebackFormat(unittest.TestCase, TracebackFormatMixin):
     DEBUG_RANGES = False
     def setUp(self) -> None:
         self.original_unraisable_hook = sys.unraisablehook
@@ -2245,7 +2245,7 @@ class TestFallbackTracebackFormat(unittest.TestCase, TracebackFormatMixin):
         sys.unraisablehook = self.original_unraisable_hook
         return super().tearDown()
 
-class BaseExceptionReportingTests:
+klasse BaseExceptionReportingTests:
 
     def get_exception(self, exception_or_callable):
         if isinstance(exception_or_callable, BaseException):
@@ -2464,7 +2464,7 @@ class BaseExceptionReportingTests:
         vanilla = self.get_report(e)
 
         # non-sequence __notes__
-        class BadThing:
+        klasse BadThing:
             def __str__(self):
                 return 'bad str'
 
@@ -2472,7 +2472,7 @@ class BaseExceptionReportingTests:
                 return 'bad repr'
 
         # unprintable, non-sequence __notes__
-        class Unprintable:
+        klasse Unprintable:
             def __repr__(self):
                 raise ValueError('bad value')
 
@@ -2503,7 +2503,7 @@ class BaseExceptionReportingTests:
         self.assertEqual(self.get_report(e), vanilla + err_msg + '\n')
 
         # an exception with a broken __getattr__ raising a non expected error
-        class BrokenException(Exception):
+        klasse BrokenException(Exception):
             broken = False
             def __getattr__(self, name):
                 if self.broken:
@@ -2540,9 +2540,9 @@ class BaseExceptionReportingTests:
                     vanilla + 'Note 5\n' + 'Note 6\n')
 
     def test_exception_qualname(self):
-        class A:
-            class B:
-                class X(Exception):
+        klasse A:
+            klasse B:
+                klasse X(Exception):
                     def __str__(self):
                         return "I am X"
 
@@ -2553,7 +2553,7 @@ class BaseExceptionReportingTests:
         self.assertEqual(exp, MODULE_PREFIX + err)
 
     def test_exception_modulename(self):
-        class X(Exception):
+        klasse X(Exception):
             def __str__(self):
                 return "I am X"
 
@@ -2585,7 +2585,7 @@ class BaseExceptionReportingTests:
         self.assertIn(exp, err)
 
     def test_exception_modulename_not_unicode(self):
-        class X(Exception):
+        klasse X(Exception):
             def __str__(self):
                 return "I am X"
 
@@ -2596,7 +2596,7 @@ class BaseExceptionReportingTests:
         self.assertEqual(exp, err)
 
     def test_exception_bad__str__(self):
-        class X(Exception):
+        klasse X(Exception):
             def __str__(self):
                 1/0
         err = self.get_report(X())
@@ -3046,7 +3046,7 @@ class BaseExceptionReportingTests:
 
 
 @force_not_colorized_test_class
-class PyExcReportingTests(BaseExceptionReportingTests, unittest.TestCase):
+klasse PyExcReportingTests(BaseExceptionReportingTests, unittest.TestCase):
     #
     # This checks reporting through the 'traceback' module, with both
     # format_exception() and print_exception().
@@ -3063,7 +3063,7 @@ class PyExcReportingTests(BaseExceptionReportingTests, unittest.TestCase):
 
 
 @force_not_colorized_test_class
-class CExcReportingTests(BaseExceptionReportingTests, unittest.TestCase):
+klasse CExcReportingTests(BaseExceptionReportingTests, unittest.TestCase):
     #
     # This checks built-in reporting by the interpreter.
     #
@@ -3077,7 +3077,7 @@ class CExcReportingTests(BaseExceptionReportingTests, unittest.TestCase):
         return s.getvalue()
 
 
-class LimitTests(unittest.TestCase):
+klasse LimitTests(unittest.TestCase):
 
     ''' Tests for limit argument.
         It's enough to test extact_tb, extract_stack and format_exception '''
@@ -3197,7 +3197,7 @@ class LimitTests(unittest.TestCase):
             self.assertEqual(extract(), [])
 
 
-class MiscTracebackCases(unittest.TestCase):
+klasse MiscTracebackCases(unittest.TestCase):
     #
     # Check non-printing functions in traceback module
     #
@@ -3238,7 +3238,7 @@ class MiscTracebackCases(unittest.TestCase):
         self.assertEqual(len(result[0]), 4)
 
 
-class TestFrame(unittest.TestCase):
+klasse TestFrame(unittest.TestCase):
 
     def test_basics(self):
         linecache.clearcache()
@@ -3279,7 +3279,7 @@ class TestFrame(unittest.TestCase):
         self.assertEqual(len(f), 4)
 
 
-class TestStack(unittest.TestCase):
+klasse TestStack(unittest.TestCase):
 
     def test_walk_stack(self):
         def deeper():
@@ -3382,7 +3382,7 @@ class TestStack(unittest.TestCase):
             ], s.format())
 
     def test_custom_format_frame(self):
-        class CustomStackSummary(traceback.StackSummary):
+        klasse CustomStackSummary(traceback.StackSummary):
             def format_frame_summary(self, frame_summary, colorize=False):
                 return f'{frame_summary.filename}:{frame_summary.lineno}'
 
@@ -3407,7 +3407,7 @@ class TestStack(unittest.TestCase):
 
         tb = g()
 
-        class Skip_G(traceback.StackSummary):
+        klasse Skip_G(traceback.StackSummary):
             def format_frame_summary(self, frame_summary, colorize=False):
                 if frame_summary.name == 'g':
                     return None
@@ -3458,24 +3458,24 @@ class TestStack(unittest.TestCase):
                 )
                 ff.assert_called_with(colno, end_colno, [cached_line], None)
 
-class Unrepresentable:
+klasse Unrepresentable:
     def __repr__(self) -> str:
         raise Exception("Unrepresentable")
 
 
 # Used in test_dont_swallow_cause_or_context_of_falsey_exception and
 # test_dont_swallow_subexceptions_of_falsey_exceptiongroup.
-class FalseyException(Exception):
+klasse FalseyException(Exception):
     def __bool__(self):
         return False
 
 
-class FalseyExceptionGroup(ExceptionGroup):
+klasse FalseyExceptionGroup(ExceptionGroup):
     def __bool__(self):
         return False
 
 
-class TestTracebackException(unittest.TestCase):
+klasse TestTracebackException(unittest.TestCase):
     def do_test_smoke(self, exc, expected_type_str):
         try:
             raise exc
@@ -3497,7 +3497,7 @@ class TestTracebackException(unittest.TestCase):
         self.do_test_smoke(ValueError(42), 'ValueError')
 
     def test_smoke_user_exception(self):
-        class MyException(Exception):
+        klasse MyException(Exception):
             pass
 
         if __name__ == '__main__':
@@ -3732,7 +3732,7 @@ class TestTracebackException(unittest.TestCase):
         self.assertEqual(list(excs[0].format()), list(excs[1].format()))
 
     def test_unhashable(self):
-        class UnhashableException(Exception):
+        klasse UnhashableException(Exception):
             def __eq__(self, other):
                 return True
 
@@ -3840,7 +3840,7 @@ class TestTracebackException(unittest.TestCase):
             self.assertIn(context_message, traceback.format_exception(e))
 
 
-class TestTracebackException_ExceptionGroups(unittest.TestCase):
+klasse TestTracebackException_ExceptionGroups(unittest.TestCase):
     def setUp(self):
         super().setUp()
         self.eg = self._get_exception_group()
@@ -4064,7 +4064,7 @@ class TestTracebackException_ExceptionGroups(unittest.TestCase):
 global_for_suggestions = None
 
 
-class SuggestionFormattingTestMixin:
+klasse SuggestionFormattingTestMixin:
     attr_function = getattr
 
     def get_suggestion(self, obj, attr_name=None):
@@ -4080,33 +4080,33 @@ class SuggestionFormattingTestMixin:
         return result_lines[0]
 
 
-class BaseSuggestionTests(SuggestionFormattingTestMixin):
+klasse BaseSuggestionTests(SuggestionFormattingTestMixin):
     def test_suggestions(self):
-        class Substitution:
+        klasse Substitution:
             noise = more_noise = a = bc = None
             blech = None
 
-        class Elimination:
+        klasse Elimination:
             noise = more_noise = a = bc = None
             blch = None
 
-        class Addition:
+        klasse Addition:
             noise = more_noise = a = bc = None
             bluchin = None
 
-        class SubstitutionOverElimination:
+        klasse SubstitutionOverElimination:
             blach = None
             bluc = None
 
-        class SubstitutionOverAddition:
+        klasse SubstitutionOverAddition:
             blach = None
             bluchi = None
 
-        class EliminationOverAddition:
+        klasse EliminationOverAddition:
             blucha = None
             bluc = None
 
-        class CaseChangeOverSubstitution:
+        klasse CaseChangeOverSubstitution:
             Luch = None
             fluch = None
             BLuch = None
@@ -4125,7 +4125,7 @@ class BaseSuggestionTests(SuggestionFormattingTestMixin):
             self.assertIn(suggestion, actual)
 
     def test_suggestions_underscored(self):
-        class A:
+        klasse A:
             bluch = None
 
         self.assertIn("'bluch'", self.get_suggestion(A(), 'blach'))
@@ -4133,7 +4133,7 @@ class BaseSuggestionTests(SuggestionFormattingTestMixin):
         self.assertIn("'bluch'", self.get_suggestion(A(), '_bluch'))
 
         attr_function = self.attr_function
-        class B:
+        klasse B:
             _bluch = None
             def method(self, name):
                 attr_function(self, name)
@@ -4148,14 +4148,14 @@ class BaseSuggestionTests(SuggestionFormattingTestMixin):
 
 
     def test_do_not_trigger_for_long_attributes(self):
-        class A:
+        klasse A:
             blech = None
 
         actual = self.get_suggestion(A(), 'somethingverywrong')
         self.assertNotIn("blech", actual)
 
     def test_do_not_trigger_for_small_names(self):
-        class MyClass:
+        klasse MyClass:
             vvv = mom = w = id = pytho = None
 
         for name in ("b", "v", "m", "py"):
@@ -4169,9 +4169,9 @@ class BaseSuggestionTests(SuggestionFormattingTestMixin):
                 self.assertNotIn("'pytho'", actual)
 
     def test_do_not_trigger_for_big_dicts(self):
-        class A:
+        klasse A:
             blech = None
-        # A class with a very big __dict__ will not be considered
+        # A klasse with a very big __dict__ will not be considered
         # for suggestions.
         for index in range(2000):
             setattr(A, f"index_{index}", None)
@@ -4180,16 +4180,16 @@ class BaseSuggestionTests(SuggestionFormattingTestMixin):
         self.assertNotIn("blech", actual)
 
     def test_suggestions_for_same_name(self):
-        class A:
+        klasse A:
             def __dir__(self):
                 return ['blech']
         actual = self.get_suggestion(A(), 'blech')
         self.assertNotIn("Did you mean", actual)
 
 
-class GetattrSuggestionTests(BaseSuggestionTests):
+klasse GetattrSuggestionTests(BaseSuggestionTests):
     def test_suggestions_no_args(self):
-        class A:
+        klasse A:
             blech = None
             def __getattr__(self, attr):
                 raise AttributeError()
@@ -4197,7 +4197,7 @@ class GetattrSuggestionTests(BaseSuggestionTests):
         actual = self.get_suggestion(A(), 'bluch')
         self.assertIn("blech", actual)
 
-        class A:
+        klasse A:
             blech = None
             def __getattr__(self, attr):
                 raise AttributeError
@@ -4206,21 +4206,21 @@ class GetattrSuggestionTests(BaseSuggestionTests):
         self.assertIn("blech", actual)
 
     def test_suggestions_invalid_args(self):
-        class NonStringifyClass:
+        klasse NonStringifyClass:
             __str__ = None
             __repr__ = None
 
-        class A:
+        klasse A:
             blech = None
             def __getattr__(self, attr):
                 raise AttributeError(NonStringifyClass())
 
-        class B:
+        klasse B:
             blech = None
             def __getattr__(self, attr):
                 raise AttributeError("Error", 23)
 
-        class C:
+        klasse C:
             blech = None
             def __getattr__(self, attr):
                 raise AttributeError(23)
@@ -4230,13 +4230,13 @@ class GetattrSuggestionTests(BaseSuggestionTests):
             self.assertIn("blech", actual)
 
 
-class DelattrSuggestionTests(BaseSuggestionTests):
+klasse DelattrSuggestionTests(BaseSuggestionTests):
     attr_function = delattr
 
 
-class SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
+klasse SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
     def test_attribute_error_with_failing_dict(self):
-        class T:
+        klasse T:
             bluch = 1
             def __dir__(self):
                 raise AttributeError("oh no!")
@@ -4246,7 +4246,7 @@ class SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
         self.assertNotIn("oh no!", actual)
 
     def test_attribute_error_with_non_string_candidates(self):
-        class T:
+        klasse T:
             bluch = 1
 
         instance = T()
@@ -4264,10 +4264,10 @@ class SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
         self.assertNotIn("?", result_lines[-1])
 
     def test_attribute_error_inside_nested_getattr(self):
-        class A:
+        klasse A:
             bluch = 1
 
-        class B:
+        klasse B:
             def __getattribute__(self, attr):
                 a = A()
                 return a.blich
@@ -4278,12 +4278,12 @@ class SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
 
     def test_getattr_nested_attribute_suggestions(self):
         # Test that nested attributes are suggested when no direct match
-        class Inner:
+        klasse Inner:
             def __init__(self):
                 self.value = 42
                 self.data = "test"
 
-        class Outer:
+        klasse Outer:
             def __init__(self):
                 self.inner = Inner()
 
@@ -4297,11 +4297,11 @@ class SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
 
     def test_getattr_nested_prioritizes_direct_matches(self):
         # Test that direct attribute matches are prioritized over nested ones
-        class Inner:
+        klasse Inner:
             def __init__(self):
                 self.foo = 42
 
-        class Outer:
+        klasse Outer:
             def __init__(self):
                 self.inner = Inner()
                 self.fooo = 100  # Similar to 'foo'
@@ -4313,12 +4313,12 @@ class SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
 
     def test_getattr_nested_with_property(self):
         # Test that descriptors (including properties) are suggested in nested attributes
-        class Inner:
+        klasse Inner:
             @property
             def computed(self):
                 return 42
 
-        class Outer:
+        klasse Outer:
             def __init__(self):
                 self.inner = Inner()
 
@@ -4328,15 +4328,15 @@ class SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
 
     def test_getattr_nested_no_suggestion_for_deep_nesting(self):
         # Test that deeply nested attributes (2+ levels) are not suggested
-        class Deep:
+        klasse Deep:
             def __init__(self):
                 self.value = 42
 
-        class Middle:
+        klasse Middle:
             def __init__(self):
                 self.deep = Deep()
 
-        class Outer:
+        klasse Outer:
             def __init__(self):
                 self.middle = Middle()
 
@@ -4346,11 +4346,11 @@ class SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
 
     def test_getattr_nested_ignores_private_attributes(self):
         # Test that nested suggestions ignore private attributes
-        class Inner:
+        klasse Inner:
             def __init__(self):
                 self.public_value = 42
 
-        class Outer:
+        klasse Outer:
             def __init__(self):
                 self._private_inner = Inner()
 
@@ -4360,11 +4360,11 @@ class SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
 
     def test_getattr_nested_limits_attribute_checks(self):
         # Test that nested suggestions are limited to checking first 20 non-private attributes
-        class Inner:
+        klasse Inner:
             def __init__(self):
                 self.target_value = 42
 
-        class Outer:
+        klasse Outer:
             def __init__(self):
                 # Add many attributes before 'inner'
                 for i in range(25):
@@ -4384,19 +4384,19 @@ class SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
 
     def test_getattr_nested_returns_first_match_only(self):
         # Test that only the first nested match is returned (not multiple)
-        class Inner1:
+        klasse Inner1:
             def __init__(self):
                 self.value = 1
 
-        class Inner2:
+        klasse Inner2:
             def __init__(self):
                 self.value = 2
 
-        class Inner3:
+        klasse Inner3:
             def __init__(self):
                 self.value = 3
 
-        class Outer:
+        klasse Outer:
             def __init__(self):
                 # Multiple inner objects with same attribute
                 self.a_inner = Inner1()
@@ -4411,7 +4411,7 @@ class SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
 
     def test_getattr_nested_handles_attribute_access_exceptions(self):
         # Test that exceptions raised when accessing attributes don't crash the suggestion system
-        class ExplodingProperty:
+        klasse ExplodingProperty:
             @property
             def exploding_attr(self):
                 raise RuntimeError("BOOM! This property always explodes")
@@ -4419,11 +4419,11 @@ class SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
             def __repr__(self):
                 raise RuntimeError("repr also explodes")
 
-        class SafeInner:
+        klasse SafeInner:
             def __init__(self):
                 self.target = 42
 
-        class Outer:
+        klasse Outer:
             def __init__(self):
                 self.exploder = ExplodingProperty()  # Accessing attributes will raise
                 self.safe_inner = SafeInner()
@@ -4435,17 +4435,17 @@ class SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
 
     def test_getattr_nested_handles_hasattr_exceptions(self):
         # Test that exceptions in hasattr don't crash the system
-        class WeirdObject:
+        klasse WeirdObject:
             def __getattr__(self, name):
                 if name == 'target':
                     raise RuntimeError("Can't check for target attribute")
                 raise AttributeError(f"No attribute {name}")
 
-        class NormalInner:
+        klasse NormalInner:
             def __init__(self):
                 self.target = 100
 
-        class Outer:
+        klasse Outer:
             def __init__(self):
                 self.weird = WeirdObject()  # hasattr will raise for 'target'
                 self.normal = NormalInner()
@@ -4797,7 +4797,7 @@ class SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
         self.assertNotIn("blech", actual)
 
     def test_name_error_with_instance(self):
-        class A:
+        klasse A:
             def __init__(self):
                 self.blech = None
             def foo(self):
@@ -4809,7 +4809,7 @@ class SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
         self.assertIn("self.blech", actual)
 
     def test_unbound_local_error_with_instance(self):
-        class A:
+        klasse A:
             def __init__(self):
                 self.blech = None
             def foo(self):
@@ -4823,7 +4823,7 @@ class SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
 
     def test_unbound_local_error_with_side_effect(self):
         # gh-132385
-        class A:
+        klasse A:
             def __getattr__(self, key):
                 if key == 'foo':
                     raise AttributeError('foo')
@@ -4868,7 +4868,7 @@ class SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
 
 
 
-class PurePythonSuggestionFormattingTests(
+klasse PurePythonSuggestionFormattingTests(
     PurePythonExceptionFormattingMixin,
     SuggestionFormattingTestBase,
     unittest.TestCase,
@@ -4880,7 +4880,7 @@ class PurePythonSuggestionFormattingTests(
 
 
 @cpython_only
-class CPythonSuggestionFormattingTests(
+klasse CPythonSuggestionFormattingTests(
     CAPIExceptionFormattingMixin,
     SuggestionFormattingTestBase,
     unittest.TestCase,
@@ -4890,7 +4890,7 @@ class CPythonSuggestionFormattingTests(
     """
 
 
-class PurePythonGetattrSuggestionFormattingTests(
+klasse PurePythonGetattrSuggestionFormattingTests(
     PurePythonExceptionFormattingMixin,
     GetattrSuggestionTests,
     unittest.TestCase,
@@ -4901,7 +4901,7 @@ class PurePythonGetattrSuggestionFormattingTests(
     """
 
 
-class PurePythonDelattrSuggestionFormattingTests(
+klasse PurePythonDelattrSuggestionFormattingTests(
     PurePythonExceptionFormattingMixin,
     DelattrSuggestionTests,
     unittest.TestCase,
@@ -4913,7 +4913,7 @@ class PurePythonDelattrSuggestionFormattingTests(
 
 
 @cpython_only
-class CPythonGetattrSuggestionFormattingTests(
+klasse CPythonGetattrSuggestionFormattingTests(
     CAPIExceptionFormattingMixin,
     GetattrSuggestionTests,
     unittest.TestCase,
@@ -4925,7 +4925,7 @@ class CPythonGetattrSuggestionFormattingTests(
 
 
 @cpython_only
-class CPythonDelattrSuggestionFormattingTests(
+klasse CPythonDelattrSuggestionFormattingTests(
     CAPIExceptionFormattingMixin,
     DelattrSuggestionTests,
     unittest.TestCase,
@@ -4935,7 +4935,7 @@ class CPythonDelattrSuggestionFormattingTests(
     internal traceback printing.
     """
 
-class MiscTest(unittest.TestCase):
+klasse MiscTest(unittest.TestCase):
 
     def test_all(self):
         expected = set()
@@ -5022,7 +5022,7 @@ class MiscTest(unittest.TestCase):
         )
 
         # gh-131936: _generate_suggestions() doesn't accept list subclasses
-        class MyList(list):
+        klasse MyList(list):
             pass
 
         with self.assertRaises(TypeError):
@@ -5050,7 +5050,7 @@ class MiscTest(unittest.TestCase):
         )
 
 
-class TestColorizedTraceback(unittest.TestCase):
+klasse TestColorizedTraceback(unittest.TestCase):
     maxDiff = None
 
     def test_colorized_traceback(self):

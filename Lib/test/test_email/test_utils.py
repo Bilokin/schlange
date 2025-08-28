@@ -8,14 +8,14 @@ from test.support import cpython_only
 from test.support.import_helper import ensure_lazy_imports
 
 
-class TestImportTime(unittest.TestCase):
+klasse TestImportTime(unittest.TestCase):
 
     @cpython_only
     def test_lazy_import(self):
         ensure_lazy_imports("email.utils", {"random", "socket"})
 
 
-class DateTimeTests(unittest.TestCase):
+klasse DateTimeTests(unittest.TestCase):
 
     datestring = 'Sun, 23 Sep 2001 20:10:55'
     dateargs = (2001, 9, 23, 20, 10, 55)
@@ -77,7 +77,7 @@ class DateTimeTests(unittest.TestCase):
             with self.subTest(dtstr=dtstr):
                 self.assertRaises(ValueError, utils.parsedate_to_datetime, dtstr)
 
-class LocaltimeTests(unittest.TestCase):
+klasse LocaltimeTests(unittest.TestCase):
 
     def test_localtime_is_tz_aware_daylight_true(self):
         test.support.patch(self, time, 'daylight', True)
@@ -166,7 +166,7 @@ class LocaltimeTests(unittest.TestCase):
 # Issue #24836: The timezone files are out of date (pre 2011k)
 # on Mac OS X Snow Leopard.
 @test.support.requires_mac_ver(10, 7)
-class FormatDateTests(unittest.TestCase):
+klasse FormatDateTests(unittest.TestCase):
 
     @test.support.run_with_tz('Europe/Minsk')
     def test_formatdate(self):

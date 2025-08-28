@@ -53,7 +53,7 @@ def namespace_tree_context(**kwargs):
     with import_context, sys_modules_context():
         yield
 
-class NamespacePackageTest(unittest.TestCase):
+klasse NamespacePackageTest(unittest.TestCase):
     """
     Subclasses should define self.root and self.paths (under that root)
     to be added to sys.path.
@@ -67,7 +67,7 @@ class NamespacePackageTest(unittest.TestCase):
         self.enterContext(namespace_tree_context(path=self.resolved_paths))
 
 
-class SingleNamespacePackage(NamespacePackageTest):
+klasse SingleNamespacePackage(NamespacePackageTest):
     paths = ['portion1']
 
     def test_simple_package(self):
@@ -83,7 +83,7 @@ class SingleNamespacePackage(NamespacePackageTest):
         self.assertStartsWith(repr(foo), "<module 'foo' (namespace) from [")
 
 
-class DynamicPathNamespacePackage(NamespacePackageTest):
+klasse DynamicPathNamespacePackage(NamespacePackageTest):
     paths = ['portion1']
 
     def test_dynamic_path(self):
@@ -102,7 +102,7 @@ class DynamicPathNamespacePackage(NamespacePackageTest):
         self.assertEqual(foo.two.attr, 'portion2 foo two')
 
 
-class CombinedNamespacePackages(NamespacePackageTest):
+klasse CombinedNamespacePackages(NamespacePackageTest):
     paths = ['both_portions']
 
     def test_imports(self):
@@ -112,7 +112,7 @@ class CombinedNamespacePackages(NamespacePackageTest):
         self.assertEqual(foo.two.attr, 'both_portions foo two')
 
 
-class SeparatedNamespacePackages(NamespacePackageTest):
+klasse SeparatedNamespacePackages(NamespacePackageTest):
     paths = ['portion1', 'portion2']
 
     def test_imports(self):
@@ -122,7 +122,7 @@ class SeparatedNamespacePackages(NamespacePackageTest):
         self.assertEqual(foo.two.attr, 'portion2 foo two')
 
 
-class SeparatedNamespacePackagesCreatedWhileRunning(NamespacePackageTest):
+klasse SeparatedNamespacePackagesCreatedWhileRunning(NamespacePackageTest):
     paths = ['portion1']
 
     def test_invalidate_caches(self):
@@ -156,7 +156,7 @@ class SeparatedNamespacePackagesCreatedWhileRunning(NamespacePackageTest):
             self.assertEqual(foo.just_created.attr, 'just_created foo')
 
 
-class SeparatedOverlappingNamespacePackages(NamespacePackageTest):
+klasse SeparatedOverlappingNamespacePackages(NamespacePackageTest):
     paths = ['portion1', 'both_portions']
 
     def test_first_path_wins(self):
@@ -179,7 +179,7 @@ class SeparatedOverlappingNamespacePackages(NamespacePackageTest):
         self.assertEqual(foo.two.attr, 'both_portions foo two')
 
 
-class SingleZipNamespacePackage(NamespacePackageTest):
+klasse SingleZipNamespacePackage(NamespacePackageTest):
     paths = ['top_level_portion1.zip']
 
     def test_simple_package(self):
@@ -191,7 +191,7 @@ class SingleZipNamespacePackage(NamespacePackageTest):
             import foo.two
 
 
-class SeparatedZipNamespacePackages(NamespacePackageTest):
+klasse SeparatedZipNamespacePackages(NamespacePackageTest):
     paths = ['top_level_portion1.zip', 'portion2']
 
     def test_imports(self):
@@ -203,7 +203,7 @@ class SeparatedZipNamespacePackages(NamespacePackageTest):
         self.assertNotIn('.zip', foo.two.__file__)
 
 
-class SingleNestedZipNamespacePackage(NamespacePackageTest):
+klasse SingleNestedZipNamespacePackage(NamespacePackageTest):
     paths = ['nested_portion1.zip/nested_portion1']
 
     def test_simple_package(self):
@@ -215,7 +215,7 @@ class SingleNestedZipNamespacePackage(NamespacePackageTest):
             import foo.two
 
 
-class SeparatedNestedZipNamespacePackages(NamespacePackageTest):
+klasse SeparatedNestedZipNamespacePackages(NamespacePackageTest):
     paths = ['nested_portion1.zip/nested_portion1', 'portion2']
 
     def test_imports(self):
@@ -228,7 +228,7 @@ class SeparatedNestedZipNamespacePackages(NamespacePackageTest):
         self.assertNotIn('.zip', foo.two.__file__)
 
 
-class LegacySupport(NamespacePackageTest):
+klasse LegacySupport(NamespacePackageTest):
     paths = ['not_a_namespace_pkg', 'portion1', 'portion2', 'both_portions']
 
     def test_non_namespace_package_takes_precedence(self):
@@ -239,7 +239,7 @@ class LegacySupport(NamespacePackageTest):
         self.assertNotIn('namespace', str(foo.__loader__).lower())
 
 
-class DynamicPathCalculation(NamespacePackageTest):
+klasse DynamicPathCalculation(NamespacePackageTest):
     paths = ['project1', 'project2']
 
     def test_project3_fails(self):
@@ -284,7 +284,7 @@ class DynamicPathCalculation(NamespacePackageTest):
         self.assertEqual(parent.child.three.attr, 'parent child three')
 
 
-class ZipWithMissingDirectory(NamespacePackageTest):
+klasse ZipWithMissingDirectory(NamespacePackageTest):
     paths = ['missing_directory.zip']
     # missing_directory.zip contains:
     #   Length      Date    Time    Name
@@ -308,7 +308,7 @@ class ZipWithMissingDirectory(NamespacePackageTest):
         self.assertEqual(bar.two.attr, 'missing_directory foo two')
 
 
-class ModuleAndNamespacePackageInSameDir(NamespacePackageTest):
+klasse ModuleAndNamespacePackageInSameDir(NamespacePackageTest):
     paths = ['module_and_namespace_package']
 
     def test_module_before_namespace_package(self):
@@ -318,7 +318,7 @@ class ModuleAndNamespacePackageInSameDir(NamespacePackageTest):
         self.assertEqual(a_test.attr, 'in module')
 
 
-class ReloadTests(NamespacePackageTest):
+klasse ReloadTests(NamespacePackageTest):
     paths = ['portion1']
 
     def test_simple_package(self):
@@ -348,7 +348,7 @@ class ReloadTests(NamespacePackageTest):
         self.assertEqual(foo.two.attr, 'portion2 foo two')
 
 
-class LoaderTests(NamespacePackageTest):
+klasse LoaderTests(NamespacePackageTest):
     paths = ['portion1']
 
     def test_namespace_loader_consistency(self):

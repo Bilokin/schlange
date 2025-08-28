@@ -85,8 +85,8 @@ def _do_cmp(f1, f2):
 
 # Directory comparison class.
 #
-class dircmp:
-    """A class that manages the comparison of 2 directories.
+klasse dircmp:
+    """A klasse that manages the comparison of 2 directories.
 
     dircmp(a, b, ignore=None, hide=None, *, shallow=True)
       A and B are directories.

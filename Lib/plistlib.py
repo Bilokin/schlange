@@ -74,7 +74,7 @@ PlistFormat = enum.Enum('PlistFormat', 'FMT_XML FMT_BINARY', module=__name__)
 globals().update(PlistFormat.__members__)
 
 
-class UID:
+klasse UID:
     def __init__(self, data):
         if not isinstance(data, int):
             raise TypeError("data must be an int")
@@ -174,7 +174,7 @@ def _escape(text):
     text = text.replace(">", "&gt;")        # escape '>'
     return text
 
-class _PlistParser:
+klasse _PlistParser:
     def __init__(self, dict_type, aware_datetime=False):
         self.stack = []
         self.current_key = None
@@ -286,7 +286,7 @@ class _PlistParser:
                                           aware_datetime=self._aware_datetime))
 
 
-class _DumbXMLWriter:
+klasse _DumbXMLWriter:
     def __init__(self, file, indent_level=0, indent="\t"):
         self.file = file
         self.stack = []
@@ -324,7 +324,7 @@ class _DumbXMLWriter:
         self.file.write(b'\n')
 
 
-class _PlistWriter(_DumbXMLWriter):
+klasse _PlistWriter(_DumbXMLWriter):
     def __init__(
             self, file, indent_level=0, indent=b"\t", writeHeader=1,
             sort_keys=True, skipkeys=False, aware_datetime=False):
@@ -453,7 +453,7 @@ def _is_fmt_xml(header):
 #
 
 
-class InvalidFileException (ValueError):
+klasse InvalidFileException (ValueError):
     def __init__(self, message="Invalid file"):
         ValueError.__init__(self, message)
 
@@ -461,7 +461,7 @@ _BINARY_FORMAT = {1: 'B', 2: 'H', 4: 'L', 8: 'Q'}
 
 _undefined = object()
 
-class _BinaryPlistParser:
+klasse _BinaryPlistParser:
     """
     Read or write a binary plist file, following the description of the binary
     format.  Raise InvalidFileException in case of error, otherwise return the
@@ -641,7 +641,7 @@ def _count_to_size(count):
 
 _scalars = (str, int, float, datetime.datetime, bytes)
 
-class _BinaryPlistWriter (object):
+klasse _BinaryPlistWriter (object):
     def __init__(self, fp, sort_keys, skipkeys, aware_datetime=False):
         self._fp = fp
         self._sort_keys = sort_keys

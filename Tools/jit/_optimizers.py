@@ -41,7 +41,7 @@ _X86_BRANCHES |= {v: k for k, v in _X86_BRANCHES.items() if v}
 
 
 @dataclasses.dataclass
-class _Block:
+klasse _Block:
     label: str | None = None
     # Non-instruction lines like labels, directives, and comments:
     noninstructions: list[str] = dataclasses.field(default_factory=list)
@@ -65,7 +65,7 @@ class _Block:
 
 
 @dataclasses.dataclass
-class Optimizer:
+klasse Optimizer:
     """Several passes of analysis and optimization for textual assembly."""
 
     path: pathlib.Path
@@ -283,14 +283,14 @@ class Optimizer:
         self.path.write_text(self._body())
 
 
-class OptimizerAArch64(Optimizer):  # pylint: disable = too-few-public-methods
+klasse OptimizerAArch64(Optimizer):  # pylint: disable = too-few-public-methods
     """aarch64-apple-darwin/aarch64-pc-windows-msvc/aarch64-unknown-linux-gnu"""
 
     # https://developer.arm.com/documentation/ddi0602/2025-03/Base-Instructions/B--Branch-
     _re_jump = re.compile(r"\s*b\s+(?P<target>[\w.]+)")
 
 
-class OptimizerX86(Optimizer):  # pylint: disable = too-few-public-methods
+klasse OptimizerX86(Optimizer):  # pylint: disable = too-few-public-methods
     """i686-pc-windows-msvc/x86_64-apple-darwin/x86_64-unknown-linux-gnu"""
 
     _branches = _X86_BRANCHES

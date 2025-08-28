@@ -20,7 +20,7 @@ from http.cookiejar import (time2isoz, http2time, iso2time, time2netscape,
 
 mswindows = (sys.platform == "win32")
 
-class DateTimeTests(unittest.TestCase):
+klasse DateTimeTests(unittest.TestCase):
 
     def test_time2isoz(self):
         base = 1019227000
@@ -193,7 +193,7 @@ class DateTimeTests(unittest.TestCase):
         iso2time('1994-02-03 14:15:29{}-0100!'.format(' '*10**6))
 
 
-class HeaderTests(unittest.TestCase):
+klasse HeaderTests(unittest.TestCase):
 
     @support.subTests('hdr', [
             'foo=bar; expires=01 Jan 2040 22:23:32 GMT',
@@ -312,7 +312,7 @@ Input was:    '%s'
 """ % (arg, expect, res, input))
 
 
-class FakeResponse:
+klasse FakeResponse:
     def __init__(self, headers=[], url=None):
         """
         headers: list of RFC822-style 'Key: value' strings
@@ -341,7 +341,7 @@ def _interact(cookiejar, url, set_cookie_hdrs, hdr_name):
     return cookie_hdr
 
 
-class FileCookieJarTests(unittest.TestCase):
+klasse FileCookieJarTests(unittest.TestCase):
     def test_constructor_with_str(self):
         filename = os_helper.TESTFN
         c = LWPCookieJar(filename)
@@ -357,7 +357,7 @@ class FileCookieJarTests(unittest.TestCase):
         self.assertIsNone(c.filename)
 
     def test_constructor_with_other_types(self):
-        class A:
+        klasse A:
             pass
 
         for type_ in (int, float, A):
@@ -459,7 +459,7 @@ class FileCookieJarTests(unittest.TestCase):
         finally:
             os_helper.unlink(filename)
 
-class CookieTests(unittest.TestCase):
+klasse CookieTests(unittest.TestCase):
     # XXX
     # Get rid of string comparisons where not actually testing str / repr.
     # .clear() etc.
@@ -1434,7 +1434,7 @@ class CookieTests(unittest.TestCase):
         self.assertIsNone(cookie.expires)
 
 
-class LWPCookieTests(unittest.TestCase):
+klasse LWPCookieTests(unittest.TestCase):
     # Tests taken from libwww-perl, with a few modifications and additions.
 
     def test_netscape_example_1(self):

@@ -10,21 +10,21 @@ COMMON_CODEC_TESTS = (
         (b'ab\x1B$def', 'replace', 'ab\uFFFD'),
     )
 
-class Test_ISO2022_JP(multibytecodec_support.TestBase, unittest.TestCase):
+klasse Test_ISO2022_JP(multibytecodec_support.TestBase, unittest.TestCase):
     encoding = 'iso2022_jp'
     tstring = multibytecodec_support.load_teststring('iso2022_jp')
     codectests = COMMON_CODEC_TESTS + (
         (b'ab\x1BNdef', 'replace', 'ab\x1BNdef'),
     )
 
-class Test_ISO2022_JP2(multibytecodec_support.TestBase, unittest.TestCase):
+klasse Test_ISO2022_JP2(multibytecodec_support.TestBase, unittest.TestCase):
     encoding = 'iso2022_jp_2'
     tstring = multibytecodec_support.load_teststring('iso2022_jp')
     codectests = COMMON_CODEC_TESTS + (
         (b'ab\x1BNdef', 'replace', 'abdef'),
     )
 
-class Test_ISO2022_JP3(multibytecodec_support.TestBase, unittest.TestCase):
+klasse Test_ISO2022_JP3(multibytecodec_support.TestBase, unittest.TestCase):
     encoding = 'iso2022_jp_3'
     tstring = multibytecodec_support.load_teststring('iso2022_jp')
     codectests = COMMON_CODEC_TESTS + (
@@ -47,7 +47,7 @@ class Test_ISO2022_JP3(multibytecodec_support.TestBase, unittest.TestCase):
         b'\x1B$(O\x29\x28\x1B(B&real;\x1B$(O\x29\x32\x1B(B = &lang;&#4660;&rang;'
     )
 
-class Test_ISO2022_JP2004(multibytecodec_support.TestBase, unittest.TestCase):
+klasse Test_ISO2022_JP2004(multibytecodec_support.TestBase, unittest.TestCase):
     encoding = 'iso2022_jp_2004'
     tstring = multibytecodec_support.load_teststring('iso2022_jp')
     codectests = COMMON_CODEC_TESTS + (
@@ -70,7 +70,7 @@ class Test_ISO2022_JP2004(multibytecodec_support.TestBase, unittest.TestCase):
         b'\x1B$(Q\x29\x28\x1B(B&real;\x1B$(Q\x29\x32\x1B(B = &lang;&#4660;&rang;'
     )
 
-class Test_ISO2022_KR(multibytecodec_support.TestBase, unittest.TestCase):
+klasse Test_ISO2022_KR(multibytecodec_support.TestBase, unittest.TestCase):
     encoding = 'iso2022_kr'
     tstring = multibytecodec_support.load_teststring('iso2022_kr')
     codectests = COMMON_CODEC_TESTS + (

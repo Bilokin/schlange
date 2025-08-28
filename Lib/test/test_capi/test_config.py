@@ -15,7 +15,7 @@ _testcapi = import_helper.import_module('_testcapi')
 Py_STATS = hasattr(sys, '_stats_on')
 
 
-class CAPITests(unittest.TestCase):
+klasse CAPITests(unittest.TestCase):
     def test_config_get(self):
         # Test PyConfig_Get()
         config_get = _testcapi.config_get
@@ -298,7 +298,7 @@ class CAPITests(unittest.TestCase):
         config_set = _testcapi.config_set
 
         # mutable configuration option mapped to sys.flags
-        class unsigned_int(int):
+        klasse unsigned_int(int):
             pass
 
         def expect_int(value):

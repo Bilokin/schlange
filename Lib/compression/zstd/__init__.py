@@ -41,7 +41,7 @@ COMPRESSION_LEVEL_DEFAULT = _zstd.ZSTD_CLEVEL_DEFAULT
 """The default compression level for Zstandard, currently '3'."""
 
 
-class FrameInfo:
+klasse FrameInfo:
     """Information about a Zstandard frame."""
 
     __slots__ = 'decompressed_size', 'dictionary_id'
@@ -172,7 +172,7 @@ def decompress(data, zstd_dict=None, options=None):
     return b''.join(results)
 
 
-class CompressionParameter(enum.IntEnum):
+klasse CompressionParameter(enum.IntEnum):
     """Compression parameters."""
 
     compression_level = _zstd.ZSTD_c_compressionLevel
@@ -206,7 +206,7 @@ class CompressionParameter(enum.IntEnum):
         return _zstd.get_param_bounds(self.value, is_compress=True)
 
 
-class DecompressionParameter(enum.IntEnum):
+klasse DecompressionParameter(enum.IntEnum):
     """Decompression parameters."""
 
     window_log_max = _zstd.ZSTD_d_windowLogMax
@@ -219,7 +219,7 @@ class DecompressionParameter(enum.IntEnum):
         return _zstd.get_param_bounds(self.value, is_compress=False)
 
 
-class Strategy(enum.IntEnum):
+klasse Strategy(enum.IntEnum):
     """Compression strategies, listed from fastest to strongest.
 
     Note that new strategies might be added in the future.

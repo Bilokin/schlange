@@ -18,7 +18,7 @@ def tearDownModule():
     asyncio.events._set_event_loop_policy(None)
 
 
-class AsyncClass:
+klasse AsyncClass:
     def __init__(self): pass
     async def async_method(self): pass
     def normal_method(self): pass
@@ -30,7 +30,7 @@ class AsyncClass:
     async def async_static_method(): pass
 
 
-class AwaitableClass:
+klasse AwaitableClass:
     def __await__(self): yield
 
 async def async_func(): pass
@@ -39,7 +39,7 @@ async def async_func_args(a, b, *, c): pass
 
 def normal_func(): pass
 
-class NormalClass(object):
+klasse NormalClass(object):
     def a(self): pass
 
 
@@ -56,7 +56,7 @@ def assertNeverAwaited(test):
         gc.collect()
 
 
-class AsyncPatchDecoratorTest(unittest.TestCase):
+klasse AsyncPatchDecoratorTest(unittest.TestCase):
     def test_is_coroutine_function_patch(self):
         @patch.object(AsyncClass, 'async_method')
         def test_async(mock_method):
@@ -117,7 +117,7 @@ class AsyncPatchDecoratorTest(unittest.TestCase):
         self.assertTrue(inspect.iscoroutinefunction(async_func))
 
 
-class AsyncPatchCMTest(unittest.TestCase):
+klasse AsyncPatchCMTest(unittest.TestCase):
     def test_is_async_function_cm(self):
         def test_async():
             with patch.object(AsyncClass, 'async_method') as mock_method:
@@ -167,7 +167,7 @@ class AsyncPatchCMTest(unittest.TestCase):
         run(test_async())
 
 
-class AsyncMockTest(unittest.TestCase):
+klasse AsyncMockTest(unittest.TestCase):
     def test_iscoroutinefunction_default(self):
         mock = AsyncMock()
         self.assertTrue(inspect.iscoroutinefunction(mock))
@@ -198,7 +198,7 @@ class AsyncMockTest(unittest.TestCase):
         self.assertIsInstance(mock, asyncio.Future)
 
 
-class AsyncAutospecTest(unittest.TestCase):
+klasse AsyncAutospecTest(unittest.TestCase):
     def test_is_AsyncMock_patch(self):
         @patch(async_foo_name, autospec=True)
         def test_async(mock_method):
@@ -299,7 +299,7 @@ class AsyncAutospecTest(unittest.TestCase):
         run(test_async())
 
 
-class AsyncSpecTest(unittest.TestCase):
+klasse AsyncSpecTest(unittest.TestCase):
     def test_spec_normal_methods_on_class(self):
         def inner_test(mock_type):
             mock = mock_type(AsyncClass)
@@ -417,7 +417,7 @@ class AsyncSpecTest(unittest.TestCase):
         test_async_attributes_coroutines()
 
 
-class AsyncSpecSetTest(unittest.TestCase):
+klasse AsyncSpecSetTest(unittest.TestCase):
     def test_is_AsyncMock_patch(self):
         @patch.object(AsyncClass, 'async_method', spec_set=True)
         def test_async(async_method):
@@ -445,7 +445,7 @@ class AsyncSpecSetTest(unittest.TestCase):
             self.assertIsInstance(cm, MagicMock)
 
 
-class AsyncArguments(IsolatedAsyncioTestCase):
+klasse AsyncArguments(IsolatedAsyncioTestCase):
     async def test_add_return_value(self):
         async def addition(self, var): pass
 
@@ -455,7 +455,7 @@ class AsyncArguments(IsolatedAsyncioTestCase):
         self.assertEqual(output, 10)
 
     async def test_add_side_effect_exception(self):
-        class CustomError(Exception): pass
+        klasse CustomError(Exception): pass
         async def addition(var): pass
         mock = AsyncMock(addition, side_effect=CustomError('side-effect'))
         with self.assertRaisesRegex(CustomError, 'side-effect'):
@@ -485,7 +485,7 @@ class AsyncArguments(IsolatedAsyncioTestCase):
             await mock()
 
     async def test_add_side_effect_exception_iterable(self):
-        class SampleException(Exception):
+        klasse SampleException(Exception):
             pass
 
         vals = [1, SampleException("foo")]
@@ -567,7 +567,7 @@ class AsyncArguments(IsolatedAsyncioTestCase):
         self.assertEqual(async_mock.call_args_list, [call(2), call(1)])
 
 
-class AsyncMagicMethods(unittest.TestCase):
+klasse AsyncMagicMethods(unittest.TestCase):
     def test_async_magic_methods_return_async_mocks(self):
         m_mock = MagicMock()
         self.assertIsInstance(m_mock.__aenter__, AsyncMock)
@@ -605,19 +605,19 @@ class AsyncMagicMethods(unittest.TestCase):
         self.assertTrue(inspect.iscoroutinefunction(m_mock.__aenter__))
         self.assertTrue(inspect.iscoroutinefunction(m_mock.__aexit__))
 
-class AsyncContextManagerTest(unittest.TestCase):
+klasse AsyncContextManagerTest(unittest.TestCase):
 
-    class WithAsyncContextManager:
+    klasse WithAsyncContextManager:
         async def __aenter__(self, *args, **kwargs): pass
 
         async def __aexit__(self, *args, **kwargs): pass
 
-    class WithSyncContextManager:
+    klasse WithSyncContextManager:
         def __enter__(self, *args, **kwargs): pass
 
         def __exit__(self, *args, **kwargs): pass
 
-    class ProductionCode:
+    klasse ProductionCode:
         # Example real-world(ish) code
         def __init__(self):
             self.session = None
@@ -719,8 +719,8 @@ class AsyncContextManagerTest(unittest.TestCase):
             run(raise_in(mock_instance))
 
 
-class AsyncIteratorTest(unittest.TestCase):
-    class WithAsyncIterator(object):
+klasse AsyncIteratorTest(unittest.TestCase):
+    klasse WithAsyncIterator(object):
         def __init__(self):
             self.items = ["foo", "NormalFoo", "baz"]
 
@@ -788,7 +788,7 @@ class AsyncIteratorTest(unittest.TestCase):
                 test_set_return_value_iter(mock_type)
 
 
-class AsyncMockAssert(unittest.TestCase):
+klasse AsyncMockAssert(unittest.TestCase):
     def setUp(self):
         self.mock = AsyncMock()
 
@@ -1038,7 +1038,7 @@ class AsyncMockAssert(unittest.TestCase):
         self.mock.assert_has_awaits(calls)
 
     def test_awaits_asserts_with_any(self):
-        class Foo:
+        klasse Foo:
             def __eq__(self, other): pass
 
         run(self._runnable_test(Foo(), 1))
@@ -1048,7 +1048,7 @@ class AsyncMockAssert(unittest.TestCase):
         self.mock.assert_any_await(ANY, 1)
 
     def test_awaits_asserts_with_spec_and_any(self):
-        class Foo:
+        klasse Foo:
             def __eq__(self, other): pass
 
         mock_with_spec = AsyncMock(spec=Foo)

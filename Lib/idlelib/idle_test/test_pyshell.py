@@ -7,7 +7,7 @@ from test.support import requires
 from tkinter import Tk
 
 
-class FunctionTest(unittest.TestCase):
+klasse FunctionTest(unittest.TestCase):
     # Test stand-alone module level non-gui functions.
 
     def test_restart_line_wide(self):
@@ -29,7 +29,7 @@ class FunctionTest(unittest.TestCase):
         self.assertEqual(pyshell.restart_line(taglen+2, ''), expect+' =')
 
 
-class PyShellFileListTest(unittest.TestCase):
+klasse PyShellFileListTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -60,7 +60,7 @@ class PyShellFileListTest(unittest.TestCase):
 ##        self.assertIsInstance(ps, pyshell.PyShell)
 
 
-class PyShellRemoveLastNewlineAndSurroundingWhitespaceTest(unittest.TestCase):
+klasse PyShellRemoveLastNewlineAndSurroundingWhitespaceTest(unittest.TestCase):
     regexp = pyshell.PyShell._last_newline_re
 
     def all_removed(self, text):

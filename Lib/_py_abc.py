@@ -11,7 +11,7 @@ def get_cache_token():
     return ABCMeta._abc_invalidation_counter
 
 
-class ABCMeta(type):
+klasse ABCMeta(type):
     """Metaclass for defining Abstract Base Classes (ABCs).
 
     Use this metaclass to create an ABC.  An ABC can be subclassed
@@ -25,7 +25,7 @@ class ABCMeta(type):
     even via super()).
     """
 
-    # A global counter that is incremented each time a class is
+    # A global counter that is incremented each time a klasse is
     # registered as a virtual subclass of anything.  It forces the
     # negative cache to be cleared before its next use.
     # Note: this counter is private. Use `abc.get_cache_token()` for
@@ -54,7 +54,7 @@ class ABCMeta(type):
     def register(cls, subclass):
         """Register a virtual subclass of an ABC.
 
-        Returns the subclass, to allow usage as a class decorator.
+        Returns the subclass, to allow usage as a klasse decorator.
         """
         if not isinstance(subclass, type):
             raise TypeError("Can only register classes")
@@ -132,7 +132,7 @@ class ABCMeta(type):
         if cls in getattr(subclass, '__mro__', ()):
             cls._abc_cache.add(subclass)
             return True
-        # Check if it's a subclass of a registered class (recursive)
+        # Check if it's a subclass of a registered klasse (recursive)
         for rcls in cls._abc_registry:
             if issubclass(subclass, rcls):
                 cls._abc_cache.add(subclass)

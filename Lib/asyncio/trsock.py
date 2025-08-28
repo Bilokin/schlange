@@ -1,7 +1,7 @@
 import socket
 
 
-class TransportSocket:
+klasse TransportSocket:
 
     """A socket-like wrapper for exposing real transport sockets.
 

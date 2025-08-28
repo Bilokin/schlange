@@ -17,7 +17,7 @@ def global_pos_only_and_normal(a, /, b):
 def global_pos_only_defaults(a=1, /, b=2):
     return a, b
 
-class PositionalOnlyTestCase(unittest.TestCase):
+klasse PositionalOnlyTestCase(unittest.TestCase):
 
     def assertRaisesSyntaxError(self, codestr, regex="invalid syntax"):
         with self.assertRaisesRegex(SyntaxError, regex):
@@ -255,7 +255,7 @@ class PositionalOnlyTestCase(unittest.TestCase):
         check_syntax_error(self, "lambda a, *, b, /, c: None")
 
     def test_posonly_methods(self):
-        class Example:
+        klasse Example:
             def f(self, a, b, /):
                 return a, b
 
@@ -309,7 +309,7 @@ class PositionalOnlyTestCase(unittest.TestCase):
 
         assert inner_has_pos_only().__annotations__ == {'x': int}
 
-        class Something:
+        klasse Something:
             def method(self):
                 def f(x: int, /): ...
                 return f
@@ -336,7 +336,7 @@ class PositionalOnlyTestCase(unittest.TestCase):
         self.assertEqual(f(42), (42, {}))
 
     def test_mangling(self):
-        class X:
+        klasse X:
             def f(self, __a=42, /):
                 return __a
 
@@ -424,11 +424,11 @@ class PositionalOnlyTestCase(unittest.TestCase):
 
         sentinel = object()
 
-        class A:
+        klasse A:
             def method(self):
                 return sentinel
 
-        class C(A):
+        klasse C(A):
             def method(self, /):
                 return super().method()
 

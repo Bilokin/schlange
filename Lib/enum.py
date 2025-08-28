@@ -19,16 +19,16 @@ __all__ = [
 # This is also why there are checks in EnumType like `if Enum is not None`
 Enum = Flag = EJECT = _stdlib_enums = ReprEnum = None
 
-class nonmember(object):
+klasse nonmember(object):
     """
-    Protects item from becoming an Enum member during class creation.
+    Protects item from becoming an Enum member during klasse creation.
     """
     def __init__(self, value):
         self.value = value
 
-class member(object):
+klasse member(object):
     """
-    Forces item to become an Enum member during class creation.
+    Forces item to become an Enum member during klasse creation.
     """
     def __init__(self, value):
         self.value = value
@@ -150,19 +150,19 @@ def bin(num, max_bits=None):
             digits = (sign[-1] * max_bits + digits)[-max_bits:]
     return "%s %s" % (sign, digits)
 
-class _not_given:
+klasse _not_given:
     def __repr__(self):
         return('<not given>')
 _not_given = _not_given()
 
-class _auto_null:
+klasse _auto_null:
     def __repr__(self):
         return '_auto_null'
 _auto_null = _auto_null()
 
-class auto:
+klasse auto:
     """
-    Instances are replaced with an appropriate value in Enum class suites.
+    Instances are replaced with an appropriate value in Enum klasse suites.
     """
     def __init__(self, value=_auto_null):
         self.value = value
@@ -170,12 +170,12 @@ class auto:
     def __repr__(self):
         return "auto(%r)" % self.value
 
-class property(DynamicClassAttribute):
+klasse property(DynamicClassAttribute):
     """
     This is a descriptor, used to define attributes that act differently
     when accessed through an enum member and through an enum class.
     Instance access is the same as property(), but access to an attribute
-    through the enum class will instead look in the class' _member_map_ for
+    through the enum klasse will instead look in the class' _member_map_ for
     a corresponding enum member.
     """
 
@@ -227,9 +227,9 @@ class property(DynamicClassAttribute):
         self.clsname = ownerclass.__name__
 
 
-class _proto_member:
+klasse _proto_member:
     """
-    intermediate step for enum members between class execution and final creation
+    intermediate step for enum members between klasse execution and final creation
     """
 
     def __init__(self, value):
@@ -293,7 +293,7 @@ class _proto_member:
                     raise KeyError
         except KeyError:
             # this could still be an alias if the value is multi-bit and the
-            # class is a flag class
+            # klasse is a flag class
             if (
                     Flag is None
                     or not issubclass(enum_class, Flag)
@@ -323,7 +323,7 @@ class _proto_member:
             enum_class._unhashable_values_map_.setdefault(member_name, []).append(value)
 
 
-class EnumDict(dict):
+klasse EnumDict(dict):
     """
     Track enum member order and ensure member names are not reused.
 
@@ -457,7 +457,7 @@ class EnumDict(dict):
 _EnumDict = EnumDict        # keep private name for backwards compatibility
 
 
-class EnumType(type):
+klasse EnumType(type):
     """
     Metaclass for Enum
     """
@@ -477,10 +477,10 @@ class EnumType(type):
         return enum_dict
 
     def __new__(metacls, cls, bases, classdict, *, boundary=None, _simple=False, **kwds):
-        # an Enum class is final once enumeration items have been defined; it
+        # an Enum klasse is final once enumeration items have been defined; it
         # cannot be mixed with other types (int, float, etc.) if it has an
         # inherited __new__ unless a new __new__ is defined (or the resulting
-        # class will fail).
+        # klasse will fail).
         #
         if _simple:
             return super().__new__(metacls, cls, bases, classdict, **kwds)
@@ -535,7 +535,7 @@ class EnumType(type):
         # now set the __repr__ for the value
         classdict['_value_repr_'] = metacls._find_data_repr_(cls, bases)
         #
-        # Flag structures (will be removed if final class is not a Flag)
+        # Flag structures (will be removed if final klasse is not a Flag)
         classdict['_boundary_'] = (
                 boundary
                 or getattr(first_enum, '_boundary_', None)
@@ -648,7 +648,7 @@ class EnumType(type):
             if isinstance(_order_, str):
                 _order_ = _order_.replace(',', ' ').split()
         #
-        # remove Flag structures if final class is not a Flag
+        # remove Flag structures if final klasse is not a Flag
         if (
                 Flag is None and cls != 'Flag'
                 or Flag is not None and not issubclass(enum_class, Flag)
@@ -700,7 +700,7 @@ class EnumType(type):
         """
         Either returns an existing member, or creates a new enum class.
 
-        This method is used both when an enum class is given a value to match
+        This method is used both when an enum klasse is given a value to match
         to an enumeration member (i.e. Color(3)) and for the functional API
         (i.e. Color = Enum('Color', names='RED GREEN BLUE')).
 
@@ -713,11 +713,11 @@ class EnumType(type):
         `names` should be either a string of white-space/comma delimited names
         (values will start at `start`), or an iterator/mapping of name, value pairs.
 
-        `module` should be set to the module this class is being created in;
+        `module` should be set to the module this klasse is being created in;
         if it is not set, an attempt to find that module will be made, but if
-        it fails the class will not be picklable.
+        it fails the klasse will not be picklable.
 
-        `qualname` should be set to the actual location this class can be found
+        `qualname` should be set to the actual location this klasse can be found
         at in its module; by default it is set to the global scope.  If this is
         not correct, unpickling will fail in some circumstances.
 
@@ -834,7 +834,7 @@ class EnumType(type):
         """
         Block attempts to reassign Enum members.
 
-        A simple assignment to the class namespace only changes one of the
+        A simple assignment to the klasse namespace only changes one of the
         several possible ways to get an Enum member from the Enum class,
         resulting in an inconsistent Enumeration.
         """
@@ -957,7 +957,7 @@ class EnumType(type):
         """
         if not bases:
             return object, Enum
-        # ensure final parent class is an Enum derivative, find any concrete
+        # ensure final parent klasse is an Enum derivative, find any concrete
         # data type, and check that Enum has no members
         first_enum = bases[-1]
         if not isinstance(first_enum, EnumType):
@@ -1020,7 +1020,7 @@ class EnumType(type):
         """
         Returns the __new__ to be used for creating the enum members.
 
-        classdict: the class dictionary given to __new__
+        classdict: the klasse dictionary given to __new__
         member_type: the data type whose __new__ will be used by default
         first_enum: enumeration to check for an overriding __new__
         """
@@ -1125,13 +1125,13 @@ class EnumType(type):
 EnumMeta = EnumType         # keep EnumMeta name for backwards compatibility
 
 
-class Enum(metaclass=EnumType):
+klasse Enum(metaclass=EnumType):
     """
     Create a collection of name/value pairs.
 
     Example enumeration:
 
-    >>> class Color(Enum):
+    >>> klasse Color(Enum):
     ...     RED = 1
     ...     BLUE = 2
     ...     GREEN = 3
@@ -1166,7 +1166,7 @@ class Enum(metaclass=EnumType):
     """
 
     def __new__(cls, value):
-        # all enum instances are actually created during class construction
+        # all enum instances are actually created during klasse construction
         # without calling this method; this method is called by the metaclass'
         # __call__ (i.e. Color(3) ), and by pickle
         if type(value) is cls:
@@ -1335,7 +1335,7 @@ class Enum(metaclass=EnumType):
     # protection from modification, while still allowing for an enumeration
     # to have members named `name` and `value`.  This works because each
     # instance of enum.property saves its companion member, which it returns
-    # on class lookup; on instance lookup it either executes a provided function
+    # on klasse lookup; on instance lookup it either executes a provided function
     # or raises an AttributeError.
 
     @property
@@ -1349,19 +1349,19 @@ class Enum(metaclass=EnumType):
         return self._value_
 
 
-class ReprEnum(Enum):
+klasse ReprEnum(Enum):
     """
     Only changes the repr(), leaving str() and format() to the mixed-in type.
     """
 
 
-class IntEnum(int, ReprEnum):
+klasse IntEnum(int, ReprEnum):
     """
     Enum where members are also (and must be) ints
     """
 
 
-class StrEnum(str, ReprEnum):
+klasse StrEnum(str, ReprEnum):
     """
     Enum where members are also (and must be) strings
     """
@@ -1404,7 +1404,7 @@ def pickle_by_enum_name(self, proto):
     # should not be used with Flag-type enums
     return getattr, (self.__class__, self._name_)
 
-class FlagBoundary(StrEnum):
+klasse FlagBoundary(StrEnum):
     """
     control how out of range values are handled
     "strict" -> error is raised             [default for Flag]
@@ -1419,7 +1419,7 @@ class FlagBoundary(StrEnum):
 STRICT, CONFORM, EJECT, KEEP = FlagBoundary
 
 
-class Flag(Enum, boundary=STRICT):
+klasse Flag(Enum, boundary=STRICT):
     """
     Support for flags
     """
@@ -1654,7 +1654,7 @@ class Flag(Enum, boundary=STRICT):
     __rxor__ = __xor__
 
 
-class IntFlag(int, ReprEnum, Flag, boundary=KEEP):
+klasse IntFlag(int, ReprEnum, Flag, boundary=KEEP):
     """
     Support for integer-based Flags
     """
@@ -1748,14 +1748,14 @@ def global_enum(cls, update_str=False):
 
 def _simple_enum(etype=Enum, *, boundary=None, use_args=None):
     """
-    Class decorator that converts a normal class into an :class:`Enum`.  No
+    Class decorator that converts a normal klasse into an :class:`Enum`.  No
     safety checks are done, and some advanced behavior (such as
     :func:`__init_subclass__`) is not available.  Enum creation can be faster
     using :func:`_simple_enum`.
 
         >>> from enum import Enum, _simple_enum
         >>> @_simple_enum(Enum)
-        ... class Color:
+        ... klasse Color:
         ...     RED = auto()
         ...     GREEN = auto()
         ...     BLUE = auto()
@@ -1942,7 +1942,7 @@ def _simple_enum(etype=Enum, *, boundary=None, use_args=None):
     return convert_class
 
 @_simple_enum(StrEnum)
-class EnumCheck:
+klasse EnumCheck:
     """
     various conditions to check an enumeration for
     """
@@ -1952,7 +1952,7 @@ class EnumCheck:
 CONTINUOUS, NAMED_FLAGS, UNIQUE = EnumCheck
 
 
-class verify:
+klasse verify:
     """
     Check an enumeration for various constraints. (see EnumCheck)
     """
@@ -2045,11 +2045,11 @@ def _test_simple_enum(checked_enum, simple_enum):
 
         >>> from enum import Enum, _simple_enum, _test_simple_enum
         >>> @_simple_enum(Enum)
-        ... class Color:
+        ... klasse Color:
         ...     RED = auto()
         ...     GREEN = auto()
         ...     BLUE = auto()
-        >>> class CheckedColor(Enum):
+        >>> klasse CheckedColor(Enum):
         ...     RED = auto()
         ...     GREEN = auto()
         ...     BLUE = auto()

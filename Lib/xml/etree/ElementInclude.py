@@ -64,11 +64,11 @@ DEFAULT_MAX_INCLUSION_DEPTH = 6
 ##
 # Fatal include error.
 
-class FatalIncludeError(SyntaxError):
+klasse FatalIncludeError(SyntaxError):
     pass
 
 
-class LimitedRecursiveIncludeError(FatalIncludeError):
+klasse LimitedRecursiveIncludeError(FatalIncludeError):
     pass
 
 

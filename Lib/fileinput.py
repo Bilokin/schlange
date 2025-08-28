@@ -1,4 +1,4 @@
-"""Helper class to quickly write a loop over all standard input files.
+"""Helper klasse to quickly write a loop over all standard input files.
 
 Typical use is:
 
@@ -168,7 +168,7 @@ def isstdin():
         raise RuntimeError("no active input()")
     return _state.isstdin()
 
-class FileInput:
+klasse FileInput:
     """FileInput([files[, inplace[, backup]]], *, mode=None, openhook=None)
 
     Class FileInput is the implementation of the module; its methods

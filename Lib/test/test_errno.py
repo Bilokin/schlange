@@ -7,7 +7,7 @@ import unittest
 
 std_c_errors = frozenset(['EDOM', 'ERANGE'])
 
-class ErrnoAttributeTests(unittest.TestCase):
+klasse ErrnoAttributeTests(unittest.TestCase):
 
     def test_for_improper_attributes(self):
         # No unexpected attributes should be on the module.
@@ -20,7 +20,7 @@ class ErrnoAttributeTests(unittest.TestCase):
             self.assertHasAttr(errno, value)
 
 
-class ErrorcodeTests(unittest.TestCase):
+klasse ErrorcodeTests(unittest.TestCase):
 
     def test_attributes_in_errorcode(self):
         for attribute in errno.__dict__.keys():

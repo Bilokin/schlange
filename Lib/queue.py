@@ -24,20 +24,20 @@ __all__ = [
 try:
     from _queue import Empty
 except ImportError:
-    class Empty(Exception):
+    klasse Empty(Exception):
         'Exception raised by Queue.get(block=0)/get_nowait().'
         pass
 
-class Full(Exception):
+klasse Full(Exception):
     'Exception raised by Queue.put(block=0)/put_nowait().'
     pass
 
 
-class ShutDown(Exception):
+klasse ShutDown(Exception):
     '''Raised when put/get with shut-down queue.'''
 
 
-class Queue:
+klasse Queue:
     '''Create a queue object with a given maximum size.
 
     If maxsize is <= 0, the queue size is infinite.
@@ -277,7 +277,7 @@ class Queue:
     __class_getitem__ = classmethod(types.GenericAlias)
 
 
-class PriorityQueue(Queue):
+klasse PriorityQueue(Queue):
     '''Variant of Queue that retrieves open entries in priority order (lowest first).
 
     Entries are typically tuples of the form:  (priority number, data).
@@ -296,7 +296,7 @@ class PriorityQueue(Queue):
         return heappop(self.queue)
 
 
-class LifoQueue(Queue):
+klasse LifoQueue(Queue):
     '''Variant of Queue that retrieves most recently added entries first.'''
 
     def _init(self, maxsize):
@@ -312,7 +312,7 @@ class LifoQueue(Queue):
         return self.queue.pop()
 
 
-class _PySimpleQueue:
+klasse _PySimpleQueue:
     '''Simple, unbounded FIFO queue.
 
     This pure Python implementation is not reentrant.

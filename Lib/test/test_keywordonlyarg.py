@@ -24,7 +24,7 @@ def sortnum(*nums, reverse=False):
 def sortwords(*words, reverse=False, **kwargs):
     return sorted(list(words), reverse=reverse)
 
-class Foo:
+klasse Foo:
     def __init__(self, *, k1, k2=0):
         self.k1 = k1
         self.k2 = k2
@@ -34,7 +34,7 @@ class Foo:
     def sum(self):
         return self.k1 + self.k2
 
-class KeywordOnlyArgTestCase(unittest.TestCase):
+klasse KeywordOnlyArgTestCase(unittest.TestCase):
     def assertRaisesSyntaxError(self, codestr):
         def shouldRaiseSyntaxError(s):
             compile(s, "<test>", "single")
@@ -140,7 +140,7 @@ class KeywordOnlyArgTestCase(unittest.TestCase):
             pass
 
     def test_kwonly_methods(self):
-        class Example:
+        klasse Example:
             def f(self, *, k1=1, k2=2):
                 return k1, k2
 
@@ -157,7 +157,7 @@ class KeywordOnlyArgTestCase(unittest.TestCase):
         lambda *, k1=unittest: None
 
     def test_mangling(self):
-        class X:
+        klasse X:
             def f(self, *, __a=42):
                 return __a
         self.assertEqual(X().f(), 42)

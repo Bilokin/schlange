@@ -70,7 +70,7 @@ def decode_q(encoded):
 
 
 # dict mapping bytes to their encoded form
-class _QByteMap(dict):
+klasse _QByteMap(dict):
 
     safe = b'-!*+/' + ascii_letters.encode('ascii') + digits.encode('ascii')
 

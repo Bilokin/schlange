@@ -53,7 +53,7 @@ def main():
     for arg in args:
         check(arg)
 
-class NannyNag(Exception):
+klasse NannyNag(Exception):
     """
     Raised by process_tokens() if detecting an ambiguous indent.
     Captured and handled in check().
@@ -132,7 +132,7 @@ def check(file):
     if verbose:
         print("%r: Clean bill of health." % (file,))
 
-class Whitespace:
+klasse Whitespace:
     # the characters used for space and tab
     S, T = ' \t'
 

@@ -17,11 +17,11 @@ from test.support import threading_helper
 
 
 @threading_helper.requires_working_threading()
-class TestDict(TestCase):
+klasse TestDict(TestCase):
     def test_racing_creation_shared_keys(self):
         """Verify that creating dictionaries is thread safe when we
         have a type with shared keys"""
-        class C(int):
+        klasse C(int):
             pass
 
         self.racing_creation(C)
@@ -34,7 +34,7 @@ class TestDict(TestCase):
     def test_racing_creation_inline_values_invalid(self):
         """Verify that re-creating a dict after we have invalid inline values
         is thread safe"""
-        class C:
+        klasse C:
             pass
 
         def make_obj():
@@ -114,7 +114,7 @@ class TestDict(TestCase):
         def f(): pass
         l = []
         THREAD_COUNT = 10
-        class MyDict(dict): pass
+        klasse MyDict(dict): pass
 
         def writer_func(l):
             for i in range(1000):
@@ -166,8 +166,8 @@ class TestDict(TestCase):
 
     def test_racing_set_object_dict(self):
         """Races assigning to __dict__ should be thread safe"""
-        class C: pass
-        class MyDict(dict): pass
+        klasse C: pass
+        klasse MyDict(dict): pass
         for cyclic in (False, True):
             f = C()
             f.__dict__ = {"foo": 42}

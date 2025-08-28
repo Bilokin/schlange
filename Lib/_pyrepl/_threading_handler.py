@@ -10,7 +10,7 @@ if TYPE_CHECKING:
     from types import TracebackType
     from typing import Protocol
 
-    class ExceptHookArgs(Protocol):
+    klasse ExceptHookArgs(Protocol):
         @property
         def exc_type(self) -> type[BaseException]: ...
         @property
@@ -20,7 +20,7 @@ if TYPE_CHECKING:
         @property
         def thread(self) -> Thread | None: ...
 
-    class ShowExceptions(Protocol):
+    klasse ShowExceptions(Protocol):
         def __call__(self) -> int: ...
         def add(self, s: str) -> None: ...
 
@@ -31,7 +31,7 @@ def install_threading_hook(reader: Reader) -> None:
     import threading
 
     @dataclass
-    class ExceptHookHandler:
+    klasse ExceptHookHandler:
         lock: threading.Lock = field(default_factory=threading.Lock)
         messages: list[str] = field(default_factory=list)
 

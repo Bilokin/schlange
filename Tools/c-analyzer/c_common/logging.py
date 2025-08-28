@@ -53,7 +53,7 @@ def hide_emit_errors():
     return restore
 
 
-class Printer:
+klasse Printer:
     def __init__(self, verbosity=VERBOSITY):
         self.verbosity = verbosity
 

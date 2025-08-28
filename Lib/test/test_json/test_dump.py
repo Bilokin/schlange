@@ -3,7 +3,7 @@ from test.test_json import PyTest, CTest
 
 from test.support import bigmemtest, _1G
 
-class TestDump:
+klasse TestDump:
     def test_dump(self):
         sio = StringIO()
         self.json.dump({}, sio)
@@ -48,11 +48,11 @@ class TestDump:
 
     # Issue 24094
     def test_encode_evil_dict(self):
-        class D(dict):
+        klasse D(dict):
             def keys(self):
                 return L
 
-        class X:
+        klasse X:
             def __hash__(self):
                 del L[0]
                 return 1337
@@ -66,9 +66,9 @@ class TestDump:
         self.assertEqual(self.dumps(d, sort_keys=True), '{"1337": "true.dat"}')
 
 
-class TestPyDump(TestDump, PyTest): pass
+klasse TestPyDump(TestDump, PyTest): pass
 
-class TestCDump(TestDump, CTest):
+klasse TestCDump(TestDump, CTest):
 
     # The size requirement here is hopefully over-estimated (actual
     # memory consumption depending on implementation details, and also

@@ -30,7 +30,7 @@ b'foo bar'
 It gets more complicated when the ctypes instance itself is contained
 in a 'base' object.
 
->>> class X(Structure):
+>>> klasse X(Structure):
 ...     _fields_ = [("x", c_int), ("y", c_int), ("array", c_char_p * 5)]
 ...
 >>> x = X()

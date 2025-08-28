@@ -3,7 +3,7 @@
 A "shelf" is a persistent, dictionary-like object.  The difference
 with dbm databases is that the values (not the keys!) in a shelf can
 be essentially arbitrary Python objects -- anything that the "pickle"
-module can handle.  This includes most class instances, recursive data
+module can handle.  This includes most klasse instances, recursive data
 types, and objects containing lots of shared sub-objects.  The keys
 are ordinary strings.
 
@@ -64,11 +64,11 @@ import collections.abc
 __all__ = ["ShelveError", "Shelf", "BsdDbShelf", "DbfilenameShelf", "open"]
 
 
-class ShelveError(Exception):
+klasse ShelveError(Exception):
     pass
 
 
-class _ClosedDict(collections.abc.MutableMapping):
+klasse _ClosedDict(collections.abc.MutableMapping):
     'Marker for a closed dict.  Access attempts raise a ValueError.'
 
     def closed(self, *args):
@@ -79,8 +79,8 @@ class _ClosedDict(collections.abc.MutableMapping):
         return '<Closed Dictionary>'
 
 
-class Shelf(collections.abc.MutableMapping):
-    """Base class for shelf implementations.
+klasse Shelf(collections.abc.MutableMapping):
+    """Base klasse for shelf implementations.
 
     This is initialized with a dictionary-like object.
     See the module's __doc__ string for an overview of the interface.
@@ -190,7 +190,7 @@ class Shelf(collections.abc.MutableMapping):
             self.dict.reorganize()
 
 
-class BsdDbShelf(Shelf):
+klasse BsdDbShelf(Shelf):
     """Shelf implementation using the "BSD" db interface.
 
     This adds methods first(), next(), previous(), last() and
@@ -229,7 +229,7 @@ class BsdDbShelf(Shelf):
         return (key.decode(self.keyencoding), self.deserializer(value))
 
 
-class DbfilenameShelf(Shelf):
+klasse DbfilenameShelf(Shelf):
     """Shelf implementation using the "dbm" generic dbm interface.
 
     This is initialized with the filename for the dbm database.

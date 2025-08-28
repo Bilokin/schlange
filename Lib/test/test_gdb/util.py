@@ -152,7 +152,7 @@ def setup_module():
         print()
 
 
-class DebuggerTests(unittest.TestCase):
+klasse DebuggerTests(unittest.TestCase):
 
     """Test that the debugger can debug Python."""
 

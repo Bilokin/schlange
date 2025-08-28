@@ -2,7 +2,7 @@ import __future__
 import unittest
 
 
-class FLUFLTests(unittest.TestCase):
+klasse FLUFLTests(unittest.TestCase):
 
     def test_barry_as_bdfl(self):
         code = "from __future__ import barry_as_FLUFL\n2 {0} 3"

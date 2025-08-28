@@ -4,7 +4,7 @@ from threading import Thread
 from test.support import threading_helper
 
 
-class ZipThreading(unittest.TestCase):
+klasse ZipThreading(unittest.TestCase):
     @staticmethod
     def work(enum):
         while True:

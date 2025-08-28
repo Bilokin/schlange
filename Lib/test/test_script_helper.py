@@ -8,7 +8,7 @@ import unittest
 from unittest import mock
 
 
-class TestScriptHelper(unittest.TestCase):
+klasse TestScriptHelper(unittest.TestCase):
 
     def test_assert_python_ok(self):
         t = script_helper.assert_python_ok('-c', 'import sys; sys.exit(0)')
@@ -70,7 +70,7 @@ class TestScriptHelper(unittest.TestCase):
 
 
 @requires_subprocess()
-class TestScriptHelperEnvironment(unittest.TestCase):
+klasse TestScriptHelperEnvironment(unittest.TestCase):
     """Code coverage for interpreter_requires_environment()."""
 
     def setUp(self):

@@ -346,7 +346,7 @@ def _check_typespec(decl, typedecl, types, knowntypes):
     return 'typespec'
 
 
-class Analyzed(_info.Analyzed):
+klasse Analyzed(_info.Analyzed):
 
     @classonly
     def is_target(cls, raw):
@@ -411,7 +411,7 @@ class Analyzed(_info.Analyzed):
             raise NotImplementedError(fmt)
 
 
-class Analysis(_info.Analysis):
+klasse Analysis(_info.Analysis):
     _item_class = Analyzed
 
     @classonly

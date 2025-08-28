@@ -24,7 +24,7 @@ fcre = re.compile(r'^From ', re.MULTILINE)
 NEWLINE_WITHOUT_FWSP = re.compile(r'\r\n[^ \t]|\r[^ \n\t]|\n[^ \t]')
 
 
-class Generator:
+klasse Generator:
     """Generates output from a Message object tree.
 
     This basic generator writes the message to the given file object as plain
@@ -403,7 +403,7 @@ class Generator:
         return re.compile(s, flags)
 
 
-class BytesGenerator(Generator):
+klasse BytesGenerator(Generator):
     """Generates a bytes version of a Message object tree.
 
     Functionally identical to the base Generator except that the output is
@@ -455,7 +455,7 @@ class BytesGenerator(Generator):
 
 _FMT = '[Non-text (%(type)s) part of message omitted, filename %(filename)s]'
 
-class DecodedGenerator(Generator):
+klasse DecodedGenerator(Generator):
     """Generates a text representation of a message.
 
     Like the Generator base class, except that non-text parts are substituted

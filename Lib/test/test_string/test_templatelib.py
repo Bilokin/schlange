@@ -6,7 +6,7 @@ from string.templatelib import Template, Interpolation, convert
 from test.test_string._support import TStringBaseCase, fstring
 
 
-class TestTemplate(unittest.TestCase, TStringBaseCase):
+klasse TestTemplate(unittest.TestCase, TStringBaseCase):
 
     def test_common(self):
         self.assertEqual(type(t'').__name__, 'Template')
@@ -21,10 +21,10 @@ class TestTemplate(unittest.TestCase, TStringBaseCase):
 
     def test_final_types(self):
         with self.assertRaisesRegex(TypeError, 'is not an acceptable base type'):
-            class Sub(Template): ...
+            klasse Sub(Template): ...
 
         with self.assertRaisesRegex(TypeError, 'is not an acceptable base type'):
-            class Sub(Interpolation): ...
+            klasse Sub(Interpolation): ...
 
     def test_basic_creation(self):
         # Simple t-string creation
@@ -139,7 +139,7 @@ world"""
                     self.assertEqual(unpickled.format_spec, interpolation.format_spec)
 
 
-class TemplateIterTests(unittest.TestCase):
+klasse TemplateIterTests(unittest.TestCase):
     def test_abc(self):
         self.assertIsInstance(iter(t''), Iterable)
         self.assertIsInstance(iter(t''), Iterator)
@@ -147,7 +147,7 @@ class TemplateIterTests(unittest.TestCase):
     def test_final(self):
         TemplateIter = type(iter(t''))
         with self.assertRaisesRegex(TypeError, 'is not an acceptable base type'):
-            class Sub(TemplateIter): ...
+            klasse Sub(TemplateIter): ...
 
     def test_iter(self):
         x = 1
@@ -169,7 +169,7 @@ class TemplateIterTests(unittest.TestCase):
         self.assertRaises(StopIteration, next, template_iter)
 
 
-class TestFunctions(unittest.TestCase):
+klasse TestFunctions(unittest.TestCase):
     def test_convert(self):
         from fractions import Fraction
 

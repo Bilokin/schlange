@@ -10,7 +10,7 @@ from email import encoders
 from email.mime.nonmultipart import MIMENonMultipart
 
 
-class MIMEImage(MIMENonMultipart):
+klasse MIMEImage(MIMENonMultipart):
     """Class for generating image/* type MIME documents."""
 
     def __init__(self, _imagedata, _subtype=None,

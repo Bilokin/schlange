@@ -38,6 +38,6 @@ def test6(x):
         """nested docstring"""
 
 
-class Outer:
-    class Inner:
-        "nested class docstring"
+klasse Outer:
+    klasse Inner:
+        "nested klasse docstring"

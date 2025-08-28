@@ -6,13 +6,13 @@
 from test import multibytecodec_support
 import unittest
 
-class TestCP949Map(multibytecodec_support.TestBase_Mapping,
+klasse TestCP949Map(multibytecodec_support.TestBase_Mapping,
                    unittest.TestCase):
     encoding = 'cp949'
     mapfileurl = 'http://www.pythontest.net/unicode/CP949.TXT'
 
 
-class TestEUCKRMap(multibytecodec_support.TestBase_Mapping,
+klasse TestEUCKRMap(multibytecodec_support.TestBase_Mapping,
                    unittest.TestCase):
     encoding = 'euc_kr'
     mapfileurl = 'http://www.pythontest.net/unicode/EUC-KR.TXT'
@@ -22,7 +22,7 @@ class TestEUCKRMap(multibytecodec_support.TestBase_Mapping,
     pass_dectest = [(b'\xa4\xd4', '\u3164')]
 
 
-class TestJOHABMap(multibytecodec_support.TestBase_Mapping,
+klasse TestJOHABMap(multibytecodec_support.TestBase_Mapping,
                    unittest.TestCase):
     encoding = 'johab'
     mapfileurl = 'http://www.pythontest.net/unicode/JOHAB.TXT'

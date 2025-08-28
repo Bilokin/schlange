@@ -165,8 +165,8 @@ PLAT_TO_VCVARS = {
     'win-arm64' : 'x86_arm64'
 }
 
-class MSVCCompiler(CCompiler) :
-    """Concrete class that implements an interface to Microsoft Visual C++,
+klasse MSVCCompiler(CCompiler) :
+    """Concrete klasse that implements an interface to Microsoft Visual C++,
        as defined by the CCompiler abstract class."""
 
     compiler_type = 'msvc'
@@ -178,7 +178,7 @@ class MSVCCompiler(CCompiler) :
     # though, so it's worth thinking about.
     executables = {}
 
-    # Private class data (need to distinguish C from C++ source for compiler)
+    # Private klasse data (need to distinguish C from C++ source for compiler)
     _c_extensions = ['.c']
     _cpp_extensions = ['.cc', '.cpp', '.cxx']
     _rc_extensions = ['.rc']

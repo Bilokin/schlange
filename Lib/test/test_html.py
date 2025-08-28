@@ -6,7 +6,7 @@ import html
 import unittest
 
 
-class HtmlTests(unittest.TestCase):
+klasse HtmlTests(unittest.TestCase):
     def test_escape(self):
         self.assertEqual(
             html.escape('\'<script>"&foo;"</script>\''),

@@ -35,7 +35,7 @@ THREAD_JOIN_TIMEOUT = 300
 
 # The enum should be here to break circular dependencies between
 # base_events and sslproto
-class _SendfileMode(enum.Enum):
+klasse _SendfileMode(enum.Enum):
     UNSUPPORTED = enum.auto()
     TRY_NATIVE = enum.auto()
     FALLBACK = enum.auto()

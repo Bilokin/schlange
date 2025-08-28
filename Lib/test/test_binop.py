@@ -25,7 +25,7 @@ def isRat(x):
     """Test whether an object is an instance of the Rat class."""
     return isinstance(x, Rat)
 
-class Rat(object):
+klasse Rat(object):
 
     """Rational number implemented as a normalized pair of ints."""
 
@@ -194,8 +194,8 @@ class Rat(object):
             return float(self) == other
         return NotImplemented
 
-class RatTestCase(unittest.TestCase):
-    """Unit tests for Rat class and its support utilities."""
+klasse RatTestCase(unittest.TestCase):
+    """Unit tests for Rat klasse and its support utilities."""
 
     def test_gcd(self):
         self.assertEqual(gcd(10, 12), 2)
@@ -300,8 +300,8 @@ class RatTestCase(unittest.TestCase):
     # XXX Ran out of steam; TO DO: divmod, div, future division
 
 
-class OperationLogger:
-    """Base class for classes with operation logging."""
+klasse OperationLogger:
+    """Base klasse for classes with operation logging."""
     def __init__(self, logger):
         self.logger = logger
     def log_operation(self, *args):
@@ -321,7 +321,7 @@ def op_sequence(op, *classes):
         pass
     return log
 
-class A(OperationLogger):
+klasse A(OperationLogger):
     def __eq__(self, other):
         self.log_operation('A.__eq__')
         return NotImplemented
@@ -332,7 +332,7 @@ class A(OperationLogger):
         self.log_operation('A.__ge__')
         return NotImplemented
 
-class B(OperationLogger, metaclass=ABCMeta):
+klasse B(OperationLogger, metaclass=ABCMeta):
     def __eq__(self, other):
         self.log_operation('B.__eq__')
         return NotImplemented
@@ -343,7 +343,7 @@ class B(OperationLogger, metaclass=ABCMeta):
         self.log_operation('B.__ge__')
         return NotImplemented
 
-class C(B):
+klasse C(B):
     def __eq__(self, other):
         self.log_operation('C.__eq__')
         return NotImplemented
@@ -354,7 +354,7 @@ class C(B):
         self.log_operation('C.__ge__')
         return NotImplemented
 
-class V(OperationLogger):
+klasse V(OperationLogger):
     """Virtual subclass of B"""
     def __eq__(self, other):
         self.log_operation('V.__eq__')
@@ -368,7 +368,7 @@ class V(OperationLogger):
 B.register(V)
 
 
-class OperationOrderTests(unittest.TestCase):
+klasse OperationOrderTests(unittest.TestCase):
     def test_comparison_orders(self):
         self.assertEqual(op_sequence(eq, A, A), ['A.__eq__', 'A.__eq__'])
         self.assertEqual(op_sequence(eq, A, B), ['A.__eq__', 'B.__eq__'])
@@ -387,33 +387,33 @@ class OperationOrderTests(unittest.TestCase):
         self.assertEqual(op_sequence(eq, B, V), ['B.__eq__', 'V.__eq__'])
         self.assertEqual(op_sequence(le, B, V), ['B.__le__', 'V.__ge__'])
 
-class SupEq(object):
+klasse SupEq(object):
     """Class that can test equality"""
     def __eq__(self, other):
         return True
 
-class S(SupEq):
+klasse S(SupEq):
     """Subclass of SupEq that should fail"""
     __eq__ = None
 
-class F(object):
-    """Independent class that should fall back"""
+klasse F(object):
+    """Independent klasse that should fall back"""
 
-class X(object):
-    """Independent class that should fail"""
+klasse X(object):
+    """Independent klasse that should fail"""
     __eq__ = None
 
-class SN(SupEq):
+klasse SN(SupEq):
     """Subclass of SupEq that can test equality, but not non-equality"""
     __ne__ = None
 
-class XN:
-    """Independent class that can test equality, but not non-equality"""
+klasse XN:
+    """Independent klasse that can test equality, but not non-equality"""
     def __eq__(self, other):
         return True
     __ne__ = None
 
-class FallbackBlockingTests(unittest.TestCase):
+klasse FallbackBlockingTests(unittest.TestCase):
     """Unit tests for None method blocking"""
 
     def test_fallback_rmethod_blocking(self):

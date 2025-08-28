@@ -10,7 +10,7 @@ machinery = util.import_importlib('importlib.machinery')
 @unittest.skipIf(util.EXTENSIONS is None or util.EXTENSIONS.filename is None,
                  'dynamic loading not supported or test module not available')
 @util.case_insensitive_tests
-class ExtensionModuleCaseSensitivityTest(util.CASEOKTestBase):
+klasse ExtensionModuleCaseSensitivityTest(util.CASEOKTestBase):
 
     def find_spec(self):
         good_name = util.EXTENSIONS.name

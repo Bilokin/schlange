@@ -4,7 +4,7 @@ and setting of highlightthickness
 """
 from tkinter import OptionMenu, _setit, StringVar, Button
 
-class DynOptionMenu(OptionMenu):
+klasse DynOptionMenu(OptionMenu):
     """Add SetMenu and highlightthickness to OptionMenu.
 
     Highlightthickness adds space around menu button.

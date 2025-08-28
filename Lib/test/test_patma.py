@@ -10,12 +10,12 @@ from test import support
 
 
 @dataclasses.dataclass
-class Point:
+klasse Point:
     x: int
     y: int
 
 
-class TestCompiler(unittest.TestCase):
+klasse TestCompiler(unittest.TestCase):
 
     def test_refleaks(self):
         # Hunting for leaks using -R doesn't catch leaks in the compiler itself,
@@ -25,7 +25,7 @@ class TestCompiler(unittest.TestCase):
             compile(file.read(), __file__, "exec")
 
 
-class TestInheritance(unittest.TestCase):
+klasse TestInheritance(unittest.TestCase):
 
     @staticmethod
     def check_sequence_then_mapping(x):
@@ -44,15 +44,15 @@ class TestInheritance(unittest.TestCase):
                 return "seq"
 
     def test_multiple_inheritance_mapping(self):
-        class C:
+        klasse C:
             pass
-        class M1(collections.UserDict, collections.abc.Sequence):
+        klasse M1(collections.UserDict, collections.abc.Sequence):
             pass
-        class M2(C, collections.UserDict, collections.abc.Sequence):
+        klasse M2(C, collections.UserDict, collections.abc.Sequence):
             pass
-        class M3(collections.UserDict, C, list):
+        klasse M3(collections.UserDict, C, list):
             pass
-        class M4(dict, collections.abc.Sequence, C):
+        klasse M4(dict, collections.abc.Sequence, C):
             pass
         self.assertEqual(self.check_sequence_then_mapping(M1()), "map")
         self.assertEqual(self.check_sequence_then_mapping(M2()), "map")
@@ -64,15 +64,15 @@ class TestInheritance(unittest.TestCase):
         self.assertEqual(self.check_mapping_then_sequence(M4()), "map")
 
     def test_multiple_inheritance_sequence(self):
-        class C:
+        klasse C:
             pass
-        class S1(collections.UserList, collections.abc.Mapping):
+        klasse S1(collections.UserList, collections.abc.Mapping):
             pass
-        class S2(C, collections.UserList, collections.abc.Mapping):
+        klasse S2(C, collections.UserList, collections.abc.Mapping):
             pass
-        class S3(list, C, collections.abc.Mapping):
+        klasse S3(list, C, collections.abc.Mapping):
             pass
-        class S4(collections.UserList, dict, C):
+        klasse S4(collections.UserList, dict, C):
             pass
         self.assertEqual(self.check_sequence_then_mapping(S1()), "seq")
         self.assertEqual(self.check_sequence_then_mapping(S2()), "seq")
@@ -84,16 +84,16 @@ class TestInheritance(unittest.TestCase):
         self.assertEqual(self.check_mapping_then_sequence(S4()), "seq")
 
     def test_late_registration_mapping(self):
-        class Parent:
+        klasse Parent:
             pass
-        class ChildPre(Parent):
+        klasse ChildPre(Parent):
             pass
-        class GrandchildPre(ChildPre):
+        klasse GrandchildPre(ChildPre):
             pass
         collections.abc.Mapping.register(Parent)
-        class ChildPost(Parent):
+        klasse ChildPost(Parent):
             pass
-        class GrandchildPost(ChildPost):
+        klasse GrandchildPost(ChildPost):
             pass
         self.assertEqual(self.check_sequence_then_mapping(Parent()), "map")
         self.assertEqual(self.check_sequence_then_mapping(ChildPre()), "map")
@@ -107,16 +107,16 @@ class TestInheritance(unittest.TestCase):
         self.assertEqual(self.check_mapping_then_sequence(GrandchildPost()), "map")
 
     def test_late_registration_sequence(self):
-        class Parent:
+        klasse Parent:
             pass
-        class ChildPre(Parent):
+        klasse ChildPre(Parent):
             pass
-        class GrandchildPre(ChildPre):
+        klasse GrandchildPre(ChildPre):
             pass
         collections.abc.Sequence.register(Parent)
-        class ChildPost(Parent):
+        klasse ChildPost(Parent):
             pass
-        class GrandchildPost(ChildPost):
+        klasse GrandchildPost(ChildPost):
             pass
         self.assertEqual(self.check_sequence_then_mapping(Parent()), "seq")
         self.assertEqual(self.check_sequence_then_mapping(ChildPre()), "seq")
@@ -130,7 +130,7 @@ class TestInheritance(unittest.TestCase):
         self.assertEqual(self.check_mapping_then_sequence(GrandchildPost()), "seq")
 
 
-class TestPatma(unittest.TestCase):
+klasse TestPatma(unittest.TestCase):
 
     def test_patma_000(self):
         match 0:
@@ -191,7 +191,7 @@ class TestPatma(unittest.TestCase):
 
     def test_patma_008(self):
         x = 0
-        class A:
+        klasse A:
             y = 1
         match x:
             case A.y as z:
@@ -200,7 +200,7 @@ class TestPatma(unittest.TestCase):
         self.assertEqual(A.y, 1)
 
     def test_patma_009(self):
-        class A:
+        klasse A:
             B = 0
         match 0:
             case x if x:
@@ -1136,7 +1136,7 @@ class TestPatma(unittest.TestCase):
         self.assertEqual(y, 0)
 
     def test_patma_111(self):
-        class A:
+        klasse A:
             B = 0
         x = 0
         match x:
@@ -1147,8 +1147,8 @@ class TestPatma(unittest.TestCase):
         self.assertEqual(y, 0)
 
     def test_patma_112(self):
-        class A:
-            class B:
+        klasse A:
+            klasse B:
                 C = 0
         x = 0
         match x:
@@ -1159,8 +1159,8 @@ class TestPatma(unittest.TestCase):
         self.assertEqual(y, 0)
 
     def test_patma_113(self):
-        class A:
-            class B:
+        klasse A:
+            klasse B:
                 C = 0
                 D = 1
         x = 1
@@ -1175,9 +1175,9 @@ class TestPatma(unittest.TestCase):
         self.assertEqual(y, 1)
 
     def test_patma_114(self):
-        class A:
-            class B:
-                class C:
+        klasse A:
+            klasse B:
+                klasse C:
                     D = 0
         x = 0
         match x:
@@ -1188,9 +1188,9 @@ class TestPatma(unittest.TestCase):
         self.assertEqual(y, 0)
 
     def test_patma_115(self):
-        class A:
-            class B:
-                class C:
+        klasse A:
+            klasse B:
+                klasse C:
                     D = 0
                     E = 1
         x = 1
@@ -1912,7 +1912,7 @@ class TestPatma(unittest.TestCase):
         self.assertEqual(whereis(Point("X", "x")), "Not on the diagonal")
 
     def test_patma_184(self):
-        class Seq(collections.abc.Sequence):
+        klasse Seq(collections.abc.Sequence):
             __getitem__ = None
             def __len__(self):
                 return 0
@@ -1922,7 +1922,7 @@ class TestPatma(unittest.TestCase):
         self.assertEqual(y, 0)
 
     def test_patma_185(self):
-        class Seq(collections.abc.Sequence):
+        klasse Seq(collections.abc.Sequence):
             __getitem__ = None
             def __len__(self):
                 return 42
@@ -1932,7 +1932,7 @@ class TestPatma(unittest.TestCase):
         self.assertEqual(y, 0)
 
     def test_patma_186(self):
-        class Seq(collections.abc.Sequence):
+        klasse Seq(collections.abc.Sequence):
             def __getitem__(self, i):
                 return i
             def __len__(self):
@@ -2063,7 +2063,7 @@ class TestPatma(unittest.TestCase):
         self.assertIs(z, 0)
 
     def test_patma_198(self):
-        class Color(enum.Enum):
+        klasse Color(enum.Enum):
             RED = 0
             GREEN = 1
             BLUE = 2
@@ -2089,7 +2089,7 @@ class TestPatma(unittest.TestCase):
         self.assertIs(f(3.0), None)
 
     def test_patma_199(self):
-        class Color(int, enum.Enum):
+        klasse Color(int, enum.Enum):
             RED = 0
             GREEN = 1
             BLUE = 2
@@ -2115,7 +2115,7 @@ class TestPatma(unittest.TestCase):
         self.assertIs(f(3.0), None)
 
     def test_patma_200(self):
-        class Class:
+        klasse Class:
             __match_args__ = ("a", "b")
         c = Class()
         c.a = 0
@@ -2128,7 +2128,7 @@ class TestPatma(unittest.TestCase):
         self.assertEqual(z, 0)
 
     def test_patma_201(self):
-        class Class:
+        klasse Class:
             __match_args__ = ("a", "b")
         c = Class()
         c.a = 0
@@ -2141,9 +2141,9 @@ class TestPatma(unittest.TestCase):
         self.assertEqual(z, 0)
 
     def test_patma_202(self):
-        class Parent:
+        klasse Parent:
             __match_args__ = "a", "b"
-        class Child(Parent):
+        klasse Child(Parent):
             __match_args__ = ("c", "d")
         c = Child()
         c.a = 0
@@ -2156,9 +2156,9 @@ class TestPatma(unittest.TestCase):
         self.assertEqual(z, 0)
 
     def test_patma_203(self):
-        class Parent:
+        klasse Parent:
             __match_args__ = ("a", "b")
-        class Child(Parent):
+        klasse Child(Parent):
             __match_args__ = "c", "d"
         c = Child()
         c.a = 0
@@ -2458,7 +2458,7 @@ class TestPatma(unittest.TestCase):
         self.assertEqual(y, 1)
 
     def test_patma_232(self):
-        class Eq:
+        klasse Eq:
             def __eq__(self, other):
                 return True
         x = eq = Eq()
@@ -2659,7 +2659,7 @@ class TestPatma(unittest.TestCase):
         self.assertEqual(f((False, range(10, 20), True)), alts[4])
 
     def test_patma_248(self):
-        class C(dict):
+        klasse C(dict):
             @staticmethod
             def get(key, default=None):
                 return 'bar'
@@ -2672,17 +2672,17 @@ class TestPatma(unittest.TestCase):
         self.assertEqual(y, 'bar')
 
     def test_patma_249(self):
-        class C:
+        klasse C:
             __attr = "eggs"  # mangled to _C__attr
             _Outer__attr = "bacon"
-        class Outer:
+        klasse Outer:
             def f(self, x):
                 match x:
                     # looks up __attr, not _C__attr or _Outer__attr
                     case C(__attr=y):
                         return y
         c = C()
-        setattr(c, "__attr", "spam")  # setattr is needed because we're in a class scope
+        setattr(c, "__attr", "spam")  # setattr is needed because we're in a klasse scope
         self.assertEqual(Outer().f(c), "spam")
 
     def test_patma_250(self):
@@ -2706,7 +2706,7 @@ class TestPatma(unittest.TestCase):
                 case _:
                     return None
 
-        class X:
+        klasse X:
             def __init__(self, attr):
                 self.attr = attr
 
@@ -2767,16 +2767,16 @@ class TestPatma(unittest.TestCase):
         from typing import Protocol, runtime_checkable
 
         @runtime_checkable
-        class P(Protocol):
+        klasse P(Protocol):
             x: int
             y: int
 
-        class A:
+        klasse A:
             def __init__(self, x: int, y: int):
                 self.x = x
                 self.y = y
 
-        class B(A): ...
+        klasse B(A): ...
 
         for cls in (A, B):
             with self.subTest(cls=cls.__name__):
@@ -2806,16 +2806,16 @@ class TestPatma(unittest.TestCase):
         T = TypeVar('T')  # not using PEP695 to be able to backport changes
 
         @runtime_checkable
-        class P(Protocol[T]):
+        klasse P(Protocol[T]):
             a: T
             b: T
 
-        class A:
+        klasse A:
             def __init__(self, x: int, y: int):
                 self.x = x
                 self.y = y
 
-        class G(Generic[T]):
+        klasse G(Generic[T]):
             def __init__(self, x: T, y: T):
                 self.x = x
                 self.y = y
@@ -2836,17 +2836,17 @@ class TestPatma(unittest.TestCase):
         # Used to fail before
         # https://github.com/python/cpython/issues/110682
         @runtime_checkable
-        class P(Protocol):
+        klasse P(Protocol):
             __match_args__ = ('x', 'y')
             x: int
             y: int
 
-        class A:
+        klasse A:
             def __init__(self, x: int, y: int):
                 self.x = x
                 self.y = y
 
-        class B(A): ...
+        klasse B(A): ...
 
         for cls in (A, B):
             with self.subTest(cls=cls.__name__):
@@ -2889,7 +2889,7 @@ class TestPatma(unittest.TestCase):
                 self.assertEqual(h, 1)
 
 
-class TestSyntaxErrors(unittest.TestCase):
+klasse TestSyntaxErrors(unittest.TestCase):
 
     def assert_syntax_error(self, code: str):
         with self.assertRaises(SyntaxError):
@@ -3230,10 +3230,10 @@ class TestSyntaxErrors(unittest.TestCase):
                 pass
         """)
 
-class TestTypeErrors(unittest.TestCase):
+klasse TestTypeErrors(unittest.TestCase):
 
     def test_accepts_positional_subpatterns_0(self):
-        class Class:
+        klasse Class:
             __match_args__ = ()
         x = Class()
         y = z = None
@@ -3255,7 +3255,7 @@ class TestTypeErrors(unittest.TestCase):
         self.assertIs(y, None)
 
     def test_got_multiple_subpatterns_for_attribute_0(self):
-        class Class:
+        klasse Class:
             __match_args__ = ("a", "a")
             a = None
         x = Class()
@@ -3269,7 +3269,7 @@ class TestTypeErrors(unittest.TestCase):
         self.assertIs(z, None)
 
     def test_got_multiple_subpatterns_for_attribute_1(self):
-        class Class:
+        klasse Class:
             __match_args__ = ("a",)
             a = None
         x = Class()
@@ -3283,7 +3283,7 @@ class TestTypeErrors(unittest.TestCase):
         self.assertIs(z, None)
 
     def test_match_args_elements_must_be_strings(self):
-        class Class:
+        klasse Class:
             __match_args__ = (None,)
         x = Class()
         y = z = None
@@ -3295,7 +3295,7 @@ class TestTypeErrors(unittest.TestCase):
         self.assertIs(z, None)
 
     def test_match_args_must_be_a_tuple_0(self):
-        class Class:
+        klasse Class:
             __match_args__ = None
         x = Class()
         y = z = None
@@ -3307,7 +3307,7 @@ class TestTypeErrors(unittest.TestCase):
         self.assertIs(z, None)
 
     def test_match_args_must_be_a_tuple_1(self):
-        class Class:
+        klasse Class:
             __match_args__ = "XYZ"
         x = Class()
         y = z = None
@@ -3319,7 +3319,7 @@ class TestTypeErrors(unittest.TestCase):
         self.assertIs(z, None)
 
     def test_match_args_must_be_a_tuple_2(self):
-        class Class:
+        klasse Class:
             __match_args__ = ["spam", "eggs"]
             spam = 0
             eggs = 1
@@ -3343,9 +3343,9 @@ class TestTypeErrors(unittest.TestCase):
 
     def test_regular_protocol(self):
         from typing import Protocol
-        class P(Protocol): ...
+        klasse P(Protocol): ...
         msg = (
-            'Instance and class checks can only be used '
+            'Instance and klasse checks can only be used '
             'with @runtime_checkable protocols'
         )
         w = None
@@ -3357,10 +3357,10 @@ class TestTypeErrors(unittest.TestCase):
 
     def test_positional_patterns_with_regular_protocol(self):
         from typing import Protocol
-        class P(Protocol):
+        klasse P(Protocol):
             x: int  # no `__match_args__`
             y: int
-        class A:
+        klasse A:
             x = 1
             y = 2
         w = None
@@ -3371,10 +3371,10 @@ class TestTypeErrors(unittest.TestCase):
         self.assertIsNone(w)
 
 
-class TestValueErrors(unittest.TestCase):
+klasse TestValueErrors(unittest.TestCase):
 
     def test_mapping_pattern_checks_duplicate_key_1(self):
-        class Keys:
+        klasse Keys:
             KEY = "a"
         x = {"a": 0, "b": 1}
         w = y = z = None
@@ -3386,7 +3386,7 @@ class TestValueErrors(unittest.TestCase):
         self.assertIs(y, None)
         self.assertIs(z, None)
 
-class TestSourceLocations(unittest.TestCase):
+klasse TestSourceLocations(unittest.TestCase):
     def test_jump_threading(self):
         # See gh-123048
         def f():
@@ -3405,7 +3405,7 @@ class TestSourceLocations(unittest.TestCase):
             if inst.opcode in dis.hasjump:
                 self.assertIsNotNone(inst.positions.lineno, "jump without location")
 
-class TestTracing(unittest.TestCase):
+klasse TestTracing(unittest.TestCase):
 
     @staticmethod
     def _trace(func, *args, **kwargs):
@@ -3532,7 +3532,7 @@ if __name__ == "__main__":
     import pyperf
 
 
-    class PerfPatma(TestPatma):
+    klasse PerfPatma(TestPatma):
 
         def assertEqual(*_, **__):
             pass

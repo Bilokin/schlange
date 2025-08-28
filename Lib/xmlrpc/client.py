@@ -94,7 +94,7 @@ implement XML-RPC servers.
 
 Exported exceptions:
 
-  Error          Base class for client errors
+  Error          Base klasse for client errors
   ProtocolError  Indicates an HTTP protocol error
   ResponseError  Indicates a broken response package
   Fault          Indicates an XML-RPC fault package
@@ -182,10 +182,10 @@ INTERNAL_ERROR        = -32603
 # Exceptions
 
 ##
-# Base class for all kinds of client-side errors.
+# Base klasse for all kinds of client-side errors.
 
-class Error(Exception):
-    """Base class for client errors."""
+klasse Error(Exception):
+    """Base klasse for client errors."""
     __str__ = object.__str__
 
 ##
@@ -198,7 +198,7 @@ class Error(Exception):
 # @param errmsg The HTTP error message.
 # @param headers The HTTP header dictionary.
 
-class ProtocolError(Error):
+klasse ProtocolError(Error):
     """Indicates an HTTP protocol error."""
     def __init__(self, url, errcode, errmsg, headers):
         Error.__init__(self)
@@ -217,7 +217,7 @@ class ProtocolError(Error):
 # raised by the unmarshalling layer, if the XML-RPC response is
 # malformed.
 
-class ResponseError(Error):
+klasse ResponseError(Error):
     """Indicates a broken response package."""
     pass
 
@@ -230,7 +230,7 @@ class ResponseError(Error):
 # @param faultCode The XML-RPC fault code.
 # @param faultString The XML-RPC fault string.
 
-class Fault(Error):
+klasse Fault(Error):
     """Indicates an XML-RPC fault package."""
     def __init__(self, faultCode, faultString, **extra):
         Error.__init__(self)
@@ -267,7 +267,7 @@ def _strftime(value):
 
     return "%04d%02d%02dT%02d:%02d:%02d" % value[:6]
 
-class DateTime:
+klasse DateTime:
     """DateTime wrapper for an ISO 8601 string or time tuple or
     localtime integer value to generate 'dateTime.iso8601' XML-RPC
     value.
@@ -364,7 +364,7 @@ def _datetime_type(data):
 #
 # @param data An 8-bit string containing arbitrary data.
 
-class Binary:
+klasse Binary:
     """Wrapper for binary data."""
 
     def __init__(self, data=None):
@@ -410,7 +410,7 @@ WRAPPERS = (DateTime, Binary)
 # --------------------------------------------------------------------
 # XML parsers
 
-class ExpatParser:
+klasse ExpatParser:
     # fast expat parser for Python 2.0 and later.
     def __init__(self, target):
         self._parser = parser = expat.ParserCreate(None, None)
@@ -443,7 +443,7 @@ class ExpatParser:
 #     value is None (interpreted as UTF-8).
 # @see dumps
 
-class Marshaller:
+klasse Marshaller:
     """Generate an XML-RPC params chunk from a Python data structure.
 
     Create a Marshaller instance for each set of parameters, and use
@@ -498,7 +498,7 @@ class Marshaller:
             # check if this object can be marshalled as a structure
             if not hasattr(value, '__dict__'):
                 raise TypeError("cannot marshal %s objects" % type(value))
-            # check if this class is a sub-class of a basic type,
+            # check if this klasse is a sub-class of a basic type,
             # because we don't know how to marshal these types
             # (e.g. a string sub-class)
             for type_ in type(value).__mro__:
@@ -610,7 +610,7 @@ class Marshaller:
 #
 # @see loads
 
-class Unmarshaller:
+klasse Unmarshaller:
     """Unmarshal an XML-RPC response, based on incoming XML event
     messages (start, data, end).  Call close() to get the resulting
     data structure.
@@ -804,7 +804,7 @@ class Unmarshaller:
 ## Multicall support
 #
 
-class _MultiCallMethod:
+klasse _MultiCallMethod:
     # some lesser magic to store calls made to a MultiCall object
     # for batch execution
     def __init__(self, call_list, name):
@@ -815,7 +815,7 @@ class _MultiCallMethod:
     def __call__(self, *args):
         self.__call_list.append((self.__name, args))
 
-class MultiCallIterator:
+klasse MultiCallIterator:
     """Iterates over the results of a multicall. Exceptions are
     raised in response to xmlrpc faults."""
 
@@ -831,7 +831,7 @@ class MultiCallIterator:
         else:
             raise ValueError("unexpected type in multicall result")
 
-class MultiCall:
+klasse MultiCall:
     """server -> an object used to boxcar method calls
 
     server should be a ServerProxy object.
@@ -1062,7 +1062,7 @@ def gzip_decode(data, max_decode=20971520):
 # @param response A stream supporting a read() method
 # @return a file-like object that the decoded data can be read() from
 
-class GzipDecodedResponse(gzip.GzipFile if gzip else object):
+klasse GzipDecodedResponse(gzip.GzipFile if gzip else object):
     """a file-like object to decode a response encoded with the gzip
     method, as described in RFC 1952.
     """
@@ -1084,7 +1084,7 @@ class GzipDecodedResponse(gzip.GzipFile if gzip else object):
 # --------------------------------------------------------------------
 # request dispatcher
 
-class _Method:
+klasse _Method:
     # some magic to bind an XML-RPC method to an RPC server.
     # supports "nested" methods (e.g. examples.getStateName)
     def __init__(self, send, name):
@@ -1096,12 +1096,12 @@ class _Method:
         return self.__send(self.__name, args)
 
 ##
-# Standard transport class for XML-RPC over HTTP.
+# Standard transport klasse for XML-RPC over HTTP.
 # <p>
 # You can create custom transports by subclassing this method, and
 # overriding selected methods.
 
-class Transport:
+klasse Transport:
     """Handles an HTTP transaction to an XML-RPC server."""
 
     # client identifier (may be overridden)
@@ -1325,9 +1325,9 @@ class Transport:
         return u.close()
 
 ##
-# Standard transport class for XML-RPC over HTTPS.
+# Standard transport klasse for XML-RPC over HTTPS.
 
-class SafeTransport(Transport):
+klasse SafeTransport(Transport):
     """Handles an HTTPS transaction to an XML-RPC server."""
 
     def __init__(self, use_datetime=False, use_builtin_types=False,
@@ -1354,10 +1354,10 @@ class SafeTransport(Transport):
         return self._connection[1]
 
 ##
-# Standard server proxy.  This class establishes a virtual connection
+# Standard server proxy.  This klasse establishes a virtual connection
 # to an XML-RPC server.
 # <p>
-# This class is available as ServerProxy and Server.  New code should
+# This klasse is available as ServerProxy and Server.  New code should
 # use ServerProxy, to avoid confusion.
 #
 # @def ServerProxy(uri, **options)
@@ -1370,7 +1370,7 @@ class SafeTransport(Transport):
 #    (printed to standard output).
 # @see Transport
 
-class ServerProxy:
+klasse ServerProxy:
     """uri [,options] -> a logical connection to an XML-RPC server
 
     uri is the connection point on the server, given as

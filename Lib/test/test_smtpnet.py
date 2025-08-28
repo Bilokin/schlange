@@ -24,7 +24,7 @@ def check_ssl_verifiy(host, port):
             return True
 
 
-class SmtpTest(unittest.TestCase):
+klasse SmtpTest(unittest.TestCase):
     testServer = SMTP_TEST_SERVER
     remotePort = 587
 
@@ -46,7 +46,7 @@ class SmtpTest(unittest.TestCase):
             server.quit()
 
 
-class SmtpSSLTest(unittest.TestCase):
+klasse SmtpSSLTest(unittest.TestCase):
     testServer = SMTP_TEST_SERVER
     remotePort = 465
 

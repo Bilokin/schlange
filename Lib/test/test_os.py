@@ -107,7 +107,7 @@ def tearDownModule():
     asyncio.events._set_event_loop_policy(None)
 
 
-class MiscTests(unittest.TestCase):
+klasse MiscTests(unittest.TestCase):
     def test_getcwd(self):
         cwd = os.getcwd()
         self.assertIsInstance(cwd, str)
@@ -176,7 +176,7 @@ class MiscTests(unittest.TestCase):
 
 
 # Tests creating TESTFN
-class FileTests(unittest.TestCase):
+klasse FileTests(unittest.TestCase):
     def setUp(self):
         if os.path.lexists(os_helper.TESTFN):
             os.unlink(os_helper.TESTFN)
@@ -634,7 +634,7 @@ class FileTests(unittest.TestCase):
 
 
 # Test attributes on return values from os.*stat* family.
-class StatAttributeTests(unittest.TestCase):
+klasse StatAttributeTests(unittest.TestCase):
     def setUp(self):
         self.fname = os_helper.TESTFN
         self.addCleanup(os_helper.unlink, self.fname)
@@ -873,7 +873,7 @@ class StatAttributeTests(unittest.TestCase):
         self.assertEqual(result.st_mode, stat.S_IFBLK)
 
 
-class UtimeTests(unittest.TestCase):
+klasse UtimeTests(unittest.TestCase):
     def setUp(self):
         self.dirname = os_helper.TESTFN
         self.fname = os.path.join(self.dirname, "f1")
@@ -1101,7 +1101,7 @@ class UtimeTests(unittest.TestCase):
         # The interpreter shouldn't crash in case utime() received a bad
         # ns argument.
         def get_bad_int(divmod_ret_val):
-            class BadInt:
+            klasse BadInt:
                 def __divmod__(*args):
                     return divmod_ret_val
             return BadInt()
@@ -1115,7 +1115,7 @@ class UtimeTests(unittest.TestCase):
 
 from test import mapping_tests
 
-class EnvironTests(mapping_tests.BasicTestMappingProtocol):
+klasse EnvironTests(mapping_tests.BasicTestMappingProtocol):
     """check that os.environ object conform to mapping protocol"""
     type2test = None
 
@@ -1466,7 +1466,7 @@ class EnvironTests(mapping_tests.BasicTestMappingProtocol):
             self.assertNotIn(b'test_env', os.environb)
             self.assertNotIn('test_env', os.environ)
 
-class WalkTests(unittest.TestCase):
+klasse WalkTests(unittest.TestCase):
     """Tests for os.walk()."""
     is_fwalk = False
 
@@ -1776,7 +1776,7 @@ class WalkTests(unittest.TestCase):
 
 
 @unittest.skipUnless(hasattr(os, 'fwalk'), "Test needs os.fwalk()")
-class FwalkTests(WalkTests):
+klasse FwalkTests(WalkTests):
     """Tests for os.fwalk()."""
     is_fwalk = True
 
@@ -1869,7 +1869,7 @@ class FwalkTests(WalkTests):
     test_walk_many_open_files = None
 
 
-class BytesWalkTests(WalkTests):
+klasse BytesWalkTests(WalkTests):
     """Tests for os.walk() with bytes."""
     def walk(self, top, **kwargs):
         if 'follow_symlinks' in kwargs:
@@ -1883,7 +1883,7 @@ class BytesWalkTests(WalkTests):
             bfiles[:] = list(map(os.fsencode, files))
 
 @unittest.skipUnless(hasattr(os, 'fwalk'), "Test needs os.fwalk()")
-class BytesFwalkTests(FwalkTests):
+klasse BytesFwalkTests(FwalkTests):
     """Tests for os.walk() with bytes."""
     def fwalk(self, top='.', *args, **kwargs):
         for broot, bdirs, bfiles, topfd in os.fwalk(os.fsencode(top), *args, **kwargs):
@@ -1895,7 +1895,7 @@ class BytesFwalkTests(FwalkTests):
             bfiles[:] = list(map(os.fsencode, files))
 
 
-class MakedirTests(unittest.TestCase):
+klasse MakedirTests(unittest.TestCase):
     def setUp(self):
         os.mkdir(os_helper.TESTFN)
 
@@ -2017,7 +2017,7 @@ class MakedirTests(unittest.TestCase):
 
 
 @unittest.skipUnless(hasattr(os, "chown"), "requires os.chown()")
-class ChownFileTests(unittest.TestCase):
+klasse ChownFileTests(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -2076,7 +2076,7 @@ class ChownFileTests(unittest.TestCase):
         os.rmdir(os_helper.TESTFN)
 
 
-class RemoveDirsTests(unittest.TestCase):
+klasse RemoveDirsTests(unittest.TestCase):
     def setUp(self):
         os.makedirs(os_helper.TESTFN)
 
@@ -2118,7 +2118,7 @@ class RemoveDirsTests(unittest.TestCase):
 
 
 @unittest.skipIf(support.is_wasi, "WASI has no /dev/null")
-class DevNullTests(unittest.TestCase):
+klasse DevNullTests(unittest.TestCase):
     def test_devnull(self):
         with open(os.devnull, 'wb', 0) as f:
             f.write(b'hello')
@@ -2127,7 +2127,7 @@ class DevNullTests(unittest.TestCase):
             self.assertEqual(f.read(), b'')
 
 
-class URandomTests(unittest.TestCase):
+klasse URandomTests(unittest.TestCase):
     def test_urandom_length(self):
         self.assertEqual(len(os.urandom(0)), 0)
         self.assertEqual(len(os.urandom(1)), 1)
@@ -2159,7 +2159,7 @@ class URandomTests(unittest.TestCase):
 
 
 @unittest.skipUnless(hasattr(os, 'getrandom'), 'need os.getrandom()')
-class GetRandomTests(unittest.TestCase):
+klasse GetRandomTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         try:
@@ -2212,7 +2212,7 @@ OS_URANDOM_DONT_USE_FD = (
                  "os.random() does not use a file descriptor")
 @unittest.skipIf(sys.platform == "vxworks",
                  "VxWorks can't set RLIMIT_NOFILE to 1")
-class URandomFDTests(unittest.TestCase):
+klasse URandomFDTests(unittest.TestCase):
     @unittest.skipUnless(resource, "test requires the resource module")
     def test_urandom_failure(self):
         # Check urandom() failing when it is not able to open /dev/random.
@@ -2324,7 +2324,7 @@ def _execvpe_mockup(defpath=None):
 
 @unittest.skipUnless(hasattr(os, 'execv'),
                      "need os.execv()")
-class ExecTests(unittest.TestCase):
+klasse ExecTests(unittest.TestCase):
     @unittest.skipIf(USING_LINUXTHREADS,
                      "avoid triggering a linuxthreads bug: see issue #4970")
     def test_execvpe_with_bad_program(self):
@@ -2429,7 +2429,7 @@ class ExecTests(unittest.TestCase):
 
 
 @unittest.skipUnless(sys.platform == "win32", "Win32 specific tests")
-class Win32ErrorTests(unittest.TestCase):
+klasse Win32ErrorTests(unittest.TestCase):
     def setUp(self):
         try:
             os.stat(os_helper.TESTFN)
@@ -2465,7 +2465,7 @@ class Win32ErrorTests(unittest.TestCase):
 
 
 @unittest.skipIf(support.is_wasi, "Cannot create invalid FD on WASI.")
-class TestInvalidFD(unittest.TestCase):
+klasse TestInvalidFD(unittest.TestCase):
     singles = ["fchdir", "dup", "fstat", "fstatvfs", "tcgetpgrp", "ttyname"]
     singles_fildes = {"fchdir"}
     # systemd-nspawn --suppress-sync=true does not verify fd passed
@@ -2616,7 +2616,7 @@ class TestInvalidFD(unittest.TestCase):
 
 
 @unittest.skipUnless(hasattr(os, 'link'), 'requires os.link')
-class LinkTests(unittest.TestCase):
+klasse LinkTests(unittest.TestCase):
     def setUp(self):
         self.file1 = os_helper.TESTFN
         self.file2 = os.path.join(os_helper.TESTFN + "2")
@@ -2654,7 +2654,7 @@ class LinkTests(unittest.TestCase):
         self._test_link(self.file1, self.file2)
 
 @unittest.skipIf(sys.platform == "win32", "Posix specific tests")
-class PosixUidGidTests(unittest.TestCase):
+klasse PosixUidGidTests(unittest.TestCase):
     # uid_t and gid_t are 32-bit unsigned integers on Linux
     UID_OVERFLOW = (1 << 32)
     GID_OVERFLOW = (1 << 32)
@@ -2725,7 +2725,7 @@ class PosixUidGidTests(unittest.TestCase):
                 'import os,sys;os.setregid(-1,-1);sys.exit(0)'])
 
 @unittest.skipIf(sys.platform == "win32", "Posix specific tests")
-class Pep383Tests(unittest.TestCase):
+klasse Pep383Tests(unittest.TestCase):
     def setUp(self):
         if os_helper.TESTFN_UNENCODABLE:
             self.dir = os_helper.TESTFN_UNENCODABLE
@@ -2799,7 +2799,7 @@ class Pep383Tests(unittest.TestCase):
             os.stat(os.path.join(self.dir, fn))
 
 @unittest.skipUnless(sys.platform == "win32", "Win32 specific tests")
-class Win32KillTests(unittest.TestCase):
+klasse Win32KillTests(unittest.TestCase):
     def _kill(self, sig):
         # Start sys.executable as a subprocess and communicate from the
         # subprocess to the parent that the interpreter is ready. When it
@@ -2922,7 +2922,7 @@ class Win32KillTests(unittest.TestCase):
 
 
 @unittest.skipUnless(sys.platform == "win32", "Win32 specific tests")
-class Win32ListdirTests(unittest.TestCase):
+klasse Win32ListdirTests(unittest.TestCase):
     """Test listdir on Windows."""
 
     def setUp(self):
@@ -2970,7 +2970,7 @@ class Win32ListdirTests(unittest.TestCase):
 
 
 @unittest.skipUnless(os.name == "nt", "NT specific tests")
-class Win32ListdriveTests(unittest.TestCase):
+klasse Win32ListdriveTests(unittest.TestCase):
     """Test listdrive, listmounts and listvolume on Windows."""
 
     def setUp(self):
@@ -3018,7 +3018,7 @@ class Win32ListdriveTests(unittest.TestCase):
 
 
 @unittest.skipUnless(hasattr(os, 'readlink'), 'needs os.readlink()')
-class ReadlinkTests(unittest.TestCase):
+klasse ReadlinkTests(unittest.TestCase):
     filelink = 'readlinktest'
     filelink_target = os.path.abspath(__file__)
     filelinkb = os.fsencode(filelink)
@@ -3080,7 +3080,7 @@ class ReadlinkTests(unittest.TestCase):
 
 @unittest.skipUnless(sys.platform == "win32", "Win32 specific tests")
 @os_helper.skip_unless_symlink
-class Win32SymlinkTests(unittest.TestCase):
+klasse Win32SymlinkTests(unittest.TestCase):
     filelink = 'filelinktest'
     filelink_target = os.path.abspath(__file__)
     dirlink = 'dirlinktest'
@@ -3257,7 +3257,7 @@ class Win32SymlinkTests(unittest.TestCase):
             self.skipTest("test requires an app execution alias")
 
 @unittest.skipUnless(sys.platform == "win32", "Win32 specific tests")
-class Win32JunctionTests(unittest.TestCase):
+klasse Win32JunctionTests(unittest.TestCase):
     junction = 'junctiontest'
     junction_target = os.path.dirname(os.path.abspath(__file__))
 
@@ -3291,7 +3291,7 @@ class Win32JunctionTests(unittest.TestCase):
         self.assertFalse(os.path.exists(self.junction))
 
 @unittest.skipUnless(sys.platform == "win32", "Win32 specific tests")
-class Win32NtTests(unittest.TestCase):
+klasse Win32NtTests(unittest.TestCase):
     def test_getfinalpathname_handles(self):
         nt = import_helper.import_module('nt')
         ctypes = import_helper.import_module('ctypes')
@@ -3443,7 +3443,7 @@ class Win32NtTests(unittest.TestCase):
 
 
 @os_helper.skip_unless_symlink
-class NonLocalSymlinkTests(unittest.TestCase):
+klasse NonLocalSymlinkTests(unittest.TestCase):
 
     def setUp(self):
         r"""
@@ -3474,7 +3474,7 @@ class NonLocalSymlinkTests(unittest.TestCase):
         assert os.path.isdir(src)
 
 
-class FSEncodingTests(unittest.TestCase):
+klasse FSEncodingTests(unittest.TestCase):
     def test_nop(self):
         self.assertEqual(os.fsencode(b'abc\xff'), b'abc\xff')
         self.assertEqual(os.fsdecode('abc\u0141'), 'abc\u0141')
@@ -3490,7 +3490,7 @@ class FSEncodingTests(unittest.TestCase):
 
 
 
-class DeviceEncodingTests(unittest.TestCase):
+klasse DeviceEncodingTests(unittest.TestCase):
 
     def test_bad_fd(self):
         # Return None when an fd doesn't actually exist.
@@ -3506,7 +3506,7 @@ class DeviceEncodingTests(unittest.TestCase):
 
 
 @support.requires_subprocess()
-class PidTests(unittest.TestCase):
+klasse PidTests(unittest.TestCase):
     @unittest.skipUnless(hasattr(os, 'getppid'), "test needs os.getppid")
     def test_getppid(self):
         p = subprocess.Popen([sys._base_executable, '-c',
@@ -3582,7 +3582,7 @@ class PidTests(unittest.TestCase):
 
 
 @support.requires_subprocess()
-class SpawnTests(unittest.TestCase):
+klasse SpawnTests(unittest.TestCase):
     @staticmethod
     def quote_args(args):
         # On Windows, os.spawn* simply joins arguments with spaces:
@@ -3791,7 +3791,7 @@ class SpawnTests(unittest.TestCase):
 # *nix buildbots. Temporarily skip this to let the buildbots move along.
 @unittest.skip("Skip due to platform/environment differences on *NIX buildbots")
 @unittest.skipUnless(hasattr(os, 'getlogin'), "test needs os.getlogin")
-class LoginTests(unittest.TestCase):
+klasse LoginTests(unittest.TestCase):
     def test_getlogin(self):
         user_name = os.getlogin()
         self.assertNotEqual(len(user_name), 0)
@@ -3799,7 +3799,7 @@ class LoginTests(unittest.TestCase):
 
 @unittest.skipUnless(hasattr(os, 'getpriority') and hasattr(os, 'setpriority'),
                      "needs os.getpriority and os.setpriority")
-class ProgramPriorityTests(unittest.TestCase):
+klasse ProgramPriorityTests(unittest.TestCase):
     """Tests for os.getpriority() and os.setpriority()."""
 
     def test_set_get_priority(self):
@@ -3822,7 +3822,7 @@ class ProgramPriorityTests(unittest.TestCase):
 
 
 @unittest.skipUnless(hasattr(os, 'sendfile'), "test needs os.sendfile()")
-class TestSendfile(unittest.IsolatedAsyncioTestCase):
+klasse TestSendfile(unittest.IsolatedAsyncioTestCase):
 
     DATA = b"12345abcde" * 16 * 1024  # 160 KiB
     SUPPORT_HEADERS_TRAILERS = (
@@ -4057,7 +4057,7 @@ def supports_extended_attributes():
                      "no non-broken extended attribute support")
 # Kernels < 2.6.39 don't respect setxattr flags.
 @support.requires_linux_version(2, 6, 39)
-class ExtendedAttributeTests(unittest.TestCase):
+klasse ExtendedAttributeTests(unittest.TestCase):
 
     def _check_xattrs_str(self, s, getxattr, setxattr, removexattr, listxattr, **kwargs):
         fn = os_helper.TESTFN
@@ -4139,7 +4139,7 @@ class ExtendedAttributeTests(unittest.TestCase):
 
 
 @unittest.skipUnless(hasattr(os, 'get_terminal_size'), "requires os.get_terminal_size")
-class TermsizeTests(unittest.TestCase):
+klasse TermsizeTests(unittest.TestCase):
     def test_does_not_crash(self):
         """Check if get_terminal_size() returns a meaningful value.
 
@@ -4208,7 +4208,7 @@ class TermsizeTests(unittest.TestCase):
 
 @unittest.skipUnless(hasattr(os, 'memfd_create'), 'requires os.memfd_create')
 @support.requires_linux_version(3, 17)
-class MemfdCreateTests(unittest.TestCase):
+klasse MemfdCreateTests(unittest.TestCase):
     def test_memfd_create(self):
         fd = os.memfd_create("Hi", os.MFD_CLOEXEC)
         self.assertNotEqual(fd, -1)
@@ -4225,7 +4225,7 @@ class MemfdCreateTests(unittest.TestCase):
 
 @unittest.skipUnless(hasattr(os, 'eventfd'), 'requires os.eventfd')
 @support.requires_linux_version(2, 6, 30)
-class EventfdTests(unittest.TestCase):
+klasse EventfdTests(unittest.TestCase):
     def test_eventfd_initval(self):
         def pack(value):
             """Pack as native uint64_t
@@ -4308,7 +4308,7 @@ class EventfdTests(unittest.TestCase):
 @unittest.skipUnless(hasattr(os, 'timerfd_create'), 'requires os.timerfd_create')
 @unittest.skipIf(sys.platform == "android", "gh-124873: Test is flaky on Android")
 @support.requires_linux_version(2, 6, 30)
-class TimerfdTests(unittest.TestCase):
+klasse TimerfdTests(unittest.TestCase):
     # gh-126112: Use 10 ms to tolerate slow buildbots
     CLOCK_RES_PLACES = 2  # 10 ms
     CLOCK_RES = 10 ** -CLOCK_RES_PLACES
@@ -4633,9 +4633,9 @@ class TimerfdTests(unittest.TestCase):
         total_time_ns = initial_expiration_ns + interval_ns * (count - 1)
         self.assertGreater(t, total_time_ns - self.CLOCK_RES_NS)
 
-class OSErrorTests(unittest.TestCase):
+klasse OSErrorTests(unittest.TestCase):
     def setUp(self):
-        class Str(str):
+        klasse Str(str):
             pass
 
         self.bytes_filenames = []
@@ -4705,7 +4705,7 @@ class OSErrorTests(unittest.TestCase):
                 else:
                     self.fail(f"No exception thrown by {func}")
 
-class CPUCountTests(unittest.TestCase):
+klasse CPUCountTests(unittest.TestCase):
     def check_cpu_count(self, cpus):
         if cpus is None:
             self.skipTest("Could not determine the number of CPUs")
@@ -4745,7 +4745,7 @@ class CPUCountTests(unittest.TestCase):
 
 # FD inheritance check is only useful for systems with process support.
 @support.requires_subprocess()
-class FDInheritanceTests(unittest.TestCase):
+klasse FDInheritanceTests(unittest.TestCase):
     def test_get_set_inheritable(self):
         fd = os.open(__file__, os.O_RDONLY)
         self.addCleanup(os.close, fd)
@@ -4858,7 +4858,7 @@ class FDInheritanceTests(unittest.TestCase):
         self.assertFalse(os.get_inheritable(fd3))
 
 @unittest.skipUnless(hasattr(os, 'openpty'), "need os.openpty()")
-class PseudoterminalTests(unittest.TestCase):
+klasse PseudoterminalTests(unittest.TestCase):
     def open_pty(self):
         """Open a pty fd-pair, and schedule cleanup for it"""
         main_fd, second_fd = os.openpty()
@@ -4959,7 +4959,7 @@ class PseudoterminalTests(unittest.TestCase):
         self.assertEqual(exitcode, 0)
 
 
-class PathTConverterTests(unittest.TestCase):
+klasse PathTConverterTests(unittest.TestCase):
     # tuples of (function name, allows fd arguments, additional arguments to
     # function, cleanup function)
     functions = [
@@ -5029,7 +5029,7 @@ class PathTConverterTests(unittest.TestCase):
                      'needs os.get_blocking() and os.set_blocking()')
 @unittest.skipIf(support.is_emscripten, "Cannot unset blocking flag")
 @unittest.skipIf(sys.platform == 'win32', 'Windows only supports blocking on pipes')
-class BlockingTests(unittest.TestCase):
+klasse BlockingTests(unittest.TestCase):
     def test_blocking(self):
         fd = os.open(__file__, os.O_RDONLY)
         self.addCleanup(os.close, fd)
@@ -5043,13 +5043,13 @@ class BlockingTests(unittest.TestCase):
 
 
 
-class ExportsTests(unittest.TestCase):
+klasse ExportsTests(unittest.TestCase):
     def test_os_all(self):
         self.assertIn('open', os.__all__)
         self.assertIn('walk', os.__all__)
 
 
-class TestDirEntry(unittest.TestCase):
+klasse TestDirEntry(unittest.TestCase):
     def setUp(self):
         self.path = os.path.realpath(os_helper.TESTFN)
         self.addCleanup(os_helper.rmtree, self.path)
@@ -5067,7 +5067,7 @@ class TestDirEntry(unittest.TestCase):
         self.assertRaises(TypeError, pickle.dumps, entry, filename)
 
 
-class TestScandir(unittest.TestCase):
+klasse TestScandir(unittest.TestCase):
     check_no_resource_warning = warnings_helper.check_no_resource_warning
 
     def setUp(self):
@@ -5421,7 +5421,7 @@ class TestScandir(unittest.TestCase):
             del iterator
 
 
-class TestPEP519(unittest.TestCase):
+klasse TestPEP519(unittest.TestCase):
 
     # Abstracted so it can be overridden to test pure Python implementation
     # if a C version is provided.
@@ -5470,7 +5470,7 @@ class TestPEP519(unittest.TestCase):
     def test_pathlike_subclasshook(self):
         # bpo-38878: subclasshook causes subclass checks
         # true on abstract implementation.
-        class A(os.PathLike):
+        klasse A(os.PathLike):
             pass
         self.assertNotIsSubclass(FakePath, A)
         self.assertIsSubclass(FakePath, os.PathLike)
@@ -5479,21 +5479,21 @@ class TestPEP519(unittest.TestCase):
         self.assertIsInstance(os.PathLike[bytes], types.GenericAlias)
 
     def test_pathlike_subclass_slots(self):
-        class A(os.PathLike):
+        klasse A(os.PathLike):
             __slots__ = ()
             def __fspath__(self):
                 return ''
         self.assertNotHasAttr(A(), '__dict__')
 
     def test_fspath_set_to_None(self):
-        class Foo:
+        klasse Foo:
             __fspath__ = None
 
-        class Bar:
+        klasse Bar:
             def __fspath__(self):
                 return 'bar'
 
-        class Baz(Bar):
+        klasse Baz(Bar):
             __fspath__ = None
 
         good_error_msg = (
@@ -5524,7 +5524,7 @@ class TestPEP519(unittest.TestCase):
         with self.assertRaisesRegex(TypeError, other_good_error_msg("Baz")):
             os.rename(Baz(), "bazzz")
 
-class TimesTests(unittest.TestCase):
+klasse TimesTests(unittest.TestCase):
     def test_times(self):
         times = os.times()
         self.assertIsInstance(times, os.times_result)
@@ -5541,7 +5541,7 @@ class TimesTests(unittest.TestCase):
 
 
 @support.requires_fork()
-class ForkTests(unittest.TestCase):
+klasse ForkTests(unittest.TestCase):
     def test_fork(self):
         # bpo-42540: ensure os.fork() with non-default memory allocator does
         # not crash on exit.
@@ -5592,7 +5592,7 @@ class ForkTests(unittest.TestCase):
             import atexit
             import os
 
-            class AtFinalization:
+            klasse AtFinalization:
                 def __del__(self):
                     print("OK")
                     pid = os.fork()
@@ -5608,7 +5608,7 @@ class ForkTests(unittest.TestCase):
 # Only test if the C version is provided, otherwise TestPEP519 already tested
 # the pure Python implementation.
 if hasattr(os, "_fspath"):
-    class TestPEP519PurePython(TestPEP519):
+    klasse TestPEP519PurePython(TestPEP519):
 
         """Explicitly test the pure Python implementation of os.fspath()."""
 

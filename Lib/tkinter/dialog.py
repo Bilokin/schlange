@@ -7,7 +7,7 @@ __all__ = ["Dialog"]
 DIALOG_ICON = 'questhead'
 
 
-class Dialog(Widget):
+klasse Dialog(Widget):
     def __init__(self, master=None, cnf={}, **kw):
         cnf = _cnfmerge((cnf, kw))
         self.widgetName = '__dialog__'

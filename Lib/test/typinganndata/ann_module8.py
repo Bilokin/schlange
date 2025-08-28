@@ -1,8 +1,8 @@
 # Test `@no_type_check`,
 # see https://bugs.python.org/issue46571
 
-class NoTypeCheck_Outer:
-    class Inner:
+klasse NoTypeCheck_Outer:
+    klasse Inner:
         x: int
 
 

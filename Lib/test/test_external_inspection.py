@@ -62,7 +62,7 @@ def get_all_awaited_by(pid):
     return unwinder.get_all_awaited_by()
 
 
-class TestGetStackTrace(unittest.TestCase):
+klasse TestGetStackTrace(unittest.TestCase):
     maxDiff = None
 
     @skip_if_not_supported
@@ -800,7 +800,7 @@ class TestGetStackTrace(unittest.TestCase):
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sock.connect(('localhost', {port}))
 
-            class EchoServerProtocol(asyncio.Protocol):
+            klasse EchoServerProtocol(asyncio.Protocol):
                 def connection_made(self, transport):
                     global connections
                     connections += 1
@@ -1257,7 +1257,7 @@ class TestGetStackTrace(unittest.TestCase):
             )
 
 
-class TestUnsupportedPlatformHandling(unittest.TestCase):
+klasse TestUnsupportedPlatformHandling(unittest.TestCase):
     @unittest.skipIf(
         sys.platform in ("linux", "darwin", "win32"),
         "Test only runs on unsupported platforms (not Linux, macOS, or Windows)",

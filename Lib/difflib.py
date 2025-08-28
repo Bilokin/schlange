@@ -17,7 +17,7 @@ Function unified_diff(a, b):
     For two lists of strings, return a delta in unified diff format.
 
 Class SequenceMatcher:
-    A flexible class for comparing pairs of sequences of any type.
+    A flexible klasse for comparing pairs of sequences of any type.
 
 Class Differ:
     For producing human-readable deltas from sequences of lines of text.
@@ -42,10 +42,10 @@ def _calculate_ratio(matches, length):
         return 2.0 * matches / length
     return 1.0
 
-class SequenceMatcher:
+klasse SequenceMatcher:
 
     """
-    SequenceMatcher is a flexible class for comparing pairs of sequences of
+    SequenceMatcher is a flexible klasse for comparing pairs of sequences of
     any type, so long as the sequence elements are hashable.  The basic
     algorithm predates, and is a little fancier than, an algorithm
     published in the late 1980's by Ratcliff and Obershelp under the
@@ -105,7 +105,7 @@ class SequenceMatcher:
     insert a[8:8] b[8:17]
      equal a[8:29] b[17:38]
 
-    See the Differ class for a fancy human-friendly file differencer, which
+    See the Differ klasse for a fancy human-friendly file differencer, which
     uses SequenceMatcher both to compare sequences of lines, and to compare
     sequences of characters within similar (near-matching) lines.
 
@@ -722,9 +722,9 @@ def _keep_original_ws(s, tag_s):
 
 
 
-class Differ:
+klasse Differ:
     r"""
-    Differ is a class for comparing sequences of lines of text, and
+    Differ is a klasse for comparing sequences of lines of text, and
     producing human-readable differences or deltas.  Differ uses
     SequenceMatcher both to compare sequences of lines, and to compare
     sequences of characters within similar (near-matching) lines.
@@ -818,7 +818,7 @@ class Differ:
           and return true iff the string is junk. The module-level function
           `IS_LINE_JUNK` may be used to filter out lines without visible
           characters, except for at most one splat ('#').  It is recommended
-          to leave linejunk None; the underlying SequenceMatcher class has
+          to leave linejunk None; the underlying SequenceMatcher klasse has
           an adaptive notion of "noise" lines that's better than any static
           definition the author has ever been able to craft.
 
@@ -1326,7 +1326,7 @@ def ndiff(a, b, linejunk=None, charjunk=IS_CHARACTER_JUNK):
 
     - linejunk: A function that should accept a single string argument and
       return true iff the string is junk.  The default is None, and is
-      recommended; the underlying SequenceMatcher class has an adaptive
+      recommended; the underlying SequenceMatcher klasse has an adaptive
       notion of "noise" lines.
 
     - charjunk: A function that accepts a character (string of length
@@ -1381,7 +1381,7 @@ def _mdiff(fromlines, tolines, context=None, linejunk=None,
         either "from" or "to" line contains a change, otherwise False.
 
     This function/iterator was originally developed to generate side by side
-    file difference for making HTML pages (see HtmlDiff class for example
+    file difference for making HTML pages (see HtmlDiff klasse for example
     usage).
 
     Note, this function utilizes the ndiff function to generate the side by
@@ -1711,10 +1711,10 @@ _legend = """
                   </table></td> </tr>
     </table>"""
 
-class HtmlDiff(object):
+klasse HtmlDiff(object):
     """For producing HTML side by side comparison with change highlights.
 
-    This class can be used to create an HTML table (or a complete HTML file
+    This klasse can be used to create an HTML table (or a complete HTML file
     containing the table) showing a side by side, line by line comparison
     of text with inter-line and intra-line change highlights.  The table can
     be generated in either full or contextual difference mode.

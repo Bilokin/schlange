@@ -4,21 +4,21 @@ from importlib import resources
 from . import util
 
 
-class CommonBinaryTests(util.CommonTests, unittest.TestCase):
+klasse CommonBinaryTests(util.CommonTests, unittest.TestCase):
     def execute(self, package, path):
         target = resources.files(package).joinpath(path)
         with target.open('rb'):
             pass
 
 
-class CommonTextTests(util.CommonTests, unittest.TestCase):
+klasse CommonTextTests(util.CommonTests, unittest.TestCase):
     def execute(self, package, path):
         target = resources.files(package).joinpath(path)
         with target.open(encoding='utf-8'):
             pass
 
 
-class OpenTests:
+klasse OpenTests:
     def test_open_binary(self):
         target = resources.files(self.data) / 'binary.file'
         with target.open('rb') as fp:
@@ -64,19 +64,19 @@ class OpenTests:
             target.open(encoding='utf-8')
 
 
-class OpenDiskTests(OpenTests, util.DiskSetup, unittest.TestCase):
+klasse OpenDiskTests(OpenTests, util.DiskSetup, unittest.TestCase):
     pass
 
 
-class OpenDiskNamespaceTests(OpenTests, util.DiskSetup, unittest.TestCase):
+klasse OpenDiskNamespaceTests(OpenTests, util.DiskSetup, unittest.TestCase):
     MODULE = 'namespacedata01'
 
 
-class OpenZipTests(OpenTests, util.ZipSetup, unittest.TestCase):
+klasse OpenZipTests(OpenTests, util.ZipSetup, unittest.TestCase):
     pass
 
 
-class OpenNamespaceZipTests(OpenTests, util.ZipSetup, unittest.TestCase):
+klasse OpenNamespaceZipTests(OpenTests, util.ZipSetup, unittest.TestCase):
     MODULE = 'namespacedata01'
 
 

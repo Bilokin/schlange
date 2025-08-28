@@ -18,7 +18,7 @@ try:
 except ImportError:
     _testinternalcapi = None
 
-class tracecontext:
+klasse tracecontext:
     """Context manager that traces its enter and exit."""
     def __init__(self, output, value):
         self.output = output
@@ -30,7 +30,7 @@ class tracecontext:
     def __exit__(self, *exc_info):
         self.output.append(-self.value)
 
-class asynctracecontext:
+klasse asynctracecontext:
     """Asynchronous context manager that traces its aenter and aexit."""
     def __init__(self, output, value):
         self.output = output
@@ -330,7 +330,7 @@ def lineno_matches_lasti(frame):
             last_line = line
     return last_line == frame.f_lineno
 
-class Tracer:
+klasse Tracer:
     def __init__(self, trace_line_events=None, trace_opcode_events=None):
         self.trace_line_events = trace_line_events
         self.trace_opcode_events = trace_opcode_events
@@ -355,7 +355,7 @@ class Tracer:
         return self.trace
 
 
-class TraceTestCase(unittest.TestCase):
+klasse TraceTestCase(unittest.TestCase):
 
     # Disable gc collection when tracing, otherwise the
     # deallocators may be traced as well.
@@ -563,7 +563,7 @@ class TraceTestCase(unittest.TestCase):
              (7, 'return')])
 
     def test_20_async_for_loop(self):
-        class AsyncIteratorWrapper:
+        klasse AsyncIteratorWrapper:
             def __init__(self, obj):
                 self._it = iter(obj)
 
@@ -1103,7 +1103,7 @@ class TraceTestCase(unittest.TestCase):
 
     def test_if_false_in_with(self):
 
-        class C:
+        klasse C:
             def __enter__(self):
                 return self
             def __exit__(*args):
@@ -1145,7 +1145,7 @@ class TraceTestCase(unittest.TestCase):
     def test_implicit_return_in_class(self):
 
         def func():
-            class A:
+            klasse A:
                 if 3 < 9:
                     a = 1
                 else:
@@ -1238,7 +1238,7 @@ class TraceTestCase(unittest.TestCase):
 
     def test_early_exit_with(self):
 
-        class C:
+        klasse C:
             def __enter__(self):
                 return self
             def __exit__(*args):
@@ -1342,7 +1342,7 @@ class TraceTestCase(unittest.TestCase):
 
     def test_tracing_exception_raised_in_with(self):
 
-        class NullCtx:
+        klasse NullCtx:
             def __enter__(self):
                 return self
             def __exit__(self, *excinfo):
@@ -1574,7 +1574,7 @@ class TraceTestCase(unittest.TestCase):
     def test_class_creation_with_docstrings(self):
 
         def func():
-            class Class_1:
+            klasse Class_1:
                 ''' the docstring. 2'''
                 def __init__(self):
                     ''' Another docstring. 4'''
@@ -1601,7 +1601,7 @@ class TraceTestCase(unittest.TestCase):
             @decorator(
                 len([8]),
             )
-            class MyObject:
+            klasse MyObject:
                 pass
 
         self.run_and_compare(func, [
@@ -1682,7 +1682,7 @@ class TraceTestCase(unittest.TestCase):
 
     def test_correct_tracing_quickened_call_class_init(self):
 
-        class C:
+        klasse C:
             def __init__(self):
                 self
 
@@ -1788,7 +1788,7 @@ EVENT_NAMES = [
 ]
 
 
-class SkipLineEventsTraceTestCase(TraceTestCase):
+klasse SkipLineEventsTraceTestCase(TraceTestCase):
     """Repeat the trace tests, but with per-line events skipped"""
 
     def compare_events(self, line_offset, events, expected_events):
@@ -1801,7 +1801,7 @@ class SkipLineEventsTraceTestCase(TraceTestCase):
 
 
 @support.cpython_only
-class TraceOpcodesTestCase(TraceTestCase):
+klasse TraceOpcodesTestCase(TraceTestCase):
     """Repeat the trace tests, but with per-opcodes events enabled"""
 
     def compare_events(self, line_offset, events, expected_events):
@@ -1850,7 +1850,7 @@ class TraceOpcodesTestCase(TraceTestCase):
         self.assertIn(b"opcode trace triggered", out)
 
 
-class RaisingTraceFuncTestCase(unittest.TestCase):
+klasse RaisingTraceFuncTestCase(unittest.TestCase):
     def setUp(self):
         self.addCleanup(sys.settrace, sys.gettrace())
 
@@ -1960,7 +1960,7 @@ class RaisingTraceFuncTestCase(unittest.TestCase):
 # moves the execution position - it's how debuggers implement a Jump
 # command (aka. "Set next statement").
 
-class JumpTracer:
+klasse JumpTracer:
     """Defines a trace function that jumps from one place to another."""
 
     def __init__(self, function, jumpFrom, jumpTo, event='line',
@@ -2021,7 +2021,7 @@ def no_jump_without_trace_function():
         raise AssertionError("Trace-function-less jump failed to fail")
 
 
-class JumpTestCase(unittest.TestCase):
+klasse JumpTestCase(unittest.TestCase):
     unbound_locals = r"assigning None to [0-9]+ unbound local"
 
     def setUp(self):
@@ -2816,7 +2816,7 @@ output.append(2)  # firstlineno is here.
 output.append(3)
 output.append(4)
 """, "<fake module>", "exec")
-        class fake_function:
+        klasse fake_function:
             __code__ = code
         tracer = JumpTracer(fake_function, 4, 1)
         sys.settrace(tracer.trace)
@@ -2997,7 +2997,7 @@ output.append(4)
         output.append(3)
 
 
-class TestExtendedArgs(unittest.TestCase):
+klasse TestExtendedArgs(unittest.TestCase):
 
     def setUp(self):
         self.addCleanup(sys.settrace, sys.gettrace())
@@ -3042,7 +3042,7 @@ class TestExtendedArgs(unittest.TestCase):
         self.assertEqual(counts, {'call': 1, 'line': count * 2 + 1, 'return': 1})
 
 
-class TestEdgeCases(unittest.TestCase):
+klasse TestEdgeCases(unittest.TestCase):
 
     def setUp(self):
         self.addCleanup(sys.settrace, sys.gettrace())
@@ -3055,7 +3055,7 @@ class TestEdgeCases(unittest.TestCase):
         def bar(*args):
             ...
 
-        class A:
+        klasse A:
             def __call__(self, *args):
                 pass
 
@@ -3076,7 +3076,7 @@ class TestEdgeCases(unittest.TestCase):
         sys.settrace(sys.gettrace())
 
 
-class TestLinesAfterTraceStarted(TraceTestCase):
+klasse TestLinesAfterTraceStarted(TraceTestCase):
 
     def test_events(self):
         tracer = Tracer()
@@ -3093,7 +3093,7 @@ class TestLinesAfterTraceStarted(TraceTestCase):
                 (6, 'line')])
 
 
-class TestSetLocalTrace(TraceTestCase):
+klasse TestSetLocalTrace(TraceTestCase):
 
     def test_with_branches(self):
 

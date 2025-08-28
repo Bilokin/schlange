@@ -23,16 +23,16 @@ with warnings.catch_warnings():
     sizeof_wchar = array.array('u').itemsize
 
 
-class ArraySubclass(array.array):
+klasse ArraySubclass(array.array):
     pass
 
-class ArraySubclassWithKwargs(array.array):
+klasse ArraySubclassWithKwargs(array.array):
     def __init__(self, typecode, newarg=None):
         array.array.__init__(self)
 
 typecodes = 'uwbBhHiIlLfdqQ'
 
-class MiscTest(unittest.TestCase):
+klasse MiscTest(unittest.TestCase):
 
     def test_array_is_sequence(self):
         self.assertIsInstance(array.array("B"), collections.abc.MutableSequence)
@@ -97,7 +97,7 @@ UTF32_LE = 20
 UTF32_BE = 21
 
 
-class ArrayReconstructorTest(unittest.TestCase):
+klasse ArrayReconstructorTest(unittest.TestCase):
 
     def setUp(self):
         self.enterContext(warnings.catch_warnings())
@@ -206,8 +206,8 @@ class ArrayReconstructorTest(unittest.TestCase):
                     msg="{0!r} != {1!r}; testcase={2!r}".format(a, b, testcase))
 
 
-class BaseTest:
-    # Required class attributes (provided by subclasses
+klasse BaseTest:
+    # Required klasse attributes (provided by subclasses
     # typecode: the typecode to test
     # example: an initializer usable in the constructor for this type
     # smallerexample: the same length as example, but smaller
@@ -1081,7 +1081,7 @@ class BaseTest:
         self.assertRaises(TypeError, array.array, self.typecode, 10)
 
         # pass through errors raised in __iter__
-        class A:
+        klasse A:
             def __iter__(self):
                 raise UnicodeError
         self.assertRaises(UnicodeError, array.array, self.typecode, A())
@@ -1203,14 +1203,14 @@ class BaseTest:
         support.check_free_after_iterating(self, reversed, array.array,
                                            (self.typecode,))
 
-class StringTest(BaseTest):
+klasse StringTest(BaseTest):
 
     def test_setitem(self):
         super().test_setitem()
         a = array.array(self.typecode, self.example)
         self.assertRaises(TypeError, a.__setitem__, 0, self.example[:2])
 
-class UnicodeTest(StringTest, unittest.TestCase):
+klasse UnicodeTest(StringTest, unittest.TestCase):
     typecode = 'u'
     example = '\x01\u263a\x00\ufeff'
     smallerexample = '\x01\u263a\x00\ufefe'
@@ -1256,12 +1256,12 @@ class UnicodeTest(StringTest, unittest.TestCase):
             array.array("u")
 
 
-class UCS4Test(UnicodeTest):
+klasse UCS4Test(UnicodeTest):
     typecode = 'w'
     minitemsize = 4
 
 
-class NumberTest(BaseTest):
+klasse NumberTest(BaseTest):
 
     def test_extslice(self):
         a = array.array(self.typecode, range(5))
@@ -1337,7 +1337,7 @@ class NumberTest(BaseTest):
 
     def test_subclassing(self):
         typecode = self.typecode
-        class ExaggeratingArray(array.array):
+        klasse ExaggeratingArray(array.array):
             __slots__ = ['offset']
 
             def __new__(cls, typecode, data, offset):
@@ -1359,7 +1359,7 @@ class NumberTest(BaseTest):
         b = array.array(self.typecode, a)
         self.assertEqual(a, b)
 
-class IntegerNumberTest(NumberTest):
+klasse IntegerNumberTest(NumberTest):
     def test_type_error(self):
         a = array.array(self.typecode)
         a.append(42)
@@ -1368,7 +1368,7 @@ class IntegerNumberTest(NumberTest):
         with self.assertRaises(TypeError):
             a[0] = 42.0
 
-class Intable:
+klasse Intable:
     def __init__(self, num):
         self._num = num
     def __index__(self):
@@ -1380,7 +1380,7 @@ class Intable:
     def __add__(self, other):
         return Intable(int(self) + int(other))
 
-class SignedNumberTest(IntegerNumberTest):
+klasse SignedNumberTest(IntegerNumberTest):
     example = [-1, 0, 1, 42, 0x7f]
     smallerexample = [-1, 0, 1, 42, 0x7e]
     biggerexample = [-1, 0, 1, 43, 0x7f]
@@ -1393,7 +1393,7 @@ class SignedNumberTest(IntegerNumberTest):
         self.check_overflow(lower, upper)
         self.check_overflow(Intable(lower), Intable(upper))
 
-class UnsignedNumberTest(IntegerNumberTest):
+klasse UnsignedNumberTest(IntegerNumberTest):
     example = [0, 1, 17, 23, 42, 0xff]
     smallerexample = [0, 1, 17, 23, 42, 0xfe]
     biggerexample = [0, 1, 17, 23, 43, 0xff]
@@ -1424,47 +1424,47 @@ class UnsignedNumberTest(IntegerNumberTest):
         )
 
 
-class ByteTest(SignedNumberTest, unittest.TestCase):
+klasse ByteTest(SignedNumberTest, unittest.TestCase):
     typecode = 'b'
     minitemsize = 1
 
-class UnsignedByteTest(UnsignedNumberTest, unittest.TestCase):
+klasse UnsignedByteTest(UnsignedNumberTest, unittest.TestCase):
     typecode = 'B'
     minitemsize = 1
 
-class ShortTest(SignedNumberTest, unittest.TestCase):
+klasse ShortTest(SignedNumberTest, unittest.TestCase):
     typecode = 'h'
     minitemsize = 2
 
-class UnsignedShortTest(UnsignedNumberTest, unittest.TestCase):
+klasse UnsignedShortTest(UnsignedNumberTest, unittest.TestCase):
     typecode = 'H'
     minitemsize = 2
 
-class IntTest(SignedNumberTest, unittest.TestCase):
+klasse IntTest(SignedNumberTest, unittest.TestCase):
     typecode = 'i'
     minitemsize = 2
 
-class UnsignedIntTest(UnsignedNumberTest, unittest.TestCase):
+klasse UnsignedIntTest(UnsignedNumberTest, unittest.TestCase):
     typecode = 'I'
     minitemsize = 2
 
-class LongTest(SignedNumberTest, unittest.TestCase):
+klasse LongTest(SignedNumberTest, unittest.TestCase):
     typecode = 'l'
     minitemsize = 4
 
-class UnsignedLongTest(UnsignedNumberTest, unittest.TestCase):
+klasse UnsignedLongTest(UnsignedNumberTest, unittest.TestCase):
     typecode = 'L'
     minitemsize = 4
 
-class LongLongTest(SignedNumberTest, unittest.TestCase):
+klasse LongLongTest(SignedNumberTest, unittest.TestCase):
     typecode = 'q'
     minitemsize = 8
 
-class UnsignedLongLongTest(UnsignedNumberTest, unittest.TestCase):
+klasse UnsignedLongLongTest(UnsignedNumberTest, unittest.TestCase):
     typecode = 'Q'
     minitemsize = 8
 
-class FPTest(NumberTest):
+klasse FPTest(NumberTest):
     example = [-42.0, 0, 42, 1e5, -1e10]
     smallerexample = [-42.0, 0, 42, 1e5, -2e10]
     biggerexample = [-42.0, 0, 42, 1e5, 1e10]
@@ -1499,11 +1499,11 @@ class FPTest(NumberTest):
             b.byteswap()
             self.assertEqual(a, b)
 
-class FloatTest(FPTest, unittest.TestCase):
+klasse FloatTest(FPTest, unittest.TestCase):
     typecode = 'f'
     minitemsize = 4
 
-class DoubleTest(FPTest, unittest.TestCase):
+klasse DoubleTest(FPTest, unittest.TestCase):
     typecode = 'd'
     minitemsize = 8
 
@@ -1525,7 +1525,7 @@ class DoubleTest(FPTest, unittest.TestCase):
             self.fail("Array of size > maxsize created - MemoryError expected")
 
 
-class LargeArrayTest(unittest.TestCase):
+klasse LargeArrayTest(unittest.TestCase):
     typecode = 'b'
 
     def example(self, size):

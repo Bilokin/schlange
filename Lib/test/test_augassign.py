@@ -3,7 +3,7 @@
 import unittest
 
 
-class AugAssignTest(unittest.TestCase):
+klasse AugAssignTest(unittest.TestCase):
     def testBasic(self):
         x = 2
         x += 1
@@ -66,7 +66,7 @@ class AugAssignTest(unittest.TestCase):
 
     def testCustomMethods1(self):
 
-        class aug_test:
+        klasse aug_test:
             def __init__(self, value):
                 self.val = value
             def __radd__(self, val):
@@ -74,16 +74,16 @@ class AugAssignTest(unittest.TestCase):
             def __add__(self, val):
                 return aug_test(self.val + val)
 
-        class aug_test2(aug_test):
+        klasse aug_test2(aug_test):
             def __iadd__(self, val):
                 self.val = self.val + val
                 return self
 
-        class aug_test3(aug_test):
+        klasse aug_test3(aug_test):
             def __iadd__(self, val):
                 return aug_test3(self.val + val)
 
-        class aug_test4(aug_test3):
+        klasse aug_test4(aug_test3):
             """Blocks inheritance, and fallback to __add__"""
             __iadd__ = None
 
@@ -118,7 +118,7 @@ class AugAssignTest(unittest.TestCase):
     def testCustomMethods2(test_self):
         output = []
 
-        class testall:
+        klasse testall:
             def __add__(self, val):
                 output.append("__add__ called")
             def __radd__(self, val):

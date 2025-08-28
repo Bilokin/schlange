@@ -246,7 +246,7 @@ _finalizer_registry = {}
 _finalizer_counter = itertools.count()
 
 
-class Finalize(object):
+klasse Finalize(object):
     '''
     Class which supports object finalization using weakrefs
     '''
@@ -432,7 +432,7 @@ atexit.register(_exit_function)
 # Some fork aware types
 #
 
-class ForkAwareThreadLock(object):
+klasse ForkAwareThreadLock(object):
     def __init__(self):
         self._lock = threading.Lock()
         self.acquire = self._lock.acquire
@@ -449,7 +449,7 @@ class ForkAwareThreadLock(object):
         return self._lock.__exit__(*args)
 
 
-class ForkAwareLocal(threading.local):
+klasse ForkAwareLocal(threading.local):
     def __init__(self):
         register_after_fork(self, lambda obj : obj.__dict__.clear())
     def __reduce__(self):

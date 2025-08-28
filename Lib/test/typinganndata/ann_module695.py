@@ -2,13 +2,13 @@ from __future__ import annotations
 from typing import Callable
 
 
-class A[T, *Ts, **P]:
+klasse A[T, *Ts, **P]:
     x: T
     y: tuple[*Ts]
     z: Callable[P, str]
 
 
-class B[T, *Ts, **P]:
+klasse B[T, *Ts, **P]:
     T = int
     Ts = str
     P = bytes
@@ -21,7 +21,7 @@ Eggs = int
 Spam = str
 
 
-class C[Eggs, **Spam]:
+klasse C[Eggs, **Spam]:
     x: Eggs
     y: Spam
 
@@ -34,7 +34,7 @@ def generic_function[T, *Ts, **P](
 def generic_function_2[Eggs, **Spam](x: Eggs, y: Spam): pass
 
 
-class D:
+klasse D:
     Foo = int
     Bar = str
 
@@ -53,7 +53,7 @@ def nested():
     Spam = memoryview
 
 
-    class E[Eggs, **Spam]:
+    klasse E[Eggs, **Spam]:
         x: Eggs
         y: Spam
 

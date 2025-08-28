@@ -10,7 +10,7 @@ from . import futures
 from . import tasks
 
 
-class TaskGroup:
+klasse TaskGroup:
     """Asynchronous context manager for managing groups of tasks.
 
     Example use:

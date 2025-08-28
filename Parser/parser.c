@@ -53,7 +53,6 @@ static KeywordToken *reserved_keywords[] = {
         {"break", 528},
         {"async", 703},
         {"while", 694},
-        {"class", 706},
         {"False", 625},
         {"await", 598},
         {NULL, -1},
@@ -63,7 +62,7 @@ static KeywordToken *reserved_keywords[] = {
         {"import", 639},
         {"assert", 533},
         {"global", 530},
-        {"klasse", 515},
+        {"klasse", 706},
         {"except", 682},
         {"lambda", 622},
         {NULL, -1},
@@ -4415,7 +4414,7 @@ class_def_rule(Parser *p)
 
 // class_def_raw:
 //     | invalid_class_def_raw
-//     | 'class' NAME type_params? ['(' arguments? ')'] ':' block
+//     | 'klasse' NAME type_params? ['(' arguments? ')'] ':' block
 static stmt_ty
 class_def_raw_rule(Parser *p)
 {
@@ -4456,12 +4455,12 @@ class_def_raw_rule(Parser *p)
         D(fprintf(stderr, "%*c%s class_def_raw[%d-%d]: %s failed!\n", p->level, ' ',
                   p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "invalid_class_def_raw"));
     }
-    { // 'class' NAME type_params? ['(' arguments? ')'] ':' block
+    { // 'klasse' NAME type_params? ['(' arguments? ')'] ':' block
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> class_def_raw[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'class' NAME type_params? ['(' arguments? ')'] ':' block"));
+        D(fprintf(stderr, "%*c> class_def_raw[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'klasse' NAME type_params? ['(' arguments? ')'] ':' block"));
         Token * _keyword;
         Token * _literal;
         expr_ty a;
@@ -4469,7 +4468,7 @@ class_def_raw_rule(Parser *p)
         asdl_stmt_seq* c;
         void *t;
         if (
-            (_keyword = _PyPegen_expect_token(p, 706))  // token='class'
+            (_keyword = _PyPegen_expect_token(p, 706))  // token='klasse'
             &&
             (a = _PyPegen_name_token(p))  // NAME
             &&
@@ -4482,7 +4481,7 @@ class_def_raw_rule(Parser *p)
             (c = block_rule(p))  // block
         )
         {
-            D(fprintf(stderr, "%*c+ class_def_raw[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'class' NAME type_params? ['(' arguments? ')'] ':' block"));
+            D(fprintf(stderr, "%*c+ class_def_raw[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'klasse' NAME type_params? ['(' arguments? ')'] ':' block"));
             Token *_token = _PyPegen_get_last_nonnwhitespace_token(p);
             if (_token == NULL) {
                 p->level--;
@@ -4502,7 +4501,7 @@ class_def_raw_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s class_def_raw[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'class' NAME type_params? ['(' arguments? ')'] ':' block"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'klasse' NAME type_params? ['(' arguments? ')'] ':' block"));
     }
     _res = NULL;
   done:
@@ -25883,8 +25882,8 @@ invalid_def_raw_rule(Parser *p)
 }
 
 // invalid_class_def_raw:
-//     | 'class' NAME type_params? ['(' arguments? ')'] NEWLINE
-//     | 'class' NAME type_params? ['(' arguments? ')'] ':' NEWLINE !INDENT
+//     | 'klasse' NAME type_params? ['(' arguments? ')'] NEWLINE
+//     | 'klasse' NAME type_params? ['(' arguments? ')'] ':' NEWLINE !INDENT
 static void *
 invalid_class_def_raw_rule(Parser *p)
 {
@@ -25897,12 +25896,12 @@ invalid_class_def_raw_rule(Parser *p)
     }
     void * _res = NULL;
     int _mark = p->mark;
-    { // 'class' NAME type_params? ['(' arguments? ')'] NEWLINE
+    { // 'klasse' NAME type_params? ['(' arguments? ')'] NEWLINE
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> invalid_class_def_raw[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'class' NAME type_params? ['(' arguments? ')'] NEWLINE"));
+        D(fprintf(stderr, "%*c> invalid_class_def_raw[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'klasse' NAME type_params? ['(' arguments? ')'] NEWLINE"));
         Token * _keyword;
         void *_opt_var;
         UNUSED(_opt_var); // Silence compiler warnings
@@ -25911,7 +25910,7 @@ invalid_class_def_raw_rule(Parser *p)
         expr_ty name_var;
         Token * newline_var;
         if (
-            (_keyword = _PyPegen_expect_token(p, 706))  // token='class'
+            (_keyword = _PyPegen_expect_token(p, 706))  // token='klasse'
             &&
             (name_var = _PyPegen_name_token(p))  // NAME
             &&
@@ -25922,7 +25921,7 @@ invalid_class_def_raw_rule(Parser *p)
             (newline_var = _PyPegen_expect_token(p, NEWLINE))  // token='NEWLINE'
         )
         {
-            D(fprintf(stderr, "%*c+ invalid_class_def_raw[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'class' NAME type_params? ['(' arguments? ')'] NEWLINE"));
+            D(fprintf(stderr, "%*c+ invalid_class_def_raw[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'klasse' NAME type_params? ['(' arguments? ')'] NEWLINE"));
             _res = RAISE_SYNTAX_ERROR ( "expected ':'" );
             if (_res == NULL && PyErr_Occurred()) {
                 p->error_indicator = 1;
@@ -25933,14 +25932,14 @@ invalid_class_def_raw_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s invalid_class_def_raw[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'class' NAME type_params? ['(' arguments? ')'] NEWLINE"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'klasse' NAME type_params? ['(' arguments? ')'] NEWLINE"));
     }
-    { // 'class' NAME type_params? ['(' arguments? ')'] ':' NEWLINE !INDENT
+    { // 'klasse' NAME type_params? ['(' arguments? ')'] ':' NEWLINE !INDENT
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> invalid_class_def_raw[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'class' NAME type_params? ['(' arguments? ')'] ':' NEWLINE !INDENT"));
+        D(fprintf(stderr, "%*c> invalid_class_def_raw[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'klasse' NAME type_params? ['(' arguments? ')'] ':' NEWLINE !INDENT"));
         Token * _literal;
         void *_opt_var;
         UNUSED(_opt_var); // Silence compiler warnings
@@ -25950,7 +25949,7 @@ invalid_class_def_raw_rule(Parser *p)
         expr_ty name_var;
         Token * newline_var;
         if (
-            (a = _PyPegen_expect_token(p, 706))  // token='class'
+            (a = _PyPegen_expect_token(p, 706))  // token='klasse'
             &&
             (name_var = _PyPegen_name_token(p))  // NAME
             &&
@@ -25965,7 +25964,7 @@ invalid_class_def_raw_rule(Parser *p)
             _PyPegen_lookahead_with_int(0, _PyPegen_expect_token, p, INDENT)  // token=INDENT
         )
         {
-            D(fprintf(stderr, "%*c+ invalid_class_def_raw[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'class' NAME type_params? ['(' arguments? ')'] ':' NEWLINE !INDENT"));
+            D(fprintf(stderr, "%*c+ invalid_class_def_raw[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'klasse' NAME type_params? ['(' arguments? ')'] ':' NEWLINE !INDENT"));
             _res = RAISE_INDENTATION_ERROR ( "expected an indented block after class definition on line %d" , a -> lineno );
             if (_res == NULL && PyErr_Occurred()) {
                 p->error_indicator = 1;
@@ -25976,7 +25975,7 @@ invalid_class_def_raw_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s invalid_class_def_raw[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'class' NAME type_params? ['(' arguments? ')'] ':' NEWLINE !INDENT"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'klasse' NAME type_params? ['(' arguments? ')'] ':' NEWLINE !INDENT"));
     }
     _res = NULL;
   done:
@@ -27814,7 +27813,7 @@ _tmp_7_rule(Parser *p)
         D(fprintf(stderr, "%*c> _tmp_7[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'klasse'"));
         Token * _keyword;
         if (
-            (_keyword = _PyPegen_expect_token(p, 515))  // token='klasse'
+            (_keyword = _PyPegen_expect_token(p, 706))  // token='klasse'
         )
         {
             D(fprintf(stderr, "%*c+ _tmp_7[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'klasse'"));

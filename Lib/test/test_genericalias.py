@@ -99,7 +99,7 @@ _UNPACKED_TUPLES = [
 ]
 
 
-class BaseTest(unittest.TestCase):
+klasse BaseTest(unittest.TestCase):
     """Test basics."""
     generic_types = [type, tuple, list, dict, set, frozenset, enumerate, memoryview,
                      defaultdict, deque,
@@ -198,7 +198,7 @@ class BaseTest(unittest.TestCase):
         self.assertEqual(t.__len__(a), 1)
 
     def test_subclassing(self):
-        class C(list[int]):
+        klasse C(list[int]):
             pass
         self.assertEqual(C.__bases__, (list,))
         self.assertEqual(C.__class__, type)
@@ -214,7 +214,7 @@ class BaseTest(unittest.TestCase):
             t[int]
 
     def test_generic_subclass(self):
-        class MyList(list):
+        klasse MyList(list):
             pass
         t = MyList[int]
         self.assertIs(t.__origin__, MyList)
@@ -222,9 +222,9 @@ class BaseTest(unittest.TestCase):
         self.assertEqual(t.__parameters__, ())
 
     def test_repr(self):
-        class MyList(list):
+        klasse MyList(list):
             pass
-        class MyGeneric:
+        klasse MyGeneric:
             __class_getitem__ = classmethod(GenericAlias)
 
         self.assertEqual(repr(list[str]), 'list[str]')
@@ -361,7 +361,7 @@ class BaseTest(unittest.TestCase):
             isinstance([], list[str])
 
     def test_issubclass(self):
-        class L(list): ...
+        klasse L(list): ...
         self.assertIsSubclass(L, list)
         with self.assertRaises(TypeError):
             issubclass(L, list[str])
@@ -375,7 +375,7 @@ class BaseTest(unittest.TestCase):
         self.assertEqual(t(0), int)
 
     def test_type_subclass_generic(self):
-        class MyType(type):
+        klasse MyType(type):
             pass
         with self.assertRaisesRegex(TypeError, 'MyType'):
             MyType[int]
@@ -393,7 +393,7 @@ class BaseTest(unittest.TestCase):
                     self.assertEqual(type(loaded), type(alias))
 
     def test_copy(self):
-        class X(list):
+        klasse X(list):
             def __copy__(self):
                 return self
             def __deepcopy__(self, memo):
@@ -452,9 +452,9 @@ class BaseTest(unittest.TestCase):
             GenericAlias(bad=float)
 
     def test_subclassing_types_genericalias(self):
-        class SubClass(GenericAlias): ...
+        klasse SubClass(GenericAlias): ...
         alias = SubClass(list, int)
-        class Bad(GenericAlias):
+        klasse Bad(GenericAlias):
             def __new__(cls, *args, **kwargs):
                 super().__new__(cls, *args, **kwargs)
 
@@ -551,7 +551,7 @@ class BaseTest(unittest.TestCase):
         self.assertEqual(deeply_nested_specialized.__parameters__, ())
 
 
-class TypeIterationTests(unittest.TestCase):
+klasse TypeIterationTests(unittest.TestCase):
     _UNITERABLE_TYPES = (list, tuple)
 
     def test_cannot_iterate(self):

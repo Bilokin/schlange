@@ -5,11 +5,11 @@ import sys
 import tkinter
 
 
-class WmInfoGatheringError(Exception):
+klasse WmInfoGatheringError(Exception):
     pass
 
 
-class ZoomHeight:
+klasse ZoomHeight:
     # Cached values for maximized window dimensions, one for each set
     # of screen dimensions.
     _max_height_and_y_coords = {}

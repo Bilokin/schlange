@@ -61,7 +61,7 @@ circular_imports_modules = {
     'D': """import A""",
 }
 
-class Finder:
+klasse Finder:
     """A dummy finder to detect concurrent access to its find_spec()
     method."""
 
@@ -81,7 +81,7 @@ class Finder:
         time.sleep(0.01)
         self.x = x + 1
 
-class FlushingFinder:
+klasse FlushingFinder:
     """A dummy finder which flushes sys.path_importer_cache when it gets
     called."""
 
@@ -89,7 +89,7 @@ class FlushingFinder:
         sys.path_importer_cache.clear()
 
 
-class ThreadedImportTests(unittest.TestCase):
+klasse ThreadedImportTests(unittest.TestCase):
 
     def setUp(self):
         self.old_random = sys.modules.pop('random', None)

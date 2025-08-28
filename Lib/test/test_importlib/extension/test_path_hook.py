@@ -7,7 +7,7 @@ import unittest
 
 @unittest.skipIf(util.EXTENSIONS is None or util.EXTENSIONS.filename is None,
                  'dynamic loading not supported or test module not available')
-class PathHookTests:
+klasse PathHookTests:
 
     """Test the path hook for extension modules."""
     # XXX Should it only succeed for pre-existing directories?

@@ -32,7 +32,7 @@ except ImportError:
 from test import support
 
 
-class SqliteTypeTests(unittest.TestCase):
+klasse SqliteTypeTests(unittest.TestCase):
     def setUp(self):
         self.con = sqlite.connect(":memory:")
         self.cur = self.con.cursor()
@@ -126,8 +126,8 @@ class SqliteTypeTests(unittest.TestCase):
         self.assertIsNone(row)
 
 
-class DeclTypesTests(unittest.TestCase):
-    class Foo:
+klasse DeclTypesTests(unittest.TestCase):
+    klasse Foo:
         def __init__(self, _val):
             if isinstance(_val, bytes):
                 # sqlite3 always calls __init__ with a bytes created from a
@@ -149,7 +149,7 @@ class DeclTypesTests(unittest.TestCase):
         def __str__(self):
             return "<%s>" % self.val
 
-    class BadConform:
+    klasse BadConform:
         def __init__(self, exc):
             self.exc = exc
         def __conform__(self, protocol):
@@ -267,13 +267,13 @@ class DeclTypesTests(unittest.TestCase):
             self.cur.execute("insert into test(bad) values (:val)", {"val": val})
 
     def test_unsupported_seq(self):
-        class Bar: pass
+        klasse Bar: pass
         val = Bar()
         with self.assertRaises(sqlite.ProgrammingError):
             self.cur.execute("insert into test(f) values (?)", (val,))
 
     def test_unsupported_dict(self):
-        class Bar: pass
+        klasse Bar: pass
         val = Bar()
         with self.assertRaises(sqlite.ProgrammingError):
             self.cur.execute("insert into test(f) values (:val)", {"val": val})
@@ -308,7 +308,7 @@ class DeclTypesTests(unittest.TestCase):
         self.assertIsNone(cur.fetchone()[0])
 
 
-class ColNamesTests(unittest.TestCase):
+klasse ColNamesTests(unittest.TestCase):
     def setUp(self):
         self.con = sqlite.connect(":memory:", detect_types=sqlite.PARSE_COLNAMES)
         self.cur = self.con.cursor()
@@ -371,7 +371,7 @@ class ColNamesTests(unittest.TestCase):
         self.assertIsNone(self.cur.description)
 
 
-class CommonTableExpressionTests(unittest.TestCase):
+klasse CommonTableExpressionTests(unittest.TestCase):
 
     def setUp(self):
         self.con = sqlite.connect(":memory:")
@@ -404,7 +404,7 @@ class CommonTableExpressionTests(unittest.TestCase):
         self.assertEqual(self.cur.description[0][0], "x")
 
 
-class ObjectAdaptationTests(unittest.TestCase):
+klasse ObjectAdaptationTests(unittest.TestCase):
     def cast(obj):
         return float(obj)
     cast = staticmethod(cast)
@@ -437,21 +437,21 @@ class ObjectAdaptationTests(unittest.TestCase):
             sqlite.adapt(1, None)
 
     def test_defect_proto(self):
-        class DefectProto():
+        klasse DefectProto():
             def __adapt__(self):
                 return None
         with self.assertRaises(sqlite.ProgrammingError):
             sqlite.adapt(1., DefectProto)
 
     def test_defect_self_adapt(self):
-        class DefectSelfAdapt(float):
+        klasse DefectSelfAdapt(float):
             def __conform__(self, _):
                 return None
         with self.assertRaises(sqlite.ProgrammingError):
             sqlite.adapt(DefectSelfAdapt(1.))
 
     def test_custom_proto(self):
-        class CustomProto():
+        klasse CustomProto():
             def __adapt__(self):
                 return "adapted"
         self.assertEqual(sqlite.adapt(1., CustomProto), "adapted")
@@ -466,7 +466,7 @@ class ObjectAdaptationTests(unittest.TestCase):
 
 
 @unittest.skipUnless(zlib, "requires zlib")
-class BinaryConverterTests(unittest.TestCase):
+klasse BinaryConverterTests(unittest.TestCase):
     def convert(s):
         return zlib.decompress(s)
     convert = staticmethod(convert)
@@ -483,7 +483,7 @@ class BinaryConverterTests(unittest.TestCase):
         result = self.con.execute('select ? as "x [bin]"', (memoryview(zlib.compress(testdata)),)).fetchone()[0]
         self.assertEqual(testdata, result)
 
-class DateTimeTests(unittest.TestCase):
+klasse DateTimeTests(unittest.TestCase):
     def setUp(self):
         self.con = sqlite.connect(":memory:", detect_types=sqlite.PARSE_DECLTYPES)
         self.cur = self.con.cursor()

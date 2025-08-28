@@ -24,7 +24,7 @@ from test.support import (script_helper, requires_debug_ranges, run_code,
 from test.support.bytecode_helper import instructions_with_positions
 from test.support.os_helper import FakePath
 
-class TestSpecifics(unittest.TestCase):
+klasse TestSpecifics(unittest.TestCase):
 
     def compile_single(self, source):
         compile(source, "<single>", "single")
@@ -74,7 +74,7 @@ class TestSpecifics(unittest.TestCase):
 
     def test_exec_with_general_mapping_for_locals(self):
 
-        class M:
+        klasse M:
             "Test mapping interface versus possible calls from eval()."
             def __getitem__(self, key):
                 if key == 'a':
@@ -103,14 +103,14 @@ class TestSpecifics(unittest.TestCase):
         self.assertEqual(m.results, ('z', m))
         self.assertRaises(TypeError, exec, 'z = b', m)
 
-        class A:
+        klasse A:
             "Non-mapping"
             pass
         m = A()
         self.assertRaises(TypeError, exec, 'z = a', g, m)
 
         # Verify that dict subclasses work as well
-        class D(dict):
+        klasse D(dict):
             def __getitem__(self, key):
                 if key == 'a':
                     return 12
@@ -370,7 +370,7 @@ class TestSpecifics(unittest.TestCase):
     def test_subscripts(self):
         # SF bug 1448804
         # Class to make testing subscript results easy
-        class str_map(object):
+        klasse str_map(object):
             def __init__(self):
                 self.data = {}
             def __getitem__(self, key):
@@ -446,7 +446,7 @@ class TestSpecifics(unittest.TestCase):
         compile(s, '?', 'exec')
 
     def test_mangling(self):
-        class A:
+        klasse A:
             def f():
                 __mangled = 1
                 __not_mangled__ = 2
@@ -957,7 +957,7 @@ class TestSpecifics(unittest.TestCase):
                     "docstring2"
                     return 42
 
-                class C:
+                klasse C:
                     "docstring3"
                     pass
 
@@ -1638,7 +1638,7 @@ class TestSpecifics(unittest.TestCase):
 
     def test_globals_dict_subclass(self):
         # gh-132386
-        class WeirdDict(dict):
+        klasse WeirdDict(dict):
             pass
 
         ns = {}
@@ -1684,8 +1684,8 @@ class TestSpecifics(unittest.TestCase):
         self.assertEqual(caught[0].category, SyntaxWarning)
         self.assertIn("\"is\" with 'int' literal", str(caught[0].message))
 
-class TestBooleanExpression(unittest.TestCase):
-    class Value:
+klasse TestBooleanExpression(unittest.TestCase):
+    klasse Value:
         def __init__(self):
             self.called = 0
 
@@ -1693,10 +1693,10 @@ class TestBooleanExpression(unittest.TestCase):
             self.called += 1
             return self.value
 
-    class Yes(Value):
+    klasse Yes(Value):
         value = True
 
-    class No(Value):
+    klasse No(Value):
         value = False
 
     def test_short_circuit_and(self):
@@ -1725,7 +1725,7 @@ class TestBooleanExpression(unittest.TestCase):
 
     def test_exception(self):
         # See gh-137288
-        class Foo:
+        klasse Foo:
             def __bool__(self):
                 raise NotImplementedError()
 
@@ -1739,7 +1739,7 @@ class TestBooleanExpression(unittest.TestCase):
             c = a or b
 
 @requires_debug_ranges()
-class TestSourcePositions(unittest.TestCase):
+klasse TestSourcePositions(unittest.TestCase):
     # Ensure that compiled code snippets have correct line and column numbers
     # in `co_positions()`.
 
@@ -1752,7 +1752,7 @@ class TestSourcePositions(unittest.TestCase):
 
         # Use an AST visitor that notes all the offsets.
         lines, end_lines, columns, end_columns = set(), set(), set(), set()
-        class SourceOffsetVisitor(ast.NodeVisitor):
+        klasse SourceOffsetVisitor(ast.NodeVisitor):
             def generic_visit(self, node):
                 super().generic_visit(node)
                 if not isinstance(node, (ast.expr, ast.stmt, ast.pattern)):
@@ -2355,10 +2355,10 @@ class TestSourcePositions(unittest.TestCase):
             self.assertEqual(end_col, 20)
 
 
-class TestStaticAttributes(unittest.TestCase):
+klasse TestStaticAttributes(unittest.TestCase):
 
     def test_basic(self):
-        class C:
+        klasse C:
             def f(self):
                 self.a = self.b = 42
                 # read fields are not included
@@ -2369,7 +2369,7 @@ class TestStaticAttributes(unittest.TestCase):
         self.assertEqual(sorted(C.__static_attributes__), ['a', 'b'])
 
     def test_nested_function(self):
-        class C:
+        klasse C:
             def f(self):
                 self.x = 1
                 self.y = 2
@@ -2388,12 +2388,12 @@ class TestStaticAttributes(unittest.TestCase):
         self.assertEqual(sorted(C.__static_attributes__), ['u', 'v', 'x', 'y', 'z'])
 
     def test_nested_class(self):
-        class C:
+        klasse C:
             def f(self):
                 self.x = 42
                 self.y = 42
 
-            class D:
+            klasse D:
                 def g(self):
                     self.y = 42
                     self.z = 42
@@ -2402,12 +2402,12 @@ class TestStaticAttributes(unittest.TestCase):
         self.assertEqual(sorted(C.D.__static_attributes__), ['y', 'z'])
 
     def test_subclass(self):
-        class C:
+        klasse C:
             def f(self):
                 self.x = 42
                 self.y = 42
 
-        class D(C):
+        klasse D(C):
             def g(self):
                 self.y = 42
                 self.z = 42
@@ -2416,7 +2416,7 @@ class TestStaticAttributes(unittest.TestCase):
         self.assertEqual(sorted(D.__static_attributes__), ['y', 'z'])
 
 
-class TestExpressionStackSize(unittest.TestCase):
+klasse TestExpressionStackSize(unittest.TestCase):
     # These tests check that the computed stack size for a code object
     # stays within reasonable bounds (see issue #21523 for an example
     # dysfunction).
@@ -2493,7 +2493,7 @@ class TestExpressionStackSize(unittest.TestCase):
         compile(code, "<foo>", "single")
 
 
-class TestStackSizeStability(unittest.TestCase):
+klasse TestStackSizeStability(unittest.TestCase):
     # Check that repeating certain snippets doesn't increase the stack size
     # beyond what a single snippet requires.
 
@@ -2820,7 +2820,7 @@ class TestStackSizeStability(unittest.TestCase):
 
 @support.cpython_only
 @unittest.skipIf(_testinternalcapi is None, 'need _testinternalcapi module')
-class TestInstructionSequence(unittest.TestCase):
+klasse TestInstructionSequence(unittest.TestCase):
     def compare_instructions(self, seq, expected):
         self.assertEqual([(opcode.opname[i[0]],) + i[1:] for i in seq.get_instructions()],
                          expected)

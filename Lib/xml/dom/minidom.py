@@ -31,7 +31,7 @@ _nodeTypes_with_children = (xml.dom.Node.ELEMENT_NODE,
                             xml.dom.Node.ENTITY_REFERENCE_NODE)
 
 
-class Node(xml.dom.Node):
+klasse Node(xml.dom.Node):
     namespaceURI = None # this is non-null only for elements and attributes
     parentNode = None
     ownerDocument = None
@@ -340,7 +340,7 @@ def _get_elements_by_tagName_ns_helper(parent, nsURI, localName, rc):
             _get_elements_by_tagName_ns_helper(node, nsURI, localName, rc)
     return rc
 
-class DocumentFragment(Node):
+klasse DocumentFragment(Node):
     nodeType = Node.DOCUMENT_FRAGMENT_NODE
     nodeName = "#document-fragment"
     nodeValue = None
@@ -358,7 +358,7 @@ class DocumentFragment(Node):
         self.childNodes = NodeList()
 
 
-class Attr(Node):
+klasse Attr(Node):
     __slots__=('_name', '_value', 'namespaceURI',
                '_prefix', 'childNodes', '_localName', 'ownerDocument', 'ownerElement')
     nodeType = Node.ATTRIBUTE_NODE
@@ -486,7 +486,7 @@ defproperty(Attr, "localName",  doc="Namespace-local name of this attribute.")
 defproperty(Attr, "schemaType", doc="Schema type for this attribute.")
 
 
-class NamedNodeMap(object):
+klasse NamedNodeMap(object):
     """The attribute list is a transient interface to the underlying
     dictionaries.  Mutations here will change the underlying element's
     dictionary.
@@ -655,7 +655,7 @@ defproperty(NamedNodeMap, "length",
 AttributeList = NamedNodeMap
 
 
-class TypeInfo(object):
+klasse TypeInfo(object):
     __slots__ = 'namespace', 'name'
 
     def __init__(self, namespace, name):
@@ -677,7 +677,7 @@ class TypeInfo(object):
 
 _no_type = TypeInfo(None, None)
 
-class Element(Node):
+klasse Element(Node):
     __slots__=('ownerDocument', 'parentNode', 'tagName', 'nodeName', 'prefix',
                'namespaceURI', '_localName', 'childNodes', '_attrs', '_attrsNS',
                'nextSibling', 'previousSibling')
@@ -964,7 +964,7 @@ def _set_attribute_node(element, attr):
     # dictionaries are tossed.
     attr.ownerElement = element
 
-class Childless:
+klasse Childless:
     """Mixin that makes childless-ness easy to implement and avoids
     the complexity of the Node methods that deal with children.
     """
@@ -1005,7 +1005,7 @@ class Childless:
             self.nodeName + " nodes do not have children")
 
 
-class ProcessingInstruction(Childless, Node):
+klasse ProcessingInstruction(Childless, Node):
     nodeType = Node.PROCESSING_INSTRUCTION_NODE
     __slots__ = ('target', 'data')
 
@@ -1031,7 +1031,7 @@ class ProcessingInstruction(Childless, Node):
         writer.write("%s<?%s %s?>%s" % (indent,self.target, self.data, newl))
 
 
-class CharacterData(Childless, Node):
+klasse CharacterData(Childless, Node):
     __slots__=('_data', 'ownerDocument','parentNode', 'previousSibling', 'nextSibling')
 
     def __init__(self):
@@ -1105,7 +1105,7 @@ class CharacterData(Childless, Node):
 defproperty(CharacterData, "length", doc="Length of the string data.")
 
 
-class Text(CharacterData):
+klasse Text(CharacterData):
     __slots__ = ()
 
     nodeType = Node.TEXT_NODE
@@ -1214,7 +1214,7 @@ def _get_containing_entref(node):
     return None
 
 
-class Comment(CharacterData):
+klasse Comment(CharacterData):
     nodeType = Node.COMMENT_NODE
     nodeName = "#comment"
 
@@ -1228,7 +1228,7 @@ class Comment(CharacterData):
         writer.write("%s<!--%s-->%s" % (indent, self.data, newl))
 
 
-class CDATASection(Text):
+klasse CDATASection(Text):
     __slots__ = ()
 
     nodeType = Node.CDATA_SECTION_NODE
@@ -1240,7 +1240,7 @@ class CDATASection(Text):
         writer.write("<![CDATA[%s]]>" % self.data)
 
 
-class ReadOnlySequentialNamedNodeMap(object):
+klasse ReadOnlySequentialNamedNodeMap(object):
     __slots__ = '_seq',
 
     def __init__(self, seq=()):
@@ -1306,8 +1306,8 @@ defproperty(ReadOnlySequentialNamedNodeMap, "length",
             doc="Number of entries in the NamedNodeMap.")
 
 
-class Identified:
-    """Mix-in class that supports the publicId and systemId attributes."""
+klasse Identified:
+    """Mix-in klasse that supports the publicId and systemId attributes."""
 
     __slots__ = 'publicId', 'systemId'
 
@@ -1321,7 +1321,7 @@ class Identified:
     def _get_systemId(self):
         return self.systemId
 
-class DocumentType(Identified, Childless, Node):
+klasse DocumentType(Identified, Childless, Node):
     nodeType = Node.DOCUMENT_TYPE_NODE
     nodeValue = None
     name = None
@@ -1381,7 +1381,7 @@ class DocumentType(Identified, Childless, Node):
             writer.write("]")
         writer.write(">"+newl)
 
-class Entity(Identified, Node):
+klasse Entity(Identified, Node):
     attributes = None
     nodeType = Node.ENTITY_NODE
     nodeValue = None
@@ -1421,7 +1421,7 @@ class Entity(Identified, Node):
         raise xml.dom.HierarchyRequestErr(
             "cannot replace children of an entity node")
 
-class Notation(Identified, Childless, Node):
+klasse Notation(Identified, Childless, Node):
     nodeType = Node.NOTATION_NODE
     nodeValue = None
 
@@ -1430,7 +1430,7 @@ class Notation(Identified, Childless, Node):
         self._identified_mixin_init(publicId, systemId)
 
 
-class DOMImplementation(DOMImplementationLS):
+klasse DOMImplementation(DOMImplementationLS):
     _features = [("core", "1.0"),
                  ("core", "2.0"),
                  ("core", None),
@@ -1509,7 +1509,7 @@ class DOMImplementation(DOMImplementationLS):
     def _create_document(self):
         return Document()
 
-class ElementInfo(object):
+klasse ElementInfo(object):
     """Object that represents content-model information for an element.
 
     This implementation is not expected to be used in practice; DOM
@@ -1559,7 +1559,7 @@ def _clear_id_cache(node):
         node.ownerDocument._id_cache.clear()
         node.ownerDocument._id_search_stack= None
 
-class Document(Node, DocumentLS):
+klasse Document(Node, DocumentLS):
     __slots__ = ('_elem_info', 'doctype',
                  '_id_search_stack', 'childNodes', '_id_cache')
     _child_node_types = (Node.ELEMENT_NODE, Node.PROCESSING_INSTRUCTION_NODE,

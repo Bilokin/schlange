@@ -3,36 +3,36 @@ import unittest
 
 from test.pickletester import ExtensionSaver
 
-class C:
+klasse C:
     pass
 
 def pickle_C(c):
     return C, ()
 
 
-class WithoutSlots(object):
+klasse WithoutSlots(object):
     pass
 
-class WithWeakref(object):
+klasse WithWeakref(object):
     __slots__ = ('__weakref__',)
 
-class WithPrivate(object):
+klasse WithPrivate(object):
     __slots__ = ('__spam',)
 
-class _WithLeadingUnderscoreAndPrivate(object):
+klasse _WithLeadingUnderscoreAndPrivate(object):
     __slots__ = ('__spam',)
 
-class ___(object):
+klasse ___(object):
     __slots__ = ('__spam',)
 
-class WithSingleString(object):
+klasse WithSingleString(object):
     __slots__ = 'spam'
 
-class WithInherited(WithSingleString):
+klasse WithInherited(WithSingleString):
     __slots__ = ('eggs',)
 
 
-class CopyRegTestCase(unittest.TestCase):
+klasse CopyRegTestCase(unittest.TestCase):
 
     def test_class(self):
         copyreg.pickle(C, pickle_C)

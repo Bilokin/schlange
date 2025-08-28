@@ -8,12 +8,12 @@ import gc
 from test.support import threading_helper
 
 
-class MyObj:
+klasse MyObj:
     pass
 
 
 @threading_helper.requires_working_threading()
-class TestGC(TestCase):
+klasse TestGC(TestCase):
     def test_get_objects(self):
         event = threading.Event()
 

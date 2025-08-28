@@ -258,13 +258,13 @@ HAVE_SOCKET_HYPERV = _have_socket_hyperv()
 # Size in bytes of the int type
 SIZEOF_INT = array.array("i").itemsize
 
-class TestLazyImport(unittest.TestCase):
+klasse TestLazyImport(unittest.TestCase):
     @cpython_only
     def test_lazy_import(self):
         ensure_lazy_imports("socket", {"array", "selectors"})
 
 
-class SocketTCPTest(unittest.TestCase):
+klasse SocketTCPTest(unittest.TestCase):
 
     def setUp(self):
         self.serv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -275,7 +275,7 @@ class SocketTCPTest(unittest.TestCase):
         self.serv.close()
         self.serv = None
 
-class SocketUDPTest(unittest.TestCase):
+klasse SocketUDPTest(unittest.TestCase):
 
     def setUp(self):
         self.serv = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -285,14 +285,14 @@ class SocketUDPTest(unittest.TestCase):
         self.serv.close()
         self.serv = None
 
-class SocketUDPLITETest(SocketUDPTest):
+klasse SocketUDPLITETest(SocketUDPTest):
 
     def setUp(self):
         self.serv = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDPLITE)
         self.port = socket_helper.bind_port(self.serv)
 
 
-class SocketCANTest(unittest.TestCase):
+klasse SocketCANTest(unittest.TestCase):
 
     """To be able to run this test, a `vcan0` CAN interface can be created with
     the following commands:
@@ -343,7 +343,7 @@ class SocketCANTest(unittest.TestCase):
                            self.interface)
 
 
-class SocketRDSTest(unittest.TestCase):
+klasse SocketRDSTest(unittest.TestCase):
 
     """To be able to run this test, the `rds` kernel module must be loaded:
     # modprobe rds
@@ -359,24 +359,24 @@ class SocketRDSTest(unittest.TestCase):
             self.skipTest('unable to bind RDS socket')
 
 
-class ThreadableTest:
+klasse ThreadableTest:
     """Threadable Test class
 
-    The ThreadableTest class makes it easy to create a threaded
+    The ThreadableTest klasse makes it easy to create a threaded
     client/server pair from an existing unit test. To create a
-    new threaded class from an existing unit test, use multiple
+    new threaded klasse from an existing unit test, use multiple
     inheritance:
 
-        class NewClass (OldClass, ThreadableTest):
+        klasse NewClass (OldClass, ThreadableTest):
             pass
 
-    This class defines two new fixture functions with obvious
+    This klasse defines two new fixture functions with obvious
     purposes for overriding:
 
         clientSetUp ()
         clientTearDown ()
 
-    Any new test functions within the class must then define
+    Any new test functions within the klasse must then define
     tests in pairs, where the test name is preceded with a
     '_' to indicate the client portion of the test. Ex:
 
@@ -470,7 +470,7 @@ class ThreadableTest:
         self.done.set()
         thread.exit()
 
-class ThreadedTCPSocketTest(SocketTCPTest, ThreadableTest):
+klasse ThreadedTCPSocketTest(SocketTCPTest, ThreadableTest):
 
     def __init__(self, methodName='runTest'):
         SocketTCPTest.__init__(self, methodName=methodName)
@@ -484,7 +484,7 @@ class ThreadedTCPSocketTest(SocketTCPTest, ThreadableTest):
         self.cli = None
         ThreadableTest.clientTearDown(self)
 
-class ThreadedUDPSocketTest(SocketUDPTest, ThreadableTest):
+klasse ThreadedUDPSocketTest(SocketUDPTest, ThreadableTest):
 
     def __init__(self, methodName='runTest'):
         SocketUDPTest.__init__(self, methodName=methodName)
@@ -500,7 +500,7 @@ class ThreadedUDPSocketTest(SocketUDPTest, ThreadableTest):
 
 @unittest.skipUnless(HAVE_SOCKET_UDPLITE,
           'UDPLITE sockets required for this test.')
-class ThreadedUDPLITESocketTest(SocketUDPLITETest, ThreadableTest):
+klasse ThreadedUDPLITESocketTest(SocketUDPLITETest, ThreadableTest):
 
     def __init__(self, methodName='runTest'):
         SocketUDPLITETest.__init__(self, methodName=methodName)
@@ -514,7 +514,7 @@ class ThreadedUDPLITESocketTest(SocketUDPLITETest, ThreadableTest):
         self.cli = None
         ThreadableTest.clientTearDown(self)
 
-class ThreadedCANSocketTest(SocketCANTest, ThreadableTest):
+klasse ThreadedCANSocketTest(SocketCANTest, ThreadableTest):
 
     def __init__(self, methodName='runTest'):
         SocketCANTest.__init__(self, methodName=methodName)
@@ -534,7 +534,7 @@ class ThreadedCANSocketTest(SocketCANTest, ThreadableTest):
         self.cli = None
         ThreadableTest.clientTearDown(self)
 
-class ThreadedRDSSocketTest(SocketRDSTest, ThreadableTest):
+klasse ThreadedRDSSocketTest(SocketRDSTest, ThreadableTest):
 
     def __init__(self, methodName='runTest'):
         SocketRDSTest.__init__(self, methodName=methodName)
@@ -562,7 +562,7 @@ class ThreadedRDSSocketTest(SocketRDSTest, ThreadableTest):
           'VSOCK sockets required for this test.')
 @unittest.skipUnless(get_cid() != 2,  # VMADDR_CID_HOST
                      "This test can only be run on a virtual guest.")
-class ThreadedVSOCKSocketStreamTest(unittest.TestCase, ThreadableTest):
+klasse ThreadedVSOCKSocketStreamTest(unittest.TestCase, ThreadableTest):
 
     def __init__(self, methodName='runTest'):
         unittest.TestCase.__init__(self, methodName=methodName)
@@ -599,7 +599,7 @@ class ThreadedVSOCKSocketStreamTest(unittest.TestCase, ThreadableTest):
         self.cli.send(MSG)
         self.cli.close()
 
-class SocketConnectedTest(ThreadedTCPSocketTest):
+klasse SocketConnectedTest(ThreadedTCPSocketTest):
     """Socket tests for client-server connection.
 
     self.cli_conn is a client socket connected to the server.  The
@@ -632,7 +632,7 @@ class SocketConnectedTest(ThreadedTCPSocketTest):
         self.serv_conn = None
         ThreadedTCPSocketTest.clientTearDown(self)
 
-class SocketPairTest(unittest.TestCase, ThreadableTest):
+klasse SocketPairTest(unittest.TestCase, ThreadableTest):
 
     def __init__(self, methodName='runTest'):
         unittest.TestCase.__init__(self, methodName=methodName)
@@ -668,8 +668,8 @@ class SocketPairTest(unittest.TestCase, ThreadableTest):
 # address families can be used, and the attributes serv_addr and
 # cli_addr will be set to the addresses of the endpoints.
 
-class SocketTestBase(unittest.TestCase):
-    """A base class for socket tests.
+klasse SocketTestBase(unittest.TestCase):
+    """A base klasse for socket tests.
 
     Subclasses must provide methods newSocket() to return a new socket
     and bindSock(sock) to bind it to an unused address.
@@ -692,7 +692,7 @@ class SocketTestBase(unittest.TestCase):
         self.serv_addr = self.serv.getsockname()
 
 
-class SocketListeningTestMixin(SocketTestBase):
+klasse SocketListeningTestMixin(SocketTestBase):
     """Mixin to listen on the server socket."""
 
     def setUp(self):
@@ -700,7 +700,7 @@ class SocketListeningTestMixin(SocketTestBase):
         self.serv.listen()
 
 
-class ThreadedSocketTestMixin(SocketTestBase, ThreadableTest):
+klasse ThreadedSocketTestMixin(SocketTestBase, ThreadableTest):
     """Mixin to add client socket and allow client/server tests.
 
     Client socket is self.cli and its address is self.cli_addr.  See
@@ -730,7 +730,7 @@ class ThreadedSocketTestMixin(SocketTestBase, ThreadableTest):
         ThreadableTest.clientTearDown(self)
 
 
-class ConnectedStreamTestMixin(SocketListeningTestMixin,
+klasse ConnectedStreamTestMixin(SocketListeningTestMixin,
                                ThreadedSocketTestMixin):
     """Mixin to allow client/server stream tests with connected client.
 
@@ -766,10 +766,10 @@ class ConnectedStreamTestMixin(SocketListeningTestMixin,
         super().clientTearDown()
 
 
-class UnixSocketTestBase(SocketTestBase):
-    """Base class for Unix-domain socket tests."""
+klasse UnixSocketTestBase(SocketTestBase):
+    """Base klasse for Unix-domain socket tests."""
 
-    # This class is used for file descriptor passing tests, so we
+    # This klasse is used for file descriptor passing tests, so we
     # create the sockets in a private directory so that other users
     # can't send anything that might be problematic for a privileged
     # user running the tests.
@@ -779,15 +779,15 @@ class UnixSocketTestBase(SocketTestBase):
         self.addCleanup(os_helper.unlink, path)
         socket_helper.bind_unix_socket(sock, path)
 
-class UnixStreamBase(UnixSocketTestBase):
-    """Base class for Unix-domain SOCK_STREAM tests."""
+klasse UnixStreamBase(UnixSocketTestBase):
+    """Base klasse for Unix-domain SOCK_STREAM tests."""
 
     def newSocket(self):
         return socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
 
 
-class InetTestBase(SocketTestBase):
-    """Base class for IPv4 socket tests."""
+klasse InetTestBase(SocketTestBase):
+    """Base klasse for IPv4 socket tests."""
 
     host = HOST
 
@@ -798,45 +798,45 @@ class InetTestBase(SocketTestBase):
     def bindSock(self, sock):
         socket_helper.bind_port(sock, host=self.host)
 
-class TCPTestBase(InetTestBase):
-    """Base class for TCP-over-IPv4 tests."""
+klasse TCPTestBase(InetTestBase):
+    """Base klasse for TCP-over-IPv4 tests."""
 
     def newSocket(self):
         return socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-class UDPTestBase(InetTestBase):
-    """Base class for UDP-over-IPv4 tests."""
+klasse UDPTestBase(InetTestBase):
+    """Base klasse for UDP-over-IPv4 tests."""
 
     def newSocket(self):
         return socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-class UDPLITETestBase(InetTestBase):
-    """Base class for UDPLITE-over-IPv4 tests."""
+klasse UDPLITETestBase(InetTestBase):
+    """Base klasse for UDPLITE-over-IPv4 tests."""
 
     def newSocket(self):
         return socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDPLITE)
 
-class SCTPStreamBase(InetTestBase):
-    """Base class for SCTP tests in one-to-one (SOCK_STREAM) mode."""
+klasse SCTPStreamBase(InetTestBase):
+    """Base klasse for SCTP tests in one-to-one (SOCK_STREAM) mode."""
 
     def newSocket(self):
         return socket.socket(socket.AF_INET, socket.SOCK_STREAM,
                              socket.IPPROTO_SCTP)
 
 
-class Inet6TestBase(InetTestBase):
-    """Base class for IPv6 socket tests."""
+klasse Inet6TestBase(InetTestBase):
+    """Base klasse for IPv6 socket tests."""
 
     host = socket_helper.HOSTv6
 
-class UDP6TestBase(Inet6TestBase):
-    """Base class for UDP-over-IPv6 tests."""
+klasse UDP6TestBase(Inet6TestBase):
+    """Base klasse for UDP-over-IPv6 tests."""
 
     def newSocket(self):
         return socket.socket(socket.AF_INET6, socket.SOCK_DGRAM)
 
-class UDPLITE6TestBase(Inet6TestBase):
-    """Base class for UDPLITE-over-IPv6 tests."""
+klasse UDPLITE6TestBase(Inet6TestBase):
+    """Base klasse for UDPLITE-over-IPv6 tests."""
 
     def newSocket(self):
         return socket.socket(socket.AF_INET6, socket.SOCK_DGRAM, socket.IPPROTO_UDPLITE)
@@ -908,7 +908,7 @@ def requireSocket(*args):
 #######################################################################
 ## Begin Tests
 
-class GeneralModuleTests(unittest.TestCase):
+klasse GeneralModuleTests(unittest.TestCase):
 
     @unittest.skipUnless(_socket is not None, 'need _socket module')
     def test_socket_type(self):
@@ -2065,7 +2065,7 @@ class GeneralModuleTests(unittest.TestCase):
 
     @unittest.skipUnless(hasattr(os, 'sendfile'), 'test needs os.sendfile()')
     def test__sendfile_use_sendfile(self):
-        class File:
+        klasse File:
             def __init__(self, fd):
                 self.fd = fd
 
@@ -2205,7 +2205,7 @@ class GeneralModuleTests(unittest.TestCase):
 
 
 @unittest.skipUnless(HAVE_SOCKET_CAN, 'SocketCan required for this test.')
-class BasicCANTest(unittest.TestCase):
+klasse BasicCANTest(unittest.TestCase):
 
     def testCrucialConstants(self):
         socket.AF_CAN
@@ -2289,7 +2289,7 @@ class BasicCANTest(unittest.TestCase):
 
 
 @unittest.skipUnless(HAVE_SOCKET_CAN, 'SocketCan required for this test.')
-class CANTest(ThreadedCANSocketTest):
+klasse CANTest(ThreadedCANSocketTest):
 
     def __init__(self, methodName='runTest'):
         ThreadedCANSocketTest.__init__(self, methodName=methodName)
@@ -2380,7 +2380,7 @@ class CANTest(ThreadedCANSocketTest):
 
 
 @unittest.skipUnless(HAVE_SOCKET_CAN_ISOTP, 'CAN ISOTP required for this test.')
-class ISOTPTest(unittest.TestCase):
+klasse ISOTPTest(unittest.TestCase):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -2423,7 +2423,7 @@ class ISOTPTest(unittest.TestCase):
 
 
 @unittest.skipUnless(HAVE_SOCKET_CAN_J1939, 'CAN J1939 required for this test.')
-class J1939Test(unittest.TestCase):
+klasse J1939Test(unittest.TestCase):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -2485,7 +2485,7 @@ class J1939Test(unittest.TestCase):
 
 
 @unittest.skipUnless(HAVE_SOCKET_RDS, 'RDS sockets required for this test.')
-class BasicRDSTest(unittest.TestCase):
+klasse BasicRDSTest(unittest.TestCase):
 
     def testCrucialConstants(self):
         socket.AF_RDS
@@ -2503,7 +2503,7 @@ class BasicRDSTest(unittest.TestCase):
 
 
 @unittest.skipUnless(HAVE_SOCKET_RDS, 'RDS sockets required for this test.')
-class RDSTest(ThreadedRDSSocketTest):
+klasse RDSTest(ThreadedRDSSocketTest):
 
     def __init__(self, methodName='runTest'):
         ThreadedRDSSocketTest.__init__(self, methodName=methodName)
@@ -2567,7 +2567,7 @@ class RDSTest(ThreadedRDSSocketTest):
 
 @unittest.skipUnless(HAVE_SOCKET_QIPCRTR,
           'QIPCRTR sockets required for this test.')
-class BasicQIPCRTRTest(unittest.TestCase):
+klasse BasicQIPCRTRTest(unittest.TestCase):
 
     def testCrucialConstants(self):
         socket.AF_QIPCRTR
@@ -2597,7 +2597,7 @@ class BasicQIPCRTRTest(unittest.TestCase):
 @unittest.skipIf(fcntl is None, "need fcntl")
 @unittest.skipUnless(HAVE_SOCKET_VSOCK,
           'VSOCK sockets required for this test.')
-class BasicVSOCKTest(unittest.TestCase):
+klasse BasicVSOCKTest(unittest.TestCase):
 
     def testCrucialConstants(self):
         socket.AF_VSOCK
@@ -2646,7 +2646,7 @@ class BasicVSOCKTest(unittest.TestCase):
 
 @unittest.skipUnless(hasattr(socket, 'AF_BLUETOOTH'),
                      'Bluetooth sockets required for this test.')
-class BasicBluetoothTest(unittest.TestCase):
+klasse BasicBluetoothTest(unittest.TestCase):
 
     def testBluetoothConstants(self):
         socket.BDADDR_ANY
@@ -2724,7 +2724,7 @@ class BasicBluetoothTest(unittest.TestCase):
 
 @unittest.skipUnless(HAVE_SOCKET_BLUETOOTH,
                      'Bluetooth sockets required for this test.')
-class BluetoothTest(unittest.TestCase):
+klasse BluetoothTest(unittest.TestCase):
 
     def testCreateRfcommSocket(self):
         with socket.socket(socket.AF_BLUETOOTH, socket.SOCK_STREAM, socket.BTPROTO_RFCOMM) as s:
@@ -2930,7 +2930,7 @@ class BluetoothTest(unittest.TestCase):
 
 @unittest.skipUnless(HAVE_SOCKET_HYPERV,
                      'Hyper-V sockets required for this test.')
-class BasicHyperVTest(unittest.TestCase):
+klasse BasicHyperVTest(unittest.TestCase):
 
     def testHyperVConstants(self):
         socket.HVSOCKET_CONNECT_TIMEOUT
@@ -2980,7 +2980,7 @@ class BasicHyperVTest(unittest.TestCase):
                 s.connect((socket.HV_GUID_ZERO, "00"))
 
 
-class BasicTCPTest(SocketConnectedTest):
+klasse BasicTCPTest(SocketConnectedTest):
 
     def __init__(self, methodName='runTest'):
         SocketConnectedTest.__init__(self, methodName=methodName)
@@ -3110,7 +3110,7 @@ class BasicTCPTest(SocketConnectedTest):
         self.serv_conn.send(MSG)
 
 
-class BasicUDPTest(ThreadedUDPSocketTest):
+klasse BasicUDPTest(ThreadedUDPSocketTest):
 
     def __init__(self, methodName='runTest'):
         ThreadedUDPSocketTest.__init__(self, methodName=methodName)
@@ -3141,7 +3141,7 @@ class BasicUDPTest(ThreadedUDPSocketTest):
 
 @unittest.skipUnless(HAVE_SOCKET_UDPLITE,
           'UDPLITE sockets required for this test.')
-class BasicUDPLITETest(ThreadedUDPLITESocketTest):
+klasse BasicUDPLITETest(ThreadedUDPLITESocketTest):
 
     def __init__(self, methodName='runTest'):
         ThreadedUDPLITESocketTest.__init__(self, methodName=methodName)
@@ -3196,8 +3196,8 @@ class BasicUDPLITETest(ThreadedUDPLITESocketTest):
 # here assumes that datagram delivery on the local machine will be
 # reliable.
 
-class SendrecvmsgBase:
-    # Base class for sendmsg()/recvmsg() tests.
+klasse SendrecvmsgBase:
+    # Base klasse for sendmsg()/recvmsg() tests.
 
     # Time in seconds to wait before considering a test failed, or
     # None for no timeout.  Not all tests actually set a timeout.
@@ -3315,7 +3315,7 @@ class SendrecvmsgBase:
         self.assertEqual(flags & mask, checkset & mask)
 
 
-class RecvmsgIntoMixin(SendrecvmsgBase):
+klasse RecvmsgIntoMixin(SendrecvmsgBase):
     # Mixin to implement doRecvmsg() using recvmsg_into().
 
     def doRecvmsg(self, sock, bufsize, *args):
@@ -3327,7 +3327,7 @@ class RecvmsgIntoMixin(SendrecvmsgBase):
         return (bytes(buf[:result[0]]),) + result[1:]
 
 
-class SendrecvmsgDgramFlagsBase(SendrecvmsgBase):
+klasse SendrecvmsgDgramFlagsBase(SendrecvmsgBase):
     # Defines flags to be checked in msg_flags for datagram sockets.
 
     @property
@@ -3335,7 +3335,7 @@ class SendrecvmsgDgramFlagsBase(SendrecvmsgBase):
         return super().msg_flags_non_eor_indicator | socket.MSG_TRUNC
 
 
-class SendrecvmsgSCTPFlagsBase(SendrecvmsgBase):
+klasse SendrecvmsgSCTPFlagsBase(SendrecvmsgBase):
     # Defines flags to be checked in msg_flags for SCTP sockets.
 
     @property
@@ -3343,8 +3343,8 @@ class SendrecvmsgSCTPFlagsBase(SendrecvmsgBase):
         return super().msg_flags_eor_indicator | socket.MSG_EOR
 
 
-class SendrecvmsgConnectionlessBase(SendrecvmsgBase):
-    # Base class for tests on connectionless-mode sockets.  Users must
+klasse SendrecvmsgConnectionlessBase(SendrecvmsgBase):
+    # Base klasse for tests on connectionless-mode sockets.  Users must
     # supply sockets on attributes cli and serv to be mapped to
     # cli_sock and serv_sock respectively.
 
@@ -3364,8 +3364,8 @@ class SendrecvmsgConnectionlessBase(SendrecvmsgBase):
         return self.cli_sock.sendto(msg, self.serv_addr)
 
 
-class SendrecvmsgConnectedBase(SendrecvmsgBase):
-    # Base class for tests on connected sockets.  Users must supply
+klasse SendrecvmsgConnectedBase(SendrecvmsgBase):
+    # Base klasse for tests on connected sockets.  Users must supply
     # sockets on attributes serv_conn and cli_conn (representing the
     # connections *to* the server and the client), to be mapped to
     # cli_sock and serv_sock respectively.
@@ -3384,15 +3384,15 @@ class SendrecvmsgConnectedBase(SendrecvmsgBase):
         pass
 
 
-class SendrecvmsgServerTimeoutBase(SendrecvmsgBase):
-    # Base class to set a timeout on server's socket.
+klasse SendrecvmsgServerTimeoutBase(SendrecvmsgBase):
+    # Base klasse to set a timeout on server's socket.
 
     def setUp(self):
         super().setUp()
         self.serv_sock.settimeout(self.fail_timeout)
 
 
-class SendmsgTests(SendrecvmsgServerTimeoutBase):
+klasse SendmsgTests(SendrecvmsgServerTimeoutBase):
     # Tests for sendmsg() which can use any socket type and do not
     # involve recvmsg() or recvmsg_into().
 
@@ -3511,7 +3511,7 @@ class SendmsgTests(SendrecvmsgServerTimeoutBase):
         self.assertRaises(OSError, self.sendmsgToServer, [MSG])
 
 
-class SendmsgStreamTests(SendmsgTests):
+klasse SendmsgStreamTests(SendmsgTests):
     # Tests for sendmsg() which require a stream socket and do not
     # involve recvmsg() or recvmsg_into().
 
@@ -3572,7 +3572,7 @@ class SendmsgStreamTests(SendmsgTests):
             self.misc_event.set()
 
 
-class SendmsgConnectionlessTests(SendmsgTests):
+klasse SendmsgConnectionlessTests(SendmsgTests):
     # Tests for sendmsg() which require a connectionless-mode
     # (e.g. datagram) socket, and do not involve recvmsg() or
     # recvmsg_into().
@@ -3589,7 +3589,7 @@ class SendmsgConnectionlessTests(SendmsgTests):
                           [MSG], [], 0, None)
 
 
-class RecvmsgGenericTests(SendrecvmsgBase):
+klasse RecvmsgGenericTests(SendrecvmsgBase):
     # Tests for recvmsg() which can also be emulated using
     # recvmsg_into(), and can use any socket type.
 
@@ -3739,7 +3739,7 @@ class RecvmsgGenericTests(SendrecvmsgBase):
         self.assertEqual(self.sendmsgToServer([MSG[:3], MSG[3:]]), len(MSG))
 
 
-class RecvmsgGenericStreamTests(RecvmsgGenericTests):
+klasse RecvmsgGenericStreamTests(RecvmsgGenericTests):
     # Tests which require a stream socket and can use either recvmsg()
     # or recvmsg_into().
 
@@ -3774,7 +3774,7 @@ class RecvmsgGenericStreamTests(RecvmsgGenericTests):
         self.sendToServer(MSG)
 
 
-class RecvmsgTests(RecvmsgGenericTests):
+klasse RecvmsgTests(RecvmsgGenericTests):
     # Tests for recvmsg() which can use any socket type.
 
     def testRecvmsgBadArgs(self):
@@ -3803,7 +3803,7 @@ class RecvmsgTests(RecvmsgGenericTests):
         self.sendToServer(MSG)
 
 
-class RecvmsgIntoTests(RecvmsgIntoMixin, RecvmsgGenericTests):
+klasse RecvmsgIntoTests(RecvmsgIntoMixin, RecvmsgGenericTests):
     # Tests for recvmsg_into() which can use any socket type.
 
     def testRecvmsgIntoBadArgs(self):
@@ -3883,7 +3883,7 @@ class RecvmsgIntoTests(RecvmsgIntoMixin, RecvmsgGenericTests):
         self.sendToServer(b"Mary had a little lamb")
 
 
-class CmsgMacroTests(unittest.TestCase):
+klasse CmsgMacroTests(unittest.TestCase):
     # Test the functions CMSG_LEN() and CMSG_SPACE().  Tests
     # assumptions used by sendmsg() and recvmsg[_into](), which share
     # code with these functions.
@@ -3942,7 +3942,7 @@ class CmsgMacroTests(unittest.TestCase):
         self.assertRaises(OverflowError, socket.CMSG_SPACE, sys.maxsize)
 
 
-class SCMRightsTest(SendrecvmsgServerTimeoutBase):
+klasse SCMRightsTest(SendrecvmsgServerTimeoutBase):
     # Tests for file descriptor passing on Unix-domain sockets.
 
     # Invalid file descriptor value that's unlikely to evaluate to a
@@ -4323,7 +4323,7 @@ class SCMRightsTest(SendrecvmsgServerTimeoutBase):
         self.createAndSendFDs(2)
 
 
-class RFC3542AncillaryTest(SendrecvmsgServerTimeoutBase):
+klasse RFC3542AncillaryTest(SendrecvmsgServerTimeoutBase):
     # Test sendmsg() and recvmsg[_into]() using the ancillary data
     # features of the RFC 3542 Advanced Sockets API for IPv6.
     # Currently we can only handle certain data items (e.g. traffic
@@ -4336,7 +4336,7 @@ class RFC3542AncillaryTest(SendrecvmsgServerTimeoutBase):
     # Test value to use when setting hop limit of packet
     hop_limit = 2
 
-    # Test value to use when setting traffic class of packet.
+    # Test value to use when setting traffic klasse of packet.
     # -1 means "use kernel default".
     traffic_class = -1
 
@@ -4424,10 +4424,10 @@ class RFC3542AncillaryTest(SendrecvmsgServerTimeoutBase):
 
     def checkTrafficClassAndHopLimit(self, ancbufsize, maxhop=255,
                                      ignoreflags=0):
-        # Receive traffic class and hop limit into ancbufsize bytes of
+        # Receive traffic klasse and hop limit into ancbufsize bytes of
         # ancillary data space.  Check that data is MSG, ancillary
         # data is not truncated (but ignore any flags in ignoreflags),
-        # and traffic class and hop limit are in range (hop limit no
+        # and traffic klasse and hop limit are in range (hop limit no
         # more than maxhop).
         self.serv_sock.setsockopt(socket.IPPROTO_IPV6,
                                   socket.IPV6_RECVHOPLIMIT, 1)
@@ -4461,7 +4461,7 @@ class RFC3542AncillaryTest(SendrecvmsgServerTimeoutBase):
     @requireAttrs(socket, "IPV6_RECVHOPLIMIT", "IPV6_HOPLIMIT",
                   "IPV6_RECVTCLASS", "IPV6_TCLASS")
     def testRecvTrafficClassAndHopLimit(self):
-        # Test receiving traffic class and hop limit as ancillary data.
+        # Test receiving traffic klasse and hop limit as ancillary data.
         self.checkTrafficClassAndHopLimit(ancbufsize=10240)
 
     @testRecvTrafficClassAndHopLimit.client_skip
@@ -4472,7 +4472,7 @@ class RFC3542AncillaryTest(SendrecvmsgServerTimeoutBase):
     @requireAttrs(socket, "CMSG_SPACE", "IPV6_RECVHOPLIMIT", "IPV6_HOPLIMIT",
                   "IPV6_RECVTCLASS", "IPV6_TCLASS")
     def testRecvTrafficClassAndHopLimitCMSG_SPACE(self):
-        # Test receiving traffic class and hop limit, using
+        # Test receiving traffic klasse and hop limit, using
         # CMSG_SPACE() to calculate buffer size.
         self.checkTrafficClassAndHopLimit(
             ancbufsize=socket.CMSG_SPACE(SIZEOF_INT) * 2)
@@ -4486,7 +4486,7 @@ class RFC3542AncillaryTest(SendrecvmsgServerTimeoutBase):
     @requireAttrs(socket, "CMSG_SPACE", "IPV6_RECVHOPLIMIT", "IPV6_HOPLIMIT",
                   "IPV6_RECVTCLASS", "IPV6_TCLASS")
     def testSetTrafficClassAndHopLimit(self):
-        # Test setting traffic class and hop limit on outgoing packet,
+        # Test setting traffic klasse and hop limit on outgoing packet,
         # and receiving them at the other end.
         self.checkTrafficClassAndHopLimit(ancbufsize=10240,
                                           maxhop=self.hop_limit)
@@ -4641,7 +4641,7 @@ class RFC3542AncillaryTest(SendrecvmsgServerTimeoutBase):
         self.sendToServer(MSG)
 
     def checkTruncatedSecondHeader(self, ancbufsize, ignoreflags=0):
-        # Receive traffic class and hop limit into ancbufsize bytes of
+        # Receive traffic klasse and hop limit into ancbufsize bytes of
         # ancillary data space, which should be large enough to
         # contain the first item, but too small to contain the header
         # of the second.  Check that data is MSG, MSG_CTRUNC is set
@@ -4761,25 +4761,25 @@ class RFC3542AncillaryTest(SendrecvmsgServerTimeoutBase):
 
 # Derive concrete test classes for different socket types.
 
-class SendrecvmsgUDPTestBase(SendrecvmsgDgramFlagsBase,
+klasse SendrecvmsgUDPTestBase(SendrecvmsgDgramFlagsBase,
                              SendrecvmsgConnectionlessBase,
                              ThreadedSocketTestMixin, UDPTestBase):
     pass
 
 @requireAttrs(socket.socket, "sendmsg")
-class SendmsgUDPTest(SendmsgConnectionlessTests, SendrecvmsgUDPTestBase):
+klasse SendmsgUDPTest(SendmsgConnectionlessTests, SendrecvmsgUDPTestBase):
     pass
 
 @requireAttrs(socket.socket, "recvmsg")
-class RecvmsgUDPTest(RecvmsgTests, SendrecvmsgUDPTestBase):
+klasse RecvmsgUDPTest(RecvmsgTests, SendrecvmsgUDPTestBase):
     pass
 
 @requireAttrs(socket.socket, "recvmsg_into")
-class RecvmsgIntoUDPTest(RecvmsgIntoTests, SendrecvmsgUDPTestBase):
+klasse RecvmsgIntoUDPTest(RecvmsgIntoTests, SendrecvmsgUDPTestBase):
     pass
 
 
-class SendrecvmsgUDP6TestBase(SendrecvmsgDgramFlagsBase,
+klasse SendrecvmsgUDP6TestBase(SendrecvmsgDgramFlagsBase,
                               SendrecvmsgConnectionlessBase,
                               ThreadedSocketTestMixin, UDP6TestBase):
 
@@ -4791,26 +4791,26 @@ class SendrecvmsgUDP6TestBase(SendrecvmsgDgramFlagsBase,
 @requireAttrs(socket.socket, "sendmsg")
 @unittest.skipUnless(socket_helper.IPV6_ENABLED, 'IPv6 required for this test.')
 @requireSocket("AF_INET6", "SOCK_DGRAM")
-class SendmsgUDP6Test(SendmsgConnectionlessTests, SendrecvmsgUDP6TestBase):
+klasse SendmsgUDP6Test(SendmsgConnectionlessTests, SendrecvmsgUDP6TestBase):
     pass
 
 @requireAttrs(socket.socket, "recvmsg")
 @unittest.skipUnless(socket_helper.IPV6_ENABLED, 'IPv6 required for this test.')
 @requireSocket("AF_INET6", "SOCK_DGRAM")
-class RecvmsgUDP6Test(RecvmsgTests, SendrecvmsgUDP6TestBase):
+klasse RecvmsgUDP6Test(RecvmsgTests, SendrecvmsgUDP6TestBase):
     pass
 
 @requireAttrs(socket.socket, "recvmsg_into")
 @unittest.skipUnless(socket_helper.IPV6_ENABLED, 'IPv6 required for this test.')
 @requireSocket("AF_INET6", "SOCK_DGRAM")
-class RecvmsgIntoUDP6Test(RecvmsgIntoTests, SendrecvmsgUDP6TestBase):
+klasse RecvmsgIntoUDP6Test(RecvmsgIntoTests, SendrecvmsgUDP6TestBase):
     pass
 
 @requireAttrs(socket.socket, "recvmsg")
 @unittest.skipUnless(socket_helper.IPV6_ENABLED, 'IPv6 required for this test.')
 @requireAttrs(socket, "IPPROTO_IPV6")
 @requireSocket("AF_INET6", "SOCK_DGRAM")
-class RecvmsgRFC3542AncillaryUDP6Test(RFC3542AncillaryTest,
+klasse RecvmsgRFC3542AncillaryUDP6Test(RFC3542AncillaryTest,
                                       SendrecvmsgUDP6TestBase):
     pass
 
@@ -4818,7 +4818,7 @@ class RecvmsgRFC3542AncillaryUDP6Test(RFC3542AncillaryTest,
 @unittest.skipUnless(socket_helper.IPV6_ENABLED, 'IPv6 required for this test.')
 @requireAttrs(socket, "IPPROTO_IPV6")
 @requireSocket("AF_INET6", "SOCK_DGRAM")
-class RecvmsgIntoRFC3542AncillaryUDP6Test(RecvmsgIntoMixin,
+klasse RecvmsgIntoRFC3542AncillaryUDP6Test(RecvmsgIntoMixin,
                                           RFC3542AncillaryTest,
                                           SendrecvmsgUDP6TestBase):
     pass
@@ -4826,7 +4826,7 @@ class RecvmsgIntoRFC3542AncillaryUDP6Test(RecvmsgIntoMixin,
 
 @unittest.skipUnless(HAVE_SOCKET_UDPLITE,
           'UDPLITE sockets required for this test.')
-class SendrecvmsgUDPLITETestBase(SendrecvmsgDgramFlagsBase,
+klasse SendrecvmsgUDPLITETestBase(SendrecvmsgDgramFlagsBase,
                              SendrecvmsgConnectionlessBase,
                              ThreadedSocketTestMixin, UDPLITETestBase):
     pass
@@ -4834,25 +4834,25 @@ class SendrecvmsgUDPLITETestBase(SendrecvmsgDgramFlagsBase,
 @unittest.skipUnless(HAVE_SOCKET_UDPLITE,
           'UDPLITE sockets required for this test.')
 @requireAttrs(socket.socket, "sendmsg")
-class SendmsgUDPLITETest(SendmsgConnectionlessTests, SendrecvmsgUDPLITETestBase):
+klasse SendmsgUDPLITETest(SendmsgConnectionlessTests, SendrecvmsgUDPLITETestBase):
     pass
 
 @unittest.skipUnless(HAVE_SOCKET_UDPLITE,
           'UDPLITE sockets required for this test.')
 @requireAttrs(socket.socket, "recvmsg")
-class RecvmsgUDPLITETest(RecvmsgTests, SendrecvmsgUDPLITETestBase):
+klasse RecvmsgUDPLITETest(RecvmsgTests, SendrecvmsgUDPLITETestBase):
     pass
 
 @unittest.skipUnless(HAVE_SOCKET_UDPLITE,
           'UDPLITE sockets required for this test.')
 @requireAttrs(socket.socket, "recvmsg_into")
-class RecvmsgIntoUDPLITETest(RecvmsgIntoTests, SendrecvmsgUDPLITETestBase):
+klasse RecvmsgIntoUDPLITETest(RecvmsgIntoTests, SendrecvmsgUDPLITETestBase):
     pass
 
 
 @unittest.skipUnless(HAVE_SOCKET_UDPLITE,
           'UDPLITE sockets required for this test.')
-class SendrecvmsgUDPLITE6TestBase(SendrecvmsgDgramFlagsBase,
+klasse SendrecvmsgUDPLITE6TestBase(SendrecvmsgDgramFlagsBase,
                               SendrecvmsgConnectionlessBase,
                               ThreadedSocketTestMixin, UDPLITE6TestBase):
 
@@ -4866,7 +4866,7 @@ class SendrecvmsgUDPLITE6TestBase(SendrecvmsgDgramFlagsBase,
 @unittest.skipUnless(HAVE_SOCKET_UDPLITE,
           'UDPLITE sockets required for this test.')
 @requireSocket("AF_INET6", "SOCK_DGRAM")
-class SendmsgUDPLITE6Test(SendmsgConnectionlessTests, SendrecvmsgUDPLITE6TestBase):
+klasse SendmsgUDPLITE6Test(SendmsgConnectionlessTests, SendrecvmsgUDPLITE6TestBase):
     pass
 
 @requireAttrs(socket.socket, "recvmsg")
@@ -4874,7 +4874,7 @@ class SendmsgUDPLITE6Test(SendmsgConnectionlessTests, SendrecvmsgUDPLITE6TestBas
 @unittest.skipUnless(HAVE_SOCKET_UDPLITE,
           'UDPLITE sockets required for this test.')
 @requireSocket("AF_INET6", "SOCK_DGRAM")
-class RecvmsgUDPLITE6Test(RecvmsgTests, SendrecvmsgUDPLITE6TestBase):
+klasse RecvmsgUDPLITE6Test(RecvmsgTests, SendrecvmsgUDPLITE6TestBase):
     pass
 
 @requireAttrs(socket.socket, "recvmsg_into")
@@ -4882,7 +4882,7 @@ class RecvmsgUDPLITE6Test(RecvmsgTests, SendrecvmsgUDPLITE6TestBase):
 @unittest.skipUnless(HAVE_SOCKET_UDPLITE,
           'UDPLITE sockets required for this test.')
 @requireSocket("AF_INET6", "SOCK_DGRAM")
-class RecvmsgIntoUDPLITE6Test(RecvmsgIntoTests, SendrecvmsgUDPLITE6TestBase):
+klasse RecvmsgIntoUDPLITE6Test(RecvmsgIntoTests, SendrecvmsgUDPLITE6TestBase):
     pass
 
 @requireAttrs(socket.socket, "recvmsg")
@@ -4891,7 +4891,7 @@ class RecvmsgIntoUDPLITE6Test(RecvmsgIntoTests, SendrecvmsgUDPLITE6TestBase):
           'UDPLITE sockets required for this test.')
 @requireAttrs(socket, "IPPROTO_IPV6")
 @requireSocket("AF_INET6", "SOCK_DGRAM")
-class RecvmsgRFC3542AncillaryUDPLITE6Test(RFC3542AncillaryTest,
+klasse RecvmsgRFC3542AncillaryUDPLITE6Test(RFC3542AncillaryTest,
                                       SendrecvmsgUDPLITE6TestBase):
     pass
 
@@ -4901,32 +4901,32 @@ class RecvmsgRFC3542AncillaryUDPLITE6Test(RFC3542AncillaryTest,
           'UDPLITE sockets required for this test.')
 @requireAttrs(socket, "IPPROTO_IPV6")
 @requireSocket("AF_INET6", "SOCK_DGRAM")
-class RecvmsgIntoRFC3542AncillaryUDPLITE6Test(RecvmsgIntoMixin,
+klasse RecvmsgIntoRFC3542AncillaryUDPLITE6Test(RecvmsgIntoMixin,
                                           RFC3542AncillaryTest,
                                           SendrecvmsgUDPLITE6TestBase):
     pass
 
 
-class SendrecvmsgTCPTestBase(SendrecvmsgConnectedBase,
+klasse SendrecvmsgTCPTestBase(SendrecvmsgConnectedBase,
                              ConnectedStreamTestMixin, TCPTestBase):
     pass
 
 @requireAttrs(socket.socket, "sendmsg")
-class SendmsgTCPTest(SendmsgStreamTests, SendrecvmsgTCPTestBase):
+klasse SendmsgTCPTest(SendmsgStreamTests, SendrecvmsgTCPTestBase):
     pass
 
 @requireAttrs(socket.socket, "recvmsg")
-class RecvmsgTCPTest(RecvmsgTests, RecvmsgGenericStreamTests,
+klasse RecvmsgTCPTest(RecvmsgTests, RecvmsgGenericStreamTests,
                      SendrecvmsgTCPTestBase):
     pass
 
 @requireAttrs(socket.socket, "recvmsg_into")
-class RecvmsgIntoTCPTest(RecvmsgIntoTests, RecvmsgGenericStreamTests,
+klasse RecvmsgIntoTCPTest(RecvmsgIntoTests, RecvmsgGenericStreamTests,
                          SendrecvmsgTCPTestBase):
     pass
 
 
-class SendrecvmsgSCTPStreamTestBase(SendrecvmsgSCTPFlagsBase,
+klasse SendrecvmsgSCTPStreamTestBase(SendrecvmsgSCTPFlagsBase,
                                     SendrecvmsgConnectedBase,
                                     ConnectedStreamTestMixin, SCTPStreamBase):
     pass
@@ -4934,13 +4934,13 @@ class SendrecvmsgSCTPStreamTestBase(SendrecvmsgSCTPFlagsBase,
 @requireAttrs(socket.socket, "sendmsg")
 @unittest.skipIf(AIX, "IPPROTO_SCTP: [Errno 62] Protocol not supported on AIX")
 @requireSocket("AF_INET", "SOCK_STREAM", "IPPROTO_SCTP")
-class SendmsgSCTPStreamTest(SendmsgStreamTests, SendrecvmsgSCTPStreamTestBase):
+klasse SendmsgSCTPStreamTest(SendmsgStreamTests, SendrecvmsgSCTPStreamTestBase):
     pass
 
 @requireAttrs(socket.socket, "recvmsg")
 @unittest.skipIf(AIX, "IPPROTO_SCTP: [Errno 62] Protocol not supported on AIX")
 @requireSocket("AF_INET", "SOCK_STREAM", "IPPROTO_SCTP")
-class RecvmsgSCTPStreamTest(RecvmsgTests, RecvmsgGenericStreamTests,
+klasse RecvmsgSCTPStreamTest(RecvmsgTests, RecvmsgGenericStreamTests,
                             SendrecvmsgSCTPStreamTestBase):
 
     def testRecvmsgEOF(self):
@@ -4954,7 +4954,7 @@ class RecvmsgSCTPStreamTest(RecvmsgTests, RecvmsgGenericStreamTests,
 @requireAttrs(socket.socket, "recvmsg_into")
 @unittest.skipIf(AIX, "IPPROTO_SCTP: [Errno 62] Protocol not supported on AIX")
 @requireSocket("AF_INET", "SOCK_STREAM", "IPPROTO_SCTP")
-class RecvmsgIntoSCTPStreamTest(RecvmsgIntoTests, RecvmsgGenericStreamTests,
+klasse RecvmsgIntoSCTPStreamTest(RecvmsgIntoTests, RecvmsgGenericStreamTests,
                                 SendrecvmsgSCTPStreamTestBase):
 
     def testRecvmsgEOF(self):
@@ -4966,35 +4966,35 @@ class RecvmsgIntoSCTPStreamTest(RecvmsgIntoTests, RecvmsgGenericStreamTests,
             self.skipTest("sporadic ENOTCONN (kernel issue?) - see issue #13876")
 
 
-class SendrecvmsgUnixStreamTestBase(SendrecvmsgConnectedBase,
+klasse SendrecvmsgUnixStreamTestBase(SendrecvmsgConnectedBase,
                                     ConnectedStreamTestMixin, UnixStreamBase):
     pass
 
 @requireAttrs(socket.socket, "sendmsg")
 @requireAttrs(socket, "AF_UNIX")
-class SendmsgUnixStreamTest(SendmsgStreamTests, SendrecvmsgUnixStreamTestBase):
+klasse SendmsgUnixStreamTest(SendmsgStreamTests, SendrecvmsgUnixStreamTestBase):
     pass
 
 @requireAttrs(socket.socket, "recvmsg")
 @requireAttrs(socket, "AF_UNIX")
-class RecvmsgUnixStreamTest(RecvmsgTests, RecvmsgGenericStreamTests,
+klasse RecvmsgUnixStreamTest(RecvmsgTests, RecvmsgGenericStreamTests,
                             SendrecvmsgUnixStreamTestBase):
     pass
 
 @requireAttrs(socket.socket, "recvmsg_into")
 @requireAttrs(socket, "AF_UNIX")
-class RecvmsgIntoUnixStreamTest(RecvmsgIntoTests, RecvmsgGenericStreamTests,
+klasse RecvmsgIntoUnixStreamTest(RecvmsgIntoTests, RecvmsgGenericStreamTests,
                                 SendrecvmsgUnixStreamTestBase):
     pass
 
 @requireAttrs(socket.socket, "sendmsg", "recvmsg")
 @requireAttrs(socket, "AF_UNIX", "SOL_SOCKET", "SCM_RIGHTS")
-class RecvmsgSCMRightsStreamTest(SCMRightsTest, SendrecvmsgUnixStreamTestBase):
+klasse RecvmsgSCMRightsStreamTest(SCMRightsTest, SendrecvmsgUnixStreamTestBase):
     pass
 
 @requireAttrs(socket.socket, "sendmsg", "recvmsg_into")
 @requireAttrs(socket, "AF_UNIX", "SOL_SOCKET", "SCM_RIGHTS")
-class RecvmsgIntoSCMRightsStreamTest(RecvmsgIntoMixin, SCMRightsTest,
+klasse RecvmsgIntoSCMRightsStreamTest(RecvmsgIntoMixin, SCMRightsTest,
                                      SendrecvmsgUnixStreamTestBase):
     pass
 
@@ -5004,8 +5004,8 @@ class RecvmsgIntoSCMRightsStreamTest(RecvmsgIntoMixin, SCMRightsTest,
 # threads alive during the test so that the OS cannot deliver the
 # signal to the wrong one.
 
-class InterruptedTimeoutBase:
-    # Base class for interrupted send/receive tests.  Installs an
+klasse InterruptedTimeoutBase:
+    # Base klasse for interrupted send/receive tests.  Installs an
     # empty handler for SIGALRM and removes it on teardown, along with
     # any scheduled alarms.
 
@@ -5039,7 +5039,7 @@ class InterruptedTimeoutBase:
 @requireAttrs(signal, "siginterrupt")
 @unittest.skipUnless(hasattr(signal, "alarm") or hasattr(signal, "setitimer"),
                      "Don't have signal.alarm or signal.setitimer")
-class InterruptedRecvTimeoutTest(InterruptedTimeoutBase, UDPTestBase):
+klasse InterruptedRecvTimeoutTest(InterruptedTimeoutBase, UDPTestBase):
     # Test interrupting the recv*() methods with signals when a
     # timeout is set.
 
@@ -5083,7 +5083,7 @@ class InterruptedRecvTimeoutTest(InterruptedTimeoutBase, UDPTestBase):
 @requireAttrs(signal, "siginterrupt")
 @unittest.skipUnless(hasattr(signal, "alarm") or hasattr(signal, "setitimer"),
                      "Don't have signal.alarm or signal.setitimer")
-class InterruptedSendTimeoutTest(InterruptedTimeoutBase,
+klasse InterruptedSendTimeoutTest(InterruptedTimeoutBase,
                                  SocketListeningTestMixin, TCPTestBase):
     # Test interrupting the interruptible send*() methods with signals
     # when a timeout is set.
@@ -5137,7 +5137,7 @@ class InterruptedSendTimeoutTest(InterruptedTimeoutBase,
         self.checkInterruptedSend(self.serv_conn.sendmsg, [b"a"*512])
 
 
-class TCPCloserTest(ThreadedTCPSocketTest):
+klasse TCPCloserTest(ThreadedTCPSocketTest):
     def testClose(self):
         conn, _ = self.serv.accept()
 
@@ -5158,7 +5158,7 @@ class TCPCloserTest(ThreadedTCPSocketTest):
         self.assertEqual(self.cli.recv(1), b'')
 
 
-class BasicSocketPairTest(SocketPairTest):
+klasse BasicSocketPairTest(SocketPairTest):
 
     def __init__(self, methodName='runTest'):
         SocketPairTest.__init__(self, methodName=methodName)
@@ -5193,7 +5193,7 @@ class BasicSocketPairTest(SocketPairTest):
         self.assertEqual(msg, MSG)
 
 
-class PurePythonSocketPairTest(SocketPairTest):
+klasse PurePythonSocketPairTest(SocketPairTest):
     # Explicitly use socketpair AF_INET or AF_INET6 to ensure that is the
     # code path we're using regardless platform is the pure python one where
     # `_socket.socketpair` does not exist.  (AF_INET does not work with
@@ -5205,7 +5205,7 @@ class PurePythonSocketPairTest(SocketPairTest):
         except OSError:
             return socket.socketpair(socket.AF_INET)
 
-    # Local imports in this class make for easy security fix backporting.
+    # Local imports in this klasse make for easy security fix backporting.
 
     def setUp(self):
         if hasattr(_socket, "socketpair"):
@@ -5292,14 +5292,14 @@ class PurePythonSocketPairTest(SocketPairTest):
                 sock2.close()
 
     def _test_injected_authentication_failure(self):
-        # No-op.  Exists for base class threading infrastructure to call.
-        # We could refactor this test into its own lesser class along with the
+        # No-op.  Exists for base klasse threading infrastructure to call.
+        # We could refactor this test into its own lesser klasse along with the
         # setUp and tearDown code to construct an ideal; it is simpler to keep
         # it here and live with extra overhead one this _one_ failure test.
         pass
 
 
-class NonBlockingTCPTests(ThreadedTCPSocketTest):
+klasse NonBlockingTCPTests(ThreadedTCPSocketTest):
 
     def __init__(self, methodName='runTest'):
         self.event = threading.Event()
@@ -5493,7 +5493,7 @@ class NonBlockingTCPTests(ThreadedTCPSocketTest):
         self.cli.sendall(MSG)
 
 
-class FileObjectClassTestCase(SocketConnectedTest):
+klasse FileObjectClassTestCase(SocketConnectedTest):
     """Unit tests for the object returned by socket.makefile()
 
     self.read_file is the io object returned by makefile() on
@@ -5656,7 +5656,7 @@ class FileObjectClassTestCase(SocketConnectedTest):
         pass
 
 
-class UnbufferedFileObjectClassTestCase(FileObjectClassTestCase):
+klasse UnbufferedFileObjectClassTestCase(FileObjectClassTestCase):
 
     """Repeat the tests from FileObjectClassTestCase with bufsize==0.
 
@@ -5766,17 +5766,17 @@ class UnbufferedFileObjectClassTestCase(FileObjectClassTestCase):
             self.serv_skipped = "failed to saturate the socket buffer"
 
 
-class LineBufferedFileObjectClassTestCase(FileObjectClassTestCase):
+klasse LineBufferedFileObjectClassTestCase(FileObjectClassTestCase):
 
     bufsize = 1 # Default-buffered for reading; line-buffered for writing
 
 
-class SmallBufferedFileObjectClassTestCase(FileObjectClassTestCase):
+klasse SmallBufferedFileObjectClassTestCase(FileObjectClassTestCase):
 
     bufsize = 2 # Exercise the buffering code
 
 
-class UnicodeReadFileObjectClassTestCase(FileObjectClassTestCase):
+klasse UnicodeReadFileObjectClassTestCase(FileObjectClassTestCase):
     """Tests for socket.makefile() in text mode (rather than binary)"""
 
     read_mode = 'r'
@@ -5786,7 +5786,7 @@ class UnicodeReadFileObjectClassTestCase(FileObjectClassTestCase):
     newline = ''
 
 
-class UnicodeWriteFileObjectClassTestCase(FileObjectClassTestCase):
+klasse UnicodeWriteFileObjectClassTestCase(FileObjectClassTestCase):
     """Tests for socket.makefile() in text mode (rather than binary)"""
 
     read_mode = 'rb'
@@ -5796,7 +5796,7 @@ class UnicodeWriteFileObjectClassTestCase(FileObjectClassTestCase):
     newline = ''
 
 
-class UnicodeReadWriteFileObjectClassTestCase(FileObjectClassTestCase):
+klasse UnicodeReadWriteFileObjectClassTestCase(FileObjectClassTestCase):
     """Tests for socket.makefile() in text mode (rather than binary)"""
 
     read_mode = 'r'
@@ -5806,7 +5806,7 @@ class UnicodeReadWriteFileObjectClassTestCase(FileObjectClassTestCase):
     newline = ''
 
 
-class NetworkConnectionTest(object):
+klasse NetworkConnectionTest(object):
     """Prove network connection."""
 
     def clientSetUp(self):
@@ -5815,13 +5815,13 @@ class NetworkConnectionTest(object):
         self.cli = socket.create_connection((HOST, self.port))
         self.serv_conn = self.cli
 
-class BasicTCPTest2(NetworkConnectionTest, BasicTCPTest):
+klasse BasicTCPTest2(NetworkConnectionTest, BasicTCPTest):
     """Tests that NetworkConnection does not break existing TCP functionality.
     """
 
-class NetworkConnectionNoServer(unittest.TestCase):
+klasse NetworkConnectionNoServer(unittest.TestCase):
 
-    class MockSocket(socket.socket):
+    klasse MockSocket(socket.socket):
         def connect(self, *args):
             raise TimeoutError('timed out')
 
@@ -5902,7 +5902,7 @@ class NetworkConnectionNoServer(unittest.TestCase):
                 self.fail('TimeoutError not raised')
 
 
-class NetworkConnectionAttributesTest(SocketTCPTest, ThreadableTest):
+klasse NetworkConnectionAttributesTest(SocketTCPTest, ThreadableTest):
     cli = None
 
     def __init__(self, methodName='runTest'):
@@ -5975,7 +5975,7 @@ class NetworkConnectionAttributesTest(SocketTCPTest, ThreadableTest):
         self.assertEqual(self.cli.gettimeout(), 30)
 
 
-class NetworkConnectionBehaviourTest(SocketTCPTest, ThreadableTest):
+klasse NetworkConnectionBehaviourTest(SocketTCPTest, ThreadableTest):
 
     def __init__(self, methodName='runTest'):
         SocketTCPTest.__init__(self, methodName=methodName)
@@ -6006,7 +6006,7 @@ class NetworkConnectionBehaviourTest(SocketTCPTest, ThreadableTest):
         self.assertRaises(TimeoutError, lambda: sock.recv(5))
 
 
-class TCPTimeoutTest(SocketTCPTest):
+klasse TCPTimeoutTest(SocketTCPTest):
 
     def testTCPTimeout(self):
         def raise_timeout(*args, **kwargs):
@@ -6036,7 +6036,7 @@ class TCPTimeoutTest(SocketTCPTest):
         # platform that doesn't support signal.alarm() or os.kill(), though
         # the bug should have existed on all platforms.
         self.serv.settimeout(5.0)   # must be longer than alarm
-        class Alarm(Exception):
+        klasse Alarm(Exception):
             pass
         def alarm_handler(signal, frame):
             raise Alarm
@@ -6063,7 +6063,7 @@ class TCPTimeoutTest(SocketTCPTest):
             # no alarm can be pending.  Safe to restore old handler.
             signal.signal(signal.SIGALRM, old_alarm)
 
-class UDPTimeoutTest(SocketUDPTest):
+klasse UDPTimeoutTest(SocketUDPTest):
 
     def testUDPTimeout(self):
         def raise_timeout(*args, **kwargs):
@@ -6088,7 +6088,7 @@ class UDPTimeoutTest(SocketUDPTest):
 
 @unittest.skipUnless(HAVE_SOCKET_UDPLITE,
           'UDPLITE sockets required for this test.')
-class UDPLITETimeoutTest(SocketUDPLITETest):
+klasse UDPLITETimeoutTest(SocketUDPLITETest):
 
     def testUDPLITETimeout(self):
         def raise_timeout(*args, **kwargs):
@@ -6111,7 +6111,7 @@ class UDPLITETimeoutTest(SocketUDPLITETest):
         if not ok:
             self.fail("recv() returned success when we did not expect it")
 
-class TestExceptions(unittest.TestCase):
+klasse TestExceptions(unittest.TestCase):
 
     def testExceptionTree(self):
         self.assertIsSubclass(OSError, Exception)
@@ -6135,7 +6135,7 @@ class TestExceptions(unittest.TestCase):
 
 
 @unittest.skipUnless(sys.platform in ('linux', 'android'), 'Linux specific test')
-class TestLinuxAbstractNamespace(unittest.TestCase):
+klasse TestLinuxAbstractNamespace(unittest.TestCase):
 
     UNIX_PATH_MAX = 108
 
@@ -6191,7 +6191,7 @@ class TestLinuxAbstractNamespace(unittest.TestCase):
 
 
 @unittest.skipUnless(hasattr(socket, 'AF_UNIX'), 'test needs socket.AF_UNIX')
-class TestUnixDomain(unittest.TestCase):
+klasse TestUnixDomain(unittest.TestCase):
 
     def setUp(self):
         self.sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
@@ -6266,7 +6266,7 @@ class TestUnixDomain(unittest.TestCase):
         self.assertRaises(OSError, self.sock.bind, "")
 
 
-class BufferIOTest(SocketConnectedTest):
+klasse BufferIOTest(SocketConnectedTest):
     """
     Test the buffer versions of socket.recv() and socket.send().
     """
@@ -6375,7 +6375,7 @@ def isTipcAvailable():
 
 @unittest.skipUnless(isTipcAvailable(),
                      "TIPC module is not loaded, please 'sudo modprobe tipc'")
-class TIPCTest(unittest.TestCase):
+klasse TIPCTest(unittest.TestCase):
     def testRDM(self):
         srv = socket.socket(socket.AF_TIPC, socket.SOCK_RDM)
         cli = socket.socket(socket.AF_TIPC, socket.SOCK_RDM)
@@ -6399,7 +6399,7 @@ class TIPCTest(unittest.TestCase):
 
 @unittest.skipUnless(isTipcAvailable(),
                      "TIPC module is not loaded, please 'sudo modprobe tipc'")
-class TIPCThreadableTest(unittest.TestCase, ThreadableTest):
+klasse TIPCThreadableTest(unittest.TestCase, ThreadableTest):
     def __init__(self, methodName = 'runTest'):
         unittest.TestCase.__init__(self, methodName = methodName)
         ThreadableTest.__init__(self)
@@ -6438,7 +6438,7 @@ class TIPCThreadableTest(unittest.TestCase, ThreadableTest):
         self.cli.close()
 
 
-class ContextManagersTest(ThreadedTCPSocketTest):
+klasse ContextManagersTest(ThreadedTCPSocketTest):
 
     def _testSocketClass(self):
         # base test
@@ -6482,7 +6482,7 @@ class ContextManagersTest(ThreadedTCPSocketTest):
         self.assertRaises(OSError, sock.sendall, b'foo')
 
 
-class InheritanceTest(unittest.TestCase):
+klasse InheritanceTest(unittest.TestCase):
     @unittest.skipUnless(hasattr(socket, "SOCK_CLOEXEC"),
                          "SOCK_CLOEXEC not defined")
     @support.requires_linux_version(2, 6, 28)
@@ -6551,7 +6551,7 @@ class InheritanceTest(unittest.TestCase):
 
 @unittest.skipUnless(hasattr(socket, "SOCK_NONBLOCK"),
                      "SOCK_NONBLOCK not defined")
-class NonblockConstantTest(unittest.TestCase):
+klasse NonblockConstantTest(unittest.TestCase):
     def checkNonblock(self, s, nonblock=True, timeout=0.0):
         if nonblock:
             self.assertEqual(s.type, socket.SOCK_STREAM)
@@ -6613,7 +6613,7 @@ class NonblockConstantTest(unittest.TestCase):
 
 @unittest.skipUnless(os.name == "nt", "Windows specific")
 @unittest.skipUnless(multiprocessing, "need multiprocessing")
-class TestSocketSharing(SocketTCPTest):
+klasse TestSocketSharing(SocketTCPTest):
     # This must be classmethod and not staticmethod or multiprocessing
     # won't be able to bootstrap it.
     @classmethod
@@ -6714,7 +6714,7 @@ class TestSocketSharing(SocketTCPTest):
                     source.close()
 
 
-class SendfileUsingSendTest(ThreadedTCPSocketTest):
+klasse SendfileUsingSendTest(ThreadedTCPSocketTest):
     """
     Test the send() implementation of socket.sendfile().
     """
@@ -6764,7 +6764,7 @@ class SendfileUsingSendTest(ThreadedTCPSocketTest):
         return b''.join(received)
 
     def meth_from_sock(self, sock):
-        # Depending on the mixin class being run return either send()
+        # Depending on the mixin klasse being run return either send()
         # or sendfile() method implementation.
         return getattr(sock, "_sendfile_use_send")
 
@@ -6981,7 +6981,7 @@ class SendfileUsingSendTest(ThreadedTCPSocketTest):
 
 @unittest.skipUnless(hasattr(os, "sendfile"),
                      'os.sendfile() required for this test.')
-class SendfileUsingSendfileTest(SendfileUsingSendTest):
+klasse SendfileUsingSendfileTest(SendfileUsingSendTest):
     """
     Test the sendfile() implementation of socket.sendfile().
     """
@@ -6990,7 +6990,7 @@ class SendfileUsingSendfileTest(SendfileUsingSendTest):
 
 
 @unittest.skipUnless(HAVE_SOCKET_ALG, 'AF_ALG required')
-class LinuxKernelCryptoAPI(unittest.TestCase):
+klasse LinuxKernelCryptoAPI(unittest.TestCase):
     # tests for AF_ALG
     def create_alg(self, typ, name):
         sock = socket.socket(socket.AF_ALG, socket.SOCK_SEQPACKET, 0)
@@ -7190,12 +7190,12 @@ class LinuxKernelCryptoAPI(unittest.TestCase):
 
 
 @unittest.skipUnless(sys.platform == 'darwin', 'macOS specific test')
-class TestMacOSTCPFlags(unittest.TestCase):
+klasse TestMacOSTCPFlags(unittest.TestCase):
     def test_tcp_keepalive(self):
         self.assertTrue(socket.TCP_KEEPALIVE)
 
 @unittest.skipUnless(hasattr(socket, 'TCP_QUICKACK'), 'need socket.TCP_QUICKACK')
-class TestQuickackFlag(unittest.TestCase):
+klasse TestQuickackFlag(unittest.TestCase):
     def check_set_quickack(self, sock):
         # quickack already true by default on some OS distributions
         opt = sock.getsockopt(socket.IPPROTO_TCP, socket.TCP_QUICKACK)
@@ -7218,7 +7218,7 @@ class TestQuickackFlag(unittest.TestCase):
 
 
 @unittest.skipUnless(sys.platform.startswith("win"), "requires Windows")
-class TestMSWindowsTCPFlags(unittest.TestCase):
+klasse TestMSWindowsTCPFlags(unittest.TestCase):
     knownTCPFlags = {
                        # available since long time ago
                        'TCP_MAXSEG',
@@ -7242,7 +7242,7 @@ class TestMSWindowsTCPFlags(unittest.TestCase):
             "New TCP flags were discovered. See bpo-32394 for more information")
 
 
-class CreateServerTest(unittest.TestCase):
+klasse CreateServerTest(unittest.TestCase):
 
     def test_address(self):
         port = socket_helper.find_unused_port()
@@ -7293,7 +7293,7 @@ class CreateServerTest(unittest.TestCase):
             self.assertEqual(sock.family, socket.AF_INET6)
 
 
-class CreateServerFunctionalTest(unittest.TestCase):
+klasse CreateServerFunctionalTest(unittest.TestCase):
     timeout = support.LOOPBACK_TIMEOUT
 
     def echo_server(self, sock):
@@ -7360,7 +7360,7 @@ class CreateServerFunctionalTest(unittest.TestCase):
 @requireAttrs(socket, "send_fds")
 @requireAttrs(socket, "recv_fds")
 @requireAttrs(socket, "AF_UNIX")
-class SendRecvFdsTests(unittest.TestCase):
+klasse SendRecvFdsTests(unittest.TestCase):
     def testSendAndRecvFds(self):
         def close_pipes(pipes):
             for fd1, fd2 in pipes:
@@ -7399,7 +7399,7 @@ class SendRecvFdsTests(unittest.TestCase):
             self.assertEqual(data,  str(index).encode())
 
 
-class FreeThreadingTests(unittest.TestCase):
+klasse FreeThreadingTests(unittest.TestCase):
 
     def test_close_detach_race(self):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

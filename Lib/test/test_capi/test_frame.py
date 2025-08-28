@@ -6,7 +6,7 @@ from test.support import import_helper
 _testcapi = import_helper.import_module('_testcapi')
 
 
-class FrameTest(unittest.TestCase):
+klasse FrameTest(unittest.TestCase):
     def getframe(self):
         return sys._getframe()
 

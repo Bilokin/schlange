@@ -6,7 +6,7 @@ from ctypes import (pythonapi, POINTER, create_string_buffer, sizeof,
                     py_object, c_char_p, c_char, c_long, c_size_t)
 
 
-class PythonAPITestCase(unittest.TestCase):
+klasse PythonAPITestCase(unittest.TestCase):
     def test_PyBytes_FromStringAndSize(self):
         PyBytes_FromStringAndSize = pythonapi.PyBytes_FromStringAndSize
 

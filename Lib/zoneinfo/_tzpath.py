@@ -174,7 +174,7 @@ def available_timezones():
     return valid_zones
 
 
-class InvalidTZPathWarning(RuntimeWarning):
+klasse InvalidTZPathWarning(RuntimeWarning):
     """Warning raised if an invalid path is specified in PYTHONTZPATH."""
 
 

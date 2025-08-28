@@ -20,7 +20,7 @@ from _pyrepl.console import InteractiveColoredConsole
 from . import futures
 
 
-class AsyncIOInteractiveConsole(InteractiveColoredConsole):
+klasse AsyncIOInteractiveConsole(InteractiveColoredConsole):
 
     def __init__(self, locals, loop):
         super().__init__(locals, filename="<stdin>")
@@ -81,7 +81,7 @@ class AsyncIOInteractiveConsole(InteractiveColoredConsole):
                 self.showtraceback()
             return self.STATEMENT_FAILED
 
-class REPLThread(threading.Thread):
+klasse REPLThread(threading.Thread):
 
     def run(self):
         global return_code

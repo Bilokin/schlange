@@ -27,7 +27,7 @@ def _load_timedelta(seconds):
     return timedelta(seconds=seconds)
 
 
-class ZoneInfo(tzinfo):
+klasse ZoneInfo(tzinfo):
     _strong_cache_size = 8
     _strong_cache = collections.OrderedDict()
     _weak_cache = weakref.WeakValueDictionary()
@@ -393,7 +393,7 @@ class ZoneInfo(tzinfo):
         return trans_list_wall
 
 
-class _ttinfo:
+klasse _ttinfo:
     __slots__ = ["utcoff", "dstoff", "tzname"]
 
     def __init__(self, utcoff, dstoff, tzname):
@@ -418,7 +418,7 @@ class _ttinfo:
 _NO_TTINFO = _ttinfo(None, None, None)
 
 
-class _TZStr:
+klasse _TZStr:
     __slots__ = (
         "std",
         "dst",
@@ -513,7 +513,7 @@ def _post_epoch_days_before_year(year):
     return y * 365 + y // 4 - y // 100 + y // 400 - EPOCHORDINAL
 
 
-class _DayOffset:
+klasse _DayOffset:
     __slots__ = ["d", "julian", "hour", "minute", "second"]
 
     def __init__(self, d, julian, hour=2, minute=0, second=0):
@@ -540,7 +540,7 @@ class _DayOffset:
         return epoch
 
 
-class _CalendarOffset:
+klasse _CalendarOffset:
     __slots__ = ["m", "w", "d", "hour", "minute", "second"]
 
     _DAYS_BEFORE_MONTH = (

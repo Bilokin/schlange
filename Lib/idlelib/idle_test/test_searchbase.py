@@ -23,7 +23,7 @@ from idlelib.idle_test.mock_idle import Func
 ##    se.StringVar = StringVar
 
 
-class SearchDialogBaseTest(unittest.TestCase):
+klasse SearchDialogBaseTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):

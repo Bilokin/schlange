@@ -11,7 +11,7 @@ from test.support import threading_helper
 from test.test_importlib import util as test_util
 
 
-class CollectInit:
+klasse CollectInit:
 
     def __init__(self, *args, **kwargs):
         self.args = args
@@ -21,7 +21,7 @@ class CollectInit:
         return self
 
 
-class LazyLoaderFactoryTests(unittest.TestCase):
+klasse LazyLoaderFactoryTests(unittest.TestCase):
 
     def test_init(self):
         factory = util.LazyLoader.factory(CollectInit)
@@ -38,7 +38,7 @@ class LazyLoaderFactoryTests(unittest.TestCase):
             util.LazyLoader.factory(object)
 
 
-class TestingImporter(abc.MetaPathFinder, abc.Loader):
+klasse TestingImporter(abc.MetaPathFinder, abc.Loader):
 
     module_name = 'lazy_loader_test'
     mutated_name = 'changed'
@@ -58,7 +58,7 @@ class TestingImporter(abc.MetaPathFinder, abc.Loader):
         self.load_count += 1
 
 
-class LazyLoaderTests(unittest.TestCase):
+klasse LazyLoaderTests(unittest.TestCase):
 
     def test_init(self):
         with self.assertRaises(TypeError):
@@ -154,7 +154,7 @@ class LazyLoaderTests(unittest.TestCase):
             module = self.new_module(loader=loader)
             self.assertEqual(loader.load_count, 0)
 
-            class RaisingThread(threading.Thread):
+            klasse RaisingThread(threading.Thread):
                 exc = None
                 def run(self):
                     try:
@@ -207,7 +207,7 @@ from types import ModuleType
 
 CONSTANT = 3.14
 
-class ImmutableModule(ModuleType):
+klasse ImmutableModule(ModuleType):
     def __setattr__(self, name, value):
         raise AttributeError('Read-only attribute!')
 

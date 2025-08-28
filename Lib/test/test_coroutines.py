@@ -17,7 +17,7 @@ except ImportError:
     _testcapi = None
 
 
-class AsyncYieldFrom:
+klasse AsyncYieldFrom:
     def __init__(self, obj):
         self.obj = obj
 
@@ -25,7 +25,7 @@ class AsyncYieldFrom:
         yield from self.obj
 
 
-class AsyncYield:
+klasse AsyncYield:
     def __init__(self, value):
         self.value = value
 
@@ -80,7 +80,7 @@ def silence_coro_gc():
         support.gc_collect()
 
 
-class AsyncBadSyntaxTest(unittest.TestCase):
+klasse AsyncBadSyntaxTest(unittest.TestCase):
 
     def test_badsyntax_1(self):
         samples = [
@@ -501,7 +501,7 @@ class AsyncBadSyntaxTest(unittest.TestCase):
                 compile(code, "<test>", "exec")
 
 
-class TokenizerRegrTest(unittest.TestCase):
+klasse TokenizerRegrTest(unittest.TestCase):
 
     def test_oneline_defs(self):
         buf = []
@@ -523,7 +523,7 @@ class TokenizerRegrTest(unittest.TestCase):
         self.assertTrue(inspect.iscoroutinefunction(ns['foo']))
 
 
-class CoroutineTest(unittest.TestCase):
+klasse CoroutineTest(unittest.TestCase):
 
     def test_gen_1(self):
         def gen(): yield
@@ -1000,7 +1000,7 @@ class CoroutineTest(unittest.TestCase):
         self.assertEqual(run_async(foo()), ([], 42))
 
     def test_await_5(self):
-        class Awaitable:
+        klasse Awaitable:
             def __await__(self):
                 return
 
@@ -1013,7 +1013,7 @@ class CoroutineTest(unittest.TestCase):
             run_async(foo())
 
     def test_await_6(self):
-        class Awaitable:
+        klasse Awaitable:
             def __await__(self):
                 return iter([52])
 
@@ -1023,7 +1023,7 @@ class CoroutineTest(unittest.TestCase):
         self.assertEqual(run_async(foo()), ([52], None))
 
     def test_await_7(self):
-        class Awaitable:
+        klasse Awaitable:
             def __await__(self):
                 yield 42
                 return 100
@@ -1034,7 +1034,7 @@ class CoroutineTest(unittest.TestCase):
         self.assertEqual(run_async(foo()), ([42], 100))
 
     def test_await_8(self):
-        class Awaitable:
+        klasse Awaitable:
             pass
 
         async def foo(): return await Awaitable()
@@ -1054,7 +1054,7 @@ class CoroutineTest(unittest.TestCase):
         async def foo():
             db = {'b':  lambda: wrap}
 
-            class DB:
+            klasse DB:
                 b = wrap
 
             return (await bar() + await wrap()() + await db['b']()()() +
@@ -1098,7 +1098,7 @@ class CoroutineTest(unittest.TestCase):
             return 'spam'
         c = coro()
 
-        class Awaitable:
+        klasse Awaitable:
             def __await__(self):
                 return c
 
@@ -1112,7 +1112,7 @@ class CoroutineTest(unittest.TestCase):
         c.close()
 
     def test_await_13(self):
-        class Awaitable:
+        klasse Awaitable:
             def __await__(self):
                 return self
 
@@ -1125,7 +1125,7 @@ class CoroutineTest(unittest.TestCase):
             run_async(foo())
 
     def test_await_14(self):
-        class Wrapper:
+        klasse Wrapper:
             # Forces the interpreter to use CoroutineType.__await__
             def __init__(self, coro):
                 assert coro.__class__ is types.CoroutineType
@@ -1133,11 +1133,11 @@ class CoroutineTest(unittest.TestCase):
             def __await__(self):
                 return self.coro.__await__()
 
-        class FutureLike:
+        klasse FutureLike:
             def __await__(self):
                 return (yield)
 
-        class Marker(Exception):
+        klasse Marker(Exception):
             pass
 
         async def coro1():
@@ -1193,7 +1193,7 @@ class CoroutineTest(unittest.TestCase):
 
     def test_await_17(self):
         # See https://github.com/python/cpython/issues/131666 for details.
-        class A:
+        klasse A:
             async def __anext__(self):
                 raise StopAsyncIteration
             def __aiter__(self):
@@ -1203,7 +1203,7 @@ class CoroutineTest(unittest.TestCase):
             self.assertRaises(TypeError, anext_awaitable.close, 1)
 
     def test_with_1(self):
-        class Manager:
+        klasse Manager:
             def __init__(self, name):
                 self.name = name
 
@@ -1243,7 +1243,7 @@ class CoroutineTest(unittest.TestCase):
             run_async(foo())
 
     def test_with_2(self):
-        class CM:
+        klasse CM:
             def __aenter__(self):
                 pass
 
@@ -1259,7 +1259,7 @@ class CoroutineTest(unittest.TestCase):
         self.assertIs(body_executed, False)
 
     def test_with_3(self):
-        class CM:
+        klasse CM:
             def __aexit__(self):
                 pass
 
@@ -1275,7 +1275,7 @@ class CoroutineTest(unittest.TestCase):
         self.assertIs(body_executed, False)
 
     def test_with_4(self):
-        class CM:
+        klasse CM:
             pass
 
         body_executed = None
@@ -1294,7 +1294,7 @@ class CoroutineTest(unittest.TestCase):
         # it's a regression test for an early bug with opcodes
         # generation
 
-        class CM:
+        klasse CM:
             async def __aenter__(self):
                 return self
 
@@ -1309,7 +1309,7 @@ class CoroutineTest(unittest.TestCase):
             run_async(func())
 
     def test_with_6(self):
-        class CM:
+        klasse CM:
             def __aenter__(self):
                 return 123
 
@@ -1328,7 +1328,7 @@ class CoroutineTest(unittest.TestCase):
             run_async(foo())
 
     def test_with_7(self):
-        class CM:
+        klasse CM:
             async def __aenter__(self):
                 return self
 
@@ -1356,7 +1356,7 @@ class CoroutineTest(unittest.TestCase):
     def test_with_8(self):
         CNT = 0
 
-        class CM:
+        klasse CM:
             async def __aenter__(self):
                 return self
 
@@ -1420,7 +1420,7 @@ class CoroutineTest(unittest.TestCase):
     def test_with_9(self):
         CNT = 0
 
-        class CM:
+        klasse CM:
             async def __aenter__(self):
                 return self
 
@@ -1440,7 +1440,7 @@ class CoroutineTest(unittest.TestCase):
     def test_with_10(self):
         CNT = 0
 
-        class CM:
+        klasse CM:
             async def __aenter__(self):
                 return self
 
@@ -1466,7 +1466,7 @@ class CoroutineTest(unittest.TestCase):
     def test_with_11(self):
         CNT = 0
 
-        class CM:
+        klasse CM:
             async def __aenter__(self):
                 raise NotImplementedError
 
@@ -1488,7 +1488,7 @@ class CoroutineTest(unittest.TestCase):
     def test_with_12(self):
         CNT = 0
 
-        class CM:
+        klasse CM:
             async def __aenter__(self):
                 return self
 
@@ -1506,7 +1506,7 @@ class CoroutineTest(unittest.TestCase):
     def test_with_13(self):
         CNT = 0
 
-        class CM:
+        klasse CM:
             async def __aenter__(self):
                 1/0
 
@@ -1527,7 +1527,7 @@ class CoroutineTest(unittest.TestCase):
     def test_for_1(self):
         aiter_calls = 0
 
-        class AsyncIter:
+        klasse AsyncIter:
             def __init__(self):
                 self.i = 0
 
@@ -1612,7 +1612,7 @@ class CoroutineTest(unittest.TestCase):
         self.assertEqual(sys.getrefcount(tup), refs_before)
 
     def test_for_3(self):
-        class I:
+        klasse I:
             def __aiter__(self):
                 return self
 
@@ -1632,7 +1632,7 @@ class CoroutineTest(unittest.TestCase):
         self.assertEqual(sys.getrefcount(aiter), refs_before)
 
     def test_for_4(self):
-        class I:
+        klasse I:
             def __aiter__(self):
                 return self
 
@@ -1657,7 +1657,7 @@ class CoroutineTest(unittest.TestCase):
     def test_for_6(self):
         I = 0
 
-        class Manager:
+        klasse Manager:
             async def __aenter__(self):
                 nonlocal I
                 I += 10000
@@ -1666,7 +1666,7 @@ class CoroutineTest(unittest.TestCase):
                 nonlocal I
                 I += 100000
 
-        class Iterable:
+        klasse Iterable:
             def __init__(self):
                 self.i = 0
 
@@ -1748,7 +1748,7 @@ class CoroutineTest(unittest.TestCase):
 
     def test_for_7(self):
         CNT = 0
-        class AI:
+        klasse AI:
             def __aiter__(self):
                 1/0
         async def foo():
@@ -1762,7 +1762,7 @@ class CoroutineTest(unittest.TestCase):
 
     def test_for_8(self):
         CNT = 0
-        class AI:
+        klasse AI:
             def __aiter__(self):
                 1/0
         async def foo():
@@ -1779,7 +1779,7 @@ class CoroutineTest(unittest.TestCase):
         self.assertEqual(CNT, 0)
 
     def test_for_11(self):
-        class F:
+        klasse F:
             def __aiter__(self):
                 return self
             def __anext__(self):
@@ -1799,9 +1799,9 @@ class CoroutineTest(unittest.TestCase):
         self.assertIsInstance(err.__cause__, ZeroDivisionError)
 
     def test_for_tuple(self):
-        class Done(Exception): pass
+        klasse Done(Exception): pass
 
-        class AIter(tuple):
+        klasse AIter(tuple):
             i = 0
             def __aiter__(self):
                 return self
@@ -1822,9 +1822,9 @@ class CoroutineTest(unittest.TestCase):
         self.assertEqual(result, [42])
 
     def test_for_stop_iteration(self):
-        class Done(Exception): pass
+        klasse Done(Exception): pass
 
-        class AIter(StopIteration):
+        klasse AIter(StopIteration):
             i = 0
             def __aiter__(self):
                 return self
@@ -2153,7 +2153,7 @@ class CoroutineTest(unittest.TestCase):
             self.assertIn("was never awaited", str(cm.unraisable.exc_value))
 
     def test_for_assign_raising_stop_async_iteration(self):
-        class BadTarget:
+        klasse BadTarget:
             def __setitem__(self, key, value):
                 raise StopAsyncIteration(42)
         tgt = BadTarget()
@@ -2186,7 +2186,7 @@ class CoroutineTest(unittest.TestCase):
         self.assertEqual(run_async(run_gen()), ([], 'end'))
 
     def test_for_assign_raising_stop_async_iteration_2(self):
-        class BadIterable:
+        klasse BadIterable:
             def __iter__(self):
                 raise StopAsyncIteration(42)
         async def badpairs():
@@ -2270,19 +2270,19 @@ class CoroutineTest(unittest.TestCase):
     support.is_emscripten or support.is_wasi,
     "asyncio does not work under Emscripten/WASI yet."
 )
-class CoroAsyncIOCompatTest(unittest.TestCase):
+klasse CoroAsyncIOCompatTest(unittest.TestCase):
 
     def test_asyncio_1(self):
         # asyncio cannot be imported when Python is compiled without thread
         # support
         asyncio = import_helper.import_module('asyncio')
 
-        class MyException(Exception):
+        klasse MyException(Exception):
             pass
 
         buffer = []
 
-        class CM:
+        klasse CM:
             async def __aenter__(self):
                 buffer.append(1)
                 await asyncio.sleep(0.01)
@@ -2312,7 +2312,7 @@ class CoroAsyncIOCompatTest(unittest.TestCase):
         self.assertEqual(buffer, [1, 2, 'MyException'])
 
 
-class OriginTrackingTest(unittest.TestCase):
+klasse OriginTrackingTest(unittest.TestCase):
     def here(self):
         info = inspect.getframeinfo(inspect.currentframe().f_back)
         return (info.filename, info.lineno)
@@ -2442,7 +2442,7 @@ class OriginTrackingTest(unittest.TestCase):
             warnings._warn_unawaited_coroutine = orig_wuc
 
 
-class UnawaitedWarningDuringShutdownTest(unittest.TestCase):
+klasse UnawaitedWarningDuringShutdownTest(unittest.TestCase):
     # https://bugs.python.org/issue32591#msg310726
     def test_unawaited_warning_during_shutdown(self):
         code = ("import asyncio\n"
@@ -2465,7 +2465,7 @@ class UnawaitedWarningDuringShutdownTest(unittest.TestCase):
 
 @support.cpython_only
 @unittest.skipIf(_testcapi is None, "requires _testcapi")
-class CAPITest(unittest.TestCase):
+klasse CAPITest(unittest.TestCase):
 
     def test_tp_await_1(self):
         from _testcapi import awaitType as at

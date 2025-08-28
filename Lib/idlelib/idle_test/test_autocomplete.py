@@ -13,7 +13,7 @@ from idlelib.idle_test.mock_idle import Func
 from idlelib.idle_test.mock_tk import Event
 
 
-class DummyEditwin:
+klasse DummyEditwin:
     def __init__(self, root, text):
         self.root = root
         self.text = text
@@ -22,7 +22,7 @@ class DummyEditwin:
         self.prompt_last_line = '>>>'  # Currently not used by autocomplete.
 
 
-class AutoCompleteTest(unittest.TestCase):
+klasse AutoCompleteTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -195,7 +195,7 @@ class AutoCompleteTest(unittest.TestCase):
         self.assertFalse(acp.open_completions(ac.TAB))
         self.text.delete('1.0', 'end')
 
-    class dummy_acw:
+    klasse dummy_acw:
         __init__ = Func()
         show_window = Func(result=False)
         hide_window = Func()

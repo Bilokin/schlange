@@ -20,7 +20,7 @@ TRUE = 1
 E_NOINTERFACE = -2147467262
 
 
-class GUID(ctypes.Structure):
+klasse GUID(ctypes.Structure):
     # https://learn.microsoft.com/en-us/windows/win32/api/guiddef/ns-guiddef-guid
     _fields_ = [
         ("Data1", DWORD),
@@ -90,7 +90,7 @@ def create_shelllink_persist(typ):
     return ppst
 
 
-class ForeignFunctionsThatWillCallComMethodsTests(unittest.TestCase):
+klasse ForeignFunctionsThatWillCallComMethodsTests(unittest.TestCase):
     def setUp(self):
         # https://learn.microsoft.com/en-us/windows/win32/api/combaseapi/nf-combaseapi-coinitializeex
         ole32.CoInitializeEx(None, COINIT_APARTMENTTHREADED)
@@ -101,12 +101,12 @@ class ForeignFunctionsThatWillCallComMethodsTests(unittest.TestCase):
         gc.collect()
 
     def test_without_paramflags_and_iid(self):
-        class IUnknown(c_void_p):
+        klasse IUnknown(c_void_p):
             QueryInterface = proto_query_interface()
             AddRef = proto_add_ref()
             Release = proto_release()
 
-        class IPersist(IUnknown):
+        klasse IPersist(IUnknown):
             GetClassID = proto_get_class_id()
 
         ppst = create_shelllink_persist(IPersist)
@@ -133,12 +133,12 @@ class ForeignFunctionsThatWillCallComMethodsTests(unittest.TestCase):
         self.assertEqual(0, ppst.Release())
 
     def test_with_paramflags_and_without_iid(self):
-        class IUnknown(c_void_p):
+        klasse IUnknown(c_void_p):
             QueryInterface = proto_query_interface(None)
             AddRef = proto_add_ref()
             Release = proto_release()
 
-        class IPersist(IUnknown):
+        klasse IPersist(IUnknown):
             GetClassID = proto_get_class_id(((OUT, "pClassID"),))
 
         ppst = create_shelllink_persist(IPersist)
@@ -158,12 +158,12 @@ class ForeignFunctionsThatWillCallComMethodsTests(unittest.TestCase):
         self.assertEqual(0, ppst.Release())
 
     def test_with_paramflags_and_iid(self):
-        class IUnknown(c_void_p):
+        klasse IUnknown(c_void_p):
             QueryInterface = proto_query_interface(None, IID_IUnknown)
             AddRef = proto_add_ref()
             Release = proto_release()
 
-        class IPersist(IUnknown):
+        klasse IPersist(IUnknown):
             GetClassID = proto_get_class_id(((OUT, "pClassID"),), IID_IPersist)
 
         ppst = create_shelllink_persist(IPersist)
@@ -183,16 +183,16 @@ class ForeignFunctionsThatWillCallComMethodsTests(unittest.TestCase):
         self.assertEqual(0, ppst.Release())
 
 
-class CopyComPointerTests(unittest.TestCase):
+klasse CopyComPointerTests(unittest.TestCase):
     def setUp(self):
         ole32.CoInitializeEx(None, COINIT_APARTMENTTHREADED)
 
-        class IUnknown(c_void_p):
+        klasse IUnknown(c_void_p):
             QueryInterface = proto_query_interface(None, IID_IUnknown)
             AddRef = proto_add_ref()
             Release = proto_release()
 
-        class IPersist(IUnknown):
+        klasse IPersist(IUnknown):
             GetClassID = proto_get_class_id(((OUT, "pClassID"),), IID_IPersist)
 
         self.IUnknown = IUnknown

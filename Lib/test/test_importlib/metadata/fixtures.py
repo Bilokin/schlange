@@ -42,19 +42,19 @@ def install_finder(finder):
         sys.meta_path.remove(finder)
 
 
-class Fixtures:
+klasse Fixtures:
     def setUp(self):
         self.fixtures = contextlib.ExitStack()
         self.addCleanup(self.fixtures.close)
 
 
-class SiteDir(Fixtures):
+klasse SiteDir(Fixtures):
     def setUp(self):
         super().setUp()
         self.site_dir = self.fixtures.enter_context(tmp_path())
 
 
-class OnSysPath(Fixtures):
+klasse OnSysPath(Fixtures):
     @staticmethod
     @contextlib.contextmanager
     def add_sys_path(dir):
@@ -70,7 +70,7 @@ class OnSysPath(Fixtures):
         self.fixtures.enter_context(import_helper.isolated_modules())
 
 
-class SiteBuilder(SiteDir):
+klasse SiteBuilder(SiteDir):
     def setUp(self):
         super().setUp()
         for cls in self.__class__.mro():
@@ -78,7 +78,7 @@ class SiteBuilder(SiteDir):
                 build_files(cls.files, prefix=self.site_dir)
 
 
-class DistInfoPkg(OnSysPath, SiteBuilder):
+klasse DistInfoPkg(OnSysPath, SiteBuilder):
     files: FilesSpec = {
         "distinfo_pkg-1.0.0.dist-info": {
             "METADATA": """
@@ -116,7 +116,7 @@ class DistInfoPkg(OnSysPath, SiteBuilder):
         build_files(files, self.site_dir)
 
 
-class DistInfoPkgEditable(DistInfoPkg):
+klasse DistInfoPkgEditable(DistInfoPkg):
     """
     Package with a PEP 660 direct_url.json.
     """
@@ -135,7 +135,7 @@ class DistInfoPkgEditable(DistInfoPkg):
     }
 
 
-class DistInfoPkgWithDot(OnSysPath, SiteBuilder):
+klasse DistInfoPkgWithDot(OnSysPath, SiteBuilder):
     files: FilesSpec = {
         "pkg_dot-1.0.0.dist-info": {
             "METADATA": """
@@ -146,7 +146,7 @@ class DistInfoPkgWithDot(OnSysPath, SiteBuilder):
     }
 
 
-class DistInfoPkgWithDotLegacy(OnSysPath, SiteBuilder):
+klasse DistInfoPkgWithDotLegacy(OnSysPath, SiteBuilder):
     files: FilesSpec = {
         "pkg.dot-1.0.0.dist-info": {
             "METADATA": """
@@ -163,11 +163,11 @@ class DistInfoPkgWithDotLegacy(OnSysPath, SiteBuilder):
     }
 
 
-class DistInfoPkgOffPath(SiteBuilder):
+klasse DistInfoPkgOffPath(SiteBuilder):
     files = DistInfoPkg.files
 
 
-class EggInfoPkg(OnSysPath, SiteBuilder):
+klasse EggInfoPkg(OnSysPath, SiteBuilder):
     files: FilesSpec = {
         "egginfo_pkg.egg-info": {
             "PKG-INFO": """
@@ -203,7 +203,7 @@ class EggInfoPkg(OnSysPath, SiteBuilder):
     }
 
 
-class EggInfoPkgPipInstalledNoToplevel(OnSysPath, SiteBuilder):
+klasse EggInfoPkgPipInstalledNoToplevel(OnSysPath, SiteBuilder):
     files: FilesSpec = {
         "egg_with_module_pkg.egg-info": {
             "PKG-INFO": "Name: egg_with_module-pkg",
@@ -234,7 +234,7 @@ class EggInfoPkgPipInstalledNoToplevel(OnSysPath, SiteBuilder):
     }
 
 
-class EggInfoPkgPipInstalledExternalDataFiles(OnSysPath, SiteBuilder):
+klasse EggInfoPkgPipInstalledExternalDataFiles(OnSysPath, SiteBuilder):
     files: FilesSpec = {
         "egg_with_module_pkg.egg-info": {
             "PKG-INFO": "Name: egg_with_module-pkg",
@@ -268,7 +268,7 @@ class EggInfoPkgPipInstalledExternalDataFiles(OnSysPath, SiteBuilder):
     }
 
 
-class EggInfoPkgPipInstalledNoModules(OnSysPath, SiteBuilder):
+klasse EggInfoPkgPipInstalledNoModules(OnSysPath, SiteBuilder):
     files: FilesSpec = {
         "egg_with_no_modules_pkg.egg-info": {
             "PKG-INFO": "Name: egg_with_no_modules-pkg",
@@ -294,7 +294,7 @@ class EggInfoPkgPipInstalledNoModules(OnSysPath, SiteBuilder):
     }
 
 
-class EggInfoPkgSourcesFallback(OnSysPath, SiteBuilder):
+klasse EggInfoPkgSourcesFallback(OnSysPath, SiteBuilder):
     files: FilesSpec = {
         "sources_fallback_pkg.egg-info": {
             "PKG-INFO": "Name: sources_fallback-pkg",
@@ -316,7 +316,7 @@ class EggInfoPkgSourcesFallback(OnSysPath, SiteBuilder):
     }
 
 
-class EggInfoFile(OnSysPath, SiteBuilder):
+klasse EggInfoFile(OnSysPath, SiteBuilder):
     files: FilesSpec = {
         "egginfo_file.egg-info": """
             Metadata-Version: 1.0
@@ -351,7 +351,7 @@ def record_names(file_defs):
     return recording.record
 
 
-class FileBuilder:
+klasse FileBuilder:
     def unicode_filename(self):
         return os_helper.FS_NONASCII or self.skip(
             "File system does not support non-ascii."
@@ -364,7 +364,7 @@ def DALS(str):
 
 
 @requires_zlib()
-class ZipFixtures:
+klasse ZipFixtures:
     root = 'test.test_importlib.metadata.data'
 
     def _fixture_on_path(self, filename):

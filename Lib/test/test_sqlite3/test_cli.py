@@ -21,7 +21,7 @@ from test.support import (
 
 
 @force_not_colorized_test_class
-class CommandLineInterface(unittest.TestCase):
+klasse CommandLineInterface(unittest.TestCase):
 
     def _do_test(self, *args, expect_success=True):
         with (
@@ -78,7 +78,7 @@ class CommandLineInterface(unittest.TestCase):
 
 
 @force_not_colorized_test_class
-class InteractiveSession(unittest.TestCase):
+klasse InteractiveSession(unittest.TestCase):
     MEMORY_DB_MSG = "Connected to a transient in-memory database"
     PS1 = "sqlite> "
     PS2 = "... "
@@ -211,7 +211,7 @@ class InteractiveSession(unittest.TestCase):
 
 @requires_subprocess()
 @force_not_colorized_test_class
-class Completion(unittest.TestCase):
+klasse Completion(unittest.TestCase):
     PS1 = "sqlite> "
 
     @classmethod

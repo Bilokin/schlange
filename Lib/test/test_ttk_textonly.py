@@ -7,7 +7,7 @@ import unittest
 from tkinter import ttk
 
 
-class MockTkApp:
+klasse MockTkApp:
 
     def splitlist(self, arg):
         if isinstance(arg, tuple):
@@ -18,7 +18,7 @@ class MockTkApp:
         return True
 
 
-class MockTclObj(object):
+klasse MockTclObj(object):
     typename = 'test'
 
     def __init__(self, val):
@@ -28,7 +28,7 @@ class MockTclObj(object):
         return str(self.val)
 
 
-class MockStateSpec(object):
+klasse MockStateSpec(object):
     typename = 'StateSpec'
 
     def __init__(self, *args):
@@ -38,7 +38,7 @@ class MockStateSpec(object):
         return ' '.join(self.val)
 
 
-class InternalFunctionsTest(unittest.TestCase):
+klasse InternalFunctionsTest(unittest.TestCase):
 
     def test_format_optdict(self):
         def check_against(fmt_opts, result):
@@ -195,7 +195,7 @@ class InternalFunctionsTest(unittest.TestCase):
             ('a', 'b', 'c', 'd'), x=[2, 3]), ("{test {a b c} d}", "-x {2 3}"))
 
         ## Testing type = vsapi
-        # vsapi type expects at least a class name and a part_id, so this
+        # vsapi type expects at least a klasse name and a part_id, so this
         # should raise a ValueError since it tries to get two elements from
         # an empty tuple
         self.assertRaises(ValueError, ttk._format_elemcreate, 'vsapi')
@@ -449,7 +449,7 @@ class InternalFunctionsTest(unittest.TestCase):
             self.assertEqual(ttk._convert_stringval(orig), expected)
 
 
-class TclObjsToPyTest(unittest.TestCase):
+klasse TclObjsToPyTest(unittest.TestCase):
 
     def test_unicode(self):
         adict = {'opt': 'välúè'}

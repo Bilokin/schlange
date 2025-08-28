@@ -54,7 +54,7 @@ def wrap_info(info):
         modified_info = (info[0], info[1], traceback_id)
         return modified_info
 
-class GUIProxy:
+klasse GUIProxy:
 
     def __init__(self, conn, gui_adap_oid):
         self.conn = conn
@@ -67,7 +67,7 @@ class GUIProxy:
                              (message, wrap_frame(frame), wrap_info(info)),
                              {})
 
-class IdbAdapter:
+klasse IdbAdapter:
 
     def __init__(self, idb):
         self.idb = idb
@@ -170,7 +170,7 @@ class IdbAdapter:
         value = dicttable[did][key]
         return reprlib.repr(value) # Can't pickle module 'builtins'.
 
-#----------end class IdbAdapter----------
+#----------end klasse IdbAdapter----------
 
 
 def start_debugger(rpchandler, gui_adap_oid):
@@ -195,7 +195,7 @@ def start_debugger(rpchandler, gui_adap_oid):
 # In the IDLE process:
 
 
-class FrameProxy:
+klasse FrameProxy:
 
     def __init__(self, conn, fid):
         self._conn = conn
@@ -237,7 +237,7 @@ class FrameProxy:
         return dp
 
 
-class CodeProxy:
+klasse CodeProxy:
 
     def __init__(self, conn, oid, cid):
         self._conn = conn
@@ -253,7 +253,7 @@ class CodeProxy:
                                          (self._cid,), {})
 
 
-class DictProxy:
+klasse DictProxy:
 
     def __init__(self, conn, oid, did):
         self._conn = conn
@@ -277,7 +277,7 @@ class DictProxy:
         raise AttributeError(name)
 
 
-class GUIAdapter:
+klasse GUIAdapter:
 
     def __init__(self, conn, gui):
         self.conn = conn
@@ -289,7 +289,7 @@ class GUIAdapter:
         self.gui.interaction(message, frame, modified_info)
 
 
-class IdbProxy:
+klasse IdbProxy:
 
     def __init__(self, conn, shell, oid):
         self.oid = oid

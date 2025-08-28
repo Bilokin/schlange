@@ -11,7 +11,7 @@ from test.support import import_helper
 code = import_helper.import_module('code')
 
 
-class MockSys:
+klasse MockSys:
 
     def mock_sys(self):
         "Mock system environment for InteractiveConsole"
@@ -31,7 +31,7 @@ class MockSys:
 
 
 @force_not_colorized_test_class
-class TestInteractiveConsole(unittest.TestCase, MockSys):
+klasse TestInteractiveConsole(unittest.TestCase, MockSys):
     maxDiff = None
 
     def setUp(self):
@@ -325,7 +325,7 @@ class TestInteractiveConsole(unittest.TestCase, MockSys):
         self.assertIs(self.sysmod.last_exc, self.sysmod.last_value)
 
 
-class TestInteractiveConsoleLocalExit(unittest.TestCase, MockSys):
+klasse TestInteractiveConsoleLocalExit(unittest.TestCase, MockSys):
 
     def setUp(self):
         self.console = code.InteractiveConsole(local_exit=True)

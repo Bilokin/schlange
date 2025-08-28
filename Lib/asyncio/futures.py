@@ -1,4 +1,4 @@
-"""A Future class similar to the one in PEP 3148."""
+"""A Future klasse similar to the one in PEP 3148."""
 
 __all__ = (
     'Future', 'wrap_future', 'isfuture',
@@ -28,12 +28,12 @@ _FINISHED = base_futures._FINISHED
 STACK_DEBUG = logging.DEBUG - 1  # heavy-duty debugging
 
 
-class Future:
-    """This class is *almost* compatible with concurrent.futures.Future.
+klasse Future:
+    """This klasse is *almost* compatible with concurrent.futures.Future.
 
     Differences:
 
-    - This class is not thread-safe.
+    - This klasse is not thread-safe.
 
     - result() and exception() do not take a timeout argument and
       raise an exception when the future isn't done yet.
@@ -41,7 +41,7 @@ class Future:
     - Callbacks registered with add_done_callback() are always called
       via the event loop's call_soon().
 
-    - This class is not compatible with the wait() and as_completed()
+    - This klasse is not compatible with the wait() and as_completed()
       methods in the concurrent.futures package.
 
     """
@@ -57,7 +57,7 @@ class Future:
     _cancelled_exc = None
 
     # This field is used for a dual purpose:
-    # - Its presence is a marker to declare that a class implements
+    # - Its presence is a marker to declare that a klasse implements
     #   the Future protocol (i.e. is intended to be duck-type compatible).
     #   The value must also be not-None, to enable a subclass to declare
     #   that it is not compatible by setting this to None.

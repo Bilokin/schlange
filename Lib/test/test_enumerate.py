@@ -6,14 +6,14 @@ import gc
 
 from test import support
 
-class G:
+klasse G:
     'Sequence using __getitem__'
     def __init__(self, seqn):
         self.seqn = seqn
     def __getitem__(self, i):
         return self.seqn[i]
 
-class I:
+klasse I:
     'Sequence using iterator protocol'
     def __init__(self, seqn):
         self.seqn = seqn
@@ -26,7 +26,7 @@ class I:
         self.i += 1
         return v
 
-class Ig:
+klasse Ig:
     'Sequence using iterator protocol defined with a generator'
     def __init__(self, seqn):
         self.seqn = seqn
@@ -35,7 +35,7 @@ class Ig:
         for val in self.seqn:
             yield val
 
-class X:
+klasse X:
     'Missing __getitem__ and __iter__'
     def __init__(self, seqn):
         self.seqn = seqn
@@ -46,7 +46,7 @@ class X:
         self.i += 1
         return v
 
-class E:
+klasse E:
     'Test propagation of exceptions'
     def __init__(self, seqn):
         self.seqn = seqn
@@ -56,7 +56,7 @@ class E:
     def __next__(self):
         3 // 0
 
-class N:
+klasse N:
     'Iterator missing __next__()'
     def __init__(self, seqn):
         self.seqn = seqn
@@ -64,7 +64,7 @@ class N:
     def __iter__(self):
         return self
 
-class PickleTest:
+klasse PickleTest:
     # Helper to check picklability
     def check_pickle(self, itorg, seq):
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
@@ -83,7 +83,7 @@ class PickleTest:
             it = pickle.loads(d)
             self.assertEqual(list(it), seq[1:])
 
-class EnumerateTestCase(unittest.TestCase, PickleTest):
+klasse EnumerateTestCase(unittest.TestCase, PickleTest):
 
     enum = enumerate
     seq, res = 'abc', [(0,'a'), (1,'b'), (2,'c')]
@@ -159,26 +159,26 @@ class EnumerateTestCase(unittest.TestCase, PickleTest):
         # when it's mutated and returned from __next__:
         self.assertTrue(gc.is_tracked(next(it)))
 
-class MyEnum(enumerate):
+klasse MyEnum(enumerate):
     pass
 
-class SubclassTestCase(EnumerateTestCase):
+klasse SubclassTestCase(EnumerateTestCase):
 
     enum = MyEnum
 
-class TestEmpty(EnumerateTestCase):
+klasse TestEmpty(EnumerateTestCase):
 
     seq, res = '', []
 
-class TestBig(EnumerateTestCase):
+klasse TestBig(EnumerateTestCase):
 
     seq = range(10,20000,2)
     res = list(zip(range(20000), seq))
 
-class TestReversed(unittest.TestCase, PickleTest):
+klasse TestReversed(unittest.TestCase, PickleTest):
 
     def test_simple(self):
-        class A:
+        klasse A:
             def __getitem__(self, i):
                 if i < 5:
                     return str(i)
@@ -201,7 +201,7 @@ class TestReversed(unittest.TestCase, PickleTest):
             r = reversed(s)
             list(r)
             self.assertEqual(operator.length_hint(r), 0)
-        class SeqWithWeirdLen:
+        klasse SeqWithWeirdLen:
             called = False
             def __len__(self):
                 if not self.called:
@@ -215,7 +215,7 @@ class TestReversed(unittest.TestCase, PickleTest):
 
 
     def test_gc(self):
-        class Seq:
+        klasse Seq:
             def __len__(self):
                 return 10
             def __getitem__(self, index):
@@ -247,17 +247,17 @@ class TestReversed(unittest.TestCase, PickleTest):
 
     def test_objmethods(self):
         # Objects must have __len__() and __getitem__() implemented.
-        class NoLen(object):
+        klasse NoLen(object):
             def __getitem__(self, i): return 1
         nl = NoLen()
         self.assertRaises(TypeError, reversed, nl)
 
-        class NoGetItem(object):
+        klasse NoGetItem(object):
             def __len__(self): return 2
         ngi = NoGetItem()
         self.assertRaises(TypeError, reversed, ngi)
 
-        class Blocked(object):
+        klasse Blocked(object):
             def __getitem__(self, i): return 1
             def __len__(self): return 2
             __reversed__ = None
@@ -269,7 +269,7 @@ class TestReversed(unittest.TestCase, PickleTest):
             self.check_pickle(reversed(data), list(data)[::-1])
 
 
-class EnumerateStartTestCase(EnumerateTestCase):
+klasse EnumerateStartTestCase(EnumerateTestCase):
 
     def test_basicfunction(self):
         e = self.enum(self.seq)
@@ -277,14 +277,14 @@ class EnumerateStartTestCase(EnumerateTestCase):
         self.assertEqual(list(self.enum(self.seq)), self.res)
 
 
-class TestStart(EnumerateStartTestCase):
+klasse TestStart(EnumerateStartTestCase):
     def enum(self, iterable, start=11):
         return enumerate(iterable, start=start)
 
     seq, res = 'abc', [(11, 'a'), (12, 'b'), (13, 'c')]
 
 
-class TestLongStart(EnumerateStartTestCase):
+klasse TestLongStart(EnumerateStartTestCase):
     def enum(self, iterable, start=sys.maxsize + 1):
         return enumerate(iterable, start=start)
 

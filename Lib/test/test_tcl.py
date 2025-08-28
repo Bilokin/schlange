@@ -21,7 +21,7 @@ except ImportError:
 tcl_version = tuple(map(int, _tkinter.TCL_VERSION.split('.')))
 
 
-class TkinterTest(unittest.TestCase):
+klasse TkinterTest(unittest.TestCase):
 
     def testFlattenLen(self):
         # Object without length.
@@ -34,7 +34,7 @@ class TkinterTest(unittest.TestCase):
         self.assertRaises(TypeError, _tkinter._flatten, {'set'})
 
 
-class TclTest(unittest.TestCase):
+klasse TclTest(unittest.TestCase):
 
     def setUp(self):
         self.interp = Tcl()
@@ -747,7 +747,7 @@ class TclTest(unittest.TestCase):
         support.check_disallow_instantiation(self, _tkinter.TkappType)
 
 
-class BigmemTclTest(unittest.TestCase):
+klasse BigmemTclTest(unittest.TestCase):
 
     def setUp(self):
         self.interp = Tcl()

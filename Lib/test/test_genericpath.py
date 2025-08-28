@@ -21,7 +21,7 @@ def create_file(filename, data=b'foo'):
         fp.write(data)
 
 
-class GenericTest:
+klasse GenericTest:
     common_attributes = ['commonprefix', 'getsize', 'getatime', 'getctime',
                          'getmtime', 'exists', 'isdir', 'isfile']
     attributes = []
@@ -338,7 +338,7 @@ class GenericTest:
                         self.assertIs(unpickled, mode)
 
 
-class TestGenericTest(GenericTest, unittest.TestCase):
+klasse TestGenericTest(GenericTest, unittest.TestCase):
     # Issue 16852: GenericTest can't inherit from unittest.TestCase
     # for test discovery purposes; CommonTest inherits from GenericTest
     # and is only meant to be inherited by others.
@@ -369,7 +369,7 @@ class TestGenericTest(GenericTest, unittest.TestCase):
 # Following TestCase is not supposed to be run from test_genericpath.
 # It is inherited by other test modules (ntpath, posixpath).
 
-class CommonTest(GenericTest):
+klasse CommonTest(GenericTest):
     common_attributes = GenericTest.common_attributes + [
         # Properties
         'curdir', 'pardir', 'extsep', 'sep',
@@ -572,7 +572,7 @@ class CommonTest(GenericTest):
         assert_python_ok('-S', '-c', 'import ' + self.pathmodule.__name__)
 
 
-class PathLikeTests(unittest.TestCase):
+klasse PathLikeTests(unittest.TestCase):
 
     def setUp(self):
         self.file_name = os_helper.TESTFN

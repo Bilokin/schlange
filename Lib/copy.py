@@ -12,7 +12,7 @@ For module specific errors, copy.Error is raised.
 
 The difference between shallow and deep copying is only relevant for
 compound objects (objects that contain other objects, like lists or
-class instances).
+klasse instances).
 
 - A shallow copy constructs a new compound object and then (to the
   extent possible) inserts *the same objects* into it that the
@@ -53,7 +53,7 @@ import types
 import weakref
 from copyreg import dispatch_table
 
-class Error(Exception):
+klasse Error(Exception):
     pass
 error = Error   # backward compatibility
 

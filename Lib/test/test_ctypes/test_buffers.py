@@ -3,7 +3,7 @@ from ctypes import (create_string_buffer, create_unicode_buffer, sizeof,
                     c_char, c_wchar)
 
 
-class StringBufferTestCase(unittest.TestCase):
+klasse StringBufferTestCase(unittest.TestCase):
     def test_buffer(self):
         b = create_string_buffer(32)
         self.assertEqual(len(b), 32)

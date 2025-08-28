@@ -3,7 +3,7 @@ import lexer as lx
 Token = lx.Token
 
 
-class PLexer:
+klasse PLexer:
     def __init__(self, src: str, filename: str):
         self.src = src
         self.filename = filename

@@ -23,7 +23,7 @@ internationalized, to the local language and cultural habits.
 #
 # James Henstridge, who also wrote a gettext.py module, which has some
 # interesting, but currently unsupported experimental features: the notion of
-# a Catalog class and instances, and the ability to add to a catalog file via
+# a Catalog klasse and instances, and the ability to add to a catalog file via
 # a Python API.
 #
 # Barry Warsaw integrated these modules, wrote the .install() API and code,
@@ -270,7 +270,7 @@ def _expand_lang(loc):
     return ret
 
 
-class NullTranslations:
+klasse NullTranslations:
     def __init__(self, fp=None):
         self._info = {}
         self._charset = None
@@ -330,7 +330,7 @@ class NullTranslations:
                 builtins.__dict__[name] = getattr(self, name)
 
 
-class GNUTranslations(NullTranslations):
+klasse GNUTranslations(NullTranslations):
     # Magic number of .mo files
     LE_MAGIC = 0x950412de
     BE_MAGIC = 0xde120495

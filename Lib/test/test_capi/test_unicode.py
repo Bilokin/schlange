@@ -24,11 +24,11 @@ except ImportError:
 
 NULL = None
 
-class Str(str):
+klasse Str(str):
     pass
 
 
-class CAPITest(unittest.TestCase):
+klasse CAPITest(unittest.TestCase):
 
     @support.cpython_only
     @unittest.skipIf(_testcapi is None, 'need _testcapi module')
@@ -704,7 +704,7 @@ class CAPITest(unittest.TestCase):
         check_format(f'type:        str',
                      b'type: %10T', py_object("abc"))
 
-        class LocalType:
+        klasse LocalType:
             pass
         obj = LocalType()
         fullname = f'{__name__}.{LocalType.__qualname__}'
@@ -1754,7 +1754,7 @@ class CAPITest(unittest.TestCase):
         self.assertEqual(unicode_GET_CACHED_HASH(obj), hash(content_bytes))
 
 
-class PyUnicodeWriterTest(unittest.TestCase):
+klasse PyUnicodeWriterTest(unittest.TestCase):
     def create_writer(self, size):
         return _testcapi.PyUnicodeWriter(size)
 
@@ -1908,7 +1908,7 @@ class PyUnicodeWriterTest(unittest.TestCase):
 
 
 @unittest.skipIf(ctypes is None, 'need ctypes')
-class PyUnicodeWriterFormatTest(unittest.TestCase):
+klasse PyUnicodeWriterFormatTest(unittest.TestCase):
     def create_writer(self, size):
         return _testcapi.PyUnicodeWriter(size)
 

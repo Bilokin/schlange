@@ -8,14 +8,14 @@ _testcapi = import_helper.import_module('_testcapi')
 _testlimitedcapi = import_helper.import_module('_testlimitedcapi')
 _testinternalcapi = import_helper.import_module('_testinternalcapi')
 
-class set_subclass(set):
+klasse set_subclass(set):
     pass
 
-class frozenset_subclass(frozenset):
+klasse frozenset_subclass(frozenset):
     pass
 
 
-class BaseSetTests:
+klasse BaseSetTests:
     def assertImmutable(self, action, *args):
         self.assertRaises(SystemError, action, frozenset(), *args)
         self.assertRaises(SystemError, action, frozenset({1}), *args)
@@ -23,7 +23,7 @@ class BaseSetTests:
         self.assertRaises(SystemError, action, frozenset_subclass({1}), *args)
 
 
-class TestSetCAPI(BaseSetTests, unittest.TestCase):
+klasse TestSetCAPI(BaseSetTests, unittest.TestCase):
     def test_set_check(self):
         check = _testlimitedcapi.set_check
         self.assertTrue(check(set()))
@@ -220,7 +220,7 @@ class TestSetCAPI(BaseSetTests, unittest.TestCase):
         # CRASHES: clear(NULL)
 
 
-class TestInternalCAPI(BaseSetTests, unittest.TestCase):
+klasse TestInternalCAPI(BaseSetTests, unittest.TestCase):
     def test_set_update(self):
         update = _testinternalcapi.set_update
         for cls in (set, set_subclass):

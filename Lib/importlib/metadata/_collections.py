@@ -2,7 +2,7 @@ import collections
 
 
 # from jaraco.collections 3.3
-class FreezableDefaultDict(collections.defaultdict):
+klasse FreezableDefaultDict(collections.defaultdict):
     """
     Often it is desirable to prevent the mutation of
     a default dict after its initial construction, such
@@ -24,7 +24,7 @@ class FreezableDefaultDict(collections.defaultdict):
         self._frozen = lambda key: self.default_factory()
 
 
-class Pair(collections.namedtuple('Pair', 'name value')):
+klasse Pair(collections.namedtuple('Pair', 'name value')):
     @classmethod
     def parse(cls, text):
         return cls(*map(str.strip, text.split("=", 1)))

@@ -7,7 +7,7 @@ import unittest
 
 
 @unittest.skipIf(util.BUILTINS.good_name is None, 'no reasonable builtin module')
-class FindSpecTests(abc.FinderTests):
+klasse FindSpecTests(abc.FinderTests):
 
     """Test find_spec() for built-in modules."""
 

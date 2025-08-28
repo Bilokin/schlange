@@ -11,7 +11,7 @@ argparser = argparse.ArgumentParser(
 argparser.add_argument("filename", help="Grammar description")
 
 
-class ASTGrammarPrinter:
+klasse ASTGrammarPrinter:
     def children(self, node: Rule) -> Iterator[Any]:
         for value in node:
             if isinstance(value, list):

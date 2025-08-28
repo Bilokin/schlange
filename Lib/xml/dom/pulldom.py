@@ -10,7 +10,7 @@ PROCESSING_INSTRUCTION = "PROCESSING_INSTRUCTION"
 IGNORABLE_WHITESPACE = "IGNORABLE_WHITESPACE"
 CHARACTERS = "CHARACTERS"
 
-class PullDOM(xml.sax.ContentHandler):
+klasse PullDOM(xml.sax.ContentHandler):
     _locator = None
     document = None
 
@@ -193,7 +193,7 @@ class PullDOM(xml.sax.ContentHandler):
         "clear(): Explicitly release parsing structures"
         self.document = None
 
-class ErrorHandler:
+klasse ErrorHandler:
     def warning(self, exception):
         print(exception)
     def error(self, exception):
@@ -201,7 +201,7 @@ class ErrorHandler:
     def fatalError(self, exception):
         raise exception
 
-class DOMEventStream:
+klasse DOMEventStream:
     def __init__(self, stream, parser, bufsize):
         self.stream = stream
         self.parser = parser
@@ -280,7 +280,7 @@ class DOMEventStream:
         self.parser = None
         self.stream = None
 
-class SAX2DOM(PullDOM):
+klasse SAX2DOM(PullDOM):
 
     def startElementNS(self, name, tagName , attrs):
         PullDOM.startElementNS(self, name, tagName, attrs)

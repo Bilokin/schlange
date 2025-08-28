@@ -809,7 +809,7 @@ def _get_machine_win32():
     )
 
 
-class _Processor:
+klasse _Processor:
     @classmethod
     def get(cls):
         func = getattr(cls, f'get_{sys.platform}', cls.from_subprocess)
@@ -865,7 +865,7 @@ def _unknown_as_blank(val):
 
 ### Portable uname() interface
 
-class uname_result(
+klasse uname_result(
     collections.namedtuple(
         "uname_result_base",
         "system node release version machine")

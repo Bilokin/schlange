@@ -27,7 +27,7 @@ import _pyio # Python implementation of io
 _strace_flags=["--trace=%file,%desc"]
 
 
-class AutoFileTests:
+klasse AutoFileTests:
     # file tests for which a test file is automatically set up
 
     def setUp(self):
@@ -179,7 +179,7 @@ class AutoFileTests:
                          "<%s.FileIO [closed]>" % (self.modulename,))
 
     def test_subclass_repr(self):
-        class TestSubclass(self.FileIO):
+        klasse TestSubclass(self.FileIO):
             pass
 
         f = TestSubclass(TESTFN)
@@ -499,16 +499,16 @@ class AutoFileTests:
 
 
 
-class CAutoFileTests(AutoFileTests, unittest.TestCase):
+klasse CAutoFileTests(AutoFileTests, unittest.TestCase):
     FileIO = _io.FileIO
     modulename = '_io'
 
-class PyAutoFileTests(AutoFileTests, unittest.TestCase):
+klasse PyAutoFileTests(AutoFileTests, unittest.TestCase):
     FileIO = _pyio.FileIO
     modulename = '_pyio'
 
 
-class OtherFileTests:
+klasse OtherFileTests:
 
     def testAbles(self):
         try:
@@ -720,8 +720,8 @@ class OtherFileTests:
             self.assertEqual(w.warnings, [])
 
     def testUnclosedFDOnException(self):
-        class MyException(Exception): pass
-        class MyFileIO(self.FileIO):
+        klasse MyException(Exception): pass
+        klasse MyFileIO(self.FileIO):
             def __setattr__(self, name, value):
                 if name == "name":
                     raise MyException("blocked setting name")
@@ -731,7 +731,7 @@ class OtherFileTests:
         os.close(fd)  # should not raise OSError(EBADF)
 
 
-class COtherFileTests(OtherFileTests, unittest.TestCase):
+klasse COtherFileTests(OtherFileTests, unittest.TestCase):
     FileIO = _io.FileIO
     modulename = '_io'
     open = _io.open
@@ -753,7 +753,7 @@ class COtherFileTests(OtherFileTests, unittest.TestCase):
         self.assertEqual(expected, actual)
 
 
-class PyOtherFileTests(OtherFileTests, unittest.TestCase):
+klasse PyOtherFileTests(OtherFileTests, unittest.TestCase):
     FileIO = _pyio.FileIO
     modulename = '_pyio'
     open = _pyio.open

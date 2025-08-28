@@ -81,7 +81,7 @@ def isrecursive(object):
     return PrettyPrinter()._safe_repr(object, {}, None, 0)[2]
 
 
-class _safe_key:
+klasse _safe_key:
     """Helper function for key functions when sorting unorderable objects.
 
     The wrapped-object will fallback to a Py2.x style comparison for
@@ -109,7 +109,7 @@ def _safe_tuple(t):
     return _safe_key(t[0]), _safe_key(t[1])
 
 
-class PrettyPrinter:
+klasse PrettyPrinter:
     def __init__(self, indent=1, width=80, depth=None, stream=None, *,
                  compact=False, sort_dicts=True, underscore_numbers=False):
         """Handle pretty printing operations onto a stream using a set of
@@ -423,7 +423,7 @@ class PrettyPrinter:
     def _pprint_simplenamespace(self, object, stream, indent, allowance, context, level):
         if type(object) is _types.SimpleNamespace:
             # The SimpleNamespace repr is "namespace" instead of the class
-            # name, so we do the same here. For subclasses; use the class name.
+            # name, so we do the same here. For subclasses; use the klasse name.
             cls_name = 'namespace'
         else:
             cls_name = object.__class__.__name__

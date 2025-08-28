@@ -30,7 +30,7 @@ from .util import debug, info, Finalize, register_after_fork, is_exiting
 # Queue type using a pipe, buffer and thread
 #
 
-class Queue(object):
+klasse Queue(object):
 
     def __init__(self, maxsize=0, *, ctx):
         if maxsize <= 0:
@@ -311,7 +311,7 @@ _sentinel = object()
 # to happen.
 #
 
-class JoinableQueue(Queue):
+klasse JoinableQueue(Queue):
 
     def __init__(self, maxsize=0, *, ctx):
         Queue.__init__(self, maxsize, ctx=ctx)
@@ -354,7 +354,7 @@ class JoinableQueue(Queue):
 # Simplified Queue type -- really just a locked pipe
 #
 
-class SimpleQueue(object):
+klasse SimpleQueue(object):
 
     def __init__(self, *, ctx):
         self._reader, self._writer = connection.Pipe(duplex=False)

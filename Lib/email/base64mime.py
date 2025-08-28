@@ -100,7 +100,7 @@ def decode(string):
 
     This function does not parse a full MIME header value encoded with
     base64 (like =?iso-8859-1?b?bmloISBuaWgh?=) -- please use the high
-    level email.header class for that functionality.
+    level email.header klasse for that functionality.
     """
     if not string:
         return bytes()

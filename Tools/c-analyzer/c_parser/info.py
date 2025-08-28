@@ -19,7 +19,7 @@ STORAGE = frozenset(_STORAGE)
 # kinds
 
 @enum.unique
-class KIND(enum.Enum):
+klasse KIND(enum.Enum):
 
     # XXX Use these in the raw parser code.
     TYPEDEF = 'typedef'
@@ -158,7 +158,7 @@ def _fix_filename(filename, relroot, *,
     return fix(filename, relroot=relroot, **kwargs)
 
 
-class FileInfo(namedtuple('FileInfo', 'filename lno')):
+klasse FileInfo(namedtuple('FileInfo', 'filename lno')):
     @classmethod
     def from_raw(cls, raw):
         if isinstance(raw, cls):
@@ -182,7 +182,7 @@ class FileInfo(namedtuple('FileInfo', 'filename lno')):
         return self._replace(filename=filename)
 
 
-class SourceLine(namedtuple('Line', 'file kind data conditions')):
+klasse SourceLine(namedtuple('Line', 'file kind data conditions')):
     KINDS = (
         #'directive',  # data is ...
         'source',  # "data" is the line
@@ -198,7 +198,7 @@ class SourceLine(namedtuple('Line', 'file kind data conditions')):
         return self.file.lno
 
 
-class DeclID(namedtuple('DeclID', 'filename funcname name')):
+klasse DeclID(namedtuple('DeclID', 'filename funcname name')):
     """The globally-unique identifier for a declaration."""
 
     @classmethod
@@ -250,7 +250,7 @@ class DeclID(namedtuple('DeclID', 'filename funcname name')):
         return self._replace(filename=filename)
 
 
-class ParsedItem(namedtuple('ParsedItem', 'file kind parent name data')):
+klasse ParsedItem(namedtuple('ParsedItem', 'file kind parent name data')):
 
     @classmethod
     def from_raw(cls, raw):
@@ -422,7 +422,7 @@ def get_effective_storage(decl, *, default=None):
 #############################
 # high-level
 
-class HighlevelParsedItem:
+klasse HighlevelParsedItem:
 
     kind = None
 
@@ -770,7 +770,7 @@ _FORMATS = {
 
 ### declarations ##
 
-class Declaration(HighlevelParsedItem):
+klasse Declaration(HighlevelParsedItem):
 
     @classmethod
     def from_row(cls, row, **markers):
@@ -840,7 +840,7 @@ class Declaration(HighlevelParsedItem):
         raise NotImplementedError(fmt)
 
 
-class VarType(namedtuple('VarType', 'typequal typespec abstract')):
+klasse VarType(namedtuple('VarType', 'typequal typespec abstract')):
 
     @classmethod
     def from_str(cls, text):
@@ -886,7 +886,7 @@ class VarType(namedtuple('VarType', 'typequal typespec abstract')):
         return self.typespec
 
 
-class Variable(Declaration):
+klasse Variable(Declaration):
     kind = KIND.VARIABLE
 
     @classmethod
@@ -953,7 +953,7 @@ class Variable(Declaration):
         return self.data
 
 
-class Signature(namedtuple('Signature', 'params returntype inline isforward')):
+klasse Signature(namedtuple('Signature', 'params returntype inline isforward')):
 
     @classmethod
     def from_str(cls, text):
@@ -1028,7 +1028,7 @@ class Signature(namedtuple('Signature', 'params returntype inline isforward')):
         return self.returntype.abstract
 
 
-class Function(Declaration):
+klasse Function(Declaration):
     kind = KIND.FUNCTION
 
     @classmethod
@@ -1084,7 +1084,7 @@ class Function(Declaration):
         return self.data
 
 
-class TypeDeclaration(Declaration):
+klasse TypeDeclaration(Declaration):
 
     def __init__(self, file, name, data, parent=None, *, _shortkey=None):
         if not _shortkey:
@@ -1098,14 +1098,14 @@ class TypeDeclaration(Declaration):
                          )
 
 
-class POTSType(TypeDeclaration):
+klasse POTSType(TypeDeclaration):
 
     def __init__(self, name):
         _file = _data = _parent = None
         super().__init__(_file, name, _data, _parent, _shortkey=name)
 
 
-class FuncPtr(TypeDeclaration):
+klasse FuncPtr(TypeDeclaration):
 
     def __init__(self, vartype):
         _file = _name = _parent = None
@@ -1114,7 +1114,7 @@ class FuncPtr(TypeDeclaration):
         super().__init__(_file, _name, data, _parent, _shortkey=f'<{vartype}>')
 
 
-class TypeDef(TypeDeclaration):
+klasse TypeDef(TypeDeclaration):
     kind = KIND.TYPEDEF
 
     @classmethod
@@ -1169,7 +1169,7 @@ class TypeDef(TypeDeclaration):
         return self.data
 
 
-class Member(namedtuple('Member', 'name vartype size')):
+klasse Member(namedtuple('Member', 'name vartype size')):
 
     @classmethod
     def from_data(cls, raw, index):
@@ -1207,7 +1207,7 @@ class Member(namedtuple('Member', 'name vartype size')):
         return f'{name}: {self.vartype or self.size}'
 
 
-class _StructUnion(TypeDeclaration):
+klasse _StructUnion(TypeDeclaration):
 
     @classmethod
     def _resolve_data(cls, data):
@@ -1257,15 +1257,15 @@ class _StructUnion(TypeDeclaration):
         return self.data
 
 
-class Struct(_StructUnion):
+klasse Struct(_StructUnion):
     kind = KIND.STRUCT
 
 
-class Union(_StructUnion):
+klasse Union(_StructUnion):
     kind = KIND.UNION
 
 
-class Enum(TypeDeclaration):
+klasse Enum(TypeDeclaration):
     kind = KIND.ENUM
 
     @classmethod
@@ -1315,7 +1315,7 @@ class Enum(TypeDeclaration):
 
 ### statements ###
 
-class Statement(HighlevelParsedItem):
+klasse Statement(HighlevelParsedItem):
     kind = KIND.STATEMENT
 
     @classmethod
@@ -1386,7 +1386,7 @@ def set_flag(item, name, value):
 #############################
 # composite
 
-class Declarations:
+klasse Declarations:
 
     @classmethod
     def from_decls(cls, decls):

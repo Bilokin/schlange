@@ -2,7 +2,7 @@ import unittest
 from ctypes import Structure, c_int
 
 
-class X(Structure):
+klasse X(Structure):
     _fields_ = [("a", c_int),
                 ("b", c_int)]
     new_was_called = False
@@ -17,11 +17,11 @@ class X(Structure):
         self.b = 12
 
 
-class Y(Structure):
+klasse Y(Structure):
     _fields_ = [("x", X)]
 
 
-class InitTest(unittest.TestCase):
+klasse InitTest(unittest.TestCase):
     def test_get(self):
         # make sure the only accessing a nested structure
         # doesn't call the structure's __new__ and __init__

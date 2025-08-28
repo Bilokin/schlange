@@ -13,7 +13,7 @@ from idlelib import searchengine
 # to avoid duplication.
 
 
-class SearchDialogTest(unittest.TestCase):
+klasse SearchDialogTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):

@@ -22,7 +22,7 @@ def tearDownModule():
     asyncio.events._set_event_loop_policy(None)
 
 
-class UpperProto(asyncio.Protocol):
+klasse UpperProto(asyncio.Protocol):
     def __init__(self):
         self.buf = []
 
@@ -36,7 +36,7 @@ class UpperProto(asyncio.Protocol):
             self.trans.close()
 
 
-class WindowsEventsTestCase(test_utils.TestCase):
+klasse WindowsEventsTestCase(test_utils.TestCase):
     def _unraisablehook(self, unraisable):
         # Storing unraisable.object can resurrect an object which is being
         # finalized. Storing unraisable.exc_value creates a reference cycle.
@@ -52,7 +52,7 @@ class WindowsEventsTestCase(test_utils.TestCase):
         sys.unraisablehook = self._prev_unraisablehook
         self.assertIsNone(self._unraisable)
 
-class ProactorLoopCtrlC(WindowsEventsTestCase):
+klasse ProactorLoopCtrlC(WindowsEventsTestCase):
 
     def test_ctrl_c(self):
 
@@ -74,7 +74,7 @@ class ProactorLoopCtrlC(WindowsEventsTestCase):
         thread.join()
 
 
-class ProactorMultithreading(WindowsEventsTestCase):
+klasse ProactorMultithreading(WindowsEventsTestCase):
     def test_run_from_nonmain_thread(self):
         finished = False
 
@@ -95,7 +95,7 @@ class ProactorMultithreading(WindowsEventsTestCase):
         self.assertTrue(finished)
 
 
-class ProactorTests(WindowsEventsTestCase):
+klasse ProactorTests(WindowsEventsTestCase):
 
     def setUp(self):
         super().setUp()
@@ -324,7 +324,7 @@ class ProactorTests(WindowsEventsTestCase):
         thr.join()
 
 
-class WinPolicyTests(WindowsEventsTestCase):
+klasse WinPolicyTests(WindowsEventsTestCase):
 
     def test_selector_win_policy(self):
         async def main():

@@ -20,7 +20,7 @@ try:
 except ImportError:
     INT_MAX = PY_SSIZE_T_MAX = UINT_MAX = 2**64 - 1
 
-class UnicodeNamesTest(unittest.TestCase):
+klasse UnicodeNamesTest(unittest.TestCase):
 
     def checkletter(self, name, code):
         # Helper that put all \N escapes inside eval'd raw strings,

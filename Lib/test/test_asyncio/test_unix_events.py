@@ -56,7 +56,7 @@ def close_pipe_transport(transport):
 
 
 @unittest.skipUnless(signal, 'Signals are not supported')
-class SelectorEventLoopSignalTests(test_utils.TestCase):
+klasse SelectorEventLoopSignalTests(test_utils.TestCase):
 
     def setUp(self):
         super().setUp()
@@ -130,7 +130,7 @@ class SelectorEventLoopSignalTests(test_utils.TestCase):
                 raise ValueError()
         m_signal.set_wakeup_fd = set_wakeup_fd
 
-        class Err(OSError):
+        klasse Err(OSError):
             errno = errno.EFAULT
         m_signal.signal.side_effect = Err
 
@@ -145,7 +145,7 @@ class SelectorEventLoopSignalTests(test_utils.TestCase):
         m_signal.NSIG = signal.NSIG
         m_signal.valid_signals = signal.valid_signals
 
-        class Err(OSError):
+        klasse Err(OSError):
             errno = errno.EINVAL
         m_signal.signal.side_effect = Err
 
@@ -160,7 +160,7 @@ class SelectorEventLoopSignalTests(test_utils.TestCase):
     @mock.patch('asyncio.unix_events.signal')
     @mock.patch('asyncio.base_events.logger')
     def test_add_signal_handler_install_error3(self, m_logging, m_signal):
-        class Err(OSError):
+        klasse Err(OSError):
             errno = errno.EINVAL
         m_signal.signal.side_effect = Err
         m_signal.NSIG = signal.NSIG
@@ -234,7 +234,7 @@ class SelectorEventLoopSignalTests(test_utils.TestCase):
         m_signal.valid_signals = signal.valid_signals
         self.loop.add_signal_handler(signal.SIGHUP, lambda: True)
 
-        class Err(OSError):
+        klasse Err(OSError):
             errno = errno.EINVAL
         m_signal.signal.side_effect = Err
 
@@ -279,7 +279,7 @@ class SelectorEventLoopSignalTests(test_utils.TestCase):
 
 @unittest.skipUnless(hasattr(socket, 'AF_UNIX'),
                      'UNIX Sockets are not supported')
-class SelectorEventLoopUnixSocketTests(test_utils.TestCase):
+klasse SelectorEventLoopUnixSocketTests(test_utils.TestCase):
 
     def setUp(self):
         super().setUp()
@@ -451,10 +451,10 @@ class SelectorEventLoopUnixSocketTests(test_utils.TestCase):
 
 @unittest.skipUnless(hasattr(os, 'sendfile'),
                      'sendfile is not supported')
-class SelectorEventLoopUnixSockSendfileTests(test_utils.TestCase):
+klasse SelectorEventLoopUnixSockSendfileTests(test_utils.TestCase):
     DATA = b"12345abcde" * 16 * 1024  # 160 KiB
 
-    class MyProto(asyncio.Protocol):
+    klasse MyProto(asyncio.Protocol):
 
         def __init__(self, loop):
             self.started = False
@@ -656,7 +656,7 @@ class SelectorEventLoopUnixSockSendfileTests(test_utils.TestCase):
         self.assertEqual(1000, self.file.tell())
 
 
-class UnixReadPipeTransportTests(test_utils.TestCase):
+klasse UnixReadPipeTransportTests(test_utils.TestCase):
 
     def setUp(self):
         super().setUp()
@@ -833,7 +833,7 @@ class UnixReadPipeTransportTests(test_utils.TestCase):
         tr.resume_reading()
 
 
-class UnixWritePipeTransportTests(test_utils.TestCase):
+klasse UnixWritePipeTransportTests(test_utils.TestCase):
 
     def setUp(self):
         super().setUp()
@@ -1109,7 +1109,7 @@ class UnixWritePipeTransportTests(test_utils.TestCase):
         self.assertFalse(self.protocol.connection_lost.called)
 
 
-class TestFunctional(unittest.TestCase):
+klasse TestFunctional(unittest.TestCase):
 
     def setUp(self):
         self.loop = asyncio.new_event_loop()
@@ -1180,7 +1180,7 @@ class TestFunctional(unittest.TestCase):
 
 
 @support.requires_fork()
-class TestFork(unittest.IsolatedAsyncioTestCase):
+klasse TestFork(unittest.IsolatedAsyncioTestCase):
 
     async def test_fork_not_share_event_loop(self):
         with warnings_helper.ignore_fork_in_thread_deprecation_warnings():

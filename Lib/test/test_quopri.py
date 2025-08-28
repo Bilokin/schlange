@@ -62,7 +62,7 @@ def withpythonimplementation(testfunc):
     newtest.__name__ = testfunc.__name__
     return newtest
 
-class QuopriTestCase(unittest.TestCase):
+klasse QuopriTestCase(unittest.TestCase):
     # Each entry is a tuple of (plaintext, encoded string).  These strings are
     # used in the "quotetabs=0" tests.
     STRINGS = (

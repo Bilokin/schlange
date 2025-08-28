@@ -114,9 +114,9 @@ def dnd_start(source, event):
         return None
 
 
-# The class that does the work
+# The klasse that does the work
 
-class DndHandler:
+klasse DndHandler:
 
     root = None
 
@@ -205,7 +205,7 @@ class DndHandler:
 # ----------------------------------------------------------------------
 # The rest is here for testing and demonstration purposes only!
 
-class Icon:
+klasse Icon:
 
     def __init__(self, name):
         self.name = name
@@ -266,7 +266,7 @@ class Icon:
         pass
 
 
-class Tester:
+klasse Tester:
 
     def __init__(self, root):
         self.top = tkinter.Toplevel(root)

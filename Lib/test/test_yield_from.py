@@ -13,7 +13,7 @@ import inspect
 from test.support import captured_stderr, disable_gc, gc_collect
 from test import support
 
-class TestPEP380Operation(unittest.TestCase):
+klasse TestPEP380Operation(unittest.TestCase):
     """
     Test semantics.
     """
@@ -542,7 +542,7 @@ class TestPEP380Operation(unittest.TestCase):
         """
         Test subiterator with a broken getattr implementation
         """
-        class Broken:
+        klasse Broken:
             def __iter__(self):
                 return self
             def __next__(self):
@@ -646,7 +646,7 @@ class TestPEP380Operation(unittest.TestCase):
                 trace.append("Caught LunchError in g2")
                 yield "g2 lunch saved"
                 yield "g2 yet more spam"
-        class LunchError(Exception):
+        klasse LunchError(Exception):
             pass
         g = g1()
         for i in range(2):
@@ -909,7 +909,7 @@ class TestPEP380Operation(unittest.TestCase):
 
     def test_delegating_generators_claim_to_be_running_with_throw(self):
         # Check with throw
-        class MyErr(Exception):
+        klasse MyErr(Exception):
             pass
         def one():
             try:
@@ -947,7 +947,7 @@ class TestPEP380Operation(unittest.TestCase):
 
     def test_delegating_generators_claim_to_be_running_with_close(self):
         # Check with close
-        class MyIt:
+        klasse MyIt:
             def __iter__(self):
                 return self
             def __next__(self):
@@ -984,7 +984,7 @@ class TestPEP380Operation(unittest.TestCase):
 
     def test_custom_iterator_return(self):
         # See issue #15568
-        class MyIter:
+        klasse MyIter:
             def __iter__(self):
                 return self
             def __next__(self):
@@ -1037,7 +1037,7 @@ class TestPEP380Operation(unittest.TestCase):
 
     def test_send_tuple_with_custom_generator(self):
         # See issue #21209.
-        class MyGen:
+        klasse MyGen:
             def __iter__(self):
                 return self
             def __next__(self):
@@ -1054,7 +1054,7 @@ class TestPEP380Operation(unittest.TestCase):
         g.send((1, 2, 3, 4))
         self.assertEqual(v, (1, 2, 3, 4))
 
-class TestInterestingEdgeCases(unittest.TestCase):
+klasse TestInterestingEdgeCases(unittest.TestCase):
 
     def assert_stop_iteration(self, iterator):
         with self.assertRaises(StopIteration) as caught:
@@ -1585,7 +1585,7 @@ class TestInterestingEdgeCases(unittest.TestCase):
     def test_throws_in_iter(self):
         # See GH-126366: NULL pointer dereference if __iter__
         # threw an exception.
-        class Silly:
+        klasse Silly:
             def __iter__(self):
                 raise RuntimeError("nobody expects the spanish inquisition")
 

@@ -17,7 +17,7 @@ Main API
 ========
 run(...): Runs a command, waits for it to complete, then returns a
           CompletedProcess instance.
-Popen(...): A class for flexibly executing a command in a new process
+Popen(...): A klasse for flexibly executing a command in a new process
 
 Constants
 ---------
@@ -105,7 +105,7 @@ else:
     if _can_fork_exec:
         from _posixsubprocess import fork_exec as _fork_exec
         # used in methods that are called by __del__
-        class _del_safe:
+        klasse _del_safe:
             waitpid = os.waitpid
             waitstatus_to_exitcode = os.waitstatus_to_exitcode
             WIFSTOPPED = os.WIFSTOPPED
@@ -113,7 +113,7 @@ else:
             WNOHANG = os.WNOHANG
             ECHILD = errno.ECHILD
     else:
-        class _del_safe:
+        klasse _del_safe:
             waitpid = None
             waitstatus_to_exitcode = None
             WIFSTOPPED = None
@@ -126,10 +126,10 @@ else:
 
 
 # Exception classes used by this module.
-class SubprocessError(Exception): pass
+klasse SubprocessError(Exception): pass
 
 
-class CalledProcessError(SubprocessError):
+klasse CalledProcessError(SubprocessError):
     """Raised when run() is called with check=True and the process
     returns a non-zero exit status.
 
@@ -166,7 +166,7 @@ class CalledProcessError(SubprocessError):
         self.output = value
 
 
-class TimeoutExpired(SubprocessError):
+klasse TimeoutExpired(SubprocessError):
     """This exception is raised when the timeout expires while waiting for a
     child process.
 
@@ -195,7 +195,7 @@ class TimeoutExpired(SubprocessError):
 
 
 if _mswindows:
-    class STARTUPINFO:
+    klasse STARTUPINFO:
         def __init__(self, *, dwFlags=0, hStdInput=None, hStdOutput=None,
                      hStdError=None, wShowWindow=0, lpAttributeList=None):
             self.dwFlags = dwFlags
@@ -218,7 +218,7 @@ if _mswindows:
                                lpAttributeList=attr_list)
 
 
-    class Handle(int):
+    klasse Handle(int):
         closed = False
 
         def Close(self, CloseHandle=_winapi.CloseHandle):
@@ -472,7 +472,7 @@ def check_output(*popenargs, timeout=None, **kwargs):
                **kwargs).stdout
 
 
-class CompletedProcess(object):
+klasse CompletedProcess(object):
     """A process that has finished running.
 
     This is returned by run().
@@ -754,7 +754,7 @@ _USE_POSIX_SPAWN = _use_posix_spawn()
 _HAVE_POSIX_SPAWN_CLOSEFROM = hasattr(os, 'POSIX_SPAWN_CLOSEFROM')
 
 
-class Popen:
+klasse Popen:
     """ Execute a child program in a new process.
 
     For a complete description of the arguments see the Python documentation.

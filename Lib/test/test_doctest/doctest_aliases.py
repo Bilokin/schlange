@@ -1,6 +1,6 @@
 # Used by test_doctest.py.
 
-class TwoNames:
+klasse TwoNames:
     '''f() and g() are two names for the same method'''
 
     def f(self):

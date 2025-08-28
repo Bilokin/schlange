@@ -13,10 +13,10 @@ from test.support import force_not_colorized
 idlelib.testing = True  # Use {} for executing test user code.
 
 
-class ExceptionTest(unittest.TestCase):
+klasse ExceptionTest(unittest.TestCase):
 
     def test_print_exception_unhashable(self):
-        class UnhashableException(Exception):
+        klasse UnhashableException(Exception):
             def __eq__(self, other):
                 return True
 
@@ -84,7 +84,7 @@ class ExceptionTest(unittest.TestCase):
 
 # StdioFile tests.
 
-class S(str):
+klasse S(str):
     def __str__(self):
         return '%s:str' % type(self).__name__
     def __unicode__(self):
@@ -99,7 +99,7 @@ class S(str):
         return '%s:slice' % type(self).__name__
 
 
-class MockShell:
+klasse MockShell:
     def __init__(self):
         self.reset()
     def write(self, *args):
@@ -114,7 +114,7 @@ class MockShell:
         self.lines = list(lines)[::-1]
 
 
-class StdInputFilesTest(unittest.TestCase):
+klasse StdInputFilesTest(unittest.TestCase):
 
     def test_misc(self):
         shell = MockShell()
@@ -217,7 +217,7 @@ class StdInputFilesTest(unittest.TestCase):
         self.assertRaises(TypeError, f.close, 1)
 
 
-class StdOutputFilesTest(unittest.TestCase):
+klasse StdOutputFilesTest(unittest.TestCase):
 
     def test_misc(self):
         shell = MockShell()
@@ -328,7 +328,7 @@ class StdOutputFilesTest(unittest.TestCase):
         self.assertRaises(TypeError, f.close, 1)
 
 
-class RecursionLimitTest(unittest.TestCase):
+klasse RecursionLimitTest(unittest.TestCase):
     # Test (un)install_recursionlimit_wrappers and fixdoc.
 
     def test_bad_setrecursionlimit_calls(self):
@@ -369,7 +369,7 @@ class RecursionLimitTest(unittest.TestCase):
         self.assertEqual(func.__doc__, "more")
 
 
-class HandleErrorTest(unittest.TestCase):
+klasse HandleErrorTest(unittest.TestCase):
     # Method of MyRPCServer
     def test_fatal_error(self):
         eq = self.assertEqual
@@ -397,7 +397,7 @@ class HandleErrorTest(unittest.TestCase):
             eq(func.called, 2)
 
 
-class ExecRuncodeTest(unittest.TestCase):
+klasse ExecRuncodeTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):

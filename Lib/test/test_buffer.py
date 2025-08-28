@@ -771,7 +771,7 @@ if SHORT_TEST:
 
 @unittest.skipUnless(struct, 'struct module required for this test.')
 @unittest.skipUnless(ndarray, 'ndarray object required for this test')
-class TestBufferProtocol(unittest.TestCase):
+klasse TestBufferProtocol(unittest.TestCase):
 
     def setUp(self):
         # The suboffsets tests need sizeof(void *).
@@ -2523,13 +2523,13 @@ class TestBufferProtocol(unittest.TestCase):
 
     def test_memoryview_struct_module(self):
 
-        class INT(object):
+        klasse INT(object):
             def __init__(self, val):
                 self.val = val
             def __int__(self):
                 return self.val
 
-        class IDX(object):
+        klasse IDX(object):
             def __init__(self, val):
                 self.val = val
             def __index__(self):
@@ -2822,7 +2822,7 @@ class TestBufferProtocol(unittest.TestCase):
 
         if ctypes:
             # format: "T{>l:x:>d:y:}"
-            class BEPoint(ctypes.BigEndianStructure):
+            klasse BEPoint(ctypes.BigEndianStructure):
                 _fields_ = [("x", ctypes.c_long), ("y", ctypes.c_double)]
             point = BEPoint(100, 200.1)
             m1 = memoryview(point)
@@ -3223,7 +3223,7 @@ class TestBufferProtocol(unittest.TestCase):
         # Some ctypes format strings are unknown to the struct module.
         if ctypes:
             # format: "T{>l:x:>l:y:}"
-            class BEPoint(ctypes.BigEndianStructure):
+            klasse BEPoint(ctypes.BigEndianStructure):
                 _fields_ = [("x", ctypes.c_long), ("y", ctypes.c_long)]
             point = BEPoint(100, 200)
             a = memoryview(point)
@@ -3970,7 +3970,7 @@ class TestBufferProtocol(unittest.TestCase):
         # Unknown formats are handled: tobytes() purely depends on itemsize.
         if ctypes:
             # format: "T{>l:x:>l:y:}"
-            class BEPoint(ctypes.BigEndianStructure):
+            klasse BEPoint(ctypes.BigEndianStructure):
                 _fields_ = [("x", ctypes.c_long), ("y", ctypes.c_long)]
             point = BEPoint(100, 200)
             a = memoryview(point)
@@ -4470,9 +4470,9 @@ class TestBufferProtocol(unittest.TestCase):
                     obj.__buffer__(flags)
 
 
-class TestPythonBufferProtocol(unittest.TestCase):
+klasse TestPythonBufferProtocol(unittest.TestCase):
     def test_basic(self):
-        class MyBuffer:
+        klasse MyBuffer:
             def __buffer__(self, flags):
                 return memoryview(b"hello")
 
@@ -4481,26 +4481,26 @@ class TestPythonBufferProtocol(unittest.TestCase):
         self.assertEqual(bytes(MyBuffer()), b"hello")
 
     def test_bad_buffer_method(self):
-        class MustReturnMV:
+        klasse MustReturnMV:
             def __buffer__(self, flags):
                 return 42
 
         self.assertRaises(TypeError, memoryview, MustReturnMV())
 
-        class NoBytesEither:
+        klasse NoBytesEither:
             def __buffer__(self, flags):
                 return b"hello"
 
         self.assertRaises(TypeError, memoryview, NoBytesEither())
 
-        class WrongArity:
+        klasse WrongArity:
             def __buffer__(self):
                 return memoryview(b"hello")
 
         self.assertRaises(TypeError, memoryview, WrongArity())
 
     def test_release_buffer(self):
-        class WhatToRelease:
+        klasse WhatToRelease:
             def __init__(self):
                 self.held = False
                 self.ba = bytearray(b"hello")
@@ -4522,7 +4522,7 @@ class TestPythonBufferProtocol(unittest.TestCase):
         self.assertFalse(wr.held)
 
     def test_same_buffer_returned(self):
-        class WhatToRelease:
+        klasse WhatToRelease:
             def __init__(self):
                 self.held = False
                 self.ba = bytearray(b"hello")
@@ -4547,7 +4547,7 @@ class TestPythonBufferProtocol(unittest.TestCase):
         self.assertFalse(wr.held)
 
     def test_buffer_flags(self):
-        class PossiblyMutable:
+        klasse PossiblyMutable:
             def __init__(self, data, mutable) -> None:
                 self._data = bytearray(data)
                 self._mutable = mutable
@@ -4638,7 +4638,7 @@ class TestPythonBufferProtocol(unittest.TestCase):
                           source, 1, PyBUF_WRITABLE)
 
     def test_inheritance(self):
-        class A(bytearray):
+        klasse A(bytearray):
             def __buffer__(self, flags):
                 return super().__buffer__(flags)
 
@@ -4648,7 +4648,7 @@ class TestPythonBufferProtocol(unittest.TestCase):
 
     def test_inheritance_releasebuffer(self):
         rb_call_count = 0
-        class B(bytearray):
+        klasse B(bytearray):
             def __buffer__(self, flags):
                 return super().__buffer__(flags)
             def __release_buffer__(self, view):
@@ -4663,7 +4663,7 @@ class TestPythonBufferProtocol(unittest.TestCase):
         self.assertEqual(rb_call_count, 1)
 
     def test_inherit_but_return_something_else(self):
-        class A(bytearray):
+        klasse A(bytearray):
             def __buffer__(self, flags):
                 return memoryview(b"hello")
 
@@ -4673,7 +4673,7 @@ class TestPythonBufferProtocol(unittest.TestCase):
 
         rb_call_count = 0
         rb_raised = False
-        class B(bytearray):
+        klasse B(bytearray):
             def __buffer__(self, flags):
                 return memoryview(b"hello")
             def __release_buffer__(self, view):
@@ -4693,7 +4693,7 @@ class TestPythonBufferProtocol(unittest.TestCase):
         self.assertIs(rb_raised, True)
 
     def test_override_only_release(self):
-        class C(bytearray):
+        klasse C(bytearray):
             def __release_buffer__(self, buffer):
                 super().__release_buffer__(buffer)
 
@@ -4704,7 +4704,7 @@ class TestPythonBufferProtocol(unittest.TestCase):
     def test_release_saves_reference(self):
         smuggled_buffer = None
 
-        class C(bytearray):
+        klasse C(bytearray):
             def __release_buffer__(s, buffer: memoryview):
                 with self.assertRaises(ValueError):
                     memoryview(buffer)
@@ -4731,7 +4731,7 @@ class TestPythonBufferProtocol(unittest.TestCase):
     def test_release_saves_reference_no_subclassing(self):
         ba = bytearray(b"hello")
 
-        class C:
+        klasse C:
             def __buffer__(self, flags):
                 return memoryview(ba)
 
@@ -4749,11 +4749,11 @@ class TestPythonBufferProtocol(unittest.TestCase):
         ba.clear()
 
     def test_multiple_inheritance_buffer_last(self):
-        class A:
+        klasse A:
             def __buffer__(self, flags):
                 return memoryview(b"hello A")
 
-        class B(A, bytearray):
+        klasse B(A, bytearray):
             def __buffer__(self, flags):
                 return super().__buffer__(flags)
 
@@ -4761,11 +4761,11 @@ class TestPythonBufferProtocol(unittest.TestCase):
         with memoryview(b) as mv:
             self.assertEqual(mv.tobytes(), b"hello A")
 
-        class Releaser:
+        klasse Releaser:
             def __release_buffer__(self, buffer):
                 self.buffer = buffer
 
-        class C(Releaser, bytearray):
+        klasse C(Releaser, bytearray):
             def __buffer__(self, flags):
                 return super().__buffer__(flags)
 
@@ -4777,14 +4777,14 @@ class TestPythonBufferProtocol(unittest.TestCase):
             c.buffer.tobytes()
 
     def test_multiple_inheritance_buffer_last_raising(self):
-        class A:
+        klasse A:
             def __buffer__(self, flags):
                 raise RuntimeError("should not be called")
 
             def __release_buffer__(self, buffer):
                 raise RuntimeError("should not be called")
 
-        class B(bytearray, A):
+        klasse B(bytearray, A):
             def __buffer__(self, flags):
                 return super().__buffer__(flags)
 
@@ -4792,12 +4792,12 @@ class TestPythonBufferProtocol(unittest.TestCase):
         with memoryview(b) as mv:
             self.assertEqual(mv.tobytes(), b"hello")
 
-        class Releaser:
+        klasse Releaser:
             buffer = None
             def __release_buffer__(self, buffer):
                 self.buffer = buffer
 
-        class C(bytearray, Releaser):
+        klasse C(bytearray, Releaser):
             def __buffer__(self, flags):
                 return super().__buffer__(flags)
 
@@ -4808,7 +4808,7 @@ class TestPythonBufferProtocol(unittest.TestCase):
         self.assertIs(c.buffer, None)
 
     def test_release_buffer_with_exception_set(self):
-        class A:
+        klasse A:
             def __buffer__(self, flags):
                 return memoryview(bytes(8))
             def __release_buffer__(self, view):

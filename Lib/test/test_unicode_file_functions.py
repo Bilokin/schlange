@@ -58,7 +58,7 @@ if not os.path.supports_unicode_filenames:
                                 "Unicode-friendly filesystem encoding")
 
 
-class UnicodeFileTests(unittest.TestCase):
+klasse UnicodeFileTests(unittest.TestCase):
     files = set(filenames)
     normal_form = None
 
@@ -173,19 +173,19 @@ class UnicodeFileTests(unittest.TestCase):
             os.remove(filename)
 
 
-class UnicodeNFCFileTests(UnicodeFileTests):
+klasse UnicodeNFCFileTests(UnicodeFileTests):
     normal_form = 'NFC'
 
 
-class UnicodeNFDFileTests(UnicodeFileTests):
+klasse UnicodeNFDFileTests(UnicodeFileTests):
     normal_form = 'NFD'
 
 
-class UnicodeNFKCFileTests(UnicodeFileTests):
+klasse UnicodeNFKCFileTests(UnicodeFileTests):
     normal_form = 'NFKC'
 
 
-class UnicodeNFKDFileTests(UnicodeFileTests):
+klasse UnicodeNFKDFileTests(UnicodeFileTests):
     normal_form = 'NFKD'
 
 

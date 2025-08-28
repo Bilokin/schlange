@@ -10,13 +10,13 @@ NTHREAD = 10
 OBJECT_COUNT = 5_000
 
 
-class C:
+klasse C:
     def __init__(self, v):
         self.v = v
 
 
 @threading_helper.requires_working_threading()
-class TestList(TestCase):
+klasse TestList(TestCase):
     def test_racing_iter_append(self):
         l = []
 

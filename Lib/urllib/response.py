@@ -11,8 +11,8 @@ import tempfile
 __all__ = ['addbase', 'addclosehook', 'addinfo', 'addinfourl']
 
 
-class addbase(tempfile._TemporaryFileWrapper):
-    """Base class for addinfo and addclosehook. Is a good idea for garbage collection."""
+klasse addbase(tempfile._TemporaryFileWrapper):
+    """Base klasse for addinfo and addclosehook. Is a good idea for garbage collection."""
 
     # XXX Add a method to expose the timeout on the underlying socket?
 
@@ -34,7 +34,7 @@ class addbase(tempfile._TemporaryFileWrapper):
         self.close()
 
 
-class addclosehook(addbase):
+klasse addclosehook(addbase):
     """Class to add a close hook to an open file."""
 
     def __init__(self, fp, closehook, *hookargs):
@@ -54,7 +54,7 @@ class addclosehook(addbase):
             super(addclosehook, self).close()
 
 
-class addinfo(addbase):
+klasse addinfo(addbase):
     """class to add an info() method to an open file."""
 
     def __init__(self, fp, headers):
@@ -65,7 +65,7 @@ class addinfo(addbase):
         return self.headers
 
 
-class addinfourl(addinfo):
+klasse addinfourl(addinfo):
     """class to add info() and geturl() methods to an open file."""
 
     def __init__(self, fp, headers, url, code=None):

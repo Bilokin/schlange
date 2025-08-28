@@ -62,7 +62,7 @@ def tearDownModule():
     colorizer.idleConf.userCfg = usercfg
 
 
-class FunctionTest(unittest.TestCase):
+klasse FunctionTest(unittest.TestCase):
 
     def test_any(self):
         self.assertEqual(colorizer.any('test', ('a', 'b', 'cd')),
@@ -95,7 +95,7 @@ class FunctionTest(unittest.TestCase):
         self.assertEqual(m.group(0), ' space')
 
 
-class ColorConfigTest(unittest.TestCase):
+klasse ColorConfigTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -124,7 +124,7 @@ class ColorConfigTest(unittest.TestCase):
         eq(text['inactiveselectbackground'], 'gray')
 
 
-class ColorDelegatorInstantiationTest(unittest.TestCase):
+klasse ColorDelegatorInstantiationTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -163,7 +163,7 @@ class ColorDelegatorInstantiationTest(unittest.TestCase):
         self.assertFalse(color.stop_colorizing)
 
 
-class ColorDelegatorTest(unittest.TestCase):
+klasse ColorDelegatorTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):

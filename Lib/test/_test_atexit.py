@@ -7,7 +7,7 @@ import unittest
 from test import support
 
 
-class GeneralTest(unittest.TestCase):
+klasse GeneralTest(unittest.TestCase):
     def setUp(self):
         atexit._clear()
 

@@ -4,7 +4,7 @@ from idlelib import debugobj
 import unittest
 
 
-class ObjectTreeItemTest(unittest.TestCase):
+klasse ObjectTreeItemTest(unittest.TestCase):
 
     def test_init(self):
         ti = debugobj.ObjectTreeItem('label', 22)
@@ -13,21 +13,21 @@ class ObjectTreeItemTest(unittest.TestCase):
         self.assertEqual(ti.setfunction, None)
 
 
-class ClassTreeItemTest(unittest.TestCase):
+klasse ClassTreeItemTest(unittest.TestCase):
 
     def test_isexpandable(self):
         ti = debugobj.ClassTreeItem('label', 0)
         self.assertTrue(ti.IsExpandable())
 
 
-class AtomicObjectTreeItemTest(unittest.TestCase):
+klasse AtomicObjectTreeItemTest(unittest.TestCase):
 
     def test_isexpandable(self):
         ti = debugobj.AtomicObjectTreeItem('label', 0)
         self.assertFalse(ti.IsExpandable())
 
 
-class SequenceTreeItemTest(unittest.TestCase):
+klasse SequenceTreeItemTest(unittest.TestCase):
 
     def test_isexpandable(self):
         ti = debugobj.SequenceTreeItem('label', ())
@@ -40,7 +40,7 @@ class SequenceTreeItemTest(unittest.TestCase):
         self.assertEqual(list(ti.keys()), [0, 1, 2])  # keys() is a range.
 
 
-class DictTreeItemTest(unittest.TestCase):
+klasse DictTreeItemTest(unittest.TestCase):
 
     def test_isexpandable(self):
         ti = debugobj.DictTreeItem('label', {})

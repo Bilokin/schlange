@@ -22,7 +22,7 @@ def concretize(cls):
     return cls
 
 
-class TestNumbers(unittest.TestCase):
+klasse TestNumbers(unittest.TestCase):
     def test_int(self):
         self.assertIsSubclass(int, Integral)
         self.assertIsSubclass(int, Rational)
@@ -66,10 +66,10 @@ class TestNumbers(unittest.TestCase):
         self.assertRaises(TypeError, int, c1)
 
 
-class TestNumbersDefaultMethods(unittest.TestCase):
+klasse TestNumbersDefaultMethods(unittest.TestCase):
     def test_complex(self):
         @concretize
-        class MyComplex(Complex):
+        klasse MyComplex(Complex):
             def __init__(self, real, imag):
                 self.r = real
                 self.i = imag
@@ -111,7 +111,7 @@ class TestNumbersDefaultMethods(unittest.TestCase):
 
     def test_real(self):
         @concretize
-        class MyReal(Real):
+        klasse MyReal(Real):
             def __init__(self, n):
                 self.n = n
 
@@ -154,7 +154,7 @@ class TestNumbersDefaultMethods(unittest.TestCase):
 
     def test_rational(self):
         @concretize
-        class MyRational(Rational):
+        klasse MyRational(Rational):
             def __init__(self, numerator, denominator):
                 self.n = numerator
                 self.d = denominator
@@ -173,7 +173,7 @@ class TestNumbersDefaultMethods(unittest.TestCase):
 
     def test_integral(self):
         @concretize
-        class MyIntegral(Integral):
+        klasse MyIntegral(Integral):
             def __init__(self, n):
                 self.n = n
 

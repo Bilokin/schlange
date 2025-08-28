@@ -129,7 +129,7 @@ def load_data(fobj):
     return trans_idx, trans_list_utc, utcoff, isdst, abbr, tz_str
 
 
-class _TZifHeader:
+klasse _TZifHeader:
     __slots__ = [
         "version",
         "isutcnt",
@@ -165,5 +165,5 @@ class _TZifHeader:
         return cls(*args)
 
 
-class ZoneInfoNotFoundError(KeyError):
+klasse ZoneInfoNotFoundError(KeyError):
     """Exception raised when a ZoneInfo key is not found."""

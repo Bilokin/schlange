@@ -67,25 +67,25 @@ def uu_decode(input, errors='strict'):
 
     return (outfile.getvalue(), len(input))
 
-class Codec(codecs.Codec):
+klasse Codec(codecs.Codec):
     def encode(self, input, errors='strict'):
         return uu_encode(input, errors)
 
     def decode(self, input, errors='strict'):
         return uu_decode(input, errors)
 
-class IncrementalEncoder(codecs.IncrementalEncoder):
+klasse IncrementalEncoder(codecs.IncrementalEncoder):
     def encode(self, input, final=False):
         return uu_encode(input, self.errors)[0]
 
-class IncrementalDecoder(codecs.IncrementalDecoder):
+klasse IncrementalDecoder(codecs.IncrementalDecoder):
     def decode(self, input, final=False):
         return uu_decode(input, self.errors)[0]
 
-class StreamWriter(Codec, codecs.StreamWriter):
+klasse StreamWriter(Codec, codecs.StreamWriter):
     charbuffertype = bytes
 
-class StreamReader(Codec, codecs.StreamReader):
+klasse StreamReader(Codec, codecs.StreamReader):
     charbuffertype = bytes
 
 ### encodings module API

@@ -24,7 +24,7 @@ def dedent(bstr):
 
 
 @parameterize
-class TestInversion(TestEmailBase):
+klasse TestInversion(TestEmailBase):
 
     policy = policy.default
     message = EmailMessage

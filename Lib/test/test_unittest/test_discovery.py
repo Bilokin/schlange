@@ -14,7 +14,7 @@ import test.test_unittest
 from test.test_importlib import util as test_util
 
 
-class TestableTestProgram(unittest.TestProgram):
+klasse TestableTestProgram(unittest.TestProgram):
     module = None
     exit = True
     defaultTest = failfast = catchbreak = buffer = None
@@ -26,7 +26,7 @@ class TestableTestProgram(unittest.TestProgram):
         pass
 
 
-class TestDiscovery(unittest.TestCase):
+klasse TestDiscovery(unittest.TestCase):
 
     # Heavily mocked tests so I can avoid hitting the filesystem
     def test_get_name_from_path(self):
@@ -157,7 +157,7 @@ class TestDiscovery(unittest.TestCase):
         os.path.isfile = lambda path: os.path.basename(path) not in directories
         self.addCleanup(restore_isfile)
 
-        class Module(object):
+        klasse Module(object):
             paths = []
             load_tests_args = []
 
@@ -231,7 +231,7 @@ class TestDiscovery(unittest.TestCase):
         os.path.isfile = lambda path: os.path.basename(path) not in directories
         self.addCleanup(restore_isfile)
 
-        class Module(object):
+        klasse Module(object):
             paths = []
             load_tests_args = []
 
@@ -316,7 +316,7 @@ class TestDiscovery(unittest.TestCase):
         os.path.isdir = lambda path: not path.endswith('.py')
         os.path.isfile = lambda path: path.endswith('.py')
 
-        class Module(object):
+        klasse Module(object):
             paths = []
             load_tests_args = []
 
@@ -457,7 +457,7 @@ class TestDiscovery(unittest.TestCase):
         os.path.isdir = lambda path: not path.endswith('.py')
         self.addCleanup(sys.path.remove, abspath('/toplevel'))
 
-        class Module(object):
+        klasse Module(object):
             paths = []
             load_tests_args = []
 
@@ -657,7 +657,7 @@ class TestDiscovery(unittest.TestCase):
         program = object.__new__(unittest.TestProgram)
         program._initArgParsers()
 
-        class Loader(object):
+        klasse Loader(object):
             args = []
             def discover(self, start_dir, pattern, top_level_dir):
                 self.args.append((start_dir, pattern, top_level_dir))
@@ -670,7 +670,7 @@ class TestDiscovery(unittest.TestCase):
     def test_command_line_handling_do_discovery_calls_loader(self):
         program = TestableTestProgram()
 
-        class Loader(object):
+        klasse Loader(object):
             args = []
             def discover(self, start_dir, pattern, top_level_dir):
                 self.args.append((start_dir, pattern, top_level_dir))
@@ -742,7 +742,7 @@ class TestDiscovery(unittest.TestCase):
         self.assertTrue(program.catchbreak)
 
     def setup_module_clash(self):
-        class Module(object):
+        klasse Module(object):
             __file__ = 'bar/foo.py'
         sys.modules['foo'] = Module
         full_path = os.path.abspath('foo')

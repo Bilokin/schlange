@@ -8,7 +8,7 @@ from _testinternalcapi import emscripten_set_up_async_input_device
 from pathlib import Path
 
 
-class EmscriptenAsyncInputDeviceTest(unittest.TestCase):
+klasse EmscriptenAsyncInputDeviceTest(unittest.TestCase):
     def test_emscripten_async_input_device(self):
         jspi_supported = emscripten_set_up_async_input_device()
         p = Path("/dev/blah")

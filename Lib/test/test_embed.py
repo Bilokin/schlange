@@ -83,7 +83,7 @@ def remove_python_envvars():
     return env
 
 
-class EmbeddingTestsMixin:
+klasse EmbeddingTestsMixin:
     def setUp(self):
         exename = "_testembed"
         builddir = os.path.dirname(sys.executable)
@@ -193,7 +193,7 @@ class EmbeddingTestsMixin:
                 current_run = []
 
 
-class EmbeddingTests(EmbeddingTestsMixin, unittest.TestCase):
+klasse EmbeddingTests(EmbeddingTestsMixin, unittest.TestCase):
     maxDiff = 100 * 50
 
     def test_subinterps_main(self):
@@ -526,7 +526,7 @@ def config_dev_mode(preconfig, config):
 
 
 @unittest.skipIf(_testinternalcapi is None, "requires _testinternalcapi")
-class InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
+klasse InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
     maxDiff = 4096
     UTF8_MODE_ERRORS = ('surrogatepass' if MS_WINDOWS else 'surrogateescape')
 
@@ -1852,7 +1852,7 @@ class InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         self.assertEqual(err, "")
 
 
-class AuditingTests(EmbeddingTestsMixin, unittest.TestCase):
+klasse AuditingTests(EmbeddingTestsMixin, unittest.TestCase):
     def test_open_code_hook(self):
         self.run_embedded_interpreter("test_open_code_hook")
 
@@ -1913,7 +1913,7 @@ class AuditingTests(EmbeddingTestsMixin, unittest.TestCase):
         self.run_embedded_interpreter("test_gilstate_after_finalization")
 
 
-class MiscTests(EmbeddingTestsMixin, unittest.TestCase):
+klasse MiscTests(EmbeddingTestsMixin, unittest.TestCase):
     def test_unicode_id_init(self):
         # bpo-42882: Test that _PyUnicode_FromId() works
         # when Python is initialized multiples times.

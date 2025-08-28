@@ -25,7 +25,7 @@ sys_version = python_implementation() + "/" + sys.version.split()[0]
 software_version = server_version + ' ' + sys_version
 
 
-class ServerHandler(SimpleHandler):
+klasse ServerHandler(SimpleHandler):
 
     server_software = software_version
 
@@ -39,7 +39,7 @@ class ServerHandler(SimpleHandler):
 
 
 
-class WSGIServer(HTTPServer):
+klasse WSGIServer(HTTPServer):
 
     """BaseHTTPServer that implements the Python WSGI protocol"""
 
@@ -68,7 +68,7 @@ class WSGIServer(HTTPServer):
 
 
 
-class WSGIRequestHandler(BaseHTTPRequestHandler):
+klasse WSGIRequestHandler(BaseHTTPRequestHandler):
 
     server_version = "WSGIServer/" + __version__
 

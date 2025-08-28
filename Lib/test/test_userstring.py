@@ -6,7 +6,7 @@ from test import string_tests
 
 from collections import UserString
 
-class UserStringTest(
+klasse UserStringTest(
     string_tests.StringLikeTest,
     unittest.TestCase
     ):
@@ -41,10 +41,10 @@ class UserStringTest(
         getattr(object, methodname)(*args)
 
     def test_rmod(self):
-        class ustr2(UserString):
+        klasse ustr2(UserString):
             pass
 
-        class ustr3(ustr2):
+        klasse ustr3(ustr2):
             def __rmod__(self, other):
                 return super().__rmod__(other)
 

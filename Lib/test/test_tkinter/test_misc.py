@@ -9,7 +9,7 @@ from test.test_tkinter.support import (AbstractTkTest, AbstractDefaultRootTest,
 
 support.requires('gui')
 
-class MiscTest(AbstractTkTest, unittest.TestCase):
+klasse MiscTest(AbstractTkTest, unittest.TestCase):
 
     def test_all(self):
         self.assertIn("Widget", tkinter.__all__)
@@ -31,7 +31,7 @@ class MiscTest(AbstractTkTest, unittest.TestCase):
         self.assertEqual(repr(f), '<tkinter.Frame object .top.child>')
 
     def test_generated_names(self):
-        class Button2(tkinter.Button):
+        klasse Button2(tkinter.Button):
             pass
 
         t = tkinter.Toplevel(self.root)
@@ -406,7 +406,7 @@ class MiscTest(AbstractTkTest, unittest.TestCase):
                          " x=10 y=20 width=300 height=200>")
 
     def test_eventtype_enum(self):
-        class CheckedEventType(enum.StrEnum):
+        klasse CheckedEventType(enum.StrEnum):
             KeyPress = '2'
             Key = KeyPress
             KeyRelease = '3'
@@ -509,7 +509,7 @@ class MiscTest(AbstractTkTest, unittest.TestCase):
         self.assertEqual(widget.selection_get(), '\u20ac\0abc\x00def')
 
 
-class WmTest(AbstractTkTest, unittest.TestCase):
+klasse WmTest(AbstractTkTest, unittest.TestCase):
 
     def test_wm_attribute(self):
         w = self.root
@@ -589,7 +589,7 @@ class WmTest(AbstractTkTest, unittest.TestCase):
         t.destroy()
 
 
-class EventTest(AbstractTkTest, unittest.TestCase):
+klasse EventTest(AbstractTkTest, unittest.TestCase):
 
     def test_focus(self):
         f = tkinter.Frame(self.root, width=150, height=100)
@@ -867,7 +867,7 @@ class EventTest(AbstractTkTest, unittest.TestCase):
             f"<VirtualEvent event x=50 y=0>")
 
 
-class BindTest(AbstractTkTest, unittest.TestCase):
+klasse BindTest(AbstractTkTest, unittest.TestCase):
 
     def setUp(self):
         super().setUp()
@@ -1285,7 +1285,7 @@ class BindTest(AbstractTkTest, unittest.TestCase):
         self.assertEqual(events, [('tag', f)])
 
 
-class DefaultRootTest(AbstractDefaultRootTest, unittest.TestCase):
+klasse DefaultRootTest(AbstractDefaultRootTest, unittest.TestCase):
 
     def test_default_root(self):
         self.assertIs(tkinter._support_default_root, True)

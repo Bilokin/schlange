@@ -6,7 +6,7 @@ def frange(start, stop, step):
         yield start
         start += step
 
-class ColorsysTest(unittest.TestCase):
+klasse ColorsysTest(unittest.TestCase):
 
     def assertTripleEqual(self, tr1, tr2):
         self.assertEqual(len(tr1), 3)

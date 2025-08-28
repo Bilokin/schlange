@@ -23,7 +23,7 @@ _MODE_READ     = 1
 _MODE_WRITE    = 3
 
 
-class BZ2File(_streams.BaseStream):
+klasse BZ2File(_streams.BaseStream):
 
     """A file object providing transparent bzip2 (de)compression.
 

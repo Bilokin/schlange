@@ -25,7 +25,7 @@ def wait_threads_blocked(nthread):
     time.sleep(0.010 * nthread)
 
 
-class Bunch(object):
+klasse Bunch(object):
     """
     A bunch of threads.
     """
@@ -92,7 +92,7 @@ class Bunch(object):
         self._can_exit = True
 
 
-class BaseTestCase(unittest.TestCase):
+klasse BaseTestCase(unittest.TestCase):
     def setUp(self):
         self._threads = threading_helper.threading_setup()
 
@@ -109,7 +109,7 @@ class BaseTestCase(unittest.TestCase):
         self.assertLess(actual, expected * 10.0)
 
 
-class BaseLockTests(BaseTestCase):
+klasse BaseLockTests(BaseTestCase):
     """
     Tests for both recursive and non-recursive locks.
     """
@@ -267,7 +267,7 @@ class BaseLockTests(BaseTestCase):
         self.assertIsNone(ref())
 
 
-class LockTests(BaseLockTests):
+klasse LockTests(BaseLockTests):
     """
     Tests for non-recursive, weak locks
     (which can be acquired and released from different threads).
@@ -333,7 +333,7 @@ class LockTests(BaseLockTests):
         use_lock(lock2)
 
 
-class RLockTests(BaseLockTests):
+klasse RLockTests(BaseLockTests):
     """
     Tests for recursive locks.
     """
@@ -486,7 +486,7 @@ class RLockTests(BaseLockTests):
         self.assertFalse(lock._is_owned())
 
 
-class EventTests(BaseTestCase):
+klasse EventTests(BaseTestCase):
     """
     Tests for Event objects.
     """
@@ -598,7 +598,7 @@ class EventTests(BaseTestCase):
         self.assertRegex(repr(evt), r"<\w+\.Event at .*: set>")
 
 
-class ConditionTests(BaseTestCase):
+klasse ConditionTests(BaseTestCase):
     """
     Tests for condition variables.
     """
@@ -800,7 +800,7 @@ class ConditionTests(BaseTestCase):
         self.assertEqual(len(success), 1)
 
 
-class BaseSemaphoreTests(BaseTestCase):
+klasse BaseSemaphoreTests(BaseTestCase):
     """
     Common tests for {bounded, unbounded} semaphore objects.
     """
@@ -995,7 +995,7 @@ class BaseSemaphoreTests(BaseTestCase):
         self.assertTrue(sem.acquire(False))
         sem.release()
 
-class SemaphoreTests(BaseSemaphoreTests):
+klasse SemaphoreTests(BaseSemaphoreTests):
     """
     Tests for unbounded semaphores.
     """
@@ -1018,7 +1018,7 @@ class SemaphoreTests(BaseSemaphoreTests):
         self.assertRegex(repr(sem), r"<\w+\.Semaphore at .*: value=4>")
 
 
-class BoundedSemaphoreTests(BaseSemaphoreTests):
+klasse BoundedSemaphoreTests(BaseSemaphoreTests):
     """
     Tests for bounded semaphores.
     """
@@ -1038,7 +1038,7 @@ class BoundedSemaphoreTests(BaseSemaphoreTests):
         self.assertRegex(repr(sem), r"<\w+\.BoundedSemaphore at .*: value=2/3>")
 
 
-class BarrierTests(BaseTestCase):
+klasse BarrierTests(BaseTestCase):
     """
     Tests for Barrier objects.
     """

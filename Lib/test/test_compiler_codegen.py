@@ -5,7 +5,7 @@ from test.support.bytecode_helper import CodegenTestCase
 # Tests for the code-generation stage of the compiler.
 # Examine the un-optimized code generated from the AST.
 
-class IsolatedCodeGenTests(CodegenTestCase):
+klasse IsolatedCodeGenTests(CodegenTestCase):
 
     def assertInstructionsMatch_recursive(self, insts, expected_insts):
         expected_nested = [i for i in expected_insts if isinstance(i, list)]

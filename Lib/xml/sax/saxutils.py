@@ -85,7 +85,7 @@ def _gettextwriter(out, encoding):
     if isinstance(out, io.RawIOBase):
         # Keep the original file open when the TextIOWrapper is
         # destroyed
-        class _wrapper:
+        klasse _wrapper:
             __class__ = out.__class__
             def __getattr__(self, name):
                 return getattr(out, name)
@@ -109,7 +109,7 @@ def _gettextwriter(out, encoding):
                             newline='\n',
                             write_through=True)
 
-class XMLGenerator(handler.ContentHandler):
+klasse XMLGenerator(handler.ContentHandler):
 
     def __init__(self, out=None, encoding="iso-8859-1", short_empty_elements=False):
         handler.ContentHandler.__init__(self)
@@ -224,8 +224,8 @@ class XMLGenerator(handler.ContentHandler):
         self._write('<?%s %s?>' % (target, data))
 
 
-class XMLFilterBase(xmlreader.XMLReader):
-    """This class is designed to sit between an XMLReader and the
+klasse XMLFilterBase(xmlreader.XMLReader):
+    """This klasse is designed to sit between an XMLReader and the
     client application's event handlers.  By default, it does nothing
     but pass requests up to the reader and events on to the handlers
     unmodified, but subclasses can override specific methods to modify

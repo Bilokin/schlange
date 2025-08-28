@@ -11,11 +11,11 @@ Py_file_input = _testcapi.Py_file_input
 Py_eval_input = _testcapi.Py_eval_input
 
 
-class DictSubclass(dict):
+klasse DictSubclass(dict):
     pass
 
 
-class CAPITest(unittest.TestCase):
+klasse CAPITest(unittest.TestCase):
     # TODO: Test the following functions:
     #
     #   PyRun_SimpleStringFlags

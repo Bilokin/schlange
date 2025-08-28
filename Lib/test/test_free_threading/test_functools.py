@@ -7,7 +7,7 @@ from threading import Barrier, Thread
 from test.support import threading_helper
 
 @threading_helper.requires_working_threading()
-class TestLRUCache(unittest.TestCase):
+klasse TestLRUCache(unittest.TestCase):
 
     def _test_concurrent_operations(self, maxsize):
         num_threads = 10

@@ -15,7 +15,7 @@ from xml.parsers import expat
 from xml.parsers.expat import errors
 
 
-class SetAttributeTest(unittest.TestCase):
+klasse SetAttributeTest(unittest.TestCase):
     def setUp(self):
         self.parser = expat.ParserCreate(namespace_separator='!')
 
@@ -82,8 +82,8 @@ data = b'''\
 
 
 # Produce UTF-8 output
-class ParseTest(unittest.TestCase):
-    class Outputter:
+klasse ParseTest(unittest.TestCase):
+    klasse Outputter:
         def __init__(self):
             self.out = []
 
@@ -272,7 +272,7 @@ class ParseTest(unittest.TestCase):
         self.assertEqual(expat.ErrorString(cm.exception.code),
                           expat.errors.XML_ERROR_FINISHED)
 
-class NamespaceSeparatorTest(unittest.TestCase):
+klasse NamespaceSeparatorTest(unittest.TestCase):
     def test_legal(self):
         # Tests that make sure we get errors when the namespace_separator value
         # is illegal, and that we don't for good values:
@@ -305,7 +305,7 @@ class NamespaceSeparatorTest(unittest.TestCase):
         expat.ParserCreate(namespace_separator='') # too short
 
 
-class InterningTest(unittest.TestCase):
+klasse InterningTest(unittest.TestCase):
     def test(self):
         # Test the interning machinery.
         p = expat.ParserCreate()
@@ -323,7 +323,7 @@ class InterningTest(unittest.TestCase):
 
     def test_issue9402(self):
         # create an ExternalEntityParserCreate with buffer text
-        class ExternalOutputter:
+        klasse ExternalOutputter:
             def __init__(self, parser):
                 self.parser = parser
                 self.parser_result = None
@@ -341,7 +341,7 @@ class InterningTest(unittest.TestCase):
         self.assertEqual(out.parser_result, 1)
 
 
-class BufferTextTest(unittest.TestCase):
+klasse BufferTextTest(unittest.TestCase):
     def setUp(self):
         self.stuff = []
         self.parser = expat.ParserCreate()
@@ -450,7 +450,7 @@ class BufferTextTest(unittest.TestCase):
 
 
 # Test handling of exception from callback:
-class HandlerExceptionTest(unittest.TestCase):
+klasse HandlerExceptionTest(unittest.TestCase):
     def StartElementHandler(self, name, attrs):
         raise RuntimeError(f'StartElementHandler: <{name}>')
 
@@ -508,7 +508,7 @@ class HandlerExceptionTest(unittest.TestCase):
 
 
 # Test Current* members:
-class PositionTest(unittest.TestCase):
+klasse PositionTest(unittest.TestCase):
     def StartElementHandler(self, name, attrs):
         self.check_pos('s')
 
@@ -539,7 +539,7 @@ class PositionTest(unittest.TestCase):
         self.parser.Parse(xml, True)
 
 
-class sf1296433Test(unittest.TestCase):
+klasse sf1296433Test(unittest.TestCase):
     def test_parse_only_xml_data(self):
         # https://bugs.python.org/issue1296433
         #
@@ -547,7 +547,7 @@ class sf1296433Test(unittest.TestCase):
         # this one doesn't crash
         #xml = "<?xml version='1.0'?><s>%s</s>" % ('a' * 10000)
 
-        class SpecificException(Exception):
+        klasse SpecificException(Exception):
             pass
 
         def handler(text):
@@ -558,7 +558,7 @@ class sf1296433Test(unittest.TestCase):
 
         self.assertRaises(SpecificException, parser.Parse, xml.encode('iso8859'))
 
-class ChardataBufferTest(unittest.TestCase):
+klasse ChardataBufferTest(unittest.TestCase):
     """
     test setting of chardata buffer size
     """
@@ -680,7 +680,7 @@ class ChardataBufferTest(unittest.TestCase):
         parser.Parse(xml2, True)
         self.assertEqual(self.n, 4)
 
-class MalformedInputTest(unittest.TestCase):
+klasse MalformedInputTest(unittest.TestCase):
     def test1(self):
         xml = b"\0\r\n"
         parser = expat.ParserCreate()
@@ -698,7 +698,7 @@ class MalformedInputTest(unittest.TestCase):
         with self.assertRaisesRegex(expat.ExpatError, err_pattern):
             parser.Parse(xml, True)
 
-class ErrorMessageTest(unittest.TestCase):
+klasse ErrorMessageTest(unittest.TestCase):
     def test_codes(self):
         # verify mapping of errors.codes and errors.messages
         self.assertEqual(errors.XML_ERROR_SYNTAX,
@@ -715,7 +715,7 @@ class ErrorMessageTest(unittest.TestCase):
                              errors.codes[errors.XML_ERROR_UNCLOSED_TOKEN])
 
 
-class ForeignDTDTests(unittest.TestCase):
+klasse ForeignDTDTests(unittest.TestCase):
     """
     Tests for the UseForeignDTD method of expat parser objects.
     """
@@ -767,7 +767,7 @@ class ForeignDTDTests(unittest.TestCase):
         self.assertEqual(handler_call_args, [("bar", "baz")])
 
 
-class ReparseDeferralTest(unittest.TestCase):
+klasse ReparseDeferralTest(unittest.TestCase):
     def test_getter_setter_round_trip(self):
         parser = expat.ParserCreate()
         enabled = (expat.version_info >= (2, 6, 0))

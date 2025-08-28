@@ -4,7 +4,7 @@ from importlib import resources
 from . import util
 
 
-class ContentsTests:
+klasse ContentsTests:
     expected = {
         '__init__.py',
         'binary.file',
@@ -18,15 +18,15 @@ class ContentsTests:
         assert self.expected <= contents
 
 
-class ContentsDiskTests(ContentsTests, util.DiskSetup, unittest.TestCase):
+klasse ContentsDiskTests(ContentsTests, util.DiskSetup, unittest.TestCase):
     pass
 
 
-class ContentsZipTests(ContentsTests, util.ZipSetup, unittest.TestCase):
+klasse ContentsZipTests(ContentsTests, util.ZipSetup, unittest.TestCase):
     pass
 
 
-class ContentsNamespaceTests(ContentsTests, util.DiskSetup, unittest.TestCase):
+klasse ContentsNamespaceTests(ContentsTests, util.DiskSetup, unittest.TestCase):
     MODULE = 'namespacedata01'
 
     expected = {

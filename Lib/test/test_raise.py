@@ -16,14 +16,14 @@ def get_tb():
         return e.__traceback__
 
 
-class Context:
+klasse Context:
     def __enter__(self):
         return self
     def __exit__(self, exc_type, exc_value, exc_tb):
         return True
 
 
-class TestRaise(unittest.TestCase):
+klasse TestRaise(unittest.TestCase):
     def test_invalid_reraise(self):
         try:
             raise
@@ -120,7 +120,7 @@ class TestRaise(unittest.TestCase):
         self.assertRaises(StopIteration, lambda: next(g))
 
     def test_erroneous_exception(self):
-        class MyException(Exception):
+        klasse MyException(Exception):
             def __init__(self):
                 raise RuntimeError()
 
@@ -133,7 +133,7 @@ class TestRaise(unittest.TestCase):
 
     def test_new_returns_invalid_instance(self):
         # See issue #11627.
-        class MyException(Exception):
+        klasse MyException(Exception):
             def __new__(cls, *args):
                 return object()
 
@@ -148,7 +148,7 @@ class TestRaise(unittest.TestCase):
 
 
 
-class TestCause(unittest.TestCase):
+klasse TestCause(unittest.TestCase):
 
     def testCauseSyntax(self):
         try:
@@ -186,7 +186,7 @@ class TestCause(unittest.TestCase):
             self.fail("No exception raised")
 
     def test_class_cause_nonexception_result(self):
-        class ConstructsNone(BaseException):
+        klasse ConstructsNone(BaseException):
             @classmethod
             def __new__(*args, **kwargs):
                 return None
@@ -209,7 +209,7 @@ class TestCause(unittest.TestCase):
             self.fail("No exception raised")
 
     def test_erroneous_cause(self):
-        class MyException(Exception):
+        klasse MyException(Exception):
             def __init__(self):
                 raise RuntimeError()
 
@@ -221,7 +221,7 @@ class TestCause(unittest.TestCase):
             self.fail("No exception raised")
 
 
-class TestTraceback(unittest.TestCase):
+klasse TestTraceback(unittest.TestCase):
 
     def test_sets_traceback(self):
         try:
@@ -242,7 +242,7 @@ class TestTraceback(unittest.TestCase):
             self.fail("No exception raised")
 
 
-class TestTracebackType(unittest.TestCase):
+klasse TestTracebackType(unittest.TestCase):
 
     def raiser(self):
         raise ValueError
@@ -308,7 +308,7 @@ class TestTracebackType(unittest.TestCase):
             types.TracebackType(other_tb, frame, 1, "nuh-uh")
 
 
-class TestContext(unittest.TestCase):
+klasse TestContext(unittest.TestCase):
     def test_instance_context_instance_raise(self):
         context = IndexError()
         try:
@@ -392,7 +392,7 @@ class TestContext(unittest.TestCase):
             self.fail("No exception raised")
 
     def test_context_manager(self):
-        class ContextManager:
+        klasse ContextManager:
             def __enter__(self):
                 pass
             def __exit__(self, t, v, tb):
@@ -471,7 +471,7 @@ class TestContext(unittest.TestCase):
         import gc
         # A re-raised exception in a __del__ caused the __context__
         # to be cleared
-        class C:
+        klasse C:
             def __del__(self):
                 try:
                     1/0
@@ -498,7 +498,7 @@ class TestContext(unittest.TestCase):
             self.assertEqual(ZeroDivisionError, cm.unraisable.exc_type)
 
 
-class TestRemovedFunctionality(unittest.TestCase):
+klasse TestRemovedFunctionality(unittest.TestCase):
     def test_tuples(self):
         try:
             raise (IndexError, KeyError) # This should be a tuple!

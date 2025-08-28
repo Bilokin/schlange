@@ -78,7 +78,7 @@ def pipe(*, duplex=False, overlapped=(True, True), bufsize=BUFSIZE):
 # Wrapper for a pipe handle
 
 
-class PipeHandle:
+klasse PipeHandle:
     """Wrapper for an overlapped pipe handle which is vaguely file-object like.
 
     The IOCP event loop can use these instead of socket objects.
@@ -122,7 +122,7 @@ class PipeHandle:
 # Replacement for subprocess.Popen using overlapped pipe handles
 
 
-class Popen(subprocess.Popen):
+klasse Popen(subprocess.Popen):
     """Replacement for subprocess.Popen using overlapped pipe handles.
 
     The stdin, stdout, stderr are None or instances of PipeHandle.

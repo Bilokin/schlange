@@ -13,7 +13,7 @@ def callback_func(arg):
 
 
 @unittest.skipUnless(sys.platform == "win32", 'Windows-specific test')
-class call_function_TestCase(unittest.TestCase):
+klasse call_function_TestCase(unittest.TestCase):
     # _ctypes.call_function is deprecated and private, but used by
     # Gary Bishp's readline module.  If we have it, we must test it as well.
 
@@ -30,7 +30,7 @@ class call_function_TestCase(unittest.TestCase):
                          kernel32.GetModuleHandleA(None))
 
 
-class CallbackTracbackTestCase(unittest.TestCase):
+klasse CallbackTracbackTestCase(unittest.TestCase):
     # When an exception is raised in a ctypes callback function, the C
     # code prints a traceback.
     #

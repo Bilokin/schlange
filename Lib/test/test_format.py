@@ -94,7 +94,7 @@ def test_exc_common(formatstr, args, exception, excmsg):
     test_exc(formatstr, args, exception, excmsg)
     test_exc(formatstr.encode('ascii'), args, exception, excmsg)
 
-class FormatTest(unittest.TestCase):
+klasse FormatTest(unittest.TestCase):
 
     def test_common_format(self):
         # test the format identifiers that work the same across
@@ -331,7 +331,7 @@ class FormatTest(unittest.TestCase):
         testcommon(b"%-5c", 65, b"A    ")
         # %b will insert a series of bytes, either from a type that supports
         # the Py_buffer protocol, or something that has a __bytes__ method
-        class FakeBytes(object):
+        klasse FakeBytes(object):
             def __bytes__(self):
                 return b'123'
         fb = FakeBytes()

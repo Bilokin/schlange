@@ -22,7 +22,7 @@ def resolve_address(host, port):
                                   socket.SOCK_STREAM)[0][4]
 
 
-class CreationTestCase(unittest.TestCase):
+klasse CreationTestCase(unittest.TestCase):
     """Test case for socket.gettimeout() and socket.settimeout()"""
 
     def setUp(self):
@@ -97,7 +97,7 @@ class CreationTestCase(unittest.TestCase):
         self.assertEqual(self.sock.gettimeout(), 1)
 
 
-class TimeoutTestCase(unittest.TestCase):
+klasse TimeoutTestCase(unittest.TestCase):
     # There are a number of tests here trying to make sure that an operation
     # doesn't take too much longer than expected.  But competing machine
     # activity makes it inevitable that such tests will fail at times.
@@ -134,7 +134,7 @@ class TimeoutTestCase(unittest.TestCase):
         self.assertGreater(delta, timeout - 1.0)
 
 
-class TCPTimeoutTestCase(TimeoutTestCase):
+klasse TCPTimeoutTestCase(TimeoutTestCase):
     """TCP test case for socket.socket() timeout functions"""
 
     def setUp(self):
@@ -256,7 +256,7 @@ class TCPTimeoutTestCase(TimeoutTestCase):
             self._sock_operation(100, 1.5, 'sendall', b"X" * 200000)
 
 
-class UDPTimeoutTestCase(TimeoutTestCase):
+klasse UDPTimeoutTestCase(TimeoutTestCase):
     """UDP test case for socket.socket() timeout functions"""
 
     def setUp(self):

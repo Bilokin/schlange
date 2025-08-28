@@ -17,7 +17,7 @@ PosInf = float('inf')
 NegInf = float('-inf')
 
 
-class JSONDecodeError(ValueError):
+klasse JSONDecodeError(ValueError):
     """Subclass of ValueError with the following additional properties:
 
     msg: The unformatted error message
@@ -259,7 +259,7 @@ def JSONArray(s_and_end, scan_once, _w=WHITESPACE.match, _ws=WHITESPACE_STR):
     return values, end
 
 
-class JSONDecoder(object):
+klasse JSONDecoder(object):
     """Simple JSON <https://json.org> decoder
 
     Performs the following translations in decoding by default:
@@ -295,7 +295,7 @@ class JSONDecoder(object):
         """``object_hook``, if specified, will be called with the result
         of every JSON object decoded and its return value will be used in
         place of the given ``dict``.  This can be used to provide custom
-        deserializations (e.g. to support JSON-RPC class hinting).
+        deserializations (e.g. to support JSON-RPC klasse hinting).
 
         ``object_pairs_hook``, if specified will be called with the result of
         every JSON object decoded with an ordered list of pairs.  The return

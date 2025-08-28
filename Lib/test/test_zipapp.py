@@ -13,7 +13,7 @@ from test.support import os_helper
 
 from unittest.mock import patch
 
-class ZipAppTest(unittest.TestCase):
+klasse ZipAppTest(unittest.TestCase):
 
     """Test zipapp module functionality."""
 
@@ -378,7 +378,7 @@ class ZipAppTest(unittest.TestCase):
         self.assertFalse(target.stat().st_mode & stat.S_IEXEC)
 
 
-class ZipAppCmdlineTest(unittest.TestCase):
+klasse ZipAppCmdlineTest(unittest.TestCase):
 
     """Test zipapp module command line API."""
 

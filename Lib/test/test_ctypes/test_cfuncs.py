@@ -10,7 +10,7 @@ from test.support import import_helper, threading_helper
 _ctypes_test = import_helper.import_module("_ctypes_test")
 
 
-class CFunctions(unittest.TestCase):
+klasse CFunctions(unittest.TestCase):
     _dll = CDLL(_ctypes_test.__file__)
 
     def S(self):
@@ -214,7 +214,7 @@ class CFunctions(unittest.TestCase):
 # The following repeats the above tests with stdcall functions (where
 # they are available)
 if hasattr(ctypes, 'WinDLL'):
-    class stdcall_dll(ctypes.WinDLL):
+    klasse stdcall_dll(ctypes.WinDLL):
         def __getattr__(self, name):
             if name[:2] == '__' and name[-2:] == '__':
                 raise AttributeError(name)
@@ -222,7 +222,7 @@ if hasattr(ctypes, 'WinDLL'):
             setattr(self, name, func)
             return func
 
-    class stdcallCFunctions(CFunctions):
+    klasse stdcallCFunctions(CFunctions):
         _dll = stdcall_dll(_ctypes_test.__file__)
 
 

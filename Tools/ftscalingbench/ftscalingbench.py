@@ -66,7 +66,7 @@ def object_lookup_special():
     for i in range(N):
         round(i / N)
 
-class MyContextManager:
+klasse MyContextManager:
     def __enter__(self):
         pass
     def __exit__(self, exc_type, exc_value, traceback):
@@ -97,7 +97,7 @@ def generator():
             accu += v
     return accu
 
-class Counter:
+klasse Counter:
     def __init__(self):
         self.i = 0
 
@@ -134,7 +134,7 @@ def module_function():
         total += module.double(i)
     return total
 
-class MyObject:
+klasse MyObject:
     pass
 
 @register_benchmark
@@ -189,7 +189,7 @@ def thread_local_read():
         _ = tmp.x
         _ = tmp.x
 
-class MyClass:
+klasse MyClass:
     __slots__ = ()
 
     def func(self):

@@ -21,14 +21,14 @@ else:
     SKIP_MODULES = ()
 
 
-class NoAll(RuntimeError):
+klasse NoAll(RuntimeError):
     pass
 
-class FailedImport(RuntimeError):
+klasse FailedImport(RuntimeError):
     pass
 
 
-class AllTest(unittest.TestCase):
+klasse AllTest(unittest.TestCase):
 
     def check_all(self, modname):
         names = {}

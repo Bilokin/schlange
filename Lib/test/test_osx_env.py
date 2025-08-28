@@ -11,7 +11,7 @@ import unittest
 @unittest.skipUnless(sys.platform == 'darwin' and
                      sysconfig.get_config_var('WITH_NEXT_FRAMEWORK'),
                      'unnecessary on this platform')
-class OSXEnvironmentVariableTestCase(unittest.TestCase):
+klasse OSXEnvironmentVariableTestCase(unittest.TestCase):
     def _check_sys(self, ev, cond, sv, val = sys.executable + 'dummy'):
         with EnvironmentVarGuard() as evg:
             subpc = [str(sys.executable), '-c',

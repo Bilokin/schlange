@@ -15,7 +15,7 @@ def three_way_cmp(x, y):
     return (x > y) - (x < y)
 
 
-class LibTest(unittest.TestCase):
+klasse LibTest(unittest.TestCase):
     def test_sqrt(self):
         lib.my_sqrt.argtypes = c_double,
         lib.my_sqrt.restype = c_double

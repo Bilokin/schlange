@@ -4,7 +4,7 @@ import os
 from platform import system as platform_system
 
 
-class ExceptionClassTests(unittest.TestCase):
+klasse ExceptionClassTests(unittest.TestCase):
 
     """Tests for anything relating to exception objects themselves (e.g.,
     inheritance hierarchy)"""
@@ -34,7 +34,7 @@ class ExceptionClassTests(unittest.TestCase):
             try:
                 last_exc = getattr(builtins, superclass_name)
             except AttributeError:
-                self.fail("base class %s not a built-in" % superclass_name)
+                self.fail("base klasse %s not a built-in" % superclass_name)
             self.assertIn(superclass_name, exc_set,
                           '%s not found' % superclass_name)
             exc_set.discard(superclass_name)
@@ -120,11 +120,11 @@ class ExceptionClassTests(unittest.TestCase):
         # in PyObject_SetAttr.
         import gc
         d = {}
-        class HashThisKeyWillClearTheDict(str):
+        klasse HashThisKeyWillClearTheDict(str):
             def __hash__(self) -> int:
                 d.clear()
                 return super().__hash__()
-        class Value(str):
+        klasse Value(str):
             pass
         exc = Exception()
 
@@ -140,7 +140,7 @@ class ExceptionClassTests(unittest.TestCase):
         gc.collect()
 
 
-class UsageTests(unittest.TestCase):
+klasse UsageTests(unittest.TestCase):
 
     """Test usage of exceptions"""
 
@@ -176,11 +176,11 @@ class UsageTests(unittest.TestCase):
                         "tuple" % type(object_))
 
     def test_raise_new_style_non_exception(self):
-        # You cannot raise a new-style class that does not inherit from
+        # You cannot raise a new-style klasse that does not inherit from
         # BaseException; the ability was not possible until BaseException's
         # introduction so no need to support new-style objects that do not
         # inherit from it.
-        class NewStyleClass(object):
+        klasse NewStyleClass(object):
             pass
         self.raise_fails(NewStyleClass)
         self.raise_fails(NewStyleClass())
@@ -192,7 +192,7 @@ class UsageTests(unittest.TestCase):
     def test_catch_non_BaseException(self):
         # Trying to catch an object that does not inherit from BaseException
         # is not allowed.
-        class NonBaseException(object):
+        klasse NonBaseException(object):
             pass
         self.catch_fails(NonBaseException)
         self.catch_fails(NonBaseException())

@@ -693,7 +693,7 @@ def get_exec_path(env=None):
 # Change environ to automatically call putenv() and unsetenv()
 from _collections_abc import MutableMapping, Mapping
 
-class _Environ(MutableMapping):
+klasse _Environ(MutableMapping):
     def __init__(self, data, encodekey, decodekey, encodevalue, decodevalue):
         self.encodekey = encodekey
         self.decodekey = decodekey
@@ -1041,7 +1041,7 @@ if sys.platform != 'vxworks':
             return _wrap_close(proc.stdin, proc)
 
     # Helper for popen() -- a proxy for a file whose close waits for the process
-    class _wrap_close:
+    klasse _wrap_close:
         def __init__(self, stream, proc):
             self._stream = stream
             self._proc = proc
@@ -1119,9 +1119,9 @@ if not _exists('fspath'):
     fspath.__name__ = "fspath"
 
 
-class PathLike(abc.ABC):
+klasse PathLike(abc.ABC):
 
-    """Abstract base class for implementing the file system path protocol."""
+    """Abstract base klasse for implementing the file system path protocol."""
 
     __slots__ = ()
 
@@ -1140,7 +1140,7 @@ class PathLike(abc.ABC):
 
 
 if name == 'nt':
-    class _AddedDllDirectory:
+    klasse _AddedDllDirectory:
         def __init__(self, path, cookie, remove_dll_directory):
             self.path = path
             self._cookie = cookie

@@ -37,12 +37,12 @@ else:
     _mkproxy = weakref.proxy
     del weakref, _weakref
 
-class _ClosedParser:
+klasse _ClosedParser:
     pass
 
 # --- ExpatLocator
 
-class ExpatLocator(xmlreader.Locator):
+klasse ExpatLocator(xmlreader.Locator):
     """Locator for use with the ExpatParser class.
 
     This uses a weak reference to the parser object to avoid creating
@@ -78,7 +78,7 @@ class ExpatLocator(xmlreader.Locator):
 
 # --- ExpatParser
 
-class ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
+klasse ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
     """SAX driver for the pyexpat C module."""
 
     def __init__(self, namespaceHandling=0, bufsize=2**16-20):

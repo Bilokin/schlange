@@ -55,21 +55,21 @@ def func_memoryerror():
 def func_overflowerror():
     raise OverflowError
 
-class AggrNoStep:
+klasse AggrNoStep:
     def __init__(self):
         pass
 
     def finalize(self):
         return 1
 
-class AggrNoFinalize:
+klasse AggrNoFinalize:
     def __init__(self):
         pass
 
     def step(self, x):
         pass
 
-class AggrExceptionInInit:
+klasse AggrExceptionInInit:
     def __init__(self):
         5/0
 
@@ -79,7 +79,7 @@ class AggrExceptionInInit:
     def finalize(self):
         pass
 
-class AggrExceptionInStep:
+klasse AggrExceptionInStep:
     def __init__(self):
         pass
 
@@ -89,7 +89,7 @@ class AggrExceptionInStep:
     def finalize(self):
         return 42
 
-class AggrExceptionInFinalize:
+klasse AggrExceptionInFinalize:
     def __init__(self):
         pass
 
@@ -99,7 +99,7 @@ class AggrExceptionInFinalize:
     def finalize(self):
         5/0
 
-class AggrCheckType:
+klasse AggrCheckType:
     def __init__(self):
         self.val = None
 
@@ -111,7 +111,7 @@ class AggrCheckType:
     def finalize(self):
         return self.val
 
-class AggrCheckTypes:
+klasse AggrCheckTypes:
     def __init__(self):
         self.val = 0
 
@@ -124,7 +124,7 @@ class AggrCheckTypes:
     def finalize(self):
         return self.val
 
-class AggrSum:
+klasse AggrSum:
     def __init__(self):
         self.val = 0.0
 
@@ -134,7 +134,7 @@ class AggrSum:
     def finalize(self):
         return self.val
 
-class AggrText:
+klasse AggrText:
     def __init__(self):
         self.txt = ""
     def step(self, txt):
@@ -143,7 +143,7 @@ class AggrText:
         return self.txt
 
 
-class FunctionTests(unittest.TestCase):
+klasse FunctionTests(unittest.TestCase):
     def setUp(self):
         self.con = sqlite.connect(":memory:")
 
@@ -427,7 +427,7 @@ class FunctionTests(unittest.TestCase):
             self.con.create_function("noop", 0, func=lambda: None)
 
 
-class WindowSumInt:
+klasse WindowSumInt:
     def __init__(self):
         self.count = 0
 
@@ -443,13 +443,13 @@ class WindowSumInt:
     def finalize(self):
         return self.count
 
-class BadWindow(Exception):
+klasse BadWindow(Exception):
     pass
 
 
 @unittest.skipIf(sqlite.sqlite_version_info < (3, 25, 0),
                  "Requires SQLite 3.25.0 or newer")
-class WindowFunctionTests(unittest.TestCase):
+klasse WindowFunctionTests(unittest.TestCase):
     def setUp(self):
         self.con = sqlite.connect(":memory:")
         self.cur = self.con.cursor()
@@ -517,17 +517,17 @@ class WindowFunctionTests(unittest.TestCase):
 
     @with_tracebacks(AttributeError)
     def test_win_missing_method(self):
-        class MissingValue:
+        klasse MissingValue:
             def step(self, x): pass
             def inverse(self, x): pass
             def finalize(self): return 42
 
-        class MissingInverse:
+        klasse MissingInverse:
             def step(self, x): pass
             def value(self): return 42
             def finalize(self): return 42
 
-        class MissingStep:
+        klasse MissingStep:
             def value(self): return 42
             def inverse(self, x): pass
             def finalize(self): return 42
@@ -551,7 +551,7 @@ class WindowFunctionTests(unittest.TestCase):
         # Note: SQLite does not (as of version 3.38.0) propagate finalize
         # callback errors to sqlite3_step(); this implies that OperationalError
         # is _not_ raised.
-        class MissingFinalize:
+        klasse MissingFinalize:
             def step(self, x): pass
             def value(self): return 42
             def inverse(self, x): pass
@@ -568,7 +568,7 @@ class WindowFunctionTests(unittest.TestCase):
 
     def test_win_redefine_function(self):
         # Redefine WindowSumInt; adjust the expected results accordingly.
-        class Redefined(WindowSumInt):
+        klasse Redefined(WindowSumInt):
             def step(self, value): self.count += value * 2
             def inverse(self, value): self.count -= value * 2
         expected = [(v[0], v[1]*2) for v in self.expected]
@@ -578,7 +578,7 @@ class WindowFunctionTests(unittest.TestCase):
         self.assertEqual(self.cur.fetchall(), expected)
 
     def test_win_error_value_return(self):
-        class ErrorValueReturn:
+        klasse ErrorValueReturn:
             def __init__(self): pass
             def step(self, x): pass
             def value(self): return 1 << 65
@@ -588,7 +588,7 @@ class WindowFunctionTests(unittest.TestCase):
                                self.cur.execute, self.query % "err_val_ret")
 
 
-class AggregateTests(unittest.TestCase):
+klasse AggregateTests(unittest.TestCase):
     def setUp(self):
         self.con = sqlite.connect(":memory:")
         cur = self.con.cursor()
@@ -724,7 +724,7 @@ class AggregateTests(unittest.TestCase):
             self.con.create_aggregate("test", 1, aggregate_class=AggrText)
 
 
-class AuthorizerTests(unittest.TestCase):
+klasse AuthorizerTests(unittest.TestCase):
     @staticmethod
     def authorizer_cb(action, arg1, arg2, dbname, source):
         if action != sqlite.SQLITE_SELECT:
@@ -771,7 +771,7 @@ class AuthorizerTests(unittest.TestCase):
             self.con.set_authorizer(authorizer_callback=lambda: None)
 
 
-class AuthorizerRaiseExceptionTests(AuthorizerTests):
+klasse AuthorizerRaiseExceptionTests(AuthorizerTests):
     @staticmethod
     def authorizer_cb(action, arg1, arg2, dbname, source):
         if action != sqlite.SQLITE_SELECT:
@@ -788,7 +788,7 @@ class AuthorizerRaiseExceptionTests(AuthorizerTests):
     def test_column_access(self):
         super().test_table_access()
 
-class AuthorizerIllegalTypeTests(AuthorizerTests):
+klasse AuthorizerIllegalTypeTests(AuthorizerTests):
     @staticmethod
     def authorizer_cb(action, arg1, arg2, dbname, source):
         if action != sqlite.SQLITE_SELECT:
@@ -797,7 +797,7 @@ class AuthorizerIllegalTypeTests(AuthorizerTests):
             return 0.0
         return sqlite.SQLITE_OK
 
-class AuthorizerLargeIntegerTests(AuthorizerTests):
+klasse AuthorizerLargeIntegerTests(AuthorizerTests):
     @staticmethod
     def authorizer_cb(action, arg1, arg2, dbname, source):
         if action != sqlite.SQLITE_SELECT:

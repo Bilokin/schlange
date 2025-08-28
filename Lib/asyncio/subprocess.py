@@ -14,7 +14,7 @@ STDOUT = subprocess.STDOUT
 DEVNULL = subprocess.DEVNULL
 
 
-class SubprocessStreamProtocol(streams.FlowControlMixin,
+klasse SubprocessStreamProtocol(streams.FlowControlMixin,
                                protocols.SubprocessProtocol):
     """Like StreamReaderProtocol, but for a subprocess."""
 
@@ -115,7 +115,7 @@ class SubprocessStreamProtocol(streams.FlowControlMixin,
             return self._stdin_closed
 
 
-class Process:
+klasse Process:
     def __init__(self, transport, protocol, loop):
         self._transport = transport
         self._protocol = protocol

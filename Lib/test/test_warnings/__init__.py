@@ -63,11 +63,11 @@ def warnings_state(module):
             module.filters = original_filters
 
 
-class TestWarning(Warning):
+klasse TestWarning(Warning):
     pass
 
 
-class BaseTest:
+klasse BaseTest:
 
     """Basic bookkeeping required for testing."""
 
@@ -95,7 +95,7 @@ class BaseTest:
         unittest.case.warnings = self.old_unittest_module
         super(BaseTest, self).tearDown()
 
-class PublicAPITests(BaseTest):
+klasse PublicAPITests(BaseTest):
 
     """Ensures that the correct values are exposed in the
     public API.
@@ -109,13 +109,13 @@ class PublicAPITests(BaseTest):
         self.assertSetEqual(set(self.module.__all__),
                             set(target_api))
 
-class CPublicAPITests(PublicAPITests, unittest.TestCase):
+klasse CPublicAPITests(PublicAPITests, unittest.TestCase):
     module = c_warnings
 
-class PyPublicAPITests(PublicAPITests, unittest.TestCase):
+klasse PyPublicAPITests(PublicAPITests, unittest.TestCase):
     module = py_warnings
 
-class FilterTests(BaseTest):
+klasse FilterTests(BaseTest):
 
     """Testing the filtering functionality."""
 
@@ -319,7 +319,7 @@ class FilterTests(BaseTest):
             self.assertEqual(w, [])
 
     def test_mutate_filter_list(self):
-        class X:
+        klasse X:
             def match(self, a):
                 L[:] = []
 
@@ -419,14 +419,14 @@ class FilterTests(BaseTest):
                     stderr = stderr.getvalue()
                     self.assertIn(error_msg, stderr)
 
-class CFilterTests(FilterTests, unittest.TestCase):
+klasse CFilterTests(FilterTests, unittest.TestCase):
     module = c_warnings
 
-class PyFilterTests(FilterTests, unittest.TestCase):
+klasse PyFilterTests(FilterTests, unittest.TestCase):
     module = py_warnings
 
 
-class WarnTests(BaseTest):
+klasse WarnTests(BaseTest):
 
     """Test warnings.warn() and warnings.warn_explicit()."""
 
@@ -583,7 +583,7 @@ class WarnTests(BaseTest):
         # issue 6415
         # Warnings instance with a bad format string for __str__ should not
         # trigger a bus error.
-        class BadStrWarning(Warning):
+        klasse BadStrWarning(Warning):
             """Warning with a bad format string for __str__."""
             def __str__(self):
                 return ("A bad formatted string %(err)" %
@@ -593,7 +593,7 @@ class WarnTests(BaseTest):
             self.module.warn(BadStrWarning())
 
     def test_warning_classes(self):
-        class MyWarningClass(Warning):
+        klasse MyWarningClass(Warning):
             pass
 
         # passing a non-subclass of Warning should raise a TypeError
@@ -601,7 +601,7 @@ class WarnTests(BaseTest):
         with self.assertRaisesRegex(TypeError, expected):
             self.module.warn('bad warning category', '')
 
-        expected = "category must be a Warning subclass, not class 'int'"
+        expected = "category must be a Warning subclass, not klasse 'int'"
         with self.assertRaisesRegex(TypeError, expected):
             self.module.warn('bad warning category', int)
 
@@ -716,7 +716,7 @@ class WarnTests(BaseTest):
             {'__name__': 'bar',
              '__spec__': types.SimpleNamespace(loader=object())})
 
-class CWarnTests(WarnTests, unittest.TestCase):
+klasse CWarnTests(WarnTests, unittest.TestCase):
     module = c_warnings
 
     # As an early adopter, we sanity check the
@@ -725,7 +725,7 @@ class CWarnTests(WarnTests, unittest.TestCase):
         self.assertIsNot(original_warnings, self.module)
         self.assertNotHasAttr(self.module.warn, '__code__')
 
-class PyWarnTests(WarnTests, unittest.TestCase):
+klasse PyWarnTests(WarnTests, unittest.TestCase):
     module = py_warnings
 
     # As an early adopter, we sanity check the
@@ -735,7 +735,7 @@ class PyWarnTests(WarnTests, unittest.TestCase):
         self.assertHasAttr(self.module.warn, '__code__')
 
 
-class WCmdLineTests(BaseTest):
+klasse WCmdLineTests(BaseTest):
 
     def test_improper_input(self):
         # Uses the private _setoption() function to test the parsing
@@ -770,11 +770,11 @@ class WCmdLineTests(BaseTest):
                 self.module.warn('test warning', TestWarning)
 
 
-class CWCmdLineTests(WCmdLineTests, unittest.TestCase):
+klasse CWCmdLineTests(WCmdLineTests, unittest.TestCase):
     module = c_warnings
 
 
-class PyWCmdLineTests(WCmdLineTests, unittest.TestCase):
+klasse PyWCmdLineTests(WCmdLineTests, unittest.TestCase):
     module = py_warnings
 
     def test_improper_option(self):
@@ -794,7 +794,7 @@ class PyWCmdLineTests(WCmdLineTests, unittest.TestCase):
         self.assertNotIn(b'RuntimeWarning', err)
 
 
-class _WarningsTests(BaseTest, unittest.TestCase):
+klasse _WarningsTests(BaseTest, unittest.TestCase):
 
     """Tests specific to the _warnings module."""
 
@@ -975,11 +975,11 @@ class _WarningsTests(BaseTest, unittest.TestCase):
         # bad splitlines() method.
         get_source_called = []
         def get_module_globals(*, splitlines_ret_val):
-            class BadSource(str):
+            klasse BadSource(str):
                 def splitlines(self):
                     return splitlines_ret_val
 
-            class BadLoader:
+            klasse BadLoader:
                 def get_source(self, fullname):
                     get_source_called.append(splitlines_ret_val)
                     return BadSource('spam')
@@ -1051,7 +1051,7 @@ class _WarningsTests(BaseTest, unittest.TestCase):
                 self.assertRaises(UserWarning, self.module.warn, 'bar')
 
 
-class WarningsDisplayTests(BaseTest):
+klasse WarningsDisplayTests(BaseTest):
 
     """Test the displaying of warnings and the ability to overload functions
     related to displaying warnings."""
@@ -1115,10 +1115,10 @@ class WarningsDisplayTests(BaseTest):
             self.assertEqual(file_object.getvalue(), expected)
 
 
-class CWarningsDisplayTests(WarningsDisplayTests, unittest.TestCase):
+klasse CWarningsDisplayTests(WarningsDisplayTests, unittest.TestCase):
     module = c_warnings
 
-class PyWarningsDisplayTests(WarningsDisplayTests, unittest.TestCase):
+klasse PyWarningsDisplayTests(WarningsDisplayTests, unittest.TestCase):
     module = py_warnings
 
     def test_tracemalloc(self):
@@ -1167,7 +1167,7 @@ class PyWarningsDisplayTests(WarningsDisplayTests, unittest.TestCase):
         self.assertEqual(stderr, expected)
 
 
-class CatchWarningTests(BaseTest):
+klasse CatchWarningTests(BaseTest):
 
     """Test catch_warnings()."""
 
@@ -1324,14 +1324,14 @@ class CatchWarningTests(BaseTest):
             with warnings_helper.check_warnings(('foo', RuntimeWarning)):
                 wmod.warn("foo")
 
-class CCatchWarningTests(CatchWarningTests, unittest.TestCase):
+klasse CCatchWarningTests(CatchWarningTests, unittest.TestCase):
     module = c_warnings
 
-class PyCatchWarningTests(CatchWarningTests, unittest.TestCase):
+klasse PyCatchWarningTests(CatchWarningTests, unittest.TestCase):
     module = py_warnings
 
 
-class EnvironmentVariableTests(BaseTest):
+klasse EnvironmentVariableTests(BaseTest):
 
     def test_single_warning(self):
         rc, stdout, stderr = assert_python_ok("-c",
@@ -1417,14 +1417,14 @@ class EnvironmentVariableTests(BaseTest):
             PYTHONDEVMODE="")
         self.assertEqual(stdout, str([PYTHONWARNINGS]).encode())
 
-class CEnvironmentVariableTests(EnvironmentVariableTests, unittest.TestCase):
+klasse CEnvironmentVariableTests(EnvironmentVariableTests, unittest.TestCase):
     module = c_warnings
 
-class PyEnvironmentVariableTests(EnvironmentVariableTests, unittest.TestCase):
+klasse PyEnvironmentVariableTests(EnvironmentVariableTests, unittest.TestCase):
     module = py_warnings
 
 
-class LocksTest(unittest.TestCase):
+klasse LocksTest(unittest.TestCase):
     @support.cpython_only
     @unittest.skipUnless(c_warnings, 'C module is required')
     def test_release_lock_no_lock(self):
@@ -1435,7 +1435,7 @@ class LocksTest(unittest.TestCase):
             c_warnings._release_lock()
 
 
-class _DeprecatedTest(BaseTest, unittest.TestCase):
+klasse _DeprecatedTest(BaseTest, unittest.TestCase):
 
     """Test _deprecated()."""
 
@@ -1474,7 +1474,7 @@ class _DeprecatedTest(BaseTest, unittest.TestCase):
                                             _version=version)
 
 
-class BootstrapTest(unittest.TestCase):
+klasse BootstrapTest(unittest.TestCase):
 
     def test_issue_8766(self):
         # "import encodings" emits a warning whereas the warnings is not loaded
@@ -1488,7 +1488,7 @@ class BootstrapTest(unittest.TestCase):
             assert_python_ok('-c', 'pass', '-W', 'always', PYTHONPATH=cwd)
 
 
-class FinalizationTest(unittest.TestCase):
+klasse FinalizationTest(unittest.TestCase):
     def test_finalization(self):
         # Issue #19421: warnings.warn() should not crash
         # during Python finalization
@@ -1496,7 +1496,7 @@ class FinalizationTest(unittest.TestCase):
 import warnings
 warn = warnings.warn
 
-class A:
+klasse A:
     def __del__(self):
         warn("test")
 
@@ -1524,7 +1524,7 @@ a=A()
         self.assertStartsWith(err, expected)
 
 
-class AsyncTests(BaseTest):
+klasse AsyncTests(BaseTest):
     """Verifies that the catch_warnings() context manager behaves
     as expected when used inside async co-routines.  This requires
     that the context_aware_warnings flag is enabled, so that
@@ -1610,15 +1610,15 @@ class AsyncTests(BaseTest):
         asyncio.run(run_parent())
 
 
-class CAsyncTests(AsyncTests, unittest.TestCase):
+klasse CAsyncTests(AsyncTests, unittest.TestCase):
     module = c_warnings
 
 
-class PyAsyncTests(AsyncTests, unittest.TestCase):
+klasse PyAsyncTests(AsyncTests, unittest.TestCase):
     module = py_warnings
 
 
-class ThreadTests(BaseTest):
+klasse ThreadTests(BaseTest):
     """Verifies that the catch_warnings() context manager behaves as
     expected when used within threads.  This requires that both the
     context_aware_warnings flag and thread_inherit_context flags are enabled.
@@ -1679,18 +1679,18 @@ class ThreadTests(BaseTest):
         run_threads()
 
 
-class CThreadTests(ThreadTests, unittest.TestCase):
+klasse CThreadTests(ThreadTests, unittest.TestCase):
     module = c_warnings
 
 
-class PyThreadTests(ThreadTests, unittest.TestCase):
+klasse PyThreadTests(ThreadTests, unittest.TestCase):
     module = py_warnings
 
 
-class DeprecatedTests(PyPublicAPITests):
+klasse DeprecatedTests(PyPublicAPITests):
     def test_dunder_deprecated(self):
         @deprecated("A will go away soon")
-        class A:
+        klasse A:
             pass
 
         self.assertEqual(A.__deprecated__, "A will go away soon")
@@ -1717,7 +1717,7 @@ class DeprecatedTests(PyPublicAPITests):
 
     def test_class(self):
         @deprecated("A will go away soon")
-        class A:
+        klasse A:
             pass
 
         with self.assertWarnsRegex(DeprecationWarning, "A will go away soon"):
@@ -1728,7 +1728,7 @@ class DeprecatedTests(PyPublicAPITests):
 
     def test_class_with_init(self):
         @deprecated("HasInit will go away soon")
-        class HasInit:
+        klasse HasInit:
             def __init__(self, x):
                 self.x = x
 
@@ -1740,7 +1740,7 @@ class DeprecatedTests(PyPublicAPITests):
         has_new_called = False
 
         @deprecated("HasNew will go away soon")
-        class HasNew:
+        klasse HasNew:
             def __new__(cls, x):
                 nonlocal has_new_called
                 has_new_called = True
@@ -1757,7 +1757,7 @@ class DeprecatedTests(PyPublicAPITests):
     def test_class_with_inherited_new(self):
         new_base_called = False
 
-        class NewBase:
+        klasse NewBase:
             def __new__(cls, x):
                 nonlocal new_base_called
                 new_base_called = True
@@ -1767,7 +1767,7 @@ class DeprecatedTests(PyPublicAPITests):
                 self.x = x
 
         @deprecated("HasInheritedNew will go away soon")
-        class HasInheritedNew(NewBase):
+        klasse HasInheritedNew(NewBase):
             pass
 
         with self.assertWarnsRegex(DeprecationWarning, "HasInheritedNew will go away soon"):
@@ -1779,7 +1779,7 @@ class DeprecatedTests(PyPublicAPITests):
         new_called = False
 
         @deprecated("HasNewNoInit will go away soon")
-        class HasNewNoInit:
+        klasse HasNewNoInit:
             def __new__(cls, x):
                 nonlocal new_called
                 new_called = True
@@ -1794,15 +1794,15 @@ class DeprecatedTests(PyPublicAPITests):
 
     def test_mixin_class(self):
         @deprecated("Mixin will go away soon")
-        class Mixin:
+        klasse Mixin:
             pass
 
-        class Base:
+        klasse Base:
             def __init__(self, a) -> None:
                 self.a = a
 
         with self.assertWarnsRegex(DeprecationWarning, "Mixin will go away soon"):
-            class Child(Base, Mixin):
+            klasse Child(Base, Mixin):
                 pass
 
         instance = Child(42)
@@ -1813,7 +1813,7 @@ class DeprecatedTests(PyPublicAPITests):
         new_called_cls = None
 
         @deprecated("MyMeta will go away soon")
-        class MyMeta(type):
+        klasse MyMeta(type):
             def __new__(mcs, name, bases, attrs, cls=None):
                 nonlocal new_called, new_called_cls
                 new_called = True
@@ -1821,7 +1821,7 @@ class DeprecatedTests(PyPublicAPITests):
                 return super().__new__(mcs, name, bases, attrs)
 
         with self.assertWarnsRegex(DeprecationWarning, "MyMeta will go away soon"):
-            class Foo(metaclass=MyMeta, cls='haha'):
+            klasse Foo(metaclass=MyMeta, cls='haha'):
                 pass
 
         self.assertTrue(new_called)
@@ -1829,7 +1829,7 @@ class DeprecatedTests(PyPublicAPITests):
 
     def test_existing_init_subclass(self):
         @deprecated("C will go away soon")
-        class C:
+        klasse C:
             def __init_subclass__(cls) -> None:
                 cls.inited = True
 
@@ -1837,19 +1837,19 @@ class DeprecatedTests(PyPublicAPITests):
             C()
 
         with self.assertWarnsRegex(DeprecationWarning, "C will go away soon"):
-            class D(C):
+            klasse D(C):
                 pass
 
         self.assertTrue(D.inited)
         self.assertIsInstance(D(), D)  # no deprecation
 
     def test_existing_init_subclass_in_base(self):
-        class Base:
+        klasse Base:
             def __init_subclass__(cls, x) -> None:
                 cls.inited = x
 
         @deprecated("C will go away soon")
-        class C(Base, x=42):
+        klasse C(Base, x=42):
             pass
 
         self.assertEqual(C.inited, 42)
@@ -1858,7 +1858,7 @@ class DeprecatedTests(PyPublicAPITests):
             C()
 
         with self.assertWarnsRegex(DeprecationWarning, "C will go away soon"):
-            class D(C, x=3):
+            klasse D(C, x=3):
                 pass
 
         self.assertEqual(D.inited, 3)
@@ -1867,7 +1867,7 @@ class DeprecatedTests(PyPublicAPITests):
         init_subclass_saw = None
 
         @deprecated("Base will go away soon")
-        class Base:
+        klasse Base:
             def __init_subclass__(cls) -> None:
                 nonlocal init_subclass_saw
                 init_subclass_saw = cls
@@ -1875,7 +1875,7 @@ class DeprecatedTests(PyPublicAPITests):
         self.assertIsNone(init_subclass_saw)
 
         with self.assertWarnsRegex(DeprecationWarning, "Base will go away soon"):
-            class C(Base):
+            klasse C(Base):
                 pass
 
         self.assertIs(init_subclass_saw, C)
@@ -1884,7 +1884,7 @@ class DeprecatedTests(PyPublicAPITests):
         init_subclass_saw = None
 
         @deprecated("Base will go away soon")
-        class Base:
+        klasse Base:
             @classmethod
             def __init_subclass__(cls) -> None:
                 nonlocal init_subclass_saw
@@ -1893,7 +1893,7 @@ class DeprecatedTests(PyPublicAPITests):
         self.assertIsNone(init_subclass_saw)
 
         with self.assertWarnsRegex(DeprecationWarning, "Base will go away soon"):
-            class C(Base):
+            klasse C(Base):
                 pass
 
         self.assertIs(init_subclass_saw, C)
@@ -1907,7 +1907,7 @@ class DeprecatedTests(PyPublicAPITests):
             b()
 
     def test_method(self):
-        class Capybara:
+        klasse Capybara:
             @deprecated("x will go away soon")
             def x(self):
                 pass
@@ -1917,7 +1917,7 @@ class DeprecatedTests(PyPublicAPITests):
             instance.x()
 
     def test_property(self):
-        class Capybara:
+        klasse Capybara:
             @property
             @deprecated("x will go away soon")
             def x(self):
@@ -1966,7 +1966,7 @@ class DeprecatedTests(PyPublicAPITests):
             "Expected an object of type str for 'message', not 'type'"
         ):
             @deprecated
-            class Foo: ...
+            klasse Foo: ...
 
         with self.assertRaisesRegex(
             TypeError,
@@ -1992,7 +1992,7 @@ class DeprecatedTests(PyPublicAPITests):
         async def coro():
             pass
 
-        class Cls:
+        klasse Cls:
             @deprecated("depr")
             def sync(self):
                 pass
@@ -2007,37 +2007,37 @@ class DeprecatedTests(PyPublicAPITests):
         self.assertTrue(inspect.iscoroutinefunction(Cls.coro))
 
     def test_inspect_class_signature(self):
-        class Cls1:  # no __init__ or __new__
+        klasse Cls1:  # no __init__ or __new__
             pass
 
-        class Cls2:  # __new__ only
+        klasse Cls2:  # __new__ only
             def __new__(cls, x, y):
                 return super().__new__(cls)
 
-        class Cls3:  # __init__ only
+        klasse Cls3:  # __init__ only
             def __init__(self, x, y):
                 pass
 
-        class Cls4:  # __new__ and __init__
+        klasse Cls4:  # __new__ and __init__
             def __new__(cls, x, y):
                 return super().__new__(cls)
 
             def __init__(self, x, y):
                 pass
 
-        class Cls5(Cls1):  # inherits no __init__ or __new__
+        klasse Cls5(Cls1):  # inherits no __init__ or __new__
             pass
 
-        class Cls6(Cls2):  # inherits __new__ only
+        klasse Cls6(Cls2):  # inherits __new__ only
             pass
 
-        class Cls7(Cls3):  # inherits __init__ only
+        klasse Cls7(Cls3):  # inherits __init__ only
             pass
 
-        class Cls8(Cls4):  # inherits __new__ and __init__
+        klasse Cls8(Cls4):  # inherits __new__ and __init__
             pass
 
-        # The `@deprecated` decorator will update the class in-place.
+        # The `@deprecated` decorator will update the klasse in-place.
         # Test the child classes first.
         for cls in reversed((Cls1, Cls2, Cls3, Cls4, Cls5, Cls6, Cls7, Cls8)):
             with self.subTest(f'class {cls.__name__} signature'):

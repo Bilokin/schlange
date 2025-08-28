@@ -18,7 +18,7 @@ ITER_KEYS = "SELECT key FROM Dict"
 REORGANIZE = "VACUUM"
 
 
-class error(OSError):
+klasse error(OSError):
     pass
 
 
@@ -34,7 +34,7 @@ def _normalize_uri(path):
     return uri
 
 
-class _Database(MutableMapping):
+klasse _Database(MutableMapping):
 
     def __init__(self, path, /, *, flag, mode):
         if hasattr(self, "_cx"):

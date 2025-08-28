@@ -18,13 +18,13 @@ IGNORED = _misc.Labeled('IGNORED')
 UNKNOWN = _misc.Labeled('UNKNOWN')
 
 
-class SystemType(TypeDeclaration):
+klasse SystemType(TypeDeclaration):
 
     def __init__(self, name):
         super().__init__(None, name, None, None, _shortkey=name)
 
 
-class Analyzed:
+klasse Analyzed:
     _locked = False
 
     @classonly
@@ -264,7 +264,7 @@ class Analyzed:
             raise NotImplementedError(fmt)
 
 
-class Analysis:
+klasse Analysis:
 
     _item_class = Analyzed
 

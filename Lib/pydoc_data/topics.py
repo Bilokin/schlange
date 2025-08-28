@@ -111,18 +111,18 @@ follows.
   the given attribute; if it cannot perform the assignment, it raises
   an exception (usually but not necessarily "AttributeError").
 
-  Note: If the object is a class instance and the attribute reference
+  Note: If the object is a klasse instance and the attribute reference
   occurs on both sides of the assignment operator, the right-hand side
   expression, "a.x" can access either an instance attribute or (if no
-  instance attribute exists) a class attribute.  The left-hand side
+  instance attribute exists) a klasse attribute.  The left-hand side
   target "a.x" is always set as an instance attribute, creating it if
   necessary.  Thus, the two occurrences of "a.x" do not necessarily
   refer to the same attribute: if the right-hand side expression
-  refers to a class attribute, the left-hand side creates a new
+  refers to a klasse attribute, the left-hand side creates a new
   instance attribute as the target of the assignment:
 
-     class Cls:
-         x = 3             # class variable
+     klasse Cls:
+         x = 3             # klasse variable
      inst = Cls()
      inst.x = inst.x + 1   # writes inst.x as 4 leaving Cls.x as 3
 
@@ -229,7 +229,7 @@ operation performed by augmented assignment is the same as the normal
 binary operations.
 
 For targets which are attribute references, the same caveat about
-class and instance attributes applies as for regular assignments.
+klasse and instance attributes applies as for regular assignments.
 
 
 Annotated assignment statements
@@ -247,9 +247,9 @@ target is allowed.
 
 The assignment target is considered “simple” if it consists of a
 single name that is not enclosed in parentheses. For simple assignment
-targets, if in class or module scope, the annotations are gathered in
+targets, if in klasse or module scope, the annotations are gathered in
 a lazily evaluated annotation scope. The annotations can be evaluated
-using the "__annotations__" attribute of a class or module, or using
+using the "__annotations__" attribute of a klasse or module, or using
 the facilities in the "annotationlib" module.
 
 If the assignment target is not simple (an attribute, subscript node,
@@ -269,7 +269,7 @@ See also:
 
   **PEP 526** - Syntax for Variable Annotations
      The proposal that added syntax for annotating the types of
-     variables (including class variables and instance variables),
+     variables (including klasse variables and instance variables),
      instead of expressing them through comments.
 
   **PEP 484** - Type hints
@@ -447,11 +447,11 @@ raises a "NameError" exception.
 Private name mangling
 =====================
 
-When an identifier that textually occurs in a class definition begins
+When an identifier that textually occurs in a klasse definition begins
 with two or more underscore characters and does not end in two or more
 underscores, it is considered a *private name* of that class.
 
-See also: The class specifications.
+See also: The klasse specifications.
 
 More precisely, private names are transformed to a longer form before
 code is generated for them.  If the transformed name is longer than
@@ -477,12 +477,12 @@ mangled:
 
 The transformation rule is defined as follows:
 
-* The class name, with leading underscores removed and a single
+* The klasse name, with leading underscores removed and a single
   leading underscore inserted, is inserted in front of the identifier,
-  e.g., the identifier "__spam" occurring in a class named "Foo",
+  e.g., the identifier "__spam" occurring in a klasse named "Foo",
   "_Foo" or "__Foo" is transformed to "_Foo__spam".
 
-* If the class name consists only of underscores, the transformation
+* If the klasse name consists only of underscores, the transformation
   is the identity, e.g., the identifier "__spam" occurring in a class
   named "_" or "__" is left as is.
 ''',
@@ -511,17 +511,17 @@ the same object or a different object with the same value.
 
 The following methods can be defined to customize the meaning of
 attribute access (use of, assignment to, or deletion of "x.name") for
-class instances.
+klasse instances.
 
 object.__getattr__(self, name)
 
    Called when the default attribute access fails with an
    "AttributeError" (either "__getattribute__()" raises an
    "AttributeError" because *name* is not an instance attribute or an
-   attribute in the class tree for "self"; or "__get__()" of a *name*
+   attribute in the klasse tree for "self"; or "__get__()" of a *name*
    property raises "AttributeError").  This method should either
    return the (computed) attribute value or raise an "AttributeError"
-   exception. The "object" class itself does not provide this method.
+   exception. The "object" klasse itself does not provide this method.
 
    Note that if the attribute is found through the normal mechanism,
    "__getattr__()" is not called.  (This is an intentional asymmetry
@@ -537,7 +537,7 @@ object.__getattr__(self, name)
 object.__getattribute__(self, name)
 
    Called unconditionally to implement attribute accesses for
-   instances of the class. If the class also defines "__getattr__()",
+   instances of the class. If the klasse also defines "__getattr__()",
    the latter will not be called unless "__getattribute__()" either
    calls it explicitly or raises an "AttributeError". This method
    should return the (computed) attribute value or raise an
@@ -563,7 +563,7 @@ object.__setattr__(self, name, value)
    value to be assigned to it.
 
    If "__setattr__()" wants to assign to an instance attribute, it
-   should call the base class method with the same name, for example,
+   should call the base klasse method with the same name, for example,
    "object.__setattr__(self, name, value)".
 
    For certain sensitive attribute assignments, raises an auditing
@@ -610,7 +610,7 @@ of a module object to a subclass of "types.ModuleType". For example:
    import sys
    from types import ModuleType
 
-   class VerboseModule(ModuleType):
+   klasse VerboseModule(ModuleType):
        def __repr__(self):
            return f'Verbose {self.__name__}'
 
@@ -642,16 +642,16 @@ Implementing Descriptors
 
 The following methods only apply when an instance of the class
 containing the method (a so-called *descriptor* class) appears in an
-*owner* class (the descriptor must be in either the owner’s class
-dictionary or in the class dictionary for one of its parents).  In the
+*owner* klasse (the descriptor must be in either the owner’s class
+dictionary or in the klasse dictionary for one of its parents).  In the
 examples below, “the attribute” refers to the attribute whose name is
 the key of the property in the owner class’ "__dict__".  The "object"
-class itself does not implement any of these protocols.
+klasse itself does not implement any of these protocols.
 
 object.__get__(self, instance, owner=None)
 
-   Called to get the attribute of the owner class (class attribute
-   access) or of an instance of that class (instance attribute
+   Called to get the attribute of the owner klasse (class attribute
+   access) or of an instance of that klasse (instance attribute
    access). The optional *owner* argument is the owner class, while
    *instance* is the instance that the attribute was accessed through,
    or "None" when the attribute is accessed through the *owner*.
@@ -669,7 +669,7 @@ object.__get__(self, instance, owner=None)
 object.__set__(self, instance, value)
 
    Called to set the attribute on an instance *instance* of the owner
-   class to a new value, *value*.
+   klasse to a new value, *value*.
 
    Note, adding "__set__()" or "__delete__()" changes the kind of
    descriptor to a “data descriptor”.  See Invoking Descriptors for
@@ -686,7 +686,7 @@ present:
 object.__objclass__
 
    The attribute "__objclass__" is interpreted by the "inspect" module
-   as specifying the class where this object was defined (setting this
+   as specifying the klasse where this object was defined (setting this
    appropriately can assist in runtime introspection of dynamic class
    attributes). For callables, it may indicate that an instance of the
    given type (or a subclass) is expected or required as the first
@@ -732,7 +732,7 @@ Class Binding
 
 Super Binding
    A dotted lookup such as "super(A, a).x" searches
-   "a.__class__.__mro__" for a base class "B" following "A" and then
+   "a.__class__.__mro__" for a base klasse "B" following "A" and then
    returns "B.__dict__['x'].__get__(a, A)".  If not a descriptor, "x"
    is returned unchanged.
 
@@ -772,7 +772,7 @@ lookup speed can be significantly improved as well.
 
 object.__slots__
 
-   This class variable can be assigned a string, iterable, or sequence
+   This klasse variable can be assigned a string, iterable, or sequence
    of strings with variable names used by instances.  *__slots__*
    reserves space for the declared variables and prevents the
    automatic creation of "__dict__" and *__weakref__* for each
@@ -780,7 +780,7 @@ object.__slots__
 
 Notes on using *__slots__*:
 
-* When inheriting from a class without *__slots__*, the "__dict__" and
+* When inheriting from a klasse without *__slots__*, the "__dict__" and
   *__weakref__* attribute of the instances will always be accessible.
 
 * Without a "__dict__" variable, instances cannot be assigned new
@@ -795,10 +795,10 @@ Notes on using *__slots__*:
   weak reference support is needed, then add "'__weakref__'" to the
   sequence of strings in the *__slots__* declaration.
 
-* *__slots__* are implemented at the class level by creating
-  descriptors for each variable name.  As a result, class attributes
+* *__slots__* are implemented at the klasse level by creating
+  descriptors for each variable name.  As a result, klasse attributes
   cannot be used to set default values for instance variables defined
-  by *__slots__*; otherwise, the class attribute would overwrite the
+  by *__slots__*; otherwise, the klasse attribute would overwrite the
   descriptor assignment.
 
 * The action of a *__slots__* declaration is not limited to the class
@@ -808,14 +808,14 @@ Notes on using *__slots__*:
   *__slots__* (which should only contain names of any *additional*
   slots).
 
-* If a class defines a slot also defined in a base class, the instance
-  variable defined by the base class slot is inaccessible (except by
+* If a klasse defines a slot also defined in a base class, the instance
+  variable defined by the base klasse slot is inaccessible (except by
   retrieving its descriptor directly from the base class). This
   renders the meaning of the program undefined.  In the future, a
   check may be added to prevent this.
 
 * "TypeError" will be raised if nonempty *__slots__* are defined for a
-  class derived from a ""variable-length" built-in type" such as
+  klasse derived from a ""variable-length" built-in type" such as
   "int", "bytes", and "tuple".
 
 * Any non-string *iterable* may be assigned to *__slots__*.
@@ -898,7 +898,7 @@ operation performed by augmented assignment is the same as the normal
 binary operations.
 
 For targets which are attribute references, the same caveat about
-class and instance attributes applies as for regular assignments.
+klasse and instance attributes applies as for regular assignments.
 ''',
     'await': r'''Await expression
 ****************
@@ -1114,7 +1114,7 @@ argument (for example, "not 'foo'" produces "False" rather than "''".)
    break_stmt: "break"
 
 "break" may only occur syntactically nested in a "for" or "while"
-loop, but not nested in a function or class definition within that
+loop, but not nested in a function or klasse definition within that
 loop.
 
 It terminates the nearest enclosing loop, skipping the optional "else"
@@ -1134,7 +1134,7 @@ object.__call__(self[, args...])
 
    Called when the instance is “called” as a function; if this method
    is defined, "x(arg1, arg2, ...)" roughly translates to
-   "type(x).__call__(x, arg1, ...)". The "object" class itself does
+   "type(x).__call__(x, arg1, ...)". The "object" klasse itself does
    not provide this method.
 ''',
     'calls': r'''Calls
@@ -1161,7 +1161,7 @@ keyword arguments but does not affect the semantics.
 
 The primary must evaluate to a callable object (user-defined
 functions, built-in functions, methods of built-in objects, class
-objects, methods of class instances, and all objects having a
+objects, methods of klasse instances, and all objects having a
 "__call__()" method are callable).  All argument expressions are
 evaluated before the call is attempted.  Please refer to section
 Function definitions for the syntax of formal *parameter* lists.
@@ -1278,40 +1278,40 @@ a built-in function or method:
    The result is up to the interpreter; see Built-in Functions for the
    descriptions of built-in functions and methods.
 
-a class object:
-   A new instance of that class is returned.
+a klasse object:
+   A new instance of that klasse is returned.
 
-a class instance method:
+a klasse instance method:
    The corresponding user-defined function is called, with an argument
    list that is one longer than the argument list of the call: the
    instance becomes the first argument.
 
-a class instance:
-   The class must define a "__call__()" method; the effect is then the
+a klasse instance:
+   The klasse must define a "__call__()" method; the effect is then the
    same as if that method was called.
 ''',
     'class': r'''Class definitions
 *****************
 
-A class definition defines a class object (see section The standard
+A klasse definition defines a klasse object (see section The standard
 type hierarchy):
 
    classdef:    [decorators] "class" classname [type_params] [inheritance] ":" suite
    inheritance: "(" [argument_list] ")"
    classname:   identifier
 
-A class definition is an executable statement.  The inheritance list
+A klasse definition is an executable statement.  The inheritance list
 usually gives a list of base classes (see Metaclasses for more
 advanced uses), so each item in the list should evaluate to a class
 object which allows subclassing.  Classes without an inheritance list
-inherit, by default, from the base class "object"; hence,
+inherit, by default, from the base klasse "object"; hence,
 
-   class Foo:
+   klasse Foo:
        pass
 
 is equivalent to
 
-   class Foo(object):
+   klasse Foo(object):
        pass
 
 The class’s suite is then executed in a new execution frame (see
@@ -1319,14 +1319,14 @@ Naming and binding), using a newly created local namespace and the
 original global namespace. (Usually, the suite contains mostly
 function definitions.)  When the class’s suite finishes execution, its
 execution frame is discarded but its local namespace is saved. [5] A
-class object is then created using the inheritance list for the base
-classes and the saved local namespace for the attribute dictionary.
-The class name is bound to this class object in the original local
+klasse object is then created using the inheritance list for the base
+klassees and the saved local namespace for the attribute dictionary.
+The klasse name is bound to this klasse object in the original local
 namespace.
 
-The order in which attributes are defined in the class body is
+The order in which attributes are defined in the klasse body is
 preserved in the new class’s "__dict__".  Note that this is reliable
-only right after the class is created and only for classes that were
+only right after the klasse is created and only for classes that were
 defined using the definition syntax.
 
 Class creation can be customized heavily using metaclasses.
@@ -1335,15 +1335,15 @@ Classes can also be decorated: just like when decorating functions,
 
    @f1(arg)
    @f2
-   class Foo: pass
+   klasse Foo: pass
 
 is roughly equivalent to
 
-   class Foo: pass
+   klasse Foo: pass
    Foo = f1(arg)(f2(Foo))
 
 The evaluation rules for the decorator expressions are the same as for
-function decorators.  The result is then bound to the class name.
+function decorators.  The result is then bound to the klasse name.
 
 Changed in version 3.9: Classes may be decorated with any valid
 "assignment_expression". Previously, the grammar was much more
@@ -1351,17 +1351,17 @@ restrictive; see **PEP 614** for details.
 
 A list of type parameters may be given in square brackets immediately
 after the class’s name. This indicates to static type checkers that
-the class is generic. At runtime, the type parameters can be retrieved
+the klasse is generic. At runtime, the type parameters can be retrieved
 from the class’s "__type_params__" attribute. See Generic classes for
 more.
 
 Changed in version 3.12: Type parameter lists are new in Python 3.12.
 
-**Programmer’s note:** Variables defined in the class definition are
-class attributes; they are shared by instances.  Instance attributes
-can be set in a method with "self.name = value".  Both class and
+**Programmer’s note:** Variables defined in the klasse definition are
+klasse attributes; they are shared by instances.  Instance attributes
+can be set in a method with "self.name = value".  Both klasse and
 instance attributes are accessible through the notation “"self.name"”,
-and an instance attribute hides a class attribute with the same name
+and an instance attribute hides a klasse attribute with the same name
 when accessed in this way.  Class attributes can be used as defaults
 for instance attributes, but using mutable values there can lead to
 unexpected results.  Descriptors can be used to create instance
@@ -1375,7 +1375,7 @@ See also:
      metaclasses are constructed.
 
   **PEP 3129** - Class Decorators
-     The proposal that added class decorators.  Function and method
+     The proposal that added klasse decorators.  Function and method
      decorators were introduced in **PEP 318**.
 ''',
     'comparisons': r'''Comparisons
@@ -1601,7 +1601,7 @@ the expression "x is z or x == z" is true, is produced while iterating
 over "y". If an exception is raised during the iteration, it is as if
 "in" raised that exception.
 
-Lastly, the old-style iteration protocol is tried: if a class defines
+Lastly, the old-style iteration protocol is tried: if a klasse defines
 "__getitem__()", "x in y" is "True" if and only if there is a non-
 negative integer index *i* such that "x is y[i] or x == y[i]", and no
 lower integer index raises the "IndexError" exception.  (If any other
@@ -1631,7 +1631,7 @@ The "if", "while" and "for" statements implement traditional control
 flow constructs.  "try" specifies exception handlers and/or cleanup
 code for a group of statements, while the "with" statement allows the
 execution of initialization and finalization code around a block of
-code.  Function and class definitions are also syntactically compound
+code.  Function and klasse definitions are also syntactically compound
 statements.
 
 A compound statement consists of one or more ‘clauses.’  A clause
@@ -1803,7 +1803,7 @@ For an "except" clause with an expression, the expression must
 evaluate to an exception type or a tuple of exception types.
 Parentheses can be dropped if multiple exception types are provided
 and the "as" clause is not used. The raised exception matches an
-"except" clause whose expression evaluates to the class or a *non-
+"except" clause whose expression evaluates to the klasse or a *non-
 virtual base class* of the exception object, or to a tuple that
 contains such a class.
 
@@ -2558,7 +2558,7 @@ following happens:
 Class Patterns
 ~~~~~~~~~~~~~~
 
-A class pattern represents a class and its positional and keyword
+A klasse pattern represents a klasse and its positional and keyword
 arguments (if any).  Syntax:
 
    class_pattern:       name_or_attr "(" [pattern_arguments ","?] ")"
@@ -2568,16 +2568,16 @@ arguments (if any).  Syntax:
    keyword_patterns:    ",".keyword_pattern+
    keyword_pattern:     NAME "=" pattern
 
-The same keyword should not be repeated in class patterns.
+The same keyword should not be repeated in klasse patterns.
 
-The following is the logical flow for matching a class pattern against
+The following is the logical flow for matching a klasse pattern against
 a subject value:
 
 1. If "name_or_attr" is not an instance of the builtin "type" , raise
    "TypeError".
 
 2. If the subject value is not an instance of "name_or_attr" (tested
-   via "isinstance()"), the class pattern fails.
+   via "isinstance()"), the klasse pattern fails.
 
 3. If no pattern arguments are present, the pattern succeeds.
    Otherwise, the subsequent steps depend on whether keyword or
@@ -2596,14 +2596,14 @@ a subject value:
       * If this raises an exception other than "AttributeError", the
         exception bubbles up.
 
-      * If this raises "AttributeError", the class pattern has failed.
+      * If this raises "AttributeError", the klasse pattern has failed.
 
       * Else, the subpattern associated with the keyword pattern is
         matched against the subject’s attribute value.  If this fails,
-        the class pattern fails; if this succeeds, the match proceeds
+        the klasse pattern fails; if this succeeds, the match proceeds
         to the next keyword.
 
-   II. If all keyword patterns succeed, the class pattern succeeds.
+   II. If all keyword patterns succeed, the klasse pattern succeeds.
 
    If any positional patterns are present, they are converted to
    keyword patterns using the "__match_args__" attribute on the class
@@ -2629,7 +2629,7 @@ a subject value:
 
       See also:
 
-        Customizing positional arguments in class pattern matching
+        Customizing positional arguments in klasse pattern matching
 
    II. Once all positional patterns have been converted to keyword
    patterns,
@@ -2845,25 +2845,25 @@ See also:
 Class definitions
 =================
 
-A class definition defines a class object (see section The standard
+A klasse definition defines a klasse object (see section The standard
 type hierarchy):
 
    classdef:    [decorators] "class" classname [type_params] [inheritance] ":" suite
    inheritance: "(" [argument_list] ")"
    classname:   identifier
 
-A class definition is an executable statement.  The inheritance list
+A klasse definition is an executable statement.  The inheritance list
 usually gives a list of base classes (see Metaclasses for more
 advanced uses), so each item in the list should evaluate to a class
 object which allows subclassing.  Classes without an inheritance list
-inherit, by default, from the base class "object"; hence,
+inherit, by default, from the base klasse "object"; hence,
 
-   class Foo:
+   klasse Foo:
        pass
 
 is equivalent to
 
-   class Foo(object):
+   klasse Foo(object):
        pass
 
 The class’s suite is then executed in a new execution frame (see
@@ -2871,14 +2871,14 @@ Naming and binding), using a newly created local namespace and the
 original global namespace. (Usually, the suite contains mostly
 function definitions.)  When the class’s suite finishes execution, its
 execution frame is discarded but its local namespace is saved. [5] A
-class object is then created using the inheritance list for the base
-classes and the saved local namespace for the attribute dictionary.
-The class name is bound to this class object in the original local
+klasse object is then created using the inheritance list for the base
+klassees and the saved local namespace for the attribute dictionary.
+The klasse name is bound to this klasse object in the original local
 namespace.
 
-The order in which attributes are defined in the class body is
+The order in which attributes are defined in the klasse body is
 preserved in the new class’s "__dict__".  Note that this is reliable
-only right after the class is created and only for classes that were
+only right after the klasse is created and only for classes that were
 defined using the definition syntax.
 
 Class creation can be customized heavily using metaclasses.
@@ -2887,15 +2887,15 @@ Classes can also be decorated: just like when decorating functions,
 
    @f1(arg)
    @f2
-   class Foo: pass
+   klasse Foo: pass
 
 is roughly equivalent to
 
-   class Foo: pass
+   klasse Foo: pass
    Foo = f1(arg)(f2(Foo))
 
 The evaluation rules for the decorator expressions are the same as for
-function decorators.  The result is then bound to the class name.
+function decorators.  The result is then bound to the klasse name.
 
 Changed in version 3.9: Classes may be decorated with any valid
 "assignment_expression". Previously, the grammar was much more
@@ -2903,17 +2903,17 @@ restrictive; see **PEP 614** for details.
 
 A list of type parameters may be given in square brackets immediately
 after the class’s name. This indicates to static type checkers that
-the class is generic. At runtime, the type parameters can be retrieved
+the klasse is generic. At runtime, the type parameters can be retrieved
 from the class’s "__type_params__" attribute. See Generic classes for
 more.
 
 Changed in version 3.12: Type parameter lists are new in Python 3.12.
 
-**Programmer’s note:** Variables defined in the class definition are
-class attributes; they are shared by instances.  Instance attributes
-can be set in a method with "self.name = value".  Both class and
+**Programmer’s note:** Variables defined in the klasse definition are
+klasse attributes; they are shared by instances.  Instance attributes
+can be set in a method with "self.name = value".  Both klasse and
 instance attributes are accessible through the notation “"self.name"”,
-and an instance attribute hides a class attribute with the same name
+and an instance attribute hides a klasse attribute with the same name
 when accessed in this way.  Class attributes can be used as defaults
 for instance attributes, but using mutable values there can lead to
 unexpected results.  Descriptors can be used to create instance
@@ -2927,7 +2927,7 @@ See also:
      metaclasses are constructed.
 
   **PEP 3129** - Class Decorators
-     The proposal that added class decorators.  Function and method
+     The proposal that added klasse decorators.  Function and method
      decorators were introduced in **PEP 318**.
 
 
@@ -3072,7 +3072,7 @@ a type parameter list:
    async def amax[T](args: list[T]) -> T:
        ...
 
-   class Bag[T]:
+   klasse Bag[T]:
        def __iter__(self) -> Iterator[T]:
            ...
 
@@ -3223,13 +3223,13 @@ Generic classes
 
 Generic classes are declared as follows:
 
-   class Bag[T]: ...
+   klasse Bag[T]: ...
 
 This syntax is equivalent to:
 
    annotation-def TYPE_PARAMS_OF_Bag():
        T = typing.TypeVar("T")
-       class Bag(typing.Generic[T]):
+       klasse Bag(typing.Generic[T]):
            __type_params__ = (T,)
            ...
        return Bag
@@ -3240,18 +3240,18 @@ annotation scope, and the name "TYPE_PARAMS_OF_Bag" is not actually
 bound at runtime.
 
 Generic classes implicitly inherit from "typing.Generic". The base
-classes and keyword arguments of generic classes are evaluated within
+klassees and keyword arguments of generic classes are evaluated within
 the type scope for the type parameters, and decorators are evaluated
 outside that scope. This is illustrated by this example:
 
    @decorator
-   class Bag(Base[T], arg=T): ...
+   klasse Bag(Base[T], arg=T): ...
 
 This is equivalent to:
 
    annotation-def TYPE_PARAMS_OF_Bag():
        T = typing.TypeVar("T")
-       class Bag(Base[T], typing.Generic[T], arg=T):
+       klasse Bag(Base[T], typing.Generic[T], arg=T):
            __type_params__ = (T,)
            ...
        return Bag
@@ -3327,15 +3327,15 @@ present, all annotations are instead stored as strings:
 [2] In pattern matching, a sequence is defined as one of the
     following:
 
-    * a class that inherits from "collections.abc.Sequence"
+    * a klasse that inherits from "collections.abc.Sequence"
 
-    * a Python class that has been registered as
+    * a Python klasse that has been registered as
       "collections.abc.Sequence"
 
-    * a builtin class that has its (CPython) "Py_TPFLAGS_SEQUENCE" bit
+    * a builtin klasse that has its (CPython) "Py_TPFLAGS_SEQUENCE" bit
       set
 
-    * a class that inherits from any of the above
+    * a klasse that inherits from any of the above
 
     The following standard library classes are sequences:
 
@@ -3358,15 +3358,15 @@ present, all annotations are instead stored as strings:
 
 [3] In pattern matching, a mapping is defined as one of the following:
 
-    * a class that inherits from "collections.abc.Mapping"
+    * a klasse that inherits from "collections.abc.Mapping"
 
-    * a Python class that has been registered as
+    * a Python klasse that has been registered as
       "collections.abc.Mapping"
 
-    * a builtin class that has its (CPython) "Py_TPFLAGS_MAPPING" bit
+    * a builtin klasse that has its (CPython) "Py_TPFLAGS_MAPPING" bit
       set
 
-    * a class that inherits from any of the above
+    * a klasse that inherits from any of the above
 
     The standard library classes "dict" and "types.MappingProxyType"
     are mappings.
@@ -3394,7 +3394,7 @@ kinds of global state, locking and unlocking resources, closing opened
 files, etc.
 
 For more information on context managers, see Context Manager Types.
-The "object" class itself does not provide the context manager
+The "object" klasse itself does not provide the context manager
 methods.
 
 object.__enter__(self)
@@ -3430,7 +3430,7 @@ See also:
    continue_stmt: "continue"
 
 "continue" may only occur syntactically nested in a "for" or "while"
-loop, but not nested in a function or class definition within that
+loop, but not nested in a function or klasse definition within that
 loop.  It continues with the next cycle of the nearest enclosing loop.
 
 When "continue" passes control out of a "try" statement with a
@@ -3461,15 +3461,15 @@ conversion behavior.
 
 object.__new__(cls[, ...])
 
-   Called to create a new instance of class *cls*.  "__new__()" is a
+   Called to create a new instance of klasse *cls*.  "__new__()" is a
    static method (special-cased so you need not declare it as such)
-   that takes the class of which an instance was requested as its
+   that takes the klasse of which an instance was requested as its
    first argument.  The remaining arguments are those passed to the
    object constructor expression (the call to the class).  The return
    value of "__new__()" should be the new object instance (usually an
    instance of *cls*).
 
-   Typical implementations create a new instance of the class by
+   Typical implementations create a new instance of the klasse by
    invoking the superclass’s "__new__()" method using
    "super().__new__(cls[, ...])" with appropriate arguments and then
    modifying the newly created instance as necessary before returning
@@ -3487,16 +3487,16 @@ object.__new__(cls[, ...])
    "__new__()" is intended mainly to allow subclasses of immutable
    types (like int, str, or tuple) to customize instance creation.  It
    is also commonly overridden in custom metaclasses in order to
-   customize class creation.
+   customize klasse creation.
 
 object.__init__(self[, ...])
 
    Called after the instance has been created (by "__new__()"), but
    before it is returned to the caller.  The arguments are those
-   passed to the class constructor expression.  If a base class has an
+   passed to the klasse constructor expression.  If a base klasse has an
    "__init__()" method, the derived class’s "__init__()" method, if
    any, must explicitly call it to ensure proper initialization of the
-   base class part of the instance; for example:
+   base klasse part of the instance; for example:
    "super().__init__([args...])".
 
    Because "__new__()" and "__init__()" work together in constructing
@@ -3510,7 +3510,7 @@ object.__del__(self)
    called a finalizer or (improperly) a destructor.  If a base class
    has a "__del__()" method, the derived class’s "__del__()" method,
    if any, must explicitly call it to ensure proper deletion of the
-   base class part of the instance.
+   base klasse part of the instance.
 
    It is possible (though not recommended!) for the "__del__()" method
    to postpone destruction of the instance by creating a new reference
@@ -3571,13 +3571,13 @@ object.__repr__(self)
    recreate an object with the same value (given an appropriate
    environment).  If this is not possible, a string of the form
    "<...some useful description...>" should be returned. The return
-   value must be a string object. If a class defines "__repr__()" but
+   value must be a string object. If a klasse defines "__repr__()" but
    not "__str__()", then "__repr__()" is also used when an “informal”
-   string representation of instances of that class is required.
+   string representation of instances of that klasse is required.
 
    This is typically used for debugging, so it is important that the
    representation is information-rich and unambiguous. A default
-   implementation is provided by the "object" class itself.
+   implementation is provided by the "object" klasse itself.
 
 object.__str__(self)
 
@@ -3616,7 +3616,7 @@ object.__format__(self, format_spec)
 
    The return value must be a string object.
 
-   The default implementation by the "object" class should be given an
+   The default implementation by the "object" klasse should be given an
    empty *format_spec* string. It delegates to "__str__()".
 
    Changed in version 3.4: The __format__ method of "object" itself
@@ -3656,7 +3656,7 @@ object.__ge__(self, other)
    ordering operations from a single root operation, see
    "functools.total_ordering()".
 
-   By default, the "object" class provides implementations consistent
+   By default, the "object" klasse provides implementations consistent
    with Value comparisons: equality compares according to object
    identity, and order comparisons raise "TypeError". Each default
    method may generate these results directly, but may also return
@@ -3705,10 +3705,10 @@ object.__hash__(self)
      builds.  An easy way to do this is with "python -c "import sys;
      print(sys.hash_info.width)"".
 
-   If a class does not define an "__eq__()" method it should not
+   If a klasse does not define an "__eq__()" method it should not
    define a "__hash__()" operation either; if it defines "__eq__()"
    but not "__hash__()", its instances will not be usable as items in
-   hashable collections.  If a class defines mutable objects and
+   hashable collections.  If a klasse defines mutable objects and
    implements an "__eq__()" method, it should not implement
    "__hash__()", since the implementation of *hashable* collections
    requires that a key’s hash value is immutable (if the object’s hash
@@ -3720,22 +3720,22 @@ object.__hash__(self)
    an appropriate value such that "x == y" implies both that "x is y"
    and "hash(x) == hash(y)".
 
-   A class that overrides "__eq__()" and does not define "__hash__()"
+   A klasse that overrides "__eq__()" and does not define "__hash__()"
    will have its "__hash__()" implicitly set to "None".  When the
-   "__hash__()" method of a class is "None", instances of the class
+   "__hash__()" method of a klasse is "None", instances of the class
    will raise an appropriate "TypeError" when a program attempts to
    retrieve their hash value, and will also be correctly identified as
    unhashable when checking "isinstance(obj,
    collections.abc.Hashable)".
 
-   If a class that overrides "__eq__()" needs to retain the
+   If a klasse that overrides "__eq__()" needs to retain the
    implementation of "__hash__()" from a parent class, the interpreter
    must be told this explicitly by setting "__hash__ =
    <ParentClass>.__hash__".
 
-   If a class that does not override "__eq__()" wishes to suppress
+   If a klasse that does not override "__eq__()" wishes to suppress
    hash support, it should include "__hash__ = None" in the class
-   definition. A class which defines its own "__hash__()" that
+   definition. A klasse which defines its own "__hash__()" that
    explicitly raises a "TypeError" would be incorrectly identified as
    hashable by an "isinstance(obj, collections.abc.Hashable)" call.
 
@@ -3761,9 +3761,9 @@ object.__bool__(self)
    Called to implement truth value testing and the built-in operation
    "bool()"; should return "False" or "True".  When this method is not
    defined, "__len__()" is called, if it is defined, and the object is
-   considered true if its result is nonzero.  If a class defines
+   considered true if its result is nonzero.  If a klasse defines
    neither "__len__()" nor "__bool__()" (which is true of the "object"
-   class itself), all its instances are considered true.
+   klasse itself), all its instances are considered true.
 ''',
     'debugger': r'''"pdb" — The Python Debugger
 ***************************
@@ -3979,10 +3979,10 @@ pdb.get_default_backend()
    Added in version 3.14.
 
 The "run*" functions and "set_trace()" are aliases for instantiating
-the "Pdb" class and calling the method of the same name.  If you want
+the "Pdb" klasse and calling the method of the same name.  If you want
 to access further features, you have to do this yourself:
 
-class pdb.Pdb(completekey='tab', stdin=None, stdout=None, skip=None, nosigint=False, readrc=True, mode=None, backend=None, colorize=False)
+klasse pdb.Pdb(completekey='tab', stdin=None, stdout=None, skip=None, nosigint=False, readrc=True, mode=None, backend=None, colorize=False)
 
    "Pdb" is the debugger class.
 
@@ -4696,9 +4696,9 @@ execution of the program, or returns to its interactive main loop.  In
 either case, it prints a stack traceback, except when the exception is
 "SystemExit".
 
-Exceptions are identified by class instances.  The "except" clause is
-selected depending on the class of the instance: it must reference the
-class of the instance or a *non-virtual base class* thereof. The
+Exceptions are identified by klasse instances.  The "except" clause is
+selected depending on the klasse of the instance: it must reference the
+klasse of the instance or a *non-virtual base class* thereof. The
 instance can be received by the handler and can carry additional
 information about the exceptional condition.
 
@@ -4726,7 +4726,7 @@ Structure of a program
 
 A Python program is constructed from code blocks. A *block* is a piece
 of Python program text that is executed as a unit. The following are
-blocks: a module, a function body, and a class definition. Each
+blocks: a module, a function body, and a klasse definition. Each
 command typed interactively is a block.  A script file (a file given
 as standard input to the interpreter or specified as a command line
 argument to the interpreter) is a code block.  A script command (a
@@ -4756,7 +4756,7 @@ The following constructs bind names:
 
 * formal parameters to functions,
 
-* class definitions,
+* klasse definitions,
 
 * function definitions,
 
@@ -4785,7 +4785,7 @@ A target occurring in a "del" statement is also considered bound for
 this purpose (though the actual semantics are to unbind the name).
 
 Each assignment or import statement occurs within a block defined by a
-class or function definition or at the module level (the top-level
+klasse or function definition or at the module level (the top-level
 code block).
 
 If a name is bound in a block, it is a local variable of that block,
@@ -4852,26 +4852,26 @@ module is imported.  The main module for a script is always called
 "__main__".
 
 Class definition blocks and arguments to "exec()" and "eval()" are
-special in the context of name resolution. A class definition is an
+special in the context of name resolution. A klasse definition is an
 executable statement that may use and define names. These references
 follow the normal rules for name resolution with an exception that
 unbound local variables are looked up in the global namespace. The
-namespace of the class definition becomes the attribute dictionary of
-the class. The scope of names defined in a class block is limited to
-the class block; it does not extend to the code blocks of methods.
+namespace of the klasse definition becomes the attribute dictionary of
+the class. The scope of names defined in a klasse block is limited to
+the klasse block; it does not extend to the code blocks of methods.
 This includes comprehensions and generator expressions, but it does
 not include annotation scopes, which have access to their enclosing
-class scopes. This means that the following will fail:
+klasse scopes. This means that the following will fail:
 
-   class A:
+   klasse A:
        a = 42
        b = list(a + i for i in range(10))
 
 However, the following will succeed:
 
-   class A:
+   klasse A:
        type Alias = Nested
-       class Nested: pass
+       klasse Nested: pass
 
    print(A.Alias.__value__)  # <type 'A.Nested'>
 
@@ -4906,13 +4906,13 @@ Annotation scopes are used in the following contexts:
 
 Annotation scopes differ from function scopes in the following ways:
 
-* Annotation scopes have access to their enclosing class namespace. If
-  an annotation scope is immediately within a class scope, or within
-  another annotation scope that is immediately within a class scope,
+* Annotation scopes have access to their enclosing klasse namespace. If
+  an annotation scope is immediately within a klasse scope, or within
+  another annotation scope that is immediately within a klasse scope,
   the code in the annotation scope can use names defined in the class
-  scope as if it were executed directly within the class body. This
+  scope as if it were executed directly within the klasse body. This
   contrasts with regular functions defined within classes, which
-  cannot access names defined in the class scope.
+  cannot access names defined in the klasse scope.
 
 * Expressions in annotation scopes cannot contain "yield", "yield
   from", "await", or ":=" expressions. (These expressions are allowed
@@ -5053,9 +5053,9 @@ execution of the program, or returns to its interactive main loop.  In
 either case, it prints a stack traceback, except when the exception is
 "SystemExit".
 
-Exceptions are identified by class instances.  The "except" clause is
-selected depending on the class of the instance: it must reference the
-class of the instance or a *non-virtual base class* thereof. The
+Exceptions are identified by klasse instances.  The "except" clause is
+selected depending on the klasse of the instance: it must reference the
+klasse of the instance or a *non-virtual base class* thereof. The
 instance can be received by the handler and can carry additional
 information about the exceptional condition.
 
@@ -5178,7 +5178,7 @@ expression list.
     'formatstrings': r'''Format String Syntax
 ********************
 
-The "str.format()" method and the "Formatter" class share the same
+The "str.format()" method and the "Formatter" klasse share the same
 syntax for format strings (although in the case of "Formatter",
 subclasses can define their own format string syntax).  The syntax is
 related to that of formatted string literals, but it is less
@@ -5613,7 +5613,7 @@ Accessing arguments’ attributes:
    >>> ('The complex number {0} is formed from the real part {0.real} '
    ...  'and the imaginary part {0.imag}.').format(c)
    'The complex number (3-5j) is formed from the real part 3.0 and the imaginary part -5.0.'
-   >>> class Point:
+   >>> klasse Point:
    ...     def __init__(self, x, y):
    ...         self.x, self.y = x, y
    ...     def __str__(self):
@@ -5887,7 +5887,7 @@ without "global", although free variables may refer to globals without
 being declared global.
 
 The "global" statement applies to the entire scope of a function or
-class body. A "SyntaxError" is raised if a variable is used or
+klasse body. A "SyntaxError" is raised if a variable is used or
 assigned to prior to its global declaration in the scope.
 
 **Programmer’s note:** "global" is a directive to the parser.  It
@@ -5938,7 +5938,7 @@ trailing underscore characters:
 
 "__*"
    Class-private names.  Names in this category, when used within the
-   context of a class definition, are re-written to use a mangled form
+   context of a klasse definition, are re-written to use a mangled form
    to help avoid name clashes between “private” attributes of base and
    derived classes. See section Identifiers (Names).
 ''',
@@ -6012,7 +6012,7 @@ be spelled exactly as written here:
 
    False      await      else       import     pass
    None       break      except     in         raise
-   True       class      finally    is         return
+   True       klasse      finally    is         return
    and        continue   for        lambda     try
    as         def        from       nonlocal   while
    assert     del        global     not        with
@@ -6078,7 +6078,7 @@ trailing underscore characters:
 
 "__*"
    Class-private names.  Names in this category, when used within the
-   context of a class definition, are re-written to use a mangled form
+   context of a klasse definition, are re-written to use a mangled form
    to help avoid name clashes between “private” attributes of base and
    derived classes. See section Identifiers (Names).
 ''',
@@ -6204,7 +6204,7 @@ items that are not part of the API (such as library modules which were
 imported and used within the module).
 
 The wild card form of import — "from module import *" — is only
-allowed at the module level.  Attempting to use it in class or
+allowed at the module level.  Attempting to use it in klasse or
 function definitions will raise a "SyntaxError".
 
 When specifying what module to import you do not have to specify the
@@ -6341,7 +6341,7 @@ the expression "x is z or x == z" is true, is produced while iterating
 over "y". If an exception is raised during the iteration, it is as if
 "in" raised that exception.
 
-Lastly, the old-style iteration protocol is tried: if a class defines
+Lastly, the old-style iteration protocol is tried: if a klasse defines
 "__getitem__()", "x in y" is "True" if and only if there is a non-
 negative integer index *i* such that "x is y[i] or x == y[i]", and no
 lower integer index raises the "IndexError" exception.  (If any other
@@ -6433,7 +6433,7 @@ The following constructs bind names:
 
 * formal parameters to functions,
 
-* class definitions,
+* klasse definitions,
 
 * function definitions,
 
@@ -6462,7 +6462,7 @@ A target occurring in a "del" statement is also considered bound for
 this purpose (though the actual semantics are to unbind the name).
 
 Each assignment or import statement occurs within a block defined by a
-class or function definition or at the module level (the top-level
+klasse or function definition or at the module level (the top-level
 code block).
 
 If a name is bound in a block, it is a local variable of that block,
@@ -6529,26 +6529,26 @@ module is imported.  The main module for a script is always called
 "__main__".
 
 Class definition blocks and arguments to "exec()" and "eval()" are
-special in the context of name resolution. A class definition is an
+special in the context of name resolution. A klasse definition is an
 executable statement that may use and define names. These references
 follow the normal rules for name resolution with an exception that
 unbound local variables are looked up in the global namespace. The
-namespace of the class definition becomes the attribute dictionary of
-the class. The scope of names defined in a class block is limited to
-the class block; it does not extend to the code blocks of methods.
+namespace of the klasse definition becomes the attribute dictionary of
+the class. The scope of names defined in a klasse block is limited to
+the klasse block; it does not extend to the code blocks of methods.
 This includes comprehensions and generator expressions, but it does
 not include annotation scopes, which have access to their enclosing
-class scopes. This means that the following will fail:
+klasse scopes. This means that the following will fail:
 
-   class A:
+   klasse A:
        a = 42
        b = list(a + i for i in range(10))
 
 However, the following will succeed:
 
-   class A:
+   klasse A:
        type Alias = Nested
-       class Nested: pass
+       klasse Nested: pass
 
    print(A.Alias.__value__)  # <type 'A.Nested'>
 
@@ -6583,13 +6583,13 @@ Annotation scopes are used in the following contexts:
 
 Annotation scopes differ from function scopes in the following ways:
 
-* Annotation scopes have access to their enclosing class namespace. If
-  an annotation scope is immediately within a class scope, or within
-  another annotation scope that is immediately within a class scope,
+* Annotation scopes have access to their enclosing klasse namespace. If
+  an annotation scope is immediately within a klasse scope, or within
+  another annotation scope that is immediately within a klasse scope,
   the code in the annotation scope can use names defined in the class
-  scope as if it were executed directly within the class body. This
+  scope as if it were executed directly within the klasse body. This
   contrasts with regular functions defined within classes, which
-  cannot access names defined in the class scope.
+  cannot access names defined in the klasse scope.
 
 * Expressions in annotation scopes cannot contain "yield", "yield
   from", "await", or ":=" expressions. (These expressions are allowed
@@ -6705,7 +6705,7 @@ specified, it is used for both.
 
    nonlocal_stmt: "nonlocal" identifier ("," identifier)*
 
-When the definition of a function or class is nested (enclosed) within
+When the definition of a function or klasse is nested (enclosed) within
 the definitions of other functions, its nonlocal scopes are the local
 scopes of the enclosing functions. The "nonlocal" statement causes the
 listed identifiers to refer to names previously bound in nonlocal
@@ -6715,7 +6715,7 @@ nearest binding is used. If a name is not bound in any nonlocal scope,
 or if there is no nonlocal scope, a "SyntaxError" is raised.
 
 The "nonlocal" statement applies to the entire scope of a function or
-class body. A "SyntaxError" is raised if a variable is used or
+klasse body. A "SyntaxError" is raised if a variable is used or
 assigned to prior to its nonlocal declaration in the scope.
 
 See also:
@@ -6766,7 +6766,7 @@ object.__or__(self, other)
    operations ("+", "-", "*", "@", "/", "//", "%", "divmod()",
    "pow()", "**", "<<", ">>", "&", "^", "|").  For instance, to
    evaluate the expression "x + y", where *x* is an instance of a
-   class that has an "__add__()" method, "type(x).__add__(x, y)" is
+   klasse that has an "__add__()" method, "type(x).__add__(x, y)" is
    called.  The "__divmod__()" method should be the equivalent to
    using "__floordiv__()" and "__mod__()"; it should not be related to
    "__truediv__()".  Note that "__pow__()" should be defined to accept
@@ -6796,10 +6796,10 @@ object.__ror__(self, other)
    "pow()", "**", "<<", ">>", "&", "^", "|") with reflected (swapped)
    operands.  These functions are only called if the operands are of
    different types, when the left operand does not support the
-   corresponding operation [3], or the right operand’s class is
+   corresponding operation [3], or the right operand’s klasse is
    derived from the left operand’s class. [4] For instance, to
    evaluate the expression "x - y", where *y* is an instance of a
-   class that has an "__rsub__()" method, "type(y).__rsub__(y, x)" is
+   klasse that has an "__rsub__()" method, "type(y).__rsub__(y, x)" is
    called if "type(x).__sub__(x, y)" returns "NotImplemented" or
    "type(y)" is a subclass of "type(x)". [5]
 
@@ -6840,7 +6840,7 @@ object.__ior__(self, other)
    (which could be, but does not have to be, *self*).  If a specific
    method is not defined, or if that method returns "NotImplemented",
    the augmented assignment falls back to the normal methods.  For
-   instance, if *x* is an instance of a class with an "__iadd__()"
+   instance, if *x* is an instance of a klasse with an "__iadd__()"
    method, "x += y" is equivalent to "x = x.__iadd__(y)" . If
    "__iadd__()" does not exist, or if "x.__iadd__(y)" returns
    "NotImplemented", "x.__add__(y)" and "y.__radd__(x)" are
@@ -7103,7 +7103,7 @@ but no code needs to be executed, for example:
 
    def f(arg): pass    # a function that does nothing (yet)
 
-   class C: pass       # a class with no methods (yet)
+   klasse C: pass       # a klasse with no methods (yet)
 ''',
     'power': r'''The power operator
 ******************
@@ -7148,7 +7148,7 @@ exception*. If there isn’t currently an active exception, a
 Otherwise, "raise" evaluates the first expression as the exception
 object.  It must be either a subclass or an instance of
 "BaseException". If it is a class, the exception instance will be
-obtained when needed by instantiating the class with no arguments.
+obtained when needed by instantiating the klasse with no arguments.
 
 The *type* of the exception is the exception instance’s class, the
 *value* is the instance itself.
@@ -7162,10 +7162,10 @@ instance, with its traceback set to its argument), like so:
    raise Exception("foo occurred").with_traceback(tracebackobj)
 
 The "from" clause is used for exception chaining: if given, the second
-*expression* must be another exception class or instance. If the
+*expression* must be another exception klasse or instance. If the
 second expression is an exception instance, it will be attached to the
 raised exception as the "__cause__" attribute (which is writable). If
-the expression is an exception class, the class will be instantiated
+the expression is an exception class, the klasse will be instantiated
 and the resulting exception instance will be attached to the raised
 exception as the "__cause__" attribute. If the raised exception is not
 handled, both exceptions will be printed:
@@ -7243,7 +7243,7 @@ exception was re-raised with the traceback it had when it was caught.
    return_stmt: "return" [expression_list]
 
 "return" may only occur syntactically nested in a function definition,
-not within a nested class definition.
+not within a nested klasse definition.
 
 If an expression list is present, it is evaluated, else "None" is
 substituted.
@@ -7269,7 +7269,7 @@ a syntax error in an asynchronous generator function.
 *************************
 
 The following methods can be defined to implement container objects.
-None of them are provided by the "object" class itself. Containers
+None of them are provided by the "object" klasse itself. Containers
 usually are *sequences* (such as "lists" or "tuples") or *mappings*
 (like *dictionaries*), but can represent other containers as well.
 The first set of methods is used either to emulate a sequence or to
@@ -7356,7 +7356,7 @@ object.__getitem__(self, key)
 
    Note:
 
-     When subscripting a *class*, the special class method
+     When subscripting a *class*, the special klasse method
      "__class_getitem__()" may be called instead of "__getitem__()".
      See __class_getitem__ versus __getitem__ for more details.
 
@@ -7495,11 +7495,11 @@ definition.__qualname__
 
 definition.__module__
 
-   The name of the module in which a class or function was defined.
+   The name of the module in which a klasse or function was defined.
 
 definition.__doc__
 
-   The documentation string of a class or function, or "None" if
+   The documentation string of a klasse or function, or "None" if
    undefined.
 
 definition.__type_params__
@@ -7513,11 +7513,11 @@ definition.__type_params__
     'specialnames': r'''Special method names
 ********************
 
-A class can implement certain operations that are invoked by special
+A klasse can implement certain operations that are invoked by special
 syntax (such as arithmetic operations or subscripting and slicing) by
 defining methods with special names. This is Python’s approach to
 *operator overloading*, allowing classes to define their own behavior
-with respect to language operators.  For instance, if a class defines
+with respect to language operators.  For instance, if a klasse defines
 a method named "__getitem__()", and "x" is an instance of this class,
 then "x[i]" is roughly equivalent to "type(x).__getitem__(x, i)".
 Except where mentioned, attempts to execute an operation raise an
@@ -7525,12 +7525,12 @@ exception when no appropriate method is defined (typically
 "AttributeError" or "TypeError").
 
 Setting a special method to "None" indicates that the corresponding
-operation is not available.  For example, if a class sets "__iter__()"
-to "None", the class is not iterable, so calling "iter()" on its
+operation is not available.  For example, if a klasse sets "__iter__()"
+to "None", the klasse is not iterable, so calling "iter()" on its
 instances will raise a "TypeError" (without falling back to
 "__getitem__()"). [2]
 
-When implementing a class that emulates any built-in type, it is
+When implementing a klasse that emulates any built-in type, it is
 important that the emulation only be implemented to the degree that it
 makes sense for the object being modelled.  For example, some
 sequences may work well with retrieval of individual elements, but
@@ -7543,15 +7543,15 @@ Basic customization
 
 object.__new__(cls[, ...])
 
-   Called to create a new instance of class *cls*.  "__new__()" is a
+   Called to create a new instance of klasse *cls*.  "__new__()" is a
    static method (special-cased so you need not declare it as such)
-   that takes the class of which an instance was requested as its
+   that takes the klasse of which an instance was requested as its
    first argument.  The remaining arguments are those passed to the
    object constructor expression (the call to the class).  The return
    value of "__new__()" should be the new object instance (usually an
    instance of *cls*).
 
-   Typical implementations create a new instance of the class by
+   Typical implementations create a new instance of the klasse by
    invoking the superclass’s "__new__()" method using
    "super().__new__(cls[, ...])" with appropriate arguments and then
    modifying the newly created instance as necessary before returning
@@ -7569,16 +7569,16 @@ object.__new__(cls[, ...])
    "__new__()" is intended mainly to allow subclasses of immutable
    types (like int, str, or tuple) to customize instance creation.  It
    is also commonly overridden in custom metaclasses in order to
-   customize class creation.
+   customize klasse creation.
 
 object.__init__(self[, ...])
 
    Called after the instance has been created (by "__new__()"), but
    before it is returned to the caller.  The arguments are those
-   passed to the class constructor expression.  If a base class has an
+   passed to the klasse constructor expression.  If a base klasse has an
    "__init__()" method, the derived class’s "__init__()" method, if
    any, must explicitly call it to ensure proper initialization of the
-   base class part of the instance; for example:
+   base klasse part of the instance; for example:
    "super().__init__([args...])".
 
    Because "__new__()" and "__init__()" work together in constructing
@@ -7592,7 +7592,7 @@ object.__del__(self)
    called a finalizer or (improperly) a destructor.  If a base class
    has a "__del__()" method, the derived class’s "__del__()" method,
    if any, must explicitly call it to ensure proper deletion of the
-   base class part of the instance.
+   base klasse part of the instance.
 
    It is possible (though not recommended!) for the "__del__()" method
    to postpone destruction of the instance by creating a new reference
@@ -7653,13 +7653,13 @@ object.__repr__(self)
    recreate an object with the same value (given an appropriate
    environment).  If this is not possible, a string of the form
    "<...some useful description...>" should be returned. The return
-   value must be a string object. If a class defines "__repr__()" but
+   value must be a string object. If a klasse defines "__repr__()" but
    not "__str__()", then "__repr__()" is also used when an “informal”
-   string representation of instances of that class is required.
+   string representation of instances of that klasse is required.
 
    This is typically used for debugging, so it is important that the
    representation is information-rich and unambiguous. A default
-   implementation is provided by the "object" class itself.
+   implementation is provided by the "object" klasse itself.
 
 object.__str__(self)
 
@@ -7698,7 +7698,7 @@ object.__format__(self, format_spec)
 
    The return value must be a string object.
 
-   The default implementation by the "object" class should be given an
+   The default implementation by the "object" klasse should be given an
    empty *format_spec* string. It delegates to "__str__()".
 
    Changed in version 3.4: The __format__ method of "object" itself
@@ -7738,7 +7738,7 @@ object.__ge__(self, other)
    ordering operations from a single root operation, see
    "functools.total_ordering()".
 
-   By default, the "object" class provides implementations consistent
+   By default, the "object" klasse provides implementations consistent
    with Value comparisons: equality compares according to object
    identity, and order comparisons raise "TypeError". Each default
    method may generate these results directly, but may also return
@@ -7787,10 +7787,10 @@ object.__hash__(self)
      builds.  An easy way to do this is with "python -c "import sys;
      print(sys.hash_info.width)"".
 
-   If a class does not define an "__eq__()" method it should not
+   If a klasse does not define an "__eq__()" method it should not
    define a "__hash__()" operation either; if it defines "__eq__()"
    but not "__hash__()", its instances will not be usable as items in
-   hashable collections.  If a class defines mutable objects and
+   hashable collections.  If a klasse defines mutable objects and
    implements an "__eq__()" method, it should not implement
    "__hash__()", since the implementation of *hashable* collections
    requires that a key’s hash value is immutable (if the object’s hash
@@ -7802,22 +7802,22 @@ object.__hash__(self)
    an appropriate value such that "x == y" implies both that "x is y"
    and "hash(x) == hash(y)".
 
-   A class that overrides "__eq__()" and does not define "__hash__()"
+   A klasse that overrides "__eq__()" and does not define "__hash__()"
    will have its "__hash__()" implicitly set to "None".  When the
-   "__hash__()" method of a class is "None", instances of the class
+   "__hash__()" method of a klasse is "None", instances of the class
    will raise an appropriate "TypeError" when a program attempts to
    retrieve their hash value, and will also be correctly identified as
    unhashable when checking "isinstance(obj,
    collections.abc.Hashable)".
 
-   If a class that overrides "__eq__()" needs to retain the
+   If a klasse that overrides "__eq__()" needs to retain the
    implementation of "__hash__()" from a parent class, the interpreter
    must be told this explicitly by setting "__hash__ =
    <ParentClass>.__hash__".
 
-   If a class that does not override "__eq__()" wishes to suppress
+   If a klasse that does not override "__eq__()" wishes to suppress
    hash support, it should include "__hash__ = None" in the class
-   definition. A class which defines its own "__hash__()" that
+   definition. A klasse which defines its own "__hash__()" that
    explicitly raises a "TypeError" would be incorrectly identified as
    hashable by an "isinstance(obj, collections.abc.Hashable)" call.
 
@@ -7843,9 +7843,9 @@ object.__bool__(self)
    Called to implement truth value testing and the built-in operation
    "bool()"; should return "False" or "True".  When this method is not
    defined, "__len__()" is called, if it is defined, and the object is
-   considered true if its result is nonzero.  If a class defines
+   considered true if its result is nonzero.  If a klasse defines
    neither "__len__()" nor "__bool__()" (which is true of the "object"
-   class itself), all its instances are considered true.
+   klasse itself), all its instances are considered true.
 
 
 Customizing attribute access
@@ -7853,17 +7853,17 @@ Customizing attribute access
 
 The following methods can be defined to customize the meaning of
 attribute access (use of, assignment to, or deletion of "x.name") for
-class instances.
+klasse instances.
 
 object.__getattr__(self, name)
 
    Called when the default attribute access fails with an
    "AttributeError" (either "__getattribute__()" raises an
    "AttributeError" because *name* is not an instance attribute or an
-   attribute in the class tree for "self"; or "__get__()" of a *name*
+   attribute in the klasse tree for "self"; or "__get__()" of a *name*
    property raises "AttributeError").  This method should either
    return the (computed) attribute value or raise an "AttributeError"
-   exception. The "object" class itself does not provide this method.
+   exception. The "object" klasse itself does not provide this method.
 
    Note that if the attribute is found through the normal mechanism,
    "__getattr__()" is not called.  (This is an intentional asymmetry
@@ -7879,7 +7879,7 @@ object.__getattr__(self, name)
 object.__getattribute__(self, name)
 
    Called unconditionally to implement attribute accesses for
-   instances of the class. If the class also defines "__getattr__()",
+   instances of the class. If the klasse also defines "__getattr__()",
    the latter will not be called unless "__getattribute__()" either
    calls it explicitly or raises an "AttributeError". This method
    should return the (computed) attribute value or raise an
@@ -7905,7 +7905,7 @@ object.__setattr__(self, name, value)
    value to be assigned to it.
 
    If "__setattr__()" wants to assign to an instance attribute, it
-   should call the base class method with the same name, for example,
+   should call the base klasse method with the same name, for example,
    "object.__setattr__(self, name, value)".
 
    For certain sensitive attribute assignments, raises an auditing
@@ -7952,7 +7952,7 @@ of a module object to a subclass of "types.ModuleType". For example:
    import sys
    from types import ModuleType
 
-   class VerboseModule(ModuleType):
+   klasse VerboseModule(ModuleType):
        def __repr__(self):
            return f'Verbose {self.__name__}'
 
@@ -7984,16 +7984,16 @@ Implementing Descriptors
 
 The following methods only apply when an instance of the class
 containing the method (a so-called *descriptor* class) appears in an
-*owner* class (the descriptor must be in either the owner’s class
-dictionary or in the class dictionary for one of its parents).  In the
+*owner* klasse (the descriptor must be in either the owner’s class
+dictionary or in the klasse dictionary for one of its parents).  In the
 examples below, “the attribute” refers to the attribute whose name is
 the key of the property in the owner class’ "__dict__".  The "object"
-class itself does not implement any of these protocols.
+klasse itself does not implement any of these protocols.
 
 object.__get__(self, instance, owner=None)
 
-   Called to get the attribute of the owner class (class attribute
-   access) or of an instance of that class (instance attribute
+   Called to get the attribute of the owner klasse (class attribute
+   access) or of an instance of that klasse (instance attribute
    access). The optional *owner* argument is the owner class, while
    *instance* is the instance that the attribute was accessed through,
    or "None" when the attribute is accessed through the *owner*.
@@ -8011,7 +8011,7 @@ object.__get__(self, instance, owner=None)
 object.__set__(self, instance, value)
 
    Called to set the attribute on an instance *instance* of the owner
-   class to a new value, *value*.
+   klasse to a new value, *value*.
 
    Note, adding "__set__()" or "__delete__()" changes the kind of
    descriptor to a “data descriptor”.  See Invoking Descriptors for
@@ -8028,7 +8028,7 @@ present:
 object.__objclass__
 
    The attribute "__objclass__" is interpreted by the "inspect" module
-   as specifying the class where this object was defined (setting this
+   as specifying the klasse where this object was defined (setting this
    appropriately can assist in runtime introspection of dynamic class
    attributes). For callables, it may indicate that an instance of the
    given type (or a subclass) is expected or required as the first
@@ -8074,7 +8074,7 @@ Class Binding
 
 Super Binding
    A dotted lookup such as "super(A, a).x" searches
-   "a.__class__.__mro__" for a base class "B" following "A" and then
+   "a.__class__.__mro__" for a base klasse "B" following "A" and then
    returns "B.__dict__['x'].__get__(a, A)".  If not a descriptor, "x"
    is returned unchanged.
 
@@ -8114,7 +8114,7 @@ lookup speed can be significantly improved as well.
 
 object.__slots__
 
-   This class variable can be assigned a string, iterable, or sequence
+   This klasse variable can be assigned a string, iterable, or sequence
    of strings with variable names used by instances.  *__slots__*
    reserves space for the declared variables and prevents the
    automatic creation of "__dict__" and *__weakref__* for each
@@ -8122,7 +8122,7 @@ object.__slots__
 
 Notes on using *__slots__*:
 
-* When inheriting from a class without *__slots__*, the "__dict__" and
+* When inheriting from a klasse without *__slots__*, the "__dict__" and
   *__weakref__* attribute of the instances will always be accessible.
 
 * Without a "__dict__" variable, instances cannot be assigned new
@@ -8137,10 +8137,10 @@ Notes on using *__slots__*:
   weak reference support is needed, then add "'__weakref__'" to the
   sequence of strings in the *__slots__* declaration.
 
-* *__slots__* are implemented at the class level by creating
-  descriptors for each variable name.  As a result, class attributes
+* *__slots__* are implemented at the klasse level by creating
+  descriptors for each variable name.  As a result, klasse attributes
   cannot be used to set default values for instance variables defined
-  by *__slots__*; otherwise, the class attribute would overwrite the
+  by *__slots__*; otherwise, the klasse attribute would overwrite the
   descriptor assignment.
 
 * The action of a *__slots__* declaration is not limited to the class
@@ -8150,14 +8150,14 @@ Notes on using *__slots__*:
   *__slots__* (which should only contain names of any *additional*
   slots).
 
-* If a class defines a slot also defined in a base class, the instance
-  variable defined by the base class slot is inaccessible (except by
+* If a klasse defines a slot also defined in a base class, the instance
+  variable defined by the base klasse slot is inaccessible (except by
   retrieving its descriptor directly from the base class). This
   renders the meaning of the program undefined.  In the future, a
   check may be added to prevent this.
 
 * "TypeError" will be raised if nonempty *__slots__* are defined for a
-  class derived from a ""variable-length" built-in type" such as
+  klasse derived from a ""variable-length" built-in type" such as
   "int", "bytes", and "tuple".
 
 * Any non-string *iterable* may be assigned to *__slots__*.
@@ -8180,34 +8180,34 @@ Notes on using *__slots__*:
   attribute will be an empty iterator.
 
 
-Customizing class creation
+Customizing klasse creation
 ==========================
 
-Whenever a class inherits from another class, "__init_subclass__()" is
+Whenever a klasse inherits from another class, "__init_subclass__()" is
 called on the parent class. This way, it is possible to write classes
 which change the behavior of subclasses. This is closely related to
-class decorators, but where class decorators only affect the specific
-class they’re applied to, "__init_subclass__" solely applies to future
-subclasses of the class defining the method.
+klasse decorators, but where klasse decorators only affect the specific
+klasse they’re applied to, "__init_subclass__" solely applies to future
+subclasses of the klasse defining the method.
 
-classmethod object.__init_subclass__(cls)
+klassemethod object.__init_subclass__(cls)
 
-   This method is called whenever the containing class is subclassed.
+   This method is called whenever the containing klasse is subclassed.
    *cls* is then the new subclass. If defined as a normal instance
-   method, this method is implicitly converted to a class method.
+   method, this method is implicitly converted to a klasse method.
 
-   Keyword arguments which are given to a new class are passed to the
+   Keyword arguments which are given to a new klasse are passed to the
    parent class’s "__init_subclass__". For compatibility with other
    classes using "__init_subclass__", one should take out the needed
    keyword arguments and pass the others over to the base class, as
    in:
 
-      class Philosopher:
+      klasse Philosopher:
           def __init_subclass__(cls, /, default_name, **kwargs):
               super().__init_subclass__(**kwargs)
               cls.default_name = default_name
 
-      class AustralianPhilosopher(Philosopher, default_name="Bruce"):
+      klasse AustralianPhilosopher(Philosopher, default_name="Bruce"):
           pass
 
    The default implementation "object.__init_subclass__" does nothing,
@@ -8222,29 +8222,29 @@ classmethod object.__init_subclass__(cls)
 
    Added in version 3.6.
 
-When a class is created, "type.__new__()" scans the class variables
+When a klasse is created, "type.__new__()" scans the klasse variables
 and makes callbacks to those with a "__set_name__()" hook.
 
 object.__set_name__(self, owner, name)
 
-   Automatically called at the time the owning class *owner* is
+   Automatically called at the time the owning klasse *owner* is
    created. The object has been assigned to *name* in that class:
 
-      class A:
+      klasse A:
           x = C()  # Automatically calls: x.__set_name__(A, 'x')
 
-   If the class variable is assigned after the class is created,
+   If the klasse variable is assigned after the klasse is created,
    "__set_name__()" will not be called automatically. If needed,
    "__set_name__()" can be called directly:
 
-      class A:
+      klasse A:
          pass
 
       c = C()
       A.x = c                  # The hook is not called
       c.__set_name__(A, 'x')   # Manually invoke the hook
 
-   See Creating the class object for more details.
+   See Creating the klasse object for more details.
 
    Added in version 3.6.
 
@@ -8252,39 +8252,39 @@ object.__set_name__(self, owner, name)
 Metaclasses
 -----------
 
-By default, classes are constructed using "type()". The class body is
-executed in a new namespace and the class name is bound locally to the
+By default, classes are constructed using "type()". The klasse body is
+executed in a new namespace and the klasse name is bound locally to the
 result of "type(name, bases, namespace)".
 
-The class creation process can be customized by passing the
-"metaclass" keyword argument in the class definition line, or by
-inheriting from an existing class that included such an argument. In
+The klasse creation process can be customized by passing the
+"metaclass" keyword argument in the klasse definition line, or by
+inheriting from an existing klasse that included such an argument. In
 the following example, both "MyClass" and "MySubclass" are instances
 of "Meta":
 
-   class Meta(type):
+   klasse Meta(type):
        pass
 
-   class MyClass(metaclass=Meta):
+   klasse MyClass(metaclass=Meta):
        pass
 
-   class MySubclass(MyClass):
+   klasse MySubclass(MyClass):
        pass
 
-Any other keyword arguments that are specified in the class definition
+Any other keyword arguments that are specified in the klasse definition
 are passed through to all metaclass operations described below.
 
-When a class definition is executed, the following steps occur:
+When a klasse definition is executed, the following steps occur:
 
 * MRO entries are resolved;
 
 * the appropriate metaclass is determined;
 
-* the class namespace is prepared;
+* the klasse namespace is prepared;
 
-* the class body is executed;
+* the klasse body is executed;
 
-* the class object is created.
+* the klasse object is created.
 
 
 Resolving MRO entries
@@ -8292,7 +8292,7 @@ Resolving MRO entries
 
 object.__mro_entries__(self, bases)
 
-   If a base that appears in a class definition is not an instance of
+   If a base that appears in a klasse definition is not an instance of
    "type", then an "__mro_entries__()" method is searched on the base.
    If an "__mro_entries__()" method is found, the base is substituted
    with the result of a call to "__mro_entries__()" when creating the
@@ -8317,7 +8317,7 @@ See also:
 Determining the appropriate metaclass
 -------------------------------------
 
-The appropriate metaclass for a class definition is determined as
+The appropriate metaclass for a klasse definition is determined as
 follows:
 
 * if no bases and no explicit metaclass are given, then "type()" is
@@ -8333,20 +8333,20 @@ The most derived metaclass is selected from the explicitly specified
 metaclass (if any) and the metaclasses (i.e. "type(cls)") of all
 specified base classes. The most derived metaclass is one which is a
 subtype of *all* of these candidate metaclasses. If none of the
-candidate metaclasses meets that criterion, then the class definition
+candidate metaclasses meets that criterion, then the klasse definition
 will fail with "TypeError".
 
 
-Preparing the class namespace
+Preparing the klasse namespace
 -----------------------------
 
 Once the appropriate metaclass has been identified, then the class
 namespace is prepared. If the metaclass has a "__prepare__" attribute,
 it is called as "namespace = metaclass.__prepare__(name, bases,
 **kwds)" (where the additional keyword arguments, if any, come from
-the class definition). The "__prepare__" method should be implemented
+the klasse definition). The "__prepare__" method should be implemented
 as a "classmethod". The namespace returned by "__prepare__" is passed
-in to "__new__", but when the final class object is created the
+in to "__new__", but when the final klasse object is created the
 namespace is copied into a new "dict".
 
 If the metaclass has no "__prepare__" attribute, then the class
@@ -8358,67 +8358,67 @@ See also:
      Introduced the "__prepare__" namespace hook
 
 
-Executing the class body
+Executing the klasse body
 ------------------------
 
-The class body is executed (approximately) as "exec(body, globals(),
+The klasse body is executed (approximately) as "exec(body, globals(),
 namespace)". The key difference from a normal call to "exec()" is that
-lexical scoping allows the class body (including any methods) to
+lexical scoping allows the klasse body (including any methods) to
 reference names from the current and outer scopes when the class
 definition occurs inside a function.
 
-However, even when the class definition occurs inside the function,
-methods defined inside the class still cannot see names defined at the
-class scope. Class variables must be accessed through the first
-parameter of instance or class methods, or through the implicit
+However, even when the klasse definition occurs inside the function,
+methods defined inside the klasse still cannot see names defined at the
+klasse scope. Class variables must be accessed through the first
+parameter of instance or klasse methods, or through the implicit
 lexically scoped "__class__" reference described in the next section.
 
 
-Creating the class object
+Creating the klasse object
 -------------------------
 
-Once the class namespace has been populated by executing the class
-body, the class object is created by calling "metaclass(name, bases,
+Once the klasse namespace has been populated by executing the class
+body, the klasse object is created by calling "metaclass(name, bases,
 namespace, **kwds)" (the additional keywords passed here are the same
 as those passed to "__prepare__").
 
-This class object is the one that will be referenced by the zero-
+This klasse object is the one that will be referenced by the zero-
 argument form of "super()". "__class__" is an implicit closure
-reference created by the compiler if any methods in a class body refer
+reference created by the compiler if any methods in a klasse body refer
 to either "__class__" or "super". This allows the zero argument form
-of "super()" to correctly identify the class being defined based on
-lexical scoping, while the class or instance that was used to make the
+of "super()" to correctly identify the klasse being defined based on
+lexical scoping, while the klasse or instance that was used to make the
 current call is identified based on the first argument passed to the
 method.
 
 **CPython implementation detail:** In CPython 3.6 and later, the
 "__class__" cell is passed to the metaclass as a "__classcell__" entry
-in the class namespace. If present, this must be propagated up to the
-"type.__new__" call in order for the class to be initialised
+in the klasse namespace. If present, this must be propagated up to the
+"type.__new__" call in order for the klasse to be initialised
 correctly. Failing to do so will result in a "RuntimeError" in Python
 3.8.
 
 When using the default metaclass "type", or any metaclass that
 ultimately calls "type.__new__", the following additional
-customization steps are invoked after creating the class object:
+customization steps are invoked after creating the klasse object:
 
 1. The "type.__new__" method collects all of the attributes in the
-   class namespace that define a "__set_name__()" method;
+   klasse namespace that define a "__set_name__()" method;
 
-2. Those "__set_name__" methods are called with the class being
+2. Those "__set_name__" methods are called with the klasse being
    defined and the assigned name of that particular attribute;
 
 3. The "__init_subclass__()" hook is called on the immediate parent of
-   the new class in its method resolution order.
+   the new klasse in its method resolution order.
 
-After the class object is created, it is passed to the class
-decorators included in the class definition (if any) and the resulting
+After the klasse object is created, it is passed to the class
+decorators included in the klasse definition (if any) and the resulting
 object is bound in the local namespace as the defined class.
 
-When a new class is created by "type.__new__", the object provided as
+When a new klasse is created by "type.__new__", the object provided as
 the namespace parameter is copied to a new ordered mapping and the
 original object is discarded. The new copy is wrapped in a read-only
-proxy, which becomes the "__dict__" attribute of the class object.
+proxy, which becomes the "__dict__" attribute of the klasse object.
 
 See also:
 
@@ -8443,7 +8443,7 @@ The following methods are used to override the default behavior of the
 
 In particular, the metaclass "abc.ABCMeta" implements these methods in
 order to allow the addition of Abstract Base Classes (ABCs) as
-“virtual base classes” to any class or type (including built-in
+“virtual base classes” to any klasse or type (including built-in
 types), including other ABCs.
 
 type.__instancecheck__(self, instance)
@@ -8459,7 +8459,7 @@ type.__subclasscheck__(self, subclass)
    "issubclass(subclass, class)".
 
 Note that these methods are looked up on the type (metaclass) of a
-class.  They cannot be defined as class methods in the actual class.
+klasse.  They cannot be defined as klasse methods in the actual class.
 This is consistent with the lookup of special methods that are called
 on instances, only in this case the instance is itself a class.
 
@@ -8494,16 +8494,16 @@ See also:
      Documentation on how to implement generic classes that can be
      parameterized at runtime and understood by static type-checkers.
 
-A class can *generally* only be parameterized if it defines the
-special class method "__class_getitem__()".
+A klasse can *generally* only be parameterized if it defines the
+special klasse method "__class_getitem__()".
 
-classmethod object.__class_getitem__(cls, key)
+klassemethod object.__class_getitem__(cls, key)
 
    Return an object representing the specialization of a generic class
    by type arguments found in *key*.
 
    When defined on a class, "__class_getitem__()" is automatically a
-   class method. As such, there is no need for it to be decorated with
+   klasse method. As such, there is no need for it to be decorated with
    "@classmethod" when it is defined.
 
 
@@ -8516,7 +8516,7 @@ easily apply *type hints* to these classes.
 
 To implement custom generic classes that can be parameterized at
 runtime and understood by static type-checkers, users should either
-inherit from a standard library class that already implements
+inherit from a standard library klasse that already implements
 "__class_getitem__()", or inherit from "typing.Generic", which has its
 own implementation of "__class_getitem__()".
 
@@ -8547,12 +8547,12 @@ follows something like the following process to decide whether
 
        class_of_obj = type(obj)
 
-       # If the class of obj defines __getitem__,
+       # If the klasse of obj defines __getitem__,
        # call class_of_obj.__getitem__(obj, x)
        if hasattr(class_of_obj, '__getitem__'):
            return class_of_obj.__getitem__(obj, x)
 
-       # Else, if obj is a class and defines __class_getitem__,
+       # Else, if obj is a klasse and defines __class_getitem__,
        # call obj.__class_getitem__(x)
        elif isclass(obj) and hasattr(obj, '__class_getitem__'):
            return obj.__class_getitem__(x)
@@ -8564,13 +8564,13 @@ follows something like the following process to decide whether
            )
 
 In Python, all classes are themselves instances of other classes. The
-class of a class is known as that class’s *metaclass*, and most
-classes have the "type" class as their metaclass. "type" does not
+klasse of a klasse is known as that class’s *metaclass*, and most
+klassees have the "type" klasse as their metaclass. "type" does not
 define "__getitem__()", meaning that expressions such as "list[int]",
 "dict[str, float]" and "tuple[str, bytes]" all result in
 "__class_getitem__()" being called:
 
-   >>> # list has class "type" as its metaclass, like most classes:
+   >>> # list has klasse "type" as its metaclass, like most classes:
    >>> type(list)
    <class 'type'>
    >>> type(dict) == type(list) == type(tuple) == type(str) == type(bytes)
@@ -8582,12 +8582,12 @@ define "__getitem__()", meaning that expressions such as "list[int]",
    >>> type(list[int])
    <class 'types.GenericAlias'>
 
-However, if a class has a custom metaclass that defines
-"__getitem__()", subscribing the class may result in different
+However, if a klasse has a custom metaclass that defines
+"__getitem__()", subscribing the klasse may result in different
 behaviour. An example of this can be found in the "enum" module:
 
    >>> from enum import Enum
-   >>> class Menu(Enum):
+   >>> klasse Menu(Enum):
    ...     """A breakfast menu"""
    ...     SPAM = 'spam'
    ...     BACON = 'bacon'
@@ -8618,7 +8618,7 @@ object.__call__(self[, args...])
 
    Called when the instance is “called” as a function; if this method
    is defined, "x(arg1, arg2, ...)" roughly translates to
-   "type(x).__call__(x, arg1, ...)". The "object" class itself does
+   "type(x).__call__(x, arg1, ...)". The "object" klasse itself does
    not provide this method.
 
 
@@ -8626,7 +8626,7 @@ Emulating container types
 =========================
 
 The following methods can be defined to implement container objects.
-None of them are provided by the "object" class itself. Containers
+None of them are provided by the "object" klasse itself. Containers
 usually are *sequences* (such as "lists" or "tuples") or *mappings*
 (like *dictionaries*), but can represent other containers as well.
 The first set of methods is used either to emulate a sequence or to
@@ -8713,7 +8713,7 @@ object.__getitem__(self, key)
 
    Note:
 
-     When subscripting a *class*, the special class method
+     When subscripting a *class*, the special klasse method
      "__class_getitem__()" may be called instead of "__getitem__()".
      See __class_getitem__ versus __getitem__ for more details.
 
@@ -8804,7 +8804,7 @@ object.__or__(self, other)
    operations ("+", "-", "*", "@", "/", "//", "%", "divmod()",
    "pow()", "**", "<<", ">>", "&", "^", "|").  For instance, to
    evaluate the expression "x + y", where *x* is an instance of a
-   class that has an "__add__()" method, "type(x).__add__(x, y)" is
+   klasse that has an "__add__()" method, "type(x).__add__(x, y)" is
    called.  The "__divmod__()" method should be the equivalent to
    using "__floordiv__()" and "__mod__()"; it should not be related to
    "__truediv__()".  Note that "__pow__()" should be defined to accept
@@ -8834,10 +8834,10 @@ object.__ror__(self, other)
    "pow()", "**", "<<", ">>", "&", "^", "|") with reflected (swapped)
    operands.  These functions are only called if the operands are of
    different types, when the left operand does not support the
-   corresponding operation [3], or the right operand’s class is
+   corresponding operation [3], or the right operand’s klasse is
    derived from the left operand’s class. [4] For instance, to
    evaluate the expression "x - y", where *y* is an instance of a
-   class that has an "__rsub__()" method, "type(y).__rsub__(y, x)" is
+   klasse that has an "__rsub__()" method, "type(y).__rsub__(y, x)" is
    called if "type(x).__sub__(x, y)" returns "NotImplemented" or
    "type(y)" is a subclass of "type(x)". [5]
 
@@ -8878,7 +8878,7 @@ object.__ior__(self, other)
    (which could be, but does not have to be, *self*).  If a specific
    method is not defined, or if that method returns "NotImplemented",
    the augmented assignment falls back to the normal methods.  For
-   instance, if *x* is an instance of a class with an "__iadd__()"
+   instance, if *x* is an instance of a klasse with an "__iadd__()"
    method, "x += y" is equivalent to "x = x.__iadd__(y)" . If
    "__iadd__()" does not exist, or if "x.__iadd__(y)" returns
    "NotImplemented", "x.__add__(y)" and "y.__radd__(x)" are
@@ -8944,7 +8944,7 @@ kinds of global state, locking and unlocking resources, closing opened
 files, etc.
 
 For more information on context managers, see Context Manager Types.
-The "object" class itself does not provide the context manager
+The "object" klasse itself does not provide the context manager
 methods.
 
 object.__enter__(self)
@@ -8975,19 +8975,19 @@ See also:
      statement.
 
 
-Customizing positional arguments in class pattern matching
+Customizing positional arguments in klasse pattern matching
 ==========================================================
 
-When using a class name in a pattern, positional arguments in the
+When using a klasse name in a pattern, positional arguments in the
 pattern are not allowed by default, i.e. "case MyClass(x, y)" is
 typically invalid without special support in "MyClass". To be able to
-use that kind of pattern, the class needs to define a *__match_args__*
+use that kind of pattern, the klasse needs to define a *__match_args__*
 attribute.
 
 object.__match_args__
 
-   This class variable can be assigned a tuple of strings. When this
-   class is used in a class pattern with positional arguments, each
+   This klasse variable can be assigned a tuple of strings. When this
+   klasse is used in a klasse pattern with positional arguments, each
    positional argument will be converted into a keyword argument,
    using the corresponding value in *__match_args__* as the keyword.
    The absence of this attribute is equivalent to setting it to "()".
@@ -9103,7 +9103,7 @@ guaranteed to work correctly if defined on an object’s type, not in
 the object’s instance dictionary.  That behaviour is the reason why
 the following code raises an exception:
 
-   >>> class C:
+   >>> klasse C:
    ...     pass
    ...
    >>> c = C()
@@ -9126,7 +9126,7 @@ invoked on the type object itself:
      File "<stdin>", line 1, in <module>
    TypeError: descriptor '__hash__' of 'int' object needs an argument
 
-Incorrectly attempting to invoke an unbound method of a class in this
+Incorrectly attempting to invoke an unbound method of a klasse in this
 way is sometimes referred to as ‘metaclass confusion’, and is avoided
 by bypassing the instance when looking up special methods:
 
@@ -9139,12 +9139,12 @@ In addition to bypassing any instance attributes in the interest of
 correctness, implicit special method lookup generally also bypasses
 the "__getattribute__()" method even of the object’s metaclass:
 
-   >>> class Meta(type):
+   >>> klasse Meta(type):
    ...     def __getattribute__(*args):
    ...         print("Metaclass getattribute invoked")
    ...         return type.__getattribute__(*args)
    ...
-   >>> class C(object, metaclass=Meta):
+   >>> klasse C(object, metaclass=Meta):
    ...     def __len__(self):
    ...         return 10
    ...     def __getattribute__(*args):
@@ -9164,7 +9164,7 @@ the "__getattribute__()" method even of the object’s metaclass:
 Bypassing the "__getattribute__()" machinery in this fashion provides
 significant scope for speed optimisations within the interpreter, at
 the cost of some flexibility in the handling of special methods (the
-special method *must* be set on the class object itself in order to be
+special method *must* be set on the klasse object itself in order to be
 consistently invoked by the interpreter).
 ''',
     'string-methods': r'''String Methods
@@ -9329,7 +9329,7 @@ str.format_map(mapping, /)
    directly and not copied to a "dict".  This is useful if for example
    "mapping" is a dict subclass:
 
-   >>> class Default(dict):
+   >>> klasse Default(dict):
    ...     def __missing__(self, key):
    ...         return key
    ...
@@ -9442,7 +9442,7 @@ str.isspace()
 
    A character is *whitespace* if in the Unicode character database
    (see "unicodedata"), either its general category is "Zs"
-   (“Separator, space”), or its bidirectional class is one of "WS",
+   (“Separator, space”), or its bidirectional klasse is one of "WS",
    "B", or "S".
 
 str.istitle()
@@ -10028,9 +10028,9 @@ of the literal, *not* as a line continuation.
     'subscriptions': r'''Subscriptions
 *************
 
-The subscription of an instance of a container class will generally
+The subscription of an instance of a container klasse will generally
 select an element from the container. The subscription of a *generic
-class* will generally return a GenericAlias object.
+klasse* will generally return a GenericAlias object.
 
    subscription: primary "[" flexible_expression_list "]"
 
@@ -10059,7 +10059,7 @@ subscription via "__getitem__()":
 1. Mappings. If the primary is a *mapping*, the expression list must
    evaluate to an object whose value is one of the keys of the
    mapping, and the subscription selects the value in the mapping that
-   corresponds to that key. An example of a builtin mapping class is
+   corresponds to that key. An example of a builtin mapping klasse is
    the "dict" class.
 
 2. Sequences. If the primary is a *sequence*, the expression list must
@@ -10088,7 +10088,7 @@ character.
 Any object can be tested for truth value, for use in an "if" or
 "while" condition or as operand of the Boolean operations below.
 
-By default, an object is considered true unless its class defines
+By default, an object is considered true unless its klasse defines
 either a "__bool__()" method that returns "False" or a "__len__()"
 method that returns zero, when called with the object. [1]  Here are
 most of the built-in objects considered false:
@@ -10147,7 +10147,7 @@ For an "except" clause with an expression, the expression must
 evaluate to an exception type or a tuple of exception types.
 Parentheses can be dropped if multiple exception types are provided
 and the "as" clause is not used. The raised exception matches an
-"except" clause whose expression evaluates to the class or a *non-
+"except" clause whose expression evaluates to the klasse or a *non-
 virtual base class* of the exception object, or to a tuple that
 contains such a class.
 
@@ -10726,13 +10726,13 @@ from its code object (accessible via the "__code__" attribute).
 Instance methods
 ----------------
 
-An instance method object combines a class, a class instance and any
+An instance method object combines a class, a klasse instance and any
 callable object (normally a user-defined function).
 
 Special read-only attributes:
 
 +----------------------------------------------------+----------------------------------------------------+
-| method.__self__                                    | Refers to the class instance object to which the   |
+| method.__self__                                    | Refers to the klasse instance object to which the   |
 |                                                    | method is bound                                    |
 +----------------------------------------------------+----------------------------------------------------+
 | method.__func__                                    | Refers to the original function object             |
@@ -10752,23 +10752,23 @@ Methods also support accessing (but not setting) the arbitrary
 function attributes on the underlying function object.
 
 User-defined method objects may be created when getting an attribute
-of a class (perhaps via an instance of that class), if that attribute
+of a klasse (perhaps via an instance of that class), if that attribute
 is a user-defined function object or a "classmethod" object.
 
 When an instance method object is created by retrieving a user-defined
-function object from a class via one of its instances, its "__self__"
+function object from a klasse via one of its instances, its "__self__"
 attribute is the instance, and the method object is said to be
 *bound*.  The new method’s "__func__" attribute is the original
 function object.
 
 When an instance method object is created by retrieving a
-"classmethod" object from a class or instance, its "__self__"
-attribute is the class itself, and its "__func__" attribute is the
-function object underlying the class method.
+"classmethod" object from a klasse or instance, its "__self__"
+attribute is the klasse itself, and its "__func__" attribute is the
+function object underlying the klasse method.
 
 When an instance method object is called, the underlying function
-("__func__") is called, inserting the class instance ("__self__") in
-front of the argument list.  For instance, when "C" is a class which
+("__func__") is called, inserting the klasse instance ("__self__") in
+front of the argument list.  For instance, when "C" is a klasse which
 contains a definition for a function "f()", and "x" is an instance of
 "C", calling "x.f(1)" is equivalent to calling "C.f(x, 1)".
 
@@ -10778,7 +10778,7 @@ itself, so that calling either "x.f(1)" or "C.f(1)" is equivalent to
 calling "f(C,1)" where "f" is the underlying function.
 
 It is important to note that user-defined functions which are
-attributes of a class instance are not converted to bound methods;
+attributes of a klasse instance are not converted to bound methods;
 this *only* happens when the function is an attribute of the class.
 
 
@@ -10858,7 +10858,7 @@ Classes
 -------
 
 Classes are callable.  These objects normally act as factories for new
-instances of themselves, but variations are possible for class types
+instances of themselves, but variations are possible for klasse types
 that override "__new__()".  The arguments of the call are passed to
 "__new__()" and, in the typical case, to "__init__()" to initialize
 the new instance.
@@ -11110,8 +11110,8 @@ module.__dict__
 Custom classes
 ==============
 
-Custom class types are typically created by class definitions (see
-section Class definitions).  A class has a namespace implemented by a
+Custom klasse types are typically created by klasse definitions (see
+section Class definitions).  A klasse has a namespace implemented by a
 dictionary object. Class attribute references are translated to
 lookups in this dictionary, e.g., "C.x" is translated to
 "C.__dict__["x"]" (although there are a number of hooks which allow
@@ -11123,18 +11123,18 @@ structures where there are multiple inheritance paths leading back to
 a common ancestor. Additional details on the C3 MRO used by Python can
 be found at The Python 2.3 Method Resolution Order.
 
-When a class attribute reference (for class "C", say) would yield a
-class method object, it is transformed into an instance method object
+When a klasse attribute reference (for klasse "C", say) would yield a
+klasse method object, it is transformed into an instance method object
 whose "__self__" attribute is "C". When it would yield a
 "staticmethod" object, it is transformed into the object wrapped by
 the static method object. See section Implementing Descriptors for
-another way in which attributes retrieved from a class may differ from
+another way in which attributes retrieved from a klasse may differ from
 those actually contained in its "__dict__".
 
 Class attribute assignments update the class’s dictionary, never the
 dictionary of a base class.
 
-A class object can be called (see above) to yield a class instance
+A klasse object can be called (see above) to yield a klasse instance
 (see below).
 
 
@@ -11149,7 +11149,7 @@ Special attributes
 | type.__qualname__                                  | The class’s *qualified name*. See also:            |
 |                                                    | "__qualname__ attributes".                         |
 +----------------------------------------------------+----------------------------------------------------+
-| type.__module__                                    | The name of the module in which the class was      |
+| type.__module__                                    | The name of the module in which the klasse was      |
 |                                                    | defined.                                           |
 +----------------------------------------------------+----------------------------------------------------+
 | type.__dict__                                      | A "mapping proxy" providing a read-only view of    |
@@ -11157,7 +11157,7 @@ Special attributes
 |                                                    | attributes".                                       |
 +----------------------------------------------------+----------------------------------------------------+
 | type.__bases__                                     | A "tuple" containing the class’s bases. In most    |
-|                                                    | cases, for a class defined as "class X(A, B, C)",  |
+|                                                    | cases, for a klasse defined as "class X(A, B, C)",  |
 |                                                    | "X.__bases__" will be exactly equal to "(A, B,     |
 |                                                    | C)".                                               |
 +----------------------------------------------------+----------------------------------------------------+
@@ -11165,7 +11165,7 @@ Special attributes
 |                                                    | undefined. Not inherited by subclasses.            |
 +----------------------------------------------------+----------------------------------------------------+
 | type.__annotations__                               | A dictionary containing *variable annotations*     |
-|                                                    | collected during class body execution. See also:   |
+|                                                    | collected during klasse body execution. See also:   |
 |                                                    | "__annotations__ attributes".  For best practices  |
 |                                                    | on working with "__annotations__", please see      |
 |                                                    | "annotationlib". Where possible, use               |
@@ -11175,17 +11175,17 @@ Special attributes
 |                                                    | evaluated. See **PEP 649**.                        |
 +----------------------------------------------------+----------------------------------------------------+
 | type.__annotate__()                                | The *annotate function* for this class, or "None"  |
-|                                                    | if the class has no annotations. See also:         |
+|                                                    | if the klasse has no annotations. See also:         |
 |                                                    | "__annotate__ attributes".  Added in version 3.14. |
 +----------------------------------------------------+----------------------------------------------------+
 | type.__type_params__                               | A "tuple" containing the type parameters of a      |
 |                                                    | generic class.  Added in version 3.12.             |
 +----------------------------------------------------+----------------------------------------------------+
 | type.__static_attributes__                         | A "tuple" containing names of attributes of this   |
-|                                                    | class which are assigned through "self.X" from any |
+|                                                    | klasse which are assigned through "self.X" from any |
 |                                                    | function in its body.  Added in version 3.13.      |
 +----------------------------------------------------+----------------------------------------------------+
-| type.__firstlineno__                               | The line number of the first line of the class     |
+| type.__firstlineno__                               | The line number of the first line of the klasse     |
 |                                                    | definition, including decorators. Setting the      |
 |                                                    | "__module__" attribute removes the                 |
 |                                                    | "__firstlineno__" item from the type’s dictionary. |
@@ -11200,7 +11200,7 @@ Special methods
 ---------------
 
 In addition to the special attributes described above, all Python
-classes also have the following two methods available:
+klassees also have the following two methods available:
 
 type.mro()
 
@@ -11210,12 +11210,12 @@ type.mro()
 
 type.__subclasses__()
 
-   Each class keeps a list of weak references to its immediate
+   Each klasse keeps a list of weak references to its immediate
    subclasses. This method returns a list of all those references
    still alive. The list is in definition order. Example:
 
-      >>> class A: pass
-      >>> class B(A): pass
+      >>> klasse A: pass
+      >>> klasse B(A): pass
       >>> A.__subclasses__()
       [<class 'B'>]
 
@@ -11223,23 +11223,23 @@ type.__subclasses__()
 Class instances
 ===============
 
-A class instance is created by calling a class object (see above).  A
-class instance has a namespace implemented as a dictionary which is
+A klasse instance is created by calling a klasse object (see above).  A
+klasse instance has a namespace implemented as a dictionary which is
 the first place in which attribute references are searched.  When an
-attribute is not found there, and the instance’s class has an
+attribute is not found there, and the instance’s klasse has an
 attribute by that name, the search continues with the class
-attributes.  If a class attribute is found that is a user-defined
+attributes.  If a klasse attribute is found that is a user-defined
 function object, it is transformed into an instance method object
 whose "__self__" attribute is the instance.  Static method and class
 method objects are also transformed; see above under “Classes”.  See
 section Implementing Descriptors for another way in which attributes
-of a class retrieved via its instances may differ from the objects
-actually stored in the class’s "__dict__".  If no class attribute is
-found, and the object’s class has a "__getattr__()" method, that is
+of a klasse retrieved via its instances may differ from the objects
+actually stored in the class’s "__dict__".  If no klasse attribute is
+found, and the object’s klasse has a "__getattr__()" method, that is
 called to satisfy the lookup.
 
 Attribute assignments and deletions update the instance’s dictionary,
-never a class’s dictionary.  If the class has a "__setattr__()" or
+never a class’s dictionary.  If the klasse has a "__setattr__()" or
 "__delattr__()" method, this is called instead of updating the
 instance dictionary directly.
 
@@ -11253,7 +11253,7 @@ Special attributes
 
 object.__class__
 
-   The class to which a class instance belongs.
+   The klasse to which a klasse instance belongs.
 
 object.__dict__
 
@@ -11645,7 +11645,7 @@ Static method objects provide a way of defeating the transformation of
 function objects to method objects described above. A static method
 object is a wrapper around any other object, usually a user-defined
 method object. When a static method object is retrieved from a class
-or a class instance, the object actually returned is the wrapped
+or a klasse instance, the object actually returned is the wrapped
 object, which is not subject to any further transformation. Static
 method objects are also callable. Static method objects are created by
 the built-in "staticmethod()" constructor.
@@ -11654,9 +11654,9 @@ the built-in "staticmethod()" constructor.
 Class method objects
 --------------------
 
-A class method object, like a static method object, is a wrapper
+A klasse method object, like a static method object, is a wrapper
 around another object that alters the way in which that object is
-retrieved from classes and class instances. The behaviour of class
+retrieved from classes and klasse instances. The behaviour of class
 method objects upon such retrieval is described above, under “instance
 methods”. Class method objects are created by the built-in
 "classmethod()" constructor.
@@ -11689,9 +11689,9 @@ identity) may not be used as keys. Values that compare equal (such as
 "1", "1.0", and "True") can be used interchangeably to index the same
 dictionary entry.
 
-class dict(**kwargs)
-class dict(mapping, **kwargs)
-class dict(iterable, **kwargs)
+klasse dict(**kwargs)
+klasse dict(mapping, **kwargs)
+klasse dict(iterable, **kwargs)
 
    Return a new dictionary initialized from an optional positional
    argument and a possibly empty set of keyword arguments.
@@ -11765,7 +11765,7 @@ class dict(iterable, **kwargs)
       is raised. "__missing__()" must be a method; it cannot be an
       instance variable:
 
-         >>> class Counter(dict):
+         >>> klasse Counter(dict):
          ...     def __missing__(self, key):
          ...         return 0
          ...
@@ -11815,7 +11815,7 @@ class dict(iterable, **kwargs)
       Create a new dictionary with keys from *iterable* and values set
       to *value*.
 
-      "fromkeys()" is a class method that returns a new dictionary.
+      "fromkeys()" is a klasse method that returns a new dictionary.
       *value* defaults to "None".  All of the values refer to just a
       single instance, so it generally doesn’t make sense for *value*
       to be a mutable object such as an empty list.  To get distinct
@@ -12015,7 +12015,7 @@ are unique and the keys are hashable. If all values in an items view
 are hashable as well, then the items view can interoperate with other
 sets. (Values views are not treated as set-like since the entries are
 generally not unique.)  For set-like views, all of the operations
-defined for the abstract base class "collections.abc.Set" are
+defined for the abstract base klasse "collections.abc.Set" are
 available (for example, "==", "<", or "^").  While using set
 operators, set-like views accept any iterable as the other operand,
 unlike sets which only accept sets as the input.
@@ -12065,10 +12065,10 @@ An example of dictionary view usage:
 
 Methods are functions that are called using the attribute notation.
 There are two flavors: built-in methods (such as "append()" on lists)
-and class instance method. Built-in methods are described with the
+and klasse instance method. Built-in methods are described with the
 types that support them.
 
-If you access a method (a function defined in a class namespace)
+If you access a method (a function defined in a klasse namespace)
 through an instance, you get a special object: a *bound method* (also
 called instance method) object. When called, it will add the "self"
 argument to the argument list.  Bound methods have two special read-
@@ -12085,7 +12085,7 @@ attribute on a method results in an "AttributeError" being raised.  In
 order to set a method attribute, you need to explicitly set it on the
 underlying function object:
 
-   >>> class C:
+   >>> klasse C:
    ...     def method(self):
    ...         pass
    ...
@@ -12273,7 +12273,7 @@ Notes:
 
    * if concatenating "tuple" objects, extend a "list" instead
 
-   * for other types, investigate the relevant class documentation
+   * for other types, investigate the relevant klasse documentation
 
 7. Some sequence types (such as "range") only support item sequences
    that follow specific patterns, and hence don’t support sequence
@@ -12399,7 +12399,7 @@ Lists are mutable sequences, typically used to store collections of
 homogeneous items (where the precise degree of similarity will vary by
 application).
 
-class list([iterable])
+klasse list([iterable])
 
    Lists may be constructed in several ways:
 
@@ -12480,7 +12480,7 @@ built-in). Tuples are also used for cases where an immutable sequence
 of homogeneous data is needed (such as allowing storage in a "set" or
 "dict" instance).
 
-class tuple([iterable])
+klasse tuple([iterable])
 
    Tuples may be constructed in a number of ways:
 
@@ -12520,8 +12520,8 @@ Ranges
 The "range" type represents an immutable sequence of numbers and is
 commonly used for looping a specific number of times in "for" loops.
 
-class range(stop)
-class range(start, stop[, step])
+klasse range(stop)
+klasse range(start, stop[, step])
 
    The arguments to the range constructor must be integers (either
    built-in "int" or any object that implements the "__index__()"

@@ -6,7 +6,7 @@ JSON = r'''
 [[[[[[[[[[[[[[[[[[["Not too deep"]]]]]]]]]]]]]]]]]]]
 '''
 
-class TestPass2:
+klasse TestPass2:
     def test_parse(self):
         # test in/out equivalence and parsing
         res = self.loads(JSON)
@@ -14,5 +14,5 @@ class TestPass2:
         self.assertEqual(res, self.loads(out))
 
 
-class TestPyPass2(TestPass2, PyTest): pass
-class TestCPass2(TestPass2, CTest): pass
+klasse TestPyPass2(TestPass2, PyTest): pass
+klasse TestCPass2(TestPass2, CTest): pass

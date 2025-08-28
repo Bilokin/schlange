@@ -24,7 +24,7 @@ LISTUPDATE_SEQUENCE = "<B1-ButtonRelease>"
 WINCONFIG_SEQUENCE = "<Configure>"
 DOUBLECLICK_SEQUENCE = "<B1-Double-ButtonRelease>"
 
-class AutoCompleteWindow:
+klasse AutoCompleteWindow:
 
     def __init__(self, widget, tags):
         # The widget (Text) on which we place the AutoCompleteWindow

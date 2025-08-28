@@ -107,7 +107,7 @@ if sys.platform == 'sunos5':
     # and thus there's less of them.
     known_era['ja_JP'] = (5, '+:1:2019/05/01:2019/12/31:令和:%EC元年')
 
-class _LocaleTests(unittest.TestCase):
+klasse _LocaleTests(unittest.TestCase):
 
     def setUp(self):
         self.oldlocale = setlocale(LC_ALL)

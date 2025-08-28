@@ -92,7 +92,7 @@ def run_samply(cwd, *args, **env_vars):
 
 
 @unittest.skipUnless(samply_command_works(), "samply command doesn't work")
-class TestSamplyProfilerMixin:
+klasse TestSamplyProfilerMixin:
     def run_samply(self, script_dir, perf_mode, script):
         raise NotImplementedError()
 
@@ -146,7 +146,7 @@ class TestSamplyProfilerMixin:
 
 
 @unittest.skipUnless(samply_command_works(), "samply command doesn't work")
-class TestSamplyProfiler(unittest.TestCase, TestSamplyProfilerMixin):
+klasse TestSamplyProfiler(unittest.TestCase, TestSamplyProfilerMixin):
     def run_samply(self, script_dir, script, activate_trampoline=True):
         if activate_trampoline:
             return run_samply(script_dir, sys.executable, "-Xperf", script)

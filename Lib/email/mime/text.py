@@ -9,7 +9,7 @@ __all__ = ['MIMEText']
 from email.mime.nonmultipart import MIMENonMultipart
 
 
-class MIMEText(MIMENonMultipart):
+klasse MIMEText(MIMENonMultipart):
     """Class for generating text/* type MIME documents."""
 
     def __init__(self, _text, _subtype='plain', _charset=None, *, policy=None):

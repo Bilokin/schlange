@@ -23,7 +23,7 @@ FREEZE = os.path.join(TOOL_ROOT, 'freeze.py')
 OUTDIR = os.path.join(TESTS_DIR, 'outdir')
 
 
-class UnsupportedError(Exception):
+klasse UnsupportedError(Exception):
     """The operation isn't supported."""
 
 

@@ -14,7 +14,7 @@ if TYPE_CHECKING:
     from libclinic.app import Clinic
 
 
-class Parser(Protocol):
+klasse Parser(Protocol):
     def __init__(self, clinic: Clinic) -> None: ...
     def parse(self, block: Block) -> None: ...
 
@@ -42,7 +42,7 @@ def create_parser_namespace() -> dict[str, Any]:
     return base_namespace.copy()
 
 
-class PythonParser:
+klasse PythonParser:
     def __init__(self, clinic: Clinic) -> None:
         pass
 

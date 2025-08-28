@@ -14,13 +14,13 @@ from test import support
 from test.support.import_helper import ensure_lazy_imports, import_module
 from test.support.pty_helper import run_pty
 
-class LazyImportTest(unittest.TestCase):
+klasse LazyImportTest(unittest.TestCase):
     @support.cpython_only
     def test_lazy_import(self):
         ensure_lazy_imports("cmd", {"inspect", "string"})
 
 
-class samplecmdclass(cmd.Cmd):
+klasse samplecmdclass(cmd.Cmd):
     """
     Instance the sampleclass:
     >>> mycmd = samplecmdclass()
@@ -202,9 +202,9 @@ class samplecmdclass(cmd.Cmd):
         return True
 
 
-class TestAlternateInput(unittest.TestCase):
+klasse TestAlternateInput(unittest.TestCase):
 
-    class simplecmd(cmd.Cmd):
+    klasse simplecmd(cmd.Cmd):
 
         def do_print(self, args):
             print(args, file=self.stdout)
@@ -213,7 +213,7 @@ class TestAlternateInput(unittest.TestCase):
             return True
 
 
-    class simplecmd2(simplecmd):
+    klasse simplecmd2(simplecmd):
 
         def do_EOF(self, args):
             print('*** Unknown syntax: EOF', file=self.stdout)
@@ -253,7 +253,7 @@ class TestAlternateInput(unittest.TestCase):
              "(Cmd) *** Unknown syntax: EOF\n"))
 
 
-class CmdPrintExceptionClass(cmd.Cmd):
+klasse CmdPrintExceptionClass(cmd.Cmd):
     """
     GH-80731
     cmd.Cmd should print the correct exception in default()
@@ -270,7 +270,7 @@ class CmdPrintExceptionClass(cmd.Cmd):
 
 
 @support.requires_subprocess()
-class CmdTestReadline(unittest.TestCase):
+klasse CmdTestReadline(unittest.TestCase):
     def setUpClass():
         # Ensure that the readline module is loaded
         # If this fails, the test is skipped because SkipTest will be raised
@@ -279,7 +279,7 @@ class CmdTestReadline(unittest.TestCase):
     def test_basic_completion(self):
         script = textwrap.dedent("""
             import cmd
-            class simplecmd(cmd.Cmd):
+            klasse simplecmd(cmd.Cmd):
                 def do_tab_completion_test(self, args):
                     print('tab completion success')
                     return True
@@ -298,7 +298,7 @@ class CmdTestReadline(unittest.TestCase):
     def test_bang_completion_without_do_shell(self):
         script = textwrap.dedent("""
             import cmd
-            class simplecmd(cmd.Cmd):
+            klasse simplecmd(cmd.Cmd):
                 def completedefault(self, text, line, begidx, endidx):
                     return ["hello"]
 

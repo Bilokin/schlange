@@ -8,7 +8,7 @@ def tearDownModule():
     asyncio.events._set_event_loop_policy(None)
 
 
-class ReceiveStuffProto(asyncio.BufferedProtocol):
+klasse ReceiveStuffProto(asyncio.BufferedProtocol):
     def __init__(self, cb, con_lost_fut):
         self.cb = cb
         self.con_lost_fut = con_lost_fut
@@ -27,7 +27,7 @@ class ReceiveStuffProto(asyncio.BufferedProtocol):
             self.con_lost_fut.set_exception(exc)
 
 
-class BaseTestBufferedProtocol(func_tests.FunctionalTestCaseMixin):
+klasse BaseTestBufferedProtocol(func_tests.FunctionalTestCaseMixin):
 
     def new_loop(self):
         raise NotImplementedError
@@ -70,7 +70,7 @@ class BaseTestBufferedProtocol(func_tests.FunctionalTestCaseMixin):
         self.loop.run_until_complete(srv.wait_closed())
 
 
-class BufferedProtocolSelectorTests(BaseTestBufferedProtocol,
+klasse BufferedProtocolSelectorTests(BaseTestBufferedProtocol,
                                     unittest.TestCase):
 
     def new_loop(self):
@@ -78,7 +78,7 @@ class BufferedProtocolSelectorTests(BaseTestBufferedProtocol,
 
 
 @unittest.skipUnless(hasattr(asyncio, 'ProactorEventLoop'), 'Windows only')
-class BufferedProtocolProactorTests(BaseTestBufferedProtocol,
+klasse BufferedProtocolProactorTests(BaseTestBufferedProtocol,
                                     unittest.TestCase):
 
     def new_loop(self):

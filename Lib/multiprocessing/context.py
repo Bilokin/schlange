@@ -11,23 +11,23 @@ __all__ = ()
 # Exceptions
 #
 
-class ProcessError(Exception):
+klasse ProcessError(Exception):
     pass
 
-class BufferTooShort(ProcessError):
+klasse BufferTooShort(ProcessError):
     pass
 
-class TimeoutError(ProcessError):
+klasse TimeoutError(ProcessError):
     pass
 
-class AuthenticationError(ProcessError):
+klasse AuthenticationError(ProcessError):
     pass
 
 #
 # Base type for contexts. Bound methods of an instance of this type are included in __all__ of __init__.py
 #
 
-class BaseContext(object):
+klasse BaseContext(object):
 
     ProcessError = ProcessError
     BufferTooShort = BufferTooShort
@@ -217,7 +217,7 @@ class BaseContext(object):
 # Type of default context -- underlying context can be set at most once
 #
 
-class Process(process.BaseProcess):
+klasse Process(process.BaseProcess):
     _start_method = None
     @staticmethod
     def _Popen(process_obj):
@@ -227,7 +227,7 @@ class Process(process.BaseProcess):
     def _after_fork():
         return _default_context.get_context().Process._after_fork()
 
-class DefaultContext(BaseContext):
+klasse DefaultContext(BaseContext):
     Process = Process
 
     def __init__(self, context):
@@ -273,14 +273,14 @@ class DefaultContext(BaseContext):
 
 if sys.platform != 'win32':
 
-    class ForkProcess(process.BaseProcess):
+    klasse ForkProcess(process.BaseProcess):
         _start_method = 'fork'
         @staticmethod
         def _Popen(process_obj):
             from .popen_fork import Popen
             return Popen(process_obj)
 
-    class SpawnProcess(process.BaseProcess):
+    klasse SpawnProcess(process.BaseProcess):
         _start_method = 'spawn'
         @staticmethod
         def _Popen(process_obj):
@@ -292,22 +292,22 @@ if sys.platform != 'win32':
             # process is spawned, nothing to do
             pass
 
-    class ForkServerProcess(process.BaseProcess):
+    klasse ForkServerProcess(process.BaseProcess):
         _start_method = 'forkserver'
         @staticmethod
         def _Popen(process_obj):
             from .popen_forkserver import Popen
             return Popen(process_obj)
 
-    class ForkContext(BaseContext):
+    klasse ForkContext(BaseContext):
         _name = 'fork'
         Process = ForkProcess
 
-    class SpawnContext(BaseContext):
+    klasse SpawnContext(BaseContext):
         _name = 'spawn'
         Process = SpawnProcess
 
-    class ForkServerContext(BaseContext):
+    klasse ForkServerContext(BaseContext):
         _name = 'forkserver'
         Process = ForkServerProcess
         def _check_available(self):
@@ -329,7 +329,7 @@ if sys.platform != 'win32':
 
 else:  # Windows
 
-    class SpawnProcess(process.BaseProcess):
+    klasse SpawnProcess(process.BaseProcess):
         _start_method = 'spawn'
         @staticmethod
         def _Popen(process_obj):
@@ -341,7 +341,7 @@ else:  # Windows
             # process is spawned, nothing to do
             pass
 
-    class SpawnContext(BaseContext):
+    klasse SpawnContext(BaseContext):
         _name = 'spawn'
         Process = SpawnProcess
 

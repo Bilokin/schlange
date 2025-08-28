@@ -30,7 +30,7 @@ _BLOCKSIZE = 512
 
 error = OSError
 
-class _Database(collections.abc.MutableMapping):
+klasse _Database(collections.abc.MutableMapping):
 
     # The on-disk directory and data files can remain in mutually
     # inconsistent states for an arbitrarily long time (see comments

@@ -99,7 +99,7 @@ def color_config(text):
         )
 
 
-class ColorDelegator(Delegator):
+klasse ColorDelegator(Delegator):
     """Delegator for syntax highlighting (text coloring).
 
     Instance variables:
@@ -132,7 +132,7 @@ class ColorDelegator(Delegator):
     def setdelegate(self, delegate):
         """Set the delegate for this instance.
 
-        A delegate is an instance of a Delegator class and each
+        A delegate is an instance of a Delegator klasse and each
         delegate points to the next delegator in the stack.  This
         allows multiple delegators to be chained together for a
         widget.  The bottom delegate for a colorizer is a Text

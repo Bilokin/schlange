@@ -61,7 +61,7 @@ def byte(i):
     return bytes([i])
 
 
-class TestLiterals(unittest.TestCase):
+klasse TestLiterals(unittest.TestCase):
 
     def setUp(self):
         self.save_path = sys.path[:]

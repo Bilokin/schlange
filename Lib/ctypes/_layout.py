@@ -23,7 +23,7 @@ def round_up(n, multiple):
 _INT_MAX = (1 << (ctypes.sizeof(ctypes.c_int) * 8) - 1) - 1
 
 
-class StructUnionLayout:
+klasse StructUnionLayout:
     def __init__(self, fields, size, align, format_spec):
         # sequence of CField objects
         self.fields = fields

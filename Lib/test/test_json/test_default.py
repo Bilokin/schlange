@@ -2,7 +2,7 @@ import collections
 from test.test_json import PyTest, CTest
 
 
-class TestDefault:
+klasse TestDefault:
     def test_default(self):
         self.assertEqual(
             self.dumps(type, default=repr),
@@ -37,5 +37,5 @@ class TestDefault:
             '{"a": 1, "b": 2, "c": 3, "d": 4}')
 
 
-class TestPyDefault(TestDefault, PyTest): pass
-class TestCDefault(TestDefault, CTest): pass
+klasse TestPyDefault(TestDefault, PyTest): pass
+klasse TestCDefault(TestDefault, CTest): pass

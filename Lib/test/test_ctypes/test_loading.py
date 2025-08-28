@@ -28,7 +28,7 @@ def setUpModule():
         print("libc_name is", libc_name)
 
 
-class LoaderTest(unittest.TestCase):
+klasse LoaderTest(unittest.TestCase):
 
     unknowndll = "xxrandomnamexx"
 

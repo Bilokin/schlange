@@ -9,7 +9,7 @@ from idlelib.editor import EditorWindow
 from idlelib.idle_test.mock_idle import Editor as MockEditor
 
 
-class Is_Get_Test(unittest.TestCase):
+klasse Is_Get_Test(unittest.TestCase):
     """Test the is_ and get_ functions"""
     test_comment = '# This is a comment'
     test_nocomment = 'This is not a comment'
@@ -40,7 +40,7 @@ class Is_Get_Test(unittest.TestCase):
         Equal(ft.get_comment_header(self.test_nocomment), '')
 
 
-class FindTest(unittest.TestCase):
+klasse FindTest(unittest.TestCase):
     """Test the find_paragraph function in paragraph module.
 
     Using the runcase() function, find_paragraph() is called with 'mark' set at
@@ -159,7 +159,7 @@ class FindTest(unittest.TestCase):
         self.runcase(teststring, 3, ('2.0', '3.0', '    ', teststring[1:55]))
 
 
-class ReformatFunctionTest(unittest.TestCase):
+klasse ReformatFunctionTest(unittest.TestCase):
     """Test the reformat_paragraph function without the editor window."""
 
     def test_reformat_paragraph(self):
@@ -185,7 +185,7 @@ class ReformatFunctionTest(unittest.TestCase):
         Equal(reform(hw, 13), "\nO hello world")
 
 
-class ReformatCommentTest(unittest.TestCase):
+klasse ReformatCommentTest(unittest.TestCase):
     """Test the reformat_comment function without the editor window."""
 
     def test_reformat_comment(self):
@@ -211,7 +211,7 @@ class ReformatCommentTest(unittest.TestCase):
         Equal(result, expected)
 
 
-class FormatClassTest(unittest.TestCase):
+klasse FormatClassTest(unittest.TestCase):
     def test_init_close(self):
         instance = ft.FormatParagraph('editor')
         self.assertEqual(instance.editwin, 'editor')
@@ -230,7 +230,7 @@ class FormatClassTest(unittest.TestCase):
 # Calling EditorWindow._close in tearDownClass prevents this but causes
 # other problems (windows left open).
 
-class TextWrapper:
+klasse TextWrapper:
     def __init__(self, master):
         self.text = Text(master=master)
     def __getattr__(self, name):
@@ -238,12 +238,12 @@ class TextWrapper:
     def undo_block_start(self): pass
     def undo_block_stop(self): pass
 
-class Editor:
+klasse Editor:
     def __init__(self, root):
         self.text = TextWrapper(root)
     get_selection_indices = EditorWindow. get_selection_indices
 
-class FormatEventTest(unittest.TestCase):
+klasse FormatEventTest(unittest.TestCase):
     """Test the formatting of text inside a Text widget.
 
     This is done with FormatParagraph.format.paragraph_event,
@@ -377,7 +377,7 @@ class FormatEventTest(unittest.TestCase):
 ##        text.delete('1.0', 'end')
 
 
-class DummyEditwin:
+klasse DummyEditwin:
     def __init__(self, root, text):
         self.root = root
         self.text = text
@@ -390,7 +390,7 @@ class DummyEditwin:
     get_selection_indices = EditorWindow.get_selection_indices
 
 
-class FormatRegionTest(unittest.TestCase):
+klasse FormatRegionTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -418,7 +418,7 @@ class FormatRegionTest(unittest.TestCase):
 
     code_sample = """\
 # WS line needed for test.
-class C1:
+klasse C1:
     # Class comment.
     def __init__(self, a, b):
         self.a = a
@@ -574,7 +574,7 @@ class C1:
         self.assertEqual(ask(), 10)
 
 
-class IndentsTest(unittest.TestCase):
+klasse IndentsTest(unittest.TestCase):
 
     @mock.patch.object(ft, "askyesno")
     def test_toggle_tabs(self, askyesno):
@@ -609,7 +609,7 @@ class IndentsTest(unittest.TestCase):
         self.assertEqual(editor.indentwidth, 3)
 
 
-class RstripTest(unittest.TestCase):
+klasse RstripTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):

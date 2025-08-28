@@ -98,7 +98,7 @@ def unsorted_keyword_only_parameters_fn(*, throw, out, the, baby, with_,
 
 unsorted_keyword_only_parameters = 'throw out the baby with_ the_ bathwater'.split()
 
-class IsTestBase(unittest.TestCase):
+klasse IsTestBase(unittest.TestCase):
     predicates = set([inspect.isbuiltin, inspect.isclass, inspect.iscode,
                       inspect.isframe, inspect.isfunction, inspect.ismethod,
                       inspect.ismodule, inspect.istraceback, inspect.ispackage,
@@ -149,7 +149,7 @@ def meth_type_noargs(type, /): pass
 def meth_type_o(type, object, /): pass
 
 
-class TestPredicates(IsTestBase):
+klasse TestPredicates(IsTestBase):
 
     def test_excluding_predicates(self):
         global tb
@@ -207,7 +207,7 @@ class TestPredicates(IsTestBase):
         self.assertFalse(inspect.ispackage(mod))
         self.assertFalse(inspect.ispackage(':)'))
 
-        class FakePackage:
+        klasse FakePackage:
             __path__ = None
 
         self.assertFalse(inspect.ispackage(FakePackage()))
@@ -217,7 +217,7 @@ class TestPredicates(IsTestBase):
         gen_coro = gen_coroutine_function_example(1)
         coro = coroutine_function_example(1)
 
-        class PMClass:
+        klasse PMClass:
             async_generator_partialmethod_example = functools.partialmethod(
                 async_generator_function_example)
             coroutine_partialmethod_example = functools.partialmethod(
@@ -271,7 +271,7 @@ class TestPredicates(IsTestBase):
             )
         )
 
-        class Cl:
+        klasse Cl:
             async def __call__(self):
                 pass
 
@@ -283,7 +283,7 @@ class TestPredicates(IsTestBase):
             inspect.markcoroutinefunction(Cl())
         ))
 
-        class Cl2:
+        klasse Cl2:
             @inspect.markcoroutinefunction
             def __call__(self):
                 pass
@@ -296,7 +296,7 @@ class TestPredicates(IsTestBase):
             inspect.markcoroutinefunction(Cl2())
         ))
 
-        class Cl3:
+        klasse Cl3:
             @inspect.markcoroutinefunction
             @classmethod
             def do_something_classy(cls):
@@ -366,13 +366,13 @@ class TestPredicates(IsTestBase):
         self.assertTrue(inspect.isawaitable(coro))
         self.assertTrue(inspect.isawaitable(gen_coro))
 
-        class Future:
+        klasse Future:
             def __await__():
                 pass
         self.assertTrue(inspect.isawaitable(Future()))
         self.assertFalse(inspect.isawaitable(Future))
 
-        class NotFuture: pass
+        klasse NotFuture: pass
         not_fut = NotFuture()
         not_fut.__await__ = lambda: None
         self.assertFalse(inspect.isawaitable(not_fut))
@@ -418,7 +418,7 @@ class TestPredicates(IsTestBase):
     def test_isroutine_singledispatch(self):
         self.assertTrue(inspect.isroutine(functools.singledispatch(mod.spam)))
 
-        class A:
+        klasse A:
             @functools.singledispatchmethod
             def method(self, arg):
                 pass
@@ -440,13 +440,13 @@ class TestPredicates(IsTestBase):
         self.istest(inspect.isclass, 'mod.StupidGit')
         self.assertTrue(inspect.isclass(list))
 
-        class CustomGetattr(object):
+        klasse CustomGetattr(object):
             def __getattr__(self, attr):
                 return None
         self.assertFalse(inspect.isclass(CustomGetattr()))
 
     def test_get_slot_members(self):
-        class C(object):
+        klasse C(object):
             __slots__ = ("a", "b")
         x = C()
         x.a = 42
@@ -457,13 +457,13 @@ class TestPredicates(IsTestBase):
     def test_isabstract(self):
         from abc import ABCMeta, abstractmethod
 
-        class AbstractClassExample(metaclass=ABCMeta):
+        klasse AbstractClassExample(metaclass=ABCMeta):
 
             @abstractmethod
             def foo(self):
                 pass
 
-        class ClassExample(AbstractClassExample):
+        klasse ClassExample(AbstractClassExample):
             def foo(self):
                 pass
 
@@ -479,29 +479,29 @@ class TestPredicates(IsTestBase):
     def test_isabstract_during_init_subclass(self):
         from abc import ABCMeta, abstractmethod
         isabstract_checks = []
-        class AbstractChecker(metaclass=ABCMeta):
+        klasse AbstractChecker(metaclass=ABCMeta):
             def __init_subclass__(cls):
                 isabstract_checks.append(inspect.isabstract(cls))
-        class AbstractClassExample(AbstractChecker):
+        klasse AbstractClassExample(AbstractChecker):
             @abstractmethod
             def foo(self):
                 pass
-        class ClassExample(AbstractClassExample):
+        klasse ClassExample(AbstractClassExample):
             def foo(self):
                 pass
         self.assertEqual(isabstract_checks, [True, False])
 
         isabstract_checks.clear()
-        class AbstractChild(AbstractClassExample):
+        klasse AbstractChild(AbstractClassExample):
             pass
-        class AbstractGrandchild(AbstractChild):
+        klasse AbstractGrandchild(AbstractChild):
             pass
-        class ConcreteGrandchild(ClassExample):
+        klasse ConcreteGrandchild(ClassExample):
             pass
         self.assertEqual(isabstract_checks, [True, True, False])
 
 
-class TestInterpreterStack(IsTestBase):
+klasse TestInterpreterStack(IsTestBase):
     def __init__(self, *args, **kwargs):
         unittest.TestCase.__init__(self, *args, **kwargs)
 
@@ -569,7 +569,7 @@ class TestInterpreterStack(IsTestBase):
         self.assertEqual(inspect.formatargvalues(args, varargs, varkw, locals),
              '(a=7, b=8, c=9, d=3, e=4, f=5, *g=(), **h={})')
 
-class GetSourceBase(unittest.TestCase):
+klasse GetSourceBase(unittest.TestCase):
     # Subclasses must override.
     fodderModule = None
 
@@ -585,12 +585,12 @@ class GetSourceBase(unittest.TestCase):
         self.assertEqual(inspect.getsource(obj),
                          self.sourcerange(top, bottom))
 
-class SlotUser:
+klasse SlotUser:
     'Docstrings for __slots__'
     __slots__ = {'power': 'measured in kilowatts',
                  'distance': 'measured in kilometers'}
 
-class TestRetrievingSourceCode(GetSourceBase):
+klasse TestRetrievingSourceCode(GetSourceBase):
     fodderModule = mod
 
     def test_getclasses(self):
@@ -725,7 +725,7 @@ class TestRetrievingSourceCode(GetSourceBase):
     def test_getmodule(self):
         # Check actual module
         self.assertEqual(inspect.getmodule(mod), mod)
-        # Check class (uses __module__ attribute)
+        # Check klasse (uses __module__ attribute)
         self.assertEqual(inspect.getmodule(mod.StupidGit), mod)
         # Check a method (no __module__ attribute, falls back to filename)
         self.assertEqual(inspect.getmodule(mod.StupidGit.abuse), mod)
@@ -802,17 +802,17 @@ class TestRetrievingSourceCode(GetSourceBase):
         self.assertIn('expected, got', str(e_append.exception))
 
     def test_getfile_class_without_module(self):
-        class CM(type):
+        klasse CM(type):
             @property
             def __module__(cls):
                 raise AttributeError
-        class C(metaclass=CM):
+        klasse C(metaclass=CM):
             pass
         with self.assertRaises(TypeError):
             inspect.getfile(C)
 
     def test_getfile_broken_repr(self):
-        class ErrorRepr:
+        klasse ErrorRepr:
             def __repr__(self):
                 raise Exception('xyz')
         er = ErrorRepr()
@@ -861,11 +861,11 @@ class TestRetrievingSourceCode(GetSourceBase):
 
     def test_getsource_on_class_without_firstlineno(self):
         __firstlineno__ = 1
-        class C:
+        klasse C:
             nonlocal __firstlineno__
         self.assertRaises(OSError, inspect.getsource, C)
 
-class TestGetsourceStdlib(unittest.TestCase):
+klasse TestGetsourceStdlib(unittest.TestCase):
     # Test Python implementations of the stdlib modules
 
     def test_getsource_stdlib_collections_abc(self):
@@ -894,7 +894,7 @@ class TestGetsourceStdlib(unittest.TestCase):
         except OSError:
             pass
         else:
-            self.assertEqual(lines[0], '    class ABCMeta(type):\n')
+            self.assertEqual(lines[0], '    klasse ABCMeta(type):\n')
             self.assertEqual(src.splitlines(True), lines)
 
     def test_getsource_stdlib_decimal(self):
@@ -906,7 +906,7 @@ class TestGetsourceStdlib(unittest.TestCase):
         self.assertEqual(lines[0], 'class Decimal(object):\n')
         self.assertEqual(src.splitlines(True), lines)
 
-class TestGetsourceInteractive(unittest.TestCase):
+klasse TestGetsourceInteractive(unittest.TestCase):
     @support.force_not_colorized
     def test_getclasses_interactive(self):
         # bpo-44648: simulate a REPL session;
@@ -918,7 +918,7 @@ class TestGetsourceInteractive(unittest.TestCase):
         _, _, stderr = assert_python_failure("-c", code, __isolated=True)
         self.assertIn(b'OSError: source code not available', stderr)
 
-class TestGettingSourceOfToplevelFrames(GetSourceBase):
+klasse TestGettingSourceOfToplevelFrames(GetSourceBase):
     fodderModule = mod
 
     def test_range_toplevel_frame(self):
@@ -928,7 +928,7 @@ class TestGettingSourceOfToplevelFrames(GetSourceBase):
     def test_range_traceback_toplevel_frame(self):
         self.assertSourceEqual(mod.tb, 1, None)
 
-class TestDecorators(GetSourceBase):
+klasse TestDecorators(GetSourceBase):
     fodderModule = mod2
 
     def test_wrapped_decorator(self):
@@ -943,7 +943,7 @@ class TestDecorators(GetSourceBase):
     def test_decorator_with_lambda(self):
         self.assertSourceEqual(mod2.func114, 113, 115)
 
-class TestOneliners(GetSourceBase):
+klasse TestOneliners(GetSourceBase):
     fodderModule = mod2
     def test_oneline_lambda(self):
         # Test inspect.getsource with a one-line lambda function.
@@ -1024,7 +1024,7 @@ class TestOneliners(GetSourceBase):
         self.assertRaises(OSError, inspect.getsource, mod2.dc370)
         self.assertRaises(OSError, inspect.getsource, mod2.dc371)
 
-class TestBlockComments(GetSourceBase):
+klasse TestBlockComments(GetSourceBase):
     fodderModule = mod
 
     def test_toplevel_class(self):
@@ -1036,7 +1036,7 @@ class TestBlockComments(GetSourceBase):
     def test_class_async_method(self):
         self.assertSourceEqual(mod.WhichComments.asyncf, 109, 112)
 
-class TestBuggyCases(GetSourceBase):
+klasse TestBuggyCases(GetSourceBase):
     fodderModule = mod2
 
     def test_with_comment(self):
@@ -1139,7 +1139,7 @@ class TestBuggyCases(GetSourceBase):
     def test_class_inside_conditional(self):
         # We skip this test when docstrings are not present,
         # because docstrings are one of the main factors of
-        # finding the correct class in the source code.
+        # finding the correct klasse in the source code.
         self.assertSourceEqual(mod2.cls238.cls239, 239, 240)
 
     def test_multiple_children_classes(self):
@@ -1160,10 +1160,10 @@ class TestBuggyCases(GetSourceBase):
                       'w', encoding='utf-8') as f:
                 f.write(textwrap.dedent("""
                     import inspect_other
-                    class A:
+                    klasse A:
                         def f(self):
                             pass
-                    class A:
+                    klasse A:
                         def f(self):
                             pass  # correct one
                     A.f = inspect_other.A.f
@@ -1172,7 +1172,7 @@ class TestBuggyCases(GetSourceBase):
             with open(os.path.join(tempdir, 'inspect_other%spy' % os.extsep),
                       'w', encoding='utf-8') as f:
                 f.write(textwrap.dedent("""
-                    class A:
+                    klasse A:
                         def f(self):
                             pass
                     """))
@@ -1201,7 +1201,7 @@ class TestBuggyCases(GetSourceBase):
         self.assertSourceEqual(next(mod2.func383()), 385, 388)
 
 
-class TestNoEOL(GetSourceBase):
+klasse TestNoEOL(GetSourceBase):
     def setUp(self):
         self.tempdir = TESTFN + '_dir'
         os.mkdir(self.tempdir)
@@ -1220,13 +1220,13 @@ class TestNoEOL(GetSourceBase):
         self.assertSourceEqual(self.fodderModule.X, 1, 2)
 
 
-class TestComplexDecorator(GetSourceBase):
+klasse TestComplexDecorator(GetSourceBase):
     fodderModule = mod2
 
     def test_parens_in_decorator(self):
         self.assertSourceEqual(self.fodderModule.complex_decorated, 273, 275)
 
-class _BrokenDataDescriptor(object):
+klasse _BrokenDataDescriptor(object):
     """
     A broken data descriptor. See bug #1785.
     """
@@ -1240,7 +1240,7 @@ class _BrokenDataDescriptor(object):
         raise AttributeError("broken data descriptor")
 
 
-class _BrokenMethodDescriptor(object):
+klasse _BrokenMethodDescriptor(object):
     """
     A broken method descriptor. See bug #1785.
     """
@@ -1256,13 +1256,13 @@ def attrs_wo_objs(cls):
     return [t[:3] for t in inspect.classify_class_attrs(cls)]
 
 
-class TestClassesAndFunctions(unittest.TestCase):
+klasse TestClassesAndFunctions(unittest.TestCase):
     def test_newstyle_mro(self):
         # The same w/ new-class MRO.
-        class A(object):    pass
-        class B(A): pass
-        class C(A): pass
-        class D(B, C): pass
+        klasse A(object):    pass
+        klasse B(A): pass
+        klasse C(A): pass
+        klasse D(B, C): pass
 
         expected = (D, B, C, A, object)
         got = inspect.getmro(D)
@@ -1418,7 +1418,7 @@ class TestClassesAndFunctions(unittest.TestCase):
         self.assertEqual(l, unsorted_keyword_only_parameters)
 
     def test_classify_newstyle(self):
-        class A(object):
+        klasse A(object):
 
             def s(): pass
             s = staticmethod(s)
@@ -1445,7 +1445,7 @@ class TestClassesAndFunctions(unittest.TestCase):
         self.assertIn(('__init__', 'method', object), attrs, 'missing __init__')
 
         self.assertIn(('s', 'static method', A), attrs, 'missing static method')
-        self.assertIn(('c', 'class method', A), attrs, 'missing class method')
+        self.assertIn(('c', 'class method', A), attrs, 'missing klasse method')
         self.assertIn(('p', 'property', A), attrs, 'missing property')
         self.assertIn(('m', 'method', A), attrs,
                       'missing plain method: %r' % attrs)
@@ -1454,13 +1454,13 @@ class TestClassesAndFunctions(unittest.TestCase):
         self.assertIn(('md', 'method', A), attrs, 'missing method descriptor')
         self.assertIn(('dd', 'data', A), attrs, 'missing data descriptor')
 
-        class B(A):
+        klasse B(A):
 
             def m(self): pass
 
         attrs = attrs_wo_objs(B)
         self.assertIn(('s', 'static method', A), attrs, 'missing static method')
-        self.assertIn(('c', 'class method', A), attrs, 'missing class method')
+        self.assertIn(('c', 'class method', A), attrs, 'missing klasse method')
         self.assertIn(('p', 'property', A), attrs, 'missing property')
         self.assertIn(('m', 'method', B), attrs, 'missing plain method')
         self.assertIn(('m1', 'method', A), attrs, 'missing plain method')
@@ -1469,7 +1469,7 @@ class TestClassesAndFunctions(unittest.TestCase):
         self.assertIn(('dd', 'data', A), attrs, 'missing data descriptor')
 
 
-        class C(A):
+        klasse C(A):
 
             def m(self): pass
             def c(self): pass
@@ -1484,7 +1484,7 @@ class TestClassesAndFunctions(unittest.TestCase):
         self.assertIn(('md', 'method', A), attrs, 'missing method descriptor')
         self.assertIn(('dd', 'data', A), attrs, 'missing data descriptor')
 
-        class D(B, C):
+        klasse D(B, C):
 
             def m1(self): pass
 
@@ -1510,7 +1510,7 @@ class TestClassesAndFunctions(unittest.TestCase):
         self.assertIn(('__new__', 'static method', bool), attrs,
                       'missing __new__')
         self.assertIn(('from_bytes', 'class method', int), attrs,
-                      'missing class method')
+                      'missing klasse method')
         self.assertIn(('to_bytes', 'method', int), attrs,
                       'missing plain method')
         self.assertIn(('__add__', 'method', int), attrs,
@@ -1519,12 +1519,12 @@ class TestClassesAndFunctions(unittest.TestCase):
                       'missing plain method')
 
     def test_classify_DynamicClassAttribute(self):
-        class Meta(type):
+        klasse Meta(type):
             def __getattr__(self, name):
                 if name == 'ham':
                     return 'spam'
                 return super().__getattr__(name)
-        class VA(metaclass=Meta):
+        klasse VA(metaclass=Meta):
             @types.DynamicClassAttribute
             def ham(self):
                 return 'eggs'
@@ -1534,7 +1534,7 @@ class TestClassesAndFunctions(unittest.TestCase):
         self.assertIn(should_find_ga, inspect.classify_class_attrs(VA))
 
     def test_classify_overrides_bool(self):
-        class NoBool(object):
+        klasse NoBool(object):
             def __eq__(self, other):
                 return NoBool()
 
@@ -1542,51 +1542,51 @@ class TestClassesAndFunctions(unittest.TestCase):
                 raise NotImplementedError(
                     "This object does not specify a boolean value")
 
-        class HasNB(object):
+        klasse HasNB(object):
             dd = NoBool()
 
         should_find_attr = inspect.Attribute('dd', 'data', HasNB, HasNB.dd)
         self.assertIn(should_find_attr, inspect.classify_class_attrs(HasNB))
 
     def test_classify_metaclass_class_attribute(self):
-        class Meta(type):
+        klasse Meta(type):
             fish = 'slap'
             def __dir__(self):
                 return ['__class__', '__module__', '__name__', 'fish']
-        class Class(metaclass=Meta):
+        klasse Class(metaclass=Meta):
             pass
         should_find = inspect.Attribute('fish', 'data', Meta, 'slap')
         self.assertIn(should_find, inspect.classify_class_attrs(Class))
 
     def test_classify_VirtualAttribute(self):
-        class Meta(type):
+        klasse Meta(type):
             def __dir__(cls):
                 return ['__class__', '__module__', '__name__', 'BOOM']
             def __getattr__(self, name):
                 if name =='BOOM':
                     return 42
                 return super().__getattr(name)
-        class Class(metaclass=Meta):
+        klasse Class(metaclass=Meta):
             pass
         should_find = inspect.Attribute('BOOM', 'data', Meta, 42)
         self.assertIn(should_find, inspect.classify_class_attrs(Class))
 
     def test_classify_VirtualAttribute_multi_classes(self):
-        class Meta1(type):
+        klasse Meta1(type):
             def __dir__(cls):
                 return ['__class__', '__module__', '__name__', 'one']
             def __getattr__(self, name):
                 if name =='one':
                     return 1
                 return super().__getattr__(name)
-        class Meta2(type):
+        klasse Meta2(type):
             def __dir__(cls):
                 return ['__class__', '__module__', '__name__', 'two']
             def __getattr__(self, name):
                 if name =='two':
                     return 2
                 return super().__getattr__(name)
-        class Meta3(Meta1, Meta2):
+        klasse Meta3(Meta1, Meta2):
             def __dir__(cls):
                 return list(sorted(set(['__class__', '__module__', '__name__', 'three'] +
                     Meta1.__dir__(cls) + Meta2.__dir__(cls))))
@@ -1594,9 +1594,9 @@ class TestClassesAndFunctions(unittest.TestCase):
                 if name =='three':
                     return 3
                 return super().__getattr__(name)
-        class Class1(metaclass=Meta1):
+        klasse Class1(metaclass=Meta1):
             pass
-        class Class2(Class1, metaclass=Meta3):
+        klasse Class2(Class1, metaclass=Meta3):
             pass
 
         should_find1 = inspect.Attribute('one', 'data', Meta1, 1)
@@ -1607,23 +1607,23 @@ class TestClassesAndFunctions(unittest.TestCase):
             self.assertIn(sf, cca)
 
     def test_classify_class_attrs_with_buggy_dir(self):
-        class M(type):
+        klasse M(type):
             def __dir__(cls):
                 return ['__class__', '__name__', 'missing']
-        class C(metaclass=M):
+        klasse C(metaclass=M):
             pass
         attrs = [a[0] for a in inspect.classify_class_attrs(C)]
         self.assertNotIn('missing', attrs)
 
     def test_getmembers_descriptors(self):
-        class A(object):
+        klasse A(object):
             dd = _BrokenDataDescriptor()
             md = _BrokenMethodDescriptor()
 
         def pred_wrapper(pred):
             # A quick'n'dirty way to discard standard attributes of new-style
             # classes.
-            class Empty(object):
+            klasse Empty(object):
                 pass
             def wrapped(x):
                 if '__name__' in dir(x) and hasattr(Empty, x.__name__):
@@ -1639,7 +1639,7 @@ class TestClassesAndFunctions(unittest.TestCase):
         self.assertEqual(inspect.getmembers(A, isdatadescriptor),
             [('dd', A.__dict__['dd'])])
 
-        class B(A):
+        klasse B(A):
             pass
 
         self.assertEqual(inspect.getmembers(B, ismethoddescriptor),
@@ -1648,7 +1648,7 @@ class TestClassesAndFunctions(unittest.TestCase):
             [('dd', A.__dict__['dd'])])
 
     def test_getmembers_method(self):
-        class B:
+        klasse B:
             def f(self):
                 pass
 
@@ -1659,7 +1659,7 @@ class TestClassesAndFunctions(unittest.TestCase):
         self.assertIn(('f', b.f), inspect.getmembers(b, inspect.ismethod))
 
     def test_getmembers_custom_dir(self):
-        class CorrectDir:
+        klasse CorrectDir:
             def __init__(self, attr):
                 self.attr = attr
             def method(self):
@@ -1680,7 +1680,7 @@ class TestClassesAndFunctions(unittest.TestCase):
         # inspect.getmembers calls `dir()` on the passed object inside.
         # if `__dir__` mentions some non-existent attribute,
         # we still need to return others correctly.
-        class BrokenDir:
+        klasse BrokenDir:
             existing = 1
             def method(self):
                 return self.existing + 1
@@ -1698,7 +1698,7 @@ class TestClassesAndFunctions(unittest.TestCase):
 
     def test_getmembers_custom_duplicated_dir(self):
         # Duplicates in `__dir__` must not fail and return just one result.
-        class DuplicatedDir:
+        klasse DuplicatedDir:
             attr = 1
             def __dir__(self):
                 return ['attr', 'attr']
@@ -1709,16 +1709,16 @@ class TestClassesAndFunctions(unittest.TestCase):
         ])
 
     def test_getmembers_VirtualAttribute(self):
-        class M(type):
+        klasse M(type):
             def __getattr__(cls, name):
                 if name == 'eggs':
                     return 'scrambled'
                 return super().__getattr__(name)
-        class A(metaclass=M):
+        klasse A(metaclass=M):
             @types.DynamicClassAttribute
             def eggs(self):
                 return 'spam'
-        class B:
+        klasse B:
             def __getattr__(self, attribute):
                 return None
         self.assertIn(('eggs', 'scrambled'), inspect.getmembers(A))
@@ -1727,7 +1727,7 @@ class TestClassesAndFunctions(unittest.TestCase):
         self.assertIn(('__getattr__', b.__getattr__), inspect.getmembers(b))
 
     def test_getmembers_static(self):
-        class A:
+        klasse A:
             @property
             def name(self):
                 raise NotImplementedError
@@ -1744,16 +1744,16 @@ class TestClassesAndFunctions(unittest.TestCase):
         self.assertIn(('eggs', inspect.getattr_static(A, 'eggs')), class_members)
 
     def test_getmembers_with_buggy_dir(self):
-        class M(type):
+        klasse M(type):
             def __dir__(cls):
                 return ['__class__', '__name__', 'missing']
-        class C(metaclass=M):
+        klasse C(metaclass=M):
             pass
         attrs = [a[0] for a in inspect.getmembers(C)]
         self.assertNotIn('missing', attrs)
 
 
-class TestFormatAnnotation(unittest.TestCase):
+klasse TestFormatAnnotation(unittest.TestCase):
     def test_typing_replacement(self):
         from test.typinganndata.ann_module9 import ann, ann1
         self.assertEqual(inspect.formatannotation(ann), 'List[str] | int')
@@ -1764,22 +1764,22 @@ class TestFormatAnnotation(unittest.TestCase):
         self.assertEqual(inspect.formatannotation(fwdref), 'fwdref')
 
 
-class TestIsMethodDescriptor(unittest.TestCase):
+klasse TestIsMethodDescriptor(unittest.TestCase):
 
     def test_custom_descriptors(self):
-        class MethodDescriptor:
+        klasse MethodDescriptor:
             def __get__(self, *_): pass
-        class MethodDescriptorSub(MethodDescriptor):
+        klasse MethodDescriptorSub(MethodDescriptor):
             pass
-        class DataDescriptorWithNoGet:
+        klasse DataDescriptorWithNoGet:
             def __set__(self, *_): pass
-        class DataDescriptorWithGetSet:
+        klasse DataDescriptorWithGetSet:
             def __get__(self, *_): pass
             def __set__(self, *_): pass
-        class DataDescriptorWithGetDelete:
+        klasse DataDescriptorWithGetDelete:
             def __get__(self, *_): pass
             def __delete__(self, *_): pass
-        class DataDescriptorSub(DataDescriptorWithNoGet,
+        klasse DataDescriptorSub(DataDescriptorWithNoGet,
                                 DataDescriptorWithGetDelete):
             pass
 
@@ -1813,7 +1813,7 @@ class TestIsMethodDescriptor(unittest.TestCase):
 
     def test_builtin_descriptors(self):
         builtin_slot_wrapper = int.__add__  # This one is mentioned in docs.
-        class Owner:
+        klasse Owner:
             def instance_method(self): pass
             @classmethod
             def class_method(cls): pass
@@ -1821,7 +1821,7 @@ class TestIsMethodDescriptor(unittest.TestCase):
             def static_method(): pass
             @property
             def a_property(self): pass
-        class Slotermeyer:
+        klasse Slotermeyer:
             __slots__ = 'a_slot',
         def function():
             pass
@@ -1860,9 +1860,9 @@ class TestIsMethodDescriptor(unittest.TestCase):
         self.assertTrue(inspect.ismethoddescriptor(functools.partial(function)))
 
     def test_descriptor_being_a_class(self):
-        class MethodDescriptorMeta(type):
+        klasse MethodDescriptorMeta(type):
             def __get__(self, *_): pass
-        class ClassBeingMethodDescriptor(metaclass=MethodDescriptorMeta):
+        klasse ClassBeingMethodDescriptor(metaclass=MethodDescriptorMeta):
             pass
         # `ClassBeingMethodDescriptor` itself *is* a method descriptor,
         # but it is *also* a class, and `ismethoddescriptor()` explicitly
@@ -1872,7 +1872,7 @@ class TestIsMethodDescriptor(unittest.TestCase):
             'classes (instances of type) are explicitly excluded')
 
     def test_non_descriptors(self):
-        class Test:
+        klasse Test:
             pass
         self.assertFalse(inspect.ismethoddescriptor(Test()))
         self.assertFalse(inspect.ismethoddescriptor(Test))
@@ -1880,16 +1880,16 @@ class TestIsMethodDescriptor(unittest.TestCase):
         self.assertFalse(inspect.ismethoddescriptor(42))
 
 
-class TestIsDataDescriptor(unittest.TestCase):
+klasse TestIsDataDescriptor(unittest.TestCase):
 
     def test_custom_descriptors(self):
-        class NonDataDescriptor:
+        klasse NonDataDescriptor:
             def __get__(self, value, type=None): pass
-        class DataDescriptor0:
+        klasse DataDescriptor0:
             def __set__(self, name, value): pass
-        class DataDescriptor1:
+        klasse DataDescriptor1:
             def __delete__(self, name): pass
-        class DataDescriptor2:
+        klasse DataDescriptor2:
             __set__ = None
         self.assertFalse(inspect.isdatadescriptor(NonDataDescriptor()),
                          'class with only __get__ not a data descriptor')
@@ -1901,13 +1901,13 @@ class TestIsDataDescriptor(unittest.TestCase):
                         'class with __set__ = None is a data descriptor')
 
     def test_slot(self):
-        class Slotted:
+        klasse Slotted:
             __slots__ = 'foo',
         self.assertTrue(inspect.isdatadescriptor(Slotted.foo),
                         'a slot is a data descriptor')
 
     def test_property(self):
-        class Propertied:
+        klasse Propertied:
             @property
             def a_property(self):
                 pass
@@ -1915,7 +1915,7 @@ class TestIsDataDescriptor(unittest.TestCase):
                         'a property is a data descriptor')
 
     def test_functions(self):
-        class Test(object):
+        klasse Test(object):
             def instance_method(self): pass
             @classmethod
             def class_method(cls): pass
@@ -1927,7 +1927,7 @@ class TestIsDataDescriptor(unittest.TestCase):
         self.assertFalse(inspect.isdatadescriptor(Test().instance_method),
                          'a instance method is not a data descriptor')
         self.assertFalse(inspect.isdatadescriptor(Test().class_method),
-                         'a class method is not a data descriptor')
+                         'a klasse method is not a data descriptor')
         self.assertFalse(inspect.isdatadescriptor(Test().static_method),
                          'a static method is not a data descriptor')
         self.assertFalse(inspect.isdatadescriptor(function),
@@ -1937,7 +1937,7 @@ class TestIsDataDescriptor(unittest.TestCase):
 
 
 _global_ref = object()
-class TestGetClosureVars(unittest.TestCase):
+klasse TestGetClosureVars(unittest.TestCase):
 
     def test_name_resolution(self):
         # Basic test of the 4 different resolution mechanisms
@@ -1970,7 +1970,7 @@ class TestGetClosureVars(unittest.TestCase):
         self.assertEqual(inspect.getclosurevars(f(_arg)), expected)
 
     def test_method_closure(self):
-        class C:
+        klasse C:
             def f(self, nonlocal_ref):
                 def g(local_ref):
                     print(local_ref, nonlocal_ref, _global_ref, unbound_ref)
@@ -1985,7 +1985,7 @@ class TestGetClosureVars(unittest.TestCase):
         self.assertEqual(inspect.getclosurevars(C().f(_arg)), expected)
 
     def test_attribute_same_name_as_global_var(self):
-        class C:
+        klasse C:
             _global_ref = object()
         def f():
             print(C._global_ref, _global_ref)
@@ -2042,7 +2042,7 @@ class TestGetClosureVars(unittest.TestCase):
         self.assertEqual(inspect.getclosurevars(foo), _empty)
 
     def test_getclosurevars_error(self):
-        class T: pass
+        klasse T: pass
         self.assertRaises(TypeError, inspect.getclosurevars, 1)
         self.assertRaises(TypeError, inspect.getclosurevars, list)
         self.assertRaises(TypeError, inspect.getclosurevars, {})
@@ -2072,7 +2072,7 @@ class TestGetClosureVars(unittest.TestCase):
         self.assertEqual(inspect.getclosurevars(f), expected)
 
 
-class TestGetcallargsFunctions(unittest.TestCase):
+klasse TestGetcallargsFunctions(unittest.TestCase):
 
     def assertEqualCallArgs(self, func, call_params_string, locs=None):
         locs = dict(locs or {}, func=func)
@@ -2273,10 +2273,10 @@ class TestGetcallargsFunctions(unittest.TestCase):
                                    'name must be a str, not a int'):
             inspect.Parameter(123, kind=4)
 
-class TestGetcallargsMethods(TestGetcallargsFunctions):
+klasse TestGetcallargsMethods(TestGetcallargsFunctions):
 
     def setUp(self):
-        class Foo(object):
+        klasse Foo(object):
             pass
         self.cls = Foo
         self.inst = Foo()
@@ -2287,7 +2287,7 @@ class TestGetcallargsMethods(TestGetcallargsFunctions):
         self.cls.method = mk('self, ' + signature)
         return self.inst.method
 
-class TestGetcallargsUnboundMethods(TestGetcallargsMethods):
+klasse TestGetcallargsUnboundMethods(TestGetcallargsMethods):
 
     def makeCallable(self, signature):
         super(TestGetcallargsUnboundMethods, self).makeCallable(signature)
@@ -2307,10 +2307,10 @@ class TestGetcallargsUnboundMethods(TestGetcallargsMethods):
         return (func, 'inst,' + call_params_string, locs)
 
 
-class TestGetattrStatic(unittest.TestCase):
+klasse TestGetattrStatic(unittest.TestCase):
 
     def test_basic(self):
-        class Thing(object):
+        klasse Thing(object):
             x = object()
 
         thing = Thing()
@@ -2322,16 +2322,16 @@ class TestGetattrStatic(unittest.TestCase):
         self.assertEqual(inspect.getattr_static(thing, 'y', 3), 3)
 
     def test_inherited(self):
-        class Thing(object):
+        klasse Thing(object):
             x = object()
-        class OtherThing(Thing):
+        klasse OtherThing(Thing):
             pass
 
         something = OtherThing()
         self.assertEqual(inspect.getattr_static(something, 'x'), Thing.x)
 
     def test_instance_attr(self):
-        class Thing(object):
+        klasse Thing(object):
             x = 2
             def __init__(self, x):
                 self.x = x
@@ -2341,7 +2341,7 @@ class TestGetattrStatic(unittest.TestCase):
         self.assertEqual(inspect.getattr_static(thing, 'x'), 2)
 
     def test_property(self):
-        class Thing(object):
+        klasse Thing(object):
             @property
             def x(self):
                 raise AttributeError("I'm pretending not to exist")
@@ -2349,23 +2349,23 @@ class TestGetattrStatic(unittest.TestCase):
         self.assertEqual(inspect.getattr_static(thing, 'x'), Thing.x)
 
     def test_descriptor_raises_AttributeError(self):
-        class descriptor(object):
+        klasse descriptor(object):
             def __get__(*_):
                 raise AttributeError("I'm pretending not to exist")
         desc = descriptor()
-        class Thing(object):
+        klasse Thing(object):
             x = desc
         thing = Thing()
         self.assertEqual(inspect.getattr_static(thing, 'x'), desc)
 
     def test_classAttribute(self):
-        class Thing(object):
+        klasse Thing(object):
             x = object()
 
         self.assertEqual(inspect.getattr_static(Thing, 'x'), Thing.x)
 
     def test_classVirtualAttribute(self):
-        class Thing(object):
+        klasse Thing(object):
             @types.DynamicClassAttribute
             def x(self):
                 return self._x
@@ -2374,15 +2374,15 @@ class TestGetattrStatic(unittest.TestCase):
         self.assertEqual(inspect.getattr_static(Thing, 'x'), Thing.__dict__['x'])
 
     def test_inherited_classattribute(self):
-        class Thing(object):
+        klasse Thing(object):
             x = object()
-        class OtherThing(Thing):
+        klasse OtherThing(Thing):
             pass
 
         self.assertEqual(inspect.getattr_static(OtherThing, 'x'), Thing.x)
 
     def test_slots(self):
-        class Thing(object):
+        klasse Thing(object):
             y = 'bar'
             __slots__ = ['x']
             def __init__(self):
@@ -2395,19 +2395,19 @@ class TestGetattrStatic(unittest.TestCase):
         self.assertEqual(inspect.getattr_static(thing, 'x'), Thing.x)
 
     def test_metaclass(self):
-        class meta(type):
+        klasse meta(type):
             attr = 'foo'
-        class Thing(object, metaclass=meta):
+        klasse Thing(object, metaclass=meta):
             pass
         self.assertEqual(inspect.getattr_static(Thing, 'attr'), 'foo')
 
-        class sub(meta):
+        klasse sub(meta):
             pass
-        class OtherThing(object, metaclass=sub):
+        klasse OtherThing(object, metaclass=sub):
             x = 3
         self.assertEqual(inspect.getattr_static(OtherThing, 'attr'), 'foo')
 
-        class OtherOtherThing(OtherThing):
+        klasse OtherOtherThing(OtherThing):
             pass
         # this test is odd, but it was added as it exposed a bug
         self.assertEqual(inspect.getattr_static(OtherOtherThing, 'x'), 3)
@@ -2423,22 +2423,22 @@ class TestGetattrStatic(unittest.TestCase):
 
     def test_inherited_slots(self):
         # returns descriptor
-        class Thing(object):
+        klasse Thing(object):
             __slots__ = ['x']
             def __init__(self):
                 self.x = 'foo'
 
-        class OtherThing(Thing):
+        klasse OtherThing(Thing):
             pass
         # it would be nice if this worked...
         # we get the descriptor instead of the instance attribute
         self.assertEqual(inspect.getattr_static(OtherThing(), 'x'), Thing.x)
 
     def test_descriptor(self):
-        class descriptor(object):
+        klasse descriptor(object):
             def __get__(self, instance, owner):
                 return 3
-        class Foo(object):
+        klasse Foo(object):
             d = descriptor()
 
         foo = Foo()
@@ -2457,21 +2457,21 @@ class TestGetattrStatic(unittest.TestCase):
         self.assertEqual(inspect.getattr_static(foo, 'd'), Foo.__dict__['d'])
 
     def test_metaclass_with_descriptor(self):
-        class descriptor(object):
+        klasse descriptor(object):
             def __get__(self, instance, owner):
                 return 3
-        class meta(type):
+        klasse meta(type):
             d = descriptor()
-        class Thing(object, metaclass=meta):
+        klasse Thing(object, metaclass=meta):
             pass
         self.assertEqual(inspect.getattr_static(Thing, 'd'), meta.__dict__['d'])
 
 
     def test_class_as_property(self):
-        class Base(object):
+        klasse Base(object):
             foo = 3
 
-        class Something(Base):
+        klasse Something(Base):
             executed = False
             @property
             def __class__(self):
@@ -2484,15 +2484,15 @@ class TestGetattrStatic(unittest.TestCase):
         self.assertEqual(inspect.getattr_static(Something, 'foo'), 3)
 
     def test_mro_as_property(self):
-        class Meta(type):
+        klasse Meta(type):
             @property
             def __mro__(self):
                 return (object,)
 
-        class Base(object):
+        klasse Base(object):
             foo = 3
 
-        class Something(Base, metaclass=Meta):
+        klasse Something(Base, metaclass=Meta):
             pass
 
         self.assertEqual(inspect.getattr_static(Something(), 'foo'), 3)
@@ -2502,7 +2502,7 @@ class TestGetattrStatic(unittest.TestCase):
         test = self
         test.called = False
 
-        class Foo(dict):
+        klasse Foo(dict):
             a = 3
             @property
             def __dict__(self):
@@ -2514,7 +2514,7 @@ class TestGetattrStatic(unittest.TestCase):
         self.assertEqual(inspect.getattr_static(foo, 'a'), 3)
         self.assertFalse(test.called)
 
-        class Bar(Foo): pass
+        klasse Bar(Foo): pass
 
         bar = Bar()
         bar.a = 5
@@ -2525,17 +2525,17 @@ class TestGetattrStatic(unittest.TestCase):
         test = self
         test.called = False
 
-        class Foo(dict):
+        klasse Foo(dict):
             a = 3
             @property
             def __dict__(self):
                 test.called = True
                 return {}
 
-        class Bar(dict):
+        klasse Bar(dict):
             a = 4
 
-        class Baz(Bar): pass
+        klasse Baz(Bar): pass
 
         baz = Baz()
         self.assertEqual(inspect.getattr_static(baz, 'a'), 4)
@@ -2547,12 +2547,12 @@ class TestGetattrStatic(unittest.TestCase):
         test = self
         test.called = False
 
-        class Custom(dict):
+        klasse Custom(dict):
             def get(self, key, default=None):
                 test.called = True
                 super().get(key, default)
 
-        class Foo(object):
+        klasse Foo(object):
             a = 3
         foo = Foo()
         foo.__dict__ = Custom()
@@ -2560,12 +2560,12 @@ class TestGetattrStatic(unittest.TestCase):
         self.assertFalse(test.called)
 
     def test_metaclass_dict_as_property(self):
-        class Meta(type):
+        klasse Meta(type):
             @property
             def __dict__(self):
                 self.executed = True
 
-        class Thing(metaclass=Meta):
+        klasse Thing(metaclass=Meta):
             executed = False
 
             def __init__(self):
@@ -2581,16 +2581,16 @@ class TestGetattrStatic(unittest.TestCase):
                          sentinel)
 
     def test_metaclass_with_metaclass_with_dict_as_property(self):
-        class MetaMeta(type):
+        klasse MetaMeta(type):
             @property
             def __dict__(self):
                 self.executed = True
                 return dict(spam=42)
 
-        class Meta(type, metaclass=MetaMeta):
+        klasse Meta(type, metaclass=MetaMeta):
             executed = False
 
-        class Thing(metaclass=Meta):
+        klasse Thing(metaclass=Meta):
             pass
 
         with self.assertRaises(AttributeError):
@@ -2601,7 +2601,7 @@ class TestGetattrStatic(unittest.TestCase):
         test = self
         test.called = False
 
-        class Foo:
+        klasse Foo:
             def __getattr__(self, attr):
                 test.called = True
                 return {}
@@ -2615,7 +2615,7 @@ class TestGetattrStatic(unittest.TestCase):
         test = self
         test.called = False
 
-        class Foo:
+        klasse Foo:
             def __getattribute__(self, attr):
                 test.called = True
                 return {}
@@ -2632,7 +2632,7 @@ class TestGetattrStatic(unittest.TestCase):
         # when no other strong references to those classes remain.
         # Since these classes can themselves hold strong references to
         # other objects, this can cause unexpected memory consumption.
-        class Foo: pass
+        klasse Foo: pass
         Foo.instance = Foo()
         weakref_to_class = weakref.ref(Foo)
         inspect.getattr_static(Foo.instance, 'whatever', 'irrelevant')
@@ -2641,7 +2641,7 @@ class TestGetattrStatic(unittest.TestCase):
         self.assertIsNone(weakref_to_class())
 
 
-class TestGetGeneratorState(unittest.TestCase):
+klasse TestGetGeneratorState(unittest.TestCase):
 
     def setUp(self):
         def number_generator():
@@ -2744,7 +2744,7 @@ class TestGetGeneratorState(unittest.TestCase):
         self.assertRaises(TypeError, inspect.getgeneratorlocals, (2,3))
 
 
-class TestGetCoroutineState(unittest.TestCase):
+klasse TestGetCoroutineState(unittest.TestCase):
 
     def setUp(self):
         @types.coroutine
@@ -2813,7 +2813,7 @@ class TestGetCoroutineState(unittest.TestCase):
 
 
 @support.requires_working_socket()
-class TestGetAsyncGenState(unittest.IsolatedAsyncioTestCase):
+klasse TestGetAsyncGenState(unittest.IsolatedAsyncioTestCase):
 
     def setUp(self):
         async def number_asyncgen():
@@ -2919,19 +2919,19 @@ class TestGetAsyncGenState(unittest.IsolatedAsyncioTestCase):
         self.assertRaises(TypeError, inspect.getasyncgenlocals, (2,3))
 
 
-class MySignature(inspect.Signature):
+klasse MySignature(inspect.Signature):
     # Top-level to make it picklable;
     # used in test_signature_object_pickle
     pass
 
-class MyParameter(inspect.Parameter):
+klasse MyParameter(inspect.Parameter):
     # Top-level to make it picklable;
     # used in test_signature_object_pickle
     pass
 
 
 
-class TestSignatureObject(unittest.TestCase):
+klasse TestSignatureObject(unittest.TestCase):
     @staticmethod
     def signature(func, **kw):
         sig = inspect.signature(func, **kw)
@@ -3110,7 +3110,7 @@ class TestSignatureObject(unittest.TestCase):
         def test_args_kwargs_only(*args, **kwargs):  # NOQA
             pass
 
-        class A:
+        klasse A:
             @classmethod
             def test_classmethod(*args):  # NOQA
                 pass
@@ -3184,7 +3184,7 @@ class TestSignatureObject(unittest.TestCase):
         test_callable(bytes.maketrans)
         test_callable(b'abc'.maketrans)
 
-        # class method
+        # klasse method
         test_callable(dict.fromkeys)
         test_callable({}.fromkeys)
 
@@ -3199,7 +3199,7 @@ class TestSignatureObject(unittest.TestCase):
 
         # This doesn't work now.
         # (We don't have a valid signature for "type" in 3.4)
-        class ThisWorksNow:
+        klasse ThisWorksNow:
             __call__ = type
         # TODO: Support type.
         self.assertEqual(ThisWorksNow()(1), int)
@@ -3309,7 +3309,7 @@ class TestSignatureObject(unittest.TestCase):
         def func(a,b, *args, kwonly=True, kwonlyreq, **kwargs):
             pass
 
-        class funclike:
+        klasse funclike:
             # Has to be callable, and have correct
             # __code__, __annotations__, __defaults__, __name__,
             # and __kwdefaults__ attributes
@@ -3365,7 +3365,7 @@ class TestSignatureObject(unittest.TestCase):
         def func(a,b, *args, kwonly=True, kwonlyreq, **kwargs):
             pass
 
-        class funclike:
+        klasse funclike:
             def __init__(self, marker):
                 pass
 
@@ -3378,7 +3378,7 @@ class TestSignatureObject(unittest.TestCase):
         self.assertEqual(str(inspect.signature(funclike)), '(marker)')
 
     def test_signature_on_method(self):
-        class Test:
+        klasse Test:
             def __init__(*args):
                 pass
             def m1(self, arg1, arg2=1) -> int:
@@ -3406,7 +3406,7 @@ class TestSignatureObject(unittest.TestCase):
 
     def test_signature_wrapped_bound_method(self):
         # Issue 24298
-        class Test:
+        klasse Test:
             def m1(self, arg1, arg2=1) -> int:
                 pass
         @functools.wraps(Test().m1)
@@ -3423,7 +3423,7 @@ class TestSignatureObject(unittest.TestCase):
                             ((('function', ..., ..., "positional_only"),),
                             ...))
 
-        class Test:
+        klasse Test:
             @classmethod
             def foo(cls, arg1, *, arg2=1):
                 pass
@@ -3446,7 +3446,7 @@ class TestSignatureObject(unittest.TestCase):
                             ((('function', ..., ..., "positional_only"),),
                             ...))
 
-        class Test:
+        klasse Test:
             @staticmethod
             def foo(cls, *, arg):
                 pass
@@ -3729,7 +3729,7 @@ class TestSignatureObject(unittest.TestCase):
     def test_signature_on_partialmethod(self):
         from functools import partialmethod
 
-        class Spam:
+        klasse Spam:
             def test():
                 pass
             ham = partialmethod(test)
@@ -3737,7 +3737,7 @@ class TestSignatureObject(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "has incorrect arguments"):
             inspect.signature(Spam.ham)
 
-        class Spam:
+        klasse Spam:
             def test(it, a, b, *, c) -> 'spam':
                 pass
             ham = partialmethod(test, c=1)
@@ -3767,7 +3767,7 @@ class TestSignatureObject(unittest.TestCase):
                            ('c', 1, ..., 'keyword_only')),
                           'spam'))
 
-        class Spam:
+        klasse Spam:
             def test(self: 'anno', x):
                 pass
 
@@ -3789,7 +3789,7 @@ class TestSignatureObject(unittest.TestCase):
                 return func(*args, **kwargs)
             return wrapper
 
-        class Foo:
+        klasse Foo:
             @decorator
             def bar(self, a, b):
                 pass
@@ -3829,7 +3829,7 @@ class TestSignatureObject(unittest.TestCase):
             wrapper.__signature__ = sig.replace(parameters=new_params)
             return wrapper
 
-        class Foo:
+        klasse Foo:
             @decorator
             def __call__(self, a, b):
                 pass
@@ -3854,7 +3854,7 @@ class TestSignatureObject(unittest.TestCase):
                           ...))
 
     def test_signature_on_class(self):
-        class C:
+        klasse C:
             def __init__(self, a):
                 pass
 
@@ -3862,10 +3862,10 @@ class TestSignatureObject(unittest.TestCase):
                          ((('a', ..., ..., "positional_or_keyword"),),
                           ...))
 
-        class CM(type):
+        klasse CM(type):
             def __call__(cls, a):
                 pass
-        class C(metaclass=CM):
+        klasse C(metaclass=CM):
             def __init__(self, b):
                 pass
 
@@ -3874,11 +3874,11 @@ class TestSignatureObject(unittest.TestCase):
                           ...))
 
         with self.subTest('classmethod'):
-            class CM(type):
+            klasse CM(type):
                 @classmethod
                 def __call__(cls, a):
                     return a
-            class C(metaclass=CM):
+            klasse C(metaclass=CM):
                 def __init__(self, b):
                     pass
 
@@ -3888,11 +3888,11 @@ class TestSignatureObject(unittest.TestCase):
                             ...))
 
         with self.subTest('staticmethod'):
-            class CM(type):
+            klasse CM(type):
                 @staticmethod
                 def __call__(a):
                     return a
-            class C(metaclass=CM):
+            klasse C(metaclass=CM):
                 def __init__(self, b):
                     pass
 
@@ -3902,12 +3902,12 @@ class TestSignatureObject(unittest.TestCase):
                             ...))
 
         with self.subTest('MethodType'):
-            class A:
+            klasse A:
                 def call(self, a):
                     return a
-            class CM(type):
+            klasse CM(type):
                 __call__ = A().call
-            class C(metaclass=CM):
+            klasse C(metaclass=CM):
                 def __init__(self, b):
                     pass
 
@@ -3917,9 +3917,9 @@ class TestSignatureObject(unittest.TestCase):
                             ...))
 
         with self.subTest('partial'):
-            class CM(type):
+            klasse CM(type):
                 __call__ = functools.partial(lambda x, a, b: (x, a, b), 2)
-            class C(metaclass=CM):
+            klasse C(metaclass=CM):
                 def __init__(self, c):
                     pass
 
@@ -3929,9 +3929,9 @@ class TestSignatureObject(unittest.TestCase):
                             ...))
 
         with self.subTest('partialmethod'):
-            class CM(type):
+            klasse CM(type):
                 __call__ = functools.partialmethod(lambda self, x, a: (x, a), 2)
-            class C(metaclass=CM):
+            klasse C(metaclass=CM):
                 def __init__(self, b):
                     pass
 
@@ -3941,9 +3941,9 @@ class TestSignatureObject(unittest.TestCase):
                             ...))
 
         with self.subTest('BuiltinMethodType'):
-            class CM(type):
+            klasse CM(type):
                 __call__ = ':'.join
-            class C(metaclass=CM):
+            klasse C(metaclass=CM):
                 def __init__(self, b):
                     pass
 
@@ -3953,9 +3953,9 @@ class TestSignatureObject(unittest.TestCase):
                 self.assertEqual(self.signature(C), self.signature(''.join))
 
         with self.subTest('MethodWrapperType'):
-            class CM(type):
+            klasse CM(type):
                 __call__ = (2).__pow__
-            class C(metaclass=CM):
+            klasse C(metaclass=CM):
                 def __init__(self, b):
                     pass
 
@@ -3966,10 +3966,10 @@ class TestSignatureObject(unittest.TestCase):
                 with self.assertRaises(AssertionError):
                     self.assertEqual(self.signature(C), self.signature((0).__pow__))
 
-        class CM(type):
+        klasse CM(type):
             def __new__(mcls, name, bases, dct, *, foo=1):
                 return super().__new__(mcls, name, bases, dct)
-        class C(metaclass=CM):
+        klasse C(metaclass=CM):
             def __init__(self, b):
                 pass
 
@@ -3984,15 +3984,15 @@ class TestSignatureObject(unittest.TestCase):
                            ('foo', 1, ..., "keyword_only")),
                           ...))
 
-        class CMM(type):
+        klasse CMM(type):
             def __new__(mcls, name, bases, dct, *, foo=1):
                 return super().__new__(mcls, name, bases, dct)
             def __call__(cls, nm, bs, dt):
                 return type(nm, bs, dt)
-        class CM(type, metaclass=CMM):
+        klasse CM(type, metaclass=CMM):
             def __new__(mcls, name, bases, dct, *, bar=2):
                 return super().__new__(mcls, name, bases, dct)
-        class C(metaclass=CM):
+        klasse C(metaclass=CM):
             def __init__(self, b):
                 pass
 
@@ -4013,10 +4013,10 @@ class TestSignatureObject(unittest.TestCase):
                          ((('b', ..., ..., "positional_or_keyword"),),
                           ...))
 
-        class CM(type):
+        klasse CM(type):
             def __init__(cls, name, bases, dct, *, bar=2):
                 return super().__init__(name, bases, dct)
-        class C(metaclass=CM):
+        klasse C(metaclass=CM):
             def __init__(self, b):
                 pass
 
@@ -4034,7 +4034,7 @@ class TestSignatureObject(unittest.TestCase):
                 return func(*args, **kwargs)
             return wrapped
 
-        class Foo:
+        klasse Foo:
             @identity
             def __new__(cls, a, b):
                 pass
@@ -4050,7 +4050,7 @@ class TestSignatureObject(unittest.TestCase):
                            ('b', ..., ..., "positional_or_keyword")),
                           ...))
 
-        class Bar:
+        klasse Bar:
             __new__ = identity(object.__new__)
 
         varargs_signature = (
@@ -4067,7 +4067,7 @@ class TestSignatureObject(unittest.TestCase):
                          varargs_signature)
 
     def test_signature_on_class_with_init(self):
-        class C:
+        klasse C:
             def __init__(self, b):
                 pass
 
@@ -4077,7 +4077,7 @@ class TestSignatureObject(unittest.TestCase):
                         ...))
 
         with self.subTest('classmethod'):
-            class C:
+            klasse C:
                 @classmethod
                 def __init__(cls, b):
                     pass
@@ -4088,7 +4088,7 @@ class TestSignatureObject(unittest.TestCase):
                             ...))
 
         with self.subTest('staticmethod'):
-            class C:
+            klasse C:
                 @staticmethod
                 def __init__(b):
                     pass
@@ -4099,10 +4099,10 @@ class TestSignatureObject(unittest.TestCase):
                             ...))
 
         with self.subTest('MethodType'):
-            class A:
+            klasse A:
                 def call(self, a):
                     pass
-            class C:
+            klasse C:
                 __init__ = A().call
 
             C(1)  # does not raise
@@ -4111,7 +4111,7 @@ class TestSignatureObject(unittest.TestCase):
                             ...))
 
         with self.subTest('partial'):
-            class C:
+            klasse C:
                 __init__ = functools.partial(lambda x, a, b: None, 2)
 
             C(1)  # does not raise
@@ -4120,7 +4120,7 @@ class TestSignatureObject(unittest.TestCase):
                             ...))
 
         with self.subTest('partialmethod'):
-            class C:
+            klasse C:
                 def _init(self, x, a):
                     self.a = (x, a)
                 __init__ = functools.partialmethod(_init, 2)
@@ -4132,7 +4132,7 @@ class TestSignatureObject(unittest.TestCase):
 
     def test_signature_on_class_with_new(self):
         with self.subTest('FunctionType'):
-            class C:
+            klasse C:
                 def __new__(cls, a):
                     return a
 
@@ -4142,7 +4142,7 @@ class TestSignatureObject(unittest.TestCase):
                             ...))
 
         with self.subTest('classmethod'):
-            class C:
+            klasse C:
                 @classmethod
                 def __new__(cls, cls2, a):
                     return a
@@ -4153,7 +4153,7 @@ class TestSignatureObject(unittest.TestCase):
                             ...))
 
         with self.subTest('staticmethod'):
-            class C:
+            klasse C:
                 @staticmethod
                 def __new__(cls, a):
                     return a
@@ -4164,10 +4164,10 @@ class TestSignatureObject(unittest.TestCase):
                             ...))
 
         with self.subTest('MethodType'):
-            class A:
+            klasse A:
                 def call(self, cls, a):
                     return a
-            class C:
+            klasse C:
                 __new__ = A().call
 
             self.assertEqual(C(1), 1)
@@ -4176,7 +4176,7 @@ class TestSignatureObject(unittest.TestCase):
                             ...))
 
         with self.subTest('partial'):
-            class C:
+            klasse C:
                 __new__ = functools.partial(lambda x, cls, a: (x, a), 2)
 
             self.assertEqual(C(1), (2, 1))
@@ -4185,7 +4185,7 @@ class TestSignatureObject(unittest.TestCase):
                             ...))
 
         with self.subTest('partialmethod'):
-            class C:
+            klasse C:
                 __new__ = functools.partialmethod(lambda cls, x, a: (x, a), 2)
 
             self.assertEqual(C(1), (2, 1))
@@ -4194,7 +4194,7 @@ class TestSignatureObject(unittest.TestCase):
                             ...))
 
         with self.subTest('BuiltinMethodType'):
-            class C:
+            klasse C:
                 __new__ = str.__subclasscheck__
 
             self.assertEqual(C(), False)
@@ -4203,7 +4203,7 @@ class TestSignatureObject(unittest.TestCase):
             self.assertRaises(ValueError, self.signature, C)
 
         with self.subTest('MethodWrapperType'):
-            class C:
+            klasse C:
                 __new__ = type.__or__.__get__(int, type)
 
             self.assertEqual(C(), C | int)
@@ -4214,14 +4214,14 @@ class TestSignatureObject(unittest.TestCase):
         # TODO: Test ClassMethodDescriptorType
 
         with self.subTest('MethodDescriptorType'):
-            class C:
+            klasse C:
                 __new__ = type.__dict__['__subclasscheck__']
 
             self.assertEqual(C(C), True)
             self.assertEqual(self.signature(C), self.signature(C.__subclasscheck__))
 
         with self.subTest('WrapperDescriptorType'):
-            class C:
+            klasse C:
                 __new__ = type.__or__
 
             self.assertEqual(C(int), C | int)
@@ -4230,16 +4230,16 @@ class TestSignatureObject(unittest.TestCase):
             self.assertRaises(ValueError, self.signature, C)
 
     def test_signature_on_subclass(self):
-        class A:
+        klasse A:
             def __new__(cls, a=1, *args, **kwargs):
                 return object.__new__(cls)
-        class B(A):
+        klasse B(A):
             def __init__(self, b):
                 pass
-        class C(A):
+        klasse C(A):
             def __new__(cls, a=1, b=2, *args, **kwargs):
                 return object.__new__(cls)
-        class D(A):
+        klasse D(A):
             pass
 
         self.assertEqual(self.signature(B),
@@ -4262,7 +4262,7 @@ class TestSignatureObject(unittest.TestCase):
 
         T = TypeVar('T')
 
-        class A(Generic[T]):
+        klasse A(Generic[T]):
             def __init__(self, *, a: int) -> None:
                 pass
 
@@ -4274,14 +4274,14 @@ class TestSignatureObject(unittest.TestCase):
                      "Signature information for builtins requires docstrings")
     def test_signature_on_class_without_init(self):
         # Test classes without user-defined __init__ or __new__
-        class C: pass
+        klasse C: pass
         self.assertEqual(str(inspect.signature(C)), '()')
-        class D(C): pass
+        klasse D(C): pass
         self.assertEqual(str(inspect.signature(D)), '()')
 
         # Test meta-classes without user-defined __init__ or __new__
-        class C(type): pass
-        class D(C): pass
+        klasse C(type): pass
+        klasse D(C): pass
         self.assertEqual(C('A', (), {}).__name__, 'A')
         # TODO: Support type.
         with self.assertRaisesRegex(ValueError, "callable.*is not supported"):
@@ -4297,26 +4297,26 @@ class TestSignatureObject(unittest.TestCase):
                     'buffer_callback=None)')
         self.assertEqual(str(inspect.signature(_pickle.Pickler)), expected)
 
-        class P(_pickle.Pickler): pass
-        class EmptyTrait: pass
-        class P2(EmptyTrait, P): pass
+        klasse P(_pickle.Pickler): pass
+        klasse EmptyTrait: pass
+        klasse P2(EmptyTrait, P): pass
         self.assertEqual(str(inspect.signature(P)), expected)
         self.assertEqual(str(inspect.signature(P2)), expected)
 
-        class P3(P2):
+        klasse P3(P2):
             def __init__(self, spam):
                 pass
         self.assertEqual(str(inspect.signature(P3)), '(spam)')
 
-        class MetaP(type):
+        klasse MetaP(type):
             def __call__(cls, foo, bar):
                 pass
-        class P4(P2, metaclass=MetaP):
+        klasse P4(P2, metaclass=MetaP):
             pass
         self.assertEqual(str(inspect.signature(P4)), '(foo, bar)')
 
     def test_signature_on_callable_objects(self):
-        class Foo:
+        klasse Foo:
             def __call__(self, a):
                 pass
 
@@ -4324,12 +4324,12 @@ class TestSignatureObject(unittest.TestCase):
                          ((('a', ..., ..., "positional_or_keyword"),),
                           ...))
 
-        class Spam:
+        klasse Spam:
             pass
         with self.assertRaisesRegex(TypeError, "is not a callable object"):
             inspect.signature(Spam())
 
-        class Bar(Spam, Foo):
+        klasse Bar(Spam, Foo):
             pass
 
         self.assertEqual(self.signature(Bar()),
@@ -4337,7 +4337,7 @@ class TestSignatureObject(unittest.TestCase):
                           ...))
 
         with self.subTest('classmethod'):
-            class C:
+            klasse C:
                 @classmethod
                 def __call__(cls, a):
                     pass
@@ -4347,7 +4347,7 @@ class TestSignatureObject(unittest.TestCase):
                             ...))
 
         with self.subTest('staticmethod'):
-            class C:
+            klasse C:
                 @staticmethod
                 def __call__(a):
                     pass
@@ -4357,10 +4357,10 @@ class TestSignatureObject(unittest.TestCase):
                             ...))
 
         with self.subTest('MethodType'):
-            class A:
+            klasse A:
                 def call(self, a):
                     return a
-            class C:
+            klasse C:
                 __call__ = A().call
 
             self.assertEqual(C()(1), 1)
@@ -4369,7 +4369,7 @@ class TestSignatureObject(unittest.TestCase):
                             ...))
 
         with self.subTest('partial'):
-            class C:
+            klasse C:
                 __call__ = functools.partial(lambda x, a, b: (x, a, b), 2)
 
             c = C()
@@ -4379,7 +4379,7 @@ class TestSignatureObject(unittest.TestCase):
                             ...))
 
         with self.subTest('partialmethod'):
-            class C:
+            klasse C:
                 __call__ = functools.partialmethod(lambda self, x, a: (x, a), 2)
 
             self.assertEqual(C()(1), (2, 1))
@@ -4388,14 +4388,14 @@ class TestSignatureObject(unittest.TestCase):
                             ...))
 
         with self.subTest('BuiltinMethodType'):
-            class C:
+            klasse C:
                 __call__ = ':'.join
 
             self.assertEqual(C()(['a', 'bc']), 'a:bc')
             self.assertEqual(self.signature(C()), self.signature(''.join))
 
         with self.subTest('MethodWrapperType'):
-            class C:
+            klasse C:
                 __call__ = (2).__pow__
 
             self.assertEqual(C()(3), 8)
@@ -4403,7 +4403,7 @@ class TestSignatureObject(unittest.TestCase):
                 self.assertEqual(self.signature(C()), self.signature((0).__pow__))
 
         with self.subTest('ClassMethodDescriptorType'):
-            class C(dict):
+            klasse C(dict):
                 __call__ = dict.__dict__['fromkeys']
 
             res = C()([1, 2], 3)
@@ -4413,14 +4413,14 @@ class TestSignatureObject(unittest.TestCase):
                 self.assertEqual(self.signature(C()), self.signature(dict.fromkeys))
 
         with self.subTest('MethodDescriptorType'):
-            class C(str):
+            klasse C(str):
                 __call__ = str.join
 
             self.assertEqual(C(':')(['a', 'bc']), 'a:bc')
             self.assertEqual(self.signature(C()), self.signature(''.join))
 
         with self.subTest('WrapperDescriptorType'):
-            class C(int):
+            klasse C(int):
                 __call__ = int.__pow__
 
             self.assertEqual(C(2)(3), 8)
@@ -4428,7 +4428,7 @@ class TestSignatureObject(unittest.TestCase):
                 self.assertEqual(self.signature(C()), self.signature((0).__pow__))
 
         with self.subTest('MemberDescriptorType'):
-            class C:
+            klasse C:
                 __slots__ = '__call__'
             c = C()
             c.__call__ = lambda a: a
@@ -4438,7 +4438,7 @@ class TestSignatureObject(unittest.TestCase):
                             ...))
 
     def test_signature_on_callable_objects_with_text_signature_attr(self):
-        class C:
+        klasse C:
             __text_signature__ = '(a, /, b, c=True)'
             def __call__(self, *args, **kwargs):
                 pass
@@ -4461,7 +4461,7 @@ class TestSignatureObject(unittest.TestCase):
                           ...))
 
     def test_signature_on_wrapper(self):
-        class Wrapper:
+        klasse Wrapper:
             def __call__(self, b):
                 pass
         wrapper = Wrapper()
@@ -4801,10 +4801,10 @@ class TestSignatureObject(unittest.TestCase):
         self.assertEqual(sig, inspect.signature(test))
 
     def test_signature_on_mangled_parameters(self):
-        class Spam:
+        klasse Spam:
             def foo(self, __p1:1=2, *, __p2:2=3):
                 pass
-        class Ham(Spam):
+        klasse Ham(Spam):
             pass
 
         self.assertEqual(self.signature(Spam.foo),
@@ -4817,7 +4817,7 @@ class TestSignatureObject(unittest.TestCase):
                          self.signature(Ham.foo))
 
     def test_signature_from_callable_python_obj(self):
-        class MySignature(inspect.Signature): pass
+        klasse MySignature(inspect.Signature): pass
         def foo(a, *, b:1): pass
         foo_sig = MySignature.from_callable(foo)
         self.assertIsInstance(foo_sig, MySignature)
@@ -4825,16 +4825,16 @@ class TestSignatureObject(unittest.TestCase):
     @unittest.skipIf(MISSING_C_DOCSTRINGS,
                      "Signature information for builtins requires docstrings")
     def test_signature_from_callable_class(self):
-        # A regression test for a class inheriting its signature from `object`.
-        class MySignature(inspect.Signature): pass
-        class foo: pass
+        # A regression test for a klasse inheriting its signature from `object`.
+        klasse MySignature(inspect.Signature): pass
+        klasse foo: pass
         foo_sig = MySignature.from_callable(foo)
         self.assertIsInstance(foo_sig, MySignature)
 
     @unittest.skipIf(MISSING_C_DOCSTRINGS,
                      "Signature information for builtins requires docstrings")
     def test_signature_from_callable_builtin_obj(self):
-        class MySignature(inspect.Signature): pass
+        klasse MySignature(inspect.Signature): pass
         sig = MySignature.from_callable(_pickle.Pickler)
         self.assertIsInstance(sig, MySignature)
 
@@ -4855,7 +4855,7 @@ class TestSignatureObject(unittest.TestCase):
         self.assertNotEqual(p1, p2)
 
     def test_signature_annotations_with_local_namespaces(self):
-        class Foo: ...
+        klasse Foo: ...
         def func(foo: Foo) -> int: pass
         def func2(foo: Foo, bar: 'Bar') -> int: pass
 
@@ -5007,7 +5007,7 @@ class TestSignatureObject(unittest.TestCase):
         def f(x: undef):
             pass
 
-        class C:
+        klasse C:
             x: undef
 
             def __init__(self, x: undef):
@@ -5018,7 +5018,7 @@ class TestSignatureObject(unittest.TestCase):
         sig = inspect.signature(C, annotation_format=Format.FORWARDREF)
         self.assertEqual(list(sig.parameters), ['x'])
 
-        class CallableWrapper:
+        klasse CallableWrapper:
             def __init__(self, func):
                 self.func = func
                 self.__annotate__ = func.__annotate__
@@ -5035,7 +5035,7 @@ class TestSignatureObject(unittest.TestCase):
         self.assertEqual(list(sig.parameters), ['args', 'kwargs'])
 
     def test_signature_none_annotation(self):
-        class funclike:
+        klasse funclike:
             # Has to be callable, and have correct
             # __code__, __annotations__, __defaults__, __name__,
             # and __kwdefaults__ attributes
@@ -5062,23 +5062,23 @@ class TestSignatureObject(unittest.TestCase):
     def test_signature_on_derived_classes(self):
         # gh-105080: Make sure that signatures are consistent on derived classes
 
-        class B:
+        klasse B:
             def __new__(self, *args, **kwargs):
                 return super().__new__(self)
             def __init__(self, value):
                 self.value = value
 
-        class D1(B):
+        klasse D1(B):
             def __init__(self, value):
                 super().__init__(value)
 
-        class D2(D1):
+        klasse D2(D1):
             pass
 
         self.assertEqual(inspect.signature(D2), inspect.signature(D1))
 
     def test_signature_on_non_comparable(self):
-        class NoncomparableCallable:
+        klasse NoncomparableCallable:
             def __call__(self, a):
                 pass
             def __eq__(self, other):
@@ -5088,7 +5088,7 @@ class TestSignatureObject(unittest.TestCase):
                           ...))
 
 
-class TestParameterObject(unittest.TestCase):
+klasse TestParameterObject(unittest.TestCase):
     def test_signature_parameter_kinds(self):
         P = inspect.Parameter
         self.assertTrue(P.POSITIONAL_ONLY < P.POSITIONAL_OR_KEYWORD < \
@@ -5259,7 +5259,7 @@ class TestParameterObject(unittest.TestCase):
             p.kind = 123
 
 
-class TestSignatureBind(unittest.TestCase):
+klasse TestSignatureBind(unittest.TestCase):
     @staticmethod
     def call(func, *args, **kwargs):
         sig = inspect.signature(func)
@@ -5530,7 +5530,7 @@ class TestSignatureBind(unittest.TestCase):
         self.assertIn(("bar", "pos-only"), result.arguments.items())
 
 
-class TestBoundArguments(unittest.TestCase):
+klasse TestBoundArguments(unittest.TestCase):
     def test_signature_bound_arguments_unhashable(self):
         def foo(a): pass
         ba = inspect.signature(foo).bind(1)
@@ -5632,7 +5632,7 @@ class TestBoundArguments(unittest.TestCase):
         ba = inspect.signature(foo).bind(1)
         self.assertIs(type(ba.arguments), dict)
 
-class TestSignaturePrivateHelpers(unittest.TestCase):
+klasse TestSignaturePrivateHelpers(unittest.TestCase):
     def _strip_non_python_syntax(self, input,
         clean_signature, self_parameter):
         computed_clean_signature, \
@@ -5679,7 +5679,7 @@ class TestSignaturePrivateHelpers(unittest.TestCase):
             None,
             None)
 
-class TestSignatureDefinitions(unittest.TestCase):
+klasse TestSignatureDefinitions(unittest.TestCase):
     # This test case provides a home for checking that particular APIs
     # have signatures available for introspection
 
@@ -6021,7 +6021,7 @@ class TestSignatureDefinitions(unittest.TestCase):
     def test_base_class_have_text_signature(self):
         # see issue 43118
         from test.typinganndata.ann_module7 import BufferedReader
-        class MyBufferedReader(BufferedReader):
+        klasse MyBufferedReader(BufferedReader):
             """buffer reader class."""
 
         text_signature = BufferedReader.__text_signature__
@@ -6030,7 +6030,7 @@ class TestSignatureDefinitions(unittest.TestCase):
         self.assertEqual(str(sig), '(raw, buffer_size=8192)')
 
 
-class NTimesUnwrappable:
+klasse NTimesUnwrappable:
     def __init__(self, n):
         self.n = n
         self._next = None
@@ -6043,7 +6043,7 @@ class NTimesUnwrappable:
             self._next = NTimesUnwrappable(self.n - 1)
         return self._next
 
-class TestUnwrap(unittest.TestCase):
+klasse TestUnwrap(unittest.TestCase):
 
     def test_unwrap_one(self):
         def func(a, b):
@@ -6093,7 +6093,7 @@ class TestUnwrap(unittest.TestCase):
     def test_unhashable(self):
         def func(): pass
         func.__wrapped__ = None
-        class C:
+        klasse C:
             __hash__ = None
             __wrapped__ = func
         self.assertIsNone(inspect.unwrap(C()))
@@ -6111,7 +6111,7 @@ class TestUnwrap(unittest.TestCase):
         self.assertIs(inspect.unwrap(classmethod(staticmethod)), staticmethod)
 
 
-class TestMain(unittest.TestCase):
+klasse TestMain(unittest.TestCase):
     def test_only_source(self):
         module = importlib.import_module('unittest')
         rc, out, err = assert_python_ok('-m', 'inspect',
@@ -6161,7 +6161,7 @@ class TestMain(unittest.TestCase):
         self.assertEqual(err, b'')
 
 
-class TestReload(unittest.TestCase):
+klasse TestReload(unittest.TestCase):
 
     src_before = textwrap.dedent("""\
 def foo():
@@ -6191,7 +6191,7 @@ def foo():
             self.assertInspectEqual(path, module)
 
 
-class TestRepl(unittest.TestCase):
+klasse TestRepl(unittest.TestCase):
 
     def spawn_repl(self, *args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, **kw):
         """Run the Python REPL with the given arguments.

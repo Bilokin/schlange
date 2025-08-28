@@ -25,7 +25,7 @@ try:
 except ImportError:
     _testcapi = None
     def with_tp_del(cls):
-        class C(object):
+        klasse C(object):
             def __new__(cls, *args, **kwargs):
                 raise unittest.SkipTest('requires _testcapi.with_tp_del')
         return C
@@ -44,12 +44,12 @@ except ImportError:
 
 # An instance of C1055820 has a self-loop, so becomes cyclic trash when
 # unreachable.
-class C1055820(object):
+klasse C1055820(object):
     def __init__(self, i):
         self.i = i
         self.loop = self
 
-class GC_Detector(object):
+klasse GC_Detector(object):
     # Create an instance I.  Then gc hasn't happened again so long as
     # I.gc_happened is false.
 
@@ -64,7 +64,7 @@ class GC_Detector(object):
         self.wr = weakref.ref(C1055820(666), it_happened)
 
 @with_tp_del
-class Uncollectable(object):
+klasse Uncollectable(object):
     """Create a reference cycle with multiple __del__ methods.
 
     An object in a reference cycle will never have zero references,
@@ -90,7 +90,7 @@ else:
 ### Tests
 ###############################################################################
 
-class GCTests(unittest.TestCase):
+klasse GCTests(unittest.TestCase):
     def test_list(self):
         l = []
         l.append(l)
@@ -116,7 +116,7 @@ class GCTests(unittest.TestCase):
         self.assertEqual(gc.collect(), 2)
 
     def test_class(self):
-        class A:
+        klasse A:
             pass
         A.a = A
         gc.collect()
@@ -124,14 +124,14 @@ class GCTests(unittest.TestCase):
         self.assertNotEqual(gc.collect(), 0)
 
     def test_newstyleclass(self):
-        class A(object):
+        klasse A(object):
             pass
         gc.collect()
         del A
         self.assertNotEqual(gc.collect(), 0)
 
     def test_instance(self):
-        class A:
+        klasse A:
             pass
         a = A()
         a.a = a
@@ -140,16 +140,16 @@ class GCTests(unittest.TestCase):
         self.assertNotEqual(gc.collect(), 0)
 
     def test_newinstance(self):
-        class A(object):
+        klasse A(object):
             pass
         a = A()
         a.a = a
         gc.collect()
         del a
         self.assertNotEqual(gc.collect(), 0)
-        class B(list):
+        klasse B(list):
             pass
-        class C(B, A):
+        klasse C(B, A):
             pass
         a = C()
         a.a = a
@@ -165,7 +165,7 @@ class GCTests(unittest.TestCase):
 
     def test_method(self):
         # Tricky: self.__init__ is a bound method, it references the instance.
-        class A:
+        klasse A:
             def __init__(self):
                 self.init = self.__init__
         a = A()
@@ -178,9 +178,9 @@ class GCTests(unittest.TestCase):
         # A() is uncollectable if it is part of a cycle, make sure it shows up
         # in gc.garbage.
         @with_tp_del
-        class A:
+        klasse A:
             def __tp_del__(self): pass
-        class B:
+        klasse B:
             pass
         a = A()
         a.a = a
@@ -204,9 +204,9 @@ class GCTests(unittest.TestCase):
         # A() is uncollectable if it is part of a cycle, make sure it shows up
         # in gc.garbage.
         @with_tp_del
-        class A(object):
+        klasse A(object):
             def __tp_del__(self): pass
-        class B(object):
+        klasse B(object):
             pass
         a = A()
         a.a = a
@@ -243,7 +243,7 @@ class GCTests(unittest.TestCase):
         import gc
         import weakref
 
-        class LateFin:
+        klasse LateFin:
             __slots__ = ('ref',)
 
             def __del__(self):
@@ -254,7 +254,7 @@ class GCTests(unittest.TestCase):
                 global func
                 func = self.ref()
 
-        class Cyclic(tuple):
+        klasse Cyclic(tuple):
             __slots__ = ()
 
             # 4. The finalizers of all garbage objects are called. In
@@ -317,7 +317,7 @@ class GCTests(unittest.TestCase):
         # callbacks *after* running finalizers.
         code = """if 1:
         import _datetime
-        class C:
+        klasse C:
             def __del__(self):
                 print('__del__ called')
                 _datetime.timedelta(days=1)  # crash?
@@ -367,7 +367,7 @@ class GCTests(unittest.TestCase):
         gc.enable()
         gc.set_threshold(1)
 
-        class A:
+        klasse A:
             def __del__(self):
                 dir(self)
         a = A()
@@ -382,7 +382,7 @@ class GCTests(unittest.TestCase):
         gc.enable()
         gc.set_threshold(1)
 
-        class A(object):
+        klasse A(object):
             def __del__(self):
                 dir(self)
         a = A()
@@ -426,7 +426,7 @@ class GCTests(unittest.TestCase):
         self.assertEqual((b, c), (1, 0))
 
     def test_trashcan(self):
-        class Ouch:
+        klasse Ouch:
             n = 0
             def __del__(self):
                 Ouch.n = Ouch.n + 1
@@ -473,7 +473,7 @@ class GCTests(unittest.TestCase):
             finally:
                 time.sleep(0.000001)
 
-        class C(list):
+        klasse C(list):
             # Appending to a list is atomic, which avoids the use of a lock.
             inits = []
             dels = []
@@ -520,7 +520,7 @@ class GCTests(unittest.TestCase):
         self.assertEqual(len(C.inits), len(C.dels))
 
     def test_boom(self):
-        class Boom:
+        klasse Boom:
             def __getattr__(self, someattribute):
                 del self.attr
                 raise AttributeError
@@ -544,7 +544,7 @@ class GCTests(unittest.TestCase):
         self.assertEqual(len(gc.garbage), garbagelen)
 
     def test_boom2(self):
-        class Boom2:
+        klasse Boom2:
             def __init__(self):
                 self.x = 0
 
@@ -612,22 +612,22 @@ class GCTests(unittest.TestCase):
         self.assertFalse(gc.is_tracked(object))
         self.assertFalse(gc.is_tracked(object()))
 
-        class UserClass:
+        klasse UserClass:
             pass
 
-        class UserInt(int):
+        klasse UserInt(int):
             pass
 
-        # Base class is object; no extra fields.
-        class UserClassSlots:
+        # Base klasse is object; no extra fields.
+        klasse UserClassSlots:
             __slots__ = ()
 
-        # Base class is fixed size larger than object; no extra fields.
-        class UserFloatSlots(float):
+        # Base klasse is fixed size larger than object; no extra fields.
+        klasse UserFloatSlots(float):
             __slots__ = ()
 
-        # Base class is variable size; no extra fields.
-        class UserIntSlots(int):
+        # Base klasse is variable size; no extra fields.
+        klasse UserIntSlots(int):
             __slots__ = ()
 
         self.assertTrue(gc.is_tracked(gc))
@@ -645,7 +645,7 @@ class GCTests(unittest.TestCase):
         self.assertFalse(gc.is_finalized(3))
 
         storage = []
-        class Lazarus:
+        klasse Lazarus:
             def __del__(self):
                 storage.append(self)
 
@@ -693,10 +693,10 @@ class GCTests(unittest.TestCase):
         # problem ;-)
         gc.collect()
 
-        class A:
+        klasse A:
             pass
 
-        class B:
+        klasse B:
             def __init__(self, x):
                 self.x = x
 
@@ -722,7 +722,7 @@ class GCTests(unittest.TestCase):
             import gc
             import _testcapi
             @_testcapi.with_tp_del
-            class X:
+            klasse X:
                 def __init__(self, name):
                     self.name = name
                 def __repr__(self):
@@ -773,7 +773,7 @@ class GCTests(unittest.TestCase):
         # Create a reference cycle through the __main__ module and check
         # it gets collected at interpreter shutdown.
         code = """if 1:
-            class C:
+            klasse C:
                 def __del__(self):
                     print('__del__ called')
             l = [C()]
@@ -786,7 +786,7 @@ class GCTests(unittest.TestCase):
         # Same as above, but with a non-__main__ module.
         with temp_dir() as script_dir:
             module = """if 1:
-                class C:
+                klasse C:
                     def __del__(self):
                         print('__del__ called')
                 l = [C()]
@@ -803,7 +803,7 @@ class GCTests(unittest.TestCase):
 
     def test_global_del_SystemExit(self):
         code = """if 1:
-            class ClassWithDel:
+            klasse ClassWithDel:
                 def __del__(self):
                     print('__del__ called')
             a = ClassWithDel()
@@ -881,11 +881,11 @@ class GCTests(unittest.TestCase):
         self.assertRaises(TypeError, gc.get_objects, 1.234)
 
     def test_resurrection_only_happens_once_per_object(self):
-        class A:  # simple self-loop
+        klasse A:  # simple self-loop
             def __init__(self):
                 self.me = self
 
-        class Lazarus(A):
+        klasse Lazarus(A):
             resurrected = 0
             resurrected_instances = []
 
@@ -917,11 +917,11 @@ class GCTests(unittest.TestCase):
         gc.enable()
 
     def test_resurrection_is_transitive(self):
-        class Cargo:
+        klasse Cargo:
             def __init__(self):
                 self.me = self
 
-        class Lazarus:
+        klasse Lazarus:
             resurrected_instances = []
 
             def __del__(self):
@@ -957,11 +957,11 @@ class GCTests(unittest.TestCase):
         # value and the dicts returned by get_stats().
         N = 100
 
-        class A:  # simple self-loop
+        klasse A:  # simple self-loop
             def __init__(self):
                 self.me = self
 
-        class Z(A):  # resurrecting __del__
+        klasse Z(A):  # resurrecting __del__
             def __del__(self):
                 zs.append(self)
 
@@ -1051,10 +1051,10 @@ class GCTests(unittest.TestCase):
 
         callback = unittest.mock.Mock()
 
-        class A:
+        klasse A:
             __slots__ = ['a', 'y', 'wz']
 
-        class Z:
+        klasse Z:
             pass
 
         # setup required object graph, as described above
@@ -1100,7 +1100,7 @@ class GCTests(unittest.TestCase):
         test = self
         collected = False
 
-        class GetObjectsOnDel:
+        klasse GetObjectsOnDel:
             def __del__(self):
                 nonlocal collected
                 collected = True
@@ -1143,7 +1143,7 @@ class GCTests(unittest.TestCase):
         import unittest
 
 
-        class Test(unittest.TestCase):
+        klasse Test(unittest.TestCase):
             def test_something(self):
                 gc.freeze()
                 gc.collect()
@@ -1162,12 +1162,12 @@ class GCTests(unittest.TestCase):
         # should fail because we are trying to access a subclass
         # attribute. But subclass type cache was not properly invalidated.
         code = """
-            class BaseNode:
+            klasse BaseNode:
                 def __del__(self):
                     BaseNode.next = BaseNode.next.next
                     fail = BaseNode.next.next
 
-            class Node(BaseNode):
+            klasse Node(BaseNode):
                 pass
 
             BaseNode.next = Node()
@@ -1187,7 +1187,7 @@ class GCTests(unittest.TestCase):
         assert_python_ok("-c", code_inside_function)
 
 
-class IncrementalGCTests(unittest.TestCase):
+klasse IncrementalGCTests(unittest.TestCase):
     @unittest.skipIf(_testinternalcapi is None, "requires _testinternalcapi")
     @requires_gil_enabled("Free threading does not support incremental GC")
     def test_incremental_gc_handles_fast_cycle_creation(self):
@@ -1198,7 +1198,7 @@ class IncrementalGCTests(unittest.TestCase):
         run_test_script(script)
 
 
-class GCCallbackTests(unittest.TestCase):
+klasse GCCallbackTests(unittest.TestCase):
     def setUp(self):
         # Save gc state and disable it.
         self.enabled = gc.isenabled()
@@ -1378,7 +1378,7 @@ class GCCallbackTests(unittest.TestCase):
             br'object repr     : \[1, 2, 3, \[\[...\], \[...\]\]\]')
 
 
-class GCTogglingTests(unittest.TestCase):
+klasse GCTogglingTests(unittest.TestCase):
     def setUp(self):
         gc.enable()
 
@@ -1468,7 +1468,7 @@ class GCTogglingTests(unittest.TestCase):
         # callback to sneak in a resurrection of cyclic trash.
 
         ouch = []
-        class D(C1055820):
+        klasse D(C1055820):
             def __del__(self):
                 ouch[:] = [c2wr()]
 
@@ -1560,7 +1560,7 @@ class GCTogglingTests(unittest.TestCase):
             gc.enable()
 
 
-class PythonFinalizationTests(unittest.TestCase):
+klasse PythonFinalizationTests(unittest.TestCase):
     def test_ast_fini(self):
         # bpo-44184: Regression test for subtype_dealloc() when deallocating
         # an AST instance also destroy its AST type: subtype_dealloc() must

@@ -16,7 +16,7 @@ formats = c_byte, c_ubyte, c_short, c_ushort, c_int, c_uint, \
           c_long, c_ulonglong, c_float, c_double, c_longdouble
 
 
-class ArrayTestCase(unittest.TestCase):
+klasse ArrayTestCase(unittest.TestCase):
     def test_inheritance_hierarchy(self):
         self.assertEqual(Array.mro(), [Array, _CData, object])
 
@@ -39,7 +39,7 @@ class ArrayTestCase(unittest.TestCase):
                     obj = cls()
 
         # Cannot call the metaclass __init__ more than once
-        class T(Array):
+        klasse T(Array):
             _type_ = c_int
             _length_ = 13
         with self.assertRaisesRegex(SystemError, "already initialized"):
@@ -168,7 +168,7 @@ class ArrayTestCase(unittest.TestCase):
         # test will not fail, but will show a leak in the testsuite.
 
         # Create a new type:
-        class my_int(c_int):
+        klasse my_int(c_int):
             pass
         # Create a new array type based on it:
         t1 = my_int * 1
@@ -176,18 +176,18 @@ class ArrayTestCase(unittest.TestCase):
         self.assertIs(t1, t2)
 
     def test_subclass(self):
-        class T(Array):
+        klasse T(Array):
             _type_ = c_int
             _length_ = 13
-        class U(T):
+        klasse U(T):
             pass
-        class V(U):
+        klasse V(U):
             pass
-        class W(V):
+        klasse W(V):
             pass
-        class X(T):
+        klasse X(T):
             _type_ = c_short
-        class Y(T):
+        klasse Y(T):
             _length_ = 187
 
         for c in [T, U, V, W]:
@@ -208,48 +208,48 @@ class ArrayTestCase(unittest.TestCase):
 
     def test_bad_subclass(self):
         with self.assertRaises(AttributeError):
-            class T(Array):
+            klasse T(Array):
                 pass
         with self.assertRaises(AttributeError):
-            class T2(Array):
+            klasse T2(Array):
                 _type_ = c_int
         with self.assertRaises(AttributeError):
-            class T3(Array):
+            klasse T3(Array):
                 _length_ = 13
 
     def test_bad_length(self):
         with self.assertRaises(ValueError):
-            class T(Array):
+            klasse T(Array):
                 _type_ = c_int
                 _length_ = - sys.maxsize * 2
         with self.assertRaises(ValueError):
-            class T2(Array):
+            klasse T2(Array):
                 _type_ = c_int
                 _length_ = -1
         with self.assertRaises(TypeError):
-            class T3(Array):
+            klasse T3(Array):
                 _type_ = c_int
                 _length_ = 1.87
         with self.assertRaises(OverflowError):
-            class T4(Array):
+            klasse T4(Array):
                 _type_ = c_int
                 _length_ = sys.maxsize * 2
 
     def test_zero_length(self):
         # _length_ can be zero.
-        class T(Array):
+        klasse T(Array):
             _type_ = c_int
             _length_ = 0
 
     def test_empty_element_struct(self):
-        class EmptyStruct(Structure):
+        klasse EmptyStruct(Structure):
             _fields_ = []
 
         obj = (EmptyStruct * 2)()  # bpo37188: Floating-point exception
         self.assertEqual(sizeof(obj), 0)
 
     def test_empty_element_array(self):
-        class EmptyArray(Array):
+        klasse EmptyArray(Array):
             _type_ = c_int
             _length_ = 0
 

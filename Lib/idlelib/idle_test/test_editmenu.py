@@ -9,7 +9,7 @@ from tkinter import ttk
 import unittest
 from idlelib import pyshell
 
-class PasteTest(unittest.TestCase):
+klasse PasteTest(unittest.TestCase):
     '''Test pasting into widgets that allow pasting.
 
     On X11, replacing selections requires tk fix.

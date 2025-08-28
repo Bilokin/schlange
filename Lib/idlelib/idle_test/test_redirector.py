@@ -7,7 +7,7 @@ from tkinter import Tk, Text, TclError
 from idlelib.idle_test.mock_idle import Func
 
 
-class InitCloseTest(unittest.TestCase):
+klasse InitCloseTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -37,7 +37,7 @@ class InitCloseTest(unittest.TestCase):
         self.assertNotHasAttr(self.text, 'widget')
 
 
-class WidgetRedirectorTest(unittest.TestCase):
+klasse WidgetRedirectorTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):

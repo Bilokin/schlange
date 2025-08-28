@@ -9,7 +9,7 @@ from textwrap import dedent
 
 from codeop import compile_command, PyCF_DONT_IMPLY_DEDENT
 
-class CodeopTests(unittest.TestCase):
+klasse CodeopTests(unittest.TestCase):
 
     def assertValid(self, str, symbol='single'):
         '''succeed iff str is a valid piece of code'''

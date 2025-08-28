@@ -71,7 +71,7 @@ def run_on_interactive_mode(source):
 
 
 @support.force_not_colorized_test_class
-class TestInteractiveInterpreter(unittest.TestCase):
+klasse TestInteractiveInterpreter(unittest.TestCase):
 
     @cpython_only
     # Python built with Py_TRACE_REFS fail with a fatal error in
@@ -338,7 +338,7 @@ class TestInteractiveInterpreter(unittest.TestCase):
 
 
 @support.force_not_colorized_test_class
-class TestInteractiveModeSyntaxErrors(unittest.TestCase):
+klasse TestInteractiveModeSyntaxErrors(unittest.TestCase):
 
     def test_interactive_syntax_error_correct_line(self):
         output = run_on_interactive_mode(dedent("""\
@@ -356,7 +356,7 @@ class TestInteractiveModeSyntaxErrors(unittest.TestCase):
         self.assertEqual(traceback_lines, expected_lines)
 
 
-class TestAsyncioREPL(unittest.TestCase):
+klasse TestAsyncioREPL(unittest.TestCase):
     def test_multiple_statements_fail_early(self):
         user_input = "1 / 0; print(f'afterwards: {1+1}')"
         p = spawn_repl("-m", "asyncio")

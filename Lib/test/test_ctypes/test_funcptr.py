@@ -17,7 +17,7 @@ except AttributeError:
 lib = CDLL(_ctypes_test.__file__)
 
 
-class CFuncPtrTestCase(unittest.TestCase, StructCheckMixin):
+klasse CFuncPtrTestCase(unittest.TestCase, StructCheckMixin):
     def test_inheritance_hierarchy(self):
         self.assertEqual(_CFuncPtr.mro(), [_CFuncPtr, _CData, object])
 
@@ -78,7 +78,7 @@ class CFuncPtrTestCase(unittest.TestCase, StructCheckMixin):
         HCURSOR = c_int
         LPCTSTR = c_char_p
 
-        class WNDCLASS(Structure):
+        klasse WNDCLASS(Structure):
             _fields_ = [("style", c_uint),
                         ("lpfnWndProc", WNDPROC),
                         ("cbClsExtra", c_int),

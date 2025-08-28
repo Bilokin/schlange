@@ -11,7 +11,7 @@ def tearDownModule():
     asyncio.events._set_event_loop_policy(None)
 
 
-class StaggeredTests(unittest.IsolatedAsyncioTestCase):
+klasse StaggeredTests(unittest.IsolatedAsyncioTestCase):
     async def test_empty(self):
         winner, index, excs = await staggered_race(
             [],

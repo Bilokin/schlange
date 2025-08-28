@@ -1,6 +1,6 @@
 import ast
 
-class ASTTestMixin:
+klasse ASTTestMixin:
     """Test mixing to have basic assertions for AST nodes."""
 
     def assertASTEqual(self, ast1, ast2):

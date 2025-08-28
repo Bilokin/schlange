@@ -7,7 +7,7 @@ from tkinter import Tk, Text
 import idlelib.autocomplete_w as acw
 
 
-class AutoCompleteWindowTest(unittest.TestCase):
+klasse AutoCompleteWindowTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):

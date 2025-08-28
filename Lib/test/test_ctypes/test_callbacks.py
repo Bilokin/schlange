@@ -17,7 +17,7 @@ from test.support import import_helper
 _ctypes_test = import_helper.import_module("_ctypes_test")
 
 
-class Callbacks(unittest.TestCase):
+klasse Callbacks(unittest.TestCase):
     functype = CFUNCTYPE
 
     def callback(self, *args):
@@ -121,7 +121,7 @@ class Callbacks(unittest.TestCase):
     def test_issue_7959(self):
         proto = self.functype.__func__(None)
 
-        class X:
+        klasse X:
             def func(self): pass
             def __init__(self):
                 self.v = proto(self.func)
@@ -134,7 +134,7 @@ class Callbacks(unittest.TestCase):
         self.assertEqual(len(live), 0)
 
     def test_issue12483(self):
-        class Nasty:
+        klasse Nasty:
             def __del__(self):
                 gc.collect()
         CFUNCTYPE(None)(lambda x=Nasty(): None)
@@ -155,11 +155,11 @@ class Callbacks(unittest.TestCase):
             self.assertEqual(out.getvalue(), "a=5, b=10, c=15\n")
 
 if hasattr(ctypes, 'WINFUNCTYPE'):
-    class StdcallCallbacks(Callbacks):
+    klasse StdcallCallbacks(Callbacks):
         functype = ctypes.WINFUNCTYPE
 
 
-class SampleCallbacksTestCase(unittest.TestCase):
+klasse SampleCallbacksTestCase(unittest.TestCase):
 
     def test_integrate(self):
         # Derived from some then non-working code, posted by David Foster
@@ -248,10 +248,10 @@ class SampleCallbacksTestCase(unittest.TestCase):
                          callback(1.1*1.1, 2.2*2.2, 3.3*3.3, 4.4*4.4, 5.5*5.5))
 
     def test_callback_large_struct(self):
-        class Check: pass
+        klasse Check: pass
 
         # This should mirror the structure in Modules/_ctypes/_ctypes_test.c
-        class X(Structure):
+        klasse X(Structure):
             _fields_ = [
                 ('first', c_ulong),
                 ('second', c_ulong),

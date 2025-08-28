@@ -6,7 +6,7 @@ from email import errors
 from test.test_email import TestEmailBase
 
 
-class TestDefectsBase:
+klasse TestDefectsBase:
 
     policy = policy.default
     raise_expected = False
@@ -301,15 +301,15 @@ class TestDefectsBase:
                                 [errors.CloseBoundaryNotFoundDefect])
 
 
-class TestDefectDetection(TestDefectsBase, TestEmailBase):
+klasse TestDefectDetection(TestDefectsBase, TestEmailBase):
 
     def get_defects(self, obj):
         return obj.defects
 
 
-class TestDefectCapture(TestDefectsBase, TestEmailBase):
+klasse TestDefectCapture(TestDefectsBase, TestEmailBase):
 
-    class CapturePolicy(policy.EmailPolicy):
+    klasse CapturePolicy(policy.EmailPolicy):
         captured = None
         def register_defect(self, obj, defect):
             self.captured.append(defect)
@@ -321,7 +321,7 @@ class TestDefectCapture(TestDefectsBase, TestEmailBase):
         return self.policy.captured
 
 
-class TestDefectRaising(TestDefectsBase, TestEmailBase):
+klasse TestDefectRaising(TestDefectsBase, TestEmailBase):
 
     policy = TestDefectsBase.policy
     policy = policy.clone(raise_on_defect=True)

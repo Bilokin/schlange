@@ -77,7 +77,7 @@ SKIPS = {
     18: "spec doesn't specify any nesting limitations",
 }
 
-class TestFail:
+klasse TestFail:
     def test_failures(self):
         for idx, doc in enumerate(JSONDOCS):
             idx = idx + 1
@@ -236,5 +236,5 @@ class TestFail:
                              'Expecting value: line %s column %d (char %d)' %
                              (line, col, idx))
 
-class TestPyFail(TestFail, PyTest): pass
-class TestCFail(TestFail, CTest): pass
+klasse TestPyFail(TestFail, PyTest): pass
+klasse TestCFail(TestFail, CTest): pass

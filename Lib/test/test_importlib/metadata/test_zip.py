@@ -12,7 +12,7 @@ from importlib.metadata import (
 )
 
 
-class TestZip(fixtures.ZipFixtures, unittest.TestCase):
+klasse TestZip(fixtures.ZipFixtures, unittest.TestCase):
     def setUp(self):
         super().setUp()
         self._fixture_on_path('example-21.12-py3-none-any.whl')
@@ -47,7 +47,7 @@ class TestZip(fixtures.ZipFixtures, unittest.TestCase):
         assert len(dists) == 1
 
 
-class TestEgg(TestZip):
+klasse TestEgg(TestZip):
     def setUp(self):
         super().setUp()
         self._fixture_on_path('example-21.12-py3.6.egg')

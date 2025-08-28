@@ -5,17 +5,17 @@ from importlib import import_module, resources
 from . import util
 
 
-class CommonBinaryTests(util.CommonTests, unittest.TestCase):
+klasse CommonBinaryTests(util.CommonTests, unittest.TestCase):
     def execute(self, package, path):
         resources.files(package).joinpath(path).read_bytes()
 
 
-class CommonTextTests(util.CommonTests, unittest.TestCase):
+klasse CommonTextTests(util.CommonTests, unittest.TestCase):
     def execute(self, package, path):
         resources.files(package).joinpath(path).read_text(encoding='utf-8')
 
 
-class ReadTests:
+klasse ReadTests:
     def test_read_bytes(self):
         result = resources.files(self.data).joinpath('binary.file').read_bytes()
         self.assertEqual(result, bytes(range(4)))
@@ -51,11 +51,11 @@ class ReadTests:
         )
 
 
-class ReadDiskTests(ReadTests, util.DiskSetup, unittest.TestCase):
+klasse ReadDiskTests(ReadTests, util.DiskSetup, unittest.TestCase):
     pass
 
 
-class ReadZipTests(ReadTests, util.ZipSetup, unittest.TestCase):
+klasse ReadZipTests(ReadTests, util.ZipSetup, unittest.TestCase):
     def test_read_submodule_resource(self):
         submodule = import_module('data01.subdirectory')
         result = resources.files(submodule).joinpath('binary.file').read_bytes()
@@ -68,11 +68,11 @@ class ReadZipTests(ReadTests, util.ZipSetup, unittest.TestCase):
         self.assertEqual(result, bytes(range(4, 8)))
 
 
-class ReadNamespaceTests(ReadTests, util.DiskSetup, unittest.TestCase):
+klasse ReadNamespaceTests(ReadTests, util.DiskSetup, unittest.TestCase):
     MODULE = 'namespacedata01'
 
 
-class ReadNamespaceZipTests(ReadTests, util.ZipSetup, unittest.TestCase):
+klasse ReadNamespaceZipTests(ReadTests, util.ZipSetup, unittest.TestCase):
     MODULE = 'namespacedata01'
 
     def test_read_submodule_resource(self):

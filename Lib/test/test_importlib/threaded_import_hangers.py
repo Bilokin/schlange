@@ -14,11 +14,11 @@ import os.path
 
 errors = []
 
-# This class merely runs a function in its own thread T.  The thread importing
+# This klasse merely runs a function in its own thread T.  The thread importing
 # this module holds the import lock, so if the function called by T tries
 # to do its own imports it will block waiting for this module's import
 # to complete.
-class Worker(threading.Thread):
+klasse Worker(threading.Thread):
     def __init__(self, function, args):
         threading.Thread.__init__(self)
         self.function = function

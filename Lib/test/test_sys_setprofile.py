@@ -4,7 +4,7 @@ import sys
 import unittest
 
 
-class TestGetProfile(unittest.TestCase):
+klasse TestGetProfile(unittest.TestCase):
     def setUp(self):
         sys.setprofile(None)
 
@@ -21,7 +21,7 @@ class TestGetProfile(unittest.TestCase):
         sys.setprofile(fn)
         self.assertIs(sys.getprofile(), fn)
 
-class HookWatcher:
+klasse HookWatcher:
     def __init__(self):
         self.frames = []
         self.events = []
@@ -53,7 +53,7 @@ class HookWatcher:
         return [item for item in self.events if item[2] not in disallowed]
 
 
-class ProfileSimulator(HookWatcher):
+klasse ProfileSimulator(HookWatcher):
     def __init__(self, testcase):
         self.testcase = testcase
         self.stack = []
@@ -88,7 +88,7 @@ class ProfileSimulator(HookWatcher):
         }
 
 
-class TestCaseBase(unittest.TestCase):
+klasse TestCaseBase(unittest.TestCase):
     def check_events(self, callable, expected, check_args=False):
         events = capture_events(callable, self.new_watcher())
         if check_args:
@@ -101,7 +101,7 @@ class TestCaseBase(unittest.TestCase):
                           % (pprint.pformat(expected), pprint.pformat(events)))
 
 
-class ProfileHookTestCase(TestCaseBase):
+klasse ProfileHookTestCase(TestCaseBase):
     def new_watcher(self):
         return HookWatcher()
 
@@ -297,7 +297,7 @@ class ProfileHookTestCase(TestCaseBase):
                               ])
 
 
-class ProfileSimulatorTestCase(TestCaseBase):
+klasse ProfileSimulatorTestCase(TestCaseBase):
     def new_watcher(self):
         return ProfileSimulator(self)
 
@@ -435,7 +435,7 @@ def show_events(callable):
     pprint.pprint(capture_events(callable))
 
 
-class TestEdgeCases(unittest.TestCase):
+klasse TestEdgeCases(unittest.TestCase):
 
     def setUp(self):
         self.addCleanup(sys.setprofile, sys.getprofile())
@@ -448,7 +448,7 @@ class TestEdgeCases(unittest.TestCase):
         def bar(*args):
             ...
 
-        class A:
+        klasse A:
             def __call__(self, *args):
                 pass
 
@@ -484,7 +484,7 @@ class TestEdgeCases(unittest.TestCase):
         # When we have a PyMethodObject whose im_func is a C function, we
         # should record both the call and the return. f = classmethod(repr)
         # is just a way to create a PyMethodObject with a C function.
-        class A:
+        klasse A:
             f = classmethod(repr)
         events = []
         sys.setprofile(lambda frame, event, args: events.append(event))
@@ -493,7 +493,7 @@ class TestEdgeCases(unittest.TestCase):
         # The last c_call is the call to sys.setprofile
         self.assertEqual(events, ['c_call', 'c_return', 'c_call'])
 
-        class B:
+        klasse B:
             f = classmethod(max)
         events = []
         sys.setprofile(lambda frame, event, args: events.append(event))

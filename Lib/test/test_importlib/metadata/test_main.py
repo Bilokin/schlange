@@ -25,7 +25,7 @@ from importlib.metadata import (
 )
 
 
-class BasicTests(fixtures.DistInfoPkg, unittest.TestCase):
+klasse BasicTests(fixtures.DistInfoPkg, unittest.TestCase):
     version_pattern = r'\d+\.\d+(\.\d)?'
 
     def test_retrieves_version_of_self(self):
@@ -62,7 +62,7 @@ class BasicTests(fixtures.DistInfoPkg, unittest.TestCase):
             Distribution.from_name(name)
 
 
-class ImportTests(fixtures.DistInfoPkg, unittest.TestCase):
+klasse ImportTests(fixtures.DistInfoPkg, unittest.TestCase):
     def test_import_nonexistent_module(self):
         # Ensure that the MetadataPathFinder does not crash an import of a
         # non-existent module.
@@ -86,7 +86,7 @@ class ImportTests(fixtures.DistInfoPkg, unittest.TestCase):
         assert ep.load() is importlib.metadata
 
 
-class NameNormalizationTests(fixtures.OnSysPath, fixtures.SiteDir, unittest.TestCase):
+klasse NameNormalizationTests(fixtures.OnSysPath, fixtures.SiteDir, unittest.TestCase):
     @staticmethod
     def make_pkg(name):
         """
@@ -133,7 +133,7 @@ class NameNormalizationTests(fixtures.OnSysPath, fixtures.SiteDir, unittest.Test
         assert len(after) == len(before)
 
 
-class InvalidMetadataTests(fixtures.OnSysPath, fixtures.SiteDir, unittest.TestCase):
+klasse InvalidMetadataTests(fixtures.OnSysPath, fixtures.SiteDir, unittest.TestCase):
     @staticmethod
     def make_pkg(name, files=dict(METADATA="VERSION: 1.0")):
         """
@@ -158,7 +158,7 @@ class InvalidMetadataTests(fixtures.OnSysPath, fixtures.SiteDir, unittest.TestCa
         assert dist.version == "1.0"
 
 
-class NonASCIITests(fixtures.OnSysPath, fixtures.SiteDir, unittest.TestCase):
+klasse NonASCIITests(fixtures.OnSysPath, fixtures.SiteDir, unittest.TestCase):
     @staticmethod
     def pkg_with_non_ascii_description(site_dir):
         """
@@ -201,7 +201,7 @@ class NonASCIITests(fixtures.OnSysPath, fixtures.SiteDir, unittest.TestCase):
         assert meta['Description'] == 'pôrˈtend'
 
 
-class DiscoveryTests(
+klasse DiscoveryTests(
     fixtures.EggInfoPkg,
     fixtures.EggInfoPkgPipInstalledNoToplevel,
     fixtures.EggInfoPkgPipInstalledNoModules,
@@ -237,7 +237,7 @@ class DiscoveryTests(
         next(dists)
 
 
-class DirectoryTest(fixtures.OnSysPath, fixtures.SiteDir, unittest.TestCase):
+klasse DirectoryTest(fixtures.OnSysPath, fixtures.SiteDir, unittest.TestCase):
     def test_egg_info(self):
         # make an `EGG-INFO` directory that's unrelated
         self.site_dir.joinpath('EGG-INFO').mkdir()
@@ -253,7 +253,7 @@ class DirectoryTest(fixtures.OnSysPath, fixtures.SiteDir, unittest.TestCase):
                 version('foo')
 
 
-class MissingSysPath(fixtures.OnSysPath, unittest.TestCase):
+klasse MissingSysPath(fixtures.OnSysPath, unittest.TestCase):
     site_dir = '/does-not-exist'
 
     def test_discovery(self):
@@ -264,7 +264,7 @@ class MissingSysPath(fixtures.OnSysPath, unittest.TestCase):
         importlib.metadata.distributions()
 
 
-class InaccessibleSysPath(fixtures.OnSysPath, ffs.TestCase):
+klasse InaccessibleSysPath(fixtures.OnSysPath, ffs.TestCase):
     site_dir = '/access-denied'
 
     def setUp(self):
@@ -280,7 +280,7 @@ class InaccessibleSysPath(fixtures.OnSysPath, ffs.TestCase):
         list(importlib.metadata.distributions())
 
 
-class TestEntryPoints(unittest.TestCase):
+klasse TestEntryPoints(unittest.TestCase):
     def __init__(self, *args):
         super().__init__(*args)
         self.ep = importlib.metadata.EntryPoint(
@@ -327,7 +327,7 @@ class TestEntryPoints(unittest.TestCase):
         ])
 
 
-class FileSystem(
+klasse FileSystem(
     fixtures.OnSysPath, fixtures.SiteDir, fixtures.FileBuilder, unittest.TestCase
 ):
     def test_unicode_dir_on_sys_path(self):
@@ -342,7 +342,7 @@ class FileSystem(
         list(distributions())
 
 
-class PackagesDistributionsPrebuiltTest(fixtures.ZipFixtures, unittest.TestCase):
+klasse PackagesDistributionsPrebuiltTest(fixtures.ZipFixtures, unittest.TestCase):
     def test_packages_distributions_example(self):
         self._fixture_on_path('example-21.12-py3-none-any.whl')
         assert packages_distributions()['example'] == ['example']
@@ -356,7 +356,7 @@ class PackagesDistributionsPrebuiltTest(fixtures.ZipFixtures, unittest.TestCase)
         assert packages_distributions()['example2'] == ['example2']
 
 
-class PackagesDistributionsTest(
+klasse PackagesDistributionsTest(
     fixtures.OnSysPath, fixtures.SiteDir, unittest.TestCase
 ):
     def test_packages_distributions_neither_toplevel_nor_files(self):
@@ -436,7 +436,7 @@ class PackagesDistributionsTest(
         assert packages_distributions()['symlinked'] == ['symlinked-pkg']
 
 
-class PackagesDistributionsEggTest(
+klasse PackagesDistributionsEggTest(
     fixtures.EggInfoPkg,
     fixtures.EggInfoPkgPipInstalledNoToplevel,
     fixtures.EggInfoPkgPipInstalledNoModules,
@@ -473,7 +473,7 @@ class PackagesDistributionsEggTest(
         assert import_names_from_package('sources_fallback-pkg') == {'sources_fallback'}
 
 
-class EditableDistributionTest(fixtures.DistInfoPkgEditable, unittest.TestCase):
+klasse EditableDistributionTest(fixtures.DistInfoPkgEditable, unittest.TestCase):
     def test_origin(self):
         dist = Distribution.from_name('distinfo-pkg')
         assert dist.origin.url.endswith('.whl')

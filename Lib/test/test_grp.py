@@ -6,7 +6,7 @@ from test.support import import_helper
 
 grp = import_helper.import_module('grp')
 
-class GroupDatabaseTestCase(unittest.TestCase):
+klasse GroupDatabaseTestCase(unittest.TestCase):
 
     def check_value(self, value):
         # check that a grp tuple has the entries and

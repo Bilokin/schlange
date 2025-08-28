@@ -11,10 +11,10 @@ _testlimitedcapi = import_helper.import_module('_testlimitedcapi')
 NULL = None
 
 
-class IntSubclass(int):
+klasse IntSubclass(int):
     pass
 
-class Index:
+klasse Index:
     def __init__(self, value):
         self.value = value
 
@@ -22,14 +22,14 @@ class Index:
         return self.value
 
 # use __index__(), not __int__()
-class MyIndexAndInt:
+klasse MyIndexAndInt:
     def __index__(self):
         return 10
     def __int__(self):
         return 22
 
 
-class LongTests(unittest.TestCase):
+klasse LongTests(unittest.TestCase):
 
     def test_compact(self):
         for n in {

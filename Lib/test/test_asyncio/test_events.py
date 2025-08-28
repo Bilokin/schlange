@@ -61,7 +61,7 @@ def _test_get_event_loop_new_process__sub_proc():
         return loop.run_until_complete(doit())
 
 
-class CoroLike:
+klasse CoroLike:
     def send(self, v):
         pass
 
@@ -75,7 +75,7 @@ class CoroLike:
         pass
 
 
-class MyBaseProto(asyncio.Protocol):
+klasse MyBaseProto(asyncio.Protocol):
     connected = None
     done = None
 
@@ -113,13 +113,13 @@ class MyBaseProto(asyncio.Protocol):
             self.done.set_result(None)
 
 
-class MyProto(MyBaseProto):
+klasse MyProto(MyBaseProto):
     def connection_made(self, transport):
         super().connection_made(transport)
         transport.write(b'GET / HTTP/1.0\r\nHost: example.com\r\n\r\n')
 
 
-class MyDatagramProto(asyncio.DatagramProtocol):
+klasse MyDatagramProto(asyncio.DatagramProtocol):
     done = None
 
     def __init__(self, loop=None):
@@ -151,7 +151,7 @@ class MyDatagramProto(asyncio.DatagramProtocol):
             self.done.set_result(None)
 
 
-class MyReadPipeProto(asyncio.Protocol):
+klasse MyReadPipeProto(asyncio.Protocol):
     done = None
 
     def __init__(self, loop=None):
@@ -187,7 +187,7 @@ class MyReadPipeProto(asyncio.Protocol):
             self.done.set_result(None)
 
 
-class MyWritePipeProto(asyncio.BaseProtocol):
+klasse MyWritePipeProto(asyncio.BaseProtocol):
     done = None
 
     def __init__(self, loop=None):
@@ -212,7 +212,7 @@ class MyWritePipeProto(asyncio.BaseProtocol):
             self.done.set_result(None)
 
 
-class MySubprocessProtocol(asyncio.SubprocessProtocol):
+klasse MySubprocessProtocol(asyncio.SubprocessProtocol):
 
     def __init__(self, loop):
         self.state = 'INITIAL'
@@ -257,7 +257,7 @@ class MySubprocessProtocol(asyncio.SubprocessProtocol):
         self.returncode = self.transport.get_returncode()
 
 
-class EventLoopTestsMixin:
+klasse EventLoopTestsMixin:
 
     def setUp(self):
         super().setUp()
@@ -845,7 +845,7 @@ class EventLoopTestsMixin:
     def test_connect_accepted_socket(self, server_ssl=None, client_ssl=None):
         loop = self.loop
 
-        class MyProto(MyBaseProto):
+        klasse MyProto(MyBaseProto):
 
             def connection_lost(self, exc):
                 super().connection_lost(exc)
@@ -1319,7 +1319,7 @@ class EventLoopTestsMixin:
     def test_create_server_sock(self):
         proto = self.loop.create_future()
 
-        class TestMyProto(MyProto):
+        klasse TestMyProto(MyProto):
             def connection_made(self, transport):
                 super().connection_made(transport)
                 proto.set_result(self)
@@ -1358,7 +1358,7 @@ class EventLoopTestsMixin:
     def test_create_server_dual_stack(self):
         f_proto = self.loop.create_future()
 
-        class TestMyProto(MyProto):
+        klasse TestMyProto(MyProto):
             def connection_made(self, transport):
                 super().connection_made(transport)
                 f_proto.set_result(self)
@@ -1415,7 +1415,7 @@ class EventLoopTestsMixin:
         client.close()
 
     def _test_create_datagram_endpoint(self, local_addr, family):
-        class TestMyDatagramProto(MyDatagramProto):
+        klasse TestMyDatagramProto(MyDatagramProto):
             def __init__(inner_self):
                 super().__init__(loop=self.loop)
 
@@ -1505,7 +1505,7 @@ class EventLoopTestsMixin:
         # sending a message to an address that wasn't listening.
         loop = self.loop
 
-        class Protocol(asyncio.DatagramProtocol):
+        klasse Protocol(asyncio.DatagramProtocol):
 
             _received_datagram = None
 
@@ -1994,7 +1994,7 @@ class EventLoopTestsMixin:
             next(it)
 
 
-class SubprocessTestsMixin:
+klasse SubprocessTestsMixin:
 
     def check_terminated(self, returncode):
         if sys.platform == 'win32':
@@ -2295,13 +2295,13 @@ class SubprocessTestsMixin:
 
 if sys.platform == 'win32':
 
-    class SelectEventLoopTests(EventLoopTestsMixin,
+    klasse SelectEventLoopTests(EventLoopTestsMixin,
                                test_utils.TestCase):
 
         def create_event_loop(self):
             return asyncio.SelectorEventLoop()
 
-    class ProactorEventLoopTests(EventLoopTestsMixin,
+    klasse ProactorEventLoopTests(EventLoopTestsMixin,
                                  SubprocessTestsMixin,
                                  test_utils.TestCase):
 
@@ -2326,7 +2326,7 @@ else:
     import selectors
 
     if hasattr(selectors, 'KqueueSelector'):
-        class KqueueEventLoopTests(EventLoopTestsMixin,
+        klasse KqueueEventLoopTests(EventLoopTestsMixin,
                                    SubprocessTestsMixin,
                                    test_utils.TestCase):
 
@@ -2351,7 +2351,7 @@ else:
                 super().test_write_pty()
 
     if hasattr(selectors, 'EpollSelector'):
-        class EPollEventLoopTests(EventLoopTestsMixin,
+        klasse EPollEventLoopTests(EventLoopTestsMixin,
                                   SubprocessTestsMixin,
                                   test_utils.TestCase):
 
@@ -2359,7 +2359,7 @@ else:
                 return asyncio.SelectorEventLoop(selectors.EpollSelector())
 
     if hasattr(selectors, 'PollSelector'):
-        class PollEventLoopTests(EventLoopTestsMixin,
+        klasse PollEventLoopTests(EventLoopTestsMixin,
                                  SubprocessTestsMixin,
                                  test_utils.TestCase):
 
@@ -2367,7 +2367,7 @@ else:
                 return asyncio.SelectorEventLoop(selectors.PollSelector())
 
     # Should always exist.
-    class SelectEventLoopTests(EventLoopTestsMixin,
+    klasse SelectEventLoopTests(EventLoopTestsMixin,
                                SubprocessTestsMixin,
                                test_utils.TestCase):
 
@@ -2379,7 +2379,7 @@ def noop(*args, **kwargs):
     pass
 
 
-class HandleTests(test_utils.TestCase):
+klasse HandleTests(test_utils.TestCase):
 
     def setUp(self):
         super().setUp()
@@ -2573,7 +2573,7 @@ class HandleTests(test_utils.TestCase):
         self.assertEqual(coroutines._format_coroutine(coro), 'AAA()')
 
 
-class TimerTests(unittest.TestCase):
+klasse TimerTests(unittest.TestCase):
 
     def setUp(self):
         super().setUp()
@@ -2726,7 +2726,7 @@ class TimerTests(unittest.TestCase):
         self.assertGreater(h1, SMALLEST)
 
 
-class AbstractEventLoopTests(unittest.TestCase):
+klasse AbstractEventLoopTests(unittest.TestCase):
 
     def test_not_implemented(self):
         f = mock.Mock()
@@ -2828,7 +2828,7 @@ class AbstractEventLoopTests(unittest.TestCase):
         loop.close()
 
 
-class PolicyTests(unittest.TestCase):
+klasse PolicyTests(unittest.TestCase):
 
     def test_abstract_event_loop_policy_deprecation(self):
         with self.assertWarnsRegex(
@@ -2933,7 +2933,7 @@ class PolicyTests(unittest.TestCase):
             self.assertIsNot(policy, old_policy)
 
 
-class GetEventLoopTestsMixin:
+klasse GetEventLoopTestsMixin:
 
     _get_running_loop_impl = None
     _set_running_loop_impl = None
@@ -3031,10 +3031,10 @@ class GetEventLoopTestsMixin:
 
 
     def test_get_event_loop_returns_running_loop(self):
-        class TestError(Exception):
+        klasse TestError(Exception):
             pass
 
-        class Policy(test_utils.DefaultEventLoopPolicy):
+        klasse Policy(test_utils.DefaultEventLoopPolicy):
             def get_event_loop(self):
                 raise TestError
 
@@ -3116,7 +3116,7 @@ class GetEventLoopTestsMixin:
         self.assertIs(asyncio._get_running_loop(), None)
 
 
-class TestPyGetEventLoop(GetEventLoopTestsMixin, unittest.TestCase):
+klasse TestPyGetEventLoop(GetEventLoopTestsMixin, unittest.TestCase):
 
     _get_running_loop_impl = events._py__get_running_loop
     _set_running_loop_impl = events._py__set_running_loop
@@ -3132,7 +3132,7 @@ except ImportError:
     pass
 else:
 
-    class TestCGetEventLoop(GetEventLoopTestsMixin, unittest.TestCase):
+    klasse TestCGetEventLoop(GetEventLoopTestsMixin, unittest.TestCase):
 
         _get_running_loop_impl = events._c__get_running_loop
         _set_running_loop_impl = events._c__set_running_loop
@@ -3142,7 +3142,7 @@ else:
         Task = asyncio.tasks._CTask
         Future = asyncio.futures._CFuture
 
-class TestServer(unittest.TestCase):
+klasse TestServer(unittest.TestCase):
 
     def test_get_loop(self):
         loop = asyncio.new_event_loop()
@@ -3154,7 +3154,7 @@ class TestServer(unittest.TestCase):
         loop.run_until_complete(server.wait_closed())
 
 
-class TestAbstractServer(unittest.TestCase):
+klasse TestAbstractServer(unittest.TestCase):
 
     def test_close(self):
         with self.assertRaises(NotImplementedError):

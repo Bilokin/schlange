@@ -82,7 +82,7 @@ def settings(*args, **kwargs):
     return lambda f: f  # pragma: nocover
 
 
-class HealthCheck(Enum):
+klasse HealthCheck(Enum):
     data_too_large = 1
     filter_too_much = 2
     too_slow = 3
@@ -95,14 +95,14 @@ class HealthCheck(Enum):
         return list(cls)
 
 
-class Verbosity(Enum):
+klasse Verbosity(Enum):
     quiet = 0
     normal = 1
     verbose = 2
     debug = 3
 
 
-class Phase(Enum):
+klasse Phase(Enum):
     explicit = 0
     reuse = 1
     generate = 2

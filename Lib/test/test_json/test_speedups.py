@@ -1,12 +1,12 @@
 from test.test_json import CTest
 
 
-class BadBool:
+klasse BadBool:
     def __bool__(self):
         1/0
 
 
-class TestSpeedups(CTest):
+klasse TestSpeedups(CTest):
     def test_scanstring(self):
         self.assertEqual(self.json.decoder.scanstring.__module__, "_json")
         self.assertIs(self.json.decoder.scanstring, self.json.decoder.c_scanstring)
@@ -18,7 +18,7 @@ class TestSpeedups(CTest):
                       self.json.encoder.c_encode_basestring_ascii)
 
 
-class TestDecode(CTest):
+klasse TestDecode(CTest):
     def test_make_scanner(self):
         self.assertRaises(AttributeError, self.json.scanner.c_make_scanner, 1)
 
@@ -29,7 +29,7 @@ class TestDecode(CTest):
         self.assertRaises(ZeroDivisionError, test, '{}')
 
 
-class TestEncode(CTest):
+klasse TestEncode(CTest):
     def test_make_encoder(self):
         # bpo-6986: The interpreter shouldn't crash in case c_make_encoder()
         # receives invalid arguments.

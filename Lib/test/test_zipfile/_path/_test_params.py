@@ -25,7 +25,7 @@ def parameterize(names, value_groups):
     return decorator
 
 
-class Invoked(types.SimpleNamespace):
+klasse Invoked(types.SimpleNamespace):
     """
     Wrap a function to be invoked for each usage.
     """

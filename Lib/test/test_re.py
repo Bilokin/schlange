@@ -24,15 +24,15 @@ else:
 # what you're doing. Some of these tests were carefully modeled to
 # cover most of the code.
 
-class S(str):
+klasse S(str):
     def __getitem__(self, index):
         return S(super().__getitem__(index))
 
-class B(bytes):
+klasse B(bytes):
     def __getitem__(self, index):
         return B(super().__getitem__(index))
 
-class ReTests(unittest.TestCase):
+klasse ReTests(unittest.TestCase):
 
     def assertTypedEqual(self, actual, expect, msg=None):
         self.assertEqual(actual, expect, msg)
@@ -537,7 +537,7 @@ class ReTests(unittest.TestCase):
         self.assertEqual(pat.match('ac').group(1, 'b2', 3), ('a', None, 'c'))
 
     def test_group(self):
-        class Index:
+        klasse Index:
             def __init__(self, value):
                 self.value = value
             def __index__(self):
@@ -1675,7 +1675,7 @@ class ReTests(unittest.TestCase):
 
     def test_bug_764548(self):
         # bug 764548, re.compile() barfs on str/unicode subclasses
-        class my_unicode(str): pass
+        klasse my_unicode(str): pass
         pat = re.compile(my_unicode("abc"))
         self.assertIsNone(pat.match("xyz"))
 
@@ -2683,7 +2683,7 @@ class ReTests(unittest.TestCase):
                 self.assertIsNone(re.search('(?s:.)' + p, s))
 
     def check_interrupt(self, pattern, string, maxcount):
-        class Interrupt(Exception):
+        klasse Interrupt(Exception):
             pass
         p = re.compile(pattern)
         for n in range(maxcount):
@@ -2713,7 +2713,7 @@ def get_debug_out(pat):
 
 
 @cpython_only
-class DebugTests(unittest.TestCase):
+klasse DebugTests(unittest.TestCase):
     maxDiff = None
 
     def test_debug_flag(self):
@@ -2808,7 +2808,7 @@ POSSESSIVE_REPEAT 0 1
 ''')
 
 
-class PatternReprTests(unittest.TestCase):
+klasse PatternReprTests(unittest.TestCase):
     def check(self, pattern, expected):
         self.assertEqual(repr(re.compile(pattern)), expected)
 
@@ -2888,7 +2888,7 @@ class PatternReprTests(unittest.TestCase):
                          "re.ASCII|re.LOCALE|re.UNICODE|re.MULTILINE|re.DEBUG|0xffe01")
 
 
-class ImplementationTest(unittest.TestCase):
+klasse ImplementationTest(unittest.TestCase):
     """
     Test implementation details of the re module.
     """
@@ -2998,7 +2998,7 @@ class ImplementationTest(unittest.TestCase):
         self.assertIn("an integer is required", str(cm.exception))
 
 
-class ExternalTests(unittest.TestCase):
+klasse ExternalTests(unittest.TestCase):
 
     def test_re_benchmarks(self):
         're_tests benchmarks'

@@ -7,7 +7,7 @@ import test.test_module.final_b
 
 x = 'a'
 
-class C:
+klasse C:
     def __del__(self):
         # Inspect module globals and builtins
         print("x =", x)

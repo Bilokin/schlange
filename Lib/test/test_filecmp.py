@@ -21,7 +21,7 @@ def _create_file_shallow_equal(template_path, new_path):
     assert os.stat(new_path).st_size == os.stat(template_path).st_size
     assert os.stat(new_path).st_mtime == os.stat(template_path).st_mtime
 
-class FileCompareTestCase(unittest.TestCase):
+klasse FileCompareTestCase(unittest.TestCase):
     def setUp(self):
         self.name = os_helper.TESTFN
         self.name_same = os_helper.TESTFN + '-same'
@@ -76,7 +76,7 @@ class FileCompareTestCase(unittest.TestCase):
         self.assertTrue(len(filecmp._cache) == 0,
                         "Cache not cleared after calling clear_cache")
 
-class DirCompareTestCase(unittest.TestCase):
+klasse DirCompareTestCase(unittest.TestCase):
     def setUp(self):
         tmpdir = tempfile.gettempdir()
         self.dir = os.path.join(tmpdir, 'dir')
@@ -324,7 +324,7 @@ class DirCompareTestCase(unittest.TestCase):
 
     def test_dircmp_subdirs_type(self):
         """Check that dircmp.subdirs respects subclassing."""
-        class MyDirCmp(filecmp.dircmp):
+        klasse MyDirCmp(filecmp.dircmp):
             pass
         d = MyDirCmp(self.dir, self.dir_diff)
         sub_dirs = d.subdirs

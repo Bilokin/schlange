@@ -19,7 +19,7 @@ else:
     from pathlib._os import magic_open
 
 
-class ReadTestBase:
+klasse ReadTestBase:
     def setUp(self):
         self.root = self.ground.setup()
         self.ground.create_hierarchy(self.root)
@@ -324,18 +324,18 @@ class ReadTestBase:
         self.assertFalse((p / 'fileA\x00').info.is_symlink())
 
 
-class ZipPathReadTest(ReadTestBase, unittest.TestCase):
+klasse ZipPathReadTest(ReadTestBase, unittest.TestCase):
     ground = ZipPathGround(ReadableZipPath)
 
 
-class LocalPathReadTest(ReadTestBase, unittest.TestCase):
+klasse LocalPathReadTest(ReadTestBase, unittest.TestCase):
     ground = LocalPathGround(ReadableLocalPath)
 
 
 if not is_pypi:
     from pathlib import Path
 
-    class PathReadTest(ReadTestBase, unittest.TestCase):
+    klasse PathReadTest(ReadTestBase, unittest.TestCase):
         ground = LocalPathGround(Path)
 
 

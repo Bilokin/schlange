@@ -121,7 +121,7 @@ def extended_linecache_checkcache(filename=None,
 linecache.checkcache = extended_linecache_checkcache
 
 
-class PyShellEditorWindow(EditorWindow):
+klasse PyShellEditorWindow(EditorWindow):
     "Regular text edit window in IDLE, supports breakpoints"
 
     def __init__(self, *args):
@@ -311,10 +311,10 @@ class PyShellEditorWindow(EditorWindow):
         EditorWindow._close(self)
 
 
-class PyShellFileList(FileList):
+klasse PyShellFileList(FileList):
     "Extend base class: IDLE supports a shell and breakpoints"
 
-    # override FileList's class variable, instances return PyShellEditorWindow
+    # override FileList's klasse variable, instances return PyShellEditorWindow
     # instead of EditorWindow when new edit windows are created.
     EditorWindow = PyShellEditorWindow
 
@@ -331,7 +331,7 @@ class PyShellFileList(FileList):
         return self.pyshell
 
 
-class ModifiedColorDelegator(ColorDelegator):
+klasse ModifiedColorDelegator(ColorDelegator):
     "Extend base class: colorizer for the shell window itself"
     def recolorize_main(self):
         self.tag_remove("TODO", "1.0", "iomark")
@@ -344,7 +344,7 @@ class ModifiedColorDelegator(ColorDelegator):
             self.tag_remove(tag, "iomark", "end")
 
 
-class ModifiedUndoDelegator(UndoDelegator):
+klasse ModifiedUndoDelegator(UndoDelegator):
     "Extend base class: forbid insert/delete before the I/O mark"
     def insert(self, index, chars, tags=None):
         try:
@@ -378,7 +378,7 @@ class ModifiedUndoDelegator(UndoDelegator):
             self.delegate.insert = orig_insert
 
 
-class UserInputTaggingDelegator(Delegator):
+klasse UserInputTaggingDelegator(Delegator):
     """Delegator used to tag user input with "stdin"."""
     def insert(self, index, chars, tags=None):
         if tags is None:
@@ -386,10 +386,10 @@ class UserInputTaggingDelegator(Delegator):
         self.delegate.insert(index, chars, tags)
 
 
-class MyRPCClient(rpc.RPCClient):
+klasse MyRPCClient(rpc.RPCClient):
 
     def handle_EOF(self):
-        "Override the base class - just re-raise EOFError"
+        "Override the base klasse - just re-raise EOFError"
         raise EOFError
 
 def restart_line(width, filename):  # See bpo-38141.
@@ -406,7 +406,7 @@ def restart_line(width, filename):  # See bpo-38141.
         return tag[:-2]  # Remove ' ='.
 
 
-class ModifiedInterpreter(InteractiveInterpreter):
+klasse ModifiedInterpreter(InteractiveInterpreter):
 
     def __init__(self, tkconsole):
         self.tkconsole = tkconsole
@@ -680,7 +680,7 @@ class ModifiedInterpreter(InteractiveInterpreter):
             self.runcode(code)
 
     def runsource(self, source):
-        "Extend base class method: Stuff the source in the line cache first"
+        "Extend base klasse method: Stuff the source in the line cache first"
         filename = self.stuffsource(source)
         # at the moment, InteractiveInterpreter expects str
         assert isinstance(source, str)
@@ -735,7 +735,7 @@ class ModifiedInterpreter(InteractiveInterpreter):
         tkconsole.showprompt()
 
     def showtraceback(self):
-        "Extend base class method to reset output properly"
+        "Extend base klasse method to reset output properly"
         self.tkconsole.resetoutput()
         self.checklinecache()
         InteractiveInterpreter.showtraceback(self)
@@ -762,7 +762,7 @@ class ModifiedInterpreter(InteractiveInterpreter):
         return 1
 
     def runcode(self, code):
-        "Override base class method"
+        "Override base klasse method"
         if self.tkconsole.executing:
             self.restart_subprocess()
         self.checklinecache()
@@ -808,7 +808,7 @@ class ModifiedInterpreter(InteractiveInterpreter):
                     pass
 
     def write(self, s):
-        "Override base class method"
+        "Override base klasse method"
         return self.tkconsole.stderr.write(s)
 
     def display_port_binding_error(self):
@@ -838,7 +838,7 @@ class ModifiedInterpreter(InteractiveInterpreter):
             parent=self.tkconsole.text)
 
 
-class PyShell(OutputWindow):
+klasse PyShell(OutputWindow):
     from idlelib.squeezer import Squeezer
 
     shell_title = "IDLE Shell " + python_version()

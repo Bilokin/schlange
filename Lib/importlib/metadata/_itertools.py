@@ -75,7 +75,7 @@ def always_iterable(obj, base_type=(str, bytes)):
 
 
 # Copied from more_itertools 10.3
-class bucket:
+klasse bucket:
     """Wrap *iterable* and return an object that buckets the iterable into
     child iterables based on a *key* function.
 

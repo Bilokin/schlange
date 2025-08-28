@@ -10,7 +10,7 @@ import threading
 from test import support
 
 
-class FunctionalTestCaseMixin:
+klasse FunctionalTestCaseMixin:
 
     def new_loop(self):
         return asyncio.new_event_loop()
@@ -115,7 +115,7 @@ class FunctionalTestCaseMixin:
 ##############################################################################
 
 
-class TestSocketWrapper:
+klasse TestSocketWrapper:
 
     def __init__(self, sock):
         self.__sock = sock
@@ -155,7 +155,7 @@ class TestSocketWrapper:
         return '<{} {!r}>'.format(type(self).__name__, self.__sock)
 
 
-class SocketThread(threading.Thread):
+klasse SocketThread(threading.Thread):
 
     def stop(self):
         self._active = False
@@ -169,7 +169,7 @@ class SocketThread(threading.Thread):
         self.stop()
 
 
-class TestThreadedClient(SocketThread):
+klasse TestThreadedClient(SocketThread):
 
     def __init__(self, test, sock, prog, timeout):
         threading.Thread.__init__(self, None, None, 'test-client')
@@ -188,7 +188,7 @@ class TestThreadedClient(SocketThread):
             self._test._abort_socket_test(ex)
 
 
-class TestThreadedServer(SocketThread):
+klasse TestThreadedServer(SocketThread):
 
     def __init__(self, test, sock, prog, timeout, max_clients):
         threading.Thread.__init__(self, None, None, 'test-server')

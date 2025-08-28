@@ -10,7 +10,7 @@ from idlelib.config import idleConf
 _openers = {')':'(',']':'[','}':'{'}
 CHECK_DELAY = 100 # milliseconds
 
-class ParenMatch:
+klasse ParenMatch:
     """Highlight matching openers and closers, (), [], and {}.
 
     There are three supported styles of paren matching.  When a right

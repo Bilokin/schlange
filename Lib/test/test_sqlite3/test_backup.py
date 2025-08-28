@@ -4,7 +4,7 @@ import unittest
 from .util import memory_database
 
 
-class BackupTests(unittest.TestCase):
+klasse BackupTests(unittest.TestCase):
     def setUp(self):
         cx = self.cx = sqlite.connect(":memory:")
         cx.execute('CREATE TABLE foo (key INTEGER)')

@@ -28,7 +28,7 @@
  To create an element instance, use the Element constructor,
  or the SubElement factory function.
 
- You can also use the ElementTree class to wrap an element structure
+ You can also use the ElementTree klasse to wrap an element structure
  and convert it to and from XML.
 
 """
@@ -104,7 +104,7 @@ import weakref
 from . import ElementPath
 
 
-class ParseError(SyntaxError):
+klasse ParseError(SyntaxError):
     """An error when parsing an XML document.
 
     In addition to its exception value, a ParseError contains
@@ -123,10 +123,10 @@ def iselement(element):
     return hasattr(element, 'tag')
 
 
-class Element:
+klasse Element:
     """An XML element.
 
-    This class is the reference implementation of the Element interface.
+    This klasse is the reference implementation of the Element interface.
 
     An element's length is its number of subelements.  That means if you
     want to check if an element is truly empty, you should check BOTH
@@ -467,10 +467,10 @@ def ProcessingInstruction(target, text=None):
 PI = ProcessingInstruction
 
 
-class QName:
+klasse QName:
     """Qualified name wrapper.
 
-    This class can be used to wrap a QName attribute value in order to get
+    This klasse can be used to wrap a QName attribute value in order to get
     proper namespace handing on output.
 
     *text_or_uri* is a string containing the QName value either in the form
@@ -515,10 +515,10 @@ class QName:
 # --------------------------------------------------------------------
 
 
-class ElementTree:
+klasse ElementTree:
     """An XML element hierarchy.
 
-    This class also provides support for serialization to and from
+    This klasse also provides support for serialization to and from
     standard XML.
 
     *element* is an optional root element node,
@@ -1098,7 +1098,7 @@ def tostring(element, encoding=None, method=None, *,
                                short_empty_elements=short_empty_elements)
     return stream.getvalue()
 
-class _ListDataStream(io.BufferedIOBase):
+klasse _ListDataStream(io.BufferedIOBase):
     """An auxiliary stream accumulating into a list reference."""
     def __init__(self, lst):
         self.lst = lst
@@ -1218,7 +1218,7 @@ def parse(source, parser=None):
 def iterparse(source, events=None, parser=None):
     """Incrementally parse XML document into ElementTree.
 
-    This class also reports what's going on to the user based on the
+    This klasse also reports what's going on to the user based on the
     *events* it is initialized with.  The supported events are the strings
     "start", "end", "start-ns" and "end-ns" (the "ns" events are used to get
     detailed namespace information).  If *events* is omitted, only
@@ -1259,7 +1259,7 @@ def iterparse(source, events=None, parser=None):
                 source.close()
 
     gen = iterator(source)
-    class IterParseIterator(collections.abc.Iterator):
+    klasse IterParseIterator(collections.abc.Iterator):
         __next__ = gen.__next__
         def close(self):
             if close_source:
@@ -1278,7 +1278,7 @@ def iterparse(source, events=None, parser=None):
     return it
 
 
-class XMLPullParser:
+klasse XMLPullParser:
 
     def __init__(self, events=None, *, _parser=None):
         # The _parser argument is for internal use only and must not be relied
@@ -1395,13 +1395,13 @@ def fromstringlist(sequence, parser=None):
 # --------------------------------------------------------------------
 
 
-class TreeBuilder:
+klasse TreeBuilder:
     """Generic element structure builder.
 
     This builder converts a sequence of start, data, and end method
     calls to a well-formed element structure.
 
-    You can use this class to build an element structure using a custom XML
+    You can use this klasse to build an element structure using a custom XML
     parser, or a parser for some other XML-like format.
 
     *element_factory* is an optional element factory which is called
@@ -1517,7 +1517,7 @@ class TreeBuilder:
 
 
 # also see ElementTree and TreeBuilder
-class XMLParser:
+klasse XMLParser:
     """Element structure builder for XML source data based on the expat parser.
 
     *target* is an optional target object which defaults to an instance of the
@@ -1787,7 +1787,7 @@ def canonicalize(xml_data=None, *, out=None, from_file=None, **options):
 _looks_like_prefix_name = re.compile(r'^\w+:\w+$', re.UNICODE).match
 
 
-class C14NWriterTarget:
+klasse C14NWriterTarget:
     """
     Canonicalization writer target for the XMLParser.
 

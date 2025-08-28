@@ -36,7 +36,7 @@ support.requires_working_socket(module=True)
 # parse_keqv_list, parse_http_list, HTTPDigestAuthHandler
 
 
-class TrivialTests(unittest.TestCase):
+klasse TrivialTests(unittest.TestCase):
 
     def test___all__(self):
         # Verify which names are exposed
@@ -84,7 +84,7 @@ class TrivialTests(unittest.TestCase):
         self.assertIn(err.reason, str(err))
 
 
-class RequestHdrsTests(unittest.TestCase):
+klasse RequestHdrsTests(unittest.TestCase):
 
     def test_request_headers_dict(self):
         """
@@ -271,7 +271,7 @@ class RequestHdrsTests(unittest.TestCase):
                          (None, None))
 
 
-class MockOpener:
+klasse MockOpener:
     addheaders = []
 
     def open(self, req, data=None, timeout=socket._GLOBAL_DEFAULT_TIMEOUT):
@@ -281,7 +281,7 @@ class MockOpener:
         self.proto, self.args = proto, args
 
 
-class MockFile:
+klasse MockFile:
     def read(self, count=None):
         pass
 
@@ -292,12 +292,12 @@ class MockFile:
         pass
 
 
-class MockHeaders(dict):
+klasse MockHeaders(dict):
     def getheaders(self, name):
         return list(self.values())
 
 
-class MockResponse(io.StringIO):
+klasse MockResponse(io.StringIO):
     def __init__(self, code, msg, headers, data, url=None):
         io.StringIO.__init__(self, data)
         self.code, self.msg, self.headers, self.url = code, msg, headers, url
@@ -309,7 +309,7 @@ class MockResponse(io.StringIO):
         return self.url
 
 
-class MockCookieJar:
+klasse MockCookieJar:
     def add_cookie_header(self, request):
         self.ach_req = request
 
@@ -317,7 +317,7 @@ class MockCookieJar:
         self.ec_req, self.ec_r = request, response
 
 
-class FakeMethod:
+klasse FakeMethod:
     def __init__(self, meth_name, action, handle):
         self.meth_name = meth_name
         self.handle = handle
@@ -327,7 +327,7 @@ class FakeMethod:
         return self.handle(self.meth_name, self.action, *args)
 
 
-class MockHTTPResponse(io.IOBase):
+klasse MockHTTPResponse(io.IOBase):
     def __init__(self, fp, msg, status, reason):
         self.fp = fp
         self.msg = msg
@@ -345,7 +345,7 @@ class MockHTTPResponse(io.IOBase):
         return self.url
 
 
-class MockHTTPClass:
+klasse MockHTTPClass:
     def __init__(self):
         self.level = 0
         self.req_headers = []
@@ -390,7 +390,7 @@ class MockHTTPClass:
         pass
 
 
-class MockHandler:
+klasse MockHandler:
     # useful for testing handler machinery
     # see add_ordered_mock_handlers() docstring
     handler_order = 500
@@ -466,7 +466,7 @@ def add_ordered_mock_handlers(opener, meth_spec):
     handlers = []
     count = 0
     for meths in meth_spec:
-        class MockHandlerSubclass(MockHandler):
+        klasse MockHandlerSubclass(MockHandler):
             pass
 
         h = MockHandlerSubclass(meths)
@@ -485,7 +485,7 @@ def build_test_opener(*handler_instances):
     return opener
 
 
-class MockHTTPHandler(urllib.request.HTTPHandler):
+klasse MockHTTPHandler(urllib.request.HTTPHandler):
     # Very simple mock HTTP handler with no special behavior other than using a mock HTTP connection
 
     def __init__(self, debuglevel=None):
@@ -496,7 +496,7 @@ class MockHTTPHandler(urllib.request.HTTPHandler):
         return self.do_open(self.httpconn, req)
 
 
-class MockHTTPHandlerRedirect(urllib.request.BaseHandler):
+klasse MockHTTPHandlerRedirect(urllib.request.BaseHandler):
     # useful for testing redirections and auth
     # sends supplied headers and code as first response
     # sends 200 OK as second response
@@ -525,7 +525,7 @@ class MockHTTPHandlerRedirect(urllib.request.BaseHandler):
 
 
 if hasattr(http.client, 'HTTPSConnection'):
-    class MockHTTPSHandler(urllib.request.HTTPSHandler):
+    klasse MockHTTPSHandler(urllib.request.HTTPSHandler):
         # Useful for testing the Proxy-Authorization request by verifying the
         # properties of httpcon
 
@@ -537,7 +537,7 @@ if hasattr(http.client, 'HTTPSConnection'):
             return self.do_open(self.httpconn, req)
 
 
-class MockHTTPHandlerCheckAuth(urllib.request.BaseHandler):
+klasse MockHTTPHandlerCheckAuth(urllib.request.BaseHandler):
     # useful for testing auth
     # sends supplied code response
     # checks if auth header is specified in request
@@ -556,7 +556,7 @@ class MockHTTPHandlerCheckAuth(urllib.request.BaseHandler):
 
 
 
-class MockPasswordManager:
+klasse MockPasswordManager:
     def add_password(self, realm, uri, user, password):
         self.realm = realm
         self.url = uri
@@ -569,10 +569,10 @@ class MockPasswordManager:
         return self.user, self.password
 
 
-class OpenerDirectorTests(unittest.TestCase):
+klasse OpenerDirectorTests(unittest.TestCase):
 
     def test_add_non_handler(self):
-        class NonHandler(object):
+        klasse NonHandler(object):
             pass
         self.assertRaises(TypeError,
                           OpenerDirector().add_handler, NonHandler())
@@ -629,7 +629,7 @@ class OpenerDirectorTests(unittest.TestCase):
         handlers = []
         for meths, handler_order in [([("http_open", "return self")], 500),
                                      (["http_open"], 0)]:
-            class MockHandlerSubclass(MockHandler):
+            klasse MockHandlerSubclass(MockHandler):
                 pass
 
             h = MockHandlerSubclass(meths)
@@ -714,10 +714,10 @@ class OpenerDirectorTests(unittest.TestCase):
                     self.assertIsInstance(args[1], MockResponse)
 
 
-class HandlerTests(unittest.TestCase):
+klasse HandlerTests(unittest.TestCase):
 
     def test_ftp(self):
-        class MockFTPWrapper:
+        klasse MockFTPWrapper:
             def __init__(self, data):
                 self.data = data
 
@@ -728,7 +728,7 @@ class HandlerTests(unittest.TestCase):
             def close(self):
                 pass
 
-        class NullFTPHandler(urllib.request.FTPHandler):
+        klasse NullFTPHandler(urllib.request.FTPHandler):
             def __init__(self, data):
                 self.data = data
 
@@ -782,7 +782,7 @@ class HandlerTests(unittest.TestCase):
 
     @support.requires_resource("network")
     def test_ftp_error(self):
-        class ErrorFTPHandler(urllib.request.FTPHandler):
+        klasse ErrorFTPHandler(urllib.request.FTPHandler):
             def __init__(self, exception):
                 self._exception = exception
 
@@ -1386,7 +1386,7 @@ class HandlerTests(unittest.TestCase):
     def test_redirect_encoding(self):
         # Some characters in the redirect target may need special handling,
         # but most ASCII characters should be treated as already encoded
-        class Handler(urllib.request.HTTPHandler):
+        klasse Handler(urllib.request.HTTPHandler):
             def http_open(self, req):
                 result = self.do_open(self.connection, req)
                 self.last_buf = self.connection.buf
@@ -1654,7 +1654,7 @@ class HandlerTests(unittest.TestCase):
         # Also (https://bugs.python.org/issue14797027, RFC 2617 section 1.2), we must
         # try digest first (since it's the strongest auth scheme), so we record
         # order of calls here to check digest comes first:
-        class RecordingOpenerDirector(OpenerDirector):
+        klasse RecordingOpenerDirector(OpenerDirector):
             def __init__(self):
                 OpenerDirector.__init__(self)
                 self.recorded = []
@@ -1662,13 +1662,13 @@ class HandlerTests(unittest.TestCase):
             def record(self, info):
                 self.recorded.append(info)
 
-        class TestDigestAuthHandler(urllib.request.HTTPDigestAuthHandler):
+        klasse TestDigestAuthHandler(urllib.request.HTTPDigestAuthHandler):
             def http_error_401(self, *args, **kwds):
                 self.parent.record("digest")
                 urllib.request.HTTPDigestAuthHandler.http_error_401(self,
                                                              *args, **kwds)
 
-        class TestBasicAuthHandler(urllib.request.HTTPBasicAuthHandler):
+        klasse TestBasicAuthHandler(urllib.request.HTTPBasicAuthHandler):
             def http_error_401(self, *args, **kwds):
                 self.parent.record("basic")
                 urllib.request.HTTPBasicAuthHandler.http_error_401(self,
@@ -1847,21 +1847,21 @@ class HandlerTests(unittest.TestCase):
         self.assertTrue(conn.fakesock.closed, "Connection not closed")
 
 
-class MiscTests(unittest.TestCase):
+klasse MiscTests(unittest.TestCase):
 
     def opener_has_handler(self, opener, handler_class):
         self.assertTrue(any(h.__class__ == handler_class
                             for h in opener.handlers))
 
     def test_build_opener(self):
-        class MyHTTPHandler(urllib.request.HTTPHandler):
+        klasse MyHTTPHandler(urllib.request.HTTPHandler):
             pass
 
-        class FooHandler(urllib.request.BaseHandler):
+        klasse FooHandler(urllib.request.BaseHandler):
             def foo_open(self):
                 pass
 
-        class BarHandler(urllib.request.BaseHandler):
+        klasse BarHandler(urllib.request.BaseHandler):
             def bar_open(self):
                 pass
 
@@ -1890,7 +1890,7 @@ class MiscTests(unittest.TestCase):
         self.opener_has_handler(o, urllib.request.HTTPHandler)
 
         # Issue2670: multiple handlers sharing the same base class
-        class MyOtherHTTPHandler(urllib.request.HTTPHandler):
+        klasse MyOtherHTTPHandler(urllib.request.HTTPHandler):
             pass
 
         o = build_opener(MyHTTPHandler, MyOtherHTTPHandler)
@@ -1974,7 +1974,7 @@ skip_libssl_fips_mode = unittest.skipIf(
 )
 
 
-class TestDigestAuthAlgorithms(unittest.TestCase):
+klasse TestDigestAuthAlgorithms(unittest.TestCase):
     def setUp(self):
         self.handler = AbstractDigestAuthHandler()
 
@@ -2005,8 +2005,8 @@ class TestDigestAuthAlgorithms(unittest.TestCase):
         )
 
 
-class RequestTests(unittest.TestCase):
-    class PutRequest(Request):
+klasse RequestTests(unittest.TestCase):
+    klasse PutRequest(Request):
         method = 'PUT'
 
     def setUp(self):

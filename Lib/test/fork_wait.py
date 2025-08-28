@@ -20,7 +20,7 @@ LONGSLEEP = 2
 SHORTSLEEP = 0.5
 NUM_THREADS = 4
 
-class ForkWait(unittest.TestCase):
+klasse ForkWait(unittest.TestCase):
 
     def setUp(self):
         self._threading_key = threading_helper.threading_setup()

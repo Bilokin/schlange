@@ -97,7 +97,7 @@ def _set_locale_in_subprocess(locale_name):
 _fields = "fsencoding stdin_info stdout_info stderr_info lang lc_ctype lc_all"
 _EncodingDetails = namedtuple("EncodingDetails", _fields)
 
-class EncodingDetails(_EncodingDetails):
+klasse EncodingDetails(_EncodingDetails):
     # XXX (ncoghlan): Using JSON for child state reporting may be less fragile
     CHILD_PROCESS_SCRIPT = ";".join([
         "import sys, os",
@@ -206,8 +206,8 @@ def setUpModule():
         print(f"_check_nl_langinfo_CODESET = {_check_nl_langinfo_CODESET!r}")
 
 
-class _LocaleHandlingTestCase(unittest.TestCase):
-    # Base class to check expected locale handling behaviour
+klasse _LocaleHandlingTestCase(unittest.TestCase):
+    # Base klasse to check expected locale handling behaviour
 
     def _check_child_encoding_details(self,
                                       env_vars,
@@ -238,7 +238,7 @@ class _LocaleHandlingTestCase(unittest.TestCase):
         self.assertEqual(stderr_lines, expected_warnings)
 
 
-class LocaleConfigurationTests(_LocaleHandlingTestCase):
+klasse LocaleConfigurationTests(_LocaleHandlingTestCase):
     # Test explicit external configuration via the process environment
 
     @classmethod
@@ -320,7 +320,7 @@ class LocaleConfigurationTests(_LocaleHandlingTestCase):
 @support.cpython_only
 @unittest.skipUnless(sysconfig.get_config_var("PY_COERCE_C_LOCALE"),
                      "C locale coercion disabled at build time")
-class LocaleCoercionTests(_LocaleHandlingTestCase):
+klasse LocaleCoercionTests(_LocaleHandlingTestCase):
     # Test implicit reconfiguration of the environment during CLI startup
 
     def _check_c_locale_coercion(self,

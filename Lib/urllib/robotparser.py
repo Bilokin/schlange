@@ -20,8 +20,8 @@ __all__ = ["RobotFileParser"]
 RequestRate = collections.namedtuple("RequestRate", "requests seconds")
 
 
-class RobotFileParser:
-    """ This class provides a set of methods to read, parse and answer
+klasse RobotFileParser:
+    """ This klasse provides a set of methods to read, parse and answer
     questions about a single robots.txt file.
 
     """
@@ -214,7 +214,7 @@ class RobotFileParser:
         return '\n\n'.join(map(str, entries))
 
 
-class RuleLine:
+klasse RuleLine:
     """A rule line is a single "Allow:" (allowance==True) or "Disallow:"
        (allowance==False) followed by a path."""
     def __init__(self, path, allowance):
@@ -232,7 +232,7 @@ class RuleLine:
         return ("Allow" if self.allowance else "Disallow") + ": " + self.path
 
 
-class Entry:
+klasse Entry:
     """An entry has one or more user-agents and zero or more rulelines"""
     def __init__(self):
         self.useragents = []

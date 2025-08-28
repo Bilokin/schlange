@@ -63,7 +63,7 @@ def check_tracebacks(self, cm, exc, exc_regex, msg_regex, obj_name):
         sqlite3.enable_callback_tracebacks(False)
 
 
-class MemoryDatabaseMixin:
+klasse MemoryDatabaseMixin:
 
     def setUp(self):
         self.con = sqlite3.connect(":memory:")

@@ -313,8 +313,8 @@ def _compile_pattern(pat, seps, case_sensitive, recursive=True):
     return re.compile(regex, flags=flags).match
 
 
-class _GlobberBase:
-    """Abstract class providing shell-style pattern matching and globbing.
+klasse _GlobberBase:
+    """Abstract klasse providing shell-style pattern matching and globbing.
     """
 
     def __init__(self, sep, case_sensitive, case_pedantic=False, recursive=False):
@@ -507,7 +507,7 @@ class _GlobberBase:
             yield path
 
 
-class _StringGlobber(_GlobberBase):
+klasse _StringGlobber(_GlobberBase):
     """Provides shell-style pattern matching and globbing for string paths.
     """
     lexists = staticmethod(os.path.lexists)

@@ -10,7 +10,7 @@ from .support.local_path import LocalPathGround
 from .support.zip_path import ZipPathGround, ReadableZipPath, WritableZipPath
 
 
-class CopyTestBase:
+klasse CopyTestBase:
     def setUp(self):
         self.source_root = self.source_ground.setup()
         self.source_ground.create_hierarchy(self.source_root)
@@ -147,7 +147,7 @@ class CopyTestBase:
         self.assertRaises(ValueError, source.copy_into, target_dir)
 
 
-class ZipToZipPathCopyTest(CopyTestBase, unittest.TestCase):
+klasse ZipToZipPathCopyTest(CopyTestBase, unittest.TestCase):
     source_ground = ZipPathGround(ReadableZipPath)
     target_ground = ZipPathGround(WritableZipPath)
 
@@ -155,17 +155,17 @@ class ZipToZipPathCopyTest(CopyTestBase, unittest.TestCase):
 if not is_pypi:
     from pathlib import Path
 
-    class ZipToLocalPathCopyTest(CopyTestBase, unittest.TestCase):
+    klasse ZipToLocalPathCopyTest(CopyTestBase, unittest.TestCase):
         source_ground = ZipPathGround(ReadableZipPath)
         target_ground = LocalPathGround(Path)
 
 
-    class LocalToZipPathCopyTest(CopyTestBase, unittest.TestCase):
+    klasse LocalToZipPathCopyTest(CopyTestBase, unittest.TestCase):
         source_ground = LocalPathGround(Path)
         target_ground = ZipPathGround(WritableZipPath)
 
 
-    class LocalToLocalPathCopyTest(CopyTestBase, unittest.TestCase):
+    klasse LocalToLocalPathCopyTest(CopyTestBase, unittest.TestCase):
         source_ground = LocalPathGround(Path)
         target_ground = LocalPathGround(Path)
 

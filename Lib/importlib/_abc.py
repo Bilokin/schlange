@@ -3,9 +3,9 @@ from . import _bootstrap
 import abc
 
 
-class Loader(metaclass=abc.ABCMeta):
+klasse Loader(metaclass=abc.ABCMeta):
 
-    """Abstract base class for import loaders."""
+    """Abstract base klasse for import loaders."""
 
     def create_module(self, spec):
         """Return a module to initialize and into which to load.

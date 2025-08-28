@@ -411,7 +411,7 @@ def process_keywords(keywords, *, no_default_keywords):
 
 
 @dataclass(frozen=True)
-class Location:
+klasse Location:
     filename: str
     lineno: int
 
@@ -420,7 +420,7 @@ class Location:
 
 
 @dataclass
-class Message:
+klasse Message:
     msgid: str
     msgid_plural: str | None
     msgctxt: str | None
@@ -452,7 +452,7 @@ def get_source_comments(source):
     return comments
 
 
-class GettextVisitor(ast.NodeVisitor):
+klasse GettextVisitor(ast.NodeVisitor):
     def __init__(self, options):
         super().__init__()
         self.options = options
@@ -698,7 +698,7 @@ def main():
         usage(1, msg)
 
     # for holding option values
-    class Options:
+    klasse Options:
         # constants
         GNU = 1
         SOLARIS = 2

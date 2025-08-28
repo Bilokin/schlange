@@ -91,7 +91,7 @@ def traceback_filename(filename):
     return traceback_lineno(filename, 0)
 
 
-class TestTraceback(unittest.TestCase):
+klasse TestTraceback(unittest.TestCase):
     def test_repr(self):
         def get_repr(*args) -> str:
             return repr(tracemalloc.Traceback(*args))
@@ -110,7 +110,7 @@ class TestTraceback(unittest.TestCase):
                          f"<Traceback {exp_repr_frames} total_nframe=2>")
 
 
-class TestTracemallocEnabled(unittest.TestCase):
+klasse TestTracemallocEnabled(unittest.TestCase):
     def setUp(self):
         if tracemalloc.is_tracing():
             self.skipTest("tracemalloc must be stopped before the test")
@@ -384,7 +384,7 @@ class TestTracemallocEnabled(unittest.TestCase):
         self.assertNotIn("test_tracemalloc", traceback[-2].filename)
 
 
-class TestSnapshot(unittest.TestCase):
+klasse TestSnapshot(unittest.TestCase):
     maxDiff = 4000
 
     def test_create_snapshot(self):
@@ -694,7 +694,7 @@ class TestSnapshot(unittest.TestCase):
                               '    <b.py, 4>'])
 
 
-class TestFilters(unittest.TestCase):
+klasse TestFilters(unittest.TestCase):
     maxDiff = 2048
 
     def test_filter_attributes(self):
@@ -905,7 +905,7 @@ class TestFilters(unittest.TestCase):
         self.assertFalse(f._match_traceback(unknown))
 
 
-class TestCommandLine(unittest.TestCase):
+klasse TestCommandLine(unittest.TestCase):
     def test_env_var_disabled_by_default(self):
         # not tracing by default
         code = 'import tracemalloc; print(tracemalloc.is_tracing())'
@@ -999,7 +999,7 @@ class TestCommandLine(unittest.TestCase):
 
 
 @unittest.skipIf(_testcapi is None, 'need _testcapi')
-class TestCAPI(unittest.TestCase):
+klasse TestCAPI(unittest.TestCase):
     maxDiff = 80 * 20
 
     def setUp(self):
@@ -1126,7 +1126,7 @@ class TestCAPI(unittest.TestCase):
             import tracemalloc
             import _testcapi
 
-            class Tracked:
+            klasse Tracked:
                 def __init__(self, domain, size):
                     self.domain = domain
                     self.ptr = id(self)

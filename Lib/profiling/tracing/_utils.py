@@ -1,5 +1,5 @@
-class _Utils:
-    """Support class for utility functions which are shared by
+klasse _Utils:
+    """Support klasse for utility functions which are shared by
     profile.py and cProfile.py modules.
     Not supposed to be used directly.
     """

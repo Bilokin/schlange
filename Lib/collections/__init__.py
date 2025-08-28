@@ -4,7 +4,7 @@ list, set, and tuple.
 
 * namedtuple   factory function for creating tuple subclasses with named fields
 * deque        list-like container with fast appends and pops on either end
-* ChainMap     dict-like class for creating a single view of multiple mappings
+* ChainMap     dict-like klasse for creating a single view of multiple mappings
 * Counter      dict subclass for counting hashable objects
 * OrderedDict  dict subclass that remembers the order entries were added
 * defaultdict  dict subclass that calls a factory function to supply missing values
@@ -66,27 +66,27 @@ heapq = None  # Lazily imported
 ### OrderedDict
 ################################################################################
 
-class _OrderedDictKeysView(_collections_abc.KeysView):
+klasse _OrderedDictKeysView(_collections_abc.KeysView):
 
     def __reversed__(self):
         yield from reversed(self._mapping)
 
-class _OrderedDictItemsView(_collections_abc.ItemsView):
+klasse _OrderedDictItemsView(_collections_abc.ItemsView):
 
     def __reversed__(self):
         for key in reversed(self._mapping):
             yield (key, self._mapping[key])
 
-class _OrderedDictValuesView(_collections_abc.ValuesView):
+klasse _OrderedDictValuesView(_collections_abc.ValuesView):
 
     def __reversed__(self):
         for key in reversed(self._mapping):
             yield self._mapping[key]
 
-class _Link(object):
+klasse _Link(object):
     __slots__ = 'prev', 'next', 'key', '__weakref__'
 
-class OrderedDict(dict):
+klasse OrderedDict(dict):
     'Dictionary that remembers insertion order'
     # An inherited dict maps keys to values.
     # The inherited dict provides __getitem__, __len__, __contains__, and get.
@@ -436,7 +436,7 @@ def namedtuple(typename, field_names, *, rename=False, defaults=None, module=Non
     tuple_new = tuple.__new__
     _dict, _tuple, _len, _map, _zip = dict, tuple, len, map, zip
 
-    # Create all the named tuple methods to be added to the class namespace
+    # Create all the named tuple methods to be added to the klasse namespace
 
     namespace = {
         '_tuple_new': tuple_new,
@@ -492,7 +492,7 @@ def namedtuple(typename, field_names, *, rename=False, defaults=None, module=Non
     ):
         method.__qualname__ = f'{typename}.{method.__name__}'
 
-    # Build-up the class namespace dictionary
+    # Build-up the klasse namespace dictionary
     # and use type() to build the result class
     class_namespace = {
         '__doc__': f'{typename}({arg_list})',
@@ -548,7 +548,7 @@ try:                                    # Load C helper function if available
 except ImportError:
     pass
 
-class Counter(dict):
+klasse Counter(dict):
     '''Dict subclass for counting hashable items.  Sometimes called a bag
     or multiset.  Elements are stored as dictionary keys and their counts
     are stored as dictionary values.
@@ -995,7 +995,7 @@ class Counter(dict):
 ###  ChainMap
 ########################################################################
 
-class ChainMap(_collections_abc.MutableMapping):
+klasse ChainMap(_collections_abc.MutableMapping):
     ''' A ChainMap groups multiple dicts (or other mappings) together
     to create a single, updateable view.
 
@@ -1130,7 +1130,7 @@ class ChainMap(_collections_abc.MutableMapping):
 ### UserDict
 ################################################################################
 
-class UserDict(_collections_abc.MutableMapping):
+klasse UserDict(_collections_abc.MutableMapping):
 
     # Start by filling-out the abstract methods
     def __init__(self, dict=None, /, **kwargs):
@@ -1227,7 +1227,7 @@ class UserDict(_collections_abc.MutableMapping):
 ### UserList
 ################################################################################
 
-class UserList(_collections_abc.MutableSequence):
+klasse UserList(_collections_abc.MutableSequence):
     """A more or less complete user-defined wrapper around list objects."""
 
     def __init__(self, initlist=None):
@@ -1360,7 +1360,7 @@ class UserList(_collections_abc.MutableSequence):
 ### UserString
 ################################################################################
 
-class UserString(_collections_abc.Sequence):
+klasse UserString(_collections_abc.Sequence):
 
     def __init__(self, seq):
         if isinstance(seq, str):

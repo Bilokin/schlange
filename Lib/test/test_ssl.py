@@ -320,7 +320,7 @@ def testing_context(server_cert=SIGNED_CERTFILE, *, server_chain=True):
     return client_context, server_context, hostname
 
 
-class BasicSocketTests(unittest.TestCase):
+klasse BasicSocketTests(unittest.TestCase):
 
     def test_constants(self):
         ssl.CERT_NONE
@@ -910,7 +910,7 @@ class BasicSocketTests(unittest.TestCase):
                 self.assertEqual(s.send(b""), 0)
 
 
-class ContextTests(unittest.TestCase):
+klasse ContextTests(unittest.TestCase):
 
     def test_constructor(self):
         for protocol in PROTOCOLS:
@@ -1239,7 +1239,7 @@ class ContextTests(unittest.TestCase):
             return 9
         def getpass_exception():
             raise Exception('getpass error')
-        class GetPassCallable:
+        klasse GetPassCallable:
             def __call__(self):
                 return KEY_PASSWORD
             def getpass(self):
@@ -1650,10 +1650,10 @@ class ContextTests(unittest.TestCase):
         self.assertEqual(ctx.verify_mode, ssl.CERT_NONE)
 
     def test_context_custom_class(self):
-        class MySSLSocket(ssl.SSLSocket):
+        klasse MySSLSocket(ssl.SSLSocket):
             pass
 
-        class MySSLObject(ssl.SSLObject):
+        klasse MySSLObject(ssl.SSLObject):
             pass
 
         ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
@@ -1683,7 +1683,7 @@ class ContextTests(unittest.TestCase):
             ctx.num_tickets = 1
 
 
-class SSLErrorTests(unittest.TestCase):
+klasse SSLErrorTests(unittest.TestCase):
 
     def test_str(self):
         # The str() of a SSLError doesn't include the errno
@@ -1743,7 +1743,7 @@ class SSLErrorTests(unittest.TestCase):
                          server_hostname="example.org\x00evil.com")
 
 
-class MemoryBIOTests(unittest.TestCase):
+klasse MemoryBIOTests(unittest.TestCase):
 
     def test_read_write(self):
         bio = ssl.MemoryBIO()
@@ -1810,7 +1810,7 @@ class MemoryBIOTests(unittest.TestCase):
         self.assertRaises(TypeError, bio.write, 1)
 
 
-class SSLObjectTests(unittest.TestCase):
+klasse SSLObjectTests(unittest.TestCase):
     def test_private_init(self):
         bio = ssl.MemoryBIO()
         with self.assertRaisesRegex(TypeError, "public constructor"):
@@ -1858,7 +1858,7 @@ class SSLObjectTests(unittest.TestCase):
         c_in.write(s_out.read())
         client.unwrap()
 
-class SimpleBackgroundTests(unittest.TestCase):
+klasse SimpleBackgroundTests(unittest.TestCase):
     """Tests that connect to a simple server running in the background"""
 
     def setUp(self):
@@ -2239,7 +2239,7 @@ class SimpleBackgroundTests(unittest.TestCase):
 
 
 @support.requires_resource('network')
-class NetworkedTests(unittest.TestCase):
+klasse NetworkedTests(unittest.TestCase):
 
     def test_timeout_connect_ex(self):
         # Issue #12065: on a timeout, connect_ex() should return the original
@@ -2290,9 +2290,9 @@ def _test_get_server_certificate_fail(test, host, port):
 
 from test.ssl_servers import make_https_server
 
-class ThreadedEchoServer(threading.Thread):
+klasse ThreadedEchoServer(threading.Thread):
 
-    class ConnectionHandler(threading.Thread):
+    klasse ConnectionHandler(threading.Thread):
 
         """A mildly complicated class, because we want it to work both
         with and without the SSL wrapper around the socket connection, so
@@ -2581,13 +2581,13 @@ class ThreadedEchoServer(threading.Thread):
     def stop(self):
         self.active = False
 
-class AsyncoreEchoServer(threading.Thread):
+klasse AsyncoreEchoServer(threading.Thread):
 
     # this one's based on asyncore.dispatcher
 
-    class EchoServer (asyncore.dispatcher):
+    klasse EchoServer (asyncore.dispatcher):
 
-        class ConnectionHandler(asyncore.dispatcher_with_send):
+        klasse ConnectionHandler(asyncore.dispatcher_with_send):
 
             def __init__(self, conn, certfile):
                 self.socket = test_wrap_socket(conn, server_side=True,
@@ -2835,7 +2835,7 @@ def supports_kx_alias(ctx, aliases):
     return False
 
 
-class ThreadedTests(unittest.TestCase):
+klasse ThreadedTests(unittest.TestCase):
 
     @support.requires_resource('walltime')
     def test_echo(self):
@@ -3739,7 +3739,7 @@ class ThreadedTests(unittest.TestCase):
         self.assertEqual(s.recv_into(buf), 4)
         self.assertEqual(bytes(buf)[:4], b"data")
 
-        class B(bytearray):
+        klasse B(bytearray):
             def __len__(self):
                 1/0
         s.send(b"data")
@@ -4666,7 +4666,7 @@ class ThreadedTests(unittest.TestCase):
 
 @unittest.skipUnless(has_tls_version('TLSv1_3') and ssl.HAS_PHA,
                      "Test needs TLS 1.3 PHA")
-class TestPostHandshakeAuth(unittest.TestCase):
+klasse TestPostHandshakeAuth(unittest.TestCase):
     def test_pha_setter(self):
         protocols = [
             ssl.PROTOCOL_TLS_SERVER, ssl.PROTOCOL_TLS_CLIENT
@@ -4983,7 +4983,7 @@ HAS_KEYLOG = hasattr(ssl.SSLContext, 'keylog_filename')
 requires_keylog = unittest.skipUnless(
     HAS_KEYLOG, 'test requires OpenSSL 1.1.1 with keylog callback')
 
-class TestSSLDebug(unittest.TestCase):
+klasse TestSSLDebug(unittest.TestCase):
 
     def keylog_lines(self, fname=os_helper.TESTFN):
         with open(fname) as f:
@@ -5151,11 +5151,11 @@ def set_socket_so_linger_on_with_zero_timeout(sock):
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER, struct.pack('ii', 1, 0))
 
 
-class TestPreHandshakeClose(unittest.TestCase):
+klasse TestPreHandshakeClose(unittest.TestCase):
     """Verify behavior of close sockets with received data before to the handshake.
     """
 
-    class SingleConnectionTestServerThread(threading.Thread):
+    klasse SingleConnectionTestServerThread(threading.Thread):
 
         def __init__(self, *, name, call_after_accept, timeout=None):
             self.call_after_accept = call_after_accept
@@ -5346,7 +5346,7 @@ class TestPreHandshakeClose(unittest.TestCase):
     def test_https_client_non_tls_response_ignored(self):
         server_responding = threading.Event()
 
-        class SynchronizedHTTPSConnection(http.client.HTTPSConnection):
+        klasse SynchronizedHTTPSConnection(http.client.HTTPSConnection):
             def connect(self):
                 # Call clear text HTTP connect(), not the encrypted HTTPS (TLS)
                 # connect(): wrap_socket() is called manually below.
@@ -5397,10 +5397,10 @@ class TestPreHandshakeClose(unittest.TestCase):
         server.join()
 
 
-class TestEnumerations(unittest.TestCase):
+klasse TestEnumerations(unittest.TestCase):
 
     def test_tlsversion(self):
-        class CheckedTLSVersion(enum.IntEnum):
+        klasse CheckedTLSVersion(enum.IntEnum):
             MINIMUM_SUPPORTED = _ssl.PROTO_MINIMUM_SUPPORTED
             SSLv3 = _ssl.PROTO_SSLv3
             TLSv1 = _ssl.PROTO_TLSv1
@@ -5411,7 +5411,7 @@ class TestEnumerations(unittest.TestCase):
         enum._test_simple_enum(CheckedTLSVersion, TLSVersion)
 
     def test_tlscontenttype(self):
-        class Checked_TLSContentType(enum.IntEnum):
+        klasse Checked_TLSContentType(enum.IntEnum):
             """Content types (record layer)
 
             See RFC 8446, section B.1
@@ -5426,7 +5426,7 @@ class TestEnumerations(unittest.TestCase):
         enum._test_simple_enum(Checked_TLSContentType, _TLSContentType)
 
     def test_tlsalerttype(self):
-        class Checked_TLSAlertType(enum.IntEnum):
+        klasse Checked_TLSAlertType(enum.IntEnum):
             """Alert types for TLSContentType.ALERT messages
 
             See RFC 8466, section B.2
@@ -5468,7 +5468,7 @@ class TestEnumerations(unittest.TestCase):
         enum._test_simple_enum(Checked_TLSAlertType, _TLSAlertType)
 
     def test_tlsmessagetype(self):
-        class Checked_TLSMessageType(enum.IntEnum):
+        klasse Checked_TLSMessageType(enum.IntEnum):
             """Message types (handshake protocol)
 
             See RFC 8446, section B.3

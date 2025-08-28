@@ -11,7 +11,7 @@ import threading
 __all__ = ["Error", "open", "open_new", "open_new_tab", "get", "register"]
 
 
-class Error(Exception):
+klasse Error(Exception):
     pass
 
 
@@ -145,8 +145,8 @@ def _synthesize(browser, *, preferred=False):
 
 # General parent classes
 
-class BaseBrowser:
-    """Parent class for all browsers. Do not use directly."""
+klasse BaseBrowser:
+    """Parent klasse for all browsers. Do not use directly."""
 
     args = ['%s']
 
@@ -164,7 +164,7 @@ class BaseBrowser:
         return self.open(url, 2)
 
 
-class GenericBrowser(BaseBrowser):
+klasse GenericBrowser(BaseBrowser):
     """Class for all browsers started with a command
        and without remote functionality."""
 
@@ -192,7 +192,7 @@ class GenericBrowser(BaseBrowser):
             return False
 
 
-class BackgroundBrowser(GenericBrowser):
+klasse BackgroundBrowser(GenericBrowser):
     """Class for all browsers which are to be started in the
        background."""
 
@@ -211,8 +211,8 @@ class BackgroundBrowser(GenericBrowser):
             return False
 
 
-class UnixBrowser(BaseBrowser):
-    """Parent class for all Unix browsers with remote functionality."""
+klasse UnixBrowser(BaseBrowser):
+    """Parent klasse for all Unix browsers with remote functionality."""
 
     raise_opts = None
     background = False
@@ -291,8 +291,8 @@ class UnixBrowser(BaseBrowser):
             return True
 
 
-class Mozilla(UnixBrowser):
-    """Launcher class for Mozilla browsers."""
+klasse Mozilla(UnixBrowser):
+    """Launcher klasse for Mozilla browsers."""
 
     remote_args = ['%action', '%s']
     remote_action = ""
@@ -301,8 +301,8 @@ class Mozilla(UnixBrowser):
     background = True
 
 
-class Epiphany(UnixBrowser):
-    """Launcher class for Epiphany browser."""
+klasse Epiphany(UnixBrowser):
+    """Launcher klasse for Epiphany browser."""
 
     raise_opts = ["-noraise", ""]
     remote_args = ['%action', '%s']
@@ -311,8 +311,8 @@ class Epiphany(UnixBrowser):
     background = True
 
 
-class Chrome(UnixBrowser):
-    """Launcher class for Google Chrome browser."""
+klasse Chrome(UnixBrowser):
+    """Launcher klasse for Google Chrome browser."""
 
     remote_args = ['%action', '%s']
     remote_action = ""
@@ -324,8 +324,8 @@ class Chrome(UnixBrowser):
 Chromium = Chrome
 
 
-class Opera(UnixBrowser):
-    """Launcher class for Opera browser."""
+klasse Opera(UnixBrowser):
+    """Launcher klasse for Opera browser."""
 
     remote_args = ['%action', '%s']
     remote_action = ""
@@ -334,8 +334,8 @@ class Opera(UnixBrowser):
     background = True
 
 
-class Elinks(UnixBrowser):
-    """Launcher class for Elinks browsers."""
+klasse Elinks(UnixBrowser):
+    """Launcher klasse for Elinks browsers."""
 
     remote_args = ['-remote', 'openURL(%s%action)']
     remote_action = ""
@@ -348,7 +348,7 @@ class Elinks(UnixBrowser):
     redirect_stdout = False
 
 
-class Konqueror(BaseBrowser):
+klasse Konqueror(BaseBrowser):
     """Controller for the KDE File Manager (kfm, or Konqueror).
 
     See the output of ``kfmclient --commands``
@@ -401,8 +401,8 @@ class Konqueror(BaseBrowser):
             return p.poll() is None
 
 
-class Edge(UnixBrowser):
-    """Launcher class for Microsoft Edge browser."""
+klasse Edge(UnixBrowser):
+    """Launcher klasse for Microsoft Edge browser."""
 
     remote_args = ['%action', '%s']
     remote_action = ""
@@ -585,7 +585,7 @@ def register_standard_browsers():
 #
 
 if sys.platform[:3] == "win":
-    class WindowsDefault(BaseBrowser):
+    klasse WindowsDefault(BaseBrowser):
         def open(self, url, new=0, autoraise=True):
             sys.audit("webbrowser.open", url)
             try:
@@ -602,7 +602,7 @@ if sys.platform[:3] == "win":
 #
 
 if sys.platform == 'darwin':
-    class MacOSXOSAScript(BaseBrowser):
+    klasse MacOSXOSAScript(BaseBrowser):
         def __init__(self, name='default'):
             super().__init__(name)
 
@@ -661,7 +661,7 @@ if sys.platform == "ios":
         # If objc exists, we know ctypes is also importable.
         from ctypes import c_void_p, c_char_p, c_ulong
 
-    class IOSBrowser(BaseBrowser):
+    klasse IOSBrowser(BaseBrowser):
         def open(self, url, new=0, autoraise=True):
             sys.audit("webbrowser.open", url)
             # If ctypes isn't available, we can't open a browser

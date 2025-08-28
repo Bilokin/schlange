@@ -14,7 +14,7 @@ if typing.TYPE_CHECKING:
     from libclinic.app import Clinic
 
 
-class Language(metaclass=abc.ABCMeta):
+klasse Language(metaclass=abc.ABCMeta):
 
     start_line = ""
     body_prefix = ""
@@ -94,7 +94,7 @@ class Language(metaclass=abc.ABCMeta):
         assert_only_one('checksum_line', field)
 
 
-class PythonLanguage(Language):
+klasse PythonLanguage(Language):
 
     language      = 'Python'
     start_line    = "#/*[{dsl_name} input]"

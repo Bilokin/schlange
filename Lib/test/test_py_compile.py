@@ -34,7 +34,7 @@ def with_source_date_epoch(fxn):
 
 
 # Run tests with SOURCE_DATE_EPOCH set or unset explicitly.
-class SourceDateEpochTestMeta(type(unittest.TestCase)):
+klasse SourceDateEpochTestMeta(type(unittest.TestCase)):
     def __new__(mcls, name, bases, dct, *, source_date_epoch):
         cls = super().__new__(mcls, name, bases, dct)
 
@@ -50,7 +50,7 @@ class SourceDateEpochTestMeta(type(unittest.TestCase)):
         return cls
 
 
-class PyCompileTestsBase:
+klasse PyCompileTestsBase:
 
     def setUp(self):
         self.directory = tempfile.mkdtemp(dir=os.getcwd())
@@ -208,21 +208,21 @@ class PyCompileTestsBase:
                 py_compile.compile(bad_coding, doraise=True, quiet=1)
 
 
-class PyCompileTestsWithSourceEpoch(PyCompileTestsBase,
+klasse PyCompileTestsWithSourceEpoch(PyCompileTestsBase,
                                     unittest.TestCase,
                                     metaclass=SourceDateEpochTestMeta,
                                     source_date_epoch=True):
     pass
 
 
-class PyCompileTestsWithoutSourceEpoch(PyCompileTestsBase,
+klasse PyCompileTestsWithoutSourceEpoch(PyCompileTestsBase,
                                        unittest.TestCase,
                                        metaclass=SourceDateEpochTestMeta,
                                        source_date_epoch=False):
     pass
 
 
-class PyCompileCLITestCase(unittest.TestCase):
+klasse PyCompileCLITestCase(unittest.TestCase):
 
     def setUp(self):
         self.directory = tempfile.mkdtemp()

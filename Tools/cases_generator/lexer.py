@@ -251,7 +251,7 @@ def make_syntax_error(
 
 
 @dataclass(slots=True, frozen=True)
-class Token:
+klasse Token:
     filename: str
     kind: str
     text: str

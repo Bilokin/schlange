@@ -49,7 +49,7 @@ def _get_digest_constructor(digest_like):
     return digest_wrapper
 
 
-class HMAC:
+klasse HMAC:
     """RFC 2104 HMAC class.  Also complies with RFC 4231.
 
     This supports the API for Cryptographic Hash Functions (PEP 247).

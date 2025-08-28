@@ -58,7 +58,7 @@ NO = "no"
 #
 # message dialog class
 
-class Message(Dialog):
+klasse Message(Dialog):
     "A message box"
 
     command  = "tk_messageBox"

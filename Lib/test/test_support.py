@@ -29,7 +29,7 @@ from test.support import warnings_helper
 TESTFN = os_helper.TESTFN
 
 
-class LogCaptureHandler(logging.StreamHandler):
+klasse LogCaptureHandler(logging.StreamHandler):
     # Inspired by pytest's caplog
     def __init__(self):
         super().__init__(io.StringIO())
@@ -54,7 +54,7 @@ def _caplog():
         root_logger.removeHandler(handler)
 
 
-class TestSupport(unittest.TestCase):
+klasse TestSupport(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         orig_filter_len = len(warnings._get_filters())
@@ -399,7 +399,7 @@ class TestSupport(unittest.TestCase):
         self.assertIsInstance(support.python_is_optimized(), bool)
 
     def test_swap_attr(self):
-        class Obj:
+        klasse Obj:
             pass
         obj = Obj()
         obj.x = 1
@@ -429,13 +429,13 @@ class TestSupport(unittest.TestCase):
             del D["y"]
         self.assertNotIn("y", D)
 
-    class RefClass:
+    klasse RefClass:
         attribute1 = None
         attribute2 = None
         _hidden_attribute1 = None
         __magic_1__ = None
 
-    class OtherClass:
+    klasse OtherClass:
         attribute2 = None
         attribute3 = None
         __magic_1__ = None
@@ -823,7 +823,7 @@ class TestSupport(unittest.TestCase):
 
 
 @hashlib_helper.requires_builtin_hashes()
-class TestHashlibSupport(unittest.TestCase):
+klasse TestHashlibSupport(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):

@@ -47,7 +47,7 @@ def normalize_POT_file(pot):
     return pot
 
 
-class Test_pygettext(unittest.TestCase):
+klasse Test_pygettext(unittest.TestCase):
     """Tests for the pygettext.py tool"""
 
     script = Path(toolsdir, 'i18n', 'pygettext.py')
@@ -197,21 +197,21 @@ class Test_pygettext(unittest.TestCase):
         for doc in ('"""doc"""', "r'''doc'''", "R'doc'", 'u"doc"'):
             with self.subTest(doc):
                 msgids = self.extract_docstrings_from_str(dedent('''\
-                class C:
+                klasse C:
                     %s
                 ''' % doc))
                 self.assertIn('doc', msgids)
 
     def test_classdocstring_bytes(self):
         msgids = self.extract_docstrings_from_str(dedent('''\
-        class C:
+        klasse C:
             b"""doc"""
         '''))
         self.assertFalse([msgid for msgid in msgids if 'doc' in msgid])
 
     def test_classdocstring_fstring(self):
         msgids = self.extract_docstrings_from_str(dedent('''\
-        class C:
+        klasse C:
             f"""doc"""
         '''))
         self.assertFalse([msgid for msgid in msgids if 'doc' in msgid])
@@ -292,11 +292,11 @@ class Test_pygettext(unittest.TestCase):
         self.assertIn('doc3', msgids)
 
     def test_classdocstring_early_colon(self):
-        """ Test docstring extraction for a class with colons occurring within
+        """ Test docstring extraction for a klasse with colons occurring within
         the parentheses.
         """
         msgids = self.extract_docstrings_from_str(dedent('''\
-        class D(L[1:2], F({1: 2}), metaclass=M(lambda x: x)):
+        klasse D(L[1:2], F({1: 2}), metaclass=M(lambda x: x)):
             """doc"""
         '''))
         self.assertIn('doc', msgids)
@@ -372,7 +372,7 @@ class Test_pygettext(unittest.TestCase):
         self.assertIn('bar', msgids)
 
     def test_function_and_class_names(self):
-        """Test that function and class names are not mistakenly extracted."""
+        """Test that function and klasse names are not mistakenly extracted."""
         msgids = self.extract_from_str(dedent('''\
         def _(x):
             pass
@@ -383,7 +383,7 @@ class Test_pygettext(unittest.TestCase):
         async def _(x):
             pass
 
-        class _(object):
+        klasse _(object):
             pass
         '''))
         self.assertEqual(msgids, [''])

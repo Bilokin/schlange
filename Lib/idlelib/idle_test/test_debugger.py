@@ -22,7 +22,7 @@ TEST_CODE = dedent("""
     """)
 
 
-class MockFrame:
+klasse MockFrame:
     "Minimal mock frame."
 
     def __init__(self, code, lineno):
@@ -30,7 +30,7 @@ class MockFrame:
         self.f_lineno = lineno
 
 
-class IdbTest(unittest.TestCase):
+klasse IdbTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -65,7 +65,7 @@ class IdbTest(unittest.TestCase):
                 self.msg, self.frame, exc_info)
 
 
-class FunctionTest(unittest.TestCase):
+klasse FunctionTest(unittest.TestCase):
     # Test module functions together.
 
     def test_functions(self):
@@ -89,7 +89,7 @@ class FunctionTest(unittest.TestCase):
         self.assertTrue(debugger._in_rpc_code(code_frame))
 
 
-class DebuggerTest(unittest.TestCase):
+klasse DebuggerTest(unittest.TestCase):
     "Tests for Debugger that do not need a real root."
 
     @classmethod
@@ -135,7 +135,7 @@ class DebuggerTest(unittest.TestCase):
         # Test the .load_breakpoints() method calls idb.
         FileIO = namedtuple('FileIO', 'filename')
 
-        class MockEditWindow(object):
+        klasse MockEditWindow(object):
             def __init__(self, fn, breakpoints):
                 self.io = FileIO(fn)
                 self.breakpoints = breakpoints
@@ -168,7 +168,7 @@ class DebuggerTest(unittest.TestCase):
         self.debugger.flist.gotofileline.assert_called_once_with('test_sync.py', 1)
 
 
-class DebuggerGuiTest(unittest.TestCase):
+klasse DebuggerGuiTest(unittest.TestCase):
     """Tests for debugger.Debugger that need tk root.
 
     close needs debugger.top set in make_gui.
@@ -227,7 +227,7 @@ class DebuggerGuiTest(unittest.TestCase):
         self.idb.get_stack.assert_called_once_with(test_frame, None)
 
 
-class StackViewerTest(unittest.TestCase):
+klasse StackViewerTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -276,7 +276,7 @@ class StackViewerTest(unittest.TestCase):
             self.sv.flist.open.assert_called_once_with('test_stackviewer.py')
 
 
-class NameSpaceTest(unittest.TestCase):
+klasse NameSpaceTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):

@@ -139,7 +139,7 @@ def emit_default(out: CWriter, uop: Uop, stack: Stack) -> None:
                 out.emit(f"{var.name} = sym_new_not_null(ctx);\n")
 
 
-class OptimizerEmitter(Emitter):
+klasse OptimizerEmitter(Emitter):
 
     def __init__(self, out: CWriter, labels: dict[str, Label], original_uop: Uop, stack: Stack):
         super().__init__(out, labels)
@@ -250,7 +250,7 @@ class OptimizerEmitter(Emitter):
         emitter.emit("}\n")
         return True
 
-class OptimizerConstantEmitter(OptimizerEmitter):
+klasse OptimizerConstantEmitter(OptimizerEmitter):
     def __init__(self, out: CWriter, labels: dict[str, Label], original_uop: Uop, stack: Stack):
         super().__init__(out, labels, original_uop, stack)
         # Replace all outputs to point to their stackref versions.

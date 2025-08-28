@@ -27,7 +27,7 @@ def tearDownModule():
     asyncio.events._set_event_loop_policy(None)
 
 
-class TestBaseSelectorEventLoop(BaseSelectorEventLoop):
+klasse TestBaseSelectorEventLoop(BaseSelectorEventLoop):
 
     def _make_self_pipe(self):
         self._ssock = mock.Mock()
@@ -54,7 +54,7 @@ def close_transport(transport):
     transport._sock = None
 
 
-class BaseSelectorEventLoopTests(test_utils.TestCase):
+klasse BaseSelectorEventLoopTests(test_utils.TestCase):
 
     def setUp(self):
         super().setUp()
@@ -91,7 +91,7 @@ class BaseSelectorEventLoopTests(test_utils.TestCase):
         self.assertEqual(self.loop._ensure_fd_no_transport.call_count, 1)
 
     def test_close(self):
-        class EventLoop(BaseSelectorEventLoop):
+        klasse EventLoop(BaseSelectorEventLoop):
             def _make_self_pipe(self):
                 self._ssock = mock.Mock()
                 self._csock = mock.Mock()
@@ -402,7 +402,7 @@ class BaseSelectorEventLoopTests(test_utils.TestCase):
         self.loop.run_until_complete(asyncio.sleep(0))
         self.assertEqual(sock.accept.call_count, backlog + 1)
 
-class SelectorTransportTests(test_utils.TestCase):
+klasse SelectorTransportTests(test_utils.TestCase):
 
     def setUp(self):
         super().setUp()
@@ -482,7 +482,7 @@ class SelectorTransportTests(test_utils.TestCase):
 
     @mock.patch('asyncio.log.logger.error')
     def test_fatal_error_custom_exception(self, m_exc):
-        class MyError(Exception):
+        klasse MyError(Exception):
             pass
         exc = MyError()
         tr = self.create_transport()
@@ -526,7 +526,7 @@ class SelectorTransportTests(test_utils.TestCase):
         self.assertFalse(self.loop.readers)
 
 
-class SelectorSocketTransportTests(test_utils.TestCase):
+klasse SelectorSocketTransportTests(test_utils.TestCase):
 
     def setUp(self):
         super().setUp()
@@ -1106,7 +1106,7 @@ class SelectorSocketTransportTests(test_utils.TestCase):
         self.assertEqual(transport.get_write_buffer_size(), 0)
         self.assertTrue(self.protocol.connection_lost.called)
 
-class SelectorSocketTransportBufferedProtocolTests(test_utils.TestCase):
+klasse SelectorSocketTransportBufferedProtocolTests(test_utils.TestCase):
 
     def setUp(self):
         super().setUp()
@@ -1285,7 +1285,7 @@ class SelectorSocketTransportBufferedProtocolTests(test_utils.TestCase):
                                    'Fatal read error on socket transport')
 
 
-class SelectorDatagramTransportTests(test_utils.TestCase):
+klasse SelectorDatagramTransportTests(test_utils.TestCase):
 
     def setUp(self):
         super().setUp()
@@ -1628,7 +1628,7 @@ class SelectorDatagramTransportTests(test_utils.TestCase):
 
     @mock.patch('asyncio.base_events.logger.error')
     def test_fatal_error_connected_custom_error(self, m_exc):
-        class MyException(Exception):
+        klasse MyException(Exception):
             pass
         transport = self.datagram_transport(address=('0.0.0.0', 1))
         err = MyException()

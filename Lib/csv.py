@@ -16,10 +16,10 @@ DIALECT REGISTRATION:
 Readers and writers support a dialect argument, which is a convenient
 handle on a group of settings.  When the dialect argument is a string,
 it identifies one of the dialects previously registered with the module.
-If it is a class or instance, the attributes of the argument are used as
+If it is a klasse or instance, the attributes of the argument are used as
 the settings for the reader or writer:
 
-    class excel:
+    klasse excel:
         delimiter = ','
         quotechar = '"'
         escapechar = None
@@ -84,7 +84,7 @@ __all__ = ["QUOTE_MINIMAL", "QUOTE_ALL", "QUOTE_NONNUMERIC", "QUOTE_NONE",
 __version__ = "1.0"
 
 
-class Dialect:
+klasse Dialect:
     """Describe a CSV dialect.
 
     This must be subclassed (see csv.excel).  Valid attributes are:
@@ -115,7 +115,7 @@ class Dialect:
             # Re-raise to get a traceback showing more user code.
             raise Error(str(e)) from None
 
-class excel(Dialect):
+klasse excel(Dialect):
     """Describe the usual properties of Excel-generated CSV files."""
     delimiter = ','
     quotechar = '"'
@@ -125,12 +125,12 @@ class excel(Dialect):
     quoting = QUOTE_MINIMAL
 register_dialect("excel", excel)
 
-class excel_tab(excel):
+klasse excel_tab(excel):
     """Describe the usual properties of Excel-generated TAB-delimited files."""
     delimiter = '\t'
 register_dialect("excel-tab", excel_tab)
 
-class unix_dialect(Dialect):
+klasse unix_dialect(Dialect):
     """Describe the usual properties of Unix-generated CSV files."""
     delimiter = ','
     quotechar = '"'
@@ -141,7 +141,7 @@ class unix_dialect(Dialect):
 register_dialect("unix", unix_dialect)
 
 
-class DictReader:
+klasse DictReader:
     def __init__(self, f, fieldnames=None, restkey=None, restval=None,
                  dialect="excel", *args, **kwds):
         if fieldnames is not None and iter(fieldnames) is fieldnames:
@@ -195,7 +195,7 @@ class DictReader:
     __class_getitem__ = classmethod(types.GenericAlias)
 
 
-class DictWriter:
+klasse DictWriter:
     def __init__(self, f, fieldnames, restval="", extrasaction="raise",
                  dialect="excel", *args, **kwds):
         if fieldnames is not None and iter(fieldnames) is fieldnames:
@@ -230,7 +230,7 @@ class DictWriter:
     __class_getitem__ = classmethod(types.GenericAlias)
 
 
-class Sniffer:
+klasse Sniffer:
     '''
     "Sniffs" the format of a CSV file (i.e. delimiter, quotechar)
     Returns a Dialect object.
@@ -254,7 +254,7 @@ class Sniffer:
         if not delimiter:
             raise Error("Could not determine delimiter")
 
-        class dialect(Dialect):
+        klasse dialect(Dialect):
             _name = "sniffed"
             lineterminator = '\r\n'
             quoting = QUOTE_MINIMAL

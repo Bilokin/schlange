@@ -15,13 +15,13 @@ NTHREADS = 10
 OBJECT_COUNT = 5_000
 
 
-class Heap(Enum):
+klasse Heap(Enum):
     MIN = 1
     MAX = 2
 
 
 @threading_helper.requires_working_threading()
-class TestHeapq(unittest.TestCase):
+klasse TestHeapq(unittest.TestCase):
     def setUp(self):
         self.test_heapq = test_heapq.TestHeapPython()
 

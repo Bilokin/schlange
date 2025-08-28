@@ -11,7 +11,7 @@ try:
     from _testcapi import with_tp_del
 except ImportError:
     def with_tp_del(cls):
-        class C(object):
+        klasse C(object):
             def __new__(cls, *args, **kwargs):
                 raise unittest.SkipTest('requires _testcapi.with_tp_del')
         return C
@@ -20,7 +20,7 @@ try:
     from _testcapi import without_gc
 except ImportError:
     def without_gc(cls):
-        class C:
+        klasse C:
             def __new__(cls, *args, **kwargs):
                 raise unittest.SkipTest('requires _testcapi.without_gc')
         return C
@@ -28,9 +28,9 @@ except ImportError:
 from test import support
 
 
-class NonGCSimpleBase:
+klasse NonGCSimpleBase:
     """
-    The base class for all the objects under test, equipped with various
+    The base klasse for all the objects under test, equipped with various
     testing features.
     """
 
@@ -94,7 +94,7 @@ class NonGCSimpleBase:
         """
 
 
-class SimpleBase(NonGCSimpleBase):
+klasse SimpleBase(NonGCSimpleBase):
 
     def __init__(self):
         self.id_ = id(self)
@@ -104,11 +104,11 @@ class SimpleBase(NonGCSimpleBase):
 
 
 @without_gc
-class NonGC(NonGCSimpleBase):
+klasse NonGC(NonGCSimpleBase):
     __slots__ = ()
 
 @without_gc
-class NonGCResurrector(NonGCSimpleBase):
+klasse NonGCResurrector(NonGCSimpleBase):
     __slots__ = ()
 
     def side_effect(self):
@@ -117,11 +117,11 @@ class NonGCResurrector(NonGCSimpleBase):
         """
         self.survivors.append(self)
 
-class Simple(SimpleBase):
+klasse Simple(SimpleBase):
     pass
 
 # Can't inherit from NonGCResurrector, in case importing without_gc fails.
-class SimpleResurrector(SimpleBase):
+klasse SimpleResurrector(SimpleBase):
 
     def side_effect(self):
         """
@@ -130,7 +130,7 @@ class SimpleResurrector(SimpleBase):
         self.survivors.append(self)
 
 
-class TestBase:
+klasse TestBase:
 
     def setUp(self):
         self.old_garbage = gc.garbage[:]
@@ -160,7 +160,7 @@ class TestBase:
         SimpleBase.survivors.clear()
 
 
-class SimpleFinalizationTest(TestBase, unittest.TestCase):
+klasse SimpleFinalizationTest(TestBase, unittest.TestCase):
     """
     Test finalization without refcycles.
     """
@@ -225,7 +225,7 @@ class SimpleFinalizationTest(TestBase, unittest.TestCase):
             self.assert_survivors(ids)
 
 
-class SelfCycleBase:
+klasse SelfCycleBase:
 
     def __init__(self):
         super().__init__()
@@ -235,13 +235,13 @@ class SelfCycleBase:
         super().check_sanity()
         assert self.ref is self
 
-class SimpleSelfCycle(SelfCycleBase, Simple):
+klasse SimpleSelfCycle(SelfCycleBase, Simple):
     pass
 
-class SelfCycleResurrector(SelfCycleBase, SimpleResurrector):
+klasse SelfCycleResurrector(SelfCycleBase, SimpleResurrector):
     pass
 
-class SuicidalSelfCycle(SelfCycleBase, Simple):
+klasse SuicidalSelfCycle(SelfCycleBase, Simple):
 
     def side_effect(self):
         """
@@ -250,7 +250,7 @@ class SuicidalSelfCycle(SelfCycleBase, Simple):
         self.ref = None
 
 
-class SelfCycleFinalizationTest(TestBase, unittest.TestCase):
+klasse SelfCycleFinalizationTest(TestBase, unittest.TestCase):
     """
     Test finalization of an object having a single cyclic reference to
     itself.
@@ -313,7 +313,7 @@ class SelfCycleFinalizationTest(TestBase, unittest.TestCase):
             self.assertIsNone(wr())
 
 
-class ChainedBase:
+klasse ChainedBase:
 
     def chain(self, left):
         self.suicided = False
@@ -337,13 +337,13 @@ class ChainedBase:
             else:
                 assert right.left is self
 
-class SimpleChained(ChainedBase, Simple):
+klasse SimpleChained(ChainedBase, Simple):
     pass
 
-class ChainedResurrector(ChainedBase, SimpleResurrector):
+klasse ChainedResurrector(ChainedBase, SimpleResurrector):
     pass
 
-class SuicidalChained(ChainedBase, Simple):
+klasse SuicidalChained(ChainedBase, Simple):
 
     def side_effect(self):
         """
@@ -354,7 +354,7 @@ class SuicidalChained(ChainedBase, Simple):
         self.right = None
 
 
-class CycleChainFinalizationTest(TestBase, unittest.TestCase):
+klasse CycleChainFinalizationTest(TestBase, unittest.TestCase):
     """
     Test finalization of a cyclic chain.  These tests are similar in
     spirit to the self-cycle tests above, but the collectable object
@@ -440,7 +440,7 @@ class CycleChainFinalizationTest(TestBase, unittest.TestCase):
 # NOTE: the tp_del slot isn't automatically inherited, so we have to call
 # with_tp_del() for each instantiated class.
 
-class LegacyBase(SimpleBase):
+klasse LegacyBase(SimpleBase):
 
     def __del__(self):
         try:
@@ -465,11 +465,11 @@ class LegacyBase(SimpleBase):
             self.errors.append(e)
 
 @with_tp_del
-class Legacy(LegacyBase):
+klasse Legacy(LegacyBase):
     pass
 
 @with_tp_del
-class LegacyResurrector(LegacyBase):
+klasse LegacyResurrector(LegacyBase):
 
     def side_effect(self):
         """
@@ -478,12 +478,12 @@ class LegacyResurrector(LegacyBase):
         self.survivors.append(self)
 
 @with_tp_del
-class LegacySelfCycle(SelfCycleBase, LegacyBase):
+klasse LegacySelfCycle(SelfCycleBase, LegacyBase):
     pass
 
 
 @support.cpython_only
-class LegacyFinalizationTest(TestBase, unittest.TestCase):
+klasse LegacyFinalizationTest(TestBase, unittest.TestCase):
     """
     Test finalization of objects with a tp_del.
     """

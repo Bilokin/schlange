@@ -117,7 +117,7 @@ def run_once(loop):
     loop.run_forever()
 
 
-class SilentWSGIRequestHandler(WSGIRequestHandler):
+klasse SilentWSGIRequestHandler(WSGIRequestHandler):
 
     def get_stderr(self):
         return io.StringIO()
@@ -126,7 +126,7 @@ class SilentWSGIRequestHandler(WSGIRequestHandler):
         pass
 
 
-class SilentWSGIServer(WSGIServer):
+klasse SilentWSGIServer(WSGIServer):
 
     request_timeout = support.LOOPBACK_TIMEOUT
 
@@ -139,7 +139,7 @@ class SilentWSGIServer(WSGIServer):
         pass
 
 
-class SSLWSGIServerMixin:
+klasse SSLWSGIServerMixin:
 
     def finish_request(self, request, client_address):
         # The relative location of our test directory (which
@@ -158,7 +158,7 @@ class SSLWSGIServerMixin:
             pass
 
 
-class SSLWSGIServer(SSLWSGIServerMixin, SilentWSGIServer):
+klasse SSLWSGIServer(SSLWSGIServerMixin, SilentWSGIServer):
     pass
 
 
@@ -199,7 +199,7 @@ def _run_test_server(*, address, use_ssl=False, server_cls, server_ssl_cls):
 
 if hasattr(socket, 'AF_UNIX'):
 
-    class UnixHTTPServer(socketserver.UnixStreamServer, HTTPServer):
+    klasse UnixHTTPServer(socketserver.UnixStreamServer, HTTPServer):
 
         def server_bind(self):
             socketserver.UnixStreamServer.server_bind(self)
@@ -207,7 +207,7 @@ if hasattr(socket, 'AF_UNIX'):
             self.server_port = 80
 
 
-    class UnixWSGIServer(UnixHTTPServer, WSGIServer):
+    klasse UnixWSGIServer(UnixHTTPServer, WSGIServer):
 
         request_timeout = support.LOOPBACK_TIMEOUT
 
@@ -227,13 +227,13 @@ if hasattr(socket, 'AF_UNIX'):
             return request, ('127.0.0.1', '')
 
 
-    class SilentUnixWSGIServer(UnixWSGIServer):
+    klasse SilentUnixWSGIServer(UnixWSGIServer):
 
         def handle_error(self, request, client_address):
             pass
 
 
-    class UnixSSLWSGIServer(SSLWSGIServerMixin, SilentUnixWSGIServer):
+    klasse UnixSSLWSGIServer(SSLWSGIServerMixin, SilentUnixWSGIServer):
         pass
 
 
@@ -308,7 +308,7 @@ def make_test_protocol(base):
     return type('TestProtocol', (base,) + base.__bases__, dct)()
 
 
-class TestSelector(selectors.BaseSelector):
+klasse TestSelector(selectors.BaseSelector):
 
     def __init__(self):
         self.keys = {}
@@ -328,7 +328,7 @@ class TestSelector(selectors.BaseSelector):
         return self.keys
 
 
-class TestLoop(base_events.BaseEventLoop):
+klasse TestLoop(base_events.BaseEventLoop):
     """Loop for unittests.
 
     It manages self time directly.
@@ -497,7 +497,7 @@ def MockCallback(**kwargs):
     return mock.Mock(spec=['__call__'], **kwargs)
 
 
-class MockPattern(str):
+klasse MockPattern(str):
     """A regex based str with a fuzzy __eq__.
 
     Use this helper with 'mock.assert_called_with', or anywhere
@@ -510,7 +510,7 @@ class MockPattern(str):
         return bool(re.search(str(self), other, re.S))
 
 
-class MockInstanceOf:
+klasse MockInstanceOf:
     def __init__(self, type):
         self._type = type
 
@@ -525,7 +525,7 @@ def get_function_source(func):
     return source
 
 
-class TestCase(unittest.TestCase):
+klasse TestCase(unittest.TestCase):
     @staticmethod
     def close_loop(loop):
         if loop._default_executor is not None:

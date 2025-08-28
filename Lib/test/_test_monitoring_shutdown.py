@@ -5,7 +5,7 @@
 
 import sys
 
-class CallableCycle:
+klasse CallableCycle:
     def __init__(self):
         self._cycle = self
 

@@ -10,12 +10,12 @@ support.requires_working_socket(module=True)
 
 @unittest.skipIf((sys.platform[:3]=='win'),
                  "can't easily test on this system")
-class SelectTestCase(unittest.TestCase):
+klasse SelectTestCase(unittest.TestCase):
 
-    class Nope:
+    klasse Nope:
         pass
 
-    class Almost:
+    klasse Almost:
         def fileno(self):
             return 'fileno'
 
@@ -84,7 +84,7 @@ class SelectTestCase(unittest.TestCase):
     )
     def test_select_mutated(self):
         a = []
-        class F:
+        klasse F:
             def fileno(self):
                 del a[-1]
                 return sys.__stdout__.fileno()

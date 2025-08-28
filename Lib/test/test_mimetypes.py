@@ -30,7 +30,7 @@ def tearDownModule():
     mimetypes.knownfiles = knownfiles
 
 
-class MimeTypesTestCase(unittest.TestCase):
+klasse MimeTypesTestCase(unittest.TestCase):
     def setUp(self):
         self.db = mimetypes.MimeTypes()
 
@@ -392,7 +392,7 @@ class MimeTypesTestCase(unittest.TestCase):
 
 
 @unittest.skipUnless(sys.platform.startswith("win"), "Windows only")
-class Win32MimeTypesTestCase(unittest.TestCase):
+klasse Win32MimeTypesTestCase(unittest.TestCase):
     def setUp(self):
         # ensure all entries actually come from the Windows registry
         self.original_types_map = mimetypes.types_map.copy()
@@ -432,7 +432,7 @@ class Win32MimeTypesTestCase(unittest.TestCase):
             self.assertEqual(from_reg[k], from_accel[k])
 
 
-class MiscTestCase(unittest.TestCase):
+klasse MiscTestCase(unittest.TestCase):
     def test__all__(self):
         support.check__all__(self, mimetypes)
 
@@ -441,7 +441,7 @@ class MiscTestCase(unittest.TestCase):
         ensure_lazy_imports("mimetypes", {"os", "posixpath", "urllib.parse", "argparse"})
 
 
-class CommandLineTest(unittest.TestCase):
+klasse CommandLineTest(unittest.TestCase):
     @force_not_colorized
     def test_parse_args(self):
         args, help_text = mimetypes._parse_args("-h")

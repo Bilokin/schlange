@@ -32,7 +32,7 @@ def _kill_python_and_exit_code(p):
     return data, returncode
 
 
-class CmdLineTest(unittest.TestCase):
+klasse CmdLineTest(unittest.TestCase):
     def test_directories(self):
         assert_python_failure('.')
         assert_python_failure('< .')
@@ -1256,7 +1256,7 @@ class CmdLineTest(unittest.TestCase):
 
 @unittest.skipIf(interpreter_requires_environment(),
                  'Cannot run -I tests when PYTHON env vars are required.')
-class IgnoreEnvironmentTest(unittest.TestCase):
+klasse IgnoreEnvironmentTest(unittest.TestCase):
 
     def run_ignoring_vars(self, predicate, **env_vars):
         # Runs a subprocess with -E set, even though we're passing
@@ -1292,7 +1292,7 @@ class IgnoreEnvironmentTest(unittest.TestCase):
         )
 
 
-class SyntaxErrorTests(unittest.TestCase):
+klasse SyntaxErrorTests(unittest.TestCase):
     @force_not_colorized
     def check_string(self, code):
         proc = subprocess.run([sys.executable, "-"], input=code,

@@ -18,7 +18,7 @@ except LookupError:
 
 
 
-class TestEmailAsianCodecs(TestEmailBase):
+klasse TestEmailAsianCodecs(TestEmailBase):
     def test_japanese_codecs(self):
         eq = self.ndiffAssertEqual
         jcode = "euc-jp"

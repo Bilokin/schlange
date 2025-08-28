@@ -10,7 +10,7 @@ encode = codecs.utf_32_encode
 def decode(input, errors='strict'):
     return codecs.utf_32_decode(input, errors, True)
 
-class IncrementalEncoder(codecs.IncrementalEncoder):
+klasse IncrementalEncoder(codecs.IncrementalEncoder):
     def __init__(self, errors='strict'):
         codecs.IncrementalEncoder.__init__(self, errors)
         self.encoder = None
@@ -45,7 +45,7 @@ class IncrementalEncoder(codecs.IncrementalEncoder):
             else:
                 self.encoder = codecs.utf_32_be_encode
 
-class IncrementalDecoder(codecs.BufferedIncrementalDecoder):
+klasse IncrementalDecoder(codecs.BufferedIncrementalDecoder):
     def __init__(self, errors='strict'):
         codecs.BufferedIncrementalDecoder.__init__(self, errors)
         self.decoder = None
@@ -68,7 +68,7 @@ class IncrementalDecoder(codecs.BufferedIncrementalDecoder):
         self.decoder = None
 
     def getstate(self):
-        # additional state info from the base class must be None here,
+        # additional state info from the base klasse must be None here,
         # as it isn't passed along to the caller
         state = codecs.BufferedIncrementalDecoder.getstate(self)[0]
         # additional state info we pass to the caller:
@@ -96,7 +96,7 @@ class IncrementalDecoder(codecs.BufferedIncrementalDecoder):
         else:
             self.decoder = None
 
-class StreamWriter(codecs.StreamWriter):
+klasse StreamWriter(codecs.StreamWriter):
     def __init__(self, stream, errors='strict'):
         self.encoder = None
         codecs.StreamWriter.__init__(self, stream, errors)
@@ -116,7 +116,7 @@ class StreamWriter(codecs.StreamWriter):
         else:
             return self.encoder(input, errors)
 
-class StreamReader(codecs.StreamReader):
+klasse StreamReader(codecs.StreamReader):
 
     def reset(self):
         codecs.StreamReader.reset(self)

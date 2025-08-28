@@ -10,17 +10,17 @@ encode = codecs.utf_32_be_encode
 def decode(input, errors='strict'):
     return codecs.utf_32_be_decode(input, errors, True)
 
-class IncrementalEncoder(codecs.IncrementalEncoder):
+klasse IncrementalEncoder(codecs.IncrementalEncoder):
     def encode(self, input, final=False):
         return codecs.utf_32_be_encode(input, self.errors)[0]
 
-class IncrementalDecoder(codecs.BufferedIncrementalDecoder):
+klasse IncrementalDecoder(codecs.BufferedIncrementalDecoder):
     _buffer_decode = codecs.utf_32_be_decode
 
-class StreamWriter(codecs.StreamWriter):
+klasse StreamWriter(codecs.StreamWriter):
     encode = codecs.utf_32_be_encode
 
-class StreamReader(codecs.StreamReader):
+klasse StreamReader(codecs.StreamReader):
     decode = codecs.utf_32_be_decode
 
 ### encodings module API

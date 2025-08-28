@@ -19,8 +19,8 @@ only one client per server, this was not a limitation.
    | [attribute of RPCServer]|        |                 |
    +-------------------------+        +-----------------+
 
-The RPCServer handler class is expected to provide register/unregister methods.
-RPCHandler inherits the mix-in class SocketIO, which provides these methods.
+The RPCServer handler klasse is expected to provide register/unregister methods.
+RPCHandler inherits the mix-in klasse SocketIO, which provides these methods.
 
 See the Idle run.main() docstring for further information on how this was
 accomplished in Idle.
@@ -63,14 +63,14 @@ def dumps(obj, protocol=None):
     return f.getvalue()
 
 
-class CodePickler(pickle.Pickler):
+klasse CodePickler(pickle.Pickler):
     dispatch_table = {types.CodeType: pickle_code, **copyreg.dispatch_table}
 
 
 BUFSIZE = 8*1024
 LOCALHOST = '127.0.0.1'
 
-class RPCServer(socketserver.TCPServer):
+klasse RPCServer(socketserver.TCPServer):
 
     def __init__(self, addr, handlerclass=None):
         if handlerclass is None:
@@ -118,14 +118,14 @@ class RPCServer(socketserver.TCPServer):
             print('-'*40, file=erf)
             os._exit(0)
 
-#----------------- end class RPCServer --------------------
+#----------------- end klasse RPCServer --------------------
 
 objecttable = {}
 request_queue = queue.Queue(0)
 response_queue = queue.Queue(0)
 
 
-class SocketIO:
+klasse SocketIO:
 
     nextseq = 0
 
@@ -484,9 +484,9 @@ class SocketIO:
         "Classes using rpc client/server can override to augment EOF action"
         pass
 
-#----------------- end class SocketIO --------------------
+#----------------- end klasse SocketIO --------------------
 
-class RemoteObject:
+klasse RemoteObject:
     # Token mix-in class
     pass
 
@@ -497,13 +497,13 @@ def remoteref(obj):
     return RemoteProxy(oid)
 
 
-class RemoteProxy:
+klasse RemoteProxy:
 
     def __init__(self, oid):
         self.oid = oid
 
 
-class RPCHandler(socketserver.BaseRequestHandler, SocketIO):
+klasse RPCHandler(socketserver.BaseRequestHandler, SocketIO):
 
     debugging = False
     location = "#S"  # Server
@@ -521,7 +521,7 @@ class RPCHandler(socketserver.BaseRequestHandler, SocketIO):
         return RPCProxy(self, oid)
 
 
-class RPCClient(SocketIO):
+klasse RPCClient(SocketIO):
 
     debugging = False
     location = "#C"  # Client
@@ -547,7 +547,7 @@ class RPCClient(SocketIO):
         return RPCProxy(self, oid)
 
 
-class RPCProxy:
+klasse RPCProxy:
 
     __methods = None
     __attributes = None
@@ -596,7 +596,7 @@ def _getattributes(obj, attributes):
             attributes[name] = 1
 
 
-class MethodProxy:
+klasse MethodProxy:
 
     def __init__(self, sockio, oid, name):
         self.sockio = sockio

@@ -86,7 +86,7 @@ def setUpModule():
         ZERO_RETURN_CMD = (shell_true,)  # Faster than Python startup.
 
 
-class BaseTestCase(unittest.TestCase):
+klasse BaseTestCase(unittest.TestCase):
     def setUp(self):
         # Try to minimize the number of children we have so this test
         # doesn't crash on some buildbots (Alphas in particular).
@@ -105,11 +105,11 @@ class BaseTestCase(unittest.TestCase):
         support.reap_children()
 
 
-class PopenTestException(Exception):
+klasse PopenTestException(Exception):
     pass
 
 
-class PopenExecuteChildRaises(subprocess.Popen):
+klasse PopenExecuteChildRaises(subprocess.Popen):
     """Popen subclass for testing cleanup of subprocess.PIPE filehandles when
     _execute_child fails.
     """
@@ -117,7 +117,7 @@ class PopenExecuteChildRaises(subprocess.Popen):
         raise PopenTestException("Forced Exception for Test")
 
 
-class ProcessTestCase(BaseTestCase):
+klasse ProcessTestCase(BaseTestCase):
 
     def test_io_buffered_by_default(self):
         p = subprocess.Popen(ZERO_RETURN_CMD,
@@ -1644,7 +1644,7 @@ class ProcessTestCase(BaseTestCase):
             self.assertEqual(proc.wait(), 0)
 
 
-class RunFuncTestCase(BaseTestCase):
+klasse RunFuncTestCase(BaseTestCase):
     def run_python(self, code, **kwargs):
         """Run Python code in a subprocess using subprocess.run"""
         argv = [sys.executable, "-c", code]
@@ -1852,7 +1852,7 @@ def _get_test_grp_name():
 
 
 @unittest.skipIf(mswindows, "POSIX specific tests")
-class POSIXProcessTestCase(BaseTestCase):
+klasse POSIXProcessTestCase(BaseTestCase):
 
     def setUp(self):
         super().setUp()
@@ -1922,7 +1922,7 @@ class POSIXProcessTestCase(BaseTestCase):
     # the destructor. An alternative would be to set _child_created to
     # False before the destructor is called but there is no easy way
     # to do that
-    class PopenNoDestructor(subprocess.Popen):
+    klasse PopenNoDestructor(subprocess.Popen):
         def __del__(self):
             pass
 
@@ -2256,7 +2256,7 @@ class POSIXProcessTestCase(BaseTestCase):
             self.fail("Exception raised by preexec_fn did not make it "
                       "to the parent process.")
 
-    class _TestExecuteChildPopen(subprocess.Popen):
+    klasse _TestExecuteChildPopen(subprocess.Popen):
         """Used to test behavior at the end of _execute_child."""
         def __init__(self, testcase, *args, **kwargs):
             self._testcase = testcase
@@ -3260,7 +3260,7 @@ class POSIXProcessTestCase(BaseTestCase):
     def test_fork_exec_sorted_fd_sanity_check(self):
         # Issue #23564: sanity check the fork_exec() fds_to_keep sanity check.
         import _posixsubprocess
-        class BadInt:
+        klasse BadInt:
             first = True
             def __init__(self, value):
                 self.value = value
@@ -3416,7 +3416,7 @@ class POSIXProcessTestCase(BaseTestCase):
         def dummy():
             pass
 
-        class AtFinalization:
+        klasse AtFinalization:
             def __del__(self):
                 print("OK")
                 subprocess.Popen({ZERO_RETURN_CMD}, preexec_fn=dummy)
@@ -3485,7 +3485,7 @@ class POSIXProcessTestCase(BaseTestCase):
 
 
 @unittest.skipUnless(mswindows, "Windows specific tests")
-class Win32ProcessTestCase(BaseTestCase):
+klasse Win32ProcessTestCase(BaseTestCase):
 
     def test_startupinfo(self):
         # startupinfo argument
@@ -3564,7 +3564,7 @@ class Win32ProcessTestCase(BaseTestCase):
     def test_issue31471(self):
         # There shouldn't be an assertion failure in Popen() in case the env
         # argument has a bad keys() method.
-        class BadEnv(dict):
+        klasse BadEnv(dict):
             keys = None
         with self.assertRaises(TypeError):
             subprocess.Popen(ZERO_RETURN_CMD, env=BadEnv())
@@ -3738,9 +3738,9 @@ class Win32ProcessTestCase(BaseTestCase):
     def test_terminate_dead(self):
         self._kill_dead_process('terminate')
 
-class MiscTests(unittest.TestCase):
+klasse MiscTests(unittest.TestCase):
 
-    class RecordingPopen(subprocess.Popen):
+    klasse RecordingPopen(subprocess.Popen):
         """A Popen that saves a reference to each instance for testing."""
         instances_created = []
 
@@ -3840,7 +3840,7 @@ class MiscTests(unittest.TestCase):
 
 @unittest.skipUnless(hasattr(selectors, 'PollSelector'),
                      "Test needs selectors.PollSelector")
-class ProcessTestCaseNoPoll(ProcessTestCase):
+klasse ProcessTestCaseNoPoll(ProcessTestCase):
     def setUp(self):
         self.orig_selector = subprocess._PopenSelector
         subprocess._PopenSelector = selectors.SelectSelector
@@ -3852,7 +3852,7 @@ class ProcessTestCaseNoPoll(ProcessTestCase):
 
 
 @unittest.skipUnless(mswindows, "Windows-specific tests")
-class CommandsWithSpaces (BaseTestCase):
+klasse CommandsWithSpaces (BaseTestCase):
 
     def setUp(self):
         super().setUp()
@@ -3895,7 +3895,7 @@ class CommandsWithSpaces (BaseTestCase):
         self.with_spaces([sys.executable, self.fname, "ab cd"])
 
 
-class ContextManagerTests(BaseTestCase):
+klasse ContextManagerTests(BaseTestCase):
 
     def test_pipe(self):
         with subprocess.Popen([sys.executable, "-c",

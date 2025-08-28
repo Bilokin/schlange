@@ -8,7 +8,7 @@ import pickle
 from test import support
 
 
-class CookieTests(unittest.TestCase):
+klasse CookieTests(unittest.TestCase):
 
     def test_basic(self):
         cases = [
@@ -346,7 +346,7 @@ class CookieTests(unittest.TestCase):
         )
 
 
-class MorselTests(unittest.TestCase):
+klasse MorselTests(unittest.TestCase):
     """Tests for the Morsel object."""
 
     def test_defaults(self):

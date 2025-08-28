@@ -100,7 +100,7 @@ def traced_decorated_function():
     func()
 
 
-class TracedClass(object):
+klasse TracedClass(object):
     def __init__(self, x):
         self.a = x
 
@@ -123,7 +123,7 @@ class TracedClass(object):
 #------------------------------ Test cases -----------------------------------#
 
 
-class TestLineCounts(unittest.TestCase):
+klasse TestLineCounts(unittest.TestCase):
     """White-box testing of line-counting, via runfunc"""
     def setUp(self):
         self.addCleanup(sys.settrace, sys.gettrace())
@@ -230,7 +230,7 @@ class TestLineCounts(unittest.TestCase):
             self.assertEqual(tracer.results().counts, expected)
 
 
-class TestRunExecCounts(unittest.TestCase):
+klasse TestRunExecCounts(unittest.TestCase):
     """A simple sanity test of line-counting, via runctx (exec)"""
     def setUp(self):
         self.my_py_filename = fix_ext_py(__file__)
@@ -258,7 +258,7 @@ class TestRunExecCounts(unittest.TestCase):
             self.assertEqual(self.tracer.results().counts[k], expected[k])
 
 
-class TestFuncs(unittest.TestCase):
+klasse TestFuncs(unittest.TestCase):
     """White-box testing of funcs tracing"""
     def setUp(self):
         self.addCleanup(sys.settrace, sys.gettrace())
@@ -325,7 +325,7 @@ class TestFuncs(unittest.TestCase):
         self.assertEqual(self.tracer.results().calledfuncs, expected)
 
 
-class TestCallers(unittest.TestCase):
+klasse TestCallers(unittest.TestCase):
     """White-box testing of callers tracing"""
     def setUp(self):
         self.addCleanup(sys.settrace, sys.gettrace())
@@ -353,7 +353,7 @@ class TestCallers(unittest.TestCase):
 
 
 # Created separately for issue #3821
-class TestCoverage(unittest.TestCase):
+klasse TestCoverage(unittest.TestCase):
     def setUp(self):
         self.addCleanup(sys.settrace, sys.gettrace())
 
@@ -430,7 +430,7 @@ class TestCoverage(unittest.TestCase):
 ### Tests that don't mess with sys.settrace and can be traced
 ### themselves TODO: Skip tests that do mess with sys.settrace when
 ### regrtest is invoked with -T option.
-class Test_Ignore(unittest.TestCase):
+klasse Test_Ignore(unittest.TestCase):
     def test_ignored(self):
         jn = os.path.join
         ignore = trace._Ignore(['x', 'y.z'], [jn('foo', 'bar')])
@@ -443,7 +443,7 @@ class Test_Ignore(unittest.TestCase):
         self.assertTrue(ignore.names(jn('bar', 'baz.py'), 'baz'))
 
 # Created for Issue 31908 -- CLI utility not writing cover files
-class TestCoverageCommandLineOutput(unittest.TestCase):
+klasse TestCoverageCommandLineOutput(unittest.TestCase):
 
     codefile = 'tmp.py'
     coverfile = 'tmp.cover'
@@ -493,7 +493,7 @@ class TestCoverageCommandLineOutput(unittest.TestCase):
                 >>>>>>     print('unreachable')
             '''))
 
-class TestCommandLine(unittest.TestCase):
+klasse TestCommandLine(unittest.TestCase):
 
     def test_failures(self):
         _errors = (
@@ -560,7 +560,7 @@ class TestCommandLine(unittest.TestCase):
         assert_python_failure('-m', 'trace', '-l', '--module', 'not_a_module_zzz')
 
 
-class TestTrace(unittest.TestCase):
+klasse TestTrace(unittest.TestCase):
     def setUp(self):
         self.addCleanup(sys.settrace, sys.gettrace())
         self.tracer = Trace(count=0, trace=1)

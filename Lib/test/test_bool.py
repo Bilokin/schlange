@@ -5,11 +5,11 @@ from test.support import os_helper
 
 import os
 
-class BoolTest(unittest.TestCase):
+klasse BoolTest(unittest.TestCase):
 
     def test_subclass(self):
         try:
-            class C(bool):
+            klasse C(bool):
                 pass
         except TypeError:
             pass
@@ -307,38 +307,38 @@ class BoolTest(unittest.TestCase):
         # from __bool__().  This isn't really a bool test, but
         # it's related.
         check = lambda o: self.assertRaises(TypeError, bool, o)
-        class Foo(object):
+        klasse Foo(object):
             def __bool__(self):
                 return self
         check(Foo())
 
-        class Bar(object):
+        klasse Bar(object):
             def __bool__(self):
                 return "Yes"
         check(Bar())
 
-        class Baz(int):
+        klasse Baz(int):
             def __bool__(self):
                 return self
         check(Baz())
 
         # __bool__() must return a bool not an int
-        class Spam(int):
+        klasse Spam(int):
             def __bool__(self):
                 return 1
         check(Spam())
 
-        class Eggs:
+        klasse Eggs:
             def __len__(self):
                 return -1
         self.assertRaises(ValueError, bool, Eggs())
 
     def test_interpreter_convert_to_bool_raises(self):
-        class SymbolicBool:
+        klasse SymbolicBool:
             def __bool__(self):
                 raise TypeError
 
-        class Symbol:
+        klasse Symbol:
             def __gt__(self, other):
                 return SymbolicBool()
 
@@ -361,7 +361,7 @@ class BoolTest(unittest.TestCase):
         # this test just tests our assumptions about __len__
         # this will start failing if __len__ changes assertions
         for badval in ['illegal', -1, 1 << 32]:
-            class A:
+            klasse A:
                 def __len__(self):
                     return badval
             try:
@@ -373,17 +373,17 @@ class BoolTest(unittest.TestCase):
                     self.assertEqual(str(e_bool), str(e_len))
 
     def test_blocked(self):
-        class A:
+        klasse A:
             __bool__ = None
         self.assertRaises(TypeError, bool, A())
 
-        class B:
+        klasse B:
             def __len__(self):
                 return 10
             __bool__ = None
         self.assertRaises(TypeError, bool, B())
 
-        class C:
+        klasse C:
             __len__ = None
         self.assertRaises(TypeError, bool, C())
 
@@ -398,7 +398,7 @@ class BoolTest(unittest.TestCase):
         self.assertIs(type(False.imag), int)
 
     def test_bool_called_at_least_once(self):
-        class X:
+        klasse X:
             def __init__(self):
                 self.count = 0
             def __bool__(self):

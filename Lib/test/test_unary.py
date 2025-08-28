@@ -2,7 +2,7 @@
 
 import unittest
 
-class UnaryOpTestCase(unittest.TestCase):
+klasse UnaryOpTestCase(unittest.TestCase):
 
     def test_negative(self):
         self.assertTrue(-2 == 0 - 2)

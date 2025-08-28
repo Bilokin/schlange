@@ -90,7 +90,7 @@ def _make_test_zip_pkg(zip_dir, zip_basename, pkg_name, script_basename,
 
 
 @support.force_not_colorized_test_class
-class CmdLineTest(unittest.TestCase):
+klasse CmdLineTest(unittest.TestCase):
     def _check_output(self, script_name, exit_code, data,
                              expected_file, expected_argv0,
                              expected_path0, expected_package,

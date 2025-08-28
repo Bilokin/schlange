@@ -72,7 +72,7 @@ GLOBAL_FLAGS = SRE_FLAG_DEBUG
 # Must be larger than MAXREPEAT, MAXCODE and sys.maxsize.
 MAXWIDTH = 1 << 64
 
-class State:
+klasse State:
     # keeps track of state for parsing
     def __init__(self):
         self.flags = 0
@@ -108,7 +108,7 @@ class State:
                 raise source.error('cannot refer to group defined in the same '
                                    'lookbehind subpattern')
 
-class SubPattern:
+klasse SubPattern:
     # a subpattern, in intermediate form
     def __init__(self, state, data=None):
         self.state = state
@@ -227,7 +227,7 @@ class SubPattern:
         self.width = min(lo, MAXWIDTH), min(hi, MAXWIDTH)
         return self.width
 
-class Tokenizer:
+klasse Tokenizer:
     def __init__(self, string):
         self.istext = isinstance(string, str)
         self.string = string

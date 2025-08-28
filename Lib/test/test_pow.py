@@ -1,7 +1,7 @@
 import math
 import unittest
 
-class PowTest(unittest.TestCase):
+klasse PowTest(unittest.TestCase):
 
     def powtest(self, type):
         if type != float:
@@ -115,7 +115,7 @@ class PowTest(unittest.TestCase):
                 self.fail(f"{a=:x} {b1=:x} {b2=:x} {got3=:x} {got4=:x}")
 
     def test_bug643260(self):
-        class TestRpow:
+        klasse TestRpow:
             def __rpow__(self, other):
                 return None
         None ** TestRpow() # Won't fail when __rpow__ invoked.  SF bug #643260.

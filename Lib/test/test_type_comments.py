@@ -226,7 +226,7 @@ def favk(
 """
 
 
-class TypeCommentTests(unittest.TestCase):
+klasse TypeCommentTests(unittest.TestCase):
 
     lowest = 4  # Lowest minor version supported
     highest = sys.version_info[1]  # Highest minor version

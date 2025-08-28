@@ -41,7 +41,7 @@ def translate_key(key, modifiers):
     return f'Key-{key}'
 
 
-class GetKeysFrame(Frame):
+klasse GetKeysFrame(Frame):
 
     # Dialog title for invalid key sequence
     keyerror_title = 'Key Sequence Error'
@@ -279,7 +279,7 @@ class GetKeysFrame(Frame):
             return True
 
 
-class GetKeysWindow(Toplevel):
+klasse GetKeysWindow(Toplevel):
 
     def __init__(self, parent, title, action, current_key_sequences,
                  *, _htest=False, _utest=False):

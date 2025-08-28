@@ -8,7 +8,7 @@ from unittest.mock import patch
 from test import support
 
 
-class EventCollector(html.parser.HTMLParser):
+klasse EventCollector(html.parser.HTMLParser):
 
     def __init__(self, *args, autocdata=False, **kw):
         self.autocdata = autocdata
@@ -72,14 +72,14 @@ class EventCollector(html.parser.HTMLParser):
         self.append(("unknown decl", decl))
 
 
-class EventCollectorExtra(EventCollector):
+klasse EventCollectorExtra(EventCollector):
 
     def handle_starttag(self, tag, attrs):
         EventCollector.handle_starttag(self, tag, attrs)
         self.append(("starttag_text", self.get_starttag_text()))
 
 
-class EventCollectorCharrefs(EventCollector):
+klasse EventCollectorCharrefs(EventCollector):
 
     def handle_charref(self, data):
         self.fail('This should never be called with convert_charrefs=True')
@@ -90,12 +90,12 @@ class EventCollectorCharrefs(EventCollector):
 
 # The normal event collector normalizes the events in get_events,
 # so we override it to return the original list of events.
-class EventCollectorNoNormalize(EventCollector):
+klasse EventCollectorNoNormalize(EventCollector):
     def get_events(self):
         return self.events
 
 
-class TestCaseBase(unittest.TestCase):
+klasse TestCaseBase(unittest.TestCase):
 
     def get_collector(self):
         return EventCollector(convert_charrefs=False)
@@ -119,7 +119,7 @@ class TestCaseBase(unittest.TestCase):
                         EventCollectorExtra(convert_charrefs=False))
 
 
-class HTMLParserTestCase(TestCaseBase):
+klasse HTMLParserTestCase(TestCaseBase):
 
     def test_processing_instruction_only(self):
         self._run_check("<?processing instruction>", [
@@ -941,7 +941,7 @@ text
         check("<!doctype" * 35 * n)
 
 
-class AttributesTestCase(TestCaseBase):
+klasse AttributesTestCase(TestCaseBase):
 
     def test_attr_syntax(self):
         output = [
@@ -1144,7 +1144,7 @@ class AttributesTestCase(TestCaseBase):
                                 [('action', 'bogus|&#()value')])])
 
 
-class TestInheritance(unittest.TestCase):
+klasse TestInheritance(unittest.TestCase):
 
     @patch("_markupbase.ParserBase.__init__")
     @patch("_markupbase.ParserBase.reset")

@@ -13,8 +13,8 @@ import unittest
 from textwrap import TextWrapper, wrap, fill, dedent, indent, shorten
 
 
-class BaseTestCase(unittest.TestCase):
-    '''Parent class with utility methods for textwrap tests.'''
+klasse BaseTestCase(unittest.TestCase):
+    '''Parent klasse with utility methods for textwrap tests.'''
 
     def show(self, textin):
         if isinstance(textin, list):
@@ -43,7 +43,7 @@ class BaseTestCase(unittest.TestCase):
                          "but got  %r" % (expect, result))
 
 
-class WrapTestCase(BaseTestCase):
+klasse WrapTestCase(BaseTestCase):
 
     def setUp(self):
         self.wrapper = TextWrapper(width=45)
@@ -476,7 +476,7 @@ What a mess!
                         break_on_hyphens=False)
 
 
-class MaxLinesTestCase(BaseTestCase):
+klasse MaxLinesTestCase(BaseTestCase):
     text = "Hello there, how are you this fine day?  I'm glad to hear it!"
 
     def test_simple(self):
@@ -571,7 +571,7 @@ class MaxLinesTestCase(BaseTestCase):
                         placeholder='*****')
 
 
-class LongWordTestCase (BaseTestCase):
+klasse LongWordTestCase (BaseTestCase):
     def setUp(self):
         self.wrapper = TextWrapper()
         self.text = '''\
@@ -640,7 +640,7 @@ How *do* you spell that odd word, anyways?
                         max_lines=4)
 
 
-class LongWordWithHyphensTestCase(BaseTestCase):
+klasse LongWordWithHyphensTestCase(BaseTestCase):
     def setUp(self):
         self.wrapper = TextWrapper()
         self.text1 = '''\
@@ -712,7 +712,7 @@ We used enyzme 2-succinyl-6-hydroxy-2,4-cyclohexadiene-1-carboxylate synthase.
                     'ng_option_', 'indeed-', 'good-bye"']
         self.check_wrap(self.text2, 10, expected)
 
-class IndentTestCases(BaseTestCase):
+klasse IndentTestCases(BaseTestCase):
 
     # called before each test method
     def setUp(self):
@@ -763,7 +763,7 @@ some (including a hanging indent).'''
 
 # Despite the similar names, DedentTestCase is *not* the inverse
 # of IndentTestCase!
-class DedentTestCase(unittest.TestCase):
+klasse DedentTestCase(unittest.TestCase):
 
     def test_type_error(self):
         with self.assertRaisesRegex(TypeError, "expected str object, not"):
@@ -942,7 +942,7 @@ def foo():
 
 
 # Test textwrap.indent
-class IndentTestCase(unittest.TestCase):
+klasse IndentTestCase(unittest.TestCase):
     # The examples used for tests. If any of these change, the expected
     # results in the various test cases must also be updated.
     # The roundtrip cases are separate, because textwrap.dedent doesn't
@@ -1076,7 +1076,7 @@ class IndentTestCase(unittest.TestCase):
             self.assertEqual(indent(text, prefix, predicate), expect)
 
 
-class ShortenTestCase(BaseTestCase):
+klasse ShortenTestCase(BaseTestCase):
 
     def check_shorten(self, text, width, expect, **kwargs):
         result = shorten(text, width, **kwargs)

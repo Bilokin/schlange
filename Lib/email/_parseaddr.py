@@ -211,13 +211,13 @@ def quote(str):
     return str.replace('\\', '\\\\').replace('"', '\\"')
 
 
-class AddrlistClass:
-    """Address parser class by Ben Escoto.
+klasse AddrlistClass:
+    """Address parser klasse by Ben Escoto.
 
-    To understand what this class does, it helps to have a copy of RFC 2822 in
+    To understand what this klasse does, it helps to have a copy of RFC 2822 in
     front of you.
 
-    Note: this class interface is deprecated and may be removed in the future.
+    Note: this klasse interface is deprecated and may be removed in the future.
     Use email.utils.AddressList instead.
     """
 
@@ -512,7 +512,7 @@ class AddrlistClass:
 
         return plist
 
-class AddressList(AddrlistClass):
+klasse AddressList(AddrlistClass):
     """An AddressList encapsulates a list of parsed RFC 2822 addresses."""
     def __init__(self, field):
         AddrlistClass.__init__(self, field)

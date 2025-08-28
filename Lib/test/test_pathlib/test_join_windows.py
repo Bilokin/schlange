@@ -14,7 +14,7 @@ else:
     from pathlib._os import vfspath
 
 
-class JoinTestBase:
+klasse JoinTestBase:
     def test_join(self):
         P = self.cls
         p = P('C:/a/b')
@@ -276,18 +276,18 @@ class JoinTestBase:
         self.assertRaises(TypeError, P('c:a/b').with_suffix, None)
 
 
-class LexicalWindowsPathJoinTest(JoinTestBase, unittest.TestCase):
+klasse LexicalWindowsPathJoinTest(JoinTestBase, unittest.TestCase):
     cls = LexicalWindowsPath
 
 
 if not is_pypi:
     from pathlib import PureWindowsPath, WindowsPath
 
-    class PureWindowsPathJoinTest(JoinTestBase, unittest.TestCase):
+    klasse PureWindowsPathJoinTest(JoinTestBase, unittest.TestCase):
         cls = PureWindowsPath
 
     if os.name == 'nt':
-        class WindowsPathJoinTest(JoinTestBase, unittest.TestCase):
+        klasse WindowsPathJoinTest(JoinTestBase, unittest.TestCase):
             cls = WindowsPath
 
 

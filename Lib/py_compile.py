@@ -15,7 +15,7 @@ import traceback
 __all__ = ["compile", "main", "PyCompileError", "PycInvalidationMode"]
 
 
-class PyCompileError(Exception):
+klasse PyCompileError(Exception):
     """Exception raised when an error occurs while attempting to
     compile the file.
 
@@ -26,19 +26,19 @@ class PyCompileError(Exception):
     where
 
         exc_type:   exception type to be used in error message
-                    type name can be accesses as class variable
+                    type name can be accesses as klasse variable
                     'exc_type_name'
 
         exc_value:  exception value to be used in error message
-                    can be accesses as class variable 'exc_value'
+                    can be accesses as klasse variable 'exc_value'
 
         file:       name of file being compiled to be used in error message
-                    can be accesses as class variable 'file'
+                    can be accesses as klasse variable 'file'
 
         msg:        string message to be written as error message
                     If no value is given, a default exception message will be
                     given, consistent with 'standard' py_compile output.
-                    message (or default) can be accesses as class variable
+                    message (or default) can be accesses as klasse variable
                     'msg'
 
     """
@@ -63,7 +63,7 @@ class PyCompileError(Exception):
         return self.msg
 
 
-class PycInvalidationMode(enum.Enum):
+klasse PycInvalidationMode(enum.Enum):
     TIMESTAMP = 1
     CHECKED_HASH = 2
     UNCHECKED_HASH = 3

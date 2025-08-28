@@ -14,9 +14,9 @@ __all__ = ["asynccontextmanager", "contextmanager", "closing", "nullcontext",
            "chdir"]
 
 
-class AbstractContextManager(abc.ABC):
+klasse AbstractContextManager(abc.ABC):
 
-    """An abstract base class for context managers."""
+    """An abstract base klasse for context managers."""
 
     __class_getitem__ = classmethod(GenericAlias)
 
@@ -38,9 +38,9 @@ class AbstractContextManager(abc.ABC):
         return NotImplemented
 
 
-class AbstractAsyncContextManager(abc.ABC):
+klasse AbstractAsyncContextManager(abc.ABC):
 
-    """An abstract base class for asynchronous context managers."""
+    """An abstract base klasse for asynchronous context managers."""
 
     __class_getitem__ = classmethod(GenericAlias)
 
@@ -63,8 +63,8 @@ class AbstractAsyncContextManager(abc.ABC):
         return NotImplemented
 
 
-class ContextDecorator(object):
-    "A base class or mixin that enables context managers to work as decorators."
+klasse ContextDecorator(object):
+    "A base klasse or mixin that enables context managers to work as decorators."
 
     def _recreate_cm(self):
         """Return a recreated instance of self.
@@ -86,8 +86,8 @@ class ContextDecorator(object):
         return inner
 
 
-class AsyncContextDecorator(object):
-    "A base class or mixin that enables async context managers to work as decorators."
+klasse AsyncContextDecorator(object):
+    "A base klasse or mixin that enables async context managers to work as decorators."
 
     def _recreate_cm(self):
         """Return a recreated instance of self.
@@ -102,7 +102,7 @@ class AsyncContextDecorator(object):
         return inner
 
 
-class _GeneratorContextManagerBase:
+klasse _GeneratorContextManagerBase:
     """Shared functionality for @contextmanager and @asynccontextmanager."""
 
     def __init__(self, func, args, kwds):
@@ -116,7 +116,7 @@ class _GeneratorContextManagerBase:
         # Unfortunately, this still doesn't provide good help output when
         # inspecting the created context manager instances, since pydoc
         # currently bypasses the instance docstring and shows the docstring
-        # for the class instead.
+        # for the klasse instead.
         # See http://bugs.python.org/issue19404 for more details.
 
     def _recreate_cm(self):
@@ -126,7 +126,7 @@ class _GeneratorContextManagerBase:
         return self.__class__(self.func, self.args, self.kwds)
 
 
-class _GeneratorContextManager(
+klasse _GeneratorContextManager(
     _GeneratorContextManagerBase,
     AbstractContextManager,
     ContextDecorator,
@@ -199,7 +199,7 @@ class _GeneratorContextManager(
             finally:
                 self.gen.close()
 
-class _AsyncGeneratorContextManager(
+klasse _AsyncGeneratorContextManager(
     _GeneratorContextManagerBase,
     AbstractAsyncContextManager,
     AsyncContextDecorator,
@@ -339,7 +339,7 @@ def asynccontextmanager(func):
     return helper
 
 
-class closing(AbstractContextManager):
+klasse closing(AbstractContextManager):
     """Context to automatically close something at the end of a block.
 
     Code like this:
@@ -364,7 +364,7 @@ class closing(AbstractContextManager):
         self.thing.close()
 
 
-class aclosing(AbstractAsyncContextManager):
+klasse aclosing(AbstractAsyncContextManager):
     """Async context manager for safely finalizing an asynchronously cleaned-up
     resource such as an async generator, calling its ``aclose()`` method.
 
@@ -390,7 +390,7 @@ class aclosing(AbstractAsyncContextManager):
         await self.thing.aclose()
 
 
-class _RedirectStream(AbstractContextManager):
+klasse _RedirectStream(AbstractContextManager):
 
     _stream = None
 
@@ -408,7 +408,7 @@ class _RedirectStream(AbstractContextManager):
         setattr(sys, self._stream, self._old_targets.pop())
 
 
-class redirect_stdout(_RedirectStream):
+klasse redirect_stdout(_RedirectStream):
     """Context manager for temporarily redirecting stdout to another file.
 
         # How to send help() to stderr
@@ -424,13 +424,13 @@ class redirect_stdout(_RedirectStream):
     _stream = "stdout"
 
 
-class redirect_stderr(_RedirectStream):
+klasse redirect_stderr(_RedirectStream):
     """Context manager for temporarily redirecting stderr to another file."""
 
     _stream = "stderr"
 
 
-class suppress(AbstractContextManager):
+klasse suppress(AbstractContextManager):
     """Context manager to suppress specified exceptions
 
     After the exception is suppressed, execution proceeds with the next
@@ -469,8 +469,8 @@ class suppress(AbstractContextManager):
         return False
 
 
-class _BaseExitStack:
-    """A base class for ExitStack and AsyncExitStack."""
+klasse _BaseExitStack:
+    """A base klasse for ExitStack and AsyncExitStack."""
 
     @staticmethod
     def _create_exit_wrapper(cm, cm_exit):
@@ -554,7 +554,7 @@ class _BaseExitStack:
 
 
 # Inspired by discussions on http://bugs.python.org/issue13585
-class ExitStack(_BaseExitStack, AbstractContextManager):
+klasse ExitStack(_BaseExitStack, AbstractContextManager):
     """Context manager for dynamic management of a stack of exit callbacks.
 
     For example:
@@ -628,7 +628,7 @@ class ExitStack(_BaseExitStack, AbstractContextManager):
 
 
 # Inspired by discussions on https://bugs.python.org/issue29302
-class AsyncExitStack(_BaseExitStack, AbstractAsyncContextManager):
+klasse AsyncExitStack(_BaseExitStack, AbstractAsyncContextManager):
     """Async context manager for dynamic management of a stack of exit
     callbacks.
 
@@ -772,7 +772,7 @@ class AsyncExitStack(_BaseExitStack, AbstractAsyncContextManager):
         return received_exc and suppressed_exc
 
 
-class nullcontext(AbstractContextManager, AbstractAsyncContextManager):
+klasse nullcontext(AbstractContextManager, AbstractAsyncContextManager):
     """Context manager that does no additional processing.
 
     Used as a stand-in for a normal context manager, when a particular
@@ -799,7 +799,7 @@ class nullcontext(AbstractContextManager, AbstractAsyncContextManager):
         pass
 
 
-class chdir(AbstractContextManager):
+klasse chdir(AbstractContextManager):
     """Non thread-safe context manager to change the current working directory."""
 
     def __init__(self, path):

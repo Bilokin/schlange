@@ -2,7 +2,7 @@
 
 (Note that this module provides a Python version of the threading.local
  class.  Depending on the version of Python you're using, there may be a
- faster one available.  You should always import the `local` class from
+ faster one available.  You should always import the `local` klasse from
  `threading`.)
 """
 
@@ -21,8 +21,8 @@ __all__ = ["local"]
 # then, so problems introduced by fiddling the order of imports here won't
 # manifest.
 
-class _localimpl:
-    """A class managing thread-local dicts"""
+klasse _localimpl:
+    """A klasse managing thread-local dicts"""
     __slots__ = 'key', 'dicts', 'localargs', 'locallock', '__weakref__'
 
     def __init__(self):
@@ -79,7 +79,7 @@ def _patch(self):
         yield
 
 
-class local:
+klasse local:
     __slots__ = '_local__impl', '__dict__'
 
     def __new__(cls, /, *args, **kw):

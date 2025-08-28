@@ -35,7 +35,7 @@ from distutils.errors import DistutilsExecError, CompileError
 #     options and carry on.
 
 
-class UnixCCompiler(CCompiler):
+klasse UnixCCompiler(CCompiler):
 
     compiler_type = 'unix'
 

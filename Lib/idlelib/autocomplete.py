@@ -35,7 +35,7 @@ ID_CHARS = string.ascii_letters + string.digits + "_"
 SEPS = f"{os.sep}{os.altsep if os.altsep else ''}"
 TRIGGERS = f".{SEPS}"
 
-class AutoComplete:
+klasse AutoComplete:
 
     def __init__(self, editwin=None, tags=None):
         self.editwin = editwin

@@ -23,8 +23,8 @@ For request-based servers (including socket-based):
         - threading (each request is handled by a new thread)
 
 The classes in this module favor the server type that is simplest to
-write: a synchronous TCP/IP server.  This is bad class design, but
-saves some typing.  (There's also the issue that a deep class hierarchy
+write: a synchronous TCP/IP server.  This is bad klasse design, but
+saves some typing.  (There's also the issue that a deep klasse hierarchy
 slows down method lookups.)
 
 There are five classes in an inheritance diagram, four of which represent
@@ -51,20 +51,20 @@ unix server classes.
 
 Forking and threading versions of each type of server can be created
 using the ForkingMixIn and ThreadingMixIn mix-in classes.  For
-instance, a threading UDP server class is created as follows:
+instance, a threading UDP server klasse is created as follows:
 
-        class ThreadingUDPServer(ThreadingMixIn, UDPServer): pass
+        klasse ThreadingUDPServer(ThreadingMixIn, UDPServer): pass
 
-The Mix-in class must come first, since it overrides a method defined
+The Mix-in klasse must come first, since it overrides a method defined
 in UDPServer! Setting the various member variables also changes
 the behavior of the underlying server mechanism.
 
-To implement a service, you must derive a class from
+To implement a service, you must derive a klasse from
 BaseRequestHandler and redefine its handle() method.  You can then run
 various versions of the service by combining one of the server classes
 with your request handler class.
 
-The request handler class must be different for datagram or stream
+The request handler klasse must be different for datagram or stream
 services.  This can be hidden by using the request handler
 subclasses StreamRequestHandler or DatagramRequestHandler.
 
@@ -80,7 +80,7 @@ conflicting changes to the server state.
 
 On the other hand, if you are building e.g. an HTTP server, where all
 data is stored externally (e.g. in the file system), a synchronous
-class will essentially render the service "deaf" while one request is
+klasse will essentially render the service "deaf" while one request is
 being handled -- which may be for a very long time if a client is slow
 to read all the data it has requested.  Here a threading or forking
 server is appropriate.
@@ -152,9 +152,9 @@ else:
     _ServerSelector = selectors.SelectSelector
 
 
-class BaseServer:
+klasse BaseServer:
 
-    """Base class for server classes.
+    """Base klasse for server classes.
 
     Methods for the caller:
 
@@ -389,9 +389,9 @@ class BaseServer:
         self.server_close()
 
 
-class TCPServer(BaseServer):
+klasse TCPServer(BaseServer):
 
-    """Base class for various socket-based server classes.
+    """Base klasse for various socket-based server classes.
 
     Defaults to synchronous IP stream (i.e., TCP).
 
@@ -525,7 +525,7 @@ class TCPServer(BaseServer):
         request.close()
 
 
-class UDPServer(TCPServer):
+klasse UDPServer(TCPServer):
 
     """UDP server class."""
 
@@ -554,8 +554,8 @@ class UDPServer(TCPServer):
         pass
 
 if hasattr(os, "fork"):
-    class ForkingMixIn:
-        """Mix-in class to handle each request in a new process."""
+    klasse ForkingMixIn:
+        """Mix-in klasse to handle each request in a new process."""
 
         timeout = 300
         active_children = None
@@ -642,7 +642,7 @@ if hasattr(os, "fork"):
             self.collect_children(blocking=self.block_on_close)
 
 
-class _Threads(list):
+klasse _Threads(list):
     """
     Joinable list of all non-daemon threads.
     """
@@ -664,7 +664,7 @@ class _Threads(list):
         self[:] = (thread for thread in self if thread.is_alive())
 
 
-class _NoThreads:
+klasse _NoThreads:
     """
     Degenerate version of _Threads.
     """
@@ -675,8 +675,8 @@ class _NoThreads:
         pass
 
 
-class ThreadingMixIn:
-    """Mix-in class to handle each request in a new thread."""
+klasse ThreadingMixIn:
+    """Mix-in klasse to handle each request in a new thread."""
 
     # Decides how threads will act upon termination of the
     # main process
@@ -716,37 +716,37 @@ class ThreadingMixIn:
 
 
 if hasattr(os, "fork"):
-    class ForkingUDPServer(ForkingMixIn, UDPServer): pass
-    class ForkingTCPServer(ForkingMixIn, TCPServer): pass
+    klasse ForkingUDPServer(ForkingMixIn, UDPServer): pass
+    klasse ForkingTCPServer(ForkingMixIn, TCPServer): pass
 
-class ThreadingUDPServer(ThreadingMixIn, UDPServer): pass
-class ThreadingTCPServer(ThreadingMixIn, TCPServer): pass
+klasse ThreadingUDPServer(ThreadingMixIn, UDPServer): pass
+klasse ThreadingTCPServer(ThreadingMixIn, TCPServer): pass
 
 if hasattr(socket, 'AF_UNIX'):
 
-    class UnixStreamServer(TCPServer):
+    klasse UnixStreamServer(TCPServer):
         address_family = socket.AF_UNIX
 
-    class UnixDatagramServer(UDPServer):
+    klasse UnixDatagramServer(UDPServer):
         address_family = socket.AF_UNIX
 
-    class ThreadingUnixStreamServer(ThreadingMixIn, UnixStreamServer): pass
+    klasse ThreadingUnixStreamServer(ThreadingMixIn, UnixStreamServer): pass
 
-    class ThreadingUnixDatagramServer(ThreadingMixIn, UnixDatagramServer): pass
+    klasse ThreadingUnixDatagramServer(ThreadingMixIn, UnixDatagramServer): pass
 
     if hasattr(os, "fork"):
-        class ForkingUnixStreamServer(ForkingMixIn, UnixStreamServer): pass
+        klasse ForkingUnixStreamServer(ForkingMixIn, UnixStreamServer): pass
 
-        class ForkingUnixDatagramServer(ForkingMixIn, UnixDatagramServer): pass
+        klasse ForkingUnixDatagramServer(ForkingMixIn, UnixDatagramServer): pass
 
-class BaseRequestHandler:
+klasse BaseRequestHandler:
 
-    """Base class for request handler classes.
+    """Base klasse for request handler classes.
 
-    This class is instantiated for each request to be handled.  The
+    This klasse is instantiated for each request to be handled.  The
     constructor sets the instance variables request, client_address
     and server, and then calls the handle() method.  To implement a
-    specific service, all you need to do is to derive a class which
+    specific service, all you need to do is to derive a klasse which
     defines a handle() method.
 
     The handle() method can find the request as self.request, the
@@ -778,14 +778,14 @@ class BaseRequestHandler:
 
 
 # The following two classes make it possible to use the same service
-# class for stream or datagram servers.
-# Each class sets up these instance variables:
+# klasse for stream or datagram servers.
+# Each klasse sets up these instance variables:
 # - rfile: a file object from which receives the request is read
 # - wfile: a file object to which the reply is written
 # When the handle() method returns, wfile is flushed properly
 
 
-class StreamRequestHandler(BaseRequestHandler):
+klasse StreamRequestHandler(BaseRequestHandler):
 
     """Define self.rfile and self.wfile for stream sockets."""
 
@@ -830,7 +830,7 @@ class StreamRequestHandler(BaseRequestHandler):
         self.wfile.close()
         self.rfile.close()
 
-class _SocketWriter(BufferedIOBase):
+klasse _SocketWriter(BufferedIOBase):
     """Simple writable BufferedIOBase implementation for a socket
 
     Does not hold data in a buffer, avoiding any need to call flush()."""
@@ -849,7 +849,7 @@ class _SocketWriter(BufferedIOBase):
     def fileno(self):
         return self._sock.fileno()
 
-class DatagramRequestHandler(BaseRequestHandler):
+klasse DatagramRequestHandler(BaseRequestHandler):
 
     """Define self.rfile and self.wfile for datagram sockets."""
 

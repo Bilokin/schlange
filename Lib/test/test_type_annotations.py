@@ -7,7 +7,7 @@ from test.support import run_code, check_syntax_error, import_helper, cpython_on
 from test.test_inspect import inspect_stringized_annotations
 
 
-class TypeAnnotationTests(unittest.TestCase):
+klasse TypeAnnotationTests(unittest.TestCase):
 
     def test_lazy_create_annotations(self):
         # type objects lazy create their __annotations__ dict on demand.
@@ -50,7 +50,7 @@ class TypeAnnotationTests(unittest.TestCase):
             del foo.__annotations__
 
     def test_annotations_are_created_correctly(self):
-        class C:
+        klasse C:
             a:int=3
             b:str=4
         self.assertEqual(C.__annotations__, {"a": int, "b": str})
@@ -68,12 +68,12 @@ class TypeAnnotationTests(unittest.TestCase):
         )
 
     def test_explicitly_set_annotations(self):
-        class C:
+        klasse C:
             __annotations__ = {"what": int}
         self.assertEqual(C.__annotations__, {"what": int})
 
     def test_explicitly_set_annotate(self):
-        class C:
+        klasse C:
             __annotate__ = lambda format: {"what": int}
         self.assertEqual(C.__annotations__, {"what": int})
         self.assertIsInstance(C.__annotate__, types.FunctionType)
@@ -82,7 +82,7 @@ class TypeAnnotationTests(unittest.TestCase):
     def test_del_annotations_and_annotate(self):
         # gh-132285
         called = False
-        class A:
+        klasse A:
             def __annotate__(format):
                 nonlocal called
                 called = True
@@ -100,7 +100,7 @@ class TypeAnnotationTests(unittest.TestCase):
         self.assertIs(A.__annotate__, None)
 
     def test_descriptor_still_works(self):
-        class C:
+        klasse C:
             def __init__(self, name=None, bases=None, d=None):
                 self.my_annotations = None
 
@@ -137,7 +137,7 @@ class TypeAnnotationTests(unittest.TestCase):
         self.assertEqual(c.__annotations__, {})
 
 
-        class D(metaclass=C):
+        klasse D(metaclass=C):
             pass
 
         self.assertEqual(D.__annotations__, {})
@@ -177,7 +177,7 @@ def build_module(code: str, name: str = "top") -> types.ModuleType:
     return mod
 
 
-class TestSetupAnnotations(unittest.TestCase):
+klasse TestSetupAnnotations(unittest.TestCase):
     def check(self, code: str):
         code = textwrap.dedent(code)
         for scope in ("module", "class"):
@@ -285,13 +285,13 @@ class TestSetupAnnotations(unittest.TestCase):
         """)
 
 
-class AnnotateTests(unittest.TestCase):
+klasse AnnotateTests(unittest.TestCase):
     """See PEP 649."""
     def test_manual_annotate(self):
         def f():
             pass
         mod = types.ModuleType("mod")
-        class X:
+        klasse X:
             pass
 
         for obj in (f, mod, X):
@@ -328,7 +328,7 @@ class AnnotateTests(unittest.TestCase):
         self.assertIs(f.__annotate__, None)
 
     def test_user_defined_annotate(self):
-        class X:
+        klasse X:
             a: int
 
             def __annotate__(format):
@@ -347,7 +347,7 @@ class AnnotateTests(unittest.TestCase):
         self.assertEqual(annotationlib.get_annotations(mod), {"a": str})
 
 
-class DeferredEvaluationTests(unittest.TestCase):
+klasse DeferredEvaluationTests(unittest.TestCase):
     def test_function(self):
         def func(x: undefined, /, y: undefined, *args: undefined, z: undefined, **kwargs: undefined) -> undefined:
             pass
@@ -383,7 +383,7 @@ class DeferredEvaluationTests(unittest.TestCase):
         })
 
     def test_class(self):
-        class X:
+        klasse X:
             a: undefined
 
         with self.assertRaises(NameError):
@@ -405,10 +405,10 @@ class DeferredEvaluationTests(unittest.TestCase):
         self.assertEqual(anno(1), {"x": 1})
 
     def test_class_scoping(self):
-        class Outer:
+        klasse Outer:
             def meth(self, x: Nested): ...
             x: Nested
-            class Nested: ...
+            klasse Nested: ...
 
         self.assertEqual(Outer.meth.__annotations__, {"x": Outer.Nested})
         self.assertEqual(Outer.__annotations__, {"x": Outer.Nested})
@@ -459,7 +459,7 @@ class DeferredEvaluationTests(unittest.TestCase):
     def test_generated_annotate(self):
         def func(x: int):
             pass
-        class X:
+        klasse X:
             x: int
         mod = build_module("x: int")
         for obj in (func, X, mod):
@@ -504,7 +504,7 @@ class DeferredEvaluationTests(unittest.TestCase):
             pass
         """)
         class_code = textwrap.dedent("""
-        class f:
+        klasse f:
             x: int
         """)
         for future in (False, True):
@@ -524,7 +524,7 @@ class DeferredEvaluationTests(unittest.TestCase):
         # this test would fail if __annotate__'s parameter was called "format"
         # during symbol table construction
         code = """
-        class format: pass
+        klasse format: pass
 
         def f(x: format): pass
         """
@@ -533,8 +533,8 @@ class DeferredEvaluationTests(unittest.TestCase):
         self.assertEqual(f.__annotations__, {"x": ns["format"]})
 
         code = """
-        class Outer:
-            class format: pass
+        klasse Outer:
+            klasse format: pass
 
             def meth(self, x: format): ...
         """
@@ -563,7 +563,7 @@ class DeferredEvaluationTests(unittest.TestCase):
             def f(x: format):
                 pass
             if False:
-                class format: pass
+                klasse format: pass
             return f
         f = outer()
         """
@@ -575,7 +575,7 @@ class DeferredEvaluationTests(unittest.TestCase):
             ns["f"].__annotations__
 
 
-class ConditionalAnnotationTests(unittest.TestCase):
+klasse ConditionalAnnotationTests(unittest.TestCase):
     def check_scopes(self, code, true_annos, false_annos):
         for scope in ("class", "module"):
             for (cond, expected) in (
@@ -597,7 +597,7 @@ class ConditionalAnnotationTests(unittest.TestCase):
 
     def test_with(self):
         code = """
-            class Swallower:
+            klasse Swallower:
                 def __enter__(self):
                     pass
 
@@ -774,7 +774,7 @@ class ConditionalAnnotationTests(unittest.TestCase):
         self.check_scopes(code, expected, expected)
 
 
-class RegressionTests(unittest.TestCase):
+klasse RegressionTests(unittest.TestCase):
     # gh-132479
     def test_complex_comprehension_inlining(self):
         # Test that the various repro cases from the issue don't crash

@@ -2,7 +2,7 @@ import unittest
 
 GLOBAL_VAR = None
 
-class NamedExpressionInvalidTest(unittest.TestCase):
+klasse NamedExpressionInvalidTest(unittest.TestCase):
 
     def test_named_expression_invalid_01(self):
         code = """x := 0"""
@@ -111,7 +111,7 @@ class NamedExpressionInvalidTest(unittest.TestCase):
         """
 
         with self.assertRaisesRegex(SyntaxError,
-            "assignment expression within a comprehension cannot be used in a class body"):
+            "assignment expression within a comprehension cannot be used in a klasse body"):
             exec(code, {}, {})
 
     def test_named_expression_valid_rebinding_iteration_variable(self):
@@ -375,7 +375,7 @@ class NamedExpressionInvalidTest(unittest.TestCase):
             exec(code, {}, {})
 
 
-class NamedExpressionAssignmentTest(unittest.TestCase):
+klasse NamedExpressionAssignmentTest(unittest.TestCase):
 
     def test_named_expression_assignment_01(self):
         (a := 10)
@@ -485,7 +485,7 @@ class NamedExpressionAssignmentTest(unittest.TestCase):
         self.assertEqual(element, a[0])
 
     def test_named_expression_assignment_18(self):
-        class TwoDimensionalList:
+        klasse TwoDimensionalList:
             def __init__(self, two_dimensional_list):
                 self.two_dimensional_list = two_dimensional_list
 
@@ -500,7 +500,7 @@ class NamedExpressionAssignmentTest(unittest.TestCase):
 
 
 
-class NamedExpressionScopeTest(unittest.TestCase):
+klasse NamedExpressionScopeTest(unittest.TestCase):
 
     def test_named_expression_scope_01(self):
         code = """def spam():
@@ -751,7 +751,7 @@ spam()"""
             self.assertEqual(elem, b[idx] + a)
 
     def test_named_expression_scope_mangled_names(self):
-        class Foo:
+        klasse Foo:
             def f(self_):
                 global __x1
                 __x1 = 0

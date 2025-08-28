@@ -11,7 +11,7 @@ from test.test_asyncio.utils import await_without_task
 def tearDownModule():
     asyncio.events._set_event_loop_policy(None)
 
-class TimeoutTests(unittest.IsolatedAsyncioTestCase):
+klasse TimeoutTests(unittest.IsolatedAsyncioTestCase):
 
     async def test_timeout_basic(self):
         with self.assertRaises(TimeoutError):

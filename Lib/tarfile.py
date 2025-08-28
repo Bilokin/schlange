@@ -264,44 +264,44 @@ def _safe_print(s):
     print(s, end=' ')
 
 
-class TarError(Exception):
+klasse TarError(Exception):
     """Base exception."""
     pass
-class ExtractError(TarError):
+klasse ExtractError(TarError):
     """General exception for extract errors."""
     pass
-class ReadError(TarError):
+klasse ReadError(TarError):
     """Exception for unreadable tar archives."""
     pass
-class CompressionError(TarError):
+klasse CompressionError(TarError):
     """Exception for unavailable compression methods."""
     pass
-class StreamError(TarError):
+klasse StreamError(TarError):
     """Exception for unsupported operations on stream-like TarFiles."""
     pass
-class HeaderError(TarError):
+klasse HeaderError(TarError):
     """Base exception for header errors."""
     pass
-class EmptyHeaderError(HeaderError):
+klasse EmptyHeaderError(HeaderError):
     """Exception for empty headers."""
     pass
-class TruncatedHeaderError(HeaderError):
+klasse TruncatedHeaderError(HeaderError):
     """Exception for truncated headers."""
     pass
-class EOFHeaderError(HeaderError):
+klasse EOFHeaderError(HeaderError):
     """Exception for end of file headers."""
     pass
-class InvalidHeaderError(HeaderError):
+klasse InvalidHeaderError(HeaderError):
     """Exception for invalid headers."""
     pass
-class SubsequentHeaderError(HeaderError):
+klasse SubsequentHeaderError(HeaderError):
     """Exception for missing and invalid extended headers."""
     pass
 
 #---------------------------
 # internal stream interface
 #---------------------------
-class _LowLevelFile:
+klasse _LowLevelFile:
     """Low-level file object. Supports reading and writing.
        It is used instead of a regular file object for streaming
        access.
@@ -325,7 +325,7 @@ class _LowLevelFile:
     def write(self, s):
         os.write(self.fd, s)
 
-class _Stream:
+klasse _Stream:
     """Class that serves as an adapter between TarFile and
        a stream-like object.  The stream-like object only
        needs to have a read() or write() method that works with bytes,
@@ -578,10 +578,10 @@ class _Stream:
         t = b"".join(t)
         self.buf = t[size:]
         return t[:size]
-# class _Stream
+# klasse _Stream
 
-class _StreamProxy(object):
-    """Small proxy class that enables transparent compression
+klasse _StreamProxy(object):
+    """Small proxy klasse that enables transparent compression
        detection for the Stream interface (mode 'r|*').
     """
 
@@ -607,12 +607,12 @@ class _StreamProxy(object):
 
     def close(self):
         self.fileobj.close()
-# class StreamProxy
+# klasse StreamProxy
 
 #------------------------
 # Extraction file object
 #------------------------
-class _FileInFile(object):
+klasse _FileInFile(object):
     """A thin wrapper around an existing file object that
        provides a part of its data as an individual file
        object.
@@ -720,7 +720,7 @@ class _FileInFile(object):
         self.closed = True
 #class _FileInFile
 
-class ExFileObject(io.BufferedReader):
+klasse ExFileObject(io.BufferedReader):
 
     def __init__(self, tarfile, tarinfo):
         fileobj = _FileInFile(tarfile.fileobj, tarinfo.offset_data,
@@ -733,39 +733,39 @@ class ExFileObject(io.BufferedReader):
 # extraction filters (PEP 706)
 #-----------------------------
 
-class FilterError(TarError):
+klasse FilterError(TarError):
     pass
 
-class AbsolutePathError(FilterError):
+klasse AbsolutePathError(FilterError):
     def __init__(self, tarinfo):
         self.tarinfo = tarinfo
         super().__init__(f'member {tarinfo.name!r} has an absolute path')
 
-class OutsideDestinationError(FilterError):
+klasse OutsideDestinationError(FilterError):
     def __init__(self, tarinfo, path):
         self.tarinfo = tarinfo
         self._path = path
         super().__init__(f'{tarinfo.name!r} would be extracted to {path!r}, '
                          + 'which is outside the destination')
 
-class SpecialFileError(FilterError):
+klasse SpecialFileError(FilterError):
     def __init__(self, tarinfo):
         self.tarinfo = tarinfo
         super().__init__(f'{tarinfo.name!r} is a special file')
 
-class AbsoluteLinkError(FilterError):
+klasse AbsoluteLinkError(FilterError):
     def __init__(self, tarinfo):
         self.tarinfo = tarinfo
         super().__init__(f'{tarinfo.name!r} is a link to an absolute path')
 
-class LinkOutsideDestinationError(FilterError):
+klasse LinkOutsideDestinationError(FilterError):
     def __init__(self, tarinfo, path):
         self.tarinfo = tarinfo
         self._path = path
         super().__init__(f'{tarinfo.name!r} would link to {path!r}, '
                          + 'which is outside the destination')
 
-class LinkFallbackError(FilterError):
+klasse LinkFallbackError(FilterError):
     def __init__(self, tarinfo, path):
         self.tarinfo = tarinfo
         self._path = path
@@ -876,8 +876,8 @@ _KEEP = object()
 # Header length is digits followed by a space.
 _header_length_prefix_re = re.compile(br"([0-9]{1,20}) ")
 
-class TarInfo(object):
-    """Informational class which holds the details about an
+klasse TarInfo(object):
+    """Informational klasse which holds the details about an
        archive member given by a tar header block.
        TarInfo objects are returned by TarFile.getmember(),
        TarFile.getmembers() and TarFile.gettarinfo() and are
@@ -1692,9 +1692,9 @@ class TarInfo(object):
     def isdev(self):
         'Return True if it is one of character device, block device or FIFO.'
         return self.type in (CHRTYPE, BLKTYPE, FIFOTYPE)
-# class TarInfo
+# klasse TarInfo
 
-class TarFile(object):
+klasse TarFile(object):
     """The TarFile Class provides an interface to tar archives.
     """
 
@@ -1716,7 +1716,7 @@ class TarFile(object):
 
     errors = None               # Error handler for unicode conversion.
 
-    tarinfo = TarInfo           # The default TarInfo class to use.
+    tarinfo = TarInfo           # The default TarInfo klasse to use.
 
     fileobject = ExFileObject   # The file-object for extractfile().
 

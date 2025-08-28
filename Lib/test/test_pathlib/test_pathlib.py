@@ -69,19 +69,19 @@ def needs_windows(fn):
     return fn
 
 def needs_symlinks(fn):
-    """Decorator that marks a test as requiring a path class that supports symlinks."""
+    """Decorator that marks a test as requiring a path klasse that supports symlinks."""
     _tests_needing_symlinks.add(fn.__name__)
     return fn
 
 
 
-class UnsupportedOperationTest(unittest.TestCase):
+klasse UnsupportedOperationTest(unittest.TestCase):
     def test_is_notimplemented(self):
         self.assertIsSubclass(pathlib.UnsupportedOperation, NotImplementedError)
         self.assertIsInstance(pathlib.UnsupportedOperation(), NotImplementedError)
 
 
-class LazyImportTest(unittest.TestCase):
+klasse LazyImportTest(unittest.TestCase):
     @cpython_only
     def test_lazy_import(self):
         import_helper.ensure_lazy_imports("pathlib", {"shutil"})
@@ -91,7 +91,7 @@ class LazyImportTest(unittest.TestCase):
 # Tests for the pure classes.
 #
 
-class PurePathTest(unittest.TestCase):
+klasse PurePathTest(unittest.TestCase):
     cls = pathlib.PurePath
 
     # Make sure any symbolic links in the base test path are resolved.
@@ -128,7 +128,7 @@ class PurePathTest(unittest.TestCase):
         # Issue #21127: it should be possible to construct a PurePath object
         # from a str subclass instance, and it then gets converted to
         # a pure str object.
-        class StrSubclass(str):
+        klasse StrSubclass(str):
             pass
         P = self.cls
         p = P(*(StrSubclass(x) for x in args))
@@ -1099,16 +1099,16 @@ class PurePathTest(unittest.TestCase):
         self.assertFalse(p.is_relative_to(P('//Server/z/Foo')))
 
 
-class PurePosixPathTest(PurePathTest):
+klasse PurePosixPathTest(PurePathTest):
     cls = pathlib.PurePosixPath
 
 
-class PureWindowsPathTest(PurePathTest):
+klasse PureWindowsPathTest(PurePathTest):
     cls = pathlib.PureWindowsPath
 
 
-class PurePathSubclassTest(PurePathTest):
-    class cls(pathlib.PurePath):
+klasse PurePathSubclassTest(PurePathTest):
+    klasse cls(pathlib.PurePath):
         pass
 
     # repr() roundtripping is not supported in custom subclass.
@@ -1119,7 +1119,7 @@ class PurePathSubclassTest(PurePathTest):
 # Tests for the concrete classes.
 #
 
-class PathTest(PurePathTest):
+klasse PathTest(PurePathTest):
     """Tests for the FS-accessing functionalities of the Path classes."""
     cls = pathlib.Path
     can_symlink = os_helper.can_symlink()
@@ -1279,7 +1279,7 @@ class PathTest(PurePathTest):
         self.assertEqual(p.expanduser(), P(os.path.expanduser('~'), './a:b'))
 
     def test_with_segments(self):
-        class P(self.cls):
+        klasse P(self.cls):
             def __init__(self, *pathsegments, session_id):
                 super().__init__(*pathsegments)
                 self.session_id = session_id
@@ -3452,7 +3452,7 @@ class PathTest(PurePathTest):
             P('c:/').group()
 
 
-class PathWalkTest(unittest.TestCase):
+klasse PathWalkTest(unittest.TestCase):
     cls = pathlib.Path
     base = PathTest.base
     can_symlink = PathTest.can_symlink
@@ -3613,32 +3613,32 @@ class PathWalkTest(unittest.TestCase):
 
 
 @unittest.skipIf(os.name == 'nt', 'test requires a POSIX-compatible system')
-class PosixPathTest(PathTest, PurePosixPathTest):
+klasse PosixPathTest(PathTest, PurePosixPathTest):
     cls = pathlib.PosixPath
 
 
 @unittest.skipIf(os.name != 'nt', 'test requires a Windows-compatible system')
-class WindowsPathTest(PathTest, PureWindowsPathTest):
+klasse WindowsPathTest(PathTest, PureWindowsPathTest):
     cls = pathlib.WindowsPath
 
 
-class PathSubclassTest(PathTest):
-    class cls(pathlib.Path):
+klasse PathSubclassTest(PathTest):
+    klasse cls(pathlib.Path):
         pass
 
     # repr() roundtripping is not supported in custom subclass.
     test_repr_roundtrips = None
 
 
-class CompatiblePathTest(unittest.TestCase):
+klasse CompatiblePathTest(unittest.TestCase):
     """
     Test that a type can be made compatible with PurePath
     derivatives by implementing division operator overloads.
     """
 
-    class CompatPath:
+    klasse CompatPath:
         """
-        Minimum viable class to test PurePath compatibility.
+        Minimum viable klasse to test PurePath compatibility.
         Simply uses the division operator to join a given
         string and the string value of another object with
         a forward slash.

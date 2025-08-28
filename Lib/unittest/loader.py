@@ -19,7 +19,7 @@ __unittest = True
 VALID_MODULE_NAME = re.compile(r'[_a-z]\w*\.py$', re.IGNORECASE)
 
 
-class _FailedTest(case.TestCase):
+klasse _FailedTest(case.TestCase):
     _testMethodName = None
 
     def __init__(self, method_name, exception):
@@ -60,9 +60,9 @@ def _splitext(path):
     return os.path.splitext(path)[0]
 
 
-class TestLoader(object):
+klasse TestLoader(object):
     """
-    This class is responsible for loading tests according to various criteria
+    This klasse is responsible for loading tests according to various criteria
     and returning them wrapped in a TestSuite
     """
     testMethodPrefix = 'test'

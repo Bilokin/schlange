@@ -19,7 +19,7 @@ some_var = 12
 some_non_assigned_global_var: int
 some_assigned_global_var = 11
 
-class Mine:
+klasse Mine:
     instance_var = 24
     def a_method(p1, p2):
         pass
@@ -52,7 +52,7 @@ type GenericAlias[T] = list[T]
 def generic_spam[T](a):
     pass
 
-class GenericMine[T: int, U: (int, str) = int]:
+klasse GenericMine[T: int, U: (int, str) = int]:
     pass
 """
 
@@ -86,7 +86,7 @@ def glob_assigned_meth_pep_695_ignore[T](): pass
 async def glob_assigned_async_meth_ignore(): pass
 async def glob_assigned_async_meth_pep_695_ignore[T](): pass
 
-class ComplexClass:
+klasse ComplexClass:
     a_var = 1234
     a_genexpr = (x for x in [])
     a_lambda = lambda x: x
@@ -94,8 +94,8 @@ class ComplexClass:
     type a_type_alias = int
     type a_type_alias_pep_695[T] = list[T]
 
-    class a_class: pass
-    class a_class_pep_695[T]: pass
+    klasse a_class: pass
+    klasse a_class_pep_695[T]: pass
 
     def a_method(self): pass
     def a_method_pep_695[T](self): pass
@@ -147,7 +147,7 @@ class ComplexClass:
     async def glob_assigned_async_meth_pep_695[T](): pass
 
     # The following are not picked as local symbols because they are not
-    # visible by the class at runtime (this is equivalent to having the
+    # visible by the klasse at runtime (this is equivalent to having the
     # definitions outside of the class).
     global glob_unassigned_meth_ignore
     def glob_unassigned_meth_ignore(): pass
@@ -177,7 +177,7 @@ def find_block(block, name):
             return ch
 
 
-class SymtableTest(unittest.TestCase):
+klasse SymtableTest(unittest.TestCase):
 
     top = symtable.symtable(TEST_CODE, "?", "exec")
     # These correspond to scopes in TEST_CODE
@@ -512,7 +512,7 @@ class SymtableTest(unittest.TestCase):
 
         st3 = symtable.symtable("def f():\n"
                                 "   x = 1\n"
-                                "   class A:\n"
+                                "   klasse A:\n"
                                 "       x = 2\n"
                                 "       def method():\n"
                                 "           return x\n",
@@ -580,7 +580,7 @@ class SymtableTest(unittest.TestCase):
         self.assertEqual(st.get_children(), [])
 
 
-class ComprehensionTests(unittest.TestCase):
+klasse ComprehensionTests(unittest.TestCase):
     def get_identifiers_recursive(self, st, res):
         res.extend(st.get_identifiers())
         for ch in st.get_children():
@@ -601,7 +601,7 @@ class ComprehensionTests(unittest.TestCase):
                 self.assertEqual(len([x for x in ids if x == 'x']), 1)
 
 
-class CommandLineTest(unittest.TestCase):
+klasse CommandLineTest(unittest.TestCase):
     maxDiff = None
 
     def test_file(self):

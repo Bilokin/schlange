@@ -5,7 +5,7 @@ from test.support import check_syntax_error, cpython_only
 from test.support import gc_collect
 
 
-class ScopeTests(unittest.TestCase):
+klasse ScopeTests(unittest.TestCase):
 
     def testSimpleNesting(self):
 
@@ -70,7 +70,7 @@ class ScopeTests(unittest.TestCase):
     def testNestingThroughClass(self):
 
         def make_adder5(x):
-            class Adder:
+            klasse Adder:
                 def __call__(self, y):
                     return x + y
             return Adder()
@@ -133,7 +133,7 @@ class ScopeTests(unittest.TestCase):
 
         def test():
             method_and_var = "var"
-            class Test:
+            klasse Test:
                 def method_and_var(self):
                     return "method"
                 def test(self):
@@ -150,8 +150,8 @@ class ScopeTests(unittest.TestCase):
         self.assertEqual(t.actual_global(), "global")
 
         method_and_var = "var"
-        class Test:
-            # this class is not nested, so the rules are different
+        klasse Test:
+            # this klasse is not nested, so the rules are different
             def method_and_var(self):
                 return "method"
             def test(self):
@@ -436,11 +436,11 @@ class ScopeTests(unittest.TestCase):
             self.assertEqual(f(), 2)
             self.assertEqual(x, 2)
 
-            # XXX what about global statements in class blocks?
+            # XXX what about global statements in klasse blocks?
             # do they affect methods?
 
             x = 12
-            class Global:
+            klasse Global:
                 global x
                 x = 13
                 def set(self, val):
@@ -456,7 +456,7 @@ class ScopeTests(unittest.TestCase):
 
     def testLeaks(self):
 
-        class Foo:
+        klasse Foo:
             count = 0
 
             def __init__(self):
@@ -481,7 +481,7 @@ class ScopeTests(unittest.TestCase):
 
         exec("""if 1:
             def test(x):
-                class Foo:
+                klasse Foo:
                     global x
                     def __call__(self, y):
                         return x + y
@@ -493,7 +493,7 @@ class ScopeTests(unittest.TestCase):
             self.assertEqual(test(3)(2), 5)
 
             looked_up_by_load_name = False
-            class X:
+            klasse X:
                 # Implicit globals inside classes are be looked up by LOAD_NAME, not
                 # LOAD_GLOBAL.
                 locals()['looked_up_by_load_name'] = True
@@ -520,9 +520,9 @@ class ScopeTests(unittest.TestCase):
 
     def testLocalsClass(self):
         # This test verifies that calling locals() does not pollute
-        # the local namespace of the class with free variables.  Old
+        # the local namespace of the klasse with free variables.  Old
         # versions of Python had a bug, where a free variable being
-        # passed through a class namespace would be inserted into
+        # passed through a klasse namespace would be inserted into
         # locals() by locals() or exec or a trace function.
         #
         # The real bug lies in frame code that copies variables
@@ -530,7 +530,7 @@ class ScopeTests(unittest.TestCase):
         # a trace function.
 
         def f(x):
-            class C:
+            klasse C:
                 x = 12
                 def m(self):
                     return x
@@ -540,7 +540,7 @@ class ScopeTests(unittest.TestCase):
         self.assertEqual(f(1).x, 12)
 
         def f(x):
-            class C:
+            klasse C:
                 y = x
                 def m(self):
                     return x
@@ -555,14 +555,14 @@ class ScopeTests(unittest.TestCase):
     def testLocalsClass_WithTrace(self):
         # Issue23728: after the trace function returns, the locals()
         # dictionary is used to update all variables, this used to
-        # include free variables. But in class statements, free
+        # include free variables. But in klasse statements, free
         # variables are not inserted...
         import sys
         self.addCleanup(sys.settrace, sys.gettrace())
         sys.settrace(lambda a,b,c:None)
         x = 12
 
-        class C:
+        klasse C:
             def f(self):
                 return x
 
@@ -572,7 +572,7 @@ class ScopeTests(unittest.TestCase):
         # var is bound and free in class
 
         def f(x):
-            class C:
+            klasse C:
                 def m(self):
                     return x
                 a = x
@@ -595,7 +595,7 @@ class ScopeTests(unittest.TestCase):
                     des = "_%s__%s" % (klass.__name__, name)
                 return lambda obj: getattr(obj, des)
 
-        class TestClass:
+        klasse TestClass:
             pass
 
         self.addCleanup(sys.settrace, sys.gettrace())
@@ -651,7 +651,7 @@ class ScopeTests(unittest.TestCase):
     def testFreeingCell(self):
         # Test what happens when a finalizer accesses
         # the cell where the object was stored.
-        class Special:
+        klasse Special:
             def __del__(self):
                 nestedcell_get()
 
@@ -676,7 +676,7 @@ class ScopeTests(unittest.TestCase):
 
     def testNonLocalMethod(self):
         def f(x):
-            class c:
+            klasse c:
                 def inc(self):
                     nonlocal x
                     x += 1
@@ -719,7 +719,7 @@ class ScopeTests(unittest.TestCase):
     def testNonLocalClass(self):
 
         def f(x):
-            class c:
+            klasse c:
                 nonlocal x
                 x += 1
                 def get(self):
@@ -771,11 +771,11 @@ class ScopeTests(unittest.TestCase):
     def testClassNamespaceOverridesClosure(self):
         # See #17853.
         x = 42
-        class X:
+        klasse X:
             locals()["x"] = 43
             y = x
         self.assertEqual(X.y, 43)
-        class X:
+        klasse X:
             locals()["x"] = 43
             del x
         self.assertNotHasAttr(X, "x")
@@ -794,7 +794,7 @@ class ScopeTests(unittest.TestCase):
         # (though it will be cleared when the frame is collected).
         # Without the lambda, setting self to None is enough to break
         # the cycle.
-        class Tester:
+        klasse Tester:
             def dig(self):
                 if 0:
                     lambda: self
@@ -812,17 +812,17 @@ class ScopeTests(unittest.TestCase):
 
     def test_multiple_nesting(self):
         # Regression test for https://github.com/python/cpython/issues/121863
-        class MultiplyNested:
+        klasse MultiplyNested:
             def f1(self):
                 __arg = 1
-                class D:
+                klasse D:
                     def g(self, __arg):
                         return __arg
                 return D().g(_MultiplyNested__arg=2)
 
             def f2(self):
                 __arg = 1
-                class D:
+                klasse D:
                     def g(self, __arg):
                         return __arg
                 return D().g

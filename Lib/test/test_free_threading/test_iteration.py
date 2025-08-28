@@ -16,7 +16,7 @@ else:
     NUMTHREADS = 5
 NUMMUTATORS = 2
 
-class ContendedTupleIterationTest(unittest.TestCase):
+klasse ContendedTupleIterationTest(unittest.TestCase):
     def make_testdata(self, n):
         return tuple(range(n))
 
@@ -70,7 +70,7 @@ class ContendedTupleIterationTest(unittest.TestCase):
             t.join()
         self.assert_iterator_results(results, seq)
 
-class ContendedListIterationTest(ContendedTupleIterationTest):
+klasse ContendedListIterationTest(ContendedTupleIterationTest):
     def make_testdata(self, n):
         return list(range(n))
 
@@ -112,7 +112,7 @@ class ContendedListIterationTest(ContendedTupleIterationTest):
         self.assert_iterator_results(results, list(seq))
 
 
-class ContendedRangeIterationTest(ContendedTupleIterationTest):
+klasse ContendedRangeIterationTest(ContendedTupleIterationTest):
     def make_testdata(self, n):
         return range(n)
 

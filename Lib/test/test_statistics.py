@@ -26,7 +26,7 @@ from fractions import Fraction
 import statistics
 
 
-# === Helper functions and class ===
+# === Helper functions and klasse ===
 
 # Test copied from Lib/test/test_math.py
 # detect evidence of double-rounding: fsum is not always correctly
@@ -138,12 +138,12 @@ def approx_equal(x, y, tol=1e-12, rel=1e-7):
     return actual_error <= allowed_error
 
 
-# This class exists only as somewhere to stick a docstring containing
+# This klasse exists only as somewhere to stick a docstring containing
 # doctests. The following docstring and tests were originally in a separate
 # module. Now that it has been merged in here, I need somewhere to hang the.
-# docstring. Ultimately, this class will die, and the information below will
+# docstring. Ultimately, this klasse will die, and the information below will
 # either become redundant, or be moved into more appropriate places.
-class _DoNothing:
+klasse _DoNothing:
     """
     When doing numeric work, especially with floats, exact equality is often
     not what you want. Due to round-off error, it is often a bad idea to try
@@ -192,7 +192,7 @@ c_statistics = import_helper.import_fresh_module('statistics',
                                                  fresh=['_statistics'])
 
 
-class TestModules(unittest.TestCase):
+klasse TestModules(unittest.TestCase):
     func_names = ['_normal_dist_inv_cdf']
 
     def test_py_functions(self):
@@ -205,8 +205,8 @@ class TestModules(unittest.TestCase):
             self.assertEqual(getattr(c_statistics, fname).__module__, '_statistics')
 
 
-class NumericTestCase(unittest.TestCase):
-    """Unit test class for numeric work.
+klasse NumericTestCase(unittest.TestCase):
+    """Unit test klasse for numeric work.
 
     This subclasses TestCase. In addition to the standard method
     ``TestCase.assertAlmostEqual``,  ``assertApproxEqual`` is provided.
@@ -228,7 +228,7 @@ class NumericTestCase(unittest.TestCase):
         The objects may be either numbers, or sequences of numbers. Sequences
         are tested element-by-element.
 
-        >>> class MyTest(NumericTestCase):
+        >>> klasse MyTest(NumericTestCase):
         ...     def test_number(self):
         ...         x = 1.0/6
         ...         y = sum([x]*6)
@@ -300,7 +300,7 @@ class NumericTestCase(unittest.TestCase):
 # === Test the helpers ===
 # ========================
 
-class TestSign(unittest.TestCase):
+klasse TestSign(unittest.TestCase):
     """Test that the helper function sign() works correctly."""
     def testZeroes(self):
         # Test that signed zeroes report their sign correctly.
@@ -310,7 +310,7 @@ class TestSign(unittest.TestCase):
 
 # --- Tests for approx_equal ---
 
-class ApproxEqualSymmetryTest(unittest.TestCase):
+klasse ApproxEqualSymmetryTest(unittest.TestCase):
     # Test symmetry of approx_equal.
 
     def test_relative_symmetry(self):
@@ -372,7 +372,7 @@ class ApproxEqualSymmetryTest(unittest.TestCase):
         self.assertEqual(flag1, flag2, template.format((a, b, tol, rel)))
 
 
-class ApproxEqualExactTest(unittest.TestCase):
+klasse ApproxEqualExactTest(unittest.TestCase):
     # Test the approx_equal function with exactly equal values.
     # Equal values should compare as approximately equal.
     # Test cases for exactly equal values, which should compare approx
@@ -436,7 +436,7 @@ class ApproxEqualExactTest(unittest.TestCase):
         self.do_exactly_equal_test(D("7.2"), D("0.1"), D("0.01"))
 
 
-class ApproxEqualUnequalTest(unittest.TestCase):
+klasse ApproxEqualUnequalTest(unittest.TestCase):
     # Unequal values should compare unequal with zero error tolerances.
     # Test cases for unequal values, with exact equality test.
 
@@ -467,7 +467,7 @@ class ApproxEqualUnequalTest(unittest.TestCase):
             self.do_exactly_unequal_test(d)
 
 
-class ApproxEqualInexactTest(unittest.TestCase):
+klasse ApproxEqualInexactTest(unittest.TestCase):
     # Inexact test cases for approx_error.
     # Test cases when comparing two values that are not exactly equal.
 
@@ -586,7 +586,7 @@ class ApproxEqualInexactTest(unittest.TestCase):
         self.do_check_both(971.44, 971.47, 0.02, 3e-5, False, False)
 
 
-class ApproxEqualSpecialsTest(unittest.TestCase):
+klasse ApproxEqualSpecialsTest(unittest.TestCase):
     # Test approx_equal with NANs and INFs and zeroes.
 
     def test_inf(self):
@@ -614,7 +614,7 @@ class ApproxEqualSpecialsTest(unittest.TestCase):
         self.assertTrue(approx_equal(nzero, Decimal(0), tol=0.1, rel=0.1))
 
 
-class TestApproxEqualErrors(unittest.TestCase):
+klasse TestApproxEqualErrors(unittest.TestCase):
     # Test error conditions of approx_equal.
 
     def test_bad_tol(self):
@@ -631,7 +631,7 @@ class TestApproxEqualErrors(unittest.TestCase):
 # The formatting routine that generates the error messages is complex enough
 # that it too needs testing.
 
-class TestNumericTestCase(unittest.TestCase):
+klasse TestNumericTestCase(unittest.TestCase):
     # The exact wording of NumericTestCase error messages is *not* guaranteed,
     # but we need to give them some sort of test to ensure that they are
     # generated correctly. As a compromise, we look for specific substrings
@@ -676,7 +676,7 @@ class TestNumericTestCase(unittest.TestCase):
 # =======================================
 
 
-class GlobalsTest(unittest.TestCase):
+klasse GlobalsTest(unittest.TestCase):
     module = statistics
     expected_metadata = ["__doc__", "__all__"]
 
@@ -696,7 +696,7 @@ class GlobalsTest(unittest.TestCase):
             self.assertHasAttr(module, name)
 
 
-class StatisticsErrorTest(unittest.TestCase):
+klasse StatisticsErrorTest(unittest.TestCase):
     def test_has_exception(self):
         self.assertHasAttr(statistics, 'StatisticsError')
         self.assertIsSubclass(statistics.StatisticsError, ValueError)
@@ -704,7 +704,7 @@ class StatisticsErrorTest(unittest.TestCase):
 
 # === Tests for private utility functions ===
 
-class ExactRatioTest(unittest.TestCase):
+klasse ExactRatioTest(unittest.TestCase):
     # Test _exact_ratio utility.
 
     def test_int(self):
@@ -734,9 +734,9 @@ class ExactRatioTest(unittest.TestCase):
 
     def test_inf(self):
         INF = float("INF")
-        class MyFloat(float):
+        klasse MyFloat(float):
             pass
-        class MyDecimal(Decimal):
+        klasse MyDecimal(Decimal):
             pass
         for inf in (INF, -INF):
             for type_ in (float, MyFloat, Decimal, MyDecimal):
@@ -748,7 +748,7 @@ class ExactRatioTest(unittest.TestCase):
 
     def test_float_nan(self):
         NAN = float("NAN")
-        class MyFloat(float):
+        klasse MyFloat(float):
             pass
         for nan in (NAN, MyFloat(NAN)):
             ratio = statistics._exact_ratio(nan)
@@ -759,7 +759,7 @@ class ExactRatioTest(unittest.TestCase):
     def test_decimal_nan(self):
         NAN = Decimal("NAN")
         sNAN = Decimal("sNAN")
-        class MyDecimal(Decimal):
+        klasse MyDecimal(Decimal):
             pass
         for nan in (NAN, MyDecimal(NAN), sNAN, MyDecimal(sNAN)):
             ratio = statistics._exact_ratio(nan)
@@ -768,7 +768,7 @@ class ExactRatioTest(unittest.TestCase):
             self.assertEqual(type(ratio[0]), type(nan))
 
 
-class DecimalToRatioTest(unittest.TestCase):
+klasse DecimalToRatioTest(unittest.TestCase):
     # Test _exact_ratio private function.
 
     def test_infinity(self):
@@ -820,7 +820,7 @@ class DecimalToRatioTest(unittest.TestCase):
         self.assertEqual(t, (147000, 1))
 
 
-class IsFiniteTest(unittest.TestCase):
+klasse IsFiniteTest(unittest.TestCase):
     # Test _isfinite private function.
 
     def test_finite(self):
@@ -839,7 +839,7 @@ class IsFiniteTest(unittest.TestCase):
             self.assertFalse(statistics._isfinite(x))
 
 
-class CoerceTest(unittest.TestCase):
+klasse CoerceTest(unittest.TestCase):
     # Test that private function _coerce correctly deals with types.
 
     # The coercion rules are currently an implementation detail, although at
@@ -866,7 +866,7 @@ class CoerceTest(unittest.TestCase):
         # be subclassed. So we test it specially.
         for T in (int, float, Fraction, Decimal):
             self.assertIs(statistics._coerce(T, bool), T)
-            class MyClass(T): pass
+            klasse MyClass(T): pass
             self.assertIs(statistics._coerce(MyClass, bool), MyClass)
 
     def assertCoerceTo(self, A, B):
@@ -879,10 +879,10 @@ class CoerceTest(unittest.TestCase):
         # Assert that type A is coerced to B.
         self.assertCoerceTo(A, B)
         # Subclasses of A are also coerced to B.
-        class SubclassOfA(A): pass
+        klasse SubclassOfA(A): pass
         self.assertCoerceTo(SubclassOfA, B)
         # A, and subclasses of A, are coerced to subclasses of B.
-        class SubclassOfB(B): pass
+        klasse SubclassOfB(B): pass
         self.assertCoerceTo(A, SubclassOfB)
         self.assertCoerceTo(SubclassOfA, SubclassOfB)
 
@@ -897,9 +897,9 @@ class CoerceTest(unittest.TestCase):
         # Coercing a type with itself returns the same type.
         self.assertIs(statistics._coerce(T, T), T)
         # Coercing a type with a subclass of itself returns the subclass.
-        class U(T): pass
-        class V(T): pass
-        class W(U): pass
+        klasse U(T): pass
+        klasse V(T): pass
+        klasse W(U): pass
         for typ in (U, V, W):
             self.assertCoerceTo(T, typ)
         self.assertCoerceTo(U, W)
@@ -934,12 +934,12 @@ class CoerceTest(unittest.TestCase):
     def test_incompatible_types(self):
         # Test that incompatible types raise.
         for T in (float, Fraction):
-            class MySubclass(T): pass
+            klasse MySubclass(T): pass
             self.assertCoerceRaises(T, Decimal)
             self.assertCoerceRaises(MySubclass, Decimal)
 
 
-class ConvertTest(unittest.TestCase):
+klasse ConvertTest(unittest.TestCase):
     # Test private _convert function.
 
     def check_exact_equal(self, x, y):
@@ -951,7 +951,7 @@ class ConvertTest(unittest.TestCase):
         # Test conversions to int.
         x = statistics._convert(Fraction(71), int)
         self.check_exact_equal(x, 71)
-        class MyInt(int): pass
+        klasse MyInt(int): pass
         x = statistics._convert(Fraction(17), MyInt)
         self.check_exact_equal(x, MyInt(17))
 
@@ -959,7 +959,7 @@ class ConvertTest(unittest.TestCase):
         # Test conversions to Fraction.
         x = statistics._convert(Fraction(95, 99), Fraction)
         self.check_exact_equal(x, Fraction(95, 99))
-        class MyFraction(Fraction):
+        klasse MyFraction(Fraction):
             def __truediv__(self, other):
                 return self.__class__(super().__truediv__(other))
         x = statistics._convert(Fraction(71, 13), MyFraction)
@@ -969,7 +969,7 @@ class ConvertTest(unittest.TestCase):
         # Test conversions to float.
         x = statistics._convert(Fraction(-1, 2), float)
         self.check_exact_equal(x, -0.5)
-        class MyFloat(float):
+        klasse MyFloat(float):
             def __truediv__(self, other):
                 return self.__class__(super().__truediv__(other))
         x = statistics._convert(Fraction(9, 8), MyFloat)
@@ -979,7 +979,7 @@ class ConvertTest(unittest.TestCase):
         # Test conversions to Decimal.
         x = statistics._convert(Fraction(1, 40), Decimal)
         self.check_exact_equal(x, Decimal("0.025"))
-        class MyDecimal(Decimal):
+        klasse MyDecimal(Decimal):
             def __truediv__(self, other):
                 return self.__class__(super().__truediv__(other))
         x = statistics._convert(Fraction(-15, 16), MyDecimal)
@@ -1001,7 +1001,7 @@ class ConvertTest(unittest.TestCase):
             statistics._convert(None, float)
 
 
-class FailNegTest(unittest.TestCase):
+klasse FailNegTest(unittest.TestCase):
     """Test _fail_neg private function."""
 
     def test_pass_through(self):
@@ -1031,7 +1031,7 @@ class FailNegTest(unittest.TestCase):
 
 # === Tests for public functions ===
 
-class UnivariateCommonMixin:
+klasse UnivariateCommonMixin:
     # Common tests for most univariate functions that take a data argument.
 
     def test_no_args(self):
@@ -1075,9 +1075,9 @@ class UnivariateCommonMixin:
 
     def test_type_of_data_collection(self):
         # Test that the type of iterable data doesn't effect the result.
-        class MyList(list):
+        klasse MyList(list):
             pass
-        class MyTuple(tuple):
+        klasse MyTuple(tuple):
             pass
         def generator(data):
             return (obj for obj in data)
@@ -1115,7 +1115,7 @@ class UnivariateCommonMixin:
         # Check the type of data elements doesn't affect the numeric result.
         # This is a weaker test than UnivariateTypeMixin.testTypesConserved,
         # because it checks the numeric result by equality, but not by type.
-        class MyFloat(float):
+        klasse MyFloat(float):
             def __truediv__(self, other):
                 return type(self)(super().__truediv__(other))
             def __add__(self, other):
@@ -1130,10 +1130,10 @@ class UnivariateCommonMixin:
             self.assertEqual(result, expected)
 
 
-class UnivariateTypeMixin:
-    """Mixin class for type-conserving functions.
+klasse UnivariateTypeMixin:
+    """Mixin klasse for type-conserving functions.
 
-    This mixin class holds test(s) for functions which conserve the type of
+    This mixin klasse holds test(s) for functions which conserve the type of
     individual data points. E.g. the mean of a list of Fractions should itself
     be a Fraction.
 
@@ -1142,7 +1142,7 @@ class UnivariateTypeMixin:
     """
     def prepare_types_for_conservation_test(self):
         """Return the types which are expected to be conserved."""
-        class MyFloat(float):
+        klasse MyFloat(float):
             def __truediv__(self, other):
                 return type(self)(super().__truediv__(other))
             def __rtruediv__(self, other):
@@ -1172,7 +1172,7 @@ class UnivariateTypeMixin:
             self.assertIs(type(result), kind)
 
 
-class TestSumCommon(UnivariateCommonMixin, UnivariateTypeMixin):
+klasse TestSumCommon(UnivariateCommonMixin, UnivariateTypeMixin):
     # Common test cases for statistics._sum() function.
 
     # This test suite looks only at the numeric value returned by _sum,
@@ -1184,7 +1184,7 @@ class TestSumCommon(UnivariateCommonMixin, UnivariateTypeMixin):
         self.func = simplified_sum
 
 
-class TestSum(NumericTestCase):
+klasse TestSum(NumericTestCase):
     # Test cases for statistics._sum() function.
 
     # These tests look at the entire three value tuple returned by _sum.
@@ -1242,7 +1242,7 @@ class TestSum(NumericTestCase):
         self.assertRaises(TypeError, self.func, [1, 2.0], Decimal(1))
 
 
-class SumTortureTest(NumericTestCase):
+klasse SumTortureTest(NumericTestCase):
     def test_torture(self):
         # Tim Peters' torture test for sum, and variants of same.
         self.assertEqual(statistics._sum([1, 1e100, 1, -1e100]*10000),
@@ -1255,7 +1255,7 @@ class SumTortureTest(NumericTestCase):
         self.assertApproxEqual(float(num), 2.0e-96, rel=5e-16)
 
 
-class SumSpecialValues(NumericTestCase):
+klasse SumSpecialValues(NumericTestCase):
     # Test that sum works correctly with IEEE-754 special values.
 
     def test_nan(self):
@@ -1319,8 +1319,8 @@ class SumSpecialValues(NumericTestCase):
 
 # === Tests for averages ===
 
-class AverageMixin(UnivariateCommonMixin):
-    # Mixin class holding common tests for averages.
+klasse AverageMixin(UnivariateCommonMixin):
+    # Mixin klasse holding common tests for averages.
 
     def test_single_value(self):
         # Average of a single value is the value itself.
@@ -1339,7 +1339,7 @@ class AverageMixin(UnivariateCommonMixin):
                     self.assertEqual(self.func(data), x)
 
 
-class TestMean(NumericTestCase, AverageMixin, UnivariateTypeMixin):
+klasse TestMean(NumericTestCase, AverageMixin, UnivariateTypeMixin):
     def setUp(self):
         self.func = statistics.mean
 
@@ -1435,7 +1435,7 @@ class TestMean(NumericTestCase, AverageMixin, UnivariateTypeMixin):
             self.assertEqual(statistics.mean([tiny]*n), tiny)
 
 
-class TestHarmonicMean(NumericTestCase, AverageMixin, UnivariateTypeMixin):
+klasse TestHarmonicMean(NumericTestCase, AverageMixin, UnivariateTypeMixin):
     def setUp(self):
         self.func = statistics.harmonic_mean
 
@@ -1556,7 +1556,7 @@ class TestHarmonicMean(NumericTestCase, AverageMixin, UnivariateTypeMixin):
             self.func([10, 20], [0, 0])                       # no non-zero weights
 
 
-class TestMedian(NumericTestCase, AverageMixin):
+klasse TestMedian(NumericTestCase, AverageMixin):
     # Common tests for median and all median.* functions.
     def setUp(self):
         self.func = statistics.median
@@ -1613,7 +1613,7 @@ class TestMedian(NumericTestCase, AverageMixin):
         self.assertEqual(self.func(data), D('3.65'))
 
 
-class TestMedianDataType(NumericTestCase, UnivariateTypeMixin):
+klasse TestMedianDataType(NumericTestCase, UnivariateTypeMixin):
     # Test conservation of data element type for median.
     def setUp(self):
         self.func = statistics.median
@@ -1626,7 +1626,7 @@ class TestMedianDataType(NumericTestCase, UnivariateTypeMixin):
         return data
 
 
-class TestMedianLow(TestMedian, UnivariateTypeMixin):
+klasse TestMedianLow(TestMedian, UnivariateTypeMixin):
     def setUp(self):
         self.func = statistics.median_low
 
@@ -1653,7 +1653,7 @@ class TestMedianLow(TestMedian, UnivariateTypeMixin):
         self.assertEqual(self.func(data), D('3.3'))
 
 
-class TestMedianHigh(TestMedian, UnivariateTypeMixin):
+klasse TestMedianHigh(TestMedian, UnivariateTypeMixin):
     def setUp(self):
         self.func = statistics.median_high
 
@@ -1680,7 +1680,7 @@ class TestMedianHigh(TestMedian, UnivariateTypeMixin):
         self.assertEqual(self.func(data), D('4.4'))
 
 
-class TestMedianGrouped(TestMedian):
+klasse TestMedianGrouped(TestMedian):
     # Test median_grouped.
     # Doesn't conserve data element types, so don't use TestMedianType.
     def setUp(self):
@@ -1800,7 +1800,7 @@ class TestMedianGrouped(TestMedian):
         self.assertRaises(TypeError, self.func, data, interval)
 
 
-class TestMode(NumericTestCase, AverageMixin, UnivariateTypeMixin):
+klasse TestMode(NumericTestCase, AverageMixin, UnivariateTypeMixin):
     # Test cases for the discrete version of mode.
     def setUp(self):
         self.func = statistics.mode
@@ -1861,7 +1861,7 @@ class TestMode(NumericTestCase, AverageMixin, UnivariateTypeMixin):
         self.assertEqual(self.func(c), 'a')
 
 
-class TestMultiMode(unittest.TestCase):
+klasse TestMultiMode(unittest.TestCase):
 
     def test_basics(self):
         multimode = statistics.multimode
@@ -1870,7 +1870,7 @@ class TestMultiMode(unittest.TestCase):
         self.assertEqual(multimode(''), [])
 
 
-class TestFMean(unittest.TestCase):
+klasse TestFMean(unittest.TestCase):
 
     def test_basics(self):
         fmean = statistics.fmean
@@ -1940,8 +1940,8 @@ class TestFMean(unittest.TestCase):
 
 # === Tests for variances and standard deviations ===
 
-class VarianceStdevMixin(UnivariateCommonMixin):
-    # Mixin class holding common tests for variance and std dev.
+klasse VarianceStdevMixin(UnivariateCommonMixin):
+    # Mixin klasse holding common tests for variance and std dev.
 
     # Subclasses should inherit from this before NumericTestClass, in order
     # to see the rel attribute below. See testShiftData for an explanation.
@@ -2006,7 +2006,7 @@ class VarianceStdevMixin(UnivariateCommonMixin):
         self.assertEqual(self.func(iter(data)), expected)
 
 
-class TestPVariance(VarianceStdevMixin, NumericTestCase, UnivariateTypeMixin):
+klasse TestPVariance(VarianceStdevMixin, NumericTestCase, UnivariateTypeMixin):
     # Tests for population variance.
     def setUp(self):
         self.func = statistics.pvariance
@@ -2050,7 +2050,7 @@ class TestPVariance(VarianceStdevMixin, NumericTestCase, UnivariateTypeMixin):
         self.assertIsInstance(result, float)
 
 
-class TestVariance(VarianceStdevMixin, NumericTestCase, UnivariateTypeMixin):
+klasse TestVariance(VarianceStdevMixin, NumericTestCase, UnivariateTypeMixin):
     # Tests for sample variance.
     def setUp(self):
         self.func = statistics.variance
@@ -2096,7 +2096,7 @@ class TestVariance(VarianceStdevMixin, NumericTestCase, UnivariateTypeMixin):
         self.assertEqual(result, exact)
         self.assertIsInstance(result, float)
 
-class TestPStdev(VarianceStdevMixin, NumericTestCase):
+klasse TestPStdev(VarianceStdevMixin, NumericTestCase):
     # Tests for population standard deviation.
     def setUp(self):
         self.func = statistics.pstdev
@@ -2113,7 +2113,7 @@ class TestPStdev(VarianceStdevMixin, NumericTestCase):
         self.assertEqual(self.func(data), 2.5)
         self.assertEqual(self.func(data, mu=0.5), 6.5)
 
-class TestSqrtHelpers(unittest.TestCase):
+klasse TestSqrtHelpers(unittest.TestCase):
 
     def test_integer_sqrt_of_frac_rto(self):
         for n, m in itertools.product(range(100), range(1, 1000)):
@@ -2211,7 +2211,7 @@ class TestSqrtHelpers(unittest.TestCase):
         self.assertEqual(statistics._decimal_sqrt_of_frac(-2, -1), statistics._decimal_sqrt_of_frac(2, 1))
 
 
-class TestStdev(VarianceStdevMixin, NumericTestCase):
+klasse TestStdev(VarianceStdevMixin, NumericTestCase):
     # Tests for sample standard deviation.
     def setUp(self):
         self.func = statistics.stdev
@@ -2231,7 +2231,7 @@ class TestStdev(VarianceStdevMixin, NumericTestCase):
         data = (1.0, 2.0)
         self.assertEqual(self.func(data, xbar=2.0), 1.0)
 
-class TestGeometricMean(unittest.TestCase):
+klasse TestGeometricMean(unittest.TestCase):
 
     def test_basics(self):
         geometric_mean = statistics.geometric_mean
@@ -2344,7 +2344,7 @@ class TestGeometricMean(unittest.TestCase):
                 self.assertAlmostEqual(actual_mean, expected_mean, places=5)
 
 
-class TestKDE(unittest.TestCase):
+klasse TestKDE(unittest.TestCase):
 
     @support.requires_resource('cpu')
     def test_kde(self):
@@ -2522,7 +2522,7 @@ class TestKDE(unittest.TestCase):
         self.assertGreater(max(rand() for i in range(5000)), 10)
 
 
-class TestQuantiles(unittest.TestCase):
+klasse TestQuantiles(unittest.TestCase):
 
     def test_specific_cases(self):
         # Match results computed by hand and cross-checked
@@ -2691,7 +2691,7 @@ class TestQuantiles(unittest.TestCase):
             quantiles([10, None, 30], n=4)      # data is non-numeric
 
 
-class TestBivariateStatistics(unittest.TestCase):
+klasse TestBivariateStatistics(unittest.TestCase):
 
     def test_unequal_size_error(self):
         for x, y in [
@@ -2722,7 +2722,7 @@ class TestBivariateStatistics(unittest.TestCase):
                 statistics.linear_regression(x, y)
 
 
-class TestCorrelationAndCovariance(unittest.TestCase):
+klasse TestCorrelationAndCovariance(unittest.TestCase):
 
     def test_results(self):
         for x, y, result in [
@@ -2835,7 +2835,7 @@ class TestCorrelationAndCovariance(unittest.TestCase):
         with self.assertRaises(ValueError):
             statistics.correlation(reading, mathematics, method='bad_method')
 
-class TestLinearRegression(unittest.TestCase):
+klasse TestLinearRegression(unittest.TestCase):
 
     def test_constant_input_error(self):
         x = [1, 1, 1,]
@@ -2874,7 +2874,7 @@ class TestLinearRegression(unittest.TestCase):
         self.assertTrue(isinstance(slope, float))
         self.assertTrue(isinstance(intercept, float))
 
-class TestNormalDist:
+klasse TestNormalDist:
 
     # General note on precision: The pdf(), cdf(), and overlap() methods
     # depend on functions in the math libraries that do not make
@@ -2906,7 +2906,7 @@ class TestNormalDist:
             self.module.NormalDist(500, -10)
 
         # verify that subclass type is honored
-        class NewNormalDist(self.module.NormalDist):
+        klasse NewNormalDist(self.module.NormalDist):
             pass
         nnd = NewNormalDist(200, 5)
         self.assertEqual(type(nnd), NewNormalDist)
@@ -2927,7 +2927,7 @@ class TestNormalDist:
             NormalDist.from_samples([10])                    # only one input
 
         # verify that subclass type is honored
-        class NewNormalDist(NormalDist):
+        klasse NewNormalDist(NormalDist):
             pass
         nnd = NewNormalDist.from_samples(data)
         self.assertEqual(type(nnd), NewNormalDist)
@@ -3239,7 +3239,7 @@ class TestNormalDist:
         self.assertNotEqual(nd2, nd6)
 
         # Test NotImplemented when types are different
-        class A:
+        klasse A:
             def __eq__(self, other):
                 return 10
         a = A()
@@ -3249,7 +3249,7 @@ class TestNormalDist:
 
         # All subclasses to compare equal giving the same behavior
         # as list, tuple, int, float, complex, str, dict, set, etc.
-        class SizedNormalDist(NormalDist):
+        klasse SizedNormalDist(NormalDist):
             def __init__(self, mu, sigma, n):
                 super().__init__(mu, sigma)
                 self.n = n
@@ -3260,7 +3260,7 @@ class TestNormalDist:
         # Don't allow duck type equality because we wouldn't
         # want a lognormal distribution to compare equal
         # to a normal distribution with the same parameters
-        class LognormalDist:
+        klasse LognormalDist:
             def __init__(self, mu, sigma):
                 self.mu = mu
                 self.sigma = sigma
@@ -3295,7 +3295,7 @@ class TestNormalDist:
 # _pickle.PicklingError:
 # Can't pickle <class 'statistics.NormalDist'>:
 # it's not the same object as statistics.NormalDist
-class TestNormalDistPython(unittest.TestCase, TestNormalDist):
+klasse TestNormalDistPython(unittest.TestCase, TestNormalDist):
     module = py_statistics
     def setUp(self):
         sys.modules['statistics'] = self.module
@@ -3305,7 +3305,7 @@ class TestNormalDistPython(unittest.TestCase, TestNormalDist):
 
 
 @unittest.skipUnless(c_statistics, 'requires _statistics')
-class TestNormalDistC(unittest.TestCase, TestNormalDist):
+klasse TestNormalDistC(unittest.TestCase, TestNormalDist):
     module = c_statistics
     def setUp(self):
         sys.modules['statistics'] = self.module

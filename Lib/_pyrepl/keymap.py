@@ -101,7 +101,7 @@ _keynames = {
 }
 
 
-class KeySpecError(Exception):
+klasse KeySpecError(Exception):
     pass
 
 

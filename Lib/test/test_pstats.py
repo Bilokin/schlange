@@ -11,13 +11,13 @@ import pstats
 import tempfile
 import cProfile
 
-class LazyImportTest(unittest.TestCase):
+klasse LazyImportTest(unittest.TestCase):
     @support.cpython_only
     def test_lazy_import(self):
         ensure_lazy_imports("pstats", {"typing"})
 
 
-class AddCallersTestCase(unittest.TestCase):
+klasse AddCallersTestCase(unittest.TestCase):
     """Tests for pstats.add_callers helper."""
 
     def test_combine_results(self):
@@ -35,7 +35,7 @@ class AddCallersTestCase(unittest.TestCase):
         self.assertEqual(new_callers, {'a': 2, 'b': 5})
 
 
-class StatsTestCase(unittest.TestCase):
+klasse StatsTestCase(unittest.TestCase):
     def setUp(self):
         stats_file = support.findfile('pstats.pck')
         self.stats = pstats.Stats(stats_file)
@@ -104,7 +104,7 @@ class StatsTestCase(unittest.TestCase):
             self.assertEqual(
                     self.stats.sort_type,
                     self.stats.sort_arg_dict_default[member.value][-1])
-        class CheckedSortKey(StrEnum):
+        klasse CheckedSortKey(StrEnum):
             CALLS = 'calls', 'ncalls'
             CUMULATIVE = 'cumulative', 'cumtime'
             FILENAME = 'filename', 'module'

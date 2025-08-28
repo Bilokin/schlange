@@ -88,7 +88,7 @@ def _repr(self):
 #   Id: errors.py 509 2006-04-20 00:58:24Z gward
 
 
-class OptParseError (Exception):
+klasse OptParseError (Exception):
     def __init__(self, msg):
         self.msg = msg
 
@@ -96,7 +96,7 @@ class OptParseError (Exception):
         return self.msg
 
 
-class OptionError (OptParseError):
+klasse OptionError (OptParseError):
     """
     Raised if an Option instance is created with invalid or
     inconsistent arguments.
@@ -112,18 +112,18 @@ class OptionError (OptParseError):
         else:
             return self.msg
 
-class OptionConflictError (OptionError):
+klasse OptionConflictError (OptionError):
     """
     Raised if conflicting options are added to an OptionParser.
     """
 
-class OptionValueError (OptParseError):
+klasse OptionValueError (OptParseError):
     """
     Raised if an invalid option value is encountered on the command
     line.
     """
 
-class BadOptionError (OptParseError):
+klasse BadOptionError (OptParseError):
     """
     Raised if an invalid option is seen on the command line.
     """
@@ -133,7 +133,7 @@ class BadOptionError (OptParseError):
     def __str__(self):
         return _("no such option: %s") % self.opt_str
 
-class AmbiguousOptionError (BadOptionError):
+klasse AmbiguousOptionError (BadOptionError):
     """
     Raised if an ambiguous option is seen on the command line.
     """
@@ -146,10 +146,10 @@ class AmbiguousOptionError (BadOptionError):
                 % (self.opt_str, ", ".join(self.possibilities)))
 
 
-class HelpFormatter:
+klasse HelpFormatter:
 
     """
-    Abstract base class for formatting option help.  OptionParser
+    Abstract base klasse for formatting option help.  OptionParser
     instances should use one of the HelpFormatter subclasses for
     formatting help; by default IndentedHelpFormatter is used.
 
@@ -355,7 +355,7 @@ class HelpFormatter:
 
         return ", ".join(opts)
 
-class IndentedHelpFormatter (HelpFormatter):
+klasse IndentedHelpFormatter (HelpFormatter):
     """Format help with indented section bodies.
     """
 
@@ -374,7 +374,7 @@ class IndentedHelpFormatter (HelpFormatter):
         return "%*s%s:\n" % (self.current_indent, "", heading)
 
 
-class TitledHelpFormatter (HelpFormatter):
+klasse TitledHelpFormatter (HelpFormatter):
     """Format help with underlined section headers.
     """
 
@@ -436,7 +436,7 @@ def check_choice(option, opt, value):
 NO_DEFAULT = ("NO", "DEFAULT")
 
 
-class Option:
+klasse Option:
     """
     Instance attributes:
       _short_opts : [string]
@@ -542,7 +542,7 @@ class Option:
     # by the constructor, in order, after all attributes are
     # initialized.  The list is created and filled in later, after all
     # the methods are actually defined.  (I just put it here because I
-    # like to define and document all class attributes in the same
+    # like to define and document all klasse attributes in the same
     # place.)  Subclasses that add another _check_*() method should
     # define their own CHECK_METHODS list that adds their check method
     # to those from this class.
@@ -804,13 +804,13 @@ class Option:
 
         return 1
 
-# class Option
+# klasse Option
 
 
 SUPPRESS_HELP = "SUPPRESS"+"HELP"
 SUPPRESS_USAGE = "SUPPRESS"+"USAGE"
 
-class Values:
+klasse Values:
 
     def __init__(self, defaults=None):
         if defaults:
@@ -875,7 +875,7 @@ class Values:
         return getattr(self, attr)
 
 
-class OptionContainer:
+klasse OptionContainer:
 
     """
     Abstract base class.
@@ -883,7 +883,7 @@ class OptionContainer:
     Class attributes:
       standard_option_list : [Option]
         list of standard options that will be accepted by all instances
-        of this parser class (intended to be overridden by subclasses).
+        of this parser klasse (intended to be overridden by subclasses).
 
     Instance attributes:
       option_list : [Option]
@@ -1063,7 +1063,7 @@ class OptionContainer:
         return "\n".join(result)
 
 
-class OptionGroup (OptionContainer):
+klasse OptionGroup (OptionContainer):
 
     def __init__(self, parser, title, description=None):
         self.parser = parser
@@ -1093,13 +1093,13 @@ class OptionGroup (OptionContainer):
         return result
 
 
-class OptionParser (OptionContainer):
+klasse OptionParser (OptionContainer):
 
     """
     Class attributes:
       standard_option_list : [Option]
         list of standard options that will be accepted by all instances
-        of this parser class (intended to be overridden by subclasses).
+        of this parser klasse (intended to be overridden by subclasses).
 
     Instance attributes:
       usage : string
@@ -1190,7 +1190,7 @@ class OptionParser (OptionContainer):
         self.epilog = epilog
 
         # Populate the option list; initial sources are the
-        # standard_option_list class attribute, the 'option_list'
+        # standard_option_list klasse attribute, the 'option_list'
         # argument, and (if applicable) the _add_version_option() and
         # _add_help_option() methods.
         self._populate_option_list(option_list,
@@ -1266,7 +1266,7 @@ class OptionParser (OptionContainer):
         """Set parsing to not stop on the first non-option, allowing
         interspersing switches with command arguments. This is the
         default behavior. See also disable_interspersed_args() and the
-        class documentation description of the attribute
+        klasse documentation description of the attribute
         allow_interspersed_args."""
         self.allow_interspersed_args = True
 
@@ -1636,7 +1636,7 @@ class OptionParser (OptionContainer):
             file = sys.stdout
         file.write(self.format_help())
 
-# class OptionParser
+# klasse OptionParser
 
 
 def _match_abbrev(s, wordmap):

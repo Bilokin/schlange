@@ -4,9 +4,9 @@
 import gc
 
 def leak():
-    class T(type):
+    klasse T(type):
         pass
-    class U(type, metaclass=T):
+    klasse U(type, metaclass=T):
         pass
     U.__class__ = U
     del U

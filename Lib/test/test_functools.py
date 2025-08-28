@@ -55,17 +55,17 @@ def signature(part):
     """ return the signature of a partial object """
     return (part.func, part.args, part.keywords, part.__dict__)
 
-class MyTuple(tuple):
+klasse MyTuple(tuple):
     pass
 
-class BadTuple(tuple):
+klasse BadTuple(tuple):
     def __add__(self, other):
         return list(self) + list(other)
 
-class MyDict(dict):
+klasse MyDict(dict):
     pass
 
-class TestImportTime(unittest.TestCase):
+klasse TestImportTime(unittest.TestCase):
 
     @cpython_only
     def test_lazy_import(self):
@@ -74,7 +74,7 @@ class TestImportTime(unittest.TestCase):
         )
 
 
-class TestPartial:
+klasse TestPartial:
 
     def test_basic_examples(self):
         p = self.partial(capture, 1, 2, a=10, b=20)
@@ -200,7 +200,7 @@ class TestPartial:
 
     def test_nested_optimization_bug(self):
         partial = self.partial
-        class Builder:
+        klasse Builder:
             def __call__(self, tag, *children, **attrib):
                 return (tag, children, attrib)
 
@@ -475,7 +475,7 @@ class TestPartial:
 
     # Issue 6083: Reference counting bug
     def test_setstate_refcount(self):
-        class BadSequence:
+        klasse BadSequence:
             def __len__(self):
                 return 4
             def __getitem__(self, key):
@@ -491,7 +491,7 @@ class TestPartial:
         self.assertRaises(TypeError, f.__setstate__, BadSequence())
 
     def test_partial_as_method(self):
-        class A:
+        klasse A:
             meth = self.partial(capture, 1, a=2)
             cmeth = classmethod(self.partial(capture, 1, a=2))
             smeth = staticmethod(self.partial(capture, 1, a=2))
@@ -512,7 +512,7 @@ class TestPartial:
 
 
 @unittest.skipUnless(c_functools, 'requires the C _functools module')
-class TestPartialC(TestPartial, unittest.TestCase):
+klasse TestPartialC(TestPartial, unittest.TestCase):
     if c_functools:
         module = c_functools
         partial = c_functools.partial
@@ -545,7 +545,7 @@ class TestPartialC(TestPartial, unittest.TestCase):
     def test_keystr_replaces_value(self):
         p = self.partial(capture)
 
-        class MutatesYourDict(object):
+        klasse MutatesYourDict(object):
             def __str__(self):
                 p.keywords[self] = ['sth2']
                 return 'astr'
@@ -571,27 +571,27 @@ class TestPartialC(TestPartial, unittest.TestCase):
             partial_cm(map2, map2)
 
 
-class TestPartialPy(TestPartial, unittest.TestCase):
+klasse TestPartialPy(TestPartial, unittest.TestCase):
     module = py_functools
     partial = py_functools.partial
 
 
 if c_functools:
-    class CPartialSubclass(c_functools.partial):
+    klasse CPartialSubclass(c_functools.partial):
         pass
 
-class PyPartialSubclass(py_functools.partial):
+klasse PyPartialSubclass(py_functools.partial):
     pass
 
 @unittest.skipUnless(c_functools, 'requires the C _functools module')
-class TestPartialCSubclass(TestPartialC):
+klasse TestPartialCSubclass(TestPartialC):
     if c_functools:
         partial = CPartialSubclass
 
     # partial subclasses are not optimized for nested calls
     test_nested_optimization = None
 
-class TestPartialPySubclass(TestPartialPy):
+klasse TestPartialPySubclass(TestPartialPy):
     partial = PyPartialSubclass
 
     def test_subclass_optimization(self):
@@ -607,9 +607,9 @@ class TestPartialPySubclass(TestPartialPy):
         self.assertEqual(p2(0), 0)
 
 
-class TestPartialMethod(unittest.TestCase):
+klasse TestPartialMethod(unittest.TestCase):
 
-    class A(object):
+    klasse A(object):
         nothing = functools.partialmethod(capture)
         positional = functools.partialmethod(capture, 1)
         keywords = functools.partialmethod(capture, a=2)
@@ -701,13 +701,13 @@ class TestPartialMethod(unittest.TestCase):
 
     def test_invalid_args(self):
         with self.assertRaises(TypeError):
-            class B(object):
+            klasse B(object):
                 method = functools.partialmethod(None, 1)
         with self.assertRaises(TypeError):
-            class B:
+            klasse B:
                 method = functools.partialmethod()
         with self.assertRaises(TypeError):
-            class B:
+            klasse B:
                 method = functools.partialmethod(func=capture, a=1)
 
     def test_repr(self):
@@ -723,7 +723,7 @@ class TestPartialMethod(unittest.TestCase):
                          'functools.partialmethod({}, 3, b=4)'.format(capture))
 
     def test_abstract(self):
-        class Abstract(abc.ABCMeta):
+        klasse Abstract(abc.ABCMeta):
 
             @abc.abstractmethod
             def add(self, x, y):
@@ -745,7 +745,7 @@ class TestPartialMethod(unittest.TestCase):
         self.assertEqual(p(2), f(1, 2))
 
     def test_subclass_optimization(self):
-        class PartialMethodSubclass(functools.partialmethod):
+        klasse PartialMethodSubclass(functools.partialmethod):
             pass
         # `partialmethod` input to `partialmethod` subclass
         p = functools.partialmethod(min, 2)
@@ -759,7 +759,7 @@ class TestPartialMethod(unittest.TestCase):
         self.assertEqual(p2.__get__(0)(), 0)
 
 
-class TestUpdateWrapper(unittest.TestCase):
+klasse TestUpdateWrapper(unittest.TestCase):
 
     def check_wrapper(self, wrapper, wrapped,
                       assigned=functools.WRAPPER_ASSIGNMENTS,
@@ -903,7 +903,7 @@ class TestUpdateWrapper(unittest.TestCase):
         self.assertEqual(wrapper.__annotations__, {'x': undefined})
 
 
-class TestWraps(TestUpdateWrapper):
+klasse TestWraps(TestUpdateWrapper):
 
     def _default_update(self):
         def f():
@@ -965,9 +965,9 @@ class TestWraps(TestUpdateWrapper):
         self.assertEqual(wrapper.dict_attr, f.dict_attr)
 
 
-class TestReduce:
+klasse TestReduce:
     def test_reduce(self):
-        class Squares:
+        klasse Squares:
             def __init__(self, max):
                 self.max = max
                 self.sofar = []
@@ -1008,7 +1008,7 @@ class TestReduce:
         self.assertRaises(TypeError, self.reduce, add, ())
         self.assertRaises(TypeError, self.reduce, add, object())
 
-        class TestFailingIter:
+        klasse TestFailingIter:
             def __iter__(self):
                 raise RuntimeError
         self.assertRaises(RuntimeError, self.reduce, add, TestFailingIter())
@@ -1016,14 +1016,14 @@ class TestReduce:
         self.assertEqual(self.reduce(add, [], None), None)
         self.assertEqual(self.reduce(add, [], 42), 42)
 
-        class BadSeq:
+        klasse BadSeq:
             def __getitem__(self, index):
                 raise ValueError
         self.assertRaises(ValueError, self.reduce, 42, BadSeq())
 
     # Test reduce()'s use of iterators.
     def test_iterator_usage(self):
-        class SequenceClass:
+        klasse SequenceClass:
             def __init__(self, n):
                 self.n = n
             def __getitem__(self, i):
@@ -1068,12 +1068,12 @@ class TestReduce:
 
 
 @unittest.skipUnless(c_functools, 'requires the C _functools module')
-class TestReduceC(TestReduce, unittest.TestCase):
+klasse TestReduceC(TestReduce, unittest.TestCase):
     if c_functools:
         reduce = c_functools.reduce
 
 
-class TestReducePy(TestReduce, unittest.TestCase):
+klasse TestReducePy(TestReduce, unittest.TestCase):
     reduce = staticmethod(py_functools.reduce)
 
     def test_reduce_with_kwargs(self):
@@ -1083,7 +1083,7 @@ class TestReducePy(TestReduce, unittest.TestCase):
             self.reduce(lambda x, y: x + y, sequence=[1, 2, 3, 4, 5], initial=1)
 
 
-class TestCmpToKey:
+klasse TestCmpToKey:
 
     def test_cmp_to_key(self):
         def cmp1(x, y):
@@ -1128,7 +1128,7 @@ class TestCmpToKey:
         with self.assertRaises(ZeroDivisionError):
             key(3) > key(1)
 
-        class BadCmp:
+        klasse BadCmp:
             def __lt__(self, other):
                 raise ZeroDivisionError
         def cmp1(x, y):
@@ -1178,7 +1178,7 @@ class TestCmpToKey:
 
 
 @unittest.skipUnless(c_functools, 'requires the C _functools module')
-class TestCmpToKeyC(TestCmpToKey, unittest.TestCase):
+klasse TestCmpToKeyC(TestCmpToKey, unittest.TestCase):
     if c_functools:
         cmp_to_key = c_functools.cmp_to_key
 
@@ -1190,15 +1190,15 @@ class TestCmpToKeyC(TestCmpToKey, unittest.TestCase):
         )
 
 
-class TestCmpToKeyPy(TestCmpToKey, unittest.TestCase):
+klasse TestCmpToKeyPy(TestCmpToKey, unittest.TestCase):
     cmp_to_key = staticmethod(py_functools.cmp_to_key)
 
 
-class TestTotalOrdering(unittest.TestCase):
+klasse TestTotalOrdering(unittest.TestCase):
 
     def test_total_ordering_lt(self):
         @functools.total_ordering
-        class A:
+        klasse A:
             def __init__(self, value):
                 self.value = value
             def __lt__(self, other):
@@ -1215,7 +1215,7 @@ class TestTotalOrdering(unittest.TestCase):
 
     def test_total_ordering_le(self):
         @functools.total_ordering
-        class A:
+        klasse A:
             def __init__(self, value):
                 self.value = value
             def __le__(self, other):
@@ -1232,7 +1232,7 @@ class TestTotalOrdering(unittest.TestCase):
 
     def test_total_ordering_gt(self):
         @functools.total_ordering
-        class A:
+        klasse A:
             def __init__(self, value):
                 self.value = value
             def __gt__(self, other):
@@ -1249,7 +1249,7 @@ class TestTotalOrdering(unittest.TestCase):
 
     def test_total_ordering_ge(self):
         @functools.total_ordering
-        class A:
+        klasse A:
             def __init__(self, value):
                 self.value = value
             def __ge__(self, other):
@@ -1267,7 +1267,7 @@ class TestTotalOrdering(unittest.TestCase):
     def test_total_ordering_no_overwrite(self):
         # new methods should not overwrite existing
         @functools.total_ordering
-        class A(int):
+        klasse A(int):
             pass
         self.assertTrue(A(1) < A(2))
         self.assertTrue(A(2) > A(1))
@@ -1279,13 +1279,13 @@ class TestTotalOrdering(unittest.TestCase):
     def test_no_operations_defined(self):
         with self.assertRaises(ValueError):
             @functools.total_ordering
-            class A:
+            klasse A:
                 pass
 
     def test_notimplemented(self):
         # Verify NotImplemented results are correctly handled
         @functools.total_ordering
-        class ImplementsLessThan:
+        klasse ImplementsLessThan:
             def __init__(self, value):
                 self.value = value
             def __eq__(self, other):
@@ -1298,7 +1298,7 @@ class TestTotalOrdering(unittest.TestCase):
                 return NotImplemented
 
         @functools.total_ordering
-        class ImplementsLessThanEqualTo:
+        klasse ImplementsLessThanEqualTo:
             def __init__(self, value):
                 self.value = value
             def __eq__(self, other):
@@ -1311,7 +1311,7 @@ class TestTotalOrdering(unittest.TestCase):
                 return NotImplemented
 
         @functools.total_ordering
-        class ImplementsGreaterThan:
+        klasse ImplementsGreaterThan:
             def __init__(self, value):
                 self.value = value
             def __eq__(self, other):
@@ -1324,7 +1324,7 @@ class TestTotalOrdering(unittest.TestCase):
                 return NotImplemented
 
         @functools.total_ordering
-        class ImplementsGreaterThanEqualTo:
+        klasse ImplementsGreaterThanEqualTo:
             def __init__(self, value):
                 self.value = value
             def __eq__(self, other):
@@ -1353,7 +1353,7 @@ class TestTotalOrdering(unittest.TestCase):
         # bug 10042; ensure stack overflow does not occur
         # when decorated types return NotImplemented
         @functools.total_ordering
-        class ImplementsLessThan:
+        klasse ImplementsLessThan:
             def __init__(self, value):
                 self.value = value
             def __eq__(self, other):
@@ -1366,7 +1366,7 @@ class TestTotalOrdering(unittest.TestCase):
                 return NotImplemented
 
         @functools.total_ordering
-        class ImplementsGreaterThan:
+        klasse ImplementsGreaterThan:
             def __init__(self, value):
                 self.value = value
             def __eq__(self, other):
@@ -1379,7 +1379,7 @@ class TestTotalOrdering(unittest.TestCase):
                 return NotImplemented
 
         @functools.total_ordering
-        class ImplementsLessThanEqualTo:
+        klasse ImplementsLessThanEqualTo:
             def __init__(self, value):
                 self.value = value
             def __eq__(self, other):
@@ -1392,7 +1392,7 @@ class TestTotalOrdering(unittest.TestCase):
                 return NotImplemented
 
         @functools.total_ordering
-        class ImplementsGreaterThanEqualTo:
+        klasse ImplementsGreaterThanEqualTo:
             def __init__(self, value):
                 self.value = value
             def __eq__(self, other):
@@ -1405,7 +1405,7 @@ class TestTotalOrdering(unittest.TestCase):
                 return NotImplemented
 
         @functools.total_ordering
-        class ComparatorNotImplemented:
+        klasse ComparatorNotImplemented:
             def __init__(self, value):
                 self.value = value
             def __eq__(self, other):
@@ -1468,7 +1468,7 @@ class TestTotalOrdering(unittest.TestCase):
     def test_total_ordering_for_metaclasses_issue_44605(self):
 
         @functools.total_ordering
-        class SortableMeta(type):
+        klasse SortableMeta(type):
             def __new__(cls, name, bases, ns):
                 return super().__new__(cls, name, bases, ns)
 
@@ -1482,10 +1482,10 @@ class TestTotalOrdering(unittest.TestCase):
                     pass
                 return self.__name__ == other.__name__
 
-        class B(metaclass=SortableMeta):
+        klasse B(metaclass=SortableMeta):
             pass
 
-        class A(metaclass=SortableMeta):
+        klasse A(metaclass=SortableMeta):
             pass
 
         self.assertTrue(A < B)
@@ -1493,7 +1493,7 @@ class TestTotalOrdering(unittest.TestCase):
 
 
 @functools.total_ordering
-class Orderable_LT:
+klasse Orderable_LT:
     def __init__(self, value):
         self.value = value
     def __lt__(self, other):
@@ -1502,7 +1502,7 @@ class Orderable_LT:
         return self.value == other.value
 
 
-class TestCache:
+klasse TestCache:
     # This tests that the pass-through is working as designed.
     # The underlying functionality is tested in TestLRU.
 
@@ -1521,17 +1521,17 @@ class TestCache:
             self.module._CacheInfo(hits=0, misses=0, maxsize=None, currsize=0))
 
 
-class TestCachePy(TestCache, unittest.TestCase):
+klasse TestCachePy(TestCache, unittest.TestCase):
     module = py_functools
 
 
 @unittest.skipUnless(c_functools, 'requires the C _functools module')
-class TestCacheC(TestCache, unittest.TestCase):
+klasse TestCacheC(TestCache, unittest.TestCase):
     if c_functools:
         module = c_functools
 
 
-class TestLRU:
+klasse TestLRU:
 
     def test_lru(self):
         def orig(x, y):
@@ -1822,7 +1822,7 @@ class TestLRU:
         self.assertEqual(cached((False,)), '(0,)')
         self.assertEqual(cached((0.0,)), '(0,)')
 
-        class T(tuple):
+        klasse T(tuple):
             pass
 
         self.assertEqual(cached(T((1,))), '(1,)')
@@ -1978,7 +1978,7 @@ class TestLRU:
             'Used to demonstrate a reentrant lru_cache call within a single thread'
             return x
 
-        class DoubleEq:
+        klasse DoubleEq:
             'Demonstrate a reentrant lru_cache call within a single thread'
             def __init__(self, x):
                 self.x = x
@@ -1995,7 +1995,7 @@ class TestLRU:
                          DoubleEq(2))               # Verify the correct return value
 
     def test_lru_method(self):
-        class X(int):
+        klasse X(int):
             f_cnt = 0
             @self.module.lru_cache(2)
             def f(self, x):
@@ -2073,7 +2073,7 @@ class TestLRU:
         def test_function(x):
             return x
 
-        class A:
+        klasse A:
             @self.module.lru_cache
             def test_method(self, x):
                 return (self, x)
@@ -2163,7 +2163,7 @@ if c_functools:
         return 3 * x + y
 
 
-class TestLRUPy(TestLRU, unittest.TestCase):
+klasse TestLRUPy(TestLRU, unittest.TestCase):
     module = py_functools
     cached_func = py_cached_func,
 
@@ -2178,7 +2178,7 @@ class TestLRUPy(TestLRU, unittest.TestCase):
 
 
 @unittest.skipUnless(c_functools, 'requires the C _functools module')
-class TestLRUC(TestLRU, unittest.TestCase):
+klasse TestLRUC(TestLRU, unittest.TestCase):
     if c_functools:
         module = c_functools
         cached_func = c_cached_func,
@@ -2193,7 +2193,7 @@ class TestLRUC(TestLRU, unittest.TestCase):
             return 3 * x + y
 
 
-class TestSingleDispatch(unittest.TestCase):
+klasse TestSingleDispatch(unittest.TestCase):
     def test_simple_overloads(self):
         @functools.singledispatch
         def g(obj):
@@ -2209,13 +2209,13 @@ class TestSingleDispatch(unittest.TestCase):
         @functools.singledispatch
         def g(obj):
             return "base"
-        class A:
+        klasse A:
             pass
-        class C(A):
+        klasse C(A):
             pass
-        class B(A):
+        klasse B(A):
             pass
-        class D(C, B):
+        klasse D(C, B):
             pass
         def g_A(a):
             return "A"
@@ -2300,7 +2300,7 @@ class TestSingleDispatch(unittest.TestCase):
         # MutableSequence below is registered directly on D. In other words, it
         # precedes MutableMapping which means single dispatch will always
         # choose MutableSequence here.
-        class D(collections.defaultdict):
+        klasse D(collections.defaultdict):
             pass
         c.MutableSequence.register(D)
         bases = [c.MutableSequence, c.MutableMapping]
@@ -2314,7 +2314,7 @@ class TestSingleDispatch(unittest.TestCase):
         # Container and Callable are registered on different base classes and
         # a generic function supporting both should always pick the Callable
         # implementation if a C instance is passed.
-        class C(collections.defaultdict):
+        klasse C(collections.defaultdict):
             def __call__(self):
                 pass
         bases = [c.Sized, c.Callable, c.Container, c.Mapping]
@@ -2421,17 +2421,17 @@ class TestSingleDispatch(unittest.TestCase):
     def test_c3_abc(self):
         c = collections.abc
         mro = functools._c3_mro
-        class A(object):
+        klasse A(object):
             pass
-        class B(A):
+        klasse B(A):
             def __len__(self):
                 return 0   # implies Sized
         @c.Container.register
-        class C(object):
+        klasse C(object):
             pass
-        class D(object):
+        klasse D(object):
             pass   # unrelated
-        class X(D, C, B):
+        klasse X(D, C, B):
             def __call__(self):
                 pass   # implies Callable
         expected = [X, c.Callable, D, C, c.Container, B, c.Sized, A, object]
@@ -2443,12 +2443,12 @@ class TestSingleDispatch(unittest.TestCase):
 
     def test_false_meta(self):
         # see issue23572
-        class MetaA(type):
+        klasse MetaA(type):
             def __len__(self):
                 return 0
-        class A(metaclass=MetaA):
+        klasse A(metaclass=MetaA):
             pass
-        class AA(A):
+        klasse AA(A):
             pass
         @functools.singledispatch
         def fun(a):
@@ -2464,7 +2464,7 @@ class TestSingleDispatch(unittest.TestCase):
         @functools.singledispatch
         def g(arg):
             return "base"
-        class O(c.Sized):
+        klasse O(c.Sized):
             def __len__(self):
                 return 0
         o = O()
@@ -2481,7 +2481,7 @@ class TestSingleDispatch(unittest.TestCase):
         c.Set.register(O)
         self.assertEqual(g(o), "set")     # because c.Set is a subclass of
                                           # c.Sized and c.Container
-        class P:
+        klasse P:
             pass
         p = P()
         self.assertEqual(g(p), "base")
@@ -2497,7 +2497,7 @@ class TestSingleDispatch(unittest.TestCase):
              ("Ambiguous dispatch: <class 'collections.abc.Iterable'> "
               "or <class 'collections.abc.Container'>")),
         )
-        class Q(c.Sized):
+        klasse Q(c.Sized):
             def __len__(self):
                 return 0
         q = Q()
@@ -2529,7 +2529,7 @@ class TestSingleDispatch(unittest.TestCase):
              ("Ambiguous dispatch: <class 'collections.abc.Sized'> "
               "or <class 'collections.abc.Container'>")),
         )
-        class R(collections.defaultdict):
+        klasse R(collections.defaultdict):
             pass
         c.MutableSequence.register(R)
         @functools.singledispatch
@@ -2543,16 +2543,16 @@ class TestSingleDispatch(unittest.TestCase):
             return "sequence"
         r = R()
         self.assertEqual(i(r), "sequence")
-        class S:
+        klasse S:
             pass
-        class T(S, c.Sized):
+        klasse T(S, c.Sized):
             def __len__(self):
                 return 0
         t = T()
         self.assertEqual(h(t), "sized")
         c.Container.register(T)
         self.assertEqual(h(t), "sized")   # because it's explicitly in the MRO
-        class U:
+        klasse U:
             def __len__(self):
                 return 0
         u = U()
@@ -2569,7 +2569,7 @@ class TestSingleDispatch(unittest.TestCase):
              ("Ambiguous dispatch: <class 'collections.abc.Sized'> "
               "or <class 'collections.abc.Container'>")),
         )
-        class V(c.Sized, S):
+        klasse V(c.Sized, S):
             def __len__(self):
                 return 0
         @functools.singledispatch
@@ -2591,7 +2591,7 @@ class TestSingleDispatch(unittest.TestCase):
         from collections import UserDict
         import weakref
 
-        class TracingDict(UserDict):
+        klasse TracingDict(UserDict):
             def __init__(self, *args, **kwargs):
                 super(TracingDict, self).__init__(*args, **kwargs)
                 self.set_ops = []
@@ -2646,7 +2646,7 @@ class TestSingleDispatch(unittest.TestCase):
             self.assertEqual(td.set_ops, [dict, list, dict, list])
             self.assertEqual(td.data[list],
                              functools._find_impl(list, g.registry))
-            class X:
+            klasse X:
                 pass
             c.MutableMapping.register(X)   # Will not invalidate the cache,
                                            # not using ABCs yet.
@@ -2708,7 +2708,7 @@ class TestSingleDispatch(unittest.TestCase):
         # Registering classes as callables doesn't work with annotations,
         # you need to pass the type explicitly.
         @i.register(str)
-        class _:
+        klasse _:
             def __init__(self, arg):
                 self.arg = arg
 
@@ -2717,7 +2717,7 @@ class TestSingleDispatch(unittest.TestCase):
         self.assertEqual(i("str"), "str")
 
     def test_method_register(self):
-        class A:
+        klasse A:
             @functools.singledispatchmethod
             def t(self, arg):
                 self.arg = "base"
@@ -2743,7 +2743,7 @@ class TestSingleDispatch(unittest.TestCase):
         self.assertNotHasAttr(aa, 'arg')
 
     def test_staticmethod_register(self):
-        class A:
+        klasse A:
             @functools.singledispatchmethod
             @staticmethod
             def t(arg):
@@ -2763,7 +2763,7 @@ class TestSingleDispatch(unittest.TestCase):
         self.assertEqual(A.t(0.0), 0.0)
 
     def test_slotted_class(self):
-        class Slot:
+        klasse Slot:
             __slots__ = ('a', 'b')
             @functools.singledispatchmethod
             def go(self, item, arg):
@@ -2777,7 +2777,7 @@ class TestSingleDispatch(unittest.TestCase):
         self.assertEqual(s.go(1, 1), 2)
 
     def test_classmethod_slotted_class(self):
-        class Slot:
+        klasse Slot:
             __slots__ = ('a', 'b')
             @functools.singledispatchmethod
             @classmethod
@@ -2794,7 +2794,7 @@ class TestSingleDispatch(unittest.TestCase):
         self.assertEqual(Slot.go(1, 1), 2)
 
     def test_staticmethod_slotted_class(self):
-        class A:
+        klasse A:
             __slots__ = ['a']
             @functools.singledispatchmethod
             @staticmethod
@@ -2819,7 +2819,7 @@ class TestSingleDispatch(unittest.TestCase):
 
     def test_assignment_behavior(self):
         # see gh-106448
-        class A:
+        klasse A:
             @functools.singledispatchmethod
             def t(arg):
                 return arg
@@ -2831,7 +2831,7 @@ class TestSingleDispatch(unittest.TestCase):
             a2.t.foo
 
     def test_classmethod_register(self):
-        class A:
+        klasse A:
             def __init__(self, arg):
                 self.arg = arg
 
@@ -2853,7 +2853,7 @@ class TestSingleDispatch(unittest.TestCase):
         self.assertEqual(A.t(0.0).arg, "base")
 
     def test_callable_register(self):
-        class A:
+        klasse A:
             def __init__(self, arg):
                 self.arg = arg
 
@@ -2876,7 +2876,7 @@ class TestSingleDispatch(unittest.TestCase):
         self.assertEqual(A.t(0.0).arg, "base")
 
     def test_abstractmethod_register(self):
-        class Abstract(metaclass=abc.ABCMeta):
+        klasse Abstract(metaclass=abc.ABCMeta):
 
             @functools.singledispatchmethod
             @abc.abstractmethod
@@ -2890,7 +2890,7 @@ class TestSingleDispatch(unittest.TestCase):
             Abstract()
 
     def test_type_ann_register(self):
-        class A:
+        klasse A:
             @functools.singledispatchmethod
             def t(self, arg):
                 return "base"
@@ -2907,7 +2907,7 @@ class TestSingleDispatch(unittest.TestCase):
         self.assertEqual(a.t(0.0), "base")
 
     def test_staticmethod_type_ann_register(self):
-        class A:
+        klasse A:
             @functools.singledispatchmethod
             @staticmethod
             def t(arg):
@@ -2927,7 +2927,7 @@ class TestSingleDispatch(unittest.TestCase):
         self.assertEqual(A.t(0.0), 0.0)
 
     def test_classmethod_type_ann_register(self):
-        class A:
+        klasse A:
             def __init__(self, arg):
                 self.arg = arg
 
@@ -2949,7 +2949,7 @@ class TestSingleDispatch(unittest.TestCase):
         self.assertEqual(A.t(0.0).arg, "base")
 
     def test_method_wrapping_attributes(self):
-        class A:
+        klasse A:
             @functools.singledispatchmethod
             def func(self, arg: int) -> str:
                 """My function docstring"""
@@ -2992,16 +2992,16 @@ class TestSingleDispatch(unittest.TestCase):
         self.assertEqual(A().static_func.__name__, 'static_func')
 
     def test_method_repr(self):
-        class Callable:
+        klasse Callable:
             def __call__(self, *args):
                 pass
 
-        class CallableWithName:
+        klasse CallableWithName:
             __name__ = 'NOQUALNAME'
             def __call__(self, *args):
                 pass
 
-        class A:
+        klasse A:
             @functools.singledispatchmethod
             def func(self, arg):
                 pass
@@ -3061,7 +3061,7 @@ class TestSingleDispatch(unittest.TestCase):
                 return wrapped(*args, **kwargs)
             return wrapper
 
-        class WithoutSingleDispatch:
+        klasse WithoutSingleDispatch:
             @classmethod
             @contextlib.contextmanager
             def cls_context_manager(cls, arg: int) -> str:
@@ -3076,7 +3076,7 @@ class TestSingleDispatch(unittest.TestCase):
             def decorated_classmethod(cls, arg: int) -> str:
                 return str(arg)
 
-        class WithSingleDispatch:
+        klasse WithSingleDispatch:
             @functools.singledispatchmethod
             @classmethod
             @contextlib.contextmanager
@@ -3218,7 +3218,7 @@ class TestSingleDispatch(unittest.TestCase):
             f(a=1)
 
     def test_invalid_positional_argument_singledispatchmethod(self):
-        class A:
+        klasse A:
             @functools.singledispatchmethod
             def t(self, *args, **kwargs):
                 pass
@@ -3375,7 +3375,7 @@ class TestSingleDispatch(unittest.TestCase):
 
     def test_method_equal_instances(self):
         # gh-127750: Reference to self was cached
-        class A:
+        klasse A:
             def __eq__(self, other):
                 return True
             def __hash__(self):
@@ -3390,7 +3390,7 @@ class TestSingleDispatch(unittest.TestCase):
         self.assertIs(b.t(2), b)
 
     def test_method_bad_hash(self):
-        class A:
+        klasse A:
             def __eq__(self, other):
                 raise AssertionError
             def __hash__(self):
@@ -3406,7 +3406,7 @@ class TestSingleDispatch(unittest.TestCase):
 
     def test_method_no_reference_loops(self):
         # gh-127750: Created a strong reference to self
-        class A:
+        klasse A:
             @functools.singledispatchmethod
             def t(self, arg):
                 return weakref.ref(self)
@@ -3442,7 +3442,7 @@ class TestSingleDispatch(unittest.TestCase):
                          '(item, arg: int) -> str')
 
     def test_method_signatures(self):
-        class A:
+        klasse A:
             def m(self, item, arg: int) -> str:
                 return str(item)
             @classmethod
@@ -3483,7 +3483,7 @@ class TestSingleDispatch(unittest.TestCase):
                          '(item, arg: int) -> str')
 
 
-class CachedCostItem:
+klasse CachedCostItem:
     _cost = 1
 
     def __init__(self):
@@ -3497,7 +3497,7 @@ class CachedCostItem:
         return self._cost
 
 
-class OptionallyCachedCostItem:
+klasse OptionallyCachedCostItem:
     _cost = 1
 
     def get_cost(self):
@@ -3508,7 +3508,7 @@ class OptionallyCachedCostItem:
     cached_cost = py_functools.cached_property(get_cost)
 
 
-class CachedCostItemWithSlots:
+klasse CachedCostItemWithSlots:
     __slots__ = ('_cost')
 
     def __init__(self):
@@ -3519,7 +3519,7 @@ class CachedCostItemWithSlots:
         raise RuntimeError('never called, slots not supported')
 
 
-class TestCachedProperty(unittest.TestCase):
+klasse TestCachedProperty(unittest.TestCase):
     def test_cached(self):
         item = CachedCostItem()
         self.assertEqual(item.cost, 2)
@@ -3541,12 +3541,12 @@ class TestCachedProperty(unittest.TestCase):
             item.cost
 
     def test_immutable_dict(self):
-        class MyMeta(type):
+        klasse MyMeta(type):
             @py_functools.cached_property
             def prop(self):
                 return True
 
-        class MyClass(metaclass=MyMeta):
+        klasse MyClass(metaclass=MyMeta):
             pass
 
         with self.assertRaisesRegex(
@@ -3558,7 +3558,7 @@ class TestCachedProperty(unittest.TestCase):
     def test_reuse_different_names(self):
         """Disallow this case because decorated function a would not be cached."""
         with self.assertRaises(TypeError) as ctx:
-            class ReusedCachedProperty:
+            klasse ReusedCachedProperty:
                 @py_functools.cached_property
                 def a(self):
                     pass
@@ -3580,10 +3580,10 @@ class TestCachedProperty(unittest.TestCase):
             counter += 1
             return counter
 
-        class A:
+        klasse A:
             cp = _cp
 
-        class B:
+        klasse B:
             cp = _cp
 
         a = A()
@@ -3595,7 +3595,7 @@ class TestCachedProperty(unittest.TestCase):
 
     def test_set_name_not_called(self):
         cp = py_functools.cached_property(lambda s: None)
-        class Foo:
+        klasse Foo:
             pass
 
         Foo.cp = cp
@@ -3620,11 +3620,11 @@ class TestCachedProperty(unittest.TestCase):
 
     def test_subclass_with___set__(self):
         """Caching still works for a subclass defining __set__."""
-        class readonly_cached_property(py_functools.cached_property):
+        klasse readonly_cached_property(py_functools.cached_property):
             def __set__(self, obj, value):
                 raise AttributeError("read only property")
 
-        class Test:
+        klasse Test:
             def __init__(self, prop):
                 self._prop = prop
 

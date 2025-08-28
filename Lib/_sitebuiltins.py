@@ -10,7 +10,7 @@ The objects used by the site module to add custom builtins.
 
 import sys
 
-class Quitter(object):
+klasse Quitter(object):
     def __init__(self, name, eof):
         self.name = name
         self.eof = eof
@@ -26,7 +26,7 @@ class Quitter(object):
         raise SystemExit(code)
 
 
-class _Printer(object):
+klasse _Printer(object):
     """interactive prompt objects for printing the license text, a list of
     contributors and the copyright notice."""
 
@@ -85,7 +85,7 @@ class _Printer(object):
                     break
 
 
-class _Helper(object):
+klasse _Helper(object):
     """Define the builtin 'help'.
 
     This is a wrapper around pydoc.help that provides a helpful message

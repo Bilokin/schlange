@@ -19,11 +19,11 @@ def _async_test(async_fn):
     return wrapper
 
 
-class TestAbstractAsyncContextManager(unittest.TestCase):
+klasse TestAbstractAsyncContextManager(unittest.TestCase):
 
     @_async_test
     async def test_enter(self):
-        class DefaultEnter(AbstractAsyncContextManager):
+        klasse DefaultEnter(AbstractAsyncContextManager):
             async def __aexit__(self, *args):
                 await super().__aexit__(*args)
 
@@ -35,7 +35,7 @@ class TestAbstractAsyncContextManager(unittest.TestCase):
 
     @_async_test
     async def test_slots(self):
-        class DefaultAsyncContextManager(AbstractAsyncContextManager):
+        klasse DefaultAsyncContextManager(AbstractAsyncContextManager):
             __slots__ = ()
 
             async def __aexit__(self, *args):
@@ -64,14 +64,14 @@ class TestAbstractAsyncContextManager(unittest.TestCase):
         await g.aclose()
 
     def test_exit_is_abstract(self):
-        class MissingAexit(AbstractAsyncContextManager):
+        klasse MissingAexit(AbstractAsyncContextManager):
             pass
 
         with self.assertRaises(TypeError):
             MissingAexit()
 
     def test_structural_subclassing(self):
-        class ManagerFromScratch:
+        klasse ManagerFromScratch:
             async def __aenter__(self):
                 return self
             async def __aexit__(self, exc_type, exc_value, traceback):
@@ -79,24 +79,24 @@ class TestAbstractAsyncContextManager(unittest.TestCase):
 
         self.assertIsSubclass(ManagerFromScratch, AbstractAsyncContextManager)
 
-        class DefaultEnter(AbstractAsyncContextManager):
+        klasse DefaultEnter(AbstractAsyncContextManager):
             async def __aexit__(self, *args):
                 await super().__aexit__(*args)
 
         self.assertIsSubclass(DefaultEnter, AbstractAsyncContextManager)
 
-        class NoneAenter(ManagerFromScratch):
+        klasse NoneAenter(ManagerFromScratch):
             __aenter__ = None
 
         self.assertNotIsSubclass(NoneAenter, AbstractAsyncContextManager)
 
-        class NoneAexit(ManagerFromScratch):
+        klasse NoneAexit(ManagerFromScratch):
             __aexit__ = None
 
         self.assertNotIsSubclass(NoneAexit, AbstractAsyncContextManager)
 
 
-class AsyncContextManagerTestCase(unittest.TestCase):
+klasse AsyncContextManagerTestCase(unittest.TestCase):
 
     @_async_test
     async def test_contextmanager_plain(self):
@@ -147,7 +147,7 @@ class AsyncContextManagerTestCase(unittest.TestCase):
         self.assertEqual(frames[0].line, '1/0')
 
         # Repeat with RuntimeError (which goes through a different code path)
-        class RuntimeErrorSubclass(RuntimeError):
+        klasse RuntimeErrorSubclass(RuntimeError):
             pass
 
         try:
@@ -160,10 +160,10 @@ class AsyncContextManagerTestCase(unittest.TestCase):
         self.assertEqual(frames[0].name, 'test_contextmanager_traceback')
         self.assertEqual(frames[0].line, 'raise RuntimeErrorSubclass(42)')
 
-        class StopIterationSubclass(StopIteration):
+        klasse StopIterationSubclass(StopIteration):
             pass
 
-        class StopAsyncIterationSubclass(StopAsyncIteration):
+        klasse StopAsyncIterationSubclass(StopAsyncIteration):
             pass
 
         for stop_exc in (
@@ -274,10 +274,10 @@ class AsyncContextManagerTestCase(unittest.TestCase):
         async def woohoo():
             yield
 
-        class StopIterationSubclass(StopIteration):
+        klasse StopIterationSubclass(StopIteration):
             pass
 
-        class StopAsyncIterationSubclass(StopAsyncIteration):
+        klasse StopAsyncIterationSubclass(StopAsyncIteration):
             pass
 
         for stop_exc in (
@@ -433,7 +433,7 @@ class AsyncContextManagerTestCase(unittest.TestCase):
             yield
 
 
-        class Test(object):
+        klasse Test(object):
 
             @context()
             async def method(self, a, b, c=None):
@@ -460,7 +460,7 @@ class AsyncContextManagerTestCase(unittest.TestCase):
         self.assertEqual(test.b, 2)
 
 
-class AclosingTestCase(unittest.TestCase):
+klasse AclosingTestCase(unittest.TestCase):
 
     @support.requires_docstrings
     def test_instance_docs(self):
@@ -471,7 +471,7 @@ class AclosingTestCase(unittest.TestCase):
     @_async_test
     async def test_aclosing(self):
         state = []
-        class C:
+        klasse C:
             async def aclose(self):
                 state.append(1)
         x = C()
@@ -483,7 +483,7 @@ class AclosingTestCase(unittest.TestCase):
     @_async_test
     async def test_aclosing_error(self):
         state = []
-        class C:
+        klasse C:
             async def aclose(self):
                 state.append(1)
         x = C()
@@ -520,8 +520,8 @@ class AclosingTestCase(unittest.TestCase):
         self.assertEqual(state, [1])
 
 
-class TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
-    class SyncAsyncExitStack(AsyncExitStack):
+klasse TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
+    klasse SyncAsyncExitStack(AsyncExitStack):
 
         def close(self):
             return _run_async_fn(self.aclose)
@@ -594,7 +594,7 @@ class TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
             self.assertIsNone(exc_type)
             self.assertIsNone(exc)
             self.assertIsNone(exc_tb)
-        class ExitCM(object):
+        klasse ExitCM(object):
             def __init__(self, check_exc):
                 self.check_exc = check_exc
             async def __aenter__(self):
@@ -621,7 +621,7 @@ class TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
 
     @_async_test
     async def test_enter_async_context(self):
-        class TestCM(object):
+        klasse TestCM(object):
             async def __aenter__(self):
                 result.append(1)
             async def __aexit__(self, *exc_details):
@@ -643,12 +643,12 @@ class TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
 
     @_async_test
     async def test_enter_async_context_errors(self):
-        class LacksEnterAndExit:
+        klasse LacksEnterAndExit:
             pass
-        class LacksEnter:
+        klasse LacksEnter:
             async def __aexit__(self, *exc_info):
                 pass
-        class LacksExit:
+        klasse LacksExit:
             async def __aenter__(self):
                 pass
 
@@ -698,7 +698,7 @@ class TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
         # Ensure AsyncExitStack chaining matches actual nested `with` statements
         # regarding explicit __context__ = None.
 
-        class MyException(Exception):
+        klasse MyException(Exception):
             pass
 
         @asynccontextmanager
@@ -730,7 +730,7 @@ class TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
 
     @_async_test
     async def test_instance_bypass_async(self):
-        class Example(object): pass
+        klasse Example(object): pass
         cm = Example()
         cm.__aenter__ = object()
         cm.__aexit__ = object()
@@ -741,10 +741,10 @@ class TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
         self.assertIs(stack._exit_callbacks[-1][1], cm)
 
 
-class TestAsyncNullcontext(unittest.TestCase):
+klasse TestAsyncNullcontext(unittest.TestCase):
     @_async_test
     async def test_async_nullcontext(self):
-        class C:
+        klasse C:
             pass
         c = C()
         async with nullcontext(c) as c_in:

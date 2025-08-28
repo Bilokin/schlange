@@ -15,7 +15,7 @@ import pickle
 RUN_ALL_HASH_TESTS = False
 JUST_SHOW_HASH_RESULTS = False # if RUN_ALL_HASH_TESTS, just display
 
-class TupleTest(seq_tests.CommonTest):
+klasse TupleTest(seq_tests.CommonTest):
     type2test = tuple
 
     def test_getitem_error(self):
@@ -43,7 +43,7 @@ class TupleTest(seq_tests.CommonTest):
             tuple(sequence=())
 
     def test_keywords_in_subclass(self):
-        class subclass(tuple):
+        klasse subclass(tuple):
             pass
         u = subclass([1, 2])
         self.assertIs(type(u), subclass)
@@ -51,7 +51,7 @@ class TupleTest(seq_tests.CommonTest):
         with self.assertRaises(TypeError):
             subclass(sequence=())
 
-        class subclass_with_init(tuple):
+        klasse subclass_with_init(tuple):
             def __init__(self, arg, newarg=None):
                 self.newarg = newarg
         u = subclass_with_init([1, 2], newarg=3)
@@ -59,7 +59,7 @@ class TupleTest(seq_tests.CommonTest):
         self.assertEqual(list(u), [1, 2])
         self.assertEqual(u.newarg, 3)
 
-        class subclass_with_new(tuple):
+        klasse subclass_with_new(tuple):
             def __new__(cls, arg, newarg=None):
                 self = super().__new__(cls, arg)
                 self.newarg = newarg
@@ -351,7 +351,7 @@ class TupleTest(seq_tests.CommonTest):
     @support.cpython_only
     def test_track_subtypes(self):
         # Tuple subtypes must always be tracked
-        class MyTuple(tuple):
+        klasse MyTuple(tuple):
             pass
         self.check_track_dynamic(MyTuple, True)
 
@@ -404,7 +404,7 @@ class TupleTest(seq_tests.CommonTest):
         # Issue 8847: In the PGO build, the MSVC linker's COMDAT folding
         # optimization causes failures in code that relies on distinct
         # function addresses.
-        class T(tuple): pass
+        klasse T(tuple): pass
         with self.assertRaises(TypeError):
             [3,] + T((1,2))
 

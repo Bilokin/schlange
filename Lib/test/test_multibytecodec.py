@@ -31,7 +31,7 @@ ALL_CJKENCODINGS = [
     'iso2022_jp_3', 'iso2022_jp_ext', 'iso2022_kr',
 ]
 
-class Test_MultibyteCodec(unittest.TestCase):
+klasse Test_MultibyteCodec(unittest.TestCase):
 
     def test_nullcoding(self):
         for enc in ALL_CJKENCODINGS:
@@ -77,7 +77,7 @@ class Test_MultibyteCodec(unittest.TestCase):
         for enc in ALL_CJKENCODINGS:
             self.assertRaises(TypeError, codecs.getdecoder(enc), "")
 
-class Test_IncrementalEncoder(unittest.TestCase):
+klasse Test_IncrementalEncoder(unittest.TestCase):
 
     def test_stateless(self):
         # cp949 encoder isn't stateful at all.
@@ -228,7 +228,7 @@ class Test_IncrementalEncoder(unittest.TestCase):
         res = _testcapi.run_in_subinterp(code)
         self.assertEqual(res, 0)
 
-class Test_IncrementalDecoder(unittest.TestCase):
+klasse Test_IncrementalDecoder(unittest.TestCase):
 
     def test_dbcs(self):
         # cp949 decoder is simple with only 1 or 2 bytes sequences.
@@ -306,7 +306,7 @@ class Test_IncrementalDecoder(unittest.TestCase):
         self.assertRaises(TypeError, decoder.setstate, (b"1234", "invalid"))
         self.assertRaises(UnicodeDecodeError, decoder.setstate, (b"123456789", 0))
 
-class Test_StreamReader(unittest.TestCase):
+klasse Test_StreamReader(unittest.TestCase):
     def test_bug1728403(self):
         try:
             f = open(TESTFN, 'wb')
@@ -323,7 +323,7 @@ class Test_StreamReader(unittest.TestCase):
         finally:
             os_helper.unlink(TESTFN)
 
-class Test_StreamWriter(unittest.TestCase):
+klasse Test_StreamWriter(unittest.TestCase):
     def test_gb18030(self):
         s= io.BytesIO()
         c = codecs.getwriter('gb18030')(s)
@@ -353,7 +353,7 @@ class Test_StreamWriter(unittest.TestCase):
         wr.write('abcd')
         self.assertEqual(s.getvalue(), b'abcd')
 
-class Test_ISO2022(unittest.TestCase):
+klasse Test_ISO2022(unittest.TestCase):
     def test_g2(self):
         iso2022jp2 = b'\x1b(B:hu4:unit\x1b.A\x1bNi de famille'
         uni = ':hu4:unit\xe9 de famille'
@@ -371,7 +371,7 @@ class Test_ISO2022(unittest.TestCase):
             # Any ISO 2022 codec will cause the segfault
             chr(x).encode('iso_2022_jp', 'ignore')
 
-class TestStateful(unittest.TestCase):
+klasse TestStateful(unittest.TestCase):
     text = '\u4E16\u4E16'
     encoding = 'iso-2022-jp'
     expected = b'\x1b$B@$@$'
@@ -399,7 +399,7 @@ class TestStateful(unittest.TestCase):
         self.assertEqual(output, self.expected_reset)
         self.assertEqual(encoder.encode('', final=True), b'')
 
-class TestHZStateful(TestStateful):
+klasse TestHZStateful(TestStateful):
     text = '\u804a\u804a'
     encoding = 'hz'
     expected = b'~{ADAD'

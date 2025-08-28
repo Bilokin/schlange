@@ -1,7 +1,7 @@
 import functools
 import tkinter
 
-class AbstractTkTest:
+klasse AbstractTkTest:
 
     @classmethod
     def setUpClass(cls):
@@ -35,7 +35,7 @@ class AbstractTkTest:
         self.root.withdraw()
 
 
-class AbstractDefaultRootTest:
+klasse AbstractDefaultRootTest:
 
     def setUp(self):
         self._old_support_default_root = tkinter._support_default_root

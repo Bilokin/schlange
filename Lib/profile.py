@@ -48,8 +48,8 @@ warnings.warn(
 #       return i_count
 #itimes = integer_timer # replace with C coded timer returning integers
 
-class _Utils:
-    """Support class for utility functions which are shared by
+klasse _Utils:
+    """Support klasse for utility functions which are shared by
     profile.py and cProfile.py modules.
     Not supposed to be used directly.
     """
@@ -109,7 +109,7 @@ def runctx(statement, globals, locals, filename=None, sort=-1):
     return _Utils(Profile).runctx(statement, globals, locals, filename, sort)
 
 
-class Profile:
+klasse Profile:
     """Profiler class.
 
     self.cur is always a tuple.  Each such tuple corresponds to a stack
@@ -355,7 +355,7 @@ class Profile:
         self.cmd = cmd
         self.simulate_call(cmd)
 
-    class fake_code:
+    klasse fake_code:
         def __init__(self, filename, line, name):
             self.co_filename = filename
             self.co_line = line
@@ -365,7 +365,7 @@ class Profile:
         def __repr__(self):
             return repr((self.co_filename, self.co_line, self.co_name))
 
-    class fake_frame:
+    klasse fake_frame:
         def __init__(self, code, prior):
             self.f_code = code
             self.f_back = prior

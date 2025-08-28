@@ -13,10 +13,10 @@ from codeop import CommandCompiler, compile_command
 __all__ = ["InteractiveInterpreter", "InteractiveConsole", "interact",
            "compile_command"]
 
-class InteractiveInterpreter:
-    """Base class for InteractiveConsole.
+klasse InteractiveInterpreter:
+    """Base klasse for InteractiveConsole.
 
-    This class deals with parsing and interpreter state (the user's
+    This klasse deals with parsing and interpreter state (the user's
     namespace); it doesn't deal with input buffering or prompting or
     input file naming (the filename is always passed in explicitly).
 
@@ -174,10 +174,10 @@ class InteractiveInterpreter:
         sys.stderr.write(data)
 
 
-class InteractiveConsole(InteractiveInterpreter):
+klasse InteractiveConsole(InteractiveInterpreter):
     """Closely emulate the behavior of the interactive Python interpreter.
 
-    This class builds on InteractiveInterpreter and adds prompting
+    This klasse builds on InteractiveInterpreter and adds prompting
     using the familiar sys.ps1 and sys.ps2, and input buffering.
 
     """
@@ -207,7 +207,7 @@ class InteractiveConsole(InteractiveInterpreter):
         The optional banner argument specifies the banner to print
         before the first interaction; by default it prints a banner
         similar to the one printed by the real Python interpreter,
-        followed by the current class name in parentheses (so as not
+        followed by the current klasse name in parentheses (so as not
         to confuse this with the real interpreter -- since it's so
         close!).
 
@@ -340,7 +340,7 @@ class InteractiveConsole(InteractiveInterpreter):
         return input(prompt)
 
 
-class Quitter:
+klasse Quitter:
     def __init__(self, name):
         self.name = name
         if sys.platform == "win32":

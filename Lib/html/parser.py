@@ -105,7 +105,7 @@ def _unescape_attrvalue(s):
     return attr_charref.sub(_replace_attr_charref, s)
 
 
-class HTMLParser(_markupbase.ParserBase):
+klasse HTMLParser(_markupbase.ParserBase):
     """Find tags and other markup and call handler functions.
 
     Usage:

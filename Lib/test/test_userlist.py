@@ -5,7 +5,7 @@ from test import list_tests
 import unittest
 
 
-class UserListTest(list_tests.CommonTest):
+klasse UserListTest(list_tests.CommonTest):
     type2test = UserList
 
     def test_getslice(self):
@@ -55,7 +55,7 @@ class UserListTest(list_tests.CommonTest):
 
     def test_getitemoverwriteiter(self):
         # Verify that __getitem__ overrides *are* recognized by __iter__
-        class T(self.type2test):
+        klasse T(self.type2test):
             def __getitem__(self, key):
                 return str(key) + '!!!'
         self.assertEqual(next(iter(T((1,2)))), "0!!!")

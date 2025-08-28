@@ -8,7 +8,7 @@ __all__ = [
 ]
 
 
-class FileWrapper:
+klasse FileWrapper:
     """Wrapper to convert file-like objects to iterables"""
 
     def __init__(self, filelike, blksize=8192):

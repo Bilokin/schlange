@@ -61,7 +61,7 @@ def server(evt, buf, serv):
         serv.close()
         evt.set()
 
-class GeneralTests:
+klasse GeneralTests:
 
     def setUp(self):
         smtplib.socket = mock_socket
@@ -160,12 +160,12 @@ class GeneralTests:
         self.assertRegex(stderr.getvalue(), expected)
 
 
-class SMTPGeneralTests(GeneralTests, unittest.TestCase):
+klasse SMTPGeneralTests(GeneralTests, unittest.TestCase):
 
     client = smtplib.SMTP
 
 
-class LMTPGeneralTests(GeneralTests, unittest.TestCase):
+klasse LMTPGeneralTests(GeneralTests, unittest.TestCase):
 
     client = smtplib.LMTP
 
@@ -227,7 +227,7 @@ MSG_END = '------------ END MESSAGE ------------\n'
 # test server times out, causing the test to fail.
 
 # Test behavior of smtpd.DebuggingServer
-class DebuggingServerTests(unittest.TestCase):
+klasse DebuggingServerTests(unittest.TestCase):
 
     maxDiff = None
 
@@ -696,7 +696,7 @@ class DebuggingServerTests(unittest.TestCase):
             smtp.send_message(m)
         smtp.close()
 
-class NonConnectingTests(unittest.TestCase):
+klasse NonConnectingTests(unittest.TestCase):
 
     def testNotConnected(self):
         # Test various operations on an unconnected SMTP object that
@@ -723,7 +723,7 @@ class NonConnectingTests(unittest.TestCase):
             self.assertIsNone(smtp.sock)
 
 
-class DefaultArgumentsTests(unittest.TestCase):
+klasse DefaultArgumentsTests(unittest.TestCase):
 
     def setUp(self):
         self.msg = EmailMessage()
@@ -751,7 +751,7 @@ class DefaultArgumentsTests(unittest.TestCase):
 
 
 # test response of client to a non-successful HELO message
-class BadHELOServerTests(unittest.TestCase):
+klasse BadHELOServerTests(unittest.TestCase):
 
     def setUp(self):
         smtplib.socket = mock_socket
@@ -770,7 +770,7 @@ class BadHELOServerTests(unittest.TestCase):
                             HOST, self.port, 'localhost', 3)
 
 
-class TooLongLineTests(unittest.TestCase):
+klasse TooLongLineTests(unittest.TestCase):
     respdata = b'250 OK' + (b'.' * smtplib._MAXLINE * 2) + b'\n'
 
     def setUp(self):
@@ -815,8 +815,8 @@ sim_lists = {'list-1':['Mr.A@somewhere.com','Mrs.C@somewhereesle.com'],
             }
 
 # Simulated SMTP channel & server
-class ResponseException(Exception): pass
-class SimSMTPChannel(smtpd.SMTPChannel):
+klasse ResponseException(Exception): pass
+klasse SimSMTPChannel(smtpd.SMTPChannel):
 
     quit_response = None
     mail_response = None
@@ -1005,7 +1005,7 @@ class SimSMTPChannel(smtpd.SMTPChannel):
         raise
 
 
-class SimSMTPServer(smtpd.SMTPServer):
+klasse SimSMTPServer(smtpd.SMTPServer):
 
     channel_class = SimSMTPChannel
 
@@ -1032,7 +1032,7 @@ class SimSMTPServer(smtpd.SMTPServer):
 
 # Test various SMTP & ESMTP commands/behaviors that require a simulated server
 # (i.e., something with more features than DebuggingServer)
-class SMTPSimTests(unittest.TestCase):
+klasse SMTPSimTests(unittest.TestCase):
 
     def setUp(self):
         self.thread_key = threading_helper.threading_setup()
@@ -1319,7 +1319,7 @@ class SMTPSimTests(unittest.TestCase):
         self.assertDictEqual(r.exception.args[0], {'Frank': (421, b'closing')})
 
     def test_421_from_data_cmd(self):
-        class MySimSMTPChannel(SimSMTPChannel):
+        klasse MySimSMTPChannel(SimSMTPChannel):
             def found_terminator(self):
                 if self.smtp_state == self.DATA:
                     self.push('421 closing')
@@ -1360,7 +1360,7 @@ class SMTPSimTests(unittest.TestCase):
 
     def test_send_message_error_on_non_ascii_addrs_if_no_smtputf8(self):
         # This test is located here and not in the SMTPUTF8SimTests
-        # class because it needs a "regular" SMTP server to work
+        # klasse because it needs a "regular" SMTP server to work
         msg = EmailMessage()
         msg['From'] = "Páolo <főo@bar.com>"
         msg['To'] = 'Dinsdale'
@@ -1400,7 +1400,7 @@ class SMTPSimTests(unittest.TestCase):
         self.assertIn(['rcpt to:<Sally>'], self.serv._SMTPchannel.all_received_lines)
 
 
-class SimSMTPUTF8Server(SimSMTPServer):
+klasse SimSMTPUTF8Server(SimSMTPServer):
 
     def __init__(self, *args, **kw):
         # The base SMTP server turns these on automatically, but our test
@@ -1426,7 +1426,7 @@ class SimSMTPUTF8Server(SimSMTPServer):
         self.last_rcpt_options = rcpt_options
 
 
-class SMTPUTF8SimTests(unittest.TestCase):
+klasse SMTPUTF8SimTests(unittest.TestCase):
 
     maxDiff = None
 
@@ -1539,7 +1539,7 @@ class SMTPUTF8SimTests(unittest.TestCase):
 
 EXPECTED_RESPONSE = encode_base64(b'\0psu\0doesnotexist', eol='')
 
-class SimSMTPAUTHInitialResponseChannel(SimSMTPChannel):
+klasse SimSMTPAUTHInitialResponseChannel(SimSMTPChannel):
     def smtp_AUTH(self, arg):
         # RFC 4954's AUTH command allows for an optional initial-response.
         # Not all AUTH methods support this; some require a challenge.  AUTH
@@ -1554,11 +1554,11 @@ class SimSMTPAUTHInitialResponseChannel(SimSMTPChannel):
                     return
         self.push('571 Bad authentication')
 
-class SimSMTPAUTHInitialResponseServer(SimSMTPServer):
+klasse SimSMTPAUTHInitialResponseServer(SimSMTPServer):
     channel_class = SimSMTPAUTHInitialResponseChannel
 
 
-class SMTPAUTHInitialResponseSimTests(unittest.TestCase):
+klasse SMTPAUTHInitialResponseSimTests(unittest.TestCase):
     def setUp(self):
         self.thread_key = threading_helper.threading_setup()
         self.real_getfqdn = socket.getfqdn

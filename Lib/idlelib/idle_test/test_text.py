@@ -1,4 +1,4 @@
-''' Test mock_tk.Text class against tkinter.Text class
+''' Test mock_tk.Text klasse against tkinter.Text class
 
 Run same tests with both by creating a mixin class.
 '''
@@ -6,7 +6,7 @@ import unittest
 from test.support import requires
 from _tkinter import TclError
 
-class TextTest:
+klasse TextTest:
     "Define items common to both sets of tests."
 
     hw = 'hello\nworld'  # Several tests insert this after initialization.
@@ -191,7 +191,7 @@ class TextTest:
             Equal(compare('3.3', op, '2.2'), greater1, op)
 
 
-class MockTextTest(TextTest, unittest.TestCase):
+klasse MockTextTest(TextTest, unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -214,7 +214,7 @@ class MockTextTest(TextTest, unittest.TestCase):
         Equal(decode('3.1', 0), (2, 6))
 
 
-class TkTextTest(TextTest, unittest.TestCase):
+klasse TkTextTest(TextTest, unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):

@@ -6,7 +6,7 @@ from test.support import requires
 from tkinter import Tk
 
 
-class WindowListTest(unittest.TestCase):
+klasse WindowListTest(unittest.TestCase):
 
     def test_init(self):
         wl = window.WindowList()
@@ -16,7 +16,7 @@ class WindowListTest(unittest.TestCase):
     # Further tests need mock Window.
 
 
-class ListedToplevelTest(unittest.TestCase):
+klasse ListedToplevelTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):

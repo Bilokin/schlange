@@ -30,7 +30,7 @@ else:
     shebang_encoding = sys.getfilesystemencoding()
 
 
-class ZipAppError(ValueError):
+klasse ZipAppError(ValueError):
     pass
 
 

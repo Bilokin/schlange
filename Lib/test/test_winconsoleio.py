@@ -15,7 +15,7 @@ from _testconsole import write_input
 
 ConIO = io._WindowsConsoleIO
 
-class WindowsConsoleIOTests(unittest.TestCase):
+klasse WindowsConsoleIOTests(unittest.TestCase):
     def test_abc(self):
         self.assertIsSubclass(ConIO, io.RawIOBase)
         self.assertNotIsSubclass(ConIO, io.BufferedIOBase)
@@ -105,7 +105,7 @@ class WindowsConsoleIOTests(unittest.TestCase):
             f.close()
 
     def test_subclass_repr(self):
-        class TestSubclass(ConIO):
+        klasse TestSubclass(ConIO):
             pass
 
         f = TestSubclass("CON")

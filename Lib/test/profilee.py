@@ -2,7 +2,7 @@
 Input for test_profile.py and test_cprofile.py.
 
 IMPORTANT: This stuff is touchy. If you modify anything above the
-test class you'll have to regenerate the stats by running the two
+test klasse you'll have to regenerate the stats by running the two
 test files.
 
 *ALL* NUMBERS in the expected output are relevant.  If you change
@@ -106,7 +106,7 @@ def subhelper():
         except AttributeError:
             TICKS += 3                  # 3 x 2
 
-class C:
+klasse C:
     def __getattr__(self, name):
         # 28 calls
         # 1 tick, local

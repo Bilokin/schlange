@@ -5,7 +5,7 @@ from test.test_tkinter.support import AbstractTkTest
 
 requires('gui')
 
-class TextTest(AbstractTkTest, unittest.TestCase):
+klasse TextTest(AbstractTkTest, unittest.TestCase):
 
     def setUp(self):
         super().setUp()

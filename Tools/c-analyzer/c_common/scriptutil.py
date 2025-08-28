@@ -102,7 +102,7 @@ def configure_logger(verbosity, logger=None, **kwargs):
 ##################################
 # selections
 
-class UnsupportedSelectionError(Exception):
+klasse UnsupportedSelectionError(Exception):
     def __init__(self, values, possible):
         self.values = tuple(values)
         self.possible = tuple(possible)
@@ -143,7 +143,7 @@ def normalize_selection(selected: str, *, possible=None):
 ##################################
 # CLI parsing helpers
 
-class CLIArgSpec(tuple):
+klasse CLIArgSpec(tuple):
     def __new__(cls, *args, **kwargs):
         return super().__new__(cls, (args, kwargs))
 

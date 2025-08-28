@@ -13,8 +13,8 @@ def _call_if_exists(parent, attr):
     func()
 
 
-class BaseTestSuite(object):
-    """A simple test suite that doesn't provide class or module shared fixtures.
+klasse BaseTestSuite(object):
+    """A simple test suite that doesn't provide klasse or module shared fixtures.
     """
     _cleanup = True
 
@@ -89,14 +89,14 @@ class BaseTestSuite(object):
             test.debug()
 
 
-class TestSuite(BaseTestSuite):
+klasse TestSuite(BaseTestSuite):
     """A test suite is a composite test consisting of a number of TestCases.
 
     For use, create an instance of TestSuite, then add test case instances.
     When all tests have been added, the suite can be passed to a test
     runner, such as TextTestRunner. It will run the individual test cases
     in the order in which they were added, aggregating the results. When
-    subclassing, do not forget to call the base class constructor.
+    subclassing, do not forget to call the base klasse constructor.
     """
 
     def run(self, result, debug=False):
@@ -154,7 +154,7 @@ class TestSuite(BaseTestSuite):
             currentClass._classSetupFailed = False
         except TypeError:
             # test may actually be a function
-            # so its class will be a builtin-type
+            # so its klasse will be a builtin-type
             pass
 
         setUpClass = getattr(currentClass, 'setUpClass', None)
@@ -337,7 +337,7 @@ class TestSuite(BaseTestSuite):
             _call_if_exists(result, '_restoreStdout')
 
 
-class _ErrorHolder(object):
+klasse _ErrorHolder(object):
     """
     Placeholder for a TestCase inside a result. As far as a TestResult
     is concerned, this looks exactly like a unit test. Used to insert
@@ -384,8 +384,8 @@ def _isnotsuite(test):
     return False
 
 
-class _DebugResult(object):
-    "Used by the TestSuite to hold previous class when running in debug."
+klasse _DebugResult(object):
+    "Used by the TestSuite to hold previous klasse when running in debug."
     _previousTestClass = None
     _moduleSetUpFailed = False
     shouldStop = False

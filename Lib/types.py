@@ -40,7 +40,7 @@ except ImportError:
     _ag = _ag()
     AsyncGeneratorType = type(_ag)
 
-    class _C:
+    klasse _C:
         def _m(self): pass
     MethodType = type(_C()._m)
 
@@ -79,9 +79,9 @@ except ImportError:
     del sys, _f, _g, _C, _c, _ag, _cell_factory  # Not for export
 
 
-# Provide a PEP 3115 compliant mechanism for class creation
+# Provide a PEP 3115 compliant mechanism for klasse creation
 def new_class(name, bases=(), kwds=None, exec_body=None):
-    """Create a class object dynamically using the appropriate metaclass."""
+    """Create a klasse object dynamically using the appropriate metaclass."""
     resolved_bases = resolve_bases(bases)
     meta, ns, kwds = prepare_class(name, resolved_bases, kwds)
     if exec_body is not None:
@@ -117,7 +117,7 @@ def prepare_class(name, bases=(), kwds=None):
     Returns (metaclass, namespace, kwds) as a 3-tuple
 
     *metaclass* is the appropriate metaclass
-    *namespace* is the prepared class namespace
+    *namespace* is the prepared klasse namespace
     *kwds* is an updated copy of the passed in kwds argument with any
     'metaclass' entry removed. If no kwds argument is passed in, this will
     be an empty dict.
@@ -155,7 +155,7 @@ def _calculate_meta(meta, bases):
             continue
         # else:
         raise TypeError("metaclass conflict: "
-                        "the metaclass of a derived class "
+                        "the metaclass of a derived klasse "
                         "must be a (non-strict) subclass "
                         "of the metaclasses of all its bases")
     return winner
@@ -169,9 +169,9 @@ def get_original_bases(cls, /):
         from typing import TypeVar, Generic, NamedTuple, TypedDict
 
         T = TypeVar("T")
-        class Foo(Generic[T]): ...
-        class Bar(Foo[int], float): ...
-        class Baz(list[str]): ...
+        klasse Foo(Generic[T]): ...
+        klasse Bar(Foo[int], float): ...
+        klasse Baz(list[str]): ...
         Eggs = NamedTuple("Eggs", [("a", int), ("b", str)])
         Spam = TypedDict("Spam", {"a": int, "b": str})
 
@@ -189,16 +189,16 @@ def get_original_bases(cls, /):
         ) from None
 
 
-class DynamicClassAttribute:
-    """Route attribute access on a class to __getattr__.
+klasse DynamicClassAttribute:
+    """Route attribute access on a klasse to __getattr__.
 
     This is a descriptor, used to define attributes that act differently when
     accessed through an instance and through a class.  Instance access remains
-    normal, but access to an attribute through a class will be routed to the
+    normal, but access to an attribute through a klasse will be routed to the
     class's __getattr__ method; this is done by raising AttributeError.
 
     This allows one to have properties active on an instance, and have virtual
-    attributes on the class with the same name.  (Enum used this between Python
+    attributes on the klasse with the same name.  (Enum used this between Python
     versions 3.4 - 3.9 .)
 
     Subclass from this to use a different method of accessing virtual attributes
@@ -252,7 +252,7 @@ class DynamicClassAttribute:
         return result
 
 
-class _GeneratorWrapper:
+klasse _GeneratorWrapper:
     def __init__(self, gen):
         self.__wrapped = gen
         self.__isgen = gen.__class__ is GeneratorType

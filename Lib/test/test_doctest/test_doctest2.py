@@ -1,5 +1,5 @@
 """A module to test whether doctest recognizes some 2.2 features,
-like static and class methods.
+like static and klasse methods.
 
 >>> print('yup')  # 1
 yup
@@ -16,7 +16,7 @@ import unittest
 if sys.flags.optimize >= 2:
     raise unittest.SkipTest("Cannot test docstrings with -O2")
 
-class C(object):
+klasse C(object):
     """Class C.
 
     >>> print(C())  # 2
@@ -44,7 +44,7 @@ class C(object):
         """
         return "42"
 
-    class D(object):
+    klasse D(object):
         """A nested D class.
 
         >>> print("In D!")   # 5
@@ -97,7 +97,7 @@ class C(object):
     @classmethod
     def clsm(cls, val):
         """
-        A class method.
+        A klasse method.
 
         >>> print(C.clsm(22))    # 18
         22
@@ -107,7 +107,7 @@ class C(object):
         return val
 
 
-class Test(unittest.TestCase):
+klasse Test(unittest.TestCase):
     def test_testmod(self):
         import doctest, sys
         EXPECTED = 19

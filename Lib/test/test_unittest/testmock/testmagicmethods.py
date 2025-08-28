@@ -6,7 +6,7 @@ from unittest.mock import AsyncMock, Mock, MagicMock, _magics
 
 
 
-class TestMockingMagicMethods(unittest.TestCase):
+klasse TestMockingMagicMethods(unittest.TestCase):
 
     def test_deleting_magic_methods(self):
         mock = Mock()
@@ -372,7 +372,7 @@ class TestMockingMagicMethods(unittest.TestCase):
         self.assertEqual(list(iter(mm)), [])
 
     def test_magic_methods_and_spec(self):
-        class Iterable(object):
+        klasse Iterable(object):
             def __iter__(self): pass
 
         mock = Mock(spec=Iterable)
@@ -381,7 +381,7 @@ class TestMockingMagicMethods(unittest.TestCase):
         mock.__iter__ = Mock(return_value=iter([]))
         self.assertEqual(list(mock), [])
 
-        class NonIterable(object):
+        klasse NonIterable(object):
             pass
         mock = Mock(spec=NonIterable)
         self.assertRaises(AttributeError, lambda: mock.__iter__)
@@ -396,7 +396,7 @@ class TestMockingMagicMethods(unittest.TestCase):
 
 
     def test_magic_methods_and_spec_set(self):
-        class Iterable(object):
+        klasse Iterable(object):
             def __iter__(self): pass
 
         mock = Mock(spec_set=Iterable)
@@ -405,7 +405,7 @@ class TestMockingMagicMethods(unittest.TestCase):
         mock.__iter__ = Mock(return_value=iter([]))
         self.assertEqual(list(mock), [])
 
-        class NonIterable(object):
+        klasse NonIterable(object):
             pass
         mock = Mock(spec_set=NonIterable)
         self.assertRaises(AttributeError, lambda: mock.__iter__)
@@ -479,7 +479,7 @@ class TestMockingMagicMethods(unittest.TestCase):
 
 
     def test_magic_method_type(self):
-        class Foo(MagicMock):
+        klasse Foo(MagicMock):
             pass
 
         foo = Foo()

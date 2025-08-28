@@ -39,7 +39,7 @@ def init_fail(log_queue=None):
     raise ValueError('error in initializer')
 
 
-class InitializerMixin(ExecutorMixin):
+klasse InitializerMixin(ExecutorMixin):
     worker_count = 2
 
     def setUp(self):
@@ -58,7 +58,7 @@ class InitializerMixin(ExecutorMixin):
             self.assertEqual(f.result(), 'initialized')
 
 
-class FailingInitializerMixin(ExecutorMixin):
+klasse FailingInitializerMixin(ExecutorMixin):
     worker_count = 2
 
     def setUp(self):
@@ -121,7 +121,7 @@ create_executor_tests(globals(), FailingInitializerMixin)
 
 
 @unittest.skipIf(sys.platform == "win32", "Resource Tracker doesn't run on Windows")
-class FailingInitializerResourcesTest(unittest.TestCase):
+klasse FailingInitializerResourcesTest(unittest.TestCase):
     """
     Source: https://github.com/python/cpython/issues/104090
     """

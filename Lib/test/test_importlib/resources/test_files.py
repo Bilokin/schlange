@@ -19,7 +19,7 @@ def suppress_known_deprecation():
         yield ctx
 
 
-class FilesTests:
+klasse FilesTests:
     def test_read_bytes(self):
         files = resources.files(self.data)
         actual = files.joinpath('utf-8.file').read_bytes()
@@ -47,15 +47,15 @@ class FilesTests:
             resources.files(package=self.data)
 
 
-class OpenDiskTests(FilesTests, util.DiskSetup, unittest.TestCase):
+klasse OpenDiskTests(FilesTests, util.DiskSetup, unittest.TestCase):
     pass
 
 
-class OpenZipTests(FilesTests, util.ZipSetup, unittest.TestCase):
+klasse OpenZipTests(FilesTests, util.ZipSetup, unittest.TestCase):
     pass
 
 
-class OpenNamespaceTests(FilesTests, util.DiskSetup, unittest.TestCase):
+klasse OpenNamespaceTests(FilesTests, util.DiskSetup, unittest.TestCase):
     MODULE = 'namespacedata01'
 
     def test_non_paths_in_dunder_path(self):
@@ -79,11 +79,11 @@ class OpenNamespaceTests(FilesTests, util.DiskSetup, unittest.TestCase):
         resources.files(namespacedata01)
 
 
-class OpenNamespaceZipTests(FilesTests, util.ZipSetup, unittest.TestCase):
+klasse OpenNamespaceZipTests(FilesTests, util.ZipSetup, unittest.TestCase):
     ZIP_MODULE = 'namespacedata01'
 
 
-class DirectSpec:
+klasse DirectSpec:
     """
     Override behavior of ModuleSetup to write a full spec directly.
     """
@@ -94,7 +94,7 @@ class DirectSpec:
         self.tree_on_path(self.spec)
 
 
-class ModulesFiles:
+klasse ModulesFiles:
     spec = {
         'mod.py': '',
         'res.txt': 'resources are the best',
@@ -110,15 +110,15 @@ class ModulesFiles:
         assert actual == self.spec['res.txt']
 
 
-class ModuleFilesDiskTests(DirectSpec, util.DiskSetup, ModulesFiles, unittest.TestCase):
+klasse ModuleFilesDiskTests(DirectSpec, util.DiskSetup, ModulesFiles, unittest.TestCase):
     pass
 
 
-class ModuleFilesZipTests(DirectSpec, util.ZipSetup, ModulesFiles, unittest.TestCase):
+klasse ModuleFilesZipTests(DirectSpec, util.ZipSetup, ModulesFiles, unittest.TestCase):
     pass
 
 
-class ImplicitContextFiles:
+klasse ImplicitContextFiles:
     set_val = textwrap.dedent(
         f"""
         import {resources.__name__} as res
@@ -175,13 +175,13 @@ class ImplicitContextFiles:
         assert importlib.import_module('frozenpkg').val == 'resources are the best'
 
 
-class ImplicitContextFilesDiskTests(
+klasse ImplicitContextFilesDiskTests(
     DirectSpec, util.DiskSetup, ImplicitContextFiles, unittest.TestCase
 ):
     pass
 
 
-class ImplicitContextFilesZipTests(
+klasse ImplicitContextFilesZipTests(
     DirectSpec, util.ZipSetup, ImplicitContextFiles, unittest.TestCase
 ):
     pass

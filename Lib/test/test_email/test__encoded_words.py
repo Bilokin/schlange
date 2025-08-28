@@ -4,7 +4,7 @@ from email import errors
 from test.test_email import TestEmailBase
 
 
-class TestDecodeQ(TestEmailBase):
+klasse TestDecodeQ(TestEmailBase):
 
     def _test(self, source, ex_result, ex_defects=[]):
         result, defects = _ew.decode_q(source)
@@ -22,7 +22,7 @@ class TestDecodeQ(TestEmailBase):
         self._test(b'foo=20=20=21=2Cbar', b'foo  !,bar')
 
 
-class TestDecodeB(TestEmailBase):
+klasse TestDecodeB(TestEmailBase):
 
     def _test(self, source, ex_result, ex_defects=[]):
         result, defects = _ew.decode_b(source)
@@ -49,7 +49,7 @@ class TestDecodeB(TestEmailBase):
         self._test(b'abcde', b'abcde', [errors.InvalidBase64LengthDefect])
 
 
-class TestDecode(TestEmailBase):
+klasse TestDecode(TestEmailBase):
 
     def test_wrong_format_input_raises(self):
         with self.assertRaises(ValueError):
@@ -143,7 +143,7 @@ class TestDecode(TestEmailBase):
                    charset='utf-8')
 
 
-class TestEncodeQ(TestEmailBase):
+klasse TestEncodeQ(TestEmailBase):
 
     def _test(self, src, expected):
         self.assertEqual(_ew.encode_q(src), expected)
@@ -158,7 +158,7 @@ class TestEncodeQ(TestEmailBase):
         self._test(b'foo  ,,bar', 'foo__=2C=2Cbar')
 
 
-class TestEncodeB(TestEmailBase):
+klasse TestEncodeB(TestEmailBase):
 
     def test_simple(self):
         self.assertEqual(_ew.encode_b(b'foo'), 'Zm9v')
@@ -167,7 +167,7 @@ class TestEncodeB(TestEmailBase):
         self.assertEqual(_ew.encode_b(b'vi'), 'dmk=')
 
 
-class TestEncode(TestEmailBase):
+klasse TestEncode(TestEmailBase):
 
     def test_q(self):
         self.assertEqual(_ew.encode('foo', 'utf-8', 'q'), '=?utf-8?q?foo?=')

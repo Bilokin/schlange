@@ -2,16 +2,16 @@
 
 def f(): pass
 
-class Other(object):
+klasse Other(object):
     @classmethod
     def foo(c): pass
 
     def om(self): pass
 
-class B (object):
+klasse B (object):
     def bm(self): pass
 
-class C (B):
+klasse C (B):
     d = 10
 
     # This one is correctly considered by both test_pyclbr.py and pyclbr.py
@@ -36,7 +36,7 @@ class C (B):
 
 # Check that mangling is correctly handled
 
-class a:
+klasse a:
     def a(self): pass
     def _(self): pass
     def _a(self): pass
@@ -44,7 +44,7 @@ class a:
     def ___(self): pass
     def __a(self): pass
 
-class _:
+klasse _:
     def a(self): pass
     def _(self): pass
     def _a(self): pass
@@ -52,7 +52,7 @@ class _:
     def ___(self): pass
     def __a(self): pass
 
-class __:
+klasse __:
     def a(self): pass
     def _(self): pass
     def _a(self): pass
@@ -60,7 +60,7 @@ class __:
     def ___(self): pass
     def __a(self): pass
 
-class ___:
+klasse ___:
     def a(self): pass
     def _(self): pass
     def _a(self): pass
@@ -68,7 +68,7 @@ class ___:
     def ___(self): pass
     def __a(self): pass
 
-class _a:
+klasse _a:
     def a(self): pass
     def _(self): pass
     def _a(self): pass
@@ -76,7 +76,7 @@ class _a:
     def ___(self): pass
     def __a(self): pass
 
-class __a:
+klasse __a:
     def a(self): pass
     def _(self): pass
     def _a(self): pass

@@ -21,12 +21,12 @@ else:
     glibc_ver = None
 
 
-class getlang_Tests(unittest.TestCase):
+klasse getlang_Tests(unittest.TestCase):
     """Test _getlang"""
     def test_basic(self):
         self.assertEqual(_strptime._getlang(), locale.getlocale(locale.LC_TIME))
 
-class LocaleTime_Tests(unittest.TestCase):
+klasse LocaleTime_Tests(unittest.TestCase):
     """Tests for _strptime.LocaleTime.
 
     All values are lower-cased when stored in LocaleTime, so make sure to
@@ -116,7 +116,7 @@ class LocaleTime_Tests(unittest.TestCase):
         self.assertEqual(self.LT_ins.lang, _strptime._getlang())
 
 
-class TimeRETests(unittest.TestCase):
+klasse TimeRETests(unittest.TestCase):
     """Tests for TimeRE."""
 
     def setUp(self):
@@ -209,7 +209,7 @@ class TimeRETests(unittest.TestCase):
         self.assertTrue(re.match(pattern, "18 0"))
 
 
-class StrptimeTests(unittest.TestCase):
+klasse StrptimeTests(unittest.TestCase):
     """Tests for _strptime.strptime."""
 
     def setUp(self):
@@ -636,7 +636,7 @@ class StrptimeTests(unittest.TestCase):
                 time.strptime("Feb 29", "%b %d"),
                 time.strptime("Mar 1", "%b %d"))
 
-class Strptime12AMPMTests(unittest.TestCase):
+klasse Strptime12AMPMTests(unittest.TestCase):
     """Test a _strptime regression in '%I %p' at 12 noon (12 PM)"""
 
     def test_twelve_noon_midnight(self):
@@ -647,7 +647,7 @@ class Strptime12AMPMTests(unittest.TestCase):
         eq(_strptime._strptime_time('12 AM', '%I %p')[3], 0)
 
 
-class JulianTests(unittest.TestCase):
+klasse JulianTests(unittest.TestCase):
     """Test a _strptime regression that all julian (1-366) are accepted"""
 
     def test_all_julian_days(self):
@@ -656,7 +656,7 @@ class JulianTests(unittest.TestCase):
             # use 2004, since it is a leap year, we have 366 days
             eq(_strptime._strptime_time('%d 2004' % i, '%j %Y')[7], i)
 
-class CalculationTests(unittest.TestCase):
+klasse CalculationTests(unittest.TestCase):
     """Test that strptime() fills in missing info correctly"""
 
     def setUp(self):
@@ -804,7 +804,7 @@ class CalculationTests(unittest.TestCase):
         check('2009 1 7', '%G %V %u', 2009, 1, 4, 0, 0, 0, 6, 4)
 
 
-class CacheTests(unittest.TestCase):
+klasse CacheTests(unittest.TestCase):
     """Test that caching works properly."""
 
     def test_time_re_recreation(self):

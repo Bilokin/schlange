@@ -12,7 +12,7 @@ DAY_TO_SEC = (24 * 60 * 60)
 CLOCK_RES = 0.050
 
 
-class CAPITest(unittest.TestCase):
+klasse CAPITest(unittest.TestCase):
     def test_min_max(self):
         # PyTime_t is just int64_t
         self.assertEqual(PyTime_MIN, -2**63)

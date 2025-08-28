@@ -9,8 +9,8 @@ from test.support import captured_stdout, force_not_colorized_test_class
 from test.test_unittest.support import BufferedWriter
 
 
-class MockTraceback(object):
-    class TracebackException:
+klasse MockTraceback(object):
+    klasse TracebackException:
         def __init__(self, *args, **kwargs):
             self.capture_locals = kwargs.get('capture_locals', False)
         def format(self, **kwargs):
@@ -34,7 +34,7 @@ def bad_cleanup2():
 
 
 @force_not_colorized_test_class
-class Test_TestResult(unittest.TestCase):
+klasse Test_TestResult(unittest.TestCase):
     # Note: there are not separate tests for TestResult.wasSuccessful(),
     # TestResult.errors, TestResult.failures, TestResult.testsRun or
     # TestResult.shouldStop because these only have meaning in terms of
@@ -68,7 +68,7 @@ class Test_TestResult(unittest.TestCase):
     # "Called when the test case test is about to be run. The default
     # implementation simply increments the instance's testsRun counter."
     def test_startTest(self):
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def test_1(self):
                 pass
 
@@ -89,7 +89,7 @@ class Test_TestResult(unittest.TestCase):
     # "Called after the test case test has been executed, regardless of
     # the outcome. The default implementation does nothing."
     def test_stopTest(self):
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def test_1(self):
                 pass
 
@@ -140,7 +140,7 @@ class Test_TestResult(unittest.TestCase):
     # methods. Contains formatted tracebacks instead
     # of sys.exc_info() results."
     def test_addSuccess(self):
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def test_1(self):
                 pass
 
@@ -179,7 +179,7 @@ class Test_TestResult(unittest.TestCase):
     # methods. Contains formatted tracebacks instead
     # of sys.exc_info() results."
     def test_addFailure(self):
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def test_1(self):
                 pass
 
@@ -206,7 +206,7 @@ class Test_TestResult(unittest.TestCase):
         self.assertIsInstance(formatted_exc, str)
 
     def test_addFailure_filter_traceback_frames(self):
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def test_1(self):
                 pass
 
@@ -232,7 +232,7 @@ class Test_TestResult(unittest.TestCase):
         self.assertIn("raise self.failureException(msg)", dropped[0])
 
     def test_addFailure_filter_traceback_frames_context(self):
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def test_1(self):
                 pass
 
@@ -261,7 +261,7 @@ class Test_TestResult(unittest.TestCase):
         self.assertIn("raise self.failureException(msg)", dropped[0])
 
     def test_addFailure_filter_traceback_frames_chained_exception_self_loop(self):
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def test_1(self):
                 pass
 
@@ -286,7 +286,7 @@ class Test_TestResult(unittest.TestCase):
         self.assertEqual(formatted_exc.count("Exception: Loop\n"), 1)
 
     def test_addFailure_filter_traceback_frames_chained_exception_cycle(self):
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def test_1(self):
                 pass
 
@@ -338,7 +338,7 @@ class Test_TestResult(unittest.TestCase):
     # methods. Contains formatted tracebacks instead
     # of sys.exc_info() results."
     def test_addError(self):
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def test_1(self):
                 pass
 
@@ -365,7 +365,7 @@ class Test_TestResult(unittest.TestCase):
         self.assertIsInstance(formatted_exc, str)
 
     def test_addError_locals(self):
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def test_1(self):
                 1/0
 
@@ -384,7 +384,7 @@ class Test_TestResult(unittest.TestCase):
         self.assertEqual('A tracebacklocals', formatted_exc)
 
     def test_addSubTest(self):
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def test_1(self):
                 nonlocal subtest
                 with self.subTest(foo=1):
@@ -418,8 +418,8 @@ class Test_TestResult(unittest.TestCase):
         self.assertIn("some recognizable failure", formatted_exc)
 
     def testStackFrameTrimming(self):
-        class Frame(object):
-            class tb_frame(object):
+        klasse Frame(object):
+            klasse tb_frame(object):
                 f_globals = {}
         result = unittest.TestResult()
         self.assertFalse(result._is_relevant_tb_level(Frame))
@@ -458,7 +458,7 @@ class Test_TestResult(unittest.TestCase):
 
 
 @force_not_colorized_test_class
-class Test_TextTestResult(unittest.TestCase):
+klasse Test_TextTestResult(unittest.TestCase):
     maxDiff = None
 
     def testGetDescriptionWithoutDocstring(self):
@@ -576,7 +576,7 @@ class Test_TextTestResult(unittest.TestCase):
                 'Tests getDescription() for a method with a longer '
                 'docstring.'))
 
-    class Test(unittest.TestCase):
+    klasse Test(unittest.TestCase):
         def testSuccess(self):
             pass
         def testSkip(self):
@@ -691,7 +691,7 @@ class Test_TextTestResult(unittest.TestCase):
                          f'testSkip ({classname}.testSkip) ... FAIL\n')
 
 
-classDict = dict(unittest.TestResult.__dict__)
+klasseDict = dict(unittest.TestResult.__dict__)
 for m in ('addSkip', 'addExpectedFailure', 'addUnexpectedSuccess',
            '__init__'):
     del classDict[m]
@@ -704,10 +704,10 @@ def __init__(self, stream=None, descriptions=None, verbosity=None):
     self.buffer = False
     self.tb_locals = False
 
-classDict['__init__'] = __init__
+klasseDict['__init__'] = __init__
 OldResult = type('OldResult', (object,), classDict)
 
-class Test_OldTestResult(unittest.TestCase):
+klasse Test_OldTestResult(unittest.TestCase):
 
     def assertOldResultWarning(self, test, failures):
         with warnings_helper.check_warnings(
@@ -717,7 +717,7 @@ class Test_OldTestResult(unittest.TestCase):
             self.assertEqual(len(result.failures), failures)
 
     def testOldTestResult(self):
-        class Test(unittest.TestCase):
+        klasse Test(unittest.TestCase):
             def testSkip(self):
                 self.skipTest('foobar')
             @unittest.expectedFailure
@@ -734,7 +734,7 @@ class Test_OldTestResult(unittest.TestCase):
             self.assertOldResultWarning(test, int(not should_pass))
 
     def testOldTestTesultSetup(self):
-        class Test(unittest.TestCase):
+        klasse Test(unittest.TestCase):
             def setUp(self):
                 self.skipTest('no reason')
             def testFoo(self):
@@ -743,13 +743,13 @@ class Test_OldTestResult(unittest.TestCase):
 
     def testOldTestResultClass(self):
         @unittest.skip('no reason')
-        class Test(unittest.TestCase):
+        klasse Test(unittest.TestCase):
             def testFoo(self):
                 pass
         self.assertOldResultWarning(Test('testFoo'), 0)
 
     def testOldResultWithRunner(self):
-        class Test(unittest.TestCase):
+        klasse Test(unittest.TestCase):
             def testFoo(self):
                 pass
         runner = unittest.TextTestRunner(resultclass=OldResult,
@@ -760,7 +760,7 @@ class Test_OldTestResult(unittest.TestCase):
 
 
 @force_not_colorized_test_class
-class TestOutputBuffering(unittest.TestCase):
+klasse TestOutputBuffering(unittest.TestCase):
 
     def setUp(self):
         self._real_out = sys.stdout
@@ -891,7 +891,7 @@ class TestOutputBuffering(unittest.TestCase):
             result = unittest.TestResult()
         result.buffer = True
 
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def setUp(self):
                 print('set up')
                 1/0
@@ -913,7 +913,7 @@ class TestOutputBuffering(unittest.TestCase):
             result = unittest.TestResult()
         result.buffer = True
 
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def tearDown(self):
                 print('tear down')
                 1/0
@@ -935,7 +935,7 @@ class TestOutputBuffering(unittest.TestCase):
             result = unittest.TestResult()
         result.buffer = True
 
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def setUp(self):
                 print('set up')
                 self.addCleanup(bad_cleanup1)
@@ -965,7 +965,7 @@ class TestOutputBuffering(unittest.TestCase):
             result = unittest.TestResult()
         result.buffer = True
 
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def setUp(self):
                 print('set up')
                 self.addCleanup(bad_cleanup1)
@@ -1006,7 +1006,7 @@ class TestOutputBuffering(unittest.TestCase):
             result = unittest.TestResult()
         result.buffer = True
 
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def setUp(self):
                 print('set up')
                 self.addCleanup(bad_cleanup1)
@@ -1049,7 +1049,7 @@ class TestOutputBuffering(unittest.TestCase):
             result = unittest.TestResult()
         result.buffer = True
 
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             @classmethod
             def setUpClass(cls):
                 print('set up class')
@@ -1072,7 +1072,7 @@ class TestOutputBuffering(unittest.TestCase):
             result = unittest.TestResult()
         result.buffer = True
 
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             @classmethod
             def tearDownClass(cls):
                 print('tear down class')
@@ -1095,7 +1095,7 @@ class TestOutputBuffering(unittest.TestCase):
             result = unittest.TestResult()
         result.buffer = True
 
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             @classmethod
             def setUpClass(cls):
                 print('set up class')
@@ -1128,7 +1128,7 @@ class TestOutputBuffering(unittest.TestCase):
             result = unittest.TestResult()
         result.buffer = True
 
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             @classmethod
             def setUpClass(cls):
                 print('set up class')
@@ -1167,7 +1167,7 @@ class TestOutputBuffering(unittest.TestCase):
             result = unittest.TestResult()
         result.buffer = True
 
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             @classmethod
             def setUpClass(cls):
                 print('set up class')
@@ -1209,10 +1209,10 @@ class TestOutputBuffering(unittest.TestCase):
             result = unittest.TestResult()
         result.buffer = True
 
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def test_foo(self):
                 pass
-        class Module(object):
+        klasse Module(object):
             @staticmethod
             def setUpModule():
                 print('set up module')
@@ -1237,10 +1237,10 @@ class TestOutputBuffering(unittest.TestCase):
             result = unittest.TestResult()
         result.buffer = True
 
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def test_foo(self):
                 pass
-        class Module(object):
+        klasse Module(object):
             @staticmethod
             def tearDownModule():
                 print('tear down module')
@@ -1265,10 +1265,10 @@ class TestOutputBuffering(unittest.TestCase):
             result = unittest.TestResult()
         result.buffer = True
 
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def test_foo(self):
                 pass
-        class Module(object):
+        klasse Module(object):
             @staticmethod
             def setUpModule():
                 print('set up module')
@@ -1303,10 +1303,10 @@ class TestOutputBuffering(unittest.TestCase):
             result = unittest.TestResult()
         result.buffer = True
 
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def test_foo(self):
                 pass
-        class Module(object):
+        klasse Module(object):
             @staticmethod
             def setUpModule():
                 print('set up module')
@@ -1354,10 +1354,10 @@ class TestOutputBuffering(unittest.TestCase):
             result = unittest.TestResult()
         result.buffer = True
 
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def test_foo(self):
                 pass
-        class Module(object):
+        klasse Module(object):
             @staticmethod
             def setUpModule():
                 print('set up module')

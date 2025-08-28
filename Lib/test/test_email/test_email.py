@@ -54,7 +54,7 @@ SPACE = ' '
 
 
 # Test various aspects of the Message class's API
-class TestMessageAPI(TestEmailBase):
+klasse TestMessageAPI(TestEmailBase):
     def test_get_all(self):
         eq = self.assertEqual
         msg = self._msgobj('msg_20.txt')
@@ -865,7 +865,7 @@ class TestMessageAPI(TestEmailBase):
 
 
 # Test the email.encoders module
-class TestEncoders(unittest.TestCase):
+klasse TestEncoders(unittest.TestCase):
 
     def test_EncodersEncode_base64(self):
         with openfile('python.gif', 'rb') as fp:
@@ -932,7 +932,7 @@ class TestEncoders(unittest.TestCase):
 
 
 # Test long header wrapping
-class TestLongHeaders(TestEmailBase):
+klasse TestLongHeaders(TestEmailBase):
 
     maxDiff = None
 
@@ -1505,7 +1505,7 @@ List: List-Unsubscribe:
 
 
 # Test mangling of "From " lines in the body of a message
-class TestFromMangling(unittest.TestCase):
+klasse TestFromMangling(unittest.TestCase):
     def setUp(self):
         self.msg = Message()
         self.msg['From'] = 'aaa@bbb.org'
@@ -1584,7 +1584,7 @@ Blah blah blah
 
 
 # Test the basic MIMEAudio class
-class TestMIMEAudio(unittest.TestCase):
+klasse TestMIMEAudio(unittest.TestCase):
     def _make_audio(self, ext):
         with openfile(f'sndhdr.{ext}', 'rb') as fp:
             self._audiodata = fp.read()
@@ -1636,7 +1636,7 @@ class TestMIMEAudio(unittest.TestCase):
 
 
 # Test the basic MIMEImage class
-class TestMIMEImage(unittest.TestCase):
+klasse TestMIMEImage(unittest.TestCase):
     def _make_image(self, ext):
         with openfile(f'python.{ext}', 'rb') as fp:
             self._imgdata = fp.read()
@@ -1695,7 +1695,7 @@ class TestMIMEImage(unittest.TestCase):
 
 
 # Test the basic MIMEApplication class
-class TestMIMEApplication(unittest.TestCase):
+klasse TestMIMEApplication(unittest.TestCase):
     def test_headers(self):
         eq = self.assertEqual
         msg = MIMEApplication(b'\xfa\xfb\xfc\xfd\xfe\xff')
@@ -1787,7 +1787,7 @@ class TestMIMEApplication(unittest.TestCase):
 
 
 # Test the basic MIMEText class
-class TestMIMEText(unittest.TestCase):
+klasse TestMIMEText(unittest.TestCase):
     def setUp(self):
         self._msg = MIMEText('hello there')
 
@@ -1847,7 +1847,7 @@ class TestMIMEText(unittest.TestCase):
 
 
 # Test complicated multipart/* messages
-class TestMultipart(TestEmailBase):
+klasse TestMultipart(TestEmailBase):
     def setUp(self):
         with openfile('python.gif', 'rb') as fp:
             data = fp.read()
@@ -2232,7 +2232,7 @@ YXNkZg==
         self.assertIs(m.policy, email.policy.default)
 
 # Test some badly formatted messages
-class TestNonConformant(TestEmailBase):
+klasse TestNonConformant(TestEmailBase):
 
     def test_parse_missing_minor_type(self):
         eq = self.assertEqual
@@ -2441,7 +2441,7 @@ counter to RFC 2822, there's no separating newline here
 
 
 # Test RFC 2047 header encoding and decoding
-class TestRFC2047(TestEmailBase):
+klasse TestRFC2047(TestEmailBase):
     def test_rfc2047_multiline(self):
         eq = self.assertEqual
         s = """Re: =?mac-iceland?q?r=8Aksm=9Arg=8Cs?= baz
@@ -2582,7 +2582,7 @@ Re: =?mac-iceland?q?r=8Aksm=9Arg=8Cs?= baz foo bar =?mac-iceland?q?r=8Aksm?=
 
 
 # Test the MIMEMessage class
-class TestMIMEMessage(TestEmailBase):
+klasse TestMIMEMessage(TestEmailBase):
     def setUp(self):
         with openfile('msg_11.txt', encoding="utf-8") as fp:
             self._text = fp.read()
@@ -2893,7 +2893,7 @@ message 2
 
 
 # Test the NonMultipart class
-class TestNonMultipart(TestEmailBase):
+klasse TestNonMultipart(TestEmailBase):
     def test_nonmultipart_is_not_multipart(self):
         msg = MIMENonMultipart('text', 'plain')
         self.assertFalse(msg.is_multipart())
@@ -2910,7 +2910,7 @@ class TestNonMultipart(TestEmailBase):
 # regenerate the plain text.  The original text and the transformed text
 # should be identical.  Note: that we ignore the Unix-From since that may
 # contain a changed date.
-class TestIdempotent(TestEmailBase):
+klasse TestIdempotent(TestEmailBase):
 
     linesep = '\n'
 
@@ -3069,7 +3069,7 @@ class TestIdempotent(TestEmailBase):
 
 
 # Test various other bits of the package's functionality
-class TestMiscellaneous(TestEmailBase):
+klasse TestMiscellaneous(TestEmailBase):
     def test_message_from_string(self):
         with openfile('msg_01.txt', encoding="utf-8") as fp:
             text = fp.read()
@@ -3098,7 +3098,7 @@ class TestMiscellaneous(TestEmailBase):
             text = fp.read()
 
         # Create a subclass
-        class MyMessage(Message):
+        klasse MyMessage(Message):
             pass
 
         msg = email.message_from_string(text, MyMessage)
@@ -3112,7 +3112,7 @@ class TestMiscellaneous(TestEmailBase):
 
     def test_message_from_file_with_class(self):
         # Create a subclass
-        class MyMessage(Message):
+        klasse MyMessage(Message):
             pass
 
         with openfile('msg_01.txt', encoding="utf-8") as fp:
@@ -3125,7 +3125,7 @@ class TestMiscellaneous(TestEmailBase):
             self.assertIsInstance(subpart, MyMessage)
 
     def test_custom_message_does_not_require_arguments(self):
-        class MyMessage(Message):
+        klasse MyMessage(Message):
             def __init__(self):
                 super().__init__()
         msg = self._str_msg("Subject: test\n\ntest", MyMessage)
@@ -3319,7 +3319,7 @@ class TestMiscellaneous(TestEmailBase):
         addr = 'person@dom.ain'
         utf8_base64 = "=?utf-8?b?SMOkbnMgV8O8cnN0?= <person@dom.ain>"
         foobar = "FOOBAR"
-        class CharsetMock:
+        klasse CharsetMock:
             def header_encode(self, string):
                 return foobar
         mock = CharsetMock()
@@ -3599,7 +3599,7 @@ Foo
     @support.requires_resource('cpu')
     def test_make_msgid_collisions(self):
         # Test make_msgid uniqueness, even with multiple threads
-        class MsgidsThread(Thread):
+        klasse MsgidsThread(Thread):
             def run(self):
                 # generate msgids for 3 seconds
                 self.msgids = []
@@ -3821,7 +3821,7 @@ multipart/report
 
 
 # Test the iterator/generators
-class TestIterators(TestEmailBase):
+klasse TestIterators(TestEmailBase):
     def test_body_line_iterator(self):
         eq = self.assertEqual
         neq = self.ndiffAssertEqual
@@ -3924,7 +3924,7 @@ Do you like this message?
         self.assertEqual(lines, target)
 
 
-class TestFeedParsers(TestEmailBase):
+klasse TestFeedParsers(TestEmailBase):
 
     def parse(self, chunks):
         feedparser = FeedParser()
@@ -3972,7 +3972,7 @@ class TestFeedParsers(TestEmailBase):
         self.assertEqual(m.items(), [('a', ''), ('b', 'x'*M*N)])
 
 
-class TestParsers(TestEmailBase):
+klasse TestParsers(TestEmailBase):
 
     def test_header_parser(self):
         eq = self.assertEqual
@@ -4184,7 +4184,7 @@ Here's the message body
         self.assertEndsWith(msg.get_payload(0).get_payload(), '\r\n')
 
 
-class Test8BitBytesHandling(TestEmailBase):
+klasse Test8BitBytesHandling(TestEmailBase):
     # In Python3 all input is string, but that doesn't work if the actual input
     # uses an 8bit transfer encoding.  To hack around that, in email 5.1 we
     # decode byte streams using the surrogateescape error handler, and
@@ -4613,7 +4613,7 @@ class Test8BitBytesHandling(TestEmailBase):
     maxDiff = None
 
 
-class BaseTestBytesGeneratorIdempotent:
+klasse BaseTestBytesGeneratorIdempotent:
 
     maxDiff = None
 
@@ -4631,21 +4631,21 @@ class BaseTestBytesGeneratorIdempotent:
         self.assertEqual(data, b.getvalue())
 
 
-class TestBytesGeneratorIdempotentNL(BaseTestBytesGeneratorIdempotent,
+klasse TestBytesGeneratorIdempotentNL(BaseTestBytesGeneratorIdempotent,
                                     TestIdempotent):
     linesep = '\n'
     blinesep = b'\n'
     normalize_linesep_regex = re.compile(br'\r\n')
 
 
-class TestBytesGeneratorIdempotentCRLF(BaseTestBytesGeneratorIdempotent,
+klasse TestBytesGeneratorIdempotentCRLF(BaseTestBytesGeneratorIdempotent,
                                        TestIdempotent):
     linesep = '\r\n'
     blinesep = b'\r\n'
     normalize_linesep_regex = re.compile(br'(?<!\r)\n')
 
 
-class TestBase64(unittest.TestCase):
+klasse TestBase64(unittest.TestCase):
     def test_len(self):
         eq = self.assertEqual
         eq(base64mime.header_length('hello'),
@@ -4697,7 +4697,7 @@ eHh4eCB4eHh4IA==\r
         eq(he('hello\nworld'), '=?iso-8859-1?b?aGVsbG8Kd29ybGQ=?=')
 
 
-class TestQuopri(unittest.TestCase):
+klasse TestQuopri(unittest.TestCase):
     def setUp(self):
         # Set of characters (as byte integers) that don't need to be encoded
         # in headers.
@@ -5019,7 +5019,7 @@ two line""")
 
 
 # Test the Charset class
-class TestCharset(unittest.TestCase):
+klasse TestCharset(unittest.TestCase):
     def tearDown(self):
         from email import charset as CharsetModule
         try:
@@ -5077,7 +5077,7 @@ class TestCharset(unittest.TestCase):
 
 
 # Test multilingual MIME headers.
-class TestHeader(TestEmailBase):
+klasse TestHeader(TestEmailBase):
     def test_simple(self):
         eq = self.ndiffAssertEqual
         h = Header('Hello World!')
@@ -5435,7 +5435,7 @@ A very long line that must get split to something other than at the
 
 
 # Test RFC 2231 header parameters (en/de)coding
-class TestRFC2231(TestEmailBase):
+klasse TestRFC2231(TestEmailBase):
 
     # test_headerregistry.TestContentTypeHeader.rfc2231_encoded_with_double_quotes
     # test_headerregistry.TestContentTypeHeader.rfc2231_single_quote_inside_double_quotes
@@ -5858,7 +5858,7 @@ Content-Transfer-Encoding: 8bit
 # Tests to ensure that signed parts of an email are completely preserved, as
 # required by RFC1847 section 2.1.  Note that these are incomplete, because the
 # email package does not currently always preserve the body.  See issue 1670765.
-class TestSigned(TestEmailBase):
+klasse TestSigned(TestEmailBase):
 
     def _msg_and_obj(self, filename):
         with openfile(filename, encoding="utf-8") as fp:
@@ -5891,7 +5891,7 @@ class TestSigned(TestEmailBase):
         result = fp.getvalue()
         self._signed_parts_eq(original, result)
 
-class TestHeaderRegistry(TestEmailBase):
+klasse TestHeaderRegistry(TestEmailBase):
     # See issue gh-93010.
     def test_HeaderRegistry(self):
         reg = HeaderRegistry()

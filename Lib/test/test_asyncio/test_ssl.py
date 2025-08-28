@@ -33,7 +33,7 @@ def tearDownModule():
     asyncio.events._set_event_loop_policy(None)
 
 
-class MyBaseProto(asyncio.Protocol):
+klasse MyBaseProto(asyncio.Protocol):
     connected = None
     done = None
 
@@ -67,7 +67,7 @@ class MyBaseProto(asyncio.Protocol):
             self.done.set_result(None)
 
 
-class MessageOutFilter(logging.Filter):
+klasse MessageOutFilter(logging.Filter):
     def __init__(self, msg):
         self.msg = msg
 
@@ -78,7 +78,7 @@ class MessageOutFilter(logging.Filter):
 
 
 @unittest.skipIf(ssl is None, 'No ssl module')
-class TestSSL(test_utils.TestCase):
+klasse TestSSL(test_utils.TestCase):
 
     PAYLOAD_SIZE = 1024 * 100
     TIMEOUT = support.LONG_TIMEOUT
@@ -519,7 +519,7 @@ class TestSSL(test_utils.TestCase):
             # break the connection during handshake
             sock.close()
 
-        class ClientProto(asyncio.Protocol):
+        klasse ClientProto(asyncio.Protocol):
             def connection_made(self, transport):
                 nonlocal connection_made_called
                 connection_made_called = True
@@ -567,7 +567,7 @@ class TestSSL(test_utils.TestCase):
     def test_connect_accepted_socket(self, server_ssl=None, client_ssl=None):
         loop = self.loop
 
-        class MyProto(MyBaseProto):
+        klasse MyProto(MyBaseProto):
 
             def connection_lost(self, exc):
                 super().connection_lost(exc)
@@ -701,7 +701,7 @@ class TestSSL(test_utils.TestCase):
             sock.unwrap()
             sock.close()
 
-        class ClientProto(asyncio.Protocol):
+        klasse ClientProto(asyncio.Protocol):
             def __init__(self, on_data, on_eof):
                 self.on_data = on_data
                 self.on_eof = on_eof
@@ -760,7 +760,7 @@ class TestSSL(test_utils.TestCase):
             sock.unwrap()
             sock.close()
 
-        class ClientProto(asyncio.Protocol):
+        klasse ClientProto(asyncio.Protocol):
             def __init__(self, on_data, on_eof):
                 self.on_data = on_data
                 self.on_eof = on_eof
@@ -832,7 +832,7 @@ class TestSSL(test_utils.TestCase):
             sock.unwrap()
             sock.close()
 
-        class ClientProtoFirst(asyncio.BufferedProtocol):
+        klasse ClientProtoFirst(asyncio.BufferedProtocol):
             def __init__(self, on_data):
                 self.on_data = on_data
                 self.buf = bytearray(1)
@@ -851,7 +851,7 @@ class TestSSL(test_utils.TestCase):
             def eof_received(self):
                 pass
 
-        class ClientProtoSecond(asyncio.Protocol):
+        klasse ClientProtoSecond(asyncio.Protocol):
             def __init__(self, on_data, on_eof):
                 self.on_data = on_data
                 self.on_eof = on_eof
@@ -921,7 +921,7 @@ class TestSSL(test_utils.TestCase):
             finally:
                 sock.close()
 
-        class ClientProto(asyncio.Protocol):
+        klasse ClientProto(asyncio.Protocol):
             def __init__(self, on_data, on_eof):
                 self.on_data = on_data
                 self.on_eof = on_eof
@@ -980,7 +980,7 @@ class TestSSL(test_utils.TestCase):
             sock.unwrap()
             sock.close()
 
-        class ServerProto(asyncio.Protocol):
+        klasse ServerProto(asyncio.Protocol):
             def __init__(self, on_con, on_eof, on_con_lost):
                 self.on_con = on_con
                 self.on_eof = on_eof
@@ -1073,7 +1073,7 @@ class TestSSL(test_utils.TestCase):
 
             CNT += 1
 
-        class ServerProtocol(asyncio.StreamReaderProtocol):
+        klasse ServerProtocol(asyncio.StreamReaderProtocol):
             def connection_made(self, transport):
                 super_ = super()
                 transport.pause_reading()
@@ -1551,7 +1551,7 @@ class TestSSL(test_utils.TestCase):
             # test.test_asyncio.test_selector_events.SelectorSocketTransportTests.test_write_buffer_after_close
             socket_transport = writer.transport._ssl_protocol._transport
 
-            class SocketWrapper:
+            klasse SocketWrapper:
                 def __init__(self, sock) -> None:
                     self.sock = sock
 
@@ -1659,7 +1659,7 @@ class TestSSL(test_utils.TestCase):
             sock.recv(32)
             sock.close()
 
-        class Protocol(asyncio.Protocol):
+        klasse Protocol(asyncio.Protocol):
             def __init__(self):
                 self.fut = asyncio.Future(loop=loop)
 
@@ -1707,7 +1707,7 @@ class TestSSL(test_utils.TestCase):
             assert sock.recv(1024) == b''
             sock.close()
 
-        class Protocol(asyncio.Protocol):
+        klasse Protocol(asyncio.Protocol):
             def __init__(self):
                 self.fut = asyncio.Future(loop=loop)
                 self.transport = None
@@ -1748,7 +1748,7 @@ class TestSSL(test_utils.TestCase):
 ###############################################################################
 
 
-class TestSocketWrapper:
+klasse TestSocketWrapper:
 
     def __init__(self, sock):
         self.__sock = sock
@@ -1787,7 +1787,7 @@ class TestSocketWrapper:
         return '<{} {!r}>'.format(type(self).__name__, self.__sock)
 
 
-class SocketThread(threading.Thread):
+klasse SocketThread(threading.Thread):
 
     def stop(self):
         self._active = False
@@ -1801,7 +1801,7 @@ class SocketThread(threading.Thread):
         self.stop()
 
 
-class TestThreadedClient(SocketThread):
+klasse TestThreadedClient(SocketThread):
 
     def __init__(self, test, sock, prog, timeout):
         threading.Thread.__init__(self, None, None, 'test-client')
@@ -1822,7 +1822,7 @@ class TestThreadedClient(SocketThread):
             self._test._abort_socket_test(ex)
 
 
-class TestThreadedServer(SocketThread):
+klasse TestThreadedServer(SocketThread):
 
     def __init__(self, test, sock, prog, timeout, max_clients):
         threading.Thread.__init__(self, None, None, 'test-server')

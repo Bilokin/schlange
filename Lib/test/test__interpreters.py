@@ -81,7 +81,7 @@ def clean_up_interpreters():
             pass  # already destroyed
 
 
-class TestBase(unittest.TestCase):
+klasse TestBase(unittest.TestCase):
 
     def tearDown(self):
         clean_up_interpreters()
@@ -90,7 +90,7 @@ class TestBase(unittest.TestCase):
 ##################################
 # misc. tests
 
-class IsShareableTests(unittest.TestCase):
+klasse IsShareableTests(unittest.TestCase):
 
     def test_default_shareables(self):
         shareables = [
@@ -112,13 +112,13 @@ class IsShareableTests(unittest.TestCase):
                     _interpreters.is_shareable(obj))
 
     def test_not_shareable(self):
-        class Cheese:
+        klasse Cheese:
             def __init__(self, name):
                 self.name = name
             def __str__(self):
                 return self.name
 
-        class SubBytes(bytes):
+        klasse SubBytes(bytes):
             """A subclass of a shareable type."""
 
         not_shareables = [
@@ -141,7 +141,7 @@ class IsShareableTests(unittest.TestCase):
                     _interpreters.is_shareable(obj))
 
 
-class ModuleTests(TestBase):
+klasse ModuleTests(TestBase):
 
     def test_import_in_interpreter(self):
         _run_output(
@@ -153,7 +153,7 @@ class ModuleTests(TestBase):
 ##################################
 # interpreter tests
 
-class ListAllTests(TestBase):
+klasse ListAllTests(TestBase):
 
     def test_initial(self):
         main, *_ = _interpreters.get_main()
@@ -176,7 +176,7 @@ class ListAllTests(TestBase):
         self.assertEqual(ids, [main, second])
 
 
-class GetCurrentTests(TestBase):
+klasse GetCurrentTests(TestBase):
 
     def test_main(self):
         main, *_ = _interpreters.get_main()
@@ -199,7 +199,7 @@ class GetCurrentTests(TestBase):
         self.assertNotEqual(cur, main)
 
 
-class GetMainTests(TestBase):
+klasse GetMainTests(TestBase):
 
     def test_from_main(self):
         [expected] = [id for id, *_ in _interpreters.list_all()]
@@ -220,7 +220,7 @@ class GetMainTests(TestBase):
         self.assertEqual(main, expected)
 
 
-class IsRunningTests(TestBase):
+klasse IsRunningTests(TestBase):
 
     def test_main(self):
         main, *_ = _interpreters.get_main()
@@ -261,7 +261,7 @@ class IsRunningTests(TestBase):
             _interpreters.is_running(-1)
 
 
-class CreateTests(TestBase):
+klasse CreateTests(TestBase):
 
     def test_in_main(self):
         id = _interpreters.create()
@@ -361,7 +361,7 @@ class CreateTests(TestBase):
         self.assertEqual(after, before | {id, id2})
 
 
-class DestroyTests(TestBase):
+klasse DestroyTests(TestBase):
 
     def test_one(self):
         id1 = _interpreters.create()
@@ -467,7 +467,7 @@ class DestroyTests(TestBase):
             self.assertTrue(_interpreters.is_running(interp))
 
 
-class CommonTests(TestBase):
+klasse CommonTests(TestBase):
     def setUp(self):
         super().setUp()
         self.id = _interpreters.create()
@@ -513,7 +513,7 @@ class CommonTests(TestBase):
             _interpreters.run_func(self.id, lambda: None, shared=bad_shared)
 
 
-class RunStringTests(TestBase):
+klasse RunStringTests(TestBase):
 
     def setUp(self):
         super().setUp()
@@ -679,7 +679,7 @@ class RunStringTests(TestBase):
             _interpreters.run_string(self.id, b'print("spam")')
 
     def test_str_subclass_string(self):
-        class StrSubclass(str): pass
+        klasse StrSubclass(str): pass
 
         output = _run_output(self.id, StrSubclass('print(1 + 2)'))
         self.assertEqual(output, '3\n')
@@ -849,7 +849,7 @@ class RunStringTests(TestBase):
         self.assertEqual(retcode, 0)
 
 
-class RunFailedTests(TestBase):
+klasse RunFailedTests(TestBase):
 
     def setUp(self):
         super().setUp()
@@ -877,7 +877,7 @@ class RunFailedTests(TestBase):
 
                 # Nothing from here down should ever run.
                 os.write({w}, b'1')
-                class NeverError(Exception): pass
+                klasse NeverError(Exception): pass
                 raise NeverError  # never raised
                 """).format(dedent(text))
             if fails:
@@ -1001,13 +1001,13 @@ class RunFailedTests(TestBase):
 
     def test_user_defined_exception(self):
         self.assert_run_failed_msg('MyError', 'spam', """
-            class MyError(Exception):
+            klasse MyError(Exception):
                 pass
             raise MyError('spam')
             """)
 
 
-class RunFuncTests(TestBase):
+klasse RunFuncTests(TestBase):
 
     def setUp(self):
         super().setUp()

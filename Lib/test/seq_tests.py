@@ -15,14 +15,14 @@ def iterfunc(seqn):
     for i in seqn:
         yield i
 
-class Sequence:
+klasse Sequence:
     'Sequence using __getitem__'
     def __init__(self, seqn):
         self.seqn = seqn
     def __getitem__(self, i):
         return self.seqn[i]
 
-class IterFunc:
+klasse IterFunc:
     'Sequence using iterator protocol'
     def __init__(self, seqn):
         self.seqn = seqn
@@ -35,7 +35,7 @@ class IterFunc:
         self.i += 1
         return v
 
-class IterGen:
+klasse IterGen:
     'Sequence using iterator protocol defined with a generator'
     def __init__(self, seqn):
         self.seqn = seqn
@@ -44,7 +44,7 @@ class IterGen:
         for val in self.seqn:
             yield val
 
-class IterNextOnly:
+klasse IterNextOnly:
     'Missing __getitem__ and __iter__'
     def __init__(self, seqn):
         self.seqn = seqn
@@ -55,7 +55,7 @@ class IterNextOnly:
         self.i += 1
         return v
 
-class IterNoNext:
+klasse IterNoNext:
     'Iterator missing __next__()'
     def __init__(self, seqn):
         self.seqn = seqn
@@ -63,7 +63,7 @@ class IterNoNext:
     def __iter__(self):
         return self
 
-class IterGenExc:
+klasse IterGenExc:
     'Test propagation of exceptions'
     def __init__(self, seqn):
         self.seqn = seqn
@@ -73,7 +73,7 @@ class IterGenExc:
     def __next__(self):
         3 // 0
 
-class IterFuncStop:
+klasse IterFuncStop:
     'Test immediate stop'
     def __init__(self, seqn):
         pass
@@ -87,15 +87,15 @@ def itermulti(seqn):
     'Test multiple tiers of iterators'
     return chain(map(lambda x:x, iterfunc(IterGen(Sequence(seqn)))))
 
-class LyingTuple(tuple):
+klasse LyingTuple(tuple):
     def __iter__(self):
         yield 1
 
-class LyingList(list):
+klasse LyingList(list):
     def __iter__(self):
         yield 1
 
-class CommonTest(unittest.TestCase):
+klasse CommonTest(unittest.TestCase):
     # The type to be tested
     type2test = None
 
@@ -115,7 +115,7 @@ class CommonTest(unittest.TestCase):
         uu2 = self.type2test(u2)
 
         v = self.type2test(tuple(u))
-        class OtherSeq:
+        klasse OtherSeq:
             def __init__(self, initseq):
                 self.__data = initseq
             def __len__(self):
@@ -239,9 +239,9 @@ class CommonTest(unittest.TestCase):
         # Sequences must test in-order.  If a rich comparison has side
         # effects, these will be visible to tests against later members.
         # In this test, the "side effect" is a short-circuiting raise.
-        class DoNotTestEq(Exception):
+        klasse DoNotTestEq(Exception):
             pass
-        class StopCompares:
+        klasse StopCompares:
             def __eq__(self, other):
                 raise DoNotTestEq
 
@@ -283,7 +283,7 @@ class CommonTest(unittest.TestCase):
         self.assertEqual(u2+u2+u2, u2*3)
         self.assertEqual(u2+u2+u2, 3*u2)
 
-        class subclass(self.type2test):
+        klasse subclass(self.type2test):
             pass
         u3 = subclass([0, 1])
         self.assertEqual(u3, u3*1)
@@ -311,7 +311,7 @@ class CommonTest(unittest.TestCase):
 
     def test_getitemoverwriteiter(self):
         # Verify that __getitem__ overrides are not recognized by __iter__
-        class T(self.type2test):
+        klasse T(self.type2test):
             def __getitem__(self, key):
                 return str(key) + '!!!'
         self.assertEqual(next(iter(T((1,2)))), 1)
@@ -361,10 +361,10 @@ class CommonTest(unittest.TestCase):
 
         self.assertRaises(TypeError, a.count)
 
-        class BadExc(Exception):
+        klasse BadExc(Exception):
             pass
 
-        class BadCmp:
+        klasse BadCmp:
             def __eq__(self, other):
                 if other == 2:
                     raise BadExc()
@@ -394,10 +394,10 @@ class CommonTest(unittest.TestCase):
 
         self.assertRaises(TypeError, u.index)
 
-        class BadExc(Exception):
+        klasse BadExc(Exception):
             pass
 
-        class BadCmp:
+        klasse BadCmp:
             def __eq__(self, other):
                 if other == 2:
                     raise BadExc()

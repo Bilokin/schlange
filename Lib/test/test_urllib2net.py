@@ -34,7 +34,7 @@ _urlopen_with_retry = _wrap_with_retry_thrice(urllib.request.urlopen,
                                               urllib.error.URLError)
 
 
-class TransientResource(object):
+klasse TransientResource(object):
 
     """Raise ResourceDenied if an exception is raised while the context manager
     is in effect that matches the specified exception and attributes."""
@@ -67,7 +67,7 @@ socket_peer_reset = TransientResource(OSError, errno=errno.ECONNRESET)
 ioerror_peer_reset = TransientResource(OSError, errno=errno.ECONNRESET)
 
 
-class AuthTests(unittest.TestCase):
+klasse AuthTests(unittest.TestCase):
     """Tests urllib2 authentication features."""
 
 ## Disabled at the moment since there is no page under python.org which
@@ -106,7 +106,7 @@ class AuthTests(unittest.TestCase):
 #                          urllib2.urlopen, "http://evil:thing@example.com")
 
 
-class CloseSocketTest(unittest.TestCase):
+klasse CloseSocketTest(unittest.TestCase):
 
     def test_close(self):
         # clear _opener global variable
@@ -122,7 +122,7 @@ class CloseSocketTest(unittest.TestCase):
             response.close()
             self.assertTrue(sock.closed)
 
-class OtherNetworkTests(unittest.TestCase):
+klasse OtherNetworkTests(unittest.TestCase):
     def setUp(self):
         if 0:  # for debugging
             import logging
@@ -289,7 +289,7 @@ class OtherNetworkTests(unittest.TestCase):
         return handlers
 
 
-class TimeoutTest(unittest.TestCase):
+klasse TimeoutTest(unittest.TestCase):
     def setUp(self):
         # clear _opener global variable
         self.addCleanup(urllib.request.urlcleanup)

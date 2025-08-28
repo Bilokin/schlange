@@ -33,7 +33,7 @@ import os
 from gettext import gettext as _
 
 
-class GetoptError(Exception):
+klasse GetoptError(Exception):
     opt = ''
     msg = ''
     def __init__(self, msg, opt=''):

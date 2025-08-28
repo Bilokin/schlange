@@ -6,7 +6,7 @@
 from test import multibytecodec_support
 import unittest
 
-class Test_GB2312(multibytecodec_support.TestBase, unittest.TestCase):
+klasse Test_GB2312(multibytecodec_support.TestBase, unittest.TestCase):
     encoding = 'gb2312'
     tstring = multibytecodec_support.load_teststring('gb2312')
     codectests = (
@@ -19,7 +19,7 @@ class Test_GB2312(multibytecodec_support.TestBase, unittest.TestCase):
         (b"\xc1\x64", "strict", None),
     )
 
-class Test_GBK(multibytecodec_support.TestBase, unittest.TestCase):
+klasse Test_GBK(multibytecodec_support.TestBase, unittest.TestCase):
     encoding = 'gbk'
     tstring = multibytecodec_support.load_teststring('gbk')
     codectests = (
@@ -33,7 +33,7 @@ class Test_GBK(multibytecodec_support.TestBase, unittest.TestCase):
         ("\u30fb", "strict", None),
     )
 
-class Test_GB18030(multibytecodec_support.TestBase, unittest.TestCase):
+klasse Test_GB18030(multibytecodec_support.TestBase, unittest.TestCase):
     encoding = 'gb18030'
     tstring = multibytecodec_support.load_teststring('gb18030')
     codectests = (
@@ -57,7 +57,7 @@ class Test_GB18030(multibytecodec_support.TestBase, unittest.TestCase):
     )
     has_iso10646 = True
 
-class Test_HZ(multibytecodec_support.TestBase, unittest.TestCase):
+klasse Test_HZ(multibytecodec_support.TestBase, unittest.TestCase):
     encoding = 'hz'
     tstring = multibytecodec_support.load_teststring('hz')
     codectests = (

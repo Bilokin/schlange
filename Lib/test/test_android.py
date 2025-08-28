@@ -24,7 +24,7 @@ STREAM_INFO = [("stdout", "I", 1), ("stderr", "W", 2)]
 
 
 # Test redirection of stdout and stderr to the Android log.
-class TestAndroidOutput(unittest.TestCase):
+klasse TestAndroidOutput(unittest.TestCase):
     maxDiff = None
 
     def setUp(self):
@@ -216,7 +216,7 @@ class TestAndroidOutput(unittest.TestCase):
 
                 # String subclasses are accepted, but they should be converted
                 # to a standard str without calling any of their methods.
-                class CustomStr(str):
+                klasse CustomStr(str):
                     def splitlines(self, *args, **kwargs):
                         raise AssertionError()
 
@@ -378,7 +378,7 @@ class TestAndroidOutput(unittest.TestCase):
                             stream.write(obj)
 
 
-class TestAndroidRateLimit(unittest.TestCase):
+klasse TestAndroidRateLimit(unittest.TestCase):
     def test_rate_limit(self):
         # https://cs.android.com/android/platform/superproject/+/android-14.0.0_r1:system/logging/liblog/include/log/log_read.h;l=39
         PER_MESSAGE_OVERHEAD = 28

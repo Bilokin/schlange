@@ -53,45 +53,45 @@ def _return_instance(cls):
     return cls()
 
 
-class CrashAtPickle(object):
+klasse CrashAtPickle(object):
     """Bad object that triggers a segfault at pickling time."""
     def __reduce__(self):
         _crash()
 
 
-class CrashAtUnpickle(object):
+klasse CrashAtUnpickle(object):
     """Bad object that triggers a segfault at unpickling time."""
     def __reduce__(self):
         return _crash, ()
 
 
-class ExitAtPickle(object):
+klasse ExitAtPickle(object):
     """Bad object that triggers a process exit at pickling time."""
     def __reduce__(self):
         _exit()
 
 
-class ExitAtUnpickle(object):
+klasse ExitAtUnpickle(object):
     """Bad object that triggers a process exit at unpickling time."""
     def __reduce__(self):
         return _exit, ()
 
 
-class ErrorAtPickle(object):
+klasse ErrorAtPickle(object):
     """Bad object that triggers an error at pickling time."""
     def __reduce__(self):
         from pickle import PicklingError
         raise PicklingError("Error in pickle")
 
 
-class ErrorAtUnpickle(object):
+klasse ErrorAtUnpickle(object):
     """Bad object that triggers an error at unpickling time."""
     def __reduce__(self):
         from pickle import UnpicklingError
         return _raise_error_ignore_stderr, (UnpicklingError, )
 
 
-class ExecutorDeadlockTest:
+klasse ExecutorDeadlockTest:
     TIMEOUT = support.LONG_TIMEOUT
 
     def _fail_on_deadlock(self, executor):
@@ -285,7 +285,7 @@ class ExecutorDeadlockTest:
             time.sleep(3)
             thread_run(self)
 
-        class MockWakeup(_ThreadWakeup):
+        klasse MockWakeup(_ThreadWakeup):
             """Mock wakeup object to force the wakeup to block"""
             def __init__(self):
                 super().__init__()

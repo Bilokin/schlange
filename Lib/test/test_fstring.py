@@ -29,7 +29,7 @@ a_global = 'global variable'
 #  worthwhile tradeoff. When I switched to this method, I found many
 #  examples where I wasn't testing what I thought I was.
 
-class TestCase(unittest.TestCase):
+klasse TestCase(unittest.TestCase):
     def assertAllRaise(self, exception_type, regex, error_strings):
         for str in error_strings:
             with self.subTest(str=str):
@@ -38,7 +38,7 @@ class TestCase(unittest.TestCase):
 
     def test__format__lookup(self):
         # Make sure __format__ is looked up on the type, not the instance.
-        class X:
+        klasse X:
             def __format__(self, spec):
                 return 'class'
 
@@ -65,7 +65,7 @@ class TestCase(unittest.TestCase):
 
     def test_ast(self):
         # Inspired by http://bugs.python.org/issue24975
-        class X:
+        klasse X:
             def __init__(self):
                 self.called = False
             def __call__(self):
@@ -845,7 +845,7 @@ x = (
                              ])
 
     def test_custom_format_specifier(self):
-        class CustomFormat:
+        klasse CustomFormat:
             def __format__(self, format_spec):
                 return format_spec
 
@@ -855,7 +855,7 @@ x = (
             exec(r'f"{F():¯\_(ツ)_/¯}"', {'F': CustomFormat})
 
     def test_side_effect_order(self):
-        class X:
+        klasse X:
             def __init__(self):
                 self.i = 0
             def __format__(self, spec):
@@ -1229,7 +1229,7 @@ x = (
             f'v:{value}'
 
     def test_missing_format_spec(self):
-        class O:
+        klasse O:
             def __format__(self, spec):
                 if not spec:
                     return '*'
@@ -1621,7 +1621,7 @@ x = (
                          'h1y=20h2y=20h3y=20')
 
         # Make sure __format__ is being called.
-        class C:
+        klasse C:
             def __format__(self, s):
                 return f'FORMAT-{s}'
             def __repr__(self):
@@ -1836,7 +1836,7 @@ print(f'''{{
         #
         # Raw f-strings should preserve literal backslashes in format specifications,
         # not interpret them as escape sequences.
-        class UnchangedFormat:
+        klasse UnchangedFormat:
             """Test helper that returns the format spec unchanged."""
             def __format__(self, format):
                 return format

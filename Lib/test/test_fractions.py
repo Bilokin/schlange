@@ -20,8 +20,8 @@ F = fractions.Fraction
 test_dir = os.path.dirname(__file__) or os.curdir
 format_testfile = os.path.join(test_dir, 'mathdata', 'formatfloat_testcases.txt')
 
-class DummyFloat(object):
-    """Dummy float class for testing comparisons with Fractions"""
+klasse DummyFloat(object):
+    """Dummy float klasse for testing comparisons with Fractions"""
 
     def __init__(self, value):
         if not isinstance(value, float):
@@ -52,7 +52,7 @@ class DummyFloat(object):
     __rsub__ = __sub__
 
 
-class DummyRational(object):
+klasse DummyRational(object):
     """Test comparison of Fraction with a naive rational implementation."""
 
     def __init__(self, num, den):
@@ -79,12 +79,12 @@ class DummyRational(object):
     def __ge__(self, other):
         return(self.num * other._denominator >= self.den * other._numerator)
 
-    # this class is for testing comparisons; conversion to float
+    # this klasse is for testing comparisons; conversion to float
     # should never be used for a comparison, since it loses accuracy
     def __float__(self):
         assert False, "__float__ should not be invoked"
 
-class DummyFraction(fractions.Fraction):
+klasse DummyFraction(fractions.Fraction):
     """Dummy Fraction subclass for copy and deepcopy testing."""
 
 
@@ -94,8 +94,8 @@ def _components(r):
 def typed_approx_eq(a, b):
     return type(a) == type(b) and (a == b or math.isclose(a, b))
 
-class Symbolic:
-    """Simple non-numeric class for testing mixed arithmetic.
+klasse Symbolic:
+    """Simple non-numeric klasse for testing mixed arithmetic.
     It is not Integral, Rational, Real or Complex, and cannot be converted
     to int, float or complex. but it supports some arithmetic operations.
     """
@@ -134,16 +134,16 @@ class Symbolic:
     def __repr__(self):
         return f'{self.__class__.__name__}({self.value!r})'
 
-class SymbolicReal(Symbolic):
+klasse SymbolicReal(Symbolic):
     pass
 numbers.Real.register(SymbolicReal)
 
-class SymbolicComplex(Symbolic):
+klasse SymbolicComplex(Symbolic):
     pass
 numbers.Complex.register(SymbolicComplex)
 
-class Rat:
-    """Simple Rational class for testing mixed arithmetic."""
+klasse Rat:
+    """Simple Rational klasse for testing mixed arithmetic."""
     def __init__(self, n, d):
         self.numerator = n
         self.denominator = d
@@ -190,8 +190,8 @@ class Rat:
         return f'{self.__class__.__name__}({self.numerator!r}, {self.denominator!r})'
 numbers.Rational.register(Rat)
 
-class Root:
-    """Simple Real class for testing mixed arithmetic."""
+klasse Root:
+    """Simple Real klasse for testing mixed arithmetic."""
     def __init__(self, v, n=F(2)):
         self.base = v
         self.degree = n
@@ -221,8 +221,8 @@ class Root:
         return f'{self.__class__.__name__}({self.base!r}, {self.degree!r})'
 numbers.Real.register(Root)
 
-class Polar:
-    """Simple Complex class for testing mixed arithmetic."""
+klasse Polar:
+    """Simple Complex klasse for testing mixed arithmetic."""
     def __init__(self, r, phi):
         self.r = r
         self.phi = phi
@@ -250,8 +250,8 @@ class Polar:
         return f'{self.__class__.__name__}({self.r!r}, {self.phi!r})'
 numbers.Complex.register(Polar)
 
-class Rect:
-    """Other simple Complex class for testing mixed arithmetic."""
+klasse Rect:
+    """Other simple Complex klasse for testing mixed arithmetic."""
     def __init__(self, x, y):
         self.x = x
         self.y = y
@@ -280,17 +280,17 @@ class Rect:
         return f'{self.__class__.__name__}({self.x!r}, {self.y!r})'
 numbers.Complex.register(Rect)
 
-class RectComplex(Rect, complex):
+klasse RectComplex(Rect, complex):
     pass
 
-class Ratio:
+klasse Ratio:
     def __init__(self, ratio):
         self._ratio = ratio
     def as_integer_ratio(self):
         return self._ratio
 
 
-class FractionTest(unittest.TestCase):
+klasse FractionTest(unittest.TestCase):
 
     def assertTypedEquals(self, expected, actual):
         """Asserts that both the types and values are the same."""
@@ -376,17 +376,17 @@ class FractionTest(unittest.TestCase):
         self.assertRaises(TypeError, F, 2, Ratio((-10, 9)))
 
         # as_integer_ratio not defined in a class
-        class A:
+        klasse A:
             pass
         a = A()
         a.as_integer_ratio = lambda: (9, 5)
         self.assertEqual((9, 5), _components(F(a)))
 
         # as_integer_ratio defined in a metaclass
-        class M(type):
+        klasse M(type):
             def as_integer_ratio(self):
                 return (11, 9)
-        class B(metaclass=M):
+        klasse B(metaclass=M):
             pass
         self.assertRaisesRegex(TypeError, errmsg, F, B)
         self.assertRaisesRegex(TypeError, errmsg, F, B())
@@ -607,7 +607,7 @@ class FractionTest(unittest.TestCase):
         self.assertRaises(OverflowError, cls.from_number, Decimal('inf'))
 
         # as_integer_ratio not defined in a class
-        class A:
+        klasse A:
             pass
         a = A()
         a.as_integer_ratio = lambda: (9, 5)
@@ -686,7 +686,7 @@ class FractionTest(unittest.TestCase):
         # even if the fraction is using some other Integral type for its
         # numerator and denominator.
 
-        class CustomInt(int):
+        klasse CustomInt(int):
             """
             Subclass of int with just enough machinery to convince the Fraction
             constructor to produce something with CustomInt numerator and
@@ -719,7 +719,7 @@ class FractionTest(unittest.TestCase):
         # Ensure that __bool__ is used on numerator which guarantees a bool
         # return.  See also bpo-39274.
         @functools.total_ordering
-        class CustomValue:
+        klasse CustomValue:
             denominator = 1
 
             def __init__(self, value):
@@ -1200,7 +1200,7 @@ class FractionTest(unittest.TestCase):
         self.assertRaises(AttributeError, setattr, r, 'a', 10)
 
     def test_int_subclass(self):
-        class myint(int):
+        klasse myint(int):
             def __mul__(self, other):
                 return type(self)(int(self) * int(other))
             def __floordiv__(self, other):

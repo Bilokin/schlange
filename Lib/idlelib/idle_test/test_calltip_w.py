@@ -6,7 +6,7 @@ from test.support import requires
 from tkinter import Tk, Text
 
 
-class CallTipWindowTest(unittest.TestCase):
+klasse CallTipWindowTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):

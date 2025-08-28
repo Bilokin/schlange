@@ -8,7 +8,7 @@ from test.support.bytecode_helper import AssemblerTestCase
 
 # Tests for the code-object creation stage of the compiler.
 
-class IsolatedAssembleTests(AssemblerTestCase):
+klasse IsolatedAssembleTests(AssemblerTestCase):
 
     def complete_metadata(self, metadata, filename="myfile.py"):
         if metadata is None:

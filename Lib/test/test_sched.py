@@ -10,7 +10,7 @@ from test.support import threading_helper
 TIMEOUT = support.SHORT_TIMEOUT
 
 
-class Timer:
+klasse Timer:
     def __init__(self):
         self._cond = threading.Condition()
         self._time = 0
@@ -38,7 +38,7 @@ class Timer:
             self._cond.notify_all()
 
 
-class TestCase(unittest.TestCase):
+klasse TestCase(unittest.TestCase):
 
     def test_enter(self):
         l = []

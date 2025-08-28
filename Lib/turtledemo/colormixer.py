@@ -1,7 +1,7 @@
 """turtledemo/colormixer.py"""
 from turtle import Screen, Turtle, mainloop
 
-class ColorTurtle(Turtle):
+klasse ColorTurtle(Turtle):
 
     def __init__(self, x, y):
         Turtle.__init__(self)

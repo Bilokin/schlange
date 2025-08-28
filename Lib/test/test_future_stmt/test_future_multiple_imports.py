@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 import unittest
 
 
-class Tests(unittest.TestCase):
+klasse Tests(unittest.TestCase):
     def test_unicode_literals(self):
         self.assertIsInstance("literal", str)
 

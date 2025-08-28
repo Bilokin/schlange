@@ -51,7 +51,7 @@ def create_doc_with_doctype():
     doctype.notations.item(0).ownerDocument = doc
     return doc
 
-class MinidomTest(unittest.TestCase):
+klasse MinidomTest(unittest.TestCase):
     def confirm(self, test, testname = "Test"):
         self.assertTrue(test, testname)
 
@@ -922,7 +922,7 @@ class MinidomTest(unittest.TestCase):
             <doc>Don't let entities make you frown &smile;</doc>
         """.strip())
 
-        class Handler:
+        klasse Handler:
             def handle(self, operation, key, data, src, dst):
                 self.operation = operation
                 self.key = key
@@ -1243,7 +1243,7 @@ class MinidomTest(unittest.TestCase):
 
         doc.unlink()
 
-    class UserDataHandler:
+    klasse UserDataHandler:
         called = 0
         def handle(self, operation, key, data, src, dst):
             dst.setUserData(key, data + 1, self)

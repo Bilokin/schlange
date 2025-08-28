@@ -60,10 +60,10 @@ except ZeroDivisionError as e:
     raise ArithmeticError from e
 """
 
-class_decorator = """\
+klasse_decorator = """\
 @f1(arg)
 @f2
-class Foo: pass
+klasse Foo: pass
 """
 
 elif1 = """\
@@ -130,7 +130,7 @@ docstring_prefixes = (
     "async def foo():\n    ",
 )
 
-class ASTTestCase(ASTTestMixin, unittest.TestCase):
+klasse ASTTestCase(ASTTestMixin, unittest.TestCase):
     def check_ast_roundtrip(self, code1, **kwargs):
         with self.subTest(code1=code1, ast_parse_kwargs=kwargs):
             ast1 = ast.parse(code1, **kwargs)
@@ -157,7 +157,7 @@ class ASTTestCase(ASTTestMixin, unittest.TestCase):
         with self.subTest(code1=code1, code2=code2):
             self.assertNotEqual(code2, code1)
 
-class UnparseTestCase(ASTTestCase):
+klasse UnparseTestCase(ASTTestCase):
     # Tests for specific bugs found in earlier versions of unparse
 
     def test_fstrings(self):
@@ -589,7 +589,7 @@ class UnparseTestCase(ASTTestCase):
             self.check_src_roundtrip(src, out, mode='single')
 
 
-class CosmeticTestCase(ASTTestCase):
+klasse CosmeticTestCase(ASTTestCase):
     """Test if there are cosmetic issues caused by unnecessary additions"""
 
     def test_simple_expressions_parens(self):
@@ -823,7 +823,7 @@ class CosmeticTestCase(ASTTestCase):
         self.check_ast_roundtrip("t''")
 
 
-class ManualASTCreationTestCase(unittest.TestCase):
+klasse ManualASTCreationTestCase(unittest.TestCase):
     """Test that AST nodes created without a type_params field unparse correctly."""
 
     def test_class(self):
@@ -924,7 +924,7 @@ class ManualASTCreationTestCase(unittest.TestCase):
         self.assertEqual(ast.unparse(node), "async def f[T = 1, *Ts = *1, **P = 1]():\n    pass")
 
 
-class DirectoryTestCase(ASTTestCase):
+klasse DirectoryTestCase(ASTTestCase):
     """Test roundtrip behaviour on all files in Lib and Lib/test."""
 
     lib_dir = pathlib.Path(__file__).parent / ".."

@@ -1,6 +1,6 @@
 """A generally useful event scheduler class.
 
-Each instance of this class manages its own queue.
+Each instance of this klasse manages its own queue.
 No multi-threading is implied; you are supposed to hack that
 yourself, or use a single instance per application.
 
@@ -48,7 +48,7 @@ arguments for the action.''')
 
 _sentinel = object()
 
-class scheduler:
+klasse scheduler:
 
     def __init__(self, timefunc=_time, delayfunc=time.sleep):
         """Initialize a new instance, passing the time and delay

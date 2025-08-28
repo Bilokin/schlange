@@ -6,7 +6,7 @@ from unittest import TestCase
 from test.support import threading_helper
 
 @threading_helper.requires_working_threading()
-class TestCode(TestCase):
+klasse TestCode(TestCase):
     def test_code_attrs(self):
         """Test concurrent accesses to lazily initialized code attributes"""
         code_objects = []

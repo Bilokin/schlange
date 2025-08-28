@@ -315,7 +315,7 @@ def create_package(test_dir, source):
         if ofi:
             ofi.close()
 
-class ModuleFinderTest(unittest.TestCase):
+klasse ModuleFinderTest(unittest.TestCase):
     def setUp(self):
         self.test_dir = tempfile.mkdtemp()
         self.test_path = [self.test_dir, os.path.dirname(tempfile.__file__)]
@@ -423,7 +423,7 @@ b.py
         self._do_test(coding_explicit_cp1252_test)
 
     def test_load_module_api(self):
-        class CheckLoadModuleApi(modulefinder.ModuleFinder):
+        klasse CheckLoadModuleApi(modulefinder.ModuleFinder):
             def __init__(self, *args, **kwds):
                 super().__init__(*args, **kwds)
 

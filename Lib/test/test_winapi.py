@@ -11,7 +11,7 @@ _winapi = import_helper.import_module('_winapi', required_on=['win'])
 MAXIMUM_WAIT_OBJECTS = 64
 MAXIMUM_BATCHED_WAIT_OBJECTS = (MAXIMUM_WAIT_OBJECTS - 1) ** 2
 
-class WinAPIBatchedWaitForMultipleObjectsTests(unittest.TestCase):
+klasse WinAPIBatchedWaitForMultipleObjectsTests(unittest.TestCase):
     def _events_waitall_test(self, n):
         evts = [_winapi.CreateEventW(0, False, False, None) for _ in range(n)]
 
@@ -94,7 +94,7 @@ class WinAPIBatchedWaitForMultipleObjectsTests(unittest.TestCase):
         self._events_waitany_test(MAXIMUM_BATCHED_WAIT_OBJECTS)
 
 
-class WinAPITests(unittest.TestCase):
+klasse WinAPITests(unittest.TestCase):
     def test_getlongpathname(self):
         testfn = pathlib.Path(os.getenv("ProgramFiles")).parents[-1] / "PROGRA~1"
         if not os.path.isdir(testfn):

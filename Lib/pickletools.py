@@ -171,7 +171,7 @@ TAKEN_FROM_ARGUMENT4  = -3   # num bytes is 4-byte signed little-endian int
 TAKEN_FROM_ARGUMENT4U = -4   # num bytes is 4-byte unsigned little-endian int
 TAKEN_FROM_ARGUMENT8U = -5   # num bytes is 8-byte unsigned little-endian int
 
-class ArgumentDescriptor(object):
+klasse ArgumentDescriptor(object):
     __slots__ = (
         # name of descriptor record, also a module global name; a string
         'name',
@@ -945,7 +945,7 @@ long4 = ArgumentDescriptor(
 # descriptors we need names to describe the various types of objects that can
 # appear on the stack.
 
-class StackObject(object):
+klasse StackObject(object):
     __slots__ = (
         # name of descriptor record, for info only
         'name',
@@ -1090,7 +1090,7 @@ topmost markobject too).
 ##############################################################################
 # Descriptors for pickle opcodes.
 
-class OpcodeInfo(object):
+klasse OpcodeInfo(object):
 
     __slots__ = (
         # symbolic name of opcode; a string
@@ -1920,7 +1920,7 @@ opcodes = [
       See EXT1.  EXT4 has a four-byte integer argument.
       """),
 
-    # Push a class object, or module function, on the stack, via its module
+    # Push a klasse object, or module function, on the stack, via its module
     # and name.
 
     I(name='GLOBAL',
@@ -1932,7 +1932,7 @@ opcodes = [
       doc="""Push a global object (module.attr) on the stack.
 
       Two newline-terminated strings follow the GLOBAL opcode.  The first is
-      taken as a module name, and the second as a class name.  The class
+      taken as a module name, and the second as a klasse name.  The class
       object module.class is pushed on the stack.  More accurately, the
       object returned by self.find_class(module, class) is pushed on the
       stack, so unpickling subclasses can override this form of lookup.
@@ -2012,13 +2012,13 @@ opcodes = [
       stack_before=[markobject, stackslice],
       stack_after=[anyobject],
       proto=0,
-      doc="""Build a class instance.
+      doc="""Build a klasse instance.
 
       This is the protocol 0 version of protocol 1's OBJ opcode.
       INST is followed by two newline-terminated strings, giving a
-      module and class name, just as for the GLOBAL opcode (and see
+      module and klasse name, just as for the GLOBAL opcode (and see
       GLOBAL for more details about that).  self.find_class(module, name)
-      is used to get a class object.
+      is used to get a klasse object.
 
       In addition, all the objects on the stack following the topmost
       markobject are gathered into a tuple and popped (along with the
@@ -2029,25 +2029,25 @@ opcodes = [
         + The argtuple is empty (markobject was at the top of the stack
           at the start).
 
-        + The class object does not have a __getinitargs__ attribute.
+        + The klasse object does not have a __getinitargs__ attribute.
 
-      then we want to create an old-style class instance without invoking
+      then we want to create an old-style klasse instance without invoking
       its __init__() method (pickle has waffled on this over the years; not
       calling __init__() is current wisdom).  In this case, an instance of
-      an old-style dummy class is created, and then we try to rebind its
-      __class__ attribute to the desired class object.  If this succeeds,
+      an old-style dummy klasse is created, and then we try to rebind its
+      __class__ attribute to the desired klasse object.  If this succeeds,
       the new instance object is pushed on the stack, and we're done.
 
-      Else (the argtuple is not empty, it's not an old-style class object,
-      or the class object does have a __getinitargs__ attribute), the code
-      first insists that the class object have a __safe_for_unpickling__
+      Else (the argtuple is not empty, it's not an old-style klasse object,
+      or the klasse object does have a __getinitargs__ attribute), the code
+      first insists that the klasse object have a __safe_for_unpickling__
       attribute.  Unlike as for the __safe_for_unpickling__ check in REDUCE,
       it doesn't matter whether this attribute has a true or false value, it
       only matters whether it exists (XXX this is a bug).  If
       __safe_for_unpickling__ doesn't exist, UnpicklingError is raised.
 
-      Else (the class object does have a __safe_for_unpickling__ attr),
-      the class object obtained from INST's arguments is applied to the
+      Else (the klasse object does have a __safe_for_unpickling__ attr),
+      the klasse object obtained from INST's arguments is applied to the
       argtuple obtained from the stack, and the resulting instance object
       is pushed on the stack.
 
@@ -2062,17 +2062,17 @@ opcodes = [
       stack_before=[markobject, anyobject, stackslice],
       stack_after=[anyobject],
       proto=1,
-      doc="""Build a class instance.
+      doc="""Build a klasse instance.
 
       This is the protocol 1 version of protocol 0's INST opcode, and is
-      very much like it.  The major difference is that the class object
+      very much like it.  The major difference is that the klasse object
       is taken off the stack, allowing it to be retrieved from the memo
-      repeatedly if several instances of the same class are created.  This
+      repeatedly if several instances of the same klasse are created.  This
       can be much more efficient (in both time and space) than repeatedly
-      embedding the module and class names in INST opcodes.
+      embedding the module and klasse names in INST opcodes.
 
       Unlike INST, OBJ takes no arguments from the opcode stream.  Instead
-      the class object is taken off the stack, immediately above the
+      the klasse object is taken off the stack, immediately above the
       topmost markobject:
 
       Stack before: ... markobject classobject stackslice
@@ -2084,7 +2084,7 @@ opcodes = [
       a bug).  See INST for the gory details.
 
       NOTE:  In Python 2.3, INST and OBJ are identical except for how they
-      get the class object.  That was always the intent; the implementations
+      get the klasse object.  That was always the intent; the implementations
       had diverged for accidental reasons.
       """),
 
@@ -2545,8 +2545,8 @@ def dis(pickle, out=None, memo=None, indentlevel=4, annotate=0):
     if stack:
         raise ValueError("stack not empty after STOP: %r" % stack)
 
-# For use in the doctest, simply as an example of a class to pickle.
-class _Example:
+# For use in the doctest, simply as an example of a klasse to pickle.
+klasse _Example:
     def __init__(self, value):
         self.value = value
 

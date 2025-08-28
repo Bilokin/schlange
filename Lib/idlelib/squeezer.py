@@ -81,7 +81,7 @@ def count_lines_with_wrapping(s, linewidth=80):
     return linecount
 
 
-class ExpandingButton(tk.Button):
+klasse ExpandingButton(tk.Button):
     """Class for the "squeezed" text buttons used by Squeezer
 
     These buttons are displayed inside a Tk Text widget in place of text. A
@@ -197,7 +197,7 @@ class ExpandingButton(tk.Button):
         return "break"
 
 
-class Squeezer:
+klasse Squeezer:
     """Replace long outputs in the shell with a simple button.
 
     This avoids IDLE's shell slowing down considerably, and even becoming
@@ -205,7 +205,7 @@ class Squeezer:
     """
     @classmethod
     def reload(cls):
-        """Load class variables from config."""
+        """Load klasse variables from config."""
         cls.auto_squeeze_min_lines = idleConf.GetOption(
             "main", "PyShell", "auto-squeeze-min-lines",
             type="int", default=50,

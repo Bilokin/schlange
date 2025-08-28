@@ -52,7 +52,7 @@ def capwords(s, sep=None):
 _sentinel_dict = {}
 
 
-class _TemplatePattern:
+klasse _TemplatePattern:
     # This descriptor is overwritten in ``Template._compile_pattern()``.
     def __get__(self, instance, cls=None):
         if cls is None:
@@ -61,8 +61,8 @@ class _TemplatePattern:
 _TemplatePattern = _TemplatePattern()
 
 
-class Template:
-    """A string class for supporting $-substitutions."""
+klasse Template:
+    """A string klasse for supporting $-substitutions."""
 
     delimiter = '$'
     # r'[a-z]' matches to non-ASCII letters when used with IGNORECASE, but
@@ -191,12 +191,12 @@ class Template:
 
 
 ########################################################################
-# The Formatter class (PEP 3101).
+# The Formatter klasse (PEP 3101).
 #
 # The overall parser is implemented in _string.formatter_parser.
 # The field name parser is implemented in _string.formatter_field_name_split.
 
-class Formatter:
+klasse Formatter:
     """See PEP 3101 for details and purpose of this class."""
 
     def format(self, format_string, /, *args, **kwargs):

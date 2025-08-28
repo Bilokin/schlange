@@ -26,7 +26,7 @@ def set_func_annotation(f, b):
 
 
 @unittest.skipUnless(Py_GIL_DISABLED, "Enable only in FT build")
-class TestFTFuncAnnotations(TestCase):
+klasse TestFTFuncAnnotations(TestCase):
     NUM_THREADS = 4
 
     def test_concurrent_read(self):

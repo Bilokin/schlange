@@ -13,7 +13,7 @@ from test.support import os_helper
 import _osx_support
 
 @unittest.skipUnless(sys.platform.startswith("darwin"), "requires OS X")
-class Test_OSXSupport(unittest.TestCase):
+klasse Test_OSXSupport(unittest.TestCase):
 
     def setUp(self):
         self.maxDiff = None

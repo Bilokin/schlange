@@ -62,7 +62,7 @@ C_STACK_REGEX = [
     fr'(  Binary file ".+"(, at .*(\+|-){ADDRESS_EXPR})? \[{ADDRESS_EXPR}\])|(<.+>)'
 ]
 
-class FaultHandlerTests(unittest.TestCase):
+klasse FaultHandlerTests(unittest.TestCase):
 
     def get_output(self, code, filename=None, fd=None):
         """
@@ -186,7 +186,7 @@ class FaultHandlerTests(unittest.TestCase):
 
             faulthandler.enable()
 
-            class RefCycle:
+            klasse RefCycle:
                 def __del__(self):
                     faulthandler._sigsegv()
 
@@ -569,7 +569,7 @@ class FaultHandlerTests(unittest.TestCase):
                 else:
                     faulthandler.dump_traceback(all_threads=True)
 
-            class Waiter(Thread):
+            klasse Waiter(Thread):
                 # avoid blocking if the main thread raises an exception.
                 daemon = True
 
@@ -927,7 +927,7 @@ class FaultHandlerTests(unittest.TestCase):
         import faulthandler
         from threading import Thread, Event
 
-        class Waiter(Thread):
+        klasse Waiter(Thread):
             def __init__(self):
                 Thread.__init__(self)
                 self.running = Event()

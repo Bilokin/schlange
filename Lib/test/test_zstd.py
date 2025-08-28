@@ -131,7 +131,7 @@ def setUpModule():
     assert len(TRAINED_DICT.dict_content) <= 3*_1K
 
 
-class FunctionsTestCase(unittest.TestCase):
+klasse FunctionsTestCase(unittest.TestCase):
 
     def test_version(self):
         s = ".".join((str(i) for i in zstd_version_info))
@@ -189,7 +189,7 @@ class FunctionsTestCase(unittest.TestCase):
         self.assertEqual(len(dat), 2 * _130_1K)
 
 
-class CompressorTestCase(unittest.TestCase):
+klasse CompressorTestCase(unittest.TestCase):
 
     def test_simple_compress_bad_args(self):
         # ZstdCompressor
@@ -507,7 +507,7 @@ class CompressorTestCase(unittest.TestCase):
         self.assertIsNone(frame_data.decompressed_size)
 
 
-class DecompressorTestCase(unittest.TestCase):
+klasse DecompressorTestCase(unittest.TestCase):
 
     def test_simple_decompress_bad_args(self):
         # ZstdDecompressor
@@ -830,7 +830,7 @@ class DecompressorTestCase(unittest.TestCase):
         self.assertEqual(d.unused_data, b'')
         self.assertEqual(d.unused_data, b'') # twice
 
-class DecompressorFlagsTestCase(unittest.TestCase):
+klasse DecompressorFlagsTestCase(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -1190,7 +1190,7 @@ class DecompressorFlagsTestCase(unittest.TestCase):
 
 
 
-class ZstdDictTestCase(unittest.TestCase):
+klasse ZstdDictTestCase(unittest.TestCase):
 
     def test_is_raw(self):
         # must be passed as a keyword argument
@@ -1548,7 +1548,7 @@ class ZstdDictTestCase(unittest.TestCase):
         self.assertEqual(len(TRAINED_DICT), len(TRAINED_DICT.dict_content))
         self.assertIn(str(len(TRAINED_DICT)), str(TRAINED_DICT))
 
-class FileTestCase(unittest.TestCase):
+klasse FileTestCase(unittest.TestCase):
     def setUp(self):
         self.DECOMPRESSED_42 = b'a'*42
         self.FRAME_42 = compress(self.DECOMPRESSED_42)
@@ -1775,7 +1775,7 @@ class FileTestCase(unittest.TestCase):
         os.remove(filename)
 
         # 3, no .fileno() method
-        class C:
+        klasse C:
             def read(self, size=-1):
                 return b'123'
         with ZstdFile(C(), 'rb') as f:
@@ -1809,7 +1809,7 @@ class FileTestCase(unittest.TestCase):
         os.remove(filename)
 
         # 3, no .filename property
-        class C:
+        klasse C:
             def read(self, size=-1):
                 return b'123'
         with ZstdFile(C(), 'rb') as f:
@@ -1957,7 +1957,7 @@ class FileTestCase(unittest.TestCase):
             self.assertRaises(ZstdError, f.read)
 
     def test_read_exception(self):
-        class C:
+        klasse C:
             def read(self, size=-1):
                 raise OSError
         with ZstdFile(C()) as f:
@@ -2290,7 +2290,7 @@ class FileTestCase(unittest.TestCase):
             self.assertRaises(TypeError, f.seek, b"derp")
 
     def test_seek_not_seekable(self):
-        class C(io.BytesIO):
+        klasse C(io.BytesIO):
             def seekable(self):
                 return False
         obj = C(COMPRESSED_100_PLUS_32KB)
@@ -2359,7 +2359,7 @@ class FileTestCase(unittest.TestCase):
                 f.write(b'1234')
 
         # 2
-        class T:
+        klasse T:
             def read(self, size):
                 return b'a' * size
 
@@ -2432,7 +2432,7 @@ class FileTestCase(unittest.TestCase):
             self.assertGreater(bi.tell(), 0) # flushed
 
         # write, no .flush() method
-        class C:
+        klasse C:
             def write(self, b):
                 return len(b)
         with ZstdFile(C(), 'w') as f:
@@ -2506,7 +2506,7 @@ class FileTestCase(unittest.TestCase):
 
         os.remove(filename)
 
-class OpenTestCase(unittest.TestCase):
+klasse OpenTestCase(unittest.TestCase):
 
     def test_binary_modes(self):
         with open(io.BytesIO(COMPRESSED_100_PLUS_32KB), "rb") as f:
@@ -2665,7 +2665,7 @@ class OpenTestCase(unittest.TestCase):
             self.assertEqual(f.write(arr), LENGTH)
             self.assertEqual(f.tell(), LENGTH)
 
-class FreeThreadingMethodTests(unittest.TestCase):
+klasse FreeThreadingMethodTests(unittest.TestCase):
 
     @threading_helper.reap_threads
     @threading_helper.requires_working_threading()

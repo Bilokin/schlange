@@ -49,7 +49,7 @@ from operator import length_hint
 n = 10
 
 
-class TestInvariantWithoutMutations:
+klasse TestInvariantWithoutMutations:
 
     def test_invariant(self):
         it = self.it
@@ -60,7 +60,7 @@ class TestInvariantWithoutMutations:
         self.assertRaises(StopIteration, next, it)
         self.assertEqual(length_hint(it), 0)
 
-class TestTemporarilyImmutable(TestInvariantWithoutMutations):
+klasse TestTemporarilyImmutable(TestInvariantWithoutMutations):
 
     def test_immutable_during_iteration(self):
         # objects such as deques, sets, and dictionaries enforce
@@ -76,64 +76,64 @@ class TestTemporarilyImmutable(TestInvariantWithoutMutations):
 
 ## ------- Concrete Type Tests -------
 
-class TestRepeat(TestInvariantWithoutMutations, unittest.TestCase):
+klasse TestRepeat(TestInvariantWithoutMutations, unittest.TestCase):
 
     def setUp(self):
         self.it = repeat(None, n)
 
-class TestXrange(TestInvariantWithoutMutations, unittest.TestCase):
+klasse TestXrange(TestInvariantWithoutMutations, unittest.TestCase):
 
     def setUp(self):
         self.it = iter(range(n))
 
-class TestXrangeCustomReversed(TestInvariantWithoutMutations, unittest.TestCase):
+klasse TestXrangeCustomReversed(TestInvariantWithoutMutations, unittest.TestCase):
 
     def setUp(self):
         self.it = reversed(range(n))
 
-class TestTuple(TestInvariantWithoutMutations, unittest.TestCase):
+klasse TestTuple(TestInvariantWithoutMutations, unittest.TestCase):
 
     def setUp(self):
         self.it = iter(tuple(range(n)))
 
 ## ------- Types that should not be mutated during iteration -------
 
-class TestDeque(TestTemporarilyImmutable, unittest.TestCase):
+klasse TestDeque(TestTemporarilyImmutable, unittest.TestCase):
 
     def setUp(self):
         d = deque(range(n))
         self.it = iter(d)
         self.mutate = d.pop
 
-class TestDequeReversed(TestTemporarilyImmutable, unittest.TestCase):
+klasse TestDequeReversed(TestTemporarilyImmutable, unittest.TestCase):
 
     def setUp(self):
         d = deque(range(n))
         self.it = reversed(d)
         self.mutate = d.pop
 
-class TestDictKeys(TestTemporarilyImmutable, unittest.TestCase):
+klasse TestDictKeys(TestTemporarilyImmutable, unittest.TestCase):
 
     def setUp(self):
         d = dict.fromkeys(range(n))
         self.it = iter(d)
         self.mutate = d.popitem
 
-class TestDictItems(TestTemporarilyImmutable, unittest.TestCase):
+klasse TestDictItems(TestTemporarilyImmutable, unittest.TestCase):
 
     def setUp(self):
         d = dict.fromkeys(range(n))
         self.it = iter(d.items())
         self.mutate = d.popitem
 
-class TestDictValues(TestTemporarilyImmutable, unittest.TestCase):
+klasse TestDictValues(TestTemporarilyImmutable, unittest.TestCase):
 
     def setUp(self):
         d = dict.fromkeys(range(n))
         self.it = iter(d.values())
         self.mutate = d.popitem
 
-class TestSet(TestTemporarilyImmutable, unittest.TestCase):
+klasse TestSet(TestTemporarilyImmutable, unittest.TestCase):
 
     def setUp(self):
         d = set(range(n))
@@ -142,7 +142,7 @@ class TestSet(TestTemporarilyImmutable, unittest.TestCase):
 
 ## ------- Types that can mutate during iteration -------
 
-class TestList(TestInvariantWithoutMutations, unittest.TestCase):
+klasse TestList(TestInvariantWithoutMutations, unittest.TestCase):
 
     def setUp(self):
         self.it = iter(range(n))
@@ -162,7 +162,7 @@ class TestList(TestInvariantWithoutMutations, unittest.TestCase):
         self.assertEqual(length_hint(it), 0)
 
 
-class TestListReversed(TestInvariantWithoutMutations, unittest.TestCase):
+klasse TestListReversed(TestInvariantWithoutMutations, unittest.TestCase):
 
     def setUp(self):
         self.it = reversed(range(n))
@@ -184,7 +184,7 @@ class TestListReversed(TestInvariantWithoutMutations, unittest.TestCase):
 ## -- Check to make sure exceptions are not suppressed by __length_hint__()
 
 
-class BadLen(object):
+klasse BadLen(object):
     def __iter__(self):
         return iter(range(10))
 
@@ -192,7 +192,7 @@ class BadLen(object):
         raise RuntimeError('hello')
 
 
-class BadLengthHint(object):
+klasse BadLengthHint(object):
     def __iter__(self):
         return iter(range(10))
 
@@ -200,7 +200,7 @@ class BadLengthHint(object):
         raise RuntimeError('hello')
 
 
-class NoneLengthHint(object):
+klasse NoneLengthHint(object):
     def __iter__(self):
         return iter(range(10))
 
@@ -208,7 +208,7 @@ class NoneLengthHint(object):
         return NotImplemented
 
 
-class TestLengthHintExceptions(unittest.TestCase):
+klasse TestLengthHintExceptions(unittest.TestCase):
 
     def test_issue1242657(self):
         self.assertRaises(RuntimeError, list, BadLen())

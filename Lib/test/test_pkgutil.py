@@ -22,7 +22,7 @@ from test.test_importlib.util import uncache
 # creating interesting package layouts to a separate module.
 # Issue #15348 declares this is indeed a dodgy hack ;)
 
-class PkgutilTests(unittest.TestCase):
+klasse PkgutilTests(unittest.TestCase):
 
     def setUp(self):
         self.dirname = tempfile.mkdtemp()
@@ -355,9 +355,9 @@ class PkgutilTests(unittest.TestCase):
             self.assertEqual(pkgutil.resolve_name('package4:submodule.attr'), 'submodule')
 
 
-class PkgutilPEP302Tests(unittest.TestCase):
+klasse PkgutilPEP302Tests(unittest.TestCase):
 
-    class MyTestLoader(object):
+    klasse MyTestLoader(object):
         def create_module(self, spec):
             return None
 
@@ -368,7 +368,7 @@ class PkgutilPEP302Tests(unittest.TestCase):
         def get_data(self, path):
             return "Hello, world!"
 
-    class MyTestImporter(object):
+    klasse MyTestImporter(object):
         def find_spec(self, fullname, path=None, target=None):
             loader = PkgutilPEP302Tests.MyTestLoader()
             return spec_from_file_location(fullname,
@@ -400,7 +400,7 @@ class PkgutilPEP302Tests(unittest.TestCase):
 
 # These tests, especially the setup and cleanup, are hideous. They
 # need to be cleaned up once issue 14715 is addressed.
-class ExtendPathTests(unittest.TestCase):
+klasse ExtendPathTests(unittest.TestCase):
     def create_init(self, pkgname):
         dirname = tempfile.mkdtemp()
         sys.path.insert(0, dirname)
@@ -561,7 +561,7 @@ class ExtendPathTests(unittest.TestCase):
         del sys.path[0]
 
 
-class NestedNamespacePackageTest(unittest.TestCase):
+klasse NestedNamespacePackageTest(unittest.TestCase):
 
     def setUp(self):
         self.basedir = tempfile.mkdtemp()
@@ -602,7 +602,7 @@ class NestedNamespacePackageTest(unittest.TestCase):
         self.assertEqual(d, 2)
 
 
-class ImportlibMigrationTests(unittest.TestCase):
+klasse ImportlibMigrationTests(unittest.TestCase):
     # With full PEP 302 support in the standard import machinery, the
     # PEP 302 emulation in this module is in the process of being
     # deprecated in favour of importlib proper

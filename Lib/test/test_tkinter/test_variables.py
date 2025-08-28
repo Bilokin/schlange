@@ -9,7 +9,7 @@ from test.support import ALWAYS_EQ
 from test.test_tkinter.support import AbstractDefaultRootTest, tcl_version
 
 
-class Var(Variable):
+klasse Var(Variable):
 
     _default = "default"
     side_effect = False
@@ -19,7 +19,7 @@ class Var(Variable):
         super().set(value)
 
 
-class TestBase(unittest.TestCase):
+klasse TestBase(unittest.TestCase):
 
     def setUp(self):
         self.root = Tcl()
@@ -28,7 +28,7 @@ class TestBase(unittest.TestCase):
         del self.root
 
 
-class TestVariable(TestBase):
+klasse TestVariable(TestBase):
 
     def info_exists(self, *args):
         return self.root.getboolean(self.root.call("info", "exists", *args))
@@ -64,7 +64,7 @@ class TestVariable(TestBase):
         self.assertFalse(self.info_exists("name"))
 
     def test_equality(self):
-        # values doesn't matter, only class and name are checked
+        # values doesn't matter, only klasse and name are checked
         v1 = Variable(self.root, name="abc")
         v2 = Variable(self.root, name="abc")
         self.assertIsNot(v1, v2)
@@ -228,7 +228,7 @@ class TestVariable(TestBase):
         self.assertEqual(trace, [('write', vname, '', 'unset')])
 
 
-class TestStringVar(TestBase):
+klasse TestStringVar(TestBase):
 
     def test_default(self):
         v = StringVar(self.root)
@@ -247,7 +247,7 @@ class TestStringVar(TestBase):
         self.assertEqual("val\x00ue", v.get())
 
 
-class TestIntVar(TestBase):
+klasse TestIntVar(TestBase):
 
     def test_default(self):
         v = IntVar(self.root)
@@ -268,7 +268,7 @@ class TestIntVar(TestBase):
             v.get()
 
 
-class TestDoubleVar(TestBase):
+klasse TestDoubleVar(TestBase):
 
     def test_default(self):
         v = DoubleVar(self.root)
@@ -295,7 +295,7 @@ class TestDoubleVar(TestBase):
             v.get()
 
 
-class TestBooleanVar(TestBase):
+klasse TestBooleanVar(TestBase):
 
     def test_default(self):
         v = BooleanVar(self.root)
@@ -342,7 +342,7 @@ class TestBooleanVar(TestBase):
             v.get()
 
 
-class DefaultRootTest(AbstractDefaultRootTest, unittest.TestCase):
+klasse DefaultRootTest(AbstractDefaultRootTest, unittest.TestCase):
 
     def test_variable(self):
         self.assertRaises(RuntimeError, Variable)

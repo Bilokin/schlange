@@ -238,7 +238,7 @@ def build_table(specs, *, sep=' ', defaultwidth=None):
     return _build_table(columns, sep=sep, defaultwidth=defaultwidth)
 
 
-class ColumnSpec(namedtuple('ColumnSpec', 'field label fmt')):
+klasse ColumnSpec(namedtuple('ColumnSpec', 'field label fmt')):
 
     REGEX = re.compile(textwrap.dedent(r'''
         ^

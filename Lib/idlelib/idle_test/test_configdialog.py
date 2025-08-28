@@ -1,6 +1,6 @@
 """Test configdialog, coverage 94%.
 
-Half the class creates dialog, half works with user customizations.
+Half the klasse creates dialog, half works with user customizations.
 """
 from idlelib import configdialog
 from test.support import requires
@@ -50,7 +50,7 @@ def tearDownModule():
     root = dialog = None
 
 
-class ConfigDialogTest(unittest.TestCase):
+klasse ConfigDialogTest(unittest.TestCase):
 
     def test_deactivate_current_config(self):
         pass
@@ -59,7 +59,7 @@ class ConfigDialogTest(unittest.TestCase):
         pass
 
 
-class ButtonTest(unittest.TestCase):
+klasse ButtonTest(unittest.TestCase):
 
     def test_click_ok(self):
         d = dialog
@@ -102,7 +102,7 @@ class ButtonTest(unittest.TestCase):
         self.assertEndsWith(contents,'a different name.\n')
 
 
-class FontPageTest(unittest.TestCase):
+klasse FontPageTest(unittest.TestCase):
     """Test that font widgets enable users to make font changes.
 
     Test that widget actions set vars, that var changes add three
@@ -260,7 +260,7 @@ class FontPageTest(unittest.TestCase):
         d.set_samples = Func()  # Re-mask for other tests.
 
 
-class HighPageTest(unittest.TestCase):
+klasse HighPageTest(unittest.TestCase):
     """Test that highlight tab widgets enable users to make changes.
 
     Test that widget actions set vars, that var changes add
@@ -768,7 +768,7 @@ class HighPageTest(unittest.TestCase):
         del d.askyesno
 
 
-class KeysPageTest(unittest.TestCase):
+klasse KeysPageTest(unittest.TestCase):
     """Test that keys tab widgets enable users to make changes.
 
     Test that widget actions set vars, that var changes add
@@ -1179,7 +1179,7 @@ class KeysPageTest(unittest.TestCase):
         del d.askyesno
 
 
-class WinPageTest(unittest.TestCase):
+klasse WinPageTest(unittest.TestCase):
     """Test that general tab widgets enable users to make changes.
 
     Test that widget actions set vars, that var changes add
@@ -1260,7 +1260,7 @@ class WinPageTest(unittest.TestCase):
         self.assertEqual(extpage, {'FormatParagraph': {'max-width': '11'}})
 
 
-class ShedPageTest(unittest.TestCase):
+klasse ShedPageTest(unittest.TestCase):
     """Test that shed tab widgets enable users to make changes.
 
     Test that widget actions set vars, that var changes add
@@ -1297,7 +1297,7 @@ class ShedPageTest(unittest.TestCase):
 
 
 #unittest.skip("Nothing here yet TODO")
-class ExtPageTest(unittest.TestCase):
+klasse ExtPageTest(unittest.TestCase):
     """Test that the help source list works correctly."""
     @classmethod
     def setUpClass(cls):
@@ -1305,7 +1305,7 @@ class ExtPageTest(unittest.TestCase):
         dialog.note.select(page)
 
 
-class HelpSourceTest(unittest.TestCase):
+klasse HelpSourceTest(unittest.TestCase):
     """Test that the help source list works correctly."""
     @classmethod
     def setUpClass(cls):
@@ -1472,7 +1472,7 @@ class HelpSourceTest(unittest.TestCase):
         fr.update_help_changes = Func()
 
 
-class VarTraceTest(unittest.TestCase):
+klasse VarTraceTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):

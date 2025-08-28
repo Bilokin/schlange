@@ -27,7 +27,7 @@ def _format_size(size, sign):
         size /= 1024
 
 
-class Statistic:
+klasse Statistic:
     """
     Statistic difference on memory allocations between two Snapshot instance.
     """
@@ -67,7 +67,7 @@ class Statistic:
         return (self.size, self.count, self.traceback)
 
 
-class StatisticDiff:
+klasse StatisticDiff:
     """
     Statistic difference on memory allocations between an old and a new
     Snapshot instance.
@@ -138,7 +138,7 @@ def _compare_grouped_stats(old_group, new_group):
 
 
 @total_ordering
-class Frame:
+klasse Frame:
     """
     Frame of a traceback.
     """
@@ -177,7 +177,7 @@ class Frame:
 
 
 @total_ordering
-class Traceback(Sequence):
+klasse Traceback(Sequence):
     """
     Sequence of Frame instances sorted from the oldest frame
     to the most recent frame.
@@ -269,7 +269,7 @@ def get_object_traceback(obj):
         return None
 
 
-class Trace:
+klasse Trace:
     """
     Trace of a memory block.
     """
@@ -308,7 +308,7 @@ class Trace:
                 % (self.domain, _format_size(self.size, False), self.traceback))
 
 
-class _Traces(Sequence):
+klasse _Traces(Sequence):
     def __init__(self, traces):
         Sequence.__init__(self)
         # traces is a tuple of trace tuples: see Trace constructor
@@ -342,7 +342,7 @@ def _normalize_filename(filename):
     return filename
 
 
-class BaseFilter:
+klasse BaseFilter:
     def __init__(self, inclusive):
         self.inclusive = inclusive
 
@@ -350,7 +350,7 @@ class BaseFilter:
         raise NotImplementedError
 
 
-class Filter(BaseFilter):
+klasse Filter(BaseFilter):
     def __init__(self, inclusive, filename_pattern,
                  lineno=None, all_frames=False, domain=None):
         super().__init__(inclusive)
@@ -398,7 +398,7 @@ class Filter(BaseFilter):
         return res
 
 
-class DomainFilter(BaseFilter):
+klasse DomainFilter(BaseFilter):
     def __init__(self, inclusive, domain):
         super().__init__(inclusive)
         self._domain = domain
@@ -412,7 +412,7 @@ class DomainFilter(BaseFilter):
         return (domain == self.domain) ^ (not self.inclusive)
 
 
-class Snapshot:
+klasse Snapshot:
     """
     Snapshot of traces of memory blocks allocated by Python.
     """

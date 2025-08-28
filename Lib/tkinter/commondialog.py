@@ -1,6 +1,6 @@
-# base class for tk common dialogues
+# base klasse for tk common dialogues
 #
-# this module provides a base class for accessing the common
+# this module provides a base klasse for accessing the common
 # dialogues available in Tk 4.2 and newer.  use filedialog,
 # colorchooser, and messagebox to access the individual
 # dialogs.
@@ -13,7 +13,7 @@ __all__ = ["Dialog"]
 from tkinter import _get_temp_root, _destroy_temp_root
 
 
-class Dialog:
+klasse Dialog:
 
     command = None
 

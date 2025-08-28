@@ -3,7 +3,7 @@ from typing import Literal,  NoReturn, overload
 
 
 @dc.dataclass
-class ClinicError(Exception):
+klasse ClinicError(Exception):
     message: str
     _: dc.KW_ONLY
     lineno: int | None = None
@@ -23,7 +23,7 @@ class ClinicError(Exception):
         return msg
 
 
-class ParseError(ClinicError):
+klasse ParseError(ClinicError):
     pass
 
 

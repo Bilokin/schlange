@@ -12,7 +12,7 @@ _testcapi = import_helper.import_module('_testcapi')
 NULL = None
 
 
-class PyEval_EvalCodeExTests(unittest.TestCase):
+klasse PyEval_EvalCodeExTests(unittest.TestCase):
 
     def test_simple(self):
         def f():
@@ -31,14 +31,14 @@ class PyEval_EvalCodeExTests(unittest.TestCase):
         # CRASHES eval_code_ex(NULL, {})
 
     def test_custom_locals(self):
-        # Monkey-patch __build_class__ to get a class code object.
+        # Monkey-patch __build_class__ to get a klasse code object.
         code = None
         def build_class(func, name, /, *bases, **kwds):
             nonlocal code
             code = func.__code__
 
         with swap_attr(builtins, '__build_class__', build_class):
-            class A:
+            klasse A:
                 # Uses LOAD_NAME for a
                 r[:] = [a]
 

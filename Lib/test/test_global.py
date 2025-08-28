@@ -18,7 +18,7 @@ import unittest
 import warnings
 
 
-class GlobalTests(unittest.TestCase):
+klasse GlobalTests(unittest.TestCase):
 
     def setUp(self):
         self.enterContext(check_warnings())
@@ -107,7 +107,7 @@ def fn():
     def test_class_def(self):
         global name_class_def
 
-        class name_class_def:
+        klasse name_class_def:
             pass
 
         value = name_class_def

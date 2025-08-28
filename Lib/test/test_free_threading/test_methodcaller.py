@@ -3,7 +3,7 @@ from threading import Thread
 from operator import methodcaller
 
 
-class TestMethodcaller(unittest.TestCase):
+klasse TestMethodcaller(unittest.TestCase):
     def test_methodcaller_threading(self):
         number_of_threads = 10
         size = 4_000

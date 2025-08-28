@@ -7,7 +7,7 @@ from .case import _BaseTestCaseContext
 _LoggingWatcher = collections.namedtuple("_LoggingWatcher",
                                          ["records", "output"])
 
-class _CapturingHandler(logging.Handler):
+klasse _CapturingHandler(logging.Handler):
     """
     A logging handler capturing all (raw and formatted) logging output.
     """
@@ -25,7 +25,7 @@ class _CapturingHandler(logging.Handler):
         self.watcher.output.append(msg)
 
 
-class _AssertLogsContext(_BaseTestCaseContext):
+klasse _AssertLogsContext(_BaseTestCaseContext):
     """A context manager for assertLogs() and assertNoLogs() """
 
     LOGGING_FORMAT = "%(levelname)s:%(name)s:%(message)s"

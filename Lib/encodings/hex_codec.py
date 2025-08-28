@@ -18,26 +18,26 @@ def hex_decode(input, errors='strict'):
     assert errors == 'strict'
     return (binascii.a2b_hex(input), len(input))
 
-class Codec(codecs.Codec):
+klasse Codec(codecs.Codec):
     def encode(self, input, errors='strict'):
         return hex_encode(input, errors)
     def decode(self, input, errors='strict'):
         return hex_decode(input, errors)
 
-class IncrementalEncoder(codecs.IncrementalEncoder):
+klasse IncrementalEncoder(codecs.IncrementalEncoder):
     def encode(self, input, final=False):
         assert self.errors == 'strict'
         return binascii.b2a_hex(input)
 
-class IncrementalDecoder(codecs.IncrementalDecoder):
+klasse IncrementalDecoder(codecs.IncrementalDecoder):
     def decode(self, input, final=False):
         assert self.errors == 'strict'
         return binascii.a2b_hex(input)
 
-class StreamWriter(Codec, codecs.StreamWriter):
+klasse StreamWriter(Codec, codecs.StreamWriter):
     charbuffertype = bytes
 
-class StreamReader(Codec, codecs.StreamReader):
+klasse StreamReader(Codec, codecs.StreamReader):
     charbuffertype = bytes
 
 ### encodings module API

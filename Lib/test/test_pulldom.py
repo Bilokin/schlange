@@ -22,7 +22,7 @@ SMALL_SAMPLE = """<?xml version="1.0"?>
 </html>"""
 
 
-class PullDOMTestCase(unittest.TestCase):
+klasse PullDOMTestCase(unittest.TestCase):
 
     def test_parse(self):
         """Minimal test of DOMEventStream.parse()"""
@@ -167,7 +167,7 @@ class PullDOMTestCase(unittest.TestCase):
         self.assertEqual(ges, False)
 
 
-class ThoroughTestCase(unittest.TestCase):
+klasse ThoroughTestCase(unittest.TestCase):
     """Test the hard-to-reach parts of pulldom."""
 
     def test_thorough_parse(self):
@@ -232,7 +232,7 @@ class ThoroughTestCase(unittest.TestCase):
         self.assertEqual(pulldom.END_DOCUMENT, evt)
 
 
-class SAXExerciser(object):
+klasse SAXExerciser(object):
     """A fake sax parser that calls some of the harder-to-reach sax methods to
     ensure it emits the correct events"""
 
@@ -266,7 +266,7 @@ class SAXExerciser(object):
     setFeature = stub
 
 
-class SAX2DOMExerciser(SAXExerciser):
+klasse SAX2DOMExerciser(SAXExerciser):
     """The same as SAXExerciser, but without the processing instruction and
     comment before the root element, because S2D can"t handle it"""
 
@@ -283,7 +283,7 @@ class SAX2DOMExerciser(SAXExerciser):
         h.endDocument()
 
 
-class SAX2DOMTestHelper(pulldom.DOMEventStream):
+klasse SAX2DOMTestHelper(pulldom.DOMEventStream):
     """Allows us to drive SAX2DOM from a DOMEventStream."""
 
     def reset(self):
@@ -293,7 +293,7 @@ class SAX2DOMTestHelper(pulldom.DOMEventStream):
         self.parser.setContentHandler(self.pulldom)
 
 
-class SAX2DOMTestCase(unittest.TestCase):
+klasse SAX2DOMTestCase(unittest.TestCase):
 
     def confirm(self, test, testname="Test"):
         self.assertTrue(test, testname)

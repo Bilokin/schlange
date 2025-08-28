@@ -113,7 +113,7 @@ if hasattr(socket, 'AF_UNIX'):
         return await loop.create_unix_server(factory, path, **kwds)
 
 
-class FlowControlMixin(protocols.Protocol):
+klasse FlowControlMixin(protocols.Protocol):
     """Reusable flow control logic for StreamWriter.drain().
 
     This implements the protocol methods pause_writing(),
@@ -177,10 +177,10 @@ class FlowControlMixin(protocols.Protocol):
         raise NotImplementedError
 
 
-class StreamReaderProtocol(FlowControlMixin, protocols.Protocol):
-    """Helper class to adapt between Protocol and StreamReader.
+klasse StreamReaderProtocol(FlowControlMixin, protocols.Protocol):
+    """Helper klasse to adapt between Protocol and StreamReader.
 
-    (This is a helper class instead of making StreamReader itself a
+    (This is a helper klasse instead of making StreamReader itself a
     Protocol subclass, because the StreamReader has other potential
     uses, and to prevent the user of the StreamReader to accidentally
     call inappropriate methods of the protocol.)
@@ -305,7 +305,7 @@ class StreamReaderProtocol(FlowControlMixin, protocols.Protocol):
                 closed.exception()
 
 
-class StreamWriter:
+klasse StreamWriter:
     """Wraps a Transport.
 
     This exposes write(), writelines(), [can_]write_eof(),
@@ -408,7 +408,7 @@ class StreamWriter:
                 self.close()
                 warnings.warn(f"unclosed {self!r}", ResourceWarning)
 
-class StreamReader:
+klasse StreamReader:
 
     _source_traceback = None
 

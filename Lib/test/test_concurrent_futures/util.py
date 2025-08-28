@@ -29,7 +29,7 @@ EXCEPTION_FUTURE = create_future(state=FINISHED, exception=OSError())
 SUCCESSFUL_FUTURE = create_future(state=FINISHED, result=42)
 
 
-class BaseTestCase(unittest.TestCase):
+klasse BaseTestCase(unittest.TestCase):
     def setUp(self):
         self._thread_key = threading_helper.threading_setup()
 
@@ -38,7 +38,7 @@ class BaseTestCase(unittest.TestCase):
         threading_helper.threading_cleanup(*self._thread_key)
 
 
-class ExecutorMixin:
+klasse ExecutorMixin:
     worker_count = 5
     executor_kwargs = {}
 
@@ -77,7 +77,7 @@ class ExecutorMixin:
         return multiprocessing.get_context(self.ctx)
 
 
-class ThreadPoolMixin(ExecutorMixin):
+klasse ThreadPoolMixin(ExecutorMixin):
     executor_type = futures.ThreadPoolExecutor
 
     def create_event(self):
@@ -85,14 +85,14 @@ class ThreadPoolMixin(ExecutorMixin):
 
 
 @support.skip_if_sanitizer("gh-129824: data races in InterpreterPool tests", thread=True)
-class InterpreterPoolMixin(ExecutorMixin):
+klasse InterpreterPoolMixin(ExecutorMixin):
     executor_type = futures.InterpreterPoolExecutor
 
     def create_event(self):
         self.skipTest("InterpreterPoolExecutor doesn't support events")
 
 
-class ProcessPoolForkMixin(ExecutorMixin):
+klasse ProcessPoolForkMixin(ExecutorMixin):
     executor_type = futures.ProcessPoolExecutor
     ctx = "fork"
 
@@ -111,7 +111,7 @@ class ProcessPoolForkMixin(ExecutorMixin):
         return self.manager.Event()
 
 
-class ProcessPoolSpawnMixin(ExecutorMixin):
+klasse ProcessPoolSpawnMixin(ExecutorMixin):
     executor_type = futures.ProcessPoolExecutor
     ctx = "spawn"
 
@@ -126,7 +126,7 @@ class ProcessPoolSpawnMixin(ExecutorMixin):
         return self.manager.Event()
 
 
-class ProcessPoolForkserverMixin(ExecutorMixin):
+klasse ProcessPoolForkserverMixin(ExecutorMixin):
     executor_type = futures.ProcessPoolExecutor
     ctx = "forkserver"
 

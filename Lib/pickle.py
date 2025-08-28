@@ -69,18 +69,18 @@ HIGHEST_PROTOCOL = 5
 # includes it.
 DEFAULT_PROTOCOL = 5
 
-class PickleError(Exception):
-    """A common base class for the other pickling exceptions."""
+klasse PickleError(Exception):
+    """A common base klasse for the other pickling exceptions."""
     pass
 
-class PicklingError(PickleError):
+klasse PicklingError(PickleError):
     """This exception is raised when an unpicklable object is passed to the
     dump() method.
 
     """
     pass
 
-class UnpicklingError(PickleError):
+klasse UnpicklingError(PickleError):
     """This exception is raised when there is a problem unpickling an object,
     such as a security violation.
 
@@ -93,7 +93,7 @@ class UnpicklingError(PickleError):
 
 # An instance of _Stop is raised by Unpickler.load_stop() in response to
 # the STOP opcode, passing the object that is the result of unpickling.
-class _Stop(Exception):
+klasse _Stop(Exception):
     def __init__(self, value):
         self.value = value
 
@@ -129,11 +129,11 @@ EMPTY_DICT     = b'}'   # push empty dict
 APPENDS        = b'e'   # extend list on stack by topmost stack slice
 GET            = b'g'   # push item from memo on stack; index is string arg
 BINGET         = b'h'   #   "    "    "    "   "   "  ;   "    " 1-byte arg
-INST           = b'i'   # build & push class instance
+INST           = b'i'   # build & push klasse instance
 LONG_BINGET    = b'j'   # push item from memo on stack; index is 4-byte arg
 LIST           = b'l'   # build list from topmost stack items
 EMPTY_LIST     = b']'   # push empty list
-OBJ            = b'o'   # build & push class instance
+OBJ            = b'o'   # build & push klasse instance
 PUT            = b'p'   # store stack top in memo; index is string arg
 BINPUT         = b'q'   #   "     "    "   "   " ;   "    " 1-byte arg
 LONG_BINPUT    = b'r'   #   "     "    "   "   " ;   "    " 4-byte arg
@@ -190,7 +190,7 @@ READONLY_BUFFER  = b'\x98'  # make top of stack readonly
 __all__.extend(x for x in dir() if x.isupper() and not x.startswith('_'))
 
 
-class _Framer:
+klasse _Framer:
 
     _FRAME_SIZE_MIN = 4
     _FRAME_SIZE_TARGET = 64 * 1024
@@ -253,7 +253,7 @@ class _Framer:
         write(payload)
 
 
-class _Unframer:
+klasse _Unframer:
 
     def __init__(self, file_read, file_readline, file_tell=None):
         self.file_read = file_read
@@ -415,7 +415,7 @@ _NoValue = object()
 
 # Pickling machinery
 
-class _Pickler:
+klasse _Pickler:
 
     def __init__(self, file, protocol=None, *, fix_imports=True,
                  buffer_callback=None):
@@ -578,7 +578,7 @@ class _Pickler:
             if reduce is not _NoValue:
                 rv = reduce(obj)
             else:
-                # Check for a class with a custom metaclass; treat as regular
+                # Check for a klasse with a custom metaclass; treat as regular
                 # class
                 if issubclass(t, type):
                     self.save_global(obj)
@@ -1247,7 +1247,7 @@ class _Pickler:
 
 # Unpickling machinery
 
-class _Unpickler:
+klasse _Unpickler:
 
     def __init__(self, file, *, fix_imports=True,
                  encoding="ASCII", errors="strict", buffers=None):
@@ -1590,10 +1590,10 @@ class _Unpickler:
         self.append(d)
     dispatch[DICT[0]] = load_dict
 
-    # INST and OBJ differ only in how they get a class object.  It's not
+    # INST and OBJ differ only in how they get a klasse object.  It's not
     # only sensible to do the rest in a common routine, the two routines
     # previously diverged and grew different bugs.
-    # klass is the class to instantiate, and k points to the topmost mark
+    # klass is the klasse to instantiate, and k points to the topmost mark
     # object, following which are the arguments for klass.__init__.
     def _instantiate(self, klass, args):
         if (args or not isinstance(klass, type) or

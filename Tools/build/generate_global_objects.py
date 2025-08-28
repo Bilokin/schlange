@@ -182,7 +182,7 @@ def iter_to_marker(lines, marker):
         yield line
 
 
-class Printer:
+klasse Printer:
 
     def __init__(self, file):
         self.level = 0

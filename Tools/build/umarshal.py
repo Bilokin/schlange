@@ -4,7 +4,7 @@ import ast
 from typing import Any
 
 
-class Type:
+klasse Type:
     # Adapted from marshal.c
     NULL                = ord('0')
     NONE                = ord('N')
@@ -47,7 +47,7 @@ CO_FAST_CELL = 0x40
 CO_FAST_FREE = 0x80
 
 
-class Code:
+klasse Code:
     def __init__(self, **kwds: Any):
         self.__dict__.update(kwds)
 
@@ -82,7 +82,7 @@ class Code:
         return len(self.co_varnames)
 
 
-class Reader:
+klasse Reader:
     # A fairly literal translation of the marshal reader.
 
     def __init__(self, data: bytes):

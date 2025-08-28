@@ -39,7 +39,7 @@ def stringify_tokens_from_source(token_generator, source_string):
 
     return result
 
-class TokenizeTest(TestCase):
+klasse TokenizeTest(TestCase):
     # Tests for the tokenize module.
 
     # The tests can be really simple. Given a small fragment of source
@@ -1216,7 +1216,7 @@ f'''
     FSTRING_END "\'\'\'"         (3, 1) (3, 4)
     """)
 
-class GenerateTokensTest(TokenizeTest):
+klasse GenerateTokensTest(TokenizeTest):
     def check_tokenize(self, s, expected):
         # Format the tokens in s in a table format.
         # The ENDMARKER and final NEWLINE are omitted.
@@ -1240,7 +1240,7 @@ def decistmt(s):
             result.append((toknum, tokval))
     return tokenize.untokenize(result).decode('utf-8').strip()
 
-class TestMisc(TestCase):
+klasse TestMisc(TestCase):
 
     def test_decistmt(self):
         # Substitute Decimals for floats in a string of statements.
@@ -1270,7 +1270,7 @@ class TestMisc(TestCase):
         self.assertCountEqual(tokenize.__all__, expected)
 
 
-class TestTokenizerAdheresToPep0263(TestCase):
+klasse TestTokenizerAdheresToPep0263(TestCase):
     """
     Test that tokenizer adheres to the coding behaviour stipulated in PEP 0263.
     """
@@ -1308,7 +1308,7 @@ class TestTokenizerAdheresToPep0263(TestCase):
         self.assertRaises(SyntaxError, self._testFile, 'bad_coding2.py')
 
 
-class Test_Tokenize(TestCase):
+klasse Test_Tokenize(TestCase):
 
     def test__tokenize_decodes_with_specified_encoding(self):
         literal = '"ЉЊЈЁЂ"'
@@ -1331,7 +1331,7 @@ class Test_Tokenize(TestCase):
                          "bytes not decoded with encoding")
 
 
-class TestDetectEncoding(TestCase):
+klasse TestDetectEncoding(TestCase):
 
     def get_readline(self, lines):
         index = 0
@@ -1556,7 +1556,7 @@ class TestDetectEncoding(TestCase):
         lines = (
             b'print("\xdf")', # Latin-1: LATIN SMALL LETTER SHARP S
             )
-        class Bunk:
+        klasse Bunk:
             def __init__(self, lines, path):
                 self.name = path
                 self._lines = lines
@@ -1586,7 +1586,7 @@ class TestDetectEncoding(TestCase):
         self.assertTrue(m.closed)
 
 
-class TestTokenize(TestCase):
+klasse TestTokenize(TestCase):
 
     def test_tokenize(self):
         import tokenize as tokenize_module
@@ -1771,7 +1771,7 @@ class TestTokenize(TestCase):
             self.assertIn(b"SyntaxError", rs.err)
 
 
-class UntokenizeTest(TestCase):
+klasse UntokenizeTest(TestCase):
 
     def test_bad_input_order(self):
         # raise if previous row
@@ -1828,7 +1828,7 @@ def contains_ambiguous_backslash(source):
     return pattern.search(source) is not None
 
 
-class TestRoundtrip(TestCase):
+klasse TestRoundtrip(TestCase):
 
     def check_roundtrip(self, f):
         """
@@ -2044,7 +2044,7 @@ if 1:
         self.check_roundtrip(code)
 
 
-class InvalidPythonTests(TestCase):
+klasse InvalidPythonTests(TestCase):
     def test_number_followed_by_name(self):
         # See issue #gh-105549
         source = "2sin(x)"
@@ -2072,7 +2072,7 @@ class InvalidPythonTests(TestCase):
         tokens = list(tokenize.generate_tokens(StringIO(source).readline))
         self.assertEqual(tokens, expected_tokens)
 
-class CTokenizeTest(TestCase):
+klasse CTokenizeTest(TestCase):
     def check_tokenize(self, s, expected):
         # Format the tokens in s in a table format.
         # The ENDMARKER and final NEWLINE are omitted.
@@ -3148,7 +3148,7 @@ async def f():
         self.assertEqual(get_tokens(code), get_tokens(code_no_cont))
 
 
-class CTokenizerBufferTests(unittest.TestCase):
+klasse CTokenizerBufferTests(unittest.TestCase):
     def test_newline_at_the_end_of_buffer(self):
         # See issue 99581: Make sure that if we need to add a new line at the
         # end of the buffer, we have enough space in the buffer, specially when
@@ -3162,7 +3162,7 @@ class CTokenizerBufferTests(unittest.TestCase):
             run_test_script(file_name)
 
 
-class CommandLineTest(unittest.TestCase):
+klasse CommandLineTest(unittest.TestCase):
     def setUp(self):
         self.filename = tempfile.mktemp()
         self.addCleanup(os_helper.unlink, self.filename)
@@ -3240,7 +3240,7 @@ class CommandLineTest(unittest.TestCase):
             self.check_output(source, expect, flag)
 
 
-class StringPrefixTest(unittest.TestCase):
+klasse StringPrefixTest(unittest.TestCase):
     @staticmethod
     def determine_valid_prefixes():
         # Try all lengths until we find a length that has zero valid

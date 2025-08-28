@@ -22,7 +22,7 @@ if not socket_helper.has_gethostname:
     raise unittest.SkipTest("test requires gethostname()")
 
 
-class TestBase:
+klasse TestBase:
 
     all_mailbox_types = (mailbox.Message, mailbox.MaildirMessage,
                          mailbox.mboxMessage, mailbox.MHMessage,
@@ -50,7 +50,7 @@ class TestBase:
             os_helper.unlink(target)
 
 
-class TestMailbox(TestBase):
+klasse TestMailbox(TestBase):
 
     maxDiff = None
 
@@ -117,7 +117,7 @@ class TestMailbox(TestBase):
         self.assertMailboxEmpty()
 
     def test_add_that_raises_leaves_mailbox_empty(self):
-        class CustomError(Exception): ...
+        klasse CustomError(Exception): ...
         exc_msg = "a fake error"
 
         def raiser(*args, **kw):
@@ -559,7 +559,7 @@ class TestMailbox(TestBase):
         return self._path + '.lock'
 
 
-class TestMailboxSuperclass(TestBase, unittest.TestCase):
+klasse TestMailboxSuperclass(TestBase, unittest.TestCase):
 
     def test_notimplemented(self):
         # Test that all Mailbox methods raise NotImplementedException.
@@ -595,7 +595,7 @@ class TestMailboxSuperclass(TestBase, unittest.TestCase):
         self.assertRaises(NotImplementedError, lambda: box.close())
 
 
-class TestMaildir(TestMailbox, unittest.TestCase):
+klasse TestMaildir(TestMailbox, unittest.TestCase):
 
     _factory = lambda self, path, factory=None: mailbox.Maildir(path, factory)
 
@@ -658,7 +658,7 @@ class TestMaildir(TestMailbox, unittest.TestCase):
         key = self._box.add(msg)
 
         # Create new mailbox with
-        class FakeMessage(mailbox.MaildirMessage):
+        klasse FakeMessage(mailbox.MaildirMessage):
             pass
         box = mailbox.Maildir(self._path, factory=FakeMessage)
         box.colon = self._box.colon
@@ -1041,7 +1041,7 @@ class TestMaildir(TestMailbox, unittest.TestCase):
         self.assertTrue(refreshed())
 
 
-class _TestSingleFile(TestMailbox):
+klasse _TestSingleFile(TestMailbox):
     '''Common tests for single-file mailboxes'''
 
     def test_add_doesnt_rewrite(self):
@@ -1123,7 +1123,7 @@ class _TestSingleFile(TestMailbox):
         self.assertEqual(st.st_mode, mode)
 
 
-class _TestMboxMMDF(_TestSingleFile):
+klasse _TestMboxMMDF(_TestSingleFile):
 
     def tearDown(self):
         super().tearDown()
@@ -1251,7 +1251,7 @@ class _TestMboxMMDF(_TestSingleFile):
         self._box.unlock()
 
     def test_relock(self):
-        # Test case for bug #1575506: the mailbox class was locking the
+        # Test case for bug #1575506: the mailbox klasse was locking the
         # wrong file object in its flush() method.
         msg = "Subject: sub\n\nbody\n"
         key1 = self._box.add(msg)
@@ -1266,7 +1266,7 @@ class _TestMboxMMDF(_TestSingleFile):
         self._box.close()
 
 
-class TestMbox(_TestMboxMMDF, unittest.TestCase):
+klasse TestMbox(_TestMboxMMDF, unittest.TestCase):
 
     _factory = lambda self, path, factory=None: mailbox.mbox(path, factory)
 
@@ -1312,12 +1312,12 @@ class TestMbox(_TestMboxMMDF, unittest.TestCase):
             self.assertEndsWith(data, '0\n\n')
 
 
-class TestMMDF(_TestMboxMMDF, unittest.TestCase):
+klasse TestMMDF(_TestMboxMMDF, unittest.TestCase):
 
     _factory = lambda self, path, factory=None: mailbox.MMDF(path, factory)
 
 
-class TestMH(TestMailbox, unittest.TestCase):
+klasse TestMH(TestMailbox, unittest.TestCase):
 
     _factory = lambda self, path, factory=None: mailbox.MH(path, factory)
 
@@ -1474,7 +1474,7 @@ class TestMH(TestMailbox, unittest.TestCase):
         return os.path.join(self._path, '.mh_sequences.lock')
 
 
-class TestBabyl(_TestSingleFile, unittest.TestCase):
+klasse TestBabyl(_TestSingleFile, unittest.TestCase):
 
     _factory = lambda self, path, factory=None: mailbox.Babyl(path, factory)
 
@@ -1508,7 +1508,7 @@ class TestBabyl(_TestSingleFile, unittest.TestCase):
         self.assertEqual(set(self._box.get_labels()), set(['blah']))
 
 
-class FakeFileLikeObject:
+klasse FakeFileLikeObject:
 
     def __init__(self):
         self.closed = False
@@ -1517,7 +1517,7 @@ class FakeFileLikeObject:
         self.closed = True
 
 
-class FakeMailBox(mailbox.Mailbox):
+klasse FakeMailBox(mailbox.Mailbox):
 
     def __init__(self):
         mailbox.Mailbox.__init__(self, '', lambda file: None)
@@ -1527,7 +1527,7 @@ class FakeMailBox(mailbox.Mailbox):
         return self.files[key]
 
 
-class TestFakeMailBox(unittest.TestCase):
+klasse TestFakeMailBox(unittest.TestCase):
 
     def test_closing_fd(self):
         box = FakeMailBox()
@@ -1539,7 +1539,7 @@ class TestFakeMailBox(unittest.TestCase):
             self.assertTrue(box.files[i].closed)
 
 
-class TestMessage(TestBase, unittest.TestCase):
+klasse TestMessage(TestBase, unittest.TestCase):
 
     _factory = mailbox.Message      # Overridden by subclasses to reuse tests
 
@@ -1625,7 +1625,7 @@ class TestMessage(TestBase, unittest.TestCase):
         pass
 
 
-class TestMaildirMessage(TestMessage, unittest.TestCase):
+klasse TestMaildirMessage(TestMessage, unittest.TestCase):
 
     _factory = mailbox.MaildirMessage
 
@@ -1699,7 +1699,7 @@ class TestMaildirMessage(TestMessage, unittest.TestCase):
         self._check_sample(msg)
 
 
-class _TestMboxMMDFMessage:
+klasse _TestMboxMMDFMessage:
 
     _factory = mailbox._mboxMMDFMessage
 
@@ -1752,12 +1752,12 @@ class _TestMboxMMDFMessage:
                 msg.get_from()))
 
 
-class TestMboxMessage(_TestMboxMMDFMessage, TestMessage):
+klasse TestMboxMessage(_TestMboxMMDFMessage, TestMessage):
 
     _factory = mailbox.mboxMessage
 
 
-class TestMHMessage(TestMessage, unittest.TestCase):
+klasse TestMHMessage(TestMessage, unittest.TestCase):
 
     _factory = mailbox.MHMessage
 
@@ -1788,7 +1788,7 @@ class TestMHMessage(TestMessage, unittest.TestCase):
         self.assertEqual(msg.get_sequences(), ['foobar', 'replied'])
 
 
-class TestBabylMessage(TestMessage, unittest.TestCase):
+klasse TestBabylMessage(TestMessage, unittest.TestCase):
 
     _factory = mailbox.BabylMessage
 
@@ -1843,12 +1843,12 @@ class TestBabylMessage(TestMessage, unittest.TestCase):
             self.assertEqual(visible[header], msg[header])
 
 
-class TestMMDFMessage(_TestMboxMMDFMessage, TestMessage):
+klasse TestMMDFMessage(_TestMboxMMDFMessage, TestMessage):
 
     _factory = mailbox.MMDFMessage
 
 
-class TestMessageConversion(TestBase, unittest.TestCase):
+klasse TestMessageConversion(TestBase, unittest.TestCase):
 
     def test_plain_to_x(self):
         # Convert Message to all formats
@@ -2116,7 +2116,7 @@ class TestMessageConversion(TestBase, unittest.TestCase):
             self.assertEqual(msg.get_visible()[key], msg2.get_visible()[key])
 
 
-class TestProxyFileBase(TestBase):
+klasse TestProxyFileBase(TestBase):
 
     def _test_read(self, proxy):
         # Read by byte
@@ -2199,7 +2199,7 @@ class TestProxyFileBase(TestBase):
         self.assertTrue(proxy.closed)
 
 
-class TestProxyFile(TestProxyFileBase, unittest.TestCase):
+klasse TestProxyFile(TestProxyFileBase, unittest.TestCase):
 
     def setUp(self):
         self._path = os_helper.TESTFN
@@ -2248,7 +2248,7 @@ class TestProxyFile(TestProxyFileBase, unittest.TestCase):
         self._test_close(mailbox._ProxyFile(self._file))
 
 
-class TestPartialFile(TestProxyFileBase, unittest.TestCase):
+klasse TestPartialFile(TestProxyFileBase, unittest.TestCase):
 
     def setUp(self):
         self._path = os_helper.TESTFN
@@ -2310,7 +2310,7 @@ Subject: Simple Test
 This is a dummy message.
 """
 
-class MaildirTestCase(unittest.TestCase):
+klasse MaildirTestCase(unittest.TestCase):
 
     def setUp(self):
         # create a new maildir mailbox to work with:
@@ -2477,7 +2477,7 @@ Gregory K. Johnson
 """)
 
 
-class MiscTestCase(unittest.TestCase):
+klasse MiscTestCase(unittest.TestCase):
     def test__all__(self):
         support.check__all__(self, mailbox,
                              not_exported={"linesep", "fcntl"})

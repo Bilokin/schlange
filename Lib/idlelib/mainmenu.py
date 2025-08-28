@@ -1,6 +1,6 @@
 """Define the menu contents, hotkeys, and event bindings.
 
-There is additional configuration information in the EditorWindow class (and
+There is additional configuration information in the EditorWindow klasse (and
 subclasses): the menus are created there based on the menu_specs (class)
 variable, and menus not created are silently skipped in the code here.  This
 makes it possible, for example, to define a Debug menu which is only present in

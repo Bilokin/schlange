@@ -8,7 +8,7 @@ from types import GenericAlias
 __all__ = ['WeakSet']
 
 
-class WeakSet:
+klasse WeakSet:
     def __init__(self, data=None):
         self.data = set()
 

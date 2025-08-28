@@ -10,7 +10,7 @@ from typing import BinaryIO, List
 from .abc import Traversable, TraversableResources
 
 
-class SimpleReader(abc.ABC):
+klasse SimpleReader(abc.ABC):
     """
     The minimum, low-level interface required from a resource
     provider.
@@ -47,7 +47,7 @@ class SimpleReader(abc.ABC):
         return self.package.split('.')[-1]
 
 
-class ResourceContainer(Traversable):
+klasse ResourceContainer(Traversable):
     """
     Traversable container for a package's resources via its reader.
     """
@@ -70,7 +70,7 @@ class ResourceContainer(Traversable):
         raise IsADirectoryError()
 
 
-class ResourceHandle(Traversable):
+klasse ResourceHandle(Traversable):
     """
     Handle to a named resource in a ResourceReader.
     """
@@ -95,10 +95,10 @@ class ResourceHandle(Traversable):
         raise RuntimeError("Cannot traverse into a resource")
 
 
-class TraversableReader(TraversableResources, SimpleReader):
+klasse TraversableReader(TraversableResources, SimpleReader):
     """
     A TraversableResources based on SimpleReader. Resource providers
-    may derive from this class to provide the TraversableResources
+    may derive from this klasse to provide the TraversableResources
     interface by supplying the SimpleReader interface.
     """
 

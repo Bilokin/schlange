@@ -14,7 +14,7 @@ from test import support
 from test.support import MISSING_C_DOCSTRINGS, script_helper
 
 
-class LoaderTests:
+klasse LoaderTests:
 
     """Test ExtensionFileLoader."""
 
@@ -101,7 +101,7 @@ class LoaderTests:
  ) = util.test_both(LoaderTests, machinery=machinery)
 
 
-class SinglePhaseExtensionModuleTests(abc.LoaderTests):
+klasse SinglePhaseExtensionModuleTests(abc.LoaderTests):
     # Test loading extension modules without multi-phase initialization.
 
     def setUp(self):
@@ -189,7 +189,7 @@ class SinglePhaseExtensionModuleTests(abc.LoaderTests):
  ) = util.test_both(SinglePhaseExtensionModuleTests, machinery=machinery)
 
 
-class MultiPhaseExtensionModuleTests(abc.LoaderTests):
+klasse MultiPhaseExtensionModuleTests(abc.LoaderTests):
     # Test loading extension modules with multi-phase initialization (PEP 489).
 
     def setUp(self):
@@ -379,7 +379,7 @@ class MultiPhaseExtensionModuleTests(abc.LoaderTests):
  ) = util.test_both(MultiPhaseExtensionModuleTests, machinery=machinery)
 
 
-class NonModuleExtensionTests(unittest.TestCase):
+klasse NonModuleExtensionTests(unittest.TestCase):
     def test_nonmodule_cases(self):
         # The test cases in this file cause the GIL to be enabled permanently
         # in free-threaded builds, so they are run in a subprocess to isolate

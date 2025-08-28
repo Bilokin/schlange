@@ -22,7 +22,7 @@ _IS_ASCII_ID_FIRST_CHAR = \
     [(chr(x) in _ASCII_ID_FIRST_CHARS) for x in range(128)]
 
 
-class HyperParser:
+klasse HyperParser:
     def __init__(self, editwin, index):
         "To initialize, analyze the surroundings of the given index."
 

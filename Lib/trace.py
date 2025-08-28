@@ -64,7 +64,7 @@ import threading
 
 PRAGMA_NOCOVER = "#pragma NO COVER"
 
-class _Ignore:
+klasse _Ignore:
     def __init__(self, modules=None, dirs=None):
         self._mods = set() if not modules else set(modules)
         self._dirs = [] if not dirs else [os.path.normpath(d)
@@ -149,7 +149,7 @@ def _fullmodname(path):
     filename, ext = os.path.splitext(base)
     return filename.lstrip(".")
 
-class CoverageResults:
+klasse CoverageResults:
     def __init__(self, counts=None, calledfuncs=None, infile=None,
                  callers=None, outfile=None):
         self.counts = counts
@@ -387,7 +387,7 @@ def _find_executable_linenos(filename):
     strs = _find_strings(filename, encoding)
     return _find_lines(code, strs)
 
-class Trace:
+klasse Trace:
     def __init__(self, count=1, trace=1, countfuncs=0, countcallers=0,
                  ignoremods=(), ignoredirs=(), infile=None, outfile=None,
                  timing=False):

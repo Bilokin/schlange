@@ -3,7 +3,7 @@ import unittest
 import textwrap
 from test.support.testcase import ExceptionIsLikeMixin
 
-class TestInvalidExceptStar(unittest.TestCase):
+klasse TestInvalidExceptStar(unittest.TestCase):
     def test_mixed_except_and_except_star_is_syntax_error(self):
         errors = [
             "try: pass\nexcept ValueError: pass\nexcept* TypeError: pass\n",
@@ -48,7 +48,7 @@ class TestInvalidExceptStar(unittest.TestCase):
                 pass
 
 
-class TestBreakContinueReturnInExceptStarBlock(unittest.TestCase):
+klasse TestBreakContinueReturnInExceptStarBlock(unittest.TestCase):
     MSG = (r"'break', 'continue' and 'return'"
            r" cannot appear in an except\* block")
 
@@ -172,7 +172,7 @@ class TestBreakContinueReturnInExceptStarBlock(unittest.TestCase):
         self.assertIsInstance(exc, ExceptionGroup)
 
 
-class ExceptStarTest(ExceptionIsLikeMixin, unittest.TestCase):
+klasse ExceptStarTest(ExceptionIsLikeMixin, unittest.TestCase):
     def assertMetadataEqual(self, e1, e2):
         if e1 is None or e2 is None:
             self.assertTrue(e1 is None and e2 is None)
@@ -190,7 +190,7 @@ class ExceptStarTest(ExceptionIsLikeMixin, unittest.TestCase):
                         and e1.__traceback__ == e2.__traceback__)
 
 
-class TestExceptStarSplitSemantics(ExceptStarTest):
+klasse TestExceptStarSplitSemantics(ExceptStarTest):
     def doSplitTestNamed(self, exc, T, match_template, rest_template):
         initial_sys_exception = sys.exception()
         sys_exception = match = rest = None
@@ -446,7 +446,7 @@ class TestExceptStarSplitSemantics(ExceptStarTest):
                 self.fail("Exception not raised")
 
 
-class TestExceptStarReraise(ExceptStarTest):
+klasse TestExceptStarReraise(ExceptStarTest):
     def test_reraise_all_named(self):
         try:
             try:
@@ -568,7 +568,7 @@ class TestExceptStarReraise(ExceptStarTest):
             exc, ExceptionGroup("", [ValueError(42)]))
 
 
-class TestExceptStarRaise(ExceptStarTest):
+klasse TestExceptStarRaise(ExceptStarTest):
     def test_raise_named(self):
         orig = ExceptionGroup("eg", [ValueError(1), OSError(2)])
         try:
@@ -706,7 +706,7 @@ class TestExceptStarRaise(ExceptStarTest):
         self.assertMetadataEqual(orig, exc.exceptions[1].__context__)
 
 
-class TestExceptStarRaiseFrom(ExceptStarTest):
+klasse TestExceptStarRaiseFrom(ExceptStarTest):
     def test_raise_named(self):
         orig = ExceptionGroup("eg", [ValueError(1), OSError(2)])
         try:
@@ -890,9 +890,9 @@ class TestExceptStarRaiseFrom(ExceptStarTest):
         self.assertMetadataEqual(orig, exc.exceptions[1].__cause__)
 
 
-class TestExceptStarExceptionGroupSubclass(ExceptStarTest):
+klasse TestExceptStarExceptionGroupSubclass(ExceptStarTest):
     def test_except_star_EG_subclass(self):
-        class EG(ExceptionGroup):
+        klasse EG(ExceptionGroup):
             def __new__(cls, message, excs, code):
                 obj = super().__new__(cls, message, excs)
                 obj.code = code
@@ -927,7 +927,7 @@ class TestExceptStarExceptionGroupSubclass(ExceptStarTest):
         self.assertEqual(teg.exceptions[0].code, 101)
 
     def test_falsy_exception_group_subclass(self):
-        class FalsyEG(ExceptionGroup):
+        klasse FalsyEG(ExceptionGroup):
             def __bool__(self):
                 return False
 
@@ -956,11 +956,11 @@ class TestExceptStarExceptionGroupSubclass(ExceptStarTest):
 
     def test_exception_group_subclass_with_bad_split_func(self):
         # see gh-128049.
-        class BadEG1(ExceptionGroup):
+        klasse BadEG1(ExceptionGroup):
             def split(self, *args):
                 return "NOT A 2-TUPLE!"
 
-        class BadEG2(ExceptionGroup):
+        klasse BadEG2(ExceptionGroup):
             def split(self, *args):
                 return ("NOT A 2-TUPLE!",)
 
@@ -983,7 +983,7 @@ class TestExceptStarExceptionGroupSubclass(ExceptStarTest):
             self.assertExceptionIsLike(m.exception.__context__, eg_class)
 
         # we allow tuples of length > 2 for backwards compatibility
-        class WeirdEG(ExceptionGroup):
+        klasse WeirdEG(ExceptionGroup):
             def split(self, *args):
                 return super().split(*args) + ("anything", 123456, None)
 
@@ -998,7 +998,7 @@ class TestExceptStarExceptionGroupSubclass(ExceptStarTest):
         self.assertExceptionIsLike(veg, WeirdEG("eg", [ValueError(456)]))
 
 
-class TestExceptStarCleanup(ExceptStarTest):
+klasse TestExceptStarCleanup(ExceptStarTest):
     def test_sys_exception_restored(self):
         try:
             try:
@@ -1017,22 +1017,22 @@ class TestExceptStarCleanup(ExceptStarTest):
         self.assertEqual(sys.exception(), None)
 
 
-class TestExceptStar_WeirdLeafExceptions(ExceptStarTest):
+klasse TestExceptStar_WeirdLeafExceptions(ExceptStarTest):
     # Test that except* works when leaf exceptions are
     # unhashable or have a bad custom __eq__
 
-    class UnhashableExc(ValueError):
+    klasse UnhashableExc(ValueError):
         __hash__ = None
 
-    class AlwaysEqualExc(ValueError):
+    klasse AlwaysEqualExc(ValueError):
         def __eq__(self, other):
             return True
 
-    class NeverEqualExc(ValueError):
+    klasse NeverEqualExc(ValueError):
         def __eq__(self, other):
             return False
 
-    class BrokenEqualExc(ValueError):
+    klasse BrokenEqualExc(ValueError):
         def __eq__(self, other):
             raise RuntimeError()
 
@@ -1109,31 +1109,31 @@ class TestExceptStar_WeirdLeafExceptions(ExceptStarTest):
                     exc, ExceptionGroup("eg", [Bad(2), ValueError(3)]))
 
 
-class TestExceptStar_WeirdExceptionGroupSubclass(ExceptStarTest):
+klasse TestExceptStar_WeirdExceptionGroupSubclass(ExceptStarTest):
     # Test that except* works with exception groups that are
     # unhashable or have a bad custom __eq__
 
-    class UnhashableEG(ExceptionGroup):
+    klasse UnhashableEG(ExceptionGroup):
         __hash__ = None
 
         def derive(self, excs):
             return type(self)(self.message, excs)
 
-    class AlwaysEqualEG(ExceptionGroup):
+    klasse AlwaysEqualEG(ExceptionGroup):
         def __eq__(self, other):
             return True
 
         def derive(self, excs):
             return type(self)(self.message, excs)
 
-    class NeverEqualEG(ExceptionGroup):
+    klasse NeverEqualEG(ExceptionGroup):
         def __eq__(self, other):
             return False
 
         def derive(self, excs):
             return type(self)(self.message, excs)
 
-    class BrokenEqualEG(ExceptionGroup):
+    klasse BrokenEqualEG(ExceptionGroup):
         def __eq__(self, other):
             raise RuntimeError()
 

@@ -4,7 +4,7 @@ from itertools import islice
 
 
 # from jaraco.itertools 6.3.0
-class Counter:
+klasse Counter:
     """
     Wrap an iterable in an object that stores the count of items
     that pass through it.

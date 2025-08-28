@@ -80,7 +80,7 @@ def _reduce_ex(self, proto):
     except AttributeError:
         if getattr(self, "__slots__", None):
             raise TypeError(f"cannot pickle {cls.__name__!r} object: "
-                            f"a class that defines __slots__ without "
+                            f"a klasse that defines __slots__ without "
                             f"defining __getstate__ cannot be pickled "
                             f"with protocol {proto}") from None
         try:
@@ -90,7 +90,7 @@ def _reduce_ex(self, proto):
     else:
         if (type(self).__getstate__ is object.__getstate__ and
             getattr(self, "__slots__", None)):
-            raise TypeError("a class that defines __slots__ without "
+            raise TypeError("a klasse that defines __slots__ without "
                             "defining __getstate__ cannot be pickled")
         dict = getstate()
     if dict:
@@ -112,15 +112,15 @@ def __newobj_ex__(cls, args, kwargs):
 def _slotnames(cls):
     """Return a list of slot names for a given class.
 
-    This needs to find slots defined by the class and its bases, so we
+    This needs to find slots defined by the klasse and its bases, so we
     can't simply return the __slots__ attribute.  We must walk down
     the Method Resolution Order and concatenate the __slots__ of each
-    class found there.  (This assumes classes don't modify their
-    __slots__ attribute to misrepresent their slots after the class is
+    klasse found there.  (This assumes classes don't modify their
+    __slots__ attribute to misrepresent their slots after the klasse is
     defined.)
     """
 
-    # Get the value from a cache in the class if possible
+    # Get the value from a cache in the klasse if possible
     names = cls.__dict__.get("__slotnames__")
     if names is not None:
         return names
@@ -128,14 +128,14 @@ def _slotnames(cls):
     # Not cached -- calculate the value
     names = []
     if not hasattr(cls, "__slots__"):
-        # This class has no slots
+        # This klasse has no slots
         pass
     else:
         # Slots found -- gather slot names from all base classes
         for c in cls.__mro__:
             if "__slots__" in c.__dict__:
                 slots = c.__dict__['__slots__']
-                # if class has a single slot, it can be given as a string
+                # if klasse has a single slot, it can be given as a string
                 if isinstance(slots, str):
                     slots = (slots,)
                 for name in slots:
@@ -152,7 +152,7 @@ def _slotnames(cls):
                     else:
                         names.append(name)
 
-    # Cache the outcome in the class if at all possible
+    # Cache the outcome in the klasse if at all possible
     try:
         cls.__slotnames__ = names
     except:

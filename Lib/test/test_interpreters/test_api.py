@@ -87,7 +87,7 @@ def build_excinfo(exctype, msg=None, formatted=None, errdisplay=None):
     )
 
 
-class ModuleTests(TestBase):
+klasse ModuleTests(TestBase):
 
     def test_queue_aliases(self):
         first = [
@@ -105,7 +105,7 @@ class ModuleTests(TestBase):
         self.assertEqual(second, first)
 
 
-class CreateTests(TestBase):
+klasse CreateTests(TestBase):
 
     def test_in_main(self):
         interp = interpreters.create()
@@ -168,7 +168,7 @@ class CreateTests(TestBase):
         self.assertEqual(set(interpreters.list_all()), before | {interp3, interp})
 
 
-class GetMainTests(TestBase):
+klasse GetMainTests(TestBase):
 
     def test_id(self):
         main = interpreters.get_main()
@@ -185,7 +185,7 @@ class GetMainTests(TestBase):
         self.assertIs(main1, main2)
 
 
-class GetCurrentTests(TestBase):
+klasse GetCurrentTests(TestBase):
 
     def test_main(self):
         main = interpreters.get_main()
@@ -246,7 +246,7 @@ class GetCurrentTests(TestBase):
         self.assertEqual(whence, WHENCE_STR_CAPI)
 
 
-class ListAllTests(TestBase):
+klasse ListAllTests(TestBase):
 
     def test_initial(self):
         interps = interpreters.list_all()
@@ -315,7 +315,7 @@ class ListAllTests(TestBase):
         self.assertEqual(res2, expected2)
 
 
-class InterpreterObjectTests(TestBase):
+klasse InterpreterObjectTests(TestBase):
 
     def test_init_int(self):
         interpid = interpreters.get_current().id
@@ -419,7 +419,7 @@ class InterpreterObjectTests(TestBase):
                 self.assertEqual(unpickled, interp)
 
 
-class TestInterpreterIsRunning(TestBase):
+klasse TestInterpreterIsRunning(TestBase):
 
     def test_main(self):
         main = interpreters.get_main()
@@ -537,7 +537,7 @@ class TestInterpreterIsRunning(TestBase):
             self.assertFalse(running)
 
 
-class TestInterpreterClose(TestBase):
+klasse TestInterpreterClose(TestBase):
 
     def test_basic(self):
         main = interpreters.get_main()
@@ -707,7 +707,7 @@ class TestInterpreterClose(TestBase):
                     self.interp_exists(interpid))
 
 
-class TestInterpreterPrepareMain(TestBase):
+klasse TestInterpreterPrepareMain(TestBase):
 
     def test_empty(self):
         interp = interpreters.create()
@@ -779,7 +779,7 @@ class TestInterpreterPrepareMain(TestBase):
                 self.run_from_capi(interpid, 'assert spam is True')
 
 
-class TestInterpreterExec(TestBase):
+klasse TestInterpreterExec(TestBase):
 
     def test_success(self):
         interp = interpreters.create()
@@ -999,7 +999,7 @@ def call_func_exec_wrapper(script, ns):
     return res, ns, id(ns)
 
 
-class Spam:
+klasse Spam:
 
     @staticmethod
     def noop():
@@ -1054,7 +1054,7 @@ def call_func_complex(op, /, value=None, *args, exc=None, **kwargs):
     elif op == 'custom-inner':
         if args or kwargs:
             raise Exception((args, kwargs))
-        class Eggs(Spam):
+        klasse Eggs(Spam):
             pass
         return Eggs(value)
     elif not isinstance(op, str):
@@ -1063,7 +1063,7 @@ def call_func_complex(op, /, value=None, *args, exc=None, **kwargs):
         raise NotImplementedError(op)
 
 
-class TestInterpreterCall(TestBase):
+klasse TestInterpreterCall(TestBase):
 
     # signature
     #  - blank
@@ -1761,7 +1761,7 @@ class TestInterpreterCall(TestBase):
         self.assertIsNotNone(ctx.caught)
 
 
-class TestIsShareable(TestBase):
+klasse TestIsShareable(TestBase):
 
     def test_default_shareables(self):
         shareables = [
@@ -1784,13 +1784,13 @@ class TestIsShareable(TestBase):
                 self.assertTrue(shareable)
 
     def test_not_shareable(self):
-        class Cheese:
+        klasse Cheese:
             def __init__(self, name):
                 self.name = name
             def __str__(self):
                 return self.name
 
-        class SubBytes(bytes):
+        klasse SubBytes(bytes):
             """A subclass of a shareable type."""
 
         not_shareables = [
@@ -1813,7 +1813,7 @@ class TestIsShareable(TestBase):
                     interpreters.is_shareable(obj))
 
 
-class LowLevelTests(TestBase):
+klasse LowLevelTests(TestBase):
 
     # The behaviors in the low-level module are important in as much
     # as they are exercised by the high-level module.  Therefore the

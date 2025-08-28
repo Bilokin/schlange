@@ -19,7 +19,7 @@ def mul(x, y):
     return x * y
 
 
-class AsCompletedTests:
+klasse AsCompletedTests:
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_no_timeout(self):
         future1 = self.executor.submit(mul, 2, 21)

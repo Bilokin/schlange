@@ -5,7 +5,7 @@ Attributes and methods will be added as needed for tests.
 
 from idlelib.idle_test.mock_tk import Text
 
-class Func:
+klasse Func:
     '''Record call, capture args, return/raise result set by test.
 
     When mock function is called, set or use attributes:
@@ -13,10 +13,10 @@ class Func:
     self.args - capture positional arguments.
     self.kwds - capture keyword arguments.
     self.result - return or raise value set in __init__.
-    self.return_self - return self instead, to mock query class return.
+    self.return_self - return self instead, to mock query klasse return.
 
     Most common use will probably be to mock instance methods.
-    Given class instance, can set and delete as instance attribute.
+    Given klasse instance, can set and delete as instance attribute.
     Mock_tk.Var and Mbox_func are special variants of this.
     '''
     def __init__(self, result=None, return_self=False):
@@ -37,7 +37,7 @@ class Func:
             return self.result
 
 
-class Editor:
+klasse Editor:
     '''Minimally imitate editor.EditorWindow class.
     '''
     def __init__(self, flist=None, filename=None, key=None, root=None,
@@ -51,7 +51,7 @@ class Editor:
         return first, last
 
 
-class UndoDelegator:
+klasse UndoDelegator:
     '''Minimally imitate undo.UndoDelegator class.
     '''
     # A real undo block is only needed for user interaction.

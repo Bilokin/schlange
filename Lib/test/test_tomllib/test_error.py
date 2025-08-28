@@ -7,7 +7,7 @@ import unittest
 from . import tomllib
 
 
-class TestError(unittest.TestCase):
+klasse TestError(unittest.TestCase):
     def test_line_and_col(self):
         with self.assertRaises(tomllib.TOMLDecodeError) as exc_info:
             tomllib.loads("val=.")

@@ -1,7 +1,7 @@
 a:int=3
 b:str="foo"
 
-class MyClass:
+klasse MyClass:
     a:int=4
     b:str="bar"
     def __init__(self, a, b):
@@ -22,7 +22,7 @@ def function3(a:"int", b:"str", c:"MyClass"):
     pass
 
 
-class UnannotatedClass:
+klasse UnannotatedClass:
     pass
 
 def unannotated_function(a, b, c): pass

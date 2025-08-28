@@ -21,7 +21,7 @@ def tearDownModule():
     asyncio.events._set_event_loop_policy(None)
 
 
-class StreamTests(test_utils.TestCase):
+klasse StreamTests(test_utils.TestCase):
 
     DATA = b'line1\nline2\nline3\n'
 
@@ -618,7 +618,7 @@ class StreamTests(test_utils.TestCase):
 
     def test_start_server(self):
 
-        class MyServer:
+        klasse MyServer:
 
             def __init__(self, loop):
                 self.server = None
@@ -689,7 +689,7 @@ class StreamTests(test_utils.TestCase):
     @socket_helper.skip_unless_bind_unix_socket
     def test_start_unix_server(self):
 
-        class MyServer:
+        klasse MyServer:
 
             def __init__(self, loop, path):
                 self.server = None
@@ -759,7 +759,7 @@ class StreamTests(test_utils.TestCase):
     @unittest.skipIf(ssl is None, 'No ssl module')
     def test_start_tls(self):
 
-        class MyServer:
+        klasse MyServer:
 
             def __init__(self, loop):
                 self.server = None

@@ -25,7 +25,7 @@ def tearDownModule():
 
 
 @unittest.skipIf(ssl is None, 'No ssl module')
-class SslProtoHandshakeTests(test_utils.TestCase):
+klasse SslProtoHandshakeTests(test_utils.TestCase):
 
     def setUp(self):
         super().setUp()
@@ -227,7 +227,7 @@ class SslProtoHandshakeTests(test_utils.TestCase):
 ##############################################################################
 
 
-class BaseStartTLS(func_tests.FunctionalTestCaseMixin):
+klasse BaseStartTLS(func_tests.FunctionalTestCaseMixin):
 
     PAYLOAD_SIZE = 1024 * 100
     TIMEOUT = support.LONG_TIMEOUT
@@ -237,7 +237,7 @@ class BaseStartTLS(func_tests.FunctionalTestCaseMixin):
 
     def test_buf_feed_data(self):
 
-        class Proto(asyncio.BufferedProtocol):
+        klasse Proto(asyncio.BufferedProtocol):
 
             def __init__(self, bufsize, usemv):
                 self.buf = bytearray(bufsize)
@@ -303,7 +303,7 @@ class BaseStartTLS(func_tests.FunctionalTestCaseMixin):
             sock.shutdown(socket.SHUT_RDWR)
             sock.close()
 
-        class ClientProto(asyncio.Protocol):
+        klasse ClientProto(asyncio.Protocol):
             def __init__(self, on_data, on_eof):
                 self.on_data = on_data
                 self.on_eof = on_eof
@@ -366,7 +366,7 @@ class BaseStartTLS(func_tests.FunctionalTestCaseMixin):
             sock.shutdown(socket.SHUT_RDWR)
             sock.close()
 
-        class ClientProto(asyncio.Protocol):
+        klasse ClientProto(asyncio.Protocol):
             def __init__(self, on_data, on_eof):
                 self.on_data = on_data
                 self.on_eof = on_eof
@@ -439,7 +439,7 @@ class BaseStartTLS(func_tests.FunctionalTestCaseMixin):
             sock.shutdown(socket.SHUT_RDWR)
             sock.close()
 
-        class ClientProtoFirst(asyncio.BufferedProtocol):
+        klasse ClientProtoFirst(asyncio.BufferedProtocol):
             def __init__(self, on_data):
                 self.on_data = on_data
                 self.buf = bytearray(1)
@@ -455,7 +455,7 @@ class BaseStartTLS(func_tests.FunctionalTestCaseMixin):
                 self.assertEqual(nsize, 1)
                 slf.on_data.set_result(bytes(slf.buf[:nsize]))
 
-        class ClientProtoSecond(asyncio.Protocol):
+        klasse ClientProtoSecond(asyncio.Protocol):
             def __init__(self, on_data, on_eof):
                 self.on_data = on_data
                 self.on_eof = on_eof
@@ -525,7 +525,7 @@ class BaseStartTLS(func_tests.FunctionalTestCaseMixin):
             finally:
                 sock.close()
 
-        class ClientProto(asyncio.Protocol):
+        klasse ClientProto(asyncio.Protocol):
             def __init__(self, on_data, on_eof):
                 self.on_data = on_data
                 self.on_eof = on_eof
@@ -587,7 +587,7 @@ class BaseStartTLS(func_tests.FunctionalTestCaseMixin):
             answer = sock.recv_all(len(ANSWER))
             sock.close()
 
-        class ServerProto(asyncio.Protocol):
+        klasse ServerProto(asyncio.Protocol):
             def __init__(self, on_con, on_con_lost, on_got_hello):
                 self.on_con = on_con
                 self.on_con_lost = on_con_lost
@@ -825,7 +825,7 @@ class BaseStartTLS(func_tests.FunctionalTestCaseMixin):
 
 
 @unittest.skipIf(ssl is None, 'No ssl module')
-class SelectorStartTLSTests(BaseStartTLS, unittest.TestCase):
+klasse SelectorStartTLSTests(BaseStartTLS, unittest.TestCase):
 
     def new_loop(self):
         return asyncio.SelectorEventLoop()
@@ -833,7 +833,7 @@ class SelectorStartTLSTests(BaseStartTLS, unittest.TestCase):
 
 @unittest.skipIf(ssl is None, 'No ssl module')
 @unittest.skipUnless(hasattr(asyncio, 'ProactorEventLoop'), 'Windows only')
-class ProactorStartTLSTests(BaseStartTLS, unittest.TestCase):
+klasse ProactorStartTLSTests(BaseStartTLS, unittest.TestCase):
 
     def new_loop(self):
         return asyncio.ProactorEventLoop()

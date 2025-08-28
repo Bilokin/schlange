@@ -195,7 +195,7 @@ def _check_arg_types(funcname, *args):
 # Singletons with a true boolean value.
 
 @object.__new__
-class ALL_BUT_LAST:
+klasse ALL_BUT_LAST:
     """Special value for use in realpath()."""
     def __repr__(self):
         return 'os.path.ALL_BUT_LAST'
@@ -203,7 +203,7 @@ class ALL_BUT_LAST:
         return self.__class__.__name__
 
 @object.__new__
-class ALLOW_MISSING:
+klasse ALLOW_MISSING:
     """Special value for use in realpath()."""
     def __repr__(self):
         return 'os.path.ALLOW_MISSING'

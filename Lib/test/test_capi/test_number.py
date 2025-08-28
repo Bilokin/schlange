@@ -15,11 +15,11 @@ except ImportError:
 
 NULL = None
 
-class BadDescr:
+klasse BadDescr:
     def __get__(self, obj, objtype=None):
         raise RuntimeError
 
-class WithDunder:
+klasse WithDunder:
     def _meth(self, *args):
         if self.val:
             return self.val
@@ -41,20 +41,20 @@ class WithDunder:
         setattr(cls, cls.methname, cls._meth)
         return obj
 
-class HasBadAttr:
+klasse HasBadAttr:
     def __new__(cls):
         obj = super().__new__(cls)
         setattr(cls, cls.methname, BadDescr())
         return obj
 
 
-class IndexLike(WithDunder):
+klasse IndexLike(WithDunder):
     methname = '__index__'
 
-class IntLike(WithDunder):
+klasse IntLike(WithDunder):
     methname = '__int__'
 
-class FloatLike(WithDunder):
+klasse FloatLike(WithDunder):
     methname = '__float__'
 
 
@@ -62,14 +62,14 @@ def subclassof(base):
     return type(base.__name__ + 'Subclass', (base,), {})
 
 
-class SomeError(Exception):
+klasse SomeError(Exception):
     pass
 
-class OtherError(Exception):
+klasse OtherError(Exception):
     pass
 
 
-class CAPITest(unittest.TestCase):
+klasse CAPITest(unittest.TestCase):
     def test_check(self):
         # Test PyNumber_Check()
         check = _testcapi.number_check
@@ -208,7 +208,7 @@ class CAPITest(unittest.TestCase):
         power = _testcapi.number_power
         inplacepower = _testcapi.number_inplacepower
 
-        class HasPow(WithDunder):
+        klasse HasPow(WithDunder):
             methname = '__pow__'
 
         # ternary op
@@ -220,7 +220,7 @@ class CAPITest(unittest.TestCase):
         self.assertRaises(TypeError, inplacepower, 4, 11, 1.25)
         self.assertRaises(TypeError, inplacepower, 4, 11, object())
 
-        class X:
+        klasse X:
             def __pow__(*args):
                 return args
 
@@ -230,7 +230,7 @@ class CAPITest(unittest.TestCase):
         self.assertEqual(power(x, 11, 5), (x, 11, 5))
         self.assertEqual(inplacepower(x, 11, 5), (x, 11, 5))
 
-        class X:
+        klasse X:
             def __rpow__(*args):
                 return args
 
@@ -240,7 +240,7 @@ class CAPITest(unittest.TestCase):
         self.assertEqual(power(4, x, 5), (x, 4, 5))
         self.assertEqual(inplacepower(4, x, 5), (x, 4, 5))
 
-        class X:
+        klasse X:
             def __ipow__(*args):
                 return args
 

@@ -12,10 +12,10 @@ from test import support
 from test.support import import_helper
 
 
-class DictTest(unittest.TestCase):
+klasse DictTest(unittest.TestCase):
 
     def test_invalid_keyword_arguments(self):
-        class Custom(dict):
+        klasse Custom(dict):
             pass
         for invalid in {1 : 2}, Custom({1 : 2}):
             with self.assertRaises(TypeError):
@@ -109,7 +109,7 @@ class DictTest(unittest.TestCase):
 
     def test_views_mapping(self):
         mappingproxy = type(type.__dict__)
-        class Dict(dict):
+        klasse Dict(dict):
             pass
         for cls in [dict, Dict]:
             d = cls()
@@ -158,7 +158,7 @@ class DictTest(unittest.TestCase):
 
         self.assertRaises(TypeError, d.__getitem__)
 
-        class BadEq(object):
+        klasse BadEq(object):
             def __eq__(self, other):
                 raise Exc()
             def __hash__(self):
@@ -168,9 +168,9 @@ class DictTest(unittest.TestCase):
         d[BadEq()] = 42
         self.assertRaises(KeyError, d.__getitem__, 23)
 
-        class Exc(Exception): pass
+        klasse Exc(Exception): pass
 
-        class BadHash(object):
+        klasse BadHash(object):
             fail = False
             def __hash__(self):
                 if self.fail:
@@ -202,7 +202,7 @@ class DictTest(unittest.TestCase):
 
         self.assertRaises((TypeError, AttributeError), d.update, None)
 
-        class SimpleUserDict:
+        klasse SimpleUserDict:
             def __init__(self):
                 self.d = {1:1, 2:2, 3:3}
             def keys(self):
@@ -213,17 +213,17 @@ class DictTest(unittest.TestCase):
         d.update(SimpleUserDict())
         self.assertEqual(d, {1:1, 2:2, 3:3})
 
-        class Exc(Exception): pass
+        klasse Exc(Exception): pass
 
         d.clear()
-        class FailingUserDict:
+        klasse FailingUserDict:
             def keys(self):
                 raise Exc
         self.assertRaises(Exc, d.update, FailingUserDict())
 
-        class FailingUserDict:
+        klasse FailingUserDict:
             def keys(self):
-                class BogonIter:
+                klasse BogonIter:
                     def __init__(self):
                         self.i = 1
                     def __iter__(self):
@@ -238,9 +238,9 @@ class DictTest(unittest.TestCase):
                 return key
         self.assertRaises(Exc, d.update, FailingUserDict())
 
-        class FailingUserDict:
+        klasse FailingUserDict:
             def keys(self):
-                class BogonIter:
+                klasse BogonIter:
                     def __init__(self):
                         self.i = ord('a')
                     def __iter__(self):
@@ -256,7 +256,7 @@ class DictTest(unittest.TestCase):
                 raise Exc
         self.assertRaises(Exc, d.update, FailingUserDict())
 
-        class badseq(object):
+        klasse badseq(object):
             def __iter__(self):
                 return self
             def __next__(self):
@@ -291,11 +291,11 @@ class DictTest(unittest.TestCase):
         )
 
     def test_update_shared_keys(self):
-        class MyClass: pass
+        klasse MyClass: pass
 
         # Subclass str to enable us to create an object during the
         # dict.update() call.
-        class MyStr(str):
+        klasse MyStr(str):
             def __hash__(self):
                 return super().__hash__()
 
@@ -334,12 +334,12 @@ class DictTest(unittest.TestCase):
             yield 1
         self.assertEqual(d.fromkeys(g()), {1:None})
         self.assertRaises(TypeError, {}.fromkeys, 3)
-        class dictlike(dict): pass
+        klasse dictlike(dict): pass
         self.assertEqual(dictlike.fromkeys('a'), {'a':None})
         self.assertEqual(dictlike().fromkeys('a'), {'a':None})
         self.assertIsInstance(dictlike.fromkeys('a'), dictlike)
         self.assertIsInstance(dictlike().fromkeys('a'), dictlike)
-        class mydict(dict):
+        klasse mydict(dict):
             def __new__(cls):
                 return collections.UserDict()
         ud = mydict.fromkeys('ab')
@@ -347,15 +347,15 @@ class DictTest(unittest.TestCase):
         self.assertIsInstance(ud, collections.UserDict)
         self.assertRaises(TypeError, dict.fromkeys)
 
-        class Exc(Exception): pass
+        klasse Exc(Exception): pass
 
-        class baddict1(dict):
+        klasse baddict1(dict):
             def __init__(self):
                 raise Exc()
 
         self.assertRaises(Exc, baddict1.fromkeys, [1])
 
-        class BadSeq(object):
+        klasse BadSeq(object):
             def __iter__(self):
                 return self
             def __next__(self):
@@ -363,7 +363,7 @@ class DictTest(unittest.TestCase):
 
         self.assertRaises(Exc, dict.fromkeys, BadSeq())
 
-        class baddict2(dict):
+        klasse baddict2(dict):
             def __setitem__(self, key, value):
                 raise Exc()
 
@@ -381,7 +381,7 @@ class DictTest(unittest.TestCase):
         self.assertEqual(dict.fromkeys(d, 0), res)
 
         # test fast path when object's constructor returns large non-empty dict
-        class baddict3(dict):
+        klasse baddict3(dict):
             def __new__(cls):
                 return d
         d = {i : i for i in range(1000)}
@@ -390,7 +390,7 @@ class DictTest(unittest.TestCase):
         self.assertEqual(baddict3.fromkeys({"a", "b", "c"}), res)
 
         # test slow path when object is a proper subclass of dict
-        class baddict4(dict):
+        klasse baddict4(dict):
             def __init__(self):
                 dict.__init__(self, d)
         d = {i : i for i in range(1000)}
@@ -428,7 +428,7 @@ class DictTest(unittest.TestCase):
                 self.assertEqual(len(d2), len(d) + 1)
 
     def test_copy_maintains_tracking(self):
-        class A:
+        klasse A:
             pass
 
         key = A()
@@ -474,9 +474,9 @@ class DictTest(unittest.TestCase):
         self.assertEqual(len(d['key']), 2)
         self.assertRaises(TypeError, d.setdefault)
 
-        class Exc(Exception): pass
+        klasse Exc(Exception): pass
 
-        class BadHash(object):
+        klasse BadHash(object):
             fail = False
             def __hash__(self):
                 if self.fail:
@@ -491,7 +491,7 @@ class DictTest(unittest.TestCase):
 
     def test_setdefault_atomic(self):
         # Issue #13521: setdefault() calls __hash__ and __eq__ only once.
-        class Hashed(object):
+        klasse Hashed(object):
             def __init__(self):
                 self.hash_count = 0
                 self.eq_count = 0
@@ -510,7 +510,7 @@ class DictTest(unittest.TestCase):
         self.assertEqual(hashed1.eq_count + hashed2.eq_count, 1)
 
     def test_setitem_atomic_at_resize(self):
-        class Hashed(object):
+        klasse Hashed(object):
             def __init__(self):
                 self.hash_count = 0
                 self.eq_count = 0
@@ -575,9 +575,9 @@ class DictTest(unittest.TestCase):
 
         self.assertRaises(TypeError, d.pop)
 
-        class Exc(Exception): pass
+        klasse Exc(Exception): pass
 
-        class BadHash(object):
+        klasse BadHash(object):
             fail = False
             def __hash__(self):
                 if self.fail:
@@ -627,7 +627,7 @@ class DictTest(unittest.TestCase):
 
     def test_mutating_lookup(self):
         # changing dict during a lookup (issue #14417)
-        class NastyKey:
+        klasse NastyKey:
             mutate_dict = None
 
             def __init__(self, value):
@@ -660,9 +660,9 @@ class DictTest(unittest.TestCase):
         d[1] = d
         self.assertEqual(repr(d), '{1: {...}}')
 
-        class Exc(Exception): pass
+        klasse Exc(Exception): pass
 
-        class BadRepr(object):
+        klasse BadRepr(object):
             def __repr__(self):
                 raise Exc()
 
@@ -681,9 +681,9 @@ class DictTest(unittest.TestCase):
         self.assertEqual({}, {})
         self.assertEqual({1: 2}, {1: 2})
 
-        class Exc(Exception): pass
+        klasse Exc(Exception): pass
 
-        class BadCmp(object):
+        klasse BadCmp(object):
             def __eq__(self, other):
                 raise Exc()
             def __hash__(self):
@@ -744,7 +744,7 @@ class DictTest(unittest.TestCase):
         self.assertFalse(larger == larger3)
 
     def test_errors_in_view_containment_check(self):
-        class C:
+        klasse C:
             def __eq__(self, other):
                 raise RuntimeError
 
@@ -826,7 +826,7 @@ class DictTest(unittest.TestCase):
         # (E) subclass defines __missing__ method raising RuntimeError
         # (F) subclass sets __missing__ instance variable (no effect)
         # (G) subclass doesn't define __missing__ at all
-        class D(dict):
+        klasse D(dict):
             def __missing__(self, key):
                 return 42
         d = D({1: 2, 3: 4})
@@ -836,7 +836,7 @@ class DictTest(unittest.TestCase):
         self.assertNotIn(2, d.keys())
         self.assertEqual(d[2], 42)
 
-        class E(dict):
+        klasse E(dict):
             def __missing__(self, key):
                 raise RuntimeError(key)
         e = E()
@@ -844,7 +844,7 @@ class DictTest(unittest.TestCase):
             e[42]
         self.assertEqual(c.exception.args, (42,))
 
-        class F(dict):
+        klasse F(dict):
             def __init__(self):
                 # An instance variable __missing__ should have no effect
                 self.__missing__ = lambda key: None
@@ -853,7 +853,7 @@ class DictTest(unittest.TestCase):
             f[42]
         self.assertEqual(c.exception.args, (42,))
 
-        class G(dict):
+        klasse G(dict):
             pass
         g = G()
         with self.assertRaises(KeyError) as c:
@@ -869,10 +869,10 @@ class DictTest(unittest.TestCase):
 
     def test_bad_key(self):
         # Dictionary lookups should fail if __eq__() raises an exception.
-        class CustomException(Exception):
+        klasse CustomException(Exception):
             pass
 
-        class BadDictKey:
+        klasse BadDictKey:
             def __hash__(self):
                 return hash(self.__class__)
 
@@ -915,7 +915,7 @@ class DictTest(unittest.TestCase):
         # Another dict resizing bug (SF bug #1456209).
         # This caused Segmentation faults or Illegal instructions.
 
-        class X(object):
+        klasse X(object):
             def __hash__(self):
                 return 5
             def __eq__(self, other):
@@ -944,7 +944,7 @@ class DictTest(unittest.TestCase):
     def test_container_iterator(self):
         # Bug #3680: tp_traverse was not implemented for dictiter and
         # dictview objects.
-        class C(object):
+        klasse C(object):
             pass
         views = (dict.items, dict.values, dict.keys)
         for v in views:
@@ -958,7 +958,7 @@ class DictTest(unittest.TestCase):
             self.assertIs(ref(), None, "Cycle was not collected")
 
     def make_shared_key_dict(self, n):
-        class C:
+        klasse C:
             pass
 
         dicts = []
@@ -1048,7 +1048,7 @@ class DictTest(unittest.TestCase):
     @support.cpython_only
     def test_splittable_update(self):
         """dict.update(other) must preserve order in other."""
-        class C:
+        klasse C:
             def __init__(self, order):
                 if order:
                     self.a, self.b, self.c = 1, 2, 3
@@ -1065,7 +1065,7 @@ class DictTest(unittest.TestCase):
     @support.cpython_only
     def test_splittable_to_generic_combinedtable(self):
         """split table must be correctly resized and converted to generic combined table"""
-        class C:
+        klasse C:
             pass
 
         a = C()
@@ -1188,17 +1188,17 @@ class DictTest(unittest.TestCase):
             self.assertEqual(sorted(values), sorted(data.values()))
 
     def test_instance_dict_getattr_str_subclass(self):
-        class Foo:
+        klasse Foo:
             def __init__(self, msg):
                 self.msg = msg
         f = Foo('123')
-        class _str(str):
+        klasse _str(str):
             pass
         self.assertEqual(f.msg, getattr(f, _str('msg')))
         self.assertEqual(f.msg, f.__dict__[_str('msg')])
 
     def test_object_set_item_single_instance_non_str_key(self):
-        class Foo: pass
+        klasse Foo: pass
         f = Foo()
         f.__dict__[1] = 1
         f.a = 'a'
@@ -1208,7 +1208,7 @@ class DictTest(unittest.TestCase):
         # This object will trigger mutation of the dict when replaced
         # by another value.  Note this relies on refcounting: the test
         # won't achieve its purpose on fully-GCed Python implementations.
-        class Mutating:
+        klasse Mutating:
             def __del__(self):
                 mutate(d)
 
@@ -1233,7 +1233,7 @@ class DictTest(unittest.TestCase):
         self.check_reentrant_insertion(mutate)
 
     def test_merge_and_mutate(self):
-        class X:
+        klasse X:
             def __hash__(self):
                 return 0
 
@@ -1255,7 +1255,7 @@ class DictTest(unittest.TestCase):
 
     def test_equal_operator_modifying_operand(self):
         # test fix for seg fault reported in bpo-27945 part 3.
-        class X():
+        klasse X():
             def __del__(self):
                 dict_b.clear()
 
@@ -1271,7 +1271,7 @@ class DictTest(unittest.TestCase):
         self.assertTrue(dict_a == dict_b)
 
         # test fix for seg fault reported in bpo-38588 part 1.
-        class Y:
+        klasse Y:
             def __eq__(self, other):
                 dict_d.clear()
                 return True
@@ -1282,7 +1282,7 @@ class DictTest(unittest.TestCase):
 
     def test_fromkeys_operator_modifying_dict_operand(self):
         # test fix for seg fault reported in issue 27945 part 4a.
-        class X(int):
+        klasse X(int):
             def __hash__(self):
                 return 13
 
@@ -1300,7 +1300,7 @@ class DictTest(unittest.TestCase):
 
     def test_fromkeys_operator_modifying_set_operand(self):
         # test fix for seg fault reported in issue 27945 part 4b.
-        class X(int):
+        klasse X(int):
             def __hash__(self):
                 return 13
 
@@ -1317,7 +1317,7 @@ class DictTest(unittest.TestCase):
             pass
 
     def test_dictitems_contains_use_after_free(self):
-        class X:
+        klasse X:
             def __eq__(self, other):
                 d.clear()
                 return NotImplemented
@@ -1327,7 +1327,7 @@ class DictTest(unittest.TestCase):
 
     def test_dict_contain_use_after_free(self):
         # bpo-40489
-        class S(str):
+        klasse S(str):
             def __eq__(self, other):
                 d.clear()
                 return NotImplemented
@@ -1339,7 +1339,7 @@ class DictTest(unittest.TestCase):
         self.assertFalse('test' in d)
 
     def test_init_use_after_free(self):
-        class X:
+        klasse X:
             def __hash__(self):
                 pair[:] = []
                 return 13
@@ -1348,7 +1348,7 @@ class DictTest(unittest.TestCase):
         dict([pair])
 
     def test_oob_indexing_dictiter_iternextitem(self):
-        class X(int):
+        klasse X(int):
             def __del__(self):
                 d.clear()
 
@@ -1384,7 +1384,7 @@ class DictTest(unittest.TestCase):
         self.assertEqual(list(reversed(dict().keys())), [])
 
     def test_reverse_iterator_for_shared_shared_dicts(self):
-        class A:
+        klasse A:
             def __init__(self, x, y):
                 if x: self.x = x
                 if y: self.y = y
@@ -1403,7 +1403,7 @@ class DictTest(unittest.TestCase):
         self.assertEqual(list(copy.items()), expected)
 
         # dict subclass doesn't override __iter__
-        class CustomDict(dict):
+        klasse CustomDict(dict):
             pass
 
         pairs = [('a', 1), ('b', 2), ('c', 3)]
@@ -1411,7 +1411,7 @@ class DictTest(unittest.TestCase):
         d = CustomDict(pairs)
         self.assertEqual(pairs, list(dict(d).items()))
 
-        class CustomReversedDict(dict):
+        klasse CustomReversedDict(dict):
             def keys(self):
                 return reversed(list(dict.keys(self)))
 
@@ -1443,7 +1443,7 @@ class DictTest(unittest.TestCase):
         self.assertTrue(gc.is_tracked(next(it)))
 
     def test_store_evilattr(self):
-        class EvilAttr:
+        klasse EvilAttr:
             def __init__(self, d):
                 self.d = d
 
@@ -1452,7 +1452,7 @@ class DictTest(unittest.TestCase):
                     del self.d['attr']
                 gc.collect()
 
-        class Obj:
+        klasse Obj:
             pass
 
         obj = Obj()
@@ -1465,12 +1465,12 @@ class DictTest(unittest.TestCase):
         # `str` keys. Make sure the unoptimized path is used when a non-`str`
         # key appears.
 
-        class StrSub(str):
+        klasse StrSub(str):
             pass
 
         eq_count = 0
-        # This class compares equal to the string 'key3'
-        class Key3:
+        # This klasse compares equal to the string 'key3'
+        klasse Key3:
             def __hash__(self):
                 return hash('key3')
 
@@ -1583,7 +1583,7 @@ class DictTest(unittest.TestCase):
 
         # Only TypeError exception is overriden,
         # other exceptions are left unchanged.
-        class HashError:
+        klasse HashError:
             def __hash__(self):
                 raise KeyError('error')
 
@@ -1602,7 +1602,7 @@ class DictTest(unittest.TestCase):
             d.get(key2)
 
 
-class CAPITest(unittest.TestCase):
+klasse CAPITest(unittest.TestCase):
 
     # Test _PyDict_GetItem_KnownHash()
     @support.cpython_only
@@ -1620,8 +1620,8 @@ class CAPITest(unittest.TestCase):
         # key does not exist
         self.assertRaises(KeyError, dict_getitem_knownhash, {}, 1, hash(1))
 
-        class Exc(Exception): pass
-        class BadEq:
+        klasse Exc(Exception): pass
+        klasse BadEq:
             def __eq__(self, other):
                 raise Exc
             def __hash__(self):
@@ -1635,13 +1635,13 @@ class CAPITest(unittest.TestCase):
 
 from test import mapping_tests
 
-class GeneralMappingTests(mapping_tests.BasicTestMappingProtocol):
+klasse GeneralMappingTests(mapping_tests.BasicTestMappingProtocol):
     type2test = dict
 
-class Dict(dict):
+klasse Dict(dict):
     pass
 
-class SubclassMappingTests(mapping_tests.BasicTestMappingProtocol):
+klasse SubclassMappingTests(mapping_tests.BasicTestMappingProtocol):
     type2test = Dict
 
 

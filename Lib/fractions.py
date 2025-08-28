@@ -179,8 +179,8 @@ _FLOAT_FORMAT_SPECIFICATION_MATCHER = re.compile(r"""
 """, re.DOTALL | re.VERBOSE).fullmatch
 
 
-class Fraction(numbers.Rational):
-    """This class implements rational numbers.
+klasse Fraction(numbers.Rational):
+    """This klasse implements rational numbers.
 
     In the two-argument form of the constructor, Fraction(8, 6) will
     produce a rational number equivalent to 4/3. Both arguments must
@@ -688,7 +688,7 @@ class Fraction(numbers.Rational):
                proceeds.
             5. Otherwise, __radd__ tries to find the nearest common
                base ABC, and fall back to its builtin type. Since this
-               class doesn't subclass a concrete type, there's no
+               klasse doesn't subclass a concrete type, there's no
                implementation to fall back to, so we need to try as
                hard as possible to return an actual value, or the user
                will get a TypeError.

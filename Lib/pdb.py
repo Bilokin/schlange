@@ -54,8 +54,8 @@ defined there can be overridden by the local file.  This behavior can be
 disabled by passing the "readrc=False" argument to the Pdb constructor.
 
 Aside from aliases, the debugger is not directly programmable; but it
-is implemented as a class from which you can derive your own debugger
-class, which you can make as fancy as you like.
+is implemented as a klasse from which you can derive your own debugger
+klasse, which you can make as fancy as you like.
 
 
 Debugger commands
@@ -63,7 +63,7 @@ Debugger commands
 
 """
 # NOTE: the actual command documentation is collected from docstrings of the
-# commands and is appended to __doc__ after the class has been defined.
+# commands and is appended to __doc__ after the klasse has been defined.
 
 import os
 import io
@@ -105,7 +105,7 @@ from types import CodeType
 from warnings import deprecated
 
 
-class Restart(Exception):
+klasse Restart(Exception):
     """Causes a debugger to be restarted for the debugged python program."""
     pass
 
@@ -170,19 +170,19 @@ def lasti2lineno(code, lasti):
     return 0
 
 
-class _rstr(str):
+klasse _rstr(str):
     """String that doesn't quote its repr."""
     def __repr__(self):
         return self
 
 
-class _ExecutableTarget:
+klasse _ExecutableTarget:
     filename: str
     code: CodeType | str
     namespace: dict
 
 
-class _ScriptTarget(_ExecutableTarget):
+klasse _ScriptTarget(_ExecutableTarget):
     def __init__(self, target):
         self._target = os.path.realpath(target)
 
@@ -221,7 +221,7 @@ class _ScriptTarget(_ExecutableTarget):
         )
 
 
-class _ModuleTarget(_ExecutableTarget):
+klasse _ModuleTarget(_ExecutableTarget):
     def __init__(self, target):
         self._target = target
 
@@ -258,7 +258,7 @@ class _ModuleTarget(_ExecutableTarget):
         )
 
 
-class _ZipTarget(_ExecutableTarget):
+klasse _ZipTarget(_ExecutableTarget):
     def __init__(self, target):
         import runpy
 
@@ -296,7 +296,7 @@ class _ZipTarget(_ExecutableTarget):
         )
 
 
-class _PdbInteractiveConsole(code.InteractiveConsole):
+klasse _PdbInteractiveConsole(code.InteractiveConsole):
     def __init__(self, ns, message):
         self._message = message
         super().__init__(locals=ns, local_exit=True)
@@ -331,7 +331,7 @@ def get_default_backend():
     return _default_backend
 
 
-class Pdb(bdb.Bdb, cmd.Cmd):
+klasse Pdb(bdb.Bdb, cmd.Cmd):
     _previous_sigint_handler = None
 
     # Limit the maximum depth of chained exceptions, we should be handling cycles,
@@ -2582,7 +2582,7 @@ class Pdb(bdb.Bdb, cmd.Cmd):
 # Collect all command help into docstring, if not run with -OO
 
 if __doc__ is not None:
-    # unfortunately we can't guess this order from the class definition
+    # unfortunately we can't guess this order from the klasse definition
     _help_order = [
         'help', 'where', 'down', 'up', 'break', 'tbreak', 'clear', 'disable',
         'enable', 'ignore', 'condition', 'commands', 'step', 'next', 'until',
@@ -2672,7 +2672,7 @@ async def set_trace_async(*, header=None, commands=None):
 
 # Remote PDB
 
-class _PdbServer(Pdb):
+klasse _PdbServer(Pdb):
     def __init__(
         self,
         sockfile,
@@ -3020,7 +3020,7 @@ class _PdbServer(Pdb):
             self._error_exc()
 
 
-class _PdbClient:
+klasse _PdbClient:
     def __init__(self, pid, server_socket, interrupt_sock):
         self.pid = pid
         self.read_buf = b""

@@ -31,15 +31,15 @@ DATA_CRLF = "\r\n".join(DATA_TEMPLATE) + "\r\n"
 DATA_MIXED = "\n".join(DATA_TEMPLATE) + "\r"
 DATA_SPLIT = [x + "\n" for x in DATA_TEMPLATE]
 
-class CTest:
+klasse CTest:
     open = io.open
 
-class PyTest:
+klasse PyTest:
     open = staticmethod(pyio.open)
 
-class TestGenericUnivNewlines:
-    # use a class variable DATA to define the data to write to the file
-    # and a class variable NEWLINE to set the expected newlines value
+klasse TestGenericUnivNewlines:
+    # use a klasse variable DATA to define the data to write to the file
+    # and a klasse variable NEWLINE to set the expected newlines value
     READMODE = 'r'
     WRITEMODE = 'wb'
 
@@ -89,19 +89,19 @@ class TestGenericUnivNewlines:
         self.assertEqual(data, DATA_SPLIT[1:])
 
 
-class TestCRNewlines(TestGenericUnivNewlines):
+klasse TestCRNewlines(TestGenericUnivNewlines):
     NEWLINE = '\r'
     DATA = DATA_CR
-class CTestCRNewlines(CTest, TestCRNewlines, unittest.TestCase): pass
-class PyTestCRNewlines(PyTest, TestCRNewlines, unittest.TestCase): pass
+klasse CTestCRNewlines(CTest, TestCRNewlines, unittest.TestCase): pass
+klasse PyTestCRNewlines(PyTest, TestCRNewlines, unittest.TestCase): pass
 
-class TestLFNewlines(TestGenericUnivNewlines):
+klasse TestLFNewlines(TestGenericUnivNewlines):
     NEWLINE = '\n'
     DATA = DATA_LF
-class CTestLFNewlines(CTest, TestLFNewlines, unittest.TestCase): pass
-class PyTestLFNewlines(PyTest, TestLFNewlines, unittest.TestCase): pass
+klasse CTestLFNewlines(CTest, TestLFNewlines, unittest.TestCase): pass
+klasse PyTestLFNewlines(PyTest, TestLFNewlines, unittest.TestCase): pass
 
-class TestCRLFNewlines(TestGenericUnivNewlines):
+klasse TestCRLFNewlines(TestGenericUnivNewlines):
     NEWLINE = '\r\n'
     DATA = DATA_CRLF
 
@@ -111,14 +111,14 @@ class TestCRLFNewlines(TestGenericUnivNewlines):
             data = fp.readline()
             pos = fp.tell()
         self.assertEqual(repr(fp.newlines), repr(self.NEWLINE))
-class CTestCRLFNewlines(CTest, TestCRLFNewlines, unittest.TestCase): pass
-class PyTestCRLFNewlines(PyTest, TestCRLFNewlines, unittest.TestCase): pass
+klasse CTestCRLFNewlines(CTest, TestCRLFNewlines, unittest.TestCase): pass
+klasse PyTestCRLFNewlines(PyTest, TestCRLFNewlines, unittest.TestCase): pass
 
-class TestMixedNewlines(TestGenericUnivNewlines):
+klasse TestMixedNewlines(TestGenericUnivNewlines):
     NEWLINE = ('\r', '\n')
     DATA = DATA_MIXED
-class CTestMixedNewlines(CTest, TestMixedNewlines, unittest.TestCase): pass
-class PyTestMixedNewlines(PyTest, TestMixedNewlines, unittest.TestCase): pass
+klasse CTestMixedNewlines(CTest, TestMixedNewlines, unittest.TestCase): pass
+klasse PyTestMixedNewlines(PyTest, TestMixedNewlines, unittest.TestCase): pass
 
 if __name__ == '__main__':
     unittest.main()

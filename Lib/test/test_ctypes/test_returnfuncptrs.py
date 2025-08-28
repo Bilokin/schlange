@@ -4,7 +4,7 @@ from test.support import import_helper
 _ctypes_test = import_helper.import_module("_ctypes_test")
 
 
-class ReturnFuncPtrTestCase(unittest.TestCase):
+klasse ReturnFuncPtrTestCase(unittest.TestCase):
     def test_with_prototype(self):
         # The _ctypes_test shared lib/dll exports quite some functions for testing.
         # The get_strchr function returns a *pointer* to the C strchr function.
@@ -45,7 +45,7 @@ class ReturnFuncPtrTestCase(unittest.TestCase):
 
     # Issue 6083: Reference counting bug
     def test_from_dll_refcount(self):
-        class BadSequence(tuple):
+        klasse BadSequence(tuple):
             def __getitem__(self, key):
                 if key == 0:
                     return "my_strchr"

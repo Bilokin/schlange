@@ -37,6 +37,6 @@ VT_MAP: dict[bytes, str] = {
     b'\x1b[24~': 'f12',
 }
 
-class EventQueue(BaseEventQueue):
+klasse EventQueue(BaseEventQueue):
     def __init__(self, encoding: str) -> None:
         BaseEventQueue.__init__(self, encoding, VT_MAP)

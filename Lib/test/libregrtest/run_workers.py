@@ -49,7 +49,7 @@ WAIT_KILLED_TIMEOUT = 60.0
 
 
 # We do not use a generator so multiple threads can call next().
-class MultiprocessIterator:
+klasse MultiprocessIterator:
 
     """A thread-safe iterator over tests for multiprocess mode."""
 
@@ -72,14 +72,14 @@ class MultiprocessIterator:
 
 
 @dataclasses.dataclass(slots=True, frozen=True)
-class MultiprocessResult:
+klasse MultiprocessResult:
     result: TestResult
     # bpo-45410: stderr is written into stdout to keep messages order
     worker_stdout: str | None = None
     err_msg: str | None = None
 
 
-class WorkerThreadExited:
+klasse WorkerThreadExited:
     """Indicates that a worker thread has exited"""
 
 ExcStr = str
@@ -87,11 +87,11 @@ QueueOutput = tuple[Literal[False], MultiprocessResult] | tuple[Literal[True], E
 QueueContent = QueueOutput | WorkerThreadExited
 
 
-class ExitThread(Exception):
+klasse ExitThread(Exception):
     pass
 
 
-class WorkerError(Exception):
+klasse WorkerError(Exception):
     def __init__(self,
                  test_name: TestName,
                  err_msg: str | None,
@@ -105,7 +105,7 @@ class WorkerError(Exception):
 _NOT_RUNNING = "<not running>"
 
 
-class WorkerThread(threading.Thread):
+klasse WorkerThread(threading.Thread):
     def __init__(self, worker_id: int, runner: "RunWorkers") -> None:
         super().__init__()
         self.worker_id = worker_id
@@ -468,7 +468,7 @@ def get_running(workers: list[WorkerThread]) -> str | None:
     return f"running ({len(running)}): {', '.join(running)}"
 
 
-class RunWorkers:
+klasse RunWorkers:
     def __init__(self, num_workers: int, runtests: RunTests,
                  logger: Logger, results: TestResults) -> None:
         self.num_workers = num_workers

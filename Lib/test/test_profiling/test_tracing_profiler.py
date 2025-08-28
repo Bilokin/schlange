@@ -12,7 +12,7 @@ from test.support.script_helper import assert_python_failure, assert_python_ok
 from test import support
 
 
-class CProfileTest(ProfileTest):
+klasse CProfileTest(ProfileTest):
     profilerclass = cProfile.Profile
     profilermodule = cProfile
     expected_max_output = "{built-in method builtins.max}"
@@ -52,7 +52,7 @@ class CProfileTest(ProfileTest):
         # gh-120289
         # Disabling profiler in external timer should not crash
         import _lsprof
-        class EvilTimer():
+        klasse EvilTimer():
             def __init__(self, disable_count):
                 self.count = 0
                 self.disable_count = disable_count
@@ -151,7 +151,7 @@ class CProfileTest(ProfileTest):
                 bytes.find(str())
 
 
-class TestCommandLine(unittest.TestCase):
+klasse TestCommandLine(unittest.TestCase):
     def test_sort(self):
         rc, out, err = assert_python_failure('-m', 'cProfile', '-s', 'demo')
         self.assertGreater(rc, 0)
@@ -162,7 +162,7 @@ class TestCommandLine(unittest.TestCase):
         when being profiled."""
         with tempfile.NamedTemporaryFile("w+", delete_on_close=False) as f:
             f.write(textwrap.dedent("""\
-                class Foo:
+                klasse Foo:
                     pass
                 import __main__
                 assert Foo == __main__.Foo

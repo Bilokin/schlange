@@ -55,11 +55,11 @@ def file_line_helper(line):
         return None
 
 
-class OutputWindow(EditorWindow):
+klasse OutputWindow(EditorWindow):
     """An editor window that can serve as an output file.
 
-    Also the future base class for the Python shell window.
-    This class has no input facilities.
+    Also the future base klasse for the Python shell window.
+    This klasse has no input facilities.
 
     Adds binding to open a file at a line to the text widget.
     """
@@ -156,7 +156,7 @@ class OutputWindow(EditorWindow):
 
 
 # These classes are currently not used but might come in handy
-class OnDemandOutputWindow:
+klasse OnDemandOutputWindow:
 
     tagdefs = {
         # XXX Should use IdlePrefs.ColorPrefs

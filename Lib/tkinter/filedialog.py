@@ -30,7 +30,7 @@ from tkinter.simpledialog import _setup_dialog
 dialogstates = {}
 
 
-class FileDialog:
+klasse FileDialog:
 
     """Standard file selection dialog -- no checks on selected file.
 
@@ -230,7 +230,7 @@ class FileDialog:
         self.selection.insert(END, os.path.join(self.directory, file))
 
 
-class LoadFileDialog(FileDialog):
+klasse LoadFileDialog(FileDialog):
 
     """File selection dialog which checks that the file exists."""
 
@@ -244,7 +244,7 @@ class LoadFileDialog(FileDialog):
             self.quit(file)
 
 
-class SaveFileDialog(FileDialog):
+klasse SaveFileDialog(FileDialog):
 
     """File selection dialog which checks that the file may be created."""
 
@@ -301,7 +301,7 @@ class SaveFileDialog(FileDialog):
 #
 
 
-class _Dialog(commondialog.Dialog):
+klasse _Dialog(commondialog.Dialog):
 
     def _fixoptions(self):
         try:
@@ -329,7 +329,7 @@ class _Dialog(commondialog.Dialog):
 #
 # file dialogs
 
-class Open(_Dialog):
+klasse Open(_Dialog):
     "Ask for a filename to open"
 
     command = "tk_getOpenFile"
@@ -349,14 +349,14 @@ class Open(_Dialog):
         return _Dialog._fixresult(self, widget, result)
 
 
-class SaveAs(_Dialog):
+klasse SaveAs(_Dialog):
     "Ask for a filename to save as"
 
     command = "tk_getSaveFile"
 
 
 # the directory dialog has its own _fix routines.
-class Directory(commondialog.Dialog):
+klasse Directory(commondialog.Dialog):
     "Ask for a directory"
 
     command = "tk_chooseDirectory"

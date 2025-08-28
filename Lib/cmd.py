@@ -1,6 +1,6 @@
-"""A generic class to build line-oriented command interpreters.
+"""A generic klasse to build line-oriented command interpreters.
 
-Interpreters constructed with this class obey the following conventions:
+Interpreters constructed with this klasse obey the following conventions:
 
 1. End of file on input is processed as the command 'EOF'.
 2. A command is parsed out of each line by collecting the prefix composed
@@ -52,7 +52,7 @@ IDENTCHARS = ('ABCDEFGHIJKLMNOPQRSTUVWXYZ'
               '0123456789'
               '_')
 
-class Cmd:
+klasse Cmd:
     """A simple framework for writing line-oriented command interpreters.
 
     These are often useful for test harnesses, administrative tools, and
@@ -60,7 +60,7 @@ class Cmd:
 
     A Cmd instance or subclass instance is a line-oriented interpreter
     framework.  There is no good reason to instantiate Cmd itself; rather,
-    it's useful as a superclass of an interpreter class you define yourself
+    it's useful as a superclass of an interpreter klasse you define yourself
     in order to inherit Cmd's methods and encapsulate action methods.
 
     """
@@ -289,7 +289,7 @@ class Cmd:
             return None
 
     def get_names(self):
-        # This method used to pull in base class attributes
+        # This method used to pull in base klasse attributes
         # at a time dir() didn't do it yet.
         return dir(self.__class__)
 

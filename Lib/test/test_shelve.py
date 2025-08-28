@@ -12,7 +12,7 @@ from test.test_dbm import dbm_iterator
 def L1(s):
     return s.decode("latin-1")
 
-class byteskeydict(MutableMapping):
+klasse byteskeydict(MutableMapping):
     "Mapping that supports bytes keys"
 
     def __init__(self):
@@ -43,7 +43,7 @@ class byteskeydict(MutableMapping):
         return byteskeydict(self.d)
 
 
-class TestCase(unittest.TestCase):
+klasse TestCase(unittest.TestCase):
     dirname = os_helper.TESTFN
     fn = os.path.join(os_helper.TESTFN, "shelftemp.db")
 
@@ -400,19 +400,19 @@ class TestCase(unittest.TestCase):
         self.assertRaises(shelve.ShelveError, shelve.BsdDbShelf, {}, **kwargs)
 
 
-class TestShelveBase:
+klasse TestShelveBase:
     type2test = shelve.Shelf
 
     def _reference(self):
         return {"key1":"value1", "key2":2, "key3":(1,2,3)}
 
 
-class TestShelveInMemBase(TestShelveBase):
+klasse TestShelveInMemBase(TestShelveBase):
     def _empty_mapping(self):
         return shelve.Shelf(byteskeydict(), **self._args)
 
 
-class TestShelveFileBase(TestShelveBase):
+klasse TestShelveFileBase(TestShelveBase):
     counter = 0
 
     def _empty_mapping(self):

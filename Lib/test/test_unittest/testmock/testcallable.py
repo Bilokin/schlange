@@ -13,7 +13,7 @@ from unittest.mock import (
 
 
 
-class TestCallable(unittest.TestCase):
+klasse TestCallable(unittest.TestCase):
 
     def assertNotCallable(self, mock):
         self.assertTrue(is_instance(mock, NonCallableMagicMock))
@@ -41,13 +41,13 @@ class TestCallable(unittest.TestCase):
 
 
     def test_subclasses(self):
-        class MockSub(Mock):
+        klasse MockSub(Mock):
             pass
 
         one = MockSub()
         self.assertIsSubclass(type(one.one), MockSub)
 
-        class MagicSub(MagicMock):
+        klasse MagicSub(MagicMock):
             pass
 
         two = MagicSub()
@@ -97,13 +97,13 @@ class TestCallable(unittest.TestCase):
 
 
     def test_patch_spec_callable_class(self):
-        class CallableX(X):
+        klasse CallableX(X):
             def __call__(self): pass
 
-        class Sub(CallableX):
+        klasse Sub(CallableX):
             pass
 
-        class Multi(SomeClass, Sub):
+        klasse Multi(SomeClass, Sub):
             pass
 
         for arg in 'spec', 'spec_set':

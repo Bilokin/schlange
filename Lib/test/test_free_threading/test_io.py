@@ -7,7 +7,7 @@ from random import randint
 from sys import getsizeof
 
 
-class ThreadSafetyMixin:
+klasse ThreadSafetyMixin:
     # Test pretty much everything that can break under free-threading.
     # Non-deterministic, but at least one of these things will fail if
     # BytesIO object is not free-thread safe.
@@ -110,8 +110,8 @@ class ThreadSafetyMixin:
 
         # no tests for seek or tell because they don't break anything
 
-class CBytesIOTest(ThreadSafetyMixin, TestCase):
+klasse CBytesIOTest(ThreadSafetyMixin, TestCase):
     ioclass = io.BytesIO
 
-class PyBytesIOTest(ThreadSafetyMixin, TestCase):
+klasse PyBytesIOTest(ThreadSafetyMixin, TestCase):
      ioclass = pyio.BytesIO

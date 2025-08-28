@@ -13,7 +13,7 @@ import warnings
 
 
 
-class TestLoader:
+klasse TestLoader:
 
     def __init__(self, path=None, is_package=None):
         self.path = path
@@ -39,7 +39,7 @@ class TestLoader:
         return None
 
 
-class NewLoader(TestLoader):
+klasse NewLoader(TestLoader):
 
     EGGS = 1
 
@@ -47,7 +47,7 @@ class NewLoader(TestLoader):
         module.eggs = self.EGGS
 
 
-class ModuleSpecTests:
+klasse ModuleSpecTests:
 
     def setUp(self):
         self.name = 'spam'
@@ -215,7 +215,7 @@ class ModuleSpecTests:
  ) = test_util.test_both(ModuleSpecTests, util=util, machinery=machinery)
 
 
-class ModuleSpecMethodsTests:
+klasse ModuleSpecMethodsTests:
 
     @property
     def bootstrap(self):
@@ -255,7 +255,7 @@ class ModuleSpecMethodsTests:
 
     def test_load_replaced(self):
         replacement = object()
-        class ReplacingLoader(TestLoader):
+        klasse ReplacingLoader(TestLoader):
             def exec_module(self, module):
                 sys.modules[module.__name__] = replacement
         self.spec.loader = ReplacingLoader()
@@ -267,7 +267,7 @@ class ModuleSpecMethodsTests:
         self.assertIs(installed, replacement)
 
     def test_load_failed(self):
-        class FailedLoader(TestLoader):
+        klasse FailedLoader(TestLoader):
             def exec_module(self, module):
                 raise RuntimeError
         self.spec.loader = FailedLoader()
@@ -277,7 +277,7 @@ class ModuleSpecMethodsTests:
             self.assertNotIn(self.spec.name, sys.modules)
 
     def test_load_failed_removed(self):
-        class FailedLoader(TestLoader):
+        klasse FailedLoader(TestLoader):
             def exec_module(self, module):
                 del sys.modules[module.__name__]
                 raise RuntimeError
@@ -291,7 +291,7 @@ class ModuleSpecMethodsTests:
         module = object()
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", ImportWarning)
-            class ImmutableLoader(TestLoader):
+            klasse ImmutableLoader(TestLoader):
                 def load_module(self, name):
                     sys.modules[name] = module
                     return module
@@ -359,7 +359,7 @@ class ModuleSpecMethodsTests:
                          machinery=machinery)
 
 
-class FactoryTests:
+klasse FactoryTests:
 
     def setUp(self):
         self.name = 'spam'
@@ -383,7 +383,7 @@ class FactoryTests:
         self.assertFalse(spec.has_location)
 
     def test_spec_from_loader_default_with_bad_is_package(self):
-        class Loader:
+        klasse Loader:
             def is_package(self, name):
                 raise ImportError
         loader = Loader()
@@ -514,7 +514,7 @@ class FactoryTests:
 
         self.assertEqual(spec.name, self.name)
         # Need to use a circuitous route to get at importlib.machinery to make
-        # sure the same class object is used in the isinstance() check as
+        # sure the same klasse object is used in the isinstance() check as
         # would have been used to create the loader.
         SourceFileLoader = self.util.spec_from_file_location.__globals__['SourceFileLoader']
         self.assertIsInstance(spec.loader, SourceFileLoader)
@@ -566,7 +566,7 @@ class FactoryTests:
         self.assertTrue(spec.has_location)
 
     def test_spec_from_file_location_loader_no_location_bad_get_filename(self):
-        class Loader:
+        klasse Loader:
             def get_filename(self, name):
                 raise ImportError
         loader = Loader()
@@ -634,7 +634,7 @@ class FactoryTests:
         self.assertTrue(spec.has_location)
 
     def test_spec_from_file_location_smsl_default_not_package(self):
-        class Loader:
+        klasse Loader:
             def is_package(self, name):
                 return False
         loader = Loader()
@@ -662,7 +662,7 @@ class FactoryTests:
         self.assertTrue(spec.has_location)
 
     def test_spec_from_file_location_smsl_default_bad_is_package(self):
-        class Loader:
+        klasse Loader:
             def is_package(self, name):
                 raise ImportError
         loader = Loader()

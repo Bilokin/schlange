@@ -5,7 +5,7 @@ import unittest
 from collections import namedtuple
 
 
-class ParseMapTest(unittest.TestCase):
+klasse ParseMapTest(unittest.TestCase):
 
     def test_parsemap(self):
         keepwhite = {ord(c): ord(c) for c in ' \t\n\r'}
@@ -21,7 +21,7 @@ class ParseMapTest(unittest.TestCase):
                          'xxx(((x)))x"x\'x\n')
 
 
-class PyParseTest(unittest.TestCase):
+klasse PyParseTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):

@@ -6,9 +6,9 @@ from email.policy import default
 from test.test_email import TestEmailBase
 
 
-class TestCustomMessage(TestEmailBase):
+klasse TestCustomMessage(TestEmailBase):
 
-    class MyMessage(Message):
+    klasse MyMessage(Message):
         def __init__(self, policy):
             self.check_policy = policy
             super().__init__()
@@ -33,7 +33,7 @@ class TestCustomMessage(TestEmailBase):
     # XXX add tests for other functions that take Message arg.
 
 
-class TestParserBase:
+klasse TestParserBase:
 
     def test_only_split_on_cr_lf(self):
         # The unicode line splitter splits on unicode linebreaks, which are
@@ -67,7 +67,7 @@ class TestParserBase:
                 ])
                 self.assertEqual(msg.get_payload(), "")
 
-    class MyMessage(EmailMessage):
+    klasse MyMessage(EmailMessage):
         pass
 
     def test_custom_message_factory_on_policy(self):
@@ -92,7 +92,7 @@ def message_from_file(s, *args, **kw):
     f = io.StringIO(s)
     return email.message_from_file(f, *args, **kw)
 
-class TestParser(TestParserBase, TestEmailBase):
+klasse TestParser(TestParserBase, TestEmailBase):
     parsers = (email.message_from_string, message_from_file)
 
 def message_from_bytes(s, *args, **kw):
@@ -102,7 +102,7 @@ def message_from_binary_file(s, *args, **kw):
     f = io.BytesIO(s.encode())
     return email.message_from_binary_file(f, *args, **kw)
 
-class TestBytesParser(TestParserBase, TestEmailBase):
+klasse TestBytesParser(TestParserBase, TestEmailBase):
     parsers = (message_from_bytes, message_from_binary_file)
 
 

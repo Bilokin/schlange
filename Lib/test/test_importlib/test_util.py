@@ -33,7 +33,7 @@ except ModuleNotFoundError:
     _interpreters = None
 
 
-class DecodeSourceBytesTests:
+klasse DecodeSourceBytesTests:
 
     source = "string ='ü'"
 
@@ -59,10 +59,10 @@ class DecodeSourceBytesTests:
  ) = util.test_both(DecodeSourceBytesTests, util=importlib_util)
 
 
-class ModuleFromSpecTests:
+klasse ModuleFromSpecTests:
 
     def test_no_create_module(self):
-        class Loader:
+        klasse Loader:
             def exec_module(self, module):
                 pass
         spec = self.machinery.ModuleSpec('test', Loader())
@@ -70,7 +70,7 @@ class ModuleFromSpecTests:
             module = self.util.module_from_spec(spec)
 
     def test_create_module_returns_None(self):
-        class Loader(self.abc.Loader):
+        klasse Loader(self.abc.Loader):
             def create_module(self, spec):
                 return None
         spec = self.machinery.ModuleSpec('test', Loader())
@@ -80,9 +80,9 @@ class ModuleFromSpecTests:
 
     def test_create_module(self):
         name = 'already set'
-        class CustomModule(types.ModuleType):
+        klasse CustomModule(types.ModuleType):
             pass
-        class Loader(self.abc.Loader):
+        klasse Loader(self.abc.Loader):
             def create_module(self, spec):
                 module = CustomModule(spec.name)
                 module.__name__ = name
@@ -137,7 +137,7 @@ class ModuleFromSpecTests:
                    util=importlib_util)
 
 
-class ResolveNameTests:
+klasse ResolveNameTests:
 
     """Tests importlib.util.resolve_name()."""
 
@@ -175,9 +175,9 @@ class ResolveNameTests:
  ) = util.test_both(ResolveNameTests, util=importlib_util)
 
 
-class FindSpecTests:
+klasse FindSpecTests:
 
-    class FakeMetaFinder:
+    klasse FakeMetaFinder:
         @staticmethod
         def find_spec(name, path=None, target=None): return name, path, target
 
@@ -312,7 +312,7 @@ class FindSpecTests:
                          machinery=machinery)
 
 
-class MagicNumberTests:
+klasse MagicNumberTests:
 
     def test_length(self):
         # Should be 4 bytes.
@@ -328,7 +328,7 @@ class MagicNumberTests:
  ) = util.test_both(MagicNumberTests, util=importlib_util)
 
 
-class PEP3147Tests:
+klasse PEP3147Tests:
 
     """Tests of PEP 3147-related functions: cache_from_source and source_from_cache."""
 
@@ -388,7 +388,7 @@ class PEP3147Tests:
         path = os.path.join('foo', 'bar', 'baz.py')
         # However if the bool-ishness can't be determined, the exception
         # propagates.
-        class Bearish:
+        klasse Bearish:
             def __bool__(self): raise RuntimeError
         with warnings.catch_warnings():
             warnings.simplefilter('ignore')
@@ -624,7 +624,7 @@ class PEP3147Tests:
  ) = util.test_both(PEP3147Tests, util=importlib_util)
 
 
-class MagicNumberTests(unittest.TestCase):
+klasse MagicNumberTests(unittest.TestCase):
     """
     Test release compatibility issues relating to importlib
     """
@@ -666,7 +666,7 @@ class MagicNumberTests(unittest.TestCase):
 
 
 @unittest.skipIf(_interpreters is None, 'subinterpreters required')
-class IncompatibleExtensionModuleRestrictionsTests(unittest.TestCase):
+klasse IncompatibleExtensionModuleRestrictionsTests(unittest.TestCase):
 
     def run_with_own_gil(self, script):
         interpid = _interpreters.create('isolated')
@@ -788,7 +788,7 @@ class IncompatibleExtensionModuleRestrictionsTests(unittest.TestCase):
             self.run_with_own_gil(script)
 
 
-class MiscTests(unittest.TestCase):
+klasse MiscTests(unittest.TestCase):
     def test_atomic_write_should_notice_incomplete_writes(self):
         import _pyio
 

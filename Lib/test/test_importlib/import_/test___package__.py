@@ -9,7 +9,7 @@ import warnings
 from test.test_importlib import util
 
 
-class Using__package__:
+klasse Using__package__:
 
     """Use of __package__ supersedes the use of __name__/__path__ to calculate
     what package a module belongs to. The basic algorithm is [__package__]::
@@ -90,12 +90,12 @@ class Using__package__:
             self.__import__('', globals, {}, ['relimport'], 1)
 
 
-class FakeSpec:
+klasse FakeSpec:
     def __init__(self, parent):
         self.parent = parent
 
 
-class Using__package__PEP451(Using__package__):
+klasse Using__package__PEP451(Using__package__):
     mock_modules = util.mock_spec
 
 
@@ -104,7 +104,7 @@ class Using__package__PEP451(Using__package__):
  ) = util.test_both(Using__package__PEP451, __import__=util.__import__)
 
 
-class Setting__package__:
+klasse Setting__package__:
 
     """Because __package__ is a new feature, it is not always set by a loader.
     Import will set it as needed to help with the transition to relying on
@@ -144,7 +144,7 @@ class Setting__package__:
                 self.assertEqual(module.__package__, 'pkg')
 
 
-class Setting__package__PEP451(Setting__package__, unittest.TestCase):
+klasse Setting__package__PEP451(Setting__package__, unittest.TestCase):
     mock_modules = util.mock_spec
 
 

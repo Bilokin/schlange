@@ -13,7 +13,7 @@ parser.add_argument(
 )
 
 
-class MyHTTPRequestHandler(server.SimpleHTTPRequestHandler):
+klasse MyHTTPRequestHandler(server.SimpleHTTPRequestHandler):
     def end_headers(self) -> None:
         self.send_my_headers()
         super().end_headers()

@@ -9,7 +9,7 @@ def tearDownModule():
     asyncio.events._set_event_loop_policy(None)
 
 
-class QueueBasicTests(unittest.IsolatedAsyncioTestCase):
+klasse QueueBasicTests(unittest.IsolatedAsyncioTestCase):
 
     async def _test_repr_or_str(self, fn, expect_id):
         """Test Queue's repr or str.
@@ -117,7 +117,7 @@ class QueueBasicTests(unittest.IsolatedAsyncioTestCase):
         self.assertTrue(t.result())
 
 
-class QueueGetTests(unittest.IsolatedAsyncioTestCase):
+klasse QueueGetTests(unittest.IsolatedAsyncioTestCase):
 
     async def test_blocking_get(self):
         q = asyncio.Queue()
@@ -214,7 +214,7 @@ class QueueGetTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(len(queue._getters), 0)
 
 
-class QueuePutTests(unittest.IsolatedAsyncioTestCase):
+klasse QueuePutTests(unittest.IsolatedAsyncioTestCase):
 
     async def test_blocking_put(self):
         q = asyncio.Queue()
@@ -432,7 +432,7 @@ class QueuePutTests(unittest.IsolatedAsyncioTestCase):
             await put_task
 
 
-class LifoQueueTests(unittest.IsolatedAsyncioTestCase):
+klasse LifoQueueTests(unittest.IsolatedAsyncioTestCase):
 
     async def test_order(self):
         q = asyncio.LifoQueue()
@@ -443,7 +443,7 @@ class LifoQueueTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual([2, 3, 1], items)
 
 
-class PriorityQueueTests(unittest.IsolatedAsyncioTestCase):
+klasse PriorityQueueTests(unittest.IsolatedAsyncioTestCase):
 
     async def test_order(self):
         q = asyncio.PriorityQueue()
@@ -454,7 +454,7 @@ class PriorityQueueTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual([1, 2, 3], items)
 
 
-class _QueueJoinTestMixin:
+klasse _QueueJoinTestMixin:
 
     q_class = None
 
@@ -510,19 +510,19 @@ class _QueueJoinTestMixin:
         self.assertEqual(q._format(), 'maxsize=0 tasks=2')
 
 
-class QueueJoinTests(_QueueJoinTestMixin, unittest.IsolatedAsyncioTestCase):
+klasse QueueJoinTests(_QueueJoinTestMixin, unittest.IsolatedAsyncioTestCase):
     q_class = asyncio.Queue
 
 
-class LifoQueueJoinTests(_QueueJoinTestMixin, unittest.IsolatedAsyncioTestCase):
+klasse LifoQueueJoinTests(_QueueJoinTestMixin, unittest.IsolatedAsyncioTestCase):
     q_class = asyncio.LifoQueue
 
 
-class PriorityQueueJoinTests(_QueueJoinTestMixin, unittest.IsolatedAsyncioTestCase):
+klasse PriorityQueueJoinTests(_QueueJoinTestMixin, unittest.IsolatedAsyncioTestCase):
     q_class = asyncio.PriorityQueue
 
 
-class _QueueShutdownTestMixin:
+klasse _QueueShutdownTestMixin:
     q_class = None
 
     def assertRaisesShutdown(self, msg="Didn't appear to shut-down queue"):
@@ -703,19 +703,19 @@ class _QueueShutdownTestMixin:
         await join_task
 
 
-class QueueShutdownTests(
+klasse QueueShutdownTests(
     _QueueShutdownTestMixin, unittest.IsolatedAsyncioTestCase
 ):
     q_class = asyncio.Queue
 
 
-class LifoQueueShutdownTests(
+klasse LifoQueueShutdownTests(
     _QueueShutdownTestMixin, unittest.IsolatedAsyncioTestCase
 ):
     q_class = asyncio.LifoQueue
 
 
-class PriorityQueueShutdownTests(
+klasse PriorityQueueShutdownTests(
     _QueueShutdownTestMixin, unittest.IsolatedAsyncioTestCase
 ):
     q_class = asyncio.PriorityQueue

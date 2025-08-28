@@ -34,17 +34,17 @@ def dict_factory(cursor, row):
         d[col[0]] = row[idx]
     return d
 
-class MyCursor(sqlite.Cursor):
+klasse MyCursor(sqlite.Cursor):
     def __init__(self, *args, **kwargs):
         sqlite.Cursor.__init__(self, *args, **kwargs)
         self.row_factory = dict_factory
 
-class ConnectionFactoryTests(unittest.TestCase):
+klasse ConnectionFactoryTests(unittest.TestCase):
     def test_connection_factories(self):
-        class DefectFactory(sqlite.Connection):
+        klasse DefectFactory(sqlite.Connection):
             def __init__(self, *args, **kwargs):
                 return None
-        class OkFactory(sqlite.Connection):
+        klasse OkFactory(sqlite.Connection):
             def __init__(self, *args, **kwargs):
                 sqlite.Connection.__init__(self, *args, **kwargs)
 
@@ -57,7 +57,7 @@ class ConnectionFactoryTests(unittest.TestCase):
 
     def test_connection_factory_relayed_call(self):
         # gh-95132: keyword args must not be passed as positional args
-        class Factory(sqlite.Connection):
+        klasse Factory(sqlite.Connection):
             def __init__(self, *args, **kwargs):
                 kwargs["isolation_level"] = None
                 super(Factory, self).__init__(*args, **kwargs)
@@ -67,7 +67,7 @@ class ConnectionFactoryTests(unittest.TestCase):
             self.assertIsInstance(con, Factory)
 
     def test_connection_factory_as_positional_arg(self):
-        class Factory(sqlite.Connection):
+        klasse Factory(sqlite.Connection):
             def __init__(self, *args, **kwargs):
                 super(Factory, self).__init__(*args, **kwargs)
 
@@ -76,7 +76,7 @@ class ConnectionFactoryTests(unittest.TestCase):
             memory_database(5.0, 0, None, True, Factory)
 
 
-class CursorFactoryTests(MemoryDatabaseMixin, unittest.TestCase):
+klasse CursorFactoryTests(MemoryDatabaseMixin, unittest.TestCase):
 
     def test_is_instance(self):
         cur = self.con.cursor()
@@ -95,7 +95,7 @@ class CursorFactoryTests(MemoryDatabaseMixin, unittest.TestCase):
         self.assertRaises(TypeError, self.con.cursor, lambda con: None)
 
 
-class RowFactoryTestsBackwardsCompat(MemoryDatabaseMixin, unittest.TestCase):
+klasse RowFactoryTestsBackwardsCompat(MemoryDatabaseMixin, unittest.TestCase):
 
     def test_is_produced_by_factory(self):
         cur = self.con.cursor(factory=MyCursor)
@@ -105,7 +105,7 @@ class RowFactoryTestsBackwardsCompat(MemoryDatabaseMixin, unittest.TestCase):
         cur.close()
 
 
-class RowFactoryTests(MemoryDatabaseMixin, unittest.TestCase):
+klasse RowFactoryTests(MemoryDatabaseMixin, unittest.TestCase):
 
     def setUp(self):
         super().setUp()
@@ -246,13 +246,13 @@ class RowFactoryTests(MemoryDatabaseMixin, unittest.TestCase):
         # Issue #24257: Incorrect use of PyObject_IsInstance() caused
         # segmentation fault.
         # Issue #27861: Also applies for cursor factory.
-        class FakeCursor(str):
+        klasse FakeCursor(str):
             __class__ = sqlite.Cursor
         self.assertRaises(TypeError, self.con.cursor, FakeCursor)
         self.assertRaises(TypeError, sqlite.Row, FakeCursor(), ())
 
 
-class TextFactoryTests(MemoryDatabaseMixin, unittest.TestCase):
+klasse TextFactoryTests(MemoryDatabaseMixin, unittest.TestCase):
 
     def test_unicode(self):
         austria = "Österreich"
@@ -274,7 +274,7 @@ class TextFactoryTests(MemoryDatabaseMixin, unittest.TestCase):
         self.assertEndsWith(row[0], "reich", "column must contain original data")
 
 
-class TextFactoryTestsWithEmbeddedZeroBytes(unittest.TestCase):
+klasse TextFactoryTestsWithEmbeddedZeroBytes(unittest.TestCase):
 
     def setUp(self):
         self.con = sqlite.connect(":memory:")

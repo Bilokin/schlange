@@ -12,7 +12,7 @@ _testlimitedcapi = import_helper.import_module("_testlimitedcapi")
 NULL = None
 INVALID_UTF8 = b'\xff'
 
-class DictSubclass(dict):
+klasse DictSubclass(dict):
     def __getitem__(self, key):
         raise RuntimeError('do not get evil')
     def __setitem__(self, key, value):
@@ -26,7 +26,7 @@ def gen():
     yield 'c'
 
 
-class CAPITest(unittest.TestCase):
+klasse CAPITest(unittest.TestCase):
 
     def test_dict_check(self):
         check = _testlimitedcapi.dict_check
@@ -366,7 +366,7 @@ class CAPITest(unittest.TestCase):
         # CRASHES setdefault(NULL, 'a', 5)
 
     def test_mapping_keys_valuesitems(self):
-        class BadMapping(dict):
+        klasse BadMapping(dict):
             def keys(self):
                 return None
             def values(self):

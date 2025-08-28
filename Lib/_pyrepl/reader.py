@@ -132,8 +132,8 @@ default_keymap: tuple[tuple[KeySpec, CommandName], ...] = tuple(
 
 
 @dataclass(slots=True)
-class Reader:
-    """The Reader class implements the bare bones of a command reader,
+klasse Reader:
+    """The Reader klasse implements the bare bones of a command reader,
     handling such details as editing and cursor motion.  What it does
     not support are such things as completion or history support -
     these are implemented elsewhere.
@@ -217,7 +217,7 @@ class Reader:
 
     ## cached metadata to speed up screen refreshes
     @dataclass
-    class RefreshCache:
+    klasse RefreshCache:
         screen: list[str] = field(default_factory=list)
         screeninfo: list[tuple[int, list[int]]] = field(init=False)
         line_end_offsets: list[int] = field(default_factory=list)

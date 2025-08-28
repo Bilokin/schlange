@@ -317,7 +317,7 @@ _TERM_ALIASES = {
 
 
 @dataclass
-class TermInfo:
+klasse TermInfo:
     terminal_name: str | bytes | None
     fallback: bool = True
 

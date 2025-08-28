@@ -40,7 +40,7 @@ def tearDownModule():
     asyncio.events._set_event_loop_policy(None)
 
 
-class TestSubprocessTransport(base_subprocess.BaseSubprocessTransport):
+klasse TestSubprocessTransport(base_subprocess.BaseSubprocessTransport):
     def _start(self, *args, **kwargs):
         self._proc = mock.Mock()
         self._proc.stdin = None
@@ -49,7 +49,7 @@ class TestSubprocessTransport(base_subprocess.BaseSubprocessTransport):
         self._proc.pid = -1
 
 
-class SubprocessTransportTests(test_utils.TestCase):
+klasse SubprocessTransportTests(test_utils.TestCase):
     def setUp(self):
         super().setUp()
         self.loop = self.new_test_loop()
@@ -112,7 +112,7 @@ class SubprocessTransportTests(test_utils.TestCase):
         transport.close()
 
 
-class SubprocessMixin:
+klasse SubprocessMixin:
 
     def test_stdin_stdout(self):
         args = PROGRAM_CAT
@@ -799,7 +799,7 @@ class SubprocessMixin:
             'pipe_connection_lost',
         ]
 
-        class MyProtocol(asyncio.SubprocessProtocol):
+        klasse MyProtocol(asyncio.SubprocessProtocol):
             def __init__(self, exit_future: asyncio.Future) -> None:
                 self.exit_future = exit_future
 
@@ -882,7 +882,7 @@ class SubprocessMixin:
 
 if sys.platform != 'win32':
     # Unix
-    class SubprocessWatcherMixin(SubprocessMixin):
+    klasse SubprocessWatcherMixin(SubprocessMixin):
 
         def setUp(self):
             super().setUp()
@@ -898,7 +898,7 @@ if sys.platform != 'win32':
                 self.assertIsInstance(watcher, unix_events._ThreadedChildWatcher)
 
 
-    class SubprocessThreadedWatcherTests(SubprocessWatcherMixin,
+    klasse SubprocessThreadedWatcherTests(SubprocessWatcherMixin,
                                          test_utils.TestCase):
         def setUp(self):
             self._original_can_use_pidfd = unix_events.can_use_pidfd
@@ -914,14 +914,14 @@ if sys.platform != 'win32':
         unix_events.can_use_pidfd(),
         "operating system does not support pidfds",
     )
-    class SubprocessPidfdWatcherTests(SubprocessWatcherMixin,
+    klasse SubprocessPidfdWatcherTests(SubprocessWatcherMixin,
                                       test_utils.TestCase):
 
         pass
 
 else:
     # Windows
-    class SubprocessProactorTests(SubprocessMixin, test_utils.TestCase):
+    klasse SubprocessProactorTests(SubprocessMixin, test_utils.TestCase):
 
         def setUp(self):
             super().setUp()

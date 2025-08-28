@@ -67,7 +67,7 @@ SyntaxError: cannot assign to __debug__
 Traceback (most recent call last):
 SyntaxError: cannot assign to __debug__
 
->>> class __debug__: pass
+>>> klasse __debug__: pass
 Traceback (most recent call last):
 SyntaxError: cannot assign to __debug__
 
@@ -684,7 +684,7 @@ Traceback (most recent call last):
 SyntaxError: Generator expression must be parenthesized
 >>> f((x for x in L), 1)
 [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
->>> class C(x for x in L):
+>>> klasse C(x for x in L):
 ...     pass
 Traceback (most recent call last):
 SyntaxError: invalid syntax
@@ -757,7 +757,7 @@ SyntaxError: invalid syntax
 ...  # doctest: +ELLIPSIS
 () [('a000', 0), ('a001', 1), ('a002', 2), ..., ('a298', 298), ('a299', 299)]
 
->>> class C:
+>>> klasse C:
 ...     def meth(self, *args):
 ...         return args
 >>> obj = C()
@@ -1033,7 +1033,7 @@ From SF bug #1705365
    SyntaxError: nonlocal declaration not allowed at module level
 
 From https://bugs.python.org/issue25973
-   >>> class A:
+   >>> klasse A:
    ...     def f(self):
    ...         nonlocal __x
    Traceback (most recent call last):
@@ -1103,22 +1103,22 @@ Missing ':' before suites:
    Traceback (most recent call last):
    SyntaxError: expected ':'
 
-   >>> class A
+   >>> klasse A
    ...     pass
    Traceback (most recent call last):
    SyntaxError: expected ':'
 
-   >>> class A[T]
+   >>> klasse A[T]
    ...     pass
    Traceback (most recent call last):
    SyntaxError: expected ':'
 
-   >>> class A[T]()
+   >>> klasse A[T]()
    ...     pass
    Traceback (most recent call last):
    SyntaxError: expected ':'
 
-   >>> class R&D:
+   >>> klasse R&D:
    ...     pass
    Traceback (most recent call last):
    SyntaxError: invalid syntax
@@ -1650,25 +1650,25 @@ Specialized indentation errors:
    Traceback (most recent call last):
    IndentationError: expected an indented block after function definition on line 1
 
-   >>> class Blech(A):
+   >>> klasse Blech(A):
    ... pass
    Traceback (most recent call last):
-   IndentationError: expected an indented block after class definition on line 1
+   IndentationError: expected an indented block after klasse definition on line 1
 
-   >>> class Blech[T](A):
+   >>> klasse Blech[T](A):
    ... pass
    Traceback (most recent call last):
-   IndentationError: expected an indented block after class definition on line 1
+   IndentationError: expected an indented block after klasse definition on line 1
 
-   >>> class C(__debug__=42): ...
+   >>> klasse C(__debug__=42): ...
    Traceback (most recent call last):
    SyntaxError: cannot assign to __debug__
 
-   >>> class Meta(type):
+   >>> klasse Meta(type):
    ...     def __new__(*args, **kwargs):
    ...         pass
 
-   >>> class C(metaclass=Meta, __debug__=42):
+   >>> klasse C(metaclass=Meta, __debug__=42):
    ...     pass
    Traceback (most recent call last):
    SyntaxError: cannot assign to __debug__
@@ -2475,7 +2475,7 @@ Invalid expressions in type scopes:
    ...
    SyntaxError: Type parameter list cannot be empty
 
-   >>> class A[]: ...
+   >>> klasse A[]: ...
    Traceback (most recent call last):
    ...
    SyntaxError: Type parameter list cannot be empty
@@ -2590,27 +2590,27 @@ Invalid expressions in type scopes:
       ...
    SyntaxError: yield expression cannot be used within a TypeVar bound
 
-   >>> class A[T: (yield 3)]: pass
+   >>> klasse A[T: (yield 3)]: pass
    Traceback (most recent call last):
       ...
    SyntaxError: yield expression cannot be used within a TypeVar bound
 
-   >>> class A[T: (int, (yield 3))]: pass
+   >>> klasse A[T: (int, (yield 3))]: pass
    Traceback (most recent call last):
       ...
    SyntaxError: yield expression cannot be used within a TypeVar constraint
 
-   >>> class A[T = (yield)]: pass
+   >>> klasse A[T = (yield)]: pass
    Traceback (most recent call last):
       ...
    SyntaxError: yield expression cannot be used within a TypeVar default
 
-   >>> class A[*Ts = (yield)]: pass
+   >>> klasse A[*Ts = (yield)]: pass
    Traceback (most recent call last):
       ...
    SyntaxError: yield expression cannot be used within a TypeVarTuple default
 
-   >>> class A[**P = [(yield), int]]: pass
+   >>> klasse A[**P = [(yield), int]]: pass
    Traceback (most recent call last):
       ...
    SyntaxError: yield expression cannot be used within a ParamSpec default
@@ -2639,26 +2639,26 @@ Invalid expressions in type scopes:
    Traceback (most recent call last):
    SyntaxError: cannot assign to __debug__
 
-   >>> class A[__debug__]: pass
+   >>> klasse A[__debug__]: pass
    Traceback (most recent call last):
    SyntaxError: cannot assign to __debug__
 
-   >>> class A[T]((x := 3)): ...
+   >>> klasse A[T]((x := 3)): ...
    Traceback (most recent call last):
       ...
    SyntaxError: named expression cannot be used within the definition of a generic
 
-   >>> class A[T]((yield 3)): ...
+   >>> klasse A[T]((yield 3)): ...
    Traceback (most recent call last):
       ...
    SyntaxError: yield expression cannot be used within the definition of a generic
 
-   >>> class A[T]((await 3)): ...
+   >>> klasse A[T]((await 3)): ...
    Traceback (most recent call last):
       ...
    SyntaxError: await expression cannot be used within the definition of a generic
 
-   >>> class A[T]((yield from [])): ...
+   >>> klasse A[T]((yield from [])): ...
    Traceback (most recent call last):
       ...
    SyntaxError: yield expression cannot be used within the definition of a generic
@@ -2695,7 +2695,7 @@ import unittest
 
 from test import support
 
-class SyntaxWarningTest(unittest.TestCase):
+klasse SyntaxWarningTest(unittest.TestCase):
     def check_warning(self, code, errtext, filename="<testcase>", mode="exec"):
         """Check that compiling code raises SyntaxWarning with errtext.
 
@@ -2776,7 +2776,7 @@ class SyntaxWarningTest(unittest.TestCase):
             self.check_warning(source, f"'{kw}' in a 'finally' block")
 
 
-class SyntaxErrorTestCase(unittest.TestCase):
+klasse SyntaxErrorTestCase(unittest.TestCase):
 
     def _check_error(self, code, errtext,
                      filename="<testcase>", mode="exec", subclass=None,
@@ -3030,8 +3030,8 @@ if x:
         # don't break in the future like __classdict__ did in this case.
         for name in ('__class__', '__classcell__', '__classdictcell__'):
             compile(f"""
-class A:
-    class B[{name}]: pass
+klasse A:
+    klasse B[{name}]: pass
                 """, "<testcase>", mode="exec")
 
     @support.cpython_only

@@ -19,7 +19,7 @@ version = '2.0beta'
 
 # ===== ERRORHANDLER =====
 
-class ErrorHandler:
+klasse ErrorHandler:
     """Basic interface for SAX error handlers.
 
     If you create an object that implements this interface, then
@@ -44,7 +44,7 @@ class ErrorHandler:
 
 # ===== CONTENTHANDLER =====
 
-class ContentHandler:
+klasse ContentHandler:
     """Interface for receiving logical document content events.
 
     This is the main callback interface in SAX, and the one most
@@ -128,7 +128,7 @@ class ContentHandler:
 
         The name parameter contains the raw XML 1.0 name of the
         element type as a string and the attrs parameter holds an
-        instance of the Attributes class containing the attributes of
+        instance of the Attributes klasse containing the attributes of
         the element."""
 
     def endElement(self, name):
@@ -143,7 +143,7 @@ class ContentHandler:
         The name parameter contains the name of the element type as a
         (uri, localname) tuple, the qname parameter the raw XML 1.0
         name used in the source document, and the attrs parameter
-        holds an instance of the Attributes class containing the
+        holds an instance of the Attributes klasse containing the
         attributes of the element.
 
         The uri part of the name tuple is None for elements which have
@@ -205,7 +205,7 @@ class ContentHandler:
 
 # ===== DTDHandler =====
 
-class DTDHandler:
+klasse DTDHandler:
     """Handle DTD events.
 
     This interface specifies only those DTD events required for basic
@@ -220,7 +220,7 @@ class DTDHandler:
 
 # ===== ENTITYRESOLVER =====
 
-class EntityResolver:
+klasse EntityResolver:
     """Basic interface for resolving entities. If you create an object
     implementing this interface, then register the object with your
     Parser, the parser will call the method in your object to
@@ -342,7 +342,7 @@ all_properties = [property_lexical_handler,
                   property_interning_dict]
 
 
-class LexicalHandler:
+klasse LexicalHandler:
     """Optional SAX2 handler for lexical events.
 
     This handler is used to obtain lexical information about an XML

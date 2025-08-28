@@ -5,7 +5,7 @@ from test import support
 
 import operator
 
-class Number:
+klasse Number:
 
     def __init__(self, x):
         self.x = x
@@ -31,7 +31,7 @@ class Number:
     def __repr__(self):
         return "Number(%r)" % (self.x, )
 
-class Vector:
+klasse Vector:
 
     def __init__(self, data):
         self.data = data
@@ -87,7 +87,7 @@ opmap = {
     "ge": (lambda a,b: a>=b, operator.ge, operator.__ge__)
 }
 
-class VectorTest(unittest.TestCase):
+klasse VectorTest(unittest.TestCase):
 
     def checkfail(self, error, opname, *args):
         for op in opmap[opname]:
@@ -129,7 +129,7 @@ class VectorTest(unittest.TestCase):
                     # calls __bool__, which should fail
                     self.assertRaises(TypeError, bool, op(a, b))
 
-class NumberTest(unittest.TestCase):
+klasse NumberTest(unittest.TestCase):
 
     def test_basic(self):
         # Check that comparisons involving Number objects
@@ -182,10 +182,10 @@ class NumberTest(unittest.TestCase):
         self.checkvalue("gt", 1, 0, True )
         self.checkvalue("ge", 1, 0, True )
 
-class MiscTest(unittest.TestCase):
+klasse MiscTest(unittest.TestCase):
 
     def test_misbehavin(self):
-        class Misb:
+        klasse Misb:
             def __lt__(self_, other): return 0
             def __gt__(self_, other): return 0
             def __eq__(self_, other): return 0
@@ -202,9 +202,9 @@ class MiscTest(unittest.TestCase):
         # Check that exceptions in __bool__ are properly
         # propagated by the not operator
         import operator
-        class Exc(Exception):
+        klasse Exc(Exception):
             pass
-        class Bad:
+        klasse Bad:
             def __bool__(self):
                 raise Exc
 
@@ -249,7 +249,7 @@ class MiscTest(unittest.TestCase):
         self.assertTrue(a < b)
 
     def test_exception_message(self):
-        class Spam:
+        klasse Spam:
             pass
 
         tests = [
@@ -273,7 +273,7 @@ class MiscTest(unittest.TestCase):
                     test[0]()
 
 
-class DictTest(unittest.TestCase):
+klasse DictTest(unittest.TestCase):
 
     def test_dicts(self):
         # Verify that __eq__ and __ne__ work for dicts even if the keys and
@@ -298,7 +298,7 @@ class DictTest(unittest.TestCase):
             for op in opmap[opname]:
                 self.assertRaises(TypeError, op, imag1a, imag2)
 
-class ListTest(unittest.TestCase):
+klasse ListTest(unittest.TestCase):
 
     def test_coverage(self):
         # exercise all comparisons for lists
@@ -320,9 +320,9 @@ class ListTest(unittest.TestCase):
     def test_badentry(self):
         # make sure that exceptions for item comparison are properly
         # propagated in list comparisons
-        class Exc(Exception):
+        klasse Exc(Exception):
             pass
-        class Bad:
+        klasse Bad:
             def __eq__(self, other):
                 raise Exc
 
@@ -335,7 +335,7 @@ class ListTest(unittest.TestCase):
     def test_goodentry(self):
         # This test exercises the final call to PyObject_RichCompare()
         # in Objects/listobject.c::list_richcompare()
-        class Good:
+        klasse Good:
             def __lt__(self, other):
                 return True
 

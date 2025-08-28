@@ -13,7 +13,7 @@ else:
     from pathlib.types import _PathParser, _JoinablePath
 
 
-class JoinTestBase:
+klasse JoinTestBase:
     def test_is_joinable(self):
         p = self.cls()
         self.assertIsInstance(p, _JoinablePath)
@@ -32,7 +32,7 @@ class JoinTestBase:
         P('/a/b/c')
 
     def test_with_segments(self):
-        class P(self.cls):
+        klasse P(self.cls):
             def __init__(self, *pathsegments, session_id):
                 super().__init__(*pathsegments)
                 self.session_id = session_id
@@ -355,17 +355,17 @@ class JoinTestBase:
         self.assertRaises(TypeError, P('a/b').with_suffix, None)
 
 
-class LexicalPathJoinTest(JoinTestBase, unittest.TestCase):
+klasse LexicalPathJoinTest(JoinTestBase, unittest.TestCase):
     cls = LexicalPath
 
 
 if not is_pypi:
     from pathlib import PurePath, Path
 
-    class PurePathJoinTest(JoinTestBase, unittest.TestCase):
+    klasse PurePathJoinTest(JoinTestBase, unittest.TestCase):
         cls = PurePath
 
-    class PathJoinTest(JoinTestBase, unittest.TestCase):
+    klasse PathJoinTest(JoinTestBase, unittest.TestCase):
         cls = Path
 
 

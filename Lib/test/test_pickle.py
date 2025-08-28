@@ -37,13 +37,13 @@ except ImportError:
     has_c_implementation = False
 
 
-class LazyImportTest(unittest.TestCase):
+klasse LazyImportTest(unittest.TestCase):
     @cpython_only
     def test_lazy_import(self):
         ensure_lazy_imports("pickle", {"re"})
 
 
-class PyPickleTests(AbstractPickleModuleTests, unittest.TestCase):
+klasse PyPickleTests(AbstractPickleModuleTests, unittest.TestCase):
     dump = staticmethod(pickle._dump)
     dumps = staticmethod(pickle._dumps)
     load = staticmethod(pickle._load)
@@ -52,7 +52,7 @@ class PyPickleTests(AbstractPickleModuleTests, unittest.TestCase):
     Unpickler = pickle._Unpickler
 
 
-class PyUnpicklerTests(AbstractUnpickleTests, unittest.TestCase):
+klasse PyUnpicklerTests(AbstractUnpickleTests, unittest.TestCase):
 
     unpickler = pickle._Unpickler
     bad_stack_errors = (IndexError,)
@@ -66,7 +66,7 @@ class PyUnpicklerTests(AbstractUnpickleTests, unittest.TestCase):
         return u.load()
 
 
-class PyPicklingErrorTests(AbstractPicklingErrorTests, unittest.TestCase):
+klasse PyPicklingErrorTests(AbstractPicklingErrorTests, unittest.TestCase):
 
     pickler = pickle._Pickler
 
@@ -78,7 +78,7 @@ class PyPicklingErrorTests(AbstractPicklingErrorTests, unittest.TestCase):
         return bytes(f.read())
 
 
-class PyPicklerTests(AbstractPickleTests, unittest.TestCase):
+klasse PyPicklerTests(AbstractPickleTests, unittest.TestCase):
 
     pickler = pickle._Pickler
     unpickler = pickle._Unpickler
@@ -96,7 +96,7 @@ class PyPicklerTests(AbstractPickleTests, unittest.TestCase):
         return u.load()
 
 
-class InMemoryPickleTests(AbstractPickleTests, AbstractUnpickleTests,
+klasse InMemoryPickleTests(AbstractPickleTests, AbstractUnpickleTests,
                           BigmemPickleTests, unittest.TestCase):
 
     bad_stack_errors = (pickle.UnpicklingError, IndexError)
@@ -115,10 +115,10 @@ class InMemoryPickleTests(AbstractPickleTests, AbstractUnpickleTests,
     test_custom_find_class = None
 
 
-class PersistentPicklerUnpicklerMixin(object):
+klasse PersistentPicklerUnpicklerMixin(object):
 
     def dumps(self, arg, proto=None):
-        class PersPickler(self.pickler):
+        klasse PersPickler(self.pickler):
             def persistent_id(subself, obj):
                 return self.persistent_id(obj)
         f = io.BytesIO()
@@ -127,7 +127,7 @@ class PersistentPicklerUnpicklerMixin(object):
         return f.getvalue()
 
     def loads(self, buf, **kwds):
-        class PersUnpickler(self.unpickler):
+        klasse PersUnpickler(self.unpickler):
             def persistent_load(subself, obj):
                 return self.persistent_load(obj)
         f = io.BytesIO(buf)
@@ -135,14 +135,14 @@ class PersistentPicklerUnpicklerMixin(object):
         return u.load()
 
 
-class PyPersPicklerTests(AbstractPersistentPicklerTests,
+klasse PyPersPicklerTests(AbstractPersistentPicklerTests,
                          PersistentPicklerUnpicklerMixin, unittest.TestCase):
 
     pickler = pickle._Pickler
     unpickler = pickle._Unpickler
 
 
-class PyIdPersPicklerTests(AbstractIdentityPersistentPicklerTests,
+klasse PyIdPersPicklerTests(AbstractIdentityPersistentPicklerTests,
                            PersistentPicklerUnpicklerMixin, unittest.TestCase):
 
     pickler = pickle._Pickler
@@ -163,18 +163,18 @@ class PyIdPersPicklerTests(AbstractIdentityPersistentPicklerTests,
             del pickler
             self.assertIsNone(r())
 
-        class PersPickler(self.pickler):
+        klasse PersPickler(self.pickler):
             def persistent_id(subself, obj):
                 return obj
         check(PersPickler)
 
-        class PersPickler(self.pickler):
+        klasse PersPickler(self.pickler):
             @classmethod
             def persistent_id(cls, obj):
                 return obj
         check(PersPickler)
 
-        class PersPickler(self.pickler):
+        klasse PersPickler(self.pickler):
             @staticmethod
             def persistent_id(obj):
                 return obj
@@ -184,12 +184,12 @@ class PyIdPersPicklerTests(AbstractIdentityPersistentPicklerTests,
     def test_custom_pickler_dispatch_table_memleak(self):
         # See https://github.com/python/cpython/issues/89988
 
-        class Pickler(self.pickler):
+        klasse Pickler(self.pickler):
             def __init__(self, *args, **kwargs):
                 self.dispatch_table = table
                 super().__init__(*args, **kwargs)
 
-        class DispatchTable:
+        klasse DispatchTable:
             pass
 
         table = DispatchTable()
@@ -214,25 +214,25 @@ class PyIdPersPicklerTests(AbstractIdentityPersistentPicklerTests,
             del unpickler
             self.assertIsNone(r())
 
-        class PersUnpickler(self.unpickler):
+        klasse PersUnpickler(self.unpickler):
             def persistent_load(subself, pid):
                 return pid
         check(PersUnpickler)
 
-        class PersUnpickler(self.unpickler):
+        klasse PersUnpickler(self.unpickler):
             @classmethod
             def persistent_load(cls, pid):
                 return pid
         check(PersUnpickler)
 
-        class PersUnpickler(self.unpickler):
+        klasse PersUnpickler(self.unpickler):
             @staticmethod
             def persistent_load(pid):
                 return pid
         check(PersUnpickler)
 
     def test_pickler_super(self):
-        class PersPickler(self.pickler):
+        klasse PersPickler(self.pickler):
             def persistent_id(subself, obj):
                 called.append(obj)
                 self.assertIsNone(super().persistent_id(obj))
@@ -247,7 +247,7 @@ class PyIdPersPicklerTests(AbstractIdentityPersistentPicklerTests,
             self.assertEqual(self.loads(f.getvalue()), 'abc')
 
     def test_unpickler_super(self):
-        class PersUnpickler(self.unpickler):
+        klasse PersUnpickler(self.unpickler):
             def persistent_load(subself, pid):
                 called.append(pid)
                 with self.assertRaises(self.persistent_load_error):
@@ -295,7 +295,7 @@ class PyIdPersPicklerTests(AbstractIdentityPersistentPicklerTests,
             self.assertEqual(unpickler.persistent_load, old_persistent_load)
 
     def test_pickler_super_instance_attribute(self):
-        class PersPickler(self.pickler):
+        klasse PersPickler(self.pickler):
             def persistent_id(subself, obj):
                 raise AssertionError('should never be called')
             def _persistent_id(subself, obj):
@@ -317,7 +317,7 @@ class PyIdPersPicklerTests(AbstractIdentityPersistentPicklerTests,
             self.assertEqual(pickler.persistent_id, old_persistent_id)
 
     def test_unpickler_super_instance_attribute(self):
-        class PersUnpickler(self.unpickler):
+        klasse PersUnpickler(self.unpickler):
             def persistent_load(subself, pid):
                 raise AssertionError('should never be called')
             def _persistent_load(subself, pid):
@@ -338,13 +338,13 @@ class PyIdPersPicklerTests(AbstractIdentityPersistentPicklerTests,
             self.assertEqual(unpickler.persistent_load, old_persistent_load)
 
 
-class PyPicklerUnpicklerObjectTests(AbstractPicklerUnpicklerObjectTests, unittest.TestCase):
+klasse PyPicklerUnpicklerObjectTests(AbstractPicklerUnpicklerObjectTests, unittest.TestCase):
 
     pickler_class = pickle._Pickler
     unpickler_class = pickle._Unpickler
 
 
-class PyDispatchTableTests(AbstractDispatchTableTests, unittest.TestCase):
+klasse PyDispatchTableTests(AbstractDispatchTableTests, unittest.TestCase):
 
     pickler_class = pickle._Pickler
 
@@ -352,7 +352,7 @@ class PyDispatchTableTests(AbstractDispatchTableTests, unittest.TestCase):
         return pickle.dispatch_table.copy()
 
 
-class PyChainDispatchTableTests(AbstractDispatchTableTests, unittest.TestCase):
+klasse PyChainDispatchTableTests(AbstractDispatchTableTests, unittest.TestCase):
 
     pickler_class = pickle._Pickler
 
@@ -360,47 +360,47 @@ class PyChainDispatchTableTests(AbstractDispatchTableTests, unittest.TestCase):
         return collections.ChainMap({}, pickle.dispatch_table)
 
 
-class PyPicklerHookTests(AbstractHookTests, unittest.TestCase):
-    class CustomPyPicklerClass(pickle._Pickler,
+klasse PyPicklerHookTests(AbstractHookTests, unittest.TestCase):
+    klasse CustomPyPicklerClass(pickle._Pickler,
                                AbstractCustomPicklerClass):
         pass
     pickler_class = CustomPyPicklerClass
 
 
 if has_c_implementation:
-    class CPickleTests(AbstractPickleModuleTests, unittest.TestCase):
+    klasse CPickleTests(AbstractPickleModuleTests, unittest.TestCase):
         from _pickle import dump, dumps, load, loads, Pickler, Unpickler
 
-    class CUnpicklerTests(PyUnpicklerTests):
+    klasse CUnpicklerTests(PyUnpicklerTests):
         unpickler = _pickle.Unpickler
         bad_stack_errors = (pickle.UnpicklingError,)
         truncated_errors = (pickle.UnpicklingError,)
 
-    class CPicklingErrorTests(PyPicklingErrorTests):
+    klasse CPicklingErrorTests(PyPicklingErrorTests):
         pickler = _pickle.Pickler
 
-    class CPicklerTests(PyPicklerTests):
-        pickler = _pickle.Pickler
-        unpickler = _pickle.Unpickler
-
-    class CPersPicklerTests(PyPersPicklerTests):
+    klasse CPicklerTests(PyPicklerTests):
         pickler = _pickle.Pickler
         unpickler = _pickle.Unpickler
 
-    class CIdPersPicklerTests(PyIdPersPicklerTests):
+    klasse CPersPicklerTests(PyPersPicklerTests):
+        pickler = _pickle.Pickler
+        unpickler = _pickle.Unpickler
+
+    klasse CIdPersPicklerTests(PyIdPersPicklerTests):
         pickler = _pickle.Pickler
         unpickler = _pickle.Unpickler
         persistent_load_error = _pickle.UnpicklingError
 
-    class CDumpPickle_LoadPickle(PyPicklerTests):
+    klasse CDumpPickle_LoadPickle(PyPicklerTests):
         pickler = _pickle.Pickler
         unpickler = pickle._Unpickler
 
-    class DumpPickle_CLoadPickle(PyPicklerTests):
+    klasse DumpPickle_CLoadPickle(PyPicklerTests):
         pickler = pickle._Pickler
         unpickler = _pickle.Unpickler
 
-    class CPicklerUnpicklerObjectTests(AbstractPicklerUnpicklerObjectTests, unittest.TestCase):
+    klasse CPicklerUnpicklerObjectTests(AbstractPicklerUnpicklerObjectTests, unittest.TestCase):
         pickler_class = _pickle.Pickler
         unpickler_class = _pickle.Unpickler
 
@@ -413,23 +413,23 @@ if has_c_implementation:
                 unpickler.memo = {-1: None}
             unpickler.memo = {1: None}
 
-    class CDispatchTableTests(AbstractDispatchTableTests, unittest.TestCase):
+    klasse CDispatchTableTests(AbstractDispatchTableTests, unittest.TestCase):
         pickler_class = pickle.Pickler
         def get_dispatch_table(self):
             return pickle.dispatch_table.copy()
 
-    class CChainDispatchTableTests(AbstractDispatchTableTests, unittest.TestCase):
+    klasse CChainDispatchTableTests(AbstractDispatchTableTests, unittest.TestCase):
         pickler_class = pickle.Pickler
         def get_dispatch_table(self):
             return collections.ChainMap({}, pickle.dispatch_table)
 
-    class CPicklerHookTests(AbstractHookTests, unittest.TestCase):
-        class CustomCPicklerClass(_pickle.Pickler, AbstractCustomPicklerClass):
+    klasse CPicklerHookTests(AbstractHookTests, unittest.TestCase):
+        klasse CustomCPicklerClass(_pickle.Pickler, AbstractCustomPicklerClass):
             pass
         pickler_class = CustomCPicklerClass
 
     @support.cpython_only
-    class HeapTypesTests(unittest.TestCase):
+    klasse HeapTypesTests(unittest.TestCase):
         def setUp(self):
             pickler = _pickle.Pickler(io.BytesIO())
             unpickler = _pickle.Unpickler(io.BytesIO())
@@ -457,7 +457,7 @@ if has_c_implementation:
                         tp.foo = "bar"
 
     @support.cpython_only
-    class SizeofTests(unittest.TestCase):
+    klasse SizeofTests(unittest.TestCase):
         check_sizeof = support.check_sizeof
 
         def test_pickler(self):
@@ -583,7 +583,7 @@ def get_exceptions(mod):
         if isinstance(attr, type) and issubclass(attr, BaseException):
             yield name, attr
 
-class CompatPickleTests(unittest.TestCase):
+klasse CompatPickleTests(unittest.TestCase):
     def test_import(self):
         modules = set(IMPORT_MAPPING.values())
         modules |= set(REVERSE_IMPORT_MAPPING)
@@ -709,7 +709,7 @@ class CompatPickleTests(unittest.TestCase):
                                  ('multiprocessing.context', name))
 
 
-class CommandLineTest(unittest.TestCase):
+klasse CommandLineTest(unittest.TestCase):
     def setUp(self):
         self.filename = tempfile.mktemp()
         self.addCleanup(os_helper.unlink, self.filename)

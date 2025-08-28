@@ -81,7 +81,7 @@ def _difference(minuend, subtrahend):
     return itertools.filterfalse(set(subtrahend).__contains__, minuend)
 
 
-class InitializedState:
+klasse InitializedState:
     """
     Mix-in to save the initialization state for pickling.
     """
@@ -98,7 +98,7 @@ class InitializedState:
         super().__init__(*args, **kwargs)
 
 
-class CompleteDirs(InitializedState, zipfile.ZipFile):
+klasse CompleteDirs(InitializedState, zipfile.ZipFile):
     """
     A ZipFile subclass that ensures that implied directories
     are always included in the namelist.
@@ -173,7 +173,7 @@ class CompleteDirs(InitializedState, zipfile.ZipFile):
         return zf
 
 
-class FastLookup(CompleteDirs):
+klasse FastLookup(CompleteDirs):
     """
     ZipFile subclass to ensure implicit
     dirs exist and are resolved rapidly.
@@ -204,7 +204,7 @@ def _extract_text_encoding(encoding=None, *args, **kwargs):
     return io.text_encoding(encoding, stack_level), args, kwargs
 
 
-class Path:
+klasse Path:
     """
     A :class:`importlib.resources.abc.Traversable` interface for zip files.
 

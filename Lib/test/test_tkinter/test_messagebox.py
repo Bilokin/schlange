@@ -8,7 +8,7 @@ from tkinter.messagebox import showinfo
 requires('gui')
 
 
-class DefaultRootTest(AbstractDefaultRootTest, unittest.TestCase):
+klasse DefaultRootTest(AbstractDefaultRootTest, unittest.TestCase):
 
     def test_showinfo(self):
         def test_callback(dialog, master):

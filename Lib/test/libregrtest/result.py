@@ -9,7 +9,7 @@ from .utils import (
 
 
 @dataclasses.dataclass(slots=True)
-class TestStats:
+klasse TestStats:
     tests_run: int = 0
     failures: int = 0
     skipped: int = 0
@@ -33,7 +33,7 @@ class TestStats:
 
 
 # Avoid enum.Enum to reduce the number of imports when tests are run
-class State:
+klasse State:
     PASSED = "PASSED"
     FAILED = "FAILED"
     SKIPPED = "SKIPPED"
@@ -85,7 +85,7 @@ Location = tuple[FileName, LineNo]
 
 
 @dataclasses.dataclass(slots=True)
-class TestResult:
+klasse TestResult:
     test_name: TestName
     state: str | None = None
     # Test duration in seconds
@@ -219,7 +219,7 @@ class TestResult:
         return json.loads(worker_json, object_hook=_decode_test_result)
 
 
-class _EncodeTestResult(json.JSONEncoder):
+klasse _EncodeTestResult(json.JSONEncoder):
     def default(self, o: Any) -> dict[str, Any]:
         if isinstance(o, TestResult):
             result = dataclasses.asdict(o)

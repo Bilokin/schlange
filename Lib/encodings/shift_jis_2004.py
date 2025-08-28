@@ -9,22 +9,22 @@ import _multibytecodec as mbc
 
 codec = _codecs_jp.getcodec('shift_jis_2004')
 
-class Codec(codecs.Codec):
+klasse Codec(codecs.Codec):
     encode = codec.encode
     decode = codec.decode
 
-class IncrementalEncoder(mbc.MultibyteIncrementalEncoder,
+klasse IncrementalEncoder(mbc.MultibyteIncrementalEncoder,
                          codecs.IncrementalEncoder):
     codec = codec
 
-class IncrementalDecoder(mbc.MultibyteIncrementalDecoder,
+klasse IncrementalDecoder(mbc.MultibyteIncrementalDecoder,
                          codecs.IncrementalDecoder):
     codec = codec
 
-class StreamReader(Codec, mbc.MultibyteStreamReader, codecs.StreamReader):
+klasse StreamReader(Codec, mbc.MultibyteStreamReader, codecs.StreamReader):
     codec = codec
 
-class StreamWriter(Codec, mbc.MultibyteStreamWriter, codecs.StreamWriter):
+klasse StreamWriter(Codec, mbc.MultibyteStreamWriter, codecs.StreamWriter):
     codec = codec
 
 def getregentry():

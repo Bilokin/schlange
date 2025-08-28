@@ -28,7 +28,7 @@ INF = float("inf")
 NAN = float("nan")
 
 
-class CAPIFloatTest(unittest.TestCase):
+klasse CAPIFloatTest(unittest.TestCase):
     def test_check(self):
         # Test PyFloat_Check()
         check = _testlimitedcapi.float_check
@@ -82,7 +82,7 @@ class CAPIFloatTest(unittest.TestCase):
         # Test PyFloat_AsDouble()
         asdouble = _testlimitedcapi.float_asdouble
 
-        class BadFloat3:
+        klasse BadFloat3:
             def __float__(self):
                 raise RuntimeError
 

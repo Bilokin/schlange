@@ -10,7 +10,7 @@ from test.support import ALWAYS_EQ, NEVER_EQ
 from test.support import skip_emscripten_stack_overflow, skip_wasi_stack_overflow
 
 
-class CommonTest(seq_tests.CommonTest):
+klasse CommonTest(seq_tests.CommonTest):
 
     def test_init(self):
         # Iterable arg is optional
@@ -273,7 +273,7 @@ class CommonTest(seq_tests.CommonTest):
         self.assertRaises(TypeError, a.extend)
 
         # overflow test. issue1621
-        class CustomIter:
+        klasse CustomIter:
             def __iter__(self):
                 return self
             def __next__(self):
@@ -340,10 +340,10 @@ class CommonTest(seq_tests.CommonTest):
         a = self.type2test([NEVER_EQ])
         self.assertRaises(ValueError, a.remove, ALWAYS_EQ)
 
-        class BadExc(Exception):
+        klasse BadExc(Exception):
             pass
 
-        class BadCmp:
+        klasse BadCmp:
             def __eq__(self, other):
                 if other == 2:
                     raise BadExc()
@@ -352,7 +352,7 @@ class CommonTest(seq_tests.CommonTest):
         a = self.type2test([0, 1, 2, 3])
         self.assertRaises(BadExc, a.remove, BadCmp())
 
-        class BadCmp2:
+        klasse BadCmp2:
             def __eq__(self, other):
                 raise BadExc()
 
@@ -380,7 +380,7 @@ class CommonTest(seq_tests.CommonTest):
         self.assertEqual(a, self.type2test([-2, -1, 0, 1, 2]))
 
         # Test modifying the list during index's iteration
-        class EvilCmp:
+        klasse EvilCmp:
             def __init__(self, victim):
                 self.victim = victim
             def __eq__(self, other):
@@ -558,7 +558,7 @@ class CommonTest(seq_tests.CommonTest):
 
     def test_constructor_exception_handling(self):
         # Bug #1242657
-        class F(object):
+        klasse F(object):
             def __iter__(self):
                 raise KeyboardInterrupt
         self.assertRaises(KeyboardInterrupt, list, F())

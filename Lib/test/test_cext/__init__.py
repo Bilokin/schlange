@@ -31,7 +31,7 @@ SETUP = os.path.join(os.path.dirname(__file__), 'setup.py')
 @support.requires_venv_with_pip()
 @support.requires_subprocess()
 @support.requires_resource('cpu')
-class BaseTests:
+klasse BaseTests:
     TEST_INTERNAL_C_API = False
 
     # Default build with no options
@@ -105,7 +105,7 @@ class BaseTests:
         run_cmd('Import', cmd)
 
 
-class TestPublicCAPI(BaseTests, unittest.TestCase):
+klasse TestPublicCAPI(BaseTests, unittest.TestCase):
     @support.requires_gil_enabled('incompatible with Free Threading')
     def test_build_limited(self):
         self.check_build('_test_limited_cext', limited=True)
@@ -130,7 +130,7 @@ class TestPublicCAPI(BaseTests, unittest.TestCase):
         self.check_build('_test_c99_cext', std='c99')
 
 
-class TestInteralCAPI(BaseTests, unittest.TestCase):
+klasse TestInteralCAPI(BaseTests, unittest.TestCase):
     TEST_INTERNAL_C_API = True
 
 

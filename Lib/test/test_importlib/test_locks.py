@@ -15,7 +15,7 @@ from test import lock_tests
 threading_helper.requires_working_threading(module=True)
 
 
-class ModuleLockAsRLockTests:
+klasse ModuleLockAsRLockTests:
     locktype = classmethod(lambda cls: cls.LockType("some_lock"))
 
     # _is_owned() unsupported
@@ -50,7 +50,7 @@ LOCK_TYPES = {kind: splitinit._bootstrap._ModuleLock
                          LockType=LOCK_TYPES)
 
 
-class DeadlockAvoidanceTests:
+klasse DeadlockAvoidanceTests:
 
     def setUp(self):
         try:
@@ -124,7 +124,7 @@ DEADLOCK_ERRORS = {kind: splitinit._bootstrap._DeadlockError
                          DeadlockError=DEADLOCK_ERRORS)
 
 
-class LifetimeTests:
+klasse LifetimeTests:
 
     @property
     def bootstrap(self):

@@ -2,98 +2,98 @@ import types
 import unittest
 
 
-class Test(unittest.TestCase):
+klasse Test(unittest.TestCase):
     def test_init_subclass(self):
-        class A:
+        klasse A:
             initialized = False
 
             def __init_subclass__(cls):
                 super().__init_subclass__()
                 cls.initialized = True
 
-        class B(A):
+        klasse B(A):
             pass
 
         self.assertFalse(A.initialized)
         self.assertTrue(B.initialized)
 
     def test_init_subclass_dict(self):
-        class A(dict):
+        klasse A(dict):
             initialized = False
 
             def __init_subclass__(cls):
                 super().__init_subclass__()
                 cls.initialized = True
 
-        class B(A):
+        klasse B(A):
             pass
 
         self.assertFalse(A.initialized)
         self.assertTrue(B.initialized)
 
     def test_init_subclass_kwargs(self):
-        class A:
+        klasse A:
             def __init_subclass__(cls, **kwargs):
                 cls.kwargs = kwargs
 
-        class B(A, x=3):
+        klasse B(A, x=3):
             pass
 
         self.assertEqual(B.kwargs, dict(x=3))
 
     def test_init_subclass_error(self):
-        class A:
+        klasse A:
             def __init_subclass__(cls):
                 raise RuntimeError
 
         with self.assertRaises(RuntimeError):
-            class B(A):
+            klasse B(A):
                 pass
 
     def test_init_subclass_wrong(self):
-        class A:
+        klasse A:
             def __init_subclass__(cls, whatever):
                 pass
 
         with self.assertRaises(TypeError):
-            class B(A):
+            klasse B(A):
                 pass
 
     def test_init_subclass_skipped(self):
-        class BaseWithInit:
+        klasse BaseWithInit:
             def __init_subclass__(cls, **kwargs):
                 super().__init_subclass__(**kwargs)
                 cls.initialized = cls
 
-        class BaseWithoutInit(BaseWithInit):
+        klasse BaseWithoutInit(BaseWithInit):
             pass
 
-        class A(BaseWithoutInit):
+        klasse A(BaseWithoutInit):
             pass
 
         self.assertIs(A.initialized, A)
         self.assertIs(BaseWithoutInit.initialized, BaseWithoutInit)
 
     def test_init_subclass_diamond(self):
-        class Base:
+        klasse Base:
             def __init_subclass__(cls, **kwargs):
                 super().__init_subclass__(**kwargs)
                 cls.calls = []
 
-        class Left(Base):
+        klasse Left(Base):
             pass
 
-        class Middle:
+        klasse Middle:
             def __init_subclass__(cls, middle, **kwargs):
                 super().__init_subclass__(**kwargs)
                 cls.calls += [middle]
 
-        class Right(Base):
+        klasse Right(Base):
             def __init_subclass__(cls, right="right", **kwargs):
                 super().__init_subclass__(**kwargs)
                 cls.calls += [right]
 
-        class A(Left, Middle, Right, middle="middle"):
+        klasse A(Left, Middle, Right, middle="middle"):
             pass
 
         self.assertEqual(A.calls, ["right", "middle"])
@@ -101,41 +101,41 @@ class Test(unittest.TestCase):
         self.assertEqual(Right.calls, [])
 
     def test_set_name(self):
-        class Descriptor:
+        klasse Descriptor:
             def __set_name__(self, owner, name):
                 self.owner = owner
                 self.name = name
 
-        class A:
+        klasse A:
             d = Descriptor()
 
         self.assertEqual(A.d.name, "d")
         self.assertIs(A.d.owner, A)
 
     def test_set_name_metaclass(self):
-        class Meta(type):
+        klasse Meta(type):
             def __new__(cls, name, bases, ns):
                 ret = super().__new__(cls, name, bases, ns)
                 self.assertEqual(ret.d.name, "d")
                 self.assertIs(ret.d.owner, ret)
                 return 0
 
-        class Descriptor:
+        klasse Descriptor:
             def __set_name__(self, owner, name):
                 self.owner = owner
                 self.name = name
 
-        class A(metaclass=Meta):
+        klasse A(metaclass=Meta):
             d = Descriptor()
         self.assertEqual(A, 0)
 
     def test_set_name_error(self):
-        class Descriptor:
+        klasse Descriptor:
             def __set_name__(self, owner, name):
                 1/0
 
         with self.assertRaises(ZeroDivisionError) as cm:
-            class NotGoingToWork:
+            klasse NotGoingToWork:
                 attr = Descriptor()
 
         notes = cm.exception.__notes__
@@ -144,12 +144,12 @@ class Test(unittest.TestCase):
         self.assertRegex(str(notes), r'\bDescriptor\b')
 
     def test_set_name_wrong(self):
-        class Descriptor:
+        klasse Descriptor:
             def __set_name__(self):
                 pass
 
         with self.assertRaises(TypeError) as cm:
-            class NotGoingToWork:
+            klasse NotGoingToWork:
                 attr = Descriptor()
 
         notes = cm.exception.__notes__
@@ -159,35 +159,35 @@ class Test(unittest.TestCase):
 
     def test_set_name_lookup(self):
         resolved = []
-        class NonDescriptor:
+        klasse NonDescriptor:
             def __getattr__(self, name):
                 resolved.append(name)
 
-        class A:
+        klasse A:
             d = NonDescriptor()
 
         self.assertNotIn('__set_name__', resolved,
                          '__set_name__ is looked up in instance dict')
 
     def test_set_name_init_subclass(self):
-        class Descriptor:
+        klasse Descriptor:
             def __set_name__(self, owner, name):
                 self.owner = owner
                 self.name = name
 
-        class Meta(type):
+        klasse Meta(type):
             def __new__(cls, name, bases, ns):
                 self = super().__new__(cls, name, bases, ns)
                 self.meta_owner = self.owner
                 self.meta_name = self.name
                 return self
 
-        class A:
+        klasse A:
             def __init_subclass__(cls):
                 cls.owner = cls.d.owner
                 cls.name = cls.d.name
 
-        class B(A, metaclass=Meta):
+        klasse B(A, metaclass=Meta):
             d = Descriptor()
 
         self.assertIs(B.owner, B)
@@ -197,12 +197,12 @@ class Test(unittest.TestCase):
 
     def test_set_name_modifying_dict(self):
         notified = []
-        class Descriptor:
+        klasse Descriptor:
             def __set_name__(self, owner, name):
                 setattr(owner, name + 'x', None)
                 notified.append(name)
 
-        class A:
+        klasse A:
             a = Descriptor()
             b = Descriptor()
             c = Descriptor()
@@ -212,11 +212,11 @@ class Test(unittest.TestCase):
         self.assertCountEqual(notified, ['a', 'b', 'c', 'd', 'e'])
 
     def test_errors(self):
-        class MyMeta(type):
+        klasse MyMeta(type):
             pass
 
         with self.assertRaises(TypeError):
-            class MyClass(metaclass=MyMeta, otherarg=1):
+            klasse MyClass(metaclass=MyMeta, otherarg=1):
                 pass
 
         with self.assertRaises(TypeError):
@@ -225,15 +225,15 @@ class Test(unittest.TestCase):
         types.prepare_class("MyClass", (object,),
                             dict(metaclass=MyMeta, otherarg=1))
 
-        class MyMeta(type):
+        klasse MyMeta(type):
             def __init__(self, name, bases, namespace, otherarg):
                 super().__init__(name, bases, namespace)
 
         with self.assertRaises(TypeError):
-            class MyClass2(metaclass=MyMeta, otherarg=1):
+            klasse MyClass2(metaclass=MyMeta, otherarg=1):
                 pass
 
-        class MyMeta(type):
+        klasse MyMeta(type):
             def __new__(cls, name, bases, namespace, otherarg):
                 return super().__new__(cls, name, bases, namespace)
 
@@ -241,29 +241,29 @@ class Test(unittest.TestCase):
                 super().__init__(name, bases, namespace)
                 self.otherarg = otherarg
 
-        class MyClass3(metaclass=MyMeta, otherarg=1):
+        klasse MyClass3(metaclass=MyMeta, otherarg=1):
             pass
 
         self.assertEqual(MyClass3.otherarg, 1)
 
     def test_errors_changed_pep487(self):
         # These tests failed before Python 3.6, PEP 487
-        class MyMeta(type):
+        klasse MyMeta(type):
             def __new__(cls, name, bases, namespace):
                 return super().__new__(cls, name=name, bases=bases,
                                        dict=namespace)
 
         with self.assertRaises(TypeError):
-            class MyClass(metaclass=MyMeta):
+            klasse MyClass(metaclass=MyMeta):
                 pass
 
-        class MyMeta(type):
+        klasse MyMeta(type):
             def __new__(cls, name, bases, namespace, otherarg):
                 self = super().__new__(cls, name, bases, namespace)
                 self.otherarg = otherarg
                 return self
 
-        class MyClass2(metaclass=MyMeta, otherarg=1):
+        klasse MyClass2(metaclass=MyMeta, otherarg=1):
             pass
 
         self.assertEqual(MyClass2.otherarg, 1)

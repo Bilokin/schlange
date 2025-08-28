@@ -25,7 +25,7 @@ is_a_simple_defined = re.compile(r'^defined\s*\(\s*[A-Za-z0-9_]+\s*\)$').match
 
 
 @dc.dataclass(repr=False)
-class Monitor:
+klasse Monitor:
     """
     A simple C preprocessor that scans C source and computes, line by line,
     what the current C preprocessor #if state is.

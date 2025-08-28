@@ -29,7 +29,7 @@ def contextual(func: Callable[[P], N | None]) -> Callable[[P], N | None]:
     return contextual_wrapper
 
 
-class Context(NamedTuple):
+klasse Context(NamedTuple):
     begin: int
     end: int
     owner: PLexer
@@ -39,7 +39,7 @@ class Context(NamedTuple):
 
 
 @dataclass
-class Node:
+klasse Node:
     context: Context | None = field(init=False, compare=False, default=None)
 
     @property
@@ -72,7 +72,7 @@ class Node:
 
 Visitor = Callable[["Stmt"], None]
 
-class Stmt:
+klasse Stmt:
 
     def __repr__(self) -> str:
         io = StringIO()
@@ -91,7 +91,7 @@ class Stmt:
 
 
 @dataclass
-class IfStmt(Stmt):
+klasse IfStmt(Stmt):
     if_: lx.Token
     condition: list[lx.Token]
     body: Stmt
@@ -126,7 +126,7 @@ class IfStmt(Stmt):
 
 
 @dataclass
-class ForStmt(Stmt):
+klasse ForStmt(Stmt):
     for_: lx.Token
     header: list[lx.Token]
     body: Stmt
@@ -148,7 +148,7 @@ class ForStmt(Stmt):
 
 
 @dataclass
-class WhileStmt(Stmt):
+klasse WhileStmt(Stmt):
     while_: lx.Token
     condition: list[lx.Token]
     body: Stmt
@@ -170,7 +170,7 @@ class WhileStmt(Stmt):
 
 
 @dataclass
-class MacroIfStmt(Stmt):
+klasse MacroIfStmt(Stmt):
     condition: lx.Token
     body: list[Stmt]
     else_: lx.Token | None
@@ -204,7 +204,7 @@ class MacroIfStmt(Stmt):
 
 
 @dataclass
-class BlockStmt(Stmt):
+klasse BlockStmt(Stmt):
     open: lx.Token
     body: list[Stmt]
     close: lx.Token
@@ -229,7 +229,7 @@ class BlockStmt(Stmt):
 
 
 @dataclass
-class SimpleStmt(Stmt):
+klasse SimpleStmt(Stmt):
     contents: list[lx.Token]
 
     def print(self, out:CWriter) -> None:
@@ -245,7 +245,7 @@ class SimpleStmt(Stmt):
     __hash__ = object.__hash__
 
 @dataclass
-class StackEffect(Node):
+klasse StackEffect(Node):
     name: str = field(compare=False)  # __eq__ only uses type, cond, size
     size: str = ""  # Optional `[size]`
     # Note: size cannot be combined with type or cond
@@ -258,18 +258,18 @@ class StackEffect(Node):
 
 
 @dataclass
-class Expression(Node):
+klasse Expression(Node):
     size: str
 
 
 @dataclass
-class CacheEffect(Node):
+klasse CacheEffect(Node):
     name: str
     size: int
 
 
 @dataclass
-class OpName(Node):
+klasse OpName(Node):
     name: str
 
 
@@ -279,7 +279,7 @@ UOp = OpName | CacheEffect
 
 
 @dataclass
-class InstHeader(Node):
+klasse InstHeader(Node):
     annotations: list[str]
     kind: Literal["inst", "op"]
     name: str
@@ -288,7 +288,7 @@ class InstHeader(Node):
 
 
 @dataclass
-class InstDef(Node):
+klasse InstDef(Node):
     annotations: list[str]
     kind: Literal["inst", "op"]
     name: str
@@ -298,20 +298,20 @@ class InstDef(Node):
 
 
 @dataclass
-class Macro(Node):
+klasse Macro(Node):
     name: str
     uops: list[UOp]
 
 
 @dataclass
-class Family(Node):
+klasse Family(Node):
     name: str
     size: str  # Variable giving the cache size in code units
     members: list[str]
 
 
 @dataclass
-class Pseudo(Node):
+klasse Pseudo(Node):
     name: str
     inputs: list[InputEffect]
     outputs: list[OutputEffect]
@@ -320,7 +320,7 @@ class Pseudo(Node):
     as_sequence: bool
 
 @dataclass
-class LabelDef(Node):
+klasse LabelDef(Node):
     name: str
     spilled: bool
     block: BlockStmt
@@ -329,7 +329,7 @@ class LabelDef(Node):
 AstNode = InstDef | Macro | Pseudo | Family | LabelDef
 
 
-class Parser(PLexer):
+klasse Parser(PLexer):
     @contextual
     def definition(self) -> AstNode | None:
         if macro := self.macro_def():

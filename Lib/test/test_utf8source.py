@@ -1,6 +1,6 @@
 import unittest
 
-class PEP3120Test(unittest.TestCase):
+klasse PEP3120Test(unittest.TestCase):
 
     def test_pep3120(self):
         self.assertEqual(
@@ -22,7 +22,7 @@ class PEP3120Test(unittest.TestCase):
             self.fail("expected exception didn't occur")
 
 
-class BuiltinCompileTests(unittest.TestCase):
+klasse BuiltinCompileTests(unittest.TestCase):
 
     # Issue 3574.
     def test_latin1(self):

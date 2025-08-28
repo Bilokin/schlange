@@ -11,7 +11,7 @@ _sentinel = object()
 # Options which accept all values allowed by Tk_GetPixels
 # borderwidth = bd
 
-class AbstractWidgetTest(AbstractTkTest):
+klasse AbstractWidgetTest(AbstractTkTest):
     _default_pixels = ''   # Value for unset pixel options.
     _rounds_pixels = True  # True if some pixel options are rounded.
     _no_round = {}         # Pixel options which are not rounded nonetheless
@@ -224,7 +224,7 @@ class AbstractWidgetTest(AbstractTkTest):
                     print('%s.OPTIONS doesn\'t contain "%s"' %
                           (self.__class__.__name__, k))
 
-class PixelOptionsTests:
+klasse PixelOptionsTests:
     """Standard options that accept all formats acceptable to Tk_GetPixels.
 
     In addition to numbers, these options can be set with distances
@@ -282,7 +282,7 @@ class PixelOptionsTests:
         widget = self.create()
         self.checkPixelsParam(widget, 'selectborderwidth', 1.3, 2.6, -2, '10p')
 
-class StandardOptionsTests(PixelOptionsTests):
+klasse StandardOptionsTests(PixelOptionsTests):
 
     STANDARD_OPTIONS = ( 'activebackground', 'activeforeground',
     'anchor', 'background', 'bitmap', 'compound', 'cursor',
@@ -542,7 +542,7 @@ class StandardOptionsTests(PixelOptionsTests):
         self.checkVariableParam(widget, 'variable', var)
 
 
-class IntegerSizeTests:
+klasse IntegerSizeTests:
     """ Tests widgets which only accept integral width and height."""
     def test_configure_height(self):
         widget = self.create()
@@ -553,7 +553,7 @@ class IntegerSizeTests:
         self.checkIntegerParam(widget, 'width', 402, -402, 0)
 
 
-class PixelSizeTests:
+klasse PixelSizeTests:
     """ Tests widgets which accept screen distances for width and height."""
     def test_configure_height(self):
         widget = self.create()
@@ -566,7 +566,7 @@ class PixelSizeTests:
 
 def add_configure_tests(*source_classes):
     # This decorator adds test_configure_xxx methods from source classes for
-    # every xxx option in the OPTIONS class attribute if they are not defined
+    # every xxx option in the OPTIONS klasse attribute if they are not defined
     # explicitly.
     def decorator(cls):
         for option in cls.OPTIONS:

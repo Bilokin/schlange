@@ -112,7 +112,7 @@ DEFAULT_ERROR_MESSAGE = """\
 
 DEFAULT_ERROR_CONTENT_TYPE = "text/html;charset=utf-8"
 
-class HTTPServer(socketserver.TCPServer):
+klasse HTTPServer(socketserver.TCPServer):
 
     allow_reuse_address = True    # Seems to make sense in testing environment
     allow_reuse_port = False
@@ -125,11 +125,11 @@ class HTTPServer(socketserver.TCPServer):
         self.server_port = port
 
 
-class ThreadingHTTPServer(socketserver.ThreadingMixIn, HTTPServer):
+klasse ThreadingHTTPServer(socketserver.ThreadingMixIn, HTTPServer):
     daemon_threads = True
 
 
-class HTTPSServer(HTTPServer):
+klasse HTTPSServer(HTTPServer):
     def __init__(self, server_address, RequestHandlerClass,
                  bind_and_activate=True, *, certfile, keyfile=None,
                  password=None, alpn_protocols=None):
@@ -166,11 +166,11 @@ class HTTPSServer(HTTPServer):
         return context
 
 
-class ThreadingHTTPSServer(socketserver.ThreadingMixIn, HTTPSServer):
+klasse ThreadingHTTPSServer(socketserver.ThreadingMixIn, HTTPSServer):
     daemon_threads = True
 
 
-class BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
+klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
 
     """HTTP request handler base class.
 
@@ -654,7 +654,7 @@ class BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
 
         return self.client_address[0]
 
-    # Essentially static class variables
+    # Essentially static klasse variables
 
     # The version of the HTTP protocol we support.
     # Set this to HTTP/1.1 to enable automatic keepalive
@@ -670,7 +670,7 @@ class BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
     }
 
 
-class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
+klasse SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
 
     """Simple HTTP request handler with GET and HEAD commands.
 
@@ -1041,7 +1041,7 @@ def _main(args=None):
             parser.error(f"Failed to read TLS password file: {e}")
 
     # ensure dual-stack is not disabled; ref #38907
-    class DualStackServerMixin:
+    klasse DualStackServerMixin:
 
         def server_bind(self):
             # suppress exception when protocol is IPv4
@@ -1054,9 +1054,9 @@ def _main(args=None):
             self.RequestHandlerClass(request, client_address, self,
                                      directory=args.directory)
 
-    class HTTPDualStackServer(DualStackServerMixin, ThreadingHTTPServer):
+    klasse HTTPDualStackServer(DualStackServerMixin, ThreadingHTTPServer):
         pass
-    class HTTPSDualStackServer(DualStackServerMixin, ThreadingHTTPSServer):
+    klasse HTTPSDualStackServer(DualStackServerMixin, ThreadingHTTPSServer):
         pass
 
     ServerClass = HTTPSDualStackServer if args.tls_cert else HTTPDualStackServer

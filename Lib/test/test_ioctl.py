@@ -10,7 +10,7 @@ from test.support.import_helper import import_module
 fcntl = import_module('fcntl')
 termios = import_module('termios')
 
-class IoctlTestsTty(unittest.TestCase):
+klasse IoctlTestsTty(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         TIOCGPGRP = support.get_attribute(termios, 'TIOCGPGRP')
@@ -132,7 +132,7 @@ class IoctlTestsTty(unittest.TestCase):
 
 
 @unittest.skipUnless(hasattr(os, 'openpty'), "need os.openpty()")
-class IoctlTestsPty(unittest.TestCase):
+klasse IoctlTestsPty(unittest.TestCase):
     def setUp(self):
         self.master_fd, self.slave_fd = os.openpty()
         self.addCleanup(os.close, self.slave_fd)

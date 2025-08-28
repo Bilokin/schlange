@@ -404,7 +404,7 @@ INVALID_BINARY_PLISTS = [
 ]
 
 
-class TestPlistlib(unittest.TestCase):
+klasse TestPlistlib(unittest.TestCase):
 
     def tearDown(self):
         try:
@@ -901,7 +901,7 @@ class TestPlistlib(unittest.TestCase):
             self.assertEqual(parsed, expected)
 
 
-class TestBinaryPlistlib(unittest.TestCase):
+klasse TestBinaryPlistlib(unittest.TestCase):
 
     @staticmethod
     def decode(*objects, offset_size=1, ref_size=1):
@@ -1047,7 +1047,7 @@ class TestBinaryPlistlib(unittest.TestCase):
             plistlib.dumps(dt, fmt=plistlib.FMT_BINARY, aware_datetime=False)
 
 
-class TestKeyedArchive(unittest.TestCase):
+klasse TestKeyedArchive(unittest.TestCase):
     def test_keyed_archive_data(self):
         # This is the structure of a NSKeyedArchive packed plist
         data = {
@@ -1079,13 +1079,13 @@ class TestKeyedArchive(unittest.TestCase):
         self.assertEqual(plistlib.loads(TESTDATA["KEYED_ARCHIVE"]), data)
 
 
-class MiscTestCase(unittest.TestCase):
+klasse MiscTestCase(unittest.TestCase):
     def test__all__(self):
         not_exported = {"PlistFormat", "PLISTHEADER"}
         support.check__all__(self, plistlib, not_exported=not_exported)
 
 @unittest.skipUnless(sys.platform == "darwin", "plutil utility is for Mac os")
-class TestPlutil(unittest.TestCase):
+klasse TestPlutil(unittest.TestCase):
     file_name = "plutil_test.plist"
     properties = {
             "fname" : "H",

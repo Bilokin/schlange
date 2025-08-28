@@ -13,7 +13,7 @@ from libclinic.function import (
 
 
 @dc.dataclass(slots=True, repr=False)
-class Block:
+klasse Block:
     r"""
     Represents a single block of text embedded in
     another file.  If dsl_name is None, the block represents
@@ -83,7 +83,7 @@ class Block:
         return f"<clinic.Block {' '.join(parts)}>"
 
 
-class BlockParser:
+klasse BlockParser:
     """
     Block-oriented parser for Argument Clinic.
     Iterator, yields Block objects.

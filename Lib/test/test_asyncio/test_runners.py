@@ -19,7 +19,7 @@ def interrupt_self():
     _thread.interrupt_main()
 
 
-class TestPolicy(asyncio.events._AbstractEventLoopPolicy):
+klasse TestPolicy(asyncio.events._AbstractEventLoopPolicy):
 
     def __init__(self, loop_factory):
         self.loop_factory = loop_factory
@@ -39,7 +39,7 @@ class TestPolicy(asyncio.events._AbstractEventLoopPolicy):
             self.loop = loop
 
 
-class BaseTest(unittest.TestCase):
+klasse BaseTest(unittest.TestCase):
 
     def new_loop(self):
         loop = asyncio.BaseEventLoop()
@@ -73,7 +73,7 @@ class BaseTest(unittest.TestCase):
         super().tearDown()
 
 
-class RunTests(BaseTest):
+klasse RunTests(BaseTest):
 
     def test_asyncio_run_return(self):
         async def main():
@@ -168,7 +168,7 @@ class RunTests(BaseTest):
         spinner = None
         lazyboy = None
 
-        class FancyExit(Exception):
+        klasse FancyExit(Exception):
             pass
 
         async def fidget():
@@ -215,7 +215,7 @@ class RunTests(BaseTest):
 
     def test_asyncio_run_without_uncancel(self):
         # See https://github.com/python/cpython/issues/95097
-        class Task:
+        klasse Task:
             def __init__(self, loop, coro, **kwargs):
                 self._task = asyncio.Task(coro, loop=loop, **kwargs)
 
@@ -284,7 +284,7 @@ class RunTests(BaseTest):
         asyncio.run(main(), loop_factory=asyncio.EventLoop)
 
 
-class RunnerTests(BaseTest):
+klasse RunnerTests(BaseTest):
 
     def test_non_debug(self):
         with asyncio.Runner(debug=False) as runner:
@@ -331,7 +331,7 @@ class RunnerTests(BaseTest):
             self.assertEqual('done', runner.run(fut))
 
     def test_run_awaitable(self):
-        class MyAwaitable:
+        klasse MyAwaitable:
             def __await__(self):
                 return self.run().__await__()
 
@@ -506,7 +506,7 @@ class RunnerTests(BaseTest):
 
     def test_no_repr_is_call_on_the_task_result(self):
         # See https://github.com/python/cpython/issues/112559.
-        class MyResult:
+        klasse MyResult:
             def __init__(self):
                 self.repr_count = 0
             def __repr__(self):

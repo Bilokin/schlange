@@ -6,7 +6,7 @@ xxlimited = import_helper.import_module('xxlimited')
 xxlimited_35 = import_helper.import_module('xxlimited_35')
 
 
-class CommonTests:
+klasse CommonTests:
     module: types.ModuleType
 
     def test_xxo_new(self):
@@ -43,7 +43,7 @@ class CommonTests:
         self.assertEqual(xxo.demo("abc"), "abc")
 
 
-class TestXXLimited(CommonTests, unittest.TestCase):
+klasse TestXXLimited(CommonTests, unittest.TestCase):
     module = xxlimited
 
     def test_xxo_demo(self):
@@ -70,7 +70,7 @@ class TestXXLimited(CommonTests, unittest.TestCase):
         self.assertEqual(b2[0], 1)
 
 
-class TestXXLimited35(CommonTests, unittest.TestCase):
+klasse TestXXLimited35(CommonTests, unittest.TestCase):
     module = xxlimited_35
 
     def test_xxo_demo(self):

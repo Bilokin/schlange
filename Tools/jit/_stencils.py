@@ -9,7 +9,7 @@ import _schema
 
 
 @enum.unique
-class HoleValue(enum.Enum):
+klasse HoleValue(enum.Enum):
     """
     Different "base" values that can be patched into holes (usually combined with the
     address of a symbol and/or an addend).
@@ -114,7 +114,7 @@ _HOLE_EXPRS = {
 
 
 @dataclasses.dataclass
-class Hole:
+klasse Hole:
     """
     A "hole" in the stencil to be patched with a computed runtime value.
 
@@ -187,7 +187,7 @@ class Hole:
 
 
 @dataclasses.dataclass
-class Stencil:
+klasse Stencil:
     """
     A contiguous block of machine code or data to be copied-and-patched.
 
@@ -208,7 +208,7 @@ class Stencil:
 
 
 @dataclasses.dataclass
-class StencilGroup:
+klasse StencilGroup:
     """
     Code and data corresponding to a given micro-opcode.
 

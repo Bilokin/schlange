@@ -7,7 +7,7 @@ tty = import_module('tty')
 
 
 @unittest.skipUnless(hasattr(os, 'openpty'), "need os.openpty()")
-class TestTty(unittest.TestCase):
+klasse TestTty(unittest.TestCase):
 
     def setUp(self):
         master_fd, self.fd = os.openpty()

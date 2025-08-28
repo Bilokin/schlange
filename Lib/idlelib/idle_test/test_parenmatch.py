@@ -12,7 +12,7 @@ from unittest.mock import Mock
 from tkinter import Tk, Text
 
 
-class DummyEditwin:
+klasse DummyEditwin:
     def __init__(self, text):
         self.text = text
         self.indentwidth = 8
@@ -20,7 +20,7 @@ class DummyEditwin:
         self.prompt_last_line = '>>>' # Currently not used by parenmatch.
 
 
-class ParenMatchTest(unittest.TestCase):
+klasse ParenMatchTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):

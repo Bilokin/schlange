@@ -115,7 +115,7 @@ def find_spec(name, package=None):
 # is imported by runpy, which means we want to avoid any unnecessary
 # dependencies.  Thus we use a class.
 
-class _incompatible_extension_module_restrictions:
+klasse _incompatible_extension_module_restrictions:
     """A context manager that can temporarily skip the compatibility check.
 
     NOTE: This function is meant to accommodate an unusual case; one
@@ -164,7 +164,7 @@ class _incompatible_extension_module_restrictions:
         return -1 if self.disable_check else 1
 
 
-class _LazyModule(types.ModuleType):
+klasse _LazyModule(types.ModuleType):
 
     """A subclass of the module type which triggers loading upon attribute access."""
 
@@ -231,7 +231,7 @@ class _LazyModule(types.ModuleType):
         delattr(self, attr)
 
 
-class LazyLoader(Loader):
+klasse LazyLoader(Loader):
 
     """A loader that creates a module which defers loading until attribute access."""
 

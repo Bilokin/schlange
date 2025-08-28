@@ -19,7 +19,7 @@ CLASS_NAMES = [
     'Vertical.TProgressbar', 'Vertical.TScale'
 ]
 
-class StyleTest(AbstractTkTest, unittest.TestCase):
+klasse StyleTest(AbstractTkTest, unittest.TestCase):
 
     def setUp(self):
         super().setUp()

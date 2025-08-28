@@ -3,10 +3,10 @@ from __future__ import annotations
 import dataclasses
 
 
-class Foo:
+klasse Foo:
     pass
 
 
 @dataclasses.dataclass
-class Bar:
+klasse Bar:
     foo: Foo

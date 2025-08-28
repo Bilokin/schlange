@@ -8,7 +8,7 @@ def abstractmethod(funcobj):
     """A decorator indicating abstract methods.
 
     Requires that the metaclass is ABCMeta or derived from it.  A
-    class that has a metaclass derived from ABCMeta cannot be
+    klasse that has a metaclass derived from ABCMeta cannot be
     instantiated unless all of its abstract methods are overridden.
     The abstract methods can be called using any of the normal
     'super' call mechanisms.  abstractmethod() may be used to declare
@@ -16,7 +16,7 @@ def abstractmethod(funcobj):
 
     Usage:
 
-        class C(metaclass=ABCMeta):
+        klasse C(metaclass=ABCMeta):
             @abstractmethod
             def my_abstract_method(self, arg1, arg2, argN):
                 ...
@@ -25,12 +25,12 @@ def abstractmethod(funcobj):
     return funcobj
 
 
-class abstractclassmethod(classmethod):
+klasse abstractclassmethod(classmethod):
     """A decorator indicating abstract classmethods.
 
     Deprecated, use 'classmethod' with 'abstractmethod' instead:
 
-        class C(ABC):
+        klasse C(ABC):
             @classmethod
             @abstractmethod
             def my_abstract_classmethod(cls, ...):
@@ -45,12 +45,12 @@ class abstractclassmethod(classmethod):
         super().__init__(callable)
 
 
-class abstractstaticmethod(staticmethod):
+klasse abstractstaticmethod(staticmethod):
     """A decorator indicating abstract staticmethods.
 
     Deprecated, use 'staticmethod' with 'abstractmethod' instead:
 
-        class C(ABC):
+        klasse C(ABC):
             @staticmethod
             @abstractmethod
             def my_abstract_staticmethod(...):
@@ -65,12 +65,12 @@ class abstractstaticmethod(staticmethod):
         super().__init__(callable)
 
 
-class abstractproperty(property):
+klasse abstractproperty(property):
     """A decorator indicating abstract properties.
 
     Deprecated, use 'property' with 'abstractmethod' instead:
 
-        class C(ABC):
+        klasse C(ABC):
             @property
             @abstractmethod
             def my_abstract_property(self):
@@ -89,7 +89,7 @@ except ImportError:
     from _py_abc import ABCMeta, get_cache_token
     ABCMeta.__module__ = 'abc'
 else:
-    class ABCMeta(type):
+    klasse ABCMeta(type):
         """Metaclass for defining Abstract Base Classes (ABCs).
 
         Use this metaclass to create an ABC.  An ABC can be subclassed
@@ -110,7 +110,7 @@ else:
         def register(cls, subclass):
             """Register a virtual subclass of an ABC.
 
-            Returns the subclass, to allow usage as a class decorator.
+            Returns the subclass, to allow usage as a klasse decorator.
             """
             return _abc_register(cls, subclass)
 
@@ -146,16 +146,16 @@ else:
 def update_abstractmethods(cls):
     """Recalculate the set of abstract methods of an abstract class.
 
-    If a class has had one of its abstract methods implemented after the
-    class was created, the method will not be considered implemented until
+    If a klasse has had one of its abstract methods implemented after the
+    klasse was created, the method will not be considered implemented until
     this function is called. Alternatively, if a new abstract method has been
     added to the class, it will only be considered an abstract method of the
-    class after this function is called.
+    klasse after this function is called.
 
     This function should be called before any use is made of the class,
-    usually in class decorators that add methods to the subject class.
+    usually in klasse decorators that add methods to the subject class.
 
-    Returns cls, to allow usage as a class decorator.
+    Returns cls, to allow usage as a klasse decorator.
 
     If cls is not an instance of ABCMeta, does nothing.
     """
@@ -181,8 +181,8 @@ def update_abstractmethods(cls):
     return cls
 
 
-class ABC(metaclass=ABCMeta):
-    """Helper class that provides a standard way to create an ABC using
+klasse ABC(metaclass=ABCMeta):
+    """Helper klasse that provides a standard way to create an ABC using
     inheritance.
     """
     __slots__ = ()

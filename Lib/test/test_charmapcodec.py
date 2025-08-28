@@ -23,7 +23,7 @@ def codec_search_function(encoding):
 # test codec's name (see test/testcodec.py)
 codecname = 'testcodec'
 
-class CharmapCodecTest(unittest.TestCase):
+klasse CharmapCodecTest(unittest.TestCase):
 
     def setUp(self):
         codecs.register(codec_search_function)

@@ -159,10 +159,10 @@ def _encode(string, codec):
         return string.encode(codec)
 
 
-class Charset:
+klasse Charset:
     """Map character sets to their email properties.
 
-    This class provides information about the requirements imposed on email
+    This klasse provides information about the requirements imposed on email
     for a specific character set.  It also provides convenience routines for
     converting between character sets, given the availability of the
     applicable codecs.  Given a character set, it will do its best to provide

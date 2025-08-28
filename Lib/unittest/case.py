@@ -23,7 +23,7 @@ _subtest_msg_sentinel = object()
 DIFF_OMITTED = ('\nDiff is %s characters long. '
                  'Set self.maxDiff to None to see it.')
 
-class SkipTest(Exception):
+klasse SkipTest(Exception):
     """
     Raise this exception in a test to skip it.
 
@@ -31,18 +31,18 @@ class SkipTest(Exception):
     instead of raising this directly.
     """
 
-class _ShouldStop(Exception):
+klasse _ShouldStop(Exception):
     """
     The test should stop.
     """
 
-class _UnexpectedSuccess(Exception):
+klasse _UnexpectedSuccess(Exception):
     """
     The test was supposed to fail, but it didn't!
     """
 
 
-class _Outcome(object):
+klasse _Outcome(object):
     def __init__(self, result=None):
         self.expecting_failure = False
         self.result = result
@@ -197,7 +197,7 @@ def _is_subtype(expected, basetype):
         return all(_is_subtype(e, basetype) for e in expected)
     return isinstance(expected, type) and issubclass(expected, basetype)
 
-class _BaseTestCaseContext:
+klasse _BaseTestCaseContext:
 
     def __init__(self, test_case):
         self.test_case = test_case
@@ -206,7 +206,7 @@ class _BaseTestCaseContext:
         msg = self.test_case._formatMessage(self.msg, standardMsg)
         raise self.test_case.failureException(msg)
 
-class _AssertRaisesBaseContext(_BaseTestCaseContext):
+klasse _AssertRaisesBaseContext(_BaseTestCaseContext):
 
     def __init__(self, expected, test_case, expected_regex=None):
         _BaseTestCaseContext.__init__(self, test_case)
@@ -248,7 +248,7 @@ class _AssertRaisesBaseContext(_BaseTestCaseContext):
             self = None
 
 
-class _AssertRaisesContext(_AssertRaisesBaseContext):
+klasse _AssertRaisesContext(_AssertRaisesBaseContext):
     """A context manager used to implement TestCase.assertRaises* methods."""
 
     _base_type = BaseException
@@ -287,7 +287,7 @@ class _AssertRaisesContext(_AssertRaisesBaseContext):
     __class_getitem__ = classmethod(types.GenericAlias)
 
 
-class _AssertWarnsContext(_AssertRaisesBaseContext):
+klasse _AssertWarnsContext(_AssertRaisesBaseContext):
     """A context manager used to implement TestCase.assertWarns* methods."""
 
     _base_type = Warning
@@ -339,7 +339,7 @@ class _AssertWarnsContext(_AssertRaisesBaseContext):
             self._raiseFailure("{} not triggered".format(exc_name))
 
 
-class _AssertNotWarnsContext(_AssertWarnsContext):
+klasse _AssertNotWarnsContext(_AssertWarnsContext):
 
     def __exit__(self, exc_type, exc_value, tb):
         self.warnings_manager.__exit__(exc_type, exc_value, tb)
@@ -356,7 +356,7 @@ class _AssertNotWarnsContext(_AssertWarnsContext):
                 self._raiseFailure(f"{exc_name} triggered")
 
 
-class _OrderedChainMap(collections.ChainMap):
+klasse _OrderedChainMap(collections.ChainMap):
     def __iter__(self):
         seen = set()
         for mapping in self.maps:
@@ -366,8 +366,8 @@ class _OrderedChainMap(collections.ChainMap):
                     yield k
 
 
-class TestCase(object):
-    """A class whose instances are single test cases.
+klasse TestCase(object):
+    """A klasse whose instances are single test cases.
 
     By default, the test code itself should be placed in a method named
     'runTest'.
@@ -416,7 +416,7 @@ class TestCase(object):
         super().__init_subclass__(*args, **kwargs)
 
     def __init__(self, methodName='runTest'):
-        """Create an instance of the class that will use the named test
+        """Create an instance of the klasse that will use the named test
            method when executed. Raises a ValueError if the instance does
            not have a method with the specified name.
         """
@@ -499,11 +499,11 @@ class TestCase(object):
 
     @classmethod
     def setUpClass(cls):
-        "Hook method for setting up class fixture before running tests in the class."
+        "Hook method for setting up klasse fixture before running tests in the class."
 
     @classmethod
     def tearDownClass(cls):
-        "Hook method for deconstructing the class fixture after running all tests in the class."
+        "Hook method for deconstructing the klasse fixture after running all tests in the class."
 
     def countTestCases(self):
         return 1
@@ -644,7 +644,7 @@ class TestCase(object):
             testMethod = getattr(self, self._testMethodName)
             if (getattr(self.__class__, "__unittest_skip__", False) or
                 getattr(testMethod, "__unittest_skip__", False)):
-                # If the class or method was skipped.
+                # If the klasse or method was skipped.
                 skip_why = (getattr(self.__class__, '__unittest_skip_why__', '')
                             or getattr(testMethod, '__unittest_skip_why__', ''))
                 _addSkip(result, self, skip_why)
@@ -709,7 +709,7 @@ class TestCase(object):
 
     @classmethod
     def doClassCleanups(cls):
-        """Execute all class cleanup functions. Normally called for you after
+        """Execute all klasse cleanup functions. Normally called for you after
         tearDownClass."""
         cls.tearDown_exceptions = []
         while cls._class_cleanups:
@@ -727,7 +727,7 @@ class TestCase(object):
         testMethod = getattr(self, self._testMethodName)
         if (getattr(self.__class__, "__unittest_skip__", False) or
             getattr(testMethod, "__unittest_skip__", False)):
-            # If the class or method was skipped.
+            # If the klasse or method was skipped.
             skip_why = (getattr(self.__class__, '__unittest_skip_why__', '')
                         or getattr(testMethod, '__unittest_skip_why__', ''))
             raise SkipTest(skip_why)
@@ -781,7 +781,7 @@ class TestCase(object):
             return  '%s : %s' % (safe_repr(standardMsg), safe_repr(msg))
 
     def assertRaises(self, expected_exception, *args, **kwargs):
-        """Fail unless an exception of class expected_exception is raised
+        """Fail unless an exception of klasse expected_exception is raised
            by the callable when invoked with specified positional and
            keyword arguments. If a different type of exception is
            raised, it will not be caught, and the test case will be
@@ -814,7 +814,7 @@ class TestCase(object):
             context = None
 
     def assertWarns(self, expected_warning, *args, **kwargs):
-        """Fail unless a warning of class warnClass is triggered
+        """Fail unless a warning of klasse warnClass is triggered
            by the callable when invoked with specified positional and
            keyword arguments.  If a different type of warning is
            triggered, it will not be handled: depending on the other
@@ -895,7 +895,7 @@ class TestCase(object):
         # NOTE(gregory.p.smith): I considered isinstance(first, type(second))
         # and vice versa.  I opted for the conservative approach in case
         # subclasses are not intended to be compared in detail to their super
-        # class instances using a type equality func.  This means testing
+        # klasse instances using a type equality func.  This means testing
         # subtypes won't automagically use the detailed comparison.  Callers
         # should use their type specific assertSpamEqual method to compare
         # subclasses if the detailed comparison is desired and appropriate.
@@ -1402,7 +1402,7 @@ class TestCase(object):
         """Asserts that the message in a raised exception matches a regex.
 
         Args:
-            expected_exception: Exception class expected to be raised.
+            expected_exception: Exception klasse expected to be raised.
             expected_regex: Regex (re.Pattern object or string) expected
                     to be found in error message.
             args: Function to be called and extra positional args.
@@ -1421,7 +1421,7 @@ class TestCase(object):
         are considered successful matches.
 
         Args:
-            expected_warning: Warning class expected to be triggered.
+            expected_warning: Warning klasse expected to be triggered.
             expected_regex: Regex (re.Pattern object or string) expected
                     to be found in error message.
             args: Function to be called and extra positional args.
@@ -1534,7 +1534,7 @@ class TestCase(object):
         self.fail(self._formatMessage(msg, f"{a} ends with {b}"))
 
 
-class FunctionTestCase(TestCase):
+klasse FunctionTestCase(TestCase):
     """A test case that wraps a test function.
 
     This is useful for slipping pre-existing test functions into the
@@ -1592,7 +1592,7 @@ class FunctionTestCase(TestCase):
         return doc and doc.split("\n")[0].strip() or None
 
 
-class _SubTest(TestCase):
+klasse _SubTest(TestCase):
 
     def __init__(self, test_case, message, params):
         super().__init__()

@@ -22,16 +22,16 @@ if sys.platform == "win32":
     windll = ctypes.WinDLL(_ctypes_test.__file__)
 
 
-class POINT(Structure):
+klasse POINT(Structure):
     _fields_ = [("x", c_int), ("y", c_int)]
 
 
-class RECT(Structure):
+klasse RECT(Structure):
     _fields_ = [("left", c_int), ("top", c_int),
                 ("right", c_int), ("bottom", c_int)]
 
 
-class FunctionTestCase(unittest.TestCase):
+klasse FunctionTestCase(unittest.TestCase):
 
     def test_mro(self):
         # in Python 2.3, this raises TypeError: MRO conflict among bases classes,
@@ -42,20 +42,20 @@ class FunctionTestCase(unittest.TestCase):
         # Found by Greg Chapman.
 
         with self.assertRaises(TypeError):
-            class X(object, Array):
+            klasse X(object, Array):
                 _length_ = 5
                 _type_ = "i"
 
         with self.assertRaises(TypeError):
-            class X2(object, _Pointer):
+            klasse X2(object, _Pointer):
                 pass
 
         with self.assertRaises(TypeError):
-            class X3(object, _SimpleCData):
+            klasse X3(object, _SimpleCData):
                 _type_ = "i"
 
         with self.assertRaises(TypeError):
-            class X4(object, Structure):
+            klasse X4(object, Structure):
                 _fields_ = []
 
     def test_c_char_parm(self):
@@ -397,7 +397,7 @@ class FunctionTestCase(unittest.TestCase):
         self.assertEqual(got, expected)
 
     def test_struct_return_2H(self):
-        class S2H(Structure):
+        klasse S2H(Structure):
             _fields_ = [("x", c_short),
                         ("y", c_short)]
         dll.ret_2h_func.restype = S2H
@@ -408,7 +408,7 @@ class FunctionTestCase(unittest.TestCase):
 
     @unittest.skipUnless(sys.platform == "win32", 'Windows-specific test')
     def test_struct_return_2H_stdcall(self):
-        class S2H(Structure):
+        klasse S2H(Structure):
             _fields_ = [("x", c_short),
                         ("y", c_short)]
 
@@ -418,7 +418,7 @@ class FunctionTestCase(unittest.TestCase):
         self.assertEqual((s2h.x, s2h.y), (99*2, 88*3))
 
     def test_struct_return_8H(self):
-        class S8I(Structure):
+        klasse S8I(Structure):
             _fields_ = [("a", c_int),
                         ("b", c_int),
                         ("c", c_int),
@@ -436,7 +436,7 @@ class FunctionTestCase(unittest.TestCase):
 
     @unittest.skipUnless(sys.platform == "win32", 'Windows-specific test')
     def test_struct_return_8H_stdcall(self):
-        class S8I(Structure):
+        klasse S8I(Structure):
             _fields_ = [("a", c_int),
                         ("b", c_int),
                         ("c", c_int),

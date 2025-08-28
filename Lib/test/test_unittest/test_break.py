@@ -11,7 +11,7 @@ from test import support
 
 @unittest.skipUnless(hasattr(os, 'kill'), "Test requires os.kill")
 @unittest.skipIf(sys.platform =="win32", "Test cannot run on Windows")
-class TestBreak(unittest.TestCase):
+klasse TestBreak(unittest.TestCase):
     int_handler = None
     # This number was smart-guessed, previously tests were failing
     # after 7th run. So, we take `x * 2 + 1` to be sure.
@@ -40,7 +40,7 @@ class TestBreak(unittest.TestCase):
             with self.subTest(repeat=repeat):
                 # We don't run `setUp` for the very first repeat
                 # and we don't run `tearDown` for the very last one,
-                # because they are handled by the test class itself.
+                # because they are handled by the test klasse itself.
                 if repeat != 0:
                     self.setUp()
                 try:
@@ -217,7 +217,7 @@ class TestBreak(unittest.TestCase):
         result = object()
         default_handler = signal.getsignal(signal.SIGINT)
 
-        class FakeRunner(object):
+        klasse FakeRunner(object):
             initArgs = []
             runArgs = []
             def __init__(self, *args, **kwargs):
@@ -226,7 +226,7 @@ class TestBreak(unittest.TestCase):
                 self.runArgs.append(test)
                 return result
 
-        class Program(unittest.TestProgram):
+        klasse Program(unittest.TestProgram):
             def __init__(self, catchbreak):
                 self.exit = False
                 self.verbosity = verbosity
@@ -291,17 +291,17 @@ class TestBreak(unittest.TestCase):
 
 @unittest.skipUnless(hasattr(os, 'kill'), "Test requires os.kill")
 @unittest.skipIf(sys.platform =="win32", "Test cannot run on Windows")
-class TestBreakDefaultIntHandler(TestBreak):
+klasse TestBreakDefaultIntHandler(TestBreak):
     int_handler = signal.default_int_handler
 
 @unittest.skipUnless(hasattr(os, 'kill'), "Test requires os.kill")
 @unittest.skipIf(sys.platform =="win32", "Test cannot run on Windows")
-class TestBreakSignalIgnored(TestBreak):
+klasse TestBreakSignalIgnored(TestBreak):
     int_handler = signal.SIG_IGN
 
 @unittest.skipUnless(hasattr(os, 'kill'), "Test requires os.kill")
 @unittest.skipIf(sys.platform =="win32", "Test cannot run on Windows")
-class TestBreakSignalDefault(TestBreak):
+klasse TestBreakSignalDefault(TestBreak):
     int_handler = signal.SIG_DFL
 
 

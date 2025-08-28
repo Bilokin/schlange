@@ -18,7 +18,7 @@ compile_command(source, filename, symbol):
 
 CommandCompiler():
 
-    Instances of this class have __call__ methods identical in
+    Instances of this klasse have __call__ methods identical in
     signature to compile_command; the difference is that if the
     instance compiles program text containing a __future__ statement,
     the instance 'remembers' and compiles all subsequent program texts
@@ -28,7 +28,7 @@ The module also provides another class:
 
 Compile():
 
-    Instances of this class act like the built-in function compile,
+    Instances of this klasse act like the built-in function compile,
     but with 'memory' in the sense described above.
 """
 
@@ -101,8 +101,8 @@ def compile_command(source, filename="<input>", symbol="single", flags=0):
     """
     return _maybe_compile(_compile, source, filename, symbol, flags)
 
-class Compile:
-    """Instances of this class behave much like the built-in compile
+klasse Compile:
+    """Instances of this klasse behave much like the built-in compile
     function, but if one is used to compile text containing a future
     statement, it "remembers" and compiles all subsequent program texts
     with the statement in force."""
@@ -122,8 +122,8 @@ class Compile:
                 self.flags |= feature.compiler_flag
         return codeob
 
-class CommandCompiler:
-    """Instances of this class have __call__ methods identical in
+klasse CommandCompiler:
+    """Instances of this klasse have __call__ methods identical in
     signature to compile_command; the difference is that if the
     instance compiles program text containing a __future__ statement,
     the instance 'remembers' and compiles all subsequent program texts

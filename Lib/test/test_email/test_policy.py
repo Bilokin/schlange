@@ -14,7 +14,7 @@ def make_defaults(base_defaults, differences):
     defaults.update(differences)
     return defaults
 
-class PolicyAPITests(unittest.TestCase):
+klasse PolicyAPITests(unittest.TestCase):
 
     longMessage = True
 
@@ -166,7 +166,7 @@ class PolicyAPITests(unittest.TestCase):
         self.assertEqual(p2.fold('Subject', msg['Subject']), expected)
 
     def test_register_defect(self):
-        class Dummy:
+        klasse Dummy:
             def __init__(self):
                 self.defects = []
         obj = Dummy()
@@ -178,11 +178,11 @@ class PolicyAPITests(unittest.TestCase):
         policy.register_defect(obj, defect2)
         self.assertEqual(obj.defects, [defect, defect2])
 
-    class MyObj:
+    klasse MyObj:
         def __init__(self):
             self.defects = []
 
-    class MyDefect(Exception):
+    klasse MyDefect(Exception):
         pass
 
     def test_handle_defect_raises_on_strict(self):
@@ -200,7 +200,7 @@ class PolicyAPITests(unittest.TestCase):
         email.policy.default.handle_defect(foo, defect2)
         self.assertEqual(foo.defects, [defect1, defect2])
 
-    class MyPolicy(email.policy.EmailPolicy):
+    klasse MyPolicy(email.policy.EmailPolicy):
         defects = None
         def __init__(self, *args, **kw):
             super().__init__(*args, defects=[], **kw)
@@ -231,7 +231,7 @@ class PolicyAPITests(unittest.TestCase):
         self.assertIsInstance(h, headerregistry.UnstructuredHeader)
         self.assertIsInstance(h, headerregistry.BaseHeader)
 
-    class Foo:
+    klasse Foo:
         parse = headerregistry.UnstructuredHeader.parse
 
     def test_each_Policy_gets_unique_factory(self):
@@ -307,7 +307,7 @@ class PolicyAPITests(unittest.TestCase):
                     "Header: Value\r\n\r\nBody",
                     policy=policy,
                 )
-                class LiteralHeader(str):
+                klasse LiteralHeader(str):
                     name = 'Header'
                     def fold(self, **kwargs):
                         return self
@@ -325,15 +325,15 @@ class PolicyAPITests(unittest.TestCase):
     # wins), but that the order still works (right overrides left).
 
 
-class TestException(Exception):
+klasse TestException(Exception):
     pass
 
-class TestPolicyPropagation(unittest.TestCase):
+klasse TestPolicyPropagation(unittest.TestCase):
 
     # The abstract methods are used by the parser but not by the wrapper
     # functions that call it, so if the exception gets raised we know that the
     # policy was actually propagated all the way to feedparser.
-    class MyPolicy(email.policy.Policy):
+    klasse MyPolicy(email.policy.Policy):
         def badmethod(self, *args, **kw):
             raise TestException("test")
         fold = fold_binary = header_fetch_parser = badmethod
@@ -416,7 +416,7 @@ class TestPolicyPropagation(unittest.TestCase):
         self.assertEqual(msg.as_string(), "Subject: testXTo: fooXX")
 
 
-class TestConcretePolicies(unittest.TestCase):
+klasse TestConcretePolicies(unittest.TestCase):
 
     def test_header_store_parse_rejects_newlines(self):
         instance = email.policy.EmailPolicy()

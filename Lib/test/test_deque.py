@@ -15,11 +15,11 @@ def fail():
     raise SyntaxError
     yield 1
 
-class BadCmp:
+klasse BadCmp:
     def __eq__(self, other):
         raise RuntimeError
 
-class MutateCmp:
+klasse MutateCmp:
     def __init__(self, deque, result):
         self.deque = deque
         self.result = result
@@ -27,7 +27,7 @@ class MutateCmp:
         self.deque.clear()
         return self.result
 
-class TestBasic(unittest.TestCase):
+klasse TestBasic(unittest.TestCase):
 
     def test_basics(self):
         d = deque(range(-5125, -5000))
@@ -104,14 +104,14 @@ class TestBasic(unittest.TestCase):
                 self.assertEqual(s.count(letter), d.count(letter), (s, d, letter))
         self.assertRaises(TypeError, d.count)       # too few args
         self.assertRaises(TypeError, d.count, 1, 2) # too many args
-        class BadCompare:
+        klasse BadCompare:
             def __eq__(self, other):
                 raise ArithmeticError
         d = deque([1, 2, BadCompare(), 3])
         self.assertRaises(ArithmeticError, d.count, 2)
         d = deque([1, 2, 3])
         self.assertRaises(ArithmeticError, d.count, BadCompare())
-        class MutatingCompare:
+        klasse MutatingCompare:
             def __eq__(self, other):
                 self.d.pop()
                 return True
@@ -167,7 +167,7 @@ class TestBasic(unittest.TestCase):
             n in d
 
     def test_contains_count_index_stop_crashes(self):
-        class A:
+        klasse A:
             def __eq__(self, other):
                 d.clear()
                 return NotImplemented
@@ -728,7 +728,7 @@ class TestBasic(unittest.TestCase):
 
     def test_container_iterator(self):
         # Bug #3680: tp_traverse was not implemented for deque iterator objects
-        class C(object):
+        klasse C(object):
             pass
         for i in range(2):
             obj = C()
@@ -758,7 +758,7 @@ class TestBasic(unittest.TestCase):
         check(deque('a' * BLOCKLEN), basesize + 2 * blocksize)
         check(deque('a' * (42 * BLOCKLEN)), basesize + 43 * blocksize)
 
-class TestVariousIteratorArgs(unittest.TestCase):
+klasse TestVariousIteratorArgs(unittest.TestCase):
 
     def test_constructor(self):
         for s in ("123", "", range(1000), ('do', 1.2), range(2000,2200,5)):
@@ -782,17 +782,17 @@ class TestVariousIteratorArgs(unittest.TestCase):
         d.append(10)
         self.assertRaises(RuntimeError, next, it)
 
-class Deque(deque):
+klasse Deque(deque):
     pass
 
-class DequeWithSlots(deque):
+klasse DequeWithSlots(deque):
     __slots__ = ('x', 'y', '__dict__')
 
-class DequeWithBadIter(deque):
+klasse DequeWithBadIter(deque):
     def __iter__(self):
         raise TypeError
 
-class TestSubclass(unittest.TestCase):
+klasse TestSubclass(unittest.TestCase):
 
     def test_basics(self):
         d = Deque(range(25))
@@ -870,7 +870,7 @@ class TestSubclass(unittest.TestCase):
         self.assertRaises(ReferenceError, str, p)
 
     def test_strange_subclass(self):
-        class X(deque):
+        klasse X(deque):
             def __iter__(self):
                 return iter([])
         d1 = X([1,2,3])
@@ -882,7 +882,7 @@ class TestSubclass(unittest.TestCase):
     def test_bug_31608(self):
         # The interpreter used to crash in specific cases where a deque
         # subclass returned a non-deque.
-        class X(deque):
+        klasse X(deque):
             pass
         d = X()
         def bad___new__(cls, *args, **kwargs):
@@ -894,16 +894,16 @@ class TestSubclass(unittest.TestCase):
             d + deque([1, 2, 3])  # shouldn't crash
 
 
-class SubclassWithKwargs(deque):
+klasse SubclassWithKwargs(deque):
     def __init__(self, newarg=1):
         deque.__init__(self)
 
-class TestSubclassWithKwargs(unittest.TestCase):
+klasse TestSubclassWithKwargs(unittest.TestCase):
     def test_subclass_with_kwargs(self):
         # SF bug #1486663 -- this used to erroneously raise a TypeError
         SubclassWithKwargs(newarg=1)
 
-class TestSequence(seq_tests.CommonTest):
+klasse TestSequence(seq_tests.CommonTest):
     type2test = deque
 
     def test_getitem(self):

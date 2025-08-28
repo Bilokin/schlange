@@ -4,7 +4,7 @@ import unittest
 from test.support import import_helper
 
 
-class ParentModuleTests:
+klasse ParentModuleTests:
 
     """Importing a submodule should import the parent modules."""
 

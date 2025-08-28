@@ -24,7 +24,7 @@ def verbose_print(arg):
             print(arg)
 
 
-class BasicThreadTest(unittest.TestCase):
+klasse BasicThreadTest(unittest.TestCase):
 
     def setUp(self):
         self.done_mutex = thread.allocate_lock()
@@ -39,7 +39,7 @@ class BasicThreadTest(unittest.TestCase):
         self.addCleanup(threading_helper.threading_cleanup, *key)
 
 
-class ThreadRunningTests(BasicThreadTest):
+klasse ThreadRunningTests(BasicThreadTest):
 
     def newtask(self):
         with self.running_mutex:
@@ -338,7 +338,7 @@ class ThreadRunningTests(BasicThreadTest):
             handle.join()
 
 
-class Barrier:
+klasse Barrier:
     def __init__(self, num_threads):
         self.num_threads = num_threads
         self.waiting = 0
@@ -363,7 +363,7 @@ class Barrier:
         self.checkout_mutex.release()
 
 
-class BarrierTest(BasicThreadTest):
+klasse BarrierTest(BasicThreadTest):
 
     def test_barrier(self):
         with threading_helper.wait_threads_exit():
@@ -400,11 +400,11 @@ class BarrierTest(BasicThreadTest):
         if finished:
             self.done_mutex.release()
 
-class LockTests(lock_tests.LockTests):
+klasse LockTests(lock_tests.LockTests):
     locktype = thread.allocate_lock
 
 
-class TestForkInThread(unittest.TestCase):
+klasse TestForkInThread(unittest.TestCase):
     def setUp(self):
         self.read_fd, self.write_fd = os.pipe()
 

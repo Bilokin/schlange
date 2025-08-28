@@ -4,7 +4,7 @@ import email.message
 import email.errors
 from email import quoprimime
 
-class ContentManager:
+klasse ContentManager:
 
     def __init__(self):
         self.get_handlers = {}

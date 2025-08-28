@@ -80,7 +80,7 @@ def write32u(output, value):
     # or unsigned.
     output.write(struct.pack("<L", value))
 
-class _PaddedFile:
+klasse _PaddedFile:
     """Minimal read-only file object that prepends a string to the contents
     of an actual file. Shouldn't be used outside of gzip.py, as it lacks
     essential functionality."""
@@ -122,11 +122,11 @@ class _PaddedFile:
         return True  # Allows fast-forwarding even in unseekable streams
 
 
-class BadGzipFile(OSError):
+klasse BadGzipFile(OSError):
     """Exception raised in some cases for invalid gzip files."""
 
 
-class _WriteBufferStream(io.RawIOBase):
+klasse _WriteBufferStream(io.RawIOBase):
     """Minimal object to pass WriteBuffer flushes into GzipFile"""
     def __init__(self, gzip_file):
         self.gzip_file = weakref.ref(gzip_file)
@@ -144,11 +144,11 @@ class _WriteBufferStream(io.RawIOBase):
         return True
 
 
-class GzipFile(_streams.BaseStream):
-    """The GzipFile class simulates most of the methods of a file object with
+klasse GzipFile(_streams.BaseStream):
+    """The GzipFile klasse simulates most of the methods of a file object with
     the exception of the truncate() method.
 
-    This class only supports opening files in binary mode. If you need to open a
+    This klasse only supports opening files in binary mode. If you need to open a
     compressed file in text mode, use the gzip.open() function.
 
     """
@@ -164,7 +164,7 @@ class GzipFile(_streams.BaseStream):
         At least one of fileobj and filename must be given a
         non-trivial value.
 
-        The new class instance is based on fileobj, which can be a regular
+        The new klasse instance is based on fileobj, which can be a regular
         file, an io.BytesIO object, or any other object which simulates a file.
         It defaults to None, in which case filename is opened to provide
         a file object.
@@ -521,7 +521,7 @@ def _read_gzip_header(fp):
     return last_mtime
 
 
-class _GzipReader(_streams.DecompressReader):
+klasse _GzipReader(_streams.DecompressReader):
     def __init__(self, fp):
         super().__init__(_PaddedFile(fp), zlib._ZlibDecompressor,
                          wbits=-zlib.MAX_WBITS)

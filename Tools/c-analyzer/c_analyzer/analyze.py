@@ -196,7 +196,7 @@ def find_typedecl(decl, typespec, typespecs):
 #############################
 # handling unresolved decls
 
-class Skipped(TypeDeclaration):
+klasse Skipped(TypeDeclaration):
     def __init__(self):
         _file = _name = _data = _parent = None
         super().__init__(_file, _name, _data, _parent, _shortkey='<skipped>')

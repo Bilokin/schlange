@@ -46,7 +46,7 @@ CONNECT_PIPE_INIT_DELAY = 0.001
 CONNECT_PIPE_MAX_DELAY = 0.100
 
 
-class _OverlappedFuture(futures.Future):
+klasse _OverlappedFuture(futures.Future):
     """Subclass of Future which represents an overlapped operation.
 
     Cancelling it will immediately cancel the overlapped operation.
@@ -94,7 +94,7 @@ class _OverlappedFuture(futures.Future):
         self._ov = None
 
 
-class _BaseWaitHandleFuture(futures.Future):
+klasse _BaseWaitHandleFuture(futures.Future):
     """Subclass of Future which represents a wait handle."""
 
     def __init__(self, ov, handle, wait_handle, *, loop=None):
@@ -168,7 +168,7 @@ class _BaseWaitHandleFuture(futures.Future):
         super().set_result(result)
 
 
-class _WaitCancelFuture(_BaseWaitHandleFuture):
+klasse _WaitCancelFuture(_BaseWaitHandleFuture):
     """Subclass of Future which represents a wait for the cancellation of a
     _WaitHandleFuture using an event.
     """
@@ -192,7 +192,7 @@ class _WaitCancelFuture(_BaseWaitHandleFuture):
             self._done_callback(self)
 
 
-class _WaitHandleFuture(_BaseWaitHandleFuture):
+klasse _WaitHandleFuture(_BaseWaitHandleFuture):
     def __init__(self, ov, handle, wait_handle, proactor, *, loop=None):
         super().__init__(ov, handle, wait_handle, loop=loop)
         self._proactor = proactor
@@ -244,7 +244,7 @@ class _WaitHandleFuture(_BaseWaitHandleFuture):
                                                       self._unregister_wait_cb)
 
 
-class PipeServer(object):
+klasse PipeServer(object):
     """Class representing a pipe server.
 
     This is much like a bound, listening socket.
@@ -303,11 +303,11 @@ class PipeServer(object):
     __del__ = close
 
 
-class _WindowsSelectorEventLoop(selector_events.BaseSelectorEventLoop):
+klasse _WindowsSelectorEventLoop(selector_events.BaseSelectorEventLoop):
     """Windows version of selector event loop."""
 
 
-class ProactorEventLoop(proactor_events.BaseProactorEventLoop):
+klasse ProactorEventLoop(proactor_events.BaseProactorEventLoop):
     """Windows version of proactor event loop using IOCP."""
 
     def __init__(self, proactor=None):
@@ -414,7 +414,7 @@ class ProactorEventLoop(proactor_events.BaseProactorEventLoop):
         return transp
 
 
-class IocpProactor:
+klasse IocpProactor:
     """Proactor implementation using IOCP."""
 
     def __init__(self, concurrency=INFINITE):
@@ -873,7 +873,7 @@ class IocpProactor:
         self.close()
 
 
-class _WindowsSubprocessTransport(base_subprocess.BaseSubprocessTransport):
+klasse _WindowsSubprocessTransport(base_subprocess.BaseSubprocessTransport):
 
     def _start(self, args, shell, stdin, stdout, stderr, bufsize, **kwargs):
         self._proc = windows_utils.Popen(
@@ -891,11 +891,11 @@ class _WindowsSubprocessTransport(base_subprocess.BaseSubprocessTransport):
 SelectorEventLoop = _WindowsSelectorEventLoop
 
 
-class _WindowsSelectorEventLoopPolicy(events._BaseDefaultEventLoopPolicy):
+klasse _WindowsSelectorEventLoopPolicy(events._BaseDefaultEventLoopPolicy):
     _loop_factory = SelectorEventLoop
 
 
-class _WindowsProactorEventLoopPolicy(events._BaseDefaultEventLoopPolicy):
+klasse _WindowsProactorEventLoopPolicy(events._BaseDefaultEventLoopPolicy):
     _loop_factory = ProactorEventLoop
 
 

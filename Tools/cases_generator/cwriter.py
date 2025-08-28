@@ -3,7 +3,7 @@ from lexer import Token
 from typing import TextIO, Iterator
 from io import StringIO
 
-class CWriter:
+klasse CWriter:
     "A writer that understands tokens and how to format C code"
 
     last_token: Token | None

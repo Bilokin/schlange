@@ -7,21 +7,21 @@ import struct
 import unittest
 from ._support import StructCheckMixin
 
-class TestAlignedStructures(unittest.TestCase, StructCheckMixin):
+klasse TestAlignedStructures(unittest.TestCase, StructCheckMixin):
     def test_aligned_string(self):
         for base, e in (
             (LittleEndianStructure, "<"),
             (BigEndianStructure, ">"),
         ):
             data =  bytearray(struct.pack(f"{e}i12x16s", 7, b"hello world!"))
-            class Aligned(base):
+            klasse Aligned(base):
                 _align_ = 16
                 _fields_ = [
                     ('value', c_char * 12)
                 ]
             self.check_struct(Aligned)
 
-            class Main(base):
+            klasse Main(base):
                 _fields_ = [
                     ('first', c_uint32),
                     ('string', Aligned),
@@ -42,14 +42,14 @@ class TestAlignedStructures(unittest.TestCase, StructCheckMixin):
             (LittleEndianStructure, bytearray(b"\1\0\0\0\1\0\0\0\7\0\0\0")),
             (BigEndianStructure, bytearray(b"\1\0\0\0\1\0\0\0\7\0\0\0")),
         ):
-            class SomeBools(base):
+            klasse SomeBools(base):
                 _align_ = 4
                 _fields_ = [
                     ("bool1", c_ubyte),
                     ("bool2", c_ubyte),
                 ]
             self.check_struct(SomeBools)
-            class Main(base):
+            klasse Main(base):
                 _fields_ = [
                     ("x", c_ubyte),
                     ("y", SomeBools),
@@ -78,14 +78,14 @@ class TestAlignedStructures(unittest.TestCase, StructCheckMixin):
                     '_align_ must be a non-negative integer',
                 )
             ):
-                class MyStructure(base):
+                klasse MyStructure(base):
                     _align_ = -1
                     _fields_ = []
 
     def test_zero_align_no_fields(self):
         for base in (Structure, LittleEndianStructure, BigEndianStructure):
             with self.subTest(base=base):
-                class MyStructure(base):
+                klasse MyStructure(base):
                     _align_ = 0
                     _fields_ = []
 
@@ -95,7 +95,7 @@ class TestAlignedStructures(unittest.TestCase, StructCheckMixin):
     def test_zero_align_with_fields(self):
         for base in (Structure, LittleEndianStructure, BigEndianStructure):
             with self.subTest(base=base):
-                class MyStructure(base):
+                klasse MyStructure(base):
                     _align_ = 0
                     _fields_ = [
                         ("x", c_ubyte),
@@ -107,7 +107,7 @@ class TestAlignedStructures(unittest.TestCase, StructCheckMixin):
     def test_oversized_structure(self):
         data = bytearray(b"\0" * 8)
         for base in (LittleEndianStructure, BigEndianStructure):
-            class SomeBoolsTooBig(base):
+            klasse SomeBoolsTooBig(base):
                 _align_ = 8
                 _fields_ = [
                     ("bool1", c_ubyte),
@@ -115,7 +115,7 @@ class TestAlignedStructures(unittest.TestCase, StructCheckMixin):
                     ("bool3", c_ubyte),
                 ]
             self.check_struct(SomeBoolsTooBig)
-            class Main(base):
+            klasse Main(base):
                 _fields_ = [
                     ("y", SomeBoolsTooBig),
                     ("z", c_uint32),
@@ -134,21 +134,21 @@ class TestAlignedStructures(unittest.TestCase, StructCheckMixin):
             (BigEndianStructure, ">"),
         ):
             data = bytearray(struct.pack(f"{e}4i", 1, 2, 3, 4))
-            class UnalignedSub(base):
+            klasse UnalignedSub(base):
                 x: c_uint32
                 _fields_ = [
                     ("x", c_uint32),
                 ]
             self.check_struct(UnalignedSub)
 
-            class AlignedStruct(UnalignedSub):
+            klasse AlignedStruct(UnalignedSub):
                 _align_ = 8
                 _fields_ = [
                     ("y", c_uint32),
                 ]
             self.check_struct(AlignedStruct)
 
-            class Main(base):
+            klasse Main(base):
                 _fields_ = [
                     ("a", c_uint32),
                     ("b", AlignedStruct)
@@ -172,7 +172,7 @@ class TestAlignedStructures(unittest.TestCase, StructCheckMixin):
             (BigEndianStructure, BigEndianUnion, ">"),
         ):
             data = bytearray(struct.pack(f"{e}4i", 1, 2, 3, 4))
-            class AlignedUnion(ubase):
+            klasse AlignedUnion(ubase):
                 _align_ = 8
                 _fields_ = [
                     ("a", c_uint32),
@@ -180,7 +180,7 @@ class TestAlignedStructures(unittest.TestCase, StructCheckMixin):
                 ]
             self.check_union(AlignedUnion)
 
-            class Main(sbase):
+            klasse Main(sbase):
                 _fields_ = [
                     ("first", c_uint32),
                     ("union", AlignedUnion),
@@ -202,7 +202,7 @@ class TestAlignedStructures(unittest.TestCase, StructCheckMixin):
             (BigEndianStructure, BigEndianUnion, ">"),
         ):
             data = bytearray(struct.pack(f"{e}4i", 1, 2, 3, 4))
-            class Sub(sbase):
+            klasse Sub(sbase):
                 _align_ = 8
                 _fields_ = [
                     ("x", c_uint32),
@@ -210,14 +210,14 @@ class TestAlignedStructures(unittest.TestCase, StructCheckMixin):
                 ]
             self.check_struct(Sub)
 
-            class MainUnion(ubase):
+            klasse MainUnion(ubase):
                 _fields_ = [
                     ("a", c_uint32),
                     ("b", Sub),
                 ]
             self.check_union(MainUnion)
 
-            class Main(sbase):
+            klasse Main(sbase):
                 _fields_ = [
                     ("first", c_uint32),
                     ("union", MainUnion),
@@ -241,7 +241,7 @@ class TestAlignedStructures(unittest.TestCase, StructCheckMixin):
             (BigEndianStructure, BigEndianUnion, ">"),
         ):
             data = bytearray(struct.pack(f"{e}H2xI", 1, 0xD60102D7))
-            class SubUnion(ubase):
+            klasse SubUnion(ubase):
                 _align_ = 2
                 _fields_ = [
                     ("unsigned", c_ubyte),
@@ -249,13 +249,13 @@ class TestAlignedStructures(unittest.TestCase, StructCheckMixin):
                 ]
             self.check_union(SubUnion)
 
-            class MainUnion(SubUnion):
+            klasse MainUnion(SubUnion):
                 _fields_ = [
                     ("num", c_uint32)
                 ]
             self.check_union(SubUnion)
 
-            class Main(sbase):
+            klasse Main(sbase):
                 _fields_ = [
                     ("first", c_uint16),
                     ("union", MainUnion),
@@ -278,7 +278,7 @@ class TestAlignedStructures(unittest.TestCase, StructCheckMixin):
             (BigEndianUnion, ">"),
         ):
             data = bytearray(struct.pack(f"{e}I4x", 0xD60102D6))
-            class SubUnion(ubase):
+            klasse SubUnion(ubase):
                 _align_ = 8
                 _fields_ = [
                     ("unsigned", c_ubyte),
@@ -286,7 +286,7 @@ class TestAlignedStructures(unittest.TestCase, StructCheckMixin):
                 ]
             self.check_union(SubUnion)
 
-            class Main(SubUnion):
+            klasse Main(SubUnion):
                 _fields_ = [
                     ("num", c_uint32)
                 ]
@@ -306,7 +306,7 @@ class TestAlignedStructures(unittest.TestCase, StructCheckMixin):
         ):
             data = bytearray(struct.pack(f"{e}B2H4xB", 1, 2, 3, 4))
 
-            class Inner(sbase):
+            klasse Inner(sbase):
                 _align_ = 8
                 _fields_ = [
                     ("x", c_uint16),
@@ -314,7 +314,7 @@ class TestAlignedStructures(unittest.TestCase, StructCheckMixin):
                 ]
             self.check_struct(Inner)
 
-            class Main(sbase):
+            klasse Main(sbase):
                 _pack_ = 1
                 _layout_ = "ms"
                 _fields_ = [

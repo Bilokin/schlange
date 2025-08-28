@@ -2,11 +2,11 @@ from test import support
 from test.test_json import PyTest, CTest
 
 
-class JSONTestObject:
+klasse JSONTestObject:
     pass
 
 
-class TestRecursion:
+klasse TestRecursion:
     def test_listrecursion(self):
         x = []
         x.append(x)
@@ -45,7 +45,7 @@ class TestRecursion:
         self.dumps(x)
 
     def test_defaultrecursion(self):
-        class RecursiveJSONEncoder(self.json.JSONEncoder):
+        klasse RecursiveJSONEncoder(self.json.JSONEncoder):
             recurse = False
             def default(self, o):
                 if o is JSONTestObject:
@@ -103,7 +103,7 @@ class TestRecursion:
     @support.skip_wasi_stack_overflow()
     def test_endless_recursion(self):
         # See #12051
-        class EndlessJSONEncoder(self.json.JSONEncoder):
+        klasse EndlessJSONEncoder(self.json.JSONEncoder):
             def default(self, o):
                 """If check_circular is False, this will keep adding another list."""
                 return [o]
@@ -113,5 +113,5 @@ class TestRecursion:
                 EndlessJSONEncoder(check_circular=False).encode(5j)
 
 
-class TestPyRecursion(TestRecursion, PyTest): pass
-class TestCRecursion(TestRecursion, CTest): pass
+klasse TestPyRecursion(TestRecursion, PyTest): pass
+klasse TestCRecursion(TestRecursion, CTest): pass

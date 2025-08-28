@@ -129,7 +129,7 @@ def _sanitize_params(prefix, suffix, dir):
     return prefix, suffix, dir, output_type
 
 
-class _RandomNameSequence:
+klasse _RandomNameSequence:
     """An instance of _RandomNameSequence generates an endless
     sequence of unpredictable strings which can safely be incorporated
     into file names.  Each string is eight characters long.  Multiple
@@ -430,7 +430,7 @@ def mktemp(suffix="", prefix=template, dir=None):
                           "No usable temporary filename found")
 
 
-class _TemporaryFileCloser:
+klasse _TemporaryFileCloser:
     """A separate object allowing proper closing of a temporary file's
     underlying file object, without adding a __del__ method to the
     temporary file."""
@@ -484,10 +484,10 @@ class _TemporaryFileCloser:
             _warnings.warn(self.warn_message, ResourceWarning)
 
 
-class _TemporaryFileWrapper:
+klasse _TemporaryFileWrapper:
     """Temporary file wrapper
 
-    This class provides a wrapper around files opened for
+    This klasse provides a wrapper around files opened for
     temporary use.  In particular, it seeks to automatically
     remove the file when it is no longer needed.
     """
@@ -703,7 +703,7 @@ else:
         raw.name = fd
         return file
 
-class SpooledTemporaryFile(_io.IOBase):
+klasse SpooledTemporaryFile(_io.IOBase):
     """Temporary file wrapper, specialized to switch from BytesIO
     or StringIO to a real file when it exceeds a certain size or
     when a fileno is needed.
@@ -882,7 +882,7 @@ class SpooledTemporaryFile(_io.IOBase):
         return self._file.detach()
 
 
-class TemporaryDirectory:
+klasse TemporaryDirectory:
     """Create and return a temporary directory.  This has the same
     behavior as mkdtemp but can be used as a context manager.  For
     example:

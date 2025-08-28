@@ -8,11 +8,11 @@ NULL = None
 PY_SSIZE_T_MIN = _testcapi.PY_SSIZE_T_MIN
 PY_SSIZE_T_MAX = _testcapi.PY_SSIZE_T_MAX
 
-class ListSubclass(list):
+klasse ListSubclass(list):
     pass
 
 
-class DelAppend:
+klasse DelAppend:
     def __init__(self, lst, item):
         self.lst = lst
         self.item = item
@@ -21,7 +21,7 @@ class DelAppend:
         self.lst.append(self.item)
 
 
-class CAPITest(unittest.TestCase):
+klasse CAPITest(unittest.TestCase):
     def test_check(self):
         # Test PyList_Check()
         check = _testlimitedcapi.list_check

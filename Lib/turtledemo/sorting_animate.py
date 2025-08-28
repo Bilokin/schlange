@@ -13,7 +13,7 @@ from turtle import *
 import random
 
 
-class Block(Turtle):
+klasse Block(Turtle):
 
     def __init__(self, size):
         self.size = size
@@ -33,7 +33,7 @@ class Block(Turtle):
         return "Block size: {0}".format(self.size)
 
 
-class Shelf(list):
+klasse Shelf(list):
 
     def __init__(self, y):
         "create a shelf. y is y-position of first block"

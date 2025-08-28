@@ -13,7 +13,7 @@ from test.support import os_helper
 from test.support import warnings_helper
 from collections import UserList
 
-class AutoFileTests:
+klasse AutoFileTests:
     # file tests for which a test file is automatically set up
 
     def setUp(self):
@@ -78,7 +78,7 @@ class AutoFileTests:
 
     def testWritelinesNonString(self):
         # verify writelines with non-string object
-        class NonString:
+        klasse NonString:
             pass
 
         self.assertRaises(TypeError, self.f.writelines,
@@ -132,14 +132,14 @@ class AutoFileTests:
     def testReadWhenWriting(self):
         self.assertRaises(OSError, self.f.read)
 
-class CAutoFileTests(AutoFileTests, unittest.TestCase):
+klasse CAutoFileTests(AutoFileTests, unittest.TestCase):
     open = io.open
 
-class PyAutoFileTests(AutoFileTests, unittest.TestCase):
+klasse PyAutoFileTests(AutoFileTests, unittest.TestCase):
     open = staticmethod(pyio.open)
 
 
-class OtherFileTests:
+klasse OtherFileTests:
 
     def tearDown(self):
         os_helper.unlink(TESTFN)
@@ -351,10 +351,10 @@ class OtherFileTests:
         finally:
             f.close()
 
-class COtherFileTests(OtherFileTests, unittest.TestCase):
+klasse COtherFileTests(OtherFileTests, unittest.TestCase):
     open = io.open
 
-class PyOtherFileTests(OtherFileTests, unittest.TestCase):
+klasse PyOtherFileTests(OtherFileTests, unittest.TestCase):
     open = staticmethod(pyio.open)
 
 

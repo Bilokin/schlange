@@ -13,7 +13,7 @@ from test.test_tools import toolsdir, skip_if_missing
 
 skip_if_missing()
 
-class ReindentTests(unittest.TestCase):
+klasse ReindentTests(unittest.TestCase):
     script = os.path.join(toolsdir, 'patchcheck', 'reindent.py')
 
     def test_noargs(self):

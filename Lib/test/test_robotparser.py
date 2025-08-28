@@ -9,7 +9,7 @@ from test.support import threading_helper
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
 
-class BaseRobotTest:
+klasse BaseRobotTest:
     robots_txt = ''
     agent = 'test_robotparser'
     good = []
@@ -43,7 +43,7 @@ class BaseRobotTest:
         self.assertEqual(self.parser.site_maps(), self.site_maps)
 
 
-class UserAgentWildcardTest(BaseRobotTest, unittest.TestCase):
+klasse UserAgentWildcardTest(BaseRobotTest, unittest.TestCase):
     robots_txt = """\
 User-agent: *
 Disallow: /cyberworld/map/ # This is an infinite virtual URL space
@@ -54,7 +54,7 @@ Disallow: /foo.html
     bad = ['/cyberworld/map/index.html', '/tmp/xxx', '/foo.html']
 
 
-class CrawlDelayAndCustomAgentTest(BaseRobotTest, unittest.TestCase):
+klasse CrawlDelayAndCustomAgentTest(BaseRobotTest, unittest.TestCase):
     robots_txt = """\
 # robots.txt for http://www.example.com/
 
@@ -71,7 +71,7 @@ Disallow:
     bad = ['/cyberworld/map/index.html']
 
 
-class SitemapTest(BaseRobotTest, unittest.TestCase):
+klasse SitemapTest(BaseRobotTest, unittest.TestCase):
     robots_txt = """\
 # robots.txt for http://www.example.com/
 
@@ -88,7 +88,7 @@ Disallow: /cyberworld/map/ # This is an infinite virtual URL space
                  'http://www.google.com/hostednews/sitemap_index.xml']
 
 
-class RejectAllRobotsTest(BaseRobotTest, unittest.TestCase):
+klasse RejectAllRobotsTest(BaseRobotTest, unittest.TestCase):
     robots_txt = """\
 # go away
 User-agent: *
@@ -98,7 +98,7 @@ Disallow: /
     bad = ['/cyberworld/map/index.html', '/', '/tmp/']
 
 
-class BaseRequestRateTest(BaseRobotTest):
+klasse BaseRequestRateTest(BaseRobotTest):
     request_rate = None
     crawl_delay = None
 
@@ -126,12 +126,12 @@ class BaseRequestRateTest(BaseRobotTest):
                     )
 
 
-class EmptyFileTest(BaseRequestRateTest, unittest.TestCase):
+klasse EmptyFileTest(BaseRequestRateTest, unittest.TestCase):
     robots_txt = ''
     good = ['/foo']
 
 
-class CrawlDelayAndRequestRateTest(BaseRequestRateTest, unittest.TestCase):
+klasse CrawlDelayAndRequestRateTest(BaseRequestRateTest, unittest.TestCase):
     robots_txt = """\
 User-agent: figtree
 Crawl-delay: 3
@@ -149,11 +149,11 @@ Disallow: /%7ejoe/index.html
            '/a%2fb.html', '/~joe/index.html']
 
 
-class DifferentAgentTest(CrawlDelayAndRequestRateTest):
+klasse DifferentAgentTest(CrawlDelayAndRequestRateTest):
     agent = 'FigTree Robot libwww-perl/5.04'
 
 
-class InvalidRequestRateTest(BaseRobotTest, unittest.TestCase):
+klasse InvalidRequestRateTest(BaseRobotTest, unittest.TestCase):
     robots_txt = """\
 User-agent: *
 Disallow: /tmp/
@@ -169,7 +169,7 @@ Request-rate: 9/banana
     crawl_delay = 3
 
 
-class InvalidCrawlDelayTest(BaseRobotTest, unittest.TestCase):
+klasse InvalidCrawlDelayTest(BaseRobotTest, unittest.TestCase):
     # From bug report #523041
     robots_txt = """\
 User-Agent: *
@@ -181,7 +181,7 @@ Crawl-delay: pears
     bad = []
 
 
-class AnotherInvalidRequestRateTest(BaseRobotTest, unittest.TestCase):
+klasse AnotherInvalidRequestRateTest(BaseRobotTest, unittest.TestCase):
     # also test that Allow and Diasallow works well with each other
     robots_txt = """\
 User-agent: Googlebot
@@ -194,7 +194,7 @@ Request-rate: whale/banana
     bad = ['/folder1/anotherfile.html']
 
 
-class UserAgentOrderingTest(BaseRobotTest, unittest.TestCase):
+klasse UserAgentOrderingTest(BaseRobotTest, unittest.TestCase):
     # the order of User-agent should be correct. note
     # that this file is incorrect because "Googlebot" is a
     # substring of "Googlebot-Mobile"
@@ -209,11 +209,11 @@ Allow: /
     bad = ['/something.jpg']
 
 
-class UserAgentGoogleMobileTest(UserAgentOrderingTest):
+klasse UserAgentGoogleMobileTest(UserAgentOrderingTest):
     agent = 'Googlebot-Mobile'
 
 
-class GoogleURLOrderingTest(BaseRobotTest, unittest.TestCase):
+klasse GoogleURLOrderingTest(BaseRobotTest, unittest.TestCase):
     # Google also got the order wrong. You need
     # to specify the URLs from more specific to more general
     robots_txt = """\
@@ -226,7 +226,7 @@ Disallow: /folder1/
     bad = ['/folder1/anotherfile.html']
 
 
-class DisallowQueryStringTest(BaseRobotTest, unittest.TestCase):
+klasse DisallowQueryStringTest(BaseRobotTest, unittest.TestCase):
     # see issue #6325 for details
     robots_txt = """\
 User-agent: *
@@ -236,7 +236,7 @@ Disallow: /some/path?name=value
     bad = ['/some/path?name=value']
 
 
-class UseFirstUserAgentWildcardTest(BaseRobotTest, unittest.TestCase):
+klasse UseFirstUserAgentWildcardTest(BaseRobotTest, unittest.TestCase):
     # obey first * entry (#4108)
     robots_txt = """\
 User-agent: *
@@ -249,7 +249,7 @@ Disallow: /another/path
     bad = ['/some/path']
 
 
-class EmptyQueryStringTest(BaseRobotTest, unittest.TestCase):
+klasse EmptyQueryStringTest(BaseRobotTest, unittest.TestCase):
     # normalize the URL first (#17403)
     robots_txt = """\
 User-agent: *
@@ -260,7 +260,7 @@ Disallow: /another/path?
     bad = ['/another/path?']
 
 
-class DefaultEntryTest(BaseRequestRateTest, unittest.TestCase):
+klasse DefaultEntryTest(BaseRequestRateTest, unittest.TestCase):
     robots_txt = """\
 User-agent: *
 Crawl-delay: 1
@@ -273,7 +273,7 @@ Disallow: /cyberworld/map/
     bad = ['/cyberworld/map/index.html']
 
 
-class StringFormattingTest(BaseRobotTest, unittest.TestCase):
+klasse StringFormattingTest(BaseRobotTest, unittest.TestCase):
     robots_txt = """\
 User-agent: *
 Crawl-delay: 1
@@ -299,7 +299,7 @@ Disallow: /cyberworld/map/\
         self.assertEqual(str(self.parser), self.expected_output)
 
 
-class RobotHandler(BaseHTTPRequestHandler):
+klasse RobotHandler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         self.send_error(403, "Forbidden access")
@@ -312,7 +312,7 @@ class RobotHandler(BaseHTTPRequestHandler):
     support.has_socket_support,
     "Socket server requires working socket."
 )
-class PasswordProtectedSiteTestCase(unittest.TestCase):
+klasse PasswordProtectedSiteTestCase(unittest.TestCase):
 
     def setUp(self):
         # clear _opener global variable
@@ -347,7 +347,7 @@ class PasswordProtectedSiteTestCase(unittest.TestCase):
 
 
 @support.requires_working_socket()
-class NetworkTestCase(unittest.TestCase):
+klasse NetworkTestCase(unittest.TestCase):
 
     base_url = 'http://www.pythontest.net/'
     robots_txt = '{}elsewhere/robots.txt'.format(base_url)

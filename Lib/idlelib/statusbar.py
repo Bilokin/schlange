@@ -1,7 +1,7 @@
 from tkinter.ttk import Label, Frame
 
 
-class MultiStatusBar(Frame):
+klasse MultiStatusBar(Frame):
 
     def __init__(self, master, **kw):
         Frame.__init__(self, master, **kw)

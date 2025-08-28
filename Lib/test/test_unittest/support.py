@@ -1,7 +1,7 @@
 import unittest
 
 
-class TestEquality(object):
+klasse TestEquality(object):
     """Used as a mixin for TestCase"""
 
     # Check for a valid __eq__ implementation
@@ -16,7 +16,7 @@ class TestEquality(object):
             self.assertNotEqual(obj_1, obj_2)
             self.assertNotEqual(obj_2, obj_1)
 
-class TestHashing(object):
+klasse TestHashing(object):
     """Used as a mixin for TestCase"""
 
     # Check for a valid __hash__ implementation
@@ -37,7 +37,7 @@ class TestHashing(object):
                 self.fail("Problem hashing %s and %s: %s" % (obj_1, obj_2, e))
 
 
-class _BaseLoggingResult(unittest.TestResult):
+klasse _BaseLoggingResult(unittest.TestResult):
     def __init__(self, log):
         self._events = log
         super().__init__()
@@ -83,7 +83,7 @@ class _BaseLoggingResult(unittest.TestResult):
         super().addUnexpectedSuccess(*args)
 
 
-class LegacyLoggingResult(_BaseLoggingResult):
+klasse LegacyLoggingResult(_BaseLoggingResult):
     """
     A legacy TestResult implementation, without an addSubTest method,
     which records its method calls.
@@ -94,7 +94,7 @@ class LegacyLoggingResult(_BaseLoggingResult):
         raise AttributeError
 
 
-class LoggingResult(_BaseLoggingResult):
+klasse LoggingResult(_BaseLoggingResult):
     """
     A TestResult implementation which records its method calls.
     """
@@ -107,7 +107,7 @@ class LoggingResult(_BaseLoggingResult):
         super().addSubTest(test, subtest, err)
 
 
-class ResultWithNoStartTestRunStopTestRun(object):
+klasse ResultWithNoStartTestRunStopTestRun(object):
     """An object honouring TestResult before startTestRun/stopTestRun."""
 
     def __init__(self):
@@ -138,7 +138,7 @@ class ResultWithNoStartTestRunStopTestRun(object):
         return True
 
 
-class BufferedWriter:
+klasse BufferedWriter:
     def __init__(self):
         self.result = ''
         self.buffer = ''

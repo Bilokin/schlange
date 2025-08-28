@@ -23,7 +23,7 @@ def char_name_db(draw, min_length=1, max_length=30):
     return list(zip(names, characters))
 
 
-class TestDawg(unittest.TestCase):
+klasse TestDawg(unittest.TestCase):
     """Tests for the directed acyclic word graph data structure that is used
     to store the unicode character names in unicodedata. Tests ported from PyPy
     """

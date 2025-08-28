@@ -59,7 +59,7 @@ def find_selection(text):
     return _setup(text).find_selection(text)
 
 
-class SearchDialog(SearchDialogBase):
+klasse SearchDialog(SearchDialogBase):
     "Dialog for finding a pattern in text."
 
     def create_widgets(self):

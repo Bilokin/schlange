@@ -38,7 +38,7 @@ def bigendian_to_native(value):
     else:
         return string_reverse(value)
 
-class StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
+klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
     def test_isbigendian(self):
         self.assertEqual((struct.pack('=i', 1)[0] == 0), ISBIGENDIAN)
 
@@ -185,7 +185,7 @@ class StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         # Integer tests (bBhHiIlLqQnN).
         import binascii
 
-        class IntTester(unittest.TestCase):
+        klasse IntTester(unittest.TestCase):
             def __init__(self, format):
                 super(IntTester, self).__init__(methodName='test_one')
                 self.format = format
@@ -275,14 +275,14 @@ class StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                             self.test_one(x)
 
                 # Some error cases.
-                class NotAnInt:
+                klasse NotAnInt:
                     def __int__(self):
                         return 42
 
                 # Objects with an '__index__' method should be allowed
                 # to pack as integers.  That is assuming the implemented
                 # '__index__' method returns an 'int'.
-                class Indexable(object):
+                klasse Indexable(object):
                     def __init__(self, value):
                         self._value = value
 
@@ -291,7 +291,7 @@ class StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
                 # If the '__index__' method raises a type error, then
                 # '__int__' should be used with a deprecation warning.
-                class BadIndex(object):
+                klasse BadIndex(object):
                     def __index__(self):
                         raise TypeError
 
@@ -493,7 +493,7 @@ class StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             self.assertEqual(value, 0x12345678)
 
     def test_bool(self):
-        class ExplodingBool(object):
+        klasse ExplodingBool(object):
             def __bool__(self):
                 raise OSError
         for prefix in tuple("<>!=")+('',):
@@ -677,7 +677,7 @@ class StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         code = """if 1:
             import struct
 
-            class C:
+            klasse C:
                 def __init__(self):
                     self.pack = struct.pack
                 def __del__(self):
@@ -761,7 +761,7 @@ class StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
     @support.cpython_only
     def test_issue98248_error_propagation(self):
-        class Div0:
+        klasse Div0:
             def __index__(self):
                 1 / 0
 
@@ -779,7 +779,7 @@ class StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
     def test_struct_subclass_instantiation(self):
         # Regression test for https://github.com/python/cpython/issues/112358
-        class MyStruct(struct.Struct):
+        klasse MyStruct(struct.Struct):
             def __init__(self):
                 super().__init__('>h')
 
@@ -800,7 +800,7 @@ class StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                     self.assertComplexesAreIdentical(z, round_trip)
 
 
-class UnpackIteratorTest(unittest.TestCase):
+klasse UnpackIteratorTest(unittest.TestCase):
     """
     Tests for iterative unpacking (struct.Struct.iter_unpack).
     """

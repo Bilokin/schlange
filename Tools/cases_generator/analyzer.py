@@ -8,13 +8,13 @@ from typing import Optional, Callable
 from parser import Stmt, SimpleStmt, BlockStmt, IfStmt, WhileStmt, ForStmt, MacroIfStmt
 
 @dataclass
-class EscapingCall:
+klasse EscapingCall:
     stmt: SimpleStmt
     call: lexer.Token
     kills: lexer.Token | None
 
 @dataclass
-class Properties:
+klasse Properties:
     escaping_calls: dict[SimpleStmt, EscapingCall]
     escapes: bool
     error_with_pop: bool
@@ -106,7 +106,7 @@ SKIP_PROPERTIES = Properties(
 
 
 @dataclass
-class Skip:
+klasse Skip:
     "Unused cache entry"
     size: int
 
@@ -119,7 +119,7 @@ class Skip:
         return SKIP_PROPERTIES
 
 
-class Flush:
+klasse Flush:
     @property
     def properties(self) -> Properties:
         return SKIP_PROPERTIES
@@ -136,7 +136,7 @@ class Flush:
 
 
 @dataclass
-class StackItem:
+klasse StackItem:
     name: str
     size: str
     peek: bool = False
@@ -154,7 +154,7 @@ class StackItem:
 
 
 @dataclass
-class StackEffect:
+klasse StackEffect:
     inputs: list[StackItem]
     outputs: list[StackItem]
 
@@ -163,7 +163,7 @@ class StackEffect:
 
 
 @dataclass
-class CacheEntry:
+klasse CacheEntry:
     name: str
     size: int
 
@@ -172,7 +172,7 @@ class CacheEntry:
 
 
 @dataclass
-class Uop:
+klasse Uop:
     name: str
     context: parser.Context | None
     annotations: list[str]
@@ -228,7 +228,7 @@ class Uop:
         return False
 
 
-class Label:
+klasse Label:
 
     def __init__(self, name: str, spilled: bool, body: BlockStmt, properties: Properties):
         self.name = name
@@ -249,7 +249,7 @@ CodeSection = Uop | Label
 
 
 @dataclass
-class Instruction:
+klasse Instruction:
     where: lexer.Token
     name: str
     parts: list[Part]
@@ -286,7 +286,7 @@ class Instruction:
 
 
 @dataclass
-class PseudoInstruction:
+klasse PseudoInstruction:
     name: str
     stack: StackEffect
     targets: list[Instruction]
@@ -303,7 +303,7 @@ class PseudoInstruction:
 
 
 @dataclass
-class Family:
+klasse Family:
     name: str
     size: str
     members: list[Instruction]
@@ -313,7 +313,7 @@ class Family:
 
 
 @dataclass
-class Analysis:
+klasse Analysis:
     instructions: dict[str, Instruction]
     uops: dict[str, Uop]
     families: dict[str, Family]

@@ -6,7 +6,7 @@ from test.support import warnings_helper
 nturl2path = warnings_helper.import_deprecated("nturl2path")
 
 
-class NTURL2PathTest(unittest.TestCase):
+klasse NTURL2PathTest(unittest.TestCase):
     """Test pathname2url() and url2pathname()"""
 
     def test_basic(self):

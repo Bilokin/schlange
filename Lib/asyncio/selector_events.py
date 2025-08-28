@@ -50,7 +50,7 @@ def _test_selector_event(selector, fd, event):
         return bool(key.events & event)
 
 
-class BaseSelectorEventLoop(base_events.BaseEventLoop):
+klasse BaseSelectorEventLoop(base_events.BaseEventLoop):
     """Selector event loop.
 
     See events.EventLoop for API specification.
@@ -760,7 +760,7 @@ class BaseSelectorEventLoop(base_events.BaseEventLoop):
         sock.close()
 
 
-class _SelectorTransport(transports._FlowControlMixin,
+klasse _SelectorTransport(transports._FlowControlMixin,
                          transports.Transport):
 
     max_size = 256 * 1024  # Buffer size passed to recv().
@@ -924,7 +924,7 @@ class _SelectorTransport(transports._FlowControlMixin,
         self._loop._add_reader(fd, callback, *args)
 
 
-class _SelectorSocketTransport(_SelectorTransport):
+klasse _SelectorSocketTransport(_SelectorTransport):
 
     _start_tls_compatible = True
     _sendfile_compatible = constants._SendfileMode.TRY_NATIVE
@@ -1209,7 +1209,7 @@ class _SelectorSocketTransport(_SelectorTransport):
         super().close()
 
 
-class _SelectorDatagramTransport(_SelectorTransport, transports.DatagramTransport):
+klasse _SelectorDatagramTransport(_SelectorTransport, transports.DatagramTransport):
 
     _buffer_factory = collections.deque
     _header_size = 8

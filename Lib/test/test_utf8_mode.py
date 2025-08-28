@@ -15,7 +15,7 @@ from test.support import os_helper, MS_WINDOWS
 POSIX_LOCALES = ('C', 'POSIX')
 VXWORKS = (sys.platform == "vxworks")
 
-class UTF8ModeTests(unittest.TestCase):
+klasse UTF8ModeTests(unittest.TestCase):
     DEFAULT_ENV = {
         'PYTHONUTF8': '',
         'PYTHONLEGACYWINDOWSFSENCODING': '',

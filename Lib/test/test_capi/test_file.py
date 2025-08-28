@@ -16,7 +16,7 @@ with open(__file__, 'rb') as fp:
 FIRST_LINE_NORM = FIRST_LINE.rstrip() + '\n'
 
 
-class CAPIFileTest(unittest.TestCase):
+klasse CAPIFileTest(unittest.TestCase):
     def test_pyfile_fromfd(self):
         # Test PyFile_FromFd() which is a thin wrapper to _io.open()
         pyfile_fromfd = _testlimitedcapi.pyfile_fromfd
@@ -146,7 +146,7 @@ class CAPIFileTest(unittest.TestCase):
         with warnings_helper.check_warnings((msg, RuntimeWarning)):
             self.assertEqual(asfd(True), 1)
 
-        class FakeFile:
+        klasse FakeFile:
             def __init__(self, fd):
                 self.fd = fd
             def fileno(self):

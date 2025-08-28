@@ -10,7 +10,7 @@ def tearDownModule():
     asyncio.events._set_event_loop_policy(None)
 
 
-class FutureTests:
+klasse FutureTests:
 
     async def test_future_traceback(self):
 
@@ -70,13 +70,13 @@ class FutureTests:
 
 @unittest.skipUnless(hasattr(tasks, '_CTask'),
                        'requires the C _asyncio module')
-class CFutureTests(FutureTests, unittest.IsolatedAsyncioTestCase):
+klasse CFutureTests(FutureTests, unittest.IsolatedAsyncioTestCase):
     cls = tasks._CTask
 
-class PyFutureTests(FutureTests, unittest.IsolatedAsyncioTestCase):
+klasse PyFutureTests(FutureTests, unittest.IsolatedAsyncioTestCase):
     cls = tasks._PyTask
 
-class FutureReprTests(unittest.IsolatedAsyncioTestCase):
+klasse FutureReprTests(unittest.IsolatedAsyncioTestCase):
 
     async def test_recursive_repr_for_pending_tasks(self):
         # The call crashes if the guard for recursive call

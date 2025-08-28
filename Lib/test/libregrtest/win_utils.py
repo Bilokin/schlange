@@ -16,9 +16,9 @@ LOAD_FACTOR_1 = 1 / math.exp(SAMPLING_INTERVAL / 60)
 NVALUE = 5
 
 
-class WindowsLoadTracker():
+klasse WindowsLoadTracker():
     """
-    This class asynchronously reads the performance counters to calculate
+    This klasse asynchronously reads the performance counters to calculate
     the system load on Windows.  A "raw" thread is used here to prevent
     interference with the test suite's cases for the threading module.
     """

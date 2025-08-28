@@ -13,7 +13,7 @@ from _colorize import get_theme
 
 
 @support.requires_subprocess()
-class TestMain(unittest.TestCase):
+klasse TestMain(unittest.TestCase):
     data = """
 
         [["blorpie"],[ "whoops" ] , [
@@ -319,7 +319,7 @@ class TestMain(unittest.TestCase):
 
 
 @support.requires_subprocess()
-class TestTool(TestMain):
+klasse TestTool(TestMain):
     module = 'json.tool'
 
 

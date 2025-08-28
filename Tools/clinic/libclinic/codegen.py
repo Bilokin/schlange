@@ -15,7 +15,7 @@ if TYPE_CHECKING:
 TemplateDict = dict[str, str]
 
 
-class CRenderData:
+klasse CRenderData:
     def __init__(self) -> None:
 
         # The C statements to declare variables.
@@ -73,7 +73,7 @@ class CRenderData:
 
 
 @dc.dataclass(slots=True, frozen=True)
-class Include:
+klasse Include:
     """
     An include like: #include "pycore_long.h"   // _Py_ID()
     """
@@ -93,7 +93,7 @@ class Include:
 
 
 @dc.dataclass(slots=True)
-class BlockPrinter:
+klasse BlockPrinter:
     language: Language
     f: io.StringIO = dc.field(default_factory=io.StringIO)
 
@@ -176,7 +176,7 @@ class BlockPrinter:
         self.f.write(text)
 
 
-class BufferSeries:
+klasse BufferSeries:
     """
     Behaves like a "defaultlist".
     When you ask for an index that doesn't exist yet,
@@ -213,7 +213,7 @@ class BufferSeries:
 
 
 @dc.dataclass(slots=True, repr=False)
-class Destination:
+klasse Destination:
     name: str
     type: str
     clinic: Clinic
@@ -266,7 +266,7 @@ class Destination:
 DestinationDict = dict[str, Destination]
 
 
-class CodeGen:
+klasse CodeGen:
     def __init__(self, limited_capi: bool) -> None:
         self.limited_capi = limited_capi
         self._ifndef_symbols: set[str] = set()

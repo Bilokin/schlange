@@ -20,7 +20,7 @@ def openfile(filename, *args, **kws):
 
 
 # Base test class
-class TestEmailBase(unittest.TestCase):
+klasse TestEmailBase(unittest.TestCase):
 
     maxDiff = None
     # Currently the default policy is compat32.  By setting that as the default
@@ -73,9 +73,9 @@ class TestEmailBase(unittest.TestCase):
 
 
 def parameterize(cls):
-    """A test method parameterization class decorator.
+    """A test method parameterization klasse decorator.
 
-    Parameters are specified as the value of a class attribute that ends with
+    Parameters are specified as the value of a klasse attribute that ends with
     the string '_params'.  Call the portion before '_params' the prefix.  Then
     a method to be parameterized must have the same prefix, the string
     '_as_', and an arbitrary suffix.

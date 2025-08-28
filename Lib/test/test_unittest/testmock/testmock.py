@@ -15,7 +15,7 @@ from unittest.mock import (
 )
 
 
-class Iter(object):
+klasse Iter(object):
     def __init__(self):
         self.thing = iter(['this', 'is', 'an', 'iter'])
 
@@ -28,7 +28,7 @@ class Iter(object):
     __next__ = next
 
 
-class Something(object):
+klasse Something(object):
     def meth(self, a, b, c, d=None): pass
 
     @classmethod
@@ -38,7 +38,7 @@ class Something(object):
     def smeth(a, b, c, d=None): pass
 
 
-class SomethingElse(object):
+klasse SomethingElse(object):
     def __init__(self):
         self._instance = None
 
@@ -49,7 +49,7 @@ class SomethingElse(object):
         return self._instance
 
 
-class Typos():
+klasse Typos():
     autospect = None
     auto_spec = None
     set_spec = None
@@ -58,7 +58,7 @@ class Typos():
 def something(a): pass
 
 
-class MockTest(unittest.TestCase):
+klasse MockTest(unittest.TestCase):
 
     def test_all(self):
         # if __all__ is badly defined then import * will raise an error
@@ -130,7 +130,7 @@ class MockTest(unittest.TestCase):
         self.assertEqual(class_mock().return_value.meth.side_effect, None)
 
     def test_create_autospec_correctly_handles_name(self):
-        class X: ...
+        klasse X: ...
         mock = create_autospec(X, spec_set=True, name="Y")
         self.assertEqual(mock._mock_name, "Y")
 
@@ -151,7 +151,7 @@ class MockTest(unittest.TestCase):
 
 
     def test_repr_with_spec(self):
-        class X(object):
+        klasse X(object):
             pass
 
         mock = Mock(spec=X)
@@ -235,8 +235,8 @@ class MockTest(unittest.TestCase):
 
 
     def test_autospec_mock(self):
-        class A(object):
-            class B(object):
+        klasse A(object):
+            klasse B(object):
                 C = None
 
         with mock.patch.object(A, 'B'):
@@ -264,11 +264,11 @@ class MockTest(unittest.TestCase):
                 mock.mock_open()  # should still be valid with open() mocked
 
     def test_create_autospec_wraps_class(self):
-        """Autospec a class with wraps & test if the call is passed to the
+        """Autospec a klasse with wraps & test if the call is passed to the
         wrapped object."""
         result = "real result"
 
-        class Result:
+        klasse Result:
             def get_result(self):
                 return result
         class_mock = create_autospec(spec=Result, wraps=Result)
@@ -280,11 +280,11 @@ class MockTest(unittest.TestCase):
         self.assertEqual(class_mock.get_result._mock_wraps, Result.get_result)
 
     def test_create_autospec_instance_wraps_class(self):
-        """Autospec a class instance with wraps & test if the call is passed
+        """Autospec a klasse instance with wraps & test if the call is passed
         to the wrapped object."""
         result = "real result"
 
-        class Result:
+        klasse Result:
             @staticmethod
             def get_result():
                 """This is a static method because when the mocked instance of
@@ -305,7 +305,7 @@ class MockTest(unittest.TestCase):
         passed to the wrapped object."""
         result = "real result"
 
-        class Result:
+        klasse Result:
             def get_result(self):
                 return result
         func_mock = create_autospec(spec=Result.get_result, wraps=Result.get_result)
@@ -670,7 +670,7 @@ class MockTest(unittest.TestCase):
 
 
     def test_from_spec(self):
-        class Something(object):
+        klasse Something(object):
             x = 3
             __something__ = None
             def y(self): pass
@@ -716,7 +716,7 @@ class MockTest(unittest.TestCase):
 
 
     def test_wraps_prevents_automatic_creation_of_mocks(self):
-        class Real(object):
+        klasse Real(object):
             pass
 
         real = Real()
@@ -736,7 +736,7 @@ class MockTest(unittest.TestCase):
 
 
     def test_wraps_attributes(self):
-        class Real(object):
+        klasse Real(object):
             attribute = Mock()
 
         real = Real()
@@ -752,7 +752,7 @@ class MockTest(unittest.TestCase):
 
 
     def test_customize_wrapped_object_with_side_effect_iterable_with_default(self):
-        class Real(object):
+        klasse Real(object):
             def method(self):
                 return sentinel.ORIGINAL_VALUE
 
@@ -766,7 +766,7 @@ class MockTest(unittest.TestCase):
 
 
     def test_customize_wrapped_object_with_side_effect_iterable(self):
-        class Real(object):
+        klasse Real(object):
             def method(self): pass
 
         real = Real()
@@ -779,7 +779,7 @@ class MockTest(unittest.TestCase):
 
 
     def test_customize_wrapped_object_with_side_effect_exception(self):
-        class Real(object):
+        klasse Real(object):
             def method(self): pass
 
         real = Real()
@@ -790,7 +790,7 @@ class MockTest(unittest.TestCase):
 
 
     def test_customize_wrapped_object_with_side_effect_function(self):
-        class Real(object):
+        klasse Real(object):
             def method(self): pass
         def side_effect():
             return sentinel.VALUE
@@ -803,7 +803,7 @@ class MockTest(unittest.TestCase):
 
 
     def test_customize_wrapped_object_with_return_value(self):
-        class Real(object):
+        klasse Real(object):
             def method(self): pass
 
         real = Real()
@@ -815,7 +815,7 @@ class MockTest(unittest.TestCase):
 
     def test_customize_wrapped_object_with_return_value_and_side_effect(self):
         # side_effect should always take precedence over return_value.
-        class Real(object):
+        klasse Real(object):
             def method(self): pass
 
         real = Real()
@@ -830,7 +830,7 @@ class MockTest(unittest.TestCase):
 
     def test_customize_wrapped_object_with_return_value_and_side_effect2(self):
         # side_effect can return DEFAULT to default to return_value
-        class Real(object):
+        klasse Real(object):
             def method(self): pass
 
         real = Real()
@@ -842,7 +842,7 @@ class MockTest(unittest.TestCase):
 
 
     def test_customize_wrapped_object_with_return_value_and_side_effect_default(self):
-        class Real(object):
+        klasse Real(object):
             def method(self): pass
 
         real = Real()
@@ -890,7 +890,7 @@ class MockTest(unittest.TestCase):
 
     def test_magic_method_wraps_class(self):
 
-        class Foo:
+        klasse Foo:
 
             def __getitem__(self, index):
                 return index
@@ -944,7 +944,7 @@ class MockTest(unittest.TestCase):
 
 
     def test_spec_list_subclass(self):
-        class Sub(list):
+        klasse Sub(list):
             pass
         mock = Mock(spec=Sub(['foo']))
 
@@ -954,7 +954,7 @@ class MockTest(unittest.TestCase):
 
 
     def test_spec_class(self):
-        class X(object):
+        klasse X(object):
             pass
 
         mock = Mock(spec=X)
@@ -974,7 +974,7 @@ class MockTest(unittest.TestCase):
 
 
     def test_spec_class_no_object_base(self):
-        class X:
+        klasse X:
             pass
 
         mock = Mock(spec=X)
@@ -994,7 +994,7 @@ class MockTest(unittest.TestCase):
 
 
     def test_setting_attribute_with_spec_set(self):
-        class X(object):
+        klasse X(object):
             y = 3
 
         mock = Mock(spec=X)
@@ -1019,7 +1019,7 @@ class MockTest(unittest.TestCase):
 
 
     def test_subclass_with_properties(self):
-        class SubClass(Mock):
+        klasse SubClass(Mock):
             def _get(self):
                 return 3
             def _set(self, value):
@@ -1336,14 +1336,14 @@ class MockTest(unittest.TestCase):
 
 
     def test_subclassing(self):
-        class Subclass(Mock):
+        klasse Subclass(Mock):
             pass
 
         mock = Subclass()
         self.assertIsInstance(mock.foo, Subclass)
         self.assertIsInstance(mock(), Subclass)
 
-        class Subclass(Mock):
+        klasse Subclass(Mock):
             def _get_child_mock(self, **kwargs):
                 return Mock(**kwargs)
 
@@ -1416,7 +1416,7 @@ class MockTest(unittest.TestCase):
         self.assertEqual([mock(), mock(), mock()], ['g', 'h', 'i'])
         self.assertRaises(StopIteration, mock)
 
-        class Foo(object):
+        klasse Foo(object):
             pass
         mock = MagicMock(side_effect=Foo)
         self.assertIsInstance(mock(), Foo)
@@ -1548,12 +1548,12 @@ class MockTest(unittest.TestCase):
 
 
     def test_assert_has_calls_nested_spec(self):
-        class Something:
+        klasse Something:
 
             def __init__(self): pass
             def meth(self, a, b, c, d=None): pass
 
-            class Foo:
+            klasse Foo:
 
                 def __init__(self, a): pass
                 def meth1(self, a, b): pass
@@ -1730,7 +1730,7 @@ class MockTest(unittest.TestCase):
 
     #Issue23078
     def test_create_autospec_classmethod_and_staticmethod(self):
-        class TestClass:
+        klasse TestClass:
             @classmethod
             def class_method(cls): pass
 
@@ -1764,7 +1764,7 @@ class MockTest(unittest.TestCase):
         with self.assertRaisesRegex(AttributeError, msg):
             m.has_calls()
 
-        class Foo(object):
+        klasse Foo(object):
             def called_once(self): pass
 
             def has_calls(self): pass
@@ -1788,7 +1788,7 @@ class MockTest(unittest.TestCase):
 
     # gh-100739
     def test_mock_safe_with_spec(self):
-        class Foo(object):
+        klasse Foo(object):
             def assert_bar(self): pass
 
             def assertSome(self): pass
@@ -1898,11 +1898,11 @@ class MockTest(unittest.TestCase):
         self.assertEqual(m.f.side_effect, None)
 
     def test_mock_add_spec(self):
-        class _One(object):
+        klasse _One(object):
             one = 1
-        class _Two(object):
+        klasse _Two(object):
             two = 2
-        class Anything(object):
+        klasse Anything(object):
             one = two = three = 'four'
 
         klasses = [
@@ -2002,7 +2002,7 @@ class MockTest(unittest.TestCase):
 
 
     def test_manager_mock(self):
-        class Foo(object):
+        klasse Foo(object):
             one = 'one'
             two = 'two'
         manager = Mock()
@@ -2311,7 +2311,7 @@ class MockTest(unittest.TestCase):
 
 
     def test_isinstance_under_settrace(self):
-        # bpo-36593 : __class__ is not set for a class that has __class__
+        # bpo-36593 : __class__ is not set for a klasse that has __class__
         # property defined when it's used with sys.settrace(trace) set.
         # Delete the module to force reimport with tracing function set
         # restore the old reference later since there are other tests that are
@@ -2350,7 +2350,7 @@ class MockTest(unittest.TestCase):
                 self.assertIsInstance(obj, Something)
 
     def test_bool_not_called_when_passing_spec_arg(self):
-        class Something:
+        klasse Something:
             def __init__(self):
                 self.obj_with_bool_func = unittest.mock.MagicMock()
 
@@ -2360,7 +2360,7 @@ class MockTest(unittest.TestCase):
         self.assertEqual(obj.obj_with_bool_func.__bool__.call_count, 0)
 
     def test_misspelled_arguments(self):
-        class Foo():
+        klasse Foo():
             one = 'one'
         # patch, patch.object and create_autospec need to check for misspelled
         # arguments explicitly and throw a RuntimeError if found.
@@ -2413,7 +2413,7 @@ class MockTest(unittest.TestCase):
         self.assertEqual('object', obj.instance)
 
     def test_decorated_async_methods_with_spec_mock(self):
-        class Foo():
+        klasse Foo():
             @classmethod
             async def class_method(cls):
                 pass

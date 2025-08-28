@@ -11,7 +11,7 @@ def tearDownModule():
     asyncio.events._set_event_loop_policy(None)
 
 
-class ToThreadTests(unittest.IsolatedAsyncioTestCase):
+klasse ToThreadTests(unittest.IsolatedAsyncioTestCase):
     async def test_to_thread(self):
         result = await asyncio.to_thread(sum, [40, 2])
         self.assertEqual(result, 42)

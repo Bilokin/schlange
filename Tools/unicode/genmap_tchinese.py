@@ -184,7 +184,7 @@ def write_big5_maps(fp, display_name, table_name, decode_map, encode_map):
     writer.generate()
 
 
-class HintsWriter:
+klasse HintsWriter:
     filler_class = BufferedFiller
 
     def __init__(self, fp, prefix, isbmpmap):

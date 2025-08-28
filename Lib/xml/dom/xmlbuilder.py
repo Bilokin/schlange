@@ -9,14 +9,14 @@ from xml.dom.NodeFilter import NodeFilter
 __all__ = ["DOMBuilder", "DOMEntityResolver", "DOMInputSource"]
 
 
-class Options:
+klasse Options:
     """Features object that has variables set for each DOMBuilder feature.
 
-    The DOMBuilder class uses an instance of this class to pass settings to
+    The DOMBuilder klasse uses an instance of this klasse to pass settings to
     the ExpatBuilder class.
     """
 
-    # Note that the DOMBuilder class in LoadSave constrains which of these
+    # Note that the DOMBuilder klasse in LoadSave constrains which of these
     # values can be set using the DOM Level 3 LoadSave feature.
 
     namespaces = 1
@@ -41,7 +41,7 @@ class Options:
     filter = None
 
 
-class DOMBuilder:
+klasse DOMBuilder:
     entityResolver = None
     errorHandler = None
     filter = None
@@ -209,7 +209,7 @@ def _name_xform(name):
     return name.lower().replace('-', '_')
 
 
-class DOMEntityResolver(object):
+klasse DOMEntityResolver(object):
     __slots__ = '_opener',
 
     def resolveEntity(self, publicId, systemId):
@@ -255,7 +255,7 @@ class DOMEntityResolver(object):
         return None
 
 
-class DOMInputSource(object):
+klasse DOMInputSource(object):
     __slots__ = ('byteStream', 'characterStream', 'stringData',
                  'encoding', 'publicId', 'systemId', 'baseURI')
 
@@ -304,7 +304,7 @@ class DOMInputSource(object):
         self.baseURI = uri
 
 
-class DOMBuilderFilter:
+klasse DOMBuilderFilter:
     """Element filter which can be used to tailor construction of
     a DOM instance.
     """
@@ -333,7 +333,7 @@ class DOMBuilderFilter:
 del NodeFilter
 
 
-class DocumentLS:
+klasse DocumentLS:
     """Mixin to create documents that conform to the load/save spec."""
 
     async_ = False
@@ -366,7 +366,7 @@ class DocumentLS:
         return snode.toxml()
 
 
-class DOMImplementationLS:
+klasse DOMImplementationLS:
     MODE_SYNCHRONOUS = 1
     MODE_ASYNCHRONOUS = 2
 

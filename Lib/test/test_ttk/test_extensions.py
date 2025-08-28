@@ -7,7 +7,7 @@ from test.test_tkinter.support import AbstractTkTest, AbstractDefaultRootTest
 
 requires('gui')
 
-class LabeledScaleTest(AbstractTkTest, unittest.TestCase):
+klasse LabeledScaleTest(AbstractTkTest, unittest.TestCase):
 
     def tearDown(self):
         self.root.update_idletasks()
@@ -192,7 +192,7 @@ class LabeledScaleTest(AbstractTkTest, unittest.TestCase):
         x.destroy()
 
 
-class OptionMenuTest(AbstractTkTest, unittest.TestCase):
+klasse OptionMenuTest(AbstractTkTest, unittest.TestCase):
 
     def setUp(self):
         super().setUp()
@@ -326,7 +326,7 @@ class OptionMenuTest(AbstractTkTest, unittest.TestCase):
         self.assertIs(self.root.children["option_menu_ex"], widget)
 
 
-class DefaultRootTest(AbstractDefaultRootTest, unittest.TestCase):
+klasse DefaultRootTest(AbstractDefaultRootTest, unittest.TestCase):
 
     def test_labeledscale(self):
         self._test_widget(ttk.LabeledScale)

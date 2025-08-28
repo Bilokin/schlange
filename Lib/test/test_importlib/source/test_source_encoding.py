@@ -16,7 +16,7 @@ import warnings
 CODING_RE = re.compile(r'^[ \t\f]*#.*?coding[:=][ \t]*([-\w.]+)', re.ASCII)
 
 
-class EncodingTest:
+klasse EncodingTest:
 
     """PEP 3120 makes UTF-8 the default encoding for source code
     [default encoding].
@@ -88,7 +88,7 @@ class EncodingTest:
             self.run_test(source)
 
 
-class EncodingTestPEP451(EncodingTest):
+klasse EncodingTestPEP451(EncodingTest):
 
     def load(self, loader):
         module = types.ModuleType(self.module_name)
@@ -102,7 +102,7 @@ class EncodingTestPEP451(EncodingTest):
  ) = util.test_both(EncodingTestPEP451, machinery=machinery)
 
 
-class EncodingTestPEP302(EncodingTest):
+klasse EncodingTestPEP302(EncodingTest):
 
     def load(self, loader):
         with warnings.catch_warnings():
@@ -115,7 +115,7 @@ class EncodingTestPEP302(EncodingTest):
  ) = util.test_both(EncodingTestPEP302, machinery=machinery)
 
 
-class LineEndingTest:
+klasse LineEndingTest:
 
     r"""Source written with the three types of line endings (\n, \r\n, \r)
     need to be readable [cr][crlf][lf]."""
@@ -144,7 +144,7 @@ class LineEndingTest:
         self.run_test(b'\n')
 
 
-class LineEndingTestPEP451(LineEndingTest):
+klasse LineEndingTestPEP451(LineEndingTest):
 
     def load(self, loader, module_name):
         module = types.ModuleType(module_name)
@@ -158,7 +158,7 @@ class LineEndingTestPEP451(LineEndingTest):
  ) = util.test_both(LineEndingTestPEP451, machinery=machinery)
 
 
-class LineEndingTestPEP302(LineEndingTest):
+klasse LineEndingTestPEP302(LineEndingTest):
 
     def load(self, loader, module_name):
         with warnings.catch_warnings():

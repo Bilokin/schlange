@@ -65,7 +65,7 @@ _threads_wakeups = weakref.WeakKeyDictionary()
 _global_shutdown = False
 
 
-class _ThreadWakeup:
+klasse _ThreadWakeup:
     def __init__(self):
         self._closed = False
         self._lock = threading.Lock()
@@ -126,13 +126,13 @@ _MAX_WINDOWS_WORKERS = 63 - 2
 
 # Hack to embed stringification of remote traceback in local traceback
 
-class _RemoteTraceback(Exception):
+klasse _RemoteTraceback(Exception):
     def __init__(self, tb):
         self.tb = tb
     def __str__(self):
         return self.tb
 
-class _ExceptionWithTraceback:
+klasse _ExceptionWithTraceback:
     def __init__(self, exc, tb):
         tb = ''.join(format_exception(type(exc), exc, tb))
         self.exc = exc
@@ -147,21 +147,21 @@ def _rebuild_exc(exc, tb):
     exc.__cause__ = _RemoteTraceback(tb)
     return exc
 
-class _WorkItem(object):
+klasse _WorkItem(object):
     def __init__(self, future, fn, args, kwargs):
         self.future = future
         self.fn = fn
         self.args = args
         self.kwargs = kwargs
 
-class _ResultItem(object):
+klasse _ResultItem(object):
     def __init__(self, work_id, exception=None, result=None, exit_pid=None):
         self.work_id = work_id
         self.exception = exception
         self.result = result
         self.exit_pid = exit_pid
 
-class _CallItem(object):
+klasse _CallItem(object):
     def __init__(self, work_id, fn, args, kwargs):
         self.work_id = work_id
         self.fn = fn
@@ -169,7 +169,7 @@ class _CallItem(object):
         self.kwargs = kwargs
 
 
-class _SafeQueue(Queue):
+klasse _SafeQueue(Queue):
     """Safe Queue set exception to the future object linked to a job"""
     def __init__(self, max_size=0, *, ctx, pending_work_items, thread_wakeup):
         self.pending_work_items = pending_work_items
@@ -269,7 +269,7 @@ def _process_worker(call_queue, result_queue, initializer, initargs, max_tasks=N
             return
 
 
-class _ExecutorManagerThread(threading.Thread):
+klasse _ExecutorManagerThread(threading.Thread):
     """Manages the communication between this process and the worker processes.
 
     The manager is run in a local thread.
@@ -620,7 +620,7 @@ def _chain_from_iterable_of_lists(iterable):
             yield element.pop()
 
 
-class BrokenProcessPool(_base.BrokenExecutor):
+klasse BrokenProcessPool(_base.BrokenExecutor):
     """
     Raised when a process in a ProcessPoolExecutor terminated abruptly
     while a future was in the running state.
@@ -635,7 +635,7 @@ _SHUTDOWN_CALLBACK_OPERATION = {
 }
 
 
-class ProcessPoolExecutor(_base.Executor):
+klasse ProcessPoolExecutor(_base.Executor):
     def __init__(self, max_workers=None, mp_context=None,
                  initializer=None, initargs=(), *, max_tasks_per_child=None):
         """Initializes a new ProcessPoolExecutor instance.

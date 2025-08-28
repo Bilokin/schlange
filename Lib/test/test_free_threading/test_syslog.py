@@ -13,7 +13,7 @@ NTHREADS = 32
 
 
 @threading_helper.requires_working_threading()
-class TestSyslog(unittest.TestCase):
+klasse TestSyslog(unittest.TestCase):
     def test_racing_syslog(self):
         def worker():
             """

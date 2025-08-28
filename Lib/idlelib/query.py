@@ -1,7 +1,7 @@
 """
 Dialogs that query users and verify the answer before accepting.
 
-Query is the generic base class for a popup dialog.
+Query is the generic base klasse for a popup dialog.
 The user must either enter a valid answer or close the dialog.
 Entries are validated when <Return> is entered or [Ok] is clicked.
 Entries are ignored when [Cancel] or [X] are clicked.
@@ -30,8 +30,8 @@ from tkinter import filedialog
 from tkinter.font import Font
 from tkinter.simpledialog import _setup_dialog
 
-class Query(Toplevel):
-    """Base class for getting verified answer from a user.
+klasse Query(Toplevel):
+    """Base klasse for getting verified answer from a user.
 
     For this base class, accept any non-blank string.
     """
@@ -160,7 +160,7 @@ class Query(Toplevel):
         super().destroy()
 
 
-class SectionName(Query):
+klasse SectionName(Query):
     "Get a name for a config file section name."
     # Used in ConfigDialog.GetNewKeysName, .GetNewThemeName (837)
 
@@ -184,7 +184,7 @@ class SectionName(Query):
         return name
 
 
-class ModuleName(Query):
+klasse ModuleName(Query):
     "Get a module name for Open Module menu entry."
     # Used in open_module (editor.EditorWindow until move to iobinding).
 
@@ -226,7 +226,7 @@ class ModuleName(Query):
         return file_path
 
 
-class Goto(Query):
+klasse Goto(Query):
     "Get a positive line number for editor Go To Line."
     # Used in editor.EditorWindow.goto_line_event.
 
@@ -242,7 +242,7 @@ class Goto(Query):
         return lineno
 
 
-class HelpSource(Query):
+klasse HelpSource(Query):
     "Get menu name and help source for Help menu."
     # Used in ConfigDialog.HelpListItemAdd/Edit, (941/9)
 
@@ -334,7 +334,7 @@ class HelpSource(Query):
         path = self.path_ok()
         return None if name is None or path is None else (name, path)
 
-class CustomRun(Query):
+klasse CustomRun(Query):
     """Get settings for custom run of module.
 
     1. Command line arguments to extend sys.argv.

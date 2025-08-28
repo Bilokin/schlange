@@ -1152,7 +1152,7 @@ TEST_INPUTS_TABLE = [
 ]
 
 
-class TestAsyncioToolsTree(unittest.TestCase):
+klasse TestAsyncioToolsTree(unittest.TestCase):
     def test_asyncio_utils(self):
         for input_, tree in TEST_INPUTS_TREE:
             with self.subTest(input_):
@@ -1168,7 +1168,7 @@ class TestAsyncioToolsTree(unittest.TestCase):
                     self.assertEqual(e.cycles, cycles)
 
 
-class TestAsyncioToolsTable(unittest.TestCase):
+klasse TestAsyncioToolsTable(unittest.TestCase):
     def test_asyncio_utils(self):
         for input_, table in TEST_INPUTS_TABLE:
             with self.subTest(input_):
@@ -1176,7 +1176,7 @@ class TestAsyncioToolsTable(unittest.TestCase):
                 self.assertEqual(result, table)
 
 
-class TestAsyncioToolsBasic(unittest.TestCase):
+klasse TestAsyncioToolsBasic(unittest.TestCase):
     def test_empty_input_tree(self):
         """Test build_async_tree with empty input."""
         result = []
@@ -1541,7 +1541,7 @@ class TestAsyncioToolsBasic(unittest.TestCase):
             )  # hex awaiter ID
 
 
-class TestAsyncioToolsEdgeCases(unittest.TestCase):
+klasse TestAsyncioToolsEdgeCases(unittest.TestCase):
 
     def test_task_awaits_self(self):
         """A task directly awaits itself - should raise a cycle."""

@@ -4,14 +4,14 @@ Smalltalk testing framework (used with permission).
 
 This module contains the core framework classes that form the basis of
 specific test cases and suites (TestCase, TestSuite etc.), and also a
-text-based utility class for running the tests and reporting the results
+text-based utility klasse for running the tests and reporting the results
  (TextTestRunner).
 
 Simple usage:
 
     import unittest
 
-    class IntegerArithmeticTestCase(unittest.TestCase):
+    klasse IntegerArithmeticTestCase(unittest.TestCase):
         def testAdd(self):  # test method names begin with 'test'
             self.assertEqual((1 + 2), 3)
             self.assertEqual(0 + 1, 1)

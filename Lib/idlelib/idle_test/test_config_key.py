@@ -14,13 +14,13 @@ from idlelib.idle_test.mock_idle import Func
 from idlelib.idle_test.mock_tk import Mbox_func
 
 
-class ValidationTest(unittest.TestCase):
+klasse ValidationTest(unittest.TestCase):
     "Test validation methods: ok, keys_ok, bind_ok."
 
-    class Validator(config_key.GetKeysFrame):
+    klasse Validator(config_key.GetKeysFrame):
         def __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)
-            class list_keys_final:
+            klasse list_keys_final:
                 get = Func()
             self.list_keys_final = list_keys_final
         get_modifiers = Func()
@@ -100,7 +100,7 @@ class ValidationTest(unittest.TestCase):
         self.assertIn('not accepted', self.dialog.showerror.message)
 
 
-class ToggleLevelTest(unittest.TestCase):
+klasse ToggleLevelTest(unittest.TestCase):
     "Test toggle between Basic and Advanced frames."
 
     @classmethod
@@ -155,13 +155,13 @@ class ToggleLevelTest(unittest.TestCase):
         self.assertGreater(basic, advanced)
 
 
-class KeySelectionTest(unittest.TestCase):
+klasse KeySelectionTest(unittest.TestCase):
     "Test selecting key on Basic frames."
 
-    class Basic(config_key.GetKeysFrame):
+    klasse Basic(config_key.GetKeysFrame):
         def __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)
-            class list_keys_final:
+            klasse list_keys_final:
                 get = Func()
                 select_clear = Func()
                 yview = Func()
@@ -237,7 +237,7 @@ class KeySelectionTest(unittest.TestCase):
         eq(string(), '<Shift-Key-braceleft>')
 
 
-class CancelWindowTest(unittest.TestCase):
+klasse CancelWindowTest(unittest.TestCase):
     "Simulate user clicking [Cancel] button."
 
     @classmethod
@@ -266,7 +266,7 @@ class CancelWindowTest(unittest.TestCase):
         mock_frame_ok.assert_not_called()
 
 
-class OKWindowTest(unittest.TestCase):
+klasse OKWindowTest(unittest.TestCase):
     "Simulate user clicking [OK] button."
 
     @classmethod
@@ -294,7 +294,7 @@ class OKWindowTest(unittest.TestCase):
         mock_frame_ok.assert_called()
 
 
-class WindowResultTest(unittest.TestCase):
+klasse WindowResultTest(unittest.TestCase):
     "Test window result get and set."
 
     @classmethod
@@ -330,7 +330,7 @@ class WindowResultTest(unittest.TestCase):
         eq(dialog.frame.result,'foo')
 
 
-class HelperTest(unittest.TestCase):
+klasse HelperTest(unittest.TestCase):
     "Test module level helper functions."
 
     def test_translate_key(self):

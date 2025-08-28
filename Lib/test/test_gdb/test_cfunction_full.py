@@ -12,7 +12,7 @@ def setUpModule():
     setup_module()
 
 
-class CFunctionFullTests(CFunctionTests):
+klasse CFunctionFullTests(CFunctionTests):
     def check(self, func_name, cmd):
         # Verify with "py-bt-full":
         gdb_output = self.get_stack_trace(

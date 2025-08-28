@@ -45,7 +45,7 @@ REQUIRED_PROPERTIES_PACKAGE = frozenset([
 ])
 
 
-class PackageFiles(typing.NamedTuple):
+klasse PackageFiles(typing.NamedTuple):
     """Structure for describing the files of a package"""
     include: list[str] | None
     exclude: list[str] | None = None

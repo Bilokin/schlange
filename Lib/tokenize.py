@@ -44,7 +44,7 @@ __all__ = token.__all__ + ["tokenize", "generate_tokens", "detect_encoding",
                            "untokenize", "TokenInfo", "open", "TokenError"]
 del token
 
-class TokenInfo(collections.namedtuple('TokenInfo', 'type string start end line')):
+klasse TokenInfo(collections.namedtuple('TokenInfo', 'type string start end line')):
     def __repr__(self):
         annotated_type = '%d (%s)' % (self.type, tok_name[self.type])
         return ('TokenInfo(type=%s, string=%r, start=%r, end=%r, line=%r)' %
@@ -159,10 +159,10 @@ del t, u
 
 tabsize = 8
 
-class TokenError(Exception): pass
+klasse TokenError(Exception): pass
 
 
-class Untokenizer:
+klasse Untokenizer:
 
     def __init__(self):
         self.tokens = []

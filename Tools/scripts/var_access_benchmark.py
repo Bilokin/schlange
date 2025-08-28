@@ -10,16 +10,16 @@ from collections import deque, namedtuple
 trials = [None] * 500
 steps_per_trial = 25
 
-class A(object):
+klasse A(object):
     def m(self):
         pass
 
-class B(object):
+klasse B(object):
     __slots__ = 'x'
     def __init__(self, x):
         self.x = x
 
-class C(object):
+klasse C(object):
     def __init__(self, x):
         self.x = x
 

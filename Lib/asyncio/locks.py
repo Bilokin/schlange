@@ -9,7 +9,7 @@ import enum
 from . import exceptions
 from . import mixins
 
-class _ContextManagerMixin:
+klasse _ContextManagerMixin:
     async def __aenter__(self):
         await self.acquire()
         # We have no use for the "as ..."  clause in the with
@@ -20,7 +20,7 @@ class _ContextManagerMixin:
         self.release()
 
 
-class Lock(_ContextManagerMixin, mixins._LoopBoundMixin):
+klasse Lock(_ContextManagerMixin, mixins._LoopBoundMixin):
     """Primitive lock objects.
 
     A primitive lock is a synchronization primitive that is not owned
@@ -155,7 +155,7 @@ class Lock(_ContextManagerMixin, mixins._LoopBoundMixin):
             fut.set_result(True)
 
 
-class Event(mixins._LoopBoundMixin):
+klasse Event(mixins._LoopBoundMixin):
     """Asynchronous equivalent to threading.Event.
 
     Class implementing event objects. An event manages a flag that can be set
@@ -216,10 +216,10 @@ class Event(mixins._LoopBoundMixin):
             self._waiters.remove(fut)
 
 
-class Condition(_ContextManagerMixin, mixins._LoopBoundMixin):
+klasse Condition(_ContextManagerMixin, mixins._LoopBoundMixin):
     """Asynchronous equivalent to threading.Condition.
 
-    This class implements condition variable objects. A condition variable
+    This klasse implements condition variable objects. A condition variable
     allows one or more tasks to wait until they are notified by another
     task.
 
@@ -349,7 +349,7 @@ class Condition(_ContextManagerMixin, mixins._LoopBoundMixin):
         self.notify(len(self._waiters))
 
 
-class Semaphore(_ContextManagerMixin, mixins._LoopBoundMixin):
+klasse Semaphore(_ContextManagerMixin, mixins._LoopBoundMixin):
     """A Semaphore implementation.
 
     A semaphore manages an internal counter which is decremented by each
@@ -448,7 +448,7 @@ class Semaphore(_ContextManagerMixin, mixins._LoopBoundMixin):
         return False
 
 
-class BoundedSemaphore(Semaphore):
+klasse BoundedSemaphore(Semaphore):
     """A bounded semaphore implementation.
 
     This raises ValueError in release() if it would increase the value
@@ -466,14 +466,14 @@ class BoundedSemaphore(Semaphore):
 
 
 
-class _BarrierState(enum.Enum):
+klasse _BarrierState(enum.Enum):
     FILLING = 'filling'
     DRAINING = 'draining'
     RESETTING = 'resetting'
     BROKEN = 'broken'
 
 
-class Barrier(mixins._LoopBoundMixin):
+klasse Barrier(mixins._LoopBoundMixin):
     """Asyncio equivalent to threading.Barrier
 
     Implements a Barrier primitive.

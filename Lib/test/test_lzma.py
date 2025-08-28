@@ -18,7 +18,7 @@ lzma = import_module("lzma")
 from lzma import LZMACompressor, LZMADecompressor, LZMAError, LZMAFile
 
 
-class CompressorDecompressorTestCase(unittest.TestCase):
+klasse CompressorDecompressorTestCase(unittest.TestCase):
 
     # Test error cases.
 
@@ -384,7 +384,7 @@ class CompressorDecompressorTestCase(unittest.TestCase):
                          decompress(bytes()), b'')
 
 
-class CompressDecompressFunctionTestCase(unittest.TestCase):
+klasse CompressDecompressFunctionTestCase(unittest.TestCase):
 
     # Test error cases:
 
@@ -519,7 +519,7 @@ class CompressDecompressFunctionTestCase(unittest.TestCase):
         self.assertEqual(ddata, INPUT * 3)
 
 
-class TempFile:
+klasse TempFile:
     """Context manager - creates a file, and deletes it on __exit__."""
 
     def __init__(self, filename, data=b""):
@@ -534,7 +534,7 @@ class TempFile:
         unlink(self.filename)
 
 
-class FileTestCase(unittest.TestCase):
+klasse FileTestCase(unittest.TestCase):
 
     def test_init(self):
         with LZMAFile(BytesIO(COMPRESSED_XZ)) as f:
@@ -1383,7 +1383,7 @@ class FileTestCase(unittest.TestCase):
             self.assertEqual(f.tell(), LENGTH)
 
 
-class OpenTestCase(unittest.TestCase):
+klasse OpenTestCase(unittest.TestCase):
 
     def test_binary_modes(self):
         with lzma.open(BytesIO(COMPRESSED_XZ), "rb") as f:
@@ -1505,7 +1505,7 @@ class OpenTestCase(unittest.TestCase):
                     pass
 
 
-class MiscellaneousTestCase(unittest.TestCase):
+klasse MiscellaneousTestCase(unittest.TestCase):
 
     def test_is_check_supported(self):
         # CHECK_NONE and CHECK_CRC32 should always be supported,

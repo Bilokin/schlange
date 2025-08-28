@@ -368,7 +368,7 @@ result_2004_dates = \
        '12/27/04 12/28/04 12/29/04 12/30/04 12/31/04 01/01/05 01/02/05']]]
 
 
-class OutputTestCase(unittest.TestCase):
+klasse OutputTestCase(unittest.TestCase):
     def normalize_calendar(self, s):
         # Filters out locale dependent strings
         def neitherspacenordigit(c):
@@ -497,7 +497,7 @@ class OutputTestCase(unittest.TestCase):
             calendar.format(["1", "2", "3"], colwidth=3, spacing=1)
             self.assertEqual(out.getvalue().strip(), "1   2   3")
 
-class CalendarTestCase(unittest.TestCase):
+klasse CalendarTestCase(unittest.TestCase):
 
     def test_deprecation_warning(self):
         with self.assertWarnsRegex(
@@ -826,7 +826,7 @@ class CalendarTestCase(unittest.TestCase):
             self.assertEqual(week, expected)
 
 
-class MonthCalendarTestCase(unittest.TestCase):
+klasse MonthCalendarTestCase(unittest.TestCase):
     def setUp(self):
         self.oldfirstweekday = calendar.firstweekday()
         calendar.setfirstweekday(self.firstweekday)
@@ -841,7 +841,7 @@ class MonthCalendarTestCase(unittest.TestCase):
             self.assertEqual(weeks[i], sum(day != 0 for day in cal[i]))
 
 
-class MondayTestCase(MonthCalendarTestCase):
+klasse MondayTestCase(MonthCalendarTestCase):
     firstweekday = calendar.MONDAY
 
     def test_february(self):
@@ -899,7 +899,7 @@ class MondayTestCase(MonthCalendarTestCase):
         self.check_weeks(2068, 12, (2, 7, 7, 7, 7, 1))
 
 
-class SundayTestCase(MonthCalendarTestCase):
+klasse SundayTestCase(MonthCalendarTestCase):
     firstweekday = calendar.SUNDAY
 
     def test_february(self):
@@ -956,7 +956,7 @@ class SundayTestCase(MonthCalendarTestCase):
         # A 31-day december starting on friday (2+7+7+7+7+1 days)
         self.check_weeks(1995, 12, (2, 7, 7, 7, 7, 1))
 
-class TimegmTestCase(unittest.TestCase):
+klasse TimegmTestCase(unittest.TestCase):
     TIMESTAMPS = [0, 10, 100, 1000, 10000, 100000, 1000000,
                   1234567890, 1262304000, 1275785153,]
     def test_timegm(self):
@@ -964,7 +964,7 @@ class TimegmTestCase(unittest.TestCase):
             tuple = time.gmtime(secs)
             self.assertEqual(secs, calendar.timegm(tuple))
 
-class MonthRangeTestCase(unittest.TestCase):
+klasse MonthRangeTestCase(unittest.TestCase):
     def test_january(self):
         # Tests valid lower boundary case.
         self.assertEqual(calendar.monthrange(2004,1), (3,31))
@@ -995,7 +995,7 @@ class MonthRangeTestCase(unittest.TestCase):
         with self.assertRaisesRegex(calendar.IllegalMonthError, '65'):
             calendar.monthrange(2004, 65)
 
-class LeapdaysTestCase(unittest.TestCase):
+klasse LeapdaysTestCase(unittest.TestCase):
     def test_no_range(self):
         # test when no range i.e. two identical years as args
         self.assertEqual(calendar.leapdays(2010,2010), 0)
@@ -1019,7 +1019,7 @@ class LeapdaysTestCase(unittest.TestCase):
 def conv(s):
     return s.replace('\n', os.linesep).encode()
 
-class CommandLineTestCase(unittest.TestCase):
+klasse CommandLineTestCase(unittest.TestCase):
     def setUp(self):
         self.runners = [self.run_cli_ok, self.run_cmd_ok]
 
@@ -1207,7 +1207,7 @@ class CommandLineTestCase(unittest.TestCase):
                           b'href="custom.css" />', output)
 
 
-class MiscTestCase(unittest.TestCase):
+klasse MiscTestCase(unittest.TestCase):
     def test__all__(self):
         not_exported = {
             'mdays', 'January', 'February', 'EPOCH',
@@ -1216,11 +1216,11 @@ class MiscTestCase(unittest.TestCase):
         support.check__all__(self, calendar, not_exported=not_exported)
 
 
-class TestSubClassingCase(unittest.TestCase):
+klasse TestSubClassingCase(unittest.TestCase):
 
     def setUp(self):
 
-        class CustomHTMLCal(calendar.HTMLCalendar):
+        klasse CustomHTMLCal(calendar.HTMLCalendar):
             cssclasses = [style + " text-nowrap" for style in
                           calendar.HTMLCalendar.cssclasses]
             cssclasses_weekday_head = ["red", "blue", "green", "lilac",

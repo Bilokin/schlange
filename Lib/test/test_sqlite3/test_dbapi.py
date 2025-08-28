@@ -42,7 +42,7 @@ from .util import memory_database, cx_limit
 from .util import MemoryDatabaseMixin
 
 
-class ModuleTests(unittest.TestCase):
+klasse ModuleTests(unittest.TestCase):
     def test_api_level(self):
         self.assertEqual(sqlite.apilevel, "2.0",
                          "apilevel is %s, should be 2.0" % sqlite.apilevel)
@@ -300,7 +300,7 @@ class ModuleTests(unittest.TestCase):
         self.assertTrue(sqlite.complete_statement("create table t(t);"))
 
 
-class ConnectionTests(unittest.TestCase):
+klasse ConnectionTests(unittest.TestCase):
 
     def setUp(self):
         self.cx = sqlite.connect(":memory:")
@@ -565,7 +565,7 @@ class ConnectionTests(unittest.TestCase):
         self.assertEqual(str(sig), "(sql, /)")
 
 
-class UninitialisedConnectionTests(unittest.TestCase):
+klasse UninitialisedConnectionTests(unittest.TestCase):
     def setUp(self):
         self.cx = sqlite.Connection.__new__(sqlite.Connection)
 
@@ -587,7 +587,7 @@ class UninitialisedConnectionTests(unittest.TestCase):
 
 @unittest.skipUnless(hasattr(sqlite.Connection, "serialize"),
                      "Needs SQLite serialize API")
-class SerializeTests(unittest.TestCase):
+klasse SerializeTests(unittest.TestCase):
     def test_serialize_deserialize(self):
         with memory_database() as cx:
             with cx:
@@ -627,7 +627,7 @@ class SerializeTests(unittest.TestCase):
                 cx.execute("create table fail(f)")
 
 
-class OpenTests(unittest.TestCase):
+klasse OpenTests(unittest.TestCase):
     _sql = "create table test(id integer)"
 
     def test_open_with_bytes_path(self):
@@ -727,7 +727,7 @@ class OpenTests(unittest.TestCase):
             self.assertEqual(type(cx), sqlite.Connection)
 
 
-class CursorTests(unittest.TestCase):
+klasse CursorTests(unittest.TestCase):
     def setUp(self):
         self.cx = sqlite.connect(":memory:")
         self.cu = self.cx.cursor()
@@ -834,7 +834,7 @@ class CursorTests(unittest.TestCase):
         self.assertEqual(row[0], "foo")
 
     def test_execute_param_sequence(self):
-        class L:
+        klasse L:
             def __len__(self):
                 return 1
             def __getitem__(self, x):
@@ -848,7 +848,7 @@ class CursorTests(unittest.TestCase):
 
     def test_execute_param_sequence_bad_len(self):
         # Issue41662: Error in __len__() was overridden with ProgrammingError.
-        class L:
+        klasse L:
             def __len__(self):
                 1/0
             def __getitem__(slf, x):
@@ -901,7 +901,7 @@ class CursorTests(unittest.TestCase):
         self.assertEqual(row[0], "foo")
 
     def test_execute_dict_mapping_mapping(self):
-        class D(dict):
+        klasse D(dict):
             def __missing__(self, key):
                 return "foo"
 
@@ -994,7 +994,7 @@ class CursorTests(unittest.TestCase):
         self.cu.executemany("insert into test(income) values (?)", [(x,) for x in range(100, 110)])
 
     def test_execute_many_iterator(self):
-        class MyIter:
+        klasse MyIter:
             def __init__(self):
                 self.value = 5
 
@@ -1109,7 +1109,7 @@ class CursorTests(unittest.TestCase):
             cur = self.cx.cursor(f)
 
     def test_cursor_wrong_class(self):
-        class Foo: pass
+        klasse Foo: pass
         foo = Foo()
         with self.assertRaises(TypeError):
             cur = sqlite.Cursor(foo)
@@ -1168,7 +1168,7 @@ class CursorTests(unittest.TestCase):
             self.assertEqual(cu.fetchall(), [(1,)])
 
 
-class BlobTests(unittest.TestCase):
+klasse BlobTests(unittest.TestCase):
     def setUp(self):
         self.cx = sqlite.connect(":memory:")
         self.cx.execute("create table test(b blob)")
@@ -1440,7 +1440,7 @@ class BlobTests(unittest.TestCase):
             blob.read()
 
     def test_blob_context_manager_reraise_exceptions(self):
-        class DummyException(Exception):
+        klasse DummyException(Exception):
             pass
         with self.assertRaisesRegex(DummyException, "reraised"):
             with self.cx.blobopen("test", "b", 1) as blob:
@@ -1496,7 +1496,7 @@ class BlobTests(unittest.TestCase):
 
 
 @threading_helper.requires_working_threading()
-class ThreadTests(unittest.TestCase):
+klasse ThreadTests(unittest.TestCase):
     def setUp(self):
         self.con = sqlite.connect(":memory:")
         self.cur = self.con.cursor()
@@ -1576,7 +1576,7 @@ class ThreadTests(unittest.TestCase):
             self.assertEqual(len(err), 0, "\n".join(err))
 
 
-class ConstructorTests(unittest.TestCase):
+klasse ConstructorTests(unittest.TestCase):
     def test_date(self):
         d = sqlite.Date(2004, 10, 28)
 
@@ -1598,7 +1598,7 @@ class ConstructorTests(unittest.TestCase):
     def test_binary(self):
         b = sqlite.Binary(b"\0'")
 
-class ExtensionTests(unittest.TestCase):
+klasse ExtensionTests(unittest.TestCase):
     def setUp(self):
         self.con = sqlite.connect(":memory:")
         self.cur = self.con.cursor()
@@ -1691,7 +1691,7 @@ class ExtensionTests(unittest.TestCase):
         self.assertEqual(result, 5, "Basic test of Connection.executescript")
 
 
-class ClosedConTests(unittest.TestCase):
+klasse ClosedConTests(unittest.TestCase):
     def check(self, fn, *args, **kwds):
         regex = "Cannot operate on a closed database."
         with self.assertRaisesRegex(sqlite.ProgrammingError, regex):
@@ -1720,7 +1720,7 @@ class ClosedConTests(unittest.TestCase):
         self.check(self.con.create_function, "foo", 1, f)
 
     def test_closed_create_aggregate(self):
-        class Agg:
+        klasse Agg:
             def __init__(self):
                 pass
             def step(self, x):
@@ -1743,7 +1743,7 @@ class ClosedConTests(unittest.TestCase):
         self.check(self.con)
 
 
-class ClosedCurTests(MemoryDatabaseMixin, unittest.TestCase):
+klasse ClosedCurTests(MemoryDatabaseMixin, unittest.TestCase):
     def test_closed(self):
         cur = self.cx.cursor()
         cur.close()
@@ -1761,7 +1761,7 @@ class ClosedCurTests(MemoryDatabaseMixin, unittest.TestCase):
                 method(*params)
 
 
-class SqliteOnConflictTests(unittest.TestCase):
+klasse SqliteOnConflictTests(unittest.TestCase):
     """
     Tests for SQLite's "insert on conflict" feature.
 
@@ -1855,7 +1855,7 @@ class SqliteOnConflictTests(unittest.TestCase):
 
 
 @requires_subprocess()
-class MultiprocessTests(unittest.TestCase):
+klasse MultiprocessTests(unittest.TestCase):
     CONNECTION_TIMEOUT = 0  # Disable the busy timeout.
 
     def tearDown(self):
@@ -1926,7 +1926,7 @@ class MultiprocessTests(unittest.TestCase):
         self.assertEqual(proc.returncode, 0)
 
 
-class RowTests(unittest.TestCase):
+klasse RowTests(unittest.TestCase):
 
     def setUp(self):
         self.cx = sqlite.connect(":memory:")

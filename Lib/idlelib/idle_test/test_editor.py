@@ -9,7 +9,7 @@ from tkinter import Tk, Text
 Editor = editor.EditorWindow
 
 
-class EditorWindowTest(unittest.TestCase):
+klasse EditorWindowTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -31,7 +31,7 @@ class EditorWindowTest(unittest.TestCase):
         e._close()
 
 
-class GetLineIndentTest(unittest.TestCase):
+klasse GetLineIndentTest(unittest.TestCase):
     def test_empty_lines(self):
         for tabwidth in [1, 2, 4, 6, 8]:
             for line in ['', '\n']:
@@ -98,7 +98,7 @@ def insert(text, string):
     text.update_idletasks()  # Force update for colorizer to finish.
 
 
-class IndentAndNewlineTest(unittest.TestCase):
+klasse IndentAndNewlineTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -181,7 +181,7 @@ class IndentAndNewlineTest(unittest.TestCase):
         eq(get('1.0', 'end'), '  def f1(self, a,\n         \n    return a + b\n')
 
 
-class IndentSearcherTest(unittest.TestCase):
+klasse IndentSearcherTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -211,7 +211,7 @@ class IndentSearcherTest(unittest.TestCase):
                 self.assertEqual(actual_pair, expected_pair)
 
 
-class RMenuTest(unittest.TestCase):
+klasse RMenuTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -230,7 +230,7 @@ class RMenuTest(unittest.TestCase):
         cls.root.destroy()
         del cls.root
 
-    class DummyRMenu:
+    klasse DummyRMenu:
         def tk_popup(x, y): pass
 
     def test_rclick(self):

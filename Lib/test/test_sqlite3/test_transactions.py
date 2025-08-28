@@ -31,7 +31,7 @@ from .util import memory_database
 from .util import MemoryDatabaseMixin
 
 
-class TransactionTests(unittest.TestCase):
+klasse TransactionTests(unittest.TestCase):
     def setUp(self):
         # We can disable the busy handlers, since we control
         # the order of SQLite C API operations.
@@ -178,7 +178,7 @@ class TransactionTests(unittest.TestCase):
         self.assertEqual(count, 2)
 
 
-class RollbackTests(unittest.TestCase):
+klasse RollbackTests(unittest.TestCase):
     """bpo-44092: sqlite3 now leaves it to SQLite to resolve rollback issues"""
 
     def setUp(self):
@@ -215,7 +215,7 @@ class RollbackTests(unittest.TestCase):
 
 
 
-class SpecialCommandTests(MemoryDatabaseMixin, unittest.TestCase):
+klasse SpecialCommandTests(MemoryDatabaseMixin, unittest.TestCase):
 
     def test_drop_table(self):
         self.cur.execute("create table test(i)")
@@ -228,7 +228,7 @@ class SpecialCommandTests(MemoryDatabaseMixin, unittest.TestCase):
         self.cur.execute("pragma count_changes=1")
 
 
-class TransactionalDDL(MemoryDatabaseMixin, unittest.TestCase):
+klasse TransactionalDDL(MemoryDatabaseMixin, unittest.TestCase):
 
     def test_ddl_does_not_autostart_transaction(self):
         # For backwards compatibility reasons, DDL statements should not
@@ -257,7 +257,7 @@ class TransactionalDDL(MemoryDatabaseMixin, unittest.TestCase):
             self.con.execute("select * from test")
 
 
-class IsolationLevelFromInit(unittest.TestCase):
+klasse IsolationLevelFromInit(unittest.TestCase):
     CREATE = "create table t(t)"
     INSERT = "insert into t values(1)"
 
@@ -303,7 +303,7 @@ class IsolationLevelFromInit(unittest.TestCase):
             self.assertEqual(self.traced, [self.INSERT])
 
 
-class IsolationLevelPostInit(unittest.TestCase):
+klasse IsolationLevelPostInit(unittest.TestCase):
     QUERY = "insert into t values(1)"
 
     def setUp(self):
@@ -353,7 +353,7 @@ class IsolationLevelPostInit(unittest.TestCase):
         self.assertEqual(self.traced, [self.QUERY])
 
 
-class AutocommitAttribute(unittest.TestCase):
+klasse AutocommitAttribute(unittest.TestCase):
     """Test PEP 249-compliant autocommit behaviour."""
     legacy = sqlite.LEGACY_TRANSACTION_CONTROL
 

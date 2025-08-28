@@ -11,7 +11,7 @@ def shorttok(tok: tokenize.TokenInfo) -> str:
     return "%-25.25s" % f"{tok.start[0]}.{tok.start[1]}: {token.tok_name[tok.type]}:{tok.string!r}"
 
 
-class Tokenizer:
+klasse Tokenizer:
     """Caching wrapper for the tokenize module.
 
     This is pretty tied to Python's syntax.

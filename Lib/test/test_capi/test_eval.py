@@ -5,13 +5,13 @@ from test.support import import_helper
 _testlimitedcapi = import_helper.import_module('_testlimitedcapi')
 
 
-class Tests(unittest.TestCase):
+klasse Tests(unittest.TestCase):
     def test_eval_get_func_name(self):
         eval_get_func_name = _testlimitedcapi.eval_get_func_name
 
         def function_example(): ...
 
-        class A:
+        klasse A:
             def method_example(self): ...
 
         self.assertEqual(eval_get_func_name(function_example),
@@ -28,7 +28,7 @@ class Tests(unittest.TestCase):
 
         def function_example(): ...
 
-        class A:
+        klasse A:
             def method_example(self): ...
 
         self.assertEqual(eval_get_func_desc(function_example),

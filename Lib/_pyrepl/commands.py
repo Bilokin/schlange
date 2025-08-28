@@ -39,7 +39,7 @@ if False:
     from .historical_reader import HistoricalReader
 
 
-class Command:
+klasse Command:
     finish: bool = False
     kills_digit_arg: bool = True
 
@@ -58,7 +58,7 @@ class Command:
         pass
 
 
-class KillCommand(Command):
+klasse KillCommand(Command):
     def kill_range(self, start: int, end: int) -> None:
         if start == end:
             return
@@ -77,19 +77,19 @@ class KillCommand(Command):
         r.dirty = True
 
 
-class YankCommand(Command):
+klasse YankCommand(Command):
     pass
 
 
-class MotionCommand(Command):
+klasse MotionCommand(Command):
     pass
 
 
-class EditCommand(Command):
+klasse EditCommand(Command):
     pass
 
 
-class FinishCommand(Command):
+klasse FinishCommand(Command):
     finish = True
     pass
 
@@ -105,7 +105,7 @@ def is_yank(command: type[Command] | None) -> bool:
 # etc
 
 
-class digit_arg(Command):
+klasse digit_arg(Command):
     kills_digit_arg = False
 
     def do(self) -> None:
@@ -128,25 +128,25 @@ class digit_arg(Command):
         r.dirty = True
 
 
-class clear_screen(Command):
+klasse clear_screen(Command):
     def do(self) -> None:
         r = self.reader
         r.console.clear()
         r.dirty = True
 
 
-class refresh(Command):
+klasse refresh(Command):
     def do(self) -> None:
         self.reader.dirty = True
 
 
-class repaint(Command):
+klasse repaint(Command):
     def do(self) -> None:
         self.reader.dirty = True
         self.reader.console.repaint()
 
 
-class kill_line(KillCommand):
+klasse kill_line(KillCommand):
     def do(self) -> None:
         r = self.reader
         b = r.buffer
@@ -159,34 +159,34 @@ class kill_line(KillCommand):
             self.kill_range(r.pos, eol + 1)
 
 
-class unix_line_discard(KillCommand):
+klasse unix_line_discard(KillCommand):
     def do(self) -> None:
         r = self.reader
         self.kill_range(r.bol(), r.pos)
 
 
-class unix_word_rubout(KillCommand):
+klasse unix_word_rubout(KillCommand):
     def do(self) -> None:
         r = self.reader
         for i in range(r.get_arg()):
             self.kill_range(r.bow(), r.pos)
 
 
-class kill_word(KillCommand):
+klasse kill_word(KillCommand):
     def do(self) -> None:
         r = self.reader
         for i in range(r.get_arg()):
             self.kill_range(r.pos, r.eow())
 
 
-class backward_kill_word(KillCommand):
+klasse backward_kill_word(KillCommand):
     def do(self) -> None:
         r = self.reader
         for i in range(r.get_arg()):
             self.kill_range(r.bow(), r.pos)
 
 
-class yank(YankCommand):
+klasse yank(YankCommand):
     def do(self) -> None:
         r = self.reader
         if not r.kill_ring:
@@ -195,7 +195,7 @@ class yank(YankCommand):
         r.insert(r.kill_ring[-1])
 
 
-class yank_pop(YankCommand):
+klasse yank_pop(YankCommand):
     def do(self) -> None:
         r = self.reader
         b = r.buffer
@@ -213,7 +213,7 @@ class yank_pop(YankCommand):
         r.dirty = True
 
 
-class interrupt(FinishCommand):
+klasse interrupt(FinishCommand):
     def do(self) -> None:
         import signal
 
@@ -222,14 +222,14 @@ class interrupt(FinishCommand):
         os.kill(os.getpid(), signal.SIGINT)
 
 
-class ctrl_c(Command):
+klasse ctrl_c(Command):
     def do(self) -> None:
         self.reader.console.finish()
         self.reader.finish()
         raise KeyboardInterrupt
 
 
-class suspend(Command):
+klasse suspend(Command):
     def do(self) -> None:
         import signal
 
@@ -246,7 +246,7 @@ class suspend(Command):
         r.console.screen = []
 
 
-class up(MotionCommand):
+klasse up(MotionCommand):
     def do(self) -> None:
         r = self.reader
         for _ in range(r.get_arg()):
@@ -276,7 +276,7 @@ class up(MotionCommand):
             r.setpos_from_xy(x, new_y)
 
 
-class down(MotionCommand):
+klasse down(MotionCommand):
     def do(self) -> None:
         r = self.reader
         b = r.buffer
@@ -308,7 +308,7 @@ class down(MotionCommand):
             r.setpos_from_xy(x, new_y)
 
 
-class left(MotionCommand):
+klasse left(MotionCommand):
     def do(self) -> None:
         r = self.reader
         for _ in range(r.get_arg()):
@@ -319,7 +319,7 @@ class left(MotionCommand):
                 self.reader.error("start of buffer")
 
 
-class right(MotionCommand):
+klasse right(MotionCommand):
     def do(self) -> None:
         r = self.reader
         b = r.buffer
@@ -331,41 +331,41 @@ class right(MotionCommand):
                 self.reader.error("end of buffer")
 
 
-class beginning_of_line(MotionCommand):
+klasse beginning_of_line(MotionCommand):
     def do(self) -> None:
         self.reader.pos = self.reader.bol()
 
 
-class end_of_line(MotionCommand):
+klasse end_of_line(MotionCommand):
     def do(self) -> None:
         self.reader.pos = self.reader.eol()
 
 
-class home(MotionCommand):
+klasse home(MotionCommand):
     def do(self) -> None:
         self.reader.pos = 0
 
 
-class end(MotionCommand):
+klasse end(MotionCommand):
     def do(self) -> None:
         self.reader.pos = len(self.reader.buffer)
 
 
-class forward_word(MotionCommand):
+klasse forward_word(MotionCommand):
     def do(self) -> None:
         r = self.reader
         for i in range(r.get_arg()):
             r.pos = r.eow()
 
 
-class backward_word(MotionCommand):
+klasse backward_word(MotionCommand):
     def do(self) -> None:
         r = self.reader
         for i in range(r.get_arg()):
             r.pos = r.bow()
 
 
-class self_insert(EditCommand):
+klasse self_insert(EditCommand):
     def do(self) -> None:
         r = self.reader
         text = self.event * r.get_arg()
@@ -379,13 +379,13 @@ class self_insert(EditCommand):
                 r.last_refresh_cache.invalidated = True
 
 
-class insert_nl(EditCommand):
+klasse insert_nl(EditCommand):
     def do(self) -> None:
         r = self.reader
         r.insert("\n" * r.get_arg())
 
 
-class transpose_characters(EditCommand):
+klasse transpose_characters(EditCommand):
     def do(self) -> None:
         r = self.reader
         b = r.buffer
@@ -403,7 +403,7 @@ class transpose_characters(EditCommand):
             r.dirty = True
 
 
-class backspace(EditCommand):
+klasse backspace(EditCommand):
     def do(self) -> None:
         r = self.reader
         b = r.buffer
@@ -416,7 +416,7 @@ class backspace(EditCommand):
                 self.reader.error("can't backspace at start")
 
 
-class delete(EditCommand):
+klasse delete(EditCommand):
     def do(self) -> None:
         r = self.reader
         b = r.buffer
@@ -436,12 +436,12 @@ class delete(EditCommand):
                 self.reader.error("end of buffer")
 
 
-class accept(FinishCommand):
+klasse accept(FinishCommand):
     def do(self) -> None:
         pass
 
 
-class help(Command):
+klasse help(Command):
     def do(self) -> None:
         import _sitebuiltins
 
@@ -449,20 +449,20 @@ class help(Command):
             self.reader.msg = _sitebuiltins._Helper()()  # type: ignore[assignment]
 
 
-class invalid_key(Command):
+klasse invalid_key(Command):
     def do(self) -> None:
         pending = self.reader.console.getpending()
         s = "".join(self.event) + pending.data
         self.reader.error("`%r' not bound" % s)
 
 
-class invalid_command(Command):
+klasse invalid_command(Command):
     def do(self) -> None:
         s = self.event_name
         self.reader.error("command `%s' not known" % s)
 
 
-class show_history(Command):
+klasse show_history(Command):
     def do(self) -> None:
         from .pager import get_pager
         from site import gethistoryfile
@@ -479,13 +479,13 @@ class show_history(Command):
         self.reader.console.posxy = self.reader.cxy
 
 
-class paste_mode(Command):
+klasse paste_mode(Command):
     def do(self) -> None:
         self.reader.paste_mode = not self.reader.paste_mode
         self.reader.dirty = True
 
 
-class perform_bracketed_paste(Command):
+klasse perform_bracketed_paste(Command):
     def do(self) -> None:
         done = "\x1b[201~"
         data = ""

@@ -11,11 +11,11 @@ import unittest
 from test.support import import_helper
 
 
-class B(bytes):
+klasse B(bytes):
     pass
 
 
-class PickleBufferTest(unittest.TestCase):
+klasse PickleBufferTest(unittest.TestCase):
 
     def check_memoryview(self, pb, equiv):
         with memoryview(pb) as m:

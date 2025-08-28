@@ -8,7 +8,7 @@ import unittest
 from test.support import script_helper
 
 
-class StructSeqTest(unittest.TestCase):
+klasse StructSeqTest(unittest.TestCase):
 
     def test_tuple(self):
         t = time.gmtime()
@@ -158,11 +158,11 @@ class StructSeqTest(unittest.TestCase):
             t("123456789", dict={"tm_zone": "some zone", "error": 0})
 
     def test_eviltuple(self):
-        class Exc(Exception):
+        klasse Exc(Exception):
             pass
 
         # Devious code could crash structseqs' constructors
-        class C:
+        klasse C:
             def __getitem__(self, i):
                 raise Exc
             def __len__(self):

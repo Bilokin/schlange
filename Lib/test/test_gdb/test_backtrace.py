@@ -10,7 +10,7 @@ def setUpModule():
     setup_module()
 
 
-class PyBtTests(DebuggerTests):
+klasse PyBtTests(DebuggerTests):
     @unittest.skipIf(python_is_optimized(),
                      "Python was compiled with optimizations")
     def test_bt(self):
@@ -56,7 +56,7 @@ Traceback \(most recent call first\):
         cmd = '''
 from threading import Thread
 
-class TestThread(Thread):
+klasse TestThread(Thread):
     # These threads would run forever, but we'll interrupt things with the
     # debugger
     def run(self):
@@ -113,7 +113,7 @@ id(42)
                      "Python was compiled with optimizations")
     def test_wrapper_call(self):
         cmd = textwrap.dedent('''
-            class MyList(list):
+            klasse MyList(list):
                 def __init__(self):
                     super(*[]).__init__()   # wrapper_call()
 

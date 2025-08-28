@@ -51,7 +51,7 @@ def d(location=None, name=None, shortname=None, version=None, suffix=None):
             'version': version, 'suffix': suffix}
 
 
-class MachOTest(unittest.TestCase):
+klasse MachOTest(unittest.TestCase):
     @unittest.skipUnless(sys.platform == "darwin", 'OSX-specific test')
     def test_find(self):
         self.assertEqual(dyld_find('libSystem.dylib'),

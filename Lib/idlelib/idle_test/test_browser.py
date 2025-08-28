@@ -15,7 +15,7 @@ from tkinter import Tk
 from idlelib.tree import TreeNode
 
 
-class ModuleBrowserTest(unittest.TestCase):
+klasse ModuleBrowserTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -86,11 +86,11 @@ mock_pyclbr_tree = {'C0': C0, 'f0': f0}
 browser.transform_children(mock_pyclbr_tree, 'test')  # C0(base)
 browser.transform_children(C0.children)  # C1()
 
-# The class below checks that the calls above are correct
+# The klasse below checks that the calls above are correct
 # and that duplicate calls have no effect.
 
 
-class TransformChildrenTest(unittest.TestCase):
+klasse TransformChildrenTest(unittest.TestCase):
 
     def test_transform_module_children(self):
         eq = self.assertEqual
@@ -121,7 +121,7 @@ class TransformChildrenTest(unittest.TestCase):
         eq(list(transform(f0.children)), [f1, c1])
 
 
-class ModuleBrowserTreeItemTest(unittest.TestCase):
+klasse ModuleBrowserTreeItemTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -173,7 +173,7 @@ class ModuleBrowserTreeItemTest(unittest.TestCase):
             fopen.assert_called_once_with(fname)
 
 
-class ChildBrowserTreeItemTest(unittest.TestCase):
+klasse ChildBrowserTreeItemTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -227,7 +227,7 @@ class ChildBrowserTreeItemTest(unittest.TestCase):
         # Failure test would have to raise OSError or AttributeError.
 
 
-class NestedChildrenTest(unittest.TestCase):
+klasse NestedChildrenTest(unittest.TestCase):
     "Test that all the nodes in a nested tree are added to the BrowserTree."
 
     def test_nested(self):

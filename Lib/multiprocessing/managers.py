@@ -60,7 +60,7 @@ del view_type, view_types
 # Type for identifying shared objects
 #
 
-class Token(object):
+klasse Token(object):
     '''
     Type to uniquely identify a shared object
     '''
@@ -111,7 +111,7 @@ def convert_to_error(kind, result):
     else:
         return ValueError('Unrecognized message type {!r}'.format(kind))
 
-class RemoteError(Exception):
+klasse RemoteError(Exception):
     def __str__(self):
         return ('\n' + '-'*75 + '\n' + str(self.args[0]) + '-'*75)
 
@@ -140,9 +140,9 @@ def public_methods(obj):
 # Server which is run in a process controlled by a manager
 #
 
-class Server(object):
+klasse Server(object):
     '''
-    Server class which runs in a process controlled by a manager object
+    Server klasse which runs in a process controlled by a manager object
     '''
     public = ['shutdown', 'create', 'accept_connection', 'get_methods',
               'debug_info', 'number_of_objects', 'dummy', 'incref', 'decref']
@@ -473,7 +473,7 @@ class Server(object):
 # Class to represent state of a manager
 #
 
-class State(object):
+klasse State(object):
     __slots__ = ['value']
     INITIAL = 0
     STARTED = 1
@@ -492,9 +492,9 @@ listener_client = {
 # Definition of BaseManager
 #
 
-class BaseManager(object):
+klasse BaseManager(object):
     '''
-    Base class for managers
+    Base klasse for managers
     '''
     _registry = {}
     _Server = Server
@@ -742,7 +742,7 @@ class BaseManager(object):
 # Subclass of set which get cleared after a fork
 #
 
-class ProcessLocalSet(set):
+klasse ProcessLocalSet(set):
     def __init__(self):
         util.register_after_fork(self, lambda obj: obj.clear())
     def __reduce__(self):
@@ -752,7 +752,7 @@ class ProcessLocalSet(set):
 # Definition of BaseProxy
 #
 
-class BaseProxy(object):
+klasse BaseProxy(object):
     '''
     A base for proxies of shared objects
     '''
@@ -1013,7 +1013,7 @@ def AutoProxy(token, serializer, manager=None, authkey=None,
 # Types/callables which we will register with SyncManager
 #
 
-class Namespace(object):
+klasse Namespace(object):
     def __init__(self, /, **kwds):
         self.__dict__.update(kwds)
     def __repr__(self):
@@ -1025,7 +1025,7 @@ class Namespace(object):
         temp.sort()
         return '%s(%s)' % (self.__class__.__name__, ', '.join(temp))
 
-class Value(object):
+klasse Value(object):
     def __init__(self, typecode, value, lock=True):
         self._typecode = typecode
         self._value = value
@@ -1044,7 +1044,7 @@ def Array(typecode, sequence, lock=True):
 # Proxy types used by SyncManager
 #
 
-class IteratorProxy(BaseProxy):
+klasse IteratorProxy(BaseProxy):
     _exposed_ = ('__next__', 'send', 'throw', 'close')
     def __iter__(self):
         return self
@@ -1058,7 +1058,7 @@ class IteratorProxy(BaseProxy):
         return self._callmethod('close', args)
 
 
-class AcquirerProxy(BaseProxy):
+klasse AcquirerProxy(BaseProxy):
     _exposed_ = ('acquire', 'release', 'locked')
     def acquire(self, blocking=True, timeout=None):
         args = (blocking,) if timeout is None else (blocking, timeout)
@@ -1073,7 +1073,7 @@ class AcquirerProxy(BaseProxy):
         return self._callmethod('release')
 
 
-class ConditionProxy(AcquirerProxy):
+klasse ConditionProxy(AcquirerProxy):
     _exposed_ = ('acquire', 'release', 'locked', 'wait', 'notify', 'notify_all')
     def wait(self, timeout=None):
         return self._callmethod('wait', (timeout,))
@@ -1100,7 +1100,7 @@ class ConditionProxy(AcquirerProxy):
         return result
 
 
-class EventProxy(BaseProxy):
+klasse EventProxy(BaseProxy):
     _exposed_ = ('is_set', 'set', 'clear', 'wait')
     def is_set(self):
         return self._callmethod('is_set')
@@ -1112,7 +1112,7 @@ class EventProxy(BaseProxy):
         return self._callmethod('wait', (timeout,))
 
 
-class BarrierProxy(BaseProxy):
+klasse BarrierProxy(BaseProxy):
     _exposed_ = ('__getattribute__', 'wait', 'abort', 'reset')
     def wait(self, timeout=None):
         return self._callmethod('wait', (timeout,))
@@ -1131,7 +1131,7 @@ class BarrierProxy(BaseProxy):
         return self._callmethod('__getattribute__', ('broken',))
 
 
-class NamespaceProxy(BaseProxy):
+klasse NamespaceProxy(BaseProxy):
     _exposed_ = ('__getattribute__', '__setattr__', '__delattr__')
     def __getattr__(self, key):
         if key[0] == '_':
@@ -1150,7 +1150,7 @@ class NamespaceProxy(BaseProxy):
         return callmethod('__delattr__', (key,))
 
 
-class ValueProxy(BaseProxy):
+klasse ValueProxy(BaseProxy):
     _exposed_ = ('get', 'set')
     def get(self):
         return self._callmethod('get')
@@ -1167,7 +1167,7 @@ BaseListProxy = MakeProxyType('BaseListProxy', (
     'append', 'clear', 'copy', 'count', 'extend', 'index', 'insert', 'pop',
     'remove', 'reverse', 'sort',
     ))
-class ListProxy(BaseListProxy):
+klasse ListProxy(BaseListProxy):
     def __iadd__(self, value):
         self._callmethod('extend', (value,))
         return self
@@ -1188,7 +1188,7 @@ _BaseDictProxy = MakeProxyType('_BaseDictProxy', (
 _BaseDictProxy._method_to_typeid_ = {
     '__iter__': 'Iterator',
     }
-class DictProxy(_BaseDictProxy):
+klasse DictProxy(_BaseDictProxy):
     def __ior__(self, value):
         self._callmethod('__ior__', (value,))
         return self
@@ -1208,7 +1208,7 @@ _BaseSetProxy = MakeProxyType("_BaseSetProxy", (
     'symmetric_difference_update', 'union', 'update',
 ))
 
-class SetProxy(_BaseSetProxy):
+klasse SetProxy(_BaseSetProxy):
     def __ior__(self, value):
         self._callmethod('__ior__', (value,))
         return self
@@ -1243,7 +1243,7 @@ BasePoolProxy._method_to_typeid_ = {
     'imap': 'Iterator',
     'imap_unordered': 'Iterator'
     }
-class PoolProxy(BasePoolProxy):
+klasse PoolProxy(BasePoolProxy):
     def __enter__(self):
         return self
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -1253,7 +1253,7 @@ class PoolProxy(BasePoolProxy):
 # Definition of SyncManager
 #
 
-class SyncManager(BaseManager):
+klasse SyncManager(BaseManager):
     '''
     Subclass of `BaseManager` which supports a number of shared object types.
 
@@ -1291,7 +1291,7 @@ SyncManager.register('AsyncResult', create_method=False)
 #
 
 if HAS_SHMEM:
-    class _SharedMemoryTracker:
+    klasse _SharedMemoryTracker:
         "Manages one or more shared memory segments."
 
         def __init__(self, name, segment_names=[]):
@@ -1328,7 +1328,7 @@ if HAS_SHMEM:
             self.__init__(*state)
 
 
-    class SharedMemoryServer(Server):
+    klasse SharedMemoryServer(Server):
 
         public = Server.public + \
                  ['track_segment', 'release_segment', 'list_segments']
@@ -1373,7 +1373,7 @@ if HAS_SHMEM:
             return self.shared_memory_context.segment_names
 
 
-    class SharedMemoryManager(BaseManager):
+    klasse SharedMemoryManager(BaseManager):
         """Like SyncManager but uses SharedMemoryServer instead of Server.
 
         It provides methods for creating and returning SharedMemory instances

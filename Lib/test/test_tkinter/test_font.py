@@ -8,7 +8,7 @@ requires('gui')
 
 fontname = "TkDefaultFont"
 
-class FontTest(AbstractTkTest, unittest.TestCase):
+klasse FontTest(AbstractTkTest, unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -119,7 +119,7 @@ class FontTest(AbstractTkTest, unittest.TestCase):
         )
 
 
-class DefaultRootTest(AbstractDefaultRootTest, unittest.TestCase):
+klasse DefaultRootTest(AbstractDefaultRootTest, unittest.TestCase):
 
     def test_families(self):
         self.assertRaises(RuntimeError, font.families)

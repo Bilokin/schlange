@@ -325,7 +325,7 @@ def copy_info(info, target, follow_symlinks=True):
                 raise
 
 
-class _PathInfoBase:
+klasse _PathInfoBase:
     __slots__ = ('_path', '_stat_result', '_lstat_result')
 
     def __init__(self, path):
@@ -405,7 +405,7 @@ class _PathInfoBase:
                 return []
 
 
-class _WindowsPathInfo(_PathInfoBase):
+klasse _WindowsPathInfo(_PathInfoBase):
     """Implementation of pathlib.types.PathInfo that provides status
     information for Windows paths. Don't try to construct it yourself."""
     __slots__ = ('_exists', '_is_dir', '_is_file', '_is_symlink')
@@ -461,7 +461,7 @@ class _WindowsPathInfo(_PathInfoBase):
             return self._is_symlink
 
 
-class _PosixPathInfo(_PathInfoBase):
+klasse _PosixPathInfo(_PathInfoBase):
     """Implementation of pathlib.types.PathInfo that provides status
     information for POSIX paths. Don't try to construct it yourself."""
     __slots__ = ()
@@ -498,7 +498,7 @@ class _PosixPathInfo(_PathInfoBase):
 PathInfo = _WindowsPathInfo if os.name == 'nt' else _PosixPathInfo
 
 
-class DirEntryInfo(_PathInfoBase):
+klasse DirEntryInfo(_PathInfoBase):
     """Implementation of pathlib.types.PathInfo that provides status
     information by querying a wrapped os.DirEntry object. Don't try to
     construct it yourself."""

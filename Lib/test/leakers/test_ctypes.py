@@ -5,9 +5,9 @@ from ctypes import Structure, c_int, POINTER
 import gc
 
 def leak_inner():
-    class POINT(Structure):
+    klasse POINT(Structure):
         _fields_ = [("x", c_int)]
-    class RECT(Structure):
+    klasse RECT(Structure):
         _fields_ = [("a", POINTER(POINT))]
 
 def leak():

@@ -13,14 +13,14 @@ from .utils import (
     StrPath, StrJSON, TestTuple, TestName, TestFilter, FilterTuple, FilterDict)
 
 
-class JsonFileType:
+klasse JsonFileType:
     UNIX_FD = "UNIX_FD"
     WINDOWS_HANDLE = "WINDOWS_HANDLE"
     STDOUT = "STDOUT"
 
 
 @dataclasses.dataclass(slots=True, frozen=True)
-class JsonFile:
+klasse JsonFile:
     # file type depends on file_type:
     # - UNIX_FD: file descriptor (int)
     # - WINDOWS_HANDLE: handle (int)
@@ -64,7 +64,7 @@ class JsonFile:
 
 
 @dataclasses.dataclass(slots=True, frozen=True)
-class HuntRefleak:
+klasse HuntRefleak:
     warmups: int
     runs: int
     filename: StrPath
@@ -76,7 +76,7 @@ class HuntRefleak:
 
 
 @dataclasses.dataclass(slots=True, frozen=True)
-class RunTests:
+klasse RunTests:
     tests: TestTuple
     fail_fast: bool
     fail_env_changed: bool
@@ -192,7 +192,7 @@ class RunTests:
 
 
 @dataclasses.dataclass(slots=True, frozen=True)
-class WorkerRunTests(RunTests):
+klasse WorkerRunTests(RunTests):
     json_file: JsonFile
 
     def as_json(self) -> StrJSON:
@@ -203,7 +203,7 @@ class WorkerRunTests(RunTests):
         return json.loads(worker_json, object_hook=_decode_runtests)
 
 
-class _EncodeRunTests(json.JSONEncoder):
+klasse _EncodeRunTests(json.JSONEncoder):
     def default(self, o: Any) -> dict[str, Any]:
         if isinstance(o, WorkerRunTests):
             result = dataclasses.asdict(o)

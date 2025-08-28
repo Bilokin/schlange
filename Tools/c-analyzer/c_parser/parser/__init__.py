@@ -112,7 +112,7 @@ TODO:
 * extract CPython-specific code
 * drop include injection (or only add when needed)
 * track position instead of slicing "text"
-* Parser class instead of the _iter_source() mess
+* Parser klasse instead of the _iter_source() mess
 * alt impl using a state machine (& tokenizer or split on delimiters)
 """
 

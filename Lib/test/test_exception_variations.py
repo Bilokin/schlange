@@ -1,7 +1,7 @@
 
 import unittest
 
-class ExceptTestCases(unittest.TestCase):
+klasse ExceptTestCases(unittest.TestCase):
     def test_try_except_else_finally(self):
         hit_except = False
         hit_else = False
@@ -294,7 +294,7 @@ class ExceptTestCases(unittest.TestCase):
         self.assertTrue(hit_except)
 
 
-class ExceptStarTestCases(unittest.TestCase):
+klasse ExceptStarTestCases(unittest.TestCase):
     def test_try_except_else_finally(self):
         hit_except = False
         hit_else = False

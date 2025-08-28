@@ -32,7 +32,7 @@ void *foo(void)
 
 @unittest.skipUnless(sys.platform.startswith('linux'),
                      'test requires GNU IFUNC support')
-class TestNullDlsym(unittest.TestCase):
+klasse TestNullDlsym(unittest.TestCase):
     """GH-126554: Ensure that we catch NULL dlsym return values
 
     In rare cases, such as when using GNU IFUNCs, dlsym(),
@@ -122,7 +122,7 @@ class TestNullDlsym(unittest.TestCase):
 
 @test.support.thread_unsafe('setlocale is not thread-safe')
 @unittest.skipUnless(os.name != 'nt', 'test requires dlerror() calls')
-class TestLocalization(unittest.TestCase):
+klasse TestLocalization(unittest.TestCase):
 
     @staticmethod
     def configure_locales(func):

@@ -4,13 +4,13 @@ import builtins
 import rlcompleter
 from test.support import MISSING_C_DOCSTRINGS
 
-class CompleteMe:
-    """ Trivial class used in testing rlcompleter.Completer. """
+klasse CompleteMe:
+    """ Trivial klasse used in testing rlcompleter.Completer. """
     spam = 1
     _ham = 2
 
 
-class TestRlcompleter(unittest.TestCase):
+klasse TestRlcompleter(unittest.TestCase):
     def setUp(self):
         self.stdcompleter = rlcompleter.Completer()
         self.completer = rlcompleter.Completer(dict(spam=int,
@@ -21,9 +21,9 @@ class TestRlcompleter(unittest.TestCase):
         self.stdcompleter.complete('', 0)
 
     def test_namespace(self):
-        class A(dict):
+        klasse A(dict):
             pass
-        class B(list):
+        klasse B(list):
             pass
 
         self.assertTrue(self.stdcompleter.use_main_ns)
@@ -103,10 +103,10 @@ class TestRlcompleter(unittest.TestCase):
         """Ensure getattr() is invoked no more than once per attribute"""
 
         # note the special case for @property methods below; that is why
-        # we use __dir__ and __getattr__ in class Foo to create a "magic"
-        # class attribute 'bar'. This forces `getattr` to call __getattr__
+        # we use __dir__ and __getattr__ in klasse Foo to create a "magic"
+        # klasse attribute 'bar'. This forces `getattr` to call __getattr__
         # (which is doesn't necessarily do).
-        class Foo:
+        klasse Foo:
             calls = 0
             bar = ''
             def __getattribute__(self, name):
@@ -121,7 +121,7 @@ class TestRlcompleter(unittest.TestCase):
         self.assertEqual(f.calls, 1)
 
     def test_property_method_not_called(self):
-        class Foo:
+        klasse Foo:
             _bar = 0
             property_called = False
 
@@ -139,7 +139,7 @@ class TestRlcompleter(unittest.TestCase):
     def test_uncreated_attr(self):
         # Attributes like properties and slots should be completed even when
         # they haven't been created on an instance
-        class Foo:
+        klasse Foo:
             __slots__ = ("bar",)
         completer = rlcompleter.Completer(dict(f=Foo()))
         self.assertEqual(completer.complete('f.', 0), 'f.bar')

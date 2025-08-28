@@ -7,7 +7,7 @@ from email.contentmanager import ContentManager, raw_data_manager
 
 
 @parameterize
-class TestContentManager(TestEmailBase):
+klasse TestContentManager(TestEmailBase):
 
     policy = policy.default
     message = EmailMessage
@@ -52,10 +52,10 @@ class TestContentManager(TestEmailBase):
         with self.assertRaisesRegex(KeyError, 'text/plain'):
             cm.get_content(m)
 
-    class BaseThing(str):
+    klasse BaseThing(str):
         pass
     baseobject_full_path = __name__ + '.' + 'TestContentManager.BaseThing'
-    class Thing(BaseThing):
+    klasse Thing(BaseThing):
         pass
     testobject_full_path = __name__ + '.' + 'TestContentManager.Thing'
 
@@ -133,7 +133,7 @@ class TestContentManager(TestEmailBase):
 
 
 @parameterize
-class TestRawDataManager(TestEmailBase):
+klasse TestRawDataManager(TestEmailBase):
     # Note: these tests are dependent on the order in which headers are added
     # to the message objects by the code.  There's no defined ordering in
     # RFC5322/MIME, so this makes the tests more fragile than the standards

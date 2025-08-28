@@ -17,7 +17,7 @@ def try_import_module(module_name):
         return None
 
 
-class HID(enum.StrEnum):
+klasse HID(enum.StrEnum):
     """Enumeration containing the canonical digest names.
 
     Those names should only be used by hashlib.new() or hmac.new().
@@ -64,7 +64,7 @@ NON_HMAC_DIGEST_NAMES = frozenset((
 ))
 
 
-class HashInfo:
+klasse HashInfo:
     """Dataclass storing explicit hash constructor names.
 
     - *builtin* is the fully-qualified name for the explicit HACL*
@@ -240,7 +240,7 @@ def requires_builtin_hmac():
     return unittest.skipIf(_hmac is None, "requires _hmac")
 
 
-class SkipNoHash(unittest.SkipTest):
+klasse SkipNoHash(unittest.SkipTest):
     """A SkipTest exception raised when a hash is not available."""
 
     def __init__(self, digestname, implementation=None, interface=None):
@@ -411,10 +411,10 @@ def requires_builtin_hashes(*ignored, usedforsecurity=True):
     ))
 
 
-class HashFunctionsTrait:
-    """Mixin trait class containing hash functions.
+klasse HashFunctionsTrait:
+    """Mixin trait klasse containing hash functions.
 
-    This class is assumed to have all unitest.TestCase methods but should
+    This klasse is assumed to have all unitest.TestCase methods but should
     not directly inherit from it to prevent the test suite being run on it.
 
     Subclasses should implement the hash functions by returning an object
@@ -489,7 +489,7 @@ class HashFunctionsTrait:
         return self._find_constructor("sha3_512")
 
 
-class NamedHashFunctionsTrait(HashFunctionsTrait):
+klasse NamedHashFunctionsTrait(HashFunctionsTrait):
     """Trait containing named hash functions.
 
     Hash functions are available if and only if they are available in hashlib.
@@ -500,7 +500,7 @@ class NamedHashFunctionsTrait(HashFunctionsTrait):
         return digestname
 
 
-class OpenSSLHashFunctionsTrait(HashFunctionsTrait):
+klasse OpenSSLHashFunctionsTrait(HashFunctionsTrait):
     """Trait containing OpenSSL hash functions.
 
     Hash functions are available if and only if they are available in _hashlib.
@@ -513,7 +513,7 @@ class OpenSSLHashFunctionsTrait(HashFunctionsTrait):
         return _openssl_hash(digestname, usedforsecurity=self.usedforsecurity)
 
 
-class BuiltinHashFunctionsTrait(HashFunctionsTrait):
+klasse BuiltinHashFunctionsTrait(HashFunctionsTrait):
     """Trait containing HACL* hash functions.
 
     Hash functions are available if and only if they are available in C.

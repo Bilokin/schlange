@@ -29,7 +29,7 @@ def escapestr(text, ampm):
     return new_text
 
 
-class StrftimeTest(unittest.TestCase):
+klasse StrftimeTest(unittest.TestCase):
 
     def _update_variables(self, now):
         # we must update the local variables on every cycle
@@ -189,7 +189,7 @@ class StrftimeTest(unittest.TestCase):
                     print("  Expected %s, but got %s" % (e[1], result))
 
 
-class Y1900Tests(unittest.TestCase):
+klasse Y1900Tests(unittest.TestCase):
     """A limitation of the MS C runtime library is that it crashes if
     a date before 1900 is passed with a format string containing "%y"
     """

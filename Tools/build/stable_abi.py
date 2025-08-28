@@ -54,7 +54,7 @@ UNIXY = MACOS or (sys.platform == "linux")  # XXX should this be "not Windows"?
 # Feel free to change its syntax (and the `parse_manifest` function)
 # to better serve that purpose (while keeping it human-readable).
 
-class Manifest:
+klasse Manifest:
     """Collection of `ABIItem`s forming the stable ABI/limited API."""
     def __init__(self):
         self.contents = {}
@@ -109,7 +109,7 @@ class Manifest:
 
 itemclasses = {}
 def itemclass(kind):
-    """Register the decorated class in `itemclasses`"""
+    """Register the decorated klasse in `itemclasses`"""
     def decorator(cls):
         itemclasses[kind] = cls
         return cls
@@ -121,7 +121,7 @@ def itemclass(kind):
 @itemclass('const')
 @itemclass('typedef')
 @dataclasses.dataclass
-class ABIItem:
+klasse ABIItem:
     """Information on one item (function, macro, struct, etc.)"""
 
     name: str
@@ -132,7 +132,7 @@ class ABIItem:
 
 @itemclass('feature_macro')
 @dataclasses.dataclass(kw_only=True)
-class FeatureMacro(ABIItem):
+klasse FeatureMacro(ABIItem):
     name: str
     doc: str
     windows: bool = False
@@ -140,7 +140,7 @@ class FeatureMacro(ABIItem):
 
 @itemclass('struct')
 @dataclasses.dataclass(kw_only=True)
-class Struct(ABIItem):
+klasse Struct(ABIItem):
     struct_abi_kind: str
     members: list = None
 
@@ -299,7 +299,7 @@ def gen_ctypes_test(manifest, args, outfile):
 
         ctypes_test = import_module('ctypes')
 
-        class TestStableABIAvailability(unittest.TestCase):
+        klasse TestStableABIAvailability(unittest.TestCase):
             def test_available_symbols(self):
 
                 for symbol_name in SYMBOL_NAMES:

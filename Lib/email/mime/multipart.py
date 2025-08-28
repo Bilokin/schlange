@@ -2,15 +2,15 @@
 # Author: Barry Warsaw
 # Contact: email-sig@python.org
 
-"""Base class for MIME multipart/* type messages."""
+"""Base klasse for MIME multipart/* type messages."""
 
 __all__ = ['MIMEMultipart']
 
 from email.mime.base import MIMEBase
 
 
-class MIMEMultipart(MIMEBase):
-    """Base class for MIME multipart/* type messages."""
+klasse MIMEMultipart(MIMEBase):
+    """Base klasse for MIME multipart/* type messages."""
 
     def __init__(self, _subtype='mixed', boundary=None, _subparts=None,
                  *, policy=None,

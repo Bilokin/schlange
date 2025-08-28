@@ -63,7 +63,7 @@ ZLIB_RUNTIME_VERSION_TUPLE = _zlib_runtime_version_tuple()
 HW_ACCELERATED = is_s390x
 
 
-class VersionTestCase(unittest.TestCase):
+klasse VersionTestCase(unittest.TestCase):
 
     def test_library_version(self):
         # Test that the major version of the actual library in use matches the
@@ -74,7 +74,7 @@ class VersionTestCase(unittest.TestCase):
         self.assertEqual(zlib.ZLIB_RUNTIME_VERSION[0], zlib.ZLIB_VERSION[0])
 
 
-class ChecksumTestCase(unittest.TestCase):
+klasse ChecksumTestCase(unittest.TestCase):
     # checksum test cases
     def test_crc32start(self):
         self.assertEqual(zlib.crc32(b""), zlib.crc32(b"", 0))
@@ -119,8 +119,8 @@ class ChecksumTestCase(unittest.TestCase):
         self.assertEqual(binascii.crc32(b'spam'), zlib.crc32(b'spam'))
 
 
-class ChecksumCombineMixin:
-    """Mixin class for testing checksum combination."""
+klasse ChecksumCombineMixin:
+    """Mixin klasse for testing checksum combination."""
 
     N = 1000
     default_iv: int
@@ -205,7 +205,7 @@ class ChecksumCombineMixin:
             self.assertEqual(checksum, expected)
 
 
-class CRC32CombineTestCase(ChecksumCombineMixin, unittest.TestCase):
+klasse CRC32CombineTestCase(ChecksumCombineMixin, unittest.TestCase):
 
     default_iv = 0
 
@@ -216,7 +216,7 @@ class CRC32CombineTestCase(ChecksumCombineMixin, unittest.TestCase):
         return zlib.crc32_combine(a, b, blen)
 
 
-class Adler32CombineTestCase(ChecksumCombineMixin, unittest.TestCase):
+klasse Adler32CombineTestCase(ChecksumCombineMixin, unittest.TestCase):
 
     default_iv = 1
 
@@ -228,7 +228,7 @@ class Adler32CombineTestCase(ChecksumCombineMixin, unittest.TestCase):
 
 
 # Issue #10276 - check that inputs >=4 GiB are handled correctly.
-class ChecksumBigBufferTestCase(unittest.TestCase):
+klasse ChecksumBigBufferTestCase(unittest.TestCase):
 
     @bigmemtest(size=_4G + 4, memuse=1, dry_run=False)
     def test_big_buffer(self, size):
@@ -237,7 +237,7 @@ class ChecksumBigBufferTestCase(unittest.TestCase):
         self.assertEqual(zlib.adler32(data), 2256789997)
 
 
-class ExceptionTestCase(unittest.TestCase):
+klasse ExceptionTestCase(unittest.TestCase):
     # make sure we generate some expected errors
     def test_badlevel(self):
         # specifying compression level out of range causes an error
@@ -288,7 +288,7 @@ class ExceptionTestCase(unittest.TestCase):
         support.check_disallow_instantiation(self, type(zlib.decompressobj()))
 
 
-class BaseCompressTestCase(object):
+klasse BaseCompressTestCase(object):
     def check_big_compress_buffer(self, size, compress_func):
         _1M = 1024 * 1024
         # Generate 10 MiB worth of random, and expand it by repeating it.
@@ -318,7 +318,7 @@ class BaseCompressTestCase(object):
             data = None
 
 
-class CompressTestCase(BaseCompressTestCase, unittest.TestCase):
+klasse CompressTestCase(BaseCompressTestCase, unittest.TestCase):
     # Test compression in one go (whole message compression)
     def test_speech(self):
         x = zlib.compress(HAMLET_SCENE)
@@ -386,7 +386,7 @@ class CompressTestCase(BaseCompressTestCase, unittest.TestCase):
             comp = data = None
 
 
-class CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
+klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
     # Test compression object
     def test_pair(self):
         # straightforward compress/decompress objects
@@ -1045,7 +1045,7 @@ LAERTES
 """
 
 
-class ZlibDecompressorTest(unittest.TestCase):
+klasse ZlibDecompressorTest(unittest.TestCase):
     # Test adopted from test_bz2.py
     TEXT = HAMLET_SCENE
     DATA = zlib.compress(HAMLET_SCENE)
@@ -1217,7 +1217,7 @@ class ZlibDecompressorTest(unittest.TestCase):
         self.assertAlmostEqual(gettotalrefcount() - refs_before, 0, delta=10)
 
 
-class CustomInt:
+klasse CustomInt:
     def __index__(self):
         return 100
 

@@ -33,7 +33,7 @@ if is_emscripten:
     raise unittest.SkipTest("incompatible with Emscripten's mmap emulation.")
 
 
-class MmapTests(unittest.TestCase):
+klasse MmapTests(unittest.TestCase):
 
     def setUp(self):
         if os.path.exists(TESTFN):
@@ -644,7 +644,7 @@ class MmapTests(unittest.TestCase):
                 pass
 
     def test_subclass(self):
-        class anon_mmap(mmap.mmap):
+        klasse anon_mmap(mmap.mmap):
             def __new__(klass, *args, **kwargs):
                 return mmap.mmap.__new__(klass, -1, *args, **kwargs)
         anon_mmap(PAGESIZE)
@@ -982,7 +982,7 @@ class MmapTests(unittest.TestCase):
                 for closed mmap files
         """
 
-        class MmapClosedByIntContext:
+        klasse MmapClosedByIntContext:
             def __init__(self, access) -> None:
                 self.access = access
 
@@ -993,7 +993,7 @@ class MmapTests(unittest.TestCase):
 
                 m = mmap.mmap(self.f.fileno(), 100, access=self.access)
 
-                class X:
+                klasse X:
                     def __index__(self):
                         m.close()
                         return 10
@@ -1137,7 +1137,7 @@ class MmapTests(unittest.TestCase):
         self.assertEqual(stderr.strip(), b'')
 
 
-class LargeMmapTests(unittest.TestCase):
+klasse LargeMmapTests(unittest.TestCase):
 
     def setUp(self):
         unlink(TESTFN)

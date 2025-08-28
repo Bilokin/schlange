@@ -18,7 +18,7 @@ CERTFILE = os.path.join(here, 'certdata', 'keycert.pem')
 
 # This one's based on HTTPServer, which is based on socketserver
 
-class HTTPSServer(_HTTPServer):
+klasse HTTPSServer(_HTTPServer):
 
     def __init__(self, server_address, handler_class, context):
         _HTTPServer.__init__(self, server_address, handler_class)
@@ -42,7 +42,7 @@ class HTTPSServer(_HTTPServer):
             raise
         return sslconn, addr
 
-class RootedHTTPRequestHandler(SimpleHTTPRequestHandler):
+klasse RootedHTTPRequestHandler(SimpleHTTPRequestHandler):
     # need to override translate_path to get a known root,
     # instead of using os.curdir, since the test could be
     # run from anywhere
@@ -83,7 +83,7 @@ class RootedHTTPRequestHandler(SimpleHTTPRequestHandler):
                               format%args))
 
 
-class StatsRequestHandler(BaseHTTPRequestHandler):
+klasse StatsRequestHandler(BaseHTTPRequestHandler):
     """Example HTTP request handler which returns SSL statistics on GET
     requests.
     """
@@ -117,7 +117,7 @@ class StatsRequestHandler(BaseHTTPRequestHandler):
             BaseHTTPRequestHandler.log_request(self, format, *args)
 
 
-class HTTPSServerThread(threading.Thread):
+klasse HTTPSServerThread(threading.Thread):
 
     def __init__(self, context, host=HOST, handler_class=None):
         self.flag = None

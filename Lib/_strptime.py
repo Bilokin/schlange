@@ -65,7 +65,7 @@ lzh_TW_alt_digits = (
     '\u5345', '\u5345\u4e00')
 
 
-class LocaleTime(object):
+klasse LocaleTime(object):
     """Stores and handles locale-specific information related to time.
 
     ATTRIBUTES:
@@ -337,7 +337,7 @@ class LocaleTime(object):
         self.timezone = (no_saving, has_saving)
 
 
-class TimeRE(dict):
+klasse TimeRE(dict):
     """Handle conversion from format directives to regexes."""
 
     def __init__(self, locale_time=None):

@@ -3,7 +3,7 @@ from unittest import TestCase
 from _pyrepl.utils import str_width, wlen, prev_next_window
 
 
-class TestUtils(TestCase):
+klasse TestUtils(TestCase):
     def test_str_width(self):
         characters = ['a', '1', '_', '!', '\x1a', '\u263A', '\uffb9']
         for c in characters:

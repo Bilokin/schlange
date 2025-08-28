@@ -44,7 +44,7 @@ if hasattr(os, 'register_at_fork'):
     os.register_at_fork(after_in_child=_threads_queues.clear)
 
 
-class WorkerContext:
+klasse WorkerContext:
 
     @classmethod
     def prepare(cls, initializer, initargs):
@@ -73,7 +73,7 @@ class WorkerContext:
         return fn(*args, **kwargs)
 
 
-class _WorkItem:
+klasse _WorkItem:
     def __init__(self, future, task):
         self.future = future
         self.task = task
@@ -141,13 +141,13 @@ def _worker(executor_reference, ctx, work_queue):
         ctx.finalize()
 
 
-class BrokenThreadPool(_base.BrokenExecutor):
+klasse BrokenThreadPool(_base.BrokenExecutor):
     """
     Raised when a worker thread in a ThreadPoolExecutor failed initializing.
     """
 
 
-class ThreadPoolExecutor(_base.Executor):
+klasse ThreadPoolExecutor(_base.Executor):
 
     BROKEN = BrokenThreadPool
 

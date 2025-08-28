@@ -4,7 +4,7 @@ import unittest
 from test import support
 from test.typinganndata import ann_module
 
-class OpcodeTest(unittest.TestCase):
+klasse OpcodeTest(unittest.TestCase):
 
     def test_try_inside_for_loop(self):
         n = 0
@@ -33,7 +33,7 @@ class OpcodeTest(unittest.TestCase):
             pass
 
     def test_default_annotations_exist(self):
-        class C: pass
+        klasse C: pass
         self.assertEqual(C.__annotations__, {})
 
     def test_use_existing_annotations(self):
@@ -45,7 +45,7 @@ class OpcodeTest(unittest.TestCase):
         # Don't rely on the existence of the '__annotations__' global.
         with support.swap_item(globals(), '__annotations__', {}):
             globals().pop('__annotations__', None)
-            class C:
+            klasse C:
                 try:
                     del __annotations__
                 except NameError:
@@ -55,10 +55,10 @@ class OpcodeTest(unittest.TestCase):
 
     def test_raise_class_exceptions(self):
 
-        class AClass(Exception): pass
-        class BClass(AClass): pass
-        class CClass(Exception): pass
-        class DClass(AClass):
+        klasse AClass(Exception): pass
+        klasse BClass(AClass): pass
+        klasse CClass(Exception): pass
+        klasse DClass(AClass):
             def __init__(self, ignore):
                 pass
 
@@ -131,7 +131,7 @@ class OpcodeTest(unittest.TestCase):
         self.assertNotEqual(f, g)
 
     def test_modulo_of_string_subclasses(self):
-        class MyString(str):
+        klasse MyString(str):
             def __mod__(self, value):
                 return 42
         self.assertEqual(MyString() % 3, 42)

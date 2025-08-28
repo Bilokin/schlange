@@ -4,15 +4,15 @@ from ctypes import c_int, Union, Structure, sizeof
 from ._support import StructCheckMixin
 
 
-class AnonTest(unittest.TestCase, StructCheckMixin):
+klasse AnonTest(unittest.TestCase, StructCheckMixin):
 
     def test_anon(self):
-        class ANON(Union):
+        klasse ANON(Union):
             _fields_ = [("a", c_int),
                         ("b", c_int)]
         self.check_union(ANON)
 
-        class Y(Structure):
+        klasse Y(Structure):
             _fields_ = [("x", c_int),
                         ("_", ANON),
                         ("y", c_int)]
@@ -42,28 +42,28 @@ class AnonTest(unittest.TestCase, StructCheckMixin):
 
     @test.support.cpython_only
     def test_issue31490(self):
-        # There shouldn't be an assertion failure in case the class has an
+        # There shouldn't be an assertion failure in case the klasse has an
         # attribute whose name is specified in _anonymous_ but not in _fields_.
 
         # AttributeError: 'x' is specified in _anonymous_ but not in _fields_
         with self.assertRaises(AttributeError):
-            class Name(Structure):
+            klasse Name(Structure):
                 _fields_ = []
                 _anonymous_ = ["x"]
                 x = 42
 
     def test_nested(self):
-        class ANON_S(Structure):
+        klasse ANON_S(Structure):
             _fields_ = [("a", c_int)]
         self.check_struct(ANON_S)
 
-        class ANON_U(Union):
+        klasse ANON_U(Union):
             _fields_ = [("_", ANON_S),
                         ("b", c_int)]
             _anonymous_ = ["_"]
         self.check_union(ANON_U)
 
-        class Y(Structure):
+        klasse Y(Structure):
             _fields_ = [("x", c_int),
                         ("_", ANON_U),
                         ("y", c_int)]

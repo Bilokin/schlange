@@ -15,7 +15,7 @@ import contextlib
 from test.support import MS_WINDOWS
 
 
-class StructUnionTestBase:
+klasse StructUnionTestBase:
     formats = {"c": c_char,
                "b": c_byte,
                "B": c_ubyte,
@@ -32,13 +32,13 @@ class StructUnionTestBase:
                }
 
     def test_subclass(self):
-        class X(self.cls):
+        klasse X(self.cls):
             _fields_ = [("a", c_int)]
 
-        class Y(X):
+        klasse Y(X):
             _fields_ = [("b", c_int)]
 
-        class Z(X):
+        klasse Z(X):
             pass
 
         self.assertEqual(sizeof(X), sizeof(c_int))
@@ -51,17 +51,17 @@ class StructUnionTestBase:
         self.assertEqual(Z._fields_, [("a", c_int)])
 
     def test_subclass_delayed(self):
-        class X(self.cls):
+        klasse X(self.cls):
             pass
         self.assertEqual(sizeof(X), 0)
         X._fields_ = [("a", c_int)]
 
-        class Y(X):
+        klasse Y(X):
             pass
         self.assertEqual(sizeof(Y), sizeof(X))
         Y._fields_ = [("b", c_int)]
 
-        class Z(X):
+        klasse Z(X):
             pass
 
         self.assertEqual(sizeof(X), sizeof(c_int))
@@ -94,19 +94,19 @@ class StructUnionTestBase:
                     obj = cls()
 
         # Cannot call the metaclass __init__ more than once
-        class T(self.cls):
+        klasse T(self.cls):
             _fields_ = [("x", c_char),
                         ("y", c_char)]
         with self.assertRaisesRegex(SystemError, "already initialized"):
             self.metacls.__init__(T, 'ptr', (), {})
 
     def test_alignment(self):
-        class X(self.cls):
+        klasse X(self.cls):
             _fields_ = [("x", c_char * 3)]
         self.assertEqual(alignment(X), calcsize("s"))
         self.assertEqual(sizeof(X), calcsize("3s"))
 
-        class Y(self.cls):
+        klasse Y(self.cls):
             _fields_ = [("x", c_char * 3),
                         ("y", c_int)]
         self.assertEqual(alignment(Y), alignment(c_int))
@@ -114,7 +114,7 @@ class StructUnionTestBase:
                           struct_size=calcsize("3s i"),
                           union_size=max(calcsize("3s"), calcsize("i")))
 
-        class SI(self.cls):
+        klasse SI(self.cls):
             _fields_ = [("a", X),
                         ("b", Y)]
         self.assertEqual(alignment(SI), max(alignment(Y), alignment(X)))
@@ -122,7 +122,7 @@ class StructUnionTestBase:
                           struct_size=calcsize("3s0i 3si 0i"),
                           union_size=max(calcsize("3s"), calcsize("i")))
 
-        class IS(self.cls):
+        klasse IS(self.cls):
             _fields_ = [("b", Y),
                         ("a", X)]
 
@@ -131,7 +131,7 @@ class StructUnionTestBase:
                           struct_size=calcsize("3si 3s 0i"),
                           union_size=max(calcsize("3s"), calcsize("i")))
 
-        class XX(self.cls):
+        klasse XX(self.cls):
             _fields_ = [("a", X),
                         ("b", X)]
         self.assertEqual(alignment(XX), alignment(X))
@@ -143,14 +143,14 @@ class StructUnionTestBase:
         # I had problems with these
         #
         # Although these are pathological cases: Empty Structures!
-        class X(self.cls):
+        klasse X(self.cls):
             _fields_ = []
 
         # Is this really the correct alignment, or should it be 0?
         self.assertTrue(alignment(X) == 1)
         self.assertTrue(sizeof(X) == 0)
 
-        class XX(self.cls):
+        klasse XX(self.cls):
             _fields_ = [("a", X),
                         ("b", X)]
 
@@ -159,7 +159,7 @@ class StructUnionTestBase:
 
     def test_fields(self):
         # test the offset and size attributes of Structure/Union fields.
-        class X(self.cls):
+        klasse X(self.cls):
             _fields_ = [("x", c_int),
                         ("y", c_char)]
 
@@ -181,13 +181,13 @@ class StructUnionTestBase:
 
     def test_field_descriptor_attributes(self):
         """Test information provided by the descriptors"""
-        class Inner(Structure):
+        klasse Inner(Structure):
             _fields_ = [
                 ("a", c_int16),
                 ("b", c_int8, 1),
                 ("c", c_int8, 2),
             ]
-        class X(self.cls):
+        klasse X(self.cls):
             _fields_ = [
                 ("x", c_int32),
                 ("y", c_int16, 1),
@@ -276,7 +276,7 @@ class StructUnionTestBase:
 
 
     def test_invalid_field_types(self):
-        class POINT(self.cls):
+        klasse POINT(self.cls):
             pass
         self.assertRaises(TypeError, setattr, POINT, "_fields_", [("x", 1), ("y", 2)])
 
@@ -285,19 +285,19 @@ class StructUnionTestBase:
         for name in b"x", 3, None:
             with self.subTest(name=name):
                 with self.assertRaises(TypeError):
-                    class S(self.cls):
+                    klasse S(self.cls):
                         _fields_ = [(name, c_int)]
 
     def test_str_name(self):
-        class WeirdString(str):
+        klasse WeirdString(str):
             def __str__(self):
                 return "unwanted value"
-        class S(self.cls):
+        klasse S(self.cls):
             _fields_ = [(WeirdString("f"), c_int)]
         self.assertEqual(S.f.name, "f")
 
     def test_intarray_fields(self):
-        class SomeInts(self.cls):
+        klasse SomeInts(self.cls):
             _fields_ = [("a", c_int * 4)]
 
         # can use tuple to initialize array (but not list!)
@@ -316,7 +316,7 @@ class StructUnionTestBase:
     def test_huge_field_name(self):
         # issue12881: segfault with large structure field names
         def create_class(length):
-            class S(self.cls):
+            klasse S(self.cls):
                 _fields_ = [('x' * length, c_int)]
 
         for length in [10 ** i for i in range(0, 8)]:
@@ -327,7 +327,7 @@ class StructUnionTestBase:
                 pass
 
     def test_abstract_class(self):
-        class X(self.cls):
+        klasse X(self.cls):
             _abstract_ = "something"
         with self.assertRaisesRegex(TypeError, r"^abstract class$"):
             X()
@@ -345,7 +345,7 @@ class StructUnionTestBase:
         else:
             warn_context = self.assertWarns(DeprecationWarning)
         with warn_context:
-            class X(self.cls):
+            klasse X(self.cls):
                 _pack_ = 1
                 # _layout_ missing
                 _fields_ = [('a', c_int8, 1), ('b', c_int16, 2)]
@@ -354,7 +354,7 @@ class StructUnionTestBase:
         self.check_sizeof(X, struct_size=3, union_size=2)
 
 
-class StructureTestCase(unittest.TestCase, StructUnionTestBase):
+klasse StructureTestCase(unittest.TestCase, StructUnionTestBase):
     cls = Structure
     metacls = PyCStructType
 
@@ -366,14 +366,14 @@ class StructureTestCase(unittest.TestCase, StructUnionTestBase):
 
     def test_simple_structs(self):
         for code, tp in self.formats.items():
-            class X(Structure):
+            klasse X(Structure):
                 _fields_ = [("x", c_char),
                             ("y", tp)]
             self.assertEqual((sizeof(X), code),
                                  (calcsize("c%c0%c" % (code, code)), code))
 
 
-class UnionTestCase(unittest.TestCase, StructUnionTestBase):
+klasse UnionTestCase(unittest.TestCase, StructUnionTestBase):
     cls = Union
     metacls = UnionType
 
@@ -385,17 +385,17 @@ class UnionTestCase(unittest.TestCase, StructUnionTestBase):
 
     def test_simple_unions(self):
         for code, tp in self.formats.items():
-            class X(Union):
+            klasse X(Union):
                 _fields_ = [("x", c_char),
                             ("y", tp)]
             self.assertEqual((sizeof(X), code),
                              (calcsize("%c" % (code)), code))
 
 
-class PointerMemberTestBase:
+klasse PointerMemberTestBase:
     def test(self):
         # a Structure/Union with a POINTER field
-        class S(self.cls):
+        klasse S(self.cls):
             _fields_ = [("array", POINTER(c_int))]
 
         s = S()
@@ -414,11 +414,11 @@ class PointerMemberTestBase:
         items = [s.array[i] for i in range(3)]
         self.assertEqual(items, [1, 2, 3])
 
-class PointerMemberTestCase_Struct(unittest.TestCase, PointerMemberTestBase):
+klasse PointerMemberTestCase_Struct(unittest.TestCase, PointerMemberTestBase):
     cls = Structure
 
     def test_none_to_pointer_fields(self):
-        class S(self.cls):
+        klasse S(self.cls):
             _fields_ = [("x", c_int),
                         ("p", POINTER(c_int))]
 
@@ -427,11 +427,11 @@ class PointerMemberTestCase_Struct(unittest.TestCase, PointerMemberTestBase):
         s.p = None
         self.assertEqual(s.x, 12345678)
 
-class PointerMemberTestCase_Union(unittest.TestCase, PointerMemberTestBase):
+klasse PointerMemberTestCase_Union(unittest.TestCase, PointerMemberTestBase):
     cls = Union
 
     def test_none_to_pointer_fields(self):
-        class S(self.cls):
+        klasse S(self.cls):
             _fields_ = [("x", c_int),
                         ("p", POINTER(c_int))]
 
@@ -441,9 +441,9 @@ class PointerMemberTestCase_Union(unittest.TestCase, PointerMemberTestBase):
         self.assertFalse(s.p)  # NULL pointers are falsy
 
 
-class TestRecursiveBase:
+klasse TestRecursiveBase:
     def test_contains_itself(self):
-        class Recursive(self.cls):
+        klasse Recursive(self.cls):
             pass
 
         try:
@@ -456,9 +456,9 @@ class TestRecursiveBase:
 
 
     def test_vice_versa(self):
-        class First(self.cls):
+        klasse First(self.cls):
             pass
-        class Second(self.cls):
+        klasse Second(self.cls):
             pass
 
         First._fields_ = [("second", Second)]
@@ -470,8 +470,8 @@ class TestRecursiveBase:
         else:
             self.fail("AttributeError not raised")
 
-class TestRecursiveStructure(unittest.TestCase, TestRecursiveBase):
+klasse TestRecursiveStructure(unittest.TestCase, TestRecursiveBase):
     cls = Structure
 
-class TestRecursiveUnion(unittest.TestCase, TestRecursiveBase):
+klasse TestRecursiveUnion(unittest.TestCase, TestRecursiveBase):
     cls = Union

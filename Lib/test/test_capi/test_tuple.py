@@ -9,11 +9,11 @@ NULL = None
 PY_SSIZE_T_MIN = _testcapi.PY_SSIZE_T_MIN
 PY_SSIZE_T_MAX = _testcapi.PY_SSIZE_T_MAX
 
-class TupleSubclass(tuple):
+klasse TupleSubclass(tuple):
     pass
 
 
-class CAPITest(unittest.TestCase):
+klasse CAPITest(unittest.TestCase):
     def test_check(self):
         # Test PyTuple_Check()
         check = _testlimitedcapi.tuple_check

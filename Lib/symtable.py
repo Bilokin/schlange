@@ -26,7 +26,7 @@ def symtable(code, filename, compile_type):
     top = _symtable.symtable(code, filename, compile_type)
     return _newSymbolTable(top, filename)
 
-class SymbolTableFactory:
+klasse SymbolTableFactory:
     def __init__(self):
         self.__memo = weakref.WeakValueDictionary()
 
@@ -47,7 +47,7 @@ class SymbolTableFactory:
 _newSymbolTable = SymbolTableFactory()
 
 
-class SymbolTableType(StrEnum):
+klasse SymbolTableType(StrEnum):
     MODULE = "module"
     FUNCTION = "function"
     CLASS = "class"
@@ -57,7 +57,7 @@ class SymbolTableType(StrEnum):
     TYPE_VARIABLE = "type variable"
 
 
-class SymbolTable:
+klasse SymbolTable:
 
     def __init__(self, raw_table, filename):
         self._table = raw_table
@@ -176,7 +176,7 @@ def _get_scope(flags):  # like _PyST_GetScope()
     return (flags >> SCOPE_OFF) & SCOPE_MASK
 
 
-class Function(SymbolTable):
+klasse Function(SymbolTable):
 
     # Default values for instance variables
     __params = None
@@ -230,7 +230,7 @@ class Function(SymbolTable):
         return self.__frees
 
 
-class Class(SymbolTable):
+klasse Class(SymbolTable):
 
     __methods = None
 
@@ -268,7 +268,7 @@ class Class(SymbolTable):
         return self.__methods
 
 
-class Symbol:
+klasse Symbol:
 
     def __init__(self, name, flags, namespaces=None, *, module_scope=False):
         self.__name = name

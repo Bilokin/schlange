@@ -11,7 +11,7 @@ from test.support import MISSING_C_DOCSTRINGS
 
 
 # Test Class TC is used in multiple get_argspec test methods
-class TC:
+klasse TC:
     'doc'
     tip = "(ai=None, *b)"
     def __init__(self, ai=None, *b): 'doc'
@@ -43,7 +43,7 @@ default_tip = calltip._default_callable_argspec
 get_spec = calltip.get_argspec
 
 
-class Get_argspecTest(unittest.TestCase):
+klasse Get_argspecTest(unittest.TestCase):
     # The get_spec function must return a string, even if blank.
     # Test a variety of objects to be sure that none cause it to raise
     # (quite aside from getting as correct an answer as possible).
@@ -58,11 +58,11 @@ class Get_argspecTest(unittest.TestCase):
         def tiptest(obj, out):
             self.assertEqual(get_spec(obj), out)
 
-        # Python class that inherits builtin methods
-        class List(list): "List() doc"
+        # Python klasse that inherits builtin methods
+        klasse List(list): "List() doc"
 
         # Simulate builtin with no docstring for default tip test
-        class SB:  __call__ = None
+        klasse SB:  __call__ = None
 
         if List.__doc__ is not None:
             tiptest(List,
@@ -205,7 +205,7 @@ bytes() -> empty bytes object''')
 
     def test_starred_parameter(self):
         # test that starred first parameter is *not* removed from argspec
-        class C:
+        klasse C:
             def m1(*args): pass
         c = C()
         for meth, mtip  in ((C.m1, '(*args)'), (c.m1, "(*args)"),):
@@ -213,9 +213,9 @@ bytes() -> empty bytes object''')
                 self.assertEqual(get_spec(meth), mtip)
 
     def test_invalid_method_get_spec(self):
-        class C:
+        klasse C:
             def m2(**kwargs): pass
-        class Test:
+        klasse Test:
             def __call__(*, a): pass
 
         mtip = calltip._invalid_method
@@ -234,13 +234,13 @@ bytes() -> empty bytes object''')
                 self.assertEqual(get_spec(meth), mtip)
 
     def test_buggy_getattr_class(self):
-        class NoCall:
-            def __getattr__(self, name):  # Not invoked for class attribute.
+        klasse NoCall:
+            def __getattr__(self, name):  # Not invoked for klasse attribute.
                 raise IndexError  # Bug.
-        class CallA(NoCall):
+        klasse CallA(NoCall):
             def __call__(self, ci):  # Bug does not matter.
                 pass
-        class CallB(NoCall):
+        klasse CallB(NoCall):
             def __call__(oui, a, b, c):  # Non-standard 'self'.
                 pass
 
@@ -251,9 +251,9 @@ bytes() -> empty bytes object''')
                 self.assertEqual(get_spec(meth), mtip)
 
     def test_metaclass_class(self):  # Failure case for issue 38689.
-        class Type(type):  # Type() requires 3 type args, returns class.
+        klasse Type(type):  # Type() requires 3 type args, returns class.
             __class__ = property({}.__getitem__, {}.__setitem__)
-        class Object(metaclass=Type):
+        klasse Object(metaclass=Type):
             __slots__ = '__class__'
         for meth, mtip  in ((Type, get_spec(type)), (Object, default_tip),
                             (Object(), '')):
@@ -266,7 +266,7 @@ bytes() -> empty bytes object''')
                 self.assertEqual(get_spec(obj), '')
 
 
-class Get_entityTest(unittest.TestCase):
+klasse Get_entityTest(unittest.TestCase):
     def test_bad_entity(self):
         self.assertIsNone(calltip.get_entity('1/0'))
     def test_good_entity(self):
@@ -277,7 +277,7 @@ class Get_entityTest(unittest.TestCase):
 # open_calltip is about half the code; the others are fairly trivial.
 # The default mocks are what are needed for open_calltip.
 
-class mock_Shell:
+klasse mock_Shell:
     "Return mock sufficient to pass to hyperparser."
     def __init__(self, text):
         text.tag_prevrange = Mock(return_value=None)
@@ -287,7 +287,7 @@ class mock_Shell:
         self.tabwidth = 8
 
 
-class mock_TipWindow:
+klasse mock_TipWindow:
     def __init__(self):
         pass
 
@@ -296,7 +296,7 @@ class mock_TipWindow:
         self.parenline, self.parencol = map(int, parenleft.split('.'))
 
 
-class WrappedCalltip(calltip.Calltip):
+klasse WrappedCalltip(calltip.Calltip):
     def _make_tk_calltip_window(self):
         return mock_TipWindow()
 
@@ -309,7 +309,7 @@ class WrappedCalltip(calltip.Calltip):
         return 'tip'
 
 
-class CalltipTest(unittest.TestCase):
+klasse CalltipTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):

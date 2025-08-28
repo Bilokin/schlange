@@ -44,7 +44,7 @@ def normalize_trace_output(output):
         )
 
 
-class TraceBackend:
+klasse TraceBackend:
     EXTENSION = None
     COMMAND = None
     COMMAND_ARGS = []
@@ -93,17 +93,17 @@ class TraceBackend:
             )
 
 
-class DTraceBackend(TraceBackend):
+klasse DTraceBackend(TraceBackend):
     EXTENSION = ".d"
     COMMAND = ["dtrace", "-q", "-s"]
 
 
-class SystemTapBackend(TraceBackend):
+klasse SystemTapBackend(TraceBackend):
     EXTENSION = ".stp"
     COMMAND = ["stap", "-g"]
 
 
-class TraceTests:
+klasse TraceTests:
     # unittest.TestCase options
     maxDiff = None
 
@@ -155,26 +155,26 @@ class TraceTests:
         self.run_case("line")
 
 
-class DTraceNormalTests(TraceTests, unittest.TestCase):
+klasse DTraceNormalTests(TraceTests, unittest.TestCase):
     backend = DTraceBackend()
     optimize_python = 0
 
 
-class DTraceOptimizedTests(TraceTests, unittest.TestCase):
+klasse DTraceOptimizedTests(TraceTests, unittest.TestCase):
     backend = DTraceBackend()
     optimize_python = 2
 
 
-class SystemTapNormalTests(TraceTests, unittest.TestCase):
+klasse SystemTapNormalTests(TraceTests, unittest.TestCase):
     backend = SystemTapBackend()
     optimize_python = 0
 
 
-class SystemTapOptimizedTests(TraceTests, unittest.TestCase):
+klasse SystemTapOptimizedTests(TraceTests, unittest.TestCase):
     backend = SystemTapBackend()
     optimize_python = 2
 
-class CheckDtraceProbes(unittest.TestCase):
+klasse CheckDtraceProbes(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         if sysconfig.get_config_var('WITH_DTRACE'):

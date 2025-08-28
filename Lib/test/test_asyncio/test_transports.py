@@ -13,7 +13,7 @@ def tearDownModule():
     asyncio.events._set_event_loop_policy(None)
 
 
-class TransportTests(unittest.TestCase):
+klasse TransportTests(unittest.TestCase):
 
     def test_ctor_extra_is_none(self):
         transport = asyncio.Transport()
@@ -30,7 +30,7 @@ class TransportTests(unittest.TestCase):
     def test_writelines(self):
         writer = mock.Mock()
 
-        class MyTransport(asyncio.Transport):
+        klasse MyTransport(asyncio.Transport):
             def write(self, data):
                 writer(data)
 
@@ -75,7 +75,7 @@ class TransportTests(unittest.TestCase):
 
     def test_flowcontrol_mixin_set_write_limits(self):
 
-        class MyTransport(transports._FlowControlMixin,
+        klasse MyTransport(transports._FlowControlMixin,
                           transports.Transport):
 
             def get_write_buffer_size(self):

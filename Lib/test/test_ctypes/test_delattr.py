@@ -2,11 +2,11 @@ import unittest
 from ctypes import Structure, c_char, c_int
 
 
-class X(Structure):
+klasse X(Structure):
     _fields_ = [("foo", c_int)]
 
 
-class TestCase(unittest.TestCase):
+klasse TestCase(unittest.TestCase):
     def test_simple(self):
         with self.assertRaises(TypeError):
             del c_int(42).value

@@ -7,7 +7,7 @@ import unittest
 from test.support import swap_item, swap_attr, skip_wasi_stack_overflow
 
 
-class RebindBuiltinsTests(unittest.TestCase):
+klasse RebindBuiltinsTests(unittest.TestCase):
 
     """Test all the ways that we can change/shadow globals/builtins."""
 
@@ -138,7 +138,7 @@ class RebindBuiltinsTests(unittest.TestCase):
     @skip_wasi_stack_overflow()
     def test_load_global_specialization_failure_keeps_oparg(self):
         # https://github.com/python/cpython/issues/91625
-        class MyGlobals(dict):
+        klasse MyGlobals(dict):
             def __missing__(self, key):
                 return int(key.removeprefix("_number_"))
 
@@ -152,7 +152,7 @@ class RebindBuiltinsTests(unittest.TestCase):
             self.assertEqual(sum_func(), expected)
 
 
-class TestTracing(unittest.TestCase):
+klasse TestTracing(unittest.TestCase):
 
     def setUp(self):
         self.addCleanup(sys.settrace, sys.gettrace())
@@ -165,7 +165,7 @@ class TestTracing(unittest.TestCase):
 
         turn_on_trace = False
 
-        class C:
+        klasse C:
             def __init__(self, x):
                 self.x = x
             def __del__(self):

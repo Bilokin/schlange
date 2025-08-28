@@ -6,7 +6,7 @@ from test.support import requires
 from tkinter import Tk, Text
 from idlelib.editor import EditorWindow
 
-class DummyEditwin:
+klasse DummyEditwin:
     def __init__(self, text):
         self.text = text
         self.indentwidth = 8
@@ -18,7 +18,7 @@ class DummyEditwin:
     is_char_in_string = EditorWindow.is_char_in_string
 
 
-class HyperParserTest(unittest.TestCase):
+klasse HyperParserTest(unittest.TestCase):
     code = (
             '"""This is a module docstring"""\n'
             '# this line is a comment\n'

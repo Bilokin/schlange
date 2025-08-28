@@ -23,7 +23,7 @@ def qfull(q):
     return q.maxsize > 0 and q.qsize() == q.maxsize
 
 # A thread to run a function that unclogs a blocked Queue.
-class _TriggerThread(threading.Thread):
+klasse _TriggerThread(threading.Thread):
     def __init__(self, fn, args):
         self.fn = fn
         self.args = args
@@ -55,7 +55,7 @@ class _TriggerThread(threading.Thread):
 # is supposed to raise an exception, call do_exceptional_blocking_test()
 # instead.
 
-class BlockingTestMixin:
+klasse BlockingTestMixin:
 
     def do_blocking_test(self, block_func, block_args, trigger_func, trigger_args):
         thread = _TriggerThread(trigger_func, trigger_args)
@@ -89,7 +89,7 @@ class BlockingTestMixin:
                 self.fail("trigger thread ended but event never set")
 
 
-class BaseQueueTestMixin(BlockingTestMixin):
+klasse BaseQueueTestMixin(BlockingTestMixin):
     def setUp(self):
         self.cum = 0
         self.cumlock = threading.Lock()
@@ -653,64 +653,64 @@ class BaseQueueTestMixin(BlockingTestMixin):
         self.assertIsInstance(results[0], self.queue.ShutDown)
 
 
-class QueueTest(BaseQueueTestMixin):
+klasse QueueTest(BaseQueueTestMixin):
 
     def setUp(self):
         self.type2test = self.queue.Queue
         super().setUp()
 
-class PyQueueTest(QueueTest, unittest.TestCase):
+klasse PyQueueTest(QueueTest, unittest.TestCase):
     queue = py_queue
 
 
 @need_c_queue
-class CQueueTest(QueueTest, unittest.TestCase):
+klasse CQueueTest(QueueTest, unittest.TestCase):
     queue = c_queue
 
 
-class LifoQueueTest(BaseQueueTestMixin):
+klasse LifoQueueTest(BaseQueueTestMixin):
 
     def setUp(self):
         self.type2test = self.queue.LifoQueue
         super().setUp()
 
 
-class PyLifoQueueTest(LifoQueueTest, unittest.TestCase):
+klasse PyLifoQueueTest(LifoQueueTest, unittest.TestCase):
     queue = py_queue
 
 
 @need_c_queue
-class CLifoQueueTest(LifoQueueTest, unittest.TestCase):
+klasse CLifoQueueTest(LifoQueueTest, unittest.TestCase):
     queue = c_queue
 
 
-class PriorityQueueTest(BaseQueueTestMixin):
+klasse PriorityQueueTest(BaseQueueTestMixin):
 
     def setUp(self):
         self.type2test = self.queue.PriorityQueue
         super().setUp()
 
 
-class PyPriorityQueueTest(PriorityQueueTest, unittest.TestCase):
+klasse PyPriorityQueueTest(PriorityQueueTest, unittest.TestCase):
     queue = py_queue
 
 
 @need_c_queue
-class CPriorityQueueTest(PriorityQueueTest, unittest.TestCase):
+klasse CPriorityQueueTest(PriorityQueueTest, unittest.TestCase):
     queue = c_queue
 
 
 # A Queue subclass that can provoke failure at a moment's notice :)
-class FailingQueueException(Exception): pass
+klasse FailingQueueException(Exception): pass
 
 
-class FailingQueueTest(BlockingTestMixin):
+klasse FailingQueueTest(BlockingTestMixin):
 
     def setUp(self):
 
         Queue = self.queue.Queue
 
-        class FailingQueue(Queue):
+        klasse FailingQueue(Queue):
             def __init__(self, *args):
                 self.fail_next_put = False
                 self.fail_next_get = False
@@ -821,16 +821,16 @@ class FailingQueueTest(BlockingTestMixin):
 
 
 
-class PyFailingQueueTest(FailingQueueTest, unittest.TestCase):
+klasse PyFailingQueueTest(FailingQueueTest, unittest.TestCase):
     queue = py_queue
 
 
 @need_c_queue
-class CFailingQueueTest(FailingQueueTest, unittest.TestCase):
+klasse CFailingQueueTest(FailingQueueTest, unittest.TestCase):
     queue = c_queue
 
 
-class BaseSimpleQueueTest:
+klasse BaseSimpleQueueTest:
 
     def setUp(self):
         self.q = self.type2test()
@@ -997,7 +997,7 @@ class BaseSimpleQueueTest:
     def test_references(self):
         # The queue should lose references to each item as soon as
         # it leaves the queue.
-        class C:
+        klasse C:
             pass
 
         N = 20
@@ -1010,7 +1010,7 @@ class BaseSimpleQueueTest:
             self.assertIsNone(wr())
 
 
-class PySimpleQueueTest(BaseSimpleQueueTest, unittest.TestCase):
+klasse PySimpleQueueTest(BaseSimpleQueueTest, unittest.TestCase):
 
     queue = py_queue
     def setUp(self):
@@ -1019,7 +1019,7 @@ class PySimpleQueueTest(BaseSimpleQueueTest, unittest.TestCase):
 
 
 @need_c_queue
-class CSimpleQueueTest(BaseSimpleQueueTest, unittest.TestCase):
+klasse CSimpleQueueTest(BaseSimpleQueueTest, unittest.TestCase):
 
     queue = c_queue
 
@@ -1042,7 +1042,7 @@ class CSimpleQueueTest(BaseSimpleQueueTest, unittest.TestCase):
         # This test exploits the fact that __del__ in a reference cycle
         # can be called any time the GC may run.
 
-        class Circular(object):
+        klasse Circular(object):
             def __init__(self):
                 self.circular = self
 

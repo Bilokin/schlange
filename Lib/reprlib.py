@@ -35,7 +35,7 @@ def recursive_repr(fillvalue='...'):
 
     return decorating_function
 
-class Repr:
+klasse Repr:
     _lookup = {
         'tuple': 'builtins',
         'list': 'builtins',
@@ -84,7 +84,7 @@ class Repr:
             if typename not in self._lookup:
                 return method(x, level)
             module = getattr(cls, '__module__', None)
-            # defined in this class and is the module intended
+            # defined in this klasse and is the module intended
             if module == self._lookup[typename]:
                 return method(x, level)
 

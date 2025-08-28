@@ -7,8 +7,8 @@ This includes:
 from tkinter import *
 
 
-class TooltipBase:
-    """abstract base class for tooltips"""
+klasse TooltipBase:
+    """abstract base klasse for tooltips"""
 
     def __init__(self, anchor_widget):
         """Create a tooltip.
@@ -79,8 +79,8 @@ class TooltipBase:
                 pass
 
 
-class OnHoverTooltipBase(TooltipBase):
-    """abstract base class for tooltips, with delayed on-hover display"""
+klasse OnHoverTooltipBase(TooltipBase):
+    """abstract base klasse for tooltips, with delayed on-hover display"""
 
     def __init__(self, anchor_widget, hover_delay=1000):
         """Create a tooltip with a mouse hover delay.
@@ -142,7 +142,7 @@ class OnHoverTooltipBase(TooltipBase):
         super().hidetip()
 
 
-class Hovertip(OnHoverTooltipBase):
+klasse Hovertip(OnHoverTooltipBase):
     "A tooltip that pops up when a mouse hovers over an anchor widget."
     def __init__(self, anchor_widget, text, hover_delay=1000,
                  foreground="#000000", background="#ffffe0"):

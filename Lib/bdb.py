@@ -13,13 +13,13 @@ __all__ = ["BdbQuit", "Bdb", "Breakpoint"]
 GENERATOR_AND_COROUTINE_FLAGS = CO_GENERATOR | CO_COROUTINE | CO_ASYNC_GENERATOR
 
 
-class BdbQuit(Exception):
+klasse BdbQuit(Exception):
     """Exception to give up completely."""
 
 
 E = sys.monitoring.events
 
-class _MonitoringTracer:
+klasse _MonitoringTracer:
     EVENT_CALLBACK_MAP = {
         E.PY_START: 'call',
         E.PY_RESUME: 'call',
@@ -177,12 +177,12 @@ class _MonitoringTracer:
         return last_lineno
 
 
-class Bdb:
+klasse Bdb:
     """Generic Python debugger base class.
 
-    This class takes care of details of the trace facility;
-    a derived class should implement user interaction.
-    The standard debugger class (pdb.Pdb) is an example.
+    This klasse takes care of details of the trace facility;
+    a derived klasse should implement user interaction.
+    The standard debugger klasse (pdb.Pdb) is an example.
 
     The optional skip argument must be an iterable of glob-style
     module name patterns.  The debugger will not step into frames
@@ -944,7 +944,7 @@ def set_trace():
     Bdb().set_trace()
 
 
-class Breakpoint:
+klasse Breakpoint:
     """Breakpoint class.
 
     Implements temporary breakpoints, ignore counts, disabling and
@@ -952,7 +952,7 @@ class Breakpoint:
 
     Breakpoints are indexed by number through bpbynumber and by
     the (file, line) tuple using bplist.  The former points to a
-    single instance of class Breakpoint.  The latter points to a
+    single instance of klasse Breakpoint.  The latter points to a
     list of such instances since there may be more than one
     breakpoint per line.
 
@@ -962,7 +962,7 @@ class Breakpoint:
     conditional breakpoint always counts a hit.
     """
 
-    # XXX Keeping state in the class is a mistake -- this means
+    # XXX Keeping state in the klasse is a mistake -- this means
     # you cannot have more than one active Bdb instance.
 
     next = 1        # Next bp to be assigned
@@ -1151,7 +1151,7 @@ def effective(file, line, frame):
 
 # -------------------- testing --------------------
 
-class Tdb(Bdb):
+klasse Tdb(Bdb):
     def user_call(self, frame, args):
         name = frame.f_code.co_name
         if not name: name = '???'

@@ -100,7 +100,7 @@ def CFUNCTYPE(restype, *argtypes, **kw):
     except KeyError:
         pass
 
-    class CFunctionType(_CFuncPtr):
+    klasse CFunctionType(_CFuncPtr):
         _argtypes_ = argtypes
         _restype_ = restype
         _flags_ = flags
@@ -127,7 +127,7 @@ if _os.name == "nt":
         except KeyError:
             pass
 
-        class WinFunctionType(_CFuncPtr):
+        klasse WinFunctionType(_CFuncPtr):
             _argtypes_ = argtypes
             _restype_ = restype
             _flags_ = flags
@@ -155,7 +155,7 @@ def _check_size(typ, typecode=None):
         raise SystemError("sizeof(%s) wrong: %d instead of %d" % \
                           (typ, actual, required))
 
-class py_object(_SimpleCData):
+klasse py_object(_SimpleCData):
     _type_ = "O"
     def __repr__(self):
         try:
@@ -165,19 +165,19 @@ class py_object(_SimpleCData):
     __class_getitem__ = classmethod(_types.GenericAlias)
 _check_size(py_object, "P")
 
-class c_short(_SimpleCData):
+klasse c_short(_SimpleCData):
     _type_ = "h"
 _check_size(c_short)
 
-class c_ushort(_SimpleCData):
+klasse c_ushort(_SimpleCData):
     _type_ = "H"
 _check_size(c_ushort)
 
-class c_long(_SimpleCData):
+klasse c_long(_SimpleCData):
     _type_ = "l"
 _check_size(c_long)
 
-class c_ulong(_SimpleCData):
+klasse c_ulong(_SimpleCData):
     _type_ = "L"
 _check_size(c_ulong)
 
@@ -186,35 +186,35 @@ if _calcsize("i") == _calcsize("l"):
     c_int = c_long
     c_uint = c_ulong
 else:
-    class c_int(_SimpleCData):
+    klasse c_int(_SimpleCData):
         _type_ = "i"
     _check_size(c_int)
 
-    class c_uint(_SimpleCData):
+    klasse c_uint(_SimpleCData):
         _type_ = "I"
     _check_size(c_uint)
 
-class c_float(_SimpleCData):
+klasse c_float(_SimpleCData):
     _type_ = "f"
 _check_size(c_float)
 
-class c_double(_SimpleCData):
+klasse c_double(_SimpleCData):
     _type_ = "d"
 _check_size(c_double)
 
-class c_longdouble(_SimpleCData):
+klasse c_longdouble(_SimpleCData):
     _type_ = "g"
 if sizeof(c_longdouble) == sizeof(c_double):
     c_longdouble = c_double
 
 try:
-    class c_double_complex(_SimpleCData):
+    klasse c_double_complex(_SimpleCData):
         _type_ = "D"
     _check_size(c_double_complex)
-    class c_float_complex(_SimpleCData):
+    klasse c_float_complex(_SimpleCData):
         _type_ = "F"
     _check_size(c_float_complex)
-    class c_longdouble_complex(_SimpleCData):
+    klasse c_longdouble_complex(_SimpleCData):
         _type_ = "G"
 except AttributeError:
     pass
@@ -224,46 +224,46 @@ if _calcsize("l") == _calcsize("q"):
     c_longlong = c_long
     c_ulonglong = c_ulong
 else:
-    class c_longlong(_SimpleCData):
+    klasse c_longlong(_SimpleCData):
         _type_ = "q"
     _check_size(c_longlong)
 
-    class c_ulonglong(_SimpleCData):
+    klasse c_ulonglong(_SimpleCData):
         _type_ = "Q"
     ##    def from_param(cls, val):
     ##        return ('d', float(val), val)
     ##    from_param = classmethod(from_param)
     _check_size(c_ulonglong)
 
-class c_ubyte(_SimpleCData):
+klasse c_ubyte(_SimpleCData):
     _type_ = "B"
 c_ubyte.__ctype_le__ = c_ubyte.__ctype_be__ = c_ubyte
 # backward compatibility:
 ##c_uchar = c_ubyte
 _check_size(c_ubyte)
 
-class c_byte(_SimpleCData):
+klasse c_byte(_SimpleCData):
     _type_ = "b"
 c_byte.__ctype_le__ = c_byte.__ctype_be__ = c_byte
 _check_size(c_byte)
 
-class c_char(_SimpleCData):
+klasse c_char(_SimpleCData):
     _type_ = "c"
 c_char.__ctype_le__ = c_char.__ctype_be__ = c_char
 _check_size(c_char)
 
-class c_char_p(_SimpleCData):
+klasse c_char_p(_SimpleCData):
     _type_ = "z"
     def __repr__(self):
         return "%s(%s)" % (self.__class__.__name__, c_void_p.from_buffer(self).value)
 _check_size(c_char_p, "P")
 
-class c_void_p(_SimpleCData):
+klasse c_void_p(_SimpleCData):
     _type_ = "P"
 c_voidp = c_void_p # backwards compatibility (to a bug)
 _check_size(c_void_p)
 
-class c_bool(_SimpleCData):
+klasse c_bool(_SimpleCData):
     _type_ = "?"
 
 def POINTER(cls):
@@ -302,7 +302,7 @@ def pointer(obj):
     typ = POINTER(type(obj))
     return typ(obj)
 
-class _PointerTypeCache:
+klasse _PointerTypeCache:
     def __setitem__(self, cls, pointer_type):
         import warnings
         warnings._deprecated("ctypes._pointer_type_cache", remove=(3, 19))
@@ -333,12 +333,12 @@ class _PointerTypeCache:
 _pointer_type_cache_fallback = {}
 _pointer_type_cache = _PointerTypeCache()
 
-class c_wchar_p(_SimpleCData):
+klasse c_wchar_p(_SimpleCData):
     _type_ = "Z"
     def __repr__(self):
         return "%s(%s)" % (self.__class__.__name__, c_void_p.from_buffer(self).value)
 
-class c_wchar(_SimpleCData):
+klasse c_wchar(_SimpleCData):
     _type_ = "u"
 
 def _reset_cache():
@@ -385,8 +385,8 @@ def ARRAY(typ, len):
 ################################################################
 
 
-class CDLL(object):
-    """An instance of this class represents a loaded dll/shared
+klasse CDLL(object):
+    """An instance of this klasse represents a loaded dll/shared
     library, exporting functions using the standard C calling
     convention (named 'cdecl' on Windows).
 
@@ -447,7 +447,7 @@ class CDLL(object):
                     self._name = nt._getfullpathname(self._name)
                     mode |= nt._LOAD_LIBRARY_SEARCH_DLL_LOAD_DIR
 
-        class _FuncPtr(_CFuncPtr):
+        klasse _FuncPtr(_CFuncPtr):
             _flags_ = flags
             _restype_ = self._func_restype_
         self._FuncPtr = _FuncPtr
@@ -476,8 +476,8 @@ class CDLL(object):
             func.__name__ = name_or_ordinal
         return func
 
-class PyDLL(CDLL):
-    """This class represents the Python library itself.  It allows
+klasse PyDLL(CDLL):
+    """This klasse represents the Python library itself.  It allows
     accessing Python API functions.  The GIL is not released, and
     Python exceptions are handled correctly.
     """
@@ -485,8 +485,8 @@ class PyDLL(CDLL):
 
 if _os.name == "nt":
 
-    class WinDLL(CDLL):
-        """This class represents a dll exporting functions using the
+    klasse WinDLL(CDLL):
+        """This klasse represents a dll exporting functions using the
         Windows stdcall calling convention.
         """
         _func_flags_ = _FUNCFLAG_STDCALL
@@ -494,7 +494,7 @@ if _os.name == "nt":
     # XXX Hm, what about HRESULT as normal parameter?
     # Mustn't it derive from c_long then?
     from _ctypes import _check_HRESULT, _SimpleCData
-    class HRESULT(_SimpleCData):
+    klasse HRESULT(_SimpleCData):
         _type_ = "l"
         # _check_retval_ is called with the function's result when it
         # is used as restype.  It checks for the FAILED bit, and
@@ -507,8 +507,8 @@ if _os.name == "nt":
         # frame).
         _check_retval_ = _check_HRESULT
 
-    class OleDLL(CDLL):
-        """This class represents a dll exporting functions using the
+    klasse OleDLL(CDLL):
+        """This klasse represents a dll exporting functions using the
         Windows stdcall calling convention, and returning HRESULT.
         HRESULT error values are automatically raised as OSError
         exceptions.
@@ -516,7 +516,7 @@ if _os.name == "nt":
         _func_flags_ = _FUNCFLAG_STDCALL
         _func_restype_ = HRESULT
 
-class LibraryLoader(object):
+klasse LibraryLoader(object):
     def __init__(self, dlltype):
         self._dlltype = dlltype
 
@@ -587,7 +587,7 @@ memmove = CFUNCTYPE(c_void_p, c_void_p, c_void_p, c_size_t)(_memmove_addr)
 memset = CFUNCTYPE(c_void_p, c_void_p, c_int, c_size_t)(_memset_addr)
 
 def PYFUNCTYPE(restype, *argtypes):
-    class CFunctionType(_CFuncPtr):
+    klasse CFunctionType(_CFuncPtr):
         _argtypes_ = argtypes
         _restype_ = restype
         _flags_ = _FUNCFLAG_CDECL | _FUNCFLAG_PYTHONAPI

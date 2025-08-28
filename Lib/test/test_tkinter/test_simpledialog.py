@@ -7,7 +7,7 @@ from tkinter.simpledialog import Dialog, askinteger
 requires('gui')
 
 
-class DefaultRootTest(AbstractDefaultRootTest, unittest.TestCase):
+klasse DefaultRootTest(AbstractDefaultRootTest, unittest.TestCase):
 
     def test_askinteger(self):
         @staticmethod

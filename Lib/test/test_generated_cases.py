@@ -52,7 +52,7 @@ def parse_src(src):
     return nodes
 
 
-class TestEffects(unittest.TestCase):
+klasse TestEffects(unittest.TestCase):
     def test_effect_sizes(self):
         stack = Stack()
         inputs = [
@@ -76,7 +76,7 @@ class TestEffects(unittest.TestCase):
         self.assertEqual(stack.logical_sp.to_c(), "1 - oparg - oparg*2 + oparg*4")
 
 
-class TestGeneratedCases(unittest.TestCase):
+klasse TestGeneratedCases(unittest.TestCase):
     def setUp(self) -> None:
         super().setUp()
         self.maxDiff = None
@@ -1891,7 +1891,7 @@ class TestGeneratedCases(unittest.TestCase):
         self.run_cases_test(input, output)
 
 
-class TestGeneratedAbstractCases(unittest.TestCase):
+klasse TestGeneratedAbstractCases(unittest.TestCase):
     def setUp(self) -> None:
         super().setUp()
         self.maxDiff = None

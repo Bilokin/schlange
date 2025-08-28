@@ -148,7 +148,7 @@ def _splitdict(tk, v, cut_minus=True, conv=None):
         dict[key] = value
     return dict
 
-class _VersionInfoType(collections.namedtuple('_VersionInfoType',
+klasse _VersionInfoType(collections.namedtuple('_VersionInfoType',
         ('major', 'minor', 'micro', 'releaselevel', 'serial'))):
     def __str__(self):
         if self.releaselevel == 'final':
@@ -172,7 +172,7 @@ def _parse_version(version):
 
 
 @enum._simple_enum(enum.StrEnum)
-class EventType:
+klasse EventType:
     KeyPress = '2'
     Key = KeyPress
     KeyRelease = '3'
@@ -214,7 +214,7 @@ class EventType:
     MouseWheel = '38'
 
 
-class Event:
+klasse Event:
     """Container for the properties of an event.
 
     Instances of this type are generated if one of the following events occurs:
@@ -370,7 +370,7 @@ def _exit(code=0):
 _varnum = 0
 
 
-class Variable:
+klasse Variable:
     """Class to define value holders for e.g. buttons.
 
     Subclasses StringVar, IntVar, DoubleVar, BooleanVar are specializations
@@ -562,7 +562,7 @@ class Variable:
                 and self._tk == other._tk)
 
 
-class StringVar(Variable):
+klasse StringVar(Variable):
     """Value holder for strings variables."""
     _default = ""
 
@@ -586,7 +586,7 @@ class StringVar(Variable):
         return str(value)
 
 
-class IntVar(Variable):
+klasse IntVar(Variable):
     """Value holder for integer variables."""
     _default = 0
 
@@ -611,7 +611,7 @@ class IntVar(Variable):
             return int(self._tk.getdouble(value))
 
 
-class DoubleVar(Variable):
+klasse DoubleVar(Variable):
     """Value holder for float variables."""
     _default = 0.0
 
@@ -632,7 +632,7 @@ class DoubleVar(Variable):
         return self._tk.getdouble(self._tk.globalgetvar(self._name))
 
 
-class BooleanVar(Variable):
+klasse BooleanVar(Variable):
     """Value holder for boolean variables."""
     _default = False
 
@@ -682,10 +682,10 @@ def getboolean(s):
 
 # Methods defined on both toplevel and interior widgets
 
-class Misc:
+klasse Misc:
     """Internal class.
 
-    Base class which defines methods common for interior widgets."""
+    Base klasse which defines methods common for interior widgets."""
 
     # used for generating child widget names
     _last_child_ids = None
@@ -1222,7 +1222,7 @@ class Misc:
         return result
 
     def winfo_class(self):
-        """Return window class name of this widget."""
+        """Return window klasse name of this widget."""
         return self.tk.call('winfo', 'class', self._w)
 
     def winfo_colormapfull(self):
@@ -2070,7 +2070,7 @@ class Misc:
         return self.tk.splitlist(self.tk.call('image', 'types'))
 
 
-class CallWrapper:
+klasse CallWrapper:
     """Internal class. Stores function to call when some user
     defined Tcl function is called e.g. after an event occurred."""
 
@@ -2092,8 +2092,8 @@ class CallWrapper:
             self.widget._report_exception()
 
 
-class XView:
-    """Mix-in class for querying and changing the horizontal position
+klasse XView:
+    """Mix-in klasse for querying and changing the horizontal position
     of a widget's window."""
 
     def xview(self, *args):
@@ -2113,8 +2113,8 @@ class XView:
         self.tk.call(self._w, 'xview', 'scroll', number, what)
 
 
-class YView:
-    """Mix-in class for querying and changing the vertical position
+klasse YView:
+    """Mix-in klasse for querying and changing the vertical position
     of a widget's window."""
 
     def yview(self, *args):
@@ -2134,7 +2134,7 @@ class YView:
         self.tk.call(self._w, 'yview', 'scroll', number, what)
 
 
-class Wm:
+klasse Wm:
     """Provides functions for the communication with the window manager."""
 
     def wm_aspect(self,
@@ -2451,7 +2451,7 @@ class Wm:
     withdraw = wm_withdraw
 
 
-class Tk(Misc, Wm):
+klasse Tk(Misc, Wm):
     """Toplevel widget of Tk which represents mostly the main window
     of an application. It has an associated Tcl interpreter."""
     _w = '.'
@@ -2583,7 +2583,7 @@ def _print_command(cmd, *, file=sys.stderr):
 # Pack, Place or Grid class, so I leave them intact -- but only as
 # backwards compatibility features.  Also note that those methods that
 # take a master as argument (e.g. pack_propagate) have been moved to
-# the Misc class (which now incorporates all methods common between
+# the Misc klasse (which now incorporates all methods common between
 # toplevel and interior widgets).  Again, for compatibility, these are
 # copied into the Pack, Place or Grid class.
 
@@ -2592,10 +2592,10 @@ def Tcl(screenName=None, baseName=None, className='Tk', useTk=False):
     return Tk(screenName, baseName, className, useTk)
 
 
-class Pack:
+klasse Pack:
     """Geometry manager Pack.
 
-    Base class to use the methods pack_* in every widget."""
+    Base klasse to use the methods pack_* in every widget."""
 
     def pack_configure(self, cnf={}, **kw):
         """Pack a widget in the parent widget. Use as options:
@@ -2638,10 +2638,10 @@ class Pack:
     slaves = pack_slaves = Misc.pack_slaves
 
 
-class Place:
+klasse Place:
     """Geometry manager Place.
 
-    Base class to use the methods place_* in every widget."""
+    Base klasse to use the methods place_* in every widget."""
 
     def place_configure(self, cnf={}, **kw):
         """Place a widget in the parent widget. Use as options:
@@ -2689,10 +2689,10 @@ class Place:
     slaves = place_slaves = Misc.place_slaves
 
 
-class Grid:
+klasse Grid:
     """Geometry manager Grid.
 
-    Base class to use the methods grid_* in every widget."""
+    Base klasse to use the methods grid_* in every widget."""
     # Thanks to Masazumi Yoshikawa (yosikawa@isi.edu)
 
     def grid_configure(self, cnf={}, **kw):
@@ -2744,7 +2744,7 @@ class Grid:
     slaves = grid_slaves = Misc.grid_slaves
 
 
-class BaseWidget(Misc):
+klasse BaseWidget(Misc):
     """Internal class."""
 
     def _setup(self, master, cnf):
@@ -2809,15 +2809,15 @@ class BaseWidget(Misc):
         return self.tk.call((self._w, name) + args)
 
 
-class Widget(BaseWidget, Pack, Place, Grid):
+klasse Widget(BaseWidget, Pack, Place, Grid):
     """Internal class.
 
-    Base class for a widget which can be positioned with the geometry managers
+    Base klasse for a widget which can be positioned with the geometry managers
     Pack, Place or Grid."""
     pass
 
 
-class Toplevel(BaseWidget, Wm):
+klasse Toplevel(BaseWidget, Wm):
     """Toplevel widget, e.g. for dialogs."""
 
     def __init__(self, master=None, cnf={}, **kw):
@@ -2847,7 +2847,7 @@ class Toplevel(BaseWidget, Wm):
         self.protocol("WM_DELETE_WINDOW", self.destroy)
 
 
-class Button(Widget):
+klasse Button(Widget):
     """Button widget."""
 
     def __init__(self, master=None, cnf={}, **kw):
@@ -2894,7 +2894,7 @@ class Button(Widget):
         return self.tk.call(self._w, 'invoke')
 
 
-class Canvas(Widget, XView, YView):
+klasse Canvas(Widget, XView, YView):
     """Canvas widget to display graphical elements like lines or text."""
 
     def __init__(self, master=None, cnf={}, **kw):
@@ -3202,7 +3202,7 @@ class Canvas(Widget, XView, YView):
 
 _checkbutton_count = 0
 
-class Checkbutton(Widget):
+klasse Checkbutton(Widget):
     """Checkbutton widget which is either in on- or off-state."""
 
     def __init__(self, master=None, cnf={}, **kw):
@@ -3251,7 +3251,7 @@ class Checkbutton(Widget):
         self.tk.call(self._w, 'toggle')
 
 
-class Entry(Widget, XView):
+klasse Entry(Widget, XView):
     """Entry widget which allows displaying simple text."""
 
     def __init__(self, master=None, cnf={}, **kw):
@@ -3337,7 +3337,7 @@ class Entry(Widget, XView):
     select_to = selection_to
 
 
-class Frame(Widget):
+klasse Frame(Widget):
     """Frame widget which may contain other widgets and can have a 3D border."""
 
     def __init__(self, master=None, cnf={}, **kw):
@@ -3357,7 +3357,7 @@ class Frame(Widget):
         Widget.__init__(self, master, 'frame', cnf, {}, extra)
 
 
-class Label(Widget):
+klasse Label(Widget):
     """Label widget which can display text and bitmaps."""
 
     def __init__(self, master=None, cnf={}, **kw):
@@ -3381,7 +3381,7 @@ class Label(Widget):
         Widget.__init__(self, master, 'label', cnf, kw)
 
 
-class Listbox(Widget, XView, YView):
+klasse Listbox(Widget, XView, YView):
     """Listbox widget which can display a list of strings."""
 
     def __init__(self, master=None, cnf={}, **kw):
@@ -3494,7 +3494,7 @@ class Listbox(Widget, XView, YView):
     itemconfig = itemconfigure
 
 
-class Menu(Widget):
+klasse Menu(Widget):
     """Menu widget which allows displaying menu bars, pull-down menus and pop-up menus."""
 
     def __init__(self, master=None, cnf={}, **kw):
@@ -3627,21 +3627,21 @@ class Menu(Widget):
             self._w, 'yposition', index))
 
 
-class Menubutton(Widget):
+klasse Menubutton(Widget):
     """Menubutton widget, obsolete since Tk8.0."""
 
     def __init__(self, master=None, cnf={}, **kw):
         Widget.__init__(self, master, 'menubutton', cnf, kw)
 
 
-class Message(Widget):
+klasse Message(Widget):
     """Message widget to display multiline text. Obsolete since Label does it too."""
 
     def __init__(self, master=None, cnf={}, **kw):
         Widget.__init__(self, master, 'message', cnf, kw)
 
 
-class Radiobutton(Widget):
+klasse Radiobutton(Widget):
     """Radiobutton widget which shows only one of several buttons in on-state."""
 
     def __init__(self, master=None, cnf={}, **kw):
@@ -3674,7 +3674,7 @@ class Radiobutton(Widget):
         self.tk.call(self._w, 'select')
 
 
-class Scale(Widget):
+klasse Scale(Widget):
     """Scale widget which can display a numerical scale."""
 
     def __init__(self, master=None, cnf={}, **kw):
@@ -3713,7 +3713,7 @@ class Scale(Widget):
         return self.tk.call(self._w, 'identify', x, y)
 
 
-class Scrollbar(Widget):
+klasse Scrollbar(Widget):
     """Scrollbar widget which displays a slider at a certain position."""
 
     def __init__(self, master=None, cnf={}, **kw):
@@ -3763,7 +3763,7 @@ class Scrollbar(Widget):
         self.tk.call(self._w, 'set', first, last)
 
 
-class Text(Widget, XView, YView):
+klasse Text(Widget, XView, YView):
     """Text widget which can display text in various forms."""
 
     def __init__(self, master=None, cnf={}, **kw):
@@ -4191,7 +4191,7 @@ class Text(Widget, XView, YView):
         self.tk.call((self._w, 'yview', '-pickplace') + what)
 
 
-class _setit:
+klasse _setit:
     """Internal class. It wraps the command in the widget OptionMenu."""
 
     def __init__(self, var, value, callback=None):
@@ -4205,7 +4205,7 @@ class _setit:
             self.__callback(self.__value, *args)
 
 
-class OptionMenu(Menubutton):
+klasse OptionMenu(Menubutton):
     """OptionMenu which allows the user to select a value from a menu."""
 
     def __init__(self, master, variable, value, *values, **kwargs):
@@ -4244,8 +4244,8 @@ class OptionMenu(Menubutton):
         self.__menu = None
 
 
-class Image:
-    """Base class for images."""
+klasse Image:
+    """Base klasse for images."""
     _last_id = 0
 
     def __init__(self, imgtype, name=None, cnf={}, master=None, **kw):
@@ -4306,7 +4306,7 @@ class Image:
             self.tk.call('image', 'width', self.name))
 
 
-class PhotoImage(Image):
+klasse PhotoImage(Image):
     """Widget which can display images in PGM, PPM, GIF, PNG format."""
 
     def __init__(self, name=None, cnf={}, master=None, **kw):
@@ -4569,7 +4569,7 @@ class PhotoImage(Image):
         self.tk.call(self.name, 'transparency', 'set', x, y, boolean)
 
 
-class BitmapImage(Image):
+klasse BitmapImage(Image):
     """Widget which can display images in XBM format."""
 
     def __init__(self, name=None, cnf={}, master=None, **kw):
@@ -4589,7 +4589,7 @@ def image_types():
     return tk.splitlist(tk.call('image', 'types'))
 
 
-class Spinbox(Widget, XView):
+klasse Spinbox(Widget, XView):
     """spinbox widget."""
 
     def __init__(self, master=None, cnf={}, **kw):
@@ -4767,7 +4767,7 @@ class Spinbox(Widget, XView):
 ###########################################################################
 
 
-class LabelFrame(Widget):
+klasse LabelFrame(Widget):
     """labelframe widget."""
 
     def __init__(self, master=None, cnf={}, **kw):
@@ -4791,7 +4791,7 @@ class LabelFrame(Widget):
 ########################################################################
 
 
-class PanedWindow(Widget):
+klasse PanedWindow(Widget):
     """panedwindow widget."""
 
     def __init__(self, master=None, cnf={}, **kw):

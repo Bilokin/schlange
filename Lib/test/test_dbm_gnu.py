@@ -9,7 +9,7 @@ gdbm = import_helper.import_module("dbm.gnu")  # skip if not supported
 
 filename = TESTFN
 
-class TestGdbm(unittest.TestCase):
+klasse TestGdbm(unittest.TestCase):
     @staticmethod
     def setUpClass():
         if support.verbose:

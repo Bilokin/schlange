@@ -19,23 +19,23 @@ def func_with_doctest():
     return 3
 
 
-class ClassWithDocstring:
-    """Some unrelated class information."""
+klasse ClassWithDocstring:
+    """Some unrelated klasse information."""
 
 
-class ClassWithoutDocstring:
+klasse ClassWithoutDocstring:
     pass
 
 
-class ClassWithDoctest:
-    """This class really has a test case in it.
+klasse ClassWithDoctest:
+    """This klasse really has a test case in it.
 
     >>> ClassWithDoctest.__name__
     'ClassWithDoctest'
     """
 
 
-class MethodWrapper:
+klasse MethodWrapper:
     def method_with_docstring(self):
         """Method with a docstring."""
 
@@ -96,7 +96,7 @@ def cached_func_without_docstring(value):
     return value + 1
 
 
-class ClassWithACachedProperty:
+klasse ClassWithACachedProperty:
 
     @functools.cached_property
     def cached(self):

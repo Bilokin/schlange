@@ -15,7 +15,7 @@ except ImportError:
     pwd = None
 
 @mock.patch('os.environ')
-class GetpassGetuserTest(unittest.TestCase):
+klasse GetpassGetuserTest(unittest.TestCase):
 
     def test_username_takes_username_from_env(self, environ):
         expected_name = 'some_name'
@@ -50,7 +50,7 @@ class GetpassGetuserTest(unittest.TestCase):
             self.assertRaises(OSError, getpass.getuser)
 
 
-class GetpassRawinputTest(unittest.TestCase):
+klasse GetpassRawinputTest(unittest.TestCase):
 
     def test_flushes_stream_after_prompt(self):
         # see issue 1703
@@ -95,7 +95,7 @@ class GetpassRawinputTest(unittest.TestCase):
 
 # Some of these might run on platforms without termios, but play it safe.
 @unittest.skipUnless(termios, 'tests require system with termios')
-class UnixGetpassTest(unittest.TestCase):
+klasse UnixGetpassTest(unittest.TestCase):
 
     def test_uses_tty_directly(self):
         with mock.patch('os.open') as open, \

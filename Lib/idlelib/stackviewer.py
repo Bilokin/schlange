@@ -19,7 +19,7 @@ def StackBrowser(root, exc, flist=None, top=None):
     node.expand()
 
 
-class StackTreeItem(TreeItem):
+klasse StackTreeItem(TreeItem):
 
     def __init__(self, exc, flist=None):
         self.flist = flist
@@ -46,7 +46,7 @@ class StackTreeItem(TreeItem):
         return sublist
 
 
-class FrameTreeItem(TreeItem):
+klasse FrameTreeItem(TreeItem):
 
     def __init__(self, info, flist):
         self.info = info
@@ -88,7 +88,7 @@ class FrameTreeItem(TreeItem):
                 self.flist.gotofileline(filename, lineno)
 
 
-class VariablesTreeItem(ObjectTreeItem):
+klasse VariablesTreeItem(ObjectTreeItem):
 
     def GetText(self):
         return self.labeltext

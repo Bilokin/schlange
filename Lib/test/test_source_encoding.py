@@ -10,7 +10,7 @@ import sys
 import subprocess
 import tempfile
 
-class MiscSourceEncodingTest(unittest.TestCase):
+klasse MiscSourceEncodingTest(unittest.TestCase):
 
     def test_import_encoded_module(self):
         from test.encoded_modules import test_strings
@@ -172,7 +172,7 @@ class MiscSourceEncodingTest(unittest.TestCase):
             os.unlink(TESTFN)
 
 
-class AbstractSourceEncodingTest:
+klasse AbstractSourceEncodingTest:
 
     def test_default_coding(self):
         src = (b'print(ascii("\xc3\xa4"))\n')
@@ -247,7 +247,7 @@ class AbstractSourceEncodingTest:
         out = self.check_script_output(src, br"'\n\n\n'")
 
 
-class UTF8ValidatorTest(unittest.TestCase):
+klasse UTF8ValidatorTest(unittest.TestCase):
     @unittest.skipIf(not sys.platform.startswith("linux"),
                      "Too slow to run on non-Linux platforms")
     @requires_resource('cpu')
@@ -316,7 +316,7 @@ class UTF8ValidatorTest(unittest.TestCase):
             check(b'\xF4'+cb+b'\xBF\xBF')
 
 
-class BytesSourceEncodingTest(AbstractSourceEncodingTest, unittest.TestCase):
+klasse BytesSourceEncodingTest(AbstractSourceEncodingTest, unittest.TestCase):
 
     def check_script_output(self, src, expected):
         with captured_stdout() as stdout:
@@ -325,7 +325,7 @@ class BytesSourceEncodingTest(AbstractSourceEncodingTest, unittest.TestCase):
         self.assertEqual(out.rstrip(), expected)
 
 
-class FileSourceEncodingTest(AbstractSourceEncodingTest, unittest.TestCase):
+klasse FileSourceEncodingTest(AbstractSourceEncodingTest, unittest.TestCase):
 
     def check_script_output(self, src, expected):
         with tempfile.TemporaryDirectory() as tmpd:

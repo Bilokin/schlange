@@ -20,12 +20,12 @@ NAN = float("nan")
 DBL_MAX = _testcapi.DBL_MAX
 
 
-class BadComplex3:
+klasse BadComplex3:
     def __complex__(self):
         raise RuntimeError
 
 
-class CAPIComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
+klasse CAPIComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
     def test_check(self):
         # Test PyComplex_Check()
         check = _testlimitedcapi.complex_check

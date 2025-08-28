@@ -21,7 +21,7 @@ def supports_virtual_terminal():
         return contextlib.nullcontext()
 
 
-class TestColorizeFunction(unittest.TestCase):
+klasse TestColorizeFunction(unittest.TestCase):
     def test_colorized_detection_checks_for_environment_variables(self):
         def check(env, fallback, expected):
             with (self.subTest(env=env, fallback=fallback),

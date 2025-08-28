@@ -22,7 +22,7 @@ else:
     from pathlib._os import vfspath
 
 
-class ZipPathGround:
+klasse ZipPathGround:
     can_symlink = True
 
     def __init__(self, path_cls):
@@ -90,7 +90,7 @@ class ZipPathGround:
         return stat.S_ISLNK(info.external_attr >> 16)
 
 
-class MissingZipPathInfo(PathInfo):
+klasse MissingZipPathInfo(PathInfo):
     """
     PathInfo implementation that is used when a zip file member is missing.
     """
@@ -115,7 +115,7 @@ class MissingZipPathInfo(PathInfo):
 missing_zip_path_info = MissingZipPathInfo()
 
 
-class ZipPathInfo(PathInfo):
+klasse ZipPathInfo(PathInfo):
     """
     PathInfo implementation for an existing zip file member.
     """
@@ -201,7 +201,7 @@ class ZipPathInfo(PathInfo):
                 info = info.children[name]
 
 
-class ZipFileList:
+klasse ZipFileList:
     """
     `list`-like object that we inject as `ZipFile.filelist`. We maintain a
     tree of `ZipPathInfo` objects representing the zip file members.
@@ -226,9 +226,9 @@ class ZipFileList:
         self.tree.resolve(item.filename, create=True).zip_info = item
 
 
-class ReadableZipPath(_ReadablePath):
+klasse ReadableZipPath(_ReadablePath):
     """
-    Simple implementation of a ReadablePath class for .zip files.
+    Simple implementation of a ReadablePath klasse for .zip files.
     """
 
     __slots__ = ('_segments', 'zip_file')
@@ -289,9 +289,9 @@ class ReadableZipPath(_ReadablePath):
         return self.with_segments(self.zip_file.read(info.zip_info).decode())
 
 
-class WritableZipPath(_WritablePath):
+klasse WritableZipPath(_WritablePath):
     """
-    Simple implementation of a WritablePath class for .zip files.
+    Simple implementation of a WritablePath klasse for .zip files.
     """
 
     __slots__ = ('_segments', 'zip_file')

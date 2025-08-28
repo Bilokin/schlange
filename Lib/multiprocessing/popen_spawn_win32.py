@@ -33,11 +33,11 @@ def _close_handles(*handles):
 
 
 #
-# We define a Popen class similar to the one from subprocess, but
+# We define a Popen klasse similar to the one from subprocess, but
 # whose constructor takes a process object as its argument.
 #
 
-class Popen(object):
+klasse Popen(object):
     '''
     Start a subprocess to run the code of a process object
     '''

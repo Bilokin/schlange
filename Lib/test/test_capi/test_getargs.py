@@ -62,109 +62,109 @@ SCHAR_MIN = SCHAR_MAX - UCHAR_MAX
 
 NULL = None
 
-class CustomError(Exception):
+klasse CustomError(Exception):
     pass
 
-class Index:
+klasse Index:
     def __index__(self):
         return 99
 
-class IndexIntSubclass(int):
+klasse IndexIntSubclass(int):
     def __index__(self):
         return 99
 
-class BadIndex:
+klasse BadIndex:
     def __index__(self):
         return 1.0
 
-class BadIndex2:
+klasse BadIndex2:
     def __index__(self):
         return True
 
-class BadIndex3(int):
+klasse BadIndex3(int):
     def __index__(self):
         return True
 
 
-class Int:
+klasse Int:
     def __int__(self):
         return 99
 
-class IntSubclass(int):
+klasse IntSubclass(int):
     def __int__(self):
         return 99
 
-class BadInt:
+klasse BadInt:
     def __int__(self):
         return 1.0
 
-class BadInt2:
+klasse BadInt2:
     def __int__(self):
         return True
 
-class BadInt3(int):
+klasse BadInt3(int):
     def __int__(self):
         return True
 
 
-class Float:
+klasse Float:
     def __float__(self):
         return 4.25
 
-class FloatSubclass(float):
+klasse FloatSubclass(float):
     pass
 
-class FloatSubclass2(float):
+klasse FloatSubclass2(float):
     def __float__(self):
         return 4.25
 
-class BadFloat:
+klasse BadFloat:
     def __float__(self):
         return 687
 
-class BadFloat2:
+klasse BadFloat2:
     def __float__(self):
         return FloatSubclass(4.25)
 
-class BadFloat3(float):
+klasse BadFloat3(float):
     def __float__(self):
         return FloatSubclass(4.25)
 
 
-class Complex:
+klasse Complex:
     def __complex__(self):
         return 4.25+0.5j
 
-class ComplexSubclass(complex):
+klasse ComplexSubclass(complex):
     pass
 
-class ComplexSubclass2(complex):
+klasse ComplexSubclass2(complex):
     def __complex__(self):
         return 4.25+0.5j
 
-class BadComplex:
+klasse BadComplex:
     def __complex__(self):
         return 1.25
 
-class BadComplex2:
+klasse BadComplex2:
     def __complex__(self):
         return ComplexSubclass(4.25+0.5j)
 
-class BadComplex3(complex):
+klasse BadComplex3(complex):
     def __complex__(self):
         return ComplexSubclass(4.25+0.5j)
 
 
-class TupleSubclass(tuple):
+klasse TupleSubclass(tuple):
     pass
 
-class DictSubclass(dict):
+klasse DictSubclass(dict):
     pass
 
 NONCONTIG_WRITABLE = memoryview(bytearray(b'noncontig'))[::-2]
 NONCONTIG_READONLY = memoryview(b'noncontig')[::-2]
 
-class Unsigned_TestCase(unittest.TestCase):
+klasse Unsigned_TestCase(unittest.TestCase):
     def test_b(self):
         from _testcapi import getargs_b
         # b returns 'unsigned char', and does range checking (0 ... UCHAR_MAX)
@@ -322,7 +322,7 @@ class Unsigned_TestCase(unittest.TestCase):
         with self.assertWarns(DeprecationWarning):
             self.assertEqual(ULONG_MAX & -VERY_LARGE, getargs_k(-VERY_LARGE))
 
-class Signed_TestCase(unittest.TestCase):
+klasse Signed_TestCase(unittest.TestCase):
     def test_h(self):
         from _testcapi import getargs_h
         # h returns 'short', and does range checking (SHRT_MIN ... SHRT_MAX)
@@ -421,7 +421,7 @@ class Signed_TestCase(unittest.TestCase):
         self.assertRaises(OverflowError, getargs_n, VERY_LARGE)
 
 
-class LongLong_TestCase(unittest.TestCase):
+klasse LongLong_TestCase(unittest.TestCase):
     def test_L(self):
         from _testcapi import getargs_L
         # L returns 'long long', and does range checking (LLONG_MIN
@@ -481,7 +481,7 @@ class LongLong_TestCase(unittest.TestCase):
             self.assertEqual(ULLONG_MAX & -VERY_LARGE, getargs_K(-VERY_LARGE))
 
 
-class Float_TestCase(unittest.TestCase, FloatsAreIdenticalMixin):
+klasse Float_TestCase(unittest.TestCase, FloatsAreIdenticalMixin):
     def test_f(self):
         from _testcapi import getargs_f
         self.assertEqual(getargs_f(4.25), 4.25)
@@ -566,12 +566,12 @@ class Float_TestCase(unittest.TestCase, FloatsAreIdenticalMixin):
         self.assertFloatsAreIdentical(getargs_D(complex(1.0, -0.0)).imag, -0.0)
 
 
-class Paradox:
+klasse Paradox:
     "This statement is false."
     def __bool__(self):
         raise NotImplementedError
 
-class Boolean_TestCase(unittest.TestCase):
+klasse Boolean_TestCase(unittest.TestCase):
     def test_p(self):
         from _testcapi import getargs_p
         self.assertEqual(0, getargs_p(False))
@@ -597,7 +597,7 @@ class Boolean_TestCase(unittest.TestCase):
         self.assertRaises(NotImplementedError, getargs_p, Paradox())
 
 
-class Tuple_TestCase(unittest.TestCase):
+klasse Tuple_TestCase(unittest.TestCase):
     def test_args(self):
         from _testcapi import get_args
 
@@ -632,14 +632,14 @@ class Tuple_TestCase(unittest.TestCase):
         self.assertEqual(ret, (1,2,3))
 
         # make sure invalid sequence arguments are handled correctly
-        class TestSeq:
+        klasse TestSeq:
             def __len__(self):
                 return 2
             def __getitem__(self, n):
                 raise CustomError
         self.assertRaises(CustomError, getargs_tuple, 1, TestSeq())
 
-class Keywords_TestCase(unittest.TestCase):
+klasse Keywords_TestCase(unittest.TestCase):
     def test_kwargs(self):
         from _testcapi import get_kwargs
 
@@ -726,7 +726,7 @@ class Keywords_TestCase(unittest.TestCase):
         else:
             self.fail('TypeError should have been raised')
 
-class KeywordOnly_TestCase(unittest.TestCase):
+klasse KeywordOnly_TestCase(unittest.TestCase):
     def test_positional_args(self):
         # using all possible positional args
         self.assertEqual(
@@ -798,7 +798,7 @@ class KeywordOnly_TestCase(unittest.TestCase):
             getargs_keyword_only(1, 2, **{'\uDC80': 10})
 
     def test_weird_str_subclass(self):
-        class BadStr(str):
+        klasse BadStr(str):
             def __eq__(self, other):
                 return True
             def __hash__(self):
@@ -812,7 +812,7 @@ class KeywordOnly_TestCase(unittest.TestCase):
             getargs_keyword_only(1, 2, **{BadStr("monster"): 666})
 
     def test_weird_str_subclass2(self):
-        class BadStr(str):
+        klasse BadStr(str):
             def __eq__(self, other):
                 return False
             def __hash__(self):
@@ -825,7 +825,7 @@ class KeywordOnly_TestCase(unittest.TestCase):
             getargs_keyword_only(1, 2, **{BadStr("monster"): 666})
 
 
-class PositionalOnlyAndKeywords_TestCase(unittest.TestCase):
+klasse PositionalOnlyAndKeywords_TestCase(unittest.TestCase):
     from _testcapi import getargs_positional_only_and_keywords as getargs
 
     def test_positional_args(self):
@@ -858,7 +858,7 @@ class PositionalOnlyAndKeywords_TestCase(unittest.TestCase):
             self.getargs(1, 2, **{'': 666})
 
 
-class Bytes_TestCase(unittest.TestCase):
+klasse Bytes_TestCase(unittest.TestCase):
     def test_c(self):
         from _testcapi import getargs_c
         self.assertRaises(TypeError, getargs_c, b'abc')  # len > 1
@@ -932,7 +932,7 @@ class Bytes_TestCase(unittest.TestCase):
         self.assertRaises(TypeError, getargs_empty, 'x', 'y', 'z', a=1, b=2)
 
 
-class String_TestCase(unittest.TestCase):
+klasse String_TestCase(unittest.TestCase):
     def test_C(self):
         from _testcapi import getargs_C
         self.assertRaises(TypeError, getargs_C, 'abc')  # len > 1
@@ -1090,7 +1090,7 @@ class String_TestCase(unittest.TestCase):
         self.assertRaises(TypeError, gh_99240_clear_args, 'a', '\0b')
 
 
-class Object_TestCase(unittest.TestCase):
+klasse Object_TestCase(unittest.TestCase):
     def test_S(self):
         from _testcapi import getargs_S
         obj = b'bytes'
@@ -1119,12 +1119,12 @@ class Object_TestCase(unittest.TestCase):
 
 
 # Bug #6012
-class Test6012(unittest.TestCase):
+klasse Test6012(unittest.TestCase):
     def test(self):
         self.assertEqual(_testcapi.argparsing("Hello", "World"), 1)
 
 
-class SkipitemTest(unittest.TestCase):
+klasse SkipitemTest(unittest.TestCase):
 
     # u, and Z raises DeprecationWarning
     @warnings_helper.ignore_warnings(category=DeprecationWarning)
@@ -1228,7 +1228,7 @@ class SkipitemTest(unittest.TestCase):
                         parse(empty_tuple, dict_b, optional_format, keywords)
 
 
-class ParseTupleAndKeywords_Test(unittest.TestCase):
+klasse ParseTupleAndKeywords_Test(unittest.TestCase):
 
     def test_parse_tuple_and_keywords(self):
         # Test handling errors in the parse_tuple_and_keywords helper itself

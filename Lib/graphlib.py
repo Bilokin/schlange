@@ -6,11 +6,11 @@ _NODE_OUT = -1
 _NODE_DONE = -2
 
 
-class _NodeInfo:
+klasse _NodeInfo:
     __slots__ = "node", "npredecessors", "successors"
 
     def __init__(self, node):
-        # The node this class is augmenting.
+        # The node this klasse is augmenting.
         self.node = node
 
         # Number of predecessors, generally >= 0. When this value falls to 0,
@@ -23,7 +23,7 @@ class _NodeInfo:
         self.successors = []
 
 
-class CycleError(ValueError):
+klasse CycleError(ValueError):
     """Subclass of ValueError raised by TopologicalSorter.prepare if cycles
     exist in the working graph.
 
@@ -38,7 +38,7 @@ class CycleError(ValueError):
     pass
 
 
-class TopologicalSorter:
+klasse TopologicalSorter:
     """Provides functionality to topologically sort a graph of hashable nodes"""
 
     def __init__(self, graph=None):

@@ -14,7 +14,7 @@ if False:
     _theme: Theme
 
 
-class ANSIColors:
+klasse ANSIColors:
     RESET = "\x1b[0m"
 
     BLACK = "\x1b[30m"
@@ -83,7 +83,7 @@ for attr, code in ANSIColors.__dict__.items():
 #   replaced, using `default_theme.copy_with()`;
 # - create a theme section by copying an existing `ThemeSection` with one or
 #   more colors replaced, using for example `default_theme.syntax.copy_with()`;
-# - create a theme from scratch by instantiating a `Theme` data class with
+# - create a theme from scratch by instantiating a `Theme` data klasse with
 #   the required sections (which are also dataclass instances).
 #
 # Then call `_colorize.set_theme(your_theme)` to set it.
@@ -113,8 +113,8 @@ for attr, code in ANSIColors.__dict__.items():
 # Python 3.13 and older. Deleting the variables ensures they don't remain in your
 # interactive shell's global scope.
 
-class ThemeSection(Mapping[str, str]):
-    """A mixin/base class for theme sections.
+klasse ThemeSection(Mapping[str, str]):
+    """A mixin/base klasse for theme sections.
 
     It enables dictionary access to a section, as well as implements convenience
     methods.
@@ -156,7 +156,7 @@ class ThemeSection(Mapping[str, str]):
 
 
 @dataclass(frozen=True)
-class Argparse(ThemeSection):
+klasse Argparse(ThemeSection):
     usage: str = ANSIColors.BOLD_BLUE
     prog: str = ANSIColors.BOLD_MAGENTA
     prog_extra: str = ANSIColors.MAGENTA
@@ -173,7 +173,7 @@ class Argparse(ThemeSection):
 
 
 @dataclass(frozen=True, kw_only=True)
-class Difflib(ThemeSection):
+klasse Difflib(ThemeSection):
     """A 'git diff'-like theme for `difflib.unified_diff`."""
     added: str = ANSIColors.GREEN
     context: str = ANSIColors.RESET  # context lines
@@ -184,7 +184,7 @@ class Difflib(ThemeSection):
 
 
 @dataclass(frozen=True, kw_only=True)
-class Syntax(ThemeSection):
+klasse Syntax(ThemeSection):
     prompt: str = ANSIColors.BOLD_MAGENTA
     keyword: str = ANSIColors.BOLD_BLUE
     builtin: str = ANSIColors.CYAN
@@ -198,7 +198,7 @@ class Syntax(ThemeSection):
 
 
 @dataclass(frozen=True, kw_only=True)
-class Traceback(ThemeSection):
+klasse Traceback(ThemeSection):
     type: str = ANSIColors.BOLD_MAGENTA
     message: str = ANSIColors.MAGENTA
     filename: str = ANSIColors.MAGENTA
@@ -210,7 +210,7 @@ class Traceback(ThemeSection):
 
 
 @dataclass(frozen=True, kw_only=True)
-class Unittest(ThemeSection):
+klasse Unittest(ThemeSection):
     passed: str = ANSIColors.GREEN
     warn: str = ANSIColors.YELLOW
     fail: str = ANSIColors.RED
@@ -219,7 +219,7 @@ class Unittest(ThemeSection):
 
 
 @dataclass(frozen=True, kw_only=True)
-class Theme:
+klasse Theme:
     """A suite of themes for all sections of Python.
 
     When adding a new one, remember to also modify `copy_with` and `no_colors`

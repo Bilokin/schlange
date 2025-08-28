@@ -10,12 +10,12 @@ j: int
 x: float = i/10
 
 def f():
-    class C: ...
+    klasse C: ...
     return C()
 
 f().new_attr: object = object()
 
-class C:
+klasse C:
     def __init__(self, x: int) -> None:
         self.x = x
 
@@ -26,11 +26,11 @@ __annotations__ = {}
 
 
 @no_type_check
-class NTC:
+klasse NTC:
     def meth(self, param: complex) -> None:
         ...
 
-class CV:
+klasse CV:
     var: ClassVar['CV']
 
 CV.var = CV()

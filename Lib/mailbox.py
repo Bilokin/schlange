@@ -31,7 +31,7 @@ __all__ = ['Mailbox', 'Maildir', 'mbox', 'MH', 'Babyl', 'MMDF',
 
 linesep = os.linesep.encode('ascii')
 
-class Mailbox:
+klasse Mailbox:
     """A group of messages in a particular place."""
 
     def __init__(self, path, factory=None, create=True):
@@ -264,7 +264,7 @@ class Mailbox:
     __class_getitem__ = classmethod(GenericAlias)
 
 
-class Maildir(Mailbox):
+klasse Maildir(Mailbox):
     """A qmail-style Maildir mailbox."""
 
     colon = ':'
@@ -626,7 +626,7 @@ class Maildir(Mailbox):
                 continue
 
 
-class _singlefileMailbox(Mailbox):
+klasse _singlefileMailbox(Mailbox):
     """A single-file mailbox."""
 
     def __init__(self, path, factory=None, create=True):
@@ -825,7 +825,7 @@ class _singlefileMailbox(Mailbox):
 
 
 
-class _mboxMMDF(_singlefileMailbox):
+klasse _mboxMMDF(_singlefileMailbox):
     """An mbox or MMDF mailbox."""
 
     _mangle_from_ = True
@@ -892,7 +892,7 @@ class _mboxMMDF(_singlefileMailbox):
         return (start, stop)
 
 
-class mbox(_mboxMMDF):
+klasse mbox(_mboxMMDF):
     """A classic mbox mailbox."""
 
     _mangle_from_ = True
@@ -944,7 +944,7 @@ class mbox(_mboxMMDF):
         self._file_length = self._file.tell()
 
 
-class MMDF(_mboxMMDF):
+klasse MMDF(_mboxMMDF):
     """An MMDF mailbox."""
 
     def __init__(self, path, factory=None, create=True):
@@ -989,7 +989,7 @@ class MMDF(_mboxMMDF):
         self._file_length = self._file.tell()
 
 
-class MH(Mailbox):
+klasse MH(Mailbox):
     """An MH mailbox."""
 
     def __init__(self, path, factory=None, create=True):
@@ -1312,7 +1312,7 @@ class MH(Mailbox):
         self.set_sequences(all_sequences)
 
 
-class Babyl(_singlefileMailbox):
+klasse Babyl(_singlefileMailbox):
     """An Rmail-style Babyl mailbox."""
 
     _special_labels = frozenset({'unseen', 'deleted', 'filed', 'answered',
@@ -1561,7 +1561,7 @@ class Babyl(_singlefileMailbox):
         return (start, stop)
 
 
-class Message(email.message.Message):
+klasse Message(email.message.Message):
     """Message with mailbox-format-specific properties."""
 
     def __init__(self, message=None):
@@ -1598,7 +1598,7 @@ class Message(email.message.Message):
             raise TypeError('Cannot convert to specified type')
 
 
-class MaildirMessage(Message):
+klasse MaildirMessage(Message):
     """Message with Maildir-specific properties."""
 
     _type_specific_attributes = ['_subdir', '_info', '_date']
@@ -1707,7 +1707,7 @@ class MaildirMessage(Message):
                             type(message))
 
 
-class _mboxMMDFMessage(Message):
+klasse _mboxMMDFMessage(Message):
     """Message with mbox- or MMDF-specific properties."""
 
     _type_specific_attributes = ['_from']
@@ -1820,11 +1820,11 @@ class _mboxMMDFMessage(Message):
                             type(message))
 
 
-class mboxMessage(_mboxMMDFMessage):
+klasse mboxMessage(_mboxMMDFMessage):
     """Message with mbox-specific properties."""
 
 
-class MHMessage(Message):
+klasse MHMessage(Message):
     """Message with MH-specific properties."""
 
     _type_specific_attributes = ['_sequences']
@@ -1896,7 +1896,7 @@ class MHMessage(Message):
                             type(message))
 
 
-class BabylMessage(Message):
+klasse BabylMessage(Message):
     """Message with Babyl-specific properties."""
 
     _type_specific_attributes = ['_labels', '_visible']
@@ -1991,11 +1991,11 @@ class BabylMessage(Message):
                             type(message))
 
 
-class MMDFMessage(_mboxMMDFMessage):
+klasse MMDFMessage(_mboxMMDFMessage):
     """Message with MMDF-specific properties."""
 
 
-class _ProxyFile:
+klasse _ProxyFile:
     """A read-only wrapper of a file."""
 
     def __init__(self, f, pos=None):
@@ -2093,7 +2093,7 @@ class _ProxyFile:
     __class_getitem__ = classmethod(GenericAlias)
 
 
-class _PartialFile(_ProxyFile):
+klasse _PartialFile(_ProxyFile):
     """A read-only wrapper of part of a file."""
 
     def __init__(self, f, start=None, stop=None):
@@ -2207,17 +2207,17 @@ def _sync_close(f):
     f.close()
 
 
-class Error(Exception):
+klasse Error(Exception):
     """Raised for module-specific errors."""
 
-class NoSuchMailboxError(Error):
+klasse NoSuchMailboxError(Error):
     """The specified mailbox does not exist and won't be created."""
 
-class NotEmptyError(Error):
+klasse NotEmptyError(Error):
     """The specified mailbox is not empty and deletion was requested."""
 
-class ExternalClashError(Error):
+klasse ExternalClashError(Error):
     """Another process caused an action to fail."""
 
-class FormatError(Error):
+klasse FormatError(Error):
     """A file appears to have an invalid format."""

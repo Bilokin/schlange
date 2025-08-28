@@ -53,7 +53,7 @@ __all__ = ['dataclass',
 #   +--- init= parameter
 #   |
 #   v     |       |       |
-#         |  no   |  yes  |  <--- class has __init__ in __dict__?
+#         |  no   |  yes  |  <--- klasse has __init__ in __dict__?
 # +=======+=======+=======+
 # | False |       |       |
 # +-------+-------+-------+
@@ -65,7 +65,7 @@ __all__ = ['dataclass',
 #    +--- repr= parameter
 #    |
 #    v    |       |       |
-#         |  no   |  yes  |  <--- class has __repr__ in __dict__?
+#         |  no   |  yes  |  <--- klasse has __repr__ in __dict__?
 # +=======+=======+=======+
 # | False |       |       |
 # +-------+-------+-------+
@@ -79,7 +79,7 @@ __all__ = ['dataclass',
 #    +--- frozen= parameter
 #    |
 #    v    |       |       |
-#         |  no   |  yes  |  <--- class has __setattr__ or __delattr__ in __dict__?
+#         |  no   |  yes  |  <--- klasse has __setattr__ or __delattr__ in __dict__?
 # +=======+=======+=======+
 # | False |       |       |  <- the default
 # +-------+-------+-------+
@@ -93,7 +93,7 @@ __all__ = ['dataclass',
 #    +--- eq= parameter
 #    |
 #    v    |       |       |
-#         |  no   |  yes  |  <--- class has __eq__ in __dict__?
+#         |  no   |  yes  |  <--- klasse has __eq__ in __dict__?
 # +=======+=======+=======+
 # | False |       |       |
 # +-------+-------+-------+
@@ -108,7 +108,7 @@ __all__ = ['dataclass',
 #    +--- order= parameter
 #    |
 #    v    |       |       |
-#         |  no   |  yes  |  <--- class has any comparison method in __dict__?
+#         |  no   |  yes  |  <--- klasse has any comparison method in __dict__?
 # +=======+=======+=======+
 # | False |       |       |  <- the default
 # +-------+-------+-------+
@@ -124,11 +124,11 @@ __all__ = ['dataclass',
 #    |       |       +--- frozen= parameter
 #    |       |       |
 #    v       v       v    |        |        |
-#                         |   no   |  yes   |  <--- class has explicitly defined __hash__
+#                         |   no   |  yes   |  <--- klasse has explicitly defined __hash__
 # +=======+=======+=======+========+========+
-# | False | False | False |        |        | No __eq__, use the base class __hash__
+# | False | False | False |        |        | No __eq__, use the base klasse __hash__
 # +-------+-------+-------+--------+--------+
-# | False | False | True  |        |        | No __eq__, use the base class __hash__
+# | False | False | True  |        |        | No __eq__, use the base klasse __hash__
 # +-------+-------+-------+--------+--------+
 # | False | True  | False | None   |        | <-- the default, not hashable
 # +-------+-------+-------+--------+--------+
@@ -146,8 +146,8 @@ __all__ = ['dataclass',
 # inherited from the base class.  If the base is object, then
 # id-based hashing is used.
 #
-# Note that a class may already have __hash__=None if it specified an
-# __eq__ method in the class body (not one that was created by
+# Note that a klasse may already have __hash__=None if it specified an
+# __eq__ method in the klasse body (not one that was created by
 # @dataclass).
 #
 # See _hash_action (below) for a coded version of this table.
@@ -157,36 +157,36 @@ __all__ = ['dataclass',
 #    +--- match_args= parameter
 #    |
 #    v    |       |       |
-#         |  no   |  yes  |  <--- class has __match_args__ in __dict__?
+#         |  no   |  yes  |  <--- klasse has __match_args__ in __dict__?
 # +=======+=======+=======+
 # | False |       |       |
 # +-------+-------+-------+
 # | True  | add   |       |  <- the default
 # +=======+=======+=======+
-# __match_args__ is always added unless the class already defines it. It is a
+# __match_args__ is always added unless the klasse already defines it. It is a
 # tuple of __init__ parameter names; non-init fields must be matched by keyword.
 
 
 # Raised when an attempt is made to modify a frozen class.
-class FrozenInstanceError(AttributeError): pass
+klasse FrozenInstanceError(AttributeError): pass
 
 # A sentinel object for default values to signal that a default
 # factory will be used.  This is given a nice repr() which will appear
 # in the function signature of dataclasses' constructors.
-class _HAS_DEFAULT_FACTORY_CLASS:
+klasse _HAS_DEFAULT_FACTORY_CLASS:
     def __repr__(self):
         return '<factory>'
 _HAS_DEFAULT_FACTORY = _HAS_DEFAULT_FACTORY_CLASS()
 
 # A sentinel object to detect if a parameter is supplied or not.  Use
-# a class to give it a better repr.
-class _MISSING_TYPE:
+# a klasse to give it a better repr.
+klasse _MISSING_TYPE:
     pass
 MISSING = _MISSING_TYPE()
 
 # A sentinel object to indicate that following fields are keyword-only by
-# default.  Use a class to give it a better repr.
-class _KW_ONLY_TYPE:
+# default.  Use a klasse to give it a better repr.
+klasse _KW_ONLY_TYPE:
     pass
 KW_ONLY = _KW_ONLY_TYPE()
 
@@ -195,7 +195,7 @@ KW_ONLY = _KW_ONLY_TYPE()
 _EMPTY_METADATA = types.MappingProxyType({})
 
 # Markers for the various kinds of fields and pseudo-fields.
-class _FIELD_BASE:
+klasse _FIELD_BASE:
     def __init__(self, name):
         self.name = name
     def __repr__(self):
@@ -204,11 +204,11 @@ _FIELD = _FIELD_BASE('_FIELD')
 _FIELD_CLASSVAR = _FIELD_BASE('_FIELD_CLASSVAR')
 _FIELD_INITVAR = _FIELD_BASE('_FIELD_INITVAR')
 
-# The name of an attribute on the class where we store the Field
-# objects.  Also used to check if a class is a Data Class.
+# The name of an attribute on the klasse where we store the Field
+# objects.  Also used to check if a klasse is a Data Class.
 _FIELDS = '__dataclass_fields__'
 
-# The name of an attribute on the class that stores the parameters to
+# The name of an attribute on the klasse that stores the parameters to
 # @dataclass.
 _PARAMS = '__dataclass_params__'
 
@@ -249,7 +249,7 @@ _ATOMIC_TYPES = frozenset({
 _ANY_MARKER = object()
 
 
-class InitVar:
+klasse InitVar:
     __slots__ = ('type', )
 
     def __init__(self, type):
@@ -271,12 +271,12 @@ class InitVar:
 # exposed externally as (conceptually) read-only objects.
 #
 # name and type are filled in after the fact, not in __init__.
-# They're not known at the time this class is instantiated, but it's
+# They're not known at the time this klasse is instantiated, but it's
 # convenient if they're available later.
 #
 # When cls._FIELDS is filled in with a list of Field objects, the name
 # and type fields will have been populated.
-class Field:
+klasse Field:
     __slots__ = ('name',
                  'type',
                  'default',
@@ -343,7 +343,7 @@ class Field:
     __class_getitem__ = classmethod(types.GenericAlias)
 
 
-class _DataclassParams:
+klasse _DataclassParams:
     __slots__ = ('init',
                  'repr',
                  'eq',
@@ -433,7 +433,7 @@ def _tuple_str(obj_name, fields):
     return f'({",".join([f"{obj_name}.{f.name}" for f in fields])},)'
 
 
-class _FuncBuilder:
+klasse _FuncBuilder:
     def __init__(self, globals):
         self.names = []
         self.src = []
@@ -517,7 +517,7 @@ class _FuncBuilder:
                 # See if it's an error to overwrite this particular function.
                 if already_exists and (msg_extra := self.overwrite_errors.get(name)):
                     error_msg = (f'Cannot overwrite attribute {fn.__name__} '
-                                 f'in class {cls.__name__}')
+                                 f'in klasse {cls.__name__}')
                     if not msg_extra is True:
                         error_msg = f'{error_msg} {msg_extra}'
 
@@ -556,11 +556,11 @@ def _field_init(f, frozen, globals, self_name, slots):
             # because there's no other way to initialize it.
 
             # For a field initialized with a default=defaultvalue, the
-            # class dict just has the default value
+            # klasse dict just has the default value
             # (cls.fieldname=defaultvalue).  But that won't work for a
             # default factory, the factory must be called in __init__
             # and we must assign that to self.fieldname.  We can't
-            # fall back to the class dict's value, both because it's
+            # fall back to the klasse dict's value, both because it's
             # not set, and because it might be different per-class
             # (which, after all, is why we have a factory function!).
 
@@ -576,13 +576,13 @@ def _field_init(f, frozen, globals, self_name, slots):
                 globals[default_name] = f.default
                 value = f.name
         else:
-            # If the class has slots, then initialize this field.
+            # If the klasse has slots, then initialize this field.
             if slots and f.default is not MISSING:
                 globals[default_name] = f.default
                 value = default_name
             else:
                 # This field does not need initialization: reading from it will
-                # just use the class attribute that contains the default.
+                # just use the klasse attribute that contains the default.
                 # Signify that to the caller by returning None.
                 return None
 
@@ -649,7 +649,7 @@ def _init_fn(fields, std_fields, kw_only_fields, frozen, has_post_init,
         if line:
             body_lines.append(line)
 
-    # Does this class have a post-init function?
+    # Does this klasse have a post-init function?
     if has_post_init:
         params_str = ','.join(f.name for f in fields
                               if f._field_type is _FIELD_INITVAR)
@@ -722,7 +722,7 @@ def _is_type(annotation, cls, a_module, a_type, is_type_predicate):
     # the caller already knows a_module.
 
     # - annotation is a string type annotation
-    # - cls is the class that this annotation was found in
+    # - cls is the klasse that this annotation was found in
     # - a_module is the module we want to match
     # - a_type is the type in that module we want to match
     # - is_type_predicate is a function called with (obj, a_module)
@@ -735,12 +735,12 @@ def _is_type(annotation, cls, a_module, a_type, is_type_predicate):
     # With string annotations, cv0 will be detected as a ClassVar:
     #   CV = ClassVar
     #   @dataclass
-    #   class C0:
+    #   klasse C0:
     #     cv0: CV
 
     # But in this example cv1 will not be detected as a ClassVar:
     #   @dataclass
-    #   class C1:
+    #   klasse C1:
     #     CV = ClassVar
     #     cv1: CV
 
@@ -899,7 +899,7 @@ def _hash_add(cls, fields, func_builder):
 def _hash_exception(cls, fields, func_builder):
     # Raise an exception.
     raise TypeError(f'Cannot overwrite attribute __hash__ '
-                    f'in class {cls.__name__}')
+                    f'in klasse {cls.__name__}')
 
 #
 #                +-------------------------------------- unsafe_hash?
@@ -935,7 +935,7 @@ def _process_class(cls, init, repr, eq, order, unsafe_hash, frozen,
                    match_args, kw_only, slots, weakref_slot):
     # Now that dicts retain insertion order, there's no reason to use
     # an ordered dict.  I am leveraging that ordering here, because
-    # derived class fields overwrite base class fields, but the order
+    # derived klasse fields overwrite base klasse fields, but the order
     # is defined by the base class, which is found first.
     fields = {}
 
@@ -977,10 +977,10 @@ def _process_class(cls, init, repr, eq, order, unsafe_hash, frozen,
             all_frozen_bases = all_frozen_bases and current_frozen
             any_frozen_base = any_frozen_base or current_frozen
 
-    # Annotations defined specifically in this class (not in base classes).
+    # Annotations defined specifically in this klasse (not in base classes).
     #
     # Fields are found from cls_annotations, which is guaranteed to be
-    # ordered.  Default values are from class attributes, if a field
+    # ordered.  Default values are from klasse attributes, if a field
     # has a default.  If the default value is a Field(), then it
     # contains additional info beyond (and possibly including) the
     # actual default value.  Pseudo-fields ClassVars and InitVars are
@@ -990,7 +990,7 @@ def _process_class(cls, init, repr, eq, order, unsafe_hash, frozen,
         cls, format=annotationlib.Format.FORWARDREF)
 
     # Now find fields in our class.  While doing so, validate some
-    # things, and set the default values (as class attributes) where
+    # things, and set the default values (as klasse attributes) where
     # we can.
     cls_fields = []
     # Get a reference to this module for the _is_kw_only() test.
@@ -1016,17 +1016,17 @@ def _process_class(cls, init, repr, eq, order, unsafe_hash, frozen,
     for f in cls_fields:
         fields[f.name] = f
 
-        # If the class attribute (which is the default value for this
+        # If the klasse attribute (which is the default value for this
         # field) exists and is of type 'Field', replace it with the
-        # real default.  This is so that normal class introspection
+        # real default.  This is so that normal klasse introspection
         # sees a real default value, not a Field.
         if isinstance(getattr(cls, f.name, None), Field):
             if f.default is MISSING:
-                # If there's no default, delete the class attribute.
+                # If there's no default, delete the klasse attribute.
                 # This happens if we specify field(repr=False), for
                 # example (that is, we specified a field object, but
                 # no default value).  Also if we're using a default
-                # factory.  The class attribute should not be set at
+                # factory.  The klasse attribute should not be set at
                 # all in the post-processed class.
                 delattr(cls, f.name)
             else:
@@ -1049,11 +1049,11 @@ def _process_class(cls, init, repr, eq, order, unsafe_hash, frozen,
             raise TypeError('cannot inherit frozen dataclass from a '
                             'non-frozen one')
 
-    # Remember all of the fields on our class (including bases).  This
-    # also marks this class as being a dataclass.
+    # Remember all of the fields on our klasse (including bases).  This
+    # also marks this klasse as being a dataclass.
     setattr(cls, _FIELDS, fields)
 
-    # Was this class defined with an explicit __hash__?  Note that if
+    # Was this klasse defined with an explicit __hash__?  Note that if
     # __eq__ is defined in this class, then python will automatically
     # set __hash__ to None.  This is a heuristic, as it's possible
     # that such a __hash__ == None was not auto-generated, but it's
@@ -1078,7 +1078,7 @@ def _process_class(cls, init, repr, eq, order, unsafe_hash, frozen,
     func_builder = _FuncBuilder(globals)
 
     if init:
-        # Does this class have a post-init function?
+        # Does this klasse have a post-init function?
         has_post_init = hasattr(cls, _POST_INIT_NAME)
 
         _init_fn(all_init_fields,
@@ -1163,7 +1163,7 @@ def _process_class(cls, init, repr, eq, order, unsafe_hash, frozen,
     func_builder.add_fns_to_class(cls)
 
     if not getattr(cls, '__doc__'):
-        # Create a class doc-string.
+        # Create a klasse doc-string.
         try:
             # In some cases fetching a signature is not possible.
             # But, we surely should not fail in this case.
@@ -1276,8 +1276,8 @@ def _create_slots(defined_fields, inherited_slots, field_names, weakref_slot):
 
 def _add_slots(cls, is_frozen, weakref_slot, defined_fields):
     # Need to create a new class, since we can't set __slots__ after a
-    # class has been created, and the @dataclass decorator is called
-    # after the class is created.
+    # klasse has been created, and the @dataclass decorator is called
+    # after the klasse is created.
 
     # Make sure __slots__ isn't already set.
     if '__slots__' in cls.__dict__:
@@ -1322,7 +1322,7 @@ def _add_slots(cls, is_frozen, weakref_slot, defined_fields):
     # fix zero argument super so that it points to the correct class
     # (the newly created one, which we're returning) and not the
     # original class.  We can break out of this loop as soon as we
-    # make an update, since all closures for a class will share a
+    # make an update, since all closures for a klasse will share a
     # given cell.
     for member in newcls.__dict__.values():
         # If this is a wrapped function, unwrap it.
@@ -1353,7 +1353,7 @@ def dataclass(cls=None, /, *, init=True, repr=True, eq=True, order=False,
     __hash__() method is added. If frozen is true, fields may not be
     assigned to after instance creation. If match_args is true, the
     __match_args__ tuple is added. If kw_only is true, then by default
-    all fields are keyword-only. If slots is true, a new class with a
+    all fields are keyword-only. If slots is true, a new klasse with a
     __slots__ attribute is returned.
     """
 
@@ -1408,7 +1408,7 @@ def asdict(obj, *, dict_factory=dict):
     Example usage::
 
       @dataclass
-      class C:
+      klasse C:
           x: int
           y: int
 
@@ -1499,7 +1499,7 @@ def astuple(obj, *, tuple_factory=tuple):
     Example usage::
 
       @dataclass
-      class C:
+      klasse C:
           x: int
           y: int
 
@@ -1569,7 +1569,7 @@ def make_dataclass(cls_name, fields, *, bases=(), namespace=None, init=True,
     is equivalent to::
 
       @dataclass
-      class C(Base):
+      klasse C(Base):
           x: 'typing.Any'
           y: int
           z: int = field(init=False)
@@ -1675,7 +1675,7 @@ def make_dataclass(cls_name, fields, *, bases=(), namespace=None, init=True,
                     unsafe_hash=unsafe_hash, frozen=frozen,
                     match_args=match_args, kw_only=kw_only, slots=slots,
                     weakref_slot=weakref_slot)
-    # Now that the class is ready, allow the VALUE format.
+    # Now that the klasse is ready, allow the VALUE format.
     value_blocked = False
     return cls
 
@@ -1686,7 +1686,7 @@ def replace(obj, /, **changes):
     This is especially useful for frozen classes.  Example usage::
 
       @dataclass(frozen=True)
-      class C:
+      klasse C:
           x: int
           y: int
 

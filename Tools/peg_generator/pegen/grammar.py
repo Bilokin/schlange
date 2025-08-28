@@ -12,11 +12,11 @@ from typing import (
 )
 
 
-class GrammarError(Exception):
+klasse GrammarError(Exception):
     pass
 
 
-class GrammarVisitor:
+klasse GrammarVisitor:
     def visit(self, node: Any, *args: Any, **kwargs: Any) -> Any:
         """Visit a node."""
         method = "visit_" + node.__class__.__name__
@@ -33,7 +33,7 @@ class GrammarVisitor:
                 self.visit(value, *args, **kwargs)
 
 
-class Grammar:
+klasse Grammar:
     def __init__(self, rules: Iterable[Rule], metas: Iterable[Tuple[str, Optional[str]]]):
         # Check if there are repeated rules in "rules"
         all_rules = {}
@@ -65,7 +65,7 @@ class Grammar:
 SIMPLE_STR = True
 
 
-class Rule:
+klasse Rule:
     def __init__(self, name: str, type: Optional[str], rhs: Rhs, memo: Optional[object] = None):
         self.name = name
         self.type = type
@@ -110,7 +110,7 @@ class Rule:
         return rhs
 
 
-class Leaf:
+klasse Leaf:
     def __init__(self, value: str):
         self.value = value
 
@@ -121,7 +121,7 @@ class Leaf:
         yield from ()
 
 
-class NameLeaf(Leaf):
+klasse NameLeaf(Leaf):
     """The value is the name."""
 
     def __str__(self) -> str:
@@ -133,14 +133,14 @@ class NameLeaf(Leaf):
         return f"NameLeaf({self.value!r})"
 
 
-class StringLeaf(Leaf):
+klasse StringLeaf(Leaf):
     """The value is a string literal, including quotes."""
 
     def __repr__(self) -> str:
         return f"StringLeaf({self.value!r})"
 
 
-class Rhs:
+klasse Rhs:
     def __init__(self, alts: List[Alt]):
         self.alts = alts
         self.memo: Optional[Tuple[Optional[str], str]] = None
@@ -164,7 +164,7 @@ class Rhs:
         return True
 
 
-class Alt:
+klasse Alt:
     def __init__(self, items: List[NamedItem], *, icut: int = -1, action: Optional[str] = None):
         self.items = items
         self.icut = icut
@@ -189,7 +189,7 @@ class Alt:
         yield self.items
 
 
-class NamedItem:
+klasse NamedItem:
     def __init__(self, name: Optional[str], item: Item, type: Optional[str] = None):
         self.name = name
         self.item = item
@@ -208,7 +208,7 @@ class NamedItem:
         yield self.item
 
 
-class Forced:
+klasse Forced:
     def __init__(self, node: Plain):
         self.node = node
 
@@ -219,7 +219,7 @@ class Forced:
         yield self.node
 
 
-class Lookahead:
+klasse Lookahead:
     def __init__(self, node: Plain, sign: str):
         self.node = node
         self.sign = sign
@@ -231,7 +231,7 @@ class Lookahead:
         yield self.node
 
 
-class PositiveLookahead(Lookahead):
+klasse PositiveLookahead(Lookahead):
     def __init__(self, node: Plain):
         super().__init__(node, "&")
 
@@ -239,7 +239,7 @@ class PositiveLookahead(Lookahead):
         return f"PositiveLookahead({self.node!r})"
 
 
-class NegativeLookahead(Lookahead):
+klasse NegativeLookahead(Lookahead):
     def __init__(self, node: Plain):
         super().__init__(node, "!")
 
@@ -247,7 +247,7 @@ class NegativeLookahead(Lookahead):
         return f"NegativeLookahead({self.node!r})"
 
 
-class Opt:
+klasse Opt:
     def __init__(self, node: Item):
         self.node = node
 
@@ -266,8 +266,8 @@ class Opt:
         yield self.node
 
 
-class Repeat:
-    """Shared base class for x* and x+."""
+klasse Repeat:
+    """Shared base klasse for x* and x+."""
 
     def __init__(self, node: Plain):
         self.node = node
@@ -277,7 +277,7 @@ class Repeat:
         yield self.node
 
 
-class Repeat0(Repeat):
+klasse Repeat0(Repeat):
     def __str__(self) -> str:
         s = str(self.node)
         # TODO: Decide whether to use (X)* or X* based on type of X
@@ -290,7 +290,7 @@ class Repeat0(Repeat):
         return f"Repeat0({self.node!r})"
 
 
-class Repeat1(Repeat):
+klasse Repeat1(Repeat):
     def __str__(self) -> str:
         s = str(self.node)
         # TODO: Decide whether to use (X)+ or X+ based on type of X
@@ -303,7 +303,7 @@ class Repeat1(Repeat):
         return f"Repeat1({self.node!r})"
 
 
-class Gather(Repeat):
+klasse Gather(Repeat):
     def __init__(self, separator: Plain, node: Plain):
         self.separator = separator
         self.node = node
@@ -315,7 +315,7 @@ class Gather(Repeat):
         return f"Gather({self.separator!r}, {self.node!r})"
 
 
-class Group:
+klasse Group:
     def __init__(self, rhs: Rhs):
         self.rhs = rhs
 
@@ -329,7 +329,7 @@ class Group:
         yield self.rhs
 
 
-class Cut:
+klasse Cut:
     def __init__(self) -> None:
         pass
 

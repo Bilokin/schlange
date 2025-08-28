@@ -17,7 +17,7 @@ FLOAT = ctypes.c_float
 BOOLEAN = BYTE
 BOOL = ctypes.c_long
 
-class VARIANT_BOOL(ctypes._SimpleCData):
+klasse VARIANT_BOOL(ctypes._SimpleCData):
     _type_ = "v"
     def __repr__(self):
         return "%s(%r)" % (self.__class__.__name__, self.value)
@@ -102,30 +102,30 @@ SERVICE_STATUS_HANDLE = HANDLE
 ################################################################
 # Some important structure definitions
 
-class RECT(ctypes.Structure):
+klasse RECT(ctypes.Structure):
     _fields_ = [("left", LONG),
                 ("top", LONG),
                 ("right", LONG),
                 ("bottom", LONG)]
 tagRECT = _RECTL = RECTL = RECT
 
-class _SMALL_RECT(ctypes.Structure):
+klasse _SMALL_RECT(ctypes.Structure):
     _fields_ = [('Left', SHORT),
                 ('Top', SHORT),
                 ('Right', SHORT),
                 ('Bottom', SHORT)]
 SMALL_RECT = _SMALL_RECT
 
-class _COORD(ctypes.Structure):
+klasse _COORD(ctypes.Structure):
     _fields_ = [('X', SHORT),
                 ('Y', SHORT)]
 
-class POINT(ctypes.Structure):
+klasse POINT(ctypes.Structure):
     _fields_ = [("x", LONG),
                 ("y", LONG)]
 tagPOINT = _POINTL = POINTL = POINT
 
-class SIZE(ctypes.Structure):
+klasse SIZE(ctypes.Structure):
     _fields_ = [("cx", LONG),
                 ("cy", LONG)]
 tagSIZE = SIZEL = SIZE
@@ -133,12 +133,12 @@ tagSIZE = SIZEL = SIZE
 def RGB(red, green, blue):
     return red + (green << 8) + (blue << 16)
 
-class FILETIME(ctypes.Structure):
+klasse FILETIME(ctypes.Structure):
     _fields_ = [("dwLowDateTime", DWORD),
                 ("dwHighDateTime", DWORD)]
 _FILETIME = FILETIME
 
-class MSG(ctypes.Structure):
+klasse MSG(ctypes.Structure):
     _fields_ = [("hWnd", HWND),
                 ("message", UINT),
                 ("wParam", WPARAM),
@@ -148,7 +148,7 @@ class MSG(ctypes.Structure):
 tagMSG = MSG
 MAX_PATH = 260
 
-class WIN32_FIND_DATAA(ctypes.Structure):
+klasse WIN32_FIND_DATAA(ctypes.Structure):
     _fields_ = [("dwFileAttributes", DWORD),
                 ("ftCreationTime", FILETIME),
                 ("ftLastAccessTime", FILETIME),
@@ -160,7 +160,7 @@ class WIN32_FIND_DATAA(ctypes.Structure):
                 ("cFileName", CHAR * MAX_PATH),
                 ("cAlternateFileName", CHAR * 14)]
 
-class WIN32_FIND_DATAW(ctypes.Structure):
+klasse WIN32_FIND_DATAW(ctypes.Structure):
     _fields_ = [("dwFileAttributes", DWORD),
                 ("ftCreationTime", FILETIME),
                 ("ftLastAccessTime", FILETIME),

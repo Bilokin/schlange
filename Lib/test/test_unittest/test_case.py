@@ -28,17 +28,17 @@ log_foobar = logging.getLogger('foo.bar')
 log_quux = logging.getLogger('quux')
 
 
-class Test(object):
+klasse Test(object):
     "Keep these TestCase classes out of the main namespace"
 
-    class Foo(unittest.TestCase):
+    klasse Foo(unittest.TestCase):
         def runTest(self): pass
         def test1(self): pass
 
-    class Bar(Foo):
+    klasse Bar(Foo):
         def test2(self): pass
 
-    class LoggingTestCase(unittest.TestCase):
+    klasse LoggingTestCase(unittest.TestCase):
         """A test case which logs its calls."""
 
         def __init__(self, events):
@@ -55,11 +55,11 @@ class Test(object):
             self.events.append('tearDown')
 
 
-class List(list):
+klasse List(list):
     pass
 
 
-class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
+klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
 
     ### Set up attributes used by inherited tests
     ################################################################
@@ -86,7 +86,7 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
     # Make sure it really is optional, and that it defaults to the proper
     # thing.
     def test_init__no_test_name(self):
-        class Test(unittest.TestCase):
+        klasse Test(unittest.TestCase):
             def runTest(self): raise MyException()
             def test(self): pass
 
@@ -107,7 +107,7 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
     # "Each instance of TestCase will run a single test method: the
     # method named methodName."
     def test_init__test_name__valid(self):
-        class Test(unittest.TestCase):
+        klasse Test(unittest.TestCase):
             def runTest(self): raise MyException()
             def test(self): pass
 
@@ -118,7 +118,7 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
     # "Each instance of TestCase will run a single test method: the
     # method named methodName."
     def test_init__test_name__invalid(self):
-        class Test(unittest.TestCase):
+        klasse Test(unittest.TestCase):
             def runTest(self): raise MyException()
             def test(self): pass
 
@@ -132,7 +132,7 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
     # "Return the number of tests represented by the this test object. For
     # TestCase instances, this will always be 1"
     def test_countTestCases(self):
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def test(self): pass
 
         self.assertEqual(Foo('test').countTestCases(), 1)
@@ -142,7 +142,7 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
     # unittest.TestResult;  subclasses of TestCase should
     # override this as necessary."
     def test_defaultTestResult(self):
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def runTest(self):
                 pass
 
@@ -160,7 +160,7 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         events = []
         result = LoggingResult(events)
 
-        class Foo(Test.LoggingTestCase):
+        klasse Foo(Test.LoggingTestCase):
             def setUp(self):
                 super(Foo, self).setUp()
                 raise RuntimeError('raised by Foo.setUp')
@@ -173,7 +173,7 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
     def test_run_call_order__error_in_setUp_default_result(self):
         events = []
 
-        class Foo(Test.LoggingTestCase):
+        klasse Foo(Test.LoggingTestCase):
             def defaultTestResult(self):
                 return LoggingResult(self.events)
 
@@ -197,7 +197,7 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         events = []
         result = LoggingResult(events)
 
-        class Foo(Test.LoggingTestCase):
+        klasse Foo(Test.LoggingTestCase):
             def test(self):
                 super(Foo, self).test()
                 raise RuntimeError('raised by Foo.test')
@@ -212,7 +212,7 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
     def test_run_call_order__error_in_test_default_result(self):
         events = []
 
-        class Foo(Test.LoggingTestCase):
+        klasse Foo(Test.LoggingTestCase):
             def defaultTestResult(self):
                 return LoggingResult(self.events)
 
@@ -236,7 +236,7 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         events = []
         result = LoggingResult(events)
 
-        class Foo(Test.LoggingTestCase):
+        klasse Foo(Test.LoggingTestCase):
             def test(self):
                 super(Foo, self).test()
                 self.fail('raised by Foo.test')
@@ -249,7 +249,7 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
     # "When a test fails with a default result stopTestRun is still called."
     def test_run_call_order__failure_in_test_default_result(self):
 
-        class Foo(Test.LoggingTestCase):
+        klasse Foo(Test.LoggingTestCase):
             def defaultTestResult(self):
                 return LoggingResult(self.events)
             def test(self):
@@ -273,7 +273,7 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         events = []
         result = LoggingResult(events)
 
-        class Foo(Test.LoggingTestCase):
+        klasse Foo(Test.LoggingTestCase):
             def tearDown(self):
                 super(Foo, self).tearDown()
                 raise RuntimeError('raised by Foo.tearDown')
@@ -286,7 +286,7 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
     # "When tearDown errors with a default result stopTestRun is still called."
     def test_run_call_order__error_in_tearDown_default_result(self):
 
-        class Foo(Test.LoggingTestCase):
+        klasse Foo(Test.LoggingTestCase):
             def defaultTestResult(self):
                 return LoggingResult(self.events)
             def tearDown(self):
@@ -303,7 +303,7 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
     # that does not support startTestRun and stopTestRun.
     def test_run_call_order_default_result(self):
 
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def defaultTestResult(self):
                 return ResultWithNoStartTestRunStopTestRun()
             def test(self):
@@ -314,10 +314,10 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
 
     def test_deprecation_of_return_val_from_test(self):
         # Issue 41322 - deprecate return of value that is not None from a test
-        class Nothing:
+        klasse Nothing:
             def __eq__(self, o):
                 return o is None
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def test1(self):
                 return 1
             def test2(self):
@@ -347,7 +347,7 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         self.assertIn(f'returned {Nothing.__name__!r}', str(w.warning))
 
     def test_deprecation_of_return_val_from_test_async_method(self):
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             async def test1(self):
                 return 1
 
@@ -366,7 +366,7 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         )
 
     def _check_call_order__subtests(self, result, events, expected_events):
-        class Foo(Test.LoggingTestCase):
+        klasse Foo(Test.LoggingTestCase):
             def test(self):
                 super(Foo, self).test()
                 for i in [1, 2, 3]:
@@ -408,7 +408,7 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         self._check_call_order__subtests(result, events, expected)
 
     def _check_call_order__subtests_success(self, result, events, expected_events):
-        class Foo(Test.LoggingTestCase):
+        klasse Foo(Test.LoggingTestCase):
             def test(self):
                 super(Foo, self).test()
                 for i in [1, 2]:
@@ -443,7 +443,7 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         result = LoggingResult(events)
         result.failfast = True
 
-        class Foo(Test.LoggingTestCase):
+        klasse Foo(Test.LoggingTestCase):
             def test(self):
                 super(Foo, self).test()
                 with self.subTest(i=1):
@@ -461,7 +461,7 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         # Ensure proper test flow with subtests and failfast (issue #22894)
         events = []
 
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def test_a(self):
                 with self.subTest():
                     events.append('a1')
@@ -489,7 +489,7 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         # Test debug() with a test that uses subTest() (bpo-34900)
         events = []
 
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def test_a(self):
                 events.append('test case')
                 with self.subTest():
@@ -499,19 +499,19 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
 
         self.assertEqual(events, ['test case', 'subtest 1'])
 
-    # "This class attribute gives the exception raised by the test() method.
+    # "This klasse attribute gives the exception raised by the test() method.
     # If a test framework needs to use a specialized exception, possibly to
     # carry additional information, it must subclass this exception in
     # order to ``play fair'' with the framework.  The initial value of this
     # attribute is AssertionError"
     def test_failureException__default(self):
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def test(self):
                 pass
 
         self.assertIs(Foo('test').failureException, AssertionError)
 
-    # "This class attribute gives the exception raised by the test() method.
+    # "This klasse attribute gives the exception raised by the test() method.
     # If a test framework needs to use a specialized exception, possibly to
     # carry additional information, it must subclass this exception in
     # order to ``play fair'' with the framework."
@@ -521,7 +521,7 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         events = []
         result = LoggingResult(events)
 
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def test(self):
                 raise RuntimeError()
 
@@ -534,7 +534,7 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         expected = ['startTest', 'addFailure', 'stopTest']
         self.assertEqual(events, expected)
 
-    # "This class attribute gives the exception raised by the test() method.
+    # "This klasse attribute gives the exception raised by the test() method.
     # If a test framework needs to use a specialized exception, possibly to
     # carry additional information, it must subclass this exception in
     # order to ``play fair'' with the framework."
@@ -544,7 +544,7 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         events = []
         result = LoggingResult(events)
 
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def test(self):
                 self.fail("foo")
 
@@ -559,7 +559,7 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
 
     # "The default implementation does nothing."
     def test_setUp(self):
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def runTest(self):
                 pass
 
@@ -568,7 +568,7 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
 
     # "The default implementation does nothing."
     def test_tearDown(self):
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def runTest(self):
                 pass
 
@@ -582,7 +582,7 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
     # will be a string (either 8-byte or unicode -- again, because the docs
     # just say "string")
     def test_id(self):
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def runTest(self):
                 pass
 
@@ -597,7 +597,7 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         events = []
         defaultResult = LoggingResult(events)
 
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def test(self):
                 events.append('test')
 
@@ -616,7 +616,7 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
     # "The result object is returned to run's caller"
     def test_run__returns_given_result(self):
 
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def test(self):
                 pass
 
@@ -632,7 +632,7 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         resultIn = unittest.TestResult()
         resultOut = unittest.TestResult()
 
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def test(self):
                 pass
 
@@ -682,8 +682,8 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
             'Tests shortDescription() whitespace is trimmed, so that the first')
 
     def testAddTypeEqualityFunc(self):
-        class SadSnake(object):
-            """Dummy class for test_addTypeEqualityFunc."""
+        klasse SadSnake(object):
+            """Dummy klasse for test_addTypeEqualityFunc."""
         s1, s2 = SadSnake(), SadSnake()
         self.assertFalse(s1 == s2)
         def AllSnakesCreatedEqual(a, b, msg=None):
@@ -1454,7 +1454,7 @@ test case
                           'saaas', r'aaaa')
 
     def testAssertRaisesCallable(self):
-        class ExceptionMock(Exception):
+        klasse ExceptionMock(Exception):
             pass
         def Stub():
             raise ExceptionMock('We expect')
@@ -1474,7 +1474,7 @@ test case
             self.assertRaises(ValueError, Stub)
 
     def testAssertRaisesContext(self):
-        class ExceptionMock(Exception):
+        klasse ExceptionMock(Exception):
             pass
         def Stub():
             raise ExceptionMock('We expect')
@@ -1531,7 +1531,7 @@ test case
         self.assertEqual(refcount, sys.getrefcount(func))
 
     def testAssertRaisesRegex(self):
-        class ExceptionMock(Exception):
+        klasse ExceptionMock(Exception):
             pass
 
         def Stub():
@@ -1562,19 +1562,19 @@ test case
 
     def testAssertRaisesRegexInvalidRegex(self):
         # Issue 20145.
-        class MyExc(Exception):
+        klasse MyExc(Exception):
             pass
         self.assertRaises(TypeError, self.assertRaisesRegex, MyExc, lambda: True)
 
     def testAssertWarnsRegexInvalidRegex(self):
         # Issue 20145.
-        class MyWarn(Warning):
+        klasse MyWarn(Warning):
             pass
         self.assertRaises(TypeError, self.assertWarnsRegex, MyWarn, lambda: True)
 
     def testAssertWarnsModifySysModules(self):
         # bpo-29620: handle modified sys.modules during iteration
-        class Foo(types.ModuleType):
+        klasse Foo(types.ModuleType):
             @property
             def __warningregistry__(self):
                 sys.modules['@bar@'] = 'bar'
@@ -1602,7 +1602,7 @@ test case
                 re.compile('^Expected$'), Stub)
 
     def testAssertRaisesExcValue(self):
-        class ExceptionMock(Exception):
+        klasse ExceptionMock(Exception):
             pass
 
         def Stub(foo):
@@ -2200,7 +2200,7 @@ test case
 
     def testDeepcopy(self):
         # Issue: 5660
-        class TestableTest(unittest.TestCase):
+        klasse TestableTest(unittest.TestCase):
             def testNothing(self):
                 pass
 
@@ -2212,7 +2212,7 @@ test case
     def testPickle(self):
         # Issue 10326
 
-        # Can't use TestCase classes defined in Test class as
+        # Can't use TestCase classes defined in Test klasse as
         # pickle does not work with inner classes
         test = unittest.TestCase('run')
         for protocol in range(pickle.HIGHEST_PROTOCOL + 1):
@@ -2232,18 +2232,18 @@ test case
         def nothing(self):
             pass
 
-        class Test1(unittest.TestCase):
+        klasse Test1(unittest.TestCase):
             test_something = _raise
 
-        class Test2(unittest.TestCase):
+        klasse Test2(unittest.TestCase):
             setUp = _raise
             test_something = nothing
 
-        class Test3(unittest.TestCase):
+        klasse Test3(unittest.TestCase):
             test_something = nothing
             tearDown = _raise
 
-        class Test4(unittest.TestCase):
+        klasse Test4(unittest.TestCase):
             def test_something(self):
                 self.addCleanup(_raise)
 
@@ -2257,18 +2257,18 @@ test case
         def nothing(self):
             pass
 
-        class Test1(unittest.TestCase):
+        klasse Test1(unittest.TestCase):
             test_something = _skip
 
-        class Test2(unittest.TestCase):
+        klasse Test2(unittest.TestCase):
             setUp = _skip
             test_something = nothing
 
-        class Test3(unittest.TestCase):
+        klasse Test3(unittest.TestCase):
             test_something = nothing
             tearDown = _skip
 
-        class Test4(unittest.TestCase):
+        klasse Test4(unittest.TestCase):
             def test_something(self):
                 self.addCleanup(_skip)
 
@@ -2284,18 +2284,18 @@ test case
         def nothing(self):
             pass
 
-        class Test1(unittest.TestCase):
+        klasse Test1(unittest.TestCase):
             test_something = _raise
 
-        class Test2(unittest.TestCase):
+        klasse Test2(unittest.TestCase):
             setUp = _raise
             test_something = nothing
 
-        class Test3(unittest.TestCase):
+        klasse Test3(unittest.TestCase):
             test_something = nothing
             tearDown = _raise
 
-        class Test4(unittest.TestCase):
+        klasse Test4(unittest.TestCase):
             def test_something(self):
                 self.addCleanup(_raise)
 
@@ -2316,7 +2316,7 @@ test case
     def test_no_exception_leak(self):
         # Issue #19880: TestCase.run() should not keep a reference
         # to the exception
-        class MyException(Exception):
+        klasse MyException(Exception):
             ninstance = 0
 
             def __init__(self):
@@ -2326,7 +2326,7 @@ test case
             def __del__(self):
                 MyException.ninstance -= 1
 
-        class TestCase(unittest.TestCase):
+        klasse TestCase(unittest.TestCase):
             def test1(self):
                 raise MyException()
 

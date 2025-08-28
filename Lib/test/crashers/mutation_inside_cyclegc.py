@@ -12,7 +12,7 @@
 
 import weakref
 
-class A(object):
+klasse A(object):
     pass
 
 def callback(x):

@@ -8,11 +8,11 @@ import unittest
 from test import support
 
 
-class SIGUSR1Exception(Exception):
+klasse SIGUSR1Exception(Exception):
     pass
 
 
-class InterProcessSignalTests(unittest.TestCase):
+klasse InterProcessSignalTests(unittest.TestCase):
     def setUp(self):
         self.got_signals = {'SIGHUP': 0, 'SIGUSR1': 0, 'SIGALRM': 0}
 

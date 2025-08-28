@@ -21,14 +21,14 @@ from . import util
 __all__ = ['BufferWrapper']
 
 #
-# Inheritable class which wraps an mmap, and from which blocks can be allocated
+# Inheritable klasse which wraps an mmap, and from which blocks can be allocated
 #
 
 if sys.platform == 'win32':
 
     import _winapi
 
-    class Arena(object):
+    klasse Arena(object):
         """
         A shared memory area backed by anonymous memory (Windows).
         """
@@ -64,7 +64,7 @@ if sys.platform == 'win32':
 
 else:
 
-    class Arena(object):
+    klasse Arena(object):
         """
         A shared memory area backed by a temporary file (POSIX).
         """
@@ -112,7 +112,7 @@ else:
 # Class allowing allocation of chunks of memory from arenas
 #
 
-class Heap(object):
+klasse Heap(object):
 
     # Minimum malloc() alignment
     _alignment = 8
@@ -319,7 +319,7 @@ class Heap(object):
 # Class wrapping a block allocated out of a Heap -- can be inherited by child process
 #
 
-class BufferWrapper(object):
+klasse BufferWrapper(object):
 
     _heap = Heap()
 

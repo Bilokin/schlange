@@ -18,9 +18,9 @@ CORE_VENV_DEPS = ('pip',)
 logger = logging.getLogger(__name__)
 
 
-class EnvBuilder:
+klasse EnvBuilder:
     """
-    This class exists to allow virtual environment creation to be
+    This klasse exists to allow virtual environment creation to be
     customized. The constructor parameters determine the builder's
     behaviour when called upon to create a virtual environment.
 

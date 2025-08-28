@@ -47,7 +47,7 @@ def _make_top_and_button(testobj):
     return top, button
 
 
-class ToolTipBaseTest(unittest.TestCase):
+klasse ToolTipBaseTest(unittest.TestCase):
     def setUp(self):
         self.top, self.button = _make_top_and_button(self)
 
@@ -65,7 +65,7 @@ class ToolTipBaseTest(unittest.TestCase):
             tooltip.showtip()
 
 
-class HovertipTest(unittest.TestCase):
+klasse HovertipTest(unittest.TestCase):
     def setUp(self):
         self.top, self.button = _make_top_and_button(self)
 

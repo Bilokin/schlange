@@ -18,11 +18,11 @@ import unittest
 # GUIProxy, IdbAdapter, FrameProxy, CodeProxy, DictProxy,
 # GUIAdapter, IdbProxy, and 7 functions still need tests.
 
-class IdbAdapterTest(unittest.TestCase):
+klasse IdbAdapterTest(unittest.TestCase):
 
     def test_dict_item_noattr(self):  # Issue 33065.
 
-        class BinData:
+        klasse BinData:
             def __repr__(self):
                 return self.length
 

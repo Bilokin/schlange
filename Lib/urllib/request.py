@@ -282,7 +282,7 @@ def request_host(request):
     host = _cut_port_re.sub("", host, 1)
     return host.lower()
 
-class Request:
+klasse Request:
 
     def __init__(self, url, data=None, headers={},
                  origin_req_host=None, unverifiable=False,
@@ -391,7 +391,7 @@ class Request:
         hdrs = {**self.unredirected_hdrs, **self.headers}
         return list(hdrs.items())
 
-class OpenerDirector:
+klasse OpenerDirector:
     def __init__(self):
         client_version = "Python-urllib/%s" % __version__
         self.addheaders = [('User-agent', client_version)]
@@ -570,7 +570,7 @@ def build_opener(*handlers):
         opener.add_handler(h)
     return opener
 
-class BaseHandler:
+klasse BaseHandler:
     handler_order = 500
 
     def add_parent(self, parent):
@@ -589,7 +589,7 @@ class BaseHandler:
         return self.handler_order < other.handler_order
 
 
-class HTTPErrorProcessor(BaseHandler):
+klasse HTTPErrorProcessor(BaseHandler):
     """Process HTTP error responses."""
     handler_order = 1000  # after all other processing
 
@@ -606,11 +606,11 @@ class HTTPErrorProcessor(BaseHandler):
 
     https_response = http_response
 
-class HTTPDefaultErrorHandler(BaseHandler):
+klasse HTTPDefaultErrorHandler(BaseHandler):
     def http_error_default(self, req, fp, code, msg, hdrs):
         raise HTTPError(req.full_url, code, msg, hdrs, fp)
 
-class HTTPRedirectHandler(BaseHandler):
+klasse HTTPRedirectHandler(BaseHandler):
     # maximum number of redirections to any single URL
     # this is needed because of the state that cookies introduce
     max_repeats = 4
@@ -757,7 +757,7 @@ def _parse_proxy(proxy):
         user = password = None
     return scheme, user, password, hostport
 
-class ProxyHandler(BaseHandler):
+klasse ProxyHandler(BaseHandler):
     # Proxies must be in front
     handler_order = 100
 
@@ -800,7 +800,7 @@ class ProxyHandler(BaseHandler):
             # ftp://proxy.example.com/a
             return self.parent.open(req, timeout=req.timeout)
 
-class HTTPPasswordMgr:
+klasse HTTPPasswordMgr:
 
     def __init__(self):
         self.passwd = {}
@@ -864,7 +864,7 @@ class HTTPPasswordMgr:
         return test[1].startswith(prefix)
 
 
-class HTTPPasswordMgrWithDefaultRealm(HTTPPasswordMgr):
+klasse HTTPPasswordMgrWithDefaultRealm(HTTPPasswordMgr):
 
     def find_user_password(self, realm, authuri):
         user, password = HTTPPasswordMgr.find_user_password(self, realm,
@@ -874,7 +874,7 @@ class HTTPPasswordMgrWithDefaultRealm(HTTPPasswordMgr):
         return HTTPPasswordMgr.find_user_password(self, None, authuri)
 
 
-class HTTPPasswordMgrWithPriorAuth(HTTPPasswordMgrWithDefaultRealm):
+klasse HTTPPasswordMgrWithPriorAuth(HTTPPasswordMgrWithDefaultRealm):
 
     def __init__(self):
         self.authenticated = {}
@@ -905,7 +905,7 @@ class HTTPPasswordMgrWithPriorAuth(HTTPPasswordMgrWithDefaultRealm):
                     return self.authenticated[uri]
 
 
-class AbstractBasicAuthHandler:
+klasse AbstractBasicAuthHandler:
 
     # XXX this allows for multiple auth-schemes, but will stupidly pick
     # the last one with a realm specified.
@@ -1017,7 +1017,7 @@ class AbstractBasicAuthHandler:
 
 
 
-class HTTPBasicAuthHandler(AbstractBasicAuthHandler, BaseHandler):
+klasse HTTPBasicAuthHandler(AbstractBasicAuthHandler, BaseHandler):
 
     auth_header = 'Authorization'
 
@@ -1028,7 +1028,7 @@ class HTTPBasicAuthHandler(AbstractBasicAuthHandler, BaseHandler):
         return response
 
 
-class ProxyBasicAuthHandler(AbstractBasicAuthHandler, BaseHandler):
+klasse ProxyBasicAuthHandler(AbstractBasicAuthHandler, BaseHandler):
 
     auth_header = 'Proxy-authorization'
 
@@ -1047,7 +1047,7 @@ class ProxyBasicAuthHandler(AbstractBasicAuthHandler, BaseHandler):
 _randombytes = os.urandom
 
 
-class AbstractDigestAuthHandler:
+klasse AbstractDigestAuthHandler:
     # Digest authentication is specified in RFC 2617/7616.
 
     # XXX The client does not inspect the Authentication-Info header
@@ -1196,7 +1196,7 @@ class AbstractDigestAuthHandler:
         return None
 
 
-class HTTPDigestAuthHandler(BaseHandler, AbstractDigestAuthHandler):
+klasse HTTPDigestAuthHandler(BaseHandler, AbstractDigestAuthHandler):
     """An authentication protocol defined by RFC 2069
 
     Digest authentication improves on basic authentication because it
@@ -1214,7 +1214,7 @@ class HTTPDigestAuthHandler(BaseHandler, AbstractDigestAuthHandler):
         return retry
 
 
-class ProxyDigestAuthHandler(BaseHandler, AbstractDigestAuthHandler):
+klasse ProxyDigestAuthHandler(BaseHandler, AbstractDigestAuthHandler):
 
     auth_header = 'Proxy-Authorization'
     handler_order = 490  # before Basic auth
@@ -1226,7 +1226,7 @@ class ProxyDigestAuthHandler(BaseHandler, AbstractDigestAuthHandler):
         self.reset_retry_count()
         return retry
 
-class AbstractHTTPHandler(BaseHandler):
+klasse AbstractHTTPHandler(BaseHandler):
 
     def __init__(self, debuglevel=None):
         self._debuglevel = debuglevel if debuglevel is not None else http.client.HTTPConnection.debuglevel
@@ -1298,7 +1298,7 @@ class AbstractHTTPHandler(BaseHandler):
         # persistent connections?
 
         # We want to make an HTTP/1.1 request, but the addinfourl
-        # class isn't prepared to deal with a persistent connection.
+        # klasse isn't prepared to deal with a persistent connection.
         # It will try to read all remaining data from the socket,
         # which will block while the server waits for the next request.
         # So make sure the connection gets closed after the (only)
@@ -1344,7 +1344,7 @@ class AbstractHTTPHandler(BaseHandler):
         return r
 
 
-class HTTPHandler(AbstractHTTPHandler):
+klasse HTTPHandler(AbstractHTTPHandler):
 
     def http_open(self, req):
         return self.do_open(http.client.HTTPConnection, req)
@@ -1353,7 +1353,7 @@ class HTTPHandler(AbstractHTTPHandler):
 
 if hasattr(http.client, 'HTTPSConnection'):
 
-    class HTTPSHandler(AbstractHTTPHandler):
+    klasse HTTPSHandler(AbstractHTTPHandler):
 
         def __init__(self, debuglevel=None, context=None, check_hostname=None):
             debuglevel = debuglevel if debuglevel is not None else http.client.HTTPSConnection.debuglevel
@@ -1373,7 +1373,7 @@ if hasattr(http.client, 'HTTPSConnection'):
 
     __all__.append('HTTPSHandler')
 
-class HTTPCookieProcessor(BaseHandler):
+klasse HTTPCookieProcessor(BaseHandler):
     def __init__(self, cookiejar=None):
         import http.cookiejar
         if cookiejar is None:
@@ -1391,7 +1391,7 @@ class HTTPCookieProcessor(BaseHandler):
     https_request = http_request
     https_response = http_response
 
-class UnknownHandler(BaseHandler):
+klasse UnknownHandler(BaseHandler):
     def unknown_open(self, req):
         type = req.type
         raise URLError('unknown url type: %s' % type)
@@ -1449,7 +1449,7 @@ def parse_http_list(s):
 
     return [part.strip() for part in res]
 
-class FileHandler(BaseHandler):
+klasse FileHandler(BaseHandler):
     # names for the localhost
     names = None
     def get_names(self):
@@ -1502,7 +1502,7 @@ def _is_local_authority(authority, resolve):
         return False
     return address in FileHandler().get_names()
 
-class FTPHandler(BaseHandler):
+klasse FTPHandler(BaseHandler):
     def ftp_open(self, req):
         import ftplib
         import mimetypes
@@ -1559,7 +1559,7 @@ class FTPHandler(BaseHandler):
         return ftpwrapper(user, passwd, host, port, dirs, timeout,
                           persistent=False)
 
-class CacheFTPHandler(FTPHandler):
+klasse CacheFTPHandler(FTPHandler):
     # XXX would be nice to have pluggable cache strategies
     # XXX this stuff is definitely not thread safe
     def __init__(self):
@@ -1612,7 +1612,7 @@ class CacheFTPHandler(FTPHandler):
         self.cache.clear()
         self.timeout.clear()
 
-class DataHandler(BaseHandler):
+klasse DataHandler(BaseHandler):
     def data_open(self, req):
         # data URLs as specified in RFC 2397.
         #
@@ -1760,7 +1760,7 @@ def noheaders():
 
 # Utility classes
 
-class ftpwrapper:
+klasse ftpwrapper:
     """Class used by open_ftp() for cache of open FTP connections."""
 
     def __init__(self, user, passwd, host, port, dirs, timeout=None,

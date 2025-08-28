@@ -5,7 +5,7 @@ from test.support import import_helper
 _testcapi = import_helper.import_module('_testcapi')
 
 
-class FunctionTest(unittest.TestCase):
+klasse FunctionTest(unittest.TestCase):
     def test_function_get_code(self):
         # Test PyFunction_GetCode()
         import types
@@ -100,7 +100,7 @@ class FunctionTest(unittest.TestCase):
         self.assertEqual(_testcapi.function_get_defaults(some), new_defaults)
         self.assertEqual(some.__defaults__, new_defaults)
 
-        class tuplesub(tuple): ...  # tuple subclasses must work
+        klasse tuplesub(tuple): ...  # tuple subclasses must work
 
         new_defaults = tuplesub(((1, 2), ['a', 'b'], None))
         _testcapi.function_set_defaults(some, new_defaults)
@@ -169,7 +169,7 @@ class FunctionTest(unittest.TestCase):
         self.assertEqual(_testcapi.function_get_kw_defaults(some), new_defaults)
         self.assertEqual(some.__kwdefaults__, new_defaults)
 
-        class dictsub(dict): ...  # dict subclasses must work
+        klasse dictsub(dict): ...  # dict subclasses must work
 
         new_defaults = dictsub({'kw2': None})
         _testcapi.function_set_kw_defaults(some, new_defaults)

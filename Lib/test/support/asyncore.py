@@ -79,7 +79,7 @@ def _strerror(err):
             return errorcode[err]
         return "Unknown error %s" %err
 
-class ExitNow(Exception):
+klasse ExitNow(Exception):
     pass
 
 _reraised_exceptions = (ExitNow, KeyboardInterrupt, SystemExit)
@@ -213,7 +213,7 @@ def loop(timeout=30.0, use_poll=False, map=None, count=None):
             poll_fun(timeout, map)
             count = count - 1
 
-class dispatcher:
+klasse dispatcher:
 
     debug = False
     connected = False
@@ -509,7 +509,7 @@ class dispatcher:
 # [for more sophisticated usage use asynchat.async_chat]
 # ---------------------------------------------------------------------------
 
-class dispatcher_with_send(dispatcher):
+klasse dispatcher_with_send(dispatcher):
 
     def __init__(self, sock=None, map=None):
         dispatcher.__init__(self, sock, map)
@@ -589,7 +589,7 @@ def close_all(map=None, ignore_all=False):
 # Regardless, this is useful for pipes, and stdin/stdout...
 
 if os.name == 'posix':
-    class file_wrapper:
+    klasse file_wrapper:
         # Here we override just enough to make a file
         # look like a socket for the purposes of asyncore.
         # The passed fd is automatically os.dup()'d
@@ -630,7 +630,7 @@ if os.name == 'posix':
         def fileno(self):
             return self.fd
 
-    class file_dispatcher(dispatcher):
+    klasse file_dispatcher(dispatcher):
 
         def __init__(self, fd, map=None):
             dispatcher.__init__(self, None, map)

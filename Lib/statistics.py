@@ -35,7 +35,7 @@ Calculate the standard median of discrete data:
 3.5
 
 
-Calculate the median, or 50th percentile, of data grouped into class intervals
+Calculate the median, or 50th percentile, of data grouped into klasse intervals
 centred on the data values provided. E.g. if your data points are rounded to
 the nearest whole number:
 
@@ -43,8 +43,8 @@ the nearest whole number:
 2.8333333333...
 
 This should be interpreted in this way: you have two data points in the class
-interval 1.5-2.5, three data points in the class interval 2.5-3.5, and one in
-the class interval 3.5-4.5. The median of these data points is 2.8333...
+interval 1.5-2.5, three data points in the klasse interval 2.5-3.5, and one in
+the klasse interval 3.5-4.5. The median of these data points is 2.8333...
 
 
 Calculating variability or spread
@@ -149,7 +149,7 @@ _random = random
 
 ## Exceptions ##############################################################
 
-class StatisticsError(ValueError):
+klasse StatisticsError(ValueError):
     pass
 
 
@@ -441,7 +441,7 @@ def median_grouped(data, interval=1.0):
         raise StatisticsError("no median for empty data")
 
     # Find the value at the midpoint. Remember this corresponds to the
-    # midpoint of the class interval.
+    # midpoint of the klasse interval.
     x = data[n // 2]
 
     # Using O(log n) bisection, find where all the x values occur in the data.
@@ -1215,7 +1215,7 @@ def quantiles(data, *, n=4, method='exclusive'):
 
 ## Normal Distribution #####################################################
 
-class NormalDist:
+klasse NormalDist:
     "Normal distribution of a random variable"
     # https://en.wikipedia.org/wiki/Normal_distribution
     # https://en.wikipedia.org/wiki/Variance#Properties
@@ -1556,7 +1556,7 @@ def _coerce(T, S):
     """Coerce types T and S to a common type, or raise TypeError.
 
     Coercion rules are currently an implementation detail. See the CoerceTest
-    test class in test_statistics for details.
+    test klasse in test_statistics for details.
 
     """
     # See http://bugs.python.org/issue24068.

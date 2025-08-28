@@ -10,7 +10,7 @@ from importlib.resources.abc import TraversableResources, ResourceReader
 from . import util
 
 
-class SimpleLoader:
+klasse SimpleLoader:
     """
     A simple loader that only implements a resource reader.
     """
@@ -22,7 +22,7 @@ class SimpleLoader:
         return self.reader
 
 
-class MagicResources(TraversableResources):
+klasse MagicResources(TraversableResources):
     """
     Magically returns the resources at path.
     """
@@ -34,7 +34,7 @@ class MagicResources(TraversableResources):
         return self.path
 
 
-class CustomTraversableResourcesTests(unittest.TestCase):
+klasse CustomTraversableResourcesTests(unittest.TestCase):
     def setUp(self):
         self.fixtures = contextlib.ExitStack()
         self.addCleanup(self.fixtures.close)

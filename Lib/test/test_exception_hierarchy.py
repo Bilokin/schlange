@@ -7,32 +7,32 @@ import errno
 from errno import EEXIST
 
 
-class SubOSError(OSError):
+klasse SubOSError(OSError):
     pass
 
-class SubOSErrorWithInit(OSError):
+klasse SubOSErrorWithInit(OSError):
     def __init__(self, message, bar):
         self.bar = bar
         super().__init__(message)
 
-class SubOSErrorWithNew(OSError):
+klasse SubOSErrorWithNew(OSError):
     def __new__(cls, message, baz):
         self = super().__new__(cls, message)
         self.baz = baz
         return self
 
-class SubOSErrorCombinedInitFirst(SubOSErrorWithInit, SubOSErrorWithNew):
+klasse SubOSErrorCombinedInitFirst(SubOSErrorWithInit, SubOSErrorWithNew):
     pass
 
-class SubOSErrorCombinedNewFirst(SubOSErrorWithNew, SubOSErrorWithInit):
+klasse SubOSErrorCombinedNewFirst(SubOSErrorWithNew, SubOSErrorWithInit):
     pass
 
-class SubOSErrorWithStandaloneInit(OSError):
+klasse SubOSErrorWithStandaloneInit(OSError):
     def __init__(self):
         pass
 
 
-class HierarchyTest(unittest.TestCase):
+klasse HierarchyTest(unittest.TestCase):
 
     def test_builtin_errors(self):
         self.assertEqual(OSError.__name__, 'OSError')
@@ -119,7 +119,7 @@ class HierarchyTest(unittest.TestCase):
             self.fail("should have raised a FileNotFoundError")
 
 
-class AttributesTest(unittest.TestCase):
+klasse AttributesTest(unittest.TestCase):
 
     def test_windows_error(self):
         if os.name == "nt":
@@ -163,7 +163,7 @@ class AttributesTest(unittest.TestCase):
             e.characters_written
 
 
-class ExplicitSubclassingTest(unittest.TestCase):
+klasse ExplicitSubclassingTest(unittest.TestCase):
 
     def test_errno_mapping(self):
         # When constructing an OSError subclass, errno mapping isn't done

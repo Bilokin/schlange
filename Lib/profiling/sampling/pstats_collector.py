@@ -4,7 +4,7 @@ import marshal
 from .collector import Collector
 
 
-class PstatsCollector(Collector):
+klasse PstatsCollector(Collector):
     def __init__(self, sample_interval_usec):
         self.result = collections.defaultdict(
             lambda: dict(total_rec_calls=0, direct_calls=0, cumulative_calls=0)

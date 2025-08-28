@@ -17,12 +17,12 @@ else:
 for typ in [c_short, c_int, c_long, c_longlong,
             c_float, c_double,
             c_ushort, c_uint, c_ulong, c_ulonglong]:
-    class X(Structure):
+    klasse X(Structure):
         _pack_ = 1
         _layout_ = 'ms'
         _fields_ = [("pad", c_byte),
                     ("value", typ)]
-    class Y(SwappedStructure):
+    klasse Y(SwappedStructure):
         _pack_ = 1
         _layout_ = 'ms'
         _fields_ = [("pad", c_byte),
@@ -31,7 +31,7 @@ for typ in [c_short, c_int, c_long, c_longlong,
     byteswapped_structures.append(Y)
 
 
-class TestStructures(unittest.TestCase):
+klasse TestStructures(unittest.TestCase):
     def test_native(self):
         for typ in structures:
             self.assertEqual(typ.value.offset, 1)

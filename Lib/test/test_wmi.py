@@ -24,7 +24,7 @@ def wmi_exec_query(query):
             # retry on timeout
 
 
-class WmiTests(unittest.TestCase):
+klasse WmiTests(unittest.TestCase):
     def test_wmi_query_os_version(self):
         r = wmi_exec_query("SELECT Version FROM Win32_OperatingSystem").split("\0")
         self.assertEqual(1, len(r))

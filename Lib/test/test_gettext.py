@@ -171,7 +171,7 @@ def reset_gettext():
     gettext._translations.clear()
 
 
-class GettextBaseTest(unittest.TestCase):
+klasse GettextBaseTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.addClassCleanup(os_helper.rmtree, os.path.split(LOCALEDIR)[0])
@@ -208,7 +208,7 @@ WCBTdHVkaW8pICAjLSMtIy0jLSMKQ29udGVudC1UeXBlOiB0ZXh0L3BsYWluOyBjaGFyc2V0PVVU
 Ri04CgA=
 '''
 
-class GettextTestCase1(GettextBaseTest):
+klasse GettextTestCase1(GettextBaseTest):
     def setUp(self):
         GettextBaseTest.setUp(self)
         self.localedir = os.curdir
@@ -263,7 +263,7 @@ trggrkg zrffntr pngnybt yvoenel.''')
         del builtins.ngettext
 
 
-class GettextTestCase2(GettextBaseTest):
+klasse GettextTestCase2(GettextBaseTest):
     def setUp(self):
         GettextBaseTest.setUp(self)
         self.localedir = os.curdir
@@ -353,7 +353,7 @@ fhccbeg sbe lbhe Clguba cebtenzf ol cebivqvat na vagresnpr gb gur TAH
 trggrkg zrffntr pngnybt yvoenel.''')
 
 
-class PluralFormsTests:
+klasse PluralFormsTests:
 
     def _test_plural_forms(self, ngettext, gettext,
                            singular, plural, tsingular, tplural,
@@ -415,7 +415,7 @@ class PluralFormsTests:
             'There is %s file', 'There are %s files')
 
 
-class GNUTranslationsPluralFormsTestCase(PluralFormsTests, GettextBaseTest):
+klasse GNUTranslationsPluralFormsTestCase(PluralFormsTests, GettextBaseTest):
     def setUp(self):
         GettextBaseTest.setUp(self)
         # Set up the bindings
@@ -428,7 +428,7 @@ class GNUTranslationsPluralFormsTestCase(PluralFormsTests, GettextBaseTest):
         self.npgettext = gettext.npgettext
 
 
-class GNUTranslationsWithDomainPluralFormsTestCase(PluralFormsTests, GettextBaseTest):
+klasse GNUTranslationsWithDomainPluralFormsTestCase(PluralFormsTests, GettextBaseTest):
     def setUp(self):
         GettextBaseTest.setUp(self)
         # Set up the bindings
@@ -456,7 +456,7 @@ class GNUTranslationsWithDomainPluralFormsTestCase(PluralFormsTests, GettextBase
             numbers_only=False)
 
 
-class GNUTranslationsClassPluralFormsTestCase(PluralFormsTests, GettextBaseTest):
+klasse GNUTranslationsClassPluralFormsTestCase(PluralFormsTests, GettextBaseTest):
     def setUp(self):
         GettextBaseTest.setUp(self)
         with open(MOFILE, 'rb') as fp:
@@ -485,7 +485,7 @@ class GNUTranslationsClassPluralFormsTestCase(PluralFormsTests, GettextBaseTest)
             numbers_only=False)
 
 
-class PluralFormsInternalTestCase(unittest.TestCase):
+klasse PluralFormsInternalTestCase(unittest.TestCase):
     # Examples from http://www.gnu.org/software/gettext/manual/gettext.html
 
     def test_ja(self):
@@ -643,7 +643,7 @@ class PluralFormsInternalTestCase(unittest.TestCase):
         self.assertRaises(TypeError, f, object())
 
 
-class GNUTranslationParsingTest(GettextBaseTest):
+klasse GNUTranslationParsingTest(GettextBaseTest):
     def test_plural_form_error_issue17898(self):
         with open(MOFILE, 'wb') as fp:
             fp.write(base64.decodebytes(GNU_MO_DATA_ISSUE_17898))
@@ -665,7 +665,7 @@ class GNUTranslationParsingTest(GettextBaseTest):
             self.assertEqual(t.info()["plural-forms"], "nplurals=2; plural=(n != 1);")
 
 
-class UnicodeTranslationsTest(GettextBaseTest):
+klasse UnicodeTranslationsTest(GettextBaseTest):
     def setUp(self):
         GettextBaseTest.setUp(self)
         with open(UMOFILE, 'rb') as fp:
@@ -685,7 +685,7 @@ class UnicodeTranslationsTest(GettextBaseTest):
         self.assertEqual(t, '\xa4yz (context version)')
 
 
-class UnicodeTranslationsPluralTest(GettextBaseTest):
+klasse UnicodeTranslationsPluralTest(GettextBaseTest):
     def setUp(self):
         GettextBaseTest.setUp(self)
         with open(MOFILE, 'rb') as fp:
@@ -727,7 +727,7 @@ class UnicodeTranslationsPluralTest(GettextBaseTest):
         eq(t, "Hay %s ficheros (context)")
 
 
-class WeirdMetadataTest(GettextBaseTest):
+klasse WeirdMetadataTest(GettextBaseTest):
     def setUp(self):
         GettextBaseTest.setUp(self)
         with open(MMOFILE, 'rb') as fp:
@@ -744,12 +744,12 @@ class WeirdMetadataTest(GettextBaseTest):
            'John Doe <jdoe@example.com>\nJane Foobar <jfoobar@example.com>')
 
 
-class DummyGNUTranslations(gettext.GNUTranslations):
+klasse DummyGNUTranslations(gettext.GNUTranslations):
     def foo(self):
         return 'foo'
 
 
-class GettextCacheTestCase(GettextBaseTest):
+klasse GettextCacheTestCase(GettextBaseTest):
     def test_cache(self):
         self.localedir = os.curdir
         self.mofile = MOFILE
@@ -775,7 +775,7 @@ class GettextCacheTestCase(GettextBaseTest):
         self.assertEqual(t.__class__, DummyGNUTranslations)
 
 
-class FallbackTranslations(gettext.NullTranslations):
+klasse FallbackTranslations(gettext.NullTranslations):
     def gettext(self, message):
         return f'gettext: {message}'
 
@@ -789,7 +789,7 @@ class FallbackTranslations(gettext.NullTranslations):
         return f'npgettext: {context}, {msgid1}, {msgid2}, {n}'
 
 
-class FallbackTestCase(GettextBaseTest):
+klasse FallbackTestCase(GettextBaseTest):
     def test_null_translations_fallback(self):
         t = gettext.NullTranslations()
         t.add_fallback(FallbackTranslations())
@@ -814,7 +814,7 @@ class FallbackTestCase(GettextBaseTest):
                          'npgettext: context, foo, foos, 1')
 
     def test_nested_fallbacks(self):
-        class NestedFallback(gettext.NullTranslations):
+        klasse NestedFallback(gettext.NullTranslations):
             def gettext(self, message):
                 if message == 'foo':
                     return 'fallback'
@@ -831,7 +831,7 @@ class FallbackTestCase(GettextBaseTest):
         self.assertEqual(t.gettext('bar'), 'gettext: bar')
 
 
-class ExpandLangTestCase(unittest.TestCase):
+klasse ExpandLangTestCase(unittest.TestCase):
     def test_expand_lang(self):
         # Test all combinations of territory, charset and
         # modifier (locale extension)
@@ -857,7 +857,7 @@ class ExpandLangTestCase(unittest.TestCase):
                     self.assertEqual(gettext._expand_lang(locale), expanded)
 
 
-class FindTestCase(unittest.TestCase):
+klasse FindTestCase(unittest.TestCase):
 
     def setUp(self):
         self.env = self.enterContext(os_helper.EnvironmentVarGuard())
@@ -927,7 +927,7 @@ class FindTestCase(unittest.TestCase):
         self.assertEqual(result, mo_file)
 
 
-class MiscTestCase(unittest.TestCase):
+klasse MiscTestCase(unittest.TestCase):
     def test__all__(self):
         support.check__all__(self, gettext,
                              not_exported={'c2py', 'ENOENT'})
@@ -937,7 +937,7 @@ class MiscTestCase(unittest.TestCase):
         ensure_lazy_imports("gettext", {"re", "warnings", "locale"})
 
 
-class TranslationFallbackTestCase(unittest.TestCase):
+klasse TranslationFallbackTestCase(unittest.TestCase):
     def test_translation_fallback(self):
         with os_helper.temp_cwd() as tempdir:
             t = gettext.translation('gettext', localedir=tempdir, fallback=True)

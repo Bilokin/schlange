@@ -45,7 +45,7 @@ def capture_test_stack(*, fut=None, depth=1):
     return walk(stack), buf.getvalue()
 
 
-class CallStackTestBase:
+klasse CallStackTestBase:
 
     async def test_stack_tgroup(self):
 
@@ -350,7 +350,7 @@ class CallStackTestBase:
     not hasattr(asyncio.futures, "_c_future_add_to_awaited_by"),
     "C-accelerated asyncio call graph backend missing",
 )
-class TestCallStackC(CallStackTestBase, unittest.IsolatedAsyncioTestCase):
+klasse TestCallStackC(CallStackTestBase, unittest.IsolatedAsyncioTestCase):
     def setUp(self):
         futures = asyncio.futures
         tasks = asyncio.tasks
@@ -399,7 +399,7 @@ class TestCallStackC(CallStackTestBase, unittest.IsolatedAsyncioTestCase):
     not hasattr(asyncio.futures, "_py_future_add_to_awaited_by"),
     "Pure Python asyncio call graph backend missing",
 )
-class TestCallStackPy(CallStackTestBase, unittest.IsolatedAsyncioTestCase):
+klasse TestCallStackPy(CallStackTestBase, unittest.IsolatedAsyncioTestCase):
     def setUp(self):
         futures = asyncio.futures
         tasks = asyncio.tasks

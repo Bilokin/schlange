@@ -32,7 +32,7 @@ dispatch = {
 
 
 # Class used to test __str__ and print
-class ClassWith__str__:
+klasse ClassWith__str__:
     def __init__(self, x):
         self.x = x
 
@@ -40,7 +40,7 @@ class ClassWith__str__:
         return self.x
 
 
-class TestPrint(unittest.TestCase):
+klasse TestPrint(unittest.TestCase):
     """Test correct operation of the print function."""
 
     def check(self, expected, args,
@@ -102,7 +102,7 @@ class TestPrint(unittest.TestCase):
 
     def test_print_flush(self):
         # operation of the flush flag
-        class filelike:
+        klasse filelike:
             def __init__(self):
                 self.written = ''
                 self.flushed = 0
@@ -121,7 +121,7 @@ class TestPrint(unittest.TestCase):
         self.assertEqual(f.flushed, 2)
 
         # ensure exceptions from flush are passed through
-        class noflush:
+        klasse noflush:
             def write(self, str):
                 pass
 
@@ -130,7 +130,7 @@ class TestPrint(unittest.TestCase):
         self.assertRaises(RuntimeError, print, 1, file=noflush(), flush=True)
 
     def test_gh130163(self):
-        class X:
+        klasse X:
             def __str__(self):
                 sys.stdout = StringIO()
                 support.gc_collect()
@@ -141,7 +141,7 @@ class TestPrint(unittest.TestCase):
             print(X())  # should not crash
 
 
-class TestPy2MigrationHint(unittest.TestCase):
+klasse TestPy2MigrationHint(unittest.TestCase):
     """Test that correct hint is produced analogous to Python3 syntax,
     if print statement is executed as in Python 2.
     """

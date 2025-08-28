@@ -1,4 +1,4 @@
-"""A lexical analyzer class for simple shell-like syntaxes."""
+"""A lexical analyzer klasse for simple shell-like syntaxes."""
 
 # Module and documentation by Eric S. Raymond, 21 Dec 1998
 # Input stacking and error message cleanup added by ESR, March 2000
@@ -12,8 +12,8 @@ from io import StringIO
 
 __all__ = ["shlex", "split", "quote", "join"]
 
-class shlex:
-    "A lexical analyzer class for simple shell-like syntaxes."
+klasse shlex:
+    "A lexical analyzer klasse for simple shell-like syntaxes."
     def __init__(self, instream=None, infile=None, posix=False,
                  punctuation_chars=False):
         from collections import deque  # deferred import for performance

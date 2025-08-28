@@ -41,11 +41,11 @@ __all__ = ["BadZipFile", "BadZipfile", "error",
            "ZIP_ZSTANDARD", "is_zipfile", "ZipInfo", "ZipFile", "PyZipFile",
            "LargeZipFile", "Path"]
 
-class BadZipFile(Exception):
+klasse BadZipFile(Exception):
     pass
 
 
-class LargeZipFile(Exception):
+klasse LargeZipFile(Exception):
     """
     Raised when writing a zipfile, the zipfile requires ZIP64 extensions
     and those extensions are disabled.
@@ -196,7 +196,7 @@ _CD64_OFFSET_START_CENTDIR = 9
 _DD_SIGNATURE = 0x08074b50
 
 
-class _Extra(bytes):
+klasse _Extra(bytes):
     FIELD_STRUCT = struct.Struct('<HH')
 
     def __new__(cls, val, id=None):
@@ -407,7 +407,7 @@ def _sanitize_filename(filename):
     return filename
 
 
-class ZipInfo:
+klasse ZipInfo:
     """Class with attributes describing each file in the ZIP archive."""
 
     __slots__ = (
@@ -467,7 +467,7 @@ class ZipInfo:
         self.compress_size = 0          # Size of the compressed file
         self.file_size = 0              # Size of the uncompressed file
         self._end_offset = None         # Start of the next local header or central directory
-        # Other attributes are set by class ZipFile:
+        # Other attributes are set by klasse ZipFile:
         # header_offset         Byte offset to the file header
         # CRC                   CRC-32 of the uncompressed file
 
@@ -735,7 +735,7 @@ def _ZipDecrypter(pwd):
     return decrypter
 
 
-class LZMACompressor:
+klasse LZMACompressor:
 
     def __init__(self):
         self._comp = None
@@ -758,7 +758,7 @@ class LZMACompressor:
         return self._comp.flush()
 
 
-class LZMADecompressor:
+klasse LZMADecompressor:
 
     def __init__(self):
         self._decomp = None
@@ -868,7 +868,7 @@ def _get_decompressor(compress_type):
             raise NotImplementedError("compression type %d" % (compress_type,))
 
 
-class _SharedFile:
+klasse _SharedFile:
     def __init__(self, file, pos, close, lock, writing):
         self._file = file
         self._pos = pos
@@ -911,7 +911,7 @@ class _SharedFile:
             self._close(fileobj)
 
 # Provide the tell method for unseekable stream
-class _Tellable:
+klasse _Tellable:
     def __init__(self, fp):
         self.fp = fp
         self.offset = 0
@@ -931,7 +931,7 @@ class _Tellable:
         self.fp.close()
 
 
-class ZipExtFile(io.BufferedIOBase):
+klasse ZipExtFile(io.BufferedIOBase):
     """File-like object for reading an archive member.
        Is returned by ZipFile.open().
     """
@@ -1276,7 +1276,7 @@ class ZipExtFile(io.BufferedIOBase):
         return filepos
 
 
-class _ZipWriteFile(io.BufferedIOBase):
+klasse _ZipWriteFile(io.BufferedIOBase):
     def __init__(self, zf, zinfo, zip64):
         self._zinfo = zinfo
         self._zip64 = zip64
@@ -1368,7 +1368,7 @@ class _ZipWriteFile(io.BufferedIOBase):
 
 
 
-class ZipFile:
+klasse ZipFile:
     """ Class with methods to open, read, write, close, list zip files.
 
     z = ZipFile(file, mode="r", compression=ZIP_STORED, allowZip64=True,
@@ -1597,7 +1597,7 @@ class ZipFile:
         return [data.filename for data in self.filelist]
 
     def infolist(self):
-        """Return a list of class ZipInfo instances for files in the
+        """Return a list of klasse ZipInfo instances for files in the
         archive."""
         return self.filelist
 
@@ -2170,7 +2170,7 @@ class ZipFile:
             fp.close()
 
 
-class PyZipFile(ZipFile):
+klasse PyZipFile(ZipFile):
     """Class to create ZIP archives with Python library files and packages."""
 
     def __init__(self, file, mode="r", compression=ZIP_STORED,

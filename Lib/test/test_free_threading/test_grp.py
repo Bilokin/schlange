@@ -12,7 +12,7 @@ NTHREADS = 10
 
 
 @threading_helper.requires_working_threading()
-class TestGrp(unittest.TestCase):
+klasse TestGrp(unittest.TestCase):
     def setUp(self):
         self.test_grp = test_grp.GroupDatabaseTestCase()
 

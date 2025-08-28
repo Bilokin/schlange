@@ -7,7 +7,7 @@ import re
 from _tkinter import TclError
 
 
-class Event:
+klasse Event:
     '''Minimal mock with attributes for testing event handlers.
 
     This is not a gui object, but is used as an argument for callbacks
@@ -26,7 +26,7 @@ class Event:
         self.__dict__.update(kwds)
 
 
-class Var:
+klasse Var:
     "Use for String/Int/BooleanVar: incomplete"
     def __init__(self, master=None, value=None, name=None):
         self.master = master
@@ -38,7 +38,7 @@ class Var:
         return self.value
 
 
-class Mbox_func:
+klasse Mbox_func:
     """Generic mock for messagebox functions, which all have the same signature.
 
     Instead of displaying a message box, the mock's call method saves the
@@ -56,7 +56,7 @@ class Mbox_func:
         return self.result  # Set by tester for ask functions
 
 
-class Mbox:
+klasse Mbox:
     """Mock for tkinter.messagebox with an Mbox_func for each function.
 
     Example usage in test_module.py for testing functions in module.py:
@@ -67,7 +67,7 @@ import module
 orig_mbox = module.messagebox
 showerror = Mbox.showerror  # example, for attribute access in test methods
 
-class Test(unittest.TestCase):
+klasse Test(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -91,7 +91,7 @@ class Test(unittest.TestCase):
     showwarning = Mbox_func()  # None
 
 
-class Text:
+klasse Text:
     """A semi-functional non-gui replacement for tkinter.Text text editors.
 
     The mock's data model is that a text is a list of \n-terminated lines.
@@ -100,7 +100,7 @@ class Text:
     Tk initializes files with a terminal \n that cannot be deleted. It is
     invisible in the sense that one cannot move the cursor beyond it.
 
-    This class is only tested (and valid) with strings of ascii chars.
+    This klasse is only tested (and valid) with strings of ascii chars.
     For testing, we are not concerned with Tk Text's treatment of,
     for instance, 0-width characters or character + accent.
    """
@@ -301,7 +301,7 @@ class Text:
         pass
 
 
-class Entry:
+klasse Entry:
     "Mock for tkinter.Entry."
     def focus_set(self):
         pass

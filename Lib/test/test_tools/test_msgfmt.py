@@ -26,7 +26,7 @@ def compile_messages(po_file, mo_file):
     assert_python_ok(msgfmt_py, '-o', mo_file, po_file)
 
 
-class CompilationTest(unittest.TestCase):
+klasse CompilationTest(unittest.TestCase):
 
     def test_compilation(self):
         self.maxDiff = None
@@ -144,7 +144,7 @@ msgstr "bar"
             self.assertIn('Syntax error', err)
 
 
-class POParserTest(unittest.TestCase):
+klasse POParserTest(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         # msgfmt uses a global variable to store messages,
@@ -241,7 +241,7 @@ class POParserTest(unittest.TestCase):
                         msgfmt.make('messages.po', 'messages.mo')
 
 
-class CLITest(unittest.TestCase):
+klasse CLITest(unittest.TestCase):
 
     def test_help(self):
         for option in ('--help', '-h'):

@@ -48,7 +48,7 @@ def randommove(state):
     return z, rand
 
 
-class NimModel(object):
+klasse NimModel(object):
     def __init__(self, game):
         self.game = game
 
@@ -84,7 +84,7 @@ class NimModel(object):
         self.move(row, col)
 
 
-class Stick(turtle.Turtle):
+klasse Stick(turtle.Turtle):
     def __init__(self, row, col, game):
         turtle.Turtle.__init__(self, visible=False)
         self.row = row
@@ -111,7 +111,7 @@ class Stick(turtle.Turtle):
         self.game.controller.notify_move(self.row, self.col)
 
 
-class NimView(object):
+klasse NimView(object):
     def __init__(self, game):
         self.game = game
         self.screen = game.screen
@@ -179,7 +179,7 @@ class NimView(object):
             self.screen.clear()
 
 
-class NimController(object):
+klasse NimController(object):
 
     def __init__(self, game):
         self.game = game
@@ -200,7 +200,7 @@ class NimController(object):
         self.BUSY = False
 
 
-class Nim(object):
+klasse Nim(object):
     CREATED = 0
     RUNNING = 1
     OVER = 2

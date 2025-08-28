@@ -5,7 +5,7 @@ import doctest
 import sys
 
 
-class TestWithAscii(unittest.TestCase):
+klasse TestWithAscii(unittest.TestCase):
     def test_one_insert(self):
         sm = difflib.SequenceMatcher(None, 'b' * 100, 'a' + 'b' * 100)
         self.assertAlmostEqual(sm.ratio(), 0.995, places=3)
@@ -43,7 +43,7 @@ class TestWithAscii(unittest.TestCase):
         self.assertEqual(sm.bjunk, {' ', 'b'})
 
 
-class TestAutojunk(unittest.TestCase):
+klasse TestAutojunk(unittest.TestCase):
     """Tests for the autojunk parameter added in 2.7"""
     def test_one_insert_homogenous_sequence(self):
         # By default autojunk=True and the heuristic kicks in for a sequence
@@ -61,7 +61,7 @@ class TestAutojunk(unittest.TestCase):
         self.assertEqual(sm.bpopular, set())
 
 
-class TestSFbugs(unittest.TestCase):
+klasse TestSFbugs(unittest.TestCase):
     def test_ratio_for_null_seqn(self):
         # Check clearing of SF bug 763023
         s = difflib.SequenceMatcher(None, [], [])
@@ -185,7 +185,7 @@ just fitS in!!
 just fits in two lineS yup!!
 the end"""
 
-class TestSFpatches(unittest.TestCase):
+klasse TestSFpatches(unittest.TestCase):
 
     def test_html_diff(self):
         # Check SF patch 914575 for generating HTML differences
@@ -272,7 +272,7 @@ class TestSFpatches(unittest.TestCase):
         self.assertIn('charset="us-ascii"', output)
         self.assertIn('&#305;mpl&#305;c&#305;t', output)
 
-class TestDiffer(unittest.TestCase):
+klasse TestDiffer(unittest.TestCase):
     def test_close_matches_aligned(self):
         # Of the 4 closely matching pairs, we want 1 to match with 3,
         # and 2 with 4, to align with a "top to bottom" mental model.
@@ -293,7 +293,7 @@ class TestDiffer(unittest.TestCase):
                             '+ kitten\n',
                             '+ puppy\n'])
 
-class TestOutputFormat(unittest.TestCase):
+klasse TestOutputFormat(unittest.TestCase):
     def test_tab_delimiter(self):
         args = [['one'], ['two'], 'Original', 'Current',
             '2005-01-26 23:30:50', '2010-04-02 10:20:52']
@@ -372,7 +372,7 @@ class TestOutputFormat(unittest.TestCase):
         self.assertEqual(expect, actual)
 
 
-class TestBytes(unittest.TestCase):
+klasse TestBytes(unittest.TestCase):
     # don't really care about the content of the output, just the fact
     # that it's bytes and we don't crash
     def check(self, diff):
@@ -464,7 +464,7 @@ class TestBytes(unittest.TestCase):
         assertDiff(expect, actual)
 
 
-class TestInputTypes(unittest.TestCase):
+klasse TestInputTypes(unittest.TestCase):
     def _assert_type_error(self, msg, generator, *args):
         with self.assertRaises(TypeError) as ctx:
             list(generator(*args))
@@ -534,7 +534,7 @@ class TestInputTypes(unittest.TestCase):
         list(difflib.unified_diff(a, b, 'a', 'b', datea, dateb))
 
 
-class TestJunkAPIs(unittest.TestCase):
+klasse TestJunkAPIs(unittest.TestCase):
     def test_is_line_junk_true(self):
         for line in ['#', '  ', ' #', '# ', ' # ', '']:
             self.assertTrue(difflib.IS_LINE_JUNK(line), repr(line))
@@ -555,7 +555,7 @@ class TestJunkAPIs(unittest.TestCase):
         for char in ['a', '#', '\n', '\f', '\r', '\v']:
             self.assertFalse(difflib.IS_CHARACTER_JUNK(char), repr(char))
 
-class TestFindLongest(unittest.TestCase):
+klasse TestFindLongest(unittest.TestCase):
     def longer_match_exists(self, a, b, n):
         return any(b_part in a for b_part in
                    [b[i:i + n + 1] for i in range(0, len(b) - n - 1)])

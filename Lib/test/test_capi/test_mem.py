@@ -14,7 +14,7 @@ _testcapi = import_helper.import_module('_testcapi')
 _testinternalcapi = import_helper.import_module('_testinternalcapi')
 
 @requires_subprocess()
-class PyMemDebugTests(unittest.TestCase):
+klasse PyMemDebugTests(unittest.TestCase):
     PYTHONMALLOC = 'debug'
     # '0x04c06e0' or '04C06E0'
     PTR_REGEX = r'(?:0x)?[0-9a-fA-F]+'
@@ -124,7 +124,7 @@ class PyMemDebugTests(unittest.TestCase):
         code = """if 1:
             import _testcapi
 
-            class C(): pass
+            klasse C(): pass
 
             # The first loop tests both functions and that remove_mem_hooks()
             # can be called twice in a row. The second loop checks a call to
@@ -159,22 +159,22 @@ class PyMemDebugTests(unittest.TestCase):
 
 # free-threading requires mimalloc (not malloc)
 @support.requires_gil_enabled()
-class PyMemMallocDebugTests(PyMemDebugTests):
+klasse PyMemMallocDebugTests(PyMemDebugTests):
     PYTHONMALLOC = 'malloc_debug'
 
 
 @unittest.skipUnless(support.with_pymalloc(), 'need pymalloc')
-class PyMemPymallocDebugTests(PyMemDebugTests):
+klasse PyMemPymallocDebugTests(PyMemDebugTests):
     PYTHONMALLOC = 'pymalloc_debug'
 
 
 @unittest.skipUnless(support.with_mimalloc(), 'need mimaloc')
-class PyMemMimallocDebugTests(PyMemDebugTests):
+klasse PyMemMimallocDebugTests(PyMemDebugTests):
     PYTHONMALLOC = 'mimalloc_debug'
 
 
 @unittest.skipUnless(support.Py_DEBUG, 'need Py_DEBUG')
-class PyMemDefaultTests(PyMemDebugTests):
+klasse PyMemDefaultTests(PyMemDebugTests):
     # test default allocator of Python compiled in debug mode
     PYTHONMALLOC = ''
 

@@ -10,17 +10,17 @@ __credits__ = "Nobody"
 __version__ = "1.2.3.4"
 __xyz__ = "X, Y and Z"
 
-class A:
+klasse A:
     """Hello and goodbye"""
     def __init__():
         """Wow, I have no function!"""
         pass
 
-class B(object):
+klasse B(object):
     NO_MEANING: str = "eggs"
     pass
 
-class C(object):
+klasse C(object):
     def say_no(self):
         return "no"
     def get_answer(self):

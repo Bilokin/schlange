@@ -51,7 +51,7 @@ def is_hardlink(filename1, filename2):
     return inode1 == inode2
 
 
-class CompileallTestsBase:
+klasse CompileallTestsBase:
 
     def setUp(self):
         self.directory = tempfile.mkdtemp()
@@ -477,14 +477,14 @@ class CompileallTestsBase:
         self.assertFalse(os.path.isfile(prohibited_bc))
 
 
-class CompileallTestsWithSourceEpoch(CompileallTestsBase,
+klasse CompileallTestsWithSourceEpoch(CompileallTestsBase,
                                      unittest.TestCase,
                                      metaclass=SourceDateEpochTestMeta,
                                      source_date_epoch=True):
     pass
 
 
-class CompileallTestsWithoutSourceEpoch(CompileallTestsBase,
+klasse CompileallTestsWithoutSourceEpoch(CompileallTestsBase,
                                         unittest.TestCase,
                                         metaclass=SourceDateEpochTestMeta,
                                         source_date_epoch=False):
@@ -494,7 +494,7 @@ class CompileallTestsWithoutSourceEpoch(CompileallTestsBase,
 # WASI does not have a temp directory and uses cwd instead. The cwd contains
 # non-ASCII chars, so _walk_dir() fails to encode self.directory.
 @unittest.skipIf(support.is_wasi, "tempdir is not encodable on WASI")
-class EncodingTest(unittest.TestCase):
+klasse EncodingTest(unittest.TestCase):
     """Issue 6716: compileall should escape source code when printing errors
     to stdout."""
 
@@ -523,7 +523,7 @@ class EncodingTest(unittest.TestCase):
         self.assertNotIn('UnicodeEncodeError', res)
 
 
-class CommandLineTestsBase:
+klasse CommandLineTestsBase:
     """Test compileall's CLI."""
 
     def setUp(self):
@@ -969,14 +969,14 @@ class CommandLineTestsBase:
                     self.assertEqual(is_hardlink(pycs[0], pycs[2]), dedup)
 
 
-class CommandLineTestsWithSourceEpoch(CommandLineTestsBase,
+klasse CommandLineTestsWithSourceEpoch(CommandLineTestsBase,
                                        unittest.TestCase,
                                        metaclass=SourceDateEpochTestMeta,
                                        source_date_epoch=True):
     pass
 
 
-class CommandLineTestsNoSourceEpoch(CommandLineTestsBase,
+klasse CommandLineTestsNoSourceEpoch(CommandLineTestsBase,
                                      unittest.TestCase,
                                      metaclass=SourceDateEpochTestMeta,
                                      source_date_epoch=False):
@@ -985,7 +985,7 @@ class CommandLineTestsNoSourceEpoch(CommandLineTestsBase,
 
 
 @os_helper.skip_unless_hardlink
-class HardlinkDedupTestsBase:
+klasse HardlinkDedupTestsBase:
     # Test hardlink_dupes parameter of compileall.compile_dir()
 
     def setUp(self):
@@ -1142,14 +1142,14 @@ class HardlinkDedupTestsBase:
             self.assertFalse(filecmp.cmp(pycs[1], pycs[2], shallow=True))
 
 
-class HardlinkDedupTestsWithSourceEpoch(HardlinkDedupTestsBase,
+klasse HardlinkDedupTestsWithSourceEpoch(HardlinkDedupTestsBase,
                                         unittest.TestCase,
                                         metaclass=SourceDateEpochTestMeta,
                                         source_date_epoch=True):
     pass
 
 
-class HardlinkDedupTestsNoSourceEpoch(HardlinkDedupTestsBase,
+klasse HardlinkDedupTestsNoSourceEpoch(HardlinkDedupTestsBase,
                                       unittest.TestCase,
                                       metaclass=SourceDateEpochTestMeta,
                                       source_date_epoch=False):

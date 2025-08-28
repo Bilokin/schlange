@@ -13,7 +13,7 @@ __all__ = ['Popen']
 # Wrapper for an fd used while launching a process
 #
 
-class _DupFd(object):
+klasse _DupFd(object):
     def __init__(self, fd):
         self.fd = fd
     def detach(self):
@@ -23,7 +23,7 @@ class _DupFd(object):
 # Start child process using a fresh interpreter
 #
 
-class Popen(popen_fork.Popen):
+klasse Popen(popen_fork.Popen):
     method = 'spawn'
     DupFd = _DupFd
 

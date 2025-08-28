@@ -10,15 +10,15 @@ import sys
 ModuleType = type(sys)
 
 
-class FullLoader:
+klasse FullLoader:
     pass
 
 
-class BareLoader:
+klasse BareLoader:
     pass
 
 
-class ModuleTests(unittest.TestCase):
+klasse ModuleTests(unittest.TestCase):
     def test_uninitialized(self):
         # An uninitialized module has no __dict__ or __name__,
         # and __doc__ is None
@@ -206,7 +206,7 @@ a = A(destroyed)"""
     def test_module_repr_with_bare_loader_but_no_name(self):
         m = ModuleType('foo')
         del m.__name__
-        # Yes, a class not an instance.
+        # Yes, a klasse not an instance.
         m.__loader__ = BareLoader
         loader_repr = repr(BareLoader)
         self.assertEqual(
@@ -218,7 +218,7 @@ a = A(destroyed)"""
         # loader's repr will be used.
         m = ModuleType('foo')
         del m.__name__
-        # Yes, a class not an instance.
+        # Yes, a klasse not an instance.
         m.__loader__ = FullLoader
         loader_repr = repr(FullLoader)
         self.assertEqual(
@@ -226,7 +226,7 @@ a = A(destroyed)"""
 
     def test_module_repr_with_bare_loader(self):
         m = ModuleType('foo')
-        # Yes, a class not an instance.
+        # Yes, a klasse not an instance.
         m.__loader__ = BareLoader
         module_repr = repr(BareLoader)
         self.assertEqual(
@@ -234,21 +234,21 @@ a = A(destroyed)"""
 
     def test_module_repr_with_full_loader(self):
         m = ModuleType('foo')
-        # Yes, a class not an instance.
+        # Yes, a klasse not an instance.
         m.__loader__ = FullLoader
         self.assertEqual(
             repr(m), f"<module 'foo' (<class '{__name__}.FullLoader'>)>")
 
     def test_module_repr_with_bare_loader_and_filename(self):
         m = ModuleType('foo')
-        # Yes, a class not an instance.
+        # Yes, a klasse not an instance.
         m.__loader__ = BareLoader
         m.__file__ = '/tmp/foo.py'
         self.assertEqual(repr(m), "<module 'foo' from '/tmp/foo.py'>")
 
     def test_module_repr_with_full_loader_and_filename(self):
         m = ModuleType('foo')
-        # Yes, a class not an instance.
+        # Yes, a klasse not an instance.
         m.__loader__ = FullLoader
         m.__file__ = '/tmp/foo.py'
         self.assertEqual(repr(m), "<module 'foo' from '/tmp/foo.py'>")
@@ -308,10 +308,10 @@ a = A(destroyed)"""
             b"shutil.rmtree = rmtree"})
 
     def test_descriptor_errors_propagate(self):
-        class Descr:
+        klasse Descr:
             def __get__(self, o, t):
                 raise RuntimeError
-        class M(ModuleType):
+        klasse M(ModuleType):
             melon = Descr()
         self.assertRaises(RuntimeError, getattr, M("mymod"), "melon")
 
@@ -381,7 +381,7 @@ a = A(destroyed)"""
     def test_subclass_with_slots(self):
         # In 3.11alpha this crashed, as the slots weren't NULLed.
 
-        class ModuleWithSlots(ModuleType):
+        klasse ModuleWithSlots(ModuleType):
             __slots__ = ("a", "b")
 
             def __init__(self, name):

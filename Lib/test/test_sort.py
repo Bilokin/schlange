@@ -39,7 +39,7 @@ def check(tag, expected, raw, compare=None):
             nerrors += 1
             return
 
-class TestBase(unittest.TestCase):
+klasse TestBase(unittest.TestCase):
     def testStressfully(self):
         # Try a variety of sizes at and around powers of 2, and at powers of 10.
         sizes = [0]
@@ -48,7 +48,7 @@ class TestBase(unittest.TestCase):
             sizes.extend(range(n-1, n+2))
         sizes.extend([10, 100, 1000])
 
-        class Complains(object):
+        klasse Complains(object):
             maybe_complain = True
 
             def __init__(self, i):
@@ -64,7 +64,7 @@ class TestBase(unittest.TestCase):
             def __repr__(self):
                 return "Complains(%d)" % self.i
 
-        class Stable(object):
+        klasse Stable(object):
             def __init__(self, key, i):
                 self.key = key
                 self.index = i
@@ -151,14 +151,14 @@ class TestBase(unittest.TestCase):
                 self.assertEqual(forced, native)
 #==============================================================================
 
-class TestBugs(unittest.TestCase):
+klasse TestBugs(unittest.TestCase):
 
     def test_bug453523(self):
         # bug 453523 -- list.sort() crasher.
         # If this fails, the most likely outcome is a core dump.
         # Mutations during a list sort should raise a ValueError.
 
-        class C:
+        klasse C:
             def __lt__(self, other):
                 if L and random.random() < 0.75:
                     L.pop()
@@ -188,7 +188,7 @@ class TestBugs(unittest.TestCase):
 
 #==============================================================================
 
-class TestDecorateSortUndecorate(unittest.TestCase):
+klasse TestDecorateSortUndecorate(unittest.TestCase):
 
     def test_decorated(self):
         data = 'The quick Brown fox Jumped over The lazy Dog'.split()
@@ -228,7 +228,7 @@ class TestDecorateSortUndecorate(unittest.TestCase):
 
     def test_key_with_mutating_del(self):
         data = list(range(10))
-        class SortKiller(object):
+        klasse SortKiller(object):
             def __init__(self, x):
                 pass
             def __del__(self):
@@ -241,7 +241,7 @@ class TestDecorateSortUndecorate(unittest.TestCase):
     def test_key_with_mutating_del_and_exception(self):
         data = list(range(10))
         ## dup = data[:]
-        class SortKiller(object):
+        klasse SortKiller(object):
             def __init__(self, x):
                 if x > 2:
                     raise RuntimeError
@@ -309,7 +309,7 @@ def check_against_PyObject_RichCompareBool(self, L):
             self.assertIs(opt, ref)
             #note: not assertEqual! We want to ensure *identical* behavior.
 
-class TestOptimizedCompares(unittest.TestCase):
+klasse TestOptimizedCompares(unittest.TestCase):
     def test_safe_object_compare(self):
         heterogeneous_lists = [[0, 'foo'],
                                [0.0, 'foo'],
@@ -331,15 +331,15 @@ class TestOptimizedCompares(unittest.TestCase):
         # This test is by ppperry. It ensures that unsafe_object_compare is
         # verifying ms->key_richcompare == tp->richcompare before comparing.
 
-        class WackyComparator(int):
+        klasse WackyComparator(int):
             def __lt__(self, other):
                 elem.__class__ = WackyList2
                 return int.__lt__(self, other)
 
-        class WackyList1(list):
+        klasse WackyList1(list):
             pass
 
-        class WackyList2(list):
+        klasse WackyList2(list):
             def __lt__(self, other):
                 raise ValueError
 
@@ -355,7 +355,7 @@ class TestOptimizedCompares(unittest.TestCase):
 
         # The following test is also by ppperry. It ensures that
         # unsafe_object_compare handles Py_NotImplemented appropriately.
-        class PointlessComparator:
+        klasse PointlessComparator:
             def __lt__(self, other):
                 return NotImplemented
         L = [PointlessComparator(), PointlessComparator()]

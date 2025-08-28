@@ -12,7 +12,7 @@ _testlimitedcapi = import_helper.import_module('_testlimitedcapi')
 NULL = None
 
 
-class ImportTests(unittest.TestCase):
+klasse ImportTests(unittest.TestCase):
     def test_getmagicnumber(self):
         # Test PyImport_GetMagicNumber()
         magic = _testlimitedcapi.PyImport_GetMagicNumber()

@@ -4,7 +4,7 @@ import types
 
 import unittest
 
-class Test_TestLoader(unittest.TestCase):
+klasse Test_TestLoader(unittest.TestCase):
 
     ### Basic object tests
     ################################################################
@@ -17,9 +17,9 @@ class Test_TestLoader(unittest.TestCase):
     ################################################################
 
     # "Return a suite of all test cases contained in the TestCase-derived
-    # class testCaseClass"
+    # klasse testCaseClass"
     def test_loadTestsFromTestCase(self):
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def test_1(self): pass
             def test_2(self): pass
             def foo_bar(self): pass
@@ -30,11 +30,11 @@ class Test_TestLoader(unittest.TestCase):
         self.assertEqual(loader.loadTestsFromTestCase(Foo), tests)
 
     # "Return a suite of all test cases contained in the TestCase-derived
-    # class testCaseClass"
+    # klasse testCaseClass"
     #
     # Make sure it does the right thing even if no tests were found
     def test_loadTestsFromTestCase__no_matches(self):
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def foo_bar(self): pass
 
         empty_suite = unittest.TestSuite()
@@ -43,7 +43,7 @@ class Test_TestLoader(unittest.TestCase):
         self.assertEqual(loader.loadTestsFromTestCase(Foo), empty_suite)
 
     # "Return a suite of all test cases contained in the TestCase-derived
-    # class testCaseClass"
+    # klasse testCaseClass"
     #
     # What happens if loadTestsFromTestCase() is given an object
     # that isn't a subclass of TestCase? Specifically, what happens
@@ -52,7 +52,7 @@ class Test_TestLoader(unittest.TestCase):
     # This is checked for specifically in the code, so we better add a
     # test for it.
     def test_loadTestsFromTestCase__TestSuite_subclass(self):
-        class NotATestCase(unittest.TestSuite):
+        klasse NotATestCase(unittest.TestSuite):
             pass
 
         loader = unittest.TestLoader()
@@ -64,13 +64,13 @@ class Test_TestLoader(unittest.TestCase):
             self.fail('Should raise TypeError')
 
     # "Return a suite of all test cases contained in the TestCase-derived
-    # class testCaseClass"
+    # klasse testCaseClass"
     #
     # Make sure loadTestsFromTestCase() picks up the default test method
     # name (as specified by TestCase), even though the method name does
     # not match the default TestLoader.testMethodPrefix string
     def test_loadTestsFromTestCase__default_method_name(self):
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def runTest(self):
                 pass
 
@@ -82,7 +82,7 @@ class Test_TestLoader(unittest.TestCase):
         self.assertIsInstance(suite, loader.suiteClass)
         self.assertEqual(list(suite), [Foo('runTest')])
 
-    # "Do not load any tests from `TestCase` class itself."
+    # "Do not load any tests from `TestCase` klasse itself."
     def test_loadTestsFromTestCase__from_TestCase(self):
         loader = unittest.TestLoader()
 
@@ -107,7 +107,7 @@ class Test_TestLoader(unittest.TestCase):
     # "This method searches `module` for classes derived from TestCase"
     def test_loadTestsFromModule__TestCase_subclass(self):
         m = types.ModuleType('m')
-        class MyTestCase(unittest.TestCase):
+        klasse MyTestCase(unittest.TestCase):
             def test(self):
                 pass
         m.testcase_1 = MyTestCase
@@ -148,7 +148,7 @@ class Test_TestLoader(unittest.TestCase):
     # What happens if no tests are found (TestCases instances, but no tests)?
     def test_loadTestsFromModule__no_TestCase_tests(self):
         m = types.ModuleType('m')
-        class MyTestCase(unittest.TestCase):
+        klasse MyTestCase(unittest.TestCase):
             pass
         m.testcase_1 = MyTestCase
 
@@ -169,11 +169,11 @@ class Test_TestLoader(unittest.TestCase):
     #
     # XXX Certain people are using this behaviour. We'll add a test for it
     def test_loadTestsFromModule__not_a_module(self):
-        class MyTestCase(unittest.TestCase):
+        klasse MyTestCase(unittest.TestCase):
             def test(self):
                 pass
 
-        class NotAModule(object):
+        klasse NotAModule(object):
             test_2 = MyTestCase
 
         loader = unittest.TestLoader()
@@ -187,7 +187,7 @@ class Test_TestLoader(unittest.TestCase):
     # with a load_tests function.
     def test_loadTestsFromModule__load_tests(self):
         m = types.ModuleType('m')
-        class MyTestCase(unittest.TestCase):
+        klasse MyTestCase(unittest.TestCase):
             def test(self):
                 pass
         m.testcase_1 = MyTestCase
@@ -213,7 +213,7 @@ class Test_TestLoader(unittest.TestCase):
 
     def test_loadTestsFromModule__pattern(self):
         m = types.ModuleType('m')
-        class MyTestCase(unittest.TestCase):
+        klasse MyTestCase(unittest.TestCase):
             def test(self):
                 pass
         m.testcase_1 = MyTestCase
@@ -415,11 +415,11 @@ class Test_TestLoader(unittest.TestCase):
     #
     # XXX Some people are relying on this, so keep it for now
     def test_loadTestsFromName__relative_not_a_module(self):
-        class MyTestCase(unittest.TestCase):
+        klasse MyTestCase(unittest.TestCase):
             def test(self):
                 pass
 
-        class NotAModule(object):
+        klasse NotAModule(object):
             test_2 = MyTestCase
 
         loader = unittest.TestLoader()
@@ -451,7 +451,7 @@ class Test_TestLoader(unittest.TestCase):
     # resolve either to ... a test case class"
     def test_loadTestsFromName__relative_TestCase_subclass(self):
         m = types.ModuleType('m')
-        class MyTestCase(unittest.TestCase):
+        klasse MyTestCase(unittest.TestCase):
             def test(self):
                 pass
         m.testcase_1 = MyTestCase
@@ -467,7 +467,7 @@ class Test_TestLoader(unittest.TestCase):
     # TestCase or TestSuite instance."
     def test_loadTestsFromName__relative_TestSuite(self):
         m = types.ModuleType('m')
-        class MyTestCase(unittest.TestCase):
+        klasse MyTestCase(unittest.TestCase):
             def test(self):
                 pass
         m.testsuite = unittest.TestSuite([MyTestCase('test')])
@@ -482,7 +482,7 @@ class Test_TestLoader(unittest.TestCase):
     # ... a test method within a test case class"
     def test_loadTestsFromName__relative_testmethod(self):
         m = types.ModuleType('m')
-        class MyTestCase(unittest.TestCase):
+        klasse MyTestCase(unittest.TestCase):
             def test(self):
                 pass
         m.testcase_1 = MyTestCase
@@ -503,7 +503,7 @@ class Test_TestLoader(unittest.TestCase):
     # for the given name (relative to a provided module)?
     def test_loadTestsFromName__relative_invalid_testmethod(self):
         m = types.ModuleType('m')
-        class MyTestCase(unittest.TestCase):
+        klasse MyTestCase(unittest.TestCase):
             def test(self):
                 pass
         m.testcase_1 = MyTestCase
@@ -552,7 +552,7 @@ class Test_TestLoader(unittest.TestCase):
     #Override the suiteClass attribute to ensure that the suiteClass
     #attribute is used
     def test_loadTestsFromName__callable__TestCase_instance_ProperSuiteClass(self):
-        class SubTestSuite(unittest.TestSuite):
+        klasse SubTestSuite(unittest.TestSuite):
             pass
         m = types.ModuleType('m')
         testcase_1 = unittest.FunctionTestCase(lambda: None)
@@ -572,10 +572,10 @@ class Test_TestLoader(unittest.TestCase):
     #Override the suiteClass attribute to ensure that the suiteClass
     #attribute is used
     def test_loadTestsFromName__relative_testmethod_ProperSuiteClass(self):
-        class SubTestSuite(unittest.TestSuite):
+        klasse SubTestSuite(unittest.TestSuite):
             pass
         m = types.ModuleType('m')
-        class MyTestCase(unittest.TestCase):
+        klasse MyTestCase(unittest.TestCase):
             def test(self):
                 pass
         m.testcase_1 = MyTestCase
@@ -839,11 +839,11 @@ class Test_TestLoader(unittest.TestCase):
     # XXX This validation is currently not done. This flexibility should
     # either be documented or a TypeError should be raised.
     def test_loadTestsFromNames__relative_not_a_module(self):
-        class MyTestCase(unittest.TestCase):
+        klasse MyTestCase(unittest.TestCase):
             def test(self):
                 pass
 
-        class NotAModule(object):
+        klasse NotAModule(object):
             test_2 = MyTestCase
 
         loader = unittest.TestLoader()
@@ -875,7 +875,7 @@ class Test_TestLoader(unittest.TestCase):
     # ... a test case class"
     def test_loadTestsFromNames__relative_TestCase_subclass(self):
         m = types.ModuleType('m')
-        class MyTestCase(unittest.TestCase):
+        klasse MyTestCase(unittest.TestCase):
             def test(self):
                 pass
         m.testcase_1 = MyTestCase
@@ -891,7 +891,7 @@ class Test_TestLoader(unittest.TestCase):
     # ... a TestSuite instance"
     def test_loadTestsFromNames__relative_TestSuite(self):
         m = types.ModuleType('m')
-        class MyTestCase(unittest.TestCase):
+        klasse MyTestCase(unittest.TestCase):
             def test(self):
                 pass
         m.testsuite = unittest.TestSuite([MyTestCase('test')])
@@ -906,7 +906,7 @@ class Test_TestLoader(unittest.TestCase):
     # test method within a test case class"
     def test_loadTestsFromNames__relative_testmethod(self):
         m = types.ModuleType('m')
-        class MyTestCase(unittest.TestCase):
+        klasse MyTestCase(unittest.TestCase):
             def test(self):
                 pass
         m.testcase_1 = MyTestCase
@@ -923,7 +923,7 @@ class Test_TestLoader(unittest.TestCase):
     def test_loadTestsFromName__function_with_different_name_than_method(self):
         # lambdas have the name '<lambda>'.
         m = types.ModuleType('m')
-        class MyTestCase(unittest.TestCase):
+        klasse MyTestCase(unittest.TestCase):
             test = lambda: 1
         m.testcase_1 = MyTestCase
 
@@ -941,7 +941,7 @@ class Test_TestLoader(unittest.TestCase):
     # resolve to "a test method within a test case class" but don't?
     def test_loadTestsFromNames__relative_invalid_testmethod(self):
         m = types.ModuleType('m')
-        class MyTestCase(unittest.TestCase):
+        klasse MyTestCase(unittest.TestCase):
             def test(self):
                 pass
         m.testcase_1 = MyTestCase
@@ -994,12 +994,12 @@ class Test_TestLoader(unittest.TestCase):
     # Are staticmethods handled correctly?
     def test_loadTestsFromNames__callable__call_staticmethod(self):
         m = types.ModuleType('m')
-        class Test1(unittest.TestCase):
+        klasse Test1(unittest.TestCase):
             def test(self):
                 pass
 
         testcase_1 = Test1('test')
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             @staticmethod
             def foo():
                 return testcase_1
@@ -1063,7 +1063,7 @@ class Test_TestLoader(unittest.TestCase):
     # Test.foobar is defined to make sure getTestCaseNames() respects
     # loader.testMethodPrefix
     def test_getTestCaseNames(self):
-        class Test(unittest.TestCase):
+        klasse Test(unittest.TestCase):
             def test_1(self): pass
             def test_2(self): pass
             def foobar(self): pass
@@ -1076,7 +1076,7 @@ class Test_TestLoader(unittest.TestCase):
     #
     # Does getTestCaseNames() behave appropriately if no tests are found?
     def test_getTestCaseNames__no_tests(self):
-        class Test(unittest.TestCase):
+        klasse Test(unittest.TestCase):
             def foobar(self): pass
 
         loader = unittest.TestLoader()
@@ -1092,7 +1092,7 @@ class Test_TestLoader(unittest.TestCase):
     # XXX It's too late in the 2.5 release cycle to fix this, but it should
     # probably be revisited for 2.6
     def test_getTestCaseNames__not_a_TestCase(self):
-        class BadCase(int):
+        klasse BadCase(int):
             def test_foo(self):
                 pass
 
@@ -1108,12 +1108,12 @@ class Test_TestLoader(unittest.TestCase):
     # TestP.foobar is defined to make sure getTestCaseNames() respects
     # loader.testMethodPrefix
     def test_getTestCaseNames__inheritance(self):
-        class TestP(unittest.TestCase):
+        klasse TestP(unittest.TestCase):
             def test_1(self): pass
             def test_2(self): pass
             def foobar(self): pass
 
-        class TestC(TestP):
+        klasse TestC(TestP):
             def test_1(self): pass
             def test_3(self): pass
 
@@ -1127,7 +1127,7 @@ class Test_TestLoader(unittest.TestCase):
     # If TestLoader.testNamePatterns is set, only tests that match one of these
     # patterns should be included.
     def test_getTestCaseNames__testNamePatterns(self):
-        class MyTest(unittest.TestCase):
+        klasse MyTest(unittest.TestCase):
             def test_1(self): pass
             def test_2(self): pass
             def foobar(self): pass
@@ -1157,11 +1157,11 @@ class Test_TestLoader(unittest.TestCase):
     # For backwards compatibility reasons (see bpo-32071), the check may only
     # touch a TestCase's attribute if it starts with the test method prefix.
     def test_getTestCaseNames__testNamePatterns__attribute_access_regression(self):
-        class Trap:
+        klasse Trap:
             def __get__(*ignored):
                 self.fail('Non-test attribute accessed')
 
-        class MyTest(unittest.TestCase):
+        klasse MyTest(unittest.TestCase):
             def test_1(self): pass
             foobar = Trap()
 
@@ -1184,7 +1184,7 @@ class Test_TestLoader(unittest.TestCase):
     # Implicit in the documentation is that testMethodPrefix is respected by
     # all loadTestsFrom* methods.
     def test_testMethodPrefix__loadTestsFromTestCase(self):
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def test_1(self): pass
             def test_2(self): pass
             def foo_bar(self): pass
@@ -1206,7 +1206,7 @@ class Test_TestLoader(unittest.TestCase):
     # all loadTestsFrom* methods.
     def test_testMethodPrefix__loadTestsFromModule(self):
         m = types.ModuleType('m')
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def test_1(self): pass
             def test_2(self): pass
             def foo_bar(self): pass
@@ -1229,7 +1229,7 @@ class Test_TestLoader(unittest.TestCase):
     # all loadTestsFrom* methods.
     def test_testMethodPrefix__loadTestsFromName(self):
         m = types.ModuleType('m')
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def test_1(self): pass
             def test_2(self): pass
             def foo_bar(self): pass
@@ -1252,7 +1252,7 @@ class Test_TestLoader(unittest.TestCase):
     # all loadTestsFrom* methods.
     def test_testMethodPrefix__loadTestsFromNames(self):
         m = types.ModuleType('m')
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def test_1(self): pass
             def test_2(self): pass
             def foo_bar(self): pass
@@ -1286,7 +1286,7 @@ class Test_TestLoader(unittest.TestCase):
         def reversed_cmp(x, y):
             return -((x > y) - (x < y))
 
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def test_1(self): pass
             def test_2(self): pass
 
@@ -1303,7 +1303,7 @@ class Test_TestLoader(unittest.TestCase):
             return -((x > y) - (x < y))
 
         m = types.ModuleType('m')
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def test_1(self): pass
             def test_2(self): pass
         m.Foo = Foo
@@ -1321,7 +1321,7 @@ class Test_TestLoader(unittest.TestCase):
             return -((x > y) - (x < y))
 
         m = types.ModuleType('m')
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def test_1(self): pass
             def test_2(self): pass
         m.Foo = Foo
@@ -1339,7 +1339,7 @@ class Test_TestLoader(unittest.TestCase):
             return -((x > y) - (x < y))
 
         m = types.ModuleType('m')
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def test_1(self): pass
             def test_2(self): pass
         m.Foo = Foo
@@ -1358,7 +1358,7 @@ class Test_TestLoader(unittest.TestCase):
         def reversed_cmp(x, y):
             return -((x > y) - (x < y))
 
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def test_1(self): pass
             def test_2(self): pass
 
@@ -1374,7 +1374,7 @@ class Test_TestLoader(unittest.TestCase):
     def test_sortTestMethodsUsing__default_value(self):
         loader = unittest.TestLoader()
 
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def test_2(self): pass
             def test_3(self): pass
             def test_1(self): pass
@@ -1388,7 +1388,7 @@ class Test_TestLoader(unittest.TestCase):
     # XXX How is this different from reassigning cmp? Are the tests returned
     # in a random order or something? This behaviour should die
     def test_sortTestMethodsUsing__None(self):
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def test_1(self): pass
             def test_2(self): pass
 
@@ -1406,7 +1406,7 @@ class Test_TestLoader(unittest.TestCase):
 
     # "Callable object that constructs a test suite from a list of tests."
     def test_suiteClass__loadTestsFromTestCase(self):
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def test_1(self): pass
             def test_2(self): pass
             def foo_bar(self): pass
@@ -1421,7 +1421,7 @@ class Test_TestLoader(unittest.TestCase):
     # all TestLoader.loadTestsFrom* methods respect it. Let's make sure
     def test_suiteClass__loadTestsFromModule(self):
         m = types.ModuleType('m')
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def test_1(self): pass
             def test_2(self): pass
             def foo_bar(self): pass
@@ -1437,7 +1437,7 @@ class Test_TestLoader(unittest.TestCase):
     # all TestLoader.loadTestsFrom* methods respect it. Let's make sure
     def test_suiteClass__loadTestsFromName(self):
         m = types.ModuleType('m')
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def test_1(self): pass
             def test_2(self): pass
             def foo_bar(self): pass
@@ -1453,7 +1453,7 @@ class Test_TestLoader(unittest.TestCase):
     # all TestLoader.loadTestsFrom* methods respect it. Let's make sure
     def test_suiteClass__loadTestsFromNames(self):
         m = types.ModuleType('m')
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             def test_1(self): pass
             def test_2(self): pass
             def foo_bar(self): pass
@@ -1475,7 +1475,7 @@ class Test_TestLoader(unittest.TestCase):
         def noop(arg):
             pass
 
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
             pass
 
         setattr(Foo, 'test_partial', functools.partial(noop, None))
@@ -1486,11 +1486,11 @@ class Test_TestLoader(unittest.TestCase):
         self.assertEqual(loader.getTestCaseNames(Foo), test_names)
 
 
-class TestObsoleteFunctions(unittest.TestCase):
-    class MyTestSuite(unittest.TestSuite):
+klasse TestObsoleteFunctions(unittest.TestCase):
+    klasse MyTestSuite(unittest.TestSuite):
         pass
 
-    class MyTestCase(unittest.TestCase):
+    klasse MyTestCase(unittest.TestCase):
         def check_1(self): pass
         def check_2(self): pass
         def test(self): pass

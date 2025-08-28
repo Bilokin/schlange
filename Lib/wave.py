@@ -9,7 +9,7 @@ The open file pointer must have methods read(), seek(), and close().
 When the setpos() and rewind() methods are not used, the seek()
 method is not  necessary.
 
-This returns an instance of a class with the following public methods:
+This returns an instance of a klasse with the following public methods:
       getnchannels()  -- returns number of audio channels (1 for
                          mono, 2 for stereo)
       getsampwidth()  -- returns sample width in bytes
@@ -28,7 +28,7 @@ This returns an instance of a class with the following public methods:
 The position returned by tell() and the position given to setpos()
 are compatible and have nothing to do with the actual position in the
 file.
-The close() method is called automatically when the class instance
+The close() method is called automatically when the klasse instance
 is destroyed.
 
 Writing WAVE files:
@@ -37,7 +37,7 @@ where file is either the name of a file or an open file pointer.
 The open file pointer must have methods write(), tell(), seek(), and
 close().
 
-This returns an instance of a class with the following public methods:
+This returns an instance of a klasse with the following public methods:
       setnchannels(n) -- set the number of channels
       setsampwidth(n) -- set the sample width
       setframerate(n) -- set the frame rate
@@ -63,7 +63,7 @@ It is best to first set all parameters, perhaps possibly the
 compression type, and then write audio frames using writeframesraw.
 When all frames have been written, either call writeframes(b'') or
 close() to patch up the sizes in the header.
-The close() method is called automatically when the class instance
+The close() method is called automatically when the klasse instance
 is destroyed.
 """
 
@@ -75,7 +75,7 @@ import sys
 
 __all__ = ["open", "Error", "Wave_read", "Wave_write"]
 
-class Error(Exception):
+klasse Error(Exception):
     pass
 
 WAVE_FORMAT_PCM = 0x0001
@@ -99,7 +99,7 @@ def _byteswap(data, width):
     return bytes(swapped_data)
 
 
-class _Chunk:
+klasse _Chunk:
     def __init__(self, file, align=True, bigendian=True, inclheader=False):
         self.closed = False
         self.align = align      # whether to align to word (2-byte) boundaries
@@ -210,7 +210,7 @@ class _Chunk:
                 raise EOFError
 
 
-class Wave_read:
+klasse Wave_read:
     """Variables used in this class:
 
     These variables are available to the user though appropriate
@@ -237,7 +237,7 @@ class Wave_read:
     _fmt_chunk_read -- 1 iff the FMT chunk has been read
     _data_seek_needed -- 1 iff positioned correctly in audio
               file for readframes()
-    _data_chunk -- instantiation of a chunk class for the DATA chunk
+    _data_chunk -- instantiation of a chunk klasse for the DATA chunk
     _framesize -- size of one frame in the file
     """
 
@@ -401,7 +401,7 @@ class Wave_read:
         self._compname = 'not compressed'
 
 
-class Wave_write:
+klasse Wave_write:
     """Variables used in this class:
 
     These variables are user settable through appropriate methods

@@ -7,7 +7,7 @@ from test.test_tkinter.support import AbstractTkTest, AbstractDefaultRootTest, r
 support.requires('gui')
 
 
-class MiscTest(AbstractTkTest, unittest.TestCase):
+klasse MiscTest(AbstractTkTest, unittest.TestCase):
 
     def test_image_types(self):
         image_types = self.root.image_types()
@@ -20,7 +20,7 @@ class MiscTest(AbstractTkTest, unittest.TestCase):
         self.assertIsInstance(image_names, tuple)
 
 
-class DefaultRootTest(AbstractDefaultRootTest, unittest.TestCase):
+klasse DefaultRootTest(AbstractDefaultRootTest, unittest.TestCase):
 
     def test_image_types(self):
         self.assertRaises(RuntimeError, tkinter.image_types)
@@ -61,7 +61,7 @@ class DefaultRootTest(AbstractDefaultRootTest, unittest.TestCase):
         self.assertRaises(RuntimeError, tkinter.PhotoImage)
 
 
-class BitmapImageTest(AbstractTkTest, unittest.TestCase):
+klasse BitmapImageTest(AbstractTkTest, unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -153,7 +153,7 @@ class BitmapImageTest(AbstractTkTest, unittest.TestCase):
             image.configure(spam=print)
 
 
-class PhotoImageTest(AbstractTkTest, unittest.TestCase):
+klasse PhotoImageTest(AbstractTkTest, unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):

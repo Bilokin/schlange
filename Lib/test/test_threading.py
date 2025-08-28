@@ -65,7 +65,7 @@ def restore_default_excepthook(testcase):
 
 
 # A trivial mutable counter.
-class Counter(object):
+klasse Counter(object):
     def __init__(self):
         self.value = 0
     def inc(self):
@@ -75,7 +75,7 @@ class Counter(object):
     def get(self):
         return self.value
 
-class TestThread(threading.Thread):
+klasse TestThread(threading.Thread):
     def __init__(self, name, testcase, sema, mutex, nrunning):
         threading.Thread.__init__(self, name=name)
         self.testcase = testcase
@@ -108,7 +108,7 @@ class TestThread(threading.Thread):
                           (self.name, self.nrunning.get()))
 
 
-class BaseTestCase(unittest.TestCase):
+klasse BaseTestCase(unittest.TestCase):
     def setUp(self):
         self._threads = threading_helper.threading_setup()
 
@@ -117,7 +117,7 @@ class BaseTestCase(unittest.TestCase):
         test.support.reap_children()
 
 
-class ThreadTests(BaseTestCase):
+klasse ThreadTests(BaseTestCase):
     maxDiff = 9999
 
     @cpython_only
@@ -188,7 +188,7 @@ class ThreadTests(BaseTestCase):
         # Intentionally disallow subclasses of threading.Lock because they have
         # never been allowed, so why start now just because the type is public?
         with self.assertRaises(TypeError):
-            class MyLock(threading.Lock): pass
+            klasse MyLock(threading.Lock): pass
 
     def test_lock_or_none(self):
         import types
@@ -329,7 +329,7 @@ class ThreadTests(BaseTestCase):
         set_async_exc = ctypes.pythonapi.PyThreadState_SetAsyncExc
         set_async_exc.argtypes = (ctypes.c_ulong, ctypes.py_object)
 
-        class AsyncExc(Exception):
+        klasse AsyncExc(Exception):
             pass
 
         exception = ctypes.py_object(AsyncExc)
@@ -364,7 +364,7 @@ class ThreadTests(BaseTestCase):
         worker_started = threading.Event()
         worker_saw_exception = threading.Event()
 
-        class Worker(threading.Thread):
+        klasse Worker(threading.Thread):
             def run(self):
                 self.id = threading.get_ident()
                 self.finished = False
@@ -444,8 +444,8 @@ class ThreadTests(BaseTestCase):
             ready.acquire()
 
             # Module globals are cleared before __del__ is run
-            # So we save the functions in class dict
-            class C:
+            # So we save the functions in klasse dict
+            klasse C:
                 ensure = ctypes.pythonapi.PyGILState_Ensure
                 release = ctypes.pythonapi.PyGILState_Release
                 def __del__(self):
@@ -573,7 +573,7 @@ class ThreadTests(BaseTestCase):
         assert not thread.is_alive()
 
     def test_no_refcycle_through_target(self):
-        class RunSelfFunction(object):
+        klasse RunSelfFunction(object):
             def __init__(self, should_raise):
                 # The links in this refcycle from Thread back to self
                 # should be cleaned up when the thread completes.
@@ -862,7 +862,7 @@ class ThreadTests(BaseTestCase):
             main_thread = threading.current_thread()
             assert main_thread is threading.main_thread()  # sanity check
 
-            class RefCycle:
+            klasse RefCycle:
                 def __init__(self):
                     self.cycle = self
 
@@ -898,7 +898,7 @@ class ThreadTests(BaseTestCase):
                 seconds = random.random() * 0.010
                 time.sleep(seconds)
 
-            class Sleeper:
+            klasse Sleeper:
                 def __del__(self):
                     random_sleep()
 
@@ -1088,7 +1088,7 @@ class ThreadTests(BaseTestCase):
         rc, out, err = assert_python_ok("-c", """if 1:
             import threading
 
-            class Atexit:
+            klasse Atexit:
                 def __del__(self):
                     print("thread_dict.atexit = %r" % thread_dict.atexit)
 
@@ -1104,7 +1104,7 @@ class ThreadTests(BaseTestCase):
         # run, regardless of whether it was callable. The correct behaviour
         # is for a thread to do nothing if its target is None, and to call
         # the target otherwise.
-        class BooleanTarget(object):
+        klasse BooleanTarget(object):
             def __init__(self):
                 self.ran = False
             def __bool__(self):
@@ -1166,7 +1166,7 @@ class ThreadTests(BaseTestCase):
             def f():
                 print("shouldn't be printed")
 
-            class AtFinalization:
+            klasse AtFinalization:
                 def __del__(self):
                     print("OK")
                     _thread.start_new_thread(f, ())
@@ -1193,7 +1193,7 @@ class ThreadTests(BaseTestCase):
                             pass
 
 
-                    class Cycle:
+                    klasse Cycle:
                         def __init__(self):
                             self.self_ref = self
                             self.thr = threading.Thread(
@@ -1227,7 +1227,7 @@ class ThreadTests(BaseTestCase):
             def set_event():
                 done.set()
 
-            class Cycle:
+            klasse Cycle:
                 def __init__(self):
                     self.self_ref = self
                     self.thr = threading.Thread(target=set_event, daemon=True)
@@ -1270,7 +1270,7 @@ class ThreadTests(BaseTestCase):
 
             uncontested_lock = threading.{lock_class_name}()
 
-            class Cycle:
+            klasse Cycle:
                 def __init__(self):
                     self.self_ref = self
                     self.thr = threading.Thread(
@@ -1430,7 +1430,7 @@ class ThreadTests(BaseTestCase):
         self.assertEqual(len(native_ids), 2)
         self.assertNotEqual(native_ids[0], native_ids[1])
 
-class ThreadJoinOnShutdown(BaseTestCase):
+klasse ThreadJoinOnShutdown(BaseTestCase):
 
     def _run_and_join(self, script):
         script = """if 1:
@@ -1636,7 +1636,7 @@ class ThreadJoinOnShutdown(BaseTestCase):
                 t.join()
 
 
-class SubinterpThreadingTests(BaseTestCase):
+klasse SubinterpThreadingTests(BaseTestCase):
     def pipe(self):
         r, w = os.pipe()
         self.addCleanup(os.close, r)
@@ -1689,7 +1689,7 @@ class SubinterpThreadingTests(BaseTestCase):
                 seconds = random.random() * 0.010
                 time.sleep(seconds)
 
-            class Sleeper:
+            klasse Sleeper:
                 def __del__(self):
                     random_sleep()
 
@@ -1834,7 +1834,7 @@ class SubinterpThreadingTests(BaseTestCase):
             self.assertIn('RuntimeError', err)
 
 
-class ThreadingExceptionTests(BaseTestCase):
+klasse ThreadingExceptionTests(BaseTestCase):
     # A RuntimeError should be raised if Thread.start() is called
     # multiple times.
     def test_start_thread_again(self):
@@ -2009,7 +2009,7 @@ class ThreadingExceptionTests(BaseTestCase):
         def bare_raise():
             raise
 
-        class Issue27558(threading.Thread):
+        klasse Issue27558(threading.Thread):
             exc = None
 
             def run(self):
@@ -2060,12 +2060,12 @@ class ThreadingExceptionTests(BaseTestCase):
         self.assertEqual(err, b"")
 
 
-class ThreadRunFail(threading.Thread):
+klasse ThreadRunFail(threading.Thread):
     def run(self):
         raise ValueError("run failed")
 
 
-class ExceptHookTests(BaseTestCase):
+klasse ExceptHookTests(BaseTestCase):
     def setUp(self):
         restore_default_excepthook(self)
         super().setUp()
@@ -2106,7 +2106,7 @@ class ExceptHookTests(BaseTestCase):
         self.assertIn('ValueError: bug', stderr)
 
     def test_system_exit(self):
-        class ThreadExit(threading.Thread):
+        klasse ThreadExit(threading.Thread):
             def run(self):
                 sys.exit(1)
 
@@ -2182,7 +2182,7 @@ class ExceptHookTests(BaseTestCase):
         self.assertEqual(custom_hook_output, "Running a thread failed\n")
 
 
-class TimerTests(BaseTestCase):
+klasse TimerTests(BaseTestCase):
 
     def setUp(self):
         BaseTestCase.setUp(self)
@@ -2210,14 +2210,14 @@ class TimerTests(BaseTestCase):
         self.callback_args.append((args[:], kwargs.copy()))
         self.callback_event.set()
 
-class LockTests(lock_tests.LockTests):
+klasse LockTests(lock_tests.LockTests):
     locktype = staticmethod(threading.Lock)
 
-class PyRLockTests(lock_tests.RLockTests):
+klasse PyRLockTests(lock_tests.RLockTests):
     locktype = staticmethod(threading._PyRLock)
 
 @unittest.skipIf(threading._CRLock is None, 'RLock not implemented in C')
-class CRLockTests(lock_tests.RLockTests):
+klasse CRLockTests(lock_tests.RLockTests):
     locktype = staticmethod(threading._CRLock)
 
     def test_signature(self):  # gh-102029
@@ -2235,7 +2235,7 @@ class CRLockTests(lock_tests.RLockTests):
                 self.assertRaises(TypeError, threading.RLock, *args, **kwargs)
 
         # Subtypes with custom `__init__` are allowed (but, not recommended):
-        class CustomRLock(self.locktype):
+        klasse CustomRLock(self.locktype):
             def __init__(self, a, *, b) -> None:
                 super().__init__()
 
@@ -2243,10 +2243,10 @@ class CRLockTests(lock_tests.RLockTests):
             CustomRLock(1, b=2)
         self.assertEqual(warnings_log, [])
 
-class EventTests(lock_tests.EventTests):
+klasse EventTests(lock_tests.EventTests):
     eventtype = staticmethod(threading.Event)
 
-class ConditionAsRLockTests(lock_tests.RLockTests):
+klasse ConditionAsRLockTests(lock_tests.RLockTests):
     # Condition uses an RLock by default and exports its API.
     locktype = staticmethod(threading.Condition)
 
@@ -2256,20 +2256,20 @@ class ConditionAsRLockTests(lock_tests.RLockTests):
     def test_recursion_count(self):
         self.skipTest("Condition does not expose _recursion_count()")
 
-class ConditionTests(lock_tests.ConditionTests):
+klasse ConditionTests(lock_tests.ConditionTests):
     condtype = staticmethod(threading.Condition)
 
-class SemaphoreTests(lock_tests.SemaphoreTests):
+klasse SemaphoreTests(lock_tests.SemaphoreTests):
     semtype = staticmethod(threading.Semaphore)
 
-class BoundedSemaphoreTests(lock_tests.BoundedSemaphoreTests):
+klasse BoundedSemaphoreTests(lock_tests.BoundedSemaphoreTests):
     semtype = staticmethod(threading.BoundedSemaphore)
 
-class BarrierTests(lock_tests.BarrierTests):
+klasse BarrierTests(lock_tests.BarrierTests):
     barriertype = staticmethod(threading.Barrier)
 
 
-class MiscTestCase(unittest.TestCase):
+klasse MiscTestCase(unittest.TestCase):
     def test__all__(self):
         restore_default_excepthook(self)
 
@@ -2383,7 +2383,7 @@ class MiscTestCase(unittest.TestCase):
         self.assertEqual(name2, "new name")
 
 
-class InterruptMainTests(unittest.TestCase):
+klasse InterruptMainTests(unittest.TestCase):
     def check_interrupt_main_with_signal_handler(self, signum):
         def handler(signum, frame):
             1/0
@@ -2464,7 +2464,7 @@ class InterruptMainTests(unittest.TestCase):
         self.assertTrue(interrupted[0])
 
 
-class AtexitTests(unittest.TestCase):
+klasse AtexitTests(unittest.TestCase):
 
     def test_atexit_output(self):
         rc, out, err = assert_python_ok("-c", """if True:

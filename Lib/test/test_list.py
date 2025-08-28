@@ -8,7 +8,7 @@ from test.support.script_helper import assert_python_failure, assert_python_ok
 import pickle
 import unittest
 
-class ListTest(list_tests.CommonTest):
+klasse ListTest(list_tests.CommonTest):
     type2test = list
 
     def test_basic(self):
@@ -51,7 +51,7 @@ class ListTest(list_tests.CommonTest):
             list(sequence=[])
 
     def test_keywords_in_subclass(self):
-        class subclass(list):
+        klasse subclass(list):
             pass
         u = subclass([1, 2])
         self.assertIs(type(u), subclass)
@@ -59,7 +59,7 @@ class ListTest(list_tests.CommonTest):
         with self.assertRaises(TypeError):
             subclass(sequence=())
 
-        class subclass_with_init(list):
+        klasse subclass_with_init(list):
             def __init__(self, seq, newarg=None):
                 super().__init__(seq)
                 self.newarg = newarg
@@ -68,7 +68,7 @@ class ListTest(list_tests.CommonTest):
         self.assertEqual(list(u), [1, 2])
         self.assertEqual(u.newarg, 3)
 
-        class subclass_with_new(list):
+        klasse subclass_with_new(list):
             def __new__(cls, seq, newarg=None):
                 self = super().__new__(cls, seq)
                 self.newarg = newarg
@@ -119,7 +119,7 @@ class ListTest(list_tests.CommonTest):
             lst *= size
 
     def test_repr_mutate(self):
-        class Obj:
+        klasse Obj:
             @staticmethod
             def __repr__():
                 try:
@@ -222,23 +222,23 @@ class ListTest(list_tests.CommonTest):
         # Issue 8847: In the PGO build, the MSVC linker's COMDAT folding
         # optimization causes failures in code that relies on distinct
         # function addresses.
-        class L(list): pass
+        klasse L(list): pass
         with self.assertRaises(TypeError):
             (3,) + L([1,2])
 
     def test_equal_operator_modifying_operand(self):
         # test fix for seg fault reported in bpo-38588 part 2.
-        class X:
+        klasse X:
             def __eq__(self,other) :
                 list2.clear()
                 return NotImplemented
 
-        class Y:
+        klasse Y:
             def __eq__(self, other):
                 list1.clear()
                 return NotImplemented
 
-        class Z:
+        klasse Z:
             def __eq__(self, other):
                 list3.clear()
                 return NotImplemented
@@ -253,7 +253,7 @@ class ListTest(list_tests.CommonTest):
 
     def test_lt_operator_modifying_operand(self):
         # See gh-120298
-        class evil:
+        klasse evil:
             def __lt__(self, other):
                 other.clear()
                 return NotImplemented
@@ -264,7 +264,7 @@ class ListTest(list_tests.CommonTest):
 
     def test_list_index_modifing_operand(self):
         # See gh-120384
-        class evil:
+        klasse evil:
             def __init__(self, lst):
                 self.lst = lst
             def __iter__(self):
@@ -288,7 +288,7 @@ class ListTest(list_tests.CommonTest):
         # bpo-38610: The count(), index(), and remove() methods were not
         # holding strong references to list elements while calling
         # PyObject_RichCompareBool().
-        class X:
+        klasse X:
             def __eq__(self, other):
                 lst.clear()
                 return NotImplemented
@@ -297,7 +297,7 @@ class ListTest(list_tests.CommonTest):
         with self.assertRaises(ValueError):
             lst.index(lst)
 
-        class L(list):
+        klasse L(list):
             def __eq__(self, other):
                 str(other)
                 return NotImplemented

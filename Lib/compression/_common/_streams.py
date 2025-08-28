@@ -6,7 +6,7 @@ import sys
 BUFFER_SIZE = io.DEFAULT_BUFFER_SIZE  # Compressed data read chunk size
 
 
-class BaseStream(io.BufferedIOBase):
+klasse BaseStream(io.BufferedIOBase):
     """Mode-checking helper functions."""
 
     def _check_not_closed(self):
@@ -30,7 +30,7 @@ class BaseStream(io.BufferedIOBase):
                                           "does not support seeking")
 
 
-class DecompressReader(io.RawIOBase):
+klasse DecompressReader(io.RawIOBase):
     """Adapts the decompressor API to a RawIOBase reader API"""
 
     def readable(self):
@@ -52,7 +52,7 @@ class DecompressReader(io.RawIOBase):
         self._decomp_args = decomp_args
         self._decompressor = self._decomp_factory(**self._decomp_args)
 
-        # Exception class to catch from decompressor signifying invalid
+        # Exception klasse to catch from decompressor signifying invalid
         # trailing data to ignore
         self._trailing_error = trailing_error
 

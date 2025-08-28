@@ -119,7 +119,7 @@ def main(del_exitfunc=False):
 
     In the Python subprocess, RPCServer is instantiated with handlerclass
     MyHandler, which inherits register/unregister methods from RPCHandler via
-    the mix-in class SocketIO.
+    the mix-in klasse SocketIO.
 
     When the RPCServer 'server' is instantiated, the TCPServer initialization
     creates an instance of run.MyHandler and calls its handle() method.
@@ -399,7 +399,7 @@ def uninstall_recursionlimit_wrappers():
         sys.setrecursionlimit(sys.getrecursionlimit() - RECURSIONLIMIT_DELTA)
 
 
-class MyRPCServer(rpc.RPCServer):
+klasse MyRPCServer(rpc.RPCServer):
 
     def handle_error(self, request, client_address):
         """Override RPCServer method for IDLE
@@ -439,7 +439,7 @@ class MyRPCServer(rpc.RPCServer):
 
 # Pseudofiles for shell-remote communication (also used in pyshell)
 
-class StdioFile(io.TextIOBase):
+klasse StdioFile(io.TextIOBase):
 
     def __init__(self, shell, tags, encoding='utf-8', errors='strict'):
         self.shell = shell
@@ -466,7 +466,7 @@ class StdioFile(io.TextIOBase):
         return True
 
 
-class StdOutputFile(StdioFile):
+klasse StdOutputFile(StdioFile):
 
     def writable(self):
         return True
@@ -478,7 +478,7 @@ class StdOutputFile(StdioFile):
         return self.shell.write(s, self.tags)
 
 
-class StdInputFile(StdioFile):
+klasse StdInputFile(StdioFile):
     _line_buffer = ''
 
     def readable(self):
@@ -525,7 +525,7 @@ class StdInputFile(StdioFile):
         self.shell.close()
 
 
-class MyHandler(rpc.RPCHandler):
+klasse MyHandler(rpc.RPCHandler):
 
     def handle(self):
         """Override base method"""
@@ -570,7 +570,7 @@ class MyHandler(rpc.RPCHandler):
         thread.interrupt_main()
 
 
-class Executive:
+klasse Executive:
 
     def __init__(self, rpchandler):
         self.rpchandler = rpchandler

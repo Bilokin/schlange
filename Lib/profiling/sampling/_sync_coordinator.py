@@ -13,22 +13,22 @@ import time
 from typing import List, NoReturn
 
 
-class CoordinatorError(Exception):
+klasse CoordinatorError(Exception):
     """Base exception for coordinator errors."""
     pass
 
 
-class ArgumentError(CoordinatorError):
+klasse ArgumentError(CoordinatorError):
     """Raised when invalid arguments are provided."""
     pass
 
 
-class SyncError(CoordinatorError):
+klasse SyncError(CoordinatorError):
     """Raised when synchronization with profiler fails."""
     pass
 
 
-class TargetError(CoordinatorError):
+klasse TargetError(CoordinatorError):
     """Raised when target execution fails."""
     pass
 

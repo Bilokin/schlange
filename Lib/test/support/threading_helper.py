@@ -159,7 +159,7 @@ def start_threads(threads, unlock=None):
                 raise AssertionError('Unable to join %d threads' % len(started))
 
 
-class catch_threading_exception:
+klasse catch_threading_exception:
     """
     Context manager catching threading.Thread exception using
     threading.excepthook.

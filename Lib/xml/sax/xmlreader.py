@@ -8,7 +8,7 @@ from ._exceptions import SAXNotSupportedException, SAXNotRecognizedException
 
 # ===== XMLREADER =====
 
-class XMLReader:
+klasse XMLReader:
     """Interface for reading an XML document using callbacks.
 
     XMLReader is the interface that an XML parser's SAX2 driver must
@@ -88,7 +88,7 @@ class XMLReader:
         "Sets the value of a SAX2 property."
         raise SAXNotRecognizedException("Property '%s' not recognized" % name)
 
-class IncrementalParser(XMLReader):
+klasse IncrementalParser(XMLReader):
     """This interface adds three extra methods to the XMLReader
     interface that allow XML parsers to support incremental
     parsing. Support for this interface is optional, since not all
@@ -103,7 +103,7 @@ class IncrementalParser(XMLReader):
     Note that these methods must _not_ be called during parsing, that
     is, after parse has been called and before it returns.
 
-    By default, the class also implements the parse method of the XMLReader
+    By default, the klasse also implements the parse method of the XMLReader
     interface using the feed, close and reset methods of the
     IncrementalParser interface as a convenience to SAX 2.0 driver
     writers."""
@@ -160,7 +160,7 @@ class IncrementalParser(XMLReader):
 
 # ===== LOCATOR =====
 
-class Locator:
+klasse Locator:
     """Interface for associating a SAX event with a document
     location. A locator object will return valid results only during
     calls to DocumentHandler methods; at any other time, the
@@ -184,15 +184,15 @@ class Locator:
 
 # ===== INPUTSOURCE =====
 
-class InputSource:
+klasse InputSource:
     """Encapsulation of the information needed by the XMLReader to
     read entities.
 
-    This class may include information about the public identifier,
+    This klasse may include information about the public identifier,
     system identifier, byte stream (possibly with character encoding
     information) and/or the character stream of an entity.
 
-    Applications will create objects of this class for use in the
+    Applications will create objects of this klasse for use in the
     XMLReader.parse method and for returning from
     EntityResolver.resolveEntity.
 
@@ -273,7 +273,7 @@ class InputSource:
 
 # ===== ATTRIBUTESIMPL =====
 
-class AttributesImpl:
+klasse AttributesImpl:
 
     def __init__(self, attrs):
         """Non-NS-aware implementation.
@@ -335,7 +335,7 @@ class AttributesImpl:
 
 # ===== ATTRIBUTESNSIMPL =====
 
-class AttributesNSImpl(AttributesImpl):
+klasse AttributesNSImpl(AttributesImpl):
 
     def __init__(self, attrs, qnames):
         """NS-aware implementation.

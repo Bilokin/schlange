@@ -21,7 +21,7 @@ try:
 except ImportError:
     pass
 
-class EventQueueTestBase:
+klasse EventQueueTestBase:
     """OS-independent mixin"""
     def make_eventqueue(self) -> base_eventqueue.BaseEventQueue:
         raise NotImplementedError()
@@ -174,13 +174,13 @@ class EventQueueTestBase:
         self.assertEqual(eq.get(), _event("key", "a"))
 
 
-class EmptyTermInfo(terminfo.TermInfo):
+klasse EmptyTermInfo(terminfo.TermInfo):
     def get(self, cap: str) -> bytes:
         return b""
 
 
 @unittest.skipIf(support.MS_WINDOWS, "No Unix event queue on Windows")
-class TestUnixEventQueue(EventQueueTestBase, unittest.TestCase):
+klasse TestUnixEventQueue(EventQueueTestBase, unittest.TestCase):
     def setUp(self):
         self.file = tempfile.TemporaryFile()
 
@@ -193,6 +193,6 @@ class TestUnixEventQueue(EventQueueTestBase, unittest.TestCase):
 
 
 @unittest.skipUnless(support.MS_WINDOWS, "No Windows event queue on Unix")
-class TestWindowsEventQueue(EventQueueTestBase, unittest.TestCase):
+klasse TestWindowsEventQueue(EventQueueTestBase, unittest.TestCase):
     def make_eventqueue(self) -> base_eventqueue.BaseEventQueue:
         return windows_eventqueue.EventQueue("utf-8")

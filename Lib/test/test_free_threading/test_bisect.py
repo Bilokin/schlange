@@ -10,7 +10,7 @@ NTHREADS = 4
 OBJECT_COUNT = 500
 
 
-class TestBase:
+klasse TestBase:
     def do_racing_insort(self, insert_method):
         def insert(data):
             for _ in range(OBJECT_COUNT):
@@ -43,12 +43,12 @@ class TestBase:
 
 
 @threading_helper.requires_working_threading()
-class TestPyBisect(unittest.TestCase, TestBase):
+klasse TestPyBisect(unittest.TestCase, TestBase):
     mod = py_bisect
 
 
 @threading_helper.requires_working_threading()
-class TestCBisect(unittest.TestCase, TestBase):
+klasse TestCBisect(unittest.TestCase, TestBase):
     mod = c_bisect
 
 

@@ -6,7 +6,7 @@ import unittest
 from test import support
 
 
-class TestMultipleFeatures(unittest.TestCase):
+klasse TestMultipleFeatures(unittest.TestCase):
 
     def test_unicode_literals(self):
         self.assertIsInstance("", str)

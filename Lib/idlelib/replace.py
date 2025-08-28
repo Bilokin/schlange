@@ -29,7 +29,7 @@ def replace(text, insert_tags=None):
     dialog.open(text, searchphrase, insert_tags=insert_tags)
 
 
-class ReplaceDialog(SearchDialogBase):
+klasse ReplaceDialog(SearchDialogBase):
     "Dialog for finding and replacing a pattern in text."
 
     title = "Replace Dialog"

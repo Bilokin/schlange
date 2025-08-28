@@ -6,14 +6,14 @@ from test.support import import_helper
 _testinternalcapi = import_helper.import_module("_testinternalcapi")
 
 
-class TestRareEventCounters(unittest.TestCase):
+klasse TestRareEventCounters(unittest.TestCase):
     def setUp(self):
         _testinternalcapi.reset_rare_event_counters()
 
     def test_set_class(self):
-        class A:
+        klasse A:
             pass
-        class B:
+        klasse B:
             pass
         a = A()
 
@@ -25,11 +25,11 @@ class TestRareEventCounters(unittest.TestCase):
         )
 
     def test_set_bases(self):
-        class A:
+        klasse A:
             pass
-        class B:
+        klasse B:
             pass
-        class C(B):
+        klasse C(B):
             pass
 
         orig_counter = _testinternalcapi.get_rare_event_counters()["set_bases"]
@@ -78,7 +78,7 @@ class TestRareEventCounters(unittest.TestCase):
             )
 
 
-class TestOptimizerSymbols(unittest.TestCase):
+klasse TestOptimizerSymbols(unittest.TestCase):
 
     @unittest.skipUnless(hasattr(_testinternalcapi, "uop_symbols_test"),
                 "requires _testinternalcapi.uop_symbols_test")

@@ -5,7 +5,7 @@ from ctypes import (Structure, Union, POINTER, cast, sizeof, addressof,
                     c_byte, c_short, c_int)
 
 
-class Test(unittest.TestCase):
+klasse Test(unittest.TestCase):
     def test_array2pointer(self):
         array = (c_int * 3)(42, 17, 2)
 
@@ -88,10 +88,10 @@ class Test(unittest.TestCase):
         array = array_type()
         self.assertRaises(TypeError, cast, array, None)
         self.assertRaises(TypeError, cast, array, array_type)
-        class Struct(Structure):
+        klasse Struct(Structure):
             _fields_ = [("a", c_int)]
         self.assertRaises(TypeError, cast, array, Struct)
-        class MyUnion(Union):
+        klasse MyUnion(Union):
             _fields_ = [("a", c_int)]
         self.assertRaises(TypeError, cast, array, MyUnion)
 

@@ -4,7 +4,7 @@ import unittest
 import warnings
 
 
-class RelativeImports:
+klasse RelativeImports:
 
     """PEP 328 introduced relative imports. This allows for imports to occur
     from within a package without having to specify the actual package name.

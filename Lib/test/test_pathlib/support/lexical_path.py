@@ -15,7 +15,7 @@ else:
     from pathlib._os import vfspath
 
 
-class LexicalPath(_JoinablePath):
+klasse LexicalPath(_JoinablePath):
     __slots__ = ('_segments',)
     parser = os.path
 
@@ -42,11 +42,11 @@ class LexicalPath(_JoinablePath):
         return type(self)(*pathsegments)
 
 
-class LexicalPosixPath(LexicalPath):
+klasse LexicalPosixPath(LexicalPath):
     __slots__ = ()
     parser = posixpath
 
 
-class LexicalWindowsPath(LexicalPath):
+klasse LexicalWindowsPath(LexicalPath):
     __slots__ = ()
     parser = ntpath

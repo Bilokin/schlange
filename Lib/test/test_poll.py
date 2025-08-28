@@ -28,7 +28,7 @@ def find_ready_matching(ready, flag):
             match.append(fd)
     return match
 
-class PollTests(unittest.TestCase):
+klasse PollTests(unittest.TestCase):
 
     def test_poll1(self):
         # Basic functional test of poll object
@@ -110,10 +110,10 @@ class PollTests(unittest.TestCase):
 
         # Test error cases
         pollster = select.poll()
-        class Nope:
+        klasse Nope:
             pass
 
-        class Almost:
+        klasse Almost:
             def fileno(self):
                 return 'fileno'
 

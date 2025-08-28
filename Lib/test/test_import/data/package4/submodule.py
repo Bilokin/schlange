@@ -1,3 +1,3 @@
 attr = 'submodule'
-class A:
+klasse A:
     attr = 'submodule'

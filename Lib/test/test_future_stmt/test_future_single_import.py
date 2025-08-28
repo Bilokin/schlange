@@ -11,7 +11,7 @@ def nester():
     return inner()
 
 
-class TestFuture(unittest.TestCase):
+klasse TestFuture(unittest.TestCase):
 
     def test_floor_div_operator(self):
         self.assertEqual(7 // 2, 3)

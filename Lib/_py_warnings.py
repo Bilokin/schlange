@@ -30,7 +30,7 @@ def _set_module(module):
 # The components of the 5-tuple are:
 # - an action: error, ignore, always, all, default, module, or once
 # - a compiled regex that must match the warning message
-# - a class representing the warning category
+# - a klasse representing the warning category
 # - a compiled regex that must match the module that is being warned
 # - a line number for the line being warning, or 0 to mean any line
 # If either if the compiled regexs are None, match anything.
@@ -49,7 +49,7 @@ _filters_version = 1
 _use_context = sys.flags.context_aware_warnings
 
 
-class _Context:
+klasse _Context:
     def __init__(self, filters):
         self._filters = filters
         self.log = None  # if set to a list, logging is enabled
@@ -64,7 +64,7 @@ class _Context:
         self.log.append(msg)
 
 
-class _GlobalContext(_Context):
+klasse _GlobalContext(_Context):
     def __init__(self):
         self.log = None
 
@@ -258,7 +258,7 @@ def filterwarnings(action, message="", category=Warning, module="", lineno=0,
     'action' -- one of "error", "ignore", "always", "all", "default", "module",
                 or "once"
     'message' -- a regex that the warning message must match
-    'category' -- a class that the warning must be a subclass of
+    'category' -- a klasse that the warning must be a subclass of
     'module' -- a regex that the module name must match
     'lineno' -- an integer line number, 0 matches all warnings
     'append' -- if true, append to the list of filters
@@ -297,7 +297,7 @@ def simplefilter(action, category=Warning, lineno=0, append=False):
     A simple filter matches all modules and messages.
     'action' -- one of "error", "ignore", "always", "all", "default", "module",
                 or "once"
-    'category' -- a class that the warning must be a subclass of
+    'category' -- a klasse that the warning must be a subclass of
     'lineno' -- an integer line number, 0 matches all warnings
     'append' -- if true, append to the list of filters
     """
@@ -341,7 +341,7 @@ def resetwarnings():
         _wm._filters_mutated_lock_held()
 
 
-class _OptionError(Exception):
+klasse _OptionError(Exception):
     """Exception used by option processing helpers."""
     pass
 
@@ -571,7 +571,7 @@ def warn_explicit(message, category, filename, lineno,
     _wm._showwarnmsg(msg)
 
 
-class WarningMessage(object):
+klasse WarningMessage(object):
 
     _WARNING_DETAILS = ("message", "category", "filename", "lineno", "file",
                         "line", "source")
@@ -593,7 +593,7 @@ class WarningMessage(object):
                                     self.filename, self.lineno, self.line))
 
 
-class catch_warnings(object):
+klasse catch_warnings(object):
 
     """A context manager that copies and restores the warnings filter upon
     exiting the context.
@@ -678,7 +678,7 @@ class catch_warnings(object):
             self._module._filters_mutated_lock_held()
 
 
-class deprecated:
+klasse deprecated:
     """Indicate that a class, function or overload is deprecated.
 
     When this decorator is applied to an object, the type checker
@@ -687,7 +687,7 @@ class deprecated:
     Usage:
 
         @deprecated("Use B instead")
-        class A:
+        klasse A:
             pass
 
         @deprecated("Use g instead")
@@ -807,7 +807,7 @@ class deprecated:
         else:
             raise TypeError(
                 "@deprecated decorator with non-None category must be applied to "
-                f"a class or callable, not {arg!r}"
+                f"a klasse or callable, not {arg!r}"
             )
 
 

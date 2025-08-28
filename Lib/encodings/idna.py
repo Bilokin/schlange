@@ -175,7 +175,7 @@ def ToUnicode(label):
 
 ### Codec APIs
 
-class Codec(codecs.Codec):
+klasse Codec(codecs.Codec):
     def encode(self, input, errors='strict'):
 
         if errors != 'strict':
@@ -269,7 +269,7 @@ class Codec(codecs.Codec):
 
         return ".".join(result)+trailing_dot, len(input)
 
-class IncrementalEncoder(codecs.BufferedIncrementalEncoder):
+klasse IncrementalEncoder(codecs.BufferedIncrementalEncoder):
     def _buffer_encode(self, input, errors, final):
         if errors != 'strict':
             # IDNA is quite clear that implementations must be strict
@@ -313,7 +313,7 @@ class IncrementalEncoder(codecs.BufferedIncrementalEncoder):
         size += len(trailing_dot)
         return (bytes(result), size)
 
-class IncrementalDecoder(codecs.BufferedIncrementalDecoder):
+klasse IncrementalDecoder(codecs.BufferedIncrementalDecoder):
     def _buffer_decode(self, input, errors, final):
         if errors != 'strict':
             raise UnicodeError(f"Unsupported error handling: {errors}")
@@ -367,10 +367,10 @@ class IncrementalDecoder(codecs.BufferedIncrementalDecoder):
         size += len(trailing_dot)
         return (result, size)
 
-class StreamWriter(Codec,codecs.StreamWriter):
+klasse StreamWriter(Codec,codecs.StreamWriter):
     pass
 
-class StreamReader(Codec,codecs.StreamReader):
+klasse StreamReader(Codec,codecs.StreamReader):
     pass
 
 ### encodings module API

@@ -58,7 +58,7 @@ def interpreter_requires_environment():
     return __cached_interp_requires_environment
 
 
-class _PythonRunResult(collections.namedtuple("_PythonRunResult",
+klasse _PythonRunResult(collections.namedtuple("_PythonRunResult",
                                           ("rc", "out", "err"))):
     """Helper for reporting Python subprocess run results"""
     def fail(self, cmd_line):

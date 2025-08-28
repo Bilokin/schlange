@@ -17,7 +17,7 @@ import warnings
 def warnfun():
     warnings.warn('rw', RuntimeWarning)
 
-class TestWarnings(unittest.TestCase):
+klasse TestWarnings(unittest.TestCase):
     def test_other_unittest(self):
         self.assertAlmostEqual(2+2, 4)
         self.assertNotAlmostEqual(4+4, 2)

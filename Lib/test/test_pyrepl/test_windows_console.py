@@ -31,7 +31,7 @@ except ImportError:
 
 
 @force_not_colorized_test_class
-class WindowsConsoleTests(TestCase):
+klasse WindowsConsoleTests(TestCase):
     def console(self, events, **kwargs) -> Console:
         console = WindowsConsole()
         console.get_event = MagicMock(side_effect=events)
@@ -359,7 +359,7 @@ class WindowsConsoleTests(TestCase):
         con.restore()
 
 
-class WindowsConsoleGetEventTests(TestCase):
+klasse WindowsConsoleGetEventTests(TestCase):
     # Virtual-Key Codes: https://learn.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
     VK_BACK = 0x08
     VK_RETURN = 0x0D

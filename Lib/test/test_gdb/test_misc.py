@@ -26,7 +26,7 @@ HAS_PYUP_PYDOWN = gdb_has_frame_select()
 
 @unittest.skipIf(python_is_optimized(),
                  "Python was compiled with optimizations")
-class PyListTests(DebuggerTests):
+klasse PyListTests(DebuggerTests):
     def assertListing(self, expected, actual):
         self.assertEndsWith(actual, expected)
 
@@ -84,7 +84,7 @@ foo(1, 2, 3)
 """
 
 
-class StackNavigationTests(DebuggerTests):
+klasse StackNavigationTests(DebuggerTests):
     @unittest.skipUnless(HAS_PYUP_PYDOWN, "test requires py-up/py-down commands")
     @unittest.skipIf(python_is_optimized(),
                      "Python was compiled with optimizations")
@@ -128,7 +128,7 @@ $''')
 #[0-9]+ Frame 0x-?[0-9a-f]+, for file <string>, line 12, in baz \(args=\(1, 2, 3\)\)
 $''')
 
-class PyPrintTests(DebuggerTests):
+klasse PyPrintTests(DebuggerTests):
     @unittest.skipIf(python_is_optimized(),
                      "Python was compiled with optimizations")
     def test_basic_command(self):
@@ -163,7 +163,7 @@ class PyPrintTests(DebuggerTests):
         self.assertMultilineMatches(bt,
                                     r".*\nbuiltin 'len' = <built-in method len of module object at remote 0x-?[0-9a-f]+>\n.*")
 
-class PyLocalsTests(DebuggerTests):
+klasse PyLocalsTests(DebuggerTests):
     @unittest.skipIf(python_is_optimized(),
                      "Python was compiled with optimizations")
     def test_basic_command(self):

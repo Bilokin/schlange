@@ -49,7 +49,7 @@ def create_regex(
     return re.compile(pattern)
 
 
-class FormatCounterFormatter(string.Formatter):
+klasse FormatCounterFormatter(string.Formatter):
     """
     This counts how many instances of each formatter
     "replacement string" appear in the format string.
@@ -72,7 +72,7 @@ class FormatCounterFormatter(string.Formatter):
 VersionTuple = tuple[int, int]
 
 
-class Sentinels(enum.Enum):
+klasse Sentinels(enum.Enum):
     unspecified = "unspecified"
     unknown = "unknown"
 
@@ -85,7 +85,7 @@ unknown: Final = Sentinels.unknown
 
 
 # This one needs to be a distinct class, unlike the other two
-class Null:
+klasse Null:
     def __repr__(self) -> str:
         return '<Null>'
 

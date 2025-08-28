@@ -17,7 +17,7 @@ from tkinter.constants import RIGHT, LEFT, Y, BOTH
 __all__ = ['ScrolledText']
 
 
-class ScrolledText(Text):
+klasse ScrolledText(Text):
     def __init__(self, master=None, **kw):
         self.frame = Frame(master)
         self.vbar = Scrollbar(self.frame)

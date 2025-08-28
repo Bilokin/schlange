@@ -10,10 +10,10 @@ something  = sentinel.Something
 something_else  = sentinel.SomethingElse
 
 
-class SampleException(Exception): pass
+klasse SampleException(Exception): pass
 
 
-class WithTest(unittest.TestCase):
+klasse WithTest(unittest.TestCase):
 
     def test_with_statement(self):
         with patch('%s.something' % __name__, sentinel.Something2):
@@ -38,7 +38,7 @@ class WithTest(unittest.TestCase):
 
 
     def test_patch_object_with_statement(self):
-        class Foo(object):
+        klasse Foo(object):
             something = 'foo'
         original = Foo.something
         with patch.object(Foo, 'something'):
@@ -125,7 +125,7 @@ class WithTest(unittest.TestCase):
         self.assertEqual(foo, {})
 
     def test_double_patch_instance_method(self):
-        class C:
+        klasse C:
             def f(self): pass
 
         c = C()
@@ -139,7 +139,7 @@ class WithTest(unittest.TestCase):
         self.assertEqual(patch1.call_count, 1)
 
 
-class TestMockOpen(unittest.TestCase):
+klasse TestMockOpen(unittest.TestCase):
 
     def test_mock_open(self):
         mock = mock_open()

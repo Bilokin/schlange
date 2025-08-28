@@ -31,7 +31,7 @@ def set_gen_qualname(g, b):
 
 
 @unittest.skipUnless(Py_GIL_DISABLED, "Enable only in FT build")
-class TestFTGenerators(TestCase):
+klasse TestFTGenerators(TestCase):
     NUM_THREADS = 4
 
     def concurrent_write_with_func(self, func):

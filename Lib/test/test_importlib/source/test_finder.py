@@ -12,7 +12,7 @@ from test.support.import_helper import make_legacy_pyc
 import unittest
 
 
-class FinderTests(abc.FinderTests):
+klasse FinderTests(abc.FinderTests):
 
     """For a top-level module, it should just be found directly in the
     directory being searched. This is true for a directory with source
@@ -176,7 +176,7 @@ class FinderTests(abc.FinderTests):
             self.assertEqual(found, self.NOT_FOUND)
 
 
-class FinderTestsPEP451(FinderTests):
+klasse FinderTestsPEP451(FinderTests):
 
     NOT_FOUND = None
 
@@ -190,7 +190,7 @@ class FinderTestsPEP451(FinderTests):
  ) = util.test_both(FinderTestsPEP451, machinery=machinery)
 
 
-class FinderTestsPEP420(FinderTests):
+klasse FinderTestsPEP420(FinderTests):
 
     NOT_FOUND = (None, [])
 

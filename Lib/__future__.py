@@ -35,7 +35,7 @@ to use the feature in question, but may continue to use such imports.
 MandatoryRelease may also be None, meaning that a planned feature got
 dropped or that the release version is undetermined.
 
-Instances of class _Feature have two corresponding methods,
+Instances of klasse _Feature have two corresponding methods,
 .getOptionalRelease() and .getMandatoryRelease().
 
 CompilerFlag is the (bitfield) flag that should be passed in the fourth
@@ -78,7 +78,7 @@ CO_FUTURE_GENERATOR_STOP = 0x800000     # StopIteration becomes RuntimeError in 
 CO_FUTURE_ANNOTATIONS = 0x1000000       # annotations become strings at runtime
 
 
-class _Feature:
+klasse _Feature:
 
     def __init__(self, optionalRelease, mandatoryRelease, compiler_flag):
         self.optional = optionalRelease

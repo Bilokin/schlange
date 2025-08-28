@@ -17,7 +17,7 @@ src_base = dirname(dirname(dirname(__file__)))
 parser_dir = os.path.join(src_base, 'Parser')
 
 
-class TestAsdlParser(unittest.TestCase):
+klasse TestAsdlParser(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         # Loads the asdl module dynamically, since it's not in a real importable
@@ -100,7 +100,7 @@ class TestAsdlParser(unittest.TestCase):
         self.assertTrue(f2.seq)
 
     def test_visitor(self):
-        class CustomVisitor(self.asdl.VisitorBase):
+        klasse CustomVisitor(self.asdl.VisitorBase):
             def __init__(self):
                 super().__init__()
                 self.names_with_seq = []

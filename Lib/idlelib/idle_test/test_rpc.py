@@ -5,7 +5,7 @@ import unittest
 
 
 
-class CodePicklerTest(unittest.TestCase):
+klasse CodePicklerTest(unittest.TestCase):
 
     def test_pickle_unpickle(self):
         def f(): return a + b + c

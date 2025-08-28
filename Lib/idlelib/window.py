@@ -2,7 +2,7 @@ from tkinter import Toplevel, TclError
 import sys
 
 
-class WindowList:
+klasse WindowList:
 
     def __init__(self):
         self.dict = {}
@@ -58,7 +58,7 @@ register_callback = registry.register_callback
 unregister_callback = registry.unregister_callback
 
 
-class ListedToplevel(Toplevel):
+klasse ListedToplevel(Toplevel):
 
     def __init__(self, master, **kw):
         Toplevel.__init__(self, master, kw)

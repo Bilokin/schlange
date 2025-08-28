@@ -4,13 +4,13 @@ import collections
 from test import support
 
 
-class BasicTestMappingProtocol(unittest.TestCase):
-    # This base class can be used to check that an object conforms to the
+klasse BasicTestMappingProtocol(unittest.TestCase):
+    # This base klasse can be used to check that an object conforms to the
     # mapping protocol
 
     # Functions that can be useful to override to adapt to dictionary
     # semantics
-    type2test = None # which class is being tested (overwrite in subclasses)
+    type2test = None # which klasse is being tested (overwrite in subclasses)
 
     def _reference(self):
         """Return a dictionary of values which are invariant by storage
@@ -196,7 +196,7 @@ class BasicTestMappingProtocol(unittest.TestCase):
         self.assertRaises((TypeError, AttributeError), d.update, 42)
 
         outerself = self
-        class SimpleUserDict:
+        klasse SimpleUserDict:
             def __init__(self):
                 self.d = outerself.reference
             def keys(self):
@@ -209,19 +209,19 @@ class BasicTestMappingProtocol(unittest.TestCase):
         i2 = sorted(self.reference.items())
         self.assertEqual(i1, i2)
 
-        class Exc(Exception): pass
+        klasse Exc(Exception): pass
 
         d = self._empty_mapping()
-        class FailingUserDict:
+        klasse FailingUserDict:
             def keys(self):
                 raise Exc
         self.assertRaises(Exc, d.update, FailingUserDict())
 
         d.clear()
 
-        class FailingUserDict:
+        klasse FailingUserDict:
             def keys(self):
-                class BogonIter:
+                klasse BogonIter:
                     def __init__(self):
                         self.i = 1
                     def __iter__(self):
@@ -236,9 +236,9 @@ class BasicTestMappingProtocol(unittest.TestCase):
                 return key
         self.assertRaises(Exc, d.update, FailingUserDict())
 
-        class FailingUserDict:
+        klasse FailingUserDict:
             def keys(self):
-                class BogonIter:
+                klasse BogonIter:
                     def __init__(self):
                         self.i = ord('a')
                     def __iter__(self):
@@ -255,7 +255,7 @@ class BasicTestMappingProtocol(unittest.TestCase):
         self.assertRaises(Exc, d.update, FailingUserDict())
 
         d = self._empty_mapping()
-        class badseq(object):
+        klasse badseq(object):
             def __iter__(self):
                 return self
             def __next__(self):
@@ -302,7 +302,7 @@ class BasicTestMappingProtocol(unittest.TestCase):
         self.assertRaises(KeyError, d.pop, k)
 
 
-class TestMappingProtocol(BasicTestMappingProtocol):
+klasse TestMappingProtocol(BasicTestMappingProtocol):
     def test_constructor(self):
         BasicTestMappingProtocol.test_constructor(self)
         self.assertTrue(self._empty_mapping() is not self._empty_mapping())
@@ -409,7 +409,7 @@ class TestMappingProtocol(BasicTestMappingProtocol):
         d.update(self._full_mapping({1:2, 3:4, 5:6}).items())
         self.assertEqual(d, {1:2, 2:4, 3:4, 5:6})
 
-        class SimpleUserDict:
+        klasse SimpleUserDict:
             def __init__(self):
                 self.d = {1:1, 2:2, 3:3}
             def keys(self):
@@ -431,13 +431,13 @@ class TestMappingProtocol(BasicTestMappingProtocol):
             yield 1
         self.assertEqual(d.fromkeys(g()), {1:None})
         self.assertRaises(TypeError, {}.fromkeys, 3)
-        class dictlike(self.type2test): pass
+        klasse dictlike(self.type2test): pass
         self.assertEqual(dictlike.fromkeys('a'), {'a':None})
         self.assertEqual(dictlike().fromkeys('a'), {'a':None})
         self.assertTrue(dictlike.fromkeys('a').__class__ is dictlike)
         self.assertTrue(dictlike().fromkeys('a').__class__ is dictlike)
         self.assertTrue(type(dictlike.fromkeys('a')) is dictlike)
-        class mydict(self.type2test):
+        klasse mydict(self.type2test):
             def __new__(cls):
                 return collections.UserDict()
         ud = mydict.fromkeys('ab')
@@ -445,15 +445,15 @@ class TestMappingProtocol(BasicTestMappingProtocol):
         self.assertIsInstance(ud, collections.UserDict)
         self.assertRaises(TypeError, dict.fromkeys)
 
-        class Exc(Exception): pass
+        klasse Exc(Exception): pass
 
-        class baddict1(self.type2test):
+        klasse baddict1(self.type2test):
             def __init__(self, *args, **kwargs):
                 raise Exc()
 
         self.assertRaises(Exc, baddict1.fromkeys, [1])
 
-        class BadSeq(object):
+        klasse BadSeq(object):
             def __iter__(self):
                 return self
             def __next__(self):
@@ -461,7 +461,7 @@ class TestMappingProtocol(BasicTestMappingProtocol):
 
         self.assertRaises(Exc, self.type2test.fromkeys, BadSeq())
 
-        class baddict2(self.type2test):
+        klasse baddict2(self.type2test):
             def __setitem__(self, key, value):
                 raise Exc()
 
@@ -533,13 +533,13 @@ class TestMappingProtocol(BasicTestMappingProtocol):
         self.assertEqual(d.pop(k, 1), v)
 
 
-class TestHashMappingProtocol(TestMappingProtocol):
+klasse TestHashMappingProtocol(TestMappingProtocol):
 
     def test_getitem(self):
         TestMappingProtocol.test_getitem(self)
-        class Exc(Exception): pass
+        klasse Exc(Exception): pass
 
-        class BadEq(object):
+        klasse BadEq(object):
             def __eq__(self, other):
                 raise Exc()
             def __hash__(self):
@@ -549,7 +549,7 @@ class TestHashMappingProtocol(TestMappingProtocol):
         d[BadEq()] = 42
         self.assertRaises(KeyError, d.__getitem__, 23)
 
-        class BadHash(object):
+        klasse BadHash(object):
             fail = False
             def __hash__(self):
                 if self.fail:
@@ -565,7 +565,7 @@ class TestHashMappingProtocol(TestMappingProtocol):
 
     def test_fromkeys(self):
         TestMappingProtocol.test_fromkeys(self)
-        class mydict(self.type2test):
+        klasse mydict(self.type2test):
             def __new__(cls):
                 return collections.UserDict()
         ud = mydict.fromkeys('ab')
@@ -575,9 +575,9 @@ class TestHashMappingProtocol(TestMappingProtocol):
     def test_pop(self):
         TestMappingProtocol.test_pop(self)
 
-        class Exc(Exception): pass
+        klasse Exc(Exception): pass
 
-        class BadHash(object):
+        klasse BadHash(object):
             fail = False
             def __hash__(self):
                 if self.fail:
@@ -613,9 +613,9 @@ class TestHashMappingProtocol(TestMappingProtocol):
         d[1] = d
         self.assertEqual(repr(d), '{1: {...}}')
 
-        class Exc(Exception): pass
+        klasse Exc(Exception): pass
 
-        class BadRepr(object):
+        klasse BadRepr(object):
             def __repr__(self):
                 raise Exc()
 
@@ -638,9 +638,9 @@ class TestHashMappingProtocol(TestMappingProtocol):
         self.assertEqual(self._full_mapping({1: 2}),
                          self._full_mapping({1: 2}))
 
-        class Exc(Exception): pass
+        klasse Exc(Exception): pass
 
-        class BadCmp(object):
+        klasse BadCmp(object):
             def __eq__(self, other):
                 raise Exc()
             def __hash__(self):
@@ -654,9 +654,9 @@ class TestHashMappingProtocol(TestMappingProtocol):
     def test_setdefault(self):
         TestMappingProtocol.test_setdefault(self)
 
-        class Exc(Exception): pass
+        klasse Exc(Exception): pass
 
-        class BadHash(object):
+        klasse BadHash(object):
             fail = False
             def __hash__(self):
                 if self.fail:

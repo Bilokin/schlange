@@ -10,25 +10,25 @@ import codecs
 
 ### Codec APIs
 
-class Codec(codecs.Codec):
+klasse Codec(codecs.Codec):
 
-    # Note: Binding these as C functions will result in the class not
+    # Note: Binding these as C functions will result in the klasse not
     # converting them to methods. This is intended.
     encode = codecs.raw_unicode_escape_encode
     decode = codecs.raw_unicode_escape_decode
 
-class IncrementalEncoder(codecs.IncrementalEncoder):
+klasse IncrementalEncoder(codecs.IncrementalEncoder):
     def encode(self, input, final=False):
         return codecs.raw_unicode_escape_encode(input, self.errors)[0]
 
-class IncrementalDecoder(codecs.BufferedIncrementalDecoder):
+klasse IncrementalDecoder(codecs.BufferedIncrementalDecoder):
     def _buffer_decode(self, input, errors, final):
         return codecs.raw_unicode_escape_decode(input, errors, final)
 
-class StreamWriter(Codec,codecs.StreamWriter):
+klasse StreamWriter(Codec,codecs.StreamWriter):
     pass
 
-class StreamReader(Codec,codecs.StreamReader):
+klasse StreamReader(Codec,codecs.StreamReader):
     def decode(self, input, errors='strict'):
         return codecs.raw_unicode_escape_decode(input, errors, False)
 

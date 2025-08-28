@@ -1,7 +1,7 @@
 from string.templatelib import Interpolation
 
 
-class TStringBaseCase:
+klasse TStringBaseCase:
     def assertInterpolationEqual(self, i, exp):
         """Test Interpolation equality.
 

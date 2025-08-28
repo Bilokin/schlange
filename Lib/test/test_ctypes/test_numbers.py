@@ -41,19 +41,19 @@ unsigned_ranges = valid_ranges(*unsigned_types)
 signed_ranges = valid_ranges(*signed_types)
 bool_values = [True, False, 0, 1, -1, 5000, 'test', [], [1]]
 
-class IntLike:
+klasse IntLike:
     def __int__(self):
         return 2
 
-class IndexLike:
+klasse IndexLike:
     def __index__(self):
         return 2
 
-class FloatLike:
+klasse FloatLike:
     def __float__(self):
         return 2.0
 
-class ComplexLike:
+klasse ComplexLike:
     def __complex__(self):
         return 1+1j
 
@@ -62,7 +62,7 @@ INF = float("inf")
 NAN = float("nan")
 
 
-class NumberTestCase(unittest.TestCase, ComplexesAreIdenticalMixin):
+klasse NumberTestCase(unittest.TestCase, ComplexesAreIdenticalMixin):
 
     def test_default_init(self):
         # default values are set to zero
@@ -94,7 +94,7 @@ class NumberTestCase(unittest.TestCase, ComplexesAreIdenticalMixin):
             self.assertRaises(TypeError, t, None)
 
     def test_from_param(self):
-        # the from_param class method attribute always
+        # the from_param klasse method attribute always
         # returns PyCArgObject instances
         for t in signed_types + unsigned_types + float_types:
             self.assertEqual(ArgType, type(t.from_param(0)))

@@ -1,7 +1,7 @@
 from math import copysign, isnan
 
 
-class ExceptionIsLikeMixin:
+klasse ExceptionIsLikeMixin:
     def assertExceptionIsLike(self, exc, template):
         """
         Passes when the provided `exc` matches the structure of `template`.
@@ -28,7 +28,7 @@ class ExceptionIsLikeMixin:
                 self.assertExceptionIsLike(e, t)
 
 
-class FloatsAreIdenticalMixin:
+klasse FloatsAreIdenticalMixin:
     def assertFloatsAreIdentical(self, x, y):
         """Fail unless floats x and y are identical, in the sense that:
         (1) both x and y are nans, or
@@ -53,7 +53,7 @@ class FloatsAreIdenticalMixin:
         self.fail(msg.format(x, y))
 
 
-class ComplexesAreIdenticalMixin(FloatsAreIdenticalMixin):
+klasse ComplexesAreIdenticalMixin(FloatsAreIdenticalMixin):
     def assertComplexesAreIdentical(self, x, y):
         """Fail unless complex numbers x and y have equal values and signs.
 

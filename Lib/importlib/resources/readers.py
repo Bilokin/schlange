@@ -19,7 +19,7 @@ def remove_duplicates(items):
     return iter(collections.OrderedDict.fromkeys(items))
 
 
-class FileReader(abc.TraversableResources):
+klasse FileReader(abc.TraversableResources):
     def __init__(self, loader):
         self.path = pathlib.Path(loader.path).parent
 
@@ -35,7 +35,7 @@ class FileReader(abc.TraversableResources):
         return self.path
 
 
-class ZipReader(abc.TraversableResources):
+klasse ZipReader(abc.TraversableResources):
     def __init__(self, loader, module):
         self.prefix = loader.prefix.replace('\\', '/')
         if loader.is_package(module):
@@ -61,7 +61,7 @@ class ZipReader(abc.TraversableResources):
         return zipfile.Path(self.archive, self.prefix)
 
 
-class MultiplexedPath(abc.Traversable):
+klasse MultiplexedPath(abc.Traversable):
     """
     Given a series of Traversable objects, implement a merged
     version of the interface across all objects. Useful for
@@ -134,7 +134,7 @@ class MultiplexedPath(abc.Traversable):
         return f'MultiplexedPath({paths})'
 
 
-class NamespaceReader(abc.TraversableResources):
+klasse NamespaceReader(abc.TraversableResources):
     def __init__(self, namespace_path):
         if 'NamespacePath' not in str(namespace_path):
             raise ValueError('Invalid path')

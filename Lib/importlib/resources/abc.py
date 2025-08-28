@@ -13,8 +13,8 @@ StrPath = Union[str, os.PathLike[str]]
 __all__ = ["ResourceReader", "Traversable", "TraversableResources"]
 
 
-class ResourceReader(metaclass=abc.ABCMeta):
-    """Abstract base class for loaders to provide resource reading support."""
+klasse ResourceReader(metaclass=abc.ABCMeta):
+    """Abstract base klasse for loaders to provide resource reading support."""
 
     @abc.abstractmethod
     def open_resource(self, resource: Text) -> BinaryIO:
@@ -55,12 +55,12 @@ class ResourceReader(metaclass=abc.ABCMeta):
         raise FileNotFoundError
 
 
-class TraversalError(Exception):
+klasse TraversalError(Exception):
     pass
 
 
 @runtime_checkable
-class Traversable(Protocol):
+klasse Traversable(Protocol):
     """
     An object with a subset of pathlib.Path methods suitable for
     traversing directories and opening files.
@@ -150,7 +150,7 @@ class Traversable(Protocol):
         """
 
 
-class TraversableResources(ResourceReader):
+klasse TraversableResources(ResourceReader):
     """
     The required interface for providing traversable
     resources.

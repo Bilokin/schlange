@@ -13,7 +13,7 @@ def _as_tuple(items):
         return ()
 
 
-class PreprocessorError(Exception):
+klasse PreprocessorError(Exception):
     """Something preprocessor-related went wrong."""
 
     @classmethod
@@ -38,7 +38,7 @@ class PreprocessorError(Exception):
         super().__init__(msg)
 
 
-class PreprocessorFailure(PreprocessorError):
+klasse PreprocessorFailure(PreprocessorError):
     """The preprocessor command failed."""
 
     @classmethod
@@ -66,7 +66,7 @@ class PreprocessorFailure(PreprocessorError):
         super().__init__(filename, preprocessor, reason)
 
 
-class ErrorDirectiveError(PreprocessorFailure):
+klasse ErrorDirectiveError(PreprocessorFailure):
     """The file hit a #error directive."""
 
     @classmethod
@@ -77,7 +77,7 @@ class ErrorDirectiveError(PreprocessorFailure):
         super().__init__(filename, argv, error, *args, **kwargs)
 
 
-class MissingDependenciesError(PreprocessorFailure):
+klasse MissingDependenciesError(PreprocessorFailure):
     """The preprocessor did not have access to all the target's dependencies."""
 
     @classmethod
@@ -93,7 +93,7 @@ class MissingDependenciesError(PreprocessorFailure):
         super().__init__(filename, *args, **kwargs)
 
 
-class OSMismatchError(MissingDependenciesError):
+klasse OSMismatchError(MissingDependenciesError):
     """The target is not compatible with the host OS."""
 
     @classmethod

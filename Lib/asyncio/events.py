@@ -31,7 +31,7 @@ import warnings
 from . import format_helpers
 
 
-class Handle:
+klasse Handle:
     """Object returned by callback registration methods."""
 
     __slots__ = ('_callback', '_args', '_cancelled', '_loop',
@@ -111,7 +111,7 @@ class Handle:
 
 # _ThreadSafeHandle is used for callbacks scheduled with call_soon_threadsafe
 # and is thread safe unlike Handle which is not thread safe.
-class _ThreadSafeHandle(Handle):
+klasse _ThreadSafeHandle(Handle):
 
     __slots__ = ('_lock',)
 
@@ -138,7 +138,7 @@ class _ThreadSafeHandle(Handle):
             return super()._run()
 
 
-class TimerHandle(Handle):
+klasse TimerHandle(Handle):
     """Object returned by timed callback registration methods."""
 
     __slots__ = ['_scheduled', '_when']
@@ -201,7 +201,7 @@ class TimerHandle(Handle):
         return self._when
 
 
-class AbstractServer:
+klasse AbstractServer:
     """Abstract server returned by create_server()."""
 
     def close(self):
@@ -251,7 +251,7 @@ class AbstractServer:
         await self.wait_closed()
 
 
-class AbstractEventLoop:
+klasse AbstractEventLoop:
     """Abstract event loop."""
 
     # Running and stopping the event loop.
@@ -662,7 +662,7 @@ class AbstractEventLoop:
         raise NotImplementedError
 
 
-class _AbstractEventLoopPolicy:
+klasse _AbstractEventLoopPolicy:
     """Abstract policy for accessing the event loop."""
 
     def get_event_loop(self):
@@ -685,7 +685,7 @@ class _AbstractEventLoopPolicy:
         the current context, set_event_loop must be called explicitly."""
         raise NotImplementedError
 
-class _BaseDefaultEventLoopPolicy(_AbstractEventLoopPolicy):
+klasse _BaseDefaultEventLoopPolicy(_AbstractEventLoopPolicy):
     """Default policy implementation for accessing the event loop.
 
     In this policy, each thread has its own event loop.  However, we
@@ -700,7 +700,7 @@ class _BaseDefaultEventLoopPolicy(_AbstractEventLoopPolicy):
 
     _loop_factory = None
 
-    class _Local(threading.local):
+    klasse _Local(threading.local):
         _loop = None
 
     def __init__(self):
@@ -743,7 +743,7 @@ _lock = threading.Lock()
 
 
 # A TLS for the running event loop, used by _get_running_loop.
-class _RunningLoop(threading.local):
+klasse _RunningLoop(threading.local):
     loop_pid = (None, None)
 
 

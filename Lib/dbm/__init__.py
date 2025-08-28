@@ -35,7 +35,7 @@ import struct
 import sys
 
 
-class error(Exception):
+klasse error(Exception):
     pass
 
 _names = ['dbm.sqlite3', 'dbm.gnu', 'dbm.ndbm', 'dbm.dumb']

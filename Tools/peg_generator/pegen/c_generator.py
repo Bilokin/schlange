@@ -64,7 +64,7 @@ _PyPegen_parse(Parser *p)
 """
 
 
-class NodeTypes(Enum):
+klasse NodeTypes(Enum):
     NAME_TOKEN = 0
     NUMBER_TOKEN = 1
     STRING_TOKEN = 2
@@ -84,7 +84,7 @@ BASE_NODETYPES = {
 
 
 @dataclass
-class FunctionCall:
+klasse FunctionCall:
     function: str
     arguments: List[Any] = field(default_factory=list)
     assigned_variable: Optional[str] = None
@@ -120,7 +120,7 @@ class FunctionCall:
         return "".join(parts)
 
 
-class CCallMakerVisitor(GrammarVisitor):
+klasse CCallMakerVisitor(GrammarVisitor):
     def __init__(
         self,
         parser_generator: ParserGenerator,
@@ -373,7 +373,7 @@ class CCallMakerVisitor(GrammarVisitor):
         return super().visit(node)
 
 
-class CParserGenerator(ParserGenerator, GrammarVisitor):
+klasse CParserGenerator(ParserGenerator, GrammarVisitor):
     def __init__(
         self,
         grammar: grammar.Grammar,

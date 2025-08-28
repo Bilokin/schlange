@@ -10,7 +10,7 @@ NTHREADS = 10
 
 
 @threading_helper.requires_working_threading()
-class TestPwd(unittest.TestCase):
+klasse TestPwd(unittest.TestCase):
     def setUp(self):
         self.test_pwd = test_pwd.PwdTest()
 

@@ -36,7 +36,7 @@ All TokenList and Terminal objects have a 'value' attribute, which produces the
 semantically meaningful value of that part of the parse subtree.  The value of
 all whitespace tokens (no matter how many sub-tokens they may contain) is a
 single space, as per the RFC rules.  This includes 'CFWS', which is herein
-included in the general class of whitespace tokens.  There is one exception to
+included in the general klasse of whitespace tokens.  There is one exception to
 the rule that whitespace tokens are collapsed into single spaces in values: in
 the value of a 'bare-quoted-string' (a quoted-string with no leading or
 trailing whitespace), any whitespace that appeared between the quotation marks
@@ -122,7 +122,7 @@ rfc2047_matcher = re.compile(r'''
 # TokenList and its subclasses
 #
 
-class TokenList(list):
+klasse TokenList(list):
 
     token_type = None
     syntactic_break = True
@@ -189,7 +189,7 @@ class TokenList(list):
         yield '{}){}'.format(indent, extra)
 
 
-class WhiteSpaceTokenList(TokenList):
+klasse WhiteSpaceTokenList(TokenList):
 
     @property
     def value(self):
@@ -200,38 +200,38 @@ class WhiteSpaceTokenList(TokenList):
         return [x.content for x in self if x.token_type=='comment']
 
 
-class UnstructuredTokenList(TokenList):
+klasse UnstructuredTokenList(TokenList):
     token_type = 'unstructured'
 
 
-class Phrase(TokenList):
+klasse Phrase(TokenList):
     token_type = 'phrase'
 
-class Word(TokenList):
+klasse Word(TokenList):
     token_type = 'word'
 
 
-class CFWSList(WhiteSpaceTokenList):
+klasse CFWSList(WhiteSpaceTokenList):
     token_type = 'cfws'
 
 
-class Atom(TokenList):
+klasse Atom(TokenList):
     token_type = 'atom'
 
 
-class Token(TokenList):
+klasse Token(TokenList):
     token_type = 'token'
     encode_as_ew = False
 
 
-class EncodedWord(TokenList):
+klasse EncodedWord(TokenList):
     token_type = 'encoded-word'
     cte = None
     charset = None
     lang = None
 
 
-class QuotedString(TokenList):
+klasse QuotedString(TokenList):
 
     token_type = 'quoted-string'
 
@@ -258,7 +258,7 @@ class QuotedString(TokenList):
                 return token.value
 
 
-class BareQuotedString(QuotedString):
+klasse BareQuotedString(QuotedString):
 
     token_type = 'bare-quoted-string'
 
@@ -270,7 +270,7 @@ class BareQuotedString(QuotedString):
         return ''.join(str(x) for x in self)
 
 
-class Comment(WhiteSpaceTokenList):
+klasse Comment(WhiteSpaceTokenList):
 
     token_type = 'comment'
 
@@ -296,7 +296,7 @@ class Comment(WhiteSpaceTokenList):
     def comments(self):
         return [self.content]
 
-class AddressList(TokenList):
+klasse AddressList(TokenList):
 
     token_type = 'address-list'
 
@@ -315,7 +315,7 @@ class AddressList(TokenList):
                     for x in self if x.token_type=='address'), [])
 
 
-class Address(TokenList):
+klasse Address(TokenList):
 
     token_type = 'address'
 
@@ -340,7 +340,7 @@ class Address(TokenList):
             return [self[0]]
         return self[0].all_mailboxes
 
-class MailboxList(TokenList):
+klasse MailboxList(TokenList):
 
     token_type = 'mailbox-list'
 
@@ -354,7 +354,7 @@ class MailboxList(TokenList):
             if x.token_type in ('mailbox', 'invalid-mailbox')]
 
 
-class GroupList(TokenList):
+klasse GroupList(TokenList):
 
     token_type = 'group-list'
 
@@ -371,7 +371,7 @@ class GroupList(TokenList):
         return self[0].all_mailboxes
 
 
-class Group(TokenList):
+klasse Group(TokenList):
 
     token_type = "group"
 
@@ -392,7 +392,7 @@ class Group(TokenList):
         return self[0].display_name
 
 
-class NameAddr(TokenList):
+klasse NameAddr(TokenList):
 
     token_type = 'name-addr'
 
@@ -419,7 +419,7 @@ class NameAddr(TokenList):
         return self[-1].addr_spec
 
 
-class AngleAddr(TokenList):
+klasse AngleAddr(TokenList):
 
     token_type = 'angle-addr'
 
@@ -453,7 +453,7 @@ class AngleAddr(TokenList):
             return '<>'
 
 
-class ObsRoute(TokenList):
+klasse ObsRoute(TokenList):
 
     token_type = 'obs-route'
 
@@ -462,7 +462,7 @@ class ObsRoute(TokenList):
         return [x.domain for x in self if x.token_type == 'domain']
 
 
-class Mailbox(TokenList):
+klasse Mailbox(TokenList):
 
     token_type = 'mailbox'
 
@@ -489,7 +489,7 @@ class Mailbox(TokenList):
         return self[0].addr_spec
 
 
-class InvalidMailbox(TokenList):
+klasse InvalidMailbox(TokenList):
 
     token_type = 'invalid-mailbox'
 
@@ -500,7 +500,7 @@ class InvalidMailbox(TokenList):
     local_part = domain = route = addr_spec = display_name
 
 
-class Domain(TokenList):
+klasse Domain(TokenList):
 
     token_type = 'domain'
     as_ew_allowed = False
@@ -510,21 +510,21 @@ class Domain(TokenList):
         return ''.join(super().value.split())
 
 
-class DotAtom(TokenList):
+klasse DotAtom(TokenList):
     token_type = 'dot-atom'
 
 
-class DotAtomText(TokenList):
+klasse DotAtomText(TokenList):
     token_type = 'dot-atom-text'
     as_ew_allowed = True
 
 
-class NoFoldLiteral(TokenList):
+klasse NoFoldLiteral(TokenList):
     token_type = 'no-fold-literal'
     as_ew_allowed = False
 
 
-class AddrSpec(TokenList):
+klasse AddrSpec(TokenList):
 
     token_type = 'addr-spec'
     as_ew_allowed = False
@@ -557,13 +557,13 @@ class AddrSpec(TokenList):
         return lp
 
 
-class ObsLocalPart(TokenList):
+klasse ObsLocalPart(TokenList):
 
     token_type = 'obs-local-part'
     as_ew_allowed = False
 
 
-class DisplayName(Phrase):
+klasse DisplayName(Phrase):
 
     token_type = 'display-name'
     ew_combine_allowed = False
@@ -611,7 +611,7 @@ class DisplayName(Phrase):
             return super().value
 
 
-class LocalPart(TokenList):
+klasse LocalPart(TokenList):
 
     token_type = 'local-part'
     as_ew_allowed = False
@@ -647,7 +647,7 @@ class LocalPart(TokenList):
         return res.value
 
 
-class DomainLiteral(TokenList):
+klasse DomainLiteral(TokenList):
 
     token_type = 'domain-literal'
     as_ew_allowed = False
@@ -663,14 +663,14 @@ class DomainLiteral(TokenList):
                 return x.value
 
 
-class MIMEVersion(TokenList):
+klasse MIMEVersion(TokenList):
 
     token_type = 'mime-version'
     major = None
     minor = None
 
 
-class Parameter(TokenList):
+klasse Parameter(TokenList):
 
     token_type = 'parameter'
     sectioned = False
@@ -698,12 +698,12 @@ class Parameter(TokenList):
         return ''
 
 
-class InvalidParameter(Parameter):
+klasse InvalidParameter(Parameter):
 
     token_type = 'invalid-parameter'
 
 
-class Attribute(TokenList):
+klasse Attribute(TokenList):
 
     token_type = 'attribute'
 
@@ -713,13 +713,13 @@ class Attribute(TokenList):
             if token.token_type.endswith('attrtext'):
                 return token.value
 
-class Section(TokenList):
+klasse Section(TokenList):
 
     token_type = 'section'
     number = None
 
 
-class Value(TokenList):
+klasse Value(TokenList):
 
     token_type = 'value'
 
@@ -734,7 +734,7 @@ class Value(TokenList):
         return self.value
 
 
-class MimeParameters(TokenList):
+klasse MimeParameters(TokenList):
 
     token_type = 'mime-parameters'
     syntactic_break = False
@@ -820,7 +820,7 @@ class MimeParameters(TokenList):
         return ' ' + params if params else ''
 
 
-class ParameterizedHeaderValue(TokenList):
+klasse ParameterizedHeaderValue(TokenList):
 
     # Set this false so that the value doesn't wind up on a new line even
     # if it and the parameters would fit there but not on the first line.
@@ -834,31 +834,31 @@ class ParameterizedHeaderValue(TokenList):
         return {}
 
 
-class ContentType(ParameterizedHeaderValue):
+klasse ContentType(ParameterizedHeaderValue):
     token_type = 'content-type'
     as_ew_allowed = False
     maintype = 'text'
     subtype = 'plain'
 
 
-class ContentDisposition(ParameterizedHeaderValue):
+klasse ContentDisposition(ParameterizedHeaderValue):
     token_type = 'content-disposition'
     as_ew_allowed = False
     content_disposition = None
 
 
-class ContentTransferEncoding(TokenList):
+klasse ContentTransferEncoding(TokenList):
     token_type = 'content-transfer-encoding'
     as_ew_allowed = False
     cte = '7bit'
 
 
-class HeaderLabel(TokenList):
+klasse HeaderLabel(TokenList):
     token_type = 'header-label'
     as_ew_allowed = False
 
 
-class MsgID(TokenList):
+klasse MsgID(TokenList):
     token_type = 'msg-id'
     as_ew_allowed = False
 
@@ -867,15 +867,15 @@ class MsgID(TokenList):
         return str(self) + policy.linesep
 
 
-class MessageID(MsgID):
+klasse MessageID(MsgID):
     token_type = 'message-id'
 
 
-class InvalidMessageID(MessageID):
+klasse InvalidMessageID(MessageID):
     token_type = 'invalid-message-id'
 
 
-class Header(TokenList):
+klasse Header(TokenList):
     token_type = 'header'
 
 
@@ -883,7 +883,7 @@ class Header(TokenList):
 # Terminal classes and instances
 #
 
-class Terminal(str):
+klasse Terminal(str):
 
     as_ew_allowed = True
     ew_combine_allowed = True
@@ -926,7 +926,7 @@ class Terminal(str):
         return(str(self), self.token_type)
 
 
-class WhiteSpaceTerminal(Terminal):
+klasse WhiteSpaceTerminal(Terminal):
 
     @property
     def value(self):
@@ -936,7 +936,7 @@ class WhiteSpaceTerminal(Terminal):
         return True
 
 
-class ValueTerminal(Terminal):
+klasse ValueTerminal(Terminal):
 
     @property
     def value(self):
@@ -946,7 +946,7 @@ class ValueTerminal(Terminal):
         return False
 
 
-class EWWhiteSpaceTerminal(WhiteSpaceTerminal):
+klasse EWWhiteSpaceTerminal(WhiteSpaceTerminal):
 
     @property
     def value(self):
@@ -956,7 +956,7 @@ class EWWhiteSpaceTerminal(WhiteSpaceTerminal):
         return ''
 
 
-class _InvalidEwError(errors.HeaderParseError):
+klasse _InvalidEwError(errors.HeaderParseError):
     """Invalid encoded word found while parsing headers."""
 
 
@@ -1303,7 +1303,7 @@ def get_cfws(value):
 def get_quoted_string(value):
     """quoted-string = [CFWS] <bare-quoted-string> [CFWS]
 
-    'bare-quoted-string' is an intermediate class defined by this
+    'bare-quoted-string' is an intermediate klasse defined by this
     parser and not by the RFC grammar.  It is the quoted string
     without any attached CFWS.
     """

@@ -15,8 +15,8 @@ _PyHASH_MODULUS = sys.hash_info.modulus
 _PyHASH_INF = sys.hash_info.inf
 
 
-class DummyIntegral(int):
-    """Dummy Integral class to test conversion of the Rational to float."""
+klasse DummyIntegral(int):
+    """Dummy Integral klasse to test conversion of the Rational to float."""
 
     def __mul__(self, other):
         return DummyIntegral(super().__mul__(other))
@@ -35,7 +35,7 @@ class DummyIntegral(int):
         return DummyIntegral(1)
 
 
-class HashTest(unittest.TestCase):
+klasse HashTest(unittest.TestCase):
     def check_equal_hash(self, x, y):
         # check both that x and y are equal and that their hashes are equal
         self.assertEqual(hash(x), hash(y),
@@ -161,7 +161,7 @@ class HashTest(unittest.TestCase):
         # normalization must therefore not change the result of
         # hash(x) for any x.
 
-        class HalibutProxy:
+        klasse HalibutProxy:
             def __hash__(self):
                 return hash('halibut')
             def __eq__(self, other):
@@ -170,7 +170,7 @@ class HashTest(unittest.TestCase):
         x = {'halibut', HalibutProxy()}
         self.assertEqual(len(x), 1)
 
-class ComparisonTest(unittest.TestCase):
+klasse ComparisonTest(unittest.TestCase):
     def test_mixed_comparisons(self):
 
         # ordered list of distinct test values of various types:

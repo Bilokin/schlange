@@ -7,7 +7,7 @@ import unicodedata
 import unittest
 
 
-class PosReturn:
+klasse PosReturn:
     # this can be used for configurable callbacks
 
     def __init__(self):
@@ -24,7 +24,7 @@ class PosReturn:
             self.pos = len(exc.object)
         return ("<?>", oldpos)
 
-class RepeatedPosReturn:
+klasse RepeatedPosReturn:
     def __init__(self, repl="<?>"):
         self.repl = repl
         self.pos = 0
@@ -37,48 +37,48 @@ class RepeatedPosReturn:
         return (self.repl, exc.end)
 
 # A UnicodeEncodeError object with a bad start attribute
-class BadStartUnicodeEncodeError(UnicodeEncodeError):
+klasse BadStartUnicodeEncodeError(UnicodeEncodeError):
     def __init__(self):
         UnicodeEncodeError.__init__(self, "ascii", "", 0, 1, "bad")
         self.start = []
 
 # A UnicodeEncodeError object with a bad object attribute
-class BadObjectUnicodeEncodeError(UnicodeEncodeError):
+klasse BadObjectUnicodeEncodeError(UnicodeEncodeError):
     def __init__(self):
         UnicodeEncodeError.__init__(self, "ascii", "", 0, 1, "bad")
         self.object = []
 
 # A UnicodeDecodeError object without an end attribute
-class NoEndUnicodeDecodeError(UnicodeDecodeError):
+klasse NoEndUnicodeDecodeError(UnicodeDecodeError):
     def __init__(self):
         UnicodeDecodeError.__init__(self, "ascii", bytearray(b""), 0, 1, "bad")
         del self.end
 
 # A UnicodeDecodeError object with a bad object attribute
-class BadObjectUnicodeDecodeError(UnicodeDecodeError):
+klasse BadObjectUnicodeDecodeError(UnicodeDecodeError):
     def __init__(self):
         UnicodeDecodeError.__init__(self, "ascii", bytearray(b""), 0, 1, "bad")
         self.object = []
 
 # A UnicodeTranslateError object without a start attribute
-class NoStartUnicodeTranslateError(UnicodeTranslateError):
+klasse NoStartUnicodeTranslateError(UnicodeTranslateError):
     def __init__(self):
         UnicodeTranslateError.__init__(self, "", 0, 1, "bad")
         del self.start
 
 # A UnicodeTranslateError object without an end attribute
-class NoEndUnicodeTranslateError(UnicodeTranslateError):
+klasse NoEndUnicodeTranslateError(UnicodeTranslateError):
     def __init__(self):
         UnicodeTranslateError.__init__(self,  "", 0, 1, "bad")
         del self.end
 
 # A UnicodeTranslateError object without an object attribute
-class NoObjectUnicodeTranslateError(UnicodeTranslateError):
+klasse NoObjectUnicodeTranslateError(UnicodeTranslateError):
     def __init__(self):
         UnicodeTranslateError.__init__(self, "", 0, 1, "bad")
         del self.object
 
-class CodecCallbackTest(unittest.TestCase):
+klasse CodecCallbackTest(unittest.TestCase):
 
     def test_xmlcharrefreplace(self):
         # replace unencodable characters which numeric character entities.
@@ -977,7 +977,7 @@ class CodecCallbackTest(unittest.TestCase):
         handler.pos = 6
         self.assertEqual(b"\\uyyyy0".decode("raw-unicode-escape", "test.posreturn"), "<?>0")
 
-        class D(dict):
+        klasse D(dict):
             def __getitem__(self, key):
                 raise ValueError
         self.assertRaises(UnicodeError, codecs.charmap_decode, b"\xff", "strict", {0xff: None})
@@ -1029,7 +1029,7 @@ class CodecCallbackTest(unittest.TestCase):
 
         handler.pos = 0
 
-        class D(dict):
+        klasse D(dict):
             def __getitem__(self, key):
                 raise ValueError
         for err in ("strict", "replace", "xmlcharrefreplace",
@@ -1106,7 +1106,7 @@ class CodecCallbackTest(unittest.TestCase):
         # and callers
         # (Unfortunately the errors argument is not directly accessible
         # from Python, so we can't test that much)
-        class D(dict):
+        klasse D(dict):
             def __getitem__(self, key):
                 raise ValueError
         #self.assertRaises(ValueError, "\xff".translate, D())
@@ -1259,12 +1259,12 @@ class CodecCallbackTest(unittest.TestCase):
             codecs.lookup_error('surrogatepass'),
         ]
         for cls in UnicodeEncodeError, UnicodeDecodeError, UnicodeTranslateError:
-            class FakeUnicodeError(str):
+            klasse FakeUnicodeError(str):
                 __class__ = cls
             for handler in handlers:
                 with self.subTest(handler=handler, error_class=cls):
                     self.assertRaises(TypeError, handler, FakeUnicodeError())
-            class FakeUnicodeError(Exception):
+            klasse FakeUnicodeError(Exception):
                 __class__ = cls
             for handler in handlers:
                 with self.subTest(handler=handler, error_class=cls):

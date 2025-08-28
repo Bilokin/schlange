@@ -20,11 +20,11 @@ from test import support
 from test.support import import_helper, threading_helper
 
 
-class MyObject:
+klasse MyObject:
     pass
 
 
-class AbstractMemoryTests:
+klasse AbstractMemoryTests:
     source_bytes = b"abcdef"
 
     @property
@@ -270,10 +270,10 @@ class AbstractMemoryTests:
                 # If tp is a factory rather than a plain type, skip
                 continue
 
-            class MyView():
+            klasse MyView():
                 def __init__(self, base):
                     self.m = memoryview(base)
-            class MySource(tp):
+            klasse MySource(tp):
                 pass
 
             # Create a reference cycle through a memoryview object.
@@ -447,14 +447,14 @@ class AbstractMemoryTests:
 # with itemsize > 1.
 # NOTE: support for multi-dimensional objects is unimplemented.
 
-class BaseBytesMemoryTests(AbstractMemoryTests):
+klasse BaseBytesMemoryTests(AbstractMemoryTests):
     ro_type = bytes
     rw_type = bytearray
     getitem_type = bytes
     itemsize = 1
     format = 'B'
 
-class BaseArrayMemoryTests(AbstractMemoryTests):
+klasse BaseArrayMemoryTests(AbstractMemoryTests):
     ro_type = None
     rw_type = lambda self, b: array.array('i', list(b))
     getitem_type = lambda self, b: array.array('i', list(b)).tobytes()
@@ -474,7 +474,7 @@ class BaseArrayMemoryTests(AbstractMemoryTests):
 # slice of slice of memoryview.
 # This is important to test allocation subtleties.
 
-class BaseMemoryviewTests:
+klasse BaseMemoryviewTests:
     def _view(self, obj):
         return memoryview(obj)
 
@@ -493,7 +493,7 @@ class BaseMemoryviewTests:
                 self.assertEqual(m.count(ord('c')), 3)
 
 
-class BaseMemorySliceTests:
+klasse BaseMemorySliceTests:
     source_bytes = b"XabcdefY"
 
     def _view(self, obj):
@@ -510,7 +510,7 @@ class BaseMemorySliceTests:
             m[1:2]
             self.assertEqual(sys.getrefcount(m), oldrefcount)
 
-class BaseMemorySliceSliceTests:
+klasse BaseMemorySliceSliceTests:
     source_bytes = b"XabcdefY"
 
     def _view(self, obj):
@@ -523,7 +523,7 @@ class BaseMemorySliceSliceTests:
 
 # Concrete test classes
 
-class BytesMemoryviewTest(unittest.TestCase,
+klasse BytesMemoryviewTest(unittest.TestCase,
     BaseMemoryviewTests, BaseBytesMemoryTests):
 
     def test_constructor(self):
@@ -536,7 +536,7 @@ class BytesMemoryviewTest(unittest.TestCase,
             self.assertRaises(TypeError, memoryview, argument=ob)
             self.assertRaises(TypeError, memoryview, ob, argument=True)
 
-class ArrayMemoryviewTest(unittest.TestCase,
+klasse ArrayMemoryviewTest(unittest.TestCase,
     BaseMemoryviewTests, BaseArrayMemoryTests):
 
     def test_array_assign(self):
@@ -548,24 +548,24 @@ class ArrayMemoryviewTest(unittest.TestCase,
         self.assertEqual(a, new_a)
 
 
-class BytesMemorySliceTest(unittest.TestCase,
+klasse BytesMemorySliceTest(unittest.TestCase,
     BaseMemorySliceTests, BaseBytesMemoryTests):
     pass
 
-class ArrayMemorySliceTest(unittest.TestCase,
+klasse ArrayMemorySliceTest(unittest.TestCase,
     BaseMemorySliceTests, BaseArrayMemoryTests):
     pass
 
-class BytesMemorySliceSliceTest(unittest.TestCase,
+klasse BytesMemorySliceSliceTest(unittest.TestCase,
     BaseMemorySliceSliceTests, BaseBytesMemoryTests):
     pass
 
-class ArrayMemorySliceSliceTest(unittest.TestCase,
+klasse ArrayMemorySliceSliceTest(unittest.TestCase,
     BaseMemorySliceSliceTests, BaseArrayMemoryTests):
     pass
 
 
-class OtherTest(unittest.TestCase):
+klasse OtherTest(unittest.TestCase):
     def test_ctypes_cast(self):
         # Issue 15944: Allow all source formats when casting to bytes.
         ctypes = import_helper.import_module("ctypes")
@@ -620,15 +620,15 @@ class OtherTest(unittest.TestCase):
             m.release()
             nonlocal ba
             ba = bytearray(size)
-        class MyIndex:
+        klasse MyIndex:
             def __index__(self):
                 release()
                 return 4
-        class MyFloat:
+        klasse MyFloat:
             def __float__(self):
                 release()
                 return 4.25
-        class MyBool:
+        klasse MyBool:
             def __bool__(self):
                 release()
                 return True
@@ -736,7 +736,7 @@ class OtherTest(unittest.TestCase):
 
 @threading_helper.requires_working_threading()
 @support.requires_resource("cpu")
-class RacingTest(unittest.TestCase):
+klasse RacingTest(unittest.TestCase):
     def test_racing_getbuf_and_releasebuf(self):
         """Repeatly access the memoryview for racing."""
         try:

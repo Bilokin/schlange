@@ -45,7 +45,7 @@ if __name__ == '__main__':
 """
 
 
-class InvalidNodeVisitor(GrammarVisitor):
+klasse InvalidNodeVisitor(GrammarVisitor):
     def visit_NameLeaf(self, node: NameLeaf) -> bool:
         name = node.value
         return name.startswith("invalid")
@@ -90,7 +90,7 @@ class InvalidNodeVisitor(GrammarVisitor):
         return self.visit(node.node)
 
 
-class PythonCallMakerVisitor(GrammarVisitor):
+klasse PythonCallMakerVisitor(GrammarVisitor):
     def __init__(self, parser_generator: ParserGenerator):
         self.gen = parser_generator
         self.cache: Dict[str, Tuple[str, str]] = {}
@@ -211,7 +211,7 @@ class PythonCallMakerVisitor(GrammarVisitor):
             )
 
 
-class PythonParserGenerator(ParserGenerator, GrammarVisitor):
+klasse PythonParserGenerator(ParserGenerator, GrammarVisitor):
     def __init__(
         self,
         grammar: grammar.Grammar,

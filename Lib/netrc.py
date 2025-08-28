@@ -20,7 +20,7 @@ def _getpwuid(uid):
         return f'uid {uid}'
 
 
-class NetrcParseError(Exception):
+klasse NetrcParseError(Exception):
     """Exception raised on syntax errors in the .netrc file."""
     def __init__(self, msg, filename=None, lineno=None):
         self.filename = filename
@@ -32,7 +32,7 @@ class NetrcParseError(Exception):
         return "%s (%s, line %s)" % (self.msg, self.filename, self.lineno)
 
 
-class _netrclex:
+klasse _netrclex:
     def __init__(self, fp):
         self.lineno = 1
         self.instream = fp
@@ -76,7 +76,7 @@ class _netrclex:
         self.pushback.append(token)
 
 
-class netrc:
+klasse netrc:
     def __init__(self, file=None):
         default_netrc = file is None
         if file is None:
@@ -180,7 +180,7 @@ class netrc:
             return None
 
     def __repr__(self):
-        """Dump the class data in the format of a .netrc file."""
+        """Dump the klasse data in the format of a .netrc file."""
         rep = ""
         for host in self.hosts.keys():
             attrs = self.hosts[host]

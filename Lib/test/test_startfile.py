@@ -19,7 +19,7 @@ startfile = support.get_attribute(os, 'startfile')
 
 
 @unittest.skipIf(platform.win32_is_iot(), "starting files is not supported on Windows IoT Core or nanoserver")
-class TestCase(unittest.TestCase):
+klasse TestCase(unittest.TestCase):
     def test_nonexisting(self):
         self.assertRaises(OSError, startfile, "nonexisting.vbs")
 

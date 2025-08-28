@@ -78,7 +78,7 @@ def wraps(wrapped,
 
 
 ################################################################################
-### total_ordering class decorator
+### total_ordering klasse decorator
 ################################################################################
 
 # The total ordering functions all invoke the root magic method directly
@@ -205,7 +205,7 @@ def total_ordering(cls):
 
 def cmp_to_key(mycmp):
     """Convert a cmp= function into a key= function"""
-    class K(object):
+    klasse K(object):
         __slots__ = ['obj']
         def __init__(self, obj):
             self.obj = obj
@@ -270,7 +270,7 @@ def reduce(function, sequence, initial=_initial_missing):
 ################################################################################
 
 
-class _PlaceholderType:
+klasse _PlaceholderType:
     """The type of the Placeholder singleton.
 
     Used as a placeholder for partial arguments.
@@ -366,7 +366,7 @@ def _partial_repr(self):
     return f"{module}.{qualname}({', '.join(args)})"
 
 # Purely functional, no descriptor behaviour
-class partial:
+klasse partial:
     """New function with partial application of the given arguments
     and keywords.
     """
@@ -440,7 +440,7 @@ except ImportError:
     pass
 
 # Descriptor version
-class partialmethod:
+klasse partialmethod:
     """Method descriptor with partial application of the given arguments
     and keywords.
 
@@ -784,7 +784,7 @@ def _c3_mro(cls, abcs=None):
     If given, *abcs* is a list of abstract base classes that should be inserted
     into the resulting MRO. Unrelated ABCs are ignored and don't end up in the
     result. The algorithm inserts ABCs where their functionality is introduced,
-    i.e. issubclass(cls, abc) returns True for the class itself but returns
+    i.e. issubclass(cls, abc) returns True for the klasse itself but returns
     False for all its direct base classes. Implicit ABCs for a given class
     (either registered or inferred from the presence of a special method like
     __len__) are inserted directly after the last ABC explicitly listed in the
@@ -806,7 +806,7 @@ def _c3_mro(cls, abcs=None):
         if issubclass(cls, base) and not any(
                 issubclass(b, base) for b in cls.__bases__
             ):
-            # If *cls* is the class that introduces behaviour described by
+            # If *cls* is the klasse that introduces behaviour described by
             # an ABC *base*, insert said ABC to its MRO.
             abstract_bases.append(base)
     for base in abstract_bases:
@@ -821,7 +821,7 @@ def _c3_mro(cls, abcs=None):
     )
 
 def _compose_mro(cls, types):
-    """Calculates the method resolution order for a given class *cls*.
+    """Calculates the method resolution order for a given klasse *cls*.
 
     Includes relevant abstract base classes (with their respective bases) from
     the *types* iterable. Uses a modified C3 linearization algorithm.
@@ -949,7 +949,7 @@ def singledispatch(func):
             if func is not None:
                 raise TypeError(
                     f"Invalid first argument to `register()`. "
-                    f"{cls!r} is not a class or union type."
+                    f"{cls!r} is not a klasse or union type."
                 )
             ann = getattr(cls, '__annotate__', None)
             if ann is None:
@@ -1008,7 +1008,7 @@ def singledispatch(func):
 
 
 # Descriptor version
-class singledispatchmethod:
+klasse singledispatchmethod:
     """Single-dispatch generic method descriptor.
 
     Supports wrapping existing descriptors and handles non-descriptor
@@ -1046,7 +1046,7 @@ class singledispatchmethod:
                 name = '?'
         return f'<single dispatch method descriptor {name}>'
 
-class _singledispatchmethod_get:
+klasse _singledispatchmethod_get:
     def __init__(self, unbound, obj, cls):
         self._unbound = unbound
         self._dispatch = unbound.dispatcher.dispatch
@@ -1108,7 +1108,7 @@ class _singledispatchmethod_get:
 
 _NOT_FOUND = object()
 
-class cached_property:
+klasse cached_property:
     def __init__(self, func):
         self.func = func
         self.attrname = None
@@ -1132,7 +1132,7 @@ class cached_property:
                 "Cannot use cached_property instance without calling __set_name__ on it.")
         try:
             cache = instance.__dict__
-        except AttributeError:  # not all objects have __dict__ (e.g. class defines slots)
+        except AttributeError:  # not all objects have __dict__ (e.g. klasse defines slots)
             msg = (
                 f"No '__dict__' attribute on {type(instance).__name__!r} "
                 f"instance to cache {self.attrname!r} property."

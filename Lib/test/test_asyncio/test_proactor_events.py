@@ -30,7 +30,7 @@ def close_transport(transport):
     transport._sock = None
 
 
-class ProactorSocketTransportTests(test_utils.TestCase):
+klasse ProactorSocketTransportTests(test_utils.TestCase):
 
     def setUp(self):
         super().setUp()
@@ -540,7 +540,7 @@ class ProactorSocketTransportTests(test_utils.TestCase):
         self.assertFalse(self.protocol.pause_writing.called)
 
 
-class ProactorDatagramTransportTests(test_utils.TestCase):
+klasse ProactorDatagramTransportTests(test_utils.TestCase):
 
     def setUp(self):
         super().setUp()
@@ -756,7 +756,7 @@ class ProactorDatagramTransportTests(test_utils.TestCase):
         m_exc.assert_not_called()
 
 
-class BaseProactorEventLoopTests(test_utils.TestCase):
+klasse BaseProactorEventLoopTests(test_utils.TestCase):
 
     def setUp(self):
         super().setUp()
@@ -975,10 +975,10 @@ class BaseProactorEventLoopTests(test_utils.TestCase):
 
 @unittest.skipIf(sys.platform != 'win32',
                  'Proactor is supported on Windows only')
-class ProactorEventLoopUnixSockSendfileTests(test_utils.TestCase):
+klasse ProactorEventLoopUnixSockSendfileTests(test_utils.TestCase):
     DATA = b"12345abcde" * 16 * 1024  # 160 KiB
 
-    class MyProto(asyncio.Protocol):
+    klasse MyProto(asyncio.Protocol):
 
         def __init__(self, loop):
             self.started = False

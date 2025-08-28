@@ -3,7 +3,7 @@ import types
 import unittest
 from test.support import skip_emscripten_stack_overflow, skip_wasi_stack_overflow, exceeds_recursion_limit
 
-class TestExceptionGroupTypeHierarchy(unittest.TestCase):
+klasse TestExceptionGroupTypeHierarchy(unittest.TestCase):
     def test_exception_group_types(self):
         self.assertIsSubclass(ExceptionGroup, Exception)
         self.assertIsSubclass(ExceptionGroup, BaseExceptionGroup)
@@ -19,7 +19,7 @@ class TestExceptionGroupTypeHierarchy(unittest.TestCase):
         self.assertIsInstance(BaseExceptionGroup[E], types.GenericAlias)
 
 
-class BadConstructorArgs(unittest.TestCase):
+klasse BadConstructorArgs(unittest.TestCase):
     def test_bad_EG_construction__too_many_args(self):
         MSG = r'BaseExceptionGroup.__new__\(\) takes exactly 2 arguments'
         with self.assertRaisesRegex(TypeError, MSG):
@@ -56,7 +56,7 @@ class BadConstructorArgs(unittest.TestCase):
             ExceptionGroup('bad error', ["not an exception"])
 
 
-class InstanceCreation(unittest.TestCase):
+klasse InstanceCreation(unittest.TestCase):
     def test_EG_wraps_Exceptions__creates_EG(self):
         excs = [ValueError(1), TypeError(2)]
         self.assertIs(
@@ -79,7 +79,7 @@ class InstanceCreation(unittest.TestCase):
         self.assertIs(type(beg), BaseExceptionGroup)
 
     def test_EG_subclass_wraps_non_base_exceptions(self):
-        class MyEG(ExceptionGroup):
+        klasse MyEG(ExceptionGroup):
             pass
 
         self.assertIs(
@@ -87,7 +87,7 @@ class InstanceCreation(unittest.TestCase):
             MyEG)
 
     def test_EG_subclass_does_not_wrap_base_exceptions(self):
-        class MyEG(ExceptionGroup):
+        klasse MyEG(ExceptionGroup):
             pass
 
         msg = "Cannot nest BaseExceptions in 'MyEG'"
@@ -95,7 +95,7 @@ class InstanceCreation(unittest.TestCase):
             MyEG("eg", [ValueError(12), KeyboardInterrupt(42)])
 
     def test_BEG_and_E_subclass_does_not_wrap_base_exceptions(self):
-        class MyEG(BaseExceptionGroup, ValueError):
+        klasse MyEG(BaseExceptionGroup, ValueError):
             pass
 
         msg = "Cannot nest BaseExceptions in 'MyEG'"
@@ -103,14 +103,14 @@ class InstanceCreation(unittest.TestCase):
             MyEG("eg", [ValueError(12), KeyboardInterrupt(42)])
 
     def test_EG_and_specific_subclass_can_wrap_any_nonbase_exception(self):
-        class MyEG(ExceptionGroup, ValueError):
+        klasse MyEG(ExceptionGroup, ValueError):
             pass
 
         # The restriction is specific to Exception, not "the other base class"
         MyEG("eg", [ValueError(12), Exception()])
 
     def test_BEG_and_specific_subclass_can_wrap_any_nonbase_exception(self):
-        class MyEG(BaseExceptionGroup, ValueError):
+        klasse MyEG(BaseExceptionGroup, ValueError):
             pass
 
         # The restriction is specific to Exception, not "the other base class"
@@ -118,7 +118,7 @@ class InstanceCreation(unittest.TestCase):
 
 
     def test_BEG_subclass_wraps_anything(self):
-        class MyBEG(BaseExceptionGroup):
+        klasse MyBEG(BaseExceptionGroup):
             pass
 
         self.assertIs(
@@ -129,7 +129,7 @@ class InstanceCreation(unittest.TestCase):
             MyBEG)
 
 
-class StrAndReprTests(unittest.TestCase):
+klasse StrAndReprTests(unittest.TestCase):
     def test_ExceptionGroup(self):
         eg = BaseExceptionGroup(
             'flat', [ValueError(1), TypeError(2)])
@@ -173,7 +173,7 @@ class StrAndReprTests(unittest.TestCase):
                     "[ValueError(1), KeyboardInterrupt(2)])])")
 
     def test_custom_exception(self):
-        class MyEG(ExceptionGroup):
+        klasse MyEG(ExceptionGroup):
             pass
 
         eg = MyEG(
@@ -226,7 +226,7 @@ def create_simple_eg():
         return e
 
 
-class ExceptionGroupFields(unittest.TestCase):
+klasse ExceptionGroupFields(unittest.TestCase):
     def test_basics_ExceptionGroup_fields(self):
         eg = create_simple_eg()
 
@@ -270,7 +270,7 @@ class ExceptionGroupFields(unittest.TestCase):
             eg.exceptions = [OSError('xyz')]
 
 
-class ExceptionGroupTestBase(unittest.TestCase):
+klasse ExceptionGroupTestBase(unittest.TestCase):
     def assertMatchesTemplate(self, exc, exc_type, template):
         """ Assert that the exception matches the template
 
@@ -294,7 +294,7 @@ class ExceptionGroupTestBase(unittest.TestCase):
             self.assertEqual(type(exc), type(template))
             self.assertEqual(exc.args, template.args)
 
-class Predicate:
+klasse Predicate:
     def __init__(self, func):
         self.func = func
 
@@ -304,13 +304,13 @@ class Predicate:
     def method(self, e):
         return self.func(e)
 
-class ExceptionGroupSubgroupTests(ExceptionGroupTestBase):
+klasse ExceptionGroupSubgroupTests(ExceptionGroupTestBase):
     def setUp(self):
         self.eg = create_simple_eg()
         self.eg_template = [ValueError(1), TypeError(int), ValueError(2)]
 
     def test_basics_subgroup_split__bad_arg_type(self):
-        class C:
+        klasse C:
             pass
 
         bad_args = ["bad arg",
@@ -376,7 +376,7 @@ class ExceptionGroupSubgroupTests(ExceptionGroupTestBase):
                     self.assertMatchesTemplate(subeg, ExceptionGroup, template)
 
 
-class ExceptionGroupSplitTests(ExceptionGroupTestBase):
+klasse ExceptionGroupSplitTests(ExceptionGroupTestBase):
     def setUp(self):
         self.eg = create_simple_eg()
         self.eg_template = [ValueError(1), TypeError(int), ValueError(2)]
@@ -457,7 +457,7 @@ class ExceptionGroupSplitTests(ExceptionGroupTestBase):
                         rest, ExceptionGroup, rest_template)
 
 
-class DeepRecursionInSplitAndSubgroup(unittest.TestCase):
+klasse DeepRecursionInSplitAndSubgroup(unittest.TestCase):
     def make_deep_eg(self):
         e = TypeError(1)
         for i in range(exceeds_recursion_limit()):
@@ -494,7 +494,7 @@ def leaf_generator(exc, tbs=None):
     tbs.pop()
 
 
-class LeafGeneratorTest(unittest.TestCase):
+klasse LeafGeneratorTest(unittest.TestCase):
     # The leaf_generator is mentioned in PEP 654 as a suggestion
     # on how to iterate over leaf nodes of an EG. Is is also
     # used below as a test utility. So we test it here.
@@ -535,7 +535,7 @@ def create_nested_eg():
         return eg
 
 
-class NestedExceptionGroupBasicsTest(ExceptionGroupTestBase):
+klasse NestedExceptionGroupBasicsTest(ExceptionGroupTestBase):
     def test_nested_group_matches_template(self):
         eg = create_nested_eg()
         self.assertMatchesTemplate(
@@ -578,7 +578,7 @@ class NestedExceptionGroupBasicsTest(ExceptionGroupTestBase):
                 expected_tbs[i])
 
 
-class ExceptionGroupSplitTestBase(ExceptionGroupTestBase):
+klasse ExceptionGroupSplitTestBase(ExceptionGroupTestBase):
 
     def split_exception_group(self, eg, types):
         """ Split an EG and do some sanity checks on the result """
@@ -647,10 +647,10 @@ class ExceptionGroupSplitTestBase(ExceptionGroupTestBase):
         return match, rest
 
 
-class NestedExceptionGroupSplitTest(ExceptionGroupSplitTestBase):
+klasse NestedExceptionGroupSplitTest(ExceptionGroupSplitTestBase):
 
     def test_split_by_type(self):
-        class MyExceptionGroup(ExceptionGroup):
+        klasse MyExceptionGroup(ExceptionGroup):
             pass
 
         def raiseVE(v):
@@ -818,7 +818,7 @@ class NestedExceptionGroupSplitTest(ExceptionGroupSplitTestBase):
         self.assertNotHasAttr(rest, '__notes__')
 
     def test_drive_invalid_return_value(self):
-        class MyEg(ExceptionGroup):
+        klasse MyEg(ExceptionGroup):
             def derive(self, excs):
                 return 42
 
@@ -830,10 +830,10 @@ class NestedExceptionGroupSplitTest(ExceptionGroupSplitTestBase):
             eg.subgroup(TypeError)
 
 
-class NestedExceptionGroupSubclassSplitTest(ExceptionGroupSplitTestBase):
+klasse NestedExceptionGroupSubclassSplitTest(ExceptionGroupSplitTestBase):
 
     def test_split_ExceptionGroup_subclass_no_derive_no_new_override(self):
-        class EG(ExceptionGroup):
+        klasse EG(ExceptionGroup):
             pass
 
         try:
@@ -875,10 +875,10 @@ class NestedExceptionGroupSubclassSplitTest(ExceptionGroupSplitTestBase):
         self.assertMatchesTemplate(rest, ExceptionGroup, [ValueError(1)])
 
     def test_split_BaseExceptionGroup_subclass_no_derive_new_override(self):
-        class EG(BaseExceptionGroup):
+        klasse EG(BaseExceptionGroup):
             def __new__(cls, message, excs, unused):
                 # The "unused" arg is here to show that split() doesn't call
-                # the actual class constructor from the default derive()
+                # the actual klasse constructor from the default derive()
                 # implementation (it would fail on unused arg if so because
                 # it assumes the BaseExceptionGroup.__new__ signature).
                 return super().__new__(cls, message, excs)
@@ -917,7 +917,7 @@ class NestedExceptionGroupSubclassSplitTest(ExceptionGroupSplitTestBase):
         self.assertMatchesTemplate(rest, ExceptionGroup, [ValueError(1)])
 
     def test_split_ExceptionGroup_subclass_derive_and_new_overrides(self):
-        class EG(ExceptionGroup):
+        klasse EG(ExceptionGroup):
             def __new__(cls, message, excs, code):
                 obj = super().__new__(cls, message, excs)
                 obj.code = code

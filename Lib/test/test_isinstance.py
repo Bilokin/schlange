@@ -8,7 +8,7 @@ from test import support
 
 
 
-class TestIsInstanceExceptions(unittest.TestCase):
+klasse TestIsInstanceExceptions(unittest.TestCase):
     # Test to make sure that an AttributeError when accessing the instance's
     # class's bases is masked.  This was actually a bug in Python 2.2 and
     # 2.2.1 where the exception wasn't caught but it also wasn't being cleared
@@ -24,13 +24,13 @@ class TestIsInstanceExceptions(unittest.TestCase):
     # extension type raises an AttributeError when its __bases__ attribute is
     # gotten.  In that case, isinstance() should return False.
     def test_class_has_no_bases(self):
-        class I(object):
+        klasse I(object):
             def getclass(self):
                 # This must return an object that has no __bases__ attribute
                 return None
             __class__ = property(getclass)
 
-        class C(object):
+        klasse C(object):
             def getbases(self):
                 return ()
             __bases__ = property(getbases)
@@ -40,17 +40,17 @@ class TestIsInstanceExceptions(unittest.TestCase):
     # Like above except that inst.__class__.__bases__ raises an exception
     # other than AttributeError
     def test_bases_raises_other_than_attribute_error(self):
-        class E(object):
+        klasse E(object):
             def getbases(self):
                 raise RuntimeError
             __bases__ = property(getbases)
 
-        class I(object):
+        klasse I(object):
             def getclass(self):
                 return E()
             __class__ = property(getclass)
 
-        class C(object):
+        klasse C(object):
             def getbases(self):
                 return ()
             __bases__ = property(getbases)
@@ -60,9 +60,9 @@ class TestIsInstanceExceptions(unittest.TestCase):
     # Here's a situation where getattr(cls, '__bases__') raises an exception.
     # If that exception is not AttributeError, it should not get masked
     def test_dont_mask_non_attribute_error(self):
-        class I: pass
+        klasse I: pass
 
-        class C(object):
+        klasse C(object):
             def getbases(self):
                 raise RuntimeError
             __bases__ = property(getbases)
@@ -72,9 +72,9 @@ class TestIsInstanceExceptions(unittest.TestCase):
     # Like above, except that getattr(cls, '__bases__') raises an
     # AttributeError, which /should/ get masked as a TypeError
     def test_mask_attribute_error(self):
-        class I: pass
+        klasse I: pass
 
-        class C(object):
+        klasse C(object):
             def getbases(self):
                 raise AttributeError
             __bases__ = property(getbases)
@@ -84,7 +84,7 @@ class TestIsInstanceExceptions(unittest.TestCase):
     # check that we don't mask non AttributeErrors
     # see: http://bugs.python.org/issue1574217
     def test_isinstance_dont_mask_non_attribute_error(self):
-        class C(object):
+        klasse C(object):
             def getclass(self):
                 raise RuntimeError
             __class__ = property(getclass)
@@ -93,31 +93,31 @@ class TestIsInstanceExceptions(unittest.TestCase):
         self.assertRaises(RuntimeError, isinstance, c, bool)
 
         # test another code path
-        class D: pass
+        klasse D: pass
         self.assertRaises(RuntimeError, isinstance, c, D)
 
 
 # These tests are similar to above, but tickle certain code paths in
 # issubclass() instead of isinstance() -- really PyObject_IsSubclass()
 # vs. PyObject_IsInstance().
-class TestIsSubclassExceptions(unittest.TestCase):
+klasse TestIsSubclassExceptions(unittest.TestCase):
     def test_dont_mask_non_attribute_error(self):
-        class C(object):
+        klasse C(object):
             def getbases(self):
                 raise RuntimeError
             __bases__ = property(getbases)
 
-        class S(C): pass
+        klasse S(C): pass
 
         self.assertRaises(RuntimeError, issubclass, C(), S())
 
     def test_mask_attribute_error(self):
-        class C(object):
+        klasse C(object):
             def getbases(self):
                 raise AttributeError
             __bases__ = property(getbases)
 
-        class S(C): pass
+        klasse S(C): pass
 
         self.assertRaises(TypeError, issubclass, C(), S())
 
@@ -126,9 +126,9 @@ class TestIsSubclassExceptions(unittest.TestCase):
     # return a valid __bases__, and it's okay for it to be a normal --
     # unrelated by inheritance -- class.
     def test_dont_mask_non_attribute_error_in_cls_arg(self):
-        class B: pass
+        klasse B: pass
 
-        class C(object):
+        klasse C(object):
             def getbases(self):
                 raise RuntimeError
             __bases__ = property(getbases)
@@ -136,9 +136,9 @@ class TestIsSubclassExceptions(unittest.TestCase):
         self.assertRaises(RuntimeError, issubclass, B, C())
 
     def test_mask_attribute_error_in_cls_arg(self):
-        class B: pass
+        klasse B: pass
 
-        class C(object):
+        klasse C(object):
             def getbases(self):
                 raise AttributeError
             __bases__ = property(getbases)
@@ -148,7 +148,7 @@ class TestIsSubclassExceptions(unittest.TestCase):
 
 
 # meta classes for creating abstract classes and instances
-class AbstractClass(object):
+klasse AbstractClass(object):
     def __init__(self, bases):
         self.bases = bases
 
@@ -159,7 +159,7 @@ class AbstractClass(object):
     def __call__(self):
         return AbstractInstance(self)
 
-class AbstractInstance(object):
+klasse AbstractInstance(object):
     def __init__(self, klass):
         self.klass = klass
 
@@ -173,13 +173,13 @@ AbstractSuper = AbstractClass(bases=())
 AbstractChild = AbstractClass(bases=(AbstractSuper,))
 
 # normal classes
-class Super:
+klasse Super:
     pass
 
-class Child(Super):
+klasse Child(Super):
     pass
 
-class TestIsInstanceIsSubclass(unittest.TestCase):
+klasse TestIsInstanceIsSubclass(unittest.TestCase):
     # Tests to ensure that isinstance and issubclass work on abstract
     # classes and instances.  Before the 2.2 release, TypeErrors were
     # raised when boolean values should have been returned.  The bug was
@@ -290,12 +290,12 @@ class TestIsInstanceIsSubclass(unittest.TestCase):
     def test_issubclass_refcount_handling(self):
         # bpo-39382: abstract_issubclass() didn't hold item reference while
         # peeking in the bases tuple, in the single inheritance case.
-        class A:
+        klasse A:
             @property
             def __bases__(self):
                 return (int, )
 
-        class B:
+        klasse B:
             def __init__(self):
                 # setting this here increases the chances of exhibiting the bug,
                 # probably due to memory layout changes.
@@ -308,7 +308,7 @@ class TestIsInstanceIsSubclass(unittest.TestCase):
         self.assertEqual(True, issubclass(B(), int))
 
     def test_infinite_recursion_in_bases(self):
-        class X:
+        klasse X:
             @property
             def __bases__(self):
                 return self.__bases__
@@ -321,7 +321,7 @@ class TestIsInstanceIsSubclass(unittest.TestCase):
     @support.skip_wasi_stack_overflow()
     def test_infinite_recursion_via_bases_tuple(self):
         """Regression test for bpo-30570."""
-        class Failure(object):
+        klasse Failure(object):
             def __getattr__(self, attr):
                 return (self, None)
         with support.infinite_recursion():
@@ -332,7 +332,7 @@ class TestIsInstanceIsSubclass(unittest.TestCase):
     @support.skip_wasi_stack_overflow()
     def test_infinite_cycle_in_bases(self):
         """Regression test for bpo-30570."""
-        class X:
+        klasse X:
             @property
             def __bases__(self):
                 return (self, self, self)
@@ -341,12 +341,12 @@ class TestIsInstanceIsSubclass(unittest.TestCase):
 
     def test_infinitely_many_bases(self):
         """Regression test for bpo-30570."""
-        class X:
+        klasse X:
             def __getattr__(self, attr):
                 self.assertEqual(attr, "__bases__")
-                class A:
+                klasse A:
                     pass
-                class B:
+                klasse B:
                     pass
                 A.__getattr__ = B.__getattr__ = X.__getattr__
                 return (A(), B())

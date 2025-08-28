@@ -26,7 +26,7 @@ def isolated_context(func):
     return wrapper
 
 
-class ContextTest(unittest.TestCase):
+klasse ContextTest(unittest.TestCase):
     def test_context_var_new_1(self):
         with self.assertRaisesRegex(TypeError, 'takes exactly 1'):
             contextvars.ContextVar()
@@ -72,16 +72,16 @@ class ContextTest(unittest.TestCase):
 
     def test_context_subclassing_1(self):
         with self.assertRaisesRegex(TypeError, 'not an acceptable base type'):
-            class MyContextVar(contextvars.ContextVar):
+            klasse MyContextVar(contextvars.ContextVar):
                 # Potentially we might want ContextVars to be subclassable.
                 pass
 
         with self.assertRaisesRegex(TypeError, 'not an acceptable base type'):
-            class MyContext(contextvars.Context):
+            klasse MyContext(contextvars.Context):
                 pass
 
         with self.assertRaisesRegex(TypeError, 'not an acceptable base type'):
-            class MyToken(contextvars.Token):
+            klasse MyToken(contextvars.Token):
                 pass
 
     def test_context_new_1(self):
@@ -95,7 +95,7 @@ class ContextTest(unittest.TestCase):
 
     def test_context_new_unhashable_str_subclass(self):
         # gh-132002: it used to crash on unhashable str subtypes.
-        class weird_str(str):
+        klasse weird_str(str):
             def __eq__(self, other):
                 pass
 
@@ -560,7 +560,7 @@ class ContextTest(unittest.TestCase):
 # HAMT Tests
 
 
-class HashKey:
+klasse HashKey:
     _crasher = None
 
     def __init__(self, hash, name, *, error_on_eq_to=None):
@@ -593,7 +593,7 @@ class HashKey:
         return (self.name, self.hash) == (other.name, other.hash)
 
 
-class KeyStr(str):
+klasse KeyStr(str):
     def __hash__(self):
         if HashKey._crasher is not None and HashKey._crasher.error_on_hash:
             raise HashingError
@@ -605,7 +605,7 @@ class KeyStr(str):
         return super().__eq__(other)
 
 
-class HaskKeyCrasher:
+klasse HaskKeyCrasher:
     def __init__(self, *, error_on_hash=False, error_on_eq=False):
         self.error_on_hash = error_on_hash
         self.error_on_eq = error_on_eq
@@ -619,16 +619,16 @@ class HaskKeyCrasher:
         HashKey._crasher = None
 
 
-class HashingError(Exception):
+klasse HashingError(Exception):
     pass
 
 
-class EqError(Exception):
+klasse EqError(Exception):
     pass
 
 
 @unittest.skipIf(hamt is None, '_testinternalcapi.hamt() not available')
-class HamtTest(unittest.TestCase):
+klasse HamtTest(unittest.TestCase):
 
     def test_hashkey_helper_1(self):
         k1 = HashKey(10, 'aaa')

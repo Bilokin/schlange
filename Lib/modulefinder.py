@@ -92,7 +92,7 @@ def _find_module(name, path=None):
     return file, file_path, (suffix, "rb", kind)
 
 
-class Module:
+klasse Module:
 
     def __init__(self, name, file=None, path=None):
         self.__name__ = name
@@ -116,7 +116,7 @@ class Module:
         s = s + ")"
         return s
 
-class ModuleFinder:
+klasse ModuleFinder:
 
     def __init__(self, path=None, debug=0, excludes=None, replace_paths=None):
         if path is None:

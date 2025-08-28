@@ -39,7 +39,7 @@ def _get_snapshot_path(module_name):
 
 
 @requires_subprocess()
-class TestTranslationsBase(unittest.TestCase):
+klasse TestTranslationsBase(unittest.TestCase):
 
     def assertMsgidsEqual(self, module):
         '''Assert that msgids extracted from a given module match a

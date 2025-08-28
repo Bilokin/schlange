@@ -1,6 +1,6 @@
 """Parse a Python module and describe its classes and functions.
 
-Parse enough of a Python file to recognize imports and class and
+Parse enough of a Python file to recognize imports and klasse and
 function definitions, and to find out the superclasses of a class.
 
 The interface consists of a single function:
@@ -9,7 +9,7 @@ where module is the name of a Python module, and path is an optional
 list of directories where the module is to be searched.  If present,
 path is prepended to the system search path sys.path.  The return value
 is a dictionary.  The keys of the dictionary are the names of the
-classes and functions defined in the module (including classes that are
+klassees and functions defined in the module (including classes that are
 defined via the from XXX import YYY construct).  The values are
 instances of classes Class and Function.  One special key/value pair is
 present for packages: the key '__path__' has a list as its value which
@@ -34,8 +34,8 @@ Instances of Class describe classes with the attributes from _Object,
 plus the following:
     super   -- list of super classes (Class instances if possible);
     methods -- mapping of method names to beginning line numbers.
-If the name of a super class is not recognized, the corresponding
-entry in the list of super classes is not a class instance but a
+If the name of a super klasse is not recognized, the corresponding
+entry in the list of super classes is not a klasse instance but a
 string giving the name of the super class.  Since import statements
 are recognized and imported modules are scanned as well, this
 shouldn't happen often.
@@ -50,8 +50,8 @@ __all__ = ["readmodule", "readmodule_ex", "Class", "Function"]
 _modules = {}  # Initialize cache of modules we've seen.
 
 
-class _Object:
-    "Information about Python class or function."
+klasse _Object:
+    "Information about Python klasse or function."
     def __init__(self, module, name, file, lineno, end_lineno, parent):
         self.module = module
         self.name = name
@@ -65,7 +65,7 @@ class _Object:
 
 
 # Odd Function and Class signatures are for back-compatibility.
-class Function(_Object):
+klasse Function(_Object):
     "Information about a Python function, including methods."
     def __init__(self, module, name, file, lineno,
                  parent=None, is_async=False, *, end_lineno=None):
@@ -75,7 +75,7 @@ class Function(_Object):
             parent.methods[name] = lineno
 
 
-class Class(_Object):
+klasse Class(_Object):
     "Information about a Python class."
     def __init__(self, module, name, super_, file, lineno,
                  parent=None, *, end_lineno=None):
@@ -183,7 +183,7 @@ def _readmodule(module, path, inpackage=None):
     return _create_tree(fullmodule, path, fname, source, tree, inpackage)
 
 
-class _ModuleBrowser(ast.NodeVisitor):
+klasse _ModuleBrowser(ast.NodeVisitor):
     def __init__(self, module, path, file, tree, inpackage):
         self.path = path
         self.tree = tree
@@ -200,7 +200,7 @@ class _ModuleBrowser(ast.NodeVisitor):
                 # We know this super class.
                 bases.append(self.tree[name])
             elif len(names := name.split(".")) > 1:
-                # Super class form is module.class:
+                # Super klasse form is module.class:
                 # look in module for class.
                 *_, module, class_ = names
                 if module in _modules:

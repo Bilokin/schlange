@@ -49,7 +49,7 @@ def get_binop_argval(arg):
     assert False, f"{arg} is not a valid BINARY_OP argument."
 
 
-class TestTranforms(BytecodeTestCase):
+klasse TestTranforms(BytecodeTestCase):
 
     def check_jump_targets(self, code):
         instructions = list(dis.get_instructions(code))
@@ -810,7 +810,7 @@ class TestTranforms(BytecodeTestCase):
                         self.assertNotInBytecode(code, "SWAP")
 
 
-class TestBuglets(unittest.TestCase):
+klasse TestBuglets(unittest.TestCase):
 
     def test_bug_11510(self):
         # folded constant set optimization was commingled with the tuple
@@ -836,7 +836,7 @@ class TestBuglets(unittest.TestCase):
         compile("while True or not spam: pass", "<test>", "exec")
 
 
-class TestMarkingVariablesAsUnKnown(BytecodeTestCase):
+klasse TestMarkingVariablesAsUnKnown(BytecodeTestCase):
 
     def setUp(self):
         self.addCleanup(sys.settrace, sys.gettrace())
@@ -1117,7 +1117,7 @@ class TestMarkingVariablesAsUnKnown(BytecodeTestCase):
         self.assertNotInBytecode(f, "LOAD_FAST_CHECK")
 
 
-class DirectCfgOptimizerTests(CfgOptimizationTestCase):
+klasse DirectCfgOptimizerTests(CfgOptimizationTestCase):
 
     def cfg_optimization_test(self, insts, expected_insts,
                               consts=None, expected_consts=None,
@@ -2385,7 +2385,7 @@ class DirectCfgOptimizerTests(CfgOptimizationTestCase):
         self.assertEqual(items, [])
 
 
-class OptimizeLoadFastTestCase(DirectCfgOptimizerTests):
+klasse OptimizeLoadFastTestCase(DirectCfgOptimizerTests):
     def make_bb(self, insts):
         last_loc = insts[-1][2]
         maxconst = 0

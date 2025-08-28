@@ -114,7 +114,7 @@ def address_type(address):
 # Connection classes
 #
 
-class _ConnectionBase:
+klasse _ConnectionBase:
     _handle = None
 
     def __init__(self, handle, readable=True, writable=True):
@@ -271,9 +271,9 @@ class _ConnectionBase:
 
 if _winapi:
 
-    class PipeConnection(_ConnectionBase):
+    klasse PipeConnection(_ConnectionBase):
         """
-        Connection class based on a Windows named pipe.
+        Connection klasse based on a Windows named pipe.
         Overlapped I/O is used, so the handles must have been created
         with FILE_FLAG_OVERLAPPED.
         """
@@ -377,9 +377,9 @@ if _winapi:
             return f
 
 
-class Connection(_ConnectionBase):
+klasse Connection(_ConnectionBase):
     """
-    Connection class based on an arbitrary file descriptor (Unix only), or
+    Connection klasse based on an arbitrary file descriptor (Unix only), or
     a socket handle (Windows).
     """
 
@@ -462,7 +462,7 @@ class Connection(_ConnectionBase):
 # Public functions
 #
 
-class Listener(object):
+klasse Listener(object):
     '''
     Returns a listener object.
 
@@ -610,7 +610,7 @@ else:
 # Definitions for connections based on sockets
 #
 
-class SocketListener(object):
+klasse SocketListener(object):
     '''
     Representation of a socket which is bound to an address and listening
     '''
@@ -670,7 +670,7 @@ def SocketClient(address):
 
 if sys.platform == 'win32':
 
-    class PipeListener(object):
+    klasse PipeListener(object):
         '''
         Representation of a named pipe
         '''
@@ -984,7 +984,7 @@ def answer_challenge(connection, authkey: bytes):
 # Support for using xmlrpclib for serialization
 #
 
-class ConnectionWrapper(object):
+klasse ConnectionWrapper(object):
     def __init__(self, conn, dumps, loads):
         self._conn = conn
         self._dumps = dumps
@@ -1006,7 +1006,7 @@ def _xml_loads(s):
     (obj,), method = xmlrpclib.loads(s.decode('utf-8'))
     return obj
 
-class XmlListener(Listener):
+klasse XmlListener(Listener):
     def accept(self):
         global xmlrpclib
         import xmlrpc.client as xmlrpclib

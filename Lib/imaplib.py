@@ -134,7 +134,7 @@ _Untagged_status = br'\* (?P<data>\d+) (?P<type>[A-Z-]+)( (?P<data2>.*))?'
 
 
 
-class IMAP4:
+klasse IMAP4:
 
     r"""IMAP4 client class.
 
@@ -166,7 +166,7 @@ class IMAP4:
     is the header of the response, and the second part contains
     the data (ie: 'literal' value).
 
-    Errors raise the exception class <instance>.error("<reason>").
+    Errors raise the exception klasse <instance>.error("<reason>").
     IMAP4 server errors raise <instance>.abort("<reason>"),
     which is a sub-class of 'error'. Mailbox status changes
     from READ-WRITE to READ-ONLY raise the exception class
@@ -183,10 +183,10 @@ class IMAP4:
     most IMAP servers implement a sub-set of the commands available here.
     """
 
-    class error(Exception): pass    # Logical errors - debug required
-    class abort(error): pass        # Service errors - close and retry
-    class readonly(abort): pass     # Mailbox status changed to READ-ONLY
-    class _responsetimeout(TimeoutError): pass # No response during IDLE
+    klasse error(Exception): pass    # Logical errors - debug required
+    klasse abort(error): pass        # Service errors - close and retry
+    klasse readonly(abort): pass     # Mailbox status changed to READ-ONLY
+    klasse _responsetimeout(TimeoutError): pass # No response during IDLE
 
     def __init__(self, host='', port=IMAP4_PORT, timeout=None):
         self.debug = Debug
@@ -1419,12 +1419,12 @@ class IMAP4:
                 n -= 1
 
 
-class Idler:
+klasse Idler:
     """Iterable IDLE context manager: start IDLE & produce untagged responses.
 
     An object of this type is returned by the IMAP4.idle() method.
 
-    Note: The name and structure of this class are subject to change.
+    Note: The name and structure of this klasse are subject to change.
     """
 
     def __init__(self, imap, duration=None):
@@ -1614,9 +1614,9 @@ class Idler:
 
 if HAVE_SSL:
 
-    class IMAP4_SSL(IMAP4):
+    klasse IMAP4_SSL(IMAP4):
 
-        """IMAP4 client class over SSL connection
+        """IMAP4 client klasse over SSL connection
 
         Instantiate with: IMAP4_SSL([host[, port[, ssl_context[, timeout=None]]]])
 
@@ -1627,7 +1627,7 @@ if HAVE_SSL:
                 timeout - socket timeout (default: None) If timeout is not given or is None,
                           the global default socket timeout is used
 
-        for more documentation see the docstring of the parent class IMAP4.
+        for more documentation see the docstring of the parent klasse IMAP4.
         """
 
 
@@ -1654,15 +1654,15 @@ if HAVE_SSL:
     __all__.append("IMAP4_SSL")
 
 
-class IMAP4_stream(IMAP4):
+klasse IMAP4_stream(IMAP4):
 
-    """IMAP4 client class over a stream
+    """IMAP4 client klasse over a stream
 
     Instantiate with: IMAP4_stream(command)
 
             "command" - a string that can be passed to subprocess.Popen()
 
-    for more documentation see the docstring of the parent class IMAP4.
+    for more documentation see the docstring of the parent klasse IMAP4.
     """
 
 
@@ -1711,9 +1711,9 @@ class IMAP4_stream(IMAP4):
 
 
 
-class _Authenticator:
+klasse _Authenticator:
 
-    """Private class to provide en/decoding
+    """Private klasse to provide en/decoding
             for base64-based authentication conversation.
     """
 

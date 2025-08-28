@@ -95,7 +95,7 @@ Make sure that None is a valid return value
 """
 
 
-class ListComprehensionTest(unittest.TestCase):
+klasse ListComprehensionTest(unittest.TestCase):
     def _check_in_scopes(self, code, outputs=None, ns=None, scopes=None, raises=(),
                          exec_func=exec):
         code = textwrap.dedent(code)
@@ -104,7 +104,7 @@ class ListComprehensionTest(unittest.TestCase):
             with self.subTest(scope=scope):
                 if scope == "class":
                     newcode = textwrap.dedent("""
-                        class _C:
+                        klasse _C:
                             {code}
                     """).format(code=textwrap.indent(code, "    "))
                     def get_output(moddict, name):
@@ -149,7 +149,7 @@ class ListComprehensionTest(unittest.TestCase):
         self._check_in_scopes(code, outputs)
 
     def test_class_scope_free_var_with_class_cell(self):
-        class C:
+        klasse C:
             def method(self):
                 super()
                 return __class__
@@ -183,7 +183,7 @@ class ListComprehensionTest(unittest.TestCase):
     def test_references___class___enclosing(self):
         code = """
             __class__ = 2
-            class C:
+            klasse C:
                 res = [__class__ for x in [1]]
             res = C.res
         """
@@ -303,7 +303,7 @@ class ListComprehensionTest(unittest.TestCase):
             items = [(x:=y) for y in range(3)]
         """
         outputs = {"x": 2}
-        # assignment expression in comprehension is disallowed in class scope
+        # assignment expression in comprehension is disallowed in klasse scope
         self._check_in_scopes(code, outputs, scopes=["module", "function"])
 
     def test_free_var_in_comp_child(self):
@@ -466,7 +466,7 @@ class ListComprehensionTest(unittest.TestCase):
 
     def test_in_class_scope_inside_function_1(self):
         code = """
-            class C:
+            klasse C:
                 y = 2
                 vals = [(x, y) for x in range(2)]
             vals = C.vals
@@ -477,7 +477,7 @@ class ListComprehensionTest(unittest.TestCase):
     def test_in_class_scope_inside_function_2(self):
         code = """
             y = 1
-            class C:
+            klasse C:
                 y = 2
                 vals = [(x, y) for x in range(2)]
             vals = C.vals
@@ -488,11 +488,11 @@ class ListComprehensionTest(unittest.TestCase):
     def test_in_class_scope_with_global(self):
         code = """
             y = 1
-            class C:
+            klasse C:
                 global y
                 y = 2
                 # Ensure the listcomp uses the global, not the value in the
-                # class namespace
+                # klasse namespace
                 locals()['y'] = 3
                 vals = [(x, y) for x in range(2)]
             vals = C.vals
@@ -505,11 +505,11 @@ class ListComprehensionTest(unittest.TestCase):
     def test_in_class_scope_with_nonlocal(self):
         code = """
             y = 1
-            class C:
+            klasse C:
                 nonlocal y
                 y = 2
                 # Ensure the listcomp uses the global, not the value in the
-                # class namespace
+                # klasse namespace
                 locals()['y'] = 3
                 vals = [(x, y) for x in range(2)]
             vals = C.vals

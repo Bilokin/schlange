@@ -39,7 +39,7 @@ except OSError as e:
         raise unittest.SkipTest("kernel doesn't support epoll()")
     raise
 
-class TestEPoll(unittest.TestCase):
+klasse TestEPoll(unittest.TestCase):
 
     def setUp(self):
         self.serverSocket = socket.create_server(('127.0.0.1', 0))

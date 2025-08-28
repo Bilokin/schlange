@@ -46,7 +46,7 @@ __all__ = [
 ]
 
 
-class PackageNotFoundError(ModuleNotFoundError):
+klasse PackageNotFoundError(ModuleNotFoundError):
     """The package was not found."""
 
     def __str__(self) -> str:
@@ -58,7 +58,7 @@ class PackageNotFoundError(ModuleNotFoundError):
         return name
 
 
-class Sectioned:
+klasse Sectioned:
     """
     A simple entry point config parser for performance
 
@@ -123,7 +123,7 @@ class Sectioned:
         return line and not line.startswith('#')
 
 
-class EntryPoint:
+klasse EntryPoint:
     """An entry point as defined by Python packaging conventions.
 
     See `the packaging docs on entry points
@@ -247,7 +247,7 @@ class EntryPoint:
         return hash(self._key())
 
 
-class EntryPoints(tuple):
+klasse EntryPoints(tuple):
     """
     An immutable collection of selectable EntryPoint objects.
     """
@@ -303,7 +303,7 @@ class EntryPoints(tuple):
         )
 
 
-class PackagePath(pathlib.PurePosixPath):
+klasse PackagePath(pathlib.PurePosixPath):
     """A reference to a path in a package"""
 
     hash: Optional[FileHash]
@@ -321,7 +321,7 @@ class PackagePath(pathlib.PurePosixPath):
         return self.dist.locate_file(self)
 
 
-class FileHash:
+klasse FileHash:
     def __init__(self, spec: str) -> None:
         self.mode, _, self.value = spec.partition('=')
 
@@ -329,11 +329,11 @@ class FileHash:
         return f'<FileHash mode: {self.mode} value: {self.value}>'
 
 
-class Distribution(metaclass=abc.ABCMeta):
+klasse Distribution(metaclass=abc.ABCMeta):
     """
     An abstract Python distribution package.
 
-    Custom providers may derive from this class and define
+    Custom providers may derive from this klasse and define
     the abstract methods to provide a concrete implementation
     for their environment. Some providers may opt to override
     the default implementation of some properties to bypass
@@ -641,7 +641,7 @@ class Distribution(metaclass=abc.ABCMeta):
         )
 
 
-class DistributionFinder(MetaPathFinder):
+klasse DistributionFinder(MetaPathFinder):
     """
     A MetaPathFinder capable of discovering installed distributions.
 
@@ -649,7 +649,7 @@ class DistributionFinder(MetaPathFinder):
     supply metadata.
     """
 
-    class Context:
+    klasse Context:
         """
         Keyword arguments presented by the caller to
         ``distributions()`` or ``Distribution.discover()``
@@ -703,9 +703,9 @@ class DistributionFinder(MetaPathFinder):
         """
 
 
-class FastPath:
+klasse FastPath:
     """
-    Micro-optimized class for searching a root for children.
+    Micro-optimized klasse for searching a root for children.
 
     Root is a path on the file system that may contain metadata
     directories either as natural directories or within a zip file.
@@ -757,9 +757,9 @@ class FastPath:
         return Lookup(self)
 
 
-class Lookup:
+klasse Lookup:
     """
-    A micro-optimized class for searching a (fast) path for metadata.
+    A micro-optimized klasse for searching a (fast) path for metadata.
     """
 
     def __init__(self, path: FastPath):
@@ -808,7 +808,7 @@ class Lookup:
         return itertools.chain(infos, eggs)
 
 
-class Prepared:
+klasse Prepared:
     """
     A prepared search query for metadata on a possibly-named package.
 
@@ -857,7 +857,7 @@ class Prepared:
         return bool(self.name)
 
 
-class MetadataPathFinder(DistributionFinder):
+klasse MetadataPathFinder(DistributionFinder):
     @classmethod
     def find_distributions(
         cls, context=DistributionFinder.Context()
@@ -886,7 +886,7 @@ class MetadataPathFinder(DistributionFinder):
         FastPath.__new__.cache_clear()
 
 
-class PathDistribution(Distribution):
+klasse PathDistribution(Distribution):
     def __init__(self, path: SimplePath) -> None:
         """Construct a distribution.
 

@@ -23,7 +23,7 @@ def instructions_with_positions(instrs, co_positions):
             for i in range(size):
                 next(co_positions, ())
 
-class BytecodeTestCase(unittest.TestCase):
+klasse BytecodeTestCase(unittest.TestCase):
     """Custom assertion methods for inspecting bytecode."""
 
     def get_disassembly_as_string(self, co):
@@ -60,13 +60,13 @@ class BytecodeTestCase(unittest.TestCase):
                     msg = msg % (opname, argval, disassembly)
                     self.fail(msg)
 
-class CompilationStepTestCase(unittest.TestCase):
+klasse CompilationStepTestCase(unittest.TestCase):
 
     HAS_ARG = set(dis.hasarg)
     HAS_TARGET = set(dis.hasjrel + dis.hasjabs + dis.hasexc)
     HAS_ARG_OR_TARGET = HAS_ARG.union(HAS_TARGET)
 
-    class Label:
+    klasse Label:
         pass
 
     def assertInstructionsMatch(self, actual_seq, expected):
@@ -136,7 +136,7 @@ class CompilationStepTestCase(unittest.TestCase):
 
 
 @unittest.skipIf(_testinternalcapi is None, "requires _testinternalcapi")
-class CodegenTestCase(CompilationStepTestCase):
+klasse CodegenTestCase(CompilationStepTestCase):
 
     def generate_code(self, ast):
         insts, _ = _testinternalcapi.compiler_codegen(ast, "my_file.py", 0)
@@ -144,14 +144,14 @@ class CodegenTestCase(CompilationStepTestCase):
 
 
 @unittest.skipIf(_testinternalcapi is None, "requires _testinternalcapi")
-class CfgOptimizationTestCase(CompilationStepTestCase):
+klasse CfgOptimizationTestCase(CompilationStepTestCase):
 
     def get_optimized(self, seq, consts, nlocals=0):
         insts = _testinternalcapi.optimize_cfg(seq, consts, nlocals)
         return insts, consts
 
 @unittest.skipIf(_testinternalcapi is None, "requires _testinternalcapi")
-class AssemblerTestCase(CompilationStepTestCase):
+klasse AssemblerTestCase(CompilationStepTestCase):
 
     def get_code_object(self, filename, insts, metadata):
         co = _testinternalcapi.assemble_code_object(filename, insts, metadata)

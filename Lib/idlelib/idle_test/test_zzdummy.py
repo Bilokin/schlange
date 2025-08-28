@@ -19,7 +19,7 @@ testcfg = {
 }
 code_sample = """\
 
-class C1:
+klasse C1:
     # Class comment.
     def __init__(self, a, b):
         self.a = a
@@ -27,7 +27,7 @@ class C1:
 """
 
 
-class DummyEditwin:
+klasse DummyEditwin:
     get_selection_indices = editor.EditorWindow.get_selection_indices
     def __init__(self, root, text):
         self.root = root
@@ -38,7 +38,7 @@ class DummyEditwin:
         self.text.undo_block_stop = mock.Mock()
 
 
-class ZZDummyTest(unittest.TestCase):
+klasse ZZDummyTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):

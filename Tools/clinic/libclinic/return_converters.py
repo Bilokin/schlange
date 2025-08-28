@@ -31,7 +31,7 @@ def add_c_return_converter(
     return f
 
 
-class CReturnConverterAutoRegister(type):
+klasse CReturnConverterAutoRegister(type):
     def __init__(
         cls: ReturnConverterType,
         name: str,
@@ -41,7 +41,7 @@ class CReturnConverterAutoRegister(type):
         add_c_return_converter(cls)
 
 
-class CReturnConverter(metaclass=CReturnConverterAutoRegister):
+klasse CReturnConverter(metaclass=CReturnConverterAutoRegister):
 
     # The C type to use for this variable.
     # 'type' should be a Python string specifying the type, e.g. "int".
@@ -103,7 +103,7 @@ class CReturnConverter(metaclass=CReturnConverterAutoRegister):
 add_c_return_converter(CReturnConverter, 'object')
 
 
-class bool_return_converter(CReturnConverter):
+klasse bool_return_converter(CReturnConverter):
     type = 'int'
 
     def render(self, function: Function, data: CRenderData) -> None:
@@ -114,7 +114,7 @@ class bool_return_converter(CReturnConverter):
         )
 
 
-class long_return_converter(CReturnConverter):
+klasse long_return_converter(CReturnConverter):
     type = 'long'
     conversion_fn = 'PyLong_FromLong'
     cast = ''
@@ -128,35 +128,35 @@ class long_return_converter(CReturnConverter):
         )
 
 
-class int_return_converter(long_return_converter):
+klasse int_return_converter(long_return_converter):
     type = 'int'
     cast = '(long)'
 
 
-class unsigned_long_return_converter(long_return_converter):
+klasse unsigned_long_return_converter(long_return_converter):
     type = 'unsigned long'
     conversion_fn = 'PyLong_FromUnsignedLong'
     unsigned_cast = '(unsigned long)'
 
 
-class unsigned_int_return_converter(unsigned_long_return_converter):
+klasse unsigned_int_return_converter(unsigned_long_return_converter):
     type = 'unsigned int'
     cast = '(unsigned long)'
     unsigned_cast = '(unsigned int)'
 
 
-class Py_ssize_t_return_converter(long_return_converter):
+klasse Py_ssize_t_return_converter(long_return_converter):
     type = 'Py_ssize_t'
     conversion_fn = 'PyLong_FromSsize_t'
 
 
-class size_t_return_converter(long_return_converter):
+klasse size_t_return_converter(long_return_converter):
     type = 'size_t'
     conversion_fn = 'PyLong_FromSize_t'
     unsigned_cast = '(size_t)'
 
 
-class double_return_converter(CReturnConverter):
+klasse double_return_converter(CReturnConverter):
     type = 'double'
     cast = ''
 
@@ -168,6 +168,6 @@ class double_return_converter(CReturnConverter):
         )
 
 
-class float_return_converter(double_return_converter):
+klasse float_return_converter(double_return_converter):
     type = 'float'
     cast = '(double)'

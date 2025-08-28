@@ -4,7 +4,7 @@ from _pyrepl.console import Event
 from _pyrepl.input import KeymapTranslator
 
 
-class KeymapTranslatorTests(unittest.TestCase):
+klasse KeymapTranslatorTests(unittest.TestCase):
     def test_push_single_key(self):
         keymap = [("a", "command_a")]
         translator = KeymapTranslator(keymap)

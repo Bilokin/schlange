@@ -11,7 +11,7 @@ from textwrap import dedent
 # to verify that the messages were really logged.
 # The only purpose of this test is to verify the code doesn't crash or leak.
 
-class Test(unittest.TestCase):
+klasse Test(unittest.TestCase):
 
     def tearDown(self):
         syslog.closelog()

@@ -16,107 +16,107 @@ from test.support import cpython_only
 from test.support.import_helper import ensure_lazy_imports
 
 # list, tuple and dict subclasses that do or don't overwrite __repr__
-class list2(list):
+klasse list2(list):
     pass
 
-class list3(list):
+klasse list3(list):
     def __repr__(self):
         return list.__repr__(self)
 
-class list_custom_repr(list):
+klasse list_custom_repr(list):
     def __repr__(self):
         return '*'*len(list.__repr__(self))
 
-class tuple2(tuple):
+klasse tuple2(tuple):
     pass
 
-class tuple3(tuple):
+klasse tuple3(tuple):
     def __repr__(self):
         return tuple.__repr__(self)
 
-class tuple_custom_repr(tuple):
+klasse tuple_custom_repr(tuple):
     def __repr__(self):
         return '*'*len(tuple.__repr__(self))
 
-class set2(set):
+klasse set2(set):
     pass
 
-class set3(set):
+klasse set3(set):
     def __repr__(self):
         return set.__repr__(self)
 
-class set_custom_repr(set):
+klasse set_custom_repr(set):
     def __repr__(self):
         return '*'*len(set.__repr__(self))
 
-class frozenset2(frozenset):
+klasse frozenset2(frozenset):
     pass
 
-class frozenset3(frozenset):
+klasse frozenset3(frozenset):
     def __repr__(self):
         return frozenset.__repr__(self)
 
-class frozenset_custom_repr(frozenset):
+klasse frozenset_custom_repr(frozenset):
     def __repr__(self):
         return '*'*len(frozenset.__repr__(self))
 
-class dict2(dict):
+klasse dict2(dict):
     pass
 
-class dict3(dict):
+klasse dict3(dict):
     def __repr__(self):
         return dict.__repr__(self)
 
-class dict_custom_repr(dict):
+klasse dict_custom_repr(dict):
     def __repr__(self):
         return '*'*len(dict.__repr__(self))
 
-class mappingview_custom_repr(MappingView):
+klasse mappingview_custom_repr(MappingView):
     def __repr__(self):
         return '*'*len(MappingView.__repr__(self))
 
-class keysview_custom_repr(KeysView):
+klasse keysview_custom_repr(KeysView):
     def __repr__(self):
         return '*'*len(KeysView.__repr__(self))
 
 @dataclasses.dataclass
-class dataclass1:
+klasse dataclass1:
     field1: str
     field2: int
     field3: bool = False
     field4: int = dataclasses.field(default=1, repr=False)
 
 @dataclasses.dataclass
-class dataclass2:
+klasse dataclass2:
     a: int = 1
     def __repr__(self):
         return "custom repr that doesn't fit within pprint width"
 
 @dataclasses.dataclass(repr=False)
-class dataclass3:
+klasse dataclass3:
     a: int = 1
 
 @dataclasses.dataclass
-class dataclass4:
+klasse dataclass4:
     a: "dataclass4"
     b: int = 1
 
 @dataclasses.dataclass
-class dataclass5:
+klasse dataclass5:
     a: "dataclass6"
     b: int = 1
 
 @dataclasses.dataclass
-class dataclass6:
+klasse dataclass6:
     c: "dataclass5"
     d: int = 1
 
-class Unorderable:
+klasse Unorderable:
     def __repr__(self):
         return str(id(self))
 
 # Class Orderable is orderable with any type
-class Orderable:
+klasse Orderable:
     def __init__(self, hash):
         self._hash = hash
     def __lt__(self, other):
@@ -134,7 +134,7 @@ class Orderable:
     def __hash__(self):
         return self._hash
 
-class QueryTestCase(unittest.TestCase):
+klasse QueryTestCase(unittest.TestCase):
 
     def setUp(self):
         self.a = list(range(100))
@@ -453,7 +453,7 @@ class QueryTestCase(unittest.TestCase):
         self.assertEqual(pprint.pformat(1234567), '1234567')
         self.assertEqual(pprint.pformat(1234567, underscore_numbers=True), '1_234_567')
 
-        class Temperature(int):
+        klasse Temperature(int):
             def __new__(cls, celsius_degrees):
                 return super().__new__(Temperature, celsius_degrees)
             def __repr__(self):
@@ -594,7 +594,7 @@ mappingproxy(OrderedDict([('the', 0),
         long = dict((chr(x), chr(x)) for x in range(90, 64, -1))
         lengths = {"empty": empty, "short": short, "long": long}
         # Test that a subclass that doesn't replace __repr__ works with different lengths
-        class MV(MappingView): pass
+        klasse MV(MappingView): pass
 
         for name, d in lengths.items():
             with self.subTest(length=name, name="Views"):
@@ -655,7 +655,7 @@ mappingproxy(OrderedDict([('the', 0),
         self.assertTrue(pprint.pformat(d.items()).endswith(", (499, None), (500, None)])"))
 
     def test_mapping_view_subclass_no_mapping(self):
-        class BMV(MappingView):
+        klasse BMV(MappingView):
             def __init__(self, d):
                 super().__init__(d)
                 self.mapping = self._mapping
@@ -665,7 +665,7 @@ mappingproxy(OrderedDict([('the', 0),
 
     def test_mapping_subclass_repr(self):
         """Test that mapping ABC views use their ._mapping's __repr__."""
-        class MyMapping(Mapping):
+        klasse MyMapping(Mapping):
             def __init__(self, keys=None):
                 self._keys = {} if keys is None else dict.fromkeys(keys)
 
@@ -736,7 +736,7 @@ namespace(the=0,
           dog=8)""")
 
     def test_simple_namespace_subclass(self):
-        class AdvancedNamespace(types.SimpleNamespace): pass
+        klasse AdvancedNamespace(types.SimpleNamespace): pass
         ns = AdvancedNamespace(
             the=0,
             quick=1,
@@ -1473,7 +1473,7 @@ ValuesView({'a': 6,
     'lazy dog'}""")
 
 
-class DottedPrettyPrinter(pprint.PrettyPrinter):
+klasse DottedPrettyPrinter(pprint.PrettyPrinter):
 
     def format(self, object, context, maxlevels, level):
         if isinstance(object, str):

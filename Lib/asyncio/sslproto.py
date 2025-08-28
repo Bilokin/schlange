@@ -20,7 +20,7 @@ if ssl is not None:
     SSLAgainErrors = (ssl.SSLWantReadError, ssl.SSLSyscallError)
 
 
-class SSLProtocolState(enum.Enum):
+klasse SSLProtocolState(enum.Enum):
     UNWRAPPED = "UNWRAPPED"
     DO_HANDSHAKE = "DO_HANDSHAKE"
     WRAPPED = "WRAPPED"
@@ -28,7 +28,7 @@ class SSLProtocolState(enum.Enum):
     SHUTDOWN = "SHUTDOWN"
 
 
-class AppProtocolState(enum.Enum):
+klasse AppProtocolState(enum.Enum):
     # This tracks the state of app protocol (https://git.io/fj59P):
     #
     #     INIT -cm-> CON_MADE [-dr*->] [-er-> EOF?] -cl-> CON_LOST
@@ -79,7 +79,7 @@ def add_flowcontrol_defaults(high, low, kb):
     return hi, lo
 
 
-class _SSLProtocolTransport(transports._FlowControlMixin,
+klasse _SSLProtocolTransport(transports._FlowControlMixin,
                             transports.Transport):
 
     _start_tls_compatible = True
@@ -260,7 +260,7 @@ class _SSLProtocolTransport(transports._FlowControlMixin,
         self._ssl_protocol._write_buffer_size += len(data)
 
 
-class SSLProtocol(protocols.BufferedProtocol):
+klasse SSLProtocol(protocols.BufferedProtocol):
     max_size = 256 * 1024   # Buffer size passed to read()
 
     _handshake_start_time = None

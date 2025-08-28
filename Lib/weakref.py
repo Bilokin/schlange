@@ -35,7 +35,7 @@ __all__ = ["ref", "proxy", "getweakrefcount", "getweakrefs",
 
 _collections_abc.MutableSet.register(WeakSet)
 
-class WeakMethod(ref):
+klasse WeakMethod(ref):
     """
     A custom `weakref.ref` subclass which simulates a weak reference to
     a bound method, working around the lifetime problem of bound methods.
@@ -89,8 +89,8 @@ class WeakMethod(ref):
     __hash__ = ref.__hash__
 
 
-class WeakValueDictionary(_collections_abc.MutableMapping):
-    """Mapping class that references values weakly.
+klasse WeakValueDictionary(_collections_abc.MutableMapping):
+    """Mapping klasse that references values weakly.
 
     Entries in the dictionary will be discarded when no strong
     reference to the value exists anymore
@@ -274,7 +274,7 @@ class WeakValueDictionary(_collections_abc.MutableMapping):
         return NotImplemented
 
 
-class KeyedRef(ref):
+klasse KeyedRef(ref):
     """Specialized reference that includes a key corresponding to the value.
 
     This is used in the WeakValueDictionary to avoid having to create
@@ -295,8 +295,8 @@ class KeyedRef(ref):
         super().__init__(ob, callback)
 
 
-class WeakKeyDictionary(_collections_abc.MutableMapping):
-    """ Mapping class that references keys weakly.
+klasse WeakKeyDictionary(_collections_abc.MutableMapping):
+    """ Mapping klasse that references keys weakly.
 
     Entries in the dictionary will be discarded when there is no
     longer a strong reference to the key. This can be used to
@@ -437,7 +437,7 @@ class WeakKeyDictionary(_collections_abc.MutableMapping):
         return NotImplemented
 
 
-class finalize:
+klasse finalize:
     """Class for finalization of weakrefable objects
 
     finalize(obj, func, *args, **kwargs) returns a callable finalizer
@@ -462,7 +462,7 @@ class finalize:
     _dirty = False
     _registered_with_atexit = False
 
-    class _Info:
+    klasse _Info:
         __slots__ = ("weakref", "func", "args", "kwargs", "atexit", "index")
 
     def __init__(self, obj, func, /, *args, **kwargs):

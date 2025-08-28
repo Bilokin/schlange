@@ -6,7 +6,7 @@ from typing import Union, List
 ann = Union[List[str], int]
 
 # mock typing._type_repr behaviour
-class A: ...
+klasse A: ...
 
 A.__module__ = 'testModule.typing'
 A.__qualname__ = 'A'

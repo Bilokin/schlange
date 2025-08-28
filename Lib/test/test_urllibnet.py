@@ -16,7 +16,7 @@ import time
 support.requires('network')
 
 
-class URLTimeoutTest(unittest.TestCase):
+klasse URLTimeoutTest(unittest.TestCase):
     # XXX this test doesn't seem to test anything useful.
 
     def setUp(self):
@@ -35,7 +35,7 @@ class URLTimeoutTest(unittest.TestCase):
             f.read()
 
 
-class urlopenNetworkTests(unittest.TestCase):
+klasse urlopenNetworkTests(unittest.TestCase):
     """Tests urllib.request.urlopen using the network.
 
     These tests are not exhaustive.  Assuming that testing using files does a
@@ -147,7 +147,7 @@ class urlopenNetworkTests(unittest.TestCase):
             urllib.request.urlopen("http://{}/".format(bogus_domain))
 
 
-class urlretrieveNetworkTests(unittest.TestCase):
+klasse urlretrieveNetworkTests(unittest.TestCase):
     """Tests urllib.request.urlretrieve using the network."""
 
     def setUp(self):

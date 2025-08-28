@@ -34,7 +34,7 @@ def kill_on_error(proc):
             raise
 
 
-class MockSocketFile:
+klasse MockSocketFile:
     """Mock socket file for testing _PdbServer without actual socket connections."""
 
     def __init__(self):
@@ -76,7 +76,7 @@ class MockSocketFile:
         return results
 
 
-class PdbClientTestCase(unittest.TestCase):
+klasse PdbClientTestCase(unittest.TestCase):
     """Tests for the _PdbClient class."""
 
     def do_test(
@@ -829,7 +829,7 @@ class PdbClientTestCase(unittest.TestCase):
         )
 
 
-class RemotePdbTestCase(unittest.TestCase):
+klasse RemotePdbTestCase(unittest.TestCase):
     """Tests for the _PdbServer class."""
 
     def setUp(self):
@@ -1010,7 +1010,7 @@ class RemotePdbTestCase(unittest.TestCase):
 
 @requires_subprocess()
 @unittest.skipIf(is_wasi, "WASI does not support TCP sockets")
-class PdbConnectTestCase(unittest.TestCase):
+klasse PdbConnectTestCase(unittest.TestCase):
     """Tests for the _connect mechanism using direct socket communication."""
 
     def setUp(self):
@@ -1460,7 +1460,7 @@ def _supports_remote_attaching():
                     "Testing on Linux requires process_vm_readv support")
 @cpython_only
 @requires_subprocess()
-class PdbAttachTestCase(unittest.TestCase):
+klasse PdbAttachTestCase(unittest.TestCase):
     def setUp(self):
         # Create a server socket that will wait for the debugger to connect
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

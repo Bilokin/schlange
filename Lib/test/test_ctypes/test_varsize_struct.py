@@ -2,9 +2,9 @@ import unittest
 from ctypes import Structure, sizeof, resize, c_int
 
 
-class VarSizeTest(unittest.TestCase):
+klasse VarSizeTest(unittest.TestCase):
     def test_resize(self):
-        class X(Structure):
+        klasse X(Structure):
             _fields_ = [("item", c_int),
                         ("array", c_int * 1)]
 

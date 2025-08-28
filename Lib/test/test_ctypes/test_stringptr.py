@@ -10,10 +10,10 @@ _ctypes_test = import_helper.import_module("_ctypes_test")
 lib = CDLL(_ctypes_test.__file__)
 
 
-class StringPtrTestCase(unittest.TestCase):
+klasse StringPtrTestCase(unittest.TestCase):
     @support.refcount_test
     def test__POINTER_c_char(self):
-        class X(Structure):
+        klasse X(Structure):
             _fields_ = [("str", POINTER(c_char))]
         x = X()
 
@@ -32,7 +32,7 @@ class StringPtrTestCase(unittest.TestCase):
         self.assertRaises(TypeError, setattr, x, "str", "Hello, World")
 
     def test__c_char_p(self):
-        class X(Structure):
+        klasse X(Structure):
             _fields_ = [("str", c_char_p)]
         x = X()
 

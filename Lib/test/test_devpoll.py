@@ -19,7 +19,7 @@ def find_ready_matching(ready, flag):
             match.append(fd)
     return match
 
-class DevPollTests(unittest.TestCase):
+klasse DevPollTests(unittest.TestCase):
 
     def test_devpoll1(self):
         # Basic functional test of poll object

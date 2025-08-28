@@ -28,10 +28,10 @@ def tearDownModule():
     se.messagebox = messagebox
 
 
-class Mock:
+klasse Mock:
     def __init__(self, *args, **kwargs): pass
 
-class GetTest(unittest.TestCase):
+klasse GetTest(unittest.TestCase):
     # SearchEngine.get returns singleton created & saved on first call.
     def test_get(self):
         saved_Engine = se.SearchEngine
@@ -43,9 +43,9 @@ class GetTest(unittest.TestCase):
             self.assertIs(root._searchengine, engine)
             self.assertIs(se.get(root), engine)
         finally:
-            se.SearchEngine = saved_Engine  # restore class to module
+            se.SearchEngine = saved_Engine  # restore klasse to module
 
-class GetLineColTest(unittest.TestCase):
+klasse GetLineColTest(unittest.TestCase):
     #  Test simple text-independent helper function
     def test_get_line_col(self):
         self.assertEqual(se.get_line_col('1.0'), (1, 0))
@@ -54,7 +54,7 @@ class GetLineColTest(unittest.TestCase):
         self.assertRaises(ValueError, se.get_line_col, ('1.0 lineend'))
         self.assertRaises(ValueError, se.get_line_col, ('end'))
 
-class GetSelectionTest(unittest.TestCase):
+klasse GetSelectionTest(unittest.TestCase):
     # Test text-dependent helper function.
 ##    # Need gui for text.index('sel.first/sel.last/insert').
 ##    @classmethod
@@ -89,7 +89,7 @@ class GetSelectionTest(unittest.TestCase):
         self.assertEqual(se.get_selection(text), ('1.5', '1.5'))
 
 
-class ReverseSearchTest(unittest.TestCase):
+klasse ReverseSearchTest(unittest.TestCase):
     # Test helper function that searches backwards within a line.
     def test_search_reverse(self):
         Equal = self.assertEqual
@@ -102,8 +102,8 @@ class ReverseSearchTest(unittest.TestCase):
         Equal(se.search_reverse(prog, line, 6), None)
 
 
-class SearchEngineTest(unittest.TestCase):
-    # Test class methods that do not use Text widget.
+klasse SearchEngineTest(unittest.TestCase):
+    # Test klasse methods that do not use Text widget.
 
     def setUp(self):
         self.engine = se.SearchEngine(root=None)
@@ -200,7 +200,7 @@ class SearchEngineTest(unittest.TestCase):
         Equal(showerror.message, expected_message)
 
 
-class SearchTest(unittest.TestCase):
+klasse SearchTest(unittest.TestCase):
     # Test that search_text makes right call to right method.
 
     @classmethod
@@ -261,7 +261,7 @@ class SearchTest(unittest.TestCase):
         Equal(search(text, pat, True), ('b', (text, pat, 2, 16, True, True)))
 
 
-class ForwardBackwardTest(unittest.TestCase):
+klasse ForwardBackwardTest(unittest.TestCase):
     # Test that search_forward method finds the target.
 ##    @classmethod
 ##    def tearDownClass(cls):

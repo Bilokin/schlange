@@ -6,7 +6,7 @@
 #
 
 
-class BufferedFiller:
+klasse BufferedFiller:
     def __init__(self, column=78):
         self.column = column
         self.buffered = []
@@ -41,7 +41,7 @@ class BufferedFiller:
         return self.count
 
 
-class DecodeMapWriter:
+klasse DecodeMapWriter:
     filler_class = BufferedFiller
 
     def __init__(self, fp, prefix, decode_map):
@@ -100,7 +100,7 @@ class DecodeMapWriter:
         self.fp.write("};\n\n")
 
 
-class EncodeMapWriter:
+klasse EncodeMapWriter:
     filler_class = BufferedFiller
     elemtype = 'DBCHAR'
     indextype = 'struct unim_index'

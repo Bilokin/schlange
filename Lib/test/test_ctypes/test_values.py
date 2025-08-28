@@ -11,7 +11,7 @@ from ctypes import (Structure, CDLL, POINTER, pythonapi,
 from test.support import import_helper, thread_unsafe
 
 
-class ValuesTestCase(unittest.TestCase):
+klasse ValuesTestCase(unittest.TestCase):
 
     def setUp(self):
         _ctypes_test = import_helper.import_module("_ctypes_test")
@@ -36,7 +36,7 @@ class ValuesTestCase(unittest.TestCase):
         self.assertRaises(ValueError, c_int.in_dll, self.ctdll, "Undefined_Symbol")
 
 
-class PythonValuesTestCase(unittest.TestCase):
+klasse PythonValuesTestCase(unittest.TestCase):
     """This test only works when python itself is a dll/shared library"""
 
     def test_optimizeflag(self):
@@ -56,7 +56,7 @@ class PythonValuesTestCase(unittest.TestCase):
         # In standard Python, this table contains a __hello__
         # module, and a __phello__ package containing a spam
         # module.
-        class struct_frozen(Structure):
+        klasse struct_frozen(Structure):
             _fields_ = [("name", c_char_p),
                         ("code", POINTER(c_ubyte)),
                         ("size", c_int),

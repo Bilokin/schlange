@@ -1,8 +1,8 @@
 import gc
 
-class old_style_class():
+klasse old_style_class():
     pass
-class new_style_class(object):
+klasse new_style_class(object):
     pass
 
 a = old_style_class()

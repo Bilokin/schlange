@@ -40,7 +40,7 @@ def _parameterize(*parameters):
     return support.subTests('kwargs', parameters)
 
 
-class PosixPathTest(unittest.TestCase):
+klasse PosixPathTest(unittest.TestCase):
 
     def setUp(self):
         for suffix in ["", "1", "2"]:
@@ -1215,12 +1215,12 @@ class PosixPathTest(unittest.TestCase):
                           ['usr/lib/', b'/usr/lib/python3'])
 
 
-class PosixCommonTest(test_genericpath.CommonTest, unittest.TestCase):
+klasse PosixCommonTest(test_genericpath.CommonTest, unittest.TestCase):
     pathmodule = posixpath
     attributes = ['relpath', 'samefile', 'sameopenfile', 'samestat']
 
 
-class PathLikeTests(unittest.TestCase):
+klasse PathLikeTests(unittest.TestCase):
 
     path = posixpath
 

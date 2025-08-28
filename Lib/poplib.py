@@ -28,7 +28,7 @@ __all__ = ["POP3","error_proto"]
 
 # Exception raised when an error or invalid response is received:
 
-class error_proto(Exception): pass
+klasse error_proto(Exception): pass
 
 # Standard Port
 POP3_PORT = 110
@@ -48,9 +48,9 @@ CRLF = CR+LF
 _MAXLINE = 2048
 
 
-class POP3:
+klasse POP3:
 
-    """This class supports both the minimal and optional command sets.
+    """This klasse supports both the minimal and optional command sets.
     Arguments can be strings or integers (where appropriate)
     (e.g.: retr(1) and retr('1') both work equally well.
 
@@ -427,8 +427,8 @@ class POP3:
 
 if HAVE_SSL:
 
-    class POP3_SSL(POP3):
-        """POP3 client class over SSL connection
+    klasse POP3_SSL(POP3):
+        """POP3 client klasse over SSL connection
 
         Instantiate with: POP3_SSL(hostname, port=995, context=None)
 
@@ -436,7 +436,7 @@ if HAVE_SSL:
                port - port number
                context - a ssl.SSLContext
 
-        See the methods of the parent class POP3 for more documentation.
+        See the methods of the parent klasse POP3 for more documentation.
         """
 
         def __init__(self, host, port=POP3_SSL_PORT,

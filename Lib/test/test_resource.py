@@ -10,7 +10,7 @@ resource = import_helper.import_module('resource')
 
 # This test is checking a few specific problem spots with the resource module.
 
-class ResourceTest(unittest.TestCase):
+klasse ResourceTest(unittest.TestCase):
 
     def test_args(self):
         self.assertRaises(TypeError, resource.getrlimit)
@@ -192,7 +192,7 @@ class ResourceTest(unittest.TestCase):
     @unittest.skipUnless(hasattr(resource, 'RLIMIT_CPU'), 'requires resource.RLIMIT_CPU')
     def test_setrusage_refcount(self):
         limits = resource.getrlimit(resource.RLIMIT_CPU)
-        class BadSequence:
+        klasse BadSequence:
             def __len__(self):
                 return 2
             def __getitem__(self, key):
@@ -242,7 +242,7 @@ class ResourceTest(unittest.TestCase):
     @unittest.skipUnless(hasattr(resource, 'prlimit'), 'no prlimit')
     @support.requires_linux_version(2, 6, 36)
     def test_prlimit_refcount(self):
-        class BadSeq:
+        klasse BadSeq:
             def __len__(self):
                 return 2
             def __getitem__(self, key):

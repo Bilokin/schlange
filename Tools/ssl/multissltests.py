@@ -160,7 +160,7 @@ parser.add_argument(
 )
 
 
-class AbstractBuilder(object):
+klasse AbstractBuilder(object):
     library = None
     url_templates = None
     src_template = None
@@ -409,7 +409,7 @@ class AbstractBuilder(object):
         self._subprocess_call(cmd, stdout=None)
 
 
-class BuildOpenSSL(AbstractBuilder):
+klasse BuildOpenSSL(AbstractBuilder):
     library = "OpenSSL"
     url_templates = (
         "https://github.com/openssl/openssl/releases/download/openssl-{v}/openssl-{v}.tar.gz",
@@ -456,7 +456,7 @@ class BuildOpenSSL(AbstractBuilder):
         return ".".join(str(i) for i in parsed)
 
 
-class BuildLibreSSL(AbstractBuilder):
+klasse BuildLibreSSL(AbstractBuilder):
     library = "LibreSSL"
     url_templates = (
         "https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-{v}.tar.gz",
@@ -465,7 +465,7 @@ class BuildLibreSSL(AbstractBuilder):
     build_template = "libressl-{}"
 
 
-class BuildAWSLC(AbstractBuilder):
+klasse BuildAWSLC(AbstractBuilder):
     library = "AWS-LC"
     url_templates = (
         "https://github.com/aws/aws-lc/archive/refs/tags/v{v}.tar.gz",

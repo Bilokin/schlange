@@ -14,7 +14,7 @@ orig_mbox = se.messagebox
 showerror = Mbox.showerror
 
 
-class ReplaceDialogTest(unittest.TestCase):
+klasse ReplaceDialogTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):

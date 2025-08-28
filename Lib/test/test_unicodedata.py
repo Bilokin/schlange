@@ -21,7 +21,7 @@ from test.support import (
 )
 
 
-class UnicodeMethodsTest(unittest.TestCase):
+klasse UnicodeMethodsTest(unittest.TestCase):
 
     # update this, if the database changes
     expectedchecksum = '9e43ee3929471739680c0e705482b4ae1c4122e4'
@@ -70,10 +70,10 @@ class UnicodeMethodsTest(unittest.TestCase):
         result = h.hexdigest()
         self.assertEqual(result, self.expectedchecksum)
 
-class UnicodeDatabaseTest(unittest.TestCase):
+klasse UnicodeDatabaseTest(unittest.TestCase):
     db = unicodedata
 
-class UnicodeFunctionsTest(UnicodeDatabaseTest):
+klasse UnicodeFunctionsTest(UnicodeDatabaseTest):
 
     # Update this if the database changes. Make sure to do a full rebuild
     # (e.g. 'make distclean && make') to get the correct checksum.
@@ -276,7 +276,7 @@ class UnicodeFunctionsTest(UnicodeDatabaseTest):
         self.assertEqual(self.db.ucd_3_2_0.east_asian_width('\u231a'), 'N')
         self.assertEqual(self.db.east_asian_width('\u231a'), 'W')
 
-class UnicodeMiscTest(UnicodeDatabaseTest):
+klasse UnicodeMiscTest(UnicodeDatabaseTest):
 
     @cpython_only
     def test_disallow_instantiation(self):
@@ -369,7 +369,7 @@ class UnicodeMiscTest(UnicodeDatabaseTest):
                 self.assertEqual(len(lines), 1,
                                  r"\u%.4x should not be a linebreak" % i)
 
-class NormalizationTest(unittest.TestCase):
+klasse NormalizationTest(unittest.TestCase):
     @staticmethod
     def check_version(testfile):
         hdr = testfile.readline()
@@ -471,7 +471,7 @@ class NormalizationTest(unittest.TestCase):
         # gh-129569: normalize() return type must always be str
         normalize = unicodedata.normalize
 
-        class MyStr(str):
+        klasse MyStr(str):
             pass
 
         normalization_forms = ("NFC", "NFKC", "NFD", "NFKD")

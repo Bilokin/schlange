@@ -157,7 +157,7 @@ def memoize_left_rec(
     return memoize_left_rec_wrapper
 
 
-class Parser:
+klasse Parser:
     """Parsing base class."""
 
     KEYWORDS: ClassVar[Tuple[str, ...]]

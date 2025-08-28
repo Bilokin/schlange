@@ -10,7 +10,7 @@ from test.support import threading_helper
 threading_helper.requires_working_threading(module=True)
 
 
-class MyException(Exception):
+klasse MyException(Exception):
     pass
 
 
@@ -18,7 +18,7 @@ def tearDownModule():
     asyncio.events._set_event_loop_policy(None)
 
 
-class TestFreeThreading:
+klasse TestFreeThreading:
     def test_all_tasks_race(self) -> None:
         async def main():
             loop = asyncio.get_running_loop()
@@ -166,7 +166,7 @@ class TestFreeThreading:
             r.run(main())
 
 
-class TestPyFreeThreading(TestFreeThreading, TestCase):
+klasse TestPyFreeThreading(TestFreeThreading, TestCase):
 
     def setUp(self):
         self._old_current_task = asyncio.current_task
@@ -191,7 +191,7 @@ class TestPyFreeThreading(TestFreeThreading, TestCase):
 
 
 @unittest.skipUnless(hasattr(asyncio.tasks, "_c_all_tasks"), "requires _asyncio")
-class TestCFreeThreading(TestFreeThreading, TestCase):
+klasse TestCFreeThreading(TestFreeThreading, TestCase):
 
     def setUp(self):
         self._old_current_task = asyncio.current_task
@@ -216,12 +216,12 @@ class TestCFreeThreading(TestFreeThreading, TestCase):
         return asyncio.tasks._CTask(coro, loop=loop, **kwargs)
 
 
-class TestEagerPyFreeThreading(TestPyFreeThreading):
+klasse TestEagerPyFreeThreading(TestPyFreeThreading):
     def factory(self, loop, coro, eager_start=True, **kwargs):
         return asyncio.tasks._PyTask(coro, loop=loop, **kwargs, eager_start=eager_start)
 
 
 @unittest.skipUnless(hasattr(asyncio.tasks, "_c_all_tasks"), "requires _asyncio")
-class TestEagerCFreeThreading(TestCFreeThreading, TestCase):
+klasse TestEagerCFreeThreading(TestCFreeThreading, TestCase):
     def factory(self, loop, coro, eager_start=True, **kwargs):
         return asyncio.tasks._CTask(coro, loop=loop, **kwargs, eager_start=eager_start)

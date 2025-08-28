@@ -48,13 +48,13 @@ def ast_repr_update_snapshots() -> None:
     AST_REPR_DATA_FILE.write_text("\n".join(data))
 
 
-class LazyImportTest(unittest.TestCase):
+klasse LazyImportTest(unittest.TestCase):
     @support.cpython_only
     def test_lazy_import(self):
         ensure_lazy_imports("ast", {"contextlib", "enum", "inspect", "re", "collections", "argparse"})
 
 
-class AST_Tests(unittest.TestCase):
+klasse AST_Tests(unittest.TestCase):
     maxDiff = None
 
     def _is_ast_node(self, name, node):
@@ -115,7 +115,7 @@ class AST_Tests(unittest.TestCase):
             ast.AST()
 
     def test_AST_garbage_collection(self):
-        class X:
+        klasse X:
             pass
         a = ast.AST()
         a.x = X()
@@ -223,11 +223,11 @@ class AST_Tests(unittest.TestCase):
     def test_docstring_optimization_single_node(self):
         # https://github.com/python/cpython/issues/137308
         class_example1 = textwrap.dedent('''
-            class A:
+            klasse A:
                 """Docstring"""
         ''')
         class_example2 = textwrap.dedent('''
-            class A:
+            klasse A:
                 """
                 Docstring"""
         ''')
@@ -290,7 +290,7 @@ class AST_Tests(unittest.TestCase):
         # https://github.com/python/cpython/issues/137308
         class_example = textwrap.dedent(
             """
-            class A:
+            klasse A:
                 '''
                 Docstring
                 '''
@@ -503,11 +503,11 @@ class AST_Tests(unittest.TestCase):
         self.assertIs(ast.Constant(...).value, ...)
 
     def test_constant_subclasses(self):
-        class N(ast.Constant):
+        klasse N(ast.Constant):
             def __init__(self, *args, **kwargs):
                 super().__init__(*args, **kwargs)
                 self.z = 'spam'
-        class N2(ast.Constant):
+        klasse N2(ast.Constant):
             pass
 
         n = N(42)
@@ -958,7 +958,7 @@ class AST_Tests(unittest.TestCase):
                 ast.parse(constant[1], mode="eval")
 
     def test_precedence_enum(self):
-        class _Precedence(enum.IntEnum):
+        klasse _Precedence(enum.IntEnum):
             """Precedence table that originated from python grammar."""
             NAMED_EXPR = enum.auto()      # <target> := <expr1>
             TUPLE = enum.auto()           # <expr1>, <expr2>
@@ -1125,14 +1125,14 @@ class AST_Tests(unittest.TestCase):
         self.assertIsInstance(tree.body[0].value.values[1], ast.Interpolation)
 
 
-class CopyTests(unittest.TestCase):
+klasse CopyTests(unittest.TestCase):
     """Test copying and pickling AST nodes."""
 
     @staticmethod
     def iter_ast_classes():
         """Iterate over the (native) subclasses of ast.AST recursively.
 
-        This excludes the special class ast.Index since its constructor
+        This excludes the special klasse ast.Index since its constructor
         returns an integer.
         """
         def do(cls):
@@ -1324,7 +1324,7 @@ class CopyTests(unittest.TestCase):
         self.assertEqual(state['lineno'], lineno)
 
     def test_replace_accept_known_custom_class_fields(self):
-        class MyNode(ast.AST):
+        klasse MyNode(ast.AST):
             _fields = ('name', 'data')
             __annotations__ = {'name': str, 'data': object}
             __match_args__ = ('name', 'data')
@@ -1355,7 +1355,7 @@ class CopyTests(unittest.TestCase):
         self.assertIs(repl.data, repl_data)
 
     def test_replace_accept_known_custom_class_attributes(self):
-        class MyNode(ast.AST):
+        klasse MyNode(ast.AST):
             x = 0
             y = 1
             _attributes = ('x', 'y')
@@ -1471,7 +1471,7 @@ class CopyTests(unittest.TestCase):
         self.assertIs(node.ctx, context)
         self.assertRaises(AttributeError, getattr, node, 'unknown')
 
-class ASTHelpers_Test(unittest.TestCase):
+klasse ASTHelpers_Test(unittest.TestCase):
     maxDiff = None
 
     def test_parse(self):
@@ -2023,7 +2023,7 @@ Module(
                 compile(ast.Expression(e), "<test>", "eval")
 
 
-class ASTValidatorTests(unittest.TestCase):
+klasse ASTValidatorTests(unittest.TestCase):
 
     def mod(self, mod, msg=None, mode="exec", *, exc=ValueError):
         mod.lineno = mod.col_offset = 0
@@ -2597,7 +2597,7 @@ class ASTValidatorTests(unittest.TestCase):
                     compile(module, "<test>", "exec")
 
 
-class ConstantTests(unittest.TestCase):
+klasse ConstantTests(unittest.TestCase):
     """Tests on the ast.Constant node type."""
 
     def compile_constant(self, value):
@@ -2730,7 +2730,7 @@ class ConstantTests(unittest.TestCase):
         self.assertEqual(c.kind, None)
 
 
-class EndPositionTests(unittest.TestCase):
+klasse EndPositionTests(unittest.TestCase):
     """Tests for end position of AST nodes.
 
     Testing end positions of nodes requires a bit of extra care
@@ -2786,7 +2786,7 @@ class EndPositionTests(unittest.TestCase):
 
     def test_class_def(self):
         s = dedent('''
-            class C(A, B):
+            klasse C(A, B):
                 x: int = 0
         ''').strip()
         cdef = ast.parse(s).body[0]
@@ -3031,7 +3031,7 @@ class EndPositionTests(unittest.TestCase):
 
     def test_source_segment_padded(self):
         s_orig = dedent('''
-            class C:
+            klasse C:
                 def fun(self) -> None:
                     "ЖЖЖЖЖ"
         ''').strip()
@@ -3052,7 +3052,7 @@ class EndPositionTests(unittest.TestCase):
 
     def test_source_segment_tabs(self):
         s = dedent('''
-            class C:
+            klasse C:
               \t\f  def fun(self) -> None:
               \t\f      pass
         ''').strip()
@@ -3086,7 +3086,7 @@ class EndPositionTests(unittest.TestCase):
         self.assertIsNone(ast.get_source_segment(s, y))
 
 
-class NodeTransformerTests(ASTTestMixin, unittest.TestCase):
+klasse NodeTransformerTests(ASTTestMixin, unittest.TestCase):
     def assertASTTransformation(self, transformer_class,
                                 initial_code, expected_code):
         initial_ast = ast.parse(dedent(initial_code))
@@ -3103,7 +3103,7 @@ class NodeTransformerTests(ASTTestMixin, unittest.TestCase):
 
         # Since `FunctionDef.returns` is defined as a single value, we test
         # the `if isinstance(old_value, AST):` branch here.
-        class SomeTypeRemover(ast.NodeTransformer):
+        klasse SomeTypeRemover(ast.NodeTransformer):
             def visit_Name(self, node: ast.Name):
                 self.generic_visit(node)
                 if node.id == 'SomeType':
@@ -3125,7 +3125,7 @@ class NodeTransformerTests(ASTTestMixin, unittest.TestCase):
 
         # Since `FunctionDef.body` is defined as a list, we test
         # the `if isinstance(old_value, list):` branch here.
-        class YieldRemover(ast.NodeTransformer):
+        klasse YieldRemover(ast.NodeTransformer):
             def visit_Expr(self, node: ast.Expr):
                 self.generic_visit(node)
                 if isinstance(node.value, ast.Yield):
@@ -3136,13 +3136,13 @@ class NodeTransformerTests(ASTTestMixin, unittest.TestCase):
 
     def test_node_return_list(self):
         code = """
-        class DSL(Base, kw1=True): ...
+        klasse DSL(Base, kw1=True): ...
         """
         expected = """
-        class DSL(Base, kw1=True, kw2=True, kw3=False): ...
+        klasse DSL(Base, kw1=True, kw2=True, kw3=False): ...
         """
 
-        class ExtendKeywords(ast.NodeTransformer):
+        klasse ExtendKeywords(ast.NodeTransformer):
             def visit_keyword(self, node: ast.keyword):
                 self.generic_visit(node)
                 if node.arg == 'kw1':
@@ -3165,7 +3165,7 @@ class NodeTransformerTests(ASTTestMixin, unittest.TestCase):
             log(arg)
         """
 
-        class PrintToLog(ast.NodeTransformer):
+        klasse PrintToLog(ast.NodeTransformer):
             def visit_Call(self, node: ast.Call):
                 self.generic_visit(node)
                 if isinstance(node.func, ast.Name) and node.func.id == 'print':
@@ -3184,7 +3184,7 @@ class NodeTransformerTests(ASTTestMixin, unittest.TestCase):
             logger.log(arg, debug=True)
         """
 
-        class PrintToLog(ast.NodeTransformer):
+        klasse PrintToLog(ast.NodeTransformer):
             def visit_Call(self, node: ast.Call):
                 self.generic_visit(node)
                 if isinstance(node.func, ast.Name) and node.func.id == 'print':
@@ -3202,7 +3202,7 @@ class NodeTransformerTests(ASTTestMixin, unittest.TestCase):
         self.assertASTTransformation(PrintToLog, code, expected)
 
 
-class ASTConstructorTests(unittest.TestCase):
+klasse ASTConstructorTests(unittest.TestCase):
     """Test the autogenerated constructors for AST nodes."""
 
     def test_FunctionDef(self):
@@ -3236,7 +3236,7 @@ class ASTConstructorTests(unittest.TestCase):
             name3 = ast.Name()
 
     def test_custom_subclass_with_no_fields(self):
-        class NoInit(ast.AST):
+        klasse NoInit(ast.AST):
             pass
 
         obj = NoInit()
@@ -3244,7 +3244,7 @@ class ASTConstructorTests(unittest.TestCase):
         self.assertEqual(obj.__dict__, {})
 
     def test_fields_but_no_field_types(self):
-        class Fields(ast.AST):
+        klasse Fields(ast.AST):
             _fields = ('a',)
 
         obj = Fields()
@@ -3254,7 +3254,7 @@ class ASTConstructorTests(unittest.TestCase):
         self.assertEqual(obj.a, 1)
 
     def test_fields_and_types(self):
-        class FieldsAndTypes(ast.AST):
+        klasse FieldsAndTypes(ast.AST):
             _fields = ('a',)
             _field_types = {'a': int | None}
             a: int | None = None
@@ -3265,7 +3265,7 @@ class ASTConstructorTests(unittest.TestCase):
         self.assertEqual(obj.a, 1)
 
     def test_custom_attributes(self):
-        class MyAttrs(ast.AST):
+        klasse MyAttrs(ast.AST):
             _attributes = ("a", "b")
 
         obj = MyAttrs(a=1, b=2)
@@ -3277,7 +3277,7 @@ class ASTConstructorTests(unittest.TestCase):
             obj = MyAttrs(c=3)
 
     def test_fields_and_types_no_default(self):
-        class FieldsAndTypesNoDefault(ast.AST):
+        klasse FieldsAndTypesNoDefault(ast.AST):
             _fields = ('a',)
             _field_types = {'a': int}
 
@@ -3290,7 +3290,7 @@ class ASTConstructorTests(unittest.TestCase):
         self.assertEqual(obj.a, 1)
 
     def test_incomplete_field_types(self):
-        class MoreFieldsThanTypes(ast.AST):
+        klasse MoreFieldsThanTypes(ast.AST):
             _fields = ('a', 'b')
             _field_types = {'a': int | None}
             a: int | None = None
@@ -3309,7 +3309,7 @@ class ASTConstructorTests(unittest.TestCase):
         self.assertEqual(obj.b, 2)
 
     def test_complete_field_types(self):
-        class _AllFieldTypes(ast.AST):
+        klasse _AllFieldTypes(ast.AST):
             _fields = ('a', 'b')
             _field_types = {'a': int | None, 'b': list[str]}
             # This must be set explicitly
@@ -3323,7 +3323,7 @@ class ASTConstructorTests(unittest.TestCase):
 
 
 @support.cpython_only
-class ModuleStateTests(unittest.TestCase):
+klasse ModuleStateTests(unittest.TestCase):
     # bpo-41194, bpo-41261, bpo-41631: The _ast module uses a global state.
 
     def check_ast_module(self):
@@ -3404,7 +3404,7 @@ class ModuleStateTests(unittest.TestCase):
         self.assertEqual(res, 0)
 
 
-class CommandLineTests(unittest.TestCase):
+klasse CommandLineTests(unittest.TestCase):
     def setUp(self):
         self.filename = tempfile.mktemp()
         self.addCleanup(os_helper.unlink, self.filename)
@@ -3663,7 +3663,7 @@ class CommandLineTests(unittest.TestCase):
         self.check_output(source, expect, '--show-empty')
 
 
-class ASTOptimizationTests(unittest.TestCase):
+klasse ASTOptimizationTests(unittest.TestCase):
     def wrap_expr(self, expr):
         return ast.Module(body=[ast.Expr(value=expr)])
 

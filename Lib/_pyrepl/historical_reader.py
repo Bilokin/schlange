@@ -53,7 +53,7 @@ ISEARCH_DIRECTION_BACKWARDS = "r"
 ISEARCH_DIRECTION_FORWARDS = "f"
 
 
-class next_history(commands.Command):
+klasse next_history(commands.Command):
     def do(self) -> None:
         r = self.reader
         if r.historyi == len(r.history):
@@ -62,7 +62,7 @@ class next_history(commands.Command):
         r.select_item(r.historyi + 1)
 
 
-class previous_history(commands.Command):
+klasse previous_history(commands.Command):
     def do(self) -> None:
         r = self.reader
         if r.historyi == 0:
@@ -71,19 +71,19 @@ class previous_history(commands.Command):
         r.select_item(r.historyi - 1)
 
 
-class history_search_backward(commands.Command):
+klasse history_search_backward(commands.Command):
     def do(self) -> None:
         r = self.reader
         r.search_next(forwards=False)
 
 
-class history_search_forward(commands.Command):
+klasse history_search_forward(commands.Command):
     def do(self) -> None:
         r = self.reader
         r.search_next(forwards=True)
 
 
-class restore_history(commands.Command):
+klasse restore_history(commands.Command):
     def do(self) -> None:
         r = self.reader
         if r.historyi != len(r.history):
@@ -93,22 +93,22 @@ class restore_history(commands.Command):
                 r.dirty = True
 
 
-class first_history(commands.Command):
+klasse first_history(commands.Command):
     def do(self) -> None:
         self.reader.select_item(0)
 
 
-class last_history(commands.Command):
+klasse last_history(commands.Command):
     def do(self) -> None:
         self.reader.select_item(len(self.reader.history))
 
 
-class operate_and_get_next(commands.FinishCommand):
+klasse operate_and_get_next(commands.FinishCommand):
     def do(self) -> None:
         self.reader.next_history = self.reader.historyi + 1
 
 
-class yank_arg(commands.Command):
+klasse yank_arg(commands.Command):
     def do(self) -> None:
         r = self.reader
         if r.last_command is self.__class__:
@@ -136,7 +136,7 @@ class yank_arg(commands.Command):
         r.dirty = True
 
 
-class forward_history_isearch(commands.Command):
+klasse forward_history_isearch(commands.Command):
     def do(self) -> None:
         r = self.reader
         r.isearch_direction = ISEARCH_DIRECTION_FORWARDS
@@ -146,7 +146,7 @@ class forward_history_isearch(commands.Command):
         r.push_input_trans(r.isearch_trans)
 
 
-class reverse_history_isearch(commands.Command):
+klasse reverse_history_isearch(commands.Command):
     def do(self) -> None:
         r = self.reader
         r.isearch_direction = ISEARCH_DIRECTION_BACKWARDS
@@ -156,7 +156,7 @@ class reverse_history_isearch(commands.Command):
         r.isearch_start = r.historyi, r.pos
 
 
-class isearch_cancel(commands.Command):
+klasse isearch_cancel(commands.Command):
     def do(self) -> None:
         r = self.reader
         r.isearch_direction = ISEARCH_DIRECTION_NONE
@@ -166,7 +166,7 @@ class isearch_cancel(commands.Command):
         r.dirty = True
 
 
-class isearch_add_character(commands.Command):
+klasse isearch_add_character(commands.Command):
     def do(self) -> None:
         r = self.reader
         b = r.buffer
@@ -177,7 +177,7 @@ class isearch_add_character(commands.Command):
             r.isearch_next()
 
 
-class isearch_backspace(commands.Command):
+klasse isearch_backspace(commands.Command):
     def do(self) -> None:
         r = self.reader
         if len(r.isearch_term) > 0:
@@ -187,21 +187,21 @@ class isearch_backspace(commands.Command):
             r.error("nothing to rubout")
 
 
-class isearch_forwards(commands.Command):
+klasse isearch_forwards(commands.Command):
     def do(self) -> None:
         r = self.reader
         r.isearch_direction = ISEARCH_DIRECTION_FORWARDS
         r.isearch_next()
 
 
-class isearch_backwards(commands.Command):
+klasse isearch_backwards(commands.Command):
     def do(self) -> None:
         r = self.reader
         r.isearch_direction = ISEARCH_DIRECTION_BACKWARDS
         r.isearch_next()
 
 
-class isearch_end(commands.Command):
+klasse isearch_end(commands.Command):
     def do(self) -> None:
         r = self.reader
         r.isearch_direction = ISEARCH_DIRECTION_NONE
@@ -211,7 +211,7 @@ class isearch_end(commands.Command):
 
 
 @dataclass
-class HistoricalReader(Reader):
+klasse HistoricalReader(Reader):
     """Adds history support (with incremental history searching) to the
     Reader class.
     """

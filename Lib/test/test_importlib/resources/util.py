@@ -15,7 +15,7 @@ from . import _path
 from importlib.machinery import ModuleSpec
 
 
-class Reader(ResourceReader):
+klasse Reader(ResourceReader):
     def __init__(self, **kwargs):
         vars(self).update(kwargs)
 
@@ -68,7 +68,7 @@ def create_package(file=None, path=None, is_package=True, contents=()):
     )
 
 
-class CommonTestsBase(metaclass=abc.ABCMeta):
+klasse CommonTestsBase(metaclass=abc.ABCMeta):
     """
     Tests shared by test_open, test_path, and test_read.
     """
@@ -169,7 +169,7 @@ fixtures = dict(
 )
 
 
-class ModuleSetup:
+klasse ModuleSetup:
     def setUp(self):
         self.fixtures = contextlib.ExitStack()
         self.addCleanup(self.fixtures.close)
@@ -182,7 +182,7 @@ class ModuleSetup:
         return importlib.import_module(module)
 
 
-class ZipSetup(ModuleSetup):
+klasse ZipSetup(ModuleSetup):
     MODULE = 'data01'
 
     def tree_on_path(self, spec):
@@ -193,7 +193,7 @@ class ZipSetup(ModuleSetup):
         )
 
 
-class DiskSetup(ModuleSetup):
+klasse DiskSetup(ModuleSetup):
     MODULE = 'data01'
 
     def tree_on_path(self, spec):
@@ -202,5 +202,5 @@ class DiskSetup(ModuleSetup):
         self.fixtures.enter_context(import_helper.DirsOnSysPath(temp_dir))
 
 
-class CommonTests(DiskSetup, CommonTestsBase):
+klasse CommonTests(DiskSetup, CommonTestsBase):
     pass

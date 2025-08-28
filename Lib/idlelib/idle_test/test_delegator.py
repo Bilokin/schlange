@@ -4,7 +4,7 @@ from idlelib.delegator import Delegator
 import unittest
 
 
-class DelegatorTest(unittest.TestCase):
+klasse DelegatorTest(unittest.TestCase):
 
     def test_mydel(self):
         # Test a simple use scenario.

@@ -2,8 +2,8 @@
 
 # ===== SAXEXCEPTION =====
 
-class SAXException(Exception):
-    """Encapsulate an XML error or warning. This class can contain
+klasse SAXException(Exception):
+    """Encapsulate an XML error or warning. This klasse can contain
     basic error or warning information from either the XML parser or
     the application: you can subclass it to provide additional
     functionality, or to add localization. Note that although you will
@@ -39,7 +39,7 @@ class SAXException(Exception):
 
 # ===== SAXPARSEEXCEPTION =====
 
-class SAXParseException(SAXException):
+klasse SAXParseException(SAXException):
     """Encapsulate an XML parse error or warning.
 
     This exception will include information for locating the error in
@@ -98,28 +98,28 @@ class SAXParseException(SAXException):
 
 # ===== SAXNOTRECOGNIZEDEXCEPTION =====
 
-class SAXNotRecognizedException(SAXException):
-    """Exception class for an unrecognized identifier.
+klasse SAXNotRecognizedException(SAXException):
+    """Exception klasse for an unrecognized identifier.
 
     An XMLReader will raise this exception when it is confronted with an
     unrecognized feature or property. SAX applications and extensions may
-    use this class for similar purposes."""
+    use this klasse for similar purposes."""
 
 
 # ===== SAXNOTSUPPORTEDEXCEPTION =====
 
-class SAXNotSupportedException(SAXException):
-    """Exception class for an unsupported operation.
+klasse SAXNotSupportedException(SAXException):
+    """Exception klasse for an unsupported operation.
 
     An XMLReader will raise this exception when a service it cannot
     perform is requested (specifically setting a state or value). SAX
-    applications and extensions may use this class for similar
+    applications and extensions may use this klasse for similar
     purposes."""
 
 # ===== SAXNOTSUPPORTEDEXCEPTION =====
 
-class SAXReaderNotAvailable(SAXNotSupportedException):
-    """Exception class for a missing driver.
+klasse SAXReaderNotAvailable(SAXNotSupportedException):
+    """Exception klasse for a missing driver.
 
     An XMLReader module (driver) should raise this exception when it
     is first imported, e.g. when a support module cannot be imported.

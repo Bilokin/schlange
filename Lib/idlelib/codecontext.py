@@ -42,7 +42,7 @@ def get_line_info(codeline):
     return indent, codeline, opener
 
 
-class CodeContext:
+klasse CodeContext:
     "Display block context above the edit window."
     UPDATEINTERVAL = 100  # millisec
 
@@ -76,7 +76,7 @@ class CodeContext:
 
     @classmethod
     def reload(cls):
-        "Load class variables from config."
+        "Load klasse variables from config."
         cls.context_depth = idleConf.GetOption("extensions", "CodeContext",
                                                "maxlines", type="int",
                                                default=15)

@@ -22,7 +22,7 @@ from test.test_py_compile import without_source_date_epoch
 from test.test_py_compile import SourceDateEpochTestMeta
 
 
-class SimpleTest(abc.LoaderTests):
+klasse SimpleTest(abc.LoaderTests):
 
     """Should have no issue importing a source module [basic]. And if there is
     a syntax error, it should raise a SyntaxError [syntax error].
@@ -35,7 +35,7 @@ class SimpleTest(abc.LoaderTests):
         self.loader = self.machinery.SourceFileLoader(self.name, self.filepath)
 
     def test_load_module_API(self):
-        class Tester(self.abc.FileLoader):
+        klasse Tester(self.abc.FileLoader):
             def get_source(self, _): return 'attr = 42'
             def is_package(self, _): return False
 
@@ -47,7 +47,7 @@ class SimpleTest(abc.LoaderTests):
 
     def test_get_filename_API(self):
         # If fullname is not set then assume self.path is desired.
-        class Tester(self.abc.FileLoader):
+        klasse Tester(self.abc.FileLoader):
             def get_code(self, _): pass
             def get_source(self, _): pass
             def is_package(self, _): pass
@@ -360,18 +360,18 @@ class SimpleTest(abc.LoaderTests):
                     abc=importlib_abc, util=importlib_util)
 
 
-class SourceDateEpochTestMeta(SourceDateEpochTestMeta,
+klasse SourceDateEpochTestMeta(SourceDateEpochTestMeta,
                               type(Source_SimpleTest)):
     pass
 
 
-class SourceDateEpoch_SimpleTest(Source_SimpleTest,
+klasse SourceDateEpoch_SimpleTest(Source_SimpleTest,
                                  metaclass=SourceDateEpochTestMeta,
                                  source_date_epoch=True):
     pass
 
 
-class BadBytecodeTest:
+klasse BadBytecodeTest:
 
     def import_(self, file, module_name):
         raise NotImplementedError
@@ -502,7 +502,7 @@ class BadBytecodeTest:
             test('_temp', mapping, bc_path)
 
 
-class BadBytecodeTestPEP451(BadBytecodeTest):
+klasse BadBytecodeTestPEP451(BadBytecodeTest):
 
     def import_(self, file, module_name):
         loader = self.loader(module_name, file)
@@ -511,7 +511,7 @@ class BadBytecodeTestPEP451(BadBytecodeTest):
         loader.exec_module(module)
 
 
-class BadBytecodeTestPEP302(BadBytecodeTest):
+klasse BadBytecodeTestPEP302(BadBytecodeTest):
 
     def import_(self, file, module_name):
         loader = self.loader(module_name, file)
@@ -521,7 +521,7 @@ class BadBytecodeTestPEP302(BadBytecodeTest):
         self.assertIn(module_name, sys.modules)
 
 
-class SourceLoaderBadBytecodeTest:
+klasse SourceLoaderBadBytecodeTest:
 
     @classmethod
     def setUpClass(cls):
@@ -669,7 +669,7 @@ class SourceLoaderBadBytecodeTest:
                 os.chmod(bytecode_path, stat.S_IWUSR)
 
 
-class SourceLoaderBadBytecodeTestPEP451(
+klasse SourceLoaderBadBytecodeTestPEP451(
         SourceLoaderBadBytecodeTest, BadBytecodeTestPEP451):
     pass
 
@@ -681,7 +681,7 @@ class SourceLoaderBadBytecodeTestPEP451(
                     util=importlib_util)
 
 
-class SourceLoaderBadBytecodeTestPEP302(
+klasse SourceLoaderBadBytecodeTestPEP302(
         SourceLoaderBadBytecodeTest, BadBytecodeTestPEP302):
     pass
 
@@ -693,7 +693,7 @@ class SourceLoaderBadBytecodeTestPEP302(
                     util=importlib_util)
 
 
-class SourcelessLoaderBadBytecodeTest:
+klasse SourcelessLoaderBadBytecodeTest:
 
     @classmethod
     def setUpClass(cls):
@@ -767,7 +767,7 @@ class SourcelessLoaderBadBytecodeTest:
         self._test_non_code_marshal(del_source=True)
 
 
-class SourcelessLoaderBadBytecodeTestPEP451(SourcelessLoaderBadBytecodeTest,
+klasse SourcelessLoaderBadBytecodeTestPEP451(SourcelessLoaderBadBytecodeTest,
         BadBytecodeTestPEP451):
     pass
 
@@ -779,7 +779,7 @@ class SourcelessLoaderBadBytecodeTestPEP451(SourcelessLoaderBadBytecodeTest,
                     util=importlib_util)
 
 
-class SourcelessLoaderBadBytecodeTestPEP302(SourcelessLoaderBadBytecodeTest,
+klasse SourcelessLoaderBadBytecodeTestPEP302(SourcelessLoaderBadBytecodeTest,
         BadBytecodeTestPEP302):
     pass
 

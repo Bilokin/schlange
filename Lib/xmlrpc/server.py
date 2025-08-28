@@ -2,8 +2,8 @@ r"""XML-RPC Servers.
 
 This module can be used to create simple XML-RPC servers
 by creating a server and either installing functions, a
-class instance, or by extending the SimpleXMLRPCServer
-class.
+klasse instance, or by extending the SimpleXMLRPCServer
+klasse.
 
 It can also be used to handle XML-RPC requests in a CGI
 environment using CGIXMLRPCRequestHandler.
@@ -25,7 +25,7 @@ server.serve_forever()
 
 2. Install an instance:
 
-class MyFuncs:
+klasse MyFuncs:
     def __init__(self):
         # make all of the sys functions available through sys.func_name
         import sys
@@ -45,7 +45,7 @@ server.serve_forever()
 
 3. Install an instance with custom dispatch method:
 
-class Math:
+klasse Math:
     def _listMethods(self):
         # this method must be present for system.listMethods
         # to work
@@ -76,7 +76,7 @@ server.serve_forever()
 
 4. Subclass SimpleXMLRPCServer:
 
-class MathServer(SimpleXMLRPCServer):
+klasse MathServer(SimpleXMLRPCServer):
     def _dispatch(self, method, params):
         try:
             # We are forcing the 'export_' prefix on methods that are
@@ -153,11 +153,11 @@ def list_public_methods(obj):
                 if not member.startswith('_') and
                     callable(getattr(obj, member))]
 
-class SimpleXMLRPCDispatcher:
-    """Mix-in class that dispatches XML-RPC requests.
+klasse SimpleXMLRPCDispatcher:
+    """Mix-in klasse that dispatches XML-RPC requests.
 
-    This class is used to register XML-RPC method handlers
-    and then to dispatch them. This class doesn't need to be
+    This klasse is used to register XML-RPC method handlers
+    and then to dispatch them. This klasse doesn't need to be
     instanced directly when used by SimpleXMLRPCServer but it
     can be instanced when used by the MultiPathXMLRPCServer
     """
@@ -420,7 +420,7 @@ class SimpleXMLRPCDispatcher:
 
         raise Exception('method "%s" is not supported' % method)
 
-class SimpleXMLRPCRequestHandler(BaseHTTPRequestHandler):
+klasse SimpleXMLRPCRequestHandler(BaseHTTPRequestHandler):
     """Simple XML-RPC request handler class.
 
     Handles all HTTP POST requests and attempts to decode them as
@@ -566,7 +566,7 @@ class SimpleXMLRPCRequestHandler(BaseHTTPRequestHandler):
         if self.server.logRequests:
             BaseHTTPRequestHandler.log_request(self, code, size)
 
-class SimpleXMLRPCServer(socketserver.TCPServer,
+klasse SimpleXMLRPCServer(socketserver.TCPServer,
                          SimpleXMLRPCDispatcher):
     """Simple XML-RPC server.
 
@@ -595,7 +595,7 @@ class SimpleXMLRPCServer(socketserver.TCPServer,
         socketserver.TCPServer.__init__(self, addr, requestHandler, bind_and_activate)
 
 
-class MultiPathXMLRPCServer(SimpleXMLRPCServer):
+klasse MultiPathXMLRPCServer(SimpleXMLRPCServer):
     """Multipath XML-RPC Server
     This specialization of SimpleXMLRPCServer allows the user to create
     multiple Dispatcher instances and assign them to different
@@ -634,7 +634,7 @@ class MultiPathXMLRPCServer(SimpleXMLRPCServer):
             response = response.encode(self.encoding, 'xmlcharrefreplace')
         return response
 
-class CGIXMLRPCRequestHandler(SimpleXMLRPCDispatcher):
+klasse CGIXMLRPCRequestHandler(SimpleXMLRPCDispatcher):
     """Simple handler for XML-RPC data passed through CGI."""
 
     def __init__(self, allow_none=False, encoding=None, use_builtin_types=False):
@@ -703,7 +703,7 @@ class CGIXMLRPCRequestHandler(SimpleXMLRPCDispatcher):
 # -----------------------------------------------------------------------------
 # Self documenting XML-RPC Server.
 
-class ServerHTMLDoc(pydoc.HTMLDoc):
+klasse ServerHTMLDoc(pydoc.HTMLDoc):
     """Class used to generate pydoc HTML document for a server"""
 
     def markup(self, text, escape=None, funcs={}, classes={}, methods={}):
@@ -814,10 +814,10 @@ class ServerHTMLDoc(pydoc.HTMLDoc):
 <title>Python: %s</title>
 %s</head><body>%s</body></html>''' % (title, css_link, contents)
 
-class XMLRPCDocGenerator:
+klasse XMLRPCDocGenerator:
     """Generates documentation for an XML-RPC server.
 
-    This class is designed as mix-in and should not
+    This klasse is designed as mix-in and should not
     be constructed directly.
     """
 
@@ -895,7 +895,7 @@ class XMLRPCDocGenerator:
 
         return documenter.page(html.escape(self.server_title), documentation)
 
-class DocXMLRPCRequestHandler(SimpleXMLRPCRequestHandler):
+klasse DocXMLRPCRequestHandler(SimpleXMLRPCRequestHandler):
     """XML-RPC and documentation request handler class.
 
     Handles all HTTP POST requests and attempts to decode them as
@@ -935,7 +935,7 @@ class DocXMLRPCRequestHandler(SimpleXMLRPCRequestHandler):
         self.end_headers()
         self.wfile.write(response)
 
-class DocXMLRPCServer(  SimpleXMLRPCServer,
+klasse DocXMLRPCServer(  SimpleXMLRPCServer,
                         XMLRPCDocGenerator):
     """XML-RPC and HTML documentation server.
 
@@ -951,7 +951,7 @@ class DocXMLRPCServer(  SimpleXMLRPCServer,
                                     use_builtin_types)
         XMLRPCDocGenerator.__init__(self)
 
-class DocCGIXMLRPCRequestHandler(   CGIXMLRPCRequestHandler,
+klasse DocCGIXMLRPCRequestHandler(   CGIXMLRPCRequestHandler,
                                     XMLRPCDocGenerator):
     """Handler for XML-RPC data and documentation requests passed through
     CGI"""
@@ -980,11 +980,11 @@ class DocCGIXMLRPCRequestHandler(   CGIXMLRPCRequestHandler,
 if __name__ == '__main__':
     import datetime
 
-    class ExampleService:
+    klasse ExampleService:
         def getData(self):
             return '42'
 
-        class currentTime:
+        klasse currentTime:
             @staticmethod
             def getCurrentTime():
                 return datetime.datetime.now()

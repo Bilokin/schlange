@@ -2,7 +2,7 @@ from idlelib.delegator import Delegator
 from idlelib.redirector import WidgetRedirector
 
 
-class Percolator:
+klasse Percolator:
 
     def __init__(self, text):
         # XXX would be nice to inherit from Delegator
@@ -73,7 +73,7 @@ class Percolator:
 def _percolator(parent):  # htest #
     import tkinter as tk
 
-    class Tracer(Delegator):
+    klasse Tracer(Delegator):
         def __init__(self, name):
             self.name = name
             Delegator.__init__(self, None)

@@ -21,7 +21,7 @@ with imports_under_tool('freeze', 'test'):
 # (PGO), since the test is just too slow in this case.
 @unittest.skipIf(support.check_cflags_pgo(),
                  'test is too slow with PGO')
-class TestFreeze(unittest.TestCase):
+klasse TestFreeze(unittest.TestCase):
 
     @support.requires_resource('cpu') # Building Python is slow
     def test_freeze_simple_script(self):

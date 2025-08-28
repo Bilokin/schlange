@@ -15,7 +15,7 @@ try:
 except ImportError:
     _testcapi = None
 
-class HelperMixin:
+klasse HelperMixin:
     def helper(self, sample, *extra):
         new = marshal.loads(marshal.dumps(sample, *extra))
         self.assertEqual(sample, new)
@@ -35,7 +35,7 @@ def omit_last_byte(data):
     # Avoid the slice literal.
     return data[slice(0, -1)]
 
-class IntTestCase(unittest.TestCase, HelperMixin):
+klasse IntTestCase(unittest.TestCase, HelperMixin):
     def test_ints(self):
         # Test a range of Python ints larger than the machine word size.
         n = sys.maxsize ** 2
@@ -71,7 +71,7 @@ class IntTestCase(unittest.TestCase, HelperMixin):
         for b in (True, False):
             self.helper(b)
 
-class FloatTestCase(unittest.TestCase, HelperMixin):
+klasse FloatTestCase(unittest.TestCase, HelperMixin):
     def test_floats(self):
         # Test a few floats
         small = 1e-25
@@ -98,7 +98,7 @@ class FloatTestCase(unittest.TestCase, HelperMixin):
                 self.helper(f, 1)
             n *= 123.4567
 
-class StringTestCase(unittest.TestCase, HelperMixin):
+klasse StringTestCase(unittest.TestCase, HelperMixin):
     def test_unicode(self):
         for s in ["", "Andr\xe8 Previn", "abc", " "*10000]:
             self.helper(marshal.loads(marshal.dumps(s)))
@@ -111,12 +111,12 @@ class StringTestCase(unittest.TestCase, HelperMixin):
         for s in [b"", b"Andr\xe8 Previn", b"abc", b" "*10000]:
             self.helper(s)
 
-class ExceptionTestCase(unittest.TestCase):
+klasse ExceptionTestCase(unittest.TestCase):
     def test_exceptions(self):
         new = marshal.loads(marshal.dumps(StopIteration))
         self.assertEqual(StopIteration, new)
 
-class CodeTestCase(unittest.TestCase):
+klasse CodeTestCase(unittest.TestCase):
     def test_code(self):
         co = ExceptionTestCase.test_exceptions.__code__
         new = marshal.loads(marshal.dumps(co))
@@ -194,7 +194,7 @@ class CodeTestCase(unittest.TestCase):
             if isinstance(obj, types.CodeType):
                 self.assertIs(co.co_filename, obj.co_filename)
 
-class ContainerTestCase(unittest.TestCase, HelperMixin):
+klasse ContainerTestCase(unittest.TestCase, HelperMixin):
     d = {'astring': 'foo@bar.baz.spam',
          'afloat': 7283.43,
          'anint': 2**20,
@@ -219,7 +219,7 @@ class ContainerTestCase(unittest.TestCase, HelperMixin):
             self.helper(constructor(self.d.keys()))
 
 
-class BufferTestCase(unittest.TestCase, HelperMixin):
+klasse BufferTestCase(unittest.TestCase, HelperMixin):
 
     def test_bytearray(self):
         b = bytearray(b"abc")
@@ -239,7 +239,7 @@ class BufferTestCase(unittest.TestCase, HelperMixin):
         self.assertEqual(new, b"abc")
 
 
-class BugsTestCase(unittest.TestCase):
+klasse BugsTestCase(unittest.TestCase):
     def test_bug_5888452(self):
         # Simple-minded check for SF 588452: Debug build crashes
         marshal.dumps([128] * 1000)
@@ -314,7 +314,7 @@ class BugsTestCase(unittest.TestCase):
 
     def test_exact_type_match(self):
         # Former bug:
-        #   >>> class Int(int): pass
+        #   >>> klasse Int(int): pass
         #   >>> type(loads(dumps(Int())))
         #   <type 'int'>
         for typ in (int, float, complex, tuple, list, dict, set, frozenset):
@@ -365,7 +365,7 @@ class BugsTestCase(unittest.TestCase):
         self.assertRaises(TypeError, marshal.loads, unicode_string)
 
     def test_bad_reader(self):
-        class BadReader(io.BytesIO):
+        klasse BadReader(io.BytesIO):
             def readinto(self, buf):
                 n = super().readinto(buf)
                 if n is not None and n > 4:
@@ -411,12 +411,12 @@ class BugsTestCase(unittest.TestCase):
 LARGE_SIZE = 2**31
 pointer_size = 8 if sys.maxsize > 0xFFFFFFFF else 4
 
-class NullWriter:
+klasse NullWriter:
     def write(self, s):
         pass
 
 @unittest.skipIf(LARGE_SIZE > sys.maxsize, "test cannot run on 32-bit systems")
-class LargeValuesTestCase(unittest.TestCase):
+klasse LargeValuesTestCase(unittest.TestCase):
     def check_unmarshallable(self, data):
         self.assertRaises(ValueError, marshal.dump, data, NullWriter())
 
@@ -466,7 +466,7 @@ def CollectObjectIDs(ids, obj):
             CollectObjectIDs(ids, v)
     return len(ids)
 
-class InstancingTestCase(unittest.TestCase, HelperMixin):
+klasse InstancingTestCase(unittest.TestCase, HelperMixin):
     keys = (123, 1.2345, 'abc', (123, 'abc'), frozenset({123, 'abc'}))
 
     def helper3(self, rsample, recursive=False, simple=False):
@@ -562,7 +562,7 @@ class InstancingTestCase(unittest.TestCase, HelperMixin):
         l.append(l)
         self.helper3(l, recursive=True)
 
-class CompatibilityTestCase(unittest.TestCase):
+klasse CompatibilityTestCase(unittest.TestCase):
     def _test(self, version):
         with open(__file__, "rb") as f:
             code = f.read()
@@ -583,7 +583,7 @@ class CompatibilityTestCase(unittest.TestCase):
     def test3To3(self):
         self._test(3)
 
-class InterningTestCase(unittest.TestCase, HelperMixin):
+klasse InterningTestCase(unittest.TestCase, HelperMixin):
     strobj = "this is an interned string"
     strobj = sys.intern(strobj)
 
@@ -601,7 +601,7 @@ class InterningTestCase(unittest.TestCase, HelperMixin):
         s2 = sys.intern(s)
         self.assertNotEqual(id(s2), id(s))
 
-class SliceTestCase(unittest.TestCase, HelperMixin):
+klasse SliceTestCase(unittest.TestCase, HelperMixin):
     def test_slice(self):
         for obj in (
             slice(None), slice(1), slice(1, 2), slice(1, 2, 3),
@@ -616,7 +616,7 @@ class SliceTestCase(unittest.TestCase, HelperMixin):
 
 @support.cpython_only
 @unittest.skipUnless(_testcapi, 'requires _testcapi')
-class CAPI_TestCase(unittest.TestCase, HelperMixin):
+klasse CAPI_TestCase(unittest.TestCase, HelperMixin):
 
     def test_write_long_to_file(self):
         for v in range(marshal.version + 1):

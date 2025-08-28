@@ -51,7 +51,7 @@ def irange(n):
     for i in range(n):
         yield i
 
-class StopNow:
+klasse StopNow:
     'Class emulating an empty iterable.'
     def __iter__(self):
         return self
@@ -82,7 +82,7 @@ def underten(x):
 picklecopiers = [lambda s, proto=proto: pickle.loads(pickle.dumps(s, proto))
                  for proto in range(pickle.HIGHEST_PROTOCOL + 1)]
 
-class TestBasicOps(unittest.TestCase):
+klasse TestBasicOps(unittest.TestCase):
 
     def pickletest(self, protocol, it, stop=4, take=1, compare=None):
         """Test that an iterator is the same after pickling, also when part-consumed"""
@@ -694,7 +694,7 @@ class TestBasicOps(unittest.TestCase):
         self.assertEqual(r, [(5, 'a'), (2, 'r'), (2, 'b')])
 
         # iter.__next__ failure
-        class ExpectedError(Exception):
+        klasse ExpectedError(Exception):
             pass
         def delayed_raise(n=0):
             for i in range(n):
@@ -709,7 +709,7 @@ class TestBasicOps(unittest.TestCase):
         self.assertRaises(ExpectedError, gulp, delayed_raise(1))
 
         # __eq__ failure
-        class DummyCmp:
+        klasse DummyCmp:
             def __eq__(self, dst):
                 raise ExpectedError
         s = [DummyCmp(), DummyCmp(), None]
@@ -846,7 +846,7 @@ class TestBasicOps(unittest.TestCase):
     def test_zip_longest_bad_iterable(self):
         exception = TypeError()
 
-        class BadIterable:
+        klasse BadIterable:
             def __iter__(self):
                 raise exception
 
@@ -857,8 +857,8 @@ class TestBasicOps(unittest.TestCase):
 
     def test_bug_7244(self):
 
-        class Repeater:
-            # this class is similar to itertools.repeat
+        klasse Repeater:
+            # this klasse is similar to itertools.repeat
             def __init__(self, o, t, e):
                 self.o = o
                 self.t = int(t)
@@ -916,7 +916,7 @@ class TestBasicOps(unittest.TestCase):
 
     def test_pairwise_reenter(self):
         def check(reenter_at, expected):
-            class I:
+            klasse I:
                 count = 0
                 def __iter__(self):
                     return self
@@ -966,7 +966,7 @@ class TestBasicOps(unittest.TestCase):
 
     def test_pairwise_reenter2(self):
         def check(maxcount, expected):
-            class I:
+            klasse I:
                 count = 0
                 def __iter__(self):
                     return self
@@ -1181,7 +1181,7 @@ class TestBasicOps(unittest.TestCase):
 
         # Issue #30537: islice can accept integer-like objects as
         # arguments
-        class IntLike(object):
+        klasse IntLike(object):
             def __init__(self, val):
                 self.val = val
             def __index__(self):
@@ -1349,7 +1349,7 @@ class TestBasicOps(unittest.TestCase):
             raise
 
     def test_tee_reenter(self):
-        class I:
+        klasse I:
             first = True
             def __iter__(self):
                 return self
@@ -1367,7 +1367,7 @@ class TestBasicOps(unittest.TestCase):
     def test_tee_concurrent(self):
         start = threading.Event()
         finish = threading.Event()
-        class I:
+        klasse I:
             def __iter__(self):
                 return self
             def __next__(self):
@@ -1492,7 +1492,7 @@ class TestBasicOps(unittest.TestCase):
                     tp.foobar = 1
 
 
-class TestExamples(unittest.TestCase):
+klasse TestExamples(unittest.TestCase):
 
     def test_accumulate(self):
         self.assertEqual(list(accumulate([1,2,3,4,5])), [1, 3, 6, 10, 15])
@@ -1577,7 +1577,7 @@ class TestExamples(unittest.TestCase):
         self.assertEqual(list(takewhile(lambda x: x<5, [1,4,6,4,1])), [1,4])
 
 
-class TestPurePythonRoughEquivalents(unittest.TestCase):
+klasse TestPurePythonRoughEquivalents(unittest.TestCase):
 
     def test_batched_recipe(self):
         def batched_recipe(iterable, n):
@@ -1707,7 +1707,7 @@ class TestPurePythonRoughEquivalents(unittest.TestCase):
         self.assertEqual(r, [(5, 'a'), (2, 'r'), (2, 'b')])
 
         # iter.__next__ failure
-        class ExpectedError(Exception):
+        klasse ExpectedError(Exception):
             pass
         def delayed_raise(n=0):
             for i in range(n):
@@ -1722,7 +1722,7 @@ class TestPurePythonRoughEquivalents(unittest.TestCase):
         self.assertRaises(ExpectedError, gulp, delayed_raise(1))
 
         # __eq__ failure
-        class DummyCmp:
+        klasse DummyCmp:
             def __eq__(self, dst):
                 raise ExpectedError
         s = [DummyCmp(), DummyCmp(), None]
@@ -1801,7 +1801,7 @@ class TestPurePythonRoughEquivalents(unittest.TestCase):
                 result.append(_tee(iterator))
             return tuple(result)
 
-        class _tee:
+        klasse _tee:
 
             def __init__(self, iterable):
                 it = iter(iterable)
@@ -1952,7 +1952,7 @@ class TestPurePythonRoughEquivalents(unittest.TestCase):
             raise
 
 
-class TestGC(unittest.TestCase):
+klasse TestGC(unittest.TestCase):
 
     def makecycle(self, iterator, container):
         container.append(iterator)
@@ -2066,14 +2066,14 @@ def R(seqn):
     for i in seqn:
         yield i
 
-class G:
+klasse G:
     'Sequence using __getitem__'
     def __init__(self, seqn):
         self.seqn = seqn
     def __getitem__(self, i):
         return self.seqn[i]
 
-class I:
+klasse I:
     'Sequence using iterator protocol'
     def __init__(self, seqn):
         self.seqn = seqn
@@ -2086,7 +2086,7 @@ class I:
         self.i += 1
         return v
 
-class Ig:
+klasse Ig:
     'Sequence using iterator protocol defined with a generator'
     def __init__(self, seqn):
         self.seqn = seqn
@@ -2095,7 +2095,7 @@ class Ig:
         for val in self.seqn:
             yield val
 
-class X:
+klasse X:
     'Missing __getitem__ and __iter__'
     def __init__(self, seqn):
         self.seqn = seqn
@@ -2106,7 +2106,7 @@ class X:
         self.i += 1
         return v
 
-class N:
+klasse N:
     'Iterator missing __next__()'
     def __init__(self, seqn):
         self.seqn = seqn
@@ -2114,7 +2114,7 @@ class N:
     def __iter__(self):
         return self
 
-class E:
+klasse E:
     'Test propagation of exceptions'
     def __init__(self, seqn):
         self.seqn = seqn
@@ -2124,7 +2124,7 @@ class E:
     def __next__(self):
         3 // 0
 
-class E2:
+klasse E2:
     'Test propagation of exceptions after two iterations'
     def __init__(self, seqn):
         self.seqn = seqn
@@ -2138,7 +2138,7 @@ class E2:
         self.i += 1
         return v
 
-class S:
+klasse S:
     'Test immediate stop'
     def __init__(self, seqn):
         pass
@@ -2152,7 +2152,7 @@ def L(seqn):
     return chain(map(lambda x:x, R(Ig(G(seqn)))))
 
 
-class TestVariousIteratorArgs(unittest.TestCase):
+klasse TestVariousIteratorArgs(unittest.TestCase):
 
     def test_accumulate(self):
         s = [1,2,3,4,5]
@@ -2331,7 +2331,7 @@ class TestVariousIteratorArgs(unittest.TestCase):
             self.assertRaises(TypeError, tee, N(s))
             self.assertRaises(ZeroDivisionError, list, tee(E(s))[0])
 
-class LengthTransparency(unittest.TestCase):
+klasse LengthTransparency(unittest.TestCase):
 
     def test_repeat(self):
         self.assertEqual(operator.length_hint(repeat(None, 50)), 50)
@@ -2344,7 +2344,7 @@ class LengthTransparency(unittest.TestCase):
         self.assertEqual(operator.length_hint(repeat(None, times=-1)), 0)
         self.assertEqual(operator.length_hint(repeat(None, times=-2)), 0)
 
-class RegressionTests(unittest.TestCase):
+klasse RegressionTests(unittest.TestCase):
 
     def test_sf_793826(self):
         # Fix Armin Rigo's successful efforts to wreak havoc
@@ -2422,7 +2422,7 @@ class RegressionTests(unittest.TestCase):
             list(b)  # shouldn't crash
 
     def test_issue30347_2(self):
-        class K:
+        klasse K:
             def __init__(self, v):
                 pass
             def __eq__(self, other):
@@ -2437,7 +2437,7 @@ class RegressionTests(unittest.TestCase):
             next(g, None)  # shouldn't crash
 
 
-class SubclassWithKwargsTest(unittest.TestCase):
+klasse SubclassWithKwargsTest(unittest.TestCase):
     def test_keywords_in_subclass(self):
         # count is not subclassable...
         testcases = [
@@ -2456,7 +2456,7 @@ class SubclassWithKwargsTest(unittest.TestCase):
         ]
         for cls, args, result in testcases:
             with self.subTest(cls):
-                class subclass(cls):
+                klasse subclass(cls):
                     pass
                 u = subclass(*args)
                 self.assertIs(type(u), subclass)
@@ -2471,7 +2471,7 @@ class SubclassWithKwargsTest(unittest.TestCase):
             if cls in [repeat, zip, map, compress]:
                 continue
             with self.subTest(cls):
-                class subclass_with_init(cls):
+                klasse subclass_with_init(cls):
                     def __init__(self, *args, newarg=None):
                         self.newarg = newarg
                 u = subclass_with_init(*args, newarg=3)
@@ -2481,7 +2481,7 @@ class SubclassWithKwargsTest(unittest.TestCase):
 
         for cls, args, result in testcases:
             with self.subTest(cls):
-                class subclass_with_new(cls):
+                klasse subclass_with_new(cls):
                     def __new__(cls, *args, newarg=None):
                         self = super().__new__(cls, *args)
                         self.newarg = newarg
@@ -2493,7 +2493,7 @@ class SubclassWithKwargsTest(unittest.TestCase):
 
 
 @support.cpython_only
-class SizeofTest(unittest.TestCase):
+klasse SizeofTest(unittest.TestCase):
     def setUp(self):
         self.ssize_t = struct.calcsize('n')
 

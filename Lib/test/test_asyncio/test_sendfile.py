@@ -25,7 +25,7 @@ def tearDownModule():
     asyncio.events._set_event_loop_policy(None)
 
 
-class MySendfileProto(asyncio.Protocol):
+klasse MySendfileProto(asyncio.Protocol):
 
     def __init__(self, loop=None, close_after=0):
         self.transport = None
@@ -67,7 +67,7 @@ class MySendfileProto(asyncio.Protocol):
             self.transport.close()
 
 
-class MyProto(asyncio.Protocol):
+klasse MyProto(asyncio.Protocol):
 
     def __init__(self, loop):
         self.started = False
@@ -91,7 +91,7 @@ class MyProto(asyncio.Protocol):
         await self.fut
 
 
-class SendfileBase:
+klasse SendfileBase:
 
     # Linux >= 6.10 seems buffering up to 17 pages of data.
     # So DATA should be large enough to make this test reliable even with a
@@ -134,7 +134,7 @@ class SendfileBase:
         return self.loop.run_until_complete(coro)
 
 
-class SockSendfileMixin(SendfileBase):
+klasse SockSendfileMixin(SendfileBase):
 
     @classmethod
     def setUpClass(cls):
@@ -243,7 +243,7 @@ class SockSendfileMixin(SendfileBase):
         self.assertEqual(self.file.tell(), len(self.DATA))
 
 
-class SendfileMixin(SendfileBase):
+klasse SendfileMixin(SendfileBase):
 
     # Note: sendfile via SSL transport is equal to sendfile fallback
 
@@ -530,19 +530,19 @@ class SendfileMixin(SendfileBase):
                 self.loop.sendfile(transport, None, fallback=False))
 
 
-class SendfileTestsBase(SendfileMixin, SockSendfileMixin):
+klasse SendfileTestsBase(SendfileMixin, SockSendfileMixin):
     pass
 
 
 if sys.platform == 'win32':
 
-    class SelectEventLoopTests(SendfileTestsBase,
+    klasse SelectEventLoopTests(SendfileTestsBase,
                                test_utils.TestCase):
 
         def create_event_loop(self):
             return asyncio.SelectorEventLoop()
 
-    class ProactorEventLoopTests(SendfileTestsBase,
+    klasse ProactorEventLoopTests(SendfileTestsBase,
                                  test_utils.TestCase):
 
         def create_event_loop(self):
@@ -552,7 +552,7 @@ else:
     import selectors
 
     if hasattr(selectors, 'KqueueSelector'):
-        class KqueueEventLoopTests(SendfileTestsBase,
+        klasse KqueueEventLoopTests(SendfileTestsBase,
                                    test_utils.TestCase):
 
             def create_event_loop(self):
@@ -560,21 +560,21 @@ else:
                     selectors.KqueueSelector())
 
     if hasattr(selectors, 'EpollSelector'):
-        class EPollEventLoopTests(SendfileTestsBase,
+        klasse EPollEventLoopTests(SendfileTestsBase,
                                   test_utils.TestCase):
 
             def create_event_loop(self):
                 return asyncio.SelectorEventLoop(selectors.EpollSelector())
 
     if hasattr(selectors, 'PollSelector'):
-        class PollEventLoopTests(SendfileTestsBase,
+        klasse PollEventLoopTests(SendfileTestsBase,
                                  test_utils.TestCase):
 
             def create_event_loop(self):
                 return asyncio.SelectorEventLoop(selectors.PollSelector())
 
     # Should always exist.
-    class SelectEventLoopTests(SendfileTestsBase,
+    klasse SelectEventLoopTests(SendfileTestsBase,
                                test_utils.TestCase):
 
         def create_event_loop(self):

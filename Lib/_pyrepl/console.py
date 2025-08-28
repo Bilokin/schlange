@@ -39,14 +39,14 @@ if TYPE_CHECKING:
 
 
 @dataclass
-class Event:
+klasse Event:
     evt: str
     data: str
     raw: bytes = b""
 
 
 @dataclass
-class Console(ABC):
+klasse Console(ABC):
     posxy: tuple[int, int]
     screen: list[str] = field(default_factory=list)
     height: int = 25
@@ -153,7 +153,7 @@ class Console(ABC):
     def repaint(self) -> None: ...
 
 
-class InteractiveColoredConsole(code.InteractiveConsole):
+klasse InteractiveColoredConsole(code.InteractiveConsole):
     STATEMENT_FAILED = object()
 
     def __init__(

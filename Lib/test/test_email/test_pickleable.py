@@ -10,7 +10,7 @@ from test.test_email import TestEmailBase, parameterize
 
 
 @parameterize
-class TestPickleCopyHeader(TestEmailBase):
+klasse TestPickleCopyHeader(TestEmailBase):
 
     header_factory = HeaderRegistry()
 
@@ -37,7 +37,7 @@ class TestPickleCopyHeader(TestEmailBase):
 
 
 @parameterize
-class TestPickleCopyMessage(TestEmailBase):
+klasse TestPickleCopyMessage(TestEmailBase):
 
     # Message objects are a sequence, so we have to make them a one-tuple in
     # msg_params so they get passed to the parameterized test method as a

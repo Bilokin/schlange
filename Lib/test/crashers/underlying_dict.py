@@ -1,7 +1,7 @@
 import gc
 
 thingy = object()
-class A(object):
+klasse A(object):
     def f(self):
         return 1
     x = thingy

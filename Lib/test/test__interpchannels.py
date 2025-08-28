@@ -72,7 +72,7 @@ def _run_interp(id, source, shared, _mainns={}):
         _interpreters.run_string(id, source, shared)
 
 
-class Interpreter(namedtuple('Interpreter', 'name id')):
+klasse Interpreter(namedtuple('Interpreter', 'name id')):
 
     @classmethod
     def from_raw(cls, raw):
@@ -119,7 +119,7 @@ def expect_channel_closed():
         assert False, 'channel not closed'
 
 
-class ChannelAction(namedtuple('ChannelAction', 'action end interp')):
+klasse ChannelAction(namedtuple('ChannelAction', 'action end interp')):
 
     def __new__(cls, action, end=None, interp=None):
         if not end:
@@ -170,7 +170,7 @@ class ChannelAction(namedtuple('ChannelAction', 'action end interp')):
         # Per __init__(), there aren't any others.
 
 
-class ChannelState(namedtuple('ChannelState', 'pending closed')):
+klasse ChannelState(namedtuple('ChannelState', 'pending closed')):
 
     def __new__(cls, pending=0, *, closed=False):
         self = super().__new__(cls, pending, closed)
@@ -254,7 +254,7 @@ def clean_up_channels():
             pass  # already destroyed
 
 
-class TestBase(unittest.TestCase):
+klasse TestBase(unittest.TestCase):
 
     def tearDown(self):
         clean_up_channels()
@@ -264,7 +264,7 @@ class TestBase(unittest.TestCase):
 ##################################
 # channel tests
 
-class ChannelIDTests(TestBase):
+klasse ChannelIDTests(TestBase):
 
     def test_default_kwargs(self):
         cid = _channels._channel_id(10, force=True)
@@ -289,7 +289,7 @@ class ChannelIDTests(TestBase):
         self.assertEqual(cid.end, 'both')
 
     def test_coerce_id(self):
-        class Int(str):
+        klasse Int(str):
             def __index__(self):
                 return 10
 
@@ -366,7 +366,7 @@ class ChannelIDTests(TestBase):
 
 
 @skip_if_sanitizer('gh-129824: race on _waiting_release', thread=True)
-class ChannelTests(TestBase):
+klasse ChannelTests(TestBase):
 
     def test_create_cid(self):
         cid = _channels.create(REPLACE)
@@ -1210,7 +1210,7 @@ class ChannelTests(TestBase):
             _channels.list_interpreters(cid)
 
 
-class ChannelReleaseTests(TestBase):
+klasse ChannelReleaseTests(TestBase):
 
     # XXX Add more test coverage a la the tests for close().
 
@@ -1375,7 +1375,7 @@ class ChannelReleaseTests(TestBase):
             _channels.recv(cid)
 
 
-class ChannelCloseFixture(namedtuple('ChannelCloseFixture',
+klasse ChannelCloseFixture(namedtuple('ChannelCloseFixture',
                                      'end interp other extra creator')):
 
     # Set this to True to avoid creating interpreters, e.g. when
@@ -1489,7 +1489,7 @@ class ChannelCloseFixture(namedtuple('ChannelCloseFixture',
 
 
 @unittest.skip('these tests take several hours to run')
-class ExhaustiveChannelTests(TestBase):
+klasse ExhaustiveChannelTests(TestBase):
 
     """
     - main / interp / other

@@ -23,21 +23,21 @@ __all__ = [
 ]
 
 
-class QueueEmpty(QueueError, queue.Empty):
+klasse QueueEmpty(QueueError, queue.Empty):
     """Raised from get_nowait() when the queue is empty.
 
     It is also raised from get() if it times out.
     """
 
 
-class QueueFull(QueueError, queue.Full):
+klasse QueueFull(QueueError, queue.Full):
     """Raised from put_nowait() when the queue is full.
 
     It is also raised from put() if it times out.
     """
 
 
-class ItemInterpreterDestroyed(QueueError,
+klasse ItemInterpreterDestroyed(QueueError,
                                _crossinterp.ItemInterpreterDestroyed):
     """Raised from get() and get_nowait()."""
 
@@ -94,7 +94,7 @@ def list_all():
 
 _known_queues = weakref.WeakValueDictionary()
 
-class Queue:
+klasse Queue:
     """A cross-interpreter queue."""
 
     def __new__(cls, id, /):

@@ -9,7 +9,7 @@ from tkinter.commondialog import Dialog
 requires('gui')
 
 
-class ChooserTest(AbstractTkTest, unittest.TestCase):
+klasse ChooserTest(AbstractTkTest, unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -39,7 +39,7 @@ class ChooserTest(AbstractTkTest, unittest.TestCase):
                          ((74, 60, 140), '#4a3c8c'))
 
 
-class DefaultRootTest(AbstractDefaultRootTest, unittest.TestCase):
+klasse DefaultRootTest(AbstractDefaultRootTest, unittest.TestCase):
 
     def test_askcolor(self):
         def test_callback(dialog, master):

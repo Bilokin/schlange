@@ -1,5 +1,5 @@
 #
-# Module providing the `Process` class which emulates `threading.Thread`
+# Module providing the `Process` klasse which emulates `threading.Thread`
 #
 # multiprocessing/process.py
 #
@@ -68,11 +68,11 @@ def _cleanup():
 # The `Process` class
 #
 
-class BaseProcess(object):
+klasse BaseProcess(object):
     '''
     Process objects represent activity that is run in a separate process
 
-    The class is analogous to `threading.Thread`
+    The klasse is analogous to `threading.Thread`
     '''
     def _Popen(self):
         raise NotImplementedError
@@ -350,7 +350,7 @@ class BaseProcess(object):
 # We subclass bytes to avoid accidental transmission of auth keys over network
 #
 
-class AuthenticationString(bytes):
+klasse AuthenticationString(bytes):
     def __reduce__(self):
         from .context import get_spawning_popen
         if get_spawning_popen() is None:
@@ -365,7 +365,7 @@ class AuthenticationString(bytes):
 # Create object representing the parent process
 #
 
-class _ParentProcess(BaseProcess):
+klasse _ParentProcess(BaseProcess):
 
     def __init__(self, name, pid, sentinel):
         self._identity = ()
@@ -398,7 +398,7 @@ class _ParentProcess(BaseProcess):
 # Create object representing the main process
 #
 
-class _MainProcess(BaseProcess):
+klasse _MainProcess(BaseProcess):
 
     def __init__(self):
         self._identity = ()

@@ -6,7 +6,7 @@ but no doctest examples.
 """
 
 
-class Foo(object):
+klasse Foo(object):
     """A docstring with no doctest examples.
 
     """

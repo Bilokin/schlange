@@ -19,7 +19,7 @@ def get_num_queues():
     return len(_queues.list_all())
 
 
-class TestBase(_TestBase):
+klasse TestBase(_TestBase):
     def tearDown(self):
         for qid, _, _ in _queues.list_all():
             try:
@@ -28,7 +28,7 @@ class TestBase(_TestBase):
                 pass
 
 
-class LowLevelTests(TestBase):
+klasse LowLevelTests(TestBase):
 
     # The behaviors in the low-level module are important in as much
     # as they are exercised by the high-level module.  Therefore the
@@ -94,7 +94,7 @@ class LowLevelTests(TestBase):
                 _queues.release(qid)
 
 
-class QueueTests(TestBase):
+klasse QueueTests(TestBase):
 
     def test_create(self):
         with self.subTest('vanilla'):
@@ -195,7 +195,7 @@ class QueueTests(TestBase):
                 self.assertEqual(unpickled, queue)
 
 
-class TestQueueOps(TestBase):
+klasse TestQueueOps(TestBase):
 
     def test_empty(self):
         queue = queues.create()

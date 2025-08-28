@@ -4,7 +4,7 @@ import pickle
 import unittest
 from test.support import skip_emscripten_stack_overflow, skip_wasi_stack_overflow, exceeds_recursion_limit
 
-class DictSetTest(unittest.TestCase):
+klasse DictSetTest(unittest.TestCase):
 
     def test_constructors_not_callable(self):
         kt = type({}.keys())
@@ -94,7 +94,7 @@ class DictSetTest(unittest.TestCase):
         d3 = {'d': 4, 'e': 5}
         d4 = {'d': 4}
 
-        class CustomSet(set):
+        klasse CustomSet(set):
             def intersection(self, other):
                 return CustomSet(super().intersection(other))
 
@@ -292,10 +292,10 @@ class DictSetTest(unittest.TestCase):
         self.assertRaises(TypeError, copy.copy, d.items())
 
     def test_compare_error(self):
-        class Exc(Exception):
+        klasse Exc(Exception):
             pass
 
-        class BadEq:
+        klasse BadEq:
             def __hash__(self):
                 return 7
             def __eq__(self, other):

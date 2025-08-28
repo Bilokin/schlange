@@ -12,7 +12,7 @@ from http.client import HTTPException
 from test import support
 from io import BytesIO
 
-class TestBase:
+klasse TestBase:
     encoding        = ''   # codec name
     codec           = None # codec tuple (with 4 elements)
     tstring         = None # must set. 2 strings to test StreamReader
@@ -283,7 +283,7 @@ class TestBase:
             del e.errors
 
 
-class TestBase_Mapping(unittest.TestCase):
+klasse TestBase_Mapping(unittest.TestCase):
     pass_enctest = []
     pass_dectest = []
     supmaps = []

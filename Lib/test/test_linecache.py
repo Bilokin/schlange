@@ -42,7 +42,7 @@ def f():
     return 3''' # No ending newline
 
 
-class TempFile:
+klasse TempFile:
 
     def setUp(self):
         super().setUp()
@@ -52,7 +52,7 @@ class TempFile:
         self.addCleanup(os_helper.unlink, self.file_name)
 
 
-class GetLineTestsGoodData(TempFile):
+klasse GetLineTestsGoodData(TempFile):
     # file_list   = ['list\n', 'of\n', 'good\n', 'strings\n']
 
     def setUp(self):
@@ -73,7 +73,7 @@ class GetLineTestsGoodData(TempFile):
         self.assertEqual(lines, self.file_list)
 
 
-class GetLineTestsBadData(TempFile):
+klasse GetLineTestsBadData(TempFile):
     # file_byte_string = b'Bad data goes here'
 
     def test_getline(self):
@@ -83,7 +83,7 @@ class GetLineTestsBadData(TempFile):
         self.assertEqual(linecache.getlines(self.file_name), [])
 
 
-class EmptyFile(GetLineTestsGoodData, unittest.TestCase):
+klasse EmptyFile(GetLineTestsGoodData, unittest.TestCase):
     file_list = []
 
     def test_getlines(self):
@@ -91,31 +91,31 @@ class EmptyFile(GetLineTestsGoodData, unittest.TestCase):
         self.assertEqual(lines, ['\n'])
 
 
-class SingleEmptyLine(GetLineTestsGoodData, unittest.TestCase):
+klasse SingleEmptyLine(GetLineTestsGoodData, unittest.TestCase):
     file_list = ['\n']
 
 
-class GoodUnicode(GetLineTestsGoodData, unittest.TestCase):
+klasse GoodUnicode(GetLineTestsGoodData, unittest.TestCase):
     file_list = ['á\n', 'b\n', 'abcdef\n', 'ááááá\n']
 
-class BadUnicode_NoDeclaration(GetLineTestsBadData, unittest.TestCase):
+klasse BadUnicode_NoDeclaration(GetLineTestsBadData, unittest.TestCase):
     file_byte_string = b'\n\x80abc'
 
-class BadUnicode_WithDeclaration(GetLineTestsBadData, unittest.TestCase):
+klasse BadUnicode_WithDeclaration(GetLineTestsBadData, unittest.TestCase):
     file_byte_string = b'# coding=utf-8\n\x80abc'
 
 
-class FakeLoader:
+klasse FakeLoader:
     def get_source(self, fullname):
         return f'source for {fullname}'
 
 
-class NoSourceLoader:
+klasse NoSourceLoader:
     def get_source(self, fullname):
         return None
 
 
-class LineCacheTests(unittest.TestCase):
+klasse LineCacheTests(unittest.TestCase):
 
     def test_getline(self):
         getline = linecache.getline
@@ -334,7 +334,7 @@ class LineCacheTests(unittest.TestCase):
         self.assertEqual(stdout, b'')
         self.assertEqual(stderr, b'')
 
-class LineCacheInvalidationTests(unittest.TestCase):
+klasse LineCacheInvalidationTests(unittest.TestCase):
     def setUp(self):
         super().setUp()
         linecache.clearcache()
@@ -376,7 +376,7 @@ class LineCacheInvalidationTests(unittest.TestCase):
         self.assertIn(self.unchanged_file, linecache.cache)
 
 
-class MultiThreadingTest(unittest.TestCase):
+klasse MultiThreadingTest(unittest.TestCase):
     @threading_helper.reap_threads
     @threading_helper.requires_working_threading()
     def test_read_write_safety(self):

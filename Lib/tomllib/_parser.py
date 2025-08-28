@@ -55,12 +55,12 @@ BASIC_STR_ESCAPE_REPLACEMENTS = MappingProxyType(
 )
 
 
-class DEPRECATED_DEFAULT:
+klasse DEPRECATED_DEFAULT:
     """Sentinel to be used as default arg during deprecation
     period of TOMLDecodeError's free-form arguments."""
 
 
-class TOMLDecodeError(ValueError):
+klasse TOMLDecodeError(ValueError):
     """An error raised if a document is not valid TOML.
 
     Adds the following attributes to ValueError:
@@ -204,7 +204,7 @@ def loads(s: str, /, *, parse_float: ParseFloat = float) -> dict[str, Any]:  # n
     return out.data.dict
 
 
-class Flags:
+klasse Flags:
     """Flags that map to parsed keys/namespaces."""
 
     # Marks an immutable namespace (inline array or inline table).
@@ -262,7 +262,7 @@ class Flags:
         return False
 
 
-class NestedDict:
+klasse NestedDict:
     def __init__(self) -> None:
         # The parsed content of the TOML document
         self.dict: dict[str, Any] = {}
@@ -296,7 +296,7 @@ class NestedDict:
             cont[last_key] = [{}]
 
 
-class Output:
+klasse Output:
     def __init__(self) -> None:
         self.data = NestedDict()
         self.flags = Flags()

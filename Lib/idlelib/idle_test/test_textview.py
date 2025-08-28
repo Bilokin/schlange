@@ -32,14 +32,14 @@ def tearDownModule():
 # Have also gotten tk error 'can't invoke "event" command'.
 
 
-class VW(tv.ViewWindow):  # Used in ViewWindowTest.
+klasse VW(tv.ViewWindow):  # Used in ViewWindowTest.
     transient = Func()
     grab_set = Func()
     wait_window = Func()
 
 
-# Call wrapper class VW with mock wait_window.
-class ViewWindowTest(unittest.TestCase):
+# Call wrapper klasse VW with mock wait_window.
+klasse ViewWindowTest(unittest.TestCase):
 
     def setUp(self):
         VW.transient.__init__()
@@ -69,7 +69,7 @@ class ViewWindowTest(unittest.TestCase):
         view.destroy()
 
 
-class AutoHideScrollbarTest(unittest.TestCase):
+klasse AutoHideScrollbarTest(unittest.TestCase):
     # Method set is tested in ScrollableTextFrameTest
     def test_forbidden_geometry(self):
         scroll = tv.AutoHideScrollbar(root)
@@ -77,7 +77,7 @@ class AutoHideScrollbarTest(unittest.TestCase):
         self.assertRaises(TclError, scroll.place)
 
 
-class ScrollableTextFrameTest(unittest.TestCase):
+klasse ScrollableTextFrameTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -121,7 +121,7 @@ class ScrollableTextFrameTest(unittest.TestCase):
                 self.assertIsNone(frame.xscroll)
 
 
-class ViewFrameTest(unittest.TestCase):
+klasse ViewFrameTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -142,7 +142,7 @@ class ViewFrameTest(unittest.TestCase):
 
 
 # Call ViewWindow with modal=False.
-class ViewFunctionTest(unittest.TestCase):
+klasse ViewFunctionTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -188,7 +188,7 @@ class ViewFunctionTest(unittest.TestCase):
 
 
 # Call ViewWindow with _utest=True.
-class ButtonClickTest(unittest.TestCase):
+klasse ButtonClickTest(unittest.TestCase):
 
     def setUp(self):
         self.view = None

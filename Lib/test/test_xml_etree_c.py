@@ -14,7 +14,7 @@ cET_alias = import_fresh_module('xml.etree.cElementTree',
 
 
 @unittest.skipUnless(cET, 'requires _elementtree')
-class MiscTests(unittest.TestCase):
+klasse MiscTests(unittest.TestCase):
     # Issue #8651.
     @support.bigmemtest(size=support._2G + 100, memuse=1, dry_run=False)
     def test_length_overflow(self, size):
@@ -93,7 +93,7 @@ class MiscTests(unittest.TestCase):
         # collection triggers a call to clear() or a reading of text or tail,
         # while a setter or clear() or __setstate__() is already running.
         elem = cET.Element('elem')
-        class X:
+        klasse X:
             def __del__(self):
                 elem.text
                 elem.tail
@@ -127,7 +127,7 @@ class MiscTests(unittest.TestCase):
         parser = cET.XMLParser.__new__(cET.XMLParser)
         self.assertRaises(ValueError, parser.close)
         self.assertRaises(ValueError, parser.feed, 'foo')
-        class MockFile:
+        klasse MockFile:
             def read(*args):
                 return ''
         self.assertRaises(ValueError, parser._parse_whole, MockFile())
@@ -173,7 +173,7 @@ class MiscTests(unittest.TestCase):
 
     def test_dict_disappearing_during_get_item(self):
         # test fix for seg fault reported in issue 27946
-        class X:
+        klasse X:
             def __hash__(self):
                 e.attrib = {} # this frees e->extra->attrib
                 [{i: i} for i in range(1000)] # exhaust the dict keys cache
@@ -205,7 +205,7 @@ class MiscTests(unittest.TestCase):
 
 
 @unittest.skipUnless(cET, 'requires _elementtree')
-class TestAliasWorking(unittest.TestCase):
+klasse TestAliasWorking(unittest.TestCase):
     # Test that the cET alias module is alive
     def test_alias_working(self):
         e = cET_alias.Element('foo')
@@ -214,7 +214,7 @@ class TestAliasWorking(unittest.TestCase):
 
 @unittest.skipUnless(cET, 'requires _elementtree')
 @support.cpython_only
-class TestAcceleratorImported(unittest.TestCase):
+klasse TestAcceleratorImported(unittest.TestCase):
     # Test that the C accelerator was imported, as expected
     def test_correct_import_cET(self):
         # SubElement is a function so it retains _elementtree as its module.
@@ -232,7 +232,7 @@ class TestAcceleratorImported(unittest.TestCase):
 
 @unittest.skipUnless(cET, 'requires _elementtree')
 @support.cpython_only
-class SizeofTest(unittest.TestCase):
+klasse SizeofTest(unittest.TestCase):
     def setUp(self):
         self.elementsize = support.calcobjsize('5P')
         # extra
@@ -262,7 +262,7 @@ def install_tests():
     from test import test_xml_etree
     for name, base in vars(test_xml_etree).items():
         if isinstance(base, type) and issubclass(base, unittest.TestCase):
-            class Temp(base):
+            klasse Temp(base):
                 pass
             Temp.__name__ = Temp.__qualname__ = name
             Temp.__module__ = __name__

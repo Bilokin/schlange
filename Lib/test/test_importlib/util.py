@@ -219,9 +219,9 @@ def import_state(**kwargs):
             setattr(sys, attr, value)
 
 
-class _ImporterMock:
+klasse _ImporterMock:
 
-    """Base class to help with creating importer mocks."""
+    """Base klasse to help with creating importer mocks."""
 
     def __init__(self, *names, module_code={}):
         self.modules = {}
@@ -260,7 +260,7 @@ class _ImporterMock:
         self._uncache.__exit__(None, None, None)
 
 
-class mock_spec(_ImporterMock):
+klasse mock_spec(_ImporterMock):
 
     """Importer mock using PEP 451 APIs."""
 
@@ -393,7 +393,7 @@ def mock_path_hook(*entries, importer):
     return hook
 
 
-class CASEOKTestBase:
+klasse CASEOKTestBase:
 
     def caseok_env_changed(self, *, should_exist):
         possibilities = b'PYTHONCASEOK', 'PYTHONCASEOK'

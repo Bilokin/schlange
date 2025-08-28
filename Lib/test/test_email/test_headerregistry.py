@@ -13,7 +13,7 @@ from test.support import ALWAYS_EQ
 DITTO = object()
 
 
-class TestHeaderRegistry(TestEmailBase):
+klasse TestHeaderRegistry(TestEmailBase):
 
     def test_arbitrary_name_unstructured(self):
         factory = headerregistry.HeaderRegistry()
@@ -29,7 +29,7 @@ class TestHeaderRegistry(TestEmailBase):
         self.assertIsInstance(h, headerregistry.BaseHeader)
         self.assertIsInstance(h, headerregistry.UniqueUnstructuredHeader)
 
-    class FooBase:
+    klasse FooBase:
         def __init__(self, *args, **kw):
             pass
 
@@ -39,7 +39,7 @@ class TestHeaderRegistry(TestEmailBase):
         self.assertIsInstance(h, self.FooBase)
         self.assertIsInstance(h, headerregistry.UnstructuredHeader)
 
-    class FooDefault:
+    klasse FooDefault:
         parse = headerregistry.UnstructuredHeader.parse
 
     def test_override_default_class(self):
@@ -71,7 +71,7 @@ class TestHeaderRegistry(TestEmailBase):
         self.assertIsInstance(h2, headerregistry.UniqueUnstructuredHeader)
 
 
-class TestHeaderBase(TestEmailBase):
+klasse TestHeaderBase(TestEmailBase):
 
     factory = headerregistry.HeaderRegistry()
 
@@ -79,7 +79,7 @@ class TestHeaderBase(TestEmailBase):
         return self.factory(name, value)
 
 
-class TestBaseHeaderFeatures(TestHeaderBase):
+klasse TestBaseHeaderFeatures(TestHeaderBase):
 
     def test_str(self):
         h = self.make_header('subject', 'this is a test')
@@ -126,7 +126,7 @@ class TestBaseHeaderFeatures(TestHeaderBase):
 
 
 @parameterize
-class TestUnstructuredHeader(TestHeaderBase):
+klasse TestUnstructuredHeader(TestHeaderBase):
 
     def string_as_value(self,
                         source,
@@ -167,7 +167,7 @@ class TestUnstructuredHeader(TestHeaderBase):
 
 
 @parameterize
-class TestDateHeader(TestHeaderBase):
+klasse TestDateHeader(TestHeaderBase):
 
     datestring = 'Sun, 23 Sep 2001 20:10:55 -0700'
     utcoffset = datetime.timedelta(hours=-7)
@@ -233,7 +233,7 @@ class TestDateHeader(TestHeaderBase):
 
 
 @parameterize
-class TestContentTypeHeader(TestHeaderBase):
+klasse TestContentTypeHeader(TestHeaderBase):
 
     def content_type_as_value(self,
                               source,
@@ -801,7 +801,7 @@ class TestContentTypeHeader(TestHeaderBase):
 
 
 @parameterize
-class TestContentTransferEncoding(TestHeaderBase):
+klasse TestContentTransferEncoding(TestHeaderBase):
 
     def cte_as_value(self,
                      source,
@@ -846,7 +846,7 @@ class TestContentTransferEncoding(TestHeaderBase):
 
 
 @parameterize
-class TestContentDisposition(TestHeaderBase):
+klasse TestContentDisposition(TestHeaderBase):
 
     def content_disp_as_value(self,
                               source,
@@ -929,7 +929,7 @@ class TestContentDisposition(TestHeaderBase):
 
 
 @parameterize
-class TestMIMEVersionHeader(TestHeaderBase):
+klasse TestMIMEVersionHeader(TestHeaderBase):
 
     def version_string_as_MIME_Version(self,
                                        source,
@@ -1087,7 +1087,7 @@ class TestMIMEVersionHeader(TestHeaderBase):
 
 
 @parameterize
-class TestAddressHeader(TestHeaderBase):
+klasse TestAddressHeader(TestHeaderBase):
 
     example_params = {
 
@@ -1407,7 +1407,7 @@ class TestAddressHeader(TestHeaderBase):
         self.assertEqual(h, 'bing: fiz <z@b.com>, zif <f@c.com>;')
 
 
-class TestAddressAndGroup(TestEmailBase):
+klasse TestAddressAndGroup(TestEmailBase):
 
     def _test_attr_ro(self, obj, attr):
         with self.assertRaises(AttributeError):
@@ -1636,7 +1636,7 @@ class TestAddressAndGroup(TestEmailBase):
         self.assertTrue(g == ALWAYS_EQ)
 
 
-class TestFolding(TestHeaderBase):
+klasse TestFolding(TestHeaderBase):
 
     def test_address_display_names(self):
         """Test the folding and encoding of address headers."""

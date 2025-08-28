@@ -17,7 +17,7 @@ from collections import abc, Counter
 from test.support import warnings_helper
 
 
-class MyIndex:
+klasse MyIndex:
     def __init__(self, value):
         self.value = value
 
@@ -25,7 +25,7 @@ class MyIndex:
         return self.value
 
 
-class TestBasicOps:
+klasse TestBasicOps:
     # Superclass with tests common to all generators.
     # Subclasses must arrange for self.gen to retrieve the Random instance
     # to be tested.
@@ -52,7 +52,7 @@ class TestBasicOps:
 
     def test_seedargs(self):
         # Seed value with a negative hash.
-        class MySeed(object):
+        klasse MySeed(object):
             def __hash__(self):
                 return -1729
         for arg in [None, 0, 1, -1, 10**20, -(10**20),
@@ -128,7 +128,7 @@ class TestBasicOps:
         # See: https://github.com/python/cpython/issues/100805
         choice = self.gen.choice
 
-        class NA(list):
+        klasse NA(list):
             "Simulate numpy.array() behavior"
             def __bool__(self):
                 raise RuntimeError
@@ -187,7 +187,7 @@ class TestBasicOps:
             self.gen.sample(population, k=5)
 
     def test_sample_on_seqsets(self):
-        class SeqSet(abc.Sequence, abc.Set):
+        klasse SeqSet(abc.Sequence, abc.Set):
             def __init__(self, items):
                 self._items = items
 
@@ -606,7 +606,7 @@ else:
     SystemRandom_available = True
 
 @unittest.skipUnless(SystemRandom_available, "random.SystemRandom not available")
-class SystemRandom_TestBasicOps(TestBasicOps, unittest.TestCase):
+klasse SystemRandom_TestBasicOps(TestBasicOps, unittest.TestCase):
     gen = random.SystemRandom()
 
     def test_autoseed(self):
@@ -631,7 +631,7 @@ class SystemRandom_TestBasicOps(TestBasicOps, unittest.TestCase):
             self.assertRaises(NotImplementedError, pickle.dumps, self.gen, proto)
 
 
-class TestRawMersenneTwister(unittest.TestCase):
+klasse TestRawMersenneTwister(unittest.TestCase):
     @test.support.cpython_only
     def test_bug_41052(self):
         # _random.Random should not be allowed to serialization
@@ -650,7 +650,7 @@ class TestRawMersenneTwister(unittest.TestCase):
         self.assertEqual(r1.random(), r2.random())
 
 
-class MersenneTwister_TestBasicOps(TestBasicOps, unittest.TestCase):
+klasse MersenneTwister_TestBasicOps(TestBasicOps, unittest.TestCase):
     gen = random.Random()
 
     def test_guaranteed_stable(self):
@@ -685,7 +685,7 @@ class MersenneTwister_TestBasicOps(TestBasicOps, unittest.TestCase):
     def test_bug_31478(self):
         # There shouldn't be an assertion failure in _random.Random.seed() in
         # case the argument has a bad __abs__() method.
-        class BadInt(int):
+        klasse BadInt(int):
             def __abs__(self):
                 return None
         try:
@@ -1023,7 +1023,7 @@ def gamma(z, sqrt2pi=(2.0*pi)**0.5):
         0.1659470187408462e-06 / (z+7.0),
     ])
 
-class TestDistributions(unittest.TestCase):
+klasse TestDistributions(unittest.TestCase):
     def test_zeroinputs(self):
         # Verify that distributions can handle a series of zero inputs'
         g = random.Random()
@@ -1297,10 +1297,10 @@ class TestDistributions(unittest.TestCase):
         self.assertEqual(0.0, random.betavariate(2.71828, 3.14159))
 
 
-class TestRandomSubclassing(unittest.TestCase):
+klasse TestRandomSubclassing(unittest.TestCase):
     def test_random_subclass_with_kwargs(self):
         # SF bug #1486663 -- this used to erroneously raise a TypeError
-        class Subclass(random.Random):
+        klasse Subclass(random.Random):
             def __init__(self, newarg=None):
                 random.Random.__init__(self)
         Subclass(newarg=1)
@@ -1313,7 +1313,7 @@ class TestRandomSubclassing(unittest.TestCase):
         # subclass providing its own random **and** getrandbits methods
         # like random.SystemRandom does => keep relying on getrandbits for
         # randrange
-        class SubClass1(random.Random):
+        klasse SubClass1(random.Random):
             def random(self):
                 called.add('SubClass1.random')
                 return random.Random.random(self)
@@ -1326,7 +1326,7 @@ class TestRandomSubclassing(unittest.TestCase):
         self.assertEqual(called, {'SubClass1.getrandbits'})
 
         # subclass providing only random => can only use random for randrange
-        class SubClass2(random.Random):
+        klasse SubClass2(random.Random):
             def random(self):
                 called.add('SubClass2.random')
                 return random.Random.random(self)
@@ -1336,7 +1336,7 @@ class TestRandomSubclassing(unittest.TestCase):
 
         # subclass defining getrandbits to complement its inherited random
         # => can now rely on getrandbits for randrange again
-        class SubClass3(SubClass2):
+        klasse SubClass3(SubClass2):
             def getrandbits(self, n):
                 called.add('SubClass3.getrandbits')
                 return random.Random.getrandbits(self, n)
@@ -1346,7 +1346,7 @@ class TestRandomSubclassing(unittest.TestCase):
 
         # subclass providing only random and inherited getrandbits
         # => random takes precedence
-        class SubClass4(SubClass3):
+        klasse SubClass4(SubClass3):
             def random(self):
                 called.add('SubClass4.random')
                 return random.Random.random(self)
@@ -1356,41 +1356,41 @@ class TestRandomSubclassing(unittest.TestCase):
 
         # Following subclasses don't define random or getrandbits directly,
         # but inherit them from classes which are not subclasses of Random
-        class Mixin1:
+        klasse Mixin1:
             def random(self):
                 called.add('Mixin1.random')
                 return random.Random.random(self)
-        class Mixin2:
+        klasse Mixin2:
             def getrandbits(self, n):
                 called.add('Mixin2.getrandbits')
                 return random.Random.getrandbits(self, n)
 
-        class SubClass5(Mixin1, random.Random):
+        klasse SubClass5(Mixin1, random.Random):
             pass
         called = set()
         SubClass5().randrange(42)
         self.assertEqual(called, {'Mixin1.random'})
 
-        class SubClass6(Mixin2, random.Random):
+        klasse SubClass6(Mixin2, random.Random):
             pass
         called = set()
         SubClass6().randrange(42)
         self.assertEqual(called, {'Mixin2.getrandbits'})
 
-        class SubClass7(Mixin1, Mixin2, random.Random):
+        klasse SubClass7(Mixin1, Mixin2, random.Random):
             pass
         called = set()
         SubClass7().randrange(42)
         self.assertEqual(called, {'Mixin1.random'})
 
-        class SubClass8(Mixin2, Mixin1, random.Random):
+        klasse SubClass8(Mixin2, Mixin1, random.Random):
             pass
         called = set()
         SubClass8().randrange(42)
         self.assertEqual(called, {'Mixin2.getrandbits'})
 
 
-class TestModule(unittest.TestCase):
+klasse TestModule(unittest.TestCase):
     def testMagicConstants(self):
         self.assertAlmostEqual(random.NV_MAGICCONST, 1.71552776992141)
         self.assertAlmostEqual(random.TWOPI, 6.28318530718)
@@ -1426,7 +1426,7 @@ class TestModule(unittest.TestCase):
             support.wait_process(pid, exitcode=0)
 
 
-class CommandLineTest(unittest.TestCase):
+klasse CommandLineTest(unittest.TestCase):
     @support.force_not_colorized
     def test_parse_args(self):
         args, help_text = random._parse_args(shlex.split("--choice a b c"))

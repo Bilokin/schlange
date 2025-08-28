@@ -3,15 +3,15 @@ from test import support
 import operator
 maxsize = support.MAX_Py_ssize_t
 
-class newstyle:
+klasse newstyle:
     def __index__(self):
         return self.ind
 
-class TrapInt(int):
+klasse TrapInt(int):
     def __index__(self):
         return int(self)
 
-class BaseTestCase(unittest.TestCase):
+klasse BaseTestCase(unittest.TestCase):
     def setUp(self):
         self.o = newstyle()
         self.n = newstyle()
@@ -58,7 +58,7 @@ class BaseTestCase(unittest.TestCase):
     def test_int_subclass_with_index(self):
         # __index__ should be used when computing indices, even for int
         # subclasses.  See issue #17576.
-        class MyInt(int):
+        klasse MyInt(int):
             def __index__(self):
                 return int(str(self)) + 1
 
@@ -72,11 +72,11 @@ class BaseTestCase(unittest.TestCase):
         #self.assertIs(type(operator_index), int)
 
     def test_index_returns_int_subclass(self):
-        class BadInt:
+        klasse BadInt:
             def __index__(self):
                 return True
 
-        class BadInt2(int):
+        klasse BadInt2(int):
             def __index__(self):
                 return True
 
@@ -90,7 +90,7 @@ class BaseTestCase(unittest.TestCase):
         self.assertEqual(n, 0)
 
 
-class SeqTestCase:
+klasse SeqTestCase:
     # This test case isn't run directly. It just defines common tests
     # to the different sequence types below
     def setUp(self):
@@ -160,7 +160,7 @@ class SeqTestCase:
         self.assertRaises(TypeError, sliceobj, self.n, self)
 
 
-class ListTestCase(SeqTestCase, unittest.TestCase):
+klasse ListTestCase(SeqTestCase, unittest.TestCase):
     seq = [0,10,20,30,40,50]
 
     def test_setdelitem(self):
@@ -194,7 +194,7 @@ class ListTestCase(SeqTestCase, unittest.TestCase):
         self.assertEqual(lst, [5, 6, 7, 8, 9, 11] * 3)
 
 
-class NewSeq:
+klasse NewSeq:
 
     def __init__(self, iterable):
         self._list = list(iterable)
@@ -216,24 +216,24 @@ class NewSeq:
         return self._list[index]
 
 
-class TupleTestCase(SeqTestCase, unittest.TestCase):
+klasse TupleTestCase(SeqTestCase, unittest.TestCase):
     seq = (0,10,20,30,40,50)
 
-class ByteArrayTestCase(SeqTestCase, unittest.TestCase):
+klasse ByteArrayTestCase(SeqTestCase, unittest.TestCase):
     seq = bytearray(b"this is a test")
 
-class BytesTestCase(SeqTestCase, unittest.TestCase):
+klasse BytesTestCase(SeqTestCase, unittest.TestCase):
     seq = b"this is a test"
 
-class StringTestCase(SeqTestCase, unittest.TestCase):
+klasse StringTestCase(SeqTestCase, unittest.TestCase):
     seq = "this is a test"
 
-class NewSeqTestCase(SeqTestCase, unittest.TestCase):
+klasse NewSeqTestCase(SeqTestCase, unittest.TestCase):
     seq = NewSeq((0,10,20,30,40,50))
 
 
 
-class RangeTestCase(unittest.TestCase):
+klasse RangeTestCase(unittest.TestCase):
 
     def test_range(self):
         n = newstyle()
@@ -242,7 +242,7 @@ class RangeTestCase(unittest.TestCase):
         self.assertEqual(range(1, 20).__getitem__(n), 6)
 
 
-class OverflowTestCase(unittest.TestCase):
+klasse OverflowTestCase(unittest.TestCase):
 
     def setUp(self):
         self.pos = 2**100
@@ -253,7 +253,7 @@ class OverflowTestCase(unittest.TestCase):
         self.assertEqual(self.neg.__index__(), self.neg)
 
     def test_getitem(self):
-        class GetItem:
+        klasse GetItem:
             def __len__(self):
                 assert False, "__len__ should not be invoked"
             def __getitem__(self, key):

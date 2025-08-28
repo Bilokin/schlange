@@ -7,7 +7,7 @@ TIP #48 (http://tip.tcl.tk/48) specified style engine.
 
 Its basic idea is to separate, to the extent possible, the code
 implementing a widget's behavior from the code implementing its
-appearance. Widget class bindings are primarily responsible for
+appearance. Widget klasse bindings are primarily responsible for
 maintaining the widget state and invoking callbacks, all aspects
 of the widgets appearance lies at Themes.
 """
@@ -345,7 +345,7 @@ def setup_master(master=None):
     return master
 
 
-class Style(object):
+klasse Style(object):
     """Manipulate style database."""
 
     _name = "ttk::style"
@@ -509,8 +509,8 @@ class Style(object):
         self.tk.call("ttk::setTheme", themename)
 
 
-class Widget(tkinter.Widget):
-    """Base class for Tk themed widgets."""
+klasse Widget(tkinter.Widget):
+    """Base klasse for Tk themed widgets."""
 
     def __init__(self, master, widgetname, kw=None):
         """Constructs a Ttk Widget with the parent master.
@@ -572,7 +572,7 @@ class Widget(tkinter.Widget):
         return self.tk.splitlist(str(self.tk.call(self._w, "state", statespec)))
 
 
-class Button(Widget):
+klasse Button(Widget):
     """Ttk Button widget, displays a textual label and/or image, and
     evaluates a command when pressed."""
 
@@ -596,7 +596,7 @@ class Button(Widget):
         return self.tk.call(self._w, "invoke")
 
 
-class Checkbutton(Widget):
+klasse Checkbutton(Widget):
     """Ttk Checkbutton widget which is either in on- or off-state."""
 
     def __init__(self, master=None, **kw):
@@ -625,7 +625,7 @@ class Checkbutton(Widget):
         return self.tk.call(self._w, "invoke")
 
 
-class Entry(Widget, tkinter.Entry):
+klasse Entry(Widget, tkinter.Entry):
     """Ttk Entry widget displays a one-line text string and allows that
     string to be edited by the user."""
 
@@ -667,7 +667,7 @@ class Entry(Widget, tkinter.Entry):
         return self.tk.getboolean(self.tk.call(self._w, "validate"))
 
 
-class Combobox(Entry):
+klasse Combobox(Entry):
     """Ttk Combobox widget combines a text field with a pop-down list of
     values."""
 
@@ -704,7 +704,7 @@ class Combobox(Entry):
         self.tk.call(self._w, "set", value)
 
 
-class Frame(Widget):
+klasse Frame(Widget):
     """Ttk Frame widget is a container, used to group other widgets
     together."""
 
@@ -722,7 +722,7 @@ class Frame(Widget):
         Widget.__init__(self, master, "ttk::frame", kw)
 
 
-class Label(Widget):
+klasse Label(Widget):
     """Ttk Label widget displays a textual label and/or image."""
 
     def __init__(self, master=None, **kw):
@@ -741,7 +741,7 @@ class Label(Widget):
         Widget.__init__(self, master, "ttk::label", kw)
 
 
-class Labelframe(Widget):
+klasse Labelframe(Widget):
     """Ttk Labelframe widget is a container used to group other widgets
     together. It has an optional label, which may be a plain text string
     or another widget."""
@@ -762,7 +762,7 @@ class Labelframe(Widget):
 LabelFrame = Labelframe # tkinter name compatibility
 
 
-class Menubutton(Widget):
+klasse Menubutton(Widget):
     """Ttk Menubutton widget displays a textual label and/or image, and
     displays a menu when pressed."""
 
@@ -781,7 +781,7 @@ class Menubutton(Widget):
         Widget.__init__(self, master, "ttk::menubutton", kw)
 
 
-class Notebook(Widget):
+klasse Notebook(Widget):
     """Ttk Notebook widget manages a collection of windows and displays
     a single one at a time. Each child window is associated with a tab,
     which the user may select to change the currently-displayed window."""
@@ -914,7 +914,7 @@ class Notebook(Widget):
         self.tk.call("ttk::notebook::enableTraversal", self._w)
 
 
-class Panedwindow(Widget, tkinter.PanedWindow):
+klasse Panedwindow(Widget, tkinter.PanedWindow):
     """Ttk Panedwindow widget displays a number of subwindows, stacked
     either vertically or horizontally."""
 
@@ -973,7 +973,7 @@ class Panedwindow(Widget, tkinter.PanedWindow):
 PanedWindow = Panedwindow # tkinter name compatibility
 
 
-class Progressbar(Widget):
+klasse Progressbar(Widget):
     """Ttk Progressbar widget shows the status of a long-running
     operation. They can operate in two modes: determinate mode shows the
     amount completed relative to the total amount of work to be done, and
@@ -1015,7 +1015,7 @@ class Progressbar(Widget):
         self.tk.call(self._w, "stop")
 
 
-class Radiobutton(Widget):
+klasse Radiobutton(Widget):
     """Ttk Radiobutton widgets are used in groups to show or change a
     set of mutually-exclusive options."""
 
@@ -1043,7 +1043,7 @@ class Radiobutton(Widget):
         return self.tk.call(self._w, "invoke")
 
 
-class Scale(Widget, tkinter.Scale):
+klasse Scale(Widget, tkinter.Scale):
     """Ttk Scale widget is typically used to control the numeric value of
     a linked variable that varies uniformly over some range."""
 
@@ -1083,7 +1083,7 @@ class Scale(Widget, tkinter.Scale):
         return self.tk.call(self._w, 'get', x, y)
 
 
-class Scrollbar(Widget, tkinter.Scrollbar):
+klasse Scrollbar(Widget, tkinter.Scrollbar):
     """Ttk Scrollbar controls the viewport of a scrollable widget."""
 
     def __init__(self, master=None, **kw):
@@ -1100,7 +1100,7 @@ class Scrollbar(Widget, tkinter.Scrollbar):
         Widget.__init__(self, master, "ttk::scrollbar", kw)
 
 
-class Separator(Widget):
+klasse Separator(Widget):
     """Ttk Separator widget displays a horizontal or vertical separator
     bar."""
 
@@ -1118,7 +1118,7 @@ class Separator(Widget):
         Widget.__init__(self, master, "ttk::separator", kw)
 
 
-class Sizegrip(Widget):
+klasse Sizegrip(Widget):
     """Ttk Sizegrip allows the user to resize the containing toplevel
     window by pressing and dragging the grip."""
 
@@ -1132,7 +1132,7 @@ class Sizegrip(Widget):
         Widget.__init__(self, master, "ttk::sizegrip", kw)
 
 
-class Spinbox(Entry):
+klasse Spinbox(Entry):
     """Ttk Spinbox is an Entry with increment and decrement arrows
 
     It is commonly used for number entry or to select from a list of
@@ -1159,7 +1159,7 @@ class Spinbox(Entry):
         self.tk.call(self._w, "set", value)
 
 
-class Treeview(Widget, tkinter.XView, tkinter.YView):
+klasse Treeview(Widget, tkinter.XView, tkinter.YView):
     """Ttk Treeview widget displays a hierarchical collection of items.
 
     Each item has a textual label, an optional image, and an optional list
@@ -1487,7 +1487,7 @@ class Treeview(Widget, tkinter.XView, tkinter.YView):
 
 # Extensions
 
-class LabeledScale(Frame):
+klasse LabeledScale(Frame):
     """A Ttk Scale widget with a Ttk Label widget indicating its
     current value.
 
@@ -1583,7 +1583,7 @@ class LabeledScale(Frame):
         self._variable.set(val)
 
 
-class OptionMenu(Menubutton):
+klasse OptionMenu(Menubutton):
     """Themed OptionMenu, based after tkinter's OptionMenu, which allows
     the user to select a value from a menu."""
 

@@ -31,7 +31,7 @@ from queue import Queue
 #
 #
 
-class DummyProcess(threading.Thread):
+klasse DummyProcess(threading.Thread):
 
     def __init__(self, group=None, target=None, name=None, args=(), kwargs={}):
         threading.Thread.__init__(self, group, target, name, args, kwargs)
@@ -79,7 +79,7 @@ def freeze_support():
 #
 #
 
-class Namespace(object):
+klasse Namespace(object):
     def __init__(self, /, **kwds):
         self.__dict__.update(kwds)
     def __repr__(self):
@@ -97,7 +97,7 @@ list = list
 def Array(typecode, sequence, lock=True):
     return array.array(typecode, sequence)
 
-class Value(object):
+klasse Value(object):
     def __init__(self, typecode, value, lock=True):
         self._typecode = typecode
         self._value = value

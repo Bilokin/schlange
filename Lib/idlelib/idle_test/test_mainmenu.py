@@ -6,7 +6,7 @@ import re
 import unittest
 
 
-class MainMenuTest(unittest.TestCase):
+klasse MainMenuTest(unittest.TestCase):
 
     def test_menudefs(self):
         actual = [item[0] for item in mainmenu.menudefs]

@@ -26,7 +26,7 @@ TESTFN2 = TESTFN + "2"
 # How much time in seconds can pass before we print a 'Still working' message.
 _PRINT_WORKING_MSG_INTERVAL = 60
 
-class TestsWithSourceFile(unittest.TestCase):
+klasse TestsWithSourceFile(unittest.TestCase):
     def setUp(self):
         # Create test data.
         line_gen = ("Test of zipfile line %d." % i for i in range(1000000))
@@ -87,7 +87,7 @@ class TestsWithSourceFile(unittest.TestCase):
         os_helper.unlink(TESTFN2)
 
 
-class OtherTests(unittest.TestCase):
+klasse OtherTests(unittest.TestCase):
     def testMoreThan64kFiles(self):
         # This test checks that more than 64k files can be added to an archive,
         # and that the resulting archive can be read properly by ZipFile

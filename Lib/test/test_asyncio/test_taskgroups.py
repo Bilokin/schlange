@@ -18,11 +18,11 @@ def tearDownModule():
     asyncio.events._set_event_loop_policy(None)
 
 
-class MyExc(Exception):
+klasse MyExc(Exception):
     pass
 
 
-class MyBaseExc(BaseException):
+klasse MyBaseExc(BaseException):
     pass
 
 
@@ -57,7 +57,7 @@ def disable_gc():
         set_gc_state(enabled=was_enabled)
 
 
-class BaseTestTaskGroup:
+klasse BaseTestTaskGroup:
 
     async def test_taskgroup_01(self):
 
@@ -778,7 +778,7 @@ class BaseTestTaskGroup:
 
     async def test_taskgroup_context_manager_exit_raises(self):
         # See https://github.com/python/cpython/issues/95289
-        class CustomException(Exception):
+        klasse CustomException(Exception):
             pass
 
         async def raise_exc():
@@ -932,7 +932,7 @@ class BaseTestTaskGroup:
         tg = asyncio.TaskGroup()
         exc = None
 
-        class _Done(Exception):
+        klasse _Done(Exception):
             pass
 
         try:
@@ -950,7 +950,7 @@ class BaseTestTaskGroup:
         tg = asyncio.TaskGroup()
         exc = None
 
-        class _Done(Exception):
+        klasse _Done(Exception):
             pass
 
         try:
@@ -968,7 +968,7 @@ class BaseTestTaskGroup:
         tg = asyncio.TaskGroup()
         exc = None
 
-        class _Done(Exception):
+        klasse _Done(Exception):
             pass
 
         async def coro_fn():
@@ -990,7 +990,7 @@ class BaseTestTaskGroup:
         tg = asyncio.TaskGroup()
         exc = None
 
-        class _Done(Exception):
+        klasse _Done(Exception):
             pass
 
         async def coro_fn():
@@ -1025,7 +1025,7 @@ class BaseTestTaskGroup:
 
     async def test_exception_refcycles_base_error(self):
         """Test that TaskGroup deletes self._base_error"""
-        class MyKeyboardInterrupt(KeyboardInterrupt):
+        klasse MyKeyboardInterrupt(KeyboardInterrupt):
             pass
 
         tg = asyncio.TaskGroup()
@@ -1056,7 +1056,7 @@ class BaseTestTaskGroup:
     async def test_cancels_task_if_created_during_creation(self):
         # regression test for gh-128550
         ran = False
-        class MyError(Exception):
+        klasse MyError(Exception):
             pass
 
         exc = None
@@ -1082,7 +1082,7 @@ class BaseTestTaskGroup:
 
 
     async def test_cancellation_does_not_leak_out_of_tg(self):
-        class MyError(Exception):
+        klasse MyError(Exception):
             pass
 
         async def throw_error():
@@ -1103,10 +1103,10 @@ class BaseTestTaskGroup:
         await asyncio.sleep(0)
 
 
-class TestTaskGroup(BaseTestTaskGroup, unittest.IsolatedAsyncioTestCase):
+klasse TestTaskGroup(BaseTestTaskGroup, unittest.IsolatedAsyncioTestCase):
     loop_factory = asyncio.EventLoop
 
-class TestEagerTaskTaskGroup(BaseTestTaskGroup, unittest.IsolatedAsyncioTestCase):
+klasse TestEagerTaskTaskGroup(BaseTestTaskGroup, unittest.IsolatedAsyncioTestCase):
     @staticmethod
     def loop_factory():
         loop = asyncio.EventLoop()

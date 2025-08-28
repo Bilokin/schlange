@@ -9,7 +9,7 @@ from email import utils
 from email import errors
 from email import _header_value_parser as parser
 
-class Address:
+klasse Address:
 
     def __init__(self, display_name='', username='', domain='', addr_spec=None):
         """Create an object representing a full email address.
@@ -101,7 +101,7 @@ class Address:
                 self.domain == other.domain)
 
 
-class Group:
+klasse Group:
 
     def __init__(self, display_name=None, addresses=None):
         """Create an object representing an address group.
@@ -153,9 +153,9 @@ class Group:
 
 # Header Classes #
 
-class BaseHeader(str):
+klasse BaseHeader(str):
 
-    """Base class for message headers.
+    """Base klasse for message headers.
 
     Implements generic behavior and provides tools for subclasses.
 
@@ -180,7 +180,7 @@ class BaseHeader(str):
     dictionary as its keyword arguments.  The method should use (usually by
     setting them as the value of similarly named attributes) and remove all the
     extra keys added by its parse method, and then use super to call its parent
-    class with the remaining arguments and keywords.
+    klasse with the remaining arguments and keywords.
 
     The subclass should also make sure that a 'max_count' attribute is defined
     that is either None or 1. XXX: need to better define this API.
@@ -257,7 +257,7 @@ def _reconstruct_header(cls_name, bases, value):
     return type(cls_name, bases, {})._reconstruct(value)
 
 
-class UnstructuredHeader:
+klasse UnstructuredHeader:
 
     max_count = None
     value_parser = staticmethod(parser.get_unstructured)
@@ -268,12 +268,12 @@ class UnstructuredHeader:
         kwds['decoded'] = str(kwds['parse_tree'])
 
 
-class UniqueUnstructuredHeader(UnstructuredHeader):
+klasse UniqueUnstructuredHeader(UnstructuredHeader):
 
     max_count = 1
 
 
-class DateHeader:
+klasse DateHeader:
 
     """Header whose value consists of a single timestamp.
 
@@ -319,12 +319,12 @@ class DateHeader:
         return self._datetime
 
 
-class UniqueDateHeader(DateHeader):
+klasse UniqueDateHeader(DateHeader):
 
     max_count = 1
 
 
-class AddressHeader:
+klasse AddressHeader:
 
     max_count = None
 
@@ -379,12 +379,12 @@ class AddressHeader:
         return self._addresses
 
 
-class UniqueAddressHeader(AddressHeader):
+klasse UniqueAddressHeader(AddressHeader):
 
     max_count = 1
 
 
-class SingleAddressHeader(AddressHeader):
+klasse SingleAddressHeader(AddressHeader):
 
     @property
     def address(self):
@@ -394,12 +394,12 @@ class SingleAddressHeader(AddressHeader):
         return self.addresses[0]
 
 
-class UniqueSingleAddressHeader(SingleAddressHeader):
+klasse UniqueSingleAddressHeader(SingleAddressHeader):
 
     max_count = 1
 
 
-class MIMEVersionHeader:
+klasse MIMEVersionHeader:
 
     max_count = 1
 
@@ -436,7 +436,7 @@ class MIMEVersionHeader:
         return self._version
 
 
-class ParameterizedMIMEHeader:
+klasse ParameterizedMIMEHeader:
 
     # Mixin that handles the params dict.  Must be subclassed and
     # a property value_parser for the specific header provided.
@@ -465,7 +465,7 @@ class ParameterizedMIMEHeader:
         return MappingProxyType(self._params)
 
 
-class ContentTypeHeader(ParameterizedMIMEHeader):
+klasse ContentTypeHeader(ParameterizedMIMEHeader):
 
     value_parser = staticmethod(parser.parse_content_type_header)
 
@@ -487,7 +487,7 @@ class ContentTypeHeader(ParameterizedMIMEHeader):
         return self.maintype + '/' + self.subtype
 
 
-class ContentDispositionHeader(ParameterizedMIMEHeader):
+klasse ContentDispositionHeader(ParameterizedMIMEHeader):
 
     value_parser = staticmethod(parser.parse_content_disposition_header)
 
@@ -501,7 +501,7 @@ class ContentDispositionHeader(ParameterizedMIMEHeader):
         return self._content_disposition
 
 
-class ContentTransferEncodingHeader:
+klasse ContentTransferEncodingHeader:
 
     max_count = 1
 
@@ -522,7 +522,7 @@ class ContentTransferEncodingHeader:
         return self._cte
 
 
-class MessageIDHeader:
+klasse MessageIDHeader:
 
     max_count = 1
     value_parser = staticmethod(parser.parse_message_id)
@@ -559,7 +559,7 @@ _default_header_map = {
     'message-id':                   MessageIDHeader,
     }
 
-class HeaderRegistry:
+klasse HeaderRegistry:
 
     """A header_factory and header registry."""
 
@@ -567,8 +567,8 @@ class HeaderRegistry:
                        use_default_map=True):
         """Create a header_factory that works with the Policy API.
 
-        base_class is the class that will be the last class in the created
-        header class's __bases__ list.  default_class is the class that will be
+        base_class is the klasse that will be the last klasse in the created
+        header class's __bases__ list.  default_class is the klasse that will be
         used if "name" (see __call__) does not appear in the registry.
         use_default_map controls whether or not the default mapping of names to
         specialized classes is copied in to the registry when the factory is
@@ -582,7 +582,7 @@ class HeaderRegistry:
             self.registry.update(_default_header_map)
 
     def map_to_type(self, name, cls):
-        """Register cls as the specialized class for handling "name" headers.
+        """Register cls as the specialized klasse for handling "name" headers.
 
         """
         self.registry[name.lower()] = cls
@@ -594,9 +594,9 @@ class HeaderRegistry:
     def __call__(self, name, value):
         """Create a header instance for header 'name' from 'value'.
 
-        Creates a header instance by creating a specialized class for parsing
+        Creates a header instance by creating a specialized klasse for parsing
         and representing the specified header by combining the factory
-        base_class with a specialized class from the registry or the
+        base_class with a specialized klasse from the registry or the
         default_class, and passing the name and value to the constructed
         class's constructor.
 

@@ -17,7 +17,7 @@ from libclinic.converter import (
 TypeSet = set[bltns.type[object]]
 
 
-class BaseUnsignedIntConverter(CConverter):
+klasse BaseUnsignedIntConverter(CConverter):
     bitwise = False
 
     def use_converter(self) -> None:
@@ -81,24 +81,24 @@ class BaseUnsignedIntConverter(CConverter):
             type=self.type)
 
 
-class uint8_converter(BaseUnsignedIntConverter):
+klasse uint8_converter(BaseUnsignedIntConverter):
     type = "uint8_t"
     converter = '_PyLong_UInt8_Converter'
 
-class uint16_converter(BaseUnsignedIntConverter):
+klasse uint16_converter(BaseUnsignedIntConverter):
     type = "uint16_t"
     converter = '_PyLong_UInt16_Converter'
 
-class uint32_converter(BaseUnsignedIntConverter):
+klasse uint32_converter(BaseUnsignedIntConverter):
     type = "uint32_t"
     converter = '_PyLong_UInt32_Converter'
 
-class uint64_converter(BaseUnsignedIntConverter):
+klasse uint64_converter(BaseUnsignedIntConverter):
     type = "uint64_t"
     converter = '_PyLong_UInt64_Converter'
 
 
-class bool_converter(CConverter):
+klasse bool_converter(CConverter):
     type = 'int'
     default_type = bool
     format_unit = 'p'
@@ -134,7 +134,7 @@ class bool_converter(CConverter):
         return super().parse_arg(argname, displayname, limited_capi=limited_capi)
 
 
-class defining_class_converter(CConverter):
+klasse defining_class_converter(CConverter):
     """
     A special-case converter:
     this is the default converter used for the defining class.
@@ -154,7 +154,7 @@ class defining_class_converter(CConverter):
         template_dict['defining_class_name'] = self.name
 
 
-class char_converter(CConverter):
+klasse char_converter(CConverter):
     type = 'char'
     default_type = (bytes, bytearray)
     format_unit = 'c'
@@ -205,7 +205,7 @@ class char_converter(CConverter):
 
 
 @add_legacy_c_converter('B', bitwise=True)
-class unsigned_char_converter(BaseUnsignedIntConverter):
+klasse unsigned_char_converter(BaseUnsignedIntConverter):
     type = 'unsigned char'
     default_type = int
     format_unit = 'b'
@@ -243,11 +243,11 @@ class unsigned_char_converter(BaseUnsignedIntConverter):
         return super().parse_arg(argname, displayname, limited_capi=limited_capi)
 
 
-class byte_converter(unsigned_char_converter):
+klasse byte_converter(unsigned_char_converter):
     pass
 
 
-class short_converter(CConverter):
+klasse short_converter(CConverter):
     type = 'short'
     default_type = int
     format_unit = 'h'
@@ -280,7 +280,7 @@ class short_converter(CConverter):
         return super().parse_arg(argname, displayname, limited_capi=limited_capi)
 
 
-class unsigned_short_converter(BaseUnsignedIntConverter):
+klasse unsigned_short_converter(BaseUnsignedIntConverter):
     type = 'unsigned short'
     default_type = int
     c_ignored_default = "0"
@@ -294,7 +294,7 @@ class unsigned_short_converter(BaseUnsignedIntConverter):
 
 
 @add_legacy_c_converter('C', accept={str})
-class int_converter(CConverter):
+klasse int_converter(CConverter):
     type = 'int'
     default_type = int
     format_unit = 'i'
@@ -341,7 +341,7 @@ class int_converter(CConverter):
         return super().parse_arg(argname, displayname, limited_capi=limited_capi)
 
 
-class unsigned_int_converter(BaseUnsignedIntConverter):
+klasse unsigned_int_converter(BaseUnsignedIntConverter):
     type = 'unsigned int'
     default_type = int
     c_ignored_default = "0"
@@ -354,7 +354,7 @@ class unsigned_int_converter(BaseUnsignedIntConverter):
             self.converter = '_PyLong_UnsignedInt_Converter'
 
 
-class long_converter(CConverter):
+klasse long_converter(CConverter):
     type = 'long'
     default_type = int
     format_unit = 'l'
@@ -372,7 +372,7 @@ class long_converter(CConverter):
         return super().parse_arg(argname, displayname, limited_capi=limited_capi)
 
 
-class unsigned_long_converter(BaseUnsignedIntConverter):
+klasse unsigned_long_converter(BaseUnsignedIntConverter):
     type = 'unsigned long'
     default_type = int
     c_ignored_default = "0"
@@ -385,7 +385,7 @@ class unsigned_long_converter(BaseUnsignedIntConverter):
             self.converter = '_PyLong_UnsignedLong_Converter'
 
 
-class long_long_converter(CConverter):
+klasse long_long_converter(CConverter):
     type = 'long long'
     default_type = int
     format_unit = 'L'
@@ -403,7 +403,7 @@ class long_long_converter(CConverter):
         return super().parse_arg(argname, displayname, limited_capi=limited_capi)
 
 
-class unsigned_long_long_converter(BaseUnsignedIntConverter):
+klasse unsigned_long_long_converter(BaseUnsignedIntConverter):
     type = 'unsigned long long'
     default_type = int
     c_ignored_default = "0"
@@ -416,7 +416,7 @@ class unsigned_long_long_converter(BaseUnsignedIntConverter):
             self.converter = '_PyLong_UnsignedLongLong_Converter'
 
 
-class Py_ssize_t_converter(CConverter):
+klasse Py_ssize_t_converter(CConverter):
     type = 'Py_ssize_t'
     c_ignored_default = "0"
 
@@ -478,7 +478,7 @@ class Py_ssize_t_converter(CConverter):
         )
 
 
-class slice_index_converter(CConverter):
+klasse slice_index_converter(CConverter):
     type = 'Py_ssize_t'
 
     def converter_init(self, *, accept: TypeSet = {int, NoneType}) -> None:
@@ -530,7 +530,7 @@ class slice_index_converter(CConverter):
                 argname=argname)
 
 
-class size_t_converter(BaseUnsignedIntConverter):
+klasse size_t_converter(BaseUnsignedIntConverter):
     type = 'size_t'
     converter = '_PyLong_Size_t_Converter'
     c_ignored_default = "0"
@@ -547,7 +547,7 @@ class size_t_converter(BaseUnsignedIntConverter):
         return super().parse_arg(argname, displayname, limited_capi=limited_capi)
 
 
-class fildes_converter(CConverter):
+klasse fildes_converter(CConverter):
     type = 'int'
     converter = '_PyLong_FileDescriptor_Converter'
 
@@ -565,7 +565,7 @@ class fildes_converter(CConverter):
             argname=argname)
 
 
-class float_converter(CConverter):
+klasse float_converter(CConverter):
     type = 'float'
     default_type = float
     format_unit = 'f'
@@ -598,7 +598,7 @@ class float_converter(CConverter):
         return super().parse_arg(argname, displayname, limited_capi=limited_capi)
 
 
-class double_converter(CConverter):
+klasse double_converter(CConverter):
     type = 'double'
     default_type = float
     format_unit = 'd'
@@ -631,7 +631,7 @@ class double_converter(CConverter):
         return super().parse_arg(argname, displayname, limited_capi=limited_capi)
 
 
-class Py_complex_converter(CConverter):
+klasse Py_complex_converter(CConverter):
     type = 'Py_complex'
     default_type = complex
     format_unit = 'D'
@@ -649,7 +649,7 @@ class Py_complex_converter(CConverter):
         return super().parse_arg(argname, displayname, limited_capi=limited_capi)
 
 
-class object_converter(CConverter):
+klasse object_converter(CConverter):
     type = 'PyObject *'
     format_unit = 'O'
 
@@ -680,11 +680,11 @@ class object_converter(CConverter):
 #  robuffer: any object supporting the buffer interface, but must not be writeable
 #
 
-class buffer:
+klasse buffer:
     pass
-class rwbuffer:
+klasse rwbuffer:
     pass
-class robuffer:
+klasse robuffer:
     pass
 
 
@@ -698,7 +698,7 @@ def str_converter_key(
 str_converter_argument_map: dict[StrConverterKeyType, str] = {}
 
 
-class str_converter(CConverter):
+klasse str_converter(CConverter):
     type = 'const char *'
     default_type = (str, Null, NoneType)
     format_unit = 's'
@@ -835,7 +835,7 @@ r('z#',                 zeroes=True, accept={robuffer, str, NoneType})
 del r
 
 
-class PyBytesObject_converter(CConverter):
+klasse PyBytesObject_converter(CConverter):
     type = 'PyBytesObject *'
     format_unit = 'S'
     # accept = {bytes}
@@ -855,7 +855,7 @@ class PyBytesObject_converter(CConverter):
         return super().parse_arg(argname, displayname, limited_capi=limited_capi)
 
 
-class PyByteArrayObject_converter(CConverter):
+klasse PyByteArrayObject_converter(CConverter):
     type = 'PyByteArrayObject *'
     format_unit = 'Y'
     # accept = {bytearray}
@@ -875,7 +875,7 @@ class PyByteArrayObject_converter(CConverter):
         return super().parse_arg(argname, displayname, limited_capi=limited_capi)
 
 
-class unicode_converter(CConverter):
+klasse unicode_converter(CConverter):
     type = 'PyObject *'
     default_type = (str, Null, NoneType)
     format_unit = 'U'
@@ -899,7 +899,7 @@ class unicode_converter(CConverter):
 @add_legacy_c_converter('u#', zeroes=True)
 @add_legacy_c_converter('Z', accept={str, NoneType})
 @add_legacy_c_converter('Z#', accept={str, NoneType}, zeroes=True)
-class Py_UNICODE_converter(CConverter):
+klasse Py_UNICODE_converter(CConverter):
     type = 'const wchar_t *'
     default_type = (str, Null, NoneType)
 
@@ -970,7 +970,7 @@ class Py_UNICODE_converter(CConverter):
 @add_legacy_c_converter('s*', accept={str, buffer})
 @add_legacy_c_converter('z*', accept={str, buffer, NoneType})
 @add_legacy_c_converter('w*', accept={rwbuffer})
-class Py_buffer_converter(CConverter):
+klasse Py_buffer_converter(CConverter):
     type = 'Py_buffer'
     format_unit = 'y*'
     impl_by_reference = True
@@ -1068,7 +1068,7 @@ def correct_name_for_self(
     raise AssertionError(f"Unhandled type of function f: {f.kind!r}")
 
 
-class self_converter(CConverter):
+klasse self_converter(CConverter):
     """
     A special-case converter:
     this is the default converter used for "self".
@@ -1187,7 +1187,7 @@ class self_converter(CConverter):
 
 # Converters for var-positional parameter.
 
-class VarPosCConverter(CConverter):
+klasse VarPosCConverter(CConverter):
     format_unit = ''
 
     def parse_arg(self, argname: str, displayname: str, *, limited_capi: bool) -> str | None:
@@ -1198,7 +1198,7 @@ class VarPosCConverter(CConverter):
         raise NotImplementedError
 
 
-class varpos_tuple_converter(VarPosCConverter):
+klasse varpos_tuple_converter(VarPosCConverter):
     type = 'PyObject *'
     format_unit = ''
     c_default = 'NULL'
@@ -1256,7 +1256,7 @@ class varpos_tuple_converter(VarPosCConverter):
                 return f"{paramname} = Py_NewRef(args);\n"
 
 
-class varpos_array_converter(VarPosCConverter):
+klasse varpos_array_converter(VarPosCConverter):
     type = 'PyObject * const *'
     length = True
     c_ignored_default = ''

@@ -16,7 +16,7 @@ from importlib.metadata import (
 )
 
 
-class APITests(
+klasse APITests(
     fixtures.EggInfoPkg,
     fixtures.EggInfoPkgPipInstalledNoToplevel,
     fixtures.EggInfoPkgPipInstalledNoModules,
@@ -277,7 +277,7 @@ class APITests(
         assert md['keywords'] == ['SAMPLE', 'PACKAGE']
 
 
-class LegacyDots(fixtures.DistInfoPkgWithDotLegacy, unittest.TestCase):
+klasse LegacyDots(fixtures.DistInfoPkgWithDotLegacy, unittest.TestCase):
     def test_name_normalization(self):
         names = 'pkg.dot', 'pkg_dot', 'pkg-dot', 'pkg..dot', 'Pkg.Dot'
         for name in names:
@@ -291,7 +291,7 @@ class LegacyDots(fixtures.DistInfoPkgWithDotLegacy, unittest.TestCase):
                 assert distribution(name).metadata['Name'] == 'pkg.lot'
 
 
-class OffSysPathTests(fixtures.DistInfoPkgOffPath, unittest.TestCase):
+klasse OffSysPathTests(fixtures.DistInfoPkgOffPath, unittest.TestCase):
     def test_find_distributions_specified_path(self):
         dists = Distribution.discover(path=[str(self.site_dir)])
         assert any(dist.metadata['Name'] == 'distinfo-pkg' for dist in dists)
@@ -308,7 +308,7 @@ class OffSysPathTests(fixtures.DistInfoPkgOffPath, unittest.TestCase):
         assert dist.version == '1.0.0'
 
 
-class InvalidateCache(unittest.TestCase):
+klasse InvalidateCache(unittest.TestCase):
     def test_invalidate_cache(self):
         # No externally observable behavior, but ensures test coverage...
         importlib.invalidate_caches()

@@ -23,7 +23,7 @@ __all__ = [
 # avoid 'import types' just for ModuleType
 ModuleType = type(sys)
 
-class _TempModule(object):
+klasse _TempModule(object):
     """Temporarily replace a module in sys.modules with an empty namespace"""
     def __init__(self, mod_name):
         self.mod_name = mod_name
@@ -46,7 +46,7 @@ class _TempModule(object):
             del sys.modules[self.mod_name]
         self._saved_module = []
 
-class _ModifiedArgv0(object):
+klasse _ModifiedArgv0(object):
     def __init__(self, value):
         self.value = value
         self._saved_value = self._sentinel = object()
@@ -163,7 +163,7 @@ def _get_module_details(mod_name, error=ImportError):
         raise error("No code object available for %s" % mod_name)
     return mod_name, spec, code
 
-class _Error(Exception):
+klasse _Error(Exception):
     """Error that _run_module_as_main() should report without a traceback"""
 
 # XXX ncoghlan: Should this be documented and made public?

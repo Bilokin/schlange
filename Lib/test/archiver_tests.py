@@ -6,7 +6,7 @@ import sys
 from test.support import swap_attr
 from test.support import os_helper
 
-class OverwriteTests:
+klasse OverwriteTests:
 
     def setUp(self):
         os.makedirs(self.testdir)

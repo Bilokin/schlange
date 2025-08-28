@@ -13,7 +13,7 @@ import codecs
 
 ### Codec APIs
 
-class Codec(codecs.Codec):
+klasse Codec(codecs.Codec):
 
     def encode(self,input,errors='strict'):
         raise UnicodeError("undefined encoding")
@@ -21,18 +21,18 @@ class Codec(codecs.Codec):
     def decode(self,input,errors='strict'):
         raise UnicodeError("undefined encoding")
 
-class IncrementalEncoder(codecs.IncrementalEncoder):
+klasse IncrementalEncoder(codecs.IncrementalEncoder):
     def encode(self, input, final=False):
         raise UnicodeError("undefined encoding")
 
-class IncrementalDecoder(codecs.IncrementalDecoder):
+klasse IncrementalDecoder(codecs.IncrementalDecoder):
     def decode(self, input, final=False):
         raise UnicodeError("undefined encoding")
 
-class StreamWriter(Codec,codecs.StreamWriter):
+klasse StreamWriter(Codec,codecs.StreamWriter):
     pass
 
-class StreamReader(Codec,codecs.StreamReader):
+klasse StreamReader(Codec,codecs.StreamReader):
     pass
 
 ### encodings module API

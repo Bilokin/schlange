@@ -8,7 +8,7 @@ from typing import Any, Dict, Iterator, List, Optional, TypeVar, Union, overload
 _T = TypeVar("_T")
 
 
-class PackageMetadata(Protocol):
+klasse PackageMetadata(Protocol):
     def __len__(self) -> int: ...  # pragma: no cover
 
     def __contains__(self, item: str) -> bool: ...  # pragma: no cover
@@ -44,7 +44,7 @@ class PackageMetadata(Protocol):
         """
 
 
-class SimplePath(Protocol):
+klasse SimplePath(Protocol):
     """
     A minimal subset of pathlib.Path required by Distribution.
     """

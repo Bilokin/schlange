@@ -26,7 +26,7 @@ def normalize(format):
     return re.sub(r"\s", "", format)
 
 
-class Test(unittest.TestCase):
+klasse Test(unittest.TestCase):
     def test_native_types(self):
         for tp, fmt, shape, itemtp in native_types:
             ob = tp()
@@ -76,47 +76,47 @@ class Test(unittest.TestCase):
 
 # define some structure classes
 
-class Point(Structure):
+klasse Point(Structure):
     _fields_ = [("x", c_long), ("y", c_long)]
 
-class PackedPoint(Structure):
+klasse PackedPoint(Structure):
     _pack_ = 2
     _layout_ = 'ms'
     _fields_ = [("x", c_long), ("y", c_long)]
 
-class PointMidPad(Structure):
+klasse PointMidPad(Structure):
     _fields_ = [("x", c_byte), ("y", c_uint)]
 
-class PackedPointMidPad(Structure):
+klasse PackedPointMidPad(Structure):
     _pack_ = 2
     _layout_ = 'ms'
     _fields_ = [("x", c_byte), ("y", c_uint64)]
 
-class PointEndPad(Structure):
+klasse PointEndPad(Structure):
     _fields_ = [("x", c_uint), ("y", c_byte)]
 
-class PackedPointEndPad(Structure):
+klasse PackedPointEndPad(Structure):
     _pack_ = 2
     _layout_ = 'ms'
     _fields_ = [("x", c_uint64), ("y", c_byte)]
 
-class Point2(Structure):
+klasse Point2(Structure):
     pass
 Point2._fields_ = [("x", c_long), ("y", c_long)]
 
-class EmptyStruct(Structure):
+klasse EmptyStruct(Structure):
     _fields_ = []
 
-class aUnion(Union):
+klasse aUnion(Union):
     _fields_ = [("a", c_int)]
 
-class StructWithArrays(Structure):
+klasse StructWithArrays(Structure):
     _fields_ = [("x", c_long * 3 * 2), ("y", Point * 4)]
 
-class Incomplete(Structure):
+klasse Incomplete(Structure):
     pass
 
-class Complete(Structure):
+klasse Complete(Structure):
     pass
 PComplete = POINTER(Complete)
 Complete._fields_ = [("a", c_long)]
@@ -232,10 +232,10 @@ native_types = [
     ]
 
 
-class BEPoint(BigEndianStructure):
+klasse BEPoint(BigEndianStructure):
     _fields_ = [("x", c_long), ("y", c_long)]
 
-class LEPoint(LittleEndianStructure):
+klasse LEPoint(LittleEndianStructure):
     _fields_ = [("x", c_long), ("y", c_long)]
 
 

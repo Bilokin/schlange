@@ -65,7 +65,7 @@ pyc_file = importlib.util.cache_from_source(TESTMOD + '.py')
 pyc_ext = '.pyc'
 
 
-class ImportHooksBaseTestCase(unittest.TestCase):
+klasse ImportHooksBaseTestCase(unittest.TestCase):
 
     def setUp(self):
         self.path = sys.path[:]
@@ -82,7 +82,7 @@ class ImportHooksBaseTestCase(unittest.TestCase):
         import_helper.modules_cleanup(*self.modules_before)
 
 
-class UncompressedZipImportTestCase(ImportHooksBaseTestCase):
+klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
 
     compression = ZIP_STORED
 
@@ -1008,11 +1008,11 @@ class UncompressedZipImportTestCase(ImportHooksBaseTestCase):
 
 
 @support.requires_zlib()
-class CompressedZipImportTestCase(UncompressedZipImportTestCase):
+klasse CompressedZipImportTestCase(UncompressedZipImportTestCase):
     compression = ZIP_DEFLATED
 
 
-class BadFileZipImportTestCase(unittest.TestCase):
+klasse BadFileZipImportTestCase(unittest.TestCase):
     def assertZipFailure(self, filename):
         self.assertRaises(zipimport.ZipImportError,
                           zipimport.zipimporter, filename)

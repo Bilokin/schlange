@@ -7,7 +7,7 @@ def funcattrs(**kwds):
         return func
     return decorate
 
-class MiscDecorators (object):
+klasse MiscDecorators (object):
     @staticmethod
     def author(name):
         def decorate(func):
@@ -17,7 +17,7 @@ class MiscDecorators (object):
 
 # -----------------------------------------------
 
-class DbcheckError (Exception):
+klasse DbcheckError (Exception):
     def __init__(self, exprstr, func, args, kwds):
         # A real version of this would set attributes here
         Exception.__init__(self, "dbcheck %r failed (func=%s args=%s kwds=%s)" %
@@ -68,10 +68,10 @@ def memoize(func):
 
 # -----------------------------------------------
 
-class TestDecorators(unittest.TestCase):
+klasse TestDecorators(unittest.TestCase):
 
     def test_single(self):
-        class C(object):
+        klasse C(object):
             @staticmethod
             def foo(): return 42
         self.assertEqual(C.foo(), 42)
@@ -206,7 +206,7 @@ class TestDecorators(unittest.TestCase):
             compile(f"@{expr}\ndef f(): pass", "test", "exec")
 
     def test_double(self):
-        class C(object):
+        klasse C(object):
             @funcattrs(abc=1, xyz="haha")
             @funcattrs(booh=42)
             def foo(self): return 42
@@ -253,7 +253,7 @@ class TestDecorators(unittest.TestCase):
                 return func
             return decorate
 
-        class NameLookupTracer (object):
+        klasse NameLookupTracer (object):
             def __init__(self, index):
                 self.index = index
 
@@ -292,24 +292,24 @@ class TestDecorators(unittest.TestCase):
         self.assertEqual(actions, expected_actions)
 
     def test_bound_function_inside_classmethod(self):
-        class A:
+        klasse A:
             def foo(self, cls):
                 return 'spam'
 
-        class B:
+        klasse B:
             bar = classmethod(A().foo)
 
         self.assertEqual(B.bar(), 'spam')
 
 
-class TestClassDecorators(unittest.TestCase):
+klasse TestClassDecorators(unittest.TestCase):
 
     def test_simple(self):
         def plain(x):
             x.extra = 'Hello'
             return x
         @plain
-        class C(object): pass
+        klasse C(object): pass
         self.assertEqual(C.extra, 'Hello')
 
     def test_double(self):
@@ -322,7 +322,7 @@ class TestClassDecorators(unittest.TestCase):
 
         @add_five
         @ten
-        class C(object): pass
+        klasse C(object): pass
         self.assertEqual(C.extra, 15)
 
     def test_order(self):
@@ -334,7 +334,7 @@ class TestClassDecorators(unittest.TestCase):
             return x
         @applied_second
         @applied_first
-        class C(object): pass
+        klasse C(object): pass
         self.assertEqual(C.extra, 'second')
 
 if __name__ == "__main__":

@@ -20,7 +20,7 @@ import contextlib
 import types
 
 
-class BadStr(str):
+klasse BadStr(str):
     def __eq__(self, other):
         return True
     def __hash__(self):
@@ -28,7 +28,7 @@ class BadStr(str):
         return str.__hash__(self) ^ 3
 
 
-class FunctionCalls(unittest.TestCase):
+klasse FunctionCalls(unittest.TestCase):
 
     def test_kwargs_order(self):
         # bpo-34320:  **kwargs should preserve order of passed OrderedDict
@@ -48,7 +48,7 @@ class FunctionCalls(unittest.TestCase):
         # recovering from failed calls:
         def f():
             pass
-        class C:
+        klasse C:
             def m(self):
                 pass
         callables = [f, C.m, [].__len__]
@@ -62,7 +62,7 @@ class FunctionCalls(unittest.TestCase):
 
 
 @cpython_only
-class CFunctionCallsErrorMessages(unittest.TestCase):
+klasse CFunctionCallsErrorMessages(unittest.TestCase):
 
     def test_varargs0(self):
         msg = r"__contains__\(\) takes exactly one argument \(0 given\)"
@@ -252,15 +252,15 @@ class CFunctionCallsErrorMessages(unittest.TestCase):
 
 
 @unittest.skipIf(_testcapi is None, "requires _testcapi")
-class TestCallingConventions(unittest.TestCase):
+klasse TestCallingConventions(unittest.TestCase):
     """Test calling using various C calling conventions (METH_*) from Python
 
     Subclasses test several kinds of functions (module-level, methods,
-    class methods static methods) using these attributes:
+    klasse methods static methods) using these attributes:
       obj: the object that contains tested functions (as attributes)
       expected_self: expected "self" argument to the C function
 
-    The base class tests module-level functions.
+    The base klasse tests module-level functions.
     """
 
     def setUp(self):
@@ -391,29 +391,29 @@ class TestCallingConventions(unittest.TestCase):
         )
 
 
-class TestCallingConventionsInstance(TestCallingConventions):
+klasse TestCallingConventionsInstance(TestCallingConventions):
     """Test calling instance methods using various calling conventions"""
 
     def setUp(self):
         self.obj = self.expected_self = _testcapi.MethInstance()
 
 
-class TestCallingConventionsClass(TestCallingConventions):
-    """Test calling class methods using various calling conventions"""
+klasse TestCallingConventionsClass(TestCallingConventions):
+    """Test calling klasse methods using various calling conventions"""
 
     def setUp(self):
         self.obj = self.expected_self = _testcapi.MethClass
 
 
-class TestCallingConventionsClassInstance(TestCallingConventions):
-    """Test calling class methods on instance"""
+klasse TestCallingConventionsClassInstance(TestCallingConventions):
+    """Test calling klasse methods on instance"""
 
     def setUp(self):
         self.obj = _testcapi.MethClass()
         self.expected_self = _testcapi.MethClass
 
 
-class TestCallingConventionsStatic(TestCallingConventions):
+klasse TestCallingConventionsStatic(TestCallingConventions):
     """Test calling static methods using various calling conventions"""
 
     def setUp(self):
@@ -429,7 +429,7 @@ def pyfunc_noarg():
     return "noarg"
 
 
-class PythonClass:
+klasse PythonClass:
     def method(self, arg1, arg2):
         return [arg1, arg2]
 
@@ -450,7 +450,7 @@ PYTHON_INSTANCE = PythonClass()
 NULL_OR_EMPTY = object()
 
 
-class FastCallTests(unittest.TestCase):
+klasse FastCallTests(unittest.TestCase):
     """Test calling using various callables from C
     """
 
@@ -464,7 +464,7 @@ class FastCallTests(unittest.TestCase):
         # Python function without argument
         (pyfunc_noarg, (), "noarg"),
 
-        # Python class methods
+        # Python klasse methods
         (PythonClass.class_method, (), "classmethod"),
         (PythonClass.static_method, (), "staticmethod"),
 
@@ -498,8 +498,8 @@ class FastCallTests(unittest.TestCase):
         for obj, expected_self in (
             (_testcapi, _testcapi),  # module-level function
             (_instance, _instance),  # bound method
-            (_testcapi.MethClass, _testcapi.MethClass),  # class method on class
-            (_testcapi.MethClass(), _testcapi.MethClass),  # class method on inst.
+            (_testcapi.MethClass, _testcapi.MethClass),  # klasse method on class
+            (_testcapi.MethClass(), _testcapi.MethClass),  # klasse method on inst.
             (_testcapi.MethStatic, None),  # static method
         ):
             CALLS_POSARGS.extend([
@@ -590,7 +590,7 @@ class FastCallTests(unittest.TestCase):
     def test_fastcall_clearing_dict(self):
         # Test bpo-36907: the point of the test is just checking that this
         # does not crash.
-        class IntWithDict:
+        klasse IntWithDict:
             __slots__ = ["kwargs"]
             def __init__(self, **kwargs):
                 self.kwargs = kwargs
@@ -620,7 +620,7 @@ def testfunction_kw(self, *, kw):
 
 
 @unittest.skipIf(_testcapi is None, "requires _testcapi")
-class TestPEP590(unittest.TestCase):
+klasse TestPEP590(unittest.TestCase):
 
     def test_method_descriptor_flag(self):
         import functools
@@ -637,7 +637,7 @@ class TestPEP590(unittest.TestCase):
         self.assertFalse(_testcapi.MethodDescriptorNopGet.__flags__ & Py_TPFLAGS_METHOD_DESCRIPTOR)
 
         # Mutable heap types should not inherit Py_TPFLAGS_METHOD_DESCRIPTOR
-        class MethodDescriptorHeap(_testcapi.MethodDescriptorBase):
+        klasse MethodDescriptorHeap(_testcapi.MethodDescriptorBase):
             pass
         self.assertFalse(MethodDescriptorHeap.__flags__ & Py_TPFLAGS_METHOD_DESCRIPTOR)
 
@@ -649,7 +649,7 @@ class TestPEP590(unittest.TestCase):
 
         # Mutable heap types should inherit Py_TPFLAGS_HAVE_VECTORCALL,
         # but should lose it when __call__ is overridden
-        class MethodDescriptorHeap(_testcapi.MethodDescriptorBase):
+        klasse MethodDescriptorHeap(_testcapi.MethodDescriptorBase):
             pass
         self.assertTrue(MethodDescriptorHeap.__flags__ & Py_TPFLAGS_HAVE_VECTORCALL)
         MethodDescriptorHeap.__call__ = print
@@ -657,7 +657,7 @@ class TestPEP590(unittest.TestCase):
 
         # Mutable heap types should not inherit Py_TPFLAGS_HAVE_VECTORCALL if
         # they define __call__ directly
-        class MethodDescriptorHeap(_testcapi.MethodDescriptorBase):
+        klasse MethodDescriptorHeap(_testcapi.MethodDescriptorBase):
             def __call__(self):
                 pass
         self.assertFalse(MethodDescriptorHeap.__flags__ & Py_TPFLAGS_HAVE_VECTORCALL)
@@ -685,7 +685,7 @@ class TestPEP590(unittest.TestCase):
     def test_vectorcall_override_with_subclass(self):
         """Setting __call__ on a superclass should disable vectorcall"""
         SuperType = _testcapi.make_vectorcall_class()
-        class DerivedType(SuperType):
+        klasse DerivedType(SuperType):
             pass
 
         instance = DerivedType()
@@ -762,18 +762,18 @@ class TestPEP590(unittest.TestCase):
         # Add derived classes (which do not support vectorcall directly,
         # but do support all other ways of calling).
 
-        class MethodDescriptorHeap(_testcapi.MethodDescriptorBase):
+        klasse MethodDescriptorHeap(_testcapi.MethodDescriptorBase):
             pass
 
-        class MethodDescriptorOverridden(_testcapi.MethodDescriptorBase):
+        klasse MethodDescriptorOverridden(_testcapi.MethodDescriptorBase):
             def __call__(self, n):
                 return 'new'
 
-        class SuperBase:
+        klasse SuperBase:
             def __call__(self, *args):
                 return super().__call__(*args)
 
-        class MethodDescriptorSuper(SuperBase, _testcapi.MethodDescriptorBase):
+        klasse MethodDescriptorSuper(SuperBase, _testcapi.MethodDescriptorBase):
             def __call__(self, *args):
                 return super().__call__(*args)
 
@@ -815,7 +815,7 @@ class TestPEP590(unittest.TestCase):
         from _testcapi import function_setvectorcall
         _testinternalcapi = import_helper.import_module("_testinternalcapi")
 
-        class X:
+        klasse X:
             def __getattribute__(self, attr):
                 return attr
 
@@ -832,7 +832,7 @@ class TestPEP590(unittest.TestCase):
         from _testcapi import function_setvectorcall
         _testinternalcapi = import_helper.import_module("_testinternalcapi")
 
-        class X:
+        klasse X:
             def __getattribute__(self, attr):
                 return attr
 
@@ -884,7 +884,7 @@ class TestPEP590(unittest.TestCase):
         args_captured = []
         kwargs_captured = []
 
-        class TestInstance:
+        klasse TestInstance:
             def f(self, *args, **kwargs):
                 args_captured.append(args)
                 kwargs_captured.append(kwargs)
@@ -894,7 +894,7 @@ class TestPEP590(unittest.TestCase):
         self.assertEqual(args_captured, [("foo",)])
         self.assertEqual(kwargs_captured, [{"baz": "bar"}])
 
-class A:
+klasse A:
     def method_two_args(self, x, y):
         pass
 
@@ -907,7 +907,7 @@ class A:
         pass
 
 @cpython_only
-class TestErrorMessagesUseQualifiedName(unittest.TestCase):
+klasse TestErrorMessagesUseQualifiedName(unittest.TestCase):
 
     @contextlib.contextmanager
     def check_raises_type_error(self, message):
@@ -941,7 +941,7 @@ class TestErrorMessagesUseQualifiedName(unittest.TestCase):
             A().method_two_args("x", "y", x="oops")
 
 @cpython_only
-class TestErrorMessagesSuggestions(unittest.TestCase):
+klasse TestErrorMessagesSuggestions(unittest.TestCase):
     @contextlib.contextmanager
     def check_suggestion_includes(self, message):
         with self.assertRaises(TypeError) as cm:
@@ -1035,7 +1035,7 @@ class TestErrorMessagesSuggestions(unittest.TestCase):
             ImportError(blech=1, namez="oops")
 
 @cpython_only
-class TestRecursion(unittest.TestCase):
+klasse TestRecursion(unittest.TestCase):
 
     @skip_on_s390x
     @unittest.skipIf(is_wasi and Py_DEBUG, "requires deep stack")
@@ -1083,7 +1083,7 @@ class TestRecursion(unittest.TestCase):
             recurse_kw()
 
 
-class TestFunctionWithManyArgs(unittest.TestCase):
+klasse TestFunctionWithManyArgs(unittest.TestCase):
     def test_function_with_many_args(self):
         for N in (10, 500, 1000):
             with self.subTest(N=N):
@@ -1095,7 +1095,7 @@ class TestFunctionWithManyArgs(unittest.TestCase):
 
 
 @unittest.skipIf(_testcapi is None, 'need _testcapi')
-class TestCAPI(unittest.TestCase):
+klasse TestCAPI(unittest.TestCase):
     def test_cfunction_call(self):
         def func(*args, **kwargs):
             return (args, kwargs)

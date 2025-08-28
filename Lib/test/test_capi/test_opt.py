@@ -50,7 +50,7 @@ def get_opnames(ex):
 @requires_specialization
 @unittest.skipIf(Py_GIL_DISABLED, "optimizer not yet supported in free-threaded builds")
 @requires_jit_enabled
-class TestExecutorInvalidation(unittest.TestCase):
+klasse TestExecutorInvalidation(unittest.TestCase):
 
     def test_invalidate_object(self):
         # Generate a new set of functions at each call
@@ -120,7 +120,7 @@ class TestExecutorInvalidation(unittest.TestCase):
 @unittest.skipIf(Py_GIL_DISABLED, "optimizer not yet supported in free-threaded builds")
 @requires_jit_enabled
 @unittest.skipIf(os.getenv("PYTHON_UOPS_OPTIMIZE") == "0", "Needs uop optimizer to run.")
-class TestUops(unittest.TestCase):
+klasse TestUops(unittest.TestCase):
 
     def test_basic_loop(self):
         def testfunc(x):
@@ -392,7 +392,7 @@ class TestUops(unittest.TestCase):
         self.assertIn("_GUARD_IS_FALSE_POP", uops)
 
     def test_for_iter_tier_two(self):
-        class MyIter:
+        klasse MyIter:
             def __init__(self, n):
                 self.n = n
             def __iter__(self):
@@ -450,7 +450,7 @@ class TestUops(unittest.TestCase):
 @unittest.skipIf(Py_GIL_DISABLED, "optimizer not yet supported in free-threaded builds")
 @requires_jit_enabled
 @unittest.skipIf(os.getenv("PYTHON_UOPS_OPTIMIZE") == "0", "Needs uop optimizer to run.")
-class TestUopsOptimization(unittest.TestCase):
+klasse TestUopsOptimization(unittest.TestCase):
 
     def _run_with_optimizer(self, testfunc, arg):
         res = testfunc(arg)
@@ -1231,7 +1231,7 @@ class TestUopsOptimization(unittest.TestCase):
                 x += a.attr
             return x
 
-        class Foo:
+        klasse Foo:
             attr = 1
 
         res, ex = self._run_with_optimizer(thing, Foo())
@@ -1257,7 +1257,7 @@ class TestUopsOptimization(unittest.TestCase):
                 x += a.attr
             return x
 
-        class Foo:
+        klasse Foo:
             attr = 1
 
         res, ex = self._run_with_optimizer(thing, Foo())
@@ -1281,10 +1281,10 @@ class TestUopsOptimization(unittest.TestCase):
                 x += a.attr
             return x
 
-        class Foo:
+        klasse Foo:
             attr = 1
 
-        class Bar:
+        klasse Bar:
             pass
 
         res, ex = self._run_with_optimizer(thing, Foo())
@@ -1308,7 +1308,7 @@ class TestUopsOptimization(unittest.TestCase):
                 x += a.attr
             return x
 
-        class Foo:
+        klasse Foo:
             attr = 1
         res, ex = self._run_with_optimizer(thing, Foo())
         opnames = list(iter_opnames(ex))
@@ -1332,7 +1332,7 @@ class TestUopsOptimization(unittest.TestCase):
                 x += a.attr
             return x
 
-        class Foo:
+        klasse Foo:
             attr = 1
 
         res, ex = self._run_with_optimizer(thing, Foo())
@@ -1350,7 +1350,7 @@ class TestUopsOptimization(unittest.TestCase):
 
         # Minimized from mdp.py benchmark
 
-        class A:
+        klasse A:
             def __init__(self):
                 self.attr = {}
 
@@ -1469,7 +1469,7 @@ class TestUopsOptimization(unittest.TestCase):
         self.assertNotIn("_GUARD_TOS_INT", uops)
 
     def test_decref_escapes(self):
-        class Convert9999ToNone:
+        klasse Convert9999ToNone:
             def __del__(self):
                 ns = sys._getframe(1).f_locals
                 if ns["i"] == _testinternalcapi.TIER2_THRESHOLD:
@@ -2026,7 +2026,7 @@ class TestUopsOptimization(unittest.TestCase):
 
     def test_call_len_known_length(self):
         def testfunc(n):
-            class C:
+            klasse C:
                 t = tuple(range(300))
 
             x = 0
@@ -2247,11 +2247,11 @@ class TestUopsOptimization(unittest.TestCase):
         self.assertIn("_GUARD_IS_TRUE_POP", uops)
 
     def test_call_isinstance_metaclass(self):
-        class EvenNumberMeta(type):
+        klasse EvenNumberMeta(type):
             def __instancecheck__(self, number):
                 return number % 2 == 0
 
-        class EvenNumber(metaclass=EvenNumberMeta):
+        klasse EvenNumber(metaclass=EvenNumberMeta):
             pass
 
         def testfunc(n):
@@ -2272,7 +2272,7 @@ class TestUopsOptimization(unittest.TestCase):
         self.assertIn("_GUARD_IS_TRUE_POP", uops)
 
     def test_set_type_version_sets_type(self):
-        class C:
+        klasse C:
             A = 1
 
         def testfunc(n):
@@ -2304,16 +2304,16 @@ class TestUopsOptimization(unittest.TestCase):
         self.assertIn("_LOAD_CONST_INLINE_BORROW", uops)
 
     def test_cached_attributes(self):
-        class C:
+        klasse C:
             A = 1
             def m(self):
                 return 1
-        class D:
+        klasse D:
             __slots__ = ()
             A = 1
             def m(self):
                 return 1
-        class E(Exception):
+        klasse E(Exception):
             def m(self):
                 return 1
         def f(n):
@@ -2505,7 +2505,7 @@ class TestUopsOptimization(unittest.TestCase):
 def global_identity(x):
     return x
 
-class TestObject:
+klasse TestObject:
     def test(self, *args, **kwargs):
         return args[0]
 

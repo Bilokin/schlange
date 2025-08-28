@@ -9,7 +9,7 @@ import unittest
 from importlib.util import cache_from_source
 from test.support.os_helper import create_empty_file
 
-class TestImport(unittest.TestCase):
+klasse TestImport(unittest.TestCase):
 
     def __init__(self, *args, **kw):
         self.package_name = 'PACKAGE_'

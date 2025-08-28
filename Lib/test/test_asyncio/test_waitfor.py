@@ -14,7 +14,7 @@ def tearDownModule():
 _EPSILON = 0.0001
 
 
-class SlowTask:
+klasse SlowTask:
     """ Task will run for this defined time, ignoring cancel requests """
     TASK_TIMEOUT = 0.2
 
@@ -37,7 +37,7 @@ class SlowTask:
         self.exited = True
 
 
-class AsyncioWaitForTest(unittest.IsolatedAsyncioTestCase):
+klasse AsyncioWaitForTest(unittest.IsolatedAsyncioTestCase):
 
     async def test_asyncio_wait_for_cancelled(self):
         t = SlowTask()
@@ -206,7 +206,7 @@ class AsyncioWaitForTest(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(type(chained), asyncio.CancelledError)
 
     async def test_wait_for_reraises_exception_during_cancellation(self):
-        class FooException(Exception):
+        klasse FooException(Exception):
             pass
 
         async def foo():
@@ -293,7 +293,7 @@ class AsyncioWaitForTest(unittest.IsolatedAsyncioTestCase):
         self.assertFalse(reached_end)
 
 
-class WaitForShieldTests(unittest.IsolatedAsyncioTestCase):
+klasse WaitForShieldTests(unittest.IsolatedAsyncioTestCase):
 
     async def test_zero_timeout(self):
         # `asyncio.shield` creates a new task which wraps the passed in

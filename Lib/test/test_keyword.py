@@ -2,7 +2,7 @@ import keyword
 import unittest
 
 
-class Test_iskeyword(unittest.TestCase):
+klasse Test_iskeyword(unittest.TestCase):
     def test_true_is_a_keyword(self):
         self.assertTrue(keyword.iskeyword('True'))
 

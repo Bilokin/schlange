@@ -30,7 +30,7 @@
             Name of the function being currently traced.
         eargs:
             A tuple:
-            * On an 'exception' event the tuple holds a class object, the
+            * On an 'exception' event the tuple holds a klasse object, the
               current exception must be an instance of this class.
             * On a 'line' event, the tuple holds a dictionary and a list. The
               dictionary maps each breakpoint number that has been hit on this
@@ -62,10 +62,10 @@ from test.support import os_helper
 from test.support import patch_list
 
 
-class BdbException(Exception): pass
-class BdbError(BdbException): """Error raised by the Bdb instance."""
-class BdbSyntaxError(BdbException): """Syntax error in the test case."""
-class BdbNotExpectedError(BdbException): """Unexpected result."""
+klasse BdbException(Exception): pass
+klasse BdbError(BdbException): """Error raised by the Bdb instance."""
+klasse BdbSyntaxError(BdbException): """Syntax error in the test case."""
+klasse BdbNotExpectedError(BdbException): """Unexpected result."""
 
 # When 'dry_run' is set to true, expect tuples are ignored and the actual
 # state of the tracer is printed after running each set_*() method of the test
@@ -97,7 +97,7 @@ def info_breakpoints():
         info += '\n'
     return info
 
-class Bdb(_bdb.Bdb):
+klasse Bdb(_bdb.Bdb):
     """Extend Bdb to enhance test coverage."""
 
     def trace_dispatch(self, frame, event, arg):
@@ -161,7 +161,7 @@ class Bdb(_bdb.Bdb):
         self.index += 1
         self.frame = self.stack[self.index][0]
 
-class Tracer(Bdb):
+klasse Tracer(Bdb):
     """A tracer for testing the bdb module."""
 
     def __init__(self, expect_set, skip=None, dry_run=False, test_case=None):
@@ -414,7 +414,7 @@ class Tracer(Bdb):
             raise BdbSyntaxError('"%s" is an invalid set_tuple' %
                                  self.set_tuple)
 
-class TracerRun():
+klasse TracerRun():
     """Provide a context for running a Tracer instance with a test case."""
 
     def __init__(self, test_case, skip=None):
@@ -425,7 +425,7 @@ class TracerRun():
         self._original_tracer = None
 
     def __enter__(self):
-        # test_pdb does not reset Breakpoint class attributes on exit :-(
+        # test_pdb does not reset Breakpoint klasse attributes on exit :-(
         reset_Breakpoint()
         self._original_tracer = sys.gettrace()
         return self.tracer
@@ -577,8 +577,8 @@ def tfunc_first():
 def tfunc_second():
     lno = 2
 
-class BaseTestCase(unittest.TestCase):
-    """Base class for all tests."""
+klasse BaseTestCase(unittest.TestCase):
+    """Base klasse for all tests."""
 
     dry_run = dry_run
 
@@ -587,7 +587,7 @@ class BaseTestCase(unittest.TestCase):
         # error message and traceback.
         raise self.failureException(msg) from None
 
-class StateTestCase(BaseTestCase):
+klasse StateTestCase(BaseTestCase):
     """Test the step, next, return, until and quit 'set_' methods."""
 
     def test_step(self):
@@ -779,7 +779,7 @@ class StateTestCase(BaseTestCase):
         with TracerRun(self) as tracer:
             tracer.runcall(tfunc_main)
 
-class BreakpointTestCase(BaseTestCase):
+klasse BreakpointTestCase(BaseTestCase):
     """Test the breakpoint set method."""
 
     def test_bp_on_non_existent_module(self):
@@ -1015,7 +1015,7 @@ class BreakpointTestCase(BaseTestCase):
         self.assertEqual(db5.get_all_breaks(), {fname: [6]})
 
 
-class RunTestCase(BaseTestCase):
+klasse RunTestCase(BaseTestCase):
     """Test run, runeval and set_trace."""
 
     def test_run_step(self):
@@ -1050,7 +1050,7 @@ class RunTestCase(BaseTestCase):
             with TracerRun(self) as tracer:
                 tracer.runeval('test_module_for_bdb.main()', ns, ns)
 
-class IssuesTestCase(BaseTestCase):
+klasse IssuesTestCase(BaseTestCase):
     """Test fixed bdb issues."""
 
     def test_step_at_return_with_no_trace_in_caller(self):
@@ -1231,7 +1231,7 @@ class IssuesTestCase(BaseTestCase):
             tracer.run(compile(textwrap.dedent(code), '<string>', 'exec'))
 
 
-class TestRegressions(unittest.TestCase):
+klasse TestRegressions(unittest.TestCase):
     def test_format_stack_entry_no_lineno(self):
         # See gh-101517
         self.assertIn('Warning: lineno is None',

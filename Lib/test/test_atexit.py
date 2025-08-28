@@ -6,13 +6,13 @@ from test import support
 from test.support import script_helper
 from test.support import threading_helper
 
-class GeneralTest(unittest.TestCase):
+klasse GeneralTest(unittest.TestCase):
     def test_general(self):
         # Run _test_atexit.py in a subprocess since it calls atexit._clear()
         script = support.findfile("_test_atexit.py")
         script_helper.run_test_script(script)
 
-class FunctionalTest(unittest.TestCase):
+klasse FunctionalTest(unittest.TestCase):
     def test_shutdown(self):
         # Actually test the shutdown mechanism in a subprocess
         code = textwrap.dedent("""
@@ -81,7 +81,7 @@ class FunctionalTest(unittest.TestCase):
 
 
 @support.cpython_only
-class SubinterpreterTest(unittest.TestCase):
+klasse SubinterpreterTest(unittest.TestCase):
 
     def test_callbacks_leak(self):
         # This test shows a leak in refleak mode if atexit doesn't

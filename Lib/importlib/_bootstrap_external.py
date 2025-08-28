@@ -17,7 +17,7 @@ work. One should use importlib as the public-facing version of this module.
 
 # When editing this code be aware that code executed at import time CANNOT
 # reference any injected objects! This includes not only global code but also
-# anything specified at the class level.
+# anything specified at the klasse level.
 
 # Module injected manually by _set_bootstrap_module()
 _bootstrap = None
@@ -410,7 +410,7 @@ def _check_name(method):
                                 (self.name, name), name=name)
         return method(self, name, *args, **kwargs)
 
-    # FIXME: @_check_name is used to define class methods before the
+    # FIXME: @_check_name is used to define klasse methods before the
     # _bootstrap module is set by _set_bootstrap_module().
     if _bootstrap is not None:
         _wrap = _bootstrap._wrap
@@ -681,7 +681,7 @@ def _bless_my_loader(module_globals):
 
 # Loaders #####################################################################
 
-class WindowsRegistryFinder:
+klasse WindowsRegistryFinder:
 
     """Meta path finder for modules declared in the Windows registry."""
 
@@ -738,9 +738,9 @@ class WindowsRegistryFinder:
                 return spec
 
 
-class _LoaderBasics:
+klasse _LoaderBasics:
 
-    """Base class of common code needed by both SourceLoader and
+    """Base klasse of common code needed by both SourceLoader and
     SourcelessFileLoader."""
 
     def is_package(self, fullname):
@@ -768,7 +768,7 @@ class _LoaderBasics:
         return _bootstrap._load_module_shim(self, fullname)
 
 
-class SourceLoader(_LoaderBasics):
+klasse SourceLoader(_LoaderBasics):
 
     def path_mtime(self, path):
         """Optional method that returns the modification time (an int) for the
@@ -913,9 +913,9 @@ class SourceLoader(_LoaderBasics):
         return code_object
 
 
-class FileLoader:
+klasse FileLoader:
 
-    """Base file loader class which implements the loader protocol methods that
+    """Base file loader klasse which implements the loader protocol methods that
     require file system usage."""
 
     def __init__(self, fullname, path):
@@ -963,7 +963,7 @@ class FileLoader:
         return FileReader(self)
 
 
-class SourceFileLoader(FileLoader, SourceLoader):
+klasse SourceFileLoader(FileLoader, SourceLoader):
 
     """Concrete implementation of SourceLoader using the file system."""
 
@@ -1008,7 +1008,7 @@ class SourceFileLoader(FileLoader, SourceLoader):
                                         exc)
 
 
-class SourcelessFileLoader(FileLoader, _LoaderBasics):
+klasse SourcelessFileLoader(FileLoader, _LoaderBasics):
 
     """Loader which handles sourceless file imports."""
 
@@ -1033,7 +1033,7 @@ class SourcelessFileLoader(FileLoader, _LoaderBasics):
         return None
 
 
-class ExtensionFileLoader(FileLoader, _LoaderBasics):
+klasse ExtensionFileLoader(FileLoader, _LoaderBasics):
 
     """Loader for extension modules.
 
@@ -1086,7 +1086,7 @@ class ExtensionFileLoader(FileLoader, _LoaderBasics):
         return self.path
 
 
-class _NamespacePath:
+klasse _NamespacePath:
     """Represents a namespace package's path.  It uses the module name
     to find its parent module, and from there it looks up the parent's
     __path__.  When this changes, the module's own path is recomputed,
@@ -1154,10 +1154,10 @@ class _NamespacePath:
         self._path.append(item)
 
 
-# This class is actually exposed publicly in a namespace package's __loader__
+# This klasse is actually exposed publicly in a namespace package's __loader__
 # attribute, so it should be available through a non-private name.
 # https://github.com/python/cpython/issues/92054
-class NamespaceLoader:
+klasse NamespaceLoader:
     def __init__(self, name, path, path_finder):
         self._path = _NamespacePath(name, path, path_finder)
 
@@ -1199,7 +1199,7 @@ _NamespaceLoader = NamespaceLoader
 
 # Finders #####################################################################
 
-class PathFinder:
+klasse PathFinder:
 
     """Meta path finder for sys.path and package __path__ attributes."""
 
@@ -1323,7 +1323,7 @@ class PathFinder:
         return MetadataPathFinder.find_distributions(*args, **kwargs)
 
 
-class FileFinder:
+klasse FileFinder:
 
     """File-based finder.
 
@@ -1442,7 +1442,7 @@ class FileFinder:
 
     @classmethod
     def path_hook(cls, *loader_details):
-        """A class method which returns a closure to use on sys.path_hook
+        """A klasse method which returns a closure to use on sys.path_hook
         which will return an instance using the specified loaders and the path
         called on the closure.
 
@@ -1462,7 +1462,7 @@ class FileFinder:
         return f'FileFinder({self.path!r})'
 
 
-class AppleFrameworkLoader(ExtensionFileLoader):
+klasse AppleFrameworkLoader(ExtensionFileLoader):
     """A loader for modules that have been packaged as frameworks for
     compatibility with Apple's iOS App Store policies.
     """

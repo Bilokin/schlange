@@ -33,7 +33,7 @@ from unittest import mock
 py = os.path.basename(sys.executable)
 
 
-class StdIOBuffer(io.TextIOWrapper):
+klasse StdIOBuffer(io.TextIOWrapper):
     '''Replacement for writable io.StringIO that behaves more like real file
 
     Unlike StringIO, provides a buffer attribute that holds the underlying
@@ -51,7 +51,7 @@ class StdIOBuffer(io.TextIOWrapper):
         return self.buffer.raw.getvalue().decode('utf-8')
 
 
-class StdStreamTest(unittest.TestCase):
+klasse StdStreamTest(unittest.TestCase):
 
     def test_skip_invalid_stderr(self):
         parser = argparse.ArgumentParser()
@@ -80,7 +80,7 @@ class StdStreamTest(unittest.TestCase):
                 self.assertRegex(mocked_stderr.getvalue(), r'usage:')
 
 
-class TestCase(unittest.TestCase):
+klasse TestCase(unittest.TestCase):
 
     def setUp(self):
         # The tests assume that line wrapping occurs at 80 columns, but this
@@ -91,7 +91,7 @@ class TestCase(unittest.TestCase):
 
 
 @os_helper.skip_unless_working_chmod
-class TempDirMixin(object):
+klasse TempDirMixin(object):
 
     def setUp(self):
         self.temp_dir = tempfile.mkdtemp()
@@ -114,14 +114,14 @@ class TempDirMixin(object):
     def create_readonly_file(self, filename):
         os.chmod(self.create_writable_file(filename), stat.S_IREAD)
 
-class Sig(object):
+klasse Sig(object):
 
     def __init__(self, *args, **kwargs):
         self.args = args
         self.kwargs = kwargs
 
 
-class NS(object):
+klasse NS(object):
 
     def __init__(self, **kwargs):
         self.__dict__.update(kwargs)
@@ -135,7 +135,7 @@ class NS(object):
         return vars(self) == vars(other)
 
 
-class ArgumentParserError(Exception):
+klasse ArgumentParserError(Exception):
 
     def __init__(self, message, stdout=None, stderr=None, error_code=None):
         Exception.__init__(self, message, stdout, stderr)
@@ -183,7 +183,7 @@ def stderr_to_parser_error(parse_args, *args, **kwargs):
         sys.stderr = old_stderr
 
 
-class ErrorRaisingArgumentParser(argparse.ArgumentParser):
+klasse ErrorRaisingArgumentParser(argparse.ArgumentParser):
 
     def parse_args(self, *args, **kwargs):
         parse_args = super(ErrorRaisingArgumentParser, self).parse_args
@@ -198,8 +198,8 @@ class ErrorRaisingArgumentParser(argparse.ArgumentParser):
         return stderr_to_parser_error(error, *args, **kwargs)
 
 
-class ParserTesterMetaclass(type):
-    """Adds parser tests using the class attributes.
+klasse ParserTesterMetaclass(type):
+    """Adds parser tests using the klasse attributes.
 
     Classes of this type should specify the following attributes:
 
@@ -260,9 +260,9 @@ class ParserTesterMetaclass(type):
             finally:
                 sys.argv = old_sys_argv
 
-        # class that holds the combination of one optional argument
+        # klasse that holds the combination of one optional argument
         # addition method and one arg parsing method
-        class AddTests(object):
+        klasse AddTests(object):
 
             def __init__(self, tester_cls, add_arguments, parse_args):
                 self._add_arguments = add_arguments
@@ -320,7 +320,7 @@ ParserTestCase = ParserTesterMetaclass('ParserTestCase', bases, {})
 # Optionals tests
 # ===============
 
-class TestOptionalsSingleDash(ParserTestCase):
+klasse TestOptionalsSingleDash(ParserTestCase):
     """Test an Optional with a single-dash option string"""
 
     argument_signatures = [Sig('-x')]
@@ -334,7 +334,7 @@ class TestOptionalsSingleDash(ParserTestCase):
     ]
 
 
-class TestOptionalsSingleDashCombined(ParserTestCase):
+klasse TestOptionalsSingleDashCombined(ParserTestCase):
     """Test an Optional with a single-dash option string"""
 
     argument_signatures = [
@@ -360,7 +360,7 @@ class TestOptionalsSingleDashCombined(ParserTestCase):
     ]
 
 
-class TestOptionalsSingleDashLong(ParserTestCase):
+klasse TestOptionalsSingleDashLong(ParserTestCase):
     """Test an Optional with a multi-character single-dash option string"""
 
     argument_signatures = [Sig('-foo')]
@@ -374,7 +374,7 @@ class TestOptionalsSingleDashLong(ParserTestCase):
     ]
 
 
-class TestOptionalsSingleDashSubsetAmbiguous(ParserTestCase):
+klasse TestOptionalsSingleDashSubsetAmbiguous(ParserTestCase):
     """Test Optionals where option strings are subsets of each other"""
 
     argument_signatures = [Sig('-f'), Sig('-foobar'), Sig('-foorab')]
@@ -390,7 +390,7 @@ class TestOptionalsSingleDashSubsetAmbiguous(ParserTestCase):
     ]
 
 
-class TestOptionalsSingleDashAmbiguous(ParserTestCase):
+klasse TestOptionalsSingleDashAmbiguous(ParserTestCase):
     """Test Optionals that partially match but are not subsets"""
 
     argument_signatures = [Sig('-foobar'), Sig('-foorab')]
@@ -413,7 +413,7 @@ class TestOptionalsSingleDashAmbiguous(ParserTestCase):
     ]
 
 
-class TestOptionalsNumeric(ParserTestCase):
+klasse TestOptionalsNumeric(ParserTestCase):
     """Test an Optional with a short opt string"""
 
     argument_signatures = [Sig('-1', dest='one')]
@@ -426,7 +426,7 @@ class TestOptionalsNumeric(ParserTestCase):
     ]
 
 
-class TestOptionalsDoubleDash(ParserTestCase):
+klasse TestOptionalsDoubleDash(ParserTestCase):
     """Test an Optional with a double-dash option string"""
 
     argument_signatures = [Sig('--foo')]
@@ -440,7 +440,7 @@ class TestOptionalsDoubleDash(ParserTestCase):
     ]
 
 
-class TestOptionalsDoubleDashPartialMatch(ParserTestCase):
+klasse TestOptionalsDoubleDashPartialMatch(ParserTestCase):
     """Tests partial matching with a double-dash option string"""
 
     argument_signatures = [
@@ -458,7 +458,7 @@ class TestOptionalsDoubleDashPartialMatch(ParserTestCase):
     ]
 
 
-class TestOptionalsDoubleDashPrefixMatch(ParserTestCase):
+klasse TestOptionalsDoubleDashPrefixMatch(ParserTestCase):
     """Tests when one double-dash option string is a prefix of another"""
 
     argument_signatures = [
@@ -477,7 +477,7 @@ class TestOptionalsDoubleDashPrefixMatch(ParserTestCase):
     ]
 
 
-class TestOptionalsSingleDoubleDash(ParserTestCase):
+klasse TestOptionalsSingleDoubleDash(ParserTestCase):
     """Test an Optional with single- and double-dash option strings"""
 
     argument_signatures = [
@@ -496,7 +496,7 @@ class TestOptionalsSingleDoubleDash(ParserTestCase):
     ]
 
 
-class TestOptionalsAlternatePrefixChars(ParserTestCase):
+klasse TestOptionalsAlternatePrefixChars(ParserTestCase):
     """Test an Optional with option strings with custom prefixes"""
 
     parser_signature = Sig(prefix_chars='+:/', add_help=False)
@@ -516,7 +516,7 @@ class TestOptionalsAlternatePrefixChars(ParserTestCase):
     ]
 
 
-class TestOptionalsAlternatePrefixCharsAddedHelp(ParserTestCase):
+klasse TestOptionalsAlternatePrefixCharsAddedHelp(ParserTestCase):
     """When ``-`` not in prefix_chars, default operators created for help
        should use the prefix_chars in use rather than - or --
        http://bugs.python.org/issue9444"""
@@ -538,7 +538,7 @@ class TestOptionalsAlternatePrefixCharsAddedHelp(ParserTestCase):
     ]
 
 
-class TestOptionalsAlternatePrefixCharsMultipleShortArgs(ParserTestCase):
+klasse TestOptionalsAlternatePrefixCharsMultipleShortArgs(ParserTestCase):
     """Verify that Optionals must be called with their defined prefixes"""
 
     parser_signature = Sig(prefix_chars='+-', add_help=False)
@@ -561,7 +561,7 @@ class TestOptionalsAlternatePrefixCharsMultipleShortArgs(ParserTestCase):
     ]
 
 
-class TestOptionalsShortLong(ParserTestCase):
+klasse TestOptionalsShortLong(ParserTestCase):
     """Test a combination of single- and double-dash option strings"""
 
     argument_signatures = [
@@ -577,7 +577,7 @@ class TestOptionalsShortLong(ParserTestCase):
     ]
 
 
-class TestOptionalsDest(ParserTestCase):
+klasse TestOptionalsDest(ParserTestCase):
     """Tests various means of setting destination"""
 
     argument_signatures = [Sig('--foo-bar'), Sig('--baz', dest='zabbaz')]
@@ -590,7 +590,7 @@ class TestOptionalsDest(ParserTestCase):
     ]
 
 
-class TestOptionalsDefault(ParserTestCase):
+klasse TestOptionalsDefault(ParserTestCase):
     """Tests specifying a default for an Optional"""
 
     argument_signatures = [Sig('-x'), Sig('-y', default=42)]
@@ -602,7 +602,7 @@ class TestOptionalsDefault(ParserTestCase):
     ]
 
 
-class TestOptionalsNargsDefault(ParserTestCase):
+klasse TestOptionalsNargsDefault(ParserTestCase):
     """Tests not specifying the number of args for an Optional"""
 
     argument_signatures = [Sig('-x')]
@@ -613,7 +613,7 @@ class TestOptionalsNargsDefault(ParserTestCase):
     ]
 
 
-class TestOptionalsNargs1(ParserTestCase):
+klasse TestOptionalsNargs1(ParserTestCase):
     """Tests specifying 1 arg for an Optional"""
 
     argument_signatures = [Sig('-x', nargs=1)]
@@ -624,7 +624,7 @@ class TestOptionalsNargs1(ParserTestCase):
     ]
 
 
-class TestOptionalsNargs3(ParserTestCase):
+klasse TestOptionalsNargs3(ParserTestCase):
     """Tests specifying 3 args for an Optional"""
 
     argument_signatures = [Sig('-x', nargs=3)]
@@ -635,7 +635,7 @@ class TestOptionalsNargs3(ParserTestCase):
     ]
 
 
-class TestOptionalsNargsOptional(ParserTestCase):
+klasse TestOptionalsNargsOptional(ParserTestCase):
     """Tests specifying an Optional arg for an Optional"""
 
     argument_signatures = [
@@ -658,7 +658,7 @@ class TestOptionalsNargsOptional(ParserTestCase):
     ]
 
 
-class TestOptionalsNargsZeroOrMore(ParserTestCase):
+klasse TestOptionalsNargsZeroOrMore(ParserTestCase):
     """Tests specifying args for an Optional that accepts zero or more"""
 
     argument_signatures = [
@@ -677,7 +677,7 @@ class TestOptionalsNargsZeroOrMore(ParserTestCase):
     ]
 
 
-class TestOptionalsNargsOneOrMore(ParserTestCase):
+klasse TestOptionalsNargsOneOrMore(ParserTestCase):
     """Tests specifying args for an Optional that accepts one or more"""
 
     argument_signatures = [
@@ -694,7 +694,7 @@ class TestOptionalsNargsOneOrMore(ParserTestCase):
     ]
 
 
-class TestOptionalsChoices(ParserTestCase):
+klasse TestOptionalsChoices(ParserTestCase):
     """Tests specifying the choices for an Optional"""
 
     argument_signatures = [
@@ -711,7 +711,7 @@ class TestOptionalsChoices(ParserTestCase):
     ]
 
 
-class TestOptionalsRequired(ParserTestCase):
+klasse TestOptionalsRequired(ParserTestCase):
     """Tests an optional action that is required"""
 
     argument_signatures = [
@@ -724,7 +724,7 @@ class TestOptionalsRequired(ParserTestCase):
     ]
 
 
-class TestOptionalsActionStore(ParserTestCase):
+klasse TestOptionalsActionStore(ParserTestCase):
     """Tests the store action for an Optional"""
 
     argument_signatures = [Sig('-x', action='store')]
@@ -735,7 +735,7 @@ class TestOptionalsActionStore(ParserTestCase):
     ]
 
 
-class TestOptionalsActionStoreConst(ParserTestCase):
+klasse TestOptionalsActionStoreConst(ParserTestCase):
     """Tests the store_const action for an Optional"""
 
     argument_signatures = [Sig('-y', action='store_const', const=object)]
@@ -746,7 +746,7 @@ class TestOptionalsActionStoreConst(ParserTestCase):
     ]
 
 
-class TestOptionalsActionStoreFalse(ParserTestCase):
+klasse TestOptionalsActionStoreFalse(ParserTestCase):
     """Tests the store_false action for an Optional"""
 
     argument_signatures = [Sig('-z', action='store_false')]
@@ -757,7 +757,7 @@ class TestOptionalsActionStoreFalse(ParserTestCase):
     ]
 
 
-class TestOptionalsActionStoreTrue(ParserTestCase):
+klasse TestOptionalsActionStoreTrue(ParserTestCase):
     """Tests the store_true action for an Optional"""
 
     argument_signatures = [Sig('--apple', action='store_true')]
@@ -767,7 +767,7 @@ class TestOptionalsActionStoreTrue(ParserTestCase):
         ('--apple', NS(apple=True)),
     ]
 
-class TestBooleanOptionalAction(ParserTestCase):
+klasse TestBooleanOptionalAction(ParserTestCase):
     """Tests BooleanOptionalAction"""
 
     argument_signatures = [Sig('--foo', action=argparse.BooleanOptionalAction)]
@@ -795,7 +795,7 @@ class TestBooleanOptionalAction(ParserTestCase):
         self.assertEqual(str(cm.exception),
                          "invalid option name '--no-foo' for BooleanOptionalAction")
 
-class TestBooleanOptionalActionRequired(ParserTestCase):
+klasse TestBooleanOptionalActionRequired(ParserTestCase):
     """Tests BooleanOptionalAction required"""
 
     argument_signatures = [
@@ -807,7 +807,7 @@ class TestBooleanOptionalActionRequired(ParserTestCase):
         ('--no-foo', NS(foo=False)),
     ]
 
-class TestOptionalsActionAppend(ParserTestCase):
+klasse TestOptionalsActionAppend(ParserTestCase):
     """Tests the append action for an Optional"""
 
     argument_signatures = [Sig('--baz', action='append')]
@@ -819,7 +819,7 @@ class TestOptionalsActionAppend(ParserTestCase):
     ]
 
 
-class TestOptionalsActionAppendWithDefault(ParserTestCase):
+klasse TestOptionalsActionAppendWithDefault(ParserTestCase):
     """Tests the append action for an Optional"""
 
     argument_signatures = [Sig('--baz', action='append', default=['X'])]
@@ -831,7 +831,7 @@ class TestOptionalsActionAppendWithDefault(ParserTestCase):
     ]
 
 
-class TestConstActionsMissingConstKwarg(ParserTestCase):
+klasse TestConstActionsMissingConstKwarg(ParserTestCase):
     """Tests that const gets default value of None when not provided"""
 
     argument_signatures = [
@@ -850,7 +850,7 @@ class TestConstActionsMissingConstKwarg(ParserTestCase):
     ]
 
 
-class TestOptionalsActionAppendConst(ParserTestCase):
+klasse TestOptionalsActionAppendConst(ParserTestCase):
     """Tests the append_const action for an Optional"""
 
     argument_signatures = [
@@ -865,7 +865,7 @@ class TestOptionalsActionAppendConst(ParserTestCase):
     ]
 
 
-class TestOptionalsActionAppendConstWithDefault(ParserTestCase):
+klasse TestOptionalsActionAppendConstWithDefault(ParserTestCase):
     """Tests the append_const action for an Optional"""
 
     argument_signatures = [
@@ -880,7 +880,7 @@ class TestOptionalsActionAppendConstWithDefault(ParserTestCase):
     ]
 
 
-class TestOptionalsActionCount(ParserTestCase):
+klasse TestOptionalsActionCount(ParserTestCase):
     """Tests the count action for an Optional"""
 
     argument_signatures = [Sig('-x', action='count')]
@@ -891,7 +891,7 @@ class TestOptionalsActionCount(ParserTestCase):
     ]
 
 
-class TestOptionalsAllowLongAbbreviation(ParserTestCase):
+klasse TestOptionalsAllowLongAbbreviation(ParserTestCase):
     """Allow long options to be abbreviated unambiguously"""
 
     argument_signatures = [
@@ -910,7 +910,7 @@ class TestOptionalsAllowLongAbbreviation(ParserTestCase):
     ]
 
 
-class TestOptionalsDisallowLongAbbreviation(ParserTestCase):
+klasse TestOptionalsDisallowLongAbbreviation(ParserTestCase):
     """Do not allow abbreviations of long options at all"""
 
     parser_signature = Sig(allow_abbrev=False)
@@ -927,7 +927,7 @@ class TestOptionalsDisallowLongAbbreviation(ParserTestCase):
     ]
 
 
-class TestOptionalsDisallowLongAbbreviationPrefixChars(ParserTestCase):
+klasse TestOptionalsDisallowLongAbbreviationPrefixChars(ParserTestCase):
     """Disallowing abbreviations works with alternative prefix characters"""
 
     parser_signature = Sig(prefix_chars='+', allow_abbrev=False)
@@ -944,7 +944,7 @@ class TestOptionalsDisallowLongAbbreviationPrefixChars(ParserTestCase):
     ]
 
 
-class TestOptionalsDisallowSingleDashLongAbbreviation(ParserTestCase):
+klasse TestOptionalsDisallowSingleDashLongAbbreviation(ParserTestCase):
     """Do not allow abbreviations of long options at all"""
 
     parser_signature = Sig(allow_abbrev=False)
@@ -961,7 +961,7 @@ class TestOptionalsDisallowSingleDashLongAbbreviation(ParserTestCase):
     ]
 
 
-class TestDisallowLongAbbreviationAllowsShortGrouping(ParserTestCase):
+klasse TestDisallowLongAbbreviationAllowsShortGrouping(ParserTestCase):
     """Do not allow abbreviations of long options at all"""
 
     parser_signature = Sig(allow_abbrev=False)
@@ -980,7 +980,7 @@ class TestDisallowLongAbbreviationAllowsShortGrouping(ParserTestCase):
     ]
 
 
-class TestDisallowLongAbbreviationAllowsShortGroupingPrefix(ParserTestCase):
+klasse TestDisallowLongAbbreviationAllowsShortGroupingPrefix(ParserTestCase):
     """Short option grouping works with custom prefix and allow_abbrev=False"""
 
     parser_signature = Sig(prefix_chars='+', allow_abbrev=False)
@@ -999,8 +999,8 @@ class TestDisallowLongAbbreviationAllowsShortGroupingPrefix(ParserTestCase):
     ]
 
 
-class TestStrEnumChoices(TestCase):
-    class Color(StrEnum):
+klasse TestStrEnumChoices(TestCase):
+    klasse Color(StrEnum):
         RED = "red"
         GREEN = "green"
         BLUE = "blue"
@@ -1032,7 +1032,7 @@ class TestStrEnumChoices(TestCase):
 # Positional tests
 # ================
 
-class TestPositionalsNargsNone(ParserTestCase):
+klasse TestPositionalsNargsNone(ParserTestCase):
     """Test a Positional that doesn't specify nargs"""
 
     argument_signatures = [Sig('foo')]
@@ -1042,7 +1042,7 @@ class TestPositionalsNargsNone(ParserTestCase):
     ]
 
 
-class TestPositionalsNargs1(ParserTestCase):
+klasse TestPositionalsNargs1(ParserTestCase):
     """Test a Positional that specifies an nargs of 1"""
 
     argument_signatures = [Sig('foo', nargs=1)]
@@ -1052,7 +1052,7 @@ class TestPositionalsNargs1(ParserTestCase):
     ]
 
 
-class TestPositionalsNargs2(ParserTestCase):
+klasse TestPositionalsNargs2(ParserTestCase):
     """Test a Positional that specifies an nargs of 2"""
 
     argument_signatures = [Sig('foo', nargs=2)]
@@ -1062,7 +1062,7 @@ class TestPositionalsNargs2(ParserTestCase):
     ]
 
 
-class TestPositionalsNargsZeroOrMore(ParserTestCase):
+klasse TestPositionalsNargsZeroOrMore(ParserTestCase):
     """Test a Positional that specifies unlimited nargs"""
 
     argument_signatures = [Sig('foo', nargs='*')]
@@ -1074,7 +1074,7 @@ class TestPositionalsNargsZeroOrMore(ParserTestCase):
     ]
 
 
-class TestPositionalsNargsZeroOrMoreDefault(ParserTestCase):
+klasse TestPositionalsNargsZeroOrMoreDefault(ParserTestCase):
     """Test a Positional that specifies unlimited nargs and a default"""
 
     argument_signatures = [Sig('foo', nargs='*', default='bar', choices=['a', 'b'])]
@@ -1086,7 +1086,7 @@ class TestPositionalsNargsZeroOrMoreDefault(ParserTestCase):
     ]
 
 
-class TestPositionalsNargsOneOrMore(ParserTestCase):
+klasse TestPositionalsNargsOneOrMore(ParserTestCase):
     """Test a Positional that specifies one or more nargs"""
 
     argument_signatures = [Sig('foo', nargs='+')]
@@ -1097,7 +1097,7 @@ class TestPositionalsNargsOneOrMore(ParserTestCase):
     ]
 
 
-class TestPositionalsNargsOptional(ParserTestCase):
+klasse TestPositionalsNargsOptional(ParserTestCase):
     """Tests an Optional Positional"""
 
     argument_signatures = [Sig('foo', nargs='?')]
@@ -1108,7 +1108,7 @@ class TestPositionalsNargsOptional(ParserTestCase):
     ]
 
 
-class TestPositionalsNargsOptionalDefault(ParserTestCase):
+klasse TestPositionalsNargsOptionalDefault(ParserTestCase):
     """Tests an Optional Positional with a default value"""
 
     argument_signatures = [Sig('foo', nargs='?', default=42, choices=['a', 'b'])]
@@ -1119,7 +1119,7 @@ class TestPositionalsNargsOptionalDefault(ParserTestCase):
     ]
 
 
-class TestPositionalsNargsOptionalConvertedDefault(ParserTestCase):
+klasse TestPositionalsNargsOptionalConvertedDefault(ParserTestCase):
     """Tests an Optional Positional with a default value
     that needs to be converted to the appropriate type.
     """
@@ -1134,7 +1134,7 @@ class TestPositionalsNargsOptionalConvertedDefault(ParserTestCase):
     ]
 
 
-class TestPositionalsNargsNoneNone(ParserTestCase):
+klasse TestPositionalsNargsNoneNone(ParserTestCase):
     """Test two Positionals that don't specify nargs"""
 
     argument_signatures = [Sig('foo'), Sig('bar')]
@@ -1144,7 +1144,7 @@ class TestPositionalsNargsNoneNone(ParserTestCase):
     ]
 
 
-class TestPositionalsNargsNone1(ParserTestCase):
+klasse TestPositionalsNargsNone1(ParserTestCase):
     """Test a Positional with no nargs followed by one with 1"""
 
     argument_signatures = [Sig('foo'), Sig('bar', nargs=1)]
@@ -1154,7 +1154,7 @@ class TestPositionalsNargsNone1(ParserTestCase):
     ]
 
 
-class TestPositionalsNargs2None(ParserTestCase):
+klasse TestPositionalsNargs2None(ParserTestCase):
     """Test a Positional with 2 nargs followed by one with none"""
 
     argument_signatures = [Sig('foo', nargs=2), Sig('bar')]
@@ -1164,7 +1164,7 @@ class TestPositionalsNargs2None(ParserTestCase):
     ]
 
 
-class TestPositionalsNargsNoneZeroOrMore(ParserTestCase):
+klasse TestPositionalsNargsNoneZeroOrMore(ParserTestCase):
     """Test a Positional with no nargs followed by one with unlimited"""
 
     argument_signatures = [Sig('-x'), Sig('foo'), Sig('bar', nargs='*')]
@@ -1184,7 +1184,7 @@ class TestPositionalsNargsNoneZeroOrMore(ParserTestCase):
     ]
 
 
-class TestPositionalsNargsNoneOneOrMore(ParserTestCase):
+klasse TestPositionalsNargsNoneOneOrMore(ParserTestCase):
     """Test a Positional with no nargs followed by one with one or more"""
 
     argument_signatures = [Sig('-x'), Sig('foo'), Sig('bar', nargs='+')]
@@ -1201,7 +1201,7 @@ class TestPositionalsNargsNoneOneOrMore(ParserTestCase):
     ]
 
 
-class TestPositionalsNargsNoneOptional(ParserTestCase):
+klasse TestPositionalsNargsNoneOptional(ParserTestCase):
     """Test a Positional with no nargs followed by one with an Optional"""
 
     argument_signatures = [Sig('-x'), Sig('foo'), Sig('bar', nargs='?')]
@@ -1217,7 +1217,7 @@ class TestPositionalsNargsNoneOptional(ParserTestCase):
     ]
 
 
-class TestPositionalsNargsZeroOrMoreNone(ParserTestCase):
+klasse TestPositionalsNargsZeroOrMoreNone(ParserTestCase):
     """Test a Positional with unlimited nargs followed by one with none"""
 
     argument_signatures = [Sig('-x'), Sig('foo', nargs='*'), Sig('bar')]
@@ -1235,7 +1235,7 @@ class TestPositionalsNargsZeroOrMoreNone(ParserTestCase):
     ]
 
 
-class TestPositionalsNargsOneOrMoreNone(ParserTestCase):
+klasse TestPositionalsNargsOneOrMoreNone(ParserTestCase):
     """Test a Positional with one or more nargs followed by one with none"""
 
     argument_signatures = [Sig('-x'), Sig('foo', nargs='+'), Sig('bar')]
@@ -1251,7 +1251,7 @@ class TestPositionalsNargsOneOrMoreNone(ParserTestCase):
     ]
 
 
-class TestPositionalsNargsOptionalNone(ParserTestCase):
+klasse TestPositionalsNargsOptionalNone(ParserTestCase):
     """Test a Positional with an Optional nargs followed by one with none"""
 
     argument_signatures = [Sig('foo', nargs='?', default=42), Sig('bar')]
@@ -1262,7 +1262,7 @@ class TestPositionalsNargsOptionalNone(ParserTestCase):
     ]
 
 
-class TestPositionalsNargs2ZeroOrMore(ParserTestCase):
+klasse TestPositionalsNargs2ZeroOrMore(ParserTestCase):
     """Test a Positional with 2 nargs followed by one with unlimited"""
 
     argument_signatures = [Sig('foo', nargs=2), Sig('bar', nargs='*')]
@@ -1273,7 +1273,7 @@ class TestPositionalsNargs2ZeroOrMore(ParserTestCase):
     ]
 
 
-class TestPositionalsNargs2OneOrMore(ParserTestCase):
+klasse TestPositionalsNargs2OneOrMore(ParserTestCase):
     """Test a Positional with 2 nargs followed by one with one or more"""
 
     argument_signatures = [Sig('foo', nargs=2), Sig('bar', nargs='+')]
@@ -1283,7 +1283,7 @@ class TestPositionalsNargs2OneOrMore(ParserTestCase):
     ]
 
 
-class TestPositionalsNargs2Optional(ParserTestCase):
+klasse TestPositionalsNargs2Optional(ParserTestCase):
     """Test a Positional with 2 nargs followed by one optional"""
 
     argument_signatures = [Sig('foo', nargs=2), Sig('bar', nargs='?')]
@@ -1294,7 +1294,7 @@ class TestPositionalsNargs2Optional(ParserTestCase):
     ]
 
 
-class TestPositionalsNargsZeroOrMore1(ParserTestCase):
+klasse TestPositionalsNargsZeroOrMore1(ParserTestCase):
     """Test a Positional with unlimited nargs followed by one with 1"""
 
     argument_signatures = [Sig('foo', nargs='*'), Sig('bar', nargs=1)]
@@ -1306,7 +1306,7 @@ class TestPositionalsNargsZeroOrMore1(ParserTestCase):
     ]
 
 
-class TestPositionalsNargsOneOrMore1(ParserTestCase):
+klasse TestPositionalsNargsOneOrMore1(ParserTestCase):
     """Test a Positional with one or more nargs followed by one with 1"""
 
     argument_signatures = [Sig('foo', nargs='+'), Sig('bar', nargs=1)]
@@ -1317,7 +1317,7 @@ class TestPositionalsNargsOneOrMore1(ParserTestCase):
     ]
 
 
-class TestPositionalsNargsOptional1(ParserTestCase):
+klasse TestPositionalsNargsOptional1(ParserTestCase):
     """Test a Positional with an Optional nargs followed by one with 1"""
 
     argument_signatures = [Sig('foo', nargs='?'), Sig('bar', nargs=1)]
@@ -1328,7 +1328,7 @@ class TestPositionalsNargsOptional1(ParserTestCase):
     ]
 
 
-class TestPositionalsNargsNoneZeroOrMore1(ParserTestCase):
+klasse TestPositionalsNargsNoneZeroOrMore1(ParserTestCase):
     """Test three Positionals: no nargs, unlimited nargs and 1 nargs"""
 
     argument_signatures = [
@@ -1350,7 +1350,7 @@ class TestPositionalsNargsNoneZeroOrMore1(ParserTestCase):
     ]
 
 
-class TestPositionalsNargsNoneOneOrMore1(ParserTestCase):
+klasse TestPositionalsNargsNoneOneOrMore1(ParserTestCase):
     """Test three Positionals: no nargs, one or more nargs and 1 nargs"""
 
     argument_signatures = [
@@ -1373,7 +1373,7 @@ class TestPositionalsNargsNoneOneOrMore1(ParserTestCase):
     ]
 
 
-class TestPositionalsNargsNoneOptional1(ParserTestCase):
+klasse TestPositionalsNargsNoneOptional1(ParserTestCase):
     """Test three Positionals: no nargs, optional narg and 1 nargs"""
 
     argument_signatures = [
@@ -1395,7 +1395,7 @@ class TestPositionalsNargsNoneOptional1(ParserTestCase):
     ]
 
 
-class TestPositionalsNargsOptionalOptional(ParserTestCase):
+klasse TestPositionalsNargsOptionalOptional(ParserTestCase):
     """Test two optional nargs"""
 
     argument_signatures = [
@@ -1410,7 +1410,7 @@ class TestPositionalsNargsOptionalOptional(ParserTestCase):
     ]
 
 
-class TestPositionalsNargsOptionalZeroOrMore(ParserTestCase):
+klasse TestPositionalsNargsOptionalZeroOrMore(ParserTestCase):
     """Test an Optional narg followed by unlimited nargs"""
 
     argument_signatures = [Sig('foo', nargs='?'), Sig('bar', nargs='*')]
@@ -1423,7 +1423,7 @@ class TestPositionalsNargsOptionalZeroOrMore(ParserTestCase):
     ]
 
 
-class TestPositionalsNargsOptionalOneOrMore(ParserTestCase):
+klasse TestPositionalsNargsOptionalOneOrMore(ParserTestCase):
     """Test an Optional narg followed by one or more nargs"""
 
     argument_signatures = [Sig('foo', nargs='?'), Sig('bar', nargs='+')]
@@ -1435,7 +1435,7 @@ class TestPositionalsNargsOptionalOneOrMore(ParserTestCase):
     ]
 
 
-class TestPositionalsChoicesString(ParserTestCase):
+klasse TestPositionalsChoicesString(ParserTestCase):
     """Test a set of single-character choices"""
 
     argument_signatures = [Sig('spam', choices=set('abcdefg'))]
@@ -1446,7 +1446,7 @@ class TestPositionalsChoicesString(ParserTestCase):
     ]
 
 
-class TestPositionalsChoicesInt(ParserTestCase):
+klasse TestPositionalsChoicesInt(ParserTestCase):
     """Test a set of integer choices"""
 
     argument_signatures = [Sig('spam', type=int, choices=range(20))]
@@ -1457,7 +1457,7 @@ class TestPositionalsChoicesInt(ParserTestCase):
     ]
 
 
-class TestPositionalsActionAppend(ParserTestCase):
+klasse TestPositionalsActionAppend(ParserTestCase):
     """Test the 'append' action"""
 
     argument_signatures = [
@@ -1470,7 +1470,7 @@ class TestPositionalsActionAppend(ParserTestCase):
     ]
 
 
-class TestPositionalsActionExtend(ParserTestCase):
+klasse TestPositionalsActionExtend(ParserTestCase):
     """Test the 'extend' action"""
 
     argument_signatures = [
@@ -1486,7 +1486,7 @@ class TestPositionalsActionExtend(ParserTestCase):
 # Combined optionals and positionals tests
 # ========================================
 
-class TestOptionalsNumericAndPositionals(ParserTestCase):
+klasse TestOptionalsNumericAndPositionals(ParserTestCase):
     """Tests negative number args when numeric options are present"""
 
     argument_signatures = [
@@ -1502,7 +1502,7 @@ class TestOptionalsNumericAndPositionals(ParserTestCase):
     ]
 
 
-class TestOptionalsAlmostNumericAndPositionals(ParserTestCase):
+klasse TestOptionalsAlmostNumericAndPositionals(ParserTestCase):
     """Tests negative number args when almost numeric options are present"""
 
     argument_signatures = [
@@ -1519,7 +1519,7 @@ class TestOptionalsAlmostNumericAndPositionals(ParserTestCase):
     ]
 
 
-class TestOptionalsAndPositionalsAppend(ParserTestCase):
+klasse TestOptionalsAndPositionalsAppend(ParserTestCase):
     argument_signatures = [
         Sig('foo', nargs='*', action='append'),
         Sig('--bar'),
@@ -1532,7 +1532,7 @@ class TestOptionalsAndPositionalsAppend(ParserTestCase):
     ]
 
 
-class TestOptionalsAndPositionalsExtend(ParserTestCase):
+klasse TestOptionalsAndPositionalsExtend(ParserTestCase):
     argument_signatures = [
         Sig('foo', nargs='*', action='extend'),
         Sig('--bar'),
@@ -1545,7 +1545,7 @@ class TestOptionalsAndPositionalsExtend(ParserTestCase):
     ]
 
 
-class TestEmptyAndSpaceContainingArguments(ParserTestCase):
+klasse TestEmptyAndSpaceContainingArguments(ParserTestCase):
 
     argument_signatures = [
         Sig('x', nargs='?'),
@@ -1564,7 +1564,7 @@ class TestEmptyAndSpaceContainingArguments(ParserTestCase):
     ]
 
 
-class TestPrefixCharacterOnlyArguments(ParserTestCase):
+klasse TestPrefixCharacterOnlyArguments(ParserTestCase):
 
     parser_signature = Sig(prefix_chars='-+')
     argument_signatures = [
@@ -1583,7 +1583,7 @@ class TestPrefixCharacterOnlyArguments(ParserTestCase):
     ]
 
 
-class TestNargsZeroOrMore(ParserTestCase):
+klasse TestNargsZeroOrMore(ParserTestCase):
     """Tests specifying args for an Optional that accepts zero or more"""
 
     argument_signatures = [Sig('-x', nargs='*'), Sig('y', nargs='*')]
@@ -1599,7 +1599,7 @@ class TestNargsZeroOrMore(ParserTestCase):
     ]
 
 
-class TestNargsRemainder(ParserTestCase):
+klasse TestNargsRemainder(ParserTestCase):
     """Tests specifying a positional with nargs=REMAINDER"""
 
     argument_signatures = [Sig('x'), Sig('y', nargs='...'), Sig('-z')]
@@ -1615,7 +1615,7 @@ class TestNargsRemainder(ParserTestCase):
     ]
 
 
-class TestOptionLike(ParserTestCase):
+klasse TestOptionLike(ParserTestCase):
     """Tests options that may or may not be arguments"""
 
     argument_signatures = [
@@ -1642,7 +1642,7 @@ class TestOptionLike(ParserTestCase):
     ]
 
 
-class TestDefaultSuppress(ParserTestCase):
+klasse TestDefaultSuppress(ParserTestCase):
     """Test actions with suppressed defaults"""
 
     argument_signatures = [
@@ -1667,7 +1667,7 @@ class TestDefaultSuppress(ParserTestCase):
     ]
 
 
-class TestParserDefaultSuppress(ParserTestCase):
+klasse TestParserDefaultSuppress(ParserTestCase):
     """Test actions with a parser-level default of SUPPRESS"""
 
     parser_signature = Sig(argument_default=argparse.SUPPRESS)
@@ -1687,7 +1687,7 @@ class TestParserDefaultSuppress(ParserTestCase):
     ]
 
 
-class TestParserDefault42(ParserTestCase):
+klasse TestParserDefault42(ParserTestCase):
     """Test actions with a parser-level default of 42"""
 
     parser_signature = Sig(argument_default=42)
@@ -1708,7 +1708,7 @@ class TestParserDefault42(ParserTestCase):
     ]
 
 
-class TestArgumentsFromFile(TempDirMixin, ParserTestCase):
+klasse TestArgumentsFromFile(TempDirMixin, ParserTestCase):
     """Test reading arguments from a file"""
 
     def setUp(self):
@@ -1753,7 +1753,7 @@ class TestArgumentsFromFile(TempDirMixin, ParserTestCase):
         undecodable = b''
 
 
-class TestArgumentsFromFileConverter(TempDirMixin, ParserTestCase):
+klasse TestArgumentsFromFileConverter(TempDirMixin, ParserTestCase):
     """Test reading arguments from a file"""
 
     def setUp(self):
@@ -1765,7 +1765,7 @@ class TestArgumentsFromFileConverter(TempDirMixin, ParserTestCase):
             with open(path, 'wb') as file:
                 file.write(text)
 
-    class FromFileConverterArgumentParser(ErrorRaisingArgumentParser):
+    klasse FromFileConverterArgumentParser(ErrorRaisingArgumentParser):
 
         def convert_arg_line_to_args(self, arg_line):
             for arg in arg_line.split():
@@ -1794,7 +1794,7 @@ def FileType(*args, **kwargs):
         return argparse.FileType(*args, **kwargs)
 
 
-class TestFileTypeDeprecation(TestCase):
+klasse TestFileTypeDeprecation(TestCase):
 
     def test(self):
         with self.assertWarns(PendingDeprecationWarning) as cm:
@@ -1803,7 +1803,7 @@ class TestFileTypeDeprecation(TestCase):
         self.assertEqual(cm.filename, __file__)
 
 
-class TestFileTypeRepr(TestCase):
+klasse TestFileTypeRepr(TestCase):
 
     def test_r(self):
         type = FileType('r')
@@ -1831,7 +1831,7 @@ BIN_STDOUT_SENTINEL = object()
 BIN_STDERR_SENTINEL = object()
 
 
-class StdStreamComparer:
+klasse StdStreamComparer:
     def __init__(self, attr):
         # We try to use the actual stdXXX.buffer attribute as our
         # marker, but under some test environments,
@@ -1861,7 +1861,7 @@ eq_bstdout = StdStreamComparer('stdout.buffer')
 eq_bstderr = StdStreamComparer('stderr.buffer')
 
 
-class RFile(object):
+klasse RFile(object):
     seen = {}
 
     def __init__(self, name):
@@ -1877,7 +1877,7 @@ class RFile(object):
             text = text.decode('ascii')
         return self.name == other.name == text
 
-class TestFileTypeR(TempDirMixin, ParserTestCase):
+klasse TestFileTypeR(TempDirMixin, ParserTestCase):
     """Test the FileType option/argument type for reading files"""
 
     def setUp(self):
@@ -1901,7 +1901,7 @@ class TestFileTypeR(TempDirMixin, ParserTestCase):
         ('readonly', NS(x=None, spam=RFile('readonly'))),
     ]
 
-class TestFileTypeDefaults(TempDirMixin, ParserTestCase):
+klasse TestFileTypeDefaults(TempDirMixin, ParserTestCase):
     """Test that a file is not created unless the default is needed"""
     def setUp(self):
         super(TestFileTypeDefaults, self).setUp()
@@ -1918,7 +1918,7 @@ class TestFileTypeDefaults(TempDirMixin, ParserTestCase):
     successes = [('-c good', NS(c=RFile('good')))]
 
 
-class TestFileTypeRB(TempDirMixin, ParserTestCase):
+klasse TestFileTypeRB(TempDirMixin, ParserTestCase):
     """Test the FileType option/argument type for reading files"""
 
     def setUp(self):
@@ -1941,7 +1941,7 @@ class TestFileTypeRB(TempDirMixin, ParserTestCase):
     ]
 
 
-class WFile(object):
+klasse WFile(object):
     seen = set()
 
     def __init__(self, name):
@@ -1959,7 +1959,7 @@ class WFile(object):
 
 
 @os_helper.skip_if_dac_override
-class TestFileTypeW(TempDirMixin, ParserTestCase):
+klasse TestFileTypeW(TempDirMixin, ParserTestCase):
     """Test the FileType option/argument type for writing files"""
 
     def setUp(self):
@@ -1982,7 +1982,7 @@ class TestFileTypeW(TempDirMixin, ParserTestCase):
 
 
 @os_helper.skip_if_dac_override
-class TestFileTypeX(TempDirMixin, ParserTestCase):
+klasse TestFileTypeX(TempDirMixin, ParserTestCase):
     """Test the FileType option/argument type for writing new files only"""
 
     def setUp(self):
@@ -2002,7 +2002,7 @@ class TestFileTypeX(TempDirMixin, ParserTestCase):
 
 
 @os_helper.skip_if_dac_override
-class TestFileTypeWB(TempDirMixin, ParserTestCase):
+klasse TestFileTypeWB(TempDirMixin, ParserTestCase):
     """Test the FileType option/argument type for writing binary files"""
 
     argument_signatures = [
@@ -2019,7 +2019,7 @@ class TestFileTypeWB(TempDirMixin, ParserTestCase):
 
 
 @os_helper.skip_if_dac_override
-class TestFileTypeXB(TestFileTypeX):
+klasse TestFileTypeXB(TestFileTypeX):
     "Test the FileType option/argument type for writing new binary files only"
 
     argument_signatures = [
@@ -2032,7 +2032,7 @@ class TestFileTypeXB(TestFileTypeX):
     ]
 
 
-class TestFileTypeOpenArgs(TestCase):
+klasse TestFileTypeOpenArgs(TestCase):
     """Test that open (the builtin) is correctly called"""
 
     def test_open_args(self):
@@ -2054,7 +2054,7 @@ class TestFileTypeOpenArgs(TestCase):
             FileType('b')('-test')
 
 
-class TestFileTypeMissingInitialization(TestCase):
+klasse TestFileTypeMissingInitialization(TestCase):
     """
     Test that add_argument throws an error if FileType class
     object was passed instead of instance of FileType
@@ -2066,13 +2066,13 @@ class TestFileTypeMissingInitialization(TestCase):
             parser.add_argument('-x', type=argparse.FileType)
 
         self.assertEqual(
-            '%r is a FileType class object, instance of it must be passed'
+            '%r is a FileType klasse object, instance of it must be passed'
             % (argparse.FileType,),
             str(cm.exception)
         )
 
 
-class TestTypeCallable(ParserTestCase):
+klasse TestTypeCallable(ParserTestCase):
     """Test some callables as option/argument types"""
 
     argument_signatures = [
@@ -2087,10 +2087,10 @@ class TestTypeCallable(ParserTestCase):
     ]
 
 
-class TestTypeUserDefined(ParserTestCase):
+klasse TestTypeUserDefined(ParserTestCase):
     """Test a user-defined option/argument type"""
 
-    class MyType(TestCase):
+    klasse MyType(TestCase):
 
         def __init__(self, value):
             self.value = value
@@ -2109,10 +2109,10 @@ class TestTypeUserDefined(ParserTestCase):
     ]
 
 
-class TestTypeClassicClass(ParserTestCase):
-    """Test a classic class type"""
+klasse TestTypeClassicClass(ParserTestCase):
+    """Test a classic klasse type"""
 
-    class C:
+    klasse C:
 
         def __init__(self, value):
             self.value = value
@@ -2131,7 +2131,7 @@ class TestTypeClassicClass(ParserTestCase):
     ]
 
 
-class TestTypeRegistration(TestCase):
+klasse TestTypeRegistration(TestCase):
     """Test a user-defined type by registering it"""
 
     def test(self):
@@ -2154,10 +2154,10 @@ class TestTypeRegistration(TestCase):
 # Action tests
 # ============
 
-class TestActionUserDefined(ParserTestCase):
+klasse TestActionUserDefined(ParserTestCase):
     """Test a user-defined option/argument action"""
 
-    class OptionalAction(argparse.Action):
+    klasse OptionalAction(argparse.Action):
 
         def __call__(self, parser, namespace, value, option_string=None):
             try:
@@ -2179,7 +2179,7 @@ class TestActionUserDefined(ParserTestCase):
                 raise ArgumentParserError('opt_action failed: %s' % e)
             setattr(namespace, 'spam', value)
 
-    class PositionalAction(argparse.Action):
+    klasse PositionalAction(argparse.Action):
 
         def __call__(self, parser, namespace, value, option_string=None):
             try:
@@ -2219,10 +2219,10 @@ class TestActionUserDefined(ParserTestCase):
     ]
 
 
-class TestActionRegistration(TestCase):
+klasse TestActionRegistration(TestCase):
     """Test a user-defined action supplied by registering it"""
 
-    class MyAction(argparse.Action):
+    klasse MyAction(argparse.Action):
 
         def __call__(self, parser, namespace, values, option_string=None):
             setattr(namespace, self.dest, 'foo[%s]' % values)
@@ -2237,7 +2237,7 @@ class TestActionRegistration(TestCase):
         self.assertEqual(parser.parse_args(['42']), NS(badger='foo[42]'))
 
 
-class TestActionExtend(ParserTestCase):
+klasse TestActionExtend(ParserTestCase):
     argument_signatures = [
         Sig('--foo', action="extend", nargs="+", type=str),
     ]
@@ -2247,7 +2247,7 @@ class TestActionExtend(ParserTestCase):
     ]
 
 
-class TestNegativeNumber(ParserTestCase):
+klasse TestNegativeNumber(ParserTestCase):
     """Test parsing negative numbers"""
 
     argument_signatures = [
@@ -2282,7 +2282,7 @@ class TestNegativeNumber(ParserTestCase):
         ('--complex -1e-3j', NS(int=None, float=None, complex=-0.001j)),
     ]
 
-class TestArgumentAndSubparserSuggestions(TestCase):
+klasse TestArgumentAndSubparserSuggestions(TestCase):
     """Test error handling and suggestion when a user makes a typo"""
 
     def test_wrong_argument_error_with_suggestions(self):
@@ -2371,10 +2371,10 @@ class TestArgumentAndSubparserSuggestions(TestCase):
         )
 
 
-class TestInvalidAction(TestCase):
+klasse TestInvalidAction(TestCase):
     """Test invalid user defined Action"""
 
-    class ActionWithoutCall(argparse.Action):
+    klasse ActionWithoutCall(argparse.Action):
         pass
 
     def test_invalid_type(self):
@@ -2409,7 +2409,7 @@ class TestInvalidAction(TestCase):
 # ================
 
 @force_not_colorized_test_class
-class TestAddSubparsers(TestCase):
+klasse TestAddSubparsers(TestCase):
     """Test the add_subparsers method"""
 
     def assertArgumentParserError(self, *args, **kwargs):
@@ -2569,7 +2569,7 @@ class TestAddSubparsers(TestCase):
         )
 
     def test_parse_known_args_to_class_namespace(self):
-        class C:
+        klasse C:
             pass
         self.assertEqual(
             self.parser.parse_known_args('0.5 1 b -w 7 -p'.split(), namespace=C),
@@ -2944,7 +2944,7 @@ class TestAddSubparsers(TestCase):
 # Groups tests
 # ============
 
-class TestPositionalsGroups(TestCase):
+klasse TestPositionalsGroups(TestCase):
     """Tests that order of group positionals matches construction order"""
 
     def test_nongroup_first(self):
@@ -2979,7 +2979,7 @@ class TestPositionalsGroups(TestCase):
         result = parser.parse_args('1 2 3 4'.split())
         self.assertEqual(expected, result)
 
-class TestGroupConstructor(TestCase):
+klasse TestGroupConstructor(TestCase):
     def test_group_prefix_chars(self):
         parser = ErrorRaisingArgumentParser()
         msg = (
@@ -3016,7 +3016,7 @@ class TestGroupConstructor(TestCase):
 # ===================
 
 @force_not_colorized_test_class
-class TestParentParsers(TestCase):
+klasse TestParentParsers(TestCase):
     """Tests that parsers can be created with parent parsers"""
 
     def assertArgumentParserError(self, *args, **kwargs):
@@ -3224,7 +3224,7 @@ class TestParentParsers(TestCase):
 # ==============================
 
 @force_not_colorized_test_class
-class TestMutuallyExclusiveGroupErrors(TestCase):
+klasse TestMutuallyExclusiveGroupErrors(TestCase):
 
     def test_invalid_add_argument_group(self):
         parser = ErrorRaisingArgumentParser()
@@ -3321,7 +3321,7 @@ class TestMutuallyExclusiveGroupErrors(TestCase):
                                'mutually exclusive groups cannot be nested',
                                g.add_mutually_exclusive_group)
 
-class MEMixin(object):
+klasse MEMixin(object):
 
     def test_failures_when_not_required(self):
         parse_args = self.get_parser(required=False).parse_args
@@ -3377,7 +3377,7 @@ class MEMixin(object):
         self.assertEqual(format_help(), textwrap.dedent(help))
 
 
-class TestMutuallyExclusiveSimple(MEMixin, TestCase):
+klasse TestMutuallyExclusiveSimple(MEMixin, TestCase):
 
     def get_parser(self, required=None):
         parser = ErrorRaisingArgumentParser(prog='PROG')
@@ -3412,7 +3412,7 @@ class TestMutuallyExclusiveSimple(MEMixin, TestCase):
         '''
 
 
-class TestMutuallyExclusiveLong(MEMixin, TestCase):
+klasse TestMutuallyExclusiveLong(MEMixin, TestCase):
 
     def get_parser(self, required=None):
         parser = ErrorRaisingArgumentParser(prog='PROG')
@@ -3455,7 +3455,7 @@ class TestMutuallyExclusiveLong(MEMixin, TestCase):
     '''
 
 
-class TestMutuallyExclusiveFirstSuppressed(MEMixin, TestCase):
+klasse TestMutuallyExclusiveFirstSuppressed(MEMixin, TestCase):
 
     def get_parser(self, required):
         parser = ErrorRaisingArgumentParser(prog='PROG')
@@ -3488,7 +3488,7 @@ class TestMutuallyExclusiveFirstSuppressed(MEMixin, TestCase):
         '''
 
 
-class TestMutuallyExclusiveManySuppressed(MEMixin, TestCase):
+klasse TestMutuallyExclusiveManySuppressed(MEMixin, TestCase):
 
     def get_parser(self, required):
         parser = ErrorRaisingArgumentParser(prog='PROG')
@@ -3524,7 +3524,7 @@ class TestMutuallyExclusiveManySuppressed(MEMixin, TestCase):
         '''
 
 
-class TestMutuallyExclusiveOptionalAndPositional(MEMixin, TestCase):
+klasse TestMutuallyExclusiveOptionalAndPositional(MEMixin, TestCase):
 
     def get_parser(self, required):
         parser = ErrorRaisingArgumentParser(prog='PROG')
@@ -3569,7 +3569,7 @@ class TestMutuallyExclusiveOptionalAndPositional(MEMixin, TestCase):
         '''
 
 
-class TestMutuallyExclusiveOptionalsMixed(MEMixin, TestCase):
+klasse TestMutuallyExclusiveOptionalsMixed(MEMixin, TestCase):
 
     def get_parser(self, required):
         parser = ErrorRaisingArgumentParser(prog='PROG')
@@ -3611,7 +3611,7 @@ class TestMutuallyExclusiveOptionalsMixed(MEMixin, TestCase):
         '''
 
 
-class TestMutuallyExclusiveInGroup(MEMixin, TestCase):
+klasse TestMutuallyExclusiveInGroup(MEMixin, TestCase):
 
     def get_parser(self, required=None):
         parser = ErrorRaisingArgumentParser(prog='PROG')
@@ -3651,7 +3651,7 @@ class TestMutuallyExclusiveInGroup(MEMixin, TestCase):
         '''
 
 
-class TestMutuallyExclusiveOptionalsAndPositionalsMixed(MEMixin, TestCase):
+klasse TestMutuallyExclusiveOptionalsAndPositionalsMixed(MEMixin, TestCase):
 
     def get_parser(self, required):
         parser = ErrorRaisingArgumentParser(prog='PROG')
@@ -3693,7 +3693,7 @@ class TestMutuallyExclusiveOptionalsAndPositionalsMixed(MEMixin, TestCase):
         '''
 
 
-class TestMutuallyExclusiveOptionalOptional(MEMixin, TestCase):
+klasse TestMutuallyExclusiveOptionalOptional(MEMixin, TestCase):
     def get_parser(self, required=None):
         parser = ErrorRaisingArgumentParser(prog='PROG')
         group = parser.add_mutually_exclusive_group(required=required)
@@ -3728,7 +3728,7 @@ class TestMutuallyExclusiveOptionalOptional(MEMixin, TestCase):
         '''
 
 
-class TestMutuallyExclusiveOptionalWithDefault(MEMixin, TestCase):
+klasse TestMutuallyExclusiveOptionalWithDefault(MEMixin, TestCase):
     def get_parser(self, required=None):
         parser = ErrorRaisingArgumentParser(prog='PROG')
         group = parser.add_mutually_exclusive_group(required=required)
@@ -3763,7 +3763,7 @@ class TestMutuallyExclusiveOptionalWithDefault(MEMixin, TestCase):
         '''
 
 
-class TestMutuallyExclusivePositionalWithDefault(MEMixin, TestCase):
+klasse TestMutuallyExclusivePositionalWithDefault(MEMixin, TestCase):
     def get_parser(self, required=None):
         parser = ErrorRaisingArgumentParser(prog='PROG')
         group = parser.add_mutually_exclusive_group(required=required)
@@ -3801,7 +3801,7 @@ class TestMutuallyExclusivePositionalWithDefault(MEMixin, TestCase):
 # Mutually exclusive group in parent parser tests
 # =================================================
 
-class MEPBase(object):
+klasse MEPBase(object):
 
     def get_parser(self, required=None):
         parent = super(MEPBase, self).get_parser(required=required)
@@ -3810,42 +3810,42 @@ class MEPBase(object):
         return parser
 
 
-class TestMutuallyExclusiveGroupErrorsParent(
+klasse TestMutuallyExclusiveGroupErrorsParent(
     MEPBase, TestMutuallyExclusiveGroupErrors):
     pass
 
 
-class TestMutuallyExclusiveSimpleParent(
+klasse TestMutuallyExclusiveSimpleParent(
     MEPBase, TestMutuallyExclusiveSimple):
     pass
 
 
-class TestMutuallyExclusiveLongParent(
+klasse TestMutuallyExclusiveLongParent(
     MEPBase, TestMutuallyExclusiveLong):
     pass
 
 
-class TestMutuallyExclusiveFirstSuppressedParent(
+klasse TestMutuallyExclusiveFirstSuppressedParent(
     MEPBase, TestMutuallyExclusiveFirstSuppressed):
     pass
 
 
-class TestMutuallyExclusiveManySuppressedParent(
+klasse TestMutuallyExclusiveManySuppressedParent(
     MEPBase, TestMutuallyExclusiveManySuppressed):
     pass
 
 
-class TestMutuallyExclusiveOptionalAndPositionalParent(
+klasse TestMutuallyExclusiveOptionalAndPositionalParent(
     MEPBase, TestMutuallyExclusiveOptionalAndPositional):
     pass
 
 
-class TestMutuallyExclusiveOptionalsMixedParent(
+klasse TestMutuallyExclusiveOptionalsMixedParent(
     MEPBase, TestMutuallyExclusiveOptionalsMixed):
     pass
 
 
-class TestMutuallyExclusiveOptionalsAndPositionalsMixedParent(
+klasse TestMutuallyExclusiveOptionalsAndPositionalsMixedParent(
     MEPBase, TestMutuallyExclusiveOptionalsAndPositionalsMixed):
     pass
 
@@ -3853,7 +3853,7 @@ class TestMutuallyExclusiveOptionalsAndPositionalsMixedParent(
 # Set default tests
 # =================
 
-class TestSetDefaults(TestCase):
+klasse TestSetDefaults(TestCase):
 
     def test_set_defaults_no_args(self):
         parser = ErrorRaisingArgumentParser()
@@ -3947,7 +3947,7 @@ class TestSetDefaults(TestCase):
 # Get default tests
 # =================
 
-class TestGetDefault(TestCase):
+klasse TestGetDefault(TestCase):
 
     def test_get_default(self):
         parser = ErrorRaisingArgumentParser()
@@ -3970,7 +3970,7 @@ class TestGetDefault(TestCase):
 # Namespace 'contains' tests
 # ==========================
 
-class TestNamespaceContainsSimple(TestCase):
+klasse TestNamespaceContainsSimple(TestCase):
 
     def test_empty(self):
         ns = argparse.Namespace()
@@ -3989,13 +3989,13 @@ class TestNamespaceContainsSimple(TestCase):
 # Help formatting tests
 # =====================
 
-class TestHelpFormattingMetaclass(type):
+klasse TestHelpFormattingMetaclass(type):
 
     def __init__(cls, name, bases, bodydict):
         if name == 'HelpTestCase':
             return
 
-        class AddTests(object):
+        klasse AddTests(object):
 
             def __init__(self, test_class, func_suffix, std_name):
                 self.func_suffix = func_suffix
@@ -4079,7 +4079,7 @@ bases = TestCase,
 HelpTestCase = TestHelpFormattingMetaclass('HelpTestCase', bases, {})
 
 
-class TestHelpBiggerOptionals(HelpTestCase):
+klasse TestHelpBiggerOptionals(HelpTestCase):
     """Make sure that argument help aligns when options are longer"""
 
     parser_signature = Sig(prog='PROG', description='DESCRIPTION',
@@ -4115,7 +4115,7 @@ class TestHelpBiggerOptionals(HelpTestCase):
         0.1
         '''
 
-class TestShortColumns(HelpTestCase):
+klasse TestShortColumns(HelpTestCase):
     '''Test extremely small number of columns.
 
     TestCase prevents "COLUMNS" from being too small in the tests themselves,
@@ -4169,7 +4169,7 @@ class TestShortColumns(HelpTestCase):
     version                     = TestHelpBiggerOptionals.version
 
 
-class TestHelpBiggerOptionalGroups(HelpTestCase):
+klasse TestHelpBiggerOptionalGroups(HelpTestCase):
     """Make sure that argument help aligns when options are longer"""
 
     parser_signature = Sig(prog='PROG', description='DESCRIPTION',
@@ -4216,7 +4216,7 @@ class TestHelpBiggerOptionalGroups(HelpTestCase):
         '''
 
 
-class TestHelpBiggerPositionals(HelpTestCase):
+klasse TestHelpBiggerPositionals(HelpTestCase):
     """Make sure that help aligns when arguments are longer"""
 
     parser_signature = Sig(usage='USAGE', description='DESCRIPTION')
@@ -4247,7 +4247,7 @@ class TestHelpBiggerPositionals(HelpTestCase):
     version = ''
 
 
-class TestHelpReformatting(HelpTestCase):
+klasse TestHelpReformatting(HelpTestCase):
     """Make sure that text after short names starts on the first line"""
 
     parser_signature = Sig(
@@ -4299,7 +4299,7 @@ be wrapped
     version = ''
 
 
-class TestHelpWrappingShortNames(HelpTestCase):
+klasse TestHelpWrappingShortNames(HelpTestCase):
     """Make sure that text after short names starts on the first line"""
 
     parser_signature = Sig(prog='PROG', description= 'D\nD' * 30)
@@ -4339,7 +4339,7 @@ HHAAHHH
     version = ''
 
 
-class TestHelpWrappingLongNames(HelpTestCase):
+klasse TestHelpWrappingLongNames(HelpTestCase):
     """Make sure that text after long names starts on the next line"""
 
     parser_signature = Sig(usage='USAGE', description= 'D D' * 30)
@@ -4393,7 +4393,7 @@ VV VV VV
         '''
 
 
-class TestHelpUsage(HelpTestCase):
+klasse TestHelpUsage(HelpTestCase):
     """Test basic usage messages"""
 
     parser_signature = Sig(prog='PROG')
@@ -4450,7 +4450,7 @@ class TestHelpUsage(HelpTestCase):
     version = ''
 
 
-class TestHelpUsageWithParentheses(HelpTestCase):
+klasse TestHelpUsageWithParentheses(HelpTestCase):
     parser_signature = Sig(prog='PROG')
     argument_signatures = [
         Sig('positional', metavar='(example) positional'),
@@ -4472,7 +4472,7 @@ class TestHelpUsageWithParentheses(HelpTestCase):
     version = ''
 
 
-class TestHelpOnlyUserGroups(HelpTestCase):
+klasse TestHelpOnlyUserGroups(HelpTestCase):
     """Test basic usage messages"""
 
     parser_signature = Sig(prog='PROG', add_help=False)
@@ -4503,7 +4503,7 @@ class TestHelpOnlyUserGroups(HelpTestCase):
     version = ''
 
 
-class TestHelpUsageLongProg(HelpTestCase):
+klasse TestHelpUsageLongProg(HelpTestCase):
     """Test usage messages where the prog is long"""
 
     parser_signature = Sig(prog='P' * 60)
@@ -4532,7 +4532,7 @@ class TestHelpUsageLongProg(HelpTestCase):
     version = ''
 
 
-class TestHelpUsageLongProgOptionsWrap(HelpTestCase):
+klasse TestHelpUsageLongProgOptionsWrap(HelpTestCase):
     """Test usage messages where the prog is long and the optionals wrap"""
 
     parser_signature = Sig(prog='P' * 60)
@@ -4568,7 +4568,7 @@ class TestHelpUsageLongProgOptionsWrap(HelpTestCase):
     version = ''
 
 
-class TestHelpUsageLongProgPositionalsWrap(HelpTestCase):
+klasse TestHelpUsageLongProgPositionalsWrap(HelpTestCase):
     """Test usage messages where the prog is long and the positionals wrap"""
 
     parser_signature = Sig(prog='P' * 60, add_help=False)
@@ -4593,7 +4593,7 @@ class TestHelpUsageLongProgPositionalsWrap(HelpTestCase):
     version = ''
 
 
-class TestHelpUsageOptionalsWrap(HelpTestCase):
+klasse TestHelpUsageOptionalsWrap(HelpTestCase):
     """Test usage messages where the optionals wrap"""
 
     parser_signature = Sig(prog='PROG')
@@ -4631,7 +4631,7 @@ class TestHelpUsageOptionalsWrap(HelpTestCase):
     version = ''
 
 
-class TestHelpUsagePositionalsWrap(HelpTestCase):
+klasse TestHelpUsagePositionalsWrap(HelpTestCase):
     """Test usage messages where the positionals wrap"""
 
     parser_signature = Sig(prog='PROG')
@@ -4665,7 +4665,7 @@ class TestHelpUsagePositionalsWrap(HelpTestCase):
     version = ''
 
 
-class TestHelpUsageOptionalsPositionalsWrap(HelpTestCase):
+klasse TestHelpUsageOptionalsPositionalsWrap(HelpTestCase):
     """Test usage messages where the optionals and positionals wrap"""
 
     parser_signature = Sig(prog='PROG')
@@ -4701,7 +4701,7 @@ class TestHelpUsageOptionalsPositionalsWrap(HelpTestCase):
     version = ''
 
 
-class TestHelpUsageOptionalsOnlyWrap(HelpTestCase):
+klasse TestHelpUsageOptionalsOnlyWrap(HelpTestCase):
     """Test usage messages where there are only optionals and they wrap"""
 
     parser_signature = Sig(prog='PROG')
@@ -4727,7 +4727,7 @@ class TestHelpUsageOptionalsOnlyWrap(HelpTestCase):
     version = ''
 
 
-class TestHelpUsagePositionalsOnlyWrap(HelpTestCase):
+klasse TestHelpUsagePositionalsOnlyWrap(HelpTestCase):
     """Test usage messages where there are only positionals and they wrap"""
 
     parser_signature = Sig(prog='PROG', add_help=False)
@@ -4751,7 +4751,7 @@ class TestHelpUsagePositionalsOnlyWrap(HelpTestCase):
     version = ''
 
 
-class TestHelpUsageMetavarsSpacesParentheses(HelpTestCase):
+klasse TestHelpUsageMetavarsSpacesParentheses(HelpTestCase):
     # https://github.com/python/cpython/issues/62549
     # https://github.com/python/cpython/issues/89743
     parser_signature = Sig(prog='PROG')
@@ -4804,7 +4804,7 @@ class TestHelpUsageMetavarsSpacesParentheses(HelpTestCase):
 
 
 @force_not_colorized_test_class
-class TestHelpUsageNoWhitespaceCrash(TestCase):
+klasse TestHelpUsageNoWhitespaceCrash(TestCase):
 
     def test_all_suppressed_mutex_followed_by_long_arg(self):
         # https://github.com/python/cpython/issues/62090
@@ -4885,7 +4885,7 @@ class TestHelpUsageNoWhitespaceCrash(TestCase):
         self.assertEqual(parser.format_usage(), usage)
 
 
-class TestHelpVariableExpansion(HelpTestCase):
+klasse TestHelpVariableExpansion(HelpTestCase):
     """Test that variables are expanded properly in help messages"""
 
     parser_signature = Sig(prog='PROG')
@@ -4931,7 +4931,7 @@ class TestHelpVariableExpansion(HelpTestCase):
     version = ''
 
 
-class TestHelpVariableExpansionUsageSupplied(HelpTestCase):
+klasse TestHelpVariableExpansionUsageSupplied(HelpTestCase):
     """Test that variables are expanded properly when usage= is present"""
 
     parser_signature = Sig(prog='PROG', usage='%(prog)s FOO')
@@ -4948,7 +4948,7 @@ class TestHelpVariableExpansionUsageSupplied(HelpTestCase):
     version = ''
 
 
-class TestHelpVariableExpansionNoArguments(HelpTestCase):
+klasse TestHelpVariableExpansionNoArguments(HelpTestCase):
     """Test that variables are expanded properly with no arguments"""
 
     parser_signature = Sig(prog='PROG', add_help=False)
@@ -4961,7 +4961,7 @@ class TestHelpVariableExpansionNoArguments(HelpTestCase):
     version = ''
 
 
-class TestHelpSuppressUsage(HelpTestCase):
+klasse TestHelpSuppressUsage(HelpTestCase):
     """Test that items can be suppressed in usage messages"""
 
     parser_signature = Sig(prog='PROG', usage=argparse.SUPPRESS)
@@ -4982,7 +4982,7 @@ class TestHelpSuppressUsage(HelpTestCase):
     version = ''
 
 
-class TestHelpSuppressOptional(HelpTestCase):
+klasse TestHelpSuppressOptional(HelpTestCase):
     """Test that optional arguments can be suppressed in help messages"""
 
     parser_signature = Sig(prog='PROG', add_help=False)
@@ -5002,7 +5002,7 @@ class TestHelpSuppressOptional(HelpTestCase):
     version = ''
 
 
-class TestHelpSuppressOptionalGroup(HelpTestCase):
+klasse TestHelpSuppressOptionalGroup(HelpTestCase):
     """Test that optional groups can be suppressed in help messages"""
 
     parser_signature = Sig(prog='PROG')
@@ -5028,7 +5028,7 @@ class TestHelpSuppressOptionalGroup(HelpTestCase):
     version = ''
 
 
-class TestHelpSuppressPositional(HelpTestCase):
+klasse TestHelpSuppressPositional(HelpTestCase):
     """Test that positional arguments can be suppressed in help messages"""
 
     parser_signature = Sig(prog='PROG')
@@ -5049,7 +5049,7 @@ class TestHelpSuppressPositional(HelpTestCase):
     version = ''
 
 
-class TestHelpRequiredOptional(HelpTestCase):
+klasse TestHelpRequiredOptional(HelpTestCase):
     """Test that required options don't look optional"""
 
     parser_signature = Sig(prog='PROG')
@@ -5069,7 +5069,7 @@ class TestHelpRequiredOptional(HelpTestCase):
     version = ''
 
 
-class TestHelpAlternatePrefixChars(HelpTestCase):
+klasse TestHelpAlternatePrefixChars(HelpTestCase):
     """Test that options display with different prefix characters"""
 
     parser_signature = Sig(prog='PROG', prefix_chars='^;', add_help=False)
@@ -5090,7 +5090,7 @@ class TestHelpAlternatePrefixChars(HelpTestCase):
     version = ''
 
 
-class TestHelpNoHelpOptional(HelpTestCase):
+klasse TestHelpNoHelpOptional(HelpTestCase):
     """Test that the --help argument can be suppressed help messages"""
 
     parser_signature = Sig(prog='PROG', add_help=False)
@@ -5113,7 +5113,7 @@ class TestHelpNoHelpOptional(HelpTestCase):
     version = ''
 
 
-class TestHelpNone(HelpTestCase):
+klasse TestHelpNone(HelpTestCase):
     """Test that no errors occur if no help is specified"""
 
     parser_signature = Sig(prog='PROG')
@@ -5137,7 +5137,7 @@ class TestHelpNone(HelpTestCase):
     version = ''
 
 
-class TestHelpTupleMetavarOptional(HelpTestCase):
+klasse TestHelpTupleMetavarOptional(HelpTestCase):
     """Test specifying metavar as a tuple"""
 
     parser_signature = Sig(prog='PROG')
@@ -5164,7 +5164,7 @@ class TestHelpTupleMetavarOptional(HelpTestCase):
     version = ''
 
 
-class TestHelpTupleMetavarPositional(HelpTestCase):
+klasse TestHelpTupleMetavarPositional(HelpTestCase):
     """Test specifying metavar on a Positional as a tuple"""
 
     parser_signature = Sig(prog='PROG')
@@ -5192,7 +5192,7 @@ class TestHelpTupleMetavarPositional(HelpTestCase):
     version = ''
 
 
-class TestHelpRawText(HelpTestCase):
+klasse TestHelpRawText(HelpTestCase):
     """Test the RawTextHelpFormatter"""
 
     parser_signature = Sig(
@@ -5241,7 +5241,7 @@ class TestHelpRawText(HelpTestCase):
     version = ''
 
 
-class TestHelpRawDescription(HelpTestCase):
+klasse TestHelpRawDescription(HelpTestCase):
     """Test the RawTextHelpFormatter"""
 
     parser_signature = Sig(
@@ -5289,7 +5289,7 @@ class TestHelpRawDescription(HelpTestCase):
     version = ''
 
 
-class TestHelpArgumentDefaults(HelpTestCase):
+klasse TestHelpArgumentDefaults(HelpTestCase):
     """Test the ArgumentDefaultsHelpFormatter"""
 
     parser_signature = Sig(
@@ -5339,7 +5339,7 @@ class TestHelpArgumentDefaults(HelpTestCase):
         '''
     version = ''
 
-class TestHelpVersionAction(HelpTestCase):
+klasse TestHelpVersionAction(HelpTestCase):
     """Test the default help for the version action"""
 
     parser_signature = Sig(prog='PROG', description='description')
@@ -5359,7 +5359,7 @@ class TestHelpVersionAction(HelpTestCase):
     version = ''
 
 
-class TestHelpVersionActionSuppress(HelpTestCase):
+klasse TestHelpVersionActionSuppress(HelpTestCase):
     """Test that the --version argument can be suppressed in help messages"""
 
     parser_signature = Sig(prog='PROG')
@@ -5384,7 +5384,7 @@ class TestHelpVersionActionSuppress(HelpTestCase):
         '''
 
 
-class TestHelpSubparsersOrdering(HelpTestCase):
+klasse TestHelpSubparsersOrdering(HelpTestCase):
     """Test ordering of subcommands in help matches the code"""
     parser_signature = Sig(prog='PROG',
                            description='display some subcommands')
@@ -5413,7 +5413,7 @@ class TestHelpSubparsersOrdering(HelpTestCase):
         0.1
         '''
 
-class TestHelpSubparsersWithHelpOrdering(HelpTestCase):
+klasse TestHelpSubparsersWithHelpOrdering(HelpTestCase):
     """Test ordering of subcommands in help matches the code"""
     parser_signature = Sig(prog='PROG',
                            description='display some subcommands')
@@ -5456,7 +5456,7 @@ class TestHelpSubparsersWithHelpOrdering(HelpTestCase):
 
 
 
-class TestHelpMetavarTypeFormatter(HelpTestCase):
+klasse TestHelpMetavarTypeFormatter(HelpTestCase):
 
     def custom_type(string):
         return string
@@ -5486,7 +5486,7 @@ class TestHelpMetavarTypeFormatter(HelpTestCase):
 
 
 @force_not_colorized_test_class
-class TestHelpCustomHelpFormatter(TestCase):
+klasse TestHelpCustomHelpFormatter(TestCase):
     maxDiff = None
 
     def test_custom_formatter_function(self):
@@ -5514,7 +5514,7 @@ class TestHelpCustomHelpFormatter(TestCase):
         '''))
 
     def test_custom_formatter_class(self):
-        class CustomFormatter(argparse.RawTextHelpFormatter):
+        klasse CustomFormatter(argparse.RawTextHelpFormatter):
             def __init__(self, prog):
                 super().__init__(prog, indent_increment=5)
 
@@ -5579,7 +5579,7 @@ class TestHelpCustomHelpFormatter(TestCase):
 # Optional/Positional constructor tests
 # =====================================
 
-class TestInvalidArgumentConstructors(TestCase):
+klasse TestInvalidArgumentConstructors(TestCase):
     """Test a bunch of invalid Argument constructors"""
 
     def assertTypeError(self, *args, errmsg=None, **kwargs):
@@ -5708,10 +5708,10 @@ class TestInvalidArgumentConstructors(TestCase):
 
     def test_user_defined_action(self):
 
-        class Success(Exception):
+        klasse Success(Exception):
             pass
 
-        class Action(object):
+        klasse Action(object):
 
             def __init__(self,
                          option_strings,
@@ -5737,7 +5737,7 @@ class TestInvalidArgumentConstructors(TestCase):
 # Actions returned by add_argument
 # ================================
 
-class TestActionsReturned(TestCase):
+klasse TestActionsReturned(TestCase):
 
     def test_dest(self):
         parser = argparse.ArgumentParser()
@@ -5767,7 +5767,7 @@ class TestActionsReturned(TestCase):
 # Argument conflict handling tests
 # ================================
 
-class TestConflictHandling(TestCase):
+klasse TestConflictHandling(TestCase):
 
     def test_bad_type(self):
         self.assertRaises(ValueError, argparse.ArgumentParser,
@@ -5830,7 +5830,7 @@ class TestConflictHandling(TestCase):
 # Help and Version option tests
 # =============================
 
-class TestOptionalsHelpVersionActions(TestCase):
+klasse TestOptionalsHelpVersionActions(TestCase):
     """Test the help and version actions"""
 
     def assertPrintHelpExit(self, parser, args_str):
@@ -5906,7 +5906,7 @@ class TestOptionalsHelpVersionActions(TestCase):
 # str() and repr() tests
 # ======================
 
-class TestStrings(TestCase):
+klasse TestStrings(TestCase):
     """Test str()  and repr() on Optionals and Positionals"""
 
     def assertStringEqual(self, obj, result_string):
@@ -5981,7 +5981,7 @@ class TestStrings(TestCase):
 # Namespace tests
 # ===============
 
-class TestNamespace(TestCase):
+klasse TestNamespace(TestCase):
 
     def test_constructor(self):
         ns = argparse.Namespace()
@@ -6018,7 +6018,7 @@ class TestNamespace(TestCase):
 # File encoding tests
 # ===================
 
-class TestEncoding(TestCase):
+klasse TestEncoding(TestCase):
 
     def _test_module_encoding(self, path):
         path, _ = os.path.splitext(path)
@@ -6036,7 +6036,7 @@ class TestEncoding(TestCase):
 # ArgumentError tests
 # ===================
 
-class TestArgumentError(TestCase):
+klasse TestArgumentError(TestCase):
 
     def test_argument_error(self):
         msg = "my error here"
@@ -6047,7 +6047,7 @@ class TestArgumentError(TestCase):
 # ArgumentTypeError tests
 # =======================
 
-class TestArgumentTypeError(TestCase):
+klasse TestArgumentTypeError(TestCase):
 
     @force_not_colorized
     def test_argument_type_error(self):
@@ -6066,7 +6066,7 @@ class TestArgumentTypeError(TestCase):
 # MessageContentError tests
 # =========================
 
-class TestMessageContentError(TestCase):
+klasse TestMessageContentError(TestCase):
 
     def test_missing_argument_name_in_message(self):
         parser = ErrorRaisingArgumentParser(prog='PROG', usage='')
@@ -6127,7 +6127,7 @@ class TestMessageContentError(TestCase):
 # Check that the type function is called only once
 # ================================================
 
-class TestTypeFunctionCallOnlyOnce(TestCase):
+klasse TestTypeFunctionCallOnlyOnce(TestCase):
 
     def test_type_function_call_only_once(self):
         def spam(string_to_convert):
@@ -6144,7 +6144,7 @@ class TestTypeFunctionCallOnlyOnce(TestCase):
 # Check that deprecated arguments output warning
 # ==============================================
 
-class TestDeprecatedArguments(TestCase):
+klasse TestDeprecatedArguments(TestCase):
 
     def test_deprecated_option(self):
         parser = argparse.ArgumentParser()
@@ -6276,7 +6276,7 @@ class TestDeprecatedArguments(TestCase):
 # Check semantics regarding the default argument and type conversion
 # ==================================================================
 
-class TestTypeFunctionCalledOnDefault(TestCase):
+klasse TestTypeFunctionCalledOnDefault(TestCase):
 
     def test_type_function_call_with_non_string_default(self):
         def spam(int_to_convert):
@@ -6325,7 +6325,7 @@ class TestTypeFunctionCalledOnDefault(TestCase):
 # parse_known_args tests
 # ======================
 
-class TestParseKnownArgs(TestCase):
+klasse TestParseKnownArgs(TestCase):
 
     def test_arguments_tuple(self):
         parser = argparse.ArgumentParser()
@@ -6370,7 +6370,7 @@ class TestParseKnownArgs(TestCase):
         self.assertEqual(NS(x=[]), args)
 
 
-class TestDoubleDash(TestCase):
+klasse TestDoubleDash(TestCase):
     def test_single_argument_option(self):
         parser = argparse.ArgumentParser(exit_on_error=False)
         parser.add_argument('-f', '--foo')
@@ -6501,7 +6501,7 @@ class TestDoubleDash(TestCase):
 # parse_intermixed_args tests
 # ===========================
 
-class TestIntermixedArgs(TestCase):
+klasse TestIntermixedArgs(TestCase):
     def test_basic(self):
         # test parsing intermixed optionals and positionals
         parser = argparse.ArgumentParser(prog='PROG')
@@ -6596,7 +6596,7 @@ class TestIntermixedArgs(TestCase):
         self.assertRaises(ArgumentParserError, parser.parse_intermixed_args, ['a'])
 
 
-class TestIntermixedMessageContentError(TestCase):
+klasse TestIntermixedMessageContentError(TestCase):
     # case where Intermixed gives different error message
     # error is raised by 1st parsing step
     def test_missing_argument_name_in_message(self):
@@ -6620,7 +6620,7 @@ class TestIntermixedMessageContentError(TestCase):
 # add_argument metavar tests
 # ==========================
 
-class TestAddArgumentMetavar(TestCase):
+klasse TestAddArgumentMetavar(TestCase):
 
     EXPECTED_MESSAGE = "length of metavar tuple does not match nargs"
 
@@ -6788,7 +6788,7 @@ class TestAddArgumentMetavar(TestCase):
         self.do_test_no_exception(nargs=3, metavar=("1", "2", "3"))
 
 
-class TestInvalidNargs(TestCase):
+klasse TestInvalidNargs(TestCase):
 
     EXPECTED_INVALID_MESSAGE = "invalid nargs value"
     EXPECTED_RANGE_MESSAGE = ("nargs for store actions must be != 0; if you "
@@ -6820,7 +6820,7 @@ class TestInvalidNargs(TestCase):
 # from argparse import * tests
 # ============================
 
-class TestImportStar(TestCase):
+klasse TestImportStar(TestCase):
 
     def test(self):
         for name in argparse.__all__:
@@ -6836,7 +6836,7 @@ class TestImportStar(TestCase):
         self.assertEqual(sorted(items), sorted(argparse.__all__))
 
 
-class TestWrappingMetavar(TestCase):
+klasse TestWrappingMetavar(TestCase):
 
     def setUp(self):
         super().setUp()
@@ -6861,7 +6861,7 @@ class TestWrappingMetavar(TestCase):
             '''))
 
 
-class TestExitOnError(TestCase):
+klasse TestExitOnError(TestCase):
 
     def setUp(self):
         self.parser = argparse.ArgumentParser(exit_on_error=False,
@@ -7015,7 +7015,7 @@ class TestExitOnError(TestCase):
 
 
 @force_not_colorized_test_class
-class TestProgName(TestCase):
+klasse TestProgName(TestCase):
     source = textwrap.dedent('''\
         import argparse
         parser = argparse.ArgumentParser()
@@ -7111,7 +7111,7 @@ class TestProgName(TestCase):
 # Translation tests
 # =================
 
-class TestTranslations(TestTranslationsBase):
+klasse TestTranslations(TestTranslationsBase):
 
     def test_translations(self):
         self.assertMsgidsEqual(argparse)
@@ -7122,7 +7122,7 @@ class TestTranslations(TestTranslationsBase):
 # ===========
 
 
-class TestColorized(TestCase):
+klasse TestColorized(TestCase):
     maxDiff = None
 
     def setUp(self):
@@ -7319,7 +7319,7 @@ class TestColorized(TestCase):
         '''))
 
     def test_custom_formatter_class(self):
-        class CustomFormatter(argparse.RawTextHelpFormatter):
+        klasse CustomFormatter(argparse.RawTextHelpFormatter):
             def __init__(self, prog):
                 super().__init__(prog, indent_increment=5)
 

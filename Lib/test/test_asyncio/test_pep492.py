@@ -15,7 +15,7 @@ def tearDownModule():
 
 
 # Test that asyncio.iscoroutine() uses collections.abc.Coroutine
-class FakeCoro:
+klasse FakeCoro:
     def send(self, value):
         pass
 
@@ -29,7 +29,7 @@ class FakeCoro:
         yield
 
 
-class BaseTest(test_utils.TestCase):
+klasse BaseTest(test_utils.TestCase):
 
     def setUp(self):
         super().setUp()
@@ -40,7 +40,7 @@ class BaseTest(test_utils.TestCase):
         self.set_event_loop(self.loop)
 
 
-class LockTests(BaseTest):
+klasse LockTests(BaseTest):
 
     def test_context_manager_async_with(self):
         primitives = [
@@ -87,7 +87,7 @@ class LockTests(BaseTest):
             self.assertFalse(primitive.locked())
 
 
-class StreamReaderTests(BaseTest):
+klasse StreamReaderTests(BaseTest):
 
     def test_readline(self):
         DATA = b'line1\nline2\nline3'
@@ -106,7 +106,7 @@ class StreamReaderTests(BaseTest):
         self.assertEqual(data, [b'line1\n', b'line2\n', b'line3'])
 
 
-class CoroutineTests(BaseTest):
+klasse CoroutineTests(BaseTest):
 
     def test_iscoroutine(self):
         async def foo(): pass

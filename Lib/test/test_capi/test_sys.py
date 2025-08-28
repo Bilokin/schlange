@@ -11,7 +11,7 @@ except ImportError:
 
 NULL = None
 
-class CAPITest(unittest.TestCase):
+klasse CAPITest(unittest.TestCase):
     # TODO: Test the following functions:
     #
     #   PySys_Audit()

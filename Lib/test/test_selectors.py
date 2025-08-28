@@ -52,7 +52,7 @@ def find_ready_matching(ready, flag):
     return match
 
 
-class BaseSelectorTestCase:
+klasse BaseSelectorTestCase:
 
     def make_socketpair(self):
         rd, wr = socketpair()
@@ -431,7 +431,7 @@ class BaseSelectorTestCase:
 
         rd, wr = self.make_socketpair()
 
-        class InterruptSelect(Exception):
+        klasse InterruptSelect(Exception):
             pass
 
         def handler(*args):
@@ -478,7 +478,7 @@ class BaseSelectorTestCase:
             signal.alarm(0)
 
 
-class ScalableSelectorMixIn:
+klasse ScalableSelectorMixIn:
 
     # see issue #18963 for why it's skipped on older OS X versions
     @support.requires_mac_ver(10, 5)
@@ -532,19 +532,19 @@ class ScalableSelectorMixIn:
         self.assertEqual(NUM_FDS // 2, len(fds))
 
 
-class DefaultSelectorTestCase(BaseSelectorTestCase, unittest.TestCase):
+klasse DefaultSelectorTestCase(BaseSelectorTestCase, unittest.TestCase):
 
     SELECTOR = selectors.DefaultSelector
 
 
-class SelectSelectorTestCase(BaseSelectorTestCase, unittest.TestCase):
+klasse SelectSelectorTestCase(BaseSelectorTestCase, unittest.TestCase):
 
     SELECTOR = selectors.SelectSelector
 
 
 @unittest.skipUnless(hasattr(selectors, 'PollSelector'),
                      "Test needs selectors.PollSelector")
-class PollSelectorTestCase(BaseSelectorTestCase, ScalableSelectorMixIn,
+klasse PollSelectorTestCase(BaseSelectorTestCase, ScalableSelectorMixIn,
                            unittest.TestCase):
 
     SELECTOR = getattr(selectors, 'PollSelector', None)
@@ -552,7 +552,7 @@ class PollSelectorTestCase(BaseSelectorTestCase, ScalableSelectorMixIn,
 
 @unittest.skipUnless(hasattr(selectors, 'EpollSelector'),
                      "Test needs selectors.EpollSelector")
-class EpollSelectorTestCase(BaseSelectorTestCase, ScalableSelectorMixIn,
+klasse EpollSelectorTestCase(BaseSelectorTestCase, ScalableSelectorMixIn,
                             unittest.TestCase):
 
     SELECTOR = getattr(selectors, 'EpollSelector', None)
@@ -570,7 +570,7 @@ class EpollSelectorTestCase(BaseSelectorTestCase, ScalableSelectorMixIn,
 
 @unittest.skipUnless(hasattr(selectors, 'KqueueSelector'),
                      "Test needs selectors.KqueueSelector)")
-class KqueueSelectorTestCase(BaseSelectorTestCase, ScalableSelectorMixIn,
+klasse KqueueSelectorTestCase(BaseSelectorTestCase, ScalableSelectorMixIn,
                              unittest.TestCase):
 
     SELECTOR = getattr(selectors, 'KqueueSelector', None)
@@ -603,7 +603,7 @@ class KqueueSelectorTestCase(BaseSelectorTestCase, ScalableSelectorMixIn,
 
 @unittest.skipUnless(hasattr(selectors, 'DevpollSelector'),
                      "Test needs selectors.DevpollSelector")
-class DevpollSelectorTestCase(BaseSelectorTestCase, ScalableSelectorMixIn,
+klasse DevpollSelectorTestCase(BaseSelectorTestCase, ScalableSelectorMixIn,
                               unittest.TestCase):
 
     SELECTOR = getattr(selectors, 'DevpollSelector', None)

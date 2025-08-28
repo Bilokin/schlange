@@ -11,7 +11,7 @@ from tkinter.simpledialog import askinteger
 from idlelib.config import idleConf
 
 
-class FormatParagraph:
+klasse FormatParagraph:
     """Format a paragraph, comment block, or selection to a max width.
 
     Does basic, standard text formatting, and also understands Python
@@ -209,7 +209,7 @@ def get_line_indent(line, tabwidth):
     return m.end(), len(m.group().expandtabs(tabwidth))
 
 
-class FormatRegion:
+klasse FormatRegion:
     "Format selected text (region)."
 
     def __init__(self, editwin):
@@ -353,7 +353,7 @@ class FormatRegion:
             maxvalue=16)
 
 
-class Indents:
+klasse Indents:
     "Change future indents."
 
     def __init__(self, editwin):
@@ -389,7 +389,7 @@ class Indents:
         return "break"
 
 
-class Rstrip:  # 'Strip Trailing Whitespace" on "Format" menu.
+klasse Rstrip:  # 'Strip Trailing Whitespace" on "Format" menu.
     def __init__(self, editwin):
         self.editwin = editwin
 

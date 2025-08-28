@@ -47,7 +47,7 @@ line3\r\n\
 .\r\n"""
 
 
-class DummyPOP3Handler(asynchat.async_chat):
+klasse DummyPOP3Handler(asynchat.async_chat):
 
     CAPAS = {'UIDL': [], 'IMPLEMENTATION': ['python-testlib-pop-server']}
     enable_UTF8 = False
@@ -204,7 +204,7 @@ class DummyPOP3Handler(asynchat.async_chat):
                 except ssl.SSLEOFError:
                     self.handle_close()
 
-class DummyPOP3Server(asyncore.dispatcher, threading.Thread):
+klasse DummyPOP3Server(asyncore.dispatcher, threading.Thread):
 
     handler = DummyPOP3Handler
 
@@ -255,7 +255,7 @@ class DummyPOP3Server(asyncore.dispatcher, threading.Thread):
         raise
 
 
-class TestPOP3Class(TestCase):
+klasse TestPOP3Class(TestCase):
     def assertOK(self, resp):
         self.assertStartsWith(resp, b"+OK")
 
@@ -424,7 +424,7 @@ class TestPOP3Class(TestCase):
 if SUPPORTS_SSL:
     from test.test_ftplib import SSLConnection
 
-    class DummyPOP3_SSLHandler(SSLConnection, DummyPOP3Handler):
+    klasse DummyPOP3_SSLHandler(SSLConnection, DummyPOP3Handler):
 
         def __init__(self, conn):
             asynchat.async_chat.__init__(self, conn)
@@ -437,7 +437,7 @@ if SUPPORTS_SSL:
 
 
 @requires_ssl
-class TestPOP3_SSLClass(TestPOP3Class):
+klasse TestPOP3_SSLClass(TestPOP3Class):
     # repeat previous tests by using poplib.POP3_SSL
 
     def setUp(self):
@@ -472,7 +472,7 @@ class TestPOP3_SSLClass(TestPOP3Class):
 
 
 @requires_ssl
-class TestPOP3_TLSClass(TestPOP3Class):
+klasse TestPOP3_TLSClass(TestPOP3Class):
     # repeat previous tests by using poplib.POP3.stls()
 
     def setUp(self):
@@ -505,7 +505,7 @@ class TestPOP3_TLSClass(TestPOP3Class):
         self.assertFalse(b'STLS' in capa.keys())
 
 
-class TestTimeouts(TestCase):
+klasse TestTimeouts(TestCase):
 
     def setUp(self):
         self.evt = threading.Event()

@@ -13,7 +13,7 @@ from .signals import registerResult
 __unittest = True
 
 
-class _WritelnDecorator(object):
+klasse _WritelnDecorator(object):
     """Used to decorate file-like objects with a handy 'writeln' method"""
     def __init__(self, stream):
         self.stream = stream
@@ -29,8 +29,8 @@ class _WritelnDecorator(object):
         self.write('\n')  # text-mode streams translate to \r\n if needed
 
 
-class TextTestResult(result.TestResult):
-    """A test result class that can print formatted text results to a stream.
+klasse TextTestResult(result.TestResult):
+    """A test result klasse that can print formatted text results to a stream.
 
     Used by TextTestRunner.
     """
@@ -178,8 +178,8 @@ class TextTestResult(result.TestResult):
             self.stream.flush()
 
 
-class TextTestRunner(object):
-    """A test runner class that displays results in textual form.
+klasse TextTestRunner(object):
+    """A test runner klasse that displays results in textual form.
 
     It prints out the names of tests as they are run, errors as they
     occur, and a summary of the results at the end of the test run.

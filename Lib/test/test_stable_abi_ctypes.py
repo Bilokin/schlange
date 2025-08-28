@@ -21,7 +21,7 @@ if feature_macros['Py_TRACE_REFS']:
 
 ctypes_test = import_module('ctypes')
 
-class TestStableABIAvailability(unittest.TestCase):
+klasse TestStableABIAvailability(unittest.TestCase):
     def test_available_symbols(self):
 
         for symbol_name in SYMBOL_NAMES:

@@ -59,11 +59,11 @@ def tearDownModule():
     shutil.rmtree(TEMP_DIR)
 
 
-class CustomError(Exception):
+klasse CustomError(Exception):
     pass
 
 
-class TzPathUserMixin:
+klasse TzPathUserMixin:
     """
     Adds a setUp() and tearDown() to make TZPATH manipulations thread-safe.
 
@@ -95,12 +95,12 @@ class TzPathUserMixin:
         super().setUp()
 
 
-class DatetimeSubclassMixin:
+klasse DatetimeSubclassMixin:
     """
     Replaces all ZoneTransition transition dates with a datetime subclass.
     """
 
-    class DatetimeSubclass(datetime):
+    klasse DatetimeSubclass(datetime):
         @classmethod
         def from_datetime(cls, dt):
             return cls(
@@ -124,7 +124,7 @@ class DatetimeSubclassMixin:
             yield new_zt
 
 
-class ZoneInfoTest(TzPathUserMixin, ZoneInfoTestBase):
+klasse ZoneInfoTest(TzPathUserMixin, ZoneInfoTestBase):
     module = py_zoneinfo
     class_name = "ZoneInfo"
 
@@ -410,7 +410,7 @@ class ZoneInfoTest(TzPathUserMixin, ZoneInfoTestBase):
                 self.assertEqual(t.dst(), offset.dst)
 
     def test_cache_exception(self):
-        class Incomparable(str):
+        klasse Incomparable(str):
             eq_called = False
             def __eq__(self, other):
                 self.eq_called = True
@@ -429,7 +429,7 @@ class ZoneInfoTest(TzPathUserMixin, ZoneInfoTestBase):
             self.assertIs(tz2, tz1)
 
 
-class CZoneInfoTest(ZoneInfoTest):
+klasse CZoneInfoTest(ZoneInfoTest):
     module = c_zoneinfo
 
     @unittest.skipIf(MISSING_C_DOCSTRINGS,
@@ -457,7 +457,7 @@ class CZoneInfoTest(ZoneInfoTest):
         """
 
         def to_subclass(dt):
-            class SameAddSubclass(type(dt)):
+            klasse SameAddSubclass(type(dt)):
                 def __add__(self, other):
                     if other == timedelta(0):
                         return self
@@ -498,20 +498,20 @@ class CZoneInfoTest(ZoneInfoTest):
                 self.assertEqual(dt.fold, 0)
 
 
-class ZoneInfoDatetimeSubclassTest(DatetimeSubclassMixin, ZoneInfoTest):
+klasse ZoneInfoDatetimeSubclassTest(DatetimeSubclassMixin, ZoneInfoTest):
     pass
 
 
-class CZoneInfoDatetimeSubclassTest(DatetimeSubclassMixin, CZoneInfoTest):
+klasse CZoneInfoDatetimeSubclassTest(DatetimeSubclassMixin, CZoneInfoTest):
     pass
 
 
-class ZoneInfoSubclassTest(ZoneInfoTest):
+klasse ZoneInfoSubclassTest(ZoneInfoTest):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
 
-        class ZISubclass(cls.klass):
+        klasse ZISubclass(cls.klass):
             pass
 
         cls.class_name = "ZISubclass"
@@ -527,11 +527,11 @@ class ZoneInfoSubclassTest(ZoneInfoTest):
         self.assertIsInstance(sub_obj, self.klass)
 
 
-class CZoneInfoSubclassTest(ZoneInfoSubclassTest):
+klasse CZoneInfoSubclassTest(ZoneInfoSubclassTest):
     module = c_zoneinfo
 
 
-class ZoneInfoV1Test(ZoneInfoTest):
+klasse ZoneInfoV1Test(ZoneInfoTest):
     @property
     def zoneinfo_data(self):
         return ZONEINFO_DATA_V1
@@ -549,14 +549,14 @@ class ZoneInfoV1Test(ZoneInfoTest):
                 yield zt
 
 
-class CZoneInfoV1Test(ZoneInfoV1Test):
+klasse CZoneInfoV1Test(ZoneInfoV1Test):
     module = c_zoneinfo
 
 
 @unittest.skipIf(
     not HAS_TZDATA_PKG, "Skipping tzdata-specific tests: tzdata not installed"
 )
-class TZDataTests(ZoneInfoTest):
+klasse TZDataTests(ZoneInfoTest):
     """
     Runs all the ZoneInfoTest tests, but against the tzdata package
 
@@ -580,11 +580,11 @@ class TZDataTests(ZoneInfoTest):
 @unittest.skipIf(
     not HAS_TZDATA_PKG, "Skipping tzdata-specific tests: tzdata not installed"
 )
-class CTZDataTests(TZDataTests):
+klasse CTZDataTests(TZDataTests):
     module = c_zoneinfo
 
 
-class WeirdZoneTest(ZoneInfoTestBase):
+klasse WeirdZoneTest(ZoneInfoTestBase):
     module = py_zoneinfo
 
     def test_one_transition(self):
@@ -940,11 +940,11 @@ class WeirdZoneTest(ZoneInfoTestBase):
         return zonefile
 
 
-class CWeirdZoneTest(WeirdZoneTest):
+klasse CWeirdZoneTest(WeirdZoneTest):
     module = c_zoneinfo
 
 
-class TZStrTest(ZoneInfoTestBase):
+klasse TZStrTest(ZoneInfoTestBase):
     module = py_zoneinfo
 
     NORMAL = 0
@@ -1444,11 +1444,11 @@ class TZStrTest(ZoneInfoTestBase):
         cls.test_cases = cases
 
 
-class CTZStrTest(TZStrTest):
+klasse CTZStrTest(TZStrTest):
     module = c_zoneinfo
 
 
-class ZoneInfoCacheTest(TzPathUserMixin, ZoneInfoTestBase):
+klasse ZoneInfoCacheTest(TzPathUserMixin, ZoneInfoTestBase):
     module = py_zoneinfo
 
     def setUp(self):
@@ -1532,7 +1532,7 @@ class ZoneInfoCacheTest(TzPathUserMixin, ZoneInfoTestBase):
         self.assertIs(tok0, tok1)
 
     def test_clear_cache_refleak(self):
-        class Stringy(str):
+        klasse Stringy(str):
             allow_comparisons = True
             def __eq__(self, other):
                 if not self.allow_comparisons:
@@ -1552,11 +1552,11 @@ class ZoneInfoCacheTest(TzPathUserMixin, ZoneInfoTestBase):
             pass
 
 
-class CZoneInfoCacheTest(ZoneInfoCacheTest):
+klasse CZoneInfoCacheTest(ZoneInfoCacheTest):
     module = c_zoneinfo
 
 
-class ZoneInfoPickleTest(TzPathUserMixin, ZoneInfoTestBase):
+klasse ZoneInfoPickleTest(TzPathUserMixin, ZoneInfoTestBase):
     module = py_zoneinfo
 
     def setUp(self):
@@ -1670,11 +1670,11 @@ class ZoneInfoPickleTest(TzPathUserMixin, ZoneInfoTestBase):
                 self.assertIs(zi, zi_rt_2)
 
 
-class CZoneInfoPickleTest(ZoneInfoPickleTest):
+klasse CZoneInfoPickleTest(ZoneInfoPickleTest):
     module = c_zoneinfo
 
 
-class CallingConventionTest(ZoneInfoTestBase):
+klasse CallingConventionTest(ZoneInfoTestBase):
     """Tests for functions with restricted calling conventions."""
 
     module = py_zoneinfo
@@ -1693,11 +1693,11 @@ class CallingConventionTest(ZoneInfoTestBase):
             self.klass.clear_cache(["UTC"])
 
 
-class CCallingConventionTest(CallingConventionTest):
+klasse CCallingConventionTest(CallingConventionTest):
     module = c_zoneinfo
 
 
-class TzPathTest(TzPathUserMixin, ZoneInfoTestBase):
+klasse TzPathTest(TzPathUserMixin, ZoneInfoTestBase):
     module = py_zoneinfo
 
     @staticmethod
@@ -1816,11 +1816,11 @@ class TzPathTest(TzPathUserMixin, ZoneInfoTestBase):
         self.assertSequenceEqual(tzpath_1, query_1)
 
 
-class CTzPathTest(TzPathTest):
+klasse CTzPathTest(TzPathTest):
     module = c_zoneinfo
 
 
-class TestModule(ZoneInfoTestBase):
+klasse TestModule(ZoneInfoTestBase):
     module = py_zoneinfo
 
     @property
@@ -1943,11 +1943,11 @@ class TestModule(ZoneInfoTestBase):
                 self.assertEqual(actual, expected)
 
 
-class CTestModule(TestModule):
+klasse CTestModule(TestModule):
     module = c_zoneinfo
 
 
-class MiscTests(unittest.TestCase):
+klasse MiscTests(unittest.TestCase):
     def test_pydatetime(self):
         # Test that zoneinfo works if the C implementation of datetime
         # is not available and the Python implementation of datetime is used.
@@ -1967,7 +1967,7 @@ class MiscTests(unittest.TestCase):
             PYTHONTZPATH=str(ZONEINFO_DATA.tzpath))
 
 
-class ExtensionBuiltTest(unittest.TestCase):
+klasse ExtensionBuiltTest(unittest.TestCase):
     """Smoke test to ensure that the C and Python extensions are both tested.
 
     Because the intention is for the Python and C versions of ZoneInfo to
@@ -1990,14 +1990,14 @@ class ExtensionBuiltTest(unittest.TestCase):
 
 
 @dataclasses.dataclass(frozen=True)
-class ZoneOffset:
+klasse ZoneOffset:
     tzname: str
     utcoffset: timedelta
     dst: timedelta = ZERO
 
 
 @dataclasses.dataclass(frozen=True)
-class ZoneTransition:
+klasse ZoneTransition:
     transition: datetime
     offset_before: ZoneOffset
     offset_after: ZoneOffset
@@ -2037,7 +2037,7 @@ class ZoneTransition:
             return self.transition
 
 
-class ZoneInfoData:
+klasse ZoneInfoData:
     def __init__(self, source_json, tzpath, v1=False):
         self.tzpath = pathlib.Path(tzpath)
         self.keys = []
@@ -2102,7 +2102,7 @@ class ZoneInfoData:
         return out
 
 
-class ZoneDumpData:
+klasse ZoneDumpData:
     @classmethod
     def transition_keys(cls):
         return cls._get_zonedump().keys()

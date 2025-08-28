@@ -53,7 +53,7 @@ def _supports_sched():
 requires_sched = unittest.skipUnless(_supports_sched(), 'requires POSIX scheduler API')
 
 
-class PosixTester(unittest.TestCase):
+klasse PosixTester(unittest.TestCase):
 
     def setUp(self):
         # create empty file
@@ -1568,7 +1568,7 @@ class PosixTester(unittest.TestCase):
 
 
 # tests for the posix *at functions follow
-class TestPosixDirFd(unittest.TestCase):
+klasse TestPosixDirFd(unittest.TestCase):
     count = 0
 
     @contextmanager
@@ -1775,7 +1775,7 @@ class TestPosixDirFd(unittest.TestCase):
             self.assertTrue(stat.S_ISFIFO(posix.stat(fullname).st_mode))
 
 
-class PosixGroupsTester(unittest.TestCase):
+klasse PosixGroupsTester(unittest.TestCase):
 
     def setUp(self):
         if posix.getuid() != 0:
@@ -1811,7 +1811,7 @@ class PosixGroupsTester(unittest.TestCase):
             self.assertListEqual(groups, posix.getgroups())
 
 
-class _PosixSpawnMixin:
+klasse _PosixSpawnMixin:
     # Program which does nothing and exits with status 0 (success)
     NOOP_PROGRAM = (sys.executable, '-I', '-S', '-c', 'pass')
     spawn_func = None
@@ -2154,13 +2154,13 @@ class _PosixSpawnMixin:
 
 @unittest.skipUnless(hasattr(os, 'posix_spawn'), "test needs os.posix_spawn")
 @support.requires_subprocess()
-class TestPosixSpawn(unittest.TestCase, _PosixSpawnMixin):
+klasse TestPosixSpawn(unittest.TestCase, _PosixSpawnMixin):
     spawn_func = getattr(posix, 'posix_spawn', None)
 
 
 @unittest.skipUnless(hasattr(os, 'posix_spawnp'), "test needs os.posix_spawnp")
 @support.requires_subprocess()
-class TestPosixSpawnP(unittest.TestCase, _PosixSpawnMixin):
+klasse TestPosixSpawnP(unittest.TestCase, _PosixSpawnMixin):
     spawn_func = getattr(posix, 'posix_spawnp', None)
 
     @os_helper.skip_unless_symlink
@@ -2197,7 +2197,7 @@ class TestPosixSpawnP(unittest.TestCase, _PosixSpawnMixin):
 
 
 @unittest.skipUnless(sys.platform == "darwin", "test weak linking on macOS")
-class TestPosixWeaklinking(unittest.TestCase):
+klasse TestPosixWeaklinking(unittest.TestCase):
     # These test cases verify that weak linking support on macOS works
     # as expected. These cases only test new behaviour introduced by weak linking,
     # regular behaviour is tested by the normal test cases.
@@ -2452,7 +2452,7 @@ class TestPosixWeaklinking(unittest.TestCase):
                 os.utime("path", dir_fd=0)
 
 
-class NamespacesTests(unittest.TestCase):
+klasse NamespacesTests(unittest.TestCase):
     """Tests for os.unshare() and os.setns()."""
 
     @unittest.skipUnless(hasattr(os, 'unshare'), 'needs os.unshare()')

@@ -34,7 +34,7 @@ from abc import ABCMeta, abstractmethod
 
 __all__ = ["Number", "Complex", "Real", "Rational", "Integral"]
 
-class Number(metaclass=ABCMeta):
+klasse Number(metaclass=ABCMeta):
     """All numbers inherit from this class.
 
     If you just want to check if an argument x is a number, without
@@ -54,7 +54,7 @@ class Number(metaclass=ABCMeta):
 ## abstract reals are expected to interoperate (i.e. R1 + R2 should be
 ## expected to work if R1 and R2 are both Reals).
 
-class Complex(Number):
+klasse Complex(Number):
     """Complex defines the operations that work on the builtin complex type.
 
     In short, those are: a conversion to complex, .real, .imag, +, -,
@@ -169,7 +169,7 @@ class Complex(Number):
 Complex.register(complex)
 
 
-class Real(Complex):
+klasse Real(Complex):
     """To Complex, Real adds the operations that work on real numbers.
 
     In short, those are: a conversion to float, trunc(), divmod,
@@ -289,7 +289,7 @@ class Real(Complex):
 Real.register(float)
 
 
-class Rational(Real):
+klasse Rational(Real):
     """To Real, Rational adds numerator and denominator properties.
 
     The numerator and denominator values should be in lowest terms,
@@ -325,7 +325,7 @@ class Rational(Real):
         return int(self.numerator) / int(self.denominator)
 
 
-class Integral(Rational):
+klasse Integral(Rational):
     """Integral adds methods that work on integral numbers.
 
     In short, these are conversion to int, pow with modulus, and the

@@ -181,7 +181,7 @@ def make_header(decoded_seq, maxlinelen=None, header_name=None,
     return h
 
 
-class Header:
+klasse Header:
     def __init__(self, s=None, charset=None,
                  maxlinelen=None, header_name=None,
                  continuation_ws=' ', errors='strict'):
@@ -414,7 +414,7 @@ class Header:
         self._chunks = chunks
 
 
-class _ValueFormatter:
+klasse _ValueFormatter:
     def __init__(self, headerlen, maxlen, continuation_ws, splitchars):
         self._maxlen = maxlen
         self._continuation_ws = continuation_ws
@@ -542,7 +542,7 @@ class _ValueFormatter:
             self._current_line.reset(remainder)
 
 
-class _Accumulator(list):
+klasse _Accumulator(list):
 
     def __init__(self, initial_size=0):
         self._initial_size = initial_size

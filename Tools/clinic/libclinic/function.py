@@ -21,7 +21,7 @@ ParamDict = dict[str, "Parameter"]
 
 
 @dc.dataclass(repr=False)
-class Module:
+klasse Module:
     name: str
     module: Module | Clinic
 
@@ -36,7 +36,7 @@ class Module:
 
 
 @dc.dataclass(repr=False)
-class Class:
+klasse Class:
     name: str
     module: Module | Clinic
     cls: Class | None
@@ -52,7 +52,7 @@ class Class:
         return "<clinic.Class " + repr(self.name) + " at " + str(id(self)) + ">"
 
 
-class FunctionKind(enum.Enum):
+klasse FunctionKind(enum.Enum):
     CALLABLE        = enum.auto()
     STATIC_METHOD   = enum.auto()
     CLASS_METHOD    = enum.auto()
@@ -79,7 +79,7 @@ SETTER: Final = FunctionKind.SETTER
 
 
 @dc.dataclass(repr=False)
-class Function:
+klasse Function:
     """
     Mutable duck type for inspect.Function.
 
@@ -193,7 +193,7 @@ class Function:
 
 
 @dc.dataclass(repr=False, slots=True)
-class Parameter:
+klasse Parameter:
     """
     Mutable duck type of inspect.Parameter.
     """

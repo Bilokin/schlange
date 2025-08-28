@@ -6,7 +6,7 @@ from test.support import gc_collect
 from itertools import product
 
 
-class Test_Assertions(unittest.TestCase):
+klasse Test_Assertions(unittest.TestCase):
     def test_AlmostEqual(self):
         self.assertAlmostEqual(1.00000001, 1.0)
         self.assertNotAlmostEqual(1.0000001, 1.0)
@@ -102,11 +102,11 @@ class Test_Assertions(unittest.TestCase):
     def test_assertRaises_frames_survival(self):
         # Issue #9815: assertRaises should avoid keeping local variables
         # in a traceback alive.
-        class A:
+        klasse A:
             pass
         wr = None
 
-        class Foo(unittest.TestCase):
+        klasse Foo(unittest.TestCase):
 
             def foo(self):
                 nonlocal wr
@@ -141,20 +141,20 @@ class Test_Assertions(unittest.TestCase):
             self.fail('assertNotRegex should have failed.')
 
 
-class TestLongMessage(unittest.TestCase):
+klasse TestLongMessage(unittest.TestCase):
     """Test that the individual asserts honour longMessage.
     This actually tests all the message behaviour for
     asserts that use longMessage."""
 
     def setUp(self):
-        class TestableTestFalse(unittest.TestCase):
+        klasse TestableTestFalse(unittest.TestCase):
             longMessage = False
             failureException = self.failureException
 
             def testTest(self):
                 pass
 
-        class TestableTestTrue(unittest.TestCase):
+        klasse TestableTestTrue(unittest.TestCase):
             longMessage = True
             failureException = self.failureException
 

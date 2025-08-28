@@ -19,7 +19,7 @@ with test_tools.imports_under_tool("peg_generator"):
     from pegen.python_generator import PythonParserGenerator
 
 
-class TestPegen(unittest.TestCase):
+klasse TestPegen(unittest.TestCase):
     def test_parse_grammar(self) -> None:
         grammar_source = """
         start: sum NEWLINE
@@ -924,8 +924,8 @@ class TestPegen(unittest.TestCase):
         self.assertFalse(diff)
 
 
-class TestGrammarVisitor:
-    class Visitor(GrammarVisitor):
+klasse TestGrammarVisitor:
+    klasse Visitor(GrammarVisitor):
         def __init__(self) -> None:
             self.n_nodes = 0
 
@@ -1001,7 +1001,7 @@ class TestGrammarVisitor:
         self.assertEqual(visitor.n_nodes, 12)
 
 
-class TestGrammarVisualizer(unittest.TestCase):
+klasse TestGrammarVisualizer(unittest.TestCase):
     def test_simple_rule(self) -> None:
         grammar = """
         start: 'a' 'b'

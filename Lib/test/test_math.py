@@ -221,29 +221,29 @@ def result_check(expected, got, ulp_tol=5, abs_tol=0.0):
     else:
         return None
 
-class FloatLike:
+klasse FloatLike:
     def __init__(self, value):
         self.value = value
 
     def __float__(self):
         return self.value
 
-class IntSubclass(int):
+klasse IntSubclass(int):
     pass
 
 # Class providing an __index__ method.
-class MyIndexable(object):
+klasse MyIndexable(object):
     def __init__(self, value):
         self.value = value
 
     def __index__(self):
         return self.value
 
-class BadDescr:
+klasse BadDescr:
     def __get__(self, obj, objtype=None):
         raise ValueError
 
-class MathTests(unittest.TestCase):
+klasse MathTests(unittest.TestCase):
 
     def ftest(self, name, got, expected, ulp_tol=5, abs_tol=0.0):
         """Compare arguments expected and got, as floats, if either
@@ -418,15 +418,15 @@ class MathTests(unittest.TestCase):
         #self.assertEqual(math.ceil(NINF), NINF)
         #self.assertTrue(math.isnan(math.ceil(NAN)))
 
-        class TestCeil:
+        klasse TestCeil:
             def __ceil__(self):
                 return 42
-        class FloatCeil(float):
+        klasse FloatCeil(float):
             def __ceil__(self):
                 return 42
-        class TestNoCeil:
+        klasse TestNoCeil:
             pass
-        class TestBadCeil:
+        klasse TestBadCeil:
             __ceil__ = BadDescr()
         self.assertEqual(math.ceil(TestCeil()), 42)
         self.assertEqual(math.ceil(FloatCeil()), 42)
@@ -587,17 +587,17 @@ class MathTests(unittest.TestCase):
         #self.assertEqual(math.ceil(NINF), NINF)
         #self.assertTrue(math.isnan(math.floor(NAN)))
 
-        class TestFloorIsNone(float):
+        klasse TestFloorIsNone(float):
             __floor__ = None
-        class TestFloor:
+        klasse TestFloor:
             def __floor__(self):
                 return 42
-        class FloatFloor(float):
+        klasse FloatFloor(float):
             def __floor__(self):
                 return 42
-        class TestNoFloor:
+        klasse TestNoFloor:
             pass
-        class TestBadFloor:
+        klasse TestBadFloor:
             __floor__ = BadDescr()
         self.assertEqual(math.floor(TestFloor()), 42)
         self.assertEqual(math.floor(FloatFloor()), 42)
@@ -1098,7 +1098,7 @@ class MathTests(unittest.TestCase):
         )
 
         # Verify tuple subclasses are allowed
-        class T(tuple):
+        klasse T(tuple):
             pass
         self.assertEqual(dist(T((1, 2, 3)), ((4, 2, -1))), 5.0)
 
@@ -1131,7 +1131,7 @@ class MathTests(unittest.TestCase):
         with self.assertRaises(TypeError):
             dist([1], 2)
 
-        class BadFloat:
+        klasse BadFloat:
             __float__ = BadDescr()
 
         with self.assertRaises(ValueError):
@@ -1204,7 +1204,7 @@ class MathTests(unittest.TestCase):
         self.assertIs(type(s), int)
         self.assertEqual(s, 0)
 
-        class IntegerLike(object):
+        klasse IntegerLike(object):
             def __init__(self, value):
                 self.value = value
 
@@ -1457,7 +1457,7 @@ class MathTests(unittest.TestCase):
         self.assertEqual(sumprod([1], BasicIterClass(1)), 0)
 
         # Error in multiplication
-        class BadMultiply:
+        klasse BadMultiply:
             def __mul__(self, other):
                 raise RuntimeError
             def __rmul__(self, other):
@@ -1505,7 +1505,7 @@ class MathTests(unittest.TestCase):
         Decimal = decimal.Decimal
         Fraction = fractions.Fraction
 
-        class Int(int):
+        klasse Int(int):
             def __add__(self, other):
                 return Int(int(self) + int(other))
             def __mul__(self, other):
@@ -1515,7 +1515,7 @@ class MathTests(unittest.TestCase):
             def __repr__(self):
                 return f'Int({int(self)})'
 
-        class Flt(float):
+        klasse Flt(float):
             def __add__(self, other):
                 return Int(int(self) + int(other))
             def __mul__(self, other):
@@ -2043,15 +2043,15 @@ class MathTests(unittest.TestCase):
         self.assertEqual(math.trunc(-0.999999), -0)
         self.assertEqual(math.trunc(-100.999), -100)
 
-        class TestTrunc:
+        klasse TestTrunc:
             def __trunc__(self):
                 return 23
-        class FloatTrunc(float):
+        klasse FloatTrunc(float):
             def __trunc__(self):
                 return 23
-        class TestNoTrunc:
+        klasse TestNoTrunc:
             pass
-        class TestBadTrunc:
+        klasse TestBadTrunc:
             __trunc__ = BadDescr()
 
         self.assertEqual(math.trunc(TestTrunc()), 23)
@@ -2307,7 +2307,7 @@ class MathTests(unittest.TestCase):
         self.assertEqual(prod([1., F(3, 2)]), 1.5)
 
         # Error in multiplication
-        class BadMultiply:
+        klasse BadMultiply:
             def __rmul__(self, other):
                 raise RuntimeError
         with self.assertRaises(RuntimeError):
@@ -2611,7 +2611,7 @@ class MathTests(unittest.TestCase):
     def test_issue39871(self):
         # A SystemError should not be raised if the first arg to atan2(),
         # copysign(), or remainder() cannot be converted to a float.
-        class F:
+        klasse F:
             def __float__(self):
                 self.converted = True
                 1/0
@@ -2687,7 +2687,7 @@ class MathTests(unittest.TestCase):
         self.assertEqual(math.copysign(1.0, x), math.copysign(1.0, y))
 
 
-class IsCloseTests(unittest.TestCase):
+klasse IsCloseTests(unittest.TestCase):
     isclose = math.isclose  # subclasses should override this
 
     def assertIsClose(self, a, b, *args, **kwargs):
@@ -2810,7 +2810,7 @@ class IsCloseTests(unittest.TestCase):
         self.assertAllNotClose(fraction_examples, rel_tol=1e-9)
 
 
-class FMATests(unittest.TestCase):
+klasse FMATests(unittest.TestCase):
     """ Tests for math.fma. """
 
     def test_fma_nan_results(self):

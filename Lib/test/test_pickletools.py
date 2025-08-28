@@ -6,7 +6,7 @@ from test.pickletester import AbstractPickleTests
 import doctest
 import unittest
 
-class OptimizedPickleTests(AbstractPickleTests, unittest.TestCase):
+klasse OptimizedPickleTests(AbstractPickleTests, unittest.TestCase):
 
     def dumps(self, arg, proto=None, **kwargs):
         return pickletools.optimize(pickle.dumps(arg, proto, **kwargs))
@@ -63,7 +63,7 @@ class OptimizedPickleTests(AbstractPickleTests, unittest.TestCase):
         self.assertNotIn(pickle.BINPUT, pickled2)
 
 
-class SimpleReader:
+klasse SimpleReader:
     def __init__(self, data):
         self.data = data
         self.pos = 0
@@ -82,7 +82,7 @@ class SimpleReader:
         return data
 
 
-class GenopsTests(unittest.TestCase):
+klasse GenopsTests(unittest.TestCase):
     def test_genops(self):
         it = pickletools.genops(b'(I123\nK\x12J\x12\x34\x56\x78t.')
         self.assertEqual([(item[0].name,) +  item[1:] for item in it], [
@@ -156,7 +156,7 @@ class GenopsTests(unittest.TestCase):
             next(it)
 
 
-class DisTests(unittest.TestCase):
+klasse DisTests(unittest.TestCase):
     maxDiff = None
 
     def check_dis(self, data, expected, **kwargs):
@@ -481,7 +481,7 @@ highest protocol among opcodes = 0
         self.check_dis_error(b'L0x10L\n.', '', 'invalid literal for int')
 
 
-class MiscTestCase(unittest.TestCase):
+klasse MiscTestCase(unittest.TestCase):
     def test__all__(self):
         not_exported = {
             'bytes_types',

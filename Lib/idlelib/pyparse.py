@@ -99,7 +99,7 @@ _chew_ordinaryre = re.compile(r"""
 """, re.VERBOSE).match
 
 
-class ParseMap(dict):
+klasse ParseMap(dict):
     r"""Dict subclass that maps anything not in dict to 'x'.
 
     This is designed to be used with str.translate in study1.
@@ -122,7 +122,7 @@ trans.update((ord(c), ord(')')) for c in ")}]")  # close brackets => ')'.
 trans.update((ord(c), ord(c)) for c in "\"'\\\n#")  # Keep these.
 
 
-class Parser:
+klasse Parser:
 
     def __init__(self, indentwidth, tabwidth):
         self.indentwidth = indentwidth

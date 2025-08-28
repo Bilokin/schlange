@@ -18,7 +18,7 @@ from idlelib.delegator import Delegator
 #$ unix <Control-backslash>
 
 
-class UndoDelegator(Delegator):
+klasse UndoDelegator(Delegator):
 
     max_undo = 1000
 
@@ -159,8 +159,8 @@ class UndoDelegator(Delegator):
         return "break"
 
 
-class Command:
-    # Base class for Undoable commands
+klasse Command:
+    # Base klasse for Undoable commands
 
     tags = None
 
@@ -204,7 +204,7 @@ class Command:
             text.mark_set(name, index)
 
 
-class InsertCommand(Command):
+klasse InsertCommand(Command):
     # Undoable insert command
 
     def __init__(self, index1, chars, tags=None):
@@ -261,7 +261,7 @@ class InsertCommand(Command):
         return "punctuation"
 
 
-class DeleteCommand(Command):
+klasse DeleteCommand(Command):
     # Undoable delete command
 
     def __init__(self, index1, index2=None):
@@ -297,7 +297,7 @@ class DeleteCommand(Command):
         ##sys.__stderr__.write("undo: %s\n" % self)
 
 
-class CommandSequence(Command):
+klasse CommandSequence(Command):
     # Wrapper for a sequence of undoable cmds to be undone/redone
     # as a unit
 

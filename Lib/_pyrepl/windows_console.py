@@ -54,7 +54,7 @@ except:
     def get_last_error() -> int:
         return 42
 
-    class WinError(OSError):  # type: ignore[no-redef]
+    klasse WinError(OSError):  # type: ignore[no-redef]
         def __init__(self, err: int | None, descr: str | None = None) -> None:
             self.err = err
             self.descr = descr
@@ -123,7 +123,7 @@ WAIT_FAILED = 0xFFFFFFFF
 INFINITE = 0xFFFFFFFF
 
 
-class _error(Exception):
+klasse _error(Exception):
     pass
 
 def _supports_vt():
@@ -132,7 +132,7 @@ def _supports_vt():
     except AttributeError:
         return False
 
-class WindowsConsole(Console):
+klasse WindowsConsole(Console):
     def __init__(
         self,
         f_in: IO[bytes] | int = 0,
@@ -584,7 +584,7 @@ class WindowsConsole(Console):
 
 
 # Windows interop
-class CONSOLE_SCREEN_BUFFER_INFO(Structure):
+klasse CONSOLE_SCREEN_BUFFER_INFO(Structure):
     _fields_ = [
         ("dwSize", _COORD),
         ("dwCursorPosition", _COORD),
@@ -594,28 +594,28 @@ class CONSOLE_SCREEN_BUFFER_INFO(Structure):
     ]
 
 
-class CONSOLE_CURSOR_INFO(Structure):
+klasse CONSOLE_CURSOR_INFO(Structure):
     _fields_ = [
         ("dwSize", DWORD),
         ("bVisible", BOOL),
     ]
 
 
-class CHAR_INFO(Structure):
+klasse CHAR_INFO(Structure):
     _fields_ = [
         ("UnicodeChar", WCHAR),
         ("Attributes", WORD),
     ]
 
 
-class Char(Union):
+klasse Char(Union):
     _fields_ = [
         ("UnicodeChar", WCHAR),
         ("Char", CHAR),
     ]
 
 
-class KeyEvent(ctypes.Structure):
+klasse KeyEvent(ctypes.Structure):
     _fields_ = [
         ("bKeyDown", BOOL),
         ("wRepeatCount", WORD),
@@ -626,18 +626,18 @@ class KeyEvent(ctypes.Structure):
     ]
 
 
-class WindowsBufferSizeEvent(ctypes.Structure):
+klasse WindowsBufferSizeEvent(ctypes.Structure):
     _fields_ = [("dwSize", _COORD)]
 
 
-class ConsoleEvent(ctypes.Union):
+klasse ConsoleEvent(ctypes.Union):
     _fields_ = [
         ("KeyEvent", KeyEvent),
         ("WindowsBufferSizeEvent", WindowsBufferSizeEvent),
     ]
 
 
-class INPUT_RECORD(Structure):
+klasse INPUT_RECORD(Structure):
     _fields_ = [("EventType", WORD), ("Event", ConsoleEvent)]
 
 

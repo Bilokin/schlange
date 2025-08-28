@@ -42,7 +42,7 @@ def load_tests(loader, tests, pattern):
             cls.__qualname__ += suffix
 
             @functools.wraps(cls, updated=())
-            class Wrapper(cls):
+            klasse Wrapper(cls):
                 @classmethod
                 def setUpClass(cls_, module=module):
                     cls_._save_sys_modules = sys.modules.copy()

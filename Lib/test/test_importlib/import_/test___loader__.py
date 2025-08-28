@@ -4,7 +4,7 @@ import unittest
 from test.test_importlib import util
 
 
-class SpecLoaderMock:
+klasse SpecLoaderMock:
 
     def find_spec(self, fullname, path=None, target=None):
         return machinery.ModuleSpec(fullname, self)
@@ -16,7 +16,7 @@ class SpecLoaderMock:
         pass
 
 
-class SpecLoaderAttributeTests:
+klasse SpecLoaderAttributeTests:
 
     def test___loader__(self):
         loader = SpecLoaderMock()

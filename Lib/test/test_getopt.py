@@ -10,7 +10,7 @@ from test.support.os_helper import EnvironmentVarGuard
 
 sentinel = object()
 
-class GetoptTests(unittest.TestCase):
+klasse GetoptTests(unittest.TestCase):
     def setUp(self):
         self.env = self.enterContext(EnvironmentVarGuard())
         del self.env["POSIXLY_CORRECT"]
@@ -231,7 +231,7 @@ def test_libref_examples():
     """
 
 
-class TestTranslations(TestTranslationsBase):
+klasse TestTranslations(TestTranslationsBase):
     def test_translations(self):
         self.assertMsgidsEqual(getopt)
 

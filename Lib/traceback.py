@@ -95,7 +95,7 @@ _context_message = (
     "another exception occurred:\n\n")
 
 
-class _Sentinel:
+klasse _Sentinel:
     def __repr__(self):
         return "<implicit>"
 
@@ -276,7 +276,7 @@ def clear_frames(tb):
         tb = tb.tb_next
 
 
-class FrameSummary:
+klasse FrameSummary:
     """Information about a single frame from a traceback.
 
     - :attr:`filename` The filename for the frame.
@@ -438,7 +438,7 @@ def _get_code_position(code, instruction_index):
 _RECURSIVE_CUTOFF = 3 # Also hardcoded in traceback.c.
 
 
-class StackSummary(list):
+klasse StackSummary(list):
     """A list of FrameSummary objects, representing a stack of frames."""
 
     @classmethod
@@ -985,7 +985,7 @@ def _display_width(line, offset=None):
 
 
 
-class _ExceptionPrintContext:
+klasse _ExceptionPrintContext:
     def __init__(self):
         self.seen = set()
         self.exception_group_depth = 0
@@ -1008,7 +1008,7 @@ class _ExceptionPrintContext:
                 yield textwrap.indent(text, indent_str, lambda line: True)
 
 
-class TracebackException:
+klasse TracebackException:
     """An exception ready for rendering.
 
     The traceback module captures enough attributes from the original exception
@@ -1031,7 +1031,7 @@ class TracebackException:
     - :attr:`__suppress_context__` The *__suppress_context__* value from the
       original exception.
     - :attr:`stack` A `StackSummary` representing the traceback.
-    - :attr:`exc_type` (deprecated) The class of the original traceback.
+    - :attr:`exc_type` (deprecated) The klasse of the original traceback.
     - :attr:`exc_type_str` String display of exc_type
     - :attr:`filename` For syntax errors - the filename where the error
       occurred.

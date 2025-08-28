@@ -11,7 +11,7 @@ threading_helper.requires_working_threading(module=True)
 VERY_SHORT_TIMEOUT = 0.1
 
 
-class Something:
+klasse Something:
     def method_1(self):
         pass  # pragma: no cover
 
@@ -19,7 +19,7 @@ class Something:
         pass  # pragma: no cover
 
 
-class TestThreadingMock(unittest.TestCase):
+klasse TestThreadingMock(unittest.TestCase):
     def _call_after_delay(self, func, /, *args, **kwargs):
         time.sleep(kwargs.pop("delay"))
         func(*args, **kwargs)

@@ -14,7 +14,7 @@ _testcapi = import_helper.import_module('_testcapi')
 _testinternalcapi = import_helper.import_module('_testinternalcapi')
 
 
-class Constant(enum.IntEnum):
+klasse Constant(enum.IntEnum):
     Py_CONSTANT_NONE = 0
     Py_CONSTANT_FALSE = 1
     Py_CONSTANT_TRUE = 2
@@ -29,7 +29,7 @@ class Constant(enum.IntEnum):
     INVALID_CONSTANT = Py_CONSTANT_EMPTY_TUPLE + 1
 
 
-class GetConstantTest(unittest.TestCase):
+klasse GetConstantTest(unittest.TestCase):
     def check_get_constant(self, get_constant):
         self.assertIs(get_constant(Constant.Py_CONSTANT_NONE), None)
         self.assertIs(get_constant(Constant.Py_CONSTANT_FALSE), False)
@@ -59,10 +59,10 @@ class GetConstantTest(unittest.TestCase):
         self.check_get_constant(_testlimitedcapi.get_constant_borrowed)
 
 
-class PrintTest(unittest.TestCase):
+klasse PrintTest(unittest.TestCase):
     def testPyObjectPrintObject(self):
 
-        class PrintableObject:
+        klasse PrintableObject:
 
             def __repr__(self):
                 return "spam spam spam"
@@ -111,13 +111,13 @@ class PrintTest(unittest.TestCase):
             _testcapi.pyobject_print_os_error(output_filename)
 
 
-class ClearWeakRefsNoCallbacksTest(unittest.TestCase):
+klasse ClearWeakRefsNoCallbacksTest(unittest.TestCase):
     """Test PyUnstable_Object_ClearWeakRefsNoCallbacks"""
     def test_ClearWeakRefsNoCallbacks(self):
         """Ensure PyUnstable_Object_ClearWeakRefsNoCallbacks works"""
         import weakref
         import gc
-        class C:
+        klasse C:
             pass
         obj = C()
         messages = []
@@ -139,7 +139,7 @@ class ClearWeakRefsNoCallbacksTest(unittest.TestCase):
 
 
 @threading_helper.requires_working_threading()
-class EnableDeferredRefcountingTest(unittest.TestCase):
+klasse EnableDeferredRefcountingTest(unittest.TestCase):
     """Test PyUnstable_Object_EnableDeferredRefcount"""
     @support.requires_resource("cpu")
     def test_enable_deferred_refcount(self):
@@ -174,7 +174,7 @@ class EnableDeferredRefcountingTest(unittest.TestCase):
             self.assertTrue(_testinternalcapi.has_deferred_refcount(silly_list))
 
 
-class IsUniquelyReferencedTest(unittest.TestCase):
+klasse IsUniquelyReferencedTest(unittest.TestCase):
     """Test PyUnstable_Object_IsUniquelyReferenced"""
     def test_is_uniquely_referenced(self):
         self.assertTrue(_testcapi.is_uniquely_referenced(object()))
@@ -184,7 +184,7 @@ class IsUniquelyReferencedTest(unittest.TestCase):
         self.assertFalse(_testcapi.is_uniquely_referenced(42))
         # CRASHES is_uniquely_referenced(NULL)
 
-class CAPITest(unittest.TestCase):
+klasse CAPITest(unittest.TestCase):
     def check_negative_refcount(self, code):
         # bpo-35059: Check that Py_DECREF() reports the correct filename
         # when calling _Py_NegativeRefcount() to abort Python.
@@ -227,7 +227,7 @@ class CAPITest(unittest.TestCase):
         # handles destructors that are possibly re-entrant or trigger a GC.
         import gc
 
-        class MyObj:
+        klasse MyObj:
             def __del__(self):
                 gc.collect()
 

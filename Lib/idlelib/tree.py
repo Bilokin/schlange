@@ -81,7 +81,7 @@ def wheel_event(event, widget=None):
     return 'break'
 
 
-class TreeNode:
+klasse TreeNode:
 
     dy = 0
 
@@ -337,9 +337,9 @@ class TreeNode:
         self.canvas.focus_set()
 
 
-class TreeItem:
+klasse TreeItem:
 
-    """Abstract class representing tree items.
+    """Abstract klasse representing tree items.
 
     Methods should typically be overridden, otherwise a default action
     is used.
@@ -397,7 +397,7 @@ class TreeItem:
 
 # Example application
 
-class FileTreeItem(TreeItem):
+klasse FileTreeItem(TreeItem):
 
     """Example TreeItem subclass -- browse the file system."""
 
@@ -443,7 +443,7 @@ class FileTreeItem(TreeItem):
 
 # A canvas widget with scroll bars and some useful bindings
 
-class ScrolledCanvas:
+klasse ScrolledCanvas:
 
     def __init__(self, master, **opts):
         if 'yscrollincrement' not in opts:

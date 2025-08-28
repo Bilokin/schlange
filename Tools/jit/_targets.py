@@ -38,7 +38,7 @@ _R = typing.TypeVar(
 
 
 @dataclasses.dataclass
-class _Target(typing.Generic[_S, _R]):
+klasse _Target(typing.Generic[_S, _R]):
     triple: str
     condition: str
     _: dataclasses.KW_ONLY
@@ -250,7 +250,7 @@ class _Target(typing.Generic[_S, _R]):
             jit_stencils_new.unlink(missing_ok=True)
 
 
-class _COFF(
+klasse _COFF(
     _Target[_schema.COFFSection, _schema.COFFRelocation]
 ):  # pylint: disable = too-few-public-methods
     def _handle_section(
@@ -338,19 +338,19 @@ class _COFF(
         return _stencils.Hole(offset, kind, value, symbol, addend)
 
 
-class _COFF32(_COFF):
+klasse _COFF32(_COFF):
     # These mangle like Mach-O and other "older" formats:
     label_prefix = "L"
     symbol_prefix = "_"
 
 
-class _COFF64(_COFF):
+klasse _COFF64(_COFF):
     # These mangle like ELF and other "newer" formats:
     label_prefix = ".L"
     symbol_prefix = ""
 
 
-class _ELF(
+klasse _ELF(
     _Target[_schema.ELFSection, _schema.ELFRelocation]
 ):  # pylint: disable = too-few-public-methods
     label_prefix = ".L"
@@ -443,7 +443,7 @@ class _ELF(
         return _stencils.Hole(offset, kind, value, symbol, addend)
 
 
-class _MachO(
+klasse _MachO(
     _Target[_schema.MachOSection, _schema.MachORelocation]
 ):  # pylint: disable = too-few-public-methods
     label_prefix = "L"

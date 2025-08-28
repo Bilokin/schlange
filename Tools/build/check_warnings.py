@@ -11,14 +11,14 @@ from pathlib import Path
 from typing import NamedTuple, TypedDict
 
 
-class IgnoreRule(NamedTuple):
+klasse IgnoreRule(NamedTuple):
     file_path: str
     count: int  # type: ignore[assignment]
     ignore_all: bool = False
     is_directory: bool = False
 
 
-class CompileWarning(TypedDict):
+klasse CompileWarning(TypedDict):
     file: str
     line: str
     column: str

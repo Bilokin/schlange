@@ -1,4 +1,4 @@
-'''Test runner and result class for the regression test suite.
+'''Test runner and result klasse for the regression test suite.
 
 '''
 
@@ -11,7 +11,7 @@ import unittest
 from test import support
 from test.libregrtest.utils import sanitize_xml
 
-class RegressionTestResult(unittest.TextTestResult):
+klasse RegressionTestResult(unittest.TextTestResult):
     USE_XML = False
 
     def __init__(self, stream, descriptions, verbosity):
@@ -139,7 +139,7 @@ class RegressionTestResult(unittest.TextTestResult):
         e.set('failures', str(len(self.failures)))
         return e
 
-class QuietRegressionTestRunner:
+klasse QuietRegressionTestRunner:
     def __init__(self, stream, buffer=False):
         self.result = RegressionTestResult(stream, None, 0)
         self.result.buffer = buffer
@@ -163,7 +163,7 @@ if __name__ == '__main__':
     import xml.etree.ElementTree as ET
     RegressionTestResult.USE_XML = True
 
-    class TestTests(unittest.TestCase):
+    klasse TestTests(unittest.TestCase):
         def test_pass(self):
             pass
 

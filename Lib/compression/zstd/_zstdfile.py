@@ -17,7 +17,7 @@ def _nbytes(dat, /):
         return mv.nbytes
 
 
-class ZstdFile(_streams.BaseStream):
+klasse ZstdFile(_streams.BaseStream):
     """A file-like object providing transparent Zstandard (de)compression.
 
     A ZstdFile can act as a wrapper for an existing file object, or refer

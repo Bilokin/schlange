@@ -68,7 +68,7 @@ def get_terminal_keycodes(ti: TermInfo) -> dict[bytes, str]:
     return keycodes
 
 
-class EventQueue(BaseEventQueue):
+klasse EventQueue(BaseEventQueue):
     def __init__(self, fd: int, encoding: str, ti: TermInfo) -> None:
         keycodes = get_terminal_keycodes(ti)
         if os.isatty(fd):

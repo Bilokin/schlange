@@ -15,7 +15,7 @@ from queue import Queue
 families = [None]
 
 
-class Listener(object):
+klasse Listener(object):
 
     def __init__(self, address=None, family=None, backlog=1):
         self._backlog_queue = Queue(backlog)
@@ -48,7 +48,7 @@ def Pipe(duplex=True):
     return Connection(a, b), Connection(b, a)
 
 
-class Connection(object):
+klasse Connection(object):
 
     def __init__(self, _in, _out):
         self._out = _out

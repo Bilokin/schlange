@@ -2,14 +2,14 @@ import unittest
 from unittest import mock
 
 
-class SampleObject:
+klasse SampleObject:
 
     def method_sample1(self): pass
 
     def method_sample2(self): pass
 
 
-class TestSealable(unittest.TestCase):
+klasse TestSealable(unittest.TestCase):
 
     def test_attributes_return_more_mocks_by_default(self):
         m = mock.Mock()
@@ -173,12 +173,12 @@ class TestSealable(unittest.TestCase):
 
     def test_seal_with_autospec(self):
         # https://bugs.python.org/issue45156
-        class Foo:
+        klasse Foo:
             foo = 0
             def bar1(self): pass
             def bar2(self): pass
 
-            class Baz:
+            klasse Baz:
                 baz = 3
                 def ban(self): pass
 

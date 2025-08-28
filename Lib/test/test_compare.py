@@ -5,14 +5,14 @@ from fractions import Fraction
 from decimal import Decimal
 
 
-class ComparisonSimpleTest(unittest.TestCase):
+klasse ComparisonSimpleTest(unittest.TestCase):
     """Test equality and order comparisons for some simple cases."""
 
-    class Empty:
+    klasse Empty:
         def __repr__(self):
             return '<Empty>'
 
-    class Cmp:
+    klasse Cmp:
         def __init__(self, arg):
             self.arg = arg
 
@@ -54,12 +54,12 @@ class ComparisonSimpleTest(unittest.TestCase):
     def test_ne_high_priority(self):
         """object.__ne__() should allow reflected __ne__() to be tried"""
         calls = []
-        class Left:
+        klasse Left:
             # Inherits object.__ne__()
             def __eq__(*args):
                 calls.append('Left.__eq__')
                 return NotImplemented
-        class Right:
+        klasse Right:
             def __eq__(*args):
                 calls.append('Right.__eq__')
                 return NotImplemented
@@ -72,12 +72,12 @@ class ComparisonSimpleTest(unittest.TestCase):
     def test_ne_low_priority(self):
         """object.__ne__() should not invoke reflected __eq__()"""
         calls = []
-        class Base:
+        klasse Base:
             # Inherits object.__ne__()
             def __eq__(*args):
                 calls.append('Base.__eq__')
                 return NotImplemented
-        class Derived(Base):  # Subclassing forces higher priority
+        klasse Derived(Base):  # Subclassing forces higher priority
             def __eq__(*args):
                 calls.append('Derived.__eq__')
                 return NotImplemented
@@ -100,7 +100,7 @@ class ComparisonSimpleTest(unittest.TestCase):
             with self.subTest(name):
                 def unexpected(*args):
                     self.fail('Unexpected operator method called')
-                class C:
+                klasse C:
                     __ne__ = unexpected
                 for other, _ in ops:
                     if other != name:
@@ -119,14 +119,14 @@ class ComparisonSimpleTest(unittest.TestCase):
         self.assertEqual(ALWAYS_EQ, y)
 
 
-class ComparisonFullTest(unittest.TestCase):
+klasse ComparisonFullTest(unittest.TestCase):
     """Test equality and ordering comparisons for built-in types and
     user-defined classes that implement relevant combinations of rich
     comparison methods.
     """
 
-    class CompBase:
-        """Base class for classes with rich comparison methods.
+    klasse CompBase:
+        """Base klasse for classes with rich comparison methods.
 
         The "x" attribute should be set to an underlying value to compare.
 
@@ -135,21 +135,21 @@ class ComparisonFullTest(unittest.TestCase):
         """
 
     # Class without any rich comparison methods.
-    class CompNone(CompBase):
+    klasse CompNone(CompBase):
         meth = ()
 
     # Classes with all combinations of value-based equality comparison methods.
-    class CompEq(CompBase):
+    klasse CompEq(CompBase):
         meth = ("eq",)
         def __eq__(self, other):
             return self.x == other.x
 
-    class CompNe(CompBase):
+    klasse CompNe(CompBase):
         meth = ("ne",)
         def __ne__(self, other):
             return self.x != other.x
 
-    class CompEqNe(CompBase):
+    klasse CompEqNe(CompBase):
         meth = ("eq", "ne")
         def __eq__(self, other):
             return self.x == other.x
@@ -158,17 +158,17 @@ class ComparisonFullTest(unittest.TestCase):
 
     # Classes with all combinations of value-based less/greater-than order
     # comparison methods.
-    class CompLt(CompBase):
+    klasse CompLt(CompBase):
         meth = ("lt",)
         def __lt__(self, other):
             return self.x < other.x
 
-    class CompGt(CompBase):
+    klasse CompGt(CompBase):
         meth = ("gt",)
         def __gt__(self, other):
             return self.x > other.x
 
-    class CompLtGt(CompBase):
+    klasse CompLtGt(CompBase):
         meth = ("lt", "gt")
         def __lt__(self, other):
             return self.x < other.x
@@ -177,17 +177,17 @@ class ComparisonFullTest(unittest.TestCase):
 
     # Classes with all combinations of value-based less/greater-or-equal-than
     # order comparison methods
-    class CompLe(CompBase):
+    klasse CompLe(CompBase):
         meth = ("le",)
         def __le__(self, other):
             return self.x <= other.x
 
-    class CompGe(CompBase):
+    klasse CompGe(CompBase):
         meth = ("ge",)
         def __ge__(self, other):
             return self.x >= other.x
 
-    class CompLeGe(CompBase):
+    klasse CompLeGe(CompBase):
         meth = ("le", "ge")
         def __le__(self, other):
             return self.x <= other.x
@@ -384,7 +384,7 @@ class ComparisonFullTest(unittest.TestCase):
 
     def test_str_subclass(self):
         """Compare instances of str and a subclass."""
-        class StrSubclass(str):
+        klasse StrSubclass(str):
             pass
 
         s1 = str("a")

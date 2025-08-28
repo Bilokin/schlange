@@ -28,7 +28,7 @@ path_sep = _bootstrap_external.path_sep
 alt_path_sep = _bootstrap_external.path_separators[1:]
 
 
-class ZipImportError(ImportError):
+klasse ZipImportError(ImportError):
     pass
 
 # _read_directory() cache
@@ -46,7 +46,7 @@ MAX_COMMENT_LEN = (1 << 16) - 1
 MAX_UINT32 = 0xffffffff
 ZIP64_EXTRA_TAG = 0x1
 
-class zipimporter(_bootstrap_external._LoaderBasics):
+klasse zipimporter(_bootstrap_external._LoaderBasics):
     """zipimporter(archivepath) -> zipimporter object
 
     Create a new zipimporter instance. 'archivepath' must be a path to

@@ -53,7 +53,7 @@ def _convert_select_pattern(pattern):
     return pattern
 
 
-class TestProgram(object):
+klasse TestProgram(object):
     """A command-line program that runs a set of tests; this is primarily
        for making test modules conveniently executable.
     """

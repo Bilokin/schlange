@@ -3,7 +3,7 @@ import functools
 from ._helpers import StubClass, stub_factory
 
 
-class StubStrategy(StubClass):
+klasse StubStrategy(StubClass):
     def __make_trailing_repr(self, transformation_name, func):
         func_name = func.__name__ or repr(func)
         return f"{self!r}.{transformation_name}({func_name})"

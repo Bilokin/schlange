@@ -227,7 +227,7 @@ def _parse_spec(spec, knownids=None, section=None):
 #######################################
 # frozen source files
 
-class FrozenSource(namedtuple('FrozenSource', 'id pyfile frozenfile')):
+klasse FrozenSource(namedtuple('FrozenSource', 'id pyfile frozenfile')):
 
     @classmethod
     def from_id(cls, frozenid, pyfile=None):
@@ -288,7 +288,7 @@ def resolve_frozen_file(frozenid, destdir):
 #######################################
 # frozen modules
 
-class FrozenModule(namedtuple('FrozenModule', 'name ispkg section source')):
+klasse FrozenModule(namedtuple('FrozenModule', 'name ispkg section source')):
 
     def __getattr__(self, name):
         return getattr(self.source, name)
@@ -461,7 +461,7 @@ def replace_block(lines, start_marker, end_marker, replacements, file):
     return lines[:start_pos + 1] + replacements + lines[end_pos:]
 
 
-class UniqueList(list):
+klasse UniqueList(list):
     def __init__(self):
         self._seen = set()
 

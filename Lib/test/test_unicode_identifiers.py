@@ -1,9 +1,9 @@
 import unittest
 
-class PEP3131Test(unittest.TestCase):
+klasse PEP3131Test(unittest.TestCase):
 
     def test_valid(self):
-        class T:
+        klasse T:
             ä = 1
             µ = 2 # this is a compatibility character
             蟒 = 3

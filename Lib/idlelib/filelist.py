@@ -4,7 +4,7 @@ import os
 from tkinter import messagebox
 
 
-class FileList:
+klasse FileList:
 
     # N.B. this import overridden in PyShellFileList.
     from idlelib.editor import EditorWindow

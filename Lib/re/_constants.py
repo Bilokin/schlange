@@ -20,7 +20,7 @@ from _sre import MAXREPEAT, MAXGROUPS  # noqa: F401
 # SRE standard exception (access as sre.error)
 # should this really be here?
 
-class PatternError(Exception):
+klasse PatternError(Exception):
     """Exception raised for invalid regular expressions.
 
     Attributes:
@@ -56,7 +56,7 @@ class PatternError(Exception):
 # Backward compatibility after renaming in 3.13
 error = PatternError
 
-class _NamedIntConstant(int):
+klasse _NamedIntConstant(int):
     def __new__(cls, value, name):
         self = super(_NamedIntConstant, cls).__new__(cls, value)
         self.name = name

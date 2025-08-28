@@ -15,7 +15,7 @@ from test import support
 from . import tomllib
 
 
-class TestMiscellaneous(unittest.TestCase):
+klasse TestMiscellaneous(unittest.TestCase):
     def test_load(self):
         content = "one=1 \n two='two' \n arr=[]"
         expected = {"one": 1, "two": "two", "arr": []}

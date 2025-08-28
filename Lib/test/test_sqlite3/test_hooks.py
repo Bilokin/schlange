@@ -30,7 +30,7 @@ from .util import memory_database, cx_limit, with_tracebacks
 from .util import MemoryDatabaseMixin
 
 
-class CollationTests(MemoryDatabaseMixin, unittest.TestCase):
+klasse CollationTests(MemoryDatabaseMixin, unittest.TestCase):
 
     def test_create_collation_not_string(self):
         with self.assertRaises(TypeError):
@@ -45,7 +45,7 @@ class CollationTests(MemoryDatabaseMixin, unittest.TestCase):
         self.con.create_collation("collä", lambda x, y: (x > y) - (x < y))
 
     def test_create_collation_bad_upper(self):
-        class BadUpperStr(str):
+        klasse BadUpperStr(str):
             def upper(self):
                 return None
         mycoll = lambda x, y: -((x > y) - (x < y))
@@ -129,7 +129,7 @@ class CollationTests(MemoryDatabaseMixin, unittest.TestCase):
         self.assertEqual(str(cm.exception), 'no such collation sequence: mycoll')
 
 
-class ProgressTests(MemoryDatabaseMixin, unittest.TestCase):
+klasse ProgressTests(MemoryDatabaseMixin, unittest.TestCase):
 
     def test_progress_handler_used(self):
         """
@@ -208,7 +208,7 @@ class ProgressTests(MemoryDatabaseMixin, unittest.TestCase):
 
     @with_tracebacks(ZeroDivisionError, msg_regex="bad_progress")
     def test_error_in_progress_handler_result(self):
-        class BadBool:
+        klasse BadBool:
             def __bool__(self):
                 1 / 0
         def bad_progress():
@@ -225,7 +225,7 @@ class ProgressTests(MemoryDatabaseMixin, unittest.TestCase):
             self.con.set_progress_handler(progress_handler=lambda: None, n=1)
 
 
-class TraceCallbackTests(MemoryDatabaseMixin, unittest.TestCase):
+klasse TraceCallbackTests(MemoryDatabaseMixin, unittest.TestCase):
 
     @contextlib.contextmanager
     def check_stmt_trace(self, cx, expected):

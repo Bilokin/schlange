@@ -13,14 +13,14 @@ import pickle
 import sys
 import weakref
 
-class IntLike:
+klasse IntLike:
     def __init__(self, num):
         self._num = num
     def __index__(self):
         return self._num
     __int__ = __index__
 
-class MemorySeekTestMixin:
+klasse MemorySeekTestMixin:
 
     def testInit(self):
         buf = self.buftype("1234567890")
@@ -65,7 +65,7 @@ class MemorySeekTestMixin:
         self.assertEqual(10000, bytesIo.tell())
 
 
-class MemoryTestMixin:
+klasse MemoryTestMixin:
 
     def test_detach(self):
         buf = self.ioclass()
@@ -371,12 +371,12 @@ class MemoryTestMixin:
     def test_subclassing(self):
         buf = self.buftype("1234567890")
         def test1():
-            class MemIO(self.ioclass):
+            klasse MemIO(self.ioclass):
                 pass
             m = MemIO(buf)
             return m.getvalue()
         def test2():
-            class MemIO(self.ioclass):
+            klasse MemIO(self.ioclass):
                 def __init__(me, a, b):
                     self.ioclass.__init__(me, a)
             m = MemIO(buf, None)
@@ -397,15 +397,15 @@ class MemoryTestMixin:
         memio.foo = 42
         memio.seek(2)
 
-        class PickleTestMemIO(self.ioclass):
+        klasse PickleTestMemIO(self.ioclass):
             def __init__(me, initvalue, foo):
                 self.ioclass.__init__(me, initvalue)
                 me.foo = foo
             # __getnewargs__ is undefined on purpose. This checks that PEP 307
             # is used to provide pickling support.
 
-        # Pickle expects the class to be on the module level. Here we use a
-        # little hack to allow the PickleTestMemIO class to derive from
+        # Pickle expects the klasse to be on the module level. Here we use a
+        # little hack to allow the PickleTestMemIO klasse to derive from
         # self.ioclass without having to define all combinations explicitly on
         # the module-level.
         import __main__
@@ -429,8 +429,8 @@ class MemoryTestMixin:
         del __main__.PickleTestMemIO
 
 
-class PyBytesIOTest(MemoryTestMixin, MemorySeekTestMixin, unittest.TestCase):
-    # Test _pyio.BytesIO; class also inherited for testing C implementation
+klasse PyBytesIOTest(MemoryTestMixin, MemorySeekTestMixin, unittest.TestCase):
+    # Test _pyio.BytesIO; klasse also inherited for testing C implementation
 
     UnsupportedOperation = pyio.UnsupportedOperation
 
@@ -574,7 +574,7 @@ class PyBytesIOTest(MemoryTestMixin, MemorySeekTestMixin, unittest.TestCase):
         self.assertRaises(TypeError, self.ioclass, buf, foo=None)
 
 
-class TextIOTestMixin:
+klasse TextIOTestMixin:
 
     def test_newlines_property(self):
         memio = self.ioclass(newline=None)
@@ -724,7 +724,7 @@ class TextIOTestMixin:
             self.ioclass(newline=newline)
 
 
-class PyStringIOTest(MemoryTestMixin, MemorySeekTestMixin,
+klasse PyStringIOTest(MemoryTestMixin, MemorySeekTestMixin,
                      TextIOTestMixin, unittest.TestCase):
     buftype = str
     ioclass = pyio.StringIO
@@ -741,21 +741,21 @@ class PyStringIOTest(MemoryTestMixin, MemorySeekTestMixin,
         self.assertEqual(memio.getvalue(), '\ud800')
 
 
-class PyStringIOPickleTest(TextIOTestMixin, unittest.TestCase):
+klasse PyStringIOPickleTest(TextIOTestMixin, unittest.TestCase):
     """Test if pickle restores properly the internal state of StringIO.
     """
     buftype = str
     UnsupportedOperation = pyio.UnsupportedOperation
     EOF = ""
 
-    class ioclass(pyio.StringIO):
+    klasse ioclass(pyio.StringIO):
         def __new__(cls, *args, **kwargs):
             return pickle.loads(pickle.dumps(pyio.StringIO(*args, **kwargs)))
         def __init__(self, *args, **kwargs):
             pass
 
 
-class CBytesIOTest(PyBytesIOTest):
+klasse CBytesIOTest(PyBytesIOTest):
     ioclass = io.BytesIO
     UnsupportedOperation = io.UnsupportedOperation
 
@@ -842,7 +842,7 @@ class CBytesIOTest(PyBytesIOTest):
         memio = self.ioclass(ba)
         self.assertEqual(sys.getrefcount(ba), old_rc)
 
-class CStringIOTest(PyStringIOTest):
+klasse CStringIOTest(PyStringIOTest):
     ioclass = io.StringIO
     UnsupportedOperation = io.UnsupportedOperation
 
@@ -890,10 +890,10 @@ class CStringIOTest(PyStringIOTest):
         self.assertRaises(ValueError, memio.__setstate__, ("closed", "", 0, None))
 
 
-class CStringIOPickleTest(PyStringIOPickleTest):
+klasse CStringIOPickleTest(PyStringIOPickleTest):
     UnsupportedOperation = io.UnsupportedOperation
 
-    class ioclass(io.StringIO):
+    klasse ioclass(io.StringIO):
         def __new__(cls, *args, **kwargs):
             return pickle.loads(pickle.dumps(io.StringIO(*args, **kwargs)))
         def __init__(self, *args, **kwargs):

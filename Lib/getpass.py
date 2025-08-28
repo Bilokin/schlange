@@ -23,7 +23,7 @@ import sys
 __all__ = ["getpass","getuser","GetPassWarning"]
 
 
-class GetPassWarning(UserWarning): pass
+klasse GetPassWarning(UserWarning): pass
 
 
 def unix_getpass(prompt='Password: ', stream=None, *, echo_char=None):

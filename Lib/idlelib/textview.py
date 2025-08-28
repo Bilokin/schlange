@@ -9,7 +9,7 @@ from tkinter.messagebox import showerror
 from idlelib.colorizer import color_config
 
 
-class AutoHideScrollbar(Scrollbar):
+klasse AutoHideScrollbar(Scrollbar):
     """A scrollbar that is automatically hidden when not needed.
 
     Only the grid geometry manager is supported.
@@ -28,7 +28,7 @@ class AutoHideScrollbar(Scrollbar):
         raise TclError(f'{self.__class__.__name__} does not support "place"')
 
 
-class ScrollableTextFrame(Frame):
+klasse ScrollableTextFrame(Frame):
     """Display text with scrollbar(s)."""
 
     def __init__(self, master, wrap=NONE, **kwargs):
@@ -69,7 +69,7 @@ class ScrollableTextFrame(Frame):
             self.xscroll = None
 
 
-class ViewFrame(Frame):
+klasse ViewFrame(Frame):
     "Display TextFrame and Close button."
     def __init__(self, parent, contents, wrap='word'):
         """Create a frame for viewing text with a "Close" button.
@@ -102,7 +102,7 @@ class ViewFrame(Frame):
         self.parent.destroy()
 
 
-class ViewWindow(Toplevel):
+klasse ViewWindow(Toplevel):
     "A simple text viewer dialog for IDLE."
 
     def __init__(self, parent, title, contents, modal=True, wrap=WORD,

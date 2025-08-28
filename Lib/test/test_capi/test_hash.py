@@ -8,7 +8,7 @@ SIZEOF_VOID_P = _testcapi.SIZEOF_VOID_P
 SIZEOF_PY_HASH_T = SIZEOF_VOID_P
 
 
-class CAPITest(unittest.TestCase):
+klasse CAPITest(unittest.TestCase):
     def test_hash_getfuncdef(self):
         # Test PyHash_GetFuncDef()
         hash_getfuncdef = _testcapi.hash_getfuncdef

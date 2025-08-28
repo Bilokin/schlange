@@ -3,7 +3,7 @@ import unittest
 from test.test_unittest.support import LoggingResult
 
 
-class Test_FunctionTestCase(unittest.TestCase):
+klasse Test_FunctionTestCase(unittest.TestCase):
 
     # "Return the number of tests represented by the this test object. For
     # TestCase instances, this will always be 1"

@@ -4,7 +4,7 @@ import unittest
 _testcapi = import_helper.import_module('_testcapi')
 
 
-class BuiltinStaticTypesTests(unittest.TestCase):
+klasse BuiltinStaticTypesTests(unittest.TestCase):
 
     TYPES = [
         object,
@@ -37,9 +37,9 @@ class BuiltinStaticTypesTests(unittest.TestCase):
                 self.assertIsNot(mro, None)
 
 
-class TypeTests(unittest.TestCase):
+klasse TypeTests(unittest.TestCase):
     def test_get_type_name(self):
-        class MyType:
+        klasse MyType:
             pass
 
         from _testcapi import (
@@ -150,10 +150,10 @@ class TypeTests(unittest.TestCase):
         self.assertIs(found, None)
 
         # no token in pure subtypes
-        class A2(A1): pass
+        klasse A2(A1): pass
         self.assertEqual(get_token(A2), 0)
         # find A1
-        class Z(STATIC, B1, A2): pass
+        klasse Z(STATIC, B1, A2): pass
         found = get_base_by_token(Z, tokenA1)
         self.assertIs(found, A1)
 
@@ -168,7 +168,7 @@ class TypeTests(unittest.TestCase):
         self.assertTrue(get_token(C1) == tokenA1)
 
         # find C1 first by shared token
-        class Z(C1, A2): pass
+        klasse Z(C1, A2): pass
         found = get_base_by_token(Z, tokenA1)
         self.assertIs(found, C1)
         # B1 not found
@@ -184,14 +184,14 @@ class TypeTests(unittest.TestCase):
         mod = _testcapi.pytype_getmodulebydef(heaptype)
         self.assertIs(mod, _testcapi)
 
-        class H1(heaptype): pass
+        klasse H1(heaptype): pass
         mod = _testcapi.pytype_getmodulebydef(H1)
         self.assertIs(mod, _testcapi)
 
         with self.assertRaises(TypeError):
             _testcapi.pytype_getmodulebydef(int)
 
-        class H2(int): pass
+        klasse H2(int): pass
         with self.assertRaises(TypeError):
             _testcapi.pytype_getmodulebydef(H2)
 
@@ -200,21 +200,21 @@ class TypeTests(unittest.TestCase):
         type_freeze = _testcapi.type_freeze
 
         # simple case, no inherante
-        class MyType:
+        klasse MyType:
             pass
         MyType.attr = "mutable"
 
         type_freeze(MyType)
         err_msg = "cannot set 'attr' attribute of immutable type 'MyType'"
         with self.assertRaisesRegex(TypeError, err_msg):
-            # the class is now immutable
+            # the klasse is now immutable
             MyType.attr = "immutable"
 
         # test MRO: PyType_Freeze() requires base classes to be immutable
-        class A: pass
-        class B: pass
-        class C(B): pass
-        class D(A, C): pass
+        klasse A: pass
+        klasse B: pass
+        klasse C(B): pass
+        klasse D(A, C): pass
 
         self.assertEqual(D.mro(), [D, A, C, B, object])
         with self.assertRaises(TypeError):
@@ -234,14 +234,14 @@ class TypeTests(unittest.TestCase):
         """test PyType_Freeze() with overridden MRO"""
         type_freeze = _testcapi.type_freeze
 
-        class Base:
+        klasse Base:
             value = 1
 
-        class Meta(type):
+        klasse Meta(type):
             def mro(cls):
                 return (cls, Base, object)
 
-        class FreezeThis(metaclass=Meta):
+        klasse FreezeThis(metaclass=Meta):
             """This has `Base` in the MRO, but not tp_bases"""
 
         self.assertEqual(FreezeThis.value, 1)

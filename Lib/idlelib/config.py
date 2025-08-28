@@ -32,11 +32,11 @@ import sys
 from tkinter.font import Font
 import idlelib
 
-class InvalidConfigType(Exception): pass
-class InvalidConfigSet(Exception): pass
-class InvalidTheme(Exception): pass
+klasse InvalidConfigType(Exception): pass
+klasse InvalidConfigSet(Exception): pass
+klasse InvalidTheme(Exception): pass
 
-class IdleConfParser(ConfigParser):
+klasse IdleConfParser(ConfigParser):
     """
     A ConfigParser specialised for idle configuration file handling
     """
@@ -76,7 +76,7 @@ class IdleConfParser(ConfigParser):
         if self.file:
             self.read(self.file)
 
-class IdleUserConfParser(IdleConfParser):
+klasse IdleUserConfParser(IdleConfParser):
     """
     IdleConfigParser specialised for user configuration handling.
     """
@@ -142,7 +142,7 @@ class IdleUserConfParser(IdleConfParser):
             elif os.path.exists(self.file):
                 os.remove(self.file)
 
-class IdleConf:
+klasse IdleConf:
     """Hold config parsers for all idle config files in singleton instance.
 
     Default config files, self.defaultCfg --
@@ -305,7 +305,7 @@ class IdleConf:
         # element (other than cursor) even though some values are not
         # yet used by idle, to allow for their use in the future.
         # Default values are generally black and white.
-        # TODO copy theme from a class attribute.
+        # TODO copy theme from a klasse attribute.
         theme ={'normal-foreground':'#000000',
                 'normal-background':'#ffffff',
                 'keyword-foreground':'#000000',
@@ -579,7 +579,7 @@ class IdleConf:
         """
         return ('<<'+virtualEvent+'>>') in self.GetCoreKeys()
 
-# TODO make keyBindings a file or class attribute used for test above
+# TODO make keyBindings a file or klasse attribute used for test above
 # and copied in function below.
 
     former_extension_events = {  #  Those with user-configurable keys.
@@ -779,7 +779,7 @@ def _warn(msg, *key):
         _warned.add(key)
 
 
-class ConfigChanges(dict):
+klasse ConfigChanges(dict):
     """Manage a user's proposed configuration option changes.
 
     Names used across multiple methods:

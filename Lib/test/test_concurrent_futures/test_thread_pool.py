@@ -13,7 +13,7 @@ from .executor import ExecutorTest, mul
 from .util import BaseTestCase, ThreadPoolMixin, setup_module
 
 
-class ThreadPoolExecutorTest(ThreadPoolMixin, ExecutorTest, BaseTestCase):
+klasse ThreadPoolExecutorTest(ThreadPoolMixin, ExecutorTest, BaseTestCase):
     def test_map_submits_without_iteration(self):
         """Tests verifying issue 11777."""
         finished = []

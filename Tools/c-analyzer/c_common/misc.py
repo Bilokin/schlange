@@ -1,5 +1,5 @@
 
-class Labeled:
+klasse Labeled:
     __slots__ = ('_label',)
     def __init__(self, label):
         self._label = label

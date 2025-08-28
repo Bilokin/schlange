@@ -28,17 +28,17 @@ py_types = import_fresh_module('types', blocked=['_types'])
 
 T = typing.TypeVar("T")
 
-class Example:
+klasse Example:
     pass
 
-class Forward: ...
+klasse Forward: ...
 
 def clear_typing_caches():
     for f in typing._cleanups:
         f()
 
 
-class TypesTests(unittest.TestCase):
+klasse TypesTests(unittest.TestCase):
 
     def test_names(self):
         c_only_names = {'CapsuleType'}
@@ -73,7 +73,7 @@ class TypesTests(unittest.TestCase):
         if not 'x': self.fail('\'x\' is false instead of true')
         if not {'x': 1}: self.fail('{\'x\': 1} is false instead of true')
         def f(): pass
-        class C: pass
+        klasse C: pass
         x = C()
         if not f: self.fail('f is false instead of true')
         if not C: self.fail('C is false instead of true')
@@ -723,7 +723,7 @@ class TypesTests(unittest.TestCase):
         self.assertIsInstance(frame.f_locals, types.FrameLocalsProxyType)
 
 
-class UnionTests(unittest.TestCase):
+klasse UnionTests(unittest.TestCase):
 
     def test_or_types_operator(self):
         self.assertEqual(int | str, typing.Union[int, str])
@@ -790,11 +790,11 @@ class UnionTests(unittest.TestCase):
         self.assertEqual(hash(int | str), hash(typing.Union[int, str]))
 
     def test_union_of_unhashable(self):
-        class UnhashableMeta(type):
+        klasse UnhashableMeta(type):
             __hash__ = None
 
-        class A(metaclass=UnhashableMeta): ...
-        class B(metaclass=UnhashableMeta): ...
+        klasse A(metaclass=UnhashableMeta): ...
+        klasse B(metaclass=UnhashableMeta): ...
 
         self.assertEqual((A | B).__args__, (A, B))
         union1 = A | B
@@ -811,15 +811,15 @@ class UnionTests(unittest.TestCase):
 
     def test_unhashable_becomes_hashable(self):
         is_hashable = False
-        class UnhashableMeta(type):
+        klasse UnhashableMeta(type):
             def __hash__(self):
                 if is_hashable:
                     return 1
                 else:
                     raise TypeError("not hashable")
 
-        class A(metaclass=UnhashableMeta): ...
-        class B(metaclass=UnhashableMeta): ...
+        klasse A(metaclass=UnhashableMeta): ...
+        klasse B(metaclass=UnhashableMeta): ...
 
         union = A | B
         self.assertEqual(union.__args__, (A, B))
@@ -890,7 +890,7 @@ class UnionTests(unittest.TestCase):
                     isinstance(object(), x)
 
     def test_bad_instancecheck(self):
-        class BadMeta(type):
+        klasse BadMeta(type):
             def __instancecheck__(cls, inst):
                 1/0
         x = int | BadMeta('A', (), {})
@@ -898,7 +898,7 @@ class UnionTests(unittest.TestCase):
         self.assertRaises(ZeroDivisionError, isinstance, [], x)
 
     def test_bad_subclasscheck(self):
-        class BadMeta(type):
+        klasse BadMeta(type):
             def __subclasscheck__(cls, sub):
                 1/0
         x = int | BadMeta('A', (), {})
@@ -1018,7 +1018,7 @@ class UnionTests(unittest.TestCase):
                          (Forward, int))
 
     def test_or_type_operator_with_Protocol(self):
-        class Proto(typing.Protocol):
+        klasse Proto(typing.Protocol):
             def meth(self) -> int:
                 ...
         self.assertEqual(Proto | str, typing.Union[Proto, str])
@@ -1032,7 +1032,7 @@ class UnionTests(unittest.TestCase):
         self.assertEqual(NT | str, typing.Union[NT, str])
 
     def test_or_type_operator_with_TypedDict(self):
-        class Point2D(typing.TypedDict):
+        klasse Point2D(typing.TypedDict):
             x: int
             y: int
             label: str
@@ -1066,7 +1066,7 @@ class UnionTests(unittest.TestCase):
         self.assertEqual(Literal['a'] | Literal['a'], Literal['a'])
 
         import enum
-        class Ints(enum.IntEnum):
+        klasse Ints(enum.IntEnum):
             A = 0
             B = 1
 
@@ -1093,7 +1093,7 @@ class UnionTests(unittest.TestCase):
         a = list[int]
         b = list[str]
         c = dict[float, str]
-        class SubClass(types.GenericAlias): ...
+        klasse SubClass(types.GenericAlias): ...
         d = SubClass(list, float)
         # equivalence with typing.Union
         self.assertEqual(a | b | c | d, typing.Union[a, b, c, d])
@@ -1104,7 +1104,7 @@ class UnionTests(unittest.TestCase):
         self.assertEqual(repr(a | b | c | d),
                          "list[int] | list[str] | dict[float, str] | list[float]")
 
-        class BadType(type):
+        klasse BadType(type):
             def __eq__(self, other):
                 return 1 / 0
 
@@ -1129,7 +1129,7 @@ class UnionTests(unittest.TestCase):
                     issubclass(int, type_)
 
     def test_or_type_operator_with_bad_module(self):
-        class BadMeta(type):
+        klasse BadMeta(type):
             __qualname__ = 'TypeVar'
             @property
             def __module__(self):
@@ -1173,11 +1173,11 @@ class UnionTests(unittest.TestCase):
             self.assertEqual(obj.__args__, (int, EqualToForwardRef("str")))
 
 
-class MappingProxyTests(unittest.TestCase):
+klasse MappingProxyTests(unittest.TestCase):
     mappingproxy = types.MappingProxyType
 
     def test_constructor(self):
-        class userdict(dict):
+        klasse userdict(dict):
             pass
 
         mapping = {'x': 1, 'y': 2}
@@ -1220,7 +1220,7 @@ class MappingProxyTests(unittest.TestCase):
         self.assertEqual(view.get('xxx', 42), 42)
 
     def test_missing(self):
-        class dictmissing(dict):
+        klasse dictmissing(dict):
             def __missing__(self, key):
                 return "missing=%s" % key
 
@@ -1234,7 +1234,7 @@ class MappingProxyTests(unittest.TestCase):
         self.assertFalse('y' in view)
 
     def test_customdict(self):
-        class customdict(dict):
+        klasse customdict(dict):
             def __contains__(self, key):
                 if key == 'magic':
                     return True
@@ -1378,7 +1378,7 @@ class MappingProxyTests(unittest.TestCase):
         self.assertDictEqual(other, {'c': 3, 'p': 0})
 
     def test_hash(self):
-        class HashableDict(dict):
+        klasse HashableDict(dict):
             def __hash__(self):
                 return 3844817361
         view = self.mappingproxy({'a': 1, 'b': 2})
@@ -1409,9 +1409,9 @@ class MappingProxyTests(unittest.TestCase):
             mp1_2 <= mp1
 
 
-class ClassCreationTests(unittest.TestCase):
+klasse ClassCreationTests(unittest.TestCase):
 
-    class Meta(type):
+    klasse Meta(type):
         def __init__(cls, name, bases, ns, **kw):
             super().__init__(name, bases, ns)
         @staticmethod
@@ -1483,8 +1483,8 @@ class ClassCreationTests(unittest.TestCase):
         self.assertEqual(C.z, 2)
 
     def test_new_class_with_mro_entry(self):
-        class A: pass
-        class C:
+        klasse A: pass
+        klasse C:
             def __mro_entries__(self, bases):
                 return (A,)
         c = C()
@@ -1505,9 +1505,9 @@ class ClassCreationTests(unittest.TestCase):
         self.assertEqual(L2.__mro__, (L2, list, object))
 
     def test_new_class_with_mro_entry_none(self):
-        class A: pass
-        class B: pass
-        class C:
+        klasse A: pass
+        klasse B: pass
+        klasse C:
             def __mro_entries__(self, bases):
                 return ()
         c = C()
@@ -1517,8 +1517,8 @@ class ClassCreationTests(unittest.TestCase):
         self.assertEqual(D.__mro__, (D, A, B, object))
 
     def test_new_class_with_mro_entry_error(self):
-        class A: pass
-        class C:
+        klasse A: pass
+        klasse C:
             def __mro_entries__(self, bases):
                 return A
         c = C()
@@ -1526,41 +1526,41 @@ class ClassCreationTests(unittest.TestCase):
             types.new_class('D', (c,), {})
 
     def test_new_class_with_mro_entry_multiple(self):
-        class A1: pass
-        class A2: pass
-        class B1: pass
-        class B2: pass
-        class A:
+        klasse A1: pass
+        klasse A2: pass
+        klasse B1: pass
+        klasse B2: pass
+        klasse A:
             def __mro_entries__(self, bases):
                 return (A1, A2)
-        class B:
+        klasse B:
             def __mro_entries__(self, bases):
                 return (B1, B2)
         D = types.new_class('D', (A(), B()), {})
         self.assertEqual(D.__bases__, (A1, A2, B1, B2))
 
     def test_new_class_with_mro_entry_multiple_2(self):
-        class A1: pass
-        class A2: pass
-        class A3: pass
-        class B1: pass
-        class B2: pass
-        class A:
+        klasse A1: pass
+        klasse A2: pass
+        klasse A3: pass
+        klasse B1: pass
+        klasse B2: pass
+        klasse A:
             def __mro_entries__(self, bases):
                 return (A1, A2, A3)
-        class B:
+        klasse B:
             def __mro_entries__(self, bases):
                 return (B1, B2)
-        class C: pass
+        klasse C: pass
         D = types.new_class('D', (A(), C, B()), {})
         self.assertEqual(D.__bases__, (A1, A2, A3, C, B1, B2))
 
     def test_get_original_bases(self):
         T = typing.TypeVar('T')
-        class A: pass
-        class B(typing.Generic[T]): pass
-        class C(B[int]): pass
-        class D(B[str], float): pass
+        klasse A: pass
+        klasse B(typing.Generic[T]): pass
+        klasse C(B[int]): pass
+        klasse D(B[str], float): pass
 
         self.assertEqual(types.get_original_bases(A), (object,))
         self.assertEqual(types.get_original_bases(B), (typing.Generic[T],))
@@ -1568,28 +1568,28 @@ class ClassCreationTests(unittest.TestCase):
         self.assertEqual(types.get_original_bases(int), (object,))
         self.assertEqual(types.get_original_bases(D), (B[str], float))
 
-        class E(list[T]): pass
-        class F(list[int]): pass
+        klasse E(list[T]): pass
+        klasse F(list[int]): pass
 
         self.assertEqual(types.get_original_bases(E), (list[T],))
         self.assertEqual(types.get_original_bases(F), (list[int],))
 
-        class FirstBase(typing.Generic[T]): pass
-        class SecondBase(typing.Generic[T]): pass
-        class First(FirstBase[int]): pass
-        class Second(SecondBase[int]): pass
-        class G(First, Second): pass
+        klasse FirstBase(typing.Generic[T]): pass
+        klasse SecondBase(typing.Generic[T]): pass
+        klasse First(FirstBase[int]): pass
+        klasse Second(SecondBase[int]): pass
+        klasse G(First, Second): pass
         self.assertEqual(types.get_original_bases(G), (First, Second))
 
-        class First_(typing.Generic[T]): pass
-        class Second_(typing.Generic[T]): pass
-        class H(First_, Second_): pass
+        klasse First_(typing.Generic[T]): pass
+        klasse Second_(typing.Generic[T]): pass
+        klasse H(First_, Second_): pass
         self.assertEqual(types.get_original_bases(H), (First_, Second_))
 
-        class ClassBasedNamedTuple(typing.NamedTuple):
+        klasse ClassBasedNamedTuple(typing.NamedTuple):
             x: int
 
-        class GenericNamedTuple(typing.NamedTuple, typing.Generic[T]):
+        klasse GenericNamedTuple(typing.NamedTuple, typing.Generic[T]):
             x: T
 
         CallBasedNamedTuple = typing.NamedTuple("CallBasedNamedTuple", [("x", int)])
@@ -1605,10 +1605,10 @@ class ClassCreationTests(unittest.TestCase):
             types.get_original_bases(CallBasedNamedTuple)[0], typing.NamedTuple
         )
 
-        class ClassBasedTypedDict(typing.TypedDict):
+        klasse ClassBasedTypedDict(typing.TypedDict):
             x: int
 
-        class GenericTypedDict(typing.TypedDict, typing.Generic[T]):
+        klasse GenericTypedDict(typing.TypedDict, typing.Generic[T]):
             x: T
 
         CallBasedTypedDict = typing.TypedDict("CallBasedTypedDict", {"x": int})
@@ -1633,7 +1633,7 @@ class ClassCreationTests(unittest.TestCase):
     def test_prepare_class(self):
         # Basic test of metaclass derivation
         expected_ns = {}
-        class A(type):
+        klasse A(type):
             def __new__(*args, **kwargs):
                 return type.__new__(*args, **kwargs)
 
@@ -1651,30 +1651,30 @@ class ClassCreationTests(unittest.TestCase):
 
     def test_bad___prepare__(self):
         # __prepare__() must return a mapping.
-        class BadMeta(type):
+        klasse BadMeta(type):
             @classmethod
             def __prepare__(*args):
                 return None
         with self.assertRaisesRegex(TypeError,
                                     r'^BadMeta\.__prepare__\(\) must '
                                     r'return a mapping, not NoneType$'):
-            class Foo(metaclass=BadMeta):
+            klasse Foo(metaclass=BadMeta):
                 pass
         # Also test the case in which the metaclass is not a type.
-        class BadMeta:
+        klasse BadMeta:
             @classmethod
             def __prepare__(*args):
                 return None
         with self.assertRaisesRegex(TypeError,
                                     r'^<metaclass>\.__prepare__\(\) must '
                                     r'return a mapping, not NoneType$'):
-            class Bar(metaclass=BadMeta()):
+            klasse Bar(metaclass=BadMeta()):
                 pass
 
     def test_resolve_bases(self):
-        class A: pass
-        class B: pass
-        class C:
+        klasse A: pass
+        klasse B: pass
+        klasse C:
             def __mro_entries__(self, bases):
                 if A in bases:
                     return ()
@@ -1701,7 +1701,7 @@ class ClassCreationTests(unittest.TestCase):
     def test_metaclass_derivation(self):
         # issue1294232: correct metaclass calculation
         new_calls = []  # to check the order of __new__ calls
-        class AMeta(type):
+        klasse AMeta(type):
             def __new__(mcls, name, bases, ns):
                 new_calls.append('AMeta')
                 return super().__new__(mcls, name, bases, ns)
@@ -1709,7 +1709,7 @@ class ClassCreationTests(unittest.TestCase):
             def __prepare__(mcls, name, bases):
                 return {}
 
-        class BMeta(AMeta):
+        klasse BMeta(AMeta):
             def __new__(mcls, name, bases, ns):
                 new_calls.append('BMeta')
                 return super().__new__(mcls, name, bases, ns)
@@ -1755,7 +1755,7 @@ class ClassCreationTests(unittest.TestCase):
     def test_metaclass_override_function(self):
         # Special case: the given metaclass isn't a class,
         # so there is no metaclass calculation.
-        class A(metaclass=self.Meta):
+        klasse A(metaclass=self.Meta):
             pass
 
         marker = object()
@@ -1774,7 +1774,7 @@ class ClassCreationTests(unittest.TestCase):
         # but not a descendant of type.
         new_calls = []  # to check the order of __new__ calls
         prepare_calls = []  # to track __prepare__ calls
-        class ANotMeta:
+        klasse ANotMeta:
             def __new__(mcls, *args, **kwargs):
                 new_calls.append('ANotMeta')
                 return super().__new__(mcls)
@@ -1783,7 +1783,7 @@ class ClassCreationTests(unittest.TestCase):
                 prepare_calls.append('ANotMeta')
                 return {}
 
-        class BNotMeta(ANotMeta):
+        klasse BNotMeta(ANotMeta):
             def __new__(mcls, *args, **kwargs):
                 new_calls.append('BNotMeta')
                 return super().__new__(mcls)
@@ -1859,13 +1859,13 @@ class ClassCreationTests(unittest.TestCase):
         # Only type itself can use the one-argument form (#27157)
         self.assertIs(type(5), int)
 
-        class M(type):
+        klasse M(type):
             pass
         with self.assertRaises(TypeError) as cm:
             M(5)
         self.assertEqual(str(cm.exception), expected_message)
 
-        class N(type, metaclass=M):
+        klasse N(type, metaclass=M):
             pass
         with self.assertRaises(TypeError) as cm:
             N(5)
@@ -1874,8 +1874,8 @@ class ClassCreationTests(unittest.TestCase):
     def test_metaclass_new_error(self):
         # bpo-44232: The C function type_new() must properly report the
         # exception when a metaclass constructor raises an exception and the
-        # winner class is not the metaclass.
-        class ModelBase(type):
+        # winner klasse is not the metaclass.
+        klasse ModelBase(type):
             def __new__(cls, name, bases, attrs):
                 super_new = super().__new__
                 new_class = super_new(cls, name, bases, {})
@@ -1883,7 +1883,7 @@ class ClassCreationTests(unittest.TestCase):
                     raise RuntimeWarning(f"{name=}")
                 return new_class
 
-        class Model(metaclass=ModelBase):
+        klasse Model(metaclass=ModelBase):
             pass
 
         with self.assertRaises(RuntimeWarning):
@@ -1892,11 +1892,11 @@ class ClassCreationTests(unittest.TestCase):
     def test_subclass_inherited_slot_update(self):
         # gh-132284: Make sure slot update still works after fix.
         # Note that after assignment to D.__getitem__ the actual C slot will
-        # never go back to dict_subscript as it was on class type creation but
+        # never go back to dict_subscript as it was on klasse type creation but
         # rather be set to slot_mp_subscript, unfortunately there is no way to
         # check that here.
 
-        class D(dict):
+        klasse D(dict):
             pass
 
         d = D({None: None})
@@ -1909,14 +1909,14 @@ class ClassCreationTests(unittest.TestCase):
     def test_tuple_subclass_as_bases(self):
         # gh-132176: it used to crash on using
         # tuple subclass for as base classes.
-        class TupleSubclass(tuple): pass
+        klasse TupleSubclass(tuple): pass
 
         typ = type("typ", TupleSubclass((int, object)), {})
         self.assertEqual(typ.__bases__, (int, object))
         self.assertEqual(type(typ.__bases__), TupleSubclass)
 
 
-class SimpleNamespaceTests(unittest.TestCase):
+klasse SimpleNamespaceTests(unittest.TestCase):
 
     def test_constructor(self):
         def check(ns, expected):
@@ -2116,7 +2116,7 @@ class SimpleNamespaceTests(unittest.TestCase):
             ns['spam']
 
     def test_subclass(self):
-        class Spam(types.SimpleNamespace):
+        klasse Spam(types.SimpleNamespace):
             pass
 
         spam = Spam(ham=8, eggs=9)
@@ -2155,7 +2155,7 @@ class SimpleNamespaceTests(unittest.TestCase):
         self.assertEqual(vars(copy.replace(ns, x=1, y=2)), {'x': 1, 'y': 2})
 
     def test_replace_subclass(self):
-        class Spam(types.SimpleNamespace):
+        klasse Spam(types.SimpleNamespace):
             pass
 
         spam = Spam(ham=8, eggs=9)
@@ -2167,7 +2167,7 @@ class SimpleNamespaceTests(unittest.TestCase):
     def test_fake_namespace_compare(self):
         # Issue #24257: Incorrect use of PyObject_IsInstance() caused
         # SystemError.
-        class FakeSimpleNamespace(str):
+        klasse FakeSimpleNamespace(str):
             __class__ = types.SimpleNamespace
         self.assertFalse(types.SimpleNamespace() == FakeSimpleNamespace())
         self.assertTrue(types.SimpleNamespace() != FakeSimpleNamespace())
@@ -2181,7 +2181,7 @@ class SimpleNamespaceTests(unittest.TestCase):
             types.SimpleNamespace() >= FakeSimpleNamespace()
 
 
-class CoroutineTests(unittest.TestCase):
+klasse CoroutineTests(unittest.TestCase):
     def test_wrong_args(self):
         samples = [None, 1, object()]
         for sample in samples:
@@ -2195,7 +2195,7 @@ class CoroutineTests(unittest.TestCase):
             return 'spam'
         self.assertEqual(foo(), 'spam')
 
-        class Awaitable:
+        klasse Awaitable:
             def __await__(self):
                 return ()
         aw = Awaitable()
@@ -2230,7 +2230,7 @@ class CoroutineTests(unittest.TestCase):
             coro.close()
 
     def test_duck_coro(self):
-        class CoroLike:
+        klasse CoroLike:
             def send(self): pass
             def throw(self): pass
             def close(self): pass
@@ -2244,7 +2244,7 @@ class CoroutineTests(unittest.TestCase):
         self.assertIs(foo().__await__(), coro)
 
     def test_duck_corogen(self):
-        class CoroGenLike:
+        klasse CoroGenLike:
             def send(self): pass
             def throw(self): pass
             def close(self): pass
@@ -2260,7 +2260,7 @@ class CoroutineTests(unittest.TestCase):
         self.assertIs(foo().__await__(), coro)
 
     def test_duck_gen(self):
-        class GenLike:
+        klasse GenLike:
             def send(self): pass
             def throw(self): pass
             def close(self): pass
@@ -2365,7 +2365,7 @@ class CoroutineTests(unittest.TestCase):
         self.assertIs(ref(), wrapper)
 
     def test_duck_functional_gen(self):
-        class Generator:
+        klasse Generator:
             """Emulates the following generator (very clumsy):
 
               def gen(fut):
@@ -2494,7 +2494,7 @@ class CoroutineTests(unittest.TestCase):
             'close', 'throw'}))
 
 
-class FunctionTests(unittest.TestCase):
+klasse FunctionTests(unittest.TestCase):
     def test_function_type_defaults(self):
         def ex(a, /, b, *, c):
             return a + b + c
@@ -2527,7 +2527,7 @@ class FunctionTests(unittest.TestCase):
             )
 
 
-class SubinterpreterTests(unittest.TestCase):
+klasse SubinterpreterTests(unittest.TestCase):
 
     NUMERIC_METHODS = {
         '__abs__',

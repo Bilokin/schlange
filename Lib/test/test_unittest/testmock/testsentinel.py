@@ -4,7 +4,7 @@ import pickle
 from unittest.mock import sentinel, DEFAULT
 
 
-class SentinelTest(unittest.TestCase):
+klasse SentinelTest(unittest.TestCase):
 
     def testSentinels(self):
         self.assertEqual(sentinel.whatever, sentinel.whatever,

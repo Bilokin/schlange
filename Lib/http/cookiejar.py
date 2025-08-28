@@ -741,10 +741,10 @@ def is_third_party(request):
         return False
 
 
-class Cookie:
+klasse Cookie:
     """HTTP Cookie.
 
-    This class represents both Netscape and RFC 2965 cookies.
+    This klasse represents both Netscape and RFC 2965 cookies.
 
     This is deliberately a very simple class.  It just holds attributes.  It's
     possible to construct Cookie instances that don't comply with the cookie
@@ -839,7 +839,7 @@ class Cookie:
         return "%s(%s)" % (self.__class__.__name__, ", ".join(args))
 
 
-class CookiePolicy:
+klasse CookiePolicy:
     """Defines which cookies get accepted from and returned to server.
 
     May also modify cookies, though this is probably a bad idea.
@@ -852,7 +852,7 @@ class CookiePolicy:
         """Return true if (and only if) cookie should be accepted from server.
 
         Currently, pre-expired cookies never get this far -- the CookieJar
-        class deletes such cookies itself.
+        klasse deletes such cookies itself.
 
         """
         raise NotImplementedError()
@@ -872,7 +872,7 @@ class CookiePolicy:
         return True
 
 
-class DefaultCookiePolicy(CookiePolicy):
+klasse DefaultCookiePolicy(CookiePolicy):
     """Implements the standard rules for accepting and returning cookies."""
 
     DomainStrictNoDots = 1
@@ -1242,9 +1242,9 @@ def deepvalues(mapping):
 
 # Used as second parameter to dict.get() method, to distinguish absent
 # dict key from one with a None value.
-class Absent: pass
+klasse Absent: pass
 
-class CookieJar:
+klasse CookieJar:
     """Collection of HTTP cookies.
 
     You may not need to know about this class: try
@@ -1772,9 +1772,9 @@ class CookieJar:
 
 
 # derives from OSError for backwards-compatibility with Python 2.4.0
-class LoadError(OSError): pass
+klasse LoadError(OSError): pass
 
-class FileCookieJar(CookieJar):
+klasse FileCookieJar(CookieJar):
     """CookieJar that can be loaded from and saved to a file."""
 
     def __init__(self, filename=None, delayload=False, policy=None):
@@ -1857,7 +1857,7 @@ def lwp_cookie_str(cookie):
 
     return join_header_words([h])
 
-class LWPCookieJar(FileCookieJar):
+klasse LWPCookieJar(FileCookieJar):
     """
     The LWPCookieJar saves a sequence of "Set-Cookie3" lines.
     "Set-Cookie3" is the format used by the libwww-perl library, not known
@@ -1978,15 +1978,15 @@ class LWPCookieJar(FileCookieJar):
                             (filename, line))
 
 
-class MozillaCookieJar(FileCookieJar):
+klasse MozillaCookieJar(FileCookieJar):
     """
 
     WARNING: you may want to backup your browser's cookies file if you use
-    this class to save cookies.  I *think* it works, but there have been
+    this klasse to save cookies.  I *think* it works, but there have been
     bugs in the past!
 
-    This class differs from CookieJar only in the format it uses to save and
-    load cookies to and from a file.  This class uses the Mozilla/Netscape
+    This klasse differs from CookieJar only in the format it uses to save and
+    load cookies to and from a file.  This klasse uses the Mozilla/Netscape
     'cookies.txt' format.  curl and lynx use this file format, too.
 
     Don't expect cookies saved while the browser is running to be noticed by
@@ -2005,7 +2005,7 @@ class MozillaCookieJar(FileCookieJar):
     really don't want to know any more about this).
 
     Note that though Mozilla and Netscape use the same format, they use
-    slightly different headers.  The class saves cookies using the Netscape
+    slightly different headers.  The klasse saves cookies using the Netscape
     header by default (Mozilla can cope with that).
 
     """

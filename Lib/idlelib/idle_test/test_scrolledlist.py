@@ -7,7 +7,7 @@ requires('gui')
 from tkinter import Tk
 
 
-class ScrolledListTest(unittest.TestCase):
+klasse ScrolledListTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):

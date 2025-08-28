@@ -34,7 +34,7 @@ from copy import copy
 
 # These tests are not particularly useful if Python was invoked with -S.
 # If you add tests that are useful under -S, this skip should be moved
-# to the class level.
+# to the klasse level.
 if sys.flags.no_site:
     raise unittest.SkipTest("Python was invoked with -S")
 
@@ -64,7 +64,7 @@ def tearDownModule():
     sys.path[:] = OLD_SYS_PATH
 
 
-class HelperFunctionsTests(unittest.TestCase):
+klasse HelperFunctionsTests(unittest.TestCase):
     """Tests for helper functions.
     """
 
@@ -400,8 +400,8 @@ class HelperFunctionsTests(unittest.TestCase):
                 self.assertEqual(sys.stderr.getvalue(), out)
 
 
-class PthFile(object):
-    """Helper class for handling testing of .pth files"""
+klasse PthFile(object):
+    """Helper klasse for handling testing of .pth files"""
 
     def __init__(self, filename_base=TESTFN, imported="time",
                     good_dirname="__testdir__", bad_dirname="__bad"):
@@ -455,7 +455,7 @@ class PthFile(object):
         if os.path.exists(self.bad_dir_path):
             os.rmdir(self.bad_dir_path)
 
-class ImportSideEffectTests(unittest.TestCase):
+klasse ImportSideEffectTests(unittest.TestCase):
     """Test side-effects from importing 'site'."""
 
     def setUp(self):
@@ -587,7 +587,7 @@ class ImportSideEffectTests(unittest.TestCase):
         ])
 
 
-class StartupImportTests(unittest.TestCase):
+klasse StartupImportTests(unittest.TestCase):
 
     @support.requires_subprocess()
     def test_startup_imports(self):
@@ -660,7 +660,7 @@ class StartupImportTests(unittest.TestCase):
             'import site, sys; site.enablerlcompleter(); sys.exit(hasattr(sys, "__interactivehook__"))']).wait()
         self.assertTrue(r, "'__interactivehook__' not added by enablerlcompleter()")
 
-class _pthFileTests(unittest.TestCase):
+klasse _pthFileTests(unittest.TestCase):
 
     if sys.platform == 'win32':
         def _create_underpth_exe(self, lines, exe_pth=True):
@@ -814,7 +814,7 @@ class _pthFileTests(unittest.TestCase):
         self.assertEqual(p.returncode, 0, "sys.flags.no_user_site was 0")
 
 
-class CommandLineTests(unittest.TestCase):
+klasse CommandLineTests(unittest.TestCase):
     def exists(self, path):
         if path is not None and os.path.isdir(path):
             return "exists"

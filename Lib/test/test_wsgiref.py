@@ -23,7 +23,7 @@ import threading
 import unittest
 
 
-class MockServer(WSGIServer):
+klasse MockServer(WSGIServer):
     """Non-socket HTTP server"""
 
     def __init__(self, server_address, RequestHandlerClass):
@@ -37,7 +37,7 @@ class MockServer(WSGIServer):
         self.setup_environ()
 
 
-class MockHandler(WSGIRequestHandler):
+klasse MockHandler(WSGIRequestHandler):
     """Non-socket HTTP handler"""
     def setup(self):
         self.connection = self.request
@@ -102,7 +102,7 @@ def compare_generic_iter(make_it, match):
         raise AssertionError("Too many items from .__next__()", it)
 
 
-class IntegrationTests(TestCase):
+klasse IntegrationTests(TestCase):
 
     def check_hello(self, out, has_length=True):
         pyver = (python_implementation() + "/" +
@@ -246,7 +246,7 @@ class IntegrationTests(TestCase):
             start_response("200 OK", [])
             return [b'\0' * support.SOCK_MAX_SIZE]
 
-        class WsgiHandler(NoLogRequestHandler, WSGIRequestHandler):
+        klasse WsgiHandler(NoLogRequestHandler, WSGIRequestHandler):
             pass
 
         server = make_server(socket_helper.HOST, 0, app, handler_class=WsgiHandler)
@@ -286,7 +286,7 @@ class IntegrationTests(TestCase):
         self.assertEqual(received, support.SOCK_MAX_SIZE - 100)
 
 
-class UtilityTests(TestCase):
+klasse UtilityTests(TestCase):
 
     def checkShift(self,sn_in,pi_in,part,sn_out,pi_out):
         env = {'SCRIPT_NAME':sn_in,'PATH_INFO':pi_in}
@@ -448,7 +448,7 @@ class UtilityTests(TestCase):
             for alt in hop, hop.title(), hop.upper(), hop.lower():
                 self.assertFalse(util.is_hop_by_hop(alt))
 
-class HeaderTests(TestCase):
+klasse HeaderTests(TestCase):
 
     def testMappingInterface(self):
         test = [('x','y')]
@@ -503,7 +503,7 @@ class HeaderTests(TestCase):
             '\r\n'
         )
 
-class ErrorHandler(BaseCGIHandler):
+klasse ErrorHandler(BaseCGIHandler):
     """Simple handler subclass for testing BaseHandler"""
 
     # BaseHandler records the OS environment at import time, but envvars
@@ -518,14 +518,14 @@ class ErrorHandler(BaseCGIHandler):
             multithread=True, multiprocess=True
         )
 
-class TestHandler(ErrorHandler):
+klasse TestHandler(ErrorHandler):
     """Simple handler subclass for testing BaseHandler, w/error passthru"""
 
     def handle_error(self):
         raise   # for testing, we want to see what's happening
 
 
-class HandlerTests(TestCase):
+klasse HandlerTests(TestCase):
     # testEnviron() can produce long error message
     maxDiff = 80 * 50
 
@@ -758,7 +758,7 @@ class HandlerTests(TestCase):
         MSG = b"Some output has been sent"
         def error_app(e,s):
             s("200 OK",[])(MSG)
-            class CrashyIterable(object):
+            klasse CrashyIterable(object):
                 def __iter__(self):
                     while True:
                         yield b'blah'
@@ -774,7 +774,7 @@ class HandlerTests(TestCase):
     def testPartialWrite(self):
         written = bytearray()
 
-        class PartialWriter:
+        klasse PartialWriter:
             def write(self, b):
                 partial = b[:7]
                 written.extend(partial)
@@ -804,7 +804,7 @@ class HandlerTests(TestCase):
             ConnectionResetError,
         ):
             with self.subTest(exception=exception):
-                class AbortingWriter:
+                klasse AbortingWriter:
                     def write(self, b):
                         raise exception
 
@@ -815,14 +815,14 @@ class HandlerTests(TestCase):
                 self.assertFalse(stderr.getvalue())
 
     def testDontResetInternalStateOnException(self):
-        class CustomException(ValueError):
+        klasse CustomException(ValueError):
             pass
 
         # We are raising CustomException here to trigger an exception
         # during the execution of SimpleHandler.finish_response(), so
         # we can easily test that the internal state of the handler is
         # preserved in case of an exception.
-        class AbortingWriter:
+        klasse AbortingWriter:
             def write(self, b):
                 raise CustomException
 

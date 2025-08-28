@@ -8,39 +8,39 @@ Empty lines above are for good reason (testing for correct line numbers)
 from typing import Optional
 from functools import wraps
 
-class C:
+klasse C:
 
     x = 5; y: Optional['C'] = None
 
 from typing import Tuple
 x: int = 5; y: str = x; f: Tuple[int, int]
 
-class M(type):
+klasse M(type):
     o: type = object
 
 (pars): bool = True
 
-class D(C):
+klasse D(C):
     j: str = 'hi'; k: str= 'bye'
 
 from types import new_class
 h_class = new_class('H', (C,))
 j_class = new_class('J')
 
-class F():
+klasse F():
     z: int = 5
     def __init__(self, x):
         pass
 
-class Y(F):
+klasse Y(F):
     def __init__(self):
         super(F, self).__init__(123)
 
-class Meta(type):
+klasse Meta(type):
     def __new__(meta, name, bases, namespace):
         return super().__new__(meta, name, bases, namespace)
 
-class S(metaclass = Meta):
+klasse S(metaclass = Meta):
     x: str = 'something'
     y: str = 'something else'
 

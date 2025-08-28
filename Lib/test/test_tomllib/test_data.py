@@ -9,7 +9,7 @@ import unittest
 from . import burntsushi, tomllib
 
 
-class MissingFile:
+klasse MissingFile:
     def __init__(self, path: Path):
         self.path = path
 
@@ -33,7 +33,7 @@ INVALID_FILES = tuple((DATA_DIR / "invalid").glob("**/*.toml"))
 assert INVALID_FILES, "Invalid TOML test files not found"
 
 
-class TestData(unittest.TestCase):
+klasse TestData(unittest.TestCase):
     def test_invalid(self):
         for invalid in INVALID_FILES:
             with self.subTest(msg=invalid.stem):

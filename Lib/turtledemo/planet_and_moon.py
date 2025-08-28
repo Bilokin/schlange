@@ -18,7 +18,7 @@ from turtle import Shape, Turtle, mainloop, Vec2D as Vec
 
 G = 8
 
-class GravSys(object):
+klasse GravSys(object):
     def __init__(self):
         self.planets = []
         self.t = 0
@@ -32,7 +32,7 @@ class GravSys(object):
             for p in self.planets:
                 p.step()
 
-class Star(Turtle):
+klasse Star(Turtle):
     def __init__(self, m, x, v, gravSys, shape):
         Turtle.__init__(self, shape=shape)
         self.penup()
