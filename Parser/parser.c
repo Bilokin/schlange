@@ -2,7 +2,7 @@
 #include "pegen.h"
 
 #if defined(Py_DEBUG) && defined(Py_BUILD_CORE)
-#  define D(x) if (p->debug) { x; }
+#  define D(x) wenn (p->debug) { x; }
 #else
 #  define D(x)
 #endif
@@ -41,8 +41,7 @@ static KeywordToken *reserved_keywords[] = {
         {"wenn", 687},
         {"with", 652},
         {"fuer", 699},
-        {"None", 624},
-        {"True", 623},
+        {"Wahr", 623},
         {NULL, -1},
     },
     (KeywordToken[]) {
@@ -52,7 +51,6 @@ static KeywordToken *reserved_keywords[] = {
         {"async", 703},
         {"while", 694},
         {"sonst", 691},
-        {"False", 625},
         {"await", 598},
         {NULL, -1},
     },
@@ -64,6 +62,8 @@ static KeywordToken *reserved_keywords[] = {
         {"klasse", 706},
         {"sowenn", 692},
         {"except", 682},
+        {"Nichts", 624},
+        {"Falsch", 625},
         {"lambda", 622},
         {NULL, -1},
     },
@@ -8477,9 +8477,9 @@ closed_pattern_rule(Parser *p)
 //     | signed_number !('+' | '-')
 //     | complex_number
 //     | strings
-//     | 'None'
-//     | 'True'
-//     | 'False'
+//     | 'Nichts'
+//     | 'Wahr'
+//     | 'Falsch'
 static pattern_ty
 literal_pattern_rule(Parser *p)
 {
@@ -8602,18 +8602,18 @@ literal_pattern_rule(Parser *p)
         D(fprintf(stderr, "%*c%s literal_pattern[%d-%d]: %s failed!\n", p->level, ' ',
                   p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "strings"));
     }
-    { // 'None'
+    { // 'Nichts'
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> literal_pattern[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'None'"));
+        D(fprintf(stderr, "%*c> literal_pattern[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'Nichts'"));
         Token * _keyword;
         if (
-            (_keyword = _PyPegen_expect_token(p, 624))  // token='None'
+            (_keyword = _PyPegen_expect_token(p, 624))  // token='Nichts'
         )
         {
-            D(fprintf(stderr, "%*c+ literal_pattern[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'None'"));
+            D(fprintf(stderr, "%*c+ literal_pattern[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'Nichts'"));
             Token *_token = _PyPegen_get_last_nonnwhitespace_token(p);
             if (_token == NULL) {
                 p->level--;
@@ -8633,20 +8633,20 @@ literal_pattern_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s literal_pattern[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'None'"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'Nichts'"));
     }
-    { // 'True'
+    { // 'Wahr'
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> literal_pattern[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'True'"));
+        D(fprintf(stderr, "%*c> literal_pattern[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'Wahr'"));
         Token * _keyword;
         if (
-            (_keyword = _PyPegen_expect_token(p, 623))  // token='True'
+            (_keyword = _PyPegen_expect_token(p, 623))  // token='Wahr'
         )
         {
-            D(fprintf(stderr, "%*c+ literal_pattern[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'True'"));
+            D(fprintf(stderr, "%*c+ literal_pattern[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'Wahr'"));
             Token *_token = _PyPegen_get_last_nonnwhitespace_token(p);
             if (_token == NULL) {
                 p->level--;
@@ -8666,20 +8666,20 @@ literal_pattern_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s literal_pattern[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'True'"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'Wahr'"));
     }
-    { // 'False'
+    { // 'Falsch'
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> literal_pattern[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'False'"));
+        D(fprintf(stderr, "%*c> literal_pattern[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'Falsch'"));
         Token * _keyword;
         if (
-            (_keyword = _PyPegen_expect_token(p, 625))  // token='False'
+            (_keyword = _PyPegen_expect_token(p, 625))  // token='Falsch'
         )
         {
-            D(fprintf(stderr, "%*c+ literal_pattern[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'False'"));
+            D(fprintf(stderr, "%*c+ literal_pattern[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'Falsch'"));
             Token *_token = _PyPegen_get_last_nonnwhitespace_token(p);
             if (_token == NULL) {
                 p->level--;
@@ -8699,7 +8699,7 @@ literal_pattern_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s literal_pattern[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'False'"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'Falsch'"));
     }
     _res = NULL;
   done:
@@ -8711,9 +8711,9 @@ literal_pattern_rule(Parser *p)
 //     | signed_number !('+' | '-')
 //     | complex_number
 //     | &(STRING | FSTRING_START | TSTRING_START) strings
-//     | 'None'
-//     | 'True'
-//     | 'False'
+//     | 'Nichts'
+//     | 'Wahr'
+//     | 'Falsch'
 static expr_ty
 literal_expr_rule(Parser *p)
 {
@@ -8796,18 +8796,18 @@ literal_expr_rule(Parser *p)
         D(fprintf(stderr, "%*c%s literal_expr[%d-%d]: %s failed!\n", p->level, ' ',
                   p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "&(STRING | FSTRING_START | TSTRING_START) strings"));
     }
-    { // 'None'
+    { // 'Nichts'
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> literal_expr[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'None'"));
+        D(fprintf(stderr, "%*c> literal_expr[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'Nichts'"));
         Token * _keyword;
         if (
-            (_keyword = _PyPegen_expect_token(p, 624))  // token='None'
+            (_keyword = _PyPegen_expect_token(p, 624))  // token='Nichts'
         )
         {
-            D(fprintf(stderr, "%*c+ literal_expr[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'None'"));
+            D(fprintf(stderr, "%*c+ literal_expr[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'Nichts'"));
             Token *_token = _PyPegen_get_last_nonnwhitespace_token(p);
             if (_token == NULL) {
                 p->level--;
@@ -8827,20 +8827,20 @@ literal_expr_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s literal_expr[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'None'"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'Nichts'"));
     }
-    { // 'True'
+    { // 'Wahr'
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> literal_expr[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'True'"));
+        D(fprintf(stderr, "%*c> literal_expr[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'Wahr'"));
         Token * _keyword;
         if (
-            (_keyword = _PyPegen_expect_token(p, 623))  // token='True'
+            (_keyword = _PyPegen_expect_token(p, 623))  // token='Wahr'
         )
         {
-            D(fprintf(stderr, "%*c+ literal_expr[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'True'"));
+            D(fprintf(stderr, "%*c+ literal_expr[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'Wahr'"));
             Token *_token = _PyPegen_get_last_nonnwhitespace_token(p);
             if (_token == NULL) {
                 p->level--;
@@ -8860,20 +8860,20 @@ literal_expr_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s literal_expr[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'True'"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'Wahr'"));
     }
-    { // 'False'
+    { // 'Falsch'
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> literal_expr[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'False'"));
+        D(fprintf(stderr, "%*c> literal_expr[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'Falsch'"));
         Token * _keyword;
         if (
-            (_keyword = _PyPegen_expect_token(p, 625))  // token='False'
+            (_keyword = _PyPegen_expect_token(p, 625))  // token='Falsch'
         )
         {
-            D(fprintf(stderr, "%*c+ literal_expr[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'False'"));
+            D(fprintf(stderr, "%*c+ literal_expr[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'Falsch'"));
             Token *_token = _PyPegen_get_last_nonnwhitespace_token(p);
             if (_token == NULL) {
                 p->level--;
@@ -8893,7 +8893,7 @@ literal_expr_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s literal_expr[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'False'"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'Falsch'"));
     }
     _res = NULL;
   done:
@@ -14959,9 +14959,9 @@ slice_rule(Parser *p)
 
 // atom:
 //     | NAME
-//     | 'True'
-//     | 'False'
-//     | 'None'
+//     | 'Wahr'
+//     | 'Falsch'
+//     | 'Nichts'
 //     | &(STRING | FSTRING_START | TSTRING_START) strings
 //     | NUMBER
 //     | &'(' (tuple | group | genexp)
@@ -15008,18 +15008,18 @@ atom_rule(Parser *p)
         D(fprintf(stderr, "%*c%s atom[%d-%d]: %s failed!\n", p->level, ' ',
                   p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "NAME"));
     }
-    { // 'True'
+    { // 'Wahr'
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> atom[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'True'"));
+        D(fprintf(stderr, "%*c> atom[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'Wahr'"));
         Token * _keyword;
         if (
-            (_keyword = _PyPegen_expect_token(p, 623))  // token='True'
+            (_keyword = _PyPegen_expect_token(p, 623))  // token='Wahr'
         )
         {
-            D(fprintf(stderr, "%*c+ atom[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'True'"));
+            D(fprintf(stderr, "%*c+ atom[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'Wahr'"));
             Token *_token = _PyPegen_get_last_nonnwhitespace_token(p);
             if (_token == NULL) {
                 p->level--;
@@ -15039,20 +15039,20 @@ atom_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s atom[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'True'"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'Wahr'"));
     }
-    { // 'False'
+    { // 'Falsch'
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> atom[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'False'"));
+        D(fprintf(stderr, "%*c> atom[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'Falsch'"));
         Token * _keyword;
         if (
-            (_keyword = _PyPegen_expect_token(p, 625))  // token='False'
+            (_keyword = _PyPegen_expect_token(p, 625))  // token='Falsch'
         )
         {
-            D(fprintf(stderr, "%*c+ atom[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'False'"));
+            D(fprintf(stderr, "%*c+ atom[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'Falsch'"));
             Token *_token = _PyPegen_get_last_nonnwhitespace_token(p);
             if (_token == NULL) {
                 p->level--;
@@ -15072,20 +15072,20 @@ atom_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s atom[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'False'"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'Falsch'"));
     }
-    { // 'None'
+    { // 'Nichts'
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> atom[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'None'"));
+        D(fprintf(stderr, "%*c> atom[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'Nichts'"));
         Token * _keyword;
         if (
-            (_keyword = _PyPegen_expect_token(p, 624))  // token='None'
+            (_keyword = _PyPegen_expect_token(p, 624))  // token='Nichts'
         )
         {
-            D(fprintf(stderr, "%*c+ atom[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'None'"));
+            D(fprintf(stderr, "%*c+ atom[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'Nichts'"));
             Token *_token = _PyPegen_get_last_nonnwhitespace_token(p);
             if (_token == NULL) {
                 p->level--;
@@ -15105,7 +15105,7 @@ atom_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s atom[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'None'"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'Nichts'"));
     }
     { // &(STRING | FSTRING_START | TSTRING_START) strings
         if (p->error_indicator) {
@@ -20931,7 +20931,7 @@ invalid_arguments_rule(Parser *p)
 }
 
 // invalid_kwarg:
-//     | ('True' | 'False' | 'None') '='
+//     | ('Wahr' | 'Falsch' | 'Nichts') '='
 //     | NAME '=' expression for_if_clauses
 //     | !(NAME '=') expression '='
 //     | '**' expression '=' expression
@@ -20947,21 +20947,21 @@ invalid_kwarg_rule(Parser *p)
     }
     void * _res = NULL;
     int _mark = p->mark;
-    { // ('True' | 'False' | 'None') '='
+    { // ('Wahr' | 'Falsch' | 'Nichts') '='
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> invalid_kwarg[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "('True' | 'False' | 'None') '='"));
+        D(fprintf(stderr, "%*c> invalid_kwarg[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "('Wahr' | 'Falsch' | 'Nichts') '='"));
         Token* a;
         Token * b;
         if (
-            (a = (Token*)_tmp_111_rule(p))  // 'True' | 'False' | 'None'
+            (a = (Token*)_tmp_111_rule(p))  // 'Wahr' | 'Falsch' | 'Nichts'
             &&
             (b = _PyPegen_expect_token(p, 22))  // token='='
         )
         {
-            D(fprintf(stderr, "%*c+ invalid_kwarg[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "('True' | 'False' | 'None') '='"));
+            D(fprintf(stderr, "%*c+ invalid_kwarg[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "('Wahr' | 'Falsch' | 'Nichts') '='"));
             _res = RAISE_SYNTAX_ERROR_KNOWN_RANGE ( a , b , "cannot assign to %s" , PyBytes_AS_STRING ( a -> bytes ) );
             if (_res == NULL && PyErr_Occurred()) {
                 p->error_indicator = 1;
@@ -20972,7 +20972,7 @@ invalid_kwarg_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s invalid_kwarg[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "('True' | 'False' | 'None') '='"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "('Wahr' | 'Falsch' | 'Nichts') '='"));
     }
     { // NAME '=' expression for_if_clauses
         if (p->error_indicator) {
@@ -21589,7 +21589,7 @@ invalid_expression_rule(Parser *p)
 // invalid_named_expression:
 //     | expression ':=' expression
 //     | NAME '=' bitwise_or !('=' | ':=')
-//     | !(list | tuple | genexp | 'True' | 'None' | 'False') bitwise_or '=' bitwise_or !('=' | ':=')
+//     | !(list | tuple | genexp | 'Wahr' | 'Nichts' | 'Falsch') bitwise_or '=' bitwise_or !('=' | ':=')
 static void *
 invalid_named_expression_rule(Parser *p)
 {
@@ -21668,12 +21668,12 @@ invalid_named_expression_rule(Parser *p)
         D(fprintf(stderr, "%*c%s invalid_named_expression[%d-%d]: %s failed!\n", p->level, ' ',
                   p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "NAME '=' bitwise_or !('=' | ':=')"));
     }
-    { // !(list | tuple | genexp | 'True' | 'None' | 'False') bitwise_or '=' bitwise_or !('=' | ':=')
+    { // !(list | tuple | genexp | 'Wahr' | 'Nichts' | 'Falsch') bitwise_or '=' bitwise_or !('=' | ':=')
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> invalid_named_expression[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "!(list | tuple | genexp | 'True' | 'None' | 'False') bitwise_or '=' bitwise_or !('=' | ':=')"));
+        D(fprintf(stderr, "%*c> invalid_named_expression[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "!(list | tuple | genexp | 'Wahr' | 'Nichts' | 'Falsch') bitwise_or '=' bitwise_or !('=' | ':=')"));
         expr_ty a;
         Token * b;
         expr_ty bitwise_or_var;
@@ -21689,7 +21689,7 @@ invalid_named_expression_rule(Parser *p)
             _PyPegen_lookahead(0, _tmp_117_rule, p)
         )
         {
-            D(fprintf(stderr, "%*c+ invalid_named_expression[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "!(list | tuple | genexp | 'True' | 'None' | 'False') bitwise_or '=' bitwise_or !('=' | ':=')"));
+            D(fprintf(stderr, "%*c+ invalid_named_expression[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "!(list | tuple | genexp | 'Wahr' | 'Nichts' | 'Falsch') bitwise_or '=' bitwise_or !('=' | ':=')"));
             _res = RAISE_SYNTAX_ERROR_KNOWN_LOCATION ( a , "cannot assign to %s here. Maybe you meant '==' instead of '='?" , _PyPegen_get_expr_name ( a ) );
             if (_res == NULL && PyErr_Occurred()) {
                 p->error_indicator = 1;
@@ -21700,7 +21700,7 @@ invalid_named_expression_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s invalid_named_expression[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "!(list | tuple | genexp | 'True' | 'None' | 'False') bitwise_or '=' bitwise_or !('=' | ':=')"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "!(list | tuple | genexp | 'Wahr' | 'Nichts' | 'Falsch') bitwise_or '=' bitwise_or !('=' | ':=')"));
     }
     _res = NULL;
   done:
@@ -34213,7 +34213,7 @@ _tmp_110_rule(Parser *p)
     return _res;
 }
 
-// _tmp_111: 'True' | 'False' | 'None'
+// _tmp_111: 'Wahr' | 'Falsch' | 'Nichts'
 static void *
 _tmp_111_rule(Parser *p)
 {
@@ -34226,62 +34226,62 @@ _tmp_111_rule(Parser *p)
     }
     void * _res = NULL;
     int _mark = p->mark;
-    { // 'True'
+    { // 'Wahr'
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> _tmp_111[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'True'"));
+        D(fprintf(stderr, "%*c> _tmp_111[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'Wahr'"));
         Token * _keyword;
         if (
-            (_keyword = _PyPegen_expect_token(p, 623))  // token='True'
+            (_keyword = _PyPegen_expect_token(p, 623))  // token='Wahr'
         )
         {
-            D(fprintf(stderr, "%*c+ _tmp_111[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'True'"));
+            D(fprintf(stderr, "%*c+ _tmp_111[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'Wahr'"));
             _res = _keyword;
             goto done;
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s _tmp_111[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'True'"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'Wahr'"));
     }
-    { // 'False'
+    { // 'Falsch'
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> _tmp_111[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'False'"));
+        D(fprintf(stderr, "%*c> _tmp_111[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'Falsch'"));
         Token * _keyword;
         if (
-            (_keyword = _PyPegen_expect_token(p, 625))  // token='False'
+            (_keyword = _PyPegen_expect_token(p, 625))  // token='Falsch'
         )
         {
-            D(fprintf(stderr, "%*c+ _tmp_111[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'False'"));
+            D(fprintf(stderr, "%*c+ _tmp_111[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'Falsch'"));
             _res = _keyword;
             goto done;
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s _tmp_111[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'False'"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'Falsch'"));
     }
-    { // 'None'
+    { // 'Nichts'
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> _tmp_111[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'None'"));
+        D(fprintf(stderr, "%*c> _tmp_111[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'Nichts'"));
         Token * _keyword;
         if (
-            (_keyword = _PyPegen_expect_token(p, 624))  // token='None'
+            (_keyword = _PyPegen_expect_token(p, 624))  // token='Nichts'
         )
         {
-            D(fprintf(stderr, "%*c+ _tmp_111[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'None'"));
+            D(fprintf(stderr, "%*c+ _tmp_111[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'Nichts'"));
             _res = _keyword;
             goto done;
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s _tmp_111[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'None'"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'Nichts'"));
     }
     _res = NULL;
   done:
@@ -34652,7 +34652,7 @@ _tmp_117_rule(Parser *p)
     return _res;
 }
 
-// _tmp_118: list | tuple | genexp | 'True' | 'None' | 'False'
+// _tmp_118: list | tuple | genexp | 'Wahr' | 'Nichts' | 'Falsch'
 static void *
 _tmp_118_rule(Parser *p)
 {
@@ -34722,62 +34722,62 @@ _tmp_118_rule(Parser *p)
         D(fprintf(stderr, "%*c%s _tmp_118[%d-%d]: %s failed!\n", p->level, ' ',
                   p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "genexp"));
     }
-    { // 'True'
+    { // 'Wahr'
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> _tmp_118[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'True'"));
+        D(fprintf(stderr, "%*c> _tmp_118[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'Wahr'"));
         Token * _keyword;
         if (
-            (_keyword = _PyPegen_expect_token(p, 623))  // token='True'
+            (_keyword = _PyPegen_expect_token(p, 623))  // token='Wahr'
         )
         {
-            D(fprintf(stderr, "%*c+ _tmp_118[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'True'"));
+            D(fprintf(stderr, "%*c+ _tmp_118[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'Wahr'"));
             _res = _keyword;
             goto done;
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s _tmp_118[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'True'"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'Wahr'"));
     }
-    { // 'None'
+    { // 'Nichts'
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> _tmp_118[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'None'"));
+        D(fprintf(stderr, "%*c> _tmp_118[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'Nichts'"));
         Token * _keyword;
         if (
-            (_keyword = _PyPegen_expect_token(p, 624))  // token='None'
+            (_keyword = _PyPegen_expect_token(p, 624))  // token='Nichts'
         )
         {
-            D(fprintf(stderr, "%*c+ _tmp_118[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'None'"));
+            D(fprintf(stderr, "%*c+ _tmp_118[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'Nichts'"));
             _res = _keyword;
             goto done;
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s _tmp_118[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'None'"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'Nichts'"));
     }
-    { // 'False'
+    { // 'Falsch'
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> _tmp_118[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'False'"));
+        D(fprintf(stderr, "%*c> _tmp_118[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'Falsch'"));
         Token * _keyword;
         if (
-            (_keyword = _PyPegen_expect_token(p, 625))  // token='False'
+            (_keyword = _PyPegen_expect_token(p, 625))  // token='Falsch'
         )
         {
-            D(fprintf(stderr, "%*c+ _tmp_118[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'False'"));
+            D(fprintf(stderr, "%*c+ _tmp_118[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'Falsch'"));
             _res = _keyword;
             goto done;
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s _tmp_118[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'False'"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'Falsch'"));
     }
     _res = NULL;
   done:

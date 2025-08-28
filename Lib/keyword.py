@@ -16,9 +16,9 @@ Alternatively, you can run 'make regen-keyword'.
 __all__ = ["iskeyword", "issoftkeyword", "kwlist", "softkwlist"]
 
 kwlist = [
-    'False',
-    'None',
-    'True',
+    'Falsch',
+    'Nichts',
+    'Wahr',
     'and',
     'as',
     'assert',
