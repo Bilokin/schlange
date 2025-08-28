@@ -48,7 +48,7 @@ klasse ProfileTest(unittest.TestCase):
             # Only compare against stats originating from the test file.
             # Prevents outside code (e.g., the io module) from causing
             # unexpected output.
-            output = [line.rstrip() fuer line in output if mod_name in line]
+            output = [line.rstrip() fuer line in output wenn mod_name in line]
             results.append('\n'.join(output))
         return results
 
@@ -60,13 +60,13 @@ klasse ProfileTest(unittest.TestCase):
         fuer i, method in enumerate(self.methodnames):
             a = expected[method]
             b = results[i+1]
-            if a != b:
+            wenn a != b:
                 fail.append(f"\nStats.{method} output fuer "
                             f"{self.profilerclass.__name__} "
                              "does not fit expectation:")
                 fail.extend(unified_diff(a.split('\n'), b.split('\n'),
                             lineterm=""))
-        if fail:
+        wenn fail:
             self.fail("\n".join(fail))
 
     def test_calling_conventions(self):
@@ -144,7 +144,7 @@ def regenerate_expected_output(filename, cls):
     with open(filename, 'r') as f:
         fuer line in f:
             newfile.append(line)
-            if line.startswith('#--cut'):
+            wenn line.startswith('#--cut'):
                 break
 
     with open(filename, 'w') as f:
@@ -166,9 +166,9 @@ def silent():
 
 
 def main():
-    if '-r' not in sys.argv:
+    wenn '-r' not in sys.argv:
         unittest.main()
-    else:
+    sonst:
         regenerate_expected_output(__file__, ProfileTest)
 
 
@@ -222,5 +222,5 @@ profilee.py:88(helper2)           -> :0(hasattr)(8)   11.964
                                      profilee.py:98(subhelper)(8)   79.960
 profilee.py:98(subhelper)         -> profilee.py:110(__getattr__)(16)   27.972"""
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     main()

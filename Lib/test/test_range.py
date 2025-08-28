@@ -8,7 +8,7 @@ from test.support import ALWAYS_EQ
 
 # pure Python implementations (3 args only), fuer comparison
 def pyrange(start, stop, step):
-    if (start - stop) // step < 0:
+    wenn (start - stop) // step < 0:
         # replace stop with next element in the sequence of integers
         # that are congruent to start modulo step.
         stop += (start - stop) % step
@@ -25,21 +25,21 @@ klasse RangeTest(unittest.TestCase):
     def assert_iterators_equal(self, xs, ys, test_id, limit=None):
         # check that an iterator xs matches the expected results ys,
         # up to a given limit.
-        if limit is not None:
+        wenn limit is not None:
             xs = itertools.islice(xs, limit)
             ys = itertools.islice(ys, limit)
         sentinel = object()
         pairs = itertools.zip_longest(xs, ys, fillvalue=sentinel)
         fuer i, (x, y) in enumerate(pairs):
-            if x == y:
+            wenn x == y:
                 continue
-            elif x == sentinel:
+            sowenn x == sentinel:
                 self.fail('{}: iterator ended unexpectedly '
                           'at position {}; expected {}'.format(test_id, i, y))
-            elif y == sentinel:
+            sowenn y == sentinel:
                 self.fail('{}: unexpected excess element {} at '
                           'position {}'.format(test_id, x, i))
-            else:
+            sonst:
                 self.fail('{}: wrong element at position {}; '
                           'expected {}, got {}'.format(test_id, i, y, x))
 
@@ -285,7 +285,7 @@ klasse RangeTest(unittest.TestCase):
 
         klasse BadCmp:
             def __eq__(self, other):
-                if other == 2:
+                wenn other == 2:
                     raise BadExc()
                 return False
 
@@ -418,7 +418,7 @@ klasse RangeTest(unittest.TestCase):
             i = iter(r)
             while True:
                 r = next(i)
-                if r == 2**65+1:
+                wenn r == 2**65+1:
                     break
             d = pickle.dumps(i, proto)
             i2 = pickle.loads(d)
@@ -431,7 +431,7 @@ klasse RangeTest(unittest.TestCase):
             i = iter(r)
             while True:
                 r = next(i)
-                if r == 19:
+                wenn r == 19:
                     break
             d = pickle.dumps(i, proto)
             i2 = pickle.loads(d)
@@ -491,7 +491,7 @@ klasse RangeTest(unittest.TestCase):
             def __int__(self): return 1
             def __index__(self): return 1
         self.assertNotIn(C2(), range(3))
-        # ..except if explicitly told so.
+        # ..except wenn explicitly told so.
         self.assertIn(int(C2()), range(3))
 
         # Check that the range.__contains__ optimization is only
@@ -656,7 +656,7 @@ klasse RangeTest(unittest.TestCase):
         # Equal ranges should have equal hashes.
         fuer a in test_ranges:
             fuer b in test_ranges:
-                if a == b:
+                wenn a == b:
                     self.assertEqual(hash(a), hash(b))
 
         # Ranges are unequal to other types (even sequence types)
@@ -724,5 +724,5 @@ klasse RangeTest(unittest.TestCase):
         with self.assertRaises(AttributeError):
             del rangeobj.step
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

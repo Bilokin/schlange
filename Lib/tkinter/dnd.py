@@ -37,15 +37,15 @@ object being dragged (the object passed to dnd_start() above), and
 'event' is the most recent event object (generally a <Motion> event;
 it can also be <ButtonPress> or <ButtonRelease>).  If the dnd_accept()
 function returns something other than None, this is the new dnd target
-object.  If dnd_accept() returns None, or if the target widget has no
+object.  If dnd_accept() returns None, or wenn the target widget has no
 dnd_accept attribute, the target widget's parent is considered as the
 target widget, and the search fuer a target object is repeated from
 there.  If necessary, the search is repeated all the way up to the
 root widget.  If none of the target widgets can produce a target
 object, there is no target object (the target object is None).
 
-The target object thus produced, if any, is called the new target
-object.  It is compared with the old target object (or None, if there
+The target object thus produced, wenn any, is called the new target
+object.  It is compared with the old target object (or None, wenn there
 was no old target widget).  There are several cases ('source' is the
 source object, and 'event' is the most recent event object):
 
@@ -68,7 +68,7 @@ target object's method dnd_enter(source, event) is called.
 
 Once this is done, the new target object replaces the old one, and the
 Tk mainloop proceeds.  The return value of the methods mentioned above
-is ignored; if they raise an exception, the normal exception handling
+is ignored; wenn they raise an exception, the normal exception handling
 mechanisms take over.
 
 The drag-and-drop processes can end in two ways: a final target object
@@ -86,7 +86,7 @@ dnd sequence.
 
 Finally, the source object is notified that the drag-and-drop process
 is over, by a call to source.dnd_end(target, event), specifying either
-the selected target object, or None if no target object was selected.
+the selected target object, or None wenn no target object was selected.
 The source object can use this to implement the commit action; this is
 sometimes simpler than to do it in the target's dnd_commit().  The
 target's dnd_commit() method could then simply be aliased to
@@ -94,7 +94,7 @@ dnd_leave().
 
 At any time during a dnd sequence, the application can cancel the
 sequence by calling the cancel() method on the object returned by
-dnd_start().  This will call dnd_leave() if a target is currently
+dnd_start().  This will call dnd_leave() wenn a target is currently
 active; it will never call dnd_commit().
 
 """
@@ -108,9 +108,9 @@ __all__ = ["dnd_start", "DndHandler"]
 
 def dnd_start(source, event):
     h = DndHandler(source, event)
-    if h.root is not None:
+    wenn h.root is not None:
         return h
-    else:
+    sonst:
         return None
 
 
@@ -121,7 +121,7 @@ klasse DndHandler:
     root = None
 
     def __init__(self, source, event):
-        if event.num > 5:
+        wenn event.num > 5:
             return
         root = event.widget._root()
         try:
@@ -143,7 +143,7 @@ klasse DndHandler:
     def __del__(self):
         root = self.root
         self.root = None
-        if root is not None:
+        wenn root is not None:
             try:
                 del root.__dnd
             except AttributeError:
@@ -159,20 +159,20 @@ klasse DndHandler:
                 attr = target_widget.dnd_accept
             except AttributeError:
                 pass
-            else:
+            sonst:
                 new_target = attr(source, event)
-                if new_target is not None:
+                wenn new_target is not None:
                     break
             target_widget = target_widget.master
         old_target = self.target
-        if old_target is new_target:
-            if old_target is not None:
+        wenn old_target is new_target:
+            wenn old_target is not None:
                 old_target.dnd_motion(source, event)
-        else:
-            if old_target is not None:
+        sonst:
+            wenn old_target is not None:
                 self.target = None
                 old_target.dnd_leave(source, event)
-            if new_target is not None:
+            wenn new_target is not None:
                 new_target.dnd_enter(source, event)
                 self.target = new_target
 
@@ -193,10 +193,10 @@ klasse DndHandler:
             self.initial_widget.unbind("<Motion>")
             widget['cursor'] = self.save_cursor
             self.target = self.source = self.initial_widget = self.root = None
-            if target is not None:
-                if commit:
+            wenn target is not None:
+                wenn commit:
                     target.dnd_commit(source, event)
-                else:
+                sonst:
                     target.dnd_leave(source, event)
         finally:
             source.dnd_end(target, event)
@@ -212,12 +212,12 @@ klasse Icon:
         self.canvas = self.label = self.id = None
 
     def attach(self, canvas, x=10, y=10):
-        if canvas is self.canvas:
+        wenn canvas is self.canvas:
             self.canvas.coords(self.id, x, y)
             return
-        if self.canvas is not None:
+        wenn self.canvas is not None:
             self.detach()
-        if canvas is None:
+        wenn canvas is None:
             return
         label = tkinter.Label(canvas, text=self.name,
                               borderwidth=2, relief="raised")
@@ -229,7 +229,7 @@ klasse Icon:
 
     def detach(self):
         canvas = self.canvas
-        if canvas is None:
+        wenn canvas is None:
             return
         id = self.id
         label = self.label
@@ -238,7 +238,7 @@ klasse Icon:
         label.destroy()
 
     def press(self, event):
-        if dnd_start(self, event):
+        wenn dnd_start(self, event):
             # where the pointer is relative to the label widget:
             self.x_off = event.x
             self.y_off = event.y
@@ -320,5 +320,5 @@ def test():
     root.mainloop()
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     test()

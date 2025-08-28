@@ -1,6 +1,6 @@
 from test.support import import_helper
 from test.support import os_helper
-import_helper.import_module("dbm.ndbm") #skip if not supported
+import_helper.import_module("dbm.ndbm") #skip wenn not supported
 import os
 import unittest
 import dbm.ndbm
@@ -38,7 +38,7 @@ klasse DbmTestCase(unittest.TestCase):
         self.d.close()
 
     def test_empty_value(self):
-        if dbm.ndbm.library == 'Berkeley DB':
+        wenn dbm.ndbm.library == 'Berkeley DB':
             self.skipTest("Berkeley DB doesn't distinguish the empty value "
                           "from the absent one")
         self.d = dbm.ndbm.open(self.filename, 'c')
@@ -161,5 +161,5 @@ klasse DbmTestCase(unittest.TestCase):
             self.assertEqual(len(db), 0)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

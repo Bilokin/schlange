@@ -37,7 +37,7 @@ klasse SelectTestCase(unittest.TestCase):
                 select.select([fd], [], [], 0)
             except OSError as err:
                 self.assertEqual(err.errno, errno.EBADF)
-            else:
+            sonst:
                 self.fail("exception not raised")
 
     def test_returned_list_identity(self):
@@ -59,19 +59,19 @@ klasse SelectTestCase(unittest.TestCase):
         with subprocess.Popen(cmd, stdout=subprocess.PIPE) as proc:
             pipe = proc.stdout
             fuer timeout in (0, 1, 2, 4, 8, 16) + (None,)*10:
-                if support.verbose:
+                wenn support.verbose:
                     print(f'timeout = {timeout}')
                 rfd, wfd, xfd = select.select([pipe], [], [], timeout)
                 self.assertEqual(wfd, [])
                 self.assertEqual(xfd, [])
-                if not rfd:
+                wenn not rfd:
                     continue
-                if rfd == [pipe]:
+                wenn rfd == [pipe]:
                     line = pipe.readline()
-                    if support.verbose:
+                    wenn support.verbose:
                         print(repr(line))
-                    if not line:
-                        if support.verbose:
+                    wenn not line:
+                        wenn support.verbose:
                             print('EOF')
                         break
                     continue
@@ -94,11 +94,11 @@ klasse SelectTestCase(unittest.TestCase):
     def test_disallow_instantiation(self):
         support.check_disallow_instantiation(self, type(select.poll()))
 
-        if hasattr(select, 'devpoll'):
+        wenn hasattr(select, 'devpoll'):
             support.check_disallow_instantiation(self, type(select.devpoll()))
 
 def tearDownModule():
     support.reap_children()
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

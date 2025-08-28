@@ -74,19 +74,19 @@ klasse StringprepTests(unittest.TestCase):
         # the database.
 
         # import hashlib
-        # predicates = [k fuer k in dir(stringprep) if k.startswith("in_table")]
+        # predicates = [k fuer k in dir(stringprep) wenn k.startswith("in_table")]
         # predicates.sort()
         # fuer p in predicates:
         #     f = getattr(stringprep, p)
         #     # Collect all BMP code points
         #     data = ["0"] * 0x10000
         #     fuer i in range(0x10000):
-        #         if f(unichr(i)):
+        #         wenn f(unichr(i)):
         #             data[i] = "1"
         #     data = "".join(data)
         #     h = hashlib.sha1()
         #     h.update(data)
         #     print p, h.hexdigest()
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

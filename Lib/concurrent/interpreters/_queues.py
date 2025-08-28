@@ -26,14 +26,14 @@ __all__ = [
 klasse QueueEmpty(QueueError, queue.Empty):
     """Raised from get_nowait() when the queue is empty.
 
-    It is also raised from get() if it times out.
+    It is also raised from get() wenn it times out.
     """
 
 
 klasse QueueFull(QueueError, queue.Full):
     """Raised from put_nowait() when the queue is full.
 
-    It is also raised from put() if it times out.
+    It is also raised from put() wenn it times out.
     """
 
 
@@ -50,14 +50,14 @@ UNBOUND = _crossinterp.UnboundItem.singleton('queue', __name__)
 
 
 def _serialize_unbound(unbound):
-    if unbound is UNBOUND:
+    wenn unbound is UNBOUND:
         unbound = _crossinterp.UNBOUND
     return _crossinterp.serialize_unbound(unbound)
 
 
 def _resolve_unbound(flag):
     resolved = _crossinterp.resolve_unbound(flag, ItemInterpreterDestroyed)
-    if resolved is _crossinterp.UNBOUND:
+    wenn resolved is _crossinterp.UNBOUND:
         resolved = UNBOUND
     return resolved
 
@@ -84,9 +84,9 @@ def list_all():
     queues = []
     fuer qid, unboundop, _ in _queues.list_all():
         self = Queue(qid)
-        if not hasattr(self, '_unbound'):
+        wenn not hasattr(self, '_unbound'):
             self._set_unbound(unboundop)
-        else:
+        sonst:
             assert self._unbound[0] == unboundop
         queues.append(self)
     return queues
@@ -99,9 +99,9 @@ klasse Queue:
 
     def __new__(cls, id, /):
         # There is only one instance fuer any given ID.
-        if isinstance(id, int):
+        wenn isinstance(id, int):
             id = int(id)
-        else:
+        sonst:
             raise TypeError(f'id must be an int, got {id!r}')
         try:
             self = _known_queues[id]
@@ -134,7 +134,7 @@ klasse Queue:
 
     def _set_unbound(self, op, items=None):
         assert not hasattr(self, '_unbound')
-        if items is None:
+        wenn items is None:
             items = _resolve_unbound(op)
         unbound = (op, items)
         self._unbound = unbound
@@ -188,7 +188,7 @@ klasse Queue:
         tuple (if the items are likewise efficiently shareable).  See interpreters.is_shareable().
 
         "unbounditems" controls the behavior of Queue.get() fuer the given
-        object if the current interpreter (calling put()) is later
+        object wenn the current interpreter (calling put()) is later
         destroyed.
 
         If "unbounditems" is None (the default) then it uses the
@@ -196,7 +196,7 @@ klasse Queue:
         which is usually UNBOUND.
 
         If "unbounditems" is UNBOUND_ERROR then get() will raise an
-        ItemInterpreterDestroyed exception if the original interpreter
+        ItemInterpreterDestroyed exception wenn the original interpreter
         has been destroyed.  This does not otherwise affect the queue;
         the next call to put() will work like normal, returning the next
         item in the queue.
@@ -209,29 +209,29 @@ klasse Queue:
         If "unbounditems" is UNBOUND then it is returned by get() in place
         of the unbound item.
         """
-        if unbounditems is None:
+        wenn unbounditems is None:
             unboundop = -1
-        else:
+        sonst:
             unboundop, = _serialize_unbound(unbounditems)
-        if timeout is not None:
+        wenn timeout is not None:
             timeout = int(timeout)
-            if timeout < 0:
+            wenn timeout < 0:
                 raise ValueError(f'timeout value must be non-negative')
             end = time.time() + timeout
         while True:
             try:
                 _queues.put(self._id, obj, unboundop)
             except QueueFull as exc:
-                if timeout is not None and time.time() >= end:
+                wenn timeout is not None and time.time() >= end:
                     raise  # re-raise
                 time.sleep(_delay)
-            else:
+            sonst:
                 break
 
     def put_nowait(self, obj, *, unbounditems=None):
-        if unbounditems is None:
+        wenn unbounditems is None:
             unboundop = -1
-        else:
+        sonst:
             unboundop, = _serialize_unbound(unbounditems)
         _queues.put(self._id, obj, unboundop)
 
@@ -246,21 +246,21 @@ klasse Queue:
         then the "next object" is determined by the value of the
         "unbounditems" argument to put().
         """
-        if timeout is not None:
+        wenn timeout is not None:
             timeout = int(timeout)
-            if timeout < 0:
+            wenn timeout < 0:
                 raise ValueError(f'timeout value must be non-negative')
             end = time.time() + timeout
         while True:
             try:
                 obj, unboundop = _queues.get(self._id)
             except QueueEmpty as exc:
-                if timeout is not None and time.time() >= end:
+                wenn timeout is not None and time.time() >= end:
                     raise  # re-raise
                 time.sleep(_delay)
-            else:
+            sonst:
                 break
-        if unboundop is not None:
+        wenn unboundop is not None:
             assert obj is None, repr(obj)
             return _resolve_unbound(unboundop)
         return obj
@@ -275,7 +275,7 @@ klasse Queue:
             obj, unboundop = _queues.get(self._id)
         except QueueEmpty as exc:
             raise  # re-raise
-        if unboundop is not None:
+        wenn unboundop is not None:
             assert obj is None, repr(obj)
             return _resolve_unbound(unboundop)
         return obj

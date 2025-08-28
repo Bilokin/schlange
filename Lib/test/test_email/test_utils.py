@@ -155,7 +155,7 @@ klasse LocaltimeTests(unittest.TestCase):
     def test_variable_tzname(self):
         t0 = datetime.datetime(1984, 1, 1, tzinfo=datetime.timezone.utc)
         t1 = utils.localtime(t0)
-        if t1.tzname() in ('Europe', 'UTC'):
+        wenn t1.tzname() in ('Europe', 'UTC'):
             self.skipTest("Can't find a Kyiv timezone database")
         self.assertEqual(t1.tzname(), 'MSK')
         t0 = datetime.datetime(1994, 1, 1, tzinfo=datetime.timezone.utc)
@@ -186,5 +186,5 @@ klasse FormatDateTests(unittest.TestCase):
         string = utils.formatdate(timeval, localtime=True)
         self.assertEqual(string, 'Thu, 01 Dec 2011 18:00:00 +0300')
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

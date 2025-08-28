@@ -45,7 +45,7 @@ klasse BasicTestMappingProtocol(unittest.TestCase):
         p = self._empty_mapping()
         p1 = dict(p) #workaround fuer singleton objects
         d = self._full_mapping(self.reference)
-        if d is p:
+        wenn d is p:
             p = p1
         #Indexing
         fuer key, value in self.reference.items():
@@ -66,8 +66,8 @@ klasse BasicTestMappingProtocol(unittest.TestCase):
         self.assertNotEqual(p, d)
         self.assertNotEqual(d, p)
         #bool
-        if p: self.fail("Empty mapping must compare to False")
-        if not d: self.fail("Full mapping must compare to True")
+        wenn p: self.fail("Empty mapping must compare to False")
+        wenn not d: self.fail("Full mapping must compare to True")
         # keys(), items(), iterkeys() ...
         def check_iterandlist(iter, lst, ref):
             self.assertHasAttr(iter, '__next__')
@@ -227,7 +227,7 @@ klasse BasicTestMappingProtocol(unittest.TestCase):
                     def __iter__(self):
                         return self
                     def __next__(self):
-                        if self.i:
+                        wenn self.i:
                             self.i = 0
                             return 'a'
                         raise Exc
@@ -244,7 +244,7 @@ klasse BasicTestMappingProtocol(unittest.TestCase):
                     def __iter__(self):
                         return self
                     def __next__(self):
-                        if self.i <= ord('z'):
+                        wenn self.i <= ord('z'):
                             rtn = chr(self.i)
                             self.i += 1
                             return rtn
@@ -508,9 +508,9 @@ klasse TestMappingProtocol(BasicTestMappingProtocol):
                 b = self._empty_mapping()
                 fuer i in range(size):
                     a[repr(i)] = i
-                    if copymode < 0:
+                    wenn copymode < 0:
                         b[repr(i)] = i
-                if copymode > 0:
+                wenn copymode > 0:
                     b = a.copy()
                 fuer i in range(size):
                     ka, va = ta = a.popitem()
@@ -552,9 +552,9 @@ klasse TestHashMappingProtocol(TestMappingProtocol):
         klasse BadHash(object):
             fail = False
             def __hash__(self):
-                if self.fail:
+                wenn self.fail:
                     raise Exc()
-                else:
+                sonst:
                     return 42
 
         d = self._empty_mapping()
@@ -580,9 +580,9 @@ klasse TestHashMappingProtocol(TestMappingProtocol):
         klasse BadHash(object):
             fail = False
             def __hash__(self):
-                if self.fail:
+                wenn self.fail:
                     raise Exc()
-                else:
+                sonst:
                     return 42
 
         d = self._empty_mapping()
@@ -598,7 +598,7 @@ klasse TestHashMappingProtocol(TestMappingProtocol):
             count = 0
             fuer i in d:
                 d[i+1] = 1
-                if count >= 1:
+                wenn count >= 1:
                     self.fail("changing dict size during iteration doesn't raise Error")
                 count += 1
         except RuntimeError:
@@ -659,9 +659,9 @@ klasse TestHashMappingProtocol(TestMappingProtocol):
         klasse BadHash(object):
             fail = False
             def __hash__(self):
-                if self.fail:
+                wenn self.fail:
                     raise Exc()
-                else:
+                sonst:
                     return 42
 
         d = self._empty_mapping()

@@ -39,5 +39,5 @@ klasse InitTest(unittest.TestCase):
         self.assertEqual(y.x.new_was_called, False)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

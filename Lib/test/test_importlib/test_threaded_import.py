@@ -25,20 +25,20 @@ def task(N, done, done_tasks, errors):
     try:
         # We don't use modulefinder but still import it in order to stress
         # importing of different modules from several threads.
-        if len(done_tasks) % 2:
+        wenn len(done_tasks) % 2:
             import modulefinder
             import random
-        else:
+        sonst:
             import random
             import modulefinder
-        # This will fail if random is not completely initialized
+        # This will fail wenn random is not completely initialized
         x = random.randrange(1, 3)
     except Exception as e:
         errors.append(e.with_traceback(None))
     finally:
         done_tasks.append(threading.get_ident())
         finished = len(done_tasks) == N
-        if finished:
+        wenn finished:
             done.set()
 
 # Create a circular import structure: A -> C -> B -> D -> A
@@ -98,18 +98,18 @@ klasse ThreadedImportTests(unittest.TestCase):
         # If the `random` module was already initialized, we restore the
         # old module at the end so that pickling tests don't fail.
         # See http://bugs.python.org/issue3657#msg110461
-        if self.old_random is not None:
+        wenn self.old_random is not None:
             sys.modules['random'] = self.old_random
 
     @mock_register_at_fork
     def check_parallel_module_init(self, mock_os):
-        if imp.lock_held():
+        wenn imp.lock_held():
             # This triggers on, e.g., from test import autotest.
             raise unittest.SkipTest("can't run when import lock is held")
 
         done = threading.Event()
         fuer N in (20, 50) * 3:
-            if verbose:
+            wenn verbose:
                 print("Trying", N, "threads ...", end=' ')
             # Make sure that random and modulefinder get reimported freshly
             fuer modname in ['random', 'modulefinder']:
@@ -127,12 +127,12 @@ klasse ThreadedImportTests(unittest.TestCase):
                 pass
             completed = done.wait(10 * 60)
             dt = time.monotonic() - t0
-            if verbose:
+            wenn verbose:
                 print("%.1f ms" % (dt*1e3), flush=True, end=" ")
             dbg_info = 'done: %s/%s' % (len(done_tasks), N)
             self.assertFalse(errors, dbg_info)
             self.assertTrue(completed, dbg_info)
-            if verbose:
+            wenn verbose:
                 print("OK.")
 
     @support.bigmemtest(size=50, memuse=76*2**20, dry_run=False)
@@ -271,5 +271,5 @@ def setUpModule():
         pass
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

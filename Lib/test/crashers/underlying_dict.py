@@ -7,9 +7,9 @@ klasse A(object):
     x = thingy
 
 r = gc.get_referrers(thingy)
-if "__module__" in r[0]:
+wenn "__module__" in r[0]:
     dct = r[0]
-else:
+sonst:
     dct = r[1]
 
 a = A()

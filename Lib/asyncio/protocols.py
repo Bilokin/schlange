@@ -39,11 +39,11 @@ klasse BaseProtocol:
 
         Pause and resume calls are paired -- pause_writing() is called
         once when the buffer goes strictly over the high-water mark
-        (even if subsequent writes increases the buffer size even
+        (even wenn subsequent writes increases the buffer size even
         more), and eventually resume_writing() is called once when the
         buffer size reaches the low-water mark.
 
-        Note that if the buffer size equals the high-water mark,
+        Note that wenn the buffer size equals the high-water mark,
         pause_writing() is not called -- it must go strictly over.
         Conversely, resume_writing() is called when the buffer size is
         equal or lower than the low-water mark.  These end conditions
@@ -51,7 +51,7 @@ klasse BaseProtocol:
         mark is zero.
 
         NOTE: This is the only Protocol callback that is not called
-        through EventLoop.call_soon() -- if it were, it would have no
+        through EventLoop.call_soon() -- wenn it were, it would have no
         effect when it's most needed (when the app keeps writing
         without yielding until pause_writing() is called).
         """
@@ -202,14 +202,14 @@ def _feed_data_to_buffered_proto(proto, data):
     while data_len:
         buf = proto.get_buffer(data_len)
         buf_len = len(buf)
-        if not buf_len:
+        wenn not buf_len:
             raise RuntimeError('get_buffer() returned an empty buffer')
 
-        if buf_len >= data_len:
+        wenn buf_len >= data_len:
             buf[:data_len] = data
             proto.buffer_updated(data_len)
             return
-        else:
+        sonst:
             buf[:buf_len] = data[:buf_len]
             proto.buffer_updated(buf_len)
             data = data[buf_len:]

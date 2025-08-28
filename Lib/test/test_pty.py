@@ -5,10 +5,10 @@ from test.support import (
 from test.support.import_helper import import_module
 from test.support.os_helper import TESTFN, unlink
 
-# Skip these tests if termios is not available
+# Skip these tests wenn termios is not available
 import_module('termios')
 
-if is_android or is_apple_mobile or is_wasm32:
+wenn is_android or is_apple_mobile or is_wasm32:
     raise unittest.SkipTest("pty is not available on this platform")
 
 import errno
@@ -26,10 +26,10 @@ TEST_STRING_2 = b"For my pet fish, Eric.\n"
 
 _HAVE_WINSZ = hasattr(tty, "TIOCGWINSZ") and hasattr(tty, "TIOCSWINSZ")
 
-if verbose:
+wenn verbose:
     def debug(msg):
         print(msg)
-else:
+sonst:
     def debug(msg):
         pass
 
@@ -38,7 +38,7 @@ else:
 # to make the test suite deterministic.  A normal call to os.read() may
 # give us less than expected.
 #
-# Beware, on my Linux system, if I put 'foo\n' into a terminal fd, I get
+# Beware, on my Linux system, wenn I put 'foo\n' into a terminal fd, I get
 # back 'foo\r\n' at the other end.  The behavior depends on the termios
 # setting.  The newline translation may be OS-specific.  To make the
 # test suite deterministic and OS-independent, the functions _readline
@@ -56,16 +56,16 @@ def normalize_output(data):
     # from someone more knowledgable.
 
     # OSF/1 (Tru64) apparently turns \n into \r\r\n.
-    if data.endswith(b'\r\r\n'):
+    wenn data.endswith(b'\r\r\n'):
         return data.replace(b'\r\r\n', b'\n')
 
-    if data.endswith(b'\r\n'):
+    wenn data.endswith(b'\r\n'):
         return data.replace(b'\r\n', b'\n')
 
     return data
 
 def _readline(fd):
-    """Read one line.  May block forever if no newline is read."""
+    """Read one line.  May block forever wenn no newline is read."""
     reader = io.FileIO(fd, mode='rb', closefd=False)
     return reader.readline()
 
@@ -81,7 +81,7 @@ def expectedFailureIfStdinIsTTY(fun):
 
 def write_all(fd, data):
     written = os.write(fd, data)
-    if written != len(data):
+    wenn written != len(data):
         # gh-73256, gh-110673: It should never happen, but check just in case
         raise Exception(f"short write: os.write({fd}, {len(data)} bytes) "
                         f"wrote {written} bytes")
@@ -96,7 +96,7 @@ klasse PtyTest(unittest.TestCase):
 
         # Save original stdin window size.
         self.stdin_dim = None
-        if _HAVE_WINSZ:
+        wenn _HAVE_WINSZ:
             try:
                 self.stdin_dim = tty.tcgetwinsize(pty.STDIN_FILENO)
                 self.addCleanup(tty.tcsetwinsize, pty.STDIN_FILENO,
@@ -118,10 +118,10 @@ klasse PtyTest(unittest.TestCase):
             mode = None
 
         new_dim = None
-        if self.stdin_dim:
+        wenn self.stdin_dim:
             try:
                 # Modify pty.STDIN_FILENO window size; we need to
-                # check if pty.openpty() is able to set pty slave
+                # check wenn pty.openpty() is able to set pty slave
                 # window size accordingly.
                 debug("Setting pty.STDIN_FILENO window size.")
                 debug(f"original size: (row, col) = {self.stdin_dim}")
@@ -153,7 +153,7 @@ klasse PtyTest(unittest.TestCase):
             # " An optional feature could not be imported " ... ?
             raise unittest.SkipTest("Pseudo-terminals (seemingly) not functional.")
 
-        # closing master_fd can raise a SIGHUP if the process is
+        # closing master_fd can raise a SIGHUP wenn the process is
         # the session leader: we installed a SIGHUP signal handler
         # to ignore this signal.
         self.addCleanup(os.close, master_fd)
@@ -161,10 +161,10 @@ klasse PtyTest(unittest.TestCase):
 
         self.assertTrue(os.isatty(slave_fd), "slave_fd is not a tty")
 
-        if mode:
+        wenn mode:
             self.assertEqual(tty.tcgetattr(slave_fd), mode,
                              "openpty() failed to set slave termios")
-        if new_dim:
+        wenn new_dim:
             self.assertEqual(tty.tcgetwinsize(slave_fd), new_dim,
                              "openpty() failed to set slave window size")
 
@@ -176,7 +176,7 @@ klasse PtyTest(unittest.TestCase):
                 s1 = os.read(master_fd, 1024)
                 self.assertEqual(b'', s1)
             except OSError as e:
-                if e.errno != errno.EAGAIN:
+                wenn e.errno != errno.EAGAIN:
                     raise
         finally:
             # Restore the original flags.
@@ -199,9 +199,9 @@ klasse PtyTest(unittest.TestCase):
         debug("calling pty.fork()")
         pid, master_fd = pty.fork()
         self.addCleanup(os.close, master_fd)
-        if pid == pty.CHILD:
+        wenn pid == pty.CHILD:
             # stdout should be connected to a tty.
-            if not os.isatty(1):
+            wenn not os.isatty(1):
                 debug("Child's fd 1 is not a tty?!")
                 os._exit(3)
 
@@ -225,11 +225,11 @@ klasse PtyTest(unittest.TestCase):
                 # Note: could add traceback printing here.
                 debug("An unexpected error was raised.")
                 os._exit(1)
-            else:
+            sonst:
                 debug("os.setsid() succeeded! (bad!)")
                 os._exit(2)
             os._exit(4)
-        else:
+        sonst:
             debug("Waiting fuer child (%d) to finish." % pid)
             # In verbose mode, we have to consume the debug output from the
             # child or the child will block, causing this test to hang in the
@@ -246,7 +246,7 @@ klasse PtyTest(unittest.TestCase):
                     data = os.read(master_fd, 80)
                 except OSError:
                     break
-                if not data:
+                wenn not data:
                     break
                 sys.stdout.write(str(data.replace(b'\r\n', b'\n'),
                                      encoding='ascii'))
@@ -260,13 +260,13 @@ klasse PtyTest(unittest.TestCase):
             (pid, status) = os.waitpid(pid, 0)
             res = os.waitstatus_to_exitcode(status)
             debug("Child (%d) exited with code %d (status %d)." % (pid, res, status))
-            if res == 1:
+            wenn res == 1:
                 self.fail("Child raised an unexpected exception in os.setsid()")
-            elif res == 2:
+            sowenn res == 2:
                 self.fail("pty.fork() failed to make child a session leader.")
-            elif res == 3:
+            sowenn res == 3:
                 self.fail("Child spawned by pty.fork() did not have a tty as stdout")
-            elif res != 4:
+            sowenn res != 4:
                 self.fail("pty.fork() failed fuer unknown reasons.")
 
             ##debug("Reading from master_fd now that the child has exited")
@@ -440,5 +440,5 @@ def tearDownModule():
     reap_children()
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

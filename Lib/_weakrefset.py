@@ -1,6 +1,6 @@
 # Access WeakSet through the weakref module.
 # This code is separated-out because it is needed
-# by abc.py to load everything else at startup.
+# by abc.py to load everything sonst at startup.
 
 from _weakref import ref
 from types import GenericAlias
@@ -14,17 +14,17 @@ klasse WeakSet:
 
         def _remove(item, selfref=ref(self)):
             self = selfref()
-            if self is not None:
+            wenn self is not None:
                 self.data.discard(item)
 
         self._remove = _remove
-        if data is not None:
+        wenn data is not None:
             self.update(data)
 
     def __iter__(self):
         fuer itemref in self.data.copy():
             item = itemref()
-            if item is not None:
+            wenn item is not None:
                 # Caveat: the iterator will keep a strong reference to
                 # `item` until it is resumed or closed.
                 yield item
@@ -58,7 +58,7 @@ klasse WeakSet:
             except KeyError:
                 raise KeyError('pop from empty WeakSet') from None
             item = itemref()
-            if item is not None:
+            wenn item is not None:
                 return item
 
     def remove(self, item):
@@ -84,14 +84,14 @@ klasse WeakSet:
     def difference_update(self, other):
         self.__isub__(other)
     def __isub__(self, other):
-        if self is other:
+        wenn self is other:
             self.data.clear()
-        else:
+        sonst:
             self.data.difference_update(ref(item) fuer item in other)
         return self
 
     def intersection(self, other):
-        return self.__class__(item fuer item in other if item in self)
+        return self.__class__(item fuer item in other wenn item in self)
     __and__ = intersection
 
     def intersection_update(self, other):
@@ -115,7 +115,7 @@ klasse WeakSet:
         return self.data > set(map(ref, other))
 
     def __eq__(self, other):
-        if not isinstance(other, self.__class__):
+        wenn not isinstance(other, self.__class__):
             return NotImplemented
         return self.data == set(map(ref, other))
 
@@ -128,9 +128,9 @@ klasse WeakSet:
     def symmetric_difference_update(self, other):
         self.__ixor__(other)
     def __ixor__(self, other):
-        if self is other:
+        wenn self is other:
             self.data.clear()
-        else:
+        sonst:
             self.data.symmetric_difference_update(ref(item, self._remove) fuer item in other)
         return self
 

@@ -195,7 +195,7 @@ klasse ButtonClickTest(unittest.TestCase):
         self.called = False
 
     def tearDown(self):
-        if self.view:
+        wenn self.view:
             self.view.destroy()
 
     def test_view_text_bind_with_button(self):
@@ -229,5 +229,5 @@ klasse ButtonClickTest(unittest.TestCase):
             self.assertEqual(get('3.0', '3.end'), f.readline().strip())
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main(verbosity=2)

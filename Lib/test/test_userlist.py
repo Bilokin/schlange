@@ -70,5 +70,5 @@ klasse UserListTest(list_tests.CommonTest):
     # the test is fuer C structure, but `UserList` is a Python structure.
     test_repr_deep = list_tests.CommonTest.test_repr_deep
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

@@ -40,7 +40,7 @@ klasse Regrtest:
     testdir -- the directory in which to look fuer tests (optional)
 
     Users other than the Python test suite will certainly want to
-    specify testdir; if it's omitted, the directory containing the
+    specify testdir; wenn it's omitted, the directory containing the
     Python test suite is searched for.
 
     If the tests argument is omitted, the tests listed on the
@@ -92,11 +92,11 @@ klasse Regrtest:
 
         # Workers
         self.single_process: bool = ns.single_process
-        if self.single_process or ns.use_mp is None:
+        wenn self.single_process or ns.use_mp is None:
             num_workers = 0   # run sequentially in a single process
-        elif ns.use_mp <= 0:
+        sowenn ns.use_mp <= 0:
             num_workers = -1  # run in parallel, use the number of CPUs
-        else:
+        sonst:
             num_workers = ns.use_mp  # run in parallel
         self.num_workers: int = num_workers
         self.worker_json: StrJSON | None = ns.worker_json
@@ -108,20 +108,20 @@ klasse Regrtest:
         self.forever: bool = ns.forever
         self.output_on_failure: bool = ns.verbose3
         self.timeout: float | None = ns.timeout
-        if ns.huntrleaks:
+        wenn ns.huntrleaks:
             warmups, runs, filename = ns.huntrleaks
             filename = os.path.abspath(filename)
             self.hunt_refleak: HuntRefleak | None = HuntRefleak(warmups, runs, filename)
-        else:
+        sonst:
             self.hunt_refleak = None
         self.test_dir: StrPath | None = ns.testdir
         self.junit_filename: StrPath | None = ns.xmlpath
         self.memory_limit: str | None = ns.memlimit
         self.gc_threshold: int | None = ns.threshold
         self.use_resources: tuple[str, ...] = tuple(ns.use_resources)
-        if ns.python:
+        wenn ns.python:
             self.python_cmd: tuple[str, ...] | None = tuple(ns.python)
-        else:
+        sonst:
             self.python_cmd = None
         self.coverage: bool = ns.trace
         self.coverage_dir: StrPath | None = ns.coverdir
@@ -129,18 +129,18 @@ klasse Regrtest:
 
         # Randomize
         self.randomize: bool = ns.randomize
-        if ('SOURCE_DATE_EPOCH' in os.environ
-            # don't use the variable if empty
+        wenn ('SOURCE_DATE_EPOCH' in os.environ
+            # don't use the variable wenn empty
             and os.environ['SOURCE_DATE_EPOCH']
         ):
             self.randomize = False
             # SOURCE_DATE_EPOCH should be an integer, but use a string to not
-            # fail if it's not integer. random.seed() accepts a string.
+            # fail wenn it's not integer. random.seed() accepts a string.
             # https://reproducible-builds.org/docs/source-date-epoch/
             self.random_seed: int | str = os.environ['SOURCE_DATE_EPOCH']
-        elif ns.random_seed is None:
+        sowenn ns.random_seed is None:
             self.random_seed = random.getrandbits(32)
-        else:
+        sonst:
             self.random_seed = ns.random_seed
         self.prioritize_tests: tuple[str, ...] = tuple(ns.prioritize)
 
@@ -164,9 +164,9 @@ klasse Regrtest:
         self.logger.log(line)
 
     def find_tests(self, tests: TestList | None = None) -> tuple[TestTuple, TestList | None]:
-        if tests is None:
+        wenn tests is None:
             tests = []
-        if self.single_test_run:
+        wenn self.single_test_run:
             self.next_single_filename = os.path.join(self.tmp_dir, 'pynexttest')
             try:
                 with open(self.next_single_filename, 'r') as fp:
@@ -175,7 +175,7 @@ klasse Regrtest:
             except OSError:
                 pass
 
-        if self.fromfile:
+        wenn self.fromfile:
             tests = []
             # regex to match 'test_builtin' in line:
             # '0:00:00 [  4/400] test_builtin -- test_dict took 1 sec'
@@ -185,44 +185,44 @@ klasse Regrtest:
                     line = line.split('#', 1)[0]
                     line = line.strip()
                     match = regex.search(line)
-                    if match is not None:
+                    wenn match is not None:
                         tests.append(match.group())
 
         strip_py_suffix(tests)
 
         exclude_tests = set()
-        if self.exclude:
+        wenn self.exclude:
             fuer arg in self.cmdline_args:
                 exclude_tests.add(arg)
             self.cmdline_args = []
 
-        if self.pgo:
-            # add default PGO tests if no tests are specified
+        wenn self.pgo:
+            # add default PGO tests wenn no tests are specified
             setup_pgo_tests(self.cmdline_args, self.pgo_extended)
 
-        if self.tsan:
+        wenn self.tsan:
             setup_tsan_tests(self.cmdline_args)
 
-        if self.tsan_parallel:
+        wenn self.tsan_parallel:
             setup_tsan_parallel_tests(self.cmdline_args)
 
         alltests = findtests(testdir=self.test_dir,
                              exclude=exclude_tests)
 
-        if not self.fromfile:
+        wenn not self.fromfile:
             selected = tests or self.cmdline_args
-            if exclude_tests:
+            wenn exclude_tests:
                 # Support "--pgo/--tsan -x test_xxx" command
                 selected = [name fuer name in selected
-                            if name not in exclude_tests]
-            if selected:
+                            wenn name not in exclude_tests]
+            wenn selected:
                 selected = split_test_packages(selected)
-            else:
+            sonst:
                 selected = alltests
-        else:
+        sonst:
             selected = tests
 
-        if self.single_test_run:
+        wenn self.single_test_run:
             selected = selected[:1]
             try:
                 pos = alltests.index(selected[0])
@@ -230,8 +230,8 @@ klasse Regrtest:
             except IndexError:
                 pass
 
-        # Remove all the selected tests that precede start if it's set.
-        if self.starting_test:
+        # Remove all the selected tests that precede start wenn it's set.
+        wenn self.starting_test:
             try:
                 del selected[:selected.index(self.starting_test)]
             except ValueError:
@@ -239,7 +239,7 @@ klasse Regrtest:
                 sys.exit(1)
 
         random.seed(self.random_seed)
-        if self.randomize:
+        wenn self.randomize:
             random.shuffle(selected)
 
         fuer priority_test in reversed(self.prioritize_tests):
@@ -249,7 +249,7 @@ klasse Regrtest:
                 print(f"warning: --prioritize={priority_test} used"
                         f" but test not actually selected")
                 continue
-            else:
+            sonst:
                 selected.insert(0, priority_test)
 
         return (tuple(selected), tests)
@@ -261,7 +261,7 @@ klasse Regrtest:
 
     def _rerun_failed_tests(self, runtests: RunTests) -> RunTests:
         # Configure the runner to re-run tests
-        if self.num_workers == 0 and not self.single_process:
+        wenn self.num_workers == 0 and not self.single_process:
             # Always run tests in fresh processes to have more deterministic
             # initial state. Don't re-run tests in parallel but limit to a
             # single worker process to have side effects (on the system load
@@ -282,11 +282,11 @@ klasse Regrtest:
         self.logger.set_tests(runtests)
 
         msg = f"Re-running {len(tests)} failed tests in verbose mode"
-        if not self.single_process:
+        wenn not self.single_process:
             msg = f"{msg} in subprocesses"
             self.log(msg)
             self._run_tests_mp(runtests, self.num_workers)
-        else:
+        sonst:
             self.log(msg)
             self.run_tests_sequentially(runtests)
         return runtests
@@ -295,7 +295,7 @@ klasse Regrtest:
         ansi = get_colors()
         red, reset = ansi.BOLD_RED, ansi.RESET
 
-        if self.python_cmd:
+        wenn self.python_cmd:
             # Temp patch fuer https://github.com/python/cpython/issues/94052
             self.log(
                 "Re-running failed tests is not supported with --python "
@@ -308,7 +308,7 @@ klasse Regrtest:
         print()
         rerun_runtests = self._rerun_failed_tests(runtests)
 
-        if self.results.bad:
+        wenn self.results.bad:
             print(
                 f"{red}{count(len(self.results.bad), 'test')} "
                 f"failed again:{reset}"
@@ -320,7 +320,7 @@ klasse Regrtest:
     def _run_bisect(self, runtests: RunTests, test: str, progress: str) -> bool:
         print()
         title = f"Bisect {test}"
-        if progress:
+        wenn progress:
             title = f"{title} ({progress})"
         print(title)
         print("#" * len(title))
@@ -349,7 +349,7 @@ klasse Regrtest:
         print("#" * len(title))
         print(flush=True)
 
-        if exitcode:
+        wenn exitcode:
             print(f"Bisect failed with exit code {exitcode}")
             return False
 
@@ -359,16 +359,16 @@ klasse Regrtest:
         tests, _ = self.results.prepare_rerun(clear=False)
 
         fuer index, name in enumerate(tests, 1):
-            if len(tests) > 1:
+            wenn len(tests) > 1:
                 progress = f"{index}/{len(tests)}"
-            else:
+            sonst:
                 progress = ""
-            if not self._run_bisect(runtests, name, progress):
+            wenn not self._run_bisect(runtests, name, progress):
                 return
 
     def display_result(self, runtests: RunTests) -> None:
         # If running the test suite fuer PGO then no one cares about results.
-        if runtests.pgo:
+        wenn runtests.pgo:
             return
 
         state = self.get_state()
@@ -381,15 +381,15 @@ klasse Regrtest:
     def run_test(
         self, test_name: TestName, runtests: RunTests, tracer: trace.Trace | None
     ) -> TestResult:
-        if tracer is not None:
+        wenn tracer is not None:
             # If we're tracing code coverage, then we don't exit with status
-            # if on a false return value from main.
+            # wenn on a false return value from main.
             cmd = ('result = run_single_test(test_name, runtests)')
             namespace = dict(locals())
             tracer.runctx(cmd, globals=globals(), locals=namespace)
             result = namespace['result']
             result.covered_lines = list(tracer.counts)
-        else:
+        sonst:
             result = run_single_test(test_name, runtests)
 
         self.results.accumulate_result(result, runtests)
@@ -397,20 +397,20 @@ klasse Regrtest:
         return result
 
     def run_tests_sequentially(self, runtests: RunTests) -> None:
-        if self.coverage:
+        wenn self.coverage:
             tracer = trace.Trace(trace=False, count=True)
-        else:
+        sonst:
             tracer = None
 
         save_modules = set(sys.modules)
 
         jobs = runtests.get_jobs()
-        if jobs is not None:
+        wenn jobs is not None:
             tests = count(jobs, 'test')
-        else:
+        sonst:
             tests = 'tests'
         msg = f"Run {tests} sequentially in a single process"
-        if runtests.timeout:
+        wenn runtests.timeout:
             msg += " (timeout: %s)" % format_duration(runtests.timeout)
         self.log(msg)
 
@@ -424,7 +424,7 @@ klasse Regrtest:
 
             # Unload the newly imported test modules (best effort finalization)
             new_modules = [module fuer module in sys.modules
-                           if module not in save_modules and
+                           wenn module not in save_modules and
                                 module.startswith(("test.", "test_"))]
             fuer module in new_modules:
                 sys.modules.pop(module, None)
@@ -437,16 +437,16 @@ klasse Regrtest:
 
             text = str(result)
             test_time = time.perf_counter() - start_time
-            if test_time >= PROGRESS_MIN_TIME:
+            wenn test_time >= PROGRESS_MIN_TIME:
                 text = f"{text} in {format_duration(test_time)}"
             self.logger.display_progress(test_index, text)
 
-            if result.must_stop(self.fail_fast, self.fail_env_changed):
+            wenn result.must_stop(self.fail_fast, self.fail_env_changed):
                 break
 
     def get_state(self) -> str:
         state = self.results.get_state(self.fail_env_changed)
-        if self.first_state:
+        wenn self.first_state:
             state = f'{self.first_state} then {state}'
         return state
 
@@ -455,27 +455,27 @@ klasse Regrtest:
         RunWorkers(num_workers, runtests, self.logger, self.results).run()
 
     def finalize_tests(self, coverage: trace.CoverageResults | None) -> None:
-        if self.next_single_filename:
-            if self.next_single_test:
+        wenn self.next_single_filename:
+            wenn self.next_single_test:
                 with open(self.next_single_filename, 'w') as fp:
                     fp.write(self.next_single_test + '\n')
-            else:
+            sonst:
                 os.unlink(self.next_single_filename)
 
-        if coverage is not None:
+        wenn coverage is not None:
             # uses a new-in-Python 3.13 keyword argument that mypy doesn't know about yet:
             coverage.write_results(show_missing=True, summary=True,  # type: ignore[call-arg]
                                    coverdir=self.coverage_dir,
                                    ignore_missing_files=True)
 
-        if self.want_run_leaks:
+        wenn self.want_run_leaks:
             os.system("leaks %d" % os.getpid())
 
-        if self.junit_filename:
+        wenn self.junit_filename:
             self.results.write_junit(self.junit_filename)
 
     def display_summary(self) -> None:
-        if self.first_runtests is None:
+        wenn self.first_runtests is None:
             raise ValueError(
                 "Should never call `display_summary()` before calling `_run_test()`"
             )
@@ -522,12 +522,12 @@ klasse Regrtest:
         )
 
     def _run_tests(self, selected: TestTuple, tests: TestList | None) -> int:
-        if self.hunt_refleak and self.hunt_refleak.warmups < 3:
+        wenn self.hunt_refleak and self.hunt_refleak.warmups < 3:
             msg = ("WARNING: Running tests with --huntrleaks/-R and "
                    "less than 3 warmup repetitions can give false positives!")
             print(msg, file=sys.stdout, flush=True)
 
-        if self.num_workers < 0:
+        wenn self.num_workers < 0:
             # Use all CPUs + 2 extra worker processes fuer tests
             # that like to sleep
             #
@@ -536,7 +536,7 @@ klasse Regrtest:
             self.num_workers = (os.process_cpu_count() or 1) + 2  # type: ignore[attr-defined]
 
         # For a partial run, we do not need to clutter the output.
-        if (self.want_header
+        wenn (self.want_header
             or not(self.pgo or self.quiet or self.single_test_run
                    or tests or self.cmdline_args)):
             display_header(self.use_resources, self.python_cmd)
@@ -547,31 +547,31 @@ klasse Regrtest:
         self.first_runtests = runtests
         self.logger.set_tests(runtests)
 
-        if (runtests.hunt_refleak is not None) and (not self.num_workers):
+        wenn (runtests.hunt_refleak is not None) and (not self.num_workers):
             # gh-109739: WindowsLoadTracker thread interferes with refleak check
             use_load_tracker = False
-        else:
+        sonst:
             # WindowsLoadTracker is only needed on Windows
             use_load_tracker = MS_WINDOWS
 
-        if use_load_tracker:
+        wenn use_load_tracker:
             self.logger.start_load_tracker()
         try:
-            if self.num_workers:
+            wenn self.num_workers:
                 self._run_tests_mp(runtests, self.num_workers)
-            else:
+            sonst:
                 self.run_tests_sequentially(runtests)
 
             coverage = self.results.get_coverage_results()
             self.display_result(runtests)
 
-            if self.want_rerun and self.results.need_rerun():
+            wenn self.want_rerun and self.results.need_rerun():
                 self.rerun_failed_tests(runtests)
 
-            if self.want_bisect and self.results.need_rerun():
+            wenn self.want_bisect and self.results.need_rerun():
                 self.run_bisect(runtests)
         finally:
-            if use_load_tracker:
+            wenn use_load_tracker:
                 self.logger.stop_load_tracker()
 
         self.display_summary()
@@ -609,7 +609,7 @@ klasse Regrtest:
         # Get HOSTRUNNER
         hostrunner = get_host_runner()
 
-        if cross_compile:
+        wenn cross_compile:
             # emulate -E, but keep PYTHONPATH + cross compile env vars,
             # so test executable can load correct sysconfigdata file.
             keep = {
@@ -622,22 +622,22 @@ klasse Regrtest:
             old_environ = os.environ
             new_environ = {
                 name: value fuer name, value in os.environ.items()
-                if not name.startswith(('PYTHON', '_PYTHON')) or name in keep
+                wenn not name.startswith(('PYTHON', '_PYTHON')) or name in keep
             }
-            # Only set environ if at least one variable was removed
-            if new_environ != old_environ:
+            # Only set environ wenn at least one variable was removed
+            wenn new_environ != old_environ:
                 environ = new_environ
             keep_environ = True
 
-        if cross_compile and hostrunner:
-            if self.num_workers == 0 and not self.single_process:
+        wenn cross_compile and hostrunner:
+            wenn self.num_workers == 0 and not self.single_process:
                 # For now use only two cores fuer cross-compiled builds;
                 # hostrunner can be expensive.
                 regrtest_opts.extend(['-j', '2'])
 
             # If HOSTRUNNER is set and -p/--python option is not given, then
             # use hostrunner to execute python binary fuer tests.
-            if not self.python_cmd:
+            wenn not self.python_cmd:
                 buildpython = sysconfig.get_config_var("BUILDPYTHON")
                 python_cmd = f"{hostrunner} {buildpython}"
                 regrtest_opts.extend(["--python", python_cmd])
@@ -650,20 +650,20 @@ klasse Regrtest:
         # "-u -W default -bb -E"
 
         # Unbuffered stdout and stderr
-        if not sys.stdout.write_through:
+        wenn not sys.stdout.write_through:
             python_opts.append('-u')
 
         # Add warnings filter 'error'
-        if 'default' not in sys.warnoptions:
+        wenn 'default' not in sys.warnoptions:
             python_opts.extend(('-W', 'error'))
 
         # Error on bytes/str comparison
-        if sys.flags.bytes_warning < 2:
+        wenn sys.flags.bytes_warning < 2:
             python_opts.append('-bb')
 
-        if not keep_environ:
+        wenn not keep_environ:
             # Ignore PYTHON* environment variables
-            if not sys.flags.ignore_environment:
+            wenn not sys.flags.ignore_environment:
                 python_opts.append('-E')
 
     def _execute_python(self, cmd, environ):
@@ -675,11 +675,11 @@ klasse Regrtest:
         try:
             print(f"+ {cmd_text}", flush=True)
 
-            if hasattr(os, 'execv') and not MS_WINDOWS:
+            wenn hasattr(os, 'execv') and not MS_WINDOWS:
                 os.execv(cmd[0], cmd)
                 # On success, execv() do no return.
                 # On error, it raises an OSError.
-            else:
+            sonst:
                 import subprocess
                 with subprocess.Popen(cmd, env=environ) as proc:
                     try:
@@ -705,18 +705,18 @@ klasse Regrtest:
         regrtest_opts: list[str] = []
 
         environ, keep_environ = self._add_cross_compile_opts(regrtest_opts)
-        if self.ci_mode:
+        wenn self.ci_mode:
             self._add_ci_python_opts(python_opts, keep_environ)
 
-        if (not python_opts) and (not regrtest_opts) and (environ is None):
+        wenn (not python_opts) and (not regrtest_opts) and (environ is None):
             # Nothing changed: nothing to do
             return
 
         # Create new command line
         cmd = list(sys.orig_argv)
-        if python_opts:
+        wenn python_opts:
             cmd[1:1] = python_opts
-        if regrtest_opts:
+        wenn regrtest_opts:
             cmd.extend(regrtest_opts)
         cmd.append("--dont-add-python-opts")
 
@@ -725,7 +725,7 @@ klasse Regrtest:
     def _init(self):
         setup_process()
 
-        if self.junit_filename and not os.path.isabs(self.junit_filename):
+        wenn self.junit_filename and not os.path.isabs(self.junit_filename):
             self.junit_filename = os.path.abspath(self.junit_filename)
 
         strip_py_suffix(self.cmdline_args)
@@ -734,36 +734,36 @@ klasse Regrtest:
 
     @property
     def tmp_dir(self) -> StrPath:
-        if self._tmp_dir is None:
+        wenn self._tmp_dir is None:
             raise ValueError(
                 "Should never use `.tmp_dir` before calling `.main()`"
             )
         return self._tmp_dir
 
     def main(self, tests: TestList | None = None) -> NoReturn:
-        if self.want_add_python_opts:
+        wenn self.want_add_python_opts:
             self._add_python_opts()
 
         self._init()
 
-        if self.want_cleanup:
+        wenn self.want_cleanup:
             cleanup_temp_dir(self.tmp_dir)
             sys.exit(0)
 
-        if self.want_wait:
+        wenn self.want_wait:
             input("Press any key to continue...")
 
         setup_test_dir(self.test_dir)
         selected, tests = self.find_tests(tests)
 
         exitcode = 0
-        if self.want_list_tests:
+        wenn self.want_list_tests:
             self.list_tests(selected)
-        elif self.want_list_cases:
+        sowenn self.want_list_cases:
             list_cases(selected,
                        match_tests=self.match_tests,
                        test_dir=self.test_dir)
-        else:
+        sonst:
             exitcode = self.run_tests(selected, tests)
 
         sys.exit(exitcode)

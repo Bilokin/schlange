@@ -55,10 +55,10 @@ requires_32b = unittest.skipUnless(sys.maxsize < 2**32,
 protocols = range(pickle.HIGHEST_PROTOCOL + 1)
 
 
-# Return True if opcode code appears in the pickle, else False.
+# Return True wenn opcode code appears in the pickle, sonst False.
 def opcode_in_pickle(code, pickle):
     fuer op, dummy, dummy in pickletools.genops(pickle):
-        if op.code == code.decode("latin-1"):
+        wenn op.code == code.decode("latin-1"):
             return True
     return False
 
@@ -66,7 +66,7 @@ def opcode_in_pickle(code, pickle):
 def count_opcode(code, pickle):
     n = 0
     fuer op, dummy, dummy in pickletools.genops(pickle):
-        if op.code == code.decode("latin-1"):
+        wenn op.code == code.decode("latin-1"):
             n += 1
     return n
 
@@ -116,20 +116,20 @@ klasse ExtensionSaver:
     # there is one).
     def __init__(self, code):
         self.code = code
-        if code in copyreg._inverted_registry:
+        wenn code in copyreg._inverted_registry:
             self.pair = copyreg._inverted_registry[code]
             copyreg.remove_extension(self.pair[0], self.pair[1], code)
-        else:
+        sonst:
             self.pair = None
 
     # Restore previous registration fuer code.
     def restore(self):
         code = self.code
         curpair = copyreg._inverted_registry.get(code)
-        if curpair is not None:
+        wenn curpair is not None:
             copyreg.remove_extension(curpair[0], curpair[1], code)
         pair = self.pair
-        if pair is not None:
+        wenn pair is not None:
             copyreg.add_extension(pair[0], pair[1], code)
 
 klasse C:
@@ -205,9 +205,9 @@ klasse ZeroCopyBytes(bytes):
     zero_copy_reconstruct = True
 
     def __reduce_ex__(self, protocol):
-        if protocol >= 5:
+        wenn protocol >= 5:
             return type(self)._reconstruct, (pickle.PickleBuffer(self),), None
-        else:
+        sonst:
             return type(self)._reconstruct, (bytes(self),)
 
     def __repr__(self):
@@ -219,10 +219,10 @@ klasse ZeroCopyBytes(bytes):
     def _reconstruct(cls, obj):
         with memoryview(obj) as m:
             obj = m.obj
-            if type(obj) is cls:
+            wenn type(obj) is cls:
                 # Zero-copy
                 return obj
-            else:
+            sonst:
                 return cls(obj)
 
 
@@ -233,9 +233,9 @@ klasse ZeroCopyBytearray(bytearray):
     zero_copy_reconstruct = True
 
     def __reduce_ex__(self, protocol):
-        if protocol >= 5:
+        wenn protocol >= 5:
             return type(self)._reconstruct, (pickle.PickleBuffer(self),), None
-        else:
+        sonst:
             return type(self)._reconstruct, (bytes(self),)
 
     def __repr__(self):
@@ -247,14 +247,14 @@ klasse ZeroCopyBytearray(bytearray):
     def _reconstruct(cls, obj):
         with memoryview(obj) as m:
             obj = m.obj
-            if type(obj) is cls:
+            wenn type(obj) is cls:
                 # Zero-copy
                 return obj
-            else:
+            sonst:
                 return cls(obj)
 
 
-if _testbuffer is not None:
+wenn _testbuffer is not None:
 
     klasse PicklableNDArray:
         # A not-really-zero-copy picklable ndarray, as the ndarray()
@@ -284,7 +284,7 @@ if _testbuffer is not None:
             return self.array.f_contiguous
 
         def __eq__(self, other):
-            if not isinstance(other, PicklableNDArray):
+            wenn not isinstance(other, PicklableNDArray):
                 return NotImplemented
             return (other.array.format == self.array.format and
                     other.array.shape == self.array.shape and
@@ -293,7 +293,7 @@ if _testbuffer is not None:
                     other.array.tobytes() == self.array.tobytes())
 
         def __ne__(self, other):
-            if not isinstance(other, PicklableNDArray):
+            wenn not isinstance(other, PicklableNDArray):
                 return NotImplemented
             return not (self == other)
 
@@ -303,19 +303,19 @@ if _testbuffer is not None:
                     f"bytes={self.array.tobytes()})")
 
         def __reduce_ex__(self, protocol):
-            if not self.array.contiguous:
+            wenn not self.array.contiguous:
                 raise NotImplementedError("Reconstructing a non-contiguous "
                                           "ndarray does not seem possible")
             ndarray_kwargs = {"shape": self.array.shape,
                               "strides": self.array.strides,
                               "format": self.array.format,
-                              "flags": (0 if self.readonly
-                                        else _testbuffer.ND_WRITABLE)}
+                              "flags": (0 wenn self.readonly
+                                        sonst _testbuffer.ND_WRITABLE)}
             pb = pickle.PickleBuffer(self.array)
-            if protocol >= 5:
+            wenn protocol >= 5:
                 return (type(self)._reconstruct,
                         (pb, ndarray_kwargs))
-            else:
+            sonst:
                 # Need to serialize the bytes in physical order
                 with pb.raw() as m:
                     return (type(self)._reconstruct,
@@ -325,7 +325,7 @@ if _testbuffer is not None:
         def _reconstruct(cls, obj, kwargs):
             with memoryview(obj) as m:
                 # For some reason, ndarray() wants a list of integers...
-                # XXX This only works if format == 'B'
+                # XXX This only works wenn format == 'B'
                 items = list(m.tobytes())
             return cls(items, **kwargs)
 
@@ -836,16 +836,16 @@ klasse AbstractUnpickleTests:
     _testdata = create_data()
 
     def assert_is_copy(self, obj, objcopy, msg=None):
-        """Utility method to verify if two objects are copies of each others.
+        """Utility method to verify wenn two objects are copies of each others.
         """
-        if msg is None:
+        wenn msg is None:
             msg = "{!r} is not a copy of {!r}".format(obj, objcopy)
         self.assertEqual(obj, objcopy, msg=msg)
         self.assertIs(type(obj), type(objcopy), msg=msg)
-        if hasattr(obj, '__dict__'):
+        wenn hasattr(obj, '__dict__'):
             self.assertDictEqual(obj.__dict__, objcopy.__dict__, msg=msg)
             self.assertIsNot(obj.__dict__, objcopy.__dict__, msg=msg)
-        if hasattr(obj, '__slots__'):
+        wenn hasattr(obj, '__slots__'):
             self.assertListEqual(obj.__slots__, objcopy.__slots__, msg=msg)
             fuer slot in obj.__slots__:
                 self.assertEqual(
@@ -859,7 +859,7 @@ klasse AbstractUnpickleTests:
             try:
                 self.loads(data)
             except BaseException as exc:
-                if support.verbose > 1:
+                wenn support.verbose > 1:
                     print('%-32r - %s: %s' %
                           (data, exc.__class__.__name__, exc))
                 raise
@@ -1419,7 +1419,7 @@ klasse AbstractUnpickleTests:
         klasse BadKey1:
             count = 1
             def __hash__(self):
-                if not self.count:
+                wenn not self.count:
                     raise CustomError
                 self.count -= 1
                 return 42
@@ -1805,11 +1805,11 @@ klasse AbstractPicklingErrorTests:
             with self.subTest(proto=proto):
                 with self.assertRaises(pickle.PicklingError) as cm:
                     self.dumps(obj, proto)
-            if proto >= 2:
+            wenn proto >= 2:
                 self.assertEqual(cm.exception.__notes__, [
                     f'when serializing {LocalREX.__module__}.{LocalREX.__qualname__} class',
                     f'when serializing {LocalREX.__module__}.{LocalREX.__qualname__} object'])
-            else:
+            sonst:
                 self.assertEqual(cm.exception.__notes__, [
                     'when serializing tuple item 0',
                     f'when serializing {LocalREX.__module__}.{LocalREX.__qualname__} reconstructor arguments',
@@ -1821,12 +1821,12 @@ klasse AbstractPicklingErrorTests:
             with self.subTest(proto=proto):
                 with self.assertRaises(CustomError) as cm:
                     self.dumps(obj, proto)
-                if proto >= 2:
+                wenn proto >= 2:
                     self.assertEqual(cm.exception.__notes__, [
                         'when serializing tuple item 2',
                         'when serializing test.pickletester.REX __new__ arguments',
                         'when serializing test.pickletester.REX object'])
-                else:
+                sonst:
                     self.assertEqual(cm.exception.__notes__, [
                         'when serializing tuple item 3',
                         'when serializing test.pickletester.REX reconstructor arguments',
@@ -1856,7 +1856,7 @@ klasse AbstractPicklingErrorTests:
                     'when serializing test.pickletester.REX object'])
 
         obj = REX((copyreg.__newobj_ex__, (REX, 42, {})))
-        if self.pickler is pickle._Pickler:
+        wenn self.pickler is pickle._Pickler:
             fuer proto in protocols[2:4]:
                 with self.subTest(proto=proto):
                     with self.assertRaises(TypeError) as cm:
@@ -1865,7 +1865,7 @@ klasse AbstractPicklingErrorTests:
                         'Value after * must be an iterable, not int')
                     self.assertEqual(cm.exception.__notes__, [
                         'when serializing test.pickletester.REX object'])
-        else:
+        sonst:
             fuer proto in protocols[2:]:
                 with self.subTest(proto=proto):
                     with self.assertRaises(pickle.PicklingError) as cm:
@@ -1876,7 +1876,7 @@ klasse AbstractPicklingErrorTests:
                         'when serializing test.pickletester.REX object'])
 
         obj = REX((copyreg.__newobj_ex__, (REX, (), [])))
-        if self.pickler is pickle._Pickler:
+        wenn self.pickler is pickle._Pickler:
             fuer proto in protocols[2:4]:
                 with self.subTest(proto=proto):
                     with self.assertRaises(TypeError) as cm:
@@ -1885,7 +1885,7 @@ klasse AbstractPicklingErrorTests:
                         'functools.partial() argument after ** must be a mapping, not list')
                     self.assertEqual(cm.exception.__notes__, [
                         'when serializing test.pickletester.REX object'])
-        else:
+        sonst:
             fuer proto in protocols[2:]:
                 with self.subTest(proto=proto):
                     with self.assertRaises(pickle.PicklingError) as cm:
@@ -1908,7 +1908,7 @@ klasse AbstractPicklingErrorTests:
                     'when serializing test.pickletester.REX object'])
 
     def test_wrong_newobj_ex_class(self):
-        if self.pickler is not pickle._Pickler:
+        wenn self.pickler is not pickle._Pickler:
             self.skipTest('only verified in the Python implementation')
         obj = REX((copyreg.__newobj_ex__, (str, (), {})))
         fuer proto in protocols[2:]:
@@ -1927,11 +1927,11 @@ klasse AbstractPicklingErrorTests:
             with self.subTest(proto=proto):
                 with self.assertRaises(pickle.PicklingError) as cm:
                     self.dumps(obj, proto)
-                if proto >= 4:
+                wenn proto >= 4:
                     self.assertEqual(cm.exception.__notes__, [
                         f'when serializing {LocalREX.__module__}.{LocalREX.__qualname__} class',
                         f'when serializing {LocalREX.__module__}.{LocalREX.__qualname__} object'])
-                elif proto >= 2:
+                sowenn proto >= 2:
                     self.assertEqual(cm.exception.__notes__, [
                         'when serializing tuple item 0',
                         'when serializing tuple item 1',
@@ -1939,7 +1939,7 @@ klasse AbstractPicklingErrorTests:
                         'when serializing functools.partial object',
                         f'when serializing {LocalREX.__module__}.{LocalREX.__qualname__} reconstructor',
                         f'when serializing {LocalREX.__module__}.{LocalREX.__qualname__} object'])
-                else:
+                sonst:
                     self.assertEqual(cm.exception.__notes__, [
                         'when serializing tuple item 0',
                         f'when serializing {LocalREX.__module__}.{LocalREX.__qualname__} reconstructor arguments',
@@ -1951,12 +1951,12 @@ klasse AbstractPicklingErrorTests:
             with self.subTest(proto=proto):
                 with self.assertRaises(CustomError) as cm:
                     self.dumps(obj, proto)
-                if proto >= 4:
+                wenn proto >= 4:
                     self.assertEqual(cm.exception.__notes__, [
                         'when serializing tuple item 2',
                         'when serializing test.pickletester.REX __new__ arguments',
                         'when serializing test.pickletester.REX object'])
-                elif proto >= 2:
+                sowenn proto >= 2:
                     self.assertEqual(cm.exception.__notes__, [
                         'when serializing tuple item 3',
                         'when serializing tuple item 1',
@@ -1964,7 +1964,7 @@ klasse AbstractPicklingErrorTests:
                         'when serializing functools.partial object',
                         'when serializing test.pickletester.REX reconstructor',
                         'when serializing test.pickletester.REX object'])
-                else:
+                sonst:
                     self.assertEqual(cm.exception.__notes__, [
                         'when serializing tuple item 2',
                         'when serializing tuple item 1',
@@ -1977,12 +1977,12 @@ klasse AbstractPicklingErrorTests:
             with self.subTest(proto=proto):
                 with self.assertRaises(CustomError) as cm:
                     self.dumps(obj, proto)
-                if proto >= 4:
+                wenn proto >= 4:
                     self.assertEqual(cm.exception.__notes__, [
                         "when serializing dict item 'a'",
                         'when serializing test.pickletester.REX __new__ arguments',
                         'when serializing test.pickletester.REX object'])
-                elif proto >= 2:
+                sowenn proto >= 2:
                     self.assertEqual(cm.exception.__notes__, [
                         "when serializing dict item 'a'",
                         'when serializing tuple item 2',
@@ -1990,7 +1990,7 @@ klasse AbstractPicklingErrorTests:
                         'when serializing functools.partial object',
                         'when serializing test.pickletester.REX reconstructor',
                         'when serializing test.pickletester.REX object'])
-                else:
+                sonst:
                     self.assertEqual(cm.exception.__notes__, [
                         "when serializing dict item 'a'",
                         'when serializing tuple item 2',
@@ -2008,7 +2008,7 @@ klasse AbstractPicklingErrorTests:
                     'when serializing test.pickletester.REX_state object'])
 
     def test_bad_state_setter(self):
-        if self.pickler is pickle._Pickler:
+        wenn self.pickler is pickle._Pickler:
             self.skipTest('only verified in the C implementation')
         obj = REX((print, (), 'state', None, None, 42))
         fuer proto in protocols:
@@ -2056,7 +2056,7 @@ klasse AbstractPicklingErrorTests:
                 self.assertEqual(cm.exception.__notes__, [
                     'when serializing test.pickletester.REX object'])
 
-        if self.pickler is not pickle._Pickler:
+        wenn self.pickler is not pickle._Pickler:
             # Python implementation is less strict and also accepts iterables.
             obj = REX((list, (), None, []))
             fuer proto in protocols:
@@ -2105,7 +2105,7 @@ klasse AbstractPicklingErrorTests:
                 self.assertEqual(cm.exception.__notes__, [
                     'when serializing test.pickletester.REX object'])
 
-        if self.pickler is not pickle._Pickler:
+        wenn self.pickler is not pickle._Pickler:
             # Python implementation is less strict and also accepts iterables.
             obj = REX((dict, (), None, None, []))
             fuer proto in protocols:
@@ -2187,10 +2187,10 @@ klasse AbstractPicklingErrorTests:
             with self.subTest(proto=proto):
                 with self.assertRaises(CustomError) as cm:
                     self.dumps(obj, proto)
-                if proto >= 4:
+                wenn proto >= 4:
                     self.assertEqual(cm.exception.__notes__, [
                         'when serializing set element'])
-                else:
+                sonst:
                     self.assertEqual(cm.exception.__notes__, [
                         'when serializing list item 0',
                         'when serializing tuple item 0',
@@ -2202,11 +2202,11 @@ klasse AbstractPicklingErrorTests:
             with self.subTest(proto=proto):
                 with self.assertRaises(CustomError) as cm:
                     self.dumps(obj, proto)
-                if proto >= 4:
+                wenn proto >= 4:
                     self.assertEqual(cm.exception.__notes__, [
                         'when serializing frozenset element',
                         'when serializing frozenset element'])
-                else:
+                sonst:
                     self.assertEqual(cm.exception.__notes__, [
                         'when serializing list item 0',
                         'when serializing tuple item 0',
@@ -2261,7 +2261,7 @@ klasse AbstractPicklingErrorTests:
     def test_nonencodable_global_name_error(self):
         fuer proto in protocols[:4]:
             with self.subTest(proto=proto):
-                name = 'nonascii\xff' if proto < 3 else 'nonencodable\udbff'
+                name = 'nonascii\xff' wenn proto < 3 sonst 'nonencodable\udbff'
                 obj = REX(name)
                 obj.__module__ = __name__
                 with support.swap_item(globals(), name, obj):
@@ -2274,7 +2274,7 @@ klasse AbstractPicklingErrorTests:
     def test_nonencodable_module_name_error(self):
         fuer proto in protocols[:4]:
             with self.subTest(proto=proto):
-                name = 'nonascii\xff' if proto < 3 else 'nonencodable\udbff'
+                name = 'nonascii\xff' wenn proto < 3 sonst 'nonencodable\udbff'
                 obj = REX('test')
                 obj.__module__ = name
                 mod = types.SimpleNamespace(test=obj)
@@ -2424,7 +2424,7 @@ klasse AbstractPicklingErrorTests:
         def check(collection):
             klasse EvilPickler(self.pickler):
                 def persistent_id(self, obj):
-                    if isinstance(obj, Clearer):
+                    wenn isinstance(obj, Clearer):
                         collection.clear()
                     return None
             pickler = EvilPickler(io.BytesIO(), proto)
@@ -2883,7 +2883,7 @@ klasse AbstractPickleTests:
                         p = self.dumps((b1, b2), proto)
                         # Note that (b1, b2) = self.loads(p) might have identical
                         # components, i.e., b1 is b2, but this is not always the
-                        # case if the content is large (equality still holds).
+                        # case wenn the content is large (equality still holds).
                         self.assert_is_copy((b1, b2), self.loads(p))
 
     def test_bytearray(self):
@@ -2894,14 +2894,14 @@ klasse AbstractPickleTests:
                 bb = self.loads(p)
                 self.assertIsNot(bb, b)
                 self.assert_is_copy(b, bb)
-                if proto <= 3:
+                wenn proto <= 3:
                     # bytearray is serialized using a global reference
                     self.assertIn(b'bytearray', p)
                     self.assertTrue(opcode_in_pickle(pickle.GLOBAL, p))
-                elif proto == 4:
+                sowenn proto == 4:
                     self.assertIn(b'bytearray', p)
                     self.assertTrue(opcode_in_pickle(pickle.STACK_GLOBAL, p))
-                elif proto == 5:
+                sowenn proto == 5:
                     self.assertNotIn(b'bytearray', p)
                     self.assertTrue(opcode_in_pickle(pickle.BYTEARRAY8, p))
 
@@ -3022,7 +3022,7 @@ klasse AbstractPickleTests:
             s = self.dumps(t, proto)
             u = self.loads(s)
             self.assert_is_copy(t, u)
-            if hasattr(os, "statvfs"):
+            wenn hasattr(os, "statvfs"):
                 t = os.statvfs(os.curdir)
                 s = self.dumps(t, proto)
                 u = self.loads(s)
@@ -3051,27 +3051,27 @@ klasse AbstractPickleTests:
 
     def test_builtin_types(self):
         fuer t in builtins.__dict__.values():
-            if isinstance(t, type) and not issubclass(t, BaseException):
+            wenn isinstance(t, type) and not issubclass(t, BaseException):
                 fuer proto in protocols:
                     s = self.dumps(t, proto)
                     self.assertIs(self.loads(s), t)
 
     def test_builtin_exceptions(self):
         fuer t in builtins.__dict__.values():
-            if isinstance(t, type) and issubclass(t, BaseException):
+            wenn isinstance(t, type) and issubclass(t, BaseException):
                 fuer proto in protocols:
                     s = self.dumps(t, proto)
                     u = self.loads(s)
-                    if proto <= 2 and issubclass(t, OSError) and t is not BlockingIOError:
+                    wenn proto <= 2 and issubclass(t, OSError) and t is not BlockingIOError:
                         self.assertIs(u, OSError)
-                    elif proto <= 2 and issubclass(t, ImportError):
+                    sowenn proto <= 2 and issubclass(t, ImportError):
                         self.assertIs(u, ImportError)
-                    else:
+                    sonst:
                         self.assertIs(u, t)
 
     def test_builtin_functions(self):
         fuer t in builtins.__dict__.values():
-            if isinstance(t, types.BuiltinFunctionType):
+            wenn isinstance(t, types.BuiltinFunctionType):
                 fuer proto in protocols:
                     s = self.dumps(t, proto)
                     self.assertIs(self.loads(s), t)
@@ -3081,10 +3081,10 @@ klasse AbstractPickleTests:
     def test_proto(self):
         fuer proto in protocols:
             pickled = self.dumps(None, proto)
-            if proto >= 2:
+            wenn proto >= 2:
                 proto_header = pickle.PROTO + bytes([proto])
                 self.assertStartsWith(pickled, proto_header)
-            else:
+            sonst:
                 self.assertEqual(count_opcode(pickle.PROTO, pickled), 0)
 
         oob = protocols[-1] + 1     # a future protocol
@@ -3094,7 +3094,7 @@ klasse AbstractPickleTests:
             self.loads(badpickle)
         except ValueError as err:
             self.assertIn("unsupported pickle protocol", str(err))
-        else:
+        sonst:
             self.fail("expected bad protocol number to raise ValueError")
 
     def test_long1(self):
@@ -3313,9 +3313,9 @@ klasse AbstractPickleTests:
             y = self.loads(s)
             self.assert_is_copy(x, y)
             num_appends = count_opcode(pickle.APPENDS, s)
-            if proto == 0:
+            wenn proto == 0:
                 self.assertEqual(num_appends, 0)
-            else:
+            sonst:
                 self.assertTrue(num_appends >= 2)
 
     def test_dict_chunking(self):
@@ -3336,9 +3336,9 @@ klasse AbstractPickleTests:
             y = self.loads(s)
             self.assert_is_copy(x, y)
             num_setitems = count_opcode(pickle.SETITEMS, s)
-            if proto == 0:
+            wenn proto == 0:
                 self.assertEqual(num_setitems, 0)
-            else:
+            sonst:
                 self.assertTrue(num_setitems >= 2)
 
     def test_set_chunking(self):
@@ -3349,9 +3349,9 @@ klasse AbstractPickleTests:
             y = self.loads(s)
             self.assert_is_copy(x, y)
             num_additems = count_opcode(pickle.ADDITEMS, s)
-            if proto < 4:
+            wenn proto < 4:
                 self.assertEqual(num_additems, 0)
-            else:
+            sonst:
                 self.assertEqual(num_additems, 1)
 
         n = 2500  # expect at least two chunks when proto >= 4
@@ -3361,9 +3361,9 @@ klasse AbstractPickleTests:
             y = self.loads(s)
             self.assert_is_copy(x, y)
             num_additems = count_opcode(pickle.ADDITEMS, s)
-            if proto < 4:
+            wenn proto < 4:
                 self.assertEqual(num_additems, 0)
-            else:
+            sonst:
                 self.assertGreaterEqual(num_additems, 2)
 
     def test_simple_newobj(self):
@@ -3372,14 +3372,14 @@ klasse AbstractPickleTests:
         fuer proto in protocols:
             with self.subTest(proto=proto):
                 s = self.dumps(x, proto)
-                if proto < 1:
+                wenn proto < 1:
                     self.assertIn(b'\nI64206', s)  # INT
-                else:
+                sonst:
                     self.assertIn(b'M\xce\xfa', s)  # BININT2
                 self.assertEqual(opcode_in_pickle(pickle.NEWOBJ, s),
                                  2 <= proto)
                 self.assertFalse(opcode_in_pickle(pickle.NEWOBJ_EX, s))
-                y = self.loads(s)   # will raise TypeError if __init__ called
+                y = self.loads(s)   # will raise TypeError wenn __init__ called
                 self.assert_is_copy(x, y)
 
     def test_complex_newobj(self):
@@ -3388,18 +3388,18 @@ klasse AbstractPickleTests:
         fuer proto in protocols:
             with self.subTest(proto=proto):
                 s = self.dumps(x, proto)
-                if proto < 1:
+                wenn proto < 1:
                     self.assertIn(b'\nI64206', s)  # INT
-                elif proto < 2:
+                sowenn proto < 2:
                     self.assertIn(b'M\xce\xfa', s)  # BININT2
-                elif proto < 4:
+                sowenn proto < 4:
                     self.assertIn(b'X\x04\x00\x00\x00FACE', s)  # BINUNICODE
-                else:
+                sonst:
                     self.assertIn(b'\x8c\x04FACE', s)  # SHORT_BINUNICODE
                 self.assertEqual(opcode_in_pickle(pickle.NEWOBJ, s),
                                  2 <= proto)
                 self.assertFalse(opcode_in_pickle(pickle.NEWOBJ_EX, s))
-                y = self.loads(s)   # will raise TypeError if __init__ called
+                y = self.loads(s)   # will raise TypeError wenn __init__ called
                 self.assert_is_copy(x, y)
 
     def test_complex_newobj_ex(self):
@@ -3408,18 +3408,18 @@ klasse AbstractPickleTests:
         fuer proto in protocols:
             with self.subTest(proto=proto):
                 s = self.dumps(x, proto)
-                if proto < 1:
+                wenn proto < 1:
                     self.assertIn(b'\nI64206', s)  # INT
-                elif proto < 2:
+                sowenn proto < 2:
                     self.assertIn(b'M\xce\xfa', s)  # BININT2
-                elif proto < 4:
+                sowenn proto < 4:
                     self.assertIn(b'X\x04\x00\x00\x00FACE', s)  # BINUNICODE
-                else:
+                sonst:
                     self.assertIn(b'\x8c\x04FACE', s)  # SHORT_BINUNICODE
                 self.assertFalse(opcode_in_pickle(pickle.NEWOBJ, s))
                 self.assertEqual(opcode_in_pickle(pickle.NEWOBJ_EX, s),
                                  4 <= proto)
-                y = self.loads(s)   # will raise TypeError if __init__ called
+                y = self.loads(s)   # will raise TypeError wenn __init__ called
                 self.assert_is_copy(x, y)
 
     def test_newobj_list_slots(self):
@@ -3536,7 +3536,7 @@ klasse AbstractPickleTests:
                 sizes = list(map(len, pickles))
                 # the size function is monotonic
                 self.assertEqual(sorted(sizes), sizes)
-                if proto >= 2:
+                wenn proto >= 2:
                     fuer p in pickles:
                         self.assertFalse(opcode_in_pickle(pickle.LONG, p))
 
@@ -3550,17 +3550,17 @@ klasse AbstractPickleTests:
         # Issue #17720
         obj = REX_six([1, 2, 3])
         fuer proto in protocols:
-            if proto == 0:
+            wenn proto == 0:
                 self._check_pickling_with_opcode(obj, pickle.APPEND, proto)
-            else:
+            sonst:
                 self._check_pickling_with_opcode(obj, pickle.APPENDS, proto)
 
     def test_setitems_on_non_dicts(self):
         obj = REX_seven({1: -1, 2: -2, 3: -3})
         fuer proto in protocols:
-            if proto == 0:
+            wenn proto == 0:
                 self._check_pickling_with_opcode(obj, pickle.SETITEM, proto)
-            else:
+            sonst:
                 self._check_pickling_with_opcode(obj, pickle.SETITEMS, proto)
 
     # Exercise framing (proto >= 4) fuer significant workloads
@@ -3580,39 +3580,39 @@ klasse AbstractPickleTests:
         frameless_opcodes = {'BINBYTES', 'BINUNICODE', 'BINBYTES8',
                              'BINUNICODE8', 'BYTEARRAY8'}
         fuer op, arg, pos in pickletools.genops(pickled):
-            if frame_end is not None:
+            wenn frame_end is not None:
                 self.assertLessEqual(pos, frame_end)
-                if pos == frame_end:
+                wenn pos == frame_end:
                     frame_end = None
 
-            if frame_end is not None:  # framed
+            wenn frame_end is not None:  # framed
                 self.assertNotEqual(op.name, 'FRAME')
-                if op.name in frameless_opcodes:
+                wenn op.name in frameless_opcodes:
                     # Only short bytes and str objects should be written
                     # in a frame
                     self.assertLessEqual(len(arg), self.FRAME_SIZE_TARGET)
 
-            else:  # not framed
-                if (op.name == 'FRAME' or
+            sonst:  # not framed
+                wenn (op.name == 'FRAME' or
                     (op.name in frameless_opcodes and
                      len(arg) > self.FRAME_SIZE_TARGET)):
                     # Frame or large bytes or str object
-                    if frameless_start is not None:
+                    wenn frameless_start is not None:
                         # Only short data should be written outside of a frame
                         self.assertLess(pos - frameless_start,
                                         self.FRAME_SIZE_MIN)
                         frameless_start = None
-                elif frameless_start is None and op.name != 'PROTO':
+                sowenn frameless_start is None and op.name != 'PROTO':
                     frameless_start = pos
 
-            if op.name == 'FRAME':
+            wenn op.name == 'FRAME':
                 self.assertGreaterEqual(arg, self.FRAME_SIZE_MIN)
                 frame_end = pos + 9 + arg
 
         pos = len(pickled)
-        if frame_end is not None:
+        wenn frame_end is not None:
             self.assertEqual(frame_end, pos)
-        elif frameless_start is not None:
+        sowenn frameless_start is not None:
             self.assertLess(pos - frameless_start, self.FRAME_SIZE_MIN)
 
     @support.skip_if_pgo_task
@@ -3639,13 +3639,13 @@ klasse AbstractPickleTests:
         fuer proto in range(4, pickle.HIGHEST_PROTOCOL + 1):
             fuer fast in [False, True]:
                 with self.subTest(proto=proto, fast=fast):
-                    if not fast:
+                    wenn not fast:
                         # fast=False by default.
                         # This covers in-memory pickling with pickle.dumps().
                         pickled = self.dumps(obj, proto)
-                    else:
+                    sonst:
                         # Pickler is required when fast=True.
-                        if not hasattr(self, 'pickler'):
+                        wenn not hasattr(self, 'pickler'):
                             continue
                         buf = io.BytesIO()
                         pickler = self.pickler(buf, protocol=proto)
@@ -3656,7 +3656,7 @@ klasse AbstractPickleTests:
                     # More informative error message in case of failure.
                     self.assertEqual([len(x) fuer x in obj],
                                      [len(x) fuer x in unpickled])
-                    # Perform full equality check if the lengths match.
+                    # Perform full equality check wenn the lengths match.
                     self.assertEqual(obj, unpickled)
                     n_frames = count_opcode(pickle.FRAME, pickled)
                     # A single frame fuer small objects between
@@ -3665,7 +3665,7 @@ klasse AbstractPickleTests:
                     self.check_frame_opcodes(pickled)
 
     def test_optional_frames(self):
-        if pickle.HIGHEST_PROTOCOL < 4:
+        wenn pickle.HIGHEST_PROTOCOL < 4:
             return
 
         def remove_frames(pickled, keep_frame=None):
@@ -3674,13 +3674,13 @@ klasse AbstractPickleTests:
             # 1 byte fuer the opcode and 8 fuer the argument
             frame_opcode_size = 9
             fuer opcode, _, pos in pickletools.genops(pickled):
-                if opcode.name == 'FRAME':
+                wenn opcode.name == 'FRAME':
                     frame_starts.append(pos)
 
             newpickle = bytearray()
             last_frame_end = 0
             fuer i, pos in enumerate(frame_starts):
-                if keep_frame and keep_frame(i):
+                wenn keep_frame and keep_frame(i):
                     continue
                 newpickle += pickled[last_frame_end:pos]
                 last_frame_end = pos + frame_opcode_size
@@ -3756,10 +3756,10 @@ klasse AbstractPickleTests:
 
             chunk_sizes = [len(c) fuer c in writer.chunks]
             large_sizes = [s fuer s in chunk_sizes
-                           if s >= self.FRAME_SIZE_TARGET]
+                           wenn s >= self.FRAME_SIZE_TARGET]
             medium_sizes = [s fuer s in chunk_sizes
-                           if 9 < s < self.FRAME_SIZE_TARGET]
-            small_sizes = [s fuer s in chunk_sizes if s <= 9]
+                           wenn 9 < s < self.FRAME_SIZE_TARGET]
+            small_sizes = [s fuer s in chunk_sizes wenn s <= 9]
 
             # Large chunks should not be too large:
             fuer chunk_size in large_sizes:
@@ -3938,7 +3938,7 @@ klasse AbstractPickleTests:
         bytestring = b"abcdefgh"
         yield ZeroCopyBytes(bytestring)
         yield ZeroCopyBytearray(bytestring)
-        if _testbuffer is not None:
+        wenn _testbuffer is not None:
             items = list(bytestring)
             value = int.from_bytes(bytestring, byteorder='little')
             fuer flags in (0, _testbuffer.ND_WRITABLE):
@@ -3958,15 +3958,15 @@ klasse AbstractPickleTests:
         fuer obj in self.buffer_like_objects():
             fuer proto in range(0, pickle.HIGHEST_PROTOCOL + 1):
                 data = self.dumps(obj, proto)
-                if obj.c_contiguous and proto >= 5:
+                wenn obj.c_contiguous and proto >= 5:
                     # The raw memory bytes are serialized in physical order
                     self.assertIn(b"abcdefgh", data)
                 self.assertEqual(count_opcode(pickle.NEXT_BUFFER, data), 0)
-                if proto >= 5:
+                wenn proto >= 5:
                     self.assertEqual(count_opcode(pickle.SHORT_BINBYTES, data),
-                                     1 if obj.readonly else 0)
+                                     1 wenn obj.readonly sonst 0)
                     self.assertEqual(count_opcode(pickle.BYTEARRAY8, data),
-                                     0 if obj.readonly else 1)
+                                     0 wenn obj.readonly sonst 1)
                     # Return a true value from buffer_callback should have
                     # the same effect
                     def buffer_callback(obj):
@@ -4002,27 +4002,27 @@ klasse AbstractPickleTests:
                 self.assertEqual(count_opcode(pickle.BYTEARRAY8, data), 0)
                 self.assertEqual(count_opcode(pickle.NEXT_BUFFER, data), 1)
                 self.assertEqual(count_opcode(pickle.READONLY_BUFFER, data),
-                                 1 if obj.readonly else 0)
+                                 1 wenn obj.readonly sonst 0)
 
-                if obj.c_contiguous:
+                wenn obj.c_contiguous:
                     self.assertEqual(bytes(buffers[0]), b"abcdefgh")
                 # Need buffers argument to unpickle properly
                 with self.assertRaises(pickle.UnpicklingError):
                     self.loads(data)
 
                 new = self.loads(data, buffers=buffers)
-                if obj.zero_copy_reconstruct:
+                wenn obj.zero_copy_reconstruct:
                     # Zero-copy achieved
                     self.assertIs(new, obj)
-                else:
+                sonst:
                     self.assertIs(type(new), type(obj))
                     self.assertEqual(new, obj)
                 # Non-sequence buffers accepted too
                 new = self.loads(data, buffers=iter(buffers))
-                if obj.zero_copy_reconstruct:
+                wenn obj.zero_copy_reconstruct:
                     # Zero-copy achieved
                     self.assertIs(new, obj)
-                else:
+                sonst:
                     self.assertIs(type(new), type(obj))
                     self.assertEqual(new, obj)
 
@@ -4082,9 +4082,9 @@ klasse AbstractPickleTests:
                 buffer_callback = buffers.append
                 data = self.dumps(arr, proto, buffer_callback=buffer_callback)
                 new = self.loads(data, buffers=buffers)
-                if arr.flags.c_contiguous or arr.flags.f_contiguous:
+                wenn arr.flags.c_contiguous or arr.flags.f_contiguous:
                     check_no_copy(arr, new)
-                else:
+                sonst:
                     check_copy(arr, new)
 
         # 1-D
@@ -4111,7 +4111,7 @@ klasse AbstractPickleTests:
             def __hash__(self):
                 return 42
             def __reduce__(self):
-                if getrandbits(6) == 0:
+                wenn getrandbits(6) == 0:
                     collection.clear()
                 return (Bad, ())
 
@@ -4140,7 +4140,7 @@ klasse BigmemPickleTests:
         data = 1 << (8 * size)
         try:
             fuer proto in protocols:
-                if proto < 2:
+                wenn proto < 2:
                     continue
                 with self.subTest(proto=proto):
                     with self.assertRaises((ValueError, OverflowError)):
@@ -4157,7 +4157,7 @@ klasse BigmemPickleTests:
         data = b"abcd" * (size // 4)
         try:
             fuer proto in protocols:
-                if proto < 3:
+                wenn proto < 3:
                     continue
                 with self.subTest(proto=proto):
                     try:
@@ -4178,10 +4178,10 @@ klasse BigmemPickleTests:
         data = b"acbd" * (size // 4)
         try:
             fuer proto in protocols:
-                if proto < 3:
+                wenn proto < 3:
                     continue
                 with self.subTest(proto=proto):
-                    if proto == 3:
+                    wenn proto == 3:
                         # Protocol 3 does not support large bytes objects.
                         # Verify that we do not crash when processing one.
                         with self.assertRaises((ValueError, OverflowError)):
@@ -4208,7 +4208,7 @@ klasse BigmemPickleTests:
         data = "abcd" * (size // 4)
         try:
             fuer proto in protocols:
-                if proto == 0:
+                wenn proto == 0:
                     continue
                 with self.subTest(proto=proto):
                     try:
@@ -4235,10 +4235,10 @@ klasse BigmemPickleTests:
         data = "abcd" * (size // 4)
         try:
             fuer proto in protocols:
-                if proto == 0:
+                wenn proto == 0:
                     continue
                 with self.subTest(proto=proto):
-                    if proto < 4:
+                    wenn proto < 4:
                         with self.assertRaises((ValueError, OverflowError)):
                             self.dumps(data, protocol=proto)
                         continue
@@ -4313,7 +4313,7 @@ klasse REX_six(object):
     the reduce protocol.
     """
     def __init__(self, items=None):
-        self.items = items if items is not None else []
+        self.items = items wenn items is not None sonst []
     def __eq__(self, other):
         return type(self) is type(other) and self.items == other.items
     def append(self, item):
@@ -4326,7 +4326,7 @@ klasse REX_seven(object):
     the reduce protocol.
     """
     def __init__(self, table=None):
-        self.table = table if table is not None else {}
+        self.table = table wenn table is not None sonst {}
     def __eq__(self, other):
         return type(self) is type(other) and self.table == other.table
     def __setitem__(self, key, value):
@@ -4447,7 +4447,7 @@ klasse BadGetattr:
 
 klasse NoNew:
     def __getattribute__(self, name):
-        if name == '__new__':
+        wenn name == '__new__':
             raise AttributeError
         return super().__getattribute__(name)
 
@@ -4518,7 +4518,7 @@ klasse AbstractPickleModuleTests:
         self.assertRaises(pickle.UnpicklingError, BadUnpickler().load)
 
     def test_unpickler_bad_file(self):
-        # bpo-38384: Crash in _pickle if the read attribute raises an error.
+        # bpo-38384: Crash in _pickle wenn the read attribute raises an error.
         def raises_oserror(self, *args, **kwargs):
             raise OSError
         @property
@@ -4644,20 +4644,20 @@ klasse AbstractPersistentPicklerTests:
     # are pickled using persistent ids.
 
     def persistent_id(self, object):
-        if isinstance(object, int) and object % 2 == 0:
+        wenn isinstance(object, int) and object % 2 == 0:
             self.id_count += 1
             return str(object)
-        elif object == "test_false_value":
+        sowenn object == "test_false_value":
             self.false_count += 1
             return ""
-        else:
+        sonst:
             return None
 
     def persistent_load(self, oid):
-        if not oid:
+        wenn not oid:
             self.load_false_count += 1
             return "test_false_value"
-        else:
+        sonst:
             self.load_count += 1
             object = int(oid)
             assert object % 2 == 0
@@ -4693,9 +4693,9 @@ klasse AbstractIdentityPersistentPicklerTests:
     def test_return_correct_type(self):
         fuer proto in protocols:
             # Protocol 0 supports only ASCII strings.
-            if proto == 0:
+            wenn proto == 0:
                 self._check_return_correct_type("abc", 0)
-            else:
+            sonst:
                 fuer obj in [b"abc\n", "abc\n", -1, -1.1 * 0.1, str]:
                     self._check_return_correct_type(obj, proto)
 
@@ -4839,10 +4839,10 @@ klasse AbstractPicklerUnpicklerObjectTests:
                 f = ioclass(pickled * N)
                 unpickler = self.unpickler_class(f)
                 fuer i in range(N):
-                    if seekable:
+                    wenn seekable:
                         pos = f.tell()
                     self.assertEqual(unpickler.load(), data1)
-                    if seekable:
+                    wenn seekable:
                         self.assertEqual(f.tell(), pos + len(pickled))
                 self.assertRaises(EOFError, unpickler.load)
 
@@ -4926,19 +4926,19 @@ klasse AbstractCustomPicklerClass:
     def reducer_override(self, obj):
         obj_name = getattr(obj, "__name__", None)
 
-        if obj_name == 'f':
+        wenn obj_name == 'f':
             # asking the pickler to save f as 5
             return int, (5, )
 
-        if obj_name == 'MyClass':
+        wenn obj_name == 'MyClass':
             return str, ('some str',)
 
-        elif obj_name == 'g':
+        sowenn obj_name == 'g':
             # in this case, the callback returns an invalid result (not a 2-5
             # tuple or a string), the pickler should raise a proper error.
             return False
 
-        elif obj_name == 'h':
+        sowenn obj_name == 'h':
             # Simulate a case when the reducer fails. The error should
             # be propagated to the original ``dump`` call.
             raise ValueError('The reducer just failed')
@@ -5130,7 +5130,7 @@ klasse AbstractDispatchTableTests:
         self.assertEqual(custom_load_dump(b).a, "custom state_setter")
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     # Print some stuff that can be used to rewrite DATA{0,1,2}
     from pickletools import dis
     x = create_data()

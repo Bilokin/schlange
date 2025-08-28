@@ -22,9 +22,9 @@ def add_c_return_converter(
     f: ReturnConverterType,
     name: str | None = None
 ) -> ReturnConverterType:
-    if not name:
+    wenn not name:
         name = f.__name__
-        if not name.endswith('_return_converter'):
+        wenn not name.endswith('_return_converter'):
             return f
         name = name.removesuffix('_return_converter')
     return_converters[name] = f
@@ -49,7 +49,7 @@ klasse CReturnConverter(metaclass=CReturnConverterAutoRegister):
     type = 'PyObject *'
 
     # The Python default value fuer this parameter, as a Python value.
-    # Or the magic value "unspecified" if there is no default.
+    # Or the magic value "unspecified" wenn there is no default.
     default: object = None
 
     def __init__(
@@ -71,7 +71,7 @@ klasse CReturnConverter(metaclass=CReturnConverterAutoRegister):
         line: list[str] = []
         add = line.append
         add(self.type)
-        if not self.type.endswith('*'):
+        wenn not self.type.endswith('*'):
             add(' ')
         add(data.converter_retval + ';')
         data.declarations.append(''.join(line))

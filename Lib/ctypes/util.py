@@ -4,7 +4,7 @@ import subprocess
 import sys
 
 # find_library(name) returns the pathname of a library, or None.
-if os.name == "nt":
+wenn os.name == "nt":
 
     def _get_build_version():
         """Return the version of MSVC that was used to build Python.
@@ -15,55 +15,55 @@ if os.name == "nt":
         # This function was copied from Lib/distutils/msvccompiler.py
         prefix = "MSC v."
         i = sys.version.find(prefix)
-        if i == -1:
+        wenn i == -1:
             return 6
         i = i + len(prefix)
         s, rest = sys.version[i:].split(" ", 1)
         majorVersion = int(s[:-2]) - 6
-        if majorVersion >= 13:
+        wenn majorVersion >= 13:
             majorVersion += 1
         minorVersion = int(s[2:3]) / 10.0
         # I don't think paths are affected by minor version in version 6
-        if majorVersion == 6:
+        wenn majorVersion == 6:
             minorVersion = 0
-        if majorVersion >= 6:
+        wenn majorVersion >= 6:
             return majorVersion + minorVersion
-        # else we don't know what version of the compiler this is
+        # sonst we don't know what version of the compiler this is
         return None
 
     def find_msvcrt():
         """Return the name of the VC runtime dll"""
         version = _get_build_version()
-        if version is None:
+        wenn version is None:
             # better be safe than sorry
             return None
-        if version <= 6:
+        wenn version <= 6:
             clibname = 'msvcrt'
-        elif version <= 13:
+        sowenn version <= 13:
             clibname = 'msvcr%d' % (version * 10)
-        else:
+        sonst:
             # CRT is no longer directly loadable. See issue23606 fuer the
             # discussion about alternative approaches.
             return None
 
         # If python was built with in debug mode
         import importlib.machinery
-        if '_d.pyd' in importlib.machinery.EXTENSION_SUFFIXES:
+        wenn '_d.pyd' in importlib.machinery.EXTENSION_SUFFIXES:
             clibname += 'd'
         return clibname+'.dll'
 
     def find_library(name):
-        if name in ('c', 'm'):
+        wenn name in ('c', 'm'):
             return find_msvcrt()
         # See MSDN fuer the REAL search order.
         fuer directory in os.environ['PATH'].split(os.pathsep):
             fname = os.path.join(directory, name)
-            if os.path.isfile(fname):
+            wenn os.path.isfile(fname):
                 return fname
-            if fname.lower().endswith(".dll"):
+            wenn fname.lower().endswith(".dll"):
                 continue
             fname = fname + ".dll"
-            if os.path.isfile(fname):
+            wenn os.path.isfile(fname):
                 return fname
         return None
 
@@ -97,7 +97,7 @@ if os.name == "nt":
 
     def _get_module_filename(module: wintypes.HMODULE):
         name = (wintypes.WCHAR * 32767)() # UNICODE_STRING_MAX_CHARS
-        if _k32_get_module_file_name(module, name, len(name)):
+        wenn _k32_get_module_file_name(module, name, len(name)):
             return name.value
         return None
 
@@ -108,7 +108,7 @@ if os.name == "nt":
         n = 1024
         while True:
             modules = (wintypes.HMODULE * n)()
-            if not _enum_process_modules(process,
+            wenn not _enum_process_modules(process,
                                          modules,
                                          ctypes.sizeof(modules),
                                          ctypes.byref(space_needed)):
@@ -116,17 +116,17 @@ if os.name == "nt":
                 msg = ctypes.FormatError(err).strip()
                 raise ctypes.WinError(err, f"EnumProcessModules failed: {msg}")
             n = space_needed.value // ctypes.sizeof(wintypes.HMODULE)
-            if n <= len(modules):
+            wenn n <= len(modules):
                 return modules[:n]
 
     def dllist():
         """Return a list of loaded shared libraries in the current process."""
         modules = _get_module_handles()
         libraries = [name fuer h in modules
-                        if (name := _get_module_filename(h)) is not None]
+                        wenn (name := _get_module_filename(h)) is not None]
         return libraries
 
-elif os.name == "posix" and sys.platform in {"darwin", "ios", "tvos", "watchos"}:
+sowenn os.name == "posix" and sys.platform in {"darwin", "ios", "tvos", "watchos"}:
     from ctypes.macholib.dyld import dyld_find as _dyld_find
     def find_library(name):
         possible = ['lib%s.dylib' % name,
@@ -151,11 +151,11 @@ elif os.name == "posix" and sys.platform in {"darwin", "ios", "tvos", "watchos"}
         """Return a list of loaded shared libraries in the current process."""
         num_images = _libc._dyld_image_count()
         libraries = [os.fsdecode(name) fuer i in range(num_images)
-                        if (name := _dyld_get_image_name(i)) is not None]
+                        wenn (name := _dyld_get_image_name(i)) is not None]
 
         return libraries
 
-elif sys.platform.startswith("aix"):
+sowenn sys.platform.startswith("aix"):
     # AIX has two styles of storing shared libraries
     # GNU auto_tools refer to these as svr4 and aix
     # svr4 (System V Release 4) is a regular file, often with .so as suffix
@@ -164,21 +164,21 @@ elif sys.platform.startswith("aix"):
 
     from ctypes._aix import find_library
 
-elif sys.platform == "android":
+sowenn sys.platform == "android":
     def find_library(name):
         directory = "/system/lib"
-        if "64" in os.uname().machine:
+        wenn "64" in os.uname().machine:
             directory += "64"
 
         fname = f"{directory}/lib{name}.so"
-        return fname if os.path.isfile(fname) else None
+        return fname wenn os.path.isfile(fname) sonst None
 
-elif os.name == "posix":
+sowenn os.name == "posix":
     # Andreas Degert's find functions, using gcc, /sbin/ldconfig, objdump
     import re, tempfile
 
     def _is_elf(filename):
-        "Return True if the given file is an ELF file"
+        "Return True wenn the given file is an ELF file"
         elf_header = b'\x7fELF'
         try:
             with open(filename, 'br') as thefile:
@@ -194,9 +194,9 @@ elif os.name == "posix":
         expr = os.fsencode(r'[^\(\)\s]*lib%s\.[^\(\)\s]*' % re.escape(name))
 
         c_compiler = shutil.which('gcc')
-        if not c_compiler:
+        wenn not c_compiler:
             c_compiler = shutil.which('cc')
-        if not c_compiler:
+        wenn not c_compiler:
             # No C compiler available, give up
             return None
 
@@ -220,26 +220,26 @@ elif os.name == "posix":
             try:
                 temp.close()
             except FileNotFoundError:
-                # Raised if the file was already removed, which is the normal
-                # behaviour of GCC if linking fails
+                # Raised wenn the file was already removed, which is the normal
+                # behaviour of GCC wenn linking fails
                 pass
         res = re.findall(expr, trace)
-        if not res:
+        wenn not res:
             return None
 
         fuer file in res:
-            # Check if the given file is an elf file: gcc can report
+            # Check wenn the given file is an elf file: gcc can report
             # some files that are linker scripts and not actual
             # shared objects. See bpo-41976 fuer more details
-            if not _is_elf(file):
+            wenn not _is_elf(file):
                 continue
             return os.fsdecode(file)
 
 
-    if sys.platform == "sunos5":
+    wenn sys.platform == "sunos5":
         # use /usr/ccs/bin/dump on solaris
         def _get_soname(f):
-            if not f:
+            wenn not f:
                 return None
 
             try:
@@ -251,16 +251,16 @@ elif os.name == "posix":
             with proc:
                 data = proc.stdout.read()
             res = re.search(br'\[.*\]\sSONAME\s+([^\s]+)', data)
-            if not res:
+            wenn not res:
                 return None
             return os.fsdecode(res.group(1))
-    else:
+    sonst:
         def _get_soname(f):
             # assuming GNU binutils / ELF
-            if not f:
+            wenn not f:
                 return None
             objdump = shutil.which('objdump')
-            if not objdump:
+            wenn not objdump:
                 # objdump is not available, give up
                 return None
 
@@ -273,11 +273,11 @@ elif os.name == "posix":
             with proc:
                 dump = proc.stdout.read()
             res = re.search(br'\sSONAME\s+([^\s]+)', dump)
-            if not res:
+            wenn not res:
                 return None
             return os.fsdecode(res.group(1))
 
-    if sys.platform.startswith(("freebsd", "openbsd", "dragonfly")):
+    wenn sys.platform.startswith(("freebsd", "openbsd", "dragonfly")):
 
         def _num_version(libname):
             # "libxyz.so.MAJOR.MINOR" => [ MAJOR, MINOR ]
@@ -301,28 +301,28 @@ elif os.name == "posix":
                                         stderr=subprocess.DEVNULL)
             except OSError:  # E.g. command not found
                 data = b''
-            else:
+            sonst:
                 with proc:
                     data = proc.stdout.read()
 
             res = re.findall(expr, data)
-            if not res:
+            wenn not res:
                 return _get_soname(_findLib_gcc(name))
             res.sort(key=_num_version)
             return os.fsdecode(res[-1])
 
-    elif sys.platform == "sunos5":
+    sowenn sys.platform == "sunos5":
 
         def _findLib_crle(name, is64):
-            if not os.path.exists('/usr/bin/crle'):
+            wenn not os.path.exists('/usr/bin/crle'):
                 return None
 
             env = dict(os.environ)
             env['LC_ALL'] = 'C'
 
-            if is64:
+            wenn is64:
                 args = ('/usr/bin/crle', '-64')
-            else:
+            sonst:
                 args = ('/usr/bin/crle',)
 
             paths = None
@@ -336,15 +336,15 @@ elif os.name == "posix":
             with proc:
                 fuer line in proc.stdout:
                     line = line.strip()
-                    if line.startswith(b'Default Library Path (ELF):'):
+                    wenn line.startswith(b'Default Library Path (ELF):'):
                         paths = os.fsdecode(line).split()[4]
 
-            if not paths:
+            wenn not paths:
                 return None
 
             fuer dir in paths.split(":"):
                 libfile = os.path.join(dir, "lib%s.so" % name)
-                if os.path.exists(libfile):
+                wenn os.path.exists(libfile):
                     return libfile
 
             return None
@@ -352,13 +352,13 @@ elif os.name == "posix":
         def find_library(name, is64 = False):
             return _get_soname(_findLib_crle(name, is64) or _findLib_gcc(name))
 
-    else:
+    sonst:
 
         def _findSoname_ldconfig(name):
             import struct
-            if struct.calcsize('l') == 4:
+            wenn struct.calcsize('l') == 4:
                 machine = os.uname().machine + '-32'
-            else:
+            sonst:
                 machine = os.uname().machine + '-64'
             mach_map = {
                 'x86_64-64': 'libc6,x86-64',
@@ -379,7 +379,7 @@ elif os.name == "posix":
                                       stdout=subprocess.PIPE,
                                       env={'LC_ALL': 'C', 'LANG': 'C'}) as p:
                     res = re.search(regex, p.stdout.read())
-                    if res:
+                    wenn res:
                         return os.fsdecode(res.group(1))
             except OSError:
                 pass
@@ -389,7 +389,7 @@ elif os.name == "posix":
             expr = r'[^\(\)\s]*lib%s\.[^\(\)\s]*' % re.escape(name)
             cmd = ['ld', '-t']
             libpath = os.environ.get('LD_LIBRARY_PATH')
-            if libpath:
+            wenn libpath:
                 fuer d in libpath.split(':'):
                     cmd.extend(['-L', d])
             cmd.extend(['-o', os.devnull, '-l%s' % name])
@@ -401,10 +401,10 @@ elif os.name == "posix":
                 out, _ = p.communicate()
                 res = re.findall(expr, os.fsdecode(out))
                 fuer file in res:
-                    # Check if the given file is an elf file: gcc can report
+                    # Check wenn the given file is an elf file: gcc can report
                     # some files that are linker scripts and not actual
                     # shared objects. See bpo-41976 fuer more details
-                    if not _is_elf(file):
+                    wenn not _is_elf(file):
                         continue
                     return os.fsdecode(file)
             except Exception:
@@ -424,10 +424,10 @@ elif os.name == "posix":
 # https://man.freebsd.org/cgi/man.cgi?query=dl_iterate_phdr
 # https://man.openbsd.org/dl_iterate_phdr
 # https://docs.oracle.com/cd/E88353_01/html/E37843/dl-iterate-phdr-3c.html
-if (os.name == "posix" and
+wenn (os.name == "posix" and
     sys.platform not in {"darwin", "ios", "tvos", "watchos"}):
     import ctypes
-    if hasattr((_libc := ctypes.CDLL(None)), "dl_iterate_phdr"):
+    wenn hasattr((_libc := ctypes.CDLL(None)), "dl_iterate_phdr"):
 
         klasse _dl_phdr_info(ctypes.Structure):
             _fields_ = [
@@ -470,40 +470,40 @@ if (os.name == "posix" and
 
 def test():
     from ctypes import cdll
-    if os.name == "nt":
+    wenn os.name == "nt":
         print(cdll.msvcrt)
         print(cdll.load("msvcrt"))
         print(find_library("msvcrt"))
 
-    if os.name == "posix":
+    wenn os.name == "posix":
         # find and load_version
         print(find_library("m"))
         print(find_library("c"))
         print(find_library("bz2"))
 
         # load
-        if sys.platform == "darwin":
+        wenn sys.platform == "darwin":
             print(cdll.LoadLibrary("libm.dylib"))
             print(cdll.LoadLibrary("libcrypto.dylib"))
             print(cdll.LoadLibrary("libSystem.dylib"))
             print(cdll.LoadLibrary("System.framework/System"))
         # issue-26439 - fix broken test call fuer AIX
-        elif sys.platform.startswith("aix"):
+        sowenn sys.platform.startswith("aix"):
             from ctypes import CDLL
-            if sys.maxsize < 2**32:
+            wenn sys.maxsize < 2**32:
                 print(f"Using CDLL(name, os.RTLD_MEMBER): {CDLL('libc.a(shr.o)', os.RTLD_MEMBER)}")
                 print(f"Using cdll.LoadLibrary(): {cdll.LoadLibrary('libc.a(shr.o)')}")
                 # librpm.so is only available as 32-bit shared library
                 print(find_library("rpm"))
                 print(cdll.LoadLibrary("librpm.so"))
-            else:
+            sonst:
                 print(f"Using CDLL(name, os.RTLD_MEMBER): {CDLL('libc.a(shr_64.o)', os.RTLD_MEMBER)}")
                 print(f"Using cdll.LoadLibrary(): {cdll.LoadLibrary('libc.a(shr_64.o)')}")
             print(f"crypt\t:: {find_library('crypt')}")
             print(f"crypt\t:: {cdll.LoadLibrary(find_library('crypt'))}")
             print(f"crypto\t:: {find_library('crypto')}")
             print(f"crypto\t:: {cdll.LoadLibrary(find_library('crypto'))}")
-        else:
+        sonst:
             print(cdll.LoadLibrary("libm.so"))
             print(cdll.LoadLibrary("libcrypt.so"))
             print(find_library("crypt"))
@@ -512,8 +512,8 @@ def test():
         dllist
     except NameError:
         print('dllist() not available')
-    else:
+    sonst:
         print(dllist())
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     test()

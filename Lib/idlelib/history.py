@@ -29,7 +29,7 @@ klasse History:
         text.bind("<<history-next>>", self.history_next)
 
     def history_next(self, event):
-        "Fetch later statement; start with earliest if cyclic."
+        "Fetch later statement; start with earliest wenn cyclic."
         self.fetch(reverse=False)
         return "break"
 
@@ -49,36 +49,36 @@ klasse History:
         nhist = len(self.history)
         pointer = self.pointer
         prefix = self.prefix
-        if pointer is not None and prefix is not None:
-            if self.text.compare("insert", "!=", "end-1c") or \
+        wenn pointer is not None and prefix is not None:
+            wenn self.text.compare("insert", "!=", "end-1c") or \
                     self.text.get("iomark", "end-1c") != self.history[pointer]:
                 pointer = prefix = None
                 self.text.mark_set("insert", "end-1c")  # != after cursor move
-        if pointer is None or prefix is None:
+        wenn pointer is None or prefix is None:
             prefix = self.text.get("iomark", "end-1c")
-            if reverse:
+            wenn reverse:
                 pointer = nhist  # will be decremented
-            else:
-                if self.cyclic:
+            sonst:
+                wenn self.cyclic:
                     pointer = -1  # will be incremented
-                else:  # abort history_next
+                sonst:  # abort history_next
                     self.text.bell()
                     return
         nprefix = len(prefix)
         while True:
-            pointer += -1 if reverse else 1
-            if pointer < 0 or pointer >= nhist:
+            pointer += -1 wenn reverse sonst 1
+            wenn pointer < 0 or pointer >= nhist:
                 self.text.bell()
-                if not self.cyclic and pointer < 0:  # abort history_prev
+                wenn not self.cyclic and pointer < 0:  # abort history_prev
                     return
-                else:
-                    if self.text.get("iomark", "end-1c") != prefix:
+                sonst:
+                    wenn self.text.get("iomark", "end-1c") != prefix:
                         self.text.delete("iomark", "end-1c")
                         self.text.insert("iomark", prefix, "stdin")
                     pointer = prefix = None
                 break
             item = self.history[pointer]
-            if item[:nprefix] == prefix and len(item) > nprefix:
+            wenn item[:nprefix] == prefix and len(item) > nprefix:
                 self.text.delete("iomark", "end-1c")
                 self.text.insert("iomark", item, "stdin")
                 break
@@ -90,7 +90,7 @@ klasse History:
     def store(self, source):
         "Store Shell input statement into history list."
         source = source.strip()
-        if len(source) > 2:
+        wenn len(source) > 2:
             # avoid duplicates
             try:
                 self.history.remove(source)
@@ -101,6 +101,6 @@ klasse History:
         self.prefix = None
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     from unittest import main
     main('idlelib.idle_test.test_history', verbosity=2, exit=False)

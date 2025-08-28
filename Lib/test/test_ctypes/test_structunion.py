@@ -166,9 +166,9 @@ klasse StructUnionTestBase:
         self.assertEqual(X.x.offset, 0)
         self.assertEqual(X.x.size, sizeof(c_int))
 
-        if self.cls == Structure:
+        wenn self.cls == Structure:
             self.assertEqual(X.y.offset, sizeof(c_int))
-        else:
+        sonst:
             self.assertEqual(X.y.offset, 0)
         self.assertEqual(X.y.size, sizeof(c_char))
 
@@ -234,9 +234,9 @@ klasse StructUnionTestBase:
             with self.subTest(name=name):
                 self.assertEqual(getattr(X, name).offset,
                                  getattr(X, name).byte_offset)
-                if self.cls == Structure:
+                wenn self.cls == Structure:
                     self.assertEqual(getattr(X, name).offset, struct_offset)
-                else:
+                sonst:
                     self.assertEqual(getattr(X, name).offset, union_offset)
 
         # is_bitfield, bit_size, bit_offset
@@ -245,13 +245,13 @@ klasse StructUnionTestBase:
         little_endian = (sys.byteorder == 'little')
         expected_bitfield_info = dict(
             # (bit_size, bit_offset)
-            b=(1, 0 if little_endian else 7),
-            c=(2, 1 if little_endian else 5),
-            y=(1, 0 if little_endian else 15),
+            b=(1, 0 wenn little_endian sonst 7),
+            c=(2, 1 wenn little_endian sonst 5),
+            y=(1, 0 wenn little_endian sonst 15),
         )
         fuer name in field_names:
             with self.subTest(name=name):
-                if info := expected_bitfield_info.get(name):
+                wenn info := expected_bitfield_info.get(name):
                     self.assertEqual(getattr(X, name).is_bitfield, True)
                     expected_bit_size, expected_bit_offset = info
                     self.assertEqual(getattr(X, name).bit_size,
@@ -261,7 +261,7 @@ klasse StructUnionTestBase:
                     self.assertEqual(getattr(X, name).size,
                                      (expected_bit_size << 16)
                                      | expected_bit_offset)
-                else:
+                sonst:
                     self.assertEqual(getattr(X, name).is_bitfield, False)
                     type_size = sizeof(expected_types[name])
                     self.assertEqual(getattr(X, name).bit_size, type_size * 8)
@@ -340,9 +340,9 @@ klasse StructUnionTestBase:
     def test_pack_layout_switch(self):
         # Setting _pack_ implicitly sets default layout to MSVC;
         # this is deprecated on non-Windows platforms.
-        if MS_WINDOWS:
+        wenn MS_WINDOWS:
             warn_context = contextlib.nullcontext()
-        else:
+        sonst:
             warn_context = self.assertWarns(DeprecationWarning)
         with warn_context:
             klasse X(self.cls):
@@ -451,7 +451,7 @@ klasse TestRecursiveBase:
         except AttributeError as details:
             self.assertIn("Structure or union cannot contain itself",
                           str(details))
-        else:
+        sonst:
             self.fail("Structure or union cannot contain itself")
 
 
@@ -467,7 +467,7 @@ klasse TestRecursiveBase:
             Second._fields_ = [("first", First)]
         except AttributeError as details:
             self.assertIn("_fields_ is final", str(details))
-        else:
+        sonst:
             self.fail("AttributeError not raised")
 
 klasse TestRecursiveStructure(unittest.TestCase, TestRecursiveBase):

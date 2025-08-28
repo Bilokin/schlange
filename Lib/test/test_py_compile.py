@@ -39,11 +39,11 @@ klasse SourceDateEpochTestMeta(type(unittest.TestCase)):
         cls = super().__new__(mcls, name, bases, dct)
 
         fuer attr in dir(cls):
-            if attr.startswith('test_'):
+            wenn attr.startswith('test_'):
                 meth = getattr(cls, attr)
-                if source_date_epoch:
+                wenn source_date_epoch:
                     wrapper = with_source_date_epoch(meth)
-                else:
+                sonst:
                     wrapper = without_source_date_epoch(meth)
                 setattr(cls, attr, wrapper)
 
@@ -63,14 +63,14 @@ klasse PyCompileTestsBase:
         # on different drives.  Therefore we need to switch to the drive where
         # the temporary source file lives.
         drive = os.path.splitdrive(self.source_path)[0]
-        if drive:
+        wenn drive:
             os.chdir(drive)
         with open(self.source_path, 'w') as file:
             file.write('x = 123\n')
 
     def tearDown(self):
         shutil.rmtree(self.directory)
-        if self.cwd_drive:
+        wenn self.cwd_drive:
             os.chdir(self.cwd_drive)
 
     def test_absolute_path(self):
@@ -85,7 +85,7 @@ klasse PyCompileTestsBase:
             os.symlink(self.pyc_path + '.actual', self.pyc_path)
         except (NotImplementedError, OSError):
             self.skipTest('need to be able to create a symlink fuer a file')
-        else:
+        sonst:
             assert os.path.islink(self.pyc_path)
             with self.assertRaises(FileExistsError):
                 py_compile.compile(self.source_path, self.pyc_path)
@@ -147,9 +147,9 @@ klasse PyCompileTestsBase:
         with open(self.pyc_path, 'rb') as fp:
             flags = importlib._bootstrap_external._classify_pyc(
                 fp.read(), 'test', {})
-        if os.environ.get('SOURCE_DATE_EPOCH'):
+        wenn os.environ.get('SOURCE_DATE_EPOCH'):
             expected_flags = 0b11
-        else:
+        sonst:
             expected_flags = 0b00
 
         self.assertEqual(flags, expected_flags)
@@ -228,7 +228,7 @@ klasse PyCompileCLITestCase(unittest.TestCase):
         self.directory = tempfile.mkdtemp()
         self.source_path = os.path.join(self.directory, '_test.py')
         self.cache_path = importlib.util.cache_from_source(self.source_path,
-                                optimization='' if __debug__ else 1)
+                                optimization='' wenn __debug__ sonst 1)
         with open(self.source_path, 'w') as file:
             file.write('x = 123\n')
 
@@ -240,8 +240,8 @@ klasse PyCompileCLITestCase(unittest.TestCase):
         # assert_python_* helpers don't return proc object. We'll just use
         # subprocess.run() instead of spawn_python() and its friends to test
         # stdin support of the CLI.
-        opts = '-m' if __debug__ else '-Om'
-        if args and args[0] == '-' and 'input' in kwargs:
+        opts = '-m' wenn __debug__ sonst '-Om'
+        wenn args and args[0] == '-' and 'input' in kwargs:
             return subprocess.run([sys.executable, opts, 'py_compile', '-'],
                                   input=kwargs['input'].encode(),
                                   capture_output=True)
@@ -298,5 +298,5 @@ klasse PyCompileCLITestCase(unittest.TestCase):
         self.assertEqual(stderr, b'')
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

@@ -152,38 +152,38 @@ SyntaxError: cannot assign to expression
 Traceback (most recent call last):
 SyntaxError: cannot assign to expression
 
->>> a if 1 else b = 1
+>>> a wenn 1 sonst b = 1
 Traceback (most recent call last):
 SyntaxError: cannot assign to conditional expression
 
->>> a = 42 if True
+>>> a = 42 wenn True
 Traceback (most recent call last):
 SyntaxError: expected 'else' after 'if' expression
 
->>> a = (42 if True)
+>>> a = (42 wenn True)
 Traceback (most recent call last):
 SyntaxError: expected 'else' after 'if' expression
 
->>> a = [1, 42 if True, 4]
+>>> a = [1, 42 wenn True, 4]
 Traceback (most recent call last):
 SyntaxError: expected 'else' after 'if' expression
 
->>> x = 1 if 1 else pass
+>>> x = 1 wenn 1 sonst pass
 Traceback (most recent call last):
 SyntaxError: expected expression after 'else', but statement is given
 
->>> x = pass if 1 else 1
+>>> x = pass wenn 1 sonst 1
 Traceback (most recent call last):
 SyntaxError: expected expression before 'if', but statement is given
 
->>> x = pass if 1 else pass
+>>> x = pass wenn 1 sonst pass
 Traceback (most recent call last):
 SyntaxError: expected expression before 'if', but statement is given
 
->>> if True:
+>>> wenn True:
 ...     print("Hello"
 ...
-... if 2:
+... wenn 2:
 ...    print(123))
 Traceback (most recent call last):
 SyntaxError: invalid syntax
@@ -285,11 +285,11 @@ SyntaxError: invalid syntax
 
 Comprehensions without 'in' keyword:
 
->>> [x fuer x if range(1)]
+>>> [x fuer x wenn range(1)]
 Traceback (most recent call last):
 SyntaxError: 'in' expected after for-loop variables
 
->>> tuple(x fuer x if range(1))
+>>> tuple(x fuer x wenn range(1))
 Traceback (most recent call last):
 SyntaxError: 'in' expected after for-loop variables
 
@@ -301,7 +301,7 @@ SyntaxError: cannot assign to function call
 Traceback (most recent call last):
 SyntaxError: cannot assign to expression
 
->>> [x fuer a, b, (c + 1, d()) if y]
+>>> [x fuer a, b, (c + 1, d()) wenn y]
 Traceback (most recent call last):
 SyntaxError: 'in' expected after for-loop variables
 
@@ -955,13 +955,13 @@ isn't, there should be a syntax error.
      ...
    SyntaxError: 'break' outside loop
 
-elif can't come after an else.
+sowenn can't come after an else.
 
-    >>> if a % 2 == 0:
+    >>> wenn a % 2 == 0:
     ...     pass
-    ... else:
+    ... sonst:
     ...     pass
-    ... elif a % 2 == 1:
+    ... sowenn a % 2 == 1:
     ...     pass
     Traceback (most recent call last):
       ...
@@ -1045,47 +1045,47 @@ This tests assignment-context; there was a bug in Python 2.5 where compiling
 a complex 'if' (one with 'elif') would fail to notice an invalid suite,
 leading to spurious errors.
 
-   >>> if 1:
+   >>> wenn 1:
    ...   x() = 1
-   ... elif 1:
+   ... sowenn 1:
    ...   pass
    Traceback (most recent call last):
      ...
    SyntaxError: cannot assign to function call here. Maybe you meant '==' instead of '='?
 
-   >>> if 1:
+   >>> wenn 1:
    ...   pass
-   ... elif 1:
+   ... sowenn 1:
    ...   x() = 1
    Traceback (most recent call last):
      ...
    SyntaxError: cannot assign to function call here. Maybe you meant '==' instead of '='?
 
-   >>> if 1:
+   >>> wenn 1:
    ...   x() = 1
-   ... elif 1:
+   ... sowenn 1:
    ...   pass
-   ... else:
+   ... sonst:
    ...   pass
    Traceback (most recent call last):
      ...
    SyntaxError: cannot assign to function call here. Maybe you meant '==' instead of '='?
 
-   >>> if 1:
+   >>> wenn 1:
    ...   pass
-   ... elif 1:
+   ... sowenn 1:
    ...   x() = 1
-   ... else:
+   ... sonst:
    ...   pass
    Traceback (most recent call last):
      ...
    SyntaxError: cannot assign to function call here. Maybe you meant '==' instead of '='?
 
-   >>> if 1:
+   >>> wenn 1:
    ...   pass
-   ... elif 1:
+   ... sowenn 1:
    ...   pass
-   ... else:
+   ... sonst:
    ...   x() = 1
    Traceback (most recent call last):
      ...
@@ -1123,29 +1123,29 @@ Missing ':' before suites:
    Traceback (most recent call last):
    SyntaxError: invalid syntax
 
-   >>> if 1
+   >>> wenn 1
    ...   pass
-   ... elif 1:
+   ... sowenn 1:
    ...   pass
-   ... else:
+   ... sonst:
    ...   x() = 1
    Traceback (most recent call last):
    SyntaxError: expected ':'
 
-   >>> if 1:
+   >>> wenn 1:
    ...   pass
-   ... elif 1
+   ... sowenn 1
    ...   pass
-   ... else:
+   ... sonst:
    ...   x() = 1
    Traceback (most recent call last):
    SyntaxError: expected ':'
 
-   >>> if 1:
+   >>> wenn 1:
    ...   pass
-   ... elif 1:
+   ... sowenn 1:
    ...   pass
-   ... else
+   ... sonst
    ...   x() = 1
    Traceback (most recent call last):
    SyntaxError: expected ':'
@@ -1241,7 +1241,7 @@ Missing ':' before suites:
    SyntaxError: expected ':'
 
    >>> match x:
-   ...   case [y] if y > 0
+   ...   case [y] wenn y > 0
    ...       pass
    Traceback (most recent call last):
    SyntaxError: expected ':'
@@ -1264,7 +1264,7 @@ Missing ':' before suites:
    Traceback (most recent call last):
    SyntaxError: cannot assign to __debug__
 
-   >>> if x = 3:
+   >>> wenn x = 3:
    ...    pass
    Traceback (most recent call last):
    SyntaxError: invalid syntax. Maybe you meant '==' or ':=' instead of '='?
@@ -1274,7 +1274,7 @@ Missing ':' before suites:
    Traceback (most recent call last):
    SyntaxError: invalid syntax. Maybe you meant '==' or ':=' instead of '='?
 
-   >>> if x.a = 3:
+   >>> wenn x.a = 3:
    ...    pass
    Traceback (most recent call last):
    SyntaxError: cannot assign to attribute here. Maybe you meant '==' instead of '='?
@@ -1528,7 +1528,7 @@ Specialized indentation errors:
 
    >>> fuer x in range(10):
    ...     pass
-   ... else:
+   ... sonst:
    ... pass
    Traceback (most recent call last):
    IndentationError: expected an indented block after 'else' statement on line 3
@@ -1540,28 +1540,28 @@ Specialized indentation errors:
 
    >>> async fuer x in range(10):
    ...     pass
-   ... else:
+   ... sonst:
    ... pass
    Traceback (most recent call last):
    IndentationError: expected an indented block after 'else' statement on line 3
 
-   >>> if something:
+   >>> wenn something:
    ... pass
    Traceback (most recent call last):
    IndentationError: expected an indented block after 'if' statement on line 1
 
-   >>> if something:
+   >>> wenn something:
    ...     pass
-   ... elif something_else:
+   ... sowenn something_else:
    ... pass
    Traceback (most recent call last):
    IndentationError: expected an indented block after 'elif' statement on line 3
 
-   >>> if something:
+   >>> wenn something:
    ...     pass
-   ... elif something_else:
+   ... sowenn something_else:
    ...     pass
-   ... else:
+   ... sonst:
    ... pass
    Traceback (most recent call last):
    IndentationError: expected an indented block after 'else' statement on line 5
@@ -1802,16 +1802,16 @@ SyntaxError: invalid syntax. Did you mean 'else'?
 Traceback (most recent call last):
 SyntaxError: invalid syntax. Did you mean 'if'?
 
->>> if x:
+>>> wenn x:
 ...   pass
 ... elseif y:
 ...   pass
 Traceback (most recent call last):
 SyntaxError: invalid syntax. Did you mean 'elif'?
 
->>> if x:
+>>> wenn x:
 ...   pass
-... elif y:
+... sowenn y:
 ...   pass
 ... elso:
 ...   pass
@@ -1891,7 +1891,7 @@ SyntaxError: invalid syntax. Did you mean 'if'?
 >>> [
 ... 123 fur x
 ... in range(3)
-... if x
+... wenn x
 ... ]
 Traceback (most recent call last):
 SyntaxError: invalid syntax. Did you mean 'for'?
@@ -2133,7 +2133,7 @@ SyntaxError: cannot use subscript as import target
 Traceback (most recent call last):
 SyntaxError: cannot use subscript as import target
 
-# Check that we dont raise the "trailing comma" error if there is more
+# Check that we dont raise the "trailing comma" error wenn there is more
 # input to the left of the valid part that we parsed.
 
 >>> from t import x,y, and 3
@@ -2790,22 +2790,22 @@ klasse SyntaxErrorTestCase(unittest.TestCase):
         try:
             compile(code, filename, mode)
         except SyntaxError as err:
-            if subclass and not isinstance(err, subclass):
+            wenn subclass and not isinstance(err, subclass):
                 self.fail("SyntaxError is not a %s" % subclass.__name__)
             mo = re.search(errtext, str(err))
-            if mo is None:
+            wenn mo is None:
                 self.fail("SyntaxError did not contain %r" % (errtext,))
             self.assertEqual(err.filename, filename)
-            if lineno is not None:
+            wenn lineno is not None:
                 self.assertEqual(err.lineno, lineno)
-            if offset is not None:
+            wenn offset is not None:
                 self.assertEqual(err.offset, offset)
-            if end_lineno is not None:
+            wenn end_lineno is not None:
                 self.assertEqual(err.end_lineno, end_lineno)
-            if end_offset is not None:
+            wenn end_offset is not None:
                 self.assertEqual(err.end_offset, end_offset)
 
-        else:
+        sonst:
             self.fail("compile() did not raise SyntaxError")
 
     def test_expression_with_assignment(self):
@@ -2837,7 +2837,7 @@ klasse SyntaxErrorTestCase(unittest.TestCase):
         self._check_error("del x, f()", "cannot delete function call")
         self._check_error("del f(), x", "cannot delete function call")
         self._check_error("del [a, b, ((c), (d,), e.f())]", "cannot delete function call")
-        self._check_error("del (a if True else b)", "cannot delete conditional")
+        self._check_error("del (a wenn True sonst b)", "cannot delete conditional")
         self._check_error("del +a", "cannot delete expression")
         self._check_error("del a, +b", "cannot delete expression")
         self._check_error("del a + b", "cannot delete expression")
@@ -2885,11 +2885,11 @@ klasse SyntaxErrorTestCase(unittest.TestCase):
         self._check_error("if 1: pass\nelse: yield",    "outside function")
         self._check_error("while 0: yield",             "outside function")
         self._check_error("while 0: yield\nelse:  x=1", "outside function")
-        self._check_error("class C:\n  if 0: yield",    "outside function")
-        self._check_error("class C:\n  if 1: pass\n  else: yield",
+        self._check_error("class C:\n  wenn 0: yield",    "outside function")
+        self._check_error("class C:\n  wenn 1: pass\n  sonst: yield",
                           "outside function")
         self._check_error("class C:\n  while 0: yield", "outside function")
-        self._check_error("class C:\n  while 0: yield\n  else:  x = 1",
+        self._check_error("class C:\n  while 0: yield\n  sonst:  x = 1",
                           "outside function")
 
     def test_return_outside_function(self):
@@ -2897,13 +2897,13 @@ klasse SyntaxErrorTestCase(unittest.TestCase):
         self._check_error("if 0: return\nelse:  x=1",    "outside function")
         self._check_error("if 1: pass\nelse: return",    "outside function")
         self._check_error("while 0: return",             "outside function")
-        self._check_error("class C:\n  if 0: return",    "outside function")
+        self._check_error("class C:\n  wenn 0: return",    "outside function")
         self._check_error("class C:\n  while 0: return", "outside function")
-        self._check_error("class C:\n  while 0: return\n  else:  x=1",
+        self._check_error("class C:\n  while 0: return\n  sonst:  x=1",
                           "outside function")
-        self._check_error("class C:\n  if 0: return\n  else: x= 1",
+        self._check_error("class C:\n  wenn 0: return\n  sonst: x= 1",
                           "outside function")
-        self._check_error("class C:\n  if 1: pass\n  else: return",
+        self._check_error("class C:\n  wenn 1: pass\n  sonst: return",
                           "outside function")
 
     def test_break_outside_loop(self):
@@ -2912,8 +2912,8 @@ klasse SyntaxErrorTestCase(unittest.TestCase):
         self._check_error("if 0: break", msg, lineno=1)
         self._check_error("if 0: break\nelse:  x=1", msg, lineno=1)
         self._check_error("if 1: pass\nelse: break", msg, lineno=2)
-        self._check_error("class C:\n  if 0: break", msg, lineno=2)
-        self._check_error("class C:\n  if 1: pass\n  else: break",
+        self._check_error("class C:\n  wenn 0: break", msg, lineno=2)
+        self._check_error("class C:\n  wenn 1: pass\n  sonst: break",
                           msg, lineno=3)
         self._check_error("with object() as obj:\n break",
                           msg, lineno=2)
@@ -2923,8 +2923,8 @@ klasse SyntaxErrorTestCase(unittest.TestCase):
         self._check_error("if 0: continue", msg, lineno=1)
         self._check_error("if 0: continue\nelse:  x=1", msg, lineno=1)
         self._check_error("if 1: pass\nelse: continue", msg, lineno=2)
-        self._check_error("class C:\n  if 0: continue", msg, lineno=2)
-        self._check_error("class C:\n  if 1: pass\n  else: continue",
+        self._check_error("class C:\n  wenn 0: continue", msg, lineno=2)
+        self._check_error("class C:\n  wenn 1: pass\n  sonst: continue",
                           msg, lineno=3)
         self._check_error("with object() as obj:\n    continue",
                           msg, lineno=2)
@@ -2957,7 +2957,7 @@ klasse SyntaxErrorTestCase(unittest.TestCase):
                           "keyword argument unpacking")
 
     def test_generator_in_function_call(self):
-        self._check_error("foo(x,    y fuer y in range(3) fuer z in range(2) if z    , p)",
+        self._check_error("foo(x,    y fuer y in range(3) fuer z in range(2) wenn z    , p)",
                           "Generator expression must be parenthesized",
                           lineno=1, end_lineno=1, offset=11, end_offset=53)
 
@@ -3007,7 +3007,7 @@ def fib(n):
         # Check that code that breaks indentation across multiple lines raises a syntax error
 
         code = r"""\
-if x:
+wenn x:
     y = 1
   \
   foo = 1
@@ -3102,7 +3102,7 @@ klasse A:
         # in the file. See bpo-42214 fuer more information.
         code = """
 def func1():
-    if a != b:
+    wenn a != b:
         raise ValueError
 
 def func2():
@@ -3303,7 +3303,7 @@ while 1:
             "from",
             "from ast import *"
         ]:
-            self._check_error(f"x = 1 if 1 else {stmt}", msg)
+            self._check_error(f"x = 1 wenn 1 sonst {stmt}", msg)
 
     def test_ifexp_body_stmt_else_expression(self):
         msg = "expected expression before 'if', but statement is given"
@@ -3313,7 +3313,7 @@ while 1:
             "break",
             "continue"
         ]:
-            self._check_error(f"x = {stmt} if 1 else 1", msg)
+            self._check_error(f"x = {stmt} wenn 1 sonst 1", msg)
 
     def test_ifexp_body_stmt_else_stmt(self):
         msg = "expected expression before 'if', but statement is given"
@@ -3322,12 +3322,12 @@ while 1:
             ("break", "pass"),
             ("continue", "import ast")
         ]:
-            self._check_error(f"x = {lhs_stmt} if 1 else {rhs_stmt}", msg)
+            self._check_error(f"x = {lhs_stmt} wenn 1 sonst {rhs_stmt}", msg)
 
 def load_tests(loader, tests, pattern):
     tests.addTest(doctest.DocTestSuite())
     return tests
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

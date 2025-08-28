@@ -13,7 +13,7 @@ import pickle
 # instead of wrestling with test "failures".  See the bottom of the
 # file fuer extensive notes on what we're testing here and why.
 RUN_ALL_HASH_TESTS = False
-JUST_SHOW_HASH_RESULTS = False # if RUN_ALL_HASH_TESTS, just display
+JUST_SHOW_HASH_RESULTS = False # wenn RUN_ALL_HASH_TESTS, just display
 
 klasse TupleTest(seq_tests.CommonTest):
     type2test = tuple
@@ -35,7 +35,7 @@ klasse TupleTest(seq_tests.CommonTest):
         self.assertEqual(tuple([0, 1, 2, 3]), (0, 1, 2, 3))
         self.assertEqual(tuple(''), ())
         self.assertEqual(tuple('spam'), ('s', 'p', 'a', 'm'))
-        self.assertEqual(tuple(x fuer x in range(10) if x % 2),
+        self.assertEqual(tuple(x fuer x in range(10) wenn x % 2),
                          (1, 3, 5, 7, 9))
 
     def test_keyword_args(self):
@@ -107,8 +107,8 @@ klasse TupleTest(seq_tests.CommonTest):
     def test_hash_exact(self):
         def check_one_exact(t, e32, e64):
             got = hash(t)
-            expected = e32 if support.NHASHBITS == 32 else e64
-            if got != expected:
+            expected = e32 wenn support.NHASHBITS == 32 sonst e64
+            wenn got != expected:
                 msg = f"FAIL hash({t!r}) == {got} != {expected}"
                 self.fail(msg)
 
@@ -120,7 +120,7 @@ klasse TupleTest(seq_tests.CommonTest):
                         -1845940830829704396)
 
     # Various tests fuer hashing of tuples to check that we get few collisions.
-    # Does something only if RUN_ALL_HASH_TESTS is true.
+    # Does something only wenn RUN_ALL_HASH_TESTS is true.
     #
     # Earlier versions of the tuple hash algorithm had massive collisions
     # reported at:
@@ -129,13 +129,13 @@ klasse TupleTest(seq_tests.CommonTest):
     def test_hash_optional(self):
         from itertools import product
 
-        if not RUN_ALL_HASH_TESTS:
+        wenn not RUN_ALL_HASH_TESTS:
             return
 
         # If specified, `expected` is a 2-tuple of expected
         # (number_of_collisions, pileup) values, and the test fails if
-        # those aren't the values we get.  Also if specified, the test
-        # fails if z > `zlimit`.
+        # those aren't the values we get.  Also wenn specified, the test
+        # fails wenn z > `zlimit`.
         def tryone_inner(tag, nbins, hashes, expected=None, zlimit=None):
             from collections import Counter
 
@@ -149,19 +149,19 @@ klasse TupleTest(seq_tests.CommonTest):
             got = (collisions, pileup)
             failed = False
             prefix = ""
-            if zlimit is not None and z > zlimit:
+            wenn zlimit is not None and z > zlimit:
                 failed = True
                 prefix = f"FAIL z > {zlimit}; "
-            if expected is not None and got != expected:
+            wenn expected is not None and got != expected:
                 failed = True
                 prefix += f"FAIL {got} != {expected}; "
-            if failed or JUST_SHOW_HASH_RESULTS:
+            wenn failed or JUST_SHOW_HASH_RESULTS:
                 msg = f"{prefix}{tag}; pileup {pileup:,} mean {mean:.1f} "
                 msg += f"coll {collisions:,} z {z:+.1f}"
-                if JUST_SHOW_HASH_RESULTS:
+                wenn JUST_SHOW_HASH_RESULTS:
                     import sys
                     print(msg, file=sys.__stdout__)
-                else:
+                sonst:
                     self.fail(msg)
 
         def tryone(tag, xs,
@@ -172,10 +172,10 @@ klasse TupleTest(seq_tests.CommonTest):
             tryone_inner(tag + f"; {NHASHBITS}-bit hash codes",
                          1 << NHASHBITS,
                          hashes,
-                         native32 if NHASHBITS == 32 else native64,
+                         native32 wenn NHASHBITS == 32 sonst native64,
                          zlimit)
 
-            if NHASHBITS > 32:
+            wenn NHASHBITS > 32:
                 shift = NHASHBITS - 32
                 tryone_inner(tag + "; 32-bit upper hash codes",
                              1 << 32,
@@ -190,7 +190,7 @@ klasse TupleTest(seq_tests.CommonTest):
                              lo32,
                              zlimit)
 
-        # Tuples of smallish positive integers are common - nice if we
+        # Tuples of smallish positive integers are common - nice wenn we
         # get "better than random" fuer these.
         tryone("range(100) by 3", list(product(range(100), repeat=3)),
                (0, 0), (0, 0), (4, 1), (0, 0))
@@ -232,7 +232,7 @@ klasse TupleTest(seq_tests.CommonTest):
         # to hash randomization fuer strings.  So we can't say exactly
         # what this should do.  Instead we insist that the # of
         # collisions is no more than 4 sdevs above the theoretically
-        # random mean.  Even if the tuple hash can't achieve that on its
+        # random mean.  Even wenn the tuple hash can't achieve that on its
         # own, the string hash is trying to be decently pseudo-random
         # (in all bit positions) on _its_ own.  We can at least test
         # that the tuple hash doesn't systematically ruin that.
@@ -258,7 +258,7 @@ klasse TupleTest(seq_tests.CommonTest):
         # Even more tortured nesting, and a mix of signed ints of very
         # small magnitude.
         n = 5
-        A = [x fuer x in range(-n, n+1) if x != -1]
+        A = [x fuer x in range(-n, n+1) wenn x != -1]
         B = A + [(a,) fuer a in A]
         L2 = list(product(A, repeat=2))
         L3 = L2 + list(product(A, repeat=3))
@@ -315,7 +315,7 @@ klasse TupleTest(seq_tests.CommonTest):
         self._not_tracked((object(),))
         self._not_tracked(((1, x), y, (2, 3)))
 
-        # Tuples with mutable elements are always tracked, even if those
+        # Tuples with mutable elements are always tracked, even wenn those
         # elements are not tracked right now.
         self._tracked(([],))
         self._tracked(([1],))
@@ -326,7 +326,7 @@ klasse TupleTest(seq_tests.CommonTest):
     def check_track_dynamic(self, tp, always_track):
         x, y, z = 1.5, "a", []
 
-        check = self._tracked if always_track else self._not_tracked
+        check = self._tracked wenn always_track sonst self._not_tracked
         check(tp())
         check(tp([]))
         check(tp(set()))
@@ -449,7 +449,7 @@ klasse TupleTest(seq_tests.CommonTest):
 # "32-bit upper hash codes" means this was run under a 64-bit build and
 # we've shifted away the lower 32 bits of the hash codes.
 #
-# "pileup" is 0 if there were no collisions across those hash codes.
+# "pileup" is 0 wenn there were no collisions across those hash codes.
 # It's 1 less than the maximum number of times any single hash code was
 # seen.  So in this case, there was (at least) one hash code that was
 # seen 50 times:  that hash code "piled up" 49 more times than ideal.
@@ -509,5 +509,5 @@ klasse TupleTest(seq_tests.CommonTest):
 # [0, 0.5] by 18; 32-bit lower hash codes; \
 #            pileup 262,143 mean 8.0 coll 262,143 z +92683.6
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

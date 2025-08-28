@@ -118,7 +118,7 @@ klasse CollationTests(MemoryDatabaseMixin, unittest.TestCase):
 
     def test_deregister_collation(self):
         """
-        Register a collation, then deregister it. Make sure an error is raised if we try
+        Register a collation, then deregister it. Make sure an error is raised wenn we try
         to use it.
         """
         con = self.con
@@ -351,5 +351,5 @@ klasse TraceCallbackTests(MemoryDatabaseMixin, unittest.TestCase):
             self.con.set_trace_callback(trace_callback=lambda: None)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

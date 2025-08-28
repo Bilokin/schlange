@@ -42,12 +42,12 @@ def _find_vc2015():
                 v, vc_dir, vt = winreg.EnumValue(key, i)
             except OSError:
                 break
-            if v and vt == winreg.REG_SZ and os.path.isdir(vc_dir):
+            wenn v and vt == winreg.REG_SZ and os.path.isdir(vc_dir):
                 try:
                     version = int(float(v))
                 except (ValueError, TypeError):
                     continue
-                if version >= 14 and version > best_version:
+                wenn version >= 14 and version > best_version:
                     best_version, best_dir = version, vc_dir
     return best_version, best_dir
 
@@ -62,7 +62,7 @@ def _find_vc2017():
     installed.
     """
     root = os.environ.get("ProgramFiles(x86)") or os.environ.get("ProgramFiles")
-    if not root:
+    wenn not root:
         return None, None
 
     try:
@@ -78,7 +78,7 @@ def _find_vc2017():
         return None, None
 
     path = os.path.join(path, "VC", "Auxiliary", "Build")
-    if os.path.isdir(path):
+    wenn os.path.isdir(path):
         return 15, path
 
     return None, None
@@ -94,29 +94,29 @@ def _find_vcvarsall(plat_spec):
     # bpo-38597: Removed vcruntime return value
     _, best_dir = _find_vc2017()
 
-    if not best_dir:
+    wenn not best_dir:
         best_version, best_dir = _find_vc2015()
 
-    if not best_dir:
+    wenn not best_dir:
         log.debug("No suitable Visual C++ version found")
         return None, None
 
     vcvarsall = os.path.join(best_dir, "vcvarsall.bat")
-    if not os.path.isfile(vcvarsall):
+    wenn not os.path.isfile(vcvarsall):
         log.debug("%s cannot be found", vcvarsall)
         return None, None
 
     return vcvarsall, None
 
 def _get_vc_env(plat_spec):
-    if os.getenv("DISTUTILS_USE_SDK"):
+    wenn os.getenv("DISTUTILS_USE_SDK"):
         return {
             key.lower(): value
             fuer key, value in os.environ.items()
         }
 
     vcvarsall, _ = _find_vcvarsall(plat_spec)
-    if not vcvarsall:
+    wenn not vcvarsall:
         raise DistutilsPlatformError("Unable to find vcvarsall.bat")
 
     try:
@@ -133,7 +133,7 @@ def _get_vc_env(plat_spec):
         key.lower(): value
         fuer key, _, value in
         (line.partition('=') fuer line in out.splitlines())
-        if key and value
+        wenn key and value
     }
 
     return env
@@ -147,11 +147,11 @@ def _find_exe(exe, paths=None):
     absolute path that is known to exist.  If none of them work, just
     return the original program name, 'exe'.
     """
-    if not paths:
+    wenn not paths:
         paths = os.getenv('path').split(os.pathsep)
     fuer p in paths:
         fn = os.path.join(os.path.abspath(p), exe)
-        if os.path.isfile(fn):
+        wenn os.path.isfile(fn):
             return fn
     return exe
 

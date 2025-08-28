@@ -50,9 +50,9 @@ def main():
     forward(170)
     up()
 
-    goto(0,300) # vanish if hideturtle() is not available ;-)
+    goto(0,300) # vanish wenn hideturtle() is not available ;-)
     return "Done!"
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     main()
     mainloop()

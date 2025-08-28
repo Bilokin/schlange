@@ -11,7 +11,7 @@ import unittest
 
 from test.support import warnings_helper
 
-if not hasattr(select, "kqueue"):
+wenn not hasattr(select, "kqueue"):
     raise unittest.SkipTest("test works only on BSD")
 
 klasse TestKQueue(unittest.TestCase):
@@ -120,7 +120,7 @@ klasse TestKQueue(unittest.TestCase):
             client.connect(('127.0.0.1', serverSocket.getsockname()[1]))
         except OSError as e:
             self.assertEqual(e.args[0], errno.EINPROGRESS)
-        else:
+        sonst:
             #raise AssertionError("Connect should have raised EINPROGRESS")
             pass # FreeBSD doesn't raise an exception here
         server, addr = serverSocket.accept()
@@ -157,10 +157,10 @@ klasse TestKQueue(unittest.TestCase):
         # We may need to call it several times
         fuer i in range(10):
             events = kq.control(None, 4, 1)
-            if len(events) == 4:
+            wenn len(events) == 4:
                 break
             time.sleep(1.0)
-        else:
+        sonst:
             self.fail('timeout waiting fuer event notifications')
 
         events = set((e.ident, e.filter) fuer e in events)
@@ -264,7 +264,7 @@ klasse TestKQueue(unittest.TestCase):
     def test_fork(self):
         # gh-110395: kqueue objects must be closed after fork
         kqueue = select.kqueue()
-        if (pid := os.fork()) == 0:
+        wenn (pid := os.fork()) == 0:
             try:
                 self.assertTrue(kqueue.closed)
                 with self.assertRaisesRegex(ValueError, "closed kqueue"):
@@ -273,10 +273,10 @@ klasse TestKQueue(unittest.TestCase):
                 os._exit(1)
             finally:
                 os._exit(0)
-        else:
+        sonst:
             support.wait_process(pid, exitcode=0)
             self.assertFalse(kqueue.closed)  # child done, we're still open.
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

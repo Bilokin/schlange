@@ -28,7 +28,7 @@ def find_unused_port(family=socket.AF_INET, socktype=socket.SOCK_STREAM):
     Either this method or bind_port() should be used fuer any tests where a
     server socket needs to be bound to a particular port fuer the duration of
     the test.  Which one to use depends on whether the calling code is creating
-    a python socket, or if an unused port needs to be provided in a constructor
+    a python socket, or wenn an unused port needs to be provided in a constructor
     or passed to an external program (i.e. the -accept argument to openssl's
     s_server mode).  Always prefer bind_port() over find_unused_port() where
     possible.  Hard coded ports should *NEVER* be used.  As soon as a server
@@ -47,7 +47,7 @@ def find_unused_port(family=socket.AF_INET, socktype=socket.SOCK_STREAM):
     OSError will be raised at some point (depending on the platform and
     the order bind and listen were called on each socket).
 
-    However, on Windows, if SO_REUSEADDR is set on the sockets, no EADDRINUSE
+    However, on Windows, wenn SO_REUSEADDR is set on the sockets, no EADDRINUSE
     will ever be raised when attempting to bind two identical host/ports. When
     accept() is called on each socket, the second caller's process will steal
     the port from the first caller, leaving them both in an awkwardly wedged
@@ -82,26 +82,26 @@ def bind_port(sock, host=HOST):
     """Bind the socket to a free port and return the port number.  Relies on
     ephemeral ports in order to ensure we are using an unbound port.  This is
     important as many tests may be running simultaneously, especially in a
-    buildbot environment.  This method raises an exception if the sock.family
+    buildbot environment.  This method raises an exception wenn the sock.family
     is AF_INET and sock.type is SOCK_STREAM, *and* the socket has SO_REUSEADDR
     or SO_REUSEPORT set on it.  Tests should *never* set these socket options
     fuer TCP/IP sockets.  The only case fuer setting these options is testing
     multicasting via multiple UDP sockets.
 
-    Additionally, if the SO_EXCLUSIVEADDRUSE socket option is available (i.e.
-    on Windows), it will be set on the socket.  This will prevent anyone else
+    Additionally, wenn the SO_EXCLUSIVEADDRUSE socket option is available (i.e.
+    on Windows), it will be set on the socket.  This will prevent anyone sonst
     from bind()'ing to our host/port fuer the duration of the test.
     """
 
-    if sock.family == socket.AF_INET and sock.type == socket.SOCK_STREAM:
-        if hasattr(socket, 'SO_REUSEADDR'):
-            if sock.getsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR) == 1:
+    wenn sock.family == socket.AF_INET and sock.type == socket.SOCK_STREAM:
+        wenn hasattr(socket, 'SO_REUSEADDR'):
+            wenn sock.getsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR) == 1:
                 raise support.TestFailed("tests should never set the "
                                          "SO_REUSEADDR socket option on "
                                          "TCP/IP sockets!")
-        if hasattr(socket, 'SO_REUSEPORT'):
+        wenn hasattr(socket, 'SO_REUSEPORT'):
             try:
-                if sock.getsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT) == 1:
+                wenn sock.getsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT) == 1:
                     raise support.TestFailed("tests should never set the "
                                              "SO_REUSEPORT socket option on "
                                              "TCP/IP sockets!")
@@ -110,7 +110,7 @@ def bind_port(sock, host=HOST):
                 # thus defining SO_REUSEPORT but this process is running
                 # under an older kernel that does not support SO_REUSEPORT.
                 pass
-        if hasattr(socket, 'SO_EXCLUSIVEADDRUSE'):
+        wenn hasattr(socket, 'SO_EXCLUSIVEADDRUSE'):
             sock.setsockopt(socket.SOL_SOCKET, socket.SO_EXCLUSIVEADDRUSE, 1)
 
     sock.bind((host, 0))
@@ -118,7 +118,7 @@ def bind_port(sock, host=HOST):
     return port
 
 def bind_unix_socket(sock, addr):
-    """Bind a unix socket, raising SkipTest if PermissionError is raised."""
+    """Bind a unix socket, raising SkipTest wenn PermissionError is raised."""
     assert sock.family == socket.AF_UNIX
     try:
         sock.bind(addr)
@@ -128,7 +128,7 @@ def bind_unix_socket(sock, addr):
 
 def _is_ipv6_enabled():
     """Check whether IPv6 is enabled on this host."""
-    if socket.has_ipv6:
+    wenn socket.has_ipv6:
         sock = None
         try:
             sock = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
@@ -137,7 +137,7 @@ def _is_ipv6_enabled():
         except OSError:
             pass
         finally:
-            if sock:
+            wenn sock:
                 sock.close()
     return False
 
@@ -147,10 +147,10 @@ IPV6_ENABLED = _is_ipv6_enabled()
 _bind_nix_socket_error = None
 def skip_unless_bind_unix_socket(test):
     """Decorator fuer tests requiring a functional bind() fuer unix sockets."""
-    if not hasattr(socket, 'AF_UNIX'):
+    wenn not hasattr(socket, 'AF_UNIX'):
         return unittest.skip('No UNIX Sockets')(test)
     global _bind_nix_socket_error
-    if _bind_nix_socket_error is None:
+    wenn _bind_nix_socket_error is None:
         from .os_helper import TESTFN, unlink
         path = TESTFN + "can_bind_unix_socket"
         with socket.socket(socket.AF_UNIX) as sock:
@@ -161,10 +161,10 @@ def skip_unless_bind_unix_socket(test):
                 _bind_nix_socket_error = e
             finally:
                 unlink(path)
-    if _bind_nix_socket_error:
+    wenn _bind_nix_socket_error:
         msg = 'Requires a functional unix bind(): %s' % _bind_nix_socket_error
         return unittest.skip(msg)(test)
-    else:
+    sonst:
         return test
 
 
@@ -174,17 +174,17 @@ def get_socket_conn_refused_errs():
     when a connection is refused.
     """
     errors = [errno.ECONNREFUSED]
-    if hasattr(errno, 'ENETUNREACH'):
+    wenn hasattr(errno, 'ENETUNREACH'):
         # On Solaris, ENETUNREACH is returned sometimes instead of ECONNREFUSED
         errors.append(errno.ENETUNREACH)
-    if hasattr(errno, 'EADDRNOTAVAIL'):
+    wenn hasattr(errno, 'EADDRNOTAVAIL'):
         # bpo-31910: socket.create_connection() fails randomly
         # with EADDRNOTAVAIL on Travis CI
         errors.append(errno.EADDRNOTAVAIL)
-    if hasattr(errno, 'EHOSTUNREACH'):
+    wenn hasattr(errno, 'EHOSTUNREACH'):
         # bpo-37583: The destination host cannot be reached
         errors.append(errno.EHOSTUNREACH)
-    if not IPV6_ENABLED:
+    wenn not IPV6_ENABLED:
         errors.append(errno.EAFNOSUPPORT)
     return errors
 
@@ -196,7 +196,7 @@ def transient_internet(resource_name, *, timeout=_NOT_SET, errnos=()):
     """Return a context manager that raises ResourceDenied when various issues
     with the internet connection manifest themselves as exceptions."""
     import urllib.error
-    if timeout is _NOT_SET:
+    wenn timeout is _NOT_SET:
         timeout = support.INTERNET_TIMEOUT
 
     default_errnos = [
@@ -221,7 +221,7 @@ def transient_internet(resource_name, *, timeout=_NOT_SET, errnos=()):
     denied = support.ResourceDenied("Resource %r is not available" % resource_name)
     captured_errnos = errnos
     gai_errnos = []
-    if not captured_errnos:
+    wenn not captured_errnos:
         captured_errnos = [getattr(errno, name, num)
                            fuer (name, num) in default_errnos]
         gai_errnos = [getattr(socket, name, num)
@@ -229,7 +229,7 @@ def transient_internet(resource_name, *, timeout=_NOT_SET, errnos=()):
 
     def filter_error(err):
         n = getattr(err, 'errno', None)
-        if (isinstance(err, TimeoutError) or
+        wenn (isinstance(err, TimeoutError) or
             (isinstance(err, socket.gaierror) and n in gai_errnos) or
             (isinstance(err, urllib.error.HTTPError) and
              500 <= err.code <= 599) or
@@ -238,13 +238,13 @@ def transient_internet(resource_name, *, timeout=_NOT_SET, errnos=()):
                   ("TimeoutError" in err.reason) or
                   ("EOFError" in err.reason))) or
             n in captured_errnos):
-            if not support.verbose:
+            wenn not support.verbose:
                 sys.stderr.write(denied.args[0] + "\n")
             raise denied from err
 
     old_timeout = socket.getdefaulttimeout()
     try:
-        if timeout is not None:
+        wenn timeout is not None:
             socket.setdefaulttimeout(timeout)
         yield
     except OSError as err:
@@ -252,14 +252,14 @@ def transient_internet(resource_name, *, timeout=_NOT_SET, errnos=()):
         # unwrap to get at the original error.
         while True:
             a = err.args
-            if len(a) >= 1 and isinstance(a[0], OSError):
+            wenn len(a) >= 1 and isinstance(a[0], OSError):
                 err = a[0]
             # The error can also be wrapped as args[1]:
             #    except socket.error as msg:
             #        raise OSError('socket error', msg) from msg
-            elif len(a) >= 2 and isinstance(a[1], OSError):
+            sowenn len(a) >= 2 and isinstance(a[1], OSError):
                 err = a[1]
-            else:
+            sonst:
                 break
         filter_error(err)
         raise
@@ -296,7 +296,7 @@ def _get_sysctl(name):
                           stdout=subprocess.PIPE,
                           stderr=subprocess.STDOUT,
                           text=True)
-    if proc.returncode:
+    wenn proc.returncode:
         support.print_warning(f'{' '.join(cmd)!r} command failed with '
                               f'exit code {proc.returncode}')
         # cache the error to only log the warning once
@@ -319,19 +319,19 @@ def _get_sysctl(name):
 
 
 def tcp_blackhole():
-    if not sys.platform.startswith('freebsd'):
+    wenn not sys.platform.startswith('freebsd'):
         return False
 
-    # gh-109015: test if FreeBSD TCP blackhole is enabled
+    # gh-109015: test wenn FreeBSD TCP blackhole is enabled
     value = _get_sysctl('net.inet.tcp.blackhole')
-    if value is None:
-        # don't skip if we fail to get the sysctl value
+    wenn value is None:
+        # don't skip wenn we fail to get the sysctl value
         return False
     return (value != 0)
 
 
 def skip_if_tcp_blackhole(test):
-    """Decorator skipping test if TCP blackhole is enabled."""
+    """Decorator skipping test wenn TCP blackhole is enabled."""
     skip_if = unittest.skipIf(
         tcp_blackhole(),
         "TCP blackhole is enabled (sysctl net.inet.tcp.blackhole)"

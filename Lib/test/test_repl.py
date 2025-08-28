@@ -23,7 +23,7 @@ except ImportError:
     pty = None
 
 
-if not has_subprocess_support:
+wenn not has_subprocess_support:
     raise unittest.SkipTest("test module requires subprocess")
 
 
@@ -65,7 +65,7 @@ def run_on_interactive_mode(source):
     process.stdin.write(source)
     output = kill_python(process)
 
-    if process.returncode != 0:
+    wenn process.returncode != 0:
         raise ValueError("Process didn't exit properly.")
     return output
 
@@ -322,7 +322,7 @@ klasse TestInteractiveInterpreter(unittest.TestCase):
         while select.select([m], [], [], SHORT_TIMEOUT)[0]:
             try:
                 data = os.read(m, 1024).decode("utf-8")
-                if not data:
+                wenn not data:
                     break
             except OSError:
                 break
@@ -401,5 +401,5 @@ klasse TestAsyncioREPL(unittest.TestCase):
         self.assertIn(expected, output, expected)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

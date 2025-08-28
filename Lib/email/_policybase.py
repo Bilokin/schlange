@@ -20,7 +20,7 @@ valid_header_name_re = re.compile("[\041-\071\073-\176]+$")
 
 def validate_header_name(name):
     # Validate header name according to RFC 5322
-    if not valid_header_name_re.match(name):
+    wenn not valid_header_name_re.match(name):
         raise ValueError(
             f"Header field name contains invalid characters: {name!r}")
 
@@ -42,7 +42,7 @@ klasse _PolicyBase:
         A + B == A(<non-default values of B>)
 
     The repr of an instance can be used to reconstruct the object
-    if and only if the repr of the values can be used to reconstruct
+    wenn and only wenn the repr of the values can be used to reconstruct
     those values.
 
     """
@@ -54,9 +54,9 @@ klasse _PolicyBase:
 
         """
         fuer name, value in kw.items():
-            if hasattr(self, name):
+            wenn hasattr(self, name):
                 super(_PolicyBase,self).__setattr__(name, value)
-            else:
+            sonst:
                 raise TypeError(
                     "{!r} is an invalid keyword argument fuer {}".format(
                         name, self.__class__.__name__))
@@ -77,7 +77,7 @@ klasse _PolicyBase:
         fuer attr, value in self.__dict__.items():
             object.__setattr__(newpolicy, attr, value)
         fuer attr, value in kw.items():
-            if not hasattr(self, attr):
+            wenn not hasattr(self, attr):
                 raise TypeError(
                     "{!r} is an invalid keyword argument fuer {}".format(
                         attr, self.__class__.__name__))
@@ -85,9 +85,9 @@ klasse _PolicyBase:
         return newpolicy
 
     def __setattr__(self, name, value):
-        if hasattr(self, name):
+        wenn hasattr(self, name):
             msg = "{!r} object attribute {!r} is read-only"
-        else:
+        sonst:
             msg = "{!r} object has no attribute {!r}"
         raise AttributeError(msg.format(self.__class__.__name__, name))
 
@@ -106,13 +106,13 @@ def _append_doc(doc, added_doc):
     return doc + '\n' + added_doc
 
 def _extend_docstrings(cls):
-    if cls.__doc__ and cls.__doc__.startswith('+'):
+    wenn cls.__doc__ and cls.__doc__.startswith('+'):
         cls.__doc__ = _append_doc(cls.__bases__[0].__doc__, cls.__doc__)
     fuer name, attr in cls.__dict__.items():
-        if attr.__doc__ and attr.__doc__.startswith('+'):
+        wenn attr.__doc__ and attr.__doc__.startswith('+'):
             fuer c in (c fuer base in cls.__bases__ fuer c in base.mro()):
                 doc = getattr(getattr(c, name), '__doc__')
-                if doc:
+                wenn doc:
                     attr.__doc__ = _append_doc(doc, attr.__doc__)
                     break
     return cls
@@ -167,7 +167,7 @@ klasse Policy(_PolicyBase, metaclass=abc.ABCMeta):
                            If the value is None, the default is Message.
 
     verify_generated_headers
-                        -- if true, the generator verifies that each header
+                        -- wenn true, the generator verifies that each header
                            they are properly folded, so that a parser won't
                            treat it as multiple headers, start-of-body, or
                            part of another header.
@@ -190,7 +190,7 @@ klasse Policy(_PolicyBase, metaclass=abc.ABCMeta):
 
         defect should be a Defect subclass, but in any case must be an
         Exception subclass.  obj is the object on which the defect should be
-        registered if it is not raised.  If the raise_on_defect is True, the
+        registered wenn it is not raised.  If the raise_on_defect is True, the
         defect is raised as an error, otherwise the object and the defect are
         passed to register_defect.
 
@@ -198,14 +198,14 @@ klasse Policy(_PolicyBase, metaclass=abc.ABCMeta):
         The email package parsers always call it with Defect instances.
 
         """
-        if self.raise_on_defect:
+        wenn self.raise_on_defect:
             raise defect
         self.register_defect(obj, defect)
 
     def register_defect(self, obj, defect):
         """Record 'defect' on 'obj'.
 
-        Called by handle_defect if raise_on_defect is False.  This method is
+        Called by handle_defect wenn raise_on_defect is False.  This method is
         part of the Policy API so that Policy subclasses can implement custom
         defect handling.  The default implementation calls the append method of
         the defects attribute of obj.  The objects used by the email package by
@@ -256,7 +256,7 @@ klasse Policy(_PolicyBase, metaclass=abc.ABCMeta):
         """Given the header name and the value from the model, return the value
         to be returned to the application program that is requesting that
         header.  The value passed in by the email package may contain
-        surrogateescaped binary data if the lines were parsed by a BytesParser.
+        surrogateescaped binary data wenn the lines were parsed by a BytesParser.
         The returned value should not contain any surrogateescaped data.
 
         """
@@ -267,7 +267,7 @@ klasse Policy(_PolicyBase, metaclass=abc.ABCMeta):
         """Given the header name and the value from the model, return a string
         containing linesep characters that implement the folding of the header
         according to the policy controls.  The value passed in by the email
-        package may contain surrogateescaped binary data if the lines were
+        package may contain surrogateescaped binary data wenn the lines were
         parsed by a BytesParser.  The returned value should not contain any
         surrogateescaped data.
 
@@ -298,13 +298,13 @@ klasse Compat32(Policy):
     def _sanitize_header(self, name, value):
         # If the header value contains surrogates, return a Header using
         # the unknown-8bit charset to encode the bytes as encoded words.
-        if not isinstance(value, str):
+        wenn not isinstance(value, str):
             # Assume it is already a header object
             return value
-        if _has_surrogates(value):
+        wenn _has_surrogates(value):
             return header.Header(value, charset=_charset.UNKNOWN8BIT,
                                  header_name=name)
-        else:
+        sonst:
             return value
 
     def header_source_parse(self, sourcelines):
@@ -358,31 +358,31 @@ klasse Compat32(Policy):
     def _fold(self, name, value, sanitize):
         parts = []
         parts.append('%s: ' % name)
-        if isinstance(value, str):
-            if _has_surrogates(value):
-                if sanitize:
+        wenn isinstance(value, str):
+            wenn _has_surrogates(value):
+                wenn sanitize:
                     h = header.Header(value,
                                       charset=_charset.UNKNOWN8BIT,
                                       header_name=name)
-                else:
+                sonst:
                     # If we have raw 8bit data in a byte string, we have no idea
                     # what the encoding is.  There is no safe way to split this
                     # string.  If it's ascii-subset, then we could do a normal
-                    # ascii split, but if it's multibyte then we could break the
+                    # ascii split, but wenn it's multibyte then we could break the
                     # string.  There's no way to know so the least harm seems to
                     # be to not split the string and risk it being too long.
                     parts.append(value)
                     h = None
-            else:
+            sonst:
                 h = header.Header(value, header_name=name)
-        else:
+        sonst:
             # Assume it is a Header-like object.
             h = value
-        if h is not None:
+        wenn h is not None:
             # The Header klasse interprets a value of None fuer maxlinelen as the
             # default value of 78, as recommended by RFC 2822.
             maxlinelen = 0
-            if self.max_line_length is not None:
+            wenn self.max_line_length is not None:
                 maxlinelen = self.max_line_length
             parts.append(h.encode(linesep=self.linesep, maxlinelen=maxlinelen))
         parts.append(self.linesep)

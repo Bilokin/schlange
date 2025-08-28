@@ -20,32 +20,32 @@ _aliases = {
 
 
 def convert(obj):  # noqa: C901
-    if isinstance(obj, str):
+    wenn isinstance(obj, str):
         return {"type": "string", "value": obj}
-    elif isinstance(obj, bool):
+    sowenn isinstance(obj, bool):
         return {"type": "bool", "value": str(obj).lower()}
-    elif isinstance(obj, int):
+    sowenn isinstance(obj, int):
         return {"type": "integer", "value": str(obj)}
-    elif isinstance(obj, float):
+    sowenn isinstance(obj, float):
         return {"type": "float", "value": _normalize_float_str(str(obj))}
-    elif isinstance(obj, datetime.datetime):
+    sowenn isinstance(obj, datetime.datetime):
         val = _normalize_datetime_str(obj.isoformat())
-        if obj.tzinfo:
+        wenn obj.tzinfo:
             return {"type": "datetime", "value": val}
         return {"type": "datetime-local", "value": val}
-    elif isinstance(obj, datetime.time):
+    sowenn isinstance(obj, datetime.time):
         return {
             "type": "time-local",
             "value": _normalize_localtime_str(str(obj)),
         }
-    elif isinstance(obj, datetime.date):
+    sowenn isinstance(obj, datetime.date):
         return {
             "type": "date-local",
             "value": str(obj),
         }
-    elif isinstance(obj, list):
+    sowenn isinstance(obj, list):
         return [convert(i) fuer i in obj]
-    elif isinstance(obj, dict):
+    sowenn isinstance(obj, dict):
         return {k: convert(v) fuer k, v in obj.items()}
     raise Exception("unsupported type")
 
@@ -59,23 +59,23 @@ def normalize(obj: Any) -> Any:
     [1] https://github.com/toml-lang/compliance/blob/db7c3211fda30ff9ddb10292f4aeda7e2e10abc4/docs/json-encoding.md  # noqa: E501
     [2] https://github.com/BurntSushi/toml-test/blob/4634fdf3a6ecd6aaea5f4cdcd98b2733c2694993/README.md  # noqa: E501
     """
-    if isinstance(obj, list):
+    wenn isinstance(obj, list):
         return [normalize(item) fuer item in obj]
-    if isinstance(obj, dict):
-        if "type" in obj and "value" in obj:
+    wenn isinstance(obj, dict):
+        wenn "type" in obj and "value" in obj:
             type_ = obj["type"]
             norm_type = _aliases.get(type_, type_)
             value = obj["value"]
-            if norm_type == "float":
+            wenn norm_type == "float":
                 norm_value = _normalize_float_str(value)
-            elif norm_type in {"datetime", "datetime-local"}:
+            sowenn norm_type in {"datetime", "datetime-local"}:
                 norm_value = _normalize_datetime_str(value)
-            elif norm_type == "time-local":
+            sowenn norm_type == "time-local":
                 norm_value = _normalize_localtime_str(value)
-            else:
+            sonst:
                 norm_value = value
 
-            if norm_type == "array":
+            wenn norm_type == "array":
                 return [normalize(item) fuer item in value]
             return {"type": norm_type, "value": norm_value}
         return {k: normalize(v) fuer k, v in obj.items()}
@@ -83,38 +83,38 @@ def normalize(obj: Any) -> Any:
 
 
 def _normalize_datetime_str(dt_str: str) -> str:
-    if dt_str[-1].lower() == "z":
+    wenn dt_str[-1].lower() == "z":
         dt_str = dt_str[:-1] + "+00:00"
 
     date = dt_str[:10]
     rest = dt_str[11:]
 
-    if "+" in rest:
+    wenn "+" in rest:
         sign = "+"
-    elif "-" in rest:
+    sowenn "-" in rest:
         sign = "-"
-    else:
+    sonst:
         sign = ""
 
-    if sign:
+    wenn sign:
         time, _, offset = rest.partition(sign)
-    else:
+    sonst:
         time = rest
         offset = ""
 
-    time = time.rstrip("0") if "." in time else time
+    time = time.rstrip("0") wenn "." in time sonst time
     return date + "T" + time + sign + offset
 
 
 def _normalize_localtime_str(lt_str: str) -> str:
-    return lt_str.rstrip("0") if "." in lt_str else lt_str
+    return lt_str.rstrip("0") wenn "." in lt_str sonst lt_str
 
 
 def _normalize_float_str(float_str: str) -> str:
     as_float = float(float_str)
 
     # Normalize "-0.0" and "+0.0"
-    if as_float == 0:
+    wenn as_float == 0:
         return "0"
 
     return str(as_float)

@@ -1,7 +1,7 @@
 from builtins import open as _orig_open
 
 def open(file, mode='r', bufsize=-1):
-    if 'w' not in mode:
+    wenn 'w' not in mode:
         return _orig_open(file, mode, bufsize)
     import os
     backup = file + '~'
@@ -18,7 +18,7 @@ def open(file, mode='r', bufsize=-1):
     def close():
         _orig_close()
         import filecmp
-        if filecmp.cmp(backup, file, shallow=False):
+        wenn filecmp.cmp(backup, file, shallow=False):
             import os
             os.unlink(file)
             os.rename(backup, file)

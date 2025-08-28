@@ -88,7 +88,7 @@ klasse ExecutorTest:
                 results.append(i)
         except futures.TimeoutError:
             pass
-        else:
+        sonst:
             self.fail('expected TimeoutError')
 
         # gh-110097: On heavily loaded systems, the launch of the worker may
@@ -184,22 +184,22 @@ klasse ExecutorTest:
         my_object = MyObject()
         my_object_collected = threading.Event()
         def set_event():
-            if Py_GIL_DISABLED:
+            wenn Py_GIL_DISABLED:
                 # gh-117688 Avoid deadlock by setting the event in a
                 # background thread. The current thread may be in the middle
                 # of the my_object_collected.wait() call, which holds locks
                 # needed by my_object_collected.set().
                 threading.Thread(target=my_object_collected.set).start()
-            else:
+            sonst:
                 my_object_collected.set()
         my_object_callback = weakref.ref(my_object, lambda obj: set_event())
         # Deliberately discarding the future.
         self.executor.submit(my_object.my_method)
         del my_object
 
-        if Py_GIL_DISABLED:
+        wenn Py_GIL_DISABLED:
             # Due to biased reference counting, my_object might only be
-            # deallocated while the thread that created it runs -- if the
+            # deallocated while the thread that created it runs -- wenn the
             # thread is paused waiting on an event, it may not merge the
             # refcount of the queued object. For that reason, we alternate
             # between running the GC and waiting fuer the event.
@@ -209,7 +209,7 @@ klasse ExecutorTest:
                 support.gc_collect()
                 collected = my_object_collected.wait(timeout=1.0)
                 wait_time += 1.0
-        else:
+        sonst:
             collected = my_object_collected.wait(timeout=support.SHORT_TIMEOUT)
         self.assertTrue(collected,
                         "Stale reference not collected within timeout.")
@@ -231,14 +231,14 @@ klasse ExecutorTest:
             support.gc_collect()  # For PyPy or other GCs.
 
             fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
-                if wr() is None:
+                wenn wr() is None:
                     break
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_swallows_falsey_exceptions(self):
         # see gh-132063: Prevent exceptions that evaluate as falsey
         # from being ignored.
-        # Recall: `x` is falsey if `len(x)` returns 0 or `bool(x)` returns False.
+        # Recall: `x` is falsey wenn `len(x)` returns 0 or `bool(x)` returns False.
 
         msg = 'boolbool'
         with self.assertRaisesRegex(FalseyBoolException, msg):

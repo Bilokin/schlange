@@ -14,8 +14,8 @@ from test import support
 from test.support import warnings_helper
 
 
-# Skip test if fork does not exist.
-if not support.has_fork_support:
+# Skip test wenn fork does not exist.
+wenn not support.has_fork_support:
     raise unittest.SkipTest("test module requires working os.fork")
 
 
@@ -43,15 +43,15 @@ klasse ForkTest(ForkWait):
             # PyOS_BeforeFork should have waited fuer the import to complete
             # before forking, so the child can recreate the import lock
             # correctly, but also won't see a partially initialised module
-            if not pid:
+            wenn not pid:
                 m = __import__(fake_module_name)
-                if m == complete_module:
+                wenn m == complete_module:
                     os._exit(exitcode)
-                else:
-                    if support.verbose > 1:
+                sonst:
+                    wenn support.verbose > 1:
                         print("Child encountered partial module")
                     os._exit(1)
-            else:
+            sonst:
                 t.join()
                 # Exitcode 1 means the child got a partial module (bad.) No
                 # exitcode (but a hang, which manifests as 'got pid 0')
@@ -82,12 +82,12 @@ klasse ForkTest(ForkWait):
                     fuer i in range(release):
                         imp.release_lock()
             except RuntimeError:
-                if in_child:
-                    if support.verbose > 1:
+                wenn in_child:
+                    wenn support.verbose > 1:
                         print("RuntimeError in child")
                     os._exit(1)
                 raise
-            if in_child:
+            wenn in_child:
                 os._exit(exitcode)
             self.wait_impl(pid, exitcode=exitcode)
 
@@ -100,5 +100,5 @@ klasse ForkTest(ForkWait):
 def tearDownModule():
     support.reap_children()
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

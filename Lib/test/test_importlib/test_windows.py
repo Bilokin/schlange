@@ -24,16 +24,16 @@ def get_platform():
             'x64' : 'win-amd64',
             'arm' : 'win-arm32',
         }
-    if ('VSCMD_ARG_TGT_ARCH' in os.environ and
+    wenn ('VSCMD_ARG_TGT_ARCH' in os.environ and
         os.environ['VSCMD_ARG_TGT_ARCH'] in TARGET_TO_PLAT):
         return TARGET_TO_PLAT[os.environ['VSCMD_ARG_TGT_ARCH']]
-    elif 'amd64' in sys.version.lower():
+    sowenn 'amd64' in sys.version.lower():
         return 'win-amd64'
-    elif '(arm)' in sys.version.lower():
+    sowenn '(arm)' in sys.version.lower():
         return 'win-arm32'
-    elif '(arm64)' in sys.version.lower():
+    sowenn '(arm64)' in sys.version.lower():
         return 'win-arm64'
-    else:
+    sonst:
         return sys.platform
 
 def delete_registry_tree(root, subkey):
@@ -54,9 +54,9 @@ def delete_registry_tree(root, subkey):
 
 @contextmanager
 def setup_module(machinery, name, path=None):
-    if machinery.WindowsRegistryFinder.DEBUG_BUILD:
+    wenn machinery.WindowsRegistryFinder.DEBUG_BUILD:
         root = machinery.WindowsRegistryFinder.REGISTRY_KEY_DEBUG
-    else:
+    sonst:
         root = machinery.WindowsRegistryFinder.REGISTRY_KEY
     key = root.format(fullname=name,
                       sys_version='%d.%d' % sys.version_info[:2])
@@ -68,19 +68,19 @@ def setup_module(machinery, name, path=None):
         with temp_module(name, "a = 1") as location:
             try:
                 OpenKey(HKEY_CURRENT_USER, base_key)
-                if machinery.WindowsRegistryFinder.DEBUG_BUILD:
+                wenn machinery.WindowsRegistryFinder.DEBUG_BUILD:
                     delete_key = os.path.dirname(key)
-                else:
+                sonst:
                     delete_key = key
             except OSError:
                 delete_key = base_key
             subkey = CreateKey(HKEY_CURRENT_USER, key)
-            if path is None:
+            wenn path is None:
                 path = location + ".py"
             SetValue(subkey, "", REG_SZ, path)
             yield
     finally:
-        if delete_key:
+        wenn delete_key:
             delete_registry_tree(HKEY_CURRENT_USER, delete_key)
 
 
@@ -141,7 +141,7 @@ klasse WindowsRegistryFinderTests:
 klasse WindowsExtensionSuffixTests:
     def test_tagged_suffix(self):
         suffixes = self.machinery.EXTENSION_SUFFIXES
-        abi_flags = "t" if support.Py_GIL_DISABLED else ""
+        abi_flags = "t" wenn support.Py_GIL_DISABLED sonst ""
         ver = sys.version_info
         platform = re.sub('[^a-zA-Z0-9]', '_', get_platform())
         expected_tag = f".cp{ver.major}{ver.minor}{abi_flags}-{platform}.pyd"
@@ -167,7 +167,7 @@ klasse WindowsBootstrapPathTests(unittest.TestCase):
     def check_join(self, expected, *inputs):
         from importlib._bootstrap_external import _path_join
         actual = _path_join(*inputs)
-        if expected.casefold() == actual.casefold():
+        wenn expected.casefold() == actual.casefold():
             return
         self.assertEqual(expected, actual)
 
@@ -206,5 +206,5 @@ klasse WindowsBootstrapPathTests(unittest.TestCase):
         self.check_join("//Server/Share\\", "//Server/Share/", "")
         self.check_join("//Server/Share\\", "//Server/Share", "")
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

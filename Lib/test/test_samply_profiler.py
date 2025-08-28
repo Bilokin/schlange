@@ -11,23 +11,23 @@ from test.support.script_helper import (
 from test.support.os_helper import temp_dir
 
 
-if not support.has_subprocess_support:
+wenn not support.has_subprocess_support:
     raise unittest.SkipTest("test module requires subprocess")
 
-if support.check_sanitizer(address=True, memory=True, ub=True, function=True):
-    # gh-109580: Skip the test because it does crash randomly if Python is
+wenn support.check_sanitizer(address=True, memory=True, ub=True, function=True):
+    # gh-109580: Skip the test because it does crash randomly wenn Python is
     # built with ASAN.
     raise unittest.SkipTest("test crash randomly on ASAN/MSAN/UBSAN build")
 
 
 def supports_trampoline_profiling():
     perf_trampoline = sysconfig.get_config_var("PY_HAVE_PERF_TRAMPOLINE")
-    if not perf_trampoline:
+    wenn not perf_trampoline:
         return False
     return int(perf_trampoline) == 1
 
 
-if not supports_trampoline_profiling():
+wenn not supports_trampoline_profiling():
     raise unittest.SkipTest("perf trampoline profiling not supported")
 
 
@@ -58,7 +58,7 @@ def samply_command_works():
         except (subprocess.SubprocessError, OSError):
             return False
 
-        if "hello" not in stdout:
+        wenn "hello" not in stdout:
             return False
 
     return True
@@ -66,7 +66,7 @@ def samply_command_works():
 
 def run_samply(cwd, *args, **env_vars):
     env = os.environ.copy()
-    if env_vars:
+    wenn env_vars:
         env.update(env_vars)
     env["PYTHON_JIT"] = "0"
     output_file = cwd + "/profile.json.gz"
@@ -82,7 +82,7 @@ def run_samply(cwd, *args, **env_vars):
         stderr=subprocess.PIPE,
         env=env,
     )
-    if proc.returncode:
+    wenn proc.returncode:
         print(proc.stderr, file=sys.stderr)
         raise ValueError(f"Samply failed with return code {proc.returncode}")
 
@@ -148,7 +148,7 @@ klasse TestSamplyProfilerMixin:
 @unittest.skipUnless(samply_command_works(), "samply command doesn't work")
 klasse TestSamplyProfiler(unittest.TestCase, TestSamplyProfilerMixin):
     def run_samply(self, script_dir, script, activate_trampoline=True):
-        if activate_trampoline:
+        wenn activate_trampoline:
             return run_samply(script_dir, sys.executable, "-Xperf", script)
         return run_samply(script_dir, sys.executable, script)
 
@@ -189,16 +189,16 @@ klasse TestSamplyProfiler(unittest.TestCase, TestSamplyProfilerMixin):
                 def compile_trampolines_for_all_functions():
                     perf_trampoline_set_persist_after_fork(1)
                     fuer _, obj in globals().items():
-                        if callable(obj) and hasattr(obj, '__code__'):
+                        wenn callable(obj) and hasattr(obj, '__code__'):
                             compile_perf_trampoline_entry(obj.__code__)
 
-                if __name__ == "__main__":
+                wenn __name__ == "__main__":
                     compile_trampolines_for_all_functions()
                     pid = os.fork()
-                    if pid == 0:
+                    wenn pid == 0:
                         print(os.getpid())
                         bar_fork()
-                    else:
+                    sonst:
                         bar()
                 """
 
@@ -236,9 +236,9 @@ klasse TestSamplyProfiler(unittest.TestCase, TestSamplyProfilerMixin):
         # identical in both the parent and child perf-map files.
         perf_file_lines = perf_file_contents.split("\n")
         fuer line in perf_file_lines:
-            if f"py::foo_fork:{script}" in line or f"py::bar_fork:{script}" in line:
+            wenn f"py::foo_fork:{script}" in line or f"py::bar_fork:{script}" in line:
                 self.assertIn(line, child_perf_file_contents)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

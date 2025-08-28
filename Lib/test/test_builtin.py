@@ -62,7 +62,7 @@ klasse Squares:
     def __len__(self): return len(self.sofar)
 
     def __getitem__(self, i):
-        if not 0 <= i < self.max: raise IndexError
+        wenn not 0 <= i < self.max: raise IndexError
         n = len(self.sofar)
         while n <= i:
             self.sofar.append(n*n)
@@ -79,7 +79,7 @@ klasse StrSquares:
         return len(self.sofar)
 
     def __getitem__(self, i):
-        if not 0 <= i < self.max:
+        wenn not 0 <= i < self.max:
             raise IndexError
         n = len(self.sofar)
         while n <= i:
@@ -260,7 +260,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
         fuer f in funcs:
             # check that generator code object is not duplicated
-            code_objs = [c fuer c in f.__code__.co_consts if isinstance(c, type(f.__code__))]
+            code_objs = [c fuer c in f.__code__.co_consts wenn isinstance(c, type(f.__code__))]
             self.assertEqual(len(code_objs), 1)
 
 
@@ -418,13 +418,13 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         codestr = '''def f():
         """doc"""
         debug_enabled = False
-        if __debug__:
+        wenn __debug__:
             debug_enabled = True
         try:
             assert False
         except AssertionError:
             return (True, f.__doc__, debug_enabled, __debug__)
-        else:
+        sonst:
             return (False, f.__doc__, debug_enabled, __debug__)
         '''
         def f(): """doc"""
@@ -514,12 +514,12 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             '''assert {x async fuer x in arange(1)}; a = 1''',
             '''assert {x: x async fuer x in arange(1)}; a = 1''',
             '''
-            if (a := 1) and __debug__:
+            wenn (a := 1) and __debug__:
                 async with Lock() as l:
                     pass
             ''',
             '''
-            if (a := 1) and __debug__:
+            wenn (a := 1) and __debug__:
                 async fuer x in arange(2):
                     pass
             ''',
@@ -787,7 +787,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         klasse M:
             "Test mapping interface versus possible calls from eval()."
             def __getitem__(self, key):
-                if key == 'a':
+                wenn key == 'a':
                     return 12
                 raise KeyError
             def keys(self):
@@ -810,7 +810,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         # Verify that dict subclasses work as well
         klasse D(dict):
             def __getitem__(self, key):
-                if key == 'a':
+                wenn key == 'a':
                     return 12
                 return dict.__getitem__(self, key)
             def keys(self):
@@ -853,12 +853,12 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
     def test_exec(self):
         g = {}
         exec('z = 1', g)
-        if '__builtins__' in g:
+        wenn '__builtins__' in g:
             del g['__builtins__']
         self.assertEqual(g, {'z': 1})
 
         exec('z = 1+1', g)
-        if '__builtins__' in g:
+        wenn '__builtins__' in g:
             del g['__builtins__']
         self.assertEqual(g, {'z': 2})
         g = {}
@@ -868,20 +868,20 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             warnings.filterwarnings("ignore", "global statement",
                     module="<string>")
             exec('global a; a = 1; b = 2', g, l)
-        if '__builtins__' in g:
+        wenn '__builtins__' in g:
             del g['__builtins__']
-        if '__builtins__' in l:
+        wenn '__builtins__' in l:
             del l['__builtins__']
         self.assertEqual((g, l), ({'a': 1}, {'b': 2}))
 
     def test_exec_kwargs(self):
         g = {}
         exec('global z\nz = 1', globals=g)
-        if '__builtins__' in g:
+        wenn '__builtins__' in g:
             del g['__builtins__']
         self.assertEqual(g, {'z': 1})
 
-        # if we only set locals, the global assignment will not
+        # wenn we only set locals, the global assignment will not
         # reach this locals dictionary
         g = {}
         exec('global z\nz = 1', locals=g)
@@ -905,9 +905,9 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                 raise frozendict_error("frozendict is readonly")
 
         # read-only builtins
-        if isinstance(__builtins__, types.ModuleType):
+        wenn isinstance(__builtins__, types.ModuleType):
             frozen_builtins = frozendict(__builtins__.__dict__)
-        else:
+        sonst:
             frozen_builtins = frozendict(__builtins__)
         code = compile("__builtins__['superglobal']=2; print(superglobal)", "test", "exec")
         self.assertRaises(frozendict_error,
@@ -1101,7 +1101,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertRaises(TypeError, filter)
         klasse BadSeq(object):
             def __getitem__(self, index):
-                if index<4:
+                wenn index<4:
                     return 42
                 raise ValueError
         self.assertRaises(ValueError, list, filter(lambda x: x, BadSeq()))
@@ -1198,7 +1198,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         id([0,1,2,3])
         id({'spam': 1, 'eggs': 2, 'ham': 3})
 
-    # Test input() later, alphabetized as if it were raw_input
+    # Test input() later, alphabetized as wenn it were raw_input
 
     def test_iter(self):
         self.assertRaises(TypeError, iter)
@@ -1319,9 +1319,9 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
         )
         def Max(a, b):
-            if a is None:
+            wenn a is None:
                 return b
-            if b is None:
+            wenn b is None:
                 return a
             return max(a, b)
         self.assertEqual(
@@ -1396,7 +1396,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                 return self
             def __next__(self):
                 self.size -= 1
-                if self.size < 0:
+                wenn self.size < 0:
                     raise Error
                 return self.size
 
@@ -1426,7 +1426,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                 return self
             def __next__(self):
                 self.size -= 1
-                if self.size < 0:
+                wenn self.size < 0:
                     raise StopIteration
                 return self.size
 
@@ -1488,7 +1488,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                 exec(stmt, globals())
             except TypeError:
                 pass
-            else:
+            sonst:
                 self.fail(stmt)
 
         self.assertEqual(max((1,), key=neg), 1)     # one elem iterable
@@ -1551,7 +1551,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                 exec(stmt, globals())
             except TypeError:
                 pass
-            else:
+            sonst:
                 self.fail(stmt)
 
         self.assertEqual(min((1,), key=neg), 1)     # one elem iterable
@@ -1715,11 +1715,11 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         fuer x in 2, 2.0:
             fuer y in 10, 10.0:
                 fuer z in 1000, 1000.0:
-                    if isinstance(x, float) or \
+                    wenn isinstance(x, float) or \
                        isinstance(y, float) or \
                        isinstance(z, float):
                         self.assertRaises(TypeError, pow, x, y, z)
-                    else:
+                    sonst:
                         self.assertAlmostEqual(pow(x, y, z), 24.0)
 
         self.assertAlmostEqual(pow(-1, 0.5), 1j)
@@ -1782,7 +1782,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         klasse X(io.StringIO):
             def __getattribute__(self, name):
                 nonlocal patch
-                if patch:
+                wenn patch:
                     patch = False
                     sys.stdout = X()
                     sys.stderr = X()
@@ -1901,7 +1901,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
     #
     #   http://sources.redhat.com/bugzilla/show_bug.cgi?id=5350
     #
-    # We skip this test on Linux/alpha if it would fail.
+    # We skip this test on Linux/alpha wenn it would fail.
     linux_alpha = (platform.system().startswith('Linux') and
                    platform.machine().startswith('alpha'))
     system_round_bug = round(5e15+1) != 5e15+1
@@ -2076,7 +2076,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertEqual(list(zip(a, b)), t)
         klasse I:
             def __getitem__(self, i):
-                if i < 0 or i > 2: raise IndexError
+                wenn i < 0 or i > 2: raise IndexError
                 return i + 4
         self.assertEqual(list(zip(a, I())), t)
         self.assertEqual(list(zip()), [])
@@ -2092,9 +2092,9 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         # A MemoryError is the most likely failure mode.
         klasse SequenceWithoutALength:
             def __getitem__(self, i):
-                if i == 5:
+                wenn i == 5:
                     raise IndexError
-                else:
+                sonst:
                     return i
         self.assertEqual(
             list(zip(SequenceWithoutALength(), range(2**30))),
@@ -2103,9 +2103,9 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
         klasse BadSeq:
             def __getitem__(self, i):
-                if i == 5:
+                wenn i == 5:
                     raise ValueError
-                else:
+                sonst:
                     return i
         self.assertRaises(ValueError, list, zip(BadSeq(), BadSeq()))
 
@@ -2178,7 +2178,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                 return self
             def __next__(self):
                 self.size -= 1
-                if self.size < 0:
+                wenn self.size < 0:
                     raise Error
                 return self.size
 
@@ -2208,7 +2208,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                 return self
             def __next__(self):
                 self.size -= 1
-                if self.size < 0:
+                wenn self.size < 0:
                     raise StopIteration
                 return self.size
 
@@ -2393,7 +2393,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         msg = "NotImplemented should not be used in a boolean context"
         self.assertRaisesRegex(TypeError, msg, bool, NotImplemented)
         with self.assertRaisesRegex(TypeError, msg):
-            if NotImplemented:
+            wenn NotImplemented:
                 pass
         with self.assertRaisesRegex(TypeError, msg):
             not NotImplemented
@@ -2419,7 +2419,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
 klasse TestBreakpoint(unittest.TestCase):
     def setUp(self):
-        # These tests require a clean slate environment.  For example, if the
+        # These tests require a clean slate environment.  For example, wenn the
         # test suite is run with $PYTHONBREAKPOINT set to something else, it
         # will mess up these tests.  Similarly fuer sys.breakpointhook.
         # Cleaning the slate here means you can't use breakpoint() to debug
@@ -2534,7 +2534,7 @@ klasse PtyTests(unittest.TestCase):
 
     @staticmethod
     def handle_sighup(signum, frame):
-        # bpo-40140: if the process is the session leader, os.close(fd)
+        # bpo-40140: wenn the process is the session leader, os.close(fd)
         # of "pid, fd = pty.fork()" can raise SIGHUP signal:
         # just ignore the signal.
         pass
@@ -2557,7 +2557,7 @@ klasse PtyTests(unittest.TestCase):
             self.skipTest("pty.fork() raised {}".format(e))
             raise
 
-        if pid == 0:
+        wenn pid == 0:
             # Child
             try:
                 os.close(r)
@@ -2578,13 +2578,13 @@ klasse PtyTests(unittest.TestCase):
             lines = []
             while True:
                 line = rpipe.readline().strip()
-                if line == "":
+                wenn line == "":
                     # The other end was closed => the child exited
                     break
                 lines.append(line)
 
         # Check the result was got and corresponds to the user's terminal input
-        if len(lines) != 2:
+        wenn len(lines) != 2:
             # Something went wrong, try to get at stderr
             # Beware of Linux raising EIO when the slave is closed
             child_output = bytearray()
@@ -2593,7 +2593,7 @@ klasse PtyTests(unittest.TestCase):
                     chunk = os.read(fd, 3000)
                 except OSError:  # Assume EIO
                     break
-                if not chunk:
+                wenn not chunk:
                     break
                 child_output.extend(chunk)
             os.close(fd)
@@ -2613,11 +2613,11 @@ klasse PtyTests(unittest.TestCase):
                         expected=None,
                         stdin_errors='surrogateescape',
                         stdout_errors='replace'):
-        if not sys.stdin.isatty() or not sys.stdout.isatty():
+        wenn not sys.stdin.isatty() or not sys.stdout.isatty():
             self.skipTest("stdin and stdout must be ttys")
         def child(wpipe):
             # Check the error handlers are accounted for
-            if stdio_encoding:
+            wenn stdio_encoding:
                 sys.stdin = io.TextIOWrapper(sys.stdin.detach(),
                                              encoding=stdio_encoding,
                                              errors=stdin_errors)
@@ -2633,13 +2633,13 @@ klasse PtyTests(unittest.TestCase):
             lines = self.run_child(child, terminal_input + b"\r\n")
         # Check we did exercise the GNU readline path
         self.assertIn(lines[0], {'tty = True', 'tty = False'})
-        if lines[0] != 'tty = True':
+        wenn lines[0] != 'tty = True':
             self.skipTest("standard IO in should have been a tty")
         input_result = eval(lines[1])   # ascii() -> eval() roundtrip
-        if expected is None:
-            if stdio_encoding:
+        wenn expected is None:
+            wenn stdio_encoding:
                 expected = terminal_input.decode(stdio_encoding, 'surrogateescape')
-            else:
+            sonst:
                 expected = terminal_input.decode(sys.stdin.encoding)  # what else?
         self.assertEqual(input_result, expected)
 
@@ -2652,7 +2652,7 @@ klasse PtyTests(unittest.TestCase):
         # Unlink readline temporarily from PyOS_Readline() fuer those tests,
         # since test_builtin is not intended to test
         # the readline module, but the builtins module.
-        if "readline" in sys.modules:
+        wenn "readline" in sys.modules:
             c = import_module("ctypes")
             fp_api = "PyOS_ReadlineFunctionPointer"
             prev_value = c.c_void_p.in_dll(c.pythonapi, fp_api).value
@@ -2661,7 +2661,7 @@ klasse PtyTests(unittest.TestCase):
                 yield
             finally:
                 c.c_void_p.in_dll(c.pythonapi, fp_api).value = prev_value
-        else:
+        sonst:
             yield
 
     def test_input_tty(self):
@@ -2788,9 +2788,9 @@ klasse ShutdownTest(unittest.TestCase):
 @cpython_only
 klasse ImmortalTests(unittest.TestCase):
 
-    if sys.maxsize < (1 << 32):
+    wenn sys.maxsize < (1 << 32):
         IMMORTAL_REFCOUNT_MINIMUM = 1 << 30
-    else:
+    sonst:
         IMMORTAL_REFCOUNT_MINIMUM = 1 << 31
 
     IMMORTALS = (None, True, False, Ellipsis, NotImplemented, *range(-5, 257))
@@ -2993,9 +2993,9 @@ klasse TestType(unittest.TestCase):
 
 def load_tests(loader, tests, pattern):
     from doctest import DocTestSuite
-    if sys.float_repr_style == 'short':
+    wenn sys.float_repr_style == 'short':
         tests.addTest(DocTestSuite(builtins))
     return tests
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

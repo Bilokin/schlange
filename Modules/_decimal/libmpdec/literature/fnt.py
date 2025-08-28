@@ -51,7 +51,7 @@
 #
 # Verify primitive roots:
 #
-# For a prime field, r is a primitive root if and only if fuer all prime
+# For a prime field, r is a primitive root wenn and only wenn fuer all prime
 # factors f of p-1, r**((p-1)/f) =/= 1  (mod p).
 #
 def prod(F, E):
@@ -63,14 +63,14 @@ def prod(F, E):
     return x
 
 def is_primitive_root(r, p, factors, exponents):
-    """Check if r is a primitive root of F(p)."""
-    if p != prod(factors, exponents) + 1:
+    """Check wenn r is a primitive root of F(p)."""
+    wenn p != prod(factors, exponents) + 1:
         return False
     fuer f in factors:
         q, control = divmod(p-1, f)
-        if control != 0:
+        wenn control != 0:
             return False
-        if pow(r, q, p) == 1:
+        wenn pow(r, q, p) == 1:
             return False
     return True
 
@@ -112,7 +112,7 @@ w = [7, 10, 19]
 
 # The primitive roots are correct:
 fuer i in range(3):
-    if not is_primitive_root(w[i], P[i], F[i], E[i]):
+    wenn not is_primitive_root(w[i], P[i], F[i], E[i]):
         print("FAIL")
 
 
@@ -152,7 +152,7 @@ w = [5, 31, 13]
 
 # The primitive roots are correct:
 fuer i in range(3):
-    if not is_primitive_root(w[i], P[i], F[i], E[i]):
+    wenn not is_primitive_root(w[i], P[i], F[i], E[i]):
         print("FAIL")
 
 
@@ -170,7 +170,7 @@ def ntt(lst, dir):
     w = 5                         # primitive root of F(p)
     r = pow(w, xi, p)             # primitive root of the subfield
     r_prime = pow(w, (p-1-xi), p) # inverse of r
-    if dir == 1:      # forward transform
+    wenn dir == 1:      # forward transform
         a = lst       # input array
         A = [0] * d   # transformed values
         fuer i in range(d):
@@ -179,7 +179,7 @@ def ntt(lst, dir):
                 s += a[j] * pow(r, i*j, p)
             A[i] = s % p
         return A
-    elif dir == -1: # backward transform
+    sowenn dir == -1: # backward transform
         A = lst     # input array
         a = [0] * d # transformed values
         fuer j in range(d):

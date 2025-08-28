@@ -38,9 +38,9 @@ _real_select = select.select
 
 def receive(sock, n, timeout=test.support.SHORT_TIMEOUT):
     r, w, x = _real_select([sock], [], [], timeout)
-    if sock in r:
+    wenn sock in r:
         return sock.recv(n)
-    else:
+    sonst:
         raise RuntimeError("timed out on %r" % (sock,))
 
 
@@ -50,7 +50,7 @@ def receive(sock, n, timeout=test.support.SHORT_TIMEOUT):
 def simple_subprocess(testcase):
     """Tests that a custom child process is not waited on (Issue 1540386)"""
     pid = os.fork()
-    if pid == 0:
+    wenn pid == 0:
         # Don't raise an exception; it would be caught by the test harness.
         os._exit(72)
     try:
@@ -79,9 +79,9 @@ klasse SocketServerTest(unittest.TestCase):
         self.test_files[:] = []
 
     def pickaddr(self, proto):
-        if proto == socket.AF_INET:
+        wenn proto == socket.AF_INET:
             return (HOST, 0)
-        else:
+        sonst:
             # XXX: We need a way to tell AF_UNIX to pick its own name
             # like AF_INET provides port==0.
             fn = socket_helper.create_unix_domain_name()
@@ -99,7 +99,7 @@ klasse SocketServerTest(unittest.TestCase):
                 line = self.rfile.readline()
                 self.wfile.write(line)
 
-        if verbose: print("creating server")
+        wenn verbose: print("creating server")
         try:
             server = MyServer(addr, MyHandler)
         except PermissionError as e:
@@ -116,7 +116,7 @@ klasse SocketServerTest(unittest.TestCase):
         # We had the OS pick a port, so pull the real address out of
         # the server.
         addr = server.server_address
-        if verbose:
+        wenn verbose:
             print("ADDR =", addr)
             print("CLASS =", svrcls)
 
@@ -129,20 +129,20 @@ klasse SocketServerTest(unittest.TestCase):
             kwargs={'poll_interval':0.01})
         t.daemon = True  # In case this function raises.
         t.start()
-        if verbose: print("server running")
+        wenn verbose: print("server running")
         fuer i in range(3):
-            if verbose: print("test client", i)
+            wenn verbose: print("test client", i)
             testfunc(svrcls.address_family, addr)
-        if verbose: print("waiting fuer server")
+        wenn verbose: print("waiting fuer server")
         server.shutdown()
         t.join()
         server.server_close()
         self.assertEqual(-1, server.socket.fileno())
-        if HAVE_FORKING and isinstance(server, socketserver.ForkingMixIn):
+        wenn HAVE_FORKING and isinstance(server, socketserver.ForkingMixIn):
             # bpo-31151: Check that ForkingMixIn.server_close() waits until
             # all children completed
             self.assertFalse(server.active_children)
-        if verbose: print("done")
+        wenn verbose: print("done")
 
     def stream_examine(self, proto, addr):
         with socket.socket(proto, socket.SOCK_STREAM) as s:
@@ -156,7 +156,7 @@ klasse SocketServerTest(unittest.TestCase):
 
     def dgram_examine(self, proto, addr):
         with socket.socket(proto, socket.SOCK_DGRAM) as s:
-            if HAVE_UNIX_SOCKETS and proto == socket.AF_UNIX:
+            wenn HAVE_UNIX_SOCKETS and proto == socket.AF_UNIX:
                 s.bind(self.pickaddr(proto))
             s.sendto(TEST_STR, addr)
             buf = data = receive(s, 100)
@@ -276,9 +276,9 @@ klasse SocketServerTest(unittest.TestCase):
         server.server_close()
 
     def test_tcpserver_bind_leak(self):
-        # Issue #22435: the server socket wouldn't be closed if bind()/listen()
+        # Issue #22435: the server socket wouldn't be closed wenn bind()/listen()
         # failed.
-        # Create many servers fuer which bind() will fail, to see if this result
+        # Create many servers fuer which bind() will fail, to see wenn this result
         # in FD exhaustion.
         fuer i in range(1024):
             with self.assertRaises(OverflowError):
@@ -379,7 +379,7 @@ klasse ThreadingErrorTestServer(socketserver.ThreadingMixIn,
         self.done.wait()
 
 
-if HAVE_FORKING:
+wenn HAVE_FORKING:
     klasse ForkingErrorTestServer(socketserver.ForkingMixIn, BaseErrorTestServer):
         pass
 
@@ -445,7 +445,7 @@ klasse SocketWriterTest(unittest.TestCase):
                 # inconvenient moment.
                 while True:
                     pthread_kill(main_thread, signal.SIGUSR1)
-                    if interrupted.wait(timeout=float(1)):
+                    wenn interrupted.wait(timeout=float(1)):
                         break
                 nonlocal received2
                 received2 = len(reader.read())
@@ -467,9 +467,9 @@ klasse MiscTestCase(unittest.TestCase):
         # objects defined in the module should be in __all__
         expected = []
         fuer name in dir(socketserver):
-            if not name.startswith('_'):
+            wenn not name.startswith('_'):
                 mod_object = getattr(socketserver, name)
-                if getattr(mod_object, '__module__', None) == 'socketserver':
+                wenn getattr(mod_object, '__module__', None) == 'socketserver':
                     expected.append(name)
         self.assertCountEqual(socketserver.__all__, expected)
 
@@ -511,5 +511,5 @@ klasse MiscTestCase(unittest.TestCase):
         server.server_close()
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

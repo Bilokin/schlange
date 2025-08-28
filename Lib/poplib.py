@@ -107,12 +107,12 @@ klasse POP3:
         self.welcome = self._getresp()
 
     def _create_socket(self, timeout):
-        if timeout is not None and not timeout:
+        wenn timeout is not None and not timeout:
             raise ValueError('Non-blocking socket (timeout=0) is not supported')
         return socket.create_connection((self.host, self.port), timeout)
 
     def _putline(self, line):
-        if self._debugging > 1: print('*put*', repr(line))
+        wenn self._debugging > 1: print('*put*', repr(line))
         sys.audit("poplib.putline", self, line)
         self.sock.sendall(line + CRLF)
 
@@ -120,40 +120,40 @@ klasse POP3:
     # Internal: send one command to the server (through _putline())
 
     def _putcmd(self, line):
-        if self._debugging: print('*cmd*', repr(line))
+        wenn self._debugging: print('*cmd*', repr(line))
         line = bytes(line, self.encoding)
         self._putline(line)
 
 
     # Internal: return one line from the server, stripping CRLF.
     # This is where all the CPU time of this module is consumed.
-    # Raise error_proto('-ERR EOF') if the connection is closed.
+    # Raise error_proto('-ERR EOF') wenn the connection is closed.
 
     def _getline(self):
         line = self.file.readline(_MAXLINE + 1)
-        if len(line) > _MAXLINE:
+        wenn len(line) > _MAXLINE:
             raise error_proto('line too long')
 
-        if self._debugging > 1: print('*get*', repr(line))
-        if not line: raise error_proto('-ERR EOF')
+        wenn self._debugging > 1: print('*get*', repr(line))
+        wenn not line: raise error_proto('-ERR EOF')
         octets = len(line)
         # server can send any combination of CR & LF
         # however, 'readline()' returns lines ending in LF
         # so only possibilities are ...LF, ...CRLF, CR...LF
-        if line[-2:] == CRLF:
+        wenn line[-2:] == CRLF:
             return line[:-2], octets
-        if line[:1] == CR:
+        wenn line[:1] == CR:
             return line[1:-1], octets
         return line[:-1], octets
 
 
     # Internal: get a response from the server.
-    # Raise 'error_proto' if the response doesn't start with '+'.
+    # Raise 'error_proto' wenn the response doesn't start with '+'.
 
     def _getresp(self):
         resp, o = self._getline()
-        if self._debugging > 1: print('*resp*', repr(resp))
-        if not resp.startswith(b'+'):
+        wenn self._debugging > 1: print('*resp*', repr(resp))
+        wenn not resp.startswith(b'+'):
             raise error_proto(resp)
         return resp
 
@@ -165,7 +165,7 @@ klasse POP3:
         list = []; octets = 0
         line, o = self._getline()
         while line != b'.':
-            if line.startswith(b'..'):
+            wenn line.startswith(b'..'):
                 o = o-1
                 line = line[1:]
             octets = octets + o
@@ -225,12 +225,12 @@ klasse POP3:
         """
         retval = self._shortcmd('STAT')
         rets = retval.split()
-        if self._debugging: print('*stat*', repr(rets))
+        wenn self._debugging: print('*stat*', repr(rets))
 
-        # Check if the response has enough elements
+        # Check wenn the response has enough elements
         # RFC 1939 requires at least 3 elements (+OK, message count, mailbox size)
         # but allows additional data after the required fields
-        if len(rets) < 3:
+        wenn len(rets) < 3:
             raise error_proto("Invalid STAT response format")
 
         try:
@@ -251,7 +251,7 @@ klasse POP3:
         Result when a message number argument is given is a
         single response: the "scan listing" fuer that message.
         """
-        if which is not None:
+        wenn which is not None:
             return self._shortcmd('LIST %s' % which)
         return self._longcmd('LIST')
 
@@ -296,19 +296,19 @@ klasse POP3:
         try:
             file = self.file
             self.file = None
-            if file is not None:
+            wenn file is not None:
                 file.close()
         finally:
             sock = self.sock
             self.sock = None
-            if sock is not None:
+            wenn sock is not None:
                 try:
                     sock.shutdown(socket.SHUT_RDWR)
                 except OSError as exc:
                     # The server might already have closed the connection.
                     # On Windows, this may result in WSAEINVAL (error 10022):
                     # An invalid operation was attempted.
-                    if (exc.errno != errno.ENOTCONN
+                    wenn (exc.errno != errno.ENOTCONN
                        and getattr(exc, 'winerror', 0) != 10022):
                         raise
                 finally:
@@ -329,7 +329,7 @@ klasse POP3:
     def apop(self, user, password):
         """Authorisation
 
-        - only possible if server has supplied a timestamp in initial greeting.
+        - only possible wenn server has supplied a timestamp in initial greeting.
 
         Args:
                 user     - mailbox user;
@@ -339,7 +339,7 @@ klasse POP3:
         """
         secret = bytes(password, self.encoding)
         m = self.timestamp.match(self.welcome)
-        if not m:
+        wenn not m:
             raise error_proto('-ERR APOP not supported by server')
         import hashlib
         digest = m.group(1)+secret
@@ -363,7 +363,7 @@ klasse POP3:
         in the form 'response mesgnum uid', otherwise result is
         the list ['response', ['mesgnum uid', ...], octets]
         """
-        if which is not None:
+        wenn which is not None:
             return self._shortcmd('UIDL %s' % which)
         return self._longcmd('UIDL')
 
@@ -408,14 +408,14 @@ klasse POP3:
 
                 context - a ssl.SSLContext
         """
-        if not HAVE_SSL:
+        wenn not HAVE_SSL:
             raise error_proto('-ERR TLS support missing')
-        if self._tls_established:
+        wenn self._tls_established:
             raise error_proto('-ERR TLS session already established')
         caps = self.capa()
-        if not 'STLS' in caps:
+        wenn not 'STLS' in caps:
             raise error_proto('-ERR STLS not supported by server')
-        if context is None:
+        wenn context is None:
             context = ssl._create_stdlib_context()
         resp = self._shortcmd('STLS')
         self.sock = context.wrap_socket(self.sock,
@@ -425,7 +425,7 @@ klasse POP3:
         return resp
 
 
-if HAVE_SSL:
+wenn HAVE_SSL:
 
     klasse POP3_SSL(POP3):
         """POP3 client klasse over SSL connection
@@ -441,7 +441,7 @@ if HAVE_SSL:
 
         def __init__(self, host, port=POP3_SSL_PORT,
                      *, timeout=socket._GLOBAL_DEFAULT_TIMEOUT, context=None):
-            if context is None:
+            wenn context is None:
                 context = ssl._create_stdlib_context()
             self.context = context
             POP3.__init__(self, host, port, timeout)
@@ -461,7 +461,7 @@ if HAVE_SSL:
 
     __all__.append("POP3_SSL")
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     a = POP3(sys.argv[1])
     print(a.getwelcome())
     a.user(sys.argv[2])

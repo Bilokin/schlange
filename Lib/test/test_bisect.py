@@ -19,9 +19,9 @@ klasse Range(object):
 
     def __getitem__(self, idx):
         n = self.stop - self.start
-        if idx < 0:
+        wenn idx < 0:
             idx += n
-        if idx >= n:
+        wenn idx >= n:
             raise IndexError(idx)
         return self.start + idx
 
@@ -159,14 +159,14 @@ klasse TestBisect:
             data.sort()
             elem = randrange(-1, n+1)
             ip = self.module.bisect_left(data, elem)
-            if ip < len(data):
+            wenn ip < len(data):
                 self.assertTrue(elem <= data[ip])
-            if ip > 0:
+            wenn ip > 0:
                 self.assertTrue(data[ip-1] < elem)
             ip = self.module.bisect_right(data, elem)
-            if ip < len(data):
+            wenn ip < len(data):
                 self.assertTrue(elem < data[ip])
-            if ip > 0:
+            wenn ip > 0:
                 self.assertTrue(data[ip-1] <= elem)
 
     def test_optionalSlicing(self):
@@ -177,13 +177,13 @@ klasse TestBisect:
                     hi = min(len(data), hi)
                     ip = func(data, elem, lo, hi)
                     self.assertTrue(lo <= ip <= hi)
-                    if func is self.module.bisect_left and ip < hi:
+                    wenn func is self.module.bisect_left and ip < hi:
                         self.assertTrue(elem <= data[ip])
-                    if func is self.module.bisect_left and ip > lo:
+                    wenn func is self.module.bisect_left and ip > lo:
                         self.assertTrue(data[ip-1] < elem)
-                    if func is self.module.bisect_right and ip < hi:
+                    wenn func is self.module.bisect_right and ip < hi:
                         self.assertTrue(elem < data[ip])
-                    if func is self.module.bisect_right and ip > lo:
+                    wenn func is self.module.bisect_right and ip > lo:
                         self.assertTrue(data[ip-1] <= elem)
                     self.assertEqual(ip, max(lo, min(hi, expected)))
 
@@ -268,7 +268,7 @@ klasse TestBisect:
             def __init__(self, val):
                 self.val = val
             def __lt__(self, other):
-                return "nonempty" if self.val < other.val else ""
+                return "nonempty" wenn self.val < other.val sonst ""
 
         data = [A(i) fuer i in range(100)]
         i1 = self.module.bisect_left(data, A(33))
@@ -305,9 +305,9 @@ klasse TestInsort:
         fuer insorted in (list(), UserList()):
             fuer i in range(n):
                 digit = choice("0123456789")
-                if digit in "02468":
+                wenn digit in "02468":
                     f = self.module.insort_left
-                else:
+                sonst:
                     f = self.module.insort_right
                 f(insorted, digit)
             self.assertEqual(sorted(insorted), insorted)
@@ -416,5 +416,5 @@ klasse TestDocExampleC(TestDocExample, unittest.TestCase):
 
 #------------------------------------------------------------------------------
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

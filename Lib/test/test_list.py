@@ -21,10 +21,10 @@ klasse ListTest(list_tests.CommonTest):
         self.assertEqual(list((0, 1, 2, 3)), [0, 1, 2, 3])
         self.assertEqual(list(''), [])
         self.assertEqual(list('spam'), ['s', 'p', 'a', 'm'])
-        self.assertEqual(list(x fuer x in range(10) if x % 2),
+        self.assertEqual(list(x fuer x in range(10) wenn x % 2),
                          [1, 3, 5, 7, 9])
 
-        if sys.maxsize == 0x7fffffff:
+        wenn sys.maxsize == 0x7fffffff:
             # This test can currently only work on 32-bit machines.
             # XXX If/when PySequence_Length() returns a ssize_t, it should be
             # XXX re-enabled.
@@ -328,7 +328,7 @@ klasse ListTest(list_tests.CommonTest):
 
     @support.cpython_only
     def test_no_memory(self):
-        # gh-118331: Make sure we don't crash if list allocation fails
+        # gh-118331: Make sure we don't crash wenn list allocation fails
         import_module("_testcapi")
         code = textwrap.dedent("""
         import _testcapi, sys
@@ -339,10 +339,10 @@ klasse ListTest(list_tests.CommonTest):
         l = [None]
         """)
         rc, _, _ = assert_python_failure("-c", code)
-        if support.MS_WINDOWS:
+        wenn support.MS_WINDOWS:
             # STATUS_ACCESS_VIOLATION
             self.assertNotEqual(rc, 0xC0000005)
-        else:
+        sonst:
             self.assertNotEqual(rc, -int(signal.SIGSEGV))
 
     def test_deopt_from_append_list(self):
@@ -358,7 +358,7 @@ klasse ListTest(list_tests.CommonTest):
                 lappend(list, None, None)
             except TypeError:
                 pass
-            else:
+            sonst:
                 raise AssertionError
         """)
 
@@ -380,5 +380,5 @@ klasse ListTest(list_tests.CommonTest):
         self.assertEqual(foo(list(range(10))), 45)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

@@ -9,7 +9,7 @@ import unittest
 from test import support
 from test.support import import_helper
 from test.support import os_helper
-# Raise SkipTest if subinterpreters not supported.
+# Raise SkipTest wenn subinterpreters not supported.
 import_helper.import_module('_interpreters')
 from .utils import TestBase
 
@@ -28,41 +28,41 @@ klasse StartupTests(TestBase):
             try:
                 yield ctx
             finally:
-                if self._debugged_in_subtest:
-                    if self._subtest_count == 1:
+                wenn self._debugged_in_subtest:
+                    wenn self._subtest_count == 1:
                         # The first subtest adds a leading newline, so we
                         # compensate here by not printing a trailing newline.
                         print('### end subtest debug ###', end='')
-                    else:
+                    sonst:
                         print('### end subtest debug ###')
                 self._debugged_in_subtest = False
 
     def debug(self, msg, *, header=None):
-        if header:
+        wenn header:
             self._debug(f'--- {header} ---')
-            if msg:
-                if msg.endswith(os.linesep):
+            wenn msg:
+                wenn msg.endswith(os.linesep):
                     self._debug(msg[:-len(os.linesep)])
-                else:
+                sonst:
                     self._debug(msg)
                     self._debug('<no newline>')
             self._debug('------')
-        else:
+        sonst:
             self._debug(msg)
 
     _debugged = False
     _debugged_in_subtest = False
     def _debug(self, msg):
-        if not self._debugged:
+        wenn not self._debugged:
             print()
             self._debugged = True
-        if self._subtest is not None:
-            if True:
-                if not self._debugged_in_subtest:
+        wenn self._subtest is not None:
+            wenn True:
+                wenn not self._debugged_in_subtest:
                     self._debugged_in_subtest = True
                     print('### start subtest debug ###')
                 print(msg)
-        else:
+        sonst:
             print(msg)
 
     def create_temp_dir(self):
@@ -75,7 +75,7 @@ klasse StartupTests(TestBase):
     def write_script(self, *path, text):
         filename = os.path.join(*path)
         dirname = os.path.dirname(filename)
-        if dirname:
+        wenn dirname:
             os.makedirs(dirname, exist_ok=True)
         with open(filename, 'w', encoding='utf-8') as outfile:
             outfile.write(dedent(text))
@@ -87,7 +87,7 @@ klasse StartupTests(TestBase):
         # EmbeddingTestsMixin.run_embedded_interpreter() in test_embed.py.
         import shlex
         import subprocess
-        if isinstance(argv, str):
+        wenn isinstance(argv, str):
             argv = shlex.split(argv)
         argv = [sys.executable, *argv]
         try:
@@ -99,15 +99,15 @@ klasse StartupTests(TestBase):
             )
         except Exception as exc:
             self.debug(f'# cmd: {shlex.join(argv)}')
-            if isinstance(exc, FileNotFoundError) and not exc.filename:
-                if os.path.exists(argv[0]):
+            wenn isinstance(exc, FileNotFoundError) and not exc.filename:
+                wenn os.path.exists(argv[0]):
                     exists = 'exists'
-                else:
+                sonst:
                     exists = 'does not exist'
                 self.debug(f'{argv[0]} {exists}')
             raise  # re-raise
         assert proc.stderr == '' or proc.returncode != 0, proc.stderr
-        if proc.returncode != 0 and support.verbose:
+        wenn proc.returncode != 0 and support.verbose:
             self.debug(f'# python3 {shlex.join(argv[1:])} failed:')
             self.debug(proc.stdout, header='stdout')
             self.debug(proc.stderr, header='stderr')
@@ -176,7 +176,7 @@ klasse FinalizationTests(TestBase):
             ''']
         proc = subprocess.run(argv, capture_output=True, text=True)
         self.assertIn('Traceback', proc.stderr)
-        if proc.returncode == 0 and support.verbose:
+        wenn proc.returncode == 0 and support.verbose:
             print()
             print("--- cmd unexpected succeeded ---")
             print(f"stdout:\n{proc.stdout}")
@@ -185,6 +185,6 @@ klasse FinalizationTests(TestBase):
         self.assertEqual(proc.returncode, 1)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     # Test needs to be a package, so we can do relative imports.
     unittest.main()

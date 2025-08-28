@@ -33,23 +33,23 @@ from .util import debug, info, Finalize, register_after_fork, is_exiting
 klasse Queue(object):
 
     def __init__(self, maxsize=0, *, ctx):
-        if maxsize <= 0:
+        wenn maxsize <= 0:
             # Can raise ImportError (see issues #3770 and #23400)
             from .synchronize import SEM_VALUE_MAX as maxsize
         self._maxsize = maxsize
         self._reader, self._writer = connection.Pipe(duplex=False)
         self._rlock = ctx.Lock()
         self._opid = os.getpid()
-        if sys.platform == 'win32':
+        wenn sys.platform == 'win32':
             self._wlock = None
-        else:
+        sonst:
             self._wlock = ctx.Lock()
         self._sem = ctx.BoundedSemaphore(maxsize)
         # For use by concurrent.futures
         self._ignore_epipe = False
         self._reset()
 
-        if sys.platform != 'win32':
+        wenn sys.platform != 'win32':
             register_after_fork(self, Queue._after_fork)
 
     def __getstate__(self):
@@ -67,9 +67,9 @@ klasse Queue(object):
         self._reset(after_fork=True)
 
     def _reset(self, after_fork=False):
-        if after_fork:
+        wenn after_fork:
             self._notempty._at_fork_reinit()
-        else:
+        sonst:
             self._notempty = threading.Condition(threading.Lock())
         self._buffer = collections.deque()
         self._thread = None
@@ -82,35 +82,35 @@ klasse Queue(object):
         self._poll = self._reader.poll
 
     def put(self, obj, block=True, timeout=None):
-        if self._closed:
+        wenn self._closed:
             raise ValueError(f"Queue {self!r} is closed")
-        if not self._sem.acquire(block, timeout):
+        wenn not self._sem.acquire(block, timeout):
             raise Full
 
         with self._notempty:
-            if self._thread is None:
+            wenn self._thread is None:
                 self._start_thread()
             self._buffer.append(obj)
             self._notempty.notify()
 
     def get(self, block=True, timeout=None):
-        if self._closed:
+        wenn self._closed:
             raise ValueError(f"Queue {self!r} is closed")
-        if block and timeout is None:
+        wenn block and timeout is None:
             with self._rlock:
                 res = self._recv_bytes()
             self._sem.release()
-        else:
-            if block:
+        sonst:
+            wenn block:
                 deadline = time.monotonic() + timeout
-            if not self._rlock.acquire(block, timeout):
+            wenn not self._rlock.acquire(block, timeout):
                 raise Empty
             try:
-                if block:
+                wenn block:
                     timeout = deadline - time.monotonic()
-                    if not self._poll(timeout):
+                    wenn not self._poll(timeout):
                         raise Empty
-                elif not self._poll():
+                sowenn not self._poll():
                     raise Empty
                 res = self._recv_bytes()
                 self._sem.release()
@@ -138,14 +138,14 @@ klasse Queue(object):
     def close(self):
         self._closed = True
         close = self._close
-        if close:
+        wenn close:
             self._close = None
             close()
 
     def join_thread(self):
         debug('Queue.join_thread()')
         assert self._closed, "Queue {0!r} not closed".format(self)
-        if self._jointhread:
+        wenn self._jointhread:
             self._jointhread()
 
     def cancel_join_thread(self):
@@ -163,8 +163,8 @@ klasse Queue(object):
         self._reader.close()
 
         # gh-107219: Close the connection writer which can unblock
-        # Queue._feed() if it was stuck in send_bytes().
-        if sys.platform == 'win32':
+        # Queue._feed() wenn it was stuck in send_bytes().
+        wenn sys.platform == 'win32':
             self._writer.close()
 
         self.close()
@@ -195,7 +195,7 @@ klasse Queue(object):
             self._thread = None
             raise
 
-        if not self._joincancelled:
+        wenn not self._joincancelled:
             self._jointhread = Finalize(
                 self._thread, Queue._finalize_join,
                 [weakref.ref(self._thread)],
@@ -213,10 +213,10 @@ klasse Queue(object):
     def _finalize_join(twr):
         debug('joining queue thread')
         thread = twr()
-        if thread is not None:
+        wenn thread is not None:
             thread.join()
             debug('... queue thread joined')
-        else:
+        sonst:
             debug('... queue thread already dead')
 
     @staticmethod
@@ -235,24 +235,24 @@ klasse Queue(object):
         nwait = notempty.wait
         bpopleft = buffer.popleft
         sentinel = _sentinel
-        if sys.platform != 'win32':
+        wenn sys.platform != 'win32':
             wacquire = writelock.acquire
             wrelease = writelock.release
-        else:
+        sonst:
             wacquire = None
 
         while 1:
             try:
                 nacquire()
                 try:
-                    if not buffer:
+                    wenn not buffer:
                         nwait()
                 finally:
                     nrelease()
                 try:
                     while 1:
                         obj = bpopleft()
-                        if obj is sentinel:
+                        wenn obj is sentinel:
                             debug('feeder thread got sentinel -- exiting')
                             reader_close()
                             writer_close()
@@ -260,9 +260,9 @@ klasse Queue(object):
 
                         # serialize the data before acquiring the lock
                         obj = _ForkingPickler.dumps(obj)
-                        if wacquire is None:
+                        wenn wacquire is None:
                             send_bytes(obj)
-                        else:
+                        sonst:
                             wacquire()
                             try:
                                 send_bytes(obj)
@@ -271,19 +271,19 @@ klasse Queue(object):
                 except IndexError:
                     pass
             except Exception as e:
-                if ignore_epipe and getattr(e, 'errno', 0) == errno.EPIPE:
+                wenn ignore_epipe and getattr(e, 'errno', 0) == errno.EPIPE:
                     return
                 # Since this runs in a daemon thread the resources it uses
                 # may be become unusable while the process is cleaning up.
                 # We ignore errors which happen after the process has
                 # started to cleanup.
-                if is_exiting():
+                wenn is_exiting():
                     info('error in queue thread: %s', e)
                     return
-                else:
+                sonst:
                     # Since the object has not been sent in the queue, we need
                     # to decrease the size of the queue. The error acts as
-                    # if the object had been silently removed from the queue
+                    # wenn the object had been silently removed from the queue
                     # and this step is necessary to have a properly working
                     # queue.
                     queue_sem.release()
@@ -306,7 +306,7 @@ _sentinel = object()
 #
 # A queue type which also supports join() and task_done() methods
 #
-# Note that if you do not call task_done() fuer each finished task then
+# Note that wenn you do not call task_done() fuer each finished task then
 # eventually the counter's semaphore may overflow causing Bad Things
 # to happen.
 #
@@ -326,13 +326,13 @@ klasse JoinableQueue(Queue):
         self._cond, self._unfinished_tasks = state[-2:]
 
     def put(self, obj, block=True, timeout=None):
-        if self._closed:
+        wenn self._closed:
             raise ValueError(f"Queue {self!r} is closed")
-        if not self._sem.acquire(block, timeout):
+        wenn not self._sem.acquire(block, timeout):
             raise Full
 
         with self._notempty, self._cond:
-            if self._thread is None:
+            wenn self._thread is None:
                 self._start_thread()
             self._buffer.append(obj)
             self._unfinished_tasks.release()
@@ -340,14 +340,14 @@ klasse JoinableQueue(Queue):
 
     def task_done(self):
         with self._cond:
-            if not self._unfinished_tasks.acquire(False):
+            wenn not self._unfinished_tasks.acquire(False):
                 raise ValueError('task_done() called too many times')
-            if self._unfinished_tasks._semlock._is_zero():
+            wenn self._unfinished_tasks._semlock._is_zero():
                 self._cond.notify_all()
 
     def join(self):
         with self._cond:
-            if not self._unfinished_tasks._semlock._is_zero():
+            wenn not self._unfinished_tasks._semlock._is_zero():
                 self._cond.wait()
 
 #
@@ -360,9 +360,9 @@ klasse SimpleQueue(object):
         self._reader, self._writer = connection.Pipe(duplex=False)
         self._rlock = ctx.Lock()
         self._poll = self._reader.poll
-        if sys.platform == 'win32':
+        wenn sys.platform == 'win32':
             self._wlock = None
-        else:
+        sonst:
             self._wlock = ctx.Lock()
 
     def close(self):
@@ -389,10 +389,10 @@ klasse SimpleQueue(object):
     def put(self, obj):
         # serialize the data before acquiring the lock
         obj = _ForkingPickler.dumps(obj)
-        if self._wlock is None:
+        wenn self._wlock is None:
             # writes to a message oriented win32 pipe are atomic
             self._writer.send_bytes(obj)
-        else:
+        sonst:
             with self._wlock:
                 self._writer.send_bytes(obj)
 

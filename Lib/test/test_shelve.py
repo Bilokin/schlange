@@ -59,13 +59,13 @@ klasse TestCase(unittest.TestCase):
             s['key1']
         except ValueError:
             pass
-        else:
+        sonst:
             self.fail('Closed shelf should not find a key')
 
     def test_open_template(self, filename=None, protocol=None):
         os.mkdir(self.dirname)
         self.addCleanup(os_helper.rmtree, self.dirname)
-        s = shelve.open(filename=filename if filename is not None else self.fn,
+        s = shelve.open(filename=filename wenn filename is not None sonst self.fn,
                         protocol=protocol)
         try:
             s['key1'] = (1,2,3,4)
@@ -143,7 +143,7 @@ klasse TestCase(unittest.TestCase):
         encodedkey = key.encode('utf-8')
         with shelve.Shelf(d, writeback=True) as s:
             s[key] = [1]
-            p1 = d[encodedkey]  # Will give a KeyError if backing store not updated
+            p1 = d[encodedkey]  # Will give a KeyError wenn backing store not updated
             s['key'].append(2)
         p2 = d[encodedkey]
         self.assertNotEqual(p1, p2)  # Write creates new object in store
@@ -159,7 +159,7 @@ klasse TestCase(unittest.TestCase):
             s['key1']
         except ValueError:
             pass
-        else:
+        sonst:
             self.fail('Closed shelf should not find a key')
 
     def test_default_protocol(self):
@@ -171,18 +171,18 @@ klasse TestCase(unittest.TestCase):
         self.addCleanup(os_helper.rmtree, self.dirname)
 
         def serializer(obj, protocol):
-            if isinstance(obj, (bytes, bytearray, str)):
-                if protocol == 5:
+            wenn isinstance(obj, (bytes, bytearray, str)):
+                wenn protocol == 5:
                     return obj
                 return type(obj).__name__
-            elif isinstance(obj, array.array):
+            sowenn isinstance(obj, array.array):
                 return obj.tobytes()
             raise TypeError(f"Unsupported type fuer serialization: {type(obj)}")
 
         def deserializer(data):
-            if isinstance(data, (bytes, bytearray, str)):
+            wenn isinstance(data, (bytes, bytearray, str)):
                 return data.decode("utf-8")
-            elif isinstance(data, array.array):
+            sowenn isinstance(data, array.array):
                 return array.array("b", data)
             raise TypeError(
                 f"Unsupported type fuer deserialization: {type(data)}"
@@ -205,7 +205,7 @@ klasse TestCase(unittest.TestCase):
                 s["bytearray_data"] = bytearray_data
                 s["array_data"] = array_data
 
-                if proto == 5:
+                wenn proto == 5:
                     self.assertEqual(s["foo"], str(bar))
                     self.assertEqual(s["bytes_data"], "Hello, world!")
                     self.assertEqual(
@@ -214,7 +214,7 @@ klasse TestCase(unittest.TestCase):
                     self.assertEqual(
                         s["array_data"], array_data.tobytes().decode()
                     )
-                else:
+                sonst:
                     self.assertEqual(s["foo"], "str")
                     self.assertEqual(s["bytes_data"], "bytes")
                     self.assertEqual(s["bytearray_data"], "bytearray")
@@ -257,7 +257,7 @@ klasse TestCase(unittest.TestCase):
 
         def serializer(obj, protocol=None):
             data = obj.__class__.__name__
-            if protocol == 5:
+            wenn protocol == 5:
                 data = str(len(data))
             return data.encode("utf-8")
 
@@ -284,7 +284,7 @@ klasse TestCase(unittest.TestCase):
                 s["bytearray_data"] = bytearray_obj
                 s["array_data"] = arr_obj
 
-                if proto == 5:
+                wenn proto == 5:
                     self.assertEqual(s["foo"], type_name_len(bar))
                     self.assertEqual(s["bytes_data"], type_name_len(bytes_obj))
                     self.assertEqual(s["bytearray_data"],
@@ -318,7 +318,7 @@ klasse TestCase(unittest.TestCase):
                     k, v = s.first()
                     self.assertEqual(k, "array_data")
                     self.assertEqual(v, type_name_len(arr_obj))
-                else:
+                sonst:
                     k, v = s.set_location(b"foo")
                     self.assertEqual(k, "foo")
                     self.assertEqual(v, "str")
@@ -446,5 +446,5 @@ fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
                                {'dbm_mod': dbm_mod, '_args': {'protocol': proto}})
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

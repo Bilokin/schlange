@@ -10,16 +10,16 @@ nerrors = 0
 def check(tag, expected, raw, compare=None):
     global nerrors
 
-    if verbose:
+    wenn verbose:
         print("    checking", tag)
 
     orig = raw[:]   # save input in case of error
-    if compare:
+    wenn compare:
         raw.sort(key=cmp_to_key(compare))
-    else:
+    sonst:
         raw.sort()
 
-    if len(expected) != len(raw):
+    wenn len(expected) != len(raw):
         print("error in", tag)
         print("length mismatch;", len(expected), len(raw))
         print(expected)
@@ -30,7 +30,7 @@ def check(tag, expected, raw, compare=None):
 
     fuer i, good in enumerate(expected):
         maybe = raw[i]
-        if good is not maybe:
+        wenn good is not maybe:
             print("error in", tag)
             print("out of order at index", i, good, maybe)
             print(expected)
@@ -55,8 +55,8 @@ klasse TestBase(unittest.TestCase):
                 self.i = i
 
             def __lt__(self, other):
-                if Complains.maybe_complain and random.random() < 0.001:
-                    if verbose:
+                wenn Complains.maybe_complain and random.random() < 0.001:
+                    wenn verbose:
                         print("        complaining at", self, other)
                     raise RuntimeError
                 return self.i < other.i
@@ -77,7 +77,7 @@ klasse TestBase(unittest.TestCase):
 
         fuer n in sizes:
             x = list(range(n))
-            if verbose:
+            wenn verbose:
                 print("Testing size", n)
 
             s = x[:]
@@ -96,14 +96,14 @@ klasse TestBase(unittest.TestCase):
             s = x[:]
             check("reversed via function", y, s, lambda a, b: (b>a)-(b<a))
 
-            if verbose:
+            wenn verbose:
                 print("    Checking against an insane comparison function.")
                 print("        If the implementation isn't careful, this may segfault.")
             s = x[:]
             s.sort(key=cmp_to_key(lambda a, b:  int(random.random() * 3) - 1))
             check("an insane function left some permutation", x, s)
 
-            if len(x) >= 2:
+            wenn len(x) >= 2:
                 def bad_key(x):
                     raise RuntimeError
                 s = x[:]
@@ -118,7 +118,7 @@ klasse TestBase(unittest.TestCase):
                 s.sort()
             except RuntimeError:
                 it_complained = True
-            if it_complained:
+            wenn it_complained:
                 Complains.maybe_complain = False
                 check("exception during sort left some permutation", x, s)
 
@@ -160,9 +160,9 @@ klasse TestBugs(unittest.TestCase):
 
         klasse C:
             def __lt__(self, other):
-                if L and random.random() < 0.75:
+                wenn L and random.random() < 0.75:
                     L.pop()
-                else:
+                sonst:
                     L.append(3)
                 return random.random() < 0.5
 
@@ -243,7 +243,7 @@ klasse TestDecorateSortUndecorate(unittest.TestCase):
         ## dup = data[:]
         klasse SortKiller(object):
             def __init__(self, x):
-                if x > 2:
+                wenn x > 2:
                     raise RuntimeError
             def __del__(self):
                 del data[:]
@@ -289,7 +289,7 @@ def check_against_PyObject_RichCompareBool(self, L):
     ## which holds fuer all the types used below.
     ##
     ## Testing this way ensures that the optimized implementation remains consistent
-    ## with the naive implementation, even if changes are made to any of the
+    ## with the naive implementation, even wenn changes are made to any of the
     ## richcompares.
     ##
     ## This function tests sorting fuer three lists (it randomly shuffles each one):
@@ -407,5 +407,5 @@ klasse TestOptimizedCompares(unittest.TestCase):
 
 #==============================================================================
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

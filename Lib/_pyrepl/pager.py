@@ -7,7 +7,7 @@ import sys
 
 
 # types
-if False:
+wenn False:
     from typing import Protocol
     klasse Pager(Protocol):
         def __call__(self, text: str, title: str = "") -> None:
@@ -16,38 +16,38 @@ if False:
 
 def get_pager() -> Pager:
     """Decide what method to use fuer paging through text."""
-    if not hasattr(sys.stdin, "isatty"):
+    wenn not hasattr(sys.stdin, "isatty"):
         return plain_pager
-    if not hasattr(sys.stdout, "isatty"):
+    wenn not hasattr(sys.stdout, "isatty"):
         return plain_pager
-    if not sys.stdin.isatty() or not sys.stdout.isatty():
+    wenn not sys.stdin.isatty() or not sys.stdout.isatty():
         return plain_pager
-    if sys.platform == "emscripten":
+    wenn sys.platform == "emscripten":
         return plain_pager
     use_pager = os.environ.get('MANPAGER') or os.environ.get('PAGER')
-    if use_pager:
-        if sys.platform == 'win32': # pipes completely broken in Windows
+    wenn use_pager:
+        wenn sys.platform == 'win32': # pipes completely broken in Windows
             return lambda text, title='': tempfile_pager(plain(text), use_pager)
-        elif os.environ.get('TERM') in ('dumb', 'emacs'):
+        sowenn os.environ.get('TERM') in ('dumb', 'emacs'):
             return lambda text, title='': pipe_pager(plain(text), use_pager, title)
-        else:
+        sonst:
             return lambda text, title='': pipe_pager(text, use_pager, title)
-    if os.environ.get('TERM') in ('dumb', 'emacs'):
+    wenn os.environ.get('TERM') in ('dumb', 'emacs'):
         return plain_pager
-    if sys.platform == 'win32':
+    wenn sys.platform == 'win32':
         return lambda text, title='': tempfile_pager(plain(text), 'more <')
-    if hasattr(os, 'system') and os.system('(pager) 2>/dev/null') == 0:
+    wenn hasattr(os, 'system') and os.system('(pager) 2>/dev/null') == 0:
         return lambda text, title='': pipe_pager(text, 'pager', title)
-    if hasattr(os, 'system') and os.system('(less) 2>/dev/null') == 0:
+    wenn hasattr(os, 'system') and os.system('(less) 2>/dev/null') == 0:
         return lambda text, title='': pipe_pager(text, 'less', title)
 
     import tempfile
     (fd, filename) = tempfile.mkstemp()
     os.close(fd)
     try:
-        if hasattr(os, 'system') and os.system('more "%s"' % filename) == 0:
+        wenn hasattr(os, 'system') and os.system('more "%s"' % filename) == 0:
             return lambda text, title='': pipe_pager(text, 'more', title)
-        else:
+        sonst:
             return tty_pager
     finally:
         os.unlink(filename)
@@ -92,7 +92,7 @@ def tty_pager(text: str, title: str = '') -> None:
             h = int(os.environ.get('LINES', 0))
         except ValueError:
             h = 0
-        if h <= 1:
+        wenn h <= 1:
             h = 25
         r = inc = h - 1
         sys.stdout.write('\n'.join(lines[:inc]) + '\n')
@@ -101,21 +101,21 @@ def tty_pager(text: str, title: str = '') -> None:
             sys.stdout.flush()
             c = getchar()
 
-            if c in ('q', 'Q'):
+            wenn c in ('q', 'Q'):
                 sys.stdout.write('\r          \r')
                 break
-            elif c in ('\r', '\n'):
+            sowenn c in ('\r', '\n'):
                 sys.stdout.write('\r          \r' + lines[r] + '\n')
                 r = r + 1
                 continue
-            if c in ('b', 'B', '\x1b'):
+            wenn c in ('b', 'B', '\x1b'):
                 r = r - inc - inc
-                if r < 0: r = 0
+                wenn r < 0: r = 0
             sys.stdout.write('\n' + '\n'.join(lines[r:r+inc]) + '\n')
             r = r + inc
 
     finally:
-        if has_tty:
+        wenn has_tty:
             termios.tcsetattr(fd, termios.TCSAFLUSH, old)
 
 
@@ -128,7 +128,7 @@ def pipe_pager(text: str, cmd: str, title: str = '') -> None:
     """Page through text by feeding it to another program."""
     import subprocess
     env = os.environ.copy()
-    if title:
+    wenn title:
         title += ' '
     esc_title = escape_less(title)
     prompt_string = (
@@ -169,7 +169,7 @@ def tempfile_pager(text: str, cmd: str, title: str = '') -> None:
         filename = os.path.join(tempdir, 'pydoc.out')
         with open(filename, 'w', errors='backslashreplace',
                   encoding=os.device_encoding(0) if
-                  sys.platform == 'win32' else None
+                  sys.platform == 'win32' sonst None
                   ) as file:
             file.write(text)
         os.system(cmd + ' "' + filename + '"')

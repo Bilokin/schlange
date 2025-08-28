@@ -203,11 +203,11 @@ klasse HyperParserTest(unittest.TestCase):
     def test_eat_identifier(self):
         def is_valid_id(candidate):
             result = HyperParser._eat_identifier(candidate, 0, len(candidate))
-            if result == len(candidate):
+            wenn result == len(candidate):
                 return True
-            elif result == 0:
+            sowenn result == 0:
                 return False
-            else:
+            sonst:
                 err_msg = "Unexpected result: {} (expected 0 or {}".format(
                     result, len(candidate)
                 )
@@ -272,5 +272,5 @@ klasse HyperParserTest(unittest.TestCase):
             self.assertEqual(eat_id('2' + 'é' * (length - 1), 0, length), 0)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main(verbosity=2)

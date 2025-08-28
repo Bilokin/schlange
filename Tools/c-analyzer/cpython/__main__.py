@@ -30,7 +30,7 @@ CHECK_EXPLANATION = textwrap.dedent('''
 
     Non-constant global variables are generally not supported
     in the CPython repo.  We use a tool to analyze the C code
-    and report if any unsupported globals are found.  The tool
+    and report wenn any unsupported globals are found.  The tool
     may be run manually with:
 
       ./python Tools/c-analyzer/check-c-globals.py --format summary [FILE]
@@ -59,9 +59,9 @@ CHECK_EXPLANATION = textwrap.dedent('''
 
 
 def _resolve_filenames(filenames):
-    if filenames:
+    wenn filenames:
         resolved = (_files.resolve_filename(f) fuer f in filenames)
-    else:
+    sonst:
         resolved = _files.iter_filenames()
     return resolved
 
@@ -74,9 +74,9 @@ def fmt_summary(analysis):
     supported = []
     unsupported = []
     fuer item in analysis:
-        if item.supported:
+        wenn item.supported:
             supported.append(item)
-        else:
+        sonst:
             unsupported.append(item)
     total = 0
 
@@ -138,7 +138,7 @@ def _cli_parse(parser):
 
 def cmd_parse(filenames=None, **kwargs):
     filenames = _resolve_filenames(filenames)
-    if 'get_file_preprocessor' not in kwargs:
+    wenn 'get_file_preprocessor' not in kwargs:
         kwargs['get_file_preprocessor'] = _parser.get_preprocessor()
     c_parser.cmd_parse(
         filenames,
@@ -165,9 +165,9 @@ def cmd_check(filenames=None, **kwargs):
             **kwargs
         )
     except SystemExit as exc:
-        num_failed = exc.args[0] if getattr(exc, 'args', None) else None
-        if isinstance(num_failed, int):
-            if num_failed > 0:
+        num_failed = exc.args[0] wenn getattr(exc, 'args', None) sonst None
+        wenn isinstance(num_failed, int):
+            wenn num_failed > 0:
                 sys.stderr.flush()
                 print(CHECK_EXPLANATION, flush=True)
         raise  # re-raise
@@ -203,32 +203,32 @@ def cmd_data(datacmd, **kwargs):
     formats['summary'] = fmt_summary
     filenames = (file
                  fuer file in _resolve_filenames(None)
-                 if file not in _parser.EXCLUDED)
+                 wenn file not in _parser.EXCLUDED)
     kwargs['get_file_preprocessor'] = _parser.get_preprocessor(log_err=print)
-    if datacmd == 'show':
+    wenn datacmd == 'show':
         types = _analyzer.read_known()
         results = []
         fuer decl, info in types.items():
-            if info is UNKNOWN:
-                if decl.kind in (KIND.STRUCT, KIND.UNION):
+            wenn info is UNKNOWN:
+                wenn decl.kind in (KIND.STRUCT, KIND.UNION):
                     extra = {'unsupported': ['type unknown'] * len(decl.members)}
-                else:
+                sonst:
                     extra = {'unsupported': ['type unknown']}
                 info = (info, extra)
             results.append((decl, info))
-            if decl.shortkey == 'struct _object':
+            wenn decl.shortkey == 'struct _object':
                 tempinfo = info
         known = _analyzer.Analysis.from_results(results)
         analyze = None
-    elif datacmd == 'dump':
+    sowenn datacmd == 'dump':
         known = _analyzer.KNOWN_FILE
         def analyze(files, **kwargs):
             decls = []
             fuer decl in _analyzer.iter_decls(files, **kwargs):
-                if not KIND.is_type_decl(decl.kind):
+                wenn not KIND.is_type_decl(decl.kind):
                     continue
-                if not decl.filename.endswith('.h'):
-                    if decl.shortkey not in _analyzer.KNOWN_IN_DOT_C:
+                wenn not decl.filename.endswith('.h'):
+                    wenn decl.shortkey not in _analyzer.KNOWN_IN_DOT_C:
                         continue
                 decls.append(decl)
             results = _c_analyzer.analyze_decls(
@@ -237,7 +237,7 @@ def cmd_data(datacmd, **kwargs):
                 analyze_resolved=_analyzer.analyze_resolved,
             )
             return _analyzer.Analysis.from_results(results)
-    else:  # check
+    sonst:  # check
         known = _analyzer.read_known()
         def analyze(files, **kwargs):
             return _analyzer.iter_decls(files, **kwargs)
@@ -267,15 +267,15 @@ def _cli_capi(parser):
         levels = []
         fuer raw in args.levels or ():
             fuer level in raw.replace(',', ' ').strip().split():
-                if level == 'public':
+                wenn level == 'public':
                     levels.append('stable')
                     levels.append('cpython')
-                elif level == 'no-public':
+                sowenn level == 'no-public':
                     levels.append('private')
                     levels.append('internal')
-                elif level in _capi.LEVELS:
+                sowenn level in _capi.LEVELS:
                     levels.append(level)
-                else:
+                sonst:
                     parser.error(f'expected LEVEL to be one of {sorted(_capi.LEVELS)}, got {level!r}')
         args.levels = set(levels)
 
@@ -287,9 +287,9 @@ def _cli_capi(parser):
         kinds = []
         fuer raw in args.kinds or ():
             fuer kind in raw.replace(',', ' ').strip().split():
-                if kind in _capi.KINDS:
+                wenn kind in _capi.KINDS:
                     kinds.append(kind)
-                else:
+                sonst:
                     parser.error(f'expected KIND to be one of {sorted(_capi.KINDS)}, got {kind!r}')
         args.kinds = set(kinds)
 
@@ -302,8 +302,8 @@ def _cli_capi(parser):
     def process_format(args, *, argv=None):
         orig = args.format
         args.format = _capi.resolve_format(args.format)
-        if isinstance(args.format, str):
-            if args.format not in _capi._FORMATS:
+        wenn isinstance(args.format, str):
+            wenn args.format not in _capi._FORMATS:
                 parser.error(f'unsupported format {orig!r}')
 
     parser.add_argument('--show-empty', dest='showempty', action='store_true')
@@ -346,17 +346,17 @@ def cmd_capi(filenames=None, *,
 
     filenames = _files.iter_header_files(filenames, levels=levels)
     #filenames = (file fuer file, _ in main_for_filenames(filenames))
-    if track_progress:
+    wenn track_progress:
         filenames = track_progress(filenames)
     items = _capi.iter_capi(filenames)
-    if levels:
-        items = (item fuer item in items if item.level in levels)
-    if kinds:
-        items = (item fuer item in items if item.kind in kinds)
+    wenn levels:
+        items = (item fuer item in items wenn item.level in levels)
+    wenn kinds:
+        items = (item fuer item in items wenn item.kind in kinds)
 
     filter = _capi.resolve_filter(ignored)
-    if filter:
-        items = (item fuer item in items if filter(item, log=lambda msg: logger.log(1, msg)))
+    wenn filter:
+        items = (item fuer item in items wenn filter(item, log=lambda msg: logger.log(1, msg)))
 
     lines = render(
         items,
@@ -376,8 +376,8 @@ def _cli_builtin_types(parser):
     def process_format(args, *, argv=None):
         orig = args.fmt
         args.fmt = _builtin_types.resolve_format(args.fmt)
-        if isinstance(args.fmt, str):
-            if args.fmt not in _builtin_types._FORMATS:
+        wenn isinstance(args.fmt, str):
+            wenn args.fmt not in _builtin_types._FORMATS:
                 parser.error(f'unsupported format {orig!r}')
 
     parser.add_argument('--include-modules', dest='showmodules',
@@ -398,8 +398,8 @@ def cmd_builtin_types(fmt, *,
     render = _builtin_types.get_renderer(fmt)
     types = _builtin_types.iter_builtin_types()
     match = _builtin_types.resolve_matcher(showmodules)
-    if match:
-        types = (t fuer t in types if match(t, log=lambda msg: logger.log(1, msg)))
+    wenn match:
+        types = (t fuer t in types wenn match(t, log=lambda msg: logger.log(1, msg)))
 
     lines = render(
         types,
@@ -415,7 +415,7 @@ def cmd_builtin_types(fmt, *,
 
 COMMANDS = {
     'check': (
-        'analyze and fail if the CPython source code has any problems',
+        'analyze and fail wenn the CPython source code has any problems',
         [_cli_check],
         cmd_check,
     ),
@@ -456,8 +456,8 @@ def parse_args(argv=sys.argv[1:], prog=None, *, subset=None):
         prog=prog or get_prog(),
     )
 
-#    if subset == 'check' or subset == ['check']:
-#        if checks is not None:
+#    wenn subset == 'check' or subset == ['check']:
+#        wenn checks is not None:
 #            commands = dict(COMMANDS)
 #            commands['check'] = list(commands['check'])
 #            cli = commands['check'][1][0]
@@ -483,7 +483,7 @@ def parse_args(argv=sys.argv[1:], prog=None, *, subset=None):
         processors[cmd],
         ['verbosity', 'traceback_cm'],
     )
-    if cmd != 'parse':
+    wenn cmd != 'parse':
         # "verbosity" is sent to the commands, so we put it back.
         args.verbosity = verbosity
 
@@ -498,7 +498,7 @@ def main(cmd, cmd_kwargs):
     run_cmd(**cmd_kwargs)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     cmd, cmd_kwargs, verbosity, traceback_cm = parse_args()
     configure_logger(verbosity)
     with traceback_cm:

@@ -35,9 +35,9 @@ RowCalculator: TypeAlias = Callable[["Stats"], Rows]
 # TODO: Check fuer parity
 
 
-if os.name == "nt":
+wenn os.name == "nt":
     DEFAULT_DIR = "c:\\temp\\py_stats\\"
-else:
+sonst:
     DEFAULT_DIR = "/tmp/py_stats/"
 
 
@@ -58,7 +58,7 @@ def _load_metadata_from_source():
             start = "#define " + prefix + "_"
             fuer line in spec_src:
                 line = line.strip()
-                if not line.startswith(start):
+                wenn not line.startswith(start):
                     continue
                 line = line[len(start) :]
                 name, val = line.split()
@@ -69,7 +69,7 @@ def _load_metadata_from_source():
 
     return {
         "_specialized_instructions": [
-            op fuer op in opcode._specialized_opmap.keys() if "__" not in op  # type: ignore
+            op fuer op in opcode._specialized_opmap.keys() wenn "__" not in op  # type: ignore
         ],
         "_stats_defines": get_defines(
             Path("Include") / "cpython" / "pystats.h", "EVAL_CALL"
@@ -79,7 +79,7 @@ def _load_metadata_from_source():
 
 
 def load_raw_data(input: Path) -> RawData:
-    if input.is_file():
+    wenn input.is_file():
         with open(input, "r") as fd:
             data = json.load(fd)
 
@@ -88,7 +88,7 @@ def load_raw_data(input: Path) -> RawData:
 
         return data
 
-    elif input.is_dir():
+    sowenn input.is_dir():
         stats = collections.Counter[str]()
 
         fuer filename in input.iterdir():
@@ -104,7 +104,7 @@ def load_raw_data(input: Path) -> RawData:
                         continue
                     # Hack to handle older data files where some uops
                     # are missing an underscore prefix in their name
-                    if key.startswith("uops[") and key[5:6] != "_":
+                    wenn key.startswith("uops[") and key[5:6] != "_":
                         key = "uops[_" + key[5:]
                     stats[key.strip()] += int(value)
             stats["__nfiles__"] += 1
@@ -113,7 +113,7 @@ def load_raw_data(input: Path) -> RawData:
         data.update(_load_metadata_from_source())
         return data
 
-    else:
+    sonst:
         raise ValueError(f"{input} is not a file or directory path")
 
 
@@ -151,31 +151,31 @@ klasse Ratio:
     percentage: bool = True
 
     def __float__(self):
-        if self.den == 0:
+        wenn self.den == 0:
             return 0.0
-        elif self.den is None:
+        sowenn self.den is None:
             return self.num
-        else:
+        sonst:
             return self.num / self.den
 
     def markdown(self) -> str:
-        if self.den is None:
+        wenn self.den is None:
             return ""
-        elif self.den == 0:
-            if self.num != 0:
+        sowenn self.den == 0:
+            wenn self.num != 0:
                 return f"{self.num:,} / 0 !!"
             return ""
-        elif self.percentage:
+        sowenn self.percentage:
             return f"{self.num / self.den:,.01%}"
-        else:
+        sonst:
             return f"{self.num / self.den:,.02f}"
 
 
 klasse DiffRatio(Ratio):
     def __init__(self, base: int | str, head: int | str):
-        if isinstance(base, str) or isinstance(head, str):
+        wenn isinstance(base, str) or isinstance(head, str):
             super().__init__(0, 0)
-        else:
+        sonst:
             super().__init__(head - base, base)
 
 
@@ -197,7 +197,7 @@ klasse OpcodeStats:
         pair_counts = {}
         fuer name_i, opcode_stat in self._data.items():
             fuer key, value in opcode_stat.items():
-                if value and key.startswith("pair_count"):
+                wenn value and key.startswith("pair_count"):
                     name_j, _, _ = key[len("pair_count") + 1 :].partition("]")
                     pair_counts[(name_i, name_j)] = value
         return pair_counts
@@ -208,10 +208,10 @@ klasse OpcodeStats:
     def get_execution_counts(self) -> dict[str, tuple[int, int]]:
         counts = {}
         fuer name, opcode_stat in self._data.items():
-            if "execution_count" in opcode_stat:
+            wenn "execution_count" in opcode_stat:
                 count = opcode_stat["execution_count"]
                 miss = 0
-                if "specializable" not in opcode_stat:
+                wenn "specializable" not in opcode_stat:
                     miss = opcode_stat.get("specialization.miss", 0)
                 counts[name] = (count, miss)
         return counts
@@ -229,7 +229,7 @@ klasse OpcodeStats:
             collections.Counter
         )
         fuer (first, second), count in pair_counts.items():
-            if count:
+            wenn count:
                 predecessors[second][first] = count
                 successors[first][second] = count
 
@@ -253,16 +253,16 @@ klasse OpcodeStats:
 
         result = {}
         fuer key, value in sorted(family_stats.items()):
-            if key.startswith("specialization."):
+            wenn key.startswith("specialization."):
                 label = key[len("specialization.") :]
-                if label in ("success", "failure") or label.startswith("failure_kinds"):
+                wenn label in ("success", "failure") or label.startswith("failure_kinds"):
                     continue
-            elif key in (
+            sowenn key in (
                 "execution_count",
                 "specializable",
             ) or key.startswith("pair"):
                 continue
-            else:
+            sonst:
                 label = key
             result[label] = value
 
@@ -282,18 +282,18 @@ klasse OpcodeStats:
 
     def get_specialization_failure_kinds(self, opcode: str) -> dict[str, int]:
         def kind_to_text(kind: int, opcode: str):
-            if kind <= 8:
+            wenn kind <= 8:
                 return pretty(self._defines[kind][0])
-            if opcode == "LOAD_SUPER_ATTR":
+            wenn opcode == "LOAD_SUPER_ATTR":
                 opcode = "SUPER"
-            elif opcode.endswith("ATTR"):
+            sowenn opcode.endswith("ATTR"):
                 opcode = "ATTR"
-            elif opcode in ("FOR_ITER", "GET_ITER", "SEND"):
+            sowenn opcode in ("FOR_ITER", "GET_ITER", "SEND"):
                 opcode = "ITER"
-            elif opcode.endswith("SUBSCR"):
+            sowenn opcode.endswith("SUBSCR"):
                 opcode = "SUBSCR"
             fuer name in self._defines[kind]:
-                if name.startswith(opcode):
+                wenn name.startswith(opcode):
                     return pretty(name[len(opcode) + 1 :])
             return "kind " + str(kind)
 
@@ -304,18 +304,18 @@ klasse OpcodeStats:
 
         max_index = 0
         fuer key in family_stats:
-            if key.startswith("specialization.failure_kind"):
+            wenn key.startswith("specialization.failure_kind"):
                 max_index = max(max_index, key_to_index(key))
 
         failure_kinds = [0] * (max_index + 1)
         fuer key in family_stats:
-            if not key.startswith("specialization.failure_kind"):
+            wenn not key.startswith("specialization.failure_kind"):
                 continue
             failure_kinds[key_to_index(key)] = family_stats[key]
         return {
             kind_to_text(index, opcode): value
             fuer (index, value) in enumerate(failure_kinds)
-            if value
+            wenn value
         }
 
     def is_specializable(self, opcode: str) -> bool:
@@ -327,16 +327,16 @@ klasse OpcodeStats:
         specialized_misses = 0
         not_specialized = 0
         fuer opcode, opcode_stat in self._data.items():
-            if "execution_count" not in opcode_stat:
+            wenn "execution_count" not in opcode_stat:
                 continue
             count = opcode_stat["execution_count"]
-            if "specializable" in opcode_stat:
+            wenn "specializable" in opcode_stat:
                 not_specialized += count
-            elif opcode in self._specialized_instructions:
+            sowenn opcode in self._specialized_instructions:
                 miss = opcode_stat.get("specialization.miss", 0)
                 specialized_hits += count - miss
                 specialized_misses += miss
-            else:
+            sonst:
                 basic += count
         return basic, specialized_hits, specialized_misses, not_specialized
 
@@ -344,21 +344,21 @@ klasse OpcodeStats:
         return {
             opcode: opcode_stat.get("specialization.deferred", 0)
             fuer opcode, opcode_stat in self._data.items()
-            if opcode != "RESUME"
+            wenn opcode != "RESUME"
         }
 
     def get_misses_counts(self) -> dict[str, int]:
         return {
             opcode: opcode_stat.get("specialization.miss", 0)
             fuer opcode, opcode_stat in self._data.items()
-            if not self.is_specializable(opcode)
+            wenn not self.is_specializable(opcode)
         }
 
     def get_opcode_counts(self) -> dict[str, int]:
         counts = {}
         fuer opcode, entry in self._data.items():
             count = entry.get("count", 0)
-            if count:
+            wenn count:
                 counts[opcode] = count
         return counts
 
@@ -374,7 +374,7 @@ klasse Stats:
     def get_opcode_stats(self, prefix: str) -> OpcodeStats:
         opcode_stats = collections.defaultdict[str, dict](dict)
         fuer key, value in self._data.items():
-            if not key.startswith(prefix):
+            wenn not key.startswith(prefix):
                 continue
             name, _, rest = key[len(prefix) + 1 :].partition("]")
             opcode_stats[name][rest.strip(".")] = value
@@ -388,15 +388,15 @@ klasse Stats:
         defines = self._data["_stats_defines"]
         result = {}
         fuer key, value in sorted(self._data.items()):
-            if "Calls to" in key:
+            wenn "Calls to" in key:
                 result[key] = value
-            elif key.startswith("Calls "):
+            sowenn key.startswith("Calls "):
                 name, index = key[:-1].split("[")
                 label = f"{name} ({pretty(defines[int(index)][0])})"
                 result[label] = value
 
         fuer key, value in sorted(self._data.items()):
-            if key.startswith("Frame"):
+            wenn key.startswith("Frame"):
                 result[key] = value
 
         return result
@@ -421,16 +421,16 @@ klasse Stats:
 
         result = {}
         fuer key, value in self._data.items():
-            if key.startswith("Object"):
-                if "materialize" in key:
+            wenn key.startswith("Object"):
+                wenn "materialize" in key:
                     den = total_materializations
-                elif "allocations" in key:
+                sowenn "allocations" in key:
                     den = total_allocations
-                elif "increfs" in key:
+                sowenn "increfs" in key:
                     den = total_increfs
-                elif "decrefs" in key:
+                sowenn "decrefs" in key:
                     den = total_decrefs
-                else:
+                sonst:
                     den = None
                 label = key[6:].strip()
                 label = label[0].upper() + label[1:]
@@ -440,7 +440,7 @@ klasse Stats:
     def get_gc_stats(self) -> list[dict[str, int]]:
         gc_stats: list[dict[str, int]] = []
         fuer key, value in self._data.items():
-            if not key.startswith("GC"):
+            wenn not key.startswith("GC"):
                 continue
             n, _, rest = key[3:].partition("]")
             name = rest.strip()
@@ -451,7 +451,7 @@ klasse Stats:
         return gc_stats
 
     def get_optimization_stats(self) -> dict[str, tuple[int, int | None]]:
-        if "Optimization attempts" not in self._data:
+        wenn "Optimization attempts" not in self._data:
             return {}
 
         attempts = self._data["Optimization attempts"]
@@ -597,7 +597,7 @@ klasse Stats:
         rows = []
         fuer k, v in self._data.items():
             match = re.match(f"{prefix}\\[([0-9]+)\\]", k)
-            if match is not None:
+            wenn match is not None:
                 entry = int(match.groups()[0])
                 rows.append((entry, v))
         rows.sort()
@@ -608,7 +608,7 @@ klasse Stats:
         return [
             (key[len(prefix) + 1 : -1].replace("_", " "), val)
             fuer key, val in self._data.items()
-            if key.startswith(prefix)
+            wenn key.startswith(prefix)
         ]
 
 
@@ -680,17 +680,17 @@ klasse Table:
         data_a = {x[0]: x[1:] fuer x in rows_a}
         data_b = {x[0]: x[1:] fuer x in rows_b}
 
-        if len(data_a) != len(rows_a) or len(data_b) != len(rows_b):
+        wenn len(data_a) != len(rows_a) or len(data_b) != len(rows_b):
             raise ValueError("Duplicate keys")
 
         # To preserve ordering, use A's keys as is and then add any in B that
         # aren't in A
-        keys = list(data_a.keys()) + [k fuer k in data_b.keys() if k not in data_a]
+        keys = list(data_a.keys()) + [k fuer k in data_b.keys() wenn k not in data_a]
         rows = [
             self.join_row(k, data_a.get(k, default), data_b.get(k, default))
             fuer k in keys
         ]
-        if self.join_mode in (JoinMode.CHANGE, JoinMode.CHANGE_ONE_COLUMN):
+        wenn self.join_mode in (JoinMode.CHANGE, JoinMode.CHANGE_ONE_COLUMN):
             rows.sort(key=lambda row: abs(float(row[-1])), reverse=True)
 
         columns = self.join_columns(self.columns)
@@ -699,10 +699,10 @@ klasse Table:
     def get_table(
         self, base_stats: Stats, head_stats: Stats | None = None
     ) -> tuple[Columns, Rows]:
-        if head_stats is None:
+        wenn head_stats is None:
             rows = self.calc_rows(base_stats)
             return self.columns, rows
-        else:
+        sonst:
             rows_a = self.calc_rows(base_stats)
             rows_b = self.calc_rows(head_stats)
             cols, rows = self.join_tables(rows_a, rows_b)
@@ -724,20 +724,20 @@ klasse Section:
         doc: str = "",
     ):
         self.title = title
-        if not summary:
+        wenn not summary:
             self.summary = title.lower()
-        else:
+        sonst:
             self.summary = summary
         self.doc = textwrap.dedent(doc)
-        if part_iter is None:
+        wenn part_iter is None:
             part_iter = []
-        if isinstance(part_iter, list):
+        wenn isinstance(part_iter, list):
 
             def iter_parts(base_stats: Stats, head_stats: Stats | None):
                 yield from part_iter
 
             self.part_iter = iter_parts
-        else:
+        sonst:
             self.part_iter = part_iter
         self.comparative = comparative
 
@@ -753,9 +753,9 @@ def calc_execution_count_table(prefix: str) -> RowCalculator:
             counts.items(), key=itemgetter(1), reverse=True
         ):
             cumulative += count
-            if miss:
+            wenn miss:
                 miss_val = Ratio(miss, count)
-            else:
+            sonst:
                 miss_val = None
             rows.append(
                 (
@@ -814,7 +814,7 @@ def pair_count_section(prefix: str, title=None) -> Section:
 
     return Section(
         "Pair counts",
-        f"Pair counts fuer top 100 {title if title else prefix} pairs",
+        f"Pair counts fuer top 100 {title wenn title sonst prefix} pairs",
         [
             Table(
                 ("Pair", "Count:", "Self:", "Cumulative:"),
@@ -840,7 +840,7 @@ def pre_succ_pairs_section() -> Section:
             successors = opcode_stats.get_successors(opcode)
             predecessors_total = predecessors.total()
             successors_total = successors.total()
-            if predecessors_total == 0 and successors_total == 0:
+            wenn predecessors_total == 0 and successors_total == 0:
                 continue
             pred_rows = [
                 (pred, Count(count), Ratio(count, predecessors_total))
@@ -909,12 +909,12 @@ def specialization_section() -> Section:
                 "opcode"
             ).get_specialization_success_failure(name)
             total = sum(values.values())
-            if total:
+            wenn total:
                 return [
                     (label.capitalize(), Count(val), Ratio(val, total))
                     fuer label, val in values.items()
                 ]
-            else:
+            sonst:
                 return []
 
         return calc
@@ -929,7 +929,7 @@ def specialization_section() -> Section:
                 [
                     (label, Count(value), Ratio(value, total))
                     fuer label, value in failures.items()
-                    if value
+                    wenn value
                 ],
                 key=itemgetter(1),
                 reverse=True,
@@ -940,16 +940,16 @@ def specialization_section() -> Section:
     def iter_specialization_tables(base_stats: Stats, head_stats: Stats | None = None):
         opcode_base_stats = base_stats.get_opcode_stats("opcode")
         names = opcode_base_stats.get_opcode_names()
-        if head_stats is not None:
+        wenn head_stats is not None:
             opcode_head_stats = head_stats.get_opcode_stats("opcode")
             names &= opcode_head_stats.get_opcode_names()  # type: ignore
-        else:
+        sonst:
             opcode_head_stats = None
 
         fuer opcode in sorted(names):
-            if not opcode_base_stats.is_specializable(opcode):
+            wenn not opcode_base_stats.is_specializable(opcode):
                 continue
-            if opcode_base_stats.get_specialization_total(opcode) == 0 and (
+            wenn opcode_base_stats.get_specialization_total(opcode) == 0 and (
                 opcode_head_stats is None
                 or opcode_head_stats.get_specialization_total(opcode) == 0
             ):
@@ -1034,7 +1034,7 @@ def specialization_effectiveness_section() -> Section:
         opcode_stats = stats.get_opcode_stats("opcode")
         deferred_counts = opcode_stats.get_deferred_counts()
         total = sum(deferred_counts.values())
-        if total == 0:
+        wenn total == 0:
             return []
 
         return [
@@ -1048,7 +1048,7 @@ def specialization_effectiveness_section() -> Section:
         opcode_stats = stats.get_opcode_stats("opcode")
         misses_counts = opcode_stats.get_misses_counts()
         total = sum(misses_counts.values())
-        if total == 0:
+        wenn total == 0:
             return []
 
         return [
@@ -1100,7 +1100,7 @@ def specialization_effectiveness_section() -> Section:
 def call_stats_section() -> Section:
     def calc_call_stats_table(stats: Stats) -> Rows:
         call_stats = stats.get_call_stats()
-        total = sum(v fuer k, v in call_stats.items() if "Calls to" in k)
+        total = sum(v fuer k, v in call_stats.items() wenn "Calls to" in k)
         return [
             (key, Count(value), Ratio(value, total))
             fuer key, value in call_stats.items()
@@ -1225,9 +1225,9 @@ def optimization_section() -> Section:
         def calc(stats: Stats) -> Rows:
             histogram = stats.get_histogram(key)
 
-            if den:
+            wenn den:
                 denominator = stats.get(den)
-            else:
+            sonst:
                 denominator = 0
                 fuer _, v in histogram:
                     denominator += v
@@ -1246,11 +1246,11 @@ def optimization_section() -> Section:
             end = len(rows) - 1
 
             while start <= end:
-                if rows[start][1] == 0:
+                wenn rows[start][1] == 0:
                     start += 1
-                elif rows[end][1] == 0:
+                sowenn rows[end][1] == 0:
                     end -= 1
-                else:
+                sonst:
                     break
 
             return rows[start:end+1]
@@ -1280,7 +1280,7 @@ def optimization_section() -> Section:
         )
 
     def iter_optimization_tables(base_stats: Stats, head_stats: Stats | None = None):
-        if not base_stats.get_optimization_stats() or (
+        wenn not base_stats.get_optimization_stats() or (
             head_stats is not None and not head_stats.get_optimization_stats()
         ):
             return
@@ -1418,53 +1418,53 @@ def output_markdown(
     level: int = 2,
 ) -> None:
     def to_markdown(x):
-        if hasattr(x, "markdown"):
+        wenn hasattr(x, "markdown"):
             return x.markdown()
-        elif isinstance(x, str):
+        sowenn isinstance(x, str):
             return x
-        elif x is None:
+        sowenn x is None:
             return ""
-        else:
+        sonst:
             raise TypeError(f"Can't convert {x} to markdown")
 
     match obj:
         case Section():
-            if obj.title:
+            wenn obj.title:
                 print("#" * level, obj.title, file=out)
                 print(file=out)
                 print("<details>", file=out)
                 print("<summary>", obj.summary, "</summary>", file=out)
                 print(file=out)
-            if obj.doc:
+            wenn obj.doc:
                 print(obj.doc, file=out)
 
-            if head_stats is not None and obj.comparative is False:
+            wenn head_stats is not None and obj.comparative is False:
                 print("Not included in comparative output.\n")
-            else:
+            sonst:
                 fuer part in obj.part_iter(base_stats, head_stats):
                     output_markdown(out, part, base_stats, head_stats, level=level + 1)
             print(file=out)
-            if obj.title:
+            wenn obj.title:
                 print("</details>", file=out)
                 print(file=out)
 
         case Table():
             header, rows = obj.get_table(base_stats, head_stats)
-            if len(rows) == 0:
+            wenn len(rows) == 0:
                 return
 
             alignments = []
             fuer item in header:
-                if item.endswith(":"):
+                wenn item.endswith(":"):
                     alignments.append("right")
-                else:
+                sonst:
                     alignments.append("left")
 
             print("<table>", file=out)
             print("<thead>", file=out)
             print("<tr>", file=out)
             fuer item, align in zip(header, alignments):
-                if item.endswith(":"):
+                wenn item.endswith(":"):
                     item = item[:-1]
                 print(f'<th align="{align}">{item}</th>', file=out)
             print("</tr>", file=out)
@@ -1472,7 +1472,7 @@ def output_markdown(
 
             print("<tbody>", file=out)
             fuer row in rows:
-                if len(row) != len(header):
+                wenn len(row) != len(header):
                     raise ValueError(
                         "Wrong number of elements in row '" + str(row) + "'"
                     )
@@ -1497,13 +1497,13 @@ def output_stats(inputs: list[Path], json_output=str | None):
     match len(inputs):
         case 1:
             data = load_raw_data(Path(inputs[0]))
-            if json_output is not None:
+            wenn json_output is not None:
                 with open(json_output, "w", encoding="utf-8") as f:
                     save_raw_data(data, f)  # type: ignore
             stats = Stats(data)
             output_markdown(sys.stdout, LAYOUT, stats)
         case 2:
-            if json_output is not None:
+            wenn json_output is not None:
                 raise ValueError(
                     "Can not output to JSON when there are multiple inputs"
                 )
@@ -1524,8 +1524,8 @@ def main():
         default=[DEFAULT_DIR],
         help=f"""
         Input source(s).
-        For each entry, if a .json file, the output provided by --json-output from a previous run;
-        if a directory, a directory containing raw pystats .txt files.
+        For each entry, wenn a .json file, the output provided by --json-output from a previous run;
+        wenn a directory, a directory containing raw pystats .txt files.
         If one source is provided, its stats are printed.
         If two sources are provided, comparative stats are printed.
         Default is {DEFAULT_DIR}.
@@ -1540,11 +1540,11 @@ def main():
 
     args = parser.parse_args()
 
-    if len(args.inputs) > 2:
+    wenn len(args.inputs) > 2:
         raise ValueError("0-2 arguments may be provided.")
 
     output_stats(args.inputs, json_output=args.json_output)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     main()

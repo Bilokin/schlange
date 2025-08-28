@@ -110,7 +110,7 @@ def main():
     tracer(1)
     return "Done!"
 
-if __name__=='__main__':
+wenn __name__=='__main__':
     msg = main()
     print(msg)
     mainloop()

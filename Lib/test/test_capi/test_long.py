@@ -4,7 +4,7 @@ import test.support as support
 
 from test.support import import_helper
 
-# Skip this test if the _testcapi and _testlimitedcapi modules isn't available.
+# Skip this test wenn the _testcapi and _testlimitedcapi modules isn't available.
 _testcapi = import_helper.import_module('_testcapi')
 _testlimitedcapi = import_helper.import_module('_testlimitedcapi')
 
@@ -44,7 +44,7 @@ klasse LongTests(unittest.TestCase):
         }:
             with self.subTest(n=n):
                 is_compact, value = _testcapi.call_long_compact_api(n)
-                if is_compact:
+                wenn is_compact:
                     self.assertEqual(n, value)
 
     def test_compact_known(self):
@@ -169,27 +169,27 @@ klasse LongTests(unittest.TestCase):
                          negative_value_error=OverflowError):
         # round trip (object -> C integer -> object)
         values = (0, 1, 512, 1234, max_val)
-        if min_val < 0:
+        wenn min_val < 0:
             values += (-1, -512, -1234, min_val)
         fuer value in values:
             with self.subTest(value=value):
                 self.assertEqual(func(value), value)
                 self.assertEqual(func(IntSubclass(value)), value)
-                if use_index:
+                wenn use_index:
                     self.assertEqual(func(Index(value)), value)
 
-        if use_index:
+        wenn use_index:
             self.assertEqual(func(MyIndexAndInt()), 10)
-        else:
+        sonst:
             self.assertRaises(TypeError, func, Index(42))
             self.assertRaises(TypeError, func, MyIndexAndInt())
 
-        if mask:
+        wenn mask:
             self.assertEqual(func(min_val - 1), max_val)
             self.assertEqual(func(max_val + 1), min_val)
             self.assertEqual(func(-1 << 1000), 0)
             self.assertEqual(func(1 << 1000), 0)
-        else:
+        sonst:
             self.assertRaises(negative_value_error, func, min_val - 1)
             self.assertRaises(negative_value_error, func, -1 << 1000)
             self.assertRaises(OverflowError, func, max_val + 1)
@@ -315,9 +315,9 @@ klasse LongTests(unittest.TestCase):
 
         # negative values
         M = (1 << _testcapi.SIZEOF_VOID_P * 8)
-        if x >= M//2:
+        wenn x >= M//2:
             self.assertIs(asvoidptr(x - M), obj)
-        if y >= M//2:
+        wenn y >= M//2:
             self.assertIs(asvoidptr(y - M), NULL)
 
         self.assertRaises(TypeError, asvoidptr, Index(x))
@@ -363,7 +363,7 @@ klasse LongTests(unittest.TestCase):
         SZ = int(math.ceil(math.log(SIZE_MAX + 1) / math.log(2)) / 8)
         MAX_SSIZE = 2 ** (SZ * 8 - 1) - 1
         MAX_USIZE = 2 ** (SZ * 8) - 1
-        if support.verbose:
+        wenn support.verbose:
             print(f"SIZEOF_SIZE={SZ}\n{MAX_SSIZE=:016X}\n{MAX_USIZE=:016X}")
 
         # These tests check that the requested buffer size is correct.
@@ -383,7 +383,7 @@ klasse LongTests(unittest.TestCase):
             (2**255-1, 32),
             (-(2**255-1), 32),
             (2**255, 33),
-            (-(2**255), 33), # if you ask, we'll say 33, but 32 would do
+            (-(2**255), 33), # wenn you ask, we'll say 33, but 32 would do
             (2**256-1, 33),
             (-(2**256-1), 33),
             (2**256, 33),
@@ -414,7 +414,7 @@ klasse LongTests(unittest.TestCase):
         # We request as many bytes as `expect_be` contains, and always check
         # the result (both big and little endian). We check the return value
         # independently, since the buffer should always be filled correctly even
-        # if we need more bytes
+        # wenn we need more bytes
         fuer v, expect_be, expect_n in [
             (0,         b'\x00',                1),
             (0,         b'\x00' * 2,            2),
@@ -436,7 +436,7 @@ klasse LongTests(unittest.TestCase):
             # Extracts successfully (unsigned), but requests 9 bytes
             (2**63,     b'\x80' + b'\x00' * 7,  9),
             (2**63,     b'\x00\x80' + b'\x00' * 7, 9),
-            # Extracts into 8 bytes, but if you provide 9 we'll say 9
+            # Extracts into 8 bytes, but wenn you provide 9 we'll say 9
             (-2**63,    b'\x80' + b'\x00' * 7,  8),
             (-2**63,    b'\xff\x80' + b'\x00' * 7, 9),
 
@@ -514,7 +514,7 @@ klasse LongTests(unittest.TestCase):
             asnativebytes(Index(1), buffer, 0, 3)
 
         # Check a few error conditions. These are validated in code, but are
-        # unspecified in docs, so if we make changes to the implementation, it's
+        # unspecified in docs, so wenn we make changes to the implementation, it's
         # fine to just update these tests rather than preserve the behaviour.
         with self.assertRaises(TypeError):
             asnativebytes('not a number', buffer, 0, -1)
@@ -545,8 +545,8 @@ klasse LongTests(unittest.TestCase):
             v = int.from_bytes(bytes_le, 'little')
 
             expect_1 = expect_2 = (SZ, n)
-            if bytes_be[0] & 0x80:
-                # All values are positive, so if MSB is set, expect extra bit
+            wenn bytes_be[0] & 0x80:
+                # All values are positive, so wenn MSB is set, expect extra bit
                 # when we request the size or have a large enough buffer
                 expect_1 = (SZ, n + 1)
                 # When passing Py_ASNATIVEBYTES_UNSIGNED_BUFFER, we expect the
@@ -571,10 +571,10 @@ klasse LongTests(unittest.TestCase):
                 self.assertIn(actual, expect_2, bytes_be.hex())
             except AssertionError as ex:
                 value_hex = ''.join(reversed([
-                    f'{b:02X}{"" if i % 8 else "_"}'
+                    f'{b:02X}{"" wenn i % 8 sonst "_"}'
                     fuer i, b in enumerate(bytes_le, start=1)
                 ])).strip('_')
-                if support.verbose:
+                wenn support.verbose:
                     print()
                     print(n, 'bytes')
                     print('hex =', value_hex)
@@ -616,7 +616,7 @@ klasse LongTests(unittest.TestCase):
 
                 # Check native endian when the result would be the same either
                 # way and we can test it.
-                if v_be == v_le:
+                wenn v_be == v_le:
                     self.assertEqual(expect_s, fromnativebytes(v_be, n, -1, 1),
                         f"PyLong_FromNativeBytes(buffer, {n}, <native>)")
                     self.assertEqual(expect_u, fromnativebytes(v_be, n, -1, 0),
@@ -722,7 +722,7 @@ klasse LongTests(unittest.TestCase):
             'bits_per_digit': int_info.bits_per_digit,
             'digit_size': int_info.sizeof_digit,
             'digits_order': -1,
-            'digit_endianness': -1 if sys.byteorder == 'little' else 1,
+            'digit_endianness': -1 wenn sys.byteorder == 'little' sonst 1,
         }
         self.assertEqual(layout, expected)
 
@@ -783,7 +783,7 @@ klasse LongTests(unittest.TestCase):
             while True:
                 num, digit = divmod(num, base)
                 digits.append(digit)
-                if not num:
+                wenn not num:
                     break
             return digits
 
@@ -794,9 +794,9 @@ klasse LongTests(unittest.TestCase):
         fuer num in numbers:
             with self.subTest(num=num):
                 data = pylong_export(num)
-                if isinstance(data, tuple):
+                wenn isinstance(data, tuple):
                     negative, digits = data
-                else:
+                sonst:
                     value = data
                     negative = int(value < 0)
                     digits = to_digits(abs(value))
@@ -804,5 +804,5 @@ klasse LongTests(unittest.TestCase):
                                  (negative, digits))
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

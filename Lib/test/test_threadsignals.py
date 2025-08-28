@@ -8,7 +8,7 @@ from test.support import threading_helper
 import _thread as thread
 import time
 
-if (sys.platform[:3] == 'win'):
+wenn (sys.platform[:3] == 'win'):
     raise unittest.SkipTest("Can't test signal on %s" % sys.platform)
 
 process_pid = os.getpid()
@@ -180,7 +180,7 @@ klasse ThreadSignals(unittest.TestCase):
         # receive a signal.  Check this by repeatedly interrupting a lock
         # acquire in the main thread, and make sure that the lock acquire times
         # out after the right amount of time.
-        # NOTE: this test only behaves as expected if C signals get delivered
+        # NOTE: this test only behaves as expected wenn C signals get delivered
         # to the main thread.  Otherwise lock.acquire() itself doesn't get
         # interrupted and the test trivially succeeds.
         self.start = None
@@ -233,5 +233,5 @@ def setUpModule():
     unittest.addModuleCleanup(registerSignals, *oldsigs)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

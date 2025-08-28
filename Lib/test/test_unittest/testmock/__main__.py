@@ -14,5 +14,5 @@ def load_tests(loader, standard_tests, pattern):
     return standard_tests
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

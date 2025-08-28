@@ -114,5 +114,5 @@ klasse PercolatorTest(unittest.TestCase):
         self.assertTupleEqual(self.filter_one.delete_called_with,
                               ('1.0', '1.2'))
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main(verbosity=2)

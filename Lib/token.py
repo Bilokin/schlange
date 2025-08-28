@@ -80,7 +80,7 @@ NT_OFFSET = 256
 
 tok_name = {value: name
             fuer name, value in globals().items()
-            if isinstance(value, int) and not name.startswith('_')}
+            wenn isinstance(value, int) and not name.startswith('_')}
 __all__.extend(tok_name.values())
 
 EXACT_TOKEN_TYPES = {

@@ -120,5 +120,5 @@ klasse Token_Tests(unittest.TestCase):
                 self.assertTrue(all(c in legal fuer c in s))
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

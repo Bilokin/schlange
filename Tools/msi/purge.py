@@ -16,7 +16,7 @@ VERSION_RE = re.compile(r'(\d+\.\d+\.\d+)([A-Za-z_]+\d+)?$')
 
 try:
     m = VERSION_RE.match(sys.argv[1])
-    if not m:
+    wenn not m:
         print('Invalid version:', sys.argv[1])
         print('Expected something like "3.5.1rc1"')
         sys.exit(1)

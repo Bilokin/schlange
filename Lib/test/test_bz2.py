@@ -20,7 +20,7 @@ from compression._common import _streams
 import sys
 
 
-# Skip tests if the bz2 module doesn't exist.
+# Skip tests wenn the bz2 module doesn't exist.
 bz2 = import_helper.import_module('bz2')
 from bz2 import BZ2File, BZ2Compressor, BZ2Decompressor
 
@@ -28,11 +28,11 @@ has_cmdline_bunzip2 = None
 
 def ext_decompress(data):
     global has_cmdline_bunzip2
-    if has_cmdline_bunzip2 is None:
+    wenn has_cmdline_bunzip2 is None:
         has_cmdline_bunzip2 = bool(shutil.which('bunzip2'))
-    if has_cmdline_bunzip2:
+    wenn has_cmdline_bunzip2:
         return subprocess.check_output(['bunzip2'], input=data)
-    else:
+    sonst:
         return bz2.decompress(data)
 
 klasse BaseTest(unittest.TestCase):
@@ -75,7 +75,7 @@ klasse BaseTest(unittest.TestCase):
     fuer fname in glob.glob(os.path.join(glob.escape(os.path.dirname(__file__)), '*.py')):
         with open(fname, 'rb') as fh:
             test_size += fh.readinto(memoryview(BIG_TEXT)[test_size:])
-        if test_size > 128*1024:
+        wenn test_size > 128*1024:
             break
     BIG_DATA = bz2.compress(BIG_TEXT, compresslevel=1)
 
@@ -158,7 +158,7 @@ klasse BZ2FileTest(BaseTest):
             text = b''
             while True:
                 str = bz2f.read(10)
-                if not str:
+                wenn not str:
                     break
                 text += str
             self.assertEqual(text, self.TEXT)
@@ -169,7 +169,7 @@ klasse BZ2FileTest(BaseTest):
             text = b''
             while True:
                 str = bz2f.read(10)
-                if not str:
+                wenn not str:
                     break
                 text += str
             self.assertEqual(text, self.TEXT * 5)
@@ -241,7 +241,7 @@ klasse BZ2FileTest(BaseTest):
         bz2f = BZ2File(self.filename)
         bz2f.close()
         self.assertRaises(ValueError, next, bz2f)
-        # This call will deadlock if the above call failed to release the lock.
+        # This call will deadlock wenn the above call failed to release the lock.
         self.assertRaises(ValueError, bz2f.readlines)
 
     def testWrite(self):
@@ -256,7 +256,7 @@ klasse BZ2FileTest(BaseTest):
             n = 0
             while True:
                 str = self.TEXT[n*10:(n+1)*10]
-                if not str:
+                wenn not str:
                     break
                 bz2f.write(str)
                 n += 1
@@ -485,14 +485,14 @@ klasse BZ2FileTest(BaseTest):
                 pass
         except ValueError:
             pass
-        else:
+        sonst:
             self.fail("__enter__ on a closed file didn't raise an exception")
         try:
             with BZ2File(self.filename, "wb") as f:
                 1/0
         except ZeroDivisionError:
             pass
-        else:
+        sonst:
             self.fail("1/0 didn't raise an exception")
 
     @threading_helper.requires_working_threading()
@@ -838,7 +838,7 @@ klasse BZ2CompressorTest(BaseTest):
         data = b''
         while True:
             str = self.TEXT[n*10:(n+1)*10]
-            if not str:
+            wenn not str:
                 break
             data += bz2c.compress(str)
             n += 1
@@ -885,7 +885,7 @@ klasse BZ2DecompressorTest(BaseTest):
         n = 0
         while True:
             str = self.DATA[n*10:(n+1)*10]
-            if not str:
+            wenn not str:
                 break
             text += bz2d.decompress(str)
             n += 1
@@ -1084,7 +1084,7 @@ klasse OpenTest(BaseTest):
 
     def test_binary_modes(self):
         fuer mode in ("wb", "xb"):
-            if mode == "xb":
+            wenn mode == "xb":
                 unlink(self.filename)
             with self.open(self.filename, mode) as f:
                 f.write(self.TEXT)
@@ -1102,7 +1102,7 @@ klasse OpenTest(BaseTest):
     def test_implicit_binary_modes(self):
         # Test implicit binary modes (no "b" or "t" in mode string).
         fuer mode in ("w", "x"):
-            if mode == "x":
+            wenn mode == "x":
                 unlink(self.filename)
             with self.open(self.filename, mode) as f:
                 f.write(self.TEXT)
@@ -1121,7 +1121,7 @@ klasse OpenTest(BaseTest):
         text = self.TEXT.decode("ascii")
         text_native_eol = text.replace("\n", os.linesep)
         fuer mode in ("wt", "xt"):
-            if mode == "xt":
+            wenn mode == "xt":
                 unlink(self.filename)
             with self.open(self.filename, mode, encoding="ascii") as f:
                 f.write(text)
@@ -1139,7 +1139,7 @@ klasse OpenTest(BaseTest):
     def test_x_mode(self):
         fuer mode in ("x", "xb", "xt"):
             unlink(self.filename)
-            encoding = "utf-8" if "t" in mode else None
+            encoding = "utf-8" wenn "t" in mode sonst None
             with self.open(self.filename, mode, encoding=encoding) as f:
                 pass
             with self.assertRaises(FileExistsError):
@@ -1201,5 +1201,5 @@ def tearDownModule():
     support.reap_children()
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

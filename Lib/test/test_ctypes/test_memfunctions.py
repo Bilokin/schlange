@@ -133,5 +133,5 @@ klasse MemFunctionsTest(unittest.TestCase):
                 with self.assertRaises(TypeError):
                     v[:] = b"9876543210"
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

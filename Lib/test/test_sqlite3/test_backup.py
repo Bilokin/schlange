@@ -113,7 +113,7 @@ klasse BackupTests(unittest.TestCase):
         journal = []
 
         def progress(status, remaining, total):
-            if not journal:
+            wenn not journal:
                 self.cx.execute('INSERT INTO foo (key) VALUES (?)', (remaining+1000,))
                 self.cx.commit()
             journal.append(remaining)
@@ -160,5 +160,5 @@ klasse BackupTests(unittest.TestCase):
             self.verify_backup(bck)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

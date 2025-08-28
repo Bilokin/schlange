@@ -28,7 +28,7 @@ themselves. In the traditional manner, a backslash introduces an escape
 sequence.
 
 pyrepl uses its own keyspec format that is meant to be a strict superset of
-readline's KEYSEQ format. This means that if a spec is found that readline
+readline's KEYSEQ format. This means that wenn a spec is found that readline
 accepts that this doesn't, it should be logged as a bug. Note that this means
 we're using the '\\C-o' style of readline's keyspec, not the 'Control-o' sort.
 
@@ -120,76 +120,76 @@ def _parse_single_key_sequence(key: str, s: int) -> tuple[list[str], int]:
     meta = 0
     ret = ""
     while not ret and s < len(key):
-        if key[s] == "\\":
+        wenn key[s] == "\\":
             c = key[s + 1].lower()
-            if c in _escapes:
+            wenn c in _escapes:
                 ret = _escapes[c]
                 s += 2
-            elif c == "c":
-                if key[s + 2] != "-":
+            sowenn c == "c":
+                wenn key[s + 2] != "-":
                     raise KeySpecError(
                         "\\C must be followed by `-' (char %d of %s)"
                         % (s + 2, repr(key))
                     )
-                if ctrl:
+                wenn ctrl:
                     raise KeySpecError(
                         "doubled \\C- (char %d of %s)" % (s + 1, repr(key))
                     )
                 ctrl = 1
                 s += 3
-            elif c == "m":
-                if key[s + 2] != "-":
+            sowenn c == "m":
+                wenn key[s + 2] != "-":
                     raise KeySpecError(
                         "\\M must be followed by `-' (char %d of %s)"
                         % (s + 2, repr(key))
                     )
-                if meta:
+                wenn meta:
                     raise KeySpecError(
                         "doubled \\M- (char %d of %s)" % (s + 1, repr(key))
                     )
                 meta = 1
                 s += 3
-            elif c.isdigit():
+            sowenn c.isdigit():
                 n = key[s + 1 : s + 4]
                 ret = chr(int(n, 8))
                 s += 4
-            elif c == "x":
+            sowenn c == "x":
                 n = key[s + 2 : s + 4]
                 ret = chr(int(n, 16))
                 s += 4
-            elif c == "<":
+            sowenn c == "<":
                 t = key.find(">", s)
-                if t == -1:
+                wenn t == -1:
                     raise KeySpecError(
                         "unterminated \\< starting at char %d of %s"
                         % (s + 1, repr(key))
                     )
                 ret = key[s + 2 : t].lower()
-                if ret not in _keynames:
+                wenn ret not in _keynames:
                     raise KeySpecError(
                         "unrecognised keyname `%s' at char %d of %s"
                         % (ret, s + 2, repr(key))
                     )
                 ret = _keynames[ret]
                 s = t + 1
-            else:
+            sonst:
                 raise KeySpecError(
                     "unknown backslash escape %s at char %d of %s"
                     % (repr(c), s + 2, repr(key))
                 )
-        else:
+        sonst:
             ret = key[s]
             s += 1
-    if ctrl:
-        if len(ret) == 1:
+    wenn ctrl:
+        wenn len(ret) == 1:
             ret = chr(ord(ret) & 0x1F)  # curses.ascii.ctrl()
-        elif ret in {"left", "right"}:
+        sowenn ret in {"left", "right"}:
             ret = f"ctrl {ret}"
-        else:
+        sonst:
             raise KeySpecError("\\C- followed by invalid key")
 
     result = [ret], s
-    if meta:
+    wenn meta:
         result[0].insert(0, "\033")
     return result
 
@@ -197,17 +197,17 @@ def _parse_single_key_sequence(key: str, s: int) -> tuple[list[str], int]:
 def compile_keymap(keymap, empty=b""):
     r = {}
     fuer key, value in keymap.items():
-        if isinstance(key, bytes):
+        wenn isinstance(key, bytes):
             first = key[:1]
-        else:
+        sonst:
             first = key[0]
         r.setdefault(first, {})[key[1:]] = value
     fuer key, value in r.items():
-        if empty in value:
-            if len(value) != 1:
+        wenn empty in value:
+            wenn len(value) != 1:
                 raise KeySpecError("key definitions fuer %s clash" % (value.values(),))
-            else:
+            sonst:
                 r[key] = value[empty]
-        else:
+        sonst:
             r[key] = compile_keymap(value, empty)
     return r

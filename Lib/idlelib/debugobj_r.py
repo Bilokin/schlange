@@ -36,6 +36,6 @@ klasse StubObjectTreeItem:
         return [StubObjectTreeItem(self.sockio, oid) fuer oid in sub_list]
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     from unittest import main
     main('idlelib.idle_test.test_debugobj_r', verbosity=2)

@@ -386,7 +386,7 @@ klasse PEP3147Tests:
         # When debug_override is not None, it can be any true-ish or false-ish
         # value.
         path = os.path.join('foo', 'bar', 'baz.py')
-        # However if the bool-ishness can't be determined, the exception
+        # However wenn the bool-ishness can't be determined, the exception
         # propagates.
         klasse Bearish:
             def __bool__(self): raise RuntimeError
@@ -413,11 +413,11 @@ klasse PEP3147Tests:
         path = 'foo.py'
         optimization_level = sys.flags.optimize
         almost_expect = os.path.join('__pycache__', 'foo.{}'.format(self.tag))
-        if optimization_level == 0:
+        wenn optimization_level == 0:
             expect = almost_expect + '.pyc'
-        elif optimization_level <= 2:
+        sowenn optimization_level <= 2:
             expect = almost_expect + '.opt-{}.pyc'.format(optimization_level)
-        else:
+        sonst:
             msg = '{!r} is a non-standard optimization level'.format(optimization_level)
             self.skipTest(msg)
         self.assertEqual(self.util.cache_from_source(path, optimization=None),
@@ -545,7 +545,7 @@ klasse PEP3147Tests:
             os.path.join(os.path.sep, 'tmp', 'trailing-slash') + os.path.sep,
         ]
         drive = ''
-        if os.name == 'nt':
+        wenn os.name == 'nt':
             drive = 'C:'
             pycache_prefixes = [
                 f'{drive}{prefix}' fuer prefix in pycache_prefixes]
@@ -677,8 +677,8 @@ klasse IncompatibleExtensionModuleRestrictionsTests(unittest.TestCase):
                 pass
         self.addCleanup(ensure_destroyed)
         excsnap = _interpreters.exec(interpid, script)
-        if excsnap is not None:
-            if excsnap.type.__name__ == 'ImportError':
+        wenn excsnap is not None:
+            wenn excsnap.type.__name__ == 'ImportError':
                 raise ImportError(excsnap.msg)
 
     def run_with_shared_gil(self, script):
@@ -690,8 +690,8 @@ klasse IncompatibleExtensionModuleRestrictionsTests(unittest.TestCase):
                 pass
         self.addCleanup(ensure_destroyed)
         excsnap = _interpreters.exec(interpid, script)
-        if excsnap is not None:
-            if excsnap.type.__name__ == 'ImportError':
+        wenn excsnap is not None:
+            wenn excsnap.type.__name__ == 'ImportError':
                 raise ImportError(excsnap.msg)
 
     @unittest.skipIf(_testsinglephase is None, "test requires _testsinglephase module")
@@ -726,9 +726,9 @@ klasse IncompatibleExtensionModuleRestrictionsTests(unittest.TestCase):
     def test_incomplete_multi_phase_init_module(self):
         # Apple extensions must be distributed as frameworks. This requires
         # a specialist loader.
-        if support.is_apple_mobile:
+        wenn support.is_apple_mobile:
             loader = "AppleFrameworkLoader"
-        else:
+        sonst:
             loader = "ExtensionFileLoader"
 
         prescript = textwrap.dedent(f'''
@@ -818,5 +818,5 @@ klasse MiscTests(unittest.TestCase):
             os.stat(support.os_helper.TESTFN) # Check that the file did not get written.
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

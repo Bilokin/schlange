@@ -179,7 +179,7 @@ klasse AsyncContextManagerTestCase(unittest.TestCase):
                 except type(stop_exc) as e:
                     self.assertIs(e, stop_exc)
                     frames = traceback.extract_tb(e.__traceback__)
-                else:
+                sonst:
                     self.fail(f'{stop_exc} was suppressed')
 
                 self.assertEqual(len(frames), 1)
@@ -208,7 +208,7 @@ klasse AsyncContextManagerTestCase(unittest.TestCase):
         await ctx.__aenter__()
         with self.assertRaises(RuntimeError):
             await ctx.__aexit__(TypeError, TypeError('foo'), None)
-        if support.check_impl_detail(cpython=True):
+        wenn support.check_impl_detail(cpython=True):
             # The "gen" attribute is an implementation detail.
             self.assertFalse(ctx.gen.ag_suspended)
 
@@ -216,7 +216,7 @@ klasse AsyncContextManagerTestCase(unittest.TestCase):
     async def test_contextmanager_trap_no_yield(self):
         @asynccontextmanager
         async def whoo():
-            if False:
+            wenn False:
                 yield
         ctx = whoo()
         with self.assertRaises(RuntimeError):
@@ -232,7 +232,7 @@ klasse AsyncContextManagerTestCase(unittest.TestCase):
         await ctx.__aenter__()
         with self.assertRaises(RuntimeError):
             await ctx.__aexit__(None, None, None)
-        if support.check_impl_detail(cpython=True):
+        wenn support.check_impl_detail(cpython=True):
             # The "gen" attribute is an implementation detail.
             self.assertFalse(ctx.gen.ag_suspended)
 
@@ -292,7 +292,7 @@ klasse AsyncContextManagerTestCase(unittest.TestCase):
                         raise stop_exc
                 except Exception as ex:
                     self.assertIs(ex, stop_exc)
-                else:
+                sonst:
                     self.fail(f'{stop_exc} was suppressed')
 
     @_async_test
@@ -375,7 +375,7 @@ klasse AsyncContextManagerTestCase(unittest.TestCase):
 
         @woohoo()
         async def recursive():
-            if depth < 10:
+            wenn depth < 10:
                 await recursive()
 
         await recursive()
@@ -557,13 +557,13 @@ klasse TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
 
         async with AsyncExitStack() as stack:
             fuer args, kwds in reversed(expected):
-                if args and kwds:
+                wenn args and kwds:
                     f = stack.push_async_callback(_exit, *args, **kwds)
-                elif args:
+                sowenn args:
                     f = stack.push_async_callback(_exit, *args)
-                elif kwds:
+                sowenn kwds:
                     f = stack.push_async_callback(_exit, **kwds)
-                else:
+                sonst:
                     f = stack.push_async_callback(_exit)
                 self.assertIs(f, _exit)
             fuer wrapper in stack._exit_callbacks:
@@ -686,7 +686,7 @@ klasse TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
             self.assertIsInstance(exc.__context__.__context__, AttributeError)
             # Inner exceptions were suppressed
             self.assertIsNone(exc.__context__.__context__.__context__)
-        else:
+        sonst:
             self.fail("Expected IndexError, but no exception was raised")
         # Check the inner exceptions
         inner_exc = saved_details[1]
@@ -725,7 +725,7 @@ klasse TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
                         raise IndexError()
                 except MyException as exc:
                     self.assertIsNone(exc.__context__)
-                else:
+                sonst:
                     self.fail("Expected IndexError, but no exception was raised")
 
     @_async_test
@@ -751,5 +751,5 @@ klasse TestAsyncNullcontext(unittest.TestCase):
             self.assertIs(c_in, c)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

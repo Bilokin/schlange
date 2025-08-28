@@ -65,5 +65,5 @@ klasse Test_JOHAB(multibytecodec_support.TestBase, unittest.TestCase):
         (b"\x8CBxy", "replace",  "\uFFFDBxy"),
     )
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

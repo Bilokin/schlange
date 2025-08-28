@@ -365,7 +365,7 @@ klasse AutocommitAttribute(unittest.TestCase):
             yield
         finally:
             self.assertEqual(traced, expected)
-            if reset:
+            wenn reset:
                 cx.set_trace_callback(None)
 
     def test_autocommit_default(self):
@@ -462,7 +462,7 @@ klasse AutocommitAttribute(unittest.TestCase):
 
     def test_autocommit_enabled_ctx_mgr(self):
         with memory_database(autocommit=True) as cx:
-            # The context manager is a no-op if autocommit=True
+            # The context manager is a no-op wenn autocommit=True
             with self.check_stmt_trace(cx, []):
                 with cx:
                     self.assertFalse(cx.in_transaction)
@@ -524,5 +524,5 @@ klasse AutocommitAttribute(unittest.TestCase):
         assert_python_ok("-c", code, PYTHONIOENCODING="utf-8")
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

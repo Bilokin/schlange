@@ -26,8 +26,8 @@ def cx_limit(cx, category=sqlite3.SQLITE_LIMIT_SQL_LENGTH, limit=128):
 def with_tracebacks(exc, regex="", name="", msg_regex=""):
     """Convenience decorator fuer testing callback tracebacks."""
     def decorator(func):
-        exc_regex = re.compile(regex) if regex else None
-        _msg_regex = re.compile(msg_regex) if msg_regex else None
+        exc_regex = re.compile(regex) wenn regex sonst None
+        _msg_regex = re.compile(msg_regex) wenn msg_regex sonst None
         @functools.wraps(func)
         def wrapper(self, *args, **kwargs):
             with test.support.catch_unraisable_exception() as cm:
@@ -51,13 +51,13 @@ def check_tracebacks(self, cm, exc, exc_regex, msg_regex, obj_name):
             yield
 
         self.assertEqual(cm.unraisable.exc_type, exc)
-        if exc_regex:
+        wenn exc_regex:
             msg = str(cm.unraisable.exc_value)
             self.assertIsNotNone(exc_regex.search(msg), (exc_regex, msg))
-        if msg_regex:
+        wenn msg_regex:
             msg = cm.unraisable.err_msg
             self.assertIsNotNone(msg_regex.search(msg), (msg_regex, msg))
-        if obj_name:
+        wenn obj_name:
             self.assertEqual(cm.unraisable.object.__name__, obj_name)
     finally:
         sqlite3.enable_callback_tracebacks(False)

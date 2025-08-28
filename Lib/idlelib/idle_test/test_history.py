@@ -97,7 +97,7 @@ klasse FetchTest(unittest.TestCase):
         Equal = self.assertEqual
         Equal(self.text.get('iomark', 'end-1c'), line)
         Equal(self.text._bell, bell)
-        if bell:
+        wenn bell:
             self.text._bell = False
         Equal(History.prefix, prefix)
         Equal(History.pointer, index)
@@ -168,5 +168,5 @@ klasse FetchTest(unittest.TestCase):
         self.assertEqual(self.history.pointer, None)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main(verbosity=2, exit=2)

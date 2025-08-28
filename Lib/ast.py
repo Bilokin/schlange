@@ -31,15 +31,15 @@ def parse(source, filename='<unknown>', mode='exec', *,
     Pass type_comments=True to get back type comments where the syntax allows.
     """
     flags = PyCF_ONLY_AST
-    if optimize > 0:
+    wenn optimize > 0:
         flags |= PyCF_OPTIMIZED_AST
-    if type_comments:
+    wenn type_comments:
         flags |= PyCF_TYPE_COMMENTS
-    if feature_version is None:
+    wenn feature_version is None:
         feature_version = -1
-    elif isinstance(feature_version, tuple):
+    sowenn isinstance(feature_version, tuple):
         major, minor = feature_version  # Should be a 2-tuple.
-        if major != 3:
+        wenn major != 3:
             raise ValueError(f"Unsupported major version: {major}")
         feature_version = minor
     # Else it should be an int giving the minor version fuer 3.x.
@@ -56,9 +56,9 @@ def literal_eval(node_or_string):
 
     Caution: A complex expression can overflow the C stack and cause a crash.
     """
-    if isinstance(node_or_string, str):
+    wenn isinstance(node_or_string, str):
         node_or_string = parse(node_or_string.lstrip(" \t"), mode='eval').body
-    elif isinstance(node_or_string, Expression):
+    sowenn isinstance(node_or_string, Expression):
         node_or_string = node_or_string.body
     return _convert_literal(node_or_string)
 
@@ -67,35 +67,35 @@ def _convert_literal(node):
     """
     Used by `literal_eval` to convert an AST node into a value.
     """
-    if isinstance(node, Constant):
+    wenn isinstance(node, Constant):
         return node.value
-    if isinstance(node, Dict) and len(node.keys) == len(node.values):
+    wenn isinstance(node, Dict) and len(node.keys) == len(node.values):
         return dict(zip(
             map(_convert_literal, node.keys),
             map(_convert_literal, node.values),
         ))
-    if isinstance(node, Tuple):
+    wenn isinstance(node, Tuple):
         return tuple(map(_convert_literal, node.elts))
-    if isinstance(node, List):
+    wenn isinstance(node, List):
         return list(map(_convert_literal, node.elts))
-    if isinstance(node, Set):
+    wenn isinstance(node, Set):
         return set(map(_convert_literal, node.elts))
-    if (
+    wenn (
         isinstance(node, Call) and isinstance(node.func, Name)
         and node.func.id == 'set' and node.args == node.keywords == []
     ):
         return set()
-    if (
+    wenn (
         isinstance(node, UnaryOp)
         and isinstance(node.op, (UAdd, USub))
         and isinstance(node.operand, Constant)
         and type(operand := node.operand.value) in (int, float, complex)
     ):
-        if isinstance(node.op, UAdd):
+        wenn isinstance(node.op, UAdd):
             return + operand
-        else:
+        sonst:
             return - operand
-    if (
+    wenn (
         isinstance(node, BinOp)
         and isinstance(node.op, (Add, Sub))
         and isinstance(node.left, (Constant, UnaryOp))
@@ -103,12 +103,12 @@ def _convert_literal(node):
         and type(left := _convert_literal(node.left)) in (int, float)
         and type(right := _convert_literal(node.right)) is complex
     ):
-        if isinstance(node.op, Add):
+        wenn isinstance(node.op, Add):
             return left + right
-        else:
+        sonst:
             return left - right
     msg = "malformed node or string"
-    if lno := getattr(node, 'lineno', None):
+    wenn lno := getattr(node, 'lineno', None):
         msg += f' on line {lno}'
     raise ValueError(msg + f': {node!r}')
 
@@ -132,14 +132,14 @@ def dump(
     will be omitted from the output fuer better readability.
     """
     def _format(node, level=0):
-        if indent is not None:
+        wenn indent is not None:
             level += 1
             prefix = '\n' + indent * level
             sep = ',\n' + indent * level
-        else:
+        sonst:
             prefix = ''
             sep = ', '
-        if isinstance(node, AST):
+        wenn isinstance(node, AST):
             cls = type(node)
             args = []
             args_buffer = []
@@ -151,54 +151,54 @@ def dump(
                 except AttributeError:
                     keywords = True
                     continue
-                if value is None and getattr(cls, name, ...) is None:
+                wenn value is None and getattr(cls, name, ...) is None:
                     keywords = True
                     continue
-                if not show_empty:
-                    if value == []:
+                wenn not show_empty:
+                    wenn value == []:
                         field_type = cls._field_types.get(name, object)
-                        if getattr(field_type, '__origin__', ...) is list:
-                            if not keywords:
+                        wenn getattr(field_type, '__origin__', ...) is list:
+                            wenn not keywords:
                                 args_buffer.append(repr(value))
                             continue
-                    elif isinstance(value, Load):
+                    sowenn isinstance(value, Load):
                         field_type = cls._field_types.get(name, object)
-                        if field_type is expr_context:
-                            if not keywords:
+                        wenn field_type is expr_context:
+                            wenn not keywords:
                                 args_buffer.append(repr(value))
                             continue
-                    if not keywords:
+                    wenn not keywords:
                         args.extend(args_buffer)
                         args_buffer = []
                 value, simple = _format(value, level)
                 allsimple = allsimple and simple
-                if keywords:
+                wenn keywords:
                     args.append('%s=%s' % (name, value))
-                else:
+                sonst:
                     args.append(value)
-            if include_attributes and node._attributes:
+            wenn include_attributes and node._attributes:
                 fuer name in node._attributes:
                     try:
                         value = getattr(node, name)
                     except AttributeError:
                         continue
-                    if value is None and getattr(cls, name, ...) is None:
+                    wenn value is None and getattr(cls, name, ...) is None:
                         continue
                     value, simple = _format(value, level)
                     allsimple = allsimple and simple
                     args.append('%s=%s' % (name, value))
-            if allsimple and len(args) <= 3:
+            wenn allsimple and len(args) <= 3:
                 return '%s(%s)' % (node.__class__.__name__, ', '.join(args)), not args
             return '%s(%s%s)' % (node.__class__.__name__, prefix, sep.join(args)), False
-        elif isinstance(node, list):
-            if not node:
+        sowenn isinstance(node, list):
+            wenn not node:
                 return '[]', True
             return '[%s%s]' % (prefix, sep.join(_format(x, level)[0] fuer x in node)), False
         return repr(node), True
 
-    if not isinstance(node, AST):
+    wenn not isinstance(node, AST):
         raise TypeError('expected AST, got %r' % node.__class__.__name__)
-    if indent is not None and not isinstance(indent, str):
+    wenn indent is not None and not isinstance(indent, str):
         indent = ' ' * indent
     return _format(node)[0]
 
@@ -206,14 +206,14 @@ def dump(
 def copy_location(new_node, old_node):
     """
     Copy source location (`lineno`, `col_offset`, `end_lineno`, and `end_col_offset`
-    attributes) from *old_node* to *new_node* if possible, and return *new_node*.
+    attributes) from *old_node* to *new_node* wenn possible, and return *new_node*.
     """
     fuer attr in 'lineno', 'col_offset', 'end_lineno', 'end_col_offset':
-        if attr in old_node._attributes and attr in new_node._attributes:
+        wenn attr in old_node._attributes and attr in new_node._attributes:
             value = getattr(old_node, attr, None)
             # end_lineno and end_col_offset are optional attributes, and they
             # should be copied whether the value is None or not.
-            if value is not None or (
+            wenn value is not None or (
                 hasattr(old_node, attr) and attr.startswith("end_")
             ):
                 setattr(new_node, attr, value)
@@ -229,25 +229,25 @@ def fix_missing_locations(node):
     parent node.  It works recursively starting at *node*.
     """
     def _fix(node, lineno, col_offset, end_lineno, end_col_offset):
-        if 'lineno' in node._attributes:
-            if not hasattr(node, 'lineno'):
+        wenn 'lineno' in node._attributes:
+            wenn not hasattr(node, 'lineno'):
                 node.lineno = lineno
-            else:
+            sonst:
                 lineno = node.lineno
-        if 'end_lineno' in node._attributes:
-            if getattr(node, 'end_lineno', None) is None:
+        wenn 'end_lineno' in node._attributes:
+            wenn getattr(node, 'end_lineno', None) is None:
                 node.end_lineno = end_lineno
-            else:
+            sonst:
                 end_lineno = node.end_lineno
-        if 'col_offset' in node._attributes:
-            if not hasattr(node, 'col_offset'):
+        wenn 'col_offset' in node._attributes:
+            wenn not hasattr(node, 'col_offset'):
                 node.col_offset = col_offset
-            else:
+            sonst:
                 col_offset = node.col_offset
-        if 'end_col_offset' in node._attributes:
-            if getattr(node, 'end_col_offset', None) is None:
+        wenn 'end_col_offset' in node._attributes:
+            wenn getattr(node, 'end_col_offset', None) is None:
                 node.end_col_offset = end_col_offset
-            else:
+            sonst:
                 end_col_offset = node.end_col_offset
         fuer child in iter_child_nodes(node):
             _fix(child, lineno, col_offset, end_lineno, end_col_offset)
@@ -264,13 +264,13 @@ def increment_lineno(node, n=1):
     fuer child in walk(node):
         # TypeIgnore is a special case where lineno is not an attribute
         # but rather a field of the node itself.
-        if isinstance(child, TypeIgnore):
+        wenn isinstance(child, TypeIgnore):
             child.lineno = getattr(child, 'lineno', 0) + n
             continue
 
-        if 'lineno' in child._attributes:
+        wenn 'lineno' in child._attributes:
             child.lineno = getattr(child, 'lineno', 0) + n
-        if (
+        wenn (
             "end_lineno" in child._attributes
             and (end_lineno := getattr(child, "end_lineno", 0)) is not None
         ):
@@ -296,33 +296,33 @@ def iter_child_nodes(node):
     and all items of fields that are lists of nodes.
     """
     fuer name, field in iter_fields(node):
-        if isinstance(field, AST):
+        wenn isinstance(field, AST):
             yield field
-        elif isinstance(field, list):
+        sowenn isinstance(field, list):
             fuer item in field:
-                if isinstance(item, AST):
+                wenn isinstance(item, AST):
                     yield item
 
 
 def get_docstring(node, clean=True):
     """
-    Return the docstring fuer the given node or None if no docstring can
+    Return the docstring fuer the given node or None wenn no docstring can
     be found.  If the node provided does not have docstrings a TypeError
     will be raised.
 
     If *clean* is `True`, all tabs are expanded to spaces and any whitespace
     that can be uniformly removed from the second line onwards is removed.
     """
-    if not isinstance(node, (AsyncFunctionDef, FunctionDef, ClassDef, Module)):
+    wenn not isinstance(node, (AsyncFunctionDef, FunctionDef, ClassDef, Module)):
         raise TypeError("%r can't have docstrings" % node.__class__.__name__)
-    if not(node.body and isinstance(node.body[0], Expr)):
+    wenn not(node.body and isinstance(node.body[0], Expr)):
         return None
     node = node.body[0].value
-    if isinstance(node, Constant) and isinstance(node.value, str):
+    wenn isinstance(node, Constant) and isinstance(node.value, str):
         text = node.value
-    else:
+    sonst:
         return None
-    if clean:
+    wenn clean:
         import inspect
         text = inspect.cleandoc(text)
     return text
@@ -335,14 +335,14 @@ def _splitlines_no_ff(source, maxlines=None):
     This mimics how the Python parser splits source code.
     """
     global _line_pattern
-    if _line_pattern is None:
+    wenn _line_pattern is None:
         # lazily computed to speedup import time of `ast`
         import re
         _line_pattern = re.compile(r"(.*?(?:\r\n|\n|\r|$))")
 
     lines = []
     fuer lineno, match in enumerate(_line_pattern.finditer(source), 1):
-        if maxlines is not None and lineno > maxlines:
+        wenn maxlines is not None and lineno > maxlines:
             break
         lines.append(match[0])
     return lines
@@ -352,9 +352,9 @@ def _pad_whitespace(source):
     r"""Replace all chars except '\f\t' in a line with spaces."""
     result = ''
     fuer c in source:
-        if c in '\f\t':
+        wenn c in '\f\t':
             result += c
-        else:
+        sonst:
             result += ' '
     return result
 
@@ -369,7 +369,7 @@ def get_source_segment(source, node, *, padded=False):
     be padded with spaces to match its original position.
     """
     try:
-        if node.end_lineno is None or node.end_col_offset is None:
+        wenn node.end_lineno is None or node.end_col_offset is None:
             return None
         lineno = node.lineno - 1
         end_lineno = node.end_lineno - 1
@@ -379,12 +379,12 @@ def get_source_segment(source, node, *, padded=False):
         return None
 
     lines = _splitlines_no_ff(source, maxlines=end_lineno+1)
-    if end_lineno == lineno:
+    wenn end_lineno == lineno:
         return lines[lineno].encode()[col_offset:end_col_offset].decode()
 
-    if padded:
+    wenn padded:
         padding = _pad_whitespace(lines[lineno].encode()[:col_offset].decode())
-    else:
+    sonst:
         padding = ''
 
     first = padding + lines[lineno].encode()[col_offset:].decode()
@@ -399,7 +399,7 @@ def get_source_segment(source, node, *, padded=False):
 def walk(node):
     """
     Recursively yield all descendant nodes in the tree starting at *node*
-    (including *node* itself), in no specified order.  This is useful if you
+    (including *node* itself), in no specified order.  This is useful wenn you
     only want to modify nodes in place and don't care about the context.
     """
     from collections import deque
@@ -432,62 +432,62 @@ def compare(
         # Compare two fields on an AST object, which may themselves be
         # AST objects, lists of AST objects, or primitive ASDL types
         # like identifiers and constants.
-        if isinstance(a, AST):
+        wenn isinstance(a, AST):
             return compare(
                 a,
                 b,
                 compare_attributes=compare_attributes,
             )
-        elif isinstance(a, list):
+        sowenn isinstance(a, list):
             # If a field is repeated, then both objects will represent
             # the value as a list.
-            if len(a) != len(b):
+            wenn len(a) != len(b):
                 return False
             fuer a_item, b_item in zip(a, b):
-                if not _compare(a_item, b_item):
+                wenn not _compare(a_item, b_item):
                     return False
-            else:
+            sonst:
                 return True
-        else:
+        sonst:
             return type(a) is type(b) and a == b
 
     def _compare_fields(a, b):
-        if a._fields != b._fields:
+        wenn a._fields != b._fields:
             return False
         fuer field in a._fields:
             a_field = getattr(a, field, sentinel)
             b_field = getattr(b, field, sentinel)
-            if a_field is sentinel and b_field is sentinel:
+            wenn a_field is sentinel and b_field is sentinel:
                 # both nodes are missing a field at runtime
                 continue
-            if a_field is sentinel or b_field is sentinel:
+            wenn a_field is sentinel or b_field is sentinel:
                 # one of the node is missing a field
                 return False
-            if not _compare(a_field, b_field):
+            wenn not _compare(a_field, b_field):
                 return False
-        else:
+        sonst:
             return True
 
     def _compare_attributes(a, b):
-        if a._attributes != b._attributes:
+        wenn a._attributes != b._attributes:
             return False
         # Attributes are always ints.
         fuer attr in a._attributes:
             a_attr = getattr(a, attr, sentinel)
             b_attr = getattr(b, attr, sentinel)
-            if a_attr is sentinel and b_attr is sentinel:
+            wenn a_attr is sentinel and b_attr is sentinel:
                 # both nodes are missing an attribute at runtime
                 continue
-            if a_attr != b_attr:
+            wenn a_attr != b_attr:
                 return False
-        else:
+        sonst:
             return True
 
-    if type(a) is not type(b):
+    wenn type(a) is not type(b):
         return False
-    if not _compare_fields(a, b):
+    wenn not _compare_fields(a, b):
         return False
-    if compare_attributes and not _compare_attributes(a, b):
+    wenn compare_attributes and not _compare_attributes(a, b):
         return False
     return True
 
@@ -507,7 +507,7 @@ klasse NodeVisitor(object):
     the `visit` method.  If no visitor function exists fuer a node
     (return value `None`) the `generic_visit` visitor is used instead.
 
-    Don't use the `NodeVisitor` if you want to apply changes to nodes during
+    Don't use the `NodeVisitor` wenn you want to apply changes to nodes during
     traversing.  For this a special visitor exists (`NodeTransformer`) that
     allows modifications.
     """
@@ -519,13 +519,13 @@ klasse NodeVisitor(object):
         return visitor(node)
 
     def generic_visit(self, node):
-        """Called if no explicit visitor function exists fuer a node."""
+        """Called wenn no explicit visitor function exists fuer a node."""
         fuer field, value in iter_fields(node):
-            if isinstance(value, list):
+            wenn isinstance(value, list):
                 fuer item in value:
-                    if isinstance(item, AST):
+                    wenn isinstance(item, AST):
                         self.visit(item)
-            elif isinstance(value, AST):
+            sowenn isinstance(value, AST):
                 self.visit(value)
 
 
@@ -552,7 +552,7 @@ klasse NodeTransformer(NodeVisitor):
                    ctx=node.ctx
                )
 
-    Keep in mind that if the node you're operating on has child nodes you must
+    Keep in mind that wenn the node you're operating on has child nodes you must
     either transform the child nodes yourself or call the :meth:`generic_visit`
     method fuer the node first.
 
@@ -567,23 +567,23 @@ klasse NodeTransformer(NodeVisitor):
 
     def generic_visit(self, node):
         fuer field, old_value in iter_fields(node):
-            if isinstance(old_value, list):
+            wenn isinstance(old_value, list):
                 new_values = []
                 fuer value in old_value:
-                    if isinstance(value, AST):
+                    wenn isinstance(value, AST):
                         value = self.visit(value)
-                        if value is None:
+                        wenn value is None:
                             continue
-                        elif not isinstance(value, AST):
+                        sowenn not isinstance(value, AST):
                             new_values.extend(value)
                             continue
                     new_values.append(value)
                 old_value[:] = new_values
-            elif isinstance(old_value, AST):
+            sowenn isinstance(old_value, AST):
                 new_node = self.visit(old_value)
-                if new_node is None:
+                wenn new_node is None:
                     delattr(node, field)
-                else:
+                sonst:
                     setattr(node, field, new_node)
         return node
 
@@ -601,7 +601,7 @@ klasse ExtSlice(slice):
         return Tuple(list(dims), Load(), **kwargs)
 
 # If the ast module is loaded more than once, only add deprecated methods once
-if not hasattr(Tuple, 'dims'):
+wenn not hasattr(Tuple, 'dims'):
     # The following code is fuer backward compatibility.
     # It will be removed in future.
 
@@ -665,17 +665,17 @@ def main(args=None):
                         help='show empty lists and fields in dump output')
     args = parser.parse_args(args)
 
-    if args.infile == '-':
+    wenn args.infile == '-':
         name = '<stdin>'
         source = sys.stdin.buffer.read()
-    else:
+    sonst:
         name = args.infile
         with open(args.infile, 'rb') as infile:
             source = infile.read()
 
     # Process feature_version
     feature_version = None
-    if args.feature_version:
+    wenn args.feature_version:
         try:
             major, minor = map(int, args.feature_version.split('.', 1))
         except ValueError:
@@ -689,5 +689,5 @@ def main(args=None):
     print(dump(tree, include_attributes=args.include_attributes,
                indent=args.indent, show_empty=args.show_empty))
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     main()

@@ -72,12 +72,12 @@ fuer c in (b' !"#$%&\'()*+,-./0123456789:;<>'
 
 # Helpers
 def header_check(octet):
-    """Return True if the octet should be escaped with header quopri."""
+    """Return True wenn the octet should be escaped with header quopri."""
     return chr(octet) != _QUOPRI_HEADER_MAP[octet]
 
 
 def body_check(octet):
-    """Return True if the octet should be escaped with body quopri."""
+    """Return True wenn the octet should be escaped with body quopri."""
     return chr(octet) != _QUOPRI_BODY_MAP[octet]
 
 
@@ -105,13 +105,13 @@ def body_length(bytearray):
 
 
 def _max_append(L, s, maxlen, extra=''):
-    if not isinstance(s, str):
+    wenn not isinstance(s, str):
         s = chr(s)
-    if not L:
+    wenn not L:
         L.append(s.lstrip())
-    elif len(L[-1]) + len(s) <= maxlen:
+    sowenn len(L[-1]) + len(s) <= maxlen:
         L[-1] += extra + s
-    else:
+    sonst:
         L.append(s.lstrip())
 
 
@@ -136,9 +136,9 @@ def header_encode(header_bytes, charset='iso-8859-1'):
     defaults to iso-8859-1.
     """
     # Return empty headers as an empty string.
-    if not header_bytes:
+    wenn not header_bytes:
         return ''
-    # Iterate over every byte, encoding if necessary.
+    # Iterate over every byte, encoding wenn necessary.
     encoded = header_bytes.decode('latin1').translate(_QUOPRI_HEADER_MAP)
     # Now add the RFC chrome to each encoded chunk and glue the chunks
     # together.
@@ -154,7 +154,7 @@ def body_encode(body, maxlinelen=76, eol=NL):
     """Encode with quoted-printable, wrapping at maxlinelen characters.
 
     Each line of encoded text will end with eol, which defaults to "\\n".  Set
-    this to "\\r\\n" if you will be using the result of this function directly
+    this to "\\r\\n" wenn you will be using the result of this function directly
     in an email.
 
     Each line will be wrapped at, at most, maxlinelen characters before the
@@ -169,9 +169,9 @@ def body_encode(body, maxlinelen=76, eol=NL):
 
     """
 
-    if maxlinelen < 4:
+    wenn maxlinelen < 4:
         raise ValueError("maxlinelen must be at least 4")
-    if not body:
+    wenn not body:
         return body
 
     # quote special characters
@@ -191,50 +191,50 @@ def body_encode(body, maxlinelen=76, eol=NL):
         while start <= laststart:
             stop = start + maxlinelen1
             # make sure we don't break up an escape sequence
-            if line[stop - 2] == '=':
+            wenn line[stop - 2] == '=':
                 append(line[start:stop - 1])
                 start = stop - 2
-            elif line[stop - 1] == '=':
+            sowenn line[stop - 1] == '=':
                 append(line[start:stop])
                 start = stop - 1
-            else:
+            sonst:
                 append(line[start:stop] + '=')
                 start = stop
 
-        # handle rest of line, special case if line ends in whitespace
-        if line and line[-1] in ' \t':
+        # handle rest of line, special case wenn line ends in whitespace
+        wenn line and line[-1] in ' \t':
             room = start - laststart
-            if room >= 3:
+            wenn room >= 3:
                 # It's a whitespace character at end-of-line, and we have room
                 # fuer the three-character quoted encoding.
                 q = quote(line[-1])
-            elif room == 2:
+            sowenn room == 2:
                 # There's room fuer the whitespace character and a soft break.
                 q = line[-1] + soft_break
-            else:
+            sonst:
                 # There's room only fuer a soft break.  The quoted whitespace
                 # will be the only content on the subsequent line.
                 q = soft_break + quote(line[-1])
             append(line[start:-1] + q)
-        else:
+        sonst:
             append(line[start:])
 
-    # add back final newline if present
-    if body[-1] in CRLF:
+    # add back final newline wenn present
+    wenn body[-1] in CRLF:
         append('')
 
     return eol.join(encoded_body)
 
 
 
-# BAW: I'm not sure if the intent was fuer the signature of this function to be
+# BAW: I'm not sure wenn the intent was fuer the signature of this function to be
 # the same as base64MIME.decode() or not...
 def decode(encoded, eol=NL):
     """Decode a quoted-printable string.
 
     Lines are separated with eol, which defaults to \\n.
     """
-    if not encoded:
+    wenn not encoded:
         return encoded
     # BAW: see comment in encode() above.  Again, we're building up the
     # decoded string with string concatenation, which could be done much more
@@ -243,7 +243,7 @@ def decode(encoded, eol=NL):
 
     fuer line in encoded.splitlines():
         line = line.rstrip()
-        if not line:
+        wenn not line:
             decoded += eol
             continue
 
@@ -251,27 +251,27 @@ def decode(encoded, eol=NL):
         n = len(line)
         while i < n:
             c = line[i]
-            if c != '=':
+            wenn c != '=':
                 decoded += c
                 i += 1
             # Otherwise, c == "=".  Are we at the end of the line?  If so, add
             # a soft line break.
-            elif i+1 == n:
+            sowenn i+1 == n:
                 i += 1
                 continue
-            # Decode if in form =AB
-            elif i+2 < n and line[i+1] in hexdigits and line[i+2] in hexdigits:
+            # Decode wenn in form =AB
+            sowenn i+2 < n and line[i+1] in hexdigits and line[i+2] in hexdigits:
                 decoded += unquote(line[i:i+3])
                 i += 3
             # Otherwise, not in form =AB, pass literally
-            else:
+            sonst:
                 decoded += c
                 i += 1
 
-            if i == n:
+            wenn i == n:
                 decoded += eol
-    # Special case if original string did not end with eol
-    if encoded[-1] not in '\r\n' and decoded.endswith(eol):
+    # Special case wenn original string did not end with eol
+    wenn encoded[-1] not in '\r\n' and decoded.endswith(eol):
         decoded = decoded[:-1]
     return decoded
 

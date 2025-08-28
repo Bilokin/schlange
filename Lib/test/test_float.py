@@ -95,13 +95,13 @@ klasse GeneralFloatCases(unittest.TestCase):
 
     def test_underscores(self):
         fuer lit in VALID_UNDERSCORE_LITERALS:
-            if not any(ch in lit fuer ch in 'jJxXoObB'):
+            wenn not any(ch in lit fuer ch in 'jJxXoObB'):
                 self.assertEqual(float(lit), eval(lit))
                 self.assertEqual(float(lit), float(lit.replace('_', '')))
         fuer lit in INVALID_UNDERSCORE_LITERALS:
-            if lit in ('0_7', '09_99'):  # octals are not recognized here
+            wenn lit in ('0_7', '09_99'):  # octals are not recognized here
                 continue
-            if not any(ch in lit fuer ch in 'jJxXoObB'):
+            wenn not any(ch in lit fuer ch in 'jJxXoObB'):
                 self.assertRaises(ValueError, float, lit)
         # Additional test cases; nan and inf are never valid as literals,
         # only in the float() constructor, but we don't allow underscores
@@ -133,7 +133,7 @@ klasse GeneralFloatCases(unittest.TestCase):
             from array import array
         except ImportError:
             pass
-        else:
+        sonst:
             factories.append(lambda b: array('B', b))
 
         fuer f in factories:
@@ -183,7 +183,7 @@ klasse GeneralFloatCases(unittest.TestCase):
         # float must not accept the locale specific decimal point but
         # it still has to accept the normal python syntax
         import locale
-        if not locale.localeconv()['decimal_point'] == ',':
+        wenn not locale.localeconv()['decimal_point'] == ',':
             self.skipTest('decimal_point is not ","')
 
         self.assertEqual(float("  3.14  "), 3.14)
@@ -300,7 +300,7 @@ klasse GeneralFloatCases(unittest.TestCase):
         x = cls.from_number(NAN)
         self.assertTrue(x != x)
         self.assertIs(type(x), cls)
-        if cls is float:
+        wenn cls is float:
             self.assertIs(cls.from_number(NAN), NAN)
 
         self.assertRaises(TypeError, cls.from_number, '3.14')
@@ -484,7 +484,7 @@ klasse GeneralFloatCases(unittest.TestCase):
             self.assertEqualAndEqualSign(pow_op(-1.0, -INF), 1.0)
             self.assertEqualAndEqualSign(pow_op(-1.0, INF), 1.0)
 
-            # 1**y is 1 fuer any y, even if y is an infinity or nan
+            # 1**y is 1 fuer any y, even wenn y is an infinity or nan
             self.assertEqualAndEqualSign(pow_op(1.0, -INF), 1.0)
             self.assertEqualAndEqualSign(pow_op(1.0, -2.0), 1.0)
             self.assertEqualAndEqualSign(pow_op(1.0, -1.0), 1.0)
@@ -497,7 +497,7 @@ klasse GeneralFloatCases(unittest.TestCase):
             self.assertEqualAndEqualSign(pow_op(1.0, INF), 1.0)
             self.assertEqualAndEqualSign(pow_op(1.0, NAN), 1.0)
 
-            # x**+-0 is 1 fuer any x, even if x is a zero, infinity, or nan
+            # x**+-0 is 1 fuer any x, even wenn x is a zero, infinity, or nan
             self.assertEqualAndEqualSign(pow_op(-INF, 0.0), 1.0)
             self.assertEqualAndEqualSign(pow_op(-2.0, 0.0), 1.0)
             self.assertEqualAndEqualSign(pow_op(-1.0, 0.0), 1.0)
@@ -674,7 +674,7 @@ BE_FLOAT_NAN = b'\x7f\xc0\x00\x00'
 LE_FLOAT_NAN = bytes(reversed(BE_FLOAT_NAN))
 
 # on an IEEE platform, all we guarantee is that bit patterns
-# representing infinities or NaNs do not raise an exception; all else
+# representing infinities or NaNs do not raise an exception; all sonst
 # is accident (today).
 # let's also try to guarantee that -0.0 and 0.0 don't get confused.
 
@@ -800,10 +800,10 @@ klasse FormatTestCase(unittest.TestCase):
     def test_format_testfile(self):
         with open(format_testfile, encoding="utf-8") as testfile:
             fuer line in testfile:
-                if line.startswith('--'):
+                wenn line.startswith('--'):
                     continue
                 line = line.strip()
-                if not line:
+                wenn not line:
                     continue
 
                 lhs, rhs = map(str.strip, line.split('->'))
@@ -811,7 +811,7 @@ klasse FormatTestCase(unittest.TestCase):
                 f = float(arg)
                 self.assertEqual(fmt % f, rhs)
                 self.assertEqual(fmt % -f, '-' + rhs)
-                if fmt != '%r':
+                wenn fmt != '%r':
                     fmt2 = fmt[1:]
                     self.assertEqual(format(f, fmt2), rhs)
                     self.assertEqual(format(-f, fmt2), '-' + rhs)
@@ -847,7 +847,7 @@ klasse ReprTestCase(unittest.TestCase):
                   'floating_points.txt'), encoding="utf-8") as floats_file:
             fuer line in floats_file:
                 line = line.strip()
-                if not line or line.startswith('#'):
+                wenn not line or line.startswith('#'):
                     continue
                 v = eval(line)
                 self.assertEqual(v, eval(repr(v)))
@@ -887,7 +887,7 @@ klasse ReprTestCase(unittest.TestCase):
             '0.0001',
             '9.999999999999e-05',
             '1e-05',
-            # values designed to provoke failure if the FPU rounding
+            # values designed to provoke failure wenn the FPU rounding
             # precision isn't set correctly
             '8.72293771110361e+25',
             '7.47005307342313e+26',
@@ -1210,7 +1210,7 @@ klasse HexFloatTestCase(FloatsAreIdenticalMixin, unittest.TestCase):
                 result = fromHex(x)
             except ValueError:
                 pass
-            else:
+            sonst:
                 self.fail('Expected float.fromhex(%r) to raise ValueError; '
                           'got %r instead' % (x, result))
 
@@ -1558,7 +1558,7 @@ klasse HexFloatTestCase(FloatsAreIdenticalMixin, unittest.TestCase):
                 x = s*ldexp(m, e)
             except OverflowError:
                 pass
-            else:
+            sonst:
                 self.identical(x, fromHex(toHex(x)))
 
     def test_subclass(self):
@@ -1580,5 +1580,5 @@ klasse HexFloatTestCase(FloatsAreIdenticalMixin, unittest.TestCase):
         self.assertEqual(getattr(f, 'foo', 'none'), 'bar')
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

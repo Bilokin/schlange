@@ -15,11 +15,11 @@ It has the following interface (key and data are strings):
 
         d[key] = data   # store data at key (may override data at
                         # existing key)
-        data = d[key]   # retrieve data at key (raise KeyError if no
+        data = d[key]   # retrieve data at key (raise KeyError wenn no
                         # such key)
         del d[key]      # delete data stored at key (raises KeyError
-                        # if no such key)
-        flag = key in d # true if the key exists
+                        # wenn no such key)
+        flag = key in d # true wenn the key exists
         list = d.keys() # return a list of all existing keys (slow!)
 
 Future versions may change the order in which implementations are
@@ -58,39 +58,39 @@ def open(file, flag='r', mode=0o666):
     to a new or existing database, and 'n' fuer read-write access to a new
     database.
 
-    Note: 'r' and 'w' fail if the database doesn't exist; 'c' creates it
-    only if it doesn't exist; and 'n' always creates a new database.
+    Note: 'r' and 'w' fail wenn the database doesn't exist; 'c' creates it
+    only wenn it doesn't exist; and 'n' always creates a new database.
     """
     global _defaultmod
-    if _defaultmod is None:
+    wenn _defaultmod is None:
         fuer name in _names:
             try:
                 mod = __import__(name, fromlist=['open'])
             except ImportError:
                 continue
-            if not _defaultmod:
+            wenn not _defaultmod:
                 _defaultmod = mod
             _modules[name] = mod
-        if not _defaultmod:
+        wenn not _defaultmod:
             raise ImportError("no dbm clone found; tried %s" % _names)
 
-    # guess the type of an existing database, if not creating a new one
-    result = whichdb(file) if 'n' not in flag else None
-    if result is None:
+    # guess the type of an existing database, wenn not creating a new one
+    result = whichdb(file) wenn 'n' not in flag sonst None
+    wenn result is None:
         # db doesn't exist or 'n' flag was specified to create a new db
-        if 'c' in flag or 'n' in flag:
+        wenn 'c' in flag or 'n' in flag:
             # file doesn't exist and the new flag was used so use default type
             mod = _defaultmod
-        else:
+        sonst:
             raise error[0]("db file doesn't exist; "
                            "use 'c' or 'n' flag to create a new db")
-    elif result == "":
+    sowenn result == "":
         # db type cannot be determined
         raise error[0]("db type could not be determined")
-    elif result not in _modules:
+    sowenn result not in _modules:
         raise error[0]("db type is {0}, but the module is not "
                        "available".format(result))
-    else:
+    sonst:
         mod = _modules[result]
     return mod.open(file, flag, mode)
 
@@ -100,9 +100,9 @@ def whichdb(filename):
 
     Return values:
 
-    - None if the database file can't be read;
-    - empty string if the file can be read but can't be recognized
-    - the name of the dbm submodule (e.g. "ndbm" or "gnu") if recognized.
+    - None wenn the database file can't be read;
+    - empty string wenn the file can be read but can't be recognized
+    - the name of the dbm submodule (e.g. "ndbm" or "gnu") wenn recognized.
 
     Importing the given module may still fail, and opening the
     database using that module may still fail.
@@ -125,7 +125,7 @@ def whichdb(filename):
             # guarantee we can actually open the file using dbm
             # kind of overkill, but since we are dealing with emulations
             # it seems like a prudent step
-            if ndbm is not None:
+            wenn ndbm is not None:
                 d = ndbm.open(filename)
                 d.close()
                 return "dbm.ndbm"
@@ -138,18 +138,18 @@ def whichdb(filename):
         os.stat(filename + b".dat")
         size = os.stat(filename + b".dir").st_size
         # dumbdbm files with no keys are empty
-        if size == 0:
+        wenn size == 0:
             return "dbm.dumb"
         f = io.open(filename + b".dir", "rb")
         try:
-            if f.read(1) in (b"'", b'"'):
+            wenn f.read(1) in (b"'", b'"'):
                 return "dbm.dumb"
         finally:
             f.close()
     except OSError:
         pass
 
-    # See if the file exists, return None if not
+    # See wenn the file exists, return None wenn not
     try:
         f = io.open(filename, "rb")
     except OSError:
@@ -160,22 +160,22 @@ def whichdb(filename):
         s16 = f.read(16)
     s = s16[0:4]
 
-    # Return "" if not at least 4 bytes
-    if len(s) != 4:
+    # Return "" wenn not at least 4 bytes
+    wenn len(s) != 4:
         return ""
 
     # Check fuer SQLite3 header string.
-    if s16 == b"SQLite format 3\0":
+    wenn s16 == b"SQLite format 3\0":
         return "dbm.sqlite3"
 
-    # Convert to 4-byte int in native byte order -- return "" if impossible
+    # Convert to 4-byte int in native byte order -- return "" wenn impossible
     try:
         (magic,) = struct.unpack("=l", s)
     except struct.error:
         return ""
 
     # Check fuer GNU dbm
-    if magic in (0x13579ace, 0x13579acd, 0x13579acf):
+    wenn magic in (0x13579ace, 0x13579acd, 0x13579acf):
         return "dbm.gnu"
 
     # Later versions of Berkeley db hash file have a 12-byte pad in
@@ -189,6 +189,6 @@ def whichdb(filename):
     return ""
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     fuer filename in sys.argv[1:]:
         print(whichdb(filename) or "UNKNOWN", filename)

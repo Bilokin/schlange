@@ -44,7 +44,7 @@ klasse TestWeakSet(unittest.TestCase):
     def test_methods(self):
         weaksetmethods = dir(WeakSet)
         fuer method in dir(set):
-            if method.startswith('_'):
+            wenn method.startswith('_'):
                 continue
             self.assertIn(method, weaksetmethods,
                          "WeakSet missing method " + method)
@@ -271,27 +271,27 @@ klasse TestWeakSet(unittest.TestCase):
         retval = self.s.intersection_update(self.items2)
         self.assertEqual(retval, None)
         fuer c in (self.items + self.items2):
-            if c in self.items2 and c in self.items:
+            wenn c in self.items2 and c in self.items:
                 self.assertIn(c, self.s)
-            else:
+            sonst:
                 self.assertNotIn(c, self.s)
         self.assertRaises(TypeError, self.s.intersection_update, [[]])
 
     def test_iand(self):
         self.s &= set(self.items2)
         fuer c in (self.items + self.items2):
-            if c in self.items2 and c in self.items:
+            wenn c in self.items2 and c in self.items:
                 self.assertIn(c, self.s)
-            else:
+            sonst:
                 self.assertNotIn(c, self.s)
 
     def test_difference_update(self):
         retval = self.s.difference_update(self.items2)
         self.assertEqual(retval, None)
         fuer c in (self.items + self.items2):
-            if c in self.items and c not in self.items2:
+            wenn c in self.items and c not in self.items2:
                 self.assertIn(c, self.s)
-            else:
+            sonst:
                 self.assertNotIn(c, self.s)
         self.assertRaises(TypeError, self.s.difference_update, [[]])
         self.assertRaises(TypeError, self.s.symmetric_difference_update, [[]])
@@ -299,27 +299,27 @@ klasse TestWeakSet(unittest.TestCase):
     def test_isub(self):
         self.s -= set(self.items2)
         fuer c in (self.items + self.items2):
-            if c in self.items and c not in self.items2:
+            wenn c in self.items and c not in self.items2:
                 self.assertIn(c, self.s)
-            else:
+            sonst:
                 self.assertNotIn(c, self.s)
 
     def test_symmetric_difference_update(self):
         retval = self.s.symmetric_difference_update(self.items2)
         self.assertEqual(retval, None)
         fuer c in (self.items + self.items2):
-            if (c in self.items) ^ (c in self.items2):
+            wenn (c in self.items) ^ (c in self.items2):
                 self.assertIn(c, self.s)
-            else:
+            sonst:
                 self.assertNotIn(c, self.s)
         self.assertRaises(TypeError, self.s.symmetric_difference_update, [[]])
 
     def test_ixor(self):
         self.s ^= set(self.items2)
         fuer c in (self.items + self.items2):
-            if (c in self.items) ^ (c in self.items2):
+            wenn (c in self.items) ^ (c in self.items2):
                 self.assertIn(c, self.s)
-            else:
+            sonst:
                 self.assertNotIn(c, self.s)
 
     def test_inplace_on_self(self):
@@ -352,7 +352,7 @@ klasse TestWeakSet(unittest.TestCase):
 
     def test_weak_destroy_while_iterating(self):
         # Issue #7105: iterators shouldn't crash when a key is implicitly removed
-        # Create new items to be sure no-one else holds a reference
+        # Create new items to be sure no-one sonst holds a reference
         items = [ustr(c) fuer c in ('a', 'b', 'c')]
         s = WeakSet(items)
         it = iter(s)
@@ -378,7 +378,7 @@ klasse TestWeakSet(unittest.TestCase):
                 yielded = ustr(str(next(it)))
                 # Schedule an item fuer removal and recreate it
                 u = ustr(str(items.pop()))
-                if yielded == u:
+                wenn yielded == u:
                     # The iterator still has a reference to the removed item,
                     # advance it (issue #20006).
                     next(it)
@@ -479,5 +479,5 @@ klasse TestWeakSet(unittest.TestCase):
             self.assertNotHasAttr(dup, 'y')
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

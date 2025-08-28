@@ -58,13 +58,13 @@ fuer c_name, ctypes_name in {
 TESTCASES = {}
 def register(name=None, set_name=False):
     def decorator(cls, name=name):
-        if name is None:
+        wenn name is None:
             name = cls.__name__
         assert name.isascii()  # will be used in _PyUnicode_EqualToASCIIString
         assert name.isidentifier()  # will be used as a C identifier
         assert name not in TESTCASES
         TESTCASES[name] = cls
-        if set_name:
+        wenn set_name:
             cls.__name__ = name
         return cls
     return decorator
@@ -153,7 +153,7 @@ klasse Packed4(Structure):
         # On a Pentium, int64 is 32-bit aligned, so the two won't match.
         # The expected behavior is instead tested in
         # StructureTestCase.test_packed, over in test_structures.py.
-        if sizeof(c_int64) != alignment(c_int64):
+        wenn sizeof(c_int64) != alignment(c_int64):
             raise unittest.SkipTest('cannot test on this platform')
 
     _fields_ = [('a', c_int8), ('b', c_int64)]
@@ -464,11 +464,11 @@ klasse GeneratedTest(unittest.TestCase, StructCheckMixin):
         fuer name, cls in TESTCASES.items():
             with self.subTest(name=name):
                 self.check_struct_or_union(cls)
-                if _maybe_skip := getattr(cls, '_maybe_skip', None):
+                wenn _maybe_skip := getattr(cls, '_maybe_skip', None):
                     _maybe_skip()
                 expected = iter(_ctypes_test.get_generated_test_data(name))
                 expected_name = next(expected)
-                if expected_name is None:
+                wenn expected_name is None:
                     self.skipTest(next(expected))
                 self.assertEqual(name, expected_name)
                 self.assertEqual(sizeof(cls), next(expected))
@@ -482,7 +482,7 @@ klasse GeneratedTest(unittest.TestCase, StructCheckMixin):
                             field.set_to(obj, value)
                             py_mem = string_at(ptr, sizeof(obj))
                             c_mem = next(expected)
-                            if py_mem != c_mem:
+                            wenn py_mem != c_mem:
                                 # Generate a helpful failure message
                                 lines, requires = dump_ctype(cls)
                                 m = "\n".join([str(field), 'in:', *lines])
@@ -510,11 +510,11 @@ def c_str_repr(string):
 def dump_simple_ctype(tp, variable_name='', semi=''):
     """Get C type name or declaration of a scalar type
 
-    variable_name: if given, declare the given variable
+    variable_name: wenn given, declare the given variable
     semi: a semicolon, and/or bitfield specification to tack on to the end
     """
     length = getattr(tp, '_length_', None)
-    if length is not None:
+    wenn length is not None:
         return f'{dump_simple_ctype(tp._type_, variable_name)}[{length}]{semi}'
     assert not issubclass(tp, (Structure, Union))
     return f'{tp._c_name}{maybe_space(variable_name)}{semi}'
@@ -524,20 +524,20 @@ def dump_ctype(tp, struct_or_union_tag='', variable_name='', semi=''):
     """Get C type name or declaration of a ctype
 
     struct_or_union_tag: name of the struct or union
-    variable_name: if given, declare the given variable
+    variable_name: wenn given, declare the given variable
     semi: a semicolon, and/or bitfield specification to tack on to the end
     """
     requires = set()
-    if issubclass(tp, (Structure, Union)):
+    wenn issubclass(tp, (Structure, Union)):
         attributes = []
         pushes = []
         pops = []
         pack = getattr(tp, '_pack_', None)
-        if pack is not None:
+        wenn pack is not None:
             pushes.append(f'#pragma pack(push, {pack})')
             pops.append(f'#pragma pack(pop)')
         layout = getattr(tp, '_layout_', None)
-        if layout == 'ms':
+        wenn layout == 'ms':
             # The 'ms_struct' attribute only works on x86 and PowerPC
             requires.add(
                 'defined(MS_WIN32) || ('
@@ -545,19 +545,19 @@ def dump_ctype(tp, struct_or_union_tag='', variable_name='', semi=''):
                     'defined(__GNUC__) || defined(__clang__)))'
                 )
             attributes.append('ms_struct')
-        if attributes:
+        wenn attributes:
             a = f' GCC_ATTR({", ".join(attributes)})'
-        else:
+        sonst:
             a = ''
         lines = [f'{struct_or_union(tp)}{a}{maybe_space(struct_or_union_tag)} ' +'{']
         fuer fielddesc in tp._fields_:
             f_name, f_tp, f_bits = unpack_field_desc(*fielddesc)
-            if f_name in getattr(tp, '_anonymous_', ()):
+            wenn f_name in getattr(tp, '_anonymous_', ()):
                 f_name = ''
-            if f_bits is None:
+            wenn f_bits is None:
                 subsemi = ';'
-            else:
-                if f_tp not in (c_int, c_uint):
+            sonst:
+                wenn f_tp not in (c_int, c_uint):
                     # XLC can reportedly only handle int & unsigned int
                     # bitfields (the only types required by C spec)
                     requires.add('!defined(__xlc__)')
@@ -569,18 +569,18 @@ def dump_ctype(tp, struct_or_union_tag='', variable_name='', semi=''):
                 lines.append('    ' + line)
         lines.append(f'}}{maybe_space(variable_name)}{semi}')
         return [*pushes, *lines, *reversed(pops)], requires
-    else:
+    sonst:
         return [dump_simple_ctype(tp, variable_name, semi)], requires
 
 def struct_or_union(cls):
-    if issubclass(cls, Structure):
+    wenn issubclass(cls, Structure):
          return 'struct'
-    if issubclass(cls, Union):
+    wenn issubclass(cls, Union):
         return 'union'
     raise TypeError(cls)
 
 def maybe_space(string):
-    if string:
+    wenn string:
         return ' ' + string
     return string
 
@@ -593,7 +593,7 @@ klasse FieldInfo:
     """Information about a (possibly nested) struct/union field"""
     name: str
     tp: type
-    bits: int | None  # number if this is a bit field
+    bits: int | None  # number wenn this is a bit field
     parent_type: type
     parent: 'FieldInfo' #| None
     descriptor: object
@@ -602,13 +602,13 @@ klasse FieldInfo:
     @cached_property
     def attr_path(self):
         """Attribute names to get at the value of this field"""
-        if self.name in getattr(self.parent_type, '_anonymous_', ()):
+        wenn self.name in getattr(self.parent_type, '_anonymous_', ()):
             selfpath = ()
-        else:
+        sonst:
             selfpath = (self.name,)
-        if self.parent:
+        wenn self.parent:
             return (*self.parent.attr_path, *selfpath)
-        else:
+        sonst:
             return selfpath
 
     @cached_property
@@ -624,9 +624,9 @@ klasse FieldInfo:
 
     @cached_property
     def root(self):
-        if self.parent is None:
+        wenn self.parent is None:
             return self
-        else:
+        sonst:
             return self.parent
 
     def __repr__(self):
@@ -643,18 +643,18 @@ def iterfields(tp, parent=None):
         fields = tp._fields_
     except AttributeError:
         yield parent
-    else:
+    sonst:
         fuer fielddesc in fields:
             f_name, f_tp, f_bits = unpack_field_desc(*fielddesc)
             descriptor = getattr(tp, f_name)
             byte_offset = descriptor.byte_offset
-            if parent:
+            wenn parent:
                 byte_offset += parent.byte_offset
             sub = FieldInfo(f_name, f_tp, f_bits, tp, parent, descriptor, byte_offset)
             yield from iterfields(f_tp, sub)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     # Dump C source to stdout
     def output(string):
         print(re.compile(r'^ +$', re.MULTILINE).sub('', string).lstrip('\n'))
@@ -664,13 +664,13 @@ if __name__ == '__main__':
         // Append VALUE to the result.
         #define APPEND(ITEM) {                          \\
             PyObject *item = ITEM;                      \\
-            if (!item) {                                \\
+            wenn (!item) {                                \\
                 Py_DECREF(result);                      \\
                 return NULL;                            \\
             }                                           \\
             int rv = PyList_Append(result, item);       \\
             Py_DECREF(item);                            \\
-            if (rv < 0) {                               \\
+            wenn (rv < 0) {                               \\
                 Py_DECREF(result);                      \\
                 return NULL;                            \\
             }                                           \\
@@ -703,21 +703,21 @@ if __name__ == '__main__':
         static PyObject *
         get_generated_test_data(PyObject *self, PyObject *name)
         {
-            if (!PyUnicode_Check(name)) {
+            wenn (!PyUnicode_Check(name)) {
                 PyErr_SetString(PyExc_TypeError, "need a string");
                 return NULL;
             }
             PyObject *result = PyList_New(0);
-            if (!result) {
+            wenn (!result) {
                 return NULL;
             }
     """)
     fuer name, cls in TESTCASES.items():
         output("""
-            if (PyUnicode_CompareWithASCIIString(name, %s) == 0) {
+            wenn (PyUnicode_CompareWithASCIIString(name, %s) == 0) {
             """ % c_str_repr(name))
         lines, requires = dump_ctype(cls, struct_or_union_tag=name, semi=';')
-        if requires:
+        wenn requires:
             output(f"""
             #if {" && ".join(f'({r})' fuer r in sorted(requires))}
             """)
@@ -736,7 +736,7 @@ if __name__ == '__main__':
             output(f"""\
                 TEST_FIELD({f_tp}, value.{field.full_name});
             """.rstrip())
-        if requires:
+        wenn requires:
             output(f"""
             #else
                 APPEND(Py_NewRef(Py_None));

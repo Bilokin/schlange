@@ -11,17 +11,17 @@ klasse TStringBaseCase:
         (value, expression, conversion, format_spec) where the final three
         items may be omitted and are assumed to be '', None and '' respectively.
         """
-        if len(exp) == 4:
+        wenn len(exp) == 4:
             actual = (i.value, i.expression, i.conversion, i.format_spec)
             self.assertEqual(actual, exp)
-        elif len(exp) == 3:
+        sowenn len(exp) == 3:
             self.assertEqual((i.value, i.expression, i.conversion), exp)
             self.assertEqual(i.format_spec, "")
-        elif len(exp) == 2:
+        sowenn len(exp) == 2:
             self.assertEqual((i.value, i.expression), exp)
             self.assertEqual(i.conversion, None)
             self.assertEqual(i.format_spec, "")
-        elif len(exp) == 1:
+        sowenn len(exp) == 1:
             self.assertEqual((i.value,), exp)
             self.assertEqual(i.expression, "")
             self.assertEqual(i.conversion, None)
@@ -44,11 +44,11 @@ klasse TStringBaseCase:
 
 
 def convert(value, conversion):
-    if conversion == "a":
+    wenn conversion == "a":
         return ascii(value)
-    elif conversion == "r":
+    sowenn conversion == "r":
         return repr(value)
-    elif conversion == "s":
+    sowenn conversion == "s":
         return str(value)
     return value
 

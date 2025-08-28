@@ -27,7 +27,7 @@ def randomfd( t, distance, parts, angledist ):
 def tree(tlist, size, level, widthfactor, branchlists, angledist=10, sizedist=5):
     # benutzt Liste von turtles und Liste von Zweiglisten,
     # fuer jede turtle eine!
-    if level > 0:
+    wenn level > 0:
         lst = []
         brs = []
         fuer t, branchlist in list(zip(tlist,branchlists)):
@@ -92,13 +92,13 @@ def main():
                 b.__next__()
             except:
                 done += 1
-        if done == 3:
+        wenn done == 3:
             break
 
     tracer(1,10)
     b = clock()
     return "runtime: %.2f sec." % (b-a)
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     main()
     mainloop()

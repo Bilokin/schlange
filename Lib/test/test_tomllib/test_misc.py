@@ -60,9 +60,9 @@ klasse TestMiscellaneous(unittest.TestCase):
         fuer k, expected_val in expected.items():
             actual_val = obj[k]
             self.assertIsInstance(actual_val, D)
-            if actual_val.is_nan():
+            wenn actual_val.is_nan():
                 self.assertTrue(expected_val.is_nan())
-            else:
+            sonst:
                 self.assertEqual(actual_val, expected_val)
 
     def test_deepcopy(self):
@@ -97,7 +97,7 @@ klasse TestMiscellaneous(unittest.TestCase):
         with support.infinite_recursion(max_depth=100):
             available = support.get_recursion_available()
             nest_count = (available // 2) - 2
-            # Add details if the test fails
+            # Add details wenn the test fails
             with self.subTest(limit=sys.getrecursionlimit(),
                               available=available,
                               nest_count=nest_count):
@@ -108,7 +108,7 @@ klasse TestMiscellaneous(unittest.TestCase):
         with support.infinite_recursion(max_depth=100):
             available = support.get_recursion_available()
             nest_count = (available // 3) - 1
-            # Add details if the test fails
+            # Add details wenn the test fails
             with self.subTest(limit=sys.getrecursionlimit(),
                               available=available,
                               nest_count=nest_count):

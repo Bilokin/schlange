@@ -24,7 +24,7 @@ klasse SAXException(Exception):
         return self._msg
 
     def getException(self):
-        "Return the embedded exception, or None if there was none."
+        "Return the embedded exception, or None wenn there was none."
         return self._exception
 
     def __str__(self):
@@ -32,7 +32,7 @@ klasse SAXException(Exception):
         return self._msg
 
     def __getitem__(self, ix):
-        """Avoids weird error messages if someone does exception[ix] by
+        """Avoids weird error messages wenn someone does exception[ix] by
         mistake, since Exception has __getitem__ defined."""
         raise AttributeError("__getitem__")
 
@@ -85,13 +85,13 @@ klasse SAXParseException(SAXException):
     def __str__(self):
         "Create a string representation of the exception."
         sysid = self.getSystemId()
-        if sysid is None:
+        wenn sysid is None:
             sysid = "<unknown>"
         linenum = self.getLineNumber()
-        if linenum is None:
+        wenn linenum is None:
             linenum = "?"
         colnum = self.getColumnNumber()
-        if colnum is None:
+        wenn colnum is None:
             colnum = "?"
         return "%s:%s:%s: %s" % (sysid, linenum, colnum, self._msg)
 
@@ -123,5 +123,5 @@ klasse SAXReaderNotAvailable(SAXNotSupportedException):
 
     An XMLReader module (driver) should raise this exception when it
     is first imported, e.g. when a support module cannot be imported.
-    It also may be raised during parsing, e.g. if executing an external
+    It also may be raised during parsing, e.g. wenn executing an external
     program is not permitted."""

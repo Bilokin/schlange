@@ -20,9 +20,9 @@ klasse AudioTests:
         self.f = self.fout = None
 
     def tearDown(self):
-        if self.f is not None:
+        wenn self.f is not None:
             self.f.close()
-        if self.fout is not None:
+        wenn self.fout is not None:
             self.fout.close()
         unlink(TESTFN)
 
@@ -78,7 +78,7 @@ klasse AudioWriteTests(AudioTests):
 
     def test_write_context_manager_calls_close(self):
         # Close checks fuer a minimum header and will raise an error
-        # if it is not set, so this proves that close is called.
+        # wenn it is not set, so this proves that close is called.
         with self.assertRaises(self.module.Error):
             with self.module.open(TESTFN, 'wb'):
                 pass
@@ -102,7 +102,7 @@ klasse AudioWriteTests(AudioTests):
                 self.assertEqual(params.nchannels, self.nchannels)
                 self.assertEqual(params.sampwidth, self.sampwidth)
                 self.assertEqual(params.framerate, self.framerate)
-            if not self.close_fd:
+            wenn not self.close_fd:
                 self.assertIsNone(f.getfp())
             self.assertEqual(testfile.closed, self.close_fd)
 
@@ -120,7 +120,7 @@ klasse AudioWriteTests(AudioTests):
             self.assertEqual(params.nchannels, self.nchannels)
             self.assertEqual(params.sampwidth, self.sampwidth)
             self.assertEqual(params.framerate, self.framerate)
-        if not self.close_fd:
+        wenn not self.close_fd:
             self.assertIsNone(f.getfp())
 
     def test_write(self):

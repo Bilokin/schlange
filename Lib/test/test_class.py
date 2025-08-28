@@ -143,7 +143,7 @@ klasse ClassTests(unittest.TestCase):
     def assertCallStack(self, expected_calls):
         actualCallList = callLst[:]  # need to copy because the comparison below will add
                                      # additional calls to callLst
-        if expected_calls != actualCallList:
+        wenn expected_calls != actualCallList:
             self.fail("Expected call list:\n  %s\ndoes not match actual call list\n  %s" %
                       (expected_calls, actualCallList))
 
@@ -570,7 +570,7 @@ klasse ClassTests(unittest.TestCase):
             a() # This should not segfault
         except RecursionError:
             pass
-        else:
+        sonst:
             self.fail("Failed to raise RecursionError")
 
     def testForExceptionsRaisedInInstanceGetattr2(self):
@@ -584,7 +584,7 @@ klasse ClassTests(unittest.TestCase):
         try:
             A().a # Raised AttributeError: A instance has no attribute 'a'
         except AttributeError as x:
-            if str(x) != "booh":
+            wenn str(x) != "booh":
                 self.fail("attribute error fuer A().a got masked: %s" % x)
 
         klasse E:
@@ -599,7 +599,7 @@ klasse ClassTests(unittest.TestCase):
             I()
         except AttributeError:
             pass
-        else:
+        sonst:
             self.fail("attribute error fuer I.__init__ got masked")
 
     def assertNotOrderable(self, a, b):
@@ -700,9 +700,9 @@ klasse ClassTests(unittest.TestCase):
             __slots__ = ("y",)
 
             def __setattr__(self, name, value) -> None:
-                if name == "z":
+                wenn name == "z":
                     super().__setattr__("y", 1)
-                else:
+                sonst:
                     super().__setattr__(name, value)
 
         error_msg = "'A' object has no attribute 'x'"
@@ -990,7 +990,7 @@ klasse TestInlineValues(unittest.TestCase):
 
     @cpython_only
     def test_detach_materialized_dict_no_memory(self):
-        # Skip test if _testcapi is not available:
+        # Skip test wenn _testcapi is not available:
         import_helper.import_module('_testcapi')
 
         code = """if 1:
@@ -1011,7 +1011,7 @@ klasse TestInlineValues(unittest.TestCase):
                 d["a"]
             except KeyError:
                 pass
-            else:
+            sonst:
                 assert False, "KeyError not raised"
         """
         rc, out, err = script_helper.assert_python_ok("-c", code)
@@ -1019,5 +1019,5 @@ klasse TestInlineValues(unittest.TestCase):
         self.assertFalse(out, msg=out.decode('utf-8'))
         self.assertFalse(err, msg=err.decode('utf-8'))
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

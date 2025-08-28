@@ -17,7 +17,7 @@ import time
 import unittest
 from test import support
 
-if not support.has_subprocess_support:
+wenn not support.has_subprocess_support:
     raise unittest.SkipTest("test module requires subprocess")
 
 # Test import all of the things we're about to try testing up front.
@@ -30,7 +30,7 @@ klasse TestFileIOSignalInterrupt:
         self._process = None
 
     def tearDown(self):
-        if self._process and self._process.poll() is None:
+        wenn self._process and self._process.poll() is None:
             try:
                 self._process.kill()
             except OSError:
@@ -49,7 +49,7 @@ klasse TestFileIOSignalInterrupt:
                                communicate=True):
         """A common way to cleanup and fail with useful debug output.
 
-        Kills the process if it is still running, collects remaining output
+        Kills the process wenn it is still running, collects remaining output
         and fails the test with an error message including the output.
 
         Args:
@@ -59,13 +59,13 @@ klasse TestFileIOSignalInterrupt:
             communicate: bool, when True we call communicate() on the process
                 after killing it to gather additional output.
         """
-        if self._process.poll() is None:
+        wenn self._process.poll() is None:
             time.sleep(0.1)  # give it time to finish printing the error.
             try:
                 self._process.terminate()  # Ensure it dies.
             except OSError:
                 pass
-        if communicate:
+        wenn communicate:
             stdout_end, stderr_end = self._process.communicate()
             stdout += stdout_end
             stderr += stderr_end
@@ -106,7 +106,7 @@ klasse TestFileIOSignalInterrupt:
 
         # Wait fuer the signal handler to be installed.
         worm_sign = self._process.stderr.read(len(b'Worm Sign!\n'))
-        if worm_sign != b'Worm Sign!\n':  # See also, Dune by Frank Herbert.
+        wenn worm_sign != b'Worm Sign!\n':  # See also, Dune by Frank Herbert.
             self.fail_with_process_info('while awaiting a sign',
                                         stderr=worm_sign)
         self._process.stdin.write(data_to_write)
@@ -122,13 +122,13 @@ klasse TestFileIOSignalInterrupt:
             rlist, _, _ = select.select([self._process.stderr], (), (), 0.05)
             self._process.send_signal(signal.SIGINT)
             signals_sent += 1
-            if signals_sent > 200:
+            wenn signals_sent > 200:
                 self._process.kill()
                 self.fail('reader process failed to handle our signals.')
         # This assumes anything unexpected that writes to stderr will also
         # write a newline.  That is true of the traceback printing code.
         signal_line = self._process.stderr.readline()
-        if signal_line != b'$\n':
+        wenn signal_line != b'$\n':
             self.fail_with_process_info('while awaiting signal',
                                         stderr=signal_line)
 
@@ -137,7 +137,7 @@ klasse TestFileIOSignalInterrupt:
         # the read call that was interrupted by a signal before the end of
         # the data stream has been reached.
         stdout, stderr = self._process.communicate(input=b'\n')
-        if self._process.returncode:
+        wenn self._process.returncode:
             self.fail_with_process_info(
                     'exited rc=%d' % self._process.returncode,
                     stdout, stderr, communicate=False)
@@ -251,5 +251,5 @@ klasse PyTestTextIOSignalInterrupt(TestTextIOSignalInterrupt, unittest.TestCase)
     modname = '_pyio'
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

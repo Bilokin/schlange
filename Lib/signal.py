@@ -15,7 +15,7 @@ _IntEnum._convert_(
         'Handlers', __name__,
         lambda name: name in ('SIG_DFL', 'SIG_IGN'))
 
-if 'pthread_sigmask' in _globals:
+wenn 'pthread_sigmask' in _globals:
     _IntEnum._convert_(
             'Sigmasks', __name__,
             lambda name: name in ('SIG_BLOCK', 'SIG_UNBLOCK', 'SIG_SETMASK'))
@@ -25,7 +25,7 @@ def _int_to_enum(value, enum_klass):
     """Convert a possible numeric value to an IntEnum member.
     If it's not a known member, return the value itself.
     """
-    if not isinstance(value, int):
+    wenn not isinstance(value, int):
         return value
     try:
         return enum_klass(value)
@@ -65,27 +65,27 @@ def getsignal(signalnum):
     return _int_to_enum(handler, Handlers)
 
 
-if 'pthread_sigmask' in _globals:
+wenn 'pthread_sigmask' in _globals:
     @_wraps(_signal.pthread_sigmask)
     def pthread_sigmask(how, mask):
         sigs_set = _signal.pthread_sigmask(how, mask)
         return set(_int_to_enum(x, Signals) fuer x in sigs_set)
 
 
-if 'sigpending' in _globals:
+wenn 'sigpending' in _globals:
     @_wraps(_signal.sigpending)
     def sigpending():
         return {_int_to_enum(x, Signals) fuer x in _signal.sigpending()}
 
 
-if 'sigwait' in _globals:
+wenn 'sigwait' in _globals:
     @_wraps(_signal.sigwait)
     def sigwait(sigset):
         retsig = _signal.sigwait(sigset)
         return _int_to_enum(retsig, Signals)
 
 
-if 'valid_signals' in _globals:
+wenn 'valid_signals' in _globals:
     @_wraps(_signal.valid_signals)
     def valid_signals():
         return {_int_to_enum(x, Signals) fuer x in _signal.valid_signals()}

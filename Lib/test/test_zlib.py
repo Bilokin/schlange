@@ -23,9 +23,9 @@ def _zlib_runtime_version_tuple(zlib_version=zlib.ZLIB_RUNTIME_VERSION):
     # Register "1.2.3" as "1.2.3.0"
     # or "1.2.0-linux","1.2.0.f","1.2.0.f-linux"
     v = zlib_version.split('-', 1)[0].split('.')
-    if len(v) < 4:
+    wenn len(v) < 4:
         v.append('0')
-    elif not v[-1].isnumeric():
+    sowenn not v[-1].isnumeric():
         v[-1] = '0'
     return tuple(map(int, v))
 
@@ -47,7 +47,7 @@ ZLIB_RUNTIME_VERSION_TUPLE = _zlib_runtime_version_tuple()
 #       x2 = co.flush()
 #       return x1 + x2
 #
-# On s390x if zlib uses a hardware accelerator, func1() creates a single
+# On s390x wenn zlib uses a hardware accelerator, func1() creates a single
 # "final" compressed block whereas func2() produces 3 compressed blocks (the
 # last one is a final block). On other platforms with no accelerator, func1()
 # and func2() produce the same compressed data made of a single (final)
@@ -59,7 +59,7 @@ ZLIB_RUNTIME_VERSION_TUPLE = _zlib_runtime_version_tuple()
 #   zlib.decompress(func1(data)) == zlib.decompress(func2(data)) == data
 #
 # To simplify the skip condition, make the assumption that s390x always has an
-# accelerator, and nothing else has it.
+# accelerator, and nothing sonst has it.
 HW_ACCELERATED = is_s390x
 
 
@@ -128,13 +128,13 @@ klasse ChecksumCombineMixin:
     def parse_iv(self, iv):
         """Parse an IV value.
 
-        - The default IV is returned if *iv* is None.
-        - A random IV is returned if *iv* is -1.
+        - The default IV is returned wenn *iv* is None.
+        - A random IV is returned wenn *iv* is -1.
         - Otherwise, *iv* is returned as is.
         """
-        if iv is None:
+        wenn iv is None:
             return self.default_iv
-        if iv == -1:
+        wenn iv == -1:
             return random.randint(1, 0x80000000)
         return iv
 
@@ -340,7 +340,7 @@ klasse CompressTestCase(BaseCompressTestCase, unittest.TestCase):
         x = zlib.compress(data)
         # With hardware acceleration, the compressed bytes
         # might not be identical.
-        if not HW_ACCELERATED:
+        wenn not HW_ACCELERATED:
             self.assertEqual(zlib.compress(bytearray(data)), x)
         fuer ob in x, bytearray(x):
             self.assertEqual(zlib.decompress(ob), data)
@@ -400,7 +400,7 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
             self.assertRaises(zlib.error, co.flush) # second flush should not work
             # With hardware acceleration, the compressed bytes might not
             # be identical.
-            if not HW_ACCELERATED:
+            wenn not HW_ACCELERATED:
                 self.assertEqual(x1 + x2, datazip)
         fuer v1, v2 in ((x1, x2), (bytearray(x1), bytearray(x2))):
             dco = zlib.decompressobj()
@@ -486,14 +486,14 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
                              "(A) uct should be b'': not %d long" %
                                        len(dco.unconsumed_tail))
             self.assertEqual(b'', dco.unused_data)
-        if flush:
+        wenn flush:
             bufs.append(dco.flush())
-        else:
+        sonst:
             while True:
                 chunk = dco.decompress(b'')
-                if chunk:
+                wenn chunk:
                     bufs.append(chunk)
-                else:
+                sonst:
                     break
         self.assertEqual(b'', dco.unconsumed_tail, ########
                          "(B) uct should be b'': not %d long" %
@@ -554,9 +554,9 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
                         'chunk too big (%d>%d)' % (len(chunk),max_length))
             bufs.append(chunk)
             cb = dco.unconsumed_tail
-        if flush:
+        wenn flush:
             bufs.append(dco.flush())
-        else:
+        sonst:
             while chunk:
                 chunk = dco.decompress(b'', max_length)
                 self.assertFalse(len(chunk) > max_length,
@@ -604,11 +604,11 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
                     'Z_PARTIAL_FLUSH']
 
         # Z_BLOCK has a known failure prior to 1.2.5.3
-        if ZLIB_RUNTIME_VERSION_TUPLE >= (1, 2, 5, 3):
+        wenn ZLIB_RUNTIME_VERSION_TUPLE >= (1, 2, 5, 3):
             sync_opt.append('Z_BLOCK')
 
         sync_opt = [getattr(zlib, opt) fuer opt in sync_opt
-                    if hasattr(zlib, opt)]
+                    wenn hasattr(zlib, opt)]
         data = HAMLET_SCENE * 8
 
         fuer sync in sync_opt:
@@ -644,7 +644,7 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         second = co.flush(zlib.Z_SYNC_FLUSH)
         expanded = dco.decompress(first + second)
 
-        # if decompressed data is different from the input data, choke.
+        # wenn decompressed data is different from the input data, choke.
         self.assertEqual(expanded, data, "17K random source doesn't match")
 
     def test_empty_flush(self):
@@ -731,12 +731,12 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
                 dco = zlib.decompressobj()
                 data = b''
                 fuer i in range(0, len(x), step):
-                    if i < len(y):
+                    wenn i < len(y):
                         self.assertEqual(dco.unused_data, b'')
-                    if maxlen == 0:
+                    wenn maxlen == 0:
                         data += dco.decompress(x[i : i + step])
                         self.assertEqual(dco.unconsumed_tail, b'')
-                    else:
+                    sonst:
                         data += dco.decompress(
                                 dco.unconsumed_tail + x[i : i + step], maxlen)
                 data += dco.flush()
@@ -756,7 +756,7 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
 
     def test_flush_with_freed_input(self):
         # Issue #16411: decompressor accesses input to last decompress() call
-        # in flush(), even if this object has been freed in the meanwhile.
+        # in flush(), even wenn this object has been freed in the meanwhile.
         input1 = b'abcdefghijklmnopqrstuvwxyz'
         input2 = b'QWERTYUIOPASDFGHJKLZXCVBNM'
         data = zlib.compress(input1)
@@ -923,7 +923,7 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         co = zlib.compressobj(level=1, wbits=15)
         zlib15 = co.compress(HAMLET_SCENE) + co.flush()
         self.assertEqual(zlib.decompress(zlib15, 15), HAMLET_SCENE)
-        if supports_wbits_0:
+        wenn supports_wbits_0:
             self.assertEqual(zlib.decompress(zlib15, 0), HAMLET_SCENE)
         self.assertEqual(zlib.decompress(zlib15, 32 + 15), HAMLET_SCENE)
         with self.assertRaisesRegex(zlib.error, 'invalid window size'):
@@ -938,7 +938,7 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         zlib9 = co.compress(HAMLET_SCENE) + co.flush()
         self.assertEqual(zlib.decompress(zlib9, 9), HAMLET_SCENE)
         self.assertEqual(zlib.decompress(zlib9, 15), HAMLET_SCENE)
-        if supports_wbits_0:
+        wenn supports_wbits_0:
             self.assertEqual(zlib.decompress(zlib9, 0), HAMLET_SCENE)
         self.assertEqual(zlib.decompress(zlib9, 32 + 9), HAMLET_SCENE)
         dco = zlib.decompressobj(wbits=32 + 9)
@@ -974,7 +974,7 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
 
 def choose_lines(source, number, seed=None, generator=random):
     """Return a list of number lines randomly chosen from the source"""
-    if seed is not None:
+    wenn seed is not None:
         generator.seed(seed)
     sources = source.split('\n')
     return [generator.choice(sources) fuer n in range(number)]
@@ -1070,7 +1070,7 @@ klasse ZlibDecompressorTest(unittest.TestCase):
         n = 0
         while True:
             str = self.DATA[n*10:(n+1)*10]
-            if not str:
+            wenn not str:
                 break
             text += zlibd.decompress(str)
             n += 1
@@ -1222,5 +1222,5 @@ klasse CustomInt:
         return 100
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

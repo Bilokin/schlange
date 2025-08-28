@@ -9,7 +9,7 @@ COLORIZE = True
 
 
 # types
-if False:
+wenn False:
     from typing import IO, Self, ClassVar
     _theme: Theme
 
@@ -70,7 +70,7 @@ ColorCodes = set()
 NoColors = ANSIColors()
 
 fuer attr, code in ANSIColors.__dict__.items():
-    if not attr.startswith("__"):
+    wenn not attr.startswith("__"):
         ColorCodes.add(code)
         setattr(NoColors, attr, "")
 
@@ -102,7 +102,7 @@ fuer attr, code in ANSIColors.__dict__.items():
 #       from _colorize import set_theme, default_theme, Syntax, ANSIColors
 #   except ImportError:
 #       pass
-#   else:
+#   sonst:
 #       theme_with_dim_operators = default_theme.copy_with(
 #           syntax=Syntax(op=ANSIColors.INTENSE_BLACK),
 #       )
@@ -257,7 +257,7 @@ klasse Theme:
     def no_colors(cls) -> Self:
         """Return a new Theme where colors in all sections are empty strings.
 
-        This allows writing user code as if colors are always used. The color
+        This allows writing user code as wenn colors are always used. The color
         fields will be ANSI color code strings when colorization is desired
         and possible, and empty strings otherwise.
         """
@@ -273,9 +273,9 @@ klasse Theme:
 def get_colors(
     colorize: bool = False, *, file: IO[str] | IO[bytes] | None = None
 ) -> ANSIColors:
-    if colorize or can_colorize(file=file):
+    wenn colorize or can_colorize(file=file):
         return ANSIColors()
-    else:
+    sonst:
         return NoColors
 
 
@@ -287,31 +287,31 @@ def decolor(text: str) -> str:
 
 
 def can_colorize(*, file: IO[str] | IO[bytes] | None = None) -> bool:
-    if file is None:
+    wenn file is None:
         file = sys.stdout
 
-    if not sys.flags.ignore_environment:
-        if os.environ.get("PYTHON_COLORS") == "0":
+    wenn not sys.flags.ignore_environment:
+        wenn os.environ.get("PYTHON_COLORS") == "0":
             return False
-        if os.environ.get("PYTHON_COLORS") == "1":
+        wenn os.environ.get("PYTHON_COLORS") == "1":
             return True
-    if os.environ.get("NO_COLOR"):
+    wenn os.environ.get("NO_COLOR"):
         return False
-    if not COLORIZE:
+    wenn not COLORIZE:
         return False
-    if os.environ.get("FORCE_COLOR"):
+    wenn os.environ.get("FORCE_COLOR"):
         return True
-    if os.environ.get("TERM") == "dumb":
+    wenn os.environ.get("TERM") == "dumb":
         return False
 
-    if not hasattr(file, "fileno"):
+    wenn not hasattr(file, "fileno"):
         return False
 
-    if sys.platform == "win32":
+    wenn sys.platform == "win32":
         try:
             import nt
 
-            if not nt._supports_virtual_terminal():
+            wenn not nt._supports_virtual_terminal():
                 return False
         except (ImportError, AttributeError):
             return False
@@ -344,7 +344,7 @@ def get_theme(
     environment (including environment variable state and console configuration
     on Windows) can also change in the course of the application life cycle.
     """
-    if force_color or (not force_no_color and can_colorize(file=tty_file)):
+    wenn force_color or (not force_no_color and can_colorize(file=tty_file)):
         return _theme
     return theme_no_color
 
@@ -352,7 +352,7 @@ def get_theme(
 def set_theme(t: Theme) -> None:
     global _theme
 
-    if not isinstance(t, Theme):
+    wenn not isinstance(t, Theme):
         raise ValueError(f"Expected Theme object, found {t}")
 
     _theme = t

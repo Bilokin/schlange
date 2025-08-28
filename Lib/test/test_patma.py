@@ -19,7 +19,7 @@ klasse TestCompiler(unittest.TestCase):
 
     def test_refleaks(self):
         # Hunting fuer leaks using -R doesn't catch leaks in the compiler itself,
-        # just the code under test. This test ensures that if there are leaks in
+        # just the code under test. This test ensures that wenn there are leaks in
         # the pattern compiler, those runs will fail:
         with open(__file__) as file:
             compile(file.read(), __file__, "exec")
@@ -140,9 +140,9 @@ klasse TestPatma(unittest.TestCase):
 
     def test_patma_001(self):
         match 0:
-            case 0 if False:
+            case 0 wenn False:
                 x = False
-            case 0 if True:
+            case 0 wenn True:
                 x = True
         self.assertIs(x, True)
 
@@ -203,9 +203,9 @@ klasse TestPatma(unittest.TestCase):
         klasse A:
             B = 0
         match 0:
-            case x if x:
+            case x wenn x:
                 z = 0
-            case _ as y if y == x and y:
+            case _ as y wenn y == x and y:
                 z = 1
             case A.B:
                 z = 2
@@ -479,7 +479,7 @@ klasse TestPatma(unittest.TestCase):
     def test_patma_040(self):
         x = 0
         match x:
-            case (0 as z) | (1 as z) | (2 as z) if z == x % 2:
+            case (0 as z) | (1 as z) | (2 as z) wenn z == x % 2:
                 y = 0
         self.assertEqual(x, 0)
         self.assertEqual(y, 0)
@@ -488,7 +488,7 @@ klasse TestPatma(unittest.TestCase):
     def test_patma_041(self):
         x = 1
         match x:
-            case (0 as z) | (1 as z) | (2 as z) if z == x % 2:
+            case (0 as z) | (1 as z) | (2 as z) wenn z == x % 2:
                 y = 0
         self.assertEqual(x, 1)
         self.assertEqual(y, 0)
@@ -498,7 +498,7 @@ klasse TestPatma(unittest.TestCase):
         x = 2
         y = None
         match x:
-            case (0 as z) | (1 as z) | (2 as z) if z == x % 2:
+            case (0 as z) | (1 as z) | (2 as z) wenn z == x % 2:
                 y = 0
         self.assertEqual(x, 2)
         self.assertIs(y, None)
@@ -508,7 +508,7 @@ klasse TestPatma(unittest.TestCase):
         x = 3
         y = None
         match x:
-            case (0 as z) | (1 as z) | (2 as z) if z == x % 2:
+            case (0 as z) | (1 as z) | (2 as z) wenn z == x % 2:
                 y = 0
         self.assertEqual(x, 3)
         self.assertIs(y, None)
@@ -588,7 +588,7 @@ klasse TestPatma(unittest.TestCase):
         match x:
             case [0]:
                 y = 0
-            case [1, 0] if (x := x[:0]):
+            case [1, 0] wenn (x := x[:0]):
                 y = 1
             case [1, 0]:
                 y = 2
@@ -739,7 +739,7 @@ klasse TestPatma(unittest.TestCase):
     def test_patma_068(self):
         x = 0
         match x:
-            case 0 if False:
+            case 0 wenn False:
                 y = 0
             case 0:
                 y = 1
@@ -750,9 +750,9 @@ klasse TestPatma(unittest.TestCase):
         x = 0
         y = None
         match x:
-            case 0 if 0:
+            case 0 wenn 0:
                 y = 0
-            case 0 if 0:
+            case 0 wenn 0:
                 y = 1
         self.assertEqual(x, 0)
         self.assertIs(y, None)
@@ -760,9 +760,9 @@ klasse TestPatma(unittest.TestCase):
     def test_patma_070(self):
         x = 0
         match x:
-            case 0 if True:
+            case 0 wenn True:
                 y = 0
-            case 0 if True:
+            case 0 wenn True:
                 y = 1
         self.assertEqual(x, 0)
         self.assertEqual(y, 0)
@@ -770,9 +770,9 @@ klasse TestPatma(unittest.TestCase):
     def test_patma_071(self):
         x = 0
         match x:
-            case 0 if 1:
+            case 0 wenn 1:
                 y = 0
-            case 0 if 1:
+            case 0 wenn 1:
                 y = 1
         self.assertEqual(x, 0)
         self.assertEqual(y, 0)
@@ -780,9 +780,9 @@ klasse TestPatma(unittest.TestCase):
     def test_patma_072(self):
         x = 0
         match x:
-            case 0 if True:
+            case 0 wenn True:
                 y = 0
-            case 0 if True:
+            case 0 wenn True:
                 y = 1
         y = 2
         self.assertEqual(x, 0)
@@ -791,9 +791,9 @@ klasse TestPatma(unittest.TestCase):
     def test_patma_073(self):
         x = 0
         match x:
-            case 0 if 0:
+            case 0 wenn 0:
                 y = 0
-            case 0 if 1:
+            case 0 wenn 1:
                 y = 1
         y = 2
         self.assertEqual(x, 0)
@@ -803,7 +803,7 @@ klasse TestPatma(unittest.TestCase):
         x = 0
         y = None
         match x:
-            case 0 if not (x := 1):
+            case 0 wenn not (x := 1):
                 y = 0
             case 1:
                 y = 1
@@ -884,7 +884,7 @@ klasse TestPatma(unittest.TestCase):
     def test_patma_081(self):
         x = 0
         match x:
-            case 0 if not (x := 1):
+            case 0 wenn not (x := 1):
                 y = 0
             case (0 as z):
                 y = 1
@@ -895,7 +895,7 @@ klasse TestPatma(unittest.TestCase):
     def test_patma_082(self):
         x = 0
         match x:
-            case (1 as z) if not (x := 1):
+            case (1 as z) wenn not (x := 1):
                 y = 0
             case 0:
                 y = 1
@@ -924,7 +924,7 @@ klasse TestPatma(unittest.TestCase):
         x = 0
         y = None
         match x:
-            case (0 as z) if (w := 0):
+            case (0 as z) wenn (w := 0):
                 y = 0
         self.assertEqual(w, 0)
         self.assertEqual(x, 0)
@@ -1556,7 +1556,7 @@ klasse TestPatma(unittest.TestCase):
         x = 0
         y = None
         match x:
-            case 0 if x:
+            case 0 wenn x:
                 y = 0
         self.assertEqual(x, 0)
         self.assertIs(y, None)
@@ -1583,7 +1583,7 @@ klasse TestPatma(unittest.TestCase):
         x = 0
         y = None
         match x:
-            case _ if x:
+            case _ wenn x:
                 y = 0
         self.assertEqual(x, 0)
         self.assertIs(y, None)
@@ -1601,7 +1601,7 @@ klasse TestPatma(unittest.TestCase):
     def test_patma_159(self):
         x = 0
         match x:
-            case 0 if not x:
+            case 0 wenn not x:
                 y = 0
             case 1:
                 y = 1
@@ -1614,7 +1614,7 @@ klasse TestPatma(unittest.TestCase):
         match x:
             case 0:
                 y = 0
-            case z if x:
+            case z wenn x:
                 y = 1
         self.assertEqual(x, 0)
         self.assertEqual(y, 0)
@@ -1633,7 +1633,7 @@ klasse TestPatma(unittest.TestCase):
     def test_patma_162(self):
         x = 0
         match x:
-            case 1 if x:
+            case 1 wenn x:
                 y = 0
             case 0:
                 y = 1
@@ -1646,7 +1646,7 @@ klasse TestPatma(unittest.TestCase):
         match x:
             case 1:
                 y = 0
-            case 1 if not x:
+            case 1 wenn not x:
                 y = 1
         self.assertEqual(x, 0)
         self.assertIs(y, None)
@@ -1665,7 +1665,7 @@ klasse TestPatma(unittest.TestCase):
     def test_patma_165(self):
         x = 0
         match x:
-            case 1 if x:
+            case 1 wenn x:
                 y = 0
             case _:
                 y = 1
@@ -1675,9 +1675,9 @@ klasse TestPatma(unittest.TestCase):
     def test_patma_166(self):
         x = 0
         match x:
-            case z if not z:
+            case z wenn not z:
                 y = 0
-            case 0 if x:
+            case 0 wenn x:
                 y = 1
         self.assertEqual(x, 0)
         self.assertEqual(y, 0)
@@ -1686,7 +1686,7 @@ klasse TestPatma(unittest.TestCase):
     def test_patma_167(self):
         x = 0
         match x:
-            case z if not z:
+            case z wenn not z:
                 y = 0
             case 1:
                 y = 1
@@ -1697,7 +1697,7 @@ klasse TestPatma(unittest.TestCase):
     def test_patma_168(self):
         x = 0
         match x:
-            case z if not x:
+            case z wenn not x:
                 y = 0
             case z:
                 y = 1
@@ -1708,9 +1708,9 @@ klasse TestPatma(unittest.TestCase):
     def test_patma_169(self):
         x = 0
         match x:
-            case z if not z:
+            case z wenn not z:
                 y = 0
-            case _ if x:
+            case _ wenn x:
                 y = 1
         self.assertEqual(x, 0)
         self.assertEqual(y, 0)
@@ -1719,7 +1719,7 @@ klasse TestPatma(unittest.TestCase):
     def test_patma_170(self):
         x = 0
         match x:
-            case _ if not x:
+            case _ wenn not x:
                 y = 0
             case 0:
                 y = 1
@@ -1730,7 +1730,7 @@ klasse TestPatma(unittest.TestCase):
         x = 0
         y = None
         match x:
-            case _ if x:
+            case _ wenn x:
                 y = 0
             case 1:
                 y = 1
@@ -1741,9 +1741,9 @@ klasse TestPatma(unittest.TestCase):
         x = 0
         z = None
         match x:
-            case _ if not x:
+            case _ wenn not x:
                 y = 0
-            case z if not x:
+            case z wenn not x:
                 y = 1
         self.assertEqual(x, 0)
         self.assertEqual(y, 0)
@@ -1752,7 +1752,7 @@ klasse TestPatma(unittest.TestCase):
     def test_patma_173(self):
         x = 0
         match x:
-            case _ if not x:
+            case _ wenn not x:
                 y = 0
             case _:
                 y = 1
@@ -1900,7 +1900,7 @@ klasse TestPatma(unittest.TestCase):
     def test_patma_183(self):
         def whereis(point):
             match point:
-                case Point(x, y) if x == y:
+                case Point(x, y) wenn x == y:
                     return f"Y=X at {x}"
                 case Point(x, y):
                     return "Not on the diagonal"
@@ -2688,9 +2688,9 @@ klasse TestPatma(unittest.TestCase):
     def test_patma_250(self):
         def f(x):
             match x:
-                case {"foo": y} if y >= 0:
+                case {"foo": y} wenn y >= 0:
                     return True
-                case {"foo": y} if y < 0:
+                case {"foo": y} wenn y < 0:
                     return False
 
         self.assertIs(f({"foo": 1}), True)
@@ -2699,9 +2699,9 @@ klasse TestPatma(unittest.TestCase):
     def test_patma_251(self):
         def f(v, x):
             match v:
-                case x.attr if x.attr >= 0:
+                case x.attr wenn x.attr >= 0:
                     return True
-                case x.attr if x.attr < 0:
+                case x.attr wenn x.attr < 0:
                     return False
                 case _:
                     return None
@@ -2723,11 +2723,11 @@ klasse TestPatma(unittest.TestCase):
 
         res = None
         match {"foo": 1}:
-            case {"foo": x} if lt(x, 0):
+            case {"foo": x} wenn lt(x, 0):
                 res = 0
-            case {"foo": x} if lt(x, 1):
+            case {"foo": x} wenn lt(x, 1):
                 res = 1
-            case {"foo": x} if lt(x, 2):
+            case {"foo": x} wenn lt(x, 2):
                 res = 2
 
         self.assertEqual(res, 2)
@@ -2754,7 +2754,7 @@ klasse TestPatma(unittest.TestCase):
     def test_patma_255(self):
         x = []
         match x:
-            case [] as z if z.append(None):
+            case [] as z wenn z.append(None):
                 y = 0
             case [None]:
                 y = 1
@@ -3056,7 +3056,7 @@ klasse TestSyntaxErrors(unittest.TestCase):
     def test_name_capture_makes_remaining_patterns_unreachable_2(self):
         self.assert_syntax_error("""
         match ...:
-            case x | [_ as x] if x:
+            case x | [_ as x] wenn x:
                 pass
         """)
 
@@ -3065,7 +3065,7 @@ klasse TestSyntaxErrors(unittest.TestCase):
         match ...:
             case x:
                 pass
-            case [x] if x:
+            case [x] wenn x:
                 pass
         """)
 
@@ -3168,7 +3168,7 @@ klasse TestSyntaxErrors(unittest.TestCase):
     def test_wildcard_makes_remaining_patterns_unreachable_2(self):
         self.assert_syntax_error("""
         match ...:
-            case _ | _ if condition():
+            case _ | _ wenn condition():
                 pass
         """)
 
@@ -3394,15 +3394,15 @@ klasse TestSourceLocations(unittest.TestCase):
             v = 1
             match v:
                 case 1:
-                    if x < 0:
+                    wenn x < 0:
                         x = 1
                 case 2:
-                    if x < 0:
+                    wenn x < 0:
                         x = 1
             x += 1
 
         fuer inst in dis.get_instructions(f):
-            if inst.opcode in dis.hasjump:
+            wenn inst.opcode in dis.hasjump:
                 self.assertIsNotNone(inst.positions.lineno, "jump without location")
 
 klasse TestTracing(unittest.TestCase):
@@ -3412,7 +3412,7 @@ klasse TestTracing(unittest.TestCase):
         actual_linenos = []
 
         def trace(frame, event, arg):
-            if event == "line" and frame.f_code.co_name == func.__name__:
+            wenn event == "line" and frame.f_code.co_name == func.__name__:
                 assert arg is None
                 relative_lineno = frame.f_lineno - func.__code__.co_firstlineno
                 actual_linenos.append(relative_lineno)
@@ -3429,7 +3429,7 @@ klasse TestTracing(unittest.TestCase):
     def test_default_wildcard(self):
         def f(command):                                         # 0
             match command.split():                              # 1
-                case ["go", direction] if direction in "nesw":  # 2
+                case ["go", direction] wenn direction in "nesw":  # 2
                     return f"go {direction}"                    # 3
                 case ["go", _]:                                 # 4
                     return "no go"                              # 5
@@ -3443,7 +3443,7 @@ klasse TestTracing(unittest.TestCase):
     def test_default_capture(self):
         def f(command):                                         # 0
             match command.split():                              # 1
-                case ["go", direction] if direction in "nesw":  # 2
+                case ["go", direction] wenn direction in "nesw":  # 2
                     return f"go {direction}"                    # 3
                 case ["go", _]:                                 # 4
                     return "no go"                              # 5
@@ -3457,7 +3457,7 @@ klasse TestTracing(unittest.TestCase):
     def test_no_default(self):
         def f(command):                                         # 0
             match command.split():                              # 1
-                case ["go", direction] if direction in "nesw":  # 2
+                case ["go", direction] wenn direction in "nesw":  # 2
                     return f"go {direction}"                    # 3
                 case ["go", _]:                                 # 4
                     return "no go"                              # 5
@@ -3490,10 +3490,10 @@ klasse TestTracing(unittest.TestCase):
         def f(command):               # 0
             match command:            # 1
                 case 1:               # 2
-                    if False:         # 3
+                    wenn False:         # 3
                         return 1      # 4
                 case _:               # 5
-                    if False:         # 6
+                    wenn False:         # 6
                         return 0      # 7
 
         self.assertListEqual(self._trace(f, 1), [1, 2, 3])
@@ -3522,7 +3522,7 @@ klasse TestTracing(unittest.TestCase):
                 compile(code, "<string>", "exec")
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     """
     # From inside environment using this Python, with pyperf installed:
     sudo $(which pyperf) system tune && \
@@ -3546,7 +3546,7 @@ if __name__ == "__main__":
         def run_perf(self, count):
             tests = []
             fuer attr in vars(TestPatma):
-                if attr.startswith("test_"):
+                wenn attr.startswith("test_"):
                     tests.append(getattr(self, attr))
             tests *= count
             start = pyperf.perf_counter()

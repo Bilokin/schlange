@@ -47,7 +47,7 @@ import threading
 import contextvars
 
 
-if sys.platform == 'darwin':
+wenn sys.platform == 'darwin':
     darwin_malloc_err_warning('test_decimal')
 
 
@@ -67,7 +67,7 @@ requires_cdecimal = unittest.skipUnless(C, "test requires C version")
 
 # Useful Test Constant
 Signals = {
-  C: tuple(C.getcontext().flags.keys()) if C else None,
+  C: tuple(C.getcontext().flags.keys()) wenn C sonst None,
   P: tuple(P.getcontext().flags.keys())
 }
 # Signals ordered with respect to precedence: when an operation
@@ -76,14 +76,14 @@ Signals = {
 OrderedSignals = {
   C: [C.Clamped, C.Rounded, C.Inexact, C.Subnormal, C.Underflow,
       C.Overflow, C.DivisionByZero, C.InvalidOperation,
-      C.FloatOperation] if C else None,
+      C.FloatOperation] wenn C sonst None,
   P: [P.Clamped, P.Rounded, P.Inexact, P.Subnormal, P.Underflow,
       P.Overflow, P.DivisionByZero, P.InvalidOperation,
       P.FloatOperation]
 }
 def assert_signals(cls, context, attr, expected):
     d = getattr(context, attr)
-    cls.assertTrue(all(d[s] if s in expected else not d[s] fuer s in d))
+    cls.assertTrue(all(d[s] wenn s in expected sonst not d[s] fuer s in d))
 
 ROUND_UP = P.ROUND_UP
 ROUND_DOWN = P.ROUND_DOWN
@@ -103,20 +103,20 @@ RoundingModes = [
 # Tests are built around these assumed context defaults.
 # test() restores the original context.
 ORIGINAL_CONTEXT = {
-  C: C.getcontext().copy() if C else None,
+  C: C.getcontext().copy() wenn C sonst None,
   P: P.getcontext().copy()
 }
 def init(m):
-    if not m: return
+    wenn not m: return
     DefaultTestContext = m.Context(
        prec=9, rounding=ROUND_HALF_EVEN, traps=dict.fromkeys(Signals[m], 0)
     )
     m.setcontext(DefaultTestContext)
 
 TESTDATADIR = 'decimaltestdata'
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     file = sys.argv[0]
-else:
+sonst:
     file = __file__
 testdir = os.path.dirname(file) or os.curdir
 directory = testdir + os.sep + TESTDATADIR + os.sep
@@ -128,7 +128,7 @@ skip_expected = not os.path.isdir(directory)
 EXTENDEDERRORTEST = False
 
 # Test extra functionality in the C version (-DEXTRA_FUNCTIONALITY).
-EXTRA_FUNCTIONALITY = True if hasattr(C, 'DecClamped') else False
+EXTRA_FUNCTIONALITY = True wenn hasattr(C, 'DecClamped') sonst False
 requires_extra_functionality = unittest.skipUnless(
   EXTRA_FUNCTIONALITY, "test requires build with -DEXTRA_FUNCTIONALITY")
 skip_if_extra_functionality = unittest.skipIf(
@@ -181,7 +181,7 @@ klasse IBMTestCases:
             'powx4014',
             ])
 
-        if self.decimal == C:
+        wenn self.decimal == C:
             # status has additional Subnormal, Underflow
             self.skipped_test_ids.add('pwsx803')
             self.skipped_test_ids.add('pwsx805')
@@ -285,17 +285,17 @@ klasse IBMTestCases:
            but higher values usually work, except fuer rare corner cases.
            In particular, all of the IBM tests pass with maximum values
            of 1070000000."""
-        if self.decimal == C and self.decimal.MAX_EMAX == 425000000:
+        wenn self.decimal == C and self.decimal.MAX_EMAX == 425000000:
             self.readcontext._unsafe_setprec(1070000000)
             self.readcontext._unsafe_setemax(1070000000)
             self.readcontext._unsafe_setemin(-1070000000)
             return self.readcontext.create_decimal(v)
-        else:
+        sonst:
             return self.decimal.Decimal(v, context)
 
     def eval_file(self, file):
         global skip_expected
-        if skip_expected:
+        wenn skip_expected:
             raise unittest.SkipTest
         with open(file, encoding="utf-8") as f:
             fuer line in f:
@@ -309,28 +309,28 @@ klasse IBMTestCases:
 
 
     def eval_line(self, s):
-        if s.find(' -> ') >= 0 and s[:2] != '--' and not s.startswith('  --'):
+        wenn s.find(' -> ') >= 0 and s[:2] != '--' and not s.startswith('  --'):
             s = (s.split('->')[0] + '->' +
                  s.split('->')[1].split('--')[0]).strip()
-        else:
+        sonst:
             s = s.split('--')[0].strip()
 
         fuer ignore in self.ignore_list:
-            if s.find(ignore) >= 0:
+            wenn s.find(ignore) >= 0:
                 #print s.split()[0], 'NotImplemented--', ignore
                 return
-        if not s:
+        wenn not s:
             return
-        elif ':' in s:
+        sowenn ':' in s:
             return self.eval_directive(s)
-        else:
+        sonst:
             return self.eval_equation(s)
 
     def eval_directive(self, s):
         funct, value = (x.strip().lower() fuer x in s.split(':'))
-        if funct == 'rounding':
+        wenn funct == 'rounding':
             value = self.RoundingDict[value]
-        else:
+        sonst:
             try:
                 value = int(value)
             except ValueError:
@@ -341,7 +341,7 @@ klasse IBMTestCases:
 
     def eval_equation(self, s):
 
-        if not TEST_ALL and random.random() < 0.90:
+        wenn not TEST_ALL and random.random() < 0.90:
             return
 
         self.context.clear_flags()
@@ -350,7 +350,7 @@ klasse IBMTestCases:
             Sides = s.split('->')
             L = Sides[0].strip().split()
             id = L[0]
-            if DEBUG:
+            wenn DEBUG:
                 print("Test ", id, end=" ")
             funct = L[1].lower()
             valstemp = L[2:]
@@ -365,11 +365,11 @@ klasse IBMTestCases:
             val = val.replace('SingleQuote', "'").replace('DoubleQuote', '"')
             return val
 
-        if id in self.skipped_test_ids:
+        wenn id in self.skipped_test_ids:
             return
 
         fname = self.NameAdapter.get(funct, funct)
-        if fname == 'rescale':
+        wenn fname == 'rescale':
             return
         funct = getattr(self.context, fname)
         vals = []
@@ -382,17 +382,17 @@ klasse IBMTestCases:
         fuer exception in theirexceptions:
             self.context.traps[exception] = 0
         fuer i, val in enumerate(valstemp):
-            if val.count("'") % 2 == 1:
+            wenn val.count("'") % 2 == 1:
                 quote = 1 - quote
-            if quote:
+            wenn quote:
                 conglomerate = conglomerate + ' ' + val
                 continue
-            else:
+            sonst:
                 val = conglomerate + val
                 conglomerate = ''
             v = FixQuotes(val)
-            if fname in ('to_sci_string', 'to_eng_string'):
-                if EXTENDEDERRORTEST:
+            wenn fname in ('to_sci_string', 'to_eng_string'):
+                wenn EXTENDEDERRORTEST:
                     fuer error in theirexceptions:
                         self.context.traps[error] = 1
                         try:
@@ -402,17 +402,17 @@ klasse IBMTestCases:
                         except Signals[self.decimal] as e:
                             self.fail("Raised %s in %s when %s disabled" % \
                                       (e, s, error))
-                        else:
+                        sonst:
                             self.fail("Did not raise %s in %s" % (error, s))
                         self.context.traps[error] = 0
                 v = self.context.create_decimal(v)
-            else:
+            sonst:
                 v = self.read_unlimited(v, self.context)
             vals.append(v)
 
         ans = FixQuotes(ans)
 
-        if EXTENDEDERRORTEST and fname not in ('to_sci_string', 'to_eng_string'):
+        wenn EXTENDEDERRORTEST and fname not in ('to_sci_string', 'to_eng_string'):
             fuer error in theirexceptions:
                 self.context.traps[error] = 1
                 try:
@@ -422,12 +422,12 @@ klasse IBMTestCases:
                 except Signals[self.decimal] as e:
                     self.fail("Raised %s in %s when %s disabled" % \
                               (e, s, error))
-                else:
+                sonst:
                     self.fail("Did not raise %s in %s" % (error, s))
                 self.context.traps[error] = 0
 
             # as above, but add traps cumulatively, to check precedence
-            ordered_errors = [e fuer e in OrderedSignals[self.decimal] if e in theirexceptions]
+            ordered_errors = [e fuer e in OrderedSignals[self.decimal] wenn e in theirexceptions]
             fuer error in ordered_errors:
                 self.context.traps[error] = 1
                 try:
@@ -437,18 +437,18 @@ klasse IBMTestCases:
                 except Signals[self.decimal] as e:
                     self.fail("Raised %s in %s; expected %s" %
                               (type(e), s, error))
-                else:
+                sonst:
                     self.fail("Did not raise %s in %s" % (error, s))
             # reset traps
             fuer error in ordered_errors:
                 self.context.traps[error] = 0
 
 
-        if DEBUG:
+        wenn DEBUG:
             print("--", self.context)
         try:
             result = str(funct(*vals))
-            if fname in self.LogicalFunctions:
+            wenn fname in self.LogicalFunctions:
                 result = str(int(eval(result))) # 'True', 'False' -> '1', '0'
         except Signals[self.decimal] as error:
             self.fail("Raised %s in %s" % (error, s))
@@ -468,24 +468,24 @@ klasse IBMTestCases:
               'Incorrect flags set in ' + s + ' -- got ' + str(myexceptions))
 
     def getexceptions(self):
-        return [e fuer e in Signals[self.decimal] if self.context.flags[e]]
+        return [e fuer e in Signals[self.decimal] wenn self.context.flags[e]]
 
     def change_precision(self, prec):
-        if self.decimal == C and self.decimal.MAX_PREC == 425000000:
+        wenn self.decimal == C and self.decimal.MAX_PREC == 425000000:
             self.context._unsafe_setprec(prec)
-        else:
+        sonst:
             self.context.prec = prec
     def change_rounding_method(self, rounding):
         self.context.rounding = rounding
     def change_min_exponent(self, exp):
-        if self.decimal == C and self.decimal.MAX_PREC == 425000000:
+        wenn self.decimal == C and self.decimal.MAX_PREC == 425000000:
             self.context._unsafe_setemin(exp)
-        else:
+        sonst:
             self.context.Emin = exp
     def change_max_exponent(self, exp):
-        if self.decimal == C and self.decimal.MAX_PREC == 425000000:
+        wenn self.decimal == C and self.decimal.MAX_PREC == 425000000:
             self.context._unsafe_setemax(exp)
-        else:
+        sonst:
             self.context.Emax = exp
     def change_clamp(self, clamp):
         self.context.clamp = clamp
@@ -815,7 +815,7 @@ klasse ExplicitConstructionTest:
 
     def test_from_number(self, cls=None):
         Decimal = self.decimal.Decimal
-        if cls is None:
+        wenn cls is None:
             cls = Decimal
 
         def check(arg, expected):
@@ -1066,7 +1066,7 @@ klasse FormatTest:
             ('7,', '123456', '123,456'),
             ('8,', '123456', ' 123,456'),
             ('08,', '123456', '0,123,456'), # special case: extra 0 needed
-            ('+08,', '123456', '+123,456'), # but not if there's a sign
+            ('+08,', '123456', '+123,456'), # but not wenn there's a sign
             ('008,', '123456', '0,123,456'), # leading zero in width
             (' 08,', '123456', ' 123,456'),
             ('08,', '-123456', '-123,456'),
@@ -1193,12 +1193,12 @@ klasse FormatTest:
             self.skipTest('locale.CHAR_MAX not available')
 
         def make_grouping(lst):
-            return ''.join([chr(x) fuer x in lst]) if self.decimal == C else lst
+            return ''.join([chr(x) fuer x in lst]) wenn self.decimal == C sonst lst
 
         def get_fmt(x, override=None, fmt='n'):
-            if self.decimal == C:
+            wenn self.decimal == C:
                 return Decimal(x).__format__(fmt, override)
-            else:
+            sonst:
                 return Decimal(x).__format__(fmt, _localeconv=override)
 
         # Set up some localeconv-like dictionaries
@@ -1276,7 +1276,7 @@ klasse FormatTest:
     def test_deprecated_N_format(self):
         Decimal = self.decimal.Decimal
         h = Decimal('6.62607015e-34')
-        if self.decimal == C:
+        wenn self.decimal == C:
             with self.assertWarns(DeprecationWarning) as cm:
                 r = format(h, 'N')
             self.assertEqual(cm.filename, __file__)
@@ -1285,7 +1285,7 @@ klasse FormatTest:
                 r = format(h, '010.3N')
             self.assertEqual(cm.filename, __file__)
             self.assertEqual(r, format(h, '010.3n').upper())
-        else:
+        sonst:
             self.assertRaises(ValueError, format, h, 'N')
             self.assertRaises(ValueError, format, h, '010.3N')
         with warnings_helper.check_no_warnings(self):
@@ -1304,10 +1304,10 @@ klasse FormatTest:
 
         decimal_point = locale.localeconv()['decimal_point']
         thousands_sep = locale.localeconv()['thousands_sep']
-        if decimal_point != '\u066b':
+        wenn decimal_point != '\u066b':
             self.skipTest('inappropriate decimal point separator '
                           '({!a} not {!a})'.format(decimal_point, '\u066b'))
-        if thousands_sep != '\u066c':
+        wenn thousands_sep != '\u066c':
             self.skipTest('inappropriate thousands separator '
                           '({!a} not {!a})'.format(thousands_sep, '\u066c'))
 
@@ -1592,7 +1592,7 @@ klasse ArithmeticOperatorsTest:
             fuer x, y in qnan_pairs + snan_pairs:
                 fuer op in order_ops + equality_ops:
                     got = op(x, y)
-                    expected = True if op is operator.ne else False
+                    expected = True wenn op is operator.ne sonst False
                     self.assertIs(expected, got,
                                 "expected {0!r} fuer operator.{1}({2!r}, {3!r}); "
                                 "got {4!r}".format(
@@ -1605,7 +1605,7 @@ klasse ArithmeticOperatorsTest:
             fuer x, y in qnan_pairs:
                 fuer op in equality_ops:
                     got = op(x, y)
-                    expected = True if op is operator.ne else False
+                    expected = True wenn op is operator.ne sonst False
                     self.assertIs(expected, got,
                                   "expected {0!r} fuer "
                                   "operator.{1}({2!r}, {3!r}); "
@@ -1730,7 +1730,7 @@ klasse ThreadingTest:
     def test_threading(self):
         DefaultContext = self.decimal.DefaultContext
 
-        if self.decimal == C and not self.decimal.HAVE_THREADS:
+        wenn self.decimal == C and not self.decimal.HAVE_THREADS:
             self.skipTest("compiled without threading")
         # Test the "threading isolation" of a Context. Also test changing
         # the DefaultContext, which acts as a template fuer the thread-local
@@ -1864,9 +1864,9 @@ klasse UsabilityTest:
         InvalidOperation = self.decimal.InvalidOperation
 
 
-        emax = C.MAX_EMAX if C else 999999999
-        emin = C.MIN_EMIN if C else -999999999
-        etiny = C.MIN_ETINY if C else -1999999997
+        emax = C.MAX_EMAX wenn C sonst 999999999
+        emin = C.MIN_EMIN wenn C sonst -999999999
+        etiny = C.MIN_ETINY wenn C sonst -1999999997
         c = Context(Emax=emax, Emin=emin)
 
         with localcontext(c):
@@ -2147,7 +2147,7 @@ klasse UsabilityTest:
             f = float(Decimal(s))
             self.assertTrue(math.isnan(f))
             sign = math.copysign(1.0, f)
-            self.assertEqual(sign, -1.0 if s.startswith('-') else 1.0)
+            self.assertEqual(sign, -1.0 wenn s.startswith('-') sonst 1.0)
 
     def test_snan_to_float(self):
         Decimal = self.decimal.Decimal
@@ -2634,7 +2634,7 @@ klasse PythonAPItests:
             e = pickle.loads(p)
             self.assertEqual(d, e)
 
-            if C:
+            wenn C:
                 # Test interchangeability
                 x = C.Decimal('-3.123e81723')
                 y = P.Decimal('-3.123e81723')
@@ -3010,7 +3010,7 @@ klasse ContextAPItests:
             self.assertEqual(c.traps, e.traps)
 
             # Test interchangeability
-            combinations = [(C, P), (P, C)] if C else [(P, P)]
+            combinations = [(C, P), (P, C)] wenn C sonst [(P, P)]
             fuer dumper, loader in combinations:
                 fuer ri, _ in enumerate(RoundingModes):
                     fuer fi, _ in enumerate(OrderedSignals[dumper]):
@@ -3885,11 +3885,11 @@ klasse ContextFlags:
         Subnormal = self.decimal.Subnormal
 
         def raise_error(context, flag):
-            if self.decimal == C:
+            wenn self.decimal == C:
                 context.flags[flag] = True
-                if context.traps[flag]:
+                wenn context.traps[flag]:
                     raise flag
-            else:
+            sonst:
                 context._raise_error(flag)
 
         context = Context(prec=9, Emin = -425000000, Emax = 425000000,
@@ -3912,7 +3912,7 @@ klasse ContextFlags:
             # find answer and flags raised using a clean context
             context.clear_flags()
             ans = fn(*args)
-            flags = [k fuer k, v in context.flags.items() if v]
+            flags = [k fuer k, v in context.flags.items() wenn v]
 
             fuer extra_flags in flagsets:
                 # set flags, before calling operation
@@ -3924,12 +3924,12 @@ klasse ContextFlags:
                 # flags that we expect to be set after the operation
                 expected_flags = list(flags)
                 fuer flag in extra_flags:
-                    if flag not in expected_flags:
+                    wenn flag not in expected_flags:
                         expected_flags.append(flag)
                 expected_flags.sort(key=id)
 
                 # flags we actually got
-                new_flags = [k fuer k,v in context.flags.items() if v]
+                new_flags = [k fuer k,v in context.flags.items() wenn v]
                 new_flags.sort(key=id)
 
                 self.assertEqual(ans, new_ans,
@@ -4040,9 +4040,9 @@ klasse ContextFlags:
         def assert_attr(a, b, attr, context, signal=None):
             context.clear_flags()
             f = getattr(a, attr)
-            if signal == FloatOperation:
+            wenn signal == FloatOperation:
                 self.assertRaises(signal, f, b)
-            else:
+            sonst:
                 self.assertIs(f(b), True)
             self.assertTrue(context.flags[FloatOperation])
 
@@ -4098,9 +4098,9 @@ klasse ContextFlags:
             self.assertTrue(c.flags[FloatOperation])
 
             c.clear_flags()
-            if signal:
+            wenn signal:
                 self.assertRaises(signal, sorted, [1.0, Decimal('10.0')])
-            else:
+            sonst:
                 s = sorted([10.0, Decimal('10.0')])
             self.assertTrue(c.flags[FloatOperation])
 
@@ -4180,7 +4180,7 @@ klasse SpecialContexts:
             BasicContext.prec = basic_context_prec
             ExtendedContext.prec = extended_context_prec
             setcontext(savecontext)
-            if ex:
+            wenn ex:
                 raise ex
 
     def test_default_context(self):
@@ -4221,7 +4221,7 @@ klasse SpecialContexts:
         finally:
             DefaultContext.prec = default_context_prec
             setcontext(savecontext)
-            if ex:
+            wenn ex:
                 raise ex
 
 @requires_cdecimal
@@ -4318,24 +4318,24 @@ klasse ContextSubclassing:
                                capitals=None, clamp=None, flags=None,
                                traps=None):
                 Context.__init__(self)
-                if prec is not None:
+                wenn prec is not None:
                     self.prec = prec
-                if rounding is not None:
+                wenn rounding is not None:
                     self.rounding = rounding
-                if Emin is not None:
+                wenn Emin is not None:
                     self.Emin = Emin
-                if Emax is not None:
+                wenn Emax is not None:
                     self.Emax = Emax
-                if capitals is not None:
+                wenn capitals is not None:
                     self.capitals = capitals
-                if clamp is not None:
+                wenn clamp is not None:
                     self.clamp = clamp
-                if flags is not None:
-                    if isinstance(flags, list):
+                wenn flags is not None:
+                    wenn isinstance(flags, list):
                         flags = {v:(v in flags) fuer v in OrderedSignals[decimal] + flags}
                     self.flags = flags
-                if traps is not None:
-                    if isinstance(traps, list):
+                wenn traps is not None:
+                    wenn isinstance(traps, list):
                         traps = {v:(v in traps) fuer v in OrderedSignals[decimal] + traps}
                     self.traps = traps
 
@@ -4371,7 +4371,7 @@ klasse ContextSubclassing:
         c = MyContext(Emax=1, prec=1)
         self.assertEqual(c.Emax, 1)
         self.assertRaises(Overflow, c.add, Decimal('1e99'), Decimal('2.234e2000'))
-        if self.decimal == C:
+        wenn self.decimal == C:
             fuer signal in (Inexact, Overflow, Rounded):
                 self.assertTrue(c.flags[signal])
 
@@ -4477,18 +4477,18 @@ klasse CheckAttributes(unittest.TestCase):
         self.assertEqual(C.__version__, P.__version__)
 
         self.assertLessEqual(set(dir(C)), set(dir(P)))
-        self.assertEqual([n fuer n in dir(C) if n[:2] != '__'], sorted(P.__all__))
+        self.assertEqual([n fuer n in dir(C) wenn n[:2] != '__'], sorted(P.__all__))
 
     def test_context_attributes(self):
 
-        x = [s fuer s in dir(C.Context()) if '__' in s or not s.startswith('_')]
-        y = [s fuer s in dir(P.Context()) if '__' in s or not s.startswith('_')]
+        x = [s fuer s in dir(C.Context()) wenn '__' in s or not s.startswith('_')]
+        y = [s fuer s in dir(P.Context()) wenn '__' in s or not s.startswith('_')]
         self.assertEqual(set(x) - set(y), set())
 
     def test_decimal_attributes(self):
 
-        x = [s fuer s in dir(C.Decimal(9)) if '__' in s or not s.startswith('_')]
-        y = [s fuer s in dir(C.Decimal(9)) if '__' in s or not s.startswith('_')]
+        x = [s fuer s in dir(C.Decimal(9)) wenn '__' in s or not s.startswith('_')]
+        y = [s fuer s in dir(C.Decimal(9)) wenn '__' in s or not s.startswith('_')]
         self.assertEqual(set(x) - set(y), set())
 
 klasse Coverage:
@@ -4554,9 +4554,9 @@ klasse Coverage:
             # three arg power
             self.assertEqual(pow(Decimal(10), 2, 7), 2)
             self.assertEqual(pow(10, Decimal(2), 7), 2)
-            if self.decimal == C:
+            wenn self.decimal == C:
                 self.assertEqual(pow(10, 2, Decimal(7)), 2)
-            else:
+            sonst:
                 # XXX: There is no special method to dispatch on the
                 # third arg of three-arg power.
                 self.assertRaises(TypeError, pow, 10, 2, Decimal(7))
@@ -4864,7 +4864,7 @@ klasse PyWhitebox(unittest.TestCase):
         b2 = Decimal('33e+33')
 
         def checkSameDec(operation, useOther=False):
-            if useOther:
+            wenn useOther:
                 eval("d1." + operation + "(d2)")
                 self.assertEqual(d1._sign, b1._sign)
                 self.assertEqual(d1._int, b1._int)
@@ -4872,7 +4872,7 @@ klasse PyWhitebox(unittest.TestCase):
                 self.assertEqual(d2._sign, b2._sign)
                 self.assertEqual(d2._int, b2._int)
                 self.assertEqual(d2._exp, b2._exp)
-            else:
+            sonst:
                 eval("d1." + operation + "()")
                 self.assertEqual(d1._sign, b1._sign)
                 self.assertEqual(d1._int, b1._int)
@@ -5088,8 +5088,8 @@ klasse CWhitebox(unittest.TestCase):
         self.assertRaises(KeyError, setattr, c, 'traps', d)
 
         # Input corner cases
-        int_max = 2**63-1 if HAVE_CONFIG_64 else 2**31-1
-        gt_max_emax = 10**18 if HAVE_CONFIG_64 else 10**9
+        int_max = 2**63-1 wenn HAVE_CONFIG_64 sonst 2**31-1
+        gt_max_emax = 10**18 wenn HAVE_CONFIG_64 sonst 10**9
 
         # prec, Emax, Emin
         fuer attr in ['prec', 'Emax']:
@@ -5112,12 +5112,12 @@ klasse CWhitebox(unittest.TestCase):
         fuer attr in ('prec', 'Emin', 'Emax', 'capitals', 'clamp'):
             self.assertRaises(OverflowError, setattr, c, attr, int_max+1)
             self.assertRaises(OverflowError, setattr, c, attr, -int_max-2)
-            if sys.platform != 'win32':
+            wenn sys.platform != 'win32':
                 self.assertRaises(ValueError, setattr, c, attr, int_max)
                 self.assertRaises(ValueError, setattr, c, attr, -int_max-1)
 
         # OverflowError: _unsafe_setprec, _unsafe_setemin, _unsafe_setemax
-        if C.MAX_PREC == 425000000:
+        wenn C.MAX_PREC == 425000000:
             self.assertRaises(OverflowError, getattr(c, '_unsafe_setprec'),
                               int_max+1)
             self.assertRaises(OverflowError, getattr(c, '_unsafe_setemax'),
@@ -5126,7 +5126,7 @@ klasse CWhitebox(unittest.TestCase):
                               -int_max-2)
 
         # ValueError: _unsafe_setprec, _unsafe_setemin, _unsafe_setemax
-        if C.MAX_PREC == 425000000:
+        wenn C.MAX_PREC == 425000000:
             self.assertRaises(ValueError, getattr(c, '_unsafe_setprec'), 0)
             self.assertRaises(ValueError, getattr(c, '_unsafe_setprec'),
                               1070000001)
@@ -5142,7 +5142,7 @@ klasse CWhitebox(unittest.TestCase):
             self.assertRaises(ValueError, setattr, c, attr, -1)
             self.assertRaises(ValueError, setattr, c, attr, 2)
             self.assertRaises(TypeError, setattr, c, attr, [1,2,3])
-            if HAVE_CONFIG_64:
+            wenn HAVE_CONFIG_64:
                 self.assertRaises(ValueError, setattr, c, attr, 2**32)
                 self.assertRaises(ValueError, setattr, c, attr, 2**32+1)
 
@@ -5182,12 +5182,12 @@ klasse CWhitebox(unittest.TestCase):
         c = Context()
 
         # Input corner cases
-        int_max = 2**63-1 if HAVE_CONFIG_64 else 2**31-1
+        int_max = 2**63-1 wenn HAVE_CONFIG_64 sonst 2**31-1
 
         # OverflowError, general ValueError
         self.assertRaises(OverflowError, setattr, c, '_allcr', int_max+1)
         self.assertRaises(OverflowError, setattr, c, '_allcr', -int_max-2)
-        if sys.platform != 'win32':
+        wenn sys.platform != 'win32':
             self.assertRaises(ValueError, setattr, c, '_allcr', int_max)
             self.assertRaises(ValueError, setattr, c, '_allcr', -int_max-1)
 
@@ -5195,7 +5195,7 @@ klasse CWhitebox(unittest.TestCase):
         fuer attr in ('_flags', '_traps'):
             self.assertRaises(OverflowError, setattr, c, attr, int_max+1)
             self.assertRaises(OverflowError, setattr, c, attr, -int_max-2)
-            if sys.platform != 'win32':
+            wenn sys.platform != 'win32':
                 self.assertRaises(TypeError, setattr, c, attr, int_max)
                 self.assertRaises(TypeError, setattr, c, attr, -int_max-1)
 
@@ -5203,7 +5203,7 @@ klasse CWhitebox(unittest.TestCase):
         self.assertRaises(ValueError, setattr, c, '_allcr', -1)
         self.assertRaises(ValueError, setattr, c, '_allcr', 2)
         self.assertRaises(TypeError, setattr, c, '_allcr', [1,2,3])
-        if HAVE_CONFIG_64:
+        wenn HAVE_CONFIG_64:
             self.assertRaises(ValueError, setattr, c, '_allcr', 2**32)
             self.assertRaises(ValueError, setattr, c, '_allcr', 2**32+1)
 
@@ -5242,7 +5242,7 @@ klasse CWhitebox(unittest.TestCase):
         self.assertEqual(c.Etop(), 2967)
 
         # Exercise all unsafe setters
-        if C.MAX_PREC == 425000000:
+        wenn C.MAX_PREC == 425000000:
             c._unsafe_setprec(999999999)
             c._unsafe_setemax(999999999)
             c._unsafe_setemin(-999999999)
@@ -5266,7 +5266,7 @@ klasse CWhitebox(unittest.TestCase):
         localcontext = C.localcontext
         MAX_EMAX = C.MAX_EMAX
         MIN_ETINY = C.MIN_ETINY
-        int_max = 2**63-1 if C.MAX_PREC > 425000000 else 2**31-1
+        int_max = 2**63-1 wenn C.MAX_PREC > 425000000 sonst 2**31-1
 
         with localcontext() as c:
             c.traps[InvalidOperation] = True
@@ -5293,7 +5293,7 @@ klasse CWhitebox(unittest.TestCase):
         self.assertRaises(TypeError, Decimal(1).__format__, [])
 
         self.assertRaises(ValueError, Decimal(1).__format__, "<>=10.10")
-        maxsize = 2**63-1 if HAVE_CONFIG_64 else 2**31-1
+        maxsize = 2**63-1 wenn HAVE_CONFIG_64 sonst 2**31-1
         self.assertRaises(ValueError, Decimal("1.23456789").__format__,
                           "=%d.1" % maxsize)
 
@@ -5466,9 +5466,9 @@ klasse CWhitebox(unittest.TestCase):
 
         def assertIsExclusivelySet(signal, signal_dict):
             fuer sig in signal_dict:
-                if sig == signal:
+                wenn sig == signal:
                     self.assertTrue(signal_dict[sig])
-                else:
+                sonst:
                     self.assertFalse(signal_dict[sig])
 
         c = DefaultContext.copy()
@@ -5607,7 +5607,7 @@ klasse CWhitebox(unittest.TestCase):
             'thousands_sep' : 'yyyyy'
         }
 
-        if CHAR_MAX == 127: # negative grouping in override
+        wenn CHAR_MAX == 127: # negative grouping in override
             self.assertRaises(ValueError, get_fmt, 12345,
                               invalid_grouping, 'g')
 
@@ -5692,11 +5692,11 @@ klasse CWhitebox(unittest.TestCase):
         HAVE_CONFIG_64 = (C.MAX_PREC > 425000000)
 
         self.assertGreater(Decimal(0).__sizeof__(), 0)
-        if HAVE_CONFIG_64:
+        wenn HAVE_CONFIG_64:
             x = Decimal(10**(19*24)).__sizeof__()
             y = Decimal(10**(19*25)).__sizeof__()
             self.assertEqual(y, x+8)
-        else:
+        sonst:
             x = Decimal(10**(9*24)).__sizeof__()
             y = Decimal(10**(9*25)).__sizeof__()
             self.assertEqual(y, x+4)
@@ -5799,29 +5799,29 @@ klasse SignatureTest(unittest.TestCase):
 
     def test_inspect_module(self):
         fuer attr in dir(P):
-            if attr.startswith('_'):
+            wenn attr.startswith('_'):
                 continue
             p_func = getattr(P, attr)
             c_func = getattr(C, attr)
-            if (attr == 'Decimal' or attr == 'Context' or
+            wenn (attr == 'Decimal' or attr == 'Context' or
                 inspect.isfunction(p_func)):
                 p_sig = inspect.signature(p_func)
                 c_sig = inspect.signature(c_func)
 
                 # parameter names:
                 c_names = list(c_sig.parameters.keys())
-                p_names = [x fuer x in p_sig.parameters.keys() if not
+                p_names = [x fuer x in p_sig.parameters.keys() wenn not
                            x.startswith('_')]
 
                 self.assertEqual(c_names, p_names,
                                  msg="parameter name mismatch in %s" % p_func)
 
                 c_kind = [x.kind fuer x in c_sig.parameters.values()]
-                p_kind = [x[1].kind fuer x in p_sig.parameters.items() if not
+                p_kind = [x[1].kind fuer x in p_sig.parameters.items() wenn not
                           x[0].startswith('_')]
 
                 # parameters:
-                if attr != 'setcontext':
+                wenn attr != 'setcontext':
                     self.assertEqual(c_kind, p_kind,
                                      msg="parameter kind mismatch in %s" % p_func)
 
@@ -5861,32 +5861,32 @@ klasse SignatureTest(unittest.TestCase):
             args = []
             kwargs = {}
             fuer name, param in sig.parameters.items():
-                if name == 'self': continue
-                if param.kind == POS:
+                wenn name == 'self': continue
+                wenn param.kind == POS:
                     args.append(pdict[module][name])
-                elif param.kind == POS_KWD:
+                sowenn param.kind == POS_KWD:
                     kwargs[name] = pdict[module][name]
-                else:
+                sonst:
                     raise TestFailed("unexpected parameter kind")
             return args, kwargs
 
         def tr(s):
             """The C Context docstrings use 'x' in order to prevent confusion
                with the article 'a' in the descriptions."""
-            if s == 'x': return 'a'
-            if s == 'y': return 'b'
-            if s == 'z': return 'c'
+            wenn s == 'x': return 'a'
+            wenn s == 'y': return 'b'
+            wenn s == 'z': return 'c'
             return s
 
         def doit(ty):
             p_type = getattr(P, ty)
             c_type = getattr(C, ty)
             fuer attr in dir(p_type):
-                if attr.startswith('_'):
+                wenn attr.startswith('_'):
                     continue
                 p_func = getattr(p_type, attr)
                 c_func = getattr(c_type, attr)
-                if inspect.isfunction(p_func):
+                wenn inspect.isfunction(p_func):
                     p_sig = inspect.signature(p_func)
                     c_sig = inspect.signature(c_func)
 
@@ -5905,10 +5905,10 @@ klasse SignatureTest(unittest.TestCase):
                     self.assertIs(c_kind[0], POS)
 
                     # remaining parameters:
-                    if ty == 'Decimal':
+                    wenn ty == 'Decimal':
                         self.assertEqual(c_kind[1:], p_kind[1:],
                                          msg="parameter kind mismatch in %s" % p_func)
-                    else: # Context methods are positional only in the C version.
+                    sonst: # Context methods are positional only in the C version.
                         self.assertEqual(len(c_kind), len(p_kind),
                                          msg="parameter kind mismatch in %s" % p_func)
 
@@ -5930,34 +5930,34 @@ klasse SignatureTest(unittest.TestCase):
 
 
 def load_tests(loader, tests, pattern):
-    if TODO_TESTS is not None:
+    wenn TODO_TESTS is not None:
         # Run only Arithmetic tests
         tests = loader.suiteClass()
     # Dynamically build custom test definition fuer each file in the test
     # directory and add the definitions to the DecimalTest class.  This
     # procedure insures that new files do not get skipped.
     fuer filename in os.listdir(directory):
-        if '.decTest' not in filename or filename.startswith("."):
+        wenn '.decTest' not in filename or filename.startswith("."):
             continue
         head, tail = filename.split('.')
-        if TODO_TESTS is not None and head not in TODO_TESTS:
+        wenn TODO_TESTS is not None and head not in TODO_TESTS:
             continue
         tester = lambda self, f=filename: self.eval_file(directory + f)
         setattr(IBMTestCases, 'test_' + head, tester)
         del filename, head, tail, tester
     fuer prefix, mod in ('C', C), ('Py', P):
-        if not mod:
+        wenn not mod:
             continue
         test_class = type(prefix + 'IBMTestCases',
                           (IBMTestCases, unittest.TestCase),
                           {'decimal': mod})
         tests.addTest(loader.loadTestsFromTestCase(test_class))
 
-    if TODO_TESTS is None:
+    wenn TODO_TESTS is None:
         from doctest import DocTestSuite, IGNORE_EXCEPTION_DETAIL
         orig_context = orig_sys_decimal.getcontext().copy()
         fuer mod in C, P:
-            if not mod:
+            wenn not mod:
                 continue
             def setUp(slf, mod=mod):
                 sys.modules['decimal'] = mod
@@ -5966,7 +5966,7 @@ def load_tests(loader, tests, pattern):
                 sys.modules['decimal'] = orig_sys_decimal
                 mod.setcontext(ORIGINAL_CONTEXT[mod].copy())
                 orig_sys_decimal.setcontext(orig_context.copy())
-            optionflags = IGNORE_EXCEPTION_DETAIL if mod is C else 0
+            optionflags = IGNORE_EXCEPTION_DETAIL wenn mod is C sonst 0
             sys.modules['decimal'] = mod
             tests.addTest(DocTestSuite(mod, setUp=setUp, tearDown=tearDown,
                                    optionflags=optionflags))
@@ -5977,16 +5977,16 @@ def setUpModule():
     init(C)
     init(P)
     global TEST_ALL
-    TEST_ALL = ARITH if ARITH is not None else is_resource_enabled('decimal')
+    TEST_ALL = ARITH wenn ARITH is not None sonst is_resource_enabled('decimal')
 
 def tearDownModule():
-    if C: C.setcontext(ORIGINAL_CONTEXT[C].copy())
+    wenn C: C.setcontext(ORIGINAL_CONTEXT[C].copy())
     P.setcontext(ORIGINAL_CONTEXT[P].copy())
-    if not C:
+    wenn not C:
         logging.getLogger(__name__).warning(
             'C tests skipped: no module named _decimal.'
         )
-    if not orig_sys_decimal is sys.modules['decimal']:
+    wenn not orig_sys_decimal is sys.modules['decimal']:
         raise TestFailed("Internal error: unbalanced number of changes to "
                          "sys.modules['decimal'].")
 
@@ -5999,7 +5999,7 @@ DEBUG = False
 def test(arith=None, verbose=None, todo_tests=None, debug=None):
     """ Execute the tests.
 
-    Runs all arithmetic tests if arith is True or if the "decimal" resource
+    Runs all arithmetic tests wenn arith is True or wenn the "decimal" resource
     is enabled in regrtest.py
     """
 
@@ -6007,19 +6007,19 @@ def test(arith=None, verbose=None, todo_tests=None, debug=None):
     ARITH = arith
     TODO_TESTS = todo_tests
     DEBUG = debug
-    unittest.main(__name__, verbosity=2 if verbose else 1, exit=False, argv=[__name__])
+    unittest.main(__name__, verbosity=2 wenn verbose sonst 1, exit=False, argv=[__name__])
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     import optparse
     p = optparse.OptionParser("test_decimal.py [--debug] [{--skip | test1 [test2 [...]]}]")
     p.add_option('--debug', '-d', action='store_true', help='shows the test number and context before each test')
     p.add_option('--skip',  '-s', action='store_true', help='skip over 90% of the arithmetic tests')
     (opt, args) = p.parse_args()
 
-    if opt.skip:
+    wenn opt.skip:
         test(arith=False, verbose=True)
-    elif args:
+    sowenn args:
         test(arith=True, verbose=True, todo_tests=args, debug=opt.debug)
-    else:
+    sonst:
         test(arith=True, verbose=True)

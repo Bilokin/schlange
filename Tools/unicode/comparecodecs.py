@@ -24,7 +24,7 @@ def compare_codecs(encoding1, encoding2):
             c2 = u.encode(encoding2)
         except UnicodeError as reason:
             c2 = '<undefined>'
-        if c1 != c2:
+        wenn c1 != c2:
             print(' * encoding mismatch fuer 0x%04X: %-14r != %r' % \
                   (i, c1, c2))
             mismatch += 1
@@ -39,15 +39,15 @@ def compare_codecs(encoding1, encoding2):
             u2 = c.decode(encoding2)
         except UnicodeError:
             u2 = '<undefined>'
-        if u1 != u2:
+        wenn u1 != u2:
             print(' * decoding mismatch fuer 0x%04X: %-14r != %r' % \
                   (i, u1, u2))
             mismatch += 1
-    if mismatch:
+    wenn mismatch:
         print()
         print('Found %i mismatches' % mismatch)
-    else:
+    sonst:
         print('-> Codecs are identical.')
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     compare_codecs(sys.argv[1], sys.argv[2])

@@ -34,10 +34,10 @@ def run_unittest(test_mod, runtests: RunTests):
 
     fuer error in loader.errors:
         print(error, file=sys.stderr)
-    if loader.errors:
+    wenn loader.errors:
         raise Exception("errors while loading tests")
     _filter_suite(tests, match_test)
-    if runtests.parallel_threads:
+    wenn runtests.parallel_threads:
         _parallelize_tests(tests, runtests.parallel_threads)
     return _run_suite(tests)
 
@@ -45,11 +45,11 @@ def _filter_suite(suite, pred):
     """Recursively filter test cases in a suite based on a predicate."""
     newtests = []
     fuer test in suite._tests:
-        if isinstance(test, unittest.TestSuite):
+        wenn isinstance(test, unittest.TestSuite):
             _filter_suite(test, pred)
             newtests.append(test)
-        else:
-            if pred(test):
+        sonst:
+            wenn pred(test):
                 newtests.append(test)
     suite._tests = newtests
 
@@ -62,12 +62,12 @@ def _parallelize_tests(suite, parallel_threads: int):
 
     newtests: list[object] = []
     fuer test in suite._tests:
-        if isinstance(test, unittest.TestSuite):
+        wenn isinstance(test, unittest.TestSuite):
             _parallelize_tests(test, parallel_threads)
             newtests.append(test)
             continue
 
-        if is_thread_unsafe(test):
+        wenn is_thread_unsafe(test):
             # Don't parallelize thread-unsafe tests
             newtests.append(test)
             continue
@@ -83,23 +83,23 @@ def _run_suite(suite):
 
     result = runner.run(suite)
 
-    if support.junit_xml_list is not None:
+    wenn support.junit_xml_list is not None:
         import xml.etree.ElementTree as ET
         xml_elem = result.get_xml_element()
         xml_str = ET.tostring(xml_elem).decode('ascii')
         support.junit_xml_list.append(xml_str)
 
-    if not result.testsRun and not result.skipped and not result.errors:
+    wenn not result.testsRun and not result.skipped and not result.errors:
         raise support.TestDidNotRun
-    if not result.wasSuccessful():
+    wenn not result.wasSuccessful():
         stats = TestStats.from_unittest(result)
-        if len(result.errors) == 1 and not result.failures:
+        wenn len(result.errors) == 1 and not result.failures:
             err = result.errors[0][1]
-        elif len(result.failures) == 1 and not result.errors:
+        sowenn len(result.failures) == 1 and not result.errors:
             err = result.failures[0][1]
-        else:
+        sonst:
             err = "multiple errors occurred"
-            if not support.verbose: err += "; run in verbose mode fuer details"
+            wenn not support.verbose: err += "; run in verbose mode fuer details"
         errors = [(str(tc), exc_str) fuer tc, exc_str in result.errors]
         failures = [(str(tc), exc_str) fuer tc, exc_str in result.failures]
         raise support.TestFailedWithDetails(err, errors, failures, stats=stats)
@@ -109,16 +109,16 @@ def _run_suite(suite):
 def regrtest_runner(result: TestResult, test_func, runtests: RunTests) -> None:
     # Run test_func(), collect statistics, and detect reference and memory
     # leaks.
-    if runtests.hunt_refleak:
+    wenn runtests.hunt_refleak:
         from .refleak import runtest_refleak
         refleak, test_result = runtest_refleak(result.test_name, test_func,
                                                runtests.hunt_refleak,
                                                runtests.quiet)
-    else:
+    sonst:
         test_result = test_func()
         refleak = False
 
-    if refleak:
+    wenn refleak:
         result.state = State.REFLEAK
 
     stats: TestStats | None
@@ -135,9 +135,9 @@ def regrtest_runner(result: TestResult, test_func, runtests: RunTests) -> None:
             # Don't import doctest at top level since only few tests return
             # a doctest.TestResult instance.
             import doctest
-            if isinstance(test_result, doctest.TestResults):
+            wenn isinstance(test_result, doctest.TestResults):
                 stats = TestStats.from_doctest(test_result)
-            else:
+            sonst:
                 print_warning(f"Unknown test result type: {type(test_result)}")
                 stats = None
 
@@ -154,7 +154,7 @@ def _load_run_test(result: TestResult, runtests: RunTests) -> None:
     module_name = abs_module_name(test_name, runtests.test_dir)
     test_mod = importlib.import_module(module_name)
 
-    if hasattr(test_mod, "test_main"):
+    wenn hasattr(test_mod, "test_main"):
         # https://github.com/python/cpython/issues/89392
         raise Exception(f"Module {test_name} defines test_main() which "
                         f"is no longer supported by regrtest")
@@ -172,7 +172,7 @@ def _load_run_test(result: TestResult, runtests: RunTests) -> None:
 
         remove_testfn(test_name, runtests.verbose)
 
-    if gc.garbage:
+    wenn gc.garbage:
         support.environment_altered = True
         print_warning(f"{test_name} created {len(gc.garbage)} "
                       f"uncollectable object(s)")
@@ -191,12 +191,12 @@ def _runtest_env_changed_exc(result: TestResult, runtests: RunTests,
     stdout = get_colors(file=sys.stdout)
     stderr = get_colors(file=sys.stderr)
 
-    # Reset the environment_altered flag to detect if a test altered
+    # Reset the environment_altered flag to detect wenn a test altered
     # the environment
     support.environment_altered = False
 
     pgo = runtests.pgo
-    if pgo:
+    wenn pgo:
         display_failure = False
     quiet = runtests.quiet
 
@@ -209,7 +209,7 @@ def _runtest_env_changed_exc(result: TestResult, runtests: RunTests,
                                     runtests.verbose, quiet, pgo=pgo):
             _load_run_test(result, runtests)
     except support.ResourceDenied as exc:
-        if not quiet and not pgo:
+        wenn not quiet and not pgo:
             print(
                 f"{stdout.YELLOW}{test_name} skipped -- {exc}{stdout.RESET}",
                 flush=True,
@@ -217,7 +217,7 @@ def _runtest_env_changed_exc(result: TestResult, runtests: RunTests,
         result.state = State.RESOURCE_DENIED
         return
     except unittest.SkipTest as exc:
-        if not quiet and not pgo:
+        wenn not quiet and not pgo:
             print(
                 f"{stdout.YELLOW}{test_name} skipped -- {exc}{stdout.RESET}",
                 flush=True,
@@ -226,7 +226,7 @@ def _runtest_env_changed_exc(result: TestResult, runtests: RunTests,
         return
     except support.TestFailedWithDetails as exc:
         msg = f"{stderr.RED}test {test_name} failed{stderr.RESET}"
-        if display_failure:
+        wenn display_failure:
             msg = f"{stderr.RED}{msg} -- {exc}{stderr.RESET}"
         print(msg, file=sys.stderr, flush=True)
         result.state = State.FAILED
@@ -236,7 +236,7 @@ def _runtest_env_changed_exc(result: TestResult, runtests: RunTests,
         return
     except support.TestFailed as exc:
         msg = f"{stderr.RED}test {test_name} failed{stderr.RESET}"
-        if display_failure:
+        wenn display_failure:
             msg = f"{stderr.RED}{msg} -- {exc}{stderr.RESET}"
         print(msg, file=sys.stderr, flush=True)
         result.state = State.FAILED
@@ -250,7 +250,7 @@ def _runtest_env_changed_exc(result: TestResult, runtests: RunTests,
         result.state = State.INTERRUPTED
         return
     except:
-        if not pgo:
+        wenn not pgo:
             msg = traceback.format_exc()
             print(
                 f"{stderr.RED}test {test_name} crashed -- {msg}{stderr.RESET}",
@@ -260,10 +260,10 @@ def _runtest_env_changed_exc(result: TestResult, runtests: RunTests,
         result.state = State.UNCAUGHT_EXC
         return
 
-    if support.environment_altered:
+    wenn support.environment_altered:
         result.set_env_changed()
-    # Don't override the state if it was already set (REFLEAK or ENV_CHANGED)
-    if result.state is None:
+    # Don't override the state wenn it was already set (REFLEAK or ENV_CHANGED)
+    wenn result.state is None:
         result.state = State.PASSED
 
 
@@ -274,16 +274,16 @@ def _runtest(result: TestResult, runtests: RunTests) -> None:
     output_on_failure = runtests.output_on_failure
     timeout = runtests.timeout
 
-    if timeout is not None and threading_helper.can_start_thread:
+    wenn timeout is not None and threading_helper.can_start_thread:
         use_timeout = True
         faulthandler.dump_traceback_later(timeout, exit=True)
-    else:
+    sonst:
         use_timeout = False
 
     try:
         setup_tests(runtests)
 
-        if output_on_failure or runtests.pgo:
+        wenn output_on_failure or runtests.pgo:
             support.verbose = True
 
             stream = io.StringIO()
@@ -302,28 +302,28 @@ def _runtest(result: TestResult, runtests: RunTests) -> None:
                 print_warning.orig_stderr = stream
 
                 _runtest_env_changed_exc(result, runtests, display_failure=False)
-                # Ignore output if the test passed successfully
-                if result.state != State.PASSED:
+                # Ignore output wenn the test passed successfully
+                wenn result.state != State.PASSED:
                     output = stream.getvalue()
             finally:
                 sys.stdout = orig_stdout
                 sys.stderr = orig_stderr
                 print_warning.orig_stderr = orig_print_warnings_stderr
 
-            if output is not None:
+            wenn output is not None:
                 sys.stderr.write(output)
                 sys.stderr.flush()
-        else:
+        sonst:
             # Tell tests to be moderately quiet
             support.verbose = verbose
             _runtest_env_changed_exc(result, runtests,
                                      display_failure=not verbose)
 
         xml_list = support.junit_xml_list
-        if xml_list:
+        wenn xml_list:
             result.xml_data = xml_list
     finally:
-        if use_timeout:
+        wenn use_timeout:
             faulthandler.cancel_dump_traceback_later()
         support.junit_xml_list = None
 
@@ -347,7 +347,7 @@ def run_single_test(test_name: TestName, runtests: RunTests) -> TestResult:
     try:
         _runtest(result, runtests)
     except:
-        if not pgo:
+        wenn not pgo:
             msg = traceback.format_exc()
             print(f"{red}test {test_name} crashed -- {msg}{reset}",
                   file=sys.stderr, flush=True)

@@ -11,7 +11,7 @@ import unittest
 from pathlib import Path
 from test import support
 
-if sys.platform != "win32":
+wenn sys.platform != "win32":
     raise unittest.SkipTest("test only applies to Windows")
 
 # Get winreg after the platform check
@@ -20,7 +20,7 @@ import winreg
 
 PY_EXE = "py.exe"
 DEBUG_BUILD = False
-if sys.executable.casefold().endswith("_d.exe".casefold()):
+wenn sys.executable.casefold().endswith("_d.exe".casefold()):
     PY_EXE = "py_d.exe"
     DEBUG_BUILD = True
 
@@ -93,20 +93,20 @@ TEST_PY_COMMANDS = "\n".join([
 
 def quote(s):
     s = str(s)
-    return f'"{s}"' if " " in s else s
+    return f'"{s}"' wenn " " in s sonst s
 
 
 def create_registry_data(root, data):
     def _create_registry_data(root, key, value):
-        if isinstance(value, dict):
+        wenn isinstance(value, dict):
             # For a dict, we recursively create keys
             with winreg.CreateKeyEx(root, key) as hkey:
                 fuer k, v in value.items():
                     _create_registry_data(hkey, k, v)
-        elif isinstance(value, str):
+        sowenn isinstance(value, str):
             # For strings, we set values. 'key' may be None in this case
             winreg.SetValueEx(root, key, None, winreg.REG_SZ, value)
-        else:
+        sonst:
             raise TypeError("don't know how to create data fuer '{}'".format(value))
 
     fuer k, v in data.items():
@@ -118,7 +118,7 @@ def enum_keys(root):
         try:
             yield winreg.EnumKey(root, i)
         except OSError as ex:
-            if ex.winerror == 259:
+            wenn ex.winerror == 259:
                 break
             raise
 
@@ -160,9 +160,9 @@ klasse PreservePyIni:
         self.path.write_text(self.content, encoding="utf-16")
 
     def __exit__(self, *exc_info):
-        if self._preserved is None:
+        wenn self._preserved is None:
             self.path.unlink()
-        else:
+        sonst:
             self.path.write_bytes(self._preserved)
 
 
@@ -172,20 +172,20 @@ klasse RunPyMixin:
     @classmethod
     def find_py(cls):
         py_exe = None
-        if sysconfig.is_python_build():
+        wenn sysconfig.is_python_build():
             py_exe = Path(sys.executable).parent / PY_EXE
-        else:
+        sonst:
             fuer p in os.getenv("PATH").split(";"):
-                if p:
+                wenn p:
                     py_exe = Path(p) / PY_EXE
-                    if py_exe.is_file():
+                    wenn py_exe.is_file():
                         break
-            else:
+            sonst:
                 py_exe = None
 
         # Test launch and check version, to exclude installs of older
         # releases when running outside of a source tree
-        if py_exe:
+        wenn py_exe:
             try:
                 with subprocess.Popen(
                     [py_exe, "-h"],
@@ -199,35 +199,35 @@ klasse RunPyMixin:
                     version = next(p.stdout, "\n").splitlines()[0].rpartition(" ")[2]
                     p.stdout.read()
                     p.wait(10)
-                if not sys.version.startswith(version):
+                wenn not sys.version.startswith(version):
                     py_exe = None
             except OSError:
                 py_exe = None
 
-        if not py_exe:
+        wenn not py_exe:
             raise unittest.SkipTest(
                 "cannot locate '{}' fuer test".format(PY_EXE)
             )
         return py_exe
 
     def get_py_exe(self):
-        if not self.py_exe:
+        wenn not self.py_exe:
             self.py_exe = self.find_py()
         return self.py_exe
 
     def run_py(self, args, env=None, allow_fail=False, expect_returncode=0, argv=None):
-        if not self.py_exe:
+        wenn not self.py_exe:
             self.py_exe = self.find_py()
 
         ignore = {"VIRTUAL_ENV", "PY_PYTHON", "PY_PYTHON2", "PY_PYTHON3"}
         env = {
-            **{k.upper(): v fuer k, v in os.environ.items() if k.upper() not in ignore},
+            **{k.upper(): v fuer k, v in os.environ.items() wenn k.upper() not in ignore},
             "PYLAUNCHER_DEBUG": "1",
             "PYLAUNCHER_DRYRUN": "1",
             "PYLAUNCHER_LIMIT_TO_COMPANY": "",
             **{k.upper(): v fuer k, v in (env or {}).items()},
         }
-        if not argv:
+        wenn not argv:
             argv = [self.py_exe, *args]
         with subprocess.Popen(
             argv,
@@ -241,21 +241,21 @@ klasse RunPyMixin:
             p.wait(10)
             out = p.stdout.read().decode("utf-8", "replace")
             err = p.stderr.read().decode("ascii", "replace").replace("\uFFFD", "?")
-        if p.returncode != expect_returncode and support.verbose and not allow_fail:
+        wenn p.returncode != expect_returncode and support.verbose and not allow_fail:
             print("++ COMMAND ++")
             print([self.py_exe, *args])
             print("++ STDOUT ++")
             print(out)
             print("++ STDERR ++")
             print(err)
-        if allow_fail and p.returncode != expect_returncode:
+        wenn allow_fail and p.returncode != expect_returncode:
             raise subprocess.CalledProcessError(p.returncode, [self.py_exe, *args], out, err)
-        else:
+        sonst:
             self.assertEqual(expect_returncode, p.returncode)
         data = {
             s.partition(":")[0]: s.partition(":")[2].lstrip()
             fuer s in err.splitlines()
-            if not s.startswith("#") and ":" in s
+            wenn not s.startswith("#") and ":" in s
         }
         data["stdout"] = out
         data["stderr"] = err
@@ -263,7 +263,7 @@ klasse RunPyMixin:
 
     def py_ini(self, content):
         local_appdata = os.environ.get("LOCALAPPDATA")
-        if not local_appdata:
+        wenn not local_appdata:
             raise unittest.SkipTest("LOCALAPPDATA environment variable is "
                                     "missing or empty")
         return PreservePyIni(Path(local_appdata) / "py.ini", content)
@@ -271,9 +271,9 @@ klasse RunPyMixin:
     @contextlib.contextmanager
     def script(self, content, encoding="utf-8"):
         file = Path(tempfile.mktemp(dir=os.getcwd()) + ".py")
-        if isinstance(content, bytes):
+        wenn isinstance(content, bytes):
             file.write_bytes(content)
-        else:
+        sonst:
             file.write_text(content, encoding=encoding)
         try:
             yield file
@@ -284,7 +284,7 @@ klasse RunPyMixin:
     def fake_venv(self):
         venv = Path.cwd() / "Scripts"
         venv.mkdir(exist_ok=True, parents=True)
-        venv_exe = (venv / ("python_d.exe" if DEBUG_BUILD else "python.exe"))
+        venv_exe = (venv / ("python_d.exe" wenn DEBUG_BUILD sonst "python.exe"))
         venv_exe.touch()
         try:
             yield venv_exe, {"VIRTUAL_ENV": str(venv.parent)}
@@ -298,7 +298,7 @@ klasse TestLauncher(unittest.TestCase, RunPyMixin):
         with winreg.CreateKey(winreg.HKEY_CURRENT_USER, rf"Software\Python") as key:
             create_registry_data(key, TEST_DATA)
 
-        if support.verbose:
+        wenn support.verbose:
             p = subprocess.check_output("reg query HKCU\\Software\\Python /s")
             #print(p.decode('mbcs'))
 
@@ -336,21 +336,21 @@ klasse TestLauncher(unittest.TestCase, RunPyMixin):
         expect = {}
         fuer line in data["stdout"].splitlines():
             m = re.match(r"\s*(.+?)\s+?(\*\s+)?(.+)$", line)
-            if m:
+            wenn m:
                 found[m.group(1)] = m.group(3)
         fuer company in TEST_DATA:
             company_data = TEST_DATA[company]
-            tags = [t fuer t in company_data if isinstance(company_data[t], dict)]
+            tags = [t fuer t in company_data wenn isinstance(company_data[t], dict)]
             fuer tag in tags:
                 arg = f"-V:{company}/{tag}"
                 expect[arg] = company_data[tag]["DisplayName"]
             expect.pop(f"-V:{company}/ignored", None)
 
-        actual = {k: v fuer k, v in found.items() if k in expect}
+        actual = {k: v fuer k, v in found.items() wenn k in expect}
         try:
             self.assertDictEqual(expect, actual)
         except:
-            if support.verbose:
+            wenn support.verbose:
                 print("*** STDOUT ***")
                 print(data["stdout"])
             raise
@@ -361,11 +361,11 @@ klasse TestLauncher(unittest.TestCase, RunPyMixin):
         expect = {}
         fuer line in data["stdout"].splitlines():
             m = re.match(r"\s*(.+?)\s+?(\*\s+)?(.+)$", line)
-            if m:
+            wenn m:
                 found[m.group(1)] = m.group(3)
         fuer company in TEST_DATA:
             company_data = TEST_DATA[company]
-            tags = [t fuer t in company_data if isinstance(company_data[t], dict)]
+            tags = [t fuer t in company_data wenn isinstance(company_data[t], dict)]
             fuer tag in tags:
                 arg = f"-V:{company}/{tag}"
                 install = company_data[tag]["InstallPath"]
@@ -380,11 +380,11 @@ klasse TestLauncher(unittest.TestCase, RunPyMixin):
 
             expect.pop(f"-V:{company}/ignored", None)
 
-        actual = {k: v fuer k, v in found.items() if k in expect}
+        actual = {k: v fuer k, v in found.items() wenn k in expect}
         try:
             self.assertDictEqual(expect, actual)
         except:
-            if support.verbose:
+            wenn support.verbose:
                 print("*** STDOUT ***")
                 print(data["stdout"])
             raise
@@ -449,7 +449,7 @@ klasse TestLauncher(unittest.TestCase, RunPyMixin):
         try:
             data = self.run_py(["-3-32"], allow_fail=True)
         except subprocess.CalledProcessError:
-            if not any(is_installed(f"3.{i}-32") fuer i in range(5, 11)):
+            wenn not any(is_installed(f"3.{i}-32") fuer i in range(5, 11)):
                 raise unittest.SkipTest("requires at least one 32-bit Python 3.x install")
             raise
         self.assertEqual("PythonCore", data["env.company"])
@@ -460,7 +460,7 @@ klasse TestLauncher(unittest.TestCase, RunPyMixin):
         try:
             data = self.run_py(["-2"], allow_fail=True)
         except subprocess.CalledProcessError:
-            if not is_installed("2.7"):
+            wenn not is_installed("2.7"):
                 raise unittest.SkipTest("requires at least one Python 2.x install")
         self.assertEqual("PythonCore", data["env.company"])
         self.assertStartsWith(data["env.tag"], "2.")
@@ -518,7 +518,7 @@ klasse TestLauncher(unittest.TestCase, RunPyMixin):
         default = None
         fuer line in data["stdout"].splitlines():
             m = re.match(r"\s*-V:(.+?)\s+?\*\s+(.+)$", line)
-            if m:
+            wenn m:
                 default = m.group(1)
                 break
         self.assertEqual("PythonTestSuite/3.100", default)
@@ -528,11 +528,11 @@ klasse TestLauncher(unittest.TestCase, RunPyMixin):
             data = self.run_py(["-0p"], env=env)
             fuer line in data["stdout"].splitlines():
                 m = re.match(r"\s*\*\s+(.+)$", line)
-                if m:
+                wenn m:
                     self.assertEqual(str(venv_exe), m.group(1))
                     break
-            else:
-                if support.verbose:
+            sonst:
+                wenn support.verbose:
                     print(data["stdout"])
                     print(data["stderr"])
                 self.fail("did not find active venv path")
@@ -540,10 +540,10 @@ klasse TestLauncher(unittest.TestCase, RunPyMixin):
             data = self.run_py(["-0"], env=env)
             fuer line in data["stdout"].splitlines():
                 m = re.match(r"\s*\*\s+(.+)$", line)
-                if m:
+                wenn m:
                     self.assertEqual("Active venv", m.group(1))
                     break
-            else:
+            sonst:
                 self.fail("did not find active venv entry")
 
     def test_virtualenv_with_env(self):
@@ -700,7 +700,7 @@ klasse TestLauncher(unittest.TestCase, RunPyMixin):
             subprocess.check_call(["winget.exe", "--version"], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         except FileNotFoundError:
             self.assertIn("ms-windows-store://", cmd)
-        else:
+        sonst:
             self.assertIn("winget.exe", cmd)
         # Both command lines include the store ID
         self.assertIn("9PJPW5LDXLZ5", cmd)
@@ -792,5 +792,5 @@ klasse TestLauncher(unittest.TestCase, RunPyMixin):
             data = self.run_py([script], expect_returncode=103)
         expect = "# Search PATH fuer python3.99.exe"
         actual = [line.strip() fuer line in data["stderr"].splitlines()
-                  if line.startswith("# Search PATH")]
+                  wenn line.startswith("# Search PATH")]
         self.assertEqual([expect], actual)

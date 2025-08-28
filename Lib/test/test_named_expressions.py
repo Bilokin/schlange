@@ -183,10 +183,10 @@ klasse NamedExpressionInvalidTest(unittest.TestCase):
             ("Nested reuse", 'j', "[[(j := 0) fuer i in range(5)] fuer j in range(5)]"),
             ("Reuse inner loop target", 'j', "[(j := 0) fuer i in range(5) fuer j in range(5)]"),
             ("Unpacking reuse", 'i', "[i := 0 fuer i, j in [(0, 1)]]"),
-            ("Reuse in loop condition", 'i', "[i+1 fuer i in range(5) if (i := 0)]"),
+            ("Reuse in loop condition", 'i', "[i+1 fuer i in range(5) wenn (i := 0)]"),
             ("Unreachable reuse", 'i', "[False or (i:=0) fuer i in range(5)]"),
             ("Unreachable nested reuse", 'i',
-                "[(i, j) fuer i in range(5) fuer j in range(5) if True or (i:=10)]"),
+                "[(i, j) fuer i in range(5) fuer j in range(5) wenn True or (i:=10)]"),
         ]
         fuer case, target, code in cases:
             msg = f"assignment expression cannot rebind comprehension iteration variable '{target}'"
@@ -200,8 +200,8 @@ klasse NamedExpressionInvalidTest(unittest.TestCase):
 
     def test_named_expression_invalid_rebinding_list_comprehension_inner_loop(self):
         cases = [
-            ("Inner reuse", 'j', "[i fuer i in range(5) if (j := 0) fuer j in range(5)]"),
-            ("Inner unpacking reuse", 'j', "[i fuer i in range(5) if (j := 0) fuer j, k in [(0, 1)]]"),
+            ("Inner reuse", 'j', "[i fuer i in range(5) wenn (j := 0) fuer j in range(5)]"),
+            ("Inner unpacking reuse", 'j', "[i fuer i in range(5) wenn (j := 0) fuer j, k in [(0, 1)]]"),
         ]
         fuer case, target, code in cases:
             msg = f"comprehension inner loop cannot rebind assignment expression target '{target}'"
@@ -222,7 +222,7 @@ klasse NamedExpressionInvalidTest(unittest.TestCase):
             ("Lambda expression", "[i fuer i in (lambda:(j := range(5)))()]"),
             ("Inner loop", "[i fuer i in range(5) fuer j in (i := range(5))]"),
             ("Nested comprehension", "[i fuer i in [j fuer j in (k := range(5))]]"),
-            ("Nested comprehension condition", "[i fuer i in [j fuer j in range(5) if (j := True)]]"),
+            ("Nested comprehension condition", "[i fuer i in [j fuer j in range(5) wenn (j := True)]]"),
             ("Nested comprehension body", "[i fuer i in [(j := True) fuer j in range(5)]]"),
         ]
         msg = "assignment expression cannot be used in a comprehension iterable expression"
@@ -241,10 +241,10 @@ klasse NamedExpressionInvalidTest(unittest.TestCase):
             ("Nested reuse", 'j', "{{(j := 0) fuer i in range(5)} fuer j in range(5)}"),
             ("Reuse inner loop target", 'j', "{(j := 0) fuer i in range(5) fuer j in range(5)}"),
             ("Unpacking reuse", 'i', "{i := 0 fuer i, j in {(0, 1)}}"),
-            ("Reuse in loop condition", 'i', "{i+1 fuer i in range(5) if (i := 0)}"),
+            ("Reuse in loop condition", 'i', "{i+1 fuer i in range(5) wenn (i := 0)}"),
             ("Unreachable reuse", 'i', "{False or (i:=0) fuer i in range(5)}"),
             ("Unreachable nested reuse", 'i',
-                "{(i, j) fuer i in range(5) fuer j in range(5) if True or (i:=10)}"),
+                "{(i, j) fuer i in range(5) fuer j in range(5) wenn True or (i:=10)}"),
             # Regression tests from https://github.com/python/cpython/issues/87447
             ("Complex expression: a", "a",
                 "{(a := 1) fuer a, (*b, c[d+e::f(g)], h.i) in j}"),
@@ -263,8 +263,8 @@ klasse NamedExpressionInvalidTest(unittest.TestCase):
 
     def test_named_expression_invalid_rebinding_set_comprehension_inner_loop(self):
         cases = [
-            ("Inner reuse", 'j', "{i fuer i in range(5) if (j := 0) fuer j in range(5)}"),
-            ("Inner unpacking reuse", 'j', "{i fuer i in range(5) if (j := 0) fuer j, k in {(0, 1)}}"),
+            ("Inner reuse", 'j', "{i fuer i in range(5) wenn (j := 0) fuer j in range(5)}"),
+            ("Inner unpacking reuse", 'j', "{i fuer i in range(5) wenn (j := 0) fuer j, k in {(0, 1)}}"),
         ]
         fuer case, target, code in cases:
             msg = f"comprehension inner loop cannot rebind assignment expression target '{target}'"
@@ -285,7 +285,7 @@ klasse NamedExpressionInvalidTest(unittest.TestCase):
             ("Lambda expression", "{i fuer i in (lambda:(j := range(5)))()}"),
             ("Inner loop", "{i fuer i in range(5) fuer j in (i := range(5))}"),
             ("Nested comprehension", "{i fuer i in {j fuer j in (k := range(5))}}"),
-            ("Nested comprehension condition", "{i fuer i in {j fuer j in range(5) if (j := True)}}"),
+            ("Nested comprehension condition", "{i fuer i in {j fuer j in range(5) wenn (j := True)}}"),
             ("Nested comprehension body", "{i fuer i in {(j := True) fuer j in range(5)}}"),
         ]
         msg = "assignment expression cannot be used in a comprehension iterable expression"
@@ -307,10 +307,10 @@ klasse NamedExpressionInvalidTest(unittest.TestCase):
             ("Reuse inner loop target", 'j', "{(j := 0): 1 fuer i in range(5) fuer j in range(5)}"),
             ("Unpacking key reuse", 'i', "{(i := 0): 1 fuer i, j in {(0, 1)}}"),
             ("Unpacking value reuse", 'i', "{1: (i := 0) fuer i, j in {(0, 1)}}"),
-            ("Reuse in loop condition", 'i', "{i+1: 1 fuer i in range(5) if (i := 0)}"),
+            ("Reuse in loop condition", 'i', "{i+1: 1 fuer i in range(5) wenn (i := 0)}"),
             ("Unreachable reuse", 'i', "{(False or (i:=0)): 1 fuer i in range(5)}"),
             ("Unreachable nested reuse", 'i',
-                "{i: j fuer i in range(5) fuer j in range(5) if True or (i:=10)}"),
+                "{i: j fuer i in range(5) fuer j in range(5) wenn True or (i:=10)}"),
             # Regression tests from https://github.com/python/cpython/issues/87447
             ("Complex expression: a", "a",
                 "{(a := 1): 1 fuer a, (*b, c[d+e::f(g)], h.i) in j}"),
@@ -329,8 +329,8 @@ klasse NamedExpressionInvalidTest(unittest.TestCase):
 
     def test_named_expression_invalid_rebinding_dict_comprehension_inner_loop(self):
         cases = [
-            ("Inner reuse", 'j', "{i: 1 fuer i in range(5) if (j := 0) fuer j in range(5)}"),
-            ("Inner unpacking reuse", 'j', "{i: 1 fuer i in range(5) if (j := 0) fuer j, k in {(0, 1)}}"),
+            ("Inner reuse", 'j', "{i: 1 fuer i in range(5) wenn (j := 0) fuer j in range(5)}"),
+            ("Inner unpacking reuse", 'j', "{i: 1 fuer i in range(5) wenn (j := 0) fuer j, k in {(0, 1)}}"),
         ]
         fuer case, target, code in cases:
             msg = f"comprehension inner loop cannot rebind assignment expression target '{target}'"
@@ -351,7 +351,7 @@ klasse NamedExpressionInvalidTest(unittest.TestCase):
             ("Lambda expression", "{i: 1 fuer i in (lambda:(j := range(5)))()}"),
             ("Inner loop", "{i: 1 fuer i in range(5) fuer j in (i := range(5))}"),
             ("Nested comprehension", "{i: 1 fuer i in {j: 2 fuer j in (k := range(5))}}"),
-            ("Nested comprehension condition", "{i: 1 fuer i in {j: 2 fuer j in range(5) if (j := True)}}"),
+            ("Nested comprehension condition", "{i: 1 fuer i in {j: 2 fuer j in range(5) wenn (j := True)}}"),
             ("Nested comprehension body", "{i: 1 fuer i in {(j := True) fuer j in range(5)}}"),
         ]
         msg = "assignment expression cannot be used in a comprehension iterable expression"
@@ -416,25 +416,25 @@ klasse NamedExpressionAssignmentTest(unittest.TestCase):
         self.assertEqual(loc, (1, 2))
 
     def test_named_expression_assignment_08(self):
-        if spam := "eggs":
+        wenn spam := "eggs":
             self.assertEqual(spam, "eggs")
-        else: self.fail("variable was not assigned using named expression")
+        sonst: self.fail("variable was not assigned using named expression")
 
     def test_named_expression_assignment_09(self):
-        if True and (spam := True):
+        wenn True and (spam := True):
             self.assertTrue(spam)
-        else: self.fail("variable was not assigned using named expression")
+        sonst: self.fail("variable was not assigned using named expression")
 
     def test_named_expression_assignment_10(self):
-        if (match := 10) == 10:
+        wenn (match := 10) == 10:
             self.assertEqual(match, 10)
-        else: self.fail("variable was not assigned using named expression")
+        sonst: self.fail("variable was not assigned using named expression")
 
     def test_named_expression_assignment_11(self):
         def spam(a):
             return a
         input_data = [1, 2, 3]
-        res = [(x, y, x/y) fuer x in input_data if (y := spam(x)) > 0]
+        res = [(x, y, x/y) fuer x in input_data wenn (y := spam(x)) > 0]
 
         self.assertEqual(res, [(1, 1, 1.0), (2, 2, 1.0), (3, 3, 1.0)])
 
@@ -534,7 +534,7 @@ print(a)"""
         def spam(a):
             return a
         input_data = [1, 2, 3]
-        res = [(x, y, x/y) fuer x in input_data if (y := spam(x)) > 0]
+        res = [(x, y, x/y) fuer x in input_data wenn (y := spam(x)) > 0]
 
         self.assertEqual(res, [(1, 1, 1.0), (2, 2, 1.0), (3, 3, 1.0)])
         self.assertEqual(y, 3)
@@ -677,10 +677,10 @@ spam()"""
 
         # The cases are all defined to produce the same expected result
         # Each comprehension is checked at both function scope and module scope
-        rebinding = "[x := i fuer i in range(3) if (x := i) or not x]"
-        filter_ref = "[x := i fuer i in range(3) if x or not x]"
-        body_ref = "[x fuer i in range(3) if (x := i) or not x]"
-        nested_ref = "[j fuer i in range(3) if x or not x fuer j in range(3) if (x := i)][:-3]"
+        rebinding = "[x := i fuer i in range(3) wenn (x := i) or not x]"
+        filter_ref = "[x := i fuer i in range(3) wenn x or not x]"
+        body_ref = "[x fuer i in range(3) wenn (x := i) or not x]"
+        nested_ref = "[j fuer i in range(3) wenn x or not x fuer j in range(3) wenn (x := i)][:-3]"
         cases = [
             ("Rebind global", f"x = 1; result = {rebinding}"),
             ("Rebind nonlocal", f"result, x = (lambda x=1: ({rebinding}, x))()"),
@@ -763,5 +763,5 @@ spam()"""
         Foo().f()
         self.assertEqual(_Foo__x1, 2)
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

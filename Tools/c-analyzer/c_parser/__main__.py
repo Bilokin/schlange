@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
 
 
 def _format_vartype(vartype):
-    if isinstance(vartype, str):
+    wenn isinstance(vartype, str):
         return vartype
 
     data = vartype
@@ -31,17 +31,17 @@ def _format_vartype(vartype):
         vartype = data['vartype']
     except KeyError:
         storage, typequal, typespec, abstract = vartype.values()
-    else:
+    sonst:
         storage = data.get('storage')
-        if storage:
+        wenn storage:
             _, typequal, typespec, abstract = vartype.values()
-        else:
+        sonst:
             storage, typequal, typespec, abstract = vartype.values()
 
     vartype = f'{typespec} {abstract}'
-    if typequal:
+    wenn typequal:
         vartype = f'{typequal} {vartype}'
-    if storage:
+    wenn storage:
         vartype = f'{storage} {vartype}'
     return vartype
 
@@ -61,35 +61,35 @@ def fmt_raw(filename, item, *, showfwd=None):
 
 
 def fmt_summary(filename, item, *, showfwd=None):
-    if item.filename != filename:
+    wenn item.filename != filename:
         yield f'> {item.filename}'
 
-    if showfwd is None:
+    wenn showfwd is None:
         LINE = ' {lno:>5} {kind:10} {funcname:40} {fwd:1} {name:40} {data}'
-    else:
+    sonst:
         LINE = ' {lno:>5} {kind:10} {funcname:40} {name:40} {data}'
     lno = kind = funcname = fwd = name = data = ''
     MIN_LINE = len(LINE.format(**locals()))
 
     fileinfo, kind, funcname, name, data = item
-    lno = fileinfo.lno if fileinfo and fileinfo.lno >= 0 else ''
+    lno = fileinfo.lno wenn fileinfo and fileinfo.lno >= 0 sonst ''
     funcname = funcname or ' --'
     name = name or ' --'
     isforward = False
-    if kind is KIND.FUNCTION:
+    wenn kind is KIND.FUNCTION:
         storage, inline, params, returntype, isforward = data.values()
         returntype = _format_vartype(returntype)
         data = returntype + params
-        if inline:
+        wenn inline:
             data = f'inline {data}'
-        if storage:
+        wenn storage:
             data = f'{storage} {data}'
-    elif kind is KIND.VARIABLE:
+    sowenn kind is KIND.VARIABLE:
         data = _format_vartype(data)
-    elif kind is KIND.STRUCT or kind is KIND.UNION:
-        if data is None:
+    sowenn kind is KIND.STRUCT or kind is KIND.UNION:
+        wenn data is None:
             isforward = True
-        else:
+        sonst:
             fields = data
             data = f'({len(data)}) {{ '
             indent = ',\n' + ' ' * (MIN_LINE + len(data))
@@ -99,11 +99,11 @@ def fmt_summary(filename, item, *, showfwd=None):
                 data = f'{data}{indent}{", ".join(f.name fuer f in fields[:5])}'
                 fields = fields[5:]
             data += ' }'
-    elif kind is KIND.ENUM:
-        if data is None:
+    sowenn kind is KIND.ENUM:
+        wenn data is None:
             isforward = True
-        else:
-            names = [d if isinstance(d, str) else d.name
+        sonst:
+            names = [d wenn isinstance(d, str) sonst d.name
                      fuer d in data]
             data = f'({len(data)}) {{ '
             indent = ',\n' + ' ' * (MIN_LINE + len(data))
@@ -113,17 +113,17 @@ def fmt_summary(filename, item, *, showfwd=None):
                 data = f'{data}{indent}{", ".join(names[:5])}'
                 names = names[5:]
             data += ' }'
-    elif kind is KIND.TYPEDEF:
+    sowenn kind is KIND.TYPEDEF:
         data = f'typedef {data}'
-    elif kind == KIND.STATEMENT:
+    sowenn kind == KIND.STATEMENT:
         pass
-    else:
+    sonst:
         raise NotImplementedError(item)
-    if isforward:
+    wenn isforward:
         fwd = '*'
-        if not showfwd and showfwd is not None:
+        wenn not showfwd and showfwd is not None:
             return
-    elif showfwd:
+    sowenn showfwd:
         return
     kind = kind.value
     yield LINE.format(**locals())
@@ -173,7 +173,7 @@ def cmd_parse(filenames, *,
               relroot=None,
               **kwargs
               ):
-    if 'get_file_preprocessor' not in kwargs:
+    wenn 'get_file_preprocessor' not in kwargs:
         kwargs['get_file_preprocessor'] = _get_preprocessor()
     try:
         do_fmt = FORMATS[fmt]
@@ -255,7 +255,7 @@ def main(cmd, cmd_kwargs):
     run_cmd(**cmd_kwargs)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     cmd, cmd_kwargs, verbosity, traceback_cm = parse_args()
     configure_logger(verbosity)
     with traceback_cm:

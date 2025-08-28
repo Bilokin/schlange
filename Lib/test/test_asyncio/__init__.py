@@ -5,7 +5,7 @@ from test.support import import_helper
 
 support.requires_working_socket(module=True)
 
-# Skip tests if we don't have concurrent.futures.
+# Skip tests wenn we don't have concurrent.futures.
 import_helper.import_module('concurrent.futures')
 
 def load_tests(*args):

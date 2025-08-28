@@ -7,7 +7,7 @@ import sys
 from test.support import os_helper
 
 
-if not hasattr(sys.stdin, 'newlines'):
+wenn not hasattr(sys.stdin, 'newlines'):
     raise unittest.SkipTest(
         "This Python does not have universal newline support")
 
@@ -45,7 +45,7 @@ klasse TestGenericUnivNewlines:
 
     def setUp(self):
         data = self.DATA
-        if "b" in self.WRITEMODE:
+        wenn "b" in self.WRITEMODE:
             data = data.encode("ascii")
         with self.open(os_helper.TESTFN, self.WRITEMODE) as fp:
             fp.write(data)
@@ -120,5 +120,5 @@ klasse TestMixedNewlines(TestGenericUnivNewlines):
 klasse CTestMixedNewlines(CTest, TestMixedNewlines, unittest.TestCase): pass
 klasse PyTestMixedNewlines(PyTest, TestMixedNewlines, unittest.TestCase): pass
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

@@ -11,7 +11,7 @@ from test import support
 from test.support import os_helper
 from test.support import script_helper
 from test.support import import_helper
-# Raise SkipTest if subinterpreters not supported.
+# Raise SkipTest wenn subinterpreters not supported.
 _interpreters = import_helper.import_module('_interpreters')
 from concurrent import interpreters
 from test.support import Py_GIL_DISABLED
@@ -48,9 +48,9 @@ def defined_in___main__(name, script, *, remove=False):
     mainns = vars(mainmod)
     assert name not in mainns
     exec(script, mainns, mainns)
-    if remove:
+    wenn remove:
         yield mainns.pop(name)
-    else:
+    sonst:
         try:
             yield mainns[name]
         finally:
@@ -58,23 +58,23 @@ def defined_in___main__(name, script, *, remove=False):
 
 
 def build_excinfo(exctype, msg=None, formatted=None, errdisplay=None):
-    if isinstance(exctype, type):
+    wenn isinstance(exctype, type):
         assert issubclass(exctype, BaseException), exctype
         exctype = types.SimpleNamespace(
             __name__=exctype.__name__,
             __qualname__=exctype.__qualname__,
             __module__=exctype.__module__,
         )
-    elif isinstance(exctype, str):
+    sowenn isinstance(exctype, str):
         module, _, name = exctype.rpartition(exctype)
-        if not module and name in __builtins__:
+        wenn not module and name in __builtins__:
             module = 'builtins'
         exctype = types.SimpleNamespace(
             __name__=name,
             __qualname__=exctype,
             __module__=module or None,
         )
-    else:
+    sonst:
         assert isinstance(exctype, types.SimpleNamespace)
     assert msg is None or isinstance(msg, str), msg
     assert formatted  is None or isinstance(formatted, str), formatted
@@ -449,9 +449,9 @@ klasse TestInterpreterIsRunning(TestBase):
         interp = interpreters.create()
         out = _run_output(interp, dedent(f"""
             import _interpreters
-            if _interpreters.is_running({interp.id}):
+            wenn _interpreters.is_running({interp.id}):
                 print(True)
-            else:
+            sonst:
                 print(False)
             """))
         self.assertEqual(out.strip(), 'True')
@@ -820,7 +820,7 @@ klasse TestInterpreterExec(TestBase):
 
         stdout, stderr = self.assert_python_failure(scriptfile)
         self.maxDiff = None
-        interpmod_line, = (l fuer l in stderr.splitlines() if ' exec' in l)
+        interpmod_line, = (l fuer l in stderr.splitlines() wenn ' exec' in l)
         #      File "{interpreters.__file__}", line 179, in exec
         self.assertEqual(stderr, dedent(f"""\
             Traceback (most recent call last):
@@ -1016,7 +1016,7 @@ klasse Spam:
         return (self.value, args, kwargs)
 
     def __eq__(self, other):
-        if not isinstance(other, Spam):
+        wenn not isinstance(other, Spam):
             return NotImplemented
         return self.value == other.value
 
@@ -1025,41 +1025,41 @@ klasse Spam:
 
 
 def call_func_complex(op, /, value=None, *args, exc=None, **kwargs):
-    if exc is not None:
+    wenn exc is not None:
         raise exc
-    if op == '':
+    wenn op == '':
         raise ValueError('missing op')
-    elif op == 'ident':
-        if args or kwargs:
+    sowenn op == 'ident':
+        wenn args or kwargs:
             raise Exception((args, kwargs))
         return value
-    elif op == 'full-ident':
+    sowenn op == 'full-ident':
         return (value, args, kwargs)
-    elif op == 'globals':
-        if value is not None or args or kwargs:
+    sowenn op == 'globals':
+        wenn value is not None or args or kwargs:
             raise Exception((value, args, kwargs))
         return __name__
-    elif op == 'interpid':
-        if value is not None or args or kwargs:
+    sowenn op == 'interpid':
+        wenn value is not None or args or kwargs:
             raise Exception((value, args, kwargs))
         return interpreters.get_current().id
-    elif op == 'closure':
-        if args or kwargs:
+    sowenn op == 'closure':
+        wenn args or kwargs:
             raise Exception((args, kwargs))
         return get_call_func_closure(value)
-    elif op == 'custom':
-        if args or kwargs:
+    sowenn op == 'custom':
+        wenn args or kwargs:
             raise Exception((args, kwargs))
         return Spam(value)
-    elif op == 'custom-inner':
-        if args or kwargs:
+    sowenn op == 'custom-inner':
+        wenn args or kwargs:
             raise Exception((args, kwargs))
         klasse Eggs(Spam):
             pass
         return Eggs(value)
-    elif not isinstance(op, str):
+    sowenn not isinstance(op, str):
         raise TypeError(op)
-    else:
+    sonst:
         raise NotImplementedError(op)
 
 
@@ -1106,7 +1106,7 @@ klasse TestInterpreterCall(TestBase):
         return self.assert_fails(interpreters.NotShareableError)
 
     def assert_code_equal(self, code1, code2):
-        if code1 == code2:
+        wenn code1 == code2:
             return
         self.assertEqual(code1.co_name, code2.co_name)
         self.assertEqual(code1.co_flags, code2.co_flags)
@@ -1122,7 +1122,7 @@ klasse TestInterpreterCall(TestBase):
         self.assertEqual(code1.co_code, code2.co_code)
 
     def assert_funcs_equal(self, func1, func2):
-        if func1 == func2:
+        wenn func1 == func2:
             return
         self.assertIs(type(func1), type(func2))
         self.assertEqual(func1.__name__, func2.__name__)
@@ -1138,7 +1138,7 @@ klasse TestInterpreterCall(TestBase):
     def assert_exceptions_equal(self, exc1, exc2):
         assert isinstance(exc1, Exception)
         assert isinstance(exc2, Exception)
-        if exc1 == exc2:
+        wenn exc1 == exc2:
             return
         self.assertIs(type(exc1), type(exc2))
         self.assertEqual(exc1.args, exc2.args)
@@ -1194,7 +1194,7 @@ klasse TestInterpreterCall(TestBase):
                 self.assert_funcs_equal(res, arg)
 
         fuer arg in defs.TOP_FUNCTIONS:
-            if arg in defs.STATELESS_FUNCTIONS:
+            wenn arg in defs.STATELESS_FUNCTIONS:
                 continue
             with self.subTest(f'stateful func {arg!r}'):
                 res = interp.call(defs.spam_returns_arg, arg)
@@ -1223,22 +1223,22 @@ klasse TestInterpreterCall(TestBase):
             # user classes
             *defs.TOP_CLASSES,
             *(c(*a) fuer c, a in defs.TOP_CLASSES.items()
-              if c not in defs.CLASSES_WITHOUT_EQUALITY),
+              wenn c not in defs.CLASSES_WITHOUT_EQUALITY),
         ]:
             with self.subTest(f'pickleable {arg!r}'):
                 res = interp.call(defs.spam_returns_arg, arg)
-                if type(arg) is object:
+                wenn type(arg) is object:
                     self.assertIs(type(res), object)
-                elif isinstance(arg, BaseException):
+                sowenn isinstance(arg, BaseException):
                     self.assert_exceptions_equal(res, arg)
-                else:
+                sonst:
                     self.assertEqual(res, arg)
                 assert is_pickleable(arg)
 
         fuer arg in [
             types.MappingProxyType({}),
             *(f fuer f in defs.NESTED_FUNCTIONS
-              if f not in defs.STATELESS_FUNCTIONS),
+              wenn f not in defs.STATELESS_FUNCTIONS),
         ]:
             with self.subTest(f'unpickleable {arg!r}'):
                 assert not _interpreters.is_shareable(arg)
@@ -1305,7 +1305,7 @@ klasse TestInterpreterCall(TestBase):
                         # This a global var...
                         return __name__
 
-                    if __name__ == '__main__':
+                    wenn __name__ == '__main__':
                         interp = interpreters.create()
                         res = interp.call(spam)
                         print(res)
@@ -1326,7 +1326,7 @@ klasse TestInterpreterCall(TestBase):
                         # This a global var...
                         return __name__
 
-                    if __name__ == '__main__':
+                    wenn __name__ == '__main__':
                         interp = interpreters.create()
                         res = mymod.run(interp, spam)
                         print(res)
@@ -1348,7 +1348,7 @@ klasse TestInterpreterCall(TestBase):
                         # This a global var...
                         return __name__
 
-                    if __name__ == '__main__':
+                    wenn __name__ == '__main__':
                         res = mymod.run(spam)
                         print(res)
                     """)
@@ -1394,10 +1394,10 @@ klasse TestInterpreterCall(TestBase):
             eggs = True
 
             def spam(*, explicit=False):
-                if explicit:
+                wenn explicit:
                     import __main__
                     ns = __main__.__dict__
-                else:
+                sonst:
                     # For now we have to have a LOAD_GLOBAL in the
                     # function in order fuer globals() to actually return
                     # spam.__globals__.  Maybe it doesn't go through pickle?
@@ -1411,12 +1411,12 @@ klasse TestInterpreterCall(TestBase):
                     ns.get('__name__'),
                     ns.get('__file__'),
                     id(func),
-                    None if func is None else repr(func),
+                    None wenn func is None sonst repr(func),
                     ns.get('eggs'),
                     ns.get('ham'),
                 ]
 
-            if __name__ == "__main__":
+            wenn __name__ == "__main__":
                 from concurrent import interpreters
                 interp = interpreters.create()
 
@@ -1515,7 +1515,7 @@ klasse TestInterpreterCall(TestBase):
             def get_count():
                 return count
 
-            if __name__ == "__main__":
+            wenn __name__ == "__main__":
                 counts = []
                 results = [count, counts]
 
@@ -1640,10 +1640,10 @@ klasse TestInterpreterCall(TestBase):
             dir: list,
         }.items():
             with self.subTest(str(func)):
-                if func in result_not_pickleable:
+                wenn func in result_not_pickleable:
                     with self.assertRaises(interpreters.NotShareableError):
                         interp.call(func)
-                else:
+                sonst:
                     res = interp.call(func)
                     self.assertIsInstance(res, expectedtype)
                     self.assertIn('__builtins__', res)
@@ -1668,7 +1668,7 @@ klasse TestInterpreterCall(TestBase):
         ])
 
         values = {name: interp.call(eval, name)
-                  fuer name in names if name != '__builtins__'}
+                  fuer name in names wenn name != '__builtins__'}
         self.assertEqual(values, {
             '__name__': '__main__',
             '__doc__': None,
@@ -1898,7 +1898,7 @@ klasse LowLevelTests(TestBase):
             with self.subTest(f'override all ({name})'):
                 overrides = {k: not v fuer k, v in vars(vanilla).items()}
                 fuer gil in gil_supported:
-                    if vanilla.gil == gil:
+                    wenn vanilla.gil == gil:
                         continue
                     overrides['gil'] = gil
                     expected = types.SimpleNamespace(**overrides)
@@ -1907,9 +1907,9 @@ klasse LowLevelTests(TestBase):
 
             # Override individual fields.
             fuer field, old in vars(vanilla).items():
-                if field == 'gil':
-                    values = [v fuer v in gil_supported if v != old]
-                else:
+                wenn field == 'gil':
+                    values = [v fuer v in gil_supported wenn v != old]
+                sonst:
                     values = [not old]
                 fuer val in values:
                     with self.subTest(f'{name}.{field} ({old!r} -> {val!r})'):
@@ -1926,7 +1926,7 @@ klasse LowLevelTests(TestBase):
 
         # Bad values fuer bool fields.
         fuer field, value in vars(supported['empty']).items():
-            if field == 'gil':
+            wenn field == 'gil':
                 continue
             assert isinstance(value, bool)
             fuer value in [1, '', 'spam', 1.0, None, object()]:
@@ -2134,7 +2134,7 @@ klasse LowLevelTests(TestBase):
         with self.subTest('main'):
             expected = _interpreters.new_config('legacy')
             expected.gil = 'own'
-            if Py_GIL_DISABLED:
+            wenn Py_GIL_DISABLED:
                 expected.check_multi_interp_extensions = False
             interpid, *_ = _interpreters.get_main()
             config = _interpreters.get_config(interpid)
@@ -2361,6 +2361,6 @@ klasse LowLevelTests(TestBase):
             self.assertEqual(rc, 0)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     # Test needs to be a package, so we can do relative imports.
     unittest.main()

@@ -19,7 +19,7 @@ from test.support import captured_stdout, import_helper
 klasse TestFrozen(unittest.TestCase):
     def test_frozen(self):
         name = '__hello__'
-        if name in sys.modules:
+        wenn name in sys.modules:
             del sys.modules[name]
         with import_helper.frozen_modules():
             import __hello__
@@ -52,5 +52,5 @@ klasse TestFrozen(unittest.TestCase):
                          importlib.machinery.FrozenImporter)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

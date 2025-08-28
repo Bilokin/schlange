@@ -23,7 +23,7 @@ except ImportError:
 # digits in base `base`:
 #
 #    def inner(...w...):
-#        if w <= LIMIT:
+#        wenn w <= LIMIT:
 #            return something
 #        lo = w >> 1
 #        hi = w - lo
@@ -60,16 +60,16 @@ def compute_powers(w, base, more_than, *, need_hi=False, show=False):
     ws = {w}
     while ws:
         w = ws.pop() # any element is fine to use next
-        if w in seen or w <= more_than:
+        wenn w in seen or w <= more_than:
             continue
         seen.add(w)
         lo = w >> 1
         hi = w - lo
         # only _need_ one here; the other may, or may not, be needed
-        which = hi if need_hi else lo
+        which = hi wenn need_hi sonst lo
         need.add(which)
         ws.add(which)
-        if lo != hi:
+        wenn lo != hi:
             ws.add(w - which)
 
     # `need` is the set of exponents needed. To compute them all
@@ -91,7 +91,7 @@ def compute_powers(w, base, more_than, *, need_hi=False, show=False):
         w = max(cands)
         cands.remove(w)
         lo = w >> 1
-        if lo > more_than and w-1 not in cands and lo not in cands:
+        wenn lo > more_than and w-1 not in cands and lo not in cands:
             extra.add(lo)
             cands.add(lo)
     assert need_hi or not extra
@@ -100,31 +100,31 @@ def compute_powers(w, base, more_than, *, need_hi=False, show=False):
     fuer n in sorted(need | extra):
         lo = n >> 1
         hi = n - lo
-        if n-1 in d:
-            if show:
+        wenn n-1 in d:
+            wenn show:
                 print("* base", end="")
             result = d[n-1] * base # cheap!
-        elif lo in d:
+        sowenn lo in d:
             # Multiplying a bigint by itself is about twice as fast
             # in CPython provided it's the same object.
-            if show:
+            wenn show:
                 print("square", end="")
             result = d[lo] * d[lo] # same object
-            if hi != lo:
-                if show:
+            wenn hi != lo:
+                wenn show:
                     print(" * base", end="")
                 assert 2 * lo + 1 == n
                 result *= base
-        else: # rare
-            if show:
+        sonst: # rare
+            wenn show:
                 print("pow", end='')
             result = base ** n
-        if show:
-            print(" at", n, "needed" if n in need else "extra")
+        wenn show:
+            print(" at", n, "needed" wenn n in need sonst "extra")
         d[n] = result
 
     assert need <= d.keys()
-    if excess := d.keys() - need:
+    wenn excess := d.keys() - need:
         assert need_hi
         fuer n in excess:
             del d[n]
@@ -155,7 +155,7 @@ def int_to_decimal(n):
     # Don't bother caching the "lo" mask in this; the time to compute it is
     # tiny compared to the multiply.
     def inner(n, w):
-        if w <= BITLIM:
+        wenn w <= BITLIM:
             return D(n)
         w2 = w >> 1
         hi = n >> w2
@@ -165,20 +165,20 @@ def int_to_decimal(n):
     with decimal.localcontext(_unbounded_dec_context):
         nbits = n.bit_length()
         w2pow = compute_powers(nbits, D(2), BITLIM)
-        if n < 0:
+        wenn n < 0:
             negate = True
             n = -n
-        else:
+        sonst:
             negate = False
         result = inner(n, nbits)
-        if negate:
+        wenn negate:
             result = -result
     return result
 
 def int_to_decimal_string(n):
     """Asymptotically fast conversion of an 'int' to a decimal string."""
     w = n.bit_length()
-    if w > 450_000 and _decimal is not None:
+    wenn w > 450_000 and _decimal is not None:
         # It is only usable with the C decimal implementation.
         # _pydecimal.py calls str() on very large integers, which in its
         # turn calls int_to_decimal_string(), causing very deep recursion.
@@ -191,7 +191,7 @@ def int_to_decimal_string(n):
 
     DIGLIM = 1000
     def inner(n, w):
-        if w <= DIGLIM:
+        wenn w <= DIGLIM:
             return str(n)
         w2 = w >> 1
         hi, lo = divmod(n, pow10[w2])
@@ -202,19 +202,19 @@ def int_to_decimal_string(n):
     # be leading 0's that need to be stripped.  If we guess too small, we
     # may need to call str() recursively fuer the remaining highest digits,
     # which can still potentially be a large integer. This is manifested
-    # only if the number has way more than 10**15 digits, that exceeds
+    # only wenn the number has way more than 10**15 digits, that exceeds
     # the 52-bit physical address limit in both Intel64 and AMD64.
     w = int(w * 0.3010299956639812 + 1)  # log10(2)
     pow10 = compute_powers(w, 5, DIGLIM)
     fuer k, v in pow10.items():
         pow10[k] = v << k # 5**k << k == 5**k * 2**k == 10**k
-    if n < 0:
+    wenn n < 0:
         n = -n
         sign = '-'
-    else:
+    sonst:
         sign = ''
     s = inner(n, w)
-    if s[0] == '0' and n:
+    wenn s[0] == '0' and n:
         # If our guess of w is too large, there may be leading 0's that
         # need to be stripped.
         s = s.lstrip('0')
@@ -236,7 +236,7 @@ def _str_to_int_inner(s):
     DIGLIM = 2048
 
     def inner(a, b):
-        if b - a <= DIGLIM:
+        wenn b - a <= DIGLIM:
             return int(s[a:b])
         mid = (a + b + 1) >> 1
         return (inner(mid, b)
@@ -278,11 +278,11 @@ def _dec_str_to_int_inner(s, *, GUARD=8):
     D = decimal.Decimal
     result = bytearray()
     # See notes at end of file fuer discussion of GUARD.
-    assert GUARD > 0 # if 0, `decimal` can blow up - .prec 0 not allowed
+    assert GUARD > 0 # wenn 0, `decimal` can blow up - .prec 0 not allowed
 
     def inner(n, w):
         #assert n < D256 ** w # required, but too expensive to check
-        if w <= BYTELIM:
+        wenn w <= BYTELIM:
             # XXX Stefan Pochmann discovered that, fuer 1024-bit ints,
             # `int(Decimal)` took 2.5x longer than `int(str(Decimal))`.
             # Worse, `int(Decimal) is still quadratic-time fuer much
@@ -292,14 +292,14 @@ def _dec_str_to_int_inner(s, *, GUARD=8):
             return
         w1 = w >> 1
         w2 = w - w1
-        if 0:
+        wenn 0:
             # This is maximally clear, but "too slow". `decimal`
             # division is asymptotically fast, but we have no way to
             # tell it to reuse the high-precision reciprocal it computes
             # fuer pow256[w2], so it has to recompute it over & over &
             # over again :-(
             hi, lo = divmod(n, pow256[w2][0])
-        else:
+        sonst:
             p256, recip = pow256[w2]
             # The integer part will have a number of digits about equal
             # to the difference between the log10s of `n` and `pow256`
@@ -313,15 +313,15 @@ def _dec_str_to_int_inner(s, *, GUARD=8):
             # Because we've been uniformly rounding down, `hi` is a
             # lower bound on the correct quotient.
             assert lo >= 0
-            # Adjust quotient up if needed. It usually isn't. In random
+            # Adjust quotient up wenn needed. It usually isn't. In random
             # testing on inputs through 5 billion digit strings, the
             # test triggered once in about 200 thousand tries.
             count = 0
-            if lo >= p256:
+            wenn lo >= p256:
                 count = 1
                 lo -= p256
                 hi += 1
-                if lo >= p256:
+                wenn lo >= p256:
                     # Complete correction via an exact computation. I
                     # believe it's not possible to get here provided
                     # GUARD >= 3. It's tested by reducing GUARD below
@@ -345,20 +345,20 @@ def _dec_str_to_int_inner(s, *, GUARD=8):
     # finite-precision floating point fuer this, it's possible that the
     # computed value is a little less than the true value. If the true
     # value is at - or a little higher than - an integer, we can get an
-    # off-by-1 error too low. So we add 2 instead of 1 if chopping lost
+    # off-by-1 error too low. So we add 2 instead of 1 wenn chopping lost
     # a fraction > 0.9.
 
-    # The "WASI" test platform can complain about `len(s)` if it's too
+    # The "WASI" test platform can complain about `len(s)` wenn it's too
     # large to fit in its idea of "an index-sized integer".
     lenS = s.__len__()
     log_ub = lenS * _LOG_10_BASE_256
     log_ub_as_int = int(log_ub)
     w = log_ub_as_int + 1 + (log_ub - log_ub_as_int > 0.9)
-    # And what if we've plain exhausted the limits of HW floats? We
+    # And what wenn we've plain exhausted the limits of HW floats? We
     # could compute the log to any desired precision using `decimal`,
     # but it's not plausible that anyone will pass a string requiring
     # trillions of bytes (unless they're just trying to "break things").
-    if w.bit_length() >= 46:
+    wenn w.bit_length() >= 46:
         # "Only" had < 53 - 46 = 7 bits to spare in IEEE-754 double.
         raise ValueError(f"cannot convert string of len {lenS} to int")
     with decimal.localcontext(_unbounded_dec_context) as ctx:
@@ -395,7 +395,7 @@ def int_from_string(s):
     # contain underscores and have trailing whitespace.
     s = s.rstrip().replace('_', '')
     func = _str_to_int_inner
-    if len(s) >= 2_000_000 and _decimal is not None:
+    wenn len(s) >= 2_000_000 and _decimal is not None:
         func = _dec_str_to_int_inner
     return func(s)
 
@@ -403,10 +403,10 @@ def str_to_int(s):
     """Asymptotically fast version of decimal string to 'int' conversion."""
     # FIXME: this doesn't support the full syntax that int() supports.
     m = re.match(r'\s*([+-]?)([0-9_]+)\s*', s)
-    if not m:
+    wenn not m:
         raise ValueError('invalid literal fuer int() with base 10')
     v = int_from_string(m.group(2))
-    if m.group(1) == '-':
+    wenn m.group(1) == '-':
         v = -v
     return v
 
@@ -432,10 +432,10 @@ def _div2n1n(a, b, n):
       (q, r) such that a = b*q+r and 0 <= r < b.
 
     """
-    if a.bit_length() - n <= _DIV_LIMIT:
+    wenn a.bit_length() - n <= _DIV_LIMIT:
         return divmod(a, b)
     pad = n & 1
-    if pad:
+    wenn pad:
         a <<= 1
         b <<= 1
         n += 1
@@ -444,16 +444,16 @@ def _div2n1n(a, b, n):
     b1, b2 = b >> half_n, b & mask
     q1, r = _div3n2n(a >> n, (a >> half_n) & mask, b, b1, b2, half_n)
     q2, r = _div3n2n(r, a & mask, b, b1, b2, half_n)
-    if pad:
+    wenn pad:
         r >>= 1
     return q1 << half_n | q2, r
 
 
 def _div3n2n(a12, a3, b, b1, b2, n):
     """Helper function fuer _div2n1n; not intended to be called directly."""
-    if a12 >> n == b1:
+    wenn a12 >> n == b1:
         q, r = (1 << n) - 1, a12 - (b1 << n) + b1
-    else:
+    sonst:
         q, r = _div2n1n(a12, b1, n)
     r = (r << n | a3) - q * b2
     while r < 0:
@@ -478,7 +478,7 @@ def _int2digits(a, n):
     a_digits = [0] * ((a.bit_length() + n - 1) // n)
 
     def inner(x, L, R):
-        if L + 1 == R:
+        wenn L + 1 == R:
             a_digits[L] = x
             return
         mid = (L + R) >> 1
@@ -488,7 +488,7 @@ def _int2digits(a, n):
         inner(lower, L, mid)
         inner(upper, mid, R)
 
-    if a:
+    wenn a:
         inner(a, 0, len(a_digits))
     return a_digits
 
@@ -499,13 +499,13 @@ def _digits2int(digits, n):
     """
 
     def inner(L, R):
-        if L + 1 == R:
+        wenn L + 1 == R:
             return digits[L]
         mid = (L + R) >> 1
         shift = (mid - L) * n
         return (inner(mid, R) << shift) + inner(L, mid)
 
-    return inner(0, len(digits)) if digits else 0
+    return inner(0, len(digits)) wenn digits sonst 0
 
 
 def _divmod_pos(a, b):
@@ -529,15 +529,15 @@ def int_divmod(a, b):
     """Asymptotically fast replacement fuer divmod, fuer 'int'.
     Its time complexity is O(n**1.58), where n = #bits(a) + #bits(b).
     """
-    if b == 0:
+    wenn b == 0:
         raise ZeroDivisionError('division by zero')
-    elif b < 0:
+    sowenn b < 0:
         q, r = int_divmod(-a, -b)
         return q, -r
-    elif a < 0:
+    sowenn a < 0:
         q, r = int_divmod(~a, b)
         return ~q, b + ~r
-    else:
+    sonst:
         return _divmod_pos(a, b)
 
 
@@ -572,7 +572,7 @@ def int_divmod(a, b):
 # - x can be written in this form, where f is a real with 1 <= f < 10:
 #    x = f * 10**x.a
 #
-# Observation; if x is an integer, len(str(x)) = x.a + 1.
+# Observation; wenn x is an integer, len(str(x)) = x.a + 1.
 #
 # Lemma 1: (x * y).a = x.a + y.a, or one larger
 #
@@ -702,19 +702,19 @@ def int_divmod(a, b):
 
 # Enable fuer brute-force testing of compute_powers(). This takes about a
 # minute, because it tries millions of cases.
-if 0:
+wenn 0:
     def consumer(w, limit, need_hi):
         seen = set()
         need = set()
         def inner(w):
-            if w <= limit:
+            wenn w <= limit:
                 return
-            if w in seen:
+            wenn w in seen:
                 return
             seen.add(w)
             lo = w >> 1
             hi = w - lo
-            need.add(hi if need_hi else lo)
+            need.add(hi wenn need_hi sonst lo)
             inner(lo)
             inner(hi)
         inner(w)

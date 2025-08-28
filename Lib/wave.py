@@ -103,26 +103,26 @@ klasse _Chunk:
     def __init__(self, file, align=True, bigendian=True, inclheader=False):
         self.closed = False
         self.align = align      # whether to align to word (2-byte) boundaries
-        if bigendian:
+        wenn bigendian:
             strflag = '>'
-        else:
+        sonst:
             strflag = '<'
         self.file = file
         self.chunkname = file.read(4)
-        if len(self.chunkname) < 4:
+        wenn len(self.chunkname) < 4:
             raise EOFError
         try:
             self.chunksize = struct.unpack_from(strflag+'L', file.read(4))[0]
         except struct.error:
             raise EOFError from None
-        if inclheader:
+        wenn inclheader:
             self.chunksize = self.chunksize - 8 # subtract header
         self.size_read = 0
         try:
             self.offset = self.file.tell()
         except (AttributeError, OSError):
             self.seekable = False
-        else:
+        sonst:
             self.seekable = True
 
     def getname(self):
@@ -130,7 +130,7 @@ klasse _Chunk:
         return self.chunkname
 
     def close(self):
-        if not self.closed:
+        wenn not self.closed:
             try:
                 self.skip()
             finally:
@@ -142,21 +142,21 @@ klasse _Chunk:
         If the file is not seekable, this will result in an error.
         """
 
-        if self.closed:
+        wenn self.closed:
             raise ValueError("I/O operation on closed file")
-        if not self.seekable:
+        wenn not self.seekable:
             raise OSError("cannot seek")
-        if whence == 1:
+        wenn whence == 1:
             pos = pos + self.size_read
-        elif whence == 2:
+        sowenn whence == 2:
             pos = pos + self.chunksize
-        if pos < 0 or pos > self.chunksize:
+        wenn pos < 0 or pos > self.chunksize:
             raise RuntimeError
         self.file.seek(self.offset + pos, 0)
         self.size_read = pos
 
     def tell(self):
-        if self.closed:
+        wenn self.closed:
             raise ValueError("I/O operation on closed file")
         return self.size_read
 
@@ -166,17 +166,17 @@ klasse _Chunk:
         of the chunk.
         """
 
-        if self.closed:
+        wenn self.closed:
             raise ValueError("I/O operation on closed file")
-        if self.size_read >= self.chunksize:
+        wenn self.size_read >= self.chunksize:
             return b''
-        if size < 0:
+        wenn size < 0:
             size = self.chunksize - self.size_read
-        if size > self.chunksize - self.size_read:
+        wenn size > self.chunksize - self.size_read:
             size = self.chunksize - self.size_read
         data = self.file.read(size)
         self.size_read = self.size_read + len(data)
-        if self.size_read == self.chunksize and \
+        wenn self.size_read == self.chunksize and \
            self.align and \
            (self.chunksize & 1):
             dummy = self.file.read(1)
@@ -190,13 +190,13 @@ klasse _Chunk:
         the start of the next chunk.
         """
 
-        if self.closed:
+        wenn self.closed:
             raise ValueError("I/O operation on closed file")
-        if self.seekable:
+        wenn self.seekable:
             try:
                 n = self.chunksize - self.size_read
                 # maybe fix alignment
-                if self.align and (self.chunksize & 1):
+                wenn self.align and (self.chunksize & 1):
                     n = n + 1
                 self.file.seek(n, 1)
                 self.size_read = self.size_read + n
@@ -206,7 +206,7 @@ klasse _Chunk:
         while self.size_read < self.chunksize:
             n = min(8192, self.chunksize - self.size_read)
             dummy = self.read(n)
-            if not dummy:
+            wenn not dummy:
                 raise EOFError
 
 
@@ -225,7 +225,7 @@ klasse Wave_read:
               available through the getsampwidth() method
     _framerate -- the sampling frequency
               available through the getframerate() method
-    _comptype -- the AIFF-C compression type ('NONE' if AIFF)
+    _comptype -- the AIFF-C compression type ('NONE' wenn AIFF)
               available through the getcomptype() method
     _compname -- the human-readable AIFF-C compression type
               available through the getcomptype() method
@@ -245,9 +245,9 @@ klasse Wave_read:
         self._convert = None
         self._soundpos = 0
         self._file = _Chunk(file, bigendian = 0)
-        if self._file.getname() != b'RIFF':
+        wenn self._file.getname() != b'RIFF':
             raise Error('file does not start with RIFF id')
-        if self._file.read(4) != b'WAVE':
+        wenn self._file.read(4) != b'WAVE':
             raise Error('not a WAVE file')
         self._fmt_chunk_read = 0
         self._data_chunk = None
@@ -258,30 +258,30 @@ klasse Wave_read:
             except EOFError:
                 break
             chunkname = chunk.getname()
-            if chunkname == b'fmt ':
+            wenn chunkname == b'fmt ':
                 self._read_fmt_chunk(chunk)
                 self._fmt_chunk_read = 1
-            elif chunkname == b'data':
-                if not self._fmt_chunk_read:
+            sowenn chunkname == b'data':
+                wenn not self._fmt_chunk_read:
                     raise Error('data chunk before fmt chunk')
                 self._data_chunk = chunk
                 self._nframes = chunk.chunksize // self._framesize
                 self._data_seek_needed = 0
                 break
             chunk.skip()
-        if not self._fmt_chunk_read or not self._data_chunk:
+        wenn not self._fmt_chunk_read or not self._data_chunk:
             raise Error('fmt chunk and/or data chunk missing')
 
     def __init__(self, f):
         self._i_opened_the_file = None
-        if isinstance(f, str):
+        wenn isinstance(f, str):
             f = builtins.open(f, 'rb')
             self._i_opened_the_file = f
         # else, assume it is an open file object already
         try:
             self.initfp(f)
         except:
-            if self._i_opened_the_file:
+            wenn self._i_opened_the_file:
                 f.close()
             raise
 
@@ -307,7 +307,7 @@ klasse Wave_read:
     def close(self):
         self._file = None
         file = self._i_opened_the_file
-        if file:
+        wenn file:
             self._i_opened_the_file = None
             file.close()
 
@@ -338,24 +338,24 @@ klasse Wave_read:
                        self.getcomptype(), self.getcompname())
 
     def setpos(self, pos):
-        if pos < 0 or pos > self._nframes:
+        wenn pos < 0 or pos > self._nframes:
             raise Error('position not in range')
         self._soundpos = pos
         self._data_seek_needed = 1
 
     def readframes(self, nframes):
-        if self._data_seek_needed:
+        wenn self._data_seek_needed:
             self._data_chunk.seek(0, 0)
             pos = self._soundpos * self._framesize
-            if pos:
+            wenn pos:
                 self._data_chunk.seek(pos, 0)
             self._data_seek_needed = 0
-        if nframes == 0:
+        wenn nframes == 0:
             return b''
         data = self._data_chunk.read(nframes * self._framesize)
-        if self._sampwidth != 1 and sys.byteorder == 'big':
+        wenn self._sampwidth != 1 and sys.byteorder == 'big':
             data = _byteswap(data, self._sampwidth)
-        if self._convert and data:
+        wenn self._convert and data:
             data = self._convert(data)
         self._soundpos = self._soundpos + len(data) // (self._nchannels * self._sampwidth)
         return data
@@ -369,22 +369,22 @@ klasse Wave_read:
             wFormatTag, self._nchannels, self._framerate, dwAvgBytesPerSec, wBlockAlign = struct.unpack_from('<HHLLH', chunk.read(14))
         except struct.error:
             raise EOFError from None
-        if wFormatTag != WAVE_FORMAT_PCM and wFormatTag != WAVE_FORMAT_EXTENSIBLE:
+        wenn wFormatTag != WAVE_FORMAT_PCM and wFormatTag != WAVE_FORMAT_EXTENSIBLE:
             raise Error('unknown format: %r' % (wFormatTag,))
         try:
             sampwidth = struct.unpack_from('<H', chunk.read(2))[0]
         except struct.error:
             raise EOFError from None
-        if wFormatTag == WAVE_FORMAT_EXTENSIBLE:
+        wenn wFormatTag == WAVE_FORMAT_EXTENSIBLE:
             try:
                 cbSize, wValidBitsPerSample, dwChannelMask = struct.unpack_from('<HHL', chunk.read(8))
                 # Read the entire UUID from the chunk
                 SubFormat = chunk.read(16)
-                if len(SubFormat) < 16:
+                wenn len(SubFormat) < 16:
                     raise EOFError
             except struct.error:
                 raise EOFError from None
-            if SubFormat != KSDATAFORMAT_SUBTYPE_PCM:
+            wenn SubFormat != KSDATAFORMAT_SUBTYPE_PCM:
                 try:
                     import uuid
                     subformat_msg = f'unknown extended format: {uuid.UUID(bytes_le=SubFormat)}'
@@ -392,9 +392,9 @@ klasse Wave_read:
                     subformat_msg = 'unknown extended format'
                 raise Error(subformat_msg)
         self._sampwidth = (sampwidth + 7) // 8
-        if not self._sampwidth:
+        wenn not self._sampwidth:
             raise Error('bad sample width')
-        if not self._nchannels:
+        wenn not self._nchannels:
             raise Error('bad # of channels')
         self._framesize = self._nchannels * self._sampwidth
         self._comptype = 'NONE'
@@ -431,13 +431,13 @@ klasse Wave_write:
 
     def __init__(self, f):
         self._i_opened_the_file = None
-        if isinstance(f, str):
+        wenn isinstance(f, str):
             f = builtins.open(f, 'wb')
             self._i_opened_the_file = f
         try:
             self.initfp(f)
         except:
-            if self._i_opened_the_file:
+            wenn self._i_opened_the_file:
                 f.close()
             raise
 
@@ -466,43 +466,43 @@ klasse Wave_write:
     # User visible methods.
     #
     def setnchannels(self, nchannels):
-        if self._datawritten:
+        wenn self._datawritten:
             raise Error('cannot change parameters after starting to write')
-        if nchannels < 1:
+        wenn nchannels < 1:
             raise Error('bad # of channels')
         self._nchannels = nchannels
 
     def getnchannels(self):
-        if not self._nchannels:
+        wenn not self._nchannels:
             raise Error('number of channels not set')
         return self._nchannels
 
     def setsampwidth(self, sampwidth):
-        if self._datawritten:
+        wenn self._datawritten:
             raise Error('cannot change parameters after starting to write')
-        if sampwidth < 1 or sampwidth > 4:
+        wenn sampwidth < 1 or sampwidth > 4:
             raise Error('bad sample width')
         self._sampwidth = sampwidth
 
     def getsampwidth(self):
-        if not self._sampwidth:
+        wenn not self._sampwidth:
             raise Error('sample width not set')
         return self._sampwidth
 
     def setframerate(self, framerate):
-        if self._datawritten:
+        wenn self._datawritten:
             raise Error('cannot change parameters after starting to write')
-        if framerate <= 0:
+        wenn framerate <= 0:
             raise Error('bad frame rate')
         self._framerate = int(round(framerate))
 
     def getframerate(self):
-        if not self._framerate:
+        wenn not self._framerate:
             raise Error('frame rate not set')
         return self._framerate
 
     def setnframes(self, nframes):
-        if self._datawritten:
+        wenn self._datawritten:
             raise Error('cannot change parameters after starting to write')
         self._nframes = nframes
 
@@ -510,9 +510,9 @@ klasse Wave_write:
         return self._nframeswritten
 
     def setcomptype(self, comptype, compname):
-        if self._datawritten:
+        wenn self._datawritten:
             raise Error('cannot change parameters after starting to write')
-        if comptype not in ('NONE',):
+        wenn comptype not in ('NONE',):
             raise Error('unsupported compression type')
         self._comptype = comptype
         self._compname = compname
@@ -525,7 +525,7 @@ klasse Wave_write:
 
     def setparams(self, params):
         nchannels, sampwidth, framerate, nframes, comptype, compname = params
-        if self._datawritten:
+        wenn self._datawritten:
             raise Error('cannot change parameters after starting to write')
         self.setnchannels(nchannels)
         self.setsampwidth(sampwidth)
@@ -534,7 +534,7 @@ klasse Wave_write:
         self.setcomptype(comptype, compname)
 
     def getparams(self):
-        if not self._nchannels or not self._sampwidth or not self._framerate:
+        wenn not self._nchannels or not self._sampwidth or not self._framerate:
             raise Error('not all parameters set')
         return _wave_params(self._nchannels, self._sampwidth, self._framerate,
               self._nframes, self._comptype, self._compname)
@@ -543,13 +543,13 @@ klasse Wave_write:
         return self._nframeswritten
 
     def writeframesraw(self, data):
-        if not isinstance(data, (bytes, bytearray)):
+        wenn not isinstance(data, (bytes, bytearray)):
             data = memoryview(data).cast('B')
         self._ensure_header_written(len(data))
         nframes = len(data) // (self._sampwidth * self._nchannels)
-        if self._convert:
+        wenn self._convert:
             data = self._convert(data)
-        if self._sampwidth != 1 and sys.byteorder == 'big':
+        wenn self._sampwidth != 1 and sys.byteorder == 'big':
             data = _byteswap(data, self._sampwidth)
         self._file.write(data)
         self._datawritten += len(data)
@@ -557,20 +557,20 @@ klasse Wave_write:
 
     def writeframes(self, data):
         self.writeframesraw(data)
-        if self._datalength != self._datawritten:
+        wenn self._datalength != self._datawritten:
             self._patchheader()
 
     def close(self):
         try:
-            if self._file:
+            wenn self._file:
                 self._ensure_header_written(0)
-                if self._datalength != self._datawritten:
+                wenn self._datalength != self._datawritten:
                     self._patchheader()
                 self._file.flush()
         finally:
             self._file = None
             file = self._i_opened_the_file
-            if file:
+            wenn file:
                 self._i_opened_the_file = None
                 file.close()
 
@@ -579,19 +579,19 @@ klasse Wave_write:
     #
 
     def _ensure_header_written(self, datasize):
-        if not self._headerwritten:
-            if not self._nchannels:
+        wenn not self._headerwritten:
+            wenn not self._nchannels:
                 raise Error('# channels not specified')
-            if not self._sampwidth:
+            wenn not self._sampwidth:
                 raise Error('sample width not specified')
-            if not self._framerate:
+            wenn not self._framerate:
                 raise Error('sampling rate not specified')
             self._write_header(datasize)
 
     def _write_header(self, initlength):
         assert not self._headerwritten
         self._file.write(b'RIFF')
-        if not self._nframes:
+        wenn not self._nframes:
             self._nframes = initlength // (self._nchannels * self._sampwidth)
         self._datalength = self._nframes * self._nchannels * self._sampwidth
         try:
@@ -604,14 +604,14 @@ klasse Wave_write:
             self._nchannels * self._framerate * self._sampwidth,
             self._nchannels * self._sampwidth,
             self._sampwidth * 8, b'data'))
-        if self._form_length_pos is not None:
+        wenn self._form_length_pos is not None:
             self._data_length_pos = self._file.tell()
         self._file.write(struct.pack('<L', self._datalength))
         self._headerwritten = True
 
     def _patchheader(self):
         assert self._headerwritten
-        if self._datawritten == self._datalength:
+        wenn self._datawritten == self._datalength:
             return
         curpos = self._file.tell()
         self._file.seek(self._form_length_pos, 0)
@@ -623,14 +623,14 @@ klasse Wave_write:
 
 
 def open(f, mode=None):
-    if mode is None:
-        if hasattr(f, 'mode'):
+    wenn mode is None:
+        wenn hasattr(f, 'mode'):
             mode = f.mode
-        else:
+        sonst:
             mode = 'rb'
-    if mode in ('r', 'rb'):
+    wenn mode in ('r', 'rb'):
         return Wave_read(f)
-    elif mode in ('w', 'wb'):
+    sowenn mode in ('w', 'wb'):
         return Wave_write(f)
-    else:
+    sonst:
         raise Error("mode must be 'r', 'rb', 'w', or 'wb'")

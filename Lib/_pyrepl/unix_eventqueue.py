@@ -62,7 +62,7 @@ def get_terminal_keycodes(ti: TermInfo) -> dict[bytes, str]:
     fuer key, terminal_code in TERMINAL_KEYNAMES.items():
         keycode = ti.get(terminal_code)
         trace('key {key} tiname {terminal_code} keycode {keycode!r}', **locals())
-        if keycode:
+        wenn keycode:
             keycodes[keycode] = key
     keycodes.update(CTRL_ARROW_KEYCODES)
     return keycodes
@@ -71,7 +71,7 @@ def get_terminal_keycodes(ti: TermInfo) -> dict[bytes, str]:
 klasse EventQueue(BaseEventQueue):
     def __init__(self, fd: int, encoding: str, ti: TermInfo) -> None:
         keycodes = get_terminal_keycodes(ti)
-        if os.isatty(fd):
+        wenn os.isatty(fd):
             backspace = tcgetattr(fd)[6][VERASE]
             keycodes[backspace] = "backspace"
         BaseEventQueue.__init__(self, encoding, keycodes)

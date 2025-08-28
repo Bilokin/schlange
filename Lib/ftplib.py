@@ -78,7 +78,7 @@ klasse FTP:
             host, user, passwd, acct, timeout, source_address, encoding
 
     The first four arguments are all strings, and have default value ''.
-    The parameter ´timeout´ must be numeric and defaults to None if not
+    The parameter ´timeout´ must be numeric and defaults to None wenn not
     passed, meaning that no timeout will be set on any ftp socket(s).
     If a timeout is passed, then this is now the default timeout fuer all ftp
     socket operations fuer this instance.
@@ -103,7 +103,7 @@ klasse FTP:
     file = None
     welcome = None
     passiveserver = True
-    # Disables https://bugs.python.org/issue43285 security if set to True.
+    # Disables https://bugs.python.org/issue43285 security wenn set to True.
     trust_server_pasv_ipv4_address = False
 
     def __init__(self, host='', user='', passwd='', acct='',
@@ -117,23 +117,23 @@ klasse FTP:
         self.encoding = encoding
         self.source_address = source_address
         self.timeout = timeout
-        if host:
+        wenn host:
             self.connect(host)
-            if user:
+            wenn user:
                 self.login(user, passwd, acct)
 
     def __enter__(self):
         return self
 
-    # Context management protocol: try to quit() if active
+    # Context management protocol: try to quit() wenn active
     def __exit__(self, *args):
-        if self.sock is not None:
+        wenn self.sock is not None:
             try:
                 self.quit()
             except (OSError, EOFError):
                 pass
             finally:
-                if self.sock is not None:
+                wenn self.sock is not None:
                     self.close()
 
     def connect(self, host='', port=0, timeout=-999, source_address=None):
@@ -144,15 +144,15 @@ klasse FTP:
          - source_address: a 2-tuple (host, port) fuer the socket to bind
            to as its source address before connecting.
         '''
-        if host != '':
+        wenn host != '':
             self.host = host
-        if port > 0:
+        wenn port > 0:
             self.port = port
-        if timeout != -999:
+        wenn timeout != -999:
             self.timeout = timeout
-        if self.timeout is not None and not self.timeout:
+        wenn self.timeout is not None and not self.timeout:
             raise ValueError('Non-blocking socket (timeout=0) is not supported')
-        if source_address is not None:
+        wenn source_address is not None:
             self.source_address = source_address
         sys.audit("ftplib.connect", self, self.host, self.port)
         self.sock = socket.create_connection((self.host, self.port), self.timeout,
@@ -165,7 +165,7 @@ klasse FTP:
     def getwelcome(self):
         '''Get the welcome message from the server.
         (this is read and squirreled away by connect())'''
-        if self.debugging:
+        wenn self.debugging:
             print('*welcome*', self.sanitize(self.welcome))
         return self.welcome
 
@@ -186,39 +186,39 @@ klasse FTP:
 
     # Internal: "sanitize" a string fuer printing
     def sanitize(self, s):
-        if s[:5] in {'pass ', 'PASS '}:
+        wenn s[:5] in {'pass ', 'PASS '}:
             i = len(s.rstrip('\r\n'))
             s = s[:5] + '*'*(i-5) + s[i:]
         return repr(s)
 
     # Internal: send one line to the server, appending CRLF
     def putline(self, line):
-        if '\r' in line or '\n' in line:
+        wenn '\r' in line or '\n' in line:
             raise ValueError('an illegal newline character should not be contained')
         sys.audit("ftplib.sendcmd", self, line)
         line = line + CRLF
-        if self.debugging > 1:
+        wenn self.debugging > 1:
             print('*put*', self.sanitize(line))
         self.sock.sendall(line.encode(self.encoding))
 
     # Internal: send one command to the server (through putline())
     def putcmd(self, line):
-        if self.debugging: print('*cmd*', self.sanitize(line))
+        wenn self.debugging: print('*cmd*', self.sanitize(line))
         self.putline(line)
 
     # Internal: return one line from the server, stripping CRLF.
-    # Raise EOFError if the connection is closed
+    # Raise EOFError wenn the connection is closed
     def getline(self):
         line = self.file.readline(self.maxline + 1)
-        if len(line) > self.maxline:
+        wenn len(line) > self.maxline:
             raise Error("got more than %d bytes" % self.maxline)
-        if self.debugging > 1:
+        wenn self.debugging > 1:
             print('*get*', self.sanitize(line))
-        if not line:
+        wenn not line:
             raise EOFError
-        if line[-2:] == CRLF:
+        wenn line[-2:] == CRLF:
             line = line[:-2]
-        elif line[-1:] in CRLF:
+        sowenn line[-1:] in CRLF:
             line = line[:-1]
         return line
 
@@ -228,36 +228,36 @@ klasse FTP:
     # these are separated by '\n' characters in the string
     def getmultiline(self):
         line = self.getline()
-        if line[3:4] == '-':
+        wenn line[3:4] == '-':
             code = line[:3]
             while 1:
                 nextline = self.getline()
                 line = line + ('\n' + nextline)
-                if nextline[:3] == code and \
+                wenn nextline[:3] == code and \
                         nextline[3:4] != '-':
                     break
         return line
 
     # Internal: get a response from the server.
-    # Raise various errors if the response indicates an error
+    # Raise various errors wenn the response indicates an error
     def getresp(self):
         resp = self.getmultiline()
-        if self.debugging:
+        wenn self.debugging:
             print('*resp*', self.sanitize(resp))
         self.lastresp = resp[:3]
         c = resp[:1]
-        if c in {'1', '2', '3'}:
+        wenn c in {'1', '2', '3'}:
             return resp
-        if c == '4':
+        wenn c == '4':
             raise error_temp(resp)
-        if c == '5':
+        wenn c == '5':
             raise error_perm(resp)
         raise error_proto(resp)
 
     def voidresp(self):
         """Expect a response beginning with '2'."""
         resp = self.getresp()
-        if resp[:1] != '2':
+        wenn resp[:1] != '2':
             raise error_reply(resp)
         return resp
 
@@ -267,11 +267,11 @@ klasse FTP:
         IP and Synch; that doesn't seem to work with the servers I've
         tried.  Instead, just send the ABOR command as OOB data.'''
         line = b'ABOR' + B_CRLF
-        if self.debugging > 1:
+        wenn self.debugging > 1:
             print('*put urgent*', self.sanitize(line))
         self.sock.sendall(line, MSG_OOB)
         resp = self.getmultiline()
-        if resp[:3] not in {'426', '225', '226'}:
+        wenn resp[:3] not in {'426', '225', '226'}:
             raise error_proto(resp)
         return resp
 
@@ -298,11 +298,11 @@ klasse FTP:
     def sendeprt(self, host, port):
         '''Send an EPRT command with the current host and the given port number.'''
         af = 0
-        if self.af == socket.AF_INET:
+        wenn self.af == socket.AF_INET:
             af = 1
-        if self.af == socket.AF_INET6:
+        wenn self.af == socket.AF_INET6:
             af = 2
-        if af == 0:
+        wenn af == 0:
             raise error_proto('unsupported address family')
         fields = ['', repr(af), host, repr(port), '']
         cmd = 'EPRT ' + '|'.join(fields)
@@ -313,23 +313,23 @@ klasse FTP:
         sock = socket.create_server(("", 0), family=self.af, backlog=1)
         port = sock.getsockname()[1] # Get proper port
         host = self.sock.getsockname()[0] # Get proper host
-        if self.af == socket.AF_INET:
+        wenn self.af == socket.AF_INET:
             resp = self.sendport(host, port)
-        else:
+        sonst:
             resp = self.sendeprt(host, port)
-        if self.timeout is not _GLOBAL_DEFAULT_TIMEOUT:
+        wenn self.timeout is not _GLOBAL_DEFAULT_TIMEOUT:
             sock.settimeout(self.timeout)
         return sock
 
     def makepasv(self):
         """Internal: Does the PASV or EPSV handshake -> (address, port)"""
-        if self.af == socket.AF_INET:
+        wenn self.af == socket.AF_INET:
             untrusted_host, port = parse227(self.sendcmd('PASV'))
-            if self.trust_server_pasv_ipv4_address:
+            wenn self.trust_server_pasv_ipv4_address:
                 host = untrusted_host
-            else:
+            sonst:
                 host = self.sock.getpeername()[0]
-        else:
+        sonst:
             host, port = parse229(self.sendcmd('EPSV'), self.sock.getpeername())
         return host, port
 
@@ -341,7 +341,7 @@ klasse FTP:
         passive, send a pasv command, connect to it, and start the
         transfer command.  Either way, return the socket fuer the
         connection and the expected size of the transfer.  The
-        expected size may be None if it could not be determined.
+        expected size may be None wenn it could not be determined.
 
         Optional 'rest' argument can be a string that is sent as the
         argument to a REST command.  This is essentially a server
@@ -349,12 +349,12 @@ klasse FTP:
         given marker.
         """
         size = None
-        if self.passiveserver:
+        wenn self.passiveserver:
             host, port = self.makepasv()
             conn = socket.create_connection((host, port), self.timeout,
                                             source_address=self.source_address)
             try:
-                if rest is not None:
+                wenn rest is not None:
                     self.sendcmd("REST %s" % rest)
                 resp = self.sendcmd(cmd)
                 # Some servers apparently send a 200 reply to
@@ -363,27 +363,27 @@ klasse FTP:
                 # be in violation of the protocol (which only allows
                 # 1xx or error messages fuer LIST), so we just discard
                 # this response.
-                if resp[0] == '2':
+                wenn resp[0] == '2':
                     resp = self.getresp()
-                if resp[0] != '1':
+                wenn resp[0] != '1':
                     raise error_reply(resp)
             except:
                 conn.close()
                 raise
-        else:
+        sonst:
             with self.makeport() as sock:
-                if rest is not None:
+                wenn rest is not None:
                     self.sendcmd("REST %s" % rest)
                 resp = self.sendcmd(cmd)
                 # See above.
-                if resp[0] == '2':
+                wenn resp[0] == '2':
                     resp = self.getresp()
-                if resp[0] != '1':
+                wenn resp[0] != '1':
                     raise error_reply(resp)
                 conn, sockaddr = sock.accept()
-                if self.timeout is not _GLOBAL_DEFAULT_TIMEOUT:
+                wenn self.timeout is not _GLOBAL_DEFAULT_TIMEOUT:
                     conn.settimeout(self.timeout)
-        if resp[:3] == '150':
+        wenn resp[:3] == '150':
             # this is conditional in case we received a 125
             size = parse150(resp)
         return conn, size
@@ -394,13 +394,13 @@ klasse FTP:
 
     def login(self, user = '', passwd = '', acct = ''):
         '''Login, default anonymous.'''
-        if not user:
+        wenn not user:
             user = 'anonymous'
-        if not passwd:
+        wenn not passwd:
             passwd = ''
-        if not acct:
+        wenn not acct:
             acct = ''
-        if user == 'anonymous' and passwd in {'', '-'}:
+        wenn user == 'anonymous' and passwd in {'', '-'}:
             # If there is no anonymous ftp password specified
             # then we'll just use anonymous@
             # We don't send any other thing because:
@@ -410,11 +410,11 @@ klasse FTP:
             #   host or country.
             passwd = passwd + 'anonymous@'
         resp = self.sendcmd('USER ' + user)
-        if resp[0] == '3':
+        wenn resp[0] == '3':
             resp = self.sendcmd('PASS ' + passwd)
-        if resp[0] == '3':
+        wenn resp[0] == '3':
             resp = self.sendcmd('ACCT ' + acct)
-        if resp[0] != '2':
+        wenn resp[0] != '2':
             raise error_reply(resp)
         return resp
 
@@ -437,7 +437,7 @@ klasse FTP:
             while data := conn.recv(blocksize):
                 callback(data)
             # shutdown ssl layer
-            if _SSLSocket is not None and isinstance(conn, _SSLSocket):
+            wenn _SSLSocket is not None and isinstance(conn, _SSLSocket):
                 conn.unwrap()
         return self.voidresp()
 
@@ -453,26 +453,26 @@ klasse FTP:
         Returns:
           The response code.
         """
-        if callback is None:
+        wenn callback is None:
             callback = print_line
         resp = self.sendcmd('TYPE A')
         with self.transfercmd(cmd) as conn, \
                  conn.makefile('r', encoding=self.encoding) as fp:
             while 1:
                 line = fp.readline(self.maxline + 1)
-                if len(line) > self.maxline:
+                wenn len(line) > self.maxline:
                     raise Error("got more than %d bytes" % self.maxline)
-                if self.debugging > 2:
+                wenn self.debugging > 2:
                     print('*retr*', repr(line))
-                if not line:
+                wenn not line:
                     break
-                if line[-2:] == CRLF:
+                wenn line[-2:] == CRLF:
                     line = line[:-2]
-                elif line[-1:] == '\n':
+                sowenn line[-1:] == '\n':
                     line = line[:-1]
                 callback(line)
             # shutdown ssl layer
-            if _SSLSocket is not None and isinstance(conn, _SSLSocket):
+            wenn _SSLSocket is not None and isinstance(conn, _SSLSocket):
                 conn.unwrap()
         return self.voidresp()
 
@@ -495,10 +495,10 @@ klasse FTP:
         with self.transfercmd(cmd, rest) as conn:
             while buf := fp.read(blocksize):
                 conn.sendall(buf)
-                if callback:
+                wenn callback:
                     callback(buf)
             # shutdown ssl layer
-            if _SSLSocket is not None and isinstance(conn, _SSLSocket):
+            wenn _SSLSocket is not None and isinstance(conn, _SSLSocket):
                 conn.unwrap()
         return self.voidresp()
 
@@ -518,18 +518,18 @@ klasse FTP:
         with self.transfercmd(cmd) as conn:
             while 1:
                 buf = fp.readline(self.maxline + 1)
-                if len(buf) > self.maxline:
+                wenn len(buf) > self.maxline:
                     raise Error("got more than %d bytes" % self.maxline)
-                if not buf:
+                wenn not buf:
                     break
-                if buf[-2:] != B_CRLF:
-                    if buf[-1] in B_CRLF: buf = buf[:-1]
+                wenn buf[-2:] != B_CRLF:
+                    wenn buf[-1] in B_CRLF: buf = buf[:-1]
                     buf = buf + B_CRLF
                 conn.sendall(buf)
-                if callback:
+                wenn callback:
                     callback(buf)
             # shutdown ssl layer
-            if _SSLSocket is not None and isinstance(conn, _SSLSocket):
+            wenn _SSLSocket is not None and isinstance(conn, _SSLSocket):
                 conn.unwrap()
         return self.voidresp()
 
@@ -555,10 +555,10 @@ klasse FTP:
         LIST command.  (This *should* only be used fuer a pathname.)'''
         cmd = 'LIST'
         func = None
-        if args[-1:] and not isinstance(args[-1], str):
+        wenn args[-1:] and not isinstance(args[-1], str):
             args, func = args[:-1], args[-1]
         fuer arg in args:
-            if arg:
+            wenn arg:
                 cmd = cmd + (' ' + arg)
         self.retrlines(cmd, func)
 
@@ -574,11 +574,11 @@ klasse FTP:
         including a variable number of "facts" depending on the server
         and whether "facts" argument has been provided.
         '''
-        if facts:
+        wenn facts:
             self.sendcmd("OPTS MLST " + ";".join(facts) + ";")
-        if path:
+        wenn path:
             cmd = "MLSD %s" % path
-        else:
+        sonst:
             cmd = "MLSD"
         lines = []
         self.retrlines(cmd, lines.append)
@@ -593,27 +593,27 @@ klasse FTP:
     def rename(self, fromname, toname):
         '''Rename a file.'''
         resp = self.sendcmd('RNFR ' + fromname)
-        if resp[0] != '3':
+        wenn resp[0] != '3':
             raise error_reply(resp)
         return self.voidcmd('RNTO ' + toname)
 
     def delete(self, filename):
         '''Delete a file.'''
         resp = self.sendcmd('DELE ' + filename)
-        if resp[:3] in {'250', '200'}:
+        wenn resp[:3] in {'250', '200'}:
             return resp
-        else:
+        sonst:
             raise error_reply(resp)
 
     def cwd(self, dirname):
         '''Change to a directory.'''
-        if dirname == '..':
+        wenn dirname == '..':
             try:
                 return self.voidcmd('CDUP')
             except error_perm as msg:
-                if msg.args[0][:3] != '500':
+                wenn msg.args[0][:3] != '500':
                     raise
-        elif dirname == '':
+        sowenn dirname == '':
             dirname = '.'  # does nothing, but could return error
         cmd = 'CWD ' + dirname
         return self.voidcmd(cmd)
@@ -622,7 +622,7 @@ klasse FTP:
         '''Retrieve the size of a file.'''
         # The SIZE command is defined in RFC-3659
         resp = self.sendcmd('SIZE ' + filename)
-        if resp[:3] == '213':
+        wenn resp[:3] == '213':
             s = resp[3:].strip()
             return int(s)
 
@@ -631,7 +631,7 @@ klasse FTP:
         resp = self.voidcmd('MKD ' + dirname)
         # fix around non-compliant implementations such as IIS shipped
         # with Windows server 2003
-        if not resp.startswith('257'):
+        wenn not resp.startswith('257'):
             return ''
         return parse257(resp)
 
@@ -644,7 +644,7 @@ klasse FTP:
         resp = self.voidcmd('PWD')
         # fix around non-compliant implementations such as IIS shipped
         # with Windows server 2003
-        if not resp.startswith('257'):
+        wenn not resp.startswith('257'):
             return ''
         return parse257(resp)
 
@@ -659,19 +659,19 @@ klasse FTP:
         try:
             file = self.file
             self.file = None
-            if file is not None:
+            wenn file is not None:
                 file.close()
         finally:
             sock = self.sock
             self.sock = None
-            if sock is not None:
+            wenn sock is not None:
                 sock.close()
 
 try:
     import ssl
 except ImportError:
     _SSLSocket = None
-else:
+sonst:
     _SSLSocket = ssl.SSLSocket
 
     klasse FTP_TLS(FTP):
@@ -711,7 +711,7 @@ else:
         def __init__(self, host='', user='', passwd='', acct='',
                      *, context=None, timeout=_GLOBAL_DEFAULT_TIMEOUT,
                      source_address=None, encoding='utf-8'):
-            if context is None:
+            wenn context is None:
                 context = ssl._create_stdlib_context()
             self.context = context
             self._prot_p = False
@@ -719,17 +719,17 @@ else:
                              timeout, source_address, encoding=encoding)
 
         def login(self, user='', passwd='', acct='', secure=True):
-            if secure and not isinstance(self.sock, ssl.SSLSocket):
+            wenn secure and not isinstance(self.sock, ssl.SSLSocket):
                 self.auth()
             return super().login(user, passwd, acct)
 
         def auth(self):
             '''Set up secure control connection by using TLS/SSL.'''
-            if isinstance(self.sock, ssl.SSLSocket):
+            wenn isinstance(self.sock, ssl.SSLSocket):
                 raise ValueError("Already using TLS")
-            if self.context.protocol >= ssl.PROTOCOL_TLS:
+            wenn self.context.protocol >= ssl.PROTOCOL_TLS:
                 resp = self.voidcmd('AUTH TLS')
-            else:
+            sonst:
                 resp = self.voidcmd('AUTH SSL')
             self.sock = self.context.wrap_socket(self.sock, server_hostname=self.host)
             self.file = self.sock.makefile(mode='r', encoding=self.encoding)
@@ -737,7 +737,7 @@ else:
 
         def ccc(self):
             '''Switch back to a clear-text control connection.'''
-            if not isinstance(self.sock, ssl.SSLSocket):
+            wenn not isinstance(self.sock, ssl.SSLSocket):
                 raise ValueError("not using TLS")
             resp = self.voidcmd('CCC')
             self.sock = self.sock.unwrap()
@@ -769,7 +769,7 @@ else:
 
         def ntransfercmd(self, cmd, rest=None):
             conn, size = super().ntransfercmd(cmd, rest)
-            if self._prot_p:
+            wenn self._prot_p:
                 conn = self.context.wrap_socket(conn,
                                                 server_hostname=self.host)
             return conn, size
@@ -779,7 +779,7 @@ else:
             line = b'ABOR' + B_CRLF
             self.sock.sendall(line)
             resp = self.getmultiline()
-            if resp[:3] not in {'426', '225', '226'}:
+            wenn resp[:3] not in {'426', '225', '226'}:
                 raise error_proto(resp)
             return resp
 
@@ -794,15 +794,15 @@ def parse150(resp):
     Returns the expected transfer size or None; size is not guaranteed to
     be present in the 150 message.
     '''
-    if resp[:3] != '150':
+    wenn resp[:3] != '150':
         raise error_reply(resp)
     global _150_re
-    if _150_re is None:
+    wenn _150_re is None:
         import re
         _150_re = re.compile(
             r"150 .* \((\d+) bytes\)", re.IGNORECASE | re.ASCII)
     m = _150_re.match(resp)
-    if not m:
+    wenn not m:
         return None
     return int(m.group(1))
 
@@ -811,16 +811,16 @@ _227_re = None
 
 def parse227(resp):
     '''Parse the '227' response fuer a PASV request.
-    Raises error_proto if it does not contain '(h1,h2,h3,h4,p1,p2)'
+    Raises error_proto wenn it does not contain '(h1,h2,h3,h4,p1,p2)'
     Return ('host.addr.as.numbers', port#) tuple.'''
-    if resp[:3] != '227':
+    wenn resp[:3] != '227':
         raise error_reply(resp)
     global _227_re
-    if _227_re is None:
+    wenn _227_re is None:
         import re
         _227_re = re.compile(r'(\d+),(\d+),(\d+),(\d+),(\d+),(\d+)', re.ASCII)
     m = _227_re.search(resp)
-    if not m:
+    wenn not m:
         raise error_proto(resp)
     numbers = m.groups()
     host = '.'.join(numbers[:4])
@@ -830,19 +830,19 @@ def parse227(resp):
 
 def parse229(resp, peer):
     '''Parse the '229' response fuer an EPSV request.
-    Raises error_proto if it does not contain '(|||port|)'
+    Raises error_proto wenn it does not contain '(|||port|)'
     Return ('host.addr.as.numbers', port#) tuple.'''
-    if resp[:3] != '229':
+    wenn resp[:3] != '229':
         raise error_reply(resp)
     left = resp.find('(')
-    if left < 0: raise error_proto(resp)
+    wenn left < 0: raise error_proto(resp)
     right = resp.find(')', left + 1)
-    if right < 0:
+    wenn right < 0:
         raise error_proto(resp) # should contain '(|||port|)'
-    if resp[left + 1] != resp[right - 1]:
+    wenn resp[left + 1] != resp[right - 1]:
         raise error_proto(resp)
     parts = resp[left + 1:right].split(resp[left+1])
-    if len(parts) != 5:
+    wenn len(parts) != 5:
         raise error_proto(resp)
     host = peer[0]
     port = int(parts[3])
@@ -853,9 +853,9 @@ def parse257(resp):
     '''Parse the '257' response fuer a MKD or PWD request.
     This is a response to a MKD or PWD request: a directory name.
     Returns the directoryname in the 257 reply.'''
-    if resp[:3] != '257':
+    wenn resp[:3] != '257':
         raise error_reply(resp)
-    if resp[3:5] != ' "':
+    wenn resp[3:5] != ' "':
         return '' # Not compliant to RFC 959, but UNIX ftpd does this
     dirname = ''
     i = 5
@@ -863,8 +863,8 @@ def parse257(resp):
     while i < n:
         c = resp[i]
         i = i+1
-        if c == '"':
-            if i >= n or resp[i] != '"':
+        wenn c == '"':
+            wenn i >= n or resp[i] != '"':
                 break
             i = i+1
         dirname = dirname + c
@@ -878,7 +878,7 @@ def print_line(line):
 
 def ftpcp(source, sourcename, target, targetname = '', type = 'I'):
     '''Copy file from one FTP-instance to another.'''
-    if not targetname:
+    wenn not targetname:
         targetname = sourcename
     type = 'TYPE ' + type
     source.voidcmd(type)
@@ -889,10 +889,10 @@ def ftpcp(source, sourcename, target, targetname = '', type = 'I'):
     # transfer request.
     # So: STOR before RETR, because here the target is a "user".
     treply = target.sendcmd('STOR ' + targetname)
-    if treply[:3] not in {'125', '150'}:
+    wenn treply[:3] not in {'125', '150'}:
         raise error_proto  # RFC 959
     sreply = source.sendcmd('RETR ' + sourcename)
-    if sreply[:3] not in {'125', '150'}:
+    wenn sreply[:3] not in {'125', '150'}:
         raise error_proto  # RFC 959
     source.voidresp()
     target.voidresp()
@@ -913,7 +913,7 @@ def test():
       file      retrieve the file and write it to stdout
     '''
 
-    if len(sys.argv) < 2:
+    wenn len(sys.argv) < 2:
         print(test.__doc__)
         sys.exit(0)
 
@@ -924,7 +924,7 @@ def test():
     while sys.argv[1] == '-d':
         debugging = debugging+1
         del sys.argv[1]
-    if sys.argv[1][:2] == '-r':
+    wenn sys.argv[1][:2] == '-r':
         # get name of alternate ~/.netrc file:
         rcfile = sys.argv[1][2:]
         del sys.argv[1]
@@ -935,10 +935,10 @@ def test():
     try:
         netrcobj = netrc.netrc(rcfile)
     except OSError:
-        if rcfile is not None:
+        wenn rcfile is not None:
             print("Could not open account file -- using anonymous login.",
                   file=sys.stderr)
-    else:
+    sonst:
         try:
             userid, acct, passwd = netrcobj.authenticators(host)
         except (KeyError, TypeError):
@@ -946,15 +946,15 @@ def test():
             print("No account -- using anonymous login.", file=sys.stderr)
     ftp.login(userid, passwd, acct)
     fuer file in sys.argv[2:]:
-        if file[:2] == '-l':
+        wenn file[:2] == '-l':
             ftp.dir(file[2:])
-        elif file[:2] == '-d':
+        sowenn file[:2] == '-d':
             cmd = 'CWD'
-            if file[2:]: cmd = cmd + ' ' + file[2:]
+            wenn file[2:]: cmd = cmd + ' ' + file[2:]
             resp = ftp.sendcmd(cmd)
-        elif file == '-p':
+        sowenn file == '-p':
             ftp.set_pasv(not ftp.passiveserver)
-        else:
+        sonst:
             ftp.retrbinary('RETR ' + file, \
                            sys.stdout.buffer.write, 1024)
             sys.stdout.buffer.flush()
@@ -962,5 +962,5 @@ def test():
     ftp.quit()
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     test()

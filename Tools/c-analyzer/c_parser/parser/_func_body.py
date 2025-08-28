@@ -64,11 +64,11 @@ def parse_function_body(name, text, resolve, source, anon_name, parent):
          block_close,
          ) = m.groups()
 
-        if empty:
+        wenn empty:
             log_match('', m, depth)
             resolve(None, None, None, text)
             yield None, text
-        elif inline_kind:
+        sowenn inline_kind:
             log_match('', m, depth)
             kind = inline_kind
             name = inline_name or anon_name('inline-')
@@ -82,16 +82,16 @@ def parse_function_body(name, text, resolve, source, anon_name, parent):
             before = []
             ident = f'{kind} {name}'
             fuer member, inline, text in _parse_body(text, resolve, source, anon_name, ident):
-                if member:
+                wenn member:
                     data.append(member)
-                if inline:
+                wenn inline:
                     yield from inline
             # un-inline the decl.  Note that it might not actually be inline.
             # We handle the case in the "maybe_inline_actual" branch.
             text = f'{inline_leading or ""} {inline_pre or ""} {kind} {name} {text}'
             # XXX Should "parent" really be None fuer inline type decls?
             yield resolve(kind, data, name, text, None), text
-        elif block_close:
+        sowenn block_close:
             log_match('', m, depth)
             depth -= 1
             resolve(None, None, None, text)
@@ -100,13 +100,13 @@ def parse_function_body(name, text, resolve, source, anon_name, parent):
             # on the yielded value instead of the resolved one.  That
             # needs to be fixed.
             yield None, text
-        elif compound_bare:
+        sowenn compound_bare:
             log_match('', m, depth)
             yield resolve('statement', compound_bare, None, text, parent), text
-        elif compound_labeled:
+        sowenn compound_labeled:
             log_match('', m, depth)
             yield resolve('statement', compound_labeled, None, text, parent), text
-        elif compound_paren:
+        sowenn compound_paren:
             log_match('', m, depth)
             try:
                 pos = match_paren(text)
@@ -115,38 +115,38 @@ def parse_function_body(name, text, resolve, source, anon_name, parent):
                 #resolve(None, None, None, text)
                 text, resolve = continue_text(source, text, resolve)
                 yield None, text
-            else:
+            sonst:
                 head = text[:pos]
                 text = text[pos:]
-                if compound_paren == 'for':
+                wenn compound_paren == 'for':
                     # XXX Parse "head" as a compound statement.
                     stmt1, stmt2, stmt3 = head.split(';', 2)
                     data = {
                         'compound': compound_paren,
                         'statements': (stmt1, stmt2, stmt3),
                     }
-                else:
+                sonst:
                     data = {
                         'compound': compound_paren,
                         'statement': head,
                     }
                 yield resolve('statement', data, None, text, parent), text
-        elif block_open:
+        sowenn block_open:
             log_match('', m, depth)
             depth += 1
-            if block_leading:
+            wenn block_leading:
                 # An inline block: the last evaluated expression is used
                 # in place of the block.
                 # XXX Combine it with the remainder after the block close.
                 stmt = f'{block_open}{{<expr>}}...;'
                 yield resolve('statement', stmt, None, text, parent), text
-            else:
+            sonst:
                 resolve(None, None, None, text)
                 yield None, text
-        elif simple_ending:
+        sowenn simple_ending:
             log_match('', m, depth)
             yield resolve('statement', simple_stmt, None, text, parent), text
-        elif var_ending:
+        sowenn var_ending:
             log_match('', m, depth)
             kind = 'variable'
             _, name, vartype = parse_var_decl(decl)
@@ -155,15 +155,15 @@ def parse_function_body(name, text, resolve, source, anon_name, parent):
                 'vartype': vartype,
             }
             after = ()
-            if var_ending == ',':
+            wenn var_ending == ',':
                 # It was a multi-declaration, so queue up the next one.
                 _, qual, typespec, _ = vartype.values()
                 text = f'{storage or ""} {qual or ""} {typespec} {text}'
             yield resolve(kind, data, name, text, parent), text
-            if var_init:
+            wenn var_init:
                 _data = f'{name} = {var_init.strip()}'
                 yield resolve('statement', _data, None, text, parent), text
-        else:
+        sonst:
             # This should be unreachable.
             raise NotImplementedError
 
@@ -193,19 +193,19 @@ def parse_function_statics(source, func, anon_name):
     while depth > 0:
         fuer srcinfo in source:
             m = LOCAL_STATICS_RE.match(srcinfo.text)
-            if m:
+            wenn m:
                 break
-        else:
+        sonst:
             # We ran out of lines.
-            if srcinfo is not None:
+            wenn srcinfo is not None:
                 srcinfo.done()
             return
         fuer item, depth in _parse_next_local_static(m, srcinfo,
                                                     anon_name, func, depth):
-            if callable(item):
+            wenn callable(item):
                 parse_body = item
                 yield from parse_body(source)
-            elif item is not None:
+            sowenn item is not None:
                 yield item
 
 
@@ -219,7 +219,7 @@ def _parse_next_local_static(m, srcinfo, anon_name, func, depth):
      ) = m.groups()
     remainder = srcinfo.text[m.end():]
 
-    if inline_kind:
+    wenn inline_kind:
         log_match('func inline', m, depth, depth)
         kind = inline_kind
         name = inline_name or anon_name('inline-')
@@ -238,9 +238,9 @@ def _parse_next_local_static(m, srcinfo, anon_name, func, depth):
             data = []  # members
             ident = f'{kind} {name}'
             fuer item in _parse_body(source, anon_name, ident):
-                if item.kind == 'field':
+                wenn item.kind == 'field':
                     data.append(item)
-                else:
+                sonst:
                     yield item
             # XXX Should "parent" really be None fuer inline type decls?
             yield srcinfo.resolve(kind, data, name, parent=None)
@@ -248,33 +248,33 @@ def _parse_next_local_static(m, srcinfo, anon_name, func, depth):
             srcinfo.resume()
         yield parse_body, depth
 
-    elif static_decl:
+    sowenn static_decl:
         log_match('local variable', m, depth, depth)
         _, name, data = parse_var_decl(static_decl)
 
         yield srcinfo.resolve('variable', data, name, parent=func), depth
 
-        if static_init:
+        wenn static_init:
             srcinfo.advance(f'{name} {static_init} {remainder}')
-        elif static_ending == ',':
+        sowenn static_ending == ',':
             # It was a multi-declaration, so queue up the next one.
             _, qual, typespec, _ = data.values()
             srcinfo.advance(f'static {qual or ""} {typespec} {remainder}')
-        else:
+        sonst:
             srcinfo.advance('')
 
-    else:
+    sonst:
         log_match('func other', m)
-        if block_open:
+        wenn block_open:
             log_match('func other', None, depth, depth + 1)
             depth += 1
-        elif block_close:
+        sowenn block_close:
             log_match('func other', None, depth, depth - 1)
             depth -= 1
-        elif stmt_end:
+        sowenn stmt_end:
             log_match('func other', None, depth, depth)
             pass
-        else:
+        sonst:
             # This should be unreachable.
             raise NotImplementedError
         srcinfo.advance(remainder)

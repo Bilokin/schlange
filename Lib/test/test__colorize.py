@@ -15,9 +15,9 @@ def clear_env():
 
 
 def supports_virtual_terminal():
-    if sys.platform == "win32":
+    wenn sys.platform == "win32":
         return unittest.mock.patch("nt._supports_virtual_terminal", return_value=True)
-    else:
+    sonst:
         return contextlib.nullcontext()
 
 
@@ -130,5 +130,5 @@ klasse TestColorizeFunction(unittest.TestCase):
                 self.assertEqual(_colorize.can_colorize(file=file), False)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

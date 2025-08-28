@@ -103,7 +103,7 @@ Here are the cases where we've taken shortcuts or made assumptions:
   pointer that gets called.  The only differentiator is the
   syntax used in the "..." part.  It will be comma-separated
   parameters fuer the former and comma-separated expressions for
-  the latter.  Thus, if we expect such decls or calls then we must
+  the latter.  Thus, wenn we expect such decls or calls then we must
   parse the decl params.
 """
 
@@ -121,7 +121,7 @@ from ._info import SourceInfo
 
 
 def parse(srclines, **srckwargs):
-    if isinstance(srclines, str):  # a filename
+    wenn isinstance(srclines, str):  # a filename
         raise NotImplementedError
 
     anon_name = anonymous_names()
@@ -165,19 +165,19 @@ def _parse(srclines, anon_name, **srckwargs):
 # are covered elsewhere (MAX_SIZES in cpython/_parser.py).
 
 def _iter_source(lines, *, maxtext=11_000, maxlines=200, showtext=False):
-    maxtext = maxtext if maxtext and maxtext > 0 else None
-    maxlines = maxlines if maxlines and maxlines > 0 else None
+    maxtext = maxtext wenn maxtext and maxtext > 0 sonst None
+    maxlines = maxlines wenn maxlines and maxlines > 0 sonst None
     filestack = []
     allinfo = {}
     # "lines" should be (fileinfo, data), as produced by the preprocessor code.
     fuer fileinfo, line in lines:
-        if fileinfo.filename in filestack:
+        wenn fileinfo.filename in filestack:
             while fileinfo.filename != filestack[-1]:
                 filename = filestack.pop()
                 del allinfo[filename]
             filename = fileinfo.filename
             srcinfo = allinfo[filename]
-        else:
+        sonst:
             filename = fileinfo.filename
             srcinfo = SourceInfo(filename)
             filestack.append(filename)
@@ -185,30 +185,30 @@ def _iter_source(lines, *, maxtext=11_000, maxlines=200, showtext=False):
 
         _logger.debug(f'-> {line}')
         srcinfo._add_line(line, fileinfo.lno)
-        if srcinfo.too_much(maxtext, maxlines):
+        wenn srcinfo.too_much(maxtext, maxlines):
             break
         while srcinfo._used():
             yield srcinfo
-            if showtext:
+            wenn showtext:
                 _logger.debug(f'=> {srcinfo.text}')
-    else:
-        if not filestack:
+    sonst:
+        wenn not filestack:
             srcinfo = SourceInfo('???')
-        else:
+        sonst:
             filename = filestack[-1]
             srcinfo = allinfo[filename]
             while srcinfo._used():
                 yield srcinfo
-                if showtext:
+                wenn showtext:
                     _logger.debug(f'=> {srcinfo.text}')
         yield srcinfo
-        if showtext:
+        wenn showtext:
             _logger.debug(f'=> {srcinfo.text}')
-        if not srcinfo._ready:
+        wenn not srcinfo._ready:
             return
     # At this point either the file ended prematurely
     # or there's "too much" text.
     filename, lno, text = srcinfo.filename, srcinfo._start, srcinfo.text
-    if len(text) > 500:
+    wenn len(text) > 500:
         text = text[:500] + '...'
     raise Exception(f'unmatched text ({filename} starting at line {lno}):\n{text}')

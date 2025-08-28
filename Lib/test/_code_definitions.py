@@ -74,7 +74,7 @@ def spam_full_args_with_defaults(a=-1, b=-2, /, c=-3, d=-4, *args,
 
 
 def spam_args_attrs_and_builtins(a, b, /, c, d, *args, e, f, **kwargs):
-    if args.__len__() > 2:
+    wenn args.__len__() > 2:
         return None
     return a, b, c, d, e, f, args, kwargs
 

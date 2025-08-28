@@ -53,9 +53,9 @@ klasse IntTestCase(unittest.TestCase, HelperMixin):
                 s = b'I' + int.to_bytes(base, 8, 'little', signed=True)
                 got = marshal.loads(s)
                 self.assertEqual(base, got)
-                if base == -1:  # a fixed-point fuer shifting right 1
+                wenn base == -1:  # a fixed-point fuer shifting right 1
                     base = 0
-                else:
+                sonst:
                     base >>= 1
 
         got = marshal.loads(b'I\xfe\xdc\xba\x98\x76\x54\x32\x10')
@@ -191,7 +191,7 @@ klasse CodeTestCase(unittest.TestCase):
         co = compile(s, "myfile", "exec")
         co = marshal.loads(marshal.dumps(co))
         fuer obj in co.co_consts:
-            if isinstance(obj, types.CodeType):
+            wenn isinstance(obj, types.CodeType):
                 self.assertIs(co.co_filename, obj.co_filename)
 
 klasse ContainerTestCase(unittest.TestCase, HelperMixin):
@@ -291,11 +291,11 @@ klasse BugsTestCase(unittest.TestCase):
         # BUG: https://bugs.python.org/issue33720
         # Windows always limits the maximum depth on release and debug builds
         #if os.name == 'nt' and support.Py_DEBUG:
-        if os.name == 'nt':
+        wenn os.name == 'nt':
             MAX_MARSHAL_STACK_DEPTH = 1000
-        elif sys.platform == 'wasi' or is_emscripten or is_apple_mobile:
+        sowenn sys.platform == 'wasi' or is_emscripten or is_apple_mobile:
             MAX_MARSHAL_STACK_DEPTH = 1500
-        else:
+        sonst:
             MAX_MARSHAL_STACK_DEPTH = 2000
         fuer i in range(MAX_MARSHAL_STACK_DEPTH - 2):
             last.append([0])
@@ -347,13 +347,13 @@ klasse BugsTestCase(unittest.TestCase):
                 with open(os_helper.TESTFN, 'wb') as f:
                     fuer d in data:
                         marshal.dump(d, f)
-                        if ilen:
+                        wenn ilen:
                             f.write(interleaved)
                         positions.append(f.tell())
                 with open(os_helper.TESTFN, 'rb') as f:
                     fuer i, d in enumerate(data):
                         self.assertEqual(d, marshal.load(f))
-                        if ilen:
+                        wenn ilen:
                             f.read(ilen)
                         self.assertEqual(positions[i], f.tell())
             finally:
@@ -368,7 +368,7 @@ klasse BugsTestCase(unittest.TestCase):
         klasse BadReader(io.BytesIO):
             def readinto(self, buf):
                 n = super().readinto(buf)
-                if n is not None and n > 4:
+                wenn n is not None and n > 4:
                     n += 10**6
                 return n
         fuer value in (1.0, 1j, b'0123456789', '0123456789'):
@@ -395,9 +395,9 @@ klasse BugsTestCase(unittest.TestCase):
                     # First, make sure that our test case still has different
                     # orders under hash seeds 0 and 1. If this check fails, we
                     # need to update this test with different elements. Skip
-                    # this part if we are configured to use any other hash
+                    # this part wenn we are configured to use any other hash
                     # algorithm (for example, using Py_HASH_EXTERNAL):
-                    if sys.hash_info.algorithm in {"fnv", "siphash24"}:
+                    wenn sys.hash_info.algorithm in {"fnv", "siphash24"}:
                         args = ["-c", f"print({s})"]
                         _, repr_0, _ = assert_python_ok(*args, PYTHONHASHSEED="0")
                         _, repr_1, _ = assert_python_ok(*args, PYTHONHASHSEED="1")
@@ -409,7 +409,7 @@ klasse BugsTestCase(unittest.TestCase):
                     self.assertEqual(dump_0, dump_1)
 
 LARGE_SIZE = 2**31
-pointer_size = 8 if sys.maxsize > 0xFFFFFFFF else 4
+pointer_size = 8 wenn sys.maxsize > 0xFFFFFFFF sonst 4
 
 klasse NullWriter:
     def write(self, s):
@@ -454,13 +454,13 @@ klasse LargeValuesTestCase(unittest.TestCase):
 
 def CollectObjectIDs(ids, obj):
     """Collect object ids seen in a structure"""
-    if id(obj) in ids:
+    wenn id(obj) in ids:
         return
     ids.add(id(obj))
-    if isinstance(obj, (list, tuple, set, frozenset)):
+    wenn isinstance(obj, (list, tuple, set, frozenset)):
         fuer e in obj:
             CollectObjectIDs(ids, e)
-    elif isinstance(obj, dict):
+    sowenn isinstance(obj, dict):
         fuer k, v in obj.items():
             CollectObjectIDs(ids, k)
             CollectObjectIDs(ids, v)
@@ -482,7 +482,7 @@ klasse InstancingTestCase(unittest.TestCase, HelperMixin):
             #same number of instances generated
             self.assertEqual(n3, n0)
 
-        if not recursive:
+        wenn not recursive:
             #can compare with version 2
             s2 = marshal.dumps(sample, 2)
             n2 = CollectObjectIDs(set(), marshal.loads(s2))
@@ -490,9 +490,9 @@ klasse InstancingTestCase(unittest.TestCase, HelperMixin):
             self.assertGreater(n2, n0)
 
             #if complex objects are in there, old format is larger
-            if not simple:
+            wenn not simple:
                 self.assertGreater(len(s2), len(s3))
-            else:
+            sonst:
                 self.assertGreaterEqual(len(s2), len(s3))
 
     def testInt(self):
@@ -548,7 +548,7 @@ klasse InstancingTestCase(unittest.TestCase, HelperMixin):
     def testModule(self):
         with open(__file__, "rb") as f:
             code = f.read()
-        if __file__.endswith(".py"):
+        wenn __file__.endswith(".py"):
             code = compile(code, __file__, "exec")
         self.helper(code)
         self.helper3(code)
@@ -566,7 +566,7 @@ klasse CompatibilityTestCase(unittest.TestCase):
     def _test(self, version):
         with open(__file__, "rb") as f:
             code = f.read()
-        if __file__.endswith(".py"):
+        wenn __file__.endswith(".py"):
             code = compile(code, __file__, "exec")
         data = marshal.dumps(code, version)
         marshal.loads(data)
@@ -697,5 +697,5 @@ klasse CAPI_TestCase(unittest.TestCase, HelperMixin):
             os_helper.unlink(os_helper.TESTFN)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

@@ -10,9 +10,9 @@ from unicodedata import ucd_3_2_0 as unicodedata
 assert unicodedata.unidata_version == '3.2.0'
 
 def in_table_a1(code):
-    if unicodedata.category(code) != 'Cn': return False
+    wenn unicodedata.category(code) != 'Cn': return False
     c = ord(code)
-    if 0xFDD0 <= c < 0xFDF0: return False
+    wenn 0xFDD0 <= c < 0xFDF0: return False
     return (c & 0xFFFF) not in (0xFFFE, 0xFFFF)
 
 
@@ -188,7 +188,7 @@ b3_exceptions = {
 
 def map_table_b3(code):
     r = b3_exceptions.get(ord(code))
-    if r is not None: return r
+    wenn r is not None: return r
     return code.lower()
 
 
@@ -197,9 +197,9 @@ def map_table_b2(a):
     b = unicodedata.normalize("NFKC", al)
     bl = "".join([map_table_b3(ch) fuer ch in b])
     c = unicodedata.normalize("NFKC", bl)
-    if b != c:
+    wenn b != c:
         return c
-    else:
+    sonst:
         return al
 
 
@@ -220,8 +220,8 @@ def in_table_c21(code):
 c22_specials = set([1757, 1807, 6158, 8204, 8205, 8232, 8233, 65279] + list(range(8288,8292)) + list(range(8298,8304)) + list(range(65529,65533)) + list(range(119155,119163)))
 def in_table_c22(code):
     c = ord(code)
-    if c < 128: return False
-    if unicodedata.category(code) == "Cc": return True
+    wenn c < 128: return False
+    wenn unicodedata.category(code) == "Cc": return True
     return c in c22_specials
 
 def in_table_c21_c22(code):
@@ -235,8 +235,8 @@ def in_table_c3(code):
 
 def in_table_c4(code):
     c = ord(code)
-    if c < 0xFDD0: return False
-    if c < 0xFDF0: return True
+    wenn c < 0xFDD0: return False
+    wenn c < 0xFDF0: return True
     return (ord(code) & 0xFFFF) in (0xFFFE, 0xFFFF)
 
 

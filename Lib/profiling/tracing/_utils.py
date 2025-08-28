@@ -26,7 +26,7 @@ klasse _Utils:
             self._show(prof, filename, sort)
 
     def _show(self, prof, filename, sort):
-        if filename is not None:
+        wenn filename is not None:
             prof.dump_stats(filename)
-        else:
+        sonst:
             prof.print_stats(sort)

@@ -11,7 +11,7 @@ from test.support.bytecode_helper import AssemblerTestCase
 klasse IsolatedAssembleTests(AssemblerTestCase):
 
     def complete_metadata(self, metadata, filename="myfile.py"):
-        if metadata is None:
+        wenn metadata is None:
             metadata = {}
         fuer key in ['name', 'qualname']:
             metadata.setdefault(key, key)
@@ -36,14 +36,14 @@ klasse IsolatedAssembleTests(AssemblerTestCase):
 
         expected_metadata = {}
         fuer key, value in metadata.items():
-            if key == "fasthidden":
+            wenn key == "fasthidden":
                 # not exposed on code object
                 continue
-            if isinstance(value, list):
+            wenn isinstance(value, list):
                 expected_metadata[key] = tuple(value)
-            elif isinstance(value, dict):
+            sowenn isinstance(value, dict):
                 expected_metadata[key] = tuple(value.keys())
-            else:
+            sonst:
                 expected_metadata[key] = value
 
         fuer key, value in expected_metadata.items():

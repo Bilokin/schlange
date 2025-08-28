@@ -25,12 +25,12 @@ def main():
     uhcdecmap, ksx1001decmap, cp949encmap = {}, {}, {}
     fuer c1, c2map in decmap.items():
         fuer c2, code in c2map.items():
-            if c1 >= 0xa1 and c2 >= 0xa1:
+            wenn c1 >= 0xa1 and c2 >= 0xa1:
                 ksx1001decmap.setdefault(c1 & 0x7f, {})
                 ksx1001decmap[c1 & 0x7f][c2 & 0x7f] = c2map[c2]
                 cp949encmap.setdefault(code >> 8, {})
                 cp949encmap[code >> 8][code & 0xFF] = (c1 << 8 | c2) & 0x7f7f
-            else:
+            sonst:
                 # uhc
                 uhcdecmap.setdefault(c1, {})
                 uhcdecmap[c1][c2] = c2map[c2]
@@ -58,5 +58,5 @@ def main():
     print("Done!")
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     main()

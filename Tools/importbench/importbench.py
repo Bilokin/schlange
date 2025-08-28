@@ -32,9 +32,9 @@ def bench(name, cleanup=lambda: None, *, seconds=1, repeat=3):
             finally:
                 cleanup()
             count += 1
-        else:
+        sonst:
             # One execution too far
-            if total_time > seconds:
+            wenn total_time > seconds:
                 count -= 1
         yield count // seconds
 
@@ -52,7 +52,7 @@ def from_cache(seconds, repeat):
 def builtin_mod(seconds, repeat):
     """Built-in module"""
     name = 'errno'
-    if name in sys.modules:
+    wenn name in sys.modules:
         del sys.modules[name]
     # Relying on built-in importer being implicit.
     yield from bench(name, lambda: sys.modules.pop(name), repeat=repeat,
@@ -82,7 +82,7 @@ def _wo_bytecode(module):
     def benchmark_wo_bytecode(seconds, repeat):
         """Source w/o bytecode: {}"""
         bytecode_path = cache_from_source(module.__file__)
-        if os.path.exists(bytecode_path):
+        wenn os.path.exists(bytecode_path):
             os.unlink(bytecode_path)
         sys.dont_write_bytecode = True
         try:
@@ -164,10 +164,10 @@ decimal_using_bytecode = _using_bytecode(decimal)
 
 
 def main(import_, options):
-    if options.source_file:
+    wenn options.source_file:
         with open(options.source_file, 'r', encoding='utf-8') as source_file:
             prev_results = json.load(source_file)
-    else:
+    sonst:
         prev_results = {}
     __builtins__.__import__ = import_
     benchmarks = (from_cache, builtin_mod,
@@ -178,17 +178,17 @@ def main(import_, options):
                   decimal_writing_bytecode,
                   decimal_wo_bytecode, decimal_using_bytecode,
                 )
-    if options.benchmark:
+    wenn options.benchmark:
         fuer b in benchmarks:
-            if b.__doc__ == options.benchmark:
+            wenn b.__doc__ == options.benchmark:
                 benchmarks = [b]
                 break
-        else:
+        sonst:
             print('Unknown benchmark: {!r}'.format(options.benchmark),
                   file=sys.stderr)
             sys.exit(1)
     seconds = 1
-    seconds_plural = 's' if seconds > 1 else ''
+    seconds_plural = 's' wenn seconds > 1 sonst ''
     repeat = 3
     header = ('Measuring imports/second over {} second{}, best out of {}\n'
               'Entire benchmark run should take about {} seconds\n'
@@ -207,7 +207,7 @@ def main(import_, options):
         assert not sys.dont_write_bytecode
         print("]", "best is", format(max(results), ',d'))
         new_results[benchmark.__doc__] = results
-    if prev_results:
+    wenn prev_results:
         print('\n\nComparing new vs. old\n')
         fuer benchmark in benchmarks:
             benchmark_name = benchmark.__doc__
@@ -217,12 +217,12 @@ def main(import_, options):
                                                      old_result,
                                               new_result/old_result)
             print(benchmark_name, ':', result)
-    if options.dest_file:
+    wenn options.dest_file:
         with open(options.dest_file, 'w', encoding='utf-8') as dest_file:
             json.dump(new_results, dest_file, indent=2)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     import argparse
 
     parser = argparse.ArgumentParser()
@@ -237,7 +237,7 @@ if __name__ == '__main__':
                         help='specific benchmark to run')
     options = parser.parse_args()
     import_ = __import__
-    if not options.builtin:
+    wenn not options.builtin:
         import_ = importlib.__import__
 
     main(import_, options)

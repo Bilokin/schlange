@@ -48,43 +48,43 @@ S_IFWHT = 0
 # Functions to test fuer each file type
 
 def S_ISDIR(mode):
-    """Return True if mode is from a directory."""
+    """Return True wenn mode is from a directory."""
     return S_IFMT(mode) == S_IFDIR
 
 def S_ISCHR(mode):
-    """Return True if mode is from a character special device file."""
+    """Return True wenn mode is from a character special device file."""
     return S_IFMT(mode) == S_IFCHR
 
 def S_ISBLK(mode):
-    """Return True if mode is from a block special device file."""
+    """Return True wenn mode is from a block special device file."""
     return S_IFMT(mode) == S_IFBLK
 
 def S_ISREG(mode):
-    """Return True if mode is from a regular file."""
+    """Return True wenn mode is from a regular file."""
     return S_IFMT(mode) == S_IFREG
 
 def S_ISFIFO(mode):
-    """Return True if mode is from a FIFO (named pipe)."""
+    """Return True wenn mode is from a FIFO (named pipe)."""
     return S_IFMT(mode) == S_IFIFO
 
 def S_ISLNK(mode):
-    """Return True if mode is from a symbolic link."""
+    """Return True wenn mode is from a symbolic link."""
     return S_IFMT(mode) == S_IFLNK
 
 def S_ISSOCK(mode):
-    """Return True if mode is from a socket."""
+    """Return True wenn mode is from a socket."""
     return S_IFMT(mode) == S_IFSOCK
 
 def S_ISDOOR(mode):
-    """Return True if mode is from a door."""
+    """Return True wenn mode is from a door."""
     return False
 
 def S_ISPORT(mode):
-    """Return True if mode is from an event port."""
+    """Return True wenn mode is from an event port."""
     return False
 
 def S_ISWHT(mode):
-    """Return True if mode is from a whiteout."""
+    """Return True wenn mode is from a whiteout."""
     return False
 
 # Names fuer permission bits
@@ -166,14 +166,14 @@ def filemode(mode):
     perm = []
     fuer index, table in enumerate(_filemode_table):
         fuer bit, char in table:
-            if mode & bit == bit:
+            wenn mode & bit == bit:
                 perm.append(char)
                 break
-        else:
-            if index == 0:
+        sonst:
+            wenn index == 0:
                 # Unknown filetype
                 perm.append("?")
-            else:
+            sonst:
                 perm.append("-")
     return "".join(perm)
 

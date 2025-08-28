@@ -47,7 +47,7 @@ def validate_uop(override: Uop, uop: Uop) -> None:
         orig_effects = getattr(uop.stack, stack_effect)
         new_effects = getattr(override.stack, stack_effect)
 
-        if len(orig_effects) != len(new_effects):
+        wenn len(orig_effects) != len(new_effects):
             msg = (
                 f"{uop.name}: Must have the same number of {stack_effect} "
                 "in bytecodes.c and optimizer_bytecodes.c "
@@ -56,7 +56,7 @@ def validate_uop(override: Uop, uop: Uop) -> None:
             raise analysis_error(msg, override.body.open)
 
         fuer orig, new in zip(orig_effects, new_effects, strict=True):
-            if orig.name != new.name and orig.name != "unused" and new.name != "unused":
+            wenn orig.name != new.name and orig.name != "unused" and new.name != "unused":
                 msg = (
                     f"{uop.name}: {stack_effect.capitalize()} must have "
                     "equal names in bytecodes.c and optimizer_bytecodes.c "
@@ -64,7 +64,7 @@ def validate_uop(override: Uop, uop: Uop) -> None:
                 )
                 raise analysis_error(msg, override.body.open)
 
-            if orig.size != new.size:
+            wenn orig.size != new.size:
                 msg = (
                     f"{uop.name}: {stack_effect.capitalize()} must have "
                     "equal sizes in bytecodes.c and optimizer_bytecodes.c "
@@ -74,7 +74,7 @@ def validate_uop(override: Uop, uop: Uop) -> None:
 
 
 def type_name(var: StackItem) -> str:
-    if var.is_array():
+    wenn var.is_array():
         return "JitOptRef *"
     return "JitOptRef "
 
@@ -84,15 +84,15 @@ def stackref_type_name(var: StackItem) -> str:
 
 def declare_variables(uop: Uop, out: CWriter, skip_inputs: bool) -> None:
     variables = {"unused"}
-    if not skip_inputs:
+    wenn not skip_inputs:
         fuer var in reversed(uop.stack.inputs):
-            if var.used and var.name not in variables:
+            wenn var.used and var.name not in variables:
                 variables.add(var.name)
                 out.emit(f"{type_name(var)}{var.name};\n")
     fuer var in uop.stack.outputs:
-        if var.peek:
+        wenn var.peek:
             continue
-        if var.name not in variables:
+        wenn var.name not in variables:
             variables.add(var.name)
             out.emit(f"{type_name(var)}{var.name};\n")
 
@@ -117,25 +117,25 @@ def emit_default(out: CWriter, uop: Uop, stack: Stack) -> None:
         stack.pop(var, null)
     offset = stack.base_offset - stack.physical_sp
     fuer var in uop.stack.outputs:
-        if var.is_array() and not var.peek and not var.name == "unused":
+        wenn var.is_array() and not var.peek and not var.name == "unused":
             c_offset = offset.to_c()
             out.emit(f"{var.name} = &stack_pointer[{c_offset}];\n")
         offset = offset.push(var)
     fuer var in uop.stack.outputs:
         local = Local.undefined(var)
         stack.push(local)
-        if var.name != "unused" and not var.peek:
+        wenn var.name != "unused" and not var.peek:
             local.in_local = True
-            if var.is_array():
-                if var.size == "1":
+            wenn var.is_array():
+                wenn var.size == "1":
                     out.emit(f"{var.name}[0] = sym_new_not_null(ctx);\n")
-                else:
+                sonst:
                     out.emit(f"for (int _i = {var.size}; --_i >= 0;) {{\n")
                     out.emit(f"{var.name}[_i] = sym_new_not_null(ctx);\n")
                     out.emit("}\n")
-            elif var.name == "null":
+            sowenn var.name == "null":
                 out.emit(f"{var.name} = sym_new_null(ctx);\n")
-            else:
+            sonst:
                 out.emit(f"{var.name} = sym_new_not_null(ctx);\n")
 
 
@@ -168,12 +168,12 @@ klasse OptimizerEmitter(Emitter):
         assert isinstance(uop, Uop)
         input_identifiers = []
         fuer token in tkn_iter:
-            if token.kind == "IDENTIFIER":
+            wenn token.kind == "IDENTIFIER":
                 input_identifiers.append(token)
-            if token.kind == "SEMI":
+            wenn token.kind == "SEMI":
                 break
 
-        if len(input_identifiers) == 0:
+        wenn len(input_identifiers) == 0:
             raise analysis_error(
                 "To evaluate an operation as pure, it must have at least 1 input",
                 tkn
@@ -182,13 +182,13 @@ klasse OptimizerEmitter(Emitter):
         # input stack effect
         uop_stack_effect_input_identifers = {inp.name fuer inp in uop.stack.inputs}
         fuer input_tkn in input_identifiers:
-            if input_tkn.text not in uop_stack_effect_input_identifers:
+            wenn input_tkn.text not in uop_stack_effect_input_identifers:
                 raise analysis_error(f"{input_tkn.text} referenced in "
                                      f"REPLACE_OPCODE_IF_EVALUATES_PURE but does not "
                                      f"exist in the base uop's input stack effects",
                                      input_tkn)
         input_identifiers_as_str = {tkn.text fuer tkn in input_identifiers}
-        used_stack_inputs = [inp fuer inp in uop.stack.inputs if inp.name in input_identifiers_as_str]
+        used_stack_inputs = [inp fuer inp in uop.stack.inputs wenn inp.name in input_identifiers_as_str]
         assert len(used_stack_inputs) > 0
         emitter = OptimizerConstantEmitter(self.out, {}, self.original_uop, self.stack.copy())
         emitter.emit("if (\n")
@@ -198,17 +198,17 @@ klasse OptimizerEmitter(Emitter):
         emitter.emit(') {\n')
         # Declare variables, before they are shadowed.
         fuer inp in used_stack_inputs:
-            if inp.used:
+            wenn inp.used:
                 emitter.emit(f"{type_name(inp)}{inp.name}_sym = {inp.name};\n")
         # Shadow the symbolic variables with stackrefs.
         fuer inp in used_stack_inputs:
-            if inp.is_array():
+            wenn inp.is_array():
                 raise analysis_error("Pure evaluation cannot take array-like inputs.", tkn)
-            if inp.used:
+            wenn inp.used:
                 emitter.emit(f"{stackref_type_name(inp)}{inp.name} = sym_get_const_as_stackref(ctx, {inp.name}_sym);\n")
         # Rename all output variables to stackref variant.
         fuer outp in self.original_uop.stack.outputs:
-            if outp.is_array():
+            wenn outp.is_array():
                 raise analysis_error(
                     "Array output StackRefs not supported fuer evaluating pure ops.",
                     self.original_uop.body.open
@@ -228,18 +228,18 @@ klasse OptimizerEmitter(Emitter):
         fuer outp in self.original_uop.stack.outputs:
             # All new stackrefs are created from new references.
             # That's how the stackref contract works.
-            if not outp.peek:
+            wenn not outp.peek:
                 emitter.emit(f"{outp.name} = sym_new_const_steal(ctx, PyStackRef_AsPyObjectSteal({outp.name}_stackref));\n")
-            else:
+            sonst:
                 emitter.emit(f"{outp.name} = sym_new_const(ctx, PyStackRef_AsPyObjectBorrow({outp.name}_stackref));\n")
 
-        if len(used_stack_inputs) == 2 and len(self.original_uop.stack.outputs) == 1:
+        wenn len(used_stack_inputs) == 2 and len(self.original_uop.stack.outputs) == 1:
                 outp = self.original_uop.stack.outputs[0]
-                if not outp.peek:
+                wenn not outp.peek:
                     emitter.emit(f"""
-                if (sym_is_const(ctx, {outp.name})) {{
+                wenn (sym_is_const(ctx, {outp.name})) {{
                     PyObject *result = sym_get_const(ctx, {outp.name});
-                    if (_Py_IsImmortal(result)) {{
+                    wenn (_Py_IsImmortal(result)) {{
                         // Replace with _POP_TWO_LOAD_CONST_INLINE_BORROW since we have two inputs and an immortal result
                         REPLACE_OP(this_instr, _POP_TWO_LOAD_CONST_INLINE_BORROW, 0, (uintptr_t)result);
                     }}
@@ -271,15 +271,15 @@ klasse OptimizerConstantEmitter(OptimizerEmitter):
     ) -> Token:
         parens = 0
         fuer tkn in tkn_iter:
-            if tkn.kind == end and parens == 0:
+            wenn tkn.kind == end and parens == 0:
                 return tkn
-            if tkn.kind == "LPAREN":
+            wenn tkn.kind == "LPAREN":
                 parens += 1
-            if tkn.kind == "RPAREN":
+            wenn tkn.kind == "RPAREN":
                 parens -= 1
-            if tkn.text in self._replacers:
+            wenn tkn.text in self._replacers:
                 self._replacers[tkn.text](tkn, tkn_iter, uop, storage, inst)
-            else:
+            sonst:
                 out.emit(tkn)
         raise analysis_error(f"Expecting {end}. Reached end of file", tkn)
 
@@ -332,11 +332,11 @@ klasse OptimizerConstantEmitter(OptimizerEmitter):
         assert lparen.kind == "LPAREN"
         first_tkn = tkn_iter.peek()
         unconditional = always_true(first_tkn)
-        if unconditional:
+        wenn unconditional:
             next(tkn_iter)
             next(tkn_iter)  # RPAREN
             self.out.start_line()
-        else:
+        sonst:
             self.out.emit_at("if ", tkn)
             self.emit(lparen)
             self.emit_to_with_replacement(self.out, tkn_iter, "RPAREN", uop, storage, inst)
@@ -345,7 +345,7 @@ klasse OptimizerConstantEmitter(OptimizerEmitter):
         storage.clear_inputs("at ERROR_IF")
 
         self.out.emit("goto error;\n")
-        if not unconditional:
+        wenn not unconditional:
             self.out.emit("}\n")
         return not unconditional
 
@@ -359,27 +359,27 @@ def write_uop(
     skip_inputs: bool,
 ) -> None:
     locals: dict[str, Local] = {}
-    prototype = override if override else uop
+    prototype = override wenn override sonst uop
     try:
         out.start_line()
-        if override:
+        wenn override:
             storage = Storage.for_uop(stack, prototype, out, check_liveness=False)
-        if debug:
+        wenn debug:
             args = []
             fuer input in prototype.stack.inputs:
-                if not input.peek or override:
+                wenn not input.peek or override:
                     args.append(input.name)
             out.emit(f'DEBUG_PRINTF({", ".join(args)});\n')
-        if override:
+        wenn override:
             fuer cache in uop.caches:
-                if cache.name != "unused":
-                    if cache.size == 4:
+                wenn cache.name != "unused":
+                    wenn cache.size == 4:
                         type = cast = "PyObject *"
-                    else:
+                    sonst:
                         type = f"uint{cache.size*16}_t "
                         cast = f"uint{cache.size*16}_t"
                     out.emit(f"{type}{cache.name} = ({cast})this_instr->operand0;\n")
-        if override:
+        wenn override:
             emitter = OptimizerEmitter(out, {}, uop, stack.copy())
             # No reference management of inputs needed.
             fuer var in storage.inputs:  # type: ignore[possibly-undefined]
@@ -388,7 +388,7 @@ def write_uop(
             out.start_line()
             storage.flush(out)
             out.start_line()
-        else:
+        sonst:
             emit_default(out, uop, stack)
             out.start_line()
             stack.flush(out)
@@ -411,28 +411,28 @@ def generate_abstract_interpreter(
     out.emit("\n")
     base_uop_names = set([uop.name fuer uop in base.uops.values()])
     fuer abstract_uop_name in abstract.uops:
-        if abstract_uop_name not in base_uop_names:
+        wenn abstract_uop_name not in base_uop_names:
             raise ValueError(f"All abstract uops should override base uops, "
                                  "but {abstract_uop_name} is not.")
 
     fuer uop in base.uops.values():
         override: Uop | None = None
-        if uop.name in abstract.uops:
+        wenn uop.name in abstract.uops:
             override = abstract.uops[uop.name]
             validate_uop(override, uop)
-        if uop.properties.tier == 1:
+        wenn uop.properties.tier == 1:
             continue
-        if uop.replicates:
+        wenn uop.replicates:
             continue
-        if uop.is_super():
+        wenn uop.is_super():
             continue
-        if not uop.is_viable():
+        wenn not uop.is_viable():
             out.emit(f"/* {uop.name} is not a viable micro-op fuer tier 2 */\n\n")
             continue
         out.emit(f"case {uop.name}: {{\n")
-        if override:
+        wenn override:
             declare_variables(override, out, skip_inputs=False)
-        else:
+        sonst:
             declare_variables(uop, out, skip_inputs=True)
         stack = Stack()
         write_uop(override, uop, out, stack, debug, skip_inputs=(override is None))
@@ -470,12 +470,12 @@ arg_parser.add_argument(
 
 arg_parser.add_argument("-d", "--debug", help="Insert debug calls", action="store_true")
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     args = arg_parser.parse_args()
-    if not args.input:
+    wenn not args.input:
         args.base.append(DEFAULT_INPUT)
         args.input.append(DEFAULT_ABSTRACT_INPUT)
-    else:
+    sonst:
         args.base.append(args.input[-1])
         args.input.pop()
     abstract = analyze_files(args.input)

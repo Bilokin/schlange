@@ -39,7 +39,7 @@ klasse Handle:
                  '_context')
 
     def __init__(self, callback, args, loop, context=None):
-        if context is None:
+        wenn context is None:
             context = contextvars.copy_context()
         self._context = context
         self._loop = loop
@@ -47,27 +47,27 @@ klasse Handle:
         self._args = args
         self._cancelled = False
         self._repr = None
-        if self._loop.get_debug():
+        wenn self._loop.get_debug():
             self._source_traceback = format_helpers.extract_stack(
                 sys._getframe(1))
-        else:
+        sonst:
             self._source_traceback = None
 
     def _repr_info(self):
         info = [self.__class__.__name__]
-        if self._cancelled:
+        wenn self._cancelled:
             info.append('cancelled')
-        if self._callback is not None:
+        wenn self._callback is not None:
             info.append(format_helpers._format_callback_source(
                 self._callback, self._args,
                 debug=self._loop.get_debug()))
-        if self._source_traceback:
+        wenn self._source_traceback:
             frame = self._source_traceback[-1]
             info.append(f'created at {frame[0]}:{frame[1]}')
         return info
 
     def __repr__(self):
-        if self._repr is not None:
+        wenn self._repr is not None:
             return self._repr
         info = self._repr_info()
         return '<{}>'.format(' '.join(info))
@@ -76,9 +76,9 @@ klasse Handle:
         return self._context
 
     def cancel(self):
-        if not self._cancelled:
+        wenn not self._cancelled:
             self._cancelled = True
-            if self._loop.get_debug():
+            wenn self._loop.get_debug():
                 # Keep a representation in debug mode to keep callback and
                 # parameters. For example, to log the warning
                 # "Executing <Handle...> took 2.5 second"
@@ -104,7 +104,7 @@ klasse Handle:
                 'exception': exc,
                 'handle': self,
             }
-            if self._source_traceback:
+            wenn self._source_traceback:
                 context['source_traceback'] = self._source_traceback
             self._loop.call_exception_handler(context)
         self = None  # Needed to break cycles when an exception occurs.
@@ -131,9 +131,9 @@ klasse _ThreadSafeHandle(Handle):
         # The event loop checks fuer cancellation without holding the lock
         # It is possible that the handle is cancelled after the check
         # but before the callback is called so check it again after acquiring
-        # the lock and return without calling the callback if it is cancelled.
+        # the lock and return without calling the callback wenn it is cancelled.
         with self._lock:
-            if self._cancelled:
+            wenn self._cancelled:
                 return
             return super()._run()
 
@@ -145,14 +145,14 @@ klasse TimerHandle(Handle):
 
     def __init__(self, when, callback, args, loop, context=None):
         super().__init__(callback, args, loop, context)
-        if self._source_traceback:
+        wenn self._source_traceback:
             del self._source_traceback[-1]
         self._when = when
         self._scheduled = False
 
     def _repr_info(self):
         info = super()._repr_info()
-        pos = 2 if self._cancelled else 1
+        pos = 2 wenn self._cancelled sonst 1
         info.insert(pos, f'when={self._when}')
         return info
 
@@ -160,27 +160,27 @@ klasse TimerHandle(Handle):
         return hash(self._when)
 
     def __lt__(self, other):
-        if isinstance(other, TimerHandle):
+        wenn isinstance(other, TimerHandle):
             return self._when < other._when
         return NotImplemented
 
     def __le__(self, other):
-        if isinstance(other, TimerHandle):
+        wenn isinstance(other, TimerHandle):
             return self._when < other._when or self.__eq__(other)
         return NotImplemented
 
     def __gt__(self, other):
-        if isinstance(other, TimerHandle):
+        wenn isinstance(other, TimerHandle):
             return self._when > other._when
         return NotImplemented
 
     def __ge__(self, other):
-        if isinstance(other, TimerHandle):
+        wenn isinstance(other, TimerHandle):
             return self._when > other._when or self.__eq__(other)
         return NotImplemented
 
     def __eq__(self, other):
-        if isinstance(other, TimerHandle):
+        wenn isinstance(other, TimerHandle):
             return (self._when == other._when and
                     self._callback == other._callback and
                     self._args == other._args and
@@ -188,7 +188,7 @@ klasse TimerHandle(Handle):
         return NotImplemented
 
     def cancel(self):
-        if not self._cancelled:
+        wenn not self._cancelled:
             self._loop._timer_handle_cancelled(self)
         super().cancel()
 
@@ -221,7 +221,7 @@ klasse AbstractServer:
         raise NotImplementedError
 
     def is_serving(self):
-        """Return True if the server is accepting connections."""
+        """Return True wenn the server is accepting connections."""
         raise NotImplementedError
 
     async def start_serving(self):
@@ -280,7 +280,7 @@ klasse AbstractEventLoop:
         raise NotImplementedError
 
     def is_closed(self):
-        """Returns True if the event loop was closed."""
+        """Returns True wenn the event loop was closed."""
         raise NotImplementedError
 
     def close(self):
@@ -512,7 +512,7 @@ klasse AbstractEventLoop:
         protocol_factory must be a callable returning a protocol instance.
 
         socket family AF_INET, socket.AF_INET6 or socket.AF_UNIX depending on
-        host (or family if specified), socket type SOCK_DGRAM.
+        host (or family wenn specified), socket type SOCK_DGRAM.
 
         reuse_address tells the kernel to reuse a local socket in
         TIME_WAIT state, without waiting fuer its natural timeout to
@@ -545,7 +545,7 @@ klasse AbstractEventLoop:
         ReadTransport interface."""
         # The reason to accept file-like object instead of just file descriptor
         # is: we need to own pipe and close it at transport finishing
-        # Can got complicated errors if pass f.fileno(),
+        # Can got complicated errors wenn pass f.fileno(),
         # close fd in pipe transport then close f and vice versa.
         raise NotImplementedError
 
@@ -558,7 +558,7 @@ klasse AbstractEventLoop:
         WriteTransport interface."""
         # The reason to accept file-like object instead of just file descriptor
         # is: we need to own pipe and close it at transport finishing
-        # Can got complicated errors if pass f.fileno(),
+        # Can got complicated errors wenn pass f.fileno(),
         # close fd in pipe transport then close f and vice versa.
         raise NotImplementedError
 
@@ -578,8 +578,8 @@ klasse AbstractEventLoop:
 
     # Ready-based callback registration methods.
     # The add_*() methods return None.
-    # The remove_*() methods return True if something was removed,
-    # False if there was nothing to delete.
+    # The remove_*() methods return True wenn something was removed,
+    # False wenn there was nothing to delete.
 
     def add_reader(self, fd, callback, *args):
         raise NotImplementedError
@@ -711,7 +711,7 @@ klasse _BaseDefaultEventLoopPolicy(_AbstractEventLoopPolicy):
 
         Returns an instance of EventLoop or raises an exception.
         """
-        if self._local._loop is None:
+        wenn self._local._loop is None:
             raise RuntimeError('There is no current event loop in thread %r.'
                                % threading.current_thread().name)
 
@@ -719,7 +719,7 @@ klasse _BaseDefaultEventLoopPolicy(_AbstractEventLoopPolicy):
 
     def set_event_loop(self, loop):
         """Set the event loop."""
-        if loop is not None and not isinstance(loop, AbstractEventLoop):
+        wenn loop is not None and not isinstance(loop, AbstractEventLoop):
             raise TypeError(f"loop must be an instance of AbstractEventLoop or None, not '{type(loop).__name__}'")
         self._local._loop = loop
 
@@ -732,7 +732,7 @@ klasse _BaseDefaultEventLoopPolicy(_AbstractEventLoopPolicy):
         return self._loop_factory()
 
 
-# Event loop policy.  The policy itself is always global, even if the
+# Event loop policy.  The policy itself is always global, even wenn the
 # policy's rules say that there is an event loop per thread (or other
 # notion of context).  The default policy is installed by the first
 # call to get_event_loop_policy().
@@ -751,13 +751,13 @@ _running_loop = _RunningLoop()
 
 
 def get_running_loop():
-    """Return the running event loop.  Raise a RuntimeError if there is none.
+    """Return the running event loop.  Raise a RuntimeError wenn there is none.
 
     This function is thread-specific.
     """
     # NOTE: this function is implemented in C (see _asynciomodule.c)
     loop = _get_running_loop()
-    if loop is None:
+    wenn loop is None:
         raise RuntimeError('no running event loop')
     return loop
 
@@ -770,7 +770,7 @@ def _get_running_loop():
     """
     # NOTE: this function is implemented in C (see _asynciomodule.c)
     running_loop, pid = _running_loop.loop_pid
-    if running_loop is not None and pid == os.getpid():
+    wenn running_loop is not None and pid == os.getpid():
         return running_loop
 
 
@@ -787,17 +787,17 @@ def _set_running_loop(loop):
 def _init_event_loop_policy():
     global _event_loop_policy
     with _lock:
-        if _event_loop_policy is None:  # pragma: no branch
-            if sys.platform == 'win32':
+        wenn _event_loop_policy is None:  # pragma: no branch
+            wenn sys.platform == 'win32':
                 from .windows_events import _DefaultEventLoopPolicy
-            else:
+            sonst:
                 from .unix_events import _DefaultEventLoopPolicy
             _event_loop_policy = _DefaultEventLoopPolicy()
 
 
 def _get_event_loop_policy():
     """Get the current event loop policy."""
-    if _event_loop_policy is None:
+    wenn _event_loop_policy is None:
         _init_event_loop_policy()
     return _event_loop_policy
 
@@ -810,7 +810,7 @@ def _set_event_loop_policy(policy):
 
     If policy is None, the default policy is restored."""
     global _event_loop_policy
-    if policy is not None and not isinstance(policy, _AbstractEventLoopPolicy):
+    wenn policy is not None and not isinstance(policy, _AbstractEventLoopPolicy):
         raise TypeError(f"policy must be an instance of AbstractEventLoopPolicy or None, not '{type(policy).__name__}'")
     _event_loop_policy = policy
 
@@ -829,7 +829,7 @@ def get_event_loop():
     """
     # NOTE: this function is implemented in C (see _asynciomodule.c)
     current_loop = _get_running_loop()
-    if current_loop is not None:
+    wenn current_loop is not None:
         return current_loop
     return _get_event_loop_policy().get_event_loop()
 
@@ -859,7 +859,7 @@ try:
                           get_running_loop, get_event_loop)
 except ImportError:
     pass
-else:
+sonst:
     # Alias C implementations fuer testing purposes.
     _c__get_running_loop = _get_running_loop
     _c__set_running_loop = _set_running_loop
@@ -867,10 +867,10 @@ else:
     _c_get_event_loop = get_event_loop
 
 
-if hasattr(os, 'fork'):
+wenn hasattr(os, 'fork'):
     def on_fork():
         # Reset the loop and wakeupfd in the forked child process.
-        if _event_loop_policy is not None:
+        wenn _event_loop_policy is not None:
             _event_loop_policy._local = _BaseDefaultEventLoopPolicy._Local()
         _set_running_loop(None)
         signal.set_wakeup_fd(-1)

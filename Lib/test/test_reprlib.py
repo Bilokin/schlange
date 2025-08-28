@@ -626,7 +626,7 @@ klasse ReprTests(unittest.TestCase):
         klasse MyRepr(Repr):
 
             def repr_TextIOWrapper(self, obj, level):
-                if obj.name in {'<stdin>', '<stdout>', '<stderr>'}:
+                wenn obj.name in {'<stdin>', '<stdout>', '<stderr>'}:
                     return obj.name
                 return repr(obj)
 
@@ -682,9 +682,9 @@ klasse LongReprTest(unittest.TestCase):
         actions.sort()
         actions.reverse()
         fuer p in actions:
-            if os.path.isdir(p):
+            wenn os.path.isdir(p):
                 os.rmdir(p)
-            else:
+            sonst:
                 os.remove(p)
         del sys.path[0]
 
@@ -697,13 +697,13 @@ klasse LongReprTest(unittest.TestCase):
         source_path_len += len(module_name) + 1 + len(".py")
         cached_path_len = (source_path_len +
             len(importlib.util.cache_from_source("x.py")) - len("x.py"))
-        if os.name == 'nt' and cached_path_len >= 258:
+        wenn os.name == 'nt' and cached_path_len >= 258:
             # Under Windows, the max path len is 260 including C's terminating
             # NUL character.
             # (see http://msdn.microsoft.com/en-us/library/windows/desktop/aa365247%28v=vs.85%29.aspx#maxpath)
             self.skipTest("test paths too long (%d characters) fuer Windows' 260 character limit"
                           % cached_path_len)
-        elif os.name == 'nt' and verbose:
+        sowenn os.name == 'nt' and verbose:
             print("cached_path_len =", cached_path_len)
 
     def test_module(self):
@@ -868,5 +868,5 @@ klasse TestRecursiveRepr(unittest.TestCase):
             {'default': EqualToForwardRef("undefined", owner=My.__repr__)}
         )
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

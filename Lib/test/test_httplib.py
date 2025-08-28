@@ -53,7 +53,7 @@ HOST = socket_helper.HOST
 
 klasse FakeSocket:
     def __init__(self, text, fileclass=io.BytesIO, host=None, port=None):
-        if isinstance(text, str):
+        wenn isinstance(text, str):
             text = text.encode("ascii")
         self.text = text
         self.fileclass = fileclass
@@ -68,7 +68,7 @@ klasse FakeSocket:
         self.data += data
 
     def makefile(self, mode, bufsize=None):
-        if mode != 'r' and mode != 'rb':
+        wenn mode != 'r' and mode != 'rb':
             raise client.UnimplementedFileMode()
         # keep the file around so we can check how much was read from it
         self.file = self.fileclass(self.text)
@@ -92,7 +92,7 @@ klasse EPipeSocket(FakeSocket):
         self.pipe_trigger = pipe_trigger
 
     def sendall(self, data):
-        if self.pipe_trigger in data:
+        wenn self.pipe_trigger in data:
             raise OSError(errno.EPIPE, "gotcha")
         self.data += data
 
@@ -107,13 +107,13 @@ klasse NoEOFBytesIO(io.BytesIO):
     """
     def read(self, n=-1):
         data = io.BytesIO.read(self, n)
-        if data == b'':
+        wenn data == b'':
             raise AssertionError('caller tried to read past EOF')
         return data
 
     def readline(self, length=None):
         data = io.BytesIO.readline(self, length)
-        if data == b'':
+        wenn data == b'':
             raise AssertionError('caller tried to read past EOF')
         return data
 
@@ -137,14 +137,14 @@ klasse FakeSocketHTTPConnection(client.HTTPConnection):
 klasse HeaderTests(TestCase):
     def test_auto_headers(self):
         # Some headers are added automatically, but should not be added by
-        # .request() if they are explicitly set.
+        # .request() wenn they are explicitly set.
 
         klasse HeaderCountingBuffer(list):
             def __init__(self):
                 self.count = {}
             def append(self, item):
                 kv = item.split(b':')
-                if len(kv) > 1:
+                wenn len(kv) > 1:
                     # item is a 'Key: Value' header string
                     lcKey = kv[0].decode('ascii').lower()
                     self.count.setdefault(lcKey, 0)
@@ -159,7 +159,7 @@ klasse HeaderTests(TestCase):
 
                 body = 'spamspamspam'
                 headers = {}
-                if explicit_header:
+                wenn explicit_header:
                     headers[header] = str(len(body))
                 conn.request('POST', '/', body, headers)
                 self.assertEqual(conn._buffer.count[header.lower()], 1)
@@ -172,12 +172,12 @@ klasse HeaderTests(TestCase):
                 self.content_length = None
             def append(self, item):
                 kv = item.split(b':', 1)
-                if len(kv) > 1 and kv[0].lower() == b'content-length':
+                wenn len(kv) > 1 and kv[0].lower() == b'content-length':
                     self.content_length = kv[1].strip()
                 list.append(self, item)
 
         # Here, we're testing that methods expecting a body get a
-        # content-length set to zero if the body is empty (either None or '')
+        # content-length set to zero wenn the body is empty (either None or '')
         bodies = (None, '')
         methods_with_body = ('PUT', 'POST', 'PATCH')
         fuer method, body in itertools.product(methods_with_body, bodies):
@@ -536,11 +536,11 @@ klasse TransferEncodingTest(TestCase):
         lines = self.expected_body.split(b' ')
         fuer idx, line in enumerate(lines):
             # fuer testing handling empty lines
-            if empty_lines and idx % 2:
+            wenn empty_lines and idx % 2:
                 yield b''
-            if idx < len(lines) - 1:
+            wenn idx < len(lines) - 1:
                 yield line + b' '
-            else:
+            sonst:
                 yield line
 
     def _parse_request(self, data):
@@ -566,7 +566,7 @@ klasse TransferEncodingTest(TestCase):
             size, chunk = lines[n:n+2]
             size = int(size, 16)
 
-            if size == 0:
+            wenn size == 0:
                 n += 1
                 break
 
@@ -577,7 +577,7 @@ klasse TransferEncodingTest(TestCase):
             # we /should/ hit the end chunk, but check against the size of
             # lines so we're not stuck in an infinite loop should we get
             # malformed data
-            if n > len(lines):
+            wenn n > len(lines):
                 break
 
         return b''.join(body)
@@ -786,9 +786,9 @@ klasse BasicTest(TestCase):
         fuer member in HTTPStatus.__members__.values():
             fuer (lower, upper), category in categories:
                 category_indicator = getattr(member, category)
-                if lower <= member <= upper:
+                wenn lower <= member <= upper:
                     self.assertTrue(category_indicator)
-                else:
+                sonst:
                     self.assertFalse(category_indicator)
 
     def test_status_lines(self):
@@ -817,7 +817,7 @@ klasse BasicTest(TestCase):
         self.assertEqual(repr(exc), '''BadStatusLine("''")''')
 
     def test_partial_reads(self):
-        # if we have Content-Length, HTTPResponse knows when to close itself,
+        # wenn we have Content-Length, HTTPResponse knows when to close itself,
         # the same behaviour as when we read the whole thing with read()
         body = "HTTP/1.1 200 Ok\r\nContent-Length: 4\r\n\r\nText"
         sock = FakeSocket(body)
@@ -847,7 +847,7 @@ klasse BasicTest(TestCase):
         self.assertTrue(resp.closed)
 
     def test_partial_readintos(self):
-        # if we have Content-Length, HTTPResponse knows when to close itself,
+        # wenn we have Content-Length, HTTPResponse knows when to close itself,
         # the same behaviour as when we read the whole thing with read()
         body = "HTTP/1.1 200 Ok\r\nContent-Length: 4\r\n\r\nText"
         sock = FakeSocket(body)
@@ -867,7 +867,7 @@ klasse BasicTest(TestCase):
         self.assertTrue(resp.closed)
 
     def test_partial_reads_past_end(self):
-        # if we have Content-Length, clip reads to the end
+        # wenn we have Content-Length, clip reads to the end
         body = "HTTP/1.1 200 Ok\r\nContent-Length: 4\r\n\r\nText"
         sock = FakeSocket(body)
         resp = client.HTTPResponse(sock)
@@ -879,7 +879,7 @@ klasse BasicTest(TestCase):
         self.assertTrue(resp.closed)
 
     def test_partial_readintos_past_end(self):
-        # if we have Content-Length, clip readintos to the end
+        # wenn we have Content-Length, clip readintos to the end
         body = "HTTP/1.1 200 Ok\r\nContent-Length: 4\r\n\r\nText"
         sock = FakeSocket(body)
         resp = client.HTTPResponse(sock)
@@ -929,7 +929,7 @@ klasse BasicTest(TestCase):
         self.assertTrue(resp.isclosed())
 
     def test_partial_reads_incomplete_body(self):
-        # if the server shuts down the connection before the whole
+        # wenn the server shuts down the connection before the whole
         # content-length is delivered, the socket is gracefully closed
         body = "HTTP/1.1 200 Ok\r\nContent-Length: 10\r\n\r\nText"
         sock = FakeSocket(body)
@@ -942,7 +942,7 @@ klasse BasicTest(TestCase):
         self.assertTrue(resp.isclosed())
 
     def test_partial_readintos_incomplete_body(self):
-        # if the server shuts down the connection before the whole
+        # wenn the server shuts down the connection before the whole
         # content-length is delivered, the socket is gracefully closed
         body = "HTTP/1.1 200 Ok\r\nContent-Length: 10\r\n\r\nText"
         sock = FakeSocket(body)
@@ -1008,7 +1008,7 @@ klasse BasicTest(TestCase):
             NoEOFBytesIO)
         resp = client.HTTPResponse(sock, method="HEAD")
         resp.begin()
-        if resp.read():
+        wenn resp.read():
             self.fail("Did not expect response from HEAD request")
 
     def test_readinto_head(self):
@@ -1022,7 +1022,7 @@ klasse BasicTest(TestCase):
         resp = client.HTTPResponse(sock, method="HEAD")
         resp.begin()
         b = bytearray(5)
-        if resp.readinto(b) != 0:
+        wenn resp.readinto(b) != 0:
             self.fail("Did not expect response from HEAD request")
         self.assertEqual(bytes(b), b'\x00'*5)
 
@@ -1175,7 +1175,7 @@ klasse BasicTest(TestCase):
                 expected_message = 'IncompleteRead(%d bytes read)' % len(expected)
                 self.assertEqual(repr(i), expected_message)
                 self.assertEqual(str(i), expected_message)
-            else:
+            sonst:
                 self.fail('IncompleteRead expected')
             finally:
                 resp.close()
@@ -1218,7 +1218,7 @@ klasse BasicTest(TestCase):
                 expected_message = 'IncompleteRead(%d bytes read)' % len(expected)
                 self.assertEqual(repr(i), expected_message)
                 self.assertEqual(str(i), expected_message)
-            else:
+            sonst:
                 self.fail('IncompleteRead expected')
             finally:
                 resp.close()
@@ -1287,7 +1287,7 @@ klasse BasicTest(TestCase):
             self.assertEqual(str(i),
                              "IncompleteRead(7 bytes read, 3 more expected)")
             self.assertTrue(resp.isclosed())
-        else:
+        sonst:
             self.fail('IncompleteRead expected')
 
     def test_epipe(self):
@@ -1359,7 +1359,7 @@ klasse BasicTest(TestCase):
         self.assertTrue(resp.closed)
 
     def test_error_leak(self):
-        # Test that the socket is not leaked if getresponse() fails
+        # Test that the socket is not leaked wenn getresponse() fails
         conn = client.HTTPConnection('example.com')
         response = None
         klasse Response(client.HTTPResponse):
@@ -1486,7 +1486,7 @@ klasse BasicTest(TestCase):
                 # Read the request header until a blank line
                 while True:
                     line = reader.readline()
-                    if not line.rstrip(b"\r\n"):
+                    wenn not line.rstrip(b"\r\n"):
                         break
                 conn.sendall(b"HTTP/1.1 200 Connection established\r\n\r\n")
                 nonlocal result
@@ -1538,7 +1538,7 @@ klasse BasicTest(TestCase):
     def test_putrequest_override_encoding(self):
         """
         It should be possible to override the default encoding
-        to transmit bytes in another encoding even if invalid
+        to transmit bytes in another encoding even wenn invalid
         (bpo-36274).
         """
         klasse UnsafeHTTPConnection(client.HTTPConnection):
@@ -1595,7 +1595,7 @@ klasse ExtendedReadTest(TestCase):
         oldpeek = resp.fp.peek
         def mypeek(n=-1):
             p = oldpeek(n)
-            if n >= 0:
+            wenn n >= 0:
                 return p[:n]
             return p[:10]
         resp.fp.peek = mypeek
@@ -1604,7 +1604,7 @@ klasse ExtendedReadTest(TestCase):
         while True:
             # try a short peek
             p = resp.peek(3)
-            if p:
+            wenn p:
                 self.assertGreater(len(p), 0)
                 # then unbounded peek
                 p2 = resp.peek()
@@ -1612,11 +1612,11 @@ klasse ExtendedReadTest(TestCase):
                 self.assertStartsWith(p2, p)
                 next = resp.read(len(p2))
                 self.assertEqual(next, p2)
-            else:
+            sonst:
                 next = resp.read()
                 self.assertFalse(next)
             all.append(next)
-            if not next:
+            wenn not next:
                 break
         self.assertEqual(b"".join(all), self.lines_expected)
 
@@ -1632,11 +1632,11 @@ klasse ExtendedReadTest(TestCase):
         while True:
             # short readlines
             line = readline(limit)
-            if line and line != b"foo":
-                if len(line) < 5:
+            wenn line and line != b"foo":
+                wenn len(line) < 5:
                     self.assertEndsWith(line, b"\n")
             all.append(line)
-            if not line:
+            wenn not line:
                 break
         self.assertEqual(b"".join(all), expected)
         self.assertTrue(self.resp.isclosed())
@@ -1655,7 +1655,7 @@ klasse ExtendedReadTest(TestCase):
         all = []
         while True:
             data = resp.read1()
-            if not data:
+            wenn not data:
                 break
             all.append(data)
         self.assertEqual(b"".join(all), self.lines_expected)
@@ -1666,7 +1666,7 @@ klasse ExtendedReadTest(TestCase):
         all = []
         while True:
             data = resp.read1(10)
-            if not data:
+            wenn not data:
                 break
             self.assertLessEqual(len(data), 10)
             all.append(data)
@@ -1724,14 +1724,14 @@ klasse Readliner:
         try:
             while True:
                 idx = read.find(b'\n')
-                if idx != -1:
+                wenn idx != -1:
                     break
-                if datalen + len(read) >= limit:
+                wenn datalen + len(read) >= limit:
                     idx = limit - datalen - 1
                 # read more data
                 data.append(read)
                 read = self.readfunc()
-                if not read:
+                wenn not read:
                     idx = 0 #eof condition
                     break
             idx += 1
@@ -1751,10 +1751,10 @@ klasse OfflineTest(TestCase):
         # intentionally omitted fuer simplicity
         denylist = {"HTTPMessage", "parse_headers"}
         fuer name in dir(client):
-            if name.startswith("_") or name in denylist:
+            wenn name.startswith("_") or name in denylist:
                 continue
             module_object = getattr(client, name)
-            if getattr(module_object, "__module__", None) == "http.client":
+            wenn getattr(module_object, "__module__", None) == "http.client":
                 expected.add(name)
         self.assertCountEqual(client.__all__, expected)
 
@@ -1841,7 +1841,7 @@ klasse SourceAddressTest(TestCase):
         self.conn = None
 
     def tearDown(self):
-        if self.conn:
+        wenn self.conn:
             self.conn.close()
             self.conn = None
         self.serv.close()
@@ -1939,7 +1939,7 @@ klasse PersistenceTest(TestCase):
                 self.assertEqual(conn.sock is None, not reuse)
                 self.assertEqual(conn.connections, 1)
                 conn.request('GET', '/subsequent-request')
-                self.assertEqual(conn.connections, 1 if reuse else 2)
+                self.assertEqual(conn.connections, 1 wenn reuse sonst 2)
 
     def test_disconnected(self):
 
@@ -1948,7 +1948,7 @@ klasse PersistenceTest(TestCase):
             stream = io.BytesIO(text)
             def readinto(buffer):
                 size = io.BytesIO.readinto(stream, buffer)
-                if size == 0:
+                wenn size == 0:
                     raise ConnectionResetError()
                 return size
             stream.readinto = readinto
@@ -1984,7 +1984,7 @@ klasse PersistenceTest(TestCase):
 klasse HTTPSTest(TestCase):
 
     def setUp(self):
-        if not hasattr(client, 'HTTPSConnection'):
+        wenn not hasattr(client, 'HTTPSConnection'):
             self.skipTest('ssl support required')
 
     def make_server(self, certfile):
@@ -2055,7 +2055,7 @@ klasse HTTPSTest(TestCase):
                 # configurations it'll fail saying "key too weak" until we
                 # address https://bugs.python.org/issue36816 to use a proper
                 # key size on self-signed.pythontest.net.
-                if re.search(r'(?i)key.too.weak', ssl_err_str):
+                wenn re.search(r'(?i)key.too.weak', ssl_err_str):
                     raise unittest.SkipTest(
                         f'Got {ssl_err_str} trying to connect '
                         f'to {selfsigned_pythontestdotnet}. '
@@ -2148,7 +2148,7 @@ klasse HTTPSTest(TestCase):
 
     def test_tls13_pha(self):
         import ssl
-        if not ssl.HAS_TLSv1_3 or not ssl.HAS_PHA:
+        wenn not ssl.HAS_TLSv1_3 or not ssl.HAS_PHA:
             self.skipTest('TLS 1.3 PHA support required')
         # just check status of PHA flag
         h = client.HTTPSConnection('localhost', 443)
@@ -2413,7 +2413,7 @@ klasse TunnelTests(TestCase):
 
     # This request is not RFC-valid, but it's been possible with the library
     # fuer years, so don't break it unexpectedly... This also tests
-    # case-insensitivity when injecting Host: headers if they're missing.
+    # case-insensitivity when injecting Host: headers wenn they're missing.
     def test_connect_with_tunnel_with_different_host_header(self):
         d = {
             b'host': b'destination.com',
@@ -2569,5 +2569,5 @@ klasse TunnelTests(TestCase):
         self.assertTrue(sock.file_closed)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main(verbosity=2)

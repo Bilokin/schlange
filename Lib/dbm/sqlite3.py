@@ -37,7 +37,7 @@ def _normalize_uri(path):
 klasse _Database(MutableMapping):
 
     def __init__(self, path, /, *, flag, mode):
-        if hasattr(self, "_cx"):
+        wenn hasattr(self, "_cx"):
             raise error(_ERR_REINIT)
 
         path = os.fsdecode(path)
@@ -60,8 +60,8 @@ klasse _Database(MutableMapping):
         # We use the URI format when opening the database.
         uri = _normalize_uri(path)
         uri = f"{uri}?mode={flag}"
-        if flag == "ro":
-            # Add immutable=1 to allow read-only SQLite access even if wal/shm missing
+        wenn flag == "ro":
+            # Add immutable=1 to allow read-only SQLite access even wenn wal/shm missing
             uri += "&immutable=1"
 
         try:
@@ -69,16 +69,16 @@ klasse _Database(MutableMapping):
         except sqlite3.Error as exc:
             raise error(str(exc))
 
-        if flag != "ro":
-            # This is an optimization only; it's ok if it fails.
+        wenn flag != "ro":
+            # This is an optimization only; it's ok wenn it fails.
             with suppress(sqlite3.OperationalError):
                 self._cx.execute("PRAGMA journal_mode = wal")
 
-            if flag == "rwc":
+            wenn flag == "rwc":
                 self._execute(BUILD_TABLE)
 
     def _execute(self, *args, **kwargs):
-        if not self._cx:
+        wenn not self._cx:
             raise error(_ERR_CLOSED)
         try:
             return closing(self._cx.execute(*args, **kwargs))
@@ -93,7 +93,7 @@ klasse _Database(MutableMapping):
     def __getitem__(self, key):
         with self._execute(LOOKUP_KEY, (key,)) as cu:
             row = cu.fetchone()
-        if not row:
+        wenn not row:
             raise KeyError(key)
         return row[0]
 
@@ -102,7 +102,7 @@ klasse _Database(MutableMapping):
 
     def __delitem__(self, key):
         with self._execute(DELETE_KEY, (key,)) as cu:
-            if not cu.rowcount:
+            wenn not cu.rowcount:
                 raise KeyError(key)
 
     def __iter__(self):
@@ -114,7 +114,7 @@ klasse _Database(MutableMapping):
             raise error(str(exc))
 
     def close(self):
-        if self._cx:
+        wenn self._cx:
             self._cx.close()
             self._cx = None
 
@@ -139,7 +139,7 @@ def open(filename, /, flag="r", mode=0o666):
     The optional 'flag' parameter can be one of ...:
         'r' (default): open an existing database fuer read only access
         'w': open an existing database fuer read/write access
-        'c': create a database if it does not exist; open fuer read/write access
+        'c': create a database wenn it does not exist; open fuer read/write access
         'n': always create a new, empty database; open fuer read/write access
 
     The optional 'mode' parameter is the Unix file access mode of the database;

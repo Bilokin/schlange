@@ -2,7 +2,7 @@ import os.path
 import unittest
 from test import support
 
-if support.PGO:
+wenn support.PGO:
     raise unittest.SkipTest("test is not helpful fuer PGO")
 
 def load_tests(*args):

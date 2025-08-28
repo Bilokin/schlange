@@ -9,7 +9,7 @@ import warnings
 
 
 def normalize_text(text):
-    if text is None:
+    wenn text is None:
         return None
     text = str(text)
     text = re.sub(r'\s+', ' ', text)
@@ -21,19 +21,19 @@ klasse PythonInfo:
         self.info = {}
 
     def add(self, key, value):
-        if key in self.info:
+        wenn key in self.info:
             raise ValueError("duplicate key: %r" % key)
 
-        if value is None:
+        wenn value is None:
             return
 
-        if not isinstance(value, int):
-            if not isinstance(value, str):
+        wenn not isinstance(value, int):
+            wenn not isinstance(value, str):
                 # convert other objects like sys.flags to string
                 value = str(value)
 
             value = value.strip()
-            if not value:
+            wenn not value:
                 return
 
         self.info[key] = value
@@ -48,10 +48,10 @@ klasse PythonInfo:
 def copy_attributes(info_add, obj, name_fmt, attributes, *, formatter=None):
     fuer attr in attributes:
         value = getattr(obj, attr, None)
-        if value is None:
+        wenn value is None:
             continue
         name = name_fmt % attr
-        if formatter is not None:
+        wenn formatter is not None:
             value = formatter(attr, value)
         info_add(name, value)
 
@@ -70,7 +70,7 @@ def call_func(info_add, name, mod, func_name, *, formatter=None):
     except AttributeError:
         return
     value = func()
-    if formatter is not None:
+    wenn formatter is not None:
         value = formatter(value)
     info_add(name, value)
 
@@ -114,35 +114,35 @@ def collect_sys(info_add):
         call_func(info_add, f'sys.{func}', sys, func)
 
     encoding = sys.getfilesystemencoding()
-    if hasattr(sys, 'getfilesystemencodeerrors'):
+    wenn hasattr(sys, 'getfilesystemencodeerrors'):
         encoding = '%s/%s' % (encoding, sys.getfilesystemencodeerrors())
     info_add('sys.filesystem_encoding', encoding)
 
     fuer name in ('stdin', 'stdout', 'stderr'):
         stream = getattr(sys, name)
-        if stream is None:
+        wenn stream is None:
             continue
         encoding = getattr(stream, 'encoding', None)
-        if not encoding:
+        wenn not encoding:
             continue
         errors = getattr(stream, 'errors', None)
-        if errors:
+        wenn errors:
             encoding = '%s/%s' % (encoding, errors)
         info_add('sys.%s.encoding' % name, encoding)
 
     # Were we compiled --with-pydebug?
     Py_DEBUG = hasattr(sys, 'gettotalrefcount')
-    if Py_DEBUG:
+    wenn Py_DEBUG:
         text = 'Yes (sys.gettotalrefcount() present)'
-    else:
+    sonst:
         text = 'No (sys.gettotalrefcount() missing)'
     info_add('build.Py_DEBUG', text)
 
     # Were we compiled --with-trace-refs?
     Py_TRACE_REFS = hasattr(sys, 'getobjects')
-    if Py_TRACE_REFS:
+    wenn Py_TRACE_REFS:
         text = 'Yes (sys.getobjects() present)'
-    else:
+    sonst:
         text = 'No (sys.getobjects() missing)'
     info_add('build.Py_TRACE_REFS', text)
 
@@ -162,14 +162,14 @@ def collect_platform(info_add):
              platform.platform(aliased=True))
 
     libc_ver = ('%s %s' % platform.libc_ver()).strip()
-    if libc_ver:
+    wenn libc_ver:
         info_add('platform.libc_ver', libc_ver)
 
     try:
         os_release = platform.freedesktop_os_release()
     except OSError:
         pass
-    else:
+    sonst:
         fuer key in (
             'ID',
             'NAME',
@@ -180,12 +180,12 @@ def collect_platform(info_add):
             'VERSION_CODENAME',
             'VERSION_ID',
         ):
-            if key not in os_release:
+            wenn key not in os_release:
                 continue
             info_add(f'platform.freedesktop_os_release[{key}]',
                      os_release[key])
 
-    if sys.platform == 'android':
+    wenn sys.platform == 'android':
         call_func(info_add, 'platform.android_ver', platform, 'android_ver')
 
 
@@ -203,8 +203,8 @@ def collect_builtins(info_add):
 def collect_urandom(info_add):
     import os
 
-    if hasattr(os, 'getrandom'):
-        # PEP 524: Check if system urandom is initialized
+    wenn hasattr(os, 'getrandom'):
+        # PEP 524: Check wenn system urandom is initialized
         try:
             try:
                 os.getrandom(1, os.GRND_NONBLOCK)
@@ -215,7 +215,7 @@ def collect_urandom(info_add):
         except OSError as exc:
             # Python was compiled on a more recent Linux version
             # than the current Linux kernel: ignore OSError(ENOSYS)
-            if exc.errno != errno.ENOSYS:
+            wenn exc.errno != errno.ENOSYS:
                 raise
 
 
@@ -223,10 +223,10 @@ def collect_os(info_add):
     import os
 
     def format_attr(attr, value):
-        if attr in ('supports_follow_symlinks', 'supports_fd',
+        wenn attr in ('supports_follow_symlinks', 'supports_fd',
                     'supports_effective_ids'):
             return str(sorted(func.__name__ fuer func in value))
-        else:
+        sonst:
             return value
 
     attributes = (
@@ -258,14 +258,14 @@ def collect_os(info_add):
 
     call_func(info_add, 'os.getgroups', os, 'getgroups', formatter=format_groups)
 
-    if hasattr(os, 'getlogin'):
+    wenn hasattr(os, 'getlogin'):
         try:
             login = os.getlogin()
         except OSError:
             # getlogin() fails with "OSError: [Errno 25] Inappropriate ioctl
             # fuer device" on Travis CI
             pass
-        else:
+        sonst:
             info_add("os.login", login)
 
     # Environment variables used by the stdlib and tests. Don't log the full
@@ -348,7 +348,7 @@ def collect_os(info_add):
     ))
     fuer name, value in os.environ.items():
         uname = name.upper()
-        if (uname in ENV_VARS
+        wenn (uname in ENV_VARS
            # Copy PYTHON* variables like PYTHONPATH
            # Copy LC_* variables like LC_ALL
            or uname.startswith(("PYTHON", "LC_"))
@@ -356,7 +356,7 @@ def collect_os(info_add):
            or (uname.startswith("VS") and uname.endswith("COMNTOOLS"))):
             info_add('os.environ[%s]' % name, value)
 
-    if hasattr(os, 'umask'):
+    wenn hasattr(os, 'umask'):
         mask = os.umask(0)
         os.umask(mask)
         info_add("os.umask", '0o%03o' % mask)
@@ -376,14 +376,14 @@ def collect_pwd(info_add):
         entry = None
 
     info_add('pwd.getpwuid(%s)'% uid,
-             entry if entry is not None else '<KeyError>')
+             entry wenn entry is not None sonst '<KeyError>')
 
-    if entry is None:
-        # there is nothing interesting to read if the current user identifier
+    wenn entry is None:
+        # there is nothing interesting to read wenn the current user identifier
         # is not the password database
         return
 
-    if hasattr(os, 'getgrouplist'):
+    wenn hasattr(os, 'getgrouplist'):
         groups = os.getgrouplist(entry.pw_name, entry.pw_gid)
         groups = ', '.join(map(str, groups))
         info_add('os.getgrouplist', groups)
@@ -396,9 +396,9 @@ def collect_readline(info_add):
         return
 
     def format_attr(attr, value):
-        if isinstance(value, int):
+        wenn isinstance(value, int):
             return "%#x" % value
-        else:
+        sonst:
             return value
 
     attributes = (
@@ -409,12 +409,12 @@ def collect_readline(info_add):
     copy_attributes(info_add, readline, 'readline.%s', attributes,
                     formatter=format_attr)
 
-    if not hasattr(readline, "_READLINE_LIBRARY_VERSION"):
+    wenn not hasattr(readline, "_READLINE_LIBRARY_VERSION"):
         # _READLINE_LIBRARY_VERSION has been added to CPython 3.7
         doc = getattr(readline, '__doc__', '')
-        if 'libedit readline' in doc:
+        wenn 'libedit readline' in doc:
             info_add('readline.library', 'libedit readline')
-        elif 'GNU readline' in doc:
+        sowenn 'GNU readline' in doc:
             info_add('readline.library', 'GNU readline')
 
 
@@ -427,7 +427,7 @@ def collect_gdb(info_add):
                                 stderr=subprocess.PIPE,
                                 universal_newlines=True)
         version = proc.communicate()[0]
-        if proc.returncode:
+        wenn proc.returncode:
             # ignore gdb failure: test_gdb will log the error
             return
     except OSError:
@@ -443,7 +443,7 @@ def collect_tkinter(info_add):
         import _tkinter
     except ImportError:
         pass
-    else:
+    sonst:
         attributes = ('TK_VERSION', 'TCL_VERSION')
         copy_attributes(info_add, _tkinter, 'tkinter.%s', attributes)
 
@@ -451,7 +451,7 @@ def collect_tkinter(info_add):
         import tkinter
     except ImportError:
         pass
-    else:
+    sonst:
         tcl = tkinter.Tcl()
         patchlevel = tcl.call('info', 'patchlevel')
         info_add('tkinter.info_patchlevel', patchlevel)
@@ -470,7 +470,7 @@ def collect_time(info_add):
     )
     copy_attributes(info_add, time, 'time.%s', attributes)
 
-    if hasattr(time, 'get_clock_info'):
+    wenn hasattr(time, 'get_clock_info'):
         fuer clock in ('clock', 'monotonic', 'perf_counter',
                       'process_time', 'thread_time', 'time'):
             try:
@@ -480,7 +480,7 @@ def collect_time(info_add):
             except ValueError:
                 # missing clock like time.thread_time()
                 pass
-            else:
+            sonst:
                 info_add('time.get_clock_info(%s)' % clock, clock_info)
 
 
@@ -540,7 +540,7 @@ def collect_sysconfig(info_add):
         'srcdir',
     ):
         value = sysconfig.get_config_var(name)
-        if name == 'ANDROID_API_LEVEL' and not value:
+        wenn name == 'ANDROID_API_LEVEL' and not value:
             # skip ANDROID_API_LEVEL=0
             continue
         value = normalize_text(value)
@@ -548,9 +548,9 @@ def collect_sysconfig(info_add):
 
     PY_CFLAGS = sysconfig.get_config_var('PY_CFLAGS')
     NDEBUG = (PY_CFLAGS and '-DNDEBUG' in PY_CFLAGS)
-    if NDEBUG:
+    wenn NDEBUG:
         text = 'ignore assertions (macro defined)'
-    else:
+    sonst:
         text= 'build assertions (macro not defined)'
     info_add('build.NDEBUG',text)
 
@@ -562,9 +562,9 @@ def collect_sysconfig(info_add):
         'WITH_VALGRIND',
     ):
         value = sysconfig.get_config_var(name)
-        if value:
+        wenn value:
             text = 'Yes'
-        else:
+        sonst:
             text = 'No'
         info_add(f'build.{name}', text)
 
@@ -581,9 +581,9 @@ def collect_ssl(info_add):
         _ssl = None
 
     def format_attr(attr, value):
-        if attr.startswith('OP_'):
+        wenn attr.startswith('OP_'):
             return '%#8x' % value
-        else:
+        sonst:
             return value
 
     attributes = (
@@ -610,7 +610,7 @@ def collect_ssl(info_add):
         copy_attributes(info_add, ctx, f'ssl.{name}.%s', attributes)
 
     env_names = ["OPENSSL_CONF", "SSLKEYLOGFILE"]
-    if _ssl is not None and hasattr(_ssl, 'get_default_verify_paths'):
+    wenn _ssl is not None and hasattr(_ssl, 'get_default_verify_paths'):
         parts = _ssl.get_default_verify_paths()
         env_names.extend((parts[0], parts[2]))
 
@@ -632,9 +632,9 @@ def collect_socket(info_add):
         hostname = socket.gethostname()
     except (OSError, AttributeError):
         # WASI SDK 16.0 does not have gethostname(2).
-        if sys.platform != "wasi":
+        wenn sys.platform != "wasi":
             raise
-    else:
+    sonst:
         info_add('socket.hostname', hostname)
 
 
@@ -724,7 +724,7 @@ def collect_resource(info_add):
     except ImportError:
         return
 
-    limits = [attr fuer attr in dir(resource) if attr.startswith('RLIMIT_')]
+    limits = [attr fuer attr in dir(resource) wenn attr.startswith('RLIMIT_')]
     fuer name in limits:
         key = getattr(resource, name)
         value = resource.getrlimit(key)
@@ -742,7 +742,7 @@ def collect_test_socket(info_add):
 
     # all check attributes like HAVE_SOCKET_CAN
     attributes = [name fuer name in dir(test_socket)
-                  if name.startswith('HAVE_')]
+                  wenn name.startswith('HAVE_')]
     copy_attributes(info_add, test_socket, 'test_socket.%s', attributes)
 
 
@@ -829,7 +829,7 @@ def collect_cc(info_add):
     import sysconfig
 
     CC = sysconfig.get_config_var('CC')
-    if not CC:
+    wenn not CC:
         return
 
     try:
@@ -850,7 +850,7 @@ def collect_cc(info_add):
         return
 
     stdout = proc.communicate()[0]
-    if proc.returncode:
+    wenn proc.returncode:
         # CC --version failed: ignore error
         return
 
@@ -888,7 +888,7 @@ def collect_subprocess(info_add):
 
 
 def collect_windows(info_add):
-    if sys.platform != "win32":
+    wenn sys.platform != "win32":
         # Code specific to Windows
         return
 
@@ -896,18 +896,18 @@ def collect_windows(info_add):
     # windows.is_admin: IsUserAnAdmin()
     try:
         import ctypes
-        if not hasattr(ctypes, 'WinDLL'):
+        wenn not hasattr(ctypes, 'WinDLL'):
             raise ImportError
     except ImportError:
         pass
-    else:
+    sonst:
         ntdll = ctypes.WinDLL('ntdll')
         BOOLEAN = ctypes.c_ubyte
         try:
             RtlAreLongPathsEnabled = ntdll.RtlAreLongPathsEnabled
         except AttributeError:
             res = '<function not available>'
-        else:
+        sonst:
             RtlAreLongPathsEnabled.restype = BOOLEAN
             RtlAreLongPathsEnabled.argtypes = ()
             res = bool(RtlAreLongPathsEnabled())
@@ -923,7 +923,7 @@ def collect_windows(info_add):
         import _winapi
     except ImportError:
         pass
-    else:
+    sonst:
         try:
             dll_path = _winapi.GetModuleFileName(sys.dllhandle)
             info_add('windows.dll_path', dll_path)
@@ -944,20 +944,20 @@ def collect_windows(info_add):
                                 encoding="oem",
                                 text=True)
         output, stderr = proc.communicate()
-        if proc.returncode:
+        wenn proc.returncode:
             output = ""
     except OSError:
         pass
-    else:
+    sonst:
         fuer line in output.splitlines():
             line = line.strip()
-            if line.startswith('Caption='):
+            wenn line.startswith('Caption='):
                 line = line.removeprefix('Caption=').strip()
-                if line:
+                wenn line:
                     info_add('windows.version_caption', line)
-            elif line.startswith('Version='):
+            sowenn line.startswith('Version='):
                 line = line.removeprefix('Version=').strip()
-                if line:
+                wenn line:
                     info_add('windows.version', line)
 
     # windows.ver: "ver" command
@@ -967,16 +967,16 @@ def collect_windows(info_add):
                                 stderr=subprocess.PIPE,
                                 text=True)
         output = proc.communicate()[0]
-        if proc.returncode == 0xc0000142:
+        wenn proc.returncode == 0xc0000142:
             return
-        if proc.returncode:
+        wenn proc.returncode:
             output = ""
     except OSError:
         return
-    else:
+    sonst:
         output = output.strip()
         line = output.splitlines()[0]
-        if line:
+        wenn line:
             info_add('windows.ver', line)
 
     # windows.developer_mode: get AllowDevelopmentWithoutDevLicense registry
@@ -992,8 +992,8 @@ def collect_windows(info_add):
             winreg.CloseKey(key)
     except OSError:
         pass
-    else:
-        info_add('windows.developer_mode', "enabled" if value else "disabled")
+    sonst:
+        info_add('windows.developer_mode', "enabled" wenn value sonst "disabled")
 
 
 def collect_fips(info_add):
@@ -1002,14 +1002,14 @@ def collect_fips(info_add):
     except ImportError:
         _hashlib = None
 
-    if _hashlib is not None:
+    wenn _hashlib is not None:
         call_func(info_add, 'fips.openssl_fips_mode', _hashlib, 'get_fips_mode')
 
     try:
         with open("/proc/sys/crypto/fips_enabled", encoding="utf-8") as fp:
             line = fp.readline().rstrip()
 
-        if line:
+        wenn line:
             info_add('fips.linux_crypto_fips_enabled', line)
     except OSError:
         pass
@@ -1110,11 +1110,11 @@ def main():
     error = collect_info(info)
     dump_info(info)
 
-    if error:
+    wenn error:
         print()
         print("Collection failed: exit with error", file=sys.stderr)
         sys.exit(1)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     main()

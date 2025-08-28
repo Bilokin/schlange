@@ -180,5 +180,5 @@ klasse TestBlessMyLoader(unittest.TestCase):
             loader)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

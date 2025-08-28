@@ -22,7 +22,7 @@ def replace(text, insert_tags=None):
     """
     root = text._root()
     engine = searchengine.get(root)
-    if not hasattr(engine, "_replacedialog"):
+    wenn not hasattr(engine, "_replacedialog"):
         engine._replacedialog = ReplaceDialog(root, engine)
     dialog = engine._replacedialog
     searchphrase = text.get("sel.first", "sel.last")
@@ -92,29 +92,29 @@ klasse ReplaceDialog(SearchDialogBase):
 
         If the find is successful, then perform replace.
         """
-        if self.do_find(self.ok):
+        wenn self.do_find(self.ok):
             self.do_replace()
 
     def default_command(self, event=None):
         """Handle the Replace+Find button as the default command.
 
-        First performs a replace and then, if the replace was
+        First performs a replace and then, wenn the replace was
         successful, a find next.
         """
-        if self.do_find(self.ok):
-            if self.do_replace():  # Only find next match if replace succeeded.
+        wenn self.do_find(self.ok):
+            wenn self.do_replace():  # Only find next match wenn replace succeeded.
                                    # A bad re can cause it to fail.
                 self.do_find(False)
 
     def _replace_expand(self, m, repl):
-        "Expand replacement text if regular expression."
-        if self.engine.isre():
+        "Expand replacement text wenn regular expression."
+        wenn self.engine.isre():
             try:
                 new = m.expand(repl)
             except re.PatternError:
                 self.engine.report_error(repl, 'Invalid Replace Expression')
                 new = None
-        else:
+        sonst:
             new = repl
 
         return new
@@ -126,23 +126,23 @@ klasse ReplaceDialog(SearchDialogBase):
         each of them.  The 'wrap around' value controls the start
         point fuer searching.  If wrap isn't set, then the searching
         starts at the first occurrence after the current selection;
-        if wrap is set, the replacement starts at the first line.
+        wenn wrap is set, the replacement starts at the first line.
         The replacement is always done top-to-bottom in the text.
         """
         prog = self.engine.getprog()
-        if not prog:
+        wenn not prog:
             return
         repl = self.replvar.get()
         text = self.text
         res = self.engine.search_text(text, prog)
-        if not res:
+        wenn not res:
             self.bell()
             return
         text.tag_remove("sel", "1.0", "end")
         text.tag_remove("hit", "1.0", "end")
         line = res[0]
         col = res[1].start()
-        if self.engine.iswrap():
+        wenn self.engine.iswrap():
             line = 1
             col = 0
         ok = True
@@ -155,23 +155,23 @@ klasse ReplaceDialog(SearchDialogBase):
             chars = text.get("%d.0" % line, "%d.0" % (line+1))
             orig = m.group()
             new = self._replace_expand(m, repl)
-            if new is None:
+            wenn new is None:
                 break
             i, j = m.span()
             first = "%d.%d" % (line, i)
             last = "%d.%d" % (line, j)
-            if new == orig:
+            wenn new == orig:
                 text.mark_set("insert", last)
-            else:
+            sonst:
                 text.mark_set("insert", first)
-                if first != last:
+                wenn first != last:
                     text.delete(first, last)
-                if new:
+                wenn new:
                     text.insert(first, new, self.insert_tags)
             col = i + len(new)
             ok = False
         text.undo_block_stop()
-        if first and last:
+        wenn first and last:
             self.show_hit(first, last)
         self.close()
 
@@ -180,11 +180,11 @@ klasse ReplaceDialog(SearchDialogBase):
 
         No text replacement is done with this option.
         """
-        if not self.engine.getprog():
+        wenn not self.engine.getprog():
             return False
         text = self.text
         res = self.engine.search_text(text, None, ok)
-        if not res:
+        wenn not res:
             self.bell()
             return False
         line, m = res
@@ -198,7 +198,7 @@ klasse ReplaceDialog(SearchDialogBase):
     def do_replace(self):
         "Replace search pattern in text with replacement value."
         prog = self.engine.getprog()
-        if not prog:
+        wenn not prog:
             return False
         text = self.text
         try:
@@ -206,21 +206,21 @@ klasse ReplaceDialog(SearchDialogBase):
             last = text.index("sel.last")
         except TclError:
             pos = None
-        if not pos:
+        wenn not pos:
             first = last = pos = text.index("insert")
         line, col = searchengine.get_line_col(pos)
         chars = text.get("%d.0" % line, "%d.0" % (line+1))
         m = prog.match(chars, col)
-        if not prog:
+        wenn not prog:
             return False
         new = self._replace_expand(m, self.replvar.get())
-        if new is None:
+        wenn new is None:
             return False
         text.mark_set("insert", first)
         text.undo_block_start()
-        if m.group():
+        wenn m.group():
             text.delete(first, last)
-        if new:
+        wenn new:
             text.insert(first, new, self.insert_tags)
         text.undo_block_stop()
         self.show_hit(first, text.index("insert"))
@@ -243,9 +243,9 @@ klasse ReplaceDialog(SearchDialogBase):
         text.tag_remove("sel", "1.0", "end")
         text.tag_add("sel", first, last)
         text.tag_remove("hit", "1.0", "end")
-        if first == last:
+        wenn first == last:
             text.tag_add("hit", first)
-        else:
+        sonst:
             text.tag_add("hit", first, last)
         text.see("insert")
         text.update_idletasks()
@@ -291,7 +291,7 @@ def _replace_dialog(parent):  # htest #
     button.pack()
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     from unittest import main
     main('idlelib.idle_test.test_replace', verbosity=2, exit=False)
 

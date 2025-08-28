@@ -19,7 +19,7 @@ klasse OutputWindowTest(unittest.TestCase):
         root.withdraw()
         w = cls.window = outwin.OutputWindow(None, None, None, root)
         cls.text = w.text = Text(root)
-        if sys.platform == 'darwin':  # Issue 112938
+        wenn sys.platform == 'darwin':  # Issue 112938
             cls.text.update = cls.text.update_idletasks
             # Without this, test write, writelines, and goto... fail.
             # The reasons and why macOS-specific are unclear.
@@ -163,9 +163,9 @@ klasse ModuleFunctionTest(unittest.TestCase):
             )
         fuer line, expected_output in test_lines:
             self.assertEqual(flh(line), expected_output)
-            if expected_output:
+            wenn expected_output:
                 mock_open.assert_called_with(expected_output[0])
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main(verbosity=2)

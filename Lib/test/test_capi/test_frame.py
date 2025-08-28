@@ -52,5 +52,5 @@ klasse FrameTest(unittest.TestCase):
         self.assertIsNone(frame.f_back)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

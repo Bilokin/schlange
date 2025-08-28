@@ -36,7 +36,7 @@ klasse Tower(list):
         return d
 
 def hanoi(n, from_, with_, to_):
-    if n > 0:
+    wenn n > 0:
         hanoi(n-1, from_, to_, with_)
         to_.push(from_.pop())
         hanoi(n-1, with_, from_, to_)
@@ -67,7 +67,7 @@ def main():
     listen()
     return "EVENTLOOP"
 
-if __name__=="__main__":
+wenn __name__=="__main__":
     msg = main()
     print(msg)
     mainloop()

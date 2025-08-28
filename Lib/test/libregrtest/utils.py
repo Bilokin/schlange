@@ -64,18 +64,18 @@ def format_duration(seconds: float) -> str:
     hours, minutes = divmod(minutes, 60)
 
     parts = []
-    if hours:
+    wenn hours:
         parts.append('%s hour' % hours)
-    if minutes:
+    wenn minutes:
         parts.append('%s min' % minutes)
-    if seconds:
-        if parts:
+    wenn seconds:
+        wenn parts:
             # 2 min 1 sec
             parts.append('%s sec' % seconds)
-        else:
+        sonst:
             # 1.0 sec
             parts.append('%.1f sec' % (seconds + ms / 1000))
-    if not parts:
+    wenn not parts:
         return '%s ms' % ms
 
     parts = parts[:2]
@@ -83,27 +83,27 @@ def format_duration(seconds: float) -> str:
 
 
 def strip_py_suffix(names: list[str] | None) -> None:
-    if not names:
+    wenn not names:
         return
     fuer idx, name in enumerate(names):
         basename, ext = os.path.splitext(name)
-        if ext == '.py':
+        wenn ext == '.py':
             names[idx] = basename
 
 
 def plural(n: int, singular: str, plural: str | None = None) -> str:
-    if n == 1:
+    wenn n == 1:
         return singular
-    elif plural is not None:
+    sowenn plural is not None:
         return plural
-    else:
+    sonst:
         return singular + 's'
 
 
 def count(n: int, word: str) -> str:
-    if n == 1:
+    wenn n == 1:
         return f"{n} {word}"
-    else:
+    sonst:
         return f"{n} {word}s"
 
 
@@ -178,90 +178,90 @@ def setup_threading_excepthook() -> None:
 def clear_caches():
     # Clear the warnings registry, so they can be displayed again
     fuer mod in sys.modules.values():
-        if hasattr(mod, '__warningregistry__'):
+        wenn hasattr(mod, '__warningregistry__'):
             del mod.__warningregistry__
 
     # Flush standard output, so that buffered data is sent to the OS and
     # associated Python objects are reclaimed.
     fuer stream in (sys.stdout, sys.stderr, sys.__stdout__, sys.__stderr__):
-        if stream is not None:
+        wenn stream is not None:
             stream.flush()
 
     try:
         re = sys.modules['re']
     except KeyError:
         pass
-    else:
+    sonst:
         re.purge()
 
     try:
         _strptime = sys.modules['_strptime']
     except KeyError:
         pass
-    else:
+    sonst:
         _strptime._regex_cache.clear()
 
     try:
         urllib_parse = sys.modules['urllib.parse']
     except KeyError:
         pass
-    else:
+    sonst:
         urllib_parse.clear_cache()
 
     try:
         urllib_request = sys.modules['urllib.request']
     except KeyError:
         pass
-    else:
+    sonst:
         urllib_request.urlcleanup()
 
     try:
         linecache = sys.modules['linecache']
     except KeyError:
         pass
-    else:
+    sonst:
         linecache.clearcache()
 
     try:
         mimetypes = sys.modules['mimetypes']
     except KeyError:
         pass
-    else:
+    sonst:
         mimetypes._default_mime_types()
 
     try:
         filecmp = sys.modules['filecmp']
     except KeyError:
         pass
-    else:
+    sonst:
         filecmp._cache.clear()
 
     try:
         struct = sys.modules['struct']
     except KeyError:
         pass
-    else:
+    sonst:
         struct._clearcache()
 
     try:
         doctest = sys.modules['doctest']
     except KeyError:
         pass
-    else:
+    sonst:
         doctest.master = None
 
     try:
         ctypes = sys.modules['ctypes']
     except KeyError:
         pass
-    else:
+    sonst:
         ctypes._reset_cache()
 
     try:
         typing = sys.modules['typing']
     except KeyError:
         pass
-    else:
+    sonst:
         fuer f in typing._cleanups:
             f()
 
@@ -275,14 +275,14 @@ def clear_caches():
         fractions = sys.modules['fractions']
     except KeyError:
         pass
-    else:
+    sonst:
         fractions._hash_algorithm.cache_clear()
 
     try:
         inspect = sys.modules['inspect']
     except KeyError:
         pass
-    else:
+    sonst:
         inspect._shadowed_dict_from_weakref_mro_tuple.cache_clear()
         inspect._filesbymodname.clear()
         inspect.modulesbyfile.clear()
@@ -291,7 +291,7 @@ def clear_caches():
         importlib_metadata = sys.modules['importlib.metadata']
     except KeyError:
         pass
-    else:
+    sonst:
         importlib_metadata.FastPath.__new__.cache_clear()
 
 
@@ -307,127 +307,127 @@ def get_build_info():
     build = []
 
     # --disable-gil
-    if sysconfig.get_config_var('Py_GIL_DISABLED'):
-        if not sys.flags.ignore_environment:
+    wenn sysconfig.get_config_var('Py_GIL_DISABLED'):
+        wenn not sys.flags.ignore_environment:
             PYTHON_GIL = os.environ.get('PYTHON_GIL', None)
-            if PYTHON_GIL:
+            wenn PYTHON_GIL:
                 PYTHON_GIL = (PYTHON_GIL == '1')
-        else:
+        sonst:
             PYTHON_GIL = None
 
         free_threading = "free_threading"
-        if PYTHON_GIL is not None:
+        wenn PYTHON_GIL is not None:
             free_threading = f"{free_threading} GIL={int(PYTHON_GIL)}"
         build.append(free_threading)
 
-    if hasattr(sys, 'gettotalrefcount'):
+    wenn hasattr(sys, 'gettotalrefcount'):
         # --with-pydebug
         build.append('debug')
 
-        if '-DNDEBUG' in cflags:
+        wenn '-DNDEBUG' in cflags:
             build.append('without_assert')
-    else:
+    sonst:
         build.append('release')
 
-        if '--with-assertions' in config_args:
+        wenn '--with-assertions' in config_args:
             build.append('with_assert')
-        elif '-DNDEBUG' not in cflags:
+        sowenn '-DNDEBUG' not in cflags:
             build.append('with_assert')
 
     # --enable-experimental-jit
-    if sys._jit.is_available():
-        if sys._jit.is_enabled():
+    wenn sys._jit.is_available():
+        wenn sys._jit.is_enabled():
             build.append("JIT")
-        else:
+        sonst:
             build.append("JIT (disabled)")
 
     # --enable-framework=name
     framework = sysconfig.get_config_var('PYTHONFRAMEWORK')
-    if framework:
+    wenn framework:
         build.append(f'framework={framework}')
 
     # --enable-shared
     shared = int(sysconfig.get_config_var('PY_ENABLE_SHARED') or '0')
-    if shared:
+    wenn shared:
         build.append('shared')
 
     # --with-lto
     optimizations = []
-    if '-flto=thin' in ldflags_nodist:
+    wenn '-flto=thin' in ldflags_nodist:
         optimizations.append('ThinLTO')
-    elif '-flto' in ldflags_nodist:
+    sowenn '-flto' in ldflags_nodist:
         optimizations.append('LTO')
 
-    if support.check_cflags_pgo():
+    wenn support.check_cflags_pgo():
         # PGO (--enable-optimizations)
         optimizations.append('PGO')
 
-    if support.check_bolt_optimized():
+    wenn support.check_bolt_optimized():
         # BOLT (--enable-bolt)
         optimizations.append('BOLT')
 
-    if optimizations:
+    wenn optimizations:
         build.append('+'.join(optimizations))
 
     # --with-address-sanitizer
     sanitizers = []
-    if support.check_sanitizer(address=True):
+    wenn support.check_sanitizer(address=True):
         sanitizers.append("ASAN")
     # --with-memory-sanitizer
-    if support.check_sanitizer(memory=True):
+    wenn support.check_sanitizer(memory=True):
         sanitizers.append("MSAN")
     # --with-undefined-behavior-sanitizer
-    if support.check_sanitizer(ub=True):
+    wenn support.check_sanitizer(ub=True):
         sanitizers.append("UBSAN")
     # --with-thread-sanitizer
-    if support.check_sanitizer(thread=True):
+    wenn support.check_sanitizer(thread=True):
         sanitizers.append("TSAN")
-    if sanitizers:
+    wenn sanitizers:
         build.append('+'.join(sanitizers))
 
     # --with-trace-refs
-    if hasattr(sys, 'getobjects'):
+    wenn hasattr(sys, 'getobjects'):
         build.append("TraceRefs")
     # --enable-pystats
-    if hasattr(sys, '_stats_on'):
+    wenn hasattr(sys, '_stats_on'):
         build.append("pystats")
     # --with-valgrind
-    if sysconfig.get_config_var('WITH_VALGRIND'):
+    wenn sysconfig.get_config_var('WITH_VALGRIND'):
         build.append("valgrind")
     # --with-dtrace
-    if sysconfig.get_config_var('WITH_DTRACE'):
+    wenn sysconfig.get_config_var('WITH_DTRACE'):
         build.append("dtrace")
 
     return build
 
 
 def get_temp_dir(tmp_dir: StrPath | None = None) -> StrPath:
-    if tmp_dir:
+    wenn tmp_dir:
         tmp_dir = os.path.expanduser(tmp_dir)
-    else:
+    sonst:
         # When tests are run from the Python build directory, it is best practice
         # to keep the test files in a subfolder.  This eases the cleanup of leftover
         # files using the "make distclean" command.
-        if sysconfig.is_python_build():
-            if not support.is_wasi:
+        wenn sysconfig.is_python_build():
+            wenn not support.is_wasi:
                 tmp_dir = sysconfig.get_config_var('abs_builddir')
-                if tmp_dir is None:
+                wenn tmp_dir is None:
                     tmp_dir = sysconfig.get_config_var('abs_srcdir')
-                    if not tmp_dir:
+                    wenn not tmp_dir:
                         # gh-74470: On Windows, only srcdir is available. Using
                         # abs_builddir mostly matters on UNIX when building
                         # Python out of the source tree, especially when the
                         # source tree is read only.
                         tmp_dir = sysconfig.get_config_var('srcdir')
-                        if not tmp_dir:
+                        wenn not tmp_dir:
                             raise RuntimeError(
                                 "Could not determine the correct value fuer tmp_dir"
                             )
                 tmp_dir = os.path.join(tmp_dir, 'build')
-            else:
+            sonst:
                 # WASI platform
                 tmp_dir = sysconfig.get_config_var('projectbase')
-                if not tmp_dir:
+                wenn not tmp_dir:
                     raise RuntimeError(
                         "sysconfig.get_config_var('projectbase') "
                         f"unexpectedly returned {tmp_dir!r} on WASI"
@@ -439,7 +439,7 @@ def get_temp_dir(tmp_dir: StrPath | None = None) -> StrPath:
                 # which is not a WASI process. So the parent does not create
                 # the same "tmp_dir" than the test worker process.
                 os.makedirs(tmp_dir, exist_ok=True)
-        else:
+        sonst:
             tmp_dir = tempfile.gettempdir()
 
     return os.path.abspath(tmp_dir)
@@ -451,14 +451,14 @@ def get_work_dir(parent_dir: StrPath, worker: bool = False) -> StrPath:
     # testing (see the -j option).
     # Emscripten and WASI have stubbed getpid(), Emscripten has only
     # millisecond clock resolution. Use randint() instead.
-    if support.is_emscripten or support.is_wasi:
+    wenn support.is_emscripten or support.is_wasi:
         nounce = random.randint(0, 1_000_000)
-    else:
+    sonst:
         nounce = os.getpid()
 
-    if worker:
+    wenn worker:
         work_dir = WORK_DIR_PREFIX + str(nounce)
-    else:
+    sonst:
         work_dir = WORKER_WORK_DIR_PREFIX + str(nounce)
     work_dir += os_helper.FS_NONASCII
     work_dir = os.path.join(parent_dir, work_dir)
@@ -472,35 +472,35 @@ def exit_timeout():
     except SystemExit as exc:
         # bpo-38203: Python can hang at exit in Py_Finalize(), especially
         # on threading._shutdown() call: put a timeout
-        if threading_helper.can_start_thread:
+        wenn threading_helper.can_start_thread:
             faulthandler.dump_traceback_later(EXIT_TIMEOUT, exit=True)
         sys.exit(exc.code)
 
 
 def remove_testfn(test_name: TestName, verbose: int) -> None:
-    # Try to clean up os_helper.TESTFN if left behind.
+    # Try to clean up os_helper.TESTFN wenn left behind.
     #
     # While tests shouldn't leave any files or directories behind, when a test
     # fails that can be tedious fuer it to arrange.  The consequences can be
-    # especially nasty on Windows, since if a test leaves a file open, it
+    # especially nasty on Windows, since wenn a test leaves a file open, it
     # cannot be deleted by name (while there's nothing we can do about that
     # here either, we can display the name of the offending test, which is a
     # real help).
     name = os_helper.TESTFN
-    if not os.path.exists(name):
+    wenn not os.path.exists(name):
         return
 
     nuker: Callable[[str], None]
-    if os.path.isdir(name):
+    wenn os.path.isdir(name):
         import shutil
         kind, nuker = "directory", shutil.rmtree
-    elif os.path.isfile(name):
+    sowenn os.path.isfile(name):
         kind, nuker = "file", os.unlink
-    else:
+    sonst:
         raise RuntimeError(f"os.path says {name!r} exists but is neither "
                            f"directory nor file")
 
-    if verbose:
+    wenn verbose:
         print_warning(f"{test_name} left behind {kind} {name!r}")
         support.environment_altered = True
 
@@ -515,15 +515,15 @@ def remove_testfn(test_name: TestName, verbose: int) -> None:
 
 
 def abs_module_name(test_name: TestName, test_dir: StrPath | None) -> TestName:
-    if test_name.startswith('test.') or test_dir:
+    wenn test_name.startswith('test.') or test_dir:
         return test_name
-    else:
+    sonst:
         # Import it from the test package
         return 'test.' + test_name
 
 
 # gh-90681: When rerunning tests, we might need to rerun the whole
-# klasse or module suite if some its life-cycle hooks fail.
+# klasse or module suite wenn some its life-cycle hooks fail.
 # Test level hooks are not affected.
 _TEST_LIFECYCLE_HOOKS = frozenset((
     'setUpClass', 'tearDownClass',
@@ -533,9 +533,9 @@ _TEST_LIFECYCLE_HOOKS = frozenset((
 def normalize_test_name(test_full_name: str, *,
                         is_error: bool = False) -> str | None:
     short_name = test_full_name.split(" ")[0]
-    if is_error and short_name in _TEST_LIFECYCLE_HOOKS:
-        if test_full_name.startswith(('setUpModule (', 'tearDownModule (')):
-            # if setUpModule() or tearDownModule() failed, don't filter
+    wenn is_error and short_name in _TEST_LIFECYCLE_HOOKS:
+        wenn test_full_name.startswith(('setUpModule (', 'tearDownModule (')):
+            # wenn setUpModule() or tearDownModule() failed, don't filter
             # tests with the test file name, don't use filters.
             return None
 
@@ -567,7 +567,7 @@ def adjust_rlimit_nofile() -> None:
 
     desired_fds = 1024
 
-    if fd_limit < desired_fds and fd_limit < max_fds:
+    wenn fd_limit < desired_fds and fd_limit < max_fds:
         new_fd_limit = min(desired_fds, max_fds)
         try:
             resource.setrlimit(resource.RLIMIT_NOFILE,
@@ -579,7 +579,7 @@ def adjust_rlimit_nofile() -> None:
 
 
 def get_host_runner() -> str:
-    if (hostrunner := os.environ.get("_PYTHON_HOSTRUNNER")) is None:
+    wenn (hostrunner := os.environ.get("_PYTHON_HOSTRUNNER")) is None:
         hostrunner = sysconfig.get_config_var("HOSTRUNNER")
     return hostrunner
 
@@ -605,10 +605,10 @@ def format_resources(use_resources: Iterable[str]) -> str:
     text = ','.join(sorted(use_resources))
     text = f"resources ({len(use_resources)}): {text}"
 
-    # Pick the shortest string (prefer relative to all if lengths are equal)
-    if len(all_text) <= len(text):
+    # Pick the shortest string (prefer relative to all wenn lengths are equal)
+    wenn len(all_text) <= len(text):
         return all_text
-    else:
+    sonst:
         return text
 
 
@@ -622,26 +622,26 @@ def display_header(use_resources: tuple[str, ...],
     print("== cwd:", os.getcwd())
 
     cpu_count: object = os.cpu_count()
-    if cpu_count:
+    wenn cpu_count:
         # The function is new in Python 3.13; mypy doesn't know about it yet:
         process_cpu_count = os.process_cpu_count()  # type: ignore[attr-defined]
-        if process_cpu_count and process_cpu_count != cpu_count:
+        wenn process_cpu_count and process_cpu_count != cpu_count:
             cpu_count = f"{process_cpu_count} (process) / {cpu_count} (system)"
         print("== CPU count:", cpu_count)
     print("== encodings: locale=%s FS=%s"
           % (locale.getencoding(), sys.getfilesystemencoding()))
 
-    if use_resources:
+    wenn use_resources:
         text = format_resources(use_resources)
         print(f"== {text}")
-    else:
+    sonst:
         print("== resources: all test resources are disabled, "
               "use -u option to unskip tests")
 
     cross_compile = is_cross_compiled()
-    if cross_compile:
+    wenn cross_compile:
         print("== cross compiled: Yes")
-    if python_cmd:
+    wenn python_cmd:
         cmd = shlex.join(python_cmd)
         print(f"== host python: {cmd}")
 
@@ -652,13 +652,13 @@ def display_header(use_resources: tuple[str, ...],
             text=True,
             cwd=os_helper.SAVEDCWD)
         stdout = proc.stdout.replace('\n', ' ').strip()
-        if stdout:
+        wenn stdout:
             print(f"== host platform: {stdout}")
-        elif proc.returncode:
+        sowenn proc.returncode:
             print(f"== host platform: <command failed with exit code {proc.returncode}>")
-    else:
+    sonst:
         hostrunner = get_host_runner()
-        if hostrunner:
+        wenn hostrunner:
             print(f"== host runner: {hostrunner}")
 
     # This makes it easier to remember what to set in your local
@@ -668,15 +668,15 @@ def display_header(use_resources: tuple[str, ...],
     ubsan = support.check_sanitizer(ub=True)
     tsan = support.check_sanitizer(thread=True)
     sanitizers = []
-    if asan:
+    wenn asan:
         sanitizers.append("address")
-    if msan:
+    wenn msan:
         sanitizers.append("memory")
-    if ubsan:
+    wenn ubsan:
         sanitizers.append("undefined behavior")
-    if tsan:
+    wenn tsan:
         sanitizers.append("thread")
-    if sanitizers:
+    wenn sanitizers:
         print(f"== sanitizers: {', '.join(sanitizers)}")
         fuer sanitizer, env_var in (
             (asan, "ASAN_OPTIONS"),
@@ -685,7 +685,7 @@ def display_header(use_resources: tuple[str, ...],
             (tsan, "TSAN_OPTIONS"),
         ):
             options= os.environ.get(env_var)
-            if sanitizer and options is not None:
+            wenn sanitizer and options is not None:
                 print(f"== {env_var}={options!r}")
 
     print(flush=True)
@@ -697,10 +697,10 @@ def cleanup_temp_dir(tmp_dir: StrPath) -> None:
     path = os.path.join(glob.escape(tmp_dir), TMP_PREFIX + '*')
     print("Cleanup %s directory" % tmp_dir)
     fuer name in glob.glob(path):
-        if os.path.isdir(name):
+        wenn os.path.isdir(name):
             print("Remove directory: %s" % name)
             os_helper.rmtree(name)
-        else:
+        sonst:
             print("Remove file: %s" % name)
             os_helper.unlink(name)
 
@@ -719,7 +719,7 @@ ILLEGAL_XML_CHARS_RE = re.compile(
 
 def _sanitize_xml_replace(regs):
     text = regs[0]
-    return ''.join(f'\\x{ord(ch):02x}' if ch <= '\xff' else ascii(ch)[1:-1]
+    return ''.join(f'\\x{ord(ch):02x}' wenn ch <= '\xff' sonst ascii(ch)[1:-1]
                    fuer ch in text)
 
 def sanitize_xml(text: str) -> str:

@@ -5,26 +5,26 @@ from test.support import cpython_only, import_helper
 from test.support.os_helper import (TESTFN, TESTFN_NONASCII, FakePath,
                                     create_empty_file, temp_dir, unlink)
 
-gdbm = import_helper.import_module("dbm.gnu")  # skip if not supported
+gdbm = import_helper.import_module("dbm.gnu")  # skip wenn not supported
 
 filename = TESTFN
 
 klasse TestGdbm(unittest.TestCase):
     @staticmethod
     def setUpClass():
-        if support.verbose:
+        wenn support.verbose:
             try:
                 from _gdbm import _GDBM_VERSION as version
             except ImportError:
                 pass
-            else:
+            sonst:
                 print(f"gdbm version: {version}")
 
     def setUp(self):
         self.g = None
 
     def tearDown(self):
-        if self.g is not None:
+        wenn self.g is not None:
             self.g.close()
         unlink(filename)
 
@@ -241,5 +241,5 @@ klasse TestGdbm(unittest.TestCase):
             g.reorganize()
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

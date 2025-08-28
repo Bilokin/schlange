@@ -14,7 +14,7 @@ def import_singlephase():
     except ImportError:
         sys.modules.pop('_testsinglephase', None)
         return False
-    else:
+    sonst:
         del sys.modules['_testsinglephase']
         return True
 
@@ -34,15 +34,15 @@ def check_singlephase(override):
     noop = {}
     override_after = _imp._override_multi_interp_extensions_check(override)
     settings_noop = _testinternalcapi.get_interp_settings()
-    if settings_noop != settings_after:
+    wenn settings_noop != settings_after:
         noop['settings_noop'] = settings_noop
     allowed_noop = import_singlephase()
-    if allowed_noop != allowed_after:
+    wenn allowed_noop != allowed_after:
         noop['allowed_noop'] = allowed_noop
 
     # Restore the original setting and check.
     override_noop = _imp._override_multi_interp_extensions_check(override_initial)
-    if override_noop != override_after:
+    wenn override_noop != override_after:
         noop['override_noop'] = override_noop
     settings_restored = _testinternalcapi.get_interp_settings()
     allowed_restored = import_singlephase()

@@ -59,7 +59,7 @@ __date__    = "07 February 2010"
 _startTime = time.time_ns()
 
 #
-#raiseExceptions is used to see if exceptions during handling should be
+#raiseExceptions is used to see wenn exceptions during handling should be
 #propagated
 #
 raiseExceptions = True
@@ -146,10 +146,10 @@ def getLevelName(level):
     """
     # See Issues #22386, #27937 and #29220 fuer why it's this way
     result = _levelToName.get(level)
-    if result is not None:
+    wenn result is not None:
         return result
     result = _nameToLevel.get(level)
-    if result is not None:
+    wenn result is not None:
         return result
     return "Level %s" % level
 
@@ -163,9 +163,9 @@ def addLevelName(level, levelName):
         _levelToName[level] = levelName
         _nameToLevel[levelName] = level
 
-if hasattr(sys, "_getframe"):
+wenn hasattr(sys, "_getframe"):
     currentframe = lambda: sys._getframe(1)
-else: #pragma: no cover
+sonst: #pragma: no cover
     def currentframe():
         """Return the frame object fuer the caller's stack frame."""
         try:
@@ -203,13 +203,13 @@ def _is_internal_frame(frame):
 
 
 def _checkLevel(level):
-    if isinstance(level, int):
+    wenn isinstance(level, int):
         rv = level
-    elif str(level) == level:
-        if level not in _nameToLevel:
+    sowenn str(level) == level:
+        wenn level not in _nameToLevel:
             raise ValueError("Unknown level: %r" % level)
         rv = _nameToLevel[level]
-    else:
+    sonst:
         raise TypeError("Level not an integer or a valid string: %r"
                         % (level,))
     return rv
@@ -222,7 +222,7 @@ def _checkLevel(level):
 #_lock is used to serialize access to shared data structures in this module.
 #This needs to be an RLock because fileConfig() creates and configures
 #Handlers, and so might arbitrary user threads. Since Handler code updates the
-#shared dictionary _handlers, it needs to acquire the lock. But if configuring,
+#shared dictionary _handlers, it needs to acquire the lock. But wenn configuring,
 #the lock would already have been acquired - so we need an RLock.
 #The same argument applies to Loggers and Manager.loggerDict.
 #
@@ -253,10 +253,10 @@ def _afterFork():
 
 # Prevent a held logging lock from blocking a child from logging.
 
-if not hasattr(os, 'register_at_fork'):  # Windows and friends.
+wenn not hasattr(os, 'register_at_fork'):  # Windows and friends.
     def _register_at_fork_reinit_lock(instance):
         pass  # no-op when os.register_at_fork does not exist.
-else:
+sonst:
     # A collection of instances with a _at_fork_reinit method (logging.Handler)
     # to be called in the child after forking.  The weakref avoids us keeping
     # discarded Handler instances alive.
@@ -309,9 +309,9 @@ klasse LogRecord(object):
         #  logging.debug("a %(a)d b %(b)s", {'a':1, 'b':2})
         # Suggested by Stefan Behnel.
         # Note that without the test fuer args[0], we get a problem because
-        # during formatting, we test to see if the arg is present using
+        # during formatting, we test to see wenn the arg is present using
         # 'if self.args:'. If the event being logged is e.g. 'Value is %d'
-        # and if the passed arg fails 'if self.args:' then no formatting
+        # and wenn the passed arg fails 'if self.args:' then no formatting
         # is done. For example, logger.warning('Value is %d', 0) would log
         # 'Value is %d' instead of 'Value is 0'.
         # For the use case of passing a dictionary, this should not be a
@@ -321,7 +321,7 @@ klasse LogRecord(object):
         # formatting still seem to suggest a mapping object is required.
         # Thus, while not removing the isinstance check, it does now look
         # fuer collections.abc.Mapping rather than, as before, dict.
-        if (args and len(args) == 1 and isinstance(args[0], collections.abc.Mapping)
+        wenn (args and len(args) == 1 and isinstance(args[0], collections.abc.Mapping)
             and args[0]):
             args = args[0]
         self.args = args
@@ -344,41 +344,41 @@ klasse LogRecord(object):
         # Eg: 1_677_903_920_999_998_503 ns --> 999_998_503 ns--> 999 ms
         # Convert to float by adding 0.0 fuer historical reasons. See gh-89047
         self.msecs = (ct % 1_000_000_000) // 1_000_000 + 0.0
-        if self.msecs == 999.0 and int(self.created) != ct // 1_000_000_000:
+        wenn self.msecs == 999.0 and int(self.created) != ct // 1_000_000_000:
             # ns -> sec conversion can round up, e.g:
             # 1_677_903_920_999_999_900 ns --> 1_677_903_921.0 sec
             self.msecs = 0.0
 
         self.relativeCreated = (ct - _startTime) / 1e6
-        if logThreads:
+        wenn logThreads:
             self.thread = threading.get_ident()
             self.threadName = threading.current_thread().name
-        else: # pragma: no cover
+        sonst: # pragma: no cover
             self.thread = None
             self.threadName = None
-        if not logMultiprocessing: # pragma: no cover
+        wenn not logMultiprocessing: # pragma: no cover
             self.processName = None
-        else:
+        sonst:
             self.processName = 'MainProcess'
             mp = sys.modules.get('multiprocessing')
-            if mp is not None:
-                # Errors may occur if multiprocessing has not finished loading
-                # yet - e.g. if a custom import hook causes third-party code
+            wenn mp is not None:
+                # Errors may occur wenn multiprocessing has not finished loading
+                # yet - e.g. wenn a custom import hook causes third-party code
                 # to run when multiprocessing calls import. See issue 8200
                 # fuer an example
                 try:
                     self.processName = mp.current_process().name
                 except Exception: #pragma: no cover
                     pass
-        if logProcesses and hasattr(os, 'getpid'):
+        wenn logProcesses and hasattr(os, 'getpid'):
             self.process = os.getpid()
-        else:
+        sonst:
             self.process = None
 
         self.taskName = None
-        if logAsyncioTasks:
+        wenn logAsyncioTasks:
             asyncio = sys.modules.get('asyncio')
-            if asyncio:
+            wenn asyncio:
                 try:
                     self.taskName = asyncio.current_task().get_name()
                 except Exception:
@@ -396,7 +396,7 @@ klasse LogRecord(object):
         arguments with the message.
         """
         msg = str(self.msg)
-        if self.args:
+        wenn self.args:
             msg = msg % self.args
         return msg
 
@@ -457,13 +457,13 @@ klasse PercentStyle(object):
 
     def validate(self):
         """Validate the input format, ensure it matches the correct style"""
-        if not self.validation_pattern.search(self._fmt):
+        wenn not self.validation_pattern.search(self._fmt):
             raise ValueError("Invalid format '%s' fuer '%s' style" % (self._fmt, self.default_format[0]))
 
     def _format(self, record):
-        if defaults := self._defaults:
+        wenn defaults := self._defaults:
             values = defaults | record.__dict__
-        else:
+        sonst:
             values = record.__dict__
         return self._fmt % values
 
@@ -483,9 +483,9 @@ klasse StrFormatStyle(PercentStyle):
     field_spec = re.compile(r'^(\d+|\w+)(\.\w+|\[[^]]+\])*$')
 
     def _format(self, record):
-        if defaults := self._defaults:
+        wenn defaults := self._defaults:
             values = defaults | record.__dict__
-        else:
+        sonst:
             values = record.__dict__
         return self._fmt.format(**values)
 
@@ -494,17 +494,17 @@ klasse StrFormatStyle(PercentStyle):
         fields = set()
         try:
             fuer _, fieldname, spec, conversion in _str_formatter.parse(self._fmt):
-                if fieldname:
-                    if not self.field_spec.match(fieldname):
+                wenn fieldname:
+                    wenn not self.field_spec.match(fieldname):
                         raise ValueError('invalid field name/expression: %r' % fieldname)
                     fields.add(fieldname)
-                if conversion and conversion not in 'rsa':
+                wenn conversion and conversion not in 'rsa':
                     raise ValueError('invalid conversion: %r' % conversion)
-                if spec and not self.fmt_spec.match(spec):
+                wenn spec and not self.fmt_spec.match(spec):
                     raise ValueError('bad specifier: %r' % spec)
         except ValueError as e:
             raise ValueError('invalid format: %s' % e)
-        if not fields:
+        wenn not fields:
             raise ValueError('invalid format: no fields')
 
 
@@ -526,19 +526,19 @@ klasse StringTemplateStyle(PercentStyle):
         fields = set()
         fuer m in pattern.finditer(self._fmt):
             d = m.groupdict()
-            if d['named']:
+            wenn d['named']:
                 fields.add(d['named'])
-            elif d['braced']:
+            sowenn d['braced']:
                 fields.add(d['braced'])
-            elif m.group(0) == '$':
+            sowenn m.group(0) == '$':
                 raise ValueError('invalid format: bare \'$\' not allowed')
-        if not fields:
+        wenn not fields:
             raise ValueError('invalid format: no fields')
 
     def _format(self, record):
-        if defaults := self._defaults:
+        wenn defaults := self._defaults:
             values = defaults | record.__dict__
-        else:
+        sonst:
             values = record.__dict__
         return self._tpl.substitute(**values)
 
@@ -615,11 +615,11 @@ klasse Formatter(object):
         .. versionchanged:: 3.2
            Added the ``style`` parameter.
         """
-        if style not in _STYLES:
+        wenn style not in _STYLES:
             raise ValueError('Style must be one of: %s' % ','.join(
                              _STYLES.keys()))
         self._style = _STYLES[style][0](fmt, defaults=defaults)
-        if validate:
+        wenn validate:
             self._style.validate()
 
         self._fmt = self._style._fmt
@@ -635,7 +635,7 @@ klasse Formatter(object):
         This method should be called from format() by a formatter which
         wants to make use of a formatted time. This method can be overridden
         in formatters to provide fuer any specific requirement, but the
-        basic behaviour is as follows: if datefmt (a string) is specified,
+        basic behaviour is as follows: wenn datefmt (a string) is specified,
         it is used with time.strftime() to format the creation time of the
         record. Otherwise, an ISO8601-like (or RFC 3339-like) format is used.
         The resulting string is returned. This function uses a user-configurable
@@ -643,15 +643,15 @@ klasse Formatter(object):
         time.localtime() is used; to change this fuer a particular formatter
         instance, set the 'converter' attribute to a function with the same
         signature as time.localtime() or time.gmtime(). To change it fuer all
-        formatters, fuer example if you want all logging times to be shown in GMT,
+        formatters, fuer example wenn you want all logging times to be shown in GMT,
         set the 'converter' attribute in the Formatter class.
         """
         ct = self.converter(record.created)
-        if datefmt:
+        wenn datefmt:
             s = time.strftime(datefmt, ct)
-        else:
+        sonst:
             s = time.strftime(self.default_time_format, ct)
-            if self.default_msec_format:
+            wenn self.default_msec_format:
                 s = self.default_msec_format % (s, record.msecs)
         return s
 
@@ -670,13 +670,13 @@ klasse Formatter(object):
         traceback.print_exception(ei[0], ei[1], tb, limit=None, file=sio)
         s = sio.getvalue()
         sio.close()
-        if s[-1:] == "\n":
+        wenn s[-1:] == "\n":
             s = s[:-1]
         return s
 
     def usesTime(self):
         """
-        Check if the format uses the creation time of the record.
+        Check wenn the format uses the creation time of the record.
         """
         return self._style.usesTime()
 
@@ -710,20 +710,20 @@ klasse Formatter(object):
         it is formatted using formatException() and appended to the message.
         """
         record.message = record.getMessage()
-        if self.usesTime():
+        wenn self.usesTime():
             record.asctime = self.formatTime(record, self.datefmt)
         s = self.formatMessage(record)
-        if record.exc_info:
+        wenn record.exc_info:
             # Cache the traceback text to avoid converting it multiple times
             # (it's constant anyway)
-            if not record.exc_text:
+            wenn not record.exc_text:
                 record.exc_text = self.formatException(record.exc_info)
-        if record.exc_text:
-            if s[-1:] != "\n":
+        wenn record.exc_text:
+            wenn s[-1:] != "\n":
                 s = s + "\n"
             s = s + record.exc_text
-        if record.stack_info:
-            if s[-1:] != "\n":
+        wenn record.stack_info:
+            wenn s[-1:] != "\n":
                 s = s + "\n"
             s = s + self.formatStack(record.stack_info)
         return s
@@ -742,9 +742,9 @@ klasse BufferingFormatter(object):
         Optionally specify a formatter which will be used to format each
         individual record.
         """
-        if linefmt:
+        wenn linefmt:
             self.linefmt = linefmt
-        else:
+        sonst:
             self.linefmt = _defaultFormatter
 
     def formatHeader(self, records):
@@ -764,7 +764,7 @@ klasse BufferingFormatter(object):
         Format the specified records and return the result as a string.
         """
         rv = ""
-        if len(records) > 0:
+        wenn len(records) > 0:
             rv = rv + self.formatHeader(records)
             fuer record in records:
                 rv = rv + self.linefmt.format(record)
@@ -799,16 +799,16 @@ klasse Filter(object):
 
     def filter(self, record):
         """
-        Determine if the specified record is to be logged.
+        Determine wenn the specified record is to be logged.
 
-        Returns True if the record should be logged, or False otherwise.
+        Returns True wenn the record should be logged, or False otherwise.
         If deemed appropriate, the record may be modified in-place.
         """
-        if self.nlen == 0:
+        wenn self.nlen == 0:
             return True
-        elif self.name == record.name:
+        sowenn self.name == record.name:
             return True
-        elif record.name.find(self.name, 0, self.nlen) != 0:
+        sowenn record.name.find(self.name, 0, self.nlen) != 0:
             return False
         return (record.name[self.nlen] == ".")
 
@@ -827,19 +827,19 @@ klasse Filterer(object):
         """
         Add the specified filter to this handler.
         """
-        if not (filter in self.filters):
+        wenn not (filter in self.filters):
             self.filters.append(filter)
 
     def removeFilter(self, filter):
         """
         Remove the specified filter from this handler.
         """
-        if filter in self.filters:
+        wenn filter in self.filters:
             self.filters.remove(filter)
 
     def filter(self, record):
         """
-        Determine if a record is loggable by consulting all the filters.
+        Determine wenn a record is loggable by consulting all the filters.
 
         The default is to allow the record to be logged; any filter can veto
         this by returning a false value.
@@ -863,13 +863,13 @@ klasse Filterer(object):
            modifying it in place.
         """
         fuer f in self.filters:
-            if hasattr(f, 'filter'):
+            wenn hasattr(f, 'filter'):
                 result = f.filter(record)
-            else:
-                result = f(record) # assume callable - will raise if not
-            if not result:
+            sonst:
+                result = f(record) # assume callable - will raise wenn not
+            wenn not result:
                 return False
-            if isinstance(result, LogRecord):
+            wenn isinstance(result, LogRecord):
                 record = result
         return record
 
@@ -886,10 +886,10 @@ def _removeHandlerRef(wr):
     """
     # This function can be called during module teardown, when globals are
     # set to None. It can also be called from another thread. So we need to
-    # pre-emptively grab the necessary globals and check if they're None,
+    # pre-emptively grab the necessary globals and check wenn they're None,
     # to prevent race conditions and failures during interpreter shutdown.
     handlers, lock = _handlerList, _lock
-    if lock and handlers:
+    wenn lock and handlers:
         with lock:
             try:
                 handlers.remove(wr)
@@ -906,7 +906,7 @@ def _addHandlerRef(handler):
 
 def getHandlerByName(name):
     """
-    Get a handler with the specified *name*, or None if there isn't one with
+    Get a handler with the specified *name*, or None wenn there isn't one with
     that name.
     """
     return _handlers.get(name)
@@ -947,10 +947,10 @@ klasse Handler(Filterer):
 
     def set_name(self, name):
         with _lock:
-            if self._name in _handlers:
+            wenn self._name in _handlers:
                 del _handlers[self._name]
             self._name = name
-            if name:
+            wenn name:
                 _handlers[name] = self
 
     name = property(get_name, set_name)
@@ -969,14 +969,14 @@ klasse Handler(Filterer):
         """
         Acquire the I/O thread lock.
         """
-        if self.lock:
+        wenn self.lock:
             self.lock.acquire()
 
     def release(self):
         """
         Release the I/O thread lock.
         """
-        if self.lock:
+        wenn self.lock:
             self.lock.release()
 
     def setLevel(self, level):
@@ -992,9 +992,9 @@ klasse Handler(Filterer):
         If a formatter is set, use it. Otherwise, use the default formatter
         fuer the module.
         """
-        if self.formatter:
+        wenn self.formatter:
             fmt = self.formatter
-        else:
+        sonst:
             fmt = _defaultFormatter
         return fmt.format(record)
 
@@ -1017,12 +1017,12 @@ klasse Handler(Filterer):
         the I/O thread lock.
 
         Returns an instance of the log record that was emitted
-        if it passed all filters, otherwise a false value is returned.
+        wenn it passed all filters, otherwise a false value is returned.
         """
         rv = self.filter(record)
-        if isinstance(rv, LogRecord):
+        wenn isinstance(rv, LogRecord):
             record = rv
-        if rv:
+        wenn rv:
             with self.lock:
                 self.emit(record)
         return rv
@@ -1054,7 +1054,7 @@ klasse Handler(Filterer):
         #get the module data lock, as we're updating a shared structure.
         with _lock:
             self._closed = True
-            if self._name and self._name in _handlers:
+            wenn self._name and self._name in _handlers:
                 del _handlers[self._name]
 
     def handleError(self, record):
@@ -1066,10 +1066,10 @@ klasse Handler(Filterer):
         exceptions get silently ignored. This is what is mostly wanted
         fuer a logging system - most users will not care about errors in
         the logging system, they are more interested in application errors.
-        You could, however, replace this with a custom handler if you wish.
+        You could, however, replace this with a custom handler wenn you wish.
         The record which was being processed is passed in to this method.
         """
-        if raiseExceptions and sys.stderr:  # see issue 13807
+        wenn raiseExceptions and sys.stderr:  # see issue 13807
             exc = sys.exception()
             try:
                 sys.stderr.write('--- Logging error ---\n')
@@ -1081,9 +1081,9 @@ klasse Handler(Filterer):
                 while (frame and os.path.dirname(frame.f_code.co_filename) ==
                        __path__[0]):
                     frame = frame.f_back
-                if frame:
+                wenn frame:
                     traceback.print_stack(frame, file=sys.stderr)
-                else:
+                sonst:
                     # couldn't find the right stack frame, fuer some reason
                     sys.stderr.write('Logged from file %s, line %s\n' % (
                                      record.filename, record.lineno))
@@ -1124,7 +1124,7 @@ klasse StreamHandler(Handler):
         If stream is not specified, sys.stderr is used.
         """
         Handler.__init__(self)
-        if stream is None:
+        wenn stream is None:
             stream = sys.stderr
         self.stream = stream
 
@@ -1133,7 +1133,7 @@ klasse StreamHandler(Handler):
         Flushes the stream.
         """
         with self.lock:
-            if self.stream and hasattr(self.stream, "flush"):
+            wenn self.stream and hasattr(self.stream, "flush"):
                 self.stream.flush()
 
     def emit(self, record):
@@ -1161,14 +1161,14 @@ klasse StreamHandler(Handler):
     def setStream(self, stream):
         """
         Sets the StreamHandler's stream to the specified value,
-        if it is different.
+        wenn it is different.
 
-        Returns the old stream, if the stream was changed, or None
-        if it wasn't.
+        Returns the old stream, wenn the stream was changed, or None
+        wenn it wasn't.
         """
-        if stream is self.stream:
+        wenn stream is self.stream:
             result = None
-        else:
+        sonst:
             result = self.stream
             with self.lock:
                 self.flush()
@@ -1180,7 +1180,7 @@ klasse StreamHandler(Handler):
         name = getattr(self.stream, 'name', '')
         #  bpo-36015: name can be an int
         name = str(name)
-        if name:
+        wenn name:
             name += ' '
         return '<%s %s(%s)>' % (self.__class__.__name__, name, level)
 
@@ -1202,7 +1202,7 @@ klasse FileHandler(StreamHandler):
         self.baseFilename = os.path.abspath(filename)
         self.mode = mode
         self.encoding = encoding
-        if "b" not in mode:
+        wenn "b" not in mode:
             self.encoding = io.text_encoding(encoding)
         self.errors = errors
         self.delay = delay
@@ -1210,12 +1210,12 @@ klasse FileHandler(StreamHandler):
         # function to be able to open or reopen the file during Python
         # finalization.
         self._builtin_open = open
-        if delay:
+        wenn delay:
             #We don't open the stream, but we still need to call the
             #Handler constructor to set level, formatter, lock etc.
             Handler.__init__(self)
             self.stream = None
-        else:
+        sonst:
             StreamHandler.__init__(self, self._open())
 
     def close(self):
@@ -1224,13 +1224,13 @@ klasse FileHandler(StreamHandler):
         """
         with self.lock:
             try:
-                if self.stream:
+                wenn self.stream:
                     try:
                         self.flush()
                     finally:
                         stream = self.stream
                         self.stream = None
-                        if hasattr(stream, "close"):
+                        wenn hasattr(stream, "close"):
                             stream.close()
             finally:
                 # Issue #19523: call unconditionally to
@@ -1258,10 +1258,10 @@ klasse FileHandler(StreamHandler):
         If stream is not open, current mode is 'w' and `_closed=True`, record
         will not be emitted (see Issue #42378).
         """
-        if self.stream is None:
-            if self.mode != 'w' or not self._closed:
+        wenn self.stream is None:
+            wenn self.mode != 'w' or not self._closed:
                 self.stream = self._open()
-        if self.stream:
+        wenn self.stream:
             StreamHandler.emit(self, record)
 
     def __repr__(self):
@@ -1309,7 +1309,7 @@ klasse PlaceHolder(object):
         """
         Add the specified logger as a child of this placeholder.
         """
-        if alogger not in self.loggerMap:
+        wenn alogger not in self.loggerMap:
             self.loggerMap[alogger] = None
 
 #
@@ -1322,8 +1322,8 @@ def setLoggerClass(klass):
     define __init__() such that only a name argument is required, and the
     __init__() should call Logger.__init__()
     """
-    if klass != Logger:
-        if not issubclass(klass, Logger):
+    wenn klass != Logger:
+        wenn not issubclass(klass, Logger):
             raise TypeError("logger not derived from logging.Logger: "
                             + klass.__name__)
     global _loggerClass
@@ -1362,7 +1362,7 @@ klasse Manager(object):
     def getLogger(self, name):
         """
         Get a logger with the specified name (channel name), creating it
-        if it doesn't yet exist. This name is a dot-separated hierarchical
+        wenn it doesn't yet exist. This name is a dot-separated hierarchical
         name, such as "a", "a.b", "a.b.c" or similar.
 
         If a PlaceHolder existed fuer the specified name [i.e. the logger
@@ -1371,19 +1371,19 @@ klasse Manager(object):
         placeholder to now point to the logger.
         """
         rv = None
-        if not isinstance(name, str):
+        wenn not isinstance(name, str):
             raise TypeError('A logger name must be a string')
         with _lock:
-            if name in self.loggerDict:
+            wenn name in self.loggerDict:
                 rv = self.loggerDict[name]
-                if isinstance(rv, PlaceHolder):
+                wenn isinstance(rv, PlaceHolder):
                     ph = rv
                     rv = (self.loggerClass or _loggerClass)(name)
                     rv.manager = self
                     self.loggerDict[name] = rv
                     self._fixupChildren(ph, rv)
                     self._fixupParents(rv)
-            else:
+            sonst:
                 rv = (self.loggerClass or _loggerClass)(name)
                 rv.manager = self
                 self.loggerDict[name] = rv
@@ -1394,8 +1394,8 @@ klasse Manager(object):
         """
         Set the klasse to be used when instantiating a logger with this Manager.
         """
-        if klass != Logger:
-            if not issubclass(klass, Logger):
+        wenn klass != Logger:
+            wenn not issubclass(klass, Logger):
                 raise TypeError("logger not derived from logging.Logger: "
                                 + klass.__name__)
         self.loggerClass = klass
@@ -1417,17 +1417,17 @@ klasse Manager(object):
         rv = None
         while (i > 0) and not rv:
             substr = name[:i]
-            if substr not in self.loggerDict:
+            wenn substr not in self.loggerDict:
                 self.loggerDict[substr] = PlaceHolder(alogger)
-            else:
+            sonst:
                 obj = self.loggerDict[substr]
-                if isinstance(obj, Logger):
+                wenn isinstance(obj, Logger):
                     rv = obj
-                else:
+                sonst:
                     assert isinstance(obj, PlaceHolder)
                     obj.append(alogger)
             i = name.rfind(".", 0, i - 1)
-        if not rv:
+        wenn not rv:
             rv = self.root
         alogger.parent = rv
 
@@ -1439,8 +1439,8 @@ klasse Manager(object):
         name = alogger.name
         namelen = len(name)
         fuer c in ph.loggerMap.keys():
-            #The if means ... if not c.parent.name.startswith(nm)
-            if c.parent.name[:namelen] != name:
+            #The wenn means ... wenn not c.parent.name.startswith(nm)
+            wenn c.parent.name[:namelen] != name:
                 alogger.parent = c.parent
                 c.parent = alogger
 
@@ -1452,7 +1452,7 @@ klasse Manager(object):
 
         with _lock:
             fuer logger in self.loggerDict.values():
-                if isinstance(logger, Logger):
+                wenn isinstance(logger, Logger):
                     logger._cache.clear()
             self.root._cache.clear()
 
@@ -1504,7 +1504,7 @@ klasse Logger(Filterer):
 
         logger.debug("Houston, we have a %s", "thorny problem", exc_info=True)
         """
-        if self.isEnabledFor(DEBUG):
+        wenn self.isEnabledFor(DEBUG):
             self._log(DEBUG, msg, args, **kwargs)
 
     def info(self, msg, *args, **kwargs):
@@ -1516,7 +1516,7 @@ klasse Logger(Filterer):
 
         logger.info("Houston, we have a %s", "notable problem", exc_info=True)
         """
-        if self.isEnabledFor(INFO):
+        wenn self.isEnabledFor(INFO):
             self._log(INFO, msg, args, **kwargs)
 
     def warning(self, msg, *args, **kwargs):
@@ -1528,7 +1528,7 @@ klasse Logger(Filterer):
 
         logger.warning("Houston, we have a %s", "bit of a problem", exc_info=True)
         """
-        if self.isEnabledFor(WARNING):
+        wenn self.isEnabledFor(WARNING):
             self._log(WARNING, msg, args, **kwargs)
 
     def warn(self, msg, *args, **kwargs):
@@ -1545,7 +1545,7 @@ klasse Logger(Filterer):
 
         logger.error("Houston, we have a %s", "major problem", exc_info=True)
         """
-        if self.isEnabledFor(ERROR):
+        wenn self.isEnabledFor(ERROR):
             self._log(ERROR, msg, args, **kwargs)
 
     def exception(self, msg, *args, exc_info=True, **kwargs):
@@ -1563,7 +1563,7 @@ klasse Logger(Filterer):
 
         logger.critical("Houston, we have a %s", "major disaster", exc_info=True)
         """
-        if self.isEnabledFor(CRITICAL):
+        wenn self.isEnabledFor(CRITICAL):
             self._log(CRITICAL, msg, args, **kwargs)
 
     def fatal(self, msg, *args, **kwargs):
@@ -1581,12 +1581,12 @@ klasse Logger(Filterer):
 
         logger.log(level, "We have a %s", "mysterious problem", exc_info=True)
         """
-        if not isinstance(level, int):
-            if raiseExceptions:
+        wenn not isinstance(level, int):
+            wenn raiseExceptions:
                 raise TypeError("level must be an integer")
-            else:
+            sonst:
                 return
-        if self.isEnabledFor(level):
+        wenn self.isEnabledFor(level):
             self._log(level, msg, args, **kwargs)
 
     def findCaller(self, stack_info=False, stacklevel=1):
@@ -1597,11 +1597,11 @@ klasse Logger(Filterer):
         f = currentframe()
         #On some versions of IronPython, currentframe() returns None if
         #IronPython isn't run with -X:Frames.
-        if f is None:
+        wenn f is None:
             return "(unknown file)", 0, "(unknown function)", None
         while stacklevel > 0:
             next_f = f.f_back
-            if next_f is None:
+            wenn next_f is None:
                 ## We've got options here.
                 ## If we want to use the last (deepest) frame:
                 break
@@ -1610,16 +1610,16 @@ klasse Logger(Filterer):
                 ## If we want to be pedantic:
                 #raise ValueError("call stack is not deep enough")
             f = next_f
-            if not _is_internal_frame(f):
+            wenn not _is_internal_frame(f):
                 stacklevel -= 1
         co = f.f_code
         sinfo = None
-        if stack_info:
+        wenn stack_info:
             with io.StringIO() as sio:
                 sio.write("Stack (most recent call last):\n")
                 traceback.print_stack(f, file=sio)
                 sinfo = sio.getvalue()
-                if sinfo[-1] == '\n':
+                wenn sinfo[-1] == '\n':
                     sinfo = sinfo[:-1]
         return co.co_filename, f.f_lineno, co.co_name, sinfo
 
@@ -1631,9 +1631,9 @@ klasse Logger(Filterer):
         """
         rv = _logRecordFactory(name, level, fn, lno, msg, args, exc_info, func,
                              sinfo)
-        if extra is not None:
+        wenn extra is not None:
             fuer key in extra:
-                if (key in ["message", "asctime"]) or (key in rv.__dict__):
+                wenn (key in ["message", "asctime"]) or (key in rv.__dict__):
                     raise KeyError("Attempt to overwrite %r in LogRecord" % key)
                 rv.__dict__[key] = extra[key]
         return rv
@@ -1645,7 +1645,7 @@ klasse Logger(Filterer):
         all the handlers of this logger to handle the record.
         """
         sinfo = None
-        if _srcfile:
+        wenn _srcfile:
             #IronPython doesn't track Python frames, so findCaller raises an
             #exception on some versions of IronPython. We trap it here so that
             #IronPython can use logging.
@@ -1653,12 +1653,12 @@ klasse Logger(Filterer):
                 fn, lno, func, sinfo = self.findCaller(stack_info, stacklevel)
             except ValueError: # pragma: no cover
                 fn, lno, func = "(unknown file)", 0, "(unknown function)"
-        else: # pragma: no cover
+        sonst: # pragma: no cover
             fn, lno, func = "(unknown file)", 0, "(unknown function)"
-        if exc_info:
-            if isinstance(exc_info, BaseException):
+        wenn exc_info:
+            wenn isinstance(exc_info, BaseException):
                 exc_info = (type(exc_info), exc_info, exc_info.__traceback__)
-            elif not isinstance(exc_info, tuple):
+            sowenn not isinstance(exc_info, tuple):
                 exc_info = sys.exc_info()
         record = self.makeRecord(self.name, level, fn, lno, msg, args,
                                  exc_info, func, extra, sinfo)
@@ -1671,12 +1671,12 @@ klasse Logger(Filterer):
         This method is used fuer unpickled records received from a socket, as
         well as those created locally. Logger-level filtering is applied.
         """
-        if self.disabled:
+        wenn self.disabled:
             return
         maybe_record = self.filter(record)
-        if not maybe_record:
+        wenn not maybe_record:
             return
-        if isinstance(maybe_record, LogRecord):
+        wenn isinstance(maybe_record, LogRecord):
             record = maybe_record
         self.callHandlers(record)
 
@@ -1685,7 +1685,7 @@ klasse Logger(Filterer):
         Add the specified handler to this logger.
         """
         with _lock:
-            if not (hdlr in self.handlers):
+            wenn not (hdlr in self.handlers):
                 self.handlers.append(hdlr)
 
     def removeHandler(self, hdlr):
@@ -1693,15 +1693,15 @@ klasse Logger(Filterer):
         Remove the specified handler from this logger.
         """
         with _lock:
-            if hdlr in self.handlers:
+            wenn hdlr in self.handlers:
                 self.handlers.remove(hdlr)
 
     def hasHandlers(self):
         """
-        See if this logger has any handlers configured.
+        See wenn this logger has any handlers configured.
 
         Loop through all handlers fuer this logger and its parents in the
-        logger hierarchy. Return True if a handler was found, else False.
+        logger hierarchy. Return True wenn a handler was found, sonst False.
         Stop searching up the hierarchy whenever a logger with the "propagate"
         attribute set to zero is found - that will be the last logger which
         is checked fuer the existence of handlers.
@@ -1709,12 +1709,12 @@ klasse Logger(Filterer):
         c = self
         rv = False
         while c:
-            if c.handlers:
+            wenn c.handlers:
                 rv = True
                 break
-            if not c.propagate:
+            wenn not c.propagate:
                 break
-            else:
+            sonst:
                 c = c.parent
         return rv
 
@@ -1733,17 +1733,17 @@ klasse Logger(Filterer):
         while c:
             fuer hdlr in c.handlers:
                 found = found + 1
-                if record.levelno >= hdlr.level:
+                wenn record.levelno >= hdlr.level:
                     hdlr.handle(record)
-            if not c.propagate:
+            wenn not c.propagate:
                 c = None    #break out
-            else:
+            sonst:
                 c = c.parent
-        if (found == 0):
-            if lastResort:
-                if record.levelno >= lastResort.level:
+        wenn (found == 0):
+            wenn lastResort:
+                wenn record.levelno >= lastResort.level:
                     lastResort.handle(record)
-            elif raiseExceptions and not self.manager.emittedNoHandlerWarning:
+            sowenn raiseExceptions and not self.manager.emittedNoHandlerWarning:
                 sys.stderr.write("No handlers could be found fuer logger"
                                  " \"%s\"\n" % self.name)
                 self.manager.emittedNoHandlerWarning = True
@@ -1757,7 +1757,7 @@ klasse Logger(Filterer):
         """
         logger = self
         while logger:
-            if logger.level:
+            wenn logger.level:
                 return logger.level
             logger = logger.parent
         return NOTSET
@@ -1766,16 +1766,16 @@ klasse Logger(Filterer):
         """
         Is this logger enabled fuer level 'level'?
         """
-        if self.disabled:
+        wenn self.disabled:
             return False
 
         try:
             return self._cache[level]
         except KeyError:
             with _lock:
-                if self.manager.disable >= level:
+                wenn self.manager.disable >= level:
                     is_enabled = self._cache[level] = False
-                else:
+                sonst:
                     is_enabled = self._cache[level] = (
                         level >= self.getEffectiveLevel()
                     )
@@ -1796,24 +1796,24 @@ klasse Logger(Filterer):
         It's useful, fuer example, when the parent logger is named using
         __name__ rather than a literal string.
         """
-        if self.root is not self:
+        wenn self.root is not self:
             suffix = '.'.join((self.name, suffix))
         return self.manager.getLogger(suffix)
 
     def getChildren(self):
 
         def _hierlevel(logger):
-            if logger is logger.manager.root:
+            wenn logger is logger.manager.root:
                 return 0
             return 1 + logger.name.count('.')
 
         d = self.manager.loggerDict
         with _lock:
             # exclude PlaceHolders - the last check is to ensure that lower-level
-            # descendants aren't returned - if there are placeholders, a logger's
+            # descendants aren't returned - wenn there are placeholders, a logger's
             # parent field might point to a grandparent or ancestor thereof.
             return set(item fuer item in d.values()
-                       if isinstance(item, Logger) and item.parent is self and
+                       wenn isinstance(item, Logger) and item.parent is self and
                        _hierlevel(item) == 1 + _hierlevel(item.parent))
 
     def __repr__(self):
@@ -1821,7 +1821,7 @@ klasse Logger(Filterer):
         return '<%s %s (%s)>' % (self.__class__.__name__, self.name, level)
 
     def __reduce__(self):
-        if getLogger(self.name) is not self:
+        wenn getLogger(self.name) is not self:
             import pickle
             raise pickle.PicklingError('logger cannot be pickled')
         return getLogger, (self.name,)
@@ -1854,7 +1854,7 @@ klasse LoggerAdapter(object):
         """
         Initialize the adapter with a logger and a dict-like object which
         provides contextual information. This constructor signature allows
-        easy stacking of LoggerAdapters, if so desired.
+        easy stacking of LoggerAdapters, wenn so desired.
 
         You can effectively pass keyword arguments as shown in the
         following example:
@@ -1885,9 +1885,9 @@ klasse LoggerAdapter(object):
         Normally, you'll only need to override this one method in a
         LoggerAdapter subclass fuer your specific needs.
         """
-        if self.merge_extra and "extra" in kwargs:
+        wenn self.merge_extra and "extra" in kwargs:
             kwargs["extra"] = {**self.extra, **kwargs["extra"]}
-        else:
+        sonst:
             kwargs["extra"] = self.extra
         return msg, kwargs
 
@@ -1940,7 +1940,7 @@ klasse LoggerAdapter(object):
         Delegate a log call to the underlying logger, after adding
         contextual information from this adapter instance.
         """
-        if self.isEnabledFor(level):
+        wenn self.isEnabledFor(level):
             msg, kwargs = self.process(msg, kwargs)
             self.logger.log(level, msg, *args, **kwargs)
 
@@ -1964,7 +1964,7 @@ klasse LoggerAdapter(object):
 
     def hasHandlers(self):
         """
-        See if the underlying logger has any handlers.
+        See wenn the underlying logger has any handlers.
         """
         return self.logger.hasHandlers()
 
@@ -2005,7 +2005,7 @@ def basicConfig(**kwargs):
     """
     Do basic configuration fuer the logging system.
 
-    This function does nothing if the root logger already has handlers
+    This function does nothing wenn the root logger already has handlers
     configured, unless the keyword argument *force* is set to ``True``.
     It is a convenience method intended fuer use by simple scripts
     to do one-shot configuration of the logging package.
@@ -2019,7 +2019,7 @@ def basicConfig(**kwargs):
 
     filename  Specifies that a FileHandler be created, using the specified
               filename, rather than a StreamHandler.
-    filemode  Specifies the mode to open the file, if filename is specified
+    filemode  Specifies the mode to open the file, wenn filename is specified
               (if filemode is unspecified, it defaults to 'a').
     format    Use the specified format string fuer the handler.
     datefmt   Use the specified date/time format.
@@ -2029,7 +2029,7 @@ def basicConfig(**kwargs):
               - defaults to '%').
     level     Set the root logger level to the specified level.
     stream    Use the specified stream to initialize the StreamHandler. Note
-              that this argument is incompatible with 'filename' - if both
+              that this argument is incompatible with 'filename' - wenn both
               are present, 'stream' is ignored.
     handlers  If specified, this should be an iterable of already created
               handlers, which will be added to the root logger. Any handler
@@ -2087,55 +2087,55 @@ def basicConfig(**kwargs):
         force = kwargs.pop('force', False)
         encoding = kwargs.pop('encoding', None)
         errors = kwargs.pop('errors', 'backslashreplace')
-        if force:
+        wenn force:
             fuer h in root.handlers[:]:
                 root.removeHandler(h)
                 h.close()
-        if len(root.handlers) == 0:
+        wenn len(root.handlers) == 0:
             handlers = kwargs.pop("handlers", None)
-            if handlers is None:
-                if "stream" in kwargs and "filename" in kwargs:
+            wenn handlers is None:
+                wenn "stream" in kwargs and "filename" in kwargs:
                     raise ValueError("'stream' and 'filename' should not be "
                                      "specified together")
-            else:
-                if "stream" in kwargs or "filename" in kwargs:
+            sonst:
+                wenn "stream" in kwargs or "filename" in kwargs:
                     raise ValueError("'stream' or 'filename' should not be "
                                      "specified together with 'handlers'")
-            if handlers is None:
+            wenn handlers is None:
                 filename = kwargs.pop("filename", None)
                 mode = kwargs.pop("filemode", 'a')
-                if filename:
-                    if 'b' in mode:
+                wenn filename:
+                    wenn 'b' in mode:
                         errors = None
-                    else:
+                    sonst:
                         encoding = io.text_encoding(encoding)
                     h = FileHandler(filename, mode,
                                     encoding=encoding, errors=errors)
-                else:
+                sonst:
                     stream = kwargs.pop("stream", None)
                     h = StreamHandler(stream)
                 handlers = [h]
             fmt = kwargs.pop("formatter", None)
-            if fmt is None:
+            wenn fmt is None:
                 dfs = kwargs.pop("datefmt", None)
                 style = kwargs.pop("style", '%')
-                if style not in _STYLES:
+                wenn style not in _STYLES:
                     raise ValueError('Style must be one of: %s' % ','.join(
                                     _STYLES.keys()))
                 fs = kwargs.pop("format", _STYLES[style][1])
                 fmt = Formatter(fs, dfs, style)
-            else:
+            sonst:
                 fuer forbidden_key in ("datefmt", "format", "style"):
-                    if forbidden_key in kwargs:
+                    wenn forbidden_key in kwargs:
                         raise ValueError(f"{forbidden_key!r} should not be specified together with 'formatter'")
             fuer h in handlers:
-                if h.formatter is None:
+                wenn h.formatter is None:
                     h.setFormatter(fmt)
                 root.addHandler(h)
             level = kwargs.pop("level", None)
-            if level is not None:
+            wenn level is not None:
                 root.setLevel(level)
-            if kwargs:
+            wenn kwargs:
                 keys = ', '.join(kwargs.keys())
                 raise ValueError('Unrecognised argument(s): %s' % keys)
 
@@ -2146,11 +2146,11 @@ def basicConfig(**kwargs):
 
 def getLogger(name=None):
     """
-    Return a logger with the specified name, creating it if necessary.
+    Return a logger with the specified name, creating it wenn necessary.
 
     If no name is specified, return the root logger.
     """
-    if not name or isinstance(name, str) and name == root.name:
+    wenn not name or isinstance(name, str) and name == root.name:
         return root
     return Logger.manager.getLogger(name)
 
@@ -2160,7 +2160,7 @@ def critical(msg, *args, **kwargs):
     has no handlers, call basicConfig() to add a console handler with a
     pre-defined format.
     """
-    if len(root.handlers) == 0:
+    wenn len(root.handlers) == 0:
         basicConfig()
     root.critical(msg, *args, **kwargs)
 
@@ -2176,7 +2176,7 @@ def error(msg, *args, **kwargs):
     no handlers, call basicConfig() to add a console handler with a pre-defined
     format.
     """
-    if len(root.handlers) == 0:
+    wenn len(root.handlers) == 0:
         basicConfig()
     root.error(msg, *args, **kwargs)
 
@@ -2194,7 +2194,7 @@ def warning(msg, *args, **kwargs):
     no handlers, call basicConfig() to add a console handler with a pre-defined
     format.
     """
-    if len(root.handlers) == 0:
+    wenn len(root.handlers) == 0:
         basicConfig()
     root.warning(msg, *args, **kwargs)
 
@@ -2209,7 +2209,7 @@ def info(msg, *args, **kwargs):
     no handlers, call basicConfig() to add a console handler with a pre-defined
     format.
     """
-    if len(root.handlers) == 0:
+    wenn len(root.handlers) == 0:
         basicConfig()
     root.info(msg, *args, **kwargs)
 
@@ -2219,7 +2219,7 @@ def debug(msg, *args, **kwargs):
     no handlers, call basicConfig() to add a console handler with a pre-defined
     format.
     """
-    if len(root.handlers) == 0:
+    wenn len(root.handlers) == 0:
         basicConfig()
     root.debug(msg, *args, **kwargs)
 
@@ -2229,7 +2229,7 @@ def log(level, msg, *args, **kwargs):
     the logger has no handlers, call basicConfig() to add a console handler
     with a pre-defined format.
     """
-    if len(root.handlers) == 0:
+    wenn len(root.handlers) == 0:
         basicConfig()
     root.log(level, msg, *args, **kwargs)
 
@@ -2248,17 +2248,17 @@ def shutdown(handlerList=_handlerList):
     Should be called at application exit.
     """
     fuer wr in reversed(handlerList[:]):
-        #errors might occur, fuer example, if files are locked
-        #we just ignore them if raiseExceptions is not set
+        #errors might occur, fuer example, wenn files are locked
+        #we just ignore them wenn raiseExceptions is not set
         try:
             h = wr()
-            if h:
+            wenn h:
                 try:
                     h.acquire()
                     # MemoryHandlers might not want to be flushed on close,
                     # but circular imports prevent us scoping this to just
                     # those handlers.  hence the default to True.
-                    if getattr(h, 'flushOnClose', True):
+                    wenn getattr(h, 'flushOnClose', True):
                         h.flush()
                     h.close()
                 except (OSError, ValueError):
@@ -2270,7 +2270,7 @@ def shutdown(handlerList=_handlerList):
                 finally:
                     h.release()
         except: # ignore everything, as we're shutting down
-            if raiseExceptions:
+            wenn raiseExceptions:
                 raise
             #else, swallow
 
@@ -2309,18 +2309,18 @@ _warnings_showwarning = None
 def _showwarning(message, category, filename, lineno, file=None, line=None):
     """
     Implementation of showwarnings which redirects to logging, which will first
-    check to see if the file parameter is None. If a file is specified, it will
+    check to see wenn the file parameter is None. If a file is specified, it will
     delegate to the original warnings implementation of showwarning. Otherwise,
     it will call warnings.formatwarning and will log the resulting string to a
     warnings logger named "py.warnings" with level logging.WARNING.
     """
-    if file is not None:
-        if _warnings_showwarning is not None:
+    wenn file is not None:
+        wenn _warnings_showwarning is not None:
             _warnings_showwarning(message, category, filename, lineno, file, line)
-    else:
+    sonst:
         s = warnings.formatwarning(message, category, filename, lineno, line)
         logger = getLogger("py.warnings")
-        if not logger.handlers:
+        wenn not logger.handlers:
             logger.addHandler(NullHandler())
         # bpo-46557: Log str(s) as msg instead of logger.warning("%s", s)
         # since some log aggregation tools group logs by the msg arg
@@ -2333,11 +2333,11 @@ def captureWarnings(capture):
     but to their original destinations.
     """
     global _warnings_showwarning
-    if capture:
-        if _warnings_showwarning is None:
+    wenn capture:
+        wenn _warnings_showwarning is None:
             _warnings_showwarning = warnings.showwarning
             warnings.showwarning = _showwarning
-    else:
-        if _warnings_showwarning is not None:
+    sonst:
+        wenn _warnings_showwarning is not None:
             warnings.showwarning = _warnings_showwarning
             _warnings_showwarning = None

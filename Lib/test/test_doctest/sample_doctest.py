@@ -39,7 +39,7 @@ def test_silly_setup():
 
 def w_blank():
     """
-    >>> if 1:
+    >>> wenn 1:
     ...    print('a')
     ...    print()
     ...    print('b')

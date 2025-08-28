@@ -30,7 +30,7 @@ Additional option details:
 -r randomizes test execution order. You can use --randseed=int to provide an
 int seed value fuer the randomizer. The randseed value will be used
 to set seeds fuer all random usages in tests
-(including randomizing the tests order if -r is set).
+(including randomizing the tests order wenn -r is set).
 By default we always set random seed, but do not randomize test order.
 
 -s On the first invocation of regrtest using -s, the first test file found
@@ -63,12 +63,12 @@ or more test names per line.  Whitespace is ignored.  Blank lines and
 lines beginning with '#' are ignored.  This is especially useful for
 whittling down failures involving interactions among tests.
 
--L causes the leaks(1) command to be run just before exit if it exists.
+-L causes the leaks(1) command to be run just before exit wenn it exists.
 leaks(1) is available on Mac OS X and presumably on some other
 FreeBSD-derived systems.
 
 -R runs each test several times and examines sys.gettotalrefcount() to
-see if the test appears to be leaking references.  The argument should
+see wenn the test appears to be leaking references.  The argument should
 be of the form stab:run:fname where 'stab' is the number of times the
 test is run to let gettotalrefcount settle down, 'run' is the number
 of times further it is run and 'fname' is the name of the file the
@@ -237,8 +237,8 @@ def _create_parser():
                        help='Slow Continuous Integration (CI) mode used by '
                             'buildbot workers')
     group.add_argument('--timeout', metavar='TIMEOUT',
-                        help='dump the traceback and exit if a test takes '
-                             'more than TIMEOUT seconds; disabled if TIMEOUT '
+                        help='dump the traceback and exit wenn a test takes '
+                             'more than TIMEOUT seconds; disabled wenn TIMEOUT '
                              'is negative or equals to zero')
     group.add_argument('--wait', action='store_true',
                        help='wait fuer user input, e.g., allow a debugger '
@@ -273,7 +273,7 @@ def _create_parser():
                        help='randomize test execution order.' + more_details)
     group.add_argument('--prioritize', metavar='TEST1,TEST2,...',
                        action='append', type=priority_list,
-                       help='select these tests first, even if the order is'
+                       help='select these tests first, even wenn the order is'
                             ' randomized.' + more_details)
     group.add_argument('-f', '--fromfile', metavar='FILE',
                        help='read names of tests to run from a file.' +
@@ -397,23 +397,23 @@ def relative_filename(string):
 
 def huntrleaks(string):
     args = string.split(':')
-    if len(args) not in (2, 3):
+    wenn len(args) not in (2, 3):
         raise argparse.ArgumentTypeError(
             'needs 2 or 3 colon-separated arguments')
-    nwarmup = int(args[0]) if args[0] else 5
-    ntracked = int(args[1]) if args[1] else 4
-    fname = args[2] if len(args) > 2 and args[2] else 'reflog.txt'
+    nwarmup = int(args[0]) wenn args[0] sonst 5
+    ntracked = int(args[1]) wenn args[1] sonst 4
+    fname = args[2] wenn len(args) > 2 and args[2] sonst 'reflog.txt'
     return nwarmup, ntracked, fname
 
 
 def resources_list(string):
     u = [x.lower() fuer x in string.split(',')]
     fuer r in u:
-        if r == 'all' or r == 'none':
+        wenn r == 'all' or r == 'none':
             continue
-        if r[0] == '-':
+        wenn r[0] == '-':
             r = r[1:]
-        if r not in RESOURCE_NAMES:
+        wenn r not in RESOURCE_NAMES:
             raise argparse.ArgumentTypeError('invalid resource: ' + r)
     return u
 
@@ -426,7 +426,7 @@ def _parse_args(args, **kwargs):
     # Defaults
     ns = Namespace()
     fuer k, v in kwargs.items():
-        if not hasattr(ns, k):
+        wenn not hasattr(ns, k):
             raise TypeError('%r is an invalid keyword argument '
                             'for this function' % k)
         setattr(ns, k, v)
@@ -436,117 +436,117 @@ def _parse_args(args, **kwargs):
     # optional arguments. Use parse_known_args() as workaround.
     ns.args = parser.parse_known_args(args=args, namespace=ns)[1]
     fuer arg in ns.args:
-        if arg.startswith('-'):
+        wenn arg.startswith('-'):
             parser.error("unrecognized arguments: %s" % arg)
 
-    if ns.timeout is not None:
+    wenn ns.timeout is not None:
         # Support "--timeout=" (no value) so Makefile.pre.pre TESTTIMEOUT
         # can be used by "make buildbottest" and "make test".
-        if ns.timeout != "":
+        wenn ns.timeout != "":
             try:
                 ns.timeout = float(ns.timeout)
             except ValueError:
                 parser.error(f"invalid timeout value: {ns.timeout!r}")
-        else:
+        sonst:
             ns.timeout = None
 
     # Continuous Integration (CI): common options fuer fast/slow CI modes
-    if ns.slow_ci or ns.fast_ci:
+    wenn ns.slow_ci or ns.fast_ci:
         # Similar to options:
         #   -j0 --randomize --fail-env-changed --rerun --slowest --verbose3
-        if ns.use_mp is None:
+        wenn ns.use_mp is None:
             ns.use_mp = 0
         ns.randomize = True
         ns.fail_env_changed = True
-        if ns.python is None:
+        wenn ns.python is None:
             ns.rerun = True
         ns.print_slow = True
         ns.verbose3 = True
-    else:
+    sonst:
         ns._add_python_opts = False
 
     # --singleprocess overrides -jN option
-    if ns.single_process:
+    wenn ns.single_process:
         ns.use_mp = None
 
     # When both --slow-ci and --fast-ci options are present,
     # --slow-ci has the priority
-    if ns.slow_ci:
+    wenn ns.slow_ci:
         # Similar to: -u "all" --timeout=1200
-        if ns.use is None:
+        wenn ns.use is None:
             ns.use = []
         ns.use.insert(0, ['all'])
-        if ns.timeout is None:
+        wenn ns.timeout is None:
             ns.timeout = 1200  # 20 minutes
-    elif ns.fast_ci:
+    sowenn ns.fast_ci:
         # Similar to: -u "all,-cpu" --timeout=600
-        if ns.use is None:
+        wenn ns.use is None:
             ns.use = []
         ns.use.insert(0, ['all', '-cpu'])
-        if ns.timeout is None:
+        wenn ns.timeout is None:
             ns.timeout = 600  # 10 minutes
 
-    if ns.single and ns.fromfile:
+    wenn ns.single and ns.fromfile:
         parser.error("-s and -f don't go together!")
-    if ns.trace:
-        if ns.use_mp is not None:
-            if not Py_DEBUG:
+    wenn ns.trace:
+        wenn ns.use_mp is not None:
+            wenn not Py_DEBUG:
                 parser.error("need --with-pydebug to use -T and -j together")
-        else:
+        sonst:
             print(
                 "Warning: collecting coverage without -j is imprecise. Configure"
                 " --with-pydebug and run -m test -T -j fuer best results.",
                 file=sys.stderr
             )
-    if ns.python is not None:
-        if ns.use_mp is None:
+    wenn ns.python is not None:
+        wenn ns.use_mp is None:
             parser.error("-p requires -j!")
         # The "executable" may be two or more parts, e.g. "node python.js"
         ns.python = shlex.split(ns.python)
-    if ns.failfast and not (ns.verbose or ns.verbose3):
+    wenn ns.failfast and not (ns.verbose or ns.verbose3):
         parser.error("-G/--failfast needs either -v or -W")
-    if ns.pgo and (ns.verbose or ns.rerun or ns.verbose3):
+    wenn ns.pgo and (ns.verbose or ns.rerun or ns.verbose3):
         parser.error("--pgo/-v don't go together!")
-    if ns.pgo_extended:
+    wenn ns.pgo_extended:
         ns.pgo = True  # pgo_extended implies pgo
 
-    if ns.nowindows:
+    wenn ns.nowindows:
         print("Warning: the --nowindows (-n) option is deprecated. "
               "Use -vv to display assertions in stderr.", file=sys.stderr)
 
-    if ns.quiet:
+    wenn ns.quiet:
         ns.verbose = 0
-    if ns.timeout is not None:
-        if ns.timeout <= 0:
+    wenn ns.timeout is not None:
+        wenn ns.timeout <= 0:
             ns.timeout = None
-    if ns.use:
+    wenn ns.use:
         fuer a in ns.use:
             fuer r in a:
-                if r == 'all':
+                wenn r == 'all':
                     ns.use_resources[:] = ALL_RESOURCES
                     continue
-                if r == 'none':
+                wenn r == 'none':
                     del ns.use_resources[:]
                     continue
                 remove = False
-                if r[0] == '-':
+                wenn r[0] == '-':
                     remove = True
                     r = r[1:]
-                if remove:
-                    if r in ns.use_resources:
+                wenn remove:
+                    wenn r in ns.use_resources:
                         ns.use_resources.remove(r)
-                elif r not in ns.use_resources:
+                sowenn r not in ns.use_resources:
                     ns.use_resources.append(r)
-    if ns.random_seed is not None:
+    wenn ns.random_seed is not None:
         ns.randomize = True
-    if ns.verbose:
+    wenn ns.verbose:
         ns.header = True
 
     # When -jN option is used, a worker process does not use --verbose3
     # and so -R 3:3 -jN --verbose3 just works as expected: there is no false
     # alarm about memory leak.
-    if ns.huntrleaks and ns.verbose3 and ns.use_mp is None:
-        # run_single_test() replaces sys.stdout with io.StringIO if verbose3
+    wenn ns.huntrleaks and ns.verbose3 and ns.use_mp is None:
+        # run_single_test() replaces sys.stdout with io.StringIO wenn verbose3
         # is true. In this case, huntrleaks sees an write into StringIO as
         # a memory leak, whereas it is not (gh-71290).
         ns.verbose3 = False
@@ -554,13 +554,13 @@ def _parse_args(args, **kwargs):
               "--huntrleaks without -jN option",
               file=sys.stderr)
 
-    if ns.forever:
+    wenn ns.forever:
         # --forever implies --failfast
         ns.failfast = True
 
-    if ns.huntrleaks:
+    wenn ns.huntrleaks:
         warmup, repetitions, _ = ns.huntrleaks
-        if warmup < 1 or repetitions < 1:
+        wenn warmup < 1 or repetitions < 1:
             msg = ("Invalid values fuer the --huntrleaks/-R parameters. The "
                    "number of warmups and repetitions must be at least 1 "
                    "each (1:1).")

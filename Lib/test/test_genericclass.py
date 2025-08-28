@@ -293,5 +293,5 @@ klasse CAPITest(unittest.TestCase):
         self.assertEqual(C.__mro__, (C, int, object))
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

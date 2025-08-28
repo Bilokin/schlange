@@ -27,10 +27,10 @@ test_source = """\
 # Script may be run with optimisation enabled, so don't rely on assert
 # statements being executed
 def assertEqual(lhs, rhs):
-    if lhs != rhs:
+    wenn lhs != rhs:
         raise AssertionError('%r != %r' % (lhs, rhs))
 def assertIdentical(lhs, rhs):
-    if lhs is not rhs:
+    wenn lhs is not rhs:
         raise AssertionError('%r is not %r' % (lhs, rhs))
 # Check basic code execution
 result = ['Top level assignment']
@@ -41,29 +41,29 @@ assertEqual(result, ['Top level assignment', 'Lower level reference'])
 # Check population of magic variables
 assertEqual(__name__, '__main__')
 from importlib.machinery import BuiltinImporter
-_loader = __loader__ if __loader__ is BuiltinImporter else type(__loader__)
+_loader = __loader__ wenn __loader__ is BuiltinImporter sonst type(__loader__)
 print('__loader__==%a' % _loader)
 print('__file__==%a' % __file__)
 print('__cached__==%a' % __cached__)
 print('__package__==%r' % __package__)
 # Check PEP 451 details
 import os.path
-if __package__ is not None:
+wenn __package__ is not None:
     print('__main__ was located through the import system')
     assertIdentical(__spec__.loader, __loader__)
     expected_spec_name = os.path.splitext(os.path.basename(__file__))[0]
-    if __package__:
+    wenn __package__:
         expected_spec_name = __package__ + "." + expected_spec_name
     assertEqual(__spec__.name, expected_spec_name)
     assertEqual(__spec__.parent, __package__)
     assertIdentical(__spec__.submodule_search_locations, None)
     assertEqual(__spec__.origin, __file__)
-    if __spec__.cached is not None:
+    wenn __spec__.cached is not None:
         assertEqual(__spec__.cached, __cached__)
 # Check the sys module
 import sys
 assertIdentical(globals(), sys.modules[__name__].__dict__)
-if __spec__ is not None:
+wenn __spec__ is not None:
     # XXX: We're not currently making __main__ available under its real name
     pass # assertIdentical(globals(), sys.modules[__spec__.name].__dict__)
 from test import test_cmd_line_script
@@ -95,7 +95,7 @@ klasse CmdLineTest(unittest.TestCase):
                              expected_file, expected_argv0,
                              expected_path0, expected_package,
                              expected_loader, expected_cwd=None):
-        if verbose > 1:
+        wenn verbose > 1:
             print("Output from test script %r:" % script_name)
             print(repr(data))
         self.assertEqual(exit_code, 0)
@@ -104,10 +104,10 @@ klasse CmdLineTest(unittest.TestCase):
         printed_package = '__package__==%r' % expected_package
         printed_argv0 = 'sys.argv[0]==%a' % expected_argv0
         printed_path0 = 'sys.path[0]==%a' % expected_path0
-        if expected_cwd is None:
+        wenn expected_cwd is None:
             expected_cwd = os.getcwd()
         printed_cwd = 'cwd==%a' % expected_cwd
-        if verbose > 1:
+        wenn verbose > 1:
             print('Expected output:')
             print(printed_file)
             print(printed_package)
@@ -118,7 +118,7 @@ klasse CmdLineTest(unittest.TestCase):
         self.assertIn(printed_package.encode('utf-8'), data)
         self.assertIn(printed_argv0.encode('utf-8'), data)
         # PYTHONSAFEPATH=1 changes the default sys.path[0]
-        if not sys.flags.safe_path:
+        wenn not sys.flags.safe_path:
             self.assertIn(printed_path0.encode('utf-8'), data)
         self.assertIn(printed_cwd.encode('utf-8'), data)
 
@@ -126,7 +126,7 @@ klasse CmdLineTest(unittest.TestCase):
                             expected_argv0, expected_path0,
                             expected_package, expected_loader,
                             *cmd_line_switches, cwd=None, **env_vars):
-        if isinstance(script_exec_args, str):
+        wenn isinstance(script_exec_args, str):
             script_exec_args = [script_exec_args]
         run_args = [*support.optim_args_from_interpreter_flags(),
                     *cmd_line_switches, *script_exec_args, *example_args]
@@ -139,15 +139,15 @@ klasse CmdLineTest(unittest.TestCase):
 
     def _check_import_error(self, script_exec_args, expected_msg,
                             *cmd_line_switches, cwd=None, **env_vars):
-        if isinstance(script_exec_args, str):
+        wenn isinstance(script_exec_args, str):
             script_exec_args = (script_exec_args,)
-        else:
+        sonst:
             script_exec_args = tuple(script_exec_args)
         run_args = cmd_line_switches + script_exec_args
         rc, out, err = assert_python_failure(
             *run_args, __isolated=False, __cwd=cwd, **env_vars
         )
-        if verbose > 1:
+        wenn verbose > 1:
             print(f'Output from test script {script_exec_args!r:}')
             print(repr(err))
             print('Expected output: %r' % expected_msg)
@@ -173,17 +173,17 @@ klasse CmdLineTest(unittest.TestCase):
 
     @contextlib.contextmanager
     def interactive_python(self, separate_stderr=False):
-        if separate_stderr:
+        wenn separate_stderr:
             p = spawn_python('-i', stderr=subprocess.PIPE)
             stderr = p.stderr
-        else:
+        sonst:
             p = spawn_python('-i', stderr=subprocess.STDOUT)
             stderr = p.stdout
         try:
             # Drain stderr until prompt
             while True:
                 data = stderr.read(4)
-                if data == b">>> ":
+                wenn data == b">>> ":
                     break
                 stderr.readline()
             yield p
@@ -201,7 +201,7 @@ klasse CmdLineTest(unittest.TestCase):
         with self.interactive_python(separate_stderr) as p:
             p.stdin.write(b"1/0\n")
             p.stdin.flush()
-            stderr = p.stderr if separate_stderr else p.stdout
+            stderr = p.stderr wenn separate_stderr sonst p.stdout
             self.assertIn(b'Traceback ', stderr.readline())
             self.assertIn(b'File "<stdin>"', stderr.readline())
             self.assertIn(b'1/0', stderr.readline())
@@ -392,7 +392,7 @@ klasse CmdLineTest(unittest.TestCase):
                 make_pkg(pkg_dir, "import sys; print('init_argv0==%r' % sys.argv[0])")
                 script_name = _make_test_script(pkg_dir, 'script')
                 rc, out, err = assert_python_ok('-m', 'test_pkg.script', *example_args, __isolated=False)
-                if verbose > 1:
+                wenn verbose > 1:
                     print(repr(out))
                 expected = "init_argv0==%r" % '-m'
                 self.assertIn(expected.encode('utf-8'), out)
@@ -410,7 +410,7 @@ klasse CmdLineTest(unittest.TestCase):
                     rc, out, err = assert_python_ok('-c',
                         'import sys; print("sys.path[0]==%r" % sys.path[0])',
                         __isolated=False)
-                    if verbose > 1:
+                    wenn verbose > 1:
                         print(repr(out))
                     expected = "sys.path[0]==%r" % ''
                     self.assertIn(expected.encode('utf-8'), out)
@@ -456,7 +456,7 @@ klasse CmdLineTest(unittest.TestCase):
 
     def check_dash_m_failure(self, *args):
         rc, out, err = assert_python_failure('-m', *args, __isolated=False)
-        if verbose > 1:
+        wenn verbose > 1:
             print(repr(out))
         self.assertEqual(rc, 1)
         return err
@@ -562,7 +562,7 @@ klasse CmdLineTest(unittest.TestCase):
         # Windows allows creating a name with an arbitrary bytes name, but
         # Python cannot a undecodable bytes argument to a subprocess.
         # Emscripten/WASI does not permit invalid UTF-8 names.
-        if (
+        wenn (
             os_helper.TESTFN_UNDECODABLE
             and sys.platform not in {
                 "win32", "emscripten", "wasi"
@@ -570,9 +570,9 @@ klasse CmdLineTest(unittest.TestCase):
             and not is_apple
         ):
             name = os.fsdecode(os_helper.TESTFN_UNDECODABLE)
-        elif os_helper.TESTFN_NONASCII:
+        sowenn os_helper.TESTFN_NONASCII:
             name = os_helper.TESTFN_NONASCII
-        else:
+        sonst:
             self.skipTest("need os_helper.TESTFN_NONASCII")
 
         # Issue #16218
@@ -595,7 +595,7 @@ klasse CmdLineTest(unittest.TestCase):
             except ValueError as err:
                 error = err
 
-            if error:
+            wenn error:
                 sys.exit(error)
             """)
         with os_helper.temp_dir() as script_dir:
@@ -615,7 +615,7 @@ klasse CmdLineTest(unittest.TestCase):
 
     def test_syntaxerror_indented_caret_position(self):
         script = textwrap.dedent("""\
-            if True:
+            wenn True:
                 1 + 1 = 2
             """)
         with os_helper.temp_dir() as script_dir:
@@ -781,7 +781,7 @@ klasse CmdLineTest(unittest.TestCase):
 
     def test_nonexisting_script(self):
         # bpo-34783: "./python script.py" must not crash
-        # if the script file doesn't exist.
+        # wenn the script file doesn't exist.
         # (Skip test fuer macOS framework builds because sys.executable name
         #  is not the actual Python executable file name.
         script = 'nonexistingscript.py'
@@ -816,5 +816,5 @@ def tearDownModule():
     support.reap_children()
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

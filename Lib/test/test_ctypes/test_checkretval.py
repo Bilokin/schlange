@@ -33,5 +33,5 @@ klasse Test(unittest.TestCase):
         self.assertRaises(OSError, oleaut32.CreateTypeLib2, 0, None, None)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

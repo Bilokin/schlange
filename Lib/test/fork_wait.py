@@ -56,7 +56,7 @@ klasse ForkWait(unittest.TestCase):
 
         # busy-loop to wait fuer threads
         fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
-            if len(self.alive) >= NUM_THREADS:
+            wenn len(self.alive) >= NUM_THREADS:
                 break
 
         a = sorted(self.alive.keys())
@@ -67,14 +67,14 @@ klasse ForkWait(unittest.TestCase):
         # Ignore the warning about fork with threads.
         with warnings.catch_warnings(category=DeprecationWarning,
                                      action="ignore"):
-            if (cpid := os.fork()) == 0:
+            wenn (cpid := os.fork()) == 0:
                 # Child
                 time.sleep(LONGSLEEP)
                 n = 0
                 fuer key in self.alive:
-                    if self.alive[key] != prefork_lives[key]:
+                    wenn self.alive[key] != prefork_lives[key]:
                         n += 1
                 os._exit(n)
-            else:
+            sonst:
                 # Parent
                 self.wait_impl(cpid, exitcode=0)

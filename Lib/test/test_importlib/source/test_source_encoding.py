@@ -24,7 +24,7 @@ klasse EncodingTest:
     PEP 263 specifies how that can change on a per-file basis. Either the first
     or second line can contain the encoding line [encoding first line]
     [encoding second line]. If the file has the BOM marker it is considered UTF-8
-    implicitly [BOM]. If any encoding is specified it must be UTF-8, else it is
+    implicitly [BOM]. If any encoding is specified it must be UTF-8, sonst it is
     an error [BOM and utf-8][BOM conflict].
 
     """
@@ -171,5 +171,5 @@ klasse LineEndingTestPEP302(LineEndingTest):
  ) = util.test_both(LineEndingTestPEP302, machinery=machinery)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

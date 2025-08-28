@@ -12,18 +12,18 @@ def capture_test_stack(*, fut=None, depth=1):
 
     def walk(s):
         ret = [
-            (f"T<{n}>" if '-' not in (n := s.future.get_name()) else 'T<anon>')
-                if isinstance(s.future, asyncio.Task) else 'F'
+            (f"T<{n}>" wenn '-' not in (n := s.future.get_name()) sonst 'T<anon>')
+                wenn isinstance(s.future, asyncio.Task) sonst 'F'
         ]
 
         ret.append(
             [
                 (
                     f"s {entry.frame.f_code.co_name}"
-                        if entry.frame.f_generator is None else
+                        wenn entry.frame.f_generator is None sonst
                         (
                             f"a {entry.frame.f_generator.cr_code.co_name}"
-                            if hasattr(entry.frame.f_generator, 'cr_code') else
+                            wenn hasattr(entry.frame.f_generator, 'cr_code') sonst
                             f"ag {entry.frame.f_generator.ag_code.co_name}"
                         )
                 ) fuer entry in s.call_stack
@@ -121,7 +121,7 @@ klasse CallStackTestBase:
         async def gen():
             fuer num in range(2):
                 yield num
-                if num == 1:
+                wenn num == 1:
                     await gen_nested_call()
 
         async def main():
@@ -249,7 +249,7 @@ klasse CallStackTestBase:
         async def main(t1, t2):
             while True:
                 _, pending = await asyncio.wait([t1, t2])
-                if not pending:
+                wenn not pending:
                     break
 
         t1 = asyncio.create_task(c1())

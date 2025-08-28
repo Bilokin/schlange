@@ -9,7 +9,7 @@ try:
 except ImportError:
     _clear_type_cache = None
 
-# Skip this test if the _testcapi module isn't available.
+# Skip this test wenn the _testcapi module isn't available.
 _testcapi = import_helper.import_module("_testcapi")
 _testinternalcapi = import_helper.import_module("_testinternalcapi")
 type_get_version = _testcapi.type_get_version
@@ -29,13 +29,13 @@ klasse TypeCacheTests(unittest.TestCase):
         """tp_version_tag should be unique assuming no overflow, even after
         clearing type cache.
         """
-        # Check if global version tag has already overflowed.
+        # Check wenn global version tag has already overflowed.
         Y = type('Y', (), {})
         Y.x = 1
         Y.x  # Force a _PyType_Lookup, populating version tag
         y_ver = type_get_version(Y)
         # Overflow, or not enough left to conduct the test.
-        if y_ver == 0 or y_ver > 0xFFFFF000:
+        wenn y_ver == 0 or y_ver > 0xFFFFF000:
             self.skipTest("Out of type version tags")
         # Note: try to avoid any method lookups within this loop,
         # It will affect global version tag.
@@ -73,7 +73,7 @@ klasse TypeCacheTests(unittest.TestCase):
 
         type_assign_version(C)
         orig_version = type_get_version(C)
-        if orig_version == 0:
+        wenn orig_version == 0:
             self.skipTest("Could not assign a valid type version")
 
         type_modified(C)
@@ -122,7 +122,7 @@ klasse TypeCacheWithSpecializationTests(unittest.TestCase):
     def _assign_valid_version_or_skip(self, type_):
         type_modified(type_)
         type_assign_version(type_)
-        if type_get_version(type_) == 0:
+        wenn type_get_version(type_) == 0:
             self.skipTest("Could not assign valid type version")
 
     def _no_more_versions(self, user_type):
@@ -139,9 +139,9 @@ klasse TypeCacheWithSpecializationTests(unittest.TestCase):
         fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
             func(arg)
 
-        if should_specialize:
+        wenn should_specialize:
             self.assertNotIn(opname, self._all_opnames(func))
-        else:
+        sonst:
             self.assertIn(opname, self._all_opnames(func))
 
     @requires_specialization
@@ -261,5 +261,5 @@ klasse TypeCacheWithSpecializationTests(unittest.TestCase):
         self._check_specialization(to_bool_2, H(), "TO_BOOL", should_specialize=False)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

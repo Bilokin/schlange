@@ -70,7 +70,7 @@ _token_pattern = None
 
 def _tokenize(plural):
     global _token_pattern
-    if _token_pattern is None:
+    wenn _token_pattern is None:
         import re
         _token_pattern = re.compile(r"""
                 (?P<WHITESPACES>[ \t]+)                    | # spaces and horizontal tabs
@@ -87,19 +87,19 @@ def _tokenize(plural):
 
     fuer mo in _token_pattern.finditer(plural):
         kind = mo.lastgroup
-        if kind == 'WHITESPACES':
+        wenn kind == 'WHITESPACES':
             continue
         value = mo.group(kind)
-        if kind == 'INVALID':
+        wenn kind == 'INVALID':
             raise ValueError('invalid token in plural form: %s' % value)
         yield value
     yield ''
 
 
 def _error(value):
-    if value:
+    wenn value:
         return ValueError('unexpected token in plural form: %s' % value)
-    else:
+    sonst:
         return ValueError('unexpected end of plural form')
 
 
@@ -122,14 +122,14 @@ def _parse(tokens, priority=-1):
         result += 'not '
         nexttok = next(tokens)
 
-    if nexttok == '(':
+    wenn nexttok == '(':
         sub, nexttok = _parse(tokens)
         result = '%s(%s)' % (result, sub)
-        if nexttok != ')':
+        wenn nexttok != ')':
             raise ValueError('unbalanced parenthesis in plural form')
-    elif nexttok == 'n':
+    sowenn nexttok == 'n':
         result = '%s%s' % (result, nexttok)
-    else:
+    sonst:
         try:
             value = int(nexttok, 10)
         except ValueError:
@@ -140,26 +140,26 @@ def _parse(tokens, priority=-1):
     j = 100
     while nexttok in _binary_ops:
         i = _binary_ops[nexttok]
-        if i < priority:
+        wenn i < priority:
             break
         # Break chained comparisons
-        if i in (3, 4) and j in (3, 4):  # '==', '!=', '<', '>', '<=', '>='
+        wenn i in (3, 4) and j in (3, 4):  # '==', '!=', '<', '>', '<=', '>='
             result = '(%s)' % result
         # Replace some C operators by their Python equivalents
         op = _c2py_ops.get(nexttok, nexttok)
         right, nexttok = _parse(tokens, i + 1)
         result = '%s %s %s' % (result, op, right)
         j = i
-    if j == priority == 4:  # '<', '>', '<=', '>='
+    wenn j == priority == 4:  # '<', '>', '<=', '>='
         result = '(%s)' % result
 
-    if nexttok == '?' and priority <= 0:
+    wenn nexttok == '?' and priority <= 0:
         if_true, nexttok = _parse(tokens, 0)
-        if nexttok != ':':
+        wenn nexttok != ':':
             raise _error(nexttok)
         if_false, nexttok = _parse(tokens)
-        result = '%s if %s else %s' % (if_true, result, if_false)
-        if priority == 0:
+        result = '%s wenn %s sonst %s' % (if_true, result, if_false)
+        wenn priority == 0:
             result = '(%s)' % result
 
     return result, nexttok
@@ -197,28 +197,28 @@ def c2py(plural):
     Python function that implements an equivalent expression.
     """
 
-    if len(plural) > 1000:
+    wenn len(plural) > 1000:
         raise ValueError('plural form expression is too long')
     try:
         result, nexttok = _parse(_tokenize(plural))
-        if nexttok:
+        wenn nexttok:
             raise _error(nexttok)
 
         depth = 0
         fuer c in result:
-            if c == '(':
+            wenn c == '(':
                 depth += 1
-                if depth > 20:
+                wenn depth > 20:
                     # Python compiler limit is about 90.
                     # The most complex example has 2.
                     raise ValueError('plural form expression is too complex')
-            elif c == ')':
+            sowenn c == ')':
                 depth -= 1
 
         ns = {'_as_int': _as_int, '__name__': __name__}
         exec('''if True:
             def func(n):
-                if not isinstance(n, int):
+                wenn not isinstance(n, int):
                     n = _as_int(n)
                 return int(%s)
             ''' % result, ns)
@@ -237,34 +237,34 @@ def _expand_lang(loc):
     # split up the locale into its base components
     mask = 0
     pos = loc.find('@')
-    if pos >= 0:
+    wenn pos >= 0:
         modifier = loc[pos:]
         loc = loc[:pos]
         mask |= COMPONENT_MODIFIER
-    else:
+    sonst:
         modifier = ''
     pos = loc.find('.')
-    if pos >= 0:
+    wenn pos >= 0:
         codeset = loc[pos:]
         loc = loc[:pos]
         mask |= COMPONENT_CODESET
-    else:
+    sonst:
         codeset = ''
     pos = loc.find('_')
-    if pos >= 0:
+    wenn pos >= 0:
         territory = loc[pos:]
         loc = loc[:pos]
         mask |= COMPONENT_TERRITORY
-    else:
+    sonst:
         territory = ''
     language = loc
     ret = []
     fuer i in range(mask+1):
-        if not (i & ~mask):  # if all components fuer this combo exist ...
+        wenn not (i & ~mask):  # wenn all components fuer this combo exist ...
             val = language
-            if i & COMPONENT_TERRITORY: val += territory
-            if i & COMPONENT_CODESET:   val += codeset
-            if i & COMPONENT_MODIFIER:  val += modifier
+            wenn i & COMPONENT_TERRITORY: val += territory
+            wenn i & COMPONENT_CODESET:   val += codeset
+            wenn i & COMPONENT_MODIFIER:  val += modifier
             ret.append(val)
     ret.reverse()
     return ret
@@ -275,44 +275,44 @@ klasse NullTranslations:
         self._info = {}
         self._charset = None
         self._fallback = None
-        if fp is not None:
+        wenn fp is not None:
             self._parse(fp)
 
     def _parse(self, fp):
         pass
 
     def add_fallback(self, fallback):
-        if self._fallback:
+        wenn self._fallback:
             self._fallback.add_fallback(fallback)
-        else:
+        sonst:
             self._fallback = fallback
 
     def gettext(self, message):
-        if self._fallback:
+        wenn self._fallback:
             return self._fallback.gettext(message)
         return message
 
     def ngettext(self, msgid1, msgid2, n):
-        if self._fallback:
+        wenn self._fallback:
             return self._fallback.ngettext(msgid1, msgid2, n)
         n = _as_int2(n)
-        if n == 1:
+        wenn n == 1:
             return msgid1
-        else:
+        sonst:
             return msgid2
 
     def pgettext(self, context, message):
-        if self._fallback:
+        wenn self._fallback:
             return self._fallback.pgettext(context, message)
         return message
 
     def npgettext(self, context, msgid1, msgid2, n):
-        if self._fallback:
+        wenn self._fallback:
             return self._fallback.npgettext(context, msgid1, msgid2, n)
         n = _as_int2(n)
-        if n == 1:
+        wenn n == 1:
             return msgid1
-        else:
+        sonst:
             return msgid2
 
     def info(self):
@@ -324,7 +324,7 @@ klasse NullTranslations:
     def install(self, names=None):
         import builtins
         builtins.__dict__['_'] = self.gettext
-        if names is not None:
+        wenn names is not None:
             allowed = {'gettext', 'ngettext', 'npgettext', 'pgettext'}
             fuer name in allowed & set(names):
                 builtins.__dict__[name] = getattr(self, name)
@@ -360,18 +360,18 @@ klasse GNUTranslations(NullTranslations):
         buflen = len(buf)
         # Are we big endian or little endian?
         magic = unpack('<I', buf[:4])[0]
-        if magic == self.LE_MAGIC:
+        wenn magic == self.LE_MAGIC:
             version, msgcount, masteridx, transidx = unpack('<4I', buf[4:20])
             ii = '<II'
-        elif magic == self.BE_MAGIC:
+        sowenn magic == self.BE_MAGIC:
             version, msgcount, masteridx, transidx = unpack('>4I', buf[4:20])
             ii = '>II'
-        else:
+        sonst:
             raise OSError(0, 'Bad magic number', filename)
 
         major_version, minor_version = self._get_versions(version)
 
-        if major_version not in self.VERSIONS:
+        wenn major_version not in self.VERSIONS:
             raise OSError(0, 'Bad version number ' + str(major_version), filename)
 
         # Now put all messages from the .mo file buffer into the catalog
@@ -381,34 +381,34 @@ klasse GNUTranslations(NullTranslations):
             mend = moff + mlen
             tlen, toff = unpack(ii, buf[transidx:transidx+8])
             tend = toff + tlen
-            if mend < buflen and tend < buflen:
+            wenn mend < buflen and tend < buflen:
                 msg = buf[moff:mend]
                 tmsg = buf[toff:tend]
-            else:
+            sonst:
                 raise OSError(0, 'File is corrupt', filename)
-            # See if we're looking at GNU .mo conventions fuer metadata
-            if mlen == 0:
+            # See wenn we're looking at GNU .mo conventions fuer metadata
+            wenn mlen == 0:
                 # Catalog description
                 lastk = None
                 fuer b_item in tmsg.split(b'\n'):
                     item = b_item.decode().strip()
-                    if not item:
+                    wenn not item:
                         continue
                     # Skip over comment lines:
-                    if item.startswith('#-#-#-#-#') and item.endswith('#-#-#-#-#'):
+                    wenn item.startswith('#-#-#-#-#') and item.endswith('#-#-#-#-#'):
                         continue
                     k = v = None
-                    if ':' in item:
+                    wenn ':' in item:
                         k, v = item.split(':', 1)
                         k = k.strip().lower()
                         v = v.strip()
                         self._info[k] = v
                         lastk = k
-                    elif lastk:
+                    sowenn lastk:
                         self._info[lastk] += '\n' + item
-                    if k == 'content-type':
+                    wenn k == 'content-type':
                         self._charset = v.split('charset=')[1]
-                    elif k == 'plural-forms':
+                    sowenn k == 'plural-forms':
                         v = v.split(';')
                         plural = v[1].split('plural=')[1]
                         self.plural = c2py(plural)
@@ -420,16 +420,16 @@ klasse GNUTranslations(NullTranslations):
             # traditional gettext applications, the msgid conversion will
             # cause no problems since us-ascii should always be a subset of
             # the charset encoding.  We may want to fall back to 8-bit msgids
-            # if the Unicode conversion fails.
+            # wenn the Unicode conversion fails.
             charset = self._charset or 'ascii'
-            if b'\x00' in msg:
+            wenn b'\x00' in msg:
                 # Plural forms
                 msgid1, msgid2 = msg.split(b'\x00')
                 tmsg = tmsg.split(b'\x00')
                 msgid1 = str(msgid1, charset)
                 fuer i, x in enumerate(tmsg):
                     catalog[(msgid1, i)] = str(x, charset)
-            else:
+            sonst:
                 catalog[str(msg, charset)] = str(tmsg, charset)
             # advance to next entry in the seek tables
             masteridx += 8
@@ -438,11 +438,11 @@ klasse GNUTranslations(NullTranslations):
     def gettext(self, message):
         missing = object()
         tmsg = self._catalog.get(message, missing)
-        if tmsg is missing:
+        wenn tmsg is missing:
             tmsg = self._catalog.get((message, self.plural(1)), missing)
-        if tmsg is not missing:
+        wenn tmsg is not missing:
             return tmsg
-        if self._fallback:
+        wenn self._fallback:
             return self._fallback.gettext(message)
         return message
 
@@ -450,11 +450,11 @@ klasse GNUTranslations(NullTranslations):
         try:
             tmsg = self._catalog[(msgid1, self.plural(n))]
         except KeyError:
-            if self._fallback:
+            wenn self._fallback:
                 return self._fallback.ngettext(msgid1, msgid2, n)
-            if n == 1:
+            wenn n == 1:
                 tmsg = msgid1
-            else:
+            sonst:
                 tmsg = msgid2
         return tmsg
 
@@ -462,11 +462,11 @@ klasse GNUTranslations(NullTranslations):
         ctxt_msg_id = self.CONTEXT % (context, message)
         missing = object()
         tmsg = self._catalog.get(ctxt_msg_id, missing)
-        if tmsg is missing:
+        wenn tmsg is missing:
             tmsg = self._catalog.get((ctxt_msg_id, self.plural(1)), missing)
-        if tmsg is not missing:
+        wenn tmsg is not missing:
             return tmsg
-        if self._fallback:
+        wenn self._fallback:
             return self._fallback.pgettext(context, message)
         return message
 
@@ -475,11 +475,11 @@ klasse GNUTranslations(NullTranslations):
         try:
             tmsg = self._catalog[ctxt_msg_id, self.plural(n)]
         except KeyError:
-            if self._fallback:
+            wenn self._fallback:
                 return self._fallback.npgettext(context, msgid1, msgid2, n)
-            if n == 1:
+            wenn n == 1:
                 tmsg = msgid1
-            else:
+            sonst:
                 tmsg = msgid2
         return tmsg
 
@@ -487,36 +487,36 @@ klasse GNUTranslations(NullTranslations):
 # Locate a .mo file using the gettext strategy
 def find(domain, localedir=None, languages=None, all=False):
     # Get some reasonable defaults fuer arguments that were not supplied
-    if localedir is None:
+    wenn localedir is None:
         localedir = _default_localedir
-    if languages is None:
+    wenn languages is None:
         languages = []
         fuer envar in ('LANGUAGE', 'LC_ALL', 'LC_MESSAGES', 'LANG'):
             val = os.environ.get(envar)
-            if val:
+            wenn val:
                 languages = val.split(':')
                 break
-        if 'C' not in languages:
+        wenn 'C' not in languages:
             languages.append('C')
     # now normalize and expand the languages
     nelangs = []
     fuer lang in languages:
         fuer nelang in _expand_lang(lang):
-            if nelang not in nelangs:
+            wenn nelang not in nelangs:
                 nelangs.append(nelang)
     # select a language
-    if all:
+    wenn all:
         result = []
-    else:
+    sonst:
         result = None
     fuer lang in nelangs:
-        if lang == 'C':
+        wenn lang == 'C':
             break
         mofile = os.path.join(localedir, lang, 'LC_MESSAGES', '%s.mo' % domain)
-        if os.path.exists(mofile):
-            if all:
+        wenn os.path.exists(mofile):
+            wenn all:
                 result.append(mofile)
-            else:
+            sonst:
                 return mofile
     return result
 
@@ -527,11 +527,11 @@ _translations = {}
 
 def translation(domain, localedir=None, languages=None,
                 class_=None, fallback=False):
-    if class_ is None:
+    wenn class_ is None:
         class_ = GNUTranslations
     mofiles = find(domain, localedir, languages, all=True)
-    if not mofiles:
-        if fallback:
+    wenn not mofiles:
+        wenn fallback:
             return NullTranslations()
         from errno import ENOENT
         raise FileNotFoundError(ENOENT,
@@ -542,7 +542,7 @@ def translation(domain, localedir=None, languages=None,
     fuer mofile in mofiles:
         key = (class_, os.path.abspath(mofile))
         t = _translations.get(key)
-        if t is None:
+        wenn t is None:
             with open(mofile, 'rb') as fp:
                 t = _translations.setdefault(key, class_(fp))
         # Copy the translation object to allow setting fallbacks and
@@ -552,9 +552,9 @@ def translation(domain, localedir=None, languages=None,
         # are not used.
         import copy
         t = copy.copy(t)
-        if result is None:
+        wenn result is None:
             result = t
-        else:
+        sonst:
             result.add_fallback(t)
     return result
 
@@ -572,14 +572,14 @@ _current_domain = 'messages'
 
 def textdomain(domain=None):
     global _current_domain
-    if domain is not None:
+    wenn domain is not None:
         _current_domain = domain
     return _current_domain
 
 
 def bindtextdomain(domain, localedir=None):
     global _localedirs
-    if localedir is not None:
+    wenn localedir is not None:
         _localedirs[domain] = localedir
     return _localedirs.get(domain, _default_localedir)
 
@@ -597,9 +597,9 @@ def dngettext(domain, msgid1, msgid2, n):
         t = translation(domain, _localedirs.get(domain, None))
     except OSError:
         n = _as_int2(n)
-        if n == 1:
+        wenn n == 1:
             return msgid1
-        else:
+        sonst:
             return msgid2
     return t.ngettext(msgid1, msgid2, n)
 
@@ -617,9 +617,9 @@ def dnpgettext(domain, context, msgid1, msgid2, n):
         t = translation(domain, _localedirs.get(domain, None))
     except OSError:
         n = _as_int2(n)
-        if n == 1:
+        wenn n == 1:
             return msgid1
-        else:
+        sonst:
             return msgid2
     return t.npgettext(context, msgid1, msgid2, n)
 

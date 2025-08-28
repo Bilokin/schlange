@@ -9,10 +9,10 @@ from ctypes import (CFUNCTYPE, POINTER, sizeof, Union,
                     c_bool, c_float, c_double, c_longdouble, py_object)
 
 
-if sys.byteorder == "little":
+wenn sys.byteorder == "little":
     THIS_ENDIAN = "<"
     OTHER_ENDIAN = ">"
-else:
+sonst:
     THIS_ENDIAN = ">"
     OTHER_ENDIAN = "<"
 
@@ -20,7 +20,7 @@ else:
 def normalize(format):
     # Remove current endian specifier and white space from a format
     # string
-    if format is None:
+    wenn format is None:
         return ""
     format = format.replace(OTHER_ENDIAN, THIS_ENDIAN)
     return re.sub(r"\s", "", format)
@@ -32,14 +32,14 @@ klasse Test(unittest.TestCase):
             ob = tp()
             v = memoryview(ob)
             self.assertEqual(normalize(v.format), normalize(fmt))
-            if shape:
+            wenn shape:
                 self.assertEqual(len(v), shape[0])
-            else:
+            sonst:
                 self.assertRaises(TypeError, len, v)
             self.assertEqual(v.itemsize, sizeof(itemtp))
             self.assertEqual(v.shape, shape)
             # XXX Issue #12851: PyCData_NewGetBuffer() must provide strides
-            #     if requested. memoryview currently reconstructs missing
+            #     wenn requested. memoryview currently reconstructs missing
             #     stride information, so this assert will fail.
             # self.assertEqual(v.strides, ())
 
@@ -56,9 +56,9 @@ klasse Test(unittest.TestCase):
             ob = tp()
             v = memoryview(ob)
             self.assertEqual(v.format, fmt)
-            if shape:
+            wenn shape:
                 self.assertEqual(len(v), shape[0])
-            else:
+            sonst:
                 self.assertRaises(TypeError, len, v)
             self.assertEqual(v.itemsize, sizeof(itemtp))
             self.assertEqual(v.shape, shape)
@@ -143,15 +143,15 @@ s_double = "d"
 s_longdouble = "g"
 
 # Alias definitions in ctypes/__init__.py
-if c_int is c_long:
+wenn c_int is c_long:
     s_int = s_long
-if c_uint is c_ulong:
+wenn c_uint is c_ulong:
     s_uint = s_ulong
-if c_longlong is c_long:
+wenn c_longlong is c_long:
     s_longlong = s_long
-if c_ulonglong is c_ulong:
+wenn c_ulonglong is c_ulong:
     s_ulonglong = s_ulong
-if c_longdouble is c_double:
+wenn c_longdouble is c_double:
     s_longdouble = s_double
 
 
@@ -249,5 +249,5 @@ endian_types = [
     ]
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

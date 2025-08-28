@@ -26,7 +26,7 @@ except ImportError:
 
 
 def save_support_xml(filename):
-    if support.junit_xml_list is None:
+    wenn support.junit_xml_list is None:
         return
 
     import pickle
@@ -55,13 +55,13 @@ def runtest_refleak(test_name, test_func,
     """Run a test multiple times, looking fuer reference leaks.
 
     Returns:
-        False if the test didn't leak references; True if we detected refleaks.
+        False wenn the test didn't leak references; True wenn we detected refleaks.
     """
     # This code is hackish and inelegant, but it seems to do the job.
     import copyreg
     import collections.abc
 
-    if not hasattr(sys, 'gettotalrefcount'):
+    wenn not hasattr(sys, 'gettotalrefcount'):
         raise Exception("Tracking reference leaks requires a debug build "
                         "of Python")
 
@@ -83,12 +83,12 @@ def runtest_refleak(test_name, test_func,
         import zipimport
     except ImportError:
         zdc = None # Run unmodified on platforms without zipimport support
-    else:
+    sonst:
         # private attribute that mypy doesn't know about:
         zdc = zipimport._zip_directory_cache.copy()  # type: ignore[attr-defined]
     abcs = {}
     fuer abc in [getattr(collections.abc, a) fuer a in collections.abc.__all__]:
-        if not isabstract(abc):
+        wenn not isabstract(abc):
             continue
         fuer obj in abc.__subclasses__() + [abc]:
             abcs[obj] = _get_dump(obj)[0]
@@ -118,7 +118,7 @@ def runtest_refleak(test_name, test_func,
     # initialize variables to make pyflakes quiet
     rc_before = alloc_before = fd_before = interned_immortal_before = 0
 
-    if not quiet:
+    wenn not quiet:
         print("beginning", repcount, "repetitions. Showing number of leaks "
                 "(. fuer 0 or less, X fuer 10 or more)",
               file=sys.stderr)
@@ -158,18 +158,18 @@ def runtest_refleak(test_name, test_func,
         alloc_deltas[i] = get_pooled_int(alloc_after - alloc_before)
         fd_deltas[i] = get_pooled_int(fd_after - fd_before)
 
-        if not quiet:
+        wenn not quiet:
             # use max, not sum, so total_leaks is one of the pooled ints
             total_leaks = max(rc_deltas[i], alloc_deltas[i], fd_deltas[i])
-            if total_leaks <= 0:
+            wenn total_leaks <= 0:
                 symbol = '.'
-            elif total_leaks < 10:
+            sowenn total_leaks < 10:
                 symbol = (
                     '.', '1', '2', '3', '4', '5', '6', '7', '8', '9',
                     )[total_leaks]
-            else:
+            sonst:
                 symbol = 'X'
-            if i == warmups:
+            wenn i == warmups:
                 print(' ', end='', file=sys.stderr, flush=True)
             print(symbol, end='', file=sys.stderr, flush=True)
             del total_leaks
@@ -182,7 +182,7 @@ def runtest_refleak(test_name, test_func,
 
         restore_support_xml(xml_filename)
 
-    if not quiet:
+    wenn not quiet:
         print(file=sys.stderr)
 
     # These checkers return False on success, True on failure
@@ -214,17 +214,17 @@ def runtest_refleak(test_name, test_func,
         deltas = deltas[warmups:]
         failing = checker(deltas)
         suspicious = any(deltas)
-        if failing or suspicious:
+        wenn failing or suspicious:
             msg = '%s leaked %s %s, sum=%s' % (
                 test_name, deltas, item_name, sum(deltas))
             print(msg, end='', file=sys.stderr)
-            if failing:
+            wenn failing:
                 print(file=sys.stderr, flush=True)
                 with open(filename, "a", encoding="utf-8") as refrep:
                     print(msg, file=refrep)
                     refrep.flush()
                 failed = True
-            else:
+            sonst:
                 print(' (this is fine)', file=sys.stderr, flush=True)
     return (failed, result)
 
@@ -248,7 +248,7 @@ def dash_R_cleanup(fs, ps, pic, zdc, abcs, linecache_data):
         import zipimport
     except ImportError:
         pass # Run unmodified on platforms without zipimport support
-    else:
+    sonst:
         zipimport._zip_directory_cache.clear()
         zipimport._zip_directory_cache.update(zdc)
 
@@ -258,11 +258,11 @@ def dash_R_cleanup(fs, ps, pic, zdc, abcs, linecache_data):
     fuer abc in abs_classes:
         fuer obj in abc.__subclasses__() + [abc]:
             refs = abcs.get(obj, None)
-            if refs is not None:
+            wenn refs is not None:
                 obj._abc_registry_clear()
                 fuer ref in refs:
                     subclass = ref()
-                    if subclass is not None:
+                    wenn subclass is not None:
                         obj.register(subclass)
             obj._abc_caches_clear()
 

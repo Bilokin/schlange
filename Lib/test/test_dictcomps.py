@@ -16,7 +16,7 @@ klasse DictComprehensionTest(unittest.TestCase):
         self.assertEqual(actual, expected)
 
         expected = {0: 0, 1: 1, 2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7, 8: 8, 9: 9}
-        actual = {k: v fuer k in range(10) fuer v in range(10) if k == v}
+        actual = {k: v fuer k in range(10) fuer v in range(10) wenn k == v}
         self.assertEqual(actual, expected)
 
     def test_scope_isolation(self):
@@ -166,5 +166,5 @@ klasse DictComprehensionTest(unittest.TestCase):
                                  expected)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

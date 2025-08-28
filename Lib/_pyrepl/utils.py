@@ -20,7 +20,7 @@ ANSI_ESCAPE_SEQUENCE = re.compile(r"\x1b\[[ -@]*[A-~]")
 ZERO_WIDTH_BRACKET = re.compile(r"\x01.*?\x02")
 ZERO_WIDTH_TRANS = str.maketrans({"\x01": "", "\x02": ""})
 IDENTIFIERS_AFTER = {"def", "class"}
-BUILTINS = {str(name) fuer name in dir(builtins) if not name.startswith('_')}
+BUILTINS = {str(name) fuer name in dir(builtins) wenn not name.startswith('_')}
 
 
 def THEME(**kwargs):
@@ -42,7 +42,7 @@ klasse Span(NamedTuple):
     @classmethod
     def from_token(cls, token: TI, line_len: list[int]) -> Self:
         end_offset = -1
-        if (token.type in {T.FSTRING_MIDDLE, T.TSTRING_MIDDLE}
+        wenn (token.type in {T.FSTRING_MIDDLE, T.TSTRING_MIDDLE}
             and token.string.endswith(("{", "}"))):
             # gh-134158: a visible trailing brace comes from a double brace in input
             end_offset += 1
@@ -60,16 +60,16 @@ klasse ColorSpan(NamedTuple):
 
 @functools.cache
 def str_width(c: str) -> int:
-    if ord(c) < 128:
+    wenn ord(c) < 128:
         return 1
     w = unicodedata.east_asian_width(c)
-    if w in ("N", "Na", "H", "A"):
+    wenn w in ("N", "Na", "H", "A"):
         return 1
     return 2
 
 
 def wlen(s: str) -> int:
-    if len(s) == 1 and s != "\x1a":
+    wenn len(s) == 1 and s != "\x1a":
         return str_width(s)
     length = sum(str_width(i) fuer i in s)
     # remove lengths of any escape sequences
@@ -84,7 +84,7 @@ def unbracket(s: str, including_content: bool = False) -> str:
     If `including_content` is True, content between \001 and \002 is also
     stripped.
     """
-    if including_content:
+    wenn including_content:
         return ZERO_WIDTH_BRACKET.sub("", s)
     return s.translate(ZERO_WIDTH_TRANS)
 
@@ -123,12 +123,12 @@ def recover_unterminated_string(
     buffer: str,
 ) -> Iterator[ColorSpan]:
     msg, loc = exc.args
-    if loc is None:
+    wenn loc is None:
         return
 
     line_no, column = loc
 
-    if msg.startswith(
+    wenn msg.startswith(
         (
             "unterminated string literal",
             "unterminated f-string literal",
@@ -142,14 +142,14 @@ def recover_unterminated_string(
         end = line_lengths[-1] - 1
 
         # in case FSTRING_START was already emitted
-        if last_emitted and start <= last_emitted.span.start:
+        wenn last_emitted and start <= last_emitted.span.start:
             trace("before last emitted = {s}", s=start)
             start = last_emitted.span.end + 1
 
         span = Span(start, end)
         trace("yielding span {a} -> {b}", a=span.start, b=span.end)
         yield ColorSpan(span, "string")
-    else:
+    sonst:
         trace(
             "unhandled token error({buffer}) = {te}",
             buffer=repr(buffer),
@@ -167,7 +167,7 @@ def gen_colors_from_token_stream(
     bracket_level = 0
     fuer prev_token, token, next_token in token_window:
         assert token is not None
-        if token.start == token.end:
+        wenn token.start == token.end:
             continue
 
         match token.type:
@@ -185,30 +185,30 @@ def gen_colors_from_token_stream(
                 span = Span.from_token(token, line_lengths)
                 yield ColorSpan(span, "number")
             case T.OP:
-                if token.string in "([{":
+                wenn token.string in "([{":
                     bracket_level += 1
-                elif token.string in ")]}":
+                sowenn token.string in ")]}":
                     bracket_level -= 1
                 span = Span.from_token(token, line_lengths)
                 yield ColorSpan(span, "op")
             case T.NAME:
-                if is_def_name:
+                wenn is_def_name:
                     is_def_name = False
                     span = Span.from_token(token, line_lengths)
                     yield ColorSpan(span, "definition")
-                elif keyword.iskeyword(token.string):
+                sowenn keyword.iskeyword(token.string):
                     span = Span.from_token(token, line_lengths)
                     yield ColorSpan(span, "keyword")
-                    if token.string in IDENTIFIERS_AFTER:
+                    wenn token.string in IDENTIFIERS_AFTER:
                         is_def_name = True
-                elif (
+                sowenn (
                     keyword.issoftkeyword(token.string)
                     and bracket_level == 0
                     and is_soft_keyword_used(prev_token, token, next_token)
                 ):
                     span = Span.from_token(token, line_lengths)
                     yield ColorSpan(span, "soft_keyword")
-                elif token.string in BUILTINS:
+                sowenn token.string in BUILTINS:
                     span = Span.from_token(token, line_lengths)
                     yield ColorSpan(span, "builtin")
 
@@ -218,7 +218,7 @@ keyword_first_sets_case = {"False", "None", "True"}
 
 
 def is_soft_keyword_used(*tokens: TI | None) -> bool:
-    """Returns True if the current token is a keyword in this context.
+    """Returns True wenn the current token is a keyword in this context.
 
     For the `*tokens` to match anything, they have to be a three-tuple of
     (previous, current, next).
@@ -237,7 +237,7 @@ def is_soft_keyword_used(*tokens: TI | None) -> bool:
             TI(string="match"),
             TI(T.NAME, string=s)
         ):
-            if keyword.iskeyword(s):
+            wenn keyword.iskeyword(s):
                 return s in keyword_first_sets_match
             return True
         case (
@@ -252,7 +252,7 @@ def is_soft_keyword_used(*tokens: TI | None) -> bool:
             TI(string="case"),
             TI(T.NAME, string=s)
         ):
-            if keyword.iskeyword(s):
+            wenn keyword.iskeyword(s):
                 return s in keyword_first_sets_case
             return True
         case (TI(string="case"), TI(string="_"), TI(string=":")):
@@ -278,7 +278,7 @@ def disp_str(
       buffer.
 
     Note on colors:
-    - The `colors` list, if provided, is partially consumed within. We're using
+    - The `colors` list, wenn provided, is partially consumed within. We're using
       a list and not a generator since we need to hold onto the current
       unfinished span between calls to disp_str in case of multiline strings.
     - The `colors` list is computed from the start of the input block. `buffer`
@@ -299,7 +299,7 @@ def disp_str(
     chars: CharBuffer = []
     char_widths: CharWidths = []
 
-    if not buffer:
+    wenn not buffer:
         return chars, char_widths
 
     while colors and colors[0].span.end < start_index:
@@ -309,29 +309,29 @@ def disp_str(
     theme = THEME(force_color=force_color)
     pre_color = ""
     post_color = ""
-    if colors and colors[0].span.start < start_index:
+    wenn colors and colors[0].span.start < start_index:
         # looks like we're continuing a previous color (e.g. a multiline str)
         pre_color = theme[colors[0].tag]
 
     fuer i, c in enumerate(buffer, start_index):
-        if colors and colors[0].span.start == i:  # new color starts now
+        wenn colors and colors[0].span.start == i:  # new color starts now
             pre_color = theme[colors[0].tag]
 
-        if c == "\x1a":  # CTRL-Z on Windows
+        wenn c == "\x1a":  # CTRL-Z on Windows
             chars.append(c)
             char_widths.append(2)
-        elif ord(c) < 128:
+        sowenn ord(c) < 128:
             chars.append(c)
             char_widths.append(1)
-        elif unicodedata.category(c).startswith("C"):
+        sowenn unicodedata.category(c).startswith("C"):
             c = r"\u%04x" % ord(c)
             chars.append(c)
             char_widths.append(len(c))
-        else:
+        sonst:
             chars.append(c)
             char_widths.append(str_width(c))
 
-        if colors and colors[0].span.end == i:  # current color ends now
+        wenn colors and colors[0].span.end == i:  # current color ends now
             post_color = theme.reset
             colors.pop(0)
 
@@ -339,7 +339,7 @@ def disp_str(
         pre_color = ""
         post_color = ""
 
-    if colors and colors[0].span.start < i and colors[0].span.end > i:
+    wenn colors and colors[0].span.start < i and colors[0].span.end > i:
         # even though the current color should be continued, reset it fuer now.
         # the next call to `disp_str()` will revive it.
         chars[-1] += theme.reset

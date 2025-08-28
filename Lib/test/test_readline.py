@@ -18,23 +18,23 @@ from test.support.pty_helper import run_pty
 from test.support.script_helper import assert_python_ok
 from test.support.threading_helper import requires_working_threading
 
-# Skip tests if there is no readline module
+# Skip tests wenn there is no readline module
 readline = import_module('readline')
 
-if hasattr(readline, "_READLINE_LIBRARY_VERSION"):
+wenn hasattr(readline, "_READLINE_LIBRARY_VERSION"):
     is_editline = ("EditLine wrapper" in readline._READLINE_LIBRARY_VERSION)
-else:
+sonst:
     is_editline = readline.backend == "editline"
 
 
 def setUpModule():
-    if verbose:
+    wenn verbose:
         # Python implementations other than CPython may not have
         # these private attributes
-        if hasattr(readline, "_READLINE_VERSION"):
+        wenn hasattr(readline, "_READLINE_VERSION"):
             print(f"readline version: {readline._READLINE_VERSION:#x}")
             print(f"readline runtime version: {readline._READLINE_RUNTIME_VERSION:#x}")
-        if hasattr(readline, "_READLINE_LIBRARY_VERSION"):
+        wenn hasattr(readline, "_READLINE_LIBRARY_VERSION"):
             print(f"readline library version: {readline._READLINE_LIBRARY_VERSION!r}")
         print(f"use libedit emulation? {is_editline}")
 
@@ -109,7 +109,7 @@ klasse TestHistoryManipulation (unittest.TestCase):
             readline.append_history_file(1, hfilename)
         except FileNotFoundError:
             pass  # Some implementations return this error (libreadline).
-        else:
+        sonst:
             os.unlink(hfilename)  # Some create it anyways (libedit).
             # If the file wasn't created, unlink will fail.
         # We're just testing that one of the two expected behaviors happens
@@ -138,7 +138,7 @@ klasse TestHistoryManipulation (unittest.TestCase):
         self.addCleanup(os.remove, TESTFN)
         readline.clear_history()
         readline.read_history_file(TESTFN)
-        if is_editline:
+        wenn is_editline:
             # An add_history() call seems to be required fuer get_history_
             # item() to register items from the file
             readline.add_history("dummy")
@@ -210,12 +210,12 @@ print("History length:", readline.get_current_history_length())
         script = textwrap.dedent("""
             import readline
             def complete(text, state):
-                if state == 0 and text == "$":
+                wenn state == 0 and text == "$":
                     return "$complete"
                 return None
-            if readline.backend == "editline":
+            wenn readline.backend == "editline":
                 readline.parse_and_bind(r'bind "\\t" rl_complete')
-            else:
+            sonst:
                 readline.parse_and_bind(r'"\\t": complete')
             readline.set_completer_delims(" \\t\\n")
             readline.set_completer(complete)
@@ -227,15 +227,15 @@ print("History length:", readline.get_current_history_length())
 
     def test_nonascii(self):
         loc = locale.setlocale(locale.LC_CTYPE, None)
-        if loc in ('C', 'POSIX'):
-            # bpo-29240: On FreeBSD, if the LC_CTYPE locale is C or POSIX,
+        wenn loc in ('C', 'POSIX'):
+            # bpo-29240: On FreeBSD, wenn the LC_CTYPE locale is C or POSIX,
             # writing and reading non-ASCII bytes into/from a TTY works, but
             # readline or ncurses ignores non-ASCII bytes on read.
             self.skipTest(f"the LC_CTYPE locale is {loc!r}")
-        if sys.flags.utf8_mode:
+        wenn sys.flags.utf8_mode:
             encoding = locale.getencoding()
             encoding = codecs.lookup(encoding).name  # normalize the name
-            if encoding != "utf-8":
+            wenn encoding != "utf-8":
                 # gh-133711: The Python UTF-8 Mode ignores the LC_CTYPE locale
                 # and always use the UTF-8 encoding.
                 self.skipTest(f"the LC_CTYPE encoding is {encoding!r}")
@@ -251,16 +251,16 @@ is_editline = readline.backend == "editline"
 inserted = "[\xEFnserted]"
 macro = "|t\xEB[after]"
 set_pre_input_hook = getattr(readline, "set_pre_input_hook", None)
-if is_editline or not set_pre_input_hook:
+wenn is_editline or not set_pre_input_hook:
     # The insert_line() call via pre_input_hook() does nothing with Editline,
     # so include the extra text that would have been inserted here
     macro = inserted + macro
 
-if is_editline:
+wenn is_editline:
     readline.parse_and_bind(r'bind ^B ed-prev-char')
     readline.parse_and_bind(r'bind "\t" rl_complete')
     readline.parse_and_bind(r'bind -s ^A "{}"'.format(macro))
-else:
+sonst:
     readline.parse_and_bind(r'Control-b: backward-char')
     readline.parse_and_bind(r'"\t": complete')
     readline.parse_and_bind(r'set disable-completion off')
@@ -271,19 +271,19 @@ else:
 def pre_input_hook():
     readline.insert_text(inserted)
     readline.redisplay()
-if set_pre_input_hook:
+wenn set_pre_input_hook:
     set_pre_input_hook(pre_input_hook)
 
 def completer(text, state):
-    if text == "t\xEB":
-        if state == 0:
+    wenn text == "t\xEB":
+        wenn state == 0:
             print("text", ascii(text))
             print("line", ascii(readline.get_line_buffer()))
             print("indexes", readline.get_begidx(), readline.get_endidx())
             return "t\xEBnt"
-        if state == 1:
+        wenn state == 1:
             return "t\xEBxt"
-    if text == "t\xEBx" and state == 0:
+    wenn text == "t\xEBx" and state == 0:
         return "t\xEBxt"
     return None
 readline.set_completer(completer)
@@ -305,7 +305,7 @@ print("history", ascii(readline.get_history_item(1)))
         output = run_pty(script, input)
         self.assertIn(b"text 't\\xeb'\r\n", output)
         self.assertIn(b"line '[\\xefnserted]|t\\xeb[after]'\r\n", output)
-        if sys.platform == "darwin" or not is_editline:
+        wenn sys.platform == "darwin" or not is_editline:
             self.assertIn(b"indexes 11 13\r\n", output)
             # Non-macOS libedit does not handle non-ASCII bytes
             # the same way and generates character indices
@@ -316,7 +316,7 @@ print("history", ascii(readline.get_history_item(1)))
             # rl_attempted_completion_function = flex_complete with:
             # (11, 13) instead of libreadline's (12, 15).
 
-        if not is_editline and hasattr(readline, "set_pre_input_hook"):
+        wenn not is_editline and hasattr(readline, "set_pre_input_hook"):
             self.assertIn(b"substitution 't\\xeb'\r\n", output)
             self.assertIn(b"matches ['t\\xebnt', 't\\xebxt']\r\n", output)
         expected = br"'[\xefnserted]|t\xebxt[after]'"
@@ -435,5 +435,5 @@ klasse FreeThreadingTest(unittest.TestCase):
             pass
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

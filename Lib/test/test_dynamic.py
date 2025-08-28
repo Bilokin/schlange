@@ -19,7 +19,7 @@ klasse RebindBuiltinsTests(unittest.TestCase):
 
         Args:
             func: function to configure.
-            *args: any arguments that should be passed to func, if calling it.
+            *args: any arguments that should be passed to func, wenn calling it.
 
         Returns:
             Nothing. Work will be performed on func in-place.
@@ -169,7 +169,7 @@ klasse TestTracing(unittest.TestCase):
             def __init__(self, x):
                 self.x = x
             def __del__(self):
-                if turn_on_trace:
+                wenn turn_on_trace:
                     sys.settrace(trace)
 
         def f():
@@ -194,5 +194,5 @@ klasse TestTracing(unittest.TestCase):
                 turn_on_trace = False
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

@@ -98,7 +98,7 @@ klasse TypeTests(unittest.TestCase):
         self.assertEqual(get_type_qualname(MyType), 'my_qualname')
         self.assertEqual(get_type_name(MyType), 'my_name')
 
-        # PyType_GetFullyQualifiedName() ignores the module if it's "builtins"
+        # PyType_GetFullyQualifiedName() ignores the module wenn it's "builtins"
         # or "__main__" of it is not a string
         MyType.__module__ = 'builtins'
         self.assertEqual(get_type_fullyqualname(MyType), 'my_qualname')
@@ -121,7 +121,7 @@ klasse TypeTests(unittest.TestCase):
 
             found_in_mro = run(True)
             found_in_bases = run(False)
-            if comparable:
+            wenn comparable:
                 self.assertIs(found_in_mro, found_in_bases)
                 return found_in_mro
             return found_in_mro, found_in_bases

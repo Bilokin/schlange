@@ -73,17 +73,17 @@ klasse DOMBuilder:
         self.filter = filter
 
     def setFeature(self, name, state):
-        if self.supportsFeature(name):
+        wenn self.supportsFeature(name):
             state = state and 1 or 0
             try:
                 settings = self._settings[(_name_xform(name), state)]
             except KeyError:
                 raise xml.dom.NotSupportedErr(
                     "unsupported feature: %r" % (name,)) from None
-            else:
+            sonst:
                 fuer name, value in settings:
                     setattr(self._options, name, value)
-        else:
+        sonst:
             raise xml.dom.NotFoundErr("unknown feature: " + repr(name))
 
     def supportsFeature(self, name):
@@ -164,7 +164,7 @@ klasse DOMBuilder:
         try:
             return getattr(self._options, xname)
         except AttributeError:
-            if name == "infoset":
+            wenn name == "infoset":
                 options = self._options
                 return (options.datatype_normalization
                         and options.whitespace_in_element_content
@@ -178,9 +178,9 @@ klasse DOMBuilder:
             raise xml.dom.NotFoundErr("feature %s not known" % repr(name))
 
     def parseURI(self, uri):
-        if self.entityResolver:
+        wenn self.entityResolver:
             input = self.entityResolver.resolveEntity(None, uri)
-        else:
+        sonst:
             input = DOMEntityResolver().resolveEntity(None, uri)
         return self.parse(input)
 
@@ -189,13 +189,13 @@ klasse DOMBuilder:
         options.filter = self.filter
         options.errorHandler = self.errorHandler
         fp = input.byteStream
-        if fp is None and input.systemId:
+        wenn fp is None and input.systemId:
             import urllib.request
             fp = urllib.request.urlopen(input.systemId)
         return self._parse_bytestream(fp, options)
 
     def parseWithContext(self, input, cnode, action):
-        if action not in self._legal_actions:
+        wenn action not in self._legal_actions:
             raise ValueError("not a legal action")
         raise NotImplementedError("Haven't written this yet...")
 
@@ -219,7 +219,7 @@ klasse DOMEntityResolver(object):
         source.systemId = systemId
         source.byteStream = self._get_opener().open(systemId)
 
-        # determine the encoding if the transport provided it
+        # determine the encoding wenn the transport provided it
         source.encoding = self._guess_media_encoding(source)
 
         # determine the base URI is we can
@@ -227,7 +227,7 @@ klasse DOMEntityResolver(object):
         parts = urllib.parse.urlparse(systemId)
         scheme, netloc, path, params, query, fragment = parts
         # XXX should we check the scheme here as well?
-        if path and not path.endswith("/"):
+        wenn path and not path.endswith("/"):
             path = posixpath.dirname(path) + "/"
             parts = scheme, netloc, path, params, query, fragment
             source.baseURI = urllib.parse.urlunparse(parts)
@@ -250,7 +250,7 @@ klasse DOMEntityResolver(object):
         # import email.message
         # assert isinstance(info, email.message.Message)
         charset = info.get_param('charset')
-        if charset is not None:
+        wenn charset is not None:
             return charset.lower()
         return None
 
@@ -342,7 +342,7 @@ klasse DocumentLS:
         return False
 
     def _set_async(self, flag):
-        if flag:
+        wenn flag:
             raise xml.dom.NotSupportedErr(
                 "asynchronous document loading is not supported")
 
@@ -359,9 +359,9 @@ klasse DocumentLS:
         raise NotImplementedError("haven't written this yet")
 
     def saveXML(self, snode):
-        if snode is None:
+        wenn snode is None:
             snode = self
-        elif snode.ownerDocument is not self:
+        sowenn snode.ownerDocument is not self:
             raise xml.dom.WrongDocumentErr()
         return snode.toxml()
 
@@ -371,12 +371,12 @@ klasse DOMImplementationLS:
     MODE_ASYNCHRONOUS = 2
 
     def createDOMBuilder(self, mode, schemaType):
-        if schemaType is not None:
+        wenn schemaType is not None:
             raise xml.dom.NotSupportedErr(
                 "schemaType not yet supported")
-        if mode == self.MODE_SYNCHRONOUS:
+        wenn mode == self.MODE_SYNCHRONOUS:
             return DOMBuilder()
-        if mode == self.MODE_ASYNCHRONOUS:
+        wenn mode == self.MODE_ASYNCHRONOUS:
             raise xml.dom.NotSupportedErr(
                 "asynchronous builders are not supported")
         raise ValueError("unknown value fuer mode")

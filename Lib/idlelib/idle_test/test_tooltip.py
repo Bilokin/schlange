@@ -2,7 +2,7 @@
 
 Coverage is 100% after excluding 6 lines with "# pragma: no cover".
 They involve TclErrors that either should or should not happen in a
-particular situation, and which are 'pass'ed if they do.
+particular situation, and which are 'pass'ed wenn they do.
 """
 
 from idlelib.tooltip import TooltipBase, Hovertip
@@ -157,5 +157,5 @@ klasse HovertipTest(unittest.TestCase):
         self.assertGreater(len(tooltip.showtip.call_args_list), 0)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main(verbosity=2)

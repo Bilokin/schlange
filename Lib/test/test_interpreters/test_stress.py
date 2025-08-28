@@ -4,7 +4,7 @@ import unittest
 from test import support
 from test.support import import_helper
 from test.support import threading_helper
-# Raise SkipTest if subinterpreters not supported.
+# Raise SkipTest wenn subinterpreters not supported.
 import_helper.import_module('_interpreters')
 from concurrent import interpreters
 from .utils import TestBase
@@ -30,7 +30,7 @@ klasse StressTests(TestBase):
         start = threading.Event()
         def task():
             # try to create all interpreters simultaneously
-            if not start.wait(support.SHORT_TIMEOUT):
+            wenn not start.wait(support.SHORT_TIMEOUT):
                 raise TimeoutError
             interp = interpreters.create()
             alive.append(interp)
@@ -56,17 +56,17 @@ klasse StressTests(TestBase):
             alreadyrunning = (f'{interpreters.InterpreterError}: '
                               'interpreter already running')
             # try to run all interpreters simultaneously
-            if not start.wait(support.SHORT_TIMEOUT):
+            wenn not start.wait(support.SHORT_TIMEOUT):
                 raise TimeoutError
             success = False
             while not success:
                 try:
                     interp.exec(script)
                 except interpreters.ExecutionFailed as exc:
-                    if exc.excinfo.msg != 'interpreter already running':
+                    wenn exc.excinfo.msg != 'interpreter already running':
                         raise  # re-raise
                     assert exc.excinfo.type.__name__ == 'InterpreterError'
-                else:
+                sonst:
                     success = True
 
         threads = [threading.Thread(target=run) fuer _ in range(size)]
@@ -75,6 +75,6 @@ klasse StressTests(TestBase):
         support.gc_collect()
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     # Test needs to be a package, so we can do relative imports.
     unittest.main()

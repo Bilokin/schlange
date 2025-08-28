@@ -61,7 +61,7 @@ klasse CodeopTests(unittest.TestCase):
         av("3**3\n")
 
         av("if 9==3:\n   pass\nelse:\n   pass\n")
-        av("if 1:\n pass\n if 1:\n  pass\n else:\n  pass\n")
+        av("if 1:\n pass\n wenn 1:\n  pass\n sonst:\n  pass\n")
 
         av("#a\n#b\na = 3\n")
         av("#a\n\n   \na=3\n")
@@ -81,7 +81,7 @@ klasse CodeopTests(unittest.TestCase):
         av("\n\na = 1\n\n")
         av("\n\nif 1: a=1\n\n")
 
-        av("if 1:\n pass\n if 1:\n  pass\n else:\n  pass\n")
+        av("if 1:\n pass\n wenn 1:\n  pass\n sonst:\n  pass\n")
         av("#a\n\n   \na=3\n\n")
 
         av("\n\na**3","eval")
@@ -112,9 +112,9 @@ klasse CodeopTests(unittest.TestCase):
         ai("if 9==3:\n   pass\nelse:\n   pass")
         ai("if 1:")
         ai("if 1:\n")
-        ai("if 1:\n pass\n if 1:\n  pass\n else:")
-        ai("if 1:\n pass\n if 1:\n  pass\n else:\n")
-        ai("if 1:\n pass\n if 1:\n  pass\n else:\n  pass")
+        ai("if 1:\n pass\n wenn 1:\n  pass\n sonst:")
+        ai("if 1:\n pass\n wenn 1:\n  pass\n sonst:\n")
+        ai("if 1:\n pass\n wenn 1:\n  pass\n sonst:\n  pass")
 
         ai("def x():")
         ai("def x():\n")
@@ -136,7 +136,7 @@ klasse CodeopTests(unittest.TestCase):
         ai("9+ \\","eval")
         ai("lambda z: \\","eval")
 
-        ai("if True:\n if True:\n  if True:   \n")
+        ai("if True:\n wenn True:\n  wenn True:   \n")
 
         ai("@a(")
         ai("@a(b")
@@ -239,7 +239,7 @@ klasse CodeopTests(unittest.TestCase):
 
         ai("def x():\n\npass\n")
 
-        ai("\n\n if 1: pass\n\npass")
+        ai("\n\n wenn 1: pass\n\npass")
 
         ai("a = 9+ \\\n")
         ai("a = 'a\\ ")
@@ -326,5 +326,5 @@ klasse CodeopTests(unittest.TestCase):
 
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

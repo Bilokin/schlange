@@ -29,7 +29,7 @@ filenames = [
 # these normal forms.  For example, HFS Plus uses a variant of Normal Form D
 # in which U+2000 through U+2FFF, U+F900 through U+FAFF, and U+2F800 through
 # U+2FAFF are not decomposed."
-if not is_apple:
+wenn not is_apple:
     filenames.extend([
         # Specific code points: NFC(fn), NFD(fn), NFKC(fn) and NFKD(fn) all different
         '11_\u0385\u03d3\u03d4',
@@ -48,7 +48,7 @@ if not is_apple:
 
 
 # Is it Unicode-friendly?
-if not os.path.supports_unicode_filenames:
+wenn not os.path.supports_unicode_filenames:
     fsencoding = sys.getfilesystemencoding()
     try:
         fuer name in filenames:
@@ -79,7 +79,7 @@ klasse UnicodeFileTests(unittest.TestCase):
         self.files = files
 
     def norm(self, s):
-        if self.normal_form:
+        wenn self.normal_form:
             return normalize(self.normal_form, s)
         return s
 
@@ -89,7 +89,7 @@ klasse UnicodeFileTests(unittest.TestCase):
         with self.assertRaises(expected_exception) as c:
             fn(filename)
         exc_filename = c.exception.filename
-        if check_filename:
+        wenn check_filename:
             self.assertEqual(exc_filename, filename, "Function '%s(%a) failed "
                              "with bad filename in the exception: %a" %
                              (fn.__name__, filename, exc_filename))
@@ -105,10 +105,10 @@ klasse UnicodeFileTests(unittest.TestCase):
             self._apply_failure(os.remove, name)
             self._apply_failure(os.listdir, name)
 
-    if sys.platform == 'win32':
+    wenn sys.platform == 'win32':
         # Windows is lunatic. Issue #13366.
         _listdir_failure = NotADirectoryError, FileNotFoundError
-    else:
+    sonst:
         _listdir_failure = NotADirectoryError
 
     def test_open(self):
@@ -143,7 +143,7 @@ klasse UnicodeFileTests(unittest.TestCase):
             self._apply_failure(os.listdir, name)
 
     # Skip the test on Apple platforms, because they use a normalization different
-    # than Python NFD normalization: filenames are different even if we use
+    # than Python NFD normalization: filenames are different even wenn we use
     # Python NFD normalization.
     @unittest.skipIf(is_apple, 'irrelevant test on Apple platforms')
     def test_listdir(self):
@@ -189,5 +189,5 @@ klasse UnicodeNFKDFileTests(UnicodeFileTests):
     normal_form = 'NFKD'
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

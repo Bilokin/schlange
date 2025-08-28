@@ -179,7 +179,7 @@ klasse ScopeTests(unittest.TestCase):
 
     def testCellIsArgAndEscapes(self):
         # We need to be sure that a cell passed in as an arg still
-        # gets wrapped in a new cell if the arg escapes into an
+        # gets wrapped in a new cell wenn the arg escapes into an
         # inner function (closure).
 
         def external():
@@ -204,7 +204,7 @@ klasse ScopeTests(unittest.TestCase):
 
     def testCellIsLocalAndEscapes(self):
         # We need to be sure that a cell bound to a local still
-        # gets wrapped in a new cell if the local escapes into an
+        # gets wrapped in a new cell wenn the local escapes into an
         # inner function (closure).
 
         def external():
@@ -232,13 +232,13 @@ klasse ScopeTests(unittest.TestCase):
 
         def f(x):
             def fact(n):
-                if n == 0:
+                wenn n == 0:
                     return 1
-                else:
+                sonst:
                     return n * fact(n - 1)
-            if x >= 0:
+            wenn x >= 0:
                 return fact(x)
-            else:
+            sonst:
                 raise ValueError("x must be >= 0")
 
         self.assertEqual(f(6), 720)
@@ -350,7 +350,7 @@ klasse ScopeTests(unittest.TestCase):
                 f()
             except UnboundLocalError:
                 pass
-            else:
+            sonst:
                 fail('scope of global_x not correctly determined')
             """, {'fail': self.fail})
 
@@ -590,8 +590,8 @@ klasse ScopeTests(unittest.TestCase):
 
         def adaptgetter(name, klass, getter):
             kind, des = getter
-            if kind == 1:       # AV happens when stepping from this line to next
-                if des == "":
+            wenn kind == 1:       # AV happens when stepping from this line to next
+                wenn des == "":
                     des = "_%s__%s" % (klass.__name__, name)
                 return lambda obj: getattr(obj, des)
 
@@ -617,7 +617,7 @@ klasse ScopeTests(unittest.TestCase):
             exec(g.__code__, {})
         except TypeError:
             pass
-        else:
+        sonst:
             self.fail("exec should have failed, because code contained free vars")
 
     def testListCompLocalVars(self):
@@ -626,7 +626,7 @@ klasse ScopeTests(unittest.TestCase):
             print(bad)
         except NameError:
             pass
-        else:
+        sonst:
             print("bad should not be defined")
 
         def x():
@@ -785,7 +785,7 @@ klasse ScopeTests(unittest.TestCase):
     def testCellLeak(self):
         # Issue 17927.
         #
-        # The issue was that if self was part of a cycle involving the
+        # The issue was that wenn self was part of a cycle involving the
         # frame of a method call, *and* the method contained a nested
         # function referencing self, thereby forcing 'self' into a
         # cell, setting self to None would not be enough to break the
@@ -796,7 +796,7 @@ klasse ScopeTests(unittest.TestCase):
         # the cycle.
         klasse Tester:
             def dig(self):
-                if 0:
+                wenn 0:
                     lambda: self
                 try:
                     1/0
@@ -835,5 +835,5 @@ klasse ScopeTests(unittest.TestCase):
         with self.assertRaises(TypeError):
             closure(_MultiplyNested__arg=2)
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

@@ -42,7 +42,7 @@ klasse _Printer(object):
                             fuer filename in files]
 
     def __setup(self):
-        if self.__lines:
+        wenn self.__lines:
             return
         data = None
         fuer filename in self.__filenames:
@@ -52,16 +52,16 @@ klasse _Printer(object):
                 break
             except OSError:
                 pass
-        if not data:
+        wenn not data:
             data = self.__data
         self.__lines = data.split('\n')
         self.__linecnt = len(self.__lines)
 
     def __repr__(self):
         self.__setup()
-        if len(self.__lines) <= self.MAXLINES:
+        wenn len(self.__lines) <= self.MAXLINES:
             return "\n".join(self.__lines)
-        else:
+        sonst:
             return "Type %s() to see the full %s text" % ((self.__name,)*2)
 
     def __call__(self):
@@ -74,14 +74,14 @@ klasse _Printer(object):
                     print(self.__lines[i])
             except IndexError:
                 break
-            else:
+            sonst:
                 lineno += self.MAXLINES
                 key = None
                 while key is None:
                     key = input(prompt)
-                    if key not in ('', 'q'):
+                    wenn key not in ('', 'q'):
                         key = None
-                if key == 'q':
+                wenn key == 'q':
                     break
 
 

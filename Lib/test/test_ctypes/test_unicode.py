@@ -59,5 +59,5 @@ klasse StringTestCase(UnicodeTestCase):
         self.assertEqual(buf[6:5:-1], b"")
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

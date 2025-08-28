@@ -165,15 +165,15 @@ klasse ModuleTest(unittest.TestCase):
 
 
 def serialize(elem, to_string=True, encoding='unicode', **options):
-    if encoding != 'unicode':
+    wenn encoding != 'unicode':
         file = io.BytesIO()
-    else:
+    sonst:
         file = io.StringIO()
     tree = ET.ElementTree(elem)
     tree.write(file, encoding=encoding, **options)
-    if to_string:
+    wenn to_string:
         return file.getvalue()
-    else:
+    sonst:
         file.seek(0)
         return file
 
@@ -258,9 +258,9 @@ klasse ElementTreeTest(unittest.TestCase):
 
             self.assertIsInstance(element.tag, str)
             self.assertIsInstance(element.attrib, dict)
-            if element.text is not None:
+            wenn element.text is not None:
                 self.assertIsInstance(element.text, str)
-            if element.tail is not None:
+            wenn element.tail is not None:
                 self.assertIsInstance(element.tail, str)
             fuer elem in element:
                 check_element(elem)
@@ -633,8 +633,8 @@ klasse ElementTreeTest(unittest.TestCase):
 
         events = ("start", "end", "start-ns", "end-ns")
         context = iterparse(SIMPLE_NS_XMLFILE, events)
-        self.assertEqual([(action, elem.tag) if action in ("start", "end")
-                                             else (action, elem)
+        self.assertEqual([(action, elem.tag) wenn action in ("start", "end")
+                                             sonst (action, elem)
                           fuer action, elem in context], [
                 ('start-ns', ('', 'namespace')),
                 ('start', '{namespace}root'),
@@ -1502,12 +1502,12 @@ klasse ElementTreeTest(unittest.TestCase):
 klasse XMLPullParserTest(unittest.TestCase):
 
     def _feed(self, parser, data, chunk_size=None, flush=False):
-        if chunk_size is None:
+        wenn chunk_size is None:
             parser.feed(data)
-        else:
+        sonst:
             fuer i in range(0, len(data), chunk_size):
                 parser.feed(data[i:i+chunk_size])
-        if flush:
+        wenn flush:
             parser.flush()
 
     def assert_events(self, parser, expected, max_events=None):
@@ -1760,13 +1760,13 @@ klasse XMLPullParserTest(unittest.TestCase):
             parser.feed(chunk)
 
         self.assert_event_tags(parser, [])  # i.e. no elements started
-        if ET is pyET:
+        wenn ET is pyET:
             self.assertTrue(parser._parser._parser.GetReparseDeferralEnabled())
 
         parser.flush()
 
         self.assert_event_tags(parser, [('start', 'doc')])
-        if ET is pyET:
+        wenn ET is pyET:
             self.assertTrue(parser._parser._parser.GetReparseDeferralEnabled())
 
         parser.feed("</doc>")
@@ -1780,20 +1780,20 @@ klasse XMLPullParserTest(unittest.TestCase):
         fuer chunk in ("<doc", ">"):
             parser.feed(chunk)
 
-        if pyexpat.version_info >= (2, 6, 0):
-            if not ET is pyET:
+        wenn pyexpat.version_info >= (2, 6, 0):
+            wenn not ET is pyET:
                 self.skipTest(f'XMLParser.(Get|Set)ReparseDeferralEnabled '
                               'methods not available in C')
             parser._parser._parser.SetReparseDeferralEnabled(False)
             self.assert_event_tags(parser, [])  # i.e. no elements started
 
-        if ET is pyET:
+        wenn ET is pyET:
             self.assertFalse(parser._parser._parser.GetReparseDeferralEnabled())
 
         parser.flush()
 
         self.assert_event_tags(parser, [('start', 'doc')])
-        if ET is pyET:
+        wenn ET is pyET:
             self.assertFalse(parser._parser._parser.GetReparseDeferralEnabled())
 
         parser.feed("</doc>")
@@ -1940,7 +1940,7 @@ klasse XIncludeTest(unittest.TestCase):
             data = XINCLUDE[href]
         except KeyError:
             raise OSError("resource not found")
-        if parse == "xml":
+        wenn parse == "xml":
             data = ET.XML(data)
         return data
 
@@ -1950,10 +1950,10 @@ klasse XIncludeTest(unittest.TestCase):
     def _my_loader(self, href, parse):
         # Used to avoid a test-dependency problem where the default loader
         # of ElementInclude uses the pyET parser fuer cET tests.
-        if parse == 'xml':
+        wenn parse == 'xml':
             with open(href, 'rb') as f:
                 return ET.parse(f).getroot()
-        else:
+        sonst:
             return None
 
     def test_xinclude_default(self):
@@ -2316,7 +2316,7 @@ klasse BugsTest(unittest.TestCase):
             b'<dc:title xmlns:dc="http://purl.org/dc/elements/1.1/" />')
 
     def test_bug_200709_element_comment(self):
-        # Not sure if this can be fixed, really (since the serializer needs
+        # Not sure wenn this can be fixed, really (since the serializer needs
         # ET.Comment, not cET.comment).
 
         a = ET.Element('a')
@@ -2581,7 +2581,7 @@ klasse BasicElementTest(ElementTestCase, unittest.TestCase):
         with self.assertRaises(TypeError):
             e[:] = [ET.Element('bar'), 'foo']
 
-        if hasattr(e, '__setstate__'):
+        wenn hasattr(e, '__setstate__'):
             state = {
                 'tag': 'tag',
                 '_children': [None],  # non-Element
@@ -2591,7 +2591,7 @@ klasse BasicElementTest(ElementTestCase, unittest.TestCase):
             }
             self.assertRaises(TypeError, e.__setstate__, state)
 
-        if hasattr(e, '__deepcopy__'):
+        wenn hasattr(e, '__deepcopy__'):
             klasse E(ET.Element):
                 def __deepcopy__(self, memo):
                     return None  # non-Element
@@ -2754,9 +2754,9 @@ klasse BadElementTest(ElementTestCase, unittest.TestCase):
                 root.clear()
                 return not raises
 
-        if raises:
+        wenn raises:
             get_checker_context = lambda: self.assertRaises(ValueError)
-        else:
+        sonst:
             get_checker_context = nullcontext
 
         self.assertIs(E.__eq__, object.__eq__)
@@ -2799,7 +2799,7 @@ klasse BadElementTest(ElementTestCase, unittest.TestCase):
 
             # Test removing root[1] (of type R) from [U(), R()].
             is_special = is_python_implementation() and raises and Z is Y
-            if is_python_implementation() and raises and Z is Y:
+            wenn is_python_implementation() and raises and Z is Y:
                 # In pure Python, using root.clear() sets the children
                 # list to [] without calling list.clear().
                 #
@@ -2812,7 +2812,7 @@ klasse BadElementTest(ElementTestCase, unittest.TestCase):
                 # to the fast Py_EQ path and Y.__eq__() is called exactly
                 # once (when checking root[0]).
                 continue
-            else:
+            sonst:
                 cases = self.cases_for_remove_existing_with_mutations(E, Z)
                 fuer R, U, description in cases:
                     with self.subTest(description):
@@ -2839,9 +2839,9 @@ klasse BadElementTest(ElementTestCase, unittest.TestCase):
                 del root[0]
                 return not raises
 
-        if raises:
+        wenn raises:
             get_checker_context = lambda: self.assertRaises(ValueError)
-        else:
+        sonst:
             get_checker_context = nullcontext
 
         # test removing R() from [U(), V()]
@@ -2997,10 +2997,10 @@ klasse BadElementTest(ElementTestCase, unittest.TestCase):
         root = ET.Element('a')
         evil = X('x')
         root.extend([evil, ET.Element('y')])
-        if is_python_implementation():
+        wenn is_python_implementation():
             # Mutating a list over which we iterate raises an error.
             self.assertRaises(RuntimeError, copy.deepcopy, root)
-        else:
+        sonst:
             c = copy.deepcopy(root)
             # In the C implementation, we can still copy the evil element.
             self.assertListEqual(list(c), [evil])
@@ -3764,7 +3764,7 @@ klasse TreeBuilderTest(unittest.TestCase):
                 self.what = what
 
             def __getattr__(self, name):
-                if name == self.raise_in:
+                wenn name == self.raise_in:
                     raise self.what(self.raise_in)
                 def handle(*args):
                     pass
@@ -4365,7 +4365,7 @@ klasse KeywordArgsTest(unittest.TestCase):
 klasse NoAcceleratorTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        if ET is not pyET:
+        wenn ET is not pyET:
             raise unittest.SkipTest('only fuer the Python version')
 
     # Test that the C accelerator was not imported fuer pyET
@@ -4533,10 +4533,10 @@ klasse C14NTest(unittest.TestCase):
         full_path = partial(os.path.join, datadir)
 
         files = [filename[:-4] fuer filename in sorted(os.listdir(datadir))
-                 if filename.endswith('.xml')]
+                 wenn filename.endswith('.xml')]
         input_files = [
             filename fuer filename in files
-            if filename.startswith('in')
+            wenn filename.startswith('in')
         ]
         configs = {
             filename: {
@@ -4545,14 +4545,14 @@ klasse C14NTest(unittest.TestCase):
                 fuer option in ET.parse(full_path(filename) + ".xml").getroot()
             }
             fuer filename in files
-            if filename.startswith('c14n')
+            wenn filename.startswith('c14n')
         }
 
         tests = {
             input_file: [
                 (filename, configs[filename.rsplit('_', 1)[-1]])
                 fuer filename in files
-                if filename.startswith(f'out_{input_file}_')
+                wenn filename.startswith(f'out_{input_file}_')
                 and filename.rsplit('_', 1)[-1] in configs
             ]
             fuer input_file in input_files
@@ -4574,7 +4574,7 @@ klasse C14NTest(unittest.TestCase):
                     config, 'TrimTextNodes') == 'true'
                 rewrite_prefixes = get_option(
                     config, 'PrefixRewrite') == 'sequential'
-                if 'QNameAware' in config:
+                wenn 'QNameAware' in config:
                     qattrs = [
                         f"{{{el.get('NS')}}}{el.get('Name')}"
                         fuer el in config['QNameAware'][1].findall(
@@ -4585,7 +4585,7 @@ klasse C14NTest(unittest.TestCase):
                         fuer el in config['QNameAware'][1].findall(
                             '{http://www.w3.org/2010/xml-c14n2}Element')
                     ]
-                else:
+                sonst:
                     qtags = qattrs = None
 
                 # Build subtest description from config.
@@ -4595,19 +4595,19 @@ klasse C14NTest(unittest.TestCase):
                 )
 
                 with self.subTest(f"{output_file}({config_descr})"):
-                    if input_file == 'inNsRedecl' and not rewrite_prefixes:
+                    wenn input_file == 'inNsRedecl' and not rewrite_prefixes:
                         self.skipTest(
                             f"Redeclared namespace handling is not supported in {output_file}")
-                    if input_file == 'inNsSuperfluous' and not rewrite_prefixes:
+                    wenn input_file == 'inNsSuperfluous' and not rewrite_prefixes:
                         self.skipTest(
                             f"Redeclared namespace handling is not supported in {output_file}")
-                    if 'QNameAware' in config and config['QNameAware'][1].find(
+                    wenn 'QNameAware' in config and config['QNameAware'][1].find(
                             '{http://www.w3.org/2010/xml-c14n2}XPathElement') is not None:
                         self.skipTest(
                             f"QName rewriting in XPath text is not supported in {output_file}")
 
                     f = full_path(input_file + ".xml")
-                    if input_file == 'inC14N5':
+                    wenn input_file == 'inC14N5':
                         # Hack: avoid setting up external entity resolution in the parser.
                         with open(full_path('world.txt'), 'rb') as entity_file:
                             with open(f, 'rb') as f:
@@ -4622,7 +4622,7 @@ klasse C14NTest(unittest.TestCase):
 
                     with open(full_path(output_file + ".xml"), 'r', encoding='utf8') as f:
                         expected = f.read()
-                        if input_file == 'inC14N3':
+                        wenn input_file == 'inC14N3':
                             # FIXME: cET resolves default attributes but ET does not!
                             expected = expected.replace(' attr="default"', '')
                             text = text.replace(' attr="default"', '')
@@ -4636,7 +4636,7 @@ def setUpModule(module=None):
     global pyET
     pyET = import_fresh_module('xml.etree.ElementTree',
                                blocked=['_elementtree'])
-    if module is None:
+    wenn module is None:
         module = pyET
 
     global ET
@@ -4662,10 +4662,10 @@ def setUpModule(module=None):
     ElementPath._cache = path_cache.copy()
 
     # Align the Comment/PI factories.
-    if hasattr(ET, '_set_factories'):
+    wenn hasattr(ET, '_set_factories'):
         old_factories = ET._set_factories(ET.Comment, ET.PI)
         unittest.addModuleCleanup(ET._set_factories, *old_factories)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

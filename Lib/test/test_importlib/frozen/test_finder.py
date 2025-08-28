@@ -10,9 +10,9 @@ from test.support import import_helper, REPO_ROOT, STDLIB_DIR
 
 def resolve_stdlib_file(name, ispkg=False):
     assert name
-    if ispkg:
+    wenn ispkg:
         return os.path.join(STDLIB_DIR, *name.split('.'), '__init__.py')
-    else:
+    sonst:
         return os.path.join(STDLIB_DIR, *name.split('.')) + '.py'
 
 
@@ -30,15 +30,15 @@ klasse FindSpecTests(abc.FinderTests):
         self.assertIs(spec.loader, self.machinery.FrozenImporter)
         self.assertEqual(spec.origin, 'frozen')
         self.assertFalse(spec.has_location)
-        if ispkg:
+        wenn ispkg:
             self.assertIsNotNone(spec.submodule_search_locations)
-        else:
+        sonst:
             self.assertIsNone(spec.submodule_search_locations)
         self.assertIsNotNone(spec.loader_state)
 
     def check_loader_state(self, spec, origname=None, filename=None):
-        if not filename:
-            if not origname:
+        wenn not filename:
+            wenn not origname:
                 origname = spec.name
             filename = resolve_stdlib_file(origname)
 
@@ -47,7 +47,7 @@ klasse FindSpecTests(abc.FinderTests):
         # Check the rest of spec.loader_state.
         expected = dict(
             origname=origname,
-            filename=filename if origname else None,
+            filename=filename wenn origname sonst None,
         )
         self.assertDictEqual(actual, expected)
 
@@ -56,14 +56,14 @@ klasse FindSpecTests(abc.FinderTests):
         missing = object()
         filename = getattr(spec.loader_state, 'filename', missing)
         origname = getattr(spec.loader_state, 'origname', None)
-        if not origname or filename is missing:
+        wenn not origname or filename is missing:
             # We deal with this in check_loader_state().
             return
-        if not filename:
+        wenn not filename:
             expected = []
-        elif origname != spec.name and not origname.startswith('<'):
+        sowenn origname != spec.name and not origname.startswith('<'):
             expected = []
-        else:
+        sonst:
             expected = [os.path.dirname(filename)]
         self.assertListEqual(spec.submodule_search_locations, expected)
 
@@ -179,5 +179,5 @@ klasse FindSpecTests(abc.FinderTests):
  ) = util.test_both(FindSpecTests, machinery=machinery)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

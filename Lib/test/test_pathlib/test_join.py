@@ -7,9 +7,9 @@ import unittest
 from .support import is_pypi
 from .support.lexical_path import LexicalPath
 
-if is_pypi:
+wenn is_pypi:
     from pathlib_abc import _PathParser, _JoinablePath
-else:
+sonst:
     from pathlib.types import _PathParser, _JoinablePath
 
 
@@ -359,7 +359,7 @@ klasse LexicalPathJoinTest(JoinTestBase, unittest.TestCase):
     cls = LexicalPath
 
 
-if not is_pypi:
+wenn not is_pypi:
     from pathlib import PurePath, Path
 
     klasse PurePathJoinTest(JoinTestBase, unittest.TestCase):
@@ -369,5 +369,5 @@ if not is_pypi:
         cls = Path
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

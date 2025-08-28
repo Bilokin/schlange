@@ -3,7 +3,7 @@ from test import support
 from test.support import import_helper
 
 
-# skip tests if the _ctypes extension was not built
+# skip tests wenn the _ctypes extension was not built
 import_helper.import_module('ctypes')
 
 def load_tests(*args):

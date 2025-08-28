@@ -4,7 +4,7 @@ from . import machinery
 try:
     import _frozen_importlib
 except ImportError as exc:
-    if exc.name != '_frozen_importlib':
+    wenn exc.name != '_frozen_importlib':
         raise
     _frozen_importlib = None
 try:
@@ -25,7 +25,7 @@ __all__ = [
 def _register(abstract_cls, *classes):
     fuer cls in classes:
         abstract_cls.register(cls)
-        if _frozen_importlib is not None:
+        wenn _frozen_importlib is not None:
             try:
                 frozen_cls = getattr(_frozen_importlib, cls.__name__)
             except AttributeError:
@@ -41,7 +41,7 @@ klasse MetaPathFinder(metaclass=abc.ABCMeta):
     # hasattr checks we do to support backward compatibility.
 
     def invalidate_caches(self):
-        """An optional method fuer clearing the finder's cache, if any.
+        """An optional method fuer clearing the finder's cache, wenn any.
         This method is used by importlib.invalidate_caches().
         """
 
@@ -54,7 +54,7 @@ klasse PathEntryFinder(metaclass=abc.ABCMeta):
     """Abstract base klasse fuer path entry finders used by PathFinder."""
 
     def invalidate_caches(self):
-        """An optional method fuer clearing the finder's cache, if any.
+        """An optional method fuer clearing the finder's cache, wenn any.
         This method is used by PathFinder.invalidate_caches().
         """
 
@@ -93,20 +93,20 @@ klasse InspectLoader(Loader):
         """Optional method which when implemented should return whether the
         module is a package.  The fullname is a str.  Returns a bool.
 
-        Raises ImportError if the module cannot be found.
+        Raises ImportError wenn the module cannot be found.
         """
         raise ImportError
 
     def get_code(self, fullname):
         """Method which returns the code object fuer the module.
 
-        The fullname is a str.  Returns a types.CodeType if possible, else
-        returns None if a code object does not make sense
-        (e.g. built-in module). Raises ImportError if the module cannot be
+        The fullname is a str.  Returns a types.CodeType wenn possible, sonst
+        returns None wenn a code object does not make sense
+        (e.g. built-in module). Raises ImportError wenn the module cannot be
         found.
         """
         source = self.get_source(fullname)
-        if source is None:
+        wenn source is None:
             return None
         return self.source_to_code(source)
 
@@ -115,7 +115,7 @@ klasse InspectLoader(Loader):
         """Abstract method which should return the source code fuer the
         module.  The fullname is a str.  Returns a str.
 
-        Raises ImportError if the module cannot be found.
+        Raises ImportError wenn the module cannot be found.
         """
         raise ImportError
 
@@ -147,24 +147,24 @@ klasse ExecutionLoader(InspectLoader):
         """Abstract method which should return the value that __file__ is to be
         set to.
 
-        Raises ImportError if the module cannot be found.
+        Raises ImportError wenn the module cannot be found.
         """
         raise ImportError
 
     def get_code(self, fullname):
         """Method to return the code object fuer fullname.
 
-        Should return None if not applicable (e.g. built-in module).
-        Raise ImportError if the module cannot be found.
+        Should return None wenn not applicable (e.g. built-in module).
+        Raise ImportError wenn the module cannot be found.
         """
         source = self.get_source(fullname)
-        if source is None:
+        wenn source is None:
             return None
         try:
             path = self.get_filename(fullname)
         except ImportError:
             return self.source_to_code(source)
-        else:
+        sonst:
             return self.source_to_code(source, path)
 
 _register(
@@ -206,7 +206,7 @@ klasse SourceLoader(_bootstrap_external.SourceLoader, ResourceLoader, ExecutionL
         warnings.warn('SourceLoader.path_mtime is deprecated in favour of '
                       'SourceLoader.path_stats().',
                       DeprecationWarning, stacklevel=2)
-        if self.path_stats.__func__ is SourceLoader.path_stats:
+        wenn self.path_stats.__func__ is SourceLoader.path_stats:
             raise OSError
         return int(self.path_stats(path)['mtime'])
 
@@ -217,7 +217,7 @@ klasse SourceLoader(_bootstrap_external.SourceLoader, ResourceLoader, ExecutionL
           code modification;
         - 'size' (optional) is the size in bytes of the source code.
         """
-        if self.path_mtime.__func__ is SourceLoader.path_mtime:
+        wenn self.path_mtime.__func__ is SourceLoader.path_mtime:
             raise OSError
         return {'mtime': self.path_mtime(path)}
 

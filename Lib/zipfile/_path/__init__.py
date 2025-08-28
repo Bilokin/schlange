@@ -130,7 +130,7 @@ klasse CompleteDirs(InitializedState, zipfile.ZipFile):
         names = self._name_set()
         dirname = name + '/'
         dir_match = name not in names and dirname in names
-        return dirname if dir_match else name
+        return dirname wenn dir_match sonst name
 
     def getinfo(self, name):
         """
@@ -139,7 +139,7 @@ klasse CompleteDirs(InitializedState, zipfile.ZipFile):
         try:
             return super().getinfo(name)
         except KeyError:
-            if not name.endswith('/') or name not in self._name_set():
+            wenn not name.endswith('/') or name not in self._name_set():
                 raise
             return zipfile.ZipInfo(filename=name)
 
@@ -149,14 +149,14 @@ klasse CompleteDirs(InitializedState, zipfile.ZipFile):
         Given a source (filename or zipfile), return an
         appropriate CompleteDirs subclass.
         """
-        if isinstance(source, CompleteDirs):
+        wenn isinstance(source, CompleteDirs):
             return source
 
-        if not isinstance(source, zipfile.ZipFile):
+        wenn not isinstance(source, zipfile.ZipFile):
             return cls(source)
 
         # Only allow fuer FastLookup when supplied zipfile is read-only
-        if 'r' not in source.mode:
+        wenn 'r' not in source.mode:
             cls = CompleteDirs
 
         source.__class__ = cls
@@ -327,7 +327,7 @@ klasse Path:
         >>> Path(zipfile.ZipFile(io.BytesIO(), 'w')) == 'foo'
         False
         """
-        if self.__class__ is not other.__class__:
+        wenn self.__class__ is not other.__class__:
             return NotImplemented
         return (self.root, self.at) == (other.root, other.at)
 
@@ -340,14 +340,14 @@ klasse Path:
         of ``pathlib.Path.open()`` by passing arguments through
         to io.TextIOWrapper().
         """
-        if self.is_dir():
+        wenn self.is_dir():
             raise IsADirectoryError(self)
         zip_mode = mode[0]
-        if zip_mode == 'r' and not self.exists():
+        wenn zip_mode == 'r' and not self.exists():
             raise FileNotFoundError(self)
         stream = self.root.open(self.at, zip_mode, pwd=pwd)
-        if 'b' in mode:
-            if args or kwargs:
+        wenn 'b' in mode:
+            wenn args or kwargs:
                 raise ValueError("encoding args invalid fuer binary operation")
             return stream
         # Text mode:
@@ -355,7 +355,7 @@ klasse Path:
         return io.TextIOWrapper(stream, encoding, *args, **kwargs)
 
     def _base(self):
-        return pathlib.PurePosixPath(self.at) if self.at else self.filename
+        return pathlib.PurePosixPath(self.at) wenn self.at sonst self.filename
 
     @property
     def name(self):
@@ -402,7 +402,7 @@ klasse Path:
         return self.at in self.root._name_set()
 
     def iterdir(self):
-        if not self.is_dir():
+        wenn not self.is_dir():
             raise ValueError("Can't listdir a file")
         subs = map(self._next, self.root.namelist())
         return filter(self._is_child, subs)
@@ -419,7 +419,7 @@ klasse Path:
         return stat.S_ISLNK(mode)
 
     def glob(self, pattern):
-        if not pattern:
+        wenn not pattern:
             raise ValueError(f"Unacceptable pattern: {pattern!r}")
 
         prefix = re.escape(self.at)
@@ -447,9 +447,9 @@ klasse Path:
 
     @property
     def parent(self):
-        if not self.at:
+        wenn not self.at:
             return self.filename.parent
         parent_at = posixpath.dirname(self.at.rstrip('/'))
-        if parent_at:
+        wenn parent_at:
             parent_at += '/'
         return self._next(parent_at)

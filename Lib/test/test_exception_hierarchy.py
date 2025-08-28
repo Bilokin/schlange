@@ -71,11 +71,11 @@ klasse HierarchyTest(unittest.TestCase):
         _map = {}
         fuer line in s.splitlines():
             line = line.strip('+- ')
-            if not line:
+            wenn not line:
                 continue
             excname, _, errnames = line.partition(' ')
             fuer errname in filter(None, errnames.strip().split(', ')):
-                if errname == "ENOTCAPABLE" and not hasattr(errno, errname):
+                wenn errname == "ENOTCAPABLE" and not hasattr(errno, errname):
                     continue
                 _map[getattr(errno, errname)] = getattr(builtins, excname)
         return _map
@@ -106,7 +106,7 @@ klasse HierarchyTest(unittest.TestCase):
             open(filename)
         except FileNotFoundError:
             pass
-        else:
+        sonst:
             self.fail("should have raised a FileNotFoundError")
 
         # Another test fuer PyErr_SetExcFromWindowsErrWithFilenameObject()
@@ -115,16 +115,16 @@ klasse HierarchyTest(unittest.TestCase):
             os.unlink(filename)
         except FileNotFoundError:
             pass
-        else:
+        sonst:
             self.fail("should have raised a FileNotFoundError")
 
 
 klasse AttributesTest(unittest.TestCase):
 
     def test_windows_error(self):
-        if os.name == "nt":
+        wenn os.name == "nt":
             self.assertIn('winerror', dir(OSError))
-        else:
+        sonst:
             self.assertNotIn('winerror', dir(OSError))
 
     def test_posix_error(self):
@@ -133,7 +133,7 @@ klasse AttributesTest(unittest.TestCase):
         self.assertEqual(e.args[0], EEXIST)
         self.assertEqual(e.strerror, "File already exists")
         self.assertEqual(e.filename, "foo.txt")
-        if os.name == "nt":
+        wenn os.name == "nt":
             self.assertEqual(e.winerror, None)
 
     @unittest.skipUnless(os.name == "nt", "Windows-specific test")
@@ -207,5 +207,5 @@ klasse ExplicitSubclassingTest(unittest.TestCase):
         self.assertEqual(str(e), '')
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

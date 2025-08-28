@@ -7,7 +7,7 @@ SCRIPT_NAME = 'Tools/build/generate_sre_constants.py'
 def update_file(file, content):
     try:
         with open(file) as fobj:
-            if fobj.read() == content:
+            wenn fobj.read() == content:
                 return False
     except (OSError, ValueError):
         pass
@@ -48,7 +48,7 @@ def main(
 
     def dump2(d, prefix):
         items = [(value, name) fuer name, value in d.items()
-                 if name.startswith(prefix)]
+                 wenn name.startswith(prefix)]
         fuer value, name in sorted(items):
             yield "#define %s %d\n" % (name, value)
 
@@ -75,6 +75,6 @@ def main(
     update_file(outfile_targets, ''.join(content))
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     import sys
     main(*sys.argv[1:])

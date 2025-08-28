@@ -30,16 +30,16 @@ def compile_progs():
 def file_line_helper(line):
     """Extract file name and line number from line of text.
 
-    Check if line of text contains one of the file/line patterns.
-    If it does and if the file and line are valid, return
+    Check wenn line of text contains one of the file/line patterns.
+    If it does and wenn the file and line are valid, return
     a tuple of the file name and line number.  If it doesn't match
-    or if the file or line is invalid, return None.
+    or wenn the file or line is invalid, return None.
     """
-    if not file_line_progs:
+    wenn not file_line_progs:
         compile_progs()
     fuer prog in file_line_progs:
         match = prog.search(line)
-        if match:
+        wenn match:
             filename, lineno = match.group(1, 2)
             try:
                 f = open(filename)
@@ -47,7 +47,7 @@ def file_line_helper(line):
                 break
             except OSError:
                 continue
-    else:
+    sonst:
         return None
     try:
         return filename, int(lineno)
@@ -90,7 +90,7 @@ klasse OutputWindow(EditorWindow):
 
     def maybesave(self):
         "Customize EditorWindow to not display save file messagebox."
-        return 'yes' if self.get_saved() else 'no'
+        return 'yes' wenn self.get_saved() sonst 'no'
 
     # Act as output file
     def write(self, s, tags=(), mark="insert"):
@@ -138,13 +138,13 @@ klasse OutputWindow(EditorWindow):
         """
         line = self.text.get("insert linestart", "insert lineend")
         result = file_line_helper(line)
-        if not result:
+        wenn not result:
             # Try the previous line.  This is handy e.g. in tracebacks,
             # where you tend to right-click on the displayed source line
             line = self.text.get("insert -1line linestart",
                                  "insert -1line lineend")
             result = file_line_helper(line)
-            if not result:
+            wenn not result:
                 self.showerror(
                     "No special line",
                     "The line you point at doesn't look like "
@@ -169,7 +169,7 @@ klasse OnDemandOutputWindow:
         self.owin = None
 
     def write(self, s, tags, mark):
-        if not self.owin:
+        wenn not self.owin:
             self.setup()
         self.owin.write(s, tags, mark)
 
@@ -177,12 +177,12 @@ klasse OnDemandOutputWindow:
         self.owin = owin = OutputWindow(self.flist)
         text = owin.text
         fuer tag, cnf in self.tagdefs.items():
-            if cnf:
+            wenn cnf:
                 text.tag_configure(tag, **cnf)
         text.tag_raise('sel')
         self.write = self.owin.write
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     from unittest import main
     main('idlelib.idle_test.test_outwin', verbosity=2, exit=False)

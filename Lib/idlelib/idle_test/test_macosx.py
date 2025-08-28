@@ -72,7 +72,7 @@ klasse IsTypeTkTest(unittest.TestCase):
             fuer tktype in alltypes:
                 with self.subTest(func=func, whentrue=whentrue, tktype=tktype):
                     macosx._tk_type = tktype
-                    (self.assertTrue if tktype in whentrue else self.assertFalse)\
+                    (self.assertTrue wenn tktype in whentrue sonst self.assertFalse)\
                                      (func())
 
 
@@ -104,10 +104,10 @@ klasse SetupTest(unittest.TestCase):
             with self.subTest(tktype=tktype):
                 macosx._tk_type = tktype
                 macosx.setupApp(root, flist)
-                if tktype in ('carbon', 'cocoa'):
+                wenn tktype in ('carbon', 'cocoa'):
                     self.assertTrue(overrideRootMenu.called)
                 overrideRootMenu.reset_mock()
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main(verbosity=2)

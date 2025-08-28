@@ -38,7 +38,7 @@ klasse TestStructSeq(unittest.TestCase):
 
     def test_sys_funcs(self):
         func_names = ['get_asyncgen_hooks']  # AsyncGenHooksType
-        if hasattr(sys, 'getwindowsversion'):
+        wenn hasattr(sys, 'getwindowsversion'):
             func_names.append('getwindowsversion')  # WindowsVersionType
         fuer func_name in func_names:
             with self.subTest(func=func_name):
@@ -51,12 +51,12 @@ try:
     unittest.main(
         module=(
             '__main__'
-            if __name__ == '__main__'
+            wenn __name__ == '__main__'
             # Avoiding a circular import:
-            else sys.modules['test._test_embed_structseq']
+            sonst sys.modules['test._test_embed_structseq']
         )
     )
 except SystemExit as exc:
-    if exc.args[0] != 0:
+    wenn exc.args[0] != 0:
         raise
 print("Tests passed")

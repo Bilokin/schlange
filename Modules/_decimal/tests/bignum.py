@@ -19,16 +19,16 @@ _PyHASH_10INV = pow(10, _PyHASH_MODULUS - 2, _PyHASH_MODULUS)
 
 def xhash(coeff, exp):
     sign = 1
-    if coeff < 0:
+    wenn coeff < 0:
         sign = -1
         coeff = -coeff
-    if exp >= 0:
+    wenn exp >= 0:
         exp_hash = pow(10, exp, _PyHASH_MODULUS)
-    else:
+    sonst:
         exp_hash = pow(_PyHASH_10INV, -exp, _PyHASH_MODULUS)
     hash_ = coeff * exp_hash % _PyHASH_MODULUS
-    ans = hash_ if sign == 1 else -hash_
-    return -2 if ans == -1 else ans
+    ans = hash_ wenn sign == 1 sonst -hash_
+    return -2 wenn ans == -1 sonst ans
 
 
 x = mpz(10) ** 425000000 - 1

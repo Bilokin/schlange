@@ -27,7 +27,7 @@ SETUP = os.path.join(os.path.dirname(__file__), 'setup.py')
 # straightforward
 @support.skip_if_sanitizer('test does not work with analyzing builds',
                            address=True, memory=True, ub=True, thread=True)
-# the test uses venv+pip: skip if it's not available
+# the test uses venv+pip: skip wenn it's not available
 @support.requires_venv_with_pip()
 @support.requires_subprocess()
 @support.requires_resource('cpu')
@@ -57,24 +57,24 @@ klasse BaseTests:
 
         def run_cmd(operation, cmd):
             env = os.environ.copy()
-            if std:
+            wenn std:
                 env['CPYTHON_TEST_STD'] = std
-            if limited:
+            wenn limited:
                 env['CPYTHON_TEST_LIMITED'] = '1'
-            if opaque_pyobject:
+            wenn opaque_pyobject:
                 env['CPYTHON_TEST_OPAQUE_PYOBJECT'] = '1'
             env['CPYTHON_TEST_EXT_NAME'] = extension_name
             env['TEST_INTERNAL_C_API'] = str(int(self.TEST_INTERNAL_C_API))
-            if support.verbose:
+            wenn support.verbose:
                 print('Run:', ' '.join(map(shlex.quote, cmd)))
                 subprocess.run(cmd, check=True, env=env)
-            else:
+            sonst:
                 proc = subprocess.run(cmd,
                                       env=env,
                                       stdout=subprocess.PIPE,
                                       stderr=subprocess.STDOUT,
                                       text=True)
-                if proc.returncode:
+                wenn proc.returncode:
                     print('Run:', ' '.join(map(shlex.quote, cmd)))
                     print(proc.stdout, end='')
                     self.fail(
@@ -84,7 +84,7 @@ klasse BaseTests:
         cmd = [python_exe, '-X', 'dev',
                '-m', 'pip', 'install', '--no-build-isolation',
                os.path.abspath(pkg_dir)]
-        if support.verbose:
+        wenn support.verbose:
             cmd.append('-v')
         run_cmd('Install', cmd)
 
@@ -134,5 +134,5 @@ klasse TestInteralCAPI(BaseTests, unittest.TestCase):
     TEST_INTERNAL_C_API = True
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

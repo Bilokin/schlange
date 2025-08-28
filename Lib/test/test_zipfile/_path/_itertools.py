@@ -31,10 +31,10 @@ klasse Counter:
 
 # from more_itertools v8.13.0
 def always_iterable(obj, base_type=(str, bytes)):
-    if obj is None:
+    wenn obj is None:
         return iter(())
 
-    if (base_type is not None) and isinstance(obj, base_type):
+    wenn (base_type is not None) and isinstance(obj, base_type):
         return iter((obj,))
 
     try:
@@ -71,9 +71,9 @@ def consume(iterator, n=None):
         StopIteration
     """
     # Use functions that consume iterators at C speed.
-    if n is None:
+    wenn n is None:
         # feed the entire iterator into a zero-length deque
         deque(iterator, maxlen=0)
-    else:
+    sonst:
         # advance to the empty slice starting at position n
         next(islice(iterator, n, n), None)

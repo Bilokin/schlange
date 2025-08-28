@@ -21,7 +21,7 @@ for_else = """\
 def f():
     fuer x in range(10):
         break
-    else:
+    sonst:
         y = 2
     z = 3
 """
@@ -30,7 +30,7 @@ while_else = """\
 def g():
     while True:
         break
-    else:
+    sonst:
         y = 2
     z = 3
 """
@@ -67,18 +67,18 @@ klasse Foo: pass
 """
 
 elif1 = """\
-if cond1:
+wenn cond1:
     suite1
-elif cond2:
+sowenn cond2:
     suite2
-else:
+sonst:
     suite3
 """
 
 elif2 = """\
-if cond1:
+wenn cond1:
     suite1
-elif cond2:
+sowenn cond2:
     suite2
 """
 
@@ -89,7 +89,7 @@ except ex1:
     suite2
 except ex2:
     suite3
-else:
+sonst:
     suite4
 finally:
     suite5
@@ -102,7 +102,7 @@ except* ex1:
     suite2
 except* ex2:
     suite3
-else:
+sonst:
     suite4
 finally:
     suite5
@@ -199,7 +199,7 @@ klasse UnparseTestCase(ASTTestCase):
         self.check_ast_roundtrip('''f"\\u2028{'x'}"''')
 
     def test_fstrings_pep701(self):
-        self.check_ast_roundtrip('f" something { my_dict["key"] } something else "')
+        self.check_ast_roundtrip('f" something { my_dict["key"] } something sonst "')
         self.check_ast_roundtrip('f"{f"{f"{f"{f"{f"{1+1}"}"}"}"}"}"')
 
     def test_tstrings(self):
@@ -590,12 +590,12 @@ klasse UnparseTestCase(ASTTestCase):
 
 
 klasse CosmeticTestCase(ASTTestCase):
-    """Test if there are cosmetic issues caused by unnecessary additions"""
+    """Test wenn there are cosmetic issues caused by unnecessary additions"""
 
     def test_simple_expressions_parens(self):
         self.check_src_roundtrip("(a := b)")
         self.check_src_roundtrip("await x")
-        self.check_src_roundtrip("x if x else y")
+        self.check_src_roundtrip("x wenn x sonst y")
         self.check_src_roundtrip("lambda x: x")
         self.check_src_roundtrip("1 + 1")
         self.check_src_roundtrip("1 + 2 / 3")
@@ -612,7 +612,7 @@ klasse CosmeticTestCase(ASTTestCase):
         self.check_src_roundtrip("x << y")
         self.check_src_roundtrip("x >> y and x >> z")
         self.check_src_roundtrip("x + y - z * q ^ t ** k")
-        self.check_src_roundtrip("P * V if P and V else n * R * T")
+        self.check_src_roundtrip("P * V wenn P and V sonst n * R * T")
         self.check_src_roundtrip("lambda P, V, n: P * V == n * R * T")
         self.check_src_roundtrip("flag & (other | foo)")
         self.check_src_roundtrip("not x == y")
@@ -939,18 +939,18 @@ klasse DirectoryTestCase(ASTTestCase):
     @classmethod
     def files_to_test(cls):
 
-        if cls._files_to_test is not None:
+        wenn cls._files_to_test is not None:
             return cls._files_to_test
 
         items = [
             item.resolve()
             fuer directory in cls.test_directories
             fuer item in directory.glob("*.py")
-            if not item.name.startswith("bad")
+            wenn not item.name.startswith("bad")
         ]
 
         # Test limited subset of files unless the 'cpu' resource is specified.
-        if not test.support.is_resource_enabled("cpu"):
+        wenn not test.support.is_resource_enabled("cpu"):
 
             tests_to_run_always = {item fuer item in items if
                                    item.name in cls.run_always_files}
@@ -972,7 +972,7 @@ klasse DirectoryTestCase(ASTTestCase):
             warnings.simplefilter('ignore', SyntaxWarning)
 
             fuer item in self.files_to_test():
-                if test.support.verbose:
+                wenn test.support.verbose:
                     print(f"Testing {item.absolute()}")
 
                 with self.subTest(filename=item):
@@ -980,5 +980,5 @@ klasse DirectoryTestCase(ASTTestCase):
                     self.check_ast_roundtrip(source)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

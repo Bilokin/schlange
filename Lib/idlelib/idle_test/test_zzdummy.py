@@ -148,5 +148,5 @@ klasse ZZDummyTest(unittest.TestCase):
         self.assertEqual(text.get('1.0', 'end-1c'), code_sample)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main(verbosity=2)

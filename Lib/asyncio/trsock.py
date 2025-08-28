@@ -34,16 +34,16 @@ klasse TransportSocket:
             f"proto={self.proto}"
         )
 
-        if self.fileno() != -1:
+        wenn self.fileno() != -1:
             try:
                 laddr = self.getsockname()
-                if laddr:
+                wenn laddr:
                     s = f"{s}, laddr={laddr}"
             except socket.error:
                 pass
             try:
                 raddr = self.getpeername()
-                if raddr:
+                wenn raddr:
                     s = f"{s}, raddr={raddr}"
             except socket.error:
                 pass
@@ -83,7 +83,7 @@ klasse TransportSocket:
         return self._sock.getsockbyname()
 
     def settimeout(self, value):
-        if value == 0:
+        wenn value == 0:
             return
         raise ValueError(
             'settimeout(): only 0 timeout is allowed on transport sockets')
@@ -92,7 +92,7 @@ klasse TransportSocket:
         return 0
 
     def setblocking(self, flag):
-        if not flag:
+        wenn not flag:
             return
         raise ValueError(
             'setblocking(): transport sockets cannot be blocking')

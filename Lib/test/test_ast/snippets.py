@@ -145,17 +145,17 @@ exec_tests = [
     Bb in Cc
     )""",
     # dictcomp
-    "{a : b fuer w in x fuer m in p if g}",
+    "{a : b fuer w in x fuer m in p wenn g}",
     # dictcomp with naked tuple
     "{a : b fuer v,w in x}",
     # setcomp
-    "{r fuer l in x if g}",
+    "{r fuer l in x wenn g}",
     # setcomp with naked tuple
     "{r fuer l,m in x}",
     # AsyncFunctionDef
     "async def f():\n 'async function'\n await something()",
     # AsyncFor
-    "async def f():\n async fuer e in i: 1\n else: 2",
+    "async def f():\n async fuer e in i: 1\n sonst: 2",
     # AsyncWith
     "async def f():\n async with a as b: 1",
     # PEP 448: Additional Unpacking Generalizations
@@ -178,7 +178,7 @@ exec_tests = [
     "@a.b.c\ndef f(): pass",
     # Simple assignment expression
     "(a := 1)",
-    # Assignment expression in if statement
+    # Assignment expression in wenn statement
     "if a := foo(): pass",
     # Assignment expression in while
     "while a := foo(): pass",
@@ -289,13 +289,13 @@ eval_tests = [
         1
      }""",
   # ListComp
-  "[a fuer b in c if d]",
+  "[a fuer b in c wenn d]",
   # GeneratorExp
-  "(a fuer b in c if d)",
+  "(a fuer b in c wenn d)",
   # SetComp
-  "{a fuer b in c if d}",
+  "{a fuer b in c wenn d}",
   # DictComp
-  "{k: v fuer k, v in c if d}",
+  "{k: v fuer k, v in c wenn d}",
   # Comprehensions with multiple fuer targets
   "[(a,b) fuer a,b in c]",
   "[(a,b) fuer (a,b) in c]",
@@ -358,7 +358,7 @@ eval_tests = [
   "[5][::1]",
   "[5][1:1:1]",
   # IfExp
-  "foo() if x else bar()",
+  "foo() wenn x sonst bar()",
   # JoinedStr and FormattedValue
   "f'{a}'",
   "f'{a:.2f}'",
@@ -374,9 +374,9 @@ eval_tests = [
 
 
 def main():
-    if __name__ != '__main__':
+    wenn __name__ != '__main__':
         return
-    if sys.argv[1:] == ['-g']:
+    wenn sys.argv[1:] == ['-g']:
         fuer statements, kind in ((exec_tests, "exec"), (single_tests, "single"),
                                  (eval_tests, "eval")):
             print(kind+"_results = [")

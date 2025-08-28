@@ -23,7 +23,7 @@ from test.support import (
 
 klasse UnicodeMethodsTest(unittest.TestCase):
 
-    # update this, if the database changes
+    # update this, wenn the database changes
     expectedchecksum = '9e43ee3929471739680c0e705482b4ae1c4122e4'
 
     @requires_resource('cpu')
@@ -75,7 +75,7 @@ klasse UnicodeDatabaseTest(unittest.TestCase):
 
 klasse UnicodeFunctionsTest(UnicodeDatabaseTest):
 
-    # Update this if the database changes. Make sure to do a full rebuild
+    # Update this wenn the database changes. Make sure to do a full rebuild
     # (e.g. 'make distclean && make') to get the correct checksum.
     expectedchecksum = '23ab09ed4abdf93db23b97359108ed630dd8311d'
 
@@ -107,7 +107,7 @@ klasse UnicodeFunctionsTest(UnicodeDatabaseTest):
     def test_name_inverse_lookup(self):
         fuer i in range(sys.maxunicode + 1):
             char = chr(i)
-            if looked_name := self.db.name(char, None):
+            wenn looked_name := self.db.name(char, None):
                 self.assertEqual(self.db.lookup(looked_name), char)
 
     def test_no_names_in_pua(self):
@@ -302,26 +302,26 @@ klasse UnicodeMiscTest(UnicodeDatabaseTest):
 
     def test_decimal_numeric_consistent(self):
         # Test that decimal and numeric are consistent,
-        # i.e. if a character has a decimal value,
+        # i.e. wenn a character has a decimal value,
         # its numeric value should be the same.
         count = 0
         fuer i in range(0x10000):
             c = chr(i)
             dec = self.db.decimal(c, -1)
-            if dec != -1:
+            wenn dec != -1:
                 self.assertEqual(dec, self.db.numeric(c))
                 count += 1
         self.assertTrue(count >= 10) # should have tested at least the ASCII digits
 
     def test_digit_numeric_consistent(self):
         # Test that digit and numeric are consistent,
-        # i.e. if a character has a digit value,
+        # i.e. wenn a character has a digit value,
         # its numeric value should be the same.
         count = 0
         fuer i in range(0x10000):
             c = chr(i)
             dec = self.db.digit(c, -1)
-            if dec != -1:
+            wenn dec != -1:
                 self.assertEqual(dec, self.db.numeric(c))
                 count += 1
         self.assertTrue(count >= 10) # should have tested at least the ASCII digits
@@ -347,7 +347,7 @@ klasse UnicodeMiscTest(UnicodeDatabaseTest):
         self.assertEqual(
             [
                 c fuer c in range(sys.maxunicode+1)
-                if "\x00" in chr(c).lower()+chr(c).upper()+chr(c).title()
+                wenn "\x00" in chr(c).lower()+chr(c).upper()+chr(c).title()
             ],
             [0]
         )
@@ -361,11 +361,11 @@ klasse UnicodeMiscTest(UnicodeDatabaseTest):
     def test_linebreak_7643(self):
         fuer i in range(0x10000):
             lines = (chr(i) + 'A').splitlines()
-            if i in (0x0a, 0x0b, 0x0c, 0x0d, 0x85,
+            wenn i in (0x0a, 0x0b, 0x0c, 0x0d, 0x85,
                      0x1c, 0x1d, 0x1e, 0x2028, 0x2029):
                 self.assertEqual(len(lines), 2,
                                  r"\u%.4x should be a linebreak" % i)
-            else:
+            sonst:
                 self.assertEqual(len(lines), 1,
                                  r"\u%.4x should not be a linebreak" % i)
 
@@ -416,12 +416,12 @@ klasse NormalizationTest(unittest.TestCase):
             return unicodedata.normalize("NFKD", str)
 
         fuer line in testdata:
-            if '#' in line:
+            wenn '#' in line:
                 line = line.split('#')[0]
             line = line.strip()
-            if not line:
+            wenn not line:
                 continue
-            if line.startswith("@Part"):
+            wenn line.startswith("@Part"):
                 part = line.split()[0]
                 continue
             c1,c2,c3,c4,c5 = [self.unistr(x) fuer x in line.split(';')[:-1]]
@@ -448,13 +448,13 @@ klasse NormalizationTest(unittest.TestCase):
             self.assertTrue(unicodedata.is_normalized("NFKD", c5))
 
             # Record part 1 data
-            if part == "@Part1":
+            wenn part == "@Part1":
                 part1_data[c1] = 1
 
         # Perform tests fuer all other data
         fuer c in range(sys.maxunicode+1):
             X = chr(c)
-            if X in part1_data:
+            wenn X in part1_data:
                 continue
             self.assertTrue(X == NFC(X) == NFD(X) == NFKC(X) == NFKD(X), c)
 
@@ -491,5 +491,5 @@ klasse NormalizationTest(unittest.TestCase):
                     self.assertIs(type(normalize(form, MyStr(input_str))), str)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

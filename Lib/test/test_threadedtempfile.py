@@ -45,7 +45,7 @@ klasse TempFileGreedy(threading.Thread):
             except:
                 self.error_count += 1
                 print_exc(file=self.errors)
-            else:
+            sonst:
                 self.ok_count += 1
 
 
@@ -57,12 +57,12 @@ klasse ThreadedTempFileTest(unittest.TestCase):
             pass
         ok = sum(t.ok_count fuer t in threads)
         errors = [str(t.name) + str(t.errors.getvalue())
-                  fuer t in threads if t.error_count]
+                  fuer t in threads wenn t.error_count]
 
         msg = "Errors: errors %d ok %d\n%s" % (len(errors), ok,
             '\n'.join(errors))
         self.assertEqual(errors, [], msg)
         self.assertEqual(ok, NUM_THREADS * FILES_PER_THREAD)
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

@@ -9,9 +9,9 @@ structures = []
 byteswapped_structures = []
 
 
-if sys.byteorder == "little":
+wenn sys.byteorder == "little":
     SwappedStructure = BigEndianStructure
-else:
+sonst:
     SwappedStructure = LittleEndianStructure
 
 fuer typ in [c_short, c_int, c_long, c_longlong,
@@ -47,5 +47,5 @@ klasse TestStructures(unittest.TestCase):
             self.assertEqual(o.value, 4)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

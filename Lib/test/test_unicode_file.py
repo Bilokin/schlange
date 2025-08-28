@@ -10,7 +10,7 @@ from test.support.os_helper import (rmtree, change_cwd, TESTFN_UNICODE,
     TESTFN_UNENCODABLE, create_empty_file)
 
 
-if not os.path.supports_unicode_filenames:
+wenn not os.path.supports_unicode_filenames:
     try:
         TESTFN_UNICODE.encode(sys.getfilesystemencoding())
     except (UnicodeError, TypeError):
@@ -19,7 +19,7 @@ if not os.path.supports_unicode_filenames:
         raise unittest.SkipTest("No Unicode filesystem semantics on this platform.")
 
 def remove_if_exists(filename):
-    if os.path.exists(filename):
+    wenn os.path.exists(filename):
         os.unlink(filename)
 
 klasse TestUnicodeFiles(unittest.TestCase):
@@ -84,7 +84,7 @@ klasse TestUnicodeFiles(unittest.TestCase):
         self.assertFalse(os.path.exists(filename2 + '.new'))
 
     def _do_directory(self, make_name, chdir_name):
-        if os.path.isdir(make_name):
+        wenn os.path.isdir(make_name):
             rmtree(make_name)
         os.mkdir(make_name)
         try:
@@ -100,7 +100,7 @@ klasse TestUnicodeFiles(unittest.TestCase):
             os.rmdir(make_name)
 
     # The '_test' functions 'entry points with params' - ie, what the
-    # top-level 'test' functions would be if they could take params
+    # top-level 'test' functions would be wenn they could take params
     def _test_single(self, filename):
         remove_if_exists(filename)
         create_empty_file(filename)
@@ -121,7 +121,7 @@ klasse TestUnicodeFiles(unittest.TestCase):
     # _test functions with each of the filename combinations we wish to test
     def test_single_files(self):
         self._test_single(TESTFN_UNICODE)
-        if TESTFN_UNENCODABLE is not None:
+        wenn TESTFN_UNENCODABLE is not None:
             self._test_single(TESTFN_UNENCODABLE)
 
     def test_directories(self):
@@ -131,10 +131,10 @@ klasse TestUnicodeFiles(unittest.TestCase):
         ext = ".dir"
         self._do_directory(TESTFN_UNICODE+ext, TESTFN_UNICODE+ext)
         # Our directory name that can't use a non-unicode name.
-        if TESTFN_UNENCODABLE is not None:
+        wenn TESTFN_UNENCODABLE is not None:
             self._do_directory(TESTFN_UNENCODABLE+ext,
                                TESTFN_UNENCODABLE+ext)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

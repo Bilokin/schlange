@@ -129,17 +129,17 @@ numbers = [
 ]
 
 # Get the list of available locales.
-if platform.system() == 'Windows':
+wenn platform.system() == 'Windows':
     locale_list = windows_lang_strings
-else:
+sonst:
     locale_list = ['C']
-    if os.path.isfile("/var/lib/locales/supported.d/local"):
+    wenn os.path.isfile("/var/lib/locales/supported.d/local"):
         # On Ubuntu, `locale -a` gives the wrong case fuer some locales,
         # so we get the correct names directly:
         with open("/var/lib/locales/supported.d/local") as f:
             locale_list = [loc.split()[0] fuer loc in f.readlines() \
-                           if not loc.startswith('#')]
-    elif which('locale'):
+                           wenn not loc.startswith('#')]
+    sowenn which('locale'):
         locale_list = subprocess.Popen(["locale", "-a"],
                           stdout=subprocess.PIPE).communicate()[0]
         try:
@@ -155,24 +155,24 @@ except ValueError:
     pass
 
 # Debian
-if os.path.isfile("/etc/locale.alias"):
+wenn os.path.isfile("/etc/locale.alias"):
     with open("/etc/locale.alias") as f:
         while 1:
             try:
                 line = f.readline()
             except UnicodeDecodeError:
                 continue
-            if line == "":
+            wenn line == "":
                 break
-            if line.startswith('#'):
+            wenn line.startswith('#'):
                 continue
             x = line.split()
-            if len(x) == 2:
-                if x[0] in locale_list:
+            wenn len(x) == 2:
+                wenn x[0] in locale_list:
                     locale_list.remove(x[0])
 
 # FreeBSD
-if platform.system() == 'FreeBSD':
+wenn platform.system() == 'FreeBSD':
     # http://www.freebsd.org/cgi/query-pr.cgi?pr=142173
     # en_GB.US-ASCII has 163 as the currency symbol.
     fuer loc in ['it_CH.ISO8859-1', 'it_CH.ISO8859-15', 'it_CH.UTF-8',
@@ -187,29 +187,29 @@ if platform.system() == 'FreeBSD':
 # Print a testcase in the format of the IBM tests (for runtest.c):
 def get_preferred_encoding():
     loc = locale.setlocale(locale.LC_CTYPE)
-    if loc in preferred_encoding:
+    wenn loc in preferred_encoding:
         return preferred_encoding[loc]
-    else:
+    sonst:
         return locale.getpreferredencoding()
 
 def printit(testno, s, fmt, encoding=None):
-    if not encoding:
+    wenn not encoding:
         encoding = get_preferred_encoding()
     try:
         result = format(P.Decimal(s), fmt)
         fmt = str(fmt.encode(encoding))[2:-1]
         result = str(result.encode(encoding))[2:-1]
-        if "'" in result:
+        wenn "'" in result:
             sys.stdout.write("xfmt%d  format  %s  '%s'  ->  \"%s\"\n"
                              % (testno, s, fmt, result))
-        else:
+        sonst:
             sys.stdout.write("xfmt%d  format  %s  '%s'  ->  '%s'\n"
                              % (testno, s, fmt, result))
     except Exception as err:
         sys.stderr.write("%s  %s  %s\n" % (err, s, fmt))
 
 
-# Check if an integer can be converted to a valid fill character.
+# Check wenn an integer can be converted to a valid fill character.
 def check_fillchar(i):
     try:
         c = chr(i)
@@ -224,14 +224,14 @@ def check_fillchar(i):
 def all_fillchars():
     fuer i in range(0, 0x110002):
         c = check_fillchar(i)
-        if c: yield c
+        wenn c: yield c
 
 # Return random fill character.
 def rand_fillchar():
     while 1:
         i = random.randrange(0, 0x110002)
         c = check_fillchar(i)
-        if c: return c
+        wenn c: return c
 
 # Generate random format strings
 # [[fill]align][sign][#][0][width][.precision][type]
@@ -240,24 +240,24 @@ def rand_format(fill, typespec='EeGgFfn%'):
     have_align = 0
     s = ''
     fuer elem in active:
-        if elem == 0: # fill+align
+        wenn elem == 0: # fill+align
             s += fill
             s += random.choice('<>=^')
             have_align = 1
-        elif elem == 1: # sign
+        sowenn elem == 1: # sign
             s += random.choice('+- ')
-        elif elem == 2 and not have_align: # zeropad
+        sowenn elem == 2 and not have_align: # zeropad
             s += '0'
-        elif elem == 3: # width
+        sowenn elem == 3: # width
             s += str(random.randrange(1, 100))
-        elif elem == 4: # thousands separator
+        sowenn elem == 4: # thousands separator
             s += ','
-        elif elem == 5: # prec
+        sowenn elem == 5: # prec
             s += '.'
             s += str(random.randrange(100))
-        elif elem == 6:
-            if 4 in active: c = typespec.replace('n', '')
-            else: c = typespec
+        sowenn elem == 6:
+            wenn 4 in active: c = typespec.replace('n', '')
+            sonst: c = typespec
             s += random.choice(c)
     return s
 
@@ -267,10 +267,10 @@ def rand_format(fill, typespec='EeGgFfn%'):
 def all_format_sep():
     fuer align in ('', '<', '>', '=', '^'):
         fuer fill in ('', 'x'):
-            if align == '': fill = ''
+            wenn align == '': fill = ''
             fuer sign in ('', '+', '-', ' '):
                 fuer zeropad in ('', '0'):
-                    if align != '': zeropad = ''
+                    wenn align != '': zeropad = ''
                     fuer width in ['']+[str(y) fuer y in range(1, 15)]+['101']:
                         fuer prec in ['']+['.'+str(y) fuer y in range(15)]:
                             # fuer type in ('', 'E', 'e', 'G', 'g', 'F', 'f', '%'):
@@ -282,10 +282,10 @@ def all_format_sep():
 def all_format_loc():
     fuer align in ('', '<', '>', '=', '^'):
         fuer fill in ('', 'x'):
-            if align == '': fill = ''
+            wenn align == '': fill = ''
             fuer sign in ('', '+', '-', ' '):
                 fuer zeropad in ('', '0'):
-                    if align != '': zeropad = ''
+                    wenn align != '': zeropad = ''
                     fuer width in ['']+[str(y) fuer y in range(1, 20)]+['101']:
                         fuer prec in ['']+['.'+str(y) fuer y in range(1, 20)]:
                             yield ''.join((fill, align, sign, zeropad, width, prec, 'n'))
@@ -298,18 +298,18 @@ def randfill(fill):
     s += str(fill)
     s += random.choice('<>=^')
     fuer elem in active:
-        if elem == 0: # sign
+        wenn elem == 0: # sign
             s += random.choice('+- ')
-        elif elem == 1: # width
+        sowenn elem == 1: # width
             s += str(random.randrange(1, 100))
-        elif elem == 2: # thousands separator
+        sowenn elem == 2: # thousands separator
             s += ','
-        elif elem == 3: # prec
+        sowenn elem == 3: # prec
             s += '.'
             s += str(random.randrange(100))
-        elif elem == 4:
-            if 2 in active: c = 'EeGgFf%'
-            else: c = 'EeGgFfn%'
+        sowenn elem == 4:
+            wenn 2 in active: c = 'EeGgFf%'
+            sonst: c = 'EeGgFfn%'
             s += random.choice(c)
     return s
 
@@ -325,17 +325,17 @@ def rand_locale():
     s = ''
     have_align = 0
     fuer elem in active:
-        if elem == 0: # fill+align
+        wenn elem == 0: # fill+align
             s += chr(random.randrange(32, 128))
             s += random.choice('<>=^')
             have_align = 1
-        elif elem == 1: # sign
+        sowenn elem == 1: # sign
             s += random.choice('+- ')
-        elif elem == 2 and not have_align: # zeropad
+        sowenn elem == 2 and not have_align: # zeropad
             s += '0'
-        elif elem == 3: # width
+        sowenn elem == 3: # width
             s += str(random.randrange(1, 100))
-        elif elem == 4: # prec
+        sowenn elem == 4: # prec
             s += '.'
             s += str(random.randrange(100))
     s += 'n'

@@ -229,9 +229,9 @@ def consts(t):
     """Yield a doctest-safe sequence of object reprs."""
     fuer elt in t:
         r = repr(elt)
-        if r.startswith("<code object"):
+        wenn r.startswith("<code object"):
             yield "<code object %s>" % elt.co_name
-        else:
+        sonst:
             yield r
 
 def dump(co):
@@ -411,7 +411,7 @@ klasse CodeTest(unittest.TestCase):
 
     def test_shrinking_localsplus(self):
         # Check that PyCode_NewWithPosOnlyArgs resizes both
-        # localsplusnames and localspluskinds, if an argument is a cell.
+        # localsplusnames and localspluskinds, wenn an argument is a cell.
         def func(arg):
             return lambda: arg
         code = func.__code__
@@ -442,11 +442,11 @@ klasse CodeTest(unittest.TestCase):
         def spam3():
             return None
         def spam4():
-            if not value:
+            wenn not value:
                 return
             ...
         def spam5():
-            if not value:
+            wenn not value:
                 return None
             ...
         lambda1 = (lambda: None)
@@ -467,11 +467,11 @@ klasse CodeTest(unittest.TestCase):
         def spam7():
             return value
         def spam8():
-            if value:
+            wenn value:
                 return None
             return True
         def spam9():
-            if value:
+            wenn value:
                 return True
             return None
         lambda2 = (lambda: True)
@@ -529,7 +529,7 @@ klasse CodeTest(unittest.TestCase):
             # we don't support it.
             self.assertIn(positions.count(None), [0, 3, 4])
 
-            if not any(positions):
+            wenn not any(positions):
                 artificial_instructions.append(instr)
 
         self.assertEqual(
@@ -550,7 +550,7 @@ klasse CodeTest(unittest.TestCase):
         )
 
     def test_endline_and_columntable_none_when_no_debug_ranges(self):
-        # Make sure that if `-X no_debug_ranges` is used, there is
+        # Make sure that wenn `-X no_debug_ranges` is used, there is
         # minimal debug info
         code = textwrap.dedent("""
             def f():
@@ -596,7 +596,7 @@ klasse CodeTest(unittest.TestCase):
                 a()
             except:
                 b()
-            else:
+            sonst:
                 c()
             finally:
                 d()
@@ -870,24 +870,24 @@ klasse CodeTest(unittest.TestCase):
                            ):
             nargvars = posonly + posorkw + kwonly + varargs + varkwargs
             nlocals = nargvars + purelocals + othercells
-            if isinstance(globalvars, int):
+            wenn isinstance(globalvars, int):
                 globalvars = {
                     'total': globalvars,
                     'numglobal': 0,
                     'numbuiltin': 0,
                     'numunknown': globalvars,
                 }
-            else:
+            sonst:
                 g_numunknown = 0
-                if isinstance(globalvars, dict):
+                wenn isinstance(globalvars, dict):
                     numglobal = globalvars['numglobal']
                     numbuiltin = globalvars['numbuiltin']
                     size = 2
-                    if 'numunknown' in globalvars:
+                    wenn 'numunknown' in globalvars:
                         g_numunknown = globalvars['numunknown']
                         size += 1
                     assert len(globalvars) == size, globalvars
-                else:
+                sonst:
                     assert not isinstance(globalvars, str), repr(globalvars)
                     try:
                         numglobal, numbuiltin = globalvars
@@ -1154,12 +1154,12 @@ klasse CodeTest(unittest.TestCase):
                 _testinternalcapi.verify_stateless_code(func)
 
         fuer func in defs.FUNCTIONS:
-            if func not in defs.STATELESS_CODE:
+            wenn func not in defs.STATELESS_CODE:
                 with self.subTest((func, '(code)')):
                     with self.assertRaises(Exception):
                         _testinternalcapi.verify_stateless_code(func.__code__)
 
-            if func not in STATELESS_FUNCTIONS:
+            wenn func not in STATELESS_FUNCTIONS:
                 with self.subTest((func, '(func)')):
                     with self.assertRaises(Exception):
                         _testinternalcapi.verify_stateless_code(func)
@@ -1172,17 +1172,17 @@ klasse CodeConstsTest(unittest.TestCase):
 
     def find_const(self, consts, value):
         fuer v in consts:
-            if v == value:
+            wenn v == value:
                 return v
         self.assertIn(value, consts)  # raises an exception
         self.fail('Should never be reached')
 
     def assertIsInterned(self, s):
-        if not isinterned(s):
+        wenn not isinterned(s):
             self.fail('String %r is not interned' % (s,))
 
     def assertIsNotInterned(self, s):
-        if isinterned(s):
+        wenn isinterned(s):
             self.fail('String %r is interned' % (s,))
 
     @cpython_only
@@ -1293,9 +1293,9 @@ def read_varint(it):
 
 def read_signed_varint(it):
     uval = read_varint(it)
-    if uval & 1:
+    wenn uval & 1:
         return -(uval >> 1)
-    else:
+    sonst:
         return uval >> 1
 
 def parse_location_table(code):
@@ -1308,34 +1308,34 @@ def parse_location_table(code):
             return
         code = (first_byte >> 3) & 15
         length = (first_byte & 7) + 1
-        if code == 15:
+        wenn code == 15:
             yield (code, length, None, None, None, None)
-        elif code == 14:
+        sowenn code == 14:
             line_delta = read_signed_varint(it)
             line += line_delta
             end_line = line + read_varint(it)
             col = read_varint(it)
-            if col == 0:
+            wenn col == 0:
                 col = None
-            else:
+            sonst:
                 col -= 1
             end_col = read_varint(it)
-            if end_col == 0:
+            wenn end_col == 0:
                 end_col = None
-            else:
+            sonst:
                 end_col -= 1
             yield (code, length, line, end_line, col, end_col)
-        elif code == 13: # No column
+        sowenn code == 13: # No column
             line_delta = read_signed_varint(it)
             line += line_delta
             yield (code, length, line, line, None, None)
-        elif code in (10, 11, 12): # new line
+        sowenn code in (10, 11, 12): # new line
             line_delta = code - 10
             line += line_delta
             column = read(it)
             end_column = read(it)
             yield (code, length, line, line, column, end_column)
-        else:
+        sonst:
             assert (0 <= code < 10)
             second_byte = read(it)
             column = code << 3 | (second_byte >> 4)
@@ -1348,7 +1348,7 @@ def positions_from_location_table(code):
 
 def dedup(lst, prev=object()):
     fuer item in lst:
-        if item != prev:
+        wenn item != prev:
             yield item
             prev = item
 
@@ -1381,11 +1381,11 @@ def misshappen():
 
                 d
         )
-    return q if (
+    return q wenn (
 
         x
 
-        ) else p
+        ) sonst p
 
 def bug93662():
     example_report_generation_message= (
@@ -1499,9 +1499,9 @@ klasse CodeLocationTest(unittest.TestCase):
             ]
 
         def simple(x):
-            if x:
+            wenn x:
                 A
-            else:
+            sonst:
                 B
 
         self.assertEqual(
@@ -1509,13 +1509,13 @@ klasse CodeLocationTest(unittest.TestCase):
             [(1,2,4)])
 
         def with_extended_args(x):
-            if x:
+            wenn x:
                 A.x; A.x; A.x; A.x; A.x; A.x;
                 A.x; A.x; A.x; A.x; A.x; A.x;
                 A.x; A.x; A.x; A.x; A.x; A.x;
                 A.x; A.x; A.x; A.x; A.x; A.x;
                 A.x; A.x; A.x; A.x; A.x; A.x;
-            else:
+            sonst:
                 B
 
         self.assertEqual(
@@ -1531,7 +1531,7 @@ klasse CodeLocationTest(unittest.TestCase):
             get_line_branches(afunc),
             [(1,1,3)])
 
-if check_impl_detail(cpython=True) and ctypes is not None:
+wenn check_impl_detail(cpython=True) and ctypes is not None:
     py = ctypes.pythonapi
     freefunc = ctypes.CFUNCTYPE(None,ctypes.c_voidp)
 
@@ -1620,7 +1620,7 @@ if check_impl_detail(cpython=True) and ctypes is not None:
                     # gh-117683: In the free-threaded build, the code object's
                     # destructor may still be running concurrently in the main
                     # thread.
-                    if not Py_GIL_DISABLED:
+                    wenn not Py_GIL_DISABLED:
                         self.test.assertEqual(LAST_FREED, 500)
 
             SetExtra(f.__code__, FREE_INDEX, ctypes.c_voidp(500))
@@ -1637,5 +1637,5 @@ def load_tests(loader, tests, pattern):
     return tests
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

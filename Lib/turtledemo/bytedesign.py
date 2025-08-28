@@ -104,19 +104,19 @@ klasse Designer(Turtle):
         self.getscreen().update()
 
     def pentl(self, side, ang, scale):
-        if side < (2 * scale): return
+        wenn side < (2 * scale): return
         self.forward(side)
         self.left(ang)
         self.pentl(side - (.38 * scale), ang, scale)
 
     def pentr(self, side, ang, scale):
-        if side < (2 * scale): return
+        wenn side < (2 * scale): return
         self.forward(side)
         self.right(ang)
         self.pentr(side - (.38 * scale), ang, scale)
 
     def tripolyr(self, side, scale):
-        if side < (4 * scale): return
+        wenn side < (4 * scale): return
         self.forward(side)
         self.right(111)
         self.forward(side / 1.78)
@@ -126,7 +126,7 @@ klasse Designer(Turtle):
         self.tripolyr(side * .75, scale)
 
     def tripolyl(self, side, scale):
-        if side < (4 * scale): return
+        wenn side < (4 * scale): return
         self.forward(side)
         self.left(111)
         self.forward(side / 1.78)
@@ -137,7 +137,7 @@ klasse Designer(Turtle):
 
     def centerpiece(self, s, a, scale):
         self.forward(s); self.left(a)
-        if s < (7.5 * scale):
+        wenn s < (7.5 * scale):
             return
         self.centerpiece(s - (1.2 * scale), a, scale)
 
@@ -152,7 +152,7 @@ def main():
     et = clock()
     return "runtime: %.2f sec." % (et-at)
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     msg = main()
     print(msg)
     mainloop()

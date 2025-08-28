@@ -88,7 +88,7 @@ try:
 except ImportError:
     from _py_abc import ABCMeta, get_cache_token
     ABCMeta.__module__ = 'abc'
-else:
+sonst:
     klasse ABCMeta(type):
         """Metaclass fuer defining Abstract Base Classes (ABCs).
 
@@ -148,7 +148,7 @@ def update_abstractmethods(cls):
 
     If a klasse has had one of its abstract methods implemented after the
     klasse was created, the method will not be considered implemented until
-    this function is called. Alternatively, if a new abstract method has been
+    this function is called. Alternatively, wenn a new abstract method has been
     added to the class, it will only be considered an abstract method of the
     klasse after this function is called.
 
@@ -159,7 +159,7 @@ def update_abstractmethods(cls):
 
     If cls is not an instance of ABCMeta, does nothing.
     """
-    if not hasattr(cls, '__abstractmethods__'):
+    wenn not hasattr(cls, '__abstractmethods__'):
         # We check fuer __abstractmethods__ here because cls might by a C
         # implementation or a python implementation (especially during
         # testing), and we want to handle both cases.
@@ -171,11 +171,11 @@ def update_abstractmethods(cls):
     fuer scls in cls.__bases__:
         fuer name in getattr(scls, '__abstractmethods__', ()):
             value = getattr(cls, name, None)
-            if getattr(value, "__isabstractmethod__", False):
+            wenn getattr(value, "__isabstractmethod__", False):
                 abstracts.add(name)
     # Also add any other newly added abstract methods.
     fuer name, value in cls.__dict__.items():
-        if getattr(value, "__isabstractmethod__", False):
+        wenn getattr(value, "__isabstractmethod__", False):
             abstracts.add(name)
     cls.__abstractmethods__ = frozenset(abstracts)
     return cls

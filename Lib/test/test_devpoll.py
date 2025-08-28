@@ -8,14 +8,14 @@ import select
 import unittest
 from test.support import cpython_only
 
-if not hasattr(select, 'devpoll') :
+wenn not hasattr(select, 'devpoll') :
     raise unittest.SkipTest('test works only on Solaris OS family')
 
 
 def find_ready_matching(ready, flag):
     match = []
     fuer fd, mode in ready:
-        if mode & flag:
+        wenn mode & flag:
             match.append(fd)
     return match
 
@@ -50,14 +50,14 @@ klasse DevPollTests(unittest.TestCase):
         while writers:
             ready = p.poll()
             ready_writers = find_ready_matching(ready, select.POLLOUT)
-            if not ready_writers:
+            wenn not ready_writers:
                 self.fail("no pipes ready fuer writing")
             wr = random.choice(ready_writers)
             os.write(wr, MSG)
 
             ready = p.poll()
             ready_readers = find_ready_matching(ready, select.POLLIN)
-            if not ready_readers:
+            wenn not ready_readers:
                 self.fail("no pipes ready fuer reading")
             self.assertEqual([w2r[wr]], ready_readers)
             rd = ready_readers[0]
@@ -138,5 +138,5 @@ klasse DevPollTests(unittest.TestCase):
         self.assertRaises(OverflowError, pollster.modify, 1, USHRT_MAX + 1)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

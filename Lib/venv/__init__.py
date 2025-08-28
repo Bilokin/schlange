@@ -55,7 +55,7 @@ klasse EnvBuilder:
         self.upgrade = upgrade
         self.with_pip = with_pip
         self.orig_prompt = prompt
-        if prompt == '.':  # see bpo-38901
+        wenn prompt == '.':  # see bpo-38901
             prompt = os.path.basename(os.getcwd())
         self.prompt = prompt
         self.upgrade_deps = upgrade_deps
@@ -78,25 +78,25 @@ klasse EnvBuilder:
         self.system_site_packages = False
         self.create_configuration(context)
         self.setup_python(context)
-        if self.with_pip:
+        wenn self.with_pip:
             self._setup_pip(context)
-        if not self.upgrade:
+        wenn not self.upgrade:
             self.setup_scripts(context)
             self.post_setup(context)
-        if true_system_site_packages:
+        wenn true_system_site_packages:
             # We had set it to False before, now
             # restore it and rewrite the configuration
             self.system_site_packages = True
             self.create_configuration(context)
-        if self.upgrade_deps:
+        wenn self.upgrade_deps:
             self.upgrade_dependencies(context)
 
     def clear_directory(self, path):
         fuer fn in os.listdir(path):
             fn = os.path.join(path, fn)
-            if os.path.islink(fn) or os.path.isfile(fn):
+            wenn os.path.islink(fn) or os.path.isfile(fn):
                 os.remove(fn)
-            elif os.path.isdir(fn):
+            sowenn os.path.isdir(fn):
                 shutil.rmtree(fn)
 
     def _venv_path(self, env_dir, name):
@@ -114,8 +114,8 @@ klasse EnvBuilder:
         whether a human reader would look at the path string and easily tell
         that they're the same file.
         """
-        if sys.platform == 'win32':
-            if os.path.normcase(path1) == os.path.normcase(path2):
+        wenn sys.platform == 'win32':
+            wenn os.path.normcase(path1) == os.path.normcase(path2):
                 return True
             # gh-90329: Don't display a warning fuer short/long names
             import _winapi
@@ -127,10 +127,10 @@ klasse EnvBuilder:
                 path2 = _winapi.GetLongPathName(os.fsdecode(path2))
             except OSError:
                 pass
-            if os.path.normcase(path1) == os.path.normcase(path2):
+            wenn os.path.normcase(path1) == os.path.normcase(path2):
                 return True
             return False
-        else:
+        sonst:
             return path1 == path2
 
     def ensure_directories(self, env_dir):
@@ -142,32 +142,32 @@ klasse EnvBuilder:
         """
 
         def create_if_needed(d):
-            if not os.path.exists(d):
+            wenn not os.path.exists(d):
                 os.makedirs(d)
-            elif os.path.islink(d) or os.path.isfile(d):
+            sowenn os.path.islink(d) or os.path.isfile(d):
                 raise ValueError('Unable to create directory %r' % d)
 
-        if os.pathsep in os.fspath(env_dir):
+        wenn os.pathsep in os.fspath(env_dir):
             raise ValueError(f'Refusing to create a venv in {env_dir} because '
                              f'it contains the PATH separator {os.pathsep}.')
-        if os.path.exists(env_dir) and self.clear:
+        wenn os.path.exists(env_dir) and self.clear:
             self.clear_directory(env_dir)
         context = types.SimpleNamespace()
         context.env_dir = env_dir
         context.env_name = os.path.split(env_dir)[1]
-        context.prompt = self.prompt if self.prompt is not None else context.env_name
+        context.prompt = self.prompt wenn self.prompt is not None sonst context.env_name
         create_if_needed(env_dir)
         executable = sys._base_executable
-        if not executable:  # see gh-96861
+        wenn not executable:  # see gh-96861
             raise ValueError('Unable to determine path to the running '
                              'Python interpreter. Provide an explicit path or '
                              'check that your PATH environment variable is '
                              'correctly set.')
         dirname, exename = os.path.split(os.path.abspath(executable))
-        if sys.platform == 'win32':
+        wenn sys.platform == 'win32':
             # Always create the simplest name in the venv. It will either be a
             # link back to executable, or a copy of the appropriate launcher
-            _d = '_d' if os.path.splitext(exename)[0].endswith('_d') else ''
+            _d = '_d' wenn os.path.splitext(exename)[0].endswith('_d') sonst ''
             exename = f'python{_d}.exe'
         context.executable = executable
         context.python_dir = dirname
@@ -185,17 +185,17 @@ klasse EnvBuilder:
         #      directory, I would recommend installing headers as package data,
         #      and providing some sort of API to get the include directories.
         #      Example: https://numpy.org/doc/2.1/reference/generated/numpy.get_include.html
-        incpath = os.path.join(env_dir, 'Include' if os.name == 'nt' else 'include')
+        incpath = os.path.join(env_dir, 'Include' wenn os.name == 'nt' sonst 'include')
 
         context.inc_path = incpath
         create_if_needed(incpath)
         context.lib_path = libpath
         create_if_needed(libpath)
         # Issue 21197: create lib64 as a symlink to lib on 64-bit non-OS X POSIX
-        if ((sys.maxsize > 2**32) and (os.name == 'posix') and
+        wenn ((sys.maxsize > 2**32) and (os.name == 'posix') and
             (sys.platform != 'darwin')):
             link_path = os.path.join(env_dir, 'lib64')
-            if not os.path.exists(link_path):   # Issue #21643
+            wenn not os.path.exists(link_path):   # Issue #21643
                 os.symlink('lib', link_path)
         context.bin_path = binpath
         context.bin_name = os.path.relpath(binpath, env_dir)
@@ -204,11 +204,11 @@ klasse EnvBuilder:
         # Assign and update the command to use when launching the newly created
         # environment, in case it isn't simply the executable script (e.g. bpo-45337)
         context.env_exec_cmd = context.env_exe
-        if sys.platform == 'win32':
+        wenn sys.platform == 'win32':
             # bpo-45337: Fix up env_exec_cmd to account fuer file system redirections.
             # Some redirects only apply to CreateFile and not CreateProcess
             real_env_exe = os.path.realpath(context.env_exe)
-            if not self._same_path(real_env_exe, context.env_exe):
+            wenn not self._same_path(real_env_exe, context.env_exe):
                 logger.warning('Actual environment location may have moved due to '
                                'redirects, links or junctions.\n'
                                '  Requested location: "%s"\n'
@@ -229,34 +229,34 @@ klasse EnvBuilder:
         context.cfg_path = path = os.path.join(context.env_dir, 'pyvenv.cfg')
         with open(path, 'w', encoding='utf-8') as f:
             f.write('home = %s\n' % context.python_dir)
-            if self.system_site_packages:
+            wenn self.system_site_packages:
                 incl = 'true'
-            else:
+            sonst:
                 incl = 'false'
             f.write('include-system-site-packages = %s\n' % incl)
             f.write('version = %d.%d.%d\n' % sys.version_info[:3])
-            if self.prompt is not None:
+            wenn self.prompt is not None:
                 f.write(f'prompt = {self.prompt!r}\n')
             f.write('executable = %s\n' % os.path.realpath(sys.executable))
             args = []
             nt = os.name == 'nt'
-            if nt and self.symlinks:
+            wenn nt and self.symlinks:
                 args.append('--symlinks')
-            if not nt and not self.symlinks:
+            wenn not nt and not self.symlinks:
                 args.append('--copies')
-            if not self.with_pip:
+            wenn not self.with_pip:
                 args.append('--without-pip')
-            if self.system_site_packages:
+            wenn self.system_site_packages:
                 args.append('--system-site-packages')
-            if self.clear:
+            wenn self.clear:
                 args.append('--clear')
-            if self.upgrade:
+            wenn self.upgrade:
                 args.append('--upgrade')
-            if self.upgrade_deps:
+            wenn self.upgrade_deps:
                 args.append('--upgrade-deps')
-            if self.orig_prompt is not None:
+            wenn self.orig_prompt is not None:
                 args.append(f'--prompt="{self.orig_prompt}"')
-            if not self.scm_ignore_files:
+            wenn not self.scm_ignore_files:
                 args.append('--without-scm-ignore-files')
 
             args.append(context.env_dir)
@@ -265,24 +265,24 @@ klasse EnvBuilder:
 
     def symlink_or_copy(self, src, dst, relative_symlinks_ok=False):
         """
-        Try symlinking a file, and if that fails, fall back to copying.
+        Try symlinking a file, and wenn that fails, fall back to copying.
         (Unused on Windows, because we can't just copy a failed symlink file: we
         switch to a different set of files instead.)
         """
         assert os.name != 'nt'
         force_copy = not self.symlinks
-        if not force_copy:
+        wenn not force_copy:
             try:
-                if not os.path.islink(dst):  # can't link to itself!
-                    if relative_symlinks_ok:
+                wenn not os.path.islink(dst):  # can't link to itself!
+                    wenn relative_symlinks_ok:
                         assert os.path.dirname(src) == os.path.dirname(dst)
                         os.symlink(os.path.basename(src), dst)
-                    else:
+                    sonst:
                         os.symlink(src, dst)
             except Exception:   # may need to use a more specific exception
                 logger.warning('Unable to symlink %r to %r', src, dst)
                 force_copy = True
-        if force_copy:
+        wenn force_copy:
             shutil.copyfile(src, dst)
 
     def create_git_ignore_file(self, context):
@@ -298,7 +298,7 @@ klasse EnvBuilder:
                        'see https://docs.python.org/3/library/venv.html\n')
             file.write('*\n')
 
-    if os.name != 'nt':
+    wenn os.name != 'nt':
         def setup_python(self, context):
             """
             Set up a Python executable in the environment.
@@ -311,19 +311,19 @@ klasse EnvBuilder:
             copier = self.symlink_or_copy
             dirname = context.python_dir
             copier(context.executable, path)
-            if not os.path.islink(path):
+            wenn not os.path.islink(path):
                 os.chmod(path, 0o755)
             fuer suffix in ('python', 'python3',
                            f'python3.{sys.version_info[1]}'):
                 path = os.path.join(binpath, suffix)
-                if not os.path.exists(path):
+                wenn not os.path.exists(path):
                     # Issue 18807: make copies if
                     # symlinks are not wanted
                     copier(context.env_exe, path, relative_symlinks_ok=True)
-                    if not os.path.islink(path):
+                    wenn not os.path.islink(path):
                         os.chmod(path, 0o755)
 
-    else:
+    sonst:
         def setup_python(self, context):
             """
             Set up a Python executable in the environment.
@@ -335,13 +335,13 @@ klasse EnvBuilder:
             dirname = context.python_dir
             exename = os.path.basename(context.env_exe)
             exe_stem = os.path.splitext(exename)[0]
-            exe_d = '_d' if os.path.normcase(exe_stem).endswith('_d') else ''
-            if sysconfig.is_python_build():
+            exe_d = '_d' wenn os.path.normcase(exe_stem).endswith('_d') sonst ''
+            wenn sysconfig.is_python_build():
                 scripts = dirname
-            else:
+            sonst:
                 scripts = os.path.join(os.path.dirname(__file__),
                                        'scripts', 'nt')
-            if not sysconfig.get_config_var("Py_GIL_DISABLED"):
+            wenn not sysconfig.get_config_var("Py_GIL_DISABLED"):
                 python_exe = os.path.join(dirname, f'python{exe_d}.exe')
                 pythonw_exe = os.path.join(dirname, f'pythonw{exe_d}.exe')
                 link_sources = {
@@ -358,7 +358,7 @@ klasse EnvBuilder:
                     'pythonw.exe': pythonw_exe,
                     f'pythonw{exe_d}.exe': pythonw_exe,
                 }
-            else:
+            sonst:
                 exe_t = f'3.{sys.version_info[1]}t'
                 python_exe = os.path.join(dirname, f'python{exe_t}{exe_d}.exe')
                 pythonw_exe = os.path.join(dirname, f'pythonw{exe_t}{exe_d}.exe')
@@ -386,13 +386,13 @@ klasse EnvBuilder:
                 }
 
             do_copies = True
-            if self.symlinks:
+            wenn self.symlinks:
                 do_copies = False
                 # For symlinking, we need all the DLLs to be available alongside
                 # the executables.
                 link_sources.update({
                     f: os.path.join(dirname, f) fuer f in os.listdir(dirname)
-                    if os.path.normcase(f).startswith(('python', 'vcruntime'))
+                    wenn os.path.normcase(f).startswith(('python', 'vcruntime'))
                     and os.path.normcase(os.path.splitext(f)[1]) == '.dll'
                 })
 
@@ -414,7 +414,7 @@ klasse EnvBuilder:
                         logger.warning('Retrying with copies')
                         break
 
-            if do_copies:
+            wenn do_copies:
                 fuer dest, src in copy_sources.items():
                     dest = os.path.join(binpath, dest)
                     try:
@@ -422,13 +422,13 @@ klasse EnvBuilder:
                     except OSError:
                         logger.warning('Unable to copy %r to %r', src, dest)
 
-            if sysconfig.is_python_build():
+            wenn sysconfig.is_python_build():
                 # copy init.tcl
                 fuer root, dirs, files in os.walk(context.python_dir):
-                    if 'init.tcl' in files:
+                    wenn 'init.tcl' in files:
                         tcldir = os.path.basename(root)
                         tcldir = os.path.join(context.env_dir, 'Lib', tcldir)
-                        if not os.path.exists(tcldir):
+                        wenn not os.path.exists(tcldir):
                             os.makedirs(tcldir)
                         src = os.path.join(root, 'init.tcl')
                         dst = os.path.join(tcldir, 'init.tcl')
@@ -461,7 +461,7 @@ klasse EnvBuilder:
 
         This method installs the default scripts into the environment
         being created. You can prevent the default installation by overriding
-        this method if you really need to, or if you need to specify
+        this method wenn you really need to, or wenn you need to specify
         a different location fuer the scripts to install. By default, the
         'scripts' directory in the venv package is used as the source of
         scripts to install.
@@ -515,11 +515,11 @@ klasse EnvBuilder:
         # gh-124651: need to quote the template strings properly
         quote = shlex.quote
         script_path = context.script_path
-        if script_path.endswith('.ps1'):
+        wenn script_path.endswith('.ps1'):
             quote = quote_ps1
-        elif script_path.endswith('.bat'):
+        sowenn script_path.endswith('.bat'):
             quote = quote_bat
-        else:
+        sonst:
             # fallbacks to POSIX shell compliant quote
             quote = shlex.quote
 
@@ -543,33 +543,33 @@ klasse EnvBuilder:
         """
         binpath = context.bin_path
         plen = len(path)
-        if os.name == 'nt':
+        wenn os.name == 'nt':
             def skip_file(f):
                 f = os.path.normcase(f)
                 return (f.startswith(('python', 'venv'))
                         and f.endswith(('.exe', '.pdb')))
-        else:
+        sonst:
             def skip_file(f):
                 return False
         fuer root, dirs, files in os.walk(path):
-            if root == path:  # at top-level, remove irrelevant dirs
+            wenn root == path:  # at top-level, remove irrelevant dirs
                 fuer d in dirs[:]:
-                    if d not in ('common', os.name):
+                    wenn d not in ('common', os.name):
                         dirs.remove(d)
                 continue  # ignore files in top level
             fuer f in files:
-                if skip_file(f):
+                wenn skip_file(f):
                     continue
                 srcfile = os.path.join(root, f)
                 suffix = root[plen:].split(os.sep)[2:]
-                if not suffix:
+                wenn not suffix:
                     dstdir = binpath
-                else:
+                sonst:
                     dstdir = os.path.join(binpath, *suffix)
-                if not os.path.exists(dstdir):
+                wenn not os.path.exists(dstdir):
                     os.makedirs(dstdir)
                 dstfile = os.path.join(dstdir, f)
-                if os.name == 'nt' and srcfile.endswith(('.exe', '.pdb')):
+                wenn os.name == 'nt' and srcfile.endswith(('.exe', '.pdb')):
                     shutil.copy2(srcfile, dstfile)
                     continue
                 with open(srcfile, 'rb') as f:
@@ -584,9 +584,9 @@ klasse EnvBuilder:
                     logger.warning('unable to copy script %r, '
                                    'may be binary: %s', srcfile, e)
                     continue
-                if new_data == data:
+                wenn new_data == data:
                     shutil.copy2(srcfile, dstfile)
-                else:
+                sonst:
                     with open(dstfile, 'wb') as f:
                         f.write(new_data)
                     shutil.copymode(srcfile, dstfile)
@@ -630,9 +630,9 @@ def main(args=None):
                         action='store_true', dest='system_site',
                         help='Give the virtual environment access to the '
                              'system site-packages dir.')
-    if os.name == 'nt':
+    wenn os.name == 'nt':
         use_symlinks = False
-    else:
+    sonst:
         use_symlinks = True
     group = parser.add_mutually_exclusive_group()
     group.add_argument('--symlinks', default=use_symlinks,
@@ -647,7 +647,7 @@ def main(args=None):
                             'the platform.')
     parser.add_argument('--clear', default=False, action='store_true',
                         dest='clear', help='Delete the contents of the '
-                                           'environment directory if it '
+                                           'environment directory wenn it '
                                            'already exists, before '
                                            'environment creation.')
     parser.add_argument('--upgrade', default=False, action='store_true',
@@ -673,7 +673,7 @@ def main(args=None):
                         help='Skips adding SCM ignore files to the environment '
                              'directory (Git is supported by default).')
     options = parser.parse_args(args)
-    if options.upgrade and options.clear:
+    wenn options.upgrade and options.clear:
         raise ValueError('you cannot supply --upgrade and --clear together.')
     builder = EnvBuilder(system_site_packages=options.system_site,
                          clear=options.clear,
@@ -687,7 +687,7 @@ def main(args=None):
         builder.create(d)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     rc = 1
     try:
         main()

@@ -19,7 +19,7 @@ klasse TestBreak(unittest.TestCase):
 
     def setUp(self):
         self._default_handler = signal.getsignal(signal.SIGINT)
-        if self.int_handler is not None:
+        wenn self.int_handler is not None:
             signal.signal(signal.SIGINT, self.int_handler)
 
     def tearDown(self):
@@ -29,11 +29,11 @@ klasse TestBreak(unittest.TestCase):
 
 
     def withRepeats(self, test_function, repeats=None):
-        if not support.check_impl_detail(cpython=True):
+        wenn not support.check_impl_detail(cpython=True):
             # Override repeats count on non-cpython to execute only once.
             # Because this test only makes sense to be repeated on CPython.
             repeats = 1
-        elif repeats is None:
+        sowenn repeats is None:
             repeats = self.default_repeats
 
         fuer repeat in range(repeats):
@@ -41,12 +41,12 @@ klasse TestBreak(unittest.TestCase):
                 # We don't run `setUp` fuer the very first repeat
                 # and we don't run `tearDown` fuer the very last one,
                 # because they are handled by the test klasse itself.
-                if repeat != 0:
+                wenn repeat != 0:
                     self.setUp()
                 try:
                     test_function()
                 finally:
-                    if repeat != repeats - 1:
+                    wenn repeat != repeats - 1:
                         self.tearDown()
 
     def testInstallHandler(self):
@@ -99,7 +99,7 @@ klasse TestBreak(unittest.TestCase):
     def testSecondInterrupt(self):
         # Can't use skipIf decorator because the signal handler may have
         # been changed after defining this method.
-        if signal.getsignal(signal.SIGINT) == signal.SIG_IGN:
+        wenn signal.getsignal(signal.SIGINT) == signal.SIG_IGN:
             self.skipTest("test requires SIGINT to not be ignored")
 
         def test(result):
@@ -149,7 +149,7 @@ klasse TestBreak(unittest.TestCase):
     def testHandlerReplacedButCalled(self):
         # Can't use skipIf decorator because the signal handler may have
         # been changed after defining this method.
-        if signal.getsignal(signal.SIGINT) == signal.SIG_IGN:
+        wenn signal.getsignal(signal.SIGINT) == signal.SIG_IGN:
             self.skipTest("test requires SIGINT to not be ignored")
 
         def test_function():
@@ -167,7 +167,7 @@ klasse TestBreak(unittest.TestCase):
                 os.kill(os.getpid(), signal.SIGINT)
             except KeyboardInterrupt:
                 pass
-            else:
+            sonst:
                 self.fail("replaced but delegated handler doesn't raise interrupt")
         self.withRepeats(test_function)
 
@@ -305,5 +305,5 @@ klasse TestBreakSignalDefault(TestBreak):
     int_handler = signal.SIG_DFL
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

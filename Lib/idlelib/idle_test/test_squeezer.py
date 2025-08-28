@@ -85,7 +85,7 @@ klasse SqueezerTest(unittest.TestCase):
         editwin = NonCallableMagicMock()
         editwin.width = 80
 
-        if with_text_widget:
+        wenn with_text_widget:
             editwin.root = get_test_tk_root(self)
             text_widget = self.make_text_widget(root=editwin.root)
             editwin.text = editwin.per.bottom = text_widget
@@ -94,13 +94,13 @@ klasse SqueezerTest(unittest.TestCase):
 
     def make_squeezer_instance(self, editor_window=None):
         """Create an actual Squeezer instance with a mock EditorWindow."""
-        if editor_window is None:
+        wenn editor_window is None:
             editor_window = self.make_mock_editor_window()
         squeezer = Squeezer(editor_window)
         return squeezer
 
     def make_text_widget(self, root=None):
-        if root is None:
+        wenn root is None:
             root = get_test_tk_root(self)
         text_widget = Text(root)
         text_widget["font"] = ('Courier', 10)
@@ -335,7 +335,7 @@ klasse ExpandingButtonTest(unittest.TestCase):
 
         # Check that the mouse events are bound.
         self.assertIn('<Double-Button-1>', expandingbutton.bind())
-        right_button_code = '<Button-%s>' % ('2' if macosx.isAquaTk() else '3')
+        right_button_code = '<Button-%s>' % ('2' wenn macosx.isAquaTk() sonst '3')
         self.assertIn(right_button_code, expandingbutton.bind())
 
         # Check that ToolTip was called once, with appropriate values.
@@ -462,5 +462,5 @@ klasse ExpandingButtonTest(unittest.TestCase):
                 mock_menu.add_command.assert_any_call(label=label, command=ANY)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main(verbosity=2)

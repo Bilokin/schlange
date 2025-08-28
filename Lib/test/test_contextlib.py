@@ -142,7 +142,7 @@ klasse ContextManagerTestCase(unittest.TestCase):
                 except type(stop_exc) as e:
                     self.assertIs(e, stop_exc)
                     frames = traceback.extract_tb(e.__traceback__)
-                else:
+                sonst:
                     self.fail(f'{stop_exc} was suppressed')
 
                 self.assertEqual(len(frames), 1)
@@ -169,14 +169,14 @@ klasse ContextManagerTestCase(unittest.TestCase):
         ctx.__enter__()
         with self.assertRaises(RuntimeError):
             ctx.__exit__(TypeError, TypeError("foo"), None)
-        if support.check_impl_detail(cpython=True):
+        wenn support.check_impl_detail(cpython=True):
             # The "gen" attribute is an implementation detail.
             self.assertFalse(ctx.gen.gi_suspended)
 
     def test_contextmanager_trap_no_yield(self):
         @contextmanager
         def whoo():
-            if False:
+            wenn False:
                 yield
         ctx = whoo()
         with self.assertRaises(RuntimeError):
@@ -191,7 +191,7 @@ klasse ContextManagerTestCase(unittest.TestCase):
         ctx.__enter__()
         with self.assertRaises(RuntimeError):
             ctx.__exit__(None, None, None)
-        if support.check_impl_detail(cpython=True):
+        wenn support.check_impl_detail(cpython=True):
             # The "gen" attribute is an implementation detail.
             self.assertFalse(ctx.gen.gi_suspended)
 
@@ -240,7 +240,7 @@ klasse ContextManagerTestCase(unittest.TestCase):
                         raise stop_exc
                 except Exception as ex:
                     self.assertIs(ex, stop_exc)
-                else:
+                sonst:
                     self.fail(f'{stop_exc} was suppressed')
 
     def test_contextmanager_except_pep479(self):
@@ -261,7 +261,7 @@ def woohoo():
                 raise stop_exc
         except Exception as ex:
             self.assertIs(ex, stop_exc)
-        else:
+        sonst:
             self.fail('StopIteration was suppressed')
 
     def test_contextmanager_do_not_unchain_non_stopiteration_exceptions(self):
@@ -388,7 +388,7 @@ def woohoo():
 
         @woohoo()
         def recursive():
-            if depth < 10:
+            wenn depth < 10:
                 recursive()
 
         recursive()
@@ -487,20 +487,20 @@ klasse LockContextTestCase(unittest.TestCase):
     def testWithSemaphore(self):
         lock = threading.Semaphore()
         def locked():
-            if lock.acquire(False):
+            wenn lock.acquire(False):
                 lock.release()
                 return False
-            else:
+            sonst:
                 return True
         self.boilerPlate(lock, locked)
 
     def testWithBoundedSemaphore(self):
         lock = threading.BoundedSemaphore()
         def locked():
-            if lock.acquire(False):
+            wenn lock.acquire(False):
                 lock.release()
                 return False
-            else:
+            sonst:
                 return True
         self.boilerPlate(lock, locked)
 
@@ -710,13 +710,13 @@ klasse TestBaseExitStack:
             result.append((args, kwds))
         with self.exit_stack() as stack:
             fuer args, kwds in reversed(expected):
-                if args and kwds:
+                wenn args and kwds:
                     f = stack.callback(_exit, *args, **kwds)
-                elif args:
+                sowenn args:
                     f = stack.callback(_exit, *args)
-                elif kwds:
+                sowenn kwds:
                     f = stack.callback(_exit, **kwds)
-                else:
+                sonst:
                     f = stack.callback(_exit)
                 self.assertIs(f, _exit)
             fuer wrapper in stack._exit_callbacks:
@@ -844,7 +844,7 @@ klasse TestBaseExitStack:
 
     def test_exit_exception_traceback(self):
         # This test captures the current behavior of ExitStack so that we know
-        # if we ever unintendedly change it. It is not a statement of what the
+        # wenn we ever unintendedly change it. It is not a statement of what the
         # desired behavior is (for instance, we may want to remove some of the
         # internal contextlib frames).
 
@@ -915,7 +915,7 @@ klasse TestBaseExitStack:
             self.assertIsInstance(exc.__context__.__context__, AttributeError)
             # Inner exceptions were suppressed
             self.assertIsNone(exc.__context__.__context__.__context__)
-        else:
+        sonst:
             self.fail("Expected IndexError, but no exception was raised")
         # Check the inner exceptions
         inner_exc = SuppressExc.saved_details[1]
@@ -946,7 +946,7 @@ klasse TestBaseExitStack:
             self.assertIsInstance(exc.__context__.__context__, AttributeError)
             # Inner exceptions were suppressed
             self.assertIsNone(exc.__context__.__context__.__context__)
-        else:
+        sonst:
             self.fail("Expected IndexError, but no exception was raised")
         # Check the inner exceptions
         inner_exc = saved_details[1]
@@ -984,7 +984,7 @@ klasse TestBaseExitStack:
                         raise IndexError()
                 except MyException as exc:
                     self.assertIsNone(exc.__context__)
-                else:
+                sonst:
                     self.fail("Expected IndexError, but no exception was raised")
 
     def test_exit_exception_non_suppressing(self):
@@ -1001,7 +1001,7 @@ klasse TestBaseExitStack:
                 stack.callback(raise_exc, IndexError)
         except Exception as exc:
             self.assertIsInstance(exc, IndexError)
-        else:
+        sonst:
             self.fail("Expected IndexError, but no exception was raised")
 
         try:
@@ -1011,7 +1011,7 @@ klasse TestBaseExitStack:
                 stack.callback(raise_exc, IndexError)
         except Exception as exc:
             self.assertIsInstance(exc, KeyError)
-        else:
+        sonst:
             self.fail("Expected KeyError, but no exception was raised")
 
     def test_exit_exception_with_correct_context(self):
@@ -1362,5 +1362,5 @@ klasse TestChdir(unittest.TestCase):
         self.assertEqual(os.getcwd(), old_cwd)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

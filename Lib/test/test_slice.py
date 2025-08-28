@@ -17,9 +17,9 @@ def evaluate_slice_index(arg):
     TypeError with a suitable message on failure.
 
     """
-    if hasattr(arg, '__index__'):
+    wenn hasattr(arg, '__index__'):
         return operator.index(arg)
-    else:
+    sonst:
         raise TypeError(
             "slice indices must be integers or "
             "None or have an __index__ method")
@@ -31,31 +31,31 @@ def slice_indices(slice, length):
     """
     # Compute step and length as integers.
     length = operator.index(length)
-    step = 1 if slice.step is None else evaluate_slice_index(slice.step)
+    step = 1 wenn slice.step is None sonst evaluate_slice_index(slice.step)
 
     # Raise ValueError fuer negative length or zero step.
-    if length < 0:
+    wenn length < 0:
         raise ValueError("length should not be negative")
-    if step == 0:
+    wenn step == 0:
         raise ValueError("slice step cannot be zero")
 
     # Find lower and upper bounds fuer start and stop.
-    lower = -1 if step < 0 else 0
-    upper = length - 1 if step < 0 else length
+    lower = -1 wenn step < 0 sonst 0
+    upper = length - 1 wenn step < 0 sonst length
 
     # Compute start.
-    if slice.start is None:
-        start = upper if step < 0 else lower
-    else:
+    wenn slice.start is None:
+        start = upper wenn step < 0 sonst lower
+    sonst:
         start = evaluate_slice_index(slice.start)
-        start = max(start + length, lower) if start < 0 else min(start, upper)
+        start = max(start + length, lower) wenn start < 0 sonst min(start, upper)
 
     # Compute stop.
-    if slice.stop is None:
-        stop = lower if step < 0 else upper
-    else:
+    wenn slice.stop is None:
+        stop = lower wenn step < 0 sonst upper
+    sonst:
         stop = evaluate_slice_index(slice.stop)
-        stop = max(stop + length, lower) if stop < 0 else min(stop, upper)
+        stop = max(stop + length, lower) wenn stop < 0 sonst min(stop, upper)
 
     return start, stop, step
 
@@ -157,7 +157,7 @@ klasse SliceTest(unittest.TestCase):
             expected = "valueerror"
         self.assertEqual(actual, expected)
 
-        if length >= 0 and slice.step != 0:
+        wenn length >= 0 and slice.step != 0:
             actual = range(*slice.indices(length))
             expected = range(length)[slice]
             self.assertEqual(actual, expected)
@@ -295,5 +295,5 @@ klasse SliceTest(unittest.TestCase):
         support.gc_collect()
         self.assertIsNone(w())
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

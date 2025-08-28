@@ -45,8 +45,8 @@ benchmarks = [
 #            This is an arbitrary Python expression; the available
 #            variables are "found" (the whole match), and "g1", "g2", ...
 #            up to "g99" contain the contents of each group, or the
-#            string 'None' if the group wasn't given a value, or the
-#            string 'Error' if the group index was out of range;
+#            string 'None' wenn the group wasn't given a value, or the
+#            string 'Error' wenn the group index was out of range;
 #            also "groups", the return value of m.group() (a tuple).
 #         4: The expected result of evaluating the expression.
 #            If the two don't match, an error is reported.
@@ -445,7 +445,7 @@ tests = [
     ('a(?:b|c|d)+?(.)', 'ace', SUCCEED, 'g1', 'e'),
     ('a(?:b|(c|e){1,2}?|d)+?(.)', 'ace', SUCCEED, 'g1 + g2', 'ce'),
 
-    # lookbehind: split by : but not if it is escaped by -.
+    # lookbehind: split by : but not wenn it is escaped by -.
     ('(?<!-):(.*?)(?<!-):', 'a:bc-:de:f', SUCCEED, 'g1', 'bc-:de' ),
     # escaping with \ as we know it
     ('(?<!\\\\):(.*?)(?<!\\\\):', 'a:bc\\:de:f', SUCCEED, 'g1', 'bc\\:de' ),
@@ -520,7 +520,7 @@ xyzabc
     (r'[\41]', '!', SUCCEED, 'found', '!'),
     # bug 114033: nothing to repeat
     (r'(x?)?', 'x', SUCCEED, 'found', 'x'),
-    # bug 115040: rescan if flags are modified inside pattern
+    # bug 115040: rescan wenn flags are modified inside pattern
     (r'(?x) foo ', 'foo', SUCCEED, 'found', 'foo'),
     # bug 115618: negative lookahead
     (r'(?<!abc)(d.f)', 'abcdefdof', SUCCEED, 'found', 'dof'),

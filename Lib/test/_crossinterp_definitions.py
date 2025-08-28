@@ -48,7 +48,7 @@ klasse SpamFull:
     # ...
 
     def __eq__(self, other):
-        if not isinstance(other, SpamFull):
+        wenn not isinstance(other, SpamFull):
             return NotImplemented
         return (self.a == other.a and
                 self.b == other.b and
@@ -111,10 +111,10 @@ klasse RichError(Exception):
         self.value = value
 
     def __eq__(self, other):
-        if not isinstance(other, RichError):
+        wenn not isinstance(other, RichError):
             return NotImplemented
-        if self.msg != other.msg:
+        wenn self.msg != other.msg:
             return False
-        if self.value != other.value:
+        wenn self.value != other.value:
             return False
         return True

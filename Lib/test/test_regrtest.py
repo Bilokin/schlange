@@ -36,7 +36,7 @@ from test.libregrtest.filter import get_match_tests, set_match_tests, match_test
 from test.libregrtest.result import TestStats
 from test.libregrtest.utils import normalize_test_name
 
-if not support.has_subprocess_support:
+wenn not support.has_subprocess_support:
     raise unittest.SkipTest("test module requires subprocess")
 
 ROOT_DIR = os.path.join(os.path.dirname(__file__), '..', '..')
@@ -421,7 +421,7 @@ klasse ParseArgsTestCase(unittest.TestCase):
         # Check Regrtest attributes which are more reliable than Namespace
         # which has an unclear API
         with os_helper.EnvironmentVarGuard() as env:
-            # Ignore SOURCE_DATE_EPOCH env var if it's set
+            # Ignore SOURCE_DATE_EPOCH env var wenn it's set
             del env['SOURCE_DATE_EPOCH']
 
             regrtest = main.Regrtest(ns)
@@ -521,11 +521,11 @@ klasse BaseTestCase(unittest.TestCase):
         self.addCleanup(os_helper.rmtree, self.tmptestdir)
 
     def create_test(self, name=None, code=None):
-        if not name:
+        wenn not name:
             name = 'noop%s' % BaseTestCase.TEST_UNIQUE_ID
             BaseTestCase.TEST_UNIQUE_ID += 1
 
-        if code is None:
+        wenn code is None:
             code = textwrap.dedent("""
                     import unittest
 
@@ -545,21 +545,21 @@ klasse BaseTestCase(unittest.TestCase):
             with open(path, 'x', encoding='utf-8') as fp:
                 fp.write(code)
         except PermissionError as exc:
-            if not sysconfig.is_python_build():
+            wenn not sysconfig.is_python_build():
                 self.skipTest("cannot write %s: %s" % (path, exc))
             raise
         return name
 
     def regex_search(self, regex, output):
         match = re.search(regex, output, re.MULTILINE)
-        if not match:
+        wenn not match:
             self.fail("%r not found in %r" % (regex, output))
         return match
 
     def check_line(self, output, pattern, full=False, regex=True):
-        if not regex:
+        wenn not regex:
             pattern = re.escape(pattern)
-        if full:
+        wenn full:
             pattern += '\n'
         regex = re.compile(r'^' + pattern, re.MULTILINE)
         self.assertRegex(output, regex)
@@ -578,42 +578,42 @@ klasse BaseTestCase(unittest.TestCase):
                              randomize=False, parallel=False, interrupted=False,
                              fail_env_changed=False,
                              forever=False, filtered=False):
-        if isinstance(tests, str):
+        wenn isinstance(tests, str):
             tests = [tests]
-        if isinstance(skipped, str):
+        wenn isinstance(skipped, str):
             skipped = [skipped]
-        if isinstance(resource_denied, str):
+        wenn isinstance(resource_denied, str):
             resource_denied = [resource_denied]
-        if isinstance(failed, str):
+        wenn isinstance(failed, str):
             failed = [failed]
-        if isinstance(env_changed, str):
+        wenn isinstance(env_changed, str):
             env_changed = [env_changed]
-        if isinstance(omitted, str):
+        wenn isinstance(omitted, str):
             omitted = [omitted]
-        if isinstance(run_no_tests, str):
+        wenn isinstance(run_no_tests, str):
             run_no_tests = [run_no_tests]
-        if isinstance(stats, int):
+        wenn isinstance(stats, int):
             stats = TestStats(stats)
-        if parallel:
+        wenn parallel:
             randomize = True
 
         rerun_failed = []
-        if rerun is not None and not env_changed:
+        wenn rerun is not None and not env_changed:
             failed = [rerun.name]
-            if not rerun.success:
+            wenn not rerun.success:
                 rerun_failed.append(rerun.name)
 
         executed = self.parse_executed_tests(output)
         total_tests = list(tests)
-        if rerun is not None:
+        wenn rerun is not None:
             total_tests.append(rerun.name)
-        if randomize:
+        wenn randomize:
             self.assertEqual(set(executed), set(total_tests), output)
-        else:
+        sonst:
             self.assertEqual(executed, total_tests, output)
 
         def plural(count):
-            return 's' if count != 1 else ''
+            return 's' wenn count != 1 sonst ''
 
         def list_regex(line_format, tests):
             count = len(tests)
@@ -622,79 +622,79 @@ klasse BaseTestCase(unittest.TestCase):
             regex = r'%s:\n    %s$' % (regex, names)
             return regex
 
-        if skipped:
+        wenn skipped:
             regex = list_regex('%s test%s skipped', skipped)
             self.check_line(output, regex)
 
-        if resource_denied:
+        wenn resource_denied:
             regex = list_regex(r'%s test%s skipped \(resource denied\)', resource_denied)
             self.check_line(output, regex)
 
-        if failed:
+        wenn failed:
             regex = list_regex('%s test%s failed', failed)
             self.check_line(output, regex)
 
-        if env_changed:
+        wenn env_changed:
             regex = list_regex(r'%s test%s altered the execution environment '
                                r'\(env changed\)',
                                env_changed)
             self.check_line(output, regex)
 
-        if omitted:
+        wenn omitted:
             regex = list_regex('%s test%s omitted', omitted)
             self.check_line(output, regex)
 
-        if rerun is not None:
+        wenn rerun is not None:
             regex = list_regex('%s re-run test%s', [rerun.name])
             self.check_line(output, regex)
             regex = LOG_PREFIX + r"Re-running 1 failed tests in verbose mode"
             self.check_line(output, regex)
             regex = fr"Re-running {rerun.name} in verbose mode"
-            if rerun.match:
+            wenn rerun.match:
                 regex = fr"{regex} \(matching: {rerun.match}\)"
             self.check_line(output, regex)
 
-        if run_no_tests:
+        wenn run_no_tests:
             regex = list_regex('%s test%s run no tests', run_no_tests)
             self.check_line(output, regex)
 
         good = (len(tests) - len(skipped) - len(resource_denied) - len(failed)
                 - len(omitted) - len(env_changed) - len(run_no_tests))
-        if good:
+        wenn good:
             regex = r'%s test%s OK\.' % (good, plural(good))
-            if not skipped and not failed and (rerun is None or rerun.success) and good > 1:
+            wenn not skipped and not failed and (rerun is None or rerun.success) and good > 1:
                 regex = 'All %s' % regex
             self.check_line(output, regex, full=True)
 
-        if interrupted:
+        wenn interrupted:
             self.check_line(output, 'Test suite interrupted by signal SIGINT.')
 
         # Total tests
         text = f'run={stats.tests_run:,}'
-        if filtered:
+        wenn filtered:
             text = fr'{text} \(filtered\)'
         parts = [text]
-        if stats.failures:
+        wenn stats.failures:
             parts.append(f'failures={stats.failures:,}')
-        if stats.skipped:
+        wenn stats.skipped:
             parts.append(f'skipped={stats.skipped:,}')
         line = fr'Total tests: {" ".join(parts)}'
         self.check_line(output, line, full=True)
 
         # Total test files
         run = len(total_tests) - len(resource_denied)
-        if rerun is not None:
+        wenn rerun is not None:
             total_failed = len(rerun_failed)
             total_rerun = 1
-        else:
+        sonst:
             total_failed = len(failed)
             total_rerun = 0
-        if interrupted:
+        wenn interrupted:
             run = 0
         text = f'run={run}'
-        if not forever:
+        wenn not forever:
             text = f'{text}/{len(tests)}'
-        if filtered:
+        wenn filtered:
             text = fr'{text} \(filtered\)'
         report = [text]
         fuer name, ntest in (
@@ -705,27 +705,27 @@ klasse BaseTestCase(unittest.TestCase):
             ('rerun', total_rerun),
             ('run_no_tests', len(run_no_tests)),
         ):
-            if ntest:
+            wenn ntest:
                 report.append(f'{name}={ntest}')
         line = fr'Total test files: {" ".join(report)}'
         self.check_line(output, line, full=True)
 
         # Result
         state = []
-        if failed:
+        wenn failed:
             state.append('FAILURE')
-        elif fail_env_changed and env_changed:
+        sowenn fail_env_changed and env_changed:
             state.append('ENV CHANGED')
-        if interrupted:
+        wenn interrupted:
             state.append('INTERRUPTED')
-        if not any((good, failed, interrupted, skipped,
+        wenn not any((good, failed, interrupted, skipped,
                     env_changed, fail_env_changed)):
             state.append("NO TESTS RAN")
-        elif not state:
+        sowenn not state:
             state.append('SUCCESS')
         state = ', '.join(state)
-        if rerun is not None:
-            new_state = 'SUCCESS' if rerun.success else 'FAILURE'
+        wenn rerun is not None:
+            new_state = 'SUCCESS' wenn rerun.success sonst 'FAILURE'
             state = f'{state} then {new_state}'
         self.check_line(output, f'Result: {state}', full=True)
 
@@ -734,13 +734,13 @@ klasse BaseTestCase(unittest.TestCase):
         return match.group(1)
 
     def run_command(self, args, input=None, exitcode=0, **kw):
-        if not input:
+        wenn not input:
             input = ''
-        if 'stderr' not in kw:
+        wenn 'stderr' not in kw:
             kw['stderr'] = subprocess.STDOUT
 
         env = kw.pop('env', None)
-        if env is None:
+        wenn env is None:
             env = dict(os.environ)
             env.pop('SOURCE_DATE_EPOCH', None)
 
@@ -750,7 +750,7 @@ klasse BaseTestCase(unittest.TestCase):
                               stdout=subprocess.PIPE,
                               env=env,
                               **kw)
-        if proc.returncode != exitcode:
+        wenn proc.returncode != exitcode:
             msg = ("Command %s failed with exit code %s, but exit code %s expected!\n"
                    "\n"
                    "stdout:\n"
@@ -758,7 +758,7 @@ klasse BaseTestCase(unittest.TestCase):
                    "%s\n"
                    "---\n"
                    % (str(args), proc.returncode, exitcode, proc.stdout))
-            if proc.stderr:
+            wenn proc.stderr:
                 msg += ("\n"
                         "stderr:\n"
                         "---\n"
@@ -770,11 +770,11 @@ klasse BaseTestCase(unittest.TestCase):
 
     def run_python(self, args, isolated=True, **kw):
         extraargs = []
-        if 'uops' in sys._xoptions:
+        wenn 'uops' in sys._xoptions:
             # Pass -X uops along
             extraargs.extend(['-X', 'uops'])
         cmd = [sys.executable, *extraargs, '-X', 'faulthandler']
-        if isolated:
+        wenn isolated:
             cmd.append('-I')
         cmd.extend(args)
         proc = self.run_command(cmd, **kw)
@@ -824,7 +824,7 @@ klasse ProgramsTestCase(BaseTestCase):
         self.regrtest_args = ['-uall', '-rwW',
                               '--testdir=%s' % self.tmptestdir]
         self.regrtest_args.extend(('--timeout', '3600', '-j4'))
-        if sys.platform == 'win32':
+        wenn sys.platform == 'win32':
             self.regrtest_args.append('-n')
 
     def check_output(self, output):
@@ -890,15 +890,15 @@ klasse ProgramsTestCase(BaseTestCase):
         # Tools\buildbot\test.bat
         script = os.path.join(ROOT_DIR, 'Tools', 'buildbot', 'test.bat')
         test_args = ['--testdir=%s' % self.tmptestdir]
-        if platform.machine() == 'ARM64':
+        wenn platform.machine() == 'ARM64':
             test_args.append('-arm64') # ARM 64-bit build
-        elif platform.machine() == 'ARM':
+        sowenn platform.machine() == 'ARM':
             test_args.append('-arm32')   # 32-bit ARM build
-        elif platform.architecture()[0] == '64bit':
+        sowenn platform.architecture()[0] == '64bit':
             test_args.append('-x64')   # 64-bit build
-        if not support.Py_DEBUG:
+        wenn not support.Py_DEBUG:
             test_args.append('+d')     # Release build, use python.exe
-        if sysconfig.get_config_var("Py_GIL_DISABLED"):
+        wenn sysconfig.get_config_var("Py_GIL_DISABLED"):
             test_args.append('--disable-gil')
         self.run_batch(script, *test_args, *self.tests)
 
@@ -906,18 +906,18 @@ klasse ProgramsTestCase(BaseTestCase):
     def test_pcbuild_rt(self):
         # PCbuild\rt.bat
         script = os.path.join(ROOT_DIR, r'PCbuild\rt.bat')
-        if not os.path.isfile(script):
+        wenn not os.path.isfile(script):
             self.skipTest(f'File "{script}" does not exist')
         rt_args = ["-q"]             # Quick, don't run tests twice
-        if platform.machine() == 'ARM64':
+        wenn platform.machine() == 'ARM64':
             rt_args.append('-arm64') # ARM 64-bit build
-        elif platform.machine() == 'ARM':
+        sowenn platform.machine() == 'ARM':
             rt_args.append('-arm32')   # 32-bit ARM build
-        elif platform.architecture()[0] == '64bit':
+        sowenn platform.architecture()[0] == '64bit':
             rt_args.append('-x64')   # 64-bit build
-        if support.Py_DEBUG:
+        wenn support.Py_DEBUG:
             rt_args.append('-d')     # Debug build, use python_d.exe
-        if sysconfig.get_config_var("Py_GIL_DISABLED"):
+        wenn sysconfig.get_config_var("Py_GIL_DISABLED"):
             rt_args.append('--disable-gil')
         self.run_batch(script, *rt_args, *self.regrtest_args, *self.tests)
 
@@ -1083,7 +1083,7 @@ klasse ArgsTestCase(BaseTestCase):
             fuer index, name in enumerate(tests, 1):
                 line = ("00:00:%02i [%s/%s] %s"
                         % (index, index, len(tests), name))
-                if previous:
+                wenn previous:
                     line += " -- %s took 0 sec" % previous
                 print(line, file=fp)
                 previous = name
@@ -1140,9 +1140,9 @@ klasse ArgsTestCase(BaseTestCase):
 
         fuer multiprocessing in (False, True):
             with self.subTest(multiprocessing=multiprocessing):
-                if multiprocessing:
+                wenn multiprocessing:
                     args = ("--slowest", "-j2", test)
-                else:
+                sonst:
                     args = ("--slowest", test)
                 output = self.run_tests(*args, exitcode=EXITCODE_INTERRUPTED)
                 self.check_executed_tests(output, test,
@@ -1177,11 +1177,11 @@ klasse ArgsTestCase(BaseTestCase):
                 def test_run(self):
                     # Store the state in the builtins module, because the test
                     # module is reload at each run
-                    if 'RUN' in builtins.__dict__:
+                    wenn 'RUN' in builtins.__dict__:
                         builtins.__dict__['RUN'] += 1
-                        if builtins.__dict__['RUN'] >= 3:
+                        wenn builtins.__dict__['RUN'] >= 3:
                             self.fail("fail at the 3rd runs")
-                    else:
+                    sonst:
                         builtins.__dict__['RUN'] = 1
         """)
         test = self.create_test('forever', code=code)
@@ -1208,7 +1208,7 @@ klasse ArgsTestCase(BaseTestCase):
         filename = 'reflog.txt'
         self.addCleanup(os_helper.unlink, filename)
         cmd = ['--huntrleaks', '3:3:']
-        if run_workers:
+        wenn run_workers:
             cmd.append('-j1')
         cmd.append(test)
         output = self.run_tests(*cmd,
@@ -1493,7 +1493,7 @@ klasse ArgsTestCase(BaseTestCase):
                     return
 
                 def test_fail_once(self):
-                    if not os.path.exists(marker_filename):
+                    wenn not os.path.exists(marker_filename):
                         open(marker_filename, "w").close()
                         self.fail("bug")
         """)
@@ -1769,7 +1769,7 @@ klasse ArgsTestCase(BaseTestCase):
 
     @support.cpython_only
     def test_uncollectable(self):
-        # Skip test if _testcapi is missing
+        # Skip test wenn _testcapi is missing
         import_helper.import_module('_testcapi')
 
         code = textwrap.dedent(r"""
@@ -1812,7 +1812,7 @@ klasse ArgsTestCase(BaseTestCase):
                 def test_sleep(self):
                     # we want to test regrtest multiprocessing timeout,
                     # not faulthandler timeout
-                    if faulthandler is not None:
+                    wenn faulthandler is not None:
                         faulthandler.cancel_dump_traceback_later()
 
                     time.sleep(60 * 5)
@@ -1828,7 +1828,7 @@ klasse ArgsTestCase(BaseTestCase):
 
     def test_unraisable_exc(self):
         # --fail-env-changed must catch unraisable exception.
-        # The exception must be displayed even if sys.stderr is redirected.
+        # The exception must be displayed even wenn sys.stderr is redirected.
         code = textwrap.dedent(r"""
             import unittest
             import weakref
@@ -1863,7 +1863,7 @@ klasse ArgsTestCase(BaseTestCase):
 
     def test_threading_excepthook(self):
         # --fail-env-changed must catch uncaught thread exception.
-        # The exception must be displayed even if sys.stderr is redirected.
+        # The exception must be displayed even wenn sys.stderr is redirected.
         code = textwrap.dedent(r"""
             import threading
             import unittest
@@ -1938,7 +1938,7 @@ klasse ArgsTestCase(BaseTestCase):
     def test_unicode_guard_env(self):
         guard = os.environ.get(setup.UNICODE_GUARD_ENV)
         self.assertIsNotNone(guard, f"{setup.UNICODE_GUARD_ENV} not set")
-        if guard.isascii():
+        wenn guard.isascii():
             # Skip to signify that the env var value was changed by the user;
             # possibly to something ASCII to work around Unicode issues.
             self.skipTest("Modified guard")
@@ -1988,13 +1988,13 @@ klasse ArgsTestCase(BaseTestCase):
 
     def test_worker_decode_error(self):
         # gh-109425: Use "backslashreplace" error handler to decode stdout.
-        if sys.platform == 'win32':
+        wenn sys.platform == 'win32':
             encoding = locale.getencoding()
-        else:
+        sonst:
             encoding = sys.stdout.encoding
-            if encoding is None:
+            wenn encoding is None:
                 encoding = sys.__stdout__.encoding
-                if encoding is None:
+                wenn encoding is None:
                     self.skipTest("cannot get regrtest worker encoding")
 
         nonascii = bytes(ch fuer ch in range(128, 256))
@@ -2007,7 +2007,7 @@ klasse ArgsTestCase(BaseTestCase):
             corrupted_output.decode(encoding)
         except UnicodeDecodeError:
             pass
-        else:
+        sonst:
             self.skipTest(f"{encoding} can decode non-ASCII bytes")
 
         expected_line = corrupted_output.decode(encoding, 'backslashreplace')
@@ -2089,7 +2089,7 @@ klasse ArgsTestCase(BaseTestCase):
 
         random_seed = 856_656_202
         cmd = ["--randomize", f"--randseed={random_seed}"]
-        if run_workers:
+        wenn run_workers:
             # run as many worker processes than the number of tests
             cmd.append(f'-j{len(tests)}')
         cmd.extend(tests)
@@ -2155,7 +2155,7 @@ klasse ArgsTestCase(BaseTestCase):
     def check_add_python_opts(self, option):
         # --fast-ci and --slow-ci add "-u -W default -bb -E" options to Python
 
-        # Skip test if _testinternalcapi is missing
+        # Skip test wenn _testinternalcapi is missing
         import_helper.import_module('_testinternalcapi')
 
         code = textwrap.dedent(r"""
@@ -2220,7 +2220,7 @@ klasse ArgsTestCase(BaseTestCase):
     @unittest.skipIf(support.is_android,
                      'raising SIGSEGV on Android is unreliable')
     def test_worker_output_on_failure(self):
-        # Skip test if faulthandler is missing
+        # Skip test wenn faulthandler is missing
         import_helper.import_module('faulthandler')
 
         code = textwrap.dedent(r"""
@@ -2248,7 +2248,7 @@ klasse ArgsTestCase(BaseTestCase):
         self.check_executed_tests(output, testname,
                                   failed=[testname],
                                   stats=0, parallel=True)
-        if not support.MS_WINDOWS:
+        wenn not support.MS_WINDOWS:
             exitcode = -int(signal.SIGSEGV)
             self.assertIn(f"Exit code {exitcode} (SIGSEGV)", output)
         self.check_line(output, "just before crash!", full=True, regex=False)
@@ -2270,7 +2270,7 @@ klasse ArgsTestCase(BaseTestCase):
         self.assertNotIn('SPAM SPAM SPAM', output)
 
         # -R option needs a debug build
-        if support.Py_DEBUG:
+        wenn support.Py_DEBUG:
             # Check fuer reference leaks, run in parallel
             output = self.run_tests("-R", "3:3", "-j1", "--verbose3", testname)
             self.check_executed_tests(output, testname, stats=1, parallel=True)
@@ -2406,7 +2406,7 @@ klasse TestUtils(unittest.TestCase):
             'resources: all')
         self.assertEqual(
             format_resources(tuple(name fuer name in ALL_RESOURCES
-                                   if name != "cpu")),
+                                   wenn name != "cpu")),
             'resources: all,-cpu')
         self.assertEqual(
             format_resources((*ALL_RESOURCES, "tzdata")),
@@ -2594,6 +2594,6 @@ klasse TestColorized(unittest.TestCase):
                 self.assertEqual(result, expected)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     setup.setup_process()
     unittest.main()

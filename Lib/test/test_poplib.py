@@ -25,7 +25,7 @@ HOST = socket_helper.HOST
 PORT = 0
 
 SUPPORTS_SSL = False
-if hasattr(poplib, 'POP3_SSL'):
+wenn hasattr(poplib, 'POP3_SSL'):
     import ssl
 
     SUPPORTS_SSL = True
@@ -69,14 +69,14 @@ klasse DummyPOP3Handler(asynchat.async_chat):
         self.in_buffer = []
         cmd = line.split(' ')[0].lower()
         space = line.find(' ')
-        if space != -1:
+        wenn space != -1:
             arg = line[space + 1:]
-        else:
+        sonst:
             arg = ""
-        if hasattr(self, 'cmd_' + cmd):
+        wenn hasattr(self, 'cmd_' + cmd):
             method = getattr(self, 'cmd_' + cmd)
             method(arg)
-        else:
+        sonst:
             self.push('-ERR unrecognized POP3 command "%s".' %cmd)
 
     def handle_error(self):
@@ -90,12 +90,12 @@ klasse DummyPOP3Handler(asynchat.async_chat):
         self.push(arg)
 
     def cmd_user(self, arg):
-        if arg != "guido":
+        wenn arg != "guido":
             self.push("-ERR no such user")
         self.push('+OK password required')
 
     def cmd_pass(self, arg):
-        if arg != "python":
+        wenn arg != "python":
             self.push("-ERR wrong password")
         self.push('+OK 10 messages')
 
@@ -103,9 +103,9 @@ klasse DummyPOP3Handler(asynchat.async_chat):
         self.push('+OK 10 100')
 
     def cmd_list(self, arg):
-        if arg:
+        wenn arg:
             self.push('+OK %s %s' % (arg, arg))
-        else:
+        sonst:
             self.push('+OK')
             asynchat.async_chat.push(self, LIST_RESP)
 
@@ -135,29 +135,29 @@ klasse DummyPOP3Handler(asynchat.async_chat):
 
     def _get_capas(self):
         _capas = dict(self.CAPAS)
-        if not self.tls_active and SUPPORTS_SSL:
+        wenn not self.tls_active and SUPPORTS_SSL:
             _capas['STLS'] = []
         return _capas
 
     def cmd_capa(self, arg):
         self.push('+OK Capability list follows')
-        if self._get_capas():
+        wenn self._get_capas():
             fuer cap, params in self._get_capas().items():
                 _ln = [cap]
-                if params:
+                wenn params:
                     _ln.extend(params)
                 self.push(' '.join(_ln))
         self.push('.')
 
     def cmd_utf8(self, arg):
         self.push('+OK I know RFC6856'
-                  if self.enable_UTF8
-                  else '-ERR What is UTF8?!')
+                  wenn self.enable_UTF8
+                  sonst '-ERR What is UTF8?!')
 
-    if SUPPORTS_SSL:
+    wenn SUPPORTS_SSL:
 
         def cmd_stls(self, arg):
-            if self.tls_active is False:
+            wenn self.tls_active is False:
                 self.push('+OK Begin TLS negotiation')
                 context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
                 context.load_cert_chain(CERTFILE)
@@ -171,34 +171,34 @@ klasse DummyPOP3Handler(asynchat.async_chat):
                 self.tls_starting = True
                 self.in_buffer = []
                 self._do_tls_handshake()
-            else:
+            sonst:
                 self.push('-ERR Command not permitted when TLS active')
 
         def _do_tls_handshake(self):
             try:
                 self.socket.do_handshake()
             except ssl.SSLError as err:
-                if err.args[0] in (ssl.SSL_ERROR_WANT_READ,
+                wenn err.args[0] in (ssl.SSL_ERROR_WANT_READ,
                                    ssl.SSL_ERROR_WANT_WRITE):
                     return
-                elif err.args[0] == ssl.SSL_ERROR_EOF:
+                sowenn err.args[0] == ssl.SSL_ERROR_EOF:
                     return self.handle_close()
                 # TODO: SSLError does not expose alert information
-                elif ("SSLV3_ALERT_BAD_CERTIFICATE" in err.args[1] or
+                sowenn ("SSLV3_ALERT_BAD_CERTIFICATE" in err.args[1] or
                       "SSLV3_ALERT_CERTIFICATE_UNKNOWN" in err.args[1]):
                     return self.handle_close()
                 raise
             except OSError as err:
-                if err.args[0] == errno.ECONNABORTED:
+                wenn err.args[0] == errno.ECONNABORTED:
                     return self.handle_close()
-            else:
+            sonst:
                 self.tls_active = True
                 self.tls_starting = False
 
         def handle_read(self):
-            if self.tls_starting:
+            wenn self.tls_starting:
                 self._do_tls_handshake()
-            else:
+            sonst:
                 try:
                     asynchat.async_chat.handle_read(self)
                 except ssl.SSLEOFError:
@@ -291,7 +291,7 @@ klasse TestPOP3Class(TestCase):
 
         original_shortcmd = self.client._shortcmd
         def mock_shortcmd_invalid_format(cmd):
-            if cmd == 'STAT':
+            wenn cmd == 'STAT':
                 return b'+OK'
             return original_shortcmd(cmd)
 
@@ -300,7 +300,7 @@ klasse TestPOP3Class(TestCase):
             self.client.stat()
 
         def mock_shortcmd_invalid_data(cmd):
-            if cmd == 'STAT':
+            wenn cmd == 'STAT':
                 return b'+OK abc def'
             return original_shortcmd(cmd)
 
@@ -309,7 +309,7 @@ klasse TestPOP3Class(TestCase):
             self.client.stat()
 
         def mock_shortcmd_extra_fields(cmd):
-            if cmd == 'STAT':
+            wenn cmd == 'STAT':
                 return b'+OK 1 2 3 4 5'
             return original_shortcmd(cmd)
 
@@ -421,7 +421,7 @@ klasse TestPOP3Class(TestCase):
         self.assertEqual(resp, expected)
 
 
-if SUPPORTS_SSL:
+wenn SUPPORTS_SSL:
     from test.test_ftplib import SSLConnection
 
     klasse DummyPOP3_SSLHandler(SSLConnection, DummyPOP3Handler):
@@ -483,7 +483,7 @@ klasse TestPOP3_TLSClass(TestPOP3Class):
         self.client.stls()
 
     def tearDown(self):
-        if self.client.file is not None and self.client.sock is not None:
+        wenn self.client.file is not None and self.client.sock is not None:
             try:
                 self.client.quit()
             except poplib.error_proto:
@@ -567,5 +567,5 @@ def setUpModule():
     unittest.addModuleCleanup(threading_helper.threading_cleanup, *thread_info)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

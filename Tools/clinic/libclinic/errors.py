@@ -13,10 +13,10 @@ klasse ClinicError(Exception):
         super().__init__(self.message)
 
     def report(self, *, warn_only: bool = False) -> str:
-        msg = "Warning" if warn_only else "Error"
-        if self.filename is not None:
+        msg = "Warning" wenn warn_only sonst "Error"
+        wenn self.filename is not None:
             msg += f" in file {self.filename!r}"
-        if self.lineno is not None:
+        wenn self.lineno is not None:
             msg += f" on line {self.lineno}"
         msg += ":\n"
         msg += f"{self.message}\n"
@@ -51,9 +51,9 @@ def warn_or_fail(
 ) -> None:
     joined = " ".join([str(a) fuer a in args])
     error = ClinicError(joined, filename=filename, lineno=line_number)
-    if fail:
+    wenn fail:
         raise error
-    else:
+    sonst:
         print(error.report(warn_only=True))
 
 

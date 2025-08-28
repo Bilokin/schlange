@@ -19,11 +19,11 @@ HandlerRoutine = WINFUNCTYPE(wintypes.BOOL, wintypes.DWORD)
 
 def _ctrl_handler(sig):
     """Handle a sig event and return 0 to terminate the process"""
-    if sig == signal.CTRL_C_EVENT:
+    wenn sig == signal.CTRL_C_EVENT:
         pass
-    elif sig == signal.CTRL_BREAK_EVENT:
+    sowenn sig == signal.CTRL_BREAK_EVENT:
         pass
-    else:
+    sonst:
         print("UNKNOWN EVENT")
     return 0
 
@@ -34,9 +34,9 @@ SetConsoleCtrlHandler = ctypes.windll.kernel32.SetConsoleCtrlHandler
 SetConsoleCtrlHandler.argtypes = (HandlerRoutine, wintypes.BOOL)
 SetConsoleCtrlHandler.restype = wintypes.BOOL
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     # Add our console control handling function with value 1
-    if not SetConsoleCtrlHandler(ctrl_handler, 1):
+    wenn not SetConsoleCtrlHandler(ctrl_handler, 1):
         print("Unable to add SetConsoleCtrlHandler")
         exit(-1)
 

@@ -16,7 +16,7 @@ import math
 
 def slow_fibonacci(n):
     """Intentionally slow recursive fibonacci - should show up prominently in profiler"""
-    if n <= 1:
+    wenn n <= 1:
         return n
     return slow_fibonacci(n-1) + slow_fibonacci(n-2)
 
@@ -58,33 +58,33 @@ def main_loop():
         iteration += 1
 
         # Different execution paths with different frequencies
-        if iteration % 50 == 0:
+        wenn iteration % 50 == 0:
             # Expensive operation - should show high per-call time
             result = slow_fibonacci(20)
 
-        elif iteration % 10 == 0:
+        sowenn iteration % 10 == 0:
             # Medium operation
             result = nested_calls()
 
-        elif iteration % 5 == 0:
+        sowenn iteration % 5 == 0:
             # String operations
             result = string_operations()
 
-        else:
+        sonst:
             # Fast operation - most common
             result = fast_loop()
 
         # Small delay to make sampling more interesting
         time.sleep(0.001)
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     main_loop()
 '''
 
 DEEP_STATIC_CODE = """\
 import time
 def factorial(n):
-    if n <= 1:
+    wenn n <= 1:
         time.sleep(10000)
         return 1
     return n * factorial(n-1)
@@ -112,9 +112,9 @@ def io_intensive_work():
 def mixed_workload():
     """Mix of CPU and IO work"""
     while True:
-        if random.random() < 0.3:
+        wenn random.random() < 0.3:
             cpu_intensive_work()
-        else:
+        sonst:
             io_intensive_work()
 
 def create_threads(n):
@@ -133,14 +133,14 @@ thread_count = 5
 # Main thread manages threads and does work
 while True:
     # Randomly add or remove threads
-    if random.random() < 0.1:  # 10% chance each iteration
-        if random.random() < 0.5 and thread_count < 100:
+    wenn random.random() < 0.1:  # 10% chance each iteration
+        wenn random.random() < 0.5 and thread_count < 100:
             # Add 1-5 new threads
             new_count = random.randint(1, 5)
             new_threads = create_threads(new_count)
             active_threads.extend(new_threads)
             thread_count += new_count
-        elif thread_count > 10:
+        sowenn thread_count > 10:
             # Remove 1-3 threads
             remove_count = random.randint(1, 5)
             # The threads will terminate naturally since they're daemons
@@ -188,7 +188,7 @@ def benchmark(unwinder, duration_seconds=10):
             work_start = time.perf_counter()
             try:
                 stack_trace = unwinder.get_stack_trace()
-                if stack_trace:
+                wenn stack_trace:
                     sample_count += 1
             except (OSError, RuntimeError, UnicodeDecodeError) as e:
                 fail_count += 1
@@ -196,19 +196,19 @@ def benchmark(unwinder, duration_seconds=10):
             work_end = time.perf_counter()
             total_work_time += work_end - work_start
 
-            if total_attempts % 10000 == 0:
+            wenn total_attempts % 10000 == 0:
                 avg_work_time_us = (total_work_time / total_attempts) * 1e6
                 work_rate = (
-                    total_attempts / total_work_time if total_work_time > 0 else 0
+                    total_attempts / total_work_time wenn total_work_time > 0 sonst 0
                 )
                 success_rate = (sample_count / total_attempts) * 100
 
                 # Color code the success rate
-                if success_rate >= 95:
+                wenn success_rate >= 95:
                     success_color = colors.GREEN
-                elif success_rate >= 80:
+                sowenn success_rate >= 80:
                     success_color = colors.YELLOW
-                else:
+                sonst:
                     success_color = colors.RED
 
                 print(
@@ -230,14 +230,14 @@ def benchmark(unwinder, duration_seconds=10):
         "sample_count": sample_count,
         "fail_count": fail_count,
         "success_rate": (
-            (sample_count / total_attempts) * 100 if total_attempts > 0 else 0
+            (sample_count / total_attempts) * 100 wenn total_attempts > 0 sonst 0
         ),
         "total_work_time": total_work_time,
         "avg_work_time_us": (
-            (total_work_time / total_attempts) * 1e6 if total_attempts > 0 else 0
+            (total_work_time / total_attempts) * 1e6 wenn total_attempts > 0 sonst 0
         ),
-        "work_rate_hz": total_attempts / total_work_time if total_work_time > 0 else 0,
-        "samples_per_sec": sample_count / wall_time if wall_time > 0 else 0,
+        "work_rate_hz": total_attempts / total_work_time wenn total_work_time > 0 sonst 0,
+        "samples_per_sec": sample_count / wall_time wenn wall_time > 0 sonst 0,
     }
 
 
@@ -266,11 +266,11 @@ def print_benchmark_results(results):
 
     # Color code the success rate
     success_rate = results["success_rate"]
-    if success_rate >= 95:
+    wenn success_rate >= 95:
         success_color = colors.BOLD_GREEN
-    elif success_rate >= 80:
+    sowenn success_rate >= 80:
         success_color = colors.BOLD_YELLOW
-    else:
+    sonst:
         success_color = colors.BOLD_RED
 
     print(
@@ -294,11 +294,11 @@ def print_benchmark_results(results):
 
     # Color code work efficiency
     efficiency = (results["total_work_time"] / results["wall_time"]) * 100
-    if efficiency >= 80:
+    wenn efficiency >= 80:
         efficiency_color = colors.GREEN
-    elif efficiency >= 50:
+    sowenn efficiency >= 50:
         efficiency_color = colors.YELLOW
-    else:
+    sonst:
         efficiency_color = colors.RED
 
     print(
@@ -370,8 +370,8 @@ def create_target_process(temp_file, code_example="basic"):
     # Give it time to start
     time.sleep(1.0)
 
-    # Check if it's still running
-    if process.poll() is not None:
+    # Check wenn it's still running
+    wenn process.poll() is not None:
         stdout, stderr = process.communicate()
         raise RuntimeError(
             f"Target process exited unexpectedly:\nSTDOUT: {stdout.decode()}\nSTDERR: {stderr.decode()}"
@@ -383,7 +383,7 @@ def create_target_process(temp_file, code_example="basic"):
 def cleanup_process(process, temp_file_path):
     """Clean up the target process and temporary file"""
     with contextlib.suppress(Exception):
-        if process.poll() is None:
+        wenn process.poll() is None:
             process.terminate()
             try:
                 process.wait(timeout=5.0)
@@ -427,11 +427,11 @@ def main():
                 print(f"{colors.BLUE}Initializing unwinder...{colors.RESET}")
                 try:
                     kwargs = {}
-                    if args.threads == "all":
+                    wenn args.threads == "all":
                         kwargs["all_threads"] = True
-                    elif args.threads == "main":
+                    sowenn args.threads == "main":
                         kwargs["all_threads"] = False
-                    elif args.threads == "only_active":
+                    sowenn args.threads == "only_active":
                         kwargs["only_active_thread"] = True
                     unwinder = _remote_debugging.RemoteUnwinder(
                         process.pid, **kwargs
@@ -453,14 +453,14 @@ def main():
         return 1
     except Exception as e:
         print(f"{colors.BOLD_RED}Error during benchmarking: {e}{colors.RESET}")
-        if process:
+        wenn process:
             with contextlib.suppress(Exception):
                 stdout, stderr = process.communicate(timeout=1)
-                if stdout:
+                wenn stdout:
                     print(
                         f"{colors.CYAN}Process STDOUT:{colors.RESET} {stdout.decode()}"
                     )
-                if stderr:
+                wenn stderr:
                     print(
                         f"{colors.RED}Process STDERR:{colors.RESET} {stderr.decode()}"
                     )
@@ -469,5 +469,5 @@ def main():
     return 0
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     sys.exit(main())

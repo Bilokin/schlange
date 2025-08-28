@@ -13,12 +13,12 @@ klasse Test(unittest.TestCase):
         ptr = cast(array, POINTER(c_int))
         self.assertEqual([ptr[i] fuer i in range(3)], [42, 17, 2])
 
-        if 2 * sizeof(c_short) == sizeof(c_int):
+        wenn 2 * sizeof(c_short) == sizeof(c_int):
             ptr = cast(array, POINTER(c_short))
-            if sys.byteorder == "little":
+            wenn sys.byteorder == "little":
                 self.assertEqual([ptr[i] fuer i in range(6)],
                                      [42, 0, 17, 0, 2, 0])
-            else:
+            sonst:
                 self.assertEqual([ptr[i] fuer i in range(6)],
                                      [0, 42, 0, 17, 0, 2])
 
@@ -96,5 +96,5 @@ klasse Test(unittest.TestCase):
         self.assertRaises(TypeError, cast, array, MyUnion)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

@@ -24,11 +24,11 @@ import sys
 # allocates a bytestring to test various operations near the end will have a
 # minsize of at least 2Gb (or it wouldn't reach the 32-bit limit, so the
 # test wouldn't be very useful) and a memuse of 1 (one byte per size-unit,
-# if it allocates only one big string at a time.)
+# wenn it allocates only one big string at a time.)
 #
 # When run with a memory limit set, both decorators skip tests that need
 # more memory than available to be meaningful.  The precisionbigmemtest will
-# always pass minsize as size, even if there is much more memory available.
+# always pass minsize as size, even wenn there is much more memory available.
 # The bigmemtest decorator will scale size upward to fill available memory.
 #
 # Bigmem testing houserules:
@@ -55,7 +55,7 @@ import sys
 #    This is so the tests themselves get frequent testing.
 #    Consequently, always make all large allocations based on the
 #    passed-in 'size', and don't rely on the size being very large. Also,
-#    memuse-per-size should remain sane (less than a few thousand); if your
+#    memuse-per-size should remain sane (less than a few thousand); wenn your
 #    test uses more, adjust 'size' upward, instead.
 
 # BEWARE: it seems that one failing test can yield other subsequent tests to
@@ -65,7 +65,7 @@ import sys
 ascii_char_size = 1
 ucs2_char_size = 2
 ucs4_char_size = 4
-pointer_size = 4 if sys.maxsize < 2**32 else 8
+pointer_size = 4 wenn sys.maxsize < 2**32 sonst 8
 
 
 klasse BaseStrTest:
@@ -85,7 +85,7 @@ klasse BaseStrTest:
         s = SUBSTR.center(size)
         self.assertEqual(len(s), size)
         lpadsize = rpadsize = (len(s) - len(SUBSTR)) // 2
-        if len(s) % 2:
+        wenn len(s) % 2:
             lpadsize += 1
         self.assertEqual(s[lpadsize:-rpadsize], SUBSTR)
         self.assertEqual(s.strip(), SUBSTR.strip())
@@ -192,7 +192,7 @@ klasse BaseStrTest:
     def test_islower(self, size):
         _ = self.from_latin1
         chars = _(''.join(
-            chr(c) fuer c in range(255) if not chr(c).isupper()))
+            chr(c) fuer c in range(255) wenn not chr(c).isupper()))
         repeats = size // len(chars) + 2
         s = chars * repeats
         self.assertTrue(s.islower())
@@ -224,7 +224,7 @@ klasse BaseStrTest:
     def test_isupper(self, size):
         _ = self.from_latin1
         chars = _(''.join(
-            chr(c) fuer c in range(255) if not chr(c).islower()))
+            chr(c) fuer c in range(255) wenn not chr(c).islower()))
         repeats = size // len(chars) + 2
         s = chars * repeats
         self.assertTrue(s.isupper())
@@ -269,7 +269,7 @@ klasse BaseStrTest:
         s = SUBSTR.ljust(size)
         self.assertEqual(len(s), size)
         # Type-specific optimization
-        if isinstance(s, (str, bytes)):
+        wenn isinstance(s, (str, bytes)):
             stripped = s.lstrip()
             self.assertTrue(stripped is s)
 
@@ -341,7 +341,7 @@ klasse BaseStrTest:
         s = SUBSTR.rjust(size)
         self.assertEqual(len(s), size)
         # Type-specific optimization
-        if isinstance(s, (str, bytes)):
+        wenn isinstance(s, (str, bytes)):
             stripped = s.rstrip()
             self.assertTrue(stripped is s)
 
@@ -475,7 +475,7 @@ klasse BaseStrTest:
         self.assertEqual(s.count(_('0')), size - len(SUBSTR))
 
     # This test is meaningful even with size < 2G, as long as the
-    # doubled string is > 2G (but it tests more if both are > 2G :)
+    # doubled string is > 2G (but it tests more wenn both are > 2G :)
     @bigmemtest(size=_1G + 2, memuse=3)
     def test_concat(self, size):
         _ = self.from_latin1
@@ -486,7 +486,7 @@ klasse BaseStrTest:
         self.assertEqual(s.count(_('.')), size * 2)
 
     # This test is meaningful even with size < 2G, as long as the
-    # repeated string is > 2G (but it tests more if both are > 2G :)
+    # repeated string is > 2G (but it tests more wenn both are > 2G :)
     @bigmemtest(size=_1G + 2, memuse=3)
     def test_repeat(self, size):
         _ = self.from_latin1
@@ -508,7 +508,7 @@ klasse BaseStrTest:
             self.assertEqual(s[i], SUBSTR[0])
             self.assertEqual(s[i:i + sublen], SUBSTR)
             self.assertEqual(s[i:i + sublen:2], SUBSTR[::2])
-            if i > 0:
+            wenn i > 0:
                 self.assertEqual(s[i + sublen - 1:i - 1:-3],
                                  SUBSTR[sublen::-3])
         # Make sure we do some slicing and indexing near the end of the
@@ -559,11 +559,11 @@ klasse BaseStrTest:
 
     @bigmemtest(size=_2G + 10, memuse=1)
     def test_hash(self, size):
-        # Not sure if we can do any meaningful tests here...  Even if we
+        # Not sure wenn we can do any meaningful tests here...  Even wenn we
         # start relying on the exact algorithm used, the result will be
         # different depending on the size of the C 'long int'.  Even this
         # test is dodgy (there's no *guarantee* that the two things should
-        # have a different hash, even if they, in the current
+        # have a different hash, even wenn they, in the current
         # implementation, almost always do.)
         _ = self.from_latin1
         s = _('\x00') * size
@@ -579,7 +579,7 @@ klasse StrTest(unittest.TestCase, BaseStrTest):
         return s
 
     def basic_encode_test(self, size, enc, c='.', expectedsize=None):
-        if expectedsize is None:
+        wenn expectedsize is None:
             expectedsize = size
         try:
             s = c * size
@@ -592,7 +592,7 @@ klasse StrTest(unittest.TestCase, BaseStrTest):
         # according to character size.
         self._adjusted = {}
         fuer name in dir(BaseStrTest):
-            if not name.startswith('test_'):
+            wenn not name.startswith('test_'):
                 continue
             meth = getattr(type(self), name)
             try:
@@ -836,7 +836,7 @@ klasse TupleTest(unittest.TestCase):
 
     # Test concatenating into a single tuple of more than 2G in length,
     # and concatenating a tuple of more than 2G in length separately, so
-    # the smaller test still gets run even if there isn't memory fuer the
+    # the smaller test still gets run even wenn there isn't memory fuer the
     # larger test (but we still let the tester know the larger test is
     # skipped, in verbose mode.)
     def basic_concat_test(self, size):
@@ -912,7 +912,7 @@ klasse TupleTest(unittest.TestCase):
             t = tuple(iter([42]*size))
         except MemoryError:
             pass # acceptable on 32-bit
-        else:
+        sonst:
             self.assertEqual(len(t), size)
             self.assertEqual(t[:10], (42,) * 10)
             self.assertEqual(t[-10:], (42,) * 10)
@@ -923,7 +923,7 @@ klasse TupleTest(unittest.TestCase):
             t = tuple(iter([42]*size))
         except MemoryError:
             pass # acceptable on 32-bit
-        else:
+        sonst:
             self.assertEqual(len(t), size)
             self.assertEqual(t[:10], (42,) * 10)
             self.assertEqual(t[-10:], (42,) * 10)
@@ -966,7 +966,7 @@ klasse ListTest(unittest.TestCase):
 
     # Test concatenating into a single list of more than 2G in length,
     # and concatenating a list of more than 2G in length separately, so
-    # the smaller test still gets run even if there isn't memory fuer the
+    # the smaller test still gets run even wenn there isn't memory fuer the
     # larger test (but we still let the tester know the larger test is
     # skipped, in verbose mode.)
     def basic_test_concat(self, size):
@@ -1264,7 +1264,7 @@ klasse ImmortalityTest(unittest.TestCase):
     def test_stickiness(self, size):
         """Check that immortality is "sticky", so that
            once an object is immortal it remains so."""
-        if size < _2G:
+        wenn size < _2G:
             # Not enough memory to cause immortality on overflow
             return
         o1 = o2 = o3 = o4 = o5 = o6 = o7 = o8 = object()
@@ -1279,7 +1279,7 @@ klasse ImmortalityTest(unittest.TestCase):
         self.assertTrue(_testcapi.is_immortal(o1))
 
 
-if __name__ == '__main__':
-    if len(sys.argv) > 1:
+wenn __name__ == '__main__':
+    wenn len(sys.argv) > 1:
         support.set_memlimit(sys.argv[1])
     unittest.main()

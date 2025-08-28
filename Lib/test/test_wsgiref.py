@@ -89,16 +89,16 @@ def compare_generic_iter(make_it, match):
     iterator to be tested (since this may test the iterator twice)."""
 
     it = make_it()
-    if not iter(it) is it:
+    wenn not iter(it) is it:
         raise AssertionError
     fuer item in match:
-        if not next(it) == item:
+        wenn not next(it) == item:
             raise AssertionError
     try:
         next(it)
     except StopIteration:
         pass
-    else:
+    sonst:
         raise AssertionError("Too many items from .__next__()", it)
 
 
@@ -273,7 +273,7 @@ klasse IntegrationTests(TestCase):
                 # an inconvenient moment.
                 while True:
                     pthread_kill(main_thread, signal.SIGUSR1)
-                    if interrupted.wait(timeout=float(1)):
+                    wenn interrupted.wait(timeout=float(1)):
                         break
                 nonlocal received
                 received = len(response.read())
@@ -300,11 +300,11 @@ klasse UtilityTests(TestCase):
         # Check defaulting when empty
         env = {}
         util.setup_testing_defaults(env)
-        if isinstance(value, StringIO):
+        wenn isinstance(value, StringIO):
             self.assertIsInstance(env[key], StringIO)
-        elif isinstance(value,BytesIO):
+        sowenn isinstance(value,BytesIO):
             self.assertIsInstance(env[key],BytesIO)
-        else:
+        sonst:
             self.assertEqual(env[key], value)
 
         # Check existing value
@@ -559,7 +559,7 @@ klasse HandlerTests(TestCase):
         # Handler inherits os_environ variables which are not overridden
         # by SimpleHandler.add_cgi_vars() (SimpleHandler.base_env)
         fuer key, value in os_environ.items():
-            if key not in expected:
+            wenn key not in expected:
                 expected[key] = value
         expected.update({
             # X doesn't exist in os_environ
@@ -727,9 +727,9 @@ klasse HandlerTests(TestCase):
                     h.http_version = version
                     h.server_software = ssw
                     h.run(non_error_app)
-                    if proto=="HTTP/0.9":
+                    wenn proto=="HTTP/0.9":
                         self.assertEqual(h.stdout.getvalue(),b"")
-                    else:
+                    sonst:
                         self.assertTrue(
                             re.match((stdpat%(version,sw)).encode("iso-8859-1"),
                                 h.stdout.getvalue()),
@@ -840,5 +840,5 @@ klasse HandlerTests(TestCase):
         self.assertIsNotNone(h.environ)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

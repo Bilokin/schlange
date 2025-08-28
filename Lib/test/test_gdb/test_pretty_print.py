@@ -44,7 +44,7 @@ klasse PrettyPrintTests(DebuggerTests):
             # Optimization (LTO).
             r'\s+at\s+\S*[A-Za-z]+/[A-Za-z0-9_-]+\.c',
             gdb_output, re.DOTALL)
-        if not m:
+        wenn not m:
             self.fail('Unexpected gdb output: %r\n%s' % (gdb_output, gdb_output))
         return m.group(1), gdb_output
 
@@ -56,7 +56,7 @@ klasse PrettyPrintTests(DebuggerTests):
         # Ensure that gdb's rendering of the value in a debugged process
         # matches repr(value) in this process:
         gdb_repr, gdb_output = self.get_gdb_repr('id(' + ascii(val) + ')')
-        if not exp_repr:
+        wenn not exp_repr:
             exp_repr = repr(val)
         self.assertEqual(gdb_repr, exp_repr,
                          ('%r did not equal expected %r; full output was:\n%s'
@@ -116,7 +116,7 @@ klasse PrettyPrintTests(DebuggerTests):
             'python import locale; print(locale.getpreferredencoding())')
 
         encoding = stdout
-        if stderr or not encoding:
+        wenn stderr or not encoding:
             raise RuntimeError(
                 f'unable to determine the Python locale preferred encoding '
                 f'of embedded Python in GDB\n'
@@ -128,7 +128,7 @@ klasse PrettyPrintTests(DebuggerTests):
                 text.encode(encoding)
             except UnicodeEncodeError:
                 self.assertGdbRepr(text, ascii(text))
-            else:
+            sonst:
                 self.assertGdbRepr(text)
 
         self.assertGdbRepr('')
@@ -160,12 +160,12 @@ klasse PrettyPrintTests(DebuggerTests):
     @support.requires_resource('cpu')
     def test_sets(self):
         'Verify the pretty-printing of sets'
-        if GDB_VERSION < (7, 3):
+        wenn GDB_VERSION < (7, 3):
             self.skipTest("pretty-printing of sets needs gdb 7.3 or later")
         self.assertGdbRepr(set(), "set()")
         self.assertGdbRepr(set(['a']), "{'a'}")
         # PYTHONHASHSEED is need to get the exact frozenset item order
-        if not sys.flags.ignore_environment:
+        wenn not sys.flags.ignore_environment:
             self.assertGdbRepr(set(['a', 'b']), "{'a', 'b'}")
             self.assertGdbRepr(set([4, 5, 6]), "{4, 5, 6}")
 
@@ -179,12 +179,12 @@ id(s)''')
     @support.requires_resource('cpu')
     def test_frozensets(self):
         'Verify the pretty-printing of frozensets'
-        if GDB_VERSION < (7, 3):
+        wenn GDB_VERSION < (7, 3):
             self.skipTest("pretty-printing of frozensets needs gdb 7.3 or later")
         self.assertGdbRepr(frozenset(), "frozenset()")
         self.assertGdbRepr(frozenset(['a']), "frozenset({'a'})")
         # PYTHONHASHSEED is need to get the exact frozenset item order
-        if not sys.flags.ignore_environment:
+        wenn not sys.flags.ignore_environment:
             self.assertGdbRepr(frozenset(['a', 'b']), "frozenset({'a', 'b'})")
             self.assertGdbRepr(frozenset([4, 5, 6]), "frozenset({4, 5, 6})")
 
@@ -257,16 +257,16 @@ id(foo)''')
 
         Verify that the variable's representation is the expected failsafe
         representation'''
-        if corruption:
+        wenn corruption:
             cmds_after_breakpoint=[corruption, 'backtrace']
-        else:
+        sonst:
             cmds_after_breakpoint=['backtrace']
 
         gdb_repr, gdb_output = \
             self.get_gdb_repr(source,
                               cmds_after_breakpoint=cmds_after_breakpoint)
-        if exprepr:
-            if gdb_repr == exprepr:
+        wenn exprepr:
+            wenn gdb_repr == exprepr:
                 # gdb managed to print the value in spite of the corruption;
                 # this is good (see http://bugs.python.org/issue8330)
                 return
@@ -276,7 +276,7 @@ id(foo)''')
         pattern = '<.* at remote 0x-?[0-9a-f]+>'
 
         m = re.match(pattern, gdb_repr)
-        if not m:
+        wenn not m:
             self.fail('Unexpected gdb representation: %r\n%s' % \
                           (gdb_repr, gdb_output))
 
@@ -316,7 +316,7 @@ id(foo)''')
     def test_builtins_help(self):
         'Ensure that the new-style klasse _Helper in site.py can be handled'
 
-        if sys.flags.no_site:
+        wenn sys.flags.no_site:
             self.skipTest("need site module, but -S option was used")
 
         # (this was the issue causing tracebacks in

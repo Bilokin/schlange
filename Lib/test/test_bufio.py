@@ -69,5 +69,5 @@ klasse PyBufferSizeTest(BufferSizeTest, unittest.TestCase):
     open = staticmethod(pyio.open)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

@@ -40,8 +40,8 @@ klasse MIMEMultipart(MIMEBase):
         # multipart messages.
         self._payload = []
 
-        if _subparts:
+        wenn _subparts:
             fuer p in _subparts:
                 self.attach(p)
-        if boundary:
+        wenn boundary:
             self.set_boundary(boundary)

@@ -35,7 +35,7 @@ import time
 from .trace import trace
 
 # types
-if False:
+wenn False:
     from .historical_reader import HistoricalReader
 
 
@@ -60,18 +60,18 @@ klasse Command:
 
 klasse KillCommand(Command):
     def kill_range(self, start: int, end: int) -> None:
-        if start == end:
+        wenn start == end:
             return
         r = self.reader
         b = r.buffer
         text = b[start:end]
         del b[start:end]
-        if is_kill(r.last_command):
-            if start < r.pos:
+        wenn is_kill(r.last_command):
+            wenn start < r.pos:
                 r.kill_ring[-1] = text + r.kill_ring[-1]
-            else:
+            sonst:
                 r.kill_ring[-1] = r.kill_ring[-1] + text
-        else:
+        sonst:
             r.kill_ring.append(text)
         r.pos = start
         r.dirty = True
@@ -111,19 +111,19 @@ klasse digit_arg(Command):
     def do(self) -> None:
         r = self.reader
         c = self.event[-1]
-        if c == "-":
-            if r.arg is not None:
+        wenn c == "-":
+            wenn r.arg is not None:
                 r.arg = -r.arg
-            else:
+            sonst:
                 r.arg = -1
-        else:
+        sonst:
             d = int(c)
-            if r.arg is None:
+            wenn r.arg is None:
                 r.arg = d
-            else:
-                if r.arg < 0:
+            sonst:
+                wenn r.arg < 0:
                     r.arg = 10 * r.arg - d
-                else:
+                sonst:
                     r.arg = 10 * r.arg + d
         r.dirty = True
 
@@ -152,10 +152,10 @@ klasse kill_line(KillCommand):
         b = r.buffer
         eol = r.eol()
         fuer c in b[r.pos : eol]:
-            if not c.isspace():
+            wenn not c.isspace():
                 self.kill_range(r.pos, eol)
                 return
-        else:
+        sonst:
             self.kill_range(r.pos, eol + 1)
 
 
@@ -189,7 +189,7 @@ klasse backward_kill_word(KillCommand):
 klasse yank(YankCommand):
     def do(self) -> None:
         r = self.reader
-        if not r.kill_ring:
+        wenn not r.kill_ring:
             r.error("nothing to yank")
             return
         r.insert(r.kill_ring[-1])
@@ -199,10 +199,10 @@ klasse yank_pop(YankCommand):
     def do(self) -> None:
         r = self.reader
         b = r.buffer
-        if not r.kill_ring:
+        wenn not r.kill_ring:
             r.error("nothing to yank")
             return
-        if not is_yank(r.last_command):
+        wenn not is_yank(r.last_command):
             r.error("previous command was not a yank")
             return
         repl = len(r.kill_ring[-1])
@@ -253,15 +253,15 @@ klasse up(MotionCommand):
             x, y = r.pos2xy()
             new_y = y - 1
 
-            if r.bol() == 0:
-                if r.historyi > 0:
+            wenn r.bol() == 0:
+                wenn r.historyi > 0:
                     r.select_item(r.historyi - 1)
                     return
                 r.pos = 0
                 r.error("start of buffer")
                 return
 
-            if (
+            wenn (
                 x
                 > (
                     new_x := r.max_column(new_y)
@@ -284,8 +284,8 @@ klasse down(MotionCommand):
             x, y = r.pos2xy()
             new_y = y + 1
 
-            if r.eol() == len(b):
-                if r.historyi < len(r.history):
+            wenn r.eol() == len(b):
+                wenn r.historyi < len(r.history):
                     r.select_item(r.historyi + 1)
                     r.pos = r.eol(0)
                     return
@@ -293,7 +293,7 @@ klasse down(MotionCommand):
                 r.error("end of buffer")
                 return
 
-            if (
+            wenn (
                 x
                 > (
                     new_x := r.max_column(new_y)
@@ -313,9 +313,9 @@ klasse left(MotionCommand):
         r = self.reader
         fuer _ in range(r.get_arg()):
             p = r.pos - 1
-            if p >= 0:
+            wenn p >= 0:
                 r.pos = p
-            else:
+            sonst:
                 self.reader.error("start of buffer")
 
 
@@ -325,9 +325,9 @@ klasse right(MotionCommand):
         b = r.buffer
         fuer _ in range(r.get_arg()):
             p = r.pos + 1
-            if p <= len(b):
+            wenn p <= len(b):
                 r.pos = p
-            else:
+            sonst:
                 self.reader.error("end of buffer")
 
 
@@ -370,11 +370,11 @@ klasse self_insert(EditCommand):
         r = self.reader
         text = self.event * r.get_arg()
         r.insert(text)
-        if r.paste_mode:
+        wenn r.paste_mode:
             data = ""
             ev = r.console.getpending()
             data += ev.data
-            if data:
+            wenn data:
                 r.insert(data)
                 r.last_refresh_cache.invalidated = True
 
@@ -390,10 +390,10 @@ klasse transpose_characters(EditCommand):
         r = self.reader
         b = r.buffer
         s = r.pos - 1
-        if s < 0:
+        wenn s < 0:
             r.error("cannot transpose at start of buffer")
-        else:
-            if s == len(b):
+        sonst:
+            wenn s == len(b):
                 s -= 1
             t = min(s + r.get_arg(), len(b) - 1)
             c = b[s]
@@ -408,11 +408,11 @@ klasse backspace(EditCommand):
         r = self.reader
         b = r.buffer
         fuer i in range(r.get_arg()):
-            if r.pos > 0:
+            wenn r.pos > 0:
                 r.pos -= 1
                 del b[r.pos]
                 r.dirty = True
-            else:
+            sonst:
                 self.reader.error("can't backspace at start")
 
 
@@ -420,7 +420,7 @@ klasse delete(EditCommand):
     def do(self) -> None:
         r = self.reader
         b = r.buffer
-        if (
+        wenn (
             r.pos == 0
             and len(b) == 0  # this is something of a hack
             and self.event[-1] == "\004"
@@ -429,10 +429,10 @@ klasse delete(EditCommand):
             r.console.finish()
             raise EOFError
         fuer i in range(r.get_arg()):
-            if r.pos != len(b):
+            wenn r.pos != len(b):
                 del b[r.pos]
                 r.dirty = True
-            else:
+            sonst:
                 self.reader.error("end of buffer")
 
 

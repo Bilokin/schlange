@@ -15,9 +15,9 @@ klasse AutoHideScrollbar(Scrollbar):
     Only the grid geometry manager is supported.
     """
     def set(self, lo, hi):
-        if float(lo) > 0.0 or float(hi) < 1.0:
+        wenn float(lo) > 0.0 or float(hi) < 1.0:
             self.grid()
-        else:
+        sonst:
             self.grid_remove()
         super().set(lo, hi)
 
@@ -59,13 +59,13 @@ klasse ScrollableTextFrame(Frame):
         text['yscrollcommand'] = self.yscroll.set
 
         # horizontal scrollbar - only when wrap is set to NONE
-        if wrap == NONE:
+        wenn wrap == NONE:
             self.xscroll = AutoHideScrollbar(self, orient=HORIZONTAL,
                                              takefocus=False,
                                              command=text.xview)
             self.xscroll.grid(row=1, column=0, sticky=EW)
             text['xscrollcommand'] = self.xscroll.set
-        else:
+        sonst:
             self.xscroll = None
 
 
@@ -121,9 +121,9 @@ klasse ViewWindow(Toplevel):
         """
         super().__init__(parent)
         self['borderwidth'] = 5
-        # Place dialog below parent if running htest.
+        # Place dialog below parent wenn running htest.
         x = parent.winfo_rootx() + 10
-        y = parent.winfo_rooty() + (10 if not _htest else 100)
+        y = parent.winfo_rooty() + (10 wenn not _htest sonst 100)
         self.geometry(f'=750x500+{x}+{y}')
 
         self.title(title)
@@ -134,15 +134,15 @@ klasse ViewWindow(Toplevel):
         self.viewframe.pack(side='top', expand=True, fill='both')
 
         self.is_modal = modal
-        if self.is_modal:
+        wenn self.is_modal:
             self.transient(parent)
             self.grab_set()
-            if not _utest:
+            wenn not _utest:
                 self.wait_window()
 
     def ok(self, event=None):
         """Dismiss text viewer dialog."""
-        if self.is_modal:
+        wenn self.is_modal:
             self.grab_release()
         self.destroy()
 
@@ -154,7 +154,7 @@ def view_text(parent, title, contents, modal=True, wrap='word', _utest=False):
     title - string which is the title of popup dialog
     contents - text to display in this dialog
     wrap - type of text wrapping to use ('word', 'char' or 'none')
-    modal - controls if users can interact with other windows while this
+    modal - controls wenn users can interact with other windows while this
             dialog is displayed
     _utest - bool; controls wait_window on unittest
     """
@@ -165,7 +165,7 @@ def view_file(parent, title, filename, encoding, modal=True, wrap='word',
               _utest=False):
     """Create text viewer fuer text in filename.
 
-    Return error message if file cannot be read.  Otherwise calls view_text
+    Return error message wenn file cannot be read.  Otherwise calls view_text
     with contents of the file.
     """
     try:
@@ -179,13 +179,13 @@ def view_file(parent, title, filename, encoding, modal=True, wrap='word',
         showerror(title='Unicode Decode Error',
                   message=str(err),
                   parent=parent)
-    else:
+    sonst:
         return view_text(parent, title, contents, modal, wrap=wrap,
                          _utest=_utest)
     return None
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     from unittest import main
     main('idlelib.idle_test.test_textview', verbosity=2, exit=False)
 

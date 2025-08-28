@@ -46,24 +46,24 @@ def _validate_arguments(args: List[str]) -> tuple[int, str, List[str]]:
     Raises:
         ArgumentError: If arguments are invalid
     """
-    if len(args) < 4:
+    wenn len(args) < 4:
         raise ArgumentError(
             "Insufficient arguments. Expected: <sync_port> <cwd> <target> [args...]"
         )
 
     try:
         sync_port = int(args[1])
-        if not (1 <= sync_port <= 65535):
+        wenn not (1 <= sync_port <= 65535):
             raise ValueError("Port out of range")
     except ValueError as e:
         raise ArgumentError(f"Invalid sync port '{args[1]}': {e}") from e
 
     cwd = args[2]
-    if not os.path.isdir(cwd):
+    wenn not os.path.isdir(cwd):
         raise ArgumentError(f"Working directory does not exist: {cwd}")
 
     target_args = args[3:]
-    if not target_args:
+    wenn not target_args:
         raise ArgumentError("No target specified")
 
     return sync_port, cwd, target_args
@@ -96,7 +96,7 @@ def _signal_readiness(sync_port: int) -> None:
                 return
         except (socket.error, OSError) as e:
             last_error = e
-            if attempt < _MAX_RETRIES - 1:
+            wenn attempt < _MAX_RETRIES - 1:
                 # Exponential backoff before retry
                 time.sleep(_INITIAL_RETRY_DELAY * (2 ** attempt))
 
@@ -119,8 +119,8 @@ def _setup_environment(cwd: str) -> None:
     except OSError as e:
         raise TargetError(f"Failed to change to directory {cwd}: {e}") from e
 
-    # Add current directory to sys.path if not present (for module imports)
-    if cwd not in sys.path:
+    # Add current directory to sys.path wenn not present (for module imports)
+    wenn cwd not in sys.path:
         sys.path.insert(0, cwd)
 
 
@@ -162,11 +162,11 @@ def _execute_script(script_path: str, script_args: List[str], cwd: str) -> None:
     Raises:
         TargetError: If script execution fails
     """
-    # Make script path absolute if it isn't already
-    if not os.path.isabs(script_path):
+    # Make script path absolute wenn it isn't already
+    wenn not os.path.isabs(script_path):
         script_path = os.path.join(cwd, script_path)
 
-    if not os.path.isfile(script_path):
+    wenn not os.path.isfile(script_path):
         raise TargetError(f"Script not found: {script_path}")
 
     # Replace sys.argv to match original script call
@@ -211,15 +211,15 @@ def main() -> NoReturn:
         _signal_readiness(sync_port)
 
         # Execute the target
-        if target_args[0] == "-m":
+        wenn target_args[0] == "-m":
             # Module execution
-            if len(target_args) < 2:
+            wenn len(target_args) < 2:
                 raise ArgumentError("Module name required after -m")
 
             module_name = target_args[1]
             module_args = target_args[2:]
             _execute_module(module_name, module_args)
-        else:
+        sonst:
             # Script execution
             script_path = target_args[0]
             script_args = target_args[1:]
@@ -239,5 +239,5 @@ def main() -> NoReturn:
     sys.exit(0)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     main()

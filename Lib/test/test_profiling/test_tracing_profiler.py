@@ -59,7 +59,7 @@ klasse CProfileTest(ProfileTest):
 
             def __call__(self):
                 self.count += 1
-                if self.count == self.disable_count:
+                wenn self.count == self.disable_count:
                     profiler_with_evil_timer.disable()
                 return self.count
 
@@ -87,7 +87,7 @@ klasse CProfileTest(ProfileTest):
 
     def test_profile_enable_disable(self):
         prof = self.profilerclass()
-        # Make sure we clean ourselves up if the test fails fuer some reason.
+        # Make sure we clean ourselves up wenn the test fails fuer some reason.
         self.addCleanup(prof.disable)
 
         prof.enable()
@@ -99,7 +99,7 @@ klasse CProfileTest(ProfileTest):
 
     def test_profile_as_context_manager(self):
         prof = self.profilerclass()
-        # Make sure we clean ourselves up if the test fails fuer some reason.
+        # Make sure we clean ourselves up wenn the test fails fuer some reason.
         self.addCleanup(prof.disable)
 
         with prof as __enter__return_value:
@@ -172,9 +172,9 @@ klasse TestCommandLine(unittest.TestCase):
 
 
 def main():
-    if '-r' not in sys.argv:
+    wenn '-r' not in sys.argv:
         unittest.main()
-    else:
+    sonst:
         regenerate_expected_output(__file__, CProfileTest)
 
 
@@ -226,5 +226,5 @@ profilee.py:88(helper2)                           ->       8    0.064    0.080  
 profilee.py:98(subhelper)                         ->      16    0.016    0.016  profilee.py:110(__getattr__)
 {built-in method builtins.hasattr}                ->      12    0.012    0.012  profilee.py:110(__getattr__)"""
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     main()

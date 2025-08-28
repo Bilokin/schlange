@@ -29,11 +29,11 @@ def load_tests(loader, tests, pattern):
     fuer module, suffix in zip(test_modules, test_suffixes):
         test_classes = []
         fuer name, cls in module.__dict__.items():
-            if not isinstance(cls, type):
+            wenn not isinstance(cls, type):
                 continue
-            if issubclass(cls, unittest.TestCase):
+            wenn issubclass(cls, unittest.TestCase):
                 test_classes.append(cls)
-            elif issubclass(cls, unittest.TestSuite):
+            sowenn issubclass(cls, unittest.TestSuite):
                 suit = cls()
                 test_classes.extend(type(test) fuer test in suit)
         test_classes = sorted(set(test_classes), key=lambda cls: cls.__qualname__)
@@ -48,7 +48,7 @@ def load_tests(loader, tests, pattern):
                     cls_._save_sys_modules = sys.modules.copy()
                     sys.modules[TESTS] = module
                     sys.modules['datetime'] = module.datetime_module
-                    if hasattr(module, '_pydatetime'):
+                    wenn hasattr(module, '_pydatetime'):
                         sys.modules['_pydatetime'] = module._pydatetime
                     sys.modules['_strptime'] = module._strptime
                     super().setUpClass()
@@ -63,5 +63,5 @@ def load_tests(loader, tests, pattern):
     return tests
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

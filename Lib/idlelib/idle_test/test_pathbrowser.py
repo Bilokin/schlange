@@ -82,5 +82,5 @@ klasse PathBrowserTreeItemTest(unittest.TestCase):
         self.assertEqual(type(sub[0]), pathbrowser.DirBrowserTreeItem)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main(verbosity=2, exit=False)

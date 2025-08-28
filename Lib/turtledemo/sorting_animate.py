@@ -89,9 +89,9 @@ def ssort(shelf):
     fuer j in range(0, length - 1):
         imin = j
         fuer i in range(j + 1, length):
-            if shelf[i].size < shelf[imin].size:
+            wenn shelf[i].size < shelf[imin].size:
                 imin = i
-        if imin != j:
+        wenn imin != j:
             shelf.insert(j, shelf.pop(imin))
 
 def partition(shelf, left, right, pivot_index):
@@ -99,14 +99,14 @@ def partition(shelf, left, right, pivot_index):
     shelf.insert(right, shelf.pop(pivot_index))
     store_index = left
     fuer i in range(left, right): # range is non-inclusive of ending value
-        if shelf[i].size < pivot.size:
+        wenn shelf[i].size < pivot.size:
             shelf.insert(store_index, shelf.pop(i))
             store_index = store_index + 1
     shelf.insert(store_index, shelf.pop(right)) # move pivot to correct position
     return store_index
 
 def qsort(shelf, left, right):
-    if left < right:
+    wenn left < right:
         pivot_index = left
         pivot_new_index = partition(shelf, left, right, pivot_index)
         qsort(shelf, left, pivot_new_index - 1)
@@ -119,7 +119,7 @@ def randomize():
     random.shuffle(target)
     fuer i, t in enumerate(target):
         fuer j in range(i, len(s)):
-            if s[j].size == t + 1:
+            wenn s[j].size == t + 1:
                 s.insert(i, s.pop(j))
     show_text(instructions1)
     show_text(instructions2, line=1)
@@ -193,6 +193,6 @@ def main():
 instructions1 = "press i fuer insertion sort, s fuer selection sort, q fuer quicksort"
 instructions2 = "spacebar to quit, r to randomize"
 
-if __name__=="__main__":
+wenn __name__=="__main__":
     msg = main()
     mainloop()

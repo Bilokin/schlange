@@ -54,7 +54,7 @@ def main():
         tilt(-4)
         lt(2)
         update()
-        if i % 12 == 0:
+        wenn i % 12 == 0:
             dancers.append(clone())
     home()
     # dance
@@ -68,14 +68,14 @@ def main():
             dancer.fd(7)
             dancer.lt(2)
             dancer.tilt(ta)
-            ta = -4 if ta > 0 else 2
-        if cs < 180:
+            ta = -4 wenn ta > 0 sonst 2
+        wenn cs < 180:
             right(4)
             shapesize(cs)
             cs *= 1.005
         update()
     return "DONE!"
 
-if __name__=='__main__':
+wenn __name__=='__main__':
     print(main())
     mainloop()

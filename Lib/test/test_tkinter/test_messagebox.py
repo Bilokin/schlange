@@ -32,5 +32,5 @@ klasse DefaultRootTest(AbstractDefaultRootTest, unittest.TestCase):
             self.assertRaises(RuntimeError, showinfo, "Spam", "Egg Information")
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

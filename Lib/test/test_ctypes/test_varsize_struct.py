@@ -48,5 +48,5 @@ klasse VarSizeTest(unittest.TestCase):
         self.assertRaises(IndexError, array.__getitem__, -1)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

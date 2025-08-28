@@ -16,18 +16,18 @@ def _read_cmd_output(commandstring, capture_stderr=False):
         os.getpid(),), "w+b")
 
     with contextlib.closing(fp) as fp:
-        if capture_stderr:
+        wenn capture_stderr:
             cmd = "%s >'%s' 2>&1" % (commandstring, fp.name)
-        else:
+        sonst:
             cmd = "%s 2>/dev/null >'%s'" % (commandstring, fp.name)
-        return fp.read() if not os.system(cmd) else None
+        return fp.read() wenn not os.system(cmd) sonst None
 
 
 def _aix_tag(vrtl, bd):
     # type: (List[int], int) -> str
     # Infer the ABI bitwidth from maxsize (assuming 64 bit as the default)
-    _sz = 32 if sys.maxsize == (2**31-1) else 64
-    _bd = bd if bd != 0 else 9988
+    _sz = 32 wenn sys.maxsize == (2**31-1) sonst 64
+    _bd = bd wenn bd != 0 sonst 9988
     # vrtl[version, release, technology_level]
     return "aix-{:1x}{:1d}{:02d}-{:04d}-{}".format(vrtl[0], vrtl[1], vrtl[2], _bd, _sz)
 
@@ -56,7 +56,7 @@ def _aix_bos_rte():
         out = _read_cmd_output("/usr/bin/lslpp -Lqc bos.rte")
     out = out.decode("utf-8")
     out = out.strip().split(":")  # type: ignore
-    _bd = int(out[-1]) if out[-1] != '' else 9988
+    _bd = int(out[-1]) wenn out[-1] != '' sonst 9988
     return (str(out[2]), _bd)
 
 
@@ -87,7 +87,7 @@ def aix_platform():
 def _aix_bgt():
     # type: () -> List[int]
     gnu_type = sysconfig.get_config_var("BUILD_GNU_TYPE")
-    if not gnu_type:
+    wenn not gnu_type:
         raise ValueError("BUILD_GNU_TYPE is not defined")
     return _aix_vrtl(vrmf=gnu_type)
 

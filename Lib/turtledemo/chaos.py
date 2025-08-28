@@ -52,6 +52,6 @@ def main():
         setworldcoordinates(0.5*s,-0.1, N+1, 1.1)
     return "Done!"
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     main()
     mainloop()

@@ -69,7 +69,7 @@ klasse Nested(object):
         self.entered = None
 
     def __enter__(self):
-        if self.entered is not None:
+        wenn self.entered is not None:
             raise RuntimeError("Context is not reentrant")
         self.entered = deque()
         vars = []
@@ -78,7 +78,7 @@ klasse Nested(object):
                 vars.append(mgr.__enter__())
                 self.entered.appendleft(mgr)
         except:
-            if not self.__exit__(*sys.exc_info()):
+            wenn not self.__exit__(*sys.exc_info()):
                 raise
         return vars
 
@@ -89,12 +89,12 @@ klasse Nested(object):
         ex = exc_info
         fuer mgr in self.entered:
             try:
-                if mgr.__exit__(*ex):
+                wenn mgr.__exit__(*ex):
                     ex = (None, None, None)
             except BaseException as e:
                 ex = (type(e), e, e.__traceback__)
         self.entered = None
-        if ex is not exc_info:
+        wenn ex is not exc_info:
             raise ex
 
 
@@ -279,7 +279,7 @@ klasse ContextmanagerAssertionMixin(object):
                                                   exc_type=None):
         self.assertTrue(mock_manager.enter_called)
         self.assertTrue(mock_manager.exit_called)
-        if exc_type is None:
+        wenn exc_type is None:
             self.assertEqual(mock_manager.exit_args[1], self.TEST_EXCEPTION)
             exc_type = type(self.TEST_EXCEPTION)
         self.assertEqual(mock_manager.exit_args[0], exc_type)
@@ -621,7 +621,7 @@ klasse NonLocalFlowControlTestCase(unittest.TestCase):
         counter = 0
         while True:
             counter += 1
-            if counter > 2:
+            wenn counter > 2:
                 break
             with mock_contextmanager_generator():
                 counter += 10
@@ -658,7 +658,7 @@ klasse NonLocalFlowControlTestCase(unittest.TestCase):
             counter += 100 # Not reached
         except RuntimeError:
             self.assertEqual(counter, 11)
-        else:
+        sonst:
             self.fail("Didn't raise RuntimeError")
 
 
@@ -727,7 +727,7 @@ klasse ExitSwallowsExceptionTestCase(unittest.TestCase):
                 1/0
         except ZeroDivisionError:
             pass
-        else:
+        sonst:
             self.fail("ZeroDivisionError should have been raised")
 
 
@@ -735,7 +735,7 @@ klasse NestedWith(unittest.TestCase):
 
     klasse Dummy(object):
         def __init__(self, value=None, gobble=False):
-            if value is None:
+            wenn value is None:
                 value = self
             self.value = value
             self.gobble = gobble
@@ -749,7 +749,7 @@ klasse NestedWith(unittest.TestCase):
         def __exit__(self, *exc_info):
             self.exit_called = True
             self.exc_info = exc_info
-            if self.gobble:
+            wenn self.gobble:
                 return True
 
     klasse InitRaises(object):
@@ -785,7 +785,7 @@ klasse NestedWith(unittest.TestCase):
                 self.fail('body of bad with executed')
         except RuntimeError:
             pass
-        else:
+        sonst:
             self.fail('RuntimeError not reraised')
         self.assertTrue(a.enter_called)
         self.assertTrue(a.exit_called)
@@ -850,5 +850,5 @@ klasse NestedWith(unittest.TestCase):
                                  expected)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

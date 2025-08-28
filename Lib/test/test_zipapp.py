@@ -455,5 +455,5 @@ klasse ZipAppCmdlineTest(unittest.TestCase):
         self.assertTrue(cm.exception.code)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

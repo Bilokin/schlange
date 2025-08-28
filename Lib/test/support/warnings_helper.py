@@ -24,11 +24,11 @@ def check_syntax_warning(testcase, statement, errtext='',
 
     warn, = warns
     testcase.assertIsSubclass(warn.category, SyntaxWarning)
-    if errtext:
+    wenn errtext:
         testcase.assertRegex(str(warn.message), errtext)
     testcase.assertEqual(warn.filename, '<testcase>')
     testcase.assertIsNotNone(warn.lineno)
-    if lineno is not None:
+    wenn lineno is not None:
         testcase.assertEqual(warn.lineno, lineno)
 
     # SyntaxWarning should be converted to SyntaxError when raised,
@@ -79,9 +79,9 @@ klasse WarningsRecorder(object):
         self._last = 0
 
     def __getattr__(self, attr):
-        if len(self._warnings) > self._last:
+        wenn len(self._warnings) > self._last:
             return getattr(self._warnings[-1], attr)
-        elif attr in warnings.WarningMessage._WARNING_DETAILS:
+        sowenn attr in warnings.WarningMessage._WARNING_DETAILS:
             return None
         raise AttributeError("%r has no attribute %r" % (self, attr))
 
@@ -101,18 +101,18 @@ def check_warnings(*filters, **kwargs):
         ("message regexp", WarningCategory)
 
     Optional argument:
-     - if 'quiet' is True, it does not fail if a filter catches nothing
+     - wenn 'quiet' is True, it does not fail wenn a filter catches nothing
         (default True without argument,
-         default False if some filters are defined)
+         default False wenn some filters are defined)
 
     Without argument, it defaults to:
         check_warnings(("", Warning), quiet=True)
     """
     quiet = kwargs.get('quiet')
-    if not filters:
+    wenn not filters:
         filters = (("", Warning),)
         # Preserve backward compatibility
-        if quiet is None:
+        wenn quiet is None:
             quiet = True
     return _filterwarnings(filters, quiet)
 
@@ -137,7 +137,7 @@ def check_no_warnings(testcase, message='', category=Warning, force_gc=False):
                                 message=message,
                                 category=category)
         yield
-        if force_gc:
+        wenn force_gc:
             gc_collect()
     testcase.assertEqual(warns, [])
 
@@ -161,7 +161,7 @@ def check_no_resource_warning(testcase):
 
 
 def _filterwarnings(filters, quiet=False):
-    """Catch the warnings, then check if all the expected
+    """Catch the warnings, then check wenn all the expected
     warnings have been raised and re-raise unexpected warnings.
     If 'quiet' is True, only re-raise the unexpected warnings.
     """
@@ -169,7 +169,7 @@ def _filterwarnings(filters, quiet=False):
     # in order to re-raise the warnings.
     frame = sys._getframe(2)
     registry = frame.f_globals.get('__warningregistry__')
-    if registry:
+    wenn registry:
         registry.clear()
     # Because test_warnings swap the module, we need to look up in the
     # sys.modules dictionary.
@@ -186,16 +186,16 @@ def _filterwarnings(filters, quiet=False):
         fuer w in reraise[:]:
             warning = w.message
             # Filter out the matching messages
-            if (re.match(msg, str(warning), re.I) and
+            wenn (re.match(msg, str(warning), re.I) and
                 issubclass(warning.__class__, cat)):
                 seen = True
                 reraise.remove(w)
-        if not seen and not quiet:
+        wenn not seen and not quiet:
             # This filter caught nothing
             missing.append((msg, cat.__name__))
-    if reraise:
+    wenn reraise:
         raise AssertionError("unhandled warning %s" % reraise[0])
-    if missing:
+    wenn missing:
         raise AssertionError("filter (%r, %s) did not catch any warning" %
                              missing[0])
 

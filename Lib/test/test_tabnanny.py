@@ -48,7 +48,7 @@ SOURCE_CODES = {
     "tab_space_errored_1": (
         'def my_func():\n'
         '\t  print("hello world")\n'
-        '\t  if True:\n'
+        '\t  wenn True:\n'
         '\t\tprint("If called")'
     ),
     "tab_space_errored_2": (
@@ -294,21 +294,21 @@ klasse TestCommandLine(TestCase):
 
     def validate_cmd(self, *args, stdout="", stderr="", partial=False, expect_failure=False):
         """Common function to assert the behaviour of command line interface."""
-        if expect_failure:
+        wenn expect_failure:
             _, out, err = script_helper.assert_python_failure('-m', 'tabnanny', *args)
-        else:
+        sonst:
             _, out, err = script_helper.assert_python_ok('-m', 'tabnanny', *args)
         # Note: The `splitlines()` will solve the problem of CRLF(\r) added
         # by OS Windows.
         out = os.fsdecode(out)
         err = os.fsdecode(err)
-        if partial:
+        wenn partial:
             fuer std, output in ((stdout, out), (stderr, err)):
                 _output = output.splitlines()
                 fuer _std in std.splitlines():
                     with self.subTest(std=_std, output=_output):
                         self.assertIn(_std, _output)
-        else:
+        sonst:
             self.assertListEqual(out.splitlines(), stdout.splitlines())
             self.assertListEqual(err.splitlines(), stderr.splitlines())
 
@@ -321,7 +321,7 @@ klasse TestCommandLine(TestCase):
             self.validate_cmd(file_path, stderr=stderr, expect_failure=True)
 
     def test_with_error_free_file(self):
-        """Should not display anything if python file is correctly indented."""
+        """Should not display anything wenn python file is correctly indented."""
         with TemporaryPyFile(SOURCE_CODES["error_free"]) as file_path:
             self.validate_cmd(file_path)
 
@@ -338,7 +338,7 @@ klasse TestCommandLine(TestCase):
             self.validate_cmd("-q", file_path, stdout=stdout)
 
     def test_verbose_mode(self):
-        """Should display more error information if verbose mode is on."""
+        """Should display more error information wenn verbose mode is on."""
         with TemporaryPyFile(SOURCE_CODES["nannynag_errored"]) as path:
             stdout = textwrap.dedent(
                 "offending line: '\\tprint(\"world\")'"
@@ -346,7 +346,7 @@ klasse TestCommandLine(TestCase):
             self.validate_cmd("-v", path, stdout=stdout, partial=True)
 
     def test_double_verbose_mode(self):
-        """Should display detailed error information if double verbose is on."""
+        """Should display detailed error information wenn double verbose is on."""
         with TemporaryPyFile(SOURCE_CODES["nannynag_errored"]) as path:
             stdout = textwrap.dedent(
                 "offending line: '\\tprint(\"world\")'"

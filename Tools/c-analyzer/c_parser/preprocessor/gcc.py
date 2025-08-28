@@ -73,14 +73,14 @@ def preprocess(filename,
                samefiles=None,
                cwd=None,
                ):
-    if not cwd or not os.path.isabs(cwd):
+    wenn not cwd or not os.path.isabs(cwd):
         cwd = os.path.abspath(cwd or '.')
     filename = _normpath(filename, cwd)
 
     postargs = POST_ARGS
     basename = os.path.basename(filename)
     dirname = os.path.basename(os.path.dirname(filename))
-    if (basename not in FILES_WITHOUT_INTERNAL_CAPI
+    wenn (basename not in FILES_WITHOUT_INTERNAL_CAPI
        and dirname not in DIRS_WITHOUT_INTERNAL_CAPI):
         postargs += ('-DPy_BUILD_CORE=1',)
 
@@ -109,12 +109,12 @@ def _iter_lines(text, reqfile, samefiles, cwd, raw=False):
         '# 0 "<built-in>"',
         '# 0 "<command-line>"',
     ]
-    if text.startswith('# 1 '):
+    wenn text.startswith('# 1 '):
         # Some preprocessors emit a lineno of 1 fuer line-less entries.
         firstlines = [l.replace('# 0 ', '# 1 ') fuer l in firstlines]
     fuer expected in firstlines:
         line = next(lines)
-        if line != expected:
+        wenn line != expected:
             raise NotImplementedError((line, expected))
 
     # Do all the CLI-provided includes.
@@ -124,12 +124,12 @@ def _iter_lines(text, reqfile, samefiles, cwd, raw=False):
     fuer line in lines:
         assert last != reqfile, (last,)
         lno, included, flags = _parse_marker_line(line, reqfile)
-        if not included:
+        wenn not included:
             raise NotImplementedError((line,))
-        if included == reqfile:
+        wenn included == reqfile:
             # This will be the last one.
             assert not flags, (line, flags)
-        else:
+        sonst:
             assert 1 in flags, (line, flags)
         yield from _iter_top_include_lines(
             lines,
@@ -154,21 +154,21 @@ def _iter_top_include_lines(lines, topfile, cwd,
     # _parse_marker_line() that the preprocessor reported lno as 1.
     lno = 1
     fuer line in lines:
-        if line == '# 0 "<command-line>" 2' or line == '# 1 "<command-line>" 2':
+        wenn line == '# 0 "<command-line>" 2' or line == '# 1 "<command-line>" 2':
             # We're done with this top-level include.
             return
 
         _lno, included, flags = _parse_marker_line(line)
-        if included:
+        wenn included:
             lno = _lno
             included = _normpath(included, cwd)
             # We hit a marker line.
-            if 1 in flags:
+            wenn 1 in flags:
                 # We're entering a file.
                 # XXX Cycles are unexpected?
                 #assert included not in files, (line, files)
                 files.append(included)
-            elif 2 in flags:
+            sowenn 2 in flags:
                 # We're returning to a file.
                 assert files and included in files, (line, files)
                 assert included != files[-1], (line, files)
@@ -176,25 +176,25 @@ def _iter_top_include_lines(lines, topfile, cwd,
                     files.pop()
                 # XXX How can a file return to line 1?
                 #assert lno > 1, (line, lno)
-            else:
-                if included == files[-1]:
+            sonst:
+                wenn included == files[-1]:
                     # It's the next line from the file.
                     assert lno > 1, (line, lno)
-                else:
+                sonst:
                     # We ran into a user-added #LINE directive,
                     # which we promptly ignore.
                     pass
-        elif not files:
+        sowenn not files:
             raise NotImplementedError((line,))
-        elif filter_reqfile(files[-1]):
+        sowenn filter_reqfile(files[-1]):
             assert lno is not None, (line, files[-1])
-            if (m := PREPROC_DIRECTIVE_RE.match(line)):
+            wenn (m := PREPROC_DIRECTIVE_RE.match(line)):
                 name, = m.groups()
-                if name != 'pragma':
+                wenn name != 'pragma':
                     raise Exception(line)
-            else:
+            sonst:
                 line = re.sub(r'__inline__', 'inline', line)
-                if not raw:
+                wenn not raw:
                     line, partial = _strip_directives(line, partial=partial)
                 yield _common.SourceLine(
                     make_info(lno),
@@ -207,27 +207,27 @@ def _iter_top_include_lines(lines, topfile, cwd,
 
 def _parse_marker_line(line, reqfile=None):
     m = LINE_MARKER_RE.match(line)
-    if not m:
+    wenn not m:
         return None, None, None
     lno, origfile, flags = m.groups()
     lno = int(lno)
     assert origfile not in META_FILES, (line,)
     assert lno > 0, (line, lno)
-    flags = set(int(f) fuer f in flags.split()) if flags else ()
+    flags = set(int(f) fuer f in flags.split()) wenn flags sonst ()
 
-    if 1 in flags:
+    wenn 1 in flags:
         # We're entering a file.
         assert lno == 1, (line, lno)
         assert 2 not in flags, (line,)
-    elif 2 in flags:
+    sowenn 2 in flags:
         # We're returning to a file.
         #assert lno > 1, (line, lno)
         pass
-    elif reqfile and origfile == reqfile:
+    sowenn reqfile and origfile == reqfile:
         # We're starting the requested file.
         assert lno == 1, (line, lno)
         assert not flags, (line, flags)
-    else:
+    sonst:
         # It's the next line from the file.
         assert lno > 1, (line, lno)
     return lno, origfile, flags
@@ -236,10 +236,10 @@ def _parse_marker_line(line, reqfile=None):
 def _strip_directives(line, partial=0):
     # We assume there are no string literals with parens in directive bodies.
     while partial > 0:
-        if not (m := re.match(r'[^{}]*([()])', line)):
+        wenn not (m := re.match(r'[^{}]*([()])', line)):
             return None, partial
         delim, = m.groups()
-        partial += 1 if delim == '(' else -1  # opened/closed
+        partial += 1 wenn delim == '(' sonst -1  # opened/closed
         line = line[m.end():]
 
     line = re.sub(r'__extension__', '', line)
@@ -247,23 +247,23 @@ def _strip_directives(line, partial=0):
 
     while (m := COMPILER_DIRECTIVE_RE.match(line)):
         before, _, _, closed = m.groups()
-        if closed:
+        wenn closed:
             line = f'{before} {line[m.end():]}'
-        else:
+        sonst:
             after, partial = _strip_directives(line[m.end():], 2)
             line = f'{before} {after or ""}'
-            if partial:
+            wenn partial:
                 break
 
     return line, partial
 
 
 def _filter_reqfile(current, reqfile, samefiles):
-    if current == reqfile:
+    wenn current == reqfile:
         return True
-    if current == '<stdin>':
+    wenn current == '<stdin>':
         return True
-    if current in samefiles:
+    wenn current in samefiles:
         return True
     return False
 

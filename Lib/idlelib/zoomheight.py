@@ -21,10 +21,10 @@ klasse ZoomHeight:
     def zoom_height_event(self, event=None):
         zoomed = self.zoom_height()
 
-        if zoomed is None:
+        wenn zoomed is None:
             self.top.bell()
-        else:
-            menu_status = 'Restore' if zoomed else 'Zoom'
+        sonst:
+            menu_status = 'Restore' wenn zoomed sonst 'Zoom'
             self.editwin.update_menu_label(menu='options', index='* Height',
                                            label=f'{menu_status} Height')
 
@@ -35,7 +35,7 @@ klasse ZoomHeight:
 
         width, height, x, y = get_window_geometry(top)
 
-        if top.wm_state() != 'normal':
+        wenn top.wm_state() != 'normal':
             # Can't zoom/restore window height fuer windows not in the 'normal'
             # state, e.g. maximized and full-screen windows.
             return None
@@ -45,11 +45,11 @@ klasse ZoomHeight:
         except WmInfoGatheringError:
             return None
 
-        if height != maxheight:
+        wenn height != maxheight:
             # Maximize the window's height.
             set_window_geometry(top, (width, maxheight, x, maxy))
             return True
-        else:
+        sonst:
             # Restore the window's height.
             #
             # .wm_geometry('') makes the window revert to the size requested
@@ -62,7 +62,7 @@ klasse ZoomHeight:
 
         screen_dimensions = (top.winfo_screenwidth(),
                              top.winfo_screenheight())
-        if screen_dimensions not in self._max_height_and_y_coords:
+        wenn screen_dimensions not in self._max_height_and_y_coords:
             orig_state = top.wm_state()
 
             # Get window geometry info fuer maximized windows.
@@ -76,7 +76,7 @@ klasse ZoomHeight:
                     'the "zoomed" window state is unavailable.')
             top.update()
             maxwidth, maxheight, maxx, maxy = get_window_geometry(top)
-            if sys.platform == 'win32':
+            wenn sys.platform == 'win32':
                 # On Windows, the returned Y coordinate is the one before
                 # maximizing, so we use 0 which is correct unless a user puts
                 # their dock on the top of the screen (very rare).
@@ -117,7 +117,7 @@ def set_window_geometry(top, geometry):
     top.wm_geometry("{:d}x{:d}+{:d}+{:d}".format(*geometry))
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     from unittest import main
     main('idlelib.idle_test.test_zoomheight', verbosity=2, exit=False)
 

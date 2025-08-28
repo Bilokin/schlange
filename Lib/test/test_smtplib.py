@@ -31,7 +31,7 @@ support.requires_working_socket(module=True)
 
 HOST = socket_helper.HOST
 
-if sys.platform == 'darwin':
+wenn sys.platform == 'darwin':
     # select.poll returns a select.POLLHUP at the end of the tests
     # on darwin, so just ignore it
     def handle_expt(self):
@@ -46,11 +46,11 @@ def server(evt, buf, serv):
         conn, addr = serv.accept()
     except TimeoutError:
         pass
-    else:
+    sonst:
         n = 500
         while buf and n > 0:
             r, w, e = select.select([], [conn], [])
-            if w:
+            wenn w:
                 sent = conn.send(buf)
                 buf = buf[sent:]
 
@@ -191,9 +191,9 @@ def debugging_server(serv, serv_evt, client_evt):
     serv_evt.set()
 
     try:
-        if hasattr(select, 'poll'):
+        wenn hasattr(select, 'poll'):
             poll_fun = asyncore.poll2
-        else:
+        sonst:
             poll_fun = asyncore.poll
 
         n = 1000
@@ -202,7 +202,7 @@ def debugging_server(serv, serv_evt, client_evt):
 
             # when the client conversation is finished, it will
             # set client_evt, and it's then ok to kill the server
-            if client_evt.is_set():
+            wenn client_evt.is_set():
                 serv.close()
                 break
 
@@ -211,7 +211,7 @@ def debugging_server(serv, serv_evt, client_evt):
     except TimeoutError:
         pass
     finally:
-        if not client_evt.is_set():
+        wenn not client_evt.is_set():
             # allow some time fuer the client to read the result
             time.sleep(0.5)
             serv.close()
@@ -297,7 +297,7 @@ klasse DebuggingServerTests(unittest.TestCase):
             self.assertEqual(smtp.local_hostname, 'localhost')
             smtp.quit()
         except OSError as e:
-            if e.errno == errno.EADDRINUSE:
+            wenn e.errno == errno.EADDRINUSE:
                 self.skipTest("couldn't bind to source port %d" % src_port)
             raise
 
@@ -550,7 +550,7 @@ klasse DebuggingServerTests(unittest.TestCase):
             self.assertRegex(debugout, to_addr)
 
     def testSendMessageWithSomeAddresses(self):
-        # Make sure nothing breaks if not all of the three 'to' headers exist
+        # Make sure nothing breaks wenn not all of the three 'to' headers exist
         m = email.mime.text.MIMEText('A test message')
         m['From'] = 'foo@bar.com'
         m['To'] = 'John, Dinsdale'
@@ -834,9 +834,9 @@ klasse SimSMTPChannel(smtpd.SMTPChannel):
         self.all_received_lines = []
         super(SimSMTPChannel, self).__init__(*args, **kw)
 
-    # AUTH related stuff.  It would be nice if support fuer this were in smtpd.
+    # AUTH related stuff.  It would be nice wenn support fuer this were in smtpd.
     def found_terminator(self):
-        if self.smtp_state == self.AUTH:
+        wenn self.smtp_state == self.AUTH:
             line = self._emptystring.join(self.received_lines)
             print('Data:', repr(line), file=smtpd.DEBUGSTREAM)
             self.received_lines = []
@@ -851,18 +851,18 @@ klasse SimSMTPChannel(smtpd.SMTPChannel):
 
 
     def smtp_AUTH(self, arg):
-        if not self.seen_greeting:
+        wenn not self.seen_greeting:
             self.push('503 Error: send EHLO first')
             return
-        if not self.extended_smtp or 'AUTH' not in self._extrafeatures:
+        wenn not self.extended_smtp or 'AUTH' not in self._extrafeatures:
             self.push('500 Error: command "AUTH" not recognized')
             return
-        if self.authenticated_user is not None:
+        wenn self.authenticated_user is not None:
             self.push(
                 '503 Bad sequence of commands: already authenticated')
             return
         args = arg.split()
-        if len(args) not in [1, 2]:
+        wenn len(args) not in [1, 2]:
             self.push('501 Syntax: AUTH <mechanism> [initial-response]')
             return
         auth_object_name = '_auth_%s' % args[0].lower().replace('-', '_')
@@ -873,13 +873,13 @@ klasse SimSMTPChannel(smtpd.SMTPChannel):
                       ' authentication mechanism {!r}'.format(auth_object_name))
             return
         self.smtp_state = self.AUTH
-        self.auth_object(args[1] if len(args) == 2 else None)
+        self.auth_object(args[1] wenn len(args) == 2 sonst None)
 
     def _authenticated(self, user, valid):
-        if valid:
+        wenn valid:
             self.authenticated_user = user
             self.push('235 Authentication Succeeded')
-        else:
+        sonst:
             self.push('535 Authentication credentials invalid')
         self.smtp_state = self.COMMAND
 
@@ -887,9 +887,9 @@ klasse SimSMTPChannel(smtpd.SMTPChannel):
         return base64.decodebytes(string.encode('ascii')).decode('utf-8')
 
     def _auth_plain(self, arg=None):
-        if arg is None:
+        wenn arg is None:
             self.push('334 ')
-        else:
+        sonst:
             logpass = self._decode_base64(arg)
             try:
                 *_, user, password = logpass.split('\0')
@@ -900,14 +900,14 @@ klasse SimSMTPChannel(smtpd.SMTPChannel):
             self._authenticated(user, password == sim_auth[1])
 
     def _auth_login(self, arg=None):
-        if arg is None:
+        wenn arg is None:
             # base64 encoded 'Username:'
             self.push('334 VXNlcm5hbWU6')
-        elif not hasattr(self, '_auth_login_user'):
+        sowenn not hasattr(self, '_auth_login_user'):
             self._auth_login_user = self._decode_base64(arg)
             # base64 encoded 'Password:'
             self.push('334 UGFzc3dvcmQ6')
-        else:
+        sonst:
             password = self._decode_base64(arg)
             self._authenticated(self._auth_login_user, password == sim_auth[1])
             del self._auth_login_user
@@ -918,9 +918,9 @@ klasse SimSMTPChannel(smtpd.SMTPChannel):
         self.push('334 QnVHZ1liVWdHeQ==')
 
     def _auth_cram_md5(self, arg=None):
-        if arg is None:
+        wenn arg is None:
             self.push('334 {}'.format(sim_cram_md5_challenge))
-        else:
+        sonst:
             logpass = self._decode_base64(arg)
             try:
                 user, hashed_pass = logpass.split()
@@ -951,41 +951,41 @@ klasse SimSMTPChannel(smtpd.SMTPChannel):
 
     def smtp_VRFY(self, arg):
         # For max compatibility smtplib should be sending the raw address.
-        if arg in sim_users:
+        wenn arg in sim_users:
             self.push('250 %s %s' % (sim_users[arg], smtplib.quoteaddr(arg)))
-        else:
+        sonst:
             self.push('550 No such user: %s' % arg)
 
     def smtp_EXPN(self, arg):
         list_name = arg.lower()
-        if list_name in sim_lists:
+        wenn list_name in sim_lists:
             user_list = sim_lists[list_name]
             fuer n, user_email in enumerate(user_list):
                 quoted_addr = smtplib.quoteaddr(user_email)
-                if n < len(user_list) - 1:
+                wenn n < len(user_list) - 1:
                     self.push('250-%s %s' % (sim_users[user_email], quoted_addr))
-                else:
+                sonst:
                     self.push('250 %s %s' % (sim_users[user_email], quoted_addr))
-        else:
+        sonst:
             self.push('550 No access fuer you!')
 
     def smtp_QUIT(self, arg):
-        if self.quit_response is None:
+        wenn self.quit_response is None:
             super(SimSMTPChannel, self).smtp_QUIT(arg)
-        else:
+        sonst:
             self.push(self.quit_response)
             self.close_when_done()
 
     def smtp_MAIL(self, arg):
-        if self.mail_response is None:
+        wenn self.mail_response is None:
             super().smtp_MAIL(arg)
-        else:
+        sonst:
             self.push(self.mail_response)
-            if self.disconnect:
+            wenn self.disconnect:
                 self.close_when_done()
 
     def smtp_RCPT(self, arg):
-        if self.rcpt_response is None:
+        wenn self.rcpt_response is None:
             super().smtp_RCPT(arg)
             return
         self.rcpt_count += 1
@@ -996,9 +996,9 @@ klasse SimSMTPChannel(smtpd.SMTPChannel):
         super().smtp_RSET(arg)
 
     def smtp_DATA(self, arg):
-        if self.data_response is None:
+        wenn self.data_response is None:
             super().smtp_DATA(arg)
-        else:
+        sonst:
             self.push(self.data_response)
 
     def handle_error(self):
@@ -1234,7 +1234,7 @@ klasse SMTPSimTests(unittest.TestCase):
             hashlib.md5()
         except ValueError:
             pass
-        else:
+        sonst:
             supported.add('CRAM-MD5')
         fuer mechanism in supported:
             self.serv.add_feature("AUTH {}".format(mechanism))
@@ -1296,7 +1296,7 @@ klasse SMTPSimTests(unittest.TestCase):
             smtp.sendmail('John', 'Sally', 'test message')
         self.assertIsNone(smtp.sock)
 
-    # Issue 5713: make sure close, not rset, is called if we get a 421 error
+    # Issue 5713: make sure close, not rset, is called wenn we get a 421 error
     def test_421_from_mail_cmd(self):
         smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost',
                             timeout=support.LOOPBACK_TIMEOUT)
@@ -1321,9 +1321,9 @@ klasse SMTPSimTests(unittest.TestCase):
     def test_421_from_data_cmd(self):
         klasse MySimSMTPChannel(SimSMTPChannel):
             def found_terminator(self):
-                if self.smtp_state == self.DATA:
+                wenn self.smtp_state == self.DATA:
                     self.push('421 closing')
-                else:
+                sonst:
                     super().found_terminator()
         self.serv.channel_class = MySimSMTPChannel
         smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost',
@@ -1545,11 +1545,11 @@ klasse SimSMTPAUTHInitialResponseChannel(SimSMTPChannel):
         # Not all AUTH methods support this; some require a challenge.  AUTH
         # PLAIN does those, so test that here.  See issue #15014.
         args = arg.split()
-        if args[0].lower() == 'plain':
-            if len(args) == 2:
+        wenn args[0].lower() == 'plain':
+            wenn len(args) == 2:
                 # AUTH PLAIN <initial-response> with the response base 64
                 # encoded.  Hard code the expected response fuer the test.
-                if args[1] == EXPECTED_RESPONSE:
+                wenn args[1] == EXPECTED_RESPONSE:
                     self.push('235 Ok')
                     return
         self.push('571 Bad authentication')
@@ -1607,5 +1607,5 @@ klasse SMTPAUTHInitialResponseSimTests(unittest.TestCase):
         self.assertEqual(code, 235)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

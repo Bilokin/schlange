@@ -29,9 +29,9 @@ def probe_den(nd):
         s2 = t2 - t1
         assert e1 == f1
         assert e2 == f2
-        if s2 < s1:
+        wenn s2 < s1:
             count += 1
-            if count >= 3:
+            wenn count >= 3:
                 print(
                     "for",
                     nd,
@@ -40,9 +40,9 @@ def probe_den(nd):
                     "extra num digits is enough",
                 )
                 break
-        else:
+        sonst:
             count = 0
-    else:
+    sonst:
         print("for", nd, "denom digits, no num seems big enough")
 
 
@@ -52,5 +52,5 @@ def main():
         probe_den(nd)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     main()

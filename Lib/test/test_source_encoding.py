@@ -33,7 +33,7 @@ klasse MiscSourceEncodingTest(unittest.TestCase):
             compile(b"# coding: cp932\nprint '\x94\x4e'", "dummy", "exec")
         except SyntaxError as v:
             self.assertEqual(v.text.rstrip('\n'), "print '\u5e74'")
-        else:
+        sonst:
             self.fail()
 
     def test_issue4626(self):
@@ -336,5 +336,5 @@ klasse FileSourceEncodingTest(AbstractSourceEncodingTest, unittest.TestCase):
         self.assertEqual(res.out.rstrip(), expected)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

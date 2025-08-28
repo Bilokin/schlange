@@ -37,7 +37,7 @@ klasse CFunctionTests(DebuggerTests):
     def check_pycfunction(self, func_name, args):
         'Verify that "py-bt" displays invocations of PyCFunction instances'
 
-        if support.verbose:
+        wenn support.verbose:
             print()
 
         # Various optimizations multiply the code paths by which these are
@@ -61,7 +61,7 @@ klasse CFunctionTests(DebuggerTests):
                         foo()
                     bar()
                 ''')
-                if support.verbose:
+                wenn support.verbose:
                     print(f'  test call: {call}', flush=True)
 
                 self.check(func_name, cmd)

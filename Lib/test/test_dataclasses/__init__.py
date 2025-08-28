@@ -118,7 +118,7 @@ klasse TestCase(unittest.TestCase):
         klasse Some: pass
 
         fuer param in inspect.signature(dataclass).parameters:
-            if param == 'cls':
+            wenn param == 'cls':
                 continue
             self.assertHasAttr(Some.__dataclass_params__, param)
 
@@ -215,7 +215,7 @@ klasse TestCase(unittest.TestCase):
         self.assertEqual(hash(C(10)), hash((10,)))
 
         # Creating this klasse should generate an exception, because
-        #  __hash__ exists and is not None, which it would be if it
+        #  __hash__ exists and is not None, which it would be wenn it
         #  had been auto-generated due to __eq__ being defined.
         with self.assertRaisesRegex(TypeError,
                                     'Cannot overwrite attribute __hash__'):
@@ -261,7 +261,7 @@ klasse TestCase(unittest.TestCase):
         first = next(iter(sig.parameters))
         self.assertNotEqual('self', first)
 
-        # But we do use 'self' if no field named self.
+        # But we do use 'self' wenn no field named self.
         @dataclass
         klasse C:
             selfx: str
@@ -317,7 +317,7 @@ klasse TestCase(unittest.TestCase):
         exclusions = {'None', 'True', 'False'}
         builtins_names = sorted(
             b fuer b in builtins.__dict__.keys()
-            if not b.startswith('__') and b not in exclusions
+            wenn not b.startswith('__') and b not in exclusions
         )
         attributes = [(name, str) fuer name in builtins_names]
         C = make_dataclass('C', attributes)
@@ -335,7 +335,7 @@ klasse TestCase(unittest.TestCase):
         exclusions = {'None', 'True', 'False'}
         builtins_names = sorted(
             b fuer b in builtins.__dict__.keys()
-            if not b.startswith('__') and b not in exclusions
+            wenn not b.startswith('__') and b not in exclusions
         )
         attributes = [(name, str) fuer name in builtins_names]
         C = make_dataclass('C', attributes, frozen=True)
@@ -461,7 +461,7 @@ klasse TestCase(unittest.TestCase):
                 self.assertTrue(fn(C(1, 1), C(1, 0)))
 
     def test_compare_subclasses(self):
-        # Comparisons fail fuer subclasses, even if no fields
+        # Comparisons fail fuer subclasses, even wenn no fields
         #  are added.
         @dataclass
         klasse B:
@@ -494,35 +494,35 @@ klasse TestCase(unittest.TestCase):
             (True,  True,  'both'),
         ]:
             with self.subTest(eq=eq, order=order):
-                if result == 'exception':
-                    with self.assertRaisesRegex(ValueError, 'eq must be true if order is true'):
+                wenn result == 'exception':
+                    with self.assertRaisesRegex(ValueError, 'eq must be true wenn order is true'):
                         @dataclass(eq=eq, order=order)
                         klasse C:
                             pass
-                else:
+                sonst:
                     @dataclass(eq=eq, order=order)
                     klasse C:
                         pass
 
-                    if result == 'neither':
+                    wenn result == 'neither':
                         self.assertNotIn('__eq__', C.__dict__)
                         self.assertNotIn('__lt__', C.__dict__)
                         self.assertNotIn('__le__', C.__dict__)
                         self.assertNotIn('__gt__', C.__dict__)
                         self.assertNotIn('__ge__', C.__dict__)
-                    elif result == 'both':
+                    sowenn result == 'both':
                         self.assertIn('__eq__', C.__dict__)
                         self.assertIn('__lt__', C.__dict__)
                         self.assertIn('__le__', C.__dict__)
                         self.assertIn('__gt__', C.__dict__)
                         self.assertIn('__ge__', C.__dict__)
-                    elif result == 'eq_only':
+                    sowenn result == 'eq_only':
                         self.assertIn('__eq__', C.__dict__)
                         self.assertNotIn('__lt__', C.__dict__)
                         self.assertNotIn('__le__', C.__dict__)
                         self.assertNotIn('__gt__', C.__dict__)
                         self.assertNotIn('__ge__', C.__dict__)
-                    else:
+                    sonst:
                         assert False, f'unknown result {result!r}'
 
     def test_field_no_default(self):
@@ -624,13 +624,13 @@ klasse TestCase(unittest.TestCase):
                 klasse C:
                     x: int = field(compare=compare, hash=hash_, default=5)
 
-                if result == 'field':
+                wenn result == 'field':
                     # __hash__ contains the field.
                     self.assertEqual(hash(C(5)), hash((5,)))
-                elif result == 'absent':
+                sowenn result == 'absent':
                     # The field is not present in the hash.
                     self.assertEqual(hash(C(5)), hash(()))
-                else:
+                sonst:
                     assert False, f'unknown result {result!r}'
 
     def test_init_false_no_default(self):
@@ -722,7 +722,7 @@ klasse TestCase(unittest.TestCase):
                           ('d', 'E:d')])
 
     def test_class_attrs(self):
-        # We only have a klasse attribute if a default value is
+        # We only have a klasse attribute wenn a default value is
         #  specified, either directly or via a field with a default.
         default = object()
         @dataclass
@@ -1000,7 +1000,7 @@ klasse TestCase(unittest.TestCase):
         klasse C:
             i: int = 10
             def __post_init__(self):
-                if self.i == 10:
+                wenn self.i == 10:
                     raise CustomError()
         with self.assertRaises(CustomError):
             C()
@@ -1024,7 +1024,7 @@ klasse TestCase(unittest.TestCase):
         self.assertEqual(C().x, 0)
         self.assertEqual(C(2).x, 4)
 
-        # Make sure that if we're frozen, post-init can't set
+        # Make sure that wenn we're frozen, post-init can't set
         #  attributes.
         @dataclass(frozen=True)
         klasse C:
@@ -1056,7 +1056,7 @@ klasse TestCase(unittest.TestCase):
         with self.assertRaises(CustomError):
             C()
 
-        # Make sure post-init is called, even if not defined in our
+        # Make sure post-init is called, even wenn not defined in our
         #  class.
         @dataclass
         klasse C(B):
@@ -1147,7 +1147,7 @@ klasse TestCase(unittest.TestCase):
                 self.c_called = True
 
         # This time, B1.__post_init__ isn't being called.  This mimics what
-        # would happen if A1.__post_init__ had been automatically added,
+        # would happen wenn A1.__post_init__ had been automatically added,
         # instead of manually added as we see here.  This test isn't really
         # needed, but I'm including it just to demonstrate the changed
         # behavior when A1 does define __post_init__.
@@ -1215,7 +1215,7 @@ klasse TestCase(unittest.TestCase):
         self.assertEqual(C.x, 10)
 
     def test_class_var_frozen(self):
-        # Make sure ClassVars work even if we're frozen.
+        # Make sure ClassVars work even wenn we're frozen.
         @dataclass(frozen=True)
         klasse C:
             x: int
@@ -1279,7 +1279,7 @@ klasse TestCase(unittest.TestCase):
             init_param: InitVar[int] = None
 
             def __post_init__(self, init_param):
-                if self.x is None:
+                wenn self.x is None:
                     self.x = init_param*2
 
         c = C(init_param=10)
@@ -1299,7 +1299,7 @@ klasse TestCase(unittest.TestCase):
 
     def test_init_var_inheritance(self):
         # Note that this deliberately tests that a dataclass need not
-        #  have a __post_init__ function if it has an InitVar field.
+        #  have a __post_init__ function wenn it has an InitVar field.
         #  It could just be used in a derived class, as shown here.
         @dataclass
         klasse Base:
@@ -1418,15 +1418,15 @@ klasse TestCase(unittest.TestCase):
         self.assertEqual(factory.call_count, 2)
 
     def test_default_factory_not_called_if_value_given(self):
-        # We need a factory that we can test if it's been called.
+        # We need a factory that we can test wenn it's been called.
         factory = Mock()
 
         @dataclass
         klasse C:
             x: int = field(default_factory=factory)
 
-        # Make sure that if a field has a default factory function,
-        #  it's not called if a value is specified.
+        # Make sure that wenn a field has a default factory function,
+        #  it's not called wenn a value is specified.
         C().x
         self.assertEqual(factory.call_count, 1)
         self.assertEqual(C(10).x, 10)
@@ -1476,7 +1476,7 @@ klasse TestCase(unittest.TestCase):
                                     'object has no attribute'):
             c.y
 
-        # And if we again derive a non-dataclass, no fields are added.
+        # And wenn we again derive a non-dataclass, no fields are added.
         klasse D(C):
             t: int
         d = D(4, 5)
@@ -1583,7 +1583,7 @@ klasse TestCase(unittest.TestCase):
         self.assertEqual(fields(C), fields(C(0, 0.0)))
 
     def test_helper_fields_exception(self):
-        # Check that TypeError is raised if not passed a dataclass or
+        # Check that TypeError is raised wenn not passed a dataclass or
         #  instance.
         with self.assertRaisesRegex(TypeError, 'dataclass type or instance'):
             fields(0)
@@ -2096,7 +2096,7 @@ klasse TestCase(unittest.TestCase):
                 self.__dict__.update(kw)
 
             def __getitem__(self, item):
-                if item == 'xyzzy':
+                wenn item == 'xyzzy':
                     return 'plugh'
                 return getattr(self, item)
 
@@ -2394,7 +2394,7 @@ klasse TestInit(unittest.TestCase):
 
         # Make sure that declaring this klasse doesn't raise an error.
         #  The issue is that we can't override __init__ in our class,
-        #  but it should be okay to add __init__ to us if our base has
+        #  but it should be okay to add __init__ to us wenn our base has
         #  an __init__.
         @dataclass
         klasse C(B):
@@ -2403,7 +2403,7 @@ klasse TestInit(unittest.TestCase):
         self.assertEqual(c.x, 10)
         self.assertNotIn('z', vars(c))
 
-        # Make sure that if we don't add an init, the base __init__
+        # Make sure that wenn we don't add an init, the base __init__
         #  gets called.
         @dataclass(init=False)
         klasse C(B):
@@ -2684,44 +2684,44 @@ klasse TestHash(unittest.TestCase):
 
     def test_hash_rules(self):
         def non_bool(value):
-            # Map to something else that's True, but not a bool.
-            if value is None:
+            # Map to something sonst that's True, but not a bool.
+            wenn value is None:
                 return None
-            if value:
+            wenn value:
                 return (3,)
             return 0
 
         def test(case, unsafe_hash, eq, frozen, with_hash, result):
             with self.subTest(case=case, unsafe_hash=unsafe_hash, eq=eq,
                               frozen=frozen):
-                if result != 'exception':
-                    if with_hash:
+                wenn result != 'exception':
+                    wenn with_hash:
                         @dataclass(unsafe_hash=unsafe_hash, eq=eq, frozen=frozen)
                         klasse C:
                             def __hash__(self):
                                 return 0
-                    else:
+                    sonst:
                         @dataclass(unsafe_hash=unsafe_hash, eq=eq, frozen=frozen)
                         klasse C:
                             pass
 
-                # See if the result matches what's expected.
-                if result == 'fn':
+                # See wenn the result matches what's expected.
+                wenn result == 'fn':
                     # __hash__ contains the function we generated.
                     self.assertIn('__hash__', C.__dict__)
                     self.assertIsNotNone(C.__dict__['__hash__'])
 
-                elif result == '':
+                sowenn result == '':
                     # __hash__ is not present in our class.
-                    if not with_hash:
+                    wenn not with_hash:
                         self.assertNotIn('__hash__', C.__dict__)
 
-                elif result == 'none':
+                sowenn result == 'none':
                     # __hash__ is set to None.
                     self.assertIn('__hash__', C.__dict__)
                     self.assertIsNone(C.__dict__['__hash__'])
 
-                elif result == 'exception':
+                sowenn result == 'exception':
                     # Creating the klasse should cause an exception.
                     #  This only happens with with_hash==True.
                     assert(with_hash)
@@ -2731,7 +2731,7 @@ klasse TestHash(unittest.TestCase):
                             def __hash__(self):
                                 return 0
 
-                else:
+                sonst:
                     assert False, f'unknown result {result!r}'
 
         # There are 8 cases of:
@@ -2774,7 +2774,7 @@ klasse TestHash(unittest.TestCase):
         self.assertEqual(C(1), C(1))
         self.assertNotEqual(C(1), C(4))
 
-        # And make sure things work in this case if we specify
+        # And make sure things work in this case wenn we specify
         #  unsafe_hash=True.
         @dataclass(unsafe_hash=True)
         klasse C:
@@ -2821,7 +2821,7 @@ klasse TestHash(unittest.TestCase):
 
     def test_hash_no_args(self):
         # Test dataclasses with no hash= argument.  This exists to
-        #  make sure that if the @dataclass parameter name is changed
+        #  make sure that wenn the @dataclass parameter name is changed
         #  or the non-default hashing behavior changes, the default
         #  hashability keeps working the same way.
 
@@ -2854,43 +2854,43 @@ klasse TestHash(unittest.TestCase):
 
             with self.subTest(frozen=frozen, eq=eq, base=base, expected=expected):
                 # First, create the class.
-                if frozen is None and eq is None:
+                wenn frozen is None and eq is None:
                     @dataclass
                     klasse C(base):
                         i: int
-                elif frozen is None:
+                sowenn frozen is None:
                     @dataclass(eq=eq)
                     klasse C(base):
                         i: int
-                elif eq is None:
+                sowenn eq is None:
                     @dataclass(frozen=frozen)
                     klasse C(base):
                         i: int
-                else:
+                sonst:
                     @dataclass(frozen=frozen, eq=eq)
                     klasse C(base):
                         i: int
 
                 # Now, make sure it hashes as expected.
-                if expected == 'unhashable':
+                wenn expected == 'unhashable':
                     c = C(10)
                     with self.assertRaisesRegex(TypeError, 'unhashable type'):
                         hash(c)
 
-                elif expected == 'base':
+                sowenn expected == 'base':
                     self.assertEqual(hash(C(10)), 301)
 
-                elif expected == 'object':
+                sowenn expected == 'object':
                     # I'm not sure what test to use here.  object's
                     #  hash isn't based on id(), so calling hash()
                     #  won't tell us much.  So, just check the
                     #  function used is object's.
                     self.assertIs(C.__hash__, object.__hash__)
 
-                elif expected == 'tuple':
+                sowenn expected == 'tuple':
                     self.assertEqual(hash(C(42)), hash((42,)))
 
-                else:
+                sonst:
                     assert False, f'unknown value fuer expected={expected!r}'
 
 
@@ -3064,9 +3064,9 @@ klasse TestFrozen(unittest.TestCase):
                 klasse C:
                     i: int
 
-                if intermediate_class:
+                wenn intermediate_class:
                     klasse I(C): pass
-                else:
+                sonst:
                     I = C
 
                 with self.assertRaisesRegex(TypeError,
@@ -3082,9 +3082,9 @@ klasse TestFrozen(unittest.TestCase):
                 klasse C:
                     i: int
 
-                if intermediate_class:
+                wenn intermediate_class:
                     klasse I(C): pass
-                else:
+                sonst:
                     I = C
 
                 with self.assertRaisesRegex(TypeError,
@@ -3099,9 +3099,9 @@ klasse TestFrozen(unittest.TestCase):
                 klasse C:
                     pass
 
-                if intermediate_class:
+                wenn intermediate_class:
                     klasse I(C): pass
-                else:
+                sonst:
                     I = C
 
                 @dataclass(frozen=True)
@@ -3582,7 +3582,7 @@ klasse TestSlots(unittest.TestCase):
         a = A(1)
         weakref.ref(a)
 
-        # And make sure if raises if slots=True is not given.
+        # And make sure wenn raises wenn slots=True is not given.
         with self.assertRaisesRegex(TypeError,
                                     "weakref_slot is True but slots is False"):
             B = make_dataclass('B', [('a', int),], weakref_slot=True)
@@ -3592,7 +3592,7 @@ klasse TestSlots(unittest.TestCase):
         klasse Base:
             field: int
 
-        # A *can* also specify weakref_slot=True if it wants to (gh-93521)
+        # A *can* also specify weakref_slot=True wenn it wants to (gh-93521)
         @dataclass(slots=True, weakref_slot=True)
         klasse A(Base):
             ...
@@ -3757,7 +3757,7 @@ klasse TestSlots(unittest.TestCase):
     @support.cpython_only
     def test_dataclass_slot_dict_ctype(self):
         # https://github.com/python/cpython/issues/123935
-        # Skips test if `_testcapi` is not present:
+        # Skips test wenn `_testcapi` is not present:
         _testcapi = import_helper.import_module('_testcapi')
 
         @dataclass(slots=True)
@@ -3835,7 +3835,7 @@ klasse TestSlots(unittest.TestCase):
             with self.subTest(make=make):
                 C = make()
                 support.gc_collect()
-                candidates = [cls fuer cls in object.__subclasses__() if cls.__name__ == 'SlotsTest'
+                candidates = [cls fuer cls in object.__subclasses__() wenn cls.__name__ == 'SlotsTest'
                               and cls.__firstlineno__ == make.__code__.co_firstlineno + 1]
                 self.assertEqual(candidates, [C])
 
@@ -3849,7 +3849,7 @@ klasse TestDescriptors(unittest.TestCase):
             def __set_name__(self, owner, name):
                 self.name = name + 'x'
             def __get__(self, instance, owner):
-                if instance is not None:
+                wenn instance is not None:
                     return 1
                 return self
 
@@ -3985,7 +3985,7 @@ klasse TestDescriptors(unittest.TestCase):
     def test_default_value(self):
         klasse D:
             def __get__(self, instance: Any, owner: object) -> int:
-                if instance is None:
+                wenn instance is None:
                     return 100
 
                 return instance._x
@@ -4006,7 +4006,7 @@ klasse TestDescriptors(unittest.TestCase):
     def test_no_default_value(self):
         klasse D:
             def __get__(self, instance: Any, owner: object) -> int:
-                if instance is None:
+                wenn instance is None:
                     raise AttributeError()
 
                 return instance._x
@@ -4024,7 +4024,7 @@ klasse TestDescriptors(unittest.TestCase):
 klasse TestStringAnnotations(unittest.TestCase):
     def test_classvar(self):
         # Some expressions recognized as ClassVar really aren't.  But
-        #  if you're using string annotations, it's not an exact
+        #  wenn you're using string annotations, it's not an exact
         #  science.
         # These tests assume that both "import typing" and "from
         # typing import *" have been run in this file.
@@ -4136,9 +4136,9 @@ klasse TestStringAnnotations(unittest.TestCase):
                 # There's a difference in how the ClassVars are
                 # interpreted when using string annotations or
                 # not. See the imported modules fuer details.
-                if m.USING_STRINGS:
+                wenn m.USING_STRINGS:
                     c = m.CV(10)
-                else:
+                sonst:
                     c = m.CV()
                 self.assertEqual(c.cv0, 20)
 
@@ -4155,11 +4155,11 @@ klasse TestStringAnnotations(unittest.TestCase):
                             # not an instance field.
                             getattr(c, field_name)
 
-                if m.USING_STRINGS:
+                wenn m.USING_STRINGS:
                     # iv4 is interpreted as a normal field.
                     self.assertIn('not_iv4', c.__dict__)
                     self.assertEqual(c.not_iv4, 4)
-                else:
+                sonst:
                     # iv4 is interpreted as an InitVar, so it
                     # won't exist on the instance.
                     self.assertNotIn('not_iv4', c.__dict__)
@@ -4328,9 +4328,9 @@ klasse TestMakeDataclass(unittest.TestCase):
             self.assertNotIn('typing', sys.modules)
 
             fuer field in fields(C):
-                if field.name == "x":
+                wenn field.name == "x":
                     self.assertEqual(field.type, annotationlib.ForwardRef('Any', module='typing'))
-                else:
+                sonst:
                     self.assertEqual(field.name, "y")
                     self.assertIs(field.type, int)
 
@@ -4407,7 +4407,7 @@ klasse TestMakeDataclass(unittest.TestCase):
                     make_dataclass('C', [field, 'a'])
 
     def test_underscore_field_names(self):
-        # Unlike namedtuple, it's okay if dataclass field names have
+        # Unlike namedtuple, it's okay wenn dataclass field names have
         # an underscore.
         make_dataclass('C', ['_', '_a', 'a_a', 'a_'])
 
@@ -4473,7 +4473,7 @@ klasse TestReplace(unittest.TestCase):
             c1.x = 3
 
         # Make sure we can't replace an attribute that doesn't exist,
-        #  if we're also replacing one that does exist.  Test this
+        #  wenn we're also replacing one that does exist.  Test this
         #  here, because setting attributes on frozen instances is
         #  handled slightly differently from non-frozen ones.
         with self.assertRaisesRegex(TypeError, r"__init__\(\) got an unexpected "
@@ -4567,9 +4567,9 @@ klasse TestReplace(unittest.TestCase):
             z: InitVar[int] = 42
 
             def __post_init__(self, y, z):
-                if y is not None:
+                wenn y is not None:
                     self.x += y
-                if z is not None:
+                wenn z is not None:
                     self.x += z
 
         c = C(x=1, y=10, z=1)
@@ -4741,7 +4741,7 @@ klasse TestMatchArgs(unittest.TestCase):
             z: int
         self.assertEqual(Z.__match_args__, ('b',))
 
-        # Ensure parent dataclass __match_args__ is seen, if child class
+        # Ensure parent dataclass __match_args__ is seen, wenn child class
         # specifies match_args=False.
         @dataclass
         klasse A:
@@ -4947,7 +4947,7 @@ klasse TestKeywordArgs(unittest.TestCase):
             b: int
             c: int = field(kw_only=True)
 
-        # And if inheriting, it's okay.
+        # And wenn inheriting, it's okay.
         @dataclass
         klasse BaseUsesKwOnly:
             a: int
@@ -5174,5 +5174,5 @@ klasse TestZeroArgumentSuperWithSlots(unittest.TestCase):
         # one will be keeping a reference to the underlying klasse A.
         self.assertIs(A().cls(), B)
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

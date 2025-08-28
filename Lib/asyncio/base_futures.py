@@ -24,17 +24,17 @@ def isfuture(obj):
 def _format_callbacks(cb):
     """helper function fuer Future.__repr__"""
     size = len(cb)
-    if not size:
+    wenn not size:
         cb = ''
 
     def format_cb(callback):
         return format_helpers._format_callback_source(callback, ())
 
-    if size == 1:
+    wenn size == 1:
         cb = format_cb(cb[0][0])
-    elif size == 2:
+    sowenn size == 2:
         cb = '{}, {}'.format(format_cb(cb[0][0]), format_cb(cb[1][0]))
-    elif size > 2:
+    sowenn size > 2:
         cb = '{}, <{} more>, {}'.format(format_cb(cb[0][0]),
                                         size - 2,
                                         format_cb(cb[-1][0]))
@@ -45,17 +45,17 @@ def _future_repr_info(future):
     # (Future) -> str
     """helper function fuer Future.__repr__"""
     info = [future._state.lower()]
-    if future._state == _FINISHED:
-        if future._exception is not None:
+    wenn future._state == _FINISHED:
+        wenn future._exception is not None:
             info.append(f'exception={future._exception!r}')
-        else:
+        sonst:
             # use reprlib to limit the length of the output, especially
             # fuer very long strings
             result = reprlib.repr(future._result)
             info.append(f'result={result}')
-    if future._callbacks:
+    wenn future._callbacks:
         info.append(_format_callbacks(future._callbacks))
-    if future._source_traceback:
+    wenn future._source_traceback:
         frame = future._source_traceback[-1]
         info.append(f'created at {frame[0]}:{frame[1]}')
     return info

@@ -7,7 +7,7 @@ try:
     import termios
 except ImportError:
     raise unittest.SkipTest("termios required")
-else:
+sonst:
     del termios
 
 

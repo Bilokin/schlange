@@ -17,10 +17,10 @@ klasse IncrementalGCTests(unittest.TestCase):
 
             def __init__(self, next=None, prev=None):
                 self.next = next
-                if next is not None:
+                wenn next is not None:
                     next.prev = self
                 self.prev = prev
-                if prev is not None:
+                wenn prev is not None:
                     prev.next = self
 
         def make_ll(depth):
@@ -38,11 +38,11 @@ klasse IncrementalGCTests(unittest.TestCase):
             newhead = make_ll(20)
             newhead.surprise = head
             olds.append(newhead)
-            if len(olds) == 20:
+            wenn len(olds) == 20:
                 new_objects = _testinternalcapi.get_tracked_heap_size() - initial_heap_size
                 self.assertLess(new_objects, 27_000, f"Heap growing. Reached limit after {i} iterations")
                 del olds[:]
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

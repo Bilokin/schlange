@@ -70,5 +70,5 @@ klasse PasteTest(unittest.TestCase):
                 self.assertEqual(spin.get(), ans)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main(verbosity=2)

@@ -67,53 +67,53 @@ klasse HelpParser(HTMLParser):
     def indent(self, amt=1):
         "Change indent (+1, 0, -1) and tags."
         self.level += amt
-        self.tags = '' if self.level == 0 else 'l'+str(self.level)
+        self.tags = '' wenn self.level == 0 sonst 'l'+str(self.level)
 
     def handle_starttag(self, tag, attrs):
         "Handle starttags in help.html."
         class_ = ''
         fuer a, v in attrs:
-            if a == 'class':
+            wenn a == 'class':
                 class_ = v
         s = ''
-        if tag == 'p' and self.prevtag and not self.prevtag[0]:
+        wenn tag == 'p' and self.prevtag and not self.prevtag[0]:
             # Begin a new block fuer <p> tags after a closed tag.
             # Avoid extra lines, e.g. after <pre> tags.
             lastline = self.text.get('end-1c linestart', 'end-1c')
-            s = '\n\n' if lastline and not lastline.isspace() else '\n'
-        elif tag == 'span' and class_ == 'pre':
+            s = '\n\n' wenn lastline and not lastline.isspace() sonst '\n'
+        sowenn tag == 'span' and class_ == 'pre':
             self.chartags = 'pre'
-        elif tag == 'span' and class_ == 'versionmodified':
+        sowenn tag == 'span' and class_ == 'versionmodified':
             self.chartags = 'em'
-        elif tag == 'em':
+        sowenn tag == 'em':
             self.chartags = 'em'
-        elif tag in ['ul', 'ol']:
-            if class_.find('simple') != -1:
+        sowenn tag in ['ul', 'ol']:
+            wenn class_.find('simple') != -1:
                 s = '\n'
                 self.simplelist = True
-            else:
+            sonst:
                 self.simplelist = False
             self.indent()
-        elif tag == 'dl':
-            if self.level > 0:
+        sowenn tag == 'dl':
+            wenn self.level > 0:
                 self.nested_dl = True
-        elif tag == 'li':
+        sowenn tag == 'li':
             s = '\n* '
-        elif tag == 'dt':
-            s = '\n\n' if not self.nested_dl else '\n'  # Avoid extra line.
+        sowenn tag == 'dt':
+            s = '\n\n' wenn not self.nested_dl sonst '\n'  # Avoid extra line.
             self.nested_dl = False
-        elif tag == 'dd':
+        sowenn tag == 'dd':
             self.indent()
             s = '\n'
-        elif tag == 'pre':
+        sowenn tag == 'pre':
             self.pre = True
             self.text.insert('end', '\n\n')
             self.tags = 'preblock'
-        elif tag == 'a' and class_ == 'headerlink':
+        sowenn tag == 'a' and class_ == 'headerlink':
             self.hdrlink = True
-        elif tag == 'h1':
+        sowenn tag == 'h1':
             self.tags = tag
-        elif tag in ['h2', 'h3']:
+        sowenn tag in ['h2', 'h3']:
             self.header = ''
             self.text.insert('end', '\n\n')
             self.tags = tag
@@ -122,37 +122,37 @@ klasse HelpParser(HTMLParser):
 
     def handle_endtag(self, tag):
         "Handle endtags in help.html."
-        if tag in ['h1', 'h2', 'h3']:
+        wenn tag in ['h1', 'h2', 'h3']:
             assert self.level == 0
-            indent = ('        ' if tag == 'h3' else
-                      '    ' if tag == 'h2' else
+            indent = ('        ' wenn tag == 'h3' sonst
+                      '    ' wenn tag == 'h2' sonst
                       '')
             self.toc.append((indent+self.header, self.text.index('insert')))
             self.tags = ''
-        elif tag in ['span', 'em']:
+        sowenn tag in ['span', 'em']:
             self.chartags = ''
-        elif tag == 'a':
+        sowenn tag == 'a':
             self.hdrlink = False
-        elif tag == 'pre':
+        sowenn tag == 'pre':
             self.pre = False
             self.tags = ''
-        elif tag in ['ul', 'dd', 'ol']:
+        sowenn tag in ['ul', 'dd', 'ol']:
             self.indent(-1)
         self.prevtag = (False, tag)
 
     def handle_data(self, data):
         "Handle date segments in help.html."
-        if not self.hdrlink:
-            d = data if self.pre else data.replace('\n', ' ')
-            if self.tags == 'h1':
+        wenn not self.hdrlink:
+            d = data wenn self.pre sonst data.replace('\n', ' ')
+            wenn self.tags == 'h1':
                 try:
                     self.hprefix = d[:d.index(' ')]
-                    if not self.hprefix.isdigit():
+                    wenn not self.hprefix.isdigit():
                         self.hprefix = ''
                 except ValueError:
                     self.hprefix = ''
-            if self.tags in ['h1', 'h2', 'h3']:
-                if (self.hprefix != '' and
+            wenn self.tags in ['h1', 'h2', 'h3']:
+                wenn (self.hprefix != '' and
                     d[0:len(self.hprefix)] == self.hprefix):
                     d = d[len(self.hprefix):]
                 self.header += d.strip()
@@ -195,10 +195,10 @@ klasse HelpText(Text):
     def findfont(self, names):
         "Return name of first font family derived from names."
         fuer name in names:
-            if name.lower() in (x.lower() fuer x in tkfont.names(root=self)):
+            wenn name.lower() in (x.lower() fuer x in tkfont.names(root=self)):
                 font = tkfont.Font(name=name, exists=True, root=self)
                 return font.actual()['family']
-            elif name.lower() in (x.lower()
+            sowenn name.lower() in (x.lower()
                                   fuer x in tkfont.families(root=self)):
                 return name
 
@@ -273,9 +273,9 @@ def copy_strip():  # pragma: no cover
     with open(src, 'r', encoding="utf-8") as inn, open(dst, 'w', encoding="utf-8") as out:
         copy = False
         fuer line in inn:
-            if '<section id="idle">' in line: copy = True
-            if '<div class="clearer">' in line: break
-            if copy: out.write(line.strip() + '\n')
+            wenn '<section id="idle">' in line: copy = True
+            wenn '<div class="clearer">' in line: break
+            wenn copy: out.write(line.strip() + '\n')
 
     print(f'{src} copied to {dst}')
 
@@ -283,13 +283,13 @@ def copy_strip():  # pragma: no cover
 def show_idlehelp(parent):
     "Create HelpWindow; called from Idle Help event handler."
     filename = join(abspath(dirname(__file__)), 'help.html')
-    if not isfile(filename):  # pragma: no cover
+    wenn not isfile(filename):  # pragma: no cover
         # Try copy_strip, present message.
         return
     return HelpWindow(parent, filename, 'IDLE Doc (%s)' % python_version())
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     from unittest import main
     main('idlelib.idle_test.test_help', verbosity=2, exit=False)
 

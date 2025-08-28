@@ -106,5 +106,5 @@ klasse ColorsysTest(unittest.TestCase):
             self.assertTripleEqual(yiq, colorsys.rgb_to_yiq(*rgb))
             self.assertTripleEqual(rgb, colorsys.yiq_to_rgb(*yiq))
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

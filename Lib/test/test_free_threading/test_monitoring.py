@@ -31,7 +31,7 @@ klasse InstrumentationMultiThreadedMixin:
         """Fibonacci function which also calls a bunch of random functions"""
         fuer func in funcs:
             func()
-        if n < 2:
+        wenn n < 2:
             return n
         return self.work(n - 1, funcs) + self.work(n - 2, funcs)
 
@@ -65,11 +65,11 @@ klasse InstrumentationMultiThreadedMixin:
         while True:
             any_alive = False
             fuer t in threads:
-                if t.is_alive():
+                wenn t.is_alive():
                     any_alive = True
                     break
 
-            if not any_alive:
+            wenn not any_alive:
                 break
 
             self.during_threads()
@@ -80,7 +80,7 @@ klasse InstrumentationMultiThreadedMixin:
 klasse MonitoringTestMixin:
     def setUp(self):
         fuer i in range(6):
-            if monitoring.get_tool(i) is None:
+            wenn monitoring.get_tool(i) is None:
                 self.tool_id = i
                 monitoring.use_tool_id(i, self.__class__.__name__)
                 break
@@ -133,11 +133,11 @@ klasse MonitoringMultiThreaded(
         self.assertTrue(self.called)
 
     def during_threads(self):
-        if self.set:
+        wenn self.set:
             monitoring.set_events(
                 self.tool_id, monitoring.events.CALL | monitoring.events.LINE
             )
-        else:
+        sonst:
             monitoring.set_events(self.tool_id, 0)
         self.set = not self.set
 
@@ -161,9 +161,9 @@ klasse SetTraceMultiThreaded(InstrumentationMultiThreadedMixin, TestCase):
         return self.trace_func
 
     def during_threads(self):
-        if self.set:
+        wenn self.set:
             sys.settrace(self.trace_func)
-        else:
+        sonst:
             sys.settrace(None)
         self.set = not self.set
 
@@ -187,9 +187,9 @@ klasse SetProfileMultiThreaded(InstrumentationMultiThreadedMixin, TestCase):
         return self.trace_func
 
     def during_threads(self):
-        if self.set:
+        wenn self.set:
             sys.setprofile(self.trace_func)
-        else:
+        sonst:
             sys.setprofile(None)
         self.set = not self.set
 
@@ -213,9 +213,9 @@ klasse SetProfileAllThreadsMultiThreaded(InstrumentationMultiThreadedMixin, Test
         return self.trace_func
 
     def during_threads(self):
-        if self.set:
+        wenn self.set:
             threading.setprofile_all_threads(self.trace_func)
-        else:
+        sonst:
             threading.setprofile_all_threads(None)
         self.set = not self.set
 
@@ -479,5 +479,5 @@ klasse MonitoringMisc(MonitoringTestMixin, TestCase):
         t.join()
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

@@ -7,7 +7,7 @@ from textwrap import dedent
 from test.support import os_helper, requires_resource
 from test.support.os_helper import TESTFN, TESTFN_ASCII
 
-if sys.platform != "win32":
+wenn sys.platform != "win32":
     raise unittest.SkipTest("windows related tests")
 
 import _winapi
@@ -46,7 +46,7 @@ klasse TestFileOperations(unittest.TestCase):
             h = None
             os.close(fd)
         finally:
-            if h:
+            wenn h:
                 _winapi.CloseHandle(h)
 
     def test_get_osfhandle(self):
@@ -116,5 +116,5 @@ klasse TestOther(unittest.TestCase):
             pass
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

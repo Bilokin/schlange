@@ -86,7 +86,7 @@ klasse TestParserBase:
                 self.assertIsInstance(msg, Message)
 
 # Play some games to get nice output in subTest.  This code could be clearer
-# if staticmethod supported __name__.
+# wenn staticmethod supported __name__.
 
 def message_from_file(s, *args, **kw):
     f = io.StringIO(s)
@@ -106,5 +106,5 @@ klasse TestBytesParser(TestParserBase, TestEmailBase):
     parsers = (message_from_bytes, message_from_binary_file)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

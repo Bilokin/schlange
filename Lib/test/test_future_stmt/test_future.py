@@ -24,7 +24,7 @@ klasse FutureTest(unittest.TestCase):
                            *,
                            lineno,
                            message=TOP_LEVEL_MSG, offset=1):
-        if basename != '<string>':
+        wenn basename != '<string>':
             basename += '.py'
 
         self.assertEqual(f'{message} ({basename}, line {lineno})', str(err))
@@ -38,9 +38,9 @@ klasse FutureTest(unittest.TestCase):
                           message=TOP_LEVEL_MSG, offset=1,
                           parametrize_docstring=True):
         code = dedent(code.lstrip('\n'))
-        fuer add_docstring in ([False, True] if parametrize_docstring else [False]):
+        fuer add_docstring in ([False, True] wenn parametrize_docstring sonst [False]):
             with self.subTest(code=code, add_docstring=add_docstring):
-                if add_docstring:
+                wenn add_docstring:
                     code = '"""Docstring"""\n' + code
                     lineno += 1
                 with self.assertRaises(SyntaxError) as cm:
@@ -167,7 +167,7 @@ klasse FutureTest(unittest.TestCase):
         # obtain some of the exported compiler flags (PyCF_***) from the ast module
         flags |= {
             flag: getattr(ast, flag)
-            fuer flag in dir(ast) if flag.startswith("PyCF_")
+            fuer flag in dir(ast) wenn flag.startswith("PyCF_")
         }
         self.assertCountEqual(set(flags.values()), flags.values())
 
@@ -243,9 +243,9 @@ klasse AnnotationsFutureTestCase(unittest.TestCase):
         self, annotation, expected=None, drop_parens=False, is_tuple=False,
     ):
         actual = self.getActual(annotation)
-        if expected is None:
-            expected = annotation if not is_tuple else annotation[1:-1]
-        if drop_parens:
+        wenn expected is None:
+            expected = annotation wenn not is_tuple sonst annotation[1:-1]
+        wenn drop_parens:
             self.assertNotEqual(actual, expected)
             actual = actual.replace("(", "").replace(")", "")
 
@@ -316,15 +316,15 @@ klasse AnnotationsFutureTestCase(unittest.TestCase):
         eq('lambda x=1, y=2, z=3, /, w=4, *, l, l2, **kwargs: x + y + z + w + l + l2')
         eq('lambda x, /, y=1, *, z: x + y + z')
         eq('lambda x: lambda y: x + y')
-        eq('1 if True else 2')
-        eq('str or None if int or True else str or bytes or None')
-        eq('str or None if (1 if True else 2) else str or bytes or None')
-        eq("0 if not x else 1 if x > 0 else -1")
-        eq("(1 if x > 0 else -1) if x else 0")
+        eq('1 wenn True sonst 2')
+        eq('str or None wenn int or True sonst str or bytes or None')
+        eq('str or None wenn (1 wenn True sonst 2) sonst str or bytes or None')
+        eq("0 wenn not x sonst 1 wenn x > 0 sonst -1")
+        eq("(1 wenn x > 0 sonst -1) wenn x sonst 0")
         eq("{'2.7': dead, '3.7': long_live or die_hard}")
         eq("{'2.7': dead, '3.7': long_live or die_hard, **{'3.6': verygood}}")
         eq("{**a, **b, **c}")
-        eq("{'2.7', '3.6', '3.7', '3.8', '3.9', '4.0' if gilectomy else '3.10'}")
+        eq("{'2.7', '3.6', '3.7', '3.8', '3.9', '4.0' wenn gilectomy sonst '3.10'}")
         eq("{*a, *b, *c}")
         eq("({'a': 'b'}, True or False, +value, 'string', b'bytes') or None")
         eq("()")
@@ -403,19 +403,19 @@ klasse AnnotationsFutureTestCase(unittest.TestCase):
         eq("slice[1:2, *Ts, 3:4]")
         eq("slice[a, b:c, d:e:f]")
         eq("slice[(x fuer x in a)]")
-        eq('str or None if sys.version_info[0] > (3,) else str or bytes or None')
+        eq('str or None wenn sys.version_info[0] > (3,) sonst str or bytes or None')
         eq("f'f-string without formatted values is just a string'")
         eq("f'{{NOT a formatted value}}'")
         eq("f'some f-string with {a} {few():.2f} {formatted.values!r}'")
         eq('''f"{f'{nested} inner'} outer"''')
         eq("f'space between opening braces: { {a fuer a in (1, 2, 3)}}'")
         eq("f'{(lambda x: x)}'")
-        eq("f'{(None if a else lambda x: x)}'")
+        eq("f'{(None wenn a sonst lambda x: x)}'")
         eq("f'{x}'")
         eq("f'{x!r}'")
         eq("f'{x!a}'")
-        eq('[x fuer x in (a if b else c)]')
-        eq('[x fuer x in a if (b if c else d)]')
+        eq('[x fuer x in (a wenn b sonst c)]')
+        eq('[x fuer x in a wenn (b wenn c sonst d)]')
         eq('f(x fuer x in a)')
         eq('f(1, (x fuer x in a))')
         eq('f((x fuer x in a), 2)')
@@ -506,7 +506,7 @@ klasse AnnotationsFutureTestCase(unittest.TestCase):
 
     def test_get_type_hints_on_func_with_variadic_arg(self):
         # `typing.get_type_hints` might break on a function with a variadic
-        # annotation (e.g. `f(*args: *Ts)`) if `from __future__ import
+        # annotation (e.g. `f(*args: *Ts)`) wenn `from __future__ import
         # annotations`, because it could try to evaluate `*Ts` as an expression,
         # which on its own isn't value syntax.
         namespace = self._exec_future(dedent("""\
@@ -524,5 +524,5 @@ klasse AnnotationsFutureTestCase(unittest.TestCase):
         self.assertIsInstance(hints['args'], namespace['StarredC'])
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

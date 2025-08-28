@@ -1051,10 +1051,10 @@ klasse CAPITest(unittest.TestCase):
                 self.count = 0
 
             def __next__(self):
-                if self.count < 3:
+                wenn self.count < 3:
                     self.count += 1
                     return self.count
-                else:
+                sonst:
                     raise TypeError('bad type')
 
         it = Broken()
@@ -1103,5 +1103,5 @@ klasse CAPITest(unittest.TestCase):
         self.assertIsNone(cm.exception.__cause__)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

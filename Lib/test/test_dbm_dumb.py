@@ -52,7 +52,7 @@ klasse DumbDBMTestCase(unittest.TestCase):
             os.umask(old_umask)
 
         expected_mode = 0o635
-        if os.name != 'posix':
+        wenn os.name != 'posix':
             # Windows only supports setting the read-only attribute.
             # This shouldn't fail, but doesn't work like Unix either.
             expected_mode = 0o666
@@ -131,7 +131,7 @@ klasse DumbDBMTestCase(unittest.TestCase):
             self.assertEqual(f[b'1'], b'a')
 
     def test_line_endings(self):
-        # test fuer bug #1172763: dumbdbm would die if the line endings
+        # test fuer bug #1172763: dumbdbm would die wenn the line endings
         # weren't what was expected.
         with contextlib.closing(dumbdbm.open(_fname)) as f:
             f[b'1'] = b'hello'
@@ -140,9 +140,9 @@ klasse DumbDBMTestCase(unittest.TestCase):
         # Mangle the file by changing the line separator to Windows or Unix
         with io.open(_fname + '.dir', 'rb') as file:
             data = file.read()
-        if os.linesep == '\n':
+        wenn os.linesep == '\n':
             data = data.replace(b'\n', b'\r\n')
-        else:
+        sonst:
             data = data.replace(b'\r\n', b'\n')
         with io.open(_fname + '.dir', 'wb') as file:
             file.write(data)
@@ -177,11 +177,11 @@ klasse DumbDBMTestCase(unittest.TestCase):
             with contextlib.closing(dumbdbm.open(_fname)) as f:
                 fuer dummy in range(100):
                     k = random.choice('abcdefghijklm')
-                    if random.random() < 0.2:
-                        if k in d:
+                    wenn random.random() < 0.2:
+                        wenn k in d:
                             del d[k]
                             del f[k]
-                    else:
+                    sonst:
                         v = random.choice((b'a', b'b', b'c')) * random.randrange(10000)
                         d[k] = v
                         f[k] = v
@@ -384,5 +384,5 @@ klasse DumbDBMTestCase(unittest.TestCase):
         _delete_files()
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

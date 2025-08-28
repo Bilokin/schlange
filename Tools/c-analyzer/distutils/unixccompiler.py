@@ -24,7 +24,7 @@ from distutils.errors import DistutilsExecError, CompileError
 #     Makefile and live with it.  Is this adequate?  If not, we might
 #     have to have a bunch of subclasses GNUCCompiler, SGICCompiler,
 #     SunCCompiler, and I suspect down that road lies madness.
-#   * even if we don't know a warning flag from an optimization flag,
+#   * even wenn we don't know a warning flag from an optimization flag,
 #     we need some way fuer outsiders to feed preprocessor/compiler/linker
 #     flags in to us -- eg. a sysadmin might want to mandate certain flags
 #     via a site config file, or a user might want to set something for
@@ -55,7 +55,7 @@ klasse UnixCCompiler(CCompiler):
                    'ranlib'       : None,
                   }
 
-    if sys.platform[:6] == "darwin":
+    wenn sys.platform[:6] == "darwin":
         executables['ranlib'] = ["ranlib"]
 
     # Needed fuer the filename generation methods provided by the base
@@ -72,7 +72,7 @@ klasse UnixCCompiler(CCompiler):
     xcode_stub_lib_extension = ".tbd"
     static_lib_format = shared_lib_format = dylib_lib_format = "lib%s%s"
     xcode_stub_lib_format = dylib_lib_format
-    if sys.platform == "cygwin":
+    wenn sys.platform == "cygwin":
         exe_extension = ".exe"
 
     def preprocess(self, source, output_file=None, macros=None,
@@ -81,11 +81,11 @@ klasse UnixCCompiler(CCompiler):
         ignore, macros, include_dirs = fixed_args
         pp_opts = gen_preprocess_options(macros, include_dirs)
         pp_args = self.preprocessor + pp_opts
-        if output_file:
+        wenn output_file:
             pp_args.extend(['-o', output_file])
-        if extra_preargs:
+        wenn extra_preargs:
             pp_args[:0] = extra_preargs
-        if extra_postargs:
+        wenn extra_postargs:
             pp_args.extend(extra_postargs)
         pp_args.append(source)
 
@@ -93,8 +93,8 @@ klasse UnixCCompiler(CCompiler):
         # generating output to stdout, or there's a target output file and
         # the source file is newer than the target (or the target doesn't
         # exist).
-        if self.force or output_file is None or newer(source, output_file):
-            if output_file:
+        wenn self.force or output_file is None or newer(source, output_file):
+            wenn output_file:
                 self.mkpath(os.path.dirname(output_file))
             try:
                 self.spawn(pp_args)

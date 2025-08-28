@@ -56,7 +56,7 @@ klasse TestReader(ScreenEqualMixin, TestCase):
         self.assert_screen_equal(
             reader,
             (
-            ">>> if so\\\n"
+            ">>> wenn so\\\n"
             "me_condit\\\n"
             "ion:\n"
             "...     s\\\n"
@@ -200,7 +200,7 @@ klasse TestReader(ScreenEqualMixin, TestCase):
                 Event(evt="key", data="down", raw=bytearray(b"\x1bOB")),
                 Event(evt="key", data="\x05", raw=bytearray(b"\x1bO5")),
                 # a double new line in-block should terminate the block
-                # even if its followed by whitespace
+                # even wenn its followed by whitespace
                 Event(evt="key", data="\n", raw=bytearray(b"\n")),
                 Event(evt="key", data="\n", raw=bytearray(b"\n")),
             ],
@@ -266,7 +266,7 @@ klasse TestReader(ScreenEqualMixin, TestCase):
             # after the refresh, they are gone
             self.assertEqual(len(reader.screen), 2)
             self.assert_screen_equal(reader, code, clean=True)
-        else:
+        sonst:
             self.fail("KeyboardInterrupt not raised.")
 
     def test_prompt_length(self):

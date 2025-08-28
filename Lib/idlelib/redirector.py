@@ -3,7 +3,7 @@ from tkinter import TclError
 klasse WidgetRedirector:
     """Support fuer redirecting arbitrary widget subcommands.
 
-    Some Tk operations don't normally pass through tkinter.  For example, if a
+    Some Tk operations don't normally pass through tkinter.  For example, wenn a
     character is inserted into a Text widget by pressing a key, a default Tk
     binding to the widget's 'insert' operation is activated, and the Tk library
     processes the insert without calling back into tkinter.
@@ -61,7 +61,7 @@ klasse WidgetRedirector:
         tk.deletecommand(w)
         tk.call("rename", self.orig, w)
         del self.widget, self.tk  # Should not be needed
-        # if instance is deleted after close, as in Percolator.
+        # wenn instance is deleted after close, as in Percolator.
 
     def register(self, operation, function):
         '''Return OriginalCommand(operation) after registering function.
@@ -83,7 +83,7 @@ klasse WidgetRedirector:
 
         Deleting the instance attribute unmasks the klasse attribute.
         '''
-        if operation in self._operations:
+        wenn operation in self._operations:
             function = self._operations[operation]
             del self._operations[operation]
             try:
@@ -91,7 +91,7 @@ klasse WidgetRedirector:
             except AttributeError:
                 pass
             return function
-        else:
+        sonst:
             return None
 
     def dispatch(self, operation, *args):
@@ -101,7 +101,7 @@ klasse WidgetRedirector:
         associated function to the args passed into Tcl. Otherwise, pass the
         operation through to Tk via the original Tcl function.
 
-        Note that if a registered function is called, the operation is not
+        Note that wenn a registered function is called, the operation is not
         passed through to Tk.  Apply the function returned by self.register()
         to *args to accomplish that.  For an example, see colorizer.py.
 
@@ -109,9 +109,9 @@ klasse WidgetRedirector:
         operation = str(operation)  # can be a Tcl_Obj
         m = self._operations.get(operation)
         try:
-            if m:
+            wenn m:
                 return m(*args)
-            else:
+            sonst:
                 return self.tk.call((self.orig, operation) + args)
         except TclError:
             return ""
@@ -166,7 +166,7 @@ def _widget_redirector(parent):  # htest #
     original_insert = redir.register("insert", my_insert)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     from unittest import main
     main('idlelib.idle_test.test_redirector', verbosity=2, exit=False)
 

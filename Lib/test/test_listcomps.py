@@ -12,7 +12,7 @@ doctests = """
 
 Test simple loop with conditional
 
-    >>> sum([i*i fuer i in range(100) if i&1 == 1])
+    >>> sum([i*i fuer i in range(100) wenn i&1 == 1])
     166650
 
 Test simple nesting
@@ -102,14 +102,14 @@ klasse ListComprehensionTest(unittest.TestCase):
         scopes = scopes or ["module", "class", "function"]
         fuer scope in scopes:
             with self.subTest(scope=scope):
-                if scope == "class":
+                wenn scope == "class":
                     newcode = textwrap.dedent("""
                         klasse _C:
                             {code}
                     """).format(code=textwrap.indent(code, "    "))
                     def get_output(moddict, name):
                         return getattr(moddict["_C"], name)
-                elif scope == "function":
+                sowenn scope == "function":
                     newcode = textwrap.dedent("""
                         def _f():
                             {code}
@@ -118,17 +118,17 @@ klasse ListComprehensionTest(unittest.TestCase):
                     """).format(code=textwrap.indent(code, "    "))
                     def get_output(moddict, name):
                         return moddict["_out"][name]
-                else:
+                sonst:
                     newcode = code
                     def get_output(moddict, name):
                         return moddict[name]
-                newns = ns.copy() if ns else {}
+                newns = ns.copy() wenn ns sonst {}
                 try:
                     exec_func(newcode, newns)
                 except raises as e:
                     # We care about e.g. NameError vs UnboundLocalError
                     self.assertIs(type(e), raises)
-                else:
+                sonst:
                     fuer k, v in (outputs or {}).items():
                         self.assertEqual(get_output(newns, k), v, k)
 
@@ -407,7 +407,7 @@ klasse ListComprehensionTest(unittest.TestCase):
 
     def test_unbound_local_after_comprehension(self):
         def f():
-            if False:
+            wenn False:
                 x = 0
             [x fuer x in [1]]
             return x
@@ -519,7 +519,7 @@ klasse ListComprehensionTest(unittest.TestCase):
 
     def test_nested_has_free_var(self):
         code = """
-            items = [a fuer a in [1] if [a fuer _ in [0]]]
+            items = [a fuer a in [1] wenn [a fuer _ in [0]]]
         """
         outputs = {"items": [1]}
         self._check_in_scopes(code, outputs, scopes=["class"])
@@ -527,20 +527,20 @@ klasse ListComprehensionTest(unittest.TestCase):
     def test_nested_free_var_not_bound_in_outer_comp(self):
         code = """
             z = 1
-            items = [a fuer a in [1] if [x fuer x in [1] if z]]
+            items = [a fuer a in [1] wenn [x fuer x in [1] wenn z]]
         """
         self._check_in_scopes(code, {"items": [1]}, scopes=["module", "function"])
         self._check_in_scopes(code, {"items": []}, ns={"z": 0}, scopes=["class"])
 
     def test_nested_free_var_in_iter(self):
         code = """
-            items = [_C fuer _C in [1] fuer [0, 1][[x fuer x in [1] if _C][0]] in [2]]
+            items = [_C fuer _C in [1] fuer [0, 1][[x fuer x in [1] wenn _C][0]] in [2]]
         """
         self._check_in_scopes(code, {"items": [1]})
 
     def test_nested_free_var_in_expr(self):
         code = """
-            items = [(_C, [x fuer x in [1] if _C]) fuer _C in [0, 1]]
+            items = [(_C, [x fuer x in [1] wenn _C]) fuer _C in [0, 1]]
         """
         self._check_in_scopes(code, {"items": [(0, []), (1, [1])]})
 
@@ -558,7 +558,7 @@ klasse ListComprehensionTest(unittest.TestCase):
             d = func()
             assert d is func
             # must use "a" in this scope
-            e = a if False else None
+            e = a wenn False sonst None
         """
         self._check_in_scopes(code, {"c": 1, "e": None})
 
@@ -661,7 +661,7 @@ klasse ListComprehensionTest(unittest.TestCase):
         self._check_in_scopes(code, {"val": 0}, ns={"sys": sys})
 
     def _recursive_replace(self, maybe_code):
-        if not isinstance(maybe_code, types.CodeType):
+        wenn not isinstance(maybe_code, types.CodeType):
             return maybe_code
         return maybe_code.replace(co_consts=tuple(
             self._recursive_replace(c) fuer c in maybe_code.co_consts
@@ -757,5 +757,5 @@ def load_tests(loader, tests, pattern):
     return tests
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

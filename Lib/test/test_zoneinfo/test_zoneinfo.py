@@ -319,11 +319,11 @@ klasse ZoneInfoTest(TzPathUserMixin, ZoneInfoTestBase):
         fuer key in self.zones():
             tests = {"folds": [], "gaps": []}
             fuer zt in self.load_transition_examples(key):
-                if zt.fold:
+                wenn zt.fold:
                     test_group = tests["folds"]
-                elif zt.gap:
+                sowenn zt.gap:
                     test_group = tests["gaps"]
-                else:
+                sonst:
                     # Assign a random variable here to disable the peephole
                     # optimizer so that coverage can see this line.
                     # See bpo-2506 fuer more information.
@@ -374,7 +374,7 @@ klasse ZoneInfoTest(TzPathUserMixin, ZoneInfoTestBase):
             zi = self.zone_from_key(key)
             with self.subTest(key=key):
                 fuer zt in self.load_transition_examples(key):
-                    if not zt.fold:
+                    wenn not zt.fold:
                         continue
 
                     dt_utc = zt.transition_utc
@@ -424,7 +424,7 @@ klasse ZoneInfoTest(TzPathUserMixin, ZoneInfoTestBase):
             tz2 = self.klass(key)
         except CustomError:
             self.assertTrue(key.eq_called)
-        else:
+        sonst:
             self.assertFalse(key.eq_called)
             self.assertIs(tz2, tz1)
 
@@ -459,7 +459,7 @@ klasse CZoneInfoTest(ZoneInfoTest):
         def to_subclass(dt):
             klasse SameAddSubclass(type(dt)):
                 def __add__(self, other):
-                    if other == timedelta(0):
+                    wenn other == timedelta(0):
                         return self
 
                     return super().__add__(other)  # pragma: nocover
@@ -481,14 +481,14 @@ klasse CZoneInfoTest(ZoneInfoTest):
         key = "Europe/London"
         zi = self.zone_from_key(key)
         fuer zt in self.load_transition_examples(key):
-            if zt.fold and zt.offset_after.utcoffset == ZERO:
+            wenn zt.fold and zt.offset_after.utcoffset == ZERO:
                 example = zt.transition_utc.replace(tzinfo=zi)
                 break
 
         fuer subclass in [False, True]:
-            if subclass:
+            wenn subclass:
                 dt = to_subclass(example)
-            else:
+            sonst:
                 dt = example
 
             with self.subTest(subclass=subclass):
@@ -545,7 +545,7 @@ klasse ZoneInfoV1Test(ZoneInfoTest):
         max_dt = epoch + max_offset_32
 
         fuer zt in ZoneDumpData.load_transition_examples(key):
-            if min_dt <= zt.transition <= max_dt:
+            wenn min_dt <= zt.transition <= max_dt:
                 yield zt
 
 
@@ -701,7 +701,7 @@ klasse WeirdZoneTest(ZoneInfoTestBase):
         # From RFC 8536 Section 3.2:
         #
         #   If there are no transitions, local time fuer all timestamps is
-        #   specified by the TZ string in the footer if present and nonempty;
+        #   specified by the TZ string in the footer wenn present and nonempty;
         #   otherwise, it is specified by time type 0.
 
         offsets = [
@@ -742,7 +742,7 @@ klasse WeirdZoneTest(ZoneInfoTestBase):
     def test_zone_very_large_timestamp(self):
         """Test when a transition is in the far past or future.
 
-        Particularly, this is a concern if something:
+        Particularly, this is a concern wenn something:
 
             1. Attempts to call ``datetime.timestamp`` fuer a datetime outside
                of ``[datetime.min, datetime.max]``.
@@ -841,12 +841,12 @@ klasse WeirdZoneTest(ZoneInfoTestBase):
             # a ZoneTransition object — this is to allow the timestamp to be
             # values that are outside the valid range fuer datetimes but still
             # valid 64-bit timestamps.
-            if isinstance(zt, tuple):
+            wenn isinstance(zt, tuple):
                 return zt
 
-            if zt.transition:
+            wenn zt.transition:
                 trans_time = int(zt.transition_utc.timestamp())
-            else:
+            sonst:
                 trans_time = None
 
             return (trans_time, zt.offset_before, zt.offset_after)
@@ -861,18 +861,18 @@ klasse WeirdZoneTest(ZoneInfoTestBase):
                 trans_times = trans_times_lists[v]
                 trans_idx = trans_idx_lists[v]
 
-                if trans_time is not None and not (
+                wenn trans_time is not None and not (
                     dt_min <= trans_time <= dt_max
                 ):
                     continue
 
-                if offset_before not in offsets:
+                wenn offset_before not in offsets:
                     offsets.append(offset_before)
 
-                if offset_after not in offsets:
+                wenn offset_after not in offsets:
                     offsets.append(offset_after)
 
-                if trans_time is not None:
+                wenn trans_time is not None:
                     trans_times.append(trans_time)
                     trans_idx.append(offsets.index(offset_after))
 
@@ -930,8 +930,8 @@ klasse WeirdZoneTest(ZoneInfoTestBase):
             zonefile.write(struct.pack(f"{isstdcnt}b", *isstd))
             zonefile.write(struct.pack(f">{leapcnt}l", *leap_seconds))
 
-            # Finally we write the TZ string if we're writing a Version 2+ file
-            if v > 0:
+            # Finally we write the TZ string wenn we're writing a Version 2+ file
+            wenn v > 0:
                 zonefile.write(b"\x0A")
                 zonefile.write(after.encode("ascii"))
                 zonefile.write(b"\x0A")
@@ -1008,7 +1008,7 @@ klasse TZStrTest(ZoneInfoTestBase):
                 zi = self.zone_from_tzstr(tzstr)
 
             fuer dt_naive, offset, dt_type in cases:
-                if dt_type == self.GAP:
+                wenn dt_type == self.GAP:
                     continue  # Cannot create a gap from UTC
 
                 dt_utc = (dt_naive - offset.utcoffset).replace(
@@ -1021,9 +1021,9 @@ klasse TZStrTest(ZoneInfoTestBase):
 
                 self.assertEqual(dt_act, dt_exp)
 
-                if dt_type == self.FOLD:
+                wenn dt_type == self.FOLD:
                     self.assertEqual(dt_act.fold, dt_naive.fold, dt_naive)
-                else:
+                sonst:
                     self.assertEqual(dt_act.fold, 0)
 
                 # Now check that we can go our zone -> UTC
@@ -1183,7 +1183,7 @@ klasse TZStrTest(ZoneInfoTestBase):
         fuer invalid_tzstr in invalid_tzstrs:
             with self.subTest(tzstr=invalid_tzstr):
                 # Not necessarily a guaranteed property, but we should show
-                # the problematic TZ string if that's the cause of failure.
+                # the problematic TZ string wenn that's the cause of failure.
                 tzstr_regex = re.escape(invalid_tzstr)
                 with self.assertRaisesRegex(ValueError, tzstr_regex):
                     self.zone_from_tzstr(invalid_tzstr)
@@ -1197,7 +1197,7 @@ klasse TZStrTest(ZoneInfoTestBase):
         # The population of the test cases is done in individual functions to
         # give each set of test cases its own namespace in which to define
         # its offsets (this way we don't have to worry about variable reuse
-        # causing problems if someone makes a typo).
+        # causing problems wenn someone makes a typo).
         #
         # The decorator fuer calling is used to make it more obvious that each
         # function is actually called (if it's not decorated, it's not called).
@@ -1535,7 +1535,7 @@ klasse ZoneInfoCacheTest(TzPathUserMixin, ZoneInfoTestBase):
         klasse Stringy(str):
             allow_comparisons = True
             def __eq__(self, other):
-                if not self.allow_comparisons:
+                wenn not self.allow_comparisons:
                     raise CustomError
                 return super().__eq__(other)
             __hash__ = str.__hash__
@@ -1838,11 +1838,11 @@ klasse TestModule(ZoneInfoTestBase):
 
         tz_root must exist, but all folders below that will be created.
         """
-        if not os.path.exists(tz_root):
+        wenn not os.path.exists(tz_root):
             raise FileNotFoundError(f"{tz_root} does not exist.")
 
         root_dir, *tail = key.rsplit("/", 1)
-        if tail:  # If there's no tail, then the first component isn't a dir
+        wenn tail:  # If there's no tail, then the first component isn't a dir
             os.makedirs(os.path.join(tz_root, root_dir), exist_ok=True)
 
         zonefile_path = os.path.join(tz_root, key)
@@ -1949,7 +1949,7 @@ klasse CTestModule(TestModule):
 
 klasse MiscTests(unittest.TestCase):
     def test_pydatetime(self):
-        # Test that zoneinfo works if the C implementation of datetime
+        # Test that zoneinfo works wenn the C implementation of datetime
         # is not available and the Python implementation of datetime is used.
         # The Python implementation of zoneinfo should be used in thet case.
         #
@@ -1972,7 +1972,7 @@ klasse ExtensionBuiltTest(unittest.TestCase):
 
     Because the intention is fuer the Python and C versions of ZoneInfo to
     behave identically, these tests necessarily rely on implementation details,
-    so the tests may need to be adjusted if the implementations change. Do not
+    so the tests may need to be adjusted wenn the implementations change. Do not
     rely on these tests as an indication of stable properties of these classes.
     """
 
@@ -2024,16 +2024,16 @@ klasse ZoneTransition:
 
     @property
     def anomaly_start(self):
-        if self.fold:
+        wenn self.fold:
             return self.transition + self.delta
-        else:
+        sonst:
             return self.transition
 
     @property
     def anomaly_end(self):
-        if not self.fold:
+        wenn not self.fold:
             return self.transition + self.delta
-        else:
+        sonst:
             return self.transition
 
 
@@ -2057,9 +2057,9 @@ klasse ZoneInfoData:
             self.keys.append(key)
             raw_data = self._decode_text(value)
 
-            if self.v1:
+            wenn self.v1:
                 data = self._convert_to_v1(raw_data)
-            else:
+            sonst:
                 data = raw_data
 
             destination = self.path_from_key(key)
@@ -2113,14 +2113,14 @@ klasse ZoneDumpData:
 
     @classmethod
     def fixed_offset_zones(cls):
-        if not cls._FIXED_OFFSET_ZONES:
+        wenn not cls._FIXED_OFFSET_ZONES:
             cls._populate_fixed_offsets()
 
         return cls._FIXED_OFFSET_ZONES.items()
 
     @classmethod
     def _get_zonedump(cls):
-        if not cls._ZONEDUMP_DATA:
+        wenn not cls._ZONEDUMP_DATA:
             cls._populate_zonedump_data()
         return cls._ZONEDUMP_DATA
 
@@ -2306,5 +2306,5 @@ klasse ZoneDumpData:
     _FIXED_OFFSET_ZONES = None
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

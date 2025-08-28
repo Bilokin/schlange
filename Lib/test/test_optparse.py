@@ -94,20 +94,20 @@ Args were %(args)s.""" % locals ())
           kwargs -- keyword arguments to `func`
           expected_exception -- exception that should be raised
           expected_message -- expected exception message (or pattern
-            if a compiled regex object)
+            wenn a compiled regex object)
 
         Returns the exception raised fuer further testing.
         """
-        if args is None:
+        wenn args is None:
             args = ()
-        if kwargs is None:
+        wenn kwargs is None:
             kwargs = {}
 
         try:
             func(*args, **kwargs)
         except expected_exception as err:
             actual_message = str(err)
-            if isinstance(expected_message, re.Pattern):
+            wenn isinstance(expected_message, re.Pattern):
                 self.assertTrue(expected_message.search(actual_message),
                              """\
 expected exception message pattern:
@@ -115,7 +115,7 @@ expected exception message pattern:
 actual exception message:
 '''%s'''
 """ % (expected_message.pattern, actual_message))
-            else:
+            sonst:
                 self.assertEqual(actual_message,
                                  expected_message,
                                  """\
@@ -126,7 +126,7 @@ actual exception message:
 """ % (expected_message, actual_message))
 
             return err
-        else:
+        sonst:
             self.fail("""expected exception %(expected_exception)s not raised
 called %(func)r
 with args %(args)r
@@ -145,7 +145,7 @@ and kwargs %(kwargs)r
             self.parser.parse_args(cmdline_args)
         except InterceptedError as err:
             self.assertEqual(err.error_message, expected_output)
-        else:
+        sonst:
             self.assertFalse("expected parse failure")
 
     def assertOutput(self,
@@ -169,12 +169,12 @@ and kwargs %(kwargs)r
                 "expected output to be an ordinary string, not %r"
                 % type(output))
 
-            if output != expected_output:
+            wenn output != expected_output:
                 self.fail("expected: \n'''\n" + expected_output +
                           "'''\nbut got \n'''\n" + output + "'''")
             self.assertEqual(err.exit_status, expected_status)
             self.assertEqual(err.exit_message, expected_error)
-        else:
+        sonst:
             self.assertFalse("expected parser.exit()")
 
     def assertTypeError(self, func, expected_message, *args):
@@ -183,7 +183,7 @@ and kwargs %(kwargs)r
 
     def assertHelp(self, parser, expected_help):
         actual_help = parser.format_help()
-        if actual_help != expected_help:
+        wenn actual_help != expected_help:
             raise self.failureException(
                 'help text failure; expected:\n"' +
                 expected_help + '"; got:\n"' +
@@ -287,7 +287,7 @@ klasse TestOptionChecks(BaseTest):
 
     def test_callback_args_no_tuple(self):
         self.assertOptionError(
-            "option -b: callback_args, if supplied, "
+            "option -b: callback_args, wenn supplied, "
             "must be a tuple: not 'foo'",
             ["-b"], {'action': 'callback',
                      'callback': self.dummy,
@@ -295,7 +295,7 @@ klasse TestOptionChecks(BaseTest):
 
     def test_callback_kwargs_no_dict(self):
         self.assertOptionError(
-            "option -b: callback_kwargs, if supplied, "
+            "option -b: callback_kwargs, wenn supplied, "
             "must be a dict: not 'foo'",
             ["-b"], {'action': 'callback',
                      'callback': self.dummy,
@@ -455,9 +455,9 @@ _time_units = { 's' : 1, 'm' : 60, 'h' : 60*60, 'd' : 60*60*24 }
 
 def _check_duration(option, opt, value):
     try:
-        if value[-1].isdigit():
+        wenn value[-1].isdigit():
             return int(value)
-        else:
+        sonst:
             return int(value[:-1]) * _time_units[value[-1]]
     except (ValueError, IndexError):
         raise OptionValueError(
@@ -1023,16 +1023,16 @@ klasse TestExtendAddTypes(BaseTest):
         self.parser.add_option("-f", "--file", type="file", dest="file")
 
     def tearDown(self):
-        if os.path.isdir(os_helper.TESTFN):
+        wenn os.path.isdir(os_helper.TESTFN):
             os.rmdir(os_helper.TESTFN)
-        elif os.path.isfile(os_helper.TESTFN):
+        sowenn os.path.isfile(os_helper.TESTFN):
             os.unlink(os_helper.TESTFN)
 
     klasse MyOption (Option):
         def check_file(option, opt, value):
-            if not os.path.exists(value):
+            wenn not os.path.exists(value):
                 raise OptionValueError("%s: file does not exist" % value)
-            elif not os.path.isfile(value):
+            sowenn not os.path.isfile(value):
                 raise OptionValueError("%s: not a regular file" % value)
             return value
 
@@ -1070,10 +1070,10 @@ klasse TestExtendAddActions(BaseTest):
         TYPED_ACTIONS = Option.TYPED_ACTIONS + ("extend",)
 
         def take_action(self, action, dest, opt, value, values, parser):
-            if action == "extend":
+            wenn action == "extend":
                 lvalue = value.split(",")
                 values.ensure_value(dest, []).extend(lvalue)
-            else:
+            sonst:
                 Option.take_action(self, action, dest, opt, parser, value,
                                    values)
 
@@ -1104,7 +1104,7 @@ klasse TestCallback(BaseTest):
         self.parser = OptionParser(option_list=options)
 
     def process_opt(self, option, opt, value, parser_):
-        if opt == "-x":
+        wenn opt == "-x":
             self.assertEqual(option._short_opts, ["-x"])
             self.assertEqual(option._long_opts, [])
             self.assertTrue(parser_ is self.parser)
@@ -1112,7 +1112,7 @@ klasse TestCallback(BaseTest):
             self.assertEqual(vars(parser_.values), {'filename': None})
 
             parser_.values.x = 42
-        elif opt == "--file":
+        sowenn opt == "--file":
             self.assertEqual(option._short_opts, ["-f"])
             self.assertEqual(option._long_opts, ["--file"])
             self.assertTrue(parser_ is self.parser)
@@ -1120,7 +1120,7 @@ klasse TestCallback(BaseTest):
             self.assertEqual(vars(parser_.values), {'filename': None, 'x': 42})
 
             setattr(parser_.values, option.dest, value)
-        else:
+        sonst:
             self.fail("Unknown option %r in process_opt." % opt)
 
     def test_callback(self):
@@ -1155,9 +1155,9 @@ klasse TestCallbackExtraArgs(BaseTest):
         self.assertEqual(len, 3)
         self.assertTrue(type is int)
 
-        if opt == "-p":
+        wenn opt == "-p":
             self.assertEqual(value, "1,2,3")
-        elif opt == "--point":
+        sowenn opt == "--point":
             self.assertEqual(value, "4,5,6")
 
         value = tuple(map(type, value.split(",")))
@@ -1180,7 +1180,7 @@ klasse TestCallbackMeddleArgs(BaseTest):
         # option is -3, -5, etc.
         nargs = int(opt[1:])
         rargs = parser_.rargs
-        if len(rargs) < nargs:
+        wenn len(rargs) < nargs:
             self.fail("Expected %d arguments fuer %s option." % (nargs, opt))
         dest = parser_.values.ensure_value(option.dest, [])
         dest.append(tuple(rargs[0:nargs]))
@@ -1206,13 +1206,13 @@ klasse TestCallbackManyArgs(BaseTest):
         self.parser = OptionParser(option_list=options)
 
     def process_many(self, option, opt, value, parser_):
-        if opt == "-a":
+        wenn opt == "-a":
             self.assertEqual(value, ("foo", "bar"))
-        elif opt == "--apple":
+        sowenn opt == "--apple":
             self.assertEqual(value, ("ding", "dong"))
-        elif opt == "-b":
+        sowenn opt == "-b":
             self.assertEqual(value, (1, 2, 3))
-        elif opt == "--bob":
+        sowenn opt == "--bob":
             self.assertEqual(value, (-666, 42, 0))
 
     def test_many_args(self):
@@ -1249,10 +1249,10 @@ klasse TestCallbackVarArgs(BaseTest):
         rargs = parser.rargs
         while rargs:
             arg = rargs[0]
-            if ((arg[:2] == "--" and len(arg) > 2) or
+            wenn ((arg[:2] == "--" and len(arg) > 2) or
                 (arg[:1] == "-" and len(arg) > 1 and arg[1] != "-")):
                 break
-            else:
+            sonst:
                 value.append(arg)
                 del rargs[0]
         setattr(parser.values, option.dest, value)
@@ -1666,9 +1666,9 @@ klasse TestTranslations(TestTranslationsBase):
         self.assertMsgidsEqual(optparse)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     # To regenerate translation snapshots
-    if len(sys.argv) > 1 and sys.argv[1] == '--snapshot-update':
+    wenn len(sys.argv) > 1 and sys.argv[1] == '--snapshot-update':
         update_translation_snapshots(optparse)
         sys.exit(0)
     unittest.main()

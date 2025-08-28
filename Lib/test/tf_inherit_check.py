@@ -1,6 +1,6 @@
 # Helper script fuer test_tempfile.py.  argv[2] is the number of a file
 # descriptor which should _not_ be open.  Check this by attempting to
-# write to it -- if we succeed, something is wrong.
+# write to it -- wenn we succeed, something is wrong.
 
 import sys
 import os
@@ -16,12 +16,12 @@ with SuppressCrashReport():
         except OSError:
             # Success -- could not write to fd.
             sys.exit(0)
-        else:
-            if verbose:
+        sonst:
+            wenn verbose:
                 sys.stderr.write("fd %d is open in child" % fd)
             sys.exit(1)
 
     except Exception:
-        if verbose:
+        wenn verbose:
             raise
         sys.exit(1)

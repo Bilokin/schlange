@@ -10,7 +10,7 @@ from test.test_asyncio import utils as test_utils
 from test import support
 from test.support import socket_helper
 
-if socket_helper.tcp_blackhole():
+wenn socket_helper.tcp_blackhole():
     raise unittest.SkipTest('Not relevant to ProactorEventLoop')
 
 
@@ -26,19 +26,19 @@ klasse MyProto(asyncio.Protocol):
         self.transport = None
         self.state = 'INITIAL'
         self.nbytes = 0
-        if loop is not None:
+        wenn loop is not None:
             self.connected = loop.create_future()
             self.done = loop.create_future()
 
     def _assert_state(self, *expected):
-        if self.state not in expected:
+        wenn self.state not in expected:
             raise AssertionError(f'state: {self.state!r}, expected: {expected!r}')
 
     def connection_made(self, transport):
         self.transport = transport
         self._assert_state('INITIAL')
         self.state = 'CONNECTED'
-        if self.connected:
+        wenn self.connected:
             self.connected.set_result(None)
         transport.write(b'GET / HTTP/1.0\r\nHost: example.com\r\n\r\n')
 
@@ -53,7 +53,7 @@ klasse MyProto(asyncio.Protocol):
     def connection_lost(self, exc):
         self._assert_state('CONNECTED', 'EOF')
         self.state = 'CLOSED'
-        if self.done:
+        wenn self.done:
             self.done.set_result(None)
 
 
@@ -68,8 +68,8 @@ klasse BaseSockTestsMixin:
         super().setUp()
 
     def tearDown(self):
-        # just in case if we have transport close callbacks
-        if not self.loop.is_closed():
+        # just in case wenn we have transport close callbacks
+        wenn not self.loop.is_closed():
             test_utils.run_briefly(self.loop)
 
         self.doCleanups()
@@ -77,9 +77,9 @@ klasse BaseSockTestsMixin:
         super().tearDown()
 
     def _basetest_sock_client_ops(self, httpd, sock):
-        if not isinstance(self.loop, proactor_events.BaseProactorEventLoop):
+        wenn not isinstance(self.loop, proactor_events.BaseProactorEventLoop):
             # in debug mode, socket operations must fail
-            # if the socket is not in blocking mode
+            # wenn the socket is not in blocking mode
             self.loop.set_debug(True)
             sock.setblocking(True)
             with self.assertRaises(ValueError):
@@ -207,7 +207,7 @@ klasse BaseSockTestsMixin:
                 rv = b''
                 while True:
                     buf = await self.loop.sock_recv(server, 8192)
-                    if not buf:
+                    wenn not buf:
                         return rv
                     rv += buf.strip()
             task = asyncio.create_task(recv_all())
@@ -224,7 +224,7 @@ klasse BaseSockTestsMixin:
     # On Linux, a second retry will do. On Windows, the waiting time is
     # unpredictable; and on FreeBSD the socket may never come back
     # because it's a loopback address. Here we'll just retry fuer a few
-    # times, and have to skip the test if it's not working. See also:
+    # times, and have to skip the test wenn it's not working. See also:
     # https://stackoverflow.com/a/54437602/3316267
     # https://lists.freebsd.org/pipermail/freebsd-current/2005-May/049876.html
     async def _basetest_sock_connect_racing(self, listener, sock):
@@ -249,9 +249,9 @@ klasse BaseSockTestsMixin:
 
                 # Retry only fuer this error:
                 # [WinError 10022] An invalid argument was supplied
-                if getattr(e, 'winerror', 0) != 10022:
+                wenn getattr(e, 'winerror', 0) != 10022:
                     break
-            else:
+            sonst:
                 # success
                 return
 
@@ -314,7 +314,7 @@ klasse BaseSockTestsMixin:
 
         while True:
             data = await self.loop.sock_recv(sock, DATA_SIZE)
-            if not data:
+            wenn not data:
                 break
             expected = bytes(islice(checker, len(data)))
             self.assertEqual(data, expected)
@@ -369,7 +369,7 @@ klasse BaseSockTestsMixin:
         while True:
             nbytes = await self.loop.sock_recv_into(sock, buf)
             data = buf[:nbytes]
-            if not data:
+            wenn not data:
                 break
             expected = bytes(islice(checker, len(data)))
             self.assertEqual(data, expected)
@@ -449,8 +449,8 @@ klasse BaseSockTestsMixin:
             self.assertEqual(from_addr, server_address)
 
     def test_sendto_blocking(self):
-        if sys.platform == 'win32':
-            if isinstance(self.loop, asyncio.ProactorEventLoop):
+        wenn sys.platform == 'win32':
+            wenn isinstance(self.loop, asyncio.ProactorEventLoop):
                 raise unittest.SkipTest('Not relevant to ProactorEventLoop')
 
         with test_utils.run_udp_echo_server() as server_address:
@@ -532,9 +532,9 @@ klasse BaseSockTestsMixin:
                         self.loop.sock_connect(sock, address))
                 except BaseException:
                     pass
-                else:
+                sonst:
                     break
-            else:
+            sonst:
                 self.fail('Can not create socket.')
 
             f = self.loop.create_connection(
@@ -547,7 +547,7 @@ klasse BaseSockTestsMixin:
             tr.close()
 
 
-if sys.platform == 'win32':
+wenn sys.platform == 'win32':
 
     klasse SelectEventLoopTests(BaseSockTestsMixin,
                                test_utils.TestCase):
@@ -642,10 +642,10 @@ if sys.platform == 'win32':
                 self._basetest_datagram_send_to_non_listening_address(
                     recvfrom_into))
 
-else:
+sonst:
     import selectors
 
-    if hasattr(selectors, 'KqueueSelector'):
+    wenn hasattr(selectors, 'KqueueSelector'):
         klasse KqueueEventLoopTests(BaseSockTestsMixin,
                                    test_utils.TestCase):
 
@@ -653,14 +653,14 @@ else:
                 return asyncio.SelectorEventLoop(
                     selectors.KqueueSelector())
 
-    if hasattr(selectors, 'EpollSelector'):
+    wenn hasattr(selectors, 'EpollSelector'):
         klasse EPollEventLoopTests(BaseSockTestsMixin,
                                   test_utils.TestCase):
 
             def create_event_loop(self):
                 return asyncio.SelectorEventLoop(selectors.EpollSelector())
 
-    if hasattr(selectors, 'PollSelector'):
+    wenn hasattr(selectors, 'PollSelector'):
         klasse PollEventLoopTests(BaseSockTestsMixin,
                                  test_utils.TestCase):
 
@@ -675,5 +675,5 @@ else:
             return asyncio.SelectorEventLoop(selectors.SelectSelector())
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

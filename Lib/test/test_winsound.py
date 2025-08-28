@@ -15,7 +15,7 @@ winsound = import_helper.import_module('winsound')
 
 
 # Unless we actually have an ear in the room, we have no idea whether a sound
-# actually plays, and it's incredibly flaky trying to figure out if a sound
+# actually plays, and it's incredibly flaky trying to figure out wenn a sound
 # even *should* play.  Instead of guessing, just call the function and assume
 # it either passed or raised the RuntimeError we expect in case of failure.
 def sound_func(func):
@@ -24,10 +24,10 @@ def sound_func(func):
         try:
             ret = func(*args, **kwargs)
         except RuntimeError as e:
-            if support.verbose:
+            wenn support.verbose:
                 print(func.__name__, 'failed:', e)
-        else:
-            if support.verbose:
+        sonst:
+            wenn support.verbose:
                 print(func.__name__, 'returned')
             return ret
     return wrapper
@@ -183,5 +183,5 @@ klasse PlaySoundTest(unittest.TestCase):
         safe_PlaySound("SystemExit", winsound.SND_ALIAS | winsound.SND_SYSTEM)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

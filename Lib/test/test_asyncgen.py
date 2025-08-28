@@ -19,9 +19,9 @@ klasse AwaitException(Exception):
 
 @types.coroutine
 def awaitable(*, throw=False):
-    if throw:
+    wenn throw:
         yield ('throw',)
-    else:
+    sonst:
         yield ('result',)
 
 
@@ -29,15 +29,15 @@ def run_until_complete(coro):
     exc = False
     while True:
         try:
-            if exc:
+            wenn exc:
                 exc = False
                 fut = coro.throw(AwaitException)
-            else:
+            sonst:
                 fut = coro.send(None)
         except StopIteration as ex:
             return ex.args[0]
 
-        if fut == ('throw',):
+        wenn fut == ('throw',):
             exc = True
 
 
@@ -65,7 +65,7 @@ def py_anext(iterator, default=_no_default):
     except AttributeError:
         raise TypeError(f'{iterator!r} is not an async iterator')
 
-    if default is _no_default:
+    wenn default is _no_default:
         return __anext__(iterator)
 
     async def anext_impl():
@@ -122,7 +122,7 @@ klasse AsyncGenSyntaxTest(unittest.TestCase):
 
     def test_async_gen_syntax_05(self):
         code = '''async def foo():
-            if 0:
+            wenn 0:
                 yield
             return 12
         '''
@@ -155,10 +155,10 @@ klasse AsyncGenTest(unittest.TestCase):
                         try:
                             an.__next__()
                         except StopIteration as ex:
-                            if ex.args:
+                            wenn ex.args:
                                 res.append(ex.args[0])
                                 break
-                            else:
+                            sonst:
                                 res.append('EMPTY StopIteration')
                                 break
                         except StopAsyncIteration:
@@ -204,7 +204,7 @@ klasse AsyncGenTest(unittest.TestCase):
             an.__next__()
         except StopIteration as ex:
             self.assertEqual(ex.args[0], 123)
-        else:
+        sonst:
             self.fail('StopIteration was not raised')
 
         an = ai.__anext__()
@@ -214,7 +214,7 @@ klasse AsyncGenTest(unittest.TestCase):
             an.__next__()
         except StopAsyncIteration as ex:
             self.assertFalse(ex.args)
-        else:
+        sonst:
             self.fail('StopAsyncIteration was not raised')
 
     def test_async_gen_exception_03(self):
@@ -242,7 +242,7 @@ klasse AsyncGenTest(unittest.TestCase):
             an.__next__()
         except StopIteration as ex:
             self.assertEqual(ex.args[0], 123)
-        else:
+        sonst:
             self.fail('StopIteration was not raised')
 
         with self.assertRaises(ZeroDivisionError):
@@ -702,9 +702,9 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
             def __aiter__(self):
                 return self
             async def __anext__(self):
-                if self.yielded >= 2:
+                wenn self.yielded >= 2:
                     raise StopAsyncIteration()
-                else:
+                sonst:
                     self.yielded += 1
                     return self.yielded
         self.check_async_iterator_anext(MyAsyncIter)
@@ -719,11 +719,11 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
                 return self
             @types.coroutine
             def __anext__(self):
-                if False:
+                wenn False:
                     yield "this is a generator-based coroutine"
-                if self.yielded >= 2:
+                wenn self.yielded >= 2:
                     raise StopAsyncIteration()
-                else:
+                sonst:
                     self.yielded += 1
                     return self.yielded
         self.check_async_iterator_anext(MyAsyncIterWithTypesCoro)
@@ -876,7 +876,7 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
                     g.send(None)
                 except StopIteration as e:
                     err = e
-                else:
+                sonst:
                     self.fail('StopIteration was not raised')
                 self.assertEqual(err.value, "default")
 
@@ -1054,7 +1054,7 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
                 it.__anext__().throw(ZeroDivisionError)
             except StopIteration as ex:
                 self.assertEqual(ex.args[0], 1000)
-            else:
+            sonst:
                 self.fail('StopIteration was not raised')
             self.assertEqual(await it.__anext__(), 4)
             with self.assertRaises(StopAsyncIteration):
@@ -1076,21 +1076,21 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
                 it.__anext__().send(None)
             except StopIteration as ex:
                 self.assertEqual(ex.args[0], 1)
-            else:
+            sonst:
                 self.fail('StopIteration was not raised')
 
             try:
                 it.__anext__().send(10)
             except StopIteration as ex:
                 self.assertEqual(ex.args[0], 10)
-            else:
+            sonst:
                 self.fail('StopIteration was not raised')
 
             try:
                 it.__anext__().send(12)
             except StopIteration as ex:
                 self.assertEqual(ex.args[0], 1200)
-            else:
+            sonst:
                 self.fail('StopIteration was not raised')
 
             with self.assertRaises(StopAsyncIteration):
@@ -1157,7 +1157,7 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
         # See: https://github.com/python/cpython/issues/128078.
 
         async def foo():
-            if False:
+            wenn False:
                 yield (1, 2)
 
         async def run():
@@ -1610,7 +1610,7 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
             except asyncio.CancelledError:
                 self.assertEqual(DONE, 1)
                 raise
-            else:
+            sonst:
                 self.fail('CancelledError was not raised')
 
         with self.assertRaises(asyncio.CancelledError):
@@ -1827,7 +1827,7 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
 
         def make_arange(n):
             # This syntax is legal starting with Python 3.7
-            return (i * 2 fuer i in range(n) if await wrap(i))
+            return (i * 2 fuer i in range(n) wenn await wrap(i))
 
         async def run():
             return [i async fuer i in make_arange(10)]
@@ -2102,5 +2102,5 @@ klasse TestUnawaitedWarnings(unittest.TestCase):
         del gen2
         gc_collect()  # does not warn unawaited
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

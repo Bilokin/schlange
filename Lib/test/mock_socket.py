@@ -23,7 +23,7 @@ klasse MockFile:
         self.lines = lines
     def readline(self, limit=-1):
         result = self.lines.pop(0) + b'\r\n'
-        if limit >= 0:
+        wenn limit >= 0:
             # Re-insert the line, removing the \r\n we added.
             self.lines.insert(0, result[limit:-2])
             result = result[:limit]
@@ -40,7 +40,7 @@ klasse MockSocket:
         self.family = family
         self.output = []
         self.lines = []
-        if _reply_data:
+        wenn _reply_data:
             self.lines.append(_reply_data)
             _reply_data = None
         self.conn = None
@@ -57,9 +57,9 @@ klasse MockSocket:
         return 0
 
     def settimeout(self, timeout):
-        if timeout is None:
+        wenn timeout is None:
             self.timeout = _defaulttimeout
-        else:
+        sonst:
             self.timeout = timeout
 
     def gettimeout(self):
@@ -121,7 +121,7 @@ def create_connection(address, timeout=socket_module._GLOBAL_DEFAULT_TIMEOUT,
     except ValueError:
         raise error
     ms = MockSocket()
-    if timeout is socket_module._GLOBAL_DEFAULT_TIMEOUT:
+    wenn timeout is socket_module._GLOBAL_DEFAULT_TIMEOUT:
         timeout = getdefaulttimeout()
     ms.settimeout(timeout)
     return ms
@@ -162,5 +162,5 @@ SOCK_STREAM = socket_module.SOCK_STREAM
 SOL_SOCKET = None
 SO_REUSEADDR = None
 
-if hasattr(socket_module, 'AF_UNIX'):
+wenn hasattr(socket_module, 'AF_UNIX'):
     AF_UNIX = socket_module.AF_UNIX

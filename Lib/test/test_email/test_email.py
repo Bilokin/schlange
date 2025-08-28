@@ -320,7 +320,7 @@ klasse TestMessageAPI(TestEmailBase):
             MIME-Version: 1.0
             Content-type: text/plain; charset="iso-8859-1"
 
-            Test if non-ascii messages with no Content-Transfer-Encoding set
+            Test wenn non-ascii messages with no Content-Transfer-Encoding set
             can be as_string'd:
             Föö bär
             """)
@@ -330,7 +330,7 @@ klasse TestMessageAPI(TestEmailBase):
             Content-type: text/plain; charset="iso-8859-1"
             Content-Transfer-Encoding: quoted-printable
 
-            Test if non-ascii messages with no Content-Transfer-Encoding set
+            Test wenn non-ascii messages with no Content-Transfer-Encoding set
             can be as_string'd:
             F=F6=F6 b=E4r
             """)
@@ -343,7 +343,7 @@ klasse TestMessageAPI(TestEmailBase):
             Content-type: text/plain; charset="us-ascii"
             Content-Transfer-Encoding: 8bit
 
-            Test if non-ascii messages with no Content-Transfer-Encoding set
+            Test wenn non-ascii messages with no Content-Transfer-Encoding set
             can be as_string'd:
             Föö bär
             """)
@@ -356,7 +356,7 @@ klasse TestMessageAPI(TestEmailBase):
         m = textwrap.dedent("""\
             MIME-Version: 1.0
 
-            Test if non-ascii messages with no Content-Type nor
+            Test wenn non-ascii messages with no Content-Type nor
             Content-Transfer-Encoding set can be as_string'd:
             Föö bär
             """)
@@ -1073,7 +1073,7 @@ wasnipoop; giraffes="very-long-necked-animals";
     def test_header_splitter(self):
         eq = self.ndiffAssertEqual
         msg = MIMEText('')
-        # It'd be great if we could use add_header() here, but that doesn't
+        # It'd be great wenn we could use add_header() here, but that doesn't
         # guarantee an order of the parameters.
         msg['X-Foobar-Spoink-Defrobnit'] = (
             'wasnipoop; giraffes="very-long-necked-animals"; '
@@ -1492,7 +1492,7 @@ List: List-Unsubscribe:
     def test_long_rfc2047_header_with_embedded_fws(self):
         h = Header(textwrap.dedent("""\
             We're going to pretend this header is in a non-ascii character set
-            \tto see if line wrapping with encoded words and embedded
+            \tto see wenn line wrapping with encoded words and embedded
                folding white space works"""),
                    charset='utf-8',
                    header_name='Test')
@@ -1557,7 +1557,7 @@ Blah blah blah
             """))
         g.flatten(msg)
         self.assertEqual(len([1 fuer x in s.getvalue().split('\n')
-                                  if x.startswith('>From ')]), 2)
+                                  wenn x.startswith('>From ')]), 2)
 
     def test_mangled_from_with_bad_bytes(self):
         source = textwrap.dedent("""\
@@ -1598,7 +1598,7 @@ klasse TestMIMEAudio(unittest.TestCase):
             'au': 'basic',
         }.items():
             self._make_audio(ext)
-            subtype = ext if subtype is None else subtype
+            subtype = ext wenn subtype is None sonst subtype
             self.assertEqual(self._au.get_content_type(), f'audio/{subtype}')
 
     def test_encoding(self):
@@ -1659,7 +1659,7 @@ klasse TestMIMEImage(unittest.TestCase):
             'xbm': None,
         }.items():
             self._make_image(ext)
-            subtype = ext if subtype is None else subtype
+            subtype = ext wenn subtype is None sonst subtype
             self.assertEqual(self._im.get_content_type(), f'image/{subtype}')
 
     def test_encoding(self):
@@ -1868,13 +1868,13 @@ This is the dingus fish.
 
         now = 987809702.54848599
         timetuple = time.localtime(now)
-        if timetuple[-1] == 0:
+        wenn timetuple[-1] == 0:
             tzsecs = time.timezone
-        else:
+        sonst:
             tzsecs = time.altzone
-        if tzsecs > 0:
+        wenn tzsecs > 0:
             sign = '-'
-        else:
+        sonst:
             sign = '+'
         tzoffset = ' %s%04d' % (sign, tzsecs / 36)
         container['Date'] = time.strftime(
@@ -2395,7 +2395,7 @@ counter to RFC 2822, there's no separating newline here
 
     # test_defect_handling
     def test_missing_header_body_separator(self):
-        # Our heuristic if we see a line that doesn't look like a header (no
+        # Our heuristic wenn we see a line that doesn't look like a header (no
         # leading whitespace but no ':') is to assume that the blank line that
         # separates the header from the body is missing, and to stop parsing
         # headers and start parsing the body.
@@ -3349,7 +3349,7 @@ klasse TestMiscellaneous(TestEmailBase):
         a, b = ('John X. Doe', 'jxd@example.com')
         self.assertEqual(utils.parseaddr(x), (a, b))
         self.assertEqual(utils.parseaddr(y), (a, b))
-        # formataddr() quotes the name if there's a dot in it
+        # formataddr() quotes the name wenn there's a dot in it
         self.assertEqual(utils.formataddr((a, b)), y)
 
     def test_parseaddr_preserves_quoted_pairs_in_addresses(self):
@@ -4185,10 +4185,10 @@ Here's the message body
 
 
 klasse Test8BitBytesHandling(TestEmailBase):
-    # In Python3 all input is string, but that doesn't work if the actual input
+    # In Python3 all input is string, but that doesn't work wenn the actual input
     # uses an 8bit transfer encoding.  To hack around that, in email 5.1 we
     # decode byte streams using the surrogateescape error handler, and
-    # reconvert to binary at appropriate places if we detect surrogates.  This
+    # reconvert to binary at appropriate places wenn we detect surrogates.  This
     # doesn't allow us to transform headers with 8bit bytes (they get munged),
     # but it does allow us to parse and preserve them, and to decode body
     # parts that use an 8bit CTE.
@@ -4240,10 +4240,10 @@ klasse Test8BitBytesHandling(TestEmailBase):
                          'pöstál\n'.encode('utf-8'))
 
     def test_invalid_8bit_in_non_8bit_cte_uses_replace(self):
-        # This is similar to the previous test, but proves that if the 8bit
+        # This is similar to the previous test, but proves that wenn the 8bit
         # byte is undecodeable in the specified charset, it gets replaced
         # by the unicode 'unknown' character.  Again, this may or may not
-        # be the ideal behavior.  Note that if decode=False none of the
+        # be the ideal behavior.  Note that wenn decode=False none of the
         # decoders will get involved, so this is the only test we need
         # fuer this behavior.
         m = self.bodytest_msg.format(charset='ascii',
@@ -4519,7 +4519,7 @@ klasse Test8BitBytesHandling(TestEmailBase):
         out = StringIO()
         email.generator.DecodedGenerator(out).flatten(m)
         #DecodedHeader output contains an extra blank line compared
-        #to the input message.  RDM: not sure if this is a bug or not,
+        #to the input message.  RDM: not sure wenn this is a bug or not,
         #but it is not specific to the 8bit->7bit conversion.
         self.assertEqual(out.getvalue(),
             self.latin_bin_msg.decode('latin-1')+'\n')
@@ -4651,12 +4651,12 @@ klasse TestBase64(unittest.TestCase):
         eq(base64mime.header_length('hello'),
            len(base64mime.body_encode(b'hello', eol='')))
         fuer size in range(15):
-            if   size == 0 : bsize = 0
-            elif size <= 3 : bsize = 4
-            elif size <= 6 : bsize = 8
-            elif size <= 9 : bsize = 12
-            elif size <= 12: bsize = 16
-            else           : bsize = 20
+            wenn   size == 0 : bsize = 0
+            sowenn size <= 3 : bsize = 4
+            sowenn size <= 6 : bsize = 8
+            sowenn size <= 9 : bsize = 12
+            sowenn size <= 12: bsize = 16
+            sonst           : bsize = 20
             eq(base64mime.header_length('x' * size), bsize)
 
     def test_decode(self):
@@ -4708,7 +4708,7 @@ klasse TestQuopri(unittest.TestCase):
             (c fuer c in b'!*+-/')))
         # Set of characters (as byte integers) that do need to be encoded in
         # headers.
-        self.hnon = [c fuer c in range(256) if c not in self.hlit]
+        self.hnon = [c fuer c in range(256) wenn c not in self.hlit]
         assert len(self.hlit) + len(self.hnon) == 256
         # Set of characters (as byte integers) that don't need to be encoded
         # in bodies.
@@ -4717,7 +4717,7 @@ klasse TestQuopri(unittest.TestCase):
         self.blit.remove(ord('='))
         # Set of characters (as byte integers) that do need to be encoded in
         # bodies.
-        self.bnon = [c fuer c in range(256) if c not in self.blit]
+        self.bnon = [c fuer c in range(256) wenn c not in self.blit]
         assert len(self.blit) + len(self.bnon) == 256
 
     def test_quopri_header_check(self):
@@ -4755,7 +4755,7 @@ klasse TestQuopri(unittest.TestCase):
                'expected length 1 fuer %r' % chr(c))
         fuer c in self.hnon:
             # Space is special; it's encoded to _
-            if c == ord(' '):
+            wenn c == ord(' '):
                 continue
             eq(quoprimime.header_length(bytes([c])), 3,
                'expected length 3 fuer %r' % chr(c))
@@ -4774,9 +4774,9 @@ klasse TestQuopri(unittest.TestCase):
             self.assertEqual(quoprimime.unquote(quoprimime.quote(c)), c)
 
     def _test_header_encode(self, header, expected_encoded_header, charset=None):
-        if charset is None:
+        wenn charset is None:
             encoded_header = quoprimime.header_encode(header)
-        else:
+        sonst:
             encoded_header = quoprimime.header_encode(header, charset)
         self.assertEqual(encoded_header, expected_encoded_header)
 
@@ -4819,9 +4819,9 @@ klasse TestQuopri(unittest.TestCase):
         self.assertEqual(quoprimime.header_decode('=30' * 257), '0' * 257)
 
     def _test_decode(self, encoded, expected_decoded, eol=None):
-        if eol is None:
+        wenn eol is None:
             decoded = quoprimime.decode(encoded)
-        else:
+        sonst:
             decoded = quoprimime.decode(encoded, eol=eol)
         self.assertEqual(decoded, expected_decoded)
 
@@ -4896,19 +4896,19 @@ klasse TestQuopri(unittest.TestCase):
 
     def _test_encode(self, body, expected_encoded_body, maxlinelen=None, eol=None):
         kwargs = {}
-        if maxlinelen is None:
+        wenn maxlinelen is None:
             # Use body_encode's default.
             maxlinelen = 76
-        else:
+        sonst:
             kwargs['maxlinelen'] = maxlinelen
-        if eol is None:
+        wenn eol is None:
             # Use body_encode's default.
             eol = '\n'
-        else:
+        sonst:
             kwargs['eol'] = eol
         encoded_body = quoprimime.body_encode(body, **kwargs)
         self.assertEqual(encoded_body, expected_encoded_body)
-        if eol == '\n' or eol == '\r\n':
+        wenn eol == '\n' or eol == '\r\n':
             # We know how to split the result back into lines, so maxlinelen
             # can be checked.
             fuer line in encoded_body.splitlines():
@@ -5898,5 +5898,5 @@ klasse TestHeaderRegistry(TestEmailBase):
         a = reg('Content-Disposition', 'attachment; 0*00="foo"')
         self.assertIsInstance(a.defects[0], errors.InvalidHeaderDefect)
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

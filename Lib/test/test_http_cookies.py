@@ -124,7 +124,7 @@ klasse CookieTests(unittest.TestCase):
                 # Extract the cookie name from the data string
                 cookie_name = case['data'].split('=')[0]
 
-                # Check if the cookie is loaded correctly
+                # Check wenn the cookie is loaded correctly
                 self.assertIn(cookie_name, C)
                 self.assertEqual(C[cookie_name].get('expires'), case['output'])
 
@@ -600,5 +600,5 @@ def load_tests(loader, tests, pattern):
     return tests
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

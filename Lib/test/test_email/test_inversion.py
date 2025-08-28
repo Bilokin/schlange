@@ -1,6 +1,6 @@
 """Test the parser and generator are inverses.
 
-Note that this is only strictly true if we are parsing RFC valid messages and
+Note that this is only strictly true wenn we are parsing RFC valid messages and
 producing RFC valid messages.
 """
 
@@ -15,11 +15,11 @@ from test.test_email import TestEmailBase, parameterize
 # separators on the rebuilt string.
 def dedent(bstr):
     lines = bstr.splitlines()
-    if not lines[0].strip():
+    wenn not lines[0].strip():
         raise ValueError("First line must contain text")
     stripamt = len(lines[0]) - len(lines[0].lstrip())
     return b'\r\n'.join(
-        [x[stripamt:] if len(x)>=stripamt else b''
+        [x[stripamt:] wenn len(x)>=stripamt sonst b''
             fuer x in lines])
 
 
@@ -74,5 +74,5 @@ klasse TestInversion(TestEmailBase):
         self.assertEqual(msg2.get_content(), payload)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

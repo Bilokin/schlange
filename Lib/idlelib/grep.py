@@ -33,7 +33,7 @@ def grep(text, io=None, flist=None):
     """
     root = text._root()
     engine = searchengine.get(root)
-    if not hasattr(engine, "_grepdialog"):
+    wenn not hasattr(engine, "_grepdialog"):
         engine._grepdialog = GrepDialog(root, engine, flist)
     dialog = engine._grepdialog
     searchphrase = text.get("sel.first", "sel.last")
@@ -56,8 +56,8 @@ def findfiles(folder, pattern, recursive):
     fuer dirpath, _, filenames in os.walk(folder, onerror=walk_error):
         yield from (os.path.join(dirpath, name)
                     fuer name in filenames
-                    if fnmatch.fnmatch(name, pattern))
-        if not recursive:
+                    wenn fnmatch.fnmatch(name, pattern))
+        wenn not recursive:
             break
 
 
@@ -99,13 +99,13 @@ klasse GrepDialog(SearchDialogBase):
             io: iomenu.IOBinding instance containing file path.
         """
         SearchDialogBase.open(self, text, searchphrase)
-        if io:
+        wenn io:
             path = io.filename or ""
-        else:
+        sonst:
             path = ""
         dir, base = os.path.split(path)
         head, tail = os.path.splitext(base)
-        if not tail:
+        wenn not tail:
             tail = ".py"
         self.globvar.set(os.path.join(dir, "*" + tail))
 
@@ -135,10 +135,10 @@ klasse GrepDialog(SearchDialogBase):
         when the search begins.
         """
         prog = self.engine.getprog()
-        if not prog:
+        wenn not prog:
             return
         path = self.globvar.get()
-        if not path:
+        wenn not path:
             self.top.bell()
             return
         from idlelib.outwin import OutputWindow  # leave here!
@@ -162,7 +162,7 @@ klasse GrepDialog(SearchDialogBase):
             path: String containing the search path.
         """
         folder, filepat = os.path.split(path)
-        if not folder:
+        wenn not folder:
             folder = os.curdir
         filelist = sorted(findfiles(folder, filepat, self.recvar.get()))
         self.close()
@@ -174,15 +174,15 @@ klasse GrepDialog(SearchDialogBase):
                 try:
                     with open(fn, errors='replace') as f:
                         fuer lineno, line in enumerate(f, 1):
-                            if line[-1:] == '\n':
+                            wenn line[-1:] == '\n':
                                 line = line[:-1]
-                            if prog.search(line):
+                            wenn prog.search(line):
                                 sys.stdout.write(f"{fn}: {lineno}: {line}\n")
                                 hits += 1
                 except OSError as msg:
                     print(msg)
             print(f"Hits found: {hits}\n(Hint: right-click to open locations.)"
-                  if hits else "No hits.")
+                  wenn hits sonst "No hits.")
         except AttributeError:
             # Tk window has been closed, OutputWindow.text = None,
             # so in OW.write, OW.text.insert fails.
@@ -215,7 +215,7 @@ def _grep_dialog(parent):  # htest #
     button.pack()
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     from unittest import main
     main('idlelib.idle_test.test_grep', verbosity=2, exit=False)
 

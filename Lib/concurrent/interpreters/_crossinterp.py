@@ -18,12 +18,12 @@ klasse classonly:
         self.name = None
 
     def __set_name__(self, cls, name):
-        if self.name is not None:
+        wenn self.name is not None:
             raise TypeError('already used')
         self.name = name
 
     def __get__(self, obj, cls):
-        if obj is not None:
+        wenn obj is not None:
             raise AttributeError(self.name)
         # called on the class
         return self.getter(None, cls)
@@ -41,7 +41,7 @@ klasse UnboundItem:
     @classonly
     def singleton(cls, kind, module, name='UNBOUND'):
         doc = cls.__doc__
-        if doc:
+        wenn doc:
             doc = doc.replace(
                 'cross-interpreter container', kind,
             ).replace(
@@ -96,12 +96,12 @@ def resolve_unbound(flag, exctype_destroyed):
         op = _UNBOUND_FLAG_TO_CONSTANT[flag]
     except KeyError:
         raise NotImplementedError(f'unsupported unbound replacement op {flag!r}')
-    if op is UNBOUND_REMOVE:
+    wenn op is UNBOUND_REMOVE:
         # "remove" not possible here
         raise NotImplementedError
-    elif op is UNBOUND_ERROR:
+    sowenn op is UNBOUND_ERROR:
         raise exctype_destroyed("item's original interpreter destroyed")
-    elif op is UNBOUND:
+    sowenn op is UNBOUND:
         return UNBOUND
-    else:
+    sonst:
         raise NotImplementedError(repr(op))

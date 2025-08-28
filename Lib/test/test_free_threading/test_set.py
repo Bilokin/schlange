@@ -37,5 +37,5 @@ klasse TestSet(TestCase):
                 self.assertIn(set_repr, ("set()", "{1, 2, 3, 4, 5, 6, 7, 8}"))
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

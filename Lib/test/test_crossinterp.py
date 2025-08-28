@@ -24,11 +24,11 @@ def ignore_byteswarning():
 
 # builtin types
 
-BUILTINS_TYPES = [o fuer _, o in __builtins__.items() if isinstance(o, type)]
+BUILTINS_TYPES = [o fuer _, o in __builtins__.items() wenn isinstance(o, type)]
 EXCEPTION_TYPES = [cls fuer cls in BUILTINS_TYPES
-                   if issubclass(cls, BaseException)]
+                   wenn issubclass(cls, BaseException)]
 OTHER_TYPES = [o fuer n, o in vars(types).items()
-               if (isinstance(o, type) and
+               wenn (isinstance(o, type) and
                    n not in ('DynamicClassAttribute', '_GeneratorWrapper'))]
 BUILTIN_TYPES = [
     *BUILTINS_TYPES,
@@ -52,7 +52,7 @@ EXCEPTIONS_WITH_SPECIAL_SIG = {
 BUILTIN_EXCEPTIONS = [
     *(cls(*sig('error!')) fuer cls, sig in EXCEPTIONS_WITH_SPECIAL_SIG.items()),
     *(cls('error!') fuer cls in EXCEPTION_TYPES
-      if cls not in EXCEPTIONS_WITH_SPECIAL_SIG),
+      wenn cls not in EXCEPTIONS_WITH_SPECIAL_SIG),
 ]
 
 # other builtin objects
@@ -216,14 +216,14 @@ _UNSHAREABLE_SIMPLE = [
 ]
 with ignore_byteswarning():
     _SHAREABLE_SIMPLE = [o fuer o in BUILTIN_SIMPLE
-                         if o not in _UNSHAREABLE_SIMPLE]
+                         wenn o not in _UNSHAREABLE_SIMPLE]
     _SHAREABLE_CONTAINERS = [
-        *(o fuer o in BUILTIN_CONTAINERS if type(o) is memoryview),
+        *(o fuer o in BUILTIN_CONTAINERS wenn type(o) is memoryview),
         *(o fuer o in BUILTIN_CONTAINERS
-          if type(o) is tuple and o not in TUPLES_WITHOUT_EQUALITY),
+          wenn type(o) is tuple and o not in TUPLES_WITHOUT_EQUALITY),
     ]
     _UNSHAREABLE_CONTAINERS = [o fuer o in BUILTIN_CONTAINERS
-                               if o not in _SHAREABLE_CONTAINERS]
+                               wenn o not in _SHAREABLE_CONTAINERS]
 SHAREABLE = [
     *_SHAREABLE_SIMPLE,
     *_SHAREABLE_CONTAINERS,
@@ -258,7 +258,7 @@ NOT_SHAREABLE = [
 
 PICKLEABLE = [
     *BUILTIN_SIMPLE,
-    *(o fuer o in BUILTIN_CONTAINERS if o not in [
+    *(o fuer o in BUILTIN_CONTAINERS wenn o not in [
         MEMORYVIEW_EMPTY,
         MEMORYVIEW_NOT_EMPTY,
         MAPPING_PROXY_EMPTY,
@@ -322,21 +322,21 @@ def load_defs(module=None):
 
     Note that the new module is not added to sys.modules.
     """
-    if module is None:
+    wenn module is None:
         modname = DEFS.__name__
-    elif isinstance(module, str):
+    sowenn isinstance(module, str):
         modname = module
         module = None
-    else:
+    sonst:
         modname = module.__name__
     # Create the new module and populate it.
     defs = import_helper.create_module(modname)
     defs.__file__ = DEFS.__file__
     exec(DEFS_TEXT, defs.__dict__)
-    # Copy the defs into the module arg, if any.
-    if module is not None:
+    # Copy the defs into the module arg, wenn any.
+    wenn module is not None:
         fuer name, value in defs.__dict__.items():
-            if name.startswith('_'):
+            wenn name.startswith('_'):
                 continue
             assert not hasattr(module, name), (name, getattr(module, name))
             setattr(module, name, value)
@@ -347,10 +347,10 @@ def load_defs(module=None):
 def using___main__():
     """Make sure __main__ module exists (and clean up after)."""
     modname = '__main__'
-    if modname not in sys.modules:
+    wenn modname not in sys.modules:
         with import_helper.isolated_modules():
             yield import_helper.add_module(modname)
-    else:
+    sonst:
         with import_helper.module_restored(modname) as mod:
             yield mod
 
@@ -366,10 +366,10 @@ def temp_module(modname):
 @contextlib.contextmanager
 def missing_defs_module(modname, *, prep=False):
     assert modname not in sys.modules, (modname,)
-    if prep:
+    wenn prep:
         with import_helper.ready_to_import(modname, DEFS_TEXT):
             yield modname
-    else:
+    sonst:
         with import_helper.isolated_modules():
             yield modname
 
@@ -390,7 +390,7 @@ klasse _GetXIDataTests(unittest.TestCase):
     def assert_exc_args_equal(self, exc1, exc2):
         args1 = exc1.args
         args2 = exc2.args
-        if isinstance(exc1, ExceptionGroup):
+        wenn isinstance(exc1, ExceptionGroup):
             self.assertIs(type(args1), type(args2))
             self.assertEqual(len(args1), 2)
             self.assertEqual(len(args1), len(args2))
@@ -403,50 +403,50 @@ klasse _GetXIDataTests(unittest.TestCase):
                 # (via __reduce__).
                 self.assertIs(type(exc1), type(exc2))
                 self.assert_exc_equal(grouped1, grouped2)
-        else:
+        sonst:
             self.assertEqual(args1, args2)
 
     def assert_exc_equal(self, exc1, exc2):
         self.assertIs(type(exc1), type(exc2))
 
-        if type(exc1).__eq__ is not object.__eq__:
+        wenn type(exc1).__eq__ is not object.__eq__:
             self.assertEqual(exc1, exc2)
 
         self.assert_exc_args_equal(exc1, exc2)
         # XXX For now we do not preserve tracebacks.
-        if exc1.__traceback__ is not None:
+        wenn exc1.__traceback__ is not None:
             self.assertEqual(exc1.__traceback__, exc2.__traceback__)
         self.assertEqual(
             getattr(exc1, '__notes__', None),
             getattr(exc2, '__notes__', None),
         )
         # We assume there are no cycles.
-        if exc1.__cause__ is None:
+        wenn exc1.__cause__ is None:
             self.assertIs(exc1.__cause__, exc2.__cause__)
-        else:
+        sonst:
             self.assert_exc_equal(exc1.__cause__, exc2.__cause__)
-        if exc1.__context__ is None:
+        wenn exc1.__context__ is None:
             self.assertIs(exc1.__context__, exc2.__context__)
-        else:
+        sonst:
             self.assert_exc_equal(exc1.__context__, exc2.__context__)
 
     def assert_equal_or_equalish(self, obj, expected):
         cls = type(expected)
-        if cls.__eq__ is not object.__eq__:
+        wenn cls.__eq__ is not object.__eq__:
             self.assertEqual(obj, expected)
-        elif cls is types.FunctionType:
+        sowenn cls is types.FunctionType:
             self.assert_functions_equal(obj, expected)
-        elif isinstance(expected, BaseException):
+        sowenn isinstance(expected, BaseException):
             self.assert_exc_equal(obj, expected)
-        elif cls is types.MethodType:
+        sowenn cls is types.MethodType:
             raise NotImplementedError(cls)
-        elif cls is types.BuiltinMethodType:
+        sowenn cls is types.BuiltinMethodType:
             raise NotImplementedError(cls)
-        elif cls is types.MethodWrapperType:
+        sowenn cls is types.MethodWrapperType:
             raise NotImplementedError(cls)
-        elif cls.__bases__ == (object,):
+        sowenn cls.__bases__ == (object,):
             self.assertEqual(obj.__dict__, expected.__dict__)
-        else:
+        sonst:
             raise NotImplementedError(cls)
 
     def get_xidata(self, obj, *, mode=None):
@@ -473,10 +473,10 @@ klasse _GetXIDataTests(unittest.TestCase):
         fuer obj in values:
             with self.subTest(repr(obj)):
                 got = self._get_roundtrip(obj, mode)
-                if got is obj:
+                wenn got is obj:
                     continue
                 self.assertIs(type(got),
-                              type(obj) if expecttype is None else expecttype)
+                              type(obj) wenn expecttype is None sonst expecttype)
                 self.assert_equal_or_equalish(got, obj)
 
     def assert_roundtrip_equal_not_identical(self, values, *,
@@ -487,7 +487,7 @@ klasse _GetXIDataTests(unittest.TestCase):
                 got = self._get_roundtrip(obj, mode)
                 self.assertIsNot(got, obj)
                 self.assertIs(type(got),
-                              type(obj) if expecttype is None else expecttype)
+                              type(obj) wenn expecttype is None sonst expecttype)
                 self.assert_equal_or_equalish(got, obj)
 
     def assert_roundtrip_not_equal(self, values, *,
@@ -498,7 +498,7 @@ klasse _GetXIDataTests(unittest.TestCase):
                 got = self._get_roundtrip(obj, mode)
                 self.assertIsNot(got, obj)
                 self.assertIs(type(got),
-                              type(obj) if expecttype is None else expecttype)
+                              type(obj) wenn expecttype is None sonst expecttype)
                 self.assertNotEqual(got, obj)
 
     def assert_not_shareable(self, values, exctype=None, *, mode=None):
@@ -507,11 +507,11 @@ klasse _GetXIDataTests(unittest.TestCase):
             with self.subTest(repr(obj)):
                 with self.assertRaises(NotShareableError) as cm:
                     _testinternalcapi.get_crossinterp_data(obj, mode)
-                if exctype is not None:
+                wenn exctype is not None:
                     self.assertIsInstance(cm.exception.__cause__, exctype)
 
     def _resolve_mode(self, mode):
-        if mode is None:
+        wenn mode is None:
             mode = self.MODE
         assert mode
         return mode
@@ -524,23 +524,23 @@ klasse PickleTests(_GetXIDataTests):
     def test_shareable(self):
         with ignore_byteswarning():
             fuer obj in SHAREABLE:
-                if obj in PICKLEABLE:
+                wenn obj in PICKLEABLE:
                     self.assert_roundtrip_equal([obj])
-                else:
+                sonst:
                     self.assert_not_shareable([obj])
 
     def test_not_shareable(self):
         with ignore_byteswarning():
             fuer obj in NOT_SHAREABLE:
-                if type(obj) is types.MappingProxyType:
+                wenn type(obj) is types.MappingProxyType:
                     self.assert_not_shareable([obj])
-                elif obj in PICKLEABLE:
+                sowenn obj in PICKLEABLE:
                     with self.subTest(repr(obj)):
                         # We don't worry about checking the actual value.
                         # The other tests should cover that well enough.
                         got = self.get_roundtrip(obj)
                         self.assertIs(type(got), type(obj))
-                else:
+                sonst:
                     self.assert_not_shareable([obj])
 
     def test_list(self):
@@ -572,7 +572,7 @@ klasse PickleTests(_GetXIDataTests):
 
         instances = []
         fuer cls, args in defs.TOP_CLASSES.items():
-            if cls in defs.CLASSES_WITHOUT_EQUALITY:
+            wenn cls in defs.CLASSES_WITHOUT_EQUALITY:
                 continue
             instances.append(cls(*args))
         self.assert_roundtrip_equal_not_identical(instances)
@@ -580,7 +580,7 @@ klasse PickleTests(_GetXIDataTests):
         # these don't compare equal
         instances = []
         fuer cls, args in defs.TOP_CLASSES.items():
-            if cls not in defs.CLASSES_WITHOUT_EQUALITY:
+            wenn cls not in defs.CLASSES_WITHOUT_EQUALITY:
                 continue
             instances.append(cls(*args))
         self.assert_roundtrip_equal(instances)
@@ -614,7 +614,7 @@ klasse PickleTests(_GetXIDataTests):
         fuer cls, xid, inst, instxid in instances:
             with self.subTest(repr(cls)):
                 delattr(mod, cls.__name__)
-                if fail:
+                wenn fail:
                     with self.assertRaises(NotShareableError):
                         _testinternalcapi.restore_crossinterp_data(xid)
                     continue
@@ -626,11 +626,11 @@ klasse PickleTests(_GetXIDataTests):
                 got = _testinternalcapi.restore_crossinterp_data(instxid)
                 self.assertIsNot(got, inst)
                 self.assertIs(type(got), gotcls)
-                if cls in defs.CLASSES_WITHOUT_EQUALITY:
+                wenn cls in defs.CLASSES_WITHOUT_EQUALITY:
                     self.assertNotEqual(got, inst)
-                elif cls in defs.BUILTIN_SUBCLASSES:
+                sowenn cls in defs.BUILTIN_SUBCLASSES:
                     self.assertEqual(got, inst)
-                else:
+                sonst:
                     self.assertNotEqual(got, inst)
 
     def assert_class_defs_not_shareable(self, defs):
@@ -739,7 +739,7 @@ klasse PickleTests(_GetXIDataTests):
         fuer func, xid in captured:
             with self.subTest(func):
                 delattr(mod, func.__name__)
-                if fail:
+                wenn fail:
                     with self.assertRaises(NotShareableError):
                         _testinternalcapi.restore_crossinterp_data(xid)
                     continue
@@ -966,9 +966,9 @@ klasse MarshalTests(_GetXIDataTests):
         ]
         types = BUILTIN_TYPES
         self.assert_not_shareable(cls fuer cls in types
-                                  if cls not in shareable)
+                                  wenn cls not in shareable)
         self.assert_roundtrip_identical(cls fuer cls in types
-                                        if cls in shareable)
+                                        wenn cls in shareable)
 
     def test_builtin_function(self):
         functions = [
@@ -1086,7 +1086,7 @@ klasse ShareableFuncTests(_GetXIDataTests):
     def test_not_stateless(self):
         self.assert_not_shareable([
             *(f fuer f in defs.FUNCTIONS
-              if f not in defs.STATELESS_FUNCTIONS),
+              wenn f not in defs.STATELESS_FUNCTIONS),
         ])
 
     def test_other_objects(self):
@@ -1167,13 +1167,13 @@ klasse PureShareableScriptTests(_GetXIDataTests):
     def test_impure_script_code(self):
         self.assert_not_shareable([
             *(f.__code__ fuer f in defs.SCRIPT_FUNCTIONS
-              if f not in defs.PURE_SCRIPT_FUNCTIONS),
+              wenn f not in defs.PURE_SCRIPT_FUNCTIONS),
         ])
 
     def test_other_code(self):
         self.assert_not_shareable([
             *(f.__code__ fuer f in defs.FUNCTIONS
-              if f not in defs.SCRIPT_FUNCTIONS),
+              wenn f not in defs.SCRIPT_FUNCTIONS),
             *(f.__code__ fuer f in defs.FUNCTION_LIKE),
         ])
 
@@ -1185,13 +1185,13 @@ klasse PureShareableScriptTests(_GetXIDataTests):
     def test_impure_script_function(self):
         self.assert_not_shareable([
             *(f fuer f in defs.SCRIPT_FUNCTIONS
-              if f not in defs.PURE_SCRIPT_FUNCTIONS),
+              wenn f not in defs.PURE_SCRIPT_FUNCTIONS),
         ])
 
     def test_other_function(self):
         self.assert_not_shareable([
             *(f fuer f in defs.FUNCTIONS
-              if f not in defs.SCRIPT_FUNCTIONS),
+              wenn f not in defs.SCRIPT_FUNCTIONS),
             *defs.FUNCTION_LIKE,
         ])
 
@@ -1216,13 +1216,13 @@ klasse ShareableScriptTests(PureShareableScriptTests):
     def test_impure_script_code(self):
         self.assert_roundtrip_equal_not_identical([
             *(f.__code__ fuer f in defs.SCRIPT_FUNCTIONS
-              if f not in defs.PURE_SCRIPT_FUNCTIONS),
+              wenn f not in defs.PURE_SCRIPT_FUNCTIONS),
         ])
 
     def test_impure_script_function(self):
         self.assert_roundtrip_not_equal([
             *(f fuer f in defs.SCRIPT_FUNCTIONS
-              if f not in defs.PURE_SCRIPT_FUNCTIONS),
+              wenn f not in defs.PURE_SCRIPT_FUNCTIONS),
         ], expecttype=types.CodeType)
 
 
@@ -1249,15 +1249,15 @@ klasse ShareableFallbackTests(_GetXIDataTests):
         with ignore_byteswarning():
             self.assert_roundtrip_equal([
                 *(o fuer o in NOT_SHAREABLE
-                  if o in okay and o not in ignored
+                  wenn o in okay and o not in ignored
                   and o is not MAPPING_PROXY_EMPTY),
             ])
             self.assert_roundtrip_not_equal([
                 *(o fuer o in NOT_SHAREABLE
-                  if o in ignored and o is not MAPPING_PROXY_EMPTY),
+                  wenn o in ignored and o is not MAPPING_PROXY_EMPTY),
             ])
             self.assert_not_shareable([
-                *(o fuer o in NOT_SHAREABLE if o not in okay),
+                *(o fuer o in NOT_SHAREABLE wenn o not in okay),
                 MAPPING_PROXY_EMPTY,
             ])
 
@@ -1491,5 +1491,5 @@ klasse ShareableTypeTests(_GetXIDataTests):
         ])
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

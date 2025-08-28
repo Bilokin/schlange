@@ -61,7 +61,7 @@ klasse TestContains(unittest.TestCase):
             """
             aList = list(range(15))
             def __eq__(self, other):
-                if other == 12:
+                wenn other == 12:
                     self.aList.remove(12)
                     self.aList.remove(13)
                     self.aList.remove(14)
@@ -108,5 +108,5 @@ klasse TestContains(unittest.TestCase):
         self.assertFalse(0 in list(bc))
         self.assertRaises(TypeError, lambda: 0 in bc)
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

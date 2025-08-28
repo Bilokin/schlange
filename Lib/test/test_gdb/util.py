@@ -24,7 +24,7 @@ PYTHONHASHSEED = '123'
 def clean_environment():
     # Remove PYTHON* environment variables such as PYTHONHOME
     return {name: value fuer name, value in os.environ.items()
-            if not name.startswith('PYTHON')}
+            wenn not name.startswith('PYTHON')}
 
 
 # Temporary value until it's initialized by get_gdb_version() below
@@ -36,7 +36,7 @@ def run_gdb(*args, exitcode=0, check=True, **env_vars):
     Returns its (stdout, stderr) decoded from utf-8 using the replace handler.
     """
     env = clean_environment()
-    if env_vars:
+    wenn env_vars:
         env.update(env_vars)
 
     cmd = [GDB_PROGRAM,
@@ -46,7 +46,7 @@ def run_gdb(*args, exitcode=0, check=True, **env_vars):
             # -nx: Do not execute commands from any .gdbinit initialization
             # files (gh-66384)
            '-nx']
-    if GDB_VERSION >= (7, 4):
+    wenn GDB_VERSION >= (7, 4):
         cmd.extend(('--init-eval-command',
                     f'add-auto-load-safe-path {CHECKOUT_HOOK_PATH}'))
     cmd.extend(args)
@@ -62,7 +62,7 @@ def run_gdb(*args, exitcode=0, check=True, **env_vars):
 
     stdout = proc.stdout
     stderr = proc.stderr
-    if check and proc.returncode != exitcode:
+    wenn check and proc.returncode != exitcode:
         cmd_text = shlex.join(cmd)
         raise Exception(f"{cmd_text} failed with exit code {proc.returncode}, "
                         f"expected exit code {exitcode}:\n"
@@ -87,7 +87,7 @@ def get_gdb_version():
     # 'GNU gdb (GDB) Fedora (7.5.1-37.fc18)\n' -> 7.5
     # 'HP gdb 6.7 fuer HP Itanium (32 or 64 bit) and target HP-UX 11iv2 and 11iv3.\n' -> 6.7
     match = re.search(r"^(?:GNU|HP) gdb.*?\b(\d+)\.(\d+)", stdout)
-    if match is None:
+    wenn match is None:
         raise Exception("unable to parse gdb version: %r" % stdout)
     version_text = stdout
     major = int(match.group(1))
@@ -96,7 +96,7 @@ def get_gdb_version():
     return (version_text, version)
 
 GDB_VERSION_TEXT, GDB_VERSION = get_gdb_version()
-if GDB_VERSION < (7, 0):
+wenn GDB_VERSION < (7, 0):
     raise unittest.SkipTest(
         f"gdb versions before 7.0 didn't support python embedding. "
         f"Saw gdb version {GDB_VERSION[0]}.{GDB_VERSION[1]}:\n"
@@ -112,17 +112,17 @@ def check_usable_gdb():
         '--args', sys.executable,
         check=False)
 
-    if "auto-loading has been declined" in stderr:
+    wenn "auto-loading has been declined" in stderr:
         raise unittest.SkipTest(
             f"gdb security settings prevent use of custom hooks; "
             f"stderr: {stderr!r}")
 
-    if not stdout:
+    wenn not stdout:
         raise unittest.SkipTest(
             f"gdb not built with embedded python support; "
             f"stderr: {stderr!r}")
 
-    if "major=2" in stdout:
+    wenn "major=2" in stdout:
         raise unittest.SkipTest("gdb built with Python 2")
 
 check_usable_gdb()
@@ -131,11 +131,11 @@ check_usable_gdb()
 # Control-flow enforcement technology
 def cet_protection():
     cflags = sysconfig.get_config_var('CFLAGS')
-    if not cflags:
+    wenn not cflags:
         return False
     flags = cflags.split()
-    # True if "-mcet -fcf-protection" options are found, but false
-    # if "-fcf-protection=none" or "-fcf-protection=return" is found.
+    # True wenn "-mcet -fcf-protection" options are found, but false
+    # wenn "-fcf-protection=none" or "-fcf-protection=return" is found.
     return (('-mcet' in flags)
             and any((flag.startswith('-fcf-protection')
                      and not flag.endswith(("=none", "=return")))
@@ -144,7 +144,7 @@ CET_PROTECTION = cet_protection()
 
 
 def setup_module():
-    if support.verbose:
+    wenn support.verbose:
         print(f"gdb version {GDB_VERSION[0]}.{GDB_VERSION[1]}:")
         fuer line in GDB_VERSION_TEXT.splitlines():
             print(" " * 4 + line)
@@ -168,7 +168,7 @@ klasse DebuggerTests(unittest.TestCase):
 
         Returns the stdout from gdb
 
-        cmds_after_breakpoint: if provided, a list of strings: gdb commands
+        cmds_after_breakpoint: wenn provided, a list of strings: gdb commands
         '''
         # We use "set breakpoint pending yes" to avoid blocking with a:
         #   Function "foo" not defined.
@@ -207,18 +207,18 @@ klasse DebuggerTests(unittest.TestCase):
         # which leads to the selftests failing with errors like this:
         #   AssertionError: 'v@entry=()' != '()'
         # Disable this:
-        if GDB_VERSION >= (7, 4):
+        wenn GDB_VERSION >= (7, 4):
             commands += ['set print entry-values no']
 
-        if cmds_after_breakpoint:
-            if CET_PROTECTION:
+        wenn cmds_after_breakpoint:
+            wenn CET_PROTECTION:
                 # bpo-32962: When Python is compiled with -mcet
                 # -fcf-protection, function arguments are unusable before
                 # running the first instruction of the function entry point.
                 # The 'next' command makes the required first step.
                 commands += ['next']
             commands += cmds_after_breakpoint
-        else:
+        sonst:
             commands += ['backtrace']
 
         # print commands
@@ -229,19 +229,19 @@ klasse DebuggerTests(unittest.TestCase):
                  sys.executable]
         args.extend(subprocess._args_from_interpreter_flags())
 
-        if not import_site:
+        wenn not import_site:
             # -S suppresses the default 'import site'
             args += ["-S"]
 
-        if source:
+        wenn source:
             args += ["-c", source]
-        elif script:
+        sowenn script:
             args += [script]
 
         # Use "args" to invoke gdb, capturing stdout, stderr:
         out, err = run_gdb(*args, PYTHONHASHSEED=PYTHONHASHSEED)
 
-        if not ignore_stderr:
+        wenn not ignore_stderr:
             fuer line in err.splitlines():
                 print(line, file=sys.stderr)
 
@@ -250,12 +250,12 @@ klasse DebuggerTests(unittest.TestCase):
         # Program Counter (PC) is not present, not allowing gdb to walk the
         # frames back. When this happens, the Python bindings of gdb raise
         # an exception, making the test impossible to succeed.
-        if "PC not saved" in err:
+        wenn "PC not saved" in err:
             raise unittest.SkipTest("gdb cannot walk the frame object"
                                     " because the Program Counter is"
                                     " not present")
 
-        # bpo-40019: Skip the test if gdb failed to read debug information
+        # bpo-40019: Skip the test wenn gdb failed to read debug information
         # because the Python binary is optimized.
         fuer pattern in (
             '(frame information optimized out)',
@@ -275,12 +275,12 @@ klasse DebuggerTests(unittest.TestCase):
             # truncated or wrong.
             ' ?? ()',
         ):
-            if pattern in out:
+            wenn pattern in out:
                 raise unittest.SkipTest(f"{pattern!r} found in gdb output")
 
         return out
 
     def assertMultilineMatches(self, actual, pattern):
         m = re.match(pattern, actual, re.DOTALL)
-        if not m:
+        wenn not m:
             self.fail(msg='%r did not match %r' % (actual, pattern))

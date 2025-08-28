@@ -13,7 +13,7 @@ klasse BoolTest(unittest.TestCase):
                 pass
         except TypeError:
             pass
-        else:
+        sonst:
             self.fail("bool should not be subclassable")
 
         self.assertRaises(TypeError, int.__new__, bool, 0)
@@ -345,9 +345,9 @@ klasse BoolTest(unittest.TestCase):
         x = Symbol()
 
         with self.assertRaises(TypeError):
-            if x > 0:
+            wenn x > 0:
                 msg = "x > 0 was true"
-            else:
+            sonst:
                 msg = "x > 0 was false"
 
         # This used to create negative refcounts, see gh-102250
@@ -359,7 +359,7 @@ klasse BoolTest(unittest.TestCase):
 
     def test_sane_len(self):
         # this test just tests our assumptions about __len__
-        # this will start failing if __len__ changes assertions
+        # this will start failing wenn __len__ changes assertions
         fuer badval in ['illegal', -1, 1 << 32]:
             klasse A:
                 def __len__(self):
@@ -406,7 +406,7 @@ klasse BoolTest(unittest.TestCase):
                 return True
 
         def f(x):
-            if x or True:
+            wenn x or True:
                 pass
 
         x = X()
@@ -421,5 +421,5 @@ klasse BoolTest(unittest.TestCase):
         self.assertIs(bool.__new__(bool, True), True)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

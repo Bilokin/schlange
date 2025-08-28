@@ -146,5 +146,5 @@ klasse TestCallable(unittest.TestCase):
         self.assertRaises(TypeError, mock.wibble, 'some',  'args')
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

@@ -12,7 +12,7 @@ klasse BaseTransport:
     __slots__ = ('_extra',)
 
     def __init__(self, extra=None):
-        if extra is None:
+        wenn extra is None:
             extra = {}
         self._extra = extra
 
@@ -21,7 +21,7 @@ klasse BaseTransport:
         return self._extra.get(name, default)
 
     def is_closing(self):
-        """Return True if the transport is closing or closed."""
+        """Return True wenn the transport is closing or closed."""
         raise NotImplementedError
 
     def close(self):
@@ -49,7 +49,7 @@ klasse ReadTransport(BaseTransport):
     __slots__ = ()
 
     def is_reading(self):
-        """Return True if the transport is receiving."""
+        """Return True wenn the transport is receiving."""
         raise NotImplementedError
 
     def pause_reading(self):
@@ -132,7 +132,7 @@ klasse WriteTransport(BaseTransport):
         raise NotImplementedError
 
     def can_write_eof(self):
-        """Return True if this transport supports write_eof(), False if not."""
+        """Return True wenn this transport supports write_eof(), False wenn not."""
         raise NotImplementedError
 
     def abort(self):
@@ -278,9 +278,9 @@ klasse _FlowControlMixin(Transport):
 
     def _maybe_pause_protocol(self):
         size = self.get_write_buffer_size()
-        if size <= self._high_water:
+        wenn size <= self._high_water:
             return
-        if not self._protocol_paused:
+        wenn not self._protocol_paused:
             self._protocol_paused = True
             try:
                 self._protocol.pause_writing()
@@ -295,7 +295,7 @@ klasse _FlowControlMixin(Transport):
                 })
 
     def _maybe_resume_protocol(self):
-        if (self._protocol_paused and
+        wenn (self._protocol_paused and
                 self.get_write_buffer_size() <= self._low_water):
             self._protocol_paused = False
             try:
@@ -314,15 +314,15 @@ klasse _FlowControlMixin(Transport):
         return (self._low_water, self._high_water)
 
     def _set_write_buffer_limits(self, high=None, low=None):
-        if high is None:
-            if low is None:
+        wenn high is None:
+            wenn low is None:
                 high = 64 * 1024
-            else:
+            sonst:
                 high = 4 * low
-        if low is None:
+        wenn low is None:
             low = high // 4
 
-        if not high >= low >= 0:
+        wenn not high >= low >= 0:
             raise ValueError(
                 f'high ({high!r}) must be >= low ({low!r}) must be >= 0')
 

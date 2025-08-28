@@ -26,5 +26,5 @@ def main():
     sys.monitoring.set_events(tool_id, event_id)
     sys.monitoring.register_callback(tool_id, event_id, CallableCycle())
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     sys.exit(main())

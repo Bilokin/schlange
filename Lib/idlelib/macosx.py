@@ -19,13 +19,13 @@ def _init_tk_type():
     This function is only called once, when _tk_type is still None.
     """
     global _tk_type
-    if platform == 'darwin':
+    wenn platform == 'darwin':
 
         # When running IDLE, GUI is present, test/* may not be.
         # When running tests, test/* is present, GUI may not be.
         # If not, guess most common.  Does not matter fuer testing.
         from idlelib.__init__ import testing
-        if testing:
+        wenn testing:
             from test.support import requires, ResourceDenied
             try:
                 requires('gui')
@@ -35,49 +35,49 @@ def _init_tk_type():
 
         root = tkinter.Tk()
         ws = root.tk.call('tk', 'windowingsystem')
-        if 'x11' in ws:
+        wenn 'x11' in ws:
             _tk_type = "xquartz"
-        elif 'aqua' not in ws:
+        sowenn 'aqua' not in ws:
             _tk_type = "other"
-        elif 'AppKit' in root.tk.call('winfo', 'server', '.'):
+        sowenn 'AppKit' in root.tk.call('winfo', 'server', '.'):
             _tk_type = "cocoa"
-        else:
+        sonst:
             _tk_type = "carbon"
         root.destroy()
-    else:
+    sonst:
         _tk_type = "other"
     return
 
 def isAquaTk():
     """
-    Returns True if IDLE is using a native OS X Tk (Cocoa or Carbon).
+    Returns True wenn IDLE is using a native OS X Tk (Cocoa or Carbon).
     """
-    if not _tk_type:
+    wenn not _tk_type:
         _init_tk_type()
     return _tk_type == "cocoa" or _tk_type == "carbon"
 
 def isCarbonTk():
     """
-    Returns True if IDLE is using a Carbon Aqua Tk (instead of the
+    Returns True wenn IDLE is using a Carbon Aqua Tk (instead of the
     newer Cocoa Aqua Tk).
     """
-    if not _tk_type:
+    wenn not _tk_type:
         _init_tk_type()
     return _tk_type == "carbon"
 
 def isCocoaTk():
     """
-    Returns True if IDLE is using a Cocoa Aqua Tk.
+    Returns True wenn IDLE is using a Cocoa Aqua Tk.
     """
-    if not _tk_type:
+    wenn not _tk_type:
         _init_tk_type()
     return _tk_type == "cocoa"
 
 def isXQuartz():
     """
-    Returns True if IDLE is using an OS X X11 Tk.
+    Returns True wenn IDLE is using an OS X X11 Tk.
     """
-    if not _tk_type:
+    wenn not _tk_type:
         _init_tk_type()
     return _tk_type == "xquartz"
 
@@ -86,7 +86,7 @@ def readSystemPreferences():
     """
     Fetch the macOS system preferences.
     """
-    if platform != 'darwin':
+    wenn platform != 'darwin':
         return None
 
     plist_path = expanduser('~/Library/Preferences/.GlobalPreferences.plist')
@@ -99,13 +99,13 @@ def readSystemPreferences():
 
 def preferTabsPreferenceWarning():
     """
-    Warn if "Prefer tabs when opening documents" is set to "Always".
+    Warn wenn "Prefer tabs when opening documents" is set to "Always".
     """
-    if platform != 'darwin':
+    wenn platform != 'darwin':
         return None
 
     prefs = readSystemPreferences()
-    if prefs and prefs.get('AppleWindowTabbingMode') == 'always':
+    wenn prefs and prefs.get('AppleWindowTabbingMode') == 'always':
         return (
             'WARNING: The system preference "Prefer tabs when opening'
             ' documents" is set to "Always". This will cause various problems'
@@ -180,10 +180,10 @@ def overrideRootMenu(root, flist):
 
     def postwindowsmenu(menu=menu):
         end = menu.index('end')
-        if end is None:
+        wenn end is None:
             end = -1
 
-        if end > 0:
+        wenn end > 0:
             menu.delete(0, end)
         window.add_windows_to_menu(menu)
     window.register_callback(postwindowsmenu)
@@ -215,7 +215,7 @@ def overrideRootMenu(root, flist):
     root.bind('<<about-idle>>', about_dialog)
     root.bind('<<open-config-dialog>>', config_dialog)
     root.createcommand('::tk::mac::ShowPreferences', config_dialog)
-    if flist:
+    wenn flist:
         root.bind('<<close-all-windows>>', flist.close_all_callback)
 
         # The binding above doesn't reliably work on all versions of Tk
@@ -223,7 +223,7 @@ def overrideRootMenu(root, flist):
         # right thing fuer now.
         root.createcommand('::tk::mac::Quit', flist.close_all_callback)
 
-    if isCarbonTk():
+    wenn isCarbonTk():
         # fuer Carbon AquaTk, replace the default Tk apple menu
         menu = Menu(menubar, name='apple', tearoff=0)
         menubar.add_cascade(label='IDLE', menu=menu)
@@ -232,7 +232,7 @@ def overrideRootMenu(root, flist):
                 ('About IDLE', '<<about-idle>>'),
                     None,
                 ]))
-    if isCocoaTk():
+    wenn isCocoaTk():
         # replace default About dialog with About IDLE one
         root.createcommand('tkAboutDialog', about_dialog)
         # replace default "Help" item in Help menu
@@ -252,7 +252,7 @@ def fixb2context(root):
 
 def setupApp(root, flist):
     """
-    Perform initial OS X customizations if needed.
+    Perform initial OS X customizations wenn needed.
     Called from pyshell.main() after initial calls to Tk()
 
     There are currently three major versions of Tk in use on OS X:
@@ -266,13 +266,13 @@ def setupApp(root, flist):
     isAquaTk(), isCarbonTk(), isCocoaTk(), isXQuartz() functions which
     are initialized here as well.
     """
-    if isAquaTk():
+    wenn isAquaTk():
         hideTkConsole(root)
         overrideRootMenu(root, flist)
         addOpenEventSupport(root, flist)
         fixb2context(root)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     from unittest import main
     main('idlelib.idle_test.test_macosx', verbosity=2)

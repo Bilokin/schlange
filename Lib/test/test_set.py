@@ -97,7 +97,7 @@ klasse TestJointOps:
             self.s | self.otherword
         except TypeError:
             pass
-        else:
+        sonst:
             self.fail("s|t did not screen-out general iterables")
 
     def test_intersection(self):
@@ -115,9 +115,9 @@ klasse TestJointOps:
             self.assertEqual(self.thetype('abcba').intersection(C('cbcf'), C('bag')), set('b'))
         s = self.thetype('abcba')
         z = s.intersection()
-        if self.thetype == frozenset():
+        wenn self.thetype == frozenset():
             self.assertEqual(id(s), id(z))
-        else:
+        sonst:
             self.assertNotEqual(id(s), id(z))
 
     def test_isdisjoint(self):
@@ -142,7 +142,7 @@ klasse TestJointOps:
             self.s & self.otherword
         except TypeError:
             pass
-        else:
+        sonst:
             self.fail("s&t did not screen-out general iterables")
 
     def test_difference(self):
@@ -169,7 +169,7 @@ klasse TestJointOps:
             self.s - self.otherword
         except TypeError:
             pass
-        else:
+        sonst:
             self.fail("s-t did not screen-out general iterables")
 
     def test_symmetric_difference(self):
@@ -194,7 +194,7 @@ klasse TestJointOps:
             self.s ^ self.otherword
         except TypeError:
             pass
-        else:
+        sonst:
             self.fail("s^t did not screen-out general iterables")
 
     def test_equality(self):
@@ -228,13 +228,13 @@ klasse TestJointOps:
 
     def test_pickling(self):
         fuer i in range(pickle.HIGHEST_PROTOCOL + 1):
-            if type(self.s) not in (set, frozenset):
+            wenn type(self.s) not in (set, frozenset):
                 self.s.x = ['x']
                 self.s.z = ['z']
             p = pickle.dumps(self.s, i)
             dup = pickle.loads(p)
             self.assertEqual(self.s, dup, "%s != %s" % (self.s, dup))
-            if type(self.s) not in (set, frozenset):
+            wenn type(self.s) not in (set, frozenset):
                 self.assertEqual(self.s.x, dup.x)
                 self.assertEqual(self.s.z, dup.z)
                 self.assertNotHasAttr(self.s, 'y')
@@ -307,7 +307,7 @@ klasse TestJointOps:
         self.assertRaises(RuntimeError, self.thetype, [BadCmp(), BadCmp()])
         self.assertRaises(RuntimeError, s.__contains__, BadCmp())
         # Detect errors during mutating operations
-        if hasattr(s, 'add'):
+        wenn hasattr(s, 'add'):
             self.assertRaises(RuntimeError, s.add, BadCmp())
             self.assertRaises(RuntimeError, s.discard, BadCmp())
             self.assertRaises(RuntimeError, s.remove, BadCmp())
@@ -316,9 +316,9 @@ klasse TestJointOps:
         w = ReprWrapper()
         s = self.thetype([w])
         w.value = s
-        if self.thetype == set:
+        wenn self.thetype == set:
             self.assertEqual(repr(s), '{set(...)}')
-        else:
+        sonst:
             name = repr(s).partition('(')[0]    # strip klasse name
             self.assertEqual(repr(s), '%s({%s(...)})' % (name, name))
 
@@ -330,7 +330,7 @@ klasse TestJointOps:
         self.assertEqual(sum(elem.hash_count fuer elem in d), n)
         s.difference(d)
         self.assertEqual(sum(elem.hash_count fuer elem in d), n)
-        if hasattr(s, 'symmetric_difference_update'):
+        wenn hasattr(s, 'symmetric_difference_update'):
             s.symmetric_difference_update(d)
         self.assertEqual(sum(elem.hash_count fuer elem in d), n)
         d2 = dict.fromkeys(set(d))
@@ -435,7 +435,7 @@ klasse TestSet(TestJointOps, unittest.TestCase):
             except KeyError as e:
                 v2 = e.args[0]
                 self.assertEqual(v1, v2)
-            else:
+            sonst:
                 self.fail()
 
     def test_remove_keyerror_set(self):
@@ -446,7 +446,7 @@ klasse TestSet(TestJointOps, unittest.TestCase):
             self.assertTrue(e.args[0] is key,
                          "KeyError should be {0}, not {1}".format(key,
                                                                   e.args[0]))
-        else:
+        sonst:
             self.fail()
 
     def test_discard(self):
@@ -494,9 +494,9 @@ klasse TestSet(TestJointOps, unittest.TestCase):
         retval = self.s.intersection_update(self.otherword)
         self.assertEqual(retval, None)
         fuer c in (self.word + self.otherword):
-            if c in self.otherword and c in self.word:
+            wenn c in self.otherword and c in self.word:
                 self.assertIn(c, self.s)
-            else:
+            sonst:
                 self.assertNotIn(c, self.s)
         self.assertRaises(PassThru, self.s.intersection_update, check_pass_thru())
         self.assertRaises(TypeError, self.s.intersection_update, [[]])
@@ -514,18 +514,18 @@ klasse TestSet(TestJointOps, unittest.TestCase):
     def test_iand(self):
         self.s &= set(self.otherword)
         fuer c in (self.word + self.otherword):
-            if c in self.otherword and c in self.word:
+            wenn c in self.otherword and c in self.word:
                 self.assertIn(c, self.s)
-            else:
+            sonst:
                 self.assertNotIn(c, self.s)
 
     def test_difference_update(self):
         retval = self.s.difference_update(self.otherword)
         self.assertEqual(retval, None)
         fuer c in (self.word + self.otherword):
-            if c in self.word and c not in self.otherword:
+            wenn c in self.word and c not in self.otherword:
                 self.assertIn(c, self.s)
-            else:
+            sonst:
                 self.assertNotIn(c, self.s)
         self.assertRaises(PassThru, self.s.difference_update, check_pass_thru())
         self.assertRaises(TypeError, self.s.difference_update, [[]])
@@ -551,18 +551,18 @@ klasse TestSet(TestJointOps, unittest.TestCase):
     def test_isub(self):
         self.s -= set(self.otherword)
         fuer c in (self.word + self.otherword):
-            if c in self.word and c not in self.otherword:
+            wenn c in self.word and c not in self.otherword:
                 self.assertIn(c, self.s)
-            else:
+            sonst:
                 self.assertNotIn(c, self.s)
 
     def test_symmetric_difference_update(self):
         retval = self.s.symmetric_difference_update(self.otherword)
         self.assertEqual(retval, None)
         fuer c in (self.word + self.otherword):
-            if (c in self.word) ^ (c in self.otherword):
+            wenn (c in self.word) ^ (c in self.otherword):
                 self.assertIn(c, self.s)
-            else:
+            sonst:
                 self.assertNotIn(c, self.s)
         self.assertRaises(PassThru, self.s.symmetric_difference_update, check_pass_thru())
         self.assertRaises(TypeError, self.s.symmetric_difference_update, [[]])
@@ -575,9 +575,9 @@ klasse TestSet(TestJointOps, unittest.TestCase):
     def test_ixor(self):
         self.s ^= set(self.otherword)
         fuer c in (self.word + self.otherword):
-            if (c in self.word) ^ (c in self.otherword):
+            wenn (c in self.word) ^ (c in self.otherword):
                 self.assertIn(c, self.s)
-            else:
+            sonst:
                 self.assertNotIn(c, self.s)
 
     def test_inplace_on_self(self):
@@ -766,7 +766,7 @@ klasse TestFrozenSet(TestJointOps, unittest.TestCase):
         addhashvalue = hashvalues.add
         elemmasks = [(i+1, 1<<i) fuer i in range(n)]
         fuer i in range(2**n):
-            addhashvalue(hash(frozenset([e fuer e, m in elemmasks if m&i])))
+            addhashvalue(hash(frozenset([e fuer e, m in elemmasks wenn m&i])))
         self.assertEqual(len(hashvalues), 2**n)
 
         def zf_range(n):
@@ -871,7 +871,7 @@ empty_set = set()
 klasse TestBasicOps:
 
     def test_repr(self):
-        if self.repr is not None:
+        wenn self.repr is not None:
             self.assertEqual(repr(self.set), self.repr)
 
     def check_repr_against_values(self):
@@ -1100,7 +1100,7 @@ klasse TestExceptionPropagation(unittest.TestCase):
                 s.update([4])
         except RuntimeError:
             pass
-        else:
+        sonst:
             self.fail("no exception when changing size during iteration")
 
 #==============================================================================
@@ -1373,8 +1373,8 @@ klasse TestSubsets:
             # Test the binary infix spelling.
             result = eval("x" + case + "y", locals())
             self.assertEqual(result, expected)
-            # Test the "friendly" method-name spelling, if one exists.
-            if case in TestSubsets.case2method:
+            # Test the "friendly" method-name spelling, wenn one exists.
+            wenn case in TestSubsets.case2method:
                 method = getattr(x, TestSubsets.case2method[case])
                 result = method(y)
                 self.assertEqual(result, expected)
@@ -1383,7 +1383,7 @@ klasse TestSubsets:
             rcase = TestSubsets.reverse[case]
             result = eval("y" + rcase + "x", locals())
             self.assertEqual(result, expected)
-            if rcase in TestSubsets.case2method:
+            wenn rcase in TestSubsets.case2method:
                 method = getattr(y, TestSubsets.case2method[rcase])
                 result = method(x)
                 self.assertEqual(result, expected)
@@ -1454,21 +1454,21 @@ klasse TestOnlySetsInBinaryOps:
             self.set |= self.other
         except TypeError:
             pass
-        else:
+        sonst:
             self.fail("expected TypeError")
 
     def test_update(self):
-        if self.otherIsIterable:
+        wenn self.otherIsIterable:
             self.set.update(self.other)
-        else:
+        sonst:
             self.assertRaises(TypeError, self.set.update, self.other)
 
     def test_union(self):
         self.assertRaises(TypeError, lambda: self.set | self.other)
         self.assertRaises(TypeError, lambda: self.other | self.set)
-        if self.otherIsIterable:
+        wenn self.otherIsIterable:
             self.set.union(self.other)
-        else:
+        sonst:
             self.assertRaises(TypeError, self.set.union, self.other)
 
     def test_intersection_update_operator(self):
@@ -1476,13 +1476,13 @@ klasse TestOnlySetsInBinaryOps:
             self.set &= self.other
         except TypeError:
             pass
-        else:
+        sonst:
             self.fail("expected TypeError")
 
     def test_intersection_update(self):
-        if self.otherIsIterable:
+        wenn self.otherIsIterable:
             self.set.intersection_update(self.other)
-        else:
+        sonst:
             self.assertRaises(TypeError,
                               self.set.intersection_update,
                               self.other)
@@ -1490,9 +1490,9 @@ klasse TestOnlySetsInBinaryOps:
     def test_intersection(self):
         self.assertRaises(TypeError, lambda: self.set & self.other)
         self.assertRaises(TypeError, lambda: self.other & self.set)
-        if self.otherIsIterable:
+        wenn self.otherIsIterable:
             self.set.intersection(self.other)
-        else:
+        sonst:
             self.assertRaises(TypeError, self.set.intersection, self.other)
 
     def test_sym_difference_update_operator(self):
@@ -1500,13 +1500,13 @@ klasse TestOnlySetsInBinaryOps:
             self.set ^= self.other
         except TypeError:
             pass
-        else:
+        sonst:
             self.fail("expected TypeError")
 
     def test_sym_difference_update(self):
-        if self.otherIsIterable:
+        wenn self.otherIsIterable:
             self.set.symmetric_difference_update(self.other)
-        else:
+        sonst:
             self.assertRaises(TypeError,
                               self.set.symmetric_difference_update,
                               self.other)
@@ -1514,9 +1514,9 @@ klasse TestOnlySetsInBinaryOps:
     def test_sym_difference(self):
         self.assertRaises(TypeError, lambda: self.set ^ self.other)
         self.assertRaises(TypeError, lambda: self.other ^ self.set)
-        if self.otherIsIterable:
+        wenn self.otherIsIterable:
             self.set.symmetric_difference(self.other)
-        else:
+        sonst:
             self.assertRaises(TypeError, self.set.symmetric_difference, self.other)
 
     def test_difference_update_operator(self):
@@ -1524,13 +1524,13 @@ klasse TestOnlySetsInBinaryOps:
             self.set -= self.other
         except TypeError:
             pass
-        else:
+        sonst:
             self.fail("expected TypeError")
 
     def test_difference_update(self):
-        if self.otherIsIterable:
+        wenn self.otherIsIterable:
             self.set.difference_update(self.other)
-        else:
+        sonst:
             self.assertRaises(TypeError,
                               self.set.difference_update,
                               self.other)
@@ -1538,9 +1538,9 @@ klasse TestOnlySetsInBinaryOps:
     def test_difference(self):
         self.assertRaises(TypeError, lambda: self.set - self.other)
         self.assertRaises(TypeError, lambda: self.other - self.set)
-        if self.otherIsIterable:
+        wenn self.otherIsIterable:
             self.set.difference(self.other)
-        else:
+        sonst:
             self.assertRaises(TypeError, self.set.difference, self.other)
 
 #------------------------------------------------------------------------------
@@ -1667,7 +1667,7 @@ klasse TestIdentities(unittest.TestCase):
         self.assertEqual(a&b, b&a)
         self.assertEqual(a|b, b|a)
         self.assertEqual(a^b, b^a)
-        if a != b:
+        wenn a != b:
             self.assertNotEqual(a-b, b-a)
 
     def test_summations(self):
@@ -1710,7 +1710,7 @@ klasse I:
     def __iter__(self):
         return self
     def __next__(self):
-        if self.i >= len(self.seqn): raise StopIteration
+        wenn self.i >= len(self.seqn): raise StopIteration
         v = self.seqn[self.i]
         self.i += 1
         return v
@@ -1730,7 +1730,7 @@ klasse X:
         self.seqn = seqn
         self.i = 0
     def __next__(self):
-        if self.i >= len(self.seqn): raise StopIteration
+        wenn self.i >= len(self.seqn): raise StopIteration
         v = self.seqn[self.i]
         self.i += 1
         return v
@@ -1785,9 +1785,9 @@ klasse TestVariousIteratorArgs(unittest.TestCase):
                 fuer g in (G, I, Ig, L, R):
                     expected = meth(data)
                     actual = meth(g(data))
-                    if isinstance(expected, bool):
+                    wenn isinstance(expected, bool):
                         self.assertEqual(actual, expected)
-                    else:
+                    sonst:
                         self.assertEqual(sorted(actual, key=repr), sorted(expected, key=repr))
                 self.assertRaises(TypeError, meth, X(s))
                 self.assertRaises(TypeError, meth, N(s))
@@ -1810,7 +1810,7 @@ klasse TestVariousIteratorArgs(unittest.TestCase):
 
 klasse bad_eq:
     def __eq__(self, other):
-        if be_bad:
+        wenn be_bad:
             set2.clear()
             raise ZeroDivisionError
         return self is other
@@ -1819,7 +1819,7 @@ klasse bad_eq:
 
 klasse bad_dict_clear:
     def __eq__(self, other):
-        if be_bad:
+        wenn be_bad:
             dict2.clear()
         return self is other
     def __hash__(self):
@@ -1875,11 +1875,11 @@ klasse TestOperationsMutating:
     def make_sets_of_bad_objects(self):
         klasse Bad:
             def __eq__(self, other):
-                if not enabled:
+                wenn not enabled:
                     return False
-                if randrange(20) == 0:
+                wenn randrange(20) == 0:
                     set1.clear()
-                if randrange(20) == 0:
+                wenn randrange(20) == 0:
                     set2.clear()
                 return bool(randrange(2))
             def __hash__(self):
@@ -2077,8 +2077,8 @@ def linegraph(G):
     L = {}
     fuer x in G:
         fuer y in G[x]:
-            nx = [frozenset([x,z]) fuer z in G[x] if z != y]
-            ny = [frozenset([y,z]) fuer z in G[y] if z != x]
+            nx = [frozenset([x,z]) fuer z in G[x] wenn z != y]
+            ny = [frozenset([y,z]) fuer z in G[y] wenn z != x]
             L[frozenset([x,y])] = frozenset(nx+ny)
     return L
 
@@ -2089,21 +2089,21 @@ def faces(G):
     fuer v1, edges in G.items():
         fuer v2 in edges:
             fuer v3 in G[v2]:
-                if v1 == v3:
+                wenn v1 == v3:
                     continue
-                if v1 in G[v3]:
+                wenn v1 in G[v3]:
                     f.add(frozenset([v1, v2, v3]))
-                else:
+                sonst:
                     fuer v4 in G[v3]:
-                        if v4 == v2:
+                        wenn v4 == v2:
                             continue
-                        if v1 in G[v4]:
+                        wenn v1 in G[v4]:
                             f.add(frozenset([v1, v2, v3, v4]))
-                        else:
+                        sonst:
                             fuer v5 in G[v4]:
-                                if v5 == v3 or v5 == v2:
+                                wenn v5 == v3 or v5 == v2:
                                     continue
-                                if v1 in G[v5]:
+                                wenn v1 in G[v5]:
                                     f.add(frozenset([v1, v2, v3, v4, v5]))
     return f
 
@@ -2157,5 +2157,5 @@ klasse TestGraphs(unittest.TestCase):
 
 #==============================================================================
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

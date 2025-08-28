@@ -80,7 +80,7 @@ klasse BasicTestCase(CfgParserTestCaseClass):
              'This One Has A ] In It',
              ]
 
-        if self.allow_no_value:
+        wenn self.allow_no_value:
             E.append('NoValue')
         E.sort()
         F = [('baz', 'qwe'), ('foo', 'bar3')]
@@ -130,7 +130,7 @@ klasse BasicTestCase(CfgParserTestCaseClass):
         eq(cf.getboolean('Types', 'boolean'), False)
         eq(cf.get('Types', '123'), 'strange but acceptable')
         eq(cf.get('This One Has A ] In It', 'forks'), 'spoons')
-        if self.allow_no_value:
+        wenn self.allow_no_value:
             eq(cf.get('NoValue', 'option-without-value'), None)
 
         # test vars= and fallback=
@@ -163,7 +163,7 @@ klasse BasicTestCase(CfgParserTestCaseClass):
         with self.assertRaises(configparser.NoOptionError):
             cf.getboolean('Types', 'no-such-boolean')
         eq(cf.getboolean('No Such Types', 'boolean', fallback=True), True)
-        if self.allow_no_value:
+        wenn self.allow_no_value:
             eq(cf.get('NoValue', 'option-without-value', fallback=False), None)
             eq(cf.get('NoValue', 'no-such-option-without-value',
                       fallback=False), False)
@@ -186,7 +186,7 @@ klasse BasicTestCase(CfgParserTestCaseClass):
         eq(cf['Spaces']['another with spaces'], 'splat!')
         eq(cf['Long Line']['foo'],
            'this line is much, much longer than my editor\nlikes it.')
-        if self.allow_no_value:
+        wenn self.allow_no_value:
             eq(cf['NoValue']['option-without-value'], None)
         # test vars= and fallback=
         eq(cf['Foo Bar'].get('foo', 'baz'), 'bar1')
@@ -229,7 +229,7 @@ klasse BasicTestCase(CfgParserTestCaseClass):
         eq(cf['Types'].getboolean('no-such-boolean', True), True)
         eq(cf['Types'].getboolean('no-such-boolean', fallback=True), True)
         eq(cf['Types'].getboolean('no-such-boolean'), None)
-        if self.allow_no_value:
+        wenn self.allow_no_value:
             eq(cf['NoValue'].get('option-without-value', False), None)
             eq(cf['NoValue'].get('option-without-value', fallback=False), None)
             eq(cf['NoValue'].get('no-such-option-without-value', False), False)
@@ -323,14 +323,14 @@ boolean {0[0]} NO
 [This One Has A ] In It]
   forks {0[0]} spoons
 """.format(self.delimiters, self.comment_prefixes)
-        if self.allow_no_value:
+        wenn self.allow_no_value:
             config_string += (
                 "[NoValue]\n"
                 "option-without-value\n"
                 )
         cf = self.fromstring(config_string)
         self.basic_test(cf)
-        if self.strict:
+        wenn self.strict:
             with self.assertRaises(configparser.DuplicateOptionError):
                 cf.read_string(textwrap.dedent("""\
                     [Duplicate Options Here]
@@ -344,7 +344,7 @@ boolean {0[0]} NO
                     [And Now For Something]
                     the larch {0[1]} 1
                 """.format(self.delimiters)))
-        else:
+        sonst:
             cf.read_string(textwrap.dedent("""\
                 [Duplicate Options Here]
                 option {0[0]} with a value
@@ -400,7 +400,7 @@ boolean {0[0]} NO
                 "forks": "spoons"
             },
         }
-        if self.allow_no_value:
+        wenn self.allow_no_value:
             config.update({
                 "NoValue": {
                     "option-without-value": None,
@@ -409,7 +409,7 @@ boolean {0[0]} NO
         cf = self.newconfig()
         cf.read_dict(config)
         self.basic_test(cf)
-        if self.strict:
+        wenn self.strict:
             with self.assertRaises(configparser.DuplicateSectionError):
                 cf.read_dict({
                     '1': {'key': 'value'},
@@ -422,7 +422,7 @@ boolean {0[0]} NO
                         'OPTION': 'with another value',
                     },
                 })
-        else:
+        sonst:
             cf.read_dict({
                 'section': {'key': 'value'},
                 'SECTION': {'key2': 'value2'},
@@ -537,16 +537,16 @@ boolean {0[0]} NO
         e = self.parse_error(cf, configparser.MissingSectionHeaderError,
                              "No Section!\n")
         self.assertEqual(e.args, ('<???>', 1, "No Section!\n"))
-        if not self.allow_no_value:
+        wenn not self.allow_no_value:
             e = self.parse_error(cf, configparser.ParsingError,
                                 "[Foo]\n  wrong-indent\n")
             self.assertEqual(e.args, ('<???>',))
             # read_file on a real file
             tricky = support.findfile("cfgparser.3", subdir="configdata")
-            if self.delimiters[0] == '=':
+            wenn self.delimiters[0] == '=':
                 error = configparser.ParsingError
                 expected = (tricky,)
-            else:
+            sonst:
                 error = configparser.MissingSectionHeaderError
                 expected = (tricky, 1,
                             '  # INI with as many tricky parts as possible\n')
@@ -555,9 +555,9 @@ boolean {0[0]} NO
             self.assertEqual(e.args, expected)
 
     def parse_error(self, cf, exc, src):
-        if hasattr(src, 'readline'):
+        wenn hasattr(src, 'readline'):
             sio = src
-        else:
+        sonst:
             sio = io.StringIO(src)
         with self.assertRaises(exc) as cm:
             cf.read_file(sio)
@@ -585,7 +585,7 @@ boolean {0[0]} NO
             cf.get(section, option)
         except exc as e:
             return e
-        else:
+        sonst:
             self.fail("expected exception type %s.%s"
                       % (exc.__module__, exc.__qualname__))
 
@@ -623,7 +623,7 @@ boolean {0[0]} NO
         self.assertEqual(str(e), "Section 'Foo' already exists")
         self.assertEqual(e.args, ("Foo", None, None))
 
-        if self.strict:
+        wenn self.strict:
             with self.assertRaises(configparser.DuplicateSectionError) as cm:
                 cf.read_string(textwrap.dedent("""\
                     [Foo]
@@ -653,10 +653,10 @@ boolean {0[0]} NO
             y{equals}2
             y{equals}3
         """.format(equals=self.delimiters[0]))
-        if self.strict:
+        wenn self.strict:
             with self.assertRaises(configparser.DuplicateOptionError):
                 cf.read_string(ini)
-        else:
+        sonst:
             cf.read_string(ini)
         self.assertEqual(cf.get('Foo', 'x'), '1')
 
@@ -676,7 +676,7 @@ boolean {0[0]} NO
             "\n".format(self.delimiters, comment=self.comment_prefixes[0],
                         default_section=self.default_section)
             )
-        if self.allow_no_value:
+        wenn self.allow_no_value:
             config_string += (
             "[Valueless]\n"
             "option-without-value\n"
@@ -687,7 +687,7 @@ boolean {0[0]} NO
             output = io.StringIO()
             cf.write(output, space_around_delimiters=space_around_delimiters)
             delimiter = self.delimiters[0]
-            if space_around_delimiters:
+            wenn space_around_delimiters:
                 delimiter = " {} ".format(delimiter)
             expect_string = (
                 "[{default_section}]\n"
@@ -706,7 +706,7 @@ boolean {0[0]} NO
                 "\n".format(equals=delimiter,
                             default_section=self.default_section)
                 )
-            if self.allow_no_value:
+            wenn self.allow_no_value:
                 expect_string += (
                     "[Valueless]\n"
                     "option-without-value\n"
@@ -729,7 +729,7 @@ boolean {0[0]} NO
         cf.set("sect", "option2", "splat")
 
     def test_read_returns_file_list(self):
-        if self.delimiters[0] != '=':
+        wenn self.delimiters[0] != '=':
             self.skipTest('incompatible format')
         file1 = support.findfile("cfgparser.1", subdir="configdata")
         # check when we pass a mix of readable and non-readable files:
@@ -762,7 +762,7 @@ boolean {0[0]} NO
         self.assertEqual(parsed_files, [])
 
     def test_read_returns_file_list_with_bytestring_path(self):
-        if self.delimiters[0] != '=':
+        wenn self.delimiters[0] != '=':
             self.skipTest('incompatible format')
         file1_bytestring = support.findfile("cfgparser.1", subdir="configdata").encode()
         # check when passing an existing bytestring path
@@ -885,7 +885,7 @@ boolean {0[0]} NO
         self.assertEqual(set(cf['section2'].keys()), {'name22'})
 
     def test_invalid_multiline_value(self):
-        if self.allow_no_value:
+        wenn self.allow_no_value:
             self.skipTest('if no_value is allowed, ParsingError is not raised')
 
         invalid = textwrap.dedent("""\
@@ -917,7 +917,7 @@ klasse ConfigParserTestCase(BasicTestCase, unittest.TestCase):
         eq(cf.get("Foo", "bar10"),
            "something with lots of interpolation (10 steps)")
         e = self.get_error(cf, configparser.InterpolationDepthError, "Foo", "bar11")
-        if self.interpolation == configparser._UNSET:
+        wenn self.interpolation == configparser._UNSET:
             self.assertEqual(e.args, ("bar11", "Foo",
                 "something %(with11)s lots of interpolation (11 steps)"))
 
@@ -928,7 +928,7 @@ klasse ConfigParserTestCase(BasicTestCase, unittest.TestCase):
         self.assertEqual(e.reference, "reference")
         self.assertEqual(e.section, "Interpolation Error")
         self.assertEqual(e.option, "name")
-        if self.interpolation == configparser._UNSET:
+        wenn self.interpolation == configparser._UNSET:
             self.assertEqual(e.args, ('name', 'Interpolation Error',
                                     '%(reference)s', 'reference'))
 
@@ -947,7 +947,7 @@ klasse ConfigParserTestCase(BasicTestCase, unittest.TestCase):
                              "not_ok{eq}%(option2)s/%%s".format(
                                  eq=self.delimiters[0]))
         self.assertEqual(cf.get("section", "ok"), "xxx/%s")
-        if self.interpolation == configparser._UNSET:
+        wenn self.interpolation == configparser._UNSET:
             self.assertEqual(cf.get("section", "not_ok"), "xxx/xxx/%s")
 
     def test_set_malformatted_interpolation(self):
@@ -1110,7 +1110,7 @@ klasse RawConfigParserTestCase(BasicTestCase, unittest.TestCase):
         cf.add_section(123)
         cf.set(123, 'this is sick', True)
         self.assertEqual(cf.get(123, 'this is sick'), True)
-        if cf._dict is configparser._default_dict:
+        wenn cf._dict is configparser._default_dict:
             # would not work fuer SortedDict; only checking fuer the most common
             # default dictionary (dict)
             cf.optionxform = lambda x: x
@@ -1161,7 +1161,7 @@ klasse ConfigParserTestCaseExtendedInterpolation(BasicTestCase, unittest.TestCas
 
     def fromstring(self, string, defaults=None, optionxform=None):
         cf = self.newconfig(defaults)
-        if optionxform:
+        wenn optionxform:
             cf.optionxform = optionxform
         cf.read_string(string)
         return cf
@@ -1499,10 +1499,10 @@ klasse CopyTestCase(BasicTestCase, unittest.TestCase):
         # we have to clean up option duplicates that appeared because of
         # the magic DEFAULTSECT behaviour.
         fuer section in cf_copy.values():
-            if section.name == self.default_section:
+            wenn section.name == self.default_section:
                 continue
             fuer default, value in cf[self.default_section].items():
-                if section[default] == value:
+                wenn section[default] == value:
                     del section[default]
         return cf_copy
 
@@ -1515,7 +1515,7 @@ klasse FakeFile:
             self.lines.reverse()
 
     def readline(self):
-        if len(self.lines):
+        wenn len(self.lines):
             return self.lines.pop()
         return ''
 
@@ -1970,7 +1970,7 @@ klasse ConvertersTestCase(BasicTestCase, unittest.TestCase):
     def newconfig(self, defaults=None):
         instance = super().newconfig(defaults=defaults)
         instance.converters['list'] = lambda v: [e.strip() fuer e in v.split()
-                                                 if e.strip()]
+                                                 wenn e.strip()]
         return instance
 
     def test_converters(self):
@@ -2045,7 +2045,7 @@ klasse ConvertersTestCase(BasicTestCase, unittest.TestCase):
 
 
 klasse BlatantOverrideConvertersTestCase(unittest.TestCase):
-    """What if somebody overrode a getboolean()? We want to make sure that in
+    """What wenn somebody overrode a getboolean()? We want to make sure that in
     this case the automatic converters do not kick in."""
 
     config = """
@@ -2072,7 +2072,7 @@ klasse BlatantOverrideConvertersTestCase(unittest.TestCase):
 
             def getboolean(self, section, option, *, raw=False, vars=None,
                         fallback=configparser._UNSET):
-                if section == option:
+                wenn section == option:
                     return True
                 return super().getboolean(section, option, raw=raw, vars=vars,
                                           fallback=fallback)
@@ -2262,5 +2262,5 @@ klasse MiscTestCase(unittest.TestCase):
         support.check__all__(self, configparser, not_exported={"Error"})
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

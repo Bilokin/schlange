@@ -83,14 +83,14 @@ def train_dict(samples, dict_size):
 
     *dict_size* is the dictionary's maximum size, in bytes.
     """
-    if not isinstance(dict_size, int):
+    wenn not isinstance(dict_size, int):
         ds_cls = type(dict_size).__qualname__
         raise TypeError(f'dict_size must be an int object, not {ds_cls!r}.')
 
     samples = tuple(samples)
     chunks = b''.join(samples)
     chunk_sizes = tuple(_nbytes(sample) fuer sample in samples)
-    if not chunks:
+    wenn not chunks:
         raise ValueError("samples contained no data; can't train dictionary.")
     dict_content = _zstd.train_dict(chunks, chunk_sizes, dict_size)
     return ZstdDict(dict_content)
@@ -115,17 +115,17 @@ def finalize_dict(zstd_dict, /, samples, dict_size, level):
     can provide improvements.
     """
 
-    if not isinstance(zstd_dict, ZstdDict):
+    wenn not isinstance(zstd_dict, ZstdDict):
         raise TypeError('zstd_dict argument should be a ZstdDict object.')
-    if not isinstance(dict_size, int):
+    wenn not isinstance(dict_size, int):
         raise TypeError('dict_size argument should be an int object.')
-    if not isinstance(level, int):
+    wenn not isinstance(level, int):
         raise TypeError('level argument should be an int object.')
 
     samples = tuple(samples)
     chunks = b''.join(samples)
     chunk_sizes = tuple(_nbytes(sample) fuer sample in samples)
-    if not chunks:
+    wenn not chunks:
         raise ValueError("The samples are empty content, can't finalize the "
                          "dictionary.")
     dict_content = _zstd.finalize_dict(zstd_dict.dict_content, chunks,
@@ -163,11 +163,11 @@ def decompress(data, zstd_dict=None, options=None):
     while True:
         decomp = ZstdDecompressor(options=options, zstd_dict=zstd_dict)
         results.append(decomp.decompress(data))
-        if not decomp.eof:
+        wenn not decomp.eof:
             raise ZstdError('Compressed data ended before the '
                             'end-of-stream marker was reached')
         data = decomp.unused_data
-        if not data:
+        wenn not data:
             break
     return b''.join(results)
 

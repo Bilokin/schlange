@@ -37,7 +37,7 @@ klasse HTTPSServer(_HTTPServer):
             sslconn = self.context.wrap_socket(sock, server_side=True)
         except OSError as e:
             # socket errors are silenced by the caller, print them here
-            if support.verbose:
+            wenn support.verbose:
                 sys.stderr.write("Got an error:\n%s\n" % e)
             raise
         return sslconn, addr
@@ -74,7 +74,7 @@ klasse RootedHTTPRequestHandler(SimpleHTTPRequestHandler):
 
     def log_message(self, format, *args):
         # we override this to suppress logging unless "verbose"
-        if support.verbose:
+        wenn support.verbose:
             sys.stdout.write(" server (%s:%d %s):\n   [%s] %s\n" %
                              (self.server.server_address,
                               self.server.server_port,
@@ -105,7 +105,7 @@ klasse StatsRequestHandler(BaseHTTPRequestHandler):
         self.send_header("Content-type", "text/plain; charset=utf-8")
         self.send_header("Content-Length", str(len(body)))
         self.end_headers()
-        if send_body:
+        wenn send_body:
             self.wfile.write(body)
 
     def do_HEAD(self):
@@ -113,7 +113,7 @@ klasse StatsRequestHandler(BaseHTTPRequestHandler):
         self.do_GET(send_body=False)
 
     def log_request(self, format, *args):
-        if support.verbose:
+        wenn support.verbose:
             BaseHTTPRequestHandler.log_request(self, format, *args)
 
 
@@ -136,7 +136,7 @@ klasse HTTPSServerThread(threading.Thread):
         threading.Thread.start(self)
 
     def run(self):
-        if self.flag:
+        wenn self.flag:
             self.flag.set()
         try:
             self.server.serve_forever(0.05)
@@ -149,7 +149,7 @@ klasse HTTPSServerThread(threading.Thread):
 
 def make_https_server(case, *, context=None, certfile=CERTFILE,
                       host=HOST, handler_class=None):
-    if context is None:
+    wenn context is None:
         context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
     # We assume the certfile contains both private key and certificate
     context.load_cert_chain(certfile)
@@ -158,17 +158,17 @@ def make_https_server(case, *, context=None, certfile=CERTFILE,
     server.start(flag)
     flag.wait()
     def cleanup():
-        if support.verbose:
+        wenn support.verbose:
             sys.stdout.write('stopping HTTPS server\n')
         server.stop()
-        if support.verbose:
+        wenn support.verbose:
             sys.stdout.write('joining HTTPS thread\n')
         server.join()
     case.addCleanup(cleanup)
     return server
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(
         description='Run a test HTTPS server. '
@@ -189,21 +189,21 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     support.verbose = args.verbose
-    if args.use_stats_handler:
+    wenn args.use_stats_handler:
         handler_class = StatsRequestHandler
-    else:
+    sonst:
         handler_class = RootedHTTPRequestHandler
         handler_class.root = os.getcwd()
     context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
     context.load_cert_chain(CERTFILE)
-    if args.curve_name:
+    wenn args.curve_name:
         context.set_ecdh_curve(args.curve_name)
-    if args.dh_file:
+    wenn args.dh_file:
         context.load_dh_params(args.dh_file)
-    if args.ciphers:
+    wenn args.ciphers:
         context.set_ciphers(args.ciphers)
 
     server = HTTPSServer(("", args.port), handler_class, context)
-    if args.verbose:
+    wenn args.verbose:
         print("Listening on https://localhost:{0.port}".format(args))
     server.serve_forever(0.1)

@@ -46,5 +46,5 @@ klasse UnaryOpTestCase(unittest.TestCase):
         self.assertRaises(TypeError, eval, "~2.0")
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

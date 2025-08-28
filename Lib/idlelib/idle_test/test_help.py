@@ -32,5 +32,5 @@ klasse IdleDocTest(unittest.TestCase):
         self.assertEqual(text.get('1.0', '1.end'), ' IDLE — Python editor and shell ')
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main(verbosity=2)

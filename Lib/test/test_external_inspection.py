@@ -82,7 +82,7 @@ klasse TestGetStackTrace(unittest.TestCase):
 
             def bar():
                 fuer x in range(100):
-                    if x == 50:
+                    wenn x == 50:
                         baz()
 
             def baz():
@@ -126,7 +126,7 @@ klasse TestGetStackTrace(unittest.TestCase):
                     "Insufficient permissions to read the stack trace"
                 )
             finally:
-                if client_socket is not None:
+                wenn client_socket is not None:
                     client_socket.close()
                 p.kill()
                 p.terminate()
@@ -145,9 +145,9 @@ klasse TestGetStackTrace(unittest.TestCase):
             # Check that the main thread stack trace is in the result
             frame = FrameInfo([script_name, 19, "<module>"])
             fuer _, stack in stack_trace:
-                if frame in stack:
+                wenn frame in stack:
                     break
-            else:
+            sonst:
                 self.fail("Main thread stack trace not found in result")
 
     @skip_if_not_supported
@@ -235,7 +235,7 @@ klasse TestGetStackTrace(unittest.TestCase):
                         "Insufficient permissions to read the stack trace"
                     )
                 finally:
-                    if client_socket is not None:
+                    wenn client_socket is not None:
                         client_socket.close()
                     p.kill()
                     p.terminate()
@@ -422,7 +422,7 @@ klasse TestGetStackTrace(unittest.TestCase):
             async def gen():
                 fuer num in range(2):
                     yield num
-                    if num == 1:
+                    wenn num == 1:
                         await gen_nested_call()
 
             async def main():
@@ -456,7 +456,7 @@ klasse TestGetStackTrace(unittest.TestCase):
                     "Insufficient permissions to read the stack trace"
                 )
             finally:
-                if client_socket is not None:
+                wenn client_socket is not None:
                     client_socket.close()
                 p.kill()
                 p.terminate()
@@ -545,7 +545,7 @@ klasse TestGetStackTrace(unittest.TestCase):
                     "Insufficient permissions to read the stack trace"
                 )
             finally:
-                if client_socket is not None:
+                wenn client_socket is not None:
                     client_socket.close()
                 p.kill()
                 p.terminate()
@@ -681,7 +681,7 @@ klasse TestGetStackTrace(unittest.TestCase):
                     "Insufficient permissions to read the stack trace"
                 )
             finally:
-                if client_socket is not None:
+                wenn client_socket is not None:
                     client_socket.close()
                 p.kill()
                 p.terminate()
@@ -878,18 +878,18 @@ klasse TestGetStackTrace(unittest.TestCase):
                         # no synchronization. That occasionally leads to invalid
                         # reads. Here we avoid making the test flaky.
                         msg = str(re)
-                        if msg.startswith("Task list appears corrupted"):
+                        wenn msg.startswith("Task list appears corrupted"):
                             continue
-                        elif msg.startswith(
+                        sowenn msg.startswith(
                             "Invalid linked list structure reading remote memory"
                         ):
                             continue
-                        elif msg.startswith("Unknown error reading memory"):
+                        sowenn msg.startswith("Unknown error reading memory"):
                             continue
-                        elif msg.startswith("Unhandled frame owner"):
+                        sowenn msg.startswith("Unhandled frame owner"):
                             continue
                         raise  # Unrecognized exception, safest not to ignore it
-                    else:
+                    sonst:
                         break
                 # expected: a list of two elements: 1 thread, 1 interp
                 self.assertEqual(len(all_awaited_by), 2)
@@ -1053,14 +1053,14 @@ klasse TestGetStackTrace(unittest.TestCase):
                 tasks_with_awaited = [
                     task
                     fuer task in entries
-                    if task.awaited_by == expected_awaited_by
+                    wenn task.awaited_by == expected_awaited_by
                 ]
                 self.assertGreaterEqual(len(tasks_with_awaited), 1000)
 
                 # the final task will have some random number, but it should for
                 # sure be one of the echo client spam horde (In windows this is not true
                 # fuer some reason)
-                if sys.platform != "win32":
+                wenn sys.platform != "win32":
                     self.assertEqual(
                         tasks_with_awaited[-1].awaited_by,
                         entries[-1].awaited_by,
@@ -1070,7 +1070,7 @@ klasse TestGetStackTrace(unittest.TestCase):
                     "Insufficient permissions to read the stack trace"
                 )
             finally:
-                if client_socket is not None:
+                wenn client_socket is not None:
                     client_socket.close()
                 p.kill()
                 p.terminate()
@@ -1087,7 +1087,7 @@ klasse TestGetStackTrace(unittest.TestCase):
         # expected stack traces are in the result (looking at you Windows!)
         this_tread_stack = None
         fuer thread_id, stack in stack_trace:
-            if thread_id == threading.get_native_id():
+            wenn thread_id == threading.get_native_id():
                 this_tread_stack = stack
                 break
         self.assertIsNotNone(this_tread_stack)
@@ -1140,7 +1140,7 @@ klasse TestGetStackTrace(unittest.TestCase):
                 count = 0
                 while count < 100000000:
                     count += 1
-                    if count % 10000000 == 0:
+                    wenn count % 10000000 == 0:
                         pass  # Keep main thread busy
                 sock.sendall(b"done\\n")
 
@@ -1204,20 +1204,20 @@ klasse TestGetStackTrace(unittest.TestCase):
                     all_traces = unwinder_all.get_stack_trace()
                     found = False
                     fuer thread_id, stack in all_traces:
-                        if not stack:
+                        wenn not stack:
                             continue
                         current_frame = stack[0]
-                        if (
+                        wenn (
                             current_frame.funcname == "main_work"
                             and current_frame.lineno > 15
                         ):
                             found = True
 
-                    if found:
+                    wenn found:
                         break
                     # Give a bit of time to take the next sample
                     time.sleep(0.1)
-                else:
+                sonst:
                     self.fail(
                         "Main thread did not start its busy work on time"
                     )
@@ -1231,7 +1231,7 @@ klasse TestGetStackTrace(unittest.TestCase):
                     "Insufficient permissions to read the stack trace"
                 )
             finally:
-                if client_socket is not None:
+                wenn client_socket is not None:
                     client_socket.close()
                 p.kill()
                 p.terminate()
@@ -1273,5 +1273,5 @@ klasse TestUnsupportedPlatformHandling(unittest.TestCase):
         )
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

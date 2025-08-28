@@ -34,15 +34,15 @@ DEFAULT_LIBRARY_FALLBACK = [
 ]
 
 def dyld_env(env, var):
-    if env is None:
+    wenn env is None:
         env = os.environ
     rval = env.get(var)
-    if rval is None:
+    wenn rval is None:
         return []
     return rval.split(':')
 
 def dyld_image_suffix(env=None):
-    if env is None:
+    wenn env is None:
         env = os.environ
     return env.get('DYLD_IMAGE_SUFFIX')
 
@@ -61,13 +61,13 @@ def dyld_fallback_library_path(env=None):
 def dyld_image_suffix_search(iterator, env=None):
     """For a potential path iterator, add DYLD_IMAGE_SUFFIX semantics"""
     suffix = dyld_image_suffix(env)
-    if suffix is None:
+    wenn suffix is None:
         return iterator
     def _inject(iterator=iterator, suffix=suffix):
         fuer path in iterator:
-            if path.endswith('.dylib'):
+            wenn path.endswith('.dylib'):
                 yield path[:-len('.dylib')] + suffix + '.dylib'
-            else:
+            sonst:
                 yield path + suffix
             yield path
     return _inject()
@@ -75,12 +75,12 @@ def dyld_image_suffix_search(iterator, env=None):
 def dyld_override_search(name, env=None):
     # If DYLD_FRAMEWORK_PATH is set and this dylib_name is a
     # framework name, use the first file that exists in the framework
-    # path if any.  If there is none go on to search the DYLD_LIBRARY_PATH
-    # if any.
+    # path wenn any.  If there is none go on to search the DYLD_LIBRARY_PATH
+    # wenn any.
 
     framework = framework_info(name)
 
-    if framework is not None:
+    wenn framework is not None:
         fuer path in dyld_framework_path(env):
             yield os.path.join(path, framework['name'])
 
@@ -93,7 +93,7 @@ def dyld_executable_path_search(name, executable_path=None):
     # If we haven't done any searching and found a library and the
     # dylib_name starts with "@executable_path/" then construct the
     # library name.
-    if name.startswith('@executable_path/') and executable_path is not None:
+    wenn name.startswith('@executable_path/') and executable_path is not None:
         yield os.path.join(executable_path, name[len('@executable_path/'):])
 
 def dyld_default_search(name, env=None):
@@ -101,7 +101,7 @@ def dyld_default_search(name, env=None):
 
     framework = framework_info(name)
 
-    if framework is not None:
+    wenn framework is not None:
         fallback_framework_path = dyld_fallback_framework_path(env)
         fuer path in fallback_framework_path:
             yield os.path.join(path, framework['name'])
@@ -110,11 +110,11 @@ def dyld_default_search(name, env=None):
     fuer path in fallback_library_path:
         yield os.path.join(path, os.path.basename(name))
 
-    if framework is not None and not fallback_framework_path:
+    wenn framework is not None and not fallback_framework_path:
         fuer path in DEFAULT_FRAMEWORK_FALLBACK:
             yield os.path.join(path, framework['name'])
 
-    if not fallback_library_path:
+    wenn not fallback_library_path:
         fuer path in DEFAULT_LIBRARY_FALLBACK:
             yield os.path.join(path, os.path.basename(name))
 
@@ -128,10 +128,10 @@ def dyld_find(name, executable_path=None, env=None):
                 dyld_default_search(name, env),
             ), env):
 
-        if os.path.isfile(path):
+        wenn os.path.isfile(path):
             return path
         try:
-            if _dyld_shared_cache_contains_path(path):
+            wenn _dyld_shared_cache_contains_path(path):
                 return path
         except NotImplementedError:
             pass
@@ -153,7 +153,7 @@ def framework_find(fn, executable_path=None, env=None):
     except ValueError as e:
         error = e
     fmwk_index = fn.rfind('.framework')
-    if fmwk_index == -1:
+    wenn fmwk_index == -1:
         fmwk_index = len(fn)
         fn += '.framework'
     fn = os.path.join(fn, os.path.basename(fn[:fmwk_index]))

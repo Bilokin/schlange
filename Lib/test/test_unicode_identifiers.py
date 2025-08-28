@@ -25,8 +25,8 @@ klasse PEP3131Test(unittest.TestCase):
               "invalid character '€' (U+20AC) (badsyntax_3131.py, line 2)")
             self.assertEqual(err.lineno, 2)
             self.assertEqual(err.offset, 1)
-        else:
+        sonst:
             self.fail("expected exception didn't occur")
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

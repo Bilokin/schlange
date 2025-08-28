@@ -178,25 +178,25 @@ TPFLAGS_IS_ABSTRACT = 1 << 20
 
 # ----------------------------------------------------------- type-checking
 def ismodule(object):
-    """Return true if the object is a module."""
+    """Return true wenn the object is a module."""
     return isinstance(object, types.ModuleType)
 
 def isclass(object):
-    """Return true if the object is a class."""
+    """Return true wenn the object is a class."""
     return isinstance(object, type)
 
 def ismethod(object):
-    """Return true if the object is an instance method."""
+    """Return true wenn the object is an instance method."""
     return isinstance(object, types.MethodType)
 
 def ispackage(object):
-    """Return true if the object is a package."""
+    """Return true wenn the object is a package."""
     return ismodule(object) and hasattr(object, "__path__")
 
 def ismethoddescriptor(object):
-    """Return true if the object is a method descriptor.
+    """Return true wenn the object is a method descriptor.
 
-    But not if ismethod() or isclass() or isfunction() are true.
+    But not wenn ismethod() or isclass() or isfunction() are true.
 
     This is new in Python 2.2, and, fuer example, is true of int.__add__.
     An object passing this test has a __get__ attribute, but not a
@@ -208,7 +208,7 @@ def ismethoddescriptor(object):
     tests return false from the ismethoddescriptor() test, simply because
     the other tests promise more -- you can, e.g., count on having the
     __func__ attribute (etc) when an object passes ismethod()."""
-    if isclass(object) or ismethod(object) or isfunction(object):
+    wenn isclass(object) or ismethod(object) or isfunction(object):
         # mutual exclusion
         return False
     tp = type(object)
@@ -217,55 +217,55 @@ def ismethoddescriptor(object):
             and not hasattr(tp, "__delete__"))
 
 def isdatadescriptor(object):
-    """Return true if the object is a data descriptor.
+    """Return true wenn the object is a data descriptor.
 
     Data descriptors have a __set__ or a __delete__ attribute.  Examples are
     properties (defined in Python) and getsets and members (defined in C).
     Typically, data descriptors will also have __name__ and __doc__ attributes
     (properties, getsets, and members have both of these attributes), but this
     is not guaranteed."""
-    if isclass(object) or ismethod(object) or isfunction(object):
+    wenn isclass(object) or ismethod(object) or isfunction(object):
         # mutual exclusion
         return False
     tp = type(object)
     return hasattr(tp, "__set__") or hasattr(tp, "__delete__")
 
-if hasattr(types, 'MemberDescriptorType'):
+wenn hasattr(types, 'MemberDescriptorType'):
     # CPython and equivalent
     def ismemberdescriptor(object):
-        """Return true if the object is a member descriptor.
+        """Return true wenn the object is a member descriptor.
 
         Member descriptors are specialized descriptors defined in extension
         modules."""
         return isinstance(object, types.MemberDescriptorType)
-else:
+sonst:
     # Other implementations
     def ismemberdescriptor(object):
-        """Return true if the object is a member descriptor.
+        """Return true wenn the object is a member descriptor.
 
         Member descriptors are specialized descriptors defined in extension
         modules."""
         return False
 
-if hasattr(types, 'GetSetDescriptorType'):
+wenn hasattr(types, 'GetSetDescriptorType'):
     # CPython and equivalent
     def isgetsetdescriptor(object):
-        """Return true if the object is a getset descriptor.
+        """Return true wenn the object is a getset descriptor.
 
         getset descriptors are specialized descriptors defined in extension
         modules."""
         return isinstance(object, types.GetSetDescriptorType)
-else:
+sonst:
     # Other implementations
     def isgetsetdescriptor(object):
-        """Return true if the object is a getset descriptor.
+        """Return true wenn the object is a getset descriptor.
 
         getset descriptors are specialized descriptors defined in extension
         modules."""
         return False
 
 def isfunction(object):
-    """Return true if the object is a user-defined function.
+    """Return true wenn the object is a user-defined function.
 
     Function objects provide these attributes:
         __doc__         documentation string
@@ -283,7 +283,7 @@ def isfunction(object):
     return isinstance(object, types.FunctionType)
 
 def _has_code_flag(f, flag):
-    """Return true if ``f`` is a function (or a method or functools.partial
+    """Return true wenn ``f`` is a function (or a method or functools.partial
     wrapper wrapping a function or a functools.partialmethod wrapping a
     function) whose code object has the given ``flag``
     set in its flags."""
@@ -291,12 +291,12 @@ def _has_code_flag(f, flag):
     while ismethod(f):
         f = f.__func__
     f = functools._unwrap_partial(f)
-    if not (isfunction(f) or _signature_is_functionlike(f)):
+    wenn not (isfunction(f) or _signature_is_functionlike(f)):
         return False
     return bool(f.__code__.co_flags & flag)
 
 def isgeneratorfunction(obj):
-    """Return true if the object is a user-defined generator function.
+    """Return true wenn the object is a user-defined generator function.
 
     Generator function objects provide the same attributes as functions.
     See help(isfunction) fuer a list of attributes."""
@@ -315,13 +315,13 @@ def markcoroutinefunction(func):
     """
     Decorator to ensure callable is recognised as a coroutine function.
     """
-    if hasattr(func, '__func__'):
+    wenn hasattr(func, '__func__'):
         func = func.__func__
     func._is_coroutine_marker = _is_coroutine_mark
     return func
 
 def iscoroutinefunction(obj):
-    """Return true if the object is a coroutine function.
+    """Return true wenn the object is a coroutine function.
 
     Coroutine functions are normally defined with "async def" syntax, but may
     be marked via markcoroutinefunction.
@@ -329,7 +329,7 @@ def iscoroutinefunction(obj):
     return _has_code_flag(obj, CO_COROUTINE) or _has_coroutine_mark(obj)
 
 def isasyncgenfunction(obj):
-    """Return true if the object is an asynchronous generator function.
+    """Return true wenn the object is an asynchronous generator function.
 
     Asynchronous generator functions are defined with "async def"
     syntax and have "yield" expressions in their body.
@@ -337,11 +337,11 @@ def isasyncgenfunction(obj):
     return _has_code_flag(obj, CO_ASYNC_GENERATOR)
 
 def isasyncgen(object):
-    """Return true if the object is an asynchronous generator."""
+    """Return true wenn the object is an asynchronous generator."""
     return isinstance(object, types.AsyncGeneratorType)
 
 def isgenerator(object):
-    """Return true if the object is a generator.
+    """Return true wenn the object is a generator.
 
     Generator objects provide these attributes:
         gi_code         code object
@@ -359,18 +359,18 @@ def isgenerator(object):
     return isinstance(object, types.GeneratorType)
 
 def iscoroutine(object):
-    """Return true if the object is a coroutine."""
+    """Return true wenn the object is a coroutine."""
     return isinstance(object, types.CoroutineType)
 
 def isawaitable(object):
-    """Return true if object can be passed to an ``await`` expression."""
+    """Return true wenn object can be passed to an ``await`` expression."""
     return (isinstance(object, types.CoroutineType) or
             isinstance(object, types.GeneratorType) and
                 bool(object.gi_code.co_flags & CO_ITERABLE_COROUTINE) or
             isinstance(object, collections.abc.Awaitable))
 
 def istraceback(object):
-    """Return true if the object is a traceback.
+    """Return true wenn the object is a traceback.
 
     Traceback objects provide these attributes:
         tb_frame        frame object at this level
@@ -380,7 +380,7 @@ def istraceback(object):
     return isinstance(object, types.TracebackType)
 
 def isframe(object):
-    """Return true if the object is a frame object.
+    """Return true wenn the object is a frame object.
 
     Frame objects provide these attributes:
         f_back          next outer frame object (this frame's caller)
@@ -398,7 +398,7 @@ def isframe(object):
     return isinstance(object, types.FrameType)
 
 def iscode(object):
-    """Return true if the object is a code object.
+    """Return true wenn the object is a code object.
 
     Code objects provide these attributes:
         co_argcount         number of arguments (not including *, ** args
@@ -429,7 +429,7 @@ def iscode(object):
     return isinstance(object, types.CodeType)
 
 def isbuiltin(object):
-    """Return true if the object is a built-in function or method.
+    """Return true wenn the object is a built-in function or method.
 
     Built-in functions and methods provide these attributes:
         __doc__         documentation string
@@ -438,11 +438,11 @@ def isbuiltin(object):
     return isinstance(object, types.BuiltinFunctionType)
 
 def ismethodwrapper(object):
-    """Return true if the object is a method wrapper."""
+    """Return true wenn the object is a method wrapper."""
     return isinstance(object, types.MethodWrapperType)
 
 def isroutine(object):
-    """Return true if the object is any kind of function or method."""
+    """Return true wenn the object is any kind of function or method."""
     return (isbuiltin(object)
             or isfunction(object)
             or ismethod(object)
@@ -451,26 +451,26 @@ def isroutine(object):
             or isinstance(object, functools._singledispatchmethod_get))
 
 def isabstract(object):
-    """Return true if the object is an abstract base klasse (ABC)."""
-    if not isinstance(object, type):
+    """Return true wenn the object is an abstract base klasse (ABC)."""
+    wenn not isinstance(object, type):
         return False
-    if object.__flags__ & TPFLAGS_IS_ABSTRACT:
+    wenn object.__flags__ & TPFLAGS_IS_ABSTRACT:
         return True
-    if not issubclass(type(object), abc.ABCMeta):
+    wenn not issubclass(type(object), abc.ABCMeta):
         return False
-    if hasattr(object, '__abstractmethods__'):
+    wenn hasattr(object, '__abstractmethods__'):
         # It looks like ABCMeta.__new__ has finished running;
         # TPFLAGS_IS_ABSTRACT should have been accurate.
         return False
     # It looks like ABCMeta.__new__ has not finished running yet; we're
     # probably in __init_subclass__. We'll look fuer abstractmethods manually.
     fuer name, value in object.__dict__.items():
-        if getattr(value, "__isabstractmethod__", False):
+        wenn getattr(value, "__isabstractmethod__", False):
             return True
     fuer base in object.__bases__:
         fuer name in getattr(base, "__abstractmethods__", ()):
             value = getattr(object, name, None)
-            if getattr(value, "__isabstractmethod__", False):
+            wenn getattr(value, "__isabstractmethod__", False):
                 return True
     return False
 
@@ -478,19 +478,19 @@ def _getmembers(object, predicate, getter):
     results = []
     processed = set()
     names = dir(object)
-    if isclass(object):
+    wenn isclass(object):
         mro = getmro(object)
-        # add any DynamicClassAttributes to the list of names if object is a class;
+        # add any DynamicClassAttributes to the list of names wenn object is a class;
         # this may result in duplicate entries if, fuer example, a virtual
         # attribute with the same name as a DynamicClassAttribute exists
         try:
             fuer base in object.__bases__:
                 fuer k, v in base.__dict__.items():
-                    if isinstance(v, types.DynamicClassAttribute):
+                    wenn isinstance(v, types.DynamicClassAttribute):
                         names.append(k)
         except AttributeError:
             pass
-    else:
+    sonst:
         mro = ()
     fuer key in names:
         # First try to get the value via getattr.  Some descriptors don't
@@ -499,18 +499,18 @@ def _getmembers(object, predicate, getter):
         try:
             value = getter(object, key)
             # handle the duplicate key
-            if key in processed:
+            wenn key in processed:
                 raise AttributeError
         except AttributeError:
             fuer base in mro:
-                if key in base.__dict__:
+                wenn key in base.__dict__:
                     value = base.__dict__[key]
                     break
-            else:
+            sonst:
                 # could be a (currently) missing slot member, or a buggy
                 # __dir__; discard and move on
                 continue
-        if not predicate or predicate(value):
+        wenn not predicate or predicate(value):
             results.append((key, value))
         processed.add(key)
     results.sort(key=lambda pair: pair[0])
@@ -554,7 +554,7 @@ def classify_class_attrs(cls):
 
         2. The klasse which defined this attribute (a class).
 
-        3. The object as obtained by calling getattr; if this fails, or if the
+        3. The object as obtained by calling getattr; wenn this fails, or wenn the
            resulting object does not live anywhere in the class' mro (including
            metaclasses) then the object is looked up in the defining class's
            dict (found by walking the mro).
@@ -566,7 +566,7 @@ def classify_class_attrs(cls):
 
     mro = getmro(cls)
     metamro = getmro(type(cls)) # fuer attributes stored in the metaclass
-    metamro = tuple(cls fuer cls in metamro if cls not in (type, object))
+    metamro = tuple(cls fuer cls in metamro wenn cls not in (type, object))
     class_bases = (cls,) + mro
     all_bases = class_bases + metamro
     names = dir(cls)
@@ -575,7 +575,7 @@ def classify_class_attrs(cls):
     # attribute with the same name as a DynamicClassAttribute exists.
     fuer base in mro:
         fuer k, v in base.__dict__.items():
-            if isinstance(v, types.DynamicClassAttribute) and v.fget is not None:
+            wenn isinstance(v, types.DynamicClassAttribute) and v.fget is not None:
                 names.append(k)
     result = []
     processed = set()
@@ -593,24 +593,24 @@ def classify_class_attrs(cls):
         homecls = None
         get_obj = None
         dict_obj = None
-        if name not in processed:
+        wenn name not in processed:
             try:
-                if name == '__dict__':
+                wenn name == '__dict__':
                     raise Exception("__dict__ is special, don't want the proxy")
                 get_obj = getattr(cls, name)
             except Exception:
                 pass
-            else:
+            sonst:
                 homecls = getattr(get_obj, "__objclass__", homecls)
-                if homecls not in class_bases:
-                    # if the resulting object does not live somewhere in the
+                wenn homecls not in class_bases:
+                    # wenn the resulting object does not live somewhere in the
                     # mro, drop it and search the mro manually
                     homecls = None
                     last_cls = None
                     # first look in the classes
                     fuer srch_cls in class_bases:
                         srch_obj = getattr(srch_cls, name, None)
-                        if srch_obj is get_obj:
+                        wenn srch_obj is get_obj:
                             last_cls = srch_cls
                     # then check the metaclasses
                     fuer srch_cls in metamro:
@@ -618,34 +618,34 @@ def classify_class_attrs(cls):
                             srch_obj = srch_cls.__getattr__(cls, name)
                         except AttributeError:
                             continue
-                        if srch_obj is get_obj:
+                        wenn srch_obj is get_obj:
                             last_cls = srch_cls
-                    if last_cls is not None:
+                    wenn last_cls is not None:
                         homecls = last_cls
         fuer base in all_bases:
-            if name in base.__dict__:
+            wenn name in base.__dict__:
                 dict_obj = base.__dict__[name]
-                if homecls not in metamro:
+                wenn homecls not in metamro:
                     homecls = base
                 break
-        if homecls is None:
+        wenn homecls is None:
             # unable to locate the attribute anywhere, most likely due to
             # buggy custom __dir__; discard and move on
             continue
-        obj = get_obj if get_obj is not None else dict_obj
+        obj = get_obj wenn get_obj is not None sonst dict_obj
         # Classify the object or its descriptor.
-        if isinstance(dict_obj, (staticmethod, types.BuiltinMethodType)):
+        wenn isinstance(dict_obj, (staticmethod, types.BuiltinMethodType)):
             kind = "static method"
             obj = dict_obj
-        elif isinstance(dict_obj, (classmethod, types.ClassMethodDescriptorType)):
+        sowenn isinstance(dict_obj, (classmethod, types.ClassMethodDescriptorType)):
             kind = "class method"
             obj = dict_obj
-        elif isinstance(dict_obj, property):
+        sowenn isinstance(dict_obj, property):
             kind = "property"
             obj = dict_obj
-        elif isroutine(obj):
+        sowenn isroutine(obj):
             kind = "method"
-        else:
+        sonst:
             kind = "data"
         result.append(Attribute(name, kind, homecls, obj))
         processed.add(name)
@@ -669,10 +669,10 @@ def unwrap(func, *, stop=None):
    as its sole argument that allows the unwrapping to be terminated early if
    the callback returns a true value. If the callback never returns a true
    value, the last object in the chain is returned as usual. For example,
-   :func:`signature` uses this to stop unwrapping if any object in the
+   :func:`signature` uses this to stop unwrapping wenn any object in the
    chain has a ``__signature__`` attribute defined.
 
-   :exc:`ValueError` is raised if a cycle is encountered.
+   :exc:`ValueError` is raised wenn a cycle is encountered.
 
     """
     f = func  # remember the original func fuer error reporting
@@ -681,11 +681,11 @@ def unwrap(func, *, stop=None):
     memo = {id(f): f}
     recursion_limit = sys.getrecursionlimit()
     while not isinstance(func, type) and hasattr(func, '__wrapped__'):
-        if stop is not None and stop(func):
+        wenn stop is not None and stop(func):
             break
         func = func.__wrapped__
         id_func = id(func)
-        if (id_func in memo) or (len(memo) >= recursion_limit):
+        wenn (id_func in memo) or (len(memo) >= recursion_limit):
             raise ValueError('wrapper loop when unwrapping {!r}'.format(f))
         memo[id_func] = func
     return func
@@ -698,72 +698,72 @@ def indentsize(line):
 
 def _findclass(func):
     cls = sys.modules.get(func.__module__)
-    if cls is None:
+    wenn cls is None:
         return None
     fuer name in func.__qualname__.split('.')[:-1]:
         cls = getattr(cls, name)
-    if not isclass(cls):
+    wenn not isclass(cls):
         return None
     return cls
 
 def _finddoc(obj):
-    if isclass(obj):
+    wenn isclass(obj):
         fuer base in obj.__mro__:
-            if base is not object:
+            wenn base is not object:
                 try:
                     doc = base.__doc__
                 except AttributeError:
                     continue
-                if doc is not None:
+                wenn doc is not None:
                     return doc
         return None
 
-    if ismethod(obj):
+    wenn ismethod(obj):
         name = obj.__func__.__name__
         self = obj.__self__
-        if (isclass(self) and
+        wenn (isclass(self) and
             getattr(getattr(self, name, None), '__func__') is obj.__func__):
             # classmethod
             cls = self
-        else:
+        sonst:
             cls = self.__class__
-    elif isfunction(obj):
+    sowenn isfunction(obj):
         name = obj.__name__
         cls = _findclass(obj)
-        if cls is None or getattr(cls, name) is not obj:
+        wenn cls is None or getattr(cls, name) is not obj:
             return None
-    elif isbuiltin(obj):
+    sowenn isbuiltin(obj):
         name = obj.__name__
         self = obj.__self__
-        if (isclass(self) and
+        wenn (isclass(self) and
             self.__qualname__ + '.' + name == obj.__qualname__):
             # classmethod
             cls = self
-        else:
+        sonst:
             cls = self.__class__
     # Should be tested before isdatadescriptor().
-    elif isinstance(obj, property):
+    sowenn isinstance(obj, property):
         name = obj.__name__
         cls = _findclass(obj.fget)
-        if cls is None or getattr(cls, name) is not obj:
+        wenn cls is None or getattr(cls, name) is not obj:
             return None
-    elif ismethoddescriptor(obj) or isdatadescriptor(obj):
+    sowenn ismethoddescriptor(obj) or isdatadescriptor(obj):
         name = obj.__name__
         cls = obj.__objclass__
-        if getattr(cls, name) is not obj:
+        wenn getattr(cls, name) is not obj:
             return None
-        if ismemberdescriptor(obj):
+        wenn ismemberdescriptor(obj):
             slots = getattr(cls, '__slots__', None)
-            if isinstance(slots, dict) and name in slots:
+            wenn isinstance(slots, dict) and name in slots:
                 return slots[name]
-    else:
+    sonst:
         return None
     fuer base in cls.__mro__:
         try:
             doc = getattr(base, name).__doc__
         except AttributeError:
             continue
-        if doc is not None:
+        wenn doc is not None:
             return doc
     return None
 
@@ -777,12 +777,12 @@ def getdoc(object):
         doc = object.__doc__
     except AttributeError:
         return None
-    if doc is None:
+    wenn doc is None:
         try:
             doc = _finddoc(object)
         except (AttributeError, TypeError):
             return None
-    if not isinstance(doc, str):
+    wenn not isinstance(doc, str):
         return None
     return cleandoc(doc)
 
@@ -797,13 +797,13 @@ def cleandoc(doc):
     margin = sys.maxsize
     fuer line in lines[1:]:
         content = len(line.lstrip(' '))
-        if content:
+        wenn content:
             indent = len(line) - content
             margin = min(margin, indent)
     # Remove indentation.
-    if lines:
+    wenn lines:
         lines[0] = lines[0].lstrip(' ')
-    if margin < sys.maxsize:
+    wenn margin < sys.maxsize:
         fuer i in range(1, len(lines)):
             lines[i] = lines[i][margin:]
     # Remove any trailing or leading blank lines.
@@ -816,27 +816,27 @@ def cleandoc(doc):
 
 def getfile(object):
     """Work out which source or compiled file an object was defined in."""
-    if ismodule(object):
-        if getattr(object, '__file__', None):
+    wenn ismodule(object):
+        wenn getattr(object, '__file__', None):
             return object.__file__
         raise TypeError('{!r} is a built-in module'.format(object))
-    if isclass(object):
-        if hasattr(object, '__module__'):
+    wenn isclass(object):
+        wenn hasattr(object, '__module__'):
             module = sys.modules.get(object.__module__)
-            if getattr(module, '__file__', None):
+            wenn getattr(module, '__file__', None):
                 return module.__file__
-            if object.__module__ == '__main__':
+            wenn object.__module__ == '__main__':
                 raise OSError('source code not available')
         raise TypeError('{!r} is a built-in class'.format(object))
-    if ismethod(object):
+    wenn ismethod(object):
         object = object.__func__
-    if isfunction(object):
+    wenn isfunction(object):
         object = object.__code__
-    if istraceback(object):
+    wenn istraceback(object):
         object = object.tb_frame
-    if isframe(object):
+    wenn isframe(object):
         object = object.f_code
-    if iscode(object):
+    wenn iscode(object):
         return object.co_filename
     raise TypeError('module, class, method, function, traceback, frame, or '
                     'code object was expected, got {}'.format(
@@ -850,36 +850,36 @@ def getmodulename(path):
                     fuer suffix in importlib.machinery.all_suffixes()]
     suffixes.sort() # try longest suffixes first, in case they overlap
     fuer neglen, suffix in suffixes:
-        if fname.endswith(suffix):
+        wenn fname.endswith(suffix):
             return fname[:neglen]
     return None
 
 def getsourcefile(object):
     """Return the filename that can be used to locate an object's source.
-    Return None if no way can be identified to get the source.
+    Return None wenn no way can be identified to get the source.
     """
     filename = getfile(object)
     all_bytecode_suffixes = importlib.machinery.BYTECODE_SUFFIXES[:]
-    if any(filename.endswith(s) fuer s in all_bytecode_suffixes):
+    wenn any(filename.endswith(s) fuer s in all_bytecode_suffixes):
         filename = (os.path.splitext(filename)[0] +
                     importlib.machinery.SOURCE_SUFFIXES[0])
-    elif any(filename.endswith(s) fuer s in
+    sowenn any(filename.endswith(s) fuer s in
                  importlib.machinery.EXTENSION_SUFFIXES):
         return None
-    elif filename.endswith(".fwork"):
+    sowenn filename.endswith(".fwork"):
         # Apple mobile framework markers are another type of non-source file
         return None
 
-    # return a filename found in the linecache even if it doesn't exist on disk
-    if filename in linecache.cache:
+    # return a filename found in the linecache even wenn it doesn't exist on disk
+    wenn filename in linecache.cache:
         return filename
-    if os.path.exists(filename):
+    wenn os.path.exists(filename):
         return filename
-    # only return a non-existent filename if the module has a PEP 302 loader
+    # only return a non-existent filename wenn the module has a PEP 302 loader
     module = getmodule(object, filename)
-    if getattr(module, '__loader__', None) is not None:
+    wenn getattr(module, '__loader__', None) is not None:
         return filename
-    elif getattr(getattr(module, "__spec__", None), "loader", None) is not None:
+    sowenn getattr(getattr(module, "__spec__", None), "loader", None) is not None:
         return filename
 
 def getabsfile(object, _filename=None):
@@ -887,7 +887,7 @@ def getabsfile(object, _filename=None):
 
     The idea is fuer each object to have a unique origin, so this routine
     normalizes the result as much as possible."""
-    if _filename is None:
+    wenn _filename is None:
         _filename = getsourcefile(object) or getfile(object)
     return os.path.normcase(os.path.abspath(_filename))
 
@@ -895,28 +895,28 @@ modulesbyfile = {}
 _filesbymodname = {}
 
 def getmodule(object, _filename=None):
-    """Return the module an object was defined in, or None if not found."""
-    if ismodule(object):
+    """Return the module an object was defined in, or None wenn not found."""
+    wenn ismodule(object):
         return object
-    if hasattr(object, '__module__'):
+    wenn hasattr(object, '__module__'):
         return sys.modules.get(object.__module__)
 
     # Try the filename to modulename cache
-    if _filename is not None and _filename in modulesbyfile:
+    wenn _filename is not None and _filename in modulesbyfile:
         return sys.modules.get(modulesbyfile[_filename])
     # Try the cache again with the absolute file name
     try:
         file = getabsfile(object, _filename)
     except (TypeError, FileNotFoundError):
         return None
-    if file in modulesbyfile:
+    wenn file in modulesbyfile:
         return sys.modules.get(modulesbyfile[file])
     # Update the filename to module name cache and check yet again
     # Copy sys.modules in order to cope with changes while iterating
     fuer modname, module in sys.modules.copy().items():
-        if ismodule(module) and hasattr(module, '__file__'):
+        wenn ismodule(module) and hasattr(module, '__file__'):
             f = module.__file__
-            if f == _filesbymodname.get(modname, None):
+            wenn f == _filesbymodname.get(modname, None):
                 # Have already mapped this module, so skip it
                 continue
             _filesbymodname[modname] = f
@@ -924,21 +924,21 @@ def getmodule(object, _filename=None):
             # Always map to the name the module knows itself by
             modulesbyfile[f] = modulesbyfile[
                 os.path.realpath(f)] = module.__name__
-    if file in modulesbyfile:
+    wenn file in modulesbyfile:
         return sys.modules.get(modulesbyfile[file])
     # Check the main module
     main = sys.modules['__main__']
-    if not hasattr(object, '__name__'):
+    wenn not hasattr(object, '__name__'):
         return None
-    if hasattr(main, object.__name__):
+    wenn hasattr(main, object.__name__):
         mainobject = getattr(main, object.__name__)
-        if mainobject is object:
+        wenn mainobject is object:
             return main
     # Check builtins
     builtin = sys.modules['builtins']
-    if hasattr(builtin, object.__name__):
+    wenn hasattr(builtin, object.__name__):
         builtinobject = getattr(builtin, object.__name__)
-        if builtinobject is object:
+        wenn builtinobject is object:
             return builtin
 
 
@@ -952,55 +952,55 @@ def findsource(object):
     The argument may be a module, class, method, function, traceback, frame,
     or code object.  The source code is returned as a list of all the lines
     in the file and the line number indexes a line in that list.  An OSError
-    is raised if the source code cannot be retrieved."""
+    is raised wenn the source code cannot be retrieved."""
 
     file = getsourcefile(object)
-    if file:
-        # Invalidate cache if needed.
+    wenn file:
+        # Invalidate cache wenn needed.
         linecache.checkcache(file)
-    else:
+    sonst:
         file = getfile(object)
         # Allow filenames in form of "<something>" to pass through.
         # `doctest` monkeypatches `linecache` module to enable
         # inspection, so let `linecache.getlines` to be called.
-        if (not (file.startswith('<') and file.endswith('>'))) or file.endswith('.fwork'):
+        wenn (not (file.startswith('<') and file.endswith('>'))) or file.endswith('.fwork'):
             raise OSError('source code not available')
 
     module = getmodule(object, file)
-    if module:
+    wenn module:
         lines = linecache.getlines(file, module.__dict__)
-        if not lines and file.startswith('<') and hasattr(object, "__code__"):
+        wenn not lines and file.startswith('<') and hasattr(object, "__code__"):
             lines = linecache._getlines_from_code(object.__code__)
-    else:
+    sonst:
         lines = linecache.getlines(file)
-    if not lines:
+    wenn not lines:
         raise OSError('could not get source code')
 
-    if ismodule(object):
+    wenn ismodule(object):
         return lines, 0
 
-    if isclass(object):
+    wenn isclass(object):
         try:
             lnum = vars(object)['__firstlineno__'] - 1
         except (TypeError, KeyError):
             raise OSError('source code not available')
-        if lnum >= len(lines):
+        wenn lnum >= len(lines):
             raise OSError('lineno is out of bounds')
         return lines, lnum
 
-    if ismethod(object):
+    wenn ismethod(object):
         object = object.__func__
-    if isfunction(object):
+    wenn isfunction(object):
         object = object.__code__
-    if istraceback(object):
+    wenn istraceback(object):
         object = object.tb_frame
-    if isframe(object):
+    wenn isframe(object):
         object = object.f_code
-    if iscode(object):
-        if not hasattr(object, 'co_firstlineno'):
+    wenn iscode(object):
+        wenn not hasattr(object, 'co_firstlineno'):
             raise OSError('could not find function definition')
         lnum = object.co_firstlineno - 1
-        if lnum >= len(lines):
+        wenn lnum >= len(lines):
             raise OSError('lineno is out of bounds')
         return lines, lnum
     raise OSError('could not find code object')
@@ -1015,13 +1015,13 @@ def getcomments(object):
     except (OSError, TypeError):
         return None
 
-    if ismodule(object):
+    wenn ismodule(object):
         # Look fuer a comment block at the top of the file.
         start = 0
-        if lines and lines[0][:2] == '#!': start = 1
+        wenn lines and lines[0][:2] == '#!': start = 1
         while start < len(lines) and lines[start].strip() in ('', '#'):
             start = start + 1
-        if start < len(lines) and lines[start][:1] == '#':
+        wenn start < len(lines) and lines[start][:1] == '#':
             comments = []
             end = start
             while end < len(lines) and lines[end][:1] == '#':
@@ -1030,19 +1030,19 @@ def getcomments(object):
             return ''.join(comments)
 
     # Look fuer a preceding block of comments at the same indentation.
-    elif lnum > 0:
+    sowenn lnum > 0:
         indent = indentsize(lines[lnum])
         end = lnum - 1
-        if end >= 0 and lines[end].lstrip()[:1] == '#' and \
+        wenn end >= 0 and lines[end].lstrip()[:1] == '#' and \
             indentsize(lines[end]) == indent:
             comments = [lines[end].expandtabs().lstrip()]
-            if end > 0:
+            wenn end > 0:
                 end = end - 1
                 comment = lines[end].expandtabs().lstrip()
                 while comment[:1] == '#' and indentsize(lines[end]) == indent:
                     comments[:0] = [comment]
                     end = end - 1
-                    if end < 0: break
+                    wenn end < 0: break
                     comment = lines[end].expandtabs().lstrip()
             while comments and comments[0].strip() == '#':
                 comments[:1] = []
@@ -1064,47 +1064,47 @@ klasse BlockFinder:
         self.body_col0 = None
 
     def tokeneater(self, type, token, srowcol, erowcol, line):
-        if not self.started and not self.indecorator:
-            if type == tokenize.INDENT or token == "async":
+        wenn not self.started and not self.indecorator:
+            wenn type == tokenize.INDENT or token == "async":
                 pass
             # skip any decorators
-            elif token == "@":
+            sowenn token == "@":
                 self.indecorator = True
-            else:
+            sonst:
                 # For "def" and "class" scan to the end of the block.
                 # For "lambda" and generator expression scan to
                 # the end of the logical line.
                 self.singleline = token not in ("def", "class")
                 self.started = True
             self.passline = True    # skip to the end of the line
-        elif type == tokenize.NEWLINE:
+        sowenn type == tokenize.NEWLINE:
             self.passline = False   # stop skipping when a NEWLINE is seen
             self.last = srowcol[0]
-            if self.singleline:
+            wenn self.singleline:
                 raise EndOfBlock
             # hitting a NEWLINE when in a decorator without args
             # ends the decorator
-            if self.indecorator:
+            wenn self.indecorator:
                 self.indecorator = False
-        elif self.passline:
+        sowenn self.passline:
             pass
-        elif type == tokenize.INDENT:
-            if self.body_col0 is None and self.started:
+        sowenn type == tokenize.INDENT:
+            wenn self.body_col0 is None and self.started:
                 self.body_col0 = erowcol[1]
             self.indent = self.indent + 1
             self.passline = True
-        elif type == tokenize.DEDENT:
+        sowenn type == tokenize.DEDENT:
             self.indent = self.indent - 1
             # the end of matching indent/dedent pairs end a block
             # (note that this only works fuer "def"/"class" blocks,
-            #  not e.g. fuer "if: else:" or "try: finally:" blocks)
-            if self.indent <= 0:
+            #  not e.g. fuer "if: sonst:" or "try: finally:" blocks)
+            wenn self.indent <= 0:
                 raise EndOfBlock
-        elif type == tokenize.COMMENT:
-            if self.body_col0 is not None and srowcol[1] >= self.body_col0:
-                # Include comments if indented at least as much as the block
+        sowenn type == tokenize.COMMENT:
+            wenn self.body_col0 is not None and srowcol[1] >= self.body_col0:
+                # Include comments wenn indented at least as much as the block
                 self.last = srowcol[0]
-        elif self.indent == 0 and type not in (tokenize.COMMENT, tokenize.NL):
+        sowenn self.indent == 0 and type not in (tokenize.COMMENT, tokenize.NL):
             # any other token on the same indentation level end the previous
             # block as well, except the pseudo-tokens COMMENT and NL.
             raise EndOfBlock
@@ -1119,7 +1119,7 @@ def getblock(lines):
     except (EndOfBlock, IndentationError):
         pass
     except SyntaxError as e:
-        if "unmatched" not in e.msg:
+        wenn "unmatched" not in e.msg:
             raise e from None
         _, *_token_info = _token
         try:
@@ -1135,18 +1135,18 @@ def getsourcelines(object):
     or code object.  The source code is returned as a list of the lines
     corresponding to the object and the line number indicates where in the
     original source file the first line of code was found.  An OSError is
-    raised if the source code cannot be retrieved."""
+    raised wenn the source code cannot be retrieved."""
     object = unwrap(object)
     lines, lnum = findsource(object)
 
-    if istraceback(object):
+    wenn istraceback(object):
         object = object.tb_frame
 
     # fuer module or frame that corresponds to module, return all source lines
-    if (ismodule(object) or
+    wenn (ismodule(object) or
         (isframe(object) and object.f_code.co_name == "<module>")):
         return lines, 0
-    else:
+    sonst:
         return getblock(lines[lnum:]), lnum + 1
 
 def getsource(object):
@@ -1154,7 +1154,7 @@ def getsource(object):
 
     The argument may be a module, class, method, function, traceback, frame,
     or code object.  The source code is returned as a single string.  An
-    OSError is raised if the source code cannot be retrieved."""
+    OSError is raised wenn the source code cannot be retrieved."""
     lines, lnum = getsourcelines(object)
     return ''.join(lines)
 
@@ -1165,7 +1165,7 @@ def walktree(classes, children, parent):
     classes.sort(key=attrgetter('__module__', '__name__'))
     fuer c in classes:
         results.append((c, c.__bases__))
-        if c in children:
+        wenn c in children:
             results.append(walktree(children[c], children, c))
     return results
 
@@ -1181,17 +1181,17 @@ def getclasstree(classes, unique=False):
     children = {}
     roots = []
     fuer c in classes:
-        if c.__bases__:
+        wenn c.__bases__:
             fuer parent in c.__bases__:
-                if parent not in children:
+                wenn parent not in children:
                     children[parent] = []
-                if c not in children[parent]:
+                wenn c not in children[parent]:
                     children[parent].append(c)
-                if unique and parent in classes: break
-        elif c not in roots:
+                wenn unique and parent in classes: break
+        sowenn c not in roots:
             roots.append(c)
     fuer parent in children:
-        if parent not in classes:
+        wenn parent not in classes:
             roots.append(parent)
     return walktree(roots, children, None)
 
@@ -1205,7 +1205,7 @@ def getargs(co):
     'args' is the list of argument names. Keyword-only arguments are
     appended. 'varargs' and 'varkw' are the names of the * and **
     arguments or None."""
-    if not iscode(co):
+    wenn not iscode(co):
         raise TypeError('{!r} is not a code object'.format(co))
 
     names = co.co_varnames
@@ -1216,11 +1216,11 @@ def getargs(co):
 
     nargs += nkwargs
     varargs = None
-    if co.co_flags & CO_VARARGS:
+    wenn co.co_flags & CO_VARARGS:
         varargs = co.co_varnames[nargs]
         nargs = nargs + 1
     varkw = None
-    if co.co_flags & CO_VARKEYWORDS:
+    wenn co.co_flags & CO_VARKEYWORDS:
         varkw = co.co_varnames[nargs]
     return Arguments(args + kwonlyargs, varargs, varkw)
 
@@ -1282,38 +1282,38 @@ def getfullargspec(func):
     defaults = ()
     kwdefaults = {}
 
-    if sig.return_annotation is not sig.empty:
+    wenn sig.return_annotation is not sig.empty:
         annotations['return'] = sig.return_annotation
 
     fuer param in sig.parameters.values():
         kind = param.kind
         name = param.name
 
-        if kind is _POSITIONAL_ONLY:
+        wenn kind is _POSITIONAL_ONLY:
             posonlyargs.append(name)
-            if param.default is not param.empty:
+            wenn param.default is not param.empty:
                 defaults += (param.default,)
-        elif kind is _POSITIONAL_OR_KEYWORD:
+        sowenn kind is _POSITIONAL_OR_KEYWORD:
             args.append(name)
-            if param.default is not param.empty:
+            wenn param.default is not param.empty:
                 defaults += (param.default,)
-        elif kind is _VAR_POSITIONAL:
+        sowenn kind is _VAR_POSITIONAL:
             varargs = name
-        elif kind is _KEYWORD_ONLY:
+        sowenn kind is _KEYWORD_ONLY:
             kwonlyargs.append(name)
-            if param.default is not param.empty:
+            wenn param.default is not param.empty:
                 kwdefaults[name] = param.default
-        elif kind is _VAR_KEYWORD:
+        sowenn kind is _VAR_KEYWORD:
             varkw = name
 
-        if param.annotation is not param.empty:
+        wenn param.annotation is not param.empty:
             annotations[name] = param.annotation
 
-    if not kwdefaults:
+    wenn not kwdefaults:
         # compatibility with 'func.__kwdefaults__'
         kwdefaults = None
 
-    if not defaults:
+    wenn not defaults:
         # compatibility with 'func.__defaults__'
         defaults = None
 
@@ -1334,20 +1334,20 @@ def getargvalues(frame):
     return ArgInfo(args, varargs, varkw, frame.f_locals)
 
 def formatannotation(annotation, base_module=None, *, quote_annotation_strings=True):
-    if not quote_annotation_strings and isinstance(annotation, str):
+    wenn not quote_annotation_strings and isinstance(annotation, str):
         return annotation
-    if getattr(annotation, '__module__', None) == 'typing':
+    wenn getattr(annotation, '__module__', None) == 'typing':
         def repl(match):
             text = match.group()
             return text.removeprefix('typing.')
         return re.sub(r'[\w\.]+', repl, repr(annotation))
-    if isinstance(annotation, types.GenericAlias):
+    wenn isinstance(annotation, types.GenericAlias):
         return str(annotation)
-    if isinstance(annotation, type):
-        if annotation.__module__ in ('builtins', base_module):
+    wenn isinstance(annotation, type):
+        wenn annotation.__module__ in ('builtins', base_module):
             return annotation.__qualname__
         return annotation.__module__+'.'+annotation.__qualname__
-    if isinstance(annotation, ForwardRef):
+    wenn isinstance(annotation, ForwardRef):
         return annotation.__forward_arg__
     return repr(annotation)
 
@@ -1375,54 +1375,54 @@ def formatargvalues(args, varargs, varkw, locals,
     specs = []
     fuer i in range(len(args)):
         specs.append(convert(args[i]))
-    if varargs:
+    wenn varargs:
         specs.append(formatvarargs(varargs) + formatvalue(locals[varargs]))
-    if varkw:
+    wenn varkw:
         specs.append(formatvarkw(varkw) + formatvalue(locals[varkw]))
     return '(' + ', '.join(specs) + ')'
 
 def _missing_arguments(f_name, argnames, pos, values):
-    names = [repr(name) fuer name in argnames if name not in values]
+    names = [repr(name) fuer name in argnames wenn name not in values]
     missing = len(names)
-    if missing == 1:
+    wenn missing == 1:
         s = names[0]
-    elif missing == 2:
+    sowenn missing == 2:
         s = "{} and {}".format(*names)
-    else:
+    sonst:
         tail = ", {} and {}".format(*names[-2:])
         del names[-2:]
         s = ", ".join(names) + tail
     raise TypeError("%s() missing %i required %s argument%s: %s" %
                     (f_name, missing,
-                      "positional" if pos else "keyword-only",
-                      "" if missing == 1 else "s", s))
+                      "positional" wenn pos sonst "keyword-only",
+                      "" wenn missing == 1 sonst "s", s))
 
 def _too_many(f_name, args, kwonly, varargs, defcount, given, values):
     atleast = len(args) - defcount
-    kwonly_given = len([arg fuer arg in kwonly if arg in values])
-    if varargs:
+    kwonly_given = len([arg fuer arg in kwonly wenn arg in values])
+    wenn varargs:
         plural = atleast != 1
         sig = "at least %d" % (atleast,)
-    elif defcount:
+    sowenn defcount:
         plural = True
         sig = "from %d to %d" % (atleast, len(args))
-    else:
+    sonst:
         plural = len(args) != 1
         sig = str(len(args))
     kwonly_sig = ""
-    if kwonly_given:
+    wenn kwonly_given:
         msg = " positional argument%s (and %d keyword-only argument%s)"
-        kwonly_sig = (msg % ("s" if given != 1 else "", kwonly_given,
-                             "s" if kwonly_given != 1 else ""))
+        kwonly_sig = (msg % ("s" wenn given != 1 sonst "", kwonly_given,
+                             "s" wenn kwonly_given != 1 sonst ""))
     raise TypeError("%s() takes %s positional argument%s but %d%s %s given" %
-            (f_name, sig, "s" if plural else "", given, kwonly_sig,
-             "was" if given == 1 and not kwonly_given else "were"))
+            (f_name, sig, "s" wenn plural sonst "", given, kwonly_sig,
+             "was" wenn given == 1 and not kwonly_given sonst "were"))
 
 def getcallargs(func, /, *positional, **named):
     """Get the mapping of arguments to values.
 
     A dict is returned, with keys the function argument names (including the
-    names of the * and ** arguments, if any), and values the respective bound
+    names of the * and ** arguments, wenn any), and values the respective bound
     values from 'positional' and 'named'."""
     spec = getfullargspec(func)
     args, varargs, varkw, defaults, kwonlyargs, kwonlydefaults, ann = spec
@@ -1430,51 +1430,51 @@ def getcallargs(func, /, *positional, **named):
     arg2value = {}
 
 
-    if ismethod(func) and func.__self__ is not None:
+    wenn ismethod(func) and func.__self__ is not None:
         # implicit 'self' (or 'cls' fuer classmethods) argument
         positional = (func.__self__,) + positional
     num_pos = len(positional)
     num_args = len(args)
-    num_defaults = len(defaults) if defaults else 0
+    num_defaults = len(defaults) wenn defaults sonst 0
 
     n = min(num_pos, num_args)
     fuer i in range(n):
         arg2value[args[i]] = positional[i]
-    if varargs:
+    wenn varargs:
         arg2value[varargs] = tuple(positional[n:])
     possible_kwargs = set(args + kwonlyargs)
-    if varkw:
+    wenn varkw:
         arg2value[varkw] = {}
     fuer kw, value in named.items():
-        if kw not in possible_kwargs:
-            if not varkw:
+        wenn kw not in possible_kwargs:
+            wenn not varkw:
                 raise TypeError("%s() got an unexpected keyword argument %r" %
                                 (f_name, kw))
             arg2value[varkw][kw] = value
             continue
-        if kw in arg2value:
+        wenn kw in arg2value:
             raise TypeError("%s() got multiple values fuer argument %r" %
                             (f_name, kw))
         arg2value[kw] = value
-    if num_pos > num_args and not varargs:
+    wenn num_pos > num_args and not varargs:
         _too_many(f_name, args, kwonlyargs, varargs, num_defaults,
                    num_pos, arg2value)
-    if num_pos < num_args:
+    wenn num_pos < num_args:
         req = args[:num_args - num_defaults]
         fuer arg in req:
-            if arg not in arg2value:
+            wenn arg not in arg2value:
                 _missing_arguments(f_name, req, True, arg2value)
         fuer i, arg in enumerate(args[num_args - num_defaults:]):
-            if arg not in arg2value:
+            wenn arg not in arg2value:
                 arg2value[arg] = defaults[i]
     missing = 0
     fuer kwarg in kwonlyargs:
-        if kwarg not in arg2value:
-            if kwonlydefaults and kwarg in kwonlydefaults:
+        wenn kwarg not in arg2value:
+            wenn kwonlydefaults and kwarg in kwonlydefaults:
                 arg2value[kwarg] = kwonlydefaults[kwarg]
-            else:
+            sonst:
                 missing += 1
-    if missing:
+    wenn missing:
         _missing_arguments(f_name, kwonlyargs, False, arg2value)
     return arg2value
 
@@ -1489,18 +1489,18 @@ def getclosurevars(func):
     set of unbound names that could not be resolved is also provided.
     """
 
-    if ismethod(func):
+    wenn ismethod(func):
         func = func.__func__
 
-    if not isfunction(func):
+    wenn not isfunction(func):
         raise TypeError("{!r} is not a Python function".format(func))
 
     code = func.__code__
     # Nonlocal references are named in co_freevars and resolved
     # by looking them up in __closure__ by positional index
-    if func.__closure__ is None:
+    wenn func.__closure__ is None:
         nonlocal_vars = {}
-    else:
+    sonst:
         nonlocal_vars = {
             var : cell.cell_contents
             fuer var, cell in zip(code.co_freevars, func.__closure__)
@@ -1510,7 +1510,7 @@ def getclosurevars(func):
     # by looking them up in __globals__ or __builtins__
     global_ns = func.__globals__
     builtin_ns = global_ns.get("__builtins__", builtins.__dict__)
-    if ismodule(builtin_ns):
+    wenn ismodule(builtin_ns):
         builtin_ns = builtin_ns.__dict__
     global_vars = {}
     builtin_vars = {}
@@ -1519,9 +1519,9 @@ def getclosurevars(func):
     fuer instruction in dis.get_instructions(code):
         opname = instruction.opname
         name = instruction.argval
-        if opname == "LOAD_ATTR":
+        wenn opname == "LOAD_ATTR":
             unbound_names.add(name)
-        elif opname == "LOAD_GLOBAL":
+        sowenn opname == "LOAD_GLOBAL":
             global_names.add(name)
     fuer name in global_names:
         try:
@@ -1556,7 +1556,7 @@ def _get_code_position_from_tb(tb):
     return _get_code_position(code, instruction_index)
 
 def _get_code_position(code, instruction_index):
-    if instruction_index < 0:
+    wenn instruction_index < 0:
         return (None, None, None, None)
     positions_gen = code.co_positions()
     # The nth entry in code.co_positions() corresponds to instruction (2*n)th since Python 3.10+
@@ -1570,36 +1570,36 @@ def getframeinfo(frame, context=1):
     the source code, and the index of the current line within that list.
     The optional second argument specifies the number of lines of context
     to return, which are centered around the current line."""
-    if istraceback(frame):
+    wenn istraceback(frame):
         positions = _get_code_position_from_tb(frame)
         lineno = frame.tb_lineno
         frame = frame.tb_frame
-    else:
+    sonst:
         lineno = frame.f_lineno
         positions = _get_code_position(frame.f_code, frame.f_lasti)
 
-    if positions[0] is None:
+    wenn positions[0] is None:
         frame, *positions = (frame, lineno, *positions[1:])
-    else:
+    sonst:
         frame, *positions = (frame, *positions)
 
     lineno = positions[0]
 
-    if not isframe(frame):
+    wenn not isframe(frame):
         raise TypeError('{!r} is not a frame or traceback object'.format(frame))
 
     filename = getsourcefile(frame) or getfile(frame)
-    if context > 0:
+    wenn context > 0:
         start = lineno - 1 - context//2
         try:
             lines, lnum = findsource(frame)
         except OSError:
             lines = index = None
-        else:
+        sonst:
             start = max(0, min(start, len(lines) - context))
             lines = lines[start:start+context]
             index = lineno - 1 - start
-    else:
+    sonst:
         lines = index = None
 
     return Traceback(filename, lineno, frame.f_code.co_name, lines,
@@ -1650,8 +1650,8 @@ def getinnerframes(tb, context=1):
     return framelist
 
 def currentframe():
-    """Return the frame of the caller or None if this is not possible."""
-    return sys._getframe(1) if hasattr(sys, "_getframe") else None
+    """Return the frame of the caller or None wenn this is not possible."""
+    return sys._getframe(1) wenn hasattr(sys, "_getframe") sonst None
 
 def stack(context=1):
     """Return a list of records fuer the stack above the caller's frame."""
@@ -1660,7 +1660,7 @@ def stack(context=1):
 def trace(context=1):
     """Return a list of records fuer the stack below the current exception."""
     exc = sys.exception()
-    tb = None if exc is None else exc.__traceback__
+    tb = None wenn exc is None sonst exc.__traceback__
     return getinnerframes(tb, context)
 
 
@@ -1682,7 +1682,7 @@ def _check_instance(obj, attr):
 
 def _check_class(klass, attr):
     fuer entry in _static_getmro(klass):
-        if _shadowed_dict(type(entry)) is _sentinel and attr in entry.__dict__:
+        wenn _shadowed_dict(type(entry)) is _sentinel and attr in entry.__dict__:
             return entry.__dict__[attr]
     return _sentinel
 
@@ -1697,9 +1697,9 @@ def _shadowed_dict_from_weakref_mro_tuple(*weakref_mro):
         # guaranteed to point to an object that is still alive.
         entry = weakref_entry()
         dunder_dict = _get_dunder_dict_of_class(entry)
-        if '__dict__' in dunder_dict:
+        wenn '__dict__' in dunder_dict:
             class_dict = dunder_dict['__dict__']
-            if not (type(class_dict) is types.GetSetDescriptorType and
+            wenn not (type(class_dict) is types.GetSetDescriptorType and
                     class_dict.__name__ == "__dict__" and
                     (class_dict.__objclass__ is object or
                      class_dict.__objclass__ is entry)):
@@ -1734,38 +1734,38 @@ def getattr_static(obj, attr, default=_sentinel):
     instance_result = _sentinel
 
     objtype = type(obj)
-    if type not in _static_getmro(objtype):
+    wenn type not in _static_getmro(objtype):
         klass = objtype
         dict_attr = _shadowed_dict(klass)
-        if (dict_attr is _sentinel or
+        wenn (dict_attr is _sentinel or
             type(dict_attr) is types.MemberDescriptorType):
             instance_result = _check_instance(obj, attr)
-    else:
+    sonst:
         klass = obj
 
     klass_result = _check_class(klass, attr)
 
-    if instance_result is not _sentinel and klass_result is not _sentinel:
-        if _check_class(type(klass_result), "__get__") is not _sentinel and (
+    wenn instance_result is not _sentinel and klass_result is not _sentinel:
+        wenn _check_class(type(klass_result), "__get__") is not _sentinel and (
             _check_class(type(klass_result), "__set__") is not _sentinel
             or _check_class(type(klass_result), "__delete__") is not _sentinel
         ):
             return klass_result
 
-    if instance_result is not _sentinel:
+    wenn instance_result is not _sentinel:
         return instance_result
-    if klass_result is not _sentinel:
+    wenn klass_result is not _sentinel:
         return klass_result
 
-    if obj is klass:
+    wenn obj is klass:
         # fuer types we check the metaclass too
         fuer entry in _static_getmro(type(klass)):
-            if (
+            wenn (
                 _shadowed_dict(type(entry)) is _sentinel
                 and attr in entry.__dict__
             ):
                 return entry.__dict__[attr]
-    if default is not _sentinel:
+    wenn default is not _sentinel:
         return default
     raise AttributeError(attr)
 
@@ -1786,11 +1786,11 @@ def getgeneratorstate(generator):
       GEN_SUSPENDED: Currently suspended at a yield expression.
       GEN_CLOSED: Execution has completed.
     """
-    if generator.gi_running:
+    wenn generator.gi_running:
         return GEN_RUNNING
-    if generator.gi_suspended:
+    wenn generator.gi_suspended:
         return GEN_SUSPENDED
-    if generator.gi_frame is None:
+    wenn generator.gi_frame is None:
         return GEN_CLOSED
     return GEN_CREATED
 
@@ -1802,13 +1802,13 @@ def getgeneratorlocals(generator):
     A dict is returned, with the keys the local variable names and values the
     bound values."""
 
-    if not isgenerator(generator):
+    wenn not isgenerator(generator):
         raise TypeError("{!r} is not a Python generator".format(generator))
 
     frame = getattr(generator, "gi_frame", None)
-    if frame is not None:
+    wenn frame is not None:
         return generator.gi_frame.f_locals
-    else:
+    sonst:
         return {}
 
 
@@ -1828,11 +1828,11 @@ def getcoroutinestate(coroutine):
       CORO_SUSPENDED: Currently suspended at an await expression.
       CORO_CLOSED: Execution has completed.
     """
-    if coroutine.cr_running:
+    wenn coroutine.cr_running:
         return CORO_RUNNING
-    if coroutine.cr_suspended:
+    wenn coroutine.cr_suspended:
         return CORO_SUSPENDED
-    if coroutine.cr_frame is None:
+    wenn coroutine.cr_frame is None:
         return CORO_CLOSED
     return CORO_CREATED
 
@@ -1844,9 +1844,9 @@ def getcoroutinelocals(coroutine):
     A dict is returned, with the keys the local variable names and values the
     bound values."""
     frame = getattr(coroutine, "cr_frame", None)
-    if frame is not None:
+    wenn frame is not None:
         return frame.f_locals
-    else:
+    sonst:
         return {}
 
 
@@ -1867,11 +1867,11 @@ def getasyncgenstate(agen):
       AGEN_SUSPENDED: Currently suspended at a yield expression.
       AGEN_CLOSED: Execution has completed.
     """
-    if agen.ag_running:
+    wenn agen.ag_running:
         return AGEN_RUNNING
-    if agen.ag_suspended:
+    wenn agen.ag_suspended:
         return AGEN_SUSPENDED
-    if agen.ag_frame is None:
+    wenn agen.ag_frame is None:
         return AGEN_CLOSED
     return AGEN_CREATED
 
@@ -1884,13 +1884,13 @@ def getasyncgenlocals(agen):
     A dict is returned, with the keys the local variable names and values the
     bound values."""
 
-    if not isasyncgen(agen):
+    wenn not isasyncgen(agen):
         raise TypeError(f"{agen!r} is not a Python async generator")
 
     frame = getattr(agen, "ag_frame", None)
-    if frame is not None:
+    wenn frame is not None:
         return agen.ag_frame.f_locals
-    else:
+    sonst:
         return {}
 
 
@@ -1906,27 +1906,27 @@ _NonUserDefinedCallables = (types.WrapperDescriptorType,
 
 
 def _signature_get_user_defined_method(cls, method_name, *, follow_wrapper_chains=True):
-    """Private helper. Checks if ``cls`` has an attribute
-    named ``method_name`` and returns it only if it is a
+    """Private helper. Checks wenn ``cls`` has an attribute
+    named ``method_name`` and returns it only wenn it is a
     pure python function.
     """
-    if method_name == '__new__':
+    wenn method_name == '__new__':
         meth = getattr(cls, method_name, None)
-    else:
+    sonst:
         meth = getattr_static(cls, method_name, None)
-    if meth is None:
+    wenn meth is None:
         return None
 
-    if follow_wrapper_chains:
+    wenn follow_wrapper_chains:
         meth = unwrap(meth, stop=(lambda m: hasattr(m, "__signature__")
                                   or _signature_is_builtin(m)))
-    if isinstance(meth, _NonUserDefinedCallables):
+    wenn isinstance(meth, _NonUserDefinedCallables):
         # Once '__signature__' will be added to 'C'-level
         # callables, this check won't be necessary
         return None
-    if method_name != '__new__':
+    wenn method_name != '__new__':
         meth = _descriptor_get(meth, cls)
-        if follow_wrapper_chains:
+        wenn follow_wrapper_chains:
             meth = unwrap(meth, stop=lambda m: hasattr(m, "__signature__"))
     return meth
 
@@ -1943,7 +1943,7 @@ def _signature_get_partial(wrapped_sig, partial, extra_args=()):
     partial_args = partial.args or ()
     partial_keywords = partial.keywords or {}
 
-    if extra_args:
+    wenn extra_args:
         partial_args = extra_args + partial_args
 
     try:
@@ -1959,20 +1959,20 @@ def _signature_get_partial(wrapped_sig, partial, extra_args=()):
             arg_value = ba.arguments[param_name]
         except KeyError:
             pass
-        else:
-            if param.kind is _POSITIONAL_ONLY:
+        sonst:
+            wenn param.kind is _POSITIONAL_ONLY:
                 # If positional-only parameter is bound by partial,
                 # it effectively disappears from the signature
-                # However, if it is a Placeholder it is not removed
+                # However, wenn it is a Placeholder it is not removed
                 # And also looses default value
-                if arg_value is functools.Placeholder:
+                wenn arg_value is functools.Placeholder:
                     new_params[param_name] = param.replace(default=_empty)
-                else:
+                sonst:
                     new_params.pop(param_name)
                 continue
 
-            if param.kind is _POSITIONAL_OR_KEYWORD:
-                if param_name in partial_keywords:
+            wenn param.kind is _POSITIONAL_OR_KEYWORD:
+                wenn param_name in partial_keywords:
                     # This means that this parameter, and all parameters
                     # after it should be keyword-only (and var-positional
                     # should be removed). Here's why. Consider the following
@@ -1988,35 +1988,35 @@ def _signature_get_partial(wrapped_sig, partial, extra_args=()):
                     transform_to_kwonly = True
                     # Set the new default value
                     new_params[param_name] = param.replace(default=arg_value)
-                else:
+                sonst:
                     # was passed as a positional argument
-                    # Do not pop if it is a Placeholder
+                    # Do not pop wenn it is a Placeholder
                     #   also change kind to positional only
                     #   and remove default
-                    if arg_value is functools.Placeholder:
+                    wenn arg_value is functools.Placeholder:
                         new_param = param.replace(
                             kind=_POSITIONAL_ONLY,
                             default=_empty
                         )
                         new_params[param_name] = new_param
-                    else:
+                    sonst:
                         new_params.pop(param_name)
                     continue
 
-            if param.kind is _KEYWORD_ONLY:
+            wenn param.kind is _KEYWORD_ONLY:
                 # Set the new default value
                 new_params[param_name] = param.replace(default=arg_value)
 
-        if transform_to_kwonly:
+        wenn transform_to_kwonly:
             assert param.kind is not _POSITIONAL_ONLY
 
-            if param.kind is _POSITIONAL_OR_KEYWORD:
+            wenn param.kind is _POSITIONAL_OR_KEYWORD:
                 new_param = new_params[param_name].replace(kind=_KEYWORD_ONLY)
                 new_params[param_name] = new_param
                 new_params.move_to_end(param_name)
-            elif param.kind in (_KEYWORD_ONLY, _VAR_KEYWORD):
+            sowenn param.kind in (_KEYWORD_ONLY, _VAR_KEYWORD):
                 new_params.move_to_end(param_name)
-            elif param.kind is _VAR_POSITIONAL:
+            sowenn param.kind is _VAR_POSITIONAL:
                 new_params.pop(param.name)
 
     return wrapped_sig.replace(parameters=new_params.values())
@@ -2029,16 +2029,16 @@ def _signature_bound_method(sig):
 
     params = tuple(sig.parameters.values())
 
-    if not params or params[0].kind in (_VAR_KEYWORD, _KEYWORD_ONLY):
+    wenn not params or params[0].kind in (_VAR_KEYWORD, _KEYWORD_ONLY):
         raise ValueError('invalid method signature')
 
     kind = params[0].kind
-    if kind in (_POSITIONAL_OR_KEYWORD, _POSITIONAL_ONLY):
+    wenn kind in (_POSITIONAL_OR_KEYWORD, _POSITIONAL_ONLY):
         # Drop first parameter:
         # '(p1, p2[, ...])' -> '(p2[, ...])'
         params = params[1:]
-    else:
-        if kind is not _VAR_POSITIONAL:
+    sonst:
+        wenn kind is not _VAR_POSITIONAL:
             # Unless we add a new parameter type we never
             # get here
             raise ValueError('invalid argument type')
@@ -2049,7 +2049,7 @@ def _signature_bound_method(sig):
 
 
 def _signature_is_builtin(obj):
-    """Private helper to test if `obj` is a callable that might
+    """Private helper to test wenn `obj` is a callable that might
     support Argument Clinic's __text_signature__ protocol.
     """
     return (isbuiltin(obj) or
@@ -2063,13 +2063,13 @@ def _signature_is_builtin(obj):
 
 
 def _signature_is_functionlike(obj):
-    """Private helper to test if `obj` is a duck type of FunctionType.
+    """Private helper to test wenn `obj` is a duck type of FunctionType.
     A good example of such objects are functions compiled with
     Cython, which have all attributes that a pure Python function
     would have, but have their code statically compiled.
     """
 
-    if not callable(obj) or isclass(obj):
+    wenn not callable(obj) or isclass(obj):
         # All function-like objects are obviously callables,
         # and not classes.
         return False
@@ -2096,12 +2096,12 @@ def _signature_strip_non_python_syntax(signature):
         the function does not have a "self" parameter.
     """
 
-    if not signature:
+    wenn not signature:
         return signature, None
 
     self_parameter = None
 
-    lines = [l.encode('ascii') fuer l in signature.split('\n') if l]
+    lines = [l.encode('ascii') fuer l in signature.split('\n') wenn l]
     generator = iter(lines).__next__
     token_stream = tokenize.tokenize(generator)
 
@@ -2119,17 +2119,17 @@ def _signature_strip_non_python_syntax(signature):
     fuer t in token_stream:
         type, string = t.type, t.string
 
-        if type == OP:
-            if string == ',':
+        wenn type == OP:
+            wenn string == ',':
                 current_parameter += 1
 
-        if (type == OP) and (string == '$'):
+        wenn (type == OP) and (string == '$'):
             assert self_parameter is None
             self_parameter = current_parameter
             continue
 
         add(string)
-        if (string == ','):
+        wenn (string == ','):
             add(' ')
     clean_signature = ''.join(text).strip().replace("\n", "")
     return clean_signature, self_parameter
@@ -2150,7 +2150,7 @@ def _signature_fromstr(cls, obj, s, skip_bound_arg=True):
     except SyntaxError:
         module = None
 
-    if not isinstance(module, ast.Module):
+    wenn not isinstance(module, ast.Module):
         raise ValueError("{!r} builtin has invalid signature".format(obj))
 
     f = module.body[0]
@@ -2162,19 +2162,19 @@ def _signature_fromstr(cls, obj, s, skip_bound_arg=True):
     module_dict = {}
 
     module_name = getattr(obj, '__module__', None)
-    if not module_name:
+    wenn not module_name:
         objclass = getattr(obj, '__objclass__', None)
         module_name = getattr(objclass, '__module__', None)
 
-    if module_name:
+    wenn module_name:
         module = sys.modules.get(module_name, None)
-        if module:
+        wenn module:
             module_dict = module.__dict__
     sys_module_dict = sys.modules.copy()
 
     def parse_name(node):
         assert isinstance(node, ast.arg)
-        if node.annotation is not None:
+        wenn node.annotation is not None:
             raise ValueError("Annotations are not currently supported")
         return node.arg
 
@@ -2187,7 +2187,7 @@ def _signature_fromstr(cls, obj, s, skip_bound_arg=True):
             except NameError:
                 raise ValueError
 
-        if isinstance(value, (str, int, float, bytes, bool, type(None))):
+        wenn isinstance(value, (str, int, float, bytes, bool, type(None))):
             return ast.Constant(value)
         raise ValueError
 
@@ -2198,14 +2198,14 @@ def _signature_fromstr(cls, obj, s, skip_bound_arg=True):
             while isinstance(n, ast.Attribute):
                 a.append(n.attr)
                 n = n.value
-            if not isinstance(n, ast.Name):
+            wenn not isinstance(n, ast.Name):
                 raise ValueError
             a.append(n.id)
             value = ".".join(reversed(a))
             return wrap_value(value)
 
         def visit_Name(self, node):
-            if not isinstance(node.ctx, ast.Load):
+            wenn not isinstance(node.ctx, ast.Load):
                 raise ValueError()
             return wrap_value(node.id)
 
@@ -2214,19 +2214,19 @@ def _signature_fromstr(cls, obj, s, skip_bound_arg=True):
             # commonly used to define default values in text signatures
             left = self.visit(node.left)
             right = self.visit(node.right)
-            if not isinstance(left, ast.Constant) or not isinstance(right, ast.Constant):
+            wenn not isinstance(left, ast.Constant) or not isinstance(right, ast.Constant):
                 raise ValueError
-            if isinstance(node.op, ast.Add):
+            wenn isinstance(node.op, ast.Add):
                 return ast.Constant(left.value + right.value)
-            elif isinstance(node.op, ast.Sub):
+            sowenn isinstance(node.op, ast.Sub):
                 return ast.Constant(left.value - right.value)
-            elif isinstance(node.op, ast.BitOr):
+            sowenn isinstance(node.op, ast.BitOr):
                 return ast.Constant(left.value | right.value)
             raise ValueError
 
     def p(name_node, default_node, default=empty):
         name = parse_name(name_node)
-        if default_node and default_node is not _empty:
+        wenn default_node and default_node is not _empty:
             try:
                 default_node = RewriteSymbolics().visit(default_node)
                 default = ast.literal_eval(default_node)
@@ -2248,7 +2248,7 @@ def _signature_fromstr(cls, obj, s, skip_bound_arg=True):
         p(name, default)
 
     # *args
-    if f.args.vararg:
+    wenn f.args.vararg:
         kind = Parameter.VAR_POSITIONAL
         p(f.args.vararg, empty)
 
@@ -2258,11 +2258,11 @@ def _signature_fromstr(cls, obj, s, skip_bound_arg=True):
         p(name, default)
 
     # **kwargs
-    if f.args.kwarg:
+    wenn f.args.kwarg:
         kind = Parameter.VAR_KEYWORD
         p(f.args.kwarg, empty)
 
-    if self_parameter is not None:
+    wenn self_parameter is not None:
         # Possibly strip the bound argument:
         #    - We *always* strip first bound argument if
         #      it is a module.
@@ -2272,9 +2272,9 @@ def _signature_fromstr(cls, obj, s, skip_bound_arg=True):
         _self = getattr(obj, '__self__', None)
         self_isbound = _self is not None
         self_ismodule = ismodule(_self)
-        if self_isbound and (self_ismodule or skip_bound_arg):
+        wenn self_isbound and (self_ismodule or skip_bound_arg):
             parameters.pop(0)
-        else:
+        sonst:
             # fuer builtins, self parameter is always positional-only!
             p = parameters[0].replace(kind=Parameter.POSITIONAL_ONLY)
             parameters[0] = p
@@ -2287,12 +2287,12 @@ def _signature_from_builtin(cls, func, skip_bound_arg=True):
     builtin callables.
     """
 
-    if not _signature_is_builtin(func):
+    wenn not _signature_is_builtin(func):
         raise TypeError("{!r} is not a Python builtin "
                         "function".format(func))
 
     s = getattr(func, "__text_signature__", None)
-    if not s:
+    wenn not s:
         raise ValueError("no signature found fuer builtin {!r}".format(func))
 
     return _signature_fromstr(cls, func, s, skip_bound_arg)
@@ -2304,16 +2304,16 @@ def _signature_from_function(cls, func, skip_bound_arg=True,
     """Private helper: constructs Signature fuer the given python function."""
 
     is_duck_function = False
-    if not isfunction(func):
-        if _signature_is_functionlike(func):
+    wenn not isfunction(func):
+        wenn _signature_is_functionlike(func):
             is_duck_function = True
-        else:
+        sonst:
             # If it's not a pure Python function, and not a duck type
             # of pure function:
             raise TypeError('{!r} is not a Python function'.format(func))
 
     s = getattr(func, "__text_signature__", None)
-    if s:
+    wenn s:
         return _signature_fromstr(cls, func, s, skip_bound_arg)
 
     Parameter = cls._parameter_cls
@@ -2331,9 +2331,9 @@ def _signature_from_function(cls, func, skip_bound_arg=True,
     defaults = func.__defaults__
     kwdefaults = func.__kwdefaults__
 
-    if defaults:
+    wenn defaults:
         pos_default_count = len(defaults)
-    else:
+    sonst:
         pos_default_count = 0
 
     parameters = []
@@ -2343,25 +2343,25 @@ def _signature_from_function(cls, func, skip_bound_arg=True,
 
     # Non-keyword-only parameters w/o defaults.
     fuer name in positional[:non_default_count]:
-        kind = _POSITIONAL_ONLY if posonly_left else _POSITIONAL_OR_KEYWORD
+        kind = _POSITIONAL_ONLY wenn posonly_left sonst _POSITIONAL_OR_KEYWORD
         annotation = annotations.get(name, _empty)
         parameters.append(Parameter(name, annotation=annotation,
                                     kind=kind))
-        if posonly_left:
+        wenn posonly_left:
             posonly_left -= 1
 
     # ... w/ defaults.
     fuer offset, name in enumerate(positional[non_default_count:]):
-        kind = _POSITIONAL_ONLY if posonly_left else _POSITIONAL_OR_KEYWORD
+        kind = _POSITIONAL_ONLY wenn posonly_left sonst _POSITIONAL_OR_KEYWORD
         annotation = annotations.get(name, _empty)
         parameters.append(Parameter(name, annotation=annotation,
                                     kind=kind,
                                     default=defaults[offset]))
-        if posonly_left:
+        wenn posonly_left:
             posonly_left -= 1
 
     # *args
-    if func_code.co_flags & CO_VARARGS:
+    wenn func_code.co_flags & CO_VARARGS:
         name = arg_names[pos_count + keyword_only_count]
         annotation = annotations.get(name, _empty)
         parameters.append(Parameter(name, annotation=annotation,
@@ -2370,7 +2370,7 @@ def _signature_from_function(cls, func, skip_bound_arg=True,
     # Keyword-only parameters.
     fuer name in keyword_only:
         default = _empty
-        if kwdefaults is not None:
+        wenn kwdefaults is not None:
             default = kwdefaults.get(name, _empty)
 
         annotation = annotations.get(name, _empty)
@@ -2378,9 +2378,9 @@ def _signature_from_function(cls, func, skip_bound_arg=True,
                                     kind=_KEYWORD_ONLY,
                                     default=default))
     # **kwargs
-    if func_code.co_flags & CO_VARKEYWORDS:
+    wenn func_code.co_flags & CO_VARKEYWORDS:
         index = pos_count + keyword_only_count
-        if func_code.co_flags & CO_VARARGS:
+        wenn func_code.co_flags & CO_VARARGS:
             index += 1
 
         name = arg_names[index]
@@ -2396,10 +2396,10 @@ def _signature_from_function(cls, func, skip_bound_arg=True,
 
 
 def _descriptor_get(descriptor, obj):
-    if isclass(descriptor):
+    wenn isclass(descriptor):
         return descriptor
     get = getattr(type(descriptor), '__get__', _sentinel)
-    if get is _sentinel:
+    wenn get is _sentinel:
         return descriptor
     return get(descriptor, obj, type(obj))
 
@@ -2426,26 +2426,26 @@ def _signature_from_callable(obj, *,
                                 eval_str=eval_str,
                                 annotation_format=annotation_format)
 
-    if not callable(obj):
+    wenn not callable(obj):
         raise TypeError('{!r} is not a callable object'.format(obj))
 
-    if isinstance(obj, types.MethodType):
+    wenn isinstance(obj, types.MethodType):
         # In this case we skip the first parameter of the underlying
         # function (usually `self` or `cls`).
         sig = _get_signature_of(obj.__func__)
 
-        if skip_bound_arg:
+        wenn skip_bound_arg:
             return _signature_bound_method(sig)
-        else:
+        sonst:
             return sig
 
     # Was this function wrapped by a decorator?
-    if follow_wrapper_chains:
+    wenn follow_wrapper_chains:
         # Unwrap until we find an explicit signature or a MethodType (which will be
         # handled explicitly below).
         obj = unwrap(obj, stop=(lambda f: hasattr(f, "__signature__")
                                 or isinstance(f, types.MethodType)))
-        if isinstance(obj, types.MethodType):
+        wenn isinstance(obj, types.MethodType):
             # If the unwrapped object is a *method*, we might want to
             # skip its first parameter (self).
             # See test_signature_wrapped_bound_method fuer details.
@@ -2455,9 +2455,9 @@ def _signature_from_callable(obj, *,
         sig = obj.__signature__
     except AttributeError:
         pass
-    else:
-        if sig is not None:
-            if not isinstance(sig, Signature):
+    sonst:
+        wenn sig is not None:
+            wenn not isinstance(sig, Signature):
                 raise TypeError(
                     'unexpected object {!r} in __signature__ '
                     'attribute'.format(sig))
@@ -2467,11 +2467,11 @@ def _signature_from_callable(obj, *,
         partialmethod = obj.__partialmethod__
     except AttributeError:
         pass
-    else:
-        if isinstance(partialmethod, functools.partialmethod):
+    sonst:
+        wenn isinstance(partialmethod, functools.partialmethod):
             # Unbound partialmethod (see functools.partialmethod)
             # This means, that we need to calculate the signature
-            # as if it's a regular partial object, but taking into
+            # as wenn it's a regular partial object, but taking into
             # account that the first positional argument
             # (usually `self`, or `cls`) will not be passed
             # automatically (as fuer boundmethods)
@@ -2480,27 +2480,27 @@ def _signature_from_callable(obj, *,
 
             sig = _signature_get_partial(wrapped_sig, partialmethod, (None,))
             first_wrapped_param = tuple(wrapped_sig.parameters.values())[0]
-            if first_wrapped_param.kind is Parameter.VAR_POSITIONAL:
+            wenn first_wrapped_param.kind is Parameter.VAR_POSITIONAL:
                 # First argument of the wrapped callable is `*args`, as in
                 # `partialmethod(lambda *args)`.
                 return sig
-            else:
+            sonst:
                 sig_params = tuple(sig.parameters.values())
                 assert (not sig_params or
                         first_wrapped_param is not sig_params[0])
                 # If there were placeholders set,
                 #   first param is transformed to positional only
-                if partialmethod.args.count(functools.Placeholder):
+                wenn partialmethod.args.count(functools.Placeholder):
                     first_wrapped_param = first_wrapped_param.replace(
                         kind=Parameter.POSITIONAL_ONLY)
                 new_params = (first_wrapped_param,) + sig_params
                 return sig.replace(parameters=new_params)
 
-    if isinstance(obj, functools.partial):
+    wenn isinstance(obj, functools.partial):
         wrapped_sig = _get_signature_of(obj.func)
         return _signature_get_partial(wrapped_sig, obj)
 
-    if isfunction(obj) or _signature_is_functionlike(obj):
+    wenn isfunction(obj) or _signature_is_functionlike(obj):
         # If it's a pure Python function, or an object that is duck type
         # of a Python function (Cython functions, fuer instance), then:
         return _signature_from_function(sigcls, obj,
@@ -2508,21 +2508,21 @@ def _signature_from_callable(obj, *,
                                         globals=globals, locals=locals, eval_str=eval_str,
                                         annotation_format=annotation_format)
 
-    if _signature_is_builtin(obj):
+    wenn _signature_is_builtin(obj):
         return _signature_from_builtin(sigcls, obj,
                                        skip_bound_arg=skip_bound_arg)
 
-    if isinstance(obj, type):
+    wenn isinstance(obj, type):
         # obj is a klasse or a metaclass
 
-        # First, let's see if it has an overloaded __call__ defined
+        # First, let's see wenn it has an overloaded __call__ defined
         # in its metaclass
         call = _signature_get_user_defined_method(
             type(obj),
             '__call__',
             follow_wrapper_chains=follow_wrapper_chains,
         )
-        if call is not None:
+        wenn call is not None:
             return _get_signature_of(call)
 
         # NOTE: The user-defined method can be a function with a thin wrapper
@@ -2538,17 +2538,17 @@ def _signature_from_callable(obj, *,
             follow_wrapper_chains=follow_wrapper_chains,
         )
 
-        # Go through the MRO and see if any klasse has user-defined
+        # Go through the MRO and see wenn any klasse has user-defined
         # pure Python __new__ or __init__ method
         fuer base in obj.__mro__:
-            # Now we check if the 'obj' klasse has an own '__new__' method
-            if new is not None and '__new__' in base.__dict__:
+            # Now we check wenn the 'obj' klasse has an own '__new__' method
+            wenn new is not None and '__new__' in base.__dict__:
                 sig = _get_signature_of(new)
-                if skip_bound_arg:
+                wenn skip_bound_arg:
                     sig = _signature_bound_method(sig)
                 return sig
             # or an own '__init__' method
-            elif init is not None and '__init__' in base.__dict__:
+            sowenn init is not None and '__init__' in base.__dict__:
                 return _get_signature_of(init)
 
         # At this point we know, that `obj` is a class, with no user-
@@ -2557,7 +2557,7 @@ def _signature_from_callable(obj, *,
         fuer base in obj.__mro__[:-1]:
             # Since '__text_signature__' is implemented as a
             # descriptor that extracts text signature from the
-            # klasse docstring, if 'obj' is derived from a builtin
+            # klasse docstring, wenn 'obj' is derived from a builtin
             # class, its own '__text_signature__' may be 'None'.
             # Therefore, we go through the MRO (except the last
             # klasse in there, which is 'object') to find the first
@@ -2566,40 +2566,40 @@ def _signature_from_callable(obj, *,
                 text_sig = base.__text_signature__
             except AttributeError:
                 pass
-            else:
-                if text_sig:
+            sonst:
+                wenn text_sig:
                     # If 'base' klasse has a __text_signature__ attribute:
                     # return a signature based on it
                     return _signature_fromstr(sigcls, base, text_sig)
 
         # No '__text_signature__' was found fuer the 'obj' class.
-        # Last option is to check if its '__init__' is
+        # Last option is to check wenn its '__init__' is
         # object.__init__ or type.__init__.
-        if type not in obj.__mro__:
+        wenn type not in obj.__mro__:
             obj_init = obj.__init__
             obj_new = obj.__new__
-            if follow_wrapper_chains:
+            wenn follow_wrapper_chains:
                 obj_init = unwrap(obj_init)
                 obj_new = unwrap(obj_new)
             # We have a klasse (not metaclass), but no user-defined
             # __init__ or __new__ fuer it
-            if obj_init is object.__init__ and obj_new is object.__new__:
+            wenn obj_init is object.__init__ and obj_new is object.__new__:
                 # Return a signature of 'object' builtin.
                 return sigcls.from_callable(object)
-            else:
+            sonst:
                 raise ValueError(
                     'no signature found fuer builtin type {!r}'.format(obj))
 
-    else:
+    sonst:
         # An object with __call__
         call = getattr_static(type(obj), '__call__', None)
-        if call is not None:
+        wenn call is not None:
             try:
                 text_sig = obj.__text_signature__
             except AttributeError:
                 pass
-            else:
-                if text_sig:
+            sonst:
+                wenn text_sig:
                     return _signature_fromstr(sigcls, obj, text_sig)
             call = _descriptor_get(call, obj)
             return _get_signature_of(call)
@@ -2647,11 +2647,11 @@ klasse Parameter:
     * name : str
         The name of the parameter as a string.
     * default : object
-        The default value fuer the parameter if specified.  If the
+        The default value fuer the parameter wenn specified.  If the
         parameter has no default value, this attribute is set to
         `Parameter.empty`.
     * annotation
-        The annotation fuer the parameter if specified.  If the
+        The annotation fuer the parameter wenn specified.  If the
         parameter has no annotation, this attribute is set to
         `Parameter.empty`.
     * kind : str
@@ -2676,27 +2676,27 @@ klasse Parameter:
             self._kind = _ParameterKind(kind)
         except ValueError:
             raise ValueError(f'value {kind!r} is not a valid Parameter.kind')
-        if default is not _empty:
-            if self._kind in (_VAR_POSITIONAL, _VAR_KEYWORD):
+        wenn default is not _empty:
+            wenn self._kind in (_VAR_POSITIONAL, _VAR_KEYWORD):
                 msg = '{} parameters cannot have default values'
                 msg = msg.format(self._kind.description)
                 raise ValueError(msg)
         self._default = default
         self._annotation = annotation
 
-        if name is _empty:
+        wenn name is _empty:
             raise ValueError('name is a required attribute fuer Parameter')
 
-        if not isinstance(name, str):
+        wenn not isinstance(name, str):
             msg = 'name must be a str, not a {}'.format(type(name).__name__)
             raise TypeError(msg)
 
-        if name[0] == '.' and name[1:].isdigit():
+        wenn name[0] == '.' and name[1:].isdigit():
             # These are implicit arguments generated by comprehensions. In
             # order to provide a friendlier interface to users, we recast
             # their name as "implicitN" and treat them as positional-only.
             # See issue 19611.
-            if self._kind != _POSITIONAL_OR_KEYWORD:
+            wenn self._kind != _POSITIONAL_OR_KEYWORD:
                 msg = (
                     'implicit arguments must be passed as '
                     'positional or keyword arguments, not {}'
@@ -2709,7 +2709,7 @@ klasse Parameter:
         # It's possible fuer C functions to have a positional-only parameter
         # where the name is a keyword, so fuer compatibility we'll allow it.
         is_keyword = iskeyword(name) and self._kind is not _POSITIONAL_ONLY
-        if is_keyword or not name.isidentifier():
+        wenn is_keyword or not name.isidentifier():
             raise ValueError('{!r} is not a valid parameter name'.format(name))
 
         self._name = name
@@ -2744,16 +2744,16 @@ klasse Parameter:
                 annotation=_void, default=_void):
         """Creates a customized copy of the Parameter."""
 
-        if name is _void:
+        wenn name is _void:
             name = self._name
 
-        if kind is _void:
+        wenn kind is _void:
             kind = self._kind
 
-        if annotation is _void:
+        wenn annotation is _void:
             annotation = self._annotation
 
-        if default is _void:
+        wenn default is _void:
             default = self._default
 
         return type(self)(name, kind, default=default, annotation=annotation)
@@ -2766,20 +2766,20 @@ klasse Parameter:
         formatted = self._name
 
         # Add annotation and default value
-        if self._annotation is not _empty:
+        wenn self._annotation is not _empty:
             annotation = formatannotation(self._annotation,
                                           quote_annotation_strings=quote_annotation_strings)
             formatted = '{}: {}'.format(formatted, annotation)
 
-        if self._default is not _empty:
-            if self._annotation is not _empty:
+        wenn self._default is not _empty:
+            wenn self._annotation is not _empty:
                 formatted = '{} = {}'.format(formatted, repr(self._default))
-            else:
+            sonst:
                 formatted = '{}={}'.format(formatted, repr(self._default))
 
-        if kind == _VAR_POSITIONAL:
+        wenn kind == _VAR_POSITIONAL:
             formatted = '*' + formatted
-        elif kind == _VAR_KEYWORD:
+        sowenn kind == _VAR_KEYWORD:
             formatted = '**' + formatted
 
         return formatted
@@ -2793,9 +2793,9 @@ klasse Parameter:
         return hash((self._name, self._kind, self._annotation, self._default))
 
     def __eq__(self, other):
-        if self is other:
+        wenn self is other:
             return True
-        if not isinstance(other, Parameter):
+        wenn not isinstance(other, Parameter):
             return NotImplemented
         return (self._name == other._name and
                 self._kind == other._kind and
@@ -2834,7 +2834,7 @@ klasse BoundArguments:
     def args(self):
         args = []
         fuer param_name, param in self._signature.parameters.items():
-            if param.kind in (_VAR_KEYWORD, _KEYWORD_ONLY):
+            wenn param.kind in (_VAR_KEYWORD, _KEYWORD_ONLY):
                 break
 
             try:
@@ -2843,11 +2843,11 @@ klasse BoundArguments:
                 # We're done here. Other arguments
                 # will be mapped in 'BoundArguments.kwargs'
                 break
-            else:
-                if param.kind == _VAR_POSITIONAL:
+            sonst:
+                wenn param.kind == _VAR_POSITIONAL:
                     # *args
                     args.extend(arg)
-                else:
+                sonst:
                     # plain argument
                     args.append(arg)
 
@@ -2858,26 +2858,26 @@ klasse BoundArguments:
         kwargs = {}
         kwargs_started = False
         fuer param_name, param in self._signature.parameters.items():
-            if not kwargs_started:
-                if param.kind in (_VAR_KEYWORD, _KEYWORD_ONLY):
+            wenn not kwargs_started:
+                wenn param.kind in (_VAR_KEYWORD, _KEYWORD_ONLY):
                     kwargs_started = True
-                else:
-                    if param_name not in self.arguments:
+                sonst:
+                    wenn param_name not in self.arguments:
                         kwargs_started = True
                         continue
 
-            if not kwargs_started:
+            wenn not kwargs_started:
                 continue
 
             try:
                 arg = self.arguments[param_name]
             except KeyError:
                 pass
-            else:
-                if param.kind == _VAR_KEYWORD:
+            sonst:
+                wenn param.kind == _VAR_KEYWORD:
                     # **kwargs
                     kwargs.update(arg)
-                else:
+                sonst:
                     # plain keyword argument
                     kwargs[param_name] = arg
 
@@ -2898,13 +2898,13 @@ klasse BoundArguments:
             try:
                 new_arguments.append((name, arguments[name]))
             except KeyError:
-                if param.default is not _empty:
+                wenn param.default is not _empty:
                     val = param.default
-                elif param.kind is _VAR_POSITIONAL:
+                sowenn param.kind is _VAR_POSITIONAL:
                     val = ()
-                elif param.kind is _VAR_KEYWORD:
+                sowenn param.kind is _VAR_KEYWORD:
                     val = {}
-                else:
+                sonst:
                     # This BoundArguments was likely produced by
                     # Signature.bind_partial().
                     continue
@@ -2912,9 +2912,9 @@ klasse BoundArguments:
         self.arguments = dict(new_arguments)
 
     def __eq__(self, other):
-        if self is other:
+        wenn self is other:
             return True
-        if not isinstance(other, BoundArguments):
+        wenn not isinstance(other, BoundArguments):
             return NotImplemented
         return (self.signature == other.signature and
                 self.arguments == other.arguments)
@@ -2945,7 +2945,7 @@ klasse Signature:
         Parameter objects (keyword-only arguments are in the same order
         as listed in `code.co_varnames`).
     * return_annotation : object
-        The annotation fuer the return type of the function if specified.
+        The annotation fuer the return type of the function wenn specified.
         If the function has no annotation fuer its return type, this
         attribute is set to `Signature.empty`.
     * bind(*args, **kwargs) -> BoundArguments
@@ -2969,10 +2969,10 @@ klasse Signature:
         objects and 'return_annotation'.  All arguments are optional.
         """
 
-        if parameters is None:
+        wenn parameters is None:
             params = OrderedDict()
-        else:
-            if __validate_parameters__:
+        sonst:
+            wenn __validate_parameters__:
                 params = OrderedDict()
                 top_kind = _POSITIONAL_ONLY
                 seen_default = False
@@ -2982,14 +2982,14 @@ klasse Signature:
                     kind = param.kind
                     name = param.name
 
-                    if kind in (_VAR_POSITIONAL, _VAR_KEYWORD):
-                        if kind in seen_var_parameters:
+                    wenn kind in (_VAR_POSITIONAL, _VAR_KEYWORD):
+                        wenn kind in seen_var_parameters:
                             msg = f'more than one {kind.description} parameter'
                             raise ValueError(msg)
 
                         seen_var_parameters.add(kind)
 
-                    if kind < top_kind:
+                    wenn kind < top_kind:
                         msg = (
                             'wrong parameter order: {} parameter before {} '
                             'parameter'
@@ -2997,27 +2997,27 @@ klasse Signature:
                         msg = msg.format(top_kind.description,
                                          kind.description)
                         raise ValueError(msg)
-                    elif kind > top_kind:
+                    sowenn kind > top_kind:
                         top_kind = kind
 
-                    if kind in (_POSITIONAL_ONLY, _POSITIONAL_OR_KEYWORD):
-                        if param.default is _empty:
-                            if seen_default:
+                    wenn kind in (_POSITIONAL_ONLY, _POSITIONAL_OR_KEYWORD):
+                        wenn param.default is _empty:
+                            wenn seen_default:
                                 # No default fuer this parameter, but the
                                 # previous parameter of had a default
                                 msg = 'non-default argument follows default ' \
                                       'argument'
                                 raise ValueError(msg)
-                        else:
+                        sonst:
                             # There is a default fuer this parameter.
                             seen_default = True
 
-                    if name in params:
+                    wenn name in params:
                         msg = 'duplicate parameter name: {!r}'.format(name)
                         raise ValueError(msg)
 
                     params[name] = param
-            else:
+            sonst:
                 params = OrderedDict((param.name, param) fuer param in parameters)
 
         self._parameters = types.MappingProxyType(params)
@@ -3047,10 +3047,10 @@ klasse Signature:
         to override them in the new copy.
         """
 
-        if parameters is _void:
+        wenn parameters is _void:
             parameters = self.parameters.values()
 
-        if return_annotation is _void:
+        wenn return_annotation is _void:
             return_annotation = self._return_annotation
 
         return type(self)(parameters,
@@ -3060,10 +3060,10 @@ klasse Signature:
 
     def _hash_basis(self):
         params = tuple(param fuer param in self.parameters.values()
-                             if param.kind != _KEYWORD_ONLY)
+                             wenn param.kind != _KEYWORD_ONLY)
 
         kwo_params = {param.name: param fuer param in self.parameters.values()
-                                        if param.kind == _KEYWORD_ONLY}
+                                        wenn param.kind == _KEYWORD_ONLY}
 
         return params, kwo_params, self.return_annotation
 
@@ -3073,9 +3073,9 @@ klasse Signature:
         return hash((params, kwo_params, return_annotation))
 
     def __eq__(self, other):
-        if self is other:
+        wenn self is other:
             return True
-        if not isinstance(other, Signature):
+        wenn not isinstance(other, Signature):
             return NotImplemented
         return self._hash_basis() == other._hash_basis()
 
@@ -3103,14 +3103,14 @@ klasse Signature:
                     # No more parameters. That's it. Just need to check that
                     # we have no `kwargs` after this while loop
                     break
-                else:
-                    if param.kind == _VAR_POSITIONAL:
+                sonst:
+                    wenn param.kind == _VAR_POSITIONAL:
                         # That's OK, just empty *args.  Let's start parsing
                         # kwargs
                         break
-                    elif param.name in kwargs:
-                        if param.kind == _POSITIONAL_ONLY:
-                            if param.default is _empty:
+                    sowenn param.name in kwargs:
+                        wenn param.kind == _POSITIONAL_ONLY:
+                            wenn param.default is _empty:
                                 msg = f'missing a required positional-only argument: {param.name!r}'
                                 raise TypeError(msg)
                             # Raise a TypeError once we are sure there is no
@@ -3119,41 +3119,41 @@ klasse Signature:
                             continue
                         parameters_ex = (param,)
                         break
-                    elif (param.kind == _VAR_KEYWORD or
+                    sowenn (param.kind == _VAR_KEYWORD or
                                                 param.default is not _empty):
                         # That's fine too - we have a default value fuer this
                         # parameter.  So, lets start parsing `kwargs`, starting
                         # with the current parameter
                         parameters_ex = (param,)
                         break
-                    else:
+                    sonst:
                         # No default, not VAR_KEYWORD, not VAR_POSITIONAL,
                         # not in `kwargs`
-                        if partial:
+                        wenn partial:
                             parameters_ex = (param,)
                             break
-                        else:
-                            if param.kind == _KEYWORD_ONLY:
+                        sonst:
+                            wenn param.kind == _KEYWORD_ONLY:
                                 argtype = ' keyword-only'
-                            else:
+                            sonst:
                                 argtype = ''
                             msg = 'missing a required{argtype} argument: {arg!r}'
                             msg = msg.format(arg=param.name, argtype=argtype)
                             raise TypeError(msg) from None
-            else:
+            sonst:
                 # We have a positional argument to process
                 try:
                     param = next(parameters)
                 except StopIteration:
                     raise TypeError('too many positional arguments') from None
-                else:
-                    if param.kind in (_VAR_KEYWORD, _KEYWORD_ONLY):
+                sonst:
+                    wenn param.kind in (_VAR_KEYWORD, _KEYWORD_ONLY):
                         # Looks like we have no parameter fuer this positional
                         # argument
                         raise TypeError(
                             'too many positional arguments') from None
 
-                    if param.kind == _VAR_POSITIONAL:
+                    wenn param.kind == _VAR_POSITIONAL:
                         # We have an '*args'-like argument, let's fill it with
                         # all positional arguments we have left and move on to
                         # the next phase
@@ -3162,7 +3162,7 @@ klasse Signature:
                         arguments[param.name] = tuple(values)
                         break
 
-                    if param.name in kwargs and param.kind != _POSITIONAL_ONLY:
+                    wenn param.name in kwargs and param.kind != _POSITIONAL_ONLY:
                         raise TypeError(
                             'multiple values fuer argument {arg!r}'.format(
                                 arg=param.name)) from None
@@ -3173,14 +3173,14 @@ klasse Signature:
         # keyword arguments
         kwargs_param = None
         fuer param in itertools.chain(parameters_ex, parameters):
-            if param.kind == _VAR_KEYWORD:
+            wenn param.kind == _VAR_KEYWORD:
                 # Memorize that we have a '**kwargs'-like parameter
                 kwargs_param = param
                 continue
 
-            if param.kind == _VAR_POSITIONAL:
+            wenn param.kind == _VAR_POSITIONAL:
                 # Named arguments don't refer to '*args'-like parameters.
-                # We only arrive here if the positional arguments ended
+                # We only arrive here wenn the positional arguments ended
                 # before reaching the last parameter before *args.
                 continue
 
@@ -3189,22 +3189,22 @@ klasse Signature:
                 arg_val = kwargs.pop(param_name)
             except KeyError:
                 # We have no value fuer this parameter.  It's fine though,
-                # if it has a default value, or it is an '*args'-like
+                # wenn it has a default value, or it is an '*args'-like
                 # parameter, left alone by the processing of positional
                 # arguments.
-                if (not partial and param.kind != _VAR_POSITIONAL and
+                wenn (not partial and param.kind != _VAR_POSITIONAL and
                                                     param.default is _empty):
                     raise TypeError('missing a required argument: {arg!r}'. \
                                     format(arg=param_name)) from None
 
-            else:
+            sonst:
                 arguments[param_name] = arg_val
 
-        if kwargs:
-            if kwargs_param is not None:
+        wenn kwargs:
+            wenn kwargs_param is not None:
                 # Process our '**kwargs'-like parameter
                 arguments[kwargs_param.name] = kwargs
-            elif pos_only_param_in_kwargs:
+            sowenn pos_only_param_in_kwargs:
                 raise TypeError(
                     'got some positional-only arguments passed as '
                     'keyword arguments: {arg!r}'.format(
@@ -3214,7 +3214,7 @@ klasse Signature:
                         ),
                     ),
                 )
-            else:
+            sonst:
                 raise TypeError(
                     'got an unexpected keyword argument {arg!r}'.format(
                         arg=next(iter(kwargs))))
@@ -3224,14 +3224,14 @@ klasse Signature:
     def bind(self, /, *args, **kwargs):
         """Get a BoundArguments object, that maps the passed `args`
         and `kwargs` to the function's signature.  Raises `TypeError`
-        if the passed arguments can not be bound.
+        wenn the passed arguments can not be bound.
         """
         return self._bind(args, kwargs)
 
     def bind_partial(self, /, *args, **kwargs):
         """Get a BoundArguments object, that partially maps the
         passed `args` and `kwargs` to the function's signature.
-        Raises `TypeError` if the passed arguments can not be bound.
+        Raises `TypeError` wenn the passed arguments can not be bound.
         """
         return self._bind(args, kwargs, partial=True)
 
@@ -3270,19 +3270,19 @@ klasse Signature:
 
             kind = param.kind
 
-            if kind == _POSITIONAL_ONLY:
+            wenn kind == _POSITIONAL_ONLY:
                 render_pos_only_separator = True
-            elif render_pos_only_separator:
+            sowenn render_pos_only_separator:
                 # It's not a positional-only parameter, and the flag
                 # is set to 'True' (there were pos-only params before.)
                 result.append('/')
                 render_pos_only_separator = False
 
-            if kind == _VAR_POSITIONAL:
+            wenn kind == _VAR_POSITIONAL:
                 # OK, we have an '*args'-like parameter, so we won't need
                 # a '*' to separate keyword-only arguments
                 render_kw_only_separator = False
-            elif kind == _KEYWORD_ONLY and render_kw_only_separator:
+            sowenn kind == _KEYWORD_ONLY and render_kw_only_separator:
                 # We have a keyword-only parameter to render and we haven't
                 # rendered an '*args'-like parameter before, so add a '*'
                 # separator to the parameters list ("foo(arg1, *, arg2)" case)
@@ -3293,16 +3293,16 @@ klasse Signature:
 
             result.append(formatted)
 
-        if render_pos_only_separator:
+        wenn render_pos_only_separator:
             # There were only positional-only parameters, hence the
             # flag was not reset to 'False'
             result.append('/')
 
         rendered = '({})'.format(', '.join(result))
-        if max_width is not None and len(rendered) > max_width:
+        wenn max_width is not None and len(rendered) > max_width:
             rendered = '(\n    {}\n)'.format(',\n    '.join(result))
 
-        if self.return_annotation is not _empty:
+        wenn self.return_annotation is not _empty:
             anno = formatannotation(self.return_annotation,
                                     quote_annotation_strings=quote_annotation_strings)
             rendered += ' -> {}'.format(anno)
@@ -3367,36 +3367,36 @@ def _main():
         print(msg, file=sys.stderr)
         sys.exit(2)
 
-    if has_attrs:
+    wenn has_attrs:
         parts = attrs.split(".")
         obj = module
         fuer part in parts:
             obj = getattr(obj, part)
 
-    if module.__name__ in sys.builtin_module_names:
+    wenn module.__name__ in sys.builtin_module_names:
         print("Can't get info fuer builtin modules.", file=sys.stderr)
         sys.exit(1)
 
-    if args.details:
+    wenn args.details:
         print('Target: {}'.format(target))
         print('Origin: {}'.format(getsourcefile(module)))
         print('Cached: {}'.format(module.__cached__))
-        if obj is module:
+        wenn obj is module:
             print('Loader: {}'.format(repr(module.__loader__)))
-            if hasattr(module, '__path__'):
+            wenn hasattr(module, '__path__'):
                 print('Submodule search path: {}'.format(module.__path__))
-        else:
+        sonst:
             try:
                 __, lineno = findsource(obj)
             except Exception:
                 pass
-            else:
+            sonst:
                 print('Line: {}'.format(lineno))
 
         print('\n')
-    else:
+    sonst:
         print(getsource(obj))
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     _main()

@@ -25,7 +25,7 @@ klasse TooltipBase:
 
     def showtip(self):
         """display the tooltip"""
-        if self.tipwindow:
+        wenn self.tipwindow:
             return
         self.tipwindow = tw = Toplevel(self.anchor_widget)
         # show no border on the top level window
@@ -72,7 +72,7 @@ klasse TooltipBase:
         # Note: This is called by __del__, so careful when overriding/extending
         tw = self.tipwindow
         self.tipwindow = None
-        if tw:
+        wenn tw:
             try:
                 tw.destroy()
             except TclError:  # pragma: no cover
@@ -111,9 +111,9 @@ klasse OnHoverTooltipBase(TooltipBase):
 
     def _show_event(self, event=None):
         """event handler to display the tooltip"""
-        if self.hover_delay:
+        wenn self.hover_delay:
             self.schedule()
-        else:
+        sonst:
             self.showtip()
 
     def _hide_event(self, event=None):
@@ -130,7 +130,7 @@ klasse OnHoverTooltipBase(TooltipBase):
         """cancel the future display of the tooltip"""
         after_id = self._after_id
         self._after_id = None
-        if after_id:
+        wenn after_id:
             self.anchor_widget.after_cancel(after_id)
 
     def hidetip(self):
@@ -182,7 +182,7 @@ def _tooltip(parent):  # htest #
     Hovertip(button2, "This is tooltip\ntext fuer button2.", hover_delay=None)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     from unittest import main
     main('idlelib.idle_test.test_tooltip', verbosity=2, exit=False)
 

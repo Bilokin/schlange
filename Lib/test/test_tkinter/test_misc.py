@@ -84,7 +84,7 @@ klasse MiscTest(AbstractTkTest, unittest.TestCase):
     @requires_tk(8, 6, 6)
     def test_tk_busy_with_cursor(self):
         root = self.root
-        if root._windowingsystem == 'aqua':
+        wenn root._windowingsystem == 'aqua':
             self.skipTest('the cursor option is not supported on OSX/Aqua')
         f = tkinter.Frame(root, name='myframe')
         f.pack()
@@ -493,9 +493,9 @@ klasse MiscTest(AbstractTkTest, unittest.TestCase):
         self.assertEqual(vi[3], vi.releaselevel)
         self.assertEqual(vi[4], vi.serial)
         self.assertTrue(vi > (1,0,0))
-        if vi.releaselevel == 'final':
+        wenn vi.releaselevel == 'final':
             self.assertEqual(vi.serial, 0)
-        else:
+        sonst:
             self.assertEqual(vi.micro, 0)
         self.assertStartsWith(str(vi), f'{vi.major}.{vi.minor}')
 
@@ -522,9 +522,9 @@ klasse WmTest(AbstractTkTest, unittest.TestCase):
         self.assertEqual(attributes2[1::2], tuple(attributes.values()))
         # silently deprecated
         attributes3 = w.wm_attributes(None)
-        if self.wantobjects:
+        wenn self.wantobjects:
             self.assertEqual(attributes3, attributes2)
-        else:
+        sonst:
             self.assertIsInstance(attributes3, str)
 
         fuer name in attributes:
@@ -536,50 +536,50 @@ klasse WmTest(AbstractTkTest, unittest.TestCase):
         self.assertIn('alpha', attributes)
         self.assertIn('fullscreen', attributes)
         self.assertIn('topmost', attributes)
-        if w._windowingsystem == "win32":
+        wenn w._windowingsystem == "win32":
             self.assertIn('disabled', attributes)
             self.assertIn('toolwindow', attributes)
             self.assertIn('transparentcolor', attributes)
-        if w._windowingsystem == "aqua":
+        wenn w._windowingsystem == "aqua":
             self.assertIn('modified', attributes)
             self.assertIn('notify', attributes)
             self.assertIn('titlepath', attributes)
             self.assertIn('transparent', attributes)
-        if w._windowingsystem == "x11":
+        wenn w._windowingsystem == "x11":
             self.assertIn('type', attributes)
             self.assertIn('zoomed', attributes)
 
         w.wm_attributes(alpha=0.5)
         self.assertEqual(w.wm_attributes('alpha'),
-                         0.5 if self.wantobjects else '0.5')
+                         0.5 wenn self.wantobjects sonst '0.5')
         w.wm_attributes(alpha=1.0)
         self.assertEqual(w.wm_attributes('alpha'),
-                         1.0 if self.wantobjects else '1.0')
+                         1.0 wenn self.wantobjects sonst '1.0')
         # silently deprecated
         w.wm_attributes('-alpha', 0.5)
         self.assertEqual(w.wm_attributes('alpha'),
-                         0.5 if self.wantobjects else '0.5')
+                         0.5 wenn self.wantobjects sonst '0.5')
         w.wm_attributes(alpha=1.0)
         self.assertEqual(w.wm_attributes('alpha'),
-                         1.0 if self.wantobjects else '1.0')
+                         1.0 wenn self.wantobjects sonst '1.0')
 
     def test_wm_iconbitmap(self):
         t = tkinter.Toplevel(self.root)
         self.assertEqual(t.wm_iconbitmap(), '')
         t.wm_iconbitmap('hourglass')
         bug = False
-        if t._windowingsystem == 'aqua':
+        wenn t._windowingsystem == 'aqua':
             # Tk bug 13ac26b35dc55f7c37f70b39d59d7ef3e63017c8.
             patchlevel = get_tk_patchlevel(t)
-            if patchlevel < (8, 6, 17) or (9, 0) <= patchlevel < (9, 0, 2):
+            wenn patchlevel < (8, 6, 17) or (9, 0) <= patchlevel < (9, 0, 2):
                 bug = True
-        if not bug:
+        wenn not bug:
             self.assertEqual(t.wm_iconbitmap(), 'hourglass')
         self.assertEqual(self.root.wm_iconbitmap(), '')
         t.wm_iconbitmap('')
         self.assertEqual(t.wm_iconbitmap(), '')
 
-        if t._windowingsystem == 'win32':
+        wenn t._windowingsystem == 'win32':
             t.wm_iconbitmap(default='hourglass')
             self.assertEqual(t.wm_iconbitmap(), 'hourglass')
             self.assertEqual(self.root.wm_iconbitmap(), '')
@@ -1141,8 +1141,8 @@ klasse BindTest(AbstractTkTest, unittest.TestCase):
         event = '<Control-Alt-Key-a>'
         w.pack()
         self.assertRaises(TypeError, w.tag_bind)
-        tag_bind = w._tag_bind if isinstance(w, tkinter.Text) else w.tag_bind
-        if isinstance(w, tkinter.Text):
+        tag_bind = w._tag_bind wenn isinstance(w, tkinter.Text) sonst w.tag_bind
+        wenn isinstance(w, tkinter.Text):
             self.assertRaises(TypeError, w.tag_bind, tag)
             self.assertRaises(TypeError, w.tag_bind, tag, event)
         self.assertEqual(tag_bind(tag), ())
@@ -1167,7 +1167,7 @@ klasse BindTest(AbstractTkTest, unittest.TestCase):
         tag = 'sel'
         event = '<Control-Alt-Key-b>'
         w.pack()
-        tag_bind = w._tag_bind if isinstance(w, tkinter.Text) else w.tag_bind
+        tag_bind = w._tag_bind wenn isinstance(w, tkinter.Text) sonst w.tag_bind
         self.assertEqual(tag_bind(tag), ())
         self.assertEqual(tag_bind(tag, event), '')
         def test1(e): pass
@@ -1185,7 +1185,7 @@ klasse BindTest(AbstractTkTest, unittest.TestCase):
         tag = 'sel'
         event = '<Control-Alt-Key-d>'
         w.pack()
-        tag_bind = w._tag_bind if isinstance(w, tkinter.Text) else w.tag_bind
+        tag_bind = w._tag_bind wenn isinstance(w, tkinter.Text) sonst w.tag_bind
         self.assertEqual(tag_bind(tag), ())
         self.assertEqual(tag_bind(tag, event), '')
         def test1(e): pass
@@ -1344,5 +1344,5 @@ def _info_commands(widget, pattern=None):
     return widget.tk.splitlist(widget.tk.call('info', 'commands', pattern))
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

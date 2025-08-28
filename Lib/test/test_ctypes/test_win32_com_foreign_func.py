@@ -5,7 +5,7 @@ import unittest
 from ctypes import POINTER, byref, c_void_p
 from ctypes.wintypes import BYTE, DWORD, WORD
 
-if sys.platform != "win32":
+wenn sys.platform != "win32":
     raise unittest.SkipTest("Windows-specific test")
 
 
@@ -281,5 +281,5 @@ klasse CopyComPointerTests(unittest.TestCase):
         self.assertEqual(0, dst_orig.Release())
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

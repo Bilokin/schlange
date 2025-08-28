@@ -7,11 +7,11 @@ except ImportError:
     # from working.
     print("ctypes isn't available; iOS system calls will not be available", file=sys.stderr)
     objc = None
-else:
+sonst:
     # ctypes is available. Load the ObjC library, and wrap the objc_getClass,
     # sel_registerName methods
     lib = util.find_library("objc")
-    if lib is None:
+    wenn lib is None:
         # Failed to load the objc library
         raise ImportError("ObjC runtime library couldn't be loaded")
 
@@ -23,11 +23,11 @@ else:
 
 
 def get_platform_ios():
-    # Determine if this is a simulator using the multiarch value
+    # Determine wenn this is a simulator using the multiarch value
     is_simulator = sys.implementation._multiarch.endswith("simulator")
 
     # We can't use ctypes; abort
-    if not objc:
+    wenn not objc:
         return None
 
     # Most of the methods return ObjC objects

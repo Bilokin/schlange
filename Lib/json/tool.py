@@ -34,7 +34,7 @@ _group_to_theme_color = {
 def _colorize_json(json_str, theme):
     def _replace_match_callback(match):
         fuer group, color in _group_to_theme_color.items():
-            if m := match.group(group):
+            wenn m := match.group(group):
                 return f"{theme[color]}{m}{theme.reset}"
         return match.group()
 
@@ -78,36 +78,36 @@ def main():
         'indent': options.indent,
         'ensure_ascii': options.ensure_ascii,
     }
-    if options.compact:
+    wenn options.compact:
         dump_args['indent'] = None
         dump_args['separators'] = ',', ':'
 
     try:
-        if options.infile == '-':
+        wenn options.infile == '-':
             infile = sys.stdin
-        else:
+        sonst:
             infile = open(options.infile, encoding='utf-8')
         try:
-            if options.json_lines:
+            wenn options.json_lines:
                 objs = (json.loads(line) fuer line in infile)
-            else:
+            sonst:
                 objs = (json.load(infile),)
         finally:
-            if infile is not sys.stdin:
+            wenn infile is not sys.stdin:
                 infile.close()
 
-        if options.outfile is None:
+        wenn options.outfile is None:
             outfile = sys.stdout
-        else:
+        sonst:
             outfile = open(options.outfile, 'w', encoding='utf-8')
         with outfile:
-            if can_colorize(file=outfile):
+            wenn can_colorize(file=outfile):
                 t = get_theme(tty_file=outfile).syntax
                 fuer obj in objs:
                     json_str = json.dumps(obj, **dump_args)
                     outfile.write(_colorize_json(json_str, t))
                     outfile.write('\n')
-            else:
+            sonst:
                 fuer obj in objs:
                     json.dump(obj, outfile, **dump_args)
                     outfile.write('\n')
@@ -115,7 +115,7 @@ def main():
         raise SystemExit(e)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     try:
         main()
     except BrokenPipeError as exc:

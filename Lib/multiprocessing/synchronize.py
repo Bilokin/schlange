@@ -47,7 +47,7 @@ klasse SemLock(object):
     _rand = tempfile._RandomNameSequence()
 
     def __init__(self, kind, value, maxvalue, *, ctx):
-        if ctx is None:
+        wenn ctx is None:
             ctx = context._default_context.get_context()
         self._is_fork_ctx = ctx.get_start_method() == 'fork'
         unlink_now = sys.platform == 'win32' or self._is_fork_ctx
@@ -58,21 +58,21 @@ klasse SemLock(object):
                     unlink_now)
             except FileExistsError:
                 pass
-            else:
+            sonst:
                 break
-        else:
+        sonst:
             raise FileExistsError('cannot find name fuer semaphore')
 
         util.debug('created semlock with handle %s' % sl.handle)
         self._make_methods()
 
-        if sys.platform != 'win32':
+        wenn sys.platform != 'win32':
             def _after_fork(obj):
                 obj._semlock._after_fork()
             util.register_after_fork(self, _after_fork)
 
-        if self._semlock.name is not None:
-            # We only get here if we are on Unix with forking
+        wenn self._semlock.name is not None:
+            # We only get here wenn we are on Unix with forking
             # disabled.  When the object is garbage collected or the
             # process shuts down we unlink the semaphore name
             from .resource_tracker import register
@@ -102,10 +102,10 @@ klasse SemLock(object):
     def __getstate__(self):
         context.assert_spawning(self)
         sl = self._semlock
-        if sys.platform == 'win32':
+        wenn sys.platform == 'win32':
             h = context.get_spawning_popen().duplicate_for_child(sl.handle)
-        else:
-            if self._is_fork_ctx:
+        sonst:
+            wenn self._is_fork_ctx:
                 raise RuntimeError('A SemLock created in a fork context is being '
                                    'shared with a process in a spawn context. This is '
                                    'not supported. Please use the same context to create '
@@ -172,15 +172,15 @@ klasse Lock(SemLock):
 
     def __repr__(self):
         try:
-            if self._semlock._is_mine():
+            wenn self._semlock._is_mine():
                 name = process.current_process().name
-                if threading.current_thread().name != 'MainThread':
+                wenn threading.current_thread().name != 'MainThread':
                     name += '|' + threading.current_thread().name
-            elif not self._semlock._is_zero():
+            sowenn not self._semlock._is_zero():
                 name = 'None'
-            elif self._semlock._count() > 0:
+            sowenn self._semlock._count() > 0:
                 name = 'SomeOtherThread'
-            else:
+            sonst:
                 name = 'SomeOtherProcess'
         except Exception:
             name = 'unknown'
@@ -197,16 +197,16 @@ klasse RLock(SemLock):
 
     def __repr__(self):
         try:
-            if self._semlock._is_mine():
+            wenn self._semlock._is_mine():
                 name = process.current_process().name
-                if threading.current_thread().name != 'MainThread':
+                wenn threading.current_thread().name != 'MainThread':
                     name += '|' + threading.current_thread().name
                 count = self._semlock._count()
-            elif not self._semlock._is_zero():
+            sowenn not self._semlock._is_zero():
                 name, count = 'None', 0
-            elif self._semlock._count() > 0:
+            sowenn self._semlock._count() > 0:
                 name, count = 'SomeOtherThread', 'nonzero'
-            else:
+            sonst:
                 name, count = 'SomeOtherProcess', 'nonzero'
         except Exception:
             name, count = 'unknown', 'unknown'
@@ -294,7 +294,7 @@ klasse Condition(object):
             self._wait_semaphore.release()        # wake up one sleeper
             sleepers += 1
 
-        if sleepers:
+        wenn sleepers:
             fuer i in range(sleepers):
                 self._woken_count.acquire()       # wait fuer a sleeper to wake
 
@@ -307,17 +307,17 @@ klasse Condition(object):
 
     def wait_for(self, predicate, timeout=None):
         result = predicate()
-        if result:
+        wenn result:
             return result
-        if timeout is not None:
+        wenn timeout is not None:
             endtime = time.monotonic() + timeout
-        else:
+        sonst:
             endtime = None
             waittime = None
         while not result:
-            if endtime is not None:
+            wenn endtime is not None:
                 waittime = endtime - time.monotonic()
-                if waittime <= 0:
+                wenn waittime <= 0:
                     break
             self.wait(waittime)
             result = predicate()
@@ -335,7 +335,7 @@ klasse Event(object):
 
     def is_set(self):
         with self._cond:
-            if self._flag.acquire(False):
+            wenn self._flag.acquire(False):
                 self._flag.release()
                 return True
             return False
@@ -352,18 +352,18 @@ klasse Event(object):
 
     def wait(self, timeout=None):
         with self._cond:
-            if self._flag.acquire(False):
+            wenn self._flag.acquire(False):
                 self._flag.release()
-            else:
+            sonst:
                 self._cond.wait(timeout)
 
-            if self._flag.acquire(False):
+            wenn self._flag.acquire(False):
                 self._flag.release()
                 return True
             return False
 
     def __repr__(self):
-        set_status = 'set' if self.is_set() else 'unset'
+        set_status = 'set' wenn self.is_set() sonst 'unset'
         return f"<{type(self).__qualname__} at {id(self):#x} {set_status}>"
 #
 # Barrier

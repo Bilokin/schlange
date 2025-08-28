@@ -69,14 +69,14 @@ klasse Message(Dialog):
 
 # Rename _icon and _type options to allow overriding them in options
 def _show(title=None, message=None, _icon=None, _type=None, **options):
-    if _icon and "icon" not in options:    options["icon"] = _icon
-    if _type and "type" not in options:    options["type"] = _type
-    if title:   options["title"] = title
-    if message: options["message"] = message
+    wenn _icon and "icon" not in options:    options["icon"] = _icon
+    wenn _type and "type" not in options:    options["type"] = _type
+    wenn title:   options["title"] = title
+    wenn message: options["message"] = message
     res = Message(**options).show()
     # In some Tcl installations, yes/no is converted into a boolean.
-    if isinstance(res, bool):
-        if res:
+    wenn isinstance(res, bool):
+        wenn res:
             return YES
         return NO
     # In others we get a Tcl_Obj.
@@ -104,29 +104,29 @@ def askquestion(title=None, message=None, **options):
 
 
 def askokcancel(title=None, message=None, **options):
-    "Ask if operation should proceed; return true if the answer is ok"
+    "Ask wenn operation should proceed; return true wenn the answer is ok"
     s = _show(title, message, QUESTION, OKCANCEL, **options)
     return s == OK
 
 
 def askyesno(title=None, message=None, **options):
-    "Ask a question; return true if the answer is yes"
+    "Ask a question; return true wenn the answer is yes"
     s = _show(title, message, QUESTION, YESNO, **options)
     return s == YES
 
 
 def askyesnocancel(title=None, message=None, **options):
-    "Ask a question; return true if the answer is yes, None if cancelled."
+    "Ask a question; return true wenn the answer is yes, None wenn cancelled."
     s = _show(title, message, QUESTION, YESNOCANCEL, **options)
     # s might be a Tcl index object, so convert it to a string
     s = str(s)
-    if s == CANCEL:
+    wenn s == CANCEL:
         return None
     return s == YES
 
 
 def askretrycancel(title=None, message=None, **options):
-    "Ask if operation should be retried; return true if the answer is yes"
+    "Ask wenn operation should be retried; return true wenn the answer is yes"
     s = _show(title, message, WARNING, RETRYCANCEL, **options)
     return s == RETRY
 
@@ -134,7 +134,7 @@ def askretrycancel(title=None, message=None, **options):
 # --------------------------------------------------------------------
 # test stuff
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
 
     print("info", showinfo("Spam", "Egg Information"))
     print("warning", showwarning("Spam", "Egg Warning"))

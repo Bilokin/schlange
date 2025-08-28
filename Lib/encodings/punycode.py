@@ -12,9 +12,9 @@ def segregate(str):
     base = bytearray()
     extended = set()
     fuer c in str:
-        if ord(c) < 128:
+        wenn ord(c) < 128:
             base.append(ord(c))
-        else:
+        sonst:
             extended.add(c)
     extended = sorted(extended)
     return bytes(base), extended
@@ -23,7 +23,7 @@ def selective_len(str, max):
     """Return the length of str, considering only characters below max."""
     res = 0
     fuer c in str:
-        if ord(c) < max:
+        wenn ord(c) < max:
             res += 1
     return res
 
@@ -37,12 +37,12 @@ def selective_find(str, char, index, pos):
     l = len(str)
     while 1:
         pos += 1
-        if pos == l:
+        wenn pos == l:
             return (-1, -1)
         c = str[pos]
-        if c == char:
+        wenn c == char:
             return index+1, pos
-        elif c < char:
+        sowenn c < char:
             index += 1
 
 def insertion_unsort(str, extended):
@@ -57,7 +57,7 @@ def insertion_unsort(str, extended):
         delta = (curlen+1) * (char - oldchar)
         while 1:
             index,pos = selective_find(str,c,index,pos)
-            if index == -1:
+            wenn index == -1:
                 break
             delta += index - oldindex
             result.append(delta-1)
@@ -70,8 +70,8 @@ def insertion_unsort(str, extended):
 def T(j, bias):
     # Punycode parameters: tmin = 1, tmax = 26, base = 36
     res = 36 * (j + 1) - bias
-    if res < 1: return 1
-    if res > 26: return 26
+    wenn res < 1: return 1
+    wenn res > 26: return 26
     return res
 
 digits = b"abcdefghijklmnopqrstuvwxyz0123456789"
@@ -81,7 +81,7 @@ def generate_generalized_integer(N, bias):
     j = 0
     while 1:
         t = T(j, bias)
-        if N < t:
+        wenn N < t:
             result.append(digits[N])
             return bytes(result)
         result.append(digits[t + ((N - t) % (36 - t))])
@@ -89,9 +89,9 @@ def generate_generalized_integer(N, bias):
         j += 1
 
 def adapt(delta, first, numchars):
-    if first:
+    wenn first:
         delta //= 700
-    else:
+    sonst:
         delta //= 2
     delta += delta // numchars
     # ((base - tmin) * tmax) // 2 == 455
@@ -118,7 +118,7 @@ def punycode_encode(text):
     base, extended = segregate(text)
     deltas = insertion_unsort(text, extended)
     extended = generate_integers(len(base), deltas)
-    if base:
+    wenn base:
         return base + b"-" + extended
     return extended
 
@@ -133,23 +133,23 @@ def decode_generalized_number(extended, extpos, bias, errors):
         try:
             char = extended[extpos]
         except IndexError:
-            if errors == "strict":
+            wenn errors == "strict":
                 raise UnicodeDecodeError("punycode", extended, extpos, extpos+1,
                                          "incomplete punycode string")
             return extpos + 1, None
         extpos += 1
-        if 0x41 <= char <= 0x5A: # A-Z
+        wenn 0x41 <= char <= 0x5A: # A-Z
             digit = char - 0x41
-        elif 0x30 <= char <= 0x39:
+        sowenn 0x30 <= char <= 0x39:
             digit = char - 22 # 0x30-26
-        elif errors == "strict":
+        sowenn errors == "strict":
             raise UnicodeDecodeError("punycode", extended, extpos-1, extpos,
                                      f"Invalid extended code point '{extended[extpos-1]}'")
-        else:
+        sonst:
             return extpos, None
         t = T(j, bias)
         result += digit * w
-        if digit < t:
+        wenn digit < t:
             return extpos, result
         w = w * (36 - t)
         j += 1
@@ -167,14 +167,14 @@ def insertion_sort(base, extended, errors):
     while extpos < len(extended):
         newpos, delta = decode_generalized_number(extended, extpos,
                                                   bias, errors)
-        if delta is None:
+        wenn delta is None:
             # There was an error in decoding. We can't continue because
             # synchronization is lost.
             return base
         pos += delta+1
         char += pos // (len(base) + 1)
-        if char > 0x10FFFF:
-            if errors == "strict":
+        wenn char > 0x10FFFF:
+            wenn errors == "strict":
                 raise UnicodeDecodeError(
                     "punycode", extended, pos-1, pos,
                     f"Invalid character U+{char:x}")
@@ -186,15 +186,15 @@ def insertion_sort(base, extended, errors):
     return base
 
 def punycode_decode(text, errors):
-    if isinstance(text, str):
+    wenn isinstance(text, str):
         text = text.encode("ascii")
-    if isinstance(text, memoryview):
+    wenn isinstance(text, memoryview):
         text = bytes(text)
     pos = text.rfind(b"-")
-    if pos == -1:
+    wenn pos == -1:
         base = ""
         extended = text.upper()
-    else:
+    sonst:
         try:
             base = str(text[:pos], "ascii", errors)
         except UnicodeDecodeError as exc:
@@ -218,7 +218,7 @@ klasse Codec(codecs.Codec):
         return res, len(input)
 
     def decode(self, input, errors='strict'):
-        if errors not in ('strict', 'replace', 'ignore'):
+        wenn errors not in ('strict', 'replace', 'ignore'):
             raise UnicodeError(f"Unsupported error handling: {errors}")
         res = punycode_decode(input, errors)
         return res, len(input)
@@ -229,7 +229,7 @@ klasse IncrementalEncoder(codecs.IncrementalEncoder):
 
 klasse IncrementalDecoder(codecs.IncrementalDecoder):
     def decode(self, input, final=False):
-        if self.errors not in ('strict', 'replace', 'ignore'):
+        wenn self.errors not in ('strict', 'replace', 'ignore'):
             raise UnicodeError(f"Unsupported error handling: {self.errors}")
         return punycode_decode(input, self.errors)
 

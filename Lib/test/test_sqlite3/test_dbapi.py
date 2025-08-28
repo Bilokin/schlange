@@ -229,36 +229,36 @@ klasse ModuleTests(unittest.TestCase):
             "SQLITE_READONLY_ROLLBACK",
             "SQLITE_WARNING_AUTOINDEX",
         ]
-        if sqlite.sqlite_version_info >= (3, 21, 0):
+        wenn sqlite.sqlite_version_info >= (3, 21, 0):
             consts += [
                 "SQLITE_IOERR_BEGIN_ATOMIC",
                 "SQLITE_IOERR_COMMIT_ATOMIC",
                 "SQLITE_IOERR_ROLLBACK_ATOMIC",
             ]
-        if sqlite.sqlite_version_info >= (3, 22, 0):
+        wenn sqlite.sqlite_version_info >= (3, 22, 0):
             consts += [
                 "SQLITE_ERROR_MISSING_COLLSEQ",
                 "SQLITE_ERROR_RETRY",
                 "SQLITE_READONLY_CANTINIT",
                 "SQLITE_READONLY_DIRECTORY",
             ]
-        if sqlite.sqlite_version_info >= (3, 24, 0):
+        wenn sqlite.sqlite_version_info >= (3, 24, 0):
             consts += ["SQLITE_CORRUPT_SEQUENCE", "SQLITE_LOCKED_VTAB"]
-        if sqlite.sqlite_version_info >= (3, 25, 0):
+        wenn sqlite.sqlite_version_info >= (3, 25, 0):
             consts += ["SQLITE_CANTOPEN_DIRTYWAL", "SQLITE_ERROR_SNAPSHOT"]
-        if sqlite.sqlite_version_info >= (3, 31, 0):
+        wenn sqlite.sqlite_version_info >= (3, 31, 0):
             consts += [
                 "SQLITE_CANTOPEN_SYMLINK",
                 "SQLITE_CONSTRAINT_PINNED",
                 "SQLITE_OK_SYMLINK",
             ]
-        if sqlite.sqlite_version_info >= (3, 32, 0):
+        wenn sqlite.sqlite_version_info >= (3, 32, 0):
             consts += [
                 "SQLITE_BUSY_TIMEOUT",
                 "SQLITE_CORRUPT_INDEX",
                 "SQLITE_IOERR_DATA",
             ]
-        if sqlite.sqlite_version_info >= (3, 34, 0):
+        wenn sqlite.sqlite_version_info >= (3, 34, 0):
             consts.append("SQLITE_IOERR_CORRUPTFS")
         fuer const in consts:
             with self.subTest(const=const):
@@ -266,9 +266,9 @@ klasse ModuleTests(unittest.TestCase):
 
     def test_error_code_on_exception(self):
         err_msg = "unable to open database file"
-        if sys.platform.startswith("win"):
+        wenn sys.platform.startswith("win"):
             err_code = sqlite.SQLITE_CANTOPEN_ISDIR
-        else:
+        sonst:
             err_code = sqlite.SQLITE_CANTOPEN
 
         with temp_dir() as db:
@@ -650,8 +650,8 @@ klasse OpenTests(unittest.TestCase):
 
     def get_undecodable_path(self):
         path = TESTFN_UNDECODABLE
-        if not path:
-            self.skipTest("only works if there are undecodable paths")
+        wenn not path:
+            self.skipTest("only works wenn there are undecodable paths")
         try:
             open(path, 'wb').close()
         except OSError:
@@ -958,7 +958,7 @@ klasse CursorTests(unittest.TestCase):
         self.assertEqual(self.cu.rowcount, 1)
 
     def test_rowcount_prefixed_with_comment(self):
-        # gh-79579: rowcount is updated even if query is prefixed with comments
+        # gh-79579: rowcount is updated even wenn query is prefixed with comments
         self.cu.execute("""
             -- foo
             insert into test(name) values ('foo'), ('foo')
@@ -1002,9 +1002,9 @@ klasse CursorTests(unittest.TestCase):
                 return self
 
             def __next__(self):
-                if self.value == 10:
+                wenn self.value == 10:
                     raise StopIteration
-                else:
+                sonst:
                     self.value += 1
                     return (self.value,)
 
@@ -1078,7 +1078,7 @@ klasse CursorTests(unittest.TestCase):
         self.assertEqual(res, [])
 
     def test_fetchmany_kw_arg(self):
-        """Checks if fetchmany works with keyword arguments"""
+        """Checks wenn fetchmany works with keyword arguments"""
         self.cu.execute("select name from test")
         res = self.cu.fetchmany(size=100)
         self.assertEqual(len(res), 1)
@@ -1522,7 +1522,7 @@ klasse ThreadTests(unittest.TestCase):
         t = threading.Thread(target=run, kwargs={"err": err})
         t.start()
         t.join()
-        if err:
+        wenn err:
             self.fail("\n".join(err))
 
     def test_check_connection_thread(self):
@@ -1538,10 +1538,10 @@ klasse ThreadTests(unittest.TestCase):
             lambda: self.con.getlimit(sqlite.SQLITE_LIMIT_LENGTH),
             lambda: self.con.blobopen("test", "b", 1),
         ]
-        if hasattr(sqlite.Connection, "serialize"):
+        wenn hasattr(sqlite.Connection, "serialize"):
             fns.append(lambda: self.con.serialize())
             fns.append(lambda: self.con.deserialize(b""))
-        if sqlite.sqlite_version_info >= (3, 25, 0):
+        wenn sqlite.sqlite_version_info >= (3, 25, 0):
             fns.append(lambda: self.con.create_window_function("foo", 0, None))
 
         fuer fn in fns:
@@ -1749,11 +1749,11 @@ klasse ClosedCurTests(MemoryDatabaseMixin, unittest.TestCase):
         cur.close()
 
         fuer method_name in ("execute", "executemany", "executescript", "fetchall", "fetchmany", "fetchone"):
-            if method_name in ("execute", "executescript"):
+            wenn method_name in ("execute", "executescript"):
                 params = ("select 4 union select 5",)
-            elif method_name == "executemany":
+            sowenn method_name == "executemany":
                 params = ("insert into foo(bar) values (?)", [(3,), (4,)])
-            else:
+            sonst:
                 params = []
 
             with self.assertRaises(sqlite.ProgrammingError):
@@ -1862,7 +1862,7 @@ klasse MultiprocessTests(unittest.TestCase):
         unlink(TESTFN)
 
     def test_ctx_mgr_rollback_if_commit_failed(self):
-        # bpo-27334: ctx manager does not rollback if commit fails
+        # bpo-27334: ctx manager does not rollback wenn commit fails
         SCRIPT = f"""if 1:
             import sqlite3
             def wait():
@@ -1882,7 +1882,7 @@ klasse MultiprocessTests(unittest.TestCase):
                     select wait();
                     rollback;
 
-                    -- start a new transaction; would fail if parent holds lock
+                    -- start a new transaction; would fail wenn parent holds lock
                     begin transaction;
                     select * from t;
                     rollback;
@@ -1910,7 +1910,7 @@ klasse MultiprocessTests(unittest.TestCase):
                 cx.execute("insert into t values('test')")
         except sqlite.OperationalError as exc:
             proc.stdin.write(str(exc))
-        else:
+        sonst:
             proc.stdin.write("no error")
         finally:
             cx.close()
@@ -1991,5 +1991,5 @@ klasse RowTests(unittest.TestCase):
         self.assertIsInstance(row, Sequence)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

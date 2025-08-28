@@ -156,7 +156,7 @@ klasse TestStringFormat(unittest.TestCase):
         self.assertEqual(anno, {"arg": "x"})
 
     def test_closure_undefined(self):
-        if False:
+        wenn False:
             x = 0
 
         def inner(arg: x):
@@ -568,7 +568,7 @@ klasse TestGetAnnotations(unittest.TestCase):
 
         foo.__annotations__ = {"a": "foo", "b": "str"}
         fuer format in Format:
-            if format == Format.VALUE_WITH_FAKE_GLOBALS:
+            wenn format == Format.VALUE_WITH_FAKE_GLOBALS:
                 continue
             with self.subTest(format=format):
                 self.assertEqual(
@@ -818,25 +818,25 @@ klasse TestGetAnnotations(unittest.TestCase):
     def test_stringized_annotation_permutations(self):
         def define_class(name, has_future, has_annos, base_text, extra_names=None):
             lines = []
-            if has_future:
+            wenn has_future:
                 lines.append("from __future__ import annotations")
             lines.append(f"class {name}({base_text}):")
-            if has_annos:
+            wenn has_annos:
                 lines.append(f"    {name}_attr: int")
-            else:
+            sonst:
                 lines.append("    pass")
             code = "\n".join(lines)
             ns = support.run_code(code, extra_names=extra_names)
             return ns[name]
 
         def check_annotations(cls, has_future, has_annos):
-            if has_annos:
-                if has_future:
+            wenn has_annos:
+                wenn has_future:
                     anno = "int"
-                else:
+                sonst:
                     anno = int
                 self.assertEqual(get_annotations(cls), {f"{cls.__name__}_attr": anno})
-            else:
+            sonst:
                 self.assertEqual(get_annotations(cls), {})
 
         fuer meta_future, base_future, child_future, meta_has_annos, base_has_annos, child_has_annos in itertools.product(
@@ -892,7 +892,7 @@ klasse TestGetAnnotations(unittest.TestCase):
         f.__annotations__["x"] = str
         # The modification is reflected in VALUE (the default)
         self.assertEqual(get_annotations(f), {"x": str})
-        # ... and also in FORWARDREF, which tries __annotations__ if available
+        # ... and also in FORWARDREF, which tries __annotations__ wenn available
         self.assertEqual(
             get_annotations(f, format=Format.FORWARDREF),
             {"x": str},
@@ -911,7 +911,7 @@ klasse TestGetAnnotations(unittest.TestCase):
 
         wa = WeirdAnnotations()
         fuer format in Format:
-            if format == Format.VALUE_WITH_FAKE_GLOBALS:
+            wenn format == Format.VALUE_WITH_FAKE_GLOBALS:
                 continue
             with (
                 self.subTest(format=format),
@@ -991,7 +991,7 @@ klasse TestGetAnnotations(unittest.TestCase):
                 pass
 
         fuer format in Format:
-            if format == Format.VALUE_WITH_FAKE_GLOBALS:
+            wenn format == Format.VALUE_WITH_FAKE_GLOBALS:
                 continue
             fuer obj in (None, 1, object(), CustomClass()):
                 with self.subTest(format=format, obj=obj):
@@ -1190,7 +1190,7 @@ klasse TestGetAnnotations(unittest.TestCase):
 klasse TestCallEvaluateFunction(unittest.TestCase):
     def test_evaluation(self):
         def evaluate(format, exc=NotImplementedError):
-            if format > 2:
+            wenn format > 2:
                 raise exc
             return undefined
 
@@ -1282,11 +1282,11 @@ klasse MetaclassTests(unittest.TestCase):
                     with self.subTest(c=c):
                         self.assertEqual(get_annotations(c), c.expected_annotations)
                         annotate_func = getattr(c, "__annotate__", None)
-                        if c.expected_annotations:
+                        wenn c.expected_annotations:
                             self.assertEqual(
                                 annotate_func(Format.VALUE), c.expected_annotations
                             )
-                        else:
+                        sonst:
                             self.assertIs(annotate_func, None)
 
 
@@ -1297,9 +1297,9 @@ klasse TestGetAnnotateFromClassNamespace(unittest.TestCase):
                 annotate = annotationlib.get_annotate_from_class_namespace(ns)
                 expected = ns["expected_annotate"]
                 with self.subTest(name=name):
-                    if expected:
+                    wenn expected:
                         self.assertIsNotNone(annotate)
-                    else:
+                    sonst:
                         self.assertIsNone(annotate)
                 return super().__new__(mcls, name, bases, ns)
 
@@ -1597,7 +1597,7 @@ klasse TestForwardRefClass(unittest.TestCase):
         # If you pass custom locals, we don't look at the owner's locals
         with self.assertRaises(NameError):
             ForwardRef("alias").evaluate(owner=Gen, locals={})
-        # But if the name exists in the locals, it works
+        # But wenn the name exists in the locals, it works
         self.assertIs(
             ForwardRef("alias").evaluate(owner=Gen, locals={"alias": str}), str
         )

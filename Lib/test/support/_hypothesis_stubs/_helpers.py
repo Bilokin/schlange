@@ -11,21 +11,21 @@ klasse StubClass:
         return new_obj
 
     def __repr__(self):
-        if self.__repr is not None:
+        wenn self.__repr is not None:
             return self.__repr
 
         argstr = ", ".join(self.__stub_args)
         kwargstr = ", ".join(f"{kw}={val}" fuer kw, val in self.__stub_kwargs.items())
 
         in_parens = argstr
-        if kwargstr:
+        wenn kwargstr:
             in_parens += ", " + kwargstr
 
         return f"{self.__class__.__qualname__}({in_parens})"
 
 
 def stub_factory(klass, name, *, with_repr=None, _seen={}):
-    if (klass, name) not in _seen:
+    wenn (klass, name) not in _seen:
 
         klasse Stub(klass):
             def __init__(self, *args, **kwargs):
@@ -35,7 +35,7 @@ def stub_factory(klass, name, *, with_repr=None, _seen={}):
 
         Stub.__name__ = name
         Stub.__qualname__ = name
-        if with_repr is not None:
+        wenn with_repr is not None:
             Stub._repr = None
 
         _seen.setdefault((klass, name, with_repr), Stub)

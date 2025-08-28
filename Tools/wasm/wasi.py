@@ -1,4 +1,4 @@
-if  __name__ == "__main__":
+wenn  __name__ == "__main__":
     import pathlib
     import runpy
     import sys

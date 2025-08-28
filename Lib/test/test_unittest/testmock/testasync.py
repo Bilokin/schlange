@@ -1115,5 +1115,5 @@ klasse AsyncMockAssert(unittest.TestCase):
         self.assertIsInstance(cm.exception.__cause__, TypeError)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

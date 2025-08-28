@@ -8,7 +8,7 @@ def parse_file(filename, *,
                get_file_preprocessor=None,
                file_maxsizes=None,
                ):
-    if get_file_preprocessor is None:
+    wenn get_file_preprocessor is None:
         get_file_preprocessor = _get_preprocessor()
     yield from _parse_file(
             filename, match_kind, get_file_preprocessor, file_maxsizes)
@@ -19,7 +19,7 @@ def parse_files(filenames, *,
                 get_file_preprocessor=None,
                 file_maxsizes=None,
                 ):
-    if get_file_preprocessor is None:
+    wenn get_file_preprocessor is None:
         get_file_preprocessor = _get_preprocessor()
     fuer filename in filenames:
         try:
@@ -33,37 +33,37 @@ def parse_files(filenames, *,
 def _parse_file(filename, match_kind, get_file_preprocessor, maxsizes):
     srckwargs = {}
     maxsize = _resolve_max_size(filename, maxsizes)
-    if maxsize:
+    wenn maxsize:
         srckwargs['maxtext'], srckwargs['maxlines'] = maxsize
 
     # Preprocess the file.
     preprocess = get_file_preprocessor(filename)
     preprocessed = preprocess()
-    if preprocessed is None:
+    wenn preprocessed is None:
         return
 
     # Parse the lines.
-    srclines = ((l.file, l.data) fuer l in preprocessed if l.kind == 'source')
+    srclines = ((l.file, l.data) fuer l in preprocessed wenn l.kind == 'source')
     fuer item in _parse(srclines, **srckwargs):
-        if match_kind is not None and not match_kind(item.kind):
+        wenn match_kind is not None and not match_kind(item.kind):
             continue
-        if not item.filename:
+        wenn not item.filename:
             raise NotImplementedError(repr(item))
         yield item
 
 
 def _resolve_max_size(filename, maxsizes):
-    fuer pattern, maxsize in (maxsizes.items() if maxsizes else ()):
-        if _match_glob(filename, pattern):
+    fuer pattern, maxsize in (maxsizes.items() wenn maxsizes sonst ()):
+        wenn _match_glob(filename, pattern):
             break
-    else:
+    sonst:
         return None
-    if not maxsize:
+    wenn not maxsize:
         return None, None
     maxtext, maxlines = maxsize
-    if maxtext is not None:
+    wenn maxtext is not None:
         maxtext = int(maxtext)
-    if maxlines is not None:
+    wenn maxlines is not None:
         maxlines = int(maxlines)
     return maxtext, maxlines
 

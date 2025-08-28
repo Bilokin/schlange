@@ -29,7 +29,7 @@ klasse GroupDatabaseTestCase(unittest.TestCase):
 
     def test_values_extended(self):
         entries = grp.getgrall()
-        if len(entries) > 1000:  # Huge group file (NIS?) -- skip the rest
+        wenn len(entries) > 1000:  # Huge group file (NIS?) -- skip the rest
             self.skipTest('huge group file, extended test skipped')
 
         fuer e in entries:
@@ -37,7 +37,7 @@ klasse GroupDatabaseTestCase(unittest.TestCase):
             self.check_value(e2)
             self.assertEqual(e2.gr_gid, e.gr_gid)
             name = e.gr_name
-            if name.startswith('+') or name.startswith('-'):
+            wenn name.startswith('+') or name.startswith('-'):
                 # NIS-related entry
                 continue
             e2 = grp.getgrnam(name)
@@ -60,7 +60,7 @@ klasse GroupDatabaseTestCase(unittest.TestCase):
         bynames = {}
         bygids = {}
         fuer (n, p, g, mem) in grp.getgrall():
-            if not n or n == '+':
+            wenn not n or n == '+':
                 continue # skip NIS entries etc.
             bynames[n] = g
             bygids[g] = n
@@ -71,20 +71,20 @@ klasse GroupDatabaseTestCase(unittest.TestCase):
         while fakename in bynames:
             chars = list(fakename)
             fuer i in range(len(chars)):
-                if chars[i] == 'z':
+                wenn chars[i] == 'z':
                     chars[i] = 'A'
                     break
-                elif chars[i] == 'Z':
+                sowenn chars[i] == 'Z':
                     continue
-                else:
+                sonst:
                     chars[i] = chr(ord(chars[i]) + 1)
                     break
-            else:
+            sonst:
                 namei = namei + 1
                 try:
                     fakename = allnames[namei]
                 except IndexError:
-                    # should never happen... if so, just forget it
+                    # should never happen... wenn so, just forget it
                     break
             fakename = ''.join(chars)
 
@@ -99,7 +99,7 @@ klasse GroupDatabaseTestCase(unittest.TestCase):
 
     def test_noninteger_gid(self):
         entries = grp.getgrall()
-        if not entries:
+        wenn not entries:
             self.skipTest('no groups')
         # Choose an existent gid.
         gid = entries[0][2]
@@ -107,5 +107,5 @@ klasse GroupDatabaseTestCase(unittest.TestCase):
         self.assertRaises(TypeError, grp.getgrgid, str(gid))
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

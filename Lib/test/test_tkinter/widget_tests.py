@@ -13,7 +13,7 @@ _sentinel = object()
 
 klasse AbstractWidgetTest(AbstractTkTest):
     _default_pixels = ''   # Value fuer unset pixel options.
-    _rounds_pixels = True  # True if some pixel options are rounded.
+    _rounds_pixels = True  # True wenn some pixel options are rounded.
     _no_round = {}         # Pixel options which are not rounded nonetheless
     _stringify = False     # Whether to convert tuples to strings
     _allow_empty_justify = False
@@ -27,33 +27,33 @@ klasse AbstractWidgetTest(AbstractTkTest):
             return self._scaling
 
     def _str(self, value):
-        if not self._stringify and self.wantobjects and tk_version >= (8, 6):
+        wenn not self._stringify and self.wantobjects and tk_version >= (8, 6):
             return value
-        if isinstance(value, tuple):
+        wenn isinstance(value, tuple):
             return ' '.join(map(self._str, value))
         return str(value)
 
     def assertEqual2(self, actual, expected, msg=None, eq=object.__eq__):
-        if eq(actual, expected):
+        wenn eq(actual, expected):
             return
         self.assertEqual(actual, expected, msg)
 
     def checkParam(self, widget, name, value, *, expected=_sentinel,
                    conv=False, eq=None):
         widget[name] = value
-        if expected is _sentinel:
+        wenn expected is _sentinel:
             expected = value
-        if name in self._clipped:
-            if not isinstance(expected, str):
+        wenn name in self._clipped:
+            wenn not isinstance(expected, str):
                 expected = max(expected, 0)
-        if conv:
+        wenn conv:
             expected = conv(expected)
-        if self._stringify or not self.wantobjects:
-            if isinstance(expected, tuple):
+        wenn self._stringify or not self.wantobjects:
+            wenn isinstance(expected, tuple):
                 expected = tkinter._join(expected)
-            else:
+            sonst:
                 expected = str(expected)
-        if eq is None:
+        wenn eq is None:
             eq = tcl_obj_eq
         self.assertEqual2(widget[name], expected, eq=eq)
         self.assertEqual2(widget.cget(name), expected, eq=eq)
@@ -63,7 +63,7 @@ klasse AbstractWidgetTest(AbstractTkTest):
 
     def checkInvalidParam(self, widget, name, value, errmsg=None):
         orig = widget[name]
-        if errmsg is not None:
+        wenn errmsg is not None:
             errmsg = errmsg.format(re.escape(str(value)))
             errmsg = fr'\A{errmsg}\z'
         with self.assertRaisesRegex(tkinter.TclError, errmsg or ''):
@@ -125,35 +125,35 @@ klasse AbstractWidgetTest(AbstractTkTest):
                        errmsg=None, allow_empty=False, fullname=None,
                        sort=False, **kwargs):
         self.checkParams(widget, name, *values, **kwargs)
-        if errmsg is None:
-            if sort:
-                if values[-1]:
+        wenn errmsg is None:
+            wenn sort:
+                wenn values[-1]:
                     values = tuple(sorted(values))
-                else:
+                sonst:
                     values = tuple(sorted(values[:-1])) + ('',)
             errmsg2 = ' %s "{}": must be %s%s or %s' % (
                     fullname or name,
                     ', '.join(values[:-1]),
-                    ',' if len(values) > 2 else '',
+                    ',' wenn len(values) > 2 sonst '',
                     values[-1] or '""')
-            if '' not in values and not allow_empty:
+            wenn '' not in values and not allow_empty:
                 self.checkInvalidParam(widget, name, '',
                                        errmsg='ambiguous' + errmsg2)
             errmsg = 'bad' + errmsg2
         self.checkInvalidParam(widget, name, 'spam', errmsg=errmsg)
 
     def checkPixelsParam(self, widget, name, *values, conv=None, **kwargs):
-        if not self._rounds_pixels or name in self._no_round:
+        wenn not self._rounds_pixels or name in self._no_round:
             conv = False
-        elif conv != str:
+        sowenn conv != str:
             conv = round
         fuer value in values:
             expected = _sentinel
             conv1 = conv
-            if isinstance(value, str):
-                if not getattr(self, '_converts_pixels', True):
+            wenn isinstance(value, str):
+                wenn not getattr(self, '_converts_pixels', True):
                     conv1 = str
-                if conv1 and conv1 is not str:
+                wenn conv1 and conv1 is not str:
                     expected = pixels_conv(value) * self.scaling
                     conv1 = round
             self.checkParam(widget, name, value, expected=expected,
@@ -164,22 +164,22 @@ klasse AbstractWidgetTest(AbstractTkTest):
 
     def checkReliefParam(self, widget, name, *, allow_empty=False):
         values = ('flat', 'groove', 'raised', 'ridge', 'solid', 'sunken')
-        if allow_empty:
+        wenn allow_empty:
             values += ('',)
         self.checkParams(widget, name, *values)
         errmsg = 'bad relief "{}": must be %s, or %s' % (
                 ', '.join(values[:-1]),
                 values[-1] or '""')
-        if tk_version < (8, 6):
+        wenn tk_version < (8, 6):
             errmsg = None
         self.checkInvalidParam(widget, name, 'spam', errmsg=errmsg)
 
     def checkImageParam(self, widget, name):
         image = tkinter.PhotoImage(master=self.root, name='image1')
         self.checkParam(widget, name, image, conv=str)
-        if tk_version < (9, 0):
+        wenn tk_version < (9, 0):
             errmsg = 'image "spam" doesn\'t exist'
-        else:
+        sonst:
             errmsg = 'image "spam" does not exist'
         self.checkInvalidParam(widget, name, 'spam',
                                errmsg=errmsg)
@@ -191,10 +191,10 @@ klasse AbstractWidgetTest(AbstractTkTest):
     def assertIsBoundingBox(self, bbox):
         self.assertIsNotNone(bbox)
         self.assertIsInstance(bbox, tuple)
-        if len(bbox) != 4:
+        wenn len(bbox) != 4:
             self.fail('Invalid bounding box: %r' % (bbox,))
         fuer item in bbox:
-            if not isinstance(item, int):
+            wenn not isinstance(item, int):
                 self.fail('Invalid bounding box: %r' % (bbox,))
                 break
 
@@ -205,8 +205,8 @@ klasse AbstractWidgetTest(AbstractTkTest):
         self.assertEqual(sorted(keys), sorted(widget.configure()))
         fuer k in keys:
             widget[k]
-        # Test if OPTIONS contains all keys
-        if test.support.verbose:
+        # Test wenn OPTIONS contains all keys
+        wenn test.support.verbose:
             aliases = {
                 'bd': 'borderwidth',
                 'bg': 'background',
@@ -218,7 +218,7 @@ klasse AbstractWidgetTest(AbstractTkTest):
             keys = set(keys)
             expected = set(self.OPTIONS)
             fuer k in sorted(keys - expected):
-                if not (k in aliases and
+                wenn not (k in aliases and
                         aliases[k] in keys and
                         aliases[k] in expected):
                     print('%s.OPTIONS doesn\'t contain "%s"' %
@@ -248,7 +248,7 @@ klasse PixelOptionsTests:
         self.checkPixelsParam(widget, 'borderwidth',
                               0, 1.3, 2.6, 6, '10p')
         self.checkParam(widget, 'borderwidth', -2)
-        if 'bd' in self.OPTIONS:
+        wenn 'bd' in self.OPTIONS:
             self.checkPixelsParam(widget, 'bd', 0, 1.3, 2.6, 6, '10p')
             self.checkParam(widget, 'bd', -2, expected=expected)
 
@@ -314,7 +314,7 @@ klasse StandardOptionsTests(PixelOptionsTests):
     def test_configure_background(self):
         widget = self.create()
         self.checkColorParam(widget, 'background')
-        if 'bg' in self.OPTIONS:
+        wenn 'bg' in self.OPTIONS:
             self.checkColorParam(widget, 'bg')
 
     @requires_tk(8, 7)
@@ -330,7 +330,7 @@ klasse StandardOptionsTests(PixelOptionsTests):
         self.checkParam(widget, 'bitmap', '@' + filename)
         # Cocoa Tk widgets don't detect invalid -bitmap values
         # See https://core.tcl.tk/tk/info/31cd33dbf0
-        if not ('aqua' in self.root.tk.call('tk', 'windowingsystem') and
+        wenn not ('aqua' in self.root.tk.call('tk', 'windowingsystem') and
                 'AppKit' in self.root.winfo_server()):
             self.checkInvalidParam(widget, 'bitmap', 'spam',
                     errmsg='bitmap "spam" not defined')
@@ -357,14 +357,14 @@ klasse StandardOptionsTests(PixelOptionsTests):
         self.checkParam(widget, 'font',
                         '-Adobe-Helvetica-Medium-R-Normal--*-120-*-*-*-*-*-*')
         is_ttk = widget.__class__.__module__ == 'tkinter.ttk'
-        if not is_ttk:
+        wenn not is_ttk:
             errmsg = 'font "" does ?n[o\']t exist'
             self.checkInvalidParam(widget, 'font', '', errmsg=errmsg)
 
     def test_configure_foreground(self):
         widget = self.create()
         self.checkColorParam(widget, 'foreground')
-        if 'fg' in self.OPTIONS:
+        wenn 'fg' in self.OPTIONS:
             self.checkColorParam(widget, 'fg')
 
     def test_configure_highlightbackground(self):
@@ -398,7 +398,7 @@ klasse StandardOptionsTests(PixelOptionsTests):
     def test_configure_justify(self):
         widget = self.create()
         values = ('left', 'right', 'center')
-        if self._allow_empty_justify:
+        wenn self._allow_empty_justify:
             values += ('',)
         self.checkEnumParam(widget, 'justify', *values,
                             fullname='justification')
@@ -471,19 +471,19 @@ klasse StandardOptionsTests(PixelOptionsTests):
     def test_configure_underline(self):
         widget = self.create()
         self.checkParams(widget, 'underline', 0, 1, 10)
-        if tk_version >= (8, 7):
+        wenn tk_version >= (8, 7):
             is_ttk = widget.__class__.__module__ == 'tkinter.ttk'
             self.checkParam(widget, 'underline', '',
-                            expected='' if is_ttk else self._default_pixels)
+                            expected='' wenn is_ttk sonst self._default_pixels)
             self.checkParam(widget, 'underline', '5+2',
-                            expected='5+2' if is_ttk else 7)
+                            expected='5+2' wenn is_ttk sonst 7)
             self.checkParam(widget, 'underline', '5-2',
-                            expected='5-2' if is_ttk else 3)
+                            expected='5-2' wenn is_ttk sonst 3)
             self.checkParam(widget, 'underline', 'end', expected='end')
             self.checkParam(widget, 'underline', 'end-2', expected='end-2')
             errmsg = (r'bad index "{}": must be integer\?\[\+-\]integer\?, '
                       r'end\?\[\+-\]integer\?, or ""')
-        else:
+        sonst:
             errmsg = 'expected integer but got "{}"'
             self.checkInvalidParam(widget, 'underline', '', errmsg=errmsg)
         self.checkInvalidParam(widget, 'underline', '10p', errmsg=errmsg)
@@ -566,18 +566,18 @@ klasse PixelSizeTests:
 
 def add_configure_tests(*source_classes):
     # This decorator adds test_configure_xxx methods from source classes for
-    # every xxx option in the OPTIONS klasse attribute if they are not defined
+    # every xxx option in the OPTIONS klasse attribute wenn they are not defined
     # explicitly.
     def decorator(cls):
         fuer option in cls.OPTIONS:
             methodname = 'test_configure_' + option
-            if not hasattr(cls, methodname):
+            wenn not hasattr(cls, methodname):
                 fuer source_class in source_classes:
-                    if hasattr(source_class, methodname):
+                    wenn hasattr(source_class, methodname):
                         setattr(cls, methodname,
                                 getattr(source_class, methodname))
                         break
-                else:
+                sonst:
                     def test(self, option=option):
                         widget = self.create()
                         widget[option]
@@ -589,6 +589,6 @@ def add_configure_tests(*source_classes):
     return decorator
 
 def setUpModule():
-    if test.support.verbose:
+    wenn test.support.verbose:
         tcl = tkinter.Tcl()
         print('patchlevel =', tcl.call('info', 'patchlevel'), flush=True)

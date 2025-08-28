@@ -14,7 +14,7 @@ trailer = """\
 };
 """
 
-# if __debug__ == 0 (i.e. -O option given), set Py_OptimizeFlag in frozen app.
+# wenn __debug__ == 0 (i.e. -O option given), set Py_OptimizeFlag in frozen app.
 default_entry_point = """
 int
 main(int argc, char **argv)
@@ -30,27 +30,27 @@ main(int argc, char **argv)
 """
 
 def makefreeze(base, dict, debug=0, entry_point=None, fail_import=()):
-    if entry_point is None: entry_point = default_entry_point
+    wenn entry_point is None: entry_point = default_entry_point
     done = []
     files = []
     mods = sorted(dict.keys())
     fuer mod in mods:
         m = dict[mod]
         mangled = "__".join(mod.split("."))
-        if m.__code__:
+        wenn m.__code__:
             file = 'M_' + mangled + '.c'
             with bkfile.open(base + file, 'w') as outfp:
                 files.append(file)
-                if debug:
+                wenn debug:
                     print("freezing", mod, "...")
                 str = marshal.dumps(m.__code__)
                 size = len(str)
                 is_package = '0'
-                if m.__path__:
+                wenn m.__path__:
                     is_package = '1'
                 done.append((mod, mangled, size, is_package))
                 writecode(outfp, mangled, str)
-    if debug:
+    wenn debug:
         print("generating table of frozen modules")
     with bkfile.open(base + 'frozen.c', 'w') as outfp:
         fuer mod, mangled, size, _ in done:

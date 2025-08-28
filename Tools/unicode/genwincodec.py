@@ -56,6 +56,6 @@ def genwincodec(codepage):
 
     print(code)
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     import sys
     genwincodec(int(sys.argv[1]))

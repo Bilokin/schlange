@@ -510,9 +510,9 @@ klasse TypeParamsAccessTest(unittest.TestCase):
                 ns = run_code(code.format(case))
                 alias = ns["C"].Alias
                 value = list(alias.__value__)[0]
-                if alias.__type_params__:
+                wenn alias.__type_params__:
                     self.assertIs(value, alias.__type_params__[0])
-                else:
+                sonst:
                     self.assertEqual(value, "global")
 
     def test_lambda_in_alias_in_class(self):
@@ -1295,7 +1295,7 @@ klasse TypeParamsRuntimeTest(unittest.TestCase):
         code = """
         klasse WeirdMapping(dict):
             def __missing__(self, key):
-                if key == "T":
+                wenn key == "T":
                     raise RuntimeError
                 raise KeyError(key)
 
@@ -1388,7 +1388,7 @@ klasse DefaultsTest(unittest.TestCase):
         self.assertEqual(V.__default__, "defined")
 
     def test_symtable_key_regression_default(self):
-        # Test against the bugs that would happen if we used .default_
+        # Test against the bugs that would happen wenn we used .default_
         # as the key in the symtable.
         ns = run_code("""
             type X[T = [T fuer T in [T]]] = T
@@ -1398,7 +1398,7 @@ klasse DefaultsTest(unittest.TestCase):
         self.assertEqual(T.__default__, [T])
 
     def test_symtable_key_regression_name(self):
-        # Test against the bugs that would happen if we used .name
+        # Test against the bugs that would happen wenn we used .name
         # as the key in the symtable.
         ns = run_code("""
             type X1[T = A] = T

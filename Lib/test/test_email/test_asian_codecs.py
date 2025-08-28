@@ -77,5 +77,5 @@ Hello World! =?iso-2022-jp?b?GyRCJU8lbSE8JW8hPCVrJUkhKhsoQg==?=
 
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

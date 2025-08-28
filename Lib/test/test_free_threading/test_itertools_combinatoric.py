@@ -47,5 +47,5 @@ klasse ItertoolsThreading(unittest.TestCase):
             test_concurrent_iteration(iterator, number_of_threads)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

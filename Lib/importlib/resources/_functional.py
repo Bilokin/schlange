@@ -38,7 +38,7 @@ def path(anchor, *path_names):
 
 
 def is_resource(anchor, *path_names):
-    """Return ``True`` if there is a resource named *name* in the package,
+    """Return ``True`` wenn there is a resource named *name* in the package,
 
     Otherwise returns ``False``.
     """
@@ -65,17 +65,17 @@ def _get_encoding_arg(path_names, encoding):
     # argument, it needs to be given explicitly when there are multiple
     # *path_names*.
     # This limitation can be removed in Python 3.15.
-    if encoding is _MISSING:
-        if len(path_names) > 1:
+    wenn encoding is _MISSING:
+        wenn len(path_names) > 1:
             raise TypeError(
                 "'encoding' argument required with multiple path names",
             )
-        else:
+        sonst:
             return 'utf-8'
     return encoding
 
 
 def _get_resource(anchor, path_names):
-    if anchor is None:
+    wenn anchor is None:
         raise TypeError("anchor must be module or string, got None")
     return files(anchor).joinpath(*path_names)

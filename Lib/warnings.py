@@ -92,7 +92,7 @@ except ImportError:
 # Module initialization
 _set_module(sys.modules[__name__])
 _processoptions(sys.warnoptions)
-if not _warnings_defaults:
+wenn not _warnings_defaults:
     _setup_defaults()
 
 del _warnings_defaults

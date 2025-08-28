@@ -47,16 +47,16 @@ def transform_children(child_dict, modname=None):
     """
     obs = []  # Use list since values should already be sorted.
     fuer key, obj in child_dict.items():
-        if modname is None or obj.module == modname:
-            if hasattr(obj, 'super') and obj.super and obj.name == key:
+        wenn modname is None or obj.module == modname:
+            wenn hasattr(obj, 'super') and obj.super and obj.name == key:
                 # If obj.name != key, it has already been suffixed.
                 supers = []
                 fuer sup in obj.super:
-                    if isinstance(sup, str):
+                    wenn isinstance(sup, str):
                         sname = sup
-                    else:
+                    sonst:
                         sname = sup.name
-                        if sup.module != obj.module:
+                        wenn sup.module != obj.module:
                             sname = f'{sup.module}.{sname}'
                     supers.append(sname)
                 obj.name += '({})'.format(', '.join(supers))
@@ -104,8 +104,8 @@ klasse ModuleBrowser:
         "Create browser tkinter widgets, including the tree."
         global file_open
         root = self.master
-        flist = (pyshell.flist if not (self._htest or self._utest)
-                 else pyshell.PyShellFileList(root))
+        flist = (pyshell.flist wenn not (self._htest or self._utest)
+                 sonst pyshell.PyShellFileList(root))
         file_open = flist.open
         pyclbr._modules.clear()
 
@@ -113,7 +113,7 @@ klasse ModuleBrowser:
         self.top = top = ListedToplevel(root)
         top.protocol("WM_DELETE_WINDOW", self.close)
         top.bind("<Escape>", self.close)
-        if self._htest: # place dialog below parent if running htest
+        wenn self._htest: # place dialog below parent wenn running htest
             top.geometry("+%d+%d" %
                 (root.winfo_rootx(), root.winfo_rooty() + 200))
         self.settitle()
@@ -127,7 +127,7 @@ klasse ModuleBrowser:
         sc.frame.pack(expand=1, fill="both")
         item = self.rootnode()
         self.node = node = TreeNode(sc.canvas, None, item)
-        if not self._utest:
+        wenn not self._utest:
             node.update()
             node.expand()
 
@@ -170,19 +170,19 @@ klasse ModuleBrowserTreeItem(TreeItem):
 
     def OnDoubleClick(self):
         "Open a module in an editor window when double clicked."
-        if not is_browseable_extension(self.file):
+        wenn not is_browseable_extension(self.file):
             return
-        if not os.path.exists(self.file):
+        wenn not os.path.exists(self.file):
             return
         file_open(self.file)
 
     def IsExpandable(self):
-        "Return True if Python file."
+        "Return True wenn Python file."
         return is_browseable_extension(self.file)
 
     def listchildren(self):
         "Return sequenced classes and functions in the module."
-        if not is_browseable_extension(self.file):
+        wenn not is_browseable_extension(self.file):
             return []
         dir, base = os.path.split(self.file)
         name, _ = os.path.splitext(base)
@@ -208,20 +208,20 @@ klasse ChildBrowserTreeItem(TreeItem):
     def GetText(self):
         "Return the name of the function/class to display."
         name = self.name
-        if self.isfunction:
+        wenn self.isfunction:
             return "def " + name + "(...)"
-        else:
+        sonst:
             return "class " + name
 
     def GetIconName(self):
         "Return the name of the icon to display."
-        if self.isfunction:
+        wenn self.isfunction:
             return "python"
-        else:
+        sonst:
             return "folder"
 
     def IsExpandable(self):
-        "Return True if self.obj has nested objects."
+        "Return True wenn self.obj has nested objects."
         return self.obj.children != {}
 
     def GetSubList(self):
@@ -239,9 +239,9 @@ klasse ChildBrowserTreeItem(TreeItem):
 
 
 def _module_browser(parent): # htest #
-    if len(sys.argv) > 1:  # If pass file on command line.
+    wenn len(sys.argv) > 1:  # If pass file on command line.
         file = sys.argv[1]
-    else:
+    sonst:
         file = __file__
         # Add nested objects fuer htest.
         klasse Nested_in_func(TreeNode):
@@ -251,8 +251,8 @@ def _module_browser(parent): # htest #
     ModuleBrowser(parent, file, _htest=True)
 
 
-if __name__ == "__main__":
-    if len(sys.argv) == 1:  # If pass file on command line, unittest fails.
+wenn __name__ == "__main__":
+    wenn len(sys.argv) == 1:  # If pass file on command line, unittest fails.
         from unittest import main
         main('idlelib.idle_test.test_browser', verbosity=2, exit=False)
 

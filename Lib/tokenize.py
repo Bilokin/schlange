@@ -52,9 +52,9 @@ klasse TokenInfo(collections.namedtuple('TokenInfo', 'type string start end line
 
     @property
     def exact_type(self):
-        if self.type == OP and self.string in EXACT_TOKEN_TYPES:
+        wenn self.type == OP and self.string in EXACT_TOKEN_TYPES:
             return EXACT_TOKEN_TYPES[self.string]
-        else:
+        sonst:
             return self.type
 
 def group(*choices): return '(' + '|'.join(choices) + ')'
@@ -87,7 +87,7 @@ def _all_string_prefixes():
     #  and don't contain any permutations (include 'fr', but not
     #  'rf'). The various permutations will be generated.
     _valid_string_prefixes = ['b', 'r', 'u', 'f', 't', 'br', 'fr', 'tr']
-    # if we add binary f-strings, add: ['fb', 'fbr']
+    # wenn we add binary f-strings, add: ['fb', 'fbr']
     result = {''}
     fuer prefix in _valid_string_prefixes:
         fuer t in _itertools.permutations(prefix):
@@ -119,7 +119,7 @@ String = group(StringPrefix + r"'[^\n'\\]*(?:\\.[^\n'\\]*)*'",
                StringPrefix + r'"[^\n"\\]*(?:\\.[^\n"\\]*)*"')
 
 # Sorting in reverse order puts the long operators before their prefixes.
-# Otherwise if = came before ==, == would get recognized as two instances
+# Otherwise wenn = came before ==, == would get recognized as two instances
 # of =.
 Special = group(*map(re.escape, sorted(EXACT_TOKEN_TYPES, reverse=True)))
 Funny = group(r'\r?\n', Special)
@@ -174,26 +174,26 @@ klasse Untokenizer:
 
     def add_whitespace(self, start):
         row, col = start
-        if row < self.prev_row or row == self.prev_row and col < self.prev_col:
+        wenn row < self.prev_row or row == self.prev_row and col < self.prev_col:
             raise ValueError("start ({},{}) precedes previous end ({},{})"
                              .format(row, col, self.prev_row, self.prev_col))
         self.add_backslash_continuation(start)
         col_offset = col - self.prev_col
-        if col_offset:
+        wenn col_offset:
             self.tokens.append(" " * col_offset)
 
     def add_backslash_continuation(self, start):
-        """Add backslash continuation characters if the row has increased
+        """Add backslash continuation characters wenn the row has increased
         without encountering a newline token.
 
         This also inserts the correct amount of whitespace before the backslash.
         """
         row = start[0]
         row_offset = row - self.prev_row
-        if row_offset == 0:
+        wenn row_offset == 0:
             return
 
-        newline = '\r\n' if self.prev_line.endswith('\r\n') else '\n'
+        newline = '\r\n' wenn self.prev_line.endswith('\r\n') sonst '\n'
         line = self.prev_line.rstrip('\\\r\n')
         ws = ''.join(_itertools.takewhile(str.isspace, reversed(line)))
         self.tokens.append(ws + f"\\{newline}" * row_offset)
@@ -203,21 +203,21 @@ klasse Untokenizer:
         characters = []
         consume_until_next_bracket = False
         fuer character in token:
-            if character == "}":
-                if consume_until_next_bracket:
+            wenn character == "}":
+                wenn consume_until_next_bracket:
                     consume_until_next_bracket = False
-                else:
+                sonst:
                     characters.append(character)
-            if character == "{":
+            wenn character == "{":
                 n_backslashes = sum(
                     1 fuer char in _itertools.takewhile(
                         "\\".__eq__,
                         characters[-2::-1]
                     )
                 )
-                if n_backslashes % 2 == 0 or characters[-1] != "N":
+                wenn n_backslashes % 2 == 0 or characters[-1] != "N":
                     characters.append(character)
-                else:
+                sonst:
                     consume_until_next_bracket = True
             characters.append(character)
         return "".join(characters)
@@ -227,32 +227,32 @@ klasse Untokenizer:
         indents = []
         startline = False
         fuer t in it:
-            if len(t) == 2:
+            wenn len(t) == 2:
                 self.compat(t, it)
                 break
             tok_type, token, start, end, line = t
-            if tok_type == ENCODING:
+            wenn tok_type == ENCODING:
                 self.encoding = token
                 continue
-            if tok_type == ENDMARKER:
+            wenn tok_type == ENDMARKER:
                 break
-            if tok_type == INDENT:
+            wenn tok_type == INDENT:
                 indents.append(token)
                 continue
-            elif tok_type == DEDENT:
+            sowenn tok_type == DEDENT:
                 indents.pop()
                 self.prev_row, self.prev_col = end
                 continue
-            elif tok_type in (NEWLINE, NL):
+            sowenn tok_type in (NEWLINE, NL):
                 startline = True
-            elif startline and indents:
+            sowenn startline and indents:
                 indent = indents[-1]
-                if start[1] >= len(indent):
+                wenn start[1] >= len(indent):
                     self.tokens.append(indent)
                     self.prev_col = len(indent)
                 startline = False
-            elif tok_type in {FSTRING_MIDDLE, TSTRING_MIDDLE}:
-                if '{' in token or '}' in token:
+            sowenn tok_type in {FSTRING_MIDDLE, TSTRING_MIDDLE}:
+                wenn '{' in token or '}' in token:
                     token = self.escape_brackets(token)
                     last_line = token.splitlines()[-1]
                     end_line, end_col = end
@@ -262,7 +262,7 @@ klasse Untokenizer:
             self.add_whitespace(start)
             self.tokens.append(token)
             self.prev_row, self.prev_col = end
-            if tok_type in (NEWLINE, NL):
+            wenn tok_type in (NEWLINE, NL):
                 self.prev_row += 1
                 self.prev_col = 0
             self.prev_type = tok_type
@@ -278,45 +278,45 @@ klasse Untokenizer:
 
         fuer tok in _itertools.chain([token], iterable):
             toknum, tokval = tok[:2]
-            if toknum == ENCODING:
+            wenn toknum == ENCODING:
                 self.encoding = tokval
                 continue
 
-            if toknum in (NAME, NUMBER):
+            wenn toknum in (NAME, NUMBER):
                 tokval += ' '
 
             # Insert a space between two consecutive strings
-            if toknum == STRING:
-                if prevstring:
+            wenn toknum == STRING:
+                wenn prevstring:
                     tokval = ' ' + tokval
                 prevstring = True
-            else:
+            sonst:
                 prevstring = False
 
-            if toknum in {FSTRING_START, TSTRING_START}:
+            wenn toknum in {FSTRING_START, TSTRING_START}:
                 in_fstring_or_tstring += 1
-            elif toknum in {FSTRING_END, TSTRING_END}:
+            sowenn toknum in {FSTRING_END, TSTRING_END}:
                 in_fstring_or_tstring -= 1
-            if toknum == INDENT:
+            wenn toknum == INDENT:
                 indents.append(tokval)
                 continue
-            elif toknum == DEDENT:
+            sowenn toknum == DEDENT:
                 indents.pop()
                 continue
-            elif toknum in (NEWLINE, NL):
+            sowenn toknum in (NEWLINE, NL):
                 startline = True
-            elif startline and indents:
+            sowenn startline and indents:
                 toks_append(indents[-1])
                 startline = False
-            elif toknum in {FSTRING_MIDDLE, TSTRING_MIDDLE}:
+            sowenn toknum in {FSTRING_MIDDLE, TSTRING_MIDDLE}:
                 tokval = self.escape_brackets(tokval)
 
-            # Insert a space between two consecutive brackets if we are in an f-string or t-string
-            if tokval in {"{", "}"} and self.tokens and self.tokens[-1] == tokval and in_fstring_or_tstring:
+            # Insert a space between two consecutive brackets wenn we are in an f-string or t-string
+            wenn tokval in {"{", "}"} and self.tokens and self.tokens[-1] == tokval and in_fstring_or_tstring:
                 tokval = ' ' + tokval
 
             # Insert a space between two consecutive f-strings
-            if toknum in (STRING, FSTRING_START) and self.prev_type in (STRING, FSTRING_END):
+            wenn toknum in (STRING, FSTRING_START) and self.prev_type in (STRING, FSTRING_END):
                 self.tokens.append(" ")
 
             toks_append(tokval)
@@ -339,7 +339,7 @@ def untokenize(iterable):
     """
     ut = Untokenizer()
     out = ut.untokenize(iterable)
-    if ut.encoding is not None:
+    wenn ut.encoding is not None:
         out = out.encode(ut.encoding)
     return out
 
@@ -348,9 +348,9 @@ def _get_normal_name(orig_enc):
     """Imitates get_normal_name in Parser/tokenizer/helpers.c."""
     # Only care about the first 12 characters.
     enc = orig_enc[:12].lower().replace("_", "-")
-    if enc == "utf-8" or enc.startswith("utf-8-"):
+    wenn enc == "utf-8" or enc.startswith("utf-8-"):
         return "utf-8"
-    if enc in ("latin-1", "iso-8859-1", "iso-latin-1") or \
+    wenn enc in ("latin-1", "iso-8859-1", "iso-latin-1") or \
        enc.startswith(("latin-1-", "iso-8859-1-", "iso-latin-1-")):
         return "iso-8859-1"
     return orig_enc
@@ -367,7 +367,7 @@ def detect_encoding(readline):
     It detects the encoding from the presence of a utf-8 bom or an encoding
     cookie as specified in pep-0263.  If both a bom and a cookie are present,
     but disagree, a SyntaxError will be raised.  If the encoding cookie is an
-    invalid charset, raise a SyntaxError.  Note that if a utf-8 bom is found,
+    invalid charset, raise a SyntaxError.  Note that wenn a utf-8 bom is found,
     'utf-8-sig' is returned.
 
     If no encoding is specified, then the default of 'utf-8' will be returned.
@@ -393,56 +393,56 @@ def detect_encoding(readline):
             line_string = line.decode('utf-8')
         except UnicodeDecodeError:
             msg = "invalid or missing encoding declaration"
-            if filename is not None:
+            wenn filename is not None:
                 msg = '{} fuer {!r}'.format(msg, filename)
             raise SyntaxError(msg)
 
         match = cookie_re.match(line_string)
-        if not match:
+        wenn not match:
             return None
         encoding = _get_normal_name(match.group(1))
         try:
             codec = lookup(encoding)
         except LookupError:
             # This behaviour mimics the Python interpreter
-            if filename is None:
+            wenn filename is None:
                 msg = "unknown encoding: " + encoding
-            else:
+            sonst:
                 msg = "unknown encoding fuer {!r}: {}".format(filename,
                         encoding)
             raise SyntaxError(msg)
 
-        if bom_found:
-            if encoding != 'utf-8':
+        wenn bom_found:
+            wenn encoding != 'utf-8':
                 # This behaviour mimics the Python interpreter
-                if filename is None:
+                wenn filename is None:
                     msg = 'encoding problem: utf-8'
-                else:
+                sonst:
                     msg = 'encoding problem fuer {!r}: utf-8'.format(filename)
                 raise SyntaxError(msg)
             encoding += '-sig'
         return encoding
 
     first = read_or_stop()
-    if first.startswith(BOM_UTF8):
+    wenn first.startswith(BOM_UTF8):
         bom_found = True
         first = first[3:]
         default = 'utf-8-sig'
-    if not first:
+    wenn not first:
         return default, []
 
     encoding = find_cookie(first)
-    if encoding:
+    wenn encoding:
         return encoding, [first]
-    if not blank_re.match(first):
+    wenn not blank_re.match(first):
         return default, [first]
 
     second = read_or_stop()
-    if not second:
+    wenn not second:
         return default, [first]
 
     encoding = find_cookie(second)
-    if encoding:
+    wenn encoding:
         return encoding, [first, second]
 
     return default, [first, second]
@@ -484,8 +484,8 @@ def tokenize(readline):
     """
     encoding, consumed = detect_encoding(readline)
     rl_gen = _itertools.chain(consumed, iter(readline, b""))
-    if encoding is not None:
-        if encoding == "utf-8-sig":
+    wenn encoding is not None:
+        wenn encoding == "utf-8-sig":
             # BOM will already have been stripped.
             encoding = "utf-8"
         yield TokenInfo(ENCODING, encoding, (0, 0), (0, 0), '')
@@ -508,12 +508,12 @@ def _main(args=None):
         sys.stderr.write('\n')
 
     def error(message, filename=None, location=None):
-        if location:
+        wenn location:
             args = (filename,) + location + (message,)
             perror("%s:%d:%d: error: %s" % args)
-        elif filename:
+        sowenn filename:
             perror("%s: error: %s" % (filename, message))
-        else:
+        sonst:
             perror("error: %s" % message)
         sys.exit(1)
 
@@ -528,11 +528,11 @@ def _main(args=None):
 
     try:
         # Tokenize the input
-        if args.filename:
+        wenn args.filename:
             filename = args.filename
             with _builtin_open(filename, 'rb') as f:
                 tokens = list(tokenize(f.readline))
-        else:
+        sonst:
             filename = "<stdin>"
             tokens = _generate_tokens_from_c_tokenizer(
                 sys.stdin.readline, extra_tokens=True)
@@ -541,7 +541,7 @@ def _main(args=None):
         # Output the tokenization
         fuer token in tokens:
             token_type = token.type
-            if args.exact:
+            wenn args.exact:
                 token_type = token.exact_type
             token_range = "%d,%d-%d,%d:" % (token.start + token.end)
             print("%-20s%-15s%-15r" %
@@ -568,25 +568,25 @@ def _transform_msg(msg):
     The C tokenizer is more picky than the Python one, so we need to massage
     the error messages a bit fuer backwards compatibility.
     """
-    if "unterminated triple-quoted string literal" in msg:
+    wenn "unterminated triple-quoted string literal" in msg:
         return "EOF in multi-line string"
     return msg
 
 def _generate_tokens_from_c_tokenizer(source, encoding=None, extra_tokens=False):
     """Tokenize a source reading Python code as unicode strings using the internal C tokenizer"""
-    if encoding is None:
+    wenn encoding is None:
         it = _tokenize.TokenizerIter(source, extra_tokens=extra_tokens)
-    else:
+    sonst:
         it = _tokenize.TokenizerIter(source, encoding=encoding, extra_tokens=extra_tokens)
     try:
         fuer info in it:
             yield TokenInfo._make(info)
     except SyntaxError as e:
-        if type(e) != SyntaxError:
+        wenn type(e) != SyntaxError:
             raise e from None
         msg = _transform_msg(e.msg)
         raise TokenError(msg, (e.lineno, e.offset)) from None
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     _main()

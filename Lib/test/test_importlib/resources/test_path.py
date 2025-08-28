@@ -48,7 +48,7 @@ klasse PathMemoryTests(PathTests, unittest.TestCase):
 klasse PathZipTests(PathTests, util.ZipSetup, unittest.TestCase):
     def test_remove_in_context_manager(self):
         """
-        It is not an error if the file that was temporarily stashed on the
+        It is not an error wenn the file that was temporarily stashed on the
         file system is removed inside the `with` stanza.
         """
         target = resources.files(self.data) / 'utf-8.file'
@@ -56,5 +56,5 @@ klasse PathZipTests(PathTests, util.ZipSetup, unittest.TestCase):
             path.unlink()
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

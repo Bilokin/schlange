@@ -19,7 +19,7 @@ def _generate_po_file(path, *, stdout_only=True):
                           '--no-location', '-o', '-', path],
                          stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                          text=True)
-    if stdout_only:
+    wenn stdout_only:
         return res.stdout
     return res
 
@@ -29,7 +29,7 @@ def _extract_msgids(po):
     fuer msgid in msgid_pattern.findall(po):
         msgid_string = ''.join(msgid_string_pattern.findall(msgid))
         msgid_string = msgid_string.replace(r'\"', '"')
-        if msgid_string:
+        wenn msgid_string:
             msgids.append(msgid_string)
     return sorted(msgids)
 

@@ -264,11 +264,11 @@ klasse ShlexTest(unittest.TestCase):
             observed = []
             while True:
                 t = s.get_token()
-                if t == s.eof:
+                wenn t == s.eof:
                     break
-                if t[0] in s.punctuation_chars:
+                wenn t[0] in s.punctuation_chars:
                     tt = 'c'
-                else:
+                sonst:
                     tt = 'a'
                 observed.append((t, tt))
             self.assertEqual(observed, expected)
@@ -371,10 +371,10 @@ klasse ShlexTest(unittest.TestCase):
 
 
 # Allow this test to be used with old shlex.py
-if not getattr(shlex, "split", None):
+wenn not getattr(shlex, "split", None):
     fuer methname in dir(ShlexTest):
-        if methname.startswith("test") and methname != "testCompat":
+        wenn methname.startswith("test") and methname != "testCompat":
             delattr(ShlexTest, methname)
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

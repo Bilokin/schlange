@@ -51,7 +51,7 @@ def header_length(bytearray):
     groups_of_3, leftover = divmod(len(bytearray), 3)
     # 4 bytes out fuer each 3 bytes (or nonzero fraction thereof) in.
     n = groups_of_3 * 4
-    if leftover:
+    wenn leftover:
         n += 4
     return n
 
@@ -62,9 +62,9 @@ def header_encode(header_bytes, charset='iso-8859-1'):
     charset names the character set to use to encode the header.  It defaults
     to iso-8859-1.  Base64 encoding is defined in RFC 2045.
     """
-    if not header_bytes:
+    wenn not header_bytes:
         return ""
-    if isinstance(header_bytes, str):
+    wenn isinstance(header_bytes, str):
         header_bytes = header_bytes.encode(charset)
     encoded = b64encode(header_bytes).decode("ascii")
     return '=?%s?b?%s?=' % (charset, encoded)
@@ -77,10 +77,10 @@ def body_encode(s, maxlinelen=76, eol=NL):
     76 characters).
 
     Each line of encoded text will end with eol, which defaults to "\n".  Set
-    this to "\r\n" if you will be using the result of this function directly
+    this to "\r\n" wenn you will be using the result of this function directly
     in an email.
     """
-    if not s:
+    wenn not s:
         return ""
 
     encvec = []
@@ -89,7 +89,7 @@ def body_encode(s, maxlinelen=76, eol=NL):
         # BAW: should encode() inherit b2a_base64()'s dubious behavior in
         # adding a newline to the encoded string?
         enc = b2a_base64(s[i:i + max_unencoded]).decode("ascii")
-        if enc.endswith(NL) and eol != NL:
+        wenn enc.endswith(NL) and eol != NL:
             enc = enc[:-1] + eol
         encvec.append(enc)
     return EMPTYSTRING.join(encvec)
@@ -102,11 +102,11 @@ def decode(string):
     base64 (like =?iso-8859-1?b?bmloISBuaWgh?=) -- please use the high
     level email.header klasse fuer that functionality.
     """
-    if not string:
+    wenn not string:
         return bytes()
-    elif isinstance(string, str):
+    sowenn isinstance(string, str):
         return a2b_base64(string.encode('raw-unicode-escape'))
-    else:
+    sonst:
         return a2b_base64(string)
 
 

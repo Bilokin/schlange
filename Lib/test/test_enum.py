@@ -29,14 +29,14 @@ def load_tests(loader, tests, ignore):
     tests.addTests(doctest.DocTestSuite(enum))
 
     lib_tests = os.path.join(REPO_ROOT, 'Doc/library/enum.rst')
-    if os.path.exists(lib_tests):
+    wenn os.path.exists(lib_tests):
         tests.addTests(doctest.DocFileSuite(
                 lib_tests,
                 module_relative=False,
                 optionflags=doctest.ELLIPSIS|doctest.NORMALIZE_WHITESPACE,
                 ))
     howto_tests = os.path.join(REPO_ROOT, 'Doc/howto/enum.rst')
-    if os.path.exists(howto_tests) and sys.float_repr_style == 'short':
+    wenn os.path.exists(howto_tests) and sys.float_repr_style == 'short':
         tests.addTests(doctest.DocFileSuite(
                 howto_tests,
                 module_relative=False,
@@ -53,11 +53,11 @@ def reraise_if_not_enum(*enum_types_or_exceptions):
             excs = [
                 e
                 fuer e in enum_types_or_exceptions
-                if isinstance(e, Exception)
+                wenn isinstance(e, Exception)
             ]
-            if len(excs) == 1:
+            wenn len(excs) == 1:
                 raise excs[0]
-            elif excs:
+            sowenn excs:
                 raise ExceptionGroup('Enum Exceptions', excs)
             return func(*args, **kwargs)
         return inner
@@ -162,7 +162,7 @@ except Exception:
     pass
 
 def test_pickle_dump_load(assertion, source, target=None):
-    if target is None:
+    wenn target is None:
         target = source
     fuer protocol in range(HIGHEST_PROTOCOL + 1):
         assertion(loads(dumps(source, protocol=protocol)), target)
@@ -232,7 +232,7 @@ klasse classproperty:
         self.fget = fget
         self.fset = fset
         self.fdel = fdel
-        if doc is None and fget is not None:
+        wenn doc is None and fget is not None:
             doc = fget.__doc__
         self.__doc__ = doc
 
@@ -282,7 +282,7 @@ klasse _EnumTests:
     values = None
 
     def setUp(self):
-        if self.__class__.__name__[-5:] == 'Class':
+        wenn self.__class__.__name__[-5:] == 'Class':
             klasse BaseEnum(self.enum_type):
                 @enum.property
                 def first(self):
@@ -291,9 +291,9 @@ klasse _EnumTests:
                 first = auto()
                 second = auto()
                 third = auto()
-                if issubclass(self.enum_type, Flag):
+                wenn issubclass(self.enum_type, Flag):
                     dupe = 3
-                else:
+                sonst:
                     dupe = third
             self.MainEnum = MainEnum
             #
@@ -340,20 +340,20 @@ klasse _EnumTests:
             #
             self.is_flag = False
             self.names = ['first', 'second', 'third']
-            if issubclass(MainEnum, StrEnum):
+            wenn issubclass(MainEnum, StrEnum):
                 self.values = self.names
-            elif MainEnum._member_type_ is str:
+            sowenn MainEnum._member_type_ is str:
                 self.values = ['1', '2', '3']
-            elif issubclass(self.enum_type, Flag):
+            sowenn issubclass(self.enum_type, Flag):
                 self.values = [1, 2, 4]
                 self.is_flag = True
                 self.dupe2 = MainEnum(5)
-            else:
+            sonst:
                 self.values = self.values or [1, 2, 3]
             #
-            if not getattr(self, 'source_values', False):
+            wenn not getattr(self, 'source_values', False):
                 self.source_values = self.values
-        elif self.__class__.__name__[-8:] == 'Function':
+        sowenn self.__class__.__name__[-8:] == 'Function':
             @enum.property
             def first(self):
                 return '%s is first!' % self.name
@@ -362,9 +362,9 @@ klasse _EnumTests:
             first = auto()
             second = auto()
             third = auto()
-            if issubclass(self.enum_type, Flag):
+            wenn issubclass(self.enum_type, Flag):
                 dupe = 3
-            else:
+            sonst:
                 dupe = third
             self.MainEnum = MainEnum = BaseEnum('MainEnum', dict(first=first, second=second, third=third, dupe=dupe))
             #
@@ -403,20 +403,20 @@ klasse _EnumTests:
             #
             self.is_flag = False
             self.names = ['first', 'second', 'third']
-            if issubclass(MainEnum, StrEnum):
+            wenn issubclass(MainEnum, StrEnum):
                 self.values = self.names
-            elif MainEnum._member_type_ is str:
+            sowenn MainEnum._member_type_ is str:
                 self.values = ['1', '2', '3']
-            elif issubclass(self.enum_type, Flag):
+            sowenn issubclass(self.enum_type, Flag):
                 self.values = [1, 2, 4]
                 self.is_flag = True
                 self.dupe2 = MainEnum(5)
-            else:
+            sonst:
                 self.values = self.values or [1, 2, 3]
             #
-            if not getattr(self, 'source_values', False):
+            wenn not getattr(self, 'source_values', False):
                 self.source_values = self.values
-        else:
+        sonst:
             raise ValueError('unknown enum style: %r' % self.__class__.__name__)
 
     def assertFormatIsValue(self, spec, member):
@@ -458,13 +458,13 @@ klasse _EnumTests:
 
     def test_basics(self):
         TE = self.MainEnum
-        if self.is_flag:
+        wenn self.is_flag:
             self.assertEqual(repr(TE), "<flag 'MainEnum'>")
             self.assertEqual(str(TE), "<flag 'MainEnum'>")
             self.assertEqual(format(TE), "<flag 'MainEnum'>")
             self.assertTrue(TE(5) is self.dupe2)
             self.assertTrue(7 in TE)
-        else:
+        sonst:
             self.assertEqual(repr(TE), "<enum 'MainEnum'>")
             self.assertEqual(str(TE), "<enum 'MainEnum'>")
             self.assertEqual(format(TE), "<enum 'MainEnum'>")
@@ -485,13 +485,13 @@ klasse _EnumTests:
             self.assertIs(TE[name], member)
         fuer member, value in zip(TE, self.values, strict=True):
             self.assertIs(TE(value), member)
-        if issubclass(TE, StrEnum):
+        wenn issubclass(TE, StrEnum):
             self.assertTrue(TE.dupe is TE('third') is TE['dupe'])
-        elif TE._member_type_ is str:
+        sowenn TE._member_type_ is str:
             self.assertTrue(TE.dupe is TE('3') is TE['dupe'])
-        elif issubclass(TE, Flag):
+        sowenn issubclass(TE, Flag):
             self.assertTrue(TE.dupe is TE(3) is TE['dupe'])
-        else:
+        sonst:
             self.assertTrue(TE.dupe is TE(self.values[2]) is TE['dupe'])
 
     def test_bool_is_true(self):
@@ -512,7 +512,7 @@ klasse _EnumTests:
         MainEnum = self.MainEnum
         self.assertIn(MainEnum.first, MainEnum)
         self.assertTrue(self.values[0] in MainEnum)
-        if type(self) not in (TestStrEnumClass, TestStrEnumFunction):
+        wenn type(self) not in (TestStrEnumClass, TestStrEnumFunction):
             self.assertFalse('first' in MainEnum)
         val = MainEnum.dupe
         self.assertIn(val, MainEnum)
@@ -523,14 +523,14 @@ klasse _EnumTests:
             two = auto()
         self.assertNotIn(OtherEnum.two, MainEnum)
         #
-        if MainEnum._member_type_ is object:
+        wenn MainEnum._member_type_ is object:
             # enums without mixed data types will always be False
             klasse NotEqualEnum(self.enum_type):
                 this = self.source_values[0]
                 that = self.source_values[1]
             self.assertNotIn(NotEqualEnum.this, MainEnum)
             self.assertNotIn(NotEqualEnum.that, MainEnum)
-        else:
+        sonst:
             # enums with mixed data types may be True
             klasse EqualEnum(self.enum_type):
                 this = self.source_values[0]
@@ -592,15 +592,15 @@ klasse _EnumTests:
         klasse SuperEnum(self.enum_type):
             def __new__(cls, *value, **kwds):
                 new = self.enum_type._member_type_.__new__
-                if self.enum_type._member_type_ is object:
+                wenn self.enum_type._member_type_ is object:
                     obj = new(cls)
-                else:
-                    if isinstance(value[0], tuple):
+                sonst:
+                    wenn isinstance(value[0], tuple):
                         create_value ,= value[0]
-                    else:
+                    sonst:
                         create_value = value
                     obj = new(cls, *create_value)
-                obj._value_ = value[0] if len(value) == 1 else value
+                obj._value_ = value[0] wenn len(value) == 1 sonst value
                 obj.description = 'test description'
                 return obj
         klasse SubEnum(SuperEnum):
@@ -681,15 +681,15 @@ klasse _EnumTests:
                 lst,
                 )
         values = self.values
-        if self.enum_type is StrEnum:
+        wenn self.enum_type is StrEnum:
             values = ['june','july','august']
         fuer month, av in zip('june july august'.split(), values):
             e = MinorEnum[month]
             self.assertEqual(e.value, av, list(MinorEnum))
             self.assertEqual(e.name, month)
-            if MinorEnum._member_type_ is not object and issubclass(MinorEnum, MinorEnum._member_type_):
+            wenn MinorEnum._member_type_ is not object and issubclass(MinorEnum, MinorEnum._member_type_):
                 self.assertEqual(e, av)
-            else:
+            sonst:
                 self.assertNotEqual(e, av)
             self.assertIn(e, MinorEnum)
             self.assertIs(type(e), MinorEnum)
@@ -705,15 +705,15 @@ klasse _EnumTests:
                 lst,
                 )
         values = self.values
-        if self.enum_type is StrEnum:
+        wenn self.enum_type is StrEnum:
             values = ['june','july','august']
         fuer month, av in zip('june july august'.split(), values):
             e = MinorEnum[month]
             self.assertEqual(e.value, av)
             self.assertEqual(e.name, month)
-            if MinorEnum._member_type_ is not object and issubclass(MinorEnum, MinorEnum._member_type_):
+            wenn MinorEnum._member_type_ is not object and issubclass(MinorEnum, MinorEnum._member_type_):
                 self.assertEqual(e, av)
-            else:
+            sonst:
                 self.assertNotEqual(e, av)
             self.assertIn(e, MinorEnum)
             self.assertIs(type(e), MinorEnum)
@@ -735,9 +735,9 @@ klasse _EnumTests:
             e = MinorEnum[month]
             self.assertEqual(e.value, av)
             self.assertEqual(e.name, month)
-            if MinorEnum._member_type_ is not object and issubclass(MinorEnum, MinorEnum._member_type_):
+            wenn MinorEnum._member_type_ is not object and issubclass(MinorEnum, MinorEnum._member_type_):
                 self.assertEqual(e, av)
-            else:
+            sonst:
                 self.assertNotEqual(e, av)
             self.assertIn(e, MinorEnum)
             self.assertIs(type(e), MinorEnum)
@@ -757,9 +757,9 @@ klasse _EnumTests:
                 )
         fuer month, av in zip('june july august'.split(), self.values):
             e = MinorEnum[month]
-            if MinorEnum._member_type_ is not object and issubclass(MinorEnum, MinorEnum._member_type_):
+            wenn MinorEnum._member_type_ is not object and issubclass(MinorEnum, MinorEnum._member_type_):
                 self.assertEqual(e, av)
-            else:
+            sonst:
                 self.assertNotEqual(e, av)
             self.assertIn(e, MinorEnum)
             self.assertIs(type(e), MinorEnum)
@@ -767,13 +767,13 @@ klasse _EnumTests:
 
     def test_repr(self):
         TE = self.MainEnum
-        if self.is_flag:
+        wenn self.is_flag:
             self.assertEqual(repr(TE(0)), "<MainEnum: 0>")
             self.assertEqual(repr(TE.dupe), "<MainEnum.dupe: 3>")
             self.assertEqual(repr(self.dupe2), "<MainEnum.first|third: 5>")
-        elif issubclass(TE, StrEnum):
+        sowenn issubclass(TE, StrEnum):
             self.assertEqual(repr(TE.dupe), "<MainEnum.third: 'third'>")
-        else:
+        sonst:
             self.assertEqual(repr(TE.dupe), "<MainEnum.third: %r>" % (self.values[2], ), TE._value_repr_)
         fuer name, value, member in zip(self.names, self.values, TE, strict=True):
             self.assertEqual(repr(member), "<MainEnum.%s: %r>" % (member.name, member.value))
@@ -817,21 +817,21 @@ klasse _PlainOutputTests:
 
     def test_str(self):
         TE = self.MainEnum
-        if self.is_flag:
+        wenn self.is_flag:
             self.assertEqual(str(TE(0)), "MainEnum(0)")
             self.assertEqual(str(TE.dupe), "MainEnum.dupe")
             self.assertEqual(str(self.dupe2), "MainEnum.first|third")
-        else:
+        sonst:
             self.assertEqual(str(TE.dupe), "MainEnum.third")
         fuer name, value, member in zip(self.names, self.values, TE, strict=True):
             self.assertEqual(str(member), "MainEnum.%s" % (member.name, ))
 
     def test_format(self):
         TE = self.MainEnum
-        if self.is_flag:
+        wenn self.is_flag:
             self.assertEqual(format(TE.dupe), "MainEnum.dupe")
             self.assertEqual(format(self.dupe2), "MainEnum.first|third")
-        else:
+        sonst:
             self.assertEqual(format(TE.dupe), "MainEnum.third")
         fuer name, value, member in zip(self.names, self.values, TE, strict=True):
             self.assertEqual(format(member), "MainEnum.%s" % (member.name, ))
@@ -856,20 +856,20 @@ klasse _MixedOutputTests:
 
     def test_str(self):
         TE = self.MainEnum
-        if self.is_flag:
+        wenn self.is_flag:
             self.assertEqual(str(TE.dupe), "MainEnum.dupe")
             self.assertEqual(str(self.dupe2), "MainEnum.first|third")
-        else:
+        sonst:
             self.assertEqual(str(TE.dupe), "MainEnum.third")
         fuer name, value, member in zip(self.names, self.values, TE, strict=True):
             self.assertEqual(str(member), "MainEnum.%s" % (member.name, ))
 
     def test_format(self):
         TE = self.MainEnum
-        if self.is_flag:
+        wenn self.is_flag:
             self.assertEqual(format(TE.dupe), "MainEnum.dupe")
             self.assertEqual(format(self.dupe2), "MainEnum.first|third")
-        else:
+        sonst:
             self.assertEqual(format(TE.dupe), "MainEnum.third")
         fuer name, value, member in zip(self.names, self.values, TE, strict=True):
             self.assertEqual(format(member), "MainEnum.%s" % (member.name, ))
@@ -894,20 +894,20 @@ klasse _MinimalOutputTests:
 
     def test_str(self):
         TE = self.MainEnum
-        if self.is_flag:
+        wenn self.is_flag:
             self.assertEqual(str(TE.dupe), "3")
             self.assertEqual(str(self.dupe2), "5")
-        else:
+        sonst:
             self.assertEqual(str(TE.dupe), str(self.values[2]))
         fuer name, value, member in zip(self.names, self.values, TE, strict=True):
             self.assertEqual(str(member), str(value))
 
     def test_format(self):
         TE = self.MainEnum
-        if self.is_flag:
+        wenn self.is_flag:
             self.assertEqual(format(TE.dupe), "3")
             self.assertEqual(format(self.dupe2), "5")
-        else:
+        sonst:
             self.assertEqual(format(TE.dupe), format(self.values[2]))
         fuer name, value, member in zip(self.names, self.values, TE, strict=True):
             self.assertEqual(format(member), format(value))
@@ -925,7 +925,7 @@ klasse _MinimalOutputTests:
         self.assertFormatIsValue('{:^20}', TE.third)
         self.assertFormatIsValue('{:>20}', TE.third)
         self.assertFormatIsValue('{:<20}', TE.third)
-        if TE._member_type_ is float:
+        wenn TE._member_type_ is float:
             self.assertFormatIsValue('{:n}', TE.third)
             self.assertFormatIsValue('{:5.2}', TE.third)
             self.assertFormatIsValue('{:f}', TE.third)
@@ -996,14 +996,14 @@ klasse _FlagTests:
         A, B = OpenAB
         AB_MASK = OpenAB.MASK
         #
-        if OpenAB._boundary_ in (EJECT, KEEP):
+        wenn OpenAB._boundary_ in (EJECT, KEEP):
             self.assertIs(~A, OpenAB(254))
             self.assertIs(~B, OpenAB(253))
             self.assertIs(~(A|B), OpenAB(252))
             self.assertIs(~AB_MASK, OpenAB(0))
             self.assertIs(~OpenAB(0), AB_MASK)
             self.assertIs(OpenAB(~4), OpenAB(251))
-        else:
+        sonst:
             self.assertIs(~A, B)
             self.assertIs(~B, A)
             self.assertIs(OpenAB(~1), B)
@@ -1023,7 +1023,7 @@ klasse _FlagTests:
         X, Y, Z = OpenXYZ
         XYZ_MASK = OpenXYZ.MASK
         #
-        if OpenXYZ._boundary_ in (EJECT, KEEP):
+        wenn OpenXYZ._boundary_ in (EJECT, KEEP):
             self.assertIs(~X, OpenXYZ(27))
             self.assertIs(~Y, OpenXYZ(29))
             self.assertIs(~Z, OpenXYZ(30))
@@ -1033,7 +1033,7 @@ klasse _FlagTests:
             self.assertIs(~(X|Y|Z), OpenXYZ(24))
             self.assertIs(~XYZ_MASK, OpenXYZ(0))
             self.assertTrue(~OpenXYZ(0), XYZ_MASK)
-        else:
+        sonst:
             self.assertIs(~X, Y|Z)
             self.assertIs(~Y, X|Z)
             self.assertIs(~Z, X|Y)
@@ -1197,7 +1197,7 @@ klasse TestMixedDateFunction(_EnumTests, _MixedOutputTests, unittest.TestCase):
     values = [date(2021, 12, 25), date(2020, 3, 15), date(2019, 11, 27)]
     source_values = [(2021, 12, 25), (2020, 3, 15), (2019, 11, 27)]
     #
-    # staticmethod decorator will be added by EnumType if not present
+    # staticmethod decorator will be added by EnumType wenn not present
     def _generate_next_value_(name, start, count, last_values):
         values = [(2021, 12, 25), (2020, 3, 15), (2019, 11, 27)]
         return values[count]
@@ -1211,7 +1211,7 @@ klasse TestMinimalDateClass(_EnumTests, _MinimalOutputTests, unittest.TestCase):
     source_values = [(2023, 12, 1), (2016, 2, 29), (2009, 1, 1)]
     #
     klasse enum_type(date, ReprEnum):
-        # staticmethod decorator will be added by EnumType if absent
+        # staticmethod decorator will be added by EnumType wenn absent
         def _generate_next_value_(name, start, count, last_values):
             values = [(2023, 12, 1), (2016, 2, 29), (2009, 1, 1)]
             return values[count]
@@ -1948,7 +1948,7 @@ klasse TestSpecial(unittest.TestCase):
                 INVALID = (256, 0, 0)
 
                 def __init__(self, r, g, b):
-                    if not all(0 <= val <= 255 fuer val in (r, g, b)):
+                    wenn not all(0 <= val <= 255 fuer val in (r, g, b)):
                         raise InvalidRgbColorError(r, g, b)
 
     def test_intenum_transitivity(self):
@@ -2049,14 +2049,14 @@ klasse TestSpecial(unittest.TestCase):
                 i = 0
                 fuer k in classdict._member_names:
                     v = classdict[k]
-                    if v is Ellipsis:
+                    wenn v is Ellipsis:
                         v = i
-                    else:
+                    sonst:
                         i = v
                     i += 1
                     temp[k] = v
                 fuer k, v in classdict.items():
-                    if k not in names:
+                    wenn k not in names:
                         temp[k] = v
                 return super(auto_enum, metacls).__new__(
                         metacls, cls, bases, temp)
@@ -2083,7 +2083,7 @@ klasse TestSpecial(unittest.TestCase):
             def __new__(cls, *args):
                 _args = args
                 name, *args = args
-                if len(args) == 0:
+                wenn len(args) == 0:
                     raise TypeError("name and value must be specified")
                 self = int.__new__(cls, *args)
                 self._intname = name
@@ -2102,22 +2102,22 @@ klasse TestSpecial(unittest.TestCase):
                         int.__repr__(self),
                         )
             def __str__(self):
-                # str() is unchanged, even if it relies on the repr() fallback
+                # str() is unchanged, even wenn it relies on the repr() fallback
                 base = int
                 base_str = base.__str__
-                if base_str.__objclass__ is object:
+                wenn base_str.__objclass__ is object:
                     return base.__repr__(self)
                 return base_str(self)
             # fuer simplicity, we only define one operator that
             # propagates expressions
             def __add__(self, other):
                 temp = int(self) + int( other)
-                if isinstance(self, NamedInt) and isinstance(other, NamedInt):
+                wenn isinstance(self, NamedInt) and isinstance(other, NamedInt):
                     return NamedInt(
                         '({0} + {1})'.format(self.__name__, other.__name__),
                         temp,
                         )
-                else:
+                sonst:
                     return temp
 
         klasse NEI(NamedInt, Enum):
@@ -2143,7 +2143,7 @@ klasse TestSpecial(unittest.TestCase):
             def __new__(cls, *args):
                 _args = args
                 name, *args = args
-                if len(args) == 0:
+                wenn len(args) == 0:
                     raise TypeError("name and value must be specified")
                 self = int.__new__(cls, *args)
                 self._intname = name
@@ -2162,22 +2162,22 @@ klasse TestSpecial(unittest.TestCase):
                         int.__repr__(self),
                         )
             def __str__(self):
-                # str() is unchanged, even if it relies on the repr() fallback
+                # str() is unchanged, even wenn it relies on the repr() fallback
                 base = int
                 base_str = base.__str__
-                if base_str.__objclass__ is object:
+                wenn base_str.__objclass__ is object:
                     return base.__repr__(self)
                 return base_str(self)
             # fuer simplicity, we only define one operator that
             # propagates expressions
             def __add__(self, other):
                 temp = int(self) + int( other)
-                if isinstance(self, NamedInt) and isinstance(other, NamedInt):
+                wenn isinstance(self, NamedInt) and isinstance(other, NamedInt):
                     return NamedInt(
                         '({0} + {1})'.format(self.__name__, other.__name__),
                         temp,
                         )
-                else:
+                sonst:
                     return temp
 
         klasse NEI(NamedInt, Enum):
@@ -2203,7 +2203,7 @@ klasse TestSpecial(unittest.TestCase):
             def __new__(cls, *args):
                 _args = args
                 name, *args = args
-                if len(args) == 0:
+                wenn len(args) == 0:
                     raise TypeError("name and value must be specified")
                 self = int.__new__(cls, *args)
                 self._intname = name
@@ -2222,22 +2222,22 @@ klasse TestSpecial(unittest.TestCase):
                         int.__repr__(self),
                         )
             def __str__(self):
-                # str() is unchanged, even if it relies on the repr() fallback
+                # str() is unchanged, even wenn it relies on the repr() fallback
                 base = int
                 base_str = base.__str__
-                if base_str.__objclass__ is object:
+                wenn base_str.__objclass__ is object:
                     return base.__repr__(self)
                 return base_str(self)
             # fuer simplicity, we only define one operator that
             # propagates expressions
             def __add__(self, other):
                 temp = int(self) + int( other)
-                if isinstance(self, NamedInt) and isinstance(other, NamedInt):
+                wenn isinstance(self, NamedInt) and isinstance(other, NamedInt):
                     return NamedInt(
                         '({0} + {1})'.format(self.__name__, other.__name__),
                         temp,
                         )
-                else:
+                sonst:
                     return temp
 
         klasse NEI(NamedInt, Enum):
@@ -2263,7 +2263,7 @@ klasse TestSpecial(unittest.TestCase):
             def __new__(cls, *args):
                 _args = args
                 name, *args = args
-                if len(args) == 0:
+                wenn len(args) == 0:
                     raise TypeError("name and value must be specified")
                 self = int.__new__(cls, *args)
                 self._intname = name
@@ -2282,22 +2282,22 @@ klasse TestSpecial(unittest.TestCase):
                         int.__repr__(self),
                         )
             def __str__(self):
-                # str() is unchanged, even if it relies on the repr() fallback
+                # str() is unchanged, even wenn it relies on the repr() fallback
                 base = int
                 base_str = base.__str__
-                if base_str.__objclass__ is object:
+                wenn base_str.__objclass__ is object:
                     return base.__repr__(self)
                 return base_str(self)
             # fuer simplicity, we only define one operator that
             # propagates expressions
             def __add__(self, other):
                 temp = int(self) + int( other)
-                if isinstance(self, NamedInt) and isinstance(other, NamedInt):
+                wenn isinstance(self, NamedInt) and isinstance(other, NamedInt):
                     return NamedInt(
                         '({0} + {1})'.format(self.__name__, other.__name__),
                         temp,
                         )
-                else:
+                sonst:
                     return temp
 
         klasse NEI(NamedInt, Enum):
@@ -2322,7 +2322,7 @@ klasse TestSpecial(unittest.TestCase):
             def __new__(cls, *args):
                 _args = args
                 name, *args = args
-                if len(args) == 0:
+                wenn len(args) == 0:
                     raise TypeError("name and value must be specified")
                 self = int.__new__(cls, *args)
                 self._intname = name
@@ -2339,21 +2339,21 @@ klasse TestSpecial(unittest.TestCase):
                         int.__repr__(self),
                         )
             def __str__(self):
-                # str() is unchanged, even if it relies on the repr() fallback
+                # str() is unchanged, even wenn it relies on the repr() fallback
                 base = int
                 base_str = base.__str__
-                if base_str.__objclass__ is object:
+                wenn base_str.__objclass__ is object:
                     return base.__repr__(self)
                 return base_str(self)
             # fuer simplicity, we only define one operator that
             # propagates expressions
             def __add__(self, other):
                 temp = int(self) + int( other)
-                if isinstance(self, NamedInt) and isinstance(other, NamedInt):
+                wenn isinstance(self, NamedInt) and isinstance(other, NamedInt):
                     return NamedInt(
                         '({0} + {1})'.format(self.__name__, other.__name__),
                         temp )
-                else:
+                sonst:
                     return temp
 
         klasse NEI(NamedInt, Enum):
@@ -2380,7 +2380,7 @@ klasse TestSpecial(unittest.TestCase):
             def __new__(cls, *args):
                 _args = args
                 name, *args = args
-                if len(args) == 0:
+                wenn len(args) == 0:
                     raise TypeError("name and value must be specified")
                 self = int.__new__(cls, *args)
                 self._intname = name
@@ -2397,22 +2397,22 @@ klasse TestSpecial(unittest.TestCase):
                         int.__repr__(self),
                         )
             def __str__(self):
-                # str() is unchanged, even if it relies on the repr() fallback
+                # str() is unchanged, even wenn it relies on the repr() fallback
                 base = int
                 base_str = base.__str__
-                if base_str.__objclass__ is object:
+                wenn base_str.__objclass__ is object:
                     return base.__repr__(self)
                 return base_str(self)
             # fuer simplicity, we only define one operator that
             # propagates expressions
             def __add__(self, other):
                 temp = int(self) + int( other)
-                if isinstance(self, NamedInt) and isinstance(other, NamedInt):
+                wenn isinstance(self, NamedInt) and isinstance(other, NamedInt):
                     return NamedInt(
                         '({0} + {1})'.format(self.__name__, other.__name__),
                         temp,
                         )
-                else:
+                sonst:
                     return temp
 
         klasse NEI(NamedInt, Enum):
@@ -2537,19 +2537,19 @@ klasse TestSpecial(unittest.TestCase):
     def test_ordered_mixin(self):
         klasse OrderedEnum(Enum):
             def __ge__(self, other):
-                if self.__class__ is other.__class__:
+                wenn self.__class__ is other.__class__:
                     return self._value_ >= other._value_
                 return NotImplemented
             def __gt__(self, other):
-                if self.__class__ is other.__class__:
+                wenn self.__class__ is other.__class__:
                     return self._value_ > other._value_
                 return NotImplemented
             def __le__(self, other):
-                if self.__class__ is other.__class__:
+                wenn self.__class__ is other.__class__:
                     return self._value_ <= other._value_
                 return NotImplemented
             def __lt__(self, other):
-                if self.__class__ is other.__class__:
+                wenn self.__class__ is other.__class__:
                     return self._value_ < other._value_
                 return NotImplemented
         klasse Grade(OrderedEnum):
@@ -2623,7 +2623,7 @@ klasse TestSpecial(unittest.TestCase):
         klasse UniqueEnum(Enum):
             def __init__(self, *args):
                 cls = self.__class__
-                if any(self.value == e.value fuer e in cls):
+                wenn any(self.value == e.value fuer e in cls):
                     a = self.name
                     e = cls(self.value).name
                     raise ValueError(
@@ -2733,7 +2733,7 @@ klasse TestSpecial(unittest.TestCase):
             Color(7)
         except ValueError as exc:
             self.assertTrue(exc.__context__ is None)
-        else:
+        sonst:
             raise Exception('Exception not raised.')
 
     def test_missing_override(self):
@@ -2743,14 +2743,14 @@ klasse TestSpecial(unittest.TestCase):
             blue = 3
             @classmethod
             def _missing_(cls, item):
-                if item == 'three':
+                wenn item == 'three':
                     return cls.blue
-                elif item == 'bad return':
+                sowenn item == 'bad return':
                     # trigger internal error
                     return 5
-                elif item == 'error out':
+                sowenn item == 'error out':
                     raise ZeroDivisionError
-                else:
+                sonst:
                     # trigger not found
                     return None
         self.assertIs(Color('three'), Color.blue)
@@ -2758,19 +2758,19 @@ klasse TestSpecial(unittest.TestCase):
             Color(7)
         except ValueError as exc:
             self.assertTrue(exc.__context__ is None)
-        else:
+        sonst:
             raise Exception('Exception not raised.')
         try:
             Color('bad return')
         except TypeError as exc:
             self.assertTrue(isinstance(exc.__context__, ValueError))
-        else:
+        sonst:
             raise Exception('Exception not raised.')
         try:
             Color('error out')
         except ZeroDivisionError as exc:
             self.assertTrue(isinstance(exc.__context__, ValueError))
-        else:
+        sonst:
             raise Exception('Exception not raised.')
 
     def test_missing_exceptions_reset(self):
@@ -2956,7 +2956,7 @@ klasse TestSpecial(unittest.TestCase):
             @classmethod
             def _missing_(cls, value):
                 fuer member in cls._member_map_.values():
-                    if member._value_.lower() == value.lower():
+                    wenn member._value_.lower() == value.lower():
                         return member
                 return super()._missing_(value)
         #
@@ -3133,10 +3133,10 @@ klasse TestSpecial(unittest.TestCase):
                 #
                 def __new__(cls, value, sequence):
                     enum = str.__new__(cls, value)
-                    if '(' in value:
+                    wenn '(' in value:
                         fis_name, segment = value.split('(', 1)
                         segment = segment.strip(' )')
-                    else:
+                    sonst:
                         fis_name = value
                         segment = None
                     enum.fis_name = fis_name
@@ -3177,7 +3177,7 @@ klasse TestSpecial(unittest.TestCase):
             vars().update({
                     k: v
                     fuer k, v in foo_defines.items()
-                    if k.startswith('FOO_')
+                    wenn k.startswith('FOO_')
                     })
             def upper(self):
                 return self.value.upper()
@@ -3190,7 +3190,7 @@ klasse TestSpecial(unittest.TestCase):
                 vars().update({
                         k: v
                         fuer k, v in foo_defines.items()
-                        if k.startswith('FOO_')
+                        wenn k.startswith('FOO_')
                         },
                         **{'FOO_CAT': 'small'},
                         )
@@ -3247,7 +3247,7 @@ klasse TestSpecial(unittest.TestCase):
             DOG = ('medium', 4)
         self.assertEqual(repr(Creature.DOG), "<Creature.DOG: inherited>")
         #
-        # check default object.__repr__ used if nothing provided
+        # check default object.__repr__ used wenn nothing provided
         #
         @dataclass(repr=False)
         klasse CreatureDataMixin:
@@ -3966,7 +3966,7 @@ klasse OldTestFlag(unittest.TestCase):
             def ALL(cls):
                 members = list(cls)
                 all_value = None
-                if members:
+                wenn members:
                     all_value = members[0]
                     fuer member in members[1:]:
                         all_value |= member
@@ -4486,7 +4486,7 @@ klasse OldTestIntFlag(unittest.TestCase):
             def ALL(cls):
                 members = list(cls)
                 all_value = None
-                if members:
+                wenn members:
                     all_value = members[0]
                     fuer member in members[1:]:
                         all_value |= member
@@ -4999,7 +4999,7 @@ klasse Color(enum.Enum)
  |  Static methods inherited from enum.EnumType:
  |
  |  __contains__(value)
- |      Return True if `value` is in `cls`.
+ |      Return True wenn `value` is in `cls`.
  |
  |      `value` is in `cls` if:
  |      1) `value` is a member of `cls`, or
@@ -5077,9 +5077,9 @@ klasse TestStdLib(unittest.TestCase):
 
     def test_pydoc(self):
         # indirectly test __objclass__
-        if StrEnum.__doc__ is None:
+        wenn StrEnum.__doc__ is None:
             expected_text = expected_help_output_without_docs % __name__
-        else:
+        sonst:
             expected_text = expected_help_output_with_docs % __name__
         output = StringIO()
         helper = pydoc.Helper(output=output)
@@ -5110,15 +5110,15 @@ klasse TestStdLib(unittest.TestCase):
         self.assertEqual(set(values.keys()), set(result.keys()))
         failed = False
         fuer k in values.keys():
-            if k == '__doc__':
+            wenn k == '__doc__':
                 # __doc__ is huge, not comparing
                 continue
-            if result[k] != values[k]:
+            wenn result[k] != values[k]:
                 print()
                 print('\n%s\n     key: %s\n  result: %s\nexpected: %s\n%s\n' %
                         ('=' * 75, k, result[k], values[k], '=' * 75), sep='')
                 failed = True
-        if failed:
+        wenn failed:
             self.fail("result does not equal expected, see print above")
 
     def test_inspect_classify_class_attrs(self):
@@ -5172,18 +5172,18 @@ klasse TestStdLib(unittest.TestCase):
                 )
         failed = False
         fuer v, r in zip(values, result):
-            if r.name in ('__init_subclass__', '__doc__'):
+            wenn r.name in ('__init_subclass__', '__doc__'):
                 # not sure how to make the __init_subclass_ Attributes match
                 # so as long as there is one, call it good
                 # __doc__ is too big to check exactly, so treat the same as __init_subclass__
                 fuer name in ('name','kind','defining_class'):
-                    if getattr(v, name) != getattr(r, name):
+                    wenn getattr(v, name) != getattr(r, name):
                         print('\n%s\n%s\n%s\n%s\n' % ('=' * 75, r, v, '=' * 75), sep='')
                         failed = True
-            elif r != v:
+            sowenn r != v:
                 print('\n%s\n%s\n%s\n%s\n' % ('=' * 75, r, v, '=' * 75), sep='')
                 failed = True
-        if failed:
+        wenn failed:
             self.fail("result does not equal expected, see print above")
 
     def test_inspect_signatures(self):
@@ -5425,8 +5425,8 @@ klasse TestConvert(unittest.TestCase):
         self.assertEqual(test_type.CONVERT_TEST_NAME_D, 5)
         self.assertEqual(test_type.CONVERT_TEST_NAME_E, 5)
         # Ensure that test_type only picked up names matching the filter.
-        extra = [name fuer name in dir(test_type) if name not in enum_dir(test_type)]
-        missing = [name fuer name in enum_dir(test_type) if name not in dir(test_type)]
+        extra = [name fuer name in dir(test_type) wenn name not in enum_dir(test_type)]
+        missing = [name fuer name in enum_dir(test_type) wenn name not in dir(test_type)]
         self.assertEqual(
                 extra + missing,
                 [],
@@ -5466,8 +5466,8 @@ klasse TestConvert(unittest.TestCase):
         self.assertEqual(test_type.CONVERT_STR_TEST_1, 'hello')
         self.assertEqual(test_type.CONVERT_STR_TEST_2, 'goodbye')
         # Ensure that test_type only picked up names matching the filter.
-        extra = [name fuer name in dir(test_type) if name not in enum_dir(test_type)]
-        missing = [name fuer name in enum_dir(test_type) if name not in dir(test_type)]
+        extra = [name fuer name in dir(test_type) wenn name not in enum_dir(test_type)]
+        missing = [name fuer name in enum_dir(test_type) wenn name not in dir(test_type)]
         self.assertEqual(
                 extra + missing,
                 [],
@@ -5536,34 +5536,34 @@ def enum_dir(cls):
             ]
             + cls._member_names_
             )
-    if cls._new_member_ is not object.__new__:
+    wenn cls._new_member_ is not object.__new__:
         interesting.add('__new__')
-    if cls.__init_subclass__ is not object.__init_subclass__:
+    wenn cls.__init_subclass__ is not object.__init_subclass__:
         interesting.add('__init_subclass__')
-    if cls._member_type_ is object:
+    wenn cls._member_type_ is object:
         return sorted(interesting)
-    else:
+    sonst:
         # return whatever mixed-in data type has
         return sorted(set(dir(cls._member_type_)) | interesting)
 
 def member_dir(member):
-    if member.__class__._member_type_ is object:
+    wenn member.__class__._member_type_ is object:
         allowed = set(['__class__', '__doc__', '__eq__', '__hash__', '__module__', 'name', 'value'])
-    else:
+    sonst:
         allowed = set(dir(member))
     fuer cls in member.__class__.mro():
         fuer name, obj in cls.__dict__.items():
-            if name[0] == '_':
+            wenn name[0] == '_':
                 continue
-            if isinstance(obj, enum.property):
-                if obj.fget is not None or name not in member._member_map_:
+            wenn isinstance(obj, enum.property):
+                wenn obj.fget is not None or name not in member._member_map_:
                     allowed.add(name)
-                else:
+                sonst:
                     allowed.discard(name)
-            elif name not in member._member_map_:
+            sowenn name not in member._member_map_:
                 allowed.add(name)
     return sorted(allowed)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

@@ -50,7 +50,7 @@ klasse Popen(object):
         # -- see spawn_main() in spawn.py.
         #
         # bpo-33929: Previously, the read end of pipe was "stolen" by the child
-        # process, but it leaked a handle if the child process had been
+        # process, but it leaked a handle wenn the child process had been
         # terminated before it could steal the handle from the parent process.
         rhandle, whandle = _winapi.CreatePipe(None, 0)
         wfd = msvcrt.open_osfhandle(whandle, 0)
@@ -61,11 +61,11 @@ klasse Popen(object):
 
         # bpo-35797: When running in a venv, we bypass the redirect
         # executor and launch our base Python.
-        if WINENV and _path_eq(python_exe, sys.executable):
+        wenn WINENV and _path_eq(python_exe, sys.executable):
             cmd[0] = python_exe = sys._base_executable
             env = os.environ.copy()
             env["__PYVENV_LAUNCHER__"] = sys.executable
-        else:
+        sonst:
             env = None
 
         cmd = ' '.join('"%s"' % x fuer x in cmd)
@@ -103,18 +103,18 @@ klasse Popen(object):
         return reduction.duplicate(handle, self.sentinel)
 
     def wait(self, timeout=None):
-        if self.returncode is not None:
+        wenn self.returncode is not None:
             return self.returncode
 
-        if timeout is None:
+        wenn timeout is None:
             msecs = _winapi.INFINITE
-        else:
+        sonst:
             msecs = max(0, int(timeout * 1000 + 0.5))
 
         res = _winapi.WaitForSingleObject(int(self._handle), msecs)
-        if res == _winapi.WAIT_OBJECT_0:
+        wenn res == _winapi.WAIT_OBJECT_0:
             code = _winapi.GetExitCodeProcess(self._handle)
-            if code == TERMINATE:
+            wenn code == TERMINATE:
                 code = -signal.SIGTERM
             self.returncode = code
 
@@ -124,7 +124,7 @@ klasse Popen(object):
         return self.wait(timeout=0)
 
     def terminate(self):
-        if self.returncode is not None:
+        wenn self.returncode is not None:
             return
 
         try:
@@ -133,10 +133,10 @@ klasse Popen(object):
             # ERROR_ACCESS_DENIED (winerror 5) is received when the
             # process already died.
             code = _winapi.GetExitCodeProcess(int(self._handle))
-            if code == _winapi.STILL_ACTIVE:
+            wenn code == _winapi.STILL_ACTIVE:
                 raise
 
-        # gh-113009: Don't set self.returncode. Even if GetExitCodeProcess()
+        # gh-113009: Don't set self.returncode. Even wenn GetExitCodeProcess()
         # returns an exit code different than STILL_ACTIVE, the process can
         # still be running. Only set self.returncode once WaitForSingleObject()
         # returns WAIT_OBJECT_0 in wait().

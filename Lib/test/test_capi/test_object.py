@@ -151,7 +151,7 @@ klasse EnableDeferredRefcountingTest(unittest.TestCase):
 
         # Make sure reference counting works on foo now
         self.assertEqual(foo, [])
-        if support.Py_GIL_DISABLED:
+        wenn support.Py_GIL_DISABLED:
             self.assertTrue(_testinternalcapi.has_deferred_refcount(foo))
 
         # Make sure that PyUnstable_Object_EnableDeferredRefcount is thread safe
@@ -170,7 +170,7 @@ klasse EnableDeferredRefcountingTest(unittest.TestCase):
             fuer i in range(10):
                 silly_list.append(i)
 
-        if support.Py_GIL_DISABLED:
+        wenn support.Py_GIL_DISABLED:
             self.assertTrue(_testinternalcapi.has_deferred_refcount(silly_list))
 
 
@@ -247,5 +247,5 @@ klasse CAPITest(unittest.TestCase):
 
         func(object())
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

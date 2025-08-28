@@ -34,5 +34,5 @@ klasse DecimalContextTest(unittest.TestCase):
         self.assertEqual(str(r2[1]), '0.111111')
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

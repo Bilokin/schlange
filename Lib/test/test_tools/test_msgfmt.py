@@ -287,8 +287,8 @@ def update_catalog_snapshots():
             f.write('\n')
 
 
-if __name__ == '__main__':
-    if len(sys.argv) > 1 and sys.argv[1] == '--snapshot-update':
+wenn __name__ == '__main__':
+    wenn len(sys.argv) > 1 and sys.argv[1] == '--snapshot-update':
         update_catalog_snapshots()
         sys.exit(0)
     unittest.main()

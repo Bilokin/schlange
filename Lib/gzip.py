@@ -50,29 +50,29 @@ def open(filename, mode="rb", compresslevel=_COMPRESS_LEVEL_TRADEOFF,
     behavior, and line ending(s).
 
     """
-    if "t" in mode:
-        if "b" in mode:
+    wenn "t" in mode:
+        wenn "b" in mode:
             raise ValueError("Invalid mode: %r" % (mode,))
-    else:
-        if encoding is not None:
+    sonst:
+        wenn encoding is not None:
             raise ValueError("Argument 'encoding' not supported in binary mode")
-        if errors is not None:
+        wenn errors is not None:
             raise ValueError("Argument 'errors' not supported in binary mode")
-        if newline is not None:
+        wenn newline is not None:
             raise ValueError("Argument 'newline' not supported in binary mode")
 
     gz_mode = mode.replace("t", "")
-    if isinstance(filename, (str, bytes, os.PathLike)):
+    wenn isinstance(filename, (str, bytes, os.PathLike)):
         binary_file = GzipFile(filename, gz_mode, compresslevel)
-    elif hasattr(filename, "read") or hasattr(filename, "write"):
+    sowenn hasattr(filename, "read") or hasattr(filename, "write"):
         binary_file = GzipFile(None, gz_mode, compresslevel, filename)
-    else:
+    sonst:
         raise TypeError("filename must be a str or bytes object, or a file")
 
-    if "t" in mode:
+    wenn "t" in mode:
         encoding = io.text_encoding(encoding)
         return io.TextIOWrapper(binary_file, encoding, errors, newline)
-    else:
+    sonst:
         return binary_file
 
 def write32u(output, value):
@@ -92,22 +92,22 @@ klasse _PaddedFile:
         self._read = 0
 
     def read(self, size):
-        if self._read is None:
+        wenn self._read is None:
             return self.file.read(size)
-        if self._read + size <= self._length:
+        wenn self._read + size <= self._length:
             read = self._read
             self._read += size
             return self._buffer[read:self._read]
-        else:
+        sonst:
             read = self._read
             self._read = None
             return self._buffer[read:] + \
                    self.file.read(size-self._length+read)
 
     def prepend(self, prepend=b''):
-        if self._read is None:
+        wenn self._read is None:
             self._buffer = prepend
-        else:  # Assume data was read since the last prepend() call
+        sonst:  # Assume data was read since the last prepend() call
             self._read -= len(prepend)
             return
         self._length = len(self._buffer)
@@ -133,7 +133,7 @@ klasse _WriteBufferStream(io.RawIOBase):
 
     def write(self, data):
         gzip_file = self.gzip_file()
-        if gzip_file is None:
+        wenn gzip_file is None:
             raise RuntimeError("lost gzip_file")
         return gzip_file._write_raw(data)
 
@@ -153,7 +153,7 @@ klasse GzipFile(_streams.BaseStream):
 
     """
 
-    # Overridden with internal file object to be closed, if only a filename
+    # Overridden with internal file object to be closed, wenn only a filename
     # is passed in
     myfileobj = None
 
@@ -172,12 +172,12 @@ klasse GzipFile(_streams.BaseStream):
         When fileobj is not None, the filename argument is only used to be
         included in the gzip file header, which may include the original
         filename of the uncompressed file.  It defaults to the filename of
-        fileobj, if discernible; otherwise, it defaults to the empty string,
+        fileobj, wenn discernible; otherwise, it defaults to the empty string,
         and in this case the original filename is not included in the header.
 
         The mode argument can be any of 'r', 'rb', 'a', 'ab', 'w', 'wb', 'x', or
         'xb' depending on whether the file will be read or written.  The default
-        is the mode of fileobj if discernible; otherwise, the default is 'rb'.
+        is the mode of fileobj wenn discernible; otherwise, the default is 'rb'.
         A mode of 'r' is equivalent to one of 'rb', and similarly fuer 'w' and
         'wb', 'a' and 'ab', and 'x' and 'xb'.
 
@@ -198,33 +198,33 @@ klasse GzipFile(_streams.BaseStream):
         self.fileobj = None
         self._buffer = None
 
-        if mode and ('t' in mode or 'U' in mode):
+        wenn mode and ('t' in mode or 'U' in mode):
             raise ValueError("Invalid mode: {!r}".format(mode))
-        if mode and 'b' not in mode:
+        wenn mode and 'b' not in mode:
             mode += 'b'
 
         try:
-            if fileobj is None:
+            wenn fileobj is None:
                 fileobj = self.myfileobj = builtins.open(filename, mode or 'rb')
-            if filename is None:
+            wenn filename is None:
                 filename = getattr(fileobj, 'name', '')
-                if not isinstance(filename, (str, bytes)):
+                wenn not isinstance(filename, (str, bytes)):
                     filename = ''
-            else:
+            sonst:
                 filename = os.fspath(filename)
             origmode = mode
-            if mode is None:
+            wenn mode is None:
                 mode = getattr(fileobj, 'mode', 'rb')
 
 
-            if mode.startswith('r'):
+            wenn mode.startswith('r'):
                 self.mode = READ
                 raw = _GzipReader(fileobj)
                 self._buffer = io.BufferedReader(raw)
                 self.name = filename
 
-            elif mode.startswith(('w', 'a', 'x')):
-                if origmode is None:
+            sowenn mode.startswith(('w', 'a', 'x')):
+                wenn origmode is None:
                     import warnings
                     warnings.warn(
                         "GzipFile was opened fuer writing, but this will "
@@ -242,15 +242,15 @@ klasse GzipFile(_streams.BaseStream):
                 self._buffer_size = _WRITE_BUFFER_SIZE
                 self._buffer = io.BufferedWriter(_WriteBufferStream(self),
                                                  buffer_size=self._buffer_size)
-            else:
+            sonst:
                 raise ValueError("Invalid mode: {!r}".format(mode))
 
             self.fileobj = fileobj
 
-            if self.mode == WRITE:
+            wenn self.mode == WRITE:
                 self._write_gzip_header(compresslevel)
         except:
-            # Avoid a ResourceWarning if the write fails,
+            # Avoid a ResourceWarning wenn the write fails,
             # eg read-only file or KeyboardInterrupt
             self._close()
             raise
@@ -282,52 +282,52 @@ klasse GzipFile(_streams.BaseStream):
             # RFC 1952 requires the FNAME field to be Latin-1. Do not
             # include filenames that cannot be represented that way.
             fname = os.path.basename(self.name)
-            if not isinstance(fname, bytes):
+            wenn not isinstance(fname, bytes):
                 fname = fname.encode('latin-1')
-            if fname.endswith(b'.gz'):
+            wenn fname.endswith(b'.gz'):
                 fname = fname[:-3]
         except UnicodeEncodeError:
             fname = b''
         flags = 0
-        if fname:
+        wenn fname:
             flags = FNAME
         self.fileobj.write(chr(flags).encode('latin-1'))
         mtime = self._write_mtime
-        if mtime is None:
+        wenn mtime is None:
             mtime = time.time()
         write32u(self.fileobj, int(mtime))
-        if compresslevel == _COMPRESS_LEVEL_BEST:
+        wenn compresslevel == _COMPRESS_LEVEL_BEST:
             xfl = b'\002'
-        elif compresslevel == _COMPRESS_LEVEL_FAST:
+        sowenn compresslevel == _COMPRESS_LEVEL_FAST:
             xfl = b'\004'
-        else:
+        sonst:
             xfl = b'\000'
         self.fileobj.write(xfl)
         self.fileobj.write(b'\377')
-        if fname:
+        wenn fname:
             self.fileobj.write(fname + b'\000')
 
     def write(self,data):
         self._check_not_closed()
-        if self.mode != WRITE:
+        wenn self.mode != WRITE:
             import errno
             raise OSError(errno.EBADF, "write() on read-only GzipFile object")
 
-        if self.fileobj is None:
+        wenn self.fileobj is None:
             raise ValueError("write() on closed GzipFile object")
 
         return self._buffer.write(data)
 
     def _write_raw(self, data):
         # Called by our self._buffer underlying WriteBufferStream.
-        if isinstance(data, (bytes, bytearray)):
+        wenn isinstance(data, (bytes, bytearray)):
             length = len(data)
-        else:
+        sonst:
             # accept any data that supports the buffer protocol
             data = memoryview(data)
             length = data.nbytes
 
-        if length > 0:
+        wenn length > 0:
             self.fileobj.write(self.compress.compress(data))
             self.size += length
             self.crc = zlib.crc32(data, self.crc)
@@ -336,7 +336,7 @@ klasse GzipFile(_streams.BaseStream):
         return length
 
     def _check_read(self, caller):
-        if self.mode != READ:
+        wenn self.mode != READ:
             import errno
             msg = f"{caller}() on write-only GzipFile object"
             raise OSError(errno.EBADF, msg)
@@ -349,11 +349,11 @@ klasse GzipFile(_streams.BaseStream):
     def read1(self, size=-1):
         """Implements BufferedIOBase.read1()
 
-        Reads up to a buffer's worth of data if size is negative."""
+        Reads up to a buffer's worth of data wenn size is negative."""
         self._check_not_closed()
         self._check_read("read1")
 
-        if size < 0:
+        wenn size < 0:
             size = io.DEFAULT_BUFFER_SIZE
         return self._buffer.read1(size)
 
@@ -378,18 +378,18 @@ klasse GzipFile(_streams.BaseStream):
 
     def close(self):
         fileobj = self.fileobj
-        if fileobj is None:
+        wenn fileobj is None:
             return
-        if self._buffer is None or self._buffer.closed:
+        wenn self._buffer is None or self._buffer.closed:
             return
         try:
-            if self.mode == WRITE:
+            wenn self.mode == WRITE:
                 self._buffer.flush()
                 fileobj.write(self.compress.flush())
                 write32u(fileobj, self.crc)
                 # self.size may exceed 2 GiB, or even 4 GiB
                 write32u(fileobj, self.size & 0xffffffff)
-            elif self.mode == READ:
+            sowenn self.mode == READ:
                 self._buffer.close()
         finally:
             self._close()
@@ -397,13 +397,13 @@ klasse GzipFile(_streams.BaseStream):
     def _close(self):
         self.fileobj = None
         myfileobj = self.myfileobj
-        if myfileobj is not None:
+        wenn myfileobj is not None:
             self.myfileobj = None
             myfileobj.close()
 
     def flush(self,zlib_mode=zlib.Z_SYNC_FLUSH):
         self._check_not_closed()
-        if self.mode == WRITE:
+        wenn self.mode == WRITE:
             self._buffer.flush()
             # Ensure the compressor's buffer is flushed
             self.fileobj.write(self.compress.flush(zlib_mode))
@@ -412,7 +412,7 @@ klasse GzipFile(_streams.BaseStream):
     def fileno(self):
         """Invoke the underlying file object's fileno() method.
 
-        This will raise AttributeError if the underlying file object
+        This will raise AttributeError wenn the underlying file object
         doesn't support fileno().
         """
         return self.fileobj.fileno()
@@ -420,7 +420,7 @@ klasse GzipFile(_streams.BaseStream):
     def rewind(self):
         '''Return the uncompressed stream file position indicator to the
         beginning of the file'''
-        if self.mode != READ:
+        wenn self.mode != READ:
             raise OSError("Can't rewind in write mode")
         self._buffer.seek(0)
 
@@ -434,23 +434,23 @@ klasse GzipFile(_streams.BaseStream):
         return True
 
     def seek(self, offset, whence=io.SEEK_SET):
-        if self.mode == WRITE:
+        wenn self.mode == WRITE:
             self._check_not_closed()
             # Flush buffer to ensure validity of self.offset
             self._buffer.flush()
-            if whence != io.SEEK_SET:
-                if whence == io.SEEK_CUR:
+            wenn whence != io.SEEK_SET:
+                wenn whence == io.SEEK_CUR:
                     offset = self.offset + offset
-                else:
+                sonst:
                     raise ValueError('Seek from end not supported')
-            if offset < self.offset:
+            wenn offset < self.offset:
                 raise OSError('Negative seek in write mode')
             count = offset - self.offset
             chunk = b'\0' * self._buffer_size
             fuer i in range(count // self._buffer_size):
                 self.write(chunk)
             self.write(b'\0' * (count % self._buffer_size))
-        elif self.mode == READ:
+        sowenn self.mode == READ:
             self._check_not_closed()
             return self._buffer.seek(offset, whence)
 
@@ -461,7 +461,7 @@ klasse GzipFile(_streams.BaseStream):
         return self._buffer.readline(size)
 
     def __del__(self):
-        if self.mode == WRITE and not self.closed:
+        wenn self.mode == WRITE and not self.closed:
             import warnings
             warnings.warn("unclosed GzipFile",
                           ResourceWarning, source=self, stacklevel=2)
@@ -477,7 +477,7 @@ def _read_exact(fp, n):
     data = fp.read(n)
     while len(data) < n:
         b = fp.read(n - len(data))
-        if not b:
+        wenn not b:
             raise EOFError("Compressed file ended before the "
                            "end-of-stream marker was reached")
         data += b
@@ -487,36 +487,36 @@ def _read_exact(fp, n):
 def _read_gzip_header(fp):
     '''Read a gzip header from `fp` and progress to the end of the header.
 
-    Returns last mtime if header was present or None otherwise.
+    Returns last mtime wenn header was present or None otherwise.
     '''
     magic = fp.read(2)
-    if magic == b'':
+    wenn magic == b'':
         return None
 
-    if magic != b'\037\213':
+    wenn magic != b'\037\213':
         raise BadGzipFile('Not a gzipped file (%r)' % magic)
 
     (method, flag, last_mtime) = struct.unpack("<BBIxx", _read_exact(fp, 8))
-    if method != 8:
+    wenn method != 8:
         raise BadGzipFile('Unknown compression method')
 
-    if flag & FEXTRA:
-        # Read & discard the extra field, if present
+    wenn flag & FEXTRA:
+        # Read & discard the extra field, wenn present
         extra_len, = struct.unpack("<H", _read_exact(fp, 2))
         _read_exact(fp, extra_len)
-    if flag & FNAME:
+    wenn flag & FNAME:
         # Read and discard a null-terminated string containing the filename
         while True:
             s = fp.read(1)
-            if not s or s==b'\000':
+            wenn not s or s==b'\000':
                 break
-    if flag & FCOMMENT:
+    wenn flag & FCOMMENT:
         # Read and discard a null-terminated string containing a comment
         while True:
             s = fp.read(1)
-            if not s or s==b'\000':
+            wenn not s or s==b'\000':
                 break
-    if flag & FHCRC:
+    wenn flag & FHCRC:
         _read_exact(fp, 2)     # Read & discard the 16-bit header CRC
     return last_mtime
 
@@ -535,23 +535,23 @@ klasse _GzipReader(_streams.DecompressReader):
 
     def _read_gzip_header(self):
         last_mtime = _read_gzip_header(self._fp)
-        if last_mtime is None:
+        wenn last_mtime is None:
             return False
         self._last_mtime = last_mtime
         return True
 
     def read(self, size=-1):
-        if size < 0:
+        wenn size < 0:
             return self.readall()
         # size=0 is special because decompress(max_length=0) is not supported
-        if not size:
+        wenn not size:
             return b""
 
         # For certain input data, a single
         # call to decompress() may not return
         # any data. In this case, retry until we get some data or reach EOF.
         while True:
-            if self._decompressor.eof:
+            wenn self._decompressor.eof:
                 # Ending case: we've come to the end of a member in the file,
                 # so finish up this member, and read a new gzip header.
                 # Check the CRC and file size, and set the flag so we read
@@ -561,30 +561,30 @@ klasse _GzipReader(_streams.DecompressReader):
                 self._decompressor = self._decomp_factory(
                     **self._decomp_args)
 
-            if self._new_member:
+            wenn self._new_member:
                 # If the _new_member flag is set, we have to
-                # jump to the next member, if there is one.
+                # jump to the next member, wenn there is one.
                 self._init_read()
-                if not self._read_gzip_header():
+                wenn not self._read_gzip_header():
                     self._size = self._pos
                     return b""
                 self._new_member = False
 
             # Read a chunk of data from the file
-            if self._decompressor.needs_input:
+            wenn self._decompressor.needs_input:
                 buf = self._fp.read(READ_BUFFER_SIZE)
                 uncompress = self._decompressor.decompress(buf, size)
-            else:
+            sonst:
                 uncompress = self._decompressor.decompress(b"", size)
 
-            if self._decompressor.unused_data != b"":
+            wenn self._decompressor.unused_data != b"":
                 # Prepend the already read bytes to the fileobj so they can
                 # be seen by _read_eof() and _read_gzip_header()
                 self._fp.prepend(self._decompressor.unused_data)
 
-            if uncompress != b"":
+            wenn uncompress != b"":
                 break
-            if buf == b"":
+            wenn buf == b"":
                 raise EOFError("Compressed file ended before the "
                                "end-of-stream marker was reached")
 
@@ -599,10 +599,10 @@ klasse _GzipReader(_streams.DecompressReader):
         # uncompressed data matches the stored values.  Note that the size
         # stored is the true file size mod 2**32.
         crc32, isize = struct.unpack("<II", _read_exact(self._fp, 8))
-        if crc32 != self._crc:
+        wenn crc32 != self._crc:
             raise BadGzipFile("CRC check failed %s != %s" % (hex(crc32),
                                                              hex(self._crc)))
-        elif isize != (self._stream_size & 0xffffffff):
+        sowenn isize != (self._stream_size & 0xffffffff):
             raise BadGzipFile("Incorrect length of data produced")
 
         # Gzip files can be padded with zeroes and still have archives.
@@ -611,7 +611,7 @@ klasse _GzipReader(_streams.DecompressReader):
         c = b"\x00"
         while c == b"\x00":
             c = self._fp.read(1)
-        if c:
+        wenn c:
             self._fp.prepend(c)
 
     def _rewind(self):
@@ -628,7 +628,7 @@ def compress(data, compresslevel=_COMPRESS_LEVEL_TRADEOFF, *, mtime=0):
     """
     # Wbits=31 automatically includes a gzip header and trailer.
     gzip_data = zlib.compress(data, level=compresslevel, wbits=31)
-    if mtime is None:
+    wenn mtime is None:
         mtime = time.time()
     # Reuse gzip header created by zlib, replace mtime and OS byte for
     # consistency.
@@ -643,19 +643,19 @@ def decompress(data):
     decompressed_members = []
     while True:
         fp = io.BytesIO(data)
-        if _read_gzip_header(fp) is None:
+        wenn _read_gzip_header(fp) is None:
             return b"".join(decompressed_members)
         # Use a zlib raw deflate compressor
         do = zlib.decompressobj(wbits=-zlib.MAX_WBITS)
         # Read all the data except the header
         decompressed = do.decompress(data[fp.tell():])
-        if not do.eof or len(do.unused_data) < 8:
+        wenn not do.eof or len(do.unused_data) < 8:
             raise EOFError("Compressed file ended before the end-of-stream "
                            "marker was reached")
         crc, length = struct.unpack("<II", do.unused_data[:8])
-        if crc != zlib.crc32(decompressed):
+        wenn crc != zlib.crc32(decompressed):
             raise BadGzipFile("CRC check failed")
-        if length != (len(decompressed) & 0xffffffff):
+        wenn length != (len(decompressed) & 0xffffffff):
             raise BadGzipFile("Incorrect length of data produced")
         decompressed_members.append(decompressed)
         data = do.unused_data[8:].lstrip(b"\x00")
@@ -678,38 +678,38 @@ def main():
     args = parser.parse_args()
 
     compresslevel = _COMPRESS_LEVEL_TRADEOFF
-    if args.fast:
+    wenn args.fast:
         compresslevel = _COMPRESS_LEVEL_FAST
-    elif args.best:
+    sowenn args.best:
         compresslevel = _COMPRESS_LEVEL_BEST
 
     fuer arg in args.args:
-        if args.decompress:
-            if arg == "-":
+        wenn args.decompress:
+            wenn arg == "-":
                 f = GzipFile(filename="", mode="rb", fileobj=sys.stdin.buffer)
                 g = sys.stdout.buffer
-            else:
-                if arg[-3:] != ".gz":
+            sonst:
+                wenn arg[-3:] != ".gz":
                     sys.exit(f"filename doesn't end in .gz: {arg!r}")
                 f = open(arg, "rb")
                 g = builtins.open(arg[:-3], "wb")
-        else:
-            if arg == "-":
+        sonst:
+            wenn arg == "-":
                 f = sys.stdin.buffer
                 g = GzipFile(filename="", mode="wb", fileobj=sys.stdout.buffer,
                              compresslevel=compresslevel)
-            else:
+            sonst:
                 f = builtins.open(arg, "rb")
                 g = open(arg + ".gz", "wb")
         while True:
             chunk = f.read(READ_BUFFER_SIZE)
-            if not chunk:
+            wenn not chunk:
                 break
             g.write(chunk)
-        if g is not sys.stdout.buffer:
+        wenn g is not sys.stdout.buffer:
             g.close()
-        if f is not sys.stdin.buffer:
+        wenn f is not sys.stdin.buffer:
             f.close()
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     main()

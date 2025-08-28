@@ -39,7 +39,7 @@ except ImportError:
 
 klasse ReplTestCase(TestCase):
     def setUp(self):
-        if not has_subprocess_support:
+        wenn not has_subprocess_support:
             raise SkipTest("test module requires subprocess")
 
     def run_repl(
@@ -54,7 +54,7 @@ klasse ReplTestCase(TestCase):
         exit_on_output: str | None = None,
     ) -> tuple[str, int]:
         temp_dir = None
-        if cwd is None:
+        wenn cwd is None:
             temp_dir = tempfile.TemporaryDirectory(ignore_cleanup_errors=True)
             cwd = temp_dir.name
         try:
@@ -68,7 +68,7 @@ klasse ReplTestCase(TestCase):
                 exit_on_output=exit_on_output,
             )
         finally:
-            if temp_dir is not None:
+            wenn temp_dir is not None:
                 temp_dir.cleanup()
 
     def _run_repl(
@@ -85,18 +85,18 @@ klasse ReplTestCase(TestCase):
         assert pty
         master_fd, slave_fd = pty.openpty()
         cmd = [sys.executable, "-i", "-u"]
-        if env is None:
+        wenn env is None:
             cmd.append("-I")
-        elif "PYTHON_HISTORY" not in env:
+        sowenn "PYTHON_HISTORY" not in env:
             env["PYTHON_HISTORY"] = os.path.join(cwd, ".regrtest_history")
-        if cmdline_args is not None:
+        wenn cmdline_args is not None:
             cmd.extend(cmdline_args)
 
         try:
             import termios
         except ModuleNotFoundError:
             pass
-        else:
+        sonst:
             term_attr = termios.tcgetattr(slave_fd)
             term_attr[6][termios.VREPRINT] = 0  # pass through CTRL-R
             term_attr[6][termios.VINTR] = 0  # pass through CTRL-C
@@ -110,10 +110,10 @@ klasse ReplTestCase(TestCase):
             cwd=cwd,
             text=True,
             close_fds=True,
-            env=env if env else os.environ,
+            env=env wenn env sonst os.environ,
         )
         os.close(slave_fd)
-        if isinstance(repl_input, list):
+        wenn isinstance(repl_input, list):
             repl_input = "\n".join(repl_input) + "\n"
         os.write(master_fd, repl_input.encode("utf-8"))
 
@@ -121,17 +121,17 @@ klasse ReplTestCase(TestCase):
         while select.select([master_fd], [], [], timeout)[0]:
             try:
                 data = os.read(master_fd, 1024).decode("utf-8")
-                if not data:
+                wenn not data:
                     break
             except OSError:
                 break
             output.append(data)
-            if exit_on_output is not None:
+            wenn exit_on_output is not None:
                 output = ["".join(output)]
-                if exit_on_output in output[0]:
+                wenn exit_on_output in output[0]:
                     process.kill()
                     break
-        else:
+        sonst:
             os.close(master_fd)
             process.kill()
             process.wait(timeout=timeout)
@@ -144,7 +144,7 @@ klasse ReplTestCase(TestCase):
             process.kill()
             exit_code = process.wait()
         output = "".join(output)
-        if skip and "can't use pyrepl" in output:
+        wenn skip and "can't use pyrepl" in output:
             self.skipTest("pyrepl not available")
         return output, exit_code
 
@@ -628,23 +628,23 @@ klasse TestPyReplOutput(ScreenEqualMixin, TestCase):
         return reader
 
     def test_stdin_is_tty(self):
-        # Used during test log analysis to figure out if a TTY was available.
+        # Used during test log analysis to figure out wenn a TTY was available.
         try:
-            if os.isatty(sys.stdin.fileno()):
+            wenn os.isatty(sys.stdin.fileno()):
                 return
         except OSError as ose:
             self.skipTest(f"stdin tty check failed: {ose}")
-        else:
+        sonst:
             self.skipTest("stdin is not a tty")
 
     def test_stdout_is_tty(self):
-        # Used during test log analysis to figure out if a TTY was available.
+        # Used during test log analysis to figure out wenn a TTY was available.
         try:
-            if os.isatty(sys.stdout.fileno()):
+            wenn os.isatty(sys.stdout.fileno()):
                 return
         except OSError as ose:
             self.skipTest(f"stdout tty check failed: {ose}")
-        else:
+        sonst:
             self.skipTest("stdout is not a tty")
 
     def test_basic(self):
@@ -980,7 +980,7 @@ klasse TestPyReplModuleCompleter(TestCase):
             # Return public methods by default
             ("import \t\n", "import public"),
             ("from \t\n", "from public"),
-            # Return private methods if explicitly specified
+            # Return private methods wenn explicitly specified
             ("import _\t\n", "import _private"),
             ("from _\t\n", "from _private"),
         )
@@ -1002,7 +1002,7 @@ klasse TestPyReplModuleCompleter(TestCase):
         cases = (
             # Return public methods by default
             ("from foo import \t\n", "from foo import public"),
-            # Return private methods if explicitly specified
+            # Return private methods wenn explicitly specified
             ("from foo import _\t\n", "from foo import _private"),
         )
         fuer code, expected in cases:
@@ -1216,9 +1216,9 @@ klasse TestPasteEvent(TestCase):
         code = (
             "def a():\n"
             "  fuer x in range(10):\n"
-            "    if x%2:\n"
+            "    wenn x%2:\n"
             "      print(x)\n"
-            "    else:\n"
+            "    sonst:\n"
             "      pass\n"
         )
         # fmt: on
@@ -1296,9 +1296,9 @@ klasse TestPasteEvent(TestCase):
         output_code = (
             "def a():\n"
             "    fuer x in range(10):\n"
-            "        if x%2:\n"
+            "        wenn x%2:\n"
             "            print(x)\n"
-            "            else:"
+            "            sonst:"
         )
         # fmt: on
 
@@ -1314,10 +1314,10 @@ klasse TestPasteEvent(TestCase):
             "def a():\n"
             "  fuer x in range(10):\n"
             "\n"
-            "    if x%2:\n"
+            "    wenn x%2:\n"
             "      print(x)\n"
             "\n"
-            "    else:\n"
+            "    sonst:\n"
             "      pass\n"
         )
 
@@ -1325,10 +1325,10 @@ klasse TestPasteEvent(TestCase):
             "def a():\n"
             "  fuer x in range(10):\n"
             "\n"
-            "    if x%2:\n"
+            "    wenn x%2:\n"
             "      print(x)\n"
             "\n"
-            "    else:\n"
+            "    sonst:\n"
             "      pass\n"
         )
         # fmt: on
@@ -1395,16 +1395,16 @@ klasse TestMain(ReplTestCase):
         output, exit_code = self.run_repl(["sorted(dir())", "exit()"], skip=True)
         self.assertEqual(exit_code, 0)
 
-        # if `__main__` is not a file (impossible with pyrepl)
+        # wenn `__main__` is not a file (impossible with pyrepl)
         case1 = f"{pre}, '__doc__', {post}" in output
 
-        # if `__main__` is an uncached .py file (no .pyc)
+        # wenn `__main__` is an uncached .py file (no .pyc)
         case2 = f"{pre}, '__doc__', '__file__', {post}" in output
 
-        # if `__main__` is a cached .pyc file and the .py source exists
+        # wenn `__main__` is a cached .pyc file and the .py source exists
         case3 = f"{pre}, '__cached__', '__doc__', '__file__', {post}" in output
 
-        # if `__main__` is a cached .pyc file but there's no .py source file
+        # wenn `__main__` is a cached .pyc file but there's no .py source file
         case4 = f"{pre}, '__cached__', '__doc__', {post}" in output
 
         self.assertTrue(case1 or case2 or case3 or case4, output)
@@ -1412,12 +1412,12 @@ klasse TestMain(ReplTestCase):
     def _assertMatchOK(
             self, var: str, expected: str | re.Pattern, actual: str
     ) -> None:
-        if isinstance(expected, re.Pattern):
+        wenn isinstance(expected, re.Pattern):
             self.assertTrue(
                 expected.match(actual),
                 f"{var}={actual} does not match {expected.pattern}",
             )
-        else:
+        sonst:
             self.assertEqual(
                 actual,
                 expected,
@@ -1439,18 +1439,18 @@ klasse TestMain(ReplTestCase):
             commands = [
                 "print(f'^{" + var + "=}')" fuer var in expectations
             ] + ["exit()"]
-            if pythonstartup:
+            wenn pythonstartup:
                 clean_env["PYTHONSTARTUP"] = str(startup)
-            if as_file and as_module:
+            wenn as_file and as_module:
                 self.fail("as_file and as_module are mutually exclusive")
-            elif as_file:
+            sowenn as_file:
                 output, exit_code = self.run_repl(
                     commands,
                     cmdline_args=[str(mod)],
                     env=clean_env,
                     skip=True,
                 )
-            elif as_module:
+            sowenn as_module:
                 output, exit_code = self.run_repl(
                     commands,
                     cmdline_args=["-m", "blue.calx"],
@@ -1458,7 +1458,7 @@ klasse TestMain(ReplTestCase):
                     cwd=td,
                     skip=True,
                 )
-            else:
+            sonst:
                 output, exit_code = self.run_repl(
                     commands,
                     cmdline_args=[],
@@ -1470,9 +1470,9 @@ klasse TestMain(ReplTestCase):
         self.assertEqual(exit_code, 0)
         fuer var, expected in expectations.items():
             with self.subTest(var=var, expected=expected):
-                if m := re.search(rf"\^{var}=(.+?)[\r\n]", output):
+                wenn m := re.search(rf"\^{var}=(.+?)[\r\n]", output):
                     self._assertMatchOK(var, expected, actual=m.group(1))
-                else:
+                sonst:
                     self.fail(f"{var}= not found in output: {output!r}\n\n{output}")
 
         self.assertNotIn("Exception", output)
@@ -1552,7 +1552,7 @@ klasse TestMain(ReplTestCase):
         self.assertNotIn("Exception", output)
         self.assertNotIn("Traceback", output)
 
-        # The site module must not load _pyrepl if PYTHON_BASIC_REPL is set
+        # The site module must not load _pyrepl wenn PYTHON_BASIC_REPL is set
         commands = ("import sys\n"
                     "print('_pyrepl' in sys.modules)\n"
                     "exit()\n")
@@ -1612,7 +1612,7 @@ klasse TestMain(ReplTestCase):
         check(output, exit_code)
 
     def test_not_wiping_history_file(self):
-        # skip, if readline module is not available
+        # skip, wenn readline module is not available
         import_module('readline')
 
         hfile = tempfile.NamedTemporaryFile(delete=False)
@@ -1655,7 +1655,7 @@ klasse TestMain(ReplTestCase):
         env = os.environ.copy()
         fuer set_tracebacklimit in [True, False]:
             commands = ("import sys\n" +
-                        ("sys.tracebacklimit = 1\n" if set_tracebacklimit else "") +
+                        ("sys.tracebacklimit = 1\n" wenn set_tracebacklimit sonst "") +
                         "def x1(): 1/0\n\n"
                         "def x2(): x1()\n\n"
                         "def x3(): x2()\n\n"
@@ -1663,19 +1663,19 @@ klasse TestMain(ReplTestCase):
                         "exit()\n")
 
             fuer basic_repl in [True, False]:
-                if basic_repl:
+                wenn basic_repl:
                     env["PYTHON_BASIC_REPL"] = "1"
-                else:
+                sonst:
                     env.pop("PYTHON_BASIC_REPL", None)
                 with self.subTest(set_tracebacklimit=set_tracebacklimit,
                                   basic_repl=basic_repl):
                     output, exit_code = self.run_repl(commands, env=env, skip=True)
                     self.assertIn("in x1", output)
-                    if set_tracebacklimit:
+                    wenn set_tracebacklimit:
                         self.assertNotIn("in x2", output)
                         self.assertNotIn("in x3", output)
                         self.assertNotIn("in <module>", output)
-                    else:
+                    sonst:
                         self.assertIn("in x2", output)
                         self.assertIn("in x3", output)
                         self.assertIn("in <module>", output)
@@ -1697,9 +1697,9 @@ klasse TestMain(ReplTestCase):
         self.assertIn("bluch", output)
 
     def test_readline_history_file(self):
-        # skip, if readline module is not available
+        # skip, wenn readline module is not available
         readline = import_module('readline')
-        if readline.backend != "editline":
+        wenn readline.backend != "editline":
             self.skipTest("GNU readline is not affected by this issue")
 
         with tempfile.NamedTemporaryFile() as hfile:

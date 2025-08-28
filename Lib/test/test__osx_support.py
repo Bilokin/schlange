@@ -33,10 +33,10 @@ klasse Test_OSXSupport(unittest.TestCase):
         # are also saved with modified keys.
         expected_vars.update(('_OSX_SUPPORT_INITIAL_'+ k,
                 config_vars[k]) fuer k in config_vars
-                    if config_vars[k] != expected_vars[k])
+                    wenn config_vars[k] != expected_vars[k])
 
     def test__find_executable(self):
-        if self.env['PATH']:
+        wenn self.env['PATH']:
             self.env['PATH'] = self.env['PATH'] + ':'
         self.env['PATH'] = self.env['PATH'] + os.path.abspath(self.temp_path_dir)
         os_helper.unlink(self.prog_name)
@@ -49,7 +49,7 @@ klasse Test_OSXSupport(unittest.TestCase):
                             _osx_support._find_executable(self.prog_name))
 
     def test__read_output(self):
-        if self.env['PATH']:
+        wenn self.env['PATH']:
             self.env['PATH'] = self.env['PATH'] + ':'
         self.env['PATH'] = self.env['PATH'] + os.path.abspath(self.temp_path_dir)
         os_helper.unlink(self.prog_name)
@@ -140,7 +140,7 @@ klasse Test_OSXSupport(unittest.TestCase):
         }
         self.add_expected_saved_initial_values(config_vars, expected_vars)
 
-        suffix = (':' + self.env['PATH']) if self.env['PATH'] else ''
+        suffix = (':' + self.env['PATH']) wenn self.env['PATH'] sonst ''
         self.env['PATH'] = os.path.abspath(self.temp_path_dir) + suffix
         fuer c_name, c_output in compilers:
             os_helper.unlink(c_name)
@@ -218,7 +218,7 @@ klasse Test_OSXSupport(unittest.TestCase):
         }
         self.add_expected_saved_initial_values(config_vars, expected_vars)
 
-        suffix = (':' + self.env['PATH']) if self.env['PATH'] else ''
+        suffix = (':' + self.env['PATH']) wenn self.env['PATH'] sonst ''
         self.env['PATH'] = os.path.abspath(self.temp_path_dir) + suffix
         c_name = 'clang'
         os_helper.unlink(c_name)
@@ -323,5 +323,5 @@ klasse Test_OSXSupport(unittest.TestCase):
         result = _osx_support.get_platform_osx(config_vars, ' ', ' ', ' ')
         self.assertEqual(('macosx', '10.6', 'fat'), result)
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

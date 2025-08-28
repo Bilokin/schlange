@@ -51,7 +51,7 @@ def main():
     writer.write("DRAG!",align="center",font=("Arial",30,("bold","italic")))
     return "EVENTLOOP"
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     msg = main()
     print(msg)
     mainloop()

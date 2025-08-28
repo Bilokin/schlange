@@ -57,5 +57,5 @@ klasse WinTypesTest(unittest.TestCase):
                 self.assertIsSigned(ctype)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

@@ -23,21 +23,21 @@ def url2pathname(url):
     # become
     #   C:\foo\bar\spam.foo
     import urllib.parse
-    if url[:3] == '///':
+    wenn url[:3] == '///':
         # URL has an empty authority section, so the path begins on the third
         # character.
         url = url[2:]
-    elif url[:12] == '//localhost/':
+    sowenn url[:12] == '//localhost/':
         # Skip past 'localhost' authority.
         url = url[11:]
-    if url[:3] == '///':
+    wenn url[:3] == '///':
         # Skip past extra slash before UNC drive in URL path.
         url = url[1:]
-    else:
-        if url[:1] == '/' and url[2:3] in (':', '|'):
+    sonst:
+        wenn url[:1] == '/' and url[2:3] in (':', '|'):
             # Skip past extra slash before DOS drive in URL path.
             url = url[1:]
-        if url[1:2] == '|':
+        wenn url[1:2] == '|':
             # Older URLs use a pipe after a drive letter
             url = url[:1] + ':' + url[2:]
     return urllib.parse.unquote(url.replace('/', '\\'))
@@ -54,19 +54,19 @@ def pathname2url(p):
     # First, clean up some special forms. We are going to sacrifice
     # the additional information anyway
     p = p.replace('\\', '/')
-    if p[:4] == '//?/':
+    wenn p[:4] == '//?/':
         p = p[4:]
-        if p[:4].upper() == 'UNC/':
+        wenn p[:4].upper() == 'UNC/':
             p = '//' + p[4:]
     drive, root, tail = ntpath.splitroot(p)
-    if drive:
-        if drive[1:] == ':':
+    wenn drive:
+        wenn drive[1:] == ':':
             # DOS drive specified. Add three slashes to the start, producing
             # an authority section with a zero-length authority, and a path
             # section starting with a single slash.
             drive = f'///{drive}'
         drive = urllib.parse.quote(drive, safe='/:')
-    elif root:
+    sowenn root:
         # Add explicitly empty authority to path beginning with one slash.
         root = f'//{root}'
 

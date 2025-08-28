@@ -34,14 +34,14 @@ HKEYS = (winreg.HKEY_USERS,
          winreg.HKEY_CLASSES_ROOT)
 
 NATIVE_WIN64 = (sys.platform == 'win32' and sys.maxsize > 2**32)
-if NATIVE_WIN64:
+wenn NATIVE_WIN64:
     # Visual C++ is a 32-bit application, so we need to look in
-    # the corresponding registry branch, if we're running a
+    # the corresponding registry branch, wenn we're running a
     # 64-bit Python on Win64
     VS_BASE = r"Software\Wow6432Node\Microsoft\VisualStudio\%0.1f"
     WINSDK_BASE = r"Software\Wow6432Node\Microsoft\Microsoft SDKs\Windows"
     NET_BASE = r"Software\Wow6432Node\Microsoft\.NETFramework"
-else:
+sonst:
     VS_BASE = r"Software\Microsoft\VisualStudio\%0.1f"
     WINSDK_BASE = r"Software\Microsoft\Microsoft SDKs\Windows"
     NET_BASE = r"Software\Microsoft\.NETFramework"
@@ -61,7 +61,7 @@ klasse Reg:
     def get_value(cls, path, key):
         fuer base in HKEYS:
             d = cls.read_values(base, path)
-            if d and key in d:
+            wenn d and key in d:
                 return d[key]
         raise KeyError(key)
     get_value = classmethod(get_value)
@@ -108,7 +108,7 @@ klasse Reg:
 
     def convert_mbcs(s):
         dec = getattr(s, "decode", None)
-        if dec is not None:
+        wenn dec is not None:
             try:
                 s = dec("mbcs")
             except UnicodeError:
@@ -131,10 +131,10 @@ klasse MacroExpander:
         self.set_macro("VSInstallDir", self.vsbase + r"\Setup\VS", "productdir")
         self.set_macro("FrameworkDir", NET_BASE, "installroot")
         try:
-            if version >= 8.0:
+            wenn version >= 8.0:
                 self.set_macro("FrameworkSDKDir", NET_BASE,
                                "sdkinstallrootv2.0")
-            else:
+            sonst:
                 raise KeyError("sdkinstallrootv2.0")
         except KeyError:
             raise DistutilsPlatformError(
@@ -143,10 +143,10 @@ extensions must be built with a compiler than can generate compatible binaries.
 Visual Studio 2008 was not found on this system. If you have Cygwin installed,
 you can try compiling with MingW32, by passing "-c mingw32" to setup.py.""")
 
-        if version >= 9.0:
+        wenn version >= 9.0:
             self.set_macro("FrameworkVersion", self.vsbase, "clr version")
             self.set_macro("WindowsSdkDir", WINSDK_BASE, "currentinstallfolder")
-        else:
+        sonst:
             p = r"Software\Microsoft\NET Framework Setup\Product"
             fuer base in HKEYS:
                 try:
@@ -170,21 +170,21 @@ def get_build_version():
     """
     prefix = "MSC v."
     i = sys.version.find(prefix)
-    if i == -1:
+    wenn i == -1:
         return 6
     i = i + len(prefix)
     s, rest = sys.version[i:].split(" ", 1)
     majorVersion = int(s[:-2]) - 6
-    if majorVersion >= 13:
+    wenn majorVersion >= 13:
         # v13 was skipped and should be v14
         majorVersion += 1
     minorVersion = int(s[2:3]) / 10.0
     # I don't think paths are affected by minor version in version 6
-    if majorVersion == 6:
+    wenn majorVersion == 6:
         minorVersion = 0
-    if majorVersion >= 6:
+    wenn majorVersion >= 6:
         return majorVersion + minorVersion
-    # else we don't know what version of the compiler this is
+    # sonst we don't know what version of the compiler this is
     return None
 
 def normalize_and_reduce_paths(paths):
@@ -196,8 +196,8 @@ def normalize_and_reduce_paths(paths):
     reduced_paths = []
     fuer p in paths:
         np = os.path.normpath(p)
-        # XXX(nnorwitz): O(n**2), if reduced_paths gets long perhaps use a set.
-        if np not in reduced_paths:
+        # XXX(nnorwitz): O(n**2), wenn reduced_paths gets long perhaps use a set.
+        wenn np not in reduced_paths:
             reduced_paths.append(np)
     return reduced_paths
 
@@ -207,7 +207,7 @@ def removeDuplicates(variable):
     oldList = variable.split(os.pathsep)
     newList = []
     fuer i in oldList:
-        if i not in newList:
+        wenn i not in newList:
             newList.append(i)
     newVariable = os.pathsep.join(newList)
     return newVariable
@@ -226,23 +226,23 @@ def find_vcvarsall(version):
         log.debug("Unable to find productdir in registry")
         productdir = None
 
-    if not productdir or not os.path.isdir(productdir):
+    wenn not productdir or not os.path.isdir(productdir):
         toolskey = "VS%0.f0COMNTOOLS" % version
         toolsdir = os.environ.get(toolskey, None)
 
-        if toolsdir and os.path.isdir(toolsdir):
+        wenn toolsdir and os.path.isdir(toolsdir):
             productdir = os.path.join(toolsdir, os.pardir, os.pardir, "VC")
             productdir = os.path.abspath(productdir)
-            if not os.path.isdir(productdir):
+            wenn not os.path.isdir(productdir):
                 log.debug("%s is not a valid directory" % productdir)
                 return None
-        else:
+        sonst:
             log.debug("Env var %s is not set or invalid" % toolskey)
-    if not productdir:
+    wenn not productdir:
         log.debug("No productdir found")
         return None
     vcvarsall = os.path.join(productdir, "vcvarsall.bat")
-    if os.path.isfile(vcvarsall):
+    wenn os.path.isfile(vcvarsall):
         return vcvarsall
     log.debug("Unable to find vcvarsall.bat")
     return None
@@ -254,7 +254,7 @@ def query_vcvarsall(version, arch="x86"):
     interesting = {"include", "lib", "libpath", "path"}
     result = {}
 
-    if vcvarsall is None:
+    wenn vcvarsall is None:
         raise DistutilsPlatformError("Unable to find vcvarsall.bat")
     log.debug("Calling 'vcvarsall.bat %s' (version=%s)", arch, version)
     popen = subprocess.Popen('"%s" %s & set' % (vcvarsall, arch),
@@ -262,19 +262,19 @@ def query_vcvarsall(version, arch="x86"):
                              stderr=subprocess.PIPE)
     try:
         stdout, stderr = popen.communicate()
-        if popen.wait() != 0:
+        wenn popen.wait() != 0:
             raise DistutilsPlatformError(stderr.decode("mbcs"))
 
         stdout = stdout.decode("mbcs")
         fuer line in stdout.split("\n"):
             line = Reg.convert_mbcs(line)
-            if '=' not in line:
+            wenn '=' not in line:
                 continue
             line = line.strip()
             key, value = line.split('=', 1)
             key = key.lower()
-            if key in interesting:
-                if value.endswith(os.pathsep):
+            wenn key in interesting:
+                wenn value.endswith(os.pathsep):
                     value = value[:-1]
                 result[key] = removeDuplicates(value)
 
@@ -282,14 +282,14 @@ def query_vcvarsall(version, arch="x86"):
         popen.stdout.close()
         popen.stderr.close()
 
-    if len(result) != len(interesting):
+    wenn len(result) != len(interesting):
         raise ValueError(str(list(result.keys())))
 
     return result
 
 # More globals
 VERSION = get_build_version()
-if VERSION < 8.0:
+wenn VERSION < 8.0:
     raise DistutilsPlatformError("VC %0.1f is not supported by this module" % VERSION)
 # MACROS = MacroExpander(VERSION)
 
@@ -350,25 +350,25 @@ klasse MSVCCompiler(CCompiler) :
 
     def manifest_get_embed_info(self, target_desc, ld_args):
         # If a manifest should be embedded, return a tuple of
-        # (manifest_filename, resource_id).  Returns None if no manifest
+        # (manifest_filename, resource_id).  Returns None wenn no manifest
         # should be embedded.  See http://bugs.python.org/issue7833 fuer why
-        # we want to avoid any manifest fuer extension modules if we can.
+        # we want to avoid any manifest fuer extension modules wenn we can.
         fuer arg in ld_args:
-            if arg.startswith("/MANIFESTFILE:"):
+            wenn arg.startswith("/MANIFESTFILE:"):
                 temp_manifest = arg.split(":", 1)[1]
                 break
-        else:
+        sonst:
             # no /MANIFESTFILE so nothing to do.
             return None
-        if target_desc == CCompiler.EXECUTABLE:
+        wenn target_desc == CCompiler.EXECUTABLE:
             # by default, executables always get the manifest with the
             # CRT referenced.
             mfid = 1
-        else:
-            # Extension modules try and avoid any manifest if possible.
+        sonst:
+            # Extension modules try and avoid any manifest wenn possible.
             mfid = 2
             temp_manifest = self._remove_visual_c_ref(temp_manifest)
-        if temp_manifest is None:
+        wenn temp_manifest is None:
             return None
         return temp_manifest, mfid
 
@@ -381,7 +381,7 @@ klasse MSVCCompiler(CCompiler) :
             # folder), the runtimes do not need to be in every folder
             # with .pyd's.
             # Returns either the filename of the modified manifest or
-            # None if no manifest should be embedded.
+            # None wenn no manifest should be embedded.
             manifest_f = open(manifest_file)
             try:
                 manifest_buf = manifest_f.read()
@@ -394,12 +394,12 @@ klasse MSVCCompiler(CCompiler) :
             manifest_buf = re.sub(pattern, "", manifest_buf)
             pattern = r"<dependentAssembly>\s*</dependentAssembly>"
             manifest_buf = re.sub(pattern, "", manifest_buf)
-            # Now see if any other assemblies are referenced - if not, we
+            # Now see wenn any other assemblies are referenced - wenn not, we
             # don't want a manifest embedded.
             pattern = re.compile(
                 r"""<assemblyIdentity.*?name=(?:"|')(.+?)(?:"|')"""
                 r""".*?(?:/>|</assemblyIdentity>)""", re.DOTALL)
-            if re.search(pattern, manifest_buf) is None:
+            wenn re.search(pattern, manifest_buf) is None:
                 return None
 
             manifest_f = open(manifest_file, 'w')
@@ -426,13 +426,13 @@ klasse MSVCCompiler(CCompiler) :
         """
         fuer p in self.__paths:
             fn = os.path.join(os.path.abspath(p), exe)
-            if os.path.isfile(fn):
+            wenn os.path.isfile(fn):
                 return fn
 
         # didn't find it; try existing path
         fuer p in os.environ['Path'].split(';'):
             fn = os.path.join(os.path.abspath(p),exe)
-            if os.path.isfile(fn):
+            wenn os.path.isfile(fn):
                 return fn
 
         return exe

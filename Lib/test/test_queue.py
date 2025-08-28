@@ -33,7 +33,7 @@ klasse _TriggerThread(threading.Thread):
     def run(self):
         # The sleep isn't necessary, but is intended to give the blocking
         # function in the main thread a chance at actually blocking before
-        # we unclog it.  But if the sleep is longer than the timeout-based
+        # we unclog it.  But wenn the sleep is longer than the timeout-based
         # tests wait in their blocking functions, those tests will fail.
         # So we give them much longer timeout values compared to the
         # sleep here (I aimed at 10 seconds fuer blocking functions --
@@ -63,14 +63,14 @@ klasse BlockingTestMixin:
         try:
             self.result = block_func(*block_args)
             # If block_func returned before our thread made the call, we failed!
-            if not thread.startedEvent.is_set():
+            wenn not thread.startedEvent.is_set():
                 self.fail("blocking function %r appeared not to block" %
                           block_func)
             return self.result
         finally:
             threading_helper.join_thread(thread) # make sure the thread terminates
 
-    # Call this instead if block_func is supposed to raise an exception.
+    # Call this instead wenn block_func is supposed to raise an exception.
     def do_exceptional_blocking_test(self,block_func, block_args, trigger_func,
                                    trigger_args, expected_exception_class):
         thread = _TriggerThread(trigger_func, trigger_args)
@@ -80,12 +80,12 @@ klasse BlockingTestMixin:
                 block_func(*block_args)
             except expected_exception_class:
                 raise
-            else:
+            sonst:
                 self.fail("expected exception of kind %r" %
                                  expected_exception_class)
         finally:
             threading_helper.join_thread(thread) # make sure the thread terminates
-            if not thread.startedEvent.is_set():
+            wenn not thread.startedEvent.is_set():
                 self.fail("trigger thread ended but event never set")
 
 
@@ -95,7 +95,7 @@ klasse BaseQueueTestMixin(BlockingTestMixin):
         self.cumlock = threading.Lock()
 
     def basic_queue_test(self, q):
-        if q.qsize():
+        wenn q.qsize():
             raise RuntimeError("Call this function with an empty queue")
         self.assertTrue(q.empty())
         self.assertFalse(q.full())
@@ -154,7 +154,7 @@ klasse BaseQueueTestMixin(BlockingTestMixin):
     def worker(self, q):
         while True:
             x = q.get()
-            if x < 0:
+            wenn x < 0:
                 q.task_done()
                 return
             with self.cumlock:
@@ -186,11 +186,11 @@ klasse BaseQueueTestMixin(BlockingTestMixin):
             q.task_done()
         except ValueError:
             pass
-        else:
+        sonst:
             self.fail("Did not detect task count going negative")
 
     def test_queue_join(self):
-        # Test that a queue join()s successfully, and before anything else
+        # Test that a queue join()s successfully, and before anything sonst
         # (done twice fuer insurance).
         q = self.type2test()
         self.queue_join_test(q)
@@ -199,7 +199,7 @@ klasse BaseQueueTestMixin(BlockingTestMixin):
             q.task_done()
         except ValueError:
             pass
-        else:
+        sonst:
             self.fail("Did not detect task count going negative")
 
     def test_basic(self):
@@ -287,7 +287,7 @@ klasse BaseQueueTestMixin(BlockingTestMixin):
             q.put("E")
         with self.assertRaises(self.queue.ShutDown):
             q.put_nowait("W")
-        if immediate:
+        wenn immediate:
             with self.assertRaises(self.queue.ShutDown):
                 q.get()
             with self.assertRaises(self.queue.ShutDown):
@@ -295,7 +295,7 @@ klasse BaseQueueTestMixin(BlockingTestMixin):
             with self.assertRaises(ValueError):
                 q.task_done()
             q.join()
-        else:
+        sonst:
             self.assertIn(q.get(), "LO")
             q.task_done()
             self.assertIn(q.get(), "LO")
@@ -334,9 +334,9 @@ klasse BaseQueueTestMixin(BlockingTestMixin):
                 break
 
             # Trigger queue shutdown.
-            if i == i_when_exec_shutdown:
+            wenn i == i_when_exec_shutdown:
                 # Only one thread should call shutdown().
-                if not event_shutdown.is_set():
+                wenn not event_shutdown.is_set():
                     event_shutdown.set()
                     results.append(True)
 
@@ -387,7 +387,7 @@ klasse BaseQueueTestMixin(BlockingTestMixin):
         #   and keep on running until shutdown.
         # The join thread is started only when shutdown is immediate.
         nparties = write_threads + read_threads
-        if immediate:
+        wenn immediate:
             nparties += join_threads
         barrier_start = threading.Barrier(nparties)
         ev_exec_shutdown = threading.Event()
@@ -398,7 +398,7 @@ klasse BaseQueueTestMixin(BlockingTestMixin):
             (self._read_msg_thread, read_threads, (q, res_gets, barrier_start)),
             (self._shutdown_thread, 1, (q, res_shutdown, ev_exec_shutdown, immediate)),
             ]
-        if immediate:
+        wenn immediate:
             lprocs.append((self._join_thread, join_threads, (q, barrier_start)))
         # start all threads.
         fuer func, n, args in lprocs:
@@ -410,7 +410,7 @@ klasse BaseQueueTestMixin(BlockingTestMixin):
 
         self.assertTrue(True in res_puts)
         self.assertEqual(res_gets.count(True), read_threads)
-        if immediate:
+        wenn immediate:
             self.assertListEqual(res_shutdown, [True])
             self.assertTrue(q.empty())
 
@@ -477,12 +477,12 @@ klasse BaseQueueTestMixin(BlockingTestMixin):
         q.put("D")
         # queue full
 
-        if immediate:
+        wenn immediate:
             thrds = (
                 (self._get_shutdown, (q, go, results)),
                 (self._get_shutdown, (q, go, results)),
             )
-        else:
+        sonst:
             thrds = (
                 # on shutdown(immediate=False)
                 # one of these threads should raise Shutdown
@@ -498,9 +498,9 @@ klasse BaseQueueTestMixin(BlockingTestMixin):
         go.set()
         fuer t in threads:
             t.join()
-        if immediate:
+        wenn immediate:
             self.assertListEqual(results, [True, True])
-        else:
+        sonst:
             self.assertListEqual(sorted(results), [False] + [True]*(len(thrds)-1))
 
     def test_shutdown_get(self):
@@ -553,7 +553,7 @@ klasse BaseQueueTestMixin(BlockingTestMixin):
         fuer func, params in thrds:
             threads.append(threading.Thread(target=func, args=params))
             threads[-1].start()
-        if not immediate:
+        wenn not immediate:
             res = []
             fuer i in range(nb):
                 threads.append(threading.Thread(target=self._get_task_done, args=(q, go, res)))
@@ -591,10 +591,10 @@ klasse BaseQueueTestMixin(BlockingTestMixin):
         q.shutdown(immediate)
         go.set()
 
-        if immediate:
+        wenn immediate:
             with self.assertRaises(self.queue.ShutDown):
                 q.get_nowait()
-        else:
+        sonst:
             result = q.get()
             self.assertEqual(result, "Y")
             q.task_done()
@@ -716,12 +716,12 @@ klasse FailingQueueTest(BlockingTestMixin):
                 self.fail_next_get = False
                 Queue.__init__(self, *args)
             def _put(self, item):
-                if self.fail_next_put:
+                wenn self.fail_next_put:
                     self.fail_next_put = False
                     raise FailingQueueException("You Lose")
                 return Queue._put(self, item)
             def _get(self):
-                if self.fail_next_get:
+                wenn self.fail_next_get:
                     self.fail_next_get = False
                     raise FailingQueueException("You Lose")
                 return Queue._get(self)
@@ -731,7 +731,7 @@ klasse FailingQueueTest(BlockingTestMixin):
         super().setUp()
 
     def failing_queue_test(self, q):
-        if q.qsize():
+        wenn q.qsize():
             raise RuntimeError("Call this function with an empty queue")
         fuer i in range(QUEUE_SIZE-1):
             q.put(i)
@@ -843,13 +843,13 @@ klasse BaseSimpleQueueTest:
                 q.put(sentinel)
                 return
             q.put(val)
-            if rnd.random() > 0.5:
+            wenn rnd.random() > 0.5:
                 time.sleep(rnd.random() * 1e-3)
 
     def consume(self, q, results, sentinel):
         while True:
             val = q.get()
-            if val == sentinel:
+            wenn val == sentinel:
                 return
             results.append(val)
 
@@ -860,9 +860,9 @@ klasse BaseSimpleQueueTest:
                     val = q.get(block=False)
                 except self.queue.Empty:
                     time.sleep(1e-5)
-                else:
+                sonst:
                     break
-            if val == sentinel:
+            wenn val == sentinel:
                 return
             results.append(val)
 
@@ -873,9 +873,9 @@ klasse BaseSimpleQueueTest:
                     val = q.get(timeout=1e-5)
                 except self.queue.Empty:
                     pass
-                else:
+                sonst:
                     break
-            if val == sentinel:
+            wenn val == sentinel:
                 return
             results.append(val)
 
@@ -1054,11 +1054,11 @@ klasse CSimpleQueueTest(BaseSimpleQueueTest, unittest.TestCase):
             q.put(next(gen))
             del o
             results.append(q.get())
-            if results[-1] >= N:
+            wenn results[-1] >= N:
                 break
 
         self.assertEqual(results, list(range(N + 1)))
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

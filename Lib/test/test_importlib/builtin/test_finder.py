@@ -42,5 +42,5 @@ klasse FindSpecTests(abc.FinderTests):
  ) = util.test_both(FindSpecTests, machinery=machinery)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

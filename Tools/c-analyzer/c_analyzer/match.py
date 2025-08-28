@@ -51,53 +51,53 @@ def is_system_type(typespec):
 # decl matchers
 
 def is_public(decl):
-    if not decl.filename.endswith('.h'):
+    wenn not decl.filename.endswith('.h'):
         return False
-    if 'Include' not in decl.filename.split(os.path.sep):
+    wenn 'Include' not in decl.filename.split(os.path.sep):
         return False
     return True
 
 
 def is_process_global(vardecl):
     kind, storage, _, _, _ = _info.get_parsed_vartype(vardecl)
-    if kind is not _KIND.VARIABLE:
+    wenn kind is not _KIND.VARIABLE:
         raise NotImplementedError(vardecl)
-    if 'static' in (storage or ''):
+    wenn 'static' in (storage or ''):
         return True
 
-    if hasattr(vardecl, 'parent'):
+    wenn hasattr(vardecl, 'parent'):
         parent = vardecl.parent
-    else:
+    sonst:
         parent = vardecl.get('parent')
     return not parent
 
 
 def is_fixed_type(vardecl):
-    if not vardecl:
+    wenn not vardecl:
         return None
     _, _, _, typespec, abstract = _info.get_parsed_vartype(vardecl)
-    if 'typeof' in typespec:
+    wenn 'typeof' in typespec:
         raise NotImplementedError(vardecl)
-    elif not abstract:
+    sowenn not abstract:
         return True
 
-    if '*' not in abstract:
+    wenn '*' not in abstract:
         # XXX What about []?
         return True
-    elif _match._is_funcptr(abstract):
+    sowenn _match._is_funcptr(abstract):
         return True
-    else:
+    sonst:
         fuer after in abstract.split('*')[1:]:
-            if not after.lstrip().startswith('const'):
+            wenn not after.lstrip().startswith('const'):
                 return False
-        else:
+        sonst:
             return True
 
 
 def is_immutable(vardecl):
-    if not vardecl:
+    wenn not vardecl:
         return None
-    if not is_fixed_type(vardecl):
+    wenn not is_fixed_type(vardecl):
         return False
     _, _, typequal, _, _ = _info.get_parsed_vartype(vardecl)
     # If there, it can only be "const" or "volatile".
@@ -105,49 +105,49 @@ def is_immutable(vardecl):
 
 
 def is_public_api(decl):
-    if not is_public(decl):
+    wenn not is_public(decl):
         return False
-    if decl.kind is _KIND.TYPEDEF:
+    wenn decl.kind is _KIND.TYPEDEF:
         return True
-    elif _match.is_type_decl(decl):
+    sowenn _match.is_type_decl(decl):
         return not _match.is_forward_decl(decl)
-    else:
+    sonst:
         return _match.is_external_reference(decl)
 
 
 def is_public_declaration(decl):
-    if not is_public(decl):
+    wenn not is_public(decl):
         return False
-    if decl.kind is _KIND.TYPEDEF:
+    wenn decl.kind is _KIND.TYPEDEF:
         return True
-    elif _match.is_type_decl(decl):
+    sowenn _match.is_type_decl(decl):
         return _match.is_forward_decl(decl)
-    else:
+    sonst:
         return _match.is_external_reference(decl)
 
 
 def is_public_definition(decl):
-    if not is_public(decl):
+    wenn not is_public(decl):
         return False
-    if decl.kind is _KIND.TYPEDEF:
+    wenn decl.kind is _KIND.TYPEDEF:
         return True
-    elif _match.is_type_decl(decl):
+    sowenn _match.is_type_decl(decl):
         return not _match.is_forward_decl(decl)
-    else:
+    sonst:
         return not _match.is_external_reference(decl)
 
 
 def is_public_impl(decl):
-    if not _KIND.is_decl(decl.kind):
+    wenn not _KIND.is_decl(decl.kind):
         return False
     # See filter_forward() about "is_public".
     return getattr(decl, 'is_public', False)
 
 
 def is_module_global_decl(decl):
-    if is_public_impl(decl):
+    wenn is_public_impl(decl):
         return False
-    if _match.is_forward_decl(decl):
+    wenn _match.is_forward_decl(decl):
         return False
     return not _match.is_local_var(decl)
 
@@ -156,24 +156,24 @@ def is_module_global_decl(decl):
 # filtering with matchers
 
 def filter_forward(items, *, markpublic=False):
-    if markpublic:
+    wenn markpublic:
         public = set()
         actual = []
         fuer item in items:
-            if is_public_api(item):
+            wenn is_public_api(item):
                 public.add(item.id)
-            elif not _match.is_forward_decl(item):
+            sowenn not _match.is_forward_decl(item):
                 actual.append(item)
-            else:
+            sonst:
                 # non-public duplicate!
                 # XXX
                 raise Exception(item)
         fuer item in actual:
             _info.set_flag(item, 'is_public', item.id in public)
             yield item
-    else:
+    sonst:
         fuer item in items:
-            if _match.is_forward_decl(item):
+            wenn _match.is_forward_decl(item):
                 continue
             yield item
 
@@ -183,23 +183,23 @@ def filter_forward(items, *, markpublic=False):
 
 def group_by_storage(decls, **kwargs):
     def is_module_global(decl):
-        if not is_module_global_decl(decl):
+        wenn not is_module_global_decl(decl):
             return False
-        if decl.kind == _KIND.VARIABLE:
-            if _info.get_effective_storage(decl) == 'static':
+        wenn decl.kind == _KIND.VARIABLE:
+            wenn _info.get_effective_storage(decl) == 'static':
                 # This is covered by is_static_module_global().
                 return False
         return True
     def is_static_module_global(decl):
-        if not _match.is_global_var(decl):
+        wenn not _match.is_global_var(decl):
             return False
         return _info.get_effective_storage(decl) == 'static'
     def is_static_local(decl):
-        if not _match.is_local_var(decl):
+        wenn not _match.is_local_var(decl):
             return False
         return _info.get_effective_storage(decl) == 'static'
     #def is_local(decl):
-    #    if not _match.is_local_var(decl):
+    #    wenn not _match.is_local_var(decl):
     #        return False
     #    return _info.get_effective_storage(decl) != 'static'
     categories = {

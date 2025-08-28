@@ -34,7 +34,7 @@ INVALID_UNDERSCORE_LITERALS = [
     '0b1_',
     '0xf_',
     '0o5_',
-    '0 if 1_Else 1',
+    '0 wenn 1_Else 1',
     # Underscores in the base selector:
     '0_b0',
     '0_xf',

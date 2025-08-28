@@ -22,17 +22,17 @@ TESTFN2 = TESTFN + '2'
 klasse LargeFileTest:
 
     def setUp(self):
-        if os.path.exists(TESTFN):
+        wenn os.path.exists(TESTFN):
             mode = 'r+b'
-        else:
+        sonst:
             mode = 'w+b'
 
         with self.open(TESTFN, mode) as f:
             current_size = os.fstat(f.fileno()).st_size
-            if current_size == size+1:
+            wenn current_size == size+1:
                 return
 
-            if current_size == 0:
+            wenn current_size == 0:
                 f.write(b'z')
 
             f.seek(0)
@@ -45,7 +45,7 @@ klasse LargeFileTest:
     def tearDownClass(cls):
         with cls.open(TESTFN, 'wb'):
             pass
-        if not os.stat(TESTFN).st_size == 0:
+        wenn not os.stat(TESTFN).st_size == 0:
             raise cls.failureException('File was not truncated by opening '
                                        'with mode "wb"')
         unlink(TESTFN2)
@@ -114,19 +114,19 @@ klasse TestFileMethods(LargeFileTest):
 
     def test_truncate(self):
         with self.open(TESTFN, 'r+b') as f:
-            if not hasattr(f, 'truncate'):
+            wenn not hasattr(f, 'truncate'):
                 raise unittest.SkipTest("open().truncate() not available "
                                         "on this system")
             f.seek(0, 2)
-            # else we've lost track of the true size
+            # sonst we've lost track of the true size
             self.assertEqual(f.tell(), size+1)
             # Cut it back via seek + truncate with no argument.
             newsize = size - 10
             f.seek(newsize)
             f.truncate()
-            self.assertEqual(f.tell(), newsize)  # else pointer moved
+            self.assertEqual(f.tell(), newsize)  # sonst pointer moved
             f.seek(0, 2)
-            self.assertEqual(f.tell(), newsize)  # else wasn't truncated
+            self.assertEqual(f.tell(), newsize)  # sonst wasn't truncated
             # Ensure that truncate(smaller than true size) shrinks
             # the file.
             newsize -= 1
@@ -139,12 +139,12 @@ klasse TestFileMethods(LargeFileTest):
             # across platform; cut it waaaaay back
             f.seek(0)
             f.truncate(1)
-            self.assertEqual(f.tell(), 0)       # else pointer moved
+            self.assertEqual(f.tell(), 0)       # sonst pointer moved
             f.seek(0)
             # Verify readall on a truncated file is well behaved. read()
             # without a size can be unbounded, this should get just the byte
             # that remains.
-            self.assertEqual(len(f.read()), 1)  # else wasn't truncated
+            self.assertEqual(len(f.read()), 1)  # sonst wasn't truncated
 
     def test_seekable(self):
         # Issue #5016; seekable() can return False when the current position
@@ -174,9 +174,9 @@ klasse TestFileMethods(LargeFileTest):
 def skip_no_disk_space(path, required):
     def decorator(fun):
         def wrapper(*args, **kwargs):
-            if not hasattr(shutil, "disk_usage"):
+            wenn not hasattr(shutil, "disk_usage"):
                 raise unittest.SkipTest("requires shutil.disk_usage")
-            if shutil.disk_usage(os.path.realpath(path)).free < required:
+            wenn shutil.disk_usage(os.path.realpath(path)).free < required:
                 hsize = int(required / 1024 / 1024)
                 raise unittest.SkipTest(
                     f"required {hsize} MiB of free disk space")
@@ -215,7 +215,7 @@ klasse TestSocketSendfile(LargeFileTest, unittest.TestCase):
 
     def tearDown(self):
         super().tearDown()
-        if self.thread is not None:
+        wenn self.thread is not None:
             self.thread.join(self.timeout)
             self.thread = None
 
@@ -228,7 +228,7 @@ klasse TestSocketSendfile(LargeFileTest, unittest.TestCase):
                     event.wait(self.timeout)
                     while True:
                         chunk = conn.recv(65536)
-                        if not chunk:
+                        wenn not chunk:
                             return
                         f.write(chunk)
 
@@ -273,11 +273,11 @@ def setUpModule():
     # takes a long time to build the >2 GiB file and takes >2 GiB of disk
     # space therefore the resource must be enabled to run this test.
     # If not, nothing after this line stanza will be executed.
-    if sys.platform[:3] == 'win' or sys.platform == 'darwin':
+    wenn sys.platform[:3] == 'win' or sys.platform == 'darwin':
         requires('largefile',
                  'test requires %s bytes and a long time to run' % str(size))
-    else:
-        # Only run if the current filesystem supports large files.
+    sonst:
+        # Only run wenn the current filesystem supports large files.
         # (Skip this test on Windows, since we now always support
         # large files.)
         f = open(TESTFN, 'wb', buffering=0)
@@ -308,5 +308,5 @@ def tearDownModule():
     unlink(TESTFN2)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

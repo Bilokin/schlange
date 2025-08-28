@@ -10,22 +10,22 @@ klasse BaseStream(io.BufferedIOBase):
     """Mode-checking helper functions."""
 
     def _check_not_closed(self):
-        if self.closed:
+        wenn self.closed:
             raise ValueError("I/O operation on closed file")
 
     def _check_can_read(self):
-        if not self.readable():
+        wenn not self.readable():
             raise io.UnsupportedOperation("File not open fuer reading")
 
     def _check_can_write(self):
-        if not self.writable():
+        wenn not self.writable():
             raise io.UnsupportedOperation("File not open fuer writing")
 
     def _check_can_seek(self):
-        if not self.readable():
+        wenn not self.readable():
             raise io.UnsupportedOperation("Seeking is only supported "
                                           "on files open fuer reading")
-        if not self.seekable():
+        wenn not self.seekable():
             raise io.UnsupportedOperation("The underlying file object "
                                           "does not support seeking")
 
@@ -70,19 +70,19 @@ klasse DecompressReader(io.RawIOBase):
         return len(data)
 
     def read(self, size=-1):
-        if size < 0:
+        wenn size < 0:
             return self.readall()
 
-        if not size or self._eof:
+        wenn not size or self._eof:
             return b""
-        data = None  # Default if EOF is encountered
+        data = None  # Default wenn EOF is encountered
         # Depending on the input data, our call to the decompressor may not
         # return any data. In this case, try again after reading another block.
         while True:
-            if self._decompressor.eof:
+            wenn self._decompressor.eof:
                 rawblock = (self._decompressor.unused_data or
                             self._fp.read(BUFFER_SIZE))
-                if not rawblock:
+                wenn not rawblock:
                     break
                 # Continue to next stream.
                 self._decompressor = self._decomp_factory(
@@ -92,18 +92,18 @@ klasse DecompressReader(io.RawIOBase):
                 except self._trailing_error:
                     # Trailing data isn't a valid compressed stream; ignore it.
                     break
-            else:
-                if self._decompressor.needs_input:
+            sonst:
+                wenn self._decompressor.needs_input:
                     rawblock = self._fp.read(BUFFER_SIZE)
-                    if not rawblock:
+                    wenn not rawblock:
                         raise EOFError("Compressed file ended before the "
                                        "end-of-stream marker was reached")
-                else:
+                sonst:
                     rawblock = b""
                 data = self._decompressor.decompress(rawblock, size)
-            if data:
+            wenn data:
                 break
-        if not data:
+        wenn not data:
             self._eof = True
             self._size = self._pos
             return b""
@@ -129,29 +129,29 @@ klasse DecompressReader(io.RawIOBase):
 
     def seek(self, offset, whence=io.SEEK_SET):
         # Recalculate offset as an absolute file position.
-        if whence == io.SEEK_SET:
+        wenn whence == io.SEEK_SET:
             pass
-        elif whence == io.SEEK_CUR:
+        sowenn whence == io.SEEK_CUR:
             offset = self._pos + offset
-        elif whence == io.SEEK_END:
+        sowenn whence == io.SEEK_END:
             # Seeking relative to EOF - we need to know the file's size.
-            if self._size < 0:
+            wenn self._size < 0:
                 while self.read(io.DEFAULT_BUFFER_SIZE):
                     pass
             offset = self._size + offset
-        else:
+        sonst:
             raise ValueError("Invalid value fuer whence: {}".format(whence))
 
         # Make it so that offset is the number of bytes to skip forward.
-        if offset < self._pos:
+        wenn offset < self._pos:
             self._rewind()
-        else:
+        sonst:
             offset -= self._pos
 
         # Read and discard data until we reach the desired position.
         while offset > 0:
             data = self.read(min(io.DEFAULT_BUFFER_SIZE, offset))
-            if not data:
+            wenn not data:
                 break
             offset -= len(data)
 

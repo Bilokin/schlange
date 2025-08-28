@@ -23,9 +23,9 @@ klasse TestLoader:
         return '<TestLoader object>'
 
     def __getattr__(self, name):
-        if name == 'get_filename' and self.path is not None:
+        wenn name == 'get_filename' and self.path is not None:
             return self._get_filename
-        if name == 'is_package':
+        wenn name == 'is_package':
             return self._is_package
         raise AttributeError(name)
 
@@ -502,7 +502,7 @@ klasse FactoryTests:
         self.assertEqual(spec.loader, self.fileloader)
         self.assertEqual(spec.origin, self.path)
         self.assertIs(spec.loader_state, None)
-        location = cwd if (cwd := os.getcwd()) != '/' else ''
+        location = cwd wenn (cwd := os.getcwd()) != '/' sonst ''
         self.assertEqual(spec.submodule_search_locations, [location])
         self.assertEqual(spec.cached, self.cached)
         self.assertTrue(spec.has_location)
@@ -602,7 +602,7 @@ klasse FactoryTests:
         self.assertEqual(spec.loader, self.fileloader)
         self.assertEqual(spec.origin, self.path)
         self.assertIs(spec.loader_state, None)
-        location = cwd if (cwd := os.getcwd()) != '/' else ''
+        location = cwd wenn (cwd := os.getcwd()) != '/' sonst ''
         self.assertEqual(spec.submodule_search_locations, [location])
         self.assertEqual(spec.cached, self.cached)
         self.assertTrue(spec.has_location)
@@ -628,7 +628,7 @@ klasse FactoryTests:
         self.assertEqual(spec.loader, self.pkgloader)
         self.assertEqual(spec.origin, self.path)
         self.assertIs(spec.loader_state, None)
-        location = cwd if (cwd := os.getcwd()) != '/' else ''
+        location = cwd wenn (cwd := os.getcwd()) != '/' sonst ''
         self.assertEqual(spec.submodule_search_locations, [location])
         self.assertEqual(spec.cached, self.cached)
         self.assertTrue(spec.has_location)
@@ -694,5 +694,5 @@ klasse FactoryTests:
  ) = test_util.test_both(FactoryTests, util=util, machinery=machinery)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

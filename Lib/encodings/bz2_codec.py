@@ -33,10 +33,10 @@ klasse IncrementalEncoder(codecs.IncrementalEncoder):
         self.compressobj = bz2.BZ2Compressor()
 
     def encode(self, input, final=False):
-        if final:
+        wenn final:
             c = self.compressobj.compress(input)
             return c + self.compressobj.flush()
-        else:
+        sonst:
             return self.compressobj.compress(input)
 
     def reset(self):

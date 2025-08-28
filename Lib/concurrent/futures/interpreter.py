@@ -28,21 +28,21 @@ klasse WorkerContext(_thread.WorkerContext):
     @classmethod
     def prepare(cls, initializer, initargs):
         def resolve_task(fn, args, kwargs):
-            if isinstance(fn, str):
+            wenn isinstance(fn, str):
                 # XXX Circle back to this later.
                 raise TypeError('scripts not supported')
-            else:
+            sonst:
                 task = (fn, args, kwargs)
             return task
 
-        if initializer is not None:
+        wenn initializer is not None:
             try:
                 initdata = resolve_task(initializer, initargs, {})
             except ValueError:
-                if isinstance(initializer, str) and initargs:
+                wenn isinstance(initializer, str) and initargs:
                     raise ValueError(f'an initializer script does not take args, got {initargs!r}')
                 raise  # re-raise
-        else:
+        sonst:
             initdata = None
         def create_context():
             return cls(initdata)
@@ -54,7 +54,7 @@ klasse WorkerContext(_thread.WorkerContext):
         self.results = None
 
     def __del__(self):
-        if self.interp is not None:
+        wenn self.interp is not None:
             self.finalize()
 
     def initialize(self):
@@ -64,7 +64,7 @@ klasse WorkerContext(_thread.WorkerContext):
             maxsize = 0
             self.results = interpreters.create_queue(maxsize)
 
-            if self.initdata:
+            wenn self.initdata:
                 self.run(self.initdata)
         except BaseException:
             self.finalize()
@@ -75,9 +75,9 @@ klasse WorkerContext(_thread.WorkerContext):
         results = self.results
         self.results = None
         self.interp = None
-        if results is not None:
+        wenn results is not None:
             del results
-        if interp is not None:
+        wenn interp is not None:
             interp.close()
 
     def run(self, task):
@@ -86,7 +86,7 @@ klasse WorkerContext(_thread.WorkerContext):
         except interpreters.ExecutionFailed as wrapper:
             # Wait fuer the exception data to show up.
             exc = self.results.get()
-            if exc is None:
+            wenn exc is None:
                 # The exception must have been not shareable.
                 raise  # re-raise
             raise exc from wrapper

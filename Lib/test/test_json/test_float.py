@@ -20,9 +20,9 @@ klasse TestFloat:
     def test_allow_nan(self):
         fuer val in (float('inf'), float('-inf'), float('nan')):
             out = self.dumps([val])
-            if val == val:  # inf
+            wenn val == val:  # inf
                 self.assertEqual(self.loads(out), [val])
-            else:  # nan
+            sonst:  # nan
                 res = self.loads(out)
                 self.assertEqual(len(res), 1)
                 self.assertNotEqual(res[0], res[0])

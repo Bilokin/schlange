@@ -21,7 +21,7 @@ klasse InvalidStateError(Exception):
 klasse SendfileNotAvailableError(RuntimeError):
     """Sendfile syscall is not available.
 
-    Raised if OS does not support sendfile syscall fuer given socket or
+    Raised wenn OS does not support sendfile syscall fuer given socket or
     file type.
     """
 
@@ -31,10 +31,10 @@ klasse IncompleteReadError(EOFError):
     Incomplete read error. Attributes:
 
     - partial: read bytes string before the end of stream was reached
-    - expected: total number of expected bytes (or None if unknown)
+    - expected: total number of expected bytes (or None wenn unknown)
     """
     def __init__(self, partial, expected):
-        r_expected = 'undefined' if expected is None else repr(expected)
+        r_expected = 'undefined' wenn expected is None sonst repr(expected)
         super().__init__(f'{len(partial)} bytes read on a total of '
                          f'{r_expected} expected bytes')
         self.partial = partial

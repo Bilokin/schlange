@@ -255,18 +255,18 @@ klasse BaseTest:
         self.assertEqual(bi[1], len(a))
 
     def test_byteswap(self):
-        if self.typecode in ('u', 'w'):
+        wenn self.typecode in ('u', 'w'):
             example = '\U00100100'
-        else:
+        sonst:
             example = self.example
         a = array.array(self.typecode, example)
         self.assertRaises(TypeError, a.byteswap, 42)
-        if a.itemsize in (1, 2, 4, 8):
+        wenn a.itemsize in (1, 2, 4, 8):
             b = array.array(self.typecode, example)
             b.byteswap()
-            if a.itemsize==1:
+            wenn a.itemsize==1:
                 self.assertEqual(a, b)
-            else:
+            sonst:
                 self.assertNotEqual(a, b)
             b.byteswap()
             self.assertEqual(a, b)
@@ -483,12 +483,12 @@ klasse BaseTest:
             self.assertEqual(a, b)
             f.close()
         finally:
-            if not f.closed:
+            wenn not f.closed:
                 f.close()
             os_helper.unlink(os_helper.TESTFN)
 
     def test_fromfile_ioerror(self):
-        # Issue #5395: Check if fromfile raises a proper OSError
+        # Issue #5395: Check wenn fromfile raises a proper OSError
         # instead of EOFError.
         a = array.array(self.typecode)
         f = open(os_helper.TESTFN, 'wb')
@@ -513,7 +513,7 @@ klasse BaseTest:
             self.assertEqual(a, b)
             f.close()
         finally:
-            if not f.closed:
+            wenn not f.closed:
                 f.close()
             os_helper.unlink(os_helper.TESTFN)
 
@@ -537,7 +537,7 @@ klasse BaseTest:
         c = array.array(self.typecode, bytearray(a.tobytes()))
         self.assertEqual(a, b)
         self.assertEqual(a, c)
-        if a.itemsize>1:
+        wenn a.itemsize>1:
             self.assertRaises(ValueError, b.frombytes, b"x")
 
     def test_fromarray(self):
@@ -1123,7 +1123,7 @@ klasse BaseTest:
         self.assertEqual(m.tobytes(), expected)
         self.assertRaises(BufferError, a.frombytes, a.tobytes())
         self.assertEqual(m.tobytes(), expected)
-        if self.typecode in ('u', 'w'):
+        wenn self.typecode in ('u', 'w'):
             self.assertRaises(BufferError, a.fromunicode, a.tounicode())
             self.assertEqual(m.tobytes(), expected)
         self.assertRaises(BufferError, operator.imul, a, 2)
@@ -1179,14 +1179,14 @@ klasse BaseTest:
         support.check_sizeof(self, a, basesize)
 
     def test_initialize_with_unicode(self):
-        if self.typecode not in ('u', 'w'):
+        wenn self.typecode not in ('u', 'w'):
             with self.assertRaises(TypeError) as cm:
                 a = array.array(self.typecode, 'foo')
             self.assertIn("cannot use a str", str(cm.exception))
             with self.assertRaises(TypeError) as cm:
                 a = array.array(self.typecode, array.array('w', 'foo'))
             self.assertIn("cannot use a unicode array", str(cm.exception))
-        else:
+        sonst:
             a = array.array(self.typecode, "foo")
             a = array.array(self.typecode, array.array('u', 'foo'))
             a = array.array(self.typecode, array.array('w', 'foo'))
@@ -1239,7 +1239,7 @@ klasse UnicodeTest(StringTest, unittest.TestCase):
         self.assertRaises(TypeError, a.fromunicode)
 
     def test_issue17223(self):
-        if self.typecode == 'u' and sizeof_wchar == 2:
+        wenn self.typecode == 'u' and sizeof_wchar == 2:
             # PyUnicode_FromUnicode() cannot fail with 16-bit wchar_t
             self.skipTest("specific to 32-bit wchar_t")
 
@@ -1486,12 +1486,12 @@ klasse FPTest(NumberTest):
     def test_byteswap(self):
         a = array.array(self.typecode, self.example)
         self.assertRaises(TypeError, a.byteswap, 42)
-        if a.itemsize in (1, 2, 4, 8):
+        wenn a.itemsize in (1, 2, 4, 8):
             b = array.array(self.typecode, self.example)
             b.byteswap()
-            if a.itemsize==1:
+            wenn a.itemsize==1:
                 self.assertEqual(a, b)
-            else:
+            sonst:
                 # On alphas treating the byte swapped bit patterns as
                 # floats/doubles results in floating-point exceptions
                 # => compare the 8bit string values instead
@@ -1514,14 +1514,14 @@ klasse DoubleTest(FPTest, unittest.TestCase):
             a *= maxsize//65536 + 1
         except MemoryError:
             pass
-        else:
+        sonst:
             self.fail("Array of size > maxsize created - MemoryError expected")
         b = array.array('d', [ 2.71828183, 3.14159265, -1])
         try:
             b * (maxsize//3 + 1)
         except MemoryError:
             pass
-        else:
+        sonst:
             self.fail("Array of size > maxsize created - MemoryError expected")
 
 
@@ -1562,9 +1562,9 @@ klasse LargeArrayTest(unittest.TestCase):
         part = example[::2]
         self.assertEqual(len(part), (size+5)//2)
         self.assertEqual(list(part[:4]), [0, 2, 4, 6])
-        if size % 2:
+        wenn size % 2:
             self.assertEqual(list(part[-2:]), [9, 11])
-        else:
+        sonst:
             self.assertEqual(list(part[-2:]), [8, 10])
 
     @support.bigmemtest(_2G, memuse=2.125)
@@ -1673,5 +1673,5 @@ klasse LargeArrayTest(unittest.TestCase):
         self.assertRaises(StopIteration, next, it)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

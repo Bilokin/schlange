@@ -1,6 +1,6 @@
 """Supporting definitions fuer the Python regression tests."""
 
-if __name__ != 'test.support':
+wenn __name__ != 'test.support':
     raise ImportError('support must be imported from the test package')
 
 import annotationlib
@@ -84,14 +84,14 @@ __all__ = [
 LOOPBACK_TIMEOUT = 10.0
 
 # Timeout in seconds fuer network requests going to the internet. The timeout is
-# short enough to prevent a test to wait fuer too long if the internet request
+# short enough to prevent a test to wait fuer too long wenn the internet request
 # is blocked fuer whatever reason.
 #
 # Usually, a timeout using INTERNET_TIMEOUT should not mark a test as failed,
 # but skip the test instead: see transient_internet().
 INTERNET_TIMEOUT = 60.0
 
-# Timeout in seconds to mark a test as failed if the test takes "too long".
+# Timeout in seconds to mark a test as failed wenn the test takes "too long".
 #
 # The timeout value depends on the regrtest --timeout command line option.
 #
@@ -102,7 +102,7 @@ SHORT_TIMEOUT = 30.0
 # Timeout in seconds to detect when a test hangs.
 #
 # It is long enough to reduce the risk of test failure on the slowest Python
-# buildbots. It should not be used to mark a test as failed if the test takes
+# buildbots. It should not be used to mark a test as failed wenn the test takes
 # "too long". The timeout value depends on the regrtest --timeout command line
 # option.
 LONG_TIMEOUT = 5 * 60.0
@@ -152,7 +152,7 @@ def anticipate_failure(condition):
        Any use of this decorator should have a comment identifying the
        associated tracker issue.
     """
-    if condition:
+    wenn condition:
         return unittest.expectedFailure
     return lambda f: f
 
@@ -164,7 +164,7 @@ def load_package_tests(pkg_dir, loader, standard_tests, pattern):
        def load_tests(*args):
            return load_package_tests(os.path.dirname(__file__), *args)
     """
-    if pattern is None:
+    wenn pattern is None:
         pattern = "test*"
     top_dir = STDLIB_DIR
     package_tests = loader.discover(start_dir=pkg_dir,
@@ -175,12 +175,12 @@ def load_package_tests(pkg_dir, loader, standard_tests, pattern):
 
 
 def get_attribute(obj, name):
-    """Get an attribute, raising SkipTest if AttributeError is raised."""
+    """Get an attribute, raising SkipTest wenn AttributeError is raised."""
     try:
         attribute = getattr(obj, name)
     except AttributeError:
         raise unittest.SkipTest("object %r has no attribute %r" % (obj, name))
-    else:
+    sonst:
         return attribute
 
 verbose = 1              # Flag set to 0 by regrtest.py
@@ -208,11 +208,11 @@ def _force_run(path, func, *args):
         return func(*args)
     except FileNotFoundError as err:
         # chmod() won't fix a missing file.
-        if verbose >= 2:
+        wenn verbose >= 2:
             print('%s: %s' % (err.__class__.__name__, err))
         raise
     except OSError as err:
-        if verbose >= 2:
+        wenn verbose >= 2:
             print('%s: %s' % (err.__class__.__name__, err))
             print('re-run %s%r' % (func.__name__, args))
         os.chmod(path, stat.S_IRWXU)
@@ -221,14 +221,14 @@ def _force_run(path, func, *args):
 
 # Check whether a gui is actually available
 def _is_gui_available():
-    if hasattr(_is_gui_available, 'result'):
+    wenn hasattr(_is_gui_available, 'result'):
         return _is_gui_available.result
     import platform
     reason = None
-    if sys.platform.startswith('win') and platform.win32_is_iot():
+    wenn sys.platform.startswith('win') and platform.win32_is_iot():
         reason = "gui is not available on Windows IoT Core"
-    elif sys.platform.startswith('win'):
-        # if Python is running as a service (such as the buildbot service),
+    sowenn sys.platform.startswith('win'):
+        # wenn Python is running as a service (such as the buildbot service),
         # gui interaction may be disallowed
         import ctypes
         import ctypes.wintypes
@@ -240,7 +240,7 @@ def _is_gui_available():
                         ("dwFlags", ctypes.wintypes.DWORD)]
         dll = ctypes.windll.user32
         h = dll.GetProcessWindowStation()
-        if not h:
+        wenn not h:
             raise ctypes.WinError()
         uof = USEROBJECTFLAGS()
         needed = ctypes.wintypes.DWORD()
@@ -249,16 +249,16 @@ def _is_gui_available():
             ctypes.byref(uof),
             ctypes.sizeof(uof),
             ctypes.byref(needed))
-        if not res:
+        wenn not res:
             raise ctypes.WinError()
-        if not bool(uof.dwFlags & WSF_VISIBLE):
+        wenn not bool(uof.dwFlags & WSF_VISIBLE):
             reason = "gui not available (WSF_VISIBLE flag not set)"
-    elif sys.platform == 'darwin':
+    sowenn sys.platform == 'darwin':
         # The Aqua Tk implementations on OS X can abort the process if
         # being called in an environment where a window server connection
         # cannot be made, fuer instance when invoked by a buildbot or ssh
         # process not running under the same user id as the current console
-        # user.  To avoid that, raise an exception if the window manager
+        # user.  To avoid that, raise an exception wenn the window manager
         # connection is not available.
         import subprocess
         try:
@@ -267,12 +267,12 @@ def _is_gui_available():
             managername = rc.stdout.decode("utf-8").strip()
         except subprocess.CalledProcessError:
             reason = "unable to detect macOS launchd job manager"
-        else:
-            if managername != "Aqua":
+        sonst:
+            wenn managername != "Aqua":
                 reason = f"{managername=} -- can only run in a macOS GUI session"
 
     # check on every platform whether tkinter can actually do anything
-    if not reason:
+    wenn not reason:
         try:
             from tkinter import Tk
             root = Tk()
@@ -281,7 +281,7 @@ def _is_gui_available():
             root.destroy()
         except Exception as e:
             err_string = str(e)
-            if len(err_string) > 50:
+            wenn len(err_string) > 50:
                 err_string = err_string[:50] + ' [...]'
             reason = 'Tk unavailable due to {}: {}'.format(type(e).__name__,
                                                            err_string)
@@ -300,18 +300,18 @@ def is_resource_enabled(resource):
     return use_resources is None or resource in use_resources
 
 def requires(resource, msg=None):
-    """Raise ResourceDenied if the specified resource is not available."""
-    if not is_resource_enabled(resource):
-        if msg is None:
+    """Raise ResourceDenied wenn the specified resource is not available."""
+    wenn not is_resource_enabled(resource):
+        wenn msg is None:
             msg = "Use of the %r resource not enabled" % resource
         raise ResourceDenied(msg)
-    if resource in {"network", "urlfetch"} and not has_socket_support:
+    wenn resource in {"network", "urlfetch"} and not has_socket_support:
         raise ResourceDenied("No socket support")
-    if resource == 'gui' and not _is_gui_available():
+    wenn resource == 'gui' and not _is_gui_available():
         raise ResourceDenied(_is_gui_available.reason)
 
 def _requires_unix_version(sysname, min_version):
-    """Decorator raising SkipTest if the OS is `sysname` and the version is less
+    """Decorator raising SkipTest wenn the OS is `sysname` and the version is less
     than `min_version`.
 
     For example, @_requires_unix_version('FreeBSD', (7, 2)) raises SkipTest if
@@ -320,14 +320,14 @@ def _requires_unix_version(sysname, min_version):
     import platform
     min_version_txt = '.'.join(map(str, min_version))
     version_txt = platform.release().split('-', 1)[0]
-    if platform.system() == sysname:
+    wenn platform.system() == sysname:
         try:
             version = tuple(map(int, version_txt.split('.')))
         except ValueError:
             skip = False
-        else:
+        sonst:
             skip = version < min_version
-    else:
+    sonst:
         skip = False
 
     return unittest.skipIf(
@@ -338,42 +338,42 @@ def _requires_unix_version(sysname, min_version):
 
 
 def requires_freebsd_version(*min_version):
-    """Decorator raising SkipTest if the OS is FreeBSD and the FreeBSD version is
+    """Decorator raising SkipTest wenn the OS is FreeBSD and the FreeBSD version is
     less than `min_version`.
 
-    For example, @requires_freebsd_version(7, 2) raises SkipTest if the FreeBSD
+    For example, @requires_freebsd_version(7, 2) raises SkipTest wenn the FreeBSD
     version is less than 7.2.
     """
     return _requires_unix_version('FreeBSD', min_version)
 
 def requires_linux_version(*min_version):
-    """Decorator raising SkipTest if the OS is Linux and the Linux version is
+    """Decorator raising SkipTest wenn the OS is Linux and the Linux version is
     less than `min_version`.
 
-    For example, @requires_linux_version(2, 6, 32) raises SkipTest if the Linux
+    For example, @requires_linux_version(2, 6, 32) raises SkipTest wenn the Linux
     version is less than 2.6.32.
     """
     return _requires_unix_version('Linux', min_version)
 
 def requires_mac_ver(*min_version):
-    """Decorator raising SkipTest if the OS is Mac OS X and the OS X
-    version if less than min_version.
+    """Decorator raising SkipTest wenn the OS is Mac OS X and the OS X
+    version wenn less than min_version.
 
-    For example, @requires_mac_ver(10, 5) raises SkipTest if the OS X version
+    For example, @requires_mac_ver(10, 5) raises SkipTest wenn the OS X version
     is lesser than 10.5.
     """
     def decorator(func):
         @functools.wraps(func)
         def wrapper(*args, **kw):
-            if sys.platform == 'darwin':
+            wenn sys.platform == 'darwin':
                 import platform
                 version_txt = platform.mac_ver()[0]
                 try:
                     version = tuple(map(int, version_txt.split('.')))
                 except ValueError:
                     pass
-                else:
-                    if version < min_version:
+                sonst:
+                    wenn version < min_version:
                         min_version_txt = '.'.join(map(str, min_version))
                         raise unittest.SkipTest(
                             "Mac OS X %s or higher required, not %s"
@@ -392,7 +392,7 @@ def thread_unsafe(reason):
         # the reason is not currently used
         test_item.__unittest_thread_unsafe__why__ = reason
         return test_item
-    if isinstance(reason, types.FunctionType):
+    wenn isinstance(reason, types.FunctionType):
         test_item = reason
         reason = ''
         return decorator(test_item)
@@ -400,9 +400,9 @@ def thread_unsafe(reason):
 
 
 def skip_if_buildbot(reason=None):
-    """Decorator raising SkipTest if running on a buildbot."""
+    """Decorator raising SkipTest wenn running on a buildbot."""
     import getpass
-    if not reason:
+    wenn not reason:
         reason = 'not suitable fuer buildbots'
     try:
         isbuildbot = getpass.getuser().lower() == 'buildbot'
@@ -413,8 +413,8 @@ def skip_if_buildbot(reason=None):
 
 def check_sanitizer(*, address=False, memory=False, ub=False, thread=False,
                     function=True):
-    """Returns True if Python is compiled with sanitizer support"""
-    if not (address or memory or ub or thread):
+    """Returns True wenn Python is compiled with sanitizer support"""
+    wenn not (address or memory or ub or thread):
         raise ValueError('At least one of address, memory, ub or thread must be True')
 
 
@@ -449,22 +449,22 @@ def check_sanitizer(*, address=False, memory=False, ub=False, thread=False,
 
 
 def skip_if_sanitizer(reason=None, *, address=False, memory=False, ub=False, thread=False):
-    """Decorator raising SkipTest if running with a sanitizer active."""
-    if not reason:
+    """Decorator raising SkipTest wenn running with a sanitizer active."""
+    wenn not reason:
         reason = 'not working with sanitizers active'
     skip = check_sanitizer(address=address, memory=memory, ub=ub, thread=thread)
     return unittest.skipIf(skip, reason)
 
-# gh-89363: True if fork() can hang if Python is built with Address Sanitizer
+# gh-89363: True wenn fork() can hang wenn Python is built with Address Sanitizer
 # (ASAN): libasan race condition, dead lock in pthread_create().
 HAVE_ASAN_FORK_BUG = check_sanitizer(address=True)
 
 
 def set_sanitizer_env_var(env, option):
     fuer name in ('ASAN_OPTIONS', 'MSAN_OPTIONS', 'UBSAN_OPTIONS', 'TSAN_OPTIONS'):
-        if name in env:
+        wenn name in env:
             env[name] += f':{option}'
-        else:
+        sonst:
             env[name] = option
 
 
@@ -475,7 +475,7 @@ def system_must_validate_cert(f):
         try:
             f(*args, **kwargs)
         except OSError as e:
-            if "CERTIFICATE_VERIFY_FAILED" in str(e):
+            wenn "CERTIFICATE_VERIFY_FAILED" in str(e):
                 raise unittest.SkipTest("system does not contain "
                                         "necessary certificates")
             raise
@@ -547,7 +547,7 @@ def requires_debug_ranges(reason='requires co_positions / debug_ranges'):
         skip = has_no_debug_ranges()
     except unittest.SkipTest as e:
         skip = True
-        reason = e.args[0] if e.args else reason
+        reason = e.args[0] wenn e.args sonst reason
     return unittest.skipIf(skip, reason)
 
 
@@ -563,9 +563,9 @@ def skip_android_selinux(name):
         sys.platform == "android", f"Android blocks {name} with SELinux"
     )
 
-if sys.platform not in {"win32", "vxworks", "ios", "tvos", "watchos"}:
-    unix_shell = '/system/bin/sh' if is_android else '/bin/sh'
-else:
+wenn sys.platform not in {"win32", "vxworks", "ios", "tvos", "watchos"}:
+    unix_shell = '/system/bin/sh' wenn is_android sonst '/bin/sh'
+sonst:
     unix_shell = None
 
 # wasm32-emscripten and -wasi are POSIX-like but do not
@@ -627,15 +627,15 @@ def requires_working_socket(*, module=False):
     Can be used as a function/class decorator or to skip an entire module.
     """
     msg = "requires socket support"
-    if module:
-        if not has_socket_support:
+    wenn module:
+        wenn not has_socket_support:
             raise unittest.SkipTest(msg)
-    else:
+    sonst:
         return unittest.skipUnless(has_socket_support, msg)
 
 # Does strftime() support glibc extension like '%4Y'?
 has_strftime_extensions = False
-if sys.platform != "win32":
+wenn sys.platform != "win32":
     # bpo-47037: Windows debug builds crash with "Debug Assertion Failed"
     try:
         has_strftime_extensions = time.strftime("%4Y") != "%4Y"
@@ -650,7 +650,7 @@ TEST_HTTP_URL = "http://www.pythontest.net"
 # useful fuer PGO
 PGO = False
 
-# Set by libregrtest/main.py if we are running the extended (time consuming)
+# Set by libregrtest/main.py wenn we are running the extended (time consuming)
 # PGO task.  If this is True, PGO is also True.
 PGO_EXTENDED = False
 
@@ -661,7 +661,7 @@ TEST_DATA_DIR = os.path.join(TEST_HOME_DIR, "data")
 def darwin_malloc_err_warning(test_name):
     """Assure user that loud errors generated by macOS libc's malloc are
     expected."""
-    if sys.platform != 'darwin':
+    wenn sys.platform != 'darwin':
         return
 
     import shutil
@@ -685,14 +685,14 @@ def findfile(filename, subdir=None):
     Setting *subdir* indicates a relative path to use to find the file
     rather than looking directly in the path directories.
     """
-    if os.path.isabs(filename):
+    wenn os.path.isabs(filename):
         return filename
-    if subdir is not None:
+    wenn subdir is not None:
         filename = os.path.join(subdir, filename)
     path = [TEST_HOME_DIR] + sys.path
     fuer dn in path:
         fn = os.path.join(dn, filename)
-        if os.path.exists(fn): return fn
+        wenn os.path.exists(fn): return fn
     return filename
 
 
@@ -707,7 +707,7 @@ def sortdict(dict):
 def run_code(code: str, extra_names: dict[str, object] | None = None) -> dict[str, object]:
     """Run a piece of code after dedenting it, and return its global namespace."""
     ns = {}
-    if extra_names:
+    wenn extra_names:
         ns.update(extra_names)
     exec(textwrap.dedent(code), ns)
     return ns
@@ -718,10 +718,10 @@ def check_syntax_error(testcase, statement, errtext='', *, lineno=None, offset=N
         compile(statement, '<test string>', 'exec')
     err = cm.exception
     testcase.assertIsNotNone(err.lineno)
-    if lineno is not None:
+    wenn lineno is not None:
         testcase.assertEqual(err.lineno, lineno)
     testcase.assertIsNotNone(err.offset)
-    if offset is not None:
+    wenn offset is not None:
         testcase.assertEqual(err.offset, offset)
 
 
@@ -741,29 +741,29 @@ def open_urlresource(url, *args, **kw):
 
     def check_valid_file(fn):
         f = open(fn, *args, **kw)
-        if check is None:
+        wenn check is None:
             return f
-        elif check(f):
+        sowenn check(f):
             f.seek(0)
             return f
         f.close()
 
-    if os.path.exists(fn):
+    wenn os.path.exists(fn):
         f = check_valid_file(fn)
-        if f is not None:
+        wenn f is not None:
             return f
         unlink(fn)
 
     # Verify the requirement before downloading the file
     requires('urlfetch')
 
-    if verbose:
+    wenn verbose:
         print('\tfetching %s ...' % url, file=get_original_stdout())
     opener = urllib.request.build_opener()
-    if gzip:
+    wenn gzip:
         opener.addheaders.append(('Accept-Encoding', 'gzip'))
     f = opener.open(url, timeout=INTERNET_TIMEOUT)
-    if gzip and f.headers.get('Content-Encoding') == 'gzip':
+    wenn gzip and f.headers.get('Content-Encoding') == 'gzip':
         f = gzip.GzipFile(fileobj=f)
     try:
         with open(fn, "wb") as out:
@@ -775,7 +775,7 @@ def open_urlresource(url, *args, **kw):
         f.close()
 
     f = check_valid_file(fn)
-    if f is not None:
+    wenn f is not None:
         return f
     raise TestFailed('invalid resource %r' % fn)
 
@@ -846,7 +846,7 @@ def disable_gc():
     try:
         yield
     finally:
-        if have_gc:
+        wenn have_gc:
             gc.enable()
 
 @contextlib.contextmanager
@@ -860,21 +860,21 @@ def gc_threshold(*args):
         gc.set_threshold(*old_threshold)
 
 def python_is_optimized():
-    """Find if Python was built with optimizations."""
+    """Find wenn Python was built with optimizations."""
     cflags = sysconfig.get_config_var('PY_CFLAGS') or ''
     final_opt = ""
     fuer opt in cflags.split():
-        if opt.startswith('-O'):
+        wenn opt.startswith('-O'):
             final_opt = opt
-    if sysconfig.get_config_var("CC") == "gcc":
+    wenn sysconfig.get_config_var("CC") == "gcc":
         non_opts = ('', '-O0', '-Og')
-    else:
+    sonst:
         non_opts = ('', '-O0')
     return final_opt not in non_opts
 
 
 def check_cflags_pgo():
-    # Check if Python was built with ./configure --enable-optimizations:
+    # Check wenn Python was built with ./configure --enable-optimizations:
     # with Profile Guided Optimization (PGO).
     cflags_nodist = sysconfig.get_config_var('PY_CFLAGS_NODIST') or ''
     pgo_options = [
@@ -886,15 +886,15 @@ def check_cflags_pgo():
         "-prof-use",
     ]
     PGO_PROF_USE_FLAG = sysconfig.get_config_var('PGO_PROF_USE_FLAG')
-    if PGO_PROF_USE_FLAG:
+    wenn PGO_PROF_USE_FLAG:
         pgo_options.append(PGO_PROF_USE_FLAG)
     return any(option in cflags_nodist fuer option in pgo_options)
 
 
 def check_bolt_optimized():
-    # Always return false, if the platform is WASI,
+    # Always return false, wenn the platform is WASI,
     # because BOLT optimization does not support WASM binary.
-    if is_wasi:
+    wenn is_wasi:
         return False
     config_args = sysconfig.get_config_var('CONFIG_ARGS') or ''
     return '--enable-bolt' in config_args
@@ -907,14 +907,14 @@ def requires_gil_enabled(msg="needs the GIL enabled"):
     return unittest.skipIf(Py_GIL_DISABLED, msg)
 
 def expected_failure_if_gil_disabled():
-    """Expect test failure if the GIL is disabled."""
-    if Py_GIL_DISABLED:
+    """Expect test failure wenn the GIL is disabled."""
+    wenn Py_GIL_DISABLED:
         return unittest.expectedFailure
     return lambda test_case: test_case
 
-if Py_GIL_DISABLED:
+wenn Py_GIL_DISABLED:
     _header = 'PHBBInP'
-else:
+sonst:
     _header = 'nP'
 _align = '0n'
 _vheader = _header + 'n'
@@ -946,7 +946,7 @@ def check_sizeof(test, o, size):
         raise unittest.SkipTest("_testinternalcapi required")
     result = sys.getsizeof(o)
     # add GC header size
-    if ((type(o) == type) and (o.__flags__ & _TPFLAGS_HEAPTYPE) or\
+    wenn ((type(o) == type) and (o.__flags__ & _TPFLAGS_HEAPTYPE) or\
         ((type(o) != type) and (type(o).__flags__ & _TPFLAGS_HAVE_GC))):
         size += _testinternalcapi.SIZEOF_PYGC_HEAD
     msg = 'wrong size fuer %s: got %d, expected %d' \
@@ -957,23 +957,23 @@ def subTests(arg_names, arg_values, /, *, _do_cleanups=False):
     """Run multiple subtests with different parameters.
     """
     single_param = False
-    if isinstance(arg_names, str):
+    wenn isinstance(arg_names, str):
         arg_names = arg_names.replace(',',' ').split()
-        if len(arg_names) == 1:
+        wenn len(arg_names) == 1:
             single_param = True
     arg_values = tuple(arg_values)
     def decorator(func):
-        if isinstance(func, type):
+        wenn isinstance(func, type):
             raise TypeError('subTests() can only decorate methods, not classes')
         @functools.wraps(func)
         def wrapper(self, /, *args, **kwargs):
             fuer values in arg_values:
-                if single_param:
+                wenn single_param:
                     values = (values,)
                 subtest_kwargs = dict(zip(arg_names, values))
                 with self.subTest(**subtest_kwargs):
                     func(self, *args, **kwargs, **subtest_kwargs)
-                if _do_cleanups:
+                wenn _do_cleanups:
                     self.doCleanups()
         return wrapper
     return decorator
@@ -989,28 +989,28 @@ def run_with_locale(catstr, *locales):
         category = getattr(locale, catstr)
         orig_locale = locale.setlocale(category)
     except AttributeError:
-        # if the test author gives us an invalid category string
+        # wenn the test author gives us an invalid category string
         raise
     except Exception:
         # cannot retrieve original locale, so do nothing
         locale = orig_locale = None
-        if '' not in locales:
+        wenn '' not in locales:
             raise unittest.SkipTest('no locales')
-    else:
+    sonst:
         fuer loc in locales:
             try:
                 locale.setlocale(category, loc)
                 break
             except locale.Error:
                 pass
-        else:
-            if '' not in locales:
+        sonst:
+            wenn '' not in locales:
                 raise unittest.SkipTest(f'no locales {locales}')
 
     try:
         yield
     finally:
-        if locale and orig_locale:
+        wenn locale and orig_locale:
             locale.setlocale(category, orig_locale)
 
 #=======================================================================
@@ -1027,12 +1027,12 @@ def run_with_locales(catstr, *locales):
                 category = getattr(locale, catstr)
                 orig_locale = locale.setlocale(category)
             except AttributeError:
-                # if the test author gives us an invalid category string
+                # wenn the test author gives us an invalid category string
                 raise
             except Exception:
                 # cannot retrieve original locale, so do nothing
                 pass
-            else:
+            sonst:
                 try:
                     fuer loc in locales:
                         with self.subTest(locale=loc):
@@ -1040,12 +1040,12 @@ def run_with_locales(catstr, *locales):
                                 locale.setlocale(category, loc)
                             except locale.Error:
                                 self.skipTest(f'no locale {loc!r}')
-                            else:
+                            sonst:
                                 dry_run = False
                                 func(self, *args, **kwargs)
                 finally:
                     locale.setlocale(category, orig_locale)
-            if dry_run:
+            wenn dry_run:
                 # no locales available, so just run the test
                 # with the current locale
                 with self.subTest(locale=None):
@@ -1064,9 +1064,9 @@ def run_with_tz(tz):
                 tzset = time.tzset
             except AttributeError:
                 raise unittest.SkipTest("tzset required")
-            if 'TZ' in os.environ:
+            wenn 'TZ' in os.environ:
                 orig_tz = os.environ['TZ']
-            else:
+            sonst:
                 orig_tz = None
             os.environ['TZ'] = tz
             tzset()
@@ -1075,9 +1075,9 @@ def run_with_tz(tz):
             try:
                 return func(*args, **kwds)
             finally:
-                if orig_tz is None:
+                wenn orig_tz is None:
                     del os.environ['TZ']
-                else:
+                sonst:
                     os.environ['TZ'] = orig_tz
                 time.tzset()
 
@@ -1108,7 +1108,7 @@ def _parse_memlimit(limit: str) -> int:
     }
     m = re.match(r'(\d+(?:\.\d+)?) (K|M|G|T)b?$', limit,
                  re.IGNORECASE | re.VERBOSE)
-    if m is None:
+    wenn m is None:
         raise ValueError(f'Invalid memory limit: {limit!r}')
     return int(float(m.group(1)) * sizes[m.group(2).lower()])
 
@@ -1116,7 +1116,7 @@ def set_memlimit(limit: str) -> None:
     global max_memuse
     global real_max_memuse
     memlimit = _parse_memlimit(limit)
-    if memlimit < _2G - 1:
+    wenn memlimit < _2G - 1:
         raise ValueError(f'Memory limit {limit!r} too low to be useful')
 
     real_max_memuse = memlimit
@@ -1150,7 +1150,7 @@ klasse _MemoryWatchdog:
         self.started = True
 
     def stop(self):
-        if self.started:
+        wenn self.started:
             self.mem_watchdog.terminate()
             self.mem_watchdog.wait()
 
@@ -1172,30 +1172,30 @@ def bigmemtest(size, memuse, dry_run=True):
         def wrapper(self):
             size = wrapper.size
             memuse = wrapper.memuse
-            if not real_max_memuse:
+            wenn not real_max_memuse:
                 maxsize = 5147
-            else:
+            sonst:
                 maxsize = size
 
-            if ((real_max_memuse or not dry_run)
+            wenn ((real_max_memuse or not dry_run)
                 and real_max_memuse < maxsize * memuse):
                 raise unittest.SkipTest(
                     "not enough memory: %.1fG minimum needed"
                     % (size * memuse / (1024 ** 3)))
 
-            if real_max_memuse and verbose:
+            wenn real_max_memuse and verbose:
                 print()
                 print(" ... expected peak memory use: {peak:.1f}G"
                       .format(peak=size * memuse / (1024 ** 3)))
                 watchdog = _MemoryWatchdog()
                 watchdog.start()
-            else:
+            sonst:
                 watchdog = None
 
             try:
                 return f(self, maxsize)
             finally:
-                if watchdog:
+                wenn watchdog:
                     watchdog.stop()
 
         wrapper.size = size
@@ -1206,15 +1206,15 @@ def bigmemtest(size, memuse, dry_run=True):
 def bigaddrspacetest(f):
     """Decorator fuer tests that fill the address space."""
     def wrapper(self):
-        if max_memuse < MAX_Py_ssize_t:
-            if MAX_Py_ssize_t >= 2**63 - 1 and max_memuse >= 2**31:
+        wenn max_memuse < MAX_Py_ssize_t:
+            wenn MAX_Py_ssize_t >= 2**63 - 1 and max_memuse >= 2**31:
                 raise unittest.SkipTest(
                     "not enough memory: try a 32-bit build instead")
-            else:
+            sonst:
                 raise unittest.SkipTest(
                     "not enough memory: %.1fG minimum needed"
                     % (MAX_Py_ssize_t / (1024 ** 3)))
-        else:
+        sonst:
             return f(self)
     return wrapper
 
@@ -1225,11 +1225,11 @@ def _id(obj):
     return obj
 
 def requires_resource(resource):
-    if resource == 'gui' and not _is_gui_available():
+    wenn resource == 'gui' and not _is_gui_available():
         return unittest.skip(_is_gui_available.reason)
-    if is_resource_enabled(resource):
+    wenn is_resource_enabled(resource):
         return _id
-    else:
+    sonst:
         return unittest.skip("resource {0!r} is not enabled".format(resource))
 
 def cpython_only(test):
@@ -1239,13 +1239,13 @@ def cpython_only(test):
     return impl_detail(cpython=True)(test)
 
 def impl_detail(msg=None, **guards):
-    if check_impl_detail(**guards):
+    wenn check_impl_detail(**guards):
         return _id
-    if msg is None:
+    wenn msg is None:
         guardnames, default = _parse_guards(guards)
-        if default:
+        wenn default:
             msg = "implementation detail not available on {0}"
-        else:
+        sonst:
             msg = "implementation detail specific to {0}"
         guardnames = sorted(guardnames.keys())
         msg = msg.format(' or '.join(guardnames))
@@ -1253,7 +1253,7 @@ def impl_detail(msg=None, **guards):
 
 def _parse_guards(guards):
     # Returns a tuple ({platform_name: run_me}, default_value)
-    if not guards:
+    wenn not guards:
         return ({'cpython': True}, False)
     is_true = list(guards.values())[0]
     assert list(guards.values()) == [is_true] * len(guards)   # all True or all False
@@ -1264,9 +1264,9 @@ def _parse_guards(guards):
 def check_impl_detail(**guards):
     """This function returns True or False depending on the host platform.
        Examples:
-          if check_impl_detail():               # only on CPython (default)
-          if check_impl_detail(jython=True):    # only on Jython
-          if check_impl_detail(cpython=False):  # everywhere except on CPython
+          wenn check_impl_detail():               # only on CPython (default)
+          wenn check_impl_detail(jython=True):    # only on Jython
+          wenn check_impl_detail(cpython=False):  # everywhere except on CPython
     """
     guards, default = _parse_guards(guards)
     return guards.get(sys.implementation.name, default)
@@ -1275,7 +1275,7 @@ def check_impl_detail(**guards):
 def no_tracing(func):
     """Decorator to temporarily turn off tracing fuer the duration of a test."""
     trace_wrapper = func
-    if hasattr(sys, 'gettrace'):
+    wenn hasattr(sys, 'gettrace'):
         @functools.wraps(func)
         def trace_wrapper(*args, **kwargs):
             original_trace = sys.gettrace()
@@ -1286,7 +1286,7 @@ def no_tracing(func):
                 sys.settrace(original_trace)
 
     coverage_wrapper = trace_wrapper
-    if 'test.cov' in sys.modules:  # -Xpresite=test.cov used
+    wenn 'test.cov' in sys.modules:  # -Xpresite=test.cov used
         cov = sys.monitoring.COVERAGE_ID
         @functools.wraps(func)
         def coverage_wrapper(*args, **kwargs):
@@ -1312,7 +1312,7 @@ def no_rerun(reason):
         _has_run = False
         def wrapper(self):
             nonlocal _has_run
-            if _has_run:
+            wenn _has_run:
                 self.skipTest(reason)
             func(self)
             _has_run = True
@@ -1323,7 +1323,7 @@ def no_rerun(reason):
 def refcount_test(test):
     """Decorator fuer tests which involve reference counting.
 
-    To start, the decorator does not run the test if is not run by CPython.
+    To start, the decorator does not run the test wenn is not run by CPython.
     After that, any trace function is unset during the test to prevent
     unexpected refcounts caused by the trace function.
 
@@ -1367,7 +1367,7 @@ def reset_code(f: types.FunctionType) -> types.FunctionType:
 # disabled, we just check fuer that directly
 
 def _check_docstrings():
-    """Just used to check if docstrings are enabled"""
+    """Just used to check wenn docstrings are enabled"""
 
 MISSING_C_DOCSTRINGS = (check_impl_detail() and
                         sys.platform != 'win32' and
@@ -1384,9 +1384,9 @@ requires_docstrings = unittest.skipUnless(HAVE_DOCSTRINGS,
 # Support fuer saving and restoring the imported modules.
 
 def flush_std_streams():
-    if sys.stdout is not None:
+    wenn sys.stdout is not None:
         sys.stdout.flush()
-    if sys.stderr is not None:
+    wenn sys.stderr is not None:
         sys.stderr.flush()
 
 
@@ -1399,12 +1399,12 @@ def print_warning(msg):
     stream.flush()
 
 # bpo-39983: Store the original sys.stderr at Python startup to be able to
-# log warnings even if sys.stderr is captured temporarily by a test.
+# log warnings even wenn sys.stderr is captured temporarily by a test.
 print_warning.orig_stderr = sys.stderr
 
 
 # Flag used by saved_test_environment of test.libregrtest.save_env,
-# to check if a test modified the environment. The flag should be set to False
+# to check wenn a test modified the environment. The flag should be set to False
 # before running a new test.
 #
 # For example, threading_helper.threading_cleanup() sets the flag is the function fails
@@ -1420,9 +1420,9 @@ def reap_children():
     global environment_altered
 
     # Need os.waitpid(-1, os.WNOHANG): Windows is not supported
-    if not (hasattr(os, 'waitpid') and hasattr(os, 'WNOHANG')):
+    wenn not (hasattr(os, 'waitpid') and hasattr(os, 'WNOHANG')):
         return
-    elif not has_subprocess_support:
+    sowenn not has_subprocess_support:
         return
 
     # Reap all our dead child processes so we don't leave zombies around.
@@ -1434,7 +1434,7 @@ def reap_children():
         except OSError:
             break
 
-        if pid == 0:
+        wenn pid == 0:
             break
 
         print_warning(f"reap_children() reaped child process {pid}")
@@ -1454,22 +1454,22 @@ def swap_attr(obj, attr, new_val):
         exist on `obj`, it will be created and then deleted at the end of the
         block.
 
-        The old value (or None if it doesn't exist) will be assigned to the
-        target of the "as" clause, if there is one.
+        The old value (or None wenn it doesn't exist) will be assigned to the
+        target of the "as" clause, wenn there is one.
     """
-    if hasattr(obj, attr):
+    wenn hasattr(obj, attr):
         real_val = getattr(obj, attr)
         setattr(obj, attr, new_val)
         try:
             yield real_val
         finally:
             setattr(obj, attr, real_val)
-    else:
+    sonst:
         setattr(obj, attr, new_val)
         try:
             yield
         finally:
-            if hasattr(obj, attr):
+            wenn hasattr(obj, attr):
                 delattr(obj, attr)
 
 @contextlib.contextmanager
@@ -1485,22 +1485,22 @@ def swap_item(obj, item, new_val):
         exist on `obj`, it will be created and then deleted at the end of the
         block.
 
-        The old value (or None if it doesn't exist) will be assigned to the
-        target of the "as" clause, if there is one.
+        The old value (or None wenn it doesn't exist) will be assigned to the
+        target of the "as" clause, wenn there is one.
     """
-    if item in obj:
+    wenn item in obj:
         real_val = obj[item]
         obj[item] = new_val
         try:
             yield real_val
         finally:
             obj[item] = real_val
-    else:
+    sonst:
         obj[item] = new_val
         try:
             yield
         finally:
-            if item in obj:
+            wenn item in obj:
                 del obj[item]
 
 def args_from_interpreter_flags():
@@ -1532,7 +1532,7 @@ klasse Matcher(object):
         fuer k in kwargs:
             v = kwargs[k]
             dv = d.get(k)
-            if not self.match_value(k, dv, v):
+            wenn not self.match_value(k, dv, v):
                 result = False
                 break
         return result
@@ -1541,11 +1541,11 @@ klasse Matcher(object):
         """
         Try to match a single stored value (dv) with a supplied value (v).
         """
-        if type(v) != type(dv):
+        wenn type(v) != type(dv):
             result = False
-        elif type(dv) is not str or k not in self._partial_matches:
+        sowenn type(dv) is not str or k not in self._partial_matches:
             result = (v == dv)
-        else:
+        sonst:
             result = dv.find(v) >= 0
         return result
 
@@ -1563,14 +1563,14 @@ def skip_if_buggy_ucrt_strfptime(test):
     """
     import locale
     global _buggy_ucrt
-    if _buggy_ucrt is None:
+    wenn _buggy_ucrt is None:
         if(sys.platform == 'win32' and
                 locale.getencoding() == 'cp65001' and
                 time.localtime().tm_zone == ''):
             _buggy_ucrt = True
-        else:
+        sonst:
             _buggy_ucrt = False
-    return unittest.skip("buggy MSVC UCRT strptime/strftime")(test) if _buggy_ucrt else test
+    return unittest.skip("buggy MSVC UCRT strptime/strftime")(test) wenn _buggy_ucrt sonst test
 
 klasse PythonSymlink:
     """Creates a symlink fuer the current Python executable"""
@@ -1586,12 +1586,12 @@ klasse PythonSymlink:
 
         self._platform_specific()
 
-    if sys.platform == "win32":
+    wenn sys.platform == "win32":
         def _platform_specific(self):
             import glob
             import _winapi
 
-            if os.path.lexists(self.real) and not os.path.exists(self.real):
+            wenn os.path.lexists(self.real) and not os.path.exists(self.real):
                 # App symlink appears to not exist, but we want the
                 # real executable here anyway
                 self.real = _winapi.GetModuleFileName(0)
@@ -1611,9 +1611,9 @@ klasse PythonSymlink:
 
             self._env = {k.upper(): os.getenv(k) fuer k in os.environ}
             self._env["PYTHONHOME"] = os.path.dirname(self.real)
-            if sysconfig.is_python_build():
+            wenn sysconfig.is_python_build():
                 self._env["PYTHONPATH"] = STDLIB_DIR
-    else:
+    sonst:
         def _platform_specific(self):
             pass
 
@@ -1630,7 +1630,7 @@ klasse PythonSymlink:
             try:
                 os.remove(link)
             except IOError as ex:
-                if verbose:
+                wenn verbose:
                     print("failed to clean up {}: {}".format(link, ex))
 
     def _call(self, python, args, env, returncode):
@@ -1639,8 +1639,8 @@ klasse PythonSymlink:
         p = subprocess.Popen(cmd, stdout=subprocess.PIPE,
                              stderr=subprocess.PIPE, env=env)
         r = p.communicate()
-        if p.returncode != returncode:
-            if verbose:
+        wenn p.returncode != returncode:
+            wenn verbose:
                 print(repr(r[0]))
                 print(repr(r[1]), file=sys.stderr)
             raise RuntimeError(
@@ -1658,7 +1658,7 @@ def skip_if_pgo_task(test):
     """Skip decorator fuer tests not run in (non-extended) PGO task"""
     ok = not PGO or PGO_EXTENDED
     msg = "Not run fuer (non-extended) PGO task"
-    return test if ok else unittest.skip(msg)(test)
+    return test wenn ok sonst unittest.skip(msg)(test)
 
 
 def detect_api_mismatch(ref_api, other_api, *, ignore=()):
@@ -1669,10 +1669,10 @@ def detect_api_mismatch(ref_api, other_api, *, ignore=()):
     includes all magic methods, i.e. those starting and ending in '__'.
     """
     missing_items = set(dir(ref_api)) - set(dir(other_api))
-    if ignore:
+    wenn ignore:
         missing_items -= set(ignore)
     missing_items = set(m fuer m in missing_items
-                        if not m.startswith('_') or m.endswith('__'))
+                        wenn not m.startswith('_') or m.endswith('__'))
     return missing_items
 
 
@@ -1717,18 +1717,18 @@ def check__all__(test_case, module, name_of_module=None, extra=(),
 
     """
 
-    if name_of_module is None:
+    wenn name_of_module is None:
         name_of_module = (module.__name__, )
-    elif isinstance(name_of_module, str):
+    sowenn isinstance(name_of_module, str):
         name_of_module = (name_of_module, )
 
     expected = set(extra)
 
     fuer name in dir(module):
-        if name.startswith('_') or name in not_exported:
+        wenn name.startswith('_') or name in not_exported:
             continue
         obj = getattr(module, name)
-        if (getattr(obj, '__module__', None) in name_of_module or
+        wenn (getattr(obj, '__module__', None) in name_of_module or
                 (not hasattr(obj, '__module__') and
                  not isinstance(obj, types.ModuleType))):
             expected.add(name)
@@ -1747,12 +1747,12 @@ def suppress_msvcrt_asserts(verbose=False):
                         | msvcrt.SEM_NOOPENFILEERRORBOX)
 
     # CrtSetReportMode() is only available in debug build
-    if hasattr(msvcrt, 'CrtSetReportMode'):
+    wenn hasattr(msvcrt, 'CrtSetReportMode'):
         fuer m in [msvcrt.CRT_WARN, msvcrt.CRT_ERROR, msvcrt.CRT_ASSERT]:
-            if verbose:
+            wenn verbose:
                 msvcrt.CrtSetReportMode(m, msvcrt.CRTDBG_MODE_FILE)
                 msvcrt.CrtSetReportFile(m, msvcrt.CRTDBG_FILE_STDERR)
-            else:
+            sonst:
                 msvcrt.CrtSetReportMode(m, 0)
 
 
@@ -1772,7 +1772,7 @@ klasse SuppressCrashReport:
         On UNIX, try to save the previous core file size limit, then set
         soft limit to 0.
         """
-        if sys.platform.startswith('win'):
+        wenn sys.platform.startswith('win'):
             # see http://msdn.microsoft.com/en-us/library/windows/desktop/ms680621.aspx
             try:
                 import msvcrt
@@ -1785,7 +1785,7 @@ klasse SuppressCrashReport:
 
             # bpo-23314: Suppress assert dialogs in debug builds.
             # CrtSetReportMode() is only available in debug build.
-            if hasattr(msvcrt, 'CrtSetReportMode'):
+            wenn hasattr(msvcrt, 'CrtSetReportMode'):
                 self.old_modes = {}
                 fuer report_type in [msvcrt.CRT_WARN,
                                     msvcrt.CRT_ERROR,
@@ -1796,13 +1796,13 @@ klasse SuppressCrashReport:
                             msvcrt.CRTDBG_FILE_STDERR)
                     self.old_modes[report_type] = old_mode, old_file
 
-        else:
+        sonst:
             try:
                 import resource
                 self.resource = resource
             except ImportError:
                 self.resource = None
-            if self.resource is not None:
+            wenn self.resource is not None:
                 try:
                     self.old_value = self.resource.getrlimit(self.resource.RLIMIT_CORE)
                     self.resource.setrlimit(self.resource.RLIMIT_CORE,
@@ -1810,9 +1810,9 @@ klasse SuppressCrashReport:
                 except (ValueError, OSError):
                     pass
 
-            if sys.platform == 'darwin':
+            wenn sys.platform == 'darwin':
                 import subprocess
-                # Check if the 'Crash Reporter' on OSX was configured
+                # Check wenn the 'Crash Reporter' on OSX was configured
                 # in 'Developer' mode and warn that it will get triggered
                 # when it is.
                 #
@@ -1825,7 +1825,7 @@ klasse SuppressCrashReport:
                                         stderr=subprocess.PIPE)
                 with proc:
                     stdout = proc.communicate()[0]
-                if stdout.strip() == b'developer':
+                wenn stdout.strip() == b'developer':
                     print("this test triggers the Crash Reporter, "
                           "that is intentional", end='', flush=True)
 
@@ -1833,19 +1833,19 @@ klasse SuppressCrashReport:
 
     def __exit__(self, *ignore_exc):
         """Restore Windows ErrorMode or core file behavior to initial value."""
-        if self.old_value is None:
+        wenn self.old_value is None:
             return
 
-        if sys.platform.startswith('win'):
+        wenn sys.platform.startswith('win'):
             import msvcrt
             msvcrt.SetErrorMode(self.old_value)
 
-            if self.old_modes:
+            wenn self.old_modes:
                 fuer report_type, (old_mode, old_file) in self.old_modes.items():
                     msvcrt.CrtSetReportMode(report_type, old_mode)
                     msvcrt.CrtSetReportFile(report_type, old_file)
-        else:
-            if self.resource is not None:
+        sonst:
+            wenn self.resource is not None:
                 try:
                     self.resource.setrlimit(self.resource.RLIMIT_CORE, self.old_value)
                 except (ValueError, OSError):
@@ -1861,7 +1861,7 @@ def patch(test_instance, object_to_patch, attr_name, new_value):
 
     """
     # check that 'attr_name' is a real attribute fuer 'object_to_patch'
-    # will raise AttributeError if it does not exist
+    # will raise AttributeError wenn it does not exist
     getattr(object_to_patch, attr_name)
 
     # keep a copy of the old value
@@ -1870,14 +1870,14 @@ def patch(test_instance, object_to_patch, attr_name, new_value):
         old_value = object_to_patch.__dict__[attr_name]
     except (AttributeError, KeyError):
         old_value = getattr(object_to_patch, attr_name, None)
-    else:
+    sonst:
         attr_is_local = True
 
     # restore the value when the test is done
     def cleanup():
-        if attr_is_local:
+        wenn attr_is_local:
             setattr(object_to_patch, attr_name, old_value)
-        else:
+        sonst:
             delattr(object_to_patch, attr_name)
 
     test_instance.addCleanup(cleanup)
@@ -1898,7 +1898,7 @@ def patch_list(orig):
 
 def run_in_subinterp(code):
     """
-    Run code in a subinterpreter. Raise unittest.SkipTest if the tracemalloc
+    Run code in a subinterpreter. Raise unittest.SkipTest wenn the tracemalloc
     module is enabled.
     """
     _check_tracemalloc()
@@ -1911,7 +1911,7 @@ def run_in_subinterp(code):
 
 def run_in_subinterp_with_config(code, *, own_gil=None, **config):
     """
-    Run code in a subinterpreter. Raise unittest.SkipTest if the tracemalloc
+    Run code in a subinterpreter. Raise unittest.SkipTest wenn the tracemalloc
     module is enabled.
     """
     _check_tracemalloc()
@@ -1919,18 +1919,18 @@ def run_in_subinterp_with_config(code, *, own_gil=None, **config):
         import _testinternalcapi
     except ImportError:
         raise unittest.SkipTest("requires _testinternalcapi")
-    if own_gil is not None:
+    wenn own_gil is not None:
         assert 'gil' not in config, (own_gil, config)
-        config['gil'] = 'own' if own_gil else 'shared'
-    else:
+        config['gil'] = 'own' wenn own_gil sonst 'shared'
+    sonst:
         gil = config['gil']
-        if gil == 0:
+        wenn gil == 0:
             config['gil'] = 'default'
-        elif gil == 1:
+        sowenn gil == 1:
             config['gil'] = 'shared'
-        elif gil == 2:
+        sowenn gil == 2:
             config['gil'] = 'own'
-        elif not isinstance(gil, str):
+        sowenn not isinstance(gil, str):
             raise NotImplementedError(gil)
     config = types.SimpleNamespace(**config)
     return _testinternalcapi.run_in_subinterp_with_config(code, config)
@@ -1943,8 +1943,8 @@ def _check_tracemalloc():
         import tracemalloc
     except ImportError:
         pass
-    else:
-        if tracemalloc.is_tracing():
+    sonst:
+        wenn tracemalloc.is_tracing():
             raise unittest.SkipTest("run_in_subinterp() cannot be used "
                                      "if tracemalloc module is tracing "
                                      "memory allocations")
@@ -1973,7 +1973,7 @@ def check_free_after_iterating(test, iter, cls, args=()):
 
 
 def missing_compiler_executable(cmd_names=[]):
-    """Check if the compiler components used to build the interpreter exist.
+    """Check wenn the compiler components used to build the interpreter exist.
 
     Check fuer the existence of the compiler executables whose names are listed
     in 'cmd_names' or all the compiler executables when 'cmd_names' is empty
@@ -1987,22 +1987,22 @@ def missing_compiler_executable(cmd_names=[]):
 
     compiler = ccompiler.new_compiler()
     sysconfig.customize_compiler(compiler)
-    if compiler.compiler_type == "msvc":
+    wenn compiler.compiler_type == "msvc":
         # MSVC has no executables, so check whether initialization succeeds
         try:
             compiler.initialize()
         except errors.PlatformError:
             return "msvc"
     fuer name in compiler.executables:
-        if cmd_names and name not in cmd_names:
+        wenn cmd_names and name not in cmd_names:
             continue
         cmd = getattr(compiler, name)
-        if cmd_names:
+        wenn cmd_names:
             assert cmd is not None, \
                     "the '%s' executable is not configured" % name
-        elif not cmd:
+        sowenn not cmd:
             continue
-        if shutil.which(cmd[0]) is None:
+        wenn shutil.which(cmd[0]) is None:
             return cmd[0]
 
 
@@ -2011,13 +2011,13 @@ def setswitchinterval(interval):
     # Setting a very low gil interval on the Android emulator causes python
     # to hang (issue #26939).
     minimum_interval = 1e-4   # 100 us
-    if is_android and interval < minimum_interval:
+    wenn is_android and interval < minimum_interval:
         global _old_android_emulator
-        if _old_android_emulator is None:
+        wenn _old_android_emulator is None:
             import platform
             av = platform.android_ver()
             _old_android_emulator = av.is_emulator and av.api_level < 24
-        if _old_android_emulator:
+        wenn _old_android_emulator:
             interval = minimum_interval
     return sys.setswitchinterval(interval)
 
@@ -2048,7 +2048,7 @@ def disable_faulthandler():
         faulthandler.disable()
         yield
     finally:
-        if is_enabled:
+        wenn is_enabled:
             faulthandler.enable(file=fd, all_threads=True)
 
 
@@ -2077,8 +2077,8 @@ klasse SaveSignals:
     def save(self):
         fuer signum in self.signals:
             handler = self.signal.getsignal(signum)
-            if handler is None:
-                # getsignal() returns None if a signal handler was not
+            wenn handler is None:
+                # getsignal() returns None wenn a signal handler was not
                 # registered by the Python signal module,
                 # and the handler is not SIG_DFL nor SIG_IGN.
                 #
@@ -2156,7 +2156,7 @@ klasse _SMALLEST:
 SMALLEST = _SMALLEST()
 
 def maybe_get_event_loop_policy():
-    """Return the global event loop policy if one is set, else return None."""
+    """Return the global event loop policy wenn one is set, sonst return None."""
     import asyncio.events
     return asyncio.events._event_loop_policy
 
@@ -2210,7 +2210,7 @@ klasse catch_unraisable_exception:
     cycle. The reference cycle is broken explicitly when the context manager
     exits.
 
-    Storing the object (cm.unraisable.object) can resurrect it if it is set to
+    Storing the object (cm.unraisable.object) can resurrect it wenn it is set to
     an object which is being finalized. Exiting the context manager clears the
     stored object.
 
@@ -2251,25 +2251,25 @@ def wait_process(pid, *, exitcode, timeout=None):
     Wait until process pid completes and check that the process exit code is
     exitcode.
 
-    Raise an AssertionError if the process exit code is not equal to exitcode.
+    Raise an AssertionError wenn the process exit code is not equal to exitcode.
 
     If the process runs longer than timeout seconds (LONG_TIMEOUT by default),
     kill the process (if signal.SIGKILL is available) and raise an
     AssertionError. The timeout feature is not available on Windows.
     """
-    if os.name != "nt":
+    wenn os.name != "nt":
         import signal
 
-        if timeout is None:
+        wenn timeout is None:
             timeout = LONG_TIMEOUT
 
         start_time = time.monotonic()
         fuer _ in sleeping_retry(timeout, error=False):
             pid2, status = os.waitpid(pid, os.WNOHANG)
-            if pid2 != 0:
+            wenn pid2 != 0:
                 break
             # rety: the process is still running
-        else:
+        sonst:
             try:
                 os.kill(pid, signal.SIGKILL)
                 os.waitpid(pid, 0)
@@ -2280,38 +2280,38 @@ def wait_process(pid, *, exitcode, timeout=None):
             dt = time.monotonic() - start_time
             raise AssertionError(f"process {pid} is still running "
                                  f"after {dt:.1f} seconds")
-    else:
+    sonst:
         # Windows implementation: don't support timeout :-(
         pid2, status = os.waitpid(pid, 0)
 
     exitcode2 = os.waitstatus_to_exitcode(status)
-    if exitcode2 != exitcode:
+    wenn exitcode2 != exitcode:
         raise AssertionError(f"process {pid} exited with code {exitcode2}, "
                              f"but exit code {exitcode} is expected")
 
     # sanity check: it should not fail in practice
-    if pid2 != pid:
+    wenn pid2 != pid:
         raise AssertionError(f"pid {pid2} != pid {pid}")
 
 def skip_if_broken_multiprocessing_synchronize():
     """
-    Skip tests if the multiprocessing.synchronize module is missing, if there
-    is no available semaphore implementation, or if creating a lock raises an
+    Skip tests wenn the multiprocessing.synchronize module is missing, wenn there
+    is no available semaphore implementation, or wenn creating a lock raises an
     OSError (on Linux only).
     """
     from .import_helper import import_module
 
-    # Skip tests if the _multiprocessing extension is missing.
+    # Skip tests wenn the _multiprocessing extension is missing.
     import_module('_multiprocessing')
 
-    # Skip tests if there is no available semaphore implementation:
+    # Skip tests wenn there is no available semaphore implementation:
     # multiprocessing.synchronize requires _multiprocessing.SemLock.
     synchronize = import_module('multiprocessing.synchronize')
 
-    if sys.platform == "linux":
+    wenn sys.platform == "linux":
         try:
             # bpo-38377: On Linux, creating a semaphore fails with OSError
-            # if the current user does not have the permission to create
+            # wenn the current user does not have the permission to create
             # a file in /dev/shm/ directory.
             import multiprocessing
             synchronize.Lock(ctx=multiprocessing.get_context('fork'))
@@ -2334,9 +2334,9 @@ def check_disallow_instantiation(testcase, tp, *args, **kwds):
     """
     mod = tp.__module__
     name = tp.__name__
-    if mod != 'builtins':
+    wenn mod != 'builtins':
         qualname = f"{mod}.{name}"
-    else:
+    sonst:
         qualname = f"{name}"
     msg = f"cannot create '{re.escape(qualname)}' instances"
     testcase.assertRaisesRegex(TypeError, msg, tp, *args, **kwds)
@@ -2386,12 +2386,12 @@ def set_recursion_limit(limit):
         sys.setrecursionlimit(original_limit)
 
 def infinite_recursion(max_depth=None):
-    if max_depth is None:
+    wenn max_depth is None:
         # Pick a number large enough to cause problems
         # but not take too long fuer code that can handle
         # very deep recursion.
         max_depth = 20_000
-    elif max_depth < 3:
+    sowenn max_depth < 3:
         raise ValueError(f"max_depth must be at least 3, got {max_depth}")
     depth = get_recursion_depth()
     depth = max(depth - 1, 1)  # Ignore infinite_recursion() frame.
@@ -2409,27 +2409,27 @@ def ignore_deprecations_from(module: str, *, like: str) -> object:
     return token
 
 def clear_ignored_deprecations(*tokens: object) -> None:
-    if not tokens:
+    wenn not tokens:
         raise ValueError("Provide token or tokens returned by ignore_deprecations_from")
 
     new_filters = []
     old_filters = warnings._get_filters()
     endswith = tuple(rf"(?#support{id(token)})" fuer token in tokens)
     fuer action, message, category, module, lineno in old_filters:
-        if action == "ignore" and category is DeprecationWarning:
-            if isinstance(message, re.Pattern):
+        wenn action == "ignore" and category is DeprecationWarning:
+            wenn isinstance(message, re.Pattern):
                 msg = message.pattern
-            else:
+            sonst:
                 msg = message or ""
-            if msg.endswith(endswith):
+            wenn msg.endswith(endswith):
                 continue
         new_filters.append((action, message, category, module, lineno))
-    if old_filters != new_filters:
+    wenn old_filters != new_filters:
         old_filters[:] = new_filters
         warnings._filters_mutated()
 
 
-# Skip a test if venv with pip is known to not work.
+# Skip a test wenn venv with pip is known to not work.
 def requires_venv_with_pip():
     # ensurepip requires zlib to open ZIP archives (.whl binary wheel packages)
     try:
@@ -2460,10 +2460,10 @@ def _findwheel(pkgname):
     filenames = sorted(filenames, reverse=True)  # approximate "newest" first
     fuer filename in filenames:
         # filename is like 'setuptools-{version}-py3-none-any.whl'
-        if not filename.endswith(".whl"):
+        wenn not filename.endswith(".whl"):
             continue
         prefix = pkgname + '-'
-        if filename.startswith(prefix):
+        wenn filename.startswith(prefix):
             return os.path.join(wheel_dir, filename)
     raise FileNotFoundError(f"No wheel fuer {pkgname} found in {wheel_dir}")
 
@@ -2476,12 +2476,12 @@ def setup_venv_with_pip_setuptools(venv_dir):
     from .os_helper import temp_cwd
 
     def run_command(cmd):
-        if verbose:
+        wenn verbose:
             import shlex
             print()
             print('Run:', ' '.join(map(shlex.quote, cmd)))
             subprocess.run(cmd, check=True)
-        else:
+        sonst:
             subprocess.run(cmd,
                            stdout=subprocess.PIPE,
                            stderr=subprocess.STDOUT,
@@ -2496,9 +2496,9 @@ def setup_venv_with_pip_setuptools(venv_dir):
 
         # Get the Python executable of the venv
         python_exe = os.path.basename(sys.executable)
-        if sys.platform == 'win32':
+        wenn sys.platform == 'win32':
             python = os.path.join(venv, 'Scripts', python_exe)
-        else:
+        sonst:
             python = os.path.join(venv, 'bin', python_exe)
 
         cmd = (python, '-X', 'dev',
@@ -2510,7 +2510,7 @@ def setup_venv_with_pip_setuptools(venv_dir):
         yield python
 
 
-# True if Python is built with the Py_DEBUG macro defined: if
+# True wenn Python is built with the Py_DEBUG macro defined: if
 # Python is built in debug mode (./configure --with-pydebug).
 Py_DEBUG = hasattr(sys, 'gettotalrefcount')
 
@@ -2544,7 +2544,7 @@ def late_deletion(obj):
     search_func.reference = ref_cycle
     codecs.register(search_func)
 
-    if hasattr(os, 'register_at_fork'):
+    wenn hasattr(os, 'register_at_fork'):
         # Store a reference in PyInterpreterState.before_forkers
         def atfork_func():
             pass
@@ -2556,25 +2556,25 @@ def busy_retry(timeout, err_msg=None, /, *, error=True):
     """
     Run the loop body until "break" stops the loop.
 
-    After *timeout* seconds, raise an AssertionError if *error* is true,
-    or just stop if *error is false.
+    After *timeout* seconds, raise an AssertionError wenn *error* is true,
+    or just stop wenn *error is false.
 
     Example:
 
         fuer _ in support.busy_retry(support.SHORT_TIMEOUT):
-            if check():
+            wenn check():
                 break
 
     Example of error=False usage:
 
         fuer _ in support.busy_retry(support.SHORT_TIMEOUT, error=False):
-            if check():
+            wenn check():
                 break
-        else:
+        sonst:
             raise RuntimeError('my custom error')
 
     """
-    if timeout <= 0:
+    wenn timeout <= 0:
         raise ValueError("timeout must be greater than zero")
 
     start_time = time.monotonic()
@@ -2583,13 +2583,13 @@ def busy_retry(timeout, err_msg=None, /, *, error=True):
     while True:
         yield
 
-        if time.monotonic() >= deadline:
+        wenn time.monotonic() >= deadline:
             break
 
-    if error:
+    wenn error:
         dt = time.monotonic() - start_time
         msg = f"timeout ({dt:.1f} seconds)"
-        if err_msg:
+        wenn err_msg:
             msg = f"{msg}: {err_msg}"
         raise AssertionError(msg)
 
@@ -2608,15 +2608,15 @@ def sleeping_retry(timeout, err_msg=None, /,
     Example raising an exception after SHORT_TIMEOUT seconds:
 
         fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
-            if check():
+            wenn check():
                 break
 
     Example of error=False usage:
 
         fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT, error=False):
-            if check():
+            wenn check():
                 break
-        else:
+        sonst:
             raise RuntimeError('my custom error')
     """
 
@@ -2705,7 +2705,7 @@ _BASE_COPY_SRC_DIR_IGNORED_NAMES = frozenset({
 # Ignore function fuer shutil.copytree() to copy the Python source code.
 def copy_python_src_ignore(path, names):
     ignored = _BASE_COPY_SRC_DIR_IGNORED_NAMES
-    if os.path.basename(path) == 'Doc':
+    wenn os.path.basename(path) == 'Doc':
         ignored |= {
             # SRC_DIR/Doc/build/
             'build',
@@ -2713,8 +2713,8 @@ def copy_python_src_ignore(path, names):
             'venv',
         }
 
-    # check if we are at the root of the source code
-    elif 'Modules' in names:
+    # check wenn we are at the root of the source code
+    sowenn 'Modules' in names:
         ignored |= {
             # SRC_DIR/build/
             'build',
@@ -2729,19 +2729,19 @@ def walk_class_hierarchy(top, *, topdown=True):
     stack = [top]
     while stack:
         top = stack.pop()
-        if isinstance(top, tuple):
+        wenn isinstance(top, tuple):
             yield top
             continue
 
         subs = type(top).__subclasses__(top)
-        if topdown:
-            # Yield before subclass traversal if going top down.
+        wenn topdown:
+            # Yield before subclass traversal wenn going top down.
             yield top, subs
             # Traverse into subclasses.
             fuer sub in reversed(subs):
                 stack.append(sub)
-        else:
-            # Yield after subclass traversal if going bottom up.
+        sonst:
+            # Yield after subclass traversal wenn going bottom up.
             stack.append((top, subs))
             # Traverse into subclasses.
             fuer sub in reversed(subs):
@@ -2754,38 +2754,38 @@ def iter_builtin_types():
         import _testinternalcapi
     except ImportError:
         _testinternalcapi = None
-    if _testinternalcapi is not None:
+    wenn _testinternalcapi is not None:
         yield from _testinternalcapi.get_static_builtin_types()
         return
 
     # Fall back to making a best-effort guess.
-    if hasattr(object, '__flags__'):
+    wenn hasattr(object, '__flags__'):
         # Look fuer any type object with the Py_TPFLAGS_STATIC_BUILTIN flag set.
         import datetime  # noqa: F401
         seen = set()
         fuer cls, subs in walk_class_hierarchy(object):
-            if cls in seen:
+            wenn cls in seen:
                 continue
             seen.add(cls)
-            if not (cls.__flags__ & _TPFLAGS_STATIC_BUILTIN):
+            wenn not (cls.__flags__ & _TPFLAGS_STATIC_BUILTIN):
                 # Do not walk its subclasses.
                 subs[:] = []
                 continue
             yield cls
-    else:
+    sonst:
         # Fall back to a naive approach.
         seen = set()
         fuer obj in __builtins__.values():
-            if not isinstance(obj, type):
+            wenn not isinstance(obj, type):
                 continue
             cls = obj
             # XXX?
-            if cls.__module__ != 'builtins':
+            wenn cls.__module__ != 'builtins':
                 continue
-            if cls == ExceptionGroup:
+            wenn cls == ExceptionGroup:
                 # It's a heap type.
                 continue
-            if cls in seen:
+            wenn cls in seen:
                 continue
             seen.add(cls)
             yield cls
@@ -2802,9 +2802,9 @@ def iter_name_in_mro(cls, name):
 
     inspect.getattr_static() is similar.
     """
-    # This can fail if "cls" is weird.
+    # This can fail wenn "cls" is weird.
     fuer base in inspect._static_getmro(cls):
-        # This can fail if "base" is weird.
+        # This can fail wenn "base" is weird.
         ns = inspect._get_dunder_dict_of_class(base)
         try:
             obj = ns[name]
@@ -2818,7 +2818,7 @@ def find_name_in_mro(cls, name, default=inspect._sentinel):
     fuer res in iter_name_in_mro(cls, name):
         # Return the first one.
         return res
-    if default is not inspect._sentinel:
+    wenn default is not inspect._sentinel:
         return default, None
     raise AttributeError(name)
 
@@ -2829,16 +2829,16 @@ def identify_type_slot_wrappers():
         import _testinternalcapi
     except ImportError:
         _testinternalcapi = None
-    if _testinternalcapi is not None:
+    wenn _testinternalcapi is not None:
         names = {n: None fuer n in _testinternalcapi.identify_type_slot_wrappers()}
         return list(names)
-    else:
+    sonst:
         raise NotImplementedError
 
 
 def iter_slot_wrappers(cls):
     def is_slot_wrapper(name, value):
-        if not isinstance(value, types.WrapperDescriptorType):
+        wenn not isinstance(value, types.WrapperDescriptorType):
             assert not repr(value).startswith('<slot wrapper '), (cls, name, value)
             return False
         assert repr(value).startswith('<slot wrapper '), (cls, name, value)
@@ -2850,10 +2850,10 @@ def iter_slot_wrappers(cls):
         attrs = identify_type_slot_wrappers()
     except NotImplementedError:
         attrs = None
-    if attrs is not None:
+    wenn attrs is not None:
         fuer attr in sorted(attrs):
             obj, base = find_name_in_mro(cls, attr, None)
-            if obj is not None and is_slot_wrapper(attr, obj):
+            wenn obj is not None and is_slot_wrapper(attr, obj):
                 yield attr, base is cls
         return
 
@@ -2862,7 +2862,7 @@ def iter_slot_wrappers(cls):
     ns = vars(cls)
     unused = set(ns)
     fuer name in dir(cls):
-        if name in ns:
+        wenn name in ns:
             unused.remove(name)
 
         try:
@@ -2870,25 +2870,25 @@ def iter_slot_wrappers(cls):
         except AttributeError:
             # It's as though it weren't in __dir__.
             assert name in ('__annotate__', '__annotations__', '__abstractmethods__'), (cls, name)
-            if name in ns and is_slot_wrapper(name, ns[name]):
+            wenn name in ns and is_slot_wrapper(name, ns[name]):
                 unused.add(name)
             continue
 
-        if not name.startswith('__') or not name.endswith('__'):
+        wenn not name.startswith('__') or not name.endswith('__'):
             assert not is_slot_wrapper(name, value), (cls, name, value)
-        if not is_slot_wrapper(name, value):
-            if name in ns:
+        wenn not is_slot_wrapper(name, value):
+            wenn name in ns:
                 assert not is_slot_wrapper(name, ns[name]), (cls, name, value, ns[name])
-        else:
-            if name in ns:
+        sonst:
+            wenn name in ns:
                 assert ns[name] is value, (cls, name, value, ns[name])
                 yield name, True
-            else:
+            sonst:
                 yield name, False
 
     fuer name in unused:
         value = ns[name]
-        if is_slot_wrapper(cls, name, value):
+        wenn is_slot_wrapper(cls, name, value):
             yield name, True
 
 
@@ -2902,7 +2902,7 @@ def force_color(color: bool):
         EnvironmentVarGuard() as env,
     ):
         env.unset("FORCE_COLOR", "NO_COLOR", "PYTHON_COLORS")
-        env.set("FORCE_COLOR" if color else "NO_COLOR", "1")
+        env.set("FORCE_COLOR" wenn color sonst "NO_COLOR", "1")
         yield
 
 
@@ -2955,7 +2955,7 @@ def force_not_colorized_test_class(cls):
 def make_clean_env() -> dict[str, str]:
     clean_env = os.environ.copy()
     fuer k in clean_env.copy():
-        if k.startswith("PYTHON"):
+        wenn k.startswith("PYTHON"):
             clean_env.pop(k)
     clean_env.pop("FORCE_COLOR", None)
     clean_env.pop("NO_COLOR", None)
@@ -2971,7 +2971,7 @@ WINDOWS_STATUS = {
 def get_signal_name(exitcode):
     import signal
 
-    if exitcode < 0:
+    wenn exitcode < 0:
         signum = -exitcode
         try:
             return signal.Signals(signum).name
@@ -2979,7 +2979,7 @@ def get_signal_name(exitcode):
             pass
 
     # Shell exit code (ex: WASI build)
-    if 128 < exitcode < 256:
+    wenn 128 < exitcode < 256:
         signum = exitcode - 128
         try:
             return signal.Signals(signum).name
@@ -2995,17 +2995,17 @@ def get_signal_name(exitcode):
 
 klasse BrokenIter:
     def __init__(self, init_raises=False, next_raises=False, iter_raises=False):
-        if init_raises:
+        wenn init_raises:
             1/0
         self.next_raises = next_raises
         self.iter_raises = iter_raises
 
     def __next__(self):
-        if self.next_raises:
+        wenn self.next_raises:
             1/0
 
     def __iter__(self):
-        if self.iter_raises:
+        wenn self.iter_raises:
             1/0
         return self
 
@@ -3019,12 +3019,12 @@ def in_systemd_nspawn_sync_suppressed() -> bool:
     and similar not being intercepted.
     """
 
-    if not hasattr(os, "O_SYNC"):
+    wenn not hasattr(os, "O_SYNC"):
         return False
 
     try:
         with open("/run/systemd/container", "rb") as fp:
-            if fp.read().rstrip() != b"systemd-nspawn":
+            wenn fp.read().rstrip() != b"systemd-nspawn":
                 return False
     except FileNotFoundError:
         return False
@@ -3035,9 +3035,9 @@ def in_systemd_nspawn_sync_suppressed() -> bool:
     try:
         fd = os.open(__file__, os.O_RDONLY | os.O_SYNC)
     except OSError as err:
-        if err.errno == errno.EINVAL:
+        wenn err.errno == errno.EINVAL:
             return True
-    else:
+    sonst:
         os.close(fd)
 
     return False
@@ -3048,7 +3048,7 @@ def run_no_yield_async_fn(async_fn, /, *args, **kwargs):
         coro.send(None)
     except StopIteration as e:
         return e.value
-    else:
+    sonst:
         raise AssertionError("coroutine did not complete")
     finally:
         coro.close()
@@ -3089,11 +3089,11 @@ def _supports_remote_attaching():
     return PROCESS_VM_READV_SUPPORTED
 
 def _support_remote_exec_only_impl():
-    if not sys.is_remote_debug_enabled():
+    wenn not sys.is_remote_debug_enabled():
         return unittest.skip("Remote debugging is not enabled")
-    if sys.platform not in ("darwin", "linux", "win32"):
+    wenn sys.platform not in ("darwin", "linux", "win32"):
         return unittest.skip("Test only runs on Linux, Windows and macOS")
-    if sys.platform == "linux" and not _supports_remote_attaching():
+    wenn sys.platform == "linux" and not _supports_remote_attaching():
         return unittest.skip("Test only runs on Linux with process_vm_readv support")
     return _id
 
@@ -3121,7 +3121,7 @@ klasse EqualToForwardRef:
         self.__owner__ = owner
 
     def __eq__(self, other):
-        if not isinstance(other, (EqualToForwardRef, annotationlib.ForwardRef)):
+        wenn not isinstance(other, (EqualToForwardRef, annotationlib.ForwardRef)):
             return NotImplemented
         return (
             self.__forward_arg__ == other.__forward_arg__
@@ -3132,11 +3132,11 @@ klasse EqualToForwardRef:
 
     def __repr__(self):
         extra = []
-        if self.__forward_module__ is not None:
+        wenn self.__forward_module__ is not None:
             extra.append(f", module={self.__forward_module__!r}")
-        if self.__forward_is_class__:
+        wenn self.__forward_is_class__:
             extra.append(", is_class=True")
-        if self.__owner__ is not None:
+        wenn self.__owner__ is not None:
             extra.append(f", owner={self.__owner__!r}")
         return f"EqualToForwardRef({self.__forward_arg__!r}{''.join(extra)})"
 
@@ -3144,31 +3144,31 @@ klasse EqualToForwardRef:
 _linked_to_musl = None
 def linked_to_musl():
     """
-    Report if the Python executable is linked to the musl C library.
+    Report wenn the Python executable is linked to the musl C library.
 
-    Return False if we don't think it is, or a version triple otherwise.
+    Return False wenn we don't think it is, or a version triple otherwise.
     """
     # This is can be a relatively expensive check, so we use a cache.
     global _linked_to_musl
-    if _linked_to_musl is not None:
+    wenn _linked_to_musl is not None:
         return _linked_to_musl
 
     # emscripten (at least as far as we're concerned) and wasi use musl,
     # but platform doesn't know how to get the version, so set it to zero.
-    if is_wasm32:
+    wenn is_wasm32:
         _linked_to_musl = (0, 0, 0)
         return _linked_to_musl
 
     # On all other non-linux platforms assume no musl.
-    if sys.platform != 'linux':
+    wenn sys.platform != 'linux':
         _linked_to_musl = False
         return _linked_to_musl
 
     # On linux, we'll depend on the platform module to do the check, so new
-    # musl platforms should add support in that module if possible.
+    # musl platforms should add support in that module wenn possible.
     import platform
     lib, version = platform.libc_ver()
-    if lib != 'musl':
+    wenn lib != 'musl':
         _linked_to_musl = False
         return _linked_to_musl
     _linked_to_musl = tuple(map(int, version.split('.')))

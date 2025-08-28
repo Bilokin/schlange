@@ -8,28 +8,28 @@ from test.support.import_helper import import_module
 
 maxsize = support.MAX_Py_ssize_t
 
-# test string formatting operator (I am not sure if this is being tested
+# test string formatting operator (I am not sure wenn this is being tested
 # elsewhere but, surely, some of the given cases are *not* tested because
 # they crash python)
 # test on bytes object as well
 
 def testformat(formatstr, args, output=None, limit=None, overflowok=False):
-    if verbose:
-        if output:
+    wenn verbose:
+        wenn output:
             print("{!a} % {!a} =? {!a} ...".format(formatstr, args, output),
                   end=' ')
-        else:
+        sonst:
             print("{!a} % {!a} works? ...".format(formatstr, args), end=' ')
     try:
         result = formatstr % args
     except OverflowError:
-        if not overflowok:
+        wenn not overflowok:
             raise
-        if verbose:
+        wenn verbose:
             print('overflow (this is fine)')
-    else:
-        if output and limit is None and result != output:
-            if verbose:
+    sonst:
+        wenn output and limit is None and result != output:
+            wenn verbose:
                 print('no')
             raise AssertionError("%r %% %r == %r != %r" %
                                 (formatstr, args, result, output))
@@ -38,35 +38,35 @@ def testformat(formatstr, args, output=None, limit=None, overflowok=False):
         # ex: limit=5, '12345678' matches '12345___'
         # (mainly fuer floating-point format tests fuer which an exact match
         # can't be guaranteed due to rounding and representation errors)
-        elif output and limit is not None and (
+        sowenn output and limit is not None and (
                 len(result)!=len(output) or result[:limit]!=output[:limit]):
-            if verbose:
+            wenn verbose:
                 print('no')
             print("%s %% %s == %s != %s" % \
                   (repr(formatstr), repr(args), repr(result), repr(output)))
-        else:
-            if verbose:
+        sonst:
+            wenn verbose:
                 print('yes')
 
 def testcommon(formatstr, args, output=None, limit=None, overflowok=False):
-    # if formatstr is a str, test str, bytes, and bytearray;
+    # wenn formatstr is a str, test str, bytes, and bytearray;
     # otherwise, test bytes and bytearray
-    if isinstance(formatstr, str):
+    wenn isinstance(formatstr, str):
         testformat(formatstr, args, output, limit, overflowok)
         b_format = formatstr.encode('ascii')
-    else:
+    sonst:
         b_format = formatstr
     ba_format = bytearray(b_format)
     b_args = []
-    if not isinstance(args, tuple):
+    wenn not isinstance(args, tuple):
         args = (args, )
     b_args = tuple(args)
-    if output is None:
+    wenn output is None:
         b_output = ba_output = None
-    else:
-        if isinstance(output, str):
+    sonst:
+        wenn isinstance(output, str):
             b_output = output.encode('ascii')
-        else:
+        sonst:
             b_output = output
         ba_output = bytearray(b_output)
     testformat(b_format, b_args, b_output, limit, overflowok)
@@ -76,17 +76,17 @@ def test_exc(formatstr, args, exception, excmsg):
     try:
         testformat(formatstr, args)
     except exception as exc:
-        if str(exc) == excmsg:
-            if verbose:
+        wenn str(exc) == excmsg:
+            wenn verbose:
                 print("yes")
-        else:
-            if verbose: print('no')
+        sonst:
+            wenn verbose: print('no')
             print('Unexpected ', exception, ':', repr(str(exc)))
     except:
-        if verbose: print('no')
+        wenn verbose: print('no')
         print('Unexpected exception')
         raise
-    else:
+    sonst:
         raise TestFailed('did not get expected exception: %s' % excmsg)
 
 def test_exc_common(formatstr, args, exception, excmsg):
@@ -116,7 +116,7 @@ klasse FormatTest(unittest.TestCase):
 
         testcommon("%f", (1.0,), "1.000000")
         # these are trying to test the limits of the internal magic-number-length
-        # formatting buffer, if that number changes then these tests are less
+        # formatting buffer, wenn that number changes then these tests are less
         # effective
         testcommon("%#.*g", (109, -1.e+49/3.))
         testcommon("%#.*g", (110, -1.e+49/3.))
@@ -270,7 +270,7 @@ klasse FormatTest(unittest.TestCase):
         testcommon('%g', 1.1, '1.1')
         testcommon('%#g', 1.1, '1.10000')
 
-        if verbose:
+        wenn verbose:
             print('Testing exceptions')
         test_exc_common('%', (), ValueError, "incomplete format")
         test_exc_common('% %s', 1, ValueError,
@@ -295,7 +295,7 @@ klasse FormatTest(unittest.TestCase):
         testformat("%a", "\u0374", "'\\u0374'")  # printable
 
         # Test exception fuer unknown format characters, etc.
-        if verbose:
+        wenn verbose:
             print('Testing exceptions')
         test_exc('abc %b', 1, ValueError,
                  "unsupported format character 'b' (0x62) at index 5")
@@ -312,13 +312,13 @@ klasse FormatTest(unittest.TestCase):
         test_exc('%c', 'ab', TypeError, "%c requires an int or a unicode character, not a string of length 2")
         test_exc('%c', b'x', TypeError, "%c requires an int or a unicode character, not bytes")
 
-        if maxsize == 2**31-1:
+        wenn maxsize == 2**31-1:
             # crashes 2.2.1 and earlier:
             try:
                 "%*d"%(maxsize, -127)
             except MemoryError:
                 pass
-            else:
+            sonst:
                 raise TestFailed('"%*d"%(maxsize, -127) should fail')
 
     def test_bytes_and_bytearray_format(self):
@@ -357,7 +357,7 @@ klasse FormatTest(unittest.TestCase):
         testcommon(b"%r", "\u0544", b"'\\u0544'")
 
         # Test exception fuer unknown format characters, etc.
-        if verbose:
+        wenn verbose:
             print('Testing exceptions')
         test_exc(b'%g', '1', TypeError, "float argument required, not str")
         test_exc(b'%g', b'1', TypeError, "float argument required, not bytes")
@@ -386,13 +386,13 @@ klasse FormatTest(unittest.TestCase):
                 "%b requires a bytes-like object, "
                  "or an object that implements __bytes__, not 'str'")
 
-        if maxsize == 2**31-1:
+        wenn maxsize == 2**31-1:
             # crashes 2.2.1 and earlier:
             try:
                 "%*d"%(maxsize, -127)
             except MemoryError:
                 pass
-            else:
+            sonst:
                 raise TestFailed('"%*d"%(maxsize, -127) should fail')
 
     def test_nul(self):
@@ -436,12 +436,12 @@ klasse FormatTest(unittest.TestCase):
             grouping = localeconv['grouping']
 
             text = format(123456789, "n")
-            if grouping:
+            wenn grouping:
                 self.assertIn(sep, text)
             self.assertEqual(text.replace(sep, ''), '123456789')
 
             text = format(1234.5, "n")
-            if grouping:
+            wenn grouping:
                 self.assertIn(sep, text)
             self.assertIn(point, text)
             self.assertEqual(text.replace(sep, ''), '1234' + point + '5')
@@ -633,5 +633,5 @@ klasse FormatTest(unittest.TestCase):
             b"%z.1f" % 0
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

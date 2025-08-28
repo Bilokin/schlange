@@ -40,9 +40,9 @@ klasse _TempModule(object):
         return self
 
     def __exit__(self, *args):
-        if self._saved_module:
+        wenn self._saved_module:
             sys.modules[self.mod_name] = self._saved_module[0]
-        else:
+        sonst:
             del sys.modules[self.mod_name]
         self._saved_module = []
 
@@ -52,7 +52,7 @@ klasse _ModifiedArgv0(object):
         self._saved_value = self._sentinel = object()
 
     def __enter__(self):
-        if self._saved_value is not self._sentinel:
+        wenn self._saved_value is not self._sentinel:
             raise RuntimeError("Already preserving saved value")
         self._saved_value = sys.argv[0]
         sys.argv[0] = self.value
@@ -66,17 +66,17 @@ def _run_code(code, run_globals, init_globals=None,
               mod_name=None, mod_spec=None,
               pkg_name=None, script_name=None):
     """Helper to run code in nominated namespace"""
-    if init_globals is not None:
+    wenn init_globals is not None:
         run_globals.update(init_globals)
-    if mod_spec is None:
+    wenn mod_spec is None:
         loader = None
         fname = script_name
         cached = None
-    else:
+    sonst:
         loader = mod_spec.loader
         fname = mod_spec.origin
         cached = mod_spec.cached
-        if pkg_name is None:
+        wenn pkg_name is None:
             pkg_name = mod_spec.parent
     run_globals.update(__name__ = mod_name,
                        __file__ = fname,
@@ -92,7 +92,7 @@ def _run_module_code(code, init_globals=None,
                     mod_name=None, mod_spec=None,
                     pkg_name=None, script_name=None):
     """Helper to run code in new namespace with sys modified"""
-    fname = script_name if mod_spec is None else mod_spec.origin
+    fname = script_name wenn mod_spec is None sonst mod_spec.origin
     with _TempModule(mod_name) as temp_module, _ModifiedArgv0(fname):
         mod_globals = temp_module.module.__dict__
         _run_code(code, mod_globals, init_globals,
@@ -103,10 +103,10 @@ def _run_module_code(code, init_globals=None,
 
 # Helper to get the full name, spec and code fuer a module
 def _get_module_details(mod_name, error=ImportError):
-    if mod_name.startswith("."):
+    wenn mod_name.startswith("."):
         raise error("Relative module names not supported")
     pkg_name, _, _ = mod_name.rpartition(".")
-    if pkg_name:
+    wenn pkg_name:
         # Try importing the parent to avoid catching initialization errors
         try:
             __import__(pkg_name)
@@ -114,12 +114,12 @@ def _get_module_details(mod_name, error=ImportError):
             # If the parent or higher ancestor package is missing, let the
             # error be raised by find_spec() below and then be caught. But do
             # not allow other errors to be caught.
-            if e.name is None or (e.name != pkg_name and
+            wenn e.name is None or (e.name != pkg_name and
                     not pkg_name.startswith(e.name + ".")):
                 raise
-        # Warn if the module has already been imported under its normal name
+        # Warn wenn the module has already been imported under its normal name
         existing = sys.modules.get(mod_name)
-        if existing is not None and not hasattr(existing, "__path__"):
+        wenn existing is not None and not hasattr(existing, "__path__"):
             from warnings import warn
             msg = "{mod_name!r} found in sys.modules after import of " \
                 "package {pkg_name!r}, but prior to execution of " \
@@ -134,32 +134,32 @@ def _get_module_details(mod_name, error=ImportError):
         # importlib, where the latter raises other errors fuer cases where
         # pkgutil previously raised ImportError
         msg = "Error while finding module specification fuer {!r} ({}: {})"
-        if mod_name.endswith(".py"):
+        wenn mod_name.endswith(".py"):
             msg += (f". Try using '{mod_name[:-3]}' instead of "
                     f"'{mod_name}' as the module name.")
         raise error(msg.format(mod_name, type(ex).__name__, ex)) from ex
-    if spec is None:
+    wenn spec is None:
         raise error("No module named %s" % mod_name)
-    if spec.submodule_search_locations is not None:
-        if mod_name == "__main__" or mod_name.endswith(".__main__"):
+    wenn spec.submodule_search_locations is not None:
+        wenn mod_name == "__main__" or mod_name.endswith(".__main__"):
             raise error("Cannot use package as __main__ module")
         try:
             pkg_main_name = mod_name + ".__main__"
             return _get_module_details(pkg_main_name, error)
         except error as e:
-            if mod_name not in sys.modules:
+            wenn mod_name not in sys.modules:
                 raise  # No module loaded; being a package is irrelevant
             raise error(("%s; %r is a package and cannot " +
                                "be directly executed") %(e, mod_name))
     loader = spec.loader
-    if loader is None:
+    wenn loader is None:
         raise error("%r is a namespace package and cannot be executed"
                                                                  % mod_name)
     try:
         code = loader.get_code(mod_name)
     except ImportError as e:
         raise error(format(e)) from e
-    if code is None:
+    wenn code is None:
         raise error("No code object available fuer %s" % mod_name)
     return mod_name, spec, code
 
@@ -185,15 +185,15 @@ def _run_module_as_main(mod_name, alter_argv=True):
            __package__
     """
     try:
-        if alter_argv or mod_name != "__main__": # i.e. -m switch
+        wenn alter_argv or mod_name != "__main__": # i.e. -m switch
             mod_name, mod_spec, code = _get_module_details(mod_name, _Error)
-        else:          # i.e. directory or zipfile execution
+        sonst:          # i.e. directory or zipfile execution
             mod_name, mod_spec, code = _get_main_module_details(_Error)
     except _Error as exc:
         msg = "%s: %s" % (sys.executable, exc)
         sys.exit(msg)
     main_globals = sys.modules["__main__"].__dict__
-    if alter_argv:
+    wenn alter_argv:
         sys.argv[0] = mod_spec.origin
     return _run_code(code, main_globals, None,
                      "__main__", mod_spec)
@@ -208,11 +208,11 @@ def run_module(mod_name, init_globals=None,
        init_globals -- dictionary used to pre-populate the module’s
        globals dictionary before the code is executed.
 
-       run_name -- if not None, this will be used fuer setting __name__;
-       otherwise, __name__ will be set to mod_name + '__main__' if the
+       run_name -- wenn not None, this will be used fuer setting __name__;
+       otherwise, __name__ will be set to mod_name + '__main__' wenn the
        named module is a package and to just mod_name otherwise.
 
-       alter_sys -- if True, sys.argv[0] is updated with the value of
+       alter_sys -- wenn True, sys.argv[0] is updated with the value of
        __file__ and sys.modules[__name__] is updated with a temporary
        module object fuer the module being executed. Both are
        restored to their original values before the function returns.
@@ -220,11 +220,11 @@ def run_module(mod_name, init_globals=None,
        Returns the resulting module globals dictionary.
     """
     mod_name, mod_spec, code = _get_module_details(mod_name)
-    if run_name is None:
+    wenn run_name is None:
         run_name = mod_name
-    if alter_sys:
+    wenn alter_sys:
         return _run_module_code(code, init_globals, run_name, mod_spec)
-    else:
+    sonst:
         # Leave the sys module alone
         return _run_code(code, {}, init_globals, run_name, mod_spec)
 
@@ -239,7 +239,7 @@ def _get_main_module_details(error=ImportError):
     try:
         return _get_module_details(main_name)
     except ImportError as exc:
-        if main_name in str(exc):
+        wenn main_name in str(exc):
             raise error("can't find %r module in %r" %
                               (main_name, sys.path[0])) from exc
         raise
@@ -253,7 +253,7 @@ def _get_code_from_file(fname):
     code_path = os.path.abspath(fname)
     with io.open_code(code_path) as f:
         code = read_code(f)
-    if code is None:
+    wenn code is None:
         # That didn't work, so try it as normal source code
         with io.open_code(code_path) as f:
             code = compile(f.read(), fname, 'exec')
@@ -269,24 +269,24 @@ def run_path(path_name, init_globals=None, run_name=None):
        init_globals -- dictionary used to pre-populate the module’s
        globals dictionary before the code is executed.
 
-       run_name -- if not None, this will be used to set __name__;
+       run_name -- wenn not None, this will be used to set __name__;
        otherwise, '<run_path>' will be used fuer __name__.
 
        Returns the resulting module globals dictionary.
     """
-    if run_name is None:
+    wenn run_name is None:
         run_name = "<run_path>"
     pkg_name = run_name.rpartition(".")[0]
     from pkgutil import get_importer
     importer = get_importer(path_name)
     path_name = os.fsdecode(path_name)
-    if isinstance(importer, type(None)):
+    wenn isinstance(importer, type(None)):
         # Not a valid sys.path entry, so run the code directly
         # execfile() doesn't help as we want to allow compiled files
         code = _get_code_from_file(path_name)
         return _run_module_code(code, init_globals, run_name,
                                 pkg_name=pkg_name, script_name=path_name)
-    else:
+    sonst:
         # Finder is defined fuer path, so add it to
         # the start of sys.path
         sys.path.insert(0, path_name)
@@ -310,10 +310,10 @@ def run_path(path_name, init_globals=None, run_name=None):
                 pass
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     # Run the module specified as the next command line argument
-    if len(sys.argv) < 2:
+    wenn len(sys.argv) < 2:
         print("No module specified fuer execution", file=sys.stderr)
-    else:
+    sonst:
         del sys.argv[0] # Make the requested module sys.argv[0]
         _run_module_as_main(sys.argv[0])

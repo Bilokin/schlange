@@ -35,8 +35,8 @@ klasse TextTest(AbstractTkTest, unittest.TestCase):
         # Invalid text index.
         self.assertRaises(tkinter.TclError, text.search, '', 0)
 
-        # Check if we are getting the indices as strings -- you are likely
-        # to get Tcl_Obj under Tk 8.5 if Tkinter doesn't convert it.
+        # Check wenn we are getting the indices as strings -- you are likely
+        # to get Tcl_Obj under Tk 8.5 wenn Tkinter doesn't convert it.
         text.insert('1.0', 'hi-test')
         self.assertEqual(text.search('-test', '1.0', 'end'), '1.2')
         self.assertEqual(text.search('test', '1.0', 'end'), '1.3')
@@ -95,5 +95,5 @@ klasse TextTest(AbstractTkTest, unittest.TestCase):
         self.assertEqual(text.count('1.3', '1.3', 'update'), None)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

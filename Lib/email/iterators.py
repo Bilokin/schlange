@@ -23,7 +23,7 @@ def walk(self):
     generator.
     """
     yield self
-    if self.is_multipart():
+    wenn self.is_multipart():
         fuer subpart in self.get_payload():
             yield from subpart.walk()
 
@@ -36,7 +36,7 @@ def body_line_iterator(msg, decode=False):
     """
     fuer subpart in msg.walk():
         payload = subpart.get_payload(decode=decode)
-        if isinstance(payload, str):
+        wenn isinstance(payload, str):
             yield from StringIO(payload)
 
 
@@ -48,21 +48,21 @@ def typed_subpart_iterator(msg, maintype='text', subtype=None):
     omitted, only the main type is matched.
     """
     fuer subpart in msg.walk():
-        if subpart.get_content_maintype() == maintype:
-            if subtype is None or subpart.get_content_subtype() == subtype:
+        wenn subpart.get_content_maintype() == maintype:
+            wenn subtype is None or subpart.get_content_subtype() == subtype:
                 yield subpart
 
 
 def _structure(msg, fp=None, level=0, include_default=False):
     """A handy debugging aid"""
-    if fp is None:
+    wenn fp is None:
         fp = sys.stdout
     tab = ' ' * (level * 4)
     print(tab + msg.get_content_type(), end='', file=fp)
-    if include_default:
+    wenn include_default:
         print(' [%s]' % msg.get_default_type(), file=fp)
-    else:
+    sonst:
         print(file=fp)
-    if msg.is_multipart():
+    wenn msg.is_multipart():
         fuer subpart in msg.get_payload():
             _structure(subpart, fp, level+1, include_default)

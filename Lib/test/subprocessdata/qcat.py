@@ -2,6 +2,6 @@
 
 import sys
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     fuer line in sys.stdin:
         sys.stdout.write(line)

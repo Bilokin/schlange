@@ -99,15 +99,15 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         self.addCleanup(os_helper.rmtree, dirName)
 
         fuer name, data in files.items():
-            if isinstance(data, tuple):
+            wenn isinstance(data, tuple):
                 mtime, data = data
             path = os.path.join(dirName, *name.split('/'))
-            if path[-1] == os.sep:
-                if not os.path.isdir(path):
+            wenn path[-1] == os.sep:
+                wenn not os.path.isdir(path):
                     os.makedirs(path)
-            else:
+            sonst:
                 dname = os.path.dirname(path)
-                if not os.path.isdir(dname):
+                wenn not os.path.isdir(dname):
                     os.makedirs(dname)
                 with open(path, 'wb') as fp:
                     fp.write(data)
@@ -121,10 +121,10 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
 
         with ZipFile(zipName, "w", compression=self.compression) as z:
             self.writeZip(z, files, file_comment=file_comment, prefix=prefix)
-            if comment is not None:
+            wenn comment is not None:
                 z.comment = comment
 
-        if stuff is not None:
+        wenn stuff is not None:
             # Prepend 'stuff' to the start of the zipfile
             with open(zipName, "rb") as f:
                 data = f.read()
@@ -134,19 +134,19 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
 
     def writeZip(self, z, files, *, file_comment=None, prefix=''):
         fuer name, data in files.items():
-            if isinstance(data, tuple):
+            wenn isinstance(data, tuple):
                 mtime, data = data
-            else:
+            sonst:
                 mtime = NOW
             name = name.replace(os.sep, '/')
             zinfo = ZipInfo(prefix + name, time.localtime(mtime))
             zinfo.compress_type = self.compression
-            if file_comment is not None:
+            wenn file_comment is not None:
                 zinfo.comment = file_comment
-            if data is None:
+            wenn data is None:
                 zinfo.CRC = 0
                 z.mkdir(zinfo)
-            else:
+            sonst:
                 assert name[-1] != '/'
                 z.writestr(zinfo, data)
 
@@ -155,7 +155,7 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         return {f"f{n}.py": test_src fuer n in range(65537)}
 
     def doTest(self, expected_ext, files, *modules, **kw):
-        if 'prefix' not in kw:
+        wenn 'prefix' not in kw:
             kw['prefix'] = 'pre/fix/'
         self.makeZip(files, **kw)
         self.doTestWithPreBuiltZip(expected_ext, *modules, **kw)
@@ -167,10 +167,10 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
 
         mod = importlib.import_module(".".join(modules))
 
-        if call is not None:
+        wenn call is not None:
             call(mod)
 
-        if expected_ext:
+        wenn expected_ext:
             file = mod.get_file()
             self.assertEqual(file, os.path.join(zip_path,
                                  *modules) + expected_ext)
@@ -194,18 +194,18 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         # occur in that case (builtin modules are always found first),
         # so we'll simply skip it then. Bug #765456.
         #
-        if "zlib" in sys.builtin_module_names:
+        wenn "zlib" in sys.builtin_module_names:
             self.skipTest('zlib is a builtin module')
-        if "zlib" in sys.modules:
+        wenn "zlib" in sys.modules:
             del sys.modules["zlib"]
         files = {"zlib.py": test_src}
         try:
             self.doTest(".py", files, "zlib")
         except ImportError:
-            if self.compression != ZIP_DEFLATED:
+            wenn self.compression != ZIP_DEFLATED:
                 self.fail("expected test to not raise ImportError")
-        else:
-            if self.compression != ZIP_STORED:
+        sonst:
+            wenn self.compression != ZIP_STORED:
                 self.fail("expected test to raise ImportError")
 
     def testPy(self):
@@ -360,12 +360,12 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
 
     def _testPackage(self, initfile):
         zi = zipimport.zipimporter(os.path.join(TEMP_ZIP, 'a'))
-        if initfile is None:
+        wenn initfile is None:
             # XXX Should it work?
             self.assertRaises(zipimport.ZipImportError, zi.is_package, 'b')
             self.assertRaises(zipimport.ZipImportError, zi.get_source, 'b')
             self.assertRaises(zipimport.ZipImportError, zi.get_code, 'b')
-        else:
+        sonst:
             self.assertTrue(zi.is_package('b'))
             self.assertEqual(zi.get_source('b'), test_src)
             self.assertEqual(zi.get_code('b').co_filename,
@@ -377,9 +377,9 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         mod = importlib.import_module(f'a.b')
         self.assertIn('a', sys.modules)
         self.assertIs(sys.modules['a.b'], mod)
-        if initfile is None:
+        wenn initfile is None:
             self.assertIsNone(mod.__file__)
-        else:
+        sonst:
             self.assertEqual(mod.__file__,
                              os.path.join(TEMP_ZIP, 'a', 'b', initfile))
         self.assertEqual(len(mod.__path__), 1, mod.__path__)
@@ -424,7 +424,7 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
 
         mod = importlib.import_module(TESTPACK)
 
-        # if TESTPACK is functioning as a namespace pkg then
+        # wenn TESTPACK is functioning as a namespace pkg then
         # there should be two entries in the __path__.
         # First should be path2 and second path1.
         self.assertEqual(2, len(mod.__path__))
@@ -500,7 +500,7 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
 
         mod = importlib.import_module(TESTPACK)
 
-        # if TESTPACK is functioning as a namespace pkg then
+        # wenn TESTPACK is functioning as a namespace pkg then
         # there should be two entries in the __path__.
         # First should be path2 and second path1.
         self.assertEqual(2, len(mod.__path__))
@@ -629,7 +629,7 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         spec = zi.find_spec('spam2')
         self.assertIsNotNone(spec)
         self.assertIsInstance(spec.loader, zipimport.zipimporter)
-        # Check that the cached data is removed if the file is deleted
+        # Check that the cached data is removed wenn the file is deleted
         os.remove(TEMP_ZIP)
         zi.invalidate_caches()
         self.assertFalse(zi._get_files())
@@ -747,7 +747,7 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         src = """if 1:  # indent hack
         def get_file():
             return __file__
-        if __loader__.get_data("some.data") != b"some data":
+        wenn __loader__.get_data("some.data") != b"some data":
             raise AssertionError("bad data")\n"""
         pyc = make_pyc(compile(src, "<???>", "exec"), NOW, len(src))
         files = {TESTMOD + pyc_ext: pyc,
@@ -765,9 +765,9 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         sys.path.insert(0, TEMP_ZIP)
         mod = importlib.import_module(TESTMOD)
         self.assertEqual(mod.test(1), 1)
-        if __debug__:
+        wenn __debug__:
             self.assertRaises(AssertionError, mod.test, False)
-        else:
+        sonst:
             self.assertEqual(mod.test(0), 0)
 
     def testImport_WithStuff(self):
@@ -837,10 +837,10 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
             print_tb(tb, 1, s)
             self.assertEndsWith(s.getvalue(),
                 '    def do_raise(): raise TypeError\n'
-                '' if support.has_no_debug_ranges() else
+                '' wenn support.has_no_debug_ranges() sonst
                 '                    ^^^^^^^^^^^^^^^\n'
             )
-        else:
+        sonst:
             raise AssertionError("This ought to be impossible")
 
     def testTraceback(self):
@@ -913,8 +913,8 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         pre_built_zip_parts = glob.glob(full_parts_glob)
 
         self.addCleanup(os_helper.unlink, TEMP_ZIP)
-        if not pre_built_zip_parts:
-            if self.compression != ZIP_STORED:
+        wenn not pre_built_zip_parts:
+            wenn self.compression != ZIP_STORED:
                 support.requires(
                     "cpu",
                     "test requires a lot of CPU fuer compression."
@@ -949,10 +949,10 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
                         while True:
                             offset = f.tell()
                             data = f.read(len(empty_page))
-                            if not data:
+                            wenn not data:
                                 break
-                            if data != empty_page:
-                                if not part:
+                            wenn data != empty_page:
+                                wenn not part:
                                     part_fullname = os.path.join(
                                         TEST_DATA_DIR,
                                         f"sparse-zip64-c{self.compression:d}-"
@@ -965,21 +965,21 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
                                     part = open(part_fullname, "wb")
                                     print("Created", part_fullname)
                                 part.write(data)
-                            else:
-                                if part:
+                            sonst:
+                                wenn part:
                                     part.close()
                                 part = None
                     finally:
-                        if part:
+                        wenn part:
                             part.close()
 
-            if self.compression == ZIP_STORED:
+            wenn self.compression == ZIP_STORED:
                 print(f"Creating sparse parts to check in into {TEST_DATA_DIR}:")
                 make_sparse_zip_parts(TEMP_ZIP)
 
-        else:
+        sonst:
             def extract_offset(name):
-                if m := re.search(r"-(0x[0-9a-f]{9})\.part$", name):
+                wenn m := re.search(r"-(0x[0-9a-f]{9})\.part$", name):
                     return int(m.group(1), base=16)
                 raise ValueError(f"{name=} does not fit expected pattern.")
             offset_parts = [(extract_offset(n), n) fuer n in pre_built_zip_parts]
@@ -1098,5 +1098,5 @@ def tearDownModule():
     os_helper.unlink(TESTMOD)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

@@ -17,7 +17,7 @@ with imports_under_tool('freeze', 'test'):
 @unittest.skipIf(sys.platform == 'darwin' and sys._framework,
         'not supported fuer frameworks builds on macOS')
 @support.skip_if_buildbot('not all buildbots have enough space')
-# gh-103053: Skip test if Python is built with Profile Guided Optimization
+# gh-103053: Skip test wenn Python is built with Profile Guided Optimization
 # (PGO), since the test is just too slow in this case.
 @unittest.skipIf(support.check_cflags_pgo(),
                  'test is too slow with PGO')

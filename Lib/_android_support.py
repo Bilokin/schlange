@@ -13,7 +13,7 @@ MAX_BYTES_PER_WRITE = 4000
 
 # UTF-8 uses a maximum of 4 bytes per character, so limiting text writes to this
 # size ensures that we can always avoid exceeding MAX_BYTES_PER_WRITE.
-# However, if the actual number of bytes per character is smaller than that,
+# However, wenn the actual number of bytes per character is smaller than that,
 # then we may still join multiple consecutive text writes into binary
 # writes containing a larger number of characters.
 MAX_CHARS_PER_WRITE = MAX_BYTES_PER_WRITE // 4
@@ -24,7 +24,7 @@ MAX_CHARS_PER_WRITE = MAX_BYTES_PER_WRITE // 4
 # redirect them to the system log using a pipe, but that wouldn't be convenient
 # or appropriate fuer all apps. So we redirect at the Python level instead.
 def init_streams(android_log_write, stdout_prio, stderr_prio):
-    if sys.executable:
+    wenn sys.executable:
         return  # Not embedded in an app.
 
     global logcat
@@ -53,7 +53,7 @@ klasse TextLogStream(io.TextIOWrapper):
         return f"<TextLogStream {self.buffer.tag!r}>"
 
     def write(self, s):
-        if not isinstance(s, str):
+        wenn not isinstance(s, str):
             raise TypeError(
                 f"write() argument must be str, not {type(s).__name__}")
 
@@ -77,12 +77,12 @@ klasse TextLogStream(io.TextIOWrapper):
     # API, so we handle buffering ourselves to avoid truncation.
     def _write_chunk(self, s):
         b = s.encode(self.encoding, self.errors)
-        if self._pending_bytes_count + len(b) > MAX_BYTES_PER_WRITE:
+        wenn self._pending_bytes_count + len(b) > MAX_BYTES_PER_WRITE:
             self.flush()
 
         self._pending_bytes.append(b)
         self._pending_bytes_count += len(b)
-        if (
+        wenn (
             self.write_through
             or b.endswith(b"\n")
             or self._pending_bytes_count > MAX_BYTES_PER_WRITE
@@ -115,7 +115,7 @@ klasse BinaryLogStream(io.RawIOBase):
         return True
 
     def write(self, b):
-        if type(b) is not bytes:
+        wenn type(b) is not bytes:
             try:
                 b = bytes(memoryview(b))
             except TypeError:
@@ -124,13 +124,13 @@ klasse BinaryLogStream(io.RawIOBase):
                 ) from None
 
         # Writing an empty string to the stream should have no effect.
-        if b:
+        wenn b:
             logcat.write(self.prio, self.tag, b)
         return len(b)
 
     # This is needed by the test suite --timeout option, which uses faulthandler.
     def fileno(self):
-        if self._fileno is None:
+        wenn self._fileno is None:
             raise io.UnsupportedOperation("fileno")
         return self._fileno
 
@@ -175,7 +175,7 @@ klasse Logcat:
             self._prev_write_time = now
 
             self._bucket_level -= PER_MESSAGE_OVERHEAD + len(tag) + len(message)
-            if self._bucket_level < 0:
+            wenn self._bucket_level < 0:
                 sleep(-self._bucket_level / MAX_BYTES_PER_SECOND)
 
             self.android_log_write(prio, tag, message)

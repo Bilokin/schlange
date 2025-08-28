@@ -29,11 +29,11 @@ klasse SubprocessStreamProtocol(streams.FlowControlMixin,
 
     def __repr__(self):
         info = [self.__class__.__name__]
-        if self.stdin is not None:
+        wenn self.stdin is not None:
             info.append(f'stdin={self.stdin!r}')
-        if self.stdout is not None:
+        wenn self.stdout is not None:
             info.append(f'stdout={self.stdout!r}')
-        if self.stderr is not None:
+        wenn self.stderr is not None:
             info.append(f'stderr={self.stderr!r}')
         return '<{}>'.format(' '.join(info))
 
@@ -41,63 +41,63 @@ klasse SubprocessStreamProtocol(streams.FlowControlMixin,
         self._transport = transport
 
         stdout_transport = transport.get_pipe_transport(1)
-        if stdout_transport is not None:
+        wenn stdout_transport is not None:
             self.stdout = streams.StreamReader(limit=self._limit,
                                                loop=self._loop)
             self.stdout.set_transport(stdout_transport)
             self._pipe_fds.append(1)
 
         stderr_transport = transport.get_pipe_transport(2)
-        if stderr_transport is not None:
+        wenn stderr_transport is not None:
             self.stderr = streams.StreamReader(limit=self._limit,
                                                loop=self._loop)
             self.stderr.set_transport(stderr_transport)
             self._pipe_fds.append(2)
 
         stdin_transport = transport.get_pipe_transport(0)
-        if stdin_transport is not None:
+        wenn stdin_transport is not None:
             self.stdin = streams.StreamWriter(stdin_transport,
                                               protocol=self,
                                               reader=None,
                                               loop=self._loop)
 
     def pipe_data_received(self, fd, data):
-        if fd == 1:
+        wenn fd == 1:
             reader = self.stdout
-        elif fd == 2:
+        sowenn fd == 2:
             reader = self.stderr
-        else:
+        sonst:
             reader = None
-        if reader is not None:
+        wenn reader is not None:
             reader.feed_data(data)
 
     def pipe_connection_lost(self, fd, exc):
-        if fd == 0:
+        wenn fd == 0:
             pipe = self.stdin
-            if pipe is not None:
+            wenn pipe is not None:
                 pipe.close()
             self.connection_lost(exc)
-            if exc is None:
+            wenn exc is None:
                 self._stdin_closed.set_result(None)
-            else:
+            sonst:
                 self._stdin_closed.set_exception(exc)
                 # Since calling `wait_closed()` is not mandatory,
-                # we shouldn't log the traceback if this is not awaited.
+                # we shouldn't log the traceback wenn this is not awaited.
                 self._stdin_closed._log_traceback = False
             return
-        if fd == 1:
+        wenn fd == 1:
             reader = self.stdout
-        elif fd == 2:
+        sowenn fd == 2:
             reader = self.stderr
-        else:
+        sonst:
             reader = None
-        if reader is not None:
-            if exc is None:
+        wenn reader is not None:
+            wenn exc is None:
                 reader.feed_eof()
-            else:
+            sonst:
                 reader.set_exception(exc)
 
-        if fd in self._pipe_fds:
+        wenn fd in self._pipe_fds:
             self._pipe_fds.remove(fd)
         self._maybe_close_transport()
 
@@ -106,12 +106,12 @@ klasse SubprocessStreamProtocol(streams.FlowControlMixin,
         self._maybe_close_transport()
 
     def _maybe_close_transport(self):
-        if len(self._pipe_fds) == 0 and self._process_exited:
+        wenn len(self._pipe_fds) == 0 and self._process_exited:
             self._transport.close()
             self._transport = None
 
     def _get_close_waiter(self, stream):
-        if stream is self.stdin:
+        wenn stream is self.stdin:
             return self._stdin_closed
 
 
@@ -148,9 +148,9 @@ klasse Process:
     async def _feed_stdin(self, input):
         debug = self._loop.get_debug()
         try:
-            if input is not None:
+            wenn input is not None:
                 self.stdin.write(input)
-                if debug:
+                wenn debug:
                     logger.debug(
                         '%r communicate: feed stdin (%s bytes)', self, len(input))
 
@@ -158,10 +158,10 @@ klasse Process:
         except (BrokenPipeError, ConnectionResetError) as exc:
             # communicate() ignores BrokenPipeError and ConnectionResetError.
             # write() and drain() can raise these exceptions.
-            if debug:
+            wenn debug:
                 logger.debug('%r communicate: stdin got %r', self, exc)
 
-        if debug:
+        wenn debug:
             logger.debug('%r communicate: close stdin', self)
         self.stdin.close()
 
@@ -170,33 +170,33 @@ klasse Process:
 
     async def _read_stream(self, fd):
         transport = self._transport.get_pipe_transport(fd)
-        if fd == 2:
+        wenn fd == 2:
             stream = self.stderr
-        else:
+        sonst:
             assert fd == 1
             stream = self.stdout
-        if self._loop.get_debug():
-            name = 'stdout' if fd == 1 else 'stderr'
+        wenn self._loop.get_debug():
+            name = 'stdout' wenn fd == 1 sonst 'stderr'
             logger.debug('%r communicate: read %s', self, name)
         output = await stream.read()
-        if self._loop.get_debug():
-            name = 'stdout' if fd == 1 else 'stderr'
+        wenn self._loop.get_debug():
+            name = 'stdout' wenn fd == 1 sonst 'stderr'
             logger.debug('%r communicate: close %s', self, name)
         transport.close()
         return output
 
     async def communicate(self, input=None):
-        if self.stdin is not None:
+        wenn self.stdin is not None:
             stdin = self._feed_stdin(input)
-        else:
+        sonst:
             stdin = self._noop()
-        if self.stdout is not None:
+        wenn self.stdout is not None:
             stdout = self._read_stream(1)
-        else:
+        sonst:
             stdout = self._noop()
-        if self.stderr is not None:
+        wenn self.stderr is not None:
             stderr = self._read_stream(2)
-        else:
+        sonst:
             stderr = self._noop()
         stdin, stdout, stderr = await tasks.gather(stdin, stdout, stderr)
         await self.wait()

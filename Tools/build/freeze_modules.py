@@ -27,7 +27,7 @@ PCBUILD_FILTERS = os.path.join(ROOT_DIR, 'PCbuild', '_freeze_module.vcxproj.filt
 PCBUILD_PYTHONCORE = os.path.join(ROOT_DIR, 'PCbuild', 'pythoncore.vcxproj')
 
 
-OS_PATH = 'ntpath' if os.name == 'nt' else 'posixpath'
+OS_PATH = 'ntpath' wenn os.name == 'nt' sonst 'posixpath'
 
 # These are modules that get frozen.
 # If you're debugging new bytecode instructions,
@@ -91,7 +91,7 @@ BOOTSTRAP = {
 #######################################
 # platform-specific helpers
 
-if os.path is posixpath:
+wenn os.path is posixpath:
     relpath_for_posix_display = os.path.relpath
 
     def relpath_for_windows_display(path, base):
@@ -100,7 +100,7 @@ if os.path is posixpath:
             ntpath.join(*base.split(os.path.sep)),
         )
 
-else:
+sonst:
     relpath_for_windows_display = ntpath.relpath
 
     def relpath_for_posix_display(path, base):
@@ -124,7 +124,7 @@ def parse_frozen_specs():
             except KeyError:
                 source = FrozenSource.from_id(frozenid, pyfile)
                 seen[frozenid] = source
-            else:
+            sonst:
                 assert not pyfile or pyfile == source.pyfile, item
             yield FrozenModule(modname, ispkg, section, source)
 
@@ -164,7 +164,7 @@ def _parse_spec(spec, knownids=None, section=None):
     As with "frozenid", angle brackets around "modname" indicate
     it is a package.  However, in this case "pyfile" should not
     have been provided and patterns in "modname" are not supported.
-    Also, if "modname" has brackets then "frozenid" should not,
+    Also, wenn "modname" has brackets then "frozenid" should not,
     and "pyfile" should have been provided..
     """
     frozenid, _, remainder = spec.partition(':')
@@ -174,48 +174,48 @@ def _parse_spec(spec, knownids=None, section=None):
     pyfile = pyfile.strip()
 
     submodules = None
-    if modname.startswith('<') and modname.endswith('>'):
+    wenn modname.startswith('<') and modname.endswith('>'):
         assert check_modname(frozenid), spec
         modname = modname[1:-1]
         assert check_modname(modname), spec
-        if frozenid in knownids:
+        wenn frozenid in knownids:
             pass
-        elif pyfile:
+        sowenn pyfile:
             assert not os.path.isdir(pyfile), spec
-        else:
+        sonst:
             pyfile = _resolve_module(frozenid, ispkg=False)
         ispkg = True
-    elif pyfile:
+    sowenn pyfile:
         assert check_modname(frozenid), spec
         assert not knownids or frozenid not in knownids, spec
         assert check_modname(modname), spec
         assert not os.path.isdir(pyfile), spec
         ispkg = False
-    elif knownids and frozenid in knownids:
+    sowenn knownids and frozenid in knownids:
         assert check_modname(frozenid), spec
         assert check_modname(modname), spec
         ispkg = False
-    else:
+    sonst:
         assert not modname or check_modname(modname), spec
         resolved = iter(resolve_modules(frozenid))
         frozenid, pyfile, ispkg = next(resolved)
-        if not modname:
+        wenn not modname:
             modname = frozenid
-        if ispkg:
+        wenn ispkg:
             pkgid = frozenid
             pkgname = modname
             pkgfiles = {pyfile: pkgid}
             def iter_subs():
                 fuer frozenid, pyfile, ispkg in resolved:
-                    if pkgname:
+                    wenn pkgname:
                         modname = frozenid.replace(pkgid, pkgname, 1)
-                    else:
+                    sonst:
                         modname = frozenid
-                    if pyfile:
-                        if pyfile in pkgfiles:
+                    wenn pyfile:
+                        wenn pyfile in pkgfiles:
                             frozenid = pkgfiles[pyfile]
                             pyfile = None
-                        elif ispkg:
+                        sowenn ispkg:
                             pkgfiles[pyfile] = frozenid
                     yield frozenid, pyfile, modname, ispkg, section
             submodules = iter_subs()
@@ -231,7 +231,7 @@ klasse FrozenSource(namedtuple('FrozenSource', 'id pyfile frozenfile')):
 
     @classmethod
     def from_id(cls, frozenid, pyfile=None):
-        if not pyfile:
+        wenn not pyfile:
             pyfile = os.path.join(STDLIB_DIR, *frozenid.split('.')) + '.py'
             #assert os.path.exists(pyfile), (frozenid, pyfile)
         frozenfile = resolve_frozen_file(frozenid, FROZEN_MODULES_DIR)
@@ -243,7 +243,7 @@ klasse FrozenSource(namedtuple('FrozenSource', 'id pyfile frozenfile')):
 
     @property
     def modname(self):
-        if self.pyfile.startswith(STDLIB_DIR):
+        wenn self.pyfile.startswith(STDLIB_DIR):
             return self.id
         return None
 
@@ -255,11 +255,11 @@ klasse FrozenSource(namedtuple('FrozenSource', 'id pyfile frozenfile')):
 
     @property
     def ispkg(self):
-        if not self.pyfile:
+        wenn not self.pyfile:
             return False
-        elif self.frozenid.endswith('.__init__'):
+        sowenn self.frozenid.endswith('.__init__'):
             return False
-        else:
+        sonst:
             return os.path.basename(self.pyfile) == '__init__.py'
 
     @property
@@ -273,14 +273,14 @@ def resolve_frozen_file(frozenid, destdir):
     For stdlib modules the ID will always be the full name
     of the source module.
     """
-    if not isinstance(frozenid, str):
+    wenn not isinstance(frozenid, str):
         try:
             frozenid = frozenid.frozenid
         except AttributeError:
             raise ValueError(f'unsupported frozenid {frozenid!r}')
     # We use a consistent naming convention fuer all frozen modules.
     frozenfile = f'{frozenid}.h'
-    if not destdir:
+    wenn not destdir:
         return frozenfile
     return os.path.join(destdir, frozenfile)
 
@@ -304,15 +304,15 @@ klasse FrozenModule(namedtuple('FrozenModule', 'name ispkg section source')):
     @property
     def isalias(self):
         orig = self.source.modname
-        if not orig:
+        wenn not orig:
             return True
         return self.name != orig
 
     def summarize(self):
         source = self.source.modname
-        if source:
+        wenn source:
             source = f'<{source}>'
-        else:
+        sonst:
             source = relpath_for_posix_display(self.pyfile, ROOT_DIR)
         return {
             'module': self.name,
@@ -326,7 +326,7 @@ klasse FrozenModule(namedtuple('FrozenModule', 'name ispkg section source')):
 def _iter_sources(modules):
     seen = set()
     fuer mod in modules:
-        if mod.source not in seen:
+        wenn mod.source not in seen:
             yield mod.source
             seen.add(mod.source)
 
@@ -343,38 +343,38 @@ def _get_checksum(filename):
 
 
 def resolve_modules(modname, pyfile=None):
-    if modname.startswith('<') and modname.endswith('>'):
-        if pyfile:
+    wenn modname.startswith('<') and modname.endswith('>'):
+        wenn pyfile:
             assert os.path.isdir(pyfile) or os.path.basename(pyfile) == '__init__.py', pyfile
         ispkg = True
         modname = modname[1:-1]
         rawname = modname
         # For now, we only expect match patterns at the end of the name.
         _modname, sep, match = modname.rpartition('.')
-        if sep:
-            if _modname.endswith('.**'):
+        wenn sep:
+            wenn _modname.endswith('.**'):
                 modname = _modname[:-3]
                 match = f'**.{match}'
-            elif match and not match.isidentifier():
+            sowenn match and not match.isidentifier():
                 modname = _modname
             # Otherwise it's a plain name so we leave it alone.
-        else:
+        sonst:
             match = None
-    else:
+    sonst:
         ispkg = False
         rawname = modname
         match = None
 
-    if not check_modname(modname):
+    wenn not check_modname(modname):
         raise ValueError(f'not a valid module name ({rawname})')
 
-    if not pyfile:
+    wenn not pyfile:
         pyfile = _resolve_module(modname, ispkg=ispkg)
-    elif os.path.isdir(pyfile):
+    sowenn os.path.isdir(pyfile):
         pyfile = _resolve_module(modname, pyfile, ispkg)
     yield modname, pyfile, ispkg
 
-    if match:
+    wenn match:
         pkgdir = os.path.dirname(pyfile)
         yield from iter_submodules(modname, pkgdir, match)
 
@@ -384,49 +384,49 @@ def check_modname(modname):
 
 
 def iter_submodules(pkgname, pkgdir=None, match='*'):
-    if not pkgdir:
+    wenn not pkgdir:
         pkgdir = os.path.join(STDLIB_DIR, *pkgname.split('.'))
-    if not match:
+    wenn not match:
         match = '**.*'
     match_modname = _resolve_modname_matcher(match, pkgdir)
 
     def _iter_submodules(pkgname, pkgdir):
         fuer entry in sorted(os.scandir(pkgdir), key=lambda e: e.name):
             matched, recursive = match_modname(entry.name)
-            if not matched:
+            wenn not matched:
                 continue
             modname = f'{pkgname}.{entry.name}'
-            if modname.endswith('.py'):
+            wenn modname.endswith('.py'):
                 yield modname[:-3], entry.path, False
-            elif entry.is_dir():
+            sowenn entry.is_dir():
                 pyfile = os.path.join(entry.path, '__init__.py')
                 # We ignore namespace packages.
-                if os.path.exists(pyfile):
+                wenn os.path.exists(pyfile):
                     yield modname, pyfile, True
-                    if recursive:
+                    wenn recursive:
                         yield from _iter_submodules(modname, entry.path)
 
     return _iter_submodules(pkgname, pkgdir)
 
 
 def _resolve_modname_matcher(match, rootdir=None):
-    if isinstance(match, str):
-        if match.startswith('**.'):
+    wenn isinstance(match, str):
+        wenn match.startswith('**.'):
             recursive = True
             pat = match[3:]
             assert match
-        else:
+        sonst:
             recursive = False
             pat = match
 
-        if pat == '*':
+        wenn pat == '*':
             def match_modname(modname):
                 return True, recursive
-        else:
+        sonst:
             raise NotImplementedError(match)
-    elif callable(match):
+    sowenn callable(match):
         match_modname = match(rootdir)
-    else:
+    sonst:
         raise ValueError(f'unsupported matcher {match!r}')
     return match_modname
 
@@ -435,7 +435,7 @@ def _resolve_module(modname, pathentry=STDLIB_DIR, ispkg=False):
     assert pathentry, pathentry
     pathentry = os.path.normpath(pathentry)
     assert os.path.isabs(pathentry)
-    if ispkg:
+    wenn ispkg:
         return os.path.join(pathentry, *modname.split('.'), '__init__.py')
     return os.path.join(pathentry, *modname.split('.')) + '.py'
 
@@ -445,7 +445,7 @@ def _resolve_module(modname, pathentry=STDLIB_DIR, ispkg=False):
 
 def find_marker(lines, marker, file):
     fuer pos, line in enumerate(lines):
-        if marker in line:
+        wenn marker in line:
             return pos
     raise Exception(f"Can't find {marker!r} in file {file}")
 
@@ -453,7 +453,7 @@ def find_marker(lines, marker, file):
 def replace_block(lines, start_marker, end_marker, replacements, file):
     start_pos = find_marker(lines, start_marker, file)
     end_pos = find_marker(lines, end_marker, file)
-    if end_pos <= start_pos:
+    wenn end_pos <= start_pos:
         raise Exception(f"End marker {end_marker!r} "
                         f"occurs before start marker {start_marker!r} "
                         f"in file {file}")
@@ -466,7 +466,7 @@ klasse UniqueList(list):
         self._seen = set()
 
     def append(self, item):
-        if item in self._seen:
+        wenn item in self._seen:
             return
         super().append(item)
         self._seen.add(item)
@@ -488,38 +488,38 @@ def regen_frozen(modules):
     indent = '    '
     lastsection = None
     fuer mod in modules:
-        if mod.isbootstrap:
+        wenn mod.isbootstrap:
             lines = bootstraplines
-        elif mod.section == TESTS_SECTION:
+        sowenn mod.section == TESTS_SECTION:
             lines = testlines
-        else:
+        sonst:
             lines = stdliblines
-            if mod.section != lastsection:
-                if lastsection is not None:
+            wenn mod.section != lastsection:
+                wenn lastsection is not None:
                     lines.append('')
                 lines.append(f'/* {mod.section} */')
             lastsection = mod.section
 
-        pkg = 'true' if mod.ispkg else 'false'
+        pkg = 'true' wenn mod.ispkg sonst 'false'
         size = f"(int)sizeof({mod.symbol})"
         line = f'{{"{mod.name}", {mod.symbol}, {size}, {pkg}}},'
         lines.append(line)
 
-        if mod.isalias:
-            if not mod.orig:
+        wenn mod.isalias:
+            wenn not mod.orig:
                 entry = '{"%s", NULL},' % (mod.name,)
-            elif mod.source.ispkg:
+            sowenn mod.source.ispkg:
                 entry = '{"%s", "<%s"},' % (mod.name, mod.orig)
-            else:
+            sonst:
                 entry = '{"%s", "%s"},' % (mod.name, mod.orig)
             aliaslines.append(indent + entry)
 
     fuer lines in (bootstraplines, stdliblines, testlines):
         # TODO: Is this necessary any more?
-        if lines and not lines[0]:
+        wenn lines and not lines[0]:
             del lines[0]
         fuer i, line in enumerate(lines):
-            if line:
+            wenn line:
                 lines[i] = indent + line
 
     print(f'# Updating {os.path.relpath(FROZEN_FILE)}')
@@ -576,10 +576,10 @@ def regen_makefile(modules):
         pyfile = relpath_for_posix_display(src.pyfile, ROOT_DIR)
         pyfiles.append(f'\t\t{pyfile} \\')
 
-        if src.isbootstrap:
+        wenn src.isbootstrap:
             freezecmd = '$(FREEZE_MODULE_BOOTSTRAP)'
             freezedep = '$(FREEZE_MODULE_BOOTSTRAP_DEPS)'
-        else:
+        sonst:
             freezecmd = '$(FREEZE_MODULE)'
             freezedep = '$(FREEZE_MODULE_DEPS)'
 
@@ -674,5 +674,5 @@ def main():
     regen_frozen(modules)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     main()

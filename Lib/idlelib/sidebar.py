@@ -15,7 +15,7 @@ from idlelib import macosx
 def get_lineno(text, index):
     """Return the line number of an index in a Tk text widget."""
     text_index = text.index(index)
-    return int(float(text_index)) if text_index else None
+    return int(float(text_index)) wenn text_index sonst None
 
 
 def get_end_linenumber(text):
@@ -33,11 +33,11 @@ def get_widget_padding(widget):
     """Get the total padding of a Tk widget, including its border."""
     # TODO: use also in codecontext.py
     manager = widget.winfo_manager()
-    if manager == 'pack':
+    wenn manager == 'pack':
         info = widget.pack_info()
-    elif manager == 'grid':
+    sowenn manager == 'grid':
         info = widget.grid_info()
-    else:
+    sonst:
         raise ValueError(f"Unsupported geometry manager: {manager}")
 
     # All values are passed through getint(), since some
@@ -97,12 +97,12 @@ klasse BaseSideBar:
         raise NotImplementedError
 
     def show_sidebar(self):
-        if not self.is_shown:
+        wenn not self.is_shown:
             self.grid()
             self.is_shown = True
 
     def hide_sidebar(self):
-        if self.is_shown:
+        wenn self.is_shown:
             self.main_widget.grid_forget()
             self.is_shown = False
 
@@ -194,7 +194,7 @@ klasse BaseSideBar:
             self.text.tag_remove("sel", "1.0", "end")
             self.text.tag_add("sel", f"{a}.0", f"{b+1}.0")
             self.text.mark_set("insert",
-                               f"{lineno if lineno == a else lineno + 1}.0")
+                               f"{lineno wenn lineno == a sonst lineno + 1}.0")
 
         def b1_mousedown_handler(event):
             nonlocal start_line
@@ -217,7 +217,7 @@ klasse BaseSideBar:
 
         def b1_drag_handler(event):
             nonlocal last_y
-            if last_y is None:  # i.e. if not currently dragging
+            wenn last_y is None:  # i.e. wenn not currently dragging
                 return
             last_y = event.y
             drag_update_selection_and_insert_mark(event.y)
@@ -228,14 +228,14 @@ klasse BaseSideBar:
             # See: https://github.com/tcltk/tk/blob/064ff9941b4b80b85916a8afe86a6c21fd388b54/library/text.tcl#L670
             nonlocal auto_scrolling_after_id
             y = last_y
-            if y is None:
+            wenn y is None:
                 self.main_widget.after_cancel(auto_scrolling_after_id)
                 auto_scrolling_after_id = None
                 return
-            elif y < 0:
+            sowenn y < 0:
                 self.text.yview_scroll(-1 + y, 'pixels')
                 drag_update_selection_and_insert_mark(y)
-            elif y > self.main_widget.winfo_height():
+            sowenn y > self.main_widget.winfo_height():
                 self.text.yview_scroll(1 + y - self.main_widget.winfo_height(),
                                        'pixels')
                 drag_update_selection_and_insert_mark(y)
@@ -243,10 +243,10 @@ klasse BaseSideBar:
                 self.main_widget.after(50, text_auto_scroll)
 
         def b1_leave_handler(event):
-            # Schedule the initial call to text_auto_scroll(), if not already
+            # Schedule the initial call to text_auto_scroll(), wenn not already
             # scheduled.
             nonlocal auto_scrolling_after_id
-            if auto_scrolling_after_id is None:
+            wenn auto_scrolling_after_id is None:
                 nonlocal last_y
                 last_y = event.y
                 auto_scrolling_after_id = \
@@ -254,9 +254,9 @@ klasse BaseSideBar:
         self.main_widget.bind('<B1-Leave>', b1_leave_handler)
 
         def b1_enter_handler(event):
-            # Cancel the scheduling of text_auto_scroll(), if it exists.
+            # Cancel the scheduling of text_auto_scroll(), wenn it exists.
             nonlocal auto_scrolling_after_id
-            if auto_scrolling_after_id is not None:
+            wenn auto_scrolling_after_id is not None:
                 self.main_widget.after_cancel(auto_scrolling_after_id)
                 auto_scrolling_after_id = None
         self.main_widget.bind('<B1-Enter>', b1_enter_handler)
@@ -334,23 +334,23 @@ klasse LineNumbers(BaseSideBar):
         Each line sidebar_text contains the linenumber fuer that line
         Synchronize with editwin.text so that both sidebar_text and
         editwin.text contain the same number of lines"""
-        if end == self.prev_end:
+        wenn end == self.prev_end:
             return
 
         width_difference = len(str(end)) - len(str(self.prev_end))
-        if width_difference:
+        wenn width_difference:
             cur_width = int(float(self.sidebar_text['width']))
             new_width = cur_width + width_difference
             self.sidebar_text['width'] = self._sidebar_width_type(new_width)
 
         with temp_enable_text_widget(self.sidebar_text):
-            if end > self.prev_end:
+            wenn end > self.prev_end:
                 new_text = '\n'.join(itertools.chain(
                     [''],
                     map(str, range(self.prev_end + 1, end + 1)),
                 ))
                 self.sidebar_text.insert(f'end -1c', new_text, 'linenumber')
-            else:
+            sonst:
                 self.sidebar_text.delete(f'{end+1}.0 -1c', 'end -1c')
 
         self.prev_end = end
@@ -372,30 +372,30 @@ klasse WrappedLineHeightChangeDelegator(Delegator):
 
     def insert(self, index, chars, tags=None):
         is_single_line = '\n' not in chars
-        if is_single_line:
+        wenn is_single_line:
             before_displaylines = get_displaylines(self, index)
 
         self.delegate.insert(index, chars, tags)
 
-        if is_single_line:
+        wenn is_single_line:
             after_displaylines = get_displaylines(self, index)
-            if after_displaylines == before_displaylines:
+            wenn after_displaylines == before_displaylines:
                 return  # no need to update the sidebar
 
         self.callback()
 
     def delete(self, index1, index2=None):
-        if index2 is None:
+        wenn index2 is None:
             index2 = index1 + "+1c"
         is_single_line = get_lineno(self, index1) == get_lineno(self, index2)
-        if is_single_line:
+        wenn is_single_line:
             before_displaylines = get_displaylines(self, index1)
 
         self.delegate.delete(index1, index2)
 
-        if is_single_line:
+        wenn is_single_line:
             after_displaylines = get_displaylines(self, index1)
-            if after_displaylines == before_displaylines:
+            wenn after_displaylines == before_displaylines:
                 return  # no need to update the sidebar
 
         self.callback()
@@ -414,7 +414,7 @@ klasse ShellSidebar(BaseSideBar):
         # Insert the TextChangeDelegator after the last delegator, so that
         # the sidebar reflects final changes to the text widget contents.
         d = self.editwin.per.top
-        if d.delegate is not self.text:
+        wenn d.delegate is not self.text:
             while d.delegate is not self.editwin.per.bottom:
                 d = d.delegate
         self.editwin.per.insertfilterafter(change_delegator, after=d)
@@ -434,7 +434,7 @@ klasse ShellSidebar(BaseSideBar):
 
         self.main_widget.bind(
             # AquaTk defines <2> as the right button, not <3>.
-            "<Button-2>" if macosx.isAquaTk() else "<Button-3>",
+            "<Button-2>" wenn macosx.isAquaTk() sonst "<Button-3>",
             self.context_menu_event,
         )
 
@@ -445,10 +445,10 @@ klasse ShellSidebar(BaseSideBar):
             return lambda: self.text.event_generate(eventname)
         rmenu.add_command(label='Copy',
                           command=mkcmd('<<copy>>'),
-                          state='normal' if has_selection else 'disabled')
+                          state='normal' wenn has_selection sonst 'disabled')
         rmenu.add_command(label='Copy with prompts',
                           command=mkcmd('<<copy-with-prompts>>'),
-                          state='normal' if has_selection else 'disabled')
+                          state='normal' wenn has_selection sonst 'disabled')
         rmenu.tk_popup(event.x_root, event.y_root)
         return "break"
 
@@ -456,7 +456,7 @@ klasse ShellSidebar(BaseSideBar):
         self.canvas.grid(row=1, column=0, sticky=tk.NSEW, padx=2, pady=0)
 
     def change_callback(self):
-        if self.is_shown:
+        wenn self.is_shown:
             self.update_sidebar()
 
     def update_sidebar(self):
@@ -468,17 +468,17 @@ klasse ShellSidebar(BaseSideBar):
         canvas.delete(tk.ALL)
 
         index = text.index("@0,0")
-        if index.split('.', 1)[1] != '0':
+        wenn index.split('.', 1)[1] != '0':
             index = text.index(f'{index}+1line linestart')
         while (lineinfo := text.dlineinfo(index)) is not None:
             y = lineinfo[1]
             prev_newline_tagnames = text_tagnames(f"{index} linestart -1c")
             prompt = (
-                '>>>' if "console" in prev_newline_tagnames else
-                '...' if "stdin" in prev_newline_tagnames else
+                '>>>' wenn "console" in prev_newline_tagnames sonst
+                '...' wenn "stdin" in prev_newline_tagnames sonst
                 None
             )
-            if prompt:
+            wenn prompt:
                 canvas.create_text(2, y, anchor=tk.NW, text=prompt,
                                    font=self.font, fill=self.colors[0])
                 lineno = get_lineno(text, index)
@@ -535,7 +535,7 @@ def _sidebar_number_scrolling(parent):  # htest #
     text.insert('1.0', '\n'.join('a'*i fuer i in range(1, 101)))
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     from unittest import main
     main('idlelib.idle_test.test_sidebar', verbosity=2, exit=False)
 

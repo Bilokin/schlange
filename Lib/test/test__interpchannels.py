@@ -34,7 +34,7 @@ def recv_wait(cid):
             obj, unboundop = _channels.recv(cid)
         except _channels.ChannelEmptyError:
             time.sleep(0.1)
-        else:
+        sonst:
             assert unboundop is None, repr(unboundop)
             return obj
 
@@ -62,13 +62,13 @@ def run_interp(id, source, **shared):
 def _run_interp(id, source, shared, _mainns={}):
     source = dedent(source)
     main, *_ = _interpreters.get_main()
-    if main == id:
+    wenn main == id:
         cur, *_ = _interpreters.get_current()
-        if cur != main:
+        wenn cur != main:
             raise RuntimeError
         # XXX Run a func?
         exec(source, _mainns)
-    else:
+    sonst:
         _interpreters.run_string(id, source, shared)
 
 
@@ -76,32 +76,32 @@ klasse Interpreter(namedtuple('Interpreter', 'name id')):
 
     @classmethod
     def from_raw(cls, raw):
-        if isinstance(raw, cls):
+        wenn isinstance(raw, cls):
             return raw
-        elif isinstance(raw, str):
+        sowenn isinstance(raw, str):
             return cls(raw)
-        else:
+        sonst:
             raise NotImplementedError
 
     def __new__(cls, name=None, id=None):
         main, *_ = _interpreters.get_main()
-        if id == main:
-            if not name:
+        wenn id == main:
+            wenn not name:
                 name = 'main'
-            elif name != 'main':
+            sowenn name != 'main':
                 raise ValueError(
                     'name mismatch (expected "main", got "{}")'.format(name))
             id = main
-        elif id is not None:
-            if not name:
+        sowenn id is not None:
+            wenn not name:
                 name = 'interp'
-            elif name == 'main':
+            sowenn name == 'main':
                 raise ValueError('name mismatch (unexpected "main")')
             assert isinstance(id, int), repr(id)
-        elif not name or name == 'main':
+        sowenn not name or name == 'main':
             name = 'main'
             id = main
-        else:
+        sonst:
             id = _interpreters.create()
         self = super().__new__(cls, name, id)
         return self
@@ -115,57 +115,57 @@ def expect_channel_closed():
         yield
     except _channels.ChannelClosedError:
         pass
-    else:
+    sonst:
         assert False, 'channel not closed'
 
 
 klasse ChannelAction(namedtuple('ChannelAction', 'action end interp')):
 
     def __new__(cls, action, end=None, interp=None):
-        if not end:
+        wenn not end:
             end = 'both'
-        if not interp:
+        wenn not interp:
             interp = 'main'
         self = super().__new__(cls, action, end, interp)
         return self
 
     def __init__(self, *args, **kwargs):
-        if self.action == 'use':
-            if self.end not in ('same', 'opposite', 'send', 'recv'):
+        wenn self.action == 'use':
+            wenn self.end not in ('same', 'opposite', 'send', 'recv'):
                 raise ValueError(self.end)
-        elif self.action in ('close', 'force-close'):
-            if self.end not in ('both', 'same', 'opposite', 'send', 'recv'):
+        sowenn self.action in ('close', 'force-close'):
+            wenn self.end not in ('both', 'same', 'opposite', 'send', 'recv'):
                 raise ValueError(self.end)
-        else:
+        sonst:
             raise ValueError(self.action)
-        if self.interp not in ('main', 'same', 'other', 'extra'):
+        wenn self.interp not in ('main', 'same', 'other', 'extra'):
             raise ValueError(self.interp)
 
     def resolve_end(self, end):
-        if self.end == 'same':
+        wenn self.end == 'same':
             return end
-        elif self.end == 'opposite':
-            return 'recv' if end == 'send' else 'send'
-        else:
+        sowenn self.end == 'opposite':
+            return 'recv' wenn end == 'send' sonst 'send'
+        sonst:
             return self.end
 
     def resolve_interp(self, interp, other, extra):
-        if self.interp == 'same':
+        wenn self.interp == 'same':
             return interp
-        elif self.interp == 'other':
-            if other is None:
+        sowenn self.interp == 'other':
+            wenn other is None:
                 raise RuntimeError
             return other
-        elif self.interp == 'extra':
-            if extra is None:
+        sowenn self.interp == 'extra':
+            wenn extra is None:
                 raise RuntimeError
             return extra
-        elif self.interp == 'main':
-            if interp.name == 'main':
+        sowenn self.interp == 'main':
+            wenn interp.name == 'main':
                 return interp
-            elif other and other.name == 'main':
+            sowenn other and other.name == 'main':
                 return other
-            else:
+            sonst:
                 raise RuntimeError
         # Per __init__(), there aren't any others.
 
@@ -183,66 +183,66 @@ klasse ChannelState(namedtuple('ChannelState', 'pending closed')):
         return type(self)(self.pending - 1, closed=self.closed)
 
     def close(self, *, force=True):
-        if self.closed:
-            if not force or self.pending == 0:
+        wenn self.closed:
+            wenn not force or self.pending == 0:
                 return self
-        return type(self)(0 if force else self.pending, closed=True)
+        return type(self)(0 wenn force sonst self.pending, closed=True)
 
 
 def run_action(cid, action, end, state, *, hideclosed=True):
-    if state.closed:
-        if action == 'use' and end == 'recv' and state.pending:
+    wenn state.closed:
+        wenn action == 'use' and end == 'recv' and state.pending:
             expectfail = False
-        else:
+        sonst:
             expectfail = True
-    else:
+    sonst:
         expectfail = False
 
     try:
         result = _run_action(cid, action, end, state)
     except _channels.ChannelClosedError:
-        if not hideclosed and not expectfail:
+        wenn not hideclosed and not expectfail:
             raise
         result = state.close()
-    else:
-        if expectfail:
+    sonst:
+        wenn expectfail:
             raise ...  # XXX
     return result
 
 
 def _run_action(cid, action, end, state):
-    if action == 'use':
-        if end == 'send':
+    wenn action == 'use':
+        wenn end == 'send':
             _channels.send(cid, b'spam', blocking=False)
             return state.incr()
-        elif end == 'recv':
-            if not state.pending:
+        sowenn end == 'recv':
+            wenn not state.pending:
                 try:
                     _channels.recv(cid)
                 except _channels.ChannelEmptyError:
                     return state
-                else:
+                sonst:
                     raise Exception('expected ChannelEmptyError')
-            else:
+            sonst:
                 recv_nowait(cid)
                 return state.decr()
-        else:
+        sonst:
             raise ValueError(end)
-    elif action == 'close':
+    sowenn action == 'close':
         kwargs = {}
-        if end in ('recv', 'send'):
+        wenn end in ('recv', 'send'):
             kwargs[end] = True
         _channels.close(cid, **kwargs)
         return state.close()
-    elif action == 'force-close':
+    sowenn action == 'force-close':
         kwargs = {
             'force': True,
             }
-        if end in ('recv', 'send'):
+        wenn end in ('recv', 'send'):
             kwargs[end] = True
         _channels.close(cid, **kwargs)
         return state.close(force=True)
-    else:
+    sonst:
         raise ValueError(action)
 
 
@@ -803,9 +803,9 @@ klasse ChannelTests(TestBase):
     def build_send_waiter(self, obj, *, buffer=False):
         # We want a long enough sleep that send() actually has to wait.
 
-        if buffer:
+        wenn buffer:
             send = _channels.send_buffer
-        else:
+        sonst:
             send = _channels.send
 
         cid = _channels.create(REPLACE)
@@ -916,9 +916,9 @@ klasse ChannelTests(TestBase):
             # It looks like the leak originates with the addition
             # of _channels.send_buffer() (gh-110246), whereas the
             # tests were added afterward.  We want this test even
-            # if the refleak isn't fixed yet, so we skip here.
+            # wenn the refleak isn't fixed yet, so we skip here.
             raise unittest.SkipTest('temporarily skipped due to refleaks')
-        else:
+        sonst:
             self._has_run_once_timeout = True
 
         obj = bytearray(b'spam')
@@ -979,9 +979,9 @@ klasse ChannelTests(TestBase):
             # It looks like the leak originates with the addition
             # of _channels.send_buffer() (gh-110246), whereas the
             # tests were added afterward.  We want this test even
-            # if the refleak isn't fixed yet, so we skip here.
+            # wenn the refleak isn't fixed yet, so we skip here.
             raise unittest.SkipTest('temporarily skipped due to refleaks')
-        else:
+        sonst:
             self._has_run_once_closed = True
 
         obj = bytearray(b'spam')
@@ -1384,9 +1384,9 @@ klasse ChannelCloseFixture(namedtuple('ChannelCloseFixture',
 
     def __new__(cls, end, interp, other, extra, creator):
         assert end in ('send', 'recv')
-        if cls.QUICK:
+        wenn cls.QUICK:
             known = {}
-        else:
+        sonst:
             interp = Interpreter.from_raw(interp)
             other = Interpreter.from_raw(other)
             extra = Interpreter.from_raw(extra)
@@ -1395,7 +1395,7 @@ klasse ChannelCloseFixture(namedtuple('ChannelCloseFixture',
                 other.name: other,
                 extra.name: extra,
                 }
-        if not creator:
+        wenn not creator:
             creator = 'same'
         self = super().__new__(cls, end, interp, other, extra, creator)
         self._prepped = set()
@@ -1422,9 +1422,9 @@ klasse ChannelCloseFixture(namedtuple('ChannelCloseFixture',
         return interp
 
     def expect_closed_error(self, end=None):
-        if end is None:
+        wenn end is None:
             end = self.end
-        if end == 'recv' and self.state.closed == 'send':
+        wenn end == 'recv' and self.state.closed == 'send':
             return False
         return bool(self.state.closed)
 
@@ -1441,9 +1441,9 @@ klasse ChannelCloseFixture(namedtuple('ChannelCloseFixture',
     # internal methods
 
     def _new_channel(self, creator):
-        if creator.name == 'main':
+        wenn creator.name == 'main':
             return _channels.create(REPLACE)
-        else:
+        sonst:
             ch = _channels.create(REPLACE)
             run_interp(creator.id, f"""
                 import _interpreters
@@ -1457,13 +1457,13 @@ klasse ChannelCloseFixture(namedtuple('ChannelCloseFixture',
         return self._cid
 
     def _get_interpreter(self, interp):
-        if interp in ('same', 'interp'):
+        wenn interp in ('same', 'interp'):
             return self.interp
-        elif interp == 'other':
+        sowenn interp == 'other':
             return self.other
-        elif interp == 'extra':
+        sowenn interp == 'extra':
             return self.extra
-        else:
+        sonst:
             name = interp
             try:
                 interp = self._known[name]
@@ -1472,10 +1472,10 @@ klasse ChannelCloseFixture(namedtuple('ChannelCloseFixture',
             return interp
 
     def _prep_interpreter(self, interp):
-        if interp.id in self._prepped:
+        wenn interp.id in self._prepped:
             return
         self._prepped.add(interp.id)
-        if interp.name == 'main':
+        wenn interp.name == 'main':
             return
         run_interp(interp.id, f"""
             import _interpchannels as channels
@@ -1629,7 +1629,7 @@ klasse ExhaustiveChannelTests(TestBase):
         ends = ('recv', 'send')
         interps = (interp1, interp2)
         fuer force in (True, False):
-            op = 'force-close' if force else 'close'
+            op = 'force-close' wenn force sonst 'close'
             fuer interp in interps:
                 fuer end in ends:
                     yield [
@@ -1661,7 +1661,7 @@ klasse ExhaustiveChannelTests(TestBase):
         end = action.resolve_end(fix.end)
         interp = action.resolve_interp(fix.interp, fix.other, fix.extra)
         fix.prep_interpreter(interp)
-        if interp.name == 'main':
+        wenn interp.name == 'main':
             result = run_action(
                 fix.cid,
                 action.action,
@@ -1670,7 +1670,7 @@ klasse ExhaustiveChannelTests(TestBase):
                 hideclosed=hideclosed,
                 )
             fix.record_action(action, result)
-        else:
+        sonst:
             _cid = _channels.create(REPLACE)
             run_interp(interp.id, f"""
                 result = helpers.run_action(
@@ -1681,7 +1681,7 @@ klasse ExhaustiveChannelTests(TestBase):
                     hideclosed={hideclosed},
                     )
                 _channels.send({_cid}, result.pending.to_bytes(1, 'little'), blocking=False)
-                _channels.send({_cid}, b'X' if result.closed else b'', blocking=False)
+                _channels.send({_cid}, b'X' wenn result.closed sonst b'', blocking=False)
                 """)
             result = ChannelState(
                 pending=int.from_bytes(recv_nowait(_cid), 'little'),
@@ -1703,16 +1703,16 @@ klasse ExhaustiveChannelTests(TestBase):
                     yield ChannelCloseFixture(end, interp, other, extra, creator)
 
     def _close(self, fix, *, force):
-        op = 'force-close' if force else 'close'
+        op = 'force-close' wenn force sonst 'close'
         close = ChannelAction(op, fix.end, 'same')
-        if not fix.expect_closed_error():
+        wenn not fix.expect_closed_error():
             self.run_action(fix, close, hideclosed=False)
-        else:
+        sonst:
             with self.assertRaises(_channels.ChannelClosedError):
                 self.run_action(fix, close, hideclosed=False)
 
     def _assert_closed_in_interp(self, fix, interp=None):
-        if interp is None or interp.name == 'main':
+        wenn interp is None or interp.name == 'main':
             with self.assertRaises(_channels.ChannelClosedError):
                 _channels.recv(fix.cid)
             with self.assertRaises(_channels.ChannelClosedError):
@@ -1721,7 +1721,7 @@ klasse ExhaustiveChannelTests(TestBase):
                 _channels.close(fix.cid)
             with self.assertRaises(_channels.ChannelClosedError):
                 _channels.close(fix.cid, force=True)
-        else:
+        sonst:
             run_interp(interp.id, """
                 with helpers.expect_channel_closed():
                     _channels.recv(cid)
@@ -1748,7 +1748,7 @@ klasse ExhaustiveChannelTests(TestBase):
 
         fuer interp in ('same', 'other'):
             interp = fix.get_interpreter(interp)
-            if interp.name == 'main':
+            wenn interp.name == 'main':
                 continue
             self._assert_closed_in_interp(fix, interp)
 
@@ -1761,18 +1761,18 @@ klasse ExhaustiveChannelTests(TestBase):
             print()
             fuer fix in self.iter_fixtures():
                 i += 1
-                if i > 1000:
+                wenn i > 1000:
                     return
-                if verbose:
-                    if (i - 1) % 6 == 0:
+                wenn verbose:
+                    wenn (i - 1) % 6 == 0:
                         print()
                     print(i, fix, '({} actions)'.format(len(actions)))
-                else:
-                    if (i - 1) % 6 == 0:
+                sonst:
+                    wenn (i - 1) % 6 == 0:
                         print(' ', end='')
                     print('.', end=''); sys.stdout.flush()
                 yield i, fix, actions
-            if verbose:
+            wenn verbose:
                 print('---')
         print()
 
@@ -1791,7 +1791,7 @@ klasse ExhaustiveChannelTests(TestBase):
                 self._close(fix, force=False)
 
                 self._assert_closed(fix)
-            # XXX Things slow down if we have too many interpreters.
+            # XXX Things slow down wenn we have too many interpreters.
             fix.clean_up()
 
     def test_force_close(self):
@@ -1803,9 +1803,9 @@ klasse ExhaustiveChannelTests(TestBase):
                 self._close(fix, force=True)
 
                 self._assert_closed(fix)
-            # XXX Things slow down if we have too many interpreters.
+            # XXX Things slow down wenn we have too many interpreters.
             fix.clean_up()
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

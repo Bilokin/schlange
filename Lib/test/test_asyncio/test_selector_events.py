@@ -48,7 +48,7 @@ def list_to_buffer(l=()):
 def close_transport(transport):
     # Don't call transport.close() because the event loop and the selector
     # are mocked
-    if transport._sock is None:
+    wenn transport._sock is None:
         return
     transport._sock.close()
     transport._sock = None
@@ -384,7 +384,7 @@ klasse BaseSelectorEventLoopTests(test_utils.TestCase):
             # time that it's called. This applies most to OpenBSD
             # whose sockets generate this errno more reproducibly than
             # Linux and other OS.
-            if sock.accept.call_count % 2 == 0:
+            wenn sock.accept.call_count % 2 == 0:
                 raise ConnectionAbortedError
             return (mock.Mock(), mock.Mock())
 
@@ -538,9 +538,9 @@ klasse SelectorSocketTransportTests(test_utils.TestCase):
     def socket_transport(self, waiter=None, sendmsg=False):
         transport = _SelectorSocketTransport(self.loop, self.sock,
                                              self.protocol, waiter=waiter)
-        if sendmsg:
+        wenn sendmsg:
             transport._write_ready = transport._write_sendmsg
-        else:
+        sonst:
             transport._write_ready = transport._write_send
         self.addCleanup(close_transport, transport)
         return transport
@@ -1295,7 +1295,7 @@ klasse SelectorDatagramTransportTests(test_utils.TestCase):
         self.sock.fileno.return_value = 7
 
     def datagram_transport(self, address=None):
-        self.sock.getpeername.side_effect = None if address else OSError
+        self.sock.getpeername.side_effect = None wenn address sonst OSError
         transport = _SelectorDatagramTransport(self.loop, self.sock,
                                                self.protocol,
                                                address=address)
@@ -1529,7 +1529,7 @@ klasse SelectorDatagramTransportTests(test_utils.TestCase):
         self.assertEqual(1, len(transport._buffer))
         self.assertEqual(transport._buffer_size, len(data) + transport._header_size)
 
-        # Now try to send the buffer, it will be added to buffer again if it fails
+        # Now try to send the buffer, it will be added to buffer again wenn it fails
         transport._sendto_ready()
         self.assertTrue(self.sock.sendto.called)
         self.assertEqual(
@@ -1640,5 +1640,5 @@ klasse SelectorDatagramTransportTests(test_utils.TestCase):
             exc_info=(MyException, MOCK_ANY, MOCK_ANY))
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

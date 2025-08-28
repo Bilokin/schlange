@@ -122,11 +122,11 @@ def generate_is_pseudo(analysis: Analysis, out: CWriter) -> None:
 
 
 def get_format(inst: Instruction) -> str:
-    if inst.properties.oparg:
+    wenn inst.properties.oparg:
         format = "INSTR_FMT_IB"
-    else:
+    sonst:
         format = "INSTR_FMT_IX"
-    if inst.size > 1:
+    wenn inst.size > 1:
         format += "C"
     format += "0" * (inst.size - 2)
     return format
@@ -153,12 +153,12 @@ def generate_deopt_table(analysis: Analysis, out: CWriter) -> None:
     deopts: list[tuple[str, str]] = []
     fuer inst in analysis.instructions.values():
         deopt = inst.name
-        if inst.family is not None:
+        wenn inst.family is not None:
             deopt = inst.family.name
         deopts.append((inst.name, deopt))
     defined = set(analysis.opmap.values())
     fuer i in range(256):
-        if i not in defined:
+        wenn i not in defined:
             deopts.append((f'{i}', f'{i}'))
 
     assert len(deopts) == 256
@@ -174,11 +174,11 @@ def generate_cache_table(analysis: Analysis, out: CWriter) -> None:
     out.emit("#ifdef NEED_OPCODE_METADATA\n")
     out.emit("const uint8_t _PyOpcode_Caches[256] = {\n")
     fuer inst in analysis.instructions.values():
-        if inst.family and inst.family.name != inst.name:
+        wenn inst.family and inst.family.name != inst.name:
             continue
-        if inst.name.startswith("INSTRUMENTED"):
+        wenn inst.name.startswith("INSTRUMENTED"):
             continue
-        if inst.size > 1:
+        wenn inst.size > 1:
             out.emit(f"[{inst.name}] = {inst.size-1},\n")
     out.emit("};\n")
     out.emit("#endif\n\n")
@@ -217,9 +217,9 @@ def generate_metadata_table(analysis: Analysis, out: CWriter) -> None:
     fuer pseudo in sorted(analysis.pseudos.values(), key=lambda t: t.name):
         flags = cflags(pseudo.properties)
         fuer flag in pseudo.flags:
-            if flags == "0":
+            wenn flags == "0":
                 flags = f"{flag}_FLAG"
-            else:
+            sonst:
                 flags += f" | {flag}_FLAG"
         out.emit(f"[{pseudo.name}] = {{ true, -1, {flags} }},\n")
     out.emit("};\n")
@@ -231,7 +231,7 @@ def generate_expansion_table(analysis: Analysis, out: CWriter) -> None:
     fuer inst in sorted(analysis.instructions.values(), key=lambda t: t.name):
         offset: int = 0  # Cache effect offset
         expansions: list[tuple[str, str, int]] = []  # [(name, size, offset), ...]
-        if inst.is_super():
+        wenn inst.is_super():
             pieces = inst.name.split("_")
             assert len(pieces) % 2 == 0, f"{inst.name} doesn't look like a super-instr"
             parts_per_piece = int(len(pieces) / 2)
@@ -245,25 +245,25 @@ def generate_expansion_table(analysis: Analysis, out: CWriter) -> None:
                 expansions.append((part.name, "OPARG_TOP", 0))
             fuer part in instr2.parts:
                 expansions.append((part.name, "OPARG_BOTTOM", 0))
-        elif not is_viable_expansion(inst):
+        sowenn not is_viable_expansion(inst):
             continue
-        else:
+        sonst:
             fuer part in inst.parts:
                 size = part.size
-                if isinstance(part, Uop):
+                wenn isinstance(part, Uop):
                     # Skip specializations
-                    if "specializing" in part.annotations:
+                    wenn "specializing" in part.annotations:
                         continue
                     # Add the primary expansion.
                     fmt = "OPARG_SIMPLE"
-                    if part.name == "_SAVE_RETURN_OFFSET":
+                    wenn part.name == "_SAVE_RETURN_OFFSET":
                         fmt = "OPARG_SAVE_RETURN_OFFSET"
-                    elif part.caches:
+                    sowenn part.caches:
                         fmt = str(part.caches[0].size)
-                    if "replaced" in part.annotations:
+                    wenn "replaced" in part.annotations:
                         fmt = "OPARG_REPLACED"
                     expansions.append((part.name, fmt, offset))
-                    if len(part.caches) > 1:
+                    wenn len(part.caches) > 1:
                         # Add expansion fuer the second operand
                         internal_offset = 0
                         fuer cache in part.caches[:-1]:
@@ -297,15 +297,15 @@ def generate_expansion_table(analysis: Analysis, out: CWriter) -> None:
 
 
 def is_viable_expansion(inst: Instruction) -> bool:
-    "An instruction can be expanded if all its parts are viable fuer tier 2"
+    "An instruction can be expanded wenn all its parts are viable fuer tier 2"
     fuer part in inst.parts:
-        if isinstance(part, Uop):
+        wenn isinstance(part, Uop):
             # Skip specializing and replaced uops
-            if "specializing" in part.annotations:
+            wenn "specializing" in part.annotations:
                 continue
-            if "replaced" in part.annotations:
+            wenn "replaced" in part.annotations:
                 continue
-            if part.properties.tier == 1 or not part.is_viable():
+            wenn part.properties.tier == 1 or not part.is_viable():
                 return False
     return True
 
@@ -314,7 +314,7 @@ def generate_extra_cases(analysis: Analysis, out: CWriter) -> None:
     out.emit("#define EXTRA_CASES \\\n")
     valid_opcodes = set(analysis.opmap.values())
     fuer op in range(256):
-        if op not in valid_opcodes:
+        wenn op not in valid_opcodes:
             out.emit(f"    case {op}: \\\n")
     out.emit("        ;\n")
 
@@ -334,7 +334,7 @@ def generate_pseudo_targets(analysis: Analysis, out: CWriter) -> None:
         f"const struct pseudo_targets _PyOpcode_PseudoTargets[{table_size}] = {{\n"
     )
     fuer pseudo in analysis.pseudos.values():
-        as_sequence = "1" if pseudo.as_sequence else "0"
+        as_sequence = "1" wenn pseudo.as_sequence sonst "0"
         targets = ["0"] * (max_targets + 1)
         fuer i, target in enumerate(pseudo.targets):
             targets[i] = target.name
@@ -404,9 +404,9 @@ arg_parser.add_argument(
     "input", nargs=argparse.REMAINDER, help="Instruction definition file(s)"
 )
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     args = arg_parser.parse_args()
-    if len(args.input) == 0:
+    wenn len(args.input) == 0:
         args.input.append(DEFAULT_INPUT)
     data = analyze_files(args.input)
     with open(args.output, "w") as outfile:

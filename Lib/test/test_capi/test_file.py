@@ -56,7 +56,7 @@ klasse CAPIFileTest(unittest.TestCase):
 
     def test_pyfile_getline(self):
         # Test PyFile_GetLine(file, n): call file.readline()
-        # and strip "\n" suffix if n < 0.
+        # and strip "\n" suffix wenn n < 0.
         pyfile_getline = _testlimitedcapi.pyfile_getline
 
         # Test Unicode
@@ -102,7 +102,7 @@ klasse CAPIFileTest(unittest.TestCase):
 
     def test_pyfile_writeobject(self):
         # Test PyFile_WriteObject(obj, file, flags):
-        # - Call file.write(str(obj)) if flags equals Py_PRINT_RAW.
+        # - Call file.write(str(obj)) wenn flags equals Py_PRINT_RAW.
         # - Call file.write(repr(obj)) otherwise.
         writeobject = _testlimitedcapi.pyfile_writeobject
         Py_PRINT_RAW = 1
@@ -130,7 +130,7 @@ klasse CAPIFileTest(unittest.TestCase):
 
     def test_pyobject_asfiledescriptor(self):
         # Test PyObject_AsFileDescriptor(obj):
-        # - Return obj if obj is an integer.
+        # - Return obj wenn obj is an integer.
         # - Return obj.fileno() otherwise.
         # File descriptor must be >= 0.
         asfd = _testlimitedcapi.pyobject_asfiledescriptor
@@ -242,10 +242,10 @@ klasse CAPIFileTest(unittest.TestCase):
             os_helper.TESTFN,
             os.fsencode(os_helper.TESTFN),
         ]
-        if os_helper.TESTFN_UNDECODABLE is not None:
+        wenn os_helper.TESTFN_UNDECODABLE is not None:
             filenames.append(os_helper.TESTFN_UNDECODABLE)
             filenames.append(os.fsdecode(os_helper.TESTFN_UNDECODABLE))
-        if os_helper.TESTFN_UNENCODABLE is not None:
+        wenn os_helper.TESTFN_UNENCODABLE is not None:
             filenames.append(os_helper.TESTFN_UNENCODABLE)
         fuer filename in filenames:
             with self.subTest(filename=filename):
@@ -286,7 +286,7 @@ klasse CAPIFileTest(unittest.TestCase):
                 with self.assertRaises(TypeError):
                     py_fopen(invalid_type, "rb")
 
-        if support.MS_WINDOWS:
+        wenn support.MS_WINDOWS:
             with self.assertRaises(OSError):
                 # On Windows, the file mode is limited to 10 characters
                 py_fopen(__file__, "rt+, ccs=UTF-8")
@@ -321,5 +321,5 @@ klasse CAPIFileTest(unittest.TestCase):
     # test_embed.test_open_code_hook()
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

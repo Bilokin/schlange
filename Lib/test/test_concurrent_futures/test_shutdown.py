@@ -34,11 +34,11 @@ klasse ExecutorShutdownTest:
             from concurrent.futures import {executor_type}
             from time import sleep
             from test.test_concurrent_futures.test_shutdown import sleep_and_print
-            if __name__ == "__main__":
+            wenn __name__ == "__main__":
                 context = '{context}'
-                if context == "":
+                wenn context == "":
                     t = {executor_type}(5)
-                else:
+                sonst:
                     from multiprocessing import get_context
                     context = get_context(context)
                     t = {executor_type}(5, mp_context=context)
@@ -63,11 +63,11 @@ klasse ExecutorShutdownTest:
                     print("runtime-error")
                     raise
             from concurrent.futures import {executor_type}
-            if __name__ == "__main__":
+            wenn __name__ == "__main__":
                 context = '{context}'
-                if not context:
+                wenn not context:
                     t = {executor_type}(5)
-                else:
+                sonst:
                     from multiprocessing import get_context
                     context = get_context(context)
                     t = {executor_type}(5, mp_context=context)
@@ -94,13 +94,13 @@ klasse ExecutorShutdownTest:
         # We can't guarantee the exact number of cancellations, but we can
         # guarantee that *some* were cancelled. With few workers, many of
         # the submitted futures should have been cancelled.
-        cancelled = [fut fuer fut in fs if fut.cancelled()]
+        cancelled = [fut fuer fut in fs wenn fut.cancelled()]
         self.assertGreater(len(cancelled), 20)
 
         # Ensure the other futures were able to finish.
         # Use "not fut.cancelled()" instead of "fut.done()" to include futures
         # that may have been left in a pending state.
-        others = [fut fuer fut in fs if not fut.cancelled()]
+        others = [fut fuer fut in fs wenn not fut.cancelled()]
         fuer fut in others:
             self.assertTrue(fut.done(), msg=f"{fut._state=}")
             self.assertIsNone(fut.exception())
@@ -115,15 +115,15 @@ klasse ExecutorShutdownTest:
 
         See https://github.com/python/cpython/issues/83386.
         """
-        if self.executor_type == futures.ProcessPoolExecutor:
+        wenn self.executor_type == futures.ProcessPoolExecutor:
             raise unittest.SkipTest(
                 "Hangs, see https://github.com/python/cpython/issues/83386")
 
         rc, out, err = assert_python_ok('-c', """if True:
             from concurrent.futures import {executor_type}
             from test.test_concurrent_futures.test_shutdown import sleep_and_print
-            if __name__ == "__main__":
-                if {context!r}: multiprocessing.set_start_method({context!r})
+            wenn __name__ == "__main__":
+                wenn {context!r}: multiprocessing.set_start_method({context!r})
                 t = {executor_type}(max_workers=3)
                 t.submit(sleep_and_print, 1.0, "apple")
                 t.shutdown(wait=False)
@@ -139,7 +139,7 @@ klasse ExecutorShutdownTest:
 
         See https://github.com/python/cpython/issues/94440.
         """
-        if not hasattr(signal, 'alarm'):
+        wenn not hasattr(signal, 'alarm'):
             raise unittest.SkipTest(
                 "Tested platform does not support the alarm signal")
 
@@ -147,7 +147,7 @@ klasse ExecutorShutdownTest:
             raise RuntimeError("timed out waiting fuer shutdown")
 
         kwargs = {}
-        if getattr(self, 'ctx', None):
+        wenn getattr(self, 'ctx', None):
             kwargs['mp_context'] = self.get_context()
         executor = self.executor_type(max_workers=1, **kwargs)
         executor.submit(int).result()
@@ -248,7 +248,7 @@ klasse ThreadPoolShutdownTest(ThreadPoolMixin, ExecutorShutdownTest, BaseTestCas
         rc, out, err = assert_python_ok('-c', """if True:
             from concurrent.futures import ThreadPoolExecutor
             from test.test_concurrent_futures.test_shutdown import sleep_and_print
-            if __name__ == "__main__":
+            wenn __name__ == "__main__":
                 t = ThreadPoolExecutor()
                 t.submit(sleep_and_print, .1, "apple")
                 t.shutdown(wait=False, cancel_futures=True)
@@ -256,7 +256,7 @@ klasse ThreadPoolShutdownTest(ThreadPoolMixin, ExecutorShutdownTest, BaseTestCas
         # Errors in atexit hooks don't change the process exit code, check
         # stderr manually.
         self.assertFalse(err)
-        # gh-116682: stdout may be empty if shutdown happens before task
+        # gh-116682: stdout may be empty wenn shutdown happens before task
         # starts executing.
         self.assertIn(out.strip(), [b"apple", b""])
 
@@ -268,10 +268,10 @@ klasse ProcessPoolShutdownTest(ExecutorShutdownTest):
             lock.acquire()
 
         mp_context = self.get_context()
-        if mp_context.get_start_method(allow_none=False) == "fork":
+        wenn mp_context.get_start_method(allow_none=False) == "fork":
             # fork pre-spawns, not on demand.
             expected_num_processes = self.worker_count
-        else:
+        sonst:
             expected_num_processes = 3
 
         sem = mp_context.Semaphore(0)
@@ -361,7 +361,7 @@ klasse ProcessPoolShutdownTest(ExecutorShutdownTest):
         #   a task ends abnormally
         #   shutdown(wait=False) is called
         start_method = self.get_context().get_start_method()
-        if (start_method == "fork" or
+        wenn (start_method == "fork" or
            (start_method == "forkserver" and sys.platform.startswith("win"))):
                 self.skipTest(f"Skipping test fuer {start_method = }")
         executor = futures.ProcessPoolExecutor(
@@ -412,5 +412,5 @@ def setUpModule():
     setup_module()
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

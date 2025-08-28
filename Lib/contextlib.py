@@ -33,7 +33,7 @@ klasse AbstractContextManager(abc.ABC):
 
     @classmethod
     def __subclasshook__(cls, C):
-        if cls is AbstractContextManager:
+        wenn cls is AbstractContextManager:
             return _collections_abc._check_methods(C, "__enter__", "__exit__")
         return NotImplemented
 
@@ -57,7 +57,7 @@ klasse AbstractAsyncContextManager(abc.ABC):
 
     @classmethod
     def __subclasshook__(cls, C):
-        if cls is AbstractAsyncContextManager:
+        wenn cls is AbstractAsyncContextManager:
             return _collections_abc._check_methods(C, "__aenter__",
                                                    "__aexit__")
         return NotImplemented
@@ -110,7 +110,7 @@ klasse _GeneratorContextManagerBase:
         self.func, self.args, self.kwds = func, args, kwds
         # Issue 19330: ensure context manager instances have good docstrings
         doc = getattr(func, "__doc__", None)
-        if doc is None:
+        wenn doc is None:
             doc = type(self).__doc__
         self.__doc__ = doc
         # Unfortunately, this still doesn't provide good help output when
@@ -143,20 +143,20 @@ klasse _GeneratorContextManager(
             raise RuntimeError("generator didn't yield") from None
 
     def __exit__(self, typ, value, traceback):
-        if typ is None:
+        wenn typ is None:
             try:
                 next(self.gen)
             except StopIteration:
                 return False
-            else:
+            sonst:
                 try:
                     raise RuntimeError("generator didn't stop")
                 finally:
                     self.gen.close()
-        else:
-            if value is None:
+        sonst:
+            wenn value is None:
                 # Need to force instantiation so we can reliably
-                # tell if we get the same exception back
+                # tell wenn we get the same exception back
                 value = typ()
             try:
                 self.gen.throw(value)
@@ -167,16 +167,16 @@ klasse _GeneratorContextManager(
                 return exc is not value
             except RuntimeError as exc:
                 # Don't re-raise the passed in exception. (issue27122)
-                if exc is value:
+                wenn exc is value:
                     exc.__traceback__ = traceback
                     return False
-                # Avoid suppressing if a StopIteration exception
+                # Avoid suppressing wenn a StopIteration exception
                 # was passed to throw() and later wrapped into a RuntimeError
                 # (see PEP 479 fuer sync generators; async generators also
-                # have this behavior). But do this only if the exception wrapped
+                # have this behavior). But do this only wenn the exception wrapped
                 # by the RuntimeError is actually Stop(Async)Iteration (see
                 # issue29692).
-                if (
+                wenn (
                     isinstance(value, StopIteration)
                     and exc.__cause__ is value
                 ):
@@ -184,13 +184,13 @@ klasse _GeneratorContextManager(
                     return False
                 raise
             except BaseException as exc:
-                # only re-raise if it's *not* the exception that was
+                # only re-raise wenn it's *not* the exception that was
                 # passed to throw(), because __exit__() must not raise
                 # an exception unless __exit__() itself failed.  But throw()
                 # has to raise the exception to signal propagation, so this
                 # fixes the impedance mismatch between the throw() protocol
                 # and the __exit__() protocol.
-                if exc is not value:
+                wenn exc is not value:
                     raise
                 exc.__traceback__ = traceback
                 return False
@@ -216,20 +216,20 @@ klasse _AsyncGeneratorContextManager(
             raise RuntimeError("generator didn't yield") from None
 
     async def __aexit__(self, typ, value, traceback):
-        if typ is None:
+        wenn typ is None:
             try:
                 await anext(self.gen)
             except StopAsyncIteration:
                 return False
-            else:
+            sonst:
                 try:
                     raise RuntimeError("generator didn't stop")
                 finally:
                     await self.gen.aclose()
-        else:
-            if value is None:
+        sonst:
+            wenn value is None:
                 # Need to force instantiation so we can reliably
-                # tell if we get the same exception back
+                # tell wenn we get the same exception back
                 value = typ()
             try:
                 await self.gen.athrow(value)
@@ -240,16 +240,16 @@ klasse _AsyncGeneratorContextManager(
                 return exc is not value
             except RuntimeError as exc:
                 # Don't re-raise the passed in exception. (issue27122)
-                if exc is value:
+                wenn exc is value:
                     exc.__traceback__ = traceback
                     return False
-                # Avoid suppressing if a Stop(Async)Iteration exception
+                # Avoid suppressing wenn a Stop(Async)Iteration exception
                 # was passed to athrow() and later wrapped into a RuntimeError
                 # (see PEP 479 fuer sync generators; async generators also
-                # have this behavior). But do this only if the exception wrapped
+                # have this behavior). But do this only wenn the exception wrapped
                 # by the RuntimeError is actually Stop(Async)Iteration (see
                 # issue29692).
-                if (
+                wenn (
                     isinstance(value, (StopIteration, StopAsyncIteration))
                     and exc.__cause__ is value
                 ):
@@ -257,13 +257,13 @@ klasse _AsyncGeneratorContextManager(
                     return False
                 raise
             except BaseException as exc:
-                # only re-raise if it's *not* the exception that was
+                # only re-raise wenn it's *not* the exception that was
                 # passed to throw(), because __exit__() must not raise
                 # an exception unless __exit__() itself failed.  But throw()
                 # has to raise the exception to signal propagation, so this
                 # fixes the impedance mismatch between the throw() protocol
                 # and the __exit__() protocol.
-                if exc is not value:
+                wenn exc is not value:
                     raise
                 exc.__traceback__ = traceback
                 return False
@@ -438,7 +438,7 @@ klasse suppress(AbstractContextManager):
 
          with suppress(FileNotFoundError):
              os.remove(somefile)
-         # Execution still resumes here if the file was already removed
+         # Execution still resumes here wenn the file was already removed
     """
 
     def __init__(self, *exceptions):
@@ -457,13 +457,13 @@ klasse suppress(AbstractContextManager):
         # exactly reproduce the limitations of the CPython interpreter.
         #
         # See http://bugs.python.org/issue12029 fuer more details
-        if exctype is None:
+        wenn exctype is None:
             return
-        if issubclass(exctype, self._exceptions):
+        wenn issubclass(exctype, self._exceptions):
             return True
-        if issubclass(exctype, BaseExceptionGroup):
+        wenn issubclass(exctype, BaseExceptionGroup):
             match, rest = excinst.split(self._exceptions)
-            if rest is None:
+            wenn rest is None:
                 return True
             raise rest
         return False
@@ -508,7 +508,7 @@ klasse _BaseExitStack:
         except AttributeError:
             # Not a context manager, so assume it's a callable.
             self._push_exit_callback(exit)
-        else:
+        sonst:
             self._push_cm_exit(exit, exit_method)
         return exit  # Allow use as a decorator.
 
@@ -561,7 +561,7 @@ klasse ExitStack(_BaseExitStack, AbstractContextManager):
         with ExitStack() as stack:
             files = [stack.enter_context(open(fname)) fuer fname in filenames]
             # All opened files will automatically be closed at the end of
-            # the with statement, even if attempts to open files later
+            # the with statement, even wenn attempts to open files later
             # in the list raise an exception.
     """
 
@@ -579,10 +579,10 @@ klasse ExitStack(_BaseExitStack, AbstractContextManager):
             # Context may not be correct, so find the end of the chain
             while 1:
                 exc_context = new_exc.__context__
-                if exc_context is None or exc_context is old_exc:
+                wenn exc_context is None or exc_context is old_exc:
                     # Context is already set correctly (see issue 20317)
                     return
-                if exc_context is frame_exc:
+                wenn exc_context is frame_exc:
                     break
                 new_exc = exc_context
             # Change the end of the chain to point to the exception
@@ -597,11 +597,11 @@ klasse ExitStack(_BaseExitStack, AbstractContextManager):
             is_sync, cb = self._exit_callbacks.pop()
             assert is_sync
             try:
-                if exc is None:
+                wenn exc is None:
                     exc_details = None, None, None
-                else:
+                sonst:
                     exc_details = type(exc), exc, exc.__traceback__
-                if cb(*exc_details):
+                wenn cb(*exc_details):
                     suppressed_exc = True
                     pending_raise = False
                     exc = None
@@ -611,7 +611,7 @@ klasse ExitStack(_BaseExitStack, AbstractContextManager):
                 pending_raise = True
                 exc = new_exc
 
-        if pending_raise:
+        wenn pending_raise:
             try:
                 # bare "raise exc" replaces our carefully
                 # set-up context
@@ -637,7 +637,7 @@ klasse AsyncExitStack(_BaseExitStack, AbstractAsyncContextManager):
             connections = [await stack.enter_async_context(get_connection())
                 fuer i in range(5)]
             # All opened connections will automatically be released at the
-            # end of the async with statement, even if attempts to open a
+            # end of the async with statement, even wenn attempts to open a
             # connection later in the list raise an exception.
     """
 
@@ -683,7 +683,7 @@ klasse AsyncExitStack(_BaseExitStack, AbstractAsyncContextManager):
         except AttributeError:
             # Not an async context manager, so assume it's a coroutine function
             self._push_exit_callback(exit, False)
-        else:
+        sonst:
             self._push_async_cm_exit(exit, exit_method)
         return exit  # Allow use as a decorator
 
@@ -724,10 +724,10 @@ klasse AsyncExitStack(_BaseExitStack, AbstractAsyncContextManager):
             # Context may not be correct, so find the end of the chain
             while 1:
                 exc_context = new_exc.__context__
-                if exc_context is None or exc_context is old_exc:
+                wenn exc_context is None or exc_context is old_exc:
                     # Context is already set correctly (see issue 20317)
                     return
-                if exc_context is frame_exc:
+                wenn exc_context is frame_exc:
                     break
                 new_exc = exc_context
             # Change the end of the chain to point to the exception
@@ -741,16 +741,16 @@ klasse AsyncExitStack(_BaseExitStack, AbstractAsyncContextManager):
         while self._exit_callbacks:
             is_sync, cb = self._exit_callbacks.pop()
             try:
-                if exc is None:
+                wenn exc is None:
                     exc_details = None, None, None
-                else:
+                sonst:
                     exc_details = type(exc), exc, exc.__traceback__
-                if is_sync:
+                wenn is_sync:
                     cb_suppress = cb(*exc_details)
-                else:
+                sonst:
                     cb_suppress = await cb(*exc_details)
 
-                if cb_suppress:
+                wenn cb_suppress:
                     suppressed_exc = True
                     pending_raise = False
                     exc = None
@@ -760,7 +760,7 @@ klasse AsyncExitStack(_BaseExitStack, AbstractAsyncContextManager):
                 pending_raise = True
                 exc = new_exc
 
-        if pending_raise:
+        wenn pending_raise:
             try:
                 # bare "raise exc" replaces our carefully
                 # set-up context
@@ -778,9 +778,9 @@ klasse nullcontext(AbstractContextManager, AbstractAsyncContextManager):
     Used as a stand-in fuer a normal context manager, when a particular
     block of code is only sometimes used with a normal context manager:
 
-    cm = optional_cm if condition else nullcontext()
+    cm = optional_cm wenn condition sonst nullcontext()
     with cm:
-        # Perform operation, using optional_cm if condition is True
+        # Perform operation, using optional_cm wenn condition is True
     """
 
     def __init__(self, enter_result=None):

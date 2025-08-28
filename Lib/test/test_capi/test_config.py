@@ -98,21 +98,21 @@ klasse CAPITests(unittest.TestCase):
             ("write_bytecode", bool, None),
             ("xoptions", dict[str, str | bool], "_xoptions"),
         ]
-        if support.Py_DEBUG:
+        wenn support.Py_DEBUG:
             options.append(("run_presite", str | None, None))
-        if support.Py_GIL_DISABLED:
+        wenn support.Py_GIL_DISABLED:
             options.append(("enable_gil", int, None))
             options.append(("tlbc_enabled", int, None))
-        if support.MS_WINDOWS:
+        wenn support.MS_WINDOWS:
             options.extend((
                 ("legacy_windows_stdio", bool, None),
                 ("legacy_windows_fs_encoding", bool, None),
             ))
-        if Py_STATS:
+        wenn Py_STATS:
             options.extend((
                 ("_pystats", bool, None),
             ))
-        if support.is_apple:
+        wenn support.is_apple:
             options.extend((
                 ("use_system_logger", bool, None),
             ))
@@ -121,22 +121,22 @@ klasse CAPITests(unittest.TestCase):
             with self.subTest(name=name, option_type=option_type,
                               sys_attr=sys_attr):
                 value = config_get(name)
-                if isinstance(option_type, types.GenericAlias):
+                wenn isinstance(option_type, types.GenericAlias):
                     self.assertIsInstance(value, option_type.__origin__)
-                    if option_type.__origin__ == dict:
+                    wenn option_type.__origin__ == dict:
                         key_type = option_type.__args__[0]
                         value_type = option_type.__args__[1]
                         fuer item in value.items():
                             self.assertIsInstance(item[0], key_type)
                             self.assertIsInstance(item[1], value_type)
-                    else:
+                    sonst:
                         item_type = option_type.__args__[0]
                         fuer item in value:
                             self.assertIsInstance(item, item_type)
-                else:
+                sonst:
                     self.assertIsInstance(value, option_type)
 
-                if sys_attr is not None:
+                wenn sys_attr is not None:
                     expected = getattr(sys, sys_attr)
                     self.assertEqual(expected, value)
 
@@ -176,7 +176,7 @@ klasse CAPITests(unittest.TestCase):
         ):
             with self.subTest(flag=flag, name=name, negate=negate):
                 value = config_get(name)
-                if negate:
+                wenn negate:
                     value = not value
                 self.assertEqual(getattr(sys.flags, flag), value)
 
@@ -184,15 +184,15 @@ klasse CAPITests(unittest.TestCase):
                          config_get('use_hash_seed') == 0
                          or config_get('hash_seed') != 0)
 
-        if support.Py_GIL_DISABLED:
+        wenn support.Py_GIL_DISABLED:
             value = config_get('enable_gil')
-            expected = (value if value != -1 else None)
+            expected = (value wenn value != -1 sonst None)
             self.assertEqual(sys.flags.gil, expected)
 
-        expected_inherit_context = 1 if support.Py_GIL_DISABLED else 0
+        expected_inherit_context = 1 wenn support.Py_GIL_DISABLED sonst 0
         self.assertEqual(sys.flags.thread_inherit_context, expected_inherit_context)
 
-        expected_safe_warnings = 1 if support.Py_GIL_DISABLED else 0
+        expected_safe_warnings = 1 wenn support.Py_GIL_DISABLED sonst 0
         self.assertEqual(sys.flags.context_aware_warnings, expected_safe_warnings)
 
     def test_config_get_non_existent(self):
@@ -262,16 +262,16 @@ klasse CAPITests(unittest.TestCase):
             ('xoptions', '_xoptions', dict[str, str | bool]),
         ):
             with self.subTest(name=name):
-                if option_type == str:
+                wenn option_type == str:
                     test_values = ('TEST_REPLACE',)
                     invalid_types = (1, None)
-                elif option_type == str | None:
+                sowenn option_type == str | None:
                     test_values = ('TEST_REPLACE', None)
                     invalid_types = (123,)
-                elif option_type == list[str]:
+                sowenn option_type == list[str]:
                     test_values = (['TEST_REPLACE'], [])
                     invalid_types = ('text', 123, [123])
-                else:  # option_type == dict[str, str | bool]:
+                sonst:  # option_type == dict[str, str | bool]:
                     test_values = ({"x": "value", "y": True},)
                     invalid_types = ('text', 123, ['option'],
                                      {123: 'value'},
@@ -335,15 +335,15 @@ klasse CAPITests(unittest.TestCase):
             ('int_max_str_digits', 'int_max_str_digits', unsigned_int, expect_int),
             # gil
         ):
-            if name == "int_max_str_digits":
+            wenn name == "int_max_str_digits":
                 new_values = (0, 5_000, 999_999)
                 invalid_values = (-1, 40)  # value must 0 or >= 4300
                 invalid_types = (1.0, "abc")
-            elif option_type == int:
+            sowenn option_type == int:
                 new_values = (False, True, 0, 1, 5, -5)
                 invalid_values = ()
                 invalid_types = (1.0, "abc")
-            else:
+            sonst:
                 new_values = (False, True, 0, 1, 5)
                 invalid_values = (-5,)
                 invalid_types = (1.0, "abc")
@@ -357,10 +357,10 @@ klasse CAPITests(unittest.TestCase):
                         config_set(name, value)
                         self.assertEqual(config_get(name), expected)
                         self.assertEqual(getattr(sys.flags, sys_flag), expect_flag)
-                        if name == "write_bytecode":
+                        wenn name == "write_bytecode":
                             self.assertEqual(getattr(sys, "dont_write_bytecode"),
                                              expect_flag)
-                        if name == "int_max_str_digits":
+                        wenn name == "int_max_str_digits":
                             self.assertEqual(sys.get_int_max_str_digits(),
                                              expect_flag)
 
@@ -399,5 +399,5 @@ klasse CAPITests(unittest.TestCase):
                     config_set(name, value)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

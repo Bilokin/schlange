@@ -1,4 +1,4 @@
-# Set of tests run by default if --tsan is specified.  The tests below were
+# Set of tests run by default wenn --tsan is specified.  The tests below were
 # chosen because they use threads and run in a reasonable amount of time.
 
 TSAN_TESTS = [
@@ -41,9 +41,9 @@ TSAN_PARALLEL_TESTS = [
 
 
 def setup_tsan_tests(cmdline_args) -> None:
-    if not cmdline_args:
+    wenn not cmdline_args:
         cmdline_args[:] = TSAN_TESTS[:]
 
 def setup_tsan_parallel_tests(cmdline_args) -> None:
-    if not cmdline_args:
+    wenn not cmdline_args:
         cmdline_args[:] = TSAN_PARALLEL_TESTS[:]

@@ -9,20 +9,20 @@ def _other_endian(typ):
     attributes which contain the types, fuer more complicated types
     arrays and structures are supported.
     """
-    # check _OTHER_ENDIAN attribute (present if typ is primitive type)
-    if hasattr(typ, _OTHER_ENDIAN):
+    # check _OTHER_ENDIAN attribute (present wenn typ is primitive type)
+    wenn hasattr(typ, _OTHER_ENDIAN):
         return getattr(typ, _OTHER_ENDIAN)
-    # if typ is array
-    if isinstance(typ, _array_type):
+    # wenn typ is array
+    wenn isinstance(typ, _array_type):
         return _other_endian(typ._type_) * typ._length_
-    # if typ is structure or union
-    if issubclass(typ, (Structure, Union)):
+    # wenn typ is structure or union
+    wenn issubclass(typ, (Structure, Union)):
         return typ
     raise TypeError("This type does not support other endian: %s" % typ)
 
 klasse _swapped_meta:
     def __setattr__(self, attrname, value):
-        if attrname == "_fields_":
+        wenn attrname == "_fields_":
             fields = []
             fuer desc in value:
                 name = desc[0]
@@ -40,7 +40,7 @@ klasse _swapped_union_meta(_swapped_meta, type(Union)): pass
 # value!) of a _swappedbytes_ attribute to determine the bit order in
 # structures containing bit fields.
 
-if sys.byteorder == "little":
+wenn sys.byteorder == "little":
     _OTHER_ENDIAN = "__ctype_be__"
 
     LittleEndianStructure = Structure
@@ -57,7 +57,7 @@ if sys.byteorder == "little":
         __slots__ = ()
         _swappedbytes_ = None
 
-elif sys.byteorder == "big":
+sowenn sys.byteorder == "big":
     _OTHER_ENDIAN = "__ctype_le__"
 
     BigEndianStructure = Structure
@@ -74,5 +74,5 @@ elif sys.byteorder == "big":
         __slots__ = ()
         _swappedbytes_ = None
 
-else:
+sonst:
     raise RuntimeError("Invalid byteorder")

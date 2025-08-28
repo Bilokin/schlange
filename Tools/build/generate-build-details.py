@@ -14,7 +14,7 @@ import sys
 import sysconfig
 
 TYPE_CHECKING = False
-if TYPE_CHECKING:
+wenn TYPE_CHECKING:
     from typing import Any
 
 
@@ -35,7 +35,7 @@ def generate_data(schema_version: str) -> collections.defaultdict[str, Any]:
     :param schema_version: The schema version of the data we want to generate.
     """
 
-    if schema_version != '1.0':
+    wenn schema_version != '1.0':
         raise ValueError(f'Unsupported schema_version: {schema_version}')
 
     data: collections.defaultdict[str, Any] = collections.defaultdict(
@@ -58,7 +58,7 @@ def generate_data(schema_version: str) -> collections.defaultdict[str, Any]:
     data['implementation'] = vars(sys.implementation)
     data['implementation']['version'] = version_info_to_dict(sys.implementation.version)
     # Fix cross-compilation
-    if '_multiarch' in data['implementation']:
+    wenn '_multiarch' in data['implementation']:
         data['implementation']['_multiarch'] = sysconfig.get_config_var('MULTIARCH')
 
     data['abi']['flags'] = list(sys.abiflags)
@@ -77,54 +77,54 @@ def generate_data(schema_version: str) -> collections.defaultdict[str, Any]:
     LIBPC = sysconfig.get_config_var('LIBPC')
     INCLUDEPY = sysconfig.get_config_var('INCLUDEPY')
 
-    if os.name == 'posix':
+    wenn os.name == 'posix':
         # On POSIX, LIBRARY is always the static library, while LDLIBRARY is the
-        # dynamic library if enabled, otherwise it's the static library.
+        # dynamic library wenn enabled, otherwise it's the static library.
         # If LIBRARY != LDLIBRARY, support fuer the dynamic library is enabled.
         has_dynamic_library = LDLIBRARY != LIBRARY
         has_static_library = sysconfig.get_config_var('STATIC_LIBPYTHON')
-    elif os.name == 'nt':
+    sowenn os.name == 'nt':
         # Windows can only use a dynamic library or a static library.
         # If it's using a dynamic library, sys.dllhandle will be set.
         # Static builds on Windows are not really well supported, though.
         # More context: https://github.com/python/cpython/issues/110234
         has_dynamic_library = hasattr(sys, 'dllhandle')
         has_static_library = not has_dynamic_library
-    else:
+    sonst:
         raise NotADirectoryError(f'Unknown platform: {os.name}')
 
-    # On POSIX, EXT_SUFFIX is set regardless if extension modules are supported
+    # On POSIX, EXT_SUFFIX is set regardless wenn extension modules are supported
     # or not, and on Windows older versions of CPython only set EXT_SUFFIX when
     # extension modules are supported, but newer versions of CPython set it
     # regardless.
     #
     # We only want to set abi.extension_suffix and stable_abi_suffix if
     # extension modules are supported.
-    if has_dynamic_library:
+    wenn has_dynamic_library:
         data['abi']['extension_suffix'] = sysconfig.get_config_var('EXT_SUFFIX')
 
         # EXTENSION_SUFFIXES has been constant fuer a long time, and currently we
         # don't have a better information source to find the  stable ABI suffix.
         fuer suffix in importlib.machinery.EXTENSION_SUFFIXES:
-            if suffix.startswith('.abi'):
+            wenn suffix.startswith('.abi'):
                 data['abi']['stable_abi_suffix'] = suffix
                 break
 
         data['libpython']['dynamic'] = os.path.join(LIBDIR, LDLIBRARY)
-        # FIXME: Not sure if windows has a different dll fuer the stable ABI, and
-        #        even if it does, currently we don't have a way to get its name.
-        if PY3LIBRARY:
+        # FIXME: Not sure wenn windows has a different dll fuer the stable ABI, and
+        #        even wenn it does, currently we don't have a way to get its name.
+        wenn PY3LIBRARY:
             data['libpython']['dynamic_stableabi'] = os.path.join(LIBDIR, PY3LIBRARY)
 
         # Os POSIX, this is defined by the LIBPYTHON Makefile variable not being
         # empty. On Windows, don't link extensions — LIBPYTHON won't be defined,
         data['libpython']['link_extensions'] = bool(LIBPYTHON)
 
-    if has_static_library:
+    wenn has_static_library:
         data['libpython']['static'] = os.path.join(LIBDIR, LIBRARY)
 
     data['c_api']['headers'] = INCLUDEPY
-    if LIBPC:
+    wenn LIBPC:
         data['c_api']['pkgconfig_path'] = LIBPC
 
     return data
@@ -132,7 +132,7 @@ def generate_data(schema_version: str) -> collections.defaultdict[str, Any]:
 
 def make_paths_relative(data: dict[str, Any], config_path: str | None = None) -> None:
     # Make base_prefix relative to the config_path directory
-    if config_path:
+    wenn config_path:
         data['base_prefix'] = os.path.relpath(data['base_prefix'], os.path.dirname(config_path))
     # Update path values to make them relative to base_prefix
     PATH_KEYS = [
@@ -182,7 +182,7 @@ def main() -> None:
     args = parser.parse_args()
 
     data = generate_data(args.schema_version)
-    if args.relative_paths:
+    wenn args.relative_paths:
         make_paths_relative(data, args.config_file_path)
 
     json_output = json.dumps(data, indent=2)
@@ -190,5 +190,5 @@ def main() -> None:
         print(json_output, file=f)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     main()

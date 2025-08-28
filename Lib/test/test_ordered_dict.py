@@ -349,7 +349,7 @@ klasse OrderedDictTests:
 
     def test_reduce_not_too_fat(self):
         OrderedDict = self.OrderedDict
-        # do not save instance dictionary if not needed
+        # do not save instance dictionary wenn not needed
         pairs = [('c', 1), ('b', 2), ('a', 3), ('d', 4), ('e', 5), ('f', 6)]
         od = OrderedDict(pairs)
         self.assertIsInstance(od.__dict__, dict)
@@ -596,7 +596,7 @@ klasse OrderedDictTests:
         dict resizes after a certain number of insertion operations,
         whether or not there were deletions that freed up slots in the
         hash table.  During fast node lookup, OrderedDict must correctly
-        respond to all resizes, even if the current "size" is the same
+        respond to all resizes, even wenn the current "size" is the same
         as the old one.  We verify that here by forcing a dict resize
         on a sparse odict and then perform an operation that should
         trigger an odict resize (e.g. popitem).  One key aspect here is
@@ -608,7 +608,7 @@ klasse OrderedDictTests:
         od = OrderedDict()
         fuer c0 in '0123456789ABCDEF':
             fuer c1 in '0123456789ABCDEF':
-                if len(od) == 4:
+                wenn len(od) == 4:
                     # This should not raise a KeyError.
                     od.popitem(last=False)
                 key = c0 + c1
@@ -747,7 +747,7 @@ klasse _TriggerSideEffectOnEqual:
     trigger = 1 # count value when to trigger side effect
 
     def __eq__(self, other):
-        if self.__class__.count == self.__class__.trigger:
+        wenn self.__class__.count == self.__class__.trigger:
             self.side_effect()
         self.__class__.count += 1
         return True
@@ -1135,5 +1135,5 @@ klasse CSimpleLRUCacheTests(SimpleLRUCacheTests, unittest.TestCase):
         cls.type2test = type2test
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

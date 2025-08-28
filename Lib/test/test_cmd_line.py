@@ -21,7 +21,7 @@ from test.support.script_helper import (
 from textwrap import dedent
 
 
-if not support.has_subprocess_support:
+wenn not support.has_subprocess_support:
     raise unittest.SkipTest("test module requires subprocess")
 
 
@@ -39,7 +39,7 @@ klasse CmdLineTest(unittest.TestCase):
 
     def verify_valid_flag(self, cmd_line):
         rc, out, err = assert_python_ok(cmd_line)
-        if out != b'':
+        wenn out != b'':
             self.assertEndsWith(out, b'\n')
         self.assertNotIn(b'Traceback', out)
         self.assertNotIn(b'Traceback', err)
@@ -143,12 +143,12 @@ klasse CmdLineTest(unittest.TestCase):
         # "-X showrefcount" shows the refcount, but only in debug builds
         rc, out, err = run_python('-I', '-X', 'showrefcount', '-c', code)
         self.assertEqual(out.rstrip(), b"{'showrefcount': True}")
-        if support.Py_DEBUG:
+        wenn support.Py_DEBUG:
             # bpo-46417: Tolerate negative reference count which can occur
             # because of bugs in C extensions. This test is only about checking
             # the showrefcount feature.
             self.assertRegex(err, br'^\[-?\d+ refs, \d+ blocks\]')
-        else:
+        sonst:
             self.assertEqual(err, b'')
 
     @support.cpython_only
@@ -187,7 +187,7 @@ klasse CmdLineTest(unittest.TestCase):
         # Check the runpy module also gives an error for
         # a nonexistent module
         assert_python_failure('-m', 'runpy', 'fnord43520xyz')
-        # All good if module is located and run successfully
+        # All good wenn module is located and run successfully
         assert_python_ok('-m', 'timeit', '-n', '1')
 
     def test_run_module_bug1764407(self):
@@ -217,7 +217,7 @@ klasse CmdLineTest(unittest.TestCase):
         assert_python_failure('-c')
         # Check we get an error fuer an uncaught exception
         assert_python_failure('-c', 'raise Exception')
-        # All good if execution is successful
+        # All good wenn execution is successful
         assert_python_ok('-c', 'pass')
 
     @unittest.skipUnless(os_helper.FS_NONASCII, 'need os_helper.FS_NONASCII')
@@ -256,22 +256,22 @@ klasse CmdLineTest(unittest.TestCase):
             stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
             env=env)
         stdout, stderr = p.communicate()
-        if p.returncode == 1:
+        wenn p.returncode == 1:
             # _Py_char2wchar() decoded b'\xff' as '\udcff' (b'\xff' is not
             # decodable from ASCII) and run_command() failed on
             # PyUnicode_AsUTF8String(). This is the expected behaviour on
             # Linux.
             pattern = b"Unable to decode the command from the command line:"
-        elif p.returncode == 0:
-            # _Py_char2wchar() decoded b'\xff' as '\xff' even if the locale is
+        sowenn p.returncode == 0:
+            # _Py_char2wchar() decoded b'\xff' as '\xff' even wenn the locale is
             # C and the locale encoding is ASCII. It occurs on FreeBSD, Solaris
             # and Mac OS X.
             pattern = b"'\\xff' "
             # The output is followed by the encoding name, an alias to ASCII.
             # Examples: "US-ASCII" or "646" (ISO 646, on Solaris).
-        else:
+        sonst:
             raise AssertionError("Unknown exit code: %s, output=%a" % (p.returncode, stdout))
-        if not stdout.startswith(pattern):
+        wenn not stdout.startswith(pattern):
             raise AssertionError("%a doesn't start with %a" % (stdout, pattern))
 
     @unittest.skipIf(sys.platform == 'win32',
@@ -369,13 +369,13 @@ klasse CmdLineTest(unittest.TestCase):
             code = ("import os, sys; sys.%s.buffer.write(b'x'); os._exit(0)"
                 % stream)
             rc, out, err = assert_python_ok('-u', '-c', code)
-            data = err if stream == 'stderr' else out
+            data = err wenn stream == 'stderr' sonst out
             self.assertEqual(data, b'x', "binary %s not unbuffered" % stream)
             # Text is unbuffered
             code = ("import os, sys; sys.%s.write('x'); os._exit(0)"
                 % stream)
             rc, out, err = assert_python_ok('-u', '-c', code)
-            data = err if stream == 'stderr' else out
+            data = err wenn stream == 'stderr' sonst out
             self.assertEqual(data, b'x', "text %s not unbuffered" % stream)
 
     def test_unbuffered_input(self):
@@ -475,10 +475,10 @@ klasse CmdLineTest(unittest.TestCase):
             print(4, file=sys.stderr)"""
         rc, out, err = assert_python_ok('-c', code)
 
-        if sys.platform == 'win32':
+        wenn sys.platform == 'win32':
             self.assertEqual(b'1\r\n2\r\n', out)
             self.assertEqual(b'3\r\n4\r\n', err)
-        else:
+        sonst:
             self.assertEqual(b'1\n2\n', out)
             self.assertEqual(b'3\n4\n', err)
 
@@ -491,7 +491,7 @@ klasse CmdLineTest(unittest.TestCase):
 
     @force_not_colorized
     def test_stdout_flush_at_shutdown(self):
-        # Issue #5319: if stdout.flush() fails at shutdown, an error should
+        # Issue #5319: wenn stdout.flush() fails at shutdown, an error should
         # be printed out.
         code = """if 1:
             import os, sys, test.support
@@ -506,7 +506,7 @@ klasse CmdLineTest(unittest.TestCase):
                       err)
 
     def test_closed_stdout(self):
-        # Issue #13444: if stdout has been explicitly closed, we should
+        # Issue #13444: wenn stdout has been explicitly closed, we should
         # not attempt to flush it at shutdown.
         code = "import sys; sys.stdout.close()"
         rc, out, err = assert_python_ok('-c', code)
@@ -521,15 +521,15 @@ klasse CmdLineTest(unittest.TestCase):
         code = """if 1:
             import os, sys
             fuer i, s in enumerate({streams}):
-                if getattr(sys, s) is not None:
+                wenn getattr(sys, s) is not None:
                     os._exit(i + 1)
             os._exit(42)""".format(streams=streams)
         def preexec():
-            if 'stdin' in streams:
+            wenn 'stdin' in streams:
                 os.close(0)
-            if 'stdout' in streams:
+            wenn 'stdout' in streams:
                 os.close(1)
-            if 'stderr' in streams:
+            wenn 'stderr' in streams:
                 os.close(2)
         p = subprocess.Popen(
             [sys.executable, "-E", "-c", code],
@@ -557,13 +557,13 @@ klasse CmdLineTest(unittest.TestCase):
         # Verify that -R enables hash randomization:
         self.verify_valid_flag('-R')
         hashes = []
-        if os.environ.get('PYTHONHASHSEED', 'random') != 'random':
+        wenn os.environ.get('PYTHONHASHSEED', 'random') != 'random':
             env = dict(os.environ)  # copy
             # We need to test that it is enabled by default without
             # the environment variable enabling it fuer us.
             del env['PYTHONHASHSEED']
             env['__cleanenv'] = '1'  # consumed by assert_python_ok()
-        else:
+        sonst:
             env = {}
         fuer i in range(3):
             code = 'print(hash("spam"))'
@@ -683,13 +683,13 @@ klasse CmdLineTest(unittest.TestCase):
             ('foo', NO_VALUE, None),
         ]
         fuer envval, opt, expected in cases:
-            exp_clause = "is None" if expected is None else f'== "{expected}"'
+            exp_clause = "is None" wenn expected is None sonst f'== "{expected}"'
             code = f"import sys; sys.exit(not sys.pycache_prefix {exp_clause})"
             args = ['-c', code]
-            env = {} if envval is None else {'PYTHONPYCACHEPREFIX': envval}
-            if opt is NO_VALUE:
+            env = {} wenn envval is None sonst {'PYTHONPYCACHEPREFIX': envval}
+            wenn opt is NO_VALUE:
                 args[:0] = ['-X', 'pycache_prefix']
-            elif opt is not None:
+            sowenn opt is not None:
                 args[:0] = ['-X', f'pycache_prefix={opt}']
             with self.subTest(envval=envval, opt=opt):
                 with os_helper.temp_cwd():
@@ -701,16 +701,16 @@ klasse CmdLineTest(unittest.TestCase):
         env.pop('PYTHONDEVMODE', None)
         env.pop('PYTHONMALLOC', None)
 
-        if xdev:
+        wenn xdev:
             args = (sys.executable, '-X', 'dev', *args)
-        else:
+        sonst:
             args = (sys.executable, *args)
         proc = subprocess.run(args,
                               stdout=subprocess.PIPE,
                               stderr=subprocess.STDOUT,
                               universal_newlines=True,
                               env=env)
-        if check_exitcode:
+        wenn check_exitcode:
             self.assertEqual(proc.returncode, 0, proc)
         return proc.stdout.rstrip()
 
@@ -727,9 +727,9 @@ klasse CmdLineTest(unittest.TestCase):
         code = ("import warnings; "
                 "print(' '.join('%s::%s' % (f[0], f[2].__name__) "
                                 "for f in warnings.filters))")
-        if support.Py_DEBUG:
+        wenn support.Py_DEBUG:
             expected_filters = "default::Warning"
-        else:
+        sonst:
             expected_filters = ("default::Warning "
                                 "default::DeprecationWarning "
                                 "ignore::DeprecationWarning "
@@ -754,15 +754,15 @@ klasse CmdLineTest(unittest.TestCase):
             import _testinternalcapi  # noqa: F401
         except ImportError:
             pass
-        else:
+        sonst:
             code = "import _testinternalcapi; print(_testinternalcapi.pymem_getallocatorsname())"
             with support.SuppressCrashReport():
                 out = self.run_xdev("-c", code, check_exitcode=False)
-            if support.with_pymalloc():
+            wenn support.with_pymalloc():
                 alloc_name = "pymalloc_debug"
-            elif support.Py_GIL_DISABLED:
+            sowenn support.Py_GIL_DISABLED:
                 alloc_name = "mimalloc_debug"
-            else:
+            sonst:
                 alloc_name = "malloc_debug"
             self.assertEqual(out, alloc_name)
 
@@ -771,17 +771,17 @@ klasse CmdLineTest(unittest.TestCase):
             import faulthandler  # noqa: F401
         except ImportError:
             pass
-        else:
+        sonst:
             code = "import faulthandler; print(faulthandler.is_enabled())"
             out = self.run_xdev("-c", code)
             self.assertEqual(out, "True")
 
     def check_warnings_filters(self, cmdline_option, envvar, use_pywarning=False):
-        if use_pywarning:
+        wenn use_pywarning:
             code = ("import sys; from test.support.import_helper import "
                     "import_fresh_module; "
                     "warnings = import_fresh_module('warnings', blocked=['_warnings']); ")
-        else:
+        sonst:
             code = "import sys, warnings; "
         code += ("print(' '.join('%s::%s' % (f[0], f[2].__name__) "
                                 "for f in warnings.filters))")
@@ -801,7 +801,7 @@ klasse CmdLineTest(unittest.TestCase):
         expected_filters = ("error::BytesWarning "
                             "once::UserWarning "
                             "always::UserWarning")
-        if not support.Py_DEBUG:
+        wenn not support.Py_DEBUG:
             expected_filters += (" "
                                  "default::DeprecationWarning "
                                  "ignore::DeprecationWarning "
@@ -822,9 +822,9 @@ klasse CmdLineTest(unittest.TestCase):
         code = 'import _testinternalcapi; print(_testinternalcapi.pymem_getallocatorsname())'
         env = dict(os.environ)
         env.pop('PYTHONDEVMODE', None)
-        if env_var is not None:
+        wenn env_var is not None:
             env['PYTHONMALLOC'] = env_var
-        else:
+        sonst:
             env.pop('PYTHONMALLOC', None)
         args = (sys.executable, '-c', code)
         proc = subprocess.run(args,
@@ -841,31 +841,31 @@ klasse CmdLineTest(unittest.TestCase):
         malloc = not support.Py_GIL_DISABLED
         pymalloc = support.with_pymalloc()
         mimalloc = support.with_mimalloc()
-        if support.Py_GIL_DISABLED:
-            default_name = 'mimalloc_debug' if support.Py_DEBUG else 'mimalloc'
+        wenn support.Py_GIL_DISABLED:
+            default_name = 'mimalloc_debug' wenn support.Py_DEBUG sonst 'mimalloc'
             default_name_debug = 'mimalloc_debug'
-        elif pymalloc:
-            default_name = 'pymalloc_debug' if support.Py_DEBUG else 'pymalloc'
+        sowenn pymalloc:
+            default_name = 'pymalloc_debug' wenn support.Py_DEBUG sonst 'pymalloc'
             default_name_debug = 'pymalloc_debug'
-        else:
-            default_name = 'malloc_debug' if support.Py_DEBUG else 'malloc'
+        sonst:
+            default_name = 'malloc_debug' wenn support.Py_DEBUG sonst 'malloc'
             default_name_debug = 'malloc_debug'
 
         tests = [
             (None, default_name),
             ('debug', default_name_debug),
         ]
-        if malloc:
+        wenn malloc:
             tests.extend([
                 ('malloc', 'malloc'),
                 ('malloc_debug', 'malloc_debug'),
             ])
-        if pymalloc:
+        wenn pymalloc:
             tests.extend((
                 ('pymalloc', 'pymalloc'),
                 ('pymalloc_debug', 'pymalloc_debug'),
             ))
-        if mimalloc:
+        wenn mimalloc:
             tests.extend((
                 ('mimalloc', 'mimalloc'),
                 ('mimalloc_debug', 'mimalloc_debug'),
@@ -900,7 +900,7 @@ klasse CmdLineTest(unittest.TestCase):
             (None, '1', '1', "-X gil=1"),
         ]
 
-        if support.Py_GIL_DISABLED:
+        wenn support.Py_GIL_DISABLED:
             cases.extend(
                 [
                     (None, None, 'None', "no options set"),
@@ -909,7 +909,7 @@ klasse CmdLineTest(unittest.TestCase):
                     (None, '0', '0', "-X gil=0"),
                 ]
             )
-        else:
+        sonst:
             cases.extend(
                 [
                     (None, None, '1', '-X gil=0 (unsupported by this build)'),
@@ -922,10 +922,10 @@ klasse CmdLineTest(unittest.TestCase):
         fuer env, opt, expected, msg in cases:
             with self.subTest(msg, env=env, opt=opt):
                 environ.pop('PYTHON_GIL', None)
-                if env is not None:
+                wenn env is not None:
                     environ['PYTHON_GIL'] = env
                 extra_args = []
-                if opt is not None:
+                wenn opt is not None:
                     extra_args = ['-X', f'gil={opt}']
 
                 proc = subprocess.run([sys.executable, *extra_args, '-c', code],
@@ -1116,12 +1116,12 @@ klasse CmdLineTest(unittest.TestCase):
                     this data has an empty newline above and a newline with spaces below $
                                             $
                     """$
-                    if 1:         $
+                    wenn 1:         $
                         print(repr(data))$
                 '''.replace(
                     "$", ""
                 ),
-                # Note: entirely blank lines are normalized to \n, even if they
+                # Note: entirely blank lines are normalized to \n, even wenn they
                 # are part of a data string. This is consistent with
                 # textwrap.dedent behavior, but might not be intuitive.
                 "'\\n\\nthis data has an empty newline above and a newline with spaces below \\n\\n'",
@@ -1312,5 +1312,5 @@ def tearDownModule():
     support.reap_children()
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

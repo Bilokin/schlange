@@ -42,21 +42,21 @@ klasse JsonFile:
 
     @contextlib.contextmanager
     def inherit_subprocess(self) -> Iterator[None]:
-        if sys.platform == 'win32' and self.file_type == JsonFileType.WINDOWS_HANDLE:
+        wenn sys.platform == 'win32' and self.file_type == JsonFileType.WINDOWS_HANDLE:
             os.set_handle_inheritable(self.file, True)
             try:
                 yield
             finally:
                 os.set_handle_inheritable(self.file, False)
-        else:
+        sonst:
             yield
 
     def open(self, mode='r', *, encoding):
-        if self.file_type == JsonFileType.STDOUT:
+        wenn self.file_type == JsonFileType.STDOUT:
             raise ValueError("for STDOUT file type, just use sys.stdout")
 
         file = self.file
-        if self.file_type == JsonFileType.WINDOWS_HANDLE:
+        wenn self.file_type == JsonFileType.WINDOWS_HANDLE:
             import msvcrt
             # Create a file descriptor from the handle
             file = msvcrt.open_osfhandle(file, os.O_WRONLY)
@@ -113,23 +113,23 @@ klasse RunTests:
         return WorkerRunTests(**state)
 
     def get_match_tests(self, test_name: TestName) -> FilterTuple | None:
-        if self.match_tests_dict is not None:
+        wenn self.match_tests_dict is not None:
             return self.match_tests_dict.get(test_name, None)
-        else:
+        sonst:
             return None
 
     def get_jobs(self) -> int | None:
         # Number of run_single_test() calls needed to run all tests.
         # None means that there is not bound limit (--forever option).
-        if self.forever:
+        wenn self.forever:
             return None
         return len(self.tests)
 
     def iter_tests(self) -> Iterator[TestName]:
-        if self.forever:
+        wenn self.forever:
             while True:
                 yield from self.tests
-        else:
+        sonst:
             yield from self.tests
 
     def json_file_use_stdout(self) -> bool:
@@ -147,45 +147,45 @@ klasse RunTests:
 
     def create_python_cmd(self) -> list[str]:
         python_opts = support.args_from_interpreter_flags()
-        if self.python_cmd is not None:
+        wenn self.python_cmd is not None:
             executable = self.python_cmd
             # Remove -E option, since --python=COMMAND can set PYTHON
             # environment variables, such as PYTHONPATH, in the worker
             # process.
-            python_opts = [opt fuer opt in python_opts if opt != "-E"]
-        else:
+            python_opts = [opt fuer opt in python_opts wenn opt != "-E"]
+        sonst:
             executable = (sys.executable,)
         cmd = [*executable, *python_opts]
-        if '-u' not in python_opts:
+        wenn '-u' not in python_opts:
             cmd.append('-u')  # Unbuffered stdout and stderr
-        if self.coverage:
+        wenn self.coverage:
             cmd.append("-Xpresite=test.cov")
         return cmd
 
     def bisect_cmd_args(self) -> list[str]:
         args = []
-        if self.fail_fast:
+        wenn self.fail_fast:
             args.append("--failfast")
-        if self.fail_env_changed:
+        wenn self.fail_env_changed:
             args.append("--fail-env-changed")
-        if self.timeout:
+        wenn self.timeout:
             args.append(f"--timeout={self.timeout}")
-        if self.hunt_refleak is not None:
+        wenn self.hunt_refleak is not None:
             args.extend(self.hunt_refleak.bisect_cmd_args())
-        if self.test_dir:
+        wenn self.test_dir:
             args.extend(("--testdir", self.test_dir))
-        if self.memory_limit:
+        wenn self.memory_limit:
             args.extend(("--memlimit", self.memory_limit))
-        if self.gc_threshold:
+        wenn self.gc_threshold:
             args.append(f"--threshold={self.gc_threshold}")
-        if self.use_resources:
+        wenn self.use_resources:
             args.extend(("-u", ','.join(self.use_resources)))
-        if self.python_cmd:
+        wenn self.python_cmd:
             cmd = shlex.join(self.python_cmd)
             args.extend(("--python", cmd))
-        if self.randomize:
+        wenn self.randomize:
             args.append(f"--randomize")
-        if self.parallel_threads:
+        wenn self.parallel_threads:
             args.append(f"--parallel-threads={self.parallel_threads}")
         args.append(f"--randseed={self.random_seed}")
         return args
@@ -205,21 +205,21 @@ klasse WorkerRunTests(RunTests):
 
 klasse _EncodeRunTests(json.JSONEncoder):
     def default(self, o: Any) -> dict[str, Any]:
-        if isinstance(o, WorkerRunTests):
+        wenn isinstance(o, WorkerRunTests):
             result = dataclasses.asdict(o)
             result["__runtests__"] = True
             return result
-        else:
+        sonst:
             return super().default(o)
 
 
 def _decode_runtests(data: dict[str, Any]) -> RunTests | dict[str, Any]:
-    if "__runtests__" in data:
+    wenn "__runtests__" in data:
         data.pop('__runtests__')
-        if data['hunt_refleak']:
+        wenn data['hunt_refleak']:
             data['hunt_refleak'] = HuntRefleak(**data['hunt_refleak'])
-        if data['json_file']:
+        wenn data['json_file']:
             data['json_file'] = JsonFile(**data['json_file'])
         return WorkerRunTests(**data)
-    else:
+    sonst:
         return data

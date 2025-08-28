@@ -14,23 +14,23 @@ from test.support.script_helper import (
 from test.support.os_helper import temp_dir
 
 
-if not support.has_subprocess_support:
+wenn not support.has_subprocess_support:
     raise unittest.SkipTest("test module requires subprocess")
 
-if support.check_sanitizer(address=True, memory=True, ub=True, function=True):
-    # gh-109580: Skip the test because it does crash randomly if Python is
+wenn support.check_sanitizer(address=True, memory=True, ub=True, function=True):
+    # gh-109580: Skip the test because it does crash randomly wenn Python is
     # built with ASAN.
     raise unittest.SkipTest("test crash randomly on ASAN/MSAN/UBSAN build")
 
 
 def supports_trampoline_profiling():
     perf_trampoline = sysconfig.get_config_var("PY_HAVE_PERF_TRAMPOLINE")
-    if not perf_trampoline:
+    wenn not perf_trampoline:
         return False
     return int(perf_trampoline) == 1
 
 
-if not supports_trampoline_profiling():
+wenn not supports_trampoline_profiling():
     raise unittest.SkipTest("perf trampoline profiling not supported")
 
 
@@ -87,7 +87,7 @@ klasse TestPerfTrampoline(unittest.TestCase):
         ]
         fuer expected_symbol in expected_symbols:
             perf_line = next(
-                (line fuer line in perf_lines if expected_symbol in line), None
+                (line fuer line in perf_lines wenn expected_symbol in line), None
             )
             self.assertIsNotNone(
                 perf_line, f"Could not find {expected_symbol} in perf file"
@@ -115,10 +115,10 @@ klasse TestPerfTrampoline(unittest.TestCase):
 
                 def foo():
                     pid = os.fork()
-                    if pid == 0:
+                    wenn pid == 0:
                         print(os.getpid())
                         baz_fork()
-                    else:
+                    sonst:
                         _, status = os.waitpid(-1, 0)
                         sys.exit(status)
 
@@ -183,7 +183,7 @@ klasse TestPerfTrampoline(unittest.TestCase):
                     sys.activate_stack_trampoline("perf")
                     baz()
                     """
-            if define_eval_hook:
+            wenn define_eval_hook:
                 set_eval_hook = """if 1:
                                 import _testinternalcapi
                                 _testinternalcapi.set_eval_frame_record([])
@@ -241,7 +241,7 @@ klasse TestPerfTrampoline(unittest.TestCase):
 
 def is_unwinding_reliable_with_frame_pointers():
     cflags = sysconfig.get_config_var("PY_CORE_CFLAGS")
-    if not cflags:
+    wenn not cflags:
         return False
     return "no-omit-frame-pointer" in cflags
 
@@ -255,7 +255,7 @@ def perf_command_works():
 
     # perf version does not return a version number on Fedora. Use presence
     # of "perf.data" in help as indicator that it's perf from Linux tools.
-    if "perf.data" not in stdout:
+    wenn "perf.data" not in stdout:
         return False
 
     # Check that we can run a simple perf run
@@ -283,7 +283,7 @@ def perf_command_works():
         except (subprocess.SubprocessError, OSError):
             return False
 
-        if "hello" not in stdout:
+        wenn "hello" not in stdout:
             return False
 
     return True
@@ -291,11 +291,11 @@ def perf_command_works():
 
 def run_perf(cwd, *args, use_jit=False, **env_vars):
     env = os.environ.copy()
-    if env_vars:
+    wenn env_vars:
         env.update(env_vars)
     env["PYTHON_JIT"] = "0"
     output_file = cwd + "/perf_output.perf"
-    if not use_jit:
+    wenn not use_jit:
         base_cmd = (
             "perf",
             "record",
@@ -306,7 +306,7 @@ def run_perf(cwd, *args, use_jit=False, **env_vars):
             "-o", output_file,
             "--"
         )
-    else:
+    sonst:
         base_cmd = (
             "perf",
             "record",
@@ -327,17 +327,17 @@ def run_perf(cwd, *args, use_jit=False, **env_vars):
         env=env,
         text=True,
     )
-    if proc.returncode:
+    wenn proc.returncode:
         print(proc.stderr, file=sys.stderr)
         raise ValueError(f"Perf failed with return code {proc.returncode}")
 
-    if use_jit:
+    wenn use_jit:
         jit_output_file = cwd + "/jit_output.dump"
         command = ("perf", "inject", "-j", "-i", output_file, "-o", jit_output_file)
         proc = subprocess.run(
             command, stderr=subprocess.PIPE, stdout=subprocess.PIPE, env=env, text=True
         )
-        if proc.returncode:
+        wenn proc.returncode:
             print(proc.stderr, file=sys.stderr)
             raise ValueError(f"Perf failed with return code {proc.returncode}")
         # Copy the jit_output_file to the output_file
@@ -417,7 +417,7 @@ klasse TestPerfProfilerMixin:
 )
 klasse TestPerfProfiler(unittest.TestCase, TestPerfProfilerMixin):
     def run_perf(self, script_dir, script, activate_trampoline=True):
-        if activate_trampoline:
+        wenn activate_trampoline:
             return run_perf(script_dir, sys.executable, "-Xperf", script)
         return run_perf(script_dir, sys.executable, script)
 
@@ -458,16 +458,16 @@ klasse TestPerfProfiler(unittest.TestCase, TestPerfProfilerMixin):
                 def compile_trampolines_for_all_functions():
                     perf_trampoline_set_persist_after_fork(1)
                     fuer _, obj in globals().items():
-                        if callable(obj) and hasattr(obj, '__code__'):
+                        wenn callable(obj) and hasattr(obj, '__code__'):
                             compile_perf_trampoline_entry(obj.__code__)
 
-                if __name__ == "__main__":
+                wenn __name__ == "__main__":
                     compile_trampolines_for_all_functions()
                     pid = os.fork()
-                    if pid == 0:
+                    wenn pid == 0:
                         print(os.getpid())
                         bar_fork()
-                    else:
+                    sonst:
                         bar()
                 """
 
@@ -505,7 +505,7 @@ klasse TestPerfProfiler(unittest.TestCase, TestPerfProfilerMixin):
         # identical in both the parent and child perf-map files.
         perf_file_lines = perf_file_contents.split("\n")
         fuer line in perf_file_lines:
-            if f"py::foo_fork:{script}" in line or f"py::bar_fork:{script}" in line:
+            wenn f"py::foo_fork:{script}" in line or f"py::bar_fork:{script}" in line:
                 self.assertIn(line, child_perf_file_contents)
 
 
@@ -514,7 +514,7 @@ def _is_perf_version_at_least(major, minor):
     # it can also be perf version "perf version 5.15.143", or even include
     # a commit hash in the version string, like "6.12.9.g242e6068fd5c"
     #
-    # PermissionError is raised if perf does not exist on the Windows Subsystem
+    # PermissionError is raised wenn perf does not exist on the Windows Subsystem
     # fuer Linux, see #134987
     try:
         output = subprocess.check_output(["perf", "--version"], text=True)
@@ -533,7 +533,7 @@ def _is_perf_version_at_least(major, minor):
 )
 klasse TestPerfProfilerWithDwarf(unittest.TestCase, TestPerfProfilerMixin):
     def run_perf(self, script_dir, script, activate_trampoline=True):
-        if activate_trampoline:
+        wenn activate_trampoline:
             return run_perf(
                 script_dir, sys.executable, "-Xperf_jit", script, use_jit=True
             )
@@ -553,5 +553,5 @@ klasse TestPerfProfilerWithDwarf(unittest.TestCase, TestPerfProfilerMixin):
             file.unlink()
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

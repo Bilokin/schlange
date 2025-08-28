@@ -150,7 +150,7 @@ klasse ClearTest(unittest.TestCase):
 
         def test(trace):
             record_line()
-            if trace:
+            wenn trace:
                 sys._getframe(0).f_trace = True
             record_line()
             record_line()
@@ -269,7 +269,7 @@ klasse FrameAttrsTest(unittest.TestCase):
             c.send(None)
         except StopIteration as ex:
             self.assertIs(ex.value, c)
-        else:
+        sonst:
             raise AssertionError('coroutine did not exit')
 
 
@@ -297,7 +297,7 @@ klasse ReprTest(unittest.TestCase):
             while tb:
                 frames.append(tb.tb_frame)
                 tb = tb.tb_next
-        else:
+        sonst:
             self.fail("should have raised")
 
         f_this, f_outer, f_inner = frames
@@ -598,7 +598,7 @@ klasse TestFrameLocals(unittest.TestCase):
             FrameLocalsProxy(frame=sys._getframe())  # no keyword arguments
 
     def test_overwrite_locals(self):
-        # Verify we do not crash if we overwrite a local passed as an argument
+        # Verify we do not crash wenn we overwrite a local passed as an argument
         # from an ancestor in the call stack.
         def f():
             xs = [1, 2, 3]
@@ -796,5 +796,5 @@ klasse TestIncompleteFrameAreInvisible(unittest.TestCase):
         self.assertIsNone(weak())
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

@@ -38,7 +38,7 @@ klasse MessageDefect(ValueError):
     """Base klasse fuer a message defect."""
 
     def __init__(self, line=None):
-        if line is not None:
+        wenn line is not None:
             super().__init__(line)
         self.line = line
 

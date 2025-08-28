@@ -30,11 +30,11 @@ def randomrow():
 
 def computerzug(state):
     xored = state[0] ^ state[1] ^ state[2]
-    if xored == 0:
+    wenn xored == 0:
         return randommove(state)
     fuer z in range(3):
         s = state[z] ^ xored
-        if s <= state[z]:
+        wenn s <= state[z]:
             move = (z, s)
             return move
 
@@ -42,7 +42,7 @@ def randommove(state):
     m = max(state)
     while True:
         z = random.randint(0,2)
-        if state[z] > (m > 1):
+        wenn state[z] > (m > 1):
             break
     rand = random.randint(m > 1, state[z]-1)
     return z, rand
@@ -53,7 +53,7 @@ klasse NimModel(object):
         self.game = game
 
     def setup(self):
-        if self.game.state not in [Nim.CREATED, Nim.OVER]:
+        wenn self.game.state not in [Nim.CREATED, Nim.OVER]:
             return
         self.sticks = [randomrow(), randomrow(), randomrow()]
         self.player = 0
@@ -65,11 +65,11 @@ klasse NimModel(object):
         maxspalte = self.sticks[row]
         self.sticks[row] = col
         self.game.view.notify_move(row, col, maxspalte, self.player)
-        if self.game_over():
+        wenn self.game_over():
             self.game.state = Nim.OVER
             self.winner = self.player
             self.game.view.notify_over()
-        elif self.player == 0:
+        sowenn self.player == 0:
             self.player = 1
             row, col = computerzug(self.sticks)
             self.move(row, col)
@@ -79,7 +79,7 @@ klasse NimModel(object):
         return self.sticks == [0, 0, 0]
 
     def notify_move(self, row, col):
-        if self.sticks[row] <= col:
+        wenn self.sticks[row] <= col:
             return
         self.move(row, col)
 
@@ -106,7 +106,7 @@ klasse Stick(turtle.Turtle):
         return x - SCREENWIDTH // 2 + WUNIT // 2, SCREENHEIGHT // 2 - y - HUNIT // 2
 
     def makemove(self, x, y):
-        if self.game.state != Nim.RUNNING:
+        wenn self.game.state != Nim.RUNNING:
             return
         self.game.controller.notify_move(self.row, self.col)
 
@@ -132,7 +132,7 @@ klasse NimView(object):
     def display(self, msg1, msg2=None):
         self.screen.tracer(False)
         self.writer.clear()
-        if msg2 is not None:
+        wenn msg2 is not None:
             self.writer.goto(0, - SCREENHEIGHT // 2 + 48)
             self.writer.pencolor("red")
             self.writer.write(msg2, align="center", font=("Courier",18,"bold"))
@@ -153,11 +153,11 @@ klasse NimView(object):
         self.screen.tracer(True)
 
     def notify_move(self, row, col, maxspalte, player):
-        if player == 0:
+        wenn player == 0:
             farbe = HCOLOR
             fuer s in range(col, maxspalte):
                 self.sticks[(row, s)].color(farbe)
-        else:
+        sonst:
             self.display(" ... thinking ...         ")
             time.sleep(0.5)
             self.display(" ... thinking ... aaah ...")
@@ -168,14 +168,14 @@ klasse NimView(object):
             self.display("Your turn! Click leftmost stick to remove.")
 
     def notify_over(self):
-        if self.game.model.winner == 0:
+        wenn self.game.model.winner == 0:
             msg2 = "Congrats. You're the winner!!!"
-        else:
+        sonst:
             msg2 = "Sorry, the computer is the winner."
         self.display("To play again press space bar. To leave press ESC.", msg2)
 
     def clear(self):
-        if self.game.state == Nim.OVER:
+        wenn self.game.state == Nim.OVER:
             self.screen.clear()
 
 
@@ -193,7 +193,7 @@ klasse NimController(object):
         self.game.screen.listen()
 
     def notify_move(self, row, col):
-        if self.BUSY:
+        wenn self.BUSY:
             return
         self.BUSY = True
         self.game.model.notify_move(row, col)
@@ -219,6 +219,6 @@ def main():
     nim = Nim(mainscreen)
     return "EVENTLOOP"
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     main()
     turtle.mainloop()

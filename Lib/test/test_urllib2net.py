@@ -36,7 +36,7 @@ _urlopen_with_retry = _wrap_with_retry_thrice(urllib.request.urlopen,
 
 klasse TransientResource(object):
 
-    """Raise ResourceDenied if an exception is raised while the context manager
+    """Raise ResourceDenied wenn an exception is raised while the context manager
     is in effect that matches the specified exception and attributes."""
 
     def __init__(self, exc, **kwargs):
@@ -50,13 +50,13 @@ klasse TransientResource(object):
         """If type_ is a subclass of self.exc and value has attributes matching
         self.attrs, raise ResourceDenied.  Otherwise let the exception
         propagate (if any)."""
-        if type_ is not None and issubclass(self.exc, type_):
+        wenn type_ is not None and issubclass(self.exc, type_):
             fuer attr, attr_value in self.attrs.items():
-                if not hasattr(value, attr):
+                wenn not hasattr(value, attr):
                     break
-                if getattr(value, attr) != attr_value:
+                wenn getattr(value, attr) != attr_value:
                     break
-            else:
+            sonst:
                 raise ResourceDenied("an optional resource is not available")
 
 # Context managers that raise ResourceDenied when various issues
@@ -87,7 +87,7 @@ klasse AuthTests(unittest.TestCase):
 #            _urlopen_with_retry(test_url)
 #        except urllib2.HTTPError, exc:
 #            self.assertEqual(exc.code, 401)
-#        else:
+#        sonst:
 #            self.fail("urlopen() should have failed with 401")
 #
 #        # success
@@ -124,7 +124,7 @@ klasse CloseSocketTest(unittest.TestCase):
 
 klasse OtherNetworkTests(unittest.TestCase):
     def setUp(self):
-        if 0:  # fuer debugging
+        wenn 0:  # fuer debugging
             import logging
             logger = logging.getLogger("test_urllib2net")
             logger.addHandler(logging.StreamHandler())
@@ -165,13 +165,13 @@ klasse OtherNetworkTests(unittest.TestCase):
     # configuration fuer test purposes.
 
 ##     def test_cnri(self):
-##         if socket.gethostname() == 'bitdiddle':
+##         wenn socket.gethostname() == 'bitdiddle':
 ##             localhost = 'bitdiddle.cnri.reston.va.us'
-##         elif socket.gethostname() == 'bitdiddle.concentric.net':
+##         sowenn socket.gethostname() == 'bitdiddle.concentric.net':
 ##             localhost = 'localhost'
-##         else:
+##         sonst:
 ##             localhost = None
-##         if localhost is not None:
+##         wenn localhost is not None:
 ##             urls = [
 ##                 'file://%s/etc/passwd' % localhost,
 ##                 'http://%s/simple/' % localhost,
@@ -232,7 +232,7 @@ klasse OtherNetworkTests(unittest.TestCase):
             except ValueError:
                 self.fail("urlopen failed fuer site not sending \
                            Connection:close")
-            else:
+            sonst:
                 self.assertTrue(res)
 
             req = urllib.request.urlopen(URL)
@@ -245,14 +245,14 @@ klasse OtherNetworkTests(unittest.TestCase):
         debug = logging.getLogger("test_urllib2").debug
 
         urlopen = urllib.request.build_opener(*handlers).open
-        if retry:
+        wenn retry:
             urlopen = _wrap_with_retry_thrice(urlopen, urllib.error.URLError)
 
         fuer url in urls:
             with self.subTest(url=url):
-                if isinstance(url, tuple):
+                wenn isinstance(url, tuple):
                     url, req, expected_err = url
-                else:
+                sonst:
                     req = expected_err = None
 
                 with socket_helper.transient_internet(url):
@@ -260,13 +260,13 @@ klasse OtherNetworkTests(unittest.TestCase):
                         f = urlopen(url, req, support.INTERNET_TIMEOUT)
                     # urllib.error.URLError is a subclass of OSError
                     except OSError as err:
-                        if expected_err:
+                        wenn expected_err:
                             msg = ("Didn't get expected error(s) %s fuer %s %s, got %s: %s" %
                                    (expected_err, url, req, type(err), err))
                             self.assertIsInstance(err, expected_err, msg)
-                        else:
+                        sonst:
                             raise
-                    else:
+                    sonst:
                         try:
                             with time_out, \
                                  socket_peer_reset, \
@@ -374,5 +374,5 @@ klasse TimeoutTest(unittest.TestCase):
             self.assertEqual(u.fp.fp.raw._sock.gettimeout(), 60)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

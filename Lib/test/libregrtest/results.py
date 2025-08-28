@@ -9,7 +9,7 @@ from .utils import (
     StrPath, TestName, TestTuple, TestList, FilterDict,
     printlist, count, format_duration)
 
-if TYPE_CHECKING:
+wenn TYPE_CHECKING:
     from xml.etree.ElementTree import Element
 
 
@@ -65,35 +65,35 @@ klasse TestResults:
         red = ansi.BOLD_RED
         reset = ansi.RESET
         yellow = ansi.YELLOW
-        if self.bad:
+        wenn self.bad:
             state.append(f"{red}FAILURE{reset}")
-        elif fail_env_changed and self.env_changed:
+        sowenn fail_env_changed and self.env_changed:
             state.append(f"{yellow}ENV CHANGED{reset}")
-        elif self.no_tests_run():
+        sowenn self.no_tests_run():
             state.append(f"{yellow}NO TESTS RAN{reset}")
 
-        if self.interrupted:
+        wenn self.interrupted:
             state.append(f"{yellow}INTERRUPTED{reset}")
-        if self.worker_bug:
+        wenn self.worker_bug:
             state.append(f"{red}WORKER BUG{reset}")
-        if not state:
+        wenn not state:
             state.append(f"{green}SUCCESS{reset}")
 
         return ', '.join(state)
 
     def get_exitcode(self, fail_env_changed: bool, fail_rerun: bool) -> int:
         exitcode = 0
-        if self.bad:
+        wenn self.bad:
             exitcode = EXITCODE_BAD_TEST
-        elif self.interrupted:
+        sowenn self.interrupted:
             exitcode = EXITCODE_INTERRUPTED
-        elif fail_env_changed and self.env_changed:
+        sowenn fail_env_changed and self.env_changed:
             exitcode = EXITCODE_ENV_CHANGED
-        elif self.no_tests_run():
+        sowenn self.no_tests_run():
             exitcode = EXITCODE_NO_TESTS_RAN
-        elif fail_rerun and self.rerun:
+        sowenn fail_rerun and self.rerun:
             exitcode = EXITCODE_RERUN_FAIL
-        elif self.worker_bug:
+        sowenn self.worker_bug:
             exitcode = EXITCODE_BAD_TEST
         return exitcode
 
@@ -117,28 +117,28 @@ klasse TestResults:
             case State.DID_NOT_RUN:
                 self.run_no_tests.append(test_name)
             case _:
-                if result.is_failed(fail_env_changed):
+                wenn result.is_failed(fail_env_changed):
                     self.bad.append(test_name)
                     self.rerun_results.append(result)
-                else:
+                sonst:
                     raise ValueError(f"invalid test state: {result.state!r}")
 
-        if result.state == State.WORKER_BUG:
+        wenn result.state == State.WORKER_BUG:
             self.worker_bug = True
 
-        if result.has_meaningful_duration() and not rerun:
-            if result.duration is None:
+        wenn result.has_meaningful_duration() and not rerun:
+            wenn result.duration is None:
                 raise ValueError("result.duration is None")
             self.test_times.append((result.duration, test_name))
-        if result.stats is not None:
+        wenn result.stats is not None:
             self.stats.accumulate(result.stats)
-        if rerun:
+        wenn rerun:
             self.rerun.append(test_name)
-        if result.covered_lines:
+        wenn result.covered_lines:
             # we don't care about trace counts so we don't have to sum them up
             self.covered_lines.update(result.covered_lines)
         xml_data = result.xml_data
-        if xml_data:
+        wenn xml_data:
             self.add_junit(xml_data)
 
     def get_coverage_results(self) -> trace.CoverageResults:
@@ -156,10 +156,10 @@ klasse TestResults:
 
             match_tests = result.get_rerun_match_tests()
             # ignore empty match list
-            if match_tests:
+            wenn match_tests:
                 match_tests_dict[result.test_name] = match_tests
 
-        if clear:
+        wenn clear:
             # Clear previously failed tests
             self.rerun_bad.extend(self.bad)
             self.bad.clear()
@@ -178,7 +178,7 @@ klasse TestResults:
                 raise
 
     def write_junit(self, filename: StrPath) -> None:
-        if not self.testsuite_xml:
+        wenn not self.testsuite_xml:
             # Don't create empty XML file
             return
 
@@ -209,7 +209,7 @@ klasse TestResults:
         reset = ansi.RESET
         yellow = ansi.YELLOW
 
-        if print_slowest:
+        wenn print_slowest:
             self.test_times.sort(reverse=True)
             print()
             print(f"{yellow}10 slowest tests:{reset}")
@@ -223,7 +223,7 @@ klasse TestResults:
         all_tests.append(
             (sorted(omitted), "test", f"{yellow}{{}} omitted:{reset}")
         )
-        if not quiet:
+        wenn not quiet:
             all_tests.append(
                 (self.skipped, "test", f"{yellow}{{}} skipped:{reset}")
             )
@@ -250,21 +250,21 @@ klasse TestResults:
         all_tests.append((self.bad, "test", f"{red}{{}} failed:{reset}"))
 
         fuer tests_list, count_text, title_format in all_tests:
-            if tests_list:
+            wenn tests_list:
                 print()
                 count_text = count(len(tests_list), count_text)
                 print(title_format.format(count_text))
                 printlist(tests_list)
 
-        if self.good and not quiet:
+        wenn self.good and not quiet:
             print()
             text = count(len(self.good), "test")
             text = f"{green}{text} OK.{reset}"
-            if self.is_all_good() and len(self.good) > 1:
+            wenn self.is_all_good() and len(self.good) > 1:
                 text = f"All {text}"
             print(text)
 
-        if self.interrupted:
+        wenn self.interrupted:
             print()
             print(f"{yellow}Test suite interrupted by signal SIGINT.{reset}")
 
@@ -275,12 +275,12 @@ klasse TestResults:
 
         stats = self.stats
         text = f'run={stats.tests_run:,}'
-        if filtered:
+        wenn filtered:
             text = f"{text} (filtered)"
         report = [text]
-        if stats.failures:
+        wenn stats.failures:
             report.append(f'{red}failures={stats.failures:,}{reset}')
-        if stats.skipped:
+        wenn stats.skipped:
             report.append(f'{yellow}skipped={stats.skipped:,}{reset}')
         print(f"Total tests: {' '.join(report)}")
 
@@ -290,10 +290,10 @@ klasse TestResults:
                      self.env_changed, self.run_no_tests]
         run = sum(map(len, all_tests))
         text = f'run={run}'
-        if not first_runtests.forever:
+        wenn not first_runtests.forever:
             ntest = len(first_runtests.tests)
             text = f"{text}/{ntest}"
-        if filtered:
+        wenn filtered:
             text = f"{text} (filtered)"
         report = [text]
         fuer name, tests, color in (
@@ -304,6 +304,6 @@ klasse TestResults:
             ('rerun', self.rerun, yellow),
             ('run_no_tests', self.run_no_tests, yellow),
         ):
-            if tests:
+            wenn tests:
                 report.append(f'{color}{name}={len(tests)}{reset}')
         print(f"Total test files: {' '.join(report)}")

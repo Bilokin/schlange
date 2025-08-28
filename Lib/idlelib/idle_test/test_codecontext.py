@@ -26,11 +26,11 @@ klasse C1:
         self.a = a
         self.b = b
     def compare(self):
-        if a > b:
+        wenn a > b:
             return a
-        elif a < b:
+        sowenn a < b:
             return b
-        else:
+        sonst:
             return None
 """
 
@@ -84,7 +84,7 @@ klasse CodeContextTest(unittest.TestCase):
                               "foreground": '#123456'}
         orig_idleConf_GetHighlight = codecontext.idleConf.GetHighlight
         def mock_idleconf_GetHighlight(theme, element):
-            if element == 'context':
+            wenn element == 'context':
                 return self.highlight_cfg
             return orig_idleConf_GetHighlight(theme, element)
         GetHighlight_patcher = unittest.mock.patch.object(
@@ -101,7 +101,7 @@ klasse CodeContextTest(unittest.TestCase):
         self.addCleanup(GetFont_patcher.stop)
 
     def tearDown(self):
-        if self.cc.context:
+        wenn self.cc.context:
             self.cc.context.destroy()
         # Explicitly call __del__ to remove scheduled scripts.
         self.cc.__del__()
@@ -140,7 +140,7 @@ klasse CodeContextTest(unittest.TestCase):
         toggle = cc.toggle_code_context_event
 
         # Make sure code context is off.
-        if cc.context:
+        wenn cc.context:
             toggle()
 
         # Toggle on.
@@ -190,39 +190,39 @@ klasse CodeContextTest(unittest.TestCase):
         # Only one 'def' is returned, not both at the same indent level.
         eq(gc(10), ([(2, 0, 'class C1:', 'class'),
                      (7, 4, '    def compare(self):', 'def'),
-                     (8, 8, '        if a > b:', 'if')], 0))
+                     (8, 8, '        wenn a > b:', 'if')], 0))
 
         # With 'elif', also show the 'if' even though it's at the same level.
         eq(gc(11), ([(2, 0, 'class C1:', 'class'),
                      (7, 4, '    def compare(self):', 'def'),
-                     (8, 8, '        if a > b:', 'if'),
-                     (10, 8, '        elif a < b:', 'elif')], 0))
+                     (8, 8, '        wenn a > b:', 'if'),
+                     (10, 8, '        sowenn a < b:', 'elif')], 0))
 
         # Set stop_line to not go back to first line in source code.
         # Return includes stop_line.
         eq(gc(11, stopline=2), ([(2, 0, 'class C1:', 'class'),
                                  (7, 4, '    def compare(self):', 'def'),
-                                 (8, 8, '        if a > b:', 'if'),
-                                 (10, 8, '        elif a < b:', 'elif')], 0))
+                                 (8, 8, '        wenn a > b:', 'if'),
+                                 (10, 8, '        sowenn a < b:', 'elif')], 0))
         eq(gc(11, stopline=3), ([(7, 4, '    def compare(self):', 'def'),
-                                 (8, 8, '        if a > b:', 'if'),
-                                 (10, 8, '        elif a < b:', 'elif')], 4))
-        eq(gc(11, stopline=8), ([(8, 8, '        if a > b:', 'if'),
-                                 (10, 8, '        elif a < b:', 'elif')], 8))
+                                 (8, 8, '        wenn a > b:', 'if'),
+                                 (10, 8, '        sowenn a < b:', 'elif')], 4))
+        eq(gc(11, stopline=8), ([(8, 8, '        wenn a > b:', 'if'),
+                                 (10, 8, '        sowenn a < b:', 'elif')], 8))
 
         # Set stop_indent to test indent level to stop at.
         eq(gc(11, stopindent=4), ([(7, 4, '    def compare(self):', 'def'),
-                                   (8, 8, '        if a > b:', 'if'),
-                                   (10, 8, '        elif a < b:', 'elif')], 4))
+                                   (8, 8, '        wenn a > b:', 'if'),
+                                   (10, 8, '        sowenn a < b:', 'elif')], 4))
         # Check that the 'if' is included.
-        eq(gc(11, stopindent=8), ([(8, 8, '        if a > b:', 'if'),
-                                   (10, 8, '        elif a < b:', 'elif')], 8))
+        eq(gc(11, stopindent=8), ([(8, 8, '        wenn a > b:', 'if'),
+                                   (10, 8, '        sowenn a < b:', 'elif')], 8))
 
     def test_update_code_context(self):
         eq = self.assertEqual
         cc = self.cc
         # Ensure code context is active.
-        if not cc.context:
+        wenn not cc.context:
             cc.toggle_code_context_event()
 
         # Invoke update_code_context without scrolling - nothing happens.
@@ -267,13 +267,13 @@ klasse CodeContextTest(unittest.TestCase):
         eq(cc.info, [(0, -1, '', False),
                      (2, 0, 'class C1:', 'class'),
                      (7, 4, '    def compare(self):', 'def'),
-                     (8, 8, '        if a > b:', 'if'),
-                     (10, 8, '        elif a < b:', 'elif')])
+                     (8, 8, '        wenn a > b:', 'if'),
+                     (10, 8, '        sowenn a < b:', 'elif')])
         eq(cc.topvisible, 12)
         eq(cc.context.get('1.0', 'end-1c'), 'class C1:\n'
                                             '    def compare(self):\n'
-                                            '        if a > b:\n'
-                                            '        elif a < b:')
+                                            '        wenn a > b:\n'
+                                            '        sowenn a < b:')
 
         # No scroll.  No update, even though context_depth changed.
         cc.update_code_context()
@@ -281,13 +281,13 @@ klasse CodeContextTest(unittest.TestCase):
         eq(cc.info, [(0, -1, '', False),
                      (2, 0, 'class C1:', 'class'),
                      (7, 4, '    def compare(self):', 'def'),
-                     (8, 8, '        if a > b:', 'if'),
-                     (10, 8, '        elif a < b:', 'elif')])
+                     (8, 8, '        wenn a > b:', 'if'),
+                     (10, 8, '        sowenn a < b:', 'elif')])
         eq(cc.topvisible, 12)
         eq(cc.context.get('1.0', 'end-1c'), 'class C1:\n'
                                             '    def compare(self):\n'
-                                            '        if a > b:\n'
-                                            '        elif a < b:')
+                                            '        wenn a > b:\n'
+                                            '        sowenn a < b:')
 
         # Scroll up.
         cc.text.yview(5)
@@ -304,7 +304,7 @@ klasse CodeContextTest(unittest.TestCase):
         cc = self.cc
         jump = cc.jumptoline
 
-        if not cc.context:
+        wenn not cc.context:
             cc.toggle_code_context_event()
 
         # Empty context.
@@ -343,7 +343,7 @@ klasse CodeContextTest(unittest.TestCase):
     @mock.patch.object(codecontext.CodeContext, 'update_code_context')
     def test_timer_event(self, mock_update):
         # Ensure code context is not active.
-        if self.cc.context:
+        wenn self.cc.context:
             self.cc.toggle_code_context_event()
         self.cc.timer_event()
         mock_update.assert_not_called()
@@ -362,7 +362,7 @@ klasse CodeContextTest(unittest.TestCase):
         self.assertNotEqual(orig_font, test_font)
 
         # Ensure code context is not active.
-        if cc.context is not None:
+        wenn cc.context is not None:
             cc.toggle_code_context_event()
 
         self.font_override = test_font
@@ -390,7 +390,7 @@ klasse CodeContextTest(unittest.TestCase):
             eq(cc.context['foreground'], colors['foreground'])
 
         # Ensure code context is not active.
-        if cc.context:
+        wenn cc.context:
             cc.toggle_code_context_event()
 
         self.highlight_cfg = test_colors
@@ -446,10 +446,10 @@ klasse HelperFunctionText(unittest.TestCase):
         # Line 4 is a BLOCKOPENER and is indented.
         eq(gli(lines[3]), (4, '    def __init__(self, a, b):', 'def'))
         # Line 8 is a different BLOCKOPENER and is indented.
-        eq(gli(lines[7]), (8, '        if a > b:', 'if'))
+        eq(gli(lines[7]), (8, '        wenn a > b:', 'if'))
         # Test tab.
         eq(gli('\tif a == b:'), (1, '\tif a == b:', 'if'))
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main(verbosity=2)

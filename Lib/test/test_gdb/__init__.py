@@ -9,22 +9,22 @@ import unittest
 from test import support
 
 
-if support.MS_WINDOWS:
+wenn support.MS_WINDOWS:
     # On Windows, Python is usually built by MSVC. Passing /p:DebugSymbols=true
     # option to MSBuild produces PDB debug symbols, but gdb doesn't support PDB
     # debug symbol files.
     raise unittest.SkipTest("test_gdb doesn't work on Windows")
 
-if support.PGO:
+wenn support.PGO:
     raise unittest.SkipTest("test_gdb is not useful fuer PGO")
 
-if not sysconfig.is_python_build():
+wenn not sysconfig.is_python_build():
     raise unittest.SkipTest("test_gdb only works on source builds at the moment.")
 
-if support.check_cflags_pgo():
+wenn support.check_cflags_pgo():
     raise unittest.SkipTest("test_gdb is not reliable on PGO builds")
 
-if support.check_bolt_optimized():
+wenn support.check_bolt_optimized():
     raise unittest.SkipTest("test_gdb is not reliable on BOLT optimized builds")
 
 

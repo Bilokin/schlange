@@ -215,7 +215,7 @@ klasse FakeRunner(object):
 
     def __init__(self, **kwargs):
         FakeRunner.initArgs = kwargs
-        if FakeRunner.raiseError:
+        wenn FakeRunner.raiseError:
             FakeRunner.raiseError -= 1
             raise TypeError
 
@@ -506,5 +506,5 @@ klasse TestCommandLineArgs(unittest.TestCase):
         self.assertIn('Ran 1 test ', run_unittest(['-k', '*test_warnings.*warning*', t]))
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

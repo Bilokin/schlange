@@ -12,7 +12,7 @@ from libclinic.block_parser import Block, BlockParser
 from libclinic.codegen import BlockPrinter, Destination, CodeGen
 from libclinic.parser import Parser, PythonParser
 from libclinic.dsl_parser import DSLParser
-if TYPE_CHECKING:
+wenn TYPE_CHECKING:
     from libclinic.clanguage import CLanguage
     from libclinic.function import (
         Module, Function, ClassDict, ModuleDict)
@@ -92,7 +92,7 @@ impl_definition block
         # (instantiated from the "parsers" global.)
         self.parsers: dict[str, Parser] = {}
         self.language: CLanguage = language
-        if printer:
+        wenn printer:
             fail("Custom printers are broken right now")
         self.printer = printer or BlockPrinter(language)
         self.verify = verify
@@ -109,7 +109,7 @@ impl_definition block
         self.add_destination("block", "buffer")
         self.add_destination("suppress", "suppress")
         self.add_destination("buffer", "buffer")
-        if filename:
+        wenn filename:
             self.add_destination("file", "file", "{dirname}/clinic/{basename}.h")
 
         d = self.get_destination_buffer
@@ -135,20 +135,20 @@ impl_definition block
         preset = None
         fuer line in self.presets_text.strip().split('\n'):
             line = line.strip()
-            if not line:
+            wenn not line:
                 continue
             name, value, *options = line.split()
-            if name == 'preset':
+            wenn name == 'preset':
                 self.presets[value] = preset = {}
                 continue
 
-            if len(options):
+            wenn len(options):
                 index = int(options[0])
-            else:
+            sonst:
                 index = 0
             buffer = self.get_destination_buffer(value, index)
 
-            if name == 'everything':
+            wenn name == 'everything':
                 fuer name in self.destination_buffers:
                     preset[name] = buffer
                 continue
@@ -162,13 +162,13 @@ impl_definition block
         type: str,
         *args: str
     ) -> None:
-        if name in self.destinations:
+        wenn name in self.destinations:
             fail(f"Destination already exists: {name!r}")
         self.destinations[name] = Destination(name, type, self, args)
 
     def get_destination(self, name: str) -> Destination:
         d = self.destinations.get(name)
-        if not d:
+        wenn not d:
             fail(f"Destination does not exist: {name!r}")
         return d
 
@@ -185,8 +185,8 @@ impl_definition block
         self.block_parser = BlockParser(input, self.language, verify=self.verify)
         fuer block in self.block_parser:
             dsl_name = block.dsl_name
-            if dsl_name:
-                if dsl_name not in self.parsers:
+            wenn dsl_name:
+                wenn dsl_name not in self.parsers:
                     assert dsl_name in parsers, f"No parser to handle {dsl_name!r} block."
                     self.parsers[dsl_name] = parsers[dsl_name](self)
                 parser = self.parsers[dsl_name]
@@ -195,35 +195,35 @@ impl_definition block
 
         # these are destinations not buffers
         fuer name, destination in self.destinations.items():
-            if destination.type == 'suppress':
+            wenn destination.type == 'suppress':
                 continue
             output = destination.dump()
 
-            if output:
+            wenn output:
                 block = Block("", dsl_name="clinic", output=output)
 
-                if destination.type == 'buffer':
+                wenn destination.type == 'buffer':
                     block.input = "dump " + name + "\n"
                     warn("Destination buffer " + repr(name) + " not empty at end of file, emptying.")
                     printer.write("\n")
                     printer.print_block(block)
                     continue
 
-                if destination.type == 'file':
+                wenn destination.type == 'file':
                     try:
                         dirname = os.path.dirname(destination.filename)
                         try:
                             os.makedirs(dirname)
                         except FileExistsError:
-                            if not os.path.isdir(dirname):
+                            wenn not os.path.isdir(dirname):
                                 fail(f"Can't write to destination "
                                      f"{destination.filename!r}; "
                                      f"can't make directory {dirname!r}!")
-                        if self.verify:
+                        wenn self.verify:
                             with open(destination.filename) as f:
                                 parser_2 = BlockParser(f.read(), language=self.language)
                                 blocks = list(parser_2)
-                                if (len(blocks) != 1) or (blocks[0].input != 'preserve\n'):
+                                wenn (len(blocks) != 1) or (blocks[0].input != 'preserve\n'):
                                     fail(f"Modified destination file "
                                          f"{destination.filename!r}; not overwriting!")
                     except FileNotFoundError:
@@ -255,13 +255,13 @@ impl_definition block
         cls: Class | None = None
 
         fuer idx, field in enumerate(fields):
-            if not isinstance(parent, Class):
-                if field in parent.modules:
+            wenn not isinstance(parent, Class):
+                wenn field in parent.modules:
                     parent = module = parent.modules[field]
                     continue
-            if field in parent.classes:
+            wenn field in parent.classes:
                 parent = cls = parent.classes[field]
-            else:
+            sonst:
                 fullname = ".".join(fields[idx:])
                 fail(f"Parent klasse or module {fullname!r} does not exist.")
 

@@ -14,7 +14,7 @@ from time import time
 from unittest.mock import patch
 
 
-if sys.platform != "android":
+wenn sys.platform != "android":
     raise unittest.SkipTest("Android-specific")
 
 api_level = platform.android_ver().api_level
@@ -73,13 +73,13 @@ klasse TestAndroidOutput(unittest.TestCase):
                 raise self.failureException(
                     f"line not found: {expected!r}"
                 ) from None
-            if match := re.fullmatch(fr"(.)/{tag}: (.*)", line):
+            wenn match := re.fullmatch(fr"(.)/{tag}: (.*)", line):
                 try:
                     self.assertEqual(level, match[1])
                     self.assertEqual(expected, match[2])
                     break
                 except AssertionError:
-                    if not skip:
+                    wenn not skip:
                         raise
 
     def tearDown(self):
@@ -109,7 +109,7 @@ klasse TestAndroidOutput(unittest.TestCase):
         stack.enter_context(self.subTest(stream_name))
         stream = getattr(sys, stream_name)
         native_stream = getattr(sys, f"__{stream_name}__")
-        if isinstance(stream, io.StringIO):
+        wenn isinstance(stream, io.StringIO):
             stack.enter_context(
                 patch(
                     f"sys.{stream_name}",
@@ -137,10 +137,10 @@ klasse TestAndroidOutput(unittest.TestCase):
                 self.assertIs(stream.write_through, False)
 
                 def write(s, lines=None, *, write_len=None):
-                    if write_len is None:
+                    wenn write_len is None:
                         write_len = len(s)
                     self.assertEqual(write_len, stream.write(s))
-                    if lines is None:
+                    wenn lines is None:
                         lines = [s]
                     self.assert_logs(level, tag, lines)
 
@@ -190,7 +190,7 @@ klasse TestAndroidOutput(unittest.TestCase):
                 stream.reconfigure(line_buffering=False)
                 self.assertIs(stream.line_buffering, True)
 
-                # However, buffering can be turned off completely if you want a
+                # However, buffering can be turned off completely wenn you want a
                 # flush after every write.
                 with self.unbuffered(stream):
                     write("\nx", ["", "x"])
@@ -281,10 +281,10 @@ klasse TestAndroidOutput(unittest.TestCase):
                 self.assertEqual(stream.fileno(), fileno)
 
                 def write(b, lines=None, *, write_len=None):
-                    if write_len is None:
+                    wenn write_len is None:
                         write_len = len(b)
                     self.assertEqual(write_len, stream.write(b))
-                    if lines is None:
+                    wenn lines is None:
                         lines = [b.decode()]
                     self.assert_logs(level, tag, lines)
 
@@ -318,15 +318,15 @@ klasse TestAndroidOutput(unittest.TestCase):
 
                 # Log entries containing newlines are shown differently by
                 # `logcat -v tag`, `logcat -v long`, and Android Studio. We
-                # currently use `logcat -v tag`, which shows each line as if it
+                # currently use `logcat -v tag`, which shows each line as wenn it
                 # was a separate log entry, but strips a single trailing
                 # newline.
                 #
                 # On newer versions of Android, all three of the above tools (or
                 # maybe Logcat itself) will also strip any number of leading
                 # newlines.
-                write(b"\nx", ["", "x"] if api_level < 30 else ["x"])
-                write(b"\na\n", ["", "a"] if api_level < 30 else ["a"])
+                write(b"\nx", ["", "x"] wenn api_level < 30 sonst ["x"])
+                write(b"\na\n", ["", "a"] wenn api_level < 30 sonst ["a"])
                 write(b"\n", [""])
                 write(b"b\n", ["b"])
                 write(b"c\n\n", ["c", ""])

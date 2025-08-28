@@ -15,7 +15,7 @@ klasse MockTraceback(object):
             self.capture_locals = kwargs.get('capture_locals', False)
         def format(self, **kwargs):
             result = ['A traceback']
-            if self.capture_locals:
+            wenn self.capture_locals:
                 result.append('locals')
             return result
 
@@ -124,7 +124,7 @@ klasse Test_TestResult(unittest.TestCase):
     # ...
     # "Called when the test case test succeeds"
     # ...
-    # "wasSuccessful() - Returns True if all tests run so far have passed,
+    # "wasSuccessful() - Returns True wenn all tests run so far have passed,
     # otherwise returns False"
     # ...
     # "testsRun - The total number of tests run so far."
@@ -163,7 +163,7 @@ klasse Test_TestResult(unittest.TestCase):
     # "Called when the test case test signals a failure. err is a tuple of
     # the form returned by sys.exc_info(): (type, value, traceback)"
     # ...
-    # "wasSuccessful() - Returns True if all tests run so far have passed,
+    # "wasSuccessful() - Returns True wenn all tests run so far have passed,
     # otherwise returns False"
     # ...
     # "testsRun - The total number of tests run so far."
@@ -227,7 +227,7 @@ klasse Test_TestResult(unittest.TestCase):
         result.stopTest(test)
 
         formatted_exc = result.failures[0][1]
-        dropped = [l fuer l in full_exc if l not in formatted_exc]
+        dropped = [l fuer l in full_exc wenn l not in formatted_exc]
         self.assertEqual(len(dropped), 1)
         self.assertIn("raise self.failureException(msg)", dropped[0])
 
@@ -256,7 +256,7 @@ klasse Test_TestResult(unittest.TestCase):
         result.stopTest(test)
 
         formatted_exc = result.failures[0][1]
-        dropped = [l fuer l in full_exc if l not in formatted_exc]
+        dropped = [l fuer l in full_exc wenn l not in formatted_exc]
         self.assertEqual(len(dropped), 1)
         self.assertIn("raise self.failureException(msg)", dropped[0])
 
@@ -322,7 +322,7 @@ klasse Test_TestResult(unittest.TestCase):
     # is a tuple of the form returned by sys.exc_info():
     # (type, value, traceback)"
     # ...
-    # "wasSuccessful() - Returns True if all tests run so far have passed,
+    # "wasSuccessful() - Returns True wenn all tests run so far have passed,
     # otherwise returns False"
     # ...
     # "testsRun - The total number of tests run so far."
@@ -608,7 +608,7 @@ klasse Test_TextTestResult(unittest.TestCase):
 
         tearDownError = None
         def tearDown(self):
-            if self.tearDownError is not None:
+            wenn self.tearDownError is not None:
                 raise self.tearDownError
 
     def _run_test(self, test_name, verbosity, tearDownError=None):
@@ -754,7 +754,7 @@ klasse Test_OldTestResult(unittest.TestCase):
                 pass
         runner = unittest.TextTestRunner(resultclass=OldResult,
                                           stream=io.StringIO())
-        # This will raise an exception if TextTestRunner can't handle old
+        # This will raise an exception wenn TextTestRunner can't handle old
         # test result objects
         runner.run(Test('testFoo'))
 
@@ -856,7 +856,7 @@ klasse TestOutputBuffering(unittest.TestCase):
             result._original_stderr = io.StringIO()
 
             print('foo', file=sys.stdout)
-            if include_error:
+            wenn include_error:
                 print('bar', file=sys.stderr)
 
 
@@ -873,7 +873,7 @@ klasse TestOutputBuffering(unittest.TestCase):
                 foo
             """)
             expectedErrMessage = ''
-            if include_error:
+            wenn include_error:
                 expectedErrMessage = textwrap.dedent("""
                 Stderr:
                 bar
@@ -1402,5 +1402,5 @@ klasse TestOutputBuffering(unittest.TestCase):
         self.assertIn(expected_out, formatted_exc)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

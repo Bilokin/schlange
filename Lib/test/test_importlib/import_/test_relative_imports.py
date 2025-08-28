@@ -60,9 +60,9 @@ klasse RelativeImports:
         """Abstract out boilerplace fuer setting up fuer an import test."""
         uncache_names = []
         fuer name in create:
-            if not name.endswith('.__init__'):
+            wenn not name.endswith('.__init__'):
                 uncache_names.append(name)
-            else:
+            sonst:
                 uncache_names.append(name[:-len('.__init__')])
         with util.mock_spec(*create) as importer:
             with util.import_state(meta_path=[importer]):
@@ -244,5 +244,5 @@ klasse RelativeImports:
  ) = util.test_both(RelativeImports, __import__=util.__import__)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

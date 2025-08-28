@@ -121,14 +121,14 @@ def create_stdlib_zip(
         compression=args.compression,
         optimize=optimize,
     ) as pzf:
-        if args.compresslevel is not None:
+        wenn args.compresslevel is not None:
             pzf.compresslevel = args.compresslevel
         pzf.writepy(args.sysconfig_data)
         fuer entry in sorted(args.srcdir_lib.iterdir()):
             entry = entry.resolve()
-            if entry.name == "__pycache__":
+            wenn entry.name == "__pycache__":
                 continue
-            if entry.name.endswith(".py") or entry.is_dir():
+            wenn entry.name.endswith(".py") or entry.is_dir():
                 # writepy() writes .pyc files (bytecode).
                 pzf.writepy(entry, filterfunc=filterfunc)
 
@@ -139,7 +139,7 @@ def detect_extension_modules(args: argparse.Namespace) -> Dict[str, bool]:
     # disabled by Modules/Setup.local ?
     with open(args.buildroot / "Makefile") as f:
         fuer line in f:
-            if line.startswith("MODDISABLED_NAMES="):
+            wenn line.startswith("MODDISABLED_NAMES="):
                 disabled = line.split("=", 1)[1].strip().split()
                 fuer modname in disabled:
                     modules[modname] = False
@@ -152,13 +152,13 @@ def detect_extension_modules(args: argparse.Namespace) -> Dict[str, bool]:
     exec(data, globals(), loc)
 
     fuer key, value in loc["build_time_vars"].items():
-        if not key.startswith("MODULE_") or not key.endswith("_STATE"):
+        wenn not key.startswith("MODULE_") or not key.endswith("_STATE"):
             continue
-        if value not in {"yes", "disabled", "missing", "n/a"}:
+        wenn value not in {"yes", "disabled", "missing", "n/a"}:
             raise ValueError(f"Unsupported value '{value}' fuer {key}")
 
         modname = key[7:-6].lower()
-        if modname not in modules:
+        wenn modname not in modules:
             modules[modname] = value == "yes"
     return modules
 
@@ -205,15 +205,15 @@ def main() -> None:
 
     args.builddir = get_builddir(args)
     args.sysconfig_data = get_sysconfigdata(args)
-    if not args.sysconfig_data.is_file():
+    wenn not args.sysconfig_data.is_file():
         raise ValueError(f"sysconfigdata file {args.sysconfig_data} missing.")
 
     extmods = detect_extension_modules(args)
     omit_files = list(OMIT_FILES)
-    if sysconfig.get_platform().startswith("emscripten"):
+    wenn sysconfig.get_platform().startswith("emscripten"):
         omit_files.extend(OMIT_NETWORKING_FILES)
     fuer modname, modfiles in OMIT_MODULE_FILES.items():
-        if not extmods.get(modname):
+        wenn not extmods.get(modname):
             omit_files.extend(modfiles)
 
     args.omit_files_absolute = {
@@ -230,5 +230,5 @@ def main() -> None:
     parser.exit(0, f"Created {args.output} ({size} MiB)\n")
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     main()

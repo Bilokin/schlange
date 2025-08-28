@@ -44,18 +44,18 @@ def main():
     except getopt.error as msg:
         errprint(msg)
     fuer o, a in opts:
-        if o == '-q':
+        wenn o == '-q':
             filename_only = filename_only + 1
-        if o == '-v':
+        wenn o == '-v':
             verbose = verbose + 1
-    if not args:
+    wenn not args:
         errprint("Usage:", sys.argv[0], "[-v] file_or_directory ...")
     fuer arg in args:
         check(arg)
 
 klasse NannyNag(Exception):
     """
-    Raised by process_tokens() if detecting an ambiguous indent.
+    Raised by process_tokens() wenn detecting an ambiguous indent.
     Captured and handled in check().
     """
     def __init__(self, lineno, msg, line):
@@ -77,13 +77,13 @@ def check(file):
     written to standard output using the print statement.
     """
 
-    if os.path.isdir(file) and not os.path.islink(file):
-        if verbose:
+    wenn os.path.isdir(file) and not os.path.islink(file):
+        wenn verbose:
             print("%r: listing directory" % (file,))
         names = os.listdir(file)
         fuer name in names:
             fullname = os.path.join(file, name)
-            if (os.path.isdir(fullname) and
+            wenn (os.path.isdir(fullname) and
                 not os.path.islink(fullname) or
                 os.path.normcase(name[-3:]) == ".py"):
                 check(fullname)
@@ -95,7 +95,7 @@ def check(file):
         errprint("%r: I/O Error: %s" % (file, msg))
         return
 
-    if verbose > 1:
+    wenn verbose > 1:
         print("checking %r ..." % file)
 
     try:
@@ -116,20 +116,20 @@ def check(file):
     except NannyNag as nag:
         badline = nag.get_lineno()
         line = nag.get_line()
-        if verbose:
+        wenn verbose:
             print("%r: *** Line %d: trouble in tab city! ***" % (file, badline))
             print("offending line: %r" % (line,))
             print(nag.get_msg())
-        else:
-            if ' ' in file: file = '"' + file + '"'
-            if filename_only: print(file)
-            else: print(file, badline, repr(line))
+        sonst:
+            wenn ' ' in file: file = '"' + file + '"'
+            wenn filename_only: print(file)
+            sonst: print(file, badline, repr(line))
         return
 
     finally:
         f.close()
 
-    if verbose:
+    wenn verbose:
         print("%r: Clean bill of health." % (file,))
 
 klasse Whitespace:
@@ -161,17 +161,17 @@ klasse Whitespace:
         count = []
         b = n = nt = 0
         fuer ch in self.raw:
-            if ch == S:
+            wenn ch == S:
                 n = n + 1
                 b = b + 1
-            elif ch == T:
+            sowenn ch == T:
                 n = n + 1
                 nt = nt + 1
-                if b >= len(count):
+                wenn b >= len(count):
                     count = count + [0] * (b - len(count) + 1)
                 count[b] = count[b] + 1
                 b = 0
-            else:
+            sonst:
                 break
         self.n    = n
         self.nt   = nt
@@ -187,7 +187,7 @@ klasse Whitespace:
     def indent_level(self, tabsize):
         # count, il = self.norm
         # fuer i in range(len(count)):
-        #    if count[i]:
+        #    wenn count[i]:
         #        il = il + (i//tabsize + 1)*tabsize * count[i]
         # return il
 
@@ -219,7 +219,7 @@ klasse Whitespace:
                 other.longest_run_of_spaces()) + 1
         a = []
         fuer ts in range(1, n+1):
-            if self.indent_level(ts) != other.indent_level(ts):
+            wenn self.indent_level(ts) != other.indent_level(ts):
                 a.append( (ts,
                            self.indent_level(ts),
                            other.indent_level(ts)) )
@@ -239,15 +239,15 @@ klasse Whitespace:
     # XXXwrite that up.
     # Note that M is of the form (T*)(S*) iff len(M.norm[0]) <= 1.
     def less(self, other):
-        if self.n >= other.n:
+        wenn self.n >= other.n:
             return False
-        if self.is_simple and other.is_simple:
+        wenn self.is_simple and other.is_simple:
             return self.nt <= other.nt
         n = max(self.longest_run_of_spaces(),
                 other.longest_run_of_spaces()) + 1
         # the self.n >= other.n test already did it fuer ts=1
         fuer ts in range(2, n+1):
-            if self.indent_level(ts) >= other.indent_level(ts):
+            wenn self.indent_level(ts) >= other.indent_level(ts):
                 return False
         return True
 
@@ -260,7 +260,7 @@ klasse Whitespace:
                 other.longest_run_of_spaces()) + 1
         a = []
         fuer ts in range(1, n+1):
-            if self.indent_level(ts) >= other.indent_level(ts):
+            wenn self.indent_level(ts) >= other.indent_level(ts):
                 a.append( (ts,
                            self.indent_level(ts),
                            other.indent_level(ts)) )
@@ -269,7 +269,7 @@ klasse Whitespace:
 def format_witnesses(w):
     firsts = (str(tup[0]) fuer tup in w)
     prefix = "at tab size"
-    if len(w) > 1:
+    wenn len(w) > 1:
         prefix = prefix + "s"
     return prefix + " " + ', '.join(firsts)
 
@@ -288,7 +288,7 @@ def _process_tokens(tokens):
     check_equal = 0
 
     fuer (type, token, start, end, line) in tokens:
-        if type == NEWLINE:
+        wenn type == NEWLINE:
             # a program statement, or ENDMARKER, will eventually follow,
             # after some (possibly empty) run of tokens of the form
             #     (NL | COMMENT)* (INDENT | DEDENT+)?
@@ -296,30 +296,30 @@ def _process_tokens(tokens):
             # be undone when we see the INDENT.
             check_equal = 1
 
-        elif type == INDENT:
+        sowenn type == INDENT:
             check_equal = 0
             thisguy = Whitespace(token)
-            if not indents[-1].less(thisguy):
+            wenn not indents[-1].less(thisguy):
                 witness = indents[-1].not_less_witness(thisguy)
                 msg = "indent not greater e.g. " + format_witnesses(witness)
                 raise NannyNag(start[0], msg, line)
             indents.append(thisguy)
 
-        elif type == DEDENT:
+        sowenn type == DEDENT:
             # there's nothing we need to check here!  what's important is
             # that when the run of DEDENTs ends, the indentation of the
             # program statement (or ENDMARKER) that triggered the run is
             # equal to what's left at the top of the indents stack
 
-            # Ouch!  This assert triggers if the last line of the source
+            # Ouch!  This assert triggers wenn the last line of the source
             # is indented *and* lacks a newline -- then DEDENTs pop out
             # of thin air.
-            # assert check_equal  # else no earlier NEWLINE, or an earlier INDENT
+            # assert check_equal  # sonst no earlier NEWLINE, or an earlier INDENT
             check_equal = 1
 
             del indents[-1]
 
-        elif check_equal and type not in JUNK:
+        sowenn check_equal and type not in JUNK:
             # this is the first "real token" following a NEWLINE, so it
             # must be the first token of the next program statement, or an
             # ENDMARKER; the "line" argument exposes the leading whitespace
@@ -328,11 +328,11 @@ def _process_tokens(tokens):
             # "indents" stack was seeded
             check_equal = 0
             thisguy = Whitespace(line)
-            if not indents[-1].equal(thisguy):
+            wenn not indents[-1].equal(thisguy):
                 witness = indents[-1].not_equal_witness(thisguy)
                 msg = "indent not equal e.g. " + format_witnesses(witness)
                 raise NannyNag(start[0], msg, line)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     main()

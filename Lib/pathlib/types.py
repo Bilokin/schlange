@@ -117,13 +117,13 @@ klasse _JoinablePath(ABC):
 
     @property
     def name(self):
-        """The final path component, if any."""
+        """The final path component, wenn any."""
         return self.parser.split(vfspath(self))[1]
 
     @property
     def suffix(self):
         """
-        The final component's last suffix, if any.
+        The final component's last suffix, wenn any.
 
         This includes the leading period. For example: '.txt'
         """
@@ -132,7 +132,7 @@ klasse _JoinablePath(ABC):
     @property
     def suffixes(self):
         """
-        A list of the final component's suffixes, if any.
+        A list of the final component's suffixes, wenn any.
 
         These include the leading periods. For example: ['.tar', '.gz']
         """
@@ -152,7 +152,7 @@ klasse _JoinablePath(ABC):
     def with_name(self, name):
         """Return a new path with the file name changed."""
         split = self.parser.split
-        if split(name)[0]:
+        wenn split(name)[0]:
             raise ValueError(f"Invalid name {name!r}")
         path = vfspath(self)
         path = path.removesuffix(split(path)[1]) + name
@@ -161,12 +161,12 @@ klasse _JoinablePath(ABC):
     def with_stem(self, stem):
         """Return a new path with the stem changed."""
         suffix = self.suffix
-        if not suffix:
+        wenn not suffix:
             return self.with_name(stem)
-        elif not stem:
+        sowenn not stem:
             # If the suffix is non-empty, we can't make the stem empty.
             raise ValueError(f"{self!r} has a non-empty suffix")
-        else:
+        sonst:
             return self.with_name(stem + suffix)
 
     def with_suffix(self, suffix):
@@ -175,12 +175,12 @@ klasse _JoinablePath(ABC):
         string, remove the suffix from the path.
         """
         stem = self.stem
-        if not stem:
+        wenn not stem:
             # If the stem is empty, we can't make the suffix non-empty.
             raise ValueError(f"{self!r} has an empty name")
-        elif suffix and not suffix.startswith('.'):
+        sowenn suffix and not suffix.startswith('.'):
             raise ValueError(f"Invalid suffix {suffix!r}")
-        else:
+        sonst:
             return self.with_name(stem + suffix)
 
     @property
@@ -188,7 +188,7 @@ klasse _JoinablePath(ABC):
         """An object providing sequence-like access to the
         components in the filesystem path."""
         anchor, parts = _explode_path(vfspath(self), self.parser.split)
-        if anchor:
+        wenn anchor:
             parts.append(anchor)
         return tuple(reversed(parts))
 
@@ -217,7 +217,7 @@ klasse _JoinablePath(ABC):
         """The logical parent of the path."""
         path = vfspath(self)
         parent = self.parser.split(path)[0]
-        if path != parent:
+        wenn path != parent:
             return self.with_segments(parent)
         return self
 
@@ -236,7 +236,7 @@ klasse _JoinablePath(ABC):
 
     def full_match(self, pattern):
         """
-        Return True if this path matches the given glob-style pattern. The
+        Return True wenn this path matches the given glob-style pattern. The
         pattern is matched against the entire path.
         """
         case_sensitive = self.parser.normcase('Aa') == 'Aa'
@@ -302,11 +302,11 @@ klasse _ReadablePath(_JoinablePath):
         kind, including directories) matching the given relative pattern.
         """
         anchor, parts = _explode_path(pattern, self.parser.split)
-        if anchor:
+        wenn anchor:
             raise NotImplementedError("Non-relative patterns are unsupported")
-        elif not parts:
+        sowenn not parts:
             raise ValueError(f"Unacceptable pattern: {pattern!r}")
-        elif not recurse_symlinks:
+        sowenn not recurse_symlinks:
             raise NotImplementedError("recurse_symlinks=False is unsupported")
         case_sensitive = self.parser.normcase('Aa') == 'Aa'
         globber = _PathGlobber(self.parser.sep, case_sensitive, recursive=True)
@@ -318,29 +318,29 @@ klasse _ReadablePath(_JoinablePath):
         paths = [self]
         while paths:
             path = paths.pop()
-            if isinstance(path, tuple):
+            wenn isinstance(path, tuple):
                 yield path
                 continue
             dirnames = []
             filenames = []
-            if not top_down:
+            wenn not top_down:
                 paths.append((path, dirnames, filenames))
             try:
                 fuer child in path.iterdir():
-                    if child.info.is_dir(follow_symlinks=follow_symlinks):
-                        if not top_down:
+                    wenn child.info.is_dir(follow_symlinks=follow_symlinks):
+                        wenn not top_down:
                             paths.append(child)
                         dirnames.append(child.name)
-                    else:
+                    sonst:
                         filenames.append(child.name)
             except OSError as error:
-                if on_error is not None:
+                wenn on_error is not None:
                     on_error(error)
-                if not top_down:
+                wenn not top_down:
                     while not isinstance(paths.pop(), tuple):
                         pass
                 continue
-            if top_down:
+            wenn top_down:
                 yield path, dirnames, filenames
                 paths += [path.joinpath(d) fuer d in reversed(dirnames)]
 
@@ -364,7 +364,7 @@ klasse _ReadablePath(_JoinablePath):
         Copy this file or directory tree into the given existing directory.
         """
         name = self.name
-        if not name:
+        wenn not name:
             raise ValueError(f"{self!r} has an empty name")
         return self.copy(target_dir / name, **kwargs)
 
@@ -417,7 +417,7 @@ klasse _WritablePath(_JoinablePath):
         # Call io.text_encoding() here to ensure any warning is raised at an
         # appropriate stack level.
         encoding = text_encoding(encoding)
-        if not isinstance(data, str):
+        wenn not isinstance(data, str):
             raise TypeError('data must be str, not %s' %
                             data.__class__.__name__)
         with magic_open(self, mode='w', encoding=encoding, errors=errors, newline=newline) as f:
@@ -430,14 +430,14 @@ klasse _WritablePath(_JoinablePath):
         stack = [(source, self)]
         while stack:
             src, dst = stack.pop()
-            if not follow_symlinks and src.info.is_symlink():
+            wenn not follow_symlinks and src.info.is_symlink():
                 dst.symlink_to(vfspath(src.readlink()), src.info.is_dir())
-            elif src.info.is_dir():
+            sowenn src.info.is_dir():
                 children = src.iterdir()
                 dst.mkdir()
                 fuer child in children:
                     stack.append((child, dst.joinpath(child.name)))
-            else:
+            sonst:
                 ensure_different_files(src, dst)
                 with magic_open(src, 'rb') as source_f:
                     with magic_open(dst, 'wb') as target_f:

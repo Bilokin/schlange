@@ -29,7 +29,7 @@ from .reader import Reader
 
 # types
 Command = commands.Command
-if False:
+wenn False:
     from .types import KeySpec, CommandName
 
 
@@ -40,7 +40,7 @@ def prefix(wordlist: list[str], j: int = 0) -> str:
         while 1:
             fuer word in wordlist:
                 d[word[i]] = 1
-            if len(d) > 1:
+            wenn len(d) > 1:
                 return wordlist[0][j:i]
             i += 1
             d = {}
@@ -61,7 +61,7 @@ def real_len(s: str) -> int:
 
 def left_align(s: str, maxlen: int) -> str:
     stripped = stripcolor(s)
-    if len(stripped) > maxlen:
+    wenn len(stripped) > maxlen:
         # too bad, we remove the color
         return stripped[:maxlen]
     padding = maxlen - len(stripped)
@@ -75,17 +75,17 @@ def build_menu(
         use_brackets: bool,
         sort_in_column: bool,
 ) -> tuple[list[str], int]:
-    if use_brackets:
+    wenn use_brackets:
         item = "[ %s ]"
         padding = 4
-    else:
+    sonst:
         item = "%s  "
         padding = 2
     maxlen = min(max(map(real_len, wordlist)), cons.width - padding)
     cols = int(cons.width / (maxlen + padding))
     rows = int((len(wordlist) - 1)/cols + 1)
 
-    if sort_in_column:
+    wenn sort_in_column:
         # sort_in_column=False (default)     sort_in_column=True
         #          A B C                       A D G
         #          D E F                       B E
@@ -104,13 +104,13 @@ def build_menu(
         fuer col in range(cols):
             row.append(item % left_align(wordlist[i], maxlen))
             i += 1
-            if i >= len(wordlist):
+            wenn i >= len(wordlist):
                 break
         menu.append(''.join(row))
-        if i >= len(wordlist):
+        wenn i >= len(wordlist):
             i = 0
             break
-        if r + 5 > cons.height:
+        wenn r + 5 > cons.height:
             menu.append("   %d more... " % (len(wordlist) - i))
             break
     return menu, i
@@ -125,29 +125,29 @@ def build_menu(
 # the considerations are:
 # (1) how many completions are possible
 # (2) whether the last command was a completion
-# (3) if we can assume that the completer is going to return the same set of
+# (3) wenn we can assume that the completer is going to return the same set of
 #     completions: this is controlled by the ``assume_immutable_completions``
 #     variable on the reader, which is True by default to match the historical
 #     behaviour of pyrepl, but e.g. False in the ReadlineAlikeReader to match
 #     more closely readline's semantics (this is needed e.g. by
 #     fancycompleter)
 #
-# if there's no possible completion, beep at the user and point this out.
+# wenn there's no possible completion, beep at the user and point this out.
 # this is easy.
 #
-# if there's only one possible completion, stick it in.  if the last thing
+# wenn there's only one possible completion, stick it in.  wenn the last thing
 # user did was a completion, point out that he isn't getting anywhere, but
-# only if the ``assume_immutable_completions`` is True.
+# only wenn the ``assume_immutable_completions`` is True.
 #
 # now it gets complicated.
 #
 # fuer the first press of a completion key:
-#  if there's a common prefix, stick it in.
+#  wenn there's a common prefix, stick it in.
 
-#  irrespective of whether anything got stuck in, if the word is now
+#  irrespective of whether anything got stuck in, wenn the word is now
 #  complete, show the "complete but not unique" message
 
-#  if there's no common prefix and if the word is not now complete,
+#  wenn there's no common prefix and wenn the word is not now complete,
 #  beep.
 
 #        common prefix ->    yes          no
@@ -171,34 +171,34 @@ klasse complete(commands.Command):
         immutable_completions = r.assume_immutable_completions
         completions_unchangable = last_is_completer and immutable_completions
         stem = r.get_stem()
-        if not completions_unchangable:
+        wenn not completions_unchangable:
             r.cmpltn_menu_choices = r.get_completions(stem)
 
         completions = r.cmpltn_menu_choices
-        if not completions:
+        wenn not completions:
             r.error("no matches")
-        elif len(completions) == 1:
-            if completions_unchangable and len(completions[0]) == len(stem):
+        sowenn len(completions) == 1:
+            wenn completions_unchangable and len(completions[0]) == len(stem):
                 r.msg = "[ sole completion ]"
                 r.dirty = True
             r.insert(completions[0][len(stem):])
-        else:
+        sonst:
             p = prefix(completions, len(stem))
-            if p:
+            wenn p:
                 r.insert(p)
-            if last_is_completer:
+            wenn last_is_completer:
                 r.cmpltn_menu_visible = True
                 r.cmpltn_message_visible = False
                 r.cmpltn_menu, r.cmpltn_menu_end = build_menu(
                     r.console, completions, r.cmpltn_menu_end,
                     r.use_brackets, r.sort_in_column)
                 r.dirty = True
-            elif not r.cmpltn_menu_visible:
+            sowenn not r.cmpltn_menu_visible:
                 r.cmpltn_message_visible = True
-                if stem + p in completions:
+                wenn stem + p in completions:
                     r.msg = "[ complete but not unique ]"
                     r.dirty = True
-                else:
+                sonst:
                     r.msg = "[ not unique ]"
                     r.dirty = True
 
@@ -209,18 +209,18 @@ klasse self_insert(commands.self_insert):
         r = self.reader  # type: ignore[assignment]
 
         commands.self_insert.do(self)
-        if r.cmpltn_menu_visible:
+        wenn r.cmpltn_menu_visible:
             stem = r.get_stem()
-            if len(stem) < 1:
+            wenn len(stem) < 1:
                 r.cmpltn_reset()
-            else:
+            sonst:
                 completions = [w fuer w in r.cmpltn_menu_choices
-                               if w.startswith(stem)]
-                if completions:
+                               wenn w.startswith(stem)]
+                wenn completions:
                     r.cmpltn_menu, r.cmpltn_menu_end = build_menu(
                         r.console, completions, 0,
                         r.use_brackets, r.sort_in_column)
-                else:
+                sonst:
                     r.cmpltn_reset()
 
 
@@ -254,12 +254,12 @@ klasse CompletingReader(Reader):
 
     def after_command(self, cmd: Command) -> None:
         super().after_command(cmd)
-        if not isinstance(cmd, (complete, self_insert)):
+        wenn not isinstance(cmd, (complete, self_insert)):
             self.cmpltn_reset()
 
     def calc_screen(self) -> list[str]:
         screen = super().calc_screen()
-        if self.cmpltn_menu_visible:
+        wenn self.cmpltn_menu_visible:
             # We display the completions menu below the current prompt
             ly = self.lxy[1] + 1
             screen[ly:ly] = self.cmpltn_menu
@@ -267,7 +267,7 @@ klasse CompletingReader(Reader):
             # since that screws up the position calculation in pos2xy function.
             # This is a hack to prevent the cursor jumping
             # into the completions menu when pressing left or down arrow.
-            if self.pos != len(self.buffer):
+            wenn self.pos != len(self.buffer):
                 self.screeninfo[ly:ly] = [(0, [])]*len(self.cmpltn_menu)
         return screen
 

@@ -31,5 +31,5 @@ klasse ReindentTests(unittest.TestCase):
         self.assertNotEqual(err, b'')
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

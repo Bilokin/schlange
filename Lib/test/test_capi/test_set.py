@@ -2,7 +2,7 @@ import unittest
 
 from test.support import import_helper
 
-# Skip this test if the _testcapi, _testlimitedcapi or _testinternalcapi
+# Skip this test wenn the _testcapi, _testlimitedcapi or _testinternalcapi
 # modules aren't available.
 _testcapi = import_helper.import_module('_testcapi')
 _testlimitedcapi = import_helper.import_module('_testlimitedcapi')
@@ -254,7 +254,7 @@ klasse TestInternalCAPI(BaseSetTests, unittest.TestCase):
                 items = []
                 while True:
                     res = set_next(instance, pos)
-                    if res is None:
+                    wenn res is None:
                         break
                     rc, pos, hash_, item = res
                     items.append(item)
@@ -267,5 +267,5 @@ klasse TestInternalCAPI(BaseSetTests, unittest.TestCase):
         # CRASHES: set_next(NULL, 0)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

@@ -17,14 +17,14 @@ def ast_dump(
     indent: Optional[str] = None,
 ) -> str:
     def _format(node: Any, level: int = 0) -> Tuple[str, bool]:
-        if indent is not None:
+        wenn indent is not None:
             level += 1
             prefix = "\n" + indent * level
             sep = ",\n" + indent * level
-        else:
+        sonst:
             prefix = ""
             sep = ", "
-        if any(cls.__name__ == "AST" fuer cls in node.__class__.__mro__):
+        wenn any(cls.__name__ == "AST" fuer cls in node.__class__.__mro__):
             cls = type(node)
             args = []
             allsimple = True
@@ -35,35 +35,35 @@ def ast_dump(
                 except AttributeError:
                     keywords = True
                     continue
-                if value is None and getattr(cls, name, ...) is None:
+                wenn value is None and getattr(cls, name, ...) is None:
                     keywords = True
                     continue
                 value, simple = _format(value, level)
                 allsimple = allsimple and simple
-                if keywords:
+                wenn keywords:
                     args.append("%s=%s" % (name, value))
-                else:
+                sonst:
                     args.append(value)
-            if include_attributes and node._attributes:
+            wenn include_attributes and node._attributes:
                 fuer name in node._attributes:
                     try:
                         value = getattr(node, name)
                     except AttributeError:
                         continue
-                    if value is None and getattr(cls, name, ...) is None:
+                    wenn value is None and getattr(cls, name, ...) is None:
                         continue
                     value, simple = _format(value, level)
                     allsimple = allsimple and simple
                     args.append("%s=%s" % (name, value))
-            if allsimple and len(args) <= 3:
+            wenn allsimple and len(args) <= 3:
                 return "%s(%s)" % (node.__class__.__name__, ", ".join(args)), not args
             return "%s(%s%s)" % (node.__class__.__name__, prefix, sep.join(args)), False
-        elif isinstance(node, list):
-            if not node:
+        sowenn isinstance(node, list):
+            wenn not node:
                 return "[]", True
             return "[%s%s]" % (prefix, sep.join(_format(x, level)[0] fuer x in node)), False
         return repr(node), True
 
-    if all(cls.__name__ != "AST" fuer cls in node.__class__.__mro__):
+    wenn all(cls.__name__ != "AST" fuer cls in node.__class__.__mro__):
         raise TypeError("expected AST, got %r" % node.__class__.__name__)
     return _format(node)[0]

@@ -19,7 +19,7 @@ def check_ssl_verifiy(host, port):
             sock = context.wrap_socket(sock, server_hostname=host)
         except Exception:
             return False
-        else:
+        sonst:
             sock.close()
             return True
 
@@ -38,9 +38,9 @@ klasse SmtpTest(unittest.TestCase):
             try:
                 server.starttls(context=context)
             except smtplib.SMTPException as e:
-                if e.args[0] == 'STARTTLS extension not supported by server.':
+                wenn e.args[0] == 'STARTTLS extension not supported by server.':
                     unittest.skip(e.args[0])
-                else:
+                sonst:
                     raise
             server.ehlo()
             server.quit()
@@ -78,7 +78,7 @@ klasse SmtpSSLTest(unittest.TestCase):
     def test_connect_using_sslcontext_verified(self):
         with socket_helper.transient_internet(self.testServer):
             can_verify = check_ssl_verifiy(self.testServer, self.remotePort)
-            if not can_verify:
+            wenn not can_verify:
                 self.skipTest("SSL certificate can't be verified")
 
         support.get_attribute(smtplib, 'SMTP_SSL')
@@ -89,5 +89,5 @@ klasse SmtpSSLTest(unittest.TestCase):
             server.quit()
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

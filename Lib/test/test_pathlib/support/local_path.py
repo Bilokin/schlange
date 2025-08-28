@@ -11,12 +11,12 @@ import os
 from . import is_pypi
 from .lexical_path import LexicalPath
 
-if is_pypi:
+wenn is_pypi:
     from shutil import rmtree
     from pathlib_abc import PathInfo, _ReadablePath, _WritablePath
     can_symlink = True
     testfn = "TESTFN"
-else:
+sonst:
     from pathlib.types import PathInfo, _ReadablePath, _WritablePath
     from test.support import os_helper
     can_symlink = os_helper.can_symlink()
@@ -63,7 +63,7 @@ klasse LocalPathGround:
             f.write(b"this is a novel\n")
         with open(os.path.join(p, 'dirC', 'dirD', 'fileD'), 'wb') as f:
             f.write(b"this is file D\n")
-        if self.can_symlink:
+        wenn self.can_symlink:
             # Relative symlinks.
             os.symlink('fileA', os.path.join(p, 'linkA'))
             os.symlink('non-existing', os.path.join(p, 'brokenLink'))
@@ -105,31 +105,31 @@ klasse LocalPathInfo(PathInfo):
 
     def exists(self, *, follow_symlinks=True):
         """Whether this path exists."""
-        if not follow_symlinks and self.is_symlink():
+        wenn not follow_symlinks and self.is_symlink():
             return True
-        if self._exists is None:
+        wenn self._exists is None:
             self._exists = os.path.exists(self._path)
         return self._exists
 
     def is_dir(self, *, follow_symlinks=True):
         """Whether this path is a directory."""
-        if not follow_symlinks and self.is_symlink():
+        wenn not follow_symlinks and self.is_symlink():
             return False
-        if self._is_dir is None:
+        wenn self._is_dir is None:
             self._is_dir = os.path.isdir(self._path)
         return self._is_dir
 
     def is_file(self, *, follow_symlinks=True):
         """Whether this path is a regular file."""
-        if not follow_symlinks and self.is_symlink():
+        wenn not follow_symlinks and self.is_symlink():
             return False
-        if self._is_file is None:
+        wenn self._is_file is None:
             self._is_file = os.path.isfile(self._path)
         return self._is_file
 
     def is_symlink(self):
         """Whether this path is a symbolic link."""
-        if self._is_symlink is None:
+        wenn self._is_symlink is None:
             self._is_symlink = os.path.islink(self._path)
         return self._is_symlink
 

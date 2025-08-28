@@ -53,5 +53,5 @@ klasse TestTokenize(unittest.TestCase):
         self.assertListEqual(tokens, expected_tokens)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

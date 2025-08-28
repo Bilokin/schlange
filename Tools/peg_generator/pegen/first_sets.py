@@ -49,10 +49,10 @@ klasse FirstSetCalculator(GrammarVisitor):
         to_remove: Set[str] = set()
         fuer other in item.items:
             new_terminals = self.visit(other)
-            if isinstance(other.item, NegativeLookahead):
+            wenn isinstance(other.item, NegativeLookahead):
                 to_remove |= new_terminals
             result |= new_terminals
-            if to_remove:
+            wenn to_remove:
                 result -= to_remove
 
             # If the set of new terminals can start with the empty string,
@@ -60,10 +60,10 @@ klasse FirstSetCalculator(GrammarVisitor):
             # also considering at least the next item in case the current
             # one fails to parse.
 
-            if "" in new_terminals:
+            wenn "" in new_terminals:
                 continue
 
-            if not isinstance(other.item, (Opt, NegativeLookahead, Repeat0)):
+            wenn not isinstance(other.item, (Opt, NegativeLookahead, Repeat0)):
                 break
 
         # Do not allow the empty string to propagate.
@@ -99,13 +99,13 @@ klasse FirstSetCalculator(GrammarVisitor):
         return self.visit(item.node)
 
     def visit_NameLeaf(self, item: NameLeaf) -> Set[str]:
-        if item.value not in self.rules:
+        wenn item.value not in self.rules:
             return {item.value}
 
-        if item.value not in self.first_sets:
+        wenn item.value not in self.first_sets:
             self.first_sets[item.value] = self.visit(self.rules[item.value])
             return self.first_sets[item.value]
-        elif item.value in self.in_process:
+        sowenn item.value in self.in_process:
             return set()
 
         return self.first_sets[item.value]
@@ -120,12 +120,12 @@ klasse FirstSetCalculator(GrammarVisitor):
         return result
 
     def visit_Rule(self, item: Rule) -> Set[str]:
-        if item.name in self.in_process:
+        wenn item.name in self.in_process:
             return set()
-        elif item.name not in self.first_sets:
+        sowenn item.name not in self.first_sets:
             self.in_process.add(item.name)
             terminals = self.visit(item.rhs)
-            if item in self.nullables:
+            wenn item in self.nullables:
                 terminals.add("")
             self.first_sets[item.name] = terminals
             self.in_process.remove(item.name)
@@ -145,5 +145,5 @@ def main() -> None:
     pprint.pprint(firs_sets)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     main()

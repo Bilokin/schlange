@@ -130,5 +130,5 @@ def run_test(rep, msg, func, arg):
     print("%20s: %.2f us" % (msg, ((stop-start)*1e6/5/rep)))
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

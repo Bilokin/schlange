@@ -464,7 +464,7 @@ def test_factory(abc_ABCMeta, abc_get_cache_token):
             klasse A(metaclass=abc.ABCMeta):
                 @classmethod
                 def __subclasshook__(cls, C):
-                    if cls is A:
+                    wenn cls is A:
                         return 'foo' in C.__dict__
                     return NotImplemented
             self.assertNotIsSubclass(A, A)
@@ -695,5 +695,5 @@ TestLegacyAPI_Py.__unittest_thread_unsafe__ = True
 TestABC_Py.__unittest_thread_unsafe__ = True
 TestABCWithInitSubclass_Py.__unittest_thread_unsafe__ = True
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

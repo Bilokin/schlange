@@ -46,7 +46,7 @@ klasse TypesTests(unittest.TestCase):
                    'get_original_bases', 'DynamicClassAttribute', 'coroutine'}
 
         fuer name in c_types.__all__:
-            if name not in c_only_names | ignored:
+            wenn name not in c_only_names | ignored:
                 self.assertIs(getattr(c_types, name), getattr(py_types, name))
 
         all_names = ignored | {
@@ -64,37 +64,37 @@ klasse TypesTests(unittest.TestCase):
         self.assertEqual(all_names - c_only_names, set(py_types.__all__))
 
     def test_truth_values(self):
-        if None: self.fail('None is true instead of false')
-        if 0: self.fail('0 is true instead of false')
-        if 0.0: self.fail('0.0 is true instead of false')
-        if '': self.fail('\'\' is true instead of false')
-        if not 1: self.fail('1 is false instead of true')
-        if not 1.0: self.fail('1.0 is false instead of true')
-        if not 'x': self.fail('\'x\' is false instead of true')
-        if not {'x': 1}: self.fail('{\'x\': 1} is false instead of true')
+        wenn None: self.fail('None is true instead of false')
+        wenn 0: self.fail('0 is true instead of false')
+        wenn 0.0: self.fail('0.0 is true instead of false')
+        wenn '': self.fail('\'\' is true instead of false')
+        wenn not 1: self.fail('1 is false instead of true')
+        wenn not 1.0: self.fail('1.0 is false instead of true')
+        wenn not 'x': self.fail('\'x\' is false instead of true')
+        wenn not {'x': 1}: self.fail('{\'x\': 1} is false instead of true')
         def f(): pass
         klasse C: pass
         x = C()
-        if not f: self.fail('f is false instead of true')
-        if not C: self.fail('C is false instead of true')
-        if not sys: self.fail('sys is false instead of true')
-        if not x: self.fail('x is false instead of true')
+        wenn not f: self.fail('f is false instead of true')
+        wenn not C: self.fail('C is false instead of true')
+        wenn not sys: self.fail('sys is false instead of true')
+        wenn not x: self.fail('x is false instead of true')
 
     def test_boolean_ops(self):
-        if 0 or 0: self.fail('0 or 0 is true instead of false')
-        if 1 and 1: pass
-        else: self.fail('1 and 1 is false instead of true')
-        if not 1: self.fail('not 1 is true instead of false')
+        wenn 0 or 0: self.fail('0 or 0 is true instead of false')
+        wenn 1 and 1: pass
+        sonst: self.fail('1 and 1 is false instead of true')
+        wenn not 1: self.fail('not 1 is true instead of false')
 
     def test_comparisons(self):
-        if 0 < 1 <= 1 == 1 >= 1 > 0 != 1: pass
-        else: self.fail('int comparisons failed')
-        if 0.0 < 1.0 <= 1.0 == 1.0 >= 1.0 > 0.0 != 1.0: pass
-        else: self.fail('float comparisons failed')
-        if '' < 'a' <= 'a' == 'a' < 'abc' < 'abd' < 'b': pass
-        else: self.fail('string comparisons failed')
-        if None is None: pass
-        else: self.fail('identity test failed')
+        wenn 0 < 1 <= 1 == 1 >= 1 > 0 != 1: pass
+        sonst: self.fail('int comparisons failed')
+        wenn 0.0 < 1.0 <= 1.0 == 1.0 >= 1.0 > 0.0 != 1.0: pass
+        sonst: self.fail('float comparisons failed')
+        wenn '' < 'a' <= 'a' == 'a' < 'abc' < 'abd' < 'b': pass
+        sonst: self.fail('string comparisons failed')
+        wenn None is None: pass
+        sonst: self.fail('identity test failed')
 
     def test_float_constructor(self):
         self.assertRaises(ValueError, float, '')
@@ -104,38 +104,38 @@ klasse TypesTests(unittest.TestCase):
     def test_zero_division(self):
         try: 5.0 / 0.0
         except ZeroDivisionError: pass
-        else: self.fail("5.0 / 0.0 didn't raise ZeroDivisionError")
+        sonst: self.fail("5.0 / 0.0 didn't raise ZeroDivisionError")
 
         try: 5.0 // 0.0
         except ZeroDivisionError: pass
-        else: self.fail("5.0 // 0.0 didn't raise ZeroDivisionError")
+        sonst: self.fail("5.0 // 0.0 didn't raise ZeroDivisionError")
 
         try: 5.0 % 0.0
         except ZeroDivisionError: pass
-        else: self.fail("5.0 % 0.0 didn't raise ZeroDivisionError")
+        sonst: self.fail("5.0 % 0.0 didn't raise ZeroDivisionError")
 
         try: 5 / 0
         except ZeroDivisionError: pass
-        else: self.fail("5 / 0 didn't raise ZeroDivisionError")
+        sonst: self.fail("5 / 0 didn't raise ZeroDivisionError")
 
         try: 5 // 0
         except ZeroDivisionError: pass
-        else: self.fail("5 // 0 didn't raise ZeroDivisionError")
+        sonst: self.fail("5 // 0 didn't raise ZeroDivisionError")
 
         try: 5 % 0
         except ZeroDivisionError: pass
-        else: self.fail("5 % 0 didn't raise ZeroDivisionError")
+        sonst: self.fail("5 % 0 didn't raise ZeroDivisionError")
 
     def test_numeric_types(self):
-        if 0 != 0.0 or 1 != 1.0 or -1 != -1.0:
+        wenn 0 != 0.0 or 1 != 1.0 or -1 != -1.0:
             self.fail('int/float value not equal')
         # calling built-in types without argument must return 0
-        if int() != 0: self.fail('int() does not return 0')
-        if float() != 0.0: self.fail('float() does not return 0.0')
-        if int(1.9) == 1 == int(1.1) and int(-1.1) == -1 == int(-1.9): pass
-        else: self.fail('int() does not round properly')
-        if float(1) == 1.0 and float(-1) == -1.0 and float(0) == 0.0: pass
-        else: self.fail('float() does not work properly')
+        wenn int() != 0: self.fail('int() does not return 0')
+        wenn float() != 0.0: self.fail('float() does not return 0.0')
+        wenn int(1.9) == 1 == int(1.1) and int(-1.1) == -1 == int(-1.9): pass
+        sonst: self.fail('int() does not round properly')
+        wenn float(1) == 1.0 and float(-1) == -1.0 and float(0) == 0.0: pass
+        sonst: self.fail('float() does not work properly')
 
     def test_float_to_string(self):
         def test(f, result):
@@ -167,32 +167,32 @@ klasse TypesTests(unittest.TestCase):
         # Ensure the first 256 integers are shared
         a = 256
         b = 128*2
-        if a is not b: self.fail('256 is not shared')
-        if 12 + 24 != 36: self.fail('int op')
-        if 12 + (-24) != -12: self.fail('int op')
-        if (-12) + 24 != 12: self.fail('int op')
-        if (-12) + (-24) != -36: self.fail('int op')
-        if not 12 < 24: self.fail('int op')
-        if not -24 < -12: self.fail('int op')
+        wenn a is not b: self.fail('256 is not shared')
+        wenn 12 + 24 != 36: self.fail('int op')
+        wenn 12 + (-24) != -12: self.fail('int op')
+        wenn (-12) + 24 != 12: self.fail('int op')
+        wenn (-12) + (-24) != -36: self.fail('int op')
+        wenn not 12 < 24: self.fail('int op')
+        wenn not -24 < -12: self.fail('int op')
         # Test fuer a particular bug in integer multiply
         xsize, ysize, zsize = 238, 356, 4
-        if not (xsize*ysize*zsize == zsize*xsize*ysize == 338912):
+        wenn not (xsize*ysize*zsize == zsize*xsize*ysize == 338912):
             self.fail('int mul commutativity')
         # And another.
         m = -sys.maxsize - 1
         fuer divisor in 1, 2, 4, 8, 16, 32:
             j = m // divisor
             prod = divisor * j
-            if prod != m:
+            wenn prod != m:
                 self.fail("%r * %r == %r != %r" % (divisor, j, prod, m))
-            if type(prod) is not int:
+            wenn type(prod) is not int:
                 self.fail("expected type(prod) to be int, not %r" %
                                    type(prod))
         # Check fuer unified integral type
         fuer divisor in 1, 2, 4, 8, 16, 32:
             j = m // divisor - 1
             prod = divisor * j
-            if type(prod) is not int:
+            wenn type(prod) is not int:
                 self.fail("expected type(%r) to be int, not %r" %
                                    (prod, type(prod)))
         # Check fuer unified integral type
@@ -200,7 +200,7 @@ klasse TypesTests(unittest.TestCase):
         fuer divisor in 1, 2, 4, 8, 16, 32:
             j = m // divisor + 1
             prod = divisor * j
-            if type(prod) is not int:
+            wenn type(prod) is not int:
                 self.fail("expected type(%r) to be int, not %r" %
                                    (prod, type(prod)))
 
@@ -214,32 +214,32 @@ klasse TypesTests(unittest.TestCase):
 
         try: 5 << -5
         except ValueError: pass
-        else: self.fail('int negative shift <<')
+        sonst: self.fail('int negative shift <<')
 
         try: 5 >> -5
         except ValueError: pass
-        else: self.fail('int negative shift >>')
+        sonst: self.fail('int negative shift >>')
 
     def test_floats(self):
-        if 12.0 + 24.0 != 36.0: self.fail('float op')
-        if 12.0 + (-24.0) != -12.0: self.fail('float op')
-        if (-12.0) + 24.0 != 12.0: self.fail('float op')
-        if (-12.0) + (-24.0) != -36.0: self.fail('float op')
-        if not 12.0 < 24.0: self.fail('float op')
-        if not -24.0 < -12.0: self.fail('float op')
+        wenn 12.0 + 24.0 != 36.0: self.fail('float op')
+        wenn 12.0 + (-24.0) != -12.0: self.fail('float op')
+        wenn (-12.0) + 24.0 != 12.0: self.fail('float op')
+        wenn (-12.0) + (-24.0) != -36.0: self.fail('float op')
+        wenn not 12.0 < 24.0: self.fail('float op')
+        wenn not -24.0 < -12.0: self.fail('float op')
 
     def test_strings(self):
-        if len('') != 0: self.fail('len(\'\')')
-        if len('a') != 1: self.fail('len(\'a\')')
-        if len('abcdef') != 6: self.fail('len(\'abcdef\')')
-        if 'xyz' + 'abcde' != 'xyzabcde': self.fail('string concatenation')
-        if 'xyz'*3 != 'xyzxyzxyz': self.fail('string repetition *3')
-        if 0*'abcde' != '': self.fail('string repetition 0*')
-        if min('abc') != 'a' or max('abc') != 'c': self.fail('min/max string')
-        if 'a' in 'abc' and 'b' in 'abc' and 'c' in 'abc' and 'd' not in 'abc': pass
-        else: self.fail('in/not in string')
+        wenn len('') != 0: self.fail('len(\'\')')
+        wenn len('a') != 1: self.fail('len(\'a\')')
+        wenn len('abcdef') != 6: self.fail('len(\'abcdef\')')
+        wenn 'xyz' + 'abcde' != 'xyzabcde': self.fail('string concatenation')
+        wenn 'xyz'*3 != 'xyzxyzxyz': self.fail('string repetition *3')
+        wenn 0*'abcde' != '': self.fail('string repetition 0*')
+        wenn min('abc') != 'a' or max('abc') != 'c': self.fail('min/max string')
+        wenn 'a' in 'abc' and 'b' in 'abc' and 'c' in 'abc' and 'd' not in 'abc': pass
+        sonst: self.fail('in/not in string')
         x = 'x'*103
-        if '%s!'%x != x+'!': self.fail('nasty string formatting bug')
+        wenn '%s!'%x != x+'!': self.fail('nasty string formatting bug')
 
         #extended slices fuer strings
         a = '0123456789'
@@ -403,7 +403,7 @@ klasse TypesTests(unittest.TestCase):
         # ensure that only int and float type specifiers work
         fuer format_spec in ([chr(x) fuer x in range(ord('a'), ord('z')+1)] +
                             [chr(x) fuer x in range(ord('A'), ord('Z')+1)]):
-            if not format_spec in 'bcdoxXeEfFgGn%':
+            wenn not format_spec in 'bcdoxXeEfFgGn%':
                 self.assertRaises(ValueError, 0 .__format__, format_spec)
                 self.assertRaises(ValueError, 1 .__format__, format_spec)
                 self.assertRaises(ValueError, (-1) .__format__, format_spec)
@@ -696,7 +696,7 @@ klasse TypesTests(unittest.TestCase):
 
     def test_call_unbound_crash(self):
         # GH-131998: The specialized instruction would get tricked into dereferencing
-        # a bound "self" that didn't exist if subsequently called unbound.
+        # a bound "self" that didn't exist wenn subsequently called unbound.
         code = """if True:
 
         def call(part):
@@ -813,9 +813,9 @@ klasse UnionTests(unittest.TestCase):
         is_hashable = False
         klasse UnhashableMeta(type):
             def __hash__(self):
-                if is_hashable:
+                wenn is_hashable:
                     return 1
-                else:
+                sonst:
                     raise TypeError("not hashable")
 
         klasse A(metaclass=UnhashableMeta): ...
@@ -956,7 +956,7 @@ klasse UnionTests(unittest.TestCase):
     def test_union_parameter_substitution(self):
         def eq(actual, expected, typed=True):
             self.assertEqual(actual, expected)
-            if typed:
+            wenn typed:
                 self.assertIs(type(actual), type(expected))
 
         T = typing.TypeVar('T')
@@ -1144,7 +1144,7 @@ klasse UnionTests(unittest.TestCase):
 
     @cpython_only
     def test_or_type_operator_reference_cycle(self):
-        if not hasattr(sys, 'gettotalrefcount'):
+        wenn not hasattr(sys, 'gettotalrefcount'):
             self.skipTest('Cannot get total reference count.')
         gc.collect()
         before = sys.gettotalrefcount()
@@ -1236,9 +1236,9 @@ klasse MappingProxyTests(unittest.TestCase):
     def test_customdict(self):
         klasse customdict(dict):
             def __contains__(self, key):
-                if key == 'magic':
+                wenn key == 'magic':
                     return True
-                else:
+                sonst:
                     return dict.__contains__(self, key)
 
             def __iter__(self):
@@ -1676,7 +1676,7 @@ klasse ClassCreationTests(unittest.TestCase):
         klasse B: pass
         klasse C:
             def __mro_entries__(self, bases):
-                if A in bases:
+                wenn A in bases:
                     return ()
                 return (A,)
         c = C()
@@ -1879,7 +1879,7 @@ klasse ClassCreationTests(unittest.TestCase):
             def __new__(cls, name, bases, attrs):
                 super_new = super().__new__
                 new_class = super_new(cls, name, bases, {})
-                if name != "Model":
+                wenn name != "Model":
                     raise RuntimeWarning(f"{name=}")
                 return new_class
 
@@ -2340,7 +2340,7 @@ klasse CoroutineTests(unittest.TestCase):
             wrapper.throw(1)
         except Exception as ex:
             self.assertIs(ex, error)
-        else:
+        sonst:
             self.fail('wrapper did not propagate an exception')
 
         # Test invalid args
@@ -2381,18 +2381,18 @@ klasse CoroutineTests(unittest.TestCase):
                 return self.send(None)
             def send(self, v):
                 try:
-                    if self._i == 0:
+                    wenn self._i == 0:
                         assert v is None
                         return self._fut
-                    if self._i == 1:
+                    wenn self._i == 1:
                         raise StopIteration(v * 2)
-                    if self._i > 1:
+                    wenn self._i > 1:
                         raise StopIteration
                 finally:
                     self._i += 1
             def throw(self, tp, *exc):
                 self._i = 100
-                if tp is not GeneratorExit:
+                wenn tp is not GeneratorExit:
                     raise tp
             def close(self):
                 self.throw(GeneratorExit)
@@ -2412,7 +2412,7 @@ klasse CoroutineTests(unittest.TestCase):
             coro.send(20)
         except StopIteration as ex:
             self.assertEqual(ex.args[0], 140)
-        else:
+        sonst:
             self.fail('StopIteration was expected')
 
     def test_gen(self):
@@ -2613,5 +2613,5 @@ klasse SubinterpreterTests(unittest.TestCase):
         self.assertEqual(interp_results, {})
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

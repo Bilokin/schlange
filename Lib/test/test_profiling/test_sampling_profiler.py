@@ -31,7 +31,7 @@ except ImportError:
     raise unittest.SkipTest(
         "Test only runs when _remote_debugging is available"
     )
-else:
+sonst:
     import profiling.sampling
     from profiling.sampling.sample import SampleProfiler
 
@@ -94,14 +94,14 @@ _test_sock.sendall(b"ready")
         client_socket, _ = server_socket.accept()
         server_socket.close()
         response = client_socket.recv(1024)
-        if response != b"ready":
+        wenn response != b"ready":
             raise RuntimeError(f"Unexpected response from subprocess: {response}")
 
         yield proc
     finally:
-        if client_socket is not None:
+        wenn client_socket is not None:
             client_socket.close()
-        if proc.poll() is None:
+        wenn proc.poll() is None:
             proc.kill()
         proc.wait()
 
@@ -446,7 +446,7 @@ klasse TestSampleProfilerComponents(unittest.TestCase):
 
         # Should have function data
         function_entries = [
-            k fuer k in stats_data.keys() if k != ("__sampled__",)
+            k fuer k in stats_data.keys() wenn k != ("__sampled__",)
         ]
         self.assertGreater(len(function_entries), 0)
 
@@ -733,7 +733,7 @@ klasse TestPrintSampledStats(unittest.TestCase):
             lines = result.strip().split("\n")
 
         # Find the data lines (skip header)
-        data_lines = [l fuer l in lines if "file" in l and ".py" in l]
+        data_lines = [l fuer l in lines wenn "file" in l and ".py" in l]
         # func3 should be first (200 calls)
         self.assertIn("func3", data_lines[0])
 
@@ -747,7 +747,7 @@ klasse TestPrintSampledStats(unittest.TestCase):
             result = output.getvalue()
             lines = result.strip().split("\n")
 
-        data_lines = [l fuer l in lines if "file" in l and ".py" in l]
+        data_lines = [l fuer l in lines wenn "file" in l and ".py" in l]
         # func3 should be first (1.5s time)
         self.assertIn("func3", data_lines[0])
 
@@ -768,7 +768,7 @@ klasse TestPrintSampledStats(unittest.TestCase):
         # Find where the main stats section ends (before summary)
         main_section_lines = []
         fuer line in lines:
-            if "Summary of Interesting Functions:" in line:
+            wenn "Summary of Interesting Functions:" in line:
                 break
             main_section_lines.append(line)
 
@@ -776,7 +776,7 @@ klasse TestPrintSampledStats(unittest.TestCase):
         func_count = sum(
             1
             fuer line in main_section_lines
-            if "func" in line and ".py" in line
+            wenn "func" in line and ".py" in line
         )
         self.assertEqual(func_count, 2)
 
@@ -894,7 +894,7 @@ klasse TestPrintSampledStats(unittest.TestCase):
             result = output.getvalue()
             lines = result.strip().split("\n")
 
-        data_lines = [l fuer l in lines if ".py" in l and "func" in l]
+        data_lines = [l fuer l in lines wenn ".py" in l and "func" in l]
         # expensive_func should be first (highest sample percentage)
         self.assertIn("expensive_func", data_lines[0])
 
@@ -980,7 +980,7 @@ klasse TestPrintSampledStats(unittest.TestCase):
         data_lines = []
         fuer line in lines:
             # Skip header lines and summary sections
-            if (
+            wenn (
                 line.startswith("     ")
                 and "(" in line
                 and ")" in line
@@ -1004,7 +1004,7 @@ klasse TestPrintSampledStats(unittest.TestCase):
         fuer line in data_lines:
             # Function name is between the last ( and ), accounting fuer ANSI color codes
             match = re.search(r"\(([^)]+)\)$", line)
-            if match:
+            wenn match:
                 func_name = match.group(1)
                 # Remove ANSI color codes
                 func_name = re.sub(r"\x1b\[[0-9;]*m", "", func_name)
@@ -1243,14 +1243,14 @@ klasse TestRecursiveFunctionProfiling(unittest.TestCase):
             self.assertEqual(cumulative_calls, 2)
 
             # Only level1 (deepest) should have direct calls
-            if level == 1:
+            wenn level == 1:
                 self.assertEqual(direct_calls, 2)
-            else:
+            sonst:
                 self.assertEqual(direct_calls, 0)
 
             # Deeper levels should have lower cumulative time than higher levels
             # (since they don't include time from functions they call)
-            if level == 1:  # Deepest level with most time
+            wenn level == 1:  # Deepest level with most time
                 self.assertGreater(ct, 0)
 
     def test_alternating_call_patterns(self):
@@ -1385,7 +1385,7 @@ import os
 
 def slow_fibonacci(n):
     """Recursive fibonacci - should show up prominently in profiler."""
-    if n <= 1:
+    wenn n <= 1:
         return n
     return slow_fibonacci(n-1) + slow_fibonacci(n-2)
 
@@ -1394,7 +1394,7 @@ def cpu_intensive_work():
     result = 0
     fuer i in range(10000):
         result += i * i
-        if i % 100 == 0:
+        wenn i % 100 == 0:
             result = result % 1000000
     return result
 
@@ -1428,19 +1428,19 @@ def main_loop():
         iteration += 1
 
         # Different execution paths - focus on CPU intensive work
-        if iteration % 3 == 0:
+        wenn iteration % 3 == 0:
             # Very CPU intensive
             result = cpu_intensive_work()
-        elif iteration % 5 == 0:
+        sowenn iteration % 5 == 0:
             # Expensive recursive operation
             result = slow_fibonacci(12)
-        else:
+        sonst:
             # Medium operation
             result = nested_calls()
 
         # No sleep - keep CPU busy
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     main_loop()
 '''
 
@@ -1509,7 +1509,7 @@ if __name__ == "__main__":
 
             # Should have some function data
             function_entries = [
-                k fuer k in stats_data.keys() if k != ("__sampled__",)
+                k fuer k in stats_data.keys() wenn k != ("__sampled__",)
             ]
             self.assertGreater(len(function_entries), 0)
 
@@ -1562,7 +1562,7 @@ if __name__ == "__main__":
                 self.assertGreater(int(count_str), 0)
 
                 # Stack trace should contain semicolon-separated entries
-                if ";" in stack_trace:
+                wenn ";" in stack_trace:
                     stack_parts = stack_trace.split(";")
                     fuer part in stack_parts:
                         # Each part should be file:function:line
@@ -2244,5 +2244,5 @@ klasse TestSampleProfilerCLI(unittest.TestCase):
                 mock_sample.reset_mock()
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

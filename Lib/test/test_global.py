@@ -81,7 +81,7 @@ def fn():
     def test_assignment_expression(self):
         global name_assignment_expression
         value = object()
-        if name_assignment_expression := value:
+        wenn name_assignment_expression := value:
             pass
         self.assertIs(globals()["name_assignment_expression"], value)
         del name_assignment_expression
@@ -210,5 +210,5 @@ def setUpModule():
     warnings.filterwarnings("error", module="<test string>")
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

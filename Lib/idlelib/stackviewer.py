@@ -10,7 +10,7 @@ from idlelib.tree import TreeNode, TreeItem, ScrolledCanvas
 
 def StackBrowser(root, exc, flist=None, top=None):
     global sc, item, node  # For testing.
-    if top is None:
+    wenn top is None:
         top = tk.Toplevel(root)
     sc = ScrolledCanvas(top, bg="white", highlightthickness=0)
     sc.frame.pack(expand=1, fill="both")
@@ -23,12 +23,12 @@ klasse StackTreeItem(TreeItem):
 
     def __init__(self, exc, flist=None):
         self.flist = flist
-        self.stack = self.get_stack(None if exc is None else exc.__traceback__)
+        self.stack = self.get_stack(None wenn exc is None sonst exc.__traceback__)
         self.text = f"{type(exc).__name__}: {str(exc)}"
 
     def get_stack(self, tb):
         stack = []
-        if tb and tb.tb_frame is None:
+        wenn tb and tb.tb_frame is None:
             tb = tb.tb_next
         while tb is not None:
             stack.append((tb.tb_frame, tb.tb_lineno))
@@ -63,9 +63,9 @@ klasse FrameTreeItem(TreeItem):
         funcname = code.co_name
         sourceline = linecache.getline(filename, lineno)
         sourceline = sourceline.strip()
-        if funcname in ("?", "", None):
+        wenn funcname in ("?", "", None):
             item = "%s, line %d: %s" % (modname, lineno, sourceline)
-        else:
+        sonst:
             item = "%s.%s(...), line %d: %s" % (modname, funcname,
                                              lineno, sourceline)
         return item
@@ -73,7 +73,7 @@ klasse FrameTreeItem(TreeItem):
     def GetSubList(self):
         frame, lineno = self.info
         sublist = []
-        if frame.f_globals is not frame.f_locals:
+        wenn frame.f_globals is not frame.f_locals:
             item = VariablesTreeItem("<locals>", frame.f_locals, self.flist)
             sublist.append(item)
         item = VariablesTreeItem("<globals>", frame.f_globals, self.flist)
@@ -81,10 +81,10 @@ klasse FrameTreeItem(TreeItem):
         return sublist
 
     def OnDoubleClick(self):
-        if self.flist:
+        wenn self.flist:
             frame, lineno = self.info
             filename = frame.f_code.co_filename
-            if os.path.isfile(filename):
+            wenn os.path.isfile(filename):
                 self.flist.gotofileline(filename, lineno)
 
 
@@ -126,7 +126,7 @@ def _stackbrowser(parent):  # htest #
         StackBrowser(top, e, flist=flist, top=top)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     from unittest import main
     main('idlelib.idle_test.test_stackviewer', verbosity=2, exit=False)
 

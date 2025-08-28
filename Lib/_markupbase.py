@@ -25,7 +25,7 @@ klasse ParserBase:
     by the SGML/HTML and XHTML parsers."""
 
     def __init__(self):
-        if self.__class__ is ParserBase:
+        wenn self.__class__ is ParserBase:
             raise RuntimeError(
                 "_markupbase.ParserBase must be subclassed")
 
@@ -42,15 +42,15 @@ klasse ParserBase:
     # words the concatenation of all the input strings to this
     # function should be exactly the entire input.
     def updatepos(self, i, j):
-        if i >= j:
+        wenn i >= j:
             return j
         rawdata = self.rawdata
         nlines = rawdata.count("\n", i, j)
-        if nlines:
+        wenn nlines:
             self.lineno = self.lineno + nlines
             pos = rawdata.rindex("\n", i, j) # Should not fail
             self.offset = j-(pos+1)
-        else:
+        sonst:
             self.offset = self.offset + j-i
         return j
 
@@ -71,68 +71,68 @@ klasse ParserBase:
         rawdata = self.rawdata
         j = i + 2
         assert rawdata[i:j] == "<!", "unexpected call to parse_declaration"
-        if rawdata[j:j+1] == ">":
+        wenn rawdata[j:j+1] == ">":
             # the empty comment <!>
             return j + 1
-        if rawdata[j:j+1] in ("-", ""):
+        wenn rawdata[j:j+1] in ("-", ""):
             # Start of comment followed by buffer boundary,
             # or just a buffer boundary.
             return -1
         # A simple, practical version could look like: ((name|stringlit) S*) + '>'
         n = len(rawdata)
-        if rawdata[j:j+2] == '--': #comment
+        wenn rawdata[j:j+2] == '--': #comment
             # Locate --.*-- as the body of the comment
             return self.parse_comment(i)
-        elif rawdata[j] == '[': #marked section
+        sowenn rawdata[j] == '[': #marked section
             # Locate [statusWord [...arbitrary SGML...]] as the body of the marked section
             # Where statusWord is one of TEMP, CDATA, IGNORE, INCLUDE, RCDATA
             # Note that this is extended by Microsoft Office "Save as Web" function
             # to include [if...] and [endif].
             return self.parse_marked_section(i)
-        else: #all other declaration elements
+        sonst: #all other declaration elements
             decltype, j = self._scan_name(j, i)
-        if j < 0:
+        wenn j < 0:
             return j
-        if decltype == "doctype":
+        wenn decltype == "doctype":
             self._decl_otherchars = ''
         while j < n:
             c = rawdata[j]
-            if c == ">":
+            wenn c == ">":
                 # end of declaration syntax
                 data = rawdata[i+2:j]
-                if decltype == "doctype":
+                wenn decltype == "doctype":
                     self.handle_decl(data)
-                else:
+                sonst:
                     # According to the HTML5 specs sections "8.2.4.44 Bogus
                     # comment state" and "8.2.4.45 Markup declaration open
                     # state", a comment token should be emitted.
                     # Calling unknown_decl provides more flexibility though.
                     self.unknown_decl(data)
                 return j + 1
-            if c in "\"'":
+            wenn c in "\"'":
                 m = _declstringlit_match(rawdata, j)
-                if not m:
+                wenn not m:
                     return -1 # incomplete
                 j = m.end()
-            elif c in "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ":
+            sowenn c in "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ":
                 name, j = self._scan_name(j, i)
-            elif c in self._decl_otherchars:
+            sowenn c in self._decl_otherchars:
                 j = j + 1
-            elif c == "[":
+            sowenn c == "[":
                 # this could be handled in a separate doctype parser
-                if decltype == "doctype":
+                wenn decltype == "doctype":
                     j = self._parse_doctype_subset(j + 1, i)
-                elif decltype in {"attlist", "linktype", "link", "element"}:
+                sowenn decltype in {"attlist", "linktype", "link", "element"}:
                     # must tolerate []'d groups in a content model in an element declaration
                     # also in data attribute specifications of attlist declaration
                     # also link type declaration subsets in linktype declarations
                     # also link attribute specification lists in link declarations
                     raise AssertionError("unsupported '[' char in %s declaration" % decltype)
-                else:
+                sonst:
                     raise AssertionError("unexpected '[' char in declaration")
-            else:
+            sonst:
                 raise AssertionError("unexpected %r char in declaration" % rawdata[j])
-            if j < 0:
+            wenn j < 0:
                 return j
         return -1 # incomplete
 
@@ -142,34 +142,34 @@ klasse ParserBase:
         rawdata= self.rawdata
         assert rawdata[i:i+3] == '<![', "unexpected call to parse_marked_section()"
         sectName, j = self._scan_name( i+3, i )
-        if j < 0:
+        wenn j < 0:
             return j
-        if sectName in {"temp", "cdata", "ignore", "include", "rcdata"}:
+        wenn sectName in {"temp", "cdata", "ignore", "include", "rcdata"}:
             # look fuer standard ]]> ending
             match= _markedsectionclose.search(rawdata, i+3)
-        elif sectName in {"if", "else", "endif"}:
+        sowenn sectName in {"if", "else", "endif"}:
             # look fuer MS Office ]> ending
             match= _msmarkedsectionclose.search(rawdata, i+3)
-        else:
+        sonst:
             raise AssertionError(
                 'unknown status keyword %r in marked section' % rawdata[i+3:j]
             )
-        if not match:
+        wenn not match:
             return -1
-        if report:
+        wenn report:
             j = match.start(0)
             self.unknown_decl(rawdata[i+3: j])
         return match.end(0)
 
-    # Internal -- parse comment, return length or -1 if not terminated
+    # Internal -- parse comment, return length or -1 wenn not terminated
     def parse_comment(self, i, report=1):
         rawdata = self.rawdata
-        if rawdata[i:i+4] != '<!--':
+        wenn rawdata[i:i+4] != '<!--':
             raise AssertionError('unexpected call to parse_comment()')
         match = _commentclose.search(rawdata, i+4)
-        if not match:
+        wenn not match:
             return -1
-        if report:
+        wenn report:
             j = match.start(0)
             self.handle_comment(rawdata[i+4: j])
         return match.end(0)
@@ -182,31 +182,31 @@ klasse ParserBase:
         j = i
         while j < n:
             c = rawdata[j]
-            if c == "<":
+            wenn c == "<":
                 s = rawdata[j:j+2]
-                if s == "<":
+                wenn s == "<":
                     # end of buffer; incomplete
                     return -1
-                if s != "<!":
+                wenn s != "<!":
                     self.updatepos(declstartpos, j + 1)
                     raise AssertionError(
                         "unexpected char in internal subset (in %r)" % s
                     )
-                if (j + 2) == n:
+                wenn (j + 2) == n:
                     # end of buffer; incomplete
                     return -1
-                if (j + 4) > n:
+                wenn (j + 4) > n:
                     # end of buffer; incomplete
                     return -1
-                if rawdata[j:j+4] == "<!--":
+                wenn rawdata[j:j+4] == "<!--":
                     j = self.parse_comment(j, report=0)
-                    if j < 0:
+                    wenn j < 0:
                         return j
                     continue
                 name, j = self._scan_name(j + 2, declstartpos)
-                if j == -1:
+                wenn j == -1:
                     return -1
-                if name not in {"attlist", "element", "entity", "notation"}:
+                wenn name not in {"attlist", "element", "entity", "notation"}:
                     self.updatepos(declstartpos, j + 2)
                     raise AssertionError(
                         "unknown declaration %r in internal subset" % name
@@ -214,32 +214,32 @@ klasse ParserBase:
                 # handle the individual names
                 meth = getattr(self, "_parse_doctype_" + name)
                 j = meth(j, declstartpos)
-                if j < 0:
+                wenn j < 0:
                     return j
-            elif c == "%":
+            sowenn c == "%":
                 # parameter entity reference
-                if (j + 1) == n:
+                wenn (j + 1) == n:
                     # end of buffer; incomplete
                     return -1
                 s, j = self._scan_name(j + 1, declstartpos)
-                if j < 0:
+                wenn j < 0:
                     return j
-                if rawdata[j] == ";":
+                wenn rawdata[j] == ";":
                     j = j + 1
-            elif c == "]":
+            sowenn c == "]":
                 j = j + 1
                 while j < n and rawdata[j].isspace():
                     j = j + 1
-                if j < n:
-                    if rawdata[j] == ">":
+                wenn j < n:
+                    wenn rawdata[j] == ">":
                         return j
                     self.updatepos(declstartpos, j)
                     raise AssertionError("unexpected char after internal subset")
-                else:
+                sonst:
                     return -1
-            elif c.isspace():
+            sowenn c.isspace():
                 j = j + 1
-            else:
+            sonst:
                 self.updatepos(declstartpos, j)
                 raise AssertionError("unexpected char %r in internal subset" % c)
         # end of buffer reached
@@ -248,11 +248,11 @@ klasse ParserBase:
     # Internal -- scan past <!ELEMENT declarations
     def _parse_doctype_element(self, i, declstartpos):
         name, j = self._scan_name(i, declstartpos)
-        if j == -1:
+        wenn j == -1:
             return -1
         # style content model; just skip until '>'
         rawdata = self.rawdata
-        if '>' in rawdata[j:]:
+        wenn '>' in rawdata[j:]:
             return rawdata.find(">", j) + 1
         return -1
 
@@ -261,131 +261,131 @@ klasse ParserBase:
         rawdata = self.rawdata
         name, j = self._scan_name(i, declstartpos)
         c = rawdata[j:j+1]
-        if c == "":
+        wenn c == "":
             return -1
-        if c == ">":
+        wenn c == ">":
             return j + 1
         while 1:
             # scan a series of attribute descriptions; simplified:
             #   name type [value] [#constraint]
             name, j = self._scan_name(j, declstartpos)
-            if j < 0:
+            wenn j < 0:
                 return j
             c = rawdata[j:j+1]
-            if c == "":
+            wenn c == "":
                 return -1
-            if c == "(":
+            wenn c == "(":
                 # an enumerated type; look fuer ')'
-                if ")" in rawdata[j:]:
+                wenn ")" in rawdata[j:]:
                     j = rawdata.find(")", j) + 1
-                else:
+                sonst:
                     return -1
                 while rawdata[j:j+1].isspace():
                     j = j + 1
-                if not rawdata[j:]:
+                wenn not rawdata[j:]:
                     # end of buffer, incomplete
                     return -1
-            else:
+            sonst:
                 name, j = self._scan_name(j, declstartpos)
             c = rawdata[j:j+1]
-            if not c:
+            wenn not c:
                 return -1
-            if c in "'\"":
+            wenn c in "'\"":
                 m = _declstringlit_match(rawdata, j)
-                if m:
+                wenn m:
                     j = m.end()
-                else:
+                sonst:
                     return -1
                 c = rawdata[j:j+1]
-                if not c:
+                wenn not c:
                     return -1
-            if c == "#":
-                if rawdata[j:] == "#":
+            wenn c == "#":
+                wenn rawdata[j:] == "#":
                     # end of buffer
                     return -1
                 name, j = self._scan_name(j + 1, declstartpos)
-                if j < 0:
+                wenn j < 0:
                     return j
                 c = rawdata[j:j+1]
-                if not c:
+                wenn not c:
                     return -1
-            if c == '>':
+            wenn c == '>':
                 # all done
                 return j + 1
 
     # Internal -- scan past <!NOTATION declarations
     def _parse_doctype_notation(self, i, declstartpos):
         name, j = self._scan_name(i, declstartpos)
-        if j < 0:
+        wenn j < 0:
             return j
         rawdata = self.rawdata
         while 1:
             c = rawdata[j:j+1]
-            if not c:
+            wenn not c:
                 # end of buffer; incomplete
                 return -1
-            if c == '>':
+            wenn c == '>':
                 return j + 1
-            if c in "'\"":
+            wenn c in "'\"":
                 m = _declstringlit_match(rawdata, j)
-                if not m:
+                wenn not m:
                     return -1
                 j = m.end()
-            else:
+            sonst:
                 name, j = self._scan_name(j, declstartpos)
-                if j < 0:
+                wenn j < 0:
                     return j
 
     # Internal -- scan past <!ENTITY declarations
     def _parse_doctype_entity(self, i, declstartpos):
         rawdata = self.rawdata
-        if rawdata[i:i+1] == "%":
+        wenn rawdata[i:i+1] == "%":
             j = i + 1
             while 1:
                 c = rawdata[j:j+1]
-                if not c:
+                wenn not c:
                     return -1
-                if c.isspace():
+                wenn c.isspace():
                     j = j + 1
-                else:
+                sonst:
                     break
-        else:
+        sonst:
             j = i
         name, j = self._scan_name(j, declstartpos)
-        if j < 0:
+        wenn j < 0:
             return j
         while 1:
             c = self.rawdata[j:j+1]
-            if not c:
+            wenn not c:
                 return -1
-            if c in "'\"":
+            wenn c in "'\"":
                 m = _declstringlit_match(rawdata, j)
-                if m:
+                wenn m:
                     j = m.end()
-                else:
+                sonst:
                     return -1    # incomplete
-            elif c == ">":
+            sowenn c == ">":
                 return j + 1
-            else:
+            sonst:
                 name, j = self._scan_name(j, declstartpos)
-                if j < 0:
+                wenn j < 0:
                     return j
 
     # Internal -- scan a name token and the new position and the token, or
-    # return -1 if we've reached the end of the buffer.
+    # return -1 wenn we've reached the end of the buffer.
     def _scan_name(self, i, declstartpos):
         rawdata = self.rawdata
         n = len(rawdata)
-        if i == n:
+        wenn i == n:
             return None, -1
         m = _declname_match(rawdata, i)
-        if m:
+        wenn m:
             s = m.group()
             name = s.strip()
-            if (i + len(s)) == n:
+            wenn (i + len(s)) == n:
                 return None, -1  # end of buffer
             return name.lower(), m.end()
-        else:
+        sonst:
             self.updatepos(declstartpos, i)
             raise AssertionError(
                 "expected name token at %r" % rawdata[declstartpos:declstartpos+20]

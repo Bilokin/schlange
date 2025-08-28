@@ -49,7 +49,7 @@ klasse TestData(unittest.TestCase):
     def test_valid(self):
         fuer valid, expected in zip(VALID_FILES, VALID_FILES_EXPECTED):
             with self.subTest(msg=valid.stem):
-                if isinstance(expected, MissingFile):
+                wenn isinstance(expected, MissingFile):
                     # For a poor man's xfail, assert that this is one of the
                     # test cases where expected data is known to be missing.
                     assert valid.stem in {

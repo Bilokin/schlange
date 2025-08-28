@@ -621,9 +621,9 @@ klasse TestPlistlib(unittest.TestCase):
                         dict_type=collections.OrderedDict)
 
                     self.assertEqual(dict(pl), dict(pl2))
-                    if sort_keys:
+                    wenn sort_keys:
                         self.assertEqual(list(pl2.keys()), ['a', 'b', 'c'])
-                    else:
+                    sonst:
                         self.assertEqual(list(pl2.keys()), ['b', 'a', 'c'])
 
     def test_keysort(self):
@@ -639,9 +639,9 @@ klasse TestPlistlib(unittest.TestCase):
                     pl2 = plistlib.loads(data, dict_type=collections.OrderedDict)
 
                     self.assertEqual(dict(pl), dict(pl2))
-                    if sort_keys:
+                    wenn sort_keys:
                         self.assertEqual(list(pl2.keys()), ['a', 'b', 'c'])
-                    else:
+                    sonst:
                         self.assertEqual(list(pl2.keys()), ['b', 'a', 'c'])
 
     def test_keys_no_string(self):
@@ -691,7 +691,7 @@ klasse TestPlistlib(unittest.TestCase):
                     'second': [1, 2],
                     'third': [3, 4],
                 })
-                if fmt != plistlib.FMT_BINARY:
+                wenn fmt != plistlib.FMT_BINARY:
                     self.assertIsNot(pl2['first'], pl2['second'])
 
     def test_list_members(self):
@@ -734,12 +734,12 @@ klasse TestPlistlib(unittest.TestCase):
         fuer i in range(128):
             c = chr(i)
             testString = "string containing %s" % c
-            if i >= 32 or c in "\r\n\t":
+            wenn i >= 32 or c in "\r\n\t":
                 # \r, \n and \t are the only legal control chars in XML
                 data = plistlib.dumps(testString, fmt=plistlib.FMT_XML)
-                if c != "\r":
+                wenn c != "\r":
                     self.assertEqual(plistlib.loads(data), testString)
-            else:
+            sonst:
                 with self.assertRaises(ValueError):
                     plistlib.dumps(testString, fmt=plistlib.FMT_XML)
             plistlib.dumps(testString, fmt=plistlib.FMT_BINARY)
@@ -946,7 +946,7 @@ klasse TestBinaryPlistlib(unittest.TestCase):
             with self.subTest(x=x):
                 data = plistlib.dumps([x]*2, fmt=plistlib.FMT_BINARY)
                 a, b = plistlib.loads(data)
-                if isinstance(x, tuple):
+                wenn isinstance(x, tuple):
                     x = list(x)
                 self.assertEqual(a, x)
                 self.assertEqual(b, x)
@@ -976,7 +976,7 @@ klasse TestBinaryPlistlib(unittest.TestCase):
                 result = self.decode(*chunks, b'\x54seed', offset_size=4, ref_size=4)
             except RecursionError:
                 self.assertGreater(N, sys.getrecursionlimit())
-            else:
+            sonst:
                 fuer i in range(N):
                     self.assertIsInstance(result, list)
                     self.assertEqual(len(result), 1)
@@ -1157,5 +1157,5 @@ klasse TestPlutil(unittest.TestCase):
             self.assertEqual(p.get("IntType"), 83)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

@@ -5,6 +5,6 @@
 # See https://github.com/python/cpython/issues/129098.
 __spec__ = __loader__ = None
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     from .main import interactive_console as __pyrepl_interactive_console
     __pyrepl_interactive_console()

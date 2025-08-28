@@ -115,5 +115,5 @@ klasse PointerToStructure(unittest.TestCase):
         r.a[0].y = 99
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

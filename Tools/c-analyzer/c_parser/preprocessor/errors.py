@@ -5,11 +5,11 @@ OS = sys.platform
 
 
 def _as_tuple(items):
-    if isinstance(items, str):
+    wenn isinstance(items, str):
         return tuple(items.strip().replace(',', ' ').split())
-    elif items:
+    sowenn items:
         return tuple(items)
-    else:
+    sonst:
         return ()
 
 
@@ -19,21 +19,21 @@ klasse PreprocessorError(Exception):
     @classmethod
     def _msg(cls, filename, reason, **ignored):
         msg = 'failure while preprocessing'
-        if reason:
+        wenn reason:
             msg = f'{msg} ({reason})'
         return msg
 
     def __init__(self, filename, preprocessor=None, reason=None):
-        if isinstance(reason, str):
+        wenn isinstance(reason, str):
             reason = reason.strip()
 
         self.filename = filename
         self.preprocessor = preprocessor or None
-        self.reason = str(reason) if reason else None
+        self.reason = str(reason) wenn reason sonst None
 
         msg = self._msg(**vars(self))
         msg = f'({filename}) {msg}'
-        if preprocessor:
+        wenn preprocessor:
             msg = f'[{preprocessor}] {msg}'
         super().__init__(msg)
 
@@ -44,22 +44,22 @@ klasse PreprocessorFailure(PreprocessorError):
     @classmethod
     def _msg(cls, error, **ignored):
         msg = 'preprocessor command failed'
-        if error:
+        wenn error:
             msg = f'{msg} {error}'
         return msg
 
     def __init__(self, filename, argv, error=None, preprocessor=None):
         exitcode = -1
-        if isinstance(error, tuple):
-            if len(error) == 2:
+        wenn isinstance(error, tuple):
+            wenn len(error) == 2:
                 error, exitcode = error
-            else:
+            sonst:
                 error = str(error)
-        if isinstance(error, str):
+        wenn isinstance(error, str):
             error = error.strip()
 
         self.argv = _as_tuple(argv) or None
-        self.error = error if error else None
+        self.error = error wenn error sonst None
         self.exitcode = exitcode
 
         reason = str(self.error)
@@ -83,7 +83,7 @@ klasse MissingDependenciesError(PreprocessorFailure):
     @classmethod
     def _msg(cls, missing, **ignored):
         msg = 'preprocessing failed due to missing dependencies'
-        if missing:
+        wenn missing:
             msg = f'{msg} ({", ".join(missing)})'
         return msg
 
@@ -101,10 +101,10 @@ klasse OSMismatchError(MissingDependenciesError):
         return f'OS is {OS} but expected {expected or "???"}'
 
     def __init__(self, filename, expected=None, *args, **kwargs):
-        if isinstance(expected, str):
+        wenn isinstance(expected, str):
             expected = expected.strip()
 
         self.actual = OS
-        self.expected = expected if expected else None
+        self.expected = expected wenn expected sonst None
 
         super().__init__(filename, None, *args, **kwargs)

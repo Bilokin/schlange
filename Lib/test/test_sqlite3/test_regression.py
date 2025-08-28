@@ -366,11 +366,11 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
             with self.subTest(i=i, row=row):
                 con.execute("insert into t2(c) values (?)", (i,))
                 con.commit()
-                if counter == 0:
+                wenn counter == 0:
                     self.assertEqual(row[0], 0)
-                elif counter == 1:
+                sowenn counter == 1:
                     self.assertEqual(row[0], 1)
-                elif counter == 2:
+                sowenn counter == 2:
                     self.assertEqual(row[0], 2)
                 counter += 1
         self.assertEqual(counter, 3, "should have returned exactly three rows")
@@ -496,12 +496,12 @@ klasse RecursiveUseOfCursors(unittest.TestCase):
                                    self.cur.fetchall)
 
     def test_recursive_cursor_iter(self):
-        conv = lambda x, l=[]: self.cur.fetchone() if l else l.append(None)
+        conv = lambda x, l=[]: self.cur.fetchone() wenn l sonst l.append(None)
         with patch.dict(sqlite.converters, {"ITER": conv}):
             self.cur.execute('select x as "x [ITER]", x from test')
             self.assertRaisesRegex(sqlite.ProgrammingError, self.msg,
                                    self.cur.fetchall)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

@@ -28,5 +28,5 @@ klasse PathHookTest:
  ) = util.test_both(PathHookTest, machinery=machinery)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

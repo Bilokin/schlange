@@ -68,9 +68,9 @@ klasse AbstractMemoryTests:
             k = 2 * len(self._source)
 
             fuer chi in self._source:
-                if chi in l:
+                wenn chi in l:
                     self.assertEqual(m.index(chi), l.index(chi))
-                else:
+                sonst:
                     self.assertRaises(ValueError, m.index, chi)
 
                 fuer start, stop in product(range(-k, k), range(-k, k)):
@@ -80,9 +80,9 @@ klasse AbstractMemoryTests:
                     except ValueError:
                         pass
 
-                    if index == -1:
+                    wenn index == -1:
                         self.assertRaises(ValueError, m.index, chi, start, stop)
-                    else:
+                    sonst:
                         self.assertEqual(m.index(chi, start, stop), index)
 
     def test_iter(self):
@@ -108,7 +108,7 @@ klasse AbstractMemoryTests:
                 self.assertEqual(m.count(ord('c')), l.count(ord('c')))
 
     def test_setitem_readonly(self):
-        if not self.ro_type:
+        wenn not self.ro_type:
             self.skipTest("no read-only type to test")
         b = self.ro_type(self._source)
         oldrefcount = sys.getrefcount(b)
@@ -122,7 +122,7 @@ klasse AbstractMemoryTests:
         self.assertEqual(sys.getrefcount(b), oldrefcount)
 
     def test_setitem_writable(self):
-        if not self.rw_type:
+        wenn not self.rw_type:
             self.skipTest("no writable type to test")
         tp = self.rw_type
         b = self.rw_type(self._source)
@@ -164,7 +164,7 @@ klasse AbstractMemoryTests:
         slices = (slice(0,1,1), slice(0,1,2))
         self.assertRaises(NotImplementedError, setitem, slices, b"a")
         # Trying to resize the memory object
-        exc = ValueError if m.format == 'c' else TypeError
+        exc = ValueError wenn m.format == 'c' sonst TypeError
         self.assertRaises(exc, setitem, 0, b"")
         self.assertRaises(exc, setitem, 0, b"ab")
         self.assertRaises(ValueError, setitem, slice(1,1), b"a")
@@ -240,13 +240,13 @@ klasse AbstractMemoryTests:
         return m
 
     def test_attributes_readonly(self):
-        if not self.ro_type:
+        wenn not self.ro_type:
             self.skipTest("no read-only type to test")
         m = self.check_attributes_with_type(self.ro_type)
         self.assertEqual(m.readonly, True)
 
     def test_attributes_writable(self):
-        if not self.rw_type:
+        wenn not self.rw_type:
             self.skipTest("no writable type to test")
         m = self.check_attributes_with_type(self.rw_type)
         self.assertEqual(m.readonly, False)
@@ -266,7 +266,7 @@ klasse AbstractMemoryTests:
 
     def test_gc(self):
         fuer tp in self._types:
-            if not isinstance(tp, type):
+            wenn not isinstance(tp, type):
                 # If tp is a factory rather than a plain type, skip
                 continue
 
@@ -348,9 +348,9 @@ klasse AbstractMemoryTests:
 
     def test_writable_readonly(self):
         # Issue #10451: memoryview incorrectly exposes a readonly
-        # buffer as writable causing a segfault if using mmap
+        # buffer as writable causing a segfault wenn using mmap
         tp = self.ro_type
-        if tp is None:
+        wenn tp is None:
             self.skipTest("no read-only type to test")
         b = tp(self._source)
         m = self._view(b)
@@ -364,7 +364,7 @@ klasse AbstractMemoryTests:
         # Memoryviews of readonly (hashable) types are hashable, and they
         # hash as hash(obj.tobytes()).
         tp = self.ro_type
-        if tp is None:
+        wenn tp is None:
             self.skipTest("no read-only type to test")
         b = tp(self._source)
         m = self._view(b)
@@ -381,7 +381,7 @@ klasse AbstractMemoryTests:
     def test_hash_writable(self):
         # Memoryviews of writable types are unhashable
         tp = self.rw_type
-        if tp is None:
+        wenn tp is None:
             self.skipTest("no writable type to test")
         b = tp(self._source)
         m = self._view(b)
@@ -762,5 +762,5 @@ klasse RacingTest(unittest.TestCase):
             del obj
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

@@ -24,7 +24,7 @@ klasse Block:
 
     input is always str, with embedded \n characters.
     input represents the original text from the file;
-    if it's a Clinic block, it is the original text with
+    wenn it's a Clinic block, it is the original text with
     the body_prefix and redundant leading whitespace removed.
 
     dsl_name is either str or None.  If str, it's the text
@@ -72,7 +72,7 @@ klasse Block:
         dsl_name = self.dsl_name or "text"
         def summarize(s: object) -> str:
             s = repr(s)
-            if len(s) > 30:
+            wenn len(s) > 30:
                 return s[:26] + "..." + s[0]
             return s
         parts = (
@@ -124,10 +124,10 @@ klasse BlockParser:
 
     def __next__(self) -> Block:
         while True:
-            if not self.input:
+            wenn not self.input:
                 raise StopIteration
 
-            if self.dsl_name:
+            wenn self.dsl_name:
                 try:
                     return_value = self.parse_clinic_block(self.dsl_name)
                 except ClinicError as exc:
@@ -138,7 +138,7 @@ klasse BlockParser:
                 self.first_block = False
                 return return_value
             block = self.parse_verbatim_block()
-            if self.first_block and not block.input:
+            wenn self.first_block and not block.input:
                 continue
             self.first_block = False
             return block
@@ -146,12 +146,12 @@ klasse BlockParser:
 
     def is_start_line(self, line: str) -> str | None:
         match = self.start_re.match(line.lstrip())
-        return match.group(1) if match else None
+        return match.group(1) wenn match sonst None
 
     def _line(self, lookahead: bool = False) -> str:
         self.line_number += 1
         line = self.input.pop()
-        if not lookahead:
+        wenn not lookahead:
             self.language.parse_line(line)
         return line
 
@@ -162,7 +162,7 @@ klasse BlockParser:
         while self.input:
             line = self._line()
             dsl_name = self.is_start_line(line)
-            if dsl_name:
+            wenn dsl_name:
                 self.dsl_name = dsl_name
                 break
             lines.append(line)
@@ -176,34 +176,34 @@ klasse BlockParser:
         body_prefix = self.language.body_prefix.format(dsl_name=dsl_name)
 
         def is_stop_line(line: str) -> bool:
-            # make sure to recognize stop line even if it
+            # make sure to recognize stop line even wenn it
             # doesn't end with EOL (it could be the very end of the file)
-            if line.startswith(stop_line):
+            wenn line.startswith(stop_line):
                 remainder = line.removeprefix(stop_line)
-                if remainder and not remainder.isspace():
+                wenn remainder and not remainder.isspace():
                     fail(f"Garbage after stop line: {remainder!r}")
                 return True
-            else:
+            sonst:
                 # gh-92256: don't allow incorrectly formatted stop lines
-                if line.lstrip().startswith(stop_line):
+                wenn line.lstrip().startswith(stop_line):
                     fail(f"Whitespace is not allowed before the stop line: {line!r}")
                 return False
 
         # consume body of program
         while self.input:
             line = self._line()
-            if is_stop_line(line) or self.is_start_line(line):
+            wenn is_stop_line(line) or self.is_start_line(line):
                 break
-            if body_prefix:
+            wenn body_prefix:
                 line = line.lstrip()
                 assert line.startswith(body_prefix)
                 line = line.removeprefix(body_prefix)
             in_lines.append(line)
 
-        # consume output and checksum line, if present.
-        if self.last_dsl_name == dsl_name:
+        # consume output and checksum line, wenn present.
+        wenn self.last_dsl_name == dsl_name:
             checksum_re = self.last_checksum_re
-        else:
+        sonst:
             before, _, after = self.language.checksum_line.format(dsl_name=dsl_name, arguments='{arguments}').partition('{arguments}')
             assert _ == '{arguments}'
             checksum_re = libclinic.create_regex(before, after, word=False)
@@ -217,36 +217,36 @@ klasse BlockParser:
         while self.input:
             line = self._line(lookahead=True)
             match = checksum_re.match(line.lstrip())
-            arguments = match.group(1) if match else None
-            if arguments:
+            arguments = match.group(1) wenn match sonst None
+            wenn arguments:
                 break
             out_lines.append(line)
-            if self.is_start_line(line):
+            wenn self.is_start_line(line):
                 break
 
         output: str | None
         output = "".join(out_lines)
-        if arguments:
+        wenn arguments:
             d = {}
             fuer field in shlex.split(arguments):
                 name, equals, value = field.partition('=')
-                if not equals:
+                wenn not equals:
                     fail(f"Mangled Argument Clinic marker line: {line!r}")
                 d[name.strip()] = value.strip()
 
-            if self.verify:
-                if 'input' in d:
+            wenn self.verify:
+                wenn 'input' in d:
                     checksum = d['output']
-                else:
+                sonst:
                     checksum = d['checksum']
 
                 computed = libclinic.compute_checksum(output, len(checksum))
-                if checksum != computed:
+                wenn checksum != computed:
                     fail("Checksum mismatch! "
                          f"Expected {checksum!r}, computed {computed!r}. "
                          "Suggested fix: remove all generated code including "
                          "the end marker, or use the '-f' option.")
-        else:
+        sonst:
             # put back output
             output_lines = output.splitlines(keepends=True)
             self.line_number -= len(output_lines)

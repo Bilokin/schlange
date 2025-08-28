@@ -90,5 +90,5 @@ klasse TestTty(unittest.TestCase):
         tty.setcbreak(fd=self.fd, when=termios.TCSANOW)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

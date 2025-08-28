@@ -23,35 +23,35 @@ klasse Popen(object):
         return fd
 
     def poll(self, flag=os.WNOHANG):
-        if self.returncode is None:
+        wenn self.returncode is None:
             try:
                 pid, sts = os.waitpid(self.pid, flag)
             except OSError:
                 # Child process not yet created. See #1731717
                 # e.errno == errno.ECHILD == 10
                 return None
-            if pid == self.pid:
+            wenn pid == self.pid:
                 self.returncode = os.waitstatus_to_exitcode(sts)
         return self.returncode
 
     def wait(self, timeout=None):
-        if self.returncode is None:
-            if timeout is not None:
+        wenn self.returncode is None:
+            wenn timeout is not None:
                 from multiprocessing.connection import wait
-                if not wait([self.sentinel], timeout):
+                wenn not wait([self.sentinel], timeout):
                     return None
-            # This shouldn't block if wait() returned successfully.
-            return self.poll(os.WNOHANG if timeout == 0.0 else 0)
+            # This shouldn't block wenn wait() returned successfully.
+            return self.poll(os.WNOHANG wenn timeout == 0.0 sonst 0)
         return self.returncode
 
     def _send_signal(self, sig):
-        if self.returncode is None:
+        wenn self.returncode is None:
             try:
                 os.kill(self.pid, sig)
             except ProcessLookupError:
                 pass
             except OSError:
-                if self.wait(timeout=0.1) is None:
+                wenn self.wait(timeout=0.1) is None:
                     raise
 
     def interrupt(self):
@@ -68,7 +68,7 @@ klasse Popen(object):
         parent_r, child_w = os.pipe()
         child_r, parent_w = os.pipe()
         self.pid = os.fork()
-        if self.pid == 0:
+        wenn self.pid == 0:
             try:
                 atexit._clear()
                 atexit.register(util._exit_function)
@@ -78,7 +78,7 @@ klasse Popen(object):
             finally:
                 atexit._run_exitfuncs()
                 os._exit(code)
-        else:
+        sonst:
             os.close(child_w)
             os.close(child_r)
             self.finalizer = util.Finalize(self, util.close_fds,
@@ -86,5 +86,5 @@ klasse Popen(object):
             self.sentinel = parent_r
 
     def close(self):
-        if self.finalizer is not None:
+        wenn self.finalizer is not None:
             self.finalizer()

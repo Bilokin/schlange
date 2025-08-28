@@ -109,11 +109,11 @@ def _check_methods(C, *methods):
     mro = C.__mro__
     fuer method in methods:
         fuer B in mro:
-            if method in B.__dict__:
-                if B.__dict__[method] is None:
+            wenn method in B.__dict__:
+                wenn B.__dict__[method] is None:
                     return NotImplemented
                 break
-        else:
+        sonst:
             return NotImplemented
     return True
 
@@ -127,7 +127,7 @@ klasse Hashable(metaclass=ABCMeta):
 
     @classmethod
     def __subclasshook__(cls, C):
-        if cls is Hashable:
+        wenn cls is Hashable:
             return _check_methods(C, "__hash__")
         return NotImplemented
 
@@ -142,7 +142,7 @@ klasse Awaitable(metaclass=ABCMeta):
 
     @classmethod
     def __subclasshook__(cls, C):
-        if cls is Awaitable:
+        wenn cls is Awaitable:
             return _check_methods(C, "__await__")
         return NotImplemented
 
@@ -165,11 +165,11 @@ klasse Coroutine(Awaitable):
         """Raise an exception in the coroutine.
         Return next yielded value or raise StopIteration.
         """
-        if val is None:
-            if tb is None:
+        wenn val is None:
+            wenn tb is None:
                 raise typ
             val = typ()
-        if tb is not None:
+        wenn tb is not None:
             val = val.with_traceback(tb)
         raise val
 
@@ -180,12 +180,12 @@ klasse Coroutine(Awaitable):
             self.throw(GeneratorExit)
         except (GeneratorExit, StopIteration):
             pass
-        else:
+        sonst:
             raise RuntimeError("coroutine ignored GeneratorExit")
 
     @classmethod
     def __subclasshook__(cls, C):
-        if cls is Coroutine:
+        wenn cls is Coroutine:
             return _check_methods(C, '__await__', 'send', 'throw', 'close')
         return NotImplemented
 
@@ -203,7 +203,7 @@ klasse AsyncIterable(metaclass=ABCMeta):
 
     @classmethod
     def __subclasshook__(cls, C):
-        if cls is AsyncIterable:
+        wenn cls is AsyncIterable:
             return _check_methods(C, "__aiter__")
         return NotImplemented
 
@@ -224,7 +224,7 @@ klasse AsyncIterator(AsyncIterable):
 
     @classmethod
     def __subclasshook__(cls, C):
-        if cls is AsyncIterator:
+        wenn cls is AsyncIterator:
             return _check_methods(C, "__anext__", "__aiter__")
         return NotImplemented
 
@@ -251,11 +251,11 @@ klasse AsyncGenerator(AsyncIterator):
         """Raise an exception in the asynchronous generator.
         Return next yielded value or raise StopAsyncIteration.
         """
-        if val is None:
-            if tb is None:
+        wenn val is None:
+            wenn tb is None:
                 raise typ
             val = typ()
-        if tb is not None:
+        wenn tb is not None:
             val = val.with_traceback(tb)
         raise val
 
@@ -266,12 +266,12 @@ klasse AsyncGenerator(AsyncIterator):
             await self.athrow(GeneratorExit)
         except (GeneratorExit, StopAsyncIteration):
             pass
-        else:
+        sonst:
             raise RuntimeError("asynchronous generator ignored GeneratorExit")
 
     @classmethod
     def __subclasshook__(cls, C):
-        if cls is AsyncGenerator:
+        wenn cls is AsyncGenerator:
             return _check_methods(C, '__aiter__', '__anext__',
                                   'asend', 'athrow', 'aclose')
         return NotImplemented
@@ -291,7 +291,7 @@ klasse Iterable(metaclass=ABCMeta):
 
     @classmethod
     def __subclasshook__(cls, C):
-        if cls is Iterable:
+        wenn cls is Iterable:
             return _check_methods(C, "__iter__")
         return NotImplemented
 
@@ -312,7 +312,7 @@ klasse Iterator(Iterable):
 
     @classmethod
     def __subclasshook__(cls, C):
-        if cls is Iterator:
+        wenn cls is Iterator:
             return _check_methods(C, '__iter__', '__next__')
         return NotImplemented
 
@@ -344,7 +344,7 @@ klasse Reversible(Iterable):
 
     @classmethod
     def __subclasshook__(cls, C):
-        if cls is Reversible:
+        wenn cls is Reversible:
             return _check_methods(C, "__reversed__", "__iter__")
         return NotImplemented
 
@@ -371,11 +371,11 @@ klasse Generator(Iterator):
         """Raise an exception in the generator.
         Return next yielded value or raise StopIteration.
         """
-        if val is None:
-            if tb is None:
+        wenn val is None:
+            wenn tb is None:
                 raise typ
             val = typ()
-        if tb is not None:
+        wenn tb is not None:
             val = val.with_traceback(tb)
         raise val
 
@@ -386,12 +386,12 @@ klasse Generator(Iterator):
             self.throw(GeneratorExit)
         except (GeneratorExit, StopIteration):
             pass
-        else:
+        sonst:
             raise RuntimeError("generator ignored GeneratorExit")
 
     @classmethod
     def __subclasshook__(cls, C):
-        if cls is Generator:
+        wenn cls is Generator:
             return _check_methods(C, '__iter__', '__next__',
                                   'send', 'throw', 'close')
         return NotImplemented
@@ -410,7 +410,7 @@ klasse Sized(metaclass=ABCMeta):
 
     @classmethod
     def __subclasshook__(cls, C):
-        if cls is Sized:
+        wenn cls is Sized:
             return _check_methods(C, "__len__")
         return NotImplemented
 
@@ -425,7 +425,7 @@ klasse Container(metaclass=ABCMeta):
 
     @classmethod
     def __subclasshook__(cls, C):
-        if cls is Container:
+        wenn cls is Container:
             return _check_methods(C, "__contains__")
         return NotImplemented
 
@@ -438,7 +438,7 @@ klasse Collection(Sized, Iterable, Container):
 
     @classmethod
     def __subclasshook__(cls, C):
-        if cls is Collection:
+        wenn cls is Collection:
             return _check_methods(C,  "__len__", "__iter__", "__contains__")
         return NotImplemented
 
@@ -453,7 +453,7 @@ klasse Buffer(metaclass=ABCMeta):
 
     @classmethod
     def __subclasshook__(cls, C):
-        if cls is Buffer:
+        wenn cls is Buffer:
             return _check_methods(C, "__buffer__")
         return NotImplemented
 
@@ -471,19 +471,19 @@ klasse _CallableGenericAlias(GenericAlias):
     __slots__ = ()
 
     def __new__(cls, origin, args):
-        if not (isinstance(args, tuple) and len(args) == 2):
+        wenn not (isinstance(args, tuple) and len(args) == 2):
             raise TypeError(
                 "Callable must be used as Callable[[arg, ...], result].")
         t_args, t_result = args
-        if isinstance(t_args, (tuple, list)):
+        wenn isinstance(t_args, (tuple, list)):
             args = (*t_args, t_result)
-        elif not _is_param_expr(t_args):
+        sowenn not _is_param_expr(t_args):
             raise TypeError(f"Expected a list of types, an ellipsis, "
                             f"ParamSpec, or Concatenate. Got {t_args}")
         return super().__new__(cls, origin, args)
 
     def __repr__(self):
-        if len(self.__args__) == 2 and _is_param_expr(self.__args__[0]):
+        wenn len(self.__args__) == 2 and _is_param_expr(self.__args__[0]):
             return super().__repr__()
         from annotationlib import type_repr
         return (f'collections.abc.Callable'
@@ -492,7 +492,7 @@ klasse _CallableGenericAlias(GenericAlias):
 
     def __reduce__(self):
         args = self.__args__
-        if not (len(args) == 2 and _is_param_expr(args[0])):
+        wenn not (len(args) == 2 and _is_param_expr(args[0])):
             args = list(args[:-1]), args[-1]
         return _CallableGenericAlias, (Callable, args)
 
@@ -501,25 +501,25 @@ klasse _CallableGenericAlias(GenericAlias):
         # rather than the default types.GenericAlias object.  Most of the
         # code is copied from typing's _GenericAlias and the builtin
         # types.GenericAlias.
-        if not isinstance(item, tuple):
+        wenn not isinstance(item, tuple):
             item = (item,)
 
         new_args = super().__getitem__(item).__args__
 
         # args[0] occurs due to things like Z[[int, str, bool]] from PEP 612
-        if not isinstance(new_args[0], (tuple, list)):
+        wenn not isinstance(new_args[0], (tuple, list)):
             t_result = new_args[-1]
             t_args = new_args[:-1]
             new_args = (t_args, t_result)
         return _CallableGenericAlias(Callable, tuple(new_args))
 
 def _is_param_expr(obj):
-    """Checks if obj matches either a list of types, ``...``, ``ParamSpec`` or
+    """Checks wenn obj matches either a list of types, ``...``, ``ParamSpec`` or
     ``_ConcatenateGenericAlias`` from typing.py
     """
-    if obj is Ellipsis:
+    wenn obj is Ellipsis:
         return True
-    if isinstance(obj, list):
+    wenn isinstance(obj, list):
         return True
     obj = type(obj)
     names = ('ParamSpec', '_ConcatenateGenericAlias')
@@ -536,7 +536,7 @@ klasse Callable(metaclass=ABCMeta):
 
     @classmethod
     def __subclasshook__(cls, C):
-        if cls is Callable:
+        wenn cls is Callable:
             return _check_methods(C, "__call__")
         return NotImplemented
 
@@ -560,37 +560,37 @@ klasse Set(Collection):
     __slots__ = ()
 
     def __le__(self, other):
-        if not isinstance(other, Set):
+        wenn not isinstance(other, Set):
             return NotImplemented
-        if len(self) > len(other):
+        wenn len(self) > len(other):
             return False
         fuer elem in self:
-            if elem not in other:
+            wenn elem not in other:
                 return False
         return True
 
     def __lt__(self, other):
-        if not isinstance(other, Set):
+        wenn not isinstance(other, Set):
             return NotImplemented
         return len(self) < len(other) and self.__le__(other)
 
     def __gt__(self, other):
-        if not isinstance(other, Set):
+        wenn not isinstance(other, Set):
             return NotImplemented
         return len(self) > len(other) and self.__ge__(other)
 
     def __ge__(self, other):
-        if not isinstance(other, Set):
+        wenn not isinstance(other, Set):
             return NotImplemented
-        if len(self) < len(other):
+        wenn len(self) < len(other):
             return False
         fuer elem in other:
-            if elem not in self:
+            wenn elem not in self:
                 return False
         return True
 
     def __eq__(self, other):
-        if not isinstance(other, Set):
+        wenn not isinstance(other, Set):
             return NotImplemented
         return len(self) == len(other) and self.__le__(other)
 
@@ -598,27 +598,27 @@ klasse Set(Collection):
     def _from_iterable(cls, it):
         '''Construct an instance of the klasse from any iterable input.
 
-        Must override this method if the klasse constructor signature
+        Must override this method wenn the klasse constructor signature
         does not accept an iterable fuer an input.
         '''
         return cls(it)
 
     def __and__(self, other):
-        if not isinstance(other, Iterable):
+        wenn not isinstance(other, Iterable):
             return NotImplemented
-        return self._from_iterable(value fuer value in other if value in self)
+        return self._from_iterable(value fuer value in other wenn value in self)
 
     __rand__ = __and__
 
     def isdisjoint(self, other):
-        'Return True if two sets have a null intersection.'
+        'Return True wenn two sets have a null intersection.'
         fuer value in other:
-            if value in self:
+            wenn value in self:
                 return False
         return True
 
     def __or__(self, other):
-        if not isinstance(other, Iterable):
+        wenn not isinstance(other, Iterable):
             return NotImplemented
         chain = (e fuer s in (self, other) fuer e in s)
         return self._from_iterable(chain)
@@ -626,24 +626,24 @@ klasse Set(Collection):
     __ror__ = __or__
 
     def __sub__(self, other):
-        if not isinstance(other, Set):
-            if not isinstance(other, Iterable):
+        wenn not isinstance(other, Set):
+            wenn not isinstance(other, Iterable):
                 return NotImplemented
             other = self._from_iterable(other)
         return self._from_iterable(value fuer value in self
-                                   if value not in other)
+                                   wenn value not in other)
 
     def __rsub__(self, other):
-        if not isinstance(other, Set):
-            if not isinstance(other, Iterable):
+        wenn not isinstance(other, Set):
+            wenn not isinstance(other, Iterable):
                 return NotImplemented
             other = self._from_iterable(other)
         return self._from_iterable(value fuer value in other
-                                   if value not in self)
+                                   wenn value not in self)
 
     def __xor__(self, other):
-        if not isinstance(other, Set):
-            if not isinstance(other, Iterable):
+        wenn not isinstance(other, Set):
+            wenn not isinstance(other, Iterable):
                 return NotImplemented
             other = self._from_iterable(other)
         return (self - other) | (other - self)
@@ -654,12 +654,12 @@ klasse Set(Collection):
         """Compute the hash value of a set.
 
         Note that we don't define __hash__: not all sets are hashable.
-        But if you define a hashable set type, its __hash__ should
+        But wenn you define a hashable set type, its __hash__ should
         call this function.
 
         This must be compatible __eq__.
 
-        All sets ought to compare equal if they contain the same
+        All sets ought to compare equal wenn they contain the same
         elements, regardless of how they are implemented, and
         regardless of the order of the elements; so there's not much
         freedom fuer __eq__ or __hash__.  We match the algorithm used
@@ -677,9 +677,9 @@ klasse Set(Collection):
         h ^= (h >> 11) ^ (h >> 25)
         h = h * 69069 + 907133923
         h &= MASK
-        if h > MAX:
+        wenn h > MAX:
             h -= MASK + 1
-        if h == -1:
+        wenn h == -1:
             h = 590923713
         return h
 
@@ -708,17 +708,17 @@ klasse MutableSet(Set):
 
     @abstractmethod
     def discard(self, value):
-        """Remove an element.  Do not raise an exception if absent."""
+        """Remove an element.  Do not raise an exception wenn absent."""
         raise NotImplementedError
 
     def remove(self, value):
         """Remove an element. If not a member, raise a KeyError."""
-        if value not in self:
+        wenn value not in self:
             raise KeyError(value)
         self.discard(value)
 
     def pop(self):
-        """Return the popped value.  Raise KeyError if empty."""
+        """Return the popped value.  Raise KeyError wenn empty."""
         it = iter(self)
         try:
             value = next(it)
@@ -746,22 +746,22 @@ klasse MutableSet(Set):
         return self
 
     def __ixor__(self, it):
-        if it is self:
+        wenn it is self:
             self.clear()
-        else:
-            if not isinstance(it, Set):
+        sonst:
+            wenn not isinstance(it, Set):
                 it = self._from_iterable(it)
             fuer value in it:
-                if value in self:
+                wenn value in self:
                     self.discard(value)
-                else:
+                sonst:
                     self.add(value)
         return self
 
     def __isub__(self, it):
-        if it is self:
+        wenn it is self:
             self.clear()
-        else:
+        sonst:
             fuer value in it:
                 self.discard(value)
         return self
@@ -790,7 +790,7 @@ klasse Mapping(Collection):
         raise KeyError
 
     def get(self, key, default=None):
-        'D.get(k[,d]) -> D[k] if k in D, else d.  d defaults to None.'
+        'D.get(k[,d]) -> D[k] wenn k in D, sonst d.  d defaults to None.'
         try:
             return self[key]
         except KeyError:
@@ -801,7 +801,7 @@ klasse Mapping(Collection):
             self[key]
         except KeyError:
             return False
-        else:
+        sonst:
             return True
 
     def keys(self):
@@ -817,7 +817,7 @@ klasse Mapping(Collection):
         return ValuesView(self)
 
     def __eq__(self, other):
-        if not isinstance(other, Mapping):
+        wenn not isinstance(other, Mapping):
             return NotImplemented
         return dict(self.items()) == dict(other.items())
 
@@ -875,7 +875,7 @@ klasse ItemsView(MappingView, Set):
             v = self._mapping[key]
         except KeyError:
             return False
-        else:
+        sonst:
             return v is value or v == value
 
     def __iter__(self):
@@ -893,7 +893,7 @@ klasse ValuesView(MappingView, Collection):
     def __contains__(self, value):
         fuer key in self._mapping:
             v = self._mapping[key]
-            if v is value or v == value:
+            wenn v is value or v == value:
                 return True
         return False
 
@@ -928,21 +928,21 @@ klasse MutableMapping(Mapping):
 
     def pop(self, key, default=__marker):
         '''D.pop(k[,d]) -> v, remove specified key and return the corresponding value.
-          If key is not found, d is returned if given, otherwise KeyError is raised.
+          If key is not found, d is returned wenn given, otherwise KeyError is raised.
         '''
         try:
             value = self[key]
         except KeyError:
-            if default is self.__marker:
+            wenn default is self.__marker:
                 raise
             return default
-        else:
+        sonst:
             del self[key]
             return value
 
     def popitem(self):
         '''D.popitem() -> (k, v), remove and return some (key, value) pair
-           as a 2-tuple; but raise KeyError if D is empty.
+           as a 2-tuple; but raise KeyError wenn D is empty.
         '''
         try:
             key = next(iter(self))
@@ -966,20 +966,20 @@ klasse MutableMapping(Mapping):
             If E present and lacks .keys() method, does:     fuer (k, v) in E: D[k] = v
             In either case, this is followed by: fuer k, v in F.items(): D[k] = v
         '''
-        if isinstance(other, Mapping):
+        wenn isinstance(other, Mapping):
             fuer key in other:
                 self[key] = other[key]
-        elif hasattr(other, "keys"):
+        sowenn hasattr(other, "keys"):
             fuer key in other.keys():
                 self[key] = other[key]
-        else:
+        sonst:
             fuer key, value in other:
                 self[key] = value
         fuer key, value in kwds.items():
             self[key] = value
 
     def setdefault(self, key, default=None):
-        'D.setdefault(k[,d]) -> D.get(k,d), also set D[k]=d if k not in D'
+        'D.setdefault(k[,d]) -> D.get(k,d), also set D[k]=d wenn k not in D'
         try:
             return self[key]
         except KeyError:
@@ -1020,7 +1020,7 @@ klasse Sequence(Reversible, Collection):
 
     def __contains__(self, value):
         fuer v in self:
-            if v is value or v == value:
+            wenn v is value or v == value:
                 return True
         return False
 
@@ -1030,14 +1030,14 @@ klasse Sequence(Reversible, Collection):
 
     def index(self, value, start=0, stop=None):
         '''S.index(value, [start, [stop]]) -> integer -- return first index of value.
-           Raises ValueError if the value is not present.
+           Raises ValueError wenn the value is not present.
 
            Supporting start and stop arguments is optional, but
            recommended.
         '''
-        if start is not None and start < 0:
+        wenn start is not None and start < 0:
             start = max(len(self) + start, 0)
-        if stop is not None and stop < 0:
+        wenn stop is not None and stop < 0:
             stop += len(self)
 
         i = start
@@ -1046,14 +1046,14 @@ klasse Sequence(Reversible, Collection):
                 v = self[i]
             except IndexError:
                 break
-            if v is value or v == value:
+            wenn v is value or v == value:
                 return i
             i += 1
         raise ValueError
 
     def count(self, value):
         'S.count(value) -> integer -- return number of occurrences of value'
-        return sum(1 fuer v in self if v is value or v == value)
+        return sum(1 fuer v in self wenn v is value or v == value)
 
 Sequence.register(tuple)
 Sequence.register(str)
@@ -1104,14 +1104,14 @@ klasse MutableSequence(Sequence):
 
     def extend(self, values):
         'S.extend(iterable) -- extend sequence by appending elements from the iterable'
-        if values is self:
+        wenn values is self:
             values = list(values)
         fuer v in values:
             self.append(v)
 
     def pop(self, index=-1):
         '''S.pop([index]) -> item -- remove and return item at index (default last).
-           Raise IndexError if list is empty or index is out of range.
+           Raise IndexError wenn list is empty or index is out of range.
         '''
         v = self[index]
         del self[index]
@@ -1119,7 +1119,7 @@ klasse MutableSequence(Sequence):
 
     def remove(self, value):
         '''S.remove(value) -- remove first occurrence of value.
-           Raise ValueError if the value is not present.
+           Raise ValueError wenn the value is not present.
         '''
         del self[self.index(value)]
 

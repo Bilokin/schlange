@@ -10,7 +10,7 @@ doctests = """
 
 Test simple loop with conditional
 
-    >>> sum({i*i fuer i in range(100) if i&1 == 1})
+    >>> sum({i*i fuer i in range(100) wenn i&1 == 1})
     166650
 
 Test simple case
@@ -195,5 +195,5 @@ def load_tests(loader, tests, pattern):
     return tests
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

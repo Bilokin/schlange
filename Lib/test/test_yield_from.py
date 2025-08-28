@@ -63,7 +63,7 @@ klasse TestPEP380Operation(unittest.TestCase):
                 trace.append("Yielded %s" % (x,))
         except ValueError as e:
             self.assertEqual(e.args[0], "spanish inquisition occurred")
-        else:
+        sonst:
             self.fail("subgenerator failed to raise ValueError")
         self.assertEqual(trace,[
             "Starting g1",
@@ -127,7 +127,7 @@ klasse TestPEP380Operation(unittest.TestCase):
                 trace.append("Yielded %s" % (x,))
         except ValueError as e:
             self.assertEqual(e.args[0], "hovercraft is full of eels")
-        else:
+        sonst:
             self.fail("subgenerator failed to raise ValueError")
         self.assertEqual(trace,[
             "Starting g1",
@@ -287,7 +287,7 @@ klasse TestPEP380Operation(unittest.TestCase):
         except ValueError as e:
             self.assertEqual(e.args[0], "nybbles have exploded with delight")
             self.assertIsInstance(e.__context__, GeneratorExit)
-        else:
+        sonst:
             self.fail("subgenerator failed to raise ValueError")
         self.assertEqual(trace,[
             "Starting g1",
@@ -327,7 +327,7 @@ klasse TestPEP380Operation(unittest.TestCase):
             g.throw(e)
         except ValueError as e:
             self.assertEqual(e.args[0], "tomato ejected")
-        else:
+        sonst:
             self.fail("subgenerator failed to raise ValueError")
         self.assertEqual(trace,[
             "Starting g1",
@@ -393,7 +393,7 @@ klasse TestPEP380Operation(unittest.TestCase):
             yield "g2 spam"
             yield "g2 more spam"
             trace.append("Finishing g2")
-            if v:
+            wenn v:
                 return v
         fuer x in g1():
             trace.append("Yielded %s" % (x,))
@@ -499,7 +499,7 @@ klasse TestPEP380Operation(unittest.TestCase):
             gi.throw(e)
         except ValueError as e:
             self.assertEqual(e.args[0],"tomato ejected")
-        else:
+        sonst:
             self.fail("subgenerator failed to raise ValueError")
         self.assertEqual(trace,[
             "Starting g",
@@ -531,7 +531,7 @@ klasse TestPEP380Operation(unittest.TestCase):
                 trace.append("Should not have yielded: %s" % (y,))
         except AttributeError as e:
             self.assertIn("send", e.args[0])
-        else:
+        sonst:
             self.fail("was able to send into non-generator")
         self.assertEqual(trace,[
             "starting g",
@@ -613,7 +613,7 @@ klasse TestPEP380Operation(unittest.TestCase):
                 trace.append("Yielded: %s" % (y,))
         except ValueError as e:
             self.assertEqual(e.args[0],"generator already executing")
-        else:
+        sonst:
             self.fail("subgenerator didn't raise ValueError")
         self.assertEqual(trace,[
             "g1: starting",
@@ -808,7 +808,7 @@ klasse TestPEP380Operation(unittest.TestCase):
             gi.throw(GeneratorExit)
         except GeneratorExit:
             pass
-        else:
+        sonst:
             self.fail("subgenerator failed to raise GeneratorExit")
         self.assertEqual(trace,[
             "Enter g",
@@ -838,7 +838,7 @@ klasse TestPEP380Operation(unittest.TestCase):
             gi.throw(GeneratorExit)
         except RuntimeError as e:
             self.assertEqual(e.args[0], "generator ignored GeneratorExit")
-        else:
+        sonst:
             self.fail("subgenerator failed to raise GeneratorExit")
         self.assertEqual(trace,[
             "Enter g",
@@ -869,7 +869,7 @@ klasse TestPEP380Operation(unittest.TestCase):
         except ValueError as e:
             self.assertEqual(e.args[0], "Vorpal bunny encountered")
             self.assertIsInstance(e.__context__, GeneratorExit)
-        else:
+        sonst:
             self.fail("subgenerator failed to raise ValueError")
         self.assertEqual(trace,[
             "Enter g",
@@ -1583,7 +1583,7 @@ klasse TestInterestingEdgeCases(unittest.TestCase):
             self.assert_stop_iteration(g)
 
     def test_throws_in_iter(self):
-        # See GH-126366: NULL pointer dereference if __iter__
+        # See GH-126366: NULL pointer dereference wenn __iter__
         # threw an exception.
         klasse Silly:
             def __iter__(self):
@@ -1596,5 +1596,5 @@ klasse TestInterestingEdgeCases(unittest.TestCase):
             next(iter(my_generator()))
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

@@ -24,7 +24,7 @@ def tearDownModule():
 def close_transport(transport):
     # Don't call transport.close() because the event loop and the IOCP proactor
     # are mocked
-    if transport._sock is None:
+    wenn transport._sock is None:
         return
     transport._sock.close()
     transport._sock = None
@@ -552,7 +552,7 @@ klasse ProactorDatagramTransportTests(test_utils.TestCase):
         self.sock.fileno.return_value = 7
 
     def datagram_transport(self, address=None):
-        self.sock.getpeername.side_effect = None if address else OSError
+        self.sock.getpeername.side_effect = None wenn address sonst OSError
         transport = _ProactorDatagramTransport(self.loop, self.sock,
                                                self.protocol,
                                                address=address)
@@ -1025,7 +1025,7 @@ klasse ProactorEventLoopUnixSockSendfileTests(test_utils.TestCase):
         sock.setblocking(blocking)
         sock.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, 1024)
         sock.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, 1024)
-        if cleanup:
+        wenn cleanup:
             self.addCleanup(sock.close)
         return sock
 
@@ -1043,8 +1043,8 @@ klasse ProactorEventLoopUnixSockSendfileTests(test_utils.TestCase):
         self.run_loop(self.loop.sock_connect(sock, srv_sock.getsockname()))
 
         def cleanup():
-            if proto.transport is not None:
-                # can be None if the task was cancelled before
+            wenn proto.transport is not None:
+                # can be None wenn the task was cancelled before
                 # connection_made callback
                 proto.transport.close()
                 self.run_loop(proto.wait_closed())
@@ -1090,5 +1090,5 @@ klasse ProactorEventLoopUnixSockSendfileTests(test_utils.TestCase):
         with self.assertRaisesRegex(ValueError, "must be non-blocking"):
             self.run_loop(self.loop.sock_sendfile(sock, self.file))
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

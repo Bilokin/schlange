@@ -84,7 +84,7 @@ klasse FunctionalTest(unittest.TestCase):
 klasse SubinterpreterTest(unittest.TestCase):
 
     def test_callbacks_leak(self):
-        # This test shows a leak in refleak mode if atexit doesn't
+        # This test shows a leak in refleak mode wenn atexit doesn't
         # take care to free callbacks in its per-subinterpreter module
         # state.
         n = atexit._ncallbacks()
@@ -116,7 +116,7 @@ klasse SubinterpreterTest(unittest.TestCase):
 
     @unittest.skipUnless(hasattr(os, "pipe"), "requires os.pipe()")
     def test_callback_on_subinterpreter_teardown(self):
-        # This tests if a callback is called on
+        # This tests wenn a callback is called on
         # subinterpreter teardown.
         expected = b"The test has passed!"
         r, w = os.pipe()
@@ -134,5 +134,5 @@ klasse SubinterpreterTest(unittest.TestCase):
         os.close(r)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

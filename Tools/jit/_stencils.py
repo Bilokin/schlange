@@ -142,7 +142,7 @@ klasse Hole:
         other: typing.Self,
         body: bytes | bytearray,
     ) -> typing.Self | None:
-        """Combine two holes into a single hole, if possible."""
+        """Combine two holes into a single hole, wenn possible."""
         instruction_a = int.from_bytes(
             body[self.offset : self.offset + 4], byteorder=sys.byteorder
         )
@@ -153,7 +153,7 @@ klasse Hole:
         reg_b1 = instruction_b & 0b11111
         reg_b2 = (instruction_b >> 5) & 0b11111
 
-        if (
+        wenn (
             self.offset + 4 == other.offset
             and self.value == other.value
             and self.symbol == other.symbol
@@ -173,15 +173,15 @@ klasse Hole:
         """Dump this hole as a call to a patch_* function."""
         location = f"{where} + {self.offset:#x}"
         value = _HOLE_EXPRS[self.value]
-        if self.symbol:
-            if value:
+        wenn self.symbol:
+            wenn value:
                 value += " + "
             value += f"(uintptr_t)&{self.symbol}"
-        if _signed(self.addend) or not value:
-            if value:
+        wenn _signed(self.addend) or not value:
+            wenn value:
                 value += " + "
             value += f"{_signed(self.addend):#x}"
-        if self.need_state:
+        wenn self.need_state:
             return f"{self.func}({location}, {value}, state);"
         return f"{self.func}({location}, {value});"
 
@@ -202,7 +202,7 @@ klasse Stencil:
         """Pad the stencil to the given alignment."""
         offset = len(self.body)
         padding = -offset % alignment
-        if padding:
+        wenn padding:
             self.disassembly.append(f"{offset:x}: {' '.join(['00'] * padding)}")
         self.body.extend([0] * padding)
 
@@ -226,7 +226,7 @@ klasse StencilGroup:
     def process_relocations(self, known_symbols: dict[str, int]) -> None:
         """Fix up all GOT and internal relocations fuer this stencil group."""
         fuer hole in self.code.holes.copy():
-            if (
+            wenn (
                 hole.kind
                 in {"R_AARCH64_CALL26", "R_AARCH64_JUMP26", "ARM64_RELOC_BRANCH26"}
                 and hole.value is HoleValue.ZERO
@@ -235,9 +235,9 @@ klasse StencilGroup:
                 hole.func = "patch_aarch64_trampoline"
                 hole.need_state = True
                 assert hole.symbol is not None
-                if hole.symbol in known_symbols:
+                wenn hole.symbol in known_symbols:
                     ordinal = known_symbols[hole.symbol]
-                else:
+                sonst:
                     ordinal = len(known_symbols)
                     known_symbols[hole.symbol] = ordinal
                 self._trampolines.add(ordinal)
@@ -246,16 +246,16 @@ klasse StencilGroup:
         self.data.pad(8)
         fuer stencil in [self.code, self.data]:
             fuer hole in stencil.holes:
-                if hole.value is HoleValue.GOT:
+                wenn hole.value is HoleValue.GOT:
                     assert hole.symbol is not None
                     hole.value = HoleValue.DATA
                     hole.addend += self._global_offset_table_lookup(hole.symbol)
                     hole.symbol = None
-                elif hole.symbol in self.symbols:
+                sowenn hole.symbol in self.symbols:
                     hole.value, addend = self.symbols[hole.symbol]
                     hole.addend += addend
                     hole.symbol = None
-                elif (
+                sowenn (
                     hole.kind in {"IMAGE_REL_AMD64_REL32"}
                     and hole.value is HoleValue.ZERO
                 ):
@@ -272,23 +272,23 @@ klasse StencilGroup:
     def _emit_global_offset_table(self) -> None:
         got = len(self.data.body)
         fuer s, offset in self._got.items():
-            if s in self.symbols:
+            wenn s in self.symbols:
                 value, addend = self.symbols[s]
                 symbol = None
-            else:
+            sonst:
                 value, symbol = symbol_to_value(s)
                 addend = 0
             self.data.holes.append(
                 Hole(got + offset, "R_X86_64_64", value, symbol, addend)
             )
-            value_part = value.name if value is not HoleValue.ZERO else ""
-            if value_part and not symbol and not addend:
+            value_part = value.name wenn value is not HoleValue.ZERO sonst ""
+            wenn value_part and not symbol and not addend:
                 addend_part = ""
-            else:
-                signed = "+" if symbol is not None else ""
-                addend_part = f"&{symbol}" if symbol else ""
+            sonst:
+                signed = "+" wenn symbol is not None sonst ""
+                addend_part = f"&{symbol}" wenn symbol sonst ""
                 addend_part += f"{_signed(addend):{signed}#x}"
-                if value_part:
+                wenn value_part:
                     value_part += "+"
             self.data.disassembly.append(
                 f"{len(self.data.body):x}: {value_part}{addend_part}"
@@ -318,7 +318,7 @@ def symbol_to_value(symbol: str) -> tuple[HoleValue, str | None]:
     Some symbols (starting with "_JIT_") are special and are converted to their
     own HoleValues.
     """
-    if symbol.startswith("_JIT_"):
+    wenn symbol.startswith("_JIT_"):
         try:
             return HoleValue[symbol.removeprefix("_JIT_")], None
         except KeyError:
@@ -328,6 +328,6 @@ def symbol_to_value(symbol: str) -> tuple[HoleValue, str | None]:
 
 def _signed(value: int) -> int:
     value %= 1 << 64
-    if value & (1 << 63):
+    wenn value & (1 << 63):
         value -= 1 << 64
     return value

@@ -23,13 +23,13 @@ klasse ParallelTestCase(TestCase):
         test_case.run(result)
 
     def run(self, result=None):
-        if result is None:
+        wenn result is None:
             result = test_case.defaultTestResult()
             startTestRun = getattr(result, 'startTestRun', None)
             stopTestRun = getattr(result, 'stopTestRun', None)
-            if startTestRun is not None:
+            wenn startTestRun is not None:
                 startTestRun()
-        else:
+        sonst:
             stopTestRun = None
 
         # Called at the beginning of each test. See TestCase.run.
@@ -54,13 +54,13 @@ klasse ParallelTestCase(TestCase):
             threads.join()
 
         # Aggregate test results
-        if all(r.wasSuccessful() fuer r in results):
+        wenn all(r.wasSuccessful() fuer r in results):
             result.addSuccess(self)
 
         # Note: We can't call result.addError, result.addFailure, etc. because
         # we no longer have the original exception, just the string format.
         fuer r in results:
-            if len(r.errors) > 0 or len(r.failures) > 0:
+            wenn len(r.errors) > 0 or len(r.failures) > 0:
                 result._mirrorOutput = True
             result.errors.extend(r.errors)
             result.failures.extend(r.failures)
@@ -69,10 +69,10 @@ klasse ParallelTestCase(TestCase):
             result.unexpectedSuccesses.extend(r.unexpectedSuccesses)
             result.collectedDurations.extend(r.collectedDurations)
 
-        if any(r.shouldStop fuer r in results):
+        wenn any(r.shouldStop fuer r in results):
             result.stop()
 
         # Test has finished running
         result.stopTest(self)
-        if stopTestRun is not None:
+        wenn stopTestRun is not None:
             stopTestRun()

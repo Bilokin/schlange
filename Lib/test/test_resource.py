@@ -79,16 +79,16 @@ klasse ResourceTest(unittest.TestCase):
                         time.sleep(.1)
                         f.flush()
                 except OSError:
-                    if not limit_set:
+                    wenn not limit_set:
                         raise
-                if limit_set:
+                wenn limit_set:
                     # Close will attempt to flush the byte we wrote
                     # Restore limit first to avoid getting a spurious error
                     resource.setrlimit(resource.RLIMIT_FSIZE, (cur, max))
             finally:
                 f.close()
         finally:
-            if limit_set:
+            wenn limit_set:
                 resource.setrlimit(resource.RLIMIT_FSIZE, (cur, max))
             os_helper.unlink(os_helper.TESTFN)
 
@@ -121,7 +121,7 @@ klasse ResourceTest(unittest.TestCase):
             # limit to a value larger than can be represented in a 32-bit
             # unsigned long, then the glibc setrlimit() wrapper function
             # silently converted the limit value to RLIM_INFINITY.
-            if sys.maxsize < 2**32 <= cur <= resource.RLIM_INFINITY:
+            wenn sys.maxsize < 2**32 <= cur <= resource.RLIM_INFINITY:
                 return [(resource.RLIM_INFINITY, max), (cur, max)]
             return [(min(cur, resource.RLIM_INFINITY), max)]
 
@@ -136,7 +136,7 @@ klasse ResourceTest(unittest.TestCase):
             resource.setrlimit(resource.RLIMIT_FSIZE, (2**32, max))
         except OverflowError:
             pass
-        else:
+        sonst:
             self.assertIn(resource.getrlimit(resource.RLIMIT_FSIZE), expected(2**32))
 
             resource.setrlimit(resource.RLIMIT_FSIZE, (2**63-5, max))
@@ -146,7 +146,7 @@ klasse ResourceTest(unittest.TestCase):
             except ValueError:
                 # There is a hard limit on macOS.
                 pass
-            else:
+            sonst:
                 self.assertIn(resource.getrlimit(resource.RLIMIT_FSIZE), expected(2**63))
                 resource.setrlimit(resource.RLIMIT_FSIZE, (2**64-5, max))
                 self.assertIn(resource.getrlimit(resource.RLIMIT_FSIZE), expected(2**64-5))
@@ -162,7 +162,7 @@ klasse ResourceTest(unittest.TestCase):
                 self.assertRaises(ValueError, resource.setrlimit, resource.RLIMIT_FSIZE, (value, max))
                 self.assertRaises(ValueError, resource.setrlimit, resource.RLIMIT_FSIZE, (cur, value))
 
-        if resource.RLIM_INFINITY in (2**32-3, 2**32-1, 2**64-3, 2**64-1):
+        wenn resource.RLIM_INFINITY in (2**32-3, 2**32-1, 2**64-3, 2**64-1):
             value = (resource.RLIM_INFINITY & 0xffff) - 0x10000
             with self.assertWarnsRegex(DeprecationWarning, "RLIM_INFINITY"):
                 resource.setrlimit(resource.RLIMIT_FSIZE, (value, max))
@@ -196,7 +196,7 @@ klasse ResourceTest(unittest.TestCase):
             def __len__(self):
                 return 2
             def __getitem__(self, key):
-                if key in (0, 1):
+                wenn key in (0, 1):
                     return len(tuple(range(1000000)))
                 raise IndexError
 
@@ -209,10 +209,10 @@ klasse ResourceTest(unittest.TestCase):
 
     def test_contants(self):
         self.assertIsInstance(resource.RLIM_INFINITY, int)
-        if sys.platform.startswith(('freebsd', 'solaris', 'sunos', 'aix')):
+        wenn sys.platform.startswith(('freebsd', 'solaris', 'sunos', 'aix')):
             self.assertHasAttr(resource, 'RLIM_SAVED_CUR')
             self.assertHasAttr(resource, 'RLIM_SAVED_MAX')
-        if hasattr(resource, 'RLIM_SAVED_CUR'):
+        wenn hasattr(resource, 'RLIM_SAVED_CUR'):
             self.assertIsInstance(resource.RLIM_SAVED_CUR, int)
             self.assertIsInstance(resource.RLIM_SAVED_MAX, int)
 
@@ -247,12 +247,12 @@ klasse ResourceTest(unittest.TestCase):
                 return 2
             def __getitem__(self, key):
                 lim = limits[key]
-                return lim - 1 if lim > 0 else lim + sys.maxsize*2  # new reference
+                return lim - 1 wenn lim > 0 sonst lim + sys.maxsize*2  # new reference
 
         limits = resource.getrlimit(resource.RLIMIT_AS)
         self.assertEqual(resource.prlimit(0, resource.RLIMIT_AS, BadSeq()),
                          limits)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

@@ -8,7 +8,7 @@ Options:
     --nosetuid
     -n
         This program generally tries to setuid 'nobody', unless this flag is
-        set.  The setuid call will fail if this program is not run as root (in
+        set.  The setuid call will fail wenn this program is not run as root (in
         which case, use this flag).
 
     --version
@@ -39,9 +39,9 @@ Options:
 
 Version: %(__version__)s
 
-If localhost is not given then 'localhost' is used, and if localport is not
+If localhost is not given then 'localhost' is used, and wenn localport is not
 given then 8025 is used.  If remotehost is not given then 'localhost' is used,
-and if remoteport is not given, then 25 is used.
+and wenn remoteport is not given, then 25 is used.
 """
 
 # Overview:
@@ -51,7 +51,7 @@ and if remoteport is not given, then 25 is used.
 # smtpd.  A number of classes are provided:
 #
 #   SMTPServer - the base klasse fuer the backend.  Raises NotImplementedError
-#   if you try to use it.
+#   wenn you try to use it.
 #
 #   DebuggingServer - simply prints each message it receives on stdout.
 #
@@ -102,7 +102,7 @@ DATA_SIZE_DEFAULT = 33554432
 
 def usage(code, msg=''):
     print(__doc__ % globals(), file=sys.stderr)
-    if msg:
+    wenn msg:
         print(msg, file=sys.stderr)
     sys.exit(code)
 
@@ -130,15 +130,15 @@ klasse SMTPChannel(asynchat.async_chat):
         self.data_size_limit = data_size_limit
         self.enable_SMTPUTF8 = enable_SMTPUTF8
         self._decode_data = decode_data
-        if enable_SMTPUTF8 and decode_data:
+        wenn enable_SMTPUTF8 and decode_data:
             raise ValueError("decode_data and enable_SMTPUTF8 cannot"
                              " be set to True at the same time")
-        if decode_data:
+        wenn decode_data:
             self._emptystring = ''
             self._linesep = '\r\n'
             self._dotsep = '.'
             self._newline = NEWLINE
-        else:
+        sonst:
             self._emptystring = b''
             self._linesep = b'\r\n'
             self._dotsep = ord(b'.')
@@ -151,10 +151,10 @@ klasse SMTPChannel(asynchat.async_chat):
         try:
             self.peer = conn.getpeername()
         except OSError as err:
-            # a race condition  may occur if the other end is closing
+            # a race condition  may occur wenn the other end is closing
             # before we can get the peername
             self.close()
-            if err.errno != errno.ENOTCONN:
+            wenn err.errno != errno.ENOTCONN:
                 raise
             return
         print('Peer:', repr(self.peer), file=DEBUGSTREAM)
@@ -301,22 +301,22 @@ klasse SMTPChannel(asynchat.async_chat):
     # Overrides base klasse fuer convenience.
     def push(self, msg):
         asynchat.async_chat.push(self, bytes(
-            msg + '\r\n', 'utf-8' if self.require_SMTPUTF8 else 'ascii'))
+            msg + '\r\n', 'utf-8' wenn self.require_SMTPUTF8 sonst 'ascii'))
 
     # Implementation of base klasse abstract method
     def collect_incoming_data(self, data):
         limit = None
-        if self.smtp_state == self.COMMAND:
+        wenn self.smtp_state == self.COMMAND:
             limit = self.max_command_size_limit
-        elif self.smtp_state == self.DATA:
+        sowenn self.smtp_state == self.DATA:
             limit = self.data_size_limit
-        if limit and self.num_bytes > limit:
+        wenn limit and self.num_bytes > limit:
             return
-        elif limit:
+        sowenn limit:
             self.num_bytes += len(data)
-        if self._decode_data:
+        wenn self._decode_data:
             self.received_lines.append(str(data, 'utf-8'))
-        else:
+        sonst:
             self.received_lines.append(data)
 
     # Implementation of base klasse abstract method
@@ -324,37 +324,37 @@ klasse SMTPChannel(asynchat.async_chat):
         line = self._emptystring.join(self.received_lines)
         print('Data:', repr(line), file=DEBUGSTREAM)
         self.received_lines = []
-        if self.smtp_state == self.COMMAND:
+        wenn self.smtp_state == self.COMMAND:
             sz, self.num_bytes = self.num_bytes, 0
-            if not line:
+            wenn not line:
                 self.push('500 Error: bad syntax')
                 return
-            if not self._decode_data:
+            wenn not self._decode_data:
                 line = str(line, 'utf-8')
             i = line.find(' ')
-            if i < 0:
+            wenn i < 0:
                 command = line.upper()
                 arg = None
-            else:
+            sonst:
                 command = line[:i].upper()
                 arg = line[i+1:].strip()
             max_sz = (self.command_size_limits[command]
-                        if self.extended_smtp else self.command_size_limit)
-            if sz > max_sz:
+                        wenn self.extended_smtp sonst self.command_size_limit)
+            wenn sz > max_sz:
                 self.push('500 Error: line too long')
                 return
             method = getattr(self, 'smtp_' + command, None)
-            if not method:
+            wenn not method:
                 self.push('500 Error: command "%s" not recognized' % command)
                 return
             method(arg)
             return
-        else:
-            if self.smtp_state != self.DATA:
+        sonst:
+            wenn self.smtp_state != self.DATA:
                 self.push('451 Internal confusion')
                 self.num_bytes = 0
                 return
-            if self.data_size_limit and self.num_bytes > self.data_size_limit:
+            wenn self.data_size_limit and self.num_bytes > self.data_size_limit:
                 self.push('552 Error: Too much mail data')
                 self.num_bytes = 0
                 return
@@ -362,32 +362,32 @@ klasse SMTPChannel(asynchat.async_chat):
             # to RFC 5321, Section 4.5.2.
             data = []
             fuer text in line.split(self._linesep):
-                if text and text[0] == self._dotsep:
+                wenn text and text[0] == self._dotsep:
                     data.append(text[1:])
-                else:
+                sonst:
                     data.append(text)
             self.received_data = self._newline.join(data)
             args = (self.peer, self.mailfrom, self.rcpttos, self.received_data)
             kwargs = {}
-            if not self._decode_data:
+            wenn not self._decode_data:
                 kwargs = {
                     'mail_options': self.mail_options,
                     'rcpt_options': self.rcpt_options,
                 }
             status = self.smtp_server.process_message(*args, **kwargs)
             self._set_post_data_state()
-            if not status:
+            wenn not status:
                 self.push('250 OK')
-            else:
+            sonst:
                 self.push(status)
 
     # SMTP and ESMTP commands
     def smtp_HELO(self, arg):
-        if not arg:
+        wenn not arg:
             self.push('501 Syntax: HELO hostname')
             return
         # See issue #21783 fuer a discussion of this behavior.
-        if self.seen_greeting:
+        wenn self.seen_greeting:
             self.push('503 Duplicate HELO/EHLO')
             return
         self._set_rset_state()
@@ -395,31 +395,31 @@ klasse SMTPChannel(asynchat.async_chat):
         self.push('250 %s' % self.fqdn)
 
     def smtp_EHLO(self, arg):
-        if not arg:
+        wenn not arg:
             self.push('501 Syntax: EHLO hostname')
             return
         # See issue #21783 fuer a discussion of this behavior.
-        if self.seen_greeting:
+        wenn self.seen_greeting:
             self.push('503 Duplicate HELO/EHLO')
             return
         self._set_rset_state()
         self.seen_greeting = arg
         self.extended_smtp = True
         self.push('250-%s' % self.fqdn)
-        if self.data_size_limit:
+        wenn self.data_size_limit:
             self.push('250-SIZE %s' % self.data_size_limit)
             self.command_size_limits['MAIL'] += 26
-        if not self._decode_data:
+        wenn not self._decode_data:
             self.push('250-8BITMIME')
-        if self.enable_SMTPUTF8:
+        wenn self.enable_SMTPUTF8:
             self.push('250-SMTPUTF8')
             self.command_size_limits['MAIL'] += 10
         self.push('250 HELP')
 
     def smtp_NOOP(self, arg):
-        if arg:
+        wenn arg:
             self.push('501 Syntax: NOOP')
-        else:
+        sonst:
             self.push('250 OK')
 
     def smtp_QUIT(self, arg):
@@ -429,126 +429,126 @@ klasse SMTPChannel(asynchat.async_chat):
 
     def _strip_command_keyword(self, keyword, arg):
         keylen = len(keyword)
-        if arg[:keylen].upper() == keyword:
+        wenn arg[:keylen].upper() == keyword:
             return arg[keylen:].strip()
         return ''
 
     def _getaddr(self, arg):
-        if not arg:
+        wenn not arg:
             return '', ''
-        if arg.lstrip().startswith('<'):
+        wenn arg.lstrip().startswith('<'):
             address, rest = get_angle_addr(arg)
-        else:
+        sonst:
             address, rest = get_addr_spec(arg)
-        if not address:
+        wenn not address:
             return address, rest
         return address.addr_spec, rest
 
     def _getparams(self, params):
-        # Return params as dictionary. Return None if not all parameters
+        # Return params as dictionary. Return None wenn not all parameters
         # appear to be syntactically valid according to RFC 1869.
         result = {}
         fuer param in params:
             param, eq, value = param.partition('=')
-            if not param.isalnum() or eq and not value:
+            wenn not param.isalnum() or eq and not value:
                 return None
-            result[param] = value if eq else True
+            result[param] = value wenn eq sonst True
         return result
 
     def smtp_HELP(self, arg):
-        if arg:
+        wenn arg:
             extended = ' [SP <mail-parameters>]'
             lc_arg = arg.upper()
-            if lc_arg == 'EHLO':
+            wenn lc_arg == 'EHLO':
                 self.push('250 Syntax: EHLO hostname')
-            elif lc_arg == 'HELO':
+            sowenn lc_arg == 'HELO':
                 self.push('250 Syntax: HELO hostname')
-            elif lc_arg == 'MAIL':
+            sowenn lc_arg == 'MAIL':
                 msg = '250 Syntax: MAIL FROM: <address>'
-                if self.extended_smtp:
+                wenn self.extended_smtp:
                     msg += extended
                 self.push(msg)
-            elif lc_arg == 'RCPT':
+            sowenn lc_arg == 'RCPT':
                 msg = '250 Syntax: RCPT TO: <address>'
-                if self.extended_smtp:
+                wenn self.extended_smtp:
                     msg += extended
                 self.push(msg)
-            elif lc_arg == 'DATA':
+            sowenn lc_arg == 'DATA':
                 self.push('250 Syntax: DATA')
-            elif lc_arg == 'RSET':
+            sowenn lc_arg == 'RSET':
                 self.push('250 Syntax: RSET')
-            elif lc_arg == 'NOOP':
+            sowenn lc_arg == 'NOOP':
                 self.push('250 Syntax: NOOP')
-            elif lc_arg == 'QUIT':
+            sowenn lc_arg == 'QUIT':
                 self.push('250 Syntax: QUIT')
-            elif lc_arg == 'VRFY':
+            sowenn lc_arg == 'VRFY':
                 self.push('250 Syntax: VRFY <address>')
-            else:
+            sonst:
                 self.push('501 Supported commands: EHLO HELO MAIL RCPT '
                           'DATA RSET NOOP QUIT VRFY')
-        else:
+        sonst:
             self.push('250 Supported commands: EHLO HELO MAIL RCPT DATA '
                       'RSET NOOP QUIT VRFY')
 
     def smtp_VRFY(self, arg):
-        if arg:
+        wenn arg:
             address, params = self._getaddr(arg)
-            if address:
+            wenn address:
                 self.push('252 Cannot VRFY user, but will accept message '
                           'and attempt delivery')
-            else:
+            sonst:
                 self.push('502 Could not VRFY %s' % arg)
-        else:
+        sonst:
             self.push('501 Syntax: VRFY <address>')
 
     def smtp_MAIL(self, arg):
-        if not self.seen_greeting:
+        wenn not self.seen_greeting:
             self.push('503 Error: send HELO first')
             return
         print('===> MAIL', arg, file=DEBUGSTREAM)
         syntaxerr = '501 Syntax: MAIL FROM: <address>'
-        if self.extended_smtp:
+        wenn self.extended_smtp:
             syntaxerr += ' [SP <mail-parameters>]'
-        if arg is None:
+        wenn arg is None:
             self.push(syntaxerr)
             return
         arg = self._strip_command_keyword('FROM:', arg)
         address, params = self._getaddr(arg)
-        if not address:
+        wenn not address:
             self.push(syntaxerr)
             return
-        if not self.extended_smtp and params:
+        wenn not self.extended_smtp and params:
             self.push(syntaxerr)
             return
-        if self.mailfrom:
+        wenn self.mailfrom:
             self.push('503 Error: nested MAIL command')
             return
         self.mail_options = params.upper().split()
         params = self._getparams(self.mail_options)
-        if params is None:
+        wenn params is None:
             self.push(syntaxerr)
             return
-        if not self._decode_data:
+        wenn not self._decode_data:
             body = params.pop('BODY', '7BIT')
-            if body not in ['7BIT', '8BITMIME']:
+            wenn body not in ['7BIT', '8BITMIME']:
                 self.push('501 Error: BODY can only be one of 7BIT, 8BITMIME')
                 return
-        if self.enable_SMTPUTF8:
+        wenn self.enable_SMTPUTF8:
             smtputf8 = params.pop('SMTPUTF8', False)
-            if smtputf8 is True:
+            wenn smtputf8 is True:
                 self.require_SMTPUTF8 = True
-            elif smtputf8 is not False:
+            sowenn smtputf8 is not False:
                 self.push('501 Error: SMTPUTF8 takes no arguments')
                 return
         size = params.pop('SIZE', None)
-        if size:
-            if not size.isdigit():
+        wenn size:
+            wenn not size.isdigit():
                 self.push(syntaxerr)
                 return
-            elif self.data_size_limit and int(size) > self.data_size_limit:
+            sowenn self.data_size_limit and int(size) > self.data_size_limit:
                 self.push('552 Error: message size exceeds fixed maximum message size')
                 return
-        if len(params.keys()) > 0:
+        wenn len(params.keys()) > 0:
             self.push('555 MAIL FROM parameters not recognized or not implemented')
             return
         self.mailfrom = address
@@ -556,34 +556,34 @@ klasse SMTPChannel(asynchat.async_chat):
         self.push('250 OK')
 
     def smtp_RCPT(self, arg):
-        if not self.seen_greeting:
+        wenn not self.seen_greeting:
             self.push('503 Error: send HELO first');
             return
         print('===> RCPT', arg, file=DEBUGSTREAM)
-        if not self.mailfrom:
+        wenn not self.mailfrom:
             self.push('503 Error: need MAIL command')
             return
         syntaxerr = '501 Syntax: RCPT TO: <address>'
-        if self.extended_smtp:
+        wenn self.extended_smtp:
             syntaxerr += ' [SP <mail-parameters>]'
-        if arg is None:
+        wenn arg is None:
             self.push(syntaxerr)
             return
         arg = self._strip_command_keyword('TO:', arg)
         address, params = self._getaddr(arg)
-        if not address:
+        wenn not address:
             self.push(syntaxerr)
             return
-        if not self.extended_smtp and params:
+        wenn not self.extended_smtp and params:
             self.push(syntaxerr)
             return
         self.rcpt_options = params.upper().split()
         params = self._getparams(self.rcpt_options)
-        if params is None:
+        wenn params is None:
             self.push(syntaxerr)
             return
         # XXX currently there are no options we recognize.
-        if len(params.keys()) > 0:
+        wenn len(params.keys()) > 0:
             self.push('555 RCPT TO parameters not recognized or not implemented')
             return
         self.rcpttos.append(address)
@@ -591,20 +591,20 @@ klasse SMTPChannel(asynchat.async_chat):
         self.push('250 OK')
 
     def smtp_RSET(self, arg):
-        if arg:
+        wenn arg:
             self.push('501 Syntax: RSET')
             return
         self._set_rset_state()
         self.push('250 OK')
 
     def smtp_DATA(self, arg):
-        if not self.seen_greeting:
+        wenn not self.seen_greeting:
             self.push('503 Error: send HELO first');
             return
-        if not self.rcpttos:
+        wenn not self.rcpttos:
             self.push('503 Error: need RCPT command')
             return
-        if arg:
+        wenn arg:
             self.push('501 Syntax: DATA')
             return
         self.smtp_state = self.DATA
@@ -628,23 +628,23 @@ klasse SMTPServer(asyncore.dispatcher):
         self.data_size_limit = data_size_limit
         self.enable_SMTPUTF8 = enable_SMTPUTF8
         self._decode_data = decode_data
-        if enable_SMTPUTF8 and decode_data:
+        wenn enable_SMTPUTF8 and decode_data:
             raise ValueError("decode_data and enable_SMTPUTF8 cannot"
                              " be set to True at the same time")
         asyncore.dispatcher.__init__(self, map=map)
         try:
-            family = 0 if socket.has_ipv6 else socket.AF_INET
+            family = 0 wenn socket.has_ipv6 sonst socket.AF_INET
             gai_results = socket.getaddrinfo(*localaddr, family=family,
                                              type=socket.SOCK_STREAM)
             self.create_socket(gai_results[0][0], gai_results[0][1])
-            # try to re-use a server port if possible
+            # try to re-use a server port wenn possible
             self.set_reuse_addr()
             self.bind(localaddr)
             self.listen(5)
         except:
             self.close()
             raise
-        else:
+        sonst:
             print('%s started at %s\n\tLocal addr: %s\n\tRemote addr:%s' % (
                 self.__class__.__name__, time.ctime(time.time()),
                 localaddr, remoteaddr), file=DEBUGSTREAM)
@@ -679,7 +679,7 @@ klasse SMTPServer(asyncore.dispatcher):
         removed.
 
         kwargs is a dictionary containing additional information.  It is
-        empty if decode_data=True was given as init parameter, otherwise
+        empty wenn decode_data=True was given as init parameter, otherwise
         it will contain the following keys:
             'mail_options': list of parameters to the mail command.  All
                             elements are uppercase strings.  Example:
@@ -701,24 +701,24 @@ klasse DebuggingServer(SMTPServer):
         lines = data.splitlines()
         fuer line in lines:
             # headers first
-            if inheaders and not line:
+            wenn inheaders and not line:
                 peerheader = 'X-Peer: ' + peer[0]
-                if not isinstance(data, str):
+                wenn not isinstance(data, str):
                     # decoded_data=false; make header match other binary output
                     peerheader = repr(peerheader.encode('utf-8'))
                 print(peerheader)
                 inheaders = 0
-            if not isinstance(data, str):
+            wenn not isinstance(data, str):
                 # Avoid spurious 'str on bytes instance' warning.
                 line = repr(line)
             print(line)
 
     def process_message(self, peer, mailfrom, rcpttos, data, **kwargs):
         print('---------- MESSAGE FOLLOWS ----------')
-        if kwargs:
-            if kwargs.get('mail_options'):
+        wenn kwargs:
+            wenn kwargs.get('mail_options'):
                 print('mail options: %s' % kwargs['mail_options'])
-            if kwargs.get('rcpt_options'):
+            wenn kwargs.get('rcpt_options'):
                 print('rcpt options: %s\n' % kwargs['rcpt_options'])
         self._print_message_content(peer, data)
         print('------------ END MESSAGE ------------')
@@ -726,7 +726,7 @@ klasse DebuggingServer(SMTPServer):
 
 klasse PureProxy(SMTPServer):
     def __init__(self, *args, **kwargs):
-        if 'enable_SMTPUTF8' in kwargs and kwargs['enable_SMTPUTF8']:
+        wenn 'enable_SMTPUTF8' in kwargs and kwargs['enable_SMTPUTF8']:
             raise ValueError("PureProxy does not support SMTPUTF8.")
         super(PureProxy, self).__init__(*args, **kwargs)
 
@@ -735,7 +735,7 @@ klasse PureProxy(SMTPServer):
         # Look fuer the last header
         i = 0
         fuer line in lines:
-            if not line:
+            wenn not line:
                 break
             i += 1
         lines.insert(i, 'X-Peer: %s' % peer[0])
@@ -788,20 +788,20 @@ def parseargs():
 
     options = Options()
     fuer opt, arg in opts:
-        if opt in ('-h', '--help'):
+        wenn opt in ('-h', '--help'):
             usage(0)
-        elif opt in ('-V', '--version'):
+        sowenn opt in ('-V', '--version'):
             print(__version__)
             sys.exit(0)
-        elif opt in ('-n', '--nosetuid'):
+        sowenn opt in ('-n', '--nosetuid'):
             options.setuid = False
-        elif opt in ('-c', '--class'):
+        sowenn opt in ('-c', '--class'):
             options.classname = arg
-        elif opt in ('-d', '--debug'):
+        sowenn opt in ('-d', '--debug'):
             DEBUGSTREAM = sys.stderr
-        elif opt in ('-u', '--smtputf8'):
+        sowenn opt in ('-u', '--smtputf8'):
             options.enable_SMTPUTF8 = True
-        elif opt in ('-s', '--size'):
+        sowenn opt in ('-s', '--size'):
             try:
                 int_size = int(arg)
                 options.size_limit = int_size
@@ -810,21 +810,21 @@ def parseargs():
                 sys.exit(1)
 
     # parse the rest of the arguments
-    if len(args) < 1:
+    wenn len(args) < 1:
         localspec = 'localhost:8025'
         remotespec = 'localhost:25'
-    elif len(args) < 2:
+    sowenn len(args) < 2:
         localspec = args[0]
         remotespec = 'localhost:25'
-    elif len(args) < 3:
+    sowenn len(args) < 3:
         localspec = args[0]
         remotespec = args[1]
-    else:
+    sonst:
         usage(1, 'Invalid arguments: %s' % COMMASPACE.join(args))
 
     # split into host/port pairs
     i = localspec.find(':')
-    if i < 0:
+    wenn i < 0:
         usage(1, 'Bad local spec: %s' % localspec)
     options.localhost = localspec[:i]
     try:
@@ -832,7 +832,7 @@ def parseargs():
     except ValueError:
         usage(1, 'Bad local port: %s' % localspec)
     i = remotespec.find(':')
-    if i < 0:
+    wenn i < 0:
         usage(1, 'Bad remote spec: %s' % remotespec)
     options.remotehost = remotespec[:i]
     try:
@@ -842,21 +842,21 @@ def parseargs():
     return options
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     options = parseargs()
     # Become nobody
     classname = options.classname
-    if "." in classname:
+    wenn "." in classname:
         lastdot = classname.rfind(".")
         mod = __import__(classname[:lastdot], globals(), locals(), [""])
         classname = classname[lastdot+1:]
-    else:
+    sonst:
         import __main__ as mod
     class_ = getattr(mod, classname)
     proxy = class_((options.localhost, options.localport),
                    (options.remotehost, options.remoteport),
                    options.size_limit, enable_SMTPUTF8=options.enable_SMTPUTF8)
-    if options.setuid:
+    wenn options.setuid:
         try:
             import pwd
         except ImportError:

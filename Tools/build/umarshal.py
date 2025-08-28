@@ -61,7 +61,7 @@ klasse Code:
         varnames: list[str] = []
         fuer name, kind in zip(self.co_localsplusnames,
                               self.co_localspluskinds):
-            if kind & select_kind:
+            wenn kind & select_kind:
                 varnames.append(name)
         return tuple(varnames)
 
@@ -138,7 +138,7 @@ klasse Reader:
         # Pray this is right
         fuer i in range(size):
             x |= self.r_short() << i*15
-        if n < 0:
+        wenn n < 0:
             x = -x
         return x
 
@@ -153,15 +153,15 @@ klasse Reader:
         return ast.literal_eval(buf.decode("ascii"))  # type: ignore[no-any-return]
 
     def r_ref_reserve(self, flag: int) -> int:
-        if flag:
+        wenn flag:
             idx = len(self.refs)
             self.refs.append(None)
             return idx
-        else:
+        sonst:
             return 0
 
     def r_ref_insert(self, obj: Any, idx: int, flag: int) -> Any:
-        if flag:
+        wenn flag:
             self.refs[idx] = obj
         return obj
 
@@ -185,83 +185,83 @@ klasse Reader:
         self.level += 1
 
         def R_REF(obj: Any) -> Any:
-            if flag:
+            wenn flag:
                 obj = self.r_ref(obj, flag)
             return obj
 
-        if type == Type.NULL:
+        wenn type == Type.NULL:
             return NULL
-        elif type == Type.NONE:
+        sowenn type == Type.NONE:
             return None
-        elif type == Type.ELLIPSIS:
+        sowenn type == Type.ELLIPSIS:
             return Ellipsis
-        elif type == Type.FALSE:
+        sowenn type == Type.FALSE:
             return False
-        elif type == Type.TRUE:
+        sowenn type == Type.TRUE:
             return True
-        elif type == Type.INT:
+        sowenn type == Type.INT:
             return R_REF(self.r_long())
-        elif type == Type.INT64:
+        sowenn type == Type.INT64:
             return R_REF(self.r_long64())
-        elif type == Type.LONG:
+        sowenn type == Type.LONG:
             return R_REF(self.r_PyLong())
-        elif type == Type.FLOAT:
+        sowenn type == Type.FLOAT:
             return R_REF(self.r_float_str())
-        elif type == Type.BINARY_FLOAT:
+        sowenn type == Type.BINARY_FLOAT:
             return R_REF(self.r_float_bin())
-        elif type == Type.COMPLEX:
+        sowenn type == Type.COMPLEX:
             return R_REF(complex(self.r_float_str(),
                                     self.r_float_str()))
-        elif type == Type.BINARY_COMPLEX:
+        sowenn type == Type.BINARY_COMPLEX:
             return R_REF(complex(self.r_float_bin(),
                                     self.r_float_bin()))
-        elif type == Type.STRING:
+        sowenn type == Type.STRING:
             n = self.r_long()
             return R_REF(self.r_string(n))
-        elif type == Type.ASCII_INTERNED or type == Type.ASCII:
+        sowenn type == Type.ASCII_INTERNED or type == Type.ASCII:
             n = self.r_long()
             return R_REF(self.r_string(n).decode("ascii"))
-        elif type == Type.SHORT_ASCII_INTERNED or type == Type.SHORT_ASCII:
+        sowenn type == Type.SHORT_ASCII_INTERNED or type == Type.SHORT_ASCII:
             n = self.r_byte()
             return R_REF(self.r_string(n).decode("ascii"))
-        elif type == Type.INTERNED or type == Type.UNICODE:
+        sowenn type == Type.INTERNED or type == Type.UNICODE:
             n = self.r_long()
             return R_REF(self.r_string(n).decode("utf8", "surrogatepass"))
-        elif type == Type.SMALL_TUPLE:
+        sowenn type == Type.SMALL_TUPLE:
             n = self.r_byte()
             idx = self.r_ref_reserve(flag)
             retval: Any = tuple(self.r_object() fuer _ in range(n))
             self.r_ref_insert(retval, idx, flag)
             return retval
-        elif type == Type.TUPLE:
+        sowenn type == Type.TUPLE:
             n = self.r_long()
             idx = self.r_ref_reserve(flag)
             retval = tuple(self.r_object() fuer _ in range(n))
             self.r_ref_insert(retval, idx, flag)
             return retval
-        elif type == Type.LIST:
+        sowenn type == Type.LIST:
             n = self.r_long()
             retval = R_REF([])
             fuer _ in range(n):
                 retval.append(self.r_object())
             return retval
-        elif type == Type.DICT:
+        sowenn type == Type.DICT:
             retval = R_REF({})
             while True:
                 key = self.r_object()
-                if key == NULL:
+                wenn key == NULL:
                     break
                 val = self.r_object()
                 retval[key] = val
             return retval
-        elif type == Type.SET:
+        sowenn type == Type.SET:
             n = self.r_long()
             retval = R_REF(set())
             fuer _ in range(n):
                 v = self.r_object()
                 retval.add(v)
             return retval
-        elif type == Type.FROZENSET:
+        sowenn type == Type.FROZENSET:
             n = self.r_long()
             s: set[Any] = set()
             idx = self.r_ref_reserve(flag)
@@ -271,7 +271,7 @@ klasse Reader:
             retval = frozenset(s)
             self.r_ref_insert(retval, idx, flag)
             return retval
-        elif type == Type.CODE:
+        sowenn type == Type.CODE:
             retval = R_REF(Code())
             retval.co_argcount = self.r_long()
             retval.co_posonlyargcount = self.r_long()
@@ -290,12 +290,12 @@ klasse Reader:
             retval.co_linetable = self.r_object()
             retval.co_exceptiontable = self.r_object()
             return retval
-        elif type == Type.REF:
+        sowenn type == Type.REF:
             n = self.r_long()
             retval = self.refs[n]
             assert retval is not None
             return retval
-        else:
+        sonst:
             breakpoint()
             raise AssertionError(f"Unknown type {type} {chr(type)!r}")
 
@@ -322,5 +322,5 @@ def main() -> None:
     pprint.pprint(retval.__dict__)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     main()

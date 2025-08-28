@@ -34,7 +34,7 @@ klasse BasicIterClass:
         self.i = 0
     def __next__(self):
         res = self.i
-        if res >= self.n:
+        wenn res >= self.n:
             raise StopIteration
         self.i = res + 1
         return res
@@ -59,9 +59,9 @@ klasse SequenceClass:
     def __init__(self, n):
         self.n = n
     def __getitem__(self, i):
-        if 0 <= i < self.n:
+        wenn 0 <= i < self.n:
             return i
-        else:
+        sonst:
             raise IndexError
 
 klasse SequenceProxyClass:
@@ -92,7 +92,7 @@ klasse CallableIterClass:
     def __call__(self):
         i = self.i
         self.i = i + 1
-        if i > 100:
+        wenn i > 100:
             raise IndexError # Emergency stop
         return i
 
@@ -108,7 +108,7 @@ klasse TestCase(unittest.TestCase):
 
     # Helper to check that an iterator returns a given sequence
     def check_iterator(self, it, seq, pickle=True):
-        if pickle:
+        wenn pickle:
             self.check_pickle(it, seq)
         res = []
         while 1:
@@ -121,7 +121,7 @@ klasse TestCase(unittest.TestCase):
 
     # Helper to check that a fuer loop generates a given sequence
     def check_for_loop(self, expr, seq, pickle=True):
-        if pickle:
+        wenn pickle:
             self.check_pickle(iter(expr), seq)
         res = []
         fuer val in expr:
@@ -259,7 +259,7 @@ klasse TestCase(unittest.TestCase):
         orig = {"iter": iter, "reversed": reversed}
 
         def run(builtin_name, item, sentinel=None):
-            it = iter(item) if sentinel is None else iter(item, sentinel)
+            it = iter(item) wenn sentinel is None sonst iter(item, sentinel)
 
             klasse CustomStr:
                 def __init__(self, name, iterator):
@@ -344,7 +344,7 @@ klasse TestCase(unittest.TestCase):
     def test_iter_function_stop(self):
         def spam(state=[0]):
             i = state[0]
-            if i == 10:
+            wenn i == 10:
                 raise StopIteration
             state[0] = i+1
             return i
@@ -364,7 +364,7 @@ klasse TestCase(unittest.TestCase):
         def spam():
             # Touching the iterator with exhaust() below will call
             # spam() once again so protect against recursion.
-            if spam.is_recursive_call:
+            wenn spam.is_recursive_call:
                 return NO_MORE
             spam.is_recursive_call = True
             exhaust(spam.iterator)
@@ -380,7 +380,7 @@ klasse TestCase(unittest.TestCase):
         def spam(state=[0]):
             i = state[0]
             state[0] = i+1
-            if i == 10:
+            wenn i == 10:
                 raise RuntimeError
             return i
         res = []
@@ -389,14 +389,14 @@ klasse TestCase(unittest.TestCase):
                 res.append(x)
         except RuntimeError:
             self.assertEqual(res, list(range(10)))
-        else:
+        sonst:
             self.fail("should have raised RuntimeError")
 
     # Test exception propagation through sequence iterator
     def test_exception_sequence(self):
         klasse MySequenceClass(SequenceClass):
             def __getitem__(self, i):
-                if i == 10:
+                wenn i == 10:
                     raise RuntimeError
                 return SequenceClass.__getitem__(self, i)
         res = []
@@ -405,14 +405,14 @@ klasse TestCase(unittest.TestCase):
                 res.append(x)
         except RuntimeError:
             self.assertEqual(res, list(range(10)))
-        else:
+        sonst:
             self.fail("should have raised RuntimeError")
 
     # Test fuer StopIteration from __getitem__
     def test_stop_sequence(self):
         klasse MySequenceClass(SequenceClass):
             def __getitem__(self, i):
-                if i == 10:
+                wenn i == 10:
                     raise StopIteration
                 return SequenceClass.__getitem__(self, i)
         self.check_for_loop(MySequenceClass(20), list(range(10)), pickle=False)
@@ -562,9 +562,9 @@ klasse TestCase(unittest.TestCase):
                     def __next__(self):
                         i = self.i
                         self.i = i + 1
-                        if i < len(self.vals):
+                        wenn i < len(self.vals):
                             return self.vals[i]
-                        else:
+                        sonst:
                             raise StopIteration
                 return SeqIter(self.vals)
 
@@ -688,7 +688,7 @@ klasse TestCase(unittest.TestCase):
         # Classes that lie about their lengths.
         klasse NoGuessLen5:
             def __getitem__(self, i):
-                if i >= 5:
+                wenn i >= 5:
                     raise IndexError
                 return i
 
@@ -729,7 +729,7 @@ klasse TestCase(unittest.TestCase):
             def __next__(self):
                 i = self.i
                 self.i = i+1
-                if i == 2:
+                wenn i == 2:
                     return "fooled you!"
                 return next(self.it)
 
@@ -902,7 +902,7 @@ klasse TestCase(unittest.TestCase):
                     self.i = self.start
 
                 def __next__(self):
-                    if self.i >= self.finish:
+                    wenn self.i >= self.finish:
                         raise StopIteration
                     result = str(self.i) + '\n'
                     self.i += 1
@@ -946,21 +946,21 @@ klasse TestCase(unittest.TestCase):
             a, b = IteratingSequenceClass(3)
         except ValueError:
             pass
-        else:
+        sonst:
             self.fail("should have raised ValueError")
 
         try:    # not enough values
             a, b, c = IteratingSequenceClass(2)
         except ValueError:
             pass
-        else:
+        sonst:
             self.fail("should have raised ValueError")
 
         try:    # not iterable
             a, b, c = len
         except TypeError:
             pass
-        else:
+        sonst:
             self.fail("should have raised TypeError")
 
         a, b, c = {1: 42, 2: 42, 3: 42}.values()
@@ -1050,7 +1050,7 @@ klasse TestCase(unittest.TestCase):
         def spam(state=[0]):
             i = state[0]
             state[0] = i+1
-            if i == 10:
+            wenn i == 10:
                 raise AssertionError("shouldn't have gotten this far")
             return i
         b = iter(spam, 5)
@@ -1186,5 +1186,5 @@ klasse TestCase(unittest.TestCase):
 
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

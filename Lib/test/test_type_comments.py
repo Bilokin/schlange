@@ -238,12 +238,12 @@ klasse TypeCommentTests(unittest.TestCase):
     def parse_all(self, source, minver=lowest, maxver=highest, expected_regex=""):
         fuer version in range(self.lowest, self.highest + 1):
             feature_version = (3, version)
-            if minver <= version <= maxver:
+            wenn minver <= version <= maxver:
                 try:
                     yield self.parse(source, feature_version)
                 except SyntaxError as err:
                     raise SyntaxError(str(err) + f" feature_version={feature_version}")
-            else:
+            sonst:
                 with self.assertRaisesRegex(SyntaxError, expected_regex,
                                             msg=f"feature_version={feature_version}"):
                     self.parse(source, feature_version)
@@ -347,15 +347,15 @@ klasse TypeCommentTests(unittest.TestCase):
                 self.assertStartsWith(t.name, 'f')
                 fuer index, c in enumerate(t.name[1:]):
                     todo.remove(c)
-                    if c == 'v':
+                    wenn c == 'v':
                         arg = t.args.vararg
-                    elif c == 'k':
+                    sowenn c == 'k':
                         arg = t.args.kwarg
-                    else:
+                    sonst:
                         assert 0 <= ord(c) - ord('a') < len(t.args.posonlyargs + t.args.args)
-                        if index < len(t.args.posonlyargs):
+                        wenn index < len(t.args.posonlyargs):
                             arg = t.args.posonlyargs[ord(c) - ord('a')]
-                        else:
+                        sonst:
                             arg = t.args.args[ord(c) - ord('a') - len(t.args.posonlyargs)]
                     self.assertEqual(arg.arg, c)  # That's the argument name
                     self.assertEqual(arg.type_comment, arg.arg.upper())
@@ -363,7 +363,7 @@ klasse TypeCommentTests(unittest.TestCase):
         tree = self.classic_parse(longargs)
         fuer t in tree.body:
             fuer arg in t.args.args + [t.args.vararg, t.args.kwarg]:
-                if arg is not None:
+                wenn arg is not None:
                     self.assertIsNone(arg.type_comment, "%s(%s:%r)" %
                                       (t.name, arg.arg, arg.type_comment))
 
@@ -396,7 +396,7 @@ klasse TypeCommentTests(unittest.TestCase):
         def parse_func_type_input(source):
             return ast.parse(source, "<unknown>", "func_type")
 
-        # Some checks below will crash if the returned structure is wrong
+        # Some checks below will crash wenn the returned structure is wrong
         tree = parse_func_type_input("() -> int")
         self.assertEqual(tree.argtypes, [])
         self.assertEqual(tree.returns.id, "int")
@@ -432,5 +432,5 @@ klasse TypeCommentTests(unittest.TestCase):
             tree = parse_func_type_input("(**int, **str) -> float")
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

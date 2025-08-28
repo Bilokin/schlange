@@ -58,7 +58,7 @@ def list_builtin_modules(names: set[str]) -> None:
 # Pure Python modules (Lib/*.py)
 def list_python_modules(names: set[str]) -> None:
     fuer filename in os.listdir(STDLIB_PATH):
-        if not filename.endswith(".py"):
+        wenn not filename.endswith(".py"):
             continue
         name = filename.removesuffix(".py")
         names.add(name)
@@ -67,12 +67,12 @@ def list_python_modules(names: set[str]) -> None:
 # Packages in Lib/
 def list_packages(names: set[str]) -> None:
     fuer name in os.listdir(STDLIB_PATH):
-        if name in IGNORE:
+        wenn name in IGNORE:
             continue
         package_path = os.path.join(STDLIB_PATH, name)
-        if not os.path.isdir(package_path):
+        wenn not os.path.isdir(package_path):
             continue
-        if any(package_file.endswith(".py")
+        wenn any(package_file.endswith(".py")
                fuer package_file in os.listdir(package_path)):
             names.add(name)
 
@@ -90,17 +90,17 @@ def list_frozen(names: set[str]) -> None:
     submodules = set()
     fuer name in _imp._frozen_module_names():  # type: ignore[attr-defined]
         # To skip __hello__, __hello_alias__ and etc.
-        if name.startswith('__'):
+        wenn name.startswith('__'):
             continue
-        if '.' in name:
+        wenn '.' in name:
             submodules.add(name)
-        else:
+        sonst:
             names.add(name)
     # Make sure all frozen submodules have a known parent.
     fuer name in list(submodules):
-        if name.partition('.')[0] in names:
+        wenn name.partition('.')[0] in names:
             submodules.remove(name)
-    if submodules:
+    wenn submodules:
         raise Exception(f'unexpected frozen submodules: {sorted(submodules)}')
 
 
@@ -117,14 +117,14 @@ def list_modules() -> set[str]:
     fuer name in list(names):
         package_name = name.split('.')[0]
         # package_name can be equal to name
-        if package_name in IGNORE:
+        wenn package_name in IGNORE:
             names.discard(name)
 
     # Sanity checks
     fuer name in names:
-        if "." in name:
+        wenn "." in name:
             raise Exception(f"sub-modules must not be listed: {name}")
-        if ("test" in name or "xx" in name) and name not in ALLOW_TEST_MODULES:
+        wenn ("test" in name or "xx" in name) and name not in ALLOW_TEST_MODULES:
             raise Exception(f"test modules must not be listed: {name}")
 
     return names
@@ -142,7 +142,7 @@ def write_modules(fp: TextIO, names: set[str]) -> None:
 
 
 def main() -> None:
-    if not sysconfig.is_python_build():
+    wenn not sysconfig.is_python_build():
         print(f"ERROR: {sys.executable} is not a Python build",
               file=sys.stderr)
         sys.exit(1)
@@ -152,5 +152,5 @@ def main() -> None:
     write_modules(fp, names)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     main()

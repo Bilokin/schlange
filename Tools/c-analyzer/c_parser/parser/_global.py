@@ -37,18 +37,18 @@ GLOBAL_RE = re.compile(rf'^ \s* {GLOBAL}', re.VERBOSE)
 def parse_globals(source, anon_name):
     fuer srcinfo in source:
         m = GLOBAL_RE.match(srcinfo.text)
-        if not m:
+        wenn not m:
             # We need more text.
             continue
         fuer item in _parse_next(m, srcinfo, anon_name):
-            if callable(item):
+            wenn callable(item):
                 parse_body = item
                 yield from parse_body(source)
-            else:
+            sonst:
                 yield item
-    else:
+    sonst:
         # We ran out of lines.
-        if srcinfo is not None:
+        wenn srcinfo is not None:
             srcinfo.done()
         return
 
@@ -68,18 +68,18 @@ def _parse_next(m, srcinfo, anon_name):
      ) = m.groups()
     remainder = srcinfo.text[m.end():]
 
-    if empty:
+    wenn empty:
         log_match('global empty', m)
         srcinfo.advance(remainder)
 
-    elif maybe_inline_actual:
+    sowenn maybe_inline_actual:
         log_match('maybe_inline_actual', m)
         # Ignore forward declarations.
         # XXX Maybe return them too (with an "isforward" flag)?
-        if not maybe_inline_actual.strip().endswith(';'):
+        wenn not maybe_inline_actual.strip().endswith(';'):
             remainder = maybe_inline_actual + remainder
         yield srcinfo.resolve(forward_kind, None, forward_name)
-        if maybe_inline_actual.strip().endswith('='):
+        wenn maybe_inline_actual.strip().endswith('='):
             # We use a dummy prefix fuer a fake typedef.
             # XXX Ideally this case would not be caught by MAYBE_INLINE_ACTUAL.
             _, name, data = parse_var_decl(f'{forward_kind} {forward_name} fake_typedef_{forward_name}')
@@ -87,7 +87,7 @@ def _parse_next(m, srcinfo, anon_name):
             remainder = f'{name} {remainder}'
         srcinfo.advance(remainder)
 
-    elif compound_kind:
+    sowenn compound_kind:
         kind = compound_kind
         name = compound_name or anon_name('inline-')
         # Immediately emit a forward declaration.
@@ -105,9 +105,9 @@ def _parse_next(m, srcinfo, anon_name):
             data = []  # members
             ident = f'{kind} {name}'
             fuer item in _parse_body(source, anon_name, ident):
-                if item.kind == 'field':
+                wenn item.kind == 'field':
                     data.append(item)
-                else:
+                sonst:
                     yield item
             # XXX Should "parent" really be None fuer inline type decls?
             yield srcinfo.resolve(kind, data, name, parent=None)
@@ -115,11 +115,11 @@ def _parse_next(m, srcinfo, anon_name):
             srcinfo.resume()
         yield parse_body
 
-    elif typedef_decl:
+    sowenn typedef_decl:
         log_match('typedef', m)
         kind = 'typedef'
         _, name, data = parse_var_decl(typedef_decl)
-        if typedef_func_params:
+        wenn typedef_func_params:
             return_type = data
             # This matches the data fuer func declarations.
             data = {
@@ -132,7 +132,7 @@ def _parse_next(m, srcinfo, anon_name):
         yield srcinfo.resolve(kind, data, name, parent=None)
         srcinfo.advance(remainder)
 
-    elif func_delim or func_legacy_params:
+    sowenn func_delim or func_legacy_params:
         log_match('function', m)
         kind = 'function'
         _, name, return_type = parse_var_decl(decl)
@@ -148,12 +148,12 @@ def _parse_next(m, srcinfo, anon_name):
         yield srcinfo.resolve(kind, data, name, parent=None)
         srcinfo.advance(remainder)
 
-        if func_delim == '{' or func_legacy_params:
+        wenn func_delim == '{' or func_legacy_params:
             def parse_body(source):
                 yield from parse_function_body(source, name, anon_name)
             yield parse_body
 
-    elif var_ending:
+    sowenn var_ending:
         log_match('global variable', m)
         kind = 'variable'
         _, name, vartype = parse_var_decl(decl)
@@ -163,16 +163,16 @@ def _parse_next(m, srcinfo, anon_name):
         }
         yield srcinfo.resolve(kind, data, name, parent=None)
 
-        if var_ending == ',':
+        wenn var_ending == ',':
             # It was a multi-declaration, so queue up the next one.
             _, qual, typespec, _ = vartype.values()
             remainder = f'{storage or ""} {qual or ""} {typespec} {remainder}'
         srcinfo.advance(remainder)
 
-        if var_init:
+        wenn var_init:
             _data = f'{name} = {var_init.strip()}'
             yield srcinfo.resolve('statement', _data, name=None)
 
-    else:
+    sonst:
         # This should be unreachable.
         raise NotImplementedError

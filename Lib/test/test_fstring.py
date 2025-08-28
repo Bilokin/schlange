@@ -641,13 +641,13 @@ x = (
                 pass
             except Exception as ex:
                 self.fail(f"Should raise SyntaxError or MemoryError, not {type(ex)}")
-            else:
+            sonst:
                 self.fail("No exception raised")
 
         raises_syntax_or_memory_error('f"{1+2:{1+2:{1+1:{1}}}}"')
 
         def create_nested_fstring(n):
-            if n == 0:
+            wenn n == 0:
                 return "1+1"
             prev = create_nested_fstring(n-1)
             return f'f"{{{prev}}}"'
@@ -1078,7 +1078,7 @@ x = (
 
         # lambda doesn't work without parens, because the colon
         # makes the parser think it's a format_spec
-        # emit warning if we can match a format_spec
+        # emit warning wenn we can match a format_spec
         self.assertAllRaise(SyntaxError,
                             "f-string: lambda expressions are not allowed "
                             "without parentheses",
@@ -1231,7 +1231,7 @@ x = (
     def test_missing_format_spec(self):
         klasse O:
             def __format__(self, spec):
-                if not spec:
+                wenn not spec:
                     return '*'
                 return spec
 
@@ -1447,31 +1447,31 @@ x = (
         self.assertEqual(f'{2:{"{"}>10}', '{{{{{{{{{2')
 
     def test_if_conditional(self):
-        # There's special logic in compile.c to test if the
-        #  conditional fuer an if (and while) are constants. Exercise
+        # There's special logic in compile.c to test wenn the
+        #  conditional fuer an wenn (and while) are constants. Exercise
         #  that code.
 
         def test_fstring(x, expected):
             flag = 0
-            if f'{x}':
+            wenn f'{x}':
                 flag = 1
-            else:
+            sonst:
                 flag = 2
             self.assertEqual(flag, expected)
 
         def test_concat_empty(x, expected):
             flag = 0
-            if '' f'{x}':
+            wenn '' f'{x}':
                 flag = 1
-            else:
+            sonst:
                 flag = 2
             self.assertEqual(flag, expected)
 
         def test_concat_non_empty(x, expected):
             flag = 0
-            if ' ' f'{x}':
+            wenn ' ' f'{x}':
                 flag = 1
-            else:
+            sonst:
                 flag = 2
             self.assertEqual(flag, expected)
 
@@ -1860,5 +1860,5 @@ print(f'''{{
         self.assertEqual(rf"{UnchangedFormat():\xFF} {UnchangedFormat():\n}", '\\xFF \\n')
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

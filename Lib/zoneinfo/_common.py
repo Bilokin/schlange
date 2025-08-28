@@ -11,15 +11,15 @@ def load_tzdata(key):
     try:
         path = resources.files(package_name).joinpath(resource_name)
         # gh-85702: Prevent PermissionError on Windows
-        if path.is_dir():
+        wenn path.is_dir():
             raise IsADirectoryError
         return path.open("rb")
     except (ImportError, FileNotFoundError, UnicodeEncodeError, IsADirectoryError):
         # There are four types of exception that can be raised that all amount
         # to "we cannot find this key":
         #
-        # ImportError: If package_name doesn't exist (e.g. if tzdata is not
-        #   installed, or if there's an error in the folder name like
+        # ImportError: If package_name doesn't exist (e.g. wenn tzdata is not
+        #   installed, or wenn there's an error in the folder name like
         #   Amrica/New_York)
         # FileNotFoundError: If resource_name doesn't exist in the package
         #   (e.g. Europe/Krasnoy)
@@ -32,10 +32,10 @@ def load_tzdata(key):
 def load_data(fobj):
     header = _TZifHeader.from_file(fobj)
 
-    if header.version == 1:
+    wenn header.version == 1:
         time_size = 4
         time_type = "l"
-    else:
+    sonst:
         # Version 2+ has 64-bit integer transition times
         time_size = 8
         time_type = "q"
@@ -62,21 +62,21 @@ def load_data(fobj):
     charcnt = header.charcnt
 
     # The data portion starts with timecnt transitions and indices
-    if timecnt:
+    wenn timecnt:
         trans_list_utc = struct.unpack(
             f">{timecnt}{time_type}", fobj.read(timecnt * time_size)
         )
         trans_idx = struct.unpack(f">{timecnt}B", fobj.read(timecnt))
-    else:
+    sonst:
         trans_list_utc = ()
         trans_idx = ()
 
     # Read the ttinfo struct, (utoff, isdst, abbrind)
-    if typecnt:
+    wenn typecnt:
         utcoff, isdst, abbrind = zip(
             *(struct.unpack(">lbb", fobj.read(6)) fuer i in range(typecnt))
         )
-    else:
+    sonst:
         utcoff = ()
         isdst = ()
         abbrind = ()
@@ -99,7 +99,7 @@ def load_data(fobj):
         # Where the idx to abbr mapping should be:
         #
         # {0: "LMT", 4: "AHST", 5: "HST", 9: "HDT"}
-        if idx not in abbr_vals:
+        wenn idx not in abbr_vals:
             span_end = abbr_chars.find(b"\x00", idx)
             abbr_vals[idx] = abbr_chars[idx:span_end].decode()
 
@@ -110,7 +110,7 @@ def load_data(fobj):
     # The remainder of the file consists of leap seconds (currently unused) and
     # the standard/wall and ut/local indicators, which are metadata we don't need.
     # In version 2 files, we need to skip the unnecessary data to get at the TZ string:
-    if header.version >= 2:
+    wenn header.version >= 2:
         # Each leap second record has size (time_size + 4)
         skip_bytes = header.isutcnt + header.isstdcnt + header.leapcnt * 12
         fobj.seek(skip_bytes, 1)
@@ -123,7 +123,7 @@ def load_data(fobj):
             tz_bytes += c
 
         tz_str = tz_bytes
-    else:
+    sonst:
         tz_str = None
 
     return trans_idx, trans_list_utc, utcoff, isdst, abbr, tz_str
@@ -147,13 +147,13 @@ klasse _TZifHeader:
     @classmethod
     def from_file(cls, stream):
         # The header starts with a 4-byte "magic" value
-        if stream.read(4) != b"TZif":
+        wenn stream.read(4) != b"TZif":
             raise ValueError("Invalid TZif file: magic not found")
 
         _version = stream.read(1)
-        if _version == b"\x00":
+        wenn _version == b"\x00":
             version = 1
-        else:
+        sonst:
             version = int(_version)
         stream.read(15)
 

@@ -47,8 +47,8 @@ klasse Timeout:
 
     def reschedule(self, when: float | None) -> None:
         """Reschedule the timeout."""
-        if self._state is not _State.ENTERED:
-            if self._state is _State.CREATED:
+        wenn self._state is not _State.ENTERED:
+            wenn self._state is _State.CREATED:
                 raise RuntimeError("Timeout has not been entered")
             raise RuntimeError(
                 f"Cannot change state of {self._state.value} Timeout",
@@ -56,16 +56,16 @@ klasse Timeout:
 
         self._when = when
 
-        if self._timeout_handler is not None:
+        wenn self._timeout_handler is not None:
             self._timeout_handler.cancel()
 
-        if when is None:
+        wenn when is None:
             self._timeout_handler = None
-        else:
+        sonst:
             loop = events.get_running_loop()
-            if when <= loop.time():
+            wenn when <= loop.time():
                 self._timeout_handler = loop.call_soon(self._on_timeout)
-            else:
+            sonst:
                 self._timeout_handler = loop.call_at(when, self._on_timeout)
 
     def expired(self) -> bool:
@@ -74,17 +74,17 @@ klasse Timeout:
 
     def __repr__(self) -> str:
         info = ['']
-        if self._state is _State.ENTERED:
-            when = round(self._when, 3) if self._when is not None else None
+        wenn self._state is _State.ENTERED:
+            when = round(self._when, 3) wenn self._when is not None sonst None
             info.append(f"when={when}")
         info_str = ' '.join(info)
         return f"<Timeout [{self._state.value}]{info_str}>"
 
     async def __aenter__(self) -> "Timeout":
-        if self._state is not _State.CREATED:
+        wenn self._state is not _State.CREATED:
             raise RuntimeError("Timeout has already been entered")
         task = tasks.current_task()
-        if task is None:
+        wenn task is None:
             raise RuntimeError("Timeout should be used inside a task")
         self._state = _State.ENTERED
         self._task = task
@@ -100,24 +100,24 @@ klasse Timeout:
     ) -> bool | None:
         assert self._state in (_State.ENTERED, _State.EXPIRING)
 
-        if self._timeout_handler is not None:
+        wenn self._timeout_handler is not None:
             self._timeout_handler.cancel()
             self._timeout_handler = None
 
-        if self._state is _State.EXPIRING:
+        wenn self._state is _State.EXPIRING:
             self._state = _State.EXPIRED
 
-            if self._task.uncancel() <= self._cancelling and exc_type is not None:
+            wenn self._task.uncancel() <= self._cancelling and exc_type is not None:
                 # Since there are no new cancel requests, we're
                 # handling this.
-                if issubclass(exc_type, exceptions.CancelledError):
+                wenn issubclass(exc_type, exceptions.CancelledError):
                     raise TimeoutError from exc_val
-                elif exc_val is not None:
+                sowenn exc_val is not None:
                     self._insert_timeout_error(exc_val)
-                    if isinstance(exc_val, ExceptionGroup):
+                    wenn isinstance(exc_val, ExceptionGroup):
                         fuer exc in exc_val.exceptions:
                             self._insert_timeout_error(exc)
-        elif self._state is _State.ENTERED:
+        sowenn self._state is _State.ENTERED:
             self._state = _State.EXITED
 
         return None
@@ -132,7 +132,7 @@ klasse Timeout:
     @staticmethod
     def _insert_timeout_error(exc_val: BaseException) -> None:
         while exc_val.__context__ is not None:
-            if isinstance(exc_val.__context__, exceptions.CancelledError):
+            wenn isinstance(exc_val.__context__, exceptions.CancelledError):
                 te = TimeoutError()
                 te.__context__ = te.__cause__ = exc_val.__context__
                 exc_val.__context__ = te
@@ -157,7 +157,7 @@ def timeout(delay: float | None) -> Timeout:
     into TimeoutError.
     """
     loop = events.get_running_loop()
-    return Timeout(loop.time() + delay if delay is not None else None)
+    return Timeout(loop.time() + delay wenn delay is not None sonst None)
 
 
 def timeout_at(when: float | None) -> Timeout:

@@ -34,42 +34,42 @@ klasse TestRlcompleter(unittest.TestCase):
     def test_global_matches(self):
         # test with builtins namespace
         self.assertEqual(sorted(self.stdcompleter.global_matches('di')),
-                         [x+'(' fuer x in dir(builtins) if x.startswith('di')])
+                         [x+'(' fuer x in dir(builtins) wenn x.startswith('di')])
         self.assertEqual(sorted(self.stdcompleter.global_matches('st')),
-                         [x+'(' fuer x in dir(builtins) if x.startswith('st')])
+                         [x+'(' fuer x in dir(builtins) wenn x.startswith('st')])
         self.assertEqual(self.stdcompleter.global_matches('akaksajadhak'), [])
 
         # test with a customized namespace
         self.assertEqual(self.completer.global_matches('CompleteM'),
-                ['CompleteMe(' if MISSING_C_DOCSTRINGS else 'CompleteMe()'])
+                ['CompleteMe(' wenn MISSING_C_DOCSTRINGS sonst 'CompleteMe()'])
         self.assertEqual(self.completer.global_matches('eg'),
                          ['egg('])
         # XXX: see issue5256
         self.assertEqual(self.completer.global_matches('CompleteM'),
-                ['CompleteMe(' if MISSING_C_DOCSTRINGS else 'CompleteMe()'])
+                ['CompleteMe(' wenn MISSING_C_DOCSTRINGS sonst 'CompleteMe()'])
 
     def test_attr_matches(self):
         # test with builtins namespace
         self.assertEqual(self.stdcompleter.attr_matches('str.s'),
                          ['str.{}('.format(x) fuer x in dir(str)
-                          if x.startswith('s')])
+                          wenn x.startswith('s')])
         self.assertEqual(self.stdcompleter.attr_matches('tuple.foospamegg'), [])
 
         def create_expected_for_none():
-            if not MISSING_C_DOCSTRINGS:
+            wenn not MISSING_C_DOCSTRINGS:
                 parentheses = ('__init_subclass__', '__class__')
-            else:
+            sonst:
                 # When `--without-doc-strings` is used, `__class__`
                 # won't have a known signature.
                 parentheses = ('__init_subclass__',)
 
             items = set()
             fuer x in dir(None):
-                if x in parentheses:
+                wenn x in parentheses:
                     items.add(f'None.{x}()')
-                elif x == '__doc__':
+                sowenn x == '__doc__':
                     items.add(f'None.{x}')
-                else:
+                sonst:
                     items.add(f'None.{x}(')
             return sorted(items)
 
@@ -97,7 +97,7 @@ klasse TestRlcompleter(unittest.TestCase):
                              ['CompleteMe.me.me.spam'])
             self.assertEqual(self.completer.attr_matches('egg.s'),
                              ['egg.{}('.format(x) fuer x in dir(str)
-                              if x.startswith('s')])
+                              wenn x.startswith('s')])
 
     def test_excessive_getattr(self):
         """Ensure getattr() is invoked no more than once per attribute"""
@@ -110,7 +110,7 @@ klasse TestRlcompleter(unittest.TestCase):
             calls = 0
             bar = ''
             def __getattribute__(self, name):
-                if name == 'bar':
+                wenn name == 'bar':
                     self.calls += 1
                     return None
                 return super().__getattribute__(name)
@@ -183,5 +183,5 @@ klasse TestRlcompleter(unittest.TestCase):
         self.assertEqual(completer.complete('Ellipsis', 0), 'Ellipsis()')
         self.assertIsNone(completer.complete('Ellipsis', 1))
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

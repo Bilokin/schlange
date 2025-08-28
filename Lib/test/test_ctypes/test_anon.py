@@ -77,5 +77,5 @@ klasse AnonTest(unittest.TestCase, StructCheckMixin):
         self.assertEqual(Y.y.offset, sizeof(c_int) * 2)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

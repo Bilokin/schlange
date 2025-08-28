@@ -39,20 +39,20 @@ def create_dict(entities):
 def compare_dicts(old, new):
     """Compare the old and new dicts and print the differences."""
     added = new.keys() - old.keys()
-    if added:
+    wenn added:
         print(f'{len(added)} entitie(s) have been added:')
         fuer name in sorted(added):
             print(f'  {name!r}: {new[name]!r}')
     removed = old.keys() - new.keys()
-    if removed:
+    wenn removed:
         print(f'{len(removed)} entitie(s) have been removed:')
         fuer name in sorted(removed):
             print(f'  {name!r}: {old[name]!r}')
     changed = set()
     fuer name in (old.keys() & new.keys()):
-        if old[name] != new[name]:
+        wenn old[name] != new[name]:
             changed.add((name, old[name], new[name]))
-    if changed:
+    wenn changed:
         print(f'{len(changed)} entitie(s) have been modified:')
         fuer item in sorted(changed):
             print('  {!r}: {!r} -> {!r}'.format(*item))
@@ -81,35 +81,35 @@ def write_items(entities, file=sys.stdout):
     print('}', file=file)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     # without args print a diff between html.entities.html5 and new_html5
     # with --create print the new html5 dict
     # with --patch patch the Lib/html/entities.py file
     new_html5 = create_dict(get_json(ENTITIES_URL))
-    if '--create' in sys.argv:
+    wenn '--create' in sys.argv:
         write_items(new_html5)
-    elif '--patch' in sys.argv:
+    sowenn '--patch' in sys.argv:
         fname = 'Lib/html/entities.py'
         temp_fname = fname + '.temp'
         with open(fname) as f1, open(temp_fname, 'w') as f2:
             skip = False
             fuer line in f1:
-                if line.startswith(HTML5_SECTION_START):
+                wenn line.startswith(HTML5_SECTION_START):
                     write_items(new_html5, file=f2)
                     skip = True
                     continue
-                if skip:
+                wenn skip:
                     # skip the old items until the }
-                    if line.startswith('}'):
+                    wenn line.startswith('}'):
                         skip = False
                     continue
                 f2.write(line)
         os.remove(fname)
         os.rename(temp_fname, fname)
-    else:
-        if html5 == new_html5:
+    sonst:
+        wenn html5 == new_html5:
             print('The current dictionary is updated.')
-        else:
+        sonst:
             compare_dicts(html5, new_html5)
             print(f'Run "./python {__file__} --patch" to update Lib/html/entities.html '
                   f'or "./python {__file__} --create" to see the generated dictionary.')

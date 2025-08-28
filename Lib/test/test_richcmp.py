@@ -72,9 +72,9 @@ klasse Vector:
         return Vector([a >= b fuer a, b in zip(self.data, self.__cast(other))])
 
     def __cast(self, other):
-        if isinstance(other, Vector):
+        wenn isinstance(other, Vector):
             other = other.data
-        if len(self.data) != len(other):
+        wenn len(self.data) != len(other):
             raise ValueError("Cannot compare vectors of different length")
         return other
 
@@ -139,7 +139,7 @@ klasse NumberTest(unittest.TestCase):
             fuer b in range(3):
                 fuer typea in (int, Number):
                     fuer typeb in (int, Number):
-                        if typea==typeb==int:
+                        wenn typea==typeb==int:
                             continue # the combination int, int is useless
                         ta = typea(a)
                         tb = typeb(b)
@@ -276,7 +276,7 @@ klasse MiscTest(unittest.TestCase):
 klasse DictTest(unittest.TestCase):
 
     def test_dicts(self):
-        # Verify that __eq__ and __ne__ work fuer dicts even if the keys and
+        # Verify that __eq__ and __ne__ work fuer dicts even wenn the keys and
         # values don't support anything other than __eq__ and __ne__ (and
         # __hash__).  Complex numbers are a fine example of that.
         import random
@@ -346,5 +346,5 @@ klasse ListTest(unittest.TestCase):
             self.assertIs(op(x, y), True)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

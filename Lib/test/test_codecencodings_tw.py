@@ -18,5 +18,5 @@ klasse Test_Big5(multibytecodec_support.TestBase, unittest.TestCase):
         (b"abc\x80\x80\xc1\xc4", "ignore",  "abc\u8b10"),
     )
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

@@ -77,7 +77,7 @@ skip_if_dont_write_bytecode = unittest.skipIf(
 
 
 def _require_loader(module, loader, skip):
-    if isinstance(module, str):
+    wenn isinstance(module, str):
         module = __import__(module)
 
     MODULE_KINDS = {
@@ -93,13 +93,13 @@ def _require_loader(module, loader, skip):
     expected = MODULE_KINDS[expected]
 
     actual = module.__spec__.loader
-    if not isinstance(actual, type):
+    wenn not isinstance(actual, type):
         actual = type(actual)
     actual = MODULE_KINDS[actual]
 
-    if actual != expected:
+    wenn actual != expected:
         err = f'expected module to be {expected}, got {module.__spec__}'
-        if skip:
+        wenn skip:
             raise unittest.SkipTest(err)
         raise Exception(err)
     return module
@@ -111,9 +111,9 @@ def require_builtin(module, *, skip=False):
 def require_extension(module, *, skip=False):
     # Apple extensions must be distributed as frameworks. This requires
     # a specialist loader.
-    if is_apple_mobile:
+    wenn is_apple_mobile:
         _require_loader(module, AppleFrameworkLoader, skip)
-    else:
+    sonst:
         _require_loader(module, ExtensionFileLoader, skip)
 
 def require_frozen(module, *, skip=True):
@@ -126,9 +126,9 @@ def require_pure_python(module, *, skip=False):
 def create_extension_loader(modname, filename):
     # Apple extensions must be distributed as frameworks. This requires
     # a specialist loader.
-    if is_apple_mobile:
+    wenn is_apple_mobile:
         return AppleFrameworkLoader(modname, filename)
-    else:
+    sonst:
         return ExtensionFileLoader(modname, filename)
 
 def import_extension_from_file(modname, filename, *, put_in_sys_modules=True):
@@ -136,7 +136,7 @@ def import_extension_from_file(modname, filename, *, put_in_sys_modules=True):
     spec = importlib.util.spec_from_loader(modname, loader)
     module = importlib.util.module_from_spec(spec)
     loader.exec_module(module)
-    if put_in_sys_modules:
+    wenn put_in_sys_modules:
         sys.modules[modname] = module
     return module
 
@@ -150,7 +150,7 @@ def remove_files(name):
     rmtree('__pycache__')
 
 
-if _testsinglephase is not None:
+wenn _testsinglephase is not None:
     def restore__testsinglephase(*, _orig=_testsinglephase):
         # We started with the module imported and want to restore
         # it to its nominal state.
@@ -162,8 +162,8 @@ if _testsinglephase is not None:
 
 
 def requires_singlephase_init(meth):
-    """Decorator to skip if single-phase init modules are not supported."""
-    if not isinstance(meth, type):
+    """Decorator to skip wenn single-phase init modules are not supported."""
+    wenn not isinstance(meth, type):
         def meth(self, _meth=meth):
             try:
                 return _meth(self)
@@ -177,7 +177,7 @@ def requires_singlephase_init(meth):
 
 
 def requires_subinterpreters(meth):
-    """Decorator to skip a test if subinterpreters are not supported."""
+    """Decorator to skip a test wenn subinterpreters are not supported."""
     return unittest.skipIf(_interpreters is None,
                            'subinterpreters required')(meth)
 
@@ -247,7 +247,7 @@ klasse ModuleSnapshot(types.SimpleNamespace):
             ns=None,
             ns_id=id(mod.__dict__),
             cached=None,
-            cached_id=id(cached) if cached else None,
+            cached_id=id(cached) wenn cached sonst None,
         )
         ''').strip()
     CLEANUP_SCRIPT = textwrap.dedent('''
@@ -262,23 +262,23 @@ klasse ModuleSnapshot(types.SimpleNamespace):
                      postscript=None,
                      postcleanup=False,
                      ):
-        if postcleanup is True:
+        wenn postcleanup is True:
             postcleanup = cls.CLEANUP_SCRIPT
-        elif isinstance(postcleanup, str):
+        sowenn isinstance(postcleanup, str):
             postcleanup = textwrap.dedent(postcleanup).strip()
             postcleanup = cls.CLEANUP_SCRIPT + os.linesep + postcleanup
-        else:
+        sonst:
             postcleanup = ''
-        prescript = textwrap.dedent(prescript).strip() if prescript else ''
-        postscript = textwrap.dedent(postscript).strip() if postscript else ''
+        prescript = textwrap.dedent(prescript).strip() wenn prescript sonst ''
+        postscript = textwrap.dedent(postscript).strip() wenn postscript sonst ''
 
-        if postcleanup:
-            if postscript:
+        wenn postcleanup:
+            wenn postscript:
                 postscript = postscript + os.linesep * 2 + postcleanup
-            else:
+            sonst:
                 postscript = postcleanup
 
-        if import_first:
+        wenn import_first:
             prescript += textwrap.dedent(f'''
 
                 # Now import the module.
@@ -303,7 +303,7 @@ klasse ModuleSnapshot(types.SimpleNamespace):
 
     @classmethod
     def from_subinterp(cls, name, interpid=None, *, pipe=None, **script_kwds):
-        if pipe is not None:
+        wenn pipe is not None:
             return cls._from_subinterp(name, interpid, pipe, script_kwds)
         pipe = os.pipe()
         try:
@@ -326,18 +326,18 @@ klasse ModuleSnapshot(types.SimpleNamespace):
 
             ''')
         _postscript = script_kwargs.get('postscript')
-        if _postscript:
+        wenn _postscript:
             _postscript = textwrap.dedent(_postscript).lstrip()
             postscript += _postscript
         script_kwargs['postscript'] = postscript.strip()
         script = cls.build_script(name, **script_kwargs)
 
         # Run the script.
-        if interpid is None:
+        wenn interpid is None:
             ret = run_in_subinterp(script)
-            if ret != 0:
+            wenn ret != 0:
                 raise AssertionError(f'{ret} != 0')
-        else:
+        sonst:
             _interpreters.run_string(interpid, script)
 
         # Parse the results.
@@ -382,7 +382,7 @@ klasse ImportTests(unittest.TestCase):
         with self.assertRaises(ImportError) as cm:
             from _testcapi import i_dont_exist
         self.assertEqual(cm.exception.name, '_testcapi')
-        if hasattr(_testcapi, "__file__"):
+        wenn hasattr(_testcapi, "__file__"):
             # The path on the exception is strictly the spec origin, not the
             # module's __file__. For most cases, these are the same; but on
             # iOS, the Framework relocation process results in the exception
@@ -392,7 +392,7 @@ klasse ImportTests(unittest.TestCase):
                 str(cm.exception),
                 r"cannot import name 'i_dont_exist' from '_testcapi' \(.*(\.(so|pyd))?\)"
             )
-        else:
+        sonst:
             self.assertEqual(
                 str(cm.exception),
                 "cannot import name 'i_dont_exist' from '_testcapi' (unknown location)"
@@ -433,7 +433,7 @@ klasse ImportTests(unittest.TestCase):
             self.assertNotIn(b"invalid_type", globals)
 
     def test_case_sensitivity(self):
-        # Brief digression to test that import is case-sensitive:  if we got
+        # Brief digression to test that import is case-sensitive:  wenn we got
         # this far, we know fuer sure that "random" exists.
         with self.assertRaises(ImportError):
             import RAnDoM
@@ -460,7 +460,7 @@ klasse ImportTests(unittest.TestCase):
                 print("a =", a, file=f)
                 print("b =", b, file=f)
 
-            if TESTFN in sys.modules:
+            wenn TESTFN in sys.modules:
                 del sys.modules[TESTFN]
             importlib.invalidate_caches()
             try:
@@ -481,7 +481,7 @@ klasse ImportTests(unittest.TestCase):
         sys.path.insert(0, os.curdir)
         try:
             test_with_extension(".py")
-            if sys.platform.startswith("win"):
+            wenn sys.platform.startswith("win"):
                 fuer ext in [".PY", ".Py", ".pY", ".pyw", ".PYW", ".pYw"]:
                     test_with_extension(ext)
         finally:
@@ -536,7 +536,7 @@ klasse ImportTests(unittest.TestCase):
         # we try.
         sys.path.insert(0, os.curdir)
         importlib.invalidate_caches()
-        if TESTFN in sys.modules:
+        wenn TESTFN in sys.modules:
             del sys.modules[TESTFN]
         try:
             fuer i in [1, 2, 3]:
@@ -615,7 +615,7 @@ klasse ImportTests(unittest.TestCase):
 
     @skip_if_dont_write_bytecode
     def test_file_to_source(self):
-        # check if __file__ points to the source file where available
+        # check wenn __file__ points to the source file where available
         source = TESTFN + ".py"
         with open(source, "w", encoding='utf-8') as f:
             f.write("test = None\n")
@@ -634,7 +634,7 @@ klasse ImportTests(unittest.TestCase):
         finally:
             del sys.path[0]
             remove_files(TESTFN)
-            if TESTFN in sys.modules:
+            wenn TESTFN in sys.modules:
                 del sys.modules[TESTFN]
 
     def test_import_by_filename(self):
@@ -673,7 +673,7 @@ klasse ImportTests(unittest.TestCase):
             except OverflowError:
                 self.skipTest("cannot set modification time to large integer")
             except OSError as e:
-                if e.errno not in (getattr(errno, 'EOVERFLOW', None),
+                wenn e.errno not in (getattr(errno, 'EOVERFLOW', None),
                                    getattr(errno, 'EINVAL', None)):
                     raise
                 self.skipTest("cannot set modification time to large integer ({})".format(e))
@@ -738,7 +738,7 @@ klasse ImportTests(unittest.TestCase):
         # bpo 38091: this is a hack to slow down the code that calls
         # has_deadlock(); the logic was itself sometimes deadlocking.
         def delay_has_deadlock(frame, event, arg):
-            if event == 'call' and frame.f_code.co_name == 'has_deadlock':
+            wenn event == 'call' and frame.f_code.co_name == 'has_deadlock':
                 time.sleep(0.1)
 
         sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'data'))
@@ -763,7 +763,7 @@ klasse ImportTests(unittest.TestCase):
                 finally:
                     sys.modules.pop('package', None)
                     sys.modules.pop('package.submodule', None)
-                if exc is not None:
+                wenn exc is not None:
                     raise exc
         finally:
             del sys.path[0]
@@ -775,7 +775,7 @@ klasse ImportTests(unittest.TestCase):
         pydname = importlib.util.find_spec("_sqlite3").origin
         depname = os.path.join(
             os.path.dirname(pydname),
-            "sqlite3{}.dll".format("_d" if "_d" in pydname else ""))
+            "sqlite3{}.dll".format("_d" wenn "_d" in pydname sonst ""))
 
         with os_helper.temp_dir() as tmp:
             tmp2 = os.path.join(tmp, "DLLs")
@@ -1000,7 +1000,7 @@ from not_a_module import symbol
                     f.write(script)
 
                 expected_error = error + (
-                    rb" \(consider renaming '.*numpy.py' if it has the "
+                    rb" \(consider renaming '.*numpy.py' wenn it has the "
                     rb"same name as a library you intended to import\)\s+\z"
                 )
 
@@ -1265,7 +1265,7 @@ klasse FilePermissionTests(unittest.TestCase):
         with temp_umask(mask), ready_to_import() as (name, path):
             cached_path = importlib.util.cache_from_source(path)
             module = __import__(name)
-            if not os.path.exists(cached_path):
+            wenn not os.path.exists(cached_path):
                 self.fail("__import__ did not result in creation of "
                           "a .pyc file")
             stat_info = os.stat(cached_path)
@@ -1285,7 +1285,7 @@ klasse FilePermissionTests(unittest.TestCase):
             cached_path = importlib.util.cache_from_source(path)
             os.chmod(path, mode)
             __import__(name)
-            if not os.path.exists(cached_path):
+            wenn not os.path.exists(cached_path):
                 self.fail("__import__ did not result in creation of "
                           "a .pyc file")
             stat_info = os.stat(cached_path)
@@ -1301,7 +1301,7 @@ klasse FilePermissionTests(unittest.TestCase):
             cached_path = importlib.util.cache_from_source(path)
             os.chmod(path, mode)
             __import__(name)
-            if not os.path.exists(cached_path):
+            wenn not os.path.exists(cached_path):
                 self.fail("__import__ did not result in creation of "
                           "a .pyc file")
             stat_info = os.stat(cached_path)
@@ -1370,9 +1370,9 @@ func_filename = func.__code__.co_filename
 
     def tearDown(self):
         sys.path[:] = self.sys_path
-        if self.orig_module is not None:
+        wenn self.orig_module is not None:
             sys.modules[self.module_name] = self.orig_module
-        else:
+        sonst:
             unload(self.module_name)
         unlink(self.file_name)
         unlink(self.compiled_name)
@@ -1468,7 +1468,7 @@ klasse PathsTests(unittest.TestCase):
         try:
             os.listdir(unc)
         except OSError as e:
-            if e.errno in (errno.EPERM, errno.EACCES, errno.ENOENT):
+            wenn e.errno in (errno.EPERM, errno.EACCES, errno.ENOENT):
                 # See issue #15338
                 self.skipTest("cannot access administrative share %r" % (unc,))
             raise
@@ -1524,7 +1524,7 @@ klasse RelativeImportTests(unittest.TestCase):
         self.assertRaises(TypeError, check_relative)
 
     def test_parentless_import_shadowed_by_global(self):
-        # Test as if this were done from the REPL where this error most commonly occurs (bpo-37409).
+        # Test as wenn this were done from the REPL where this error most commonly occurs (bpo-37409).
         script_helper.assert_python_failure('-W', 'ignore', '-c',
             "foo = 1; from . import foo")
 
@@ -1594,7 +1594,7 @@ klasse OverridingImportBuiltinTests(unittest.TestCase):
             self.assertEqual(foo(), 5)
 
         # Test what happens when we shadow __import__ in globals(); this
-        # currently does not impact the import process, but if this changes,
+        # currently does not impact the import process, but wenn this changes,
         # other code will need to change, so keep this test as a tripwire.
         with swap_item(globals(), "__import__", lambda *x: 5):
             self.assertEqual(foo(), os)
@@ -1853,7 +1853,7 @@ klasse GetSourcefileTests(unittest.TestCase):
 
     def test_get_sourcefile(self):
         # Given a valid bytecode path, return the path to the corresponding
-        # source file if it exists.
+        # source file wenn it exists.
         with mock.patch('importlib._bootstrap_external._path_isfile') as _path_isfile:
             _path_isfile.return_value = True
             path = TESTFN + '.pyc'
@@ -1899,7 +1899,7 @@ klasse ImportTracebackTests(unittest.TestCase):
         while tb:
             code = tb.tb_frame.f_code
             fn = code.co_filename
-            if not deduped_files or fn != deduped_files[-1]:
+            wenn not deduped_files or fn != deduped_files[-1]:
                 deduped_files.append(fn)
             tb = tb.tb_next
         self.assertEqual(len(deduped_files), len(files), deduped_files)
@@ -1912,7 +1912,7 @@ klasse ImportTracebackTests(unittest.TestCase):
             import nonexistent_xyzzy
         except ImportError as e:
             tb = e.__traceback__
-        else:
+        sonst:
             self.fail("ImportError should have been raised")
         self.assert_traceback(tb, [__file__])
 
@@ -1922,7 +1922,7 @@ klasse ImportTracebackTests(unittest.TestCase):
             import foo
         except ImportError as e:
             tb = e.__traceback__
-        else:
+        sonst:
             self.fail("ImportError should have been raised")
         self.assert_traceback(tb, [__file__, 'foo.py'])
 
@@ -1932,7 +1932,7 @@ klasse ImportTracebackTests(unittest.TestCase):
             import foo
         except ZeroDivisionError as e:
             tb = e.__traceback__
-        else:
+        sonst:
             self.fail("ZeroDivisionError should have been raised")
         self.assert_traceback(tb, [__file__, 'foo.py'])
 
@@ -1943,7 +1943,7 @@ klasse ImportTracebackTests(unittest.TestCase):
             import foo
         except ZeroDivisionError as e:
             tb = e.__traceback__
-        else:
+        sonst:
             self.fail("ZeroDivisionError should have been raised")
         self.assert_traceback(tb, [__file__, 'foo.py', 'bar.py'])
 
@@ -1954,7 +1954,7 @@ klasse ImportTracebackTests(unittest.TestCase):
             import foo
         except SyntaxError as e:
             tb = e.__traceback__
-        else:
+        sonst:
             self.fail("SyntaxError should have been raised")
         self.assert_traceback(tb, [__file__])
 
@@ -1979,7 +1979,7 @@ klasse ImportTracebackTests(unittest.TestCase):
             import _parent_foo.bar
         except ZeroDivisionError as e:
             tb = e.__traceback__
-        else:
+        sonst:
             self.fail("ZeroDivisionError should have been raised")
         self.assert_traceback(tb, [__file__, bar_path])
 
@@ -1989,7 +1989,7 @@ klasse ImportTracebackTests(unittest.TestCase):
             from _parent_foo import bar
         except ZeroDivisionError as e:
             tb = e.__traceback__
-        else:
+        sonst:
             self.fail("ImportError should have been raised")
         self.assert_traceback(tb, [__file__, bar_path])
 
@@ -1999,7 +1999,7 @@ klasse ImportTracebackTests(unittest.TestCase):
             import _parent_foo.bar
         except ZeroDivisionError as e:
             tb = e.__traceback__
-        else:
+        sonst:
             self.fail("ZeroDivisionError should have been raised")
         self.assert_traceback(tb, [__file__, init_path])
 
@@ -2009,7 +2009,7 @@ klasse ImportTracebackTests(unittest.TestCase):
             from _parent_foo import bar
         except ZeroDivisionError as e:
             tb = e.__traceback__
-        else:
+        sonst:
             self.fail("ZeroDivisionError should have been raised")
         self.assert_traceback(tb, [__file__, init_path])
 
@@ -2019,9 +2019,9 @@ klasse ImportTracebackTests(unittest.TestCase):
         # away from the traceback.
         self.create_module("foo", "")
         importlib = sys.modules['_frozen_importlib_external']
-        if 'load_module' in vars(importlib.SourceLoader):
+        wenn 'load_module' in vars(importlib.SourceLoader):
             old_exec_module = importlib.SourceLoader.exec_module
-        else:
+        sonst:
             old_exec_module = None
         try:
             def exec_module(*args):
@@ -2031,13 +2031,13 @@ klasse ImportTracebackTests(unittest.TestCase):
                 import foo
             except ZeroDivisionError as e:
                 tb = e.__traceback__
-            else:
+            sonst:
                 self.fail("ZeroDivisionError should have been raised")
             self.assert_traceback(tb, [__file__, '<frozen importlib', __file__])
         finally:
-            if old_exec_module is None:
+            wenn old_exec_module is None:
                 del importlib.SourceLoader.exec_module
-            else:
+            sonst:
                 importlib.SourceLoader.exec_module = old_exec_module
 
     @unittest.skipUnless(TESTFN_UNENCODABLE, 'need TESTFN_UNENCODABLE')
@@ -2060,7 +2060,7 @@ klasse CircularImportTests(unittest.TestCase):
         """Make sure no modules pre-exist in sys.modules which are being used to
         test."""
         fuer key in list(sys.modules.keys()):
-            if key.startswith('test.test_import.data.circular_imports'):
+            wenn key.startswith('test.test_import.data.circular_imports'):
                 del sys.modules[key]
 
     def test_direct(self):
@@ -2203,23 +2203,23 @@ klasse SubinterpImportTests(unittest.TestCase):
         r, w = os.pipe()
         self.addCleanup(os.close, r)
         self.addCleanup(os.close, w)
-        if hasattr(os, 'set_blocking'):
+        wenn hasattr(os, 'set_blocking'):
             os.set_blocking(r, False)
         return (r, w)
 
     def import_script(self, name, fd, filename=None, check_override=None):
         override_text = ''
-        if check_override is not None:
+        wenn check_override is not None:
             override_text = f'''
                 import _imp
                 _imp._override_multi_interp_extensions_check({check_override})
                 '''
-        if filename:
+        wenn filename:
             # Apple extensions must be distributed as frameworks. This requires
             # a specialist loader.
-            if is_apple_mobile:
+            wenn is_apple_mobile:
                 loader = "AppleFrameworkLoader"
-            else:
+            sonst:
                 loader = "ExtensionFileLoader"
 
             return textwrap.dedent(f'''
@@ -2234,11 +2234,11 @@ klasse SubinterpImportTests(unittest.TestCase):
                     loader.exec_module(module)
                 except ImportError as exc:
                     text = 'ImportError: ' + str(exc)
-                else:
+                sonst:
                     text = 'okay'
                 os.write({fd}, text.encode('utf-8'))
                 ''')
-        else:
+        sonst:
             return textwrap.dedent(f'''
                 import os, sys
                 {override_text}
@@ -2246,7 +2246,7 @@ klasse SubinterpImportTests(unittest.TestCase):
                     import {name}
                 except ImportError as exc:
                     text = 'ImportError: ' + str(exc)
-                else:
+                sonst:
                     text = 'okay'
                 os.write({fd}, text.encode('utf-8'))
                 ''')
@@ -2268,14 +2268,14 @@ klasse SubinterpImportTests(unittest.TestCase):
         the interpreter will be configured to check fuer modules
         that are not compatible with use in multiple interpreters.
 
-        This should always return "okay" fuer all modules if the
+        This should always return "okay" fuer all modules wenn the
         setting is False (with no override).
         """
         __import__(name)
 
         kwargs = dict(
             **self.RUN_KWARGS,
-            **(self.ISOLATED if isolated else self.NOT_ISOLATED),
+            **(self.ISOLATED wenn isolated sonst self.NOT_ISOLATED),
             check_multi_interp_extensions=check_singlephase_setting,
         )
 
@@ -2319,12 +2319,12 @@ klasse SubinterpImportTests(unittest.TestCase):
         #  * this tests importing the module fuer the first time
         kwargs = dict(
             **self.RUN_KWARGS,
-            **(self.ISOLATED if isolated else self.NOT_ISOLATED),
+            **(self.ISOLATED wenn isolated sonst self.NOT_ISOLATED),
             check_multi_interp_extensions=strict,
         )
         gil = kwargs['gil']
-        kwargs['gil'] = 'default' if gil == 0 else (
-            'shared' if gil == 1 else 'own' if gil == 2 else gil)
+        kwargs['gil'] = 'default' wenn gil == 0 sonst (
+            'shared' wenn gil == 1 sonst 'own' wenn gil == 2 sonst gil)
         _, out, err = script_helper.assert_python_ok('-c', textwrap.dedent(f'''
             import _testinternalcapi, sys
             assert (
@@ -2347,12 +2347,12 @@ klasse SubinterpImportTests(unittest.TestCase):
         #  * "strict" is always True
         kwargs = dict(
             **self.RUN_KWARGS,
-            **(self.ISOLATED if isolated else self.NOT_ISOLATED),
+            **(self.ISOLATED wenn isolated sonst self.NOT_ISOLATED),
             check_multi_interp_extensions=True,
         )
         gil = kwargs['gil']
-        kwargs['gil'] = 'default' if gil == 0 else (
-            'shared' if gil == 1 else 'own' if gil == 2 else gil)
+        kwargs['gil'] = 'default' wenn gil == 0 sonst (
+            'shared' wenn gil == 1 sonst 'own' wenn gil == 2 sonst gil)
         _, out, err = script_helper.assert_python_ok('-c', textwrap.dedent(f'''
             import _testinternalcapi, sys
             assert {name!r} not in sys.modules, {name!r}
@@ -2375,7 +2375,7 @@ klasse SubinterpImportTests(unittest.TestCase):
         # since they still don't implement multi-phase init.
         module = '_imp'
         require_builtin(module)
-        if not Py_GIL_DISABLED:
+        wenn not Py_GIL_DISABLED:
             with self.subTest(f'{module}: not strict'):
                 self.check_compatible_here(module, strict=False)
         with self.subTest(f'{module}: strict, not fresh'):
@@ -2386,9 +2386,9 @@ klasse SubinterpImportTests(unittest.TestCase):
     def test_frozen_compat(self):
         module = '_frozen_importlib'
         require_frozen(module, skip=True)
-        if __import__(module).__spec__.origin != 'frozen':
+        wenn __import__(module).__spec__.origin != 'frozen':
             raise unittest.SkipTest(f'{module} is unexpectedly not frozen')
-        if not Py_GIL_DISABLED:
+        wenn not Py_GIL_DISABLED:
             with self.subTest(f'{module}: not strict'):
                 self.check_compatible_here(module, strict=False)
         with self.subTest(f'{module}: strict, not fresh'):
@@ -2413,7 +2413,7 @@ klasse SubinterpImportTests(unittest.TestCase):
         module = '_testmultiphase'
         require_extension(module)
 
-        if not Py_GIL_DISABLED:
+        wenn not Py_GIL_DISABLED:
             with self.subTest(f'{module}: not strict'):
                 self.check_compatible_here(module, strict=False)
         with self.subTest(f'{module}: strict, not fresh'):
@@ -2434,7 +2434,7 @@ klasse SubinterpImportTests(unittest.TestCase):
             self.check_incompatible_here(modname, filename, isolated=True)
         with self.subTest(f'{modname}: not isolated'):
             self.check_incompatible_here(modname, filename, isolated=False)
-        if not Py_GIL_DISABLED:
+        wenn not Py_GIL_DISABLED:
             with self.subTest(f'{modname}: not strict'):
                 self.check_compatible_here(modname, filename, strict=False)
 
@@ -2461,7 +2461,7 @@ klasse SubinterpImportTests(unittest.TestCase):
                 with self.subTest(f'{modname}: not isolated, strict'):
                     self.check_compatible_here(modname, filename,
                                                strict=True, isolated=False)
-                if not Py_GIL_DISABLED:
+                wenn not Py_GIL_DISABLED:
                     with self.subTest(f'{modname}: not isolated, not strict'):
                         self.check_compatible_here(
                             modname, filename, strict=False, isolated=False)
@@ -2470,7 +2470,7 @@ klasse SubinterpImportTests(unittest.TestCase):
     def test_python_compat(self):
         module = 'threading'
         require_pure_python(module)
-        if not Py_GIL_DISABLED:
+        wenn not Py_GIL_DISABLED:
             with self.subTest(f'{module}: not strict'):
                 self.check_compatible_here(module, strict=False)
         with self.subTest(f'{module}: strict, not fresh'):
@@ -2549,8 +2549,8 @@ klasse TestSinglePhaseSnapshot(ModuleSnapshot):
     * module - mod or a SimpleNamespace with __file__ & __spec__
     * ns - a shallow copy of mod.__dict__
     * ns_id - id(mod.__dict__)
-    * cached - sys.modules[name] (or None if not there or not snapshotable)
-    * cached_id - id(sys.modules[name]) (or None if not there)
+    * cached - sys.modules[name] (or None wenn not there or not snapshotable)
+    * cached_id - id(sys.modules[name]) (or None wenn not there)
 
     Extra fields:
 
@@ -2650,7 +2650,7 @@ klasse TestSinglePhaseSnapshot(ModuleSnapshot):
         self.lookedup = mod.look_up_self()
         self.lookedup_id = id(self.lookedup)
         self.state_initialized = mod.state_initialized()
-        if hasattr(mod, 'initialized_count'):
+        wenn hasattr(mod, 'initialized_count'):
             self.init_count = mod.initialized_count()
         return self
 
@@ -2673,7 +2673,7 @@ klasse TestSinglePhaseSnapshot(ModuleSnapshot):
     @classmethod
     def parse(cls, text):
         self = super().parse(text)
-        if not self.has_spam:
+        wenn not self.has_spam:
             del self.spam
         del self.has_spam
         return self
@@ -2692,7 +2692,7 @@ klasse SinglephaseInitTests(unittest.TestCase):
         # Apple extensions must be distributed as frameworks. This requires
         # a specialist loader, and we need to differentiate between the
         # spec.origin and the original file location.
-        if is_apple_mobile:
+        wenn is_apple_mobile:
             assert cls.LOADER is AppleFrameworkLoader
 
             cls.ORIGIN = spec.origin
@@ -2701,7 +2701,7 @@ klasse SinglephaseInitTests(unittest.TestCase):
                     os.path.dirname(sys.executable),
                     f.read().strip()
                 )
-        else:
+        sonst:
             assert cls.LOADER is ExtensionFileLoader
 
             cls.ORIGIN = spec.origin
@@ -2717,8 +2717,8 @@ klasse SinglephaseInitTests(unittest.TestCase):
     @classmethod
     def clean_up(cls):
         name = cls.NAME
-        if name in sys.modules:
-            if hasattr(sys.modules[name], '_clear_globals'):
+        wenn name in sys.modules:
+            wenn hasattr(sys.modules[name], '_clear_globals'):
                 assert sys.modules[name].__file__ == cls.FILE, \
                     f"{sys.modules[name].__file__} != {cls.FILE}"
 
@@ -2792,7 +2792,7 @@ klasse SinglephaseInitTests(unittest.TestCase):
         def clean_up():
             _interpreters.exec(interpid, textwrap.dedent(f'''
                 name = {self.NAME!r}
-                if name in sys.modules:
+                wenn name in sys.modules:
                     sys.modules.pop(name)._clear_globals()
                 _testinternalcapi.clear_extension(name, {self.ORIGIN!r})
                 '''))
@@ -2806,8 +2806,8 @@ klasse SinglephaseInitTests(unittest.TestCase):
                             ):
         name = self.NAME
 
-        if postcleanup:
-            import_ = 'import _testinternalcapi' if interpid is None else ''
+        wenn postcleanup:
+            import_ = 'import _testinternalcapi' wenn interpid is None sonst ''
             postcleanup = f'''
                 {import_}
                 mod._clear_globals()
@@ -2842,7 +2842,7 @@ klasse SinglephaseInitTests(unittest.TestCase):
         isolated = False
 
         mod = loaded.module
-        if not mod:
+        wenn not mod:
             # It came from a subinterpreter.
             isolated = True
             mod = loaded.snapshot.module
@@ -2850,7 +2850,7 @@ klasse SinglephaseInitTests(unittest.TestCase):
         self.assertEqual(mod.__spec__.name, loaded.name)
         self.assertEqual(mod.__file__, self.FILE)
         self.assertEqual(mod.__spec__.origin, self.ORIGIN)
-        if not isolated:
+        wenn not isolated:
             self.assertIsSubclass(mod.error, Exception)
         self.assertEqual(mod.int_const, 1969)
         self.assertEqual(mod.str_const, 'something different')
@@ -2859,17 +2859,17 @@ klasse SinglephaseInitTests(unittest.TestCase):
 
         snap = loaded.snapshot
         self.assertEqual(snap.summed, 3)
-        if snap.state_initialized is not None:
+        wenn snap.state_initialized is not None:
             self.assertIsInstance(snap.state_initialized, float)
             self.assertGreater(snap.state_initialized, 0)
-        if isolated:
+        wenn isolated:
             # The "looked up" module is interpreter-specific
             # (interp->imports.modules_by_index was set fuer the module).
             self.assertEqual(snap.lookedup_id, snap.id)
             self.assertEqual(snap.cached_id, snap.id)
             with self.assertRaises(AttributeError):
                 snap.spam
-        else:
+        sonst:
             self.assertIs(snap.lookedup, mod)
             self.assertIs(snap.cached, mod)
 
@@ -3111,11 +3111,11 @@ klasse SinglephaseInitTests(unittest.TestCase):
             self.add_module_cleanup(name)
             with self.subTest(name=name, has_state=has_state):
                 loaded = self.load(name)
-                if has_state:
+                wenn has_state:
                     self.addCleanup(loaded.module._clear_module_state)
 
                 reloaded = self.re_load(name, loaded.module)
-                if has_state:
+                wenn has_state:
                     self.addCleanup(reloaded.module._clear_module_state)
 
                 self.check_common(loaded)
@@ -3135,9 +3135,9 @@ klasse SinglephaseInitTests(unittest.TestCase):
                 self.assertNotEqual(reloaded.module.__dict__,
                                     loaded.module.__dict__)
                 self.assertIs(reloaded.snapshot.lookedup, reloaded.module)
-                if loaded.snapshot.state_initialized is None:
+                wenn loaded.snapshot.state_initialized is None:
                     self.assertIs(reloaded.snapshot.state_initialized, None)
-                else:
+                sonst:
                     self.assertGreater(reloaded.snapshot.state_initialized,
                                        loaded.snapshot.state_initialized)
 
@@ -3232,7 +3232,7 @@ klasse SinglephaseInitTests(unittest.TestCase):
     def test_basic_multiple_interpreters_deleted_no_reset(self):
         # without resetting; already loaded in a deleted interpreter
 
-        if Py_TRACE_REFS:
+        wenn Py_TRACE_REFS:
             # It's a Py_TRACE_REFS build.
             # This test breaks interpreter isolation a little,
             # which causes problems on Py_TRACE_REF builds.
@@ -3373,6 +3373,6 @@ klasse TestMagicNumber(unittest.TestCase):
         self.assertIn(magic_number, range(start, start + 50))
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     # Test needs to be a package, so we can do relative imports.
     unittest.main()

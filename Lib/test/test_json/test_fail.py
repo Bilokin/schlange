@@ -65,7 +65,7 @@ JSONDOCS = [
     # https://json.org/JSON_checker/test/fail31.json
     '[0e+-1]',
     # https://json.org/JSON_checker/test/fail32.json
-    '{"Comma instead if closing brace": true,',
+    '{"Comma instead wenn closing brace": true,',
     # https://json.org/JSON_checker/test/fail33.json
     '["mismatch"}',
     # https://code.google.com/archive/p/simplejson/issues/3
@@ -81,14 +81,14 @@ klasse TestFail:
     def test_failures(self):
         fuer idx, doc in enumerate(JSONDOCS):
             idx = idx + 1
-            if idx in SKIPS:
+            wenn idx in SKIPS:
                 self.loads(doc)
                 continue
             try:
                 self.loads(doc)
             except self.JSONDecodeError:
                 pass
-            else:
+            sonst:
                 self.fail(f"Expected failure fuer fail{idx}.json: {doc!r}")
 
     def test_non_string_keys_dict(self):

@@ -26,7 +26,7 @@ klasse SlowTask:
 
         while True:
             tosleep = exitat - time.monotonic()
-            if tosleep <= 0:
+            wenn tosleep <= 0:
                 break
 
             try:
@@ -250,7 +250,7 @@ klasse AsyncioWaitForTest(unittest.IsolatedAsyncioTestCase):
 
     async def test_wait_for_cancel_suppressed(self):
         # GH-86296: Suppressing CancelledError is discouraged
-        # but if a task suppresses CancelledError and returns a value,
+        # but wenn a task suppresses CancelledError and returns a value,
         # `wait_for` should return the value instead of raising CancelledError.
         # This is the same behavior as `asyncio.timeout`.
 
@@ -349,5 +349,5 @@ klasse WaitForShieldTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(await task, "done")
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

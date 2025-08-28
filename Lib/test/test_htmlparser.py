@@ -15,7 +15,7 @@ klasse EventCollector(html.parser.HTMLParser):
         self.events = []
         self.append = self.events.append
         html.parser.HTMLParser.__init__(self, *args, **kw)
-        if autocdata:
+        wenn autocdata:
             self._set_support_cdata(False)
 
     def get_events(self):
@@ -25,9 +25,9 @@ klasse EventCollector(html.parser.HTMLParser):
         prevtype = None
         fuer event in self.events:
             type = event[0]
-            if type == prevtype == "data":
+            wenn type == prevtype == "data":
                 L[-1] = ("data", L[-1][1] + event[1])
-            else:
+            sonst:
                 L.append(event)
             prevtype = type
         self.events = L
@@ -37,7 +37,7 @@ klasse EventCollector(html.parser.HTMLParser):
 
     def handle_starttag(self, tag, attrs):
         self.append(("starttag", tag, attrs))
-        if self.autocdata and tag == 'svg':
+        wenn self.autocdata and tag == 'svg':
             self._set_support_cdata(True)
 
     def handle_startendtag(self, tag, attrs):
@@ -45,7 +45,7 @@ klasse EventCollector(html.parser.HTMLParser):
 
     def handle_endtag(self, tag):
         self.append(("endtag", tag))
-        if self.autocdata and tag == 'svg':
+        wenn self.autocdata and tag == 'svg':
             self._set_support_cdata(False)
 
     # all other markup
@@ -101,14 +101,14 @@ klasse TestCaseBase(unittest.TestCase):
         return EventCollector(convert_charrefs=False)
 
     def _run_check(self, source, expected_events, collector=None):
-        if collector is None:
+        wenn collector is None:
             collector = self.get_collector()
         parser = collector
         fuer s in source:
             parser.feed(s)
         parser.close()
         events = parser.get_events()
-        if events != expected_events:
+        wenn events != expected_events:
             self.fail("received events did not match expected events" +
                       "\nSource:\n" + repr(source) +
                       "\nExpected:\n" + pprint.pformat(expected_events) +
@@ -442,7 +442,7 @@ text
         content = "a = 123"
         s = f'<ScrIPt>{content}{tail}'
         self._run_check(s, [("starttag", "script", []),
-                            ("data", content if end else content + tail)],
+                            ("data", content wenn end sonst content + tail)],
                         collector=EventCollectorNoNormalize(convert_charrefs=False))
 
     @support.subTests('tail,end', [
@@ -458,12 +458,12 @@ text
     def test_eof_in_title(self, tail, end):
         s = f'<TitLe>Egg &amp; Spam{tail}'
         self._run_check(s, [("starttag", "title", []),
-                            ("data", "Egg & Spam" + ('' if end else tail))],
+                            ("data", "Egg & Spam" + ('' wenn end sonst tail))],
                         collector=EventCollectorNoNormalize(convert_charrefs=True))
         self._run_check(s, [("starttag", "title", []),
                             ('data', 'Egg '),
                             ('entityref', 'amp'),
-                            ('data', ' Spam' + ('' if end else tail))],
+                            ('data', ' Spam' + ('' wenn end sonst tail))],
                         collector=EventCollectorNoNormalize(convert_charrefs=False))
 
     def test_comments(self):
@@ -575,7 +575,7 @@ text
                             '   x="z{0}z" x="{0} z" x="{0}=z"></a>'
                             .format(charref), expected, collector=collector())
 
-        # only unescape unterminated entity matches if they are not followed by
+        # only unescape unterminated entity matches wenn they are not followed by
         # an alphanumeric or an equals sign
         charref = '&cent'
         expected = [('starttag', 'a',
@@ -872,7 +872,7 @@ text
         '] ]>',
         ']] >',
         ('\n'
-         '    if (a < b && a > b) {\n'
+         '    wenn (a < b && a > b) {\n'
          '        printf("[<marquee>How?</marquee>]");\n'
          '    }\n'),
     ])
@@ -910,7 +910,7 @@ text
 
     def test_convert_charrefs_dropped_text(self):
         # #23144: make sure that all the events are triggered when
-        # convert_charrefs is True, even if we don't call .close()
+        # convert_charrefs is True, even wenn we don't call .close()
         parser = EventCollector(convert_charrefs=True)
         # before the fix, bar & baz was missing
         parser.feed("foo <a>link</a> bar &amp; baz")
@@ -1155,5 +1155,5 @@ klasse TestInheritance(unittest.TestCase):
             super_reset_method.assert_called_once()
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

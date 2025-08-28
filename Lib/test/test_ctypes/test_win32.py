@@ -65,7 +65,7 @@ klasse TestWintypes(unittest.TestCase):
 
     def test_COMError(self):
         from ctypes import COMError
-        if support.HAVE_DOCSTRINGS:
+        wenn support.HAVE_DOCSTRINGS:
             self.assertEqual(COMError.__doc__,
                              "Raised when a COM method call failed.")
 
@@ -137,7 +137,7 @@ klasse Structures(unittest.TestCase):
         fuer i in range(4):
             ret = ReturnRect(i, rect, pointer(rect), pt, rect,
                          byref(rect), pt, rect)
-            # the c function will check and modify ret if something is
+            # the c function will check and modify ret wenn something is
             # passed in improperly
             self.assertEqual(ret.left, left.value)
             self.assertEqual(ret.right, right.value)
@@ -148,5 +148,5 @@ klasse Structures(unittest.TestCase):
         self.assertIs(PointInRect.argtypes[0], ReturnRect.argtypes[5])
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

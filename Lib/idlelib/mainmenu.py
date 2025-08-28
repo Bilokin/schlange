@@ -116,11 +116,11 @@ menudefs = [
    ]),
 ]
 
-if find_spec('turtledemo'):
+wenn find_spec('turtledemo'):
     menudefs[-1][1].append(('Turtle Demo', '<<open-turtle-demo>>'))
 
 default_keydefs = idleConf.GetCurrentKeySet()
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     from unittest import main
     main('idlelib.idle_test.test_mainmenu', verbosity=2)

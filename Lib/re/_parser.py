@@ -86,11 +86,11 @@ klasse State:
     def opengroup(self, name=None):
         gid = self.groups
         self.groupwidths.append(None)
-        if self.groups > MAXGROUPS:
+        wenn self.groups > MAXGROUPS:
             raise error("too many groups")
-        if name is not None:
+        wenn name is not None:
             ogid = self.groupdict.get(name, None)
-            if ogid is not None:
+            wenn ogid is not None:
                 raise error("redefinition of group name %r as group %d; "
                             "was group %d" % (name, gid,  ogid))
             self.groupdict[name] = gid
@@ -101,10 +101,10 @@ klasse State:
         return gid < self.groups and self.groupwidths[gid] is not None
 
     def checklookbehindgroup(self, gid, source):
-        if self.lookbehindgroups is not None:
-            if not self.checkgroup(gid):
+        wenn self.lookbehindgroups is not None:
+            wenn not self.checkgroup(gid):
                 raise source.error('cannot refer to an open group')
-            if gid >= self.lookbehindgroups:
+            wenn gid >= self.lookbehindgroups:
                 raise source.error('cannot refer to group defined in the same '
                                    'lookbehind subpattern')
 
@@ -112,7 +112,7 @@ klasse SubPattern:
     # a subpattern, in intermediate form
     def __init__(self, state, data=None):
         self.state = state
-        if data is None:
+        wenn data is None:
             data = []
         self.data = data
         self.width = None
@@ -121,43 +121,43 @@ klasse SubPattern:
         seqtypes = (tuple, list)
         fuer op, av in self.data:
             print(level*"  " + str(op), end='')
-            if op is IN:
+            wenn op is IN:
                 # member sublanguage
                 print()
                 fuer op, a in av:
                     print((level+1)*"  " + str(op), a)
-            elif op is BRANCH:
+            sowenn op is BRANCH:
                 print()
                 fuer i, a in enumerate(av[1]):
-                    if i:
+                    wenn i:
                         print(level*"  " + "OR")
                     a.dump(level+1)
-            elif op is GROUPREF_EXISTS:
+            sowenn op is GROUPREF_EXISTS:
                 condgroup, item_yes, item_no = av
                 print('', condgroup)
                 item_yes.dump(level+1)
-                if item_no:
+                wenn item_no:
                     print(level*"  " + "ELSE")
                     item_no.dump(level+1)
-            elif isinstance(av, SubPattern):
+            sowenn isinstance(av, SubPattern):
                 print()
                 av.dump(level+1)
-            elif isinstance(av, seqtypes):
+            sowenn isinstance(av, seqtypes):
                 nl = False
                 fuer a in av:
-                    if isinstance(a, SubPattern):
-                        if not nl:
+                    wenn isinstance(a, SubPattern):
+                        wenn not nl:
                             print()
                         a.dump(level+1)
                         nl = True
-                    else:
-                        if not nl:
+                    sonst:
+                        wenn not nl:
                             print(' ', end='')
                         print(a, end='')
                         nl = False
-                if not nl:
+                wenn not nl:
                     print()
-            else:
+            sonst:
                 print('', av)
     def __repr__(self):
         return repr(self.data)
@@ -166,7 +166,7 @@ klasse SubPattern:
     def __delitem__(self, index):
         del self.data[index]
     def __getitem__(self, index):
-        if isinstance(index, slice):
+        wenn isinstance(index, slice):
             return SubPattern(self.state, self.data[index])
         return self.data[index]
     def __setitem__(self, index, code):
@@ -177,11 +177,11 @@ klasse SubPattern:
         self.data.append(code)
     def getwidth(self):
         # determine the width (min, max) fuer this subpattern
-        if self.width is not None:
+        wenn self.width is not None:
             return self.width
         lo = hi = 0
         fuer op, av in self.data:
-            if op is BRANCH:
+            wenn op is BRANCH:
                 i = MAXWIDTH
                 j = 0
                 fuer av in av[1]:
@@ -190,39 +190,39 @@ klasse SubPattern:
                     j = max(j, h)
                 lo = lo + i
                 hi = hi + j
-            elif op is ATOMIC_GROUP:
+            sowenn op is ATOMIC_GROUP:
                 i, j = av.getwidth()
                 lo = lo + i
                 hi = hi + j
-            elif op is SUBPATTERN:
+            sowenn op is SUBPATTERN:
                 i, j = av[-1].getwidth()
                 lo = lo + i
                 hi = hi + j
-            elif op in _REPEATCODES:
+            sowenn op in _REPEATCODES:
                 i, j = av[2].getwidth()
                 lo = lo + i * av[0]
-                if av[1] == MAXREPEAT and j:
+                wenn av[1] == MAXREPEAT and j:
                     hi = MAXWIDTH
-                else:
+                sonst:
                     hi = hi + j * av[1]
-            elif op in _UNITCODES:
+            sowenn op in _UNITCODES:
                 lo = lo + 1
                 hi = hi + 1
-            elif op is GROUPREF:
+            sowenn op is GROUPREF:
                 i, j = self.state.groupwidths[av]
                 lo = lo + i
                 hi = hi + j
-            elif op is GROUPREF_EXISTS:
+            sowenn op is GROUPREF_EXISTS:
                 i, j = av[1].getwidth()
-                if av[2] is not None:
+                wenn av[2] is not None:
                     l, h = av[2].getwidth()
                     i = min(i, l)
                     j = max(j, h)
-                else:
+                sonst:
                     i = 0
                 lo = lo + i
                 hi = hi + j
-            elif op is SUCCESS:
+            sowenn op is SUCCESS:
                 break
         self.width = min(lo, MAXWIDTH), min(hi, MAXWIDTH)
         return self.width
@@ -231,7 +231,7 @@ klasse Tokenizer:
     def __init__(self, string):
         self.istext = isinstance(string, str)
         self.string = string
-        if not self.istext:
+        wenn not self.istext:
             string = str(string, 'latin1')
         self.decoded_string = string
         self.index = 0
@@ -244,7 +244,7 @@ klasse Tokenizer:
         except IndexError:
             self.next = None
             return
-        if char == "\\":
+        wenn char == "\\":
             index += 1
             try:
                 char += self.decoded_string[index]
@@ -254,7 +254,7 @@ klasse Tokenizer:
         self.index = index + 1
         self.next = char
     def match(self, char):
-        if char == self.next:
+        wenn char == self.next:
             self.__next()
             return True
         return False
@@ -266,7 +266,7 @@ klasse Tokenizer:
         result = ''
         fuer _ in range(n):
             c = self.next
-            if c not in charset:
+            wenn c not in charset:
                 break
             result += c
             self.__next()
@@ -276,13 +276,13 @@ klasse Tokenizer:
         while True:
             c = self.next
             self.__next()
-            if c is None:
-                if not result:
+            wenn c is None:
+                wenn not result:
                     raise self.error("missing " + name)
                 raise self.error("missing %s, unterminated name" % terminator,
                                  len(result))
-            if c == terminator:
-                if not result:
+            wenn c == terminator:
+                wenn not result:
                     raise self.error("missing " + name, 1)
                 break
             result += c
@@ -297,52 +297,52 @@ klasse Tokenizer:
         self.__next()
 
     def error(self, msg, offset=0):
-        if not self.istext:
+        wenn not self.istext:
             msg = msg.encode('ascii', 'backslashreplace').decode('ascii')
         return error(msg, self.string, self.tell() - offset)
 
     def checkgroupname(self, name, offset):
-        if not (self.istext or name.isascii()):
+        wenn not (self.istext or name.isascii()):
             msg = "bad character in group name %a" % name
             raise self.error(msg, len(name) + offset)
-        if not name.isidentifier():
+        wenn not name.isidentifier():
             msg = "bad character in group name %r" % name
             raise self.error(msg, len(name) + offset)
 
 def _class_escape(source, escape):
     # handle escape code inside character class
     code = ESCAPES.get(escape)
-    if code:
+    wenn code:
         return code
     code = CATEGORIES.get(escape)
-    if code and code[0] is IN:
+    wenn code and code[0] is IN:
         return code
     try:
         c = escape[1:2]
-        if c == "x":
+        wenn c == "x":
             # hexadecimal escape (exactly two digits)
             escape += source.getwhile(2, HEXDIGITS)
-            if len(escape) != 4:
+            wenn len(escape) != 4:
                 raise source.error("incomplete escape %s" % escape, len(escape))
             return LITERAL, int(escape[2:], 16)
-        elif c == "u" and source.istext:
+        sowenn c == "u" and source.istext:
             # unicode escape (exactly four digits)
             escape += source.getwhile(4, HEXDIGITS)
-            if len(escape) != 6:
+            wenn len(escape) != 6:
                 raise source.error("incomplete escape %s" % escape, len(escape))
             return LITERAL, int(escape[2:], 16)
-        elif c == "U" and source.istext:
+        sowenn c == "U" and source.istext:
             # unicode escape (exactly eight digits)
             escape += source.getwhile(8, HEXDIGITS)
-            if len(escape) != 10:
+            wenn len(escape) != 10:
                 raise source.error("incomplete escape %s" % escape, len(escape))
             c = int(escape[2:], 16)
             chr(c) # raise ValueError fuer invalid code
             return LITERAL, c
-        elif c == "N" and source.istext:
+        sowenn c == "N" and source.istext:
             import unicodedata
             # named unicode escape e.g. \N{EM DASH}
-            if not source.match('{'):
+            wenn not source.match('{'):
                 raise source.error("missing {")
             charname = source.getuntil('}', 'character name')
             try:
@@ -351,18 +351,18 @@ def _class_escape(source, escape):
                 raise source.error("undefined character name %r" % charname,
                                    len(charname) + len(r'\N{}')) from None
             return LITERAL, c
-        elif c in OCTDIGITS:
+        sowenn c in OCTDIGITS:
             # octal escape (up to three digits)
             escape += source.getwhile(2, OCTDIGITS)
             c = int(escape[1:], 8)
-            if c > 0o377:
+            wenn c > 0o377:
                 raise source.error('octal escape value %s outside of '
                                    'range 0-0o377' % escape, len(escape))
             return LITERAL, c
-        elif c in DIGITS:
+        sowenn c in DIGITS:
             raise ValueError
-        if len(escape) == 2:
-            if c in ASCIILETTERS:
+        wenn len(escape) == 2:
+            wenn c in ASCIILETTERS:
                 raise source.error('bad escape %s' % escape, len(escape))
             return LITERAL, ord(escape[1])
     except ValueError:
@@ -372,37 +372,37 @@ def _class_escape(source, escape):
 def _escape(source, escape, state):
     # handle escape code in expression
     code = CATEGORIES.get(escape)
-    if code:
+    wenn code:
         return code
     code = ESCAPES.get(escape)
-    if code:
+    wenn code:
         return code
     try:
         c = escape[1:2]
-        if c == "x":
+        wenn c == "x":
             # hexadecimal escape
             escape += source.getwhile(2, HEXDIGITS)
-            if len(escape) != 4:
+            wenn len(escape) != 4:
                 raise source.error("incomplete escape %s" % escape, len(escape))
             return LITERAL, int(escape[2:], 16)
-        elif c == "u" and source.istext:
+        sowenn c == "u" and source.istext:
             # unicode escape (exactly four digits)
             escape += source.getwhile(4, HEXDIGITS)
-            if len(escape) != 6:
+            wenn len(escape) != 6:
                 raise source.error("incomplete escape %s" % escape, len(escape))
             return LITERAL, int(escape[2:], 16)
-        elif c == "U" and source.istext:
+        sowenn c == "U" and source.istext:
             # unicode escape (exactly eight digits)
             escape += source.getwhile(8, HEXDIGITS)
-            if len(escape) != 10:
+            wenn len(escape) != 10:
                 raise source.error("incomplete escape %s" % escape, len(escape))
             c = int(escape[2:], 16)
             chr(c) # raise ValueError fuer invalid code
             return LITERAL, c
-        elif c == "N" and source.istext:
+        sowenn c == "N" and source.istext:
             import unicodedata
             # named unicode escape e.g. \N{EM DASH}
-            if not source.match('{'):
+            wenn not source.match('{'):
                 raise source.error("missing {")
             charname = source.getuntil('}', 'character name')
             try:
@@ -411,35 +411,35 @@ def _escape(source, escape, state):
                 raise source.error("undefined character name %r" % charname,
                                    len(charname) + len(r'\N{}')) from None
             return LITERAL, c
-        elif c == "0":
+        sowenn c == "0":
             # octal escape
             escape += source.getwhile(2, OCTDIGITS)
             return LITERAL, int(escape[1:], 8)
-        elif c in DIGITS:
+        sowenn c in DIGITS:
             # octal escape *or* decimal group reference (sigh)
-            if source.next in DIGITS:
+            wenn source.next in DIGITS:
                 escape += source.get()
-                if (escape[1] in OCTDIGITS and escape[2] in OCTDIGITS and
+                wenn (escape[1] in OCTDIGITS and escape[2] in OCTDIGITS and
                     source.next in OCTDIGITS):
                     # got three octal digits; this is an octal escape
                     escape += source.get()
                     c = int(escape[1:], 8)
-                    if c > 0o377:
+                    wenn c > 0o377:
                         raise source.error('octal escape value %s outside of '
                                            'range 0-0o377' % escape,
                                            len(escape))
                     return LITERAL, c
             # not an octal escape, so this is a group reference
             group = int(escape[1:])
-            if group < state.groups:
-                if not state.checkgroup(group):
+            wenn group < state.groups:
+                wenn not state.checkgroup(group):
                     raise source.error("cannot refer to an open group",
                                        len(escape))
                 state.checklookbehindgroup(group, source)
                 return GROUPREF, group
             raise source.error("invalid group reference %d" % group, len(escape) - 1)
-        if len(escape) == 2:
-            if c in ASCIILETTERS:
+        wenn len(escape) == 2:
+            wenn c in ASCIILETTERS:
                 raise source.error("bad escape %s" % escape, len(escape))
             return LITERAL, ord(escape[1])
     except ValueError:
@@ -459,27 +459,27 @@ def _parse_sub(source, state, verbose, nested):
     while True:
         itemsappend(_parse(source, state, verbose, nested + 1,
                            not nested and not items))
-        if not sourcematch("|"):
+        wenn not sourcematch("|"):
             break
-        if not nested:
+        wenn not nested:
             verbose = state.flags & SRE_FLAG_VERBOSE
 
-    if len(items) == 1:
+    wenn len(items) == 1:
         return items[0]
 
     subpattern = SubPattern(state)
 
-    # check if all items share a common prefix
+    # check wenn all items share a common prefix
     while True:
         prefix = None
         fuer item in items:
-            if not item:
+            wenn not item:
                 break
-            if prefix is None:
+            wenn prefix is None:
                 prefix = item[0]
-            elif item[0] != prefix:
+            sowenn item[0] != prefix:
                 break
-        else:
+        sonst:
             # all subitems start with a common "prefix".
             # move it out of the branch
             fuer item in items:
@@ -488,19 +488,19 @@ def _parse_sub(source, state, verbose, nested):
             continue # check next one
         break
 
-    # check if the branch can be replaced by a character set
+    # check wenn the branch can be replaced by a character set
     set = []
     fuer item in items:
-        if len(item) != 1:
+        wenn len(item) != 1:
             break
         op, av = item[0]
-        if op is LITERAL:
+        wenn op is LITERAL:
             set.append((op, av))
-        elif op is IN and av[0][0] is not NEGATE:
+        sowenn op is IN and av[0][0] is not NEGATE:
             set.extend(av)
-        else:
+        sonst:
             break
-    else:
+    sonst:
         # we can store this as a character set instead of a
         # branch (the compiler may optimize this even more)
         subpattern.append((IN, _uniq(set)))
@@ -523,38 +523,38 @@ def _parse(source, state, verbose, nested, first=False):
     while True:
 
         this = source.next
-        if this is None:
+        wenn this is None:
             break # end of pattern
-        if this in "|)":
+        wenn this in "|)":
             break # end of subpattern
         sourceget()
 
-        if verbose:
+        wenn verbose:
             # skip whitespace and comments
-            if this in WHITESPACE:
+            wenn this in WHITESPACE:
                 continue
-            if this == "#":
+            wenn this == "#":
                 while True:
                     this = sourceget()
-                    if this is None or this == "\n":
+                    wenn this is None or this == "\n":
                         break
                 continue
 
-        if this[0] == "\\":
+        wenn this[0] == "\\":
             code = _escape(source, this, state)
             subpatternappend(code)
 
-        elif this not in SPECIAL_CHARS:
+        sowenn this not in SPECIAL_CHARS:
             subpatternappend((LITERAL, _ord(this)))
 
-        elif this == "[":
+        sowenn this == "[":
             here = source.tell() - 1
             # character set
             set = []
             setappend = set.append
-##          if sourcematch(":"):
+##          wenn sourcematch(":"):
 ##              pass # handle character classes
-            if source.next == '[':
+            wenn source.next == '[':
                 import warnings
                 warnings.warn(
                     'Possible nested set at position %d' % source.tell(),
@@ -564,42 +564,42 @@ def _parse(source, state, verbose, nested, first=False):
             # check remaining characters
             while True:
                 this = sourceget()
-                if this is None:
+                wenn this is None:
                     raise source.error("unterminated character set",
                                        source.tell() - here)
-                if this == "]" and set:
+                wenn this == "]" and set:
                     break
-                elif this[0] == "\\":
+                sowenn this[0] == "\\":
                     code1 = _class_escape(source, this)
-                else:
-                    if set and this in '-&~|' and source.next == this:
+                sonst:
+                    wenn set and this in '-&~|' and source.next == this:
                         import warnings
                         warnings.warn(
                             'Possible set %s at position %d' % (
-                                'difference' if this == '-' else
-                                'intersection' if this == '&' else
-                                'symmetric difference' if this == '~' else
+                                'difference' wenn this == '-' sonst
+                                'intersection' wenn this == '&' sonst
+                                'symmetric difference' wenn this == '~' sonst
                                 'union',
                                 source.tell() - 1),
                             FutureWarning, stacklevel=nested + 6
                         )
                     code1 = LITERAL, _ord(this)
-                if sourcematch("-"):
+                wenn sourcematch("-"):
                     # potential range
                     that = sourceget()
-                    if that is None:
+                    wenn that is None:
                         raise source.error("unterminated character set",
                                            source.tell() - here)
-                    if that == "]":
-                        if code1[0] is IN:
+                    wenn that == "]":
+                        wenn code1[0] is IN:
                             code1 = code1[1][0]
                         setappend(code1)
                         setappend((LITERAL, _ord("-")))
                         break
-                    if that[0] == "\\":
+                    wenn that[0] == "\\":
                         code2 = _class_escape(source, that)
-                    else:
-                        if that == '-':
+                    sonst:
+                        wenn that == '-':
                             import warnings
                             warnings.warn(
                                 'Possible set difference at position %d' % (
@@ -607,47 +607,47 @@ def _parse(source, state, verbose, nested, first=False):
                                 FutureWarning, stacklevel=nested + 6
                             )
                         code2 = LITERAL, _ord(that)
-                    if code1[0] != LITERAL or code2[0] != LITERAL:
+                    wenn code1[0] != LITERAL or code2[0] != LITERAL:
                         msg = "bad character range %s-%s" % (this, that)
                         raise source.error(msg, len(this) + 1 + len(that))
                     lo = code1[1]
                     hi = code2[1]
-                    if hi < lo:
+                    wenn hi < lo:
                         msg = "bad character range %s-%s" % (this, that)
                         raise source.error(msg, len(this) + 1 + len(that))
                     setappend((RANGE, (lo, hi)))
-                else:
-                    if code1[0] is IN:
+                sonst:
+                    wenn code1[0] is IN:
                         code1 = code1[1][0]
                     setappend(code1)
 
             set = _uniq(set)
             # XXX: <fl> should move set optimization to compiler!
-            if _len(set) == 1 and set[0][0] is LITERAL:
+            wenn _len(set) == 1 and set[0][0] is LITERAL:
                 # optimization
-                if negate:
+                wenn negate:
                     subpatternappend((NOT_LITERAL, set[0][1]))
-                else:
+                sonst:
                     subpatternappend(set[0])
-            else:
-                if negate:
+            sonst:
+                wenn negate:
                     set.insert(0, (NEGATE, None))
                 # charmap optimization can't be added here because
                 # global flags still are not known
                 subpatternappend((IN, set))
 
-        elif this in REPEAT_CHARS:
+        sowenn this in REPEAT_CHARS:
             # repeat previous item
             here = source.tell()
-            if this == "?":
+            wenn this == "?":
                 min, max = 0, 1
-            elif this == "*":
+            sowenn this == "*":
                 min, max = 0, MAXREPEAT
 
-            elif this == "+":
+            sowenn this == "+":
                 min, max = 1, MAXREPEAT
-            elif this == "{":
-                if source.next == "}":
+            sowenn this == "{":
+                wenn source.next == "}":
                     subpatternappend((LITERAL, _ord(this)))
                     continue
 
@@ -655,182 +655,182 @@ def _parse(source, state, verbose, nested, first=False):
                 lo = hi = ""
                 while source.next in DIGITS:
                     lo += sourceget()
-                if sourcematch(","):
+                wenn sourcematch(","):
                     while source.next in DIGITS:
                         hi += sourceget()
-                else:
+                sonst:
                     hi = lo
-                if not sourcematch("}"):
+                wenn not sourcematch("}"):
                     subpatternappend((LITERAL, _ord(this)))
                     source.seek(here)
                     continue
 
-                if lo:
+                wenn lo:
                     min = int(lo)
-                    if min >= MAXREPEAT:
+                    wenn min >= MAXREPEAT:
                         raise OverflowError("the repetition number is too large")
-                if hi:
+                wenn hi:
                     max = int(hi)
-                    if max >= MAXREPEAT:
+                    wenn max >= MAXREPEAT:
                         raise OverflowError("the repetition number is too large")
-                    if max < min:
+                    wenn max < min:
                         raise source.error("min repeat greater than max repeat",
                                            source.tell() - here)
-            else:
+            sonst:
                 raise AssertionError("unsupported quantifier %r" % (char,))
             # figure out which item to repeat
-            if subpattern:
+            wenn subpattern:
                 item = subpattern[-1:]
-            else:
+            sonst:
                 item = None
-            if not item or item[0][0] is AT:
+            wenn not item or item[0][0] is AT:
                 raise source.error("nothing to repeat",
                                    source.tell() - here + len(this))
-            if item[0][0] in _REPEATCODES:
+            wenn item[0][0] in _REPEATCODES:
                 raise source.error("multiple repeat",
                                    source.tell() - here + len(this))
-            if item[0][0] is SUBPATTERN:
+            wenn item[0][0] is SUBPATTERN:
                 group, add_flags, del_flags, p = item[0][1]
-                if group is None and not add_flags and not del_flags:
+                wenn group is None and not add_flags and not del_flags:
                     item = p
-            if sourcematch("?"):
+            wenn sourcematch("?"):
                 # Non-Greedy Match
                 subpattern[-1] = (MIN_REPEAT, (min, max, item))
-            elif sourcematch("+"):
+            sowenn sourcematch("+"):
                 # Possessive Match (Always Greedy)
                 subpattern[-1] = (POSSESSIVE_REPEAT, (min, max, item))
-            else:
+            sonst:
                 # Greedy Match
                 subpattern[-1] = (MAX_REPEAT, (min, max, item))
 
-        elif this == ".":
+        sowenn this == ".":
             subpatternappend((ANY, None))
 
-        elif this == "(":
+        sowenn this == "(":
             start = source.tell() - 1
             capture = True
             atomic = False
             name = None
             add_flags = 0
             del_flags = 0
-            if sourcematch("?"):
+            wenn sourcematch("?"):
                 # options
                 char = sourceget()
-                if char is None:
+                wenn char is None:
                     raise source.error("unexpected end of pattern")
-                if char == "P":
+                wenn char == "P":
                     # python extensions
-                    if sourcematch("<"):
+                    wenn sourcematch("<"):
                         # named group: skip forward to end of name
                         name = source.getuntil(">", "group name")
                         source.checkgroupname(name, 1)
-                    elif sourcematch("="):
+                    sowenn sourcematch("="):
                         # named backreference
                         name = source.getuntil(")", "group name")
                         source.checkgroupname(name, 1)
                         gid = state.groupdict.get(name)
-                        if gid is None:
+                        wenn gid is None:
                             msg = "unknown group name %r" % name
                             raise source.error(msg, len(name) + 1)
-                        if not state.checkgroup(gid):
+                        wenn not state.checkgroup(gid):
                             raise source.error("cannot refer to an open group",
                                                len(name) + 1)
                         state.checklookbehindgroup(gid, source)
                         subpatternappend((GROUPREF, gid))
                         continue
 
-                    else:
+                    sonst:
                         char = sourceget()
-                        if char is None:
+                        wenn char is None:
                             raise source.error("unexpected end of pattern")
                         raise source.error("unknown extension ?P" + char,
                                            len(char) + 2)
-                elif char == ":":
+                sowenn char == ":":
                     # non-capturing group
                     capture = False
-                elif char == "#":
+                sowenn char == "#":
                     # comment
                     while True:
-                        if source.next is None:
+                        wenn source.next is None:
                             raise source.error("missing ), unterminated comment",
                                                source.tell() - start)
-                        if sourceget() == ")":
+                        wenn sourceget() == ")":
                             break
                     continue
 
-                elif char in "=!<":
+                sowenn char in "=!<":
                     # lookahead assertions
                     dir = 1
-                    if char == "<":
+                    wenn char == "<":
                         char = sourceget()
-                        if char is None:
+                        wenn char is None:
                             raise source.error("unexpected end of pattern")
-                        if char not in "=!":
+                        wenn char not in "=!":
                             raise source.error("unknown extension ?<" + char,
                                                len(char) + 2)
                         dir = -1 # lookbehind
                         lookbehindgroups = state.lookbehindgroups
-                        if lookbehindgroups is None:
+                        wenn lookbehindgroups is None:
                             state.lookbehindgroups = state.groups
                     p = _parse_sub(source, state, verbose, nested + 1)
-                    if dir < 0:
-                        if lookbehindgroups is None:
+                    wenn dir < 0:
+                        wenn lookbehindgroups is None:
                             state.lookbehindgroups = None
-                    if not sourcematch(")"):
+                    wenn not sourcematch(")"):
                         raise source.error("missing ), unterminated subpattern",
                                            source.tell() - start)
-                    if char == "=":
+                    wenn char == "=":
                         subpatternappend((ASSERT, (dir, p)))
-                    elif p:
+                    sowenn p:
                         subpatternappend((ASSERT_NOT, (dir, p)))
-                    else:
+                    sonst:
                         subpatternappend((FAILURE, ()))
                     continue
 
-                elif char == "(":
+                sowenn char == "(":
                     # conditional backreference group
                     condname = source.getuntil(")", "group name")
-                    if not (condname.isdecimal() and condname.isascii()):
+                    wenn not (condname.isdecimal() and condname.isascii()):
                         source.checkgroupname(condname, 1)
                         condgroup = state.groupdict.get(condname)
-                        if condgroup is None:
+                        wenn condgroup is None:
                             msg = "unknown group name %r" % condname
                             raise source.error(msg, len(condname) + 1)
-                    else:
+                    sonst:
                         condgroup = int(condname)
-                        if not condgroup:
+                        wenn not condgroup:
                             raise source.error("bad group number",
                                                len(condname) + 1)
-                        if condgroup >= MAXGROUPS:
+                        wenn condgroup >= MAXGROUPS:
                             msg = "invalid group reference %d" % condgroup
                             raise source.error(msg, len(condname) + 1)
-                        if condgroup not in state.grouprefpos:
+                        wenn condgroup not in state.grouprefpos:
                             state.grouprefpos[condgroup] = (
                                 source.tell() - len(condname) - 1
                             )
                     state.checklookbehindgroup(condgroup, source)
                     item_yes = _parse(source, state, verbose, nested + 1)
-                    if source.match("|"):
+                    wenn source.match("|"):
                         item_no = _parse(source, state, verbose, nested + 1)
-                        if source.next == "|":
+                        wenn source.next == "|":
                             raise source.error("conditional backref with more than two branches")
-                    else:
+                    sonst:
                         item_no = None
-                    if not source.match(")"):
+                    wenn not source.match(")"):
                         raise source.error("missing ), unterminated subpattern",
                                            source.tell() - start)
                     subpatternappend((GROUPREF_EXISTS, (condgroup, item_yes, item_no)))
                     continue
 
-                elif char == ">":
+                sowenn char == ">":
                     # non-capturing, atomic group
                     capture = False
                     atomic = True
-                elif char in FLAGS or char == "-":
+                sowenn char in FLAGS or char == "-":
                     # flags
                     flags = _parse_flags(source, state, char)
-                    if flags is None:  # global flags
-                        if not first or subpattern:
+                    wenn flags is None:  # global flags
+                        wenn not first or subpattern:
                             raise source.error('global flags not at the start '
                                                'of the expression',
                                                source.tell() - start)
@@ -839,47 +839,47 @@ def _parse(source, state, verbose, nested, first=False):
 
                     add_flags, del_flags = flags
                     capture = False
-                else:
+                sonst:
                     raise source.error("unknown extension ?" + char,
                                        len(char) + 1)
 
             # parse group contents
-            if capture:
+            wenn capture:
                 try:
                     group = state.opengroup(name)
                 except error as err:
                     raise source.error(err.msg, len(name) + 1) from None
-            else:
+            sonst:
                 group = None
             sub_verbose = ((verbose or (add_flags & SRE_FLAG_VERBOSE)) and
                            not (del_flags & SRE_FLAG_VERBOSE))
             p = _parse_sub(source, state, sub_verbose, nested + 1)
-            if not source.match(")"):
+            wenn not source.match(")"):
                 raise source.error("missing ), unterminated subpattern",
                                    source.tell() - start)
-            if group is not None:
+            wenn group is not None:
                 state.closegroup(group, p)
-            if atomic:
+            wenn atomic:
                 assert group is None
                 subpatternappend((ATOMIC_GROUP, p))
-            else:
+            sonst:
                 subpatternappend((SUBPATTERN, (group, add_flags, del_flags, p)))
 
-        elif this == "^":
+        sowenn this == "^":
             subpatternappend((AT, AT_BEGINNING))
 
-        elif this == "$":
+        sowenn this == "$":
             subpatternappend((AT, AT_END))
 
-        else:
+        sonst:
             raise AssertionError("unsupported special character %r" % (char,))
 
     # unpack non-capturing groups
     fuer i in range(len(subpattern))[::-1]:
         op, av = subpattern[i]
-        if op is SUBPATTERN:
+        wenn op is SUBPATTERN:
             group, add_flags, del_flags, p = av
-            if group is None and not add_flags and not del_flags:
+            wenn group is None and not add_flags and not del_flags:
                 subpattern[i: i+1] = p
 
     return subpattern
@@ -888,75 +888,75 @@ def _parse_flags(source, state, char):
     sourceget = source.get
     add_flags = 0
     del_flags = 0
-    if char != "-":
+    wenn char != "-":
         while True:
             flag = FLAGS[char]
-            if source.istext:
-                if char == 'L':
+            wenn source.istext:
+                wenn char == 'L':
                     msg = "bad inline flags: cannot use 'L' flag with a str pattern"
                     raise source.error(msg)
-            else:
-                if char == 'u':
+            sonst:
+                wenn char == 'u':
                     msg = "bad inline flags: cannot use 'u' flag with a bytes pattern"
                     raise source.error(msg)
             add_flags |= flag
-            if (flag & TYPE_FLAGS) and (add_flags & TYPE_FLAGS) != flag:
+            wenn (flag & TYPE_FLAGS) and (add_flags & TYPE_FLAGS) != flag:
                 msg = "bad inline flags: flags 'a', 'u' and 'L' are incompatible"
                 raise source.error(msg)
             char = sourceget()
-            if char is None:
+            wenn char is None:
                 raise source.error("missing -, : or )")
-            if char in ")-:":
+            wenn char in ")-:":
                 break
-            if char not in FLAGS:
-                msg = "unknown flag" if char.isalpha() else "missing -, : or )"
+            wenn char not in FLAGS:
+                msg = "unknown flag" wenn char.isalpha() sonst "missing -, : or )"
                 raise source.error(msg, len(char))
-    if char == ")":
+    wenn char == ")":
         state.flags |= add_flags
         return None
-    if add_flags & GLOBAL_FLAGS:
+    wenn add_flags & GLOBAL_FLAGS:
         raise source.error("bad inline flags: cannot turn on global flag", 1)
-    if char == "-":
+    wenn char == "-":
         char = sourceget()
-        if char is None:
+        wenn char is None:
             raise source.error("missing flag")
-        if char not in FLAGS:
-            msg = "unknown flag" if char.isalpha() else "missing flag"
+        wenn char not in FLAGS:
+            msg = "unknown flag" wenn char.isalpha() sonst "missing flag"
             raise source.error(msg, len(char))
         while True:
             flag = FLAGS[char]
-            if flag & TYPE_FLAGS:
+            wenn flag & TYPE_FLAGS:
                 msg = "bad inline flags: cannot turn off flags 'a', 'u' and 'L'"
                 raise source.error(msg)
             del_flags |= flag
             char = sourceget()
-            if char is None:
+            wenn char is None:
                 raise source.error("missing :")
-            if char == ":":
+            wenn char == ":":
                 break
-            if char not in FLAGS:
-                msg = "unknown flag" if char.isalpha() else "missing :"
+            wenn char not in FLAGS:
+                msg = "unknown flag" wenn char.isalpha() sonst "missing :"
                 raise source.error(msg, len(char))
     assert char == ":"
-    if del_flags & GLOBAL_FLAGS:
+    wenn del_flags & GLOBAL_FLAGS:
         raise source.error("bad inline flags: cannot turn off global flag", 1)
-    if add_flags & del_flags:
+    wenn add_flags & del_flags:
         raise source.error("bad inline flags: flag turned on and off", 1)
     return add_flags, del_flags
 
 def fix_flags(src, flags):
     # Check and fix flags according to the type of pattern (str or bytes)
-    if isinstance(src, str):
-        if flags & SRE_FLAG_LOCALE:
+    wenn isinstance(src, str):
+        wenn flags & SRE_FLAG_LOCALE:
             raise ValueError("cannot use LOCALE flag with a str pattern")
-        if not flags & SRE_FLAG_ASCII:
+        wenn not flags & SRE_FLAG_ASCII:
             flags |= SRE_FLAG_UNICODE
-        elif flags & SRE_FLAG_UNICODE:
+        sowenn flags & SRE_FLAG_UNICODE:
             raise ValueError("ASCII and UNICODE flags are incompatible")
-    else:
-        if flags & SRE_FLAG_UNICODE:
+    sonst:
+        wenn flags & SRE_FLAG_UNICODE:
             raise ValueError("cannot use UNICODE flag with a bytes pattern")
-        if flags & SRE_FLAG_LOCALE and flags & SRE_FLAG_ASCII:
+        wenn flags & SRE_FLAG_LOCALE and flags & SRE_FLAG_ASCII:
             raise ValueError("ASCII and LOCALE flags are incompatible")
     return flags
 
@@ -965,7 +965,7 @@ def parse(str, flags=0, state=None):
 
     source = Tokenizer(str)
 
-    if state is None:
+    wenn state is None:
         state = State()
     state.flags = flags
     state.str = str
@@ -973,16 +973,16 @@ def parse(str, flags=0, state=None):
     p = _parse_sub(source, state, flags & SRE_FLAG_VERBOSE, 0)
     p.state.flags = fix_flags(str, p.state.flags)
 
-    if source.next is not None:
+    wenn source.next is not None:
         assert source.next == ")"
         raise source.error("unbalanced parenthesis")
 
     fuer g in p.state.grouprefpos:
-        if g >= p.state.groups:
+        wenn g >= p.state.groups:
             msg = "invalid group reference %d" % g
             raise error(msg, str, p.state.grouprefpos[g])
 
-    if flags & SRE_FLAG_DEBUG:
+    wenn flags & SRE_FLAG_DEBUG:
         p.dump()
 
     return p
@@ -996,71 +996,71 @@ def parse_template(source, pattern):
     literal = []
     lappend = literal.append
     def addliteral():
-        if s.istext:
+        wenn s.istext:
             result.append(''.join(literal))
-        else:
+        sonst:
             # The tokenizer implicitly decodes bytes objects as latin-1, we must
             # therefore re-encode the final representation.
             result.append(''.join(literal).encode('latin-1'))
         del literal[:]
     def addgroup(index, pos):
-        if index > pattern.groups:
+        wenn index > pattern.groups:
             raise s.error("invalid group reference %d" % index, pos)
         addliteral()
         result.append(index)
     groupindex = pattern.groupindex
     while True:
         this = sget()
-        if this is None:
+        wenn this is None:
             break # end of replacement string
-        if this[0] == "\\":
+        wenn this[0] == "\\":
             # group
             c = this[1]
-            if c == "g":
-                if not s.match("<"):
+            wenn c == "g":
+                wenn not s.match("<"):
                     raise s.error("missing <")
                 name = s.getuntil(">", "group name")
-                if not (name.isdecimal() and name.isascii()):
+                wenn not (name.isdecimal() and name.isascii()):
                     s.checkgroupname(name, 1)
                     try:
                         index = groupindex[name]
                     except KeyError:
                         raise IndexError("unknown group name %r" % name) from None
-                else:
+                sonst:
                     index = int(name)
-                    if index >= MAXGROUPS:
+                    wenn index >= MAXGROUPS:
                         raise s.error("invalid group reference %d" % index,
                                       len(name) + 1)
                 addgroup(index, len(name) + 1)
-            elif c == "0":
-                if s.next in OCTDIGITS:
+            sowenn c == "0":
+                wenn s.next in OCTDIGITS:
                     this += sget()
-                    if s.next in OCTDIGITS:
+                    wenn s.next in OCTDIGITS:
                         this += sget()
                 lappend(chr(int(this[1:], 8) & 0xff))
-            elif c in DIGITS:
+            sowenn c in DIGITS:
                 isoctal = False
-                if s.next in DIGITS:
+                wenn s.next in DIGITS:
                     this += sget()
-                    if (c in OCTDIGITS and this[2] in OCTDIGITS and
+                    wenn (c in OCTDIGITS and this[2] in OCTDIGITS and
                         s.next in OCTDIGITS):
                         this += sget()
                         isoctal = True
                         c = int(this[1:], 8)
-                        if c > 0o377:
+                        wenn c > 0o377:
                             raise s.error('octal escape value %s outside of '
                                           'range 0-0o377' % this, len(this))
                         lappend(chr(c))
-                if not isoctal:
+                wenn not isoctal:
                     addgroup(int(this[1:]), len(this) - 1)
-            else:
+            sonst:
                 try:
                     this = chr(ESCAPES[this][1])
                 except KeyError:
-                    if c in ASCIILETTERS:
+                    wenn c in ASCIILETTERS:
                         raise s.error('bad escape %s' % this, len(this)) from None
                 lappend(this)
-        else:
+        sonst:
             lappend(this)
     addliteral()
     return result

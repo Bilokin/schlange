@@ -24,9 +24,9 @@ InvalidTZPathWarning = _tzpath.InvalidTZPathWarning
 
 
 def __getattr__(name):
-    if name == "TZPATH":
+    wenn name == "TZPATH":
         return _tzpath.TZPATH
-    else:
+    sonst:
         raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
 
 

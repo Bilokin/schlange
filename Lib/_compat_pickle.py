@@ -144,7 +144,7 @@ try:
     WindowsError
 except NameError:
     pass
-else:
+sonst:
     PYTHON2_EXCEPTIONS += ("WindowsError",)
 
 fuer excname in PYTHON2_EXCEPTIONS:

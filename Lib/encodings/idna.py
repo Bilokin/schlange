@@ -15,7 +15,7 @@ def nameprep(label):  # type: (str) -> str
     # Map
     newlabel = []
     fuer c in label:
-        if stringprep.in_table_b1(c):
+        wenn stringprep.in_table_b1(c):
             # Map to nothing
             continue
         newlabel.append(stringprep.map_table_b2(c))
@@ -26,7 +26,7 @@ def nameprep(label):  # type: (str) -> str
 
     # Prohibit
     fuer i, c in enumerate(label):
-        if stringprep.in_table_c12(c) or \
+        wenn stringprep.in_table_c12(c) or \
            stringprep.in_table_c22(c) or \
            stringprep.in_table_c3(c) or \
            stringprep.in_table_c4(c) or \
@@ -39,7 +39,7 @@ def nameprep(label):  # type: (str) -> str
 
     # Check bidi
     RandAL = [stringprep.in_table_d1(x) fuer x in label]
-    if any(RandAL):
+    wenn any(RandAL):
         # There is a RandAL char in the string. Must perform further
         # tests:
         # 1) The characters in section 5.8 MUST be prohibited.
@@ -47,17 +47,17 @@ def nameprep(label):  # type: (str) -> str
         # 2) If a string contains any RandALCat character, the string
         # MUST NOT contain any LCat character.
         fuer i, x in enumerate(label):
-            if stringprep.in_table_d2(x):
+            wenn stringprep.in_table_d2(x):
                 raise UnicodeEncodeError("idna", label, i, i+1,
                                          "Violation of BIDI requirement 2")
         # 3) If a string contains any RandALCat character, a
         # RandALCat character MUST be the first character of the
         # string, and a RandALCat character MUST be the last
         # character of the string.
-        if not RandAL[0]:
+        wenn not RandAL[0]:
             raise UnicodeEncodeError("idna", label, 0, 1,
                                      "Violation of BIDI requirement 3")
-        if not RandAL[-1]:
+        wenn not RandAL[-1]:
             raise UnicodeEncodeError("idna", label, len(label)-1, len(label),
                                      "Violation of BIDI requirement 3")
 
@@ -69,14 +69,14 @@ def ToASCII(label):  # type: (str) -> bytes
         label_ascii = label.encode("ascii")
     except UnicodeEncodeError:
         pass
-    else:
+    sonst:
         # Skip to step 3: UseSTD3ASCIIRules is false, so
         # Skip to step 8.
-        if 0 < len(label_ascii) < 64:
+        wenn 0 < len(label_ascii) < 64:
             return label_ascii
-        if len(label) == 0:
+        wenn len(label) == 0:
             raise UnicodeEncodeError("idna", label, 0, 1, "label empty")
-        else:
+        sonst:
             raise UnicodeEncodeError("idna", label, 0, len(label), "label too long")
 
     # Step 2: nameprep
@@ -88,17 +88,17 @@ def ToASCII(label):  # type: (str) -> bytes
         label_ascii = label.encode("ascii")
     except UnicodeEncodeError:
         pass
-    else:
+    sonst:
         # Skip to step 8.
-        if 0 < len(label) < 64:
+        wenn 0 < len(label) < 64:
             return label_ascii
-        if len(label) == 0:
+        wenn len(label) == 0:
             raise UnicodeEncodeError("idna", label, 0, 1, "label empty")
-        else:
+        sonst:
             raise UnicodeEncodeError("idna", label, 0, len(label), "label too long")
 
     # Step 5: Check ACE prefix
-    if label.lower().startswith(sace_prefix):
+    wenn label.lower().startswith(sace_prefix):
         raise UnicodeEncodeError(
             "idna", label, 0, len(sace_prefix), "Label starts with ACE prefix")
 
@@ -110,12 +110,12 @@ def ToASCII(label):  # type: (str) -> bytes
 
     # Step 8: Check size
     # do not check fuer empty as we prepend ace_prefix.
-    if len(label_ascii) < 64:
+    wenn len(label_ascii) < 64:
         return label_ascii
     raise UnicodeEncodeError("idna", label, 0, len(label), "label too long")
 
 def ToUnicode(label):
-    if len(label) > 1024:
+    wenn len(label) > 1024:
         # Protection from https://github.com/python/cpython/issues/98433.
         # https://datatracker.ietf.org/doc/html/rfc5894#section-6
         # doesn't specify a label size limit prior to NAMEPREP. But having
@@ -124,19 +124,19 @@ def ToUnicode(label):
         # per https://www.rfc-editor.org/rfc/rfc3454#section-3.1 while still
         # preventing us from wasting time decoding a big thing that'll just
         # hit the actual <= 63 length limit in Step 6.
-        if isinstance(label, str):
+        wenn isinstance(label, str):
             label = label.encode("utf-8", errors="backslashreplace")
         raise UnicodeDecodeError("idna", label, 0, len(label), "label way too long")
     # Step 1: Check fuer ASCII
-    if isinstance(label, bytes):
+    wenn isinstance(label, bytes):
         pure_ascii = True
-    else:
+    sonst:
         try:
             label = label.encode("ascii")
             pure_ascii = True
         except UnicodeEncodeError:
             pure_ascii = False
-    if not pure_ascii:
+    wenn not pure_ascii:
         assert isinstance(label, str)
         # Step 2: Perform nameprep
         label = nameprep(label)
@@ -148,7 +148,7 @@ def ToUnicode(label):
                                      "Invalid character in IDN label")
     # Step 3: Check fuer ACE prefix
     assert isinstance(label, bytes)
-    if not label.lower().startswith(ace_prefix):
+    wenn not label.lower().startswith(ace_prefix):
         return str(label, "ascii")
 
     # Step 4: Remove ACE prefix
@@ -166,7 +166,7 @@ def ToUnicode(label):
 
     # Step 7: Compare the result of step 6 with the one of step 3
     # label2 will already be in lower case.
-    if str(label, "ascii").lower() != str(label2, "ascii"):
+    wenn str(label, "ascii").lower() != str(label2, "ascii"):
         raise UnicodeDecodeError("idna", label, 0, len(label),
                                  f"IDNA does not round-trip, '{label!r}' != '{label2!r}'")
 
@@ -178,27 +178,27 @@ def ToUnicode(label):
 klasse Codec(codecs.Codec):
     def encode(self, input, errors='strict'):
 
-        if errors != 'strict':
+        wenn errors != 'strict':
             # IDNA is quite clear that implementations must be strict
             raise UnicodeError(f"Unsupported error handling: {errors}")
 
-        if not input:
+        wenn not input:
             return b'', 0
 
         try:
             result = input.encode('ascii')
         except UnicodeEncodeError:
             pass
-        else:
+        sonst:
             # ASCII name: fast path
             labels = result.split(b'.')
             fuer i, label in enumerate(labels[:-1]):
-                if len(label) == 0:
+                wenn len(label) == 0:
                     offset = sum(len(l) fuer l in labels[:i]) + i
                     raise UnicodeEncodeError("idna", input, offset, offset+1,
                                              "label empty")
             fuer i, label in enumerate(labels):
-                if len(label) >= 64:
+                wenn len(label) >= 64:
                     offset = sum(len(l) fuer l in labels[:i]) + i
                     raise UnicodeEncodeError("idna", input, offset, offset+len(label),
                                              "label too long")
@@ -206,13 +206,13 @@ klasse Codec(codecs.Codec):
 
         result = bytearray()
         labels = dots.split(input)
-        if labels and not labels[-1]:
+        wenn labels and not labels[-1]:
             trailing_dot = b'.'
             del labels[-1]
-        else:
+        sonst:
             trailing_dot = b''
         fuer i, label in enumerate(labels):
-            if result:
+            wenn result:
                 # Join with U+002E
                 result.extend(b'.')
             try:
@@ -230,18 +230,18 @@ klasse Codec(codecs.Codec):
 
     def decode(self, input, errors='strict'):
 
-        if errors != 'strict':
+        wenn errors != 'strict':
             raise UnicodeError(f"Unsupported error handling: {errors}")
 
-        if not input:
+        wenn not input:
             return "", 0
 
         # IDNA allows decoding to operate on Unicode strings, too.
-        if not isinstance(input, bytes):
+        wenn not isinstance(input, bytes):
             # XXX obviously wrong, see #3232
             input = bytes(input)
 
-        if ace_prefix not in input.lower():
+        wenn ace_prefix not in input.lower():
             # Fast path
             try:
                 return input.decode('ascii'), len(input)
@@ -250,10 +250,10 @@ klasse Codec(codecs.Codec):
 
         labels = input.split(b".")
 
-        if labels and len(labels[-1]) == 0:
+        wenn labels and len(labels[-1]) == 0:
             trailing_dot = '.'
             del labels[-1]
-        else:
+        sonst:
             trailing_dot = ''
 
         result = []
@@ -264,36 +264,36 @@ klasse Codec(codecs.Codec):
                 offset = sum(len(x) fuer x in labels[:i]) + len(labels[:i])
                 raise UnicodeDecodeError(
                     "idna", input, offset+exc.start, offset+exc.end, exc.reason)
-            else:
+            sonst:
                 result.append(u_label)
 
         return ".".join(result)+trailing_dot, len(input)
 
 klasse IncrementalEncoder(codecs.BufferedIncrementalEncoder):
     def _buffer_encode(self, input, errors, final):
-        if errors != 'strict':
+        wenn errors != 'strict':
             # IDNA is quite clear that implementations must be strict
             raise UnicodeError(f"Unsupported error handling: {errors}")
 
-        if not input:
+        wenn not input:
             return (b'', 0)
 
         labels = dots.split(input)
         trailing_dot = b''
-        if labels:
-            if not labels[-1]:
+        wenn labels:
+            wenn not labels[-1]:
                 trailing_dot = b'.'
                 del labels[-1]
-            elif not final:
+            sowenn not final:
                 # Keep potentially unfinished label until the next call
                 del labels[-1]
-                if labels:
+                wenn labels:
                     trailing_dot = b'.'
 
         result = bytearray()
         size = 0
         fuer label in labels:
-            if size:
+            wenn size:
                 # Join with U+002E
                 result.extend(b'.')
                 size += 1
@@ -315,16 +315,16 @@ klasse IncrementalEncoder(codecs.BufferedIncrementalEncoder):
 
 klasse IncrementalDecoder(codecs.BufferedIncrementalDecoder):
     def _buffer_decode(self, input, errors, final):
-        if errors != 'strict':
+        wenn errors != 'strict':
             raise UnicodeError(f"Unsupported error handling: {errors}")
 
-        if not input:
+        wenn not input:
             return ("", 0)
 
         # IDNA allows decoding to operate on Unicode strings, too.
-        if isinstance(input, str):
+        wenn isinstance(input, str):
             labels = dots.split(input)
-        else:
+        sonst:
             # Must be ASCII string
             try:
                 input = str(input, "ascii")
@@ -334,14 +334,14 @@ klasse IncrementalDecoder(codecs.BufferedIncrementalDecoder):
             labels = input.split(".")
 
         trailing_dot = ''
-        if labels:
-            if not labels[-1]:
+        wenn labels:
+            wenn not labels[-1]:
                 trailing_dot = '.'
                 del labels[-1]
-            elif not final:
+            sowenn not final:
                 # Keep potentially unfinished label until the next call
                 del labels[-1]
-                if labels:
+                wenn labels:
                     trailing_dot = '.'
 
         result = []
@@ -357,9 +357,9 @@ klasse IncrementalDecoder(codecs.BufferedIncrementalDecoder):
                     size + exc.end,
                     exc.reason,
                 )
-            else:
+            sonst:
                 result.append(u_label)
-            if size:
+            wenn size:
                 size += 1
             size += len(label)
 

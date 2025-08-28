@@ -786,7 +786,7 @@ klasse MinidomTest(unittest.TestCase):
             "testCloneDocumentDeep: documentElement owner is not new document")
         self.assertFalse(doc.documentElement.isSameNode(doc2.documentElement),
                 "testCloneDocumentDeep: documentElement should not be shared")
-        if doc.doctype is not None:
+        wenn doc.doctype is not None:
             # check the doctype iff the original DOM maintained it
             self.assertEqual(doc2.doctype.nodeType, Node.DOCUMENT_TYPE_NODE,
                     "testCloneDocumentDeep: doctype not a DOCUMENT_TYPE_NODE")
@@ -875,7 +875,7 @@ klasse MinidomTest(unittest.TestCase):
                           src.doctype, 1)
 
     # Testing attribute clones uses a helper, and should always be deep,
-    # even if the argument to cloneNode is false.
+    # even wenn the argument to cloneNode is false.
     def check_clone_attribute(self, deep, testName):
         doc = parseString("<doc attr='value'/>")
         attr = doc.documentElement.getAttributeNode("attr")
@@ -935,7 +935,7 @@ klasse MinidomTest(unittest.TestCase):
         entity = doctype.entities['smile']
         entity.setUserData("key", "data", handler)
 
-        if clone_document:
+        wenn clone_document:
             # clone Document
             clone = document.cloneNode(deep=True)
 
@@ -943,7 +943,7 @@ klasse MinidomTest(unittest.TestCase):
                              "Don't let entities make you frown ☺")
             operation = xml.dom.UserDataHandler.NODE_IMPORTED
             dst = clone.doctype.entities['smile']
-        else:
+        sonst:
             # clone DocumentType
             with support.swap_attr(doctype, 'ownerDocument', None):
                 clone = doctype.cloneNode(deep=True)
@@ -1631,7 +1631,7 @@ klasse MinidomTest(unittest.TestCase):
             self.assertEqual(n1.nodeName, n2.nodeName)
             self.assertFalse(n1.isSameNode(n2))
             self.assertFalse(n2.isSameNode(n1))
-            if n1.nodeType == Node.DOCUMENT_TYPE_NODE:
+            wenn n1.nodeType == Node.DOCUMENT_TYPE_NODE:
                 len(n1.entities)
                 len(n2.entities)
                 len(n1.notations)
@@ -1653,7 +1653,7 @@ klasse MinidomTest(unittest.TestCase):
                     self.assertEqual(e1.publicId, e2.publicId)
                     self.assertEqual(e1.systemId, e2.systemId)
                     stack.append((e1, e2))
-            if n1.nodeType != Node.DOCUMENT_NODE:
+            wenn n1.nodeType != Node.DOCUMENT_NODE:
                 self.assertTrue(n1.ownerDocument.isSameNode(doc))
                 self.assertTrue(n2.ownerDocument.isSameNode(doc2))
             fuer i in range(len(n1.childNodes)):
@@ -1741,5 +1741,5 @@ klasse MinidomTest(unittest.TestCase):
         dom2 = parseString(dom1.toprettyxml())
         self.checkWholeText(dom2.getElementsByTagName('node')[0].firstChild, '</data>')
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

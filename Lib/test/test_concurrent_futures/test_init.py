@@ -22,7 +22,7 @@ def init(x):
     global INITIALIZER_STATUS
     INITIALIZER_STATUS = x
     # InterpreterPoolInitializerTest.test_initializer fails
-    # if we don't have a LOAD_GLOBAL.  (It could be any global.)
+    # wenn we don't have a LOAD_GLOBAL.  (It could be any global.)
     # We will address this separately.
     INITIALIZER_STATUS
 
@@ -30,7 +30,7 @@ def get_init_status():
     return INITIALIZER_STATUS
 
 def init_fail(log_queue=None):
-    if log_queue is not None:
+    wenn log_queue is not None:
         logger = logging.getLogger('concurrent.futures')
         logger.addHandler(QueueHandler(log_queue))
         logger.setLevel('CRITICAL')
@@ -62,13 +62,13 @@ klasse FailingInitializerMixin(ExecutorMixin):
     worker_count = 2
 
     def setUp(self):
-        if hasattr(self, "ctx"):
+        wenn hasattr(self, "ctx"):
             # Pass a queue to redirect the child's logging output
             self.mp_context = self.get_context()
             self.log_queue = self.mp_context.Queue()
             self.executor_kwargs = dict(initializer=init_fail,
                                         initargs=(self.log_queue,))
-        else:
+        sonst:
             # In a thread pool, the child shares our logging setup
             # (see _assert_logged())
             self.mp_context = None
@@ -84,14 +84,14 @@ klasse FailingInitializerMixin(ExecutorMixin):
             except BrokenExecutor:
                 # Perhaps the executor is already broken
                 pass
-            else:
+            sonst:
                 with self.assertRaises(BrokenExecutor):
                     future.result()
 
             # At some point, the executor should break
             fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT,
                                             "executor not broken"):
-                if self.executor._broken:
+                wenn self.executor._broken:
                     break
 
             # ... and from this point submit() is guaranteed to fail
@@ -100,7 +100,7 @@ klasse FailingInitializerMixin(ExecutorMixin):
 
     @contextlib.contextmanager
     def _assert_logged(self, msg):
-        if self.log_queue is not None:
+        wenn self.log_queue is not None:
             yield
             output = []
             try:
@@ -108,7 +108,7 @@ klasse FailingInitializerMixin(ExecutorMixin):
                     output.append(self.log_queue.get_nowait().getMessage())
             except queue.Empty:
                 pass
-        else:
+        sonst:
             with self.assertLogs('concurrent.futures', 'CRITICAL') as cm:
                 yield
             output = cm.output
@@ -155,5 +155,5 @@ def setUpModule():
     setup_module()
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

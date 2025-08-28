@@ -14,7 +14,7 @@ Interpreters constructed with this klasse obey the following conventions:
    with defined help_ functions, broken into up to three topics; documented
    commands, miscellaneous help topics, and undocumented commands.
 6. The command '?' is a synonym fuer 'help'.  The command '!' is a synonym
-   fuer 'shell', if a do_shell method exists.
+   fuer 'shell', wenn a do_shell method exists.
 7. If completion is enabled, completing commands will be done automatically,
    and completing of commands args is done by calling complete_foo() with
    arguments text, line, begidx, endidx.  text is string we are matching
@@ -83,17 +83,17 @@ klasse Cmd:
         completion key; it defaults to the Tab key. If completekey is
         not None and the readline module is available, command completion
         is done automatically. The optional arguments stdin and stdout
-        specify alternate input and output file objects; if not specified,
+        specify alternate input and output file objects; wenn not specified,
         sys.stdin and sys.stdout are used.
 
         """
-        if stdin is not None:
+        wenn stdin is not None:
             self.stdin = stdin
-        else:
+        sonst:
             self.stdin = sys.stdin
-        if stdout is not None:
+        wenn stdout is not None:
             self.stdout = stdout
-        else:
+        sonst:
             self.stdout = sys.stdout
         self.cmdqueue = []
         self.completekey = completekey
@@ -106,51 +106,51 @@ klasse Cmd:
         """
 
         self.preloop()
-        if self.use_rawinput and self.completekey:
+        wenn self.use_rawinput and self.completekey:
             try:
                 import readline
                 self.old_completer = readline.get_completer()
                 readline.set_completer(self.complete)
-                if readline.backend == "editline":
-                    if self.completekey == 'tab':
+                wenn readline.backend == "editline":
+                    wenn self.completekey == 'tab':
                         # libedit uses "^I" instead of "tab"
                         command_string = "bind ^I rl_complete"
-                    else:
+                    sonst:
                         command_string = f"bind {self.completekey} rl_complete"
-                else:
+                sonst:
                     command_string = f"{self.completekey}: complete"
                 readline.parse_and_bind(command_string)
             except ImportError:
                 pass
         try:
-            if intro is not None:
+            wenn intro is not None:
                 self.intro = intro
-            if self.intro:
+            wenn self.intro:
                 self.stdout.write(str(self.intro)+"\n")
             stop = None
             while not stop:
-                if self.cmdqueue:
+                wenn self.cmdqueue:
                     line = self.cmdqueue.pop(0)
-                else:
-                    if self.use_rawinput:
+                sonst:
+                    wenn self.use_rawinput:
                         try:
                             line = input(self.prompt)
                         except EOFError:
                             line = 'EOF'
-                    else:
+                    sonst:
                         self.stdout.write(self.prompt)
                         self.stdout.flush()
                         line = self.stdin.readline()
-                        if not len(line):
+                        wenn not len(line):
                             line = 'EOF'
-                        else:
+                        sonst:
                             line = line.rstrip('\r\n')
                 line = self.precmd(line)
                 stop = self.onecmd(line)
                 stop = self.postcmd(stop, line)
             self.postloop()
         finally:
-            if self.use_rawinput and self.completekey:
+            wenn self.use_rawinput and self.completekey:
                 try:
                     import readline
                     readline.set_completer(self.old_completer)
@@ -183,17 +183,17 @@ klasse Cmd:
     def parseline(self, line):
         """Parse the line into a command name and a string containing
         the arguments.  Returns a tuple containing (command, args, line).
-        'command' and 'args' may be None if the line couldn't be parsed.
+        'command' and 'args' may be None wenn the line couldn't be parsed.
         """
         line = line.strip()
-        if not line:
+        wenn not line:
             return None, None, line
-        elif line[0] == '?':
+        sowenn line[0] == '?':
             line = 'help ' + line[1:]
-        elif line[0] == '!':
-            if hasattr(self, 'do_shell'):
+        sowenn line[0] == '!':
+            wenn hasattr(self, 'do_shell'):
                 line = 'shell ' + line[1:]
-            else:
+            sonst:
                 return None, None, line
         i, n = 0, len(line)
         while i < n and line[i] in self.identchars: i = i+1
@@ -211,18 +211,18 @@ klasse Cmd:
 
         """
         cmd, arg, line = self.parseline(line)
-        if not line:
+        wenn not line:
             return self.emptyline()
-        if cmd is None:
+        wenn cmd is None:
             return self.default(line)
         self.lastcmd = line
-        if line == 'EOF' :
+        wenn line == 'EOF' :
             self.lastcmd = ''
-        if cmd == '':
+        wenn cmd == '':
             return self.default(line)
-        else:
+        sonst:
             func = getattr(self, 'do_' + cmd, None)
-            if func is None:
+            wenn func is None:
                 return self.default(line)
             return func(arg)
 
@@ -233,7 +233,7 @@ klasse Cmd:
         command entered.
 
         """
-        if self.lastcmd:
+        wenn self.lastcmd:
             return self.onecmd(self.lastcmd)
 
     def default(self, line):
@@ -256,7 +256,7 @@ klasse Cmd:
 
     def completenames(self, text, *ignored):
         dotext = 'do_'+text
-        return [a[3:] fuer a in self.get_names() if a.startswith(dotext)]
+        return [a[3:] fuer a in self.get_names() wenn a.startswith(dotext)]
 
     def complete(self, text, state):
         """Return the next possible completion fuer 'text'.
@@ -264,23 +264,23 @@ klasse Cmd:
         If a command has not been entered, then complete against command list.
         Otherwise try to call complete_<command> to get list of completions.
         """
-        if state == 0:
+        wenn state == 0:
             import readline
             origline = readline.get_line_buffer()
             line = origline.lstrip()
             stripped = len(origline) - len(line)
             begidx = readline.get_begidx() - stripped
             endidx = readline.get_endidx() - stripped
-            if begidx>0:
+            wenn begidx>0:
                 cmd, args, foo = self.parseline(line)
-                if not cmd:
+                wenn not cmd:
                     compfunc = self.completedefault
-                else:
+                sonst:
                     try:
                         compfunc = getattr(self, 'complete_' + cmd)
                     except AttributeError:
                         compfunc = self.completedefault
-            else:
+            sonst:
                 compfunc = self.completenames
             self.completion_matches = compfunc(text, line, begidx, endidx)
         try:
@@ -296,12 +296,12 @@ klasse Cmd:
     def complete_help(self, *args):
         commands = set(self.completenames(*args))
         topics = set(a[5:] fuer a in self.get_names()
-                     if a.startswith('help_' + args[0]))
+                     wenn a.startswith('help_' + args[0]))
         return list(commands | topics)
 
     def do_help(self, arg):
         'List available commands with "help" or detailed help with "help cmd".'
-        if arg:
+        wenn arg:
             # XXX check arg syntax
             try:
                 func = getattr(self, 'help_' + arg)
@@ -311,7 +311,7 @@ klasse Cmd:
                 try:
                     doc=getattr(self, 'do_' + arg).__doc__
                     doc = cleandoc(doc)
-                    if doc:
+                    wenn doc:
                         self.stdout.write("%s\n"%str(doc))
                         return
                 except AttributeError:
@@ -319,29 +319,29 @@ klasse Cmd:
                 self.stdout.write("%s\n"%str(self.nohelp % (arg,)))
                 return
             func()
-        else:
+        sonst:
             names = self.get_names()
             cmds_doc = []
             cmds_undoc = []
             topics = set()
             fuer name in names:
-                if name[:5] == 'help_':
+                wenn name[:5] == 'help_':
                     topics.add(name[5:])
             names.sort()
-            # There can be duplicates if routines overridden
+            # There can be duplicates wenn routines overridden
             prevname = ''
             fuer name in names:
-                if name[:3] == 'do_':
-                    if name == prevname:
+                wenn name[:3] == 'do_':
+                    wenn name == prevname:
                         continue
                     prevname = name
                     cmd=name[3:]
-                    if cmd in topics:
+                    wenn cmd in topics:
                         cmds_doc.append(cmd)
                         topics.remove(cmd)
-                    elif getattr(self, name).__doc__:
+                    sowenn getattr(self, name).__doc__:
                         cmds_doc.append(cmd)
-                    else:
+                    sonst:
                         cmds_undoc.append(cmd)
             self.stdout.write("%s\n"%str(self.doc_leader))
             self.print_topics(self.doc_header,   cmds_doc,   15,80)
@@ -349,9 +349,9 @@ klasse Cmd:
             self.print_topics(self.undoc_header, cmds_undoc, 15,80)
 
     def print_topics(self, header, cmds, cmdlen, maxcol):
-        if cmds:
+        wenn cmds:
             self.stdout.write("%s\n"%str(header))
-            if self.ruler:
+            wenn self.ruler:
                 self.stdout.write("%s\n"%str(self.ruler * len(header)))
             self.columnize(cmds, maxcol-1)
             self.stdout.write("\n")
@@ -362,17 +362,17 @@ klasse Cmd:
         Each column is only as wide as necessary.
         Columns are separated by two spaces (one was not legible enough).
         """
-        if not list:
+        wenn not list:
             self.stdout.write("<empty>\n")
             return
 
         nonstrings = [i fuer i in range(len(list))
-                        if not isinstance(list[i], str)]
-        if nonstrings:
+                        wenn not isinstance(list[i], str)]
+        wenn nonstrings:
             raise TypeError("list[i] not a string fuer i in %s"
                             % ", ".join(map(str, nonstrings)))
         size = len(list)
-        if size == 1:
+        wenn size == 1:
             self.stdout.write('%s\n'%str(list[0]))
             return
         # Try every row count from 1 upwards
@@ -384,17 +384,17 @@ klasse Cmd:
                 colwidth = 0
                 fuer row in range(nrows):
                     i = row + nrows*col
-                    if i >= size:
+                    wenn i >= size:
                         break
                     x = list[i]
                     colwidth = max(colwidth, len(x))
                 colwidths.append(colwidth)
                 totwidth += colwidth + 2
-                if totwidth > displaywidth:
+                wenn totwidth > displaywidth:
                     break
-            if totwidth <= displaywidth:
+            wenn totwidth <= displaywidth:
                 break
-        else:
+        sonst:
             nrows = len(list)
             ncols = 1
             colwidths = [0]
@@ -402,9 +402,9 @@ klasse Cmd:
             texts = []
             fuer col in range(ncols):
                 i = row + nrows*col
-                if i >= size:
+                wenn i >= size:
                     x = ""
-                else:
+                sonst:
                     x = list[i]
                 texts.append(x)
             while texts and not texts[-1]:

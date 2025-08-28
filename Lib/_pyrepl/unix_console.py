@@ -50,9 +50,9 @@ except ImportError:
 TYPE_CHECKING = False
 
 # types
-if TYPE_CHECKING:
+wenn TYPE_CHECKING:
     from typing import IO, Literal, overload
-else:
+sonst:
     overload = lambda func: None
 
 
@@ -74,7 +74,7 @@ TIOCGWINSZ = getattr(termios, "TIOCGWINSZ", None)
 
 def add_baudrate_if_supported(dictionary: dict[int, int], rate: int) -> None:
     baudrate_name = "B%d" % rate
-    if hasattr(termios, baudrate_name):
+    wenn hasattr(termios, baudrate_name):
         dictionary[getattr(termios, baudrate_name)] = rate
 
 
@@ -127,9 +127,9 @@ except AttributeError:
             self.fd = fd
         # note: The 'timeout' argument is received as *milliseconds*
         def poll(self, timeout: float | None = None) -> list[int]:
-            if timeout is None:
+            wenn timeout is None:
                 r, w, e = select.select([self.fd], [], [])
-            else:
+            sonst:
                 r, w, e = select.select([self.fd], [], [], timeout/1000)
             return r
 
@@ -168,7 +168,7 @@ klasse UnixConsole(Console):
 
         def _my_getstr(cap: str, optional: bool = False) -> bytes | None:
             r = self.terminfo.get(cap)
-            if not optional and r is None:
+            wenn not optional and r is None:
                 raise InvalidTerminal(
                     f"terminal doesn't have the required {cap} capability"
                 )
@@ -232,18 +232,18 @@ klasse UnixConsole(Console):
         - c_xy (tuple): Cursor position (x, y) on the screen.
         """
         cx, cy = c_xy
-        if not self.__gone_tall:
+        wenn not self.__gone_tall:
             while len(self.screen) < min(len(screen), self.height):
                 self.__hide_cursor()
                 self.__move(0, len(self.screen) - 1)
                 self.__write("\n")
                 self.posxy = 0, len(self.screen)
                 self.screen.append("")
-        else:
+        sonst:
             while len(self.screen) < len(screen):
                 self.screen.append("")
 
-        if len(screen) > self.height:
+        wenn len(screen) > self.height:
             self.__gone_tall = 1
             self.__move = self.__move_tall
 
@@ -252,20 +252,20 @@ klasse UnixConsole(Console):
         height = self.height
 
         # we make sure the cursor is on the screen, and that we're
-        # using all of the screen if we can
-        if cy < offset:
+        # using all of the screen wenn we can
+        wenn cy < offset:
             offset = cy
-        elif cy >= offset + height:
+        sowenn cy >= offset + height:
             offset = cy - height + 1
-        elif offset > 0 and len(screen) < offset + height:
+        sowenn offset > 0 and len(screen) < offset + height:
             offset = max(len(screen) - height, 0)
             screen.append("")
 
         oldscr = self.screen[old_offset : old_offset + height]
         newscr = screen[offset : offset + height]
 
-        # use hardware scrolling if we have it.
-        if old_offset > offset and self._ri:
+        # use hardware scrolling wenn we have it.
+        wenn old_offset > offset and self._ri:
             self.__hide_cursor()
             self.__write_code(self._cup, 0, 0)
             self.posxy = 0, old_offset
@@ -273,7 +273,7 @@ klasse UnixConsole(Console):
                 self.__write_code(self._ri)
                 oldscr.pop(-1)
                 oldscr.insert(0, "")
-        elif old_offset < offset and self._ind:
+        sowenn old_offset < offset and self._ind:
             self.__hide_cursor()
             self.__write_code(self._cup, self.height - 1, 0)
             self.posxy = 0, old_offset + self.height - 1
@@ -289,7 +289,7 @@ klasse UnixConsole(Console):
             oldline,
             newline,
         ) in zip(range(offset, offset + height), oldscr, newscr):
-            if oldline != newline:
+            wenn oldline != newline:
                 self.__write_changed_line(y, oldline, newline, px)
 
         y = len(newscr)
@@ -314,9 +314,9 @@ klasse UnixConsole(Console):
         - x (int): X coordinate.
         - y (int): Y coordinate.
         """
-        if y < self.__offset or y >= self.__offset + self.height:
+        wenn y < self.__offset or y >= self.__offset + self.height:
             self.event_queue.insert(Event("scroll", None))
-        else:
+        sonst:
             self.__move(x, y)
             self.posxy = x, y
             self.flushoutput()
@@ -339,7 +339,7 @@ klasse UnixConsole(Console):
         tcsetattr(self.input_fd, termios.TCSADRAIN, raw)
 
         # In macOS terminal we need to deactivate line wrap via ANSI escape code
-        if platform.system() == "Darwin" and os.getenv("TERM_PROGRAM") == "Apple_Terminal":
+        wenn platform.system() == "Darwin" and os.getenv("TERM_PROGRAM") == "Apple_Terminal":
             os.write(self.output_fd, b"\033[?7l")
 
         self.screen = []
@@ -370,10 +370,10 @@ klasse UnixConsole(Console):
         self.flushoutput()
         tcsetattr(self.input_fd, termios.TCSADRAIN, self.__svtermstate)
 
-        if platform.system() == "Darwin" and os.getenv("TERM_PROGRAM") == "Apple_Terminal":
+        wenn platform.system() == "Darwin" and os.getenv("TERM_PROGRAM") == "Apple_Terminal":
             os.write(self.output_fd, b"\033[?7h")
 
-        if hasattr(self, "old_sigwinch"):
+        wenn hasattr(self, "old_sigwinch"):
             signal.signal(signal.SIGWINCH, self.old_sigwinch)
             del self.old_sigwinch
 
@@ -394,7 +394,7 @@ klasse UnixConsole(Console):
         Returns:
         - Event: Event object from the event queue.
         """
-        if not block and not self.wait(timeout=0):
+        wenn not block and not self.wait(timeout=0):
             return None
 
         while self.event_queue.empty():
@@ -402,14 +402,14 @@ klasse UnixConsole(Console):
                 try:
                     self.push_char(self.__read(1))
                 except OSError as err:
-                    if err.errno == errno.EINTR:
-                        if not self.event_queue.empty():
+                    wenn err.errno == errno.EINTR:
+                        wenn not self.event_queue.empty():
                             return self.event_queue.get()
-                        else:
+                        sonst:
                             continue
-                    else:
+                    sonst:
                         raise
-                else:
+                sonst:
                     break
         return self.event_queue.get()
 
@@ -429,12 +429,12 @@ klasse UnixConsole(Console):
         Parameters:
         - visible (bool): Visibility flag.
         """
-        if visible:
+        wenn visible:
             self.__show_cursor()
-        else:
+        sonst:
             self.__hide_cursor()
 
-    if TIOCGWINSZ:
+    wenn TIOCGWINSZ:
 
         def getheightwidth(self):
             """
@@ -451,11 +451,11 @@ klasse UnixConsole(Console):
                 except OSError:
                     return 25, 80
                 height, width = struct.unpack("hhhh", size)[0:2]
-                if not height:
+                wenn not height:
                     return 25, 80
                 return height, width
 
-    else:
+    sonst:
 
         def getheightwidth(self):
             """
@@ -480,9 +480,9 @@ klasse UnixConsole(Console):
         Flush the output buffer.
         """
         fuer text, iscode in self.__buffer:
-            if iscode:
+            wenn iscode:
                 self.__tputs(text)
-            else:
+            sonst:
                 os.write(self.output_fd, text.encode(self.encoding, "replace"))
         del self.__buffer[:]
 
@@ -504,7 +504,7 @@ klasse UnixConsole(Console):
         self.__maybe_write_code(self._bel)
         self.flushoutput()
 
-    if FIONREAD:
+    wenn FIONREAD:
 
         def getpending(self):
             """
@@ -528,7 +528,7 @@ klasse UnixConsole(Console):
             e.raw += raw
             return e
 
-    else:
+    sonst:
 
         def getpending(self):
             """
@@ -565,7 +565,7 @@ klasse UnixConsole(Console):
     def input_hook(self):
         # avoid inline imports here so the repl doesn't get flooded
         # with import logging from -X importtime=2
-        if posix is not None and posix._is_inputhook_installed():
+        wenn posix is not None and posix._is_inputhook_installed():
             return posix._inputhook
 
     def __enable_bracketed_paste(self) -> None:
@@ -578,34 +578,34 @@ klasse UnixConsole(Console):
         """
         Set up the movement functions based on the terminal capabilities.
         """
-        if 0 and self._hpa:  # hpa don't work in windows telnet :-(
+        wenn 0 and self._hpa:  # hpa don't work in windows telnet :-(
             self.__move_x = self.__move_x_hpa
-        elif self._cub and self._cuf:
+        sowenn self._cub and self._cuf:
             self.__move_x = self.__move_x_cub_cuf
-        elif self._cub1 and self._cuf1:
+        sowenn self._cub1 and self._cuf1:
             self.__move_x = self.__move_x_cub1_cuf1
-        else:
+        sonst:
             raise RuntimeError("insufficient terminal (horizontal)")
 
-        if self._cuu and self._cud:
+        wenn self._cuu and self._cud:
             self.__move_y = self.__move_y_cuu_cud
-        elif self._cuu1 and self._cud1:
+        sowenn self._cuu1 and self._cud1:
             self.__move_y = self.__move_y_cuu1_cud1
-        else:
+        sonst:
             raise RuntimeError("insufficient terminal (vertical)")
 
-        if self._dch1:
+        wenn self._dch1:
             self.dch1 = self._dch1
-        elif self._dch:
+        sowenn self._dch:
             self.dch1 = terminfo.tparm(self._dch, 1)
-        else:
+        sonst:
             self.dch1 = None
 
-        if self._ich1:
+        wenn self._ich1:
             self.ich1 = self._ich1
-        elif self._ich:
+        sowenn self._ich:
             self.ich1 = terminfo.tparm(self._ich, 1)
-        else:
+        sonst:
             self.ich1 = None
 
         self.__move = self.__move_short
@@ -622,7 +622,7 @@ klasse UnixConsole(Console):
         px_pos = 0
         j = 0
         fuer c in oldline:
-            if j >= px_coord:
+            wenn j >= px_coord:
                 break
             j += wlen(c)
             px_pos += 1
@@ -638,9 +638,9 @@ klasse UnixConsole(Console):
             x_coord += wlen(newline[x_pos])
             x_pos += 1
 
-        # if we need to insert a single character right after the first detected change
-        if oldline[x_pos:] == newline[x_pos + 1 :] and self.ich1:
-            if (
+        # wenn we need to insert a single character right after the first detected change
+        wenn oldline[x_pos:] == newline[x_pos + 1 :] and self.ich1:
+            wenn (
                 y == self.posxy[1]
                 and x_coord > self.posxy[0]
                 and oldline[px_pos:x_pos] == newline[px_pos + 1 : x_pos + 1]
@@ -653,8 +653,8 @@ klasse UnixConsole(Console):
             self.__write(newline[x_pos])
             self.posxy = x_coord + character_width, y
 
-        # if it's a single character change in the middle of the line
-        elif (
+        # wenn it's a single character change in the middle of the line
+        sowenn (
             x_coord < minlen
             and oldline[x_pos + 1 :] == newline[x_pos + 1 :]
             and wlen(oldline[x_pos]) == wlen(newline[x_pos])
@@ -664,8 +664,8 @@ klasse UnixConsole(Console):
             self.__write(newline[x_pos])
             self.posxy = x_coord + character_width, y
 
-        # if this is the last character to fit in the line and we edit in the middle of the line
-        elif (
+        # wenn this is the last character to fit in the line and we edit in the middle of the line
+        sowenn (
             self.dch1
             and self.ich1
             and wlen(newline) == self.width
@@ -683,15 +683,15 @@ klasse UnixConsole(Console):
             self.__write(newline[x_pos])
             self.posxy = character_width + 1, y
 
-        else:
+        sonst:
             self.__hide_cursor()
             self.__move(x_coord, y)
-            if wlen(oldline) > wlen(newline):
+            wenn wlen(oldline) > wlen(newline):
                 self.__write_code(self._el)
             self.__write(newline[x_pos:])
             self.posxy = wlen(newline), y
 
-        if "\x1b" in newline:
+        wenn "\x1b" in newline:
             # ANSI escape characters are present, so we can't assume
             # anything about the position of the cursor.  Moving the cursor
             # to the left margin should work to get to a known position.
@@ -704,43 +704,43 @@ klasse UnixConsole(Console):
         self.__buffer.append((terminfo.tparm(fmt, *args), 1))
 
     def __maybe_write_code(self, fmt, *args):
-        if fmt:
+        wenn fmt:
             self.__write_code(fmt, *args)
 
     def __move_y_cuu1_cud1(self, y):
         assert self._cud1 is not None
         assert self._cuu1 is not None
         dy = y - self.posxy[1]
-        if dy > 0:
+        wenn dy > 0:
             self.__write_code(dy * self._cud1)
-        elif dy < 0:
+        sowenn dy < 0:
             self.__write_code((-dy) * self._cuu1)
 
     def __move_y_cuu_cud(self, y):
         dy = y - self.posxy[1]
-        if dy > 0:
+        wenn dy > 0:
             self.__write_code(self._cud, dy)
-        elif dy < 0:
+        sowenn dy < 0:
             self.__write_code(self._cuu, -dy)
 
     def __move_x_hpa(self, x: int) -> None:
-        if x != self.posxy[0]:
+        wenn x != self.posxy[0]:
             self.__write_code(self._hpa, x)
 
     def __move_x_cub1_cuf1(self, x: int) -> None:
         assert self._cuf1 is not None
         assert self._cub1 is not None
         dx = x - self.posxy[0]
-        if dx > 0:
+        wenn dx > 0:
             self.__write_code(self._cuf1 * dx)
-        elif dx < 0:
+        sowenn dx < 0:
             self.__write_code(self._cub1 * (-dx))
 
     def __move_x_cub_cuf(self, x: int) -> None:
         dx = x - self.posxy[0]
-        if dx > 0:
+        wenn dx > 0:
             self.__write_code(self._cuf, dx)
-        elif dx < 0:
+        sowenn dx < 0:
             self.__write_code(self._cub, -dx)
 
     def __move_short(self, x, y):
@@ -756,22 +756,22 @@ klasse UnixConsole(Console):
         self.event_queue.insert(Event("resize", None))
 
     def __hide_cursor(self):
-        if self.cursor_visible:
+        wenn self.cursor_visible:
             self.__maybe_write_code(self._civis)
             self.cursor_visible = 0
 
     def __show_cursor(self):
-        if not self.cursor_visible:
+        wenn not self.cursor_visible:
             self.__maybe_write_code(self._cnorm)
             self.cursor_visible = 1
 
     def repaint(self):
-        if not self.__gone_tall:
+        wenn not self.__gone_tall:
             self.posxy = 0, self.posxy[1]
             self.__write("\r")
             ns = len(self.screen) * ["\000" * self.width]
             self.screen = ns
-        else:
+        sonst:
             self.posxy = 0, self.__offset
             self.__move(0, self.__offset)
             ns = self.height * ["\000" * self.width]
@@ -784,22 +784,22 @@ klasse UnixConsole(Console):
         I have the strong suspicion that this is complexity that
         will never do anyone any good."""
         # using .get() means that things will blow up
-        # only if the bps is actually needed (which I'm
+        # only wenn the bps is actually needed (which I'm
         # betting is pretty unlkely)
         bps = ratedict.get(self.__svtermstate.ospeed)
         while True:
             m = prog.search(fmt)
-            if not m:
+            wenn not m:
                 os.write(self.output_fd, fmt)
                 break
             x, y = m.span()
             os.write(self.output_fd, fmt[:x])
             fmt = fmt[y:]
             delay = int(m.group(1))
-            if b"*" in m.group(2):
+            wenn b"*" in m.group(2):
                 delay *= self.height
-            if self._pad and bps is not None:
+            wenn self._pad and bps is not None:
                 nchars = (bps * delay) / 1000
                 os.write(self.output_fd, self._pad * nchars)
-            else:
+            sonst:
                 time.sleep(float(delay) / 1000.0)

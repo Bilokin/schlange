@@ -143,7 +143,7 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
     def test_idle_process_reuse_one(self):
         executor = self.executor
         assert executor._max_workers >= 4
-        if self.get_context().get_start_method(allow_none=False) == "fork":
+        wenn self.get_context().get_start_method(allow_none=False) == "fork":
             raise unittest.SkipTest("Incompatible with the fork start method.")
         executor.submit(mul, 21, 2).result()
         executor.submit(mul, 6, 7).result()
@@ -153,7 +153,7 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
     def test_idle_process_reuse_multiple(self):
         executor = self.executor
         assert executor._max_workers <= 5
-        if self.get_context().get_start_method(allow_none=False) == "fork":
+        wenn self.get_context().get_start_method(allow_none=False) == "fork":
             raise unittest.SkipTest("Incompatible with the fork start method.")
         executor.submit(mul, 12, 7).result()
         executor.submit(mul, 33, 25)
@@ -166,7 +166,7 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
 
     def test_max_tasks_per_child(self):
         context = self.get_context()
-        if context.get_start_method(allow_none=False) == "fork":
+        wenn context.get_start_method(allow_none=False) == "fork":
             with self.assertRaises(ValueError):
                 self.executor_type(1, mp_context=context, max_tasks_per_child=3)
             return
@@ -200,7 +200,7 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
 
     def test_max_tasks_early_shutdown(self):
         context = self.get_context()
-        if context.get_start_method(allow_none=False) == "fork":
+        wenn context.get_start_method(allow_none=False) == "fork":
             raise unittest.SkipTest("Incompatible with the fork start method.")
         # not using self.executor as we need to control construction.
         # arguably this could go in another klasse w/o that mixin.
@@ -228,7 +228,7 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
         nthread = 0
         def mock_start_new_thread(func, *args, **kwargs):
             nonlocal nthread
-            if nthread >= 1:
+            wenn nthread >= 1:
                 raise RuntimeError("can't create new thread at "
                                    "interpreter shutdown")
             nthread += 1
@@ -287,11 +287,11 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
             getattr(executor, function_name)()
             worker_process.join()
 
-            if function_name == TERMINATE_WORKERS:
+            wenn function_name == TERMINATE_WORKERS:
                 worker_process.terminate.assert_called()
-            elif function_name == KILL_WORKERS:
+            sowenn function_name == KILL_WORKERS:
                 worker_process.kill.assert_called()
-            else:
+            sonst:
                 self.fail(f"Unknown operation: {function_name}")
 
             self.assertRaises(queue.Empty, q.get, timeout=0.01)
@@ -341,7 +341,7 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
             # We need it dead before ending the test to ensure it doesn't
             # get marked as an ENV CHANGE due to living child process.
             fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
-                if not worker_process.is_alive():
+                wenn not worker_process.is_alive():
                     break
 
 
@@ -355,5 +355,5 @@ def setUpModule():
     setup_module()
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

@@ -837,7 +837,7 @@ def template_replace(templates: list[str], replacements: dict[str, list[str]]) -
           ("Huskies are cute but also tiring")
       ]
 
-    Note that if any of the replacements do not occur in any template:
+    Note that wenn any of the replacements do not occur in any template:
       templates = ["Huskies are word1", "Beagles!"]
       replacements = {"word1": ["playful", "cute"],
                       "word2": ["feisty", "tiring"]}
@@ -875,7 +875,7 @@ def template_replace(templates: list[str], replacements: dict[str, list[str]]) -
     rendered_templates_no_duplicates = []
     fuer x in rendered_templates:
         # Inefficient, but should be fine fuer our purposes.
-        if x not in rendered_templates_no_duplicates:
+        wenn x not in rendered_templates_no_duplicates:
             rendered_templates_no_duplicates.append(x)
 
     return rendered_templates_no_duplicates
@@ -963,10 +963,10 @@ klasse GenericAliasSubstitutionTests(BaseTestCase):
             )
             fuer alias_str, args_str, expected_str in rendered_templates:
                 with self.subTest(alias=alias_str, args=args_str, expected=expected_str):
-                    if expected_str == 'TypeError':
+                    wenn expected_str == 'TypeError':
                         with self.assertRaises(TypeError):
                             eval(alias_str + args_str)
-                    else:
+                    sonst:
                         self.assertEqual(
                             eval(alias_str + args_str),
                             eval(expected_str)
@@ -1016,7 +1016,7 @@ klasse GenericAliasSubstitutionTests(BaseTestCase):
             # This one isn't technically valid - none of the things that
             # `generic` can be (defined in `generics` above) are variadic, so we
             # shouldn't really be able to do `generic[T1, *tuple_type[int, ...]]`.
-            # So even if type checkers shouldn't allow it, we allow it at
+            # So even wenn type checkers shouldn't allow it, we allow it at
             # runtime, in accordance with a general philosophy of "Keep the
             # runtime lenient so people can experiment with typing constructs".
             ('generic[T1, *tuple_type[int, ...]]',     '[str]',                                             'generic[str, *tuple_type[int, ...]]'),
@@ -1029,10 +1029,10 @@ klasse GenericAliasSubstitutionTests(BaseTestCase):
             )
             fuer alias_str, args_str, expected_str in rendered_templates:
                 with self.subTest(alias=alias_str, args=args_str, expected=expected_str):
-                    if expected_str == 'TypeError':
+                    wenn expected_str == 'TypeError':
                         with self.assertRaises(TypeError):
                             eval(alias_str + args_str)
-                    else:
+                    sonst:
                         self.assertEqual(
                             eval(alias_str + args_str),
                             eval(expected_str)
@@ -1061,10 +1061,10 @@ klasse GenericAliasSubstitutionTests(BaseTestCase):
             )
             fuer alias_str, args_str, expected_str in rendered_templates:
                 with self.subTest(alias=alias_str, args=args_str, expected=expected_str):
-                    if expected_str == 'TypeError':
+                    wenn expected_str == 'TypeError':
                         with self.assertRaises(TypeError):
                             eval(alias_str + args_str)
-                    else:
+                    sonst:
                         self.assertEqual(
                             eval(alias_str + args_str),
                             eval(expected_str)
@@ -1163,10 +1163,10 @@ klasse GenericAliasSubstitutionTests(BaseTestCase):
             )
             fuer alias_str, args_str, expected_str in rendered_templates:
                 with self.subTest(alias=alias_str, args=args_str, expected=expected_str):
-                    if expected_str == 'TypeError':
+                    wenn expected_str == 'TypeError':
                         with self.assertRaises(TypeError):
                             eval(alias_str + args_str)
-                    else:
+                    sonst:
                         self.assertEqual(
                             eval(alias_str + args_str),
                             eval(expected_str)
@@ -1359,7 +1359,7 @@ klasse TypeVarTupleTests(BaseTestCase):
                 H[()]
             with self.assertRaises(TypeError):
                 H[float]
-            if A != Tuple:
+            wenn A != Tuple:
                 self.assertEqual(H[float, str],
                                  tuple[list[float], A[()], list[str]])
             self.assertEqual(H[float, str, int],
@@ -1372,7 +1372,7 @@ klasse TypeVarTupleTests(BaseTestCase):
                 I[()]
             with self.assertRaises(TypeError):
                 I[float]
-            if A != Tuple:
+            wenn A != Tuple:
                 self.assertEqual(I[float, str],
                                  Tuple[List[float], A[()], List[str]])
             self.assertEqual(I[float, str, int],
@@ -1955,7 +1955,7 @@ klasse TypeVarTupleTests(BaseTestCase):
 
 klasse TypeVarTuplePicklingTests(BaseTestCase):
     # These are slightly awkward tests to run, because TypeVarTuples are only
-    # picklable if defined in the global scope. We therefore need to push
+    # picklable wenn defined in the global scope. We therefore need to push
     # various things defined in these tests into the global scope with `global`
     # statements at the start of each test.
 
@@ -2417,7 +2417,7 @@ klasse BaseCallableTests:
     def test_basic(self):
         Callable = self.Callable
         alias = Callable[[int, str], float]
-        if Callable is collections.abc.Callable:
+        wenn Callable is collections.abc.Callable:
             self.assertIsInstance(alias, types.GenericAlias)
         self.assertIs(alias.__origin__, collections.abc.Callable)
         self.assertEqual(alias.__args__, (int, str, float))
@@ -2821,7 +2821,7 @@ klasse Concrete(Proto):
 klasse Other:
     attr: int = 1
     def meth(self, arg: str) -> int:
-        if arg == 'this':
+        wenn arg == 'this':
             return 1
         return 0
 
@@ -3224,7 +3224,7 @@ klasse ProtocolTests(BaseTestCase):
 
         # These aren't protocols at all (despite having annotations),
         # so they should only be considered subclasses of CallableMembersProto
-        # if they *actually have an attribute* matching the `meth` member
+        # wenn they *actually have an attribute* matching the `meth` member
         # (just having an annotation is insufficient)
 
         klasse AnnotatedButNotAProtocol:
@@ -3404,7 +3404,7 @@ klasse ProtocolTests(BaseTestCase):
 
         klasse Eggs:
             def __getattr__(self, attr):
-                if attr == "x":
+                wenn attr == "x":
                     return 42
                 raise AttributeError(attr)
 
@@ -3898,7 +3898,7 @@ klasse ProtocolTests(BaseTestCase):
         klasse HasX(Protocol):
             # The presence of a non-callable member
             # would mean issubclass() checks would fail with TypeError
-            # if it weren't fuer the custom `__subclasshook__` method
+            # wenn it weren't fuer the custom `__subclasshook__` method
             x = 1
 
             @classmethod
@@ -4508,7 +4508,7 @@ klasse ProtocolTests(BaseTestCase):
         klasse Foo(collections.abc.Sized, Protocol): pass
 
         # gh-105144: this previously raised TypeError
-        # if a Protocol subclass of Sized had been created
+        # wenn a Protocol subclass of Sized had been created
         # before any isinstance() checks against Sized
         self.assertNotIsInstance(1, collections.abc.Sized)
 
@@ -4519,7 +4519,7 @@ klasse ProtocolTests(BaseTestCase):
         klasse Foo(typing.Sized, Protocol): pass
 
         # gh-105144: this previously raised TypeError
-        # if a Protocol subclass of Sized had been created
+        # wenn a Protocol subclass of Sized had been created
         # before any isinstance() checks against Sized
         self.assertNotIsInstance(1, typing.Sized)
 
@@ -4927,10 +4927,10 @@ klasse GenericTests(BaseTestCase):
 
     def test_naive_runtime_checks(self):
         def naive_dict_check(obj, tp):
-            # Check if a dictionary conforms to Dict type
-            if len(tp.__parameters__) > 0:
+            # Check wenn a dictionary conforms to Dict type
+            wenn len(tp.__parameters__) > 0:
                 raise NotImplementedError
-            if tp.__args__:
+            wenn tp.__args__:
                 KT, VT = tp.__args__
                 return all(
                     isinstance(k, KT) and isinstance(v, VT)
@@ -4942,8 +4942,8 @@ klasse GenericTests(BaseTestCase):
             naive_dict_check({1: 'x'}, typing.Dict[str, T])
 
         def naive_generic_check(obj, tp):
-            # Check if an instance conforms to the generic class
-            if not hasattr(obj, '__orig_class__'):
+            # Check wenn an instance conforms to the generic class
+            wenn not hasattr(obj, '__orig_class__'):
                 raise NotImplementedError
             return obj.__orig_class__ == tp
         klasse Node(Generic[T]): ...
@@ -4954,7 +4954,7 @@ klasse GenericTests(BaseTestCase):
             naive_generic_check([1, 2, 3], Node[int])
 
         def naive_list_base_check(obj, tp):
-            # Check if list conforms to a List subclass
+            # Check wenn list conforms to a List subclass
             return all(isinstance(x, tp.__orig_bases__[0].__args__[0])
                        fuer x in obj)
         klasse C(List[int]): ...
@@ -5269,12 +5269,12 @@ klasse GenericTests(BaseTestCase):
         fuer obj in objs:
             self.assertNotEqual(repr(obj), '')
             self.assertEqual(obj, obj)
-            if (getattr(obj, '__parameters__', None)
+            wenn (getattr(obj, '__parameters__', None)
                     and not isinstance(obj, typing.TypeVar)
                     and isinstance(obj.__parameters__, tuple)
                     and len(obj.__parameters__) == 1):
                 self.assertEqual(obj[Any].__args__, (Any,))
-            if isinstance(obj, type):
+            wenn isinstance(obj, type):
                 fuer base in obj.__mro__:
                     self.assertNotEqual(repr(base), '')
                     self.assertEqual(base, base)
@@ -5619,7 +5619,7 @@ klasse GenericTests(BaseTestCase):
         klasse Final:
             def __init_subclass__(cls, **kwargs) -> None:
                 fuer base in cls.__bases__:
-                    if base is not Final and issubclass(base, Final):
+                    wenn base is not Final and issubclass(base, Final):
                         raise FinalException(base)
                 super().__init_subclass__(**kwargs)
         klasse Test(Generic[T], Final):
@@ -5962,7 +5962,7 @@ klasse FinalDecoratorTests(BaseTestCase):
             def __call__(self, *args, **kwargs):
                 return self.func(*args, **kwargs)
 
-        # Check that no error is thrown if the attribute
+        # Check that no error is thrown wenn the attribute
         # is not writable.
         @final
         @Wrapper
@@ -5977,7 +5977,7 @@ klasse FinalDecoratorTests(BaseTestCase):
         klasse WithMeta(metaclass=Meta): ...
         self.assertEqual(WithMeta.__final__, "can't set me")
 
-        # Builtin classes throw TypeError if you try to set an
+        # Builtin classes throw TypeError wenn you try to set an
         # attribute.
         final(int)
         self.assertNotHasAttr(int, "__final__")
@@ -6497,9 +6497,9 @@ klasse AsyncIteratorWrapper(typing.AsyncIterator[T_a]):
 
     async def __anext__(self) -> T_a:
         data = await self.value
-        if data:
+        wenn data:
             return data
-        else:
+        sonst:
             raise StopAsyncIteration
 
 klasse ACM:
@@ -7792,9 +7792,9 @@ klasse CollectionsAbcTests(BaseTestCase):
         klasse Base(typing.Iterable):
             @classmethod
             def __subclasshook__(cls, other):
-                if other.__name__ == 'Foo':
+                wenn other.__name__ == 'Foo':
                     return True
-                else:
+                sonst:
                     return False
 
         klasse C(Base): ...
@@ -7920,9 +7920,9 @@ klasse TypeTests(BaseTestCase):
         A = Optional[Type[BaseException]]
 
         def foo(a: A) -> Optional[BaseException]:
-            if a is None:
+            wenn a is None:
                 return None
-            else:
+            sonst:
                 return a()
 
         self.assertIsInstance(foo(KeyboardInterrupt), KeyboardInterrupt)
@@ -8371,7 +8371,7 @@ klasse NamedTupleTests(BaseTestCase):
 
         klasse Meta(type):
             def __getattribute__(self, attr):
-                if attr == "__set_name__":
+                wenn attr == "__set_name__":
                     raise CustomException
                 return object.__getattribute__(self, attr)
 
@@ -8620,7 +8620,7 @@ klasse TypedDictTests(BaseTestCase):
     def test_inheritance_pep563(self):
         def _make_td(future, class_name, annos, base, extra_names=None):
             lines = []
-            if future:
+            wenn future:
                 lines.append('from __future__ import annotations')
             lines.append('from typing import TypedDict')
             lines.append(f'class {class_name}({base}):')
@@ -8640,8 +8640,8 @@ klasse TypedDictTests(BaseTestCase):
                     child = _make_td(
                         child_future, "Child", {"child": "int"}, "Base", {"Base": base}
                     )
-                    base_anno = ForwardRef("int", module="builtins") if base_future else int
-                    child_anno = ForwardRef("int", module="builtins") if child_future else int
+                    base_anno = ForwardRef("int", module="builtins") wenn base_future sonst int
+                    child_anno = ForwardRef("int", module="builtins") wenn child_future sonst int
                     self.assertEqual(base.__annotations__, {'base': base_anno})
                     self.assertEqual(
                         child.__annotations__, {'child': child_anno, 'base': base_anno}
@@ -9469,7 +9469,7 @@ klasse AnnotatedTests(BaseTestCase):
                 self.x = x
 
             def __eq__(self, other):
-                if not isinstance(other, C):
+                wenn not isinstance(other, C):
                     return NotImplemented
                 return other.x == self.x
 
@@ -10523,9 +10523,9 @@ klasse SpecialAttrsTests(BaseTestCase):
                 fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
                     s = pickle.dumps(cls, proto)
                     loaded = pickle.loads(s)
-                    if isinstance(cls, Union):
+                    wenn isinstance(cls, Union):
                         self.assertEqual(cls, loaded)
-                    else:
+                    sonst:
                         self.assertIs(cls, loaded)
 
     TypeName = typing.NewType('SpecialAttrsTests.TypeName', Any)
@@ -10756,7 +10756,7 @@ klasse AllTests(BaseTestCase):
         computed_all = {
             k fuer k, v in vars(typing).items()
             # explicitly exported, not a thing with __module__
-            if k in actual_all or (
+            wenn k in actual_all or (
                 # avoid private names
                 not k.startswith('_') and
                 # there's a few types and metaclasses that aren't exported
@@ -10838,5 +10838,5 @@ def load_tests(loader, tests, pattern):
     return tests
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     main()

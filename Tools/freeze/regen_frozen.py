@@ -31,7 +31,7 @@ def gen_c_code(fp, co_bytes):
     write('static unsigned char %s[] = {' % SYMBOL, end='')
     bytes_per_row = 13
     fuer i, opcode in enumerate(co_bytes):
-        if (i % bytes_per_row) == 0:
+        wenn (i % bytes_per_row) == 0:
             # start a new row
             write()
             write('    ', end='')
@@ -47,5 +47,5 @@ def main():
         gen_c_code(fp, co_bytes)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     main()

@@ -53,10 +53,10 @@ klasse OperatorTestCase:
         actual_all = set(operator.__all__)
         computed_all = set()
         fuer name in vars(operator):
-            if name.startswith('__'):
+            wenn name.startswith('__'):
                 continue
             value = getattr(operator, name)
-            if value.__module__ in ('operator', '_operator'):
+            wenn value.__module__ in ('operator', '_operator'):
                 computed_all.add(name)
         self.assertSetEqual(computed_all, actual_all)
 
@@ -589,9 +589,9 @@ klasse OperatorTestCase:
                 self.value = value
 
             def __length_hint__(self):
-                if type(self.value) is type:
+                wenn type(self.value) is type:
                     raise self.value
-                else:
+                sonst:
                     return self.value
 
         self.assertEqual(operator.length_hint([], 2), 0)
@@ -629,11 +629,11 @@ klasse OperatorTestCase:
     def test_dunder_is_original(self):
         operator = self.module
 
-        names = [name fuer name in dir(operator) if not name.startswith('_')]
+        names = [name fuer name in dir(operator) wenn not name.startswith('_')]
         fuer name in names:
             orig = getattr(operator, name)
             dunder = getattr(operator, '__' + name.strip('_') + '__', None)
-            if dunder:
+            wenn dunder:
                 self.assertIs(dunder, orig)
 
     @support.requires_docstrings
@@ -771,5 +771,5 @@ klasse CCOperatorPickleTestCase(OperatorPickleTestCase, unittest.TestCase):
     module2 = c_operator
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

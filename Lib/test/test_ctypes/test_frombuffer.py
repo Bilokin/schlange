@@ -35,7 +35,7 @@ klasse Test(unittest.TestCase):
         a.pop()
         x = (c_int * 16).from_buffer(a)
 
-        self.assertIn(a, [obj.obj if isinstance(obj, memoryview) else obj
+        self.assertIn(a, [obj.obj wenn isinstance(obj, memoryview) sonst obj
                           fuer obj in x._objects.values()])
 
         expected = x[:]
@@ -140,5 +140,5 @@ klasse Test(unittest.TestCase):
         self.assertRaises(TypeError, _SimpleCData.from_buffer_copy, b"123")
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

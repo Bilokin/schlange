@@ -77,31 +77,31 @@ klasse WSGIRequestHandler(BaseHTTPRequestHandler):
         env['SERVER_PROTOCOL'] = self.request_version
         env['SERVER_SOFTWARE'] = self.server_version
         env['REQUEST_METHOD'] = self.command
-        if '?' in self.path:
+        wenn '?' in self.path:
             path,query = self.path.split('?',1)
-        else:
+        sonst:
             path,query = self.path,''
 
         env['PATH_INFO'] = urllib.parse.unquote(path, 'iso-8859-1')
         env['QUERY_STRING'] = query
         env['REMOTE_ADDR'] = self.client_address[0]
 
-        if self.headers.get('content-type') is None:
+        wenn self.headers.get('content-type') is None:
             env['CONTENT_TYPE'] = self.headers.get_content_type()
-        else:
+        sonst:
             env['CONTENT_TYPE'] = self.headers['content-type']
 
         length = self.headers.get('content-length')
-        if length:
+        wenn length:
             env['CONTENT_LENGTH'] = length
 
         fuer k, v in self.headers.items():
             k=k.replace('-','_').upper(); v=v.strip()
-            if k in env:
+            wenn k in env:
                 continue                    # skip content length, type,etc.
-            if 'HTTP_'+k in env:
+            wenn 'HTTP_'+k in env:
                 env['HTTP_'+k] += ','+v     # comma-separate multiple headers
-            else:
+            sonst:
                 env['HTTP_'+k] = v
         return env
 
@@ -112,14 +112,14 @@ klasse WSGIRequestHandler(BaseHTTPRequestHandler):
         """Handle a single HTTP request"""
 
         self.raw_requestline = self.rfile.readline(65537)
-        if len(self.raw_requestline) > 65536:
+        wenn len(self.raw_requestline) > 65536:
             self.requestline = ''
             self.request_version = ''
             self.command = ''
             self.send_error(414)
             return
 
-        if not self.parse_request(): # An error code has been sent, just exit
+        wenn not self.parse_request(): # An error code has been sent, just exit
             return
 
         handler = ServerHandler(
@@ -152,7 +152,7 @@ def make_server(
     return server
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     with make_server('', 8000, demo_app) as httpd:
         sa = httpd.socket.getsockname()
         print("Serving HTTP on", sa[0], "port", sa[1], "...")

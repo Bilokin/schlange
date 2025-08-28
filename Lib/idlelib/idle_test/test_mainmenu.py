@@ -28,15 +28,15 @@ klasse MainMenuTest(unittest.TestCase):
             ):
             with self.subTest(menu=menu, pattern=pattern):
                 fuer menutup in mainmenu.menudefs:
-                    if menutup[0] == menu:
+                    wenn menutup[0] == menu:
                         break
-                else:
+                sonst:
                     self.assertTrue(0, f"{menu} not in menudefs")
                 self.assertTrue(any(re.search(pattern, menuitem[0])
                                     fuer menuitem in menutup[1]
-                                    if menuitem is not None),  # Separator.
+                                    wenn menuitem is not None),  # Separator.
                                 f"{pattern} not in {menu}")
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main(verbosity=2)

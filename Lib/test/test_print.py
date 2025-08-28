@@ -46,10 +46,10 @@ klasse TestPrint(unittest.TestCase):
     def check(self, expected, args,
               sep=NotDefined, end=NotDefined, file=NotDefined):
         # Capture sys.stdout in a StringIO.  Call print with args,
-        # and with sep, end, and file, if they're defined.  Result
+        # and with sep, end, and file, wenn they're defined.  Result
         # must match expected.
 
-        # Look up the actual function to call, based on if sep, end,
+        # Look up the actual function to call, based on wenn sep, end,
         # and file are defined.
         fn = dispatch[(sep is not NotDefined,
                        end is not NotDefined,
@@ -143,7 +143,7 @@ klasse TestPrint(unittest.TestCase):
 
 klasse TestPy2MigrationHint(unittest.TestCase):
     """Test that correct hint is produced analogous to Python3 syntax,
-    if print statement is executed as in Python 2.
+    wenn print statement is executed as in Python 2.
     """
 
     def test_normal_string(self):
@@ -200,5 +200,5 @@ klasse TestPy2MigrationHint(unittest.TestCase):
                 str(context.exception))
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

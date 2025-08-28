@@ -20,7 +20,7 @@ from test.support import socket_helper
 from test.support import wait_process
 from test.support import hashlib_helper
 
-if sys.platform == 'win32':
+wenn sys.platform == 'win32':
     raise unittest.SkipTest('UNIX only')
 
 
@@ -41,7 +41,7 @@ def EXITCODE(exitcode):
 
 
 def SIGNAL(signum):
-    if not 1 <= signum <= 68:
+    wenn not 1 <= signum <= 68:
         raise AssertionError(f'invalid signum {signum}')
     return 32768 - signum
 
@@ -49,7 +49,7 @@ def SIGNAL(signum):
 def close_pipe_transport(transport):
     # Don't call transport.close() because the event loop and the selector
     # are mocked
-    if transport._pipe is None:
+    wenn transport._pipe is None:
         return
     transport._pipe.close()
     transport._pipe = None
@@ -126,7 +126,7 @@ klasse SelectorEventLoopSignalTests(test_utils.TestCase):
         m_signal.valid_signals = signal.valid_signals
 
         def set_wakeup_fd(fd):
-            if fd == -1:
+            wenn fd == -1:
                 raise ValueError()
         m_signal.set_wakeup_fd = set_wakeup_fd
 
@@ -502,7 +502,7 @@ klasse SelectorEventLoopUnixSockSendfileTests(test_utils.TestCase):
         sock.setblocking(False)
         sock.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, 1024)
         sock.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, 1024)
-        if cleanup:
+        wenn cleanup:
             self.addCleanup(sock.close)
         return sock
 
@@ -1190,7 +1190,7 @@ klasse TestFork(unittest.IsolatedAsyncioTestCase):
             self.addCleanup(os.close, r)
             self.addCleanup(os.close, w)
             pid = os.fork()
-            if pid == 0:
+            wenn pid == 0:
                 # child
                 try:
                     loop = asyncio.get_event_loop()
@@ -1201,7 +1201,7 @@ klasse TestFork(unittest.IsolatedAsyncioTestCase):
                     os.write(w, b'ERROR:' + ascii(e).encode())
                 finally:
                     os._exit(0)
-            else:
+            sonst:
                 # parent
                 result = os.read(r, 100)
                 self.assertEqual(result, b'NO LOOP')
@@ -1297,5 +1297,5 @@ klasse TestFork(unittest.IsolatedAsyncioTestCase):
 
         self.assertEqual(result.value, 0)
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

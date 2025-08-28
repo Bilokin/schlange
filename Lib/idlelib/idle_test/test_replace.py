@@ -290,5 +290,5 @@ klasse ReplaceDialogTest(unittest.TestCase):
         replace_find()
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main(verbosity=2)

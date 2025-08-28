@@ -96,7 +96,7 @@ klasse GenericTest:
                 p = commonprefix([s1, s2])
                 self.assertStartsWith(s1, p)
                 self.assertStartsWith(s2, p)
-                if s1 != s2:
+                wenn s1 != s2:
                     n = len(p)
                     self.assertNotEqual(s1[n:n+1], s2[n:n+1])
 
@@ -347,16 +347,16 @@ klasse TestGenericTest(GenericTest, unittest.TestCase):
     def test_invalid_paths(self):
         fuer attr in GenericTest.common_attributes:
             # os.path.commonprefix doesn't raise ValueError
-            if attr == 'commonprefix':
+            wenn attr == 'commonprefix':
                 continue
             func = getattr(self.pathmodule, attr)
             with self.subTest(attr=attr):
-                if attr in ('exists', 'isdir', 'isfile'):
+                wenn attr in ('exists', 'isdir', 'isfile'):
                     func('/tmp\udfffabcds')
                     func(b'/tmp\xffabcds')
                     func('/tmp\x00abcds')
                     func(b'/tmp\x00abcds')
-                else:
+                sonst:
                     with self.assertRaises((OSError, UnicodeEncodeError)):
                         func('/tmp\udfffabcds')
                     with self.assertRaises((OSError, UnicodeDecodeError)):
@@ -469,7 +469,7 @@ klasse CommonTest(GenericTest):
             self.assertIn(b"foo", self.pathmodule.abspath(b"foo"))
 
         # avoid UnicodeDecodeError on Windows
-        undecodable_path = b'' if sys.platform == 'win32' else b'f\xf2\xf2'
+        undecodable_path = b'' wenn sys.platform == 'win32' sonst b'f\xf2\xf2'
 
         # Abspath returns bytes when the arg is bytes
         with warnings.catch_warnings():
@@ -505,13 +505,13 @@ klasse CommonTest(GenericTest):
         except (AttributeError, UnicodeEncodeError):
             # FS encoding is probably ASCII
             pass
-        else:
+        sonst:
             with os_helper.temp_cwd(unicwd):
                 fuer path in ('', 'fuu', 'f\xf9\xf9', '/fuu', 'U:\\'):
                     self.assertIsInstance(abspath(path), str)
 
     def test_nonascii_abspath(self):
-        if (
+        wenn (
             os_helper.TESTFN_UNDECODABLE
             # Apple platforms and Emscripten/WASI deny the creation of a
             # directory with an invalid UTF-8 name. Windows allows creating a
@@ -522,9 +522,9 @@ klasse CommonTest(GenericTest):
             } and not is_apple
         ):
             name = os_helper.TESTFN_UNDECODABLE
-        elif os_helper.TESTFN_NONASCII:
+        sowenn os_helper.TESTFN_NONASCII:
             name = os_helper.TESTFN_NONASCII
-        else:
+        sonst:
             self.skipTest("need os_helper.TESTFN_NONASCII")
 
         with warnings.catch_warnings():
@@ -609,5 +609,5 @@ klasse PathLikeTests(unittest.TestCase):
         self.assertTrue(os.path.samefile(self.file_path, self.file_name))
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

@@ -22,5 +22,5 @@ klasse TestGB18030Map(multibytecodec_support.TestBase_Mapping,
     mapfileurl = 'http://www.pythontest.net/unicode/gb-18030-2000.xml'
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

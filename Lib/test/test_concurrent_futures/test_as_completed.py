@@ -98,7 +98,7 @@ klasse AsCompletedTests:
             del future
             support.gc_collect()  # For PyPy or other GCs.
             self.assertIsNone(wr())
-            if futures_list:
+            wenn futures_list:
                 futures_list[0].set_result("test")
 
     def test_correct_timeout_exception_msg(self):
@@ -118,5 +118,5 @@ def setUpModule():
     setup_module()
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

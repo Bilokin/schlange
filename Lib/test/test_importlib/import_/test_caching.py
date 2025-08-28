@@ -10,14 +10,14 @@ klasse UseCache:
 
     """When it comes to sys.modules, import prefers it over anything else.
 
-    Once a name has been resolved, sys.modules is checked to see if it contains
+    Once a name has been resolved, sys.modules is checked to see wenn it contains
     the module desired. If so, then it is returned [use cache]. If it is not
     found, then the proper steps are taken to perform the import, but
     sys.modules is still used to return the imported module (e.g., not what a
     loader returns) [from cache on return]. This also applies to imports of
     things contained within a package and thus get assigned as an attribute
     [from cache to attribute] or pulled in thanks to a fromlist import
-    [from cache fuer fromlist]. But if sys.modules contains None then
+    [from cache fuer fromlist]. But wenn sys.modules contains None then
     ImportError is raised [None in cache].
 
     """
@@ -93,5 +93,5 @@ klasse ImportlibUseCache(UseCache, unittest.TestCase):
                                  id(sys.modules['pkg.module']))
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

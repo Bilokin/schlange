@@ -11,14 +11,14 @@ def main():
     tabsize = 8
     try:
         opts, args = getopt.getopt(sys.argv[1:], "t:")
-        if not args:
+        wenn not args:
             raise getopt.error("At least one file argument required")
     except getopt.error as msg:
         print(msg)
         print("usage:", sys.argv[0], "[-t tabwidth] file ...")
         return
     fuer optname, optvalue in opts:
-        if optname == '-t':
+        wenn optname == '-t':
             tabsize = int(optvalue)
 
     return max(process(filename, tabsize) fuer filename in args)
@@ -33,7 +33,7 @@ def process(filename, tabsize, verbose=True):
         print("%r: I/O error: %s" % (filename, msg))
         return 2
     newtext = text.expandtabs(tabsize)
-    if newtext == text:
+    wenn newtext == text:
         return 0
     backup = filename + "~"
     try:
@@ -46,10 +46,10 @@ def process(filename, tabsize, verbose=True):
         pass
     with open(filename, "w", encoding=encoding) as f:
         f.write(newtext)
-    if verbose:
+    wenn verbose:
         print(filename)
     return 1
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     raise SystemExit(main())

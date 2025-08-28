@@ -133,5 +133,5 @@ klasse NamespaceReaderTest(util.DiskSetup, unittest.TestCase):
         self.assertEqual(repr(reader.files()), f"MultiplexedPath('{root}')")
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

@@ -13,7 +13,7 @@ the example.  It should be ignored:
 
 import sys
 import unittest
-if sys.flags.optimize >= 2:
+wenn sys.flags.optimize >= 2:
     raise unittest.SkipTest("Cannot test docstrings with -O2")
 
 klasse C(object):
@@ -112,9 +112,9 @@ klasse Test(unittest.TestCase):
         import doctest, sys
         EXPECTED = 19
         f, t = doctest.testmod(sys.modules[__name__])
-        if f:
+        wenn f:
             self.fail("%d of %d doctests failed" % (f, t))
-        if t != EXPECTED:
+        wenn t != EXPECTED:
             self.fail("expected %d tests to run, not %d" % (EXPECTED, t))
 
 
@@ -122,5 +122,5 @@ klasse Test(unittest.TestCase):
 # to make sure they don't get tested.
 from doctest import *
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

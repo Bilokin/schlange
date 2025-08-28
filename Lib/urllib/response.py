@@ -26,7 +26,7 @@ klasse addbase(tempfile._TemporaryFileWrapper):
                                              id(self), self.file)
 
     def __enter__(self):
-        if self.fp.closed:
+        wenn self.fp.closed:
             raise ValueError("I/O operation on closed file")
         return self
 
@@ -46,7 +46,7 @@ klasse addclosehook(addbase):
         try:
             closehook = self.closehook
             hookargs = self.hookargs
-            if closehook:
+            wenn closehook:
                 self.closehook = None
                 self.hookargs = None
                 closehook(*hookargs)

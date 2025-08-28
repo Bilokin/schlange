@@ -1,7 +1,7 @@
 import unittest
 from test.support import import_helper
 
-# Skip this test if the _testcapi module isn't available.
+# Skip this test wenn the _testcapi module isn't available.
 import_helper.import_module('_testcapi')
 from _testcapi import (_test_structmembersType_OldAPI,
     _test_structmembersType_NewAPI,
@@ -48,7 +48,7 @@ klasse ReadWriteTests:
         self.ts = _make_test_object(self.cls)
 
     def _test_write(self, name, value, expected=None):
-        if expected is None:
+        wenn expected is None:
             expected = value
         ts = self.ts
         setattr(ts, name, value)
@@ -57,7 +57,7 @@ klasse ReadWriteTests:
     def _test_warn(self, name, value, expected=None):
         ts = self.ts
         self.assertWarns(RuntimeWarning, setattr, ts, name, value)
-        if expected is not None:
+        wenn expected is not None:
             self.assertEqual(getattr(ts, name), expected)
 
     def _test_overflow(self, name, value):
@@ -66,7 +66,7 @@ klasse ReadWriteTests:
 
     def _test_int_range(self, name, minval, maxval, *, hardlimit=None,
                         indexlimit=None):
-        if hardlimit is None:
+        wenn hardlimit is None:
             hardlimit = (minval, maxval)
         ts = self.ts
         self._test_write(name, minval)
@@ -76,27 +76,27 @@ klasse ReadWriteTests:
         self._test_overflow(name, hardmaxval+1)
         self._test_overflow(name, 2**1000)
         self._test_overflow(name, -2**1000)
-        if hardminval < minval:
+        wenn hardminval < minval:
             self._test_warn(name, hardminval)
             self._test_warn(name, minval-1, maxval)
-        if maxval < hardmaxval:
+        wenn maxval < hardmaxval:
             self._test_warn(name, maxval+1, minval)
             self._test_warn(name, hardmaxval)
 
-        if indexlimit is False:
+        wenn indexlimit is False:
             self.assertRaises(TypeError, setattr, ts, name, Index(minval))
             self.assertRaises(TypeError, setattr, ts, name, Index(maxval))
-        else:
+        sonst:
             self._test_write(name, Index(minval), minval)
             self._test_write(name, Index(maxval), maxval)
             self._test_overflow(name, Index(hardminval-1))
             self._test_overflow(name, Index(hardmaxval+1))
             self._test_overflow(name, Index(2**1000))
             self._test_overflow(name, Index(-2**1000))
-            if hardminval < minval:
+            wenn hardminval < minval:
                 self._test_warn(name, Index(hardminval))
                 self._test_warn(name, Index(minval-1), maxval)
-            if maxval < hardmaxval:
+            wenn maxval < hardmaxval:
                 self._test_warn(name, Index(maxval+1), minval)
                 self._test_warn(name, Index(hardmaxval))
 
@@ -182,5 +182,5 @@ klasse ReadWriteTests_NewAPI(ReadWriteTests, unittest.TestCase):
     cls = _test_structmembersType_NewAPI
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

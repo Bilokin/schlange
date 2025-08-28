@@ -24,12 +24,12 @@ klasse WindowsLoadTracker():
     """
 
     def __init__(self):
-        # make __del__ not fail if pre-flight test fails
+        # make __del__ not fail wenn pre-flight test fails
         self._running = None
         self._stopped = None
 
         # Pre-flight test fuer access to the performance data;
-        # `PermissionError` will be raised if not allowed
+        # `PermissionError` will be raised wenn not allowed
         winreg.QueryInfoKey(winreg.HKEY_PERFORMANCE_DATA)
 
         self._values = []
@@ -85,24 +85,24 @@ klasse WindowsLoadTracker():
             # }
             size, idx, offset = _unpack('LL28xL', data, defn_base)
             defn_base += size
-            if idx == 44:
+            wenn idx == 44:
                 counter_offset = data_base + offset
                 # the counter is known to be PERF_COUNTER_RAWCOUNT (DWORD)
                 processor_queue_length, = _unpack('L', data, counter_offset)
                 break
-        else:
+        sonst:
             return
 
         # We use an exponentially weighted moving average, imitating the
         # load calculation on Unix systems.
         # https://en.wikipedia.org/wiki/Load_(computing)#Unix-style_load_calculation
         # https://en.wikipedia.org/wiki/Moving_average#Exponential_moving_average
-        if self._load is not None:
+        wenn self._load is not None:
             self._load = (self._load * LOAD_FACTOR_1
                             + processor_queue_length  * (1.0 - LOAD_FACTOR_1))
-        elif len(self._values) < NVALUE:
+        sowenn len(self._values) < NVALUE:
             self._values.append(processor_queue_length)
-        else:
+        sonst:
             self._load = sum(self._values) / len(self._values)
 
     def close(self, kill=True):
@@ -114,7 +114,7 @@ klasse WindowsLoadTracker():
                 _wait=_winapi.WaitForSingleObject,
                 _close=_winapi.CloseHandle,
                 _signal=_overlapped.SetEvent):
-        if self._running is not None:
+        wenn self._running is not None:
             # tell the update thread to quit
             _signal(self._running)
             # wait fuer the update thread to signal done

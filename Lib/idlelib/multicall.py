@@ -44,10 +44,10 @@ MC_SHIFT = 1<<0; MC_CONTROL = 1<<2; MC_ALT = 1<<3; MC_META = 1<<5
 MC_OPTION = 1<<6; MC_COMMAND = 1<<7
 
 # define the list of modifiers, to be used in complex event types.
-if sys.platform == "darwin":
+wenn sys.platform == "darwin":
     _modifiers = (("Shift",), ("Control",), ("Option",), ("Command",))
     _modifier_masks = (MC_SHIFT, MC_CONTROL, MC_OPTION, MC_COMMAND)
-else:
+sonst:
     _modifiers = (("Control",), ("Alt",), ("Shift",), ("Meta", "M"))
     _modifier_masks = (MC_CONTROL, MC_ALT, MC_SHIFT, MC_META)
 
@@ -56,7 +56,7 @@ _modifier_names = {name: number
                          fuer number in range(len(_modifiers))
                          fuer name in _modifiers[number]}
 
-# In 3.4, if no shell window is ever open, the underlying Tk widget is
+# In 3.4, wenn no shell window is ever open, the underlying Tk widget is
 # destroyed before .__del__ methods here are called.  The following
 # is used to selectively ignore shutdown exceptions to avoid
 # 'Exception ignored' messages.  See http://bugs.python.org/issue20167
@@ -80,16 +80,16 @@ klasse _SimpleBinder:
         self.handlerid = None
 
     def bind(self, triplet, func):
-        if not self.handlerid:
+        wenn not self.handlerid:
             def handler(event, l = self.bindedfuncs, mc_type = self.type):
                 event.mc_type = mc_type
                 wascalled = {}
                 fuer i in range(len(l)-1, -1, -1):
                     func = l[i]
-                    if func not in wascalled:
+                    wenn func not in wascalled:
                         wascalled[func] = True
                         r = func(event)
-                        if r:
+                        wenn r:
                             return r
             self.handlerid = self.widget.bind(self.widgetinst,
                                               self.sequence, handler)
@@ -97,17 +97,17 @@ klasse _SimpleBinder:
 
     def unbind(self, triplet, func):
         self.bindedfuncs.remove(func)
-        if not self.bindedfuncs:
+        wenn not self.bindedfuncs:
             self.widget.unbind(self.widgetinst, self.sequence, self.handlerid)
             self.handlerid = None
 
     def __del__(self):
-        if self.handlerid:
+        wenn self.handlerid:
             try:
                 self.widget.unbind(self.widgetinst, self.sequence,
                         self.handlerid)
             except tkinter.TclError as e:
-                if not APPLICATION_GONE in e.args[0]:
+                wenn not APPLICATION_GONE in e.args[0]:
                     raise
 
 # An int in range(1 << len(_modifiers)) represents a combination of modifiers
@@ -118,7 +118,7 @@ klasse _SimpleBinder:
 _states = range(1 << len(_modifiers))
 _state_names = [''.join(m[0]+'-'
                         fuer i, m in enumerate(_modifiers)
-                        if (1 << i) & s)
+                        wenn (1 << i) & s)
                 fuer s in _states]
 
 def expand_substates(states):
@@ -146,7 +146,7 @@ _state_codes = []
 fuer s in _states:
     r = 0
     fuer i in range(len(_modifiers)):
-        if (1 << i) & s:
+        wenn (1 << i) & s:
             r |= _modifier_masks[i]
     _state_codes.append(r)
 
@@ -171,19 +171,19 @@ klasse _ComplexBinder:
             fuer l in lists:
                 fuer i in range(len(l)-1, -1, -1):
                     func = l[i]
-                    if func not in wascalled:
+                    wenn func not in wascalled:
                         wascalled[func] = True
                         r = l[i](event)
-                        if r:
+                        wenn r:
                             break
-                if r:
+                wenn r:
                     break
             ishandlerrunning[:] = []
             # Call all functions in doafterhandler and remove them from list
             fuer f in doafterhandler:
                 f()
             doafterhandler[:] = []
-            if r:
+            wenn r:
                 return r
         return handler
 
@@ -211,7 +211,7 @@ klasse _ComplexBinder:
                                                           seq, handler)))
 
     def bind(self, triplet, func):
-        if triplet[2] not in self.bindedfuncs:
+        wenn triplet[2] not in self.bindedfuncs:
             self.bindedfuncs[triplet[2]] = [[] fuer s in _states]
             fuer s in _states:
                 lists = [ self.bindedfuncs[detail][i]
@@ -223,16 +223,16 @@ klasse _ComplexBinder:
                 self.handlerids.append((seq, self.widget.bind(self.widgetinst,
                                                               seq, handler)))
         doit = lambda: self.bindedfuncs[triplet[2]][triplet[0]].append(func)
-        if not self.ishandlerrunning:
+        wenn not self.ishandlerrunning:
             doit()
-        else:
+        sonst:
             self.doafterhandler.append(doit)
 
     def unbind(self, triplet, func):
         doit = lambda: self.bindedfuncs[triplet[2]][triplet[0]].remove(func)
-        if not self.ishandlerrunning:
+        wenn not self.ishandlerrunning:
             doit()
-        else:
+        sonst:
             self.doafterhandler.append(doit)
 
     def __del__(self):
@@ -240,7 +240,7 @@ klasse _ComplexBinder:
             try:
                 self.widget.unbind(self.widgetinst, seq, id)
             except tkinter.TclError as e:
-                if not APPLICATION_GONE in e.args[0]:
+                wenn not APPLICATION_GONE in e.args[0]:
                     raise
 
 # define the list of event types to be handled by MultiEvent. the order is
@@ -267,47 +267,47 @@ _button_re = re.compile(r"^[1-5]$")
 def _parse_sequence(sequence):
     """Get a string which should describe an event sequence. If it is
     successfully parsed as one, return a tuple containing the state (as an int),
-    the event type (as an index of _types), and the detail - None if none, or a
-    string if there is one. If the parsing is unsuccessful, return None.
+    the event type (as an index of _types), and the detail - None wenn none, or a
+    string wenn there is one. If the parsing is unsuccessful, return None.
     """
-    if not sequence or sequence[0] != '<' or sequence[-1] != '>':
+    wenn not sequence or sequence[0] != '<' or sequence[-1] != '>':
         return None
     words = sequence[1:-1].split('-')
     modifiers = 0
     while words and words[0] in _modifier_names:
         modifiers |= 1 << _modifier_names[words[0]]
         del words[0]
-    if words and words[0] in _type_names:
+    wenn words and words[0] in _type_names:
         type = _type_names[words[0]]
         del words[0]
-    else:
+    sonst:
         return None
-    if _binder_classes[type] is _SimpleBinder:
-        if modifiers or words:
+    wenn _binder_classes[type] is _SimpleBinder:
+        wenn modifiers or words:
             return None
-        else:
+        sonst:
             detail = None
-    else:
+    sonst:
         # _ComplexBinder
-        if type in [_type_names[s] fuer s in ("KeyPress", "KeyRelease")]:
+        wenn type in [_type_names[s] fuer s in ("KeyPress", "KeyRelease")]:
             type_re = _keysym_re
-        else:
+        sonst:
             type_re = _button_re
 
-        if not words:
+        wenn not words:
             detail = None
-        elif len(words) == 1 and type_re.match(words[0]):
+        sowenn len(words) == 1 and type_re.match(words[0]):
             detail = words[0]
-        else:
+        sonst:
             return None
 
     return modifiers, type, detail
 
 def _triplet_to_sequence(triplet):
-    if triplet[2]:
+    wenn triplet[2]:
         return '<'+_state_names[triplet[0]]+_types[triplet[1]][0]+'-'+ \
                triplet[2]+'>'
-    else:
+    sonst:
         return '<'+_state_names[triplet[0]]+_types[triplet[1]][0]+'>'
 
 _multicall_dict = {}
@@ -316,7 +316,7 @@ def MultiCallCreator(widget):
     given widget klasse (for example, Tkinter.Text). This is used
     instead of a templating mechanism.
     """
-    if widget in _multicall_dict:
+    wenn widget in _multicall_dict:
         return _multicall_dict[widget]
 
     klasse MultiCall (widget):
@@ -334,27 +334,27 @@ def MultiCallCreator(widget):
         def bind(self, sequence=None, func=None, add=None):
             #print("bind(%s, %s, %s)" % (sequence, func, add),
             #      file=sys.__stderr__)
-            if type(sequence) is str and len(sequence) > 2 and \
+            wenn type(sequence) is str and len(sequence) > 2 and \
                sequence[:2] == "<<" and sequence[-2:] == ">>":
-                if sequence in self.__eventinfo:
+                wenn sequence in self.__eventinfo:
                     ei = self.__eventinfo[sequence]
-                    if ei[0] is not None:
+                    wenn ei[0] is not None:
                         fuer triplet in ei[1]:
                             self.__binders[triplet[1]].unbind(triplet, ei[0])
                     ei[0] = func
-                    if ei[0] is not None:
+                    wenn ei[0] is not None:
                         fuer triplet in ei[1]:
                             self.__binders[triplet[1]].bind(triplet, func)
-                else:
+                sonst:
                     self.__eventinfo[sequence] = [func, []]
             return widget.bind(self, sequence, func, add)
 
         def unbind(self, sequence, funcid=None):
-            if type(sequence) is str and len(sequence) > 2 and \
+            wenn type(sequence) is str and len(sequence) > 2 and \
                sequence[:2] == "<<" and sequence[-2:] == ">>" and \
                sequence in self.__eventinfo:
                 func, triplets = self.__eventinfo[sequence]
-                if func is not None:
+                wenn func is not None:
                     fuer triplet in triplets:
                         self.__binders[triplet[1]].unbind(triplet, func)
                     self.__eventinfo[sequence][0] = None
@@ -363,38 +363,38 @@ def MultiCallCreator(widget):
         def event_add(self, virtual, *sequences):
             #print("event_add(%s, %s)" % (repr(virtual), repr(sequences)),
             #      file=sys.__stderr__)
-            if virtual not in self.__eventinfo:
+            wenn virtual not in self.__eventinfo:
                 self.__eventinfo[virtual] = [None, []]
 
             func, triplets = self.__eventinfo[virtual]
             fuer seq in sequences:
                 triplet = _parse_sequence(seq)
-                if triplet is None:
+                wenn triplet is None:
                     #print("Tkinter event_add(%s)" % seq, file=sys.__stderr__)
                     widget.event_add(self, virtual, seq)
-                else:
-                    if func is not None:
+                sonst:
+                    wenn func is not None:
                         self.__binders[triplet[1]].bind(triplet, func)
                     triplets.append(triplet)
 
         def event_delete(self, virtual, *sequences):
-            if virtual not in self.__eventinfo:
+            wenn virtual not in self.__eventinfo:
                 return
             func, triplets = self.__eventinfo[virtual]
             fuer seq in sequences:
                 triplet = _parse_sequence(seq)
-                if triplet is None:
+                wenn triplet is None:
                     #print("Tkinter event_delete: %s" % seq, file=sys.__stderr__)
                     widget.event_delete(self, virtual, seq)
-                else:
-                    if func is not None:
+                sonst:
+                    wenn func is not None:
                         self.__binders[triplet[1]].unbind(triplet, func)
                     triplets.remove(triplet)
 
         def event_info(self, virtual=None):
-            if virtual is None or virtual not in self.__eventinfo:
+            wenn virtual is None or virtual not in self.__eventinfo:
                 return widget.event_info(self, virtual)
-            else:
+            sonst:
                 return tuple(map(_triplet_to_sequence,
                                  self.__eventinfo[virtual][1])) + \
                        widget.event_info(self, virtual)
@@ -402,12 +402,12 @@ def MultiCallCreator(widget):
         def __del__(self):
             fuer virtual in self.__eventinfo:
                 func, triplets = self.__eventinfo[virtual]
-                if func:
+                wenn func:
                     fuer triplet in triplets:
                         try:
                             self.__binders[triplet[1]].unbind(triplet, func)
                         except tkinter.TclError as e:
-                            if not APPLICATION_GONE in e.args[0]:
+                            wenn not APPLICATION_GONE in e.args[0]:
                                 raise
 
     _multicall_dict[widget] = MultiCall
@@ -443,7 +443,7 @@ def _multi_call(parent):  # htest #
     bindseq("<Leave>")
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     from unittest import main
     main('idlelib.idle_test.test_mainmenu', verbosity=2, exit=False)
 

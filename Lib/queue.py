@@ -80,13 +80,13 @@ klasse Queue:
         have been processed (meaning that a task_done() call was received
         fuer every item that had been put() into the queue).
 
-        Raises a ValueError if called more times than there were items
+        Raises a ValueError wenn called more times than there were items
         placed in the queue.
         '''
         with self.all_tasks_done:
             unfinished = self.unfinished_tasks - 1
-            if unfinished <= 0:
-                if unfinished < 0:
+            wenn unfinished <= 0:
+                wenn unfinished < 0:
                     raise ValueError('task_done() called too many times')
                 self.all_tasks_done.notify_all()
             self.unfinished_tasks = unfinished
@@ -110,7 +110,7 @@ klasse Queue:
             return self._qsize()
 
     def empty(self):
-        '''Return True if the queue is empty, False otherwise (not reliable!).
+        '''Return True wenn the queue is empty, False otherwise (not reliable!).
 
         This method is likely to be removed at some point.  Use qsize() == 0
         as a direct substitute, but be aware that either approach risks a race
@@ -124,7 +124,7 @@ klasse Queue:
             return not self._qsize()
 
     def full(self):
-        '''Return True if the queue is full, False otherwise (not reliable!).
+        '''Return True wenn the queue is full, False otherwise (not reliable!).
 
         This method is likely to be removed at some point.  Use qsize() >= n
         as a direct substitute, but be aware that either approach risks a race
@@ -138,37 +138,37 @@ klasse Queue:
         '''Put an item into the queue.
 
         If optional args 'block' is true and 'timeout' is None (the default),
-        block if necessary until a free slot is available. If 'timeout' is
+        block wenn necessary until a free slot is available. If 'timeout' is
         a non-negative number, it blocks at most 'timeout' seconds and raises
-        the Full exception if no free slot was available within that time.
-        Otherwise ('block' is false), put an item on the queue if a free slot
-        is immediately available, else raise the Full exception ('timeout'
+        the Full exception wenn no free slot was available within that time.
+        Otherwise ('block' is false), put an item on the queue wenn a free slot
+        is immediately available, sonst raise the Full exception ('timeout'
         is ignored in that case).
 
-        Raises ShutDown if the queue has been shut down.
+        Raises ShutDown wenn the queue has been shut down.
         '''
         with self.not_full:
-            if self.is_shutdown:
+            wenn self.is_shutdown:
                 raise ShutDown
-            if self.maxsize > 0:
-                if not block:
-                    if self._qsize() >= self.maxsize:
+            wenn self.maxsize > 0:
+                wenn not block:
+                    wenn self._qsize() >= self.maxsize:
                         raise Full
-                elif timeout is None:
+                sowenn timeout is None:
                     while self._qsize() >= self.maxsize:
                         self.not_full.wait()
-                        if self.is_shutdown:
+                        wenn self.is_shutdown:
                             raise ShutDown
-                elif timeout < 0:
+                sowenn timeout < 0:
                     raise ValueError("'timeout' must be a non-negative number")
-                else:
+                sonst:
                     endtime = time() + timeout
                     while self._qsize() >= self.maxsize:
                         remaining = endtime - time()
-                        if remaining <= 0.0:
+                        wenn remaining <= 0.0:
                             raise Full
                         self.not_full.wait(remaining)
-                        if self.is_shutdown:
+                        wenn self.is_shutdown:
                             raise ShutDown
             self._put(item)
             self.unfinished_tasks += 1
@@ -178,37 +178,37 @@ klasse Queue:
         '''Remove and return an item from the queue.
 
         If optional args 'block' is true and 'timeout' is None (the default),
-        block if necessary until an item is available. If 'timeout' is
+        block wenn necessary until an item is available. If 'timeout' is
         a non-negative number, it blocks at most 'timeout' seconds and raises
-        the Empty exception if no item was available within that time.
-        Otherwise ('block' is false), return an item if one is immediately
-        available, else raise the Empty exception ('timeout' is ignored
+        the Empty exception wenn no item was available within that time.
+        Otherwise ('block' is false), return an item wenn one is immediately
+        available, sonst raise the Empty exception ('timeout' is ignored
         in that case).
 
-        Raises ShutDown if the queue has been shut down and is empty,
-        or if the queue has been shut down immediately.
+        Raises ShutDown wenn the queue has been shut down and is empty,
+        or wenn the queue has been shut down immediately.
         '''
         with self.not_empty:
-            if self.is_shutdown and not self._qsize():
+            wenn self.is_shutdown and not self._qsize():
                 raise ShutDown
-            if not block:
-                if not self._qsize():
+            wenn not block:
+                wenn not self._qsize():
                     raise Empty
-            elif timeout is None:
+            sowenn timeout is None:
                 while not self._qsize():
                     self.not_empty.wait()
-                    if self.is_shutdown and not self._qsize():
+                    wenn self.is_shutdown and not self._qsize():
                         raise ShutDown
-            elif timeout < 0:
+            sowenn timeout < 0:
                 raise ValueError("'timeout' must be a non-negative number")
-            else:
+            sonst:
                 endtime = time() + timeout
                 while not self._qsize():
                     remaining = endtime - time()
-                    if remaining <= 0.0:
+                    wenn remaining <= 0.0:
                         raise Empty
                     self.not_empty.wait(remaining)
-                    if self.is_shutdown and not self._qsize():
+                    wenn self.is_shutdown and not self._qsize():
                         raise ShutDown
             item = self._get()
             self.not_full.notify()
@@ -217,7 +217,7 @@ klasse Queue:
     def put_nowait(self, item):
         '''Put an item into the queue without blocking.
 
-        Only enqueue the item if a free slot is immediately available.
+        Only enqueue the item wenn a free slot is immediately available.
         Otherwise raise the Full exception.
         '''
         return self.put(item, block=False)
@@ -225,7 +225,7 @@ klasse Queue:
     def get_nowait(self):
         '''Remove and return an item from the queue without blocking.
 
-        Only get an item if one is immediately available. Otherwise
+        Only get an item wenn one is immediately available. Otherwise
         raise the Empty exception.
         '''
         return self.get(block=False)
@@ -244,10 +244,10 @@ klasse Queue:
         '''
         with self.mutex:
             self.is_shutdown = True
-            if immediate:
+            wenn immediate:
                 while self._qsize():
                     self._get()
-                    if self.unfinished_tasks > 0:
+                    wenn self.unfinished_tasks > 0:
                         self.unfinished_tasks -= 1
                 # release all blocked threads in `join()`
                 self.all_tasks_done.notify_all()
@@ -339,16 +339,16 @@ klasse _PySimpleQueue:
         '''Remove and return an item from the queue.
 
         If optional args 'block' is true and 'timeout' is None (the default),
-        block if necessary until an item is available. If 'timeout' is
+        block wenn necessary until an item is available. If 'timeout' is
         a non-negative number, it blocks at most 'timeout' seconds and raises
-        the Empty exception if no item was available within that time.
-        Otherwise ('block' is false), return an item if one is immediately
-        available, else raise the Empty exception ('timeout' is ignored
+        the Empty exception wenn no item was available within that time.
+        Otherwise ('block' is false), return an item wenn one is immediately
+        available, sonst raise the Empty exception ('timeout' is ignored
         in that case).
         '''
-        if timeout is not None and timeout < 0:
+        wenn timeout is not None and timeout < 0:
             raise ValueError("'timeout' must be a non-negative number")
-        if not self._count.acquire(block, timeout):
+        wenn not self._count.acquire(block, timeout):
             raise Empty
         return self._queue.popleft()
 
@@ -363,13 +363,13 @@ klasse _PySimpleQueue:
     def get_nowait(self):
         '''Remove and return an item from the queue without blocking.
 
-        Only get an item if one is immediately available. Otherwise
+        Only get an item wenn one is immediately available. Otherwise
         raise the Empty exception.
         '''
         return self.get(block=False)
 
     def empty(self):
-        '''Return True if the queue is empty, False otherwise (not reliable!).'''
+        '''Return True wenn the queue is empty, False otherwise (not reliable!).'''
         return len(self._queue) == 0
 
     def qsize(self):
@@ -379,5 +379,5 @@ klasse _PySimpleQueue:
     __class_getitem__ = classmethod(types.GenericAlias)
 
 
-if SimpleQueue is None:
+wenn SimpleQueue is None:
     SimpleQueue = _PySimpleQueue

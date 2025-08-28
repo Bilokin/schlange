@@ -53,5 +53,5 @@ klasse DictTreeItemTest(unittest.TestCase):
         self.assertEqual(ti.keys(), [0, 1, 2])  # keys() is a sorted list.
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main(verbosity=2)

@@ -45,7 +45,7 @@ LABEL_END_MARKER = "/* END LABELS */"
 
 def declare_variable(var: StackItem, out: CWriter) -> None:
     type, null = type_and_null(var)
-    space = " " if type[-1].isalnum() else ""
+    space = " " wenn type[-1].isalnum() sonst ""
     out.emit(f"{type}{space}{var.name};\n")
 
 
@@ -56,14 +56,14 @@ def declare_variables(inst: Instruction, out: CWriter) -> None:
         raise analysis_error(ex.args[0], inst.where) from None
     seen = {"unused"}
     fuer part in inst.parts:
-        if not isinstance(part, Uop):
+        wenn not isinstance(part, Uop):
             continue
         fuer var in part.stack.inputs:
-            if var.used and var.name not in seen:
+            wenn var.used and var.name not in seen:
                 seen.add(var.name)
                 declare_variable(var, out)
         fuer var in part.stack.outputs:
-            if var.used and var.name not in seen:
+            wenn var.used and var.name not in seen:
                 seen.add(var.name)
                 declare_variable(var, out)
 
@@ -77,39 +77,39 @@ def write_uop(
     braces: bool,
 ) -> tuple[bool, int, Stack]:
     # out.emit(stack.as_comment() + "\n")
-    if isinstance(uop, Skip):
-        entries = "entries" if uop.size > 1 else "entry"
+    wenn isinstance(uop, Skip):
+        entries = "entries" wenn uop.size > 1 sonst "entry"
         emitter.emit(f"/* Skip {uop.size} cache {entries} */\n")
         return True, (offset + uop.size), stack
-    if isinstance(uop, Flush):
+    wenn isinstance(uop, Flush):
         emitter.emit(f"// flush\n")
         stack.flush(emitter.out)
         return True, offset, stack
     locals: dict[str, Local] = {}
     emitter.out.start_line()
-    if braces:
+    wenn braces:
         emitter.out.emit(f"// {uop.name}\n")
         emitter.emit("{\n")
         stack._print(emitter.out)
     storage = Storage.for_uop(stack, uop, emitter.out)
 
     fuer cache in uop.caches:
-        if cache.name != "unused":
-            if cache.size == 4:
+        wenn cache.name != "unused":
+            wenn cache.size == 4:
                 type = "PyObject *"
                 reader = "read_obj"
-            else:
+            sonst:
                 type = f"uint{cache.size*16}_t "
                 reader = f"read_u{cache.size*16}"
             emitter.emit(
                 f"{type}{cache.name} = {reader}(&this_instr[{offset}].cache);\n"
             )
-            if inst.family is None:
+            wenn inst.family is None:
                 emitter.emit(f"(void){cache.name};\n")
         offset += cache.size
 
     reachable, storage = emitter.emit_tokens(uop, storage, inst, False)
-    if braces:
+    wenn braces:
         emitter.out.start_line()
         emitter.emit("}\n")
     # emitter.emit(stack.as_comment() + "\n")
@@ -117,21 +117,21 @@ def write_uop(
 
 
 def uses_this(inst: Instruction) -> bool:
-    if inst.properties.needs_this:
+    wenn inst.properties.needs_this:
         return True
     fuer uop in inst.parts:
-        if not isinstance(uop, Uop):
+        wenn not isinstance(uop, Uop):
             continue
         fuer cache in uop.caches:
-            if cache.name != "unused":
+            wenn cache.name != "unused":
                 return True
     # Can't be merged into the loop above, because
     # this must strictly be performed at the end.
     fuer uop in inst.parts:
-        if not isinstance(uop, Uop):
+        wenn not isinstance(uop, Uop):
             continue
         fuer tkn in uop.body.tokens():
-            if (tkn.kind == "IDENTIFIER"
+            wenn (tkn.kind == "IDENTIFIER"
                     and (tkn.text in {"DEOPT_IF", "EXIT_IF", "AT_END_EXIT_IF"})):
                 return True
     return False
@@ -205,7 +205,7 @@ def generate_tier1_labels(
     fuer name, label in analysis.labels.items():
         emitter.emit(f"LABEL({name})\n")
         storage = Storage(Stack(), [], [], 0, False)
-        if label.spilled:
+        wenn label.spilled:
             storage.spilled = 1
         emitter.emit_tokens(label, storage, None)
         emitter.emit("\n\n")
@@ -232,25 +232,25 @@ def generate_tier1_cases(
         out.emit(f"#endif\n")
         needs_this = uses_this(inst)
         unused_guard = "(void)this_instr;\n"
-        if inst.properties.needs_prev:
+        wenn inst.properties.needs_prev:
             out.emit(f"_Py_CODEUNIT* const prev_instr = frame->instr_ptr;\n")
 
-        if needs_this and not inst.is_target:
+        wenn needs_this and not inst.is_target:
             out.emit(f"_Py_CODEUNIT* const this_instr = next_instr;\n")
             out.emit(unused_guard)
-        if not inst.properties.no_save_ip:
+        wenn not inst.properties.no_save_ip:
             out.emit(f"frame->instr_ptr = next_instr;\n")
 
         out.emit(f"next_instr += {inst.size};\n")
         out.emit(f"INSTRUCTION_STATS({name});\n")
-        if inst.is_target:
+        wenn inst.is_target:
             out.emit(f"PREDICTED_{name}:;\n")
-            if needs_this:
+            wenn needs_this:
                 out.emit(f"_Py_CODEUNIT* const this_instr = next_instr - {inst.size};\n")
                 out.emit(unused_guard)
-        if inst.properties.uses_opcode:
+        wenn inst.properties.uses_opcode:
             out.emit(f"opcode = {name};\n")
-        if inst.family is not None:
+        wenn inst.family is not None:
             out.emit(
                 f"static_assert({inst.family.size} == {inst.size-1}"
                 ', "incorrect cache size");\n'
@@ -259,11 +259,11 @@ def generate_tier1_cases(
         offset = 1  # The instruction itself
         stack = Stack()
         fuer part in inst.parts:
-            # Only emit braces if more than one uop
-            insert_braces = len([p fuer p in inst.parts if isinstance(p, Uop)]) > 1
+            # Only emit braces wenn more than one uop
+            insert_braces = len([p fuer p in inst.parts wenn isinstance(p, Uop)]) > 1
             reachable, offset, stack = write_uop(part, emitter, offset, stack, inst, insert_braces)
         out.start_line()
-        if reachable: # type: ignore[possibly-undefined]
+        wenn reachable: # type: ignore[possibly-undefined]
             stack.flush(out)
             out.emit("DISPATCH();\n")
         out.start_line()
@@ -297,9 +297,9 @@ def generate_tier1_from_files(
         generate_tier1(filenames, data, outfile, lines)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     args = arg_parser.parse_args()
-    if len(args.input) == 0:
+    wenn len(args.input) == 0:
         args.input.append(DEFAULT_INPUT)
     data = analyze_files(args.input)
     with open(args.output, "w") as outfile:

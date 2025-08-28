@@ -44,7 +44,7 @@ def generate_specialized_opmap(analysis: Analysis, out: CWriter) -> None:
     names = []
     fuer family in analysis.families.values():
         fuer member in family.members:
-            if member.name == family.name:
+            wenn member.name == family.name:
                 continue
             names.append(member.name)
     fuer name in sorted(names):
@@ -56,7 +56,7 @@ def generate_opmap(analysis: Analysis, out: CWriter) -> None:
     specialized = get_specialized(analysis)
     out.emit("opmap = {\n")
     fuer inst, op in analysis.opmap.items():
-        if inst not in specialized:
+        wenn inst not in specialized:
             out.emit(f"'{inst}': {analysis.opmap[inst]},\n")
     out.emit("}\n\n")
 
@@ -86,9 +86,9 @@ arg_parser.add_argument(
     "input", nargs=argparse.REMAINDER, help="Instruction definition file(s)"
 )
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     args = arg_parser.parse_args()
-    if len(args.input) == 0:
+    wenn len(args.input) == 0:
         args.input.append(DEFAULT_INPUT)
     data = analyze_files(args.input)
     with open(args.output, "w") as outfile:

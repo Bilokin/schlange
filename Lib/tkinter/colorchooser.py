@@ -39,7 +39,7 @@ klasse Chooser(Dialog):
         """
         try:
             color = self.options["initialcolor"]
-            if isinstance(color, tuple):
+            wenn isinstance(color, tuple):
                 # Assume an RGB triplet.
                 self.options["initialcolor"] = "#%02x%02x%02x" % color
         except KeyError:
@@ -53,7 +53,7 @@ klasse Chooser(Dialog):
         """
         # Result can be many things: an empty tuple, an empty string, or
         # a _tkinter.Tcl_Obj, so this somewhat weird check handles that.
-        if not result or not str(result):
+        wenn not result or not str(result):
             return None, None  # canceled
 
         # To simplify application code, the color chooser returns
@@ -72,7 +72,7 @@ def askcolor(color=None, **options):
     chooser dialog with color as the initial value.
     """
 
-    if color:
+    wenn color:
         options = options.copy()
         options["initialcolor"] = color
 
@@ -82,5 +82,5 @@ def askcolor(color=None, **options):
 # --------------------------------------------------------------------
 # test stuff
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     print("color", askcolor())

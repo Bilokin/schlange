@@ -120,9 +120,9 @@ klasse ModuleTest(unittest.TestCase):
     def test_auto_numbering_reenterability(self):
         klasse ReenteringFormatter(string.Formatter):
             def format_field(self, value, format_spec):
-                if format_spec.isdigit() and int(format_spec) > 0:
+                wenn format_spec.isdigit() and int(format_spec) > 0:
                     return self.format('{:{}}!', value, int(format_spec) - 1)
-                else:
+                sonst:
                     return super().format_field(value, format_spec)
         fmt = ReenteringFormatter()
         x = types.SimpleNamespace(a='X')
@@ -135,13 +135,13 @@ klasse ModuleTest(unittest.TestCase):
                 self.namespace = namespace
 
             def get_value(self, key, args, kwds):
-                if isinstance(key, str):
+                wenn isinstance(key, str):
                     try:
                         # Check explicitly passed arguments first
                         return kwds[key]
                     except KeyError:
                         return self.namespace[key]
-                else:
+                sonst:
                     string.Formatter.get_value(key, args, kwds)
 
         fmt = NamespaceFormatter({'greeting':'hello'})
@@ -160,7 +160,7 @@ klasse ModuleTest(unittest.TestCase):
     def test_override_convert_field(self):
         klasse XFormatter(string.Formatter):
             def convert_field(self, value, conversion):
-                if conversion == 'x':
+                wenn conversion == 'x':
                     return None
                 return super().convert_field(value, conversion)
 
@@ -174,11 +174,11 @@ klasse ModuleTest(unittest.TestCase):
             # (literal_text, field_name, format_spec, conversion)
             def parse(self, format_string):
                 fuer field in format_string.split('|'):
-                    if field[0] == '+':
+                    wenn field[0] == '+':
                         # it's markup
                         field_name, _, format_spec = field[1:].partition(':')
                         yield '', field_name, format_spec, None
-                    else:
+                    sonst:
                         yield field, None, None, None
 
         fmt = BarFormatter()
@@ -194,7 +194,7 @@ klasse ModuleTest(unittest.TestCase):
                 fuer arg in used_args:
                     unused_args.remove(arg)
 
-                if unused_args:
+                wenn unused_args:
                     raise ValueError("unused arguments")
 
         fmt = CheckAllUsedFormatter()
@@ -510,7 +510,7 @@ klasse TestTemplate(unittest.TestCase):
         s = Template('$who likes to eat a bag of ${what} worth $100')
         self.assertFalse(s.is_valid())
 
-        # if the pattern has an unrecognized capture group,
+        # wenn the pattern has an unrecognized capture group,
         # it should raise ValueError like substitute and safe_substitute do
         klasse BadPattern(Template):
             pattern = r"""
@@ -540,7 +540,7 @@ klasse TestTemplate(unittest.TestCase):
         ids = s.get_identifiers()
         eq(ids, ['who', 'what'])
 
-        # if the pattern has an unrecognized capture group,
+        # wenn the pattern has an unrecognized capture group,
         # it should raise ValueError like substitute and safe_substitute do
         klasse BadPattern(Template):
             pattern = r"""
@@ -554,5 +554,5 @@ klasse TestTemplate(unittest.TestCase):
         self.assertRaises(ValueError, s.get_identifiers)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

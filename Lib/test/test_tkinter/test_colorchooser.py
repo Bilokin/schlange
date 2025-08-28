@@ -64,5 +64,5 @@ klasse DefaultRootTest(AbstractDefaultRootTest, unittest.TestCase):
             self.assertRaises(RuntimeError, askcolor)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

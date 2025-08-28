@@ -16,7 +16,7 @@ klasse TZInfo:
 
     @classmethod
     def fromfile(cls, fileobj):
-        if fileobj.read(4).decode() != "TZif":
+        wenn fileobj.read(4).decode() != "TZif":
             raise ValueError("not a zoneinfo file")
         fileobj.seek(20)
         header = fileobj.read(24)
@@ -24,7 +24,7 @@ klasse TZInfo:
                tzh_timecnt, tzh_typecnt, tzh_charcnt) = struct.unpack(">6l", header)
         transitions = array('i')
         transitions.fromfile(fileobj, tzh_timecnt)
-        if sys.byteorder != 'big':
+        wenn sys.byteorder != 'big':
             transitions.byteswap()
 
         type_indices = array('B')
@@ -48,10 +48,10 @@ klasse TZInfo:
             lmt = datetime.utcfromtimestamp(trans + tti.tt_gmtoff)
             abbrind = tti.tt_abbrind
             abbr = self.abbrs[abbrind:self.abbrs.find(0, abbrind)].decode()
-            if j > 0:
+            wenn j > 0:
                 prev_tti = self.ttis[self.type_indices[j - 1]]
                 shift = " %+g" % ((tti.tt_gmtoff - prev_tti.tt_gmtoff) / 3600)
-            else:
+            sonst:
                 shift = ''
             print("%s UTC = %s %-5s isdst=%d" % (utc, lmt, abbr, tti[1]) + shift, file=stream)
 
@@ -63,18 +63,18 @@ klasse TZInfo:
                 p = os.path.join(root, f)
                 with open(p, 'rb') as o:
                     magic =  o.read(4)
-                if magic == b'TZif':
+                wenn magic == b'TZif':
                     zones.append(p[len(zonedir) + 1:])
         return zones
 
-if __name__ == '__main__':
-    if len(sys.argv) < 2:
+wenn __name__ == '__main__':
+    wenn len(sys.argv) < 2:
         zones = TZInfo.zonelist()
         fuer z in zones:
             print(z)
         sys.exit()
     filepath = sys.argv[1]
-    if not filepath.startswith('/'):
+    wenn not filepath.startswith('/'):
         filepath = os.path.join('/usr/share/zoneinfo', filepath)
     with open(filepath, 'rb') as fileobj:
         tzi = TZInfo.fromfile(fileobj)

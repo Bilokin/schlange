@@ -8,7 +8,7 @@ __all__ = ['__import__', 'import_module', 'invalidate_caches', 'reload']
 # partially initialised package would be present in sys.modules, those
 # modules would get an uninitialised copy of the source version, instead
 # of a fully initialised version (either the frozen one or the one
-# initialised below if the frozen one is not available).
+# initialised below wenn the frozen one is not available).
 import _imp  # Just the builtin component, NOT the full Python module
 import sys
 
@@ -17,7 +17,7 @@ try:
 except ImportError:
     from . import _bootstrap
     _bootstrap._setup(sys, _imp)
-else:
+sonst:
     # importlib._bootstrap is the built-in import, ensure we don't create
     # a second copy of the module.
     _bootstrap.__name__ = 'importlib._bootstrap'
@@ -25,7 +25,7 @@ else:
     try:
         _bootstrap.__file__ = __file__.replace('__init__.py', '_bootstrap.py')
     except NameError:
-        # __file__ is not guaranteed to be defined, e.g. if this code gets
+        # __file__ is not guaranteed to be defined, e.g. wenn this code gets
         # frozen by a tool like cx_Freeze.
         pass
     sys.modules['importlib._bootstrap'] = _bootstrap
@@ -36,13 +36,13 @@ except ImportError:
     from . import _bootstrap_external
     _bootstrap_external._set_bootstrap_module(_bootstrap)
     _bootstrap._bootstrap_external = _bootstrap_external
-else:
+sonst:
     _bootstrap_external.__name__ = 'importlib._bootstrap_external'
     _bootstrap_external.__package__ = 'importlib'
     try:
         _bootstrap_external.__file__ = __file__.replace('__init__.py', '_bootstrap_external.py')
     except NameError:
-        # __file__ is not guaranteed to be defined, e.g. if this code gets
+        # __file__ is not guaranteed to be defined, e.g. wenn this code gets
         # frozen by a tool like cx_Freeze.
         pass
     sys.modules['importlib._bootstrap_external'] = _bootstrap_external
@@ -64,7 +64,7 @@ def invalidate_caches():
     """Call the invalidate_caches() method on all meta path finders stored in
     sys.meta_path (where implemented)."""
     fuer finder in sys.meta_path:
-        if hasattr(finder, 'invalidate_caches'):
+        wenn hasattr(finder, 'invalidate_caches'):
             finder.invalidate_caches()
 
 
@@ -77,12 +77,12 @@ def import_module(name, package=None):
 
     """
     level = 0
-    if name.startswith('.'):
-        if not package:
+    wenn name.startswith('.'):
+        wenn not package:
             raise TypeError("the 'package' argument is required to perform a "
                             f"relative import fuer {name!r}")
         fuer character in name:
-            if character != '.':
+            wenn character != '.':
                 break
             level += 1
     return _bootstrap._gcd_import(name[level:], package, level)
@@ -105,26 +105,26 @@ def reload(module):
         except AttributeError:
             raise TypeError("reload() argument must be a module") from None
 
-    if sys.modules.get(name) is not module:
+    wenn sys.modules.get(name) is not module:
         raise ImportError(f"module {name} not in sys.modules", name=name)
-    if name in _RELOADING:
+    wenn name in _RELOADING:
         return _RELOADING[name]
     _RELOADING[name] = module
     try:
         parent_name = name.rpartition('.')[0]
-        if parent_name:
+        wenn parent_name:
             try:
                 parent = sys.modules[parent_name]
             except KeyError:
                 raise ImportError(f"parent {parent_name!r} not in sys.modules",
                                   name=parent_name) from None
-            else:
+            sonst:
                 pkgpath = parent.__path__
-        else:
+        sonst:
             pkgpath = None
         target = module
         spec = module.__spec__ = _bootstrap._find_spec(name, pkgpath, target)
-        if spec is None:
+        wenn spec is None:
             raise ModuleNotFoundError(f"spec not found fuer the module {name!r}", name=name)
         _bootstrap._exec(spec, module)
         # The module may have replaced itself in sys.modules!

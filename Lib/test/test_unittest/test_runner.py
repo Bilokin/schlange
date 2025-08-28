@@ -29,7 +29,7 @@ klasse CustomError(Exception):
     pass
 
 # For test output compat:
-CustomErrorRepr = f"{__name__ + '.' if __name__ != '__main__' else ''}CustomError"
+CustomErrorRepr = f"{__name__ + '.' wenn __name__ != '__main__' sonst ''}CustomError"
 
 
 def runTests(*cases):
@@ -50,9 +50,9 @@ def runTests(*cases):
 
 
 def cleanup(ordering, blowUp=False):
-    if not blowUp:
+    wenn not blowUp:
         ordering.append('cleanup_good')
-    else:
+    sonst:
         ordering.append('cleanup_exc')
         raise CustomError('CleanUpExc')
 
@@ -147,7 +147,7 @@ klasse TestCleanUp(unittest.TestCase):
             def setUp(self):
                 ordering.append('setUp')
                 test.addCleanup(cleanup2)
-                if blowUp:
+                wenn blowUp:
                     raise CustomError('foo')
 
             def testNothing(self):
@@ -289,7 +289,7 @@ klasse TestClassCleanup(unittest.TestCase):
             def setUpClass(cls):
                 ordering.append('setUpClass')
                 cls.addClassCleanup(cleanup, ordering)
-                if blowUp:
+                wenn blowUp:
                     raise CustomError()
             def testNothing(self):
                 ordering.append('test')
@@ -315,7 +315,7 @@ klasse TestClassCleanup(unittest.TestCase):
             def setUpClass(cls):
                 ordering.append('setUpClass')
                 cls.addClassCleanup(cleanup, ordering)
-                if blowUp:
+                wenn blowUp:
                     raise CustomError()
             def testNothing(self):
                 ordering.append('test')
@@ -475,11 +475,11 @@ klasse TestClassCleanup(unittest.TestCase):
             def setUpClass(cls):
                 ordering.append('setUpClass')
                 cls.addClassCleanup(cleanup, ordering, blowUp=True)
-                if class_blow_up:
+                wenn class_blow_up:
                     raise CustomError('ClassExc')
             def setUp(self):
                 ordering.append('setUp')
-                if method_blow_up:
+                wenn method_blow_up:
                     raise CustomError('MethodExc')
             def testNothing(self):
                 ordering.append('test')
@@ -714,7 +714,7 @@ klasse TestModuleCleanUp(ExceptionIsLikeMixin, unittest.TestCase):
             def setUpModule():
                 ordering.append('setUpModule')
                 unittest.addModuleCleanup(cleanup, ordering)
-                if blowUp:
+                wenn blowUp:
                     raise CustomError('setUpModule Exc')
             @staticmethod
             def tearDownModule():
@@ -754,7 +754,7 @@ klasse TestModuleCleanUp(ExceptionIsLikeMixin, unittest.TestCase):
             def setUpModule():
                 ordering.append('setUpModule')
                 unittest.addModuleCleanup(cleanup, ordering)
-                if blowUp:
+                wenn blowUp:
                     raise CustomError()
             @staticmethod
             def tearDownModule():
@@ -765,7 +765,7 @@ klasse TestModuleCleanUp(ExceptionIsLikeMixin, unittest.TestCase):
             def setUpModule():
                 ordering.append('setUpModule2')
                 unittest.addModuleCleanup(cleanup, ordering)
-                if blowUp2:
+                wenn blowUp2:
                     raise CustomError()
             @staticmethod
             def tearDownModule():
@@ -1081,7 +1081,7 @@ klasse TestModuleCleanUp(ExceptionIsLikeMixin, unittest.TestCase):
             def setUpModule():
                 ordering.append('setUpModule')
                 unittest.addModuleCleanup(cleanup, ordering, blowUp=True)
-                if module_blow_up:
+                wenn module_blow_up:
                     raise CustomError('ModuleExc')
             @staticmethod
             def tearDownModule():
@@ -1091,11 +1091,11 @@ klasse TestModuleCleanUp(ExceptionIsLikeMixin, unittest.TestCase):
             @classmethod
             def setUpClass(cls):
                 ordering.append('setUpClass')
-                if class_blow_up:
+                wenn class_blow_up:
                     raise CustomError('ClassExc')
             def setUp(self):
                 ordering.append('setUp')
-                if method_blow_up:
+                wenn method_blow_up:
                     raise CustomError('MethodExc')
             def testNothing(self):
                 ordering.append('test')
@@ -1230,12 +1230,12 @@ klasse Test_TextTestRunner(unittest.TestCase):
         # clean the environment from pre-existing PYTHONWARNINGS to make
         # test_warnings results consistent
         self.pythonwarnings = os.environ.get('PYTHONWARNINGS')
-        if self.pythonwarnings:
+        wenn self.pythonwarnings:
             del os.environ['PYTHONWARNINGS']
 
     def tearDown(self):
-        # bring back pre-existing PYTHONWARNINGS if present
-        if self.pythonwarnings:
+        # bring back pre-existing PYTHONWARNINGS wenn present
+        wenn self.pythonwarnings:
             os.environ['PYTHONWARNINGS'] = self.pythonwarnings
 
     def test_init(self):
@@ -1393,9 +1393,9 @@ klasse Test_TextTestRunner(unittest.TestCase):
         args_list = (
             # passing 'ignore' as warnings arg -> no warnings
             [sys.executable, '_test_warnings.py', 'ignore'],
-            # -W doesn't affect the result if the arg is passed
+            # -W doesn't affect the result wenn the arg is passed
             [sys.executable, '-Wa', '_test_warnings.py', 'ignore'],
-            # -W affects the result if the arg is not passed
+            # -W affects the result wenn the arg is not passed
             [sys.executable, '-Wi', '_test_warnings.py']
         )
         # in all these cases no warnings are printed
@@ -1444,11 +1444,11 @@ klasse Test_TextTestRunner(unittest.TestCase):
             stream.flush()
             text = stream.getvalue()
             regex = r"\n\d+.\d\d\ds"
-            if expect_durations:
+            wenn expect_durations:
                 self.assertEqual(len(result.collectedDurations), 1)
                 self.assertIn('Slowest test durations', text)
                 self.assertRegex(text, regex)
-            else:
+            sonst:
                 self.assertEqual(len(result.collectedDurations), 0)
                 self.assertNotIn('Slowest test durations', text)
                 self.assertNotRegex(text, regex)
@@ -1495,5 +1495,5 @@ klasse Test_TextTestRunner(unittest.TestCase):
 
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

@@ -20,6 +20,6 @@ klasse TestFuzzer(unittest.TestCase):
         _xxtestfuzz.run(b"AAAAAA\0")
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     faulthandler.enable()
     unittest.main()

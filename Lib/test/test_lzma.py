@@ -1329,7 +1329,7 @@ klasse FileTestCase(unittest.TestCase):
             while True:
                 self.assertEqual(f.tell(), pos)
                 result = f.read(183)
-                if not result:
+                wenn not result:
                     break
                 pos += len(result)
             self.assertEqual(f.tell(), len(INPUT))
@@ -1497,7 +1497,7 @@ klasse OpenTestCase(unittest.TestCase):
         self.addCleanup(unlink, TESTFN)
         fuer mode in ("x", "xb", "xt"):
             unlink(TESTFN)
-            encoding = "ascii" if "t" in mode else None
+            encoding = "ascii" wenn "t" in mode sonst None
             with lzma.open(TESTFN, mode, encoding=encoding):
                 pass
             with self.assertRaises(FileExistsError):
@@ -2093,5 +2093,5 @@ ISSUE_21872_DAT = (
 )
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

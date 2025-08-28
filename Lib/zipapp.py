@@ -9,7 +9,7 @@ import zipfile
 __all__ = ['ZipAppError', 'create_archive', 'get_interpreter']
 
 
-# The __main__.py used if the users specifies "-m module:fn".
+# The __main__.py used wenn the users specifies "-m module:fn".
 # Note that this will always be written as UTF-8 (module and
 # function names can be non-ASCII in Python 3).
 # We add a coding cookie even though UTF-8 is the default in Python 3
@@ -21,12 +21,12 @@ import {module}
 """
 
 
-# The Windows launcher defaults to UTF-8 when parsing shebang lines if the
+# The Windows launcher defaults to UTF-8 when parsing shebang lines wenn the
 # file has no BOM. So use UTF-8 on Windows.
 # On Unix, use the filesystem encoding.
-if sys.platform.startswith('win'):
+wenn sys.platform.startswith('win'):
     shebang_encoding = 'utf-8'
-else:
+sonst:
     shebang_encoding = sys.getfilesystemencoding()
 
 
@@ -36,16 +36,16 @@ klasse ZipAppError(ValueError):
 
 @contextlib.contextmanager
 def _maybe_open(archive, mode):
-    if isinstance(archive, (str, os.PathLike)):
+    wenn isinstance(archive, (str, os.PathLike)):
         with open(archive, mode) as f:
             yield f
-    else:
+    sonst:
         yield archive
 
 
 def _write_file_prefix(f, interpreter):
     """Write a shebang line."""
-    if interpreter:
+    wenn interpreter:
         shebang = b'#!' + interpreter.encode(shebang_encoding) + b'\n'
         f.write(shebang)
 
@@ -54,9 +54,9 @@ def _copy_archive(archive, new_archive, interpreter=None):
     """Copy an application archive, modifying the shebang line."""
     with _maybe_open(archive, 'rb') as src:
         # Skip the shebang line from the source.
-        # Read 2 bytes of the source and check if they are #!.
+        # Read 2 bytes of the source and check wenn they are #!.
         first_2 = src.read(2)
-        if first_2 == b'#!':
+        wenn first_2 == b'#!':
             # Discard the initial 2 bytes and the rest of the shebang line.
             first_2 = b''
             src.readline()
@@ -69,7 +69,7 @@ def _copy_archive(archive, new_archive, interpreter=None):
             dst.write(first_2)
             shutil.copyfileobj(src, dst)
 
-    if interpreter and isinstance(new_archive, str):
+    wenn interpreter and isinstance(new_archive, str):
         os.chmod(new_archive, os.stat(new_archive).st_mode | stat.S_IEXEC)
 
 
@@ -90,45 +90,45 @@ def create_archive(source, target=None, interpreter=None, main=None,
     INTERPRETER is None), and a __main__.py which runs MAIN (if MAIN is
     not specified, an existing __main__.py will be used).  It is an error
     to specify MAIN fuer anything other than a directory source with no
-    __main__.py, and it is an error to omit MAIN if the directory has no
+    __main__.py, and it is an error to omit MAIN wenn the directory has no
     __main__.py.
     """
     # Are we copying an existing archive?
     source_is_file = False
-    if hasattr(source, 'read') and hasattr(source, 'readline'):
+    wenn hasattr(source, 'read') and hasattr(source, 'readline'):
         source_is_file = True
-    else:
+    sonst:
         source = pathlib.Path(source)
-        if source.is_file():
+        wenn source.is_file():
             source_is_file = True
 
-    if source_is_file:
+    wenn source_is_file:
         _copy_archive(source, target, interpreter)
         return
 
     # We are creating a new archive from a directory.
-    if not source.exists():
+    wenn not source.exists():
         raise ZipAppError("Source does not exist")
     has_main = (source / '__main__.py').is_file()
-    if main and has_main:
+    wenn main and has_main:
         raise ZipAppError(
-            "Cannot specify entry point if the source has __main__.py")
-    if not (main or has_main):
+            "Cannot specify entry point wenn the source has __main__.py")
+    wenn not (main or has_main):
         raise ZipAppError("Archive has no entry point")
 
     main_py = None
-    if main:
+    wenn main:
         # Check that main has the right format.
         mod, sep, fn = main.partition(':')
         mod_ok = all(part.isidentifier() fuer part in mod.split('.'))
         fn_ok = all(part.isidentifier() fuer part in fn.split('.'))
-        if not (sep == ':' and mod_ok and fn_ok):
+        wenn not (sep == ':' and mod_ok and fn_ok):
             raise ZipAppError("Invalid entry point: " + main)
         main_py = MAIN_TEMPLATE.format(module=mod, fn=fn)
 
-    if target is None:
+    wenn target is None:
         target = source.with_suffix('.pyz')
-    elif not hasattr(target, 'write'):
+    sowenn not hasattr(target, 'write'):
         target = pathlib.Path(target)
 
     # Create the list of files to add to the archive now, in case
@@ -137,7 +137,7 @@ def create_archive(source, target=None, interpreter=None, main=None,
     files_to_add = {}
     fuer path in sorted(source.rglob('*')):
         relative_path = path.relative_to(source)
-        if filter is None or filter(relative_path):
+        wenn filter is None or filter(relative_path):
             files_to_add[path] = relative_path
 
     # The target cannot be in the list of files to add. If it were, we'd
@@ -154,27 +154,27 @@ def create_archive(source, target=None, interpreter=None, main=None,
     # If target is a file-like object, it will simply fail to compare
     # equal to any of the entries in files_to_add, so there's no need
     # to add a special check fuer that.
-    if target in files_to_add:
+    wenn target in files_to_add:
         raise ZipAppError(
             f"The target archive {target} overwrites one of the source files.")
 
     with _maybe_open(target, 'wb') as fd:
         _write_file_prefix(fd, interpreter)
-        compression = (zipfile.ZIP_DEFLATED if compressed else
+        compression = (zipfile.ZIP_DEFLATED wenn compressed sonst
                        zipfile.ZIP_STORED)
         with zipfile.ZipFile(fd, 'w', compression=compression) as z:
             fuer path, relative_path in files_to_add.items():
                 z.write(path, relative_path.as_posix())
-            if main_py:
+            wenn main_py:
                 z.writestr('__main__.py', main_py.encode('utf-8'))
 
-    if interpreter and not hasattr(target, 'write'):
+    wenn interpreter and not hasattr(target, 'write'):
         target.chmod(target.stat().st_mode | stat.S_IEXEC)
 
 
 def get_interpreter(archive):
     with _maybe_open(archive, 'rb') as f:
-        if f.read(2) == b'#!':
+        wenn f.read(2) == b'#!':
             return f.readline().strip().decode(shebang_encoding)
 
 
@@ -190,7 +190,7 @@ def main(args=None):
     parser = argparse.ArgumentParser(color=True)
     parser.add_argument('--output', '-o', default=None,
             help="The name of the output archive. "
-                 "Required if SOURCE is an archive.")
+                 "Required wenn SOURCE is an archive.")
     parser.add_argument('--python', '-p', default=None,
             help="The name of the Python interpreter to use "
                  "(default: no shebang line).")
@@ -208,18 +208,18 @@ def main(args=None):
     args = parser.parse_args(args)
 
     # Handle `python -m zipapp archive.pyz --info`.
-    if args.info:
-        if not os.path.isfile(args.source):
+    wenn args.info:
+        wenn not os.path.isfile(args.source):
             raise SystemExit("Can only get info fuer an archive file")
         interpreter = get_interpreter(args.source)
         print("Interpreter: {}".format(interpreter or "<none>"))
         sys.exit(0)
 
-    if os.path.isfile(args.source):
-        if args.output is None or (os.path.exists(args.output) and
+    wenn os.path.isfile(args.source):
+        wenn args.output is None or (os.path.exists(args.output) and
                                    os.path.samefile(args.source, args.output)):
             raise SystemExit("In-place editing of archives is not supported")
-        if args.main:
+        wenn args.main:
             raise SystemExit("Cannot change the main function when copying")
 
     create_archive(args.source, args.output,
@@ -227,5 +227,5 @@ def main(args=None):
                    compressed=args.compress)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     main()

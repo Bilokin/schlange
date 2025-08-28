@@ -173,7 +173,7 @@ klasse samplecmdclass(cmd.Cmd):
 
     def do_add(self, s):
         l = s.split()
-        if len(l) != 2:
+        wenn len(l) != 2:
             print("*** invalid number of arguments")
             return
         try:
@@ -303,9 +303,9 @@ klasse CmdTestReadline(unittest.TestCase):
                     return ["hello"]
 
                 def default(self, line):
-                    if line.replace(" ", "") == "!hello":
+                    wenn line.replace(" ", "") == "!hello":
                         print('tab completion success')
-                    else:
+                    sonst:
                         print('tab completion failure')
                     return True
 
@@ -324,8 +324,8 @@ def load_tests(loader, tests, pattern):
     return tests
 
 
-if __name__ == "__main__":
-    if "-i" in sys.argv:
+wenn __name__ == "__main__":
+    wenn "-i" in sys.argv:
         samplecmdclass().cmdloop()
-    else:
+    sonst:
         unittest.main()

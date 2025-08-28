@@ -277,5 +277,5 @@ klasse Test(unittest.TestCase):
             type(name='NewClass', bases=(object,), dict={})
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

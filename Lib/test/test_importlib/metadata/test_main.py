@@ -454,7 +454,7 @@ klasse PackagesDistributionsEggTest(
             return {
                 import_name
                 fuer import_name, package_names in distributions.items()
-                if package_name in package_names
+                wenn package_name in package_names
             }
 
         # egginfo-pkg declares one import ('mod') via top_level.txt

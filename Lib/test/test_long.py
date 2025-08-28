@@ -49,25 +49,25 @@ def int_to_float(n):
     ROUND_HALF_TO_EVEN_CORRECTION = [0, -1, -2, 1, 0, -1, 2, 1]
 
     # Reduce to the case where n is positive.
-    if n == 0:
+    wenn n == 0:
         return 0.0
-    elif n < 0:
+    sowenn n < 0:
         return -int_to_float(-n)
 
     # Convert n to a 'floating-point' number q * 2**shift, where q is an
     # integer with 'PRECISION' significant bits.  When shifting n to create q,
     # the least significant bit of q is treated as 'sticky'.  That is, the
-    # least significant bit of q is set if either the corresponding bit of n
+    # least significant bit of q is set wenn either the corresponding bit of n
     # was already set, or any one of the bits of n lost in the shift was set.
     shift = n.bit_length() - PRECISION
-    q = n << -shift if shift < 0 else (n >> shift) | bool(n & ~(-1 << shift))
+    q = n << -shift wenn shift < 0 sonst (n >> shift) | bool(n & ~(-1 << shift))
 
     # Round half to even (actually rounds to the nearest multiple of 4,
     # rounding ties to a multiple of 8).
     q += ROUND_HALF_TO_EVEN_CORRECTION[q & 7]
 
     # Detect overflow.
-    if shift + (q == Q_MAX) > SHIFT_MAX:
+    wenn shift + (q == Q_MAX) > SHIFT_MAX:
         raise OverflowError("integer too large to convert to float")
 
     # Checks: q is exactly representable, and q**2**shift doesn't overflow.
@@ -88,14 +88,14 @@ def truediv(a, b):
     a, b = abs(a), abs(b)
 
     # exceptions:  division by zero, overflow
-    if not b:
+    wenn not b:
         raise ZeroDivisionError("division by zero")
-    if a >= DBL_MIN_OVERFLOW * b:
+    wenn a >= DBL_MIN_OVERFLOW * b:
         raise OverflowError("int/int too large to represent as a float")
 
    # find integer d satisfying 2**(d - 1) <= a/b < 2**d
     d = a.bit_length() - b.bit_length()
-    if d >= 0 and a >= 2**d * b or d < 0 and a * 2**-d >= b:
+    wenn d >= 0 and a >= 2**d * b or d < 0 and a * 2**-d >= b:
         d += 1
 
     # compute 2**-exp * a / b fuer suitable exp
@@ -105,11 +105,11 @@ def truediv(a, b):
 
     # round-half-to-even: fractional part is r/b, which is > 0.5 iff
     # 2*r > b, and == 0.5 iff 2*r == b.
-    if 2*r > b or 2*r == b and q % 2 == 1:
+    wenn 2*r > b or 2*r == b and q % 2 == 1:
         q += 1
 
     result = math.ldexp(q, exp)
-    return -result if negative else result
+    return -result wenn negative sonst result
 
 
 klasse LongTest(unittest.TestCase):
@@ -133,11 +133,11 @@ klasse LongTest(unittest.TestCase):
             self.assertTrue(1 <= bits <= SHIFT)
             nbits = nbits + bits
             answer = answer << bits
-            if r & 1:
+            wenn r & 1:
                 answer = answer | ((1 << bits) - 1)
             r = int(random.random() * (SHIFT * 2))
         self.assertTrue(nbits_lo <= nbits <= nbits_hi)
-        if random.random() < 0.5:
+        wenn random.random() < 0.5:
             answer = -answer
         return answer
 
@@ -148,7 +148,7 @@ klasse LongTest(unittest.TestCase):
         answer = 0
         fuer i in range(ndigits):
             answer = (answer << SHIFT) | random.randint(0, MASK)
-        if random.random() < 0.5:
+        wenn random.random() < 0.5:
             answer = -answer
         return answer
 
@@ -162,9 +162,9 @@ klasse LongTest(unittest.TestCase):
             eq(q, q2, "divmod returns different quotient than /")
             eq(r, r2, "divmod returns different mod than %")
             eq(x, q*y + r, "x != q*y + r after divmod")
-            if y > 0:
+            wenn y > 0:
                 self.assertTrue(0 <= r < y, "bad mod from divmod")
-            else:
+            sonst:
                 self.assertTrue(y < r <= 0, "bad mod from divmod")
 
     def test_division(self):
@@ -218,7 +218,7 @@ klasse LongTest(unittest.TestCase):
         fuer abits in bits:
             a = (1 << abits) - 1
             fuer bbits in bits:
-                if bbits < abits:
+                wenn bbits < abits:
                     continue
                 with self.subTest(abits=abits, bbits=bbits):
                     b = (1 << bbits) - 1
@@ -293,7 +293,7 @@ klasse LongTest(unittest.TestCase):
     def slow_format(self, x, base):
         digits = []
         sign = 0
-        if x < 0:
+        wenn x < 0:
             sign, x = 1, -x
         while x:
             x, r = divmod(x, base)
@@ -332,7 +332,7 @@ klasse LongTest(unittest.TestCase):
                 fuer prefix in "", " ", "\t", "  \t\t  ":
                     ss = prefix + sign + s
                     vv = v
-                    if sign == "-" and v is not ValueError:
+                    wenn sign == "-" and v is not ValueError:
                         vv = -v
                     try:
                         self.assertEqual(int(ss), vv)
@@ -346,7 +346,7 @@ klasse LongTest(unittest.TestCase):
         self.assertRaises(ValueError, int, '-37L')
         self.assertRaises(ValueError, int, '0x32L', 16)
         self.assertRaises(ValueError, int, '1L', 21)
-        # ... but it's just a normal digit if base >= 22
+        # ... but it's just a normal digit wenn base >= 22
         self.assertEqual(int('1L', 22), 43)
 
         # tests with base 0
@@ -538,10 +538,10 @@ klasse LongTest(unittest.TestCase):
         # represents all Python ints and floats exactly).
         klasse Rat:
             def __init__(self, value):
-                if isinstance(value, int):
+                wenn isinstance(value, int):
                     self.n = value
                     self.d = 1
-                elif isinstance(value, float):
+                sowenn isinstance(value, float):
                     # Convert to exact rational equivalent.
                     f, e = math.frexp(abs(value))
                     assert f == 0 or 0.5 <= f < 1.0
@@ -563,22 +563,22 @@ klasse LongTest(unittest.TestCase):
                         e -= CHUNK
 
                     # Now |value| = top * 2**e exactly.
-                    if e >= 0:
+                    wenn e >= 0:
                         n = top << e
                         d = 1
-                    else:
+                    sonst:
                         n = top
                         d = 1 << -e
-                    if value < 0:
+                    wenn value < 0:
                         n = -n
                     self.n = n
                     self.d = d
                     assert float(n) / float(d) == value
-                else:
+                sonst:
                     raise TypeError("can't deal with %r" % value)
 
             def _cmp__(self, other):
-                if not isinstance(other, Rat):
+                wenn not isinstance(other, Rat):
                     other = Rat(other)
                 x, y = self.n * other.d, self.d * other.n
                 return (x > y) - (x < y)
@@ -753,7 +753,7 @@ klasse LongTest(unittest.TestCase):
         # ensure that only int and float type specifiers work
         fuer format_spec in ([chr(x) fuer x in range(ord('a'), ord('z')+1)] +
                             [chr(x) fuer x in range(ord('A'), ord('Z')+1)]):
-            if not format_spec in 'bcdoxXeEfFgGn%':
+            wenn not format_spec in 'bcdoxXeEfFgGn%':
                 self.assertRaises(ValueError, format, 0, format_spec)
                 self.assertRaises(ValueError, format, 1, format_spec)
                 self.assertRaises(ValueError, format, -1, format_spec)
@@ -848,7 +848,7 @@ klasse LongTest(unittest.TestCase):
         # implementation converts the arguments to float directly and
         # then applies a float division.  This can give doubly-rounded
         # results on x87-using machines (particularly 32-bit Linux).
-        if skip_small and max(abs(a), abs(b)) < 2**DBL_MANT_DIG:
+        wenn skip_small and max(abs(a), abs(b)) < 2**DBL_MANT_DIG:
             return
 
         try:
@@ -940,7 +940,7 @@ klasse LongTest(unittest.TestCase):
         # largeish random divisions: a/b where |a| <= |b| <=
         # 2*|a|; |ans| is between 0.5 and 1.0, so error should
         # always be bounded by 2**-54 with equality possible only
-        # if the least significant bit of q=ans*2**53 is zero.
+        # wenn the least significant bit of q=ans*2**53 is zero.
         fuer M in [10**10, 10**100, 10**1000]:
             fuer i in range(1000):
                 a = random.randrange(1, M)
@@ -1147,12 +1147,12 @@ klasse LongTest(unittest.TestCase):
             # Check equivalence with Python version
             self.assertEqual(k, len(bin(x).lstrip('-0b')))
             # Behaviour as specified in the docs
-            if x != 0:
+            wenn x != 0:
                 self.assertTrue(2**(k-1) <= abs(x) < 2**k)
-            else:
+            sonst:
                 self.assertEqual(k, 0)
             # Alternative definition: x.bit_length() == 1 + floor(log_2(x))
-            if x != 0:
+            wenn x != 0:
                 # When x is an exact power of 2, numeric errors can
                 # cause floor(log(x)/log(2)) to be one too small; for
                 # small x this can be fixed by adding a small quantity
@@ -1262,9 +1262,9 @@ klasse LongTest(unittest.TestCase):
     def test_to_bytes(self):
         def check(tests, byteorder, signed=False):
             def equivalent_python(n, length, byteorder, signed=False):
-                if byteorder == 'little':
+                wenn byteorder == 'little':
                     order = range(length)
-                elif byteorder == 'big':
+                sowenn byteorder == 'big':
                     order = reversed(range(length))
                 return bytes((n >> i*8) & 0xff fuer i in order)
 
@@ -1279,7 +1279,7 @@ klasse LongTest(unittest.TestCase):
                         .format(test, byteorder, signed)) from err
 
                 # Test fuer all default arguments.
-                if len(expected) == 1 and byteorder == 'big' and not signed:
+                wenn len(expected) == 1 and byteorder == 'big' and not signed:
                     try:
                         self.assertEqual(test.to_bytes(), expected)
                     except Exception as err:
@@ -1395,13 +1395,13 @@ klasse LongTest(unittest.TestCase):
     def test_from_bytes(self):
         def check(tests, byteorder, signed=False):
             def equivalent_python(byte_array, byteorder, signed=False):
-                if byteorder == 'little':
+                wenn byteorder == 'little':
                     little_ordered = list(byte_array)
-                elif byteorder == 'big':
+                sowenn byteorder == 'big':
                     little_ordered = list(reversed(byte_array))
 
                 n = sum(b << i*8 fuer i, b in enumerate(little_ordered))
-                if signed and little_ordered and (little_ordered[-1] & 0x80):
+                wenn signed and little_ordered and (little_ordered[-1] & 0x80):
                     n -= 1 << 8*len(little_ordered)
 
                 return n
@@ -1417,7 +1417,7 @@ klasse LongTest(unittest.TestCase):
                         .format(test, byteorder, signed)) from err
 
                 # Test fuer all default arguments.
-                if byteorder == 'big' and not signed:
+                wenn byteorder == 'big' and not signed:
                     try:
                         self.assertEqual(
                             int.from_bytes(test),
@@ -1693,5 +1693,5 @@ klasse LongTest(unittest.TestCase):
         # GH-117195 -- This shouldn't crash
         object.__sizeof__(1)
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

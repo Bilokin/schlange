@@ -6,7 +6,7 @@ from test import support
 from test.support import import_helper
 
 
-# Do this first so test will be skipped if module doesn't exist
+# Do this first so test will be skipped wenn module doesn't exist
 _wmi = import_helper.import_module('_wmi', required_on=['win'])
 
 
@@ -19,7 +19,7 @@ def wmi_exec_query(query):
             pass
             # retry on pipe error
         except WindowsError as exc:
-            if exc.winerror != 258:
+            wenn exc.winerror != 258:
                 raise
             # retry on timeout
 
@@ -45,7 +45,7 @@ klasse WmiTests(unittest.TestCase):
         try:
             wmi_exec_query("SELECT InvalidColumnName FROM InvalidTableName")
         except OSError as ex:
-            if ex.winerror & 0xFFFFFFFF == 0x80041010:
+            wenn ex.winerror & 0xFFFFFFFF == 0x80041010:
                 # This is the expected error code. All others should fail the test
                 return
         self.fail("Expected OSError")

@@ -198,7 +198,7 @@ klasse Test_Csv(unittest.TestCase):
             def __len__(self):
                 return 10
             def __getitem__(self, i):
-                if i > 2:
+                wenn i > 2:
                     raise OSError
         self._write_error_test(OSError, BadList())
         klasse BadItem:
@@ -1267,7 +1267,7 @@ klasse TestDialectValidity(unittest.TestCase):
                 self.assertRaises(csv.Error, create_invalid, field_name, 5)
                 self.assertRaises(ValueError, create_invalid, field_name, "\n")
                 self.assertRaises(ValueError, create_invalid, field_name, "\r")
-                if field_name != "delimiter":
+                wenn field_name != "delimiter":
                     self.assertRaises(ValueError, create_invalid, field_name, " ",
                                       skipinitialspace=True)
 
@@ -1457,7 +1457,7 @@ klasse TestLeaks(unittest.TestCase):
             csv.reader(["a,b,c\r\n"])
             delta = rc-lastrc
             lastrc = rc
-        # if csv.reader() leaks, last delta should be 3 or more
+        # wenn csv.reader() leaks, last delta should be 3 or more
         self.assertLess(delta, 3)
 
     def test_create_write(self):
@@ -1473,7 +1473,7 @@ klasse TestLeaks(unittest.TestCase):
             csv.writer(s)
             delta = rc-lastrc
             lastrc = rc
-        # if csv.writer() leaks, last delta should be 3 or more
+        # wenn csv.writer() leaks, last delta should be 3 or more
         self.assertLess(delta, 3)
 
     def test_read(self):
@@ -1489,7 +1489,7 @@ klasse TestLeaks(unittest.TestCase):
                 pass
             delta = rc-lastrc
             lastrc = rc
-        # if reader leaks during read, delta should be 5 or more
+        # wenn reader leaks during read, delta should be 5 or more
         self.assertLess(delta, 5)
 
     def test_write(self):
@@ -1506,7 +1506,7 @@ klasse TestLeaks(unittest.TestCase):
                 writer.writerow(row)
             delta = rc-lastrc
             lastrc = rc
-        # if writer leaks during write, last delta should be 5 or more
+        # wenn writer leaks during write, last delta should be 5 or more
         self.assertLess(delta, 5)
 
 klasse TestUnicode(unittest.TestCase):
@@ -1603,5 +1603,5 @@ klasse MiscTestCase(unittest.TestCase):
             with self.subTest(tp=tp):
                 check_disallow_instantiation(self, tp)
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

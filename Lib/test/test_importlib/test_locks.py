@@ -60,16 +60,16 @@ klasse DeadlockAvoidanceTests:
             self.old_switchinterval = None
 
     def tearDown(self):
-        if self.old_switchinterval is not None:
+        wenn self.old_switchinterval is not None:
             sys.setswitchinterval(self.old_switchinterval)
 
     def run_deadlock_avoidance_test(self, create_deadlock):
         NLOCKS = 10
         locks = [self.LockType(str(i)) fuer i in range(NLOCKS)]
         pairs = [(locks[i], locks[(i+1)%NLOCKS]) fuer i in range(NLOCKS)]
-        if create_deadlock:
+        wenn create_deadlock:
             NTHREADS = NLOCKS
-        else:
+        sonst:
             NTHREADS = NLOCKS - 1
         barrier = threading.Barrier(NTHREADS)
         results = []
@@ -81,7 +81,7 @@ klasse DeadlockAvoidanceTests:
                 lock.acquire()
             except self.DeadlockError:
                 return False
-            else:
+            sonst:
                 return True
 
         def f():
@@ -90,9 +90,9 @@ klasse DeadlockAvoidanceTests:
             barrier.wait()
             rb = _acquire(b)
             results.append((ra, rb))
-            if rb:
+            wenn rb:
                 b.release()
-            if ra:
+            wenn ra:
                 a.release()
         with lock_tests.Bunch(f, NTHREADS):
             pass
@@ -157,5 +157,5 @@ def setUpModule():
     unittest.addModuleCleanup(threading_helper.threading_cleanup, *thread_info)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

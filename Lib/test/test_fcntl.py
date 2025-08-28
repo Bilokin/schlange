@@ -14,7 +14,7 @@ from test.support.import_helper import import_module
 from test.support.os_helper import TESTFN, unlink, make_bad_fd
 
 
-# Skip test if no fcntl module.
+# Skip test wenn no fcntl module.
 fcntl = import_module('fcntl')
 
 
@@ -46,7 +46,7 @@ klasse TestFcntl(unittest.TestCase):
         self.f = None
 
     def tearDown(self):
-        if self.f and not self.f.closed:
+        wenn self.f and not self.f.closed:
             self.f.close()
         unlink(TESTFN)
 
@@ -56,29 +56,29 @@ klasse TestFcntl(unittest.TestCase):
             os.O_LARGEFILE
         except AttributeError:
             start_len = "ll"
-        else:
+        sonst:
             start_len = "qq"
 
-        if (
+        wenn (
             sys.platform.startswith(('netbsd', 'freebsd', 'openbsd'))
             or is_apple
         ):
-            if struct.calcsize('l') == 8:
+            wenn struct.calcsize('l') == 8:
                 off_t = 'l'
                 pid_t = 'i'
-            else:
+            sonst:
                 off_t = 'lxxxx'
                 pid_t = 'l'
             lockdata = struct.pack(off_t + off_t + pid_t + 'hh', 0, 0, 0,
                                    fcntl.F_WRLCK, 0)
-        elif sys.platform.startswith('gnukfreebsd'):
+        sowenn sys.platform.startswith('gnukfreebsd'):
             lockdata = struct.pack('qqihhi', 0, 0, 0, fcntl.F_WRLCK, 0, 0)
-        elif sys.platform in ['hp-uxB', 'unixware7']:
+        sowenn sys.platform in ['hp-uxB', 'unixware7']:
             lockdata = struct.pack('hhlllii', fcntl.F_WRLCK, 0, 0, 0, 0, 0, 0)
-        else:
+        sonst:
             lockdata = struct.pack('hh'+start_len+'hh', fcntl.F_WRLCK, 0, 0, 0, 0, 0)
-        if lockdata:
-            if verbose:
+        wenn lockdata:
+            wenn verbose:
                 print('struct.pack: ', repr(lockdata))
         return lockdata
 
@@ -86,11 +86,11 @@ klasse TestFcntl(unittest.TestCase):
         # the example from the library docs
         self.f = open(TESTFN, 'wb')
         rv = fcntl.fcntl(self.f.fileno(), fcntl.F_SETFL, os.O_NONBLOCK)
-        if verbose:
+        wenn verbose:
             print('Status from fcntl with O_NONBLOCK: ', rv)
         lockdata = self.get_lockdata()
         rv = fcntl.fcntl(self.f.fileno(), fcntl.F_SETLKW, lockdata)
-        if verbose:
+        wenn verbose:
             print('String from fcntl with F_SETLKW: ', repr(rv))
         self.f.close()
 
@@ -98,11 +98,11 @@ klasse TestFcntl(unittest.TestCase):
         # again, but pass the file rather than numeric descriptor
         self.f = open(TESTFN, 'wb')
         rv = fcntl.fcntl(self.f, fcntl.F_SETFL, os.O_NONBLOCK)
-        if verbose:
+        wenn verbose:
             print('Status from fcntl with O_NONBLOCK: ', rv)
         lockdata = self.get_lockdata()
         rv = fcntl.fcntl(self.f, fcntl.F_SETLKW, lockdata)
-        if verbose:
+        wenn verbose:
             print('String from fcntl with F_SETLKW: ', repr(rv))
         self.f.close()
 
@@ -149,7 +149,7 @@ klasse TestFcntl(unittest.TestCase):
             try:
                 fcntl.fcntl(fd, cmd, fcntl.DN_DELETE)
             except OSError as exc:
-                if exc.errno == errno.EINVAL:
+                wenn exc.errno == errno.EINVAL:
                     self.skipTest("F_NOTIFY not available by this environment")
             fcntl.fcntl(fd, cmd, flags)
         finally:
@@ -219,7 +219,7 @@ klasse TestFcntl(unittest.TestCase):
             pipesize_default = fcntl.fcntl(test_pipe_w, fcntl.F_GETPIPE_SZ)
             pipesize = pipesize_default // 2  # A new value to detect change.
             pagesize_default = get_pagesize()
-            if pipesize < pagesize_default:  # the POSIX minimum
+            wenn pipesize < pagesize_default:  # the POSIX minimum
                 raise unittest.SkipTest(
                     'default pipesize too small to perform test.')
             fcntl.fcntl(test_pipe_w, fcntl.F_SETPIPE_SZ, pipesize)
@@ -232,9 +232,9 @@ klasse TestFcntl(unittest.TestCase):
     def _check_fcntl_not_mutate_len(self, nbytes=None):
         self.f = open(TESTFN, 'wb')
         buf = struct.pack('ii', fcntl.F_OWNER_PID, os.getpid())
-        if nbytes is not None:
+        wenn nbytes is not None:
             buf += b' ' * (nbytes - len(buf))
-        else:
+        sonst:
             nbytes = len(buf)
         save_buf = bytes(buf)
         r = fcntl.fcntl(self.f, fcntl.F_SETOWN_EX, buf)
@@ -289,5 +289,5 @@ klasse TestFcntl(unittest.TestCase):
             fcntl.fcntl(fd, fcntl.F_DUPFD, b'\0' * 2048)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

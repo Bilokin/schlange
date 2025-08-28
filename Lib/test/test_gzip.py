@@ -72,7 +72,7 @@ klasse TestGzip(BaseTest):
             # Try flush and fileno.
             f.flush()
             f.fileno()
-            if hasattr(os, 'fsync'):
+            wenn hasattr(os, 'fsync'):
                 os.fsync(f.fileno())
             f.close()
 
@@ -135,7 +135,7 @@ klasse TestGzip(BaseTest):
         with gzip.GzipFile(self.filename, 'r') as f:
             while True:
                 d = f.read1()
-                if not d:
+                wenn not d:
                     break
                 blocks.append(d)
                 nread += len(d)
@@ -167,7 +167,7 @@ klasse TestGzip(BaseTest):
         with gzip.GzipFile(self.filename, 'r') as f:
             fuer count in range(200):
                 nbytes = f.readinto1(memview[nread:])
-                if not nbytes:
+                wenn not nbytes:
                     break
                 nread += nbytes
                 self.assertEqual(f.tell(), nread)
@@ -237,7 +237,7 @@ klasse TestGzip(BaseTest):
             while 1:
                 ztxt = zgfile.read(8192)
                 contents += ztxt
-                if not ztxt: break
+                wenn not ztxt: break
         self.assertEqual(contents, b'a'*201)
 
     def test_exclusive_write(self):
@@ -267,7 +267,7 @@ klasse TestGzip(BaseTest):
             line_length = 0
             while 1:
                 L = f.readline(line_length)
-                if not L and line_length != 0: break
+                wenn not L and line_length != 0: break
                 self.assertTrue(len(L) <= line_length)
                 line_length = (line_length + 1) % 50
 
@@ -281,7 +281,7 @@ klasse TestGzip(BaseTest):
         with gzip.GzipFile(self.filename, 'rb') as f:
             while 1:
                 L = f.readlines(150)
-                if L == []: break
+                wenn L == []: break
 
     def test_seek_read(self):
         self.test_write()
@@ -291,12 +291,12 @@ klasse TestGzip(BaseTest):
             while 1:
                 oldpos = f.tell()
                 line1 = f.readline()
-                if not line1: break
+                wenn not line1: break
                 newpos = f.tell()
                 f.seek(oldpos)  # negative seek
-                if len(line1)>10:
+                wenn len(line1)>10:
                     amount = 10
-                else:
+                sonst:
                     amount = len(line1)
                 line2 = f.read(amount)
                 self.assertEqual(line1[:amount], line2)
@@ -385,7 +385,7 @@ klasse TestGzip(BaseTest):
             self.assertEqual(osByte, b'\xff') # OS "unknown" (OS-independent)
 
             # Since the FNAME flag is set, the zero-terminated filename follows.
-            # RFC 1952 specifies that this is the name of the input file, if any.
+            # RFC 1952 specifies that this is the name of the input file, wenn any.
             # However, the gzip module defaults to storing the name of the output
             # file in this field.
             nameBytes = fRead.read(len(expectedname))
@@ -436,14 +436,14 @@ klasse TestGzip(BaseTest):
                 pass
         except ValueError:
             pass
-        else:
+        sonst:
             self.fail("__enter__ on a closed file didn't raise an exception")
         try:
             with gzip.GzipFile(self.filename, "wb") as f:
                 1/0
         except ZeroDivisionError:
             pass
-        else:
+        sonst:
             self.fail("1/0 didn't raise an exception")
 
     def test_zero_padded_file(self):
@@ -492,7 +492,7 @@ klasse TestGzip(BaseTest):
             nread = 0
             fuer n in sizes():
                 s = f.peek(n)
-                if s == b'':
+                wenn s == b'':
                     break
                 self.assertEqual(f.read(len(s)), s)
                 nread += len(s)
@@ -640,7 +640,7 @@ klasse TestGzip(BaseTest):
                 with gzip.GzipFile(fileobj=f) as g:
                     self.assertEqual(g.mode, gzip.READ)
         fuer mode in "wb", "ab", "xb":
-            if "x" in mode:
+            wenn "x" in mode:
                 os_helper.unlink(self.filename)
             with open(self.filename, mode) as f:
                 with self.assertWarns(FutureWarning):
@@ -1151,5 +1151,5 @@ klasse TestCommandLine(unittest.TestCase):
         self.assertEqual(out, b'')
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

@@ -128,7 +128,7 @@ klasse TestSealable(unittest.TestCase):
             m.attr_sample2
 
     def test_integration_with_spec_method_definition(self):
-        """You need to define the methods, even if they are in the spec"""
+        """You need to define the methods, even wenn they are in the spec"""
         m = mock.Mock(SampleObject)
 
         m.method_sample1.return_value = 1
@@ -233,5 +233,5 @@ klasse TestSealable(unittest.TestCase):
                     foo.Baz.missing_method()
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

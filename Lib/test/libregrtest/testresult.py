@@ -16,9 +16,9 @@ klasse RegressionTestResult(unittest.TextTestResult):
 
     def __init__(self, stream, descriptions, verbosity):
         super().__init__(stream=stream, descriptions=descriptions,
-                         verbosity=2 if verbosity else 0)
+                         verbosity=2 wenn verbosity sonst 0)
         self.buffer = True
-        if self.USE_XML:
+        wenn self.USE_XML:
             from xml.etree import ElementTree as ET
             from datetime import datetime, UTC
             self.__ET = ET
@@ -44,55 +44,55 @@ klasse RegressionTestResult(unittest.TextTestResult):
 
     def startTest(self, test):
         super().startTest(test)
-        if self.USE_XML:
+        wenn self.USE_XML:
             self.__e = e = self.__ET.SubElement(self.__suite, 'testcase')
         self.__start_time = time.perf_counter()
 
     def _add_result(self, test, capture=False, **args):
-        if not self.USE_XML:
+        wenn not self.USE_XML:
             return
         e = self.__e
         self.__e = None
-        if e is None:
+        wenn e is None:
             return
         ET = self.__ET
 
         e.set('name', args.pop('name', self.__getId(test)))
         e.set('status', args.pop('status', 'run'))
         e.set('result', args.pop('result', 'completed'))
-        if self.__start_time:
+        wenn self.__start_time:
             e.set('time', f'{time.perf_counter() - self.__start_time:0.6f}')
 
-        if capture:
-            if self._stdout_buffer is not None:
+        wenn capture:
+            wenn self._stdout_buffer is not None:
                 stdout = self._stdout_buffer.getvalue().rstrip()
                 ET.SubElement(e, 'system-out').text = sanitize_xml(stdout)
-            if self._stderr_buffer is not None:
+            wenn self._stderr_buffer is not None:
                 stderr = self._stderr_buffer.getvalue().rstrip()
                 ET.SubElement(e, 'system-err').text = sanitize_xml(stderr)
 
         fuer k, v in args.items():
-            if not k or not v:
+            wenn not k or not v:
                 continue
 
             e2 = ET.SubElement(e, k)
-            if hasattr(v, 'items'):
+            wenn hasattr(v, 'items'):
                 fuer k2, v2 in v.items():
-                    if k2:
+                    wenn k2:
                         e2.set(k2, sanitize_xml(str(v2)))
-                    else:
+                    sonst:
                         e2.text = sanitize_xml(str(v2))
-            else:
+            sonst:
                 e2.text = sanitize_xml(str(v))
 
     @classmethod
     def __makeErrorDict(cls, err_type, err_value, err_tb):
-        if isinstance(err_type, type):
-            if err_type.__module__ == 'builtins':
+        wenn isinstance(err_type, type):
+            wenn err_type.__module__ == 'builtins':
                 typename = err_type.__name__
-            else:
+            sonst:
                 typename = f'{err_type.__module__}.{err_type.__name__}'
-        else:
+        sonst:
             typename = repr(err_type)
 
         msg = traceback.format_exception(err_type, err_value, None)
@@ -115,7 +115,7 @@ klasse RegressionTestResult(unittest.TextTestResult):
     def addFailure(self, test, err):
         self._add_result(test, True, failure=self.__makeErrorDict(*err))
         super().addFailure(test, err)
-        if support.failfast:
+        wenn support.failfast:
             self.stop()
 
     def addSkip(self, test, reason):
@@ -131,7 +131,7 @@ klasse RegressionTestResult(unittest.TextTestResult):
         super().addUnexpectedSuccess(test)
 
     def get_xml_element(self):
-        if not self.USE_XML:
+        wenn not self.USE_XML:
             raise ValueError("USE_XML is false")
         e = self.__suite
         e.set('tests', str(self.testsRun))
@@ -149,7 +149,7 @@ klasse QuietRegressionTestRunner:
         return self.result
 
 def get_test_runner_class(verbosity, buffer=False):
-    if verbosity:
+    wenn verbosity:
         return functools.partial(unittest.TextTestRunner,
                                  resultclass=RegressionTestResult,
                                  buffer=buffer,
@@ -159,7 +159,7 @@ def get_test_runner_class(verbosity, buffer=False):
 def get_test_runner(stream, verbosity, capture_output=False):
     return get_test_runner_class(verbosity, capture_output)(stream)
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     import xml.etree.ElementTree as ET
     RegressionTestResult.USE_XML = True
 

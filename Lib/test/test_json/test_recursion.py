@@ -14,7 +14,7 @@ klasse TestRecursion:
             self.dumps(x)
         except ValueError as exc:
             self.assertEqual(exc.__notes__, ["when serializing list item 0"])
-        else:
+        sonst:
             self.fail("didn't raise ValueError on list recursion")
         x = []
         y = [x]
@@ -23,7 +23,7 @@ klasse TestRecursion:
             self.dumps(x)
         except ValueError as exc:
             self.assertEqual(exc.__notes__, ["when serializing list item 0"]*2)
-        else:
+        sonst:
             self.fail("didn't raise ValueError on alternating list recursion")
         y = []
         x = [y, y]
@@ -37,7 +37,7 @@ klasse TestRecursion:
             self.dumps(x)
         except ValueError as exc:
             self.assertEqual(exc.__notes__, ["when serializing dict item 'test'"])
-        else:
+        sonst:
             self.fail("didn't raise ValueError on dict recursion")
         x = {}
         y = {"a": x, "b": x}
@@ -48,10 +48,10 @@ klasse TestRecursion:
         klasse RecursiveJSONEncoder(self.json.JSONEncoder):
             recurse = False
             def default(self, o):
-                if o is JSONTestObject:
-                    if self.recurse:
+                wenn o is JSONTestObject:
+                    wenn self.recurse:
                         return [JSONTestObject]
-                    else:
+                    sonst:
                         return 'JSONTestObject'
                 return self.json.JSONEncoder.default(o)
 
@@ -64,7 +64,7 @@ klasse TestRecursion:
             self.assertEqual(exc.__notes__,
                              ["when serializing list item 0",
                               "when serializing type object"])
-        else:
+        sonst:
             self.fail("didn't raise ValueError on default recursion")
 
 

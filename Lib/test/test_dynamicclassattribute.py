@@ -218,7 +218,7 @@ klasse PropertySubclassTests(unittest.TestCase):
                 print('\n',spam.__doc__)
         except AttributeError:
             pass
-        else:
+        sonst:
             raise Exception("AttributeError not raised")
 
     @unittest.skipIf(sys.flags.optimize >= 2,
@@ -296,5 +296,5 @@ klasse PropertySubclassTests(unittest.TestCase):
 
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

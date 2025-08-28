@@ -24,9 +24,9 @@ klasse Using__package__:
     [__name__]::
 
       def calc_package(caller_name, has___path__):
-          if has__path__:
+          wenn has__path__:
               return caller_name
-          else:
+          sonst:
               return caller_name.rsplit('.', 1)[0]
 
     Then the normal algorithm fuer relative name imports can proceed as if
@@ -74,7 +74,7 @@ klasse Using__package__:
         self.assertEqual(module.__name__, 'pkg')
 
     def test_warn_when_package_and_spec_disagree(self):
-        # Raise a DeprecationWarning if __package__ != __spec__.parent.
+        # Raise a DeprecationWarning wenn __package__ != __spec__.parent.
         with self.assertWarns(DeprecationWarning):
             self.import_module({'__package__': 'pkg.fake',
                                 '__spec__': FakeSpec('pkg.fakefake')})
@@ -148,5 +148,5 @@ klasse Setting__package__PEP451(Setting__package__, unittest.TestCase):
     mock_modules = util.mock_spec
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

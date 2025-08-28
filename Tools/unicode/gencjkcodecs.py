@@ -64,6 +64,6 @@ def gencodecs(prefix):
             with open(codecpath, 'w') as f:
                 f.write(code)
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     import sys
     gencodecs(sys.argv[1])

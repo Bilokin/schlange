@@ -19,7 +19,7 @@ def run_regrtests(*extra_args):
         '-Werror', '-bb',  # turn warnings into exceptions
         '-m', 'test',
     ]
-    if not extra_args:
+    wenn not extra_args:
         args.extend([
             '-r',  # randomize
             '-w',  # re-run failed tests with -v
@@ -27,11 +27,11 @@ def run_regrtests(*extra_args):
             '-u', 'urlfetch',  # download test vectors
             '-j', '0'  # use multiple CPUs
         ])
-    else:
+    sonst:
         args.extend(extra_args)
     args.extend(TESTS)
     result = subprocess.call(args)
     sys.exit(result)
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     run_regrtests(*sys.argv[1:])

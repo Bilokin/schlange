@@ -21,9 +21,9 @@ klasse ReceiveStuffProto(asyncio.BufferedProtocol):
         self.cb(self.buffer[:nbytes])
 
     def connection_lost(self, exc):
-        if exc is None:
+        wenn exc is None:
             self.con_lost_fut.set_result(None)
-        else:
+        sonst:
             self.con_lost_fut.set_exception(exc)
 
 
@@ -42,7 +42,7 @@ klasse BaseTestBufferedProtocol(func_tests.FunctionalTestCaseMixin):
             def on_buf(buf):
                 nonlocal data
                 data += buf
-                if data == NOISE:
+                wenn data == NOISE:
                     tr.write(b'1')
 
             conn_lost_fut = self.loop.create_future()
@@ -85,5 +85,5 @@ klasse BufferedProtocolProactorTests(BaseTestBufferedProtocol,
         return asyncio.ProactorEventLoop()
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

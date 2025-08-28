@@ -40,7 +40,7 @@ klasse StaggeredTests(unittest.IsolatedAsyncioTestCase):
 
     async def test_first_error_second_successful(self):
         async def coro(index):
-            if index == 0:
+            wenn index == 0:
                 raise ValueError(index)
             return f'Res: {index}'
 
@@ -60,7 +60,7 @@ klasse StaggeredTests(unittest.IsolatedAsyncioTestCase):
 
     async def test_first_timeout_second_successful(self):
         async def coro(index):
-            if index == 0:
+            wenn index == 0:
                 await asyncio.sleep(10)  # much bigger than delay
             return f'Res: {index}'
 

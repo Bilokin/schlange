@@ -22,13 +22,13 @@ klasse PyTest(unittest.TestCase):
 
 @unittest.skipUnless(cjson, 'requires _json')
 klasse CTest(unittest.TestCase):
-    if cjson is not None:
+    wenn cjson is not None:
         json = cjson
         loads = staticmethod(cjson.loads)
         dumps = staticmethod(cjson.dumps)
         JSONDecodeError = staticmethod(cjson.JSONDecodeError)
 
-# test PyTest and CTest checking if the functions come from the right module
+# test PyTest and CTest checking wenn the functions come from the right module
 klasse TestPyTest(PyTest):
     def test_pyjson(self):
         self.assertEqual(self.json.scanner.make_scanner.__module__,

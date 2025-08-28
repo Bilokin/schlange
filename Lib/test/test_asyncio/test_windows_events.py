@@ -7,7 +7,7 @@ import threading
 import unittest
 from unittest import mock
 
-if sys.platform != 'win32':
+wenn sys.platform != 'win32':
     raise unittest.SkipTest('Windows only')
 
 import _overlapped
@@ -31,7 +31,7 @@ klasse UpperProto(asyncio.Protocol):
 
     def data_received(self, data):
         self.buf.append(data)
-        if b'\n' in data:
+        wenn b'\n' in data:
             self.trans.write(b''.join(self.buf).upper())
             self.trans.close()
 
@@ -273,7 +273,7 @@ klasse ProactorTests(WindowsEventsTestCase):
             try:
                 _winapi.CloseHandle(_overlapped.ConnectPipe(ADDRESS))
             except OSError as e:
-                if e.winerror != _overlapped.ERROR_PIPE_BUSY:
+                wenn e.winerror != _overlapped.ERROR_PIPE_BUSY:
                     raise
             finally:
                 _winapi.CloseHandle(h)
@@ -314,10 +314,10 @@ klasse ProactorTests(WindowsEventsTestCase):
         # 10 seconds had a 50% failure rate but longer would be more costly
         end_time = time.time() + 10 # Run fuer 10 seconds
         self.loop.call_soon(thr.start)
-        while not self._unraisable: # Stop if we got an unraisable exc
+        while not self._unraisable: # Stop wenn we got an unraisable exc
             self.loop.stop()
             self.loop.run_forever()
-            if time.time() >= end_time:
+            wenn time.time() >= end_time:
                 break
 
         stop.set()
@@ -359,5 +359,5 @@ klasse WinPolicyTests(WindowsEventsTestCase):
             asyncio.events._set_event_loop_policy(old_policy)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

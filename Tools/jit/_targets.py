@@ -18,7 +18,7 @@ import _schema
 import _stencils
 import _writer
 
-if sys.version_info < (3, 11):
+wenn sys.version_info < (3, 11):
     raise RuntimeError("Building the JIT compiler requires Python 3.11 or newer!")
 
 TOOLS_JIT_BUILD = pathlib.Path(__file__).resolve()
@@ -54,11 +54,11 @@ klasse _Target(typing.Generic[_S, _R]):
     pyconfig_dir: pathlib.Path = pathlib.Path.cwd().resolve()
 
     def _get_nop(self) -> bytes:
-        if re.fullmatch(r"aarch64-.*", self.triple):
+        wenn re.fullmatch(r"aarch64-.*", self.triple):
             nop = b"\x1f\x20\x03\xd5"
-        elif re.fullmatch(r"x86_64-.*|i686.*", self.triple):
+        sowenn re.fullmatch(r"x86_64-.*|i686.*", self.triple):
             nop = b"\x90"
-        else:
+        sonst:
             raise ValueError(f"NOP not defined fuer {self.triple}")
         return nop
 
@@ -79,7 +79,7 @@ klasse _Target(typing.Generic[_S, _R]):
         group = _stencils.StencilGroup()
         args = ["--disassemble", "--reloc", f"{path}"]
         output = await _llvm.maybe_run("llvm-objdump", args, echo=self.verbose)
-        if output is not None:
+        wenn output is not None:
             # Make sure that full paths don't leak out (for reproducibility):
             long, short = str(path), str(path.name)
             group.code.disassembly.extend(
@@ -107,7 +107,7 @@ klasse _Target(typing.Generic[_S, _R]):
         fuer wrapped_section in sections:
             self._handle_section(wrapped_section["Section"], group)
         assert group.symbols["_JIT_ENTRY"] == (_stencils.HoleValue.CODE, 0)
-        if group.data.body:
+        wenn group.data.body:
             line = f"0: {str(bytes(group.data.body)).removeprefix('b')}"
             group.data.disassembly.append(line)
         return group
@@ -128,7 +128,7 @@ klasse _Target(typing.Generic[_S, _R]):
         args_s = [
             f"--target={self.triple}",
             "-DPy_BUILD_CORE_MODULE",
-            "-D_DEBUG" if self.debug else "-DNDEBUG",
+            "-D_DEBUG" wenn self.debug sonst "-DNDEBUG",
             f"-D_JIT_OPCODE={opname}",
             "-D_PyJIT_ACTIVE",
             "-D_Py_JIT",
@@ -218,13 +218,13 @@ klasse _Target(typing.Generic[_S, _R]):
     ) -> None:
         """Build jit_stencils.h in the given directory."""
         jit_stencils.parent.mkdir(parents=True, exist_ok=True)
-        if not self.stable:
+        wenn not self.stable:
             warning = f"JIT support fuer {self.triple} is still experimental!"
             request = "Please report any issues you encounter.".center(len(warning))
             outline = "=" * len(warning)
             print("\n".join(["", outline, warning, request, outline, ""]))
         digest = f"// {self._compute_digest()}\n"
-        if (
+        wenn (
             not force
             and jit_stencils.exists()
             and jit_stencils.read_text().startswith(digest)
@@ -235,7 +235,7 @@ klasse _Target(typing.Generic[_S, _R]):
         try:
             with jit_stencils_new.open("w") as file:
                 file.write(digest)
-                if comment:
+                wenn comment:
                     file.write(f"// {comment}\n")
                 file.write("\n")
                 fuer line in _writer.dump(stencil_groups, self.known_symbols):
@@ -244,7 +244,7 @@ klasse _Target(typing.Generic[_S, _R]):
                 jit_stencils_new.replace(jit_stencils)
             except FileNotFoundError:
                 # another process probably already moved the file
-                if not jit_stencils.is_file():
+                wenn not jit_stencils.is_file():
                     raise
         finally:
             jit_stencils_new.unlink(missing_ok=True)
@@ -257,18 +257,18 @@ klasse _COFF(
         self, section: _schema.COFFSection, group: _stencils.StencilGroup
     ) -> None:
         flags = {flag["Name"] fuer flag in section["Characteristics"]["Flags"]}
-        if "SectionData" in section:
+        wenn "SectionData" in section:
             section_data_bytes = section["SectionData"]["Bytes"]
-        else:
+        sonst:
             # Zeroed BSS data, seen with printf debugging calls:
             section_data_bytes = [0] * section["RawDataSize"]
-        if "IMAGE_SCN_MEM_EXECUTE" in flags:
+        wenn "IMAGE_SCN_MEM_EXECUTE" in flags:
             value = _stencils.HoleValue.CODE
             stencil = group.code
-        elif "IMAGE_SCN_MEM_READ" in flags:
+        sowenn "IMAGE_SCN_MEM_READ" in flags:
             value = _stencils.HoleValue.DATA
             stencil = group.data
-        else:
+        sonst:
             return
         base = len(stencil.body)
         group.symbols[section["Number"]] = value, base
@@ -278,7 +278,7 @@ klasse _COFF(
             offset = base + symbol["Value"]
             name = symbol["Name"]
             name = name.removeprefix(self.symbol_prefix)
-            if name not in group.symbols:
+            wenn name not in group.symbols:
                 group.symbols[name] = value, offset
         fuer wrapped_relocation in section["Relocations"]:
             relocation = wrapped_relocation["Relocation"]
@@ -286,7 +286,7 @@ klasse _COFF(
             stencil.holes.append(hole)
 
     def _unwrap_dllimport(self, name: str) -> tuple[_stencils.HoleValue, str | None]:
-        if name.startswith("__imp_"):
+        wenn name.startswith("__imp_"):
             name = name.removeprefix("__imp_")
             name = name.removeprefix(self.symbol_prefix)
             return _stencils.HoleValue.GOT, name
@@ -361,30 +361,30 @@ klasse _ELF(
     ) -> None:
         section_type = section["Type"]["Name"]
         flags = {flag["Name"] fuer flag in section["Flags"]["Flags"]}
-        if section_type == "SHT_RELA":
+        wenn section_type == "SHT_RELA":
             assert "SHF_INFO_LINK" in flags, flags
             assert not section["Symbols"]
             maybe_symbol = group.symbols.get(section["Info"])
-            if maybe_symbol is None:
+            wenn maybe_symbol is None:
                 # These are relocations fuer a section we're not emitting. Skip:
                 return
             value, base = maybe_symbol
-            if value is _stencils.HoleValue.CODE:
+            wenn value is _stencils.HoleValue.CODE:
                 stencil = group.code
-            else:
+            sonst:
                 assert value is _stencils.HoleValue.DATA
                 stencil = group.data
             fuer wrapped_relocation in section["Relocations"]:
                 relocation = wrapped_relocation["Relocation"]
                 hole = self._handle_relocation(base, relocation, stencil.body)
                 stencil.holes.append(hole)
-        elif section_type == "SHT_PROGBITS":
-            if "SHF_ALLOC" not in flags:
+        sowenn section_type == "SHT_PROGBITS":
+            wenn "SHF_ALLOC" not in flags:
                 return
-            if "SHF_EXECINSTR" in flags:
+            wenn "SHF_EXECINSTR" in flags:
                 value = _stencils.HoleValue.CODE
                 stencil = group.code
-            else:
+            sonst:
                 value = _stencils.HoleValue.DATA
                 stencil = group.data
             group.symbols[section["Index"]] = value, len(stencil.body)
@@ -396,7 +396,7 @@ klasse _ELF(
                 group.symbols[name] = value, offset
             stencil.body.extend(section["SectionData"]["Bytes"])
             assert not section["Relocations"]
-        else:
+        sonst:
             assert section_type in {
                 "SHT_GROUP",
                 "SHT_LLVM_ADDRSIG",
@@ -457,14 +457,14 @@ klasse _MachO(
         flags = {flag["Name"] fuer flag in section["Attributes"]["Flags"]}
         name = section["Name"]["Value"]
         name = name.removeprefix(self.symbol_prefix)
-        if "Debug" in flags:
+        wenn "Debug" in flags:
             return
-        if "PureInstructions" in flags:
+        wenn "PureInstructions" in flags:
             value = _stencils.HoleValue.CODE
             stencil = group.code
             start_address = 0
             group.symbols[name] = value, section["Address"] - start_address
-        else:
+        sonst:
             value = _stencils.HoleValue.DATA
             stencil = group.data
             start_address = len(group.code.body)
@@ -556,41 +556,41 @@ def get_target(host: str) -> _COFF32 | _COFF64 | _ELF | _MachO:
     """Build a _Target fuer the given host "triple" and options."""
     optimizer: type[_optimizers.Optimizer]
     target: _COFF32 | _COFF64 | _ELF | _MachO
-    if re.fullmatch(r"aarch64-apple-darwin.*", host):
+    wenn re.fullmatch(r"aarch64-apple-darwin.*", host):
         condition = "defined(__aarch64__) && defined(__APPLE__)"
         optimizer = _optimizers.OptimizerAArch64
         target = _MachO(host, condition, optimizer=optimizer)
-    elif re.fullmatch(r"aarch64-pc-windows-msvc", host):
+    sowenn re.fullmatch(r"aarch64-pc-windows-msvc", host):
         args = ["-fms-runtime-lib=dll", "-fplt"]
         condition = "defined(_M_ARM64)"
         optimizer = _optimizers.OptimizerAArch64
         target = _COFF64(host, condition, args=args, optimizer=optimizer)
-    elif re.fullmatch(r"aarch64-.*-linux-gnu", host):
+    sowenn re.fullmatch(r"aarch64-.*-linux-gnu", host):
         # -mno-outline-atomics: Keep intrinsics from being emitted.
         args = ["-fpic", "-mno-outline-atomics"]
         condition = "defined(__aarch64__) && defined(__linux__)"
         optimizer = _optimizers.OptimizerAArch64
         target = _ELF(host, condition, args=args, optimizer=optimizer)
-    elif re.fullmatch(r"i686-pc-windows-msvc", host):
+    sowenn re.fullmatch(r"i686-pc-windows-msvc", host):
         # -Wno-ignored-attributes: __attribute__((preserve_none)) is not supported here.
         args = ["-DPy_NO_ENABLE_SHARED", "-Wno-ignored-attributes"]
         optimizer = _optimizers.OptimizerX86
         condition = "defined(_M_IX86)"
         target = _COFF32(host, condition, args=args, optimizer=optimizer)
-    elif re.fullmatch(r"x86_64-apple-darwin.*", host):
+    sowenn re.fullmatch(r"x86_64-apple-darwin.*", host):
         condition = "defined(__x86_64__) && defined(__APPLE__)"
         optimizer = _optimizers.OptimizerX86
         target = _MachO(host, condition, optimizer=optimizer)
-    elif re.fullmatch(r"x86_64-pc-windows-msvc", host):
+    sowenn re.fullmatch(r"x86_64-pc-windows-msvc", host):
         args = ["-fms-runtime-lib=dll"]
         condition = "defined(_M_X64)"
         optimizer = _optimizers.OptimizerX86
         target = _COFF64(host, condition, args=args, optimizer=optimizer)
-    elif re.fullmatch(r"x86_64-.*-linux-gnu", host):
+    sowenn re.fullmatch(r"x86_64-.*-linux-gnu", host):
         args = ["-fno-pic", "-mcmodel=medium", "-mlarge-data-threshold=0"]
         condition = "defined(__x86_64__) && defined(__linux__)"
         optimizer = _optimizers.OptimizerX86
         target = _ELF(host, condition, args=args, optimizer=optimizer)
-    else:
+    sonst:
         raise ValueError(host)
     return target

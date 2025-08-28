@@ -11,30 +11,30 @@ UNKNOWN = '???'
 
 
 def parse_markers(markers, default=None):
-    if markers is NOT_SET:
+    wenn markers is NOT_SET:
         return default
-    if not markers:
+    wenn not markers:
         return None
-    if type(markers) is not str:
+    wenn type(markers) is not str:
         return markers
-    if markers == markers[0] * len(markers):
+    wenn markers == markers[0] * len(markers):
         return [markers]
     return list(markers)
 
 
 def fix_row(row, **markers):
-    if isinstance(row, str):
+    wenn isinstance(row, str):
         raise NotImplementedError(row)
     empty = parse_markers(markers.pop('empty', ('-',)))
     unknown = parse_markers(markers.pop('unknown', ('???',)))
-    row = (val if val else None fuer val in row)
-    if not empty:
-        if unknown:
-            row = (UNKNOWN if val in unknown else val fuer val in row)
-    elif not unknown:
-        row = (EMPTY if val in empty else val fuer val in row)
-    else:
-        row = (EMPTY if val in empty else (UNKNOWN if val in unknown else val)
+    row = (val wenn val sonst None fuer val in row)
+    wenn not empty:
+        wenn unknown:
+            row = (UNKNOWN wenn val in unknown sonst val fuer val in row)
+    sowenn not unknown:
+        row = (EMPTY wenn val in empty sonst val fuer val in row)
+    sonst:
+        row = (EMPTY wenn val in empty sonst (UNKNOWN wenn val in unknown sonst val)
                fuer val in row)
     return tuple(row)
 
@@ -46,37 +46,37 @@ def _fix_read_default(row):
 
 def _fix_write_default(row, empty=''):
     fuer value in row:
-        yield empty if value is None else str(value)
+        yield empty wenn value is None sonst str(value)
 
 
 def _normalize_fix_read(fix):
-    if fix is None:
+    wenn fix is None:
         fix = ''
-    if callable(fix):
+    wenn callable(fix):
         def fix_row(row):
             values = fix(row)
             return _fix_read_default(values)
-    elif isinstance(fix, str):
+    sowenn isinstance(fix, str):
         def fix_row(row):
             values = _fix_read_default(row)
-            return (None if v == fix else v
+            return (None wenn v == fix sonst v
                     fuer v in values)
-    else:
+    sonst:
         raise NotImplementedError(fix)
     return fix_row
 
 
 def _normalize_fix_write(fix, empty=''):
-    if fix is None:
+    wenn fix is None:
         fix = empty
-    if callable(fix):
+    wenn callable(fix):
         def fix_row(row):
             values = fix(row)
             return _fix_write_default(values, empty)
-    elif isinstance(fix, str):
+    sowenn isinstance(fix, str):
         def fix_row(row):
             return _fix_write_default(row, fix)
-    else:
+    sonst:
         raise NotImplementedError(fix)
     return fix_row
 
@@ -88,7 +88,7 @@ def read_table(infile, header, *,
                _get_reader=csv.reader,
                ):
     """Yield each row of the given ???-separated (e.g. tab) file."""
-    if isinstance(infile, str):
+    wenn isinstance(infile, str):
         with _open(infile, newline='') as infile:
             yield from read_table(
                 infile,
@@ -102,13 +102,13 @@ def read_table(infile, header, *,
     lines = strutil._iter_significant_lines(infile)
 
     # Validate the header.
-    if not isinstance(header, str):
+    wenn not isinstance(header, str):
         header = sep.join(header)
     try:
         actualheader = next(lines).strip()
     except StopIteration:
         actualheader = ''
-    if actualheader != header:
+    wenn actualheader != header:
         raise ValueError(f'bad header {actualheader!r}')
 
     fix_row = _normalize_fix_read(fix)
@@ -124,9 +124,9 @@ def write_table(outfile, header, rows, *,
                 _get_writer=csv.writer,
                 ):
     """Write each of the rows to the given ???-separated (e.g. tab) file."""
-    if backup:
+    wenn backup:
         fsutil.create_backup(outfile, backup)
-    if isinstance(outfile, str):
+    wenn isinstance(outfile, str):
         with _open(outfile, 'w', newline='') as outfile:
             return write_table(
                 outfile,
@@ -139,7 +139,7 @@ def write_table(outfile, header, rows, *,
                 _get_writer=_get_writer,
             )
 
-    if isinstance(header, str):
+    wenn isinstance(header, str):
         header = header.split(sep or '\t')
     fix_row = _normalize_fix_write(fix)
     writer = _get_writer(outfile, delimiter=sep or '\t')
@@ -155,64 +155,64 @@ def parse_table(entries, sep, header=None, rawsep=None, *,
                 strict=True,
                 ):
     header, sep = _normalize_table_file_props(header, sep)
-    if not sep:
+    wenn not sep:
         raise ValueError('missing "sep"')
 
     ncols = None
-    if header:
-        if strict:
+    wenn header:
+        wenn strict:
             ncols = len(header.split(sep))
         cur_file = None
     fuer line, filename in strutil.parse_entries(entries, ignoresep=sep):
         _sep = sep
-        if filename:
-            if header and cur_file != filename:
+        wenn filename:
+            wenn header and cur_file != filename:
                 cur_file = filename
-                # Skip the first line if it's the header.
-                if line.strip() == header:
+                # Skip the first line wenn it's the header.
+                wenn line.strip() == header:
                     continue
-                else:
+                sonst:
                     # We expected the header.
                     raise NotImplementedError((header, line))
-        elif rawsep and sep not in line:
+        sowenn rawsep and sep not in line:
             _sep = rawsep
 
         row = _parse_row(line, _sep, ncols, default)
-        if strict and not ncols:
+        wenn strict and not ncols:
             ncols = len(row)
         yield row, filename
 
 
 def parse_row(line, sep, *, ncols=None, default=NOT_SET):
-    if not sep:
+    wenn not sep:
         raise ValueError('missing "sep"')
     return _parse_row(line, sep, ncols, default)
 
 
 def _parse_row(line, sep, ncols, default):
     row = tuple(v.strip() fuer v in line.split(sep))
-    if (ncols or 0) > 0:
+    wenn (ncols or 0) > 0:
         diff = ncols - len(row)
-        if diff:
-            if default is NOT_SET or diff < 0:
+        wenn diff:
+            wenn default is NOT_SET or diff < 0:
                 raise Exception(f'bad row (expected {ncols} columns, got {row!r})')
             row += (default,) * diff
     return row
 
 
 def _normalize_table_file_props(header, sep):
-    if not header:
+    wenn not header:
         return None, sep
 
-    if not isinstance(header, str):
-        if not sep:
+    wenn not isinstance(header, str):
+        wenn not sep:
             raise NotImplementedError(header)
         header = sep.join(header)
-    elif not sep:
+    sowenn not sep:
         fuer sep in ('\t', ',', ' '):
-            if sep in header:
+            wenn sep in header:
                 break
-        else:
+        sonst:
             sep = None
     return header, sep
 
@@ -224,7 +224,7 @@ WIDTH = 20
 
 
 def resolve_columns(specs):
-    if isinstance(specs, str):
+    wenn isinstance(specs, str):
         specs = specs.replace(',', ' ').strip().split()
     resolved = []
     fuer raw in specs:
@@ -274,23 +274,23 @@ klasse ColumnSpec(namedtuple('ColumnSpec', 'field label fmt')):
 
     @classmethod
     def from_raw(cls, raw):
-        if not raw:
+        wenn not raw:
             raise ValueError('missing column spec')
-        elif isinstance(raw, cls):
+        sowenn isinstance(raw, cls):
             return raw
 
-        if isinstance(raw, str):
+        wenn isinstance(raw, str):
             *values, _ = cls._parse(raw)
-        else:
+        sonst:
             *values, _ = cls._normalize(raw)
-        if values is None:
+        wenn values is None:
             raise ValueError(f'unsupported column spec {raw!r}')
         return cls(*values)
 
     @classmethod
     def parse(cls, specstr):
         parsed = cls._parse(specstr)
-        if not parsed:
+        wenn not parsed:
             return None
         *values, _ = parsed
         return cls(*values)
@@ -298,79 +298,79 @@ klasse ColumnSpec(namedtuple('ColumnSpec', 'field label fmt')):
     @classmethod
     def _parse(cls, specstr):
         m = cls.REGEX.match(specstr)
-        if not m:
+        wenn not m:
             return None
         (label, field,
          align, width1,
          width2, fmt,
          ) = m.groups()
-        if not label:
+        wenn not label:
             label = field
-        if fmt:
+        wenn fmt:
             assert not align and not width1, (specstr,)
             _parsed = _parse_fmt(fmt)
-            if not _parsed:
+            wenn not _parsed:
                 raise NotImplementedError
-            elif width2:
+            sowenn width2:
                 width, _ = _parsed
-                if width != int(width2):
+                wenn width != int(width2):
                     raise NotImplementedError(specstr)
-        elif width2:
+        sowenn width2:
             fmt = width2
             width = int(width2)
-        else:
+        sonst:
             assert not fmt, (fmt, specstr)
-            if align:
-                width = int(width1) if width1 else len(label)
+            wenn align:
+                width = int(width1) wenn width1 sonst len(label)
                 fmt = f'{align}{width}'
-            else:
+            sonst:
                 width = None
         return field, label, fmt, width
 
     @classmethod
     def _normalize(cls, spec):
-        if len(spec) == 1:
+        wenn len(spec) == 1:
             raw, = spec
             raise NotImplementedError
             return _resolve_column(raw)
 
-        if len(spec) == 4:
+        wenn len(spec) == 4:
             label, field, width, fmt = spec
-            if width:
-                if not fmt:
+            wenn width:
+                wenn not fmt:
                     fmt = str(width)
-                elif _parse_fmt(fmt)[0] != width:
+                sowenn _parse_fmt(fmt)[0] != width:
                     raise ValueError(f'width mismatch in {spec}')
-        elif len(raw) == 3:
+        sowenn len(raw) == 3:
             label, field, fmt = spec
-            if not field:
+            wenn not field:
                 label, field = None, label
-            elif not isinstance(field, str) or not field.isidentifier():
+            sowenn not isinstance(field, str) or not field.isidentifier():
                 # XXX This doesn't seem right...
-                fmt = f'{field}:{fmt}' if fmt else field
+                fmt = f'{field}:{fmt}' wenn fmt sonst field
                 label, field = None, label
-        elif len(raw) == 2:
+        sowenn len(raw) == 2:
             label = None
             field, fmt = raw
-            if not field:
+            wenn not field:
                 field, fmt = fmt, None
-            elif not field.isidentifier() or fmt.isidentifier():
+            sowenn not field.isidentifier() or fmt.isidentifier():
                 label, field = field, fmt
-        else:
+        sonst:
             raise NotImplementedError
 
-        fmt = f':{fmt}' if fmt else ''
-        if label:
+        fmt = f':{fmt}' wenn fmt sonst ''
+        wenn label:
             return cls._parse(f'[{label}]{field}{fmt}')
-        else:
+        sonst:
             return cls._parse(f'{field}{fmt}')
 
     @property
     def width(self):
-        if not self.fmt:
+        wenn not self.fmt:
             return None
         parsed = _parse_fmt(self.fmt)
-        if not parsed:
+        wenn not parsed:
             return None
         width, _ = parsed
         return width
@@ -380,35 +380,35 @@ klasse ColumnSpec(namedtuple('ColumnSpec', 'field label fmt')):
 
 
 def _parse_fmt(fmt):
-    if fmt.startswith(tuple('<^>')):
+    wenn fmt.startswith(tuple('<^>')):
         align = fmt[0]
         width = fmt[1:]
-        if width.isdigit():
+        wenn width.isdigit():
             return int(width), align
-    elif fmt.isdigit():
+    sowenn fmt.isdigit():
         return int(fmt), '<'
     return None
 
 
 def _resolve_width(width, fmt, label, default):
-    if width:
-        if not isinstance(width, int):
+    wenn width:
+        wenn not isinstance(width, int):
             raise NotImplementedError
         return width
-    elif fmt:
+    sowenn fmt:
         parsed = _parse_fmt(fmt)
-        if parsed:
+        wenn parsed:
             width, _ = parsed
-            if width:
+            wenn width:
                 return width
 
-    if not default:
+    wenn not default:
         return WIDTH
-    elif hasattr(default, 'get'):
+    sowenn hasattr(default, 'get'):
         defaults = default
         default = defaults.get(None) or WIDTH
         return defaults.get(label) or default
-    else:
+    sonst:
         return default or WIDTH
 
 
@@ -419,7 +419,7 @@ def _build_table(columns, *, sep=' ', defaultwidth=None):
     fuer spec in columns:
         width = spec.resolve_width(defaultwidth)
         colfmt = spec.fmt
-        colfmt = f':{spec.fmt}' if spec.fmt else f':{width}'
+        colfmt = f':{spec.fmt}' wenn spec.fmt sonst f':{width}'
 
         header.append(f' {{:^{width}}} '.format(spec.label))
         div.append('-' * (width + 2))

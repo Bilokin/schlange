@@ -70,7 +70,7 @@ klasse ListedToplevel(Toplevel):
         Toplevel.destroy(self)
         # If this is Idle's last window then quit the mainloop
         # (Needed fuer clean exit on Windows 98)
-        if not registry.dict:
+        wenn not registry.dict:
             self.quit()
 
     def update_windowlist_registry(self, window):
@@ -82,7 +82,7 @@ klasse ListedToplevel(Toplevel):
 
     def wakeup(self):
         try:
-            if self.wm_state() == "iconic":
+            wenn self.wm_state() == "iconic":
                 self.wm_withdraw()
                 self.wm_deiconify()
             self.tkraise()
@@ -93,6 +93,6 @@ klasse ListedToplevel(Toplevel):
             pass
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     from unittest import main
     main('idlelib.idle_test.test_window', verbosity=2)

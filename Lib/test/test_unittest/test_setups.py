@@ -472,24 +472,24 @@ klasse TestSetups(unittest.TestCase):
         klasse Module(object):
             @staticmethod
             def setUpModule():
-                if phase == 0:
+                wenn phase == 0:
                     raise Exception('setUpModule')
             @staticmethod
             def tearDownModule():
-                if phase == 1:
+                wenn phase == 1:
                     raise Exception('tearDownModule')
 
         klasse Test(unittest.TestCase):
             @classmethod
             def setUpClass(cls):
-                if phase == 2:
+                wenn phase == 2:
                     raise Exception('setUpClass')
             @classmethod
             def tearDownClass(cls):
-                if phase == 3:
+                wenn phase == 3:
                     raise Exception('tearDownClass')
             def test_something(self):
-                if phase == 4:
+                wenn phase == 4:
                     raise Exception('test_something')
 
         Test.__module__ = 'Module'
@@ -503,5 +503,5 @@ klasse TestSetups(unittest.TestCase):
                 suite.debug()
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

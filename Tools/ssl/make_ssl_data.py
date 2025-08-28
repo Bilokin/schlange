@@ -99,7 +99,7 @@ def _file_search(fname, pat):
     with open(fname, encoding="utf-8") as f:
         fuer line in f:
             match = pat.search(line)
-            if match is not None:
+            wenn match is not None:
                 yield match
 
 
@@ -113,13 +113,13 @@ def parse_err_h(args):
     lib2errnum = {}
     fuer match in _file_search(args.err_h, pat):
         macroname, libname, num = match.groups()
-        if macroname in ['ERR_LIB_OFFSET', 'ERR_LIB_MASK']:
+        wenn macroname in ['ERR_LIB_OFFSET', 'ERR_LIB_MASK']:
             # ignore: "# define ERR_LIB_OFFSET                 23L"
             # ignore: "# define ERR_LIB_MASK                   0xFF"
             continue
         actual = int(num)
         expect = lib2errnum.setdefault(libname, actual)
-        if actual != expect:
+        wenn actual != expect:
             logger.warning("OpenSSL inconsistency fuer ERR_LIB_%s (%d != %d)",
                            libname, actual, expect)
     return lib2errnum
@@ -132,12 +132,12 @@ def parse_openssl_error_text(args):
     e.g., "ASN1_R_ADDING_OBJECT:171:adding object". The <MESSAGE> part
     is not stored as it will be recovered at runtime when needed.
     """
-    # ignore backslash line continuation (placed before <MESSAGE> if present)
+    # ignore backslash line continuation (placed before <MESSAGE> wenn present)
     pat = re.compile(r"^((\w+?)_R_(\w+)):(\d+):")
     seen = {}
     fuer match in _file_search(args.errtxt, pat):
         reason, libname, errname, num = match.groups()
-        if "_F_" in reason:  # ignore function codes
+        wenn "_F_" in reason:  # ignore function codes
             # FEAT(picnixz): in the future, we may want to also check
             # the consistency of the OpenSSL files with an external tool.
             # See https://github.com/python/cpython/issues/132745.
@@ -196,17 +196,17 @@ def get_openssl_git_commit(args):
 
 def main(args=None):
     args = parser.parse_args(args)
-    if not os.path.isdir(args.srcdir):
+    wenn not os.path.isdir(args.srcdir):
         error(f"OpenSSL directory not found: {args.srcdir}")
     args.err_h = os.path.join(args.srcdir, "include", "openssl", "err.h")
-    if not os.path.isfile(args.err_h):
+    wenn not os.path.isfile(args.err_h):
         # Fall back to infile fuer OpenSSL 3.0.0 and later.
         args.err_h += ".in"
     args.errcodes = os.path.join(args.srcdir, "crypto", "err", "openssl.ec")
-    if not os.path.isfile(args.errcodes):
+    wenn not os.path.isfile(args.errcodes):
         error(f"file {args.errcodes} not found in {args.srcdir}")
     args.errtxt = os.path.join(args.srcdir, "crypto", "err", "openssl.txt")
-    if not os.path.isfile(args.errtxt):
+    wenn not os.path.isfile(args.errtxt):
         error(f"file {args.errtxt} not found in {args.srcdir}")
 
     # [("ERR_LIB_X509", "X509", 11), ...]
@@ -230,14 +230,14 @@ def main(args=None):
     lines.append("")
     lines.extend(gen_error_codes(args))
 
-    if args.output is None:
+    wenn args.output is None:
         fuer line in lines:
             print(line)
-    else:
+    sonst:
         with open(args.output, 'w') as output:
             fuer line in lines:
                 print(line, file=output)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     main()

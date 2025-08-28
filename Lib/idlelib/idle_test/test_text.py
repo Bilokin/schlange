@@ -88,7 +88,7 @@ klasse TextTest:
         Equal(get('1.0', 'end'), '*helx\nlo*\nwor*ldx\n')
 
     def test_no_delete(self):
-        # if index1 == 'insert' or 'end' or >= end, there is no deletion
+        # wenn index1 == 'insert' or 'end' or >= end, there is no deletion
         delete = self.text.delete
         get = self.text.get
         Equal = self.assertEqual
@@ -232,5 +232,5 @@ klasse TkTextTest(TextTest, unittest.TestCase):
         self.text = self.Text(self.root)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main(verbosity=2, exit=False)

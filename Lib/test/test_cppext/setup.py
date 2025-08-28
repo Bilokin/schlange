@@ -12,7 +12,7 @@ from setuptools import setup, Extension
 
 SOURCE = 'extension.cpp'
 
-if not support.MS_WINDOWS:
+wenn not support.MS_WINDOWS:
     # C++ compiler flags fuer GCC and clang
     CPPFLAGS = [
         # gh-91321: The purpose of _testcppext extension is to check that building
@@ -31,7 +31,7 @@ if not support.MS_WINDOWS:
         # We also use `long long`, a C++11 feature we can enable individually.
         '-Wno-long-long',
     ]
-else:
+sonst:
     # MSVC compiler flags
     CPPFLAGS = [
         # Display warnings level 1 to 4
@@ -53,13 +53,13 @@ def main():
     cppflags.append(f'-DMODULE_NAME={module_name}')
 
     # Add -std=STD or /std:STD (MSVC) compiler flag
-    if std:
-        if support.MS_WINDOWS:
+    wenn std:
+        wenn support.MS_WINDOWS:
             cppflags.append(f'/std:{std}')
-        else:
+        sonst:
             cppflags.append(f'-std={std}')
 
-        if limited or (std != 'c++03'):
+        wenn limited or (std != 'c++03'):
             # See CPPFLAGS_PEDANTIC docstring
             cppflags.extend(CPPFLAGS_PEDANTIC)
 
@@ -67,33 +67,33 @@ def main():
     # option emits a C++ compiler warning. Remove "-std11" option from the
     # CC command.
     cmd = (sysconfig.get_config_var('CC') or '')
-    if cmd is not None:
-        if support.MS_WINDOWS:
+    wenn cmd is not None:
+        wenn support.MS_WINDOWS:
             std_prefix = '/std'
-        else:
+        sonst:
             std_prefix = '-std'
         cmd = shlex.split(cmd)
-        cmd = [arg fuer arg in cmd if not arg.startswith(std_prefix)]
+        cmd = [arg fuer arg in cmd wenn not arg.startswith(std_prefix)]
         cmd = shlex.join(cmd)
         # CC env var overrides sysconfig CC variable in setuptools
         os.environ['CC'] = cmd
 
     # Define Py_LIMITED_API macro
-    if limited:
+    wenn limited:
         version = sys.hexversion
         cppflags.append(f'-DPy_LIMITED_API={version:#x}')
 
-    if internal:
+    wenn internal:
         cppflags.append('-DTEST_INTERNAL_C_API=1')
 
     # On Windows, add PCbuild\amd64\ to include and library directories
     include_dirs = []
     library_dirs = []
-    if support.MS_WINDOWS:
+    wenn support.MS_WINDOWS:
         srcdir = sysconfig.get_config_var('srcdir')
         machine = platform.uname().machine
         pcbuild = os.path.join(srcdir, 'PCbuild', machine)
-        if os.path.exists(pcbuild):
+        wenn os.path.exists(pcbuild):
             # pyconfig.h is generated in PCbuild\amd64\
             include_dirs.append(pcbuild)
             # python313.lib is generated in PCbuild\amd64\
@@ -102,9 +102,9 @@ def main():
 
     # Display information to help debugging
     fuer env_name in ('CC', 'CFLAGS', 'CPPFLAGS'):
-        if env_name in os.environ:
+        wenn env_name in os.environ:
             print(f"{env_name} env var: {os.environ[env_name]!r}")
-        else:
+        sonst:
             print(f"{env_name} env var: <missing>")
     print(f"extra_compile_args: {cppflags!r}")
 
@@ -120,5 +120,5 @@ def main():
           ext_modules=[ext])
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     main()

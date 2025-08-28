@@ -136,7 +136,7 @@ klasse PkgutilTests(unittest.TestCase):
             list(pkgutil.iter_modules("invalid_path"))
 
     def test_unreadable_dir_on_syspath(self):
-        # issue7367 - walk_packages failed if unreadable dir on sys.path
+        # issue7367 - walk_packages failed wenn unreadable dir on sys.path
         package_name = "unreadable_package"
         d = os.path.join(self.dirname, package_name)
         # this does not appear to create an unreadable dir on Windows
@@ -182,7 +182,7 @@ klasse PkgutilTests(unittest.TestCase):
         self.assertEqual(actual, expected)
 
         fuer pkg in expected:
-            if pkg.endswith('mod'):
+            wenn pkg.endswith('mod'):
                 continue
             del sys.modules[pkg]
 
@@ -217,7 +217,7 @@ klasse PkgutilTests(unittest.TestCase):
         del sys.path[0]
 
         fuer pkg in expected:
-            if pkg.endswith('mod'):
+            wenn pkg.endswith('mod'):
                 continue
             del sys.modules[pkg]
 
@@ -306,7 +306,7 @@ klasse PkgutilTests(unittest.TestCase):
             importlib.invalidate_caches()
             mod = importlib.import_module(uw)
             success_cases += (uw, mod),
-            if len(uw) > 1:
+            wenn len(uw) > 1:
                 failure_cases += (uw[:-1], ImportError),
 
         # add an example with a Unicode digit at the start
@@ -626,12 +626,12 @@ klasse ImportlibMigrationTests(unittest.TestCase):
 
 
 def tearDownModule():
-    # this is necessary if test is run repeated (like when finding leaks)
+    # this is necessary wenn test is run repeated (like when finding leaks)
     import zipimport
     import importlib
     zipimport._zip_directory_cache.clear()
     importlib.invalidate_caches()
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

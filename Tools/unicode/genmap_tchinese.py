@@ -69,9 +69,9 @@ def make_hkscs_map(table):
     # multiple multibyte (i.e. Big-5) codes.
     fuer mbcode, cp_seq in table:
         cp, *_ = cp_seq
-        if len(cp_seq) == 1:
+        wenn len(cp_seq) == 1:
             single_cp_table.append((mbcode, cp))
-        else:
+        sonst:
             sequences.append((mbcode, cp_seq))
         beginnings.setdefault(cp, []).append(mbcode)
     # Decode table only cares about single code points (no sequences) currently
@@ -82,16 +82,16 @@ def make_hkscs_map(table):
     # Encode table needs to mark code points beginning a sequence as tuples.
     fuer cp, mbcodes in beginnings.items():
         plane = cp >> 16
-        if plane == 0:
+        wenn plane == 0:
             encode_map = encode_map_bmp
-        elif plane == 2:
+        sowenn plane == 2:
             encode_map = encode_map_notbmp
             is_bmp_map[bh2s(mbcodes[0])] = 1
-        else:
+        sonst:
             assert False, 'only plane 0 (BMP) and plane 2 (SIP) allowed'
-        if len(mbcodes) == 1:
+        wenn len(mbcodes) == 1:
             encode_value = mbcodes[0]
-        else:
+        sonst:
             encode_value = tuple(mbcodes)
         uni_b1, uni_b2 = split_bytes(cp & 0xffff)
         encode_map.setdefault(uni_b1, {})
@@ -123,7 +123,7 @@ def load_big5_map():
     fuer c1, m in list(big5decmap.items()):
         fuer c2, code in list(m.items()):
             big5encmap.setdefault(code >> 8, {})
-            if code & 0xff not in big5encmap[code >> 8]:
+            wenn code & 0xff not in big5encmap[code >> 8]:
                 big5encmap[code >> 8][code & 0xff] = c1 << 8 | c2
     # fix unicode->big5 priority fuer the above-mentioned duplicate characters
     big5encmap[0xFF][0x0F] = 0xA241
@@ -142,7 +142,7 @@ def load_cp950_map():
     fuer c1, m in list(cp950decmap.items()):
         fuer c2, code in list(m.items()):
             cp950encmap.setdefault(code >> 8, {})
-            if code & 0xff not in cp950encmap[code >> 8]:
+            wenn code & 0xff not in cp950encmap[code >> 8]:
                 cp950encmap[code >> 8][code & 0xff] = c1 << 8 | c2
     # fix unicode->big5 duplicated mapping priority
     cp950encmap[0x53][0x41] = 0xA451
@@ -159,12 +159,12 @@ def main_tw():
     # that are not in Big5:
     fuer c1, m in list(cp950encmap.items()):
         fuer c2, code in list(m.items()):
-            if (c1 in big5encmap and c2 in big5encmap[c1]
+            wenn (c1 in big5encmap and c2 in big5encmap[c1]
                     and big5encmap[c1][c2] == code):
                 del cp950encmap[c1][c2]
     fuer c1, m in list(cp950decmap.items()):
         fuer c2, code in list(m.items()):
-            if (c1 in big5decmap and c2 in big5decmap[c1]
+            wenn (c1 in big5decmap and c2 in big5decmap[c1]
                     and big5decmap[c1][c2] == code):
                 del cp950decmap[c1][c2]
 
@@ -234,6 +234,6 @@ def main_hkscs():
         writer.generate()
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     main_tw()
     main_hkscs()

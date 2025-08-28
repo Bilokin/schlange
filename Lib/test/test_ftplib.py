@@ -79,16 +79,16 @@ klasse DummyDTPHandler(asynchat.async_chat):
         # XXX: this method can be called many times in a row fuer a single
         # connection, including in clear-text (non-TLS) mode.
         # (behaviour witnessed with test_data_connection)
-        if not self.dtp_conn_closed:
+        wenn not self.dtp_conn_closed:
             self.baseclass.push('226 transfer complete')
             self.shutdown()
             self.dtp_conn_closed = True
 
     def push(self, what):
-        if self.baseclass.next_data is not None:
+        wenn self.baseclass.next_data is not None:
             what = self.baseclass.next_data
             self.baseclass.next_data = None
-        if not what:
+        wenn not what:
             return self.close_when_done()
         super(DummyDTPHandler, self).push(what.encode(self.encoding))
 
@@ -129,20 +129,20 @@ klasse DummyFTPHandler(asynchat.async_chat):
     def found_terminator(self):
         line = b''.join(self.in_buffer).decode(self.encoding)
         self.in_buffer = []
-        if self.next_response:
+        wenn self.next_response:
             self.push(self.next_response)
             self.next_response = ''
         cmd = line.split(' ')[0].lower()
         self.last_received_cmd = cmd
         space = line.find(' ')
-        if space != -1:
+        wenn space != -1:
             arg = line[space + 1:]
-        else:
+        sonst:
             arg = ""
-        if hasattr(self, 'cmd_' + cmd):
+        wenn hasattr(self, 'cmd_' + cmd):
             method = getattr(self, 'cmd_' + cmd)
             method(arg)
-        else:
+        sonst:
             self.push('550 command "%s" not understood.' %cmd)
 
     def handle_error(self):
@@ -244,9 +244,9 @@ klasse DummyFTPHandler(asynchat.async_chat):
 
     def cmd_retr(self, arg):
         self.push('125 retr ok')
-        if self.rest is not None:
+        wenn self.rest is not None:
             offset = int(self.rest)
-        else:
+        sonst:
             offset = 0
         self.dtp.push(self.next_retr_data[offset:])
         self.dtp.close_when_done()
@@ -327,7 +327,7 @@ klasse DummyFTPServer(asyncore.dispatcher, threading.Thread):
         default_error_handler()
 
 
-if ssl is not None:
+wenn ssl is not None:
 
     CERTFILE = os.path.join(os.path.dirname(__file__), "certdata", "keycert3.pem")
     CAFILE = os.path.join(os.path.dirname(__file__), "certdata", "pycacert.pem")
@@ -353,19 +353,19 @@ if ssl is not None:
             try:
                 self.socket.do_handshake()
             except ssl.SSLError as err:
-                if err.args[0] in (ssl.SSL_ERROR_WANT_READ,
+                wenn err.args[0] in (ssl.SSL_ERROR_WANT_READ,
                                    ssl.SSL_ERROR_WANT_WRITE):
                     return
-                elif err.args[0] == ssl.SSL_ERROR_EOF:
+                sowenn err.args[0] == ssl.SSL_ERROR_EOF:
                     return self.handle_close()
                 # TODO: SSLError does not expose alert information
-                elif "SSLV3_ALERT_BAD_CERTIFICATE" in err.args[1]:
+                sowenn "SSLV3_ALERT_BAD_CERTIFICATE" in err.args[1]:
                     return self.handle_close()
                 raise
             except OSError as err:
-                if err.args[0] == errno.ECONNABORTED:
+                wenn err.args[0] == errno.ECONNABORTED:
                     return self.handle_close()
-            else:
+            sonst:
                 self._ssl_accepting = False
 
         def _do_ssl_shutdown(self):
@@ -373,7 +373,7 @@ if ssl is not None:
             try:
                 self.socket = self.socket.unwrap()
             except ssl.SSLError as err:
-                if err.args[0] in (ssl.SSL_ERROR_WANT_READ,
+                wenn err.args[0] in (ssl.SSL_ERROR_WANT_READ,
                                    ssl.SSL_ERROR_WANT_WRITE):
                     return
             except OSError:
@@ -383,32 +383,32 @@ if ssl is not None:
                 # http://www.mail-archive.com/openssl-users@openssl.org/msg60710.html
                 pass
             self._ssl_closing = False
-            if getattr(self, '_ccc', False) is False:
+            wenn getattr(self, '_ccc', False) is False:
                 super(SSLConnection, self).close()
-            else:
+            sonst:
                 pass
 
         def handle_read_event(self):
-            if self._ssl_accepting:
+            wenn self._ssl_accepting:
                 self._do_ssl_handshake()
-            elif self._ssl_closing:
+            sowenn self._ssl_closing:
                 self._do_ssl_shutdown()
-            else:
+            sonst:
                 super(SSLConnection, self).handle_read_event()
 
         def handle_write_event(self):
-            if self._ssl_accepting:
+            wenn self._ssl_accepting:
                 self._do_ssl_handshake()
-            elif self._ssl_closing:
+            sowenn self._ssl_closing:
                 self._do_ssl_shutdown()
-            else:
+            sonst:
                 super(SSLConnection, self).handle_write_event()
 
         def send(self, data):
             try:
                 return super(SSLConnection, self).send(data)
             except ssl.SSLError as err:
-                if err.args[0] in (ssl.SSL_ERROR_EOF, ssl.SSL_ERROR_ZERO_RETURN,
+                wenn err.args[0] in (ssl.SSL_ERROR_EOF, ssl.SSL_ERROR_ZERO_RETURN,
                                    ssl.SSL_ERROR_WANT_READ,
                                    ssl.SSL_ERROR_WANT_WRITE):
                     return 0
@@ -418,10 +418,10 @@ if ssl is not None:
             try:
                 return super(SSLConnection, self).recv(buffer_size)
             except ssl.SSLError as err:
-                if err.args[0] in (ssl.SSL_ERROR_WANT_READ,
+                wenn err.args[0] in (ssl.SSL_ERROR_WANT_READ,
                                    ssl.SSL_ERROR_WANT_WRITE):
                     return b''
-                if err.args[0] in (ssl.SSL_ERROR_EOF, ssl.SSL_ERROR_ZERO_RETURN):
+                wenn err.args[0] in (ssl.SSL_ERROR_EOF, ssl.SSL_ERROR_ZERO_RETURN):
                     self.handle_close()
                     return b''
                 raise
@@ -430,10 +430,10 @@ if ssl is not None:
             default_error_handler()
 
         def shutdown(self):
-            if (isinstance(self.socket, ssl.SSLSocket) and
+            wenn (isinstance(self.socket, ssl.SSLSocket) and
                     self.socket._sslobj is not None):
                 self._do_ssl_shutdown()
-            else:
+            sonst:
                 self.close()
 
 
@@ -442,7 +442,7 @@ if ssl is not None:
 
         def __init__(self, conn, baseclass):
             DummyDTPHandler.__init__(self, conn, baseclass)
-            if self.baseclass.secure_data_channel:
+            wenn self.baseclass.secure_data_channel:
                 self.secure_connection()
 
 
@@ -476,13 +476,13 @@ if ssl is not None:
         def cmd_prot(self, line):
             """Setup un/secure data channel."""
             arg = line.upper()
-            if arg == 'C':
+            wenn arg == 'C':
                 self.push('200 Protection set to Clear')
                 self.secure_data_channel = False
-            elif arg == 'P':
+            sowenn arg == 'P':
                 self.push('200 Protection set to Private')
                 self.secure_data_channel = True
-            else:
+            sonst:
                 self.push("502 Unrecognized PROT type (use C or P).")
 
 
@@ -674,10 +674,10 @@ klasse TestFTPClass(TestCase):
             self.server.handler_instance.next_data = data
 
         def test_entry(line, type=None, perm=None, unique=None, name=None):
-            type = 'type' if type is None else type
-            perm = 'perm' if perm is None else perm
-            unique = 'unique' if unique is None else unique
-            name = 'name' if name is None else name
+            type = 'type' wenn type is None sonst type
+            perm = 'perm' wenn perm is None sonst perm
+            unique = 'unique' wenn unique is None sonst unique
+            name = 'name' wenn name is None sonst name
             set_data(line)
             _name, facts = next(self.client.mlsd())
             self.assertEqual(_name, name)
@@ -751,7 +751,7 @@ klasse TestFTPClass(TestCase):
         self.client.quit()
 
         def is_client_connected():
-            if self.client.sock is None:
+            wenn self.client.sock is None:
                 return False
             try:
                 self.client.sendcmd('noop')
@@ -784,7 +784,7 @@ klasse TestFTPClass(TestCase):
                 self.server.handler_instance.next_response = '550 error on quit'
         except ftplib.error_perm as err:
             self.assertEqual(str(err), '550 error on quit')
-        else:
+        sonst:
             self.fail('Exception not raised')
         # needed to give the threaded server some time to set the attribute
         # which otherwise would still be == 'noop'
@@ -801,7 +801,7 @@ klasse TestFTPClass(TestCase):
             self.assertEqual(self.client.sock.getsockname()[1], port)
             self.client.quit()
         except OSError as e:
-            if e.errno == errno.EADDRINUSE:
+            wenn e.errno == errno.EADDRINUSE:
                 self.skipTest("couldn't bind to port %d" % port)
             raise
 
@@ -812,7 +812,7 @@ klasse TestFTPClass(TestCase):
             with self.client.transfercmd('list') as sock:
                 self.assertEqual(sock.getsockname()[1], port)
         except OSError as e:
-            if e.errno == errno.EADDRINUSE:
+            wenn e.errno == errno.EADDRINUSE:
                 self.skipTest("couldn't bind to port %d" % port)
             raise
 
@@ -1078,7 +1078,7 @@ klasse TestTimeouts(TestCase):
             conn, addr = self.sock.accept()
         except TimeoutError:
             pass
-        else:
+        sonst:
             conn.sendall(b"1 Hola mundo\n")
             conn.shutdown(socket.SHUT_WR)
             # (2) Signal the caller that it is safe to close the socket.
@@ -1159,5 +1159,5 @@ def setUpModule():
     unittest.addModuleCleanup(threading_helper.threading_cleanup, *thread_info)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

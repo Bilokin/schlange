@@ -12,7 +12,7 @@ _chew_ordinaryre - non-special characters.
 """
 import re
 
-# Reason last statement is continued (or C_NONE if it's not).
+# Reason last statement is continued (or C_NONE wenn it's not).
 (C_NONE, C_BACKSLASH, C_STRING_FIRST_LINE,
  C_STRING_NEXT_LINES, C_BRACKET) = range(5)
 
@@ -22,7 +22,7 @@ _synchre = re.compile(r"""
     ^
     [ \t]*
     (?: while
-    |   else
+    |   sonst
     |   def
     |   return
     |   assert
@@ -73,7 +73,7 @@ _match_stringre = re.compile(r"""
 
 _itemre = re.compile(r"""
     [ \t]*
-    [^\s#\\]    # if we match, m.end()-1 is the interesting char
+    [^\s#\\]    # wenn we match, m.end()-1 is the interesting char
 """, re.VERBOSE).match
 
 # Match start of statements that should be followed by a dedent.
@@ -137,9 +137,9 @@ klasse Parser:
         """
         Return index of a good place to begin parsing, as close to the
         end of the string as possible.  This will be the start of some
-        popular stmt like "if" or "def".  Return None if none found:
-        the caller should pass more prior context then, if possible, or
-        if not (the entire program text up until the point of interest
+        popular stmt like "if" or "def".  Return None wenn none found:
+        the caller should pass more prior context then, wenn possible, or
+        wenn not (the entire program text up until the point of interest
         has already been tried) pass 0 to set_lo().
 
         This will be reliable iff given a reliable is_char_in_string()
@@ -154,15 +154,15 @@ klasse Parser:
         limit = len(code)
         fuer tries in range(5):
             i = code.rfind(":\n", 0, limit)
-            if i < 0:
+            wenn i < 0:
                 break
             i = code.rfind('\n', 0, i) + 1  # start of colon line (-1+1=0)
             m = _synchre(code, i, limit)
-            if m and not is_char_in_string(m.start()):
+            wenn m and not is_char_in_string(m.start()):
                 pos = m.start()
                 break
             limit = i
-        if pos is None:
+        wenn pos is None:
             # Nothing looks like a block-opener, or stuff does
             # but is_char_in_string keeps returning true; most likely
             # we're in or near a giant string, the colorizer hasn't
@@ -172,7 +172,7 @@ klasse Parser:
             # give it one last try from the start, but stop wasting
             # time here regardless of the outcome.
             m = _synchre(code)
-            if m and not is_char_in_string(m.start()):
+            wenn m and not is_char_in_string(m.start()):
                 pos = m.start()
             return pos
 
@@ -181,7 +181,7 @@ klasse Parser:
         i = pos + 1
         while m := _synchre(code, i):
             s, i = m.span()
-            if not is_char_in_string(s):
+            wenn not is_char_in_string(s):
                 pos = s
         return pos
 
@@ -191,7 +191,7 @@ klasse Parser:
         Intended to be called with the result of find_good_parse_start().
         """
         assert lo == 0 or self.code[lo-1] == '\n'
-        if lo > 0:
+        wenn lo > 0:
             self.code = self.code[lo:]
 
     def _study1(self):
@@ -201,7 +201,7 @@ klasse Parser:
         based) of the non-continuation lines.
         Creates self.{goodlines, continuation}.
         """
-        if self.study_level >= 1:
+        wenn self.study_level >= 1:
             return
         self.study_level = 1
 
@@ -232,30 +232,30 @@ klasse Parser:
             i = i+1
 
             # cases are checked in decreasing order of frequency
-            if ch == 'x':
+            wenn ch == 'x':
                 continue
 
-            if ch == '\n':
+            wenn ch == '\n':
                 lno = lno + 1
-                if level == 0:
+                wenn level == 0:
                     push_good(lno)
-                    # else we're in an unclosed bracket structure
+                    # sonst we're in an unclosed bracket structure
                 continue
 
-            if ch == '(':
+            wenn ch == '(':
                 level = level + 1
                 continue
 
-            if ch == ')':
-                if level:
+            wenn ch == ')':
+                wenn level:
                     level = level - 1
-                    # else the program is invalid, but we can't complain
+                    # sonst the program is invalid, but we can't complain
                 continue
 
-            if ch == '"' or ch == "'":
+            wenn ch == '"' or ch == "'":
                 # consume the string
                 quote = ch
-                if code[i-1:i+2] == quote * 3:
+                wenn code[i-1:i+2] == quote * 3:
                     quote = quote * 3
                 firstlno = lno
                 w = len(quote) - 1
@@ -264,43 +264,43 @@ klasse Parser:
                     ch = code[i]
                     i = i+1
 
-                    if ch == 'x':
+                    wenn ch == 'x':
                         continue
 
-                    if code[i-1:i+w] == quote:
+                    wenn code[i-1:i+w] == quote:
                         i = i+w
                         break
 
-                    if ch == '\n':
+                    wenn ch == '\n':
                         lno = lno + 1
-                        if w == 0:
+                        wenn w == 0:
                             # unterminated single-quoted string
-                            if level == 0:
+                            wenn level == 0:
                                 push_good(lno)
                             break
                         continue
 
-                    if ch == '\\':
+                    wenn ch == '\\':
                         assert i < n
-                        if code[i] == '\n':
+                        wenn code[i] == '\n':
                             lno = lno + 1
                         i = i+1
                         continue
 
-                    # else comment char or paren inside string
+                    # sonst comment char or paren inside string
 
-                else:
+                sonst:
                     # didn't break out of the loop, so we're still
                     # inside a string
-                    if (lno - 1) == firstlno:
+                    wenn (lno - 1) == firstlno:
                         # before the previous \n in code, we were in the first
                         # line of the string
                         continuation = C_STRING_FIRST_LINE
-                    else:
+                    sonst:
                         continuation = C_STRING_NEXT_LINES
                 continue    # with outer loop
 
-            if ch == '#':
+            wenn ch == '#':
                 # consume the comment
                 i = code.find('\n', i)
                 assert i >= 0
@@ -308,16 +308,16 @@ klasse Parser:
 
             assert ch == '\\'
             assert i < n
-            if code[i] == '\n':
+            wenn code[i] == '\n':
                 lno = lno + 1
-                if i+1 == n:
+                wenn i+1 == n:
                     continuation = C_BACKSLASH
             i = i+1
 
         # The last stmt may be continued fuer all 3 reasons.
         # String continuation takes precedence over bracket
         # continuation, which beats backslash continuation.
-        if (continuation != C_STRING_FIRST_LINE
+        wenn (continuation != C_STRING_FIRST_LINE
             and continuation != C_STRING_NEXT_LINES and level > 0):
             continuation = C_BRACKET
         self.continuation = continuation
@@ -325,7 +325,7 @@ klasse Parser:
         # Push the final line number as a sentinel value, regardless of
         # whether it's continued.
         assert (continuation == C_NONE) == (goodlines[-1] == lno)
-        if goodlines[-1] != lno:
+        wenn goodlines[-1] != lno:
             push_good(lno)
 
     def get_continuation_type(self):
@@ -349,9 +349,9 @@ klasse Parser:
             self.lastch
                 last interesting character before optional trailing comment
             self.lastopenbracketpos
-                if continuation is C_BRACKET, index of last open bracket
+                wenn continuation is C_BRACKET, index of last open bracket
         """
-        if self.study_level >= 2:
+        wenn self.study_level >= 2:
             return
         self._study1()
         self.study_level = 2
@@ -366,15 +366,15 @@ klasse Parser:
             # Move p back to the stmt at line number goodlines[i-1].
             q = p
             fuer nothing in range(goodlines[i-1], goodlines[i]):
-                # tricky: sets p to 0 if no preceding newline
+                # tricky: sets p to 0 wenn no preceding newline
                 p = code.rfind('\n', 0, p-1) + 1
             # The stmt code[p:q] isn't a continuation, but may be blank
             # or a non-indenting comment line.
-            if  _junkre(code, p):
+            wenn  _junkre(code, p):
                 i = i-1
-            else:
+            sonst:
                 break
-        if i == 0:
+        wenn i == 0:
             # nothing but junk!
             assert p == 0
             q = p
@@ -389,37 +389,37 @@ klasse Parser:
         while p < q:
             # suck up all except ()[]{}'"#\\
             m = _chew_ordinaryre(code, p, q)
-            if m:
+            wenn m:
                 # we skipped at least one boring char
                 newp = m.end()
                 # back up over totally boring whitespace
                 i = newp - 1    # index of last boring char
                 while i >= p and code[i] in " \t\n":
                     i = i-1
-                if i >= p:
+                wenn i >= p:
                     lastch = code[i]
                 p = newp
-                if p >= q:
+                wenn p >= q:
                     break
 
             ch = code[p]
 
-            if ch in "([{":
+            wenn ch in "([{":
                 push_stack(p)
                 bracketing.append((p, len(stack)))
                 lastch = ch
                 p = p+1
                 continue
 
-            if ch in ")]}":
-                if stack:
+            wenn ch in ")]}":
+                wenn stack:
                     del stack[-1]
                 lastch = ch
                 p = p+1
                 bracketing.append((p, len(stack)))
                 continue
 
-            if ch == '"' or ch == "'":
+            wenn ch == '"' or ch == "'":
                 # consume string
                 # Note that study1 did this with a Python loop, but
                 # we use a regexp here; the reason is speed in both
@@ -433,7 +433,7 @@ klasse Parser:
                 bracketing.append((p, len(stack)))
                 continue
 
-            if ch == '#':
+            wenn ch == '#':
                 # consume comment and trailing newline
                 bracketing.append((p, len(stack)+1))
                 p = code.find('\n', p, q) + 1
@@ -444,7 +444,7 @@ klasse Parser:
             assert ch == '\\'
             p = p+1     # beyond backslash
             assert p < q
-            if code[p] != '\n':
+            wenn code[p] != '\n':
                 # the program is invalid, but can't complain
                 lastch = ch + code[p]
             p = p+1     # beyond escaped char
@@ -452,7 +452,7 @@ klasse Parser:
         # end while p < q:
 
         self.lastch = lastch
-        self.lastopenbracketpos = stack[-1] if stack else None
+        self.lastopenbracketpos = stack[-1] wenn stack sonst None
         self.stmt_bracketing = tuple(bracketing)
 
     def compute_bracket_indent(self):
@@ -470,14 +470,14 @@ klasse Parser:
         # find first list item; set i to start of its line
         while j < n:
             m = _itemre(code, j)
-            if m:
+            wenn m:
                 j = m.end() - 1     # index of first interesting char
                 extra = 0
                 break
-            else:
+            sonst:
                 # this line is junk; advance to next line
                 i = j = code.find('\n', j) + 1
-        else:
+        sonst:
             # nothing interesting follows the bracket;
             # reproduce the bracket line's indentation + a level
             j = i = origi
@@ -516,34 +516,34 @@ klasse Parser:
         found = level = 0
         while i < endpos:
             ch = code[i]
-            if ch in "([{":
+            wenn ch in "([{":
                 level = level + 1
                 i = i+1
-            elif ch in ")]}":
-                if level:
+            sowenn ch in ")]}":
+                wenn level:
                     level = level - 1
                 i = i+1
-            elif ch == '"' or ch == "'":
+            sowenn ch == '"' or ch == "'":
                 i = _match_stringre(code, i, endpos).end()
-            elif ch == '#':
+            sowenn ch == '#':
                 # This line is unreachable because the # makes a comment of
                 # everything after it.
                 break
-            elif level == 0 and ch == '=' and \
+            sowenn level == 0 and ch == '=' and \
                    (i == 0 or code[i-1] not in "=<>!") and \
                    code[i+1] != '=':
                 found = 1
                 break
-            else:
+            sonst:
                 i = i+1
 
-        if found:
+        wenn found:
             # found a legit =, but it may be the last interesting
             # thing on the line
             i = i+1     # move beyond the =
             found = re.match(r"\s*\\", code[i:endpos]) is None
 
-        if not found:
+        wenn not found:
             # oh well ... settle fuer moving beyond the first chunk
             # of non-whitespace chars
             i = startpos
@@ -566,12 +566,12 @@ klasse Parser:
         return code[i:j]
 
     def is_block_opener(self):
-        "Return True if the last interesting statement opens a block."
+        "Return True wenn the last interesting statement opens a block."
         self._study2()
         return self.lastch == ':'
 
     def is_block_closer(self):
-        "Return True if the last interesting statement closes a block."
+        "Return True wenn the last interesting statement closes a block."
         self._study2()
         return _closere(self.code, self.stmt_start) is not None
 
@@ -584,6 +584,6 @@ klasse Parser:
         return self.stmt_bracketing
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     from unittest import main
     main('idlelib.idle_test.test_pyparse', verbosity=2)

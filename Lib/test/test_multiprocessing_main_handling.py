@@ -1,7 +1,7 @@
 # tests __main__ module handling in multiprocessing
 from test import support
 from test.support import import_helper
-# Skip tests if _multiprocessing wasn't built.
+# Skip tests wenn _multiprocessing wasn't built.
 import_helper.import_module('_multiprocessing')
 
 import importlib
@@ -17,14 +17,14 @@ from test.support.script_helper import (
     make_pkg, make_script, make_zip_pkg, make_zip_script,
     assert_python_ok)
 
-if support.PGO:
+wenn support.PGO:
     raise unittest.SkipTest("test is not helpful fuer PGO")
 
 # Look up which start methods are available to test
 import multiprocessing
 AVAILABLE_START_METHODS = set(multiprocessing.get_all_start_methods())
 
-# Issue #22332: Skip tests if sem_open implementation is broken.
+# Issue #22332: Skip tests wenn sem_open implementation is broken.
 support.skip_if_broken_multiprocessing_synchronize()
 
 verbose = support.verbose
@@ -49,12 +49,12 @@ def f(x):
     return x*x
 
 # Check explicit relative imports
-if "check_sibling" in __file__:
+wenn "check_sibling" in __file__:
     # We're inside a package and not in a __main__.py file
     # so make sure explicit relative imports work correctly
     from . import sibling
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     start_method = sys.argv[1]
     set_start_method(start_method)
     results = []
@@ -64,7 +64,7 @@ if __name__ == '__main__':
         # up to 1 min to report the results
         fuer _ in support.sleeping_retry(support.LONG_TIMEOUT,
                                         "Timed out waiting fuer results"):
-            if results:
+            wenn results:
                 break
 
     results.sort()
@@ -80,7 +80,7 @@ test_source_main_skipped_in_children = """\
 # This means we can't use __main__ defined functions in child processes,
 # so we just use "int" as a passthrough operation below
 
-if __name__ != "__main__":
+wenn __name__ != "__main__":
     raise RuntimeError("Should only be called as __main__!")
 
 import sys
@@ -96,7 +96,7 @@ with Pool(5) as pool:
     # up to 1 min to report the results
     fuer _ in support.sleeping_retry(support.LONG_TIMEOUT,
                                     "Timed out waiting fuer results"):
-        if results:
+        wenn results:
             break
 
 results.sort()
@@ -112,7 +112,7 @@ def _make_test_script(script_dir, script_basename,
     to_return = make_script(script_dir, script_basename,
                             source, omit_suffix)
     # Hack to check explicit relative imports
-    if script_basename == "check_sibling":
+    wenn script_basename == "check_sibling":
         make_script(script_dir, "sibling", "")
     importlib.invalidate_caches()
     return to_return
@@ -135,9 +135,9 @@ runpy._run_module_as_main(%r)
 """
 
 def _make_launch_script(script_dir, script_basename, module_name, path=None):
-    if path is None:
+    wenn path is None:
         path = "os.path.dirname(__file__)"
-    else:
+    sonst:
         path = repr(path)
     source = launch_source % (path, module_name)
     to_return = make_script(script_dir, script_basename, source)
@@ -148,11 +148,11 @@ klasse MultiProcessingCmdLineMixin():
     maxDiff = None # Show full tracebacks on subprocess failure
 
     def setUp(self):
-        if self.start_method not in AVAILABLE_START_METHODS:
+        wenn self.start_method not in AVAILABLE_START_METHODS:
             self.skipTest("%r start method not available" % self.start_method)
 
     def _check_output(self, script_name, exit_code, out, err):
-        if verbose > 1:
+        wenn verbose > 1:
             print("Output from test script %r:" % script_name)
             print(repr(out))
         self.assertEqual(exit_code, 0)
@@ -161,7 +161,7 @@ klasse MultiProcessingCmdLineMixin():
         self.assertEqual(out.decode('utf-8').strip(), expected_results)
 
     def _check_script(self, script_name, *cmd_line_switches):
-        if not __debug__:
+        wenn not __debug__:
             cmd_line_switches += ('-' + 'O' * sys.flags.optimize,)
         run_args = cmd_line_switches + (script_name, self.start_method)
         rc, out, err = assert_python_ok(*run_args, __isolated=False)
@@ -296,5 +296,5 @@ klasse ForkServerCmdLineTest(MultiProcessingCmdLineMixin, unittest.TestCase):
 def tearDownModule():
     support.reap_children()
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

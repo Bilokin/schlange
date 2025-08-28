@@ -26,9 +26,9 @@ klasse LabeledScaleTest(AbstractTkTest, unittest.TestCase):
         name = myvar._name
         x = ttk.LabeledScale(self.root, variable=myvar)
         x.destroy()
-        if self.wantobjects:
+        wenn self.wantobjects:
             self.assertEqual(x.tk.globalgetvar(name), myvar.get())
-        else:
+        sonst:
             self.assertEqual(float(x.tk.globalgetvar(name)), myvar.get())
         del myvar
         gc_collect()  # For PyPy or other GCs.
@@ -45,9 +45,9 @@ klasse LabeledScaleTest(AbstractTkTest, unittest.TestCase):
         # value which causes the tracing callback to be called and then
         # it tries calling instance attributes not yet defined.
         ttk.LabeledScale(self.root, variable=myvar)
-        if hasattr(sys, 'last_exc'):
+        wenn hasattr(sys, 'last_exc'):
             self.assertNotEqual(type(sys.last_exc), tkinter.TclError)
-        elif hasattr(sys, 'last_type'):
+        sowenn hasattr(sys, 'last_type'):
             self.assertNotEqual(sys.last_type, tkinter.TclError)
 
     def test_initialization(self):
@@ -120,7 +120,7 @@ klasse LabeledScaleTest(AbstractTkTest, unittest.TestCase):
         self.assertNotEqual(prev_xcoord, curr_xcoord)
         # the label widget should have been repositioned too
         linfo_2 = lscale.label.place_info()
-        self.assertEqual(lscale.label['text'], 0 if self.wantobjects else '0')
+        self.assertEqual(lscale.label['text'], 0 wenn self.wantobjects sonst '0')
         self.assertEqual(curr_xcoord, int(linfo_2['x']))
         # change the range back
         lscale.scale.configure(from_=0, to=10)
@@ -143,16 +143,16 @@ klasse LabeledScaleTest(AbstractTkTest, unittest.TestCase):
         x.update()
         self.assertEqual(x.value, newval)
         self.assertEqual(x.label['text'],
-                         newval if self.wantobjects else str(newval))
+                         newval wenn self.wantobjects sonst str(newval))
         self.assertEqual(float(x.scale.get()), newval)
         self.assertGreater(x.scale.coords()[0], curr_xcoord)
         self.assertEqual(x.scale.coords()[0],
             int(x.label.place_info()['x']))
 
         # value outside range
-        if self.wantobjects:
+        wenn self.wantobjects:
             conv = lambda x: x
-        else:
+        sonst:
             conv = int
         x.value = conv(x.scale['to']) + 1 # no changes shouldn't happen
         x.update()
@@ -236,19 +236,19 @@ klasse OptionMenuTest(AbstractTkTest, unittest.TestCase):
         fuer i in range(len(items)):
             value = optmenu['menu'].entrycget(i, 'value')
             self.assertEqual(value, items[i])
-            if value == default:
+            wenn value == default:
                 found_default = True
         self.assertTrue(found_default)
         optmenu.destroy()
 
-        # default shouldn't be in menu if it is not part of values
+        # default shouldn't be in menu wenn it is not part of values
         default = 'd'
         optmenu = ttk.OptionMenu(self.root, self.textvar, default, *items)
         curr = None
         i = 0
         while True:
             last, curr = curr, optmenu['menu'].entryconfigure(i, 'value')
-            if last == curr:
+            wenn last == curr:
                 # no more menu entries
                 break
             self.assertNotEqual(curr, default)
@@ -275,7 +275,7 @@ klasse OptionMenuTest(AbstractTkTest, unittest.TestCase):
         optmenu = ttk.OptionMenu(self.root, self.textvar, 'a', command=cb_test,
             *items)
         optmenu['menu'].invoke(1)
-        if not success:
+        wenn not success:
             self.fail("Menu callback not invoked")
 
         optmenu.destroy()
@@ -332,5 +332,5 @@ klasse DefaultRootTest(AbstractDefaultRootTest, unittest.TestCase):
         self._test_widget(ttk.LabeledScale)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

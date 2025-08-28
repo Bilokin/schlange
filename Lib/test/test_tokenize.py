@@ -29,10 +29,10 @@ def stringify_tokens_from_source(token_generator, source_string):
     missing_trailing_nl = source_string[-1] not in '\r\n'
 
     fuer type, token, start, end, line in token_generator:
-        if type == tokenize.ENDMARKER:
+        wenn type == tokenize.ENDMARKER:
             break
-        # Ignore the new line on the last line if the input lacks one
-        if missing_trailing_nl and type == tokenize.NEWLINE and end[0] == num_lines:
+        # Ignore the new line on the last line wenn the input lacks one
+        wenn missing_trailing_nl and type == tokenize.NEWLINE and end[0] == num_lines:
             continue
         type = tokenize.tok_name[type]
         result.append(f"    {type:10} {token!r:13} {start} {end}")
@@ -279,11 +279,11 @@ def k(x):
         def number_token(s):
             f = BytesIO(s.encode('utf-8'))
             fuer toktype, token, start, end, line in tokenize.tokenize(f.readline):
-                if toktype == tokenize.NUMBER:
+                wenn toktype == tokenize.NUMBER:
                     return token
             return 'invalid token'
         fuer lit in VALID_UNDERSCORE_LITERALS:
-            if '(' in lit:
+            wenn '(' in lit:
                 # this won't work with compound complex inputs
                 continue
             self.assertEqual(number_token(lit), lit)
@@ -291,7 +291,7 @@ def k(x):
         # See gh-105549 fuer context
         extra_valid_cases = {"0_7", "09_99"}
         fuer lit in INVALID_UNDERSCORE_LITERALS:
-            if lit in extra_valid_cases:
+            wenn lit in extra_valid_cases:
                 continue
             try:
                 number_token(lit)
@@ -1020,7 +1020,7 @@ f'''__{
 async def foo():
   def foo(await):
     await = 1
-  if 1:
+  wenn 1:
     await
 async += 1
 ''', """\
@@ -1229,14 +1229,14 @@ def decistmt(s):
     result = []
     g = tokenize.tokenize(BytesIO(s.encode('utf-8')).readline)   # tokenize the string
     fuer toknum, tokval, _, _, _  in g:
-        if toknum == tokenize.NUMBER and '.' in tokval:  # replace NUMBER tokens
+        wenn toknum == tokenize.NUMBER and '.' in tokval:  # replace NUMBER tokens
             result.extend([
                 (tokenize.NAME, 'Decimal'),
                 (tokenize.OP, '('),
                 (tokenize.STRING, repr(tokval)),
                 (tokenize.OP, ')')
             ])
-        else:
+        sonst:
             result.append((toknum, tokval))
     return tokenize.untokenize(result).decode('utf-8').strip()
 
@@ -1286,7 +1286,7 @@ klasse TestTokenizerAdheresToPep0263(TestCase):
 
     def test_latin1_coding_cookie_and_utf8_bom(self):
         """
-        As per PEP 0263, if a file starts with a utf-8 BOM signature, the only
+        As per PEP 0263, wenn a file starts with a utf-8 BOM signature, the only
         allowed encoding fuer the comment is 'utf-8'.  The text file used in
         this test starts with a BOM signature, but specifies latin1 as the
         coding, so verify that a SyntaxError is raised, which matches the
@@ -1316,10 +1316,10 @@ klasse Test_Tokenize(TestCase):
         first = False
         def readline():
             nonlocal first
-            if not first:
+            wenn not first:
                 first = True
                 yield line
-            else:
+            sonst:
                 yield b''
 
         # skip the initial encoding token and the end tokens
@@ -1337,7 +1337,7 @@ klasse TestDetectEncoding(TestCase):
         index = 0
         def readline():
             nonlocal index
-            if index == len(lines):
+            wenn index == len(lines):
                 raise StopIteration
             line = lines[index]
             index += 1
@@ -1477,7 +1477,7 @@ klasse TestDetectEncoding(TestCase):
                 self.assertEqual(found, "iso-8859-1")
 
     def test_syntaxerror_latin1(self):
-        # Issue 14629: need to raise TokenError if the first
+        # Issue 14629: need to raise TokenError wenn the first
         # line(s) have non-UTF-8 characters
         lines = (
             b'print("\xdf")', # Latin-1: LATIN SMALL LETTER SHARP S
@@ -1563,7 +1563,7 @@ klasse TestDetectEncoding(TestCase):
                 self._index = 0
 
             def readline(self):
-                if self._index == len(lines):
+                wenn self._index == len(lines):
                     raise StopIteration
                 line = lines[self._index]
                 self._index += 1
@@ -1604,7 +1604,7 @@ klasse TestTokenize(TestCase):
                     next_line = readline()
                 except StopIteration:
                     return out
-                if next_line:
+                wenn next_line:
                     out.append(next_line)
                     continue
                 return out
@@ -1613,7 +1613,7 @@ klasse TestTokenize(TestCase):
         def mock_readline():
             nonlocal counter
             counter += 1
-            if counter == 5:
+            wenn counter == 5:
                 return b''
             return str(counter).encode()
 
@@ -1774,7 +1774,7 @@ klasse TestTokenize(TestCase):
 klasse UntokenizeTest(TestCase):
 
     def test_bad_input_order(self):
-        # raise if previous row
+        # raise wenn previous row
         u = tokenize.Untokenizer()
         u.prev_row = 2
         u.prev_col = 2
@@ -1782,7 +1782,7 @@ klasse UntokenizeTest(TestCase):
             u.add_whitespace((1,3))
         self.assertEqual(cm.exception.args[0],
                 'start (1,3) precedes previous end (2,2)')
-        # raise if previous column in row
+        # raise wenn previous column in row
         self.assertRaises(ValueError, u.add_whitespace, (2,1))
 
     def test_backslash_continuation(self):
@@ -1813,7 +1813,7 @@ klasse UntokenizeTest(TestCase):
 
 
 def contains_ambiguous_backslash(source):
-    """Return `True` if the source contains a backslash on a
+    """Return `True` wenn the source contains a backslash on a
     line by itself. For example:
 
     a = (1
@@ -1836,7 +1836,7 @@ klasse TestRoundtrip(TestCase):
         The source code in f is tokenized to both 5- and 2-tuples.
         Both sequences are converted back to source code via
         tokenize.untokenize(), and the latter tokenized again to 2-tuples.
-        The test fails if the 3 pair tokenizations do not match.
+        The test fails wenn the 3 pair tokenizations do not match.
 
         If the source code can be untokenized unambiguously, the
         untokenized code must match the original code exactly.
@@ -1846,9 +1846,9 @@ klasse TestRoundtrip(TestCase):
         following spaces.  A proper test should test this.
         """
         # Get source code and original tokenizations
-        if isinstance(f, str):
+        wenn isinstance(f, str):
             code = f.encode('utf-8')
-        else:
+        sonst:
             code = f.read()
         readline = iter(code.splitlines(keepends=True)).__next__
         tokens5 = list(tokenize.tokenize(readline))
@@ -1864,7 +1864,7 @@ klasse TestRoundtrip(TestCase):
         tokens2_from5 = [tok[:2] fuer tok in tokenize.tokenize(readline5)]
         self.assertEqual(tokens2_from5, tokens2)
 
-        if not contains_ambiguous_backslash(code):
+        wenn not contains_ambiguous_backslash(code):
             # The BOM does not produce a token so there is no way to preserve it.
             code_without_bom = code.removeprefix(b'\xef\xbb\xbf')
             readline = iter(code_without_bom.splitlines(keepends=True)).__next__
@@ -1872,13 +1872,13 @@ klasse TestRoundtrip(TestCase):
             self.assertEqual(code_without_bom, untokenized_code)
 
     def check_line_extraction(self, f):
-        if isinstance(f, str):
+        wenn isinstance(f, str):
             code = f.encode('utf-8')
-        else:
+        sonst:
             code = f.read()
         readline = iter(code.splitlines(keepends=True)).__next__
         fuer tok in tokenize.tokenize(readline):
-            if tok.type in  {tokenize.ENCODING, tokenize.ENDMARKER}:
+            wenn tok.type in  {tokenize.ENCODING, tokenize.ENDMARKER}:
                 continue
             self.assertEqual(tok.string, tok.line[tok.start[1]: tok.end[1]])
 
@@ -1960,17 +1960,17 @@ klasse TestRoundtrip(TestCase):
         self.check_roundtrip(r"f'\\\\{{foo}}'")
         cases = [
     """
-if 1:
+wenn 1:
     "foo"
 "bar"
 """,
     """
-if 1:
+wenn 1:
     ("foo"
      "bar")
 """,
     """
-if 1:
+wenn 1:
     "foo"
     "bar"
 """ ]
@@ -2016,11 +2016,11 @@ if 1:
         tempdir = os.path.dirname(__file__) or os.curdir
         testfiles = glob.glob(os.path.join(glob.escape(tempdir), "test*.py"))
 
-        if not support.is_resource_enabled("cpu"):
+        wenn not support.is_resource_enabled("cpu"):
             testfiles = random.sample(testfiles, 10)
 
         fuer testfile in testfiles:
-            if support.verbose >= 2:
+            wenn support.verbose >= 2:
                 print('tokenize', testfile)
             with open(testfile, 'rb') as f:
                 with self.subTest(file=testfile):
@@ -2029,7 +2029,7 @@ if 1:
 
 
     def roundtrip(self, code):
-        if isinstance(code, str):
+        wenn isinstance(code, str):
             code = code.encode('utf-8')
         return tokenize.untokenize(tokenize.tokenize(BytesIO(code).readline)).decode('utf-8')
 
@@ -2826,7 +2826,7 @@ f'''__{
 async def foo():
   def foo(await):
     await = 1
-  if 1:
+  wenn 1:
     await
 async += 1
 ''', """\
@@ -3113,7 +3113,7 @@ async def f():
         self.assertEqual(get_tokens(code), get_tokens(code_no_cont))
 
         code = dedent("""
-            if x:
+            wenn x:
                 y = 1
                 \\
                         \\
@@ -3140,7 +3140,7 @@ async def f():
         """)
 
         code_no_cont = dedent("""
-            if x:
+            wenn x:
                 y = 1
                 foo = 1
         """)
@@ -3150,7 +3150,7 @@ async def f():
 
 klasse CTokenizerBufferTests(unittest.TestCase):
     def test_newline_at_the_end_of_buffer(self):
-        # See issue 99581: Make sure that if we need to add a new line at the
+        # See issue 99581: Make sure that wenn we need to add a new line at the
         # end of the buffer, we have enough space in the buffer, specially when
         # the current line is as long as the buffer space available.
         test_script = f"""\
@@ -3263,7 +3263,7 @@ klasse StringPrefixTest(unittest.TestCase):
 
         # This logic assumes that all combinations of valid prefixes only use
         # the characters that are valid single character prefixes.  That seems
-        # like a valid assumption, but if it ever changes this will need
+        # like a valid assumption, but wenn it ever changes this will need
         # adjusting.
         valid_prefixes = set()
         fuer length in itertools.count():
@@ -3275,7 +3275,7 @@ klasse StringPrefixTest(unittest.TestCase):
                 fuer t in itertools.permutations(prefix):
                     fuer u in itertools.product(*[(c, c.upper()) fuer c in t]):
                         p = "".join(u)
-                        if p == "not":
+                        wenn p == "not":
                             # 'not' can never be a string prefix,
                             # because it's a valid expression: not ""
                             continue
@@ -3289,7 +3289,7 @@ klasse StringPrefixTest(unittest.TestCase):
                             num_at_this_length += 1
                         except SyntaxError:
                             pass
-            if num_at_this_length == 0:
+            wenn num_at_this_length == 0:
                 return valid_prefixes
 
 
@@ -3299,12 +3299,12 @@ klasse StringPrefixTest(unittest.TestCase):
         # thing is to split apart tokenize.StringPrefix.
 
         # Make sure StringPrefix begins and ends in parens.  We're
-        # assuming it's of the form "(a|b|ab)", if a, b, and cd are
+        # assuming it's of the form "(a|b|ab)", wenn a, b, and cd are
         # valid string prefixes.
         self.assertEqual(tokenize.StringPrefix[0], '(')
         self.assertEqual(tokenize.StringPrefix[-1], ')')
 
-        # Then split apart everything else by '|'.
+        # Then split apart everything sonst by '|'.
         defined_prefixes = set(tokenize.StringPrefix[1:-1].split('|'))
 
         # Now compute the actual allowed string prefixes and compare
@@ -3312,5 +3312,5 @@ klasse StringPrefixTest(unittest.TestCase):
         self.assertEqual(defined_prefixes, self.determine_valid_prefixes())
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

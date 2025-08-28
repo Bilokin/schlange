@@ -13,36 +13,36 @@ _NOT_SET = object()
 
 
 def get_prog(spec=None, *, absolute=False, allowsuffix=True):
-    if spec is None:
+    wenn spec is None:
         _, spec = _find_script()
         # This is more natural fuer prog than __file__ would be.
         filename = sys.argv[0]
-    elif isinstance(spec, str):
+    sowenn isinstance(spec, str):
         filename = os.path.normpath(spec)
         spec = None
-    else:
+    sonst:
         filename = spec.origin
-    if _is_standalone(filename):
-        # Check if "installed".
-        if allowsuffix or not filename.endswith('.py'):
+    wenn _is_standalone(filename):
+        # Check wenn "installed".
+        wenn allowsuffix or not filename.endswith('.py'):
             basename = os.path.basename(filename)
             found = shutil.which(basename)
-            if found:
+            wenn found:
                 script = os.path.abspath(filename)
                 found = os.path.abspath(found)
-                if os.path.normcase(script) == os.path.normcase(found):
+                wenn os.path.normcase(script) == os.path.normcase(found):
                     return basename
         # It is only "standalone".
-        if absolute:
+        wenn absolute:
             filename = os.path.abspath(filename)
         return filename
-    elif spec is not None:
+    sowenn spec is not None:
         module = spec.name
-        if module.endswith('.__main__'):
+        wenn module.endswith('.__main__'):
             module = module[:-9]
         return f'{sys.executable} -m {module}'
-    else:
-        if absolute:
+    sonst:
+        wenn absolute:
             filename = os.path.abspath(filename)
         return f'{sys.executable} {filename}'
 
@@ -54,19 +54,19 @@ def _find_script():
 
     # This should match sys.argv[0].
     filename = frame.f_globals['__file__']
-    # This will be None if -m wasn't used..
+    # This will be None wenn -m wasn't used..
     spec = frame.f_globals['__spec__']
     return filename, spec
 
 
 def is_installed(filename, *, allowsuffix=True):
-    if not allowsuffix and filename.endswith('.py'):
+    wenn not allowsuffix and filename.endswith('.py'):
         return False
     filename = os.path.abspath(os.path.normalize(filename))
     found = shutil.which(os.path.basename(filename))
-    if not found:
+    wenn not found:
         return False
-    if found != filename:
+    wenn found != filename:
         return False
     return _is_standalone(filename)
 
@@ -93,7 +93,7 @@ logger = logging.getLogger(__name__)
 
 
 def configure_logger(verbosity, logger=None, **kwargs):
-    if logger is None:
+    wenn logger is None:
         # Configure the root logger.
         logger = logging.getLogger()
     loggingutil.configure_logger(logger, verbosity, **kwargs)
@@ -114,28 +114,28 @@ klasse UnsupportedSelectionError(Exception):
 
 
 def normalize_selection(selected: str, *, possible=None):
-    if selected in (None, True, False):
+    wenn selected in (None, True, False):
         return selected
-    elif isinstance(selected, str):
+    sowenn isinstance(selected, str):
         selected = [selected]
-    elif not selected:
+    sowenn not selected:
         return ()
 
     unsupported = []
     _selected = set()
     fuer item in selected:
-        if not item:
+        wenn not item:
             continue
         fuer value in item.strip().replace(',', ' ').split():
-            if not value:
+            wenn not value:
                 continue
             # XXX Handle subtraction (leading "-").
-            if possible and value not in possible and value != 'all':
+            wenn possible and value not in possible and value != 'all':
                 unsupported.append(value)
             _selected.add(value)
-    if unsupported:
+    wenn unsupported:
         raise UnsupportedSelectionError(unsupported, tuple(possible))
-    if 'all' in _selected:
+    wenn 'all' in _selected:
         return True
     return frozenset(selected)
 
@@ -166,10 +166,10 @@ klasse CLIArgSpec(tuple):
 def apply_cli_argspecs(parser, specs):
     processors = []
     fuer spec in specs:
-        if callable(spec):
+        wenn callable(spec):
             procs = spec(parser)
             _add_procs(processors, procs)
-        else:
+        sonst:
             args, kwargs = spec
             parser.add_argument(args, kwargs)
     return processors
@@ -177,12 +177,12 @@ def apply_cli_argspecs(parser, specs):
 
 def _add_procs(flattened, procs):
     # XXX Fail on non-empty, non-callable procs?
-    if not procs:
+    wenn not procs:
         return
-    if callable(procs):
+    wenn callable(procs):
         flattened.append(procs)
-    else:
-        #processors.extend(p fuer p in procs if callable(p))
+    sonst:
+        #processors.extend(p fuer p in procs wenn callable(p))
         fuer proc in procs:
             _add_procs(flattened, proc)
 
@@ -194,7 +194,7 @@ def add_verbosity_cli(parser):
     def process_args(args, *, argv=None):
         ns = vars(args)
         key = 'verbosity'
-        if key in ns:
+        wenn key in ns:
             parser.error(f'duplicate arg {key!r}')
         ns[key] = max(0, VERBOSITY + ns.pop('verbose') - ns.pop('quiet'))
         return key
@@ -210,7 +210,7 @@ def add_traceback_cli(parser):
     def process_args(args, *, argv=None):
         ns = vars(args)
         key = 'traceback_cm'
-        if key in ns:
+        wenn key in ns:
             parser.error(f'duplicate arg {key!r}')
         showtb = ns.pop('traceback')
 
@@ -225,15 +225,15 @@ def add_traceback_cli(parser):
             except NotImplementedError:
                 raise  # re-raise
             except Exception as exc:
-                if not showtb:
+                wenn not showtb:
                     sys.exit(f'ERROR: {exc}')
                 raise  # re-raise
             except KeyboardInterrupt:
-                if not showtb:
+                wenn not showtb:
                     sys.exit('\nINTERRUPTED')
                 raise  # re-raise
             except BaseException as exc:
-                if not showtb:
+                wenn not showtb:
                     sys.exit(f'{type(exc).__name__}: {exc}')
                 raise  # re-raise
             finally:
@@ -244,19 +244,19 @@ def add_traceback_cli(parser):
 
 
 def add_sepval_cli(parser, opt, dest, choices, *, sep=',', **kwargs):
-#    if opt is True:
+#    wenn opt is True:
 #        parser.add_argument(f'--{dest}', action='append', **kwargs)
-#    elif isinstance(opt, str) and opt.startswith('-'):
+#    sowenn isinstance(opt, str) and opt.startswith('-'):
 #        parser.add_argument(opt, dest=dest, action='append', **kwargs)
-#    else:
-#        arg = dest if not opt else opt
+#    sonst:
+#        arg = dest wenn not opt sonst opt
 #        kwargs.setdefault('nargs', '+')
 #        parser.add_argument(arg, dest=dest, action='append', **kwargs)
-    if not isinstance(opt, str):
+    wenn not isinstance(opt, str):
         parser.error(f'opt must be a string, got {opt!r}')
-    elif opt.startswith('-'):
+    sowenn opt.startswith('-'):
         parser.add_argument(opt, dest=dest, action='append', **kwargs)
-    else:
+    sonst:
         kwargs.setdefault('nargs', '+')
         #kwargs.setdefault('metavar', opt.upper())
         parser.add_argument(opt, dest=dest, action='append', **kwargs)
@@ -265,12 +265,12 @@ def add_sepval_cli(parser, opt, dest, choices, *, sep=',', **kwargs):
         ns = vars(args)
 
         # XXX Use normalize_selection()?
-        if isinstance(ns[dest], str):
+        wenn isinstance(ns[dest], str):
             ns[dest] = [ns[dest]]
         selections = []
         fuer many in ns[dest] or ():
             fuer value in many.split(sep):
-                if value not in choices:
+                wenn value not in choices:
                     parser.error(f'unknown {dest} {value!r}')
                 selections.append(value)
         ns[dest] = selections
@@ -295,7 +295,7 @@ def add_file_filtering_cli(parser, *, excluded=None):
     def process_args(args, *, argv=None):
         ns = vars(args)
         key = 'iter_filenames'
-        if key in ns:
+        wenn key in ns:
             parser.error(f'duplicate arg {key!r}')
 
         _include = tuple(ns.pop('include') or ())
@@ -323,12 +323,12 @@ def add_progress_cli(parser, *, threshold=VERBOSITY, **kwargs):
     parser.set_defaults(track_progress=True)
 
     def process_args(args, *, argv=None):
-        if args.track_progress:
+        wenn args.track_progress:
             ns = vars(args)
             verbosity = ns.get('verbosity', VERBOSITY)
-            if verbosity <= threshold:
+            wenn verbosity <= threshold:
                 args.track_progress = track_progress_compact
-            else:
+            sonst:
                 args.track_progress = track_progress_flat
     return process_args
 
@@ -346,22 +346,22 @@ def add_failure_filtering_cli(parser, pool, *, default=False):
             fail = normalize_selection(fail, possible=pool)
         except UnsupportedSelectionError as exc:
             parser.error(f'invalid --fail values: {", ".join(exc.unique)}')
-        else:
-            if fail is None:
+        sonst:
+            wenn fail is None:
                 fail = default
 
-            if fail is True:
+            wenn fail is True:
                 def ignore_exc(_exc):
                     return False
-            elif fail is False:
+            sowenn fail is False:
                 def ignore_exc(_exc):
                     return True
-            else:
+            sonst:
                 def ignore_exc(exc):
                     fuer err in fail:
-                        if type(exc) == pool[err]:
+                        wenn type(exc) == pool[err]:
                             return False
-                    else:
+                    sonst:
                         return True
             args.ignore_exc = ignore_exc
     return process_args
@@ -377,27 +377,27 @@ def add_kind_filtering_cli(parser, *, default=None):
         fuer kind in ns.pop('kinds') or default or ():
             kinds.extend(kind.strip().replace(',', ' ').split())
 
-        if not kinds:
+        wenn not kinds:
             match_kind = (lambda k: True)
-        else:
+        sonst:
             included = set()
             excluded = set()
             fuer kind in kinds:
-                if kind.startswith('-'):
+                wenn kind.startswith('-'):
                     kind = kind[1:]
                     excluded.add(kind)
-                    if kind in included:
+                    wenn kind in included:
                         included.remove(kind)
-                else:
+                sonst:
                     included.add(kind)
-                    if kind in excluded:
+                    wenn kind in excluded:
                         excluded.remove(kind)
-            if excluded:
-                if included:
+            wenn excluded:
+                wenn included:
                     ...  # XXX fail?
                 def match_kind(kind, *, _excluded=excluded):
                     return kind not in _excluded
-            else:
+            sonst:
                 def match_kind(kind, *, _included=included):
                     return kind in _included
         args.match_kind = match_kind
@@ -413,7 +413,7 @@ COMMON_CLI = [
 
 def add_commands_cli(parser, commands, *, commonspecs=COMMON_CLI, subset=None):
     arg_processors = {}
-    if isinstance(subset, str):
+    wenn isinstance(subset, str):
         cmdname = subset
         try:
             _, argspecs, _ = commands[cmdname]
@@ -421,18 +421,18 @@ def add_commands_cli(parser, commands, *, commonspecs=COMMON_CLI, subset=None):
             raise ValueError(f'unsupported subset {subset!r}')
         parser.set_defaults(cmd=cmdname)
         arg_processors[cmdname] = _add_cmd_cli(parser, commonspecs, argspecs)
-    else:
-        if subset is None:
+    sonst:
+        wenn subset is None:
             cmdnames = subset = list(commands)
-        elif not subset:
+        sowenn not subset:
             raise NotImplementedError
-        elif isinstance(subset, set):
-            cmdnames = [k fuer k in commands if k in subset]
+        sowenn isinstance(subset, set):
+            cmdnames = [k fuer k in commands wenn k in subset]
             subset = sorted(subset)
-        else:
-            cmdnames = [n fuer n in subset if n in commands]
-        if len(cmdnames) < len(subset):
-            bad = tuple(n fuer n in subset if n not in commands)
+        sonst:
+            cmdnames = [n fuer n in subset wenn n in commands]
+        wenn len(cmdnames) < len(subset):
+            bad = tuple(n fuer n in subset wenn n not in commands)
             raise ValueError(f'unsupported subset {bad}')
 
         common = argparse.ArgumentParser(add_help=False)
@@ -454,21 +454,21 @@ def _add_cmd_cli(parser, commonspecs, argspecs):
     processors = []
     argspecs = list(commonspecs or ()) + list(argspecs or ())
     fuer argspec in argspecs:
-        if callable(argspec):
+        wenn callable(argspec):
             procs = argspec(parser)
             _add_procs(processors, procs)
-        else:
-            if not argspec:
+        sonst:
+            wenn not argspec:
                 raise NotImplementedError
             args = list(argspec)
-            if not isinstance(args[-1], str):
+            wenn not isinstance(args[-1], str):
                 kwargs = args.pop()
-                if not isinstance(args[0], str):
+                wenn not isinstance(args[0], str):
                     try:
                         args, = args
                     except (TypeError, ValueError):
                         parser.error(f'invalid cmd args {argspec!r}')
-            else:
+            sonst:
                 kwargs = {}
             parser.add_argument(*args, **kwargs)
             # There will be nothing to process.
@@ -477,11 +477,11 @@ def _add_cmd_cli(parser, commonspecs, argspecs):
 
 def _flatten_processors(processors):
     fuer proc in processors:
-        if proc is None:
+        wenn proc is None:
             continue
-        if callable(proc):
+        wenn callable(proc):
             yield proc
-        else:
+        sonst:
             yield from _flatten_processors(proc)
 
 
@@ -489,22 +489,22 @@ def process_args(args, argv, processors, *, keys=None):
     processors = _flatten_processors(processors)
     ns = vars(args)
     extracted = {}
-    if keys is None:
+    wenn keys is None:
         fuer process_args in processors:
             fuer key in process_args(args, argv=argv):
                 extracted[key] = ns.pop(key)
-    else:
+    sonst:
         remainder = set(keys)
         fuer process_args in processors:
             hanging = process_args(args, argv=argv)
-            if isinstance(hanging, str):
+            wenn isinstance(hanging, str):
                 hanging = [hanging]
             fuer key in hanging or ():
-                if key not in remainder:
+                wenn key not in remainder:
                     raise NotImplementedError(key)
                 extracted[key] = ns.pop(key)
                 remainder.remove(key)
-        if remainder:
+        wenn remainder:
             raise NotImplementedError(sorted(remainder))
     return extracted
 
@@ -520,7 +520,7 @@ def process_args_by_key(args, argv, processors, keys):
 def set_command(name, add_cli):
     """A decorator factory to set CLI info."""
     def decorator(func):
-        if hasattr(func, '__cli__'):
+        wenn hasattr(func, '__cli__'):
             raise Exception(f'already set')
         func.__cli__ = (name, add_cli)
         return func
@@ -533,7 +533,7 @@ def set_command(name, add_cli):
 def filter_filenames(filenames, process_filenames=None, relroot=fsutil.USE_CWD):
     # We expect each filename to be a normalized, absolute path.
     fuer filename, _, check, _ in _iter_filenames(filenames, process_filenames, relroot):
-        if (reason := check()):
+        wenn (reason := check()):
             logger.debug(f'{filename}: {reason}')
             continue
         yield filename
@@ -542,36 +542,36 @@ def filter_filenames(filenames, process_filenames=None, relroot=fsutil.USE_CWD):
 def main_for_filenames(filenames, process_filenames=None, relroot=fsutil.USE_CWD):
     filenames, relroot = fsutil.fix_filenames(filenames, relroot=relroot)
     fuer filename, relfile, check, show in _iter_filenames(filenames, process_filenames, relroot):
-        if show:
+        wenn show:
             print()
             print(relfile)
             print('-------------------------------------------')
-        if (reason := check()):
+        wenn (reason := check()):
             print(reason)
             continue
         yield filename, relfile
 
 
 def _iter_filenames(filenames, process, relroot):
-    if process is None:
+    wenn process is None:
         yield from fsutil.process_filenames(filenames, relroot=relroot)
         return
 
     onempty = Exception('no filenames provided')
     items = process(filenames, relroot=relroot)
     items, peeked = iterutil.peek_and_iter(items)
-    if not items:
+    wenn not items:
         raise onempty
-    if isinstance(peeked, str):
-        if relroot and relroot is not fsutil.USE_CWD:
+    wenn isinstance(peeked, str):
+        wenn relroot and relroot is not fsutil.USE_CWD:
             relroot = os.path.abspath(relroot)
         check = (lambda: True)
         fuer filename, ismany in iterutil.iter_many(items, onempty):
             relfile = fsutil.format_filename(filename, relroot, fixroot=False)
             yield filename, relfile, check, ismany
-    elif len(peeked) == 4:
+    sowenn len(peeked) == 4:
         yield from items
-    else:
+    sonst:
         raise NotImplementedError
 
 
@@ -582,7 +582,7 @@ def track_progress_compact(items, *, groups=5, **mark_kwargs):
         last = next(marks)
         print(last, end='', flush=True)
         yield item
-    if not last.endswith(os.linesep):
+    wenn not last.endswith(os.linesep):
         print()
 
 
@@ -594,34 +594,34 @@ def track_progress_flat(items, fmt='<{}>'):
 
 def iter_marks(mark='.', *, group=5, groups=2, lines=_NOT_SET, sep=' '):
     mark = mark or ''
-    group = group if group and group > 1 else 1
-    groups = groups if groups and groups > 1 else 1
+    group = group wenn group and group > 1 sonst 1
+    groups = groups wenn groups and groups > 1 sonst 1
 
-    sep = f'{mark}{sep}' if sep else mark
+    sep = f'{mark}{sep}' wenn sep sonst mark
     end = f'{mark}{os.linesep}'
     div = os.linesep
     perline = group * groups
-    if lines is _NOT_SET:
+    wenn lines is _NOT_SET:
         # By default we try to put about 100 in each line group.
         perlines = 100 // perline * perline
-    elif not lines or lines < 0:
+    sowenn not lines or lines < 0:
         perlines = None
-    else:
+    sonst:
         perlines = perline * lines
 
-    if perline == 1:
+    wenn perline == 1:
         yield end
-    elif group == 1:
+    sowenn group == 1:
         yield sep
 
     count = 1
     while True:
-        if count % perline == 0:
+        wenn count % perline == 0:
             yield end
-            if perlines and count % perlines == 0:
+            wenn perlines and count % perlines == 0:
                 yield div
-        elif count % group == 0:
+        sowenn count % group == 0:
             yield sep
-        else:
+        sonst:
             yield mark
         count += 1

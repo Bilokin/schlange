@@ -57,9 +57,9 @@ klasse PointersTestCase(unittest.TestCase):
     def test_pass_pointers(self):
         dll = CDLL(_ctypes_test.__file__)
         func = dll._testfunc_p_p
-        if sizeof(c_longlong) == sizeof(c_void_p):
+        wenn sizeof(c_longlong) == sizeof(c_void_p):
             func.restype = c_longlong
-        else:
+        sonst:
             func.restype = c_long
 
         i = c_int(12345678)
@@ -190,12 +190,12 @@ klasse PointersTestCase(unittest.TestCase):
 
     def test_c_void_p(self):
         # http://sourceforge.net/tracker/?func=detail&aid=1518190&group_id=5470&atid=105470
-        if sizeof(c_void_p) == 4:
+        wenn sizeof(c_void_p) == 4:
             self.assertEqual(c_void_p(0xFFFFFFFF).value,
                                  c_void_p(-1).value)
             self.assertEqual(c_void_p(0xFFFFFFFFFFFFFFFF).value,
                                  c_void_p(-1).value)
-        elif sizeof(c_void_p) == 8:
+        sowenn sizeof(c_void_p) == 8:
             self.assertEqual(c_void_p(0xFFFFFFFF).value,
                                  0xFFFFFFFF)
             self.assertEqual(c_void_p(0xFFFFFFFFFFFFFFFF).value,
@@ -239,7 +239,7 @@ klasse PointersTestCase(unittest.TestCase):
         self.assertEqual(bool(CFUNCTYPE(None)(42)), True)
 
         # COM methods are boolean True:
-        if sys.platform == "win32":
+        wenn sys.platform == "win32":
             mth = ctypes.WINFUNCTYPE(None)(42, "name", (), None)
             self.assertEqual(bool(mth), True)
 
@@ -473,5 +473,5 @@ klasse PointerTypeCacheTestCase(unittest.TestCase):
         self.assertIs(ptr._type_, c_int)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

@@ -38,9 +38,9 @@ def mock_socket_module():
         'AF_INET', 'AF_INET6', 'AF_UNSPEC', 'IPPROTO_TCP', 'IPPROTO_UDP',
         'SOCK_STREAM', 'SOCK_DGRAM', 'SOL_SOCKET', 'SO_REUSEADDR', 'inet_pton'
     ):
-        if hasattr(socket, name):
+        wenn hasattr(socket, name):
             setattr(m_socket, name, getattr(socket, name))
-        else:
+        sonst:
             delattr(m_socket, name)
 
     m_socket.socket = mock.MagicMock()
@@ -95,7 +95,7 @@ klasse BaseEventTests(test_utils.TestCase):
         self.assertIsNone(
             base_events._ipaddr_info('1.2.3.4', 1, UNSPEC, 0, 0))
 
-        if socket_helper.IPV6_ENABLED:
+        wenn socket_helper.IPV6_ENABLED:
             # IPv4 address with family IPv6.
             self.assertIsNone(
                 base_events._ipaddr_info('1.2.3.4', 1, INET6, STREAM, TCP))
@@ -264,7 +264,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
 
         klasse DummyExecutor(concurrent.futures.ThreadPoolExecutor):
             def shutdown(self, wait=True, *, cancel_futures=False):
-                if wait:
+                wenn wait:
                     event.wait()
 
         self.loop._process_events = mock.Mock()
@@ -340,7 +340,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
             pass
 
         loop.set_debug(debug)
-        if debug:
+        wenn debug:
             msg = ("Non-thread-safe operation invoked on an event loop other "
                    "than the current one")
             with self.assertRaisesRegex(RuntimeError, msg):
@@ -349,7 +349,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
                 loop.call_later(60, cb)
             with self.assertRaisesRegex(RuntimeError, msg):
                 loop.call_at(loop.time() + 60, cb)
-        else:
+        sonst:
             loop.call_soon(cb)
             loop.call_later(60, cb)
             loop.call_at(loop.time() + 60, cb)
@@ -360,7 +360,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
             event.wait()
 
             try:
-                if create_loop:
+                wenn create_loop:
                     loop2 = base_events.BaseEventLoop()
                     try:
                         asyncio.set_event_loop(loop2)
@@ -368,11 +368,11 @@ klasse BaseEventLoopTests(test_utils.TestCase):
                     finally:
                         asyncio.set_event_loop(None)
                         loop2.close()
-                else:
+                sonst:
                     self.check_thread(loop, debug)
             except Exception as exc:
                 loop.call_soon_threadsafe(fut.set_exception, exc)
-            else:
+            sonst:
                 loop.call_soon_threadsafe(fut.set_result, None)
 
         def test_thread(loop, debug, create_loop=False):
@@ -388,17 +388,17 @@ klasse BaseEventLoopTests(test_utils.TestCase):
         self.loop._process_events = mock.Mock()
         self.loop._write_to_self = mock.Mock()
 
-        # raise RuntimeError if the thread has no event loop
+        # raise RuntimeError wenn the thread has no event loop
         test_thread(self.loop, True)
 
-        # check disabled if debug mode is disabled
+        # check disabled wenn debug mode is disabled
         test_thread(self.loop, False)
 
-        # raise RuntimeError if the event loop of the thread is not the called
+        # raise RuntimeError wenn the event loop of the thread is not the called
         # event loop
         test_thread(self.loop, True, create_loop=True)
 
-        # check disabled if debug mode is disabled
+        # check disabled wenn debug mode is disabled
         test_thread(self.loop, False, create_loop=True)
 
     def test__run_once(self):
@@ -473,7 +473,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
             h = self.loop.call_later(100, cb)
             h.cancel()
 
-        # This test is invalid if _MIN_SCHEDULED_TIMER_HANDLES is too low
+        # This test is invalid wenn _MIN_SCHEDULED_TIMER_HANDLES is too low
         self.assertLessEqual(cancelled_count + not_cancelled_count,
             base_events._MIN_SCHEDULED_TIMER_HANDLES)
 
@@ -546,7 +546,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
         with self.assertRaises(ShowStopper):
             self.loop.run_until_complete(foo(0.1))
 
-        # This call fails if run_until_complete does not clean up
+        # This call fails wenn run_until_complete does not clean up
         # done-callback fuer the previous future.
         self.loop.run_until_complete(foo(0.2))
 
@@ -795,7 +795,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
             'loop = asyncio.new_event_loop()',
             'print(loop.get_debug())'))
 
-        # Test with -E to not fail if the unit test was run with
+        # Test with -E to not fail wenn the unit test was run with
         # PYTHONASYNCIODEBUG set to a non-empty string
         sts, stdout, stderr = assert_python_ok('-E', '-c', code)
         self.assertEqual(stdout.rstrip(), b'False')
@@ -901,7 +901,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
 
     def test_run_until_complete_baseexception(self):
         # Python issue #22429: run_until_complete() must not schedule a pending
-        # call to stop() if the future raised a BaseException
+        # call to stop() wenn the future raised a BaseException
         async def raise_keyboard_interrupt():
             raise KeyboardInterrupt
 
@@ -927,7 +927,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
 
         def proc_events(event_list):
             nonlocal doer
-            if event_sentinel in event_list:
+            wenn event_sentinel in event_list:
                 doer = self.loop.call_soon(do_event)
 
         def do_event():
@@ -1034,7 +1034,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
                 item = await ai.__anext__()
             except StopAsyncIteration:
                 return
-            if item == 'THREE':
+            wenn item == 'THREE':
                 status['stopped'] = True
                 return
             asyncio.create_task(iter_one())
@@ -1088,7 +1088,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
                     (socket.AF_INET, 0, 0, '', ('192.0.2.1', 5))]
 
         async def sock_connect(sock, address):
-            if address[0] == '2001:db8::1':
+            wenn address[0] == '2001:db8::1':
                 await asyncio.sleep(1)
             sock.connect(address)
 
@@ -1120,7 +1120,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
                     (socket.AF_INET, 0, 0, '', ('192.0.2.2', 6))]
 
         async def sock_connect(sock, address):
-            if address[0] == '192.0.2.1':
+            wenn address[0] == '192.0.2.1':
                 await asyncio.sleep(1)
             sock.connect(address)
 
@@ -1148,11 +1148,11 @@ klasse MyProto(asyncio.Protocol):
     def __init__(self, create_future=False):
         self.state = 'INITIAL'
         self.nbytes = 0
-        if create_future:
+        wenn create_future:
             self.done = asyncio.get_running_loop().create_future()
 
     def _assert_state(self, *expected):
-        if self.state not in expected:
+        wenn self.state not in expected:
             raise AssertionError(f'state: {self.state!r}, expected: {expected!r}')
 
     def connection_made(self, transport):
@@ -1172,7 +1172,7 @@ klasse MyProto(asyncio.Protocol):
     def connection_lost(self, exc):
         self._assert_state('CONNECTED', 'EOF')
         self.state = 'CLOSED'
-        if self.done:
+        wenn self.done:
             self.done.set_result(None)
 
 
@@ -1182,11 +1182,11 @@ klasse MyDatagramProto(asyncio.DatagramProtocol):
     def __init__(self, create_future=False, loop=None):
         self.state = 'INITIAL'
         self.nbytes = 0
-        if create_future:
+        wenn create_future:
             self.done = loop.create_future()
 
     def _assert_state(self, expected):
-        if self.state != expected:
+        wenn self.state != expected:
             raise AssertionError(f'state: {self.state!r}, expected: {expected!r}')
 
     def connection_made(self, transport):
@@ -1204,7 +1204,7 @@ klasse MyDatagramProto(asyncio.DatagramProtocol):
     def connection_lost(self, exc):
         self._assert_state('INITIALIZED')
         self.state = 'CLOSED'
-        if self.done:
+        wenn self.done:
             self.done.set_result(None)
 
 
@@ -1365,10 +1365,10 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
         try:
             self.loop.run_until_complete(main())
         except OSError as ex:
-            if (hasattr(errno, 'EADDRNOTAVAIL') and
+            wenn (hasattr(errno, 'EADDRNOTAVAIL') and
                     ex.errno == errno.EADDRNOTAVAIL):
                 self.skipTest('failed to bind to ::1')
-            else:
+            sonst:
                 raise
 
     def test_create_datagram_endpoint_wrong_sock(self):
@@ -1473,7 +1473,7 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
     def test_create_connection_multiple_errors_local_addr(self, m_socket):
 
         def bind(addr):
-            if addr[0] == '0.0.0.1':
+            wenn addr[0] == '0.0.0.1':
                 err = OSError('Err')
                 err.strerror = 'Err'
                 raise err
@@ -1511,8 +1511,8 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
             self.assertIsInstance(e, OSError)
 
     def _test_create_connection_ip_addr(self, m_socket, allow_inet_pton):
-        # Test the fallback code, even if this system has inet_pton.
-        if not allow_inet_pton:
+        # Test the fallback code, even wenn this system has inet_pton.
+        wenn not allow_inet_pton:
             del m_socket.inet_pton
 
         m_socket.getaddrinfo = socket.getaddrinfo
@@ -1532,7 +1532,7 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
             t.close()
             test_utils.run_briefly(self.loop)  # allow transport to close
 
-        if socket_helper.IPV6_ENABLED:
+        wenn socket_helper.IPV6_ENABLED:
             sock.family = socket.AF_INET6
             coro = self.loop.create_connection(asyncio.Protocol, '::1', 80)
             t, p = self.loop.run_until_complete(coro)
@@ -1617,10 +1617,10 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
 
     def test_create_connection_no_local_addr(self):
         async def getaddrinfo(host, *args, **kw):
-            if host == 'example.com':
+            wenn host == 'example.com':
                 return [(2, 1, 6, '', ('107.6.106.82', 80)),
                         (2, 1, 6, '', ('107.6.106.82', 80))]
-            else:
+            sonst:
                 return []
 
         def getaddrinfo_task(*args, **kwds):
@@ -1738,7 +1738,7 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
         self.assertRaises(ValueError, self.loop.run_until_complete, coro)
 
     def test_create_connection_ssl_server_hostname_errors(self):
-        # When using ssl, server_hostname may be None if host is non-empty.
+        # When using ssl, server_hostname may be None wenn host is non-empty.
         coro = self.loop.create_connection(MyProto, '', 80, ssl=True)
         self.assertRaises(ValueError, self.loop.run_until_complete, coro)
         coro = self.loop.create_connection(MyProto, None, 80, ssl=True)
@@ -1758,7 +1758,7 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
             self.loop.run_until_complete(coro)
 
     def test_create_server_empty_host(self):
-        # if host is empty string use None instead
+        # wenn host is empty string use None instead
         host = object()
 
         async def getaddrinfo(*args, **kw):
@@ -2009,7 +2009,7 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
 
         reuseport_supported = hasattr(socket, 'SO_REUSEPORT')
 
-        if reuseport_supported:
+        wenn reuseport_supported:
             self.assertFalse(
                 sock.getsockopt(
                     socket.SOL_SOCKET, socket.SO_REUSEPORT))
@@ -2032,7 +2032,7 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
         self.assertFalse(
             sock.getsockopt(
                 socket.SOL_SOCKET, socket.SO_REUSEADDR))
-        if reuseport_supported:
+        wenn reuseport_supported:
             self.assertTrue(
                 sock.getsockopt(
                     socket.SOL_SOCKET, socket.SO_REUSEPORT))
@@ -2246,16 +2246,16 @@ klasse BaseLoopSockSendfileTests(test_utils.TestCase):
             except OSError:
                 self.run_loop(asyncio.sleep(0.5))
                 continue
-            else:
+            sonst:
                 break
-        else:
+        sonst:
             # One last try, so we get the exception
             self.run_loop(self.loop.sock_connect(sock, addr))
 
         def cleanup():
             server.close()
             sock.close()
-            if proto.transport is not None:
+            wenn proto.transport is not None:
                 proto.transport.close()
                 self.run_loop(proto.wait_closed())
             self.run_loop(server.wait_closed())
@@ -2379,5 +2379,5 @@ klasse TestSelectorUtils(test_utils.TestCase):
 
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

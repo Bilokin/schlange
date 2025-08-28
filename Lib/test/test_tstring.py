@@ -287,5 +287,5 @@ klasse TestTString(unittest.TestCase, TStringBaseCase):
         )
         self.assertEqual(fstring(t), "\n        Hello,\n        Python\n        ")
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

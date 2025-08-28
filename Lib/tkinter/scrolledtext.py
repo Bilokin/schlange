@@ -35,7 +35,7 @@ klasse ScrolledText(Text):
         methods = methods.difference(text_meths)
 
         fuer m in methods:
-            if m[0] != '_' and m != 'config' and m != 'configure':
+            wenn m[0] != '_' and m != 'config' and m != 'configure':
                 setattr(self, m, getattr(self.frame, m))
 
     def __str__(self):
@@ -52,5 +52,5 @@ def example():
     stext.mainloop()
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     example()

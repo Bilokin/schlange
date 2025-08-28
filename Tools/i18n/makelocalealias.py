@@ -21,38 +21,38 @@ def parse(filename):
         lines = list(f)
     # Remove mojibake in /usr/share/X11/locale/locale.alias.
     # b'\xef\xbf\xbd' == '\ufffd'.encode('utf-8')
-    lines = [line fuer line in lines if '\xef\xbf\xbd' not in line]
+    lines = [line fuer line in lines wenn '\xef\xbf\xbd' not in line]
     data = {}
     fuer line in lines:
         line = line.strip()
-        if not line:
+        wenn not line:
             continue
-        if line[:1] == '#':
+        wenn line[:1] == '#':
             continue
         locale, alias = line.split()
         # Fix non-standard locale names, e.g. ks_IN@devanagari.UTF-8
-        if '@' in alias:
+        wenn '@' in alias:
             alias_lang, _, alias_mod = alias.partition('@')
-            if '.' in alias_mod:
+            wenn '.' in alias_mod:
                 alias_mod, _, alias_enc = alias_mod.partition('.')
                 alias = alias_lang + '.' + alias_enc + '@' + alias_mod
         # Strip ':'
-        if locale[-1] == ':':
+        wenn locale[-1] == ':':
             locale = locale[:-1]
         # Lower-case locale
         locale = locale.lower()
         # Ignore one letter locale mappings (except fuer 'c')
-        if len(locale) == 1 and locale != 'c':
+        wenn len(locale) == 1 and locale != 'c':
             continue
-        if '@' in locale and '@' not in alias:
+        wenn '@' in locale and '@' not in alias:
             # Do not simply remove the "@euro" modifier.
             # Glibc generates separate locales with the "@euro" modifier, and
             # not always generates a locale without it with the same encoding.
             # It can also affect collation.
-            if locale.endswith('@euro') and not locale.endswith('.utf-8@euro'):
+            wenn locale.endswith('@euro') and not locale.endswith('.utf-8@euro'):
                 alias += '@euro'
-        # Normalize encoding, if given
-        if '.' in locale:
+        # Normalize encoding, wenn given
+        wenn '.' in locale:
             lang, encoding = locale.split('.')[:2]
             encoding = encoding.replace('-', '')
             encoding = encoding.replace('_', '')
@@ -71,20 +71,20 @@ def parse_glibc_supported(filename):
     data = {}
     fuer line in lines:
         line = line.strip()
-        if not line:
+        wenn not line:
             continue
-        if line[:1] == '#':
+        wenn line[:1] == '#':
             continue
         line = line.replace('/', ' ').strip()
         line = line.rstrip('\\').rstrip()
         words = line.split()
-        if len(words) != 2:
+        wenn len(words) != 2:
             continue
         alias, alias_encoding = words
         # Lower-case locale
         locale = alias.lower()
-        # Normalize encoding, if given
-        if '.' in locale:
+        # Normalize encoding, wenn given
+        wenn '.' in locale:
             lang, encoding = locale.split('.')[:2]
             encoding = encoding.replace('-', '')
             encoding = encoding.replace('_', '')
@@ -92,7 +92,7 @@ def parse_glibc_supported(filename):
         # Add an encoding to alias
         alias, _, modifier = alias.partition('@')
         alias = _locale._replace_encoding(alias, alias_encoding)
-        if modifier:
+        wenn modifier:
             alias += '@' + modifier
         data[locale] = alias
     return data
@@ -105,9 +105,9 @@ def pprint(data):
 def print_differences(data, olddata):
     items = sorted(olddata.items())
     fuer k, v in items:
-        if k not in data:
+        wenn k not in data:
             print('#    removed %a' % k)
-        elif olddata[k] != data[k]:
+        sowenn olddata[k] != data[k]:
             print('#    updated %a -> %a to %a' % \
                   (k, olddata[k], data[k]))
         # Additions are not mentioned
@@ -117,12 +117,12 @@ def optimize(data):
     locale.locale_alias = data.copy()
     fuer k, v in data.items():
         del locale.locale_alias[k]
-        if locale.normalize(k) != v:
+        wenn locale.normalize(k) != v:
             locale.locale_alias[k] = v
     newdata = locale.locale_alias
     errors = check(data)
     locale.locale_alias = locale_alias
-    if errors:
+    wenn errors:
         sys.exit(1)
     return newdata
 
@@ -131,13 +131,13 @@ def check(data):
     # are actually mapped to the correct alias locales.
     errors = 0
     fuer k, v in data.items():
-        if locale.normalize(k) != v:
+        wenn locale.normalize(k) != v:
             print('ERROR: %a -> %a != %a' % (k, locale.normalize(k), v),
                   file=sys.stderr)
             errors += 1
     return errors
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('--locale-alias', default=LOCALE_ALIAS,
@@ -158,7 +158,7 @@ if __name__ == '__main__':
         # Repeat optimization while the size is decreased.
         n = len(data)
         data = optimize(data)
-        if len(data) == n:
+        wenn len(data) == n:
             break
     print_differences(data, locale.locale_alias)
     print()

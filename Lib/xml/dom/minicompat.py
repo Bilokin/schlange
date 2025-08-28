@@ -51,7 +51,7 @@ klasse NodeList(list):
     __slots__ = ()
 
     def item(self, index):
-        if 0 <= index < len(self):
+        wenn 0 <= index < len(self):
             return self[index]
 
     def _get_length(self):
@@ -66,7 +66,7 @@ klasse NodeList(list):
 
     # For backward compatibility
     def __setstate__(self, state):
-        if state is None:
+        wenn state is None:
             state = []
         self[:] = state
 

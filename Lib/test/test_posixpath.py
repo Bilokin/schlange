@@ -199,7 +199,7 @@ klasse PosixPathTest(unittest.TestCase):
             f.write(b"foo")
         self.assertIs(posixpath.islink(TESTFN + "1"), False)
 
-        if os_helper.can_symlink():
+        wenn os_helper.can_symlink():
             self.addCleanup(os_helper.unlink, TESTFN + "2")
             os.symlink(TESTFN + "1", TESTFN + "2")
             self.assertIs(posixpath.islink(TESTFN + "2"), True)
@@ -252,7 +252,7 @@ klasse PosixPathTest(unittest.TestCase):
         def fake_lstat(path):
             st_ino = 0
             st_dev = 0
-            if path == ABSTFN:
+            wenn path == ABSTFN:
                 st_dev = 1
                 st_ino = 1
             return posix.stat_result((0, st_ino, st_dev, 0, 0, 0, 0, 0, 0, 0))
@@ -270,11 +270,11 @@ klasse PosixPathTest(unittest.TestCase):
         def fake_lstat(path):
             st_ino = 0
             st_dev = 0
-            if path.startswith(ABSTFN) and path != ABSTFN:
+            wenn path.startswith(ABSTFN) and path != ABSTFN:
                 # ismount tries to read something inside the ABSTFN directory;
                 # simulate this being forbidden (no read permission).
                 raise OSError("Fake [Errno 13] Permission denied")
-            if path == ABSTFN:
+            wenn path == ABSTFN:
                 st_dev = 1
                 st_ino = 1
             return posix.stat_result((0, st_ino, st_dev, 0, 0, 0, 0, 0, 0, 0))
@@ -325,8 +325,8 @@ klasse PosixPathTest(unittest.TestCase):
         self.assertIsInstance(posixpath.expanduser("~/"), str)
         self.assertIsInstance(posixpath.expanduser(b"~/"), bytes)
 
-        # if home directory == root directory, this test makes no sense
-        if posixpath.expanduser("~") != '/':
+        # wenn home directory == root directory, this test makes no sense
+        wenn posixpath.expanduser("~") != '/':
             self.assertEqual(
                 posixpath.expanduser("~") + "/",
                 posixpath.expanduser("~/")
@@ -364,10 +364,10 @@ klasse PosixPathTest(unittest.TestCase):
         pwd = import_helper.import_module('pwd')
         getpwall = support.get_attribute(pwd, 'getpwall')
         names = [entry.pw_name fuer entry in getpwall()]
-        maxusers = 1000 if support.is_resource_enabled('cpu') else 100
-        if len(names) > maxusers:
+        maxusers = 1000 wenn support.is_resource_enabled('cpu') sonst 100
+        wenn len(names) > maxusers:
             # Select random names, half of them with non-ASCII name,
-            # if available.
+            # wenn available.
             random.shuffle(names)
             names.sort(key=lambda name: name.isascii())
             del names[maxusers//2:-maxusers//2]
@@ -484,7 +484,7 @@ klasse PosixPathTest(unittest.TestCase):
     @os_helper.skip_unless_symlink
     @skip_if_ABSTFN_contains_backslash
     def test_realpath_strict(self):
-        # Bug #43757: raise FileNotFoundError in strict mode if we encounter
+        # Bug #43757: raise FileNotFoundError in strict mode wenn we encounter
         # a path that does not exist.
         try:
             os.symlink(ABSTFN+"1", ABSTFN)
@@ -537,70 +537,70 @@ klasse PosixPathTest(unittest.TestCase):
         self.assertRaises(ValueError, realpath, path, strict=ALLOW_MISSING)
 
         path = '/\udfff'
-        if sys.platform == 'win32':
+        wenn sys.platform == 'win32':
             self.assertEqual(realpath(path, strict=False), path)
             self.assertRaises(FileNotFoundError, realpath, path, strict=True)
             self.assertEqual(realpath(path, strict=ALLOW_MISSING), path)
-        else:
+        sonst:
             self.assertRaises(UnicodeEncodeError, realpath, path, strict=False)
             self.assertRaises(UnicodeEncodeError, realpath, path, strict=ALL_BUT_LAST)
             self.assertRaises(UnicodeEncodeError, realpath, path, strict=True)
             self.assertRaises(UnicodeEncodeError, realpath, path, strict=ALLOW_MISSING)
         path = '/nonexistent/\udfff'
-        if sys.platform == 'win32':
+        wenn sys.platform == 'win32':
             self.assertEqual(realpath(path, strict=False), path)
             self.assertEqual(realpath(path, strict=ALLOW_MISSING), path)
-        else:
+        sonst:
             self.assertRaises(UnicodeEncodeError, realpath, path, strict=False)
             self.assertRaises(UnicodeEncodeError, realpath, path, strict=ALLOW_MISSING)
         self.assertRaises(FileNotFoundError, realpath, path, strict=ALL_BUT_LAST)
         self.assertRaises(FileNotFoundError, realpath, path, strict=True)
         path = '/\udfff/..'
-        if sys.platform == 'win32':
+        wenn sys.platform == 'win32':
             self.assertEqual(realpath(path, strict=False), '/')
             self.assertRaises(FileNotFoundError, realpath, path, strict=True)
             self.assertEqual(realpath(path, strict=ALLOW_MISSING), '/')
-        else:
+        sonst:
             self.assertRaises(UnicodeEncodeError, realpath, path, strict=False)
             self.assertRaises(UnicodeEncodeError, realpath, path, strict=ALL_BUT_LAST)
             self.assertRaises(UnicodeEncodeError, realpath, path, strict=True)
             self.assertRaises(UnicodeEncodeError, realpath, path, strict=ALLOW_MISSING)
         path = '/nonexistent/\udfff/..'
-        if sys.platform == 'win32':
+        wenn sys.platform == 'win32':
             self.assertEqual(realpath(path, strict=False), '/nonexistent')
             self.assertEqual(realpath(path, strict=ALLOW_MISSING), '/nonexistent')
-        else:
+        sonst:
             self.assertRaises(UnicodeEncodeError, realpath, path, strict=False)
             self.assertRaises(UnicodeEncodeError, realpath, path, strict=ALLOW_MISSING)
         self.assertRaises(FileNotFoundError, realpath, path, strict=ALL_BUT_LAST)
         self.assertRaises(FileNotFoundError, realpath, path, strict=True)
 
         path = b'/\xff'
-        if sys.platform == 'win32':
+        wenn sys.platform == 'win32':
             self.assertRaises(UnicodeDecodeError, realpath, path, strict=False)
             self.assertRaises(UnicodeDecodeError, realpath, path, strict=True)
             self.assertRaises(UnicodeDecodeError, realpath, path, strict=ALLOW_MISSING)
-        else:
+        sonst:
             self.assertEqual(realpath(path, strict=False), path)
-            if support.is_wasi:
+            wenn support.is_wasi:
                 self.assertRaises(OSError, realpath, path, strict=ALL_BUT_LAST)
                 self.assertRaises(OSError, realpath, path, strict=True)
                 self.assertRaises(OSError, realpath, path, strict=ALLOW_MISSING)
-            else:
+            sonst:
                 self.assertEqual(realpath(path, strict=ALL_BUT_LAST), path)
                 self.assertRaises(FileNotFoundError, realpath, path, strict=True)
                 self.assertEqual(realpath(path, strict=ALLOW_MISSING), path)
         path = b'/nonexistent/\xff'
-        if sys.platform == 'win32':
+        wenn sys.platform == 'win32':
             self.assertRaises(UnicodeDecodeError, realpath, path, strict=False)
             self.assertRaises(UnicodeDecodeError, realpath, path, strict=ALLOW_MISSING)
-        else:
+        sonst:
             self.assertEqual(realpath(path, strict=False), path)
-        if support.is_wasi:
+        wenn support.is_wasi:
             self.assertRaises(OSError, realpath, path, strict=ALL_BUT_LAST)
             self.assertRaises(OSError, realpath, path, strict=True)
             self.assertRaises(OSError, realpath, path, strict=ALLOW_MISSING)
-        else:
+        sonst:
             self.assertRaises(FileNotFoundError, realpath, path, strict=ALL_BUT_LAST)
             self.assertRaises(FileNotFoundError, realpath, path, strict=True)
 
@@ -630,7 +630,7 @@ klasse PosixPathTest(unittest.TestCase):
     @os_helper.skip_unless_symlink
     @skip_if_ABSTFN_contains_backslash
     def test_realpath_symlink_loops(self):
-        # Bug #930024, return the path unchanged if we get into an infinite
+        # Bug #930024, return the path unchanged wenn we get into an infinite
         # symlink loop in non-strict mode (default).
         try:
             os.symlink(ABSTFN, ABSTFN)
@@ -672,7 +672,7 @@ klasse PosixPathTest(unittest.TestCase):
     @skip_if_ABSTFN_contains_backslash
     @_parameterize({'strict': True}, {'strict': ALL_BUT_LAST}, {'strict': ALLOW_MISSING})
     def test_realpath_symlink_loops_strict(self, kwargs):
-        # Bug #43757, raise OSError if we get into an infinite symlink loop in
+        # Bug #43757, raise OSError wenn we get into an infinite symlink loop in
         # the strict modes.
         try:
             os.symlink(ABSTFN, ABSTFN)
@@ -771,7 +771,7 @@ klasse PosixPathTest(unittest.TestCase):
     @_parameterize({}, {'strict': True}, {'strict': ALL_BUT_LAST}, {'strict': ALLOW_MISSING})
     def test_realpath_resolve_before_normalizing(self, kwargs):
         # Bug #990669: Symbolic links should be resolved before we
-        # normalize the path. E.g.: if we have directories 'a', 'k' and 'y'
+        # normalize the path. E.g.: wenn we have directories 'a', 'k' and 'y'
         # in the following hierarchy:
         # a/k/y
         #
@@ -799,7 +799,7 @@ klasse PosixPathTest(unittest.TestCase):
     @skip_if_ABSTFN_contains_backslash
     @_parameterize({}, {'strict': True}, {'strict': ALL_BUT_LAST}, {'strict': ALLOW_MISSING})
     def test_realpath_resolve_first(self, kwargs):
-        # Bug #1213894: The first component of the path, if not absolute,
+        # Bug #1213894: The first component of the path, wenn not absolute,
         # must be resolved too.
 
         try:
@@ -868,7 +868,7 @@ klasse PosixPathTest(unittest.TestCase):
                 os.stat(ABSTFN)
             except PermissionError:
                 pass
-            else:
+            sonst:
                 self.skipTest('Cannot block permissions')
 
             self.assertEqual(realpath(ABSTFN + '/k', strict=False),
@@ -1029,19 +1029,19 @@ klasse PosixPathTest(unittest.TestCase):
         os.symlink("nonexistent", ABSTFN + "/broken")
         os.symlink("cycle", ABSTFN + "/cycle")
         def check(path, modes, expected, errno=None):
-            if isinstance(expected, str):
+            wenn isinstance(expected, str):
                 assert errno is None
                 expected = expected.replace('/', os.sep)
                 fuer mode in modes:
                     with self.subTest(mode=mode):
                         self.assertEqual(realpath(path, strict=mode).replace('/', os.sep),
                                          ABSTFN.replace('/', os.sep) + expected)
-            else:
+            sonst:
                 fuer mode in modes:
                     with self.subTest(mode=mode):
                         with self.assertRaises(expected) as cm:
                             realpath(path, strict=mode)
-                        if errno is not None:
+                        wenn errno is not None:
                             self.assertEqual(cm.exception.errno, errno)
 
         self.enterContext(os_helper.change_cwd(ABSTFN))
@@ -1297,5 +1297,5 @@ klasse PathLikeTests(unittest.TestCase):
         self.assertEqual(common_path, self.file_name)
 
 
-if __name__=="__main__":
+wenn __name__=="__main__":
     unittest.main()

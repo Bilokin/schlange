@@ -18,7 +18,7 @@ def make_zip_file(tree, dst):
 
 def walk(tree, prefix=''):
     fuer name, contents in tree.items():
-        if isinstance(contents, dict):
+        wenn isinstance(contents, dict):
             yield from walk(contents, prefix=f'{prefix}{name}/')
-        else:
+        sonst:
             yield f'{prefix}{name}', contents

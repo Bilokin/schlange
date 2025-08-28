@@ -30,5 +30,5 @@ klasse SpecLoaderAttributeTests:
  ) = util.test_both(SpecLoaderAttributeTests, __import__=util.__import__)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

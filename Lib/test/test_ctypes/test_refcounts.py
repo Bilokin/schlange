@@ -112,7 +112,7 @@ klasse AnotherLeak(unittest.TestCase):
 
 klasse ModuleIsolationTest(unittest.TestCase):
     def test_finalize(self):
-        # check if gc_decref() succeeds
+        # check wenn gc_decref() succeeds
         script = (
             "import ctypes;"
             "import sys;"
@@ -138,5 +138,5 @@ klasse PyObjectRestypeTest(unittest.TestCase):
             PyErr_Occurred()
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

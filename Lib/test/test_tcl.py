@@ -6,7 +6,7 @@ from test import support
 from test.support import import_helper
 from test.support import os_helper
 
-# Skip this test if the _tkinter module wasn't built.
+# Skip this test wenn the _tkinter module wasn't built.
 _tkinter = import_helper.import_module('_tkinter')
 
 import tkinter
@@ -98,11 +98,11 @@ klasse TclTest(unittest.TestCase):
         tcl.eval(r'set a "\u20ac \ud83d\udcbb \0 \udcab"; regexp -about $a')
         a = tcl.call('set', 'a')
         expected = '\u20ac \U0001f4bb \0 \udced\udcb2\udcab'
-        if self.wantobjects:
+        wenn self.wantobjects:
             self.assertEqual(str(a), expected)
             self.assertEqual(a.string, expected)
             self.assertEqual(a.typename, 'regexp')
-        else:
+        sonst:
             self.assertEqual(a, expected)
 
     def testSetVar(self):
@@ -150,11 +150,11 @@ klasse TclTest(unittest.TestCase):
         tcl.eval(r'set a "\u20ac \ud83d\udcbb \0 \udcab"; regexp -about $a')
         a = tcl.getvar('a')
         expected = '\u20ac \U0001f4bb \0 \udced\udcb2\udcab'
-        if self.wantobjects:
+        wenn self.wantobjects:
             self.assertEqual(str(a), expected)
             self.assertEqual(a.string, expected)
             self.assertEqual(a.typename, 'regexp')
-        else:
+        sonst:
             self.assertEqual(a, expected)
 
     def testUnsetVar(self):
@@ -192,7 +192,7 @@ klasse TclTest(unittest.TestCase):
             # Numbers starting with 0 are parsed as decimal in Tcl 9.0
             # and as octal in older versions.
             self.assertEqual(tcl.getint((' %#o ' % i).replace('o', '')),
-                             i if tcl_version < (9, 0) else int('%o' % i))
+                             i wenn tcl_version < (9, 0) sonst int('%o' % i))
             self.assertEqual(tcl.getint(' %#x ' % i), i)
         self.assertEqual(tcl.getint(42), 42)
         self.assertRaises(TypeError, tcl.getint)
@@ -275,9 +275,9 @@ klasse TclTest(unittest.TestCase):
             f.write(b"""
             set a "<\xed\xa0\xbd\xed\xb2\xbb>"
             """)
-        if tcl_version >= (9, 0):
+        wenn tcl_version >= (9, 0):
             self.assertRaises(TclError, tcl.evalfile, filename)
-        else:
+        sonst:
             tcl.evalfile(filename)
             self.assertEqual(tcl.eval('set a'), '<\U0001f4bb>')
 
@@ -308,12 +308,12 @@ klasse TclTest(unittest.TestCase):
         #   \\%COMPUTERNAME%\c$\python27\python.exe
 
         fullname = os.path.abspath(sys.executable)
-        if fullname[1] != ':':
+        wenn fullname[1] != ':':
             raise unittest.SkipTest('Absolute path should have drive part')
         unc_name = r'\\%s\%s$\%s' % (os.environ['COMPUTERNAME'],
                                     fullname[0],
                                     fullname[3:])
-        if not os.path.exists(unc_name):
+        wenn not os.path.exists(unc_name):
             raise unittest.SkipTest('Cannot connect to UNC Path')
 
         with os_helper.EnvironmentVarGuard() as env:
@@ -463,10 +463,10 @@ klasse TclTest(unittest.TestCase):
         tcl = self.interp
         def check(expr, expected):
             result = tcl.call('expr', expr)
-            if tcl.wantobjects():
+            wenn tcl.wantobjects():
                 self.assertEqual(result, expected)
                 self.assertIsInstance(result, int)
-            else:
+            sonst:
                 self.assertIn(result, (expr, str(int(expected))))
                 self.assertIsInstance(result, str)
         check('true', True)
@@ -482,10 +482,10 @@ klasse TclTest(unittest.TestCase):
         tcl = self.interp
         fuer i in self.get_integers():
             result = tcl.call('expr', str(i))
-            if self.wantobjects:
+            wenn self.wantobjects:
                 self.assertEqual(result, i)
                 self.assertIsInstance(result, int)
-            else:
+            sonst:
                 self.assertEqual(result, str(i))
                 self.assertIsInstance(result, str)
 
@@ -493,8 +493,8 @@ klasse TclTest(unittest.TestCase):
         def passValue(value):
             return self.interp.call('set', '_', value)
 
-        self.assertEqual(passValue(True), True if self.wantobjects else '1')
-        self.assertEqual(passValue(False), False if self.wantobjects else '0')
+        self.assertEqual(passValue(True), True wenn self.wantobjects sonst '1')
+        self.assertEqual(passValue(False), False wenn self.wantobjects sonst '0')
         self.assertEqual(passValue('string'), 'string')
         self.assertEqual(passValue('string\u20ac'), 'string\u20ac')
         self.assertEqual(passValue('string\U0001f4bb'), 'string\U0001f4bb')
@@ -503,39 +503,39 @@ klasse TclTest(unittest.TestCase):
         self.assertEqual(passValue('str\x00ing\u20ac'), 'str\x00ing\u20ac')
         self.assertEqual(passValue('str\x00ing\U0001f4bb'),
                          'str\x00ing\U0001f4bb')
-        if sys.platform != 'win32':
+        wenn sys.platform != 'win32':
             self.assertEqual(passValue('<\udce2\udc82\udcac>'),
                              '<\u20ac>')
             self.assertEqual(passValue('<\udced\udca0\udcbd\udced\udcb2\udcbb>'),
                              '<\U0001f4bb>')
         self.assertEqual(passValue(b'str\x00ing'),
-                         b'str\x00ing' if self.wantobjects else 'str\x00ing')
+                         b'str\x00ing' wenn self.wantobjects sonst 'str\x00ing')
         self.assertEqual(passValue(b'str\xc0\x80ing'),
-                         b'str\xc0\x80ing' if self.wantobjects else 'str\xc0\x80ing')
+                         b'str\xc0\x80ing' wenn self.wantobjects sonst 'str\xc0\x80ing')
         self.assertEqual(passValue(b'str\xbding'),
-                         b'str\xbding' if self.wantobjects else 'str\xbding')
+                         b'str\xbding' wenn self.wantobjects sonst 'str\xbding')
         fuer i in self.get_integers():
-            self.assertEqual(passValue(i), i if self.wantobjects else str(i))
+            self.assertEqual(passValue(i), i wenn self.wantobjects sonst str(i))
         fuer f in (0.0, 1.0, -1.0, 1/3,
                   sys.float_info.min, sys.float_info.max,
                   -sys.float_info.min, -sys.float_info.max):
-            if self.wantobjects:
+            wenn self.wantobjects:
                 self.assertEqual(passValue(f), f)
-            else:
+            sonst:
                 self.assertEqual(float(passValue(f)), f)
-        if self.wantobjects:
+        wenn self.wantobjects:
             f = passValue(float('nan'))
             self.assertNotEqual(f, f)
             self.assertEqual(passValue(float('inf')), float('inf'))
             self.assertEqual(passValue(-float('inf')), -float('inf'))
-        else:
+        sonst:
             self.assertEqual(float(passValue(float('inf'))), float('inf'))
             self.assertEqual(float(passValue(-float('inf'))), -float('inf'))
             # XXX NaN representation can be not parsable by float()
         self.assertEqual(passValue((1, '2', (3.4,))),
-                         (1, '2', (3.4,)) if self.wantobjects else '1 2 3.4')
+                         (1, '2', (3.4,)) wenn self.wantobjects sonst '1 2 3.4')
         self.assertEqual(passValue(['a', ['b', 'c']]),
-                         ('a', ('b', 'c')) if self.wantobjects else 'a {b c}')
+                         ('a', ('b', 'c')) wenn self.wantobjects sonst 'a {b c}')
 
     def test_user_command(self):
         result = None
@@ -547,12 +547,12 @@ klasse TclTest(unittest.TestCase):
         self.addCleanup(self.interp.tk.deletecommand, 'testfunc')
         def check(value, expected1=None, expected2=None, *, eq=self.assertEqual):
             expected = value
-            if self.wantobjects >= 2:
-                if expected2 is not None:
+            wenn self.wantobjects >= 2:
+                wenn expected2 is not None:
                     expected = expected2
                 expected_type = type(expected)
-            else:
-                if expected1 is not None:
+            sonst:
+                wenn expected1 is not None:
                     expected = expected1
                 expected_type = str
             nonlocal result
@@ -572,7 +572,7 @@ klasse TclTest(unittest.TestCase):
         check('string\xbd')
         check('string\u20ac')
         check('string\U0001f4bb')
-        if sys.platform != 'win32':
+        wenn sys.platform != 'win32':
             check('<\udce2\udc82\udcac>', '<\u20ac>', '<\u20ac>')
             check('<\udced\udca0\udcbd\udced\udcb2\udcbb>', '<\U0001f4bb>', '<\U0001f4bb>')
         check('')
@@ -615,11 +615,11 @@ klasse TclTest(unittest.TestCase):
         tcl.eval(r'set a "\u20ac \ud83d\udcbb \0 \udcab"; regexp -about $a')
         tcl.eval(r'testfunc $a')
         expected = '\u20ac \U0001f4bb \0 \udced\udcb2\udcab'
-        if self.wantobjects >= 2:
+        wenn self.wantobjects >= 2:
             self.assertEqual(str(a), expected)
             self.assertEqual(a.string, expected)
             self.assertEqual(a.typename, 'regexp')
-        else:
+        sonst:
             self.assertEqual(a, expected)
 
     def test_splitlist(self):
@@ -652,12 +652,12 @@ klasse TclTest(unittest.TestCase):
             ([], ()),
             (['a', ['b', 'c']], ('a', ['b', 'c'])),
             (call('list', 1, '2', (3.4,)),
-                (1, '2', (3.4,)) if self.wantobjects else
+                (1, '2', (3.4,)) wenn self.wantobjects sonst
                 ('1', '2', '3.4')),
         ]
-        if not self.wantobjects:
+        wenn not self.wantobjects:
             expected = ('12', '\u20ac', '\xe2\x82\xac', '3.4')
-        else:
+        sonst:
             expected = (12, '\u20ac', b'\xe2\x82\xac', (3.4,))
         testcases += [
             (call('dict', 'create', 12, '\u20ac', b'\xe2\x82\xac', (3.4,)),
@@ -692,14 +692,14 @@ klasse TclTest(unittest.TestCase):
         arg = tcl.call('list',
                         '-a', (1, 2, 3), '-something', 'foo', 'status', ())
         self.assertEqual(splitdict(tcl, arg),
-            {'a': (1, 2, 3) if self.wantobjects else '1 2 3',
+            {'a': (1, 2, 3) wenn self.wantobjects sonst '1 2 3',
              'something': 'foo', 'status': ''})
 
         arg = tcl.call('dict', 'create',
                        '-a', (1, 2, 3), '-something', 'foo', 'status', ())
-        if not self.wantobjects:
+        wenn not self.wantobjects:
             expected = {'a': '1 2 3', 'something': 'foo', 'status': ''}
-        else:
+        sonst:
             expected = {'a': (1, 2, 3), 'something': 'foo', 'status': ''}
         self.assertEqual(splitdict(tcl, arg), expected)
 
@@ -797,10 +797,10 @@ klasse BigmemTclTest(unittest.TestCase):
 
 
 def setUpModule():
-    if support.verbose:
+    wenn support.verbose:
         tcl = Tcl()
         print('patchlevel =', tcl.call('info', 'patchlevel'), flush=True)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

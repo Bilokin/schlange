@@ -107,7 +107,7 @@ klasse TestRaces(TestBase):
                     super().__init__
                     super().__init__()
                 except RuntimeError:
-                    pass  #  happens if __class__ is replaced with non-type
+                    pass  #  happens wenn __class__ is replaced with non-type
 
         def access():
             C()
@@ -140,9 +140,9 @@ klasse TestRaces(TestBase):
                 return False
 
         def access():
-            if seq:
+            wenn seq:
                 return 1
-            else:
+            sonst:
                 return 2
 
         def mutate():
@@ -274,7 +274,7 @@ klasse TestRaces(TestBase):
     def test_racing_recursion_limit(self):
         def something_recursive():
             def count(n):
-                if n > 0:
+                wenn n > 0:
                     return count(n - 1) + 1
                 return 0
 
@@ -319,5 +319,5 @@ klasse TestWarningsRaces(TestBase):
         do_race(modify_filters, emit_warning)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

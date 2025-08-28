@@ -14,7 +14,7 @@ def concretize(cls):
     fuer name in dir(cls):
         try:
             value = getattr(cls, name)
-            if value.__isabstractmethod__:
+            wenn value.__isabstractmethod__:
                 setattr(cls, name, not_implemented)
         except AttributeError:
             pass
@@ -83,7 +83,7 @@ klasse TestNumbersDefaultMethods(unittest.TestCase):
                 return self.i
 
             def __add__(self, other):
-                if isinstance(other, Complex):
+                wenn isinstance(other, Complex):
                     return MyComplex(self.imag + other.imag,
                                      self.real + other.real)
                 raise NotImplementedError
@@ -92,9 +92,9 @@ klasse TestNumbersDefaultMethods(unittest.TestCase):
                 return MyComplex(-self.real, -self.imag)
 
             def __eq__(self, other):
-                if isinstance(other, Complex):
+                wenn isinstance(other, Complex):
                     return self.imag == other.imag and self.real == other.real
-                if isinstance(other, Number):
+                wenn isinstance(other, Number):
                     return self.imag == 0 and self.real == other.real
 
         # test __bool__
@@ -196,5 +196,5 @@ klasse TestNumbersDefaultMethods(unittest.TestCase):
         self.assertEqual(MyIntegral(123).denominator, 1)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

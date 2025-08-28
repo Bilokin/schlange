@@ -5,7 +5,7 @@ import os
 import sys
 
 
-if support.check_sanitizer(address=True, memory=True):
+wenn support.check_sanitizer(address=True, memory=True):
     SKIP_MODULES = frozenset((
         # gh-90791: Tests involving libX11 can SEGFAULT on ASAN/MSAN builds.
         # Skip modules, packages and tests using '_tkinter'.
@@ -17,7 +17,7 @@ if support.check_sanitizer(address=True, memory=True):
         'idlelib',
         'test_idle',
     ))
-else:
+sonst:
     SKIP_MODULES = ()
 
 
@@ -46,7 +46,7 @@ klasse AllTest(unittest.TestCase):
                 # may not be available or not initialize properly in all
                 # environments.
                 raise FailedImport(modname)
-        if not hasattr(sys.modules[modname], "__all__"):
+        wenn not hasattr(sys.modules[modname], "__all__"):
             raise NoAll(modname)
         names = {}
         with self.subTest(module=modname):
@@ -61,11 +61,11 @@ klasse AllTest(unittest.TestCase):
                     # Include the module name in the exception string
                     self.fail("__all__ failure in {}: {}: {}".format(
                               modname, e.__class__.__name__, e))
-                if "__builtins__" in names:
+                wenn "__builtins__" in names:
                     del names["__builtins__"]
-                if '__annotations__' in names:
+                wenn '__annotations__' in names:
                     del names['__annotations__']
-                if "__warningregistry__" in names:
+                wenn "__warningregistry__" in names:
                     del names["__warningregistry__"]
                 keys = set(names)
                 all_list = sys.modules[modname].__all__
@@ -78,22 +78,22 @@ klasse AllTest(unittest.TestCase):
     def walk_modules(self, basedir, modpath):
         fuer fn in sorted(os.listdir(basedir)):
             path = os.path.join(basedir, fn)
-            if os.path.isdir(path):
-                if fn in SKIP_MODULES:
+            wenn os.path.isdir(path):
+                wenn fn in SKIP_MODULES:
                     continue
                 pkg_init = os.path.join(path, '__init__.py')
-                if os.path.exists(pkg_init):
+                wenn os.path.exists(pkg_init):
                     yield pkg_init, modpath + fn
                     fuer p, m in self.walk_modules(path, modpath + fn + "."):
                         yield p, m
                 continue
 
-            if fn == '__init__.py':
+            wenn fn == '__init__.py':
                 continue
-            if not fn.endswith('.py'):
+            wenn not fn.endswith('.py'):
                 continue
             modname = fn.removesuffix('.py')
-            if modname in SKIP_MODULES:
+            wenn modname in SKIP_MODULES:
                 continue
             yield path, modpath + modname
 
@@ -116,19 +116,19 @@ klasse AllTest(unittest.TestCase):
             m = modname
             denied = False
             while m:
-                if m in denylist:
+                wenn m in denylist:
                     denied = True
                     break
                 m = m.rpartition('.')[0]
-            if denied:
+            wenn denied:
                 continue
-            if support.verbose:
+            wenn support.verbose:
                 print(f"Check {modname}", flush=True)
             try:
                 # This heuristic speeds up the process by removing, de facto,
                 # most test modules (and avoiding the auto-executing ones).
                 with open(path, "rb") as f:
-                    if b"__all__" not in f.read():
+                    wenn b"__all__" not in f.read():
                         raise NoAll(modname)
                 self.check_all(modname)
             except NoAll:
@@ -136,11 +136,11 @@ klasse AllTest(unittest.TestCase):
             except FailedImport:
                 failed_imports.append(modname)
 
-        if support.verbose:
+        wenn support.verbose:
             print('Following modules have no __all__ and have been ignored:',
                   ignored)
             print('Following modules failed to be imported:', failed_imports)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

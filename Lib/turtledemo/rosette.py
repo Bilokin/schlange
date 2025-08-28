@@ -57,7 +57,7 @@ def main():
     return "runtime: %.3f sec" % (z1+et-at)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     msg = main()
     print(msg)
     mainloop()

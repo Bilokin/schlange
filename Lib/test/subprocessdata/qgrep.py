@@ -3,8 +3,8 @@ argument and no options."""
 
 import sys
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     pattern = sys.argv[1]
     fuer line in sys.stdin:
-        if pattern in line:
+        wenn pattern in line:
             sys.stdout.write(line)

@@ -134,7 +134,7 @@ klasse SearchDialogBaseTest(unittest.TestCase):
             fuer spec, button in zip(others, buttons):
                 val, label = spec
                 self.assertEqual(button['text'], label)
-                if val == state:
+                wenn val == state:
                     # hit other button, then this one
                     # indexes depend on button order
                     self.assertEqual(var.get(), state)
@@ -151,10 +151,10 @@ klasse SearchDialogBaseTest(unittest.TestCase):
         # Look fuer close button command in buttonframe
         closebuttoncommand = ''
         fuer child in self.dialog.buttonframe.winfo_children():
-            if child['text'] == 'Close':
+            wenn child['text'] == 'Close':
                 closebuttoncommand = child['command']
         self.assertIn('close', closebuttoncommand)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main(verbosity=2, exit=2)

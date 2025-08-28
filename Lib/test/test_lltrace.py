@@ -27,7 +27,7 @@ klasse TestLLTrace(unittest.TestCase):
         self.assertEqual(stderr, b"")
         self.assertEqual(status, 0)
         result = stdout.decode('utf-8')
-        if support.verbose:
+        wenn support.verbose:
             print("\n\n--- code ---")
             print(code)
             print("\n--- stdout ---")
@@ -78,14 +78,14 @@ klasse TestLLTrace(unittest.TestCase):
         instr_map = {i.offset: i fuer i in dis.get_instructions(example, adaptive=True)}
         fuer line in stdout.splitlines():
             offset, colon, opname_oparg = line.partition(":")
-            if not colon:
+            wenn not colon:
                 continue
             offset = int(offset)
             opname_oparg = opname_oparg.split()
-            if len(opname_oparg) == 2:
+            wenn len(opname_oparg) == 2:
                 opname, oparg = opname_oparg
                 oparg = int(oparg)
-            else:
+            sonst:
                 (opname,) = opname_oparg
                 oparg = None
             self.assertEqual(instr_map[offset].opname, opname)
@@ -103,9 +103,9 @@ klasse TestLLTrace(unittest.TestCase):
             console.push('__lltrace__ = 1')
             console.push('a = [1, 2, 3]')
             console.push('a[0] = 1')
-            print('unreachable if bug exists')
+            print('unreachable wenn bug exists')
         """)
-        self.assertIn("unreachable if bug exists", stdout)
+        self.assertIn("unreachable wenn bug exists", stdout)
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

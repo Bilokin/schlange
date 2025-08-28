@@ -62,12 +62,12 @@ TABLE_SECTIONS = {
     'variables': (
         ['name', 'parent', 'data', 'file'],
         (lambda kind: kind is KIND.VARIABLE),
-        (lambda v: (v.filename or '', str(v.parent) if v.parent else '', v.name)),
+        (lambda v: (v.filename or '', str(v.parent) wenn v.parent sonst '', v.name)),
     ),
     'statements': (
         ['file', 'parent', 'data'],
         (lambda kind: kind is KIND.STATEMENT),
-        (lambda v: (v.filename or '', str(v.parent) if v.parent else '', v.name)),
+        (lambda v: (v.filename or '', str(v.parent) wenn v.parent sonst '', v.name)),
     ),
     KIND.TYPEDEF: 'typedefs',
     KIND.STRUCT: 'structs',
@@ -89,7 +89,7 @@ def _render_table(items, columns, relroot=None):
     fuer item in items:
         rowdata = item.render_rowdata(columns)
         row = [rowdata[c] fuer c in columns]
-        if relroot and 'file' in columns:
+        wenn relroot and 'file' in columns:
             index = columns.index('file')
             row[index] = os.path.relpath(row[index], relroot)
         yield '\t'.join(row)
@@ -101,12 +101,12 @@ def _render_table(items, columns, relroot=None):
 def build_section(name, groupitems, *, relroot=None):
     info = TABLE_SECTIONS[name]
     while type(info) is not tuple:
-        if name in KINDS:
+        wenn name in KINDS:
             name = info
         info = TABLE_SECTIONS[info]
 
     columns, match_kind, sortkey = info
-    items = (v fuer v in groupitems if match_kind(v.kind))
+    items = (v fuer v in groupitems wenn match_kind(v.kind))
     items = sorted(items, key=sortkey)
     def render():
         yield ''
@@ -127,16 +127,16 @@ CHECKS = {
 
 def add_checks_cli(parser, checks=None, *, add_flags=None):
     default = False
-    if not checks:
+    wenn not checks:
         checks = list(CHECKS)
         default = True
-    elif isinstance(checks, str):
+    sowenn isinstance(checks, str):
         checks = [checks]
-    if (add_flags is None and len(checks) > 1) or default:
+    wenn (add_flags is None and len(checks) > 1) or default:
         add_flags = True
 
     process_checks = add_sepval_cli(parser, '--check', 'checks', checks)
-    if add_flags:
+    wenn add_flags:
         fuer check in checks:
             parser.add_argument(f'--{check}', dest='checks',
                                 action='append_const', const=check)
@@ -149,43 +149,43 @@ def _get_check_handlers(fmt, printer, verbosity=VERBOSITY):
     div = None
     def handle_after():
         pass
-    if not fmt:
+    wenn not fmt:
         div = ''
         def handle_failure(failure, data):
             data = repr(data)
-            if verbosity >= 3:
+            wenn verbosity >= 3:
                 logger.info(f'failure: {failure}')
                 logger.info(f'data:    {data}')
-            else:
+            sonst:
                 logger.warn(f'failure: {failure} (data: {data})')
-    elif fmt == 'raw':
+    sowenn fmt == 'raw':
         def handle_failure(failure, data):
             print(f'{failure!r} {data!r}')
-    elif fmt == 'brief':
+    sowenn fmt == 'brief':
         def handle_failure(failure, data):
             parent = data.parent or ''
-            funcname = parent if isinstance(parent, str) else parent.name
-            name = f'({funcname}).{data.name}' if funcname else data.name
+            funcname = parent wenn isinstance(parent, str) sonst parent.name
+            name = f'({funcname}).{data.name}' wenn funcname sonst data.name
             failure = failure.split('\t')[0]
             print(f'{data.filename}:{name} - {failure}')
-    elif fmt == 'summary':
+    sowenn fmt == 'summary':
         def handle_failure(failure, data):
             print(_fmt_one_summary(data, failure))
-    elif fmt == 'full':
+    sowenn fmt == 'full':
         div = ''
         def handle_failure(failure, data):
-            name = data.shortkey if data.kind is KIND.VARIABLE else data.name
+            name = data.shortkey wenn data.kind is KIND.VARIABLE sonst data.name
             parent = data.parent or ''
-            funcname = parent if isinstance(parent, str) else parent.name
-            known = 'yes' if data.is_known else '*** NO ***'
+            funcname = parent wenn isinstance(parent, str) sonst parent.name
+            known = 'yes' wenn data.is_known sonst '*** NO ***'
             print(f'{data.kind.value} {name!r} failed ({failure})')
             print(f'  file:         {data.filename}')
             print(f'  func:         {funcname or "-"}')
             print(f'  name:         {data.name}')
             print(f'  data:         ...')
             print(f'  type unknown: {known}')
-    else:
-        if fmt in FORMATS:
+    sonst:
+        wenn fmt in FORMATS:
             raise NotImplementedError(fmt)
         raise ValueError(f'unsupported fmt {fmt!r}')
     return handle_failure, handle_after, div
@@ -203,10 +203,10 @@ def fmt_brief(analysis):
     # XXX Support sorting.
     items = sorted(analysis)
     fuer kind in KINDS:
-        if kind is KIND.STATEMENT:
+        wenn kind is KIND.STATEMENT:
             continue
         fuer item in items:
-            if item.kind is not kind:
+            wenn item.kind is not kind:
                 continue
             yield from item.render('brief')
     yield f'  total: {len(items)}'
@@ -233,10 +233,10 @@ def fmt_summary(analysis):
 
 def _fmt_one_summary(item, extra=None):
     parent = item.parent or ''
-    funcname = parent if isinstance(parent, str) else parent.name
-    if extra:
+    funcname = parent wenn isinstance(parent, str) sonst parent.name
+    wenn extra:
         return f'{item.filename:35}\t{funcname or "-":35}\t{item.name:40}\t{extra}'
-    else:
+    sonst:
         return f'{item.filename:35}\t{funcname or "-":35}\t{item.name}'
 
 
@@ -270,17 +270,17 @@ def add_output_cli(parser, *, default='summary'):
 # the commands
 
 def _cli_check(parser, checks=None, **kwargs):
-    if isinstance(checks, str):
+    wenn isinstance(checks, str):
         checks = [checks]
-    if checks is False:
+    wenn checks is False:
         process_checks = None
-    elif checks is None:
+    sowenn checks is None:
         process_checks = add_checks_cli(parser)
-    elif len(checks) == 1 and type(checks) is not dict and re.match(r'^<.*>$', checks[0]):
+    sowenn len(checks) == 1 and type(checks) is not dict and re.match(r'^<.*>$', checks[0]):
         check = checks[0][1:-1]
         def process_checks(args, *, argv=None):
             args.checks = [check]
-    else:
+    sonst:
         process_checks = add_checks_cli(parser, checks=checks)
     process_progress = add_progress_cli(parser)
     process_output = add_output_cli(parser, default=None)
@@ -306,11 +306,11 @@ def cmd_check(filenames, *,
               _CHECKS=CHECKS,
               **kwargs
               ):
-    if not checks:
+    wenn not checks:
         checks = _CHECKS
-    elif isinstance(checks, str):
+    sowenn isinstance(checks, str):
         checks = [checks]
-    checks = [_CHECKS[c] if isinstance(c, str) else c
+    checks = [_CHECKS[c] wenn isinstance(c, str) sonst c
               fuer c in checks]
     printer = Printer(verbosity)
     (handle_failure, handle_after, div
@@ -318,7 +318,7 @@ def cmd_check(filenames, *,
 
     filenames, relroot = fsutil.fix_filenames(filenames, relroot=relroot)
     filenames = filter_filenames(filenames, iter_filenames, relroot)
-    if track_progress:
+    wenn track_progress:
         filenames = track_progress(filenames)
 
     logger.info('analyzing files...')
@@ -329,10 +329,10 @@ def cmd_check(filenames, *,
     logger.info('checking analysis results...')
     failed = []
     fuer data, failure in _check_all(decls, checks, failfast=failfast):
-        if data is None:
+        wenn data is None:
             printer.info('stopping after one failure')
             break
-        if div is not None and len(failed) > 0:
+        wenn div is not None and len(failed) > 0:
             printer.info(div)
         failed.append(data)
         handle_failure(failure, data)
@@ -342,7 +342,7 @@ def cmd_check(filenames, *,
     logger.info(f'total failures: {len(failed)}')
     logger.info('done checking')
 
-    if fmt == 'summary':
+    wenn fmt == 'summary':
         print('Categorized by storage:')
         print()
         from .match import group_by_storage
@@ -354,7 +354,7 @@ def cmd_check(filenames, *,
                 print(' ', _fmt_one_summary(decl))
             print(f'subtotal: {len(decls)}')
 
-    if len(failed) > 0:
+    wenn len(failed) > 0:
         sys.exit(len(failed))
 
 
@@ -380,7 +380,7 @@ def cmd_analyze(filenames, *,
                 formats=FORMATS,
                 **kwargs
                 ):
-    verbosity = verbosity if verbosity is not None else 3
+    verbosity = verbosity wenn verbosity is not None sonst 3
 
     try:
         do_fmt = formats[fmt]
@@ -389,7 +389,7 @@ def cmd_analyze(filenames, *,
 
     filenames, relroot = fsutil.fix_filenames(filenames, relroot=relroot)
     filenames = filter_filenames(filenames, iter_filenames, relroot)
-    if track_progress:
+    wenn track_progress:
         filenames = track_progress(filenames)
 
     logger.info('analyzing files...')
@@ -411,23 +411,23 @@ def _cli_data(parser, filenames=None, known=None):
     subs = parser.add_subparsers(dest='datacmd')
 
     sub = subs.add_parser('show', parents=[common])
-    if known is None:
+    wenn known is None:
         sub.add_argument('--known', required=True)
-    if filenames is None:
+    wenn filenames is None:
         sub.add_argument('filenames', metavar='FILE', nargs='+')
 
     sub = subs.add_parser('dump', parents=[common])
-    if known is None:
+    wenn known is None:
         sub.add_argument('--known')
     sub.add_argument('--show', action='store_true')
     process_progress = add_progress_cli(sub)
 
     sub = subs.add_parser('check', parents=[common])
-    if known is None:
+    wenn known is None:
         sub.add_argument('--known', required=True)
 
     def process_args(args, *, argv):
-        if args.datacmd == 'dump':
+        wenn args.datacmd == 'dump':
             process_progress(args, argv)
     return process_args
 
@@ -442,35 +442,35 @@ def cmd_data(datacmd, filenames, known=None, *,
              ):
     kwargs.pop('verbosity', None)
     usestdout = kwargs.pop('show', None)
-    if datacmd == 'show':
+    wenn datacmd == 'show':
         do_fmt = formats['summary']
-        if isinstance(known, str):
+        wenn isinstance(known, str):
             known, _ = _datafiles.get_known(known, extracolumns, relroot)
         fuer line in do_fmt(known):
             print(line)
-    elif datacmd == 'dump':
+    sowenn datacmd == 'dump':
         filenames, relroot = fsutil.fix_filenames(filenames, relroot=relroot)
-        if track_progress:
+        wenn track_progress:
             filenames = track_progress(filenames)
         analyzed = _analyze(filenames, **kwargs)
         analyzed.fix_filenames(relroot, normalize=False)
-        if known is None or usestdout:
+        wenn known is None or usestdout:
             outfile = io.StringIO()
             _datafiles.write_known(analyzed, outfile, extracolumns,
                                    relroot=relroot)
             print(outfile.getvalue())
-        else:
+        sonst:
             _datafiles.write_known(analyzed, known, extracolumns,
                                    relroot=relroot)
-    elif datacmd == 'check':
+    sowenn datacmd == 'check':
         raise NotImplementedError(datacmd)
-    else:
+    sonst:
         raise ValueError(f'unsupported data command {datacmd!r}')
 
 
 COMMANDS = {
     'check': (
-        'analyze and fail if the given C source/header files have any problems',
+        'analyze and fail wenn the given C source/header files have any problems',
         [_cli_check],
         cmd_check,
     ),
@@ -531,7 +531,7 @@ def main(cmd, cmd_kwargs):
     run_cmd(**cmd_kwargs)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     cmd, cmd_kwargs, verbosity, traceback_cm = parse_args()
     configure_logger(verbosity)
     with traceback_cm:

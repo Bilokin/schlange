@@ -97,7 +97,7 @@ klasse TestPartial:
             self.partial(2)()
         except TypeError:
             pass
-        else:
+        sonst:
             self.fail('First arg not checked fuer callability')
 
     def test_protection_of_callers_dict_argument(self):
@@ -479,11 +479,11 @@ klasse TestPartial:
             def __len__(self):
                 return 4
             def __getitem__(self, key):
-                if key == 0:
+                wenn key == 0:
                     return max
-                elif key == 1:
+                sowenn key == 1:
                     return tuple(range(1000000))
-                elif key in (2, 3):
+                sowenn key in (2, 3):
                     return {}
                 raise IndexError
 
@@ -513,7 +513,7 @@ klasse TestPartial:
 
 @unittest.skipUnless(c_functools, 'requires the C _functools module')
 klasse TestPartialC(TestPartial, unittest.TestCase):
-    if c_functools:
+    wenn c_functools:
         module = c_functools
         partial = c_functools.partial
 
@@ -529,7 +529,7 @@ klasse TestPartialC(TestPartial, unittest.TestCase):
             del p.__dict__
         except TypeError:
             pass
-        else:
+        sonst:
             self.fail('partial object allowed __dict__ to be deleted')
 
     def test_manually_adding_non_string_keyword(self):
@@ -576,7 +576,7 @@ klasse TestPartialPy(TestPartial, unittest.TestCase):
     partial = py_functools.partial
 
 
-if c_functools:
+wenn c_functools:
     klasse CPartialSubclass(c_functools.partial):
         pass
 
@@ -585,7 +585,7 @@ klasse PyPartialSubclass(py_functools.partial):
 
 @unittest.skipUnless(c_functools, 'requires the C _functools module')
 klasse TestPartialCSubclass(TestPartialC):
-    if c_functools:
+    wenn c_functools:
         partial = CPartialSubclass
 
     # partial subclasses are not optimized fuer nested calls
@@ -772,7 +772,7 @@ klasse TestUpdateWrapper(unittest.TestCase):
             wrapper_attr = getattr(wrapper, name)
             wrapped_attr = getattr(wrapped, name)
             fuer key in wrapped_attr:
-                if name == "__dict__" and key == "__wrapped__":
+                wenn name == "__dict__" and key == "__wrapped__":
                     # __wrapped__ is overwritten by the update code
                     continue
                 self.assertIs(wrapped_attr[key], wrapper_attr[key])
@@ -976,7 +976,7 @@ klasse TestReduce:
                 return len(self.sofar)
 
             def __getitem__(self, i):
-                if not 0 <= i < self.max: raise IndexError
+                wenn not 0 <= i < self.max: raise IndexError
                 n = len(self.sofar)
                 while n <= i:
                     self.sofar.append(n*n)
@@ -1027,9 +1027,9 @@ klasse TestReduce:
             def __init__(self, n):
                 self.n = n
             def __getitem__(self, i):
-                if 0 <= i < self.n:
+                wenn 0 <= i < self.n:
                     return i
-                else:
+                sonst:
                     raise IndexError
 
         from operator import add
@@ -1069,7 +1069,7 @@ klasse TestReduce:
 
 @unittest.skipUnless(c_functools, 'requires the C _functools module')
 klasse TestReduceC(TestReduce, unittest.TestCase):
-    if c_functools:
+    wenn c_functools:
         reduce = c_functools.reduce
 
 
@@ -1179,7 +1179,7 @@ klasse TestCmpToKey:
 
 @unittest.skipUnless(c_functools, 'requires the C _functools module')
 klasse TestCmpToKeyC(TestCmpToKey, unittest.TestCase):
-    if c_functools:
+    wenn c_functools:
         cmp_to_key = c_functools.cmp_to_key
 
     @support.cpython_only
@@ -1289,11 +1289,11 @@ klasse TestTotalOrdering(unittest.TestCase):
             def __init__(self, value):
                 self.value = value
             def __eq__(self, other):
-                if isinstance(other, ImplementsLessThan):
+                wenn isinstance(other, ImplementsLessThan):
                     return self.value == other.value
                 return False
             def __lt__(self, other):
-                if isinstance(other, ImplementsLessThan):
+                wenn isinstance(other, ImplementsLessThan):
                     return self.value < other.value
                 return NotImplemented
 
@@ -1302,11 +1302,11 @@ klasse TestTotalOrdering(unittest.TestCase):
             def __init__(self, value):
                 self.value = value
             def __eq__(self, other):
-                if isinstance(other, ImplementsLessThanEqualTo):
+                wenn isinstance(other, ImplementsLessThanEqualTo):
                     return self.value == other.value
                 return False
             def __le__(self, other):
-                if isinstance(other, ImplementsLessThanEqualTo):
+                wenn isinstance(other, ImplementsLessThanEqualTo):
                     return self.value <= other.value
                 return NotImplemented
 
@@ -1315,11 +1315,11 @@ klasse TestTotalOrdering(unittest.TestCase):
             def __init__(self, value):
                 self.value = value
             def __eq__(self, other):
-                if isinstance(other, ImplementsGreaterThan):
+                wenn isinstance(other, ImplementsGreaterThan):
                     return self.value == other.value
                 return False
             def __gt__(self, other):
-                if isinstance(other, ImplementsGreaterThan):
+                wenn isinstance(other, ImplementsGreaterThan):
                     return self.value > other.value
                 return NotImplemented
 
@@ -1328,11 +1328,11 @@ klasse TestTotalOrdering(unittest.TestCase):
             def __init__(self, value):
                 self.value = value
             def __eq__(self, other):
-                if isinstance(other, ImplementsGreaterThanEqualTo):
+                wenn isinstance(other, ImplementsGreaterThanEqualTo):
                     return self.value == other.value
                 return False
             def __ge__(self, other):
-                if isinstance(other, ImplementsGreaterThanEqualTo):
+                wenn isinstance(other, ImplementsGreaterThanEqualTo):
                     return self.value >= other.value
                 return NotImplemented
 
@@ -1357,11 +1357,11 @@ klasse TestTotalOrdering(unittest.TestCase):
             def __init__(self, value):
                 self.value = value
             def __eq__(self, other):
-                if isinstance(other, ImplementsLessThan):
+                wenn isinstance(other, ImplementsLessThan):
                     return self.value == other.value
                 return False
             def __lt__(self, other):
-                if isinstance(other, ImplementsLessThan):
+                wenn isinstance(other, ImplementsLessThan):
                     return self.value < other.value
                 return NotImplemented
 
@@ -1370,11 +1370,11 @@ klasse TestTotalOrdering(unittest.TestCase):
             def __init__(self, value):
                 self.value = value
             def __eq__(self, other):
-                if isinstance(other, ImplementsGreaterThan):
+                wenn isinstance(other, ImplementsGreaterThan):
                     return self.value == other.value
                 return False
             def __gt__(self, other):
-                if isinstance(other, ImplementsGreaterThan):
+                wenn isinstance(other, ImplementsGreaterThan):
                     return self.value > other.value
                 return NotImplemented
 
@@ -1383,11 +1383,11 @@ klasse TestTotalOrdering(unittest.TestCase):
             def __init__(self, value):
                 self.value = value
             def __eq__(self, other):
-                if isinstance(other, ImplementsLessThanEqualTo):
+                wenn isinstance(other, ImplementsLessThanEqualTo):
                     return self.value == other.value
                 return False
             def __le__(self, other):
-                if isinstance(other, ImplementsLessThanEqualTo):
+                wenn isinstance(other, ImplementsLessThanEqualTo):
                     return self.value <= other.value
                 return NotImplemented
 
@@ -1396,11 +1396,11 @@ klasse TestTotalOrdering(unittest.TestCase):
             def __init__(self, value):
                 self.value = value
             def __eq__(self, other):
-                if isinstance(other, ImplementsGreaterThanEqualTo):
+                wenn isinstance(other, ImplementsGreaterThanEqualTo):
                     return self.value == other.value
                 return False
             def __ge__(self, other):
-                if isinstance(other, ImplementsGreaterThanEqualTo):
+                wenn isinstance(other, ImplementsGreaterThanEqualTo):
                     return self.value >= other.value
                 return NotImplemented
 
@@ -1409,7 +1409,7 @@ klasse TestTotalOrdering(unittest.TestCase):
             def __init__(self, value):
                 self.value = value
             def __eq__(self, other):
-                if isinstance(other, ComparatorNotImplemented):
+                wenn isinstance(other, ComparatorNotImplemented):
                     return self.value == other.value
                 return False
             def __lt__(self, other):
@@ -1473,12 +1473,12 @@ klasse TestTotalOrdering(unittest.TestCase):
                 return super().__new__(cls, name, bases, ns)
 
             def __lt__(self, other):
-                if not isinstance(other, SortableMeta):
+                wenn not isinstance(other, SortableMeta):
                     pass
                 return self.__name__ < other.__name__
 
             def __eq__(self, other):
-                if not isinstance(other, SortableMeta):
+                wenn not isinstance(other, SortableMeta):
                     pass
                 return self.__name__ == other.__name__
 
@@ -1509,7 +1509,7 @@ klasse TestCache:
     def test_cache(self):
         @self.module.cache
         def fib(n):
-            if n < 2:
+            wenn n < 2:
                 return n
             return fib(n-1) + fib(n-2)
         self.assertEqual([fib(n) fuer n in range(16)],
@@ -1527,7 +1527,7 @@ klasse TestCachePy(TestCache, unittest.TestCase):
 
 @unittest.skipUnless(c_functools, 'requires the C _functools module')
 klasse TestCacheC(TestCache, unittest.TestCase):
-    if c_functools:
+    wenn c_functools:
         module = c_functools
 
 
@@ -1647,7 +1647,7 @@ klasse TestLRU:
         def f(x):
             nonlocal once
             rv = f'.{x}.'
-            if x == 20 and once:
+            wenn x == 20 and once:
                 once = False
                 rv = f(x)
             return rv
@@ -1753,7 +1753,7 @@ klasse TestLRU:
     def test_lru_with_maxsize_none(self):
         @self.module.lru_cache(maxsize=None)
         def fib(n):
-            if n < 2:
+            wenn n < 2:
                 return n
             return fib(n-1) + fib(n-2)
         self.assertEqual([fib(n) fuer n in range(16)],
@@ -1835,7 +1835,7 @@ klasse TestLRU:
     def test_lru_with_keyword_args(self):
         @self.module.lru_cache()
         def fib(n):
-            if n < 2:
+            wenn n < 2:
                 return n
             return fib(n=n-1) + fib(n=n-2)
         self.assertEqual(
@@ -1851,7 +1851,7 @@ klasse TestLRU:
     def test_lru_with_keyword_args_maxsize_none(self):
         @self.module.lru_cache(maxsize=None)
         def fib(n):
-            if n < 2:
+            wenn n < 2:
                 return n
             return fib(n=n-1) + fib(n=n-2)
         self.assertEqual([fib(n=number) fuer number in range(16)],
@@ -1910,11 +1910,11 @@ klasse TestLRU:
                 start.set()
 
             hits, misses, maxsize, currsize = f.cache_info()
-            if self.module is py_functools:
+            wenn self.module is py_functools:
                 # XXX: Why can be not equal?
                 self.assertLessEqual(misses, n)
                 self.assertLessEqual(hits, m*n - misses)
-            else:
+            sonst:
                 self.assertEqual(misses, n)
                 self.assertEqual(hits, m*n - misses)
             self.assertEqual(currsize, n)
@@ -1985,7 +1985,7 @@ klasse TestLRU:
             def __hash__(self):
                 return self.x
             def __eq__(self, other):
-                if self.x == 2:
+                wenn self.x == 2:
                     test_func(DoubleEq(1))
                 return self.x == other.x
 
@@ -2141,12 +2141,12 @@ klasse TestLRU:
 
         @self.module.lru_cache
         def fib(n):
-            if n <= 1:
+            wenn n <= 1:
                 return n
             return fib(n-1) + fib(n-2)
 
         fib(100)
-        if self.module == c_functools:
+        wenn self.module == c_functools:
             fib.cache_clear()
             with support.infinite_recursion():
                 with self.assertRaises(RecursionError):
@@ -2157,7 +2157,7 @@ klasse TestLRU:
 def py_cached_func(x, y):
     return 3 * x + y
 
-if c_functools:
+wenn c_functools:
     @c_functools.lru_cache()
     def c_cached_func(x, y):
         return 3 * x + y
@@ -2179,7 +2179,7 @@ klasse TestLRUPy(TestLRU, unittest.TestCase):
 
 @unittest.skipUnless(c_functools, 'requires the C _functools module')
 klasse TestLRUC(TestLRU, unittest.TestCase):
-    if c_functools:
+    wenn c_functools:
         module = c_functools
         cached_func = c_cached_func,
 
@@ -2248,7 +2248,7 @@ klasse TestSingleDispatch(unittest.TestCase):
             "Simple test"
             return "Test"
         self.assertEqual(g.__name__, "g")
-        if sys.flags.optimize < 2:
+        wenn sys.flags.optimize < 2:
             self.assertEqual(g.__doc__, "Simple test")
 
     @unittest.skipUnless(decimal, 'requires _decimal')
@@ -2313,7 +2313,7 @@ klasse TestSingleDispatch(unittest.TestCase):
 
         # Container and Callable are registered on different base classes and
         # a generic function supporting both should always pick the Callable
-        # implementation if a C instance is passed.
+        # implementation wenn a C instance is passed.
         klasse C(collections.defaultdict):
             def __call__(self):
                 pass
@@ -2980,8 +2980,8 @@ klasse TestSingleDispatch(unittest.TestCase):
                 self.assertEqual(meth.__qualname__, prefix + meth.__name__)
                 self.assertEqual(meth.__doc__,
                                  ('My function docstring'
-                                  if support.HAVE_PY_DOCSTRINGS
-                                  else None))
+                                  wenn support.HAVE_PY_DOCSTRINGS
+                                  sonst None))
                 self.assertEqual(meth.__annotations__['arg'], int)
 
         self.assertEqual(A.func.__name__, 'func')
@@ -3135,8 +3135,8 @@ klasse TestSingleDispatch(unittest.TestCase):
             with self.subTest(meth=meth):
                 self.assertEqual(meth.__doc__,
                                  ('My function docstring'
-                                  if support.HAVE_PY_DOCSTRINGS
-                                  else None))
+                                  wenn support.HAVE_PY_DOCSTRINGS
+                                  sonst None))
                 self.assertEqual(meth.__annotations__['arg'], int)
 
         self.assertEqual(
@@ -3415,7 +3415,7 @@ klasse TestSingleDispatch(unittest.TestCase):
         r = a.t(1)
         self.assertIsNotNone(r())
         del a  # delete a after a.t
-        if not support.check_impl_detail(cpython=True):
+        wenn not support.check_impl_detail(cpython=True):
             support.gc_collect()
         self.assertIsNone(r())
 
@@ -3426,7 +3426,7 @@ klasse TestSingleDispatch(unittest.TestCase):
         r = t(1)
         self.assertIsNotNone(r())
         del t
-        if not support.check_impl_detail(cpython=True):
+        wenn not support.check_impl_detail(cpython=True):
             support.gc_collect()
         self.assertIsNone(r())
 
@@ -3612,8 +3612,8 @@ klasse TestCachedProperty(unittest.TestCase):
     def test_doc(self):
         self.assertEqual(CachedCostItem.cost.__doc__,
                          ("The cost of the item."
-                          if support.HAVE_PY_DOCSTRINGS
-                          else None))
+                          wenn support.HAVE_PY_DOCSTRINGS
+                          sonst None))
 
     def test_module(self):
         self.assertEqual(CachedCostItem.cost.__module__, CachedCostItem.__module__)
@@ -3638,5 +3638,5 @@ klasse TestCachedProperty(unittest.TestCase):
         self.assertEqual(t.prop, 1)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

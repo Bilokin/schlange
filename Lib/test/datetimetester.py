@@ -87,19 +87,19 @@ klasse TestModule(unittest.TestCase):
             self.assertIn(attr, all_attrs)
 
     def test_name_cleanup(self):
-        if '_Pure' in self.__class__.__name__:
+        wenn '_Pure' in self.__class__.__name__:
             self.skipTest('Only run fuer Fast C implementation')
 
         datetime = datetime_module
         names = set(name fuer name in dir(datetime)
-                    if not name.startswith('__') and not name.endswith('__'))
+                    wenn not name.startswith('__') and not name.endswith('__'))
         allowed = set(['MAXYEAR', 'MINYEAR', 'date', 'datetime',
                        'datetime_CAPI', 'time', 'timedelta', 'timezone',
                        'tzinfo', 'UTC', 'sys'])
         self.assertEqual(names - allowed, set([]))
 
     def test_divide_and_round(self):
-        if '_Fast' in self.__class__.__name__:
+        wenn '_Fast' in self.__class__.__name__:
             self.skipTest('Only run fuer Pure Python implementation')
 
         dar = _pydatetime._divide_and_round
@@ -132,9 +132,9 @@ klasse TestModule(unittest.TestCase):
 klasse FixedOffset(tzinfo):
 
     def __init__(self, offset, name, dstoffset=42):
-        if isinstance(offset, int):
+        wenn isinstance(offset, int):
             offset = timedelta(minutes=offset)
-        if isinstance(dstoffset, int):
+        wenn isinstance(dstoffset, int):
             dstoffset = timedelta(minutes=dstoffset)
         self.__offset = offset
         self.__name = name
@@ -202,7 +202,7 @@ klasse TestTZInfo(unittest.TestCase):
 
     def test_pickling_base(self):
         # There's no point to pickling tzinfo objects on their own (they
-        # carry no data), but they need to be picklable anyway else
+        # carry no data), but they need to be picklable anyway sonst
         # concrete subclasses can't be pickled.
         orig = tzinfo.__new__(tzinfo)
         self.assertIs(type(orig), tzinfo)
@@ -1100,7 +1100,7 @@ klasse TestTimeDelta(HarmlessMixedComparison, unittest.TestCase):
 # date tests
 
 klasse TestDateOnly(unittest.TestCase):
-    # Tests here won't pass if also run on datetime objects, so don't
+    # Tests here won't pass wenn also run on datetime objects, so don't
     # subclass this to test datetimes too.
 
     def test_delta_non_days_ignored(self):
@@ -1203,7 +1203,7 @@ klasse TestDateOnly(unittest.TestCase):
 
     @warnings_helper.ignore_warnings(category=DeprecationWarning)
     def test_strptime_leap_year(self):
-        # GH-70647: warns if parsing a format with a day and no year.
+        # GH-70647: warns wenn parsing a format with a day and no year.
         with self.assertRaises(ValueError):
             # The existing behavior that GH-70647 seeks to change.
             date.strptime('02-29', '%m-%d')
@@ -1260,8 +1260,8 @@ klasse TestDate(HarmlessMixedComparison, unittest.TestCase):
             self.assertEqual(n, d.toordinal())
             fromord = self.theclass.fromordinal(n)
             self.assertEqual(d, fromord)
-            if hasattr(fromord, "hour"):
-            # if we're checking something fancier than a date, verify
+            wenn hasattr(fromord, "hour"):
+            # wenn we're checking something fancier than a date, verify
             # the extra fields have been zeroed out
                 self.assertEqual(fromord.hour, 0)
                 self.assertEqual(fromord.minute, 0)
@@ -1277,7 +1277,7 @@ klasse TestDate(HarmlessMixedComparison, unittest.TestCase):
             d2 = self.theclass.fromordinal(n)
             self.assertEqual(d, d2)
             # Verify that moving back a day gets to the end of year-1.
-            if year > 1:
+            wenn year > 1:
                 d = self.theclass.fromordinal(n-1)
                 d2 = self.theclass(year-1, 12, 31)
                 self.assertEqual(d, d2)
@@ -1288,7 +1288,7 @@ klasse TestDate(HarmlessMixedComparison, unittest.TestCase):
         fuer year, isleap in (2000, True), (2002, False):
             n = self.theclass(year, 1, 1).toordinal()
             fuer month, maxday in zip(range(1, 13), dim):
-                if month == 2 and isleap:
+                wenn month == 2 and isleap:
                     maxday += 1
                 fuer day in range(1, maxday+1):
                     d = self.theclass(year, month, day)
@@ -1466,7 +1466,7 @@ klasse TestDate(HarmlessMixedComparison, unittest.TestCase):
             today = self.theclass.today()
             ts = time.time()
             todayagain = self.theclass.fromtimestamp(ts)
-            if today == todayagain:
+            wenn today == todayagain:
                 break
             # There are several legit reasons that could fail:
             # 1. It recently became midnight, between the today() and the
@@ -1481,8 +1481,8 @@ klasse TestDate(HarmlessMixedComparison, unittest.TestCase):
             time.sleep(0.1)
 
         # It worked or it didn't.  If it didn't, assume it's reason #2, and
-        # let the test pass if they're within half a second of each other.
-        if today != todayagain:
+        # let the test pass wenn they're within half a second of each other.
+        wenn today != todayagain:
             self.assertAlmostEqual(todayagain, today,
                                    delta=timedelta(seconds=0.5))
 
@@ -1570,7 +1570,7 @@ klasse TestDate(HarmlessMixedComparison, unittest.TestCase):
             d = self.theclass(2000+i, 12, 31)
             d1 = self.theclass(1600+i, 12, 31)
             self.assertEqual(d.isocalendar()[1:], d1.isocalendar()[1:])
-            if d.isocalendar()[1] == 53:
+            wenn d.isocalendar()[1] == 53:
                 L.append(i)
         self.assertEqual(L, iso_long_years)
 
@@ -1671,9 +1671,9 @@ klasse TestDate(HarmlessMixedComparison, unittest.TestCase):
 
     def test_resolution_info(self):
         # XXX: Should min and max respect subclassing?
-        if issubclass(self.theclass, datetime):
+        wenn issubclass(self.theclass, datetime):
             expected_class = datetime
-        else:
+        sonst:
             expected_class = date
         self.assertIsInstance(self.theclass.min, expected_class)
         self.assertIsInstance(self.theclass.max, expected_class)
@@ -1824,13 +1824,13 @@ klasse TestDate(HarmlessMixedComparison, unittest.TestCase):
         fuer year, g_offset in dataset:
             with self.subTest(year=year, specifier=specifier):
                 d = self.theclass(year, 1, 1)
-                if specifier == 'G':
+                wenn specifier == 'G':
                     year += g_offset
-                if specifier == 'C':
+                wenn specifier == 'C':
                     expected = f"{year // 100:02d}"
-                else:
+                sonst:
                     expected = f"{year:04d}"
-                    if specifier == 'F':
+                    wenn specifier == 'F':
                         expected += f"-01-01"
                 self.assertEqual(d.strftime(f"%{specifier}"), expected)
 
@@ -1977,12 +1977,12 @@ klasse TestDate(HarmlessMixedComparison, unittest.TestCase):
         # fields, but does check the month field.  This stops, e.g.,
         # datetime.datetime('1995-03-25') from yielding an insane object.
         base = b'1995-03-25'
-        if not issubclass(self.theclass, datetime):
+        wenn not issubclass(self.theclass, datetime):
             base = base[:4]
         fuer month_byte in b'9', b'\0', b'\r', b'\xff':
             self.assertRaises(TypeError, self.theclass,
                                          base[:2] + month_byte + base[3:])
-        if issubclass(self.theclass, datetime):
+        wenn issubclass(self.theclass, datetime):
             # Good bytes, but bad tzinfo:
             with self.assertRaisesRegex(TypeError, '^bad tzinfo state arg$'):
                 self.theclass(bytes([1] * len(base)), 'EST')
@@ -2379,7 +2379,7 @@ klasse TestDateTime(TestDate):
         self.assertTrue(dt1 < dt2)
 
     def test_strftime_with_bad_tzname_replace(self):
-        # verify ok if tzinfo.tzname().replace() returns a non-string
+        # verify ok wenn tzinfo.tzname().replace() returns a non-string
         klasse MyTzInfo(FixedOffset):
             def tzname(self, dt):
                 klasse MyStr(str):
@@ -2669,7 +2669,7 @@ klasse TestDateTime(TestDate):
                 s = t.timestamp()
             except OverflowError:
                 pass
-            else:
+            sonst:
                 self.assertEqual(self.theclass.fromtimestamp(s), t)
 
     def test_timestamp_aware(self):
@@ -2700,7 +2700,7 @@ klasse TestDateTime(TestDate):
             except OSError:
                 # localtime(-1) and gmtime(-1) is not supported on Windows
                 pass
-            else:
+            sonst:
                 self.assertEqual(minus_one.second, 59)
                 self.assertEqual(minus_one.microsecond, 999999)
 
@@ -2862,7 +2862,7 @@ klasse TestDateTime(TestDate):
     def test_utcnow(self):
         import time
 
-        # Call it a success if utcnow() and utcfromtimestamp() are within
+        # Call it a success wenn utcnow() and utcfromtimestamp() are within
         # a second of each other.
         tolerance = timedelta(seconds=1)
         fuer dummy in range(3):
@@ -2871,7 +2871,7 @@ klasse TestDateTime(TestDate):
 
             with self.assertWarns(DeprecationWarning):
                 from_timestamp = self.theclass.utcfromtimestamp(time.time())
-            if abs(from_timestamp - from_now) <= tolerance:
+            wenn abs(from_timestamp - from_now) <= tolerance:
                 break
             # Else try again a few times.
         self.assertLessEqual(abs(from_timestamp - from_now), tolerance)
@@ -2910,10 +2910,10 @@ klasse TestDateTime(TestDate):
         # Only local timezone and UTC are supported
         fuer tzseconds, tzname in ((0, 'UTC'), (0, 'GMT'),
                                  (-_time.timezone, _time.tzname[0])):
-            if tzseconds < 0:
+            wenn tzseconds < 0:
                 sign = '-'
                 seconds = -tzseconds
-            else:
+            sonst:
                 sign ='+'
                 seconds = tzseconds
             hours, minutes = divmod(seconds//60, 60)
@@ -2929,7 +2929,7 @@ klasse TestDateTime(TestDate):
         # yet will roundtrip
         self.assertEqual(dt.strftime(fmt), dtstr)
 
-        # Produce naive datetime if no %z is provided
+        # Produce naive datetime wenn no %z is provided
         self.assertEqual(strptime("UTC", "%Z").tzinfo, None)
 
         with self.assertRaises(ValueError): strptime("-2400", "%z")
@@ -2972,7 +2972,7 @@ klasse TestDateTime(TestDate):
 
     @warnings_helper.ignore_warnings(category=DeprecationWarning)
     def test_strptime_leap_year(self):
-        # GH-70647: warns if parsing a format with a day and no year.
+        # GH-70647: warns wenn parsing a format with a day and no year.
         with self.assertRaises(ValueError):
             # The existing behavior that GH-70647 seeks to change.
             self.theclass.strptime('02-29', '%m-%d')
@@ -3218,10 +3218,10 @@ klasse TestDateTime(TestDate):
                                   constr_name=constr_name):
                     constructor = getattr(base_obj, constr_name)
 
-                    if constr_name == "utcfromtimestamp":
+                    wenn constr_name == "utcfromtimestamp":
                         with self.assertWarns(DeprecationWarning):
                             dt = constructor(*constr_args)
-                    else:
+                    sonst:
                         dt = constructor(*constr_args)
 
                     # Test that it creates the right subclass
@@ -3252,10 +3252,10 @@ klasse TestDateTime(TestDate):
         fuer name, meth_name, kwargs in test_cases:
             with self.subTest(name):
                 constr = getattr(DateTimeSubclass, meth_name)
-                if meth_name == "utcnow":
+                wenn meth_name == "utcnow":
                     with self.assertWarns(DeprecationWarning):
                         dt = constr(**kwargs)
-                else:
+                sonst:
                     dt = constr(**kwargs)
 
                 self.assertIsInstance(dt, DateTimeSubclass)
@@ -3407,7 +3407,7 @@ klasse TestDateTime(TestDate):
         fuer ip, ts in enumerate(timespecs):
             fuer tzi in tzinfos:
                 fuer dt_tuple in datetime_bases:
-                    if ts == 'milliseconds':
+                    wenn ts == 'milliseconds':
                         new_microseconds = 1000 * (dt_tuple[6] // 1000)
                         dt_tuple = dt_tuple[0:6] + (new_microseconds,)
 
@@ -4056,10 +4056,10 @@ klasse TestTime(HarmlessMixedComparison, unittest.TestCase):
         # Only local timezone and UTC are supported
         fuer tzseconds, tzname in ((0, 'UTC'), (0, 'GMT'),
                                  (-_time.timezone, _time.tzname[0])):
-            if tzseconds < 0:
+            wenn tzseconds < 0:
                 sign = '-'
                 seconds = -tzseconds
-            else:
+            sonst:
                 sign ='+'
                 seconds = tzseconds
             hours, minutes = divmod(seconds//60, 60)
@@ -4078,7 +4078,7 @@ klasse TestTime(HarmlessMixedComparison, unittest.TestCase):
         # yet will roundtrip
         self.assertEqual(t.strftime(fmt), tstr)
 
-        # Produce naive time if no %z is provided
+        # Produce naive time wenn no %z is provided
         self.assertEqual(strptime("UTC", "%Z").tzinfo, None)
 
     def test_strptime_errors(self):
@@ -4255,20 +4255,20 @@ klasse TZInfoBase:
                               (-1439, True),
                               (1439, True),
                               (1440, False)):
-            if cls is time:
+            wenn cls is time:
                 t = cls(1, 2, 3, tzinfo=Edgy(offset))
-            elif cls is datetime:
+            sowenn cls is datetime:
                 t = cls(6, 6, 6, 1, 2, 3, tzinfo=Edgy(offset))
-            else:
+            sonst:
                 assert 0, "impossible"
-            if legit:
+            wenn legit:
                 aofs = abs(offset)
                 h, m = divmod(aofs, 60)
                 tag = "%c%02d:%02d" % (offset < 0 and '-' or '+', h, m)
-                if isinstance(t, datetime):
+                wenn isinstance(t, datetime):
                     t = t.timetz()
                 self.assertEqual(str(t), "01:02:03" + tag)
-            else:
+            sonst:
                 self.assertRaises(ValueError, str, t)
 
     def test_tzinfo_classes(self):
@@ -4322,14 +4322,14 @@ klasse TZInfoBase:
     def test_aware_compare(self):
         cls = self.theclass
 
-        # Ensure that utcoffset() gets ignored if the comparands have
+        # Ensure that utcoffset() gets ignored wenn the comparands have
         # the same tzinfo member.
         klasse OperandDependentOffset(tzinfo):
             def utcoffset(self, t):
-                if t.minute < 10:
+                wenn t.minute < 10:
                     # d0 and d1 equal after adjustment
                     return timedelta(minutes=t.minute)
-                else:
+                sonst:
                     # d2 off in the weeds
                     return timedelta(minutes=59)
 
@@ -4344,24 +4344,24 @@ klasse TZInfoBase:
                     expected = op(x.minute, y.minute)
                     self.assertEqual(got, expected)
 
-        # However, if they're different members, uctoffset is not ignored.
+        # However, wenn they're different members, uctoffset is not ignored.
         # Note that a time can't actually have an operand-dependent offset,
         # though (and time.utcoffset() passes None to tzinfo.utcoffset()),
         # so skip this test fuer time.
-        if cls is not time:
+        wenn cls is not time:
             d0 = base.replace(minute=3, tzinfo=OperandDependentOffset())
             d1 = base.replace(minute=9, tzinfo=OperandDependentOffset())
             d2 = base.replace(minute=11, tzinfo=OperandDependentOffset())
             fuer x in d0, d1, d2:
                 fuer y in d0, d1, d2:
                     got = (x > y) - (x < y)
-                    if (x is d0 or x is d1) and (y is d0 or y is d1):
+                    wenn (x is d0 or x is d1) and (y is d0 or y is d1):
                         expected = 0
-                    elif x is y is d2:
+                    sowenn x is y is d2:
                         expected = 0
-                    elif x is d2:
+                    sowenn x is d2:
                         expected = -1
-                    else:
+                    sonst:
                         self.assertIs(y, d2)
                         expected = 1
                     self.assertEqual(got, expected)
@@ -4622,7 +4622,7 @@ klasse TestTimeTZ(TestTime, TZInfoBase, unittest.TestCase):
         self.assertEqual(t2.utcoffset(), timedelta(minutes=24))
         self.assertEqual(t1, t2)
 
-        # But if they're not identical, it isn't ignored.
+        # But wenn they're not identical, it isn't ignored.
         t2 = t2.replace(tzinfo=Varies())
         self.assertTrue(t1 < t2)  # t1's offset counter still going up
 
@@ -4709,7 +4709,7 @@ klasse TestTimeTZ(TestTime, TZInfoBase, unittest.TestCase):
         fuer ip, ts in enumerate(timespecs):
             fuer tzi in tzinfos:
                 fuer t_tuple in time_bases:
-                    if ts == 'milliseconds':
+                    wenn ts == 'milliseconds':
                         new_microseconds = 1000 * (t_tuple[-1] // 1000)
                         t_tuple = t_tuple[0:-1] + (new_microseconds,)
 
@@ -4944,7 +4944,7 @@ klasse TestDateTimeTZ(TestDateTime, TZInfoBase, unittest.TestCase):
         with self.assertRaises(TypeError):
             t1 > t2
 
-        # It's also naive if it has tzinfo but tzinfo.utcoffset() is None.
+        # It's also naive wenn it has tzinfo but tzinfo.utcoffset() is None.
         klasse Naive(tzinfo):
             def utcoffset(self, dt): return None
         t2 = self.theclass(5, 6, 7, tzinfo=Naive())
@@ -5178,11 +5178,11 @@ klasse TestDateTimeTZ(TestDateTime, TZInfoBase, unittest.TestCase):
                 with self.assertWarns(DeprecationWarning):
                     utcnow = datetime.utcnow().replace(tzinfo=utc)
                 now2 = utcnow.astimezone(weirdtz)
-                if abs(now - now2) < timedelta(seconds=30):
+                wenn abs(now - now2) < timedelta(seconds=30):
                     break
                 # Else the code is broken, or more than 30 seconds passed between
                 # calls; assuming the latter, just try again.
-            else:
+            sonst:
                 # Three strikes and we're out.
                 self.fail("utcnow(), now(tz), or astimezone() may be broken")
 
@@ -5253,7 +5253,7 @@ klasse TestDateTimeTZ(TestDateTime, TZInfoBase, unittest.TestCase):
         # DST flag.
         klasse DST(tzinfo):
             def __init__(self, dstvalue):
-                if isinstance(dstvalue, int):
+                wenn isinstance(dstvalue, int):
                     dstvalue = timedelta(minutes=dstvalue)
                 self.dstvalue = dstvalue
             def dst(self, dt):
@@ -5287,7 +5287,7 @@ klasse TestDateTimeTZ(TestDateTime, TZInfoBase, unittest.TestCase):
     def test_utctimetuple(self):
         klasse DST(tzinfo):
             def __init__(self, dstvalue=0):
-                if isinstance(dstvalue, int):
+                wenn isinstance(dstvalue, int):
                     dstvalue = timedelta(minutes=dstvalue)
                 self.dstvalue = dstvalue
             def dst(self, dt):
@@ -5326,7 +5326,7 @@ klasse TestDateTimeTZ(TestDateTime, TZInfoBase, unittest.TestCase):
         t = d.utctimetuple()
         self.assertEqual(t[:-1], d.timetuple()[:-1])
         self.assertEqual(0, t.tm_isdst)
-        # Same if utcoffset is None
+        # Same wenn utcoffset is None
         klasse NOFS(DST):
             def utcoffset(self, dt):
                 return None
@@ -5494,10 +5494,10 @@ klasse TestDateTimeTZ(TestDateTime, TZInfoBase, unittest.TestCase):
         # same tzinfo member.
         klasse OperandDependentOffset(tzinfo):
             def utcoffset(self, t):
-                if t.minute < 10:
+                wenn t.minute < 10:
                     # d0 and d1 equal after adjustment
                     return timedelta(minutes=t.minute)
-                else:
+                sonst:
                     # d2 off in the weeds
                     return timedelta(minutes=59)
 
@@ -5511,7 +5511,7 @@ klasse TestDateTimeTZ(TestDateTime, TZInfoBase, unittest.TestCase):
                 expected = timedelta(minutes=x.minute - y.minute)
                 self.assertEqual(got, expected)
 
-        # OTOH, if the tzinfo members are distinct, utcoffsets aren't
+        # OTOH, wenn the tzinfo members are distinct, utcoffsets aren't
         # ignored.
         base = cls(8, 9, 10, 11, 12, 13, 14)
         d0 = base.replace(minute=3, tzinfo=OperandDependentOffset())
@@ -5520,13 +5520,13 @@ klasse TestDateTimeTZ(TestDateTime, TZInfoBase, unittest.TestCase):
         fuer x in d0, d1, d2:
             fuer y in d0, d1, d2:
                 got = x - y
-                if (x is d0 or x is d1) and (y is d0 or y is d1):
+                wenn (x is d0 or x is d1) and (y is d0 or y is d1):
                     expected = timedelta(0)
-                elif x is y is d2:
+                sowenn x is y is d2:
                     expected = timedelta(0)
-                elif x is d2:
+                sowenn x is d2:
                     expected = timedelta(minutes=(11-59)-0)
-                else:
+                sonst:
                     self.assertIs(y, d2)
                     expected = timedelta(minutes=0-(11-59))
                 self.assertEqual(got, expected)
@@ -5557,7 +5557,7 @@ klasse TestDateTimeTZ(TestDateTime, TZInfoBase, unittest.TestCase):
         self.assertEqual(t2.utcoffset(), timedelta(minutes=24))
         self.assertEqual(t1, t2)
 
-        # But if they're not identical, it isn't ignored.
+        # But wenn they're not identical, it isn't ignored.
         t2 = t2.replace(tzinfo=Varies())
         self.assertTrue(t1 < t2)  # t1's offset counter still going up
 
@@ -5591,7 +5591,7 @@ klasse TestDateTimeTZ(TestDateTime, TZInfoBase, unittest.TestCase):
 
 def first_sunday_on_or_after(dt):
     days_to_go = 6 - dt.weekday()
-    if days_to_go:
+    wenn days_to_go:
         dt += timedelta(days_to_go)
     return dt
 
@@ -5619,16 +5619,16 @@ klasse USTimeZone(tzinfo):
         return self.reprname
 
     def tzname(self, dt):
-        if self.dst(dt):
+        wenn self.dst(dt):
             return self.dstname
-        else:
+        sonst:
             return self.stdname
 
     def utcoffset(self, dt):
         return self.stdoffset + self.dst(dt)
 
     def dst(self, dt):
-        if dt is None or dt.tzinfo is None:
+        wenn dt is None or dt.tzinfo is None:
             # An exception instead may be sensible here, in one or more of
             # the cases.
             return ZERO
@@ -5644,9 +5644,9 @@ klasse USTimeZone(tzinfo):
 
         # Can't compare naive to aware objects, so strip the timezone from
         # dt first.
-        if start <= dt.replace(tzinfo=None) < end:
+        wenn start <= dt.replace(tzinfo=None) < end:
             return HOUR
-        else:
+        sonst:
             return ZERO
 
 Eastern  = USTimeZone(-5, "Eastern",  "EST", "EDT")
@@ -5683,7 +5683,7 @@ klasse TestTimezoneConversions(unittest.TestCase):
         # daylight time then (it's "after 2am"), really an alias
         # fuer 1:MM:SS standard time.  The latter form is what
         # conversion back from UTC produces.
-        if dt.date() == dston.date() and dt.hour == 2:
+        wenn dt.date() == dston.date() and dt.hour == 2:
             # We're in the redundant hour, and coming back from
             # UTC gives the 1:MM:SS standard-time spelling.
             self.assertEqual(there_and_back + HOUR, dt)
@@ -5693,7 +5693,7 @@ klasse TestTimezoneConversions(unittest.TestCase):
             # They're the same times in UTC.
             self.assertEqual(there_and_back.astimezone(utc),
                              dt.astimezone(utc))
-        else:
+        sonst:
             # We're not in the redundant hour.
             self.assertEqual(dt, there_and_back)
 
@@ -5707,14 +5707,14 @@ klasse TestTimezoneConversions(unittest.TestCase):
         # from UTC to mimic the local clock's "repeat an hour" behavior.
         nexthour_utc = asutc + HOUR
         nexthour_tz = nexthour_utc.astimezone(tz)
-        if dt.date() == dstoff.date() and dt.hour == 0:
+        wenn dt.date() == dstoff.date() and dt.hour == 0:
             # We're in the hour before the last DST hour.  The last DST hour
             # is ineffable.  We want the conversion back to repeat 1:MM.
             self.assertEqual(nexthour_tz, dt.replace(hour=1))
             nexthour_utc += HOUR
             nexthour_tz = nexthour_utc.astimezone(tz)
             self.assertEqual(nexthour_tz, dt.replace(hour=1))
-        else:
+        sonst:
             self.assertEqual(nexthour_tz - dt, HOUR)
 
     # Check a time that's outside DST.
@@ -5769,7 +5769,7 @@ klasse TestTimezoneConversions(unittest.TestCase):
         # For these adjacent DST-aware time zones, the range of time offsets
         # tested ends up creating hours in the one that aren't representable
         # in the other.  For the same reason, we would see failures in the
-        # Eastern vs Pacific tests too if we added 3*HOUR to the list of
+        # Eastern vs Pacific tests too wenn we added 3*HOUR to the list of
         # offset deltas in convert_between_tz_and_utc().
         #
         # self.convert_between_tz_and_utc(Eastern, Central)  # can't work
@@ -5846,9 +5846,9 @@ klasse TestTimezoneConversions(unittest.TestCase):
         # a ValueError should be raised by astimezone().
         klasse tricky_notok(ok):
             def dst(self, dt):
-                if dt.year == 2000:
+                wenn dt.year == 2000:
                     return None
-                else:
+                sonst:
                     return 10*HOUR
         dt = self.theclass(2001, 1, 1).replace(tzinfo=utc_real)
         self.assertRaises(ValueError, dt.astimezone, tricky_notok())
@@ -5878,7 +5878,7 @@ klasse TestTimezoneConversions(unittest.TestCase):
         fstart = start.replace(tzinfo=FEastern)
         fuer wall in 23, 0, 1, 3, 4, 5:
             expected = start.replace(hour=wall)
-            if wall == 23:
+            wenn wall == 23:
                 expected -= timedelta(days=1)
             got = Eastern.fromutc(start)
             self.assertEqual(expected, got)
@@ -5952,7 +5952,7 @@ klasse Oddballs(unittest.TestCase):
             self.assertTrue(x <= y)
             self.assertTrue(x >= y)
 
-        # Nevertheless, comparison should work if other object is an instance
+        # Nevertheless, comparison should work wenn other object is an instance
         # of date or datetime klasse with overridden comparison operators.
         # So special methods should return NotImplemented, as if
         # date and datetime were independent classes.
@@ -6009,29 +6009,29 @@ klasse tzinfo2(tzinfo):
     def fromutc(self, dt):
         "datetime in UTC -> datetime in local time."
 
-        if not isinstance(dt, datetime):
+        wenn not isinstance(dt, datetime):
             raise TypeError("fromutc() requires a datetime argument")
-        if dt.tzinfo is not self:
+        wenn dt.tzinfo is not self:
             raise ValueError("dt.tzinfo is not self")
         # Returned value satisfies
         #          dt + ldt.utcoffset() = ldt
         off0 = dt.replace(fold=0).utcoffset()
         off1 = dt.replace(fold=1).utcoffset()
-        if off0 is None or off1 is None or dt.dst() is None:
+        wenn off0 is None or off1 is None or dt.dst() is None:
             raise ValueError
-        if off0 == off1:
+        wenn off0 == off1:
             ldt = dt + off0
             off1 = ldt.utcoffset()
-            if off0 == off1:
+            wenn off0 == off1:
                 return ldt
         # Now, we discovered both possible offsets, so
         # we can just try four possible solutions:
         fuer off in [off0, off1]:
             ldt = dt + off
-            if ldt.utcoffset() == off:
+            wenn ldt.utcoffset() == off:
                 return ldt
             ldt = ldt.replace(fold=1)
-            if ldt.utcoffset() == off:
+            wenn ldt.utcoffset() == off:
                 return ldt
 
         raise ValueError("No suitable local time found")
@@ -6050,16 +6050,16 @@ klasse USTimeZone2(tzinfo2):
         return self.reprname
 
     def tzname(self, dt):
-        if self.dst(dt):
+        wenn self.dst(dt):
             return self.dstname
-        else:
+        sonst:
             return self.stdname
 
     def utcoffset(self, dt):
         return self.stdoffset + self.dst(dt)
 
     def dst(self, dt):
-        if dt is None or dt.tzinfo is None:
+        wenn dt is None or dt.tzinfo is None:
             # An exception instead may be sensible here, in one or more of
             # the cases.
             return ZERO
@@ -6076,16 +6076,16 @@ klasse USTimeZone2(tzinfo2):
         # Can't compare naive to aware objects, so strip the timezone from
         # dt first.
         dt = dt.replace(tzinfo=None)
-        if start + HOUR <= dt < end:
+        wenn start + HOUR <= dt < end:
             # DST is in effect.
             return HOUR
-        elif end <= dt < end + HOUR:
+        sowenn end <= dt < end + HOUR:
             # Fold (an ambiguous hour): use dt.fold to disambiguate.
-            return ZERO if dt.fold else HOUR
-        elif start <= dt < start + HOUR:
+            return ZERO wenn dt.fold sonst HOUR
+        sowenn start <= dt < start + HOUR:
             # Gap (a non-existent hour): reverse the fold rule.
-            return HOUR if dt.fold else ZERO
-        else:
+            return HOUR wenn dt.fold sonst ZERO
+        sonst:
             # DST is off.
             return ZERO
 
@@ -6117,42 +6117,42 @@ klasse Europe_Vilnius_1941(tzinfo):
 
     def utcoffset(self, dt):
         fold_start, fold_stop = self._loc_fold()
-        if dt < fold_start:
+        wenn dt < fold_start:
             return 3 * HOUR
-        if dt < fold_stop:
-            return (2 if dt.fold else 3) * HOUR
-        # if dt >= fold_stop
+        wenn dt < fold_stop:
+            return (2 wenn dt.fold sonst 3) * HOUR
+        # wenn dt >= fold_stop
         return 2 * HOUR
 
     def dst(self, dt):
         fold_start, fold_stop = self._loc_fold()
-        if dt < fold_start:
+        wenn dt < fold_start:
             return 0 * HOUR
-        if dt < fold_stop:
-            return (1 if dt.fold else 0) * HOUR
-        # if dt >= fold_stop
+        wenn dt < fold_stop:
+            return (1 wenn dt.fold sonst 0) * HOUR
+        # wenn dt >= fold_stop
         return 1 * HOUR
 
     def tzname(self, dt):
         fold_start, fold_stop = self._loc_fold()
-        if dt < fold_start:
+        wenn dt < fold_start:
             return 'MSK'
-        if dt < fold_stop:
+        wenn dt < fold_stop:
             return ('MSK', 'CEST')[dt.fold]
-        # if dt >= fold_stop
+        # wenn dt >= fold_stop
         return 'CEST'
 
     def fromutc(self, dt):
         assert dt.fold == 0
         assert dt.tzinfo is self
-        if dt.year != 1941:
+        wenn dt.year != 1941:
             raise NotImplementedError
         fold_start, fold_stop = self._utc_fold()
-        if dt < fold_start:
+        wenn dt < fold_start:
             return dt + 3 * HOUR
-        if dt < fold_stop:
+        wenn dt < fold_stop:
             return (dt + 2 * HOUR).replace(fold=1)
-        # if dt >= fold_stop
+        # wenn dt >= fold_stop
         return dt + 2 * HOUR
 
 
@@ -6266,7 +6266,7 @@ klasse TestLocalTimeDisambiguation(unittest.TestCase):
     @support.run_with_tz('Australia/Lord_Howe')
     def test_fromtimestamp_lord_howe(self):
         tm = _time.localtime(1.4e9)
-        if _time.strftime('%Z%z', tm) != 'LHST+1030':
+        wenn _time.strftime('%Z%z', tm) != 'LHST+1030':
             self.skipTest('Australia/Lord_Howe timezone is not supported on this platform')
         # $ TZ=Australia/Lord_Howe date -r 1428158700
         # Sun Apr  5 01:45:00 LHDT 2015
@@ -6294,7 +6294,7 @@ klasse TestLocalTimeDisambiguation(unittest.TestCase):
     @support.run_with_tz('Australia/Lord_Howe')
     def test_timestamp_lord_howe(self):
         tm = _time.localtime(1.4e9)
-        if _time.strftime('%Z%z', tm) != 'LHST+1030':
+        wenn _time.strftime('%Z%z', tm) != 'LHST+1030':
             self.skipTest('Australia/Lord_Howe timezone is not supported on this platform')
         t = datetime(2015, 4, 5, 1, 45)
         s0 = t.replace(fold=0).timestamp()
@@ -6324,7 +6324,7 @@ klasse TestLocalTimeDisambiguation(unittest.TestCase):
                 s = pickler.dumps(x, proto)
                 y = unpickler.loads(s)
                 self.assertEqual(x, y)
-                self.assertEqual((0 if proto < 4 else x.fold), y.fold)
+                self.assertEqual((0 wenn proto < 4 sonst x.fold), y.fold)
 
     def test_repr(self):
         t = time(fold=1)
@@ -6454,7 +6454,7 @@ klasse ZoneInfo(tzinfo):
     @staticmethod
     def invert(ut, ti):
         lt = (array('q', ut), array('q', ut))
-        if ut:
+        wenn ut:
             offset = ti[0][0] // SEC
             lt[0][0] += offset
             lt[1][0] += offset
@@ -6465,17 +6465,17 @@ klasse ZoneInfo(tzinfo):
 
     @classmethod
     def fromfile(cls, fileobj):
-        if fileobj.read(4).decode() != "TZif":
+        wenn fileobj.read(4).decode() != "TZif":
             raise ValueError("not a zoneinfo file")
         fileobj.seek(32)
         counts = array('i')
         counts.fromfile(fileobj, 3)
-        if sys.byteorder != 'big':
+        wenn sys.byteorder != 'big':
             counts.byteswap()
 
         ut = array('i')
         ut.fromfile(fileobj, counts[0])
-        if sys.byteorder != 'big':
+        wenn sys.byteorder != 'big':
             ut.byteswap()
 
         type_indices = array('B')
@@ -6511,9 +6511,9 @@ klasse ZoneInfo(tzinfo):
     def fromutc(self, dt):
         """datetime in UTC -> datetime in local time."""
 
-        if not isinstance(dt, datetime):
+        wenn not isinstance(dt, datetime):
             raise TypeError("fromutc() requires a datetime argument")
-        if dt.tzinfo is not self:
+        wenn dt.tzinfo is not self:
             raise ValueError("dt.tzinfo is not self")
 
         timestamp = ((dt.toordinal() - self.EPOCHORDINAL) * 86400
@@ -6521,10 +6521,10 @@ klasse ZoneInfo(tzinfo):
                      + dt.minute * 60
                      + dt.second)
 
-        if timestamp < self.ut[1]:
+        wenn timestamp < self.ut[1]:
             tti = self.ti[0]
             fold = 0
-        else:
+        sonst:
             idx = bisect.bisect_right(self.ut, timestamp)
             assert self.ut[idx-1] <= timestamp
             assert idx == len(self.ut) or timestamp < self.ut[idx]
@@ -6533,9 +6533,9 @@ klasse ZoneInfo(tzinfo):
             shift = tti_prev[0] - tti[0]
             fold = (shift > timedelta(0, timestamp - self.ut[idx-1]))
         dt += tti[0]
-        if fold:
+        wenn fold:
             return dt.replace(fold=1)
-        else:
+        sonst:
             return dt
 
     def _find_ti(self, dt, i):
@@ -6557,14 +6557,14 @@ klasse ZoneInfo(tzinfo):
         # so let's return 1h whenever DST is in effect.  Since
         # we don't use dst() in fromutc(), it is unlikely that
         # it will be needed fuer anything more than bool(dst()).
-        return ZERO if isdst else HOUR
+        return ZERO wenn isdst sonst HOUR
 
     def tzname(self, dt):
         return self._find_ti(dt, 2)
 
     @classmethod
     def zonenames(cls, zonedir=None):
-        if zonedir is None:
+        wenn zonedir is None:
             zonedir = cls.zoneroot
         zone_tab = os.path.join(zonedir, 'zone.tab')
         try:
@@ -6574,7 +6574,7 @@ klasse ZoneInfo(tzinfo):
         with f:
             fuer line in f:
                 line = line.strip()
-                if line and not line.startswith('#'):
+                wenn line and not line.startswith('#'):
                     yield line.split()[2]
 
     @classmethod
@@ -6591,30 +6591,30 @@ klasse ZoneInfo(tzinfo):
             count += 1
             tz = cls.fromname(zonename)
             fuer dt, shift in tz.transitions():
-                if dt < stats_since:
+                wenn dt < stats_since:
                     continue
-                if shift > ZERO:
+                wenn shift > ZERO:
                     gap_count += 1
-                    if (shift, dt) > (max_gap, max_gap_datetime):
+                    wenn (shift, dt) > (max_gap, max_gap_datetime):
                         max_gap = shift
                         max_gap_zone = zonename
                         max_gap_datetime = dt
-                    if (shift, datetime.max - dt) < (min_gap, datetime.max - min_gap_datetime):
+                    wenn (shift, datetime.max - dt) < (min_gap, datetime.max - min_gap_datetime):
                         min_gap = shift
                         min_gap_zone = zonename
                         min_gap_datetime = dt
-                elif shift < ZERO:
+                sowenn shift < ZERO:
                     fold_count += 1
                     shift = -shift
-                    if (shift, dt) > (max_fold, max_fold_datetime):
+                    wenn (shift, dt) > (max_fold, max_fold_datetime):
                         max_fold = shift
                         max_fold_zone = zonename
                         max_fold_datetime = dt
-                    if (shift, datetime.max - dt) < (min_fold, datetime.max - min_fold_datetime):
+                    wenn (shift, datetime.max - dt) < (min_fold, datetime.max - min_fold_datetime):
                         min_fold = shift
                         min_fold_zone = zonename
                         min_fold_datetime = dt
-                else:
+                sonst:
                     zeros_count += 1
         trans_counts = (gap_count, fold_count, zeros_count)
         print("Number of zones:       %5d" % count)
@@ -6635,7 +6635,7 @@ klasse ZoneInfo(tzinfo):
         """Find all folds with the same value of isdst on both sides of the transition."""
         fuer (_, prev_ti), (t, ti) in pairs(zip(self.ut, self.ti)):
             shift = ti[0] - prev_ti[0]
-            if shift < ZERO and ti[1] == prev_ti[1]:
+            wenn shift < ZERO and ti[1] == prev_ti[1]:
                 yield _utcfromtimestamp(datetime, t,), -shift, prev_ti[2], ti[2]
 
     @classmethod
@@ -6644,7 +6644,7 @@ klasse ZoneInfo(tzinfo):
         fuer zonename in cls.zonenames():
             tz = cls.fromname(zonename)
             fuer dt, shift, prev_abbr, abbr in tz.nondst_folds():
-                if dt.year < start_year or same_abbr and prev_abbr != abbr:
+                wenn dt.year < start_year or same_abbr and prev_abbr != abbr:
                     continue
                 count += 1
                 print("%3d) %-30s %s %10s %5s -> %s" %
@@ -6652,17 +6652,17 @@ klasse ZoneInfo(tzinfo):
 
     def folds(self):
         fuer t, shift in self.transitions():
-            if shift < ZERO:
+            wenn shift < ZERO:
                 yield t, -shift
 
     def gaps(self):
         fuer t, shift in self.transitions():
-            if shift > ZERO:
+            wenn shift > ZERO:
                 yield t, shift
 
     def zeros(self):
         fuer t, shift in self.transitions():
-            if not shift:
+            wenn not shift:
                 yield t
 
 
@@ -6670,9 +6670,9 @@ klasse ZoneInfoTest(unittest.TestCase):
     zonename = 'America/New_York'
 
     def setUp(self):
-        if sys.platform == "vxworks":
+        wenn sys.platform == "vxworks":
             self.skipTest("Skipping zoneinfo tests on VxWorks")
-        if sys.platform == "win32":
+        wenn sys.platform == "win32":
             self.skipTest("Skipping zoneinfo tests on Windows")
         try:
             self.tz = ZoneInfo.fromname(self.zonename)
@@ -6743,7 +6743,7 @@ klasse ZoneInfoTest(unittest.TestCase):
         hasattr(_time, "tzset"), "time module has no attribute tzset"
     )
     def test_system_transitions(self):
-        if ('Riyadh8' in self.zonename or
+        wenn ('Riyadh8' in self.zonename or
             # From tzdata NEWS file:
             # The files solar87, solar88, and solar89 are no longer distributed.
             # They were a negative experiment - that is, a demonstration that
@@ -6755,7 +6755,7 @@ klasse ZoneInfoTest(unittest.TestCase):
         tz = self.tz
         with self._change_tz(self.zonename):
             fuer udt, shift in tz.transitions():
-                if udt.year >= 2037:
+                wenn udt.year >= 2037:
                     # System support fuer times around the end of 32-bit time_t
                     # and later is flaky on many systems.
                     break
@@ -6769,7 +6769,7 @@ klasse ZoneInfoTest(unittest.TestCase):
                     self.assertEquivDatetimes(sdt, tzdt)
                     s1 = sdt.timestamp()
                     self.assertEqual(s, s1)
-                if ss > 0:  # gap
+                wenn ss > 0:  # gap
                     # Create local time inside the gap
                     dt = datetime.fromtimestamp(s0) - shift / 2
                     ts0 = dt.timestamp()
@@ -6785,12 +6785,12 @@ klasse ZoneInfoTest(unittest.TestCase):
 klasse ZoneInfoCompleteTest(unittest.TestSuite):
     def __init__(self):
         tests = []
-        if is_resource_enabled('tzdata'):
+        wenn is_resource_enabled('tzdata'):
             fuer name in ZoneInfo.zonenames():
                 Test = type('ZoneInfoTest[%s]' % name, (ZoneInfoTest,), {})
                 Test.zonename = name
                 fuer method in dir(Test):
-                    if method.startswith('test_'):
+                    wenn method.startswith('test_'):
                         tests.append(Test(method))
         super().__init__(tests)
 
@@ -6803,7 +6803,7 @@ klasse IranTest(ZoneInfoTest):
 klasse CapiTest(unittest.TestCase):
     def setUp(self):
         # Since the C API is not present in the _Pure tests, skip all tests
-        if self.__class__.__name__.endswith('Pure'):
+        wenn self.__class__.__name__.endswith('Pure'):
             self.skipTest('Not relevant in pure Python')
 
         # This *must* be called, and it must be called first, so until either
@@ -7193,16 +7193,16 @@ klasse CapiTest(unittest.TestCase):
     def test_type_check_in_subinterp(self):
         # iOS requires the use of the custom framework loader,
         # not the ExtensionFileLoader.
-        if sys.platform == "ios":
+        wenn sys.platform == "ios":
             extension_loader = "AppleFrameworkLoader"
-        else:
+        sonst:
             extension_loader = "ExtensionFileLoader"
 
         script = textwrap.dedent(f"""
-            if {_interpreters is None}:
+            wenn {_interpreters is None}:
                 import _testcapi as module
                 module.test_datetime_capi()
-            else:
+            sonst:
                 import importlib.machinery
                 import importlib.util
                 fullname = '_testcapi_datetime'
@@ -7213,7 +7213,7 @@ klasse CapiTest(unittest.TestCase):
                 spec.loader.exec_module(module)
 
             def run(type_checker, obj):
-                if not type_checker(obj, True):
+                wenn not type_checker(obj, True):
                     raise TypeError(f'{{type(obj)}} is not C API type')
 
             import _datetime
@@ -7223,10 +7223,10 @@ klasse CapiTest(unittest.TestCase):
             run(module.datetime_check_delta,    _datetime.timedelta(1))
             run(module.datetime_check_tzinfo,   _datetime.tzinfo())
         """)
-        if _interpreters is None:
+        wenn _interpreters is None:
             ret = support.run_in_subinterp(script)
             self.assertEqual(ret, 0)
-        else:
+        sonst:
             fuer name in ('isolated', 'legacy'):
                 with self.subTest(name):
                     config = _interpreters.new_config(name).__dict__
@@ -7237,7 +7237,7 @@ klasse CapiTest(unittest.TestCase):
 klasse ExtensionModuleTests(unittest.TestCase):
 
     def setUp(self):
-        if self.__class__.__name__.endswith('Pure'):
+        wenn self.__class__.__name__.endswith('Pure'):
             self.skipTest('Not relevant in pure Python')
 
     @support.cpython_only
@@ -7341,5 +7341,5 @@ def load_tests(loader, standard_tests, pattern):
     return standard_tests
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

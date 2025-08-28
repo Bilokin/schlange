@@ -41,7 +41,7 @@ Unpack generic sequence
 
     >>> klasse Seq:
     ...     def __getitem__(self, i):
-    ...         if i >= 0 and i < 3: return i
+    ...         wenn i >= 0 and i < 3: return i
     ...         raise IndexError
     ...
     >>> a, b, c = Seq()
@@ -104,11 +104,11 @@ error
     ...
     >>> klasse BadSeq:
     ...     def __getitem__(self, i):
-    ...         if i >= 0 and i < 3:
+    ...         wenn i >= 0 and i < 3:
     ...             return i
-    ...         elif i == 3:
+    ...         sowenn i == 3:
     ...             raise BozoError
-    ...         else:
+    ...         sonst:
     ...             raise IndexError
     ...
 
@@ -218,5 +218,5 @@ klasse TestCornerCases(unittest.TestCase):
             y = unpack_400(range(400))
             self.assertEqual(y, 399)
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

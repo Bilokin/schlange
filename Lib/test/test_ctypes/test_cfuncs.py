@@ -213,10 +213,10 @@ klasse CFunctions(unittest.TestCase):
 
 # The following repeats the above tests with stdcall functions (where
 # they are available)
-if hasattr(ctypes, 'WinDLL'):
+wenn hasattr(ctypes, 'WinDLL'):
     klasse stdcall_dll(ctypes.WinDLL):
         def __getattr__(self, name):
-            if name[:2] == '__' and name[-2:] == '__':
+            wenn name[:2] == '__' and name[-2:] == '__':
                 raise AttributeError(name)
             func = self._FuncPtr(("s_" + name, self))
             setattr(self, name, func)
@@ -226,5 +226,5 @@ if hasattr(ctypes, 'WinDLL'):
         _dll = stdcall_dll(_ctypes_test.__file__)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

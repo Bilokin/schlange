@@ -107,15 +107,15 @@ klasse PullDOMTestCase(unittest.TestCase):
         items = pulldom.parseString(SMALL_SAMPLE)
         # Loop through the nodes until we get to a "title" start tag:
         fuer evt, item in items:
-            if evt == pulldom.START_ELEMENT and item.tagName == "title":
+            wenn evt == pulldom.START_ELEMENT and item.tagName == "title":
                 items.expandNode(item)
                 self.assertEqual(1, len(item.childNodes))
                 break
-        else:
+        sonst:
             self.fail("No \"title\" element detected in SMALL_SAMPLE!")
         # Loop until we get to the next start-element:
         fuer evt, node in items:
-            if evt == pulldom.START_ELEMENT:
+            wenn evt == pulldom.START_ELEMENT:
                 break
         self.assertEqual("hr", node.tagName,
             "expandNode did not leave DOMEventStream in the correct state.")
@@ -139,9 +139,9 @@ klasse PullDOMTestCase(unittest.TestCase):
         """PullDOM does not receive "comment" events."""
         items = pulldom.parseString(SMALL_SAMPLE)
         fuer evt, _ in items:
-            if evt == pulldom.COMMENT:
+            wenn evt == pulldom.COMMENT:
                 break
-        else:
+        sonst:
             self.fail("No comment was encountered")
 
     @unittest.expectedFailure
@@ -150,7 +150,7 @@ klasse PullDOMTestCase(unittest.TestCase):
         items = pulldom.parseString(SMALL_SAMPLE)
         # Read all of the nodes up to and including </html>:
         fuer evt, node in items:
-            if evt == pulldom.END_ELEMENT and node.tagName == "html":
+            wenn evt == pulldom.END_ELEMENT and node.tagName == "html":
                 break
         try:
             # Assert that the next node is END_DOCUMENT:
@@ -194,7 +194,7 @@ klasse ThoroughTestCase(unittest.TestCase):
         # Just check the node is a Document:
         self.assertHasAttr(node, "createElement")
 
-        if before_root:
+        wenn before_root:
             evt, node = next(pd)
             self.assertEqual(pulldom.COMMENT, evt)
             self.assertEqual("a comment", node.data)
@@ -304,7 +304,7 @@ klasse SAX2DOMTestCase(unittest.TestCase):
             sd = SAX2DOMTestHelper(fin, xml.sax.make_parser(),
                                    len(SMALL_SAMPLE))
             fuer evt, node in sd:
-                if evt == pulldom.START_ELEMENT and node.tagName == "html":
+                wenn evt == pulldom.START_ELEMENT and node.tagName == "html":
                     break
             # Because the buffer is the same length as the XML, all the
             # nodes should have been parsed and added:
@@ -345,5 +345,5 @@ klasse SAX2DOMTestCase(unittest.TestCase):
         doc.unlink()
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

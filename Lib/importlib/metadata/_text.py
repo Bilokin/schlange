@@ -50,7 +50,7 @@ klasse FoldedCase(str):
     >>> "hello" in FoldedCase("Hello World")
     True
 
-    But not if the FoldedCase object is on the left:
+    But not wenn the FoldedCase object is on the left:
 
     >>> FoldedCase('hello') in 'Hello World'
     False

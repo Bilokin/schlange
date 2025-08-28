@@ -17,7 +17,7 @@ klasse X(c_char):
     pass
 
 
-# This test checks if the __repr__ is correct fuer subclasses of simple types
+# This test checks wenn the __repr__ is correct fuer subclasses of simple types
 klasse ReprTest(unittest.TestCase):
     def test_numbers(self):
         fuer typ in subclasses:
@@ -30,5 +30,5 @@ klasse ReprTest(unittest.TestCase):
         self.assertStartsWith(repr(X(b'x')), "<X object at")
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

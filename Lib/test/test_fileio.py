@@ -34,7 +34,7 @@ klasse AutoFileTests:
         self.f = self.FileIO(TESTFN, 'w')
 
     def tearDown(self):
-        if self.f:
+        wenn self.f:
             self.f.close()
         os.remove(TESTFN)
 
@@ -78,8 +78,8 @@ klasse AutoFileTests:
     def testBlksize(self):
         # test private _blksize attribute
         blksize = io.DEFAULT_BUFFER_SIZE
-        # try to get preferred blksize from stat.st_blksize, if available
-        if hasattr(os, 'fstat'):
+        # try to get preferred blksize from stat.st_blksize, wenn available
+        wenn hasattr(os, 'fstat'):
             fst = os.fstat(self.f.fileno())
             blksize = getattr(fst, 'st_blksize', blksize)
         self.assertEqual(self.f._blksize, blksize)
@@ -250,7 +250,7 @@ klasse AutoFileTests:
         except OSError as e:
             self.assertNotEqual(e.errno, 0)
             self.assertEqual(e.filename, ".")
-        else:
+        sonst:
             self.fail("Should have raised OSError")
 
     @unittest.skipIf(os.name == 'nt', "test only works on a POSIX-like system")
@@ -261,7 +261,7 @@ klasse AutoFileTests:
         os.close(fd)
         self.assertEqual(cm.exception.errno, errno.EISDIR)
 
-    #A set of functions testing that we get expected behaviour if someone has
+    #A set of functions testing that we get expected behaviour wenn someone has
     #manually closed the internal file descriptor.  First, a decorator:
     def ClosedFD(func):
         @wraps(func)
@@ -288,7 +288,7 @@ klasse AutoFileTests:
                 func(self, f)
             except OSError as e:
                 self.assertEqual(e.errno, errno.EBADF)
-            else:
+            sonst:
                 self.fail("Should have raised OSError")
             finally:
                 try:
@@ -413,7 +413,7 @@ klasse AutoFileTests:
                 # behaviors in a libc (ex. fstat, newfstatat, statx, open, openat).
                 # Allow any that use the same substring.
                 def count_similarname(name):
-                    return len([ev fuer ev in syscalls if name in ev.syscall])
+                    return len([ev fuer ev in syscalls wenn name in ev.syscall])
 
                 checks = [
                     # Should open and close the file exactly once
@@ -430,7 +430,7 @@ klasse AutoFileTests:
                     ("stat", 1)
                 ]
 
-                if extra_checks:
+                wenn extra_checks:
                     checks += extra_checks
 
                 fuer call, count in checks:
@@ -531,7 +531,7 @@ klasse OtherFileTests:
             self.assertEqual(f.isatty(), False)
             f.close()
 
-            if sys.platform != "win32":
+            wenn sys.platform != "win32":
                 try:
                     f = self.FileIO("/dev/tty", "a")
                 except OSError:
@@ -539,10 +539,10 @@ klasse OtherFileTests:
                     # ttys, so skip the test.  This also handles other
                     # OS'es that don't support /dev/tty.
                     pass
-                else:
+                sonst:
                     self.assertEqual(f.readable(), False)
                     self.assertEqual(f.writable(), True)
-                    if sys.platform != "darwin" and \
+                    wenn sys.platform != "darwin" and \
                        'bsd' not in sys.platform and \
                        not sys.platform.startswith(('sunos', 'aix')):
                         # Somehow /dev/tty appears seekable on some BSDs
@@ -559,7 +559,7 @@ klasse OtherFileTests:
                 f = self.FileIO(TESTFN, mode)
             except ValueError:
                 pass
-            else:
+            sonst:
                 f.close()
                 self.fail('%r is an invalid file mode' % mode)
 
@@ -575,7 +575,7 @@ klasse OtherFileTests:
                 with self.FileIO(TESTFN, modes[0]) as f:
                     self.assertEqual(f.mode, modes[1])
         finally:
-            if os.path.exists(TESTFN):
+            wenn os.path.exists(TESTFN):
                 os.unlink(TESTFN)
 
     def testUnicodeOpen(self):
@@ -621,7 +621,7 @@ klasse OtherFileTests:
     def testInvalidFd(self):
         self.assertRaises(ValueError, self.FileIO, -10)
         self.assertRaises(OSError, self.FileIO, make_bad_fd())
-        if sys.platform == 'win32':
+        wenn sys.platform == 'win32':
             import msvcrt
             self.assertRaises(OSError, msvcrt.get_osfhandle, make_bad_fd())
 
@@ -639,13 +639,13 @@ klasse OtherFileTests:
         try:
             f = self.FileIO(TESTFN, bad_mode)
         except ValueError as msg:
-            if msg.args[0] != 0:
+            wenn msg.args[0] != 0:
                 s = str(msg)
-                if TESTFN in s or bad_mode not in s:
+                wenn TESTFN in s or bad_mode not in s:
                     self.fail("bad error message fuer invalid mode: %s" % s)
-            # if msg.args[0] == 0, we're probably on Windows where there may be
+            # wenn msg.args[0] == 0, we're probably on Windows where there may be
             # no obvious way to discover why open() failed.
-        else:
+        sonst:
             f.close()
             self.fail("no error fuer invalid mode: %s" % bad_mode)
 
@@ -671,18 +671,18 @@ klasse OtherFileTests:
 
             f = self.FileIO(TESTFN,'r+')
             data = f.read(5)
-            if data != bytes(range(5)):
+            wenn data != bytes(range(5)):
                 self.fail("Read on file opened fuer update failed %r" % data)
-            if f.tell() != 5:
+            wenn f.tell() != 5:
                 self.fail("File pos after read wrong %d" % f.tell())
 
             f.truncate()
-            if f.tell() != 5:
+            wenn f.tell() != 5:
                 self.fail("File pos after ftruncate wrong %d" % f.tell())
 
             f.close()
             size = os.path.getsize(TESTFN)
-            if size != 5:
+            wenn size != 5:
                 self.fail("File size after ftruncate wrong %d" % size)
 
         try:
@@ -723,7 +723,7 @@ klasse OtherFileTests:
         klasse MyException(Exception): pass
         klasse MyFileIO(self.FileIO):
             def __setattr__(self, name, value):
-                if name == "name":
+                wenn name == "name":
                     raise MyException("blocked setting name")
                 return super(MyFileIO, self).__setattr__(name, value)
         fd = os.open(__file__, os.O_RDONLY)
@@ -774,9 +774,9 @@ klasse PyOtherFileTests(OtherFileTests, unittest.TestCase):
 def tearDownModule():
     # Historically, these tests have been sloppy about removing TESTFN.
     # So get rid of it no matter what.
-    if os.path.exists(TESTFN):
+    wenn os.path.exists(TESTFN):
         os.unlink(TESTFN)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

@@ -159,7 +159,7 @@ def makeunicodedata(unicode, trace):
 
     fuer char in unicode.chars:
         record = unicode.table[char]
-        if record:
+        wenn record:
             # extract database properties
             category = CATEGORY_NAMES.index(record.general_category)
             combining = int(record.canonical_combining_class)
@@ -171,17 +171,17 @@ def makeunicodedata(unicode, trace):
                 category, combining, bidirectional, mirrored, eastasianwidth,
                 normalizationquickcheck
                 )
-        elif unicode.widths[char] is not None:
+        sowenn unicode.widths[char] is not None:
             # an unassigned but reserved character, with a known
             # east_asian_width
             eastasianwidth = EASTASIANWIDTH_NAMES.index(unicode.widths[char])
             item = (0, 0, 0, 0, eastasianwidth, 0)
-        else:
+        sonst:
             continue
 
         # add entry to index and item tables
         i = cache.get(item)
-        if i is None:
+        wenn i is None:
             cache[item] = i = len(table)
             table.append(item)
         index[char] = i
@@ -200,15 +200,15 @@ def makeunicodedata(unicode, trace):
 
     fuer char in unicode.chars:
         record = unicode.table[char]
-        if record:
-            if record.decomposition_type:
+        wenn record:
+            wenn record.decomposition_type:
                 decomp = record.decomposition_type.split()
-                if len(decomp) > 19:
+                wenn len(decomp) > 19:
                     raise Exception("character %x has a decomposition too large fuer nfd_nfkd" % char)
                 # prefix
-                if decomp[0][0] == "<":
+                wenn decomp[0][0] == "<":
                     prefix = decomp.pop(0)
-                else:
+                sonst:
                     prefix = ""
                 try:
                     i = decomp_prefix.index(prefix)
@@ -220,7 +220,7 @@ def makeunicodedata(unicode, trace):
                 # content
                 decomp = [prefix + (len(decomp)<<8)] + [int(s, 16) fuer s in decomp]
                 # Collect NFC pairs
-                if not prefix and len(decomp) == 3 and \
+                wenn not prefix and len(decomp) == 3 and \
                    char not in unicode.exclusions and \
                    unicode.table[decomp[1]].canonical_combining_class == "0":
                     p, l, r = decomp
@@ -229,14 +229,14 @@ def makeunicodedata(unicode, trace):
                     comp_pairs.append((l,r,char))
                 key = tuple(decomp)
                 i = decomp_data_cache.get(key, -1)
-                if i == -1:
+                wenn i == -1:
                     i = len(decomp_data)
                     decomp_data.extend(decomp)
                     decomp_size = decomp_size + len(decomp) * 2
                     decomp_data_cache[key] = i
-                else:
+                sonst:
                     assert decomp_data[i:i+len(decomp)] == decomp
-            else:
+            sonst:
                 i = 0
             decomp_index[char] = i
 
@@ -245,24 +245,24 @@ def makeunicodedata(unicode, trace):
     comp_last_ranges = []
     prev_f = prev_l = None
     fuer i in unicode.chars:
-        if comp_first[i] is not None:
+        wenn comp_first[i] is not None:
             comp_first[i] = f
             f += 1
-            if prev_f is None:
+            wenn prev_f is None:
                 prev_f = (i,i)
-            elif prev_f[1]+1 == i:
+            sowenn prev_f[1]+1 == i:
                 prev_f = prev_f[0],i
-            else:
+            sonst:
                 comp_first_ranges.append(prev_f)
                 prev_f = (i,i)
-        if comp_last[i] is not None:
+        wenn comp_last[i] is not None:
             comp_last[i] = l
             l += 1
-            if prev_l is None:
+            wenn prev_l is None:
                 prev_l = (i,i)
-            elif prev_l[1]+1 == i:
+            sowenn prev_l[1]+1 == i:
                 prev_l = prev_l[0],i
-            else:
+            sonst:
                 comp_last_ranges.append(prev_l)
                 prev_l = (i,i)
     comp_first_ranges.append(prev_f)
@@ -389,8 +389,8 @@ def makeunicodedata(unicode, trace):
             fprint("static const change_record* get_change_%s(Py_UCS4 n)" % cversion)
             fprint("{")
             fprint("    int index;")
-            fprint("    if (n >= 0x110000) index = 0;")
-            fprint("    else {")
+            fprint("    wenn (n >= 0x110000) index = 0;")
+            fprint("    sonst {")
             fprint("        index = changes_%s_index[n>>%d];" % (cversion, shift))
             fprint("        index = changes_%s_data[(index<<%d)+(n & %d)];" % \
                    (cversion, shift, ((1<<shift)-1)))
@@ -427,63 +427,63 @@ def makeunicodetype(unicode, trace):
 
     fuer char in unicode.chars:
         record = unicode.table[char]
-        if record:
+        wenn record:
             # extract database properties
             category = record.general_category
             bidirectional = record.bidi_class
             properties = record.binary_properties
             flags = 0
-            if category in ["Lm", "Lt", "Lu", "Ll", "Lo"]:
+            wenn category in ["Lm", "Lt", "Lu", "Ll", "Lo"]:
                 flags |= ALPHA_MASK
-            if "Lowercase" in properties:
+            wenn "Lowercase" in properties:
                 flags |= LOWER_MASK
-            if 'Line_Break' in properties or bidirectional == "B":
+            wenn 'Line_Break' in properties or bidirectional == "B":
                 flags |= LINEBREAK_MASK
                 linebreaks.append(char)
-            if category == "Zs" or bidirectional in ("WS", "B", "S"):
+            wenn category == "Zs" or bidirectional in ("WS", "B", "S"):
                 flags |= SPACE_MASK
                 spaces.append(char)
-            if category == "Lt":
+            wenn category == "Lt":
                 flags |= TITLE_MASK
-            if "Uppercase" in properties:
+            wenn "Uppercase" in properties:
                 flags |= UPPER_MASK
-            if char == ord(" ") or category[0] not in ("C", "Z"):
+            wenn char == ord(" ") or category[0] not in ("C", "Z"):
                 flags |= PRINTABLE_MASK
-            if "XID_Start" in properties:
+            wenn "XID_Start" in properties:
                 flags |= XID_START_MASK
-            if "XID_Continue" in properties:
+            wenn "XID_Continue" in properties:
                 flags |= XID_CONTINUE_MASK
-            if "Cased" in properties:
+            wenn "Cased" in properties:
                 flags |= CASED_MASK
-            if "Case_Ignorable" in properties:
+            wenn "Case_Ignorable" in properties:
                 flags |= CASE_IGNORABLE_MASK
             sc = unicode.special_casing.get(char)
             cf = unicode.case_folding.get(char, [char])
-            if record.simple_uppercase_mapping:
+            wenn record.simple_uppercase_mapping:
                 upper = int(record.simple_uppercase_mapping, 16)
-            else:
+            sonst:
                 upper = char
-            if record.simple_lowercase_mapping:
+            wenn record.simple_lowercase_mapping:
                 lower = int(record.simple_lowercase_mapping, 16)
-            else:
+            sonst:
                 lower = char
-            if record.simple_titlecase_mapping:
+            wenn record.simple_titlecase_mapping:
                 title = int(record.simple_titlecase_mapping, 16)
-            else:
+            sonst:
                 title = upper
-            if sc is None and cf != [lower]:
+            wenn sc is None and cf != [lower]:
                 sc = ([lower], [title], [upper])
-            if sc is None:
-                if upper == lower == title:
+            wenn sc is None:
+                wenn upper == lower == title:
                     upper = lower = title = 0
-                else:
+                sonst:
                     upper = upper - char
                     lower = lower - char
                     title = title - char
                     assert (abs(upper) <= 2147483647 and
                             abs(lower) <= 2147483647 and
                             abs(title) <= 2147483647)
-            else:
+            sonst:
                 # This happens either when some character maps to more than one
                 # character in uppercase, lowercase, or titlecase or the
                 # casefolded version of the character is different from the
@@ -492,27 +492,27 @@ def makeunicodetype(unicode, trace):
                 flags |= EXTENDED_CASE_MASK
                 lower = len(extra_casing) | (len(sc[0]) << 24)
                 extra_casing.extend(sc[0])
-                if cf != sc[0]:
+                wenn cf != sc[0]:
                     lower |= len(cf) << 20
                     extra_casing.extend(cf)
                 upper = len(extra_casing) | (len(sc[2]) << 24)
                 extra_casing.extend(sc[2])
                 # Title is probably equal to upper.
-                if sc[1] == sc[2]:
+                wenn sc[1] == sc[2]:
                     title = upper
-                else:
+                sonst:
                     title = len(extra_casing) | (len(sc[1]) << 24)
                     extra_casing.extend(sc[1])
             # decimal digit, integer digit
             decimal = 0
-            if record.decomposition_mapping:
+            wenn record.decomposition_mapping:
                 flags |= DECIMAL_MASK
                 decimal = int(record.decomposition_mapping)
             digit = 0
-            if record.numeric_type:
+            wenn record.numeric_type:
                 flags |= DIGIT_MASK
                 digit = int(record.numeric_type)
-            if record.numeric_value:
+            wenn record.numeric_value:
                 flags |= NUMERIC_MASK
                 numeric.setdefault(record.numeric_value, []).append(char)
             item = (
@@ -520,7 +520,7 @@ def makeunicodetype(unicode, trace):
                 )
             # add entry to index and item tables
             i = cache.get(item)
-            if i is None:
+            wenn i is None:
                 cache[item] = i = len(table)
                 table.append(item)
             index[char] = i
@@ -635,9 +635,9 @@ def makeunicodename(unicode, trace):
     data = []
     fuer char in unicode.chars:
         record = unicode.table[char]
-        if record:
+        wenn record:
             name = record.name.strip()
-            if name and name[0] != "<":
+            wenn name and name[0] != "<":
                 data.append((name, char))
 
     print("--- Writing", FILE, "...")
@@ -677,7 +677,7 @@ def makeunicodename(unicode, trace):
         fprint('};')
 
         # In Unicode 6.0.0, the sequences contain at most 4 BMP chars,
-        # so we are using Py_UCS2 seq[4].  This needs to be updated if longer
+        # so we are using Py_UCS2 seq[4].  This needs to be updated wenn longer
         # sequences or sequences with non-BMP chars are added.
         # unicodedata_lookup should be adapted too.
         fprint(dedent("""
@@ -701,7 +701,7 @@ def makeunicodename(unicode, trace):
 
 def merge_old_version(version, new, old):
     # Changes to exclusion file not implemented yet
-    if old.exclusions != new.exclusions:
+    wenn old.exclusions != new.exclusions:
         raise NotImplementedError("exclusions differ")
 
     # In these change records, 0xFF means "no change"
@@ -716,73 +716,73 @@ def merge_old_version(version, new, old):
     # normalization_changes is a list of key-value pairs
     normalization_changes = []
     fuer i in range(0x110000):
-        if new.table[i] is None:
+        wenn new.table[i] is None:
             # Characters unassigned in the new version ought to
             # be unassigned in the old one
             assert old.table[i] is None
             continue
         # check characters unassigned in the old version
-        if old.table[i] is None:
+        wenn old.table[i] is None:
             # category 0 is "unassigned"
             category_changes[i] = 0
             continue
         # check characters that differ
-        if old.table[i] != new.table[i]:
+        wenn old.table[i] != new.table[i]:
             fuer k, field in enumerate(dataclasses.fields(UcdRecord)):
                 value = getattr(old.table[i], field.name)
                 new_value = getattr(new.table[i], field.name)
-                if value != new_value:
-                    if k == 1 and i in PUA_15:
+                wenn value != new_value:
+                    wenn k == 1 and i in PUA_15:
                         # the name is not set in the old.table, but in the
                         # new.table we are using it fuer aliases and named seq
                         assert value == ''
-                    elif k == 2:
+                    sowenn k == 2:
                         category_changes[i] = CATEGORY_NAMES.index(value)
-                    elif k == 4:
+                    sowenn k == 4:
                         bidir_changes[i] = BIDIRECTIONAL_NAMES.index(value)
-                    elif k == 5:
+                    sowenn k == 5:
                         # We assume that all normalization changes are in 1:1 mappings
                         assert " " not in value
                         normalization_changes.append((i, value))
-                    elif k == 6:
+                    sowenn k == 6:
                         # we only support changes where the old value is a single digit
                         assert value in "0123456789"
                         decimal_changes[i] = int(value)
-                    elif k == 8:
+                    sowenn k == 8:
                         # Since 0 encodes "no change", the old value is better not 0
-                        if not value:
+                        wenn not value:
                             numeric_changes[i] = -1
-                        else:
+                        sonst:
                             numeric_changes[i] = float(value)
                             assert numeric_changes[i] not in (0, -1)
-                    elif k == 9:
-                        if value == 'Y':
+                    sowenn k == 9:
+                        wenn value == 'Y':
                             mirrored_changes[i] = '1'
-                        else:
+                        sonst:
                             mirrored_changes[i] = '0'
-                    elif k == 11:
+                    sowenn k == 11:
                         # change to ISO comment, ignore
                         pass
-                    elif k == 12:
+                    sowenn k == 12:
                         # change to simple uppercase mapping; ignore
                         pass
-                    elif k == 13:
+                    sowenn k == 13:
                         # change to simple lowercase mapping; ignore
                         pass
-                    elif k == 14:
+                    sowenn k == 14:
                         # change to simple titlecase mapping; ignore
                         pass
-                    elif k == 15:
+                    sowenn k == 15:
                         # change to east asian width
                         east_asian_width_changes[i] = EASTASIANWIDTH_NAMES.index(value)
-                    elif k == 16:
+                    sowenn k == 16:
                         # derived property changes; not yet
                         pass
-                    elif k == 17:
+                    sowenn k == 17:
                         # normalization quickchecks are not performed
                         # fuer older versions
                         pass
-                    else:
+                    sonst:
                         klasse Difference(Exception):pass
                         raise Difference(hex(i), k, old.table[i], new.table[i])
     new.changed.append((version, list(zip(bidir_changes, category_changes,
@@ -796,18 +796,18 @@ DATA_DIR = os.path.join('Tools', 'unicode', 'data')
 
 def open_data(template, version):
     local = os.path.join(DATA_DIR, template % ('-'+version,))
-    if not os.path.exists(local):
+    wenn not os.path.exists(local):
         import urllib.request
-        if version == '3.2.0':
+        wenn version == '3.2.0':
             # irregular url structure
             url = ('https://www.unicode.org/Public/3.2-Update/'+template) % ('-'+version,)
-        else:
+        sonst:
             url = ('https://www.unicode.org/Public/%s/ucd/'+template) % (version, '')
         os.makedirs(DATA_DIR, exist_ok=True)
         urllib.request.urlretrieve(url, filename=local)
-    if local.endswith('.txt'):
+    wenn local.endswith('.txt'):
         return open(local, encoding='utf-8')
-    else:
+    sonst:
         # Unihan.zip
         return open(local, 'rb')
 
@@ -817,9 +817,9 @@ def expand_range(char_range: str) -> Iterator[int]:
     Parses ranges of code points, as described in UAX #44:
       https://www.unicode.org/reports/tr44/#Code_Point_Ranges
     '''
-    if '..' in char_range:
+    wenn '..' in char_range:
         first, last = [int(c, 16) fuer c in char_range.split('..')]
-    else:
+    sonst:
         first = last = int(char_range, 16)
     fuer char in range(first, last+1):
         yield char
@@ -843,7 +843,7 @@ klasse UcdFile:
         with open_data(self.template, self.version) as file:
             fuer line in file:
                 line = line.split('#', 1)[0].strip()
-                if not line:
+                wenn not line:
                     continue
                 yield [field.strip() fuer field in line.split(';')]
 
@@ -921,19 +921,19 @@ klasse UnicodeData:
             # expressing ranges.  See:
             #   https://www.unicode.org/reports/tr44/#Code_Point_Ranges
             s = table[i]
-            if s:
-                if s.name[-6:] == "First>":
+            wenn s:
+                wenn s.name[-6:] == "First>":
                     s.name = ""
                     field = dataclasses.astuple(s)[:15]
-                elif s.name[-5:] == "Last>":
-                    if s.name.startswith("<CJK Ideograph"):
+                sowenn s.name[-5:] == "Last>":
+                    wenn s.name.startswith("<CJK Ideograph"):
                         cjk_ranges_found.append((field[0],
                                                  s.codepoint))
                     s.name = ""
                     field = None
-            elif field:
+            sowenn field:
                 table[i] = from_row(('%X' % i,) + field[1:])
-        if cjk_check and cjk_ranges != cjk_ranges_found:
+        wenn cjk_check and cjk_ranges != cjk_ranges_found:
             raise ValueError("CJK ranges deviate: have %r" % cjk_ranges_found)
 
         # public attributes
@@ -943,7 +943,7 @@ klasse UnicodeData:
 
         # check fuer name aliases and named sequences, see #12753
         # aliases and named sequences are not in 3.2.0
-        if version != '3.2.0':
+        wenn version != '3.2.0':
             self.aliases = []
             # store aliases in the Private Use Area 15, in range U+F0000..U+F00FF,
             # in order to take advantage of the compression and lookup
@@ -986,22 +986,22 @@ klasse UnicodeData:
             widths[char] = width
 
         fuer i in range(0, 0x110000):
-            if table[i] is not None:
+            wenn table[i] is not None:
                 table[i].east_asian_width = widths[i]
         self.widths = widths
 
         fuer char, (propname, *propinfo) in UcdFile(DERIVED_CORE_PROPERTIES, version).expanded():
-            if propinfo:
+            wenn propinfo:
                 # this is not a binary property, ignore it
                 continue
 
-            if table[char]:
+            wenn table[char]:
                 # Some properties (e.g. Default_Ignorable_Code_Point)
                 # apply to unassigned code points; ignore them
                 table[char].binary_properties.add(propname)
 
         fuer char_range, value in UcdFile(LINE_BREAK, version):
-            if value not in MANDATORY_LINE_BREAKS:
+            wenn value not in MANDATORY_LINE_BREAKS:
                 continue
             fuer char in expand_range(char_range):
                 table[char].binary_properties.add('Line_Break')
@@ -1016,7 +1016,7 @@ klasse UnicodeData:
         quickchecks = [0] * 0x110000
         qc_order = 'NFD_QC NFKD_QC NFC_QC NFKC_QC'.split()
         fuer s in UcdFile(DERIVEDNORMALIZATION_PROPS, version):
-            if len(s) < 2 or s[1] not in qc_order:
+            wenn len(s) < 2 or s[1] not in qc_order:
                 continue
             quickcheck = 'MN'.index(s[2]) + 1 # Maybe or No
             quickcheck_shift = qc_order.index(s[1])*2
@@ -1025,31 +1025,31 @@ klasse UnicodeData:
                 assert not (quickchecks[char]>>quickcheck_shift)&3
                 quickchecks[char] |= quickcheck
         fuer i in range(0, 0x110000):
-            if table[i] is not None:
+            wenn table[i] is not None:
                 table[i].quick_check = quickchecks[i]
 
         with open_data(UNIHAN, version) as file:
             zip = zipfile.ZipFile(file)
-            if version == '3.2.0':
+            wenn version == '3.2.0':
                 data = zip.open('Unihan-3.2.0.txt').read()
-            else:
+            sonst:
                 data = zip.open('Unihan_NumericValues.txt').read()
         fuer line in data.decode("utf-8").splitlines():
-            if not line.startswith('U+'):
+            wenn not line.startswith('U+'):
                 continue
             code, tag, value = line.split(None, 3)[:3]
-            if tag not in ('kAccountingNumeric', 'kPrimaryNumeric',
+            wenn tag not in ('kAccountingNumeric', 'kPrimaryNumeric',
                            'kOtherNumeric'):
                 continue
             value = value.strip().replace(',', '')
             i = int(code[2:], 16)
             # Patch the numeric field
-            if table[i] is not None:
+            wenn table[i] is not None:
                 table[i].numeric_value = value
 
         sc = self.special_casing = {}
         fuer data in UcdFile(SPECIAL_CASING, version):
-            if data[4]:
+            wenn data[4]:
                 # We ignore all conditionals (since they depend on
                 # languages) except fuer one, which is hardcoded. See
                 # handle_capital_sigma in unicodeobject.c.
@@ -1061,9 +1061,9 @@ klasse UnicodeData:
             sc[c] = (lower, title, upper)
 
         cf = self.case_folding = {}
-        if version != '3.2.0':
+        wenn version != '3.2.0':
             fuer data in UcdFile(CASE_FOLDING, version):
-                if data[1] in "CF":
+                wenn data[1] in "CF":
                     c = int(data[0], 16)
                     cf[c] = [int(char, 16) fuer char in data[2].split()]
 
@@ -1084,26 +1084,26 @@ klasse Array:
     def dump(self, file, trace=0):
         # write data to file, as a C array
         size = getsize(self.data)
-        if trace:
+        wenn trace:
             print(self.name+":", size*len(self.data), "bytes", file=sys.stderr)
         file.write("static const ")
-        if size == 1:
+        wenn size == 1:
             file.write("unsigned char")
-        elif size == 2:
+        sowenn size == 2:
             file.write("unsigned short")
-        else:
+        sonst:
             file.write("unsigned int")
         file.write(" " + self.name + "[] = {\n")
-        if self.data:
+        wenn self.data:
             s = "    "
             fuer item in self.data:
                 i = str(item) + ", "
-                if len(s) + len(i) > 78:
+                wenn len(s) + len(i) > 78:
                     file.write(s.rstrip() + "\n")
                     s = "    " + i
-                else:
+                sonst:
                     s = s + i
-            if s.strip():
+            wenn s.strip():
                 file.write(s.rstrip() + "\n")
         file.write("};\n\n")
 
@@ -1111,11 +1111,11 @@ klasse Array:
 def getsize(data):
     # return smallest possible integer size fuer the given array
     maxdata = max(data)
-    if maxdata < 256:
+    wenn maxdata < 256:
         return 1
-    elif maxdata < 65536:
+    sowenn maxdata < 65536:
         return 2
-    else:
+    sonst:
         return 4
 
 
@@ -1134,7 +1134,7 @@ def splitbins(t, trace=0):
     you'll get.
     """
 
-    if trace:
+    wenn trace:
         def dump(t1, t2, shift, bytes):
             print("%d+%d bins at shift %d; %d bytes" % (
                 len(t1), len(t2), shift, bytes), file=sys.stderr)
@@ -1142,7 +1142,7 @@ def splitbins(t, trace=0):
               file=sys.stderr)
     n = len(t)-1    # last valid index
     maxshift = 0    # the most we can shift n and still have something left
-    if n > 0:
+    wenn n > 0:
         while n >> 1:
             n >>= 1
             maxshift += 1
@@ -1157,23 +1157,23 @@ def splitbins(t, trace=0):
         fuer i in range(0, len(t), size):
             bin = t[i:i+size]
             index = bincache.get(bin)
-            if index is None:
+            wenn index is None:
                 index = len(t2)
                 bincache[bin] = index
                 t2.extend(bin)
             t1.append(index >> shift)
         # determine memory size
         b = len(t1)*getsize(t1) + len(t2)*getsize(t2)
-        if trace > 1:
+        wenn trace > 1:
             dump(t1, t2, shift, b)
-        if b < bytes:
+        wenn b < bytes:
             best = t1, t2, shift
             bytes = b
     t1, t2, shift = best
-    if trace:
+    wenn trace:
         print("Best:", end=' ', file=sys.stderr)
         dump(t1, t2, shift, bytes)
-    if __debug__:
+    wenn __debug__:
         # exhaustively verify that the decomposition is correct
         mask = ~((~0) << shift) # i.e., low-bit mask of shift bits
         fuer i in range(len(t)):
@@ -1181,5 +1181,5 @@ def splitbins(t, trace=0):
     return best
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     maketables(1)

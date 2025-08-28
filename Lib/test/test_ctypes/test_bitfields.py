@@ -56,10 +56,10 @@ try:
     func_msvc = CDLL(_ctypes_test.__file__).unpack_bitfields_msvc
 except AttributeError as err:
     # The MSVC struct must be available on Windows; it's optional elsewhere
-    if support.MS_WINDOWS:
+    wenn support.MS_WINDOWS:
         raise err
     func_msvc = None
-else:
+sonst:
     func_msvc.argtypes = POINTER(BITS_msvc), c_char
 
 
@@ -79,10 +79,10 @@ klasse C_Test(unittest.TestCase):
         b = BITS()
         name = "M"
         # See Modules/_ctypes/_ctypes_test.c fuer where the magic 999 comes from.
-        if func(byref(b), name.encode('ascii')) == 999:
+        wenn func(byref(b), name.encode('ascii')) == 999:
             # unpack_bitfields and unpack_bitfields_msvc in
             # Modules/_ctypes/_ctypes_test.c return 999 to indicate
-            # an invalid name. 'M' is only valid, if signed short bitfields
+            # an invalid name. 'M' is only valid, wenn signed short bitfields
             # are supported by the C compiler.
             self.skipTest("Compiler does not support signed short bitfields")
         fuer i in range(256):
@@ -99,10 +99,10 @@ klasse C_Test(unittest.TestCase):
         b = BITS_msvc()
         name = "M"
         # See Modules/_ctypes/_ctypes_test.c fuer where the magic 999 comes from.
-        if func_msvc(byref(b), name.encode('ascii')) == 999:
+        wenn func_msvc(byref(b), name.encode('ascii')) == 999:
             # unpack_bitfields and unpack_bitfields_msvc in
             # Modules/_ctypes/_ctypes_test.c return 999 to indicate
-            # an invalid name. 'M' is only valid, if signed short bitfields
+            # an invalid name. 'M' is only valid, wenn signed short bitfields
             # are supported by the C compiler.
             self.skipTest("Compiler does not support signed short bitfields")
         fuer i in range(256):
@@ -154,7 +154,7 @@ klasse BitFieldTest(unittest.TestCase, StructCheckMixin):
     def test_signed(self):
         fuer c_typ in signed_int_types:
             with self.subTest(c_typ):
-                if sizeof(c_typ) != alignment(c_typ):
+                wenn sizeof(c_typ) != alignment(c_typ):
                      self.skipTest('assumes size=alignment')
                 klasse X(Structure):
                     _fields_ = [("dummy", c_typ),
@@ -175,7 +175,7 @@ klasse BitFieldTest(unittest.TestCase, StructCheckMixin):
     def test_unsigned(self):
         fuer c_typ in unsigned_int_types:
             with self.subTest(c_typ):
-                if sizeof(c_typ) != alignment(c_typ):
+                wenn sizeof(c_typ) != alignment(c_typ):
                      self.skipTest('assumes size=alignment')
                 klasse X(Structure):
                     _fields_ = [("a", c_typ, 3),
@@ -205,7 +205,7 @@ klasse BitFieldTest(unittest.TestCase, StructCheckMixin):
         result = self.fail_fields(("a", c_void_p, 1))
         self.assertEqual(result, (TypeError, 'bit fields not allowed fuer type c_void_p'))
 
-        if c_int != c_long:
+        wenn c_int != c_long:
             result = self.fail_fields(("a", POINTER(c_int), 1))
             self.assertEqual(result, (TypeError, 'bit fields not allowed fuer type LP_c_int'))
 
@@ -234,7 +234,7 @@ klasse BitFieldTest(unittest.TestCase, StructCheckMixin):
     def test_single_bitfield_size(self):
         fuer c_typ in int_types:
             with self.subTest(c_typ):
-                if sizeof(c_typ) != alignment(c_typ):
+                wenn sizeof(c_typ) != alignment(c_typ):
                      self.skipTest('assumes size=alignment')
                 result = self.fail_fields(("a", c_typ, -1))
                 self.assertEqual(result, (ValueError,
@@ -299,9 +299,9 @@ klasse BitFieldTest(unittest.TestCase, StructCheckMixin):
             _fields_ = [("a", c_byte, 4),
                         ("b", c_int, 4)]
         self.check_struct(X)
-        if os.name == "nt":
+        wenn os.name == "nt":
             self.assertEqual(sizeof(X), sizeof(c_int)*2)
-        else:
+        sonst:
             self.assertEqual(sizeof(X), sizeof(c_int))
 
     def test_mixed_2(self):
@@ -330,9 +330,9 @@ klasse BitFieldTest(unittest.TestCase, StructCheckMixin):
         # MSVC does NOT combine c_short and c_int into one field, GCC
         # does (unless GCC is run with '-mms-bitfields' which
         # produces code compatible with MSVC).
-        if os.name == "nt":
+        wenn os.name == "nt":
             self.assertEqual(sizeof(X), sizeof(c_int) * 4)
-        else:
+        sonst:
             self.assertEqual(sizeof(X), sizeof(c_int) * 2)
 
     def test_mixed_5(self):
@@ -393,9 +393,9 @@ klasse BitFieldTest(unittest.TestCase, StructCheckMixin):
                 ("B", c_uint32, 1),
                 ]
         self.check_struct(X)
-        if sys.platform == 'win32':
+        wenn sys.platform == 'win32':
             self.assertEqual(8, sizeof(X))
-        else:
+        sonst:
             self.assertEqual(4, sizeof(X))
 
     @unittest.skipIf(sizeof(c_uint64) != alignment(c_uint64),
@@ -407,10 +407,10 @@ klasse BitFieldTest(unittest.TestCase, StructCheckMixin):
                 ("B", c_uint64, 1),
                 ]
         self.check_struct(X)
-        if sys.platform == 'win32':
+        wenn sys.platform == 'win32':
             self.assertEqual(8, alignment(X))
             self.assertEqual(16, sizeof(X))
-        else:
+        sonst:
             self.assertEqual(8, alignment(X))
             self.assertEqual(8, sizeof(X))
 
@@ -501,9 +501,9 @@ klasse BitFieldTest(unittest.TestCase, StructCheckMixin):
                 ("c", c_uint32, 16)
             ]
         self.check_struct(X)
-        if sys.platform == 'win32':
+        wenn sys.platform == 'win32':
             self.assertEqual(8, sizeof(X))
-        else:
+        sonst:
             self.assertEqual(4, sizeof(X))
 
     def test_anon_bitfields(self):
@@ -583,5 +583,5 @@ klasse BitFieldTest(unittest.TestCase, StructCheckMixin):
         self.assertEqual(int.from_bytes(b).bit_count(), 3)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

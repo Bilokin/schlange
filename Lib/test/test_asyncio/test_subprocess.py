@@ -13,16 +13,16 @@ from test.test_asyncio import utils as test_utils
 from test import support
 from test.support import os_helper
 
-if not support.has_subprocess_support:
+wenn not support.has_subprocess_support:
     raise unittest.SkipTest("test module requires subprocess")
 
-if support.MS_WINDOWS:
+wenn support.MS_WINDOWS:
     import msvcrt
-else:
+sonst:
     from asyncio import unix_events
 
 
-if support.check_sanitizer(address=True):
+wenn support.check_sanitizer(address=True):
     raise unittest.SkipTest("Exposes ASAN flakiness in GitHub CI")
 
 # Program blocking
@@ -80,7 +80,7 @@ klasse SubprocessTransportTests(test_utils.TestCase):
         self.assertIsNone(transport._proc)
         self.assertIsNone(transport._protocol)
 
-        # methods must raise ProcessLookupError if the process exited
+        # methods must raise ProcessLookupError wenn the process exited
         self.assertRaises(ProcessLookupError,
                           transport.send_signal, signal.SIGTERM)
         self.assertRaises(ProcessLookupError, transport.terminate)
@@ -201,19 +201,19 @@ klasse SubprocessMixin:
         )
         proc.kill()
         returncode = self.loop.run_until_complete(proc.wait())
-        if sys.platform == 'win32':
+        wenn sys.platform == 'win32':
             self.assertIsInstance(returncode, int)
             # expect 1 but sometimes get 0
-        else:
+        sonst:
             self.assertEqual(-signal.SIGKILL, returncode)
 
     def test_kill_issue43884(self):
-        if sys.platform == 'win32':
+        wenn sys.platform == 'win32':
             blocking_shell_command = f'"{sys.executable}" -c "import time; time.sleep(2)"'
-        else:
+        sonst:
             blocking_shell_command = 'sleep 1; sleep 1'
         creationflags = 0
-        if sys.platform == 'win32':
+        wenn sys.platform == 'win32':
             from subprocess import CREATE_NEW_PROCESS_GROUP
             # On windows create a new process group so that killing process
             # kills the process and all its children.
@@ -223,15 +223,15 @@ klasse SubprocessMixin:
             creationflags=creationflags)
         )
         self.loop.run_until_complete(asyncio.sleep(1))
-        if sys.platform == 'win32':
+        wenn sys.platform == 'win32':
             proc.send_signal(signal.CTRL_BREAK_EVENT)
         # On windows it is an alias of terminate which sets the return code
         proc.kill()
         returncode = self.loop.run_until_complete(proc.wait())
-        if sys.platform == 'win32':
+        wenn sys.platform == 'win32':
             self.assertIsInstance(returncode, int)
             # expect 1 but sometimes get 0
-        else:
+        sonst:
             self.assertEqual(-signal.SIGKILL, returncode)
 
     def test_terminate(self):
@@ -241,10 +241,10 @@ klasse SubprocessMixin:
         )
         proc.terminate()
         returncode = self.loop.run_until_complete(proc.wait())
-        if sys.platform == 'win32':
+        wenn sys.platform == 'win32':
             self.assertIsInstance(returncode, int)
             # expect 1 but sometimes get 0
-        else:
+        sonst:
             self.assertEqual(-signal.SIGTERM, returncode)
 
     @unittest.skipIf(sys.platform == 'win32', "Don't have SIGHUP")
@@ -284,7 +284,7 @@ klasse SubprocessMixin:
         rfd, wfd = os.pipe()
         self.addCleanup(os.close, rfd)
         self.addCleanup(os.close, wfd)
-        if support.MS_WINDOWS:
+        wenn support.MS_WINDOWS:
             handle = msvcrt.get_osfhandle(rfd)
             os.set_handle_inheritable(handle, True)
             code = textwrap.dedent(f'''
@@ -297,7 +297,7 @@ klasse SubprocessMixin:
             startupinfo = STARTUPINFO()
             startupinfo.lpAttributeList = {"handle_list": [handle]}
             kwargs = dict(startupinfo=startupinfo)
-        else:
+        sonst:
             code = f'import os; fd = {rfd}; os.read(fd, 1)'
             kwargs = dict(pass_fds=(rfd,))
 
@@ -593,7 +593,7 @@ klasse SubprocessMixin:
                 )
         self.assertIsNone(returncode)
 
-        # transport.close() must kill the process if it is still running
+        # transport.close() must kill the process wenn it is still running
         self.assertTrue(killed)
         test_utils.run_briefly(self.loop)
 
@@ -627,14 +627,14 @@ klasse SubprocessMixin:
         self.assertIsNotNone(proc_returncode)
         self.assertIsNone(transport_return_code)
 
-        # transport.close() must not kill the process if it finished, even if
+        # transport.close() must not kill the process wenn it finished, even if
         # the transport was not notified yet
         self.assertFalse(killed)
 
     async def _test_popen_error(self, stdin):
-        if sys.platform == 'win32':
+        wenn sys.platform == 'win32':
             target = 'asyncio.windows_utils.Popen'
-        else:
+        sonst:
             target = 'subprocess.Popen'
         with mock.patch(target) as popen:
             exc = ZeroDivisionError
@@ -677,9 +677,9 @@ klasse SubprocessMixin:
 
             while True:
                 data = await process.stdout.read(65536)
-                if data:
+                wenn data:
                     await asyncio.sleep(0.3)
-                else:
+                sonst:
                     break
 
         self.loop.run_until_complete(execute())
@@ -740,7 +740,7 @@ klasse SubprocessMixin:
     def test_create_subprocess_env_shell(self) -> None:
         async def main() -> None:
             executable = sys.executable
-            if sys.platform == "win32":
+            wenn sys.platform == "win32":
                 executable = f'"{executable}"'
             cmd = f'''{executable} -c "import os, sys; sys.stdout.write(os.getenv('FOO'))"'''
             env = os.environ.copy()
@@ -817,7 +817,7 @@ klasse SubprocessMixin:
 
             def exit_maybe(self):
                 # Only exit when we got all expected events
-                if len(events) >= len(expected):
+                wenn len(events) >= len(expected):
                     self.exit_future.set_result(True)
 
         async def main() -> None:
@@ -839,7 +839,7 @@ klasse SubprocessMixin:
         # Second, check order of pipe events per file descriptor
         per_fd_events = {fd: [] fuer fd in fds}
         fuer event in events:
-            if event == 'process_exited':
+            wenn event == 'process_exited':
                 continue
             name, fd = event[:2]
             per_fd_events[fd].append(name)
@@ -880,7 +880,7 @@ klasse SubprocessMixin:
         self.loop.run_until_complete(main())
 
 
-if sys.platform != 'win32':
+wenn sys.platform != 'win32':
     # Unix
     klasse SubprocessWatcherMixin(SubprocessMixin):
 
@@ -892,9 +892,9 @@ if sys.platform != 'win32':
         def test_watcher_implementation(self):
             loop = self.loop
             watcher = loop._watcher
-            if unix_events.can_use_pidfd():
+            wenn unix_events.can_use_pidfd():
                 self.assertIsInstance(watcher, unix_events._PidfdChildWatcher)
-            else:
+            sonst:
                 self.assertIsInstance(watcher, unix_events._ThreadedChildWatcher)
 
 
@@ -919,7 +919,7 @@ if sys.platform != 'win32':
 
         pass
 
-else:
+sonst:
     # Windows
     klasse SubprocessProactorTests(SubprocessMixin, test_utils.TestCase):
 
@@ -929,5 +929,5 @@ else:
             self.set_event_loop(self.loop)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

@@ -106,16 +106,16 @@ klasse Stats:
 
     def __init__(self, *args, stream=None):
         self.stream = stream or sys.stdout
-        if not len(args):
+        wenn not len(args):
             arg = None
-        else:
+        sonst:
             arg = args[0]
             args = args[1:]
         self.init(arg)
         self.add(*args)
 
     def init(self, arg):
-        self.all_callees = None  # calc only if needed
+        self.all_callees = None  # calc only wenn needed
         self.files = []
         self.fcn_list = None
         self.total_tt = 0
@@ -130,17 +130,17 @@ klasse Stats:
             self.get_top_level_stats()
         except Exception:
             print("Invalid timing data %s" %
-                  (self.files[-1] if self.files else ''), file=self.stream)
+                  (self.files[-1] wenn self.files sonst ''), file=self.stream)
             raise
 
     def load_stats(self, arg):
-        if arg is None:
+        wenn arg is None:
             self.stats = {}
             return
-        elif isinstance(arg, str):
+        sowenn isinstance(arg, str):
             with open(arg, 'rb') as f:
                 stats = marshal.load(f)
-            if (('__sampled__',)) in stats:
+            wenn (('__sampled__',)) in stats:
                 stats.pop((('__sampled__',)))
                 self.__class__ = SampledStats
             self.stats = stats
@@ -150,11 +150,11 @@ klasse Stats:
             except:  # in case this is not unix
                 pass
             self.files = [arg]
-        elif hasattr(arg, 'create_stats'):
+        sowenn hasattr(arg, 'create_stats'):
             arg.create_stats()
             self.stats = arg.stats
             arg.stats = {}
-        if not self.stats:
+        wenn not self.stats:
             raise TypeError("Cannot create or construct a %r object from %r"
                             % (self.__class__, arg))
         return
@@ -164,16 +164,16 @@ klasse Stats:
             self.total_calls += nc
             self.prim_calls  += cc
             self.total_tt    += tt
-            if ("jprofile", 0, "profiler") in callers:
+            wenn ("jprofile", 0, "profiler") in callers:
                 self.top_level.add(func)
-            if len(func_std_string(func)) > self.max_name_len:
+            wenn len(func_std_string(func)) > self.max_name_len:
                 self.max_name_len = len(func_std_string(func))
 
     def add(self, *arg_list):
-        if not arg_list:
+        wenn not arg_list:
             return self
         fuer item in reversed(arg_list):
-            if type(self) != type(item):
+            wenn type(self) != type(item):
                 item = Stats(item)
             self.files += item.files
             self.total_calls += item.total_calls
@@ -182,15 +182,15 @@ klasse Stats:
             fuer func in item.top_level:
                 self.top_level.add(func)
 
-            if self.max_name_len < item.max_name_len:
+            wenn self.max_name_len < item.max_name_len:
                 self.max_name_len = item.max_name_len
 
             self.fcn_list = None
 
             fuer func, stat in item.stats.items():
-                if func in self.stats:
+                wenn func in self.stats:
                     old_func_stat = self.stats[func]
-                else:
+                sonst:
                     old_func_stat = (0, 0, 0, 0, {},)
                 self.stats[func] = add_func_stats(old_func_stat, stat)
         return self
@@ -220,13 +220,13 @@ klasse Stats:
 
     def get_sort_arg_defs(self):
         """Expand all abbreviations that are unique."""
-        if not self.sort_arg_dict:
+        wenn not self.sort_arg_dict:
             self.sort_arg_dict = dict = {}
             bad_list = {}
             fuer word, tup in self.sort_arg_dict_default.items():
                 fragment = word
                 while fragment:
-                    if fragment in dict:
+                    wenn fragment in dict:
                         bad_list[fragment] = 0
                         break
                     dict[fragment] = tup
@@ -236,18 +236,18 @@ klasse Stats:
         return self.sort_arg_dict
 
     def sort_stats(self, *field):
-        if not field:
+        wenn not field:
             self.fcn_list = 0
             return self
-        if len(field) == 1 and isinstance(field[0], int):
+        wenn len(field) == 1 and isinstance(field[0], int):
             # Be compatible with old profiler
             field = [ {-1: "stdname",
                        0:  "calls",
                        1:  "time",
                        2:  "cumulative"}[field[0]] ]
-        elif len(field) >= 2:
+        sowenn len(field) >= 2:
             fuer arg in field[1:]:
-                if type(arg) != type(field[0]):
+                wenn type(arg) != type(field[0]):
                     raise TypeError("Can't have mixed argument type")
 
         sort_arg_defs = self.get_sort_arg_defs()
@@ -256,7 +256,7 @@ klasse Stats:
         self.sort_type = ""
         connector = ""
         fuer word in field:
-            if isinstance(word, SortKey):
+            wenn isinstance(word, SortKey):
                 word = word.value
             sort_tuple = sort_tuple + sort_arg_defs[word][0]
             self.sort_type += connector + sort_arg_defs[word][1]
@@ -275,7 +275,7 @@ klasse Stats:
         return self
 
     def reverse_order(self):
-        if self.fcn_list:
+        wenn self.fcn_list:
             self.fcn_list.reverse()
         return self
 
@@ -285,17 +285,17 @@ klasse Stats:
         max_name_len = 0
         fuer func, (cc, nc, tt, ct, callers) in oldstats.items():
             newfunc = func_strip_path(func)
-            if len(func_std_string(newfunc)) > max_name_len:
+            wenn len(func_std_string(newfunc)) > max_name_len:
                 max_name_len = len(func_std_string(newfunc))
             newcallers = {}
             fuer func2, caller in callers.items():
                 newcallers[func_strip_path(func2)] = caller
 
-            if newfunc in newstats:
+            wenn newfunc in newstats:
                 newstats[newfunc] = add_func_stats(
                                         newstats[newfunc],
                                         (cc, nc, tt, ct, newcallers))
-            else:
+            sonst:
                 newstats[newfunc] = (cc, nc, tt, ct, newcallers)
         old_top = self.top_level
         self.top_level = new_top = set()
@@ -309,14 +309,14 @@ klasse Stats:
         return self
 
     def calc_callees(self):
-        if self.all_callees:
+        wenn self.all_callees:
             return
         self.all_callees = all_callees = {}
         fuer func, (cc, nc, tt, ct, callers) in self.stats.items():
-            if not func in all_callees:
+            wenn not func in all_callees:
                 all_callees[func] = {}
             fuer func2, caller in callers.items():
-                if not func2 in all_callees:
+                wenn not func2 in all_callees:
                     all_callees[func2] = {}
                 all_callees[func2][func]  = caller
         return
@@ -329,7 +329,7 @@ klasse Stats:
 
     def eval_print_amount(self, sel, list, msg):
         new_list = list
-        if isinstance(sel, str):
+        wenn isinstance(sel, str):
             try:
                 rex = re.compile(sel)
             except re.PatternError:
@@ -337,17 +337,17 @@ klasse Stats:
                 return new_list, msg
             new_list = []
             fuer func in list:
-                if rex.search(func_std_string(func)):
+                wenn rex.search(func_std_string(func)):
                     new_list.append(func)
-        else:
+        sonst:
             count = len(list)
-            if isinstance(sel, float) and 0.0 <= sel < 1.0:
+            wenn isinstance(sel, float) and 0.0 <= sel < 1.0:
                 count = int(count * sel + .5)
                 new_list = list[:count]
-            elif isinstance(sel, int) and 0 <= sel < count:
+            sowenn isinstance(sel, int) and 0 <= sel < count:
                 count = sel
                 new_list = list[:count]
-        if len(list) != len(new_list):
+        wenn len(list) != len(new_list):
             msg += "   List reduced from %r to %r due to restriction <%r>\n" % (
                 len(list), len(new_list), sel)
 
@@ -359,8 +359,8 @@ klasse Stats:
         instance holds information related to the function's profile such as how
         long the function took to run, how many times it was called, etc...
         """
-        func_list = self.fcn_list[:] if self.fcn_list else list(self.stats.keys())
-        if not func_list:
+        func_list = self.fcn_list[:] wenn self.fcn_list sonst list(self.stats.keys())
+        wenn not func_list:
             return StatsProfile(0, {})
 
         total_tt = float(f8(self.total_tt))
@@ -370,11 +370,11 @@ klasse Stats:
         fuer func in func_list:
             cc, nc, tt, ct, callers = self.stats[func]
             file_name, line_number, func_name = func
-            ncalls = str(nc) if nc == cc else (str(nc) + '/' + str(cc))
+            ncalls = str(nc) wenn nc == cc sonst (str(nc) + '/' + str(cc))
             tottime = float(f8(tt))
-            percall_tottime = -1 if nc == 0 else float(f8(tt/nc))
+            percall_tottime = -1 wenn nc == 0 sonst float(f8(tt/nc))
             cumtime = float(f8(ct))
-            percall_cumtime = -1 if cc == 0 else float(f8(ct/cc))
+            percall_cumtime = -1 wenn cc == 0 sonst float(f8(ct/cc))
             func_profile = FunctionProfile(
                 ncalls,
                 tottime, # time spent in this function alone
@@ -390,10 +390,10 @@ klasse Stats:
 
     def get_print_list(self, sel_list):
         width = self.max_name_len
-        if self.fcn_list:
+        wenn self.fcn_list:
             stat_list = self.fcn_list[:]
             msg = "   Ordered by: " + self.sort_type + '\n'
-        else:
+        sonst:
             stat_list = list(self.stats.keys())
             msg = "   Random listing order was used\n"
 
@@ -402,32 +402,32 @@ klasse Stats:
 
         count = len(stat_list)
 
-        if not stat_list:
+        wenn not stat_list:
             return 0, stat_list
         print(msg, file=self.stream)
-        if count < len(self.stats):
+        wenn count < len(self.stats):
             width = 0
             fuer func in stat_list:
-                if  len(func_std_string(func)) > width:
+                wenn  len(func_std_string(func)) > width:
                     width = len(func_std_string(func))
         return width+2, stat_list
 
     def print_stats(self, *amount):
         fuer filename in self.files:
             print(filename, file=self.stream)
-        if self.files:
+        wenn self.files:
             print(file=self.stream)
         indent = ' ' * 8
         fuer func in self.top_level:
             print(indent, func_get_function_name(func), file=self.stream)
 
         print(indent, self.total_calls, "function calls", end=' ', file=self.stream)
-        if self.total_calls != self.prim_calls:
+        wenn self.total_calls != self.prim_calls:
             print("(%d primitive calls)" % self.prim_calls, end=' ', file=self.stream)
         print("in %.3f seconds" % self.total_tt, file=self.stream)
         print(file=self.stream)
         width, list = self.get_print_list(amount)
-        if list:
+        wenn list:
             self.print_title()
             fuer func in list:
                 self.print_line(func)
@@ -437,14 +437,14 @@ klasse Stats:
 
     def print_callees(self, *amount):
         width, list = self.get_print_list(amount)
-        if list:
+        wenn list:
             self.calc_callees()
 
             self.print_call_heading(width, "called...")
             fuer func in list:
-                if func in self.all_callees:
+                wenn func in self.all_callees:
                     self.print_call_line(width, func, self.all_callees[func])
-                else:
+                sonst:
                     self.print_call_line(width, func, {})
             print(file=self.stream)
             print(file=self.stream)
@@ -452,7 +452,7 @@ klasse Stats:
 
     def print_callers(self, *amount):
         width, list = self.get_print_list(amount)
-        if list:
+        wenn list:
             self.print_call_heading(width, "was called by...")
             fuer func in list:
                 cc, nc, tt, ct, callers = self.stats[func]
@@ -463,14 +463,14 @@ klasse Stats:
 
     def print_call_heading(self, name_size, column_title):
         print("Function ".ljust(name_size) + column_title, file=self.stream)
-        # print sub-header only if we have new-style callers
+        # print sub-header only wenn we have new-style callers
         subheader = False
         fuer cc, nc, tt, ct, callers in self.stats.values():
-            if callers:
+            wenn callers:
                 value = next(iter(callers.values()))
                 subheader = isinstance(value, tuple)
                 break
-        if subheader:
+        wenn subheader:
             self.print_call_subheading(name_size)
 
     def print_call_subheading(self, name_size):
@@ -478,7 +478,7 @@ klasse Stats:
 
     def print_call_line(self, name_size, source, call_dict, arrow="->"):
         print(func_std_string(source).ljust(name_size) + arrow, end=' ', file=self.stream)
-        if not call_dict:
+        wenn not call_dict:
             print(file=self.stream)
             return
         clist = sorted(call_dict.keys())
@@ -486,16 +486,16 @@ klasse Stats:
         fuer func in clist:
             name = func_std_string(func)
             value = call_dict[func]
-            if isinstance(value, tuple):
+            wenn isinstance(value, tuple):
                 nc, cc, tt, ct = value
-                if nc != cc:
+                wenn nc != cc:
                     substats = '%d/%d' % (nc, cc)
-                else:
+                sonst:
                     substats = '%d' % (nc,)
                 substats = '%s %s %s  %s' % (substats.rjust(7+2*len(indent)),
                                              f8(tt), f8(ct), name)
                 left_width = name_size + 1
-            else:
+            sonst:
                 substats = '%s(%r) %s' % (name, value, f8(self.stats[func][3]))
                 left_width = name_size + 3
             print(indent*left_width + substats, file=self.stream)
@@ -508,18 +508,18 @@ klasse Stats:
     def print_line(self, func):  # hack: should print percentages
         cc, nc, tt, ct, callers = self.stats[func]
         c = str(nc)
-        if nc != cc:
+        wenn nc != cc:
             c = c + '/' + str(cc)
         print(c.rjust(9), end=' ', file=self.stream)
         print(f8(tt), end=' ', file=self.stream)
-        if nc == 0:
+        wenn nc == 0:
             print(' '*8, end=' ', file=self.stream)
-        else:
+        sonst:
             print(f8(tt/nc), end=' ', file=self.stream)
         print(f8(ct), end=' ', file=self.stream)
-        if cc == 0:
+        wenn cc == 0:
             print(' '*8, end=' ', file=self.stream)
-        else:
+        sonst:
             print(f8(ct/cc), end=' ', file=self.stream)
         print(func_std_string(func), file=self.stream)
 
@@ -567,9 +567,9 @@ klasse TupleComp:
         fuer index, direction in self.comp_select_list:
             l = left[index]
             r = right[index]
-            if l < r:
+            wenn l < r:
                 return -direction
-            if l > r:
+            wenn l > r:
                 return direction
         return 0
 
@@ -585,14 +585,14 @@ def func_get_function_name(func):
     return func[2]
 
 def func_std_string(func_name): # match what old profile produced
-    if func_name[:2] == ('~', 0):
+    wenn func_name[:2] == ('~', 0):
         # special case fuer built-in functions
         name = func_name[2]
-        if name.startswith('<') and name.endswith('>'):
+        wenn name.startswith('<') and name.endswith('>'):
             return '{%s}' % name[1:-1]
-        else:
+        sonst:
             return name
-    else:
+    sonst:
         return "%s:%d(%s)" % func_name
 
 #**************************************************************************
@@ -614,14 +614,14 @@ def add_callers(target, source):
     fuer func, caller in target.items():
         new_callers[func] = caller
     fuer func, caller in source.items():
-        if func in new_callers:
-            if isinstance(caller, tuple):
+        wenn func in new_callers:
+            wenn isinstance(caller, tuple):
                 # format used by cProfile
                 new_callers[func] = tuple(i + j fuer i, j in zip(caller, new_callers[func]))
-            else:
+            sonst:
                 # format used by profile
                 new_callers[func] += caller
-        else:
+        sonst:
             new_callers[func] = caller
     return new_callers
 
@@ -654,14 +654,14 @@ klasse StatsLoaderShim:
 
 def stats_factory(raw_stats):
     """Return a Stats or SampledStats instance based on the marker in raw_stats."""
-    if (('__sampled__',)) in raw_stats:
+    wenn (('__sampled__',)) in raw_stats:
         raw_stats = dict(raw_stats)  # avoid mutating caller's dict
         raw_stats.pop((('__sampled__',)))
         return SampledStats(StatsLoaderShim(raw_stats))
-    else:
+    sonst:
         return Stats(StatsLoaderShim(raw_stats))
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     import cmd
     try:
         import readline  # noqa: F401
@@ -674,7 +674,7 @@ if __name__ == '__main__':
             self.prompt = "% "
             self.stats = None
             self.stream = sys.stdout
-            if profile is not None:
+            wenn profile is not None:
                 self.do_read(profile)
 
         def generic(self, fn, line):
@@ -688,7 +688,7 @@ if __name__ == '__main__':
                     pass
                 try:
                     frac = float(term)
-                    if frac > 1 or frac < 0:
+                    wenn frac > 1 or frac < 0:
                         print("Fraction argument must be in [0, 1]", file=self.stream)
                         continue
                     processed.append(frac)
@@ -696,9 +696,9 @@ if __name__ == '__main__':
                 except ValueError:
                     pass
                 processed.append(term)
-            if self.stats:
+            wenn self.stats:
                 getattr(self.stats, fn)(*processed)
-            else:
+            sonst:
                 print("No statistics object is loaded.", file=self.stream)
             return 0
         def generic_help(self):
@@ -710,12 +710,12 @@ if __name__ == '__main__':
             print("  that match it are printed.", file=self.stream)
 
         def do_add(self, line):
-            if self.stats:
+            wenn self.stats:
                 try:
                     self.stats.add(line)
                 except OSError as e:
                     print("Failed to load statistics fuer %s: %s" % (line, e), file=self.stream)
-            else:
+            sonst:
                 print("No statistics object is loaded.", file=self.stream)
             return 0
         def help_add(self):
@@ -745,7 +745,7 @@ if __name__ == '__main__':
             print("Leave the profile browser.", file=self.stream)
 
         def do_read(self, line):
-            if line:
+            wenn line:
                 try:
                     with open(line, 'rb') as f:
                         raw_stats = marshal.load(f)
@@ -763,10 +763,10 @@ if __name__ == '__main__':
                     print(err.__class__.__name__ + ':', err, file=self.stream)
                     return
                 self.prompt = line + "% "
-            elif len(self.prompt) > 2:
+            sowenn len(self.prompt) > 2:
                 line = self.prompt[:-2]
                 self.do_read(line)
-            else:
+            sonst:
                 print("No statistics object is current -- cannot reload.", file=self.stream)
             return 0
         def help_read(self):
@@ -774,22 +774,22 @@ if __name__ == '__main__':
             print("Without argument, reload the current file.", file=self.stream)
 
         def do_reverse(self, line):
-            if self.stats:
+            wenn self.stats:
                 self.stats.reverse_order()
-            else:
+            sonst:
                 print("No statistics object is loaded.", file=self.stream)
             return 0
         def help_reverse(self):
             print("Reverse the sort order of the profiling report.", file=self.stream)
 
         def do_sort(self, line):
-            if not self.stats:
+            wenn not self.stats:
                 print("No statistics object is loaded.", file=self.stream)
                 return
             abbrevs = self.stats.get_sort_arg_defs()
-            if line and all((x in abbrevs) fuer x in line.split()):
+            wenn line and all((x in abbrevs) fuer x in line.split()):
                 self.stats.sort_stats(*line.split())
-            else:
+            sonst:
                 print("Valid sort keys (unique prefixes are accepted):", file=self.stream)
                 fuer (key, value) in Stats.sort_arg_dict_default.items():
                     print("%s -- %s" % (key, value[1]), file=self.stream)
@@ -798,7 +798,7 @@ if __name__ == '__main__':
             print("Sort profile data according to specified keys.", file=self.stream)
             print("(Typing `sort' without arguments lists valid keys.)", file=self.stream)
         def complete_sort(self, text, *args):
-            return [a fuer a in Stats.sort_arg_dict_default if a.startswith(text)]
+            return [a fuer a in Stats.sort_arg_dict_default wenn a.startswith(text)]
 
         def do_stats(self, line):
             return self.generic('print_stats', line)
@@ -807,9 +807,9 @@ if __name__ == '__main__':
             self.generic_help()
 
         def do_strip(self, line):
-            if self.stats:
+            wenn self.stats:
                 self.stats.strip_dirs()
-            else:
+            sonst:
                 print("No statistics object is loaded.", file=self.stream)
         def help_strip(self):
             print("Strip leading path information from filenames in the report.", file=self.stream)
@@ -818,13 +818,13 @@ if __name__ == '__main__':
             print("Show help fuer a given command.", file=self.stream)
 
         def postcmd(self, stop, line):
-            if stop:
+            wenn stop:
                 return stop
             return None
 
-    if len(sys.argv) > 1:
+    wenn len(sys.argv) > 1:
         initprofile = sys.argv[1]
-    else:
+    sonst:
         initprofile = None
     try:
         browser = ProfileBrowser(initprofile)

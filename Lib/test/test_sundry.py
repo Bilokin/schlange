@@ -14,7 +14,7 @@ klasse TestUntestedModules(unittest.TestCase):
                     import_helper.import_module('test.test_{}'.format(name))
                 except unittest.SkipTest:
                     importlib.import_module(name)
-                else:
+                sonst:
                     self.fail('{} has tests even though test_sundry claims '
                               'otherwise'.format(name))
 
@@ -24,9 +24,9 @@ klasse TestUntestedModules(unittest.TestCase):
                 # Not available on Windows
                 import tty  # noqa: F401
             except ImportError:
-                if support.verbose:
+                wenn support.verbose:
                     print("skipping tty")
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

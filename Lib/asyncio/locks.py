@@ -64,9 +64,9 @@ klasse Lock(_ContextManagerMixin, mixins._LoopBoundMixin):
 
     Lock objects can be tested fuer locking state:
 
-        if not lock.locked():
+        wenn not lock.locked():
            await lock.acquire()
-        else:
+        sonst:
            # lock is acquired
            ...
 
@@ -78,13 +78,13 @@ klasse Lock(_ContextManagerMixin, mixins._LoopBoundMixin):
 
     def __repr__(self):
         res = super().__repr__()
-        extra = 'locked' if self._locked else 'unlocked'
-        if self._waiters:
+        extra = 'locked' wenn self._locked sonst 'unlocked'
+        wenn self._waiters:
             extra = f'{extra}, waiters:{len(self._waiters)}'
         return f'<{res[1:-1]} [{extra}]>'
 
     def locked(self):
-        """Return True if lock is acquired."""
+        """Return True wenn lock is acquired."""
         return self._locked
 
     async def acquire(self):
@@ -94,13 +94,13 @@ klasse Lock(_ContextManagerMixin, mixins._LoopBoundMixin):
         locked and returns True.
         """
         # Implement fair scheduling, where thread always waits
-        # its turn. Jumping the queue if all are cancelled is an optimization.
-        if (not self._locked and (self._waiters is None or
+        # its turn. Jumping the queue wenn all are cancelled is an optimization.
+        wenn (not self._locked and (self._waiters is None or
                 all(w.cancelled() fuer w in self._waiters))):
             self._locked = True
             return True
 
-        if self._waiters is None:
+        wenn self._waiters is None:
             self._waiters = collections.deque()
         fut = self._get_loop().create_future()
         self._waiters.append(fut)
@@ -116,7 +116,7 @@ klasse Lock(_ContextManagerMixin, mixins._LoopBoundMixin):
             # Ensure the lock invariant: If lock is not claimed (or about
             # to be claimed by us) and there is a Task in waiters,
             # ensure that the Task at the head will run.
-            if not self._locked:
+            wenn not self._locked:
                 self._wake_up_first()
             raise
 
@@ -135,15 +135,15 @@ klasse Lock(_ContextManagerMixin, mixins._LoopBoundMixin):
 
         There is no return value.
         """
-        if self._locked:
+        wenn self._locked:
             self._locked = False
             self._wake_up_first()
-        else:
+        sonst:
             raise RuntimeError('Lock is not acquired.')
 
     def _wake_up_first(self):
         """Ensure that the first waiter will wake up."""
-        if not self._waiters:
+        wenn not self._waiters:
             return
         try:
             fut = next(iter(self._waiters))
@@ -151,7 +151,7 @@ klasse Lock(_ContextManagerMixin, mixins._LoopBoundMixin):
             return
 
         # .done() means that the waiter is already set to wake up.
-        if not fut.done():
+        wenn not fut.done():
             fut.set_result(True)
 
 
@@ -170,13 +170,13 @@ klasse Event(mixins._LoopBoundMixin):
 
     def __repr__(self):
         res = super().__repr__()
-        extra = 'set' if self._value else 'unset'
-        if self._waiters:
+        extra = 'set' wenn self._value sonst 'unset'
+        wenn self._waiters:
             extra = f'{extra}, waiters:{len(self._waiters)}'
         return f'<{res[1:-1]} [{extra}]>'
 
     def is_set(self):
-        """Return True if and only if the internal flag is true."""
+        """Return True wenn and only wenn the internal flag is true."""
         return self._value
 
     def set(self):
@@ -184,11 +184,11 @@ klasse Event(mixins._LoopBoundMixin):
         become true are awakened. Tasks that call wait() once the flag is
         true will not block at all.
         """
-        if not self._value:
+        wenn not self._value:
             self._value = True
 
             fuer fut in self._waiters:
-                if not fut.done():
+                wenn not fut.done():
                     fut.set_result(True)
 
     def clear(self):
@@ -204,7 +204,7 @@ klasse Event(mixins._LoopBoundMixin):
         immediately.  Otherwise, block until another task calls
         set() to set the flag to true, then return True.
         """
-        if self._value:
+        wenn self._value:
             return True
 
         fut = self._get_loop().create_future()
@@ -227,7 +227,7 @@ klasse Condition(_ContextManagerMixin, mixins._LoopBoundMixin):
     """
 
     def __init__(self, lock=None):
-        if lock is None:
+        wenn lock is None:
             lock = Lock()
 
         self._lock = lock
@@ -240,8 +240,8 @@ klasse Condition(_ContextManagerMixin, mixins._LoopBoundMixin):
 
     def __repr__(self):
         res = super().__repr__()
-        extra = 'locked' if self.locked() else 'unlocked'
-        if self._waiters:
+        extra = 'locked' wenn self.locked() sonst 'unlocked'
+        wenn self._waiters:
             extra = f'{extra}, waiters:{len(self._waiters)}'
         return f'<{res[1:-1]} [{extra}]>'
 
@@ -260,7 +260,7 @@ klasse Condition(_ContextManagerMixin, mixins._LoopBoundMixin):
         which is why the caller should always
         re-check the state and be prepared to wait() again.
         """
-        if not self.locked():
+        wenn not self.locked():
             raise RuntimeError('cannot wait on un-acquired lock')
 
         fut = self._get_loop().create_future()
@@ -275,7 +275,7 @@ klasse Condition(_ContextManagerMixin, mixins._LoopBoundMixin):
                     self._waiters.remove(fut)
 
             finally:
-                # Must re-acquire lock even if wait is cancelled.
+                # Must re-acquire lock even wenn wait is cancelled.
                 # We only catch CancelledError here, since we don't want any
                 # other (fatal) errors with the future to cause us to spin.
                 err = None
@@ -286,7 +286,7 @@ klasse Condition(_ContextManagerMixin, mixins._LoopBoundMixin):
                     except exceptions.CancelledError as e:
                         err = e
 
-                if err is not None:
+                wenn err is not None:
                     try:
                         raise err  # Re-raise most recent exception instance.
                     finally:
@@ -315,28 +315,28 @@ klasse Condition(_ContextManagerMixin, mixins._LoopBoundMixin):
         return result
 
     def notify(self, n=1):
-        """By default, wake up one task waiting on this condition, if any.
+        """By default, wake up one task waiting on this condition, wenn any.
         If the calling task has not acquired the lock when this method
         is called, a RuntimeError is raised.
 
         This method wakes up n of the tasks waiting fuer the condition
-         variable; if fewer than n are waiting, they are all awoken.
+         variable; wenn fewer than n are waiting, they are all awoken.
 
         Note: an awakened task does not actually return from its
         wait() call until it can reacquire the lock. Since notify() does
         not release the lock, its caller should.
         """
-        if not self.locked():
+        wenn not self.locked():
             raise RuntimeError('cannot notify on un-acquired lock')
         self._notify(n)
 
     def _notify(self, n):
         idx = 0
         fuer fut in self._waiters:
-            if idx >= n:
+            wenn idx >= n:
                 break
 
-            if not fut.done():
+            wenn not fut.done():
                 idx += 1
                 fut.set_result(False)
 
@@ -365,20 +365,20 @@ klasse Semaphore(_ContextManagerMixin, mixins._LoopBoundMixin):
     """
 
     def __init__(self, value=1):
-        if value < 0:
+        wenn value < 0:
             raise ValueError("Semaphore initial value must be >= 0")
         self._waiters = None
         self._value = value
 
     def __repr__(self):
         res = super().__repr__()
-        extra = 'locked' if self.locked() else f'unlocked, value:{self._value}'
-        if self._waiters:
+        extra = 'locked' wenn self.locked() sonst f'unlocked, value:{self._value}'
+        wenn self._waiters:
             extra = f'{extra}, waiters:{len(self._waiters)}'
         return f'<{res[1:-1]} [{extra}]>'
 
     def locked(self):
-        """Returns True if semaphore cannot be acquired immediately."""
+        """Returns True wenn semaphore cannot be acquired immediately."""
         # Due to state, or FIFO rules (must allow others to run first).
         return self._value == 0 or (
             any(not w.cancelled() fuer w in (self._waiters or ())))
@@ -392,12 +392,12 @@ klasse Semaphore(_ContextManagerMixin, mixins._LoopBoundMixin):
         called release() to make it larger than 0, and then return
         True.
         """
-        if not self.locked():
-            # Maintain FIFO, wait fuer others to start even if _value > 0.
+        wenn not self.locked():
+            # Maintain FIFO, wait fuer others to start even wenn _value > 0.
             self._value -= 1
             return True
 
-        if self._waiters is None:
+        wenn self._waiters is None:
             self._waiters = collections.deque()
         fut = self._get_loop().create_future()
         self._waiters.append(fut)
@@ -409,7 +409,7 @@ klasse Semaphore(_ContextManagerMixin, mixins._LoopBoundMixin):
                 self._waiters.remove(fut)
         except exceptions.CancelledError:
             # Currently the only exception designed be able to occur here.
-            if fut.done() and not fut.cancelled():
+            wenn fut.done() and not fut.cancelled():
                 # Our Future was successfully set to True via _wake_up_next(),
                 # but we are not about to successfully acquire(). Therefore we
                 # must undo the bookkeeping already done and attempt to wake
@@ -421,7 +421,7 @@ klasse Semaphore(_ContextManagerMixin, mixins._LoopBoundMixin):
             # New waiters may have arrived but had to wait due to FIFO.
             # Wake up as many as are allowed.
             while self._value > 0:
-                if not self._wake_up_next():
+                wenn not self._wake_up_next():
                     break  # There was no-one to wake up.
         return True
 
@@ -436,11 +436,11 @@ klasse Semaphore(_ContextManagerMixin, mixins._LoopBoundMixin):
 
     def _wake_up_next(self):
         """Wake up the first waiter that isn't done."""
-        if not self._waiters:
+        wenn not self._waiters:
             return False
 
         fuer fut in self._waiters:
-            if not fut.done():
+            wenn not fut.done():
                 self._value -= 1
                 fut.set_result(True)
                 # `fut` is now `done()` and not `cancelled()`.
@@ -451,7 +451,7 @@ klasse Semaphore(_ContextManagerMixin, mixins._LoopBoundMixin):
 klasse BoundedSemaphore(Semaphore):
     """A bounded semaphore implementation.
 
-    This raises ValueError in release() if it would increase the value
+    This raises ValueError in release() wenn it would increase the value
     above the initial value.
     """
 
@@ -460,7 +460,7 @@ klasse BoundedSemaphore(Semaphore):
         super().__init__(value)
 
     def release(self):
-        if self._value >= self._bound_value:
+        wenn self._value >= self._bound_value:
             raise ValueError('BoundedSemaphore released too many times')
         super().release()
 
@@ -484,7 +484,7 @@ klasse Barrier(mixins._LoopBoundMixin):
 
     def __init__(self, parties):
         """Create a barrier, initialised to 'parties' tasks."""
-        if parties < 1:
+        wenn parties < 1:
             raise ValueError('parties must be >= 1')
 
         self._cond = Condition() # notify all tasks when state changes
@@ -496,7 +496,7 @@ klasse Barrier(mixins._LoopBoundMixin):
     def __repr__(self):
         res = super().__repr__()
         extra = f'{self._state.value}'
-        if not self.broken:
+        wenn not self.broken:
             extra += f', waiters:{self.n_waiting}/{self.parties}'
         return f'<{res[1:-1]} [{extra}]>'
 
@@ -520,10 +520,10 @@ klasse Barrier(mixins._LoopBoundMixin):
             try:
                 index = self._count
                 self._count += 1
-                if index + 1 == self._parties:
+                wenn index + 1 == self._parties:
                     # We release the barrier
                     await self._release()
-                else:
+                sonst:
                     await self._wait()
                 return index
             finally:
@@ -533,7 +533,7 @@ klasse Barrier(mixins._LoopBoundMixin):
 
     async def _block(self):
         # Block until the barrier is ready fuer us,
-        # or raise an exception if it is broken.
+        # or raise an exception wenn it is broken.
         #
         # It is draining or resetting, wait until done
         # unless a CancelledError occurs
@@ -543,8 +543,8 @@ klasse Barrier(mixins._LoopBoundMixin):
             )
         )
 
-        # see if the barrier is in a broken state
-        if self._state is _BarrierState.BROKEN:
+        # see wenn the barrier is in a broken state
+        wenn self._state is _BarrierState.BROKEN:
             raise exceptions.BrokenBarrierError("Barrier aborted")
 
     async def _release(self):
@@ -557,20 +557,20 @@ klasse Barrier(mixins._LoopBoundMixin):
 
     async def _wait(self):
         # Wait in the barrier until we are released. Raise an exception
-        # if the barrier is reset or broken.
+        # wenn the barrier is reset or broken.
 
         # wait fuer end of filling
         # unless a CancelledError occurs
         await self._cond.wait_for(lambda: self._state is not _BarrierState.FILLING)
 
-        if self._state in (_BarrierState.BROKEN, _BarrierState.RESETTING):
+        wenn self._state in (_BarrierState.BROKEN, _BarrierState.RESETTING):
             raise exceptions.BrokenBarrierError("Abort or reset of barrier")
 
     def _exit(self):
         # If we are the last tasks to exit the barrier, signal any tasks
         # waiting fuer the barrier to drain.
-        if self._count == 0:
-            if self._state in (_BarrierState.RESETTING, _BarrierState.DRAINING):
+        wenn self._count == 0:
+            wenn self._state in (_BarrierState.RESETTING, _BarrierState.DRAINING):
                 self._state = _BarrierState.FILLING
             self._cond.notify_all()
 
@@ -581,11 +581,11 @@ klasse Barrier(mixins._LoopBoundMixin):
         raised.
         """
         async with self._cond:
-            if self._count > 0:
-                if self._state is not _BarrierState.RESETTING:
+            wenn self._count > 0:
+                wenn self._state is not _BarrierState.RESETTING:
                     #reset the barrier, waking up tasks
                     self._state = _BarrierState.RESETTING
-            else:
+            sonst:
                 self._state = _BarrierState.FILLING
             self._cond.notify_all()
 
@@ -607,11 +607,11 @@ klasse Barrier(mixins._LoopBoundMixin):
     @property
     def n_waiting(self):
         """Return the number of tasks currently waiting at the barrier."""
-        if self._state is _BarrierState.FILLING:
+        wenn self._state is _BarrierState.FILLING:
             return self._count
         return 0
 
     @property
     def broken(self):
-        """Return True if the barrier is in a broken state."""
+        """Return True wenn the barrier is in a broken state."""
         return self._state is _BarrierState.BROKEN

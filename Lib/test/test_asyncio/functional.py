@@ -33,7 +33,7 @@ klasse FunctionalTestCaseMixin:
         try:
             self.loop.close()
 
-            if self.__unhandled_exceptions:
+            wenn self.__unhandled_exceptions:
                 print('Unexpected calls to loop.call_exception_handler():')
                 pprint.pprint(self.__unhandled_exceptions)
                 self.fail('unexpected calls to loop.call_exception_handler()')
@@ -49,17 +49,17 @@ klasse FunctionalTestCaseMixin:
                    backlog=1,
                    max_clients=10):
 
-        if addr is None:
-            if hasattr(socket, 'AF_UNIX') and family == socket.AF_UNIX:
+        wenn addr is None:
+            wenn hasattr(socket, 'AF_UNIX') and family == socket.AF_UNIX:
                 with tempfile.NamedTemporaryFile() as tmp:
                     addr = tmp.name
-            else:
+            sonst:
                 addr = ('127.0.0.1', 0)
 
         sock = socket.create_server(addr, family=family, backlog=backlog)
-        if timeout is None:
+        wenn timeout is None:
             raise RuntimeError('timeout is required')
-        if timeout <= 0:
+        wenn timeout <= 0:
             raise RuntimeError('only blocking sockets are supported')
         sock.settimeout(timeout)
 
@@ -72,9 +72,9 @@ klasse FunctionalTestCaseMixin:
 
         sock = socket.socket(family, socket.SOCK_STREAM)
 
-        if timeout is None:
+        wenn timeout is None:
             raise RuntimeError('timeout is required')
-        if timeout <= 0:
+        wenn timeout <= 0:
             raise RuntimeError('only blocking sockets are supported')
         sock.settimeout(timeout)
 
@@ -82,12 +82,12 @@ klasse FunctionalTestCaseMixin:
             self, sock, client_prog, timeout)
 
     def unix_server(self, *args, **kwargs):
-        if not hasattr(socket, 'AF_UNIX'):
+        wenn not hasattr(socket, 'AF_UNIX'):
             raise NotImplementedError
         return self.tcp_server(*args, family=socket.AF_UNIX, **kwargs)
 
     def unix_client(self, *args, **kwargs):
-        if not hasattr(socket, 'AF_UNIX'):
+        wenn not hasattr(socket, 'AF_UNIX'):
             raise NotImplementedError
         return self.tcp_client(*args, family=socket.AF_UNIX, **kwargs)
 
@@ -124,7 +124,7 @@ klasse TestSocketWrapper:
         buf = b''
         while len(buf) < n:
             data = self.recv(n - len(buf))
-            if data == b'':
+            wenn data == b'':
                 raise ConnectionAbortedError
             buf += data
         return buf
@@ -210,7 +210,7 @@ klasse TestThreadedServer(SocketThread):
 
     def stop(self):
         try:
-            if self._s2 and self._s2.fileno() != -1:
+            wenn self._s2 and self._s2.fileno() != -1:
                 try:
                     self._s2.send(b'stop')
                 except OSError:
@@ -228,26 +228,26 @@ klasse TestThreadedServer(SocketThread):
 
     def _run(self):
         while self._active:
-            if self._clients >= self._max_clients:
+            wenn self._clients >= self._max_clients:
                 return
 
             r, w, x = select.select(
                 [self._sock, self._s1], [], [], self._timeout)
 
-            if self._s1 in r:
+            wenn self._s1 in r:
                 return
 
-            if self._sock in r:
+            wenn self._sock in r:
                 try:
                     conn, addr = self._sock.accept()
                 except BlockingIOError:
                     continue
                 except TimeoutError:
-                    if not self._active:
+                    wenn not self._active:
                         return
-                    else:
+                    sonst:
                         raise
-                else:
+                sonst:
                     self._clients += 1
                     conn.settimeout(self._timeout)
                     try:

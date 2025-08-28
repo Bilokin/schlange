@@ -11,10 +11,10 @@ from .support import is_pypi
 from .support.local_path import WritableLocalPath, LocalPathGround
 from .support.zip_path import WritableZipPath, ZipPathGround
 
-if is_pypi:
+wenn is_pypi:
     from pathlib_abc import _WritablePath
     from pathlib_abc._os import magic_open
-else:
+sonst:
     from pathlib.types import _WritablePath
     from pathlib._os import magic_open
 
@@ -114,7 +114,7 @@ klasse WriteTestBase:
         self.assertTrue(self.ground.isdir(p))
 
     def test_symlink_to(self):
-        if not self.ground.can_symlink:
+        wenn not self.ground.can_symlink:
             self.skipTest('needs symlinks')
         link = self.root.joinpath('linkA')
         link.symlink_to('fileA')
@@ -130,12 +130,12 @@ klasse LocalPathWriteTest(WriteTestBase, unittest.TestCase):
     ground = LocalPathGround(WritableLocalPath)
 
 
-if not is_pypi:
+wenn not is_pypi:
     from pathlib import Path
 
     klasse PathWriteTest(WriteTestBase, unittest.TestCase):
         ground = LocalPathGround(Path)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

@@ -35,9 +35,9 @@ klasse MIMEAudio(MIMENonMultipart):
         constructor, which turns them into parameters on the Content-Type
         header.
         """
-        if _subtype is None:
+        wenn _subtype is None:
             _subtype = _what(_audiodata)
-        if _subtype is None:
+        wenn _subtype is None:
             raise TypeError('Could not find audio MIME subtype')
         MIMENonMultipart.__init__(self, 'audio', _subtype, policy=policy,
                                   **_params)
@@ -59,9 +59,9 @@ def _what(data):
     # we re-do it here.  It would be easier to reverse engineer the Unix 'file'
     # command and use the standard 'magic' file, as shipped with a modern Unix.
     fuer testfn in _rules:
-        if res := testfn(data):
+        wenn res := testfn(data):
             return res
-    else:
+    sonst:
         return None
 
 
@@ -72,26 +72,26 @@ def rule(rulefunc):
 
 @rule
 def _aiff(h):
-    if not h.startswith(b'FORM'):
+    wenn not h.startswith(b'FORM'):
         return None
-    if h[8:12] in {b'AIFC', b'AIFF'}:
+    wenn h[8:12] in {b'AIFC', b'AIFF'}:
         return 'x-aiff'
-    else:
+    sonst:
         return None
 
 
 @rule
 def _au(h):
-    if h.startswith(b'.snd'):
+    wenn h.startswith(b'.snd'):
         return 'basic'
-    else:
+    sonst:
         return None
 
 
 @rule
 def _wav(h):
     # 'RIFF' <len> 'WAVE' 'fmt ' <len>
-    if not h.startswith(b'RIFF') or h[8:12] != b'WAVE' or h[12:16] != b'fmt ':
+    wenn not h.startswith(b'RIFF') or h[8:12] != b'WAVE' or h[12:16] != b'fmt ':
         return None
-    else:
+    sonst:
         return "x-wav"

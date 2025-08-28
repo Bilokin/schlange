@@ -185,9 +185,9 @@ klasse IdleConfTest(unittest.TestCase):
         cls.config_string = {}
 
         conf = config.IdleConf(_utest=True)
-        if __name__ != '__main__':
+        wenn __name__ != '__main__':
             idle_dir = os.path.dirname(__file__)
-        else:
+        sonst:
             idle_dir = os.path.abspath(sys.path[0])
         fuer ctype in conf.config_types:
             config_path = os.path.join(idle_dir, '../config-%s.def' % ctype)
@@ -455,7 +455,7 @@ klasse IdleConfTest(unittest.TestCase):
            {'<<z-in>>': ['<Control-Shift-KeyRelease-Insert>']})
         userextn.remove_section('ZzDummy')
 # need option key test
-##        key = ['<Option-Key-2>'] if sys.platform == 'darwin' else ['<Alt-Key-2>']
+##        key = ['<Option-Key-2>'] wenn sys.platform == 'darwin' sonst ['<Alt-Key-2>']
 ##        eq(conf.GetExtensionKeys('ZoomHeight'), {'<<zoom-height>>': key})
 
     def test_get_extension_bindings(self):
@@ -564,7 +564,7 @@ klasse IdleConfTest(unittest.TestCase):
         f = Font.actual(Font(name='TkFixedFont', exists=True, root=root))
         self.assertEqual(
             conf.GetFont(root, 'main', 'EditorWindow'),
-            (f['family'], 10 if f['size'] <= 0 else f['size'], f['weight']))
+            (f['family'], 10 wenn f['size'] <= 0 sonst f['size'], f['weight']))
 
         # Cleanup root
         root.destroy()
@@ -801,5 +801,5 @@ klasse WarningTest(unittest.TestCase):
         Equal(stderr.getvalue(), 'warn2'+'\n')
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main(verbosity=2)

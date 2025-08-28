@@ -17,7 +17,7 @@ except ImportError:
     _testcapi = None
 
 
-# This tests to make sure that if a SIGINT arrives just before we send into a
+# This tests to make sure that wenn a SIGINT arrives just before we send into a
 # yield from chain, the KeyboardInterrupt is raised in the innermost
 # generator (see bpo-30039).
 @unittest.skipUnless(_testcapi is not None and
@@ -33,7 +33,7 @@ klasse SignalAndYieldFromTest(unittest.TestCase):
             yield
         except KeyboardInterrupt:
             return "PASSED"
-        else:
+        sonst:
             return "FAILED"
 
     def test_raise_and_yield_from(self):
@@ -260,7 +260,7 @@ klasse GeneratorTest(unittest.TestCase):
         def loop():
             try:
                 fuer _ in gen_raises():
-                    if True is False:
+                    wenn True is False:
                         return
             except ValueError:
                 pass
@@ -276,7 +276,7 @@ klasse GeneratorTest(unittest.TestCase):
                 self.val = 0
 
             def __next__(self):
-                if self.val == 2:
+                wenn self.val == 2:
                     raise StopIteration
                 self.val += 1
                 return self.val
@@ -695,17 +695,17 @@ klasse GeneratorDeallocTest(unittest.TestCase):
                 self.frame = None
 
         def get_frame(index):
-            if index == 1:
+            wenn index == 1:
                 return next(g1())
-            elif index == 2:
+            sowenn index == 2:
                 gen = g2()
                 next(gen)
                 return gen.gi_frame
-            elif index == 3:
+            sowenn index == 3:
                 obj = ObjectWithFrame()
                 next(g3(obj))
                 return obj.frame
-            else:
+            sonst:
                 return None
 
         fuer index in (1, 2, 3):
@@ -729,13 +729,13 @@ klasse GeneratorDeallocTest(unittest.TestCase):
             yield sys._getframe().f_locals
 
         def get_frame_locals(index):
-            if index == 1:
+            wenn index == 1:
                 nonlocal frame_locals1
                 next(g1())
                 return frame_locals1
-            if index == 2:
+            wenn index == 2:
                 return next(g2())
-            else:
+            sonst:
                 return None
 
         fuer index in (1, 2):
@@ -863,7 +863,7 @@ klasse GeneratorStackTraceTest(unittest.TestCase):
         while frame:
             name = frame.f_code.co_name
             # Stop checking frames when we get to our test helper.
-            if (name.startswith('check_') or name.startswith('call_')
+            wenn (name.startswith('check_') or name.startswith('call_')
                     or name.startswith('test')):
                 break
 
@@ -1178,9 +1178,9 @@ Guido's binary tree example.
     ...
     ...     def __repr__(self, level=0, indent="    "):
     ...         s = level*indent + repr(self.label)
-    ...         if self.left:
+    ...         wenn self.left:
     ...             s = s + "\\n" + self.left.__repr__(level+1, indent)
-    ...         if self.right:
+    ...         wenn self.right:
     ...             s = s + "\\n" + self.right.__repr__(level+1, indent)
     ...         return s
     ...
@@ -1190,7 +1190,7 @@ Guido's binary tree example.
     >>> # Create a Tree from a list.
     >>> def tree(list):
     ...     n = len(list)
-    ...     if n == 0:
+    ...     wenn n == 0:
     ...         return []
     ...     i = n // 2
     ...     return Tree(list[i], tree(list[:i]), tree(list[i+1:]))
@@ -1200,7 +1200,7 @@ Guido's binary tree example.
 
     >>> # A recursive generator that generates Tree labels in in-order.
     >>> def inorder(t):
-    ...     if t:
+    ...     wenn t:
     ...         fuer x in inorder(t.left):
     ...             yield x
     ...         yield t.label
@@ -1269,11 +1269,11 @@ Next one was posted to c.l.py.
 >>> def gcomb(x, k):
 ...     "Generate all combinations of k elements from list x."
 ...
-...     if k > len(x):
+...     wenn k > len(x):
 ...         return
-...     if k == 0:
+...     wenn k == 0:
 ...         yield []
-...     else:
+...     sonst:
 ...         first, rest = x[0], x[1:]
 ...         # A combination does or doesn't contain first.
 ...         # If it does, the remainder is a k-1 comb of rest.
@@ -1322,10 +1322,10 @@ From the Iterators list, about the types of these things.
 >>> i = g()
 >>> type(i)
 <class 'generator'>
->>> [s fuer s in dir(i) if not s.startswith('_')]
+>>> [s fuer s in dir(i) wenn not s.startswith('_')]
 ['close', 'gi_code', 'gi_frame', 'gi_running', 'gi_suspended', 'gi_yieldfrom', 'send', 'throw']
 >>> from test.support import HAVE_DOCSTRINGS
->>> print(i.__next__.__doc__ if HAVE_DOCSTRINGS else 'Implement next(self).')
+>>> print(i.__next__.__doc__ wenn HAVE_DOCSTRINGS sonst 'Implement next(self).')
 Implement next(self).
 >>> iter(i) is i
 True
@@ -1374,7 +1374,7 @@ Subject: Re: PEP 255: Simple Generators
 ...         return next(self.generator)
 ...
 ...     def union(self, parent):
-...         if self.parent:
+...         wenn self.parent:
 ...             raise ValueError("Sorry, I'm not a root!")
 ...         self.parent = parent
 ...
@@ -1391,13 +1391,13 @@ Subject: Re: PEP 255: Simple Generators
 ...     fuer s in sets:
 ...         print(" %s->%s" % (s, s.find()), end='')
 ...     print()
-...     if len(roots) > 1:
+...     wenn len(roots) > 1:
 ...         s1 = gen.choice(roots)
 ...         roots.remove(s1)
 ...         s2 = gen.choice(roots)
 ...         s1.union(s2)
 ...         print("merged", s1, "into", s2)
-...     else:
+...     sonst:
 ...         break
  A->A B->B C->C D->D E->E F->F G->G H->H I->I J->J K->K L->L M->M
 merged K into B
@@ -1447,7 +1447,7 @@ Build up to a recursive Sieve of Eratosthenes generator.
 
 >>> def exclude_multiples(n, ints):
 ...     fuer i in ints:
-...         if i % n:
+...         wenn i % n:
 ...             yield i
 
 >>> firstn(exclude_multiples(3, intsfrom(1)), 6)
@@ -1481,13 +1481,13 @@ Try writing it without generators, and correctly, and without generating
 ...     ng = next(g)
 ...     nh = next(h)
 ...     while 1:
-...         if ng < nh:
+...         wenn ng < nh:
 ...             yield ng
 ...             ng = next(g)
-...         elif ng > nh:
+...         sowenn ng > nh:
 ...             yield nh
 ...             nh = next(h)
-...         else:
+...         sonst:
 ...             yield ng
 ...             ng = next(g)
 ...             nh = next(h)
@@ -1717,20 +1717,20 @@ These are fine:
 
 
 >>> def f():
-...    if 0:
+...    wenn 0:
 ...        yield
 >>> type(f())
 <class 'generator'>
 
 
 >>> def f():
-...     if 0:
+...     wenn 0:
 ...         yield 1
 >>> type(f())
 <class 'generator'>
 
 >>> def f():
-...    if "":
+...    wenn "":
 ...        yield None
 >>> type(f())
 <class 'generator'>
@@ -1738,20 +1738,20 @@ These are fine:
 >>> def f():
 ...     return
 ...     try:
-...         if x==4:
+...         wenn x==4:
 ...             pass
-...         elif 0:
+...         sowenn 0:
 ...             try:
 ...                 1//0
 ...             except SyntaxError:
 ...                 pass
-...             else:
-...                 if 0:
+...             sonst:
+...                 wenn 0:
 ...                     while 12:
 ...                         x += 1
 ...                         yield 2 # don't blink
 ...                         f(a, b, c, d, e)
-...         else:
+...         sonst:
 ...             pass
 ...     except:
 ...         x = 1
@@ -1760,7 +1760,7 @@ These are fine:
 <class 'generator'>
 
 >>> def f():
-...     if 0:
+...     wenn 0:
 ...         def g():
 ...             yield 1
 ...
@@ -1768,7 +1768,7 @@ These are fine:
 <class 'NoneType'>
 
 >>> def f():
-...     if 0:
+...     wenn 0:
 ...         klasse C:
 ...             def __init__(self):
 ...                 yield 1
@@ -1778,9 +1778,9 @@ These are fine:
 <class 'NoneType'>
 
 >>> def f():
-...     if 0:
+...     wenn 0:
 ...         return
-...     if 0:
+...     wenn 0:
 ...         yield 2
 >>> type(f())
 <class 'generator'>
@@ -1870,9 +1870,9 @@ def simple_conjoin(gs):
     values = [None] * len(gs)
 
     def gen(i):
-        if i >= len(gs):
+        wenn i >= len(gs):
             yield values
-        else:
+        sonst:
             fuer values[i] in gs[i]():
                 fuer x in gen(i+1):
                     yield x
@@ -1895,20 +1895,20 @@ def conjoin(gs):
     # remaining is divisible by 3.
 
     def gen(i):
-        if i >= n:
+        wenn i >= n:
             yield values
 
-        elif (n-i) % 3:
+        sowenn (n-i) % 3:
             ip1 = i+1
             fuer values[i] in gs[i]():
                 fuer x in gen(ip1):
                     yield x
 
-        else:
+        sonst:
             fuer x in _gen3(i):
                 yield x
 
-    # Do three loop nests at a time, recursing only if at least three more
+    # Do three loop nests at a time, recursing only wenn at least three more
     # remain.  Don't call directly:  this is an internal optimization for
     # gen's use.
 
@@ -1917,14 +1917,14 @@ def conjoin(gs):
         ip1, ip2, ip3 = i+1, i+2, i+3
         g, g1, g2 = gs[i : ip3]
 
-        if ip3 >= n:
+        wenn ip3 >= n:
             # These are the last three, so we can yield values directly.
             fuer values[i] in g():
                 fuer values[ip1] in g1():
                     fuer values[ip2] in g2():
                         yield values
 
-        else:
+        sonst:
             # At least 6 loop nests remain; peel off 3 and recurse fuer the
             # rest.
             fuer values[i] in g():
@@ -1962,7 +1962,7 @@ def flat_conjoin(gs):  # rename to conjoin to run tests with this instead
                 i += 1
         except _StopIteration:
             pass
-        else:
+        sonst:
             assert i == n
             yield values
 
@@ -1977,7 +1977,7 @@ def flat_conjoin(gs):  # rename to conjoin to run tests with this instead
             except _StopIteration:
                 # Continue backtracking.
                 i -= 1
-        else:
+        sonst:
             assert i < 0
             break
 
@@ -2009,7 +2009,7 @@ klasse Queens:
             def rowgen(rowuses=rowuses):
                 fuer j in rangen:
                     uses = rowuses[j]
-                    if uses & self.used == 0:
+                    wenn uses & self.used == 0:
                         self.used |= uses
                         yield j
                         self.used &= ~uses
@@ -2047,16 +2047,16 @@ klasse Knights:
         succs = self.succs = []
 
         # Remove i0 from each of its successor's successor lists, i.e.
-        # successors can't go back to i0 again.  Return 0 if we can
-        # detect this makes a solution impossible, else return 1.
+        # successors can't go back to i0 again.  Return 0 wenn we can
+        # detect this makes a solution impossible, sonst return 1.
 
         def remove_from_successors(i0, len=len):
             # If we remove all exits from a free square, we're dead:
-            # even if we move to it next, we can't leave it again.
+            # even wenn we move to it next, we can't leave it again.
             # If we create a square with one exit, we must visit it next;
-            # else somebody else will have to visit it, and since there's
+            # sonst somebody sonst will have to visit it, and since there's
             # only one adjacent, there won't be a way to leave it again.
-            # Finally, if we create more than one free square with a
+            # Finally, wenn we create more than one free square with a
             # single exit, we can only move to one of them next, leaving
             # the other one a dead end.
             ne0 = ne1 = 0
@@ -2064,9 +2064,9 @@ klasse Knights:
                 s = succs[i]
                 s.remove(i0)
                 e = len(s)
-                if e == 0:
+                wenn e == 0:
                     ne0 += 1
-                elif e == 1:
+                sowenn e == 1:
                     ne1 += 1
             return ne0 == 0 and ne1 < 2
 
@@ -2078,7 +2078,7 @@ klasse Knights:
 
         # Generate the first move.
         def first():
-            if m < 1 or n < 1:
+            wenn m < 1 or n < 1:
                 return
 
             # Since we're looking fuer a cycle, it doesn't matter where we
@@ -2093,7 +2093,7 @@ klasse Knights:
         def second():
             corner = self.coords2index(0, 0)
             assert self.lastij == corner  # i.e., we started in the corner
-            if m < 3 or n < 3:
+            wenn m < 3 or n < 3:
                 return
             assert len(succs[corner]) == 2
             assert self.coords2index(1, 2) in succs[corner]
@@ -2122,16 +2122,16 @@ klasse Knights:
             fuer i in succs[self.lastij]:
                 e = len(succs[i])
                 assert e > 0, "else remove_from_successors() pruning flawed"
-                if e == 1:
+                wenn e == 1:
                     candidates = [(e, i)]
                     break
                 candidates.append((e, i))
-            else:
+            sonst:
                 candidates.sort()
 
             fuer e, i in candidates:
-                if i != self.final:
-                    if remove_from_successors(i):
+                wenn i != self.final:
+                    wenn remove_from_successors(i):
                         self.lastij = i
                         yield i
                     add_to_successors(i)
@@ -2150,18 +2150,18 @@ klasse Knights:
             fuer i in succs[self.lastij]:
                 e = len(succs[i])
                 assert e > 0, "else remove_from_successors() pruning flawed"
-                if e == 1:
+                wenn e == 1:
                     candidates = [(e, 0, i)]
                     break
                 i1, j1 = self.index2coords(i)
                 d = (i1 - vmid)**2 + (j1 - hmid)**2
                 candidates.append((e, -d, i))
-            else:
+            sonst:
                 candidates.sort()
 
             fuer e, d, i in candidates:
-                if i != self.final:
-                    if remove_from_successors(i):
+                wenn i != self.final:
+                    wenn remove_from_successors(i):
                         self.lastij = i
                         yield i
                     add_to_successors(i)
@@ -2171,9 +2171,9 @@ klasse Knights:
             assert self.final in succs[self.lastij]
             yield self.final
 
-        if m*n < 4:
+        wenn m*n < 4:
             self.squaregenerators = [first]
-        else:
+        sonst:
             self.squaregenerators = [first, second] + \
                 [hard and advance_hard or advance] * (m*n - 3) + \
                 [last]
@@ -2199,7 +2199,7 @@ klasse Knights:
         fuer i in range(m):
             fuer j in rangen:
                 s = [c2i(i+io, j+jo) fuer io, jo in offsets
-                                     if 0 <= i+io < m and
+                                     wenn 0 <= i+io < m and
                                         0 <= j+jo < n]
                 succs.append(s)
 
@@ -2246,7 +2246,7 @@ possible use of conjoin, just to generate the full cross-product.
 [1, 1, 1]
 
 For efficiency in typical backtracking apps, conjoin() yields the same list
-object each time.  So if you want to save away a full account of its
+object each time.  So wenn you want to save away a full account of its
 generated sequence, you need to copy its results.
 
 >>> def gencopy(iterator):
@@ -2274,7 +2274,7 @@ And run an 8-queens solver.
 >>> count = 0
 >>> fuer row2col in q.solve():
 ...     count += 1
-...     if count <= LIMIT:
+...     wenn count <= LIMIT:
 ...         print("Solution", count)
 ...         q.printsolution(row2col)
 Solution 1
@@ -2325,10 +2325,10 @@ And run a Knight's Tour on a 10x10 board.  Note that there are about
 >>> count = 0
 >>> fuer x in k.solve():
 ...     count += 1
-...     if count <= LIMIT:
+...     wenn count <= LIMIT:
 ...         print("Solution", count)
 ...         k.printsolution(x)
-...     else:
+...     sonst:
 ...         break
 Solution 1
 +---+---+---+---+---+---+---+---+---+---+
@@ -2751,7 +2751,7 @@ enclosing function a generator:
 refleaks_tests = """
 Prior to adding cycle-GC support to itertools.tee, this code would leak
 references. We add it to the standard suite so the routine refleak-tests
-would trigger if it starts being uncleanable again.
+would trigger wenn it starts being uncleanable again.
 
 >>> import itertools
 >>> def leak():
@@ -2838,5 +2838,5 @@ def load_tests(loader, tests, pattern):
     return tests
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

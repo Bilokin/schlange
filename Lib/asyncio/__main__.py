@@ -56,7 +56,7 @@ klasse AsyncIOInteractiveConsole(InteractiveColoredConsole):
                 future.set_exception(ex)
                 return
 
-            if not inspect.iscoroutine(coro):
+            wenn not inspect.iscoroutine(coro):
                 future.set_result(coro)
                 return
 
@@ -75,9 +75,9 @@ klasse AsyncIOInteractiveConsole(InteractiveColoredConsole):
             self.loop.stop()
             return
         except BaseException:
-            if keyboard_interrupted:
+            wenn keyboard_interrupted:
                 self.write("\nKeyboardInterrupt\n")
-            else:
+            sonst:
                 self.showtraceback()
             return self.STATEMENT_FAILED
 
@@ -96,7 +96,7 @@ klasse REPLThread(threading.Thread):
 
             console.write(banner)
 
-            if startup_path := os.getenv("PYTHONSTARTUP"):
+            wenn startup_path := os.getenv("PYTHONSTARTUP"):
                 sys.audit("cpython.run_startup", startup_path)
 
                 import tokenize
@@ -105,12 +105,12 @@ klasse REPLThread(threading.Thread):
                     exec(startup_code, console.locals)
 
             ps1 = getattr(sys, "ps1", ">>> ")
-            if CAN_USE_PYREPL:
+            wenn CAN_USE_PYREPL:
                 theme = get_theme().syntax
                 ps1 = f"{theme.prompt}{ps1}{theme.reset}"
             console.write(f"{ps1}import asyncio\n")
 
-            if CAN_USE_PYREPL:
+            wenn CAN_USE_PYREPL:
                 from _pyrepl.simple_interact import (
                     run_multiline_interactive_console,
                 )
@@ -124,7 +124,7 @@ klasse REPLThread(threading.Thread):
                     console.showtraceback()
                     console.write("Internal error, ")
                     return_code = 1
-            else:
+            sonst:
                 console.interact(banner="", exitmsg="")
         finally:
             warnings.filterwarnings(
@@ -135,16 +135,16 @@ klasse REPLThread(threading.Thread):
             loop.call_soon_threadsafe(loop.stop)
 
     def interrupt(self) -> None:
-        if not CAN_USE_PYREPL:
+        wenn not CAN_USE_PYREPL:
             return
 
         from _pyrepl.simple_interact import _get_reader
         r = _get_reader()
-        if r.threading_hook is not None:
+        wenn r.threading_hook is not None:
             r.threading_hook.add("")  # type: ignore
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     parser = argparse.ArgumentParser(
         prog="python3 -m asyncio",
         description="Interactive asyncio shell and CLI tools",
@@ -157,7 +157,7 @@ if __name__ == '__main__':
     ps.add_argument("pid", type=int, help="Process ID to inspect")
     formats = [fmt.value fuer fmt in TaskTableOutputFormat]
     formats_to_show = [fmt fuer fmt in formats
-                       if fmt != TaskTableOutputFormat.bsv.value]
+                       wenn fmt != TaskTableOutputFormat.bsv.value]
     ps.add_argument("--format", choices=formats, default="table",
                     metavar=f"{{{','.join(formats_to_show)}}}")
     pstree = subparsers.add_parser(
@@ -183,9 +183,9 @@ if __name__ == '__main__':
 
     sys.audit("cpython.run_stdin")
 
-    if os.getenv('PYTHON_BASIC_REPL'):
+    wenn os.getenv('PYTHON_BASIC_REPL'):
         CAN_USE_PYREPL = False
-    else:
+    sonst:
         from _pyrepl.main import CAN_USE_PYREPL
 
     return_code = 0
@@ -210,18 +210,18 @@ if __name__ == '__main__':
 
     interactive_hook = getattr(sys, "__interactivehook__", None)
 
-    if interactive_hook is not None:
+    wenn interactive_hook is not None:
         sys.audit("cpython.run_interactivehook", interactive_hook)
         interactive_hook()
 
-    if interactive_hook is site.register_readline:
+    wenn interactive_hook is site.register_readline:
         # Fix the completer function to use the interactive console locals
         try:
             import rlcompleter
         except:
             pass
-        else:
-            if readline is not None:
+        sonst:
+            wenn readline is not None:
                 completer = rlcompleter.Completer(console.locals)
                 readline.set_completer(completer.complete)
 
@@ -234,11 +234,11 @@ if __name__ == '__main__':
             loop.run_forever()
         except KeyboardInterrupt:
             keyboard_interrupted = True
-            if repl_future and not repl_future.done():
+            wenn repl_future and not repl_future.done():
                 repl_future.cancel()
             repl_thread.interrupt()
             continue
-        else:
+        sonst:
             break
 
     console.write('exiting asyncio REPL...\n')

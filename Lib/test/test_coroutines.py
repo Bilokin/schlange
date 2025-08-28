@@ -48,7 +48,7 @@ def run_async(coro):
         try:
             buffer.append(coro.send(None))
         except StopIteration as ex:
-            result = ex.args[0] if ex.args else None
+            result = ex.args[0] wenn ex.args sonst None
             break
     return buffer, result
 
@@ -61,13 +61,13 @@ def run_async__await__(coro):
     i = 0
     while True:
         try:
-            if i % 2:
+            wenn i % 2:
                 buffer.append(next(aw))
-            else:
+            sonst:
                 buffer.append(aw.send(None))
             i += 1
         except StopIteration as ex:
-            result = ex.args[0] if ex.args else None
+            result = ex.args[0] wenn ex.args sonst None
             break
     return buffer, result
 
@@ -151,7 +151,7 @@ klasse AsyncBadSyntaxTest(unittest.TestCase):
                 def bar():
                  [i fuer i in els
                     fuer b in els
-                        if await b]
+                        wenn await b]
             """,
 
             """async def foo():
@@ -161,7 +161,7 @@ klasse AsyncBadSyntaxTest(unittest.TestCase):
 
             """async def foo():
                 def bar():
-                 [i fuer i in els if await i]
+                 [i fuer i in els wenn await i]
             """,
 
             """def bar():
@@ -205,7 +205,7 @@ klasse AsyncBadSyntaxTest(unittest.TestCase):
             """def bar():
                  [i fuer i in els
                     fuer b in els
-                        if await b]
+                        wenn await b]
             """,
 
             """def bar():
@@ -213,7 +213,7 @@ klasse AsyncBadSyntaxTest(unittest.TestCase):
             """,
 
             """def bar():
-                 [i fuer i in els if await i]
+                 [i fuer i in els wenn await i]
             """,
 
             """def bar():
@@ -240,13 +240,13 @@ klasse AsyncBadSyntaxTest(unittest.TestCase):
 
             """async def foo():
                    def bar(): pass
-                   if 1:
+                   wenn 1:
                        await = 1
             """,
 
             """def foo():
                    async def bar(): pass
-                   if 1:
+                   wenn 1:
                        await a
             """,
 
@@ -835,7 +835,7 @@ klasse CoroutineTest(unittest.TestCase):
                                     'cannot reuse already awaited coroutine'):
             coro.throw(Exception('wat'))
 
-        # Closing a coroutine shouldn't raise any exception even if it's
+        # Closing a coroutine shouldn't raise any exception even wenn it's
         # already closed/exhausted (similar to generators)
         coro.close()
         coro.close()
@@ -875,7 +875,7 @@ klasse CoroutineTest(unittest.TestCase):
                                     'cannot reuse already awaited coroutine'):
             it.throw(Exception('wat'))
 
-        # Closing a coroutine shouldn't raise any exception even if it's
+        # Closing a coroutine shouldn't raise any exception even wenn it's
         # already closed/exhausted (similar to generators)
         it.close()
         it.close()
@@ -905,7 +905,7 @@ klasse CoroutineTest(unittest.TestCase):
         self.assertEqual(CHK, 1)
 
         fuer _ in range(3):
-            # Closing a coroutine shouldn't raise any exception even if it's
+            # Closing a coroutine shouldn't raise any exception even wenn it's
             # already closed/exhausted (similar to generators)
             coro.close()
             self.assertEqual(CHK, 1)
@@ -957,7 +957,7 @@ klasse CoroutineTest(unittest.TestCase):
 
     def test_corotype_1(self):
         ct = types.CoroutineType
-        if not support.MISSING_C_DOCSTRINGS:
+        wenn not support.MISSING_C_DOCSTRINGS:
             self.assertIn('into coroutine', ct.send.__doc__)
             self.assertIn('inside coroutine', ct.close.__doc__)
             self.assertIn('in coroutine', ct.throw.__doc__)
@@ -1216,7 +1216,7 @@ klasse CoroutineTest(unittest.TestCase):
                 await AsyncYieldFrom(['exit-1-' + self.name,
                                       'exit-2-' + self.name])
 
-                if self.name == 'B':
+                wenn self.name == 'B':
                     return True
 
 
@@ -1349,7 +1349,7 @@ klasse CoroutineTest(unittest.TestCase):
                 "that does not implement __await__: int")
             self.assertTrue(exc.__context__ is not None)
             self.assertTrue(isinstance(exc.__context__, ZeroDivisionError))
-        else:
+        sonst:
             self.fail('invalid asynchronous context manager did not fail')
 
 
@@ -1460,7 +1460,7 @@ klasse CoroutineTest(unittest.TestCase):
             self.assertTrue(isinstance(exc.__context__, ZeroDivisionError))
             self.assertTrue(isinstance(exc.__context__.__context__,
                                        RuntimeError))
-        else:
+        sonst:
             self.fail('exception from __aexit__ did not propagate')
 
     def test_with_11(self):
@@ -1482,7 +1482,7 @@ klasse CoroutineTest(unittest.TestCase):
             run_async(foo())
         except NotImplementedError as exc:
             self.assertTrue(exc.__context__ is None)
-        else:
+        sonst:
             self.fail('exception from __aenter__ did not propagate')
 
     def test_with_12(self):
@@ -1539,10 +1539,10 @@ klasse CoroutineTest(unittest.TestCase):
             async def __anext__(self):
                 self.i += 1
 
-                if not (self.i % 10):
+                wenn not (self.i % 10):
                     await AsyncYield(self.i * 10)
 
-                if self.i > 100:
+                wenn self.i > 100:
                     raise StopAsyncIteration
 
                 return self.i, self.i
@@ -1565,9 +1565,9 @@ klasse CoroutineTest(unittest.TestCase):
             nonlocal buffer
             async fuer i in AsyncIter():
                 buffer.append(i[0])
-                if i[0] == 20:
+                wenn i[0] == 20:
                     break
-            else:
+            sonst:
                 buffer.append('what?')
             buffer.append('end')
 
@@ -1582,10 +1582,10 @@ klasse CoroutineTest(unittest.TestCase):
         async def test3():
             nonlocal buffer
             async fuer i in AsyncIter():
-                if i[0] > 20:
+                wenn i[0] > 20:
                     continue
                 buffer.append(i[0])
-            else:
+            sonst:
                 buffer.append('what?')
             buffer.append('end')
 
@@ -1674,7 +1674,7 @@ klasse CoroutineTest(unittest.TestCase):
                 return self
 
             async def __anext__(self):
-                if self.i > 10:
+                wenn self.i > 10:
                     raise StopAsyncIteration
                 self.i += 1
                 return self.i
@@ -1731,7 +1731,7 @@ klasse CoroutineTest(unittest.TestCase):
                 I += 100
                 async fuer i in Iterable():
                     I += 1
-                else:
+                sonst:
                     I += 10000000
             I += 1000
 
@@ -1739,7 +1739,7 @@ klasse CoroutineTest(unittest.TestCase):
                 I += 100
                 async fuer i in Iterable():
                     I += 1
-                else:
+                sonst:
                     I += 10000000
             I += 1000
 
@@ -1773,7 +1773,7 @@ klasse CoroutineTest(unittest.TestCase):
         with self.assertRaises(ZeroDivisionError):
             with warnings.catch_warnings():
                 warnings.simplefilter("error")
-                # Test that if __aiter__ raises an exception it propagates
+                # Test that wenn __aiter__ raises an exception it propagates
                 # without any kind of warning.
                 run_async(foo())
         self.assertEqual(CNT, 0)
@@ -1806,7 +1806,7 @@ klasse CoroutineTest(unittest.TestCase):
             def __aiter__(self):
                 return self
             async def __anext__(self):
-                if self.i >= len(self):
+                wenn self.i >= len(self):
                     raise StopAsyncIteration
                 self.i += 1
                 return self[self.i - 1]
@@ -1829,7 +1829,7 @@ klasse CoroutineTest(unittest.TestCase):
             def __aiter__(self):
                 return self
             async def __anext__(self):
-                if self.i:
+                wenn self.i:
                     raise StopAsyncIteration
                 self.i += 1
                 return self.value
@@ -1933,25 +1933,25 @@ klasse CoroutineTest(unittest.TestCase):
                 yield i
 
         async def run_list():
-            return [i + 1 async fuer i in f([10, 20]) if i > 10]
+            return [i + 1 async fuer i in f([10, 20]) wenn i > 10]
         self.assertEqual(
             run_async(run_list()),
             ([], [21]))
 
         async def run_set():
-            return {i + 1 async fuer i in f([10, 20]) if i > 10}
+            return {i + 1 async fuer i in f([10, 20]) wenn i > 10}
         self.assertEqual(
             run_async(run_set()),
             ([], {21}))
 
         async def run_dict():
-            return {i + 1: i + 2 async fuer i in f([10, 20]) if i > 10}
+            return {i + 1: i + 2 async fuer i in f([10, 20]) wenn i > 10}
         self.assertEqual(
             run_async(run_dict()),
             ([], {21: 22}))
 
         async def run_gen():
-            gen = (i + 1 async fuer i in f([10, 20]) if i > 10)
+            gen = (i + 1 async fuer i in f([10, 20]) wenn i > 10)
             return [g + 100 async fuer g in gen]
         self.assertEqual(
             run_async(run_gen()),
@@ -1963,25 +1963,25 @@ klasse CoroutineTest(unittest.TestCase):
                 yield i
 
         async def run_list():
-            return [i + 10 async fuer i in f(range(5)) if 0 < i < 4]
+            return [i + 10 async fuer i in f(range(5)) wenn 0 < i < 4]
         self.assertEqual(
             run_async(run_list()),
             ([], [11, 12, 13]))
 
         async def run_set():
-            return {i + 10 async fuer i in f(range(5)) if 0 < i < 4}
+            return {i + 10 async fuer i in f(range(5)) wenn 0 < i < 4}
         self.assertEqual(
             run_async(run_set()),
             ([], {11, 12, 13}))
 
         async def run_dict():
-            return {i + 10: i + 100 async fuer i in f(range(5)) if 0 < i < 4}
+            return {i + 10: i + 100 async fuer i in f(range(5)) wenn 0 < i < 4}
         self.assertEqual(
             run_async(run_dict()),
             ([], {11: 101, 12: 102, 13: 103}))
 
         async def run_gen():
-            gen = (i + 10 async fuer i in f(range(5)) if 0 < i < 4)
+            gen = (i + 10 async fuer i in f(range(5)) wenn 0 < i < 4)
             return [g + 100 async fuer g in gen]
         self.assertEqual(
             run_async(run_gen()),
@@ -1993,8 +1993,8 @@ klasse CoroutineTest(unittest.TestCase):
                 yield i
 
         async def run_list():
-            return [i + 1 fuer pair in ([10, 20], [30, 40]) if pair[0] > 10
-                    async fuer i in f(pair) if i > 30]
+            return [i + 1 fuer pair in ([10, 20], [30, 40]) wenn pair[0] > 10
+                    async fuer i in f(pair) wenn i > 30]
         self.assertEqual(
             run_async(run_list()),
             ([], [41]))
@@ -2494,5 +2494,5 @@ klasse CAPITest(unittest.TestCase):
             self.assertEqual(foo().send(None), 1)
 
 
-if __name__=="__main__":
+wenn __name__=="__main__":
     unittest.main()

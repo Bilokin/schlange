@@ -15,12 +15,12 @@ try:
     import _multiprocessing  # noqa: F401
 except ImportError:
     multiprocessing = None
-else:
+sonst:
     import multiprocessing
 
 # Misc tests from Tim Peters' re.doc
 
-# WARNING: Don't change details in these tests if you don't know
+# WARNING: Don't change details in these tests wenn you don't know
 # what you're doing. Some of these tests were carefully modeled to
 # cover most of the code.
 
@@ -37,10 +37,10 @@ klasse ReTests(unittest.TestCase):
     def assertTypedEqual(self, actual, expect, msg=None):
         self.assertEqual(actual, expect, msg)
         def recurse(actual, expect):
-            if isinstance(expect, (tuple, list)):
+            wenn isinstance(expect, (tuple, list)):
                 fuer x, y in zip(actual, expect):
                     recurse(x, y)
-            else:
+            sonst:
                 self.assertIs(type(actual), type(expect), msg)
         recurse(actual, expect)
 
@@ -50,7 +50,7 @@ klasse ReTests(unittest.TestCase):
         with self.subTest(pattern=pattern):
             err = cm.exception
             self.assertEqual(err.msg, errmsg)
-            if pos is not None:
+            wenn pos is not None:
                 self.assertEqual(err.pos, pos)
 
     def checkTemplateError(self, pattern, repl, string, errmsg, pos=None):
@@ -59,7 +59,7 @@ klasse ReTests(unittest.TestCase):
         with self.subTest(pattern=pattern, repl=repl):
             err = cm.exception
             self.assertEqual(err.msg, errmsg)
-            if pos is not None:
+            wenn pos is not None:
                 self.assertEqual(err.pos, pos)
 
     def test_error_is_PatternError_alias(self):
@@ -1355,11 +1355,11 @@ klasse ReTests(unittest.TestCase):
 
     def assertMatch(self, pattern, text, match=None, span=None,
                     matcher=re.fullmatch):
-        if match is None and span is None:
+        wenn match is None and span is None:
             # the pattern matches the whole text
             match = text
             span = (0, len(text))
-        elif match is None or span is None:
+        sowenn match is None or span is None:
             raise ValueError('If match is not None, span should be specified '
                              '(and vice versa).')
         m = matcher(pattern, text)
@@ -1445,14 +1445,14 @@ klasse ReTests(unittest.TestCase):
 
     def test_sre_character_literals(self):
         fuer i in [0, 8, 16, 32, 64, 127, 128, 255, 256, 0xFFFF, 0x10000, 0x10FFFF]:
-            if i < 256:
+            wenn i < 256:
                 self.assertTrue(re.match(r"\%03o" % i, chr(i)))
                 self.assertTrue(re.match(r"\%03o0" % i, chr(i)+"0"))
                 self.assertTrue(re.match(r"\%03o8" % i, chr(i)+"8"))
                 self.assertTrue(re.match(r"\x%02x" % i, chr(i)))
                 self.assertTrue(re.match(r"\x%02x0" % i, chr(i)+"0"))
                 self.assertTrue(re.match(r"\x%02xz" % i, chr(i)+"z"))
-            if i < 0x10000:
+            wenn i < 0x10000:
                 self.assertTrue(re.match(r"\u%04x" % i, chr(i)))
                 self.assertTrue(re.match(r"\u%04x0" % i, chr(i)+"0"))
                 self.assertTrue(re.match(r"\u%04xz" % i, chr(i)+"z"))
@@ -1477,7 +1477,7 @@ klasse ReTests(unittest.TestCase):
 
     def test_sre_character_class_literals(self):
         fuer i in [0, 8, 16, 32, 64, 127, 128, 255, 256, 0xFFFF, 0x10000, 0x10FFFF]:
-            if i < 256:
+            wenn i < 256:
                 self.assertTrue(re.match(r"[\%o]" % i, chr(i)))
                 self.assertTrue(re.match(r"[\%o8]" % i, chr(i)))
                 self.assertTrue(re.match(r"[\%03o]" % i, chr(i)))
@@ -1486,7 +1486,7 @@ klasse ReTests(unittest.TestCase):
                 self.assertTrue(re.match(r"[\x%02x]" % i, chr(i)))
                 self.assertTrue(re.match(r"[\x%02x0]" % i, chr(i)))
                 self.assertTrue(re.match(r"[\x%02xz]" % i, chr(i)))
-            if i < 0x10000:
+            wenn i < 0x10000:
                 self.assertTrue(re.match(r"[\u%04x]" % i, chr(i)))
                 self.assertTrue(re.match(r"[\u%04x0]" % i, chr(i)))
                 self.assertTrue(re.match(r"[\u%04xz]" % i, chr(i)))
@@ -1603,7 +1603,7 @@ klasse ReTests(unittest.TestCase):
                 outer_op = outer_reps + outer_mod
                 fuer inner_reps in '*', '+', '?', '{1,2}':
                     fuer inner_mod in '', '?', '+':
-                        if inner_mod + outer_reps in ('?', '+'):
+                        wenn inner_mod + outer_reps in ('?', '+'):
                             continue
                         inner_op = inner_reps + inner_mod
                         self.checkPatternError(r'x%s%s' % (inner_op, outer_op),
@@ -1881,35 +1881,35 @@ klasse ReTests(unittest.TestCase):
             try:
                 c = bytes([i]).decode(enc)
                 sletter = c.lower()
-                if sletter == c: continue
+                wenn sletter == c: continue
                 bletter = sletter.encode(enc)
-                if len(bletter) != 1: continue
-                if bletter.decode(enc) != sletter: continue
+                wenn len(bletter) != 1: continue
+                wenn bletter.decode(enc) != sletter: continue
                 bpat = re.escape(bytes([i]))
                 break
             except (UnicodeError, TypeError):
                 pass
-        else:
+        sonst:
             bletter = None
             bpat = b'A'
         # Bytes patterns
         pat = re.compile(bpat, re.LOCALE | re.IGNORECASE)
-        if bletter:
+        wenn bletter:
             self.assertTrue(pat.match(bletter))
         pat = re.compile(b'(?L)' + bpat, re.IGNORECASE)
-        if bletter:
+        wenn bletter:
             self.assertTrue(pat.match(bletter))
         pat = re.compile(bpat, re.IGNORECASE)
-        if bletter:
+        wenn bletter:
             self.assertIsNone(pat.match(bletter))
         pat = re.compile(br'\w', re.LOCALE)
-        if bletter:
+        wenn bletter:
             self.assertTrue(pat.match(bletter))
         pat = re.compile(br'(?L)\w')
-        if bletter:
+        wenn bletter:
             self.assertTrue(pat.match(bletter))
         pat = re.compile(br'\w')
-        if bletter:
+        wenn bletter:
             self.assertIsNone(pat.match(bletter))
         # Incompatibilities
         self.assertRaises(ValueError, re.compile, '', re.LOCALE)
@@ -2392,7 +2392,7 @@ klasse ReTests(unittest.TestCase):
                           {'tag': 'foo', 'text': None}])
 
     def test_MARK_PUSH_macro_bug(self):
-        # issue35859, MARK_PUSH() macro didn't protect MARK-0 if it
+        # issue35859, MARK_PUSH() macro didn't protect MARK-0 wenn it
         # was the only available mark.
         self.assertEqual(re.match(r'(ab|a)*?b', 'ab').groups(), ('a',))
         self.assertEqual(re.match(r'(ab|a)+?b', 'ab').groups(), ('a',))
@@ -2401,7 +2401,7 @@ klasse ReTests(unittest.TestCase):
 
     def test_MIN_UNTIL_mark_bug(self):
         # Fixed in issue35859, reported in issue9134.
-        # JUMP_MIN_UNTIL_2 should MARK_PUSH() if in a repeat
+        # JUMP_MIN_UNTIL_2 should MARK_PUSH() wenn in a repeat
         s = 'axxzbcz'
         p = r'(?:(?:a|bc)*?(xx)??z)*'
         self.assertEqual(re.match(p, s).groups(), ('xx',))
@@ -2416,7 +2416,7 @@ klasse ReTests(unittest.TestCase):
 
     def test_REPEAT_ONE_mark_bug(self):
         # issue35859
-        # JUMP_REPEAT_ONE_1 should MARK_PUSH() if in a repeat
+        # JUMP_REPEAT_ONE_1 should MARK_PUSH() wenn in a repeat
         s = 'aabaab'
         p = r'(?:[^b]*a(?=(b)|(a))ab)*'
         m = re.match(p, s)
@@ -2424,7 +2424,7 @@ klasse ReTests(unittest.TestCase):
         self.assertEqual(m.span(2), (4, 5))
         self.assertEqual(m.groups(), (None, 'a'))
 
-        # JUMP_REPEAT_ONE_2 should MARK_PUSH() if in a repeat
+        # JUMP_REPEAT_ONE_2 should MARK_PUSH() wenn in a repeat
         s = 'abab'
         p = r'(?:[^b]*(?=(b)|(a))ab)*'
         m = re.match(p, s)
@@ -2436,7 +2436,7 @@ klasse ReTests(unittest.TestCase):
 
     def test_MIN_REPEAT_ONE_mark_bug(self):
         # issue35859
-        # JUMP_MIN_REPEAT_ONE should MARK_PUSH() if in a repeat
+        # JUMP_MIN_REPEAT_ONE should MARK_PUSH() wenn in a repeat
         s = 'abab'
         p = r'(?:.*?(?=(a)|(b))b)*'
         m = re.match(p, s)
@@ -2453,7 +2453,7 @@ klasse ReTests(unittest.TestCase):
         # JUMP_ASSERT_NOT should LASTMARK_SAVE()
         self.assertEqual(re.match(r'(?!(..)c)', 'ab').groups(), (None,))
 
-        # JUMP_ASSERT_NOT should MARK_PUSH() if in a repeat
+        # JUMP_ASSERT_NOT should MARK_PUSH() wenn in a repeat
         m = re.match(r'((?!(ab)c)(.))*', 'abab')
         self.assertEqual(m.span(), (0, 4))
         self.assertEqual(m.span(1), (3, 4))
@@ -2657,7 +2657,7 @@ klasse ReTests(unittest.TestCase):
         try:
             self.assertFalse(p.is_alive(), 'pattern.sub() timed out')
         finally:
-            if p.is_alive():
+            wenn p.is_alive():
                 p.terminate()
                 p.join()
 
@@ -2941,7 +2941,7 @@ klasse ImplementationTest(unittest.TestCase):
         fuer i in list(range(128, 0x1000)) + [0x10400, 0x10428]:
             c = chr(i)
             self.assertEqual(_sre.ascii_tolower(i), i)
-            if i != 0x0130:
+            wenn i != 0x0130:
                 self.assertEqual(_sre.unicode_tolower(i), ord(c.lower()))
             iscased = c != c.lower() or c != c.upper()
             self.assertFalse(_sre.ascii_iscased(i))
@@ -3020,22 +3020,22 @@ klasse ExternalTests(unittest.TestCase):
         from test.re_tests import tests, FAIL, SYNTAX_ERROR
         fuer t in tests:
             pattern = s = outcome = repl = expected = None
-            if len(t) == 5:
+            wenn len(t) == 5:
                 pattern, s, outcome, repl, expected = t
-            elif len(t) == 3:
+            sowenn len(t) == 3:
                 pattern, s, outcome = t
-            else:
+            sonst:
                 raise ValueError('Test tuples should have 3 or 5 fields', t)
 
             with self.subTest(pattern=pattern, string=s):
-                if outcome == SYNTAX_ERROR:  # Expected a syntax error
+                wenn outcome == SYNTAX_ERROR:  # Expected a syntax error
                     with self.assertRaises(re.PatternError):
                         re.compile(pattern)
                     continue
 
                 obj = re.compile(pattern)
                 result = obj.search(s)
-                if outcome == FAIL:
+                wenn outcome == FAIL:
                     self.assertIsNone(result, 'Succeeded incorrectly')
                     continue
 
@@ -3050,8 +3050,8 @@ klasse ExternalTests(unittest.TestCase):
                     fuer i in range(1, 100):
                         try:
                             gi = result.group(i)
-                            # Special hack because else the string concat fails:
-                            if gi is None:
+                            # Special hack because sonst the string concat fails:
+                            wenn gi is None:
                                 gi = "None"
                         except IndexError:
                             gi = "Error"
@@ -3059,7 +3059,7 @@ klasse ExternalTests(unittest.TestCase):
                     fuer i in result.re.groupindex.keys():
                         try:
                             gi = result.group(i)
-                            if gi is None:
+                            wenn gi is None:
                                 gi = "None"
                         except IndexError:
                             gi = "Error"
@@ -3075,7 +3075,7 @@ klasse ExternalTests(unittest.TestCase):
                 except UnicodeEncodeError:
                     # skip non-ascii tests
                     pass
-                else:
+                sonst:
                     with self.subTest('bytes pattern match'):
                         obj = re.compile(bpat)
                         self.assertTrue(obj.search(bs))
@@ -3085,14 +3085,14 @@ klasse ExternalTests(unittest.TestCase):
                     with self.subTest('locale-sensitive match'):
                         obj = re.compile(bpat, re.LOCALE)
                         result = obj.search(bs)
-                        if result is None:
+                        wenn result is None:
                             print('=== Fails on locale-sensitive match', t)
 
                 # Try the match with the search area limited to the extent
-                # of the match and see if it still succeeds.  \B will
+                # of the match and see wenn it still succeeds.  \B will
                 # break (because it won't match at the end or start of a
                 # string), so we'll ignore patterns that feature it.
-                if (pattern[:2] != r'\B' and pattern[-2:] != r'\B'
+                wenn (pattern[:2] != r'\B' and pattern[-2:] != r'\B'
                             and result is not None):
                     with self.subTest('range-limited match'):
                         obj = re.compile(pattern)
@@ -3111,5 +3111,5 @@ klasse ExternalTests(unittest.TestCase):
                     self.assertTrue(obj.search(s))
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

@@ -364,5 +364,5 @@ def blowstack(fxn, arg, compare_to):
         fxn(arg, tuple_arg)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

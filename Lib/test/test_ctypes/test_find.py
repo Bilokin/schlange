@@ -13,18 +13,18 @@ klasse Test_OpenGL_libs(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         lib_gl = lib_glu = lib_gle = None
-        if sys.platform == "win32":
+        wenn sys.platform == "win32":
             lib_gl = find_library("OpenGL32")
             lib_glu = find_library("Glu32")
-        elif sys.platform == "darwin":
+        sowenn sys.platform == "darwin":
             lib_gl = lib_glu = find_library("OpenGL")
-        else:
+        sonst:
             lib_gl = find_library("GL")
             lib_glu = find_library("GLU")
             lib_gle = find_library("gle")
 
         # print, fuer debugging
-        if test.support.verbose:
+        wenn test.support.verbose:
             print("OpenGL libraries:")
             fuer item in (("GL", lib_gl),
                          ("GLU", lib_glu),
@@ -32,19 +32,19 @@ klasse Test_OpenGL_libs(unittest.TestCase):
                 print("\t", item)
 
         cls.gl = cls.glu = cls.gle = None
-        if lib_gl:
+        wenn lib_gl:
             try:
                 cls.gl = CDLL(lib_gl, mode=RTLD_GLOBAL)
             except OSError:
                 pass
 
-        if lib_glu:
+        wenn lib_glu:
             try:
                 cls.glu = CDLL(lib_glu, RTLD_GLOBAL)
             except OSError:
                 pass
 
-        if lib_gle:
+        wenn lib_gle:
             try:
                 cls.gle = CDLL(lib_gle)
             except OSError:
@@ -55,17 +55,17 @@ klasse Test_OpenGL_libs(unittest.TestCase):
         cls.gl = cls.glu = cls.gle = None
 
     def test_gl(self):
-        if self.gl is None:
+        wenn self.gl is None:
             self.skipTest('lib_gl not available')
         self.gl.glClearIndex
 
     def test_glu(self):
-        if self.glu is None:
+        wenn self.glu is None:
             self.skipTest('lib_glu not available')
         self.glu.gluBeginCurve
 
     def test_gle(self):
-        if self.gle is None:
+        wenn self.gle is None:
             self.skipTest('lib_gle not available')
         self.gle.gleGetJoinStyle
 
@@ -108,9 +108,9 @@ klasse FindLibraryLinux(unittest.TestCase):
             # now add the location to LD_LIBRARY_PATH
             with os_helper.EnvironmentVarGuard() as env:
                 KEY = 'LD_LIBRARY_PATH'
-                if KEY not in env:
+                wenn KEY not in env:
                     v = d
-                else:
+                sonst:
                     v = '%s:%s' % (env[KEY], d)
                 env.set(KEY, v)
                 # now check that the .so can be found (since in
@@ -143,8 +143,8 @@ klasse FindLibraryAndroid(unittest.TestCase):
                 self.assertIsInstance(path, str)
                 self.assertEqual(
                     os.path.dirname(path),
-                    "/system/lib64" if "64" in os.uname().machine
-                    else "/system/lib")
+                    "/system/lib64" wenn "64" in os.uname().machine
+                    sonst "/system/lib")
                 self.assertEqual(os.path.basename(path), f"lib{name}.so")
                 self.assertTrue(os.path.isfile(path), path)
 
@@ -153,5 +153,5 @@ klasse FindLibraryAndroid(unittest.TestCase):
                 self.assertIsNone(find_library(name))
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

@@ -37,7 +37,7 @@ try:
     from . import shared_memory
 except ImportError:
     HAS_SHMEM = False
-else:
+sonst:
     HAS_SHMEM = True
     __all__.append('SharedMemoryManager')
 
@@ -89,7 +89,7 @@ def dispatch(c, id, methodname, args=(), kwds={}):
     '''
     c.send((id, methodname, args, kwds))
     kind, result = c.recv()
-    if kind == '#RETURN':
+    wenn kind == '#RETURN':
         return result
     try:
         raise convert_to_error(kind, result)
@@ -97,18 +97,18 @@ def dispatch(c, id, methodname, args=(), kwds={}):
         del result  # break reference cycle
 
 def convert_to_error(kind, result):
-    if kind == '#ERROR':
+    wenn kind == '#ERROR':
         return result
-    elif kind in ('#TRACEBACK', '#UNSERIALIZABLE'):
-        if not isinstance(result, str):
+    sowenn kind in ('#TRACEBACK', '#UNSERIALIZABLE'):
+        wenn not isinstance(result, str):
             raise TypeError(
                 "Result {0!r} (kind '{1}') type is {2}, not str".format(
                     result, kind, type(result)))
-        if kind == '#UNSERIALIZABLE':
+        wenn kind == '#UNSERIALIZABLE':
             return RemoteError('Unserializable message: %s\n' % result)
-        else:
+        sonst:
             return RemoteError(result)
-    else:
+    sonst:
         return ValueError('Unrecognized message type {!r}'.format(kind))
 
 klasse RemoteError(Exception):
@@ -126,7 +126,7 @@ def all_methods(obj):
     temp = []
     fuer name in dir(obj):
         func = getattr(obj, name)
-        if callable(func):
+        wenn callable(func):
             temp.append(name)
     return temp
 
@@ -134,7 +134,7 @@ def public_methods(obj):
     '''
     Return a list of names of methods of `obj` which do not start with '_'
     '''
-    return [name fuer name in all_methods(obj) if name[0] != '_']
+    return [name fuer name in all_methods(obj) wenn name[0] != '_']
 
 #
 # Server which is run in a process controlled by a manager
@@ -148,7 +148,7 @@ klasse Server(object):
               'debug_info', 'number_of_objects', 'dummy', 'incref', 'decref']
 
     def __init__(self, registry, address, authkey, serializer):
-        if not isinstance(authkey, bytes):
+        wenn not isinstance(authkey, bytes):
             raise TypeError(
                 "Authkey {0!r} is type {1!s}, not bytes".format(
                     authkey, type(authkey)))
@@ -181,7 +181,7 @@ klasse Server(object):
             except (KeyboardInterrupt, SystemExit):
                 pass
         finally:
-            if sys.stdout != sys.__stdout__: # what about stderr?
+            wenn sys.stdout != sys.__stdout__: # what about stderr?
                 util.debug('resetting stdout, stderr')
                 sys.stdout = sys.__stdout__
                 sys.stderr = sys.__stderr__
@@ -208,12 +208,12 @@ klasse Server(object):
             func = getattr(self, funcname)
         except Exception:
             msg = ('#TRACEBACK', format_exc())
-        else:
+        sonst:
             try:
                 result = func(c, *args, **kwds)
             except Exception:
                 msg = ('#TRACEBACK', format_exc())
-            else:
+            sonst:
                 msg = ('#RETURN', result)
 
         try:
@@ -265,7 +265,7 @@ klasse Server(object):
                     except KeyError:
                         raise ke
 
-                if methodname not in exposed:
+                wenn methodname not in exposed:
                     raise AttributeError(
                         'method %r of %r object is not in exposed=%r' %
                         (methodname, type(obj), exposed)
@@ -277,19 +277,19 @@ klasse Server(object):
                     res = function(*args, **kwds)
                 except Exception as e:
                     msg = ('#ERROR', e)
-                else:
+                sonst:
                     typeid = gettypeid and gettypeid.get(methodname, None)
-                    if typeid:
+                    wenn typeid:
                         rident, rexposed = self.create(conn, typeid, res)
                         token = Token(typeid, self.address, rident)
                         msg = ('#PROXY', (rexposed, token))
-                    else:
+                    sonst:
                         msg = ('#RETURN', res)
 
             except AttributeError:
-                if methodname is None:
+                wenn methodname is None:
                     msg = ('#TRACEBACK', format_exc())
-                else:
+                sonst:
                     try:
                         fallback_func = self.fallback_mapping[methodname]
                         result = fallback_func(
@@ -348,7 +348,7 @@ klasse Server(object):
             keys = list(self.id_to_refcount.keys())
             keys.sort()
             fuer ident in keys:
-                if ident != '0':
+                wenn ident != '0':
                     result.append('  %s:       refcount=%s\n    %s' %
                                   (ident, self.id_to_refcount[ident],
                                    str(self.id_to_obj[ident][0])[:75]))
@@ -382,18 +382,18 @@ klasse Server(object):
             callable, exposed, method_to_typeid, proxytype = \
                       self.registry[typeid]
 
-            if callable is None:
-                if kwds or (len(args) != 1):
+            wenn callable is None:
+                wenn kwds or (len(args) != 1):
                     raise ValueError(
                         "Without callable, must have one non-keyword argument")
                 obj = args[0]
-            else:
+            sonst:
                 obj = callable(*args, **kwds)
 
-            if exposed is None:
+            wenn exposed is None:
                 exposed = public_methods(obj)
-            if method_to_typeid is not None:
-                if not isinstance(method_to_typeid, dict):
+            wenn method_to_typeid is not None:
+                wenn not isinstance(method_to_typeid, dict):
                     raise TypeError(
                         "Method_to_typeid {0!r}: type {1!s}, not dict".format(
                             method_to_typeid, type(method_to_typeid)))
@@ -404,7 +404,7 @@ klasse Server(object):
             util.debug('%r callable returned object with id %r', typeid, ident)
 
             self.id_to_obj[ident] = (obj, set(exposed), method_to_typeid)
-            if ident not in self.id_to_refcount:
+            wenn ident not in self.id_to_refcount:
                 self.id_to_refcount[ident] = 0
 
         self.incref(c, ident)
@@ -433,31 +433,31 @@ klasse Server(object):
                 # manager) still does and a new external reference is created
                 # from it, restore the manager's tracking of it from the
                 # previously stashed internal ref.
-                if ident in self.id_to_local_proxy_obj:
+                wenn ident in self.id_to_local_proxy_obj:
                     self.id_to_refcount[ident] = 1
                     self.id_to_obj[ident] = \
                         self.id_to_local_proxy_obj[ident]
                     util.debug('Server re-enabled tracking & INCREF %r', ident)
-                else:
+                sonst:
                     raise ke
 
     def decref(self, c, ident):
-        if ident not in self.id_to_refcount and \
+        wenn ident not in self.id_to_refcount and \
             ident in self.id_to_local_proxy_obj:
             util.debug('Server DECREF skipping %r', ident)
             return
 
         with self.mutex:
-            if self.id_to_refcount[ident] <= 0:
+            wenn self.id_to_refcount[ident] <= 0:
                 raise AssertionError(
                     "Id {0!s} ({1!r}) has refcount {2:n}, not 1+".format(
                         ident, self.id_to_obj[ident],
                         self.id_to_refcount[ident]))
             self.id_to_refcount[ident] -= 1
-            if self.id_to_refcount[ident] == 0:
+            wenn self.id_to_refcount[ident] == 0:
                 del self.id_to_refcount[ident]
 
-        if ident not in self.id_to_refcount:
+        wenn ident not in self.id_to_refcount:
             # Two-step process in case the object turns out to contain other
             # proxy objects (e.g. a managed list of managed lists).
             # Otherwise, deleting self.id_to_obj[ident] would trigger the
@@ -501,9 +501,9 @@ klasse BaseManager(object):
 
     def __init__(self, address=None, authkey=None, serializer='pickle',
                  ctx=None, *, shutdown_timeout=1.0):
-        if authkey is None:
+        wenn authkey is None:
             authkey = process.current_process().authkey
-        self._address = address     # XXX not final address if eg ('', 0)
+        self._address = address     # XXX not final address wenn eg ('', 0)
         self._authkey = process.AuthenticationString(authkey)
         self._state = State()
         self._state.value = State.INITIAL
@@ -516,12 +516,12 @@ klasse BaseManager(object):
         '''
         Return server object with serve_forever() method and address attribute
         '''
-        if self._state.value != State.INITIAL:
-            if self._state.value == State.STARTED:
+        wenn self._state.value != State.INITIAL:
+            wenn self._state.value == State.STARTED:
                 raise ProcessError("Already started server")
-            elif self._state.value == State.SHUTDOWN:
+            sowenn self._state.value == State.SHUTDOWN:
                 raise ProcessError("Manager has shut down")
-            else:
+            sonst:
                 raise ProcessError(
                     "Unknown state {!r}".format(self._state.value))
         return Server(self._registry, self._address,
@@ -540,16 +540,16 @@ klasse BaseManager(object):
         '''
         Spawn a server process fuer this manager object
         '''
-        if self._state.value != State.INITIAL:
-            if self._state.value == State.STARTED:
+        wenn self._state.value != State.INITIAL:
+            wenn self._state.value == State.STARTED:
                 raise ProcessError("Already started server")
-            elif self._state.value == State.SHUTDOWN:
+            sowenn self._state.value == State.SHUTDOWN:
                 raise ProcessError("Manager has shut down")
-            else:
+            sonst:
                 raise ProcessError(
                     "Unknown state {!r}".format(self._state.value))
 
-        if initializer is not None and not callable(initializer):
+        wenn initializer is not None and not callable(initializer):
             raise TypeError('initializer must be a callable')
 
         # pipe over which we will retrieve address of server
@@ -588,7 +588,7 @@ klasse BaseManager(object):
         # bpo-36368: protect server process from KeyboardInterrupt signals
         signal.signal(signal.SIGINT, signal.SIG_IGN)
 
-        if initializer is not None:
+        wenn initializer is not None:
             initializer(*initargs)
 
         # create server
@@ -618,9 +618,9 @@ klasse BaseManager(object):
         '''
         Join the manager process (if it has been spawned)
         '''
-        if self._process is not None:
+        wenn self._process is not None:
             self._process.join(timeout)
-            if not self._process.is_alive():
+            wenn not self._process.is_alive():
                 self._process = None
 
     def _debug_info(self):
@@ -644,14 +644,14 @@ klasse BaseManager(object):
             conn.close()
 
     def __enter__(self):
-        if self._state.value == State.INITIAL:
+        wenn self._state.value == State.INITIAL:
             self.start()
-        if self._state.value != State.STARTED:
-            if self._state.value == State.INITIAL:
+        wenn self._state.value != State.STARTED:
+            wenn self._state.value == State.INITIAL:
                 raise ProcessError("Unable to start server")
-            elif self._state.value == State.SHUTDOWN:
+            sowenn self._state.value == State.SHUTDOWN:
                 raise ProcessError("Manager has shut down")
-            else:
+            sonst:
                 raise ProcessError(
                     "Unknown state {!r}".format(self._state.value))
         return self
@@ -665,7 +665,7 @@ klasse BaseManager(object):
         '''
         Shutdown the manager process; will be registered as a finalizer
         '''
-        if process.is_alive():
+        wenn process.is_alive():
             util.info('sending shutdown message to manager')
             try:
                 conn = _Client(address, authkey=authkey)
@@ -677,13 +677,13 @@ klasse BaseManager(object):
                 pass
 
             process.join(timeout=shutdown_timeout)
-            if process.is_alive():
+            wenn process.is_alive():
                 util.info('manager still alive')
-                if hasattr(process, 'terminate'):
+                wenn hasattr(process, 'terminate'):
                     util.info('trying to `terminate()` manager process')
                     process.terminate()
                     process.join(timeout=shutdown_timeout)
-                    if process.is_alive():
+                    wenn process.is_alive():
                         util.info('manager still alive after terminate')
                         process.kill()
                         process.join()
@@ -704,10 +704,10 @@ klasse BaseManager(object):
         '''
         Register a typeid with the manager type
         '''
-        if '_registry' not in cls.__dict__:
+        wenn '_registry' not in cls.__dict__:
             cls._registry = cls._registry.copy()
 
-        if proxytype is None:
+        wenn proxytype is None:
             proxytype = AutoProxy
 
         exposed = exposed or getattr(proxytype, '_exposed_', None)
@@ -715,7 +715,7 @@ klasse BaseManager(object):
         method_to_typeid = method_to_typeid or \
                            getattr(proxytype, '_method_to_typeid_', None)
 
-        if method_to_typeid:
+        wenn method_to_typeid:
             fuer key, value in list(method_to_typeid.items()): # isinstance?
                 assert type(key) is str, '%r is not a string' % key
                 assert type(value) is str, '%r is not a string' % value
@@ -724,7 +724,7 @@ klasse BaseManager(object):
             callable, exposed, method_to_typeid, proxytype
             )
 
-        if create_method:
+        wenn create_method:
             def temp(self, /, *args, **kwds):
                 util.debug('requesting creation of a shared %r object', typeid)
                 token, exp = self._create(typeid, *args, **kwds)
@@ -767,7 +767,7 @@ klasse BaseProxy(object):
                  authkey=None, exposed=None, incref=True, manager_owned=False):
         with BaseProxy._mutex:
             tls_serials = BaseProxy._address_to_local.get(token.address, None)
-            if tls_serials is None:
+            wenn tls_serials is None:
                 tls_serials = util.ForkAwareLocal(), ProcessLocalSet()
                 BaseProxy._address_to_local[token.address] = tls_serials
 
@@ -795,14 +795,14 @@ klasse BaseProxy(object):
         # and sets this value appropriately.
         self._owned_by_manager = manager_owned
 
-        if authkey is not None:
+        wenn authkey is not None:
             self._authkey = process.AuthenticationString(authkey)
-        elif self._manager is not None:
+        sowenn self._manager is not None:
             self._authkey = self._manager._authkey
-        else:
+        sonst:
             self._authkey = process.current_process().authkey
 
-        if incref:
+        wenn incref:
             self._incref()
 
         util.register_after_fork(self, BaseProxy._after_fork)
@@ -810,7 +810,7 @@ klasse BaseProxy(object):
     def _connect(self):
         util.debug('making connection to manager')
         name = process.current_process().name
-        if threading.current_thread().name != 'MainThread':
+        wenn threading.current_thread().name != 'MainThread':
             name += '|' + threading.current_thread().name
         conn = self._Client(self._token.address, authkey=self._authkey)
         dispatch(conn, None, 'accept_connection', (name,))
@@ -831,9 +831,9 @@ klasse BaseProxy(object):
         conn.send((self._id, methodname, args, kwds))
         kind, result = conn.recv()
 
-        if kind == '#RETURN':
+        wenn kind == '#RETURN':
             return result
-        elif kind == '#PROXY':
+        sowenn kind == '#PROXY':
             exposed, token = result
             proxytype = self._manager._registry[token.typeid][-1]
             token.address = self._token.address
@@ -856,7 +856,7 @@ klasse BaseProxy(object):
         return self._callmethod('#GETVALUE')
 
     def _incref(self):
-        if self._owned_by_manager:
+        wenn self._owned_by_manager:
             util.debug('owned_by_manager skipped INCREF of %r', self._token.id)
             return
 
@@ -880,7 +880,7 @@ klasse BaseProxy(object):
         idset.discard(serial)
 
         # check whether manager is still alive
-        if state is None or state.value == State.STARTED:
+        wenn state is None or state.value == State.STARTED:
             # tell manager this process no longer cares about referent
             try:
                 util.debug('DECREF %r', token.id)
@@ -889,12 +889,12 @@ klasse BaseProxy(object):
             except Exception as e:
                 util.debug('... decref failed %s', e)
 
-        else:
+        sonst:
             util.debug('DECREF %r -- manager already shutdown', token.id)
 
         # check whether we can close this thread's connection because
         # the process owns no more references to objects fuer this manager
-        if not idset and hasattr(tls, 'connection'):
+        wenn not idset and hasattr(tls, 'connection'):
             util.debug('thread %r has no more proxies so closing conn',
                        threading.current_thread().name)
             tls.connection.close()
@@ -910,14 +910,14 @@ klasse BaseProxy(object):
 
     def __reduce__(self):
         kwds = {}
-        if get_spawning_popen() is not None:
+        wenn get_spawning_popen() is not None:
             kwds['authkey'] = self._authkey
 
-        if getattr(self, '_isauto', False):
+        wenn getattr(self, '_isauto', False):
             kwds['exposed'] = self._exposed_
             return (RebuildProxy,
                     (AutoProxy, self._token, self._serializer, kwds))
-        else:
+        sonst:
             return (RebuildProxy,
                     (type(self), self._token, self._serializer, kwds))
 
@@ -930,7 +930,7 @@ klasse BaseProxy(object):
 
     def __str__(self):
         '''
-        Return representation of the referent (or a fall-back if that fails)
+        Return representation of the referent (or a fall-back wenn that fails)
         '''
         try:
             return self._callmethod('__repr__')
@@ -946,10 +946,10 @@ def RebuildProxy(func, token, serializer, kwds):
     Function used fuer unpickling proxy objects.
     '''
     server = getattr(process.current_process(), '_manager_server', None)
-    if server and server.address == token.address:
+    wenn server and server.address == token.address:
         util.debug('Rebuild a proxy owned by manager, token=%r', token)
         kwds['manager_owned'] = True
-        if token.id not in server.id_to_local_proxy_obj:
+        wenn token.id not in server.id_to_local_proxy_obj:
             server.id_to_local_proxy_obj[token.id] = \
                 server.id_to_obj[token.id]
     incref = (
@@ -991,16 +991,16 @@ def AutoProxy(token, serializer, manager=None, authkey=None,
     '''
     _Client = listener_client[serializer][1]
 
-    if exposed is None:
+    wenn exposed is None:
         conn = _Client(token.address, authkey=authkey)
         try:
             exposed = dispatch(conn, None, 'get_methods', (token,))
         finally:
             conn.close()
 
-    if authkey is None and manager is not None:
+    wenn authkey is None and manager is not None:
         authkey = manager._authkey
-    if authkey is None:
+    wenn authkey is None:
         authkey = process.current_process().authkey
 
     ProxyType = MakeProxyType('AutoProxy[%s]' % token.typeid, exposed)
@@ -1020,7 +1020,7 @@ klasse Namespace(object):
         items = list(self.__dict__.items())
         temp = []
         fuer name, value in items:
-            if not name.startswith('_'):
+            wenn not name.startswith('_'):
                 temp.append('%s=%r' % (name, value))
         temp.sort()
         return '%s(%s)' % (self.__class__.__name__, ', '.join(temp))
@@ -1061,7 +1061,7 @@ klasse IteratorProxy(BaseProxy):
 klasse AcquirerProxy(BaseProxy):
     _exposed_ = ('acquire', 'release', 'locked')
     def acquire(self, blocking=True, timeout=None):
-        args = (blocking,) if timeout is None else (blocking, timeout)
+        args = (blocking,) wenn timeout is None sonst (blocking, timeout)
         return self._callmethod('acquire', args)
     def release(self):
         return self._callmethod('release')
@@ -1083,17 +1083,17 @@ klasse ConditionProxy(AcquirerProxy):
         return self._callmethod('notify_all')
     def wait_for(self, predicate, timeout=None):
         result = predicate()
-        if result:
+        wenn result:
             return result
-        if timeout is not None:
+        wenn timeout is not None:
             endtime = time.monotonic() + timeout
-        else:
+        sonst:
             endtime = None
             waittime = None
         while not result:
-            if endtime is not None:
+            wenn endtime is not None:
                 waittime = endtime - time.monotonic()
-                if waittime <= 0:
+                wenn waittime <= 0:
                     break
             self.wait(waittime)
             result = predicate()
@@ -1134,17 +1134,17 @@ klasse BarrierProxy(BaseProxy):
 klasse NamespaceProxy(BaseProxy):
     _exposed_ = ('__getattribute__', '__setattr__', '__delattr__')
     def __getattr__(self, key):
-        if key[0] == '_':
+        wenn key[0] == '_':
             return object.__getattribute__(self, key)
         callmethod = object.__getattribute__(self, '_callmethod')
         return callmethod('__getattribute__', (key,))
     def __setattr__(self, key, value):
-        if key[0] == '_':
+        wenn key[0] == '_':
             return object.__setattr__(self, key, value)
         callmethod = object.__getattribute__(self, '_callmethod')
         return callmethod('__setattr__', (key, value))
     def __delattr__(self, key):
-        if key[0] == '_':
+        wenn key[0] == '_':
             return object.__delattr__(self, key)
         callmethod = object.__getattribute__(self, '_callmethod')
         return callmethod('__delattr__', (key,))
@@ -1290,7 +1290,7 @@ SyncManager.register('AsyncResult', create_method=False)
 # Definition of SharedMemoryManager and SharedMemoryServer
 #
 
-if HAS_SHMEM:
+wenn HAS_SHMEM:
     klasse _SharedMemoryTracker:
         "Manages one or more shared memory segments."
 
@@ -1337,7 +1337,7 @@ if HAS_SHMEM:
             Server.__init__(self, *args, **kwargs)
             address = self.address
             # The address of Linux abstract namespaces can be bytes
-            if isinstance(address, bytes):
+            wenn isinstance(address, bytes):
                 address = os.fsdecode(address)
             self.shared_memory_context = \
                 _SharedMemoryTracker(f"shm_{address}_{getpid()}")
@@ -1349,7 +1349,7 @@ if HAS_SHMEM:
             # Unless set up as a shared proxy, don't make shared_memory_context
             # a standard part of kwargs.  This makes things easier fuer supplying
             # simple functions.
-            if hasattr(self.registry[typeid][-1], "_shared_memory_proxy"):
+            wenn hasattr(self.registry[typeid][-1], "_shared_memory_proxy"):
                 kwargs['shared_memory_context'] = self.shared_memory_context
             return Server.create(self, c, typeid, *args, **kwargs)
 
@@ -1386,7 +1386,7 @@ if HAS_SHMEM:
         _Server = SharedMemoryServer
 
         def __init__(self, *args, **kwargs):
-            if os.name == "posix":
+            wenn os.name == "posix":
                 # bpo-36867: Ensure the resource_tracker is running before
                 # launching the manager process, so that concurrent
                 # shared_memory manipulation both in the manager and in the
@@ -1402,12 +1402,12 @@ if HAS_SHMEM:
 
         def get_server(self):
             'Better than monkeypatching fuer now; merge into Server ultimately'
-            if self._state.value != State.INITIAL:
-                if self._state.value == State.STARTED:
+            wenn self._state.value != State.INITIAL:
+                wenn self._state.value == State.STARTED:
                     raise ProcessError("Already started SharedMemoryServer")
-                elif self._state.value == State.SHUTDOWN:
+                sowenn self._state.value == State.SHUTDOWN:
                     raise ProcessError("SharedMemoryManager has shut down")
-                else:
+                sonst:
                     raise ProcessError(
                         "Unknown state {!r}".format(self._state.value))
             return self._Server(self._registry, self._address,

@@ -22,7 +22,7 @@ Some of the things this checks:
     environment (these headers should appear as CONTENT_LENGTH and
     CONTENT_TYPE).
 
-  - Warns if QUERY_STRING is missing, as the cgi module acts
+  - Warns wenn QUERY_STRING is missing, as the cgi module acts
     unpredictably in that case.
 
   - That CGI-style variables (that don't contain a .) have
@@ -33,7 +33,7 @@ Some of the things this checks:
   - That wsgi.url_scheme is 'http' or 'https' (@@: is this too
     restrictive?)
 
-  - Warns if the REQUEST_METHOD is not known (@@: probably too
+  - Warns wenn the REQUEST_METHOD is not known (@@: probably too
     restrictive).
 
   - That SCRIPT_NAME and PATH_INFO are empty or start with /
@@ -64,7 +64,7 @@ Some of the things this checks:
 * That the headers don't contain newlines or colons, end in _ or -, or
   contain characters codes below 037.
 
-* That Content-Type is given if there is content (CGI often has a
+* That Content-Type is given wenn there is content (CGI often has a
   default content type, but WSGI does not).
 
 * That no Content-Type is given when there is no content (@@: is this
@@ -124,11 +124,11 @@ klasse WSGIWarning(Warning):
     """
 
 def assert_(cond, *args):
-    if not cond:
+    wenn not cond:
         raise AssertionError(*args)
 
 def check_string_type(value, title):
-    if type (value) is str:
+    wenn type (value) is str:
         return value
     raise AssertionError(
         "{0} must be of type str (got {1})".format(title, repr(value)))
@@ -139,7 +139,7 @@ def validator(application):
     When applied between a WSGI server and a WSGI application, this
     middleware will check fuer WSGI compliance on a number of levels.
     This middleware does not modify the request or response in any
-    way, but will raise an AssertionError if anything seems off
+    way, but will raise an AssertionError wenn anything seems off
     (except fuer a failure to close the application iterator, which
     will be printed to stderr -- there's no way to raise an exception
     at that point).
@@ -152,7 +152,7 @@ def validator(application):
 
         check_environ(environ)
 
-        # We use this to check if the application returns without
+        # We use this to check wenn the application returns without
         # calling start_response:
         start_response_started = []
 
@@ -162,9 +162,9 @@ def validator(application):
             assert_(not kw, "No keyword arguments allowed")
             status = args[0]
             headers = args[1]
-            if len(args) == 3:
+            wenn len(args) == 3:
                 exc_info = args[2]
-            else:
+            sonst:
                 exc_info = None
 
             check_status(status)
@@ -180,7 +180,7 @@ def validator(application):
 
         iterator = application(environ, start_response_wrapper)
         assert_(iterator is not None and iterator != False,
-            "The application must return an iterator, if only an empty list")
+            "The application must return an iterator, wenn only an empty list")
 
         check_iterator(iterator)
 
@@ -272,9 +272,9 @@ klasse IteratorWrapper:
         assert_(not self.closed,
             "Iterator read after closed")
         v = next(self.iterator)
-        if type(v) is not bytes:
+        wenn type(v) is not bytes:
             assert_(False, "Iterator yielded non-bytestring (%r)" % (v,))
-        if self.check_start_response is not None:
+        wenn self.check_start_response is not None:
             assert_(self.check_start_response,
                 "The application returns and we started iterating over its body, but start_response has not yet been called")
             self.check_start_response = None
@@ -282,11 +282,11 @@ klasse IteratorWrapper:
 
     def close(self):
         self.closed = True
-        if hasattr(self.original_iterator, 'close'):
+        wenn hasattr(self.original_iterator, 'close'):
             self.original_iterator.close()
 
     def __del__(self):
-        if not self.closed:
+        wenn not self.closed:
             sys.stderr.write(
                 "Iterator garbage collected without being closed")
         assert_(self.closed,
@@ -309,7 +309,7 @@ def check_environ(environ):
             "Environment should not have the key: %s "
             "(use %s instead)" % (key, key[5:]))
 
-    if 'QUERY_STRING' not in environ:
+    wenn 'QUERY_STRING' not in environ:
         warnings.warn(
             'QUERY_STRING is not in the WSGI environment; the cgi '
             'module will use sys.argv when this variable is missing, '
@@ -317,7 +317,7 @@ def check_environ(environ):
             WSGIWarning)
 
     fuer key in environ.keys():
-        if '.' in key:
+        wenn '.' in key:
             # Extension, we don't care about its type
             continue
         assert_(type(environ[key]) is str,
@@ -333,7 +333,7 @@ def check_environ(environ):
     check_errors(environ['wsgi.errors'])
 
     # @@: these need filling out:
-    if environ['REQUEST_METHOD'] not in (
+    wenn environ['REQUEST_METHOD'] not in (
         'GET', 'HEAD', 'POST', 'OPTIONS', 'PATCH', 'PUT', 'DELETE', 'TRACE'):
         warnings.warn(
             "Unknown REQUEST_METHOD: %r" % environ['REQUEST_METHOD'],
@@ -345,14 +345,14 @@ def check_environ(environ):
     assert_(not environ.get('PATH_INFO')
             or environ['PATH_INFO'].startswith('/'),
         "PATH_INFO doesn't start with /: %r" % environ['PATH_INFO'])
-    if environ.get('CONTENT_LENGTH'):
+    wenn environ.get('CONTENT_LENGTH'):
         assert_(int(environ['CONTENT_LENGTH']) >= 0,
             "Invalid CONTENT_LENGTH: %r" % environ['CONTENT_LENGTH'])
 
-    if not environ.get('SCRIPT_NAME'):
+    wenn not environ.get('SCRIPT_NAME'):
         assert_('PATH_INFO' in environ,
             "One of SCRIPT_NAME or PATH_INFO are required (PATH_INFO "
-            "should at least be '/' if SCRIPT_NAME is empty)")
+            "should at least be '/' wenn SCRIPT_NAME is empty)")
     assert_(environ.get('SCRIPT_NAME') != '/',
         "SCRIPT_NAME cannot be '/'; it should instead be '', and "
         "PATH_INFO should be '/'")
@@ -377,7 +377,7 @@ def check_status(status):
         "Status codes must be three characters: %r" % status_code)
     status_int = int(status_code)
     assert_(status_int >= 100, "Status code is invalid: %r" % status_int)
-    if len(status) < 4 or status[3] != ' ':
+    wenn len(status) < 4 or status[3] != ' ':
         warnings.warn(
             "The status string (%r) should be a three-digit integer "
             "followed by a single space and a status explanation"
@@ -404,7 +404,7 @@ def check_headers(headers):
         assert_(header_re.search(name), "Bad header name: %r" % name)
         assert_(not name.endswith('-') and not name.endswith('_'),
             "Names may not end in '-' or '_': %r" % name)
-        if bad_header_value_re.search(value):
+        wenn bad_header_value_re.search(value):
             assert_(0, "Bad header value: %r (bad char: %r)"
             % (value, bad_header_value_re.search(value).group(0)))
 
@@ -416,12 +416,12 @@ def check_content_type(status, headers):
     NO_MESSAGE_BODY = (204, 304)
     fuer name, value in headers:
         name = check_string_type(name, "Header name")
-        if name.lower() == 'content-type':
-            if code not in NO_MESSAGE_BODY:
+        wenn name.lower() == 'content-type':
+            wenn code not in NO_MESSAGE_BODY:
                 return
             assert_(0, ("Content-Type header found in a %s response, "
                         "which must not return content.") % code)
-    if code not in NO_MESSAGE_BODY:
+    wenn code not in NO_MESSAGE_BODY:
         assert_(0, "No Content-Type header found in headers (%s)" % headers)
 
 def check_exc_info(exc_info):

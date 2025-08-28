@@ -7,7 +7,7 @@ from test.support import (
     gc_collect)
 
 
-# Skip this test if the _testcapi module isn't available.
+# Skip this test wenn the _testcapi module isn't available.
 _testcapi = import_helper.import_module('_testcapi')
 
 
@@ -674,5 +674,5 @@ klasse TestContextObjectWatchers(unittest.TestCase):
             ctx.run(lambda: None)
         self.assertEqual(switches, [ctx, None])
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

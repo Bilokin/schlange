@@ -18,13 +18,13 @@ klasse TestBase:
     tstring         = None # must set. 2 strings to test StreamReader
 
     codectests      = None # must set. codec test tuple
-    roundtriptest   = 1    # set if roundtrip is possible with unicode
-    has_iso10646    = 0    # set if this encoding contains whole iso10646 map
+    roundtriptest   = 1    # set wenn roundtrip is possible with unicode
+    has_iso10646    = 0    # set wenn this encoding contains whole iso10646 map
     xmlcharnametest = None # string to test xmlcharrefreplace
     unmappedunicode = '\udeee' # a unicode code point that is not mapped.
 
     def setUp(self):
-        if self.codec is None:
+        wenn self.codec is None:
             self.codec = codecs.lookup(self.encoding)
         self.encode = self.codec.encode
         self.decode = self.codec.decode
@@ -44,34 +44,34 @@ klasse TestBase:
         fuer native, utf8 in zip(*tstring_lines):
             u = self.decode(native)[0]
             self.assertEqual(u, utf8.decode('utf-8'))
-            if self.roundtriptest:
+            wenn self.roundtriptest:
                 self.assertEqual(native, self.encode(u)[0])
 
     def test_errorhandle(self):
         fuer source, scheme, expected in self.codectests:
-            if isinstance(source, bytes):
+            wenn isinstance(source, bytes):
                 func = self.decode
-            else:
+            sonst:
                 func = self.encode
-            if expected:
+            wenn expected:
                 result = func(source, scheme)[0]
-                if func is self.decode:
+                wenn func is self.decode:
                     self.assertTrue(type(result) is str, type(result))
                     self.assertEqual(result, expected,
                                      '%a.decode(%r, %r)=%a != %a'
                                      % (source, self.encoding, scheme, result,
                                         expected))
-                else:
+                sonst:
                     self.assertTrue(type(result) is bytes, type(result))
                     self.assertEqual(result, expected,
                                      '%a.encode(%r, %r)=%a != %a'
                                      % (source, self.encoding, scheme, result,
                                         expected))
-            else:
+            sonst:
                 self.assertRaises(UnicodeError, func, source, scheme)
 
     def test_xmlcharrefreplace(self):
-        if self.has_iso10646:
+        wenn self.has_iso10646:
             self.skipTest('encoding contains full ISO 10646 map')
 
         s = "\u0b13\u0b23\u0b60 nd eggs"
@@ -81,27 +81,27 @@ klasse TestBase:
         )
 
     def test_customreplace_encode(self):
-        if self.has_iso10646:
+        wenn self.has_iso10646:
             self.skipTest('encoding contains full ISO 10646 map')
 
         from html.entities import codepoint2name
 
         def xmlcharnamereplace(exc):
-            if not isinstance(exc, UnicodeEncodeError):
+            wenn not isinstance(exc, UnicodeEncodeError):
                 raise TypeError("don't know how to handle %r" % exc)
             l = []
             fuer c in exc.object[exc.start:exc.end]:
-                if ord(c) in codepoint2name:
+                wenn ord(c) in codepoint2name:
                     l.append("&%s;" % codepoint2name[ord(c)])
-                else:
+                sonst:
                     l.append("&#%d;" % ord(c))
             return ("".join(l), exc.end)
 
         codecs.register_error("test.xmlcharnamereplace", xmlcharnamereplace)
 
-        if self.xmlcharnametest:
+        wenn self.xmlcharnametest:
             sin, sout = self.xmlcharnametest
-        else:
+        sonst:
             sin = "\xab\u211c\xbb = \u2329\u1234\u232a"
             sout = b"&laquo;&real;&raquo; = &lang;&#4660;&rang;"
         self.assertEqual(self.encode(sin,
@@ -145,10 +145,10 @@ klasse TestBase:
 
     def test_callback_backward_index(self):
         def myreplace(exc):
-            if myreplace.limit > 0:
+            wenn myreplace.limit > 0:
                 myreplace.limit -= 1
                 return ('REPLACED', 0)
-            else:
+            sonst:
                 return ('TERMINAL', exc.end)
         myreplace.limit = 3
         codecs.register_error("test.cjktest", myreplace)
@@ -178,12 +178,12 @@ klasse TestBase:
             ostream = BytesIO()
             encoder = self.incrementalencoder()
             while 1:
-                if sizehint is not None:
+                wenn sizehint is not None:
                     data = istream.read(sizehint)
-                else:
+                sonst:
                     data = istream.read()
 
-                if not data:
+                wenn not data:
                     break
                 e = encoder.encode(data)
                 ostream.write(e)
@@ -199,9 +199,9 @@ klasse TestBase:
             decoder = self.incrementaldecoder()
             while 1:
                 data = istream.read(sizehint)
-                if not data:
+                wenn not data:
                     break
-                else:
+                sonst:
                     u = decoder.decode(data)
                     ostream.write(u)
 
@@ -237,11 +237,11 @@ klasse TestBase:
                 func = getattr(istream, name)
                 while 1:
                     data = func(sizehint)
-                    if not data:
+                    wenn not data:
                         break
-                    if name == "readlines":
+                    wenn name == "readlines":
                         ostream.writelines(data)
-                    else:
+                    sonst:
                         ostream.write(data)
 
                 self.assertEqual(ostream.getvalue(), self.tstring[1])
@@ -256,16 +256,16 @@ klasse TestBase:
                 ostream = self.writer(BytesIO())
                 func = getattr(istream, name)
                 while 1:
-                    if sizehint is not None:
+                    wenn sizehint is not None:
                         data = func(sizehint)
-                    else:
+                    sonst:
                         data = func()
 
-                    if not data:
+                    wenn not data:
                         break
-                    if name == "readlines":
+                    wenn name == "readlines":
                         ostream.writelines(data)
-                    else:
+                    sonst:
                         ostream.write(data)
 
                 self.assertEqual(ostream.getvalue(), self.tstring[0])
@@ -299,9 +299,9 @@ klasse TestBase_Mapping(unittest.TestCase):
         return support.open_urlresource(self.mapfileurl, encoding="utf-8")
 
     def test_mapping_file(self):
-        if self.mapfileurl.endswith('.xml'):
+        wenn self.mapfileurl.endswith('.xml'):
             self._test_mapping_file_ucm()
-        else:
+        sonst:
             self._test_mapping_file_plain()
 
     def _test_mapping_file_plain(self):
@@ -312,20 +312,20 @@ klasse TestBase_Mapping(unittest.TestCase):
 
         with self.open_mapping_file() as f:
             fuer line in f:
-                if not line:
+                wenn not line:
                     break
                 data = line.split('#')[0].split()
-                if len(data) != 2:
+                wenn len(data) != 2:
                     continue
 
-                if data[0][:2] != '0x':
+                wenn data[0][:2] != '0x':
                     self.fail(f"Invalid line: {line!r}")
                 csetch = bytes.fromhex(data[0][2:])
-                if len(csetch) == 1 and 0x80 <= csetch[0]:
+                wenn len(csetch) == 1 and 0x80 <= csetch[0]:
                     continue
 
                 unich = unichrs(data[1])
-                if ord(unich) == 0xfffd or unich in urt_wa:
+                wenn ord(unich) == 0xfffd or unich in urt_wa:
                     continue
                 urt_wa[unich] = csetch
 
@@ -345,33 +345,33 @@ klasse TestBase_Mapping(unittest.TestCase):
             self._testpoint(*mapping)
 
     def _testpoint(self, csetch, unich):
-        if (csetch, unich) not in self.pass_enctest:
+        wenn (csetch, unich) not in self.pass_enctest:
             self.assertEqual(unich.encode(self.encoding), csetch)
-        if (csetch, unich) not in self.pass_dectest:
+        wenn (csetch, unich) not in self.pass_dectest:
             self.assertEqual(str(csetch, self.encoding), unich)
 
     def test_errorhandle(self):
         fuer source, scheme, expected in self.codectests:
-            if isinstance(source, bytes):
+            wenn isinstance(source, bytes):
                 func = source.decode
-            else:
+            sonst:
                 func = source.encode
-            if expected:
-                if isinstance(source, bytes):
+            wenn expected:
+                wenn isinstance(source, bytes):
                     result = func(self.encoding, scheme)
                     self.assertTrue(type(result) is str, type(result))
                     self.assertEqual(result, expected,
                                      '%a.decode(%r, %r)=%a != %a'
                                      % (source, self.encoding, scheme, result,
                                         expected))
-                else:
+                sonst:
                     result = func(self.encoding, scheme)
                     self.assertTrue(type(result) is bytes, type(result))
                     self.assertEqual(result, expected,
                                      '%a.encode(%r, %r)=%a != %a'
                                      % (source, self.encoding, scheme, result,
                                         expected))
-            else:
+            sonst:
                 self.assertRaises(UnicodeError, func, self.encoding, scheme)
 
 def load_teststring(name):

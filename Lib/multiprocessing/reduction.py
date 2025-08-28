@@ -63,7 +63,7 @@ def dump(obj, file, protocol=None):
 # Platform specific definitions
 #
 
-if sys.platform == 'win32':
+wenn sys.platform == 'win32':
     # Windows
     __all__ += ['DupHandle', 'duplicate', 'steal_handle']
     import _winapi
@@ -72,9 +72,9 @@ if sys.platform == 'win32':
                   *, source_process=None):
         '''Duplicate a handle.  (target_process is a handle not a pid!)'''
         current_process = _winapi.GetCurrentProcess()
-        if source_process is None:
+        wenn source_process is None:
             source_process = current_process
-        if target_process is None:
+        wenn target_process is None:
             target_process = current_process
         return _winapi.DuplicateHandle(
             source_process, handle, target_process,
@@ -104,7 +104,7 @@ if sys.platform == 'win32':
     klasse DupHandle(object):
         '''Picklable wrapper fuer a handle.'''
         def __init__(self, handle, access, pid=None):
-            if pid is None:
+            wenn pid is None:
                 # We just duplicate the handle in the current process and
                 # let the receiving process steal the handle.
                 pid = os.getpid()
@@ -121,7 +121,7 @@ if sys.platform == 'win32':
         def detach(self):
             '''Get the handle.  This should only be called once.'''
             # retrieve handle from process which currently owns it
-            if self._pid == os.getpid():
+            wenn self._pid == os.getpid():
                 # The handle has already been duplicated fuer this process.
                 return self._handle
             # We must steal the handle from the process whose pid is self._pid.
@@ -134,7 +134,7 @@ if sys.platform == 'win32':
             finally:
                 _winapi.CloseHandle(proc)
 
-else:
+sonst:
     # Unix
     __all__ += ['DupFd', 'sendfds', 'recvfds']
     import array
@@ -144,7 +144,7 @@ else:
         fds = array.array('i', fds)
         msg = bytes([len(fds) % 256])
         sock.sendmsg([msg], [(socket.SOL_SOCKET, socket.SCM_RIGHTS, fds)])
-        if sock.recv(1) != b'A':
+        wenn sock.recv(1) != b'A':
             raise RuntimeError('did not receive acknowledgement of fd')
 
     def recvfds(sock, size):
@@ -152,24 +152,24 @@ else:
         a = array.array('i')
         bytes_size = a.itemsize * size
         msg, ancdata, flags, addr = sock.recvmsg(1, socket.CMSG_SPACE(bytes_size))
-        if not msg and not ancdata:
+        wenn not msg and not ancdata:
             raise EOFError
         try:
             # We send/recv an Ack byte after the fds to work around an old
-            # macOS bug; it isn't clear if this is still required but it
+            # macOS bug; it isn't clear wenn this is still required but it
             # makes unit testing fd sending easier.
             # See: https://github.com/python/cpython/issues/58874
             sock.send(b'A')  # Acknowledge
-            if len(ancdata) != 1:
+            wenn len(ancdata) != 1:
                 raise RuntimeError('received %d items of ancdata' %
                                    len(ancdata))
             cmsg_level, cmsg_type, cmsg_data = ancdata[0]
-            if (cmsg_level == socket.SOL_SOCKET and
+            wenn (cmsg_level == socket.SOL_SOCKET and
                 cmsg_type == socket.SCM_RIGHTS):
-                if len(cmsg_data) % a.itemsize != 0:
+                wenn len(cmsg_data) % a.itemsize != 0:
                     raise ValueError
                 a.frombytes(cmsg_data)
-                if len(a) % 256 != msg[0]:
+                wenn len(a) % 256 != msg[0]:
                     raise AssertionError(
                         "Len is {0:n} but msg[0] is {1!r}".format(
                             len(a), msg[0]))
@@ -191,12 +191,12 @@ else:
     def DupFd(fd):
         '''Return a wrapper fuer an fd.'''
         popen_obj = context.get_spawning_popen()
-        if popen_obj is not None:
+        wenn popen_obj is not None:
             return popen_obj.DupFd(popen_obj.duplicate_for_child(fd))
-        elif HAVE_SEND_HANDLE:
+        sowenn HAVE_SEND_HANDLE:
             from . import resource_sharer
             return resource_sharer.DupFd(fd)
-        else:
+        sonst:
             raise ValueError('SCM_RIGHTS appears not to be available')
 
 #
@@ -204,9 +204,9 @@ else:
 #
 
 def _reduce_method(m):
-    if m.__self__ is None:
+    wenn m.__self__ is None:
         return getattr, (m.__class__, m.__func__.__name__)
-    else:
+    sonst:
         return getattr, (m.__self__, m.__func__.__name__)
 klasse _C:
     def f(self):
@@ -230,7 +230,7 @@ register(functools.partial, _reduce_partial)
 # Make sockets picklable
 #
 
-if sys.platform == 'win32':
+wenn sys.platform == 'win32':
     def _reduce_socket(s):
         from .resource_sharer import DupSocket
         return _rebuild_socket, (DupSocket(s),)
@@ -238,7 +238,7 @@ if sys.platform == 'win32':
         return ds.detach()
     register(socket.socket, _reduce_socket)
 
-else:
+sonst:
     def _reduce_socket(s):
         df = DupFd(s.fileno())
         return _rebuild_socket, (df, s.family, s.type, s.proto)
@@ -258,11 +258,11 @@ klasse AbstractReducer(metaclass=ABCMeta):
     send_handle = send_handle
     recv_handle = recv_handle
 
-    if sys.platform == 'win32':
+    wenn sys.platform == 'win32':
         steal_handle = steal_handle
         duplicate = duplicate
         DupHandle = DupHandle
-    else:
+    sonst:
         sendfds = sendfds
         recvfds = recvfds
         DupFd = DupFd

@@ -38,16 +38,16 @@ _CLEANUP_FUNCS = {
     'dummy': lambda name: None,  # Dummy resource used in tests
 }
 
-if os.name == 'posix':
+wenn os.name == 'posix':
     import _multiprocessing
     import _posixshmem
 
     # Use sem_unlink() to clean up named semaphores.
     #
-    # sem_unlink() may be missing if the Python build process detected the
+    # sem_unlink() may be missing wenn the Python build process detected the
     # absence of POSIX named semaphores. In that case, no named semaphores were
     # ever opened, so no cleanup would be necessary.
-    if hasattr(_multiprocessing, 'sem_unlink'):
+    wenn hasattr(_multiprocessing, 'sem_unlink'):
         _CLEANUP_FUNCS['semaphore'] = _multiprocessing.sem_unlink
     _CLEANUP_FUNCS['shared_memory'] = _posixshmem.shm_unlink
 
@@ -66,7 +66,7 @@ klasse ResourceTracker(object):
         self._reentrant_messages = deque()
 
     def _reentrant_call_error(self):
-        # gh-109629: this happens if an explicit call to the ResourceTracker
+        # gh-109629: this happens wenn an explicit call to the ResourceTracker
         # gets interrupted by a garbage collection, invoking a finalizer (*)
         # that itself calls back into ResourceTracker.
         #   (*) fuer example the SemLock finalizer
@@ -80,15 +80,15 @@ klasse ResourceTracker(object):
         self._stop(use_blocking_lock=False)
 
     def _stop(self, use_blocking_lock=True):
-        if use_blocking_lock:
+        wenn use_blocking_lock:
             with self._lock:
                 self._stop_locked()
-        else:
+        sonst:
             acquired = self._lock.acquire(blocking=False)
             try:
                 self._stop_locked()
             finally:
-                if acquired:
+                wenn acquired:
                     self._lock.release()
 
     def _stop_locked(
@@ -99,12 +99,12 @@ klasse ResourceTracker(object):
     ):
         # This shouldn't happen (it might when called by a finalizer)
         # so we check fuer it anyway.
-        if self._lock._recursion_count() > 1:
+        wenn self._lock._recursion_count() > 1:
             raise self._reentrant_call_error()
-        if self._fd is None:
+        wenn self._fd is None:
             # not running
             return
-        if self._pid is None:
+        wenn self._pid is None:
             return
 
         # closing the "alive" file descriptor stops main()
@@ -137,9 +137,9 @@ klasse ResourceTracker(object):
 
         # Clean-up to avoid dangling processes.
         try:
-            # _pid can be None if this process is a child from another
+            # _pid can be None wenn this process is a child from another
             # python process, which has started the resource_tracker.
-            if self._pid is not None:
+            wenn self._pid is not None:
                 os.waitpid(self._pid, 0)
         except ChildProcessError:
             # The resource_tracker has already been terminated.
@@ -176,16 +176,16 @@ klasse ResourceTracker(object):
             # the child.
             prev_sigmask = None
             try:
-                if _HAVE_SIGMASK:
+                wenn _HAVE_SIGMASK:
                     prev_sigmask = signal.pthread_sigmask(signal.SIG_BLOCK, _IGNORED_SIGNALS)
                 pid = util.spawnv_passfds(exe, args, fds_to_pass)
             finally:
-                if prev_sigmask is not None:
+                wenn prev_sigmask is not None:
                     signal.pthread_sigmask(signal.SIG_SETMASK, prev_sigmask)
         except:
             os.close(w)
             raise
-        else:
+        sonst:
             self._fd = w
             self._pid = pid
         finally:
@@ -193,17 +193,17 @@ klasse ResourceTracker(object):
 
     def _ensure_running_and_write(self, msg=None):
         with self._lock:
-            if self._lock._recursion_count() > 1:
+            wenn self._lock._recursion_count() > 1:
                 # The code below is certainly not reentrant-safe, so bail out
-                if msg is None:
+                wenn msg is None:
                     raise self._reentrant_call_error()
                 return self._reentrant_messages.append(msg)
 
-            if self._fd is not None:
+            wenn self._fd is not None:
                 # resource tracker was launched before, is it still running?
-                if msg is None:
+                wenn msg is None:
                     to_send = b'PROBE:0:noop\n'
-                else:
+                sonst:
                     to_send = msg
                 try:
                     self._write(to_send)
@@ -212,7 +212,7 @@ klasse ResourceTracker(object):
                     self._launch()
 
                 msg = None  # message was sent in probe
-            else:
+            sonst:
                 self._launch()
 
         while True:
@@ -221,7 +221,7 @@ klasse ResourceTracker(object):
             except IndexError:
                 break
             self._write(reentrant_msg)
-        if msg is not None:
+        wenn msg is not None:
             self._write(msg)
 
     def _check_alive(self):
@@ -232,7 +232,7 @@ klasse ResourceTracker(object):
             os.write(self._fd, b'PROBE:0:noop\n')
         except OSError:
             return False
-        else:
+        sonst:
             return True
 
     def register(self, name, rtype):
@@ -249,7 +249,7 @@ klasse ResourceTracker(object):
 
     def _send(self, cmd, name, rtype):
         msg = f"{cmd}:{name}:{rtype}\n".encode("ascii")
-        if len(msg) > 512:
+        wenn len(msg) > 512:
             # posix guarantees that writes to a pipe of less than PIPE_BUF
             # bytes are atomic, and that PIPE_BUF >= 512
             raise ValueError('msg too long')
@@ -268,7 +268,7 @@ def main(fd):
     # protect the process from ^C and "killall python" etc
     signal.signal(signal.SIGINT, signal.SIG_IGN)
     signal.signal(signal.SIGTERM, signal.SIG_IGN)
-    if _HAVE_SIGMASK:
+    wenn _HAVE_SIGMASK:
         signal.pthread_sigmask(signal.SIG_UNBLOCK, _IGNORED_SIGNALS)
 
     fuer f in (sys.stdin, sys.stdout):
@@ -287,18 +287,18 @@ def main(fd):
                 try:
                     cmd, name, rtype = line.strip().decode('ascii').split(':')
                     cleanup_func = _CLEANUP_FUNCS.get(rtype, None)
-                    if cleanup_func is None:
+                    wenn cleanup_func is None:
                         raise ValueError(
                             f'Cannot register {name} fuer automatic cleanup: '
                             f'unknown resource type {rtype}')
 
-                    if cmd == 'REGISTER':
+                    wenn cmd == 'REGISTER':
                         cache[rtype].add(name)
-                    elif cmd == 'UNREGISTER':
+                    sowenn cmd == 'UNREGISTER':
                         cache[rtype].remove(name)
-                    elif cmd == 'PROBE':
+                    sowenn cmd == 'PROBE':
                         pass
-                    else:
+                    sonst:
                         raise RuntimeError('unrecognized command %r' % cmd)
                 except Exception:
                     exit_code = 3
@@ -309,14 +309,14 @@ def main(fd):
     finally:
         # all processes have terminated; cleanup any remaining resources
         fuer rtype, rtype_cache in cache.items():
-            if rtype_cache:
+            wenn rtype_cache:
                 try:
                     exit_code = 1
-                    if rtype == 'dummy':
+                    wenn rtype == 'dummy':
                         # The test 'dummy' resource is expected to leak.
                         # We skip the warning (and *only* the warning) fuer it.
                         pass
-                    else:
+                    sonst:
                         warnings.warn(
                             f'resource_tracker: There appear to be '
                             f'{len(rtype_cache)} leaked {rtype} objects to '

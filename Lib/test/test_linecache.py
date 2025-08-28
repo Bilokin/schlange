@@ -62,7 +62,7 @@ klasse GetLineTestsGoodData(TempFile):
     def test_getline(self):
         with tokenize.open(self.file_name) as fp:
             fuer index, line in enumerate(fp):
-                if not line.endswith('\n'):
+                wenn not line.endswith('\n'):
                     line += '\n'
 
                 cached_line = linecache.getline(self.file_name, index + 1)
@@ -158,12 +158,12 @@ klasse LineCacheTests(unittest.TestCase):
 
         # Are all files cached?
         self.assertNotEqual(cached, [])
-        cached_empty = [fn fuer fn in cached if fn not in linecache.cache]
+        cached_empty = [fn fuer fn in cached wenn fn not in linecache.cache]
         self.assertEqual(cached_empty, [])
 
         # Can we clear the cache?
         linecache.clearcache()
-        cached_empty = [fn fuer fn in cached if fn in linecache.cache]
+        cached_empty = [fn fuer fn in cached wenn fn in linecache.cache]
         self.assertEqual(cached_empty, [])
 
     def test_checkcache(self):
@@ -212,7 +212,7 @@ klasse LineCacheTests(unittest.TestCase):
             True, linecache.lazycache(NONEXISTENT_FILENAME, globals()))
         self.assertEqual(1, len(linecache.cache[NONEXISTENT_FILENAME]))
         # Note here that we're looking up a nonexistent filename with no
-        # globals: this would error if the lazy value wasn't resolved.
+        # globals: this would error wenn the lazy value wasn't resolved.
         self.assertEqual(lines, linecache.getlines(NONEXISTENT_FILENAME))
 
     def test_lazycache_provide_after_failed_lookup(self):
@@ -411,5 +411,5 @@ klasse MultiThreadingTest(unittest.TestCase):
             check([linecache_get_line] * 20)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

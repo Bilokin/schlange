@@ -31,5 +31,5 @@ klasse TestGrp(unittest.TestCase):
         )
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

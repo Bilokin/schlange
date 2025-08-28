@@ -41,12 +41,12 @@ def _wait_for_interp_to_run(interp, timeout=None):
     # bpo-37224: Running this test file in multiprocesses will fail randomly.
     # The failure reason is that the thread can't acquire the cpu to
     # run subinterpreter earlier than the main thread in multiprocess.
-    if timeout is None:
+    wenn timeout is None:
         timeout = support.SHORT_TIMEOUT
     fuer _ in support.sleeping_retry(timeout, error=False):
-        if _interpreters.is_running(interp):
+        wenn _interpreters.is_running(interp):
             break
-    else:
+    sonst:
         raise RuntimeError('interp is not running')
 
 
@@ -73,7 +73,7 @@ def _running(interp):
 
 def clean_up_interpreters():
     fuer id, *_ in _interpreters.list_all():
-        if id == 0:  # main
+        wenn id == 0:  # main
             continue
         try:
             _interpreters.destroy(id)
@@ -239,9 +239,9 @@ klasse IsRunningTests(TestBase):
         interp = _interpreters.create()
         out = _run_output(interp, dedent(f"""
             import _interpreters
-            if _interpreters.is_running({interp}):
+            wenn _interpreters.is_running({interp}):
                 print(True)
-            else:
+            sonst:
                 print(False)
             """))
         self.assertEqual(out.strip(), 'True')
@@ -880,17 +880,17 @@ klasse RunFailedTests(TestBase):
                 klasse NeverError(Exception): pass
                 raise NeverError  # never raised
                 """).format(dedent(text))
-            if fails:
+            wenn fails:
                 err = _interpreters.run_string(self.id, script)
                 self.assertIsNot(err, None)
                 return err
-            else:
+            sonst:
                 err = _interpreters.run_string(self.id, script)
                 self.assertIs(err, None)
                 return None
         except:
             raise  # re-raise
-        else:
+        sonst:
             msg = os.read(r, 100)
             self.assertEqual(msg, b'0')
         finally:
@@ -898,10 +898,10 @@ klasse RunFailedTests(TestBase):
             os.close(w)
 
     def _assert_run_failed(self, exctype, msg, script):
-        if isinstance(exctype, str):
+        wenn isinstance(exctype, str):
             exctype_name = exctype
             exctype = None
-        else:
+        sonst:
             exctype_name = exctype.__name__
 
         # Run the script.
@@ -909,10 +909,10 @@ klasse RunFailedTests(TestBase):
 
         # Check the wrapper exception.
         self.assertEqual(excinfo.type.__name__, exctype_name)
-        if msg is None:
+        wenn msg is None:
             self.assertEqual(excinfo.formatted.split(':')[0],
                              exctype_name)
-        else:
+        sonst:
             self.assertEqual(excinfo.formatted,
                              '{}: {}'.format(exctype_name, msg))
 
@@ -964,7 +964,7 @@ klasse RunFailedTests(TestBase):
             # missing close paren
             print("spam"
 
-            if x + y + z < 20:
+            wenn x + y + z < 20:
                 ...
             """)
 
@@ -1048,7 +1048,7 @@ klasse RunFuncTests(TestBase):
         t = threading.Thread(target=f)
         t.start()
         t.join()
-        if failed:
+        wenn failed:
             raise Exception from failed
 
         with open(r, encoding="utf-8") as outfile:
@@ -1120,5 +1120,5 @@ klasse RunFuncTests(TestBase):
                 _interpreters.run_func(self.id, script)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

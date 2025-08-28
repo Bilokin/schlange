@@ -121,7 +121,7 @@ klasse BaseXYTestCase(unittest.TestCase):
         self.check_multidimensional(base64.b64encode, bytes_data)
 
     def check_multidimensional(self, f, data):
-        padding = b"\x00" if len(data) % 2 else b""
+        padding = b"\x00" wenn len(data) % 2 sonst b""
         bytes_data = data + padding # Make sure cast works
         shape = (len(bytes_data) // 2, 2)
         multidimensional = memoryview(bytes_data).cast('B', shape)
@@ -351,10 +351,10 @@ klasse BaseXYTestCase(unittest.TestCase):
         tests = [b'abc', b'ABCDEF==', b'==ABCDEF']
         prefixes = [b'M', b'ME', b'MFRA', b'MFRGG', b'MFRGGZA', b'MFRGGZDF']
         fuer i in range(0, 17):
-            if i:
+            wenn i:
                 tests.append(b'='*i)
             fuer prefix in prefixes:
-                if len(prefix) + i != 8:
+                wenn len(prefix) + i != 8:
                     tests.append(prefix + b'='*i)
         fuer data in tests:
             with self.subTest(data=data):
@@ -420,10 +420,10 @@ klasse BaseXYTestCase(unittest.TestCase):
         tests = [b'abc', b'ABCDEF==', b'==ABCDEF', b'c4======']
         prefixes = [b'M', b'ME', b'MFRA', b'MFRGG', b'MFRGGZA', b'MFRGGZDF']
         fuer i in range(0, 17):
-            if i:
+            wenn i:
                 tests.append(b'='*i)
             fuer prefix in prefixes:
-                if len(prefix) + i != 8:
+                wenn len(prefix) + i != 8:
                     tests.append(prefix + b'='*i)
         fuer data in tests:
             with self.subTest(to_decode=data):
@@ -856,7 +856,7 @@ klasse BaseXYTestCase(unittest.TestCase):
 
 klasse TestMain(unittest.TestCase):
     def tearDown(self):
-        if os.path.exists(os_helper.TESTFN):
+        wenn os.path.exists(os_helper.TESTFN):
             os.unlink(os_helper.TESTFN)
 
     def get_output(self, *args):
@@ -890,5 +890,5 @@ klasse TestMain(unittest.TestCase):
         self.assertIn(b'usage: ', output)
         self.assertIn(b'-d, -u: decode', output)
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

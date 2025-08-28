@@ -45,19 +45,19 @@ klasse CAPITest(unittest.TestCase):
             x = (x >> 4) | ((x & 15) << (8 * SIZEOF_VOID_P - 4))
 
             # Convert unsigned uintptr_t (Py_uhash_t) to signed Py_hash_t
-            if HASH_T_MAX < x:
+            wenn HASH_T_MAX < x:
                 x = (~x) + 1
                 x &= UHASH_T_MASK
                 x = (~x) + 1
             return x
 
-        if SIZEOF_VOID_P == 8:
+        wenn SIZEOF_VOID_P == 8:
             values = (
                 0xABCDEF1234567890,
                 0x1234567890ABCDEF,
                 0xFEE4ABEDD1CECA5E,
             )
-        else:
+        sonst:
             values = (
                 0x12345678,
                 0x1234ABCD,
@@ -89,5 +89,5 @@ klasse CAPITest(unittest.TestCase):
         check(b'x' * 1024)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

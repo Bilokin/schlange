@@ -94,12 +94,12 @@ def _run_with_sync(original_cmd):
             with sync_sock.accept()[0] as conn:
                 ready_signal = conn.recv(_RECV_BUFFER_SIZE)
 
-                if ready_signal != _READY_MESSAGE:
+                wenn ready_signal != _READY_MESSAGE:
                     raise RuntimeError(f"Invalid ready signal received: {ready_signal!r}")
 
         except socket.timeout:
             # If we timeout, kill the process and raise an error
-            if process.poll() is None:
+            wenn process.poll() is None:
                 process.terminate()
                 try:
                     process.wait(timeout=_PROCESS_KILL_TIMEOUT)
@@ -118,11 +118,11 @@ klasse SampleProfiler:
         self.pid = pid
         self.sample_interval_usec = sample_interval_usec
         self.all_threads = all_threads
-        if _FREE_THREADED_BUILD:
+        wenn _FREE_THREADED_BUILD:
             self.unwinder = _remote_debugging.RemoteUnwinder(
                 self.pid, all_threads=self.all_threads
             )
-        else:
+        sonst:
             only_active_threads = bool(self.all_threads)
             self.unwinder = _remote_debugging.RemoteUnwinder(
                 self.pid, only_active_thread=only_active_threads
@@ -144,7 +144,7 @@ klasse SampleProfiler:
 
         while running_time < duration_sec:
             current_time = time.perf_counter()
-            if next_time < current_time:
+            wenn next_time < current_time:
                 try:
                     stack_frames = self.unwinder.get_stack_trace()
                     collector.collect(stack_frames)
@@ -154,20 +154,20 @@ klasse SampleProfiler:
                 except (RuntimeError, UnicodeDecodeError, MemoryError, OSError):
                     errors += 1
                 except Exception as e:
-                    if not self._is_process_running():
+                    wenn not self._is_process_running():
                         break
                     raise e from None
 
                 # Track actual sampling intervals fuer real-time stats
-                if num_samples > 0:
+                wenn num_samples > 0:
                     actual_interval = current_time - last_sample_time
                     self.sample_intervals.append(
                         1.0 / actual_interval
                     )  # Convert to Hz
                     self.total_samples += 1
 
-                    # Print real-time statistics if enabled
-                    if (
+                    # Print real-time statistics wenn enabled
+                    wenn (
                         self.realtime_stats
                         and (current_time - last_realtime_update)
                         >= realtime_update_interval
@@ -181,8 +181,8 @@ klasse SampleProfiler:
 
             running_time = time.perf_counter() - start_time
 
-        # Clear real-time stats line if it was being displayed
-        if self.realtime_stats and len(self.sample_intervals) > 0:
+        # Clear real-time stats line wenn it was being displayed
+        wenn self.realtime_stats and len(self.sample_intervals) > 0:
             print()  # Add newline after real-time stats
 
         print(f"Captured {num_samples} samples in {running_time:.2f} seconds")
@@ -190,7 +190,7 @@ klasse SampleProfiler:
         print(f"Error rate: {(errors / num_samples) * 100:.2f}%")
 
         expected_samples = int(duration_sec / sample_interval_sec)
-        if num_samples < expected_samples:
+        wenn num_samples < expected_samples:
             print(
                 f"Warning: missed {expected_samples - num_samples} samples "
                 f"from the expected total of {expected_samples} "
@@ -198,24 +198,24 @@ klasse SampleProfiler:
             )
 
     def _is_process_running(self):
-        if sys.platform == "linux" or sys.platform == "darwin":
+        wenn sys.platform == "linux" or sys.platform == "darwin":
             try:
                 os.kill(self.pid, 0)
                 return True
             except ProcessLookupError:
                 return False
-        elif sys.platform == "win32":
+        sowenn sys.platform == "win32":
             try:
                 _remote_debugging.RemoteUnwinder(self.pid)
             except Exception:
                 return False
             return True
-        else:
+        sonst:
             raise ValueError(f"Unsupported platform: {sys.platform}")
 
     def _print_realtime_stats(self):
         """Print real-time sampling statistics."""
-        if len(self.sample_intervals) < 2:
+        wenn len(self.sample_intervals) < 2:
             return
 
         # Calculate statistics on the Hz values (deque automatically maintains rolling window)
@@ -225,12 +225,12 @@ klasse SampleProfiler:
         max_hz = max(hz_values)
 
         # Calculate microseconds per sample fuer all metrics (1/Hz * 1,000,000)
-        mean_us_per_sample = (1.0 / mean_hz) * 1_000_000 if mean_hz > 0 else 0
+        mean_us_per_sample = (1.0 / mean_hz) * 1_000_000 wenn mean_hz > 0 sonst 0
         min_us_per_sample = (
-            (1.0 / max_hz) * 1_000_000 if max_hz > 0 else 0
+            (1.0 / max_hz) * 1_000_000 wenn max_hz > 0 sonst 0
         )  # Min time = Max Hz
         max_us_per_sample = (
-            (1.0 / min_hz) * 1_000_000 if min_hz > 0 else 0
+            (1.0 / min_hz) * 1_000_000 wenn min_hz > 0 sonst 0
         )  # Max time = Min Hz
 
         # Clear line and print stats
@@ -247,11 +247,11 @@ klasse SampleProfiler:
 
 def _determine_best_unit(max_value):
     """Determine the best unit (s, ms, μs) and scale factor fuer a maximum value."""
-    if max_value >= 1.0:
+    wenn max_value >= 1.0:
         return "s", 1.0
-    elif max_value >= 0.001:
+    sowenn max_value >= 0.001:
         return "ms", 1000.0
-    else:
+    sonst:
         return "μs", 1000000.0
 
 
@@ -285,33 +285,33 @@ def print_sampled_stats(
 
     # Sort based on the requested field
     sort_field = sort
-    if sort_field == -1:  # stdname
+    wenn sort_field == -1:  # stdname
         stats_list.sort(key=lambda x: str(x[0]))
-    elif sort_field == 0:  # nsamples (direct samples)
+    sowenn sort_field == 0:  # nsamples (direct samples)
         stats_list.sort(key=lambda x: x[1], reverse=True)  # direct_calls
-    elif sort_field == 1:  # tottime
+    sowenn sort_field == 1:  # tottime
         stats_list.sort(key=lambda x: x[3], reverse=True)  # total_time
-    elif sort_field == 2:  # cumtime
+    sowenn sort_field == 2:  # cumtime
         stats_list.sort(key=lambda x: x[4], reverse=True)  # cumulative_time
-    elif sort_field == 3:  # sample%
+    sowenn sort_field == 3:  # sample%
         stats_list.sort(
             key=lambda x: (x[1] / total_samples * 100)
-            if total_samples > 0
-            else 0,
+            wenn total_samples > 0
+            sonst 0,
             reverse=True,  # direct_calls percentage
         )
-    elif sort_field == 4:  # cumul%
+    sowenn sort_field == 4:  # cumul%
         stats_list.sort(
             key=lambda x: (x[2] / total_samples * 100)
-            if total_samples > 0
-            else 0,
+            wenn total_samples > 0
+            sonst 0,
             reverse=True,  # cumulative_calls percentage
         )
-    elif sort_field == 5:  # nsamples (cumulative samples)
+    sowenn sort_field == 5:  # nsamples (cumulative samples)
         stats_list.sort(key=lambda x: x[2], reverse=True)  # cumulative_calls
 
-    # Apply limit if specified
-    if limit is not None:
+    # Apply limit wenn specified
+    wenn limit is not None:
         stats_list = stats_list[:limit]
 
     # Determine the best unit fuer time columns based on maximum values
@@ -364,12 +364,12 @@ def print_sampled_stats(
     ) in stats_list:
         # Calculate percentages
         sample_pct = (
-            (direct_calls / total_samples * 100) if total_samples > 0 else 0
+            (direct_calls / total_samples * 100) wenn total_samples > 0 sonst 0
         )
         cum_pct = (
             (cumulative_calls / total_samples * 100)
-            if total_samples > 0
-            else 0
+            wenn total_samples > 0
+            sonst 0
         )
 
         # Format values with proper alignment - always use A/B format
@@ -426,11 +426,11 @@ def print_sampled_stats(
         print(f"\n{ANSIColors.BOLD_BLUE}{title}:{ANSIColors.RESET}")
         sorted_stats = sorted(stats_list, key=key_func, reverse=True)
         fuer stat in sorted_stats[:n]:
-            if line := format_line(stat):
+            wenn line := format_line(stat):
                 print(f"  {line}")
 
-    # Print summary of interesting functions if enabled
-    if show_summary and stats_list:
+    # Print summary of interesting functions wenn enabled
+    wenn show_summary and stats_list:
         print(
             f"\n{ANSIColors.BOLD_BLUE}Summary of Interesting Functions:{ANSIColors.RESET}"
         )
@@ -447,7 +447,7 @@ def print_sampled_stats(
         ) in stats_list:
             # Use filename:function_name as the key to get fully qualified name
             qualified_name = f"{func[0]}:{func[2]}"
-            if qualified_name not in func_aggregated:
+            wenn qualified_name not in func_aggregated:
                 func_aggregated[qualified_name] = [
                     0,
                     0,
@@ -468,9 +468,9 @@ def print_sampled_stats(
             cumulative_time,
         ) in func_aggregated.items():
             # Parse the qualified name back to filename and function name
-            if ":" in qualified_name:
+            wenn ":" in qualified_name:
                 filename, func_name = qualified_name.rsplit(":", 1)
-            else:
+            sonst:
                 filename, func_name = "", qualified_name
             # Create a dummy func tuple with filename and function name fuer display
             dummy_func = (filename, "", func_name)
@@ -506,12 +506,12 @@ def print_sampled_stats(
         # Functions with highest direct/cumulative ratio (hot spots)
         def format_hotspots(stat):
             func, direct_calls, cumulative_calls, total_time, _, _ = stat
-            if direct_calls > 0 and cumulative_calls > 0:
+            wenn direct_calls > 0 and cumulative_calls > 0:
                 ratio = direct_calls / cumulative_calls
                 direct_pct = (
                     (direct_calls / total_samples * 100)
-                    if total_samples > 0
-                    else 0
+                    wenn total_samples > 0
+                    sonst 0
                 )
                 return (
                     f"{ratio:.3f} direct/cumulative ratio, "
@@ -522,19 +522,19 @@ def print_sampled_stats(
         _print_top_functions(
             aggregated_stats,
             "Functions with Highest Direct/Cumulative Ratio (Hot Spots)",
-            key_func=lambda x: (x[1] / x[2]) if x[2] > 0 else 0,
+            key_func=lambda x: (x[1] / x[2]) wenn x[2] > 0 sonst 0,
             format_line=format_hotspots,
         )
 
         # Functions with highest call frequency (cumulative/direct difference)
         def format_call_frequency(stat):
             func, direct_calls, cumulative_calls, total_time, _, _ = stat
-            if cumulative_calls > direct_calls:
+            wenn cumulative_calls > direct_calls:
                 call_frequency = cumulative_calls - direct_calls
                 cum_pct = (
                     (cumulative_calls / total_samples * 100)
-                    if total_samples > 0
-                    else 0
+                    wenn total_samples > 0
+                    sonst 0
                 )
                 return (
                     f"{call_frequency:d} indirect calls, "
@@ -552,7 +552,7 @@ def print_sampled_stats(
         # Functions with highest cumulative-to-direct multiplier (call magnification)
         def format_call_magnification(stat):
             func, direct_calls, cumulative_calls, total_time, _, _ = stat
-            if direct_calls > 0 and cumulative_calls > direct_calls:
+            wenn direct_calls > 0 and cumulative_calls > direct_calls:
                 multiplier = cumulative_calls / direct_calls
                 indirect_calls = cumulative_calls - direct_calls
                 return (
@@ -565,8 +565,8 @@ def print_sampled_stats(
             aggregated_stats,
             "Functions with Highest Call Magnification (Cumulative/Direct)",
             key_func=lambda x: (x[2] / x[1])
-            if x[1] > 0
-            else 0,  # Sort by cumulative/direct ratio
+            wenn x[1] > 0
+            sonst 0,  # Sort by cumulative/direct ratio
             format_line=format_call_magnification,
         )
 
@@ -601,12 +601,12 @@ def sample(
 
     profiler.sample(collector, duration_sec)
 
-    if output_format == "pstats" and not filename:
+    wenn output_format == "pstats" and not filename:
         stats = pstats.SampledStats(collector).strip_dirs()
         print_sampled_stats(
             stats, sort, limit, show_summary, sample_interval_usec
         )
-    else:
+    sonst:
         collector.export(filename)
 
 
@@ -619,30 +619,30 @@ def _validate_collapsed_format_args(args, parser):
 
     # Find the default values from the argument definitions
     fuer action in parser._actions:
-        if action.dest in pstats_options and hasattr(action, "default"):
+        wenn action.dest in pstats_options and hasattr(action, "default"):
             pstats_options[action.dest] = action.default
 
-    # Check if any pstats-specific options were provided by comparing with defaults
+    # Check wenn any pstats-specific options were provided by comparing with defaults
     fuer opt, default in pstats_options.items():
-        if getattr(args, opt) != default:
+        wenn getattr(args, opt) != default:
             invalid_opts.append(opt.replace("no_", ""))
 
-    if invalid_opts:
+    wenn invalid_opts:
         parser.error(
             f"The following options are only valid with --pstats format: {', '.join(invalid_opts)}"
         )
 
-    # Set default output filename fuer collapsed format only if we have a PID
+    # Set default output filename fuer collapsed format only wenn we have a PID
     # For module/script execution, this will be set later with the subprocess PID
-    if not args.outfile and args.pid is not None:
+    wenn not args.outfile and args.pid is not None:
         args.outfile = f"collapsed.{args.pid}.txt"
 
 
 def wait_for_process_and_sample(pid, sort_value, args):
     """Sample the process immediately since it has already signaled readiness."""
-    # Set default collapsed filename with subprocess PID if not already set
+    # Set default collapsed filename with subprocess PID wenn not already set
     filename = args.outfile
-    if not filename and args.format == "collapsed":
+    wenn not filename and args.format == "collapsed":
         filename = f"collapsed.{pid}.txt"
 
     sample(
@@ -805,12 +805,12 @@ def main():
     args = parser.parse_args()
 
     # Validate format-specific arguments
-    if args.format == "collapsed":
+    wenn args.format == "collapsed":
         _validate_collapsed_format_args(args, parser)
 
-    sort_value = args.sort if args.sort is not None else 2
+    sort_value = args.sort wenn args.sort is not None sonst 2
 
-    if args.module is not None and not args.module:
+    wenn args.module is not None and not args.module:
         parser.error("argument -m/--module: expected one argument")
 
     # Validate that we have exactly one target type
@@ -821,12 +821,12 @@ def main():
 
     target_count = sum([has_pid, has_module, has_script])
 
-    if target_count == 0:
+    wenn target_count == 0:
         parser.error("one of the arguments -p/--pid -m/--module or script name is required")
-    elif target_count > 1:
+    sowenn target_count > 1:
         parser.error("only one target type can be specified: -p/--pid, -m/--module, or script")
 
-    if args.pid:
+    wenn args.pid:
         sample(
             args.pid,
             sample_interval_usec=args.interval,
@@ -839,10 +839,10 @@ def main():
             output_format=args.format,
             realtime_stats=args.realtime_stats,
         )
-    elif args.module or args.args:
-        if args.module:
+    sowenn args.module or args.args:
+        wenn args.module:
             cmd = (sys.executable, "-m", args.module, *args.args)
-        else:
+        sonst:
             cmd = (sys.executable, *args.args)
 
         # Use synchronized process startup
@@ -852,7 +852,7 @@ def main():
         try:
             wait_for_process_and_sample(process.pid, sort_value, args)
         finally:
-            if process.poll() is None:
+            wenn process.poll() is None:
                 process.terminate()
                 try:
                     process.wait(timeout=2)
@@ -860,5 +860,5 @@ def main():
                     process.kill()
                     process.wait()
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     main()

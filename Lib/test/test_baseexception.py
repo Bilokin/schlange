@@ -21,7 +21,7 @@ klasse ExceptionClassTests(unittest.TestCase):
         exc_set = set()
         fuer object_ in builtins.__dict__.values():
             try:
-                if issubclass(object_, BaseException):
+                wenn issubclass(object_, BaseException):
                     exc_set.add(object_.__name__)
             except TypeError:
                 pass
@@ -44,23 +44,23 @@ klasse ExceptionClassTests(unittest.TestCase):
                 exc_line = exc_line.rstrip()
                 depth = exc_line.rindex('─')
                 exc_name = exc_line[depth+2:]  # Slice past space
-                if '(' in exc_name:
+                wenn '(' in exc_name:
                     paren_index = exc_name.index('(')
                     platform_name = exc_name[paren_index+1:-1]
                     exc_name = exc_name[:paren_index-1]  # Slice off space
-                    if platform_system() != platform_name:
+                    wenn platform_system() != platform_name:
                         exc_set.discard(exc_name)
                         continue
-                if '[' in exc_name:
+                wenn '[' in exc_name:
                     left_bracket = exc_name.index('[')
                     exc_name = exc_name[:left_bracket-1]  # cover space
                 try:
                     exc = getattr(builtins, exc_name)
                 except AttributeError:
                     self.fail("%s not a built-in exception" % exc_name)
-                if last_depth < depth:
+                wenn last_depth < depth:
                     superclasses.append((last_depth, last_exc))
-                elif last_depth > depth:
+                sowenn last_depth > depth:
                     while superclasses[-1][0] >= depth:
                         superclasses.pop()
                 self.assertIsSubclass(exc, superclasses[-1][1],
@@ -78,7 +78,7 @@ klasse ExceptionClassTests(unittest.TestCase):
             inheritance_tree.close()
 
         # Underscore-prefixed (private) exceptions don't need to be documented
-        exc_set = set(e fuer e in exc_set if not e.startswith('_'))
+        exc_set = set(e fuer e in exc_set wenn not e.startswith('_'))
         self.assertEqual(len(exc_set), 0, "%s not accounted for" % exc_set)
 
     interface_tests = ("length", "args", "str", "repr")
@@ -136,7 +136,7 @@ klasse ExceptionClassTests(unittest.TestCase):
         # crash in GC.
         exc.__setstate__(d)  # __hash__() is called again here, clearing the dict.
 
-        # This GC would crash if the refcount of Value() goes below zero.
+        # This GC would crash wenn the refcount of Value() goes below zero.
         gc.collect()
 
 
@@ -206,5 +206,5 @@ klasse UsageTests(unittest.TestCase):
         self.catch_fails("spam")
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

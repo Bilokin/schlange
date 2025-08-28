@@ -3,7 +3,7 @@
 # their own thread, as a side effect of being imported.  If the spawned
 # thread doesn't complete in TIMEOUT seconds, an "appeared to hang" message
 # is appended to the module-global `errors` list.  That list remains empty
-# if (and only if) all functions tested complete.
+# wenn (and only if) all functions tested complete.
 
 TIMEOUT = 10
 
@@ -15,7 +15,7 @@ import os.path
 errors = []
 
 # This klasse merely runs a function in its own thread T.  The thread importing
-# this module holds the import lock, so if the function called by T tries
+# this module holds the import lock, so wenn the function called by T tries
 # to do its own imports it will block waiting fuer this module's import
 # to complete.
 klasse Worker(threading.Thread):
@@ -39,7 +39,7 @@ fuer name, func, args in [
         t = Worker(func, args)
         t.start()
         t.join(TIMEOUT)
-        if t.is_alive():
+        wenn t.is_alive():
             errors.append("%s appeared to hang" % name)
     finally:
         del t

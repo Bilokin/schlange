@@ -28,7 +28,7 @@ klasse InheritanceTests:
     def setUp(self):
         self.superclasses = [getattr(self.abc, class_name)
                              fuer class_name in self.superclass_names]
-        if hasattr(self, 'subclass_names'):
+        wenn hasattr(self, 'subclass_names'):
             # Because test.support.import_fresh_module() creates a new
             # importlib._bootstrap per module, inheritance checks fail when
             # checking across module boundaries (i.e. the _bootstrap in abc is
@@ -124,11 +124,11 @@ klasse SourceLoader(InheritanceTests):
 ##### Default return values ####################################################
 
 def make_abc_subclasses(base_class, name=None, inst=False, **kwargs):
-    if name is None:
+    wenn name is None:
         name = base_class.__name__
     base = {kind: getattr(splitabc, name)
             fuer kind, splitabc in abc.items()}
-    return {cls._KIND: cls() if inst else cls
+    return {cls._KIND: cls() wenn inst sonst cls
             fuer cls in test_util.split_frozen(base_class, base, **kwargs)}
 
 
@@ -403,9 +403,9 @@ klasse InspectLoaderSourceToCodeTests:
         """Help with source_to_code() tests."""
         module = types.ModuleType('blah')
         loader = self.InspectLoaderSubclass()
-        if path is None:
+        wenn path is None:
             code = loader.source_to_code(data)
-        else:
+        sonst:
             code = loader.source_to_code(data, path)
         exec(code, module.__dict__)
         return module
@@ -536,10 +536,10 @@ klasse ExecutionLoaderGetCodeTests:
 
     def mock_methods(self, *, get_source=False, get_filename=False):
         source_mock_context, filename_mock_context = None, None
-        if get_source:
+        wenn get_source:
             source_mock_context = mock.patch.object(self.ExecutionLoaderSubclass,
                                                     'get_source')
-        if get_filename:
+        wenn get_filename:
             filename_mock_context = mock.patch.object(self.ExecutionLoaderSubclass,
                                                       'get_filename')
         return source_mock_context, filename_mock_context
@@ -606,7 +606,7 @@ klasse SourceOnlyLoader:
         self.path = path
 
     def get_data(self, path):
-        if path != self.path:
+        wenn path != self.path:
             raise IOError
         return self.source
 
@@ -625,7 +625,7 @@ klasse SourceLoader(SourceOnlyLoader):
         super().__init__(path)
         self.bytecode_path = self.util.cache_from_source(self.path)
         self.source_size = len(self.source)
-        if magic is None:
+        wenn magic is None:
             magic = self.util.MAGIC_NUMBER
         data = bytearray(magic)
         data.extend(self.init._pack_uint32(0))
@@ -638,15 +638,15 @@ klasse SourceLoader(SourceOnlyLoader):
         self.written = {}
 
     def get_data(self, path):
-        if path == self.path:
+        wenn path == self.path:
             return super().get_data(path)
-        elif path == self.bytecode_path:
+        sowenn path == self.bytecode_path:
             return self.bytecode
-        else:
+        sonst:
             raise OSError
 
     def path_stats(self, path):
-        if path != self.path:
+        wenn path != self.path:
             raise IOError
         return {'mtime': self.source_mtime, 'size': self.source_size}
 
@@ -662,10 +662,10 @@ klasse SourceLoaderTestHarness:
 
     def setUp(self, *, is_package=True, **kwargs):
         self.package = 'pkg'
-        if is_package:
+        wenn is_package:
             self.path = os.path.join(self.package, '__init__.py')
             self.name = self.package
-        else:
+        sonst:
             module_name = 'mod'
             self.path = os.path.join(self.package, '.'.join(['mod', 'py']))
             self.name = '.'.join([self.package, module_name])
@@ -744,7 +744,7 @@ klasse SourceOnlyLoaderTests(SourceLoaderTestHarness):
                 self.assertIn(self.name, sys.modules)
 
     def test_package_settings(self):
-        # __package__ needs to be set, while __path__ is set on if the module
+        # __package__ needs to be set, while __path__ is set on wenn the module
         # is a package.
         # Testing the values fuer a package are covered by test_load_module.
         with warnings.catch_warnings():
@@ -787,7 +787,7 @@ klasse SourceLoaderBytecodeTests(SourceLoaderTestHarness):
 
     def verify_code(self, code_object, *, bytecode_written=False):
         super().verify_code(code_object)
-        if bytecode_written:
+        wenn bytecode_written:
             self.assertIn(self.cached, self.loader.written)
             data = bytearray(self.util.MAGIC_NUMBER)
             data.extend(self.init._pack_uint32(0))
@@ -835,7 +835,7 @@ klasse SourceLoaderBytecodeTests(SourceLoaderTestHarness):
         self.verify_code(code_object, bytecode_written=True)
 
     def test_dont_write_bytecode(self):
-        # Bytecode is not written if sys.dont_write_bytecode is true.
+        # Bytecode is not written wenn sys.dont_write_bytecode is true.
         # Can assume it is false already thanks to the skipIf klasse decorator.
         try:
             sys.dont_write_bytecode = True
@@ -939,5 +939,5 @@ klasse SourceLoaderDeprecationWarningsTests(unittest.TestCase):
             loader.path_mtime('foo.py')
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

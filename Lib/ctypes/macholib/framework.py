@@ -24,7 +24,7 @@ def framework_info(filename):
         Location/Name.framework/Name_Suffix
         Location/Name.framework/Name
 
-    returns None if not found, or a mapping equivalent to:
+    returns None wenn not found, or a mapping equivalent to:
         dict(
             location='Location',
             name='Name.framework/Versions/SomeVersion/Name_Suffix',
@@ -34,9 +34,9 @@ def framework_info(filename):
         )
 
     Note that SomeVersion and Suffix are optional and may be None
-    if not present
+    wenn not present
     """
     is_framework = STRICT_FRAMEWORK_RE.match(filename)
-    if not is_framework:
+    wenn not is_framework:
         return None
     return is_framework.groupdict()

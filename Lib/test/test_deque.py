@@ -236,7 +236,7 @@ klasse TestBasic(unittest.TestCase):
         fuer i in range(n):
             d.popleft()
             l.pop(0)
-            if random.random() < 0.5:
+            wenn random.random() < 0.5:
                 d.append(i)
                 l.append(i)
             fuer j in range(1-len(l), len(l)):
@@ -284,7 +284,7 @@ klasse TestBasic(unittest.TestCase):
                     except ValueError:
                         with self.assertRaises(ValueError):
                             d.index(element, start, stop)
-                    else:
+                    sonst:
                         self.assertEqual(d.index(element, start, stop), target)
 
         # Test large start argument
@@ -320,9 +320,9 @@ klasse TestBasic(unittest.TestCase):
         fuer i in range(-len(elements), len(elements)):
             d = deque(elements, maxlen=len(elements)+1)
             d.insert(i, 'Z')
-            if i >= 0:
+            wenn i >= 0:
                 self.assertEqual(d[i], 'Z')
-            else:
+            sonst:
                 self.assertEqual(d[i-1], 'Z')
 
     def test_imul(self):
@@ -548,7 +548,7 @@ klasse TestBasic(unittest.TestCase):
             fuer i in range(size, BIG):
                 append(i)
                 x = pop()
-                if x != i - size:
+                wenn x != i - size:
                     self.assertEqual(x, i-size)
             self.assertEqual(list(d), list(range(BIG-size, BIG)))
 
@@ -559,7 +559,7 @@ klasse TestBasic(unittest.TestCase):
             fuer i in range(size, BIG):
                 append(i)
                 x = pop()
-                if x != i - size:
+                wenn x != i - size:
                     self.assertEqual(x, i-size)
             self.assertEqual(list(reversed(list(d))),
                              list(range(BIG-size, BIG)))
@@ -572,7 +572,7 @@ klasse TestBasic(unittest.TestCase):
             append(i)
         fuer i in range(BIG):
             x = pop()
-            if x != i:
+            wenn x != i:
                 self.assertEqual(x, i)
 
     def test_big_queue_popright(self):
@@ -582,7 +582,7 @@ klasse TestBasic(unittest.TestCase):
             append(i)
         fuer i in range(BIG):
             x = pop()
-            if x != i:
+            wenn x != i:
                 self.assertEqual(x, i)
 
     def test_big_stack_right(self):
@@ -592,7 +592,7 @@ klasse TestBasic(unittest.TestCase):
             append(i)
         fuer i in reversed(range(BIG)):
             x = pop()
-            if x != i:
+            wenn x != i:
                 self.assertEqual(x, i)
         self.assertEqual(len(d), 0)
 
@@ -603,7 +603,7 @@ klasse TestBasic(unittest.TestCase):
             append(i)
         fuer i in reversed(range(BIG)):
             x = pop()
-            if x != i:
+            wenn x != i:
                 self.assertEqual(x, i)
         self.assertEqual(len(d), 0)
 
@@ -693,7 +693,7 @@ klasse TestBasic(unittest.TestCase):
         fuer i in range(5):
             fuer maxlen in range(-1, 6):
                 s = [random.random() fuer j in range(i)]
-                d = deque(s) if maxlen == -1 else deque(s, maxlen)
+                d = deque(s) wenn maxlen == -1 sonst deque(s, maxlen)
                 e = d.copy()
                 self.assertEqual(d, e)
                 self.assertEqual(d.maxlen, e.maxlen)
@@ -733,9 +733,9 @@ klasse TestBasic(unittest.TestCase):
         fuer i in range(2):
             obj = C()
             ref = weakref.ref(obj)
-            if i == 0:
+            wenn i == 0:
                 container = deque([obj, 1])
-            else:
+            sonst:
                 container = reversed(deque([obj, 1]))
             obj.x = iter(container)
             del obj, container
@@ -875,7 +875,7 @@ klasse TestSubclass(unittest.TestCase):
                 return iter([])
         d1 = X([1,2,3])
         d2 = X([4,5,6])
-        d1 == d2   # not clear if this is supposed to be True or False,
+        d1 == d2   # not clear wenn this is supposed to be True or False,
                    # but it used to give a SystemError
 
     @support.cpython_only
@@ -1034,5 +1034,5 @@ def load_tests(loader, tests, pattern):
     return tests
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

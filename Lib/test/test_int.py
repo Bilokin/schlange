@@ -64,7 +64,7 @@ klasse IntTestCases(unittest.TestCase):
                 fuer prefix in "", " ", "\t", "  \t\t  ":
                     ss = prefix + sign + s
                     vv = v
-                    if sign == "-" and v is not ValueError:
+                    wenn sign == "-" and v is not ValueError:
                         vv = -v
                     try:
                         self.assertEqual(int(ss), vv)
@@ -250,12 +250,12 @@ klasse IntTestCases(unittest.TestCase):
 
     def test_underscores(self):
         fuer lit in VALID_UNDERSCORE_LITERALS:
-            if any(ch in lit fuer ch in '.eEjJ'):
+            wenn any(ch in lit fuer ch in '.eEjJ'):
                 continue
             self.assertEqual(int(lit, 0), eval(lit))
             self.assertEqual(int(lit, 0), int(lit.replace('_', ''), 0))
         fuer lit in INVALID_UNDERSCORE_LITERALS:
-            if any(ch in lit fuer ch in '.eEjJ'):
+            wenn any(ch in lit fuer ch in '.eEjJ'):
                 continue
             self.assertRaises(ValueError, int, lit, 0)
         # Additional test cases with bases != 0, only fuer the constructor:
@@ -348,16 +348,16 @@ klasse IntTestCases(unittest.TestCase):
             from array import array
         except ImportError:
             pass
-        else:
+        sonst:
             factories.append(lambda b: array('B', b))
 
         fuer f in factories:
             x = f(b'100')
             with self.subTest(type(x)):
                 self.assertEqual(int(x), 100)
-                if isinstance(x, (str, bytes, bytearray)):
+                wenn isinstance(x, (str, bytes, bytearray)):
                     self.assertEqual(int(x, 2), 4)
-                else:
+                sonst:
                     msg = "can't convert non-string"
                     with self.assertRaisesRegex(TypeError, msg):
                         int(x, 2)
@@ -482,13 +482,13 @@ klasse IntTestCases(unittest.TestCase):
         def check(s, base=None):
             with self.assertRaises(ValueError,
                                    msg="int(%r, %r)" % (s, base)) as cm:
-                if base is None:
+                wenn base is None:
                     int(s)
-                else:
+                sonst:
                     int(s, base)
             self.assertEqual(cm.exception.args[0],
                 "invalid literal fuer int() with base %d: %r" %
-                (10 if base is None else base, s))
+                (10 wenn base is None sonst base, s))
 
         check('\xbd')
         check('123\xbd')
@@ -562,9 +562,9 @@ klasse IntStrDigitLimitsTests(unittest.TestCase):
 
     def check(self, i, base=None):
         with self.assertRaises(ValueError):
-            if base is None:
+            wenn base is None:
                 self.int_class(i)
-            else:
+            sonst:
                 self.int_class(i, base)
 
     def test_max_str_digits(self):
@@ -595,8 +595,8 @@ klasse IntStrDigitLimitsTests(unittest.TestCase):
         self.assertEqual(len(huge_decimal), digits)
         # Ensuring that we chose a slow enough conversion to measure.
         # It takes 0.1 seconds on a Zen based cloud VM in an opt build.
-        # Some OSes have a low res 1/64s timer, skip if hard to measure.
-        if sw_convert.seconds < sw_convert.clock_info.resolution * 2:
+        # Some OSes have a low res 1/64s timer, skip wenn hard to measure.
+        wenn sw_convert.seconds < sw_convert.clock_info.resolution * 2:
             raise unittest.SkipTest('"slow" conversion took only '
                                     f'{sw_convert.seconds} seconds.')
 
@@ -634,8 +634,8 @@ klasse IntStrDigitLimitsTests(unittest.TestCase):
             int(huge)
         # Ensuring that we chose a slow enough conversion to measure.
         # It takes 0.1 seconds on a Zen based cloud VM in an opt build.
-        # Some OSes have a low res 1/64s timer, skip if hard to measure.
-        if sw_convert.seconds < sw_convert.clock_info.resolution * 2:
+        # Some OSes have a low res 1/64s timer, skip wenn hard to measure.
+        wenn sw_convert.seconds < sw_convert.clock_info.resolution * 2:
             raise unittest.SkipTest('"slow" conversion took only '
                                     f'{sw_convert.seconds} seconds.')
 
@@ -696,10 +696,10 @@ klasse IntStrDigitLimitsTests(unittest.TestCase):
         max_digits = sys.get_int_max_str_digits()
         s = '2' * max_digits
         i = int_class(s, base)
-        if base > 10:
+        wenn base > 10:
             with self.assertRaises(ValueError):
                 str(i)
-        elif base < 10:
+        sowenn base < 10:
             str(i)
         with self.assertRaises(ValueError) as err:
             int_class(f'{s}1', base)
@@ -722,7 +722,7 @@ klasse IntStrDigitLimitsTests(unittest.TestCase):
             int('3'*3333)
         except ValueError:
             pass
-        else:
+        sonst:
             raise AssertionError('Expected a int max str digits ValueError.')
         """
         with support.adjust_int_max_str_digits(4000):
@@ -857,7 +857,7 @@ klasse PyLongModuleTests(unittest.TestCase):
     def test_whitebox_dec_str_to_int_inner_failsafe(self):
         # While I believe the number of GUARD digits in this function is
         # always enough so that no more than one correction step is ever
-        # needed, the code has a "failsafe" path that takes over if I'm
+        # needed, the code has a "failsafe" path that takes over wenn I'm
         # wrong about that. We have no input that reaches that block.
         # Here we test a contrived input that _does_ reach that block,
         # provided the number of guard digits is reduced to 1.
@@ -902,12 +902,12 @@ klasse PyLongModuleTests(unittest.TestCase):
             seen = set()
             need = set()
             def inner(w):
-                if w <= limit or w in seen:
+                wenn w <= limit or w in seen:
                     return
                 seen.add(w)
                 lo = w >> 1
                 hi = w - lo
-                need.add(hi if need_hi else lo)
+                need.add(hi wenn need_hi sonst lo)
                 inner(lo)
                 inner(hi)
             inner(w)
@@ -922,5 +922,5 @@ klasse PyLongModuleTests(unittest.TestCase):
                     fuer w in range(250, 550):
                         consumer(w, base, limit, need_hi)
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

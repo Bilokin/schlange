@@ -77,5 +77,5 @@ klasse StringPtrTestCase(unittest.TestCase):
         # the pointer is hanging and using it would reference freed memory.
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

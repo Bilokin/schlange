@@ -19,7 +19,7 @@ Notes:
   without some complicated hoopla to save, reset and restore the tty state.
 
 - The evaluation of the NAME.NAME... form may cause arbitrary application
-  defined code to be executed if an object with a __getattr__ hook is found.
+  defined code to be executed wenn an object with a __getattr__ hook is found.
   Since it is the responsibility of the application (or the user) to enable this
   feature, I consider this an acceptable risk.  More complicated expressions
   (e.g. function calls or indexing operations) are *not* evaluated.
@@ -55,15 +55,15 @@ klasse Completer:
         readline.set_completer(Completer(my_namespace).complete)
         """
 
-        if namespace and not isinstance(namespace, dict):
+        wenn namespace and not isinstance(namespace, dict):
             raise TypeError('namespace must be a dictionary')
 
         # Don't bind to namespace quite yet, but flag whether the user wants a
         # specific namespace or to use __main__.__dict__. This will allow us
         # to bind to __main__.__dict__ at completion time, not now.
-        if namespace is None:
+        wenn namespace is None:
             self.use_main_ns = 1
-        else:
+        sonst:
             self.use_main_ns = 0
             self.namespace = namespace
 
@@ -74,25 +74,25 @@ klasse Completer:
         returns None.  The completion should begin with 'text'.
 
         """
-        if self.use_main_ns:
+        wenn self.use_main_ns:
             self.namespace = __main__.__dict__
 
-        if not text.strip():
-            if state == 0:
-                if _readline_available:
+        wenn not text.strip():
+            wenn state == 0:
+                wenn _readline_available:
                     readline.insert_text('\t')
                     readline.redisplay()
                     return ''
-                else:
+                sonst:
                     return '\t'
-            else:
+            sonst:
                 return None
 
-        if state == 0:
+        wenn state == 0:
             with warnings.catch_warnings(action="ignore"):
-                if "." in text:
+                wenn "." in text:
                     self.matches = self.attr_matches(text)
-                else:
+                sonst:
                     self.matches = self.global_matches(text)
         try:
             return self.matches[state]
@@ -100,10 +100,10 @@ klasse Completer:
             return None
 
     def _callable_postfix(self, val, word):
-        if callable(val):
+        wenn callable(val):
             word += "("
             try:
-                if not inspect.signature(val).parameters:
+                wenn not inspect.signature(val).parameters:
                     word += ")"
             except ValueError:
                 pass
@@ -121,18 +121,18 @@ klasse Completer:
         seen = {"__builtins__"}
         n = len(text)
         fuer word in keyword.kwlist + keyword.softkwlist:
-            if word[:n] == text:
+            wenn word[:n] == text:
                 seen.add(word)
-                if word in {'finally', 'try'}:
+                wenn word in {'finally', 'try'}:
                     word = word + ':'
-                elif word not in {'False', 'None', 'True',
+                sowenn word not in {'False', 'None', 'True',
                                   'break', 'continue', 'pass',
                                   'else', '_'}:
                     word = word + ' '
                 matches.append(word)
         fuer nspace in [self.namespace, builtins.__dict__]:
             fuer word, val in nspace.items():
-                if word[:n] == text and word not in seen:
+                wenn word[:n] == text and word not in seen:
                     seen.add(word)
                     matches.append(self._callable_postfix(val, word))
         return matches
@@ -145,12 +145,12 @@ klasse Completer:
         (as revealed by dir()) are used as possible completions.  (For class
         instances, klasse members are also considered.)
 
-        WARNING: this can still invoke arbitrary C code, if an object
+        WARNING: this can still invoke arbitrary C code, wenn an object
         with a __getattr__ hook is evaluated.
 
         """
         m = re.match(r"(\w+(\.\w+)*)\.(\w*)", text)
-        if not m:
+        wenn not m:
             return []
         expr, attr = m.group(1, 3)
         try:
@@ -162,23 +162,23 @@ klasse Completer:
         words = set(dir(thisobject))
         words.discard("__builtins__")
 
-        if hasattr(thisobject, '__class__'):
+        wenn hasattr(thisobject, '__class__'):
             words.add('__class__')
             words.update(get_class_members(thisobject.__class__))
         matches = []
         n = len(attr)
-        if attr == '':
+        wenn attr == '':
             noprefix = '_'
-        elif attr == '_':
+        sowenn attr == '_':
             noprefix = '__'
-        else:
+        sonst:
             noprefix = None
         while True:
             fuer word in words:
-                if (word[:n] == attr and
+                wenn (word[:n] == attr and
                     not (noprefix and word[:n+1] == noprefix)):
                     match = "%s.%s" % (expr, word)
-                    if isinstance(getattr(type(thisobject), word, None),
+                    wenn isinstance(getattr(type(thisobject), word, None),
                                   property):
                         # bpo-44752: thisobject.word is a method decorated by
                         # `@property`. What follows applies a postfix if
@@ -188,22 +188,22 @@ klasse Completer:
                         # property method, which is not desirable.
                         matches.append(match)
                         continue
-                    if (value := getattr(thisobject, word, None)) is not None:
+                    wenn (value := getattr(thisobject, word, None)) is not None:
                         matches.append(self._callable_postfix(value, match))
-                    else:
+                    sonst:
                         matches.append(match)
-            if matches or not noprefix:
+            wenn matches or not noprefix:
                 break
-            if noprefix == '_':
+            wenn noprefix == '_':
                 noprefix = '__'
-            else:
+            sonst:
                 noprefix = None
         matches.sort()
         return matches
 
 def get_class_members(klass):
     ret = dir(klass)
-    if hasattr(klass,'__bases__'):
+    wenn hasattr(klass,'__bases__'):
         fuer base in klass.__bases__:
             ret = ret + get_class_members(base)
     return ret
@@ -212,7 +212,7 @@ try:
     import readline
 except ImportError:
     _readline_available = False
-else:
+sonst:
     readline.set_completer(Completer().complete)
     # Release references early at shutdown (the readline module's
     # contents are quasi-immortal, and the completer function holds a

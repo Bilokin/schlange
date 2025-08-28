@@ -41,9 +41,9 @@ klasse BaseContext(object):
     def cpu_count(self):
         '''Returns the number of CPUs in the system'''
         num = os.cpu_count()
-        if num is None:
+        wenn num is None:
             raise NotImplementedError('cannot determine number of cpus')
-        else:
+        sonst:
             return num
 
     def Manager(self):
@@ -145,12 +145,12 @@ klasse BaseContext(object):
         '''Check whether this is a fake forked process in a frozen executable.
         If so then run code specified by commandline and exit.
         '''
-        if self.get_start_method() == 'spawn' and getattr(sys, 'frozen', False):
+        wenn self.get_start_method() == 'spawn' and getattr(sys, 'frozen', False):
             from .spawn import freeze_support
             freeze_support()
 
     def get_logger(self):
-        '''Return package logger -- if it does not already exist then
+        '''Return package logger -- wenn it does not already exist then
         it is created.
         '''
         from .util import get_logger
@@ -185,7 +185,7 @@ klasse BaseContext(object):
         set_forkserver_preload(module_names)
 
     def get_context(self, method=None):
-        if method is None:
+        wenn method is None:
             return self
         try:
             ctx = _concrete_contexts[method]
@@ -235,24 +235,24 @@ klasse DefaultContext(BaseContext):
         self._actual_context = None
 
     def get_context(self, method=None):
-        if method is None:
-            if self._actual_context is None:
+        wenn method is None:
+            wenn self._actual_context is None:
                 self._actual_context = self._default_context
             return self._actual_context
-        else:
+        sonst:
             return super().get_context(method)
 
     def set_start_method(self, method, force=False):
-        if self._actual_context is not None and not force:
+        wenn self._actual_context is not None and not force:
             raise RuntimeError('context has already been set')
-        if method is None and force:
+        wenn method is None and force:
             self._actual_context = None
             return
         self._actual_context = self.get_context(method)
 
     def get_start_method(self, allow_none=False):
-        if self._actual_context is None:
-            if allow_none:
+        wenn self._actual_context is None:
+            wenn allow_none:
                 return None
             self._actual_context = self._default_context
         return self._actual_context._name
@@ -262,7 +262,7 @@ klasse DefaultContext(BaseContext):
         default = self._default_context.get_start_method()
         start_method_names = [default]
         start_method_names.extend(
-            name fuer name in _concrete_contexts if name != default
+            name fuer name in _concrete_contexts wenn name != default
         )
         return start_method_names
 
@@ -271,7 +271,7 @@ klasse DefaultContext(BaseContext):
 # Context types fuer fixed start method
 #
 
-if sys.platform != 'win32':
+wenn sys.platform != 'win32':
 
     klasse ForkProcess(process.BaseProcess):
         _start_method = 'fork'
@@ -311,7 +311,7 @@ if sys.platform != 'win32':
         _name = 'forkserver'
         Process = ForkServerProcess
         def _check_available(self):
-            if not reduction.HAVE_SEND_HANDLE:
+            wenn not reduction.HAVE_SEND_HANDLE:
                 raise ValueError('forkserver start method not available')
 
     _concrete_contexts = {
@@ -322,12 +322,12 @@ if sys.platform != 'win32':
     # bpo-33725: running arbitrary code after fork() is no longer reliable
     # on macOS since macOS 10.14 (Mojave). Use spawn by default instead.
     # gh-84559: We changed everyones default to a thread safeish one in 3.14.
-    if reduction.HAVE_SEND_HANDLE and sys.platform != 'darwin':
+    wenn reduction.HAVE_SEND_HANDLE and sys.platform != 'darwin':
         _default_context = DefaultContext(_concrete_contexts['forkserver'])
-    else:
+    sonst:
         _default_context = DefaultContext(_concrete_contexts['spawn'])
 
-else:  # Windows
+sonst:  # Windows
 
     klasse SpawnProcess(process.BaseProcess):
         _start_method = 'spawn'
@@ -370,7 +370,7 @@ def set_spawning_popen(popen):
     _tls.spawning_popen = popen
 
 def assert_spawning(obj):
-    if get_spawning_popen() is None:
+    wenn get_spawning_popen() is None:
         raise RuntimeError(
             '%s objects should only be shared between processes'
             ' through inheritance' % type(obj).__name__

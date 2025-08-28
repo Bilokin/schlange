@@ -173,9 +173,9 @@ klasse DictTest(unittest.TestCase):
         klasse BadHash(object):
             fail = False
             def __hash__(self):
-                if self.fail:
+                wenn self.fail:
                     raise Exc()
-                else:
+                sonst:
                     return 42
 
         x = BadHash()
@@ -229,7 +229,7 @@ klasse DictTest(unittest.TestCase):
                     def __iter__(self):
                         return self
                     def __next__(self):
-                        if self.i:
+                        wenn self.i:
                             self.i = 0
                             return 'a'
                         raise Exc
@@ -246,7 +246,7 @@ klasse DictTest(unittest.TestCase):
                     def __iter__(self):
                         return self
                     def __next__(self):
-                        if self.i <= ord('z'):
+                        wenn self.i <= ord('z'):
                             rtn = chr(self.i)
                             self.i += 1
                             return rtn
@@ -479,9 +479,9 @@ klasse DictTest(unittest.TestCase):
         klasse BadHash(object):
             fail = False
             def __hash__(self):
-                if self.fail:
+                wenn self.fail:
                     raise Exc()
-                else:
+                sonst:
                     return 42
 
         x = BadHash()
@@ -541,9 +541,9 @@ klasse DictTest(unittest.TestCase):
                 b = {}
                 fuer i in range(size):
                     a[repr(i)] = i
-                    if copymode < 0:
+                    wenn copymode < 0:
                         b[repr(i)] = i
-                if copymode > 0:
+                wenn copymode > 0:
                     b = a.copy()
                 fuer i in range(size):
                     ka, va = ta = a.popitem()
@@ -580,9 +580,9 @@ klasse DictTest(unittest.TestCase):
         klasse BadHash(object):
             fail = False
             def __hash__(self):
-                if self.fail:
+                wenn self.fail:
                     raise Exc()
-                else:
+                sonst:
                     return 42
 
         x = BadHash()
@@ -638,7 +638,7 @@ klasse DictTest(unittest.TestCase):
                 return 1
 
             def __eq__(self, other):
-                if NastyKey.mutate_dict:
+                wenn NastyKey.mutate_dict:
                     mydict, key = NastyKey.mutate_dict
                     NastyKey.mutate_dict = None
                     del mydict[key]
@@ -798,8 +798,8 @@ klasse DictTest(unittest.TestCase):
     def test_items_symmetric_difference(self):
         rr = random.randrange
         fuer _ in range(100):
-            left = {x:rr(3) fuer x in range(20) if rr(2)}
-            right = {x:rr(3) fuer x in range(20) if rr(2)}
+            left = {x:rr(3) fuer x in range(20) wenn rr(2)}
+            right = {x:rr(3) fuer x in range(20) wenn rr(2)}
             with self.subTest(left=left, right=right):
                 expected = set(left.items()) ^ set(right.items())
                 actual = left.items() ^ right.items()
@@ -868,7 +868,7 @@ klasse DictTest(unittest.TestCase):
         self.assertEqual(c.exception.args, ((1,),))
 
     def test_bad_key(self):
-        # Dictionary lookups should fail if __eq__() raises an exception.
+        # Dictionary lookups should fail wenn __eq__() raises an exception.
         klasse CustomException(Exception):
             pass
 
@@ -877,7 +877,7 @@ klasse DictTest(unittest.TestCase):
                 return hash(self.__class__)
 
             def __eq__(self, other):
-                if isinstance(other, self.__class__):
+                wenn isinstance(other, self.__class__):
                     raise CustomException
                 return other
 
@@ -919,7 +919,7 @@ klasse DictTest(unittest.TestCase):
             def __hash__(self):
                 return 5
             def __eq__(self, other):
-                if resizing:
+                wenn resizing:
                     d.clear()
                 return False
         d = {}
@@ -934,7 +934,7 @@ klasse DictTest(unittest.TestCase):
         d[9] = 6
 
     def test_empty_presized_dict_in_freelist(self):
-        # Bug #3537: if an empty but presized dict with a size larger
+        # Bug #3537: wenn an empty but presized dict with a size larger
         # than 7 was in the freelist, it triggered an assertion failure
         with self.assertRaises(ZeroDivisionError):
             d = {'a': 1 // 0, 'b': None, 'c': None, 'd': None, 'e': None,
@@ -1050,9 +1050,9 @@ klasse DictTest(unittest.TestCase):
         """dict.update(other) must preserve order in other."""
         klasse C:
             def __init__(self, order):
-                if order:
+                wenn order:
                     self.a, self.b, self.c = 1, 2, 3
-                else:
+                sonst:
                     self.c, self.b, self.a = 1, 2, 3
         o = C(True)
         o = C(False)  # o.__dict__ has reversed order.
@@ -1287,7 +1287,7 @@ klasse DictTest(unittest.TestCase):
                 return 13
 
             def __eq__(self, other):
-                if len(d) > 1:
+                wenn len(d) > 1:
                     d.clear()
                 return False
 
@@ -1305,7 +1305,7 @@ klasse DictTest(unittest.TestCase):
                 return 13
 
             def __eq__(self, other):
-                if len(d) > 1:
+                wenn len(d) > 1:
                     d.clear()
                 return False
 
@@ -1356,7 +1356,7 @@ klasse DictTest(unittest.TestCase):
 
         def iter_and_mutate():
             fuer result in d.items():
-                if result[0] == 2:
+                wenn result[0] == 2:
                     d[2] = None # free d[2] --> X(2).__del__ was called
 
         self.assertRaises(RuntimeError, iter_and_mutate)
@@ -1386,8 +1386,8 @@ klasse DictTest(unittest.TestCase):
     def test_reverse_iterator_for_shared_shared_dicts(self):
         klasse A:
             def __init__(self, x, y):
-                if x: self.x = x
-                if y: self.y = y
+                wenn x: self.x = x
+                wenn y: self.y = y
 
         self.assertEqual(list(reversed(A(1, 2).__dict__)), ['y', 'x'])
         self.assertEqual(list(reversed(A(1, 0).__dict__)), ['x'])
@@ -1448,7 +1448,7 @@ klasse DictTest(unittest.TestCase):
                 self.d = d
 
             def __del__(self):
-                if 'attr' in self.d:
+                wenn 'attr' in self.d:
                     del self.d['attr']
                 gc.collect()
 
@@ -1461,7 +1461,7 @@ klasse DictTest(unittest.TestCase):
             obj.attr = EvilAttr(obj.__dict__)
 
     def test_str_nonstr(self):
-        # cpython uses a different lookup function if the dict only contains
+        # cpython uses a different lookup function wenn the dict only contains
         # `str` keys. Make sure the unoptimized path is used when a non-`str`
         # key appears.
 
@@ -1476,7 +1476,7 @@ klasse DictTest(unittest.TestCase):
 
             def __eq__(self, other):
                 nonlocal eq_count
-                if isinstance(other, Key3) or isinstance(other, str) and other == 'key3':
+                wenn isinstance(other, Key3) or isinstance(other, str) and other == 'key3':
                     eq_count += 1
                     return True
                 return False
@@ -1539,7 +1539,7 @@ klasse DictTest(unittest.TestCase):
                 # `'key1'`, but (at least on cpython) is a different object.
                 noninterned_key1 = 'ke'
                 noninterned_key1 += 'y1'
-                if support.check_impl_detail(cpython=True):
+                wenn support.check_impl_detail(cpython=True):
                     # suppress a SyntaxWarning
                     interned_key1 = 'key1'
                     self.assertFalse(noninterned_key1 is interned_key1)
@@ -1645,5 +1645,5 @@ klasse SubclassMappingTests(mapping_tests.BasicTestMappingProtocol):
     type2test = Dict
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

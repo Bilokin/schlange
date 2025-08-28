@@ -6,7 +6,7 @@ import urllib.response
 import unittest
 from test import support
 
-if support.is_wasi:
+wenn support.is_wasi:
     raise unittest.SkipTest("Cannot create socket on WASI")
 
 
@@ -66,5 +66,5 @@ klasse TestResponse(unittest.TestCase):
     def tearDown(self):
         self.sock.close()
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

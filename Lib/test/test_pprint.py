@@ -245,7 +245,7 @@ klasse QueryTestCase(unittest.TestCase):
         # Ahem.  The docs don't say anything about that -- this appears to
         # be testing an implementation quirk.  Starting in Python 2.5, it's
         # not true fuer dicts:  pprint always sorts dicts by key now; before,
-        # it sorted a dict display if and only if the display required
+        # it sorted a dict display wenn and only wenn the display required
         # multiple lines.  For that reason, dicts with more than one element
         # aren't tested here.
         fuer simple in (0, 0, 0+0j, 0.0, "", b"", bytearray(),
@@ -561,11 +561,11 @@ mappingproxy(OrderedDict([('the', 0),
             short = dict_class(dict(zip('edcba', 'edcba')))
             long = dict_class(dict((chr(x), chr(x)) fuer x in range(90, 64, -1)))
             lengths = {"empty": empty, "short": short, "long": long}
-            prefix = "odict" if dict_class is collections.OrderedDict else "dict"
+            prefix = "odict" wenn dict_class is collections.OrderedDict sonst "dict"
             fuer name, d in lengths.items():
                 with self.subTest(length=name, prefix=prefix):
                     is_short = len(d) < 6
-                    joiner = ", " if is_short else ",\n "
+                    joiner = ", " wenn is_short sonst ",\n "
                     k = d.keys()
                     v = d.values()
                     i = d.items()
@@ -599,7 +599,7 @@ mappingproxy(OrderedDict([('the', 0),
         fuer name, d in lengths.items():
             with self.subTest(length=name, name="Views"):
                 is_short = len(d) < 6
-                joiner = ", " if is_short else ",\n "
+                joiner = ", " wenn is_short sonst ",\n "
                 i = d.items()
                 s = sorted(i)
                 joined_items = "({%s})" % joiner.join(["%r: %r" % (k, v) fuer (k, v) in i])
@@ -667,7 +667,7 @@ mappingproxy(OrderedDict([('the', 0),
         """Test that mapping ABC views use their ._mapping's __repr__."""
         klasse MyMapping(Mapping):
             def __init__(self, keys=None):
-                self._keys = {} if keys is None else dict.fromkeys(keys)
+                self._keys = {} wenn keys is None sonst dict.fromkeys(keys)
 
             def __getitem__(self, item):
                 return self._keys[item]
@@ -1476,15 +1476,15 @@ ValuesView({'a': 6,
 klasse DottedPrettyPrinter(pprint.PrettyPrinter):
 
     def format(self, object, context, maxlevels, level):
-        if isinstance(object, str):
-            if ' ' in object:
+        wenn isinstance(object, str):
+            wenn ' ' in object:
                 return repr(object), 1, 0
-            else:
+            sonst:
                 return object, 0, 0
-        else:
+        sonst:
             return pprint.PrettyPrinter.format(
                 self, object, context, maxlevels, level)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

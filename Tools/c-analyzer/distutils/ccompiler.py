@@ -68,7 +68,7 @@ klasse CCompiler:
     # Default language settings. language_map is used to detect a source
     # file or Extension target language, checking source filenames.
     # language_order is used to detect the language precedence, when deciding
-    # what language to use when mixing source types. For example, if some
+    # what language to use when mixing source types. For example, wenn some
     # extension has two files with ".c" extension, and one with ".cpp", it
     # is still linked as c++.
     language_map = {".c"   : "c",
@@ -142,21 +142,21 @@ klasse CCompiler:
         # basically the same things with Unix C compilers.
 
         fuer key in kwargs:
-            if key not in self.executables:
+            wenn key not in self.executables:
                 raise ValueError("unknown executable '%s' fuer klasse %s" %
                       (key, self.__class__.__name__))
             self.set_executable(key, kwargs[key])
 
     def set_executable(self, key, value):
-        if isinstance(value, str):
+        wenn isinstance(value, str):
             setattr(self, key, split_quoted(value))
-        else:
+        sonst:
             setattr(self, key, value)
 
     def _find_macro(self, name):
         i = 0
         fuer defn in self.macros:
-            if defn[0] == name:
+            wenn defn[0] == name:
                 return i
             i += 1
         return None
@@ -164,10 +164,10 @@ klasse CCompiler:
     def _check_macro_definitions(self, definitions):
         """Ensures that every element of 'definitions' is a valid macro
         definition, ie. either (name,value) 2-tuple or a (name,) tuple.  Do
-        nothing if all definitions are OK, raise TypeError otherwise.
+        nothing wenn all definitions are OK, raise TypeError otherwise.
         """
         fuer defn in definitions:
-            if not (isinstance(defn, tuple) and
+            wenn not (isinstance(defn, tuple) and
                     (len(defn) in (1, 2) and
                       (isinstance (defn[1], str) or defn[1] is None)) and
                     isinstance (defn[0], str)):
@@ -181,14 +181,14 @@ klasse CCompiler:
     def define_macro(self, name, value=None):
         """Define a preprocessor macro fuer all compilations driven by this
         compiler object.  The optional parameter 'value' should be a
-        string; if it is not supplied, then the macro will be defined
+        string; wenn it is not supplied, then the macro will be defined
         without an explicit value and the exact outcome depends on the
         compiler used (XXX true? does ANSI say anything about this?)
         """
         # Delete from the list of macro definitions/undefinitions if
         # already there (so that this one will take precedence).
         i = self._find_macro (name)
-        if i is not None:
+        wenn i is not None:
             del self.macros[i]
 
         self.macros.append((name, value))
@@ -205,7 +205,7 @@ klasse CCompiler:
         # Delete from the list of macro definitions/undefinitions if
         # already there (so that this one will take precedence).
         i = self._find_macro (name)
-        if i is not None:
+        wenn i is not None:
             del self.macros[i]
 
         undefn = (name,)
@@ -237,7 +237,7 @@ klasse CCompiler:
 
     def _fix_compile_args(self, output_dir, macros, include_dirs):
         """Typecheck and fix-up some of the arguments to the 'compile()'
-        method, and return fixed-up values.  Specifically: if 'output_dir'
+        method, and return fixed-up values.  Specifically: wenn 'output_dir'
         is None, replaces it with 'self.output_dir'; ensures that 'macros'
         is a list, and augments it with 'self.macros'; ensures that
         'include_dirs' is a list, and augments it with 'self.include_dirs'.
@@ -245,23 +245,23 @@ klasse CCompiler:
         i.e. fuer 'output_dir' either string or None, and fuer 'macros' and
         'include_dirs' either list or None.
         """
-        if output_dir is None:
+        wenn output_dir is None:
             output_dir = self.output_dir
-        elif not isinstance(output_dir, str):
+        sowenn not isinstance(output_dir, str):
             raise TypeError("'output_dir' must be a string or None")
 
-        if macros is None:
+        wenn macros is None:
             macros = self.macros
-        elif isinstance(macros, list):
+        sowenn isinstance(macros, list):
             macros = macros + (self.macros or [])
-        else:
+        sonst:
             raise TypeError("'macros' (if supplied) must be a list of tuples")
 
-        if include_dirs is None:
+        wenn include_dirs is None:
             include_dirs = self.include_dirs
-        elif isinstance(include_dirs, (list, tuple)):
+        sowenn isinstance(include_dirs, (list, tuple)):
             include_dirs = list(include_dirs) + (self.include_dirs or [])
-        else:
+        sonst:
             raise TypeError(
                   "'include_dirs' (if supplied) must be a list of strings")
 
@@ -312,7 +312,7 @@ klasse CCompiler:
 #        """Search the specified list of directories fuer a static or shared
 #        library file 'lib' and return the full path to that file.  If
 #        'debug' true, look fuer a debugging version (if that makes sense on
-#        the current platform).  Return None if 'lib' wasn't found in any of
+#        the current platform).  Return None wenn 'lib' wasn't found in any of
 #        the specified directories.
 #        """
 #        raise NotImplementedError
@@ -352,12 +352,12 @@ def get_default_compiler(osname=None, platform=None):
        The default values are os.name and sys.platform in case the
        parameters are not given.
     """
-    if osname is None:
+    wenn osname is None:
         osname = os.name
-    if platform is None:
+    wenn platform is None:
         platform = sys.platform
     fuer pattern, compiler in _default_compilers:
-        if re.match(pattern, platform) is not None or \
+        wenn re.match(pattern, platform) is not None or \
            re.match(pattern, osname) is not None:
             return compiler
     # Default to Unix compiler
@@ -387,20 +387,20 @@ def new_compiler(plat=None, compiler=None, verbose=0, dry_run=0, force=0):
     the default compilers are "traditional Unix interface" (UnixCCompiler
     class) and Visual C++ (MSVCCompiler class).  Note that it's perfectly
     possible to ask fuer a Unix compiler object under Windows, and a
-    Microsoft compiler object under Unix -- if you supply a value for
+    Microsoft compiler object under Unix -- wenn you supply a value for
     'compiler', 'plat' is ignored.
     """
-    if plat is None:
+    wenn plat is None:
         plat = os.name
 
     try:
-        if compiler is None:
+        wenn compiler is None:
             compiler = get_default_compiler(plat)
 
         (module_name, class_name, long_description) = compiler_class[compiler]
     except KeyError:
         msg = "don't know how to compile C/C++ code on platform '%s'" % plat
-        if compiler is not None:
+        wenn compiler is not None:
             msg = msg + " with '%s' compiler" % compiler
         raise DistutilsPlatformError(msg)
 
@@ -448,18 +448,18 @@ def gen_preprocess_options(macros, include_dirs):
     # and therefore common to all CCompiler classes.
     pp_opts = []
     fuer macro in macros:
-        if not (isinstance(macro, tuple) and 1 <= len(macro) <= 2):
+        wenn not (isinstance(macro, tuple) and 1 <= len(macro) <= 2):
             raise TypeError(
                   "bad macro definition '%s': "
                   "each element of 'macros' list must be a 1- or 2-tuple"
                   % macro)
 
-        if len(macro) == 1:        # undefine this macro
+        wenn len(macro) == 1:        # undefine this macro
             pp_opts.append("-U%s" % macro[0])
-        elif len(macro) == 2:
-            if macro[1] is None:    # define with no explicit value
+        sowenn len(macro) == 2:
+            wenn macro[1] is None:    # define with no explicit value
                 pp_opts.append("-D%s" % macro[0])
-            else:
+            sonst:
                 # XXX *don't* need to be clever about quoting the
                 # macro value here, because we're going to avoid the
                 # shell at all costs when we spawn the command!

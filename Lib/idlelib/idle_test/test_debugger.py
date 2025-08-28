@@ -17,7 +17,7 @@ from unittest.mock import Mock, patch
 TEST_CODE = dedent("""
     i = 1
     i += 2
-    if i == 3:
+    wenn i == 3:
        print(i)
     """)
 
@@ -293,5 +293,5 @@ klasse NameSpaceTest(unittest.TestCase):
         debugger.NamespaceViewer(self.root, 'Test')
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main(verbosity=2)

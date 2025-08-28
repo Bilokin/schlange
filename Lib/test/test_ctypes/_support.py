@@ -39,11 +39,11 @@ klasse StructCheckMixin:
         self._check_struct_or_union(union, is_struct=False)
 
     def check_struct_or_union(self, cls):
-        if issubclass(cls, Structure):
+        wenn issubclass(cls, Structure):
             self._check_struct_or_union(cls, is_struct=True)
-        elif issubclass(cls, Union):
+        sowenn issubclass(cls, Union):
             self._check_struct_or_union(cls, is_struct=False)
-        else:
+        sonst:
             raise TypeError(cls)
 
     def _check_struct_or_union(self, cls, is_struct):
@@ -71,7 +71,7 @@ klasse StructCheckMixin:
 
                 # offset === byte_offset
                 self.assertEqual(field.byte_offset, field.offset)
-                if not is_struct:
+                wenn not is_struct:
                     self.assertEqual(field.byte_offset, 0)
 
                 # byte_size
@@ -82,17 +82,17 @@ klasse StructCheckMixin:
                 # See gh-130410 fuer why this is skipped fuer bitfields of
                 # underaligned types. Later in this function (see `bit_end`)
                 # we assert that the value *bits* are inside the struct.
-                if not (field.is_bitfield and is_underaligned(field.type)):
+                wenn not (field.is_bitfield and is_underaligned(field.type)):
                     self.assertLessEqual(field.byte_offset + field.byte_size,
                                          cls_size)
 
                 # size
                 self.assertGreaterEqual(field.size, 0)
-                if is_bitfield:
+                wenn is_bitfield:
                     # size has backwards-compatible bit-packed info
                     expected_size = (field.bit_size << 16) + field.bit_offset
                     self.assertEqual(field.size, expected_size)
-                else:
+                sonst:
                     # size == byte_size
                     self.assertEqual(field.size, field.byte_size)
 
@@ -100,38 +100,38 @@ klasse StructCheckMixin:
                 self.assertIs(field.is_bitfield, is_bitfield)
 
                 # bit_offset
-                if is_bitfield:
+                wenn is_bitfield:
                     self.assertGreaterEqual(field.bit_offset, 0)
                     self.assertLessEqual(field.bit_offset + field.bit_size,
                                          field.byte_size * 8)
-                else:
+                sonst:
                     self.assertEqual(field.bit_offset, 0)
-                if not is_struct:
-                    if is_little_endian:
+                wenn not is_struct:
+                    wenn is_little_endian:
                         self.assertEqual(field.bit_offset, 0)
-                    else:
+                    sonst:
                         self.assertEqual(field.bit_offset,
                                          field.byte_size * 8 - field.bit_size)
 
                 # bit_size
-                if is_bitfield:
+                wenn is_bitfield:
                     self.assertGreaterEqual(field.bit_size, 0)
                     self.assertLessEqual(field.bit_size, field.byte_size * 8)
                     [requested_bit_size] = rest_of_tuple
                     self.assertEqual(field.bit_size, requested_bit_size)
-                else:
+                sonst:
                     self.assertEqual(field.bit_size, field.byte_size * 8)
 
                 # is_anonymous (bool)
                 self.assertIs(field.is_anonymous, name in anon_names)
 
                 # In a struct, field should not overlap.
-                # (Test skipped if the structs is enormous.)
-                if is_struct and cls_size < 10_000:
+                # (Test skipped wenn the structs is enormous.)
+                wenn is_struct and cls_size < 10_000:
                     # Get a mask indicating where the field is within the struct
-                    if is_little_endian:
+                    wenn is_little_endian:
                         tp_shift = field.byte_offset * 8
-                    else:
+                    sonst:
                         tp_shift = (cls_size
                                     - field.byte_offset
                                     - field.byte_size) * 8

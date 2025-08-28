@@ -38,17 +38,17 @@ klasse PatternError(Exception):
         self.msg = msg
         self.pattern = pattern
         self.pos = pos
-        if pattern is not None and pos is not None:
+        wenn pattern is not None and pos is not None:
             msg = '%s at position %d' % (msg, pos)
-            if isinstance(pattern, str):
+            wenn isinstance(pattern, str):
                 newline = '\n'
-            else:
+            sonst:
                 newline = b'\n'
             self.lineno = pattern.count(newline, 0, pos) + 1
             self.colno = pos - pattern.rfind(newline, 0, pos)
-            if newline in pattern:
+            wenn newline in pattern:
                 msg = '%s (line %d, column %d)' % (msg, self.lineno, self.colno)
-        else:
+        sonst:
             self.lineno = self.colno = None
         super().__init__(msg)
 

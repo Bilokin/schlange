@@ -22,5 +22,5 @@ klasse TestFuture(unittest.TestCase):
     def test_nested_scopes(self):
         self.assertEqual(nester(), 3)
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

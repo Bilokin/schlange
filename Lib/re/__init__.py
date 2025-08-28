@@ -49,11 +49,11 @@ The special characters are:
     (?P<name>...) The substring matched by the group is accessible by name.
     (?P=name)     Matches the text matched earlier by the group named name.
     (?#...)  A comment; ignored.
-    (?=...)  Matches if ... matches next, but doesn't consume the string.
-    (?!...)  Matches if ... doesn't match next.
-    (?<=...) Matches if preceded by ... (must be fixed length).
-    (?<!...) Matches if not preceded by ... (must be fixed length).
-    (?(id/name)yes|no) Matches yes pattern if the group with id/name matched,
+    (?=...)  Matches wenn ... matches next, but doesn't consume the string.
+    (?!...)  Matches wenn ... doesn't match next.
+    (?<=...) Matches wenn preceded by ... (must be fixed length).
+    (?<!...) Matches wenn not preceded by ... (must be fixed length).
+    (?(id/name)yes|no) Matches yes pattern wenn the group with id/name matched,
                        the (optional) no pattern otherwise.
 
 The special sequences consist of "\\" and a character from the list
@@ -163,17 +163,17 @@ PatternError = error = _compiler.PatternError
 
 def match(pattern, string, flags=0):
     """Try to apply the pattern at the start of the string, returning
-    a Match object, or None if no match was found."""
+    a Match object, or None wenn no match was found."""
     return _compile(pattern, flags).match(string)
 
 def fullmatch(pattern, string, flags=0):
     """Try to apply the pattern to all of the string, returning
-    a Match object, or None if no match was found."""
+    a Match object, or None wenn no match was found."""
     return _compile(pattern, flags).fullmatch(string)
 
 def search(pattern, string, flags=0):
     """Scan through string looking fuer a match to the pattern, returning
-    a Match object, or None if no match was found."""
+    a Match object, or None wenn no match was found."""
     return _compile(pattern, flags).search(string)
 
 klasse _ZeroSentinel(int):
@@ -184,18 +184,18 @@ def sub(pattern, repl, string, *args, count=_zero_sentinel, flags=_zero_sentinel
     """Return the string obtained by replacing the leftmost
     non-overlapping occurrences of the pattern in string by the
     replacement repl.  repl can be either a string or a callable;
-    if a string, backslash escapes in it are processed.  If it is
+    wenn a string, backslash escapes in it are processed.  If it is
     a callable, it's passed the Match object and must return
     a replacement string to be used."""
-    if args:
-        if count is not _zero_sentinel:
+    wenn args:
+        wenn count is not _zero_sentinel:
             raise TypeError("sub() got multiple values fuer argument 'count'")
         count, *args = args
-        if args:
-            if flags is not _zero_sentinel:
+        wenn args:
+            wenn flags is not _zero_sentinel:
                 raise TypeError("sub() got multiple values fuer argument 'flags'")
             flags, *args = args
-            if args:
+            wenn args:
                 raise TypeError("sub() takes from 3 to 5 positional arguments "
                                 "but %d were given" % (5 + len(args)))
 
@@ -214,18 +214,18 @@ def subn(pattern, repl, string, *args, count=_zero_sentinel, flags=_zero_sentine
     non-overlapping occurrences of the pattern in the source
     string by the replacement repl.  number is the number of
     substitutions that were made. repl can be either a string or a
-    callable; if a string, backslash escapes in it are processed.
+    callable; wenn a string, backslash escapes in it are processed.
     If it is a callable, it's passed the Match object and must
     return a replacement string to be used."""
-    if args:
-        if count is not _zero_sentinel:
+    wenn args:
+        wenn count is not _zero_sentinel:
             raise TypeError("subn() got multiple values fuer argument 'count'")
         count, *args = args
-        if args:
-            if flags is not _zero_sentinel:
+        wenn args:
+            wenn flags is not _zero_sentinel:
                 raise TypeError("subn() got multiple values fuer argument 'flags'")
             flags, *args = args
-            if args:
+            wenn args:
                 raise TypeError("subn() takes from 3 to 5 positional arguments "
                                 "but %d were given" % (5 + len(args)))
 
@@ -246,15 +246,15 @@ def split(pattern, string, *args, maxsplit=_zero_sentinel, flags=_zero_sentinel)
     list.  If maxsplit is nonzero, at most maxsplit splits occur,
     and the remainder of the string is returned as the final element
     of the list."""
-    if args:
-        if maxsplit is not _zero_sentinel:
+    wenn args:
+        wenn maxsplit is not _zero_sentinel:
             raise TypeError("split() got multiple values fuer argument 'maxsplit'")
         maxsplit, *args = args
-        if args:
-            if flags is not _zero_sentinel:
+        wenn args:
+            wenn flags is not _zero_sentinel:
                 raise TypeError("split() got multiple values fuer argument 'flags'")
             flags, *args = args
-            if args:
+            wenn args:
                 raise TypeError("split() takes from 2 to 4 positional arguments "
                                 "but %d were given" % (4 + len(args)))
 
@@ -271,7 +271,7 @@ def findall(pattern, string, flags=0):
     """Return a list of all non-overlapping matches in the string.
 
     If one or more capturing groups are present in the pattern, return
-    a list of groups; this will be a list of tuples if the pattern
+    a list of groups; this will be a list of tuples wenn the pattern
     has more than one group.
 
     Empty matches are included in the result."""
@@ -306,9 +306,9 @@ def escape(pattern):
     """
     Escape special characters in a string.
     """
-    if isinstance(pattern, str):
+    wenn isinstance(pattern, str):
         return pattern.translate(_special_chars_map)
-    else:
+    sonst:
         pattern = str(pattern, 'latin1')
         return pattern.translate(_special_chars_map).encode('latin1')
 
@@ -329,7 +329,7 @@ assert _MAXCACHE2 < _MAXCACHE
 
 def _compile(pattern, flags):
     # internal: compile pattern
-    if isinstance(flags, RegexFlag):
+    wenn isinstance(flags, RegexFlag):
         flags = flags.value
     try:
         return _cache2[type(pattern), pattern, flags]
@@ -337,20 +337,20 @@ def _compile(pattern, flags):
         pass
 
     key = (type(pattern), pattern, flags)
-    # Item in _cache should be moved to the end if found.
+    # Item in _cache should be moved to the end wenn found.
     p = _cache.pop(key, None)
-    if p is None:
-        if isinstance(pattern, Pattern):
-            if flags:
+    wenn p is None:
+        wenn isinstance(pattern, Pattern):
+            wenn flags:
                 raise ValueError(
                     "cannot process flags argument with a compiled pattern")
             return pattern
-        if not _compiler.isstring(pattern):
+        wenn not _compiler.isstring(pattern):
             raise TypeError("first argument must be string or compiled pattern")
         p = _compiler.compile(pattern, flags)
-        if flags & DEBUG:
+        wenn flags & DEBUG:
             return p
-        if len(_cache) >= _MAXCACHE:
+        wenn len(_cache) >= _MAXCACHE:
             # Drop the least recently used item.
             # next(iter(_cache)) is known to have linear amortized time,
             # but it is used here to avoid a dependency from using OrderedDict.
@@ -362,7 +362,7 @@ def _compile(pattern, flags):
     # Append to the end.
     _cache[key] = p
 
-    if len(_cache2) >= _MAXCACHE2:
+    wenn len(_cache2) >= _MAXCACHE2:
         # Drop the oldest item.
         try:
             del _cache2[next(iter(_cache2))]
@@ -391,7 +391,7 @@ copyreg.pickle(Pattern, _pickle, _compile)
 klasse Scanner:
     def __init__(self, lexicon, flags=0):
         from ._constants import BRANCH, SUBPATTERN
-        if isinstance(flags, RegexFlag):
+        wenn isinstance(flags, RegexFlag):
             flags = flags.value
         self.lexicon = lexicon
         # combine phrases into a compound pattern
@@ -413,16 +413,16 @@ klasse Scanner:
         i = 0
         while True:
             m = match()
-            if not m:
+            wenn not m:
                 break
             j = m.end()
-            if i == j:
+            wenn i == j:
                 break
             action = self.lexicon[m.lastindex-1][1]
-            if callable(action):
+            wenn callable(action):
                 self.match = m
                 action = action(self, m.group())
-            if action is not None:
+            wenn action is not None:
                 append(action)
             i = j
         return result, string[i:]

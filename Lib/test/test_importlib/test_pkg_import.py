@@ -20,7 +20,7 @@ klasse TestImport(unittest.TestCase):
 
     def remove_modules(self):
         fuer module_name in (self.package_name, self.module_name):
-            if module_name in sys.modules:
+            wenn module_name in sys.modules:
                 del sys.modules[module_name]
 
     def setUp(self):
@@ -40,7 +40,7 @@ klasse TestImport(unittest.TestCase):
 
     def rewrite_file(self, contents):
         compiled_path = cache_from_source(self.module_path)
-        if os.path.exists(compiled_path):
+        wenn os.path.exists(compiled_path):
             os.remove(compiled_path)
         with open(self.module_path, 'w', encoding='utf-8') as f:
             f.write(contents)
@@ -53,7 +53,7 @@ klasse TestImport(unittest.TestCase):
         self.rewrite_file('for')
         try: __import__(self.module_name)
         except SyntaxError: pass
-        else: raise RuntimeError('Failed to induce SyntaxError') # self.fail()?
+        sonst: raise RuntimeError('Failed to induce SyntaxError') # self.fail()?
         self.assertNotIn(self.module_name, sys.modules)
         self.assertNotHasAttr(sys.modules[self.package_name], 'foo')
 
@@ -67,7 +67,7 @@ klasse TestImport(unittest.TestCase):
 
         try: __import__(self.module_name)
         except NameError: pass
-        else: raise RuntimeError('Failed to induce NameError.')
+        sonst: raise RuntimeError('Failed to induce NameError.')
 
         # ...now  change  the module  so  that  the NameError  doesn't
         # happen
@@ -76,5 +76,5 @@ klasse TestImport(unittest.TestCase):
         self.assertEqual(getattr(module, var), 1)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

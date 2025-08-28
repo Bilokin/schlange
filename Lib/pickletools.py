@@ -217,7 +217,7 @@ def read_uint1(f):
     """
 
     data = f.read(1)
-    if data:
+    wenn data:
         return data[0]
     raise ValueError("not enough data in stream to read uint1")
 
@@ -238,7 +238,7 @@ def read_uint2(f):
     """
 
     data = f.read(2)
-    if len(data) == 2:
+    wenn len(data) == 2:
         return _unpack("<H", data)[0]
     raise ValueError("not enough data in stream to read uint2")
 
@@ -259,7 +259,7 @@ def read_int4(f):
     """
 
     data = f.read(4)
-    if len(data) == 4:
+    wenn len(data) == 4:
         return _unpack("<i", data)[0]
     raise ValueError("not enough data in stream to read int4")
 
@@ -280,7 +280,7 @@ def read_uint4(f):
     """
 
     data = f.read(4)
-    if len(data) == 4:
+    wenn len(data) == 4:
         return _unpack("<I", data)[0]
     raise ValueError("not enough data in stream to read uint4")
 
@@ -301,7 +301,7 @@ def read_uint8(f):
     """
 
     data = f.read(8)
-    if len(data) == 8:
+    wenn len(data) == 8:
         return _unpack("<Q", data)[0]
     raise ValueError("not enough data in stream to read uint8")
 
@@ -340,22 +340,22 @@ def read_stringnl(f, decode=True, stripquotes=True, *, encoding='latin-1'):
     """
 
     data = f.readline()
-    if not data.endswith(b'\n'):
+    wenn not data.endswith(b'\n'):
         raise ValueError("no newline found when trying to read stringnl")
     data = data[:-1]    # lose the newline
 
-    if stripquotes:
+    wenn stripquotes:
         fuer q in (b'"', b"'"):
-            if data.startswith(q):
-                if not data.endswith(q):
+            wenn data.startswith(q):
+                wenn not data.endswith(q):
                     raise ValueError("strinq quote %r not found at both "
                                      "ends of %r" % (q, data))
                 data = data[1:-1]
                 break
-        else:
+        sonst:
             raise ValueError("no string quotes around %r" % data)
 
-    if decode:
+    wenn decode:
         data = codecs.escape_decode(data)[0].decode(encoding)
     return data
 
@@ -418,7 +418,7 @@ def read_string1(f):
     n = read_uint1(f)
     assert n >= 0
     data = f.read(n)
-    if len(data) == n:
+    wenn len(data) == n:
         return data.decode("latin-1")
     raise ValueError("expected %d bytes in a string1, but only %d remain" %
                      (n, len(data)))
@@ -449,10 +449,10 @@ def read_string4(f):
     """
 
     n = read_int4(f)
-    if n < 0:
+    wenn n < 0:
         raise ValueError("string4 byte count < 0: %d" % n)
     data = f.read(n)
-    if len(data) == n:
+    wenn len(data) == n:
         return data.decode("latin-1")
     raise ValueError("expected %d bytes in a string4, but only %d remain" %
                      (n, len(data)))
@@ -481,7 +481,7 @@ def read_bytes1(f):
     n = read_uint1(f)
     assert n >= 0
     data = f.read(n)
-    if len(data) == n:
+    wenn len(data) == n:
         return data
     raise ValueError("expected %d bytes in a bytes1, but only %d remain" %
                      (n, len(data)))
@@ -512,10 +512,10 @@ def read_bytes4(f):
 
     n = read_uint4(f)
     assert n >= 0
-    if n > sys.maxsize:
+    wenn n > sys.maxsize:
         raise ValueError("bytes4 byte count > sys.maxsize: %d" % n)
     data = f.read(n)
-    if len(data) == n:
+    wenn len(data) == n:
         return data
     raise ValueError("expected %d bytes in a bytes4, but only %d remain" %
                      (n, len(data)))
@@ -547,10 +547,10 @@ def read_bytes8(f):
 
     n = read_uint8(f)
     assert n >= 0
-    if n > sys.maxsize:
+    wenn n > sys.maxsize:
         raise ValueError("bytes8 byte count > sys.maxsize: %d" % n)
     data = f.read(n)
-    if len(data) == n:
+    wenn len(data) == n:
         return data
     raise ValueError("expected %d bytes in a bytes8, but only %d remain" %
                      (n, len(data)))
@@ -582,10 +582,10 @@ def read_bytearray8(f):
 
     n = read_uint8(f)
     assert n >= 0
-    if n > sys.maxsize:
+    wenn n > sys.maxsize:
         raise ValueError("bytearray8 byte count > sys.maxsize: %d" % n)
     data = f.read(n)
-    if len(data) == n:
+    wenn len(data) == n:
         return bytearray(data)
     raise ValueError("expected %d bytes in a bytearray8, but only %d remain" %
                      (n, len(data)))
@@ -608,7 +608,7 @@ def read_unicodestringnl(f):
     """
 
     data = f.readline()
-    if not data.endswith(b'\n'):
+    wenn not data.endswith(b'\n'):
         raise ValueError("no newline found when trying to read "
                          "unicodestringnl")
     data = data[:-1]    # lose the newline
@@ -647,7 +647,7 @@ def read_unicodestring1(f):
     n = read_uint1(f)
     assert n >= 0
     data = f.read(n)
-    if len(data) == n:
+    wenn len(data) == n:
         return str(data, 'utf-8', 'surrogatepass')
     raise ValueError("expected %d bytes in a unicodestring1, but only %d "
                      "remain" % (n, len(data)))
@@ -685,10 +685,10 @@ def read_unicodestring4(f):
 
     n = read_uint4(f)
     assert n >= 0
-    if n > sys.maxsize:
+    wenn n > sys.maxsize:
         raise ValueError("unicodestring4 byte count > sys.maxsize: %d" % n)
     data = f.read(n)
-    if len(data) == n:
+    wenn len(data) == n:
         return str(data, 'utf-8', 'surrogatepass')
     raise ValueError("expected %d bytes in a unicodestring4, but only %d "
                      "remain" % (n, len(data)))
@@ -726,10 +726,10 @@ def read_unicodestring8(f):
 
     n = read_uint8(f)
     assert n >= 0
-    if n > sys.maxsize:
+    wenn n > sys.maxsize:
         raise ValueError("unicodestring8 byte count > sys.maxsize: %d" % n)
     data = f.read(n)
-    if len(data) == n:
+    wenn len(data) == n:
         return str(data, 'utf-8', 'surrogatepass')
     raise ValueError("expected %d bytes in a unicodestring8, but only %d "
                      "remain" % (n, len(data)))
@@ -762,9 +762,9 @@ def read_decimalnl_short(f):
     s = read_stringnl(f, decode=False, stripquotes=False)
 
     # There's a hack fuer True and False here.
-    if s == b"00":
+    wenn s == b"00":
         return False
-    elif s == b"01":
+    sowenn s == b"01":
         return True
 
     return int(s)
@@ -781,7 +781,7 @@ def read_decimalnl_long(f):
     """
 
     s = read_stringnl(f, decode=False, stripquotes=False)
-    if s[-1:] == b'L':
+    wenn s[-1:] == b'L':
         s = s[:-1]
     return int(s)
 
@@ -843,7 +843,7 @@ def read_float8(f):
     """
 
     data = f.read(8)
-    if len(data) == 8:
+    wenn len(data) == 8:
         return _unpack(">d", data)[0]
     raise ValueError("not enough data in stream to read float8")
 
@@ -887,7 +887,7 @@ def read_long1(f):
 
     n = read_uint1(f)
     data = f.read(n)
-    if len(data) != n:
+    wenn len(data) != n:
         raise ValueError("not enough data in stream to read long1")
     return decode_long(data)
 
@@ -918,10 +918,10 @@ def read_long4(f):
     """
 
     n = read_int4(f)
-    if n < 0:
+    wenn n < 0:
         raise ValueError("long4 byte count < 0: %d" % n)
     data = f.read(n)
-    if len(data) != n:
+    wenn len(data) != n:
         raise ValueError("not enough data in stream to read long4")
     return decode_long(data)
 
@@ -963,7 +963,7 @@ klasse StackObject(object):
         self.name = name
 
         assert isinstance(obtype, type) or isinstance(obtype, tuple)
-        if isinstance(obtype, tuple):
+        wenn isinstance(obtype, tuple):
             fuer contained in obtype:
                 assert isinstance(contained, type)
         self.obtype = obtype
@@ -1483,7 +1483,7 @@ opcodes = [
       on most boxes).
 
       In general, FLOAT cannot be used to transport infinities, NaNs, or
-      minus zero across boxes (or even on a single box, if the platform C
+      minus zero across boxes (or even on a single box, wenn the platform C
       library can't read the strings it produces fuer such things -- Windows
       is like that), but may do less damage than BINFLOAT on boxes with
       greater precision or dynamic range than IEEE-754 double.
@@ -1499,7 +1499,7 @@ opcodes = [
 
       This generally requires less than half the space of FLOAT encoding.
       In general, BINFLOAT cannot be used to transport infinities, NaNs, or
-      minus zero, raises an exception if the exponent exceeds the range of
+      minus zero, raises an exception wenn the exponent exceeds the range of
       an IEEE-754 double, and retains no more than 53 bits of precision (if
       there are more than that, "add a half and chop" rounding is used to
       cut it back to 53 significant bits).
@@ -2067,7 +2067,7 @@ opcodes = [
       This is the protocol 1 version of protocol 0's INST opcode, and is
       very much like it.  The major difference is that the klasse object
       is taken off the stack, allowing it to be retrieved from the memo
-      repeatedly if several instances of the same klasse are created.  This
+      repeatedly wenn several instances of the same klasse are created.  This
       can be much more efficient (in both time and space) than repeatedly
       embedding the module and klasse names in INST opcodes.
 
@@ -2199,10 +2199,10 @@ name2i = {}
 code2i = {}
 
 fuer i, d in enumerate(opcodes):
-    if d.name in name2i:
+    wenn d.name in name2i:
         raise ValueError("repeated name %r at indices %d and %d" %
                          (d.name, name2i[d.name], i))
-    if d.code in code2i:
+    wenn d.code in code2i:
         raise ValueError("repeated code %r at indices %d and %d" %
                          (d.code, code2i[d.code], i))
 
@@ -2225,23 +2225,23 @@ def assure_pickle_consistency(verbose=False):
 
     copy = code2op.copy()
     fuer name in pickle.__all__:
-        if not re.match("[A-Z][A-Z0-9_]+$", name):
-            if verbose:
+        wenn not re.match("[A-Z][A-Z0-9_]+$", name):
+            wenn verbose:
                 print("skipping %r: it doesn't look like an opcode name" % name)
             continue
         picklecode = getattr(pickle, name)
-        if not isinstance(picklecode, bytes) or len(picklecode) != 1:
-            if verbose:
+        wenn not isinstance(picklecode, bytes) or len(picklecode) != 1:
+            wenn verbose:
                 print(("skipping %r: value %r doesn't look like a pickle "
                        "code" % (name, picklecode)))
             continue
         picklecode = picklecode.decode("latin-1")
-        if picklecode in copy:
-            if verbose:
+        wenn picklecode in copy:
+            wenn verbose:
                 print("checking name %r w/ code %r fuer consistency" % (
                       name, picklecode))
             d = copy[picklecode]
-            if d.name != name:
+            wenn d.name != name:
                 raise ValueError("for pickle code %r, pickle.py uses name %r "
                                  "but we're using name %r" % (picklecode,
                                                               name,
@@ -2249,11 +2249,11 @@ def assure_pickle_consistency(verbose=False):
             # Forget this one.  Any left over in copy at the end are a problem
             # of a different kind.
             del copy[picklecode]
-        else:
+        sonst:
             raise ValueError("pickle.py appears to have a pickle opcode with "
                              "name %r and code %r, but we don't" %
                              (name, picklecode))
-    if copy:
+    wenn copy:
         msg = ["we appear to have pickle opcodes that pickle.py doesn't have:"]
         fuer code, d in copy.items():
             msg.append("    name %r with code %r" % (d.name, code))
@@ -2266,34 +2266,34 @@ del assure_pickle_consistency
 # A pickle opcode generator.
 
 def _genops(data, yield_end_pos=False):
-    if isinstance(data, bytes_types):
+    wenn isinstance(data, bytes_types):
         data = io.BytesIO(data)
 
-    if hasattr(data, "tell"):
+    wenn hasattr(data, "tell"):
         getpos = data.tell
-    else:
+    sonst:
         getpos = lambda: None
 
     while True:
         pos = getpos()
         code = data.read(1)
         opcode = code2op.get(code.decode("latin-1"))
-        if opcode is None:
-            if code == b"":
+        wenn opcode is None:
+            wenn code == b"":
                 raise ValueError("pickle exhausted before seeing STOP")
-            else:
+            sonst:
                 raise ValueError("at position %s, opcode %r unknown" % (
-                                 "<unknown>" if pos is None else pos,
+                                 "<unknown>" wenn pos is None sonst pos,
                                  code))
-        if opcode.arg is None:
+        wenn opcode.arg is None:
             arg = None
-        else:
+        sonst:
             arg = opcode.arg.reader(data)
-        if yield_end_pos:
+        wenn yield_end_pos:
             yield opcode, arg, pos, getpos()
-        else:
+        sonst:
             yield opcode, arg, pos
-        if code == b'.':
+        wenn code == b'.':
             assert opcode.name == 'STOP'
             break
 
@@ -2335,28 +2335,28 @@ def optimize(p):
     proto = 0
     protoheader = b''
     fuer opcode, arg, pos, end_pos in _genops(p, yield_end_pos=True):
-        if 'PUT' in opcode.name:
+        wenn 'PUT' in opcode.name:
             oldids.add(arg)
             opcodes.append((put, arg))
-        elif opcode.name == 'MEMOIZE':
+        sowenn opcode.name == 'MEMOIZE':
             idx = len(oldids)
             oldids.add(idx)
             opcodes.append((put, idx))
-        elif 'FRAME' in opcode.name:
+        sowenn 'FRAME' in opcode.name:
             pass
-        elif 'GET' in opcode.name:
-            if opcode.proto > proto:
+        sowenn 'GET' in opcode.name:
+            wenn opcode.proto > proto:
                 proto = opcode.proto
             newids[arg] = None
             opcodes.append((get, arg))
-        elif opcode.name == 'PROTO':
-            if arg > proto:
+        sowenn opcode.name == 'PROTO':
+            wenn arg > proto:
                 proto = arg
-            if pos == 0:
+            wenn pos == 0:
                 protoheader = p[pos:end_pos]
-            else:
+            sonst:
                 opcodes.append((pos, end_pos))
-        else:
+        sonst:
             opcodes.append((pos, end_pos))
     del oldids
 
@@ -2365,26 +2365,26 @@ def optimize(p):
     # Write the PROTO header before any framing
     out.write(protoheader)
     pickler = pickle._Pickler(out, proto)
-    if proto >= 4:
+    wenn proto >= 4:
         pickler.framer.start_framing()
     idx = 0
     fuer op, arg in opcodes:
         frameless = False
-        if op is put:
-            if arg not in newids:
+        wenn op is put:
+            wenn arg not in newids:
                 continue
             data = pickler.put(idx)
             newids[arg] = idx
             idx += 1
-        elif op is get:
+        sowenn op is get:
             data = pickler.get(newids[arg])
-        else:
+        sonst:
             data = p[op:arg]
             frameless = len(data) > pickler.framer._FRAME_SIZE_TARGET
         pickler.framer.commit_frame(force=frameless)
-        if frameless:
+        wenn frameless:
             pickler.framer.file_write(data)
-        else:
+        sonst:
             pickler.write(data)
     pickler.framer.end_framing()
     return out.getvalue()
@@ -2403,7 +2403,7 @@ def dis(pickle, out=None, memo=None, indentlevel=4, annotate=0):
     printed.  It defaults to sys.stdout.
 
     Optional arg 'memo' is a Python dict, used as the pickle's memo.  It
-    may be mutated by dis(), if the pickle contains PUT or BINPUT opcodes.
+    may be mutated by dis(), wenn the pickle contains PUT or BINPUT opcodes.
     Passing the same memo object to another dis() call then allows disassembly
     to proceed across multiple pickles that were all created by the same
     pickler with the same memo.  Ordinarily you don't need to worry about this.
@@ -2411,7 +2411,7 @@ def dis(pickle, out=None, memo=None, indentlevel=4, annotate=0):
     Optional arg 'indentlevel' is the number of blanks by which to indent
     a new MARK level.  It defaults to 4.
 
-    Optional arg 'annotate' if nonzero instructs dis() to add short
+    Optional arg 'annotate' wenn nonzero instructs dis() to add short
     description of the opcode on each line of disassembled output.
     The value given to 'annotate' must be an integer and is used as a
     hint fuer the column where annotation should start.  The default
@@ -2436,7 +2436,7 @@ def dis(pickle, out=None, memo=None, indentlevel=4, annotate=0):
     # (which in turn is needed to indent MARK blocks correctly).
 
     stack = []          # crude emulation of unpickler stack
-    if memo is None:
+    wenn memo is None:
         memo = {}       # crude emulation of unpickler memo
     maxproto = -1       # max protocol number seen
     markstack = []      # bytecode positions of MARK opcodes
@@ -2444,7 +2444,7 @@ def dis(pickle, out=None, memo=None, indentlevel=4, annotate=0):
     errormsg = None
     annocol = annotate  # column hint fuer annotations
     fuer opcode, arg, pos in genops(pickle):
-        if pos is not None:
+        wenn pos is not None:
             print("%5d:" % pos, end=' ', file=out)
 
         line = "%-4s %s%s" % (repr(opcode.code)[1:-1],
@@ -2458,18 +2458,18 @@ def dis(pickle, out=None, memo=None, indentlevel=4, annotate=0):
 
         # See whether a MARK should be popped.
         markmsg = None
-        if markobject in before or (opcode.name == "POP" and
+        wenn markobject in before or (opcode.name == "POP" and
                                     stack and
                                     stack[-1] is markobject):
             assert markobject not in after
-            if __debug__:
-                if markobject in before:
+            wenn __debug__:
+                wenn markobject in before:
                     assert before[-1] is stackslice
-            if markstack:
+            wenn markstack:
                 markpos = markstack.pop()
-                if markpos is None:
+                wenn markpos is None:
                     markmsg = "(MARK at unknown opcode offset)"
-                else:
+                sonst:
                     markmsg = "(MARK at %d)" % markpos
                 # Pop everything at and after the topmost markobject.
                 while stack[-1] is not markobject:
@@ -2481,68 +2481,68 @@ def dis(pickle, out=None, memo=None, indentlevel=4, annotate=0):
                 except ValueError:
                     assert opcode.name == "POP"
                     numtopop = 0
-            else:
+            sonst:
                 errormsg = "no MARK exists on stack"
 
         # Check fuer correct memo usage.
-        if opcode.name in ("PUT", "BINPUT", "LONG_BINPUT", "MEMOIZE"):
-            if opcode.name == "MEMOIZE":
+        wenn opcode.name in ("PUT", "BINPUT", "LONG_BINPUT", "MEMOIZE"):
+            wenn opcode.name == "MEMOIZE":
                 memo_idx = len(memo)
                 markmsg = "(as %d)" % memo_idx
-            else:
+            sonst:
                 assert arg is not None
                 memo_idx = arg
-            if not stack:
+            wenn not stack:
                 errormsg = "stack is empty -- can't store into memo"
-            elif stack[-1] is markobject:
+            sowenn stack[-1] is markobject:
                 errormsg = "can't store markobject in the memo"
-            else:
+            sonst:
                 memo[memo_idx] = stack[-1]
-        elif opcode.name in ("GET", "BINGET", "LONG_BINGET"):
-            if arg in memo:
+        sowenn opcode.name in ("GET", "BINGET", "LONG_BINGET"):
+            wenn arg in memo:
                 assert len(after) == 1
                 after = [memo[arg]]     # fuer better stack emulation
-            else:
+            sonst:
                 errormsg = "memo key %r has never been stored into" % arg
 
-        if arg is not None or markmsg:
+        wenn arg is not None or markmsg:
             # make a mild effort to align arguments
             line += ' ' * (10 - len(opcode.name))
-            if arg is not None:
-                if opcode.name in ("STRING", "BINSTRING", "SHORT_BINSTRING"):
+            wenn arg is not None:
+                wenn opcode.name in ("STRING", "BINSTRING", "SHORT_BINSTRING"):
                     line += ' ' + ascii(arg)
-                else:
+                sonst:
                     line += ' ' + repr(arg)
-            if markmsg:
+            wenn markmsg:
                 line += ' ' + markmsg
-        if annotate:
+        wenn annotate:
             line += ' ' * (annocol - len(line))
             # make a mild effort to align annotations
             annocol = len(line)
-            if annocol > 50:
+            wenn annocol > 50:
                 annocol = annotate
             line += ' ' + opcode.doc.split('\n', 1)[0]
         print(line, file=out)
 
-        if errormsg:
+        wenn errormsg:
             # Note that we delayed complaining until the offending opcode
             # was printed.
             raise ValueError(errormsg)
 
         # Emulate the stack effects.
-        if len(stack) < numtopop:
+        wenn len(stack) < numtopop:
             raise ValueError("tries to pop %d items from stack with "
                              "only %d items" % (numtopop, len(stack)))
-        if numtopop:
+        wenn numtopop:
             del stack[-numtopop:]
-        if markobject in after:
+        wenn markobject in after:
             assert markobject not in before
             markstack.append(pos)
 
         stack.extend(after)
 
     print("highest protocol among opcodes =", maxproto, file=out)
-    if stack:
+    wenn stack:
         raise ValueError("stack not empty after STOP: %r" % stack)
 
 # For use in the doctest, simply as an example of a klasse to pickle.
@@ -2839,7 +2839,7 @@ __test__ = {'disassembler_test': _dis_test,
            }
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(
         description='disassemble one or more pickle files',
@@ -2865,23 +2865,23 @@ if __name__ == "__main__":
         help='if more than one pickle file is specified, print this before'
         ' each disassembly')
     args = parser.parse_args()
-    annotate = 30 if args.annotate else 0
-    memo = {} if args.memo else None
-    if args.output is None:
+    annotate = 30 wenn args.annotate sonst 0
+    memo = {} wenn args.memo sonst None
+    wenn args.output is None:
         output = sys.stdout
-    else:
+    sonst:
         output = open(args.output, 'w')
     try:
         fuer arg in args.pickle_file:
-            if len(args.pickle_file) > 1:
-                name = '<stdin>' if arg == '-' else arg
+            wenn len(args.pickle_file) > 1:
+                name = '<stdin>' wenn arg == '-' sonst arg
                 preamble = args.preamble.format(name=name)
                 output.write(preamble + '\n')
-            if arg == '-':
+            wenn arg == '-':
                 dis(sys.stdin.buffer, output, memo, args.indentlevel, annotate)
-            else:
+            sonst:
                 with open(arg, 'rb') as f:
                     dis(f, output, memo, args.indentlevel, annotate)
     finally:
-        if output is not sys.stdout:
+        wenn output is not sys.stdout:
             output.close()

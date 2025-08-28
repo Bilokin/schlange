@@ -41,10 +41,10 @@ def clockface(radius):
     pensize(7)
     fuer i in range(60):
         jump(radius)
-        if i % 5 == 0:
+        wenn i % 5 == 0:
             fd(25)
             jump(-radius-25)
-        else:
+        sonst:
             dot(3)
             jump(-radius)
         rt(6)
@@ -111,7 +111,7 @@ def tick():
         second_hand.setheading(6*sekunde)  # or here
         minute_hand.setheading(6*minute)
         hour_hand.setheading(30*stunde)
-        if t.day != current_day:
+        wenn t.day != current_day:
             display_date_time()
         tracer(True)
         ontimer(tick, 100)
@@ -125,7 +125,7 @@ def main():
     tick()
     return "EVENTLOOP"
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     mode("logo")
     msg = main()
     print(msg)

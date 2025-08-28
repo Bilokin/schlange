@@ -96,7 +96,7 @@ klasse ParseTest(unittest.TestCase):
 
         def CharacterDataHandler(self, data):
             data = data.strip()
-            if data:
+            wenn data:
                 self.out.append('Character data: ' + repr(data))
 
         def ProcessingInstructionHandler(self, target, data):
@@ -359,9 +359,9 @@ klasse BufferTextTest(unittest.TestCase):
     def StartElementHandler(self, name, attrs):
         self.stuff.append("<%s>" % name)
         bt = attrs.get("buffer-text")
-        if bt == "yes":
+        wenn bt == "yes":
             self.parser.buffer_text = 1
-        elif bt == "no":
+        sowenn bt == "no":
             self.parser.buffer_text = 0
 
     def EndElementHandler(self, name):
@@ -463,16 +463,16 @@ klasse HandlerExceptionTest(unittest.TestCase):
         # gh-66652: test _PyTraceback_Add() used by pyexpat.c to inject frames
 
         # Change the current directory to the Python source code directory
-        # if it is available.
+        # wenn it is available.
         src_dir = sysconfig.get_config_var('abs_builddir')
-        if src_dir:
+        wenn src_dir:
             have_source = os.path.isdir(src_dir)
-        else:
+        sonst:
             have_source = False
-        if have_source:
+        wenn have_source:
             with os_helper.change_cwd(src_dir):
                 self._test_exception(have_source)
-        else:
+        sonst:
             self._test_exception(have_source)
 
     def _test_exception(self, have_source):
@@ -500,9 +500,9 @@ klasse HandlerExceptionTest(unittest.TestCase):
                                    "test_pyexpat.py", "StartElementHandler")
 
         # Check that the traceback contains the relevant line in
-        # Modules/pyexpat.c. Skip the test if Modules/pyexpat.c is not
+        # Modules/pyexpat.c. Skip the test wenn Modules/pyexpat.c is not
         # available.
-        if have_source and os.path.exists(PYEXPAT_C):
+        wenn have_source and os.path.exists(PYEXPAT_C):
             self.assertIn('call_with_frame("StartElement"',
                           entries[1].line)
 
@@ -779,7 +779,7 @@ klasse ReparseDeferralTest(unittest.TestCase):
         self.assertIs(parser.GetReparseDeferralEnabled(), enabled)
 
     def test_reparse_deferral_enabled(self):
-        if expat.version_info < (2, 6, 0):
+        wenn expat.version_info < (2, 6, 0):
             self.skipTest(f'Expat {expat.version_info} does not '
                           'support reparse deferral')
 
@@ -810,7 +810,7 @@ klasse ReparseDeferralTest(unittest.TestCase):
 
         parser = expat.ParserCreate()
         parser.StartElementHandler = start_element
-        if expat.version_info >= (2, 6, 0):
+        wenn expat.version_info >= (2, 6, 0):
             parser.SetReparseDeferralEnabled(False)
         self.assertFalse(parser.GetReparseDeferralEnabled())
 
@@ -821,5 +821,5 @@ klasse ReparseDeferralTest(unittest.TestCase):
         self.assertEqual(started, ['doc'])
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

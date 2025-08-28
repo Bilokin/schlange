@@ -27,14 +27,14 @@ klasse HookWatcher:
         self.events = []
 
     def callback(self, frame, event, arg):
-        if (event == "call"
+        wenn (event == "call"
             or event == "return"
             or event == "exception"):
             self.add_event(event, frame, arg)
 
     def add_event(self, event, frame=None, arg=None):
         """Add an event to the log."""
-        if frame is None:
+        wenn frame is None:
             frame = sys._getframe(1)
 
         try:
@@ -50,7 +50,7 @@ klasse HookWatcher:
         disallowed = [ident(self.add_event.__func__), ident(ident)]
         self.frames = None
 
-        return [item fuer item in self.events if item[2] not in disallowed]
+        return [item fuer item in self.events wenn item[2] not in disallowed]
 
 
 klasse ProfileSimulator(HookWatcher):
@@ -91,12 +91,12 @@ klasse ProfileSimulator(HookWatcher):
 klasse TestCaseBase(unittest.TestCase):
     def check_events(self, callable, expected, check_args=False):
         events = capture_events(callable, self.new_watcher())
-        if check_args:
-            if events != expected:
+        wenn check_args:
+            wenn events != expected:
                 self.fail("Expected events:\n%s\nReceived events:\n%s"
                           % (pprint.pformat(expected), pprint.pformat(events)))
-        else:
-            if [(frameno, event, ident) fuer frameno, event, ident, arg in events] != expected:
+        sonst:
+            wenn [(frameno, event, ident) fuer frameno, event, ident, arg in events] != expected:
                 self.fail("Expected events:\n%s\nReceived events:\n%s"
                           % (pprint.pformat(expected), pprint.pformat(events)))
 
@@ -399,9 +399,9 @@ klasse ProfileSimulatorTestCase(TestCaseBase):
 
 
 def ident(function):
-    if hasattr(function, "f_code"):
+    wenn hasattr(function, "f_code"):
         code = function.f_code
-    else:
+    sonst:
         code = function.__code__
     return code.co_firstlineno, code.co_name
 
@@ -414,7 +414,7 @@ protect_ident = ident(protect)
 
 
 def capture_events(callable, p=None):
-    if p is None:
+    wenn p is None:
         p = HookWatcher()
     # Disable the garbage collector. This prevents __del__s from showing up in
     # traces.
@@ -425,7 +425,7 @@ def capture_events(callable, p=None):
         protect(callable, p)
         sys.setprofile(None)
     finally:
-        if old_gc:
+        wenn old_gc:
             gc.enable()
     return p.get_events()[1:-1]
 
@@ -533,5 +533,5 @@ klasse TestEdgeCases(unittest.TestCase):
         )
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

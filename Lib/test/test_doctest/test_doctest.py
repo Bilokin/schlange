@@ -19,7 +19,7 @@ import contextlib
 
 def doctest_skip_if(condition):
     def decorator(func):
-        if condition and support.HAVE_DOCSTRINGS:
+        wenn condition and support.HAVE_DOCSTRINGS:
             func.__doc__ = ">>> pass  # doctest: +SKIP"
         return func
     return decorator
@@ -179,7 +179,7 @@ Unit tests fuer the `Example` class.
 Example is a simple container klasse that holds:
   - `source`: A source string.
   - `want`: An expected output string.
-  - `exc_msg`: An expected exception message string (or None if no
+  - `exc_msg`: An expected exception message string (or None wenn no
     exception is expected).
   - `lineno`: A line number (within the docstring).
   - `indent`: The example's indentation in the input string.
@@ -376,7 +376,7 @@ will raise a ValueError:
 If there's no blank space after a PS2 prompt ('...'), then `DocTest`
 will raise a ValueError:
 
-    >>> docstring = '>>> if 1:\n...print(1)\n1'
+    >>> docstring = '>>> wenn 1:\n...print(1)\n1'
     >>> parser.get_doctest(docstring, globs, 'some_test', 'filename', 0)
     Traceback (most recent call last):
     ValueError: line 2 of the docstring fuer some_test lacks blank after ...: '...print(1)'
@@ -547,7 +547,7 @@ Finding Tests in Modules
 ~~~~~~~~~~~~~~~~~~~~~~~~
 For a module, DocTestFinder will create a test fuer the class's
 docstring, and will recursively explore its contents, including
-functions, classes, and the `__test__` dictionary, if it exists:
+functions, classes, and the `__test__` dictionary, wenn it exists:
 
     >>> # A module
     >>> import types
@@ -731,7 +731,7 @@ DocTestFinder finds the line number of each example:
     [1, 9, 12]
 """
 
-    if int.__doc__: # simple check fuer --without-doc-strings, skip if lacking
+    wenn int.__doc__: # simple check fuer --without-doc-strings, skip wenn lacking
         def non_Python_modules(): r"""
 
 Finding Doctests in Modules Not Written in Python
@@ -744,7 +744,7 @@ plain ol' Python and is guaranteed to be available.
     >>> tests = doctest.DocTestFinder().find(builtins)
     >>> 750 < len(tests) < 800 # approximate number of objects with docstrings
     True
-    >>> real_tests = [t fuer t in tests if len(t.examples) > 0]
+    >>> real_tests = [t fuer t in tests wenn len(t.examples) > 0]
     >>> len(real_tests) # objects that actually have doctests
     14
     >>> fuer t in real_tests:
@@ -843,7 +843,7 @@ text:
 
     >>> s = '''
     ...     >>> x, y = 2, 3  # no output expected
-    ...     >>> if 1:
+    ...     >>> wenn 1:
     ...     ...     print(x)
     ...     ...     print(y)
     ...     2
@@ -855,9 +855,9 @@ text:
     ...     '''
     >>> parser = doctest.DocTestParser()
     >>> fuer piece in parser.parse(s):
-    ...     if isinstance(piece, doctest.Example):
+    ...     wenn isinstance(piece, doctest.Example):
     ...         print('Example:', (piece.source, piece.want, piece.lineno))
-    ...     else:
+    ...     sonst:
     ...         print('   Text:', repr(piece))
        Text: '\n'
     Example: ('x, y = 2, 3  # no output expected\n', '', 1)
@@ -1179,7 +1179,7 @@ However, with IGNORE_EXCEPTION_DETAIL, the module name of the exception
     TestResults(failed=0, attempted=2)
 
 The module path will be completely ignored, so two different module paths will
-still pass if IGNORE_EXCEPTION_DETAIL is given. This is intentional, so it can
+still pass wenn IGNORE_EXCEPTION_DETAIL is given. This is intentional, so it can
 be used when exceptions have changed module.
 
     >>> def f(x):
@@ -1424,7 +1424,7 @@ output to match any substring in the actual output:
 
     ... also matches nothing:
 
-    >>> if 1:
+    >>> wenn 1:
     ...     fuer i in range(100):
     ...         print(i**2, end=' ') #doctest: +ELLIPSIS
     ...     print('!')
@@ -1432,7 +1432,7 @@ output to match any substring in the actual output:
 
     ... can be surprising; e.g., this test passes:
 
-    >>> if 1:  #doctest: +ELLIPSIS
+    >>> wenn 1:  #doctest: +ELLIPSIS
     ...     fuer i in range(20):
     ...         print(i, end=' ')
     ...     print(20)
@@ -2027,7 +2027,7 @@ Run the debugger on the docstring, and then restore sys.stdin.
 
 """
 
-if not hasattr(sys, 'gettrace') or not sys.gettrace():
+wenn not hasattr(sys, 'gettrace') or not sys.gettrace():
     def test_pdb_set_trace():
         """Using pdb.set_trace from a doctest.
 
@@ -2793,7 +2793,7 @@ def test_unittest_reportflags():
     Here, we'll set the REPORT_ONLY_FIRST_FAILURE option so we see
     only the first failure of each test.  First, we'll look at the
     output without the flag.  The file test_doctest.txt file has two
-    tests. They both fail if blank lines are disabled:
+    tests. They both fail wenn blank lines are disabled:
 
       >>> suite = doctest.DocFileSuite('test_doctest.txt',
       ...                          optionflags=doctest.DONT_ACCEPT_BLANKLINE)
@@ -2804,9 +2804,9 @@ def test_unittest_reportflags():
       >>> print(result.failures[0][1]) # doctest: +ELLIPSIS
       Traceback (most recent call last):
         File ...
-          >...>> if 1:
+          >...>> wenn 1:
       AssertionError: Failed example:
-          if 1:
+          wenn 1:
              print('a')
              print()
              print('b')
@@ -2850,9 +2850,9 @@ def test_unittest_reportflags():
       >>> print(result.failures[0][1]) # doctest: +ELLIPSIS
       Traceback ...
         File ...
-          >...>> if 1:
+          >...>> wenn 1:
       AssertionError: Failed example:
-          if 1:
+          wenn 1:
              print('a')
              print()
              print('b')
@@ -2883,8 +2883,8 @@ We don't want color or `-v` in sys.argv fuer these tests.
     >>> _colorize.COLORIZE = False
 
     >>> save_argv = sys.argv
-    >>> if '-v' in sys.argv:
-    ...     sys.argv = [arg fuer arg in save_argv if arg != '-v']
+    >>> wenn '-v' in sys.argv:
+    ...     sys.argv = [arg fuer arg in save_argv wenn arg != '-v']
 
 
     >>> doctest.testfile('test_doctest.txt') # doctest: +ELLIPSIS
@@ -2948,7 +2948,7 @@ Verbosity can be increased with the optional `verbose` parameter:
         'blue'
     ok
     Trying:
-        if 1:
+        wenn 1:
            print('a')
            print()
            print('b')
@@ -3192,7 +3192,7 @@ newline conversion itself; let's make sure it does so correctly (issue 1812).
 We'll write a file inside the package that has all three kinds of line endings
 in it, and use a package hook to install a custom loader; on any platform,
 at least one of the line endings will raise a ValueError fuer inconsistent
-whitespace if doctest does not correctly do the newline conversion.
+whitespace wenn doctest does not correctly do the newline conversion.
 
     >>> from test.support import os_helper
     >>> import shutil
@@ -3343,7 +3343,7 @@ except UnicodeEncodeError:
     # Skip the test: the filesystem encoding is unable to encode the filename
     supports_unicode = False
 
-if supports_unicode:
+wenn supports_unicode:
     def test_unicode(): """
 Check doctest with a non-ascii filename:
 
@@ -3483,7 +3483,7 @@ text files).
     ...             '-m', 'doctest', '-v', '-o', 'ELLIPSIS',
     ...             '-o', 'NORMALIZE_WHITESPACE', fn, fn2)
 
-Our first test run will show the errors from the first file (doctest stops if a
+Our first test run will show the errors from the first file (doctest stops wenn a
 file has errors).  Note that doctest test-run error output appears on stdout,
 not stderr:
 
@@ -3778,7 +3778,7 @@ def test_syntax_error_with_note(cls, multiline=False):
     Line
     """
     exc = cls("error", ("x.py", 23, None, "bad syntax"))
-    exc.add_note('Note\nLine' if multiline else 'Note')
+    exc.add_note('Note\nLine' wenn multiline sonst 'Note')
     raise exc
 
 
@@ -3845,5 +3845,5 @@ def load_tests(loader, tests, pattern):
     return tests
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main(module='test.test_doctest.test_doctest')

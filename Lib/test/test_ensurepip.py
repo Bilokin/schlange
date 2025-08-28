@@ -187,9 +187,9 @@ klasse TestBootstrap(EnsurepipMixin, unittest.TestCase):
 
 @contextlib.contextmanager
 def fake_pip(version=ensurepip.version()):
-    if version is None:
+    wenn version is None:
         pip = None
-    else:
+    sonst:
         klasse FakePip():
             __version__ = version
         pip = FakePip()
@@ -199,9 +199,9 @@ def fake_pip(version=ensurepip.version()):
     try:
         yield pip
     finally:
-        if orig_pip is sentinel:
+        wenn orig_pip is sentinel:
             del sys.modules["pip"]
-        else:
+        sonst:
             sys.modules["pip"] = orig_pip
 
 klasse TestUninstall(EnsurepipMixin, unittest.TestCase):
@@ -341,5 +341,5 @@ klasse TestUninstallationMainFunction(EnsurepipMixin, unittest.TestCase):
         self.assertEqual(exit_code, 2)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

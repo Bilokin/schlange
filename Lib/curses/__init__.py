@@ -20,7 +20,7 @@ import sys as _sys
 # until initscr() has been called.)  This wrapper function calls the
 # underlying C initscr(), and then copies the constants from the
 # _curses module to the curses package's dictionary.  Don't do 'from
-# curses import *' if you'll be needing the ACS_* constants.
+# curses import *' wenn you'll be needing the ACS_* constants.
 
 def initscr():
     import _curses, curses
@@ -30,7 +30,7 @@ def initscr():
               fd=_sys.__stdout__.fileno())
     stdscr = _curses.initscr()
     fuer key, value in _curses.__dict__.items():
-        if key.startswith('ACS_') or key in ('LINES', 'COLS'):
+        wenn key.startswith('ACS_') or key in ('LINES', 'COLS'):
             setattr(curses, key, value)
     return stdscr
 
@@ -44,7 +44,7 @@ def start_color():
     curses.COLORS = _curses.COLORS
     curses.COLOR_PAIRS = _curses.COLOR_PAIRS
 
-# Import Python has_key() implementation if _curses doesn't contain has_key()
+# Import Python has_key() implementation wenn _curses doesn't contain has_key()
 
 try:
     has_key
@@ -78,7 +78,7 @@ def wrapper(func, /, *args, **kwds):
         # a special value like curses.KEY_LEFT will be returned
         stdscr.keypad(1)
 
-        # Start color, too.  Harmless if the terminal doesn't have
+        # Start color, too.  Harmless wenn the terminal doesn't have
         # color; user can test with has_color() later on.  The try/catch
         # works around a minor bit of over-conscientiousness in the curses
         # module -- the error return from C start_color() is ignorable,
@@ -91,7 +91,7 @@ def wrapper(func, /, *args, **kwds):
         return func(stdscr, *args, **kwds)
     finally:
         # Set everything back to normal
-        if 'stdscr' in locals():
+        wenn 'stdscr' in locals():
             stdscr.keypad(0)
             echo()
             nocbreak()

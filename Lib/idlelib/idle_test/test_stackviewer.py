@@ -37,5 +37,5 @@ klasse StackBrowserTest(unittest.TestCase):
         isi(stackviewer.node, TreeNode)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main(verbosity=2)

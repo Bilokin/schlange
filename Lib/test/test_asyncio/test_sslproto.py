@@ -34,7 +34,7 @@ klasse SslProtoHandshakeTests(test_utils.TestCase):
 
     def ssl_protocol(self, *, waiter=None, proto=None):
         sslcontext = test_utils.dummy_ssl_context()
-        if proto is None:  # app protocol
+        wenn proto is None:  # app protocol
             proto = asyncio.Protocol()
         ssl_proto = sslproto.SSLProtocol(self.loop, proto, sslcontext, waiter,
                                          ssl_handshake_timeout=0.1)
@@ -48,7 +48,7 @@ klasse SslProtoHandshakeTests(test_utils.TestCase):
         # emulate reading decompressed data
         sslobj.read.side_effect = ssl.SSLWantReadError
         sslobj.write.side_effect = ssl.SSLWantReadError
-        if do_handshake is not None:
+        wenn do_handshake is not None:
             sslobj.do_handshake = do_handshake
         ssl_proto._sslobj = sslobj
         ssl_proto.connection_made(transport)
@@ -83,7 +83,7 @@ klasse SslProtoHandshakeTests(test_utils.TestCase):
 
     def test_fatal_error_no_name_error(self):
         # From issue #363.
-        # _fatal_error() generates a NameError if sslproto.py
+        # _fatal_error() generates a NameError wenn sslproto.py
         # does not import base_events.
         waiter = self.loop.create_future()
         ssl_proto = self.ssl_protocol(waiter=waiter)
@@ -98,7 +98,7 @@ klasse SslProtoHandshakeTests(test_utils.TestCase):
 
     def test_connection_lost(self):
         # From issue #472.
-        # yield from waiter hang if lost_connection was called.
+        # yield from waiter hang wenn lost_connection was called.
         waiter = self.loop.create_future()
         ssl_proto = self.ssl_protocol(waiter=waiter)
         self.connection_made(
@@ -246,15 +246,15 @@ klasse BaseStartTLS(func_tests.FunctionalTestCaseMixin):
                 self.usemv = usemv
 
             def get_buffer(self, sizehint):
-                if self.usemv:
+                wenn self.usemv:
                     return self.mv
-                else:
+                sonst:
                     return self.buf
 
             def buffer_updated(self, nsize):
-                if self.usemv:
+                wenn self.usemv:
                     self.data += self.mv[:nsize]
-                else:
+                sonst:
                     self.data += self.buf[:nsize]
 
         fuer usemv in [False, True]:
@@ -343,7 +343,7 @@ klasse BaseStartTLS(func_tests.FunctionalTestCaseMixin):
                 asyncio.wait_for(client(srv.addr),
                                  timeout=support.SHORT_TIMEOUT))
 
-        # No garbage is left if SSL is closed uncleanly
+        # No garbage is left wenn SSL is closed uncleanly
         client_context = weakref.ref(client_context)
         support.gc_collect()
         self.assertIsNone(client_context())
@@ -407,7 +407,7 @@ klasse BaseStartTLS(func_tests.FunctionalTestCaseMixin):
                                  timeout=support.SHORT_TIMEOUT))
 
         # No garbage is left fuer SSL client from loop.create_connection, even
-        # if user stores the SSLTransport in corresponding protocol instance
+        # wenn user stores the SSLTransport in corresponding protocol instance
         client_context = weakref.ref(client_context)
         support.gc_collect()
         self.assertIsNone(client_context())
@@ -604,14 +604,14 @@ klasse BaseStartTLS(func_tests.FunctionalTestCaseMixin):
 
             def data_received(self, data):
                 self.data += data
-                if len(self.data) >= len(HELLO_MSG):
+                wenn len(self.data) >= len(HELLO_MSG):
                     self.on_got_hello.set_result(None)
 
             def connection_lost(self, exc):
                 self.transport = None
-                if exc is None:
+                wenn exc is None:
                     self.on_con_lost.set_result(None)
-                else:
+                sonst:
                     self.on_con_lost.set_exception(exc)
 
         async def main(proto, on_con, on_con_lost, on_got_hello):
@@ -667,7 +667,7 @@ klasse BaseStartTLS(func_tests.FunctionalTestCaseMixin):
         self.loop.run_until_complete(main())
 
     def test_handshake_timeout(self):
-        # bpo-29970: Check that a connection is aborted if handshake is not
+        # bpo-29970: Check that a connection is aborted wenn handshake is not
         # completed in timeout period, instead of remaining open indefinitely
         client_sslctx = test_utils.simple_client_sslcontext()
 
@@ -705,7 +705,7 @@ klasse BaseStartTLS(func_tests.FunctionalTestCaseMixin):
         self.assertTrue(server_side_aborted)
 
         # Python issue #23197: cancelling a handshake must not raise an
-        # exception or log an error, even if the handshake failed
+        # exception or log an error, even wenn the handshake failed
         self.assertEqual(messages, [])
 
         # The 10s handshake timeout should be cancelled to free related
@@ -839,5 +839,5 @@ klasse ProactorStartTLSTests(BaseStartTLS, unittest.TestCase):
         return asyncio.ProactorEventLoop()
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

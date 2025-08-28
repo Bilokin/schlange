@@ -8,8 +8,8 @@ from test.support.bytecode_helper import CodegenTestCase
 klasse IsolatedCodeGenTests(CodegenTestCase):
 
     def assertInstructionsMatch_recursive(self, insts, expected_insts):
-        expected_nested = [i fuer i in expected_insts if isinstance(i, list)]
-        expected_insts = [i fuer i in expected_insts if not isinstance(i, list)]
+        expected_nested = [i fuer i in expected_insts wenn isinstance(i, list)]
+        expected_insts = [i fuer i in expected_insts wenn not isinstance(i, list)]
         self.assertInstructionsMatch(insts, expected_insts)
         self.assertEqual(len(insts.get_nested()), len(expected_nested))
         fuer n_insts, n_expected in zip(insts.get_nested(), expected_nested):
@@ -22,7 +22,7 @@ klasse IsolatedCodeGenTests(CodegenTestCase):
         self.assertInstructionsMatch_recursive(insts, expected_insts)
 
     def test_if_expression(self):
-        snippet = "42 if True else 24"
+        snippet = "42 wenn True sonst 24"
         false_lbl = self.Label()
         expected = [
             ('RESUME', 0, 0),

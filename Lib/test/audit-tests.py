@@ -38,33 +38,33 @@ klasse TestHook:
         return [i[0] fuer i in self.seen]
 
     def __call__(self, event, args):
-        if self.closed:
+        wenn self.closed:
             return
         self.seen.append((event, args))
-        if event in self.raise_on_events:
+        wenn event in self.raise_on_events:
             raise self.exc_type("saw event " + event)
 
 
 # Simple helpers, since we are not in unittest here
 def assertEqual(x, y):
-    if x != y:
+    wenn x != y:
         raise AssertionError(f"{x!r} should equal {y!r}")
 
 
 def assertIn(el, series):
-    if el not in series:
+    wenn el not in series:
         raise AssertionError(f"{el!r} should be in {series!r}")
 
 
 def assertNotIn(el, series):
-    if el in series:
+    wenn el in series:
         raise AssertionError(f"{el!r} should not be in {series!r}")
 
 
 def assertSequenceEqual(x, y):
-    if len(x) != len(y):
+    wenn len(x) != len(y):
         raise AssertionError(f"{x!r} should equal {y!r}")
-    if any(ix != iy fuer ix, iy in zip(x, y)):
+    wenn any(ix != iy fuer ix, iy in zip(x, y)):
         raise AssertionError(f"{x!r} should equal {y!r}")
 
 
@@ -74,7 +74,7 @@ def assertRaises(ex_type):
         yield
         assert False, f"expected {ex_type}"
     except BaseException as ex:
-        if isinstance(ex, AssertionError):
+        wenn isinstance(ex, AssertionError):
             raise
         assert type(ex) is ex_type, f"{ex} should be {ex_type}"
 
@@ -123,13 +123,13 @@ def test_marshal():
         finally:
             os.unlink("test-marshal.bin")
 
-    actual = [(a[0], a[1]) fuer e, a in hook.seen if e == "marshal.dumps"]
+    actual = [(a[0], a[1]) fuer e, a in hook.seen wenn e == "marshal.dumps"]
     assertSequenceEqual(actual, [(o, marshal.version)] * 2)
 
-    actual = [a[0] fuer e, a in hook.seen if e == "marshal.loads"]
+    actual = [a[0] fuer e, a in hook.seen wenn e == "marshal.loads"]
     assertSequenceEqual(actual, [payload])
 
-    actual = [e fuer e, a in hook.seen if e == "marshal.load"]
+    actual = [e fuer e, a in hook.seen wenn e == "marshal.load"]
     assertSequenceEqual(actual, ["marshal.load"])
 
 
@@ -180,7 +180,7 @@ def test_monkeypatch():
         # Catch klasse changes
         a.__class__ = B
 
-    actual = [(a[0], a[1]) fuer e, a in hook.seen if e == "object.__setattr__"]
+    actual = [(a[0], a[1]) fuer e, a in hook.seen wenn e == "object.__setattr__"]
     assertSequenceEqual(
         [(C, "__name__"), (C, "__bases__"), (C, "__bases__"), (a, "__class__")], actual
     )
@@ -201,9 +201,9 @@ def test_open(testfn):
         readline = None
 
     def rl(name):
-        if readline:
+        wenn readline:
             return getattr(readline, name, None)
-        else:
+        sonst:
             return None
 
     # Try a range of "open" functions.
@@ -224,21 +224,21 @@ def test_open(testfn):
             (rl("read_init_file"), testfn),
             (rl("read_init_file"), None),
         ]:
-            if not fn:
+            wenn not fn:
                 continue
             with assertRaises(RuntimeError):
                 try:
                     fn(*args)
                 except NotImplementedError:
-                    if fn == load_dh_params:
+                    wenn fn == load_dh_params:
                         # Not callable in some builds
                         load_dh_params = None
                         raise RuntimeError
-                    else:
+                    sonst:
                         raise
 
-    actual_mode = [(a[0], a[1]) fuer e, a in hook.seen if e == "open" and a[1]]
-    actual_flag = [(a[0], a[2]) fuer e, a in hook.seen if e == "open" and not a[1]]
+    actual_mode = [(a[0], a[1]) fuer e, a in hook.seen wenn e == "open" and a[1]]
+    actual_flag = [(a[0], a[2]) fuer e, a in hook.seen wenn e == "open" and not a[1]]
     assertSequenceEqual(
         [
             i
@@ -247,17 +247,17 @@ def test_open(testfn):
                 (sys.executable, "r"),
                 (3, "w"),
                 (testfn, "w"),
-                (testfn, "rb") if load_dh_params else None,
-                (testfn, "r") if readline else None,
-                ("~/.history", "r") if readline else None,
-                (testfn, "w") if readline else None,
-                ("~/.history", "w") if readline else None,
-                (testfn, "a") if rl("append_history_file") else None,
-                ("~/.history", "a") if rl("append_history_file") else None,
-                (testfn, "r") if readline else None,
-                ("<readline_init_file>", "r") if readline else None,
+                (testfn, "rb") wenn load_dh_params sonst None,
+                (testfn, "r") wenn readline sonst None,
+                ("~/.history", "r") wenn readline sonst None,
+                (testfn, "w") wenn readline sonst None,
+                ("~/.history", "w") wenn readline sonst None,
+                (testfn, "a") wenn rl("append_history_file") sonst None,
+                ("~/.history", "a") wenn rl("append_history_file") sonst None,
+                (testfn, "r") wenn readline sonst None,
+                ("<readline_init_file>", "r") wenn readline sonst None,
             ]
-            if i is not None
+            wenn i is not None
         ],
         actual_mode,
     )
@@ -268,7 +268,7 @@ def test_cantrace():
     traced = []
 
     def trace(frame, event, *args):
-        if frame.f_code == TestHook.__call__.__code__:
+        wenn frame.f_code == TestHook.__call__.__code__:
             traced.append(event)
 
     old = sys.settrace(trace)
@@ -338,14 +338,14 @@ def test_posixsubprocess():
 
 def test_excepthook():
     def excepthook(exc_type, exc_value, exc_tb):
-        if exc_type is not RuntimeError:
+        wenn exc_type is not RuntimeError:
             sys.__excepthook__(exc_type, exc_value, exc_tb)
 
     def hook(event, args):
-        if event == "sys.excepthook":
-            if not isinstance(args[2], args[1]):
+        wenn event == "sys.excepthook":
+            wenn not isinstance(args[2], args[1]):
                 raise TypeError(f"Expected isinstance({args[2]!r}, " f"{args[1]!r})")
-            if args[0] != excepthook:
+            wenn args[0] != excepthook:
                 raise ValueError(f"Expected {args[0]} == {excepthook}")
             print(event, repr(args[2]))
 
@@ -361,8 +361,8 @@ def test_unraisablehook():
         pass
 
     def hook(event, args):
-        if event == "sys.unraisablehook":
-            if args[0] != unraisablehook:
+        wenn event == "sys.unraisablehook":
+            wenn args[0] != unraisablehook:
                 raise ValueError(f"Expected {args[0]} == {unraisablehook}")
             print(event, repr(args[1].exc_value), args[1].err_msg)
 
@@ -376,7 +376,7 @@ def test_winreg():
     from winreg import OpenKey, EnumKey, CloseKey, HKEY_LOCAL_MACHINE
 
     def hook(event, args):
-        if not event.startswith("winreg."):
+        wenn not event.startswith("winreg."):
             return
         print(event, *args)
 
@@ -388,7 +388,7 @@ def test_winreg():
         EnumKey(k, 10000)
     except OSError:
         pass
-    else:
+    sonst:
         raise RuntimeError("Expected EnumKey(HKLM, 10000) to fail")
 
     kv = k.Detach()
@@ -399,17 +399,17 @@ def test_socket():
     import socket
 
     def hook(event, args):
-        if event.startswith("socket."):
+        wenn event.startswith("socket."):
             print(event, *args)
 
     sys.addaudithook(hook)
 
     socket.gethostname()
 
-    # Don't care if this fails, we just want the audit message
+    # Don't care wenn this fails, we just want the audit message
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
-        # Don't care if this fails, we just want the audit message
+        # Don't care wenn this fails, we just want the audit message
         sock.bind(('127.0.0.1', 8080))
     except Exception:
         pass
@@ -421,7 +421,7 @@ def test_gc():
     import gc
 
     def hook(event, args):
-        if event.startswith("gc."):
+        wenn event.startswith("gc."):
             print(event, *args)
 
     sys.addaudithook(hook)
@@ -439,7 +439,7 @@ def test_http_client():
     import http.client
 
     def hook(event, args):
-        if event.startswith("http.client."):
+        wenn event.startswith("http.client."):
             print(event, *args[1:])
 
     sys.addaudithook(hook)
@@ -457,7 +457,7 @@ def test_sqlite3():
     import sqlite3
 
     def hook(event, *args):
-        if event.startswith("sqlite3."):
+        wenn event.startswith("sqlite3."):
             print(event, *args)
 
     sys.addaudithook(hook)
@@ -466,13 +466,13 @@ def test_sqlite3():
 
     # Configured without --enable-loadable-sqlite-extensions
     try:
-        if hasattr(sqlite3.Connection, "enable_load_extension"):
+        wenn hasattr(sqlite3.Connection, "enable_load_extension"):
             cx1.enable_load_extension(False)
             try:
                 cx1.load_extension("test")
             except sqlite3.OperationalError:
                 pass
-            else:
+            sonst:
                 raise RuntimeError("Expected sqlite3.load_extension to fail")
     finally:
         cx1.close()
@@ -482,7 +482,7 @@ def test_sys_getframe():
     import sys
 
     def hook(event, args):
-        if event.startswith("sys."):
+        wenn event.startswith("sys."):
             print(event, args[0].f_code.co_name)
 
     sys.addaudithook(hook)
@@ -493,7 +493,7 @@ def test_sys_getframemodulename():
     import sys
 
     def hook(event, args):
-        if event.startswith("sys."):
+        wenn event.startswith("sys."):
             print(event, *args)
 
     sys.addaudithook(hook)
@@ -504,7 +504,7 @@ def test_threading():
     import _thread
 
     def hook(event, args):
-        if event.startswith(("_thread.", "cpython.PyThreadState", "test.")):
+        wenn event.startswith(("_thread.", "cpython.PyThreadState", "test.")):
             print(event, args)
 
     sys.addaudithook(hook)
@@ -533,7 +533,7 @@ def test_threading_abort():
         pass
 
     def hook(event, args):
-        if event == "cpython.PyThreadState_New":
+        wenn event == "cpython.PyThreadState_New":
             raise ThreadNewAbortError()
 
     sys.addaudithook(hook)
@@ -549,7 +549,7 @@ def test_wmi_exec_query():
     import _wmi
 
     def hook(event, args):
-        if event.startswith("_wmi."):
+        wenn event.startswith("_wmi."):
             print(event, args[0])
 
     sys.addaudithook(hook)
@@ -558,14 +558,14 @@ def test_wmi_exec_query():
     except WindowsError as e:
         # gh-112278: WMI may be slow response when first called, but we still
         # get the audit event, so just ignore the timeout
-        if e.winerror != 258:
+        wenn e.winerror != 258:
             raise
 
 def test_syslog():
     import syslog
 
     def hook(event, args):
-        if event.startswith("syslog."):
+        wenn event.startswith("syslog."):
             print(event, *args)
 
     sys.addaudithook(hook)
@@ -589,7 +589,7 @@ def test_not_in_gc():
     sys.addaudithook(hook)
 
     fuer o in gc.get_objects():
-        if isinstance(o, list):
+        wenn isinstance(o, list):
             assert hook not in o
 
 
@@ -597,10 +597,10 @@ def test_time(mode):
     import time
 
     def hook(event, args):
-        if event.startswith("time."):
-            if mode == 'print':
+        wenn event.startswith("time."):
+            wenn mode == 'print':
                 print(event, *args)
-            elif mode == 'fail':
+            sowenn mode == 'fail':
                 raise AssertionError('hook failed')
     sys.addaudithook(hook)
 
@@ -615,7 +615,7 @@ def test_sys_monitoring_register_callback():
     import sys
 
     def hook(event, args):
-        if event.startswith("sys.monitoring"):
+        wenn event.startswith("sys.monitoring"):
             print(event, args)
 
     sys.addaudithook(hook)
@@ -626,7 +626,7 @@ def test_winapi_createnamedpipe(pipe_name):
     import _winapi
 
     def hook(event, args):
-        if event == "_winapi.CreateNamedPipe":
+        wenn event == "_winapi.CreateNamedPipe":
             print(event, args)
 
     sys.addaudithook(hook)
@@ -640,7 +640,7 @@ def test_assert_unicode():
         sys.audit(9)
     except TypeError:
         pass
-    else:
+    sonst:
         raise RuntimeError("Expected sys.audit(9) to fail.")
 
 def test_sys_remote_exec():
@@ -651,7 +651,7 @@ def test_sys_remote_exec():
     event_script_path = ""
     remote_event_script_path = ""
     def hook(event, args):
-        if event not in ["sys.remote_exec", "cpython.remote_debugger_script"]:
+        wenn event not in ["sys.remote_exec", "cpython.remote_debugger_script"]:
             return
         print(event, args)
         match event:
@@ -672,7 +672,7 @@ def test_sys_remote_exec():
         assertEqual(event_script_path, tmp_file.name)
         assertEqual(remote_event_script_path, tmp_file.name)
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     from test.support import suppress_msvcrt_asserts
 
     suppress_msvcrt_asserts()

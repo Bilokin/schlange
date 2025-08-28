@@ -7,7 +7,7 @@ import sys
 
 import _targets
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     comment = f"$ {shlex.join([pathlib.Path(sys.executable).name] + sys.argv)}"
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -65,6 +65,6 @@ if __name__ == "__main__":
     lines.append('#error "unexpected target"\n')
     lines.append("#endif\n")
     body = "".join(lines)
-    # Don't touch the file if it hasn't changed (so we don't trigger a rebuild):
-    if not jit_stencils_h.is_file() or jit_stencils_h.read_text() != body:
+    # Don't touch the file wenn it hasn't changed (so we don't trigger a rebuild):
+    wenn not jit_stencils_h.is_file() or jit_stencils_h.read_text() != body:
         jit_stencils_h.write_text(body)

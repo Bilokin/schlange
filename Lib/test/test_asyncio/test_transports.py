@@ -99,5 +99,5 @@ klasse TransportTests(unittest.TestCase):
         self.assertEqual(transport.get_write_buffer_limits(), (128, 256))
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

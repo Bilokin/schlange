@@ -32,7 +32,7 @@ klasse Test_TestLoader(unittest.TestCase):
     # "Return a suite of all test cases contained in the TestCase-derived
     # klasse testCaseClass"
     #
-    # Make sure it does the right thing even if no tests were found
+    # Make sure it does the right thing even wenn no tests were found
     def test_loadTestsFromTestCase__no_matches(self):
         klasse Foo(unittest.TestCase):
             def foo_bar(self): pass
@@ -45,9 +45,9 @@ klasse Test_TestLoader(unittest.TestCase):
     # "Return a suite of all test cases contained in the TestCase-derived
     # klasse testCaseClass"
     #
-    # What happens if loadTestsFromTestCase() is given an object
+    # What happens wenn loadTestsFromTestCase() is given an object
     # that isn't a subclass of TestCase? Specifically, what happens
-    # if testCaseClass is a subclass of TestSuite?
+    # wenn testCaseClass is a subclass of TestSuite?
     #
     # This is checked fuer specifically in the code, so we better add a
     # test fuer it.
@@ -60,7 +60,7 @@ klasse Test_TestLoader(unittest.TestCase):
             loader.loadTestsFromTestCase(NotATestCase)
         except TypeError:
             pass
-        else:
+        sonst:
             self.fail('Should raise TypeError')
 
     # "Return a suite of all test cases contained in the TestCase-derived
@@ -134,7 +134,7 @@ klasse Test_TestLoader(unittest.TestCase):
 
     # "This method searches `module` fuer classes derived from TestCase"
     #
-    # What happens if no tests are found (no TestCase instances)?
+    # What happens wenn no tests are found (no TestCase instances)?
     def test_loadTestsFromModule__no_TestCase_instances(self):
         m = types.ModuleType('m')
 
@@ -145,7 +145,7 @@ klasse Test_TestLoader(unittest.TestCase):
 
     # "This method searches `module` fuer classes derived from TestCase"
     #
-    # What happens if no tests are found (TestCases instances, but no tests)?
+    # What happens wenn no tests are found (TestCases instances, but no tests)?
     def test_loadTestsFromModule__no_TestCase_tests(self):
         m = types.ModuleType('m')
         klasse MyTestCase(unittest.TestCase):
@@ -160,7 +160,7 @@ klasse Test_TestLoader(unittest.TestCase):
 
     # "This method searches `module` fuer classes derived from TestCase"s
     #
-    # What happens if loadTestsFromModule() is given something other
+    # What happens wenn loadTestsFromModule() is given something other
     # than a module?
     #
     # XXX Currently, it succeeds anyway. This flexibility
@@ -271,7 +271,7 @@ klasse Test_TestLoader(unittest.TestCase):
             loader.loadTestsFromName('')
         except ValueError as e:
             self.assertEqual(str(e), "Empty module name")
-        else:
+        sonst:
             self.fail("TestLoader.loadTestsFromName failed to raise ValueError")
 
     # "The specifier name is a ``dotted name'' that may resolve either to
@@ -433,7 +433,7 @@ klasse Test_TestLoader(unittest.TestCase):
     # within a test case class, or a callable object which returns a
     # TestCase or TestSuite instance."
     #
-    # Does it raise an exception if the name resolves to an invalid
+    # Does it raise an exception wenn the name resolves to an invalid
     # object?
     def test_loadTestsFromName__relative_bad_object(self):
         m = types.ModuleType('m')
@@ -444,7 +444,7 @@ klasse Test_TestLoader(unittest.TestCase):
             loader.loadTestsFromName('testcase_1', m)
         except TypeError:
             pass
-        else:
+        sonst:
             self.fail("Should have raised TypeError")
 
     # "The specifier name is a ``dotted name'' that may
@@ -590,7 +590,7 @@ klasse Test_TestLoader(unittest.TestCase):
     # "The specifier name is a ``dotted name'' that may resolve ... to
     # ... a callable object which returns a TestCase or TestSuite instance"
     #
-    # What happens if the callable returns something else?
+    # What happens wenn the callable returns something else?
     def test_loadTestsFromName__callable__wrong_type(self):
         m = types.ModuleType('m')
         def return_wrong():
@@ -602,7 +602,7 @@ klasse Test_TestLoader(unittest.TestCase):
             suite = loader.loadTestsFromName('return_wrong', m)
         except TypeError:
             pass
-        else:
+        sonst:
             self.fail("TestLoader.loadTestsFromName failed to raise TypeError")
 
     # "The specifier can refer to modules and packages which have not been
@@ -624,7 +624,7 @@ klasse Test_TestLoader(unittest.TestCase):
             # module should now be loaded, thanks to loadTestsFromName()
             self.assertIn(module_name, sys.modules)
         finally:
-            if module_name in sys.modules:
+            wenn module_name in sys.modules:
                 del sys.modules[module_name]
 
     ################################################################
@@ -653,7 +653,7 @@ klasse Test_TestLoader(unittest.TestCase):
     # "Similar to loadTestsFromName(), but takes a sequence of names rather
     # than a single name."
     #
-    # What happens if that sequence of names is empty?
+    # What happens wenn that sequence of names is empty?
     def test_loadTestsFromNames__empty_name_list(self):
         loader = unittest.TestLoader()
 
@@ -666,7 +666,7 @@ klasse Test_TestLoader(unittest.TestCase):
     # ...
     # "The method optionally resolves name relative to the given module"
     #
-    # What happens if that sequence of names is empty?
+    # What happens wenn that sequence of names is empty?
     #
     # XXX Should this raise a ValueError or just return an empty TestSuite?
     def test_loadTestsFromNames__relative_empty_name_list(self):
@@ -689,7 +689,7 @@ klasse Test_TestLoader(unittest.TestCase):
             loader.loadTestsFromNames([''])
         except ValueError as e:
             self.assertEqual(str(e), "Empty module name")
-        else:
+        sonst:
             self.fail("TestLoader.loadTestsFromNames failed to raise ValueError")
 
     # "The specifier name is a ``dotted name'' that may resolve either to
@@ -857,7 +857,7 @@ klasse Test_TestLoader(unittest.TestCase):
     # within a test case class, or a callable object which returns a
     # TestCase or TestSuite instance."
     #
-    # Does it raise an exception if the name resolves to an invalid
+    # Does it raise an exception wenn the name resolves to an invalid
     # object?
     def test_loadTestsFromNames__relative_bad_object(self):
         m = types.ModuleType('m')
@@ -868,7 +868,7 @@ klasse Test_TestLoader(unittest.TestCase):
             loader.loadTestsFromNames(['testcase_1'], m)
         except TypeError:
             pass
-        else:
+        sonst:
             self.fail("Should have raised TypeError")
 
     # "The specifier name is a ``dotted name'' that may resolve ... to
@@ -918,7 +918,7 @@ klasse Test_TestLoader(unittest.TestCase):
         ref_suite = unittest.TestSuite([MyTestCase('test')])
         self.assertEqual(list(suite), [ref_suite])
 
-    # #14971: Make sure the dotted name resolution works even if the actual
+    # #14971: Make sure the dotted name resolution works even wenn the actual
     # function doesn't have the same name as is used to find it.
     def test_loadTestsFromName__function_with_different_name_than_method(self):
         # lambdas have the name '<lambda>'.
@@ -1027,7 +1027,7 @@ klasse Test_TestLoader(unittest.TestCase):
             suite = loader.loadTestsFromNames(['return_wrong'], m)
         except TypeError:
             pass
-        else:
+        sonst:
             self.fail("TestLoader.loadTestsFromNames failed to raise TypeError")
 
     # "The specifier can refer to modules and packages which have not been
@@ -1049,7 +1049,7 @@ klasse Test_TestLoader(unittest.TestCase):
             # module should now be loaded, thanks to loadTestsFromName()
             self.assertIn(module_name, sys.modules)
         finally:
-            if module_name in sys.modules:
+            wenn module_name in sys.modules:
                 del sys.modules[module_name]
 
     ################################################################
@@ -1074,7 +1074,7 @@ klasse Test_TestLoader(unittest.TestCase):
 
     # "Return a sorted sequence of method names found within testCaseClass"
     #
-    # Does getTestCaseNames() behave appropriately if no tests are found?
+    # Does getTestCaseNames() behave appropriately wenn no tests are found?
     def test_getTestCaseNames__no_tests(self):
         klasse Test(unittest.TestCase):
             def foobar(self): pass
@@ -1155,7 +1155,7 @@ klasse Test_TestLoader(unittest.TestCase):
     # patterns should be included.
     #
     # For backwards compatibility reasons (see bpo-32071), the check may only
-    # touch a TestCase's attribute if it starts with the test method prefix.
+    # touch a TestCase's attribute wenn it starts with the test method prefix.
     def test_getTestCaseNames__testNamePatterns__attribute_access_regression(self):
         klasse Trap:
             def __get__(*ignored):
@@ -1500,5 +1500,5 @@ klasse TestObsoleteFunctions(unittest.TestCase):
         return unittest.util.three_way_cmp(b, a)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

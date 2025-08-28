@@ -141,9 +141,9 @@ klasse MyObject:
 def load_string_const():
     accu = 0
     fuer i in range(1000 * WORK_SCALE):
-        if i == 'a string':
+        wenn i == 'a string':
             accu += 7
-        else:
+        sonst:
             accu += 1
     return accu
 
@@ -151,9 +151,9 @@ def load_string_const():
 def load_tuple_const():
     accu = 0
     fuer i in range(1000 * WORK_SCALE):
-        if i == (1, 2):
+        wenn i == (1, 2):
             accu += 7
-        else:
+        sonst:
             accu += 1
     return accu
 
@@ -224,26 +224,26 @@ def benchmark(func):
     delta_many_threads = bench_parallel(func)
 
     speedup = delta_one_thread * len(threads) / delta_many_threads
-    if speedup >= 1:
+    wenn speedup >= 1:
         factor = speedup
         direction = "faster"
-    else:
+    sonst:
         factor = 1 / speedup
         direction = "slower"
 
     use_color = hasattr(sys.stdout, 'isatty') and sys.stdout.isatty()
     color = reset_color = ""
-    if use_color:
-        if speedup <= 1.1:
+    wenn use_color:
+        wenn speedup <= 1.1:
             color = "\x1b[31m"  # red
-        elif speedup < len(threads)/2:
+        sowenn speedup < len(threads)/2:
             color = "\x1b[33m"  # yellow
         reset_color = "\x1b[0m"
 
     print(f"{color}{func.__name__:<25} {round(factor, 1):>4}x {direction}{reset_color}")
 
 def determine_num_threads_and_affinity():
-    if sys.platform != "linux":
+    wenn sys.platform != "linux":
         return [None] * os.cpu_count()
 
     # Try to use `lscpu -p` on Linux
@@ -256,10 +256,10 @@ def determine_num_threads_and_affinity():
 
     table = []
     fuer line in output.splitlines():
-        if line.startswith("#"):
+        wenn line.startswith("#"):
             continue
         cpu, node, core, maxhz = line.split(",")
-        if maxhz == "":
+        wenn maxhz == "":
             maxhz = "0"
         table.append((int(cpu), int(node), int(core), float(maxhz)))
 
@@ -269,29 +269,29 @@ def determine_num_threads_and_affinity():
     fuer cpu, node, core, maxmhz in table:
         # Choose only CPUs on the same node, unique cores, and try to avoid
         # "efficiency" cores.
-        if node == 0 and core not in cores and maxmhz == max_mhz_all:
+        wenn node == 0 and core not in cores and maxmhz == max_mhz_all:
             cpus.append(cpu)
             cores.add(core)
     return cpus
 
 
 def thread_run(cpu, in_queue, out_queue):
-    if cpu is not None and hasattr(os, "sched_setaffinity"):
+    wenn cpu is not None and hasattr(os, "sched_setaffinity"):
         # Set the affinity fuer the current thread
         os.sched_setaffinity(0, (cpu,))
 
     while True:
         func = in_queue.get()
-        if func is None:
+        wenn func is None:
             break
         func()
         out_queue.put(None)
 
 
 def initialize_threads(opts):
-    if opts.threads == -1:
+    wenn opts.threads == -1:
         cpus = determine_num_threads_and_affinity()
-    else:
+    sonst:
         cpus = [None] * opts.threads  # don't set affinity
 
     print(f"Running benchmarks with {len(cpus)} threads")
@@ -307,40 +307,40 @@ def initialize_threads(opts):
 
 def main(opts):
     global WORK_SCALE
-    if not hasattr(sys, "_is_gil_enabled") or sys._is_gil_enabled():
+    wenn not hasattr(sys, "_is_gil_enabled") or sys._is_gil_enabled():
         sys.stderr.write("expected to be run with the  GIL disabled\n")
 
     benchmark_names = opts.benchmarks
-    if benchmark_names:
+    wenn benchmark_names:
         fuer name in benchmark_names:
-            if name not in ALL_BENCHMARKS:
+            wenn name not in ALL_BENCHMARKS:
                 sys.stderr.write(f"Unknown benchmark: {name}\n")
                 sys.exit(1)
-    else:
+    sonst:
         benchmark_names = ALL_BENCHMARKS.keys()
 
     WORK_SCALE = opts.scale
 
-    if not opts.baseline_only:
+    wenn not opts.baseline_only:
         initialize_threads(opts)
 
     do_bench = not opts.baseline_only and not opts.parallel_only
     fuer name in benchmark_names:
         func = ALL_BENCHMARKS[name]
-        if do_bench:
+        wenn do_bench:
             benchmark(func)
             continue
 
-        if opts.parallel_only:
+        wenn opts.parallel_only:
             delta_ns = bench_parallel(func)
-        else:
+        sonst:
             delta_ns = bench_one_thread(func)
 
         time_ms = delta_ns / 1_000_000
         print(f"{func.__name__:<18} {time_ms:.1f} ms")
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser()

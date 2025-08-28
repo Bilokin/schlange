@@ -108,6 +108,6 @@ rot13_map.update({
 def rot13(infile, outfile):
     outfile.write(codecs.encode(infile.read(), 'rot-13'))
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     import sys
     rot13(sys.stdin, sys.stdout)

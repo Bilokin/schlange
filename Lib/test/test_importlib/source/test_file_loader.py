@@ -24,7 +24,7 @@ from test.test_py_compile import SourceDateEpochTestMeta
 
 klasse SimpleTest(abc.LoaderTests):
 
-    """Should have no issue importing a source module [basic]. And if there is
+    """Should have no issue importing a source module [basic]. And wenn there is
     a syntax error, it should raise a SyntaxError [syntax error].
 
     """
@@ -187,7 +187,7 @@ klasse SimpleTest(abc.LoaderTests):
         finally:
             os.unlink(file_path)
             pycache = os.path.dirname(self.util.cache_from_source(file_path))
-            if os.path.exists(pycache):
+            wenn os.path.exists(pycache):
                 shutil.rmtree(pycache)
 
     @util.writes_bytecode_files
@@ -204,7 +204,7 @@ klasse SimpleTest(abc.LoaderTests):
             except OverflowError:
                 self.skipTest("cannot set modification time to large integer")
             except OSError as e:
-                if e.errno != getattr(errno, 'EOVERFLOW', None):
+                wenn e.errno != getattr(errno, 'EOVERFLOW', None):
                     raise
                 self.skipTest("cannot set modification time to large integer ({})".format(e))
             loader = self.machinery.SourceFileLoader('_temp', mapping['_temp'])
@@ -387,17 +387,17 @@ klasse BadBytecodeTest:
         except KeyError:
             pass
         py_compile.compile(mapping[name], invalidation_mode=invalidation_mode)
-        if not del_source:
+        wenn not del_source:
             bytecode_path = self.util.cache_from_source(mapping[name])
-        else:
+        sonst:
             os.unlink(mapping[name])
             bytecode_path = make_legacy_pyc(mapping[name])
-        if manipulator:
+        wenn manipulator:
             with open(bytecode_path, 'rb') as file:
                 bc = file.read()
                 new_bc = manipulator(bc)
             with open(bytecode_path, 'wb') as file:
-                if new_bc is not None:
+                wenn new_bc is not None:
                     file.write(new_bc)
         return bytecode_path
 
@@ -411,7 +411,7 @@ klasse BadBytecodeTest:
     @util.writes_bytecode_files
     def _test_partial_magic(self, test, *, del_source=False):
         # When their are less than 4 bytes to a .pyc, regenerate it if
-        # possible, else raise ImportError.
+        # possible, sonst raise ImportError.
         with util.create_modules('_temp') as mapping:
             bc_path = self.manipulate_bytecode('_temp', mapping,
                                                 lambda bc: bc[:3],
@@ -471,7 +471,7 @@ klasse BadBytecodeTest:
             bc_path = self.manipulate_bytecode('_temp', mapping,
                                                 lambda bc: bc[:16],
                                                 del_source=del_source)
-            file_path = mapping['_temp'] if not del_source else bc_path
+            file_path = mapping['_temp'] wenn not del_source sonst bc_path
             with self.assertRaises(EOFError):
                 self.import_(file_path, '_temp')
 
@@ -480,7 +480,7 @@ klasse BadBytecodeTest:
             bytecode_path = self.manipulate_bytecode('_temp', mapping,
                                     lambda bc: bc[:16] + marshal.dumps(b'abcd'),
                                     del_source=del_source)
-            file_path = mapping['_temp'] if not del_source else bytecode_path
+            file_path = mapping['_temp'] wenn not del_source sonst bytecode_path
             with self.assertRaises(ImportError) as cm:
                 self.import_(file_path, '_temp')
             self.assertEqual(cm.exception.name, '_temp')
@@ -491,7 +491,7 @@ klasse BadBytecodeTest:
             bytecode_path = self.manipulate_bytecode('_temp', mapping,
                                                 lambda bc: bc[:16] + b'<test>',
                                                 del_source=del_source)
-            file_path = mapping['_temp'] if not del_source else bytecode_path
+            file_path = mapping['_temp'] wenn not del_source sonst bytecode_path
             with self.assertRaises(EOFError):
                 self.import_(file_path, '_temp')
 
@@ -529,7 +529,7 @@ klasse SourceLoaderBadBytecodeTest:
 
     @util.writes_bytecode_files
     def test_empty_file(self):
-        # When a .pyc is empty, regenerate it if possible, else raise
+        # When a .pyc is empty, regenerate it wenn possible, sonst raise
         # ImportError.
         def test(name, mapping, bytecode_path):
             self.import_(mapping[name], name)
@@ -548,8 +548,8 @@ klasse SourceLoaderBadBytecodeTest:
 
     @util.writes_bytecode_files
     def test_magic_only(self):
-        # When there is only the magic number, regenerate the .pyc if possible,
-        # else raise EOFError.
+        # When there is only the magic number, regenerate the .pyc wenn possible,
+        # sonst raise EOFError.
         def test(name, mapping, bytecode_path):
             self.import_(mapping[name], name)
             with open(bytecode_path, 'rb') as file:
@@ -571,7 +571,7 @@ klasse SourceLoaderBadBytecodeTest:
 
     @util.writes_bytecode_files
     def test_partial_timestamp(self):
-        # When the timestamp is partial, regenerate the .pyc, else
+        # When the timestamp is partial, regenerate the .pyc, sonst
         # raise EOFError.
         def test(name, mapping, bc_path):
             self.import_(mapping[name], name)
@@ -582,7 +582,7 @@ klasse SourceLoaderBadBytecodeTest:
 
     @util.writes_bytecode_files
     def test_partial_flags(self):
-        # When the flags is partial, regenerate the .pyc, else raise EOFError.
+        # When the flags is partial, regenerate the .pyc, sonst raise EOFError.
         def test(name, mapping, bc_path):
             self.import_(mapping[name], name)
             with open(bc_path, 'rb') as file:
@@ -592,7 +592,7 @@ klasse SourceLoaderBadBytecodeTest:
 
     @util.writes_bytecode_files
     def test_partial_hash(self):
-        # When the hash is partial, regenerate the .pyc, else raise EOFError.
+        # When the hash is partial, regenerate the .pyc, sonst raise EOFError.
         def test(name, mapping, bc_path):
             self.import_(mapping[name], name)
             with open(bc_path, 'rb') as file:
@@ -602,7 +602,7 @@ klasse SourceLoaderBadBytecodeTest:
 
     @util.writes_bytecode_files
     def test_partial_size(self):
-        # When the size is partial, regenerate the .pyc, else
+        # When the size is partial, regenerate the .pyc, sonst
         # raise EOFError.
         def test(name, mapping, bc_path):
             self.import_(mapping[name], name)
@@ -791,5 +791,5 @@ klasse SourcelessLoaderBadBytecodeTestPEP302(SourcelessLoaderBadBytecodeTest,
                     util=importlib_util)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

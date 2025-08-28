@@ -367,7 +367,7 @@ klasse PyPicklerHookTests(AbstractHookTests, unittest.TestCase):
     pickler_class = CustomPyPicklerClass
 
 
-if has_c_implementation:
+wenn has_c_implementation:
     klasse CPickleTests(AbstractPickleModuleTests, unittest.TestCase):
         from _pickle import dump, dumps, load, loads, Pickler, Unpickler
 
@@ -514,7 +514,7 @@ if has_c_implementation:
             check_unpickler(recurse(1), 32, 20)
             check_unpickler(recurse(20), 32, 20)
             check_unpickler(recurse(50), 64, 60)
-            if not (support.is_wasi and support.Py_DEBUG):
+            wenn not (support.is_wasi and support.Py_DEBUG):
                 # stack depth too shallow in pydebug WASI.
                 check_unpickler(recurse(100), 128, 140)
 
@@ -539,16 +539,16 @@ ALT_NAME_MAPPING = {
 }
 
 def mapping(module, name):
-    if (module, name) in NAME_MAPPING:
+    wenn (module, name) in NAME_MAPPING:
         module, name = NAME_MAPPING[(module, name)]
-    elif module in IMPORT_MAPPING:
+    sowenn module in IMPORT_MAPPING:
         module = IMPORT_MAPPING[module]
     return module, name
 
 def reverse_mapping(module, name):
-    if (module, name) in REVERSE_NAME_MAPPING:
+    wenn (module, name) in REVERSE_NAME_MAPPING:
         module, name = REVERSE_NAME_MAPPING[(module, name)]
-    elif module in REVERSE_IMPORT_MAPPING:
+    sowenn module in REVERSE_IMPORT_MAPPING:
         module = REVERSE_IMPORT_MAPPING[module]
     return module, name
 
@@ -558,15 +558,15 @@ def getmodule(module):
     except KeyError:
         try:
             with warnings.catch_warnings():
-                action = 'always' if support.verbose else 'ignore'
+                action = 'always' wenn support.verbose sonst 'ignore'
                 warnings.simplefilter(action, DeprecationWarning)
                 __import__(module)
         except AttributeError as exc:
-            if support.verbose:
+            wenn support.verbose:
                 print("Can't import module %r: %s" % (module, exc))
             raise ImportError
         except ImportError as exc:
-            if support.verbose:
+            wenn support.verbose:
                 print(exc)
             raise
         return sys.modules[module]
@@ -580,7 +580,7 @@ def getattribute(module, name):
 def get_exceptions(mod):
     fuer name in dir(mod):
         attr = getattr(mod, name)
-        if isinstance(attr, type) and issubclass(attr, BaseException):
+        wenn isinstance(attr, type) and issubclass(attr, BaseException):
             yield name, attr
 
 klasse CompatPickleTests(unittest.TestCase):
@@ -602,28 +602,28 @@ klasse CompatPickleTests(unittest.TestCase):
                     getmodule(module3)
                 except ImportError:
                     pass
-                if module3[:1] != '_':
+                wenn module3[:1] != '_':
                     self.assertIn(module2, IMPORT_MAPPING)
                     self.assertEqual(IMPORT_MAPPING[module2], module3)
 
     def test_name_mapping(self):
         fuer (module3, name3), (module2, name2) in REVERSE_NAME_MAPPING.items():
             with self.subTest(((module3, name3), (module2, name2))):
-                if (module2, name2) == ('exceptions', 'OSError'):
+                wenn (module2, name2) == ('exceptions', 'OSError'):
                     attr = getattribute(module3, name3)
                     self.assertIsSubclass(attr, OSError)
-                elif (module2, name2) == ('exceptions', 'ImportError'):
+                sowenn (module2, name2) == ('exceptions', 'ImportError'):
                     attr = getattribute(module3, name3)
                     self.assertIsSubclass(attr, ImportError)
-                else:
+                sonst:
                     module, name = mapping(module2, name2)
-                    if module3[:1] != '_':
+                    wenn module3[:1] != '_':
                         self.assertEqual((module, name), (module3, name3))
                     try:
                         attr = getattribute(module3, name3)
                     except ImportError:
                         pass
-                    else:
+                    sonst:
                         self.assertEqual(getattribute(module, name), attr)
 
     def test_reverse_import_mapping(self):
@@ -632,14 +632,14 @@ klasse CompatPickleTests(unittest.TestCase):
                 try:
                     getmodule(module3)
                 except ImportError as exc:
-                    if support.verbose:
+                    wenn support.verbose:
                         print(exc)
-                if ((module2, module3) not in ALT_IMPORT_MAPPING and
+                wenn ((module2, module3) not in ALT_IMPORT_MAPPING and
                     REVERSE_IMPORT_MAPPING.get(module3, None) != module2):
                     fuer (m3, n3), (m2, n2) in REVERSE_NAME_MAPPING.items():
-                        if (module3, module2) == (m3, m2):
+                        wenn (module3, module2) == (m3, m2):
                             break
-                    else:
+                    sonst:
                         self.fail('No reverse mapping from %r to %r' %
                                   (module3, module2))
                 module = REVERSE_IMPORT_MAPPING.get(module3, module3)
@@ -654,7 +654,7 @@ klasse CompatPickleTests(unittest.TestCase):
                 except ImportError:
                     pass
                 module, name = reverse_mapping(module3, name3)
-                if (module2, name2, module3, name3) not in ALT_NAME_MAPPING:
+                wenn (module2, name2, module3, name3) not in ALT_NAME_MAPPING:
                     self.assertEqual((module, name), (module2, name2))
                 module, name = mapping(module, name)
                 self.assertEqual((module, name), (module3, name3))
@@ -673,7 +673,7 @@ klasse CompatPickleTests(unittest.TestCase):
 
         fuer name, exc in get_exceptions(builtins):
             with self.subTest(name):
-                if exc in (BlockingIOError,
+                wenn exc in (BlockingIOError,
                            ResourceWarning,
                            StopAsyncIteration,
                            PythonFinalizationError,
@@ -683,15 +683,15 @@ klasse CompatPickleTests(unittest.TestCase):
                            ExceptionGroup,
                            _IncompleteInputError):
                     continue
-                if exc is not OSError and issubclass(exc, OSError):
+                wenn exc is not OSError and issubclass(exc, OSError):
                     self.assertEqual(reverse_mapping('builtins', name),
                                      ('exceptions', 'OSError'))
-                elif exc is not ImportError and issubclass(exc, ImportError):
+                sowenn exc is not ImportError and issubclass(exc, ImportError):
                     self.assertEqual(reverse_mapping('builtins', name),
                                      ('exceptions', 'ImportError'))
                     self.assertEqual(mapping('exceptions', name),
                                      ('exceptions', name))
-                else:
+                sonst:
                     self.assertEqual(reverse_mapping('builtins', name),
                                      ('exceptions', name))
                     self.assertEqual(mapping('exceptions', name),
@@ -700,7 +700,7 @@ klasse CompatPickleTests(unittest.TestCase):
     def test_multiprocessing_exceptions(self):
         module = import_helper.import_module('multiprocessing.context')
         fuer name, exc in get_exceptions(module):
-            if issubclass(exc, Warning):
+            wenn issubclass(exc, Warning):
                 continue
             with self.subTest(name):
                 self.assertEqual(reverse_mapping('multiprocessing.context', name),
@@ -767,5 +767,5 @@ def load_tests(loader, tests, pattern):
     return tests
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

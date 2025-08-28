@@ -38,7 +38,7 @@ klasse BasicWrapTestCase(unittest.TestCase):
         f.restype = POINTER(c_int)
         f.argtypes = [POINTER(c_int)]
 
-        # This only works if the value c_int(42) passed to the
+        # This only works wenn the value c_int(42) passed to the
         # function is still alive while the pointer (the result) is
         # used.
 
@@ -242,5 +242,5 @@ klasse AsParamNestedWrapperTestCase(BasicWrapTestCase):
         return AsParamWrapper(AsParamWrapper(AsParamWrapper(param)))
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

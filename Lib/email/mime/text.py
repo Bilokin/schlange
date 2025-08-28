@@ -24,10 +24,10 @@ klasse MIMEText(MIMENonMultipart):
         Content-Transfer-Encoding header will also be set.
         """
 
-        # If no _charset was specified, check to see if there are non-ascii
+        # If no _charset was specified, check to see wenn there are non-ascii
         # characters present. If not, use 'us-ascii', otherwise use utf-8.
         # XXX: This can be removed once #7304 is fixed.
-        if _charset is None:
+        wenn _charset is None:
             try:
                 _text.encode('us-ascii')
                 _charset = 'us-ascii'

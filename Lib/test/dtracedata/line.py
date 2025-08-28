@@ -5,7 +5,7 @@ def test_line():
         a = i
         b = i+2
         c = i+3
-        if c < 4:
+        wenn c < 4:
             a = c
         d = a + b +c
         print('#', a, b, c, d)
@@ -13,5 +13,5 @@ def test_line():
     print('# Epilogue', a)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     test_line()

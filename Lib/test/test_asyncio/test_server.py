@@ -25,9 +25,9 @@ klasse BaseStartServer(func_tests.FunctionalTestCaseMixin):
         def client(sock, addr):
             fuer i in range(10):
                 time.sleep(0.2)
-                if srv.is_serving():
+                wenn srv.is_serving():
                     break
-            else:
+            sonst:
                 raise RuntimeError
 
             sock.settimeout(2)
@@ -252,7 +252,7 @@ klasse TestServer2(unittest.IsolatedAsyncioTestCase):
         fuer i in range(10):
             s_wr.write(b'a' * c_bufsize)
             s_wr.write(b'a' * s_bufsize)
-            if s_wr.transport.get_write_buffer_size() > 0:
+            wenn s_wr.transport.get_write_buffer_size() > 0:
                 break
         self.assertNotEqual(s_wr.transport.get_write_buffer_size(), 0)
 
@@ -298,7 +298,7 @@ klasse UnixServerCleanupTests(unittest.IsolatedAsyncioTestCase):
 
     @socket_helper.skip_unless_bind_unix_socket
     async def test_unix_server_cleanup_gone(self):
-        # Someone else has already cleaned up the socket
+        # Someone sonst has already cleaned up the socket
         with test_utils.unix_socket_path() as addr:
             async def serve(*args):
                 pass
@@ -314,7 +314,7 @@ klasse UnixServerCleanupTests(unittest.IsolatedAsyncioTestCase):
 
     @socket_helper.skip_unless_bind_unix_socket
     async def test_unix_server_cleanup_replaced(self):
-        # Someone else has replaced the socket with their own
+        # Someone sonst has replaced the socket with their own
         with test_utils.unix_socket_path() as addr:
             async def serve(*args):
                 pass
@@ -348,5 +348,5 @@ klasse ProactorStartServerTests(BaseStartServer, unittest.TestCase):
         return asyncio.ProactorEventLoop()
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

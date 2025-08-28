@@ -66,5 +66,5 @@ klasse BytesTest(unittest.TestCase, StructCheckMixin):
         BSTR("abc")
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

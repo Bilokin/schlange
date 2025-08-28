@@ -42,7 +42,7 @@ def method_cache(method, cache_wrapper=None):
     >>> a.calls
     75
 
-    Note that if method had been decorated with ``functools.lru_cache()``,
+    Note that wenn method had been decorated with ``functools.lru_cache()``,
     a.calls would have been 76 (due to the cached value of 0 having been
     flushed by the 'b' instance).
 
@@ -88,7 +88,7 @@ def method_cache(method, cache_wrapper=None):
 # From jaraco.functools 3.3
 def pass_none(func):
     """
-    Wrap func so it's not called if its first param is None
+    Wrap func so it's not called wenn its first param is None
 
     >>> print_text = pass_none(print)
     >>> print_text('text')
@@ -98,7 +98,7 @@ def pass_none(func):
 
     @functools.wraps(func)
     def wrapper(param, *args, **kwargs):
-        if param is not None:
+        wenn param is not None:
             return func(param, *args, **kwargs)
 
     return wrapper

@@ -29,7 +29,7 @@ klasse TestRaise(unittest.TestCase):
             raise
         except RuntimeError as e:
             self.assertIn("No active exception", str(e))
-        else:
+        sonst:
             self.fail("No exception raised")
 
     def test_reraise(self):
@@ -41,7 +41,7 @@ klasse TestRaise(unittest.TestCase):
                 raise
         except IndexError as exc2:
             self.assertIs(exc1, exc2)
-        else:
+        sonst:
             self.fail("No exception raised")
 
     def test_except_reraise(self):
@@ -128,7 +128,7 @@ klasse TestRaise(unittest.TestCase):
             raise MyException
         except RuntimeError:
             pass
-        else:
+        sonst:
             self.fail("No exception raised")
 
     def test_new_returns_invalid_instance(self):
@@ -174,7 +174,7 @@ klasse TestCause(unittest.TestCase):
             raise IndexError from 5
         except TypeError as e:
             self.assertIn("exception cause", str(e))
-        else:
+        sonst:
             self.fail("No exception raised")
 
     def test_class_cause(self):
@@ -182,7 +182,7 @@ klasse TestCause(unittest.TestCase):
             raise IndexError from KeyError
         except IndexError as e:
             self.assertIsInstance(e.__cause__, KeyError)
-        else:
+        sonst:
             self.fail("No exception raised")
 
     def test_class_cause_nonexception_result(self):
@@ -196,7 +196,7 @@ klasse TestCause(unittest.TestCase):
             self.assertIn("should have returned an instance of BaseException", str(e))
         except IndexError:
             self.fail("Wrong kind of exception raised")
-        else:
+        sonst:
             self.fail("No exception raised")
 
     def test_instance_cause(self):
@@ -205,7 +205,7 @@ klasse TestCause(unittest.TestCase):
             raise IndexError from cause
         except IndexError as e:
             self.assertIs(e.__cause__, cause)
-        else:
+        sonst:
             self.fail("No exception raised")
 
     def test_erroneous_cause(self):
@@ -217,7 +217,7 @@ klasse TestCause(unittest.TestCase):
             raise IndexError from MyException
         except RuntimeError:
             pass
-        else:
+        sonst:
             self.fail("No exception raised")
 
 
@@ -228,7 +228,7 @@ klasse TestTraceback(unittest.TestCase):
             raise IndexError()
         except IndexError as e:
             self.assertIsInstance(e.__traceback__, types.TracebackType)
-        else:
+        sonst:
             self.fail("No exception raised")
 
     def test_accepts_traceback(self):
@@ -238,7 +238,7 @@ klasse TestTraceback(unittest.TestCase):
         except IndexError as e:
             self.assertNotEqual(e.__traceback__, tb)
             self.assertEqual(e.__traceback__.tb_next, tb)
-        else:
+        sonst:
             self.fail("No exception raised")
 
 
@@ -318,7 +318,7 @@ klasse TestContext(unittest.TestCase):
                 raise OSError()
         except OSError as e:
             self.assertIs(e.__context__, context)
-        else:
+        sonst:
             self.fail("No exception raised")
 
     def test_class_context_instance_raise(self):
@@ -331,7 +331,7 @@ klasse TestContext(unittest.TestCase):
         except OSError as e:
             self.assertIsNot(e.__context__, context)
             self.assertIsInstance(e.__context__, context)
-        else:
+        sonst:
             self.fail("No exception raised")
 
     def test_class_context_class_raise(self):
@@ -344,7 +344,7 @@ klasse TestContext(unittest.TestCase):
         except OSError as e:
             self.assertIsNot(e.__context__, context)
             self.assertIsInstance(e.__context__, context)
-        else:
+        sonst:
             self.fail("No exception raised")
 
     def test_c_exception_context(self):
@@ -355,7 +355,7 @@ klasse TestContext(unittest.TestCase):
                 raise OSError
         except OSError as e:
             self.assertIsInstance(e.__context__, ZeroDivisionError)
-        else:
+        sonst:
             self.fail("No exception raised")
 
     def test_c_exception_raise(self):
@@ -366,7 +366,7 @@ klasse TestContext(unittest.TestCase):
                 xyzzy
         except NameError as e:
             self.assertIsInstance(e.__context__, ZeroDivisionError)
-        else:
+        sonst:
             self.fail("No exception raised")
 
     def test_noraise_finally(self):
@@ -377,7 +377,7 @@ klasse TestContext(unittest.TestCase):
                 raise OSError
         except OSError as e:
             self.assertIsNone(e.__context__)
-        else:
+        sonst:
             self.fail("No exception raised")
 
     def test_raise_finally(self):
@@ -388,7 +388,7 @@ klasse TestContext(unittest.TestCase):
                 raise OSError
         except OSError as e:
             self.assertIsInstance(e.__context__, ZeroDivisionError)
-        else:
+        sonst:
             self.fail("No exception raised")
 
     def test_context_manager(self):
@@ -402,7 +402,7 @@ klasse TestContext(unittest.TestCase):
                 1/0
         except NameError as e:
             self.assertIsInstance(e.__context__, ZeroDivisionError)
-        else:
+        sonst:
             self.fail("No exception raised")
 
     def test_cycle_broken(self):
@@ -504,7 +504,7 @@ klasse TestRemovedFunctionality(unittest.TestCase):
             raise (IndexError, KeyError) # This should be a tuple!
         except TypeError:
             pass
-        else:
+        sonst:
             self.fail("No exception raised")
 
     def test_strings(self):
@@ -512,9 +512,9 @@ klasse TestRemovedFunctionality(unittest.TestCase):
             raise "foo"
         except TypeError:
             pass
-        else:
+        sonst:
             self.fail("No exception raised")
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

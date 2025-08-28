@@ -106,7 +106,7 @@ klasse Random(_random.Random):
     Used to instantiate instances of Random to get generators that don't
     share state.
 
-    Class Random can also be subclassed if you want to use a different basic
+    Class Random can also be subclassed wenn you want to use a different basic
     generator of your own devising: in that case, override the following
     methods:  random(), seed(), getstate(), and setstate().
     Optionally, implement a getrandbits() method so that randrange()
@@ -132,28 +132,28 @@ klasse Random(_random.Random):
         str, bytes, and bytearray.
 
         None or no argument seeds from current time or from an operating
-        system specific randomness source if available.
+        system specific randomness source wenn available.
 
         If *a* is an int, all bits are used.
 
-        For version 2 (the default), all of the bits are used if *a* is a str,
+        For version 2 (the default), all of the bits are used wenn *a* is a str,
         bytes, or bytearray.  For version 1 (provided fuer reproducing random
         sequences from older versions of Python), the algorithm fuer str and
         bytes generates a narrower range of seeds.
 
         """
 
-        if version == 1 and isinstance(a, (str, bytes)):
-            a = a.decode('latin-1') if isinstance(a, bytes) else a
-            x = ord(a[0]) << 7 if a else 0
+        wenn version == 1 and isinstance(a, (str, bytes)):
+            a = a.decode('latin-1') wenn isinstance(a, bytes) sonst a
+            x = ord(a[0]) << 7 wenn a sonst 0
             fuer c in map(ord, a):
                 x = ((1000003 * x) ^ c) & 0xFFFFFFFFFFFFFFFF
             x ^= len(a)
-            a = -2 if x == -1 else x
+            a = -2 wenn x == -1 sonst x
 
-        elif version == 2 and isinstance(a, (str, bytes, bytearray)):
+        sowenn version == 2 and isinstance(a, (str, bytes, bytearray)):
             global _sha512
-            if _sha512 is None:
+            wenn _sha512 is None:
                 try:
                     # hashlib is pretty heavy to load, try lean internal
                     # module first
@@ -162,11 +162,11 @@ klasse Random(_random.Random):
                     # fallback to official implementation
                     from hashlib import sha512 as _sha512
 
-            if isinstance(a, str):
+            wenn isinstance(a, str):
                 a = a.encode()
             a = int.from_bytes(a + _sha512(a).digest())
 
-        elif not isinstance(a, (type(None), int, float, str, bytes, bytearray)):
+        sowenn not isinstance(a, (type(None), int, float, str, bytes, bytearray)):
             raise TypeError('The only supported seed types are:\n'
                             'None, int, float, str, bytes, and bytearray.')
 
@@ -180,10 +180,10 @@ klasse Random(_random.Random):
     def setstate(self, state):
         """Restore internal state from object returned by getstate()."""
         version = state[0]
-        if version == 3:
+        wenn version == 3:
             version, internalstate, self.gauss_next = state
             super().setstate(internalstate)
-        elif version == 2:
+        sowenn version == 2:
             version, internalstate, self.gauss_next = state
             # In version 2, the state was saved as signed ints, which causes
             #   inconsistencies between 32/64-bit systems. The state is
@@ -194,7 +194,7 @@ klasse Random(_random.Random):
             except ValueError as e:
                 raise TypeError from e
             super().setstate(internalstate)
-        else:
+        sonst:
             raise ValueError("state with version %s passed to "
                              "Random.setstate() of version %s" %
                              (version, self.VERSION))
@@ -232,13 +232,13 @@ klasse Random(_random.Random):
         """
 
         fuer c in cls.__mro__:
-            if '_randbelow' in c.__dict__:
+            wenn '_randbelow' in c.__dict__:
                 # just inherit it
                 break
-            if 'getrandbits' in c.__dict__:
+            wenn 'getrandbits' in c.__dict__:
                 cls._randbelow = cls._randbelow_with_getrandbits
                 break
-            if 'random' in c.__dict__:
+            wenn 'random' in c.__dict__:
                 cls._randbelow = cls._randbelow_without_getrandbits
                 break
 
@@ -258,7 +258,7 @@ klasse Random(_random.Random):
         """
 
         random = self.random
-        if n >= maxsize:
+        wenn n >= maxsize:
             from warnings import warn
             warn("Underlying random() generator does not supply \n"
                  "enough bits to choose from a population range this large.\n"
@@ -302,12 +302,12 @@ klasse Random(_random.Random):
         # This code is a bit messy to make it fast fuer the
         # common case while still doing adequate error checking.
         istart = _index(start)
-        if stop is None:
+        wenn stop is None:
             # We don't check fuer "step != 1" because it hasn't been
             # type checked and converted to an integer yet.
-            if step is not _ONE:
+            wenn step is not _ONE:
                 raise TypeError("Missing a non-None stop argument")
-            if istart > 0:
+            wenn istart > 0:
                 return self._randbelow(istart)
             raise ValueError("empty range fuer randrange()")
 
@@ -316,19 +316,19 @@ klasse Random(_random.Random):
         width = istop - istart
         istep = _index(step)
         # Fast path.
-        if istep == 1:
-            if width > 0:
+        wenn istep == 1:
+            wenn width > 0:
                 return istart + self._randbelow(width)
             raise ValueError(f"empty range in randrange({start}, {stop})")
 
         # Non-unit step argument supplied.
-        if istep > 0:
+        wenn istep > 0:
             n = (width + istep - 1) // istep
-        elif istep < 0:
+        sowenn istep < 0:
             n = (width + istep + 1) // istep
-        else:
+        sonst:
             raise ValueError("zero step fuer randrange()")
-        if n <= 0:
+        wenn n <= 0:
             raise ValueError(f"empty range in randrange({start}, {stop}, {step})")
         return istart + istep * self._randbelow(n)
 
@@ -337,7 +337,7 @@ klasse Random(_random.Random):
         """
         a = _index(a)
         b = _index(b)
-        if b < a:
+        wenn b < a:
             raise ValueError(f"empty range in randint({a}, {b})")
         return a + self._randbelow(b - a + 1)
 
@@ -349,7 +349,7 @@ klasse Random(_random.Random):
 
         # As an accommodation fuer NumPy, we don't use "if not seq"
         # because bool(numpy.array()) raises a ValueError.
-        if not len(seq):
+        wenn not len(seq):
             raise IndexError('Cannot choose from an empty sequence')
         return seq[self._randbelow(len(seq))]
 
@@ -415,30 +415,30 @@ klasse Random(_random.Random):
         # too many calls to _randbelow(), making them slower and
         # causing them to eat more entropy than necessary.
 
-        if not isinstance(population, _Sequence):
+        wenn not isinstance(population, _Sequence):
             raise TypeError("Population must be a sequence.  "
                             "For dicts or sets, use sorted(d).")
         n = len(population)
-        if counts is not None:
+        wenn counts is not None:
             cum_counts = list(_accumulate(counts))
-            if len(cum_counts) != n:
+            wenn len(cum_counts) != n:
                 raise ValueError('The number of counts does not match the population')
-            total = cum_counts.pop() if cum_counts else 0
-            if not isinstance(total, int):
+            total = cum_counts.pop() wenn cum_counts sonst 0
+            wenn not isinstance(total, int):
                 raise TypeError('Counts must be integers')
-            if total < 0:
+            wenn total < 0:
                 raise ValueError('Counts must be non-negative')
             selections = self.sample(range(total), k=k)
             bisect = _bisect
             return [population[bisect(cum_counts, s)] fuer s in selections]
         randbelow = self._randbelow
-        if not 0 <= k <= n:
+        wenn not 0 <= k <= n:
             raise ValueError("Sample larger than population or is negative")
         result = [None] * k
         setsize = 21        # size of a small set minus size of an empty list
-        if k > 5:
+        wenn k > 5:
             setsize += 4 ** _ceil(_log(k * 3, 4))  # table size fuer big sets
-        if n <= setsize:
+        wenn n <= setsize:
             # An n-length list is smaller than a k-length set.
             # Invariant:  non-selected at pool[0 : n-i]
             pool = list(population)
@@ -446,7 +446,7 @@ klasse Random(_random.Random):
                 j = randbelow(n - i)
                 result[i] = pool[j]
                 pool[j] = pool[n - i - 1]  # move non-selected item into vacancy
-        else:
+        sonst:
             selected = set()
             selected_add = selected.add
             fuer i in range(k):
@@ -466,28 +466,28 @@ klasse Random(_random.Random):
         """
         random = self.random
         n = len(population)
-        if cum_weights is None:
-            if weights is None:
+        wenn cum_weights is None:
+            wenn weights is None:
                 floor = _floor
                 n += 0.0    # convert to float fuer a small speed improvement
                 return [population[floor(random() * n)] fuer i in _repeat(None, k)]
             try:
                 cum_weights = list(_accumulate(weights))
             except TypeError:
-                if not isinstance(weights, int):
+                wenn not isinstance(weights, int):
                     raise
                 k = weights
                 raise TypeError(
                     f'The number of choices must be a keyword argument: {k=}'
                 ) from None
-        elif weights is not None:
+        sowenn weights is not None:
             raise TypeError('Cannot specify both weights and cumulative weights')
-        if len(cum_weights) != n:
+        wenn len(cum_weights) != n:
             raise ValueError('The number of weights does not match the population')
         total = cum_weights[-1] + 0.0   # convert to float
-        if total <= 0.0:
+        wenn total <= 0.0:
             raise ValueError('Total of weights must be greater than zero')
-        if not _isfinite(total):
+        wenn not _isfinite(total):
             raise ValueError('Total of weights must be finite')
         bisect = _bisect
         hi = n - 1
@@ -524,10 +524,10 @@ klasse Random(_random.Random):
         """
         u = self.random()
         try:
-            c = 0.5 if mode is None else (mode - low) / (high - low)
+            c = 0.5 wenn mode is None sonst (mode - low) / (high - low)
         except ZeroDivisionError:
             return low
-        if u > c:
+        wenn u > c:
             u = 1.0 - u
             c = 1.0 - c
             low, high = high, low
@@ -550,7 +550,7 @@ klasse Random(_random.Random):
             u2 = 1.0 - random()
             z = NV_MAGICCONST * (u1 - 0.5) / u2
             zz = z * z / 4.0
-            if zz <= -_log(u2):
+            wenn zz <= -_log(u2):
                 break
         return mu + z * sigma
 
@@ -584,7 +584,7 @@ klasse Random(_random.Random):
         random = self.random
         z = self.gauss_next
         self.gauss_next = None
-        if z is None:
+        wenn z is None:
             x2pi = random() * TWOPI
             g2rad = _sqrt(-2.0 * _log(1.0 - random()))
             z = _cos(x2pi) * g2rad
@@ -608,8 +608,8 @@ klasse Random(_random.Random):
         lambd is 1.0 divided by the desired mean.  It should be
         nonzero.  (The parameter would be called "lambda", but that is
         a reserved word in Python.)  Returned values range from 0 to
-        positive infinity if lambd is positive, and from negative
-        infinity to 0 if lambd is negative.
+        positive infinity wenn lambd is positive, and from negative
+        infinity to 0 wenn lambd is negative.
 
         The mean (expected value) and variance of the random variable are:
 
@@ -639,7 +639,7 @@ klasse Random(_random.Random):
         # implementation of step 4.
 
         random = self.random
-        if kappa <= 1e-6:
+        wenn kappa <= 1e-6:
             return TWOPI * random()
 
         s = 0.5 / kappa
@@ -651,15 +651,15 @@ klasse Random(_random.Random):
 
             d = z / (r + z)
             u2 = random()
-            if u2 < 1.0 - d * d or u2 <= (1.0 - d) * _exp(d):
+            wenn u2 < 1.0 - d * d or u2 <= (1.0 - d) * _exp(d):
                 break
 
         q = 1.0 / r
         f = (q + z) / (1.0 + q * z)
         u3 = random()
-        if u3 > 0.5:
+        wenn u3 > 0.5:
             theta = (mu + _acos(f)) % TWOPI
-        else:
+        sonst:
             theta = (mu - _acos(f)) % TWOPI
 
         return theta
@@ -684,11 +684,11 @@ klasse Random(_random.Random):
 
         # Warning: a few older sources define the gamma distribution in terms
         # of alpha > -1.0
-        if alpha <= 0.0 or beta <= 0.0:
+        wenn alpha <= 0.0 or beta <= 0.0:
             raise ValueError('gammavariate: alpha and beta must be > 0.0')
 
         random = self.random
-        if alpha > 1.0:
+        wenn alpha > 1.0:
 
             # Uses R.C.H. Cheng, "The generation of Gamma
             # variables with non-integral shape parameters",
@@ -700,36 +700,36 @@ klasse Random(_random.Random):
 
             while True:
                 u1 = random()
-                if not 1e-7 < u1 < 0.9999999:
+                wenn not 1e-7 < u1 < 0.9999999:
                     continue
                 u2 = 1.0 - random()
                 v = _log(u1 / (1.0 - u1)) / ainv
                 x = alpha * _exp(v)
                 z = u1 * u1 * u2
                 r = bbb + ccc * v - x
-                if r + SG_MAGICCONST - 4.5 * z >= 0.0 or r >= _log(z):
+                wenn r + SG_MAGICCONST - 4.5 * z >= 0.0 or r >= _log(z):
                     return x * beta
 
-        elif alpha == 1.0:
+        sowenn alpha == 1.0:
             # expovariate(1/beta)
             return -_log(1.0 - random()) * beta
 
-        else:
+        sonst:
             # alpha is between 0 and 1 (exclusive)
             # Uses ALGORITHM GS of Statistical Computing - Kennedy & Gentle
             while True:
                 u = random()
                 b = (_e + alpha) / _e
                 p = b * u
-                if p <= 1.0:
+                wenn p <= 1.0:
                     x = p ** (1.0 / alpha)
-                else:
+                sonst:
                     x = -_log((b - p) / alpha)
                 u1 = random()
-                if p > 1.0:
-                    if u1 <= x ** (alpha - 1.0):
+                wenn p > 1.0:
+                    wenn u1 <= x ** (alpha - 1.0):
                         break
-                elif u1 <= _exp(-x):
+                sowenn u1 <= _exp(-x):
                     break
             return x * beta
 
@@ -761,7 +761,7 @@ klasse Random(_random.Random):
         # This version due to Janne Sinkkonen, and matches all the std
         # texts (e.g., Knuth Vol 2 Ed 3 pg 134 "the beta distribution").
         y = self.gammavariate(alpha, 1.0)
-        if y:
+        wenn y:
             return y / (y + self.gammavariate(beta, 1.0))
         return 0.0
 
@@ -809,35 +809,35 @@ klasse Random(_random.Random):
 
         """
         # Error check inputs and handle edge cases
-        if n < 0:
+        wenn n < 0:
             raise ValueError("n must be non-negative")
-        if p <= 0.0 or p >= 1.0:
-            if p == 0.0:
+        wenn p <= 0.0 or p >= 1.0:
+            wenn p == 0.0:
                 return 0
-            if p == 1.0:
+            wenn p == 1.0:
                 return n
             raise ValueError("p must be in the range 0.0 <= p <= 1.0")
 
         random = self.random
 
         # Fast path fuer a common case
-        if n == 1:
+        wenn n == 1:
             return _index(random() < p)
 
         # Exploit symmetry to establish:  p <= 0.5
-        if p > 0.5:
+        wenn p > 0.5:
             return n - self.binomialvariate(n, 1.0 - p)
 
-        if n * p < 10.0:
+        wenn n * p < 10.0:
             # BG: Geometric method by Devroye with running time of O(np).
             # https://dl.acm.org/doi/pdf/10.1145/42372.42381
             x = y = 0
             c = _log2(1.0 - p)
-            if not c:
+            wenn not c:
                 return x
             while True:
                 y += _floor(_log2(random()) / c) + 1
-                if y > n:
+                wenn y > n:
                     return x
                 x += 1
 
@@ -858,16 +858,16 @@ klasse Random(_random.Random):
             u -= 0.5
             us = 0.5 - _fabs(u)
             k = _floor((2.0 * a / us + b) * u + c)
-            if k < 0 or k > n:
+            wenn k < 0 or k > n:
                 continue
             v = random()
 
             # The early-out "squeeze" test substantially reduces
             # the number of acceptance condition evaluations.
-            if us >= 0.07 and v <= vr:
+            wenn us >= 0.07 and v <= vr:
                 return k
 
-            if not setup_complete:
+            wenn not setup_complete:
                 alpha = (2.83 + 5.1 / b) * spq
                 lpq = _log(p / (1.0 - p))
                 m = _floor((n + 1) * p)         # Mode of the distribution
@@ -878,7 +878,7 @@ klasse Random(_random.Random):
             # Note, the original paper erroneously omits the call to log(v)
             # when comparing to the log of the rescaled binomial distribution.
             v *= alpha / (a / (us * us) + b)
-            if _log(v) <= h - _lgamma(k + 1) - _lgamma(n - k + 1) + (k - m) * lpq:
+            wenn _log(v) <= h - _lgamma(k + 1) - _lgamma(n - k + 1) + (k - m) * lpq:
                 return k
 
 
@@ -901,7 +901,7 @@ klasse SystemRandom(Random):
 
     def getrandbits(self, k):
         """getrandbits(k) -> x.  Generates an int with k random bits."""
-        if k < 0:
+        wenn k < 0:
             raise ValueError('number of bits must be non-negative')
         numbytes = (k + 7) // 8                       # bits / 8 and rounded up
         x = int.from_bytes(_urandom(numbytes))
@@ -1001,7 +1001,7 @@ def _test(N=10_000):
 ## ------------------------------------------------------
 ## ------------------ fork support  ---------------------
 
-if hasattr(_os, "fork"):
+wenn hasattr(_os, "fork"):
     _os.register_at_fork(after_in_child=_inst.seed)
 
 
@@ -1028,7 +1028,7 @@ def _parse_args(arg_list: list[str] | None):
         help=argparse.SUPPRESS)
     parser.add_argument("input", nargs="*",
                         help="""\
-if no options given, output depends on the input
+wenn no options given, output depends on the input
     string or multiple: same as --choice
     integer: same as --integer
     float: same as --float""")
@@ -1040,21 +1040,21 @@ def main(arg_list: list[str] | None = None) -> int | str:
     args, help_text = _parse_args(arg_list)
 
     # Explicit arguments
-    if args.choice:
+    wenn args.choice:
         return choice(args.choice)
 
-    if args.integer is not None:
+    wenn args.integer is not None:
         return randint(1, args.integer)
 
-    if args.float is not None:
+    wenn args.float is not None:
         return uniform(0, args.float)
 
-    if args.test:
+    wenn args.test:
         _test(args.test)
         return ""
 
     # No explicit argument, select based on input
-    if len(args.input) == 1:
+    wenn len(args.input) == 1:
         val = args.input[0]
         try:
             # Is it an integer?
@@ -1069,11 +1069,11 @@ def main(arg_list: list[str] | None = None) -> int | str:
                 # Split in case of space-separated string: "a b c"
                 return choice(val.split())
 
-    if len(args.input) >= 2:
+    wenn len(args.input) >= 2:
         return choice(args.input)
 
     return help_text
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     print(main())

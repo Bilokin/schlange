@@ -46,14 +46,14 @@ klasse ExecutorMixin:
         super().setUp()
 
         self.t1 = time.monotonic()
-        if hasattr(self, "ctx"):
+        wenn hasattr(self, "ctx"):
             self.executor = self.executor_type(
                 max_workers=self.worker_count,
                 mp_context=self.get_context(),
                 **self.executor_kwargs)
             with warnings_helper.ignore_fork_in_thread_deprecation_warnings():
                 self.manager = self.get_context().Manager()
-        else:
+        sonst:
             self.executor = self.executor_type(
                 max_workers=self.worker_count,
                 **self.executor_kwargs)
@@ -62,12 +62,12 @@ klasse ExecutorMixin:
     def tearDown(self):
         self.executor.shutdown(wait=True)
         self.executor = None
-        if self.manager is not None:
+        wenn self.manager is not None:
             self.manager.shutdown()
             self.manager = None
 
         dt = time.monotonic() - self.t1
-        if support.verbose:
+        wenn support.verbose:
             print("%.2fs" % dt, end=' ')
         self.assertLess(dt, 300, "synchronization issue: test lasted too long")
 
@@ -101,9 +101,9 @@ klasse ProcessPoolForkMixin(ExecutorMixin):
             _check_system_limits()
         except NotImplementedError:
             self.skipTest("ProcessPoolExecutor unavailable on this system")
-        if sys.platform == "win32":
+        wenn sys.platform == "win32":
             self.skipTest("require unix system")
-        if support.check_sanitizer(thread=True):
+        wenn support.check_sanitizer(thread=True):
             self.skipTest("TSAN doesn't support threads after fork")
         return super().get_context()
 
@@ -135,9 +135,9 @@ klasse ProcessPoolForkserverMixin(ExecutorMixin):
             _check_system_limits()
         except NotImplementedError:
             self.skipTest("ProcessPoolExecutor unavailable on this system")
-        if sys.platform == "win32":
+        wenn sys.platform == "win32":
             self.skipTest("require unix system")
-        if support.check_sanitizer(thread=True):
+        wenn support.check_sanitizer(thread=True):
             self.skipTest("TSAN doesn't support threads after fork")
         return super().get_context()
 
@@ -152,11 +152,11 @@ def create_executor_tests(remote_globals, mixin, bases=(BaseTestCase,),
                                            ProcessPoolForkserverMixin,
                                            ProcessPoolSpawnMixin)):
     def strip_mixin(name):
-        if name.endswith(('Mixin', 'Tests')):
+        wenn name.endswith(('Mixin', 'Tests')):
             return name[:-5]
-        elif name.endswith('Test'):
+        sowenn name.endswith('Test'):
             return name[:-4]
-        else:
+        sonst:
             return name
 
     module = remote_globals['__name__']
@@ -172,7 +172,7 @@ def setup_module():
         _check_system_limits()
     except NotImplementedError:
         pass
-    else:
+    sonst:
         unittest.addModuleCleanup(multiprocessing.util._cleanup_tests)
 
     thread_info = threading_helper.threading_setup()

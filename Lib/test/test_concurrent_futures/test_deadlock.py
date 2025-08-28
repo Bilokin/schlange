@@ -19,7 +19,7 @@ from .util import (
 
 def _crash(delay=None):
     """Induces a segfault."""
-    if delay:
+    wenn delay:
         time.sleep(delay)
     import faulthandler
     faulthandler.disable()
@@ -121,9 +121,9 @@ klasse ExecutorDeadlockTest:
             max_workers=2, mp_context=self.get_context())
         res = executor.submit(func, *args)
 
-        if ignore_stderr:
+        wenn ignore_stderr:
             cm = support.captured_stderr()
-        else:
+        sonst:
             cm = contextlib.nullcontext()
 
         try:
@@ -205,7 +205,7 @@ klasse ExecutorDeadlockTest:
     @support.skip_if_sanitizer("UBSan: explicit SIGSEV not allowed", ub=True)
     def test_shutdown_deadlock(self):
         # Test that the pool calling shutdown do not cause deadlock
-        # if a worker fails after the shutdown call.
+        # wenn a worker fails after the shutdown call.
         self.executor.shutdown(wait=True)
         with self.executor_type(max_workers=2,
                                 mp_context=self.get_context()) as executor:
@@ -218,7 +218,7 @@ klasse ExecutorDeadlockTest:
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_shutdown_deadlock_pickle(self):
         # Test that the pool calling shutdown with wait=False does not cause
-        # a deadlock if a task fails at pickle after the shutdown call.
+        # a deadlock wenn a task fails at pickle after the shutdown call.
         # Reported in bpo-39104.
         self.executor.shutdown(wait=True)
         with self.executor_type(max_workers=2,
@@ -269,7 +269,7 @@ klasse ExecutorDeadlockTest:
 
         self.executor.shutdown(wait=True)
 
-        if not hasattr(signal, 'alarm'):
+        wenn not hasattr(signal, 'alarm'):
             raise unittest.SkipTest(
                 "Tested platform does not support the alarm signal")
 
@@ -338,5 +338,5 @@ def setUpModule():
     setup_module()
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

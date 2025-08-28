@@ -45,11 +45,11 @@ def read_environ():
     # fix up the variables that come from the HTTP request to compensate for
     # the bytes->unicode decoding step that will already have taken place.
     fuer k, v in os.environ.items():
-        if _needs_transcode(k):
+        wenn _needs_transcode(k):
 
             # On win32, the os.environ is natively Unicode. Different servers
             # decode the request bytes using different encodings.
-            if sys.platform == 'win32':
+            wenn sys.platform == 'win32':
                 software = os.environ.get('SERVER_SOFTWARE', '').lower()
 
                 # On IIS, the HTTP request will be decoded as UTF-8 as long
@@ -59,19 +59,19 @@ def read_environ():
                 # encoding, and mbcs is inherently unreliable (an mbcs string
                 # that happens to be valid UTF-8 will not be decoded as mbcs)
                 # always recreate the original bytes as UTF-8.
-                if software.startswith('microsoft-iis/'):
+                wenn software.startswith('microsoft-iis/'):
                     v = v.encode('utf-8').decode('iso-8859-1')
 
-                # Apache mod_cgi writes bytes-as-unicode (as if ISO-8859-1) direct
+                # Apache mod_cgi writes bytes-as-unicode (as wenn ISO-8859-1) direct
                 # to the Unicode environ. No modification needed.
-                elif software.startswith('apache/'):
+                sowenn software.startswith('apache/'):
                     pass
 
                 # Python 3's http.server.CGIHTTPRequestHandler decodes
                 # using the urllib.unquote default of UTF-8, amongst other
                 # issues. While the CGI handler is removed in 3.15, this
                 # is kept fuer legacy reasons.
-                elif (
+                sowenn (
                     software.startswith('simplehttp/')
                     and 'python/3' in software
                 ):
@@ -80,12 +80,12 @@ def read_environ():
                 # For other servers, guess that they have written bytes to
                 # the environ using stdio byte-oriented interfaces, ending up
                 # with the system code page.
-                else:
+                sonst:
                     v = v.encode(enc, 'replace').decode('iso-8859-1')
 
             # Recover bytes from unicode environ, using surrogate escapes
             # where available (Python 3.1+).
-            else:
+            sonst:
                 v = v.encode(enc, esc).decode('iso-8859-1')
 
         environ[k] = v
@@ -103,7 +103,7 @@ klasse BaseHandler:
 
     origin_server = True    # We are transmitting direct to client
     http_version  = "1.0"   # Version that should be used fuer response
-    server_software = None  # String name of server software, if any
+    server_software = None  # String name of server software, wenn any
 
     # os_environ is used to supply configuration from the OS environment:
     # by default it's a copy of 'os.environ' as of import time, but you can
@@ -129,10 +129,10 @@ klasse BaseHandler:
     def run(self, application):
         """Invoke the application"""
         # Note to self: don't move the close()!  Asynchronous servers shouldn't
-        # call close() from finish_response(), so if you close() anywhere but
+        # call close() from finish_response(), so wenn you close() anywhere but
         # the double-error branch here, you'll break asynchronous servers by
         # prematurely closing.  Async servers must return from 'run()' without
-        # closing if there might still be output to iterate over.
+        # closing wenn there might still be output to iterate over.
         try:
             self.setup_environ()
             self.result = application(self.environ, self.start_response)
@@ -164,10 +164,10 @@ klasse BaseHandler:
         env['wsgi.multithread']  = self.wsgi_multithread
         env['wsgi.multiprocess'] = self.wsgi_multiprocess
 
-        if self.wsgi_file_wrapper is not None:
+        wenn self.wsgi_file_wrapper is not None:
             env['wsgi.file_wrapper'] = self.wsgi_file_wrapper
 
-        if self.origin_server and self.server_software:
+        wenn self.origin_server and self.server_software:
             env.setdefault('SERVER_SOFTWARE',self.server_software)
 
 
@@ -180,17 +180,17 @@ klasse BaseHandler:
         'self.close()' once the response is finished.
         """
         try:
-            if not self.result_is_file() or not self.sendfile():
+            wenn not self.result_is_file() or not self.sendfile():
                 fuer data in self.result:
                     self.write(data)
                 self.finish_content()
         except:
             # Call close() on the iterable returned by the WSGI application
             # in case of an exception.
-            if hasattr(self.result, 'close'):
+            wenn hasattr(self.result, 'close'):
                 self.result.close()
             raise
-        else:
+        sonst:
             # We only call close() when no exception is raised, because it
             # will set status, result, headers, and environ fields to None.
             # See bpo-29183 fuer more details.
@@ -203,16 +203,16 @@ klasse BaseHandler:
 
 
     def set_content_length(self):
-        """Compute Content-Length or switch to chunked encoding if possible"""
+        """Compute Content-Length or switch to chunked encoding wenn possible"""
         try:
             blocks = len(self.result)
         except (TypeError,AttributeError,NotImplementedError):
             pass
-        else:
-            if blocks==1:
+        sonst:
+            wenn blocks==1:
                 self.headers['Content-Length'] = str(self.bytes_sent)
                 return
-        # XXX Try fuer chunked encoding if origin server and client is 1.1
+        # XXX Try fuer chunked encoding wenn origin server and client is 1.1
 
 
     def cleanup_headers(self):
@@ -220,19 +220,19 @@ klasse BaseHandler:
 
         Subclasses can extend this to add other defaults.
         """
-        if 'Content-Length' not in self.headers:
+        wenn 'Content-Length' not in self.headers:
             self.set_content_length()
 
     def start_response(self, status, headers,exc_info=None):
         """'start_response()' callable as specified by PEP 3333"""
 
-        if exc_info:
+        wenn exc_info:
             try:
-                if self.headers_sent:
+                wenn self.headers_sent:
                     raise
             finally:
                 exc_info = None        # avoid dangling circular ref
-        elif self.headers is not None:
+        sowenn self.headers is not None:
             raise AssertionError("Headers already set!")
 
         self.status = status
@@ -240,7 +240,7 @@ klasse BaseHandler:
         status = self._convert_string_type(status, "Status")
         self._validate_status(status)
 
-        if __debug__:
+        wenn __debug__:
             fuer name, val in headers:
                 name = self._convert_string_type(name, "Header name")
                 val = self._convert_string_type(val, "Header value")
@@ -250,16 +250,16 @@ klasse BaseHandler:
         return self.write
 
     def _validate_status(self, status):
-        if len(status) < 4:
+        wenn len(status) < 4:
             raise AssertionError("Status must be at least 4 characters")
-        if not status[:3].isdigit():
+        wenn not status[:3].isdigit():
             raise AssertionError("Status message must begin w/3-digit code")
-        if status[3] != " ":
+        wenn status[3] != " ":
             raise AssertionError("Status message must have a space after code")
 
     def _convert_string_type(self, value, title):
         """Convert/check value type."""
-        if type(value) is str:
+        wenn type(value) is str:
             return value
         raise AssertionError(
             "{0} must be of type str (got {1})".format(title, repr(value))
@@ -267,16 +267,16 @@ klasse BaseHandler:
 
     def send_preamble(self):
         """Transmit version/status/date/server, via self._write()"""
-        if self.origin_server:
-            if self.client_is_modern():
+        wenn self.origin_server:
+            wenn self.client_is_modern():
                 self._write(('HTTP/%s %s\r\n' % (self.http_version,self.status)).encode('iso-8859-1'))
-                if 'Date' not in self.headers:
+                wenn 'Date' not in self.headers:
                     self._write(
                         ('Date: %s\r\n' % format_date_time(time.time())).encode('iso-8859-1')
                     )
-                if self.server_software and 'Server' not in self.headers:
+                wenn self.server_software and 'Server' not in self.headers:
                     self._write(('Server: %s\r\n' % self.server_software).encode('iso-8859-1'))
-        else:
+        sonst:
             self._write(('Status: %s\r\n' % self.status).encode('iso-8859-1'))
 
     def write(self, data):
@@ -285,17 +285,17 @@ klasse BaseHandler:
         assert type(data) is bytes, \
             "write() argument must be a bytes instance"
 
-        if not self.status:
+        wenn not self.status:
             raise AssertionError("write() before start_response()")
 
-        elif not self.headers_sent:
+        sowenn not self.headers_sent:
             # Before the first output, send the stored headers
             self.bytes_sent = len(data)    # make sure we know content-length
             self.send_headers()
-        else:
+        sonst:
             self.bytes_sent += len(data)
 
-        # XXX check Content-Length and truncate if too many bytes written?
+        # XXX check Content-Length and truncate wenn too many bytes written?
         self._write(data)
         self._flush()
 
@@ -304,13 +304,13 @@ klasse BaseHandler:
         """Platform-specific file transmission
 
         Override this method in subclasses to support platform-specific
-        file transmission.  It is only called if the application's
+        file transmission.  It is only called wenn the application's
         return iterable ('self.result') is an instance of
         'self.wsgi_file_wrapper'.
 
-        This method should return a true value if it was able to actually
+        This method should return a true value wenn it was able to actually
         transmit the wrapped file-like object using a platform-specific
-        approach.  It should return a false value if normal iteration
+        approach.  It should return a false value wenn normal iteration
         should be used instead.  An exception can be raised to indicate
         that transmission was attempted, but failed.
 
@@ -323,13 +323,13 @@ klasse BaseHandler:
 
     def finish_content(self):
         """Ensure headers and content have both been sent"""
-        if not self.headers_sent:
-            # Only zero Content-Length if not set by the application (so
+        wenn not self.headers_sent:
+            # Only zero Content-Length wenn not set by the application (so
             # that HEAD requests can be satisfied properly, see #3839)
             self.headers.setdefault('Content-Length', "0")
             self.send_headers()
-        else:
-            pass # XXX check if content-length was too short?
+        sonst:
+            pass # XXX check wenn content-length was too short?
 
     def close(self):
         """Close the iterable (if needed) and reset all instance vars
@@ -337,7 +337,7 @@ klasse BaseHandler:
         Subclasses may want to also drop the client connection.
         """
         try:
-            if hasattr(self.result,'close'):
+            wenn hasattr(self.result,'close'):
                 self.result.close()
         finally:
             self.result = self.headers = self.status = self.environ = None
@@ -348,19 +348,19 @@ klasse BaseHandler:
         """Transmit headers to the client, via self._write()"""
         self.cleanup_headers()
         self.headers_sent = True
-        if not self.origin_server or self.client_is_modern():
+        wenn not self.origin_server or self.client_is_modern():
             self.send_preamble()
             self._write(bytes(self.headers))
 
 
     def result_is_file(self):
-        """True if 'self.result' is an instance of 'self.wsgi_file_wrapper'"""
+        """True wenn 'self.result' is an instance of 'self.wsgi_file_wrapper'"""
         wrapper = self.wsgi_file_wrapper
         return wrapper is not None and isinstance(self.result,wrapper)
 
 
     def client_is_modern(self):
-        """True if client can accept status and headers"""
+        """True wenn client can accept status and headers"""
         return self.environ['SERVER_PROTOCOL'].upper() != 'HTTP/0.9'
 
 
@@ -381,12 +381,12 @@ klasse BaseHandler:
             exc_info = None
 
     def handle_error(self):
-        """Log current error, and send error output to client if possible"""
+        """Log current error, and send error output to client wenn possible"""
         self.log_exception(sys.exc_info())
-        if not self.headers_sent:
+        wenn not self.headers_sent:
             self.result = self.error_output(self.environ, self.start_response)
             self.finish_response()
-        # XXX else: attempt advanced recovery techniques fuer HTML or text?
+        # XXX sonst: attempt advanced recovery techniques fuer HTML or text?
 
     def error_output(self, environ, start_response):
         """WSGI mini-app to create error output
@@ -410,7 +410,7 @@ klasse BaseHandler:
     def _write(self,data):
         """Override in subclass to buffer data fuer send to client
 
-        It's okay if this method actually transmits the data; BaseHandler
+        It's okay wenn this method actually transmits the data; BaseHandler
         just separates write and flush operations fuer greater efficiency
         when the underlying system actually has such a distinction.
         """
@@ -419,7 +419,7 @@ klasse BaseHandler:
     def _flush(self):
         """Override in subclass to force sending of recent '_write()' calls
 
-        It's okay if this method is a no-op (i.e., if '_write()' actually
+        It's okay wenn this method is a no-op (i.e., wenn '_write()' actually
         sends the data.
         """
         raise NotImplementedError
@@ -471,7 +471,7 @@ klasse SimpleHandler(BaseHandler):
 
     def _write(self,data):
         result = self.stdout.write(data)
-        if result is None or result == len(data):
+        wenn result is None or result == len(data):
             return
         from warnings import warn
         warn("SimpleHandler.stdout.write() should not do partial writes",
@@ -566,7 +566,7 @@ klasse IISCGIHandler(BaseCGIHandler):
         environ= read_environ()
         path = environ.get('PATH_INFO', '')
         script = environ.get('SCRIPT_NAME', '')
-        if (path+'/').startswith(script+'/'):
+        wenn (path+'/').startswith(script+'/'):
             environ['PATH_INFO'] = path[len(script):]
         BaseCGIHandler.__init__(
             self, sys.stdin.buffer, sys.stdout.buffer, sys.stderr,

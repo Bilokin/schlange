@@ -20,7 +20,7 @@ def _setup(text):
     """
     root = text._root()
     engine = searchengine.get(root)
-    if not hasattr(engine, "_searchdialog"):
+    wenn not hasattr(engine, "_searchdialog"):
         engine._searchdialog = SearchDialog(root, engine)
     return engine._searchdialog
 
@@ -70,7 +70,7 @@ klasse SearchDialog(SearchDialogBase):
 
     def default_command(self, event=None):
         "Handle the Find Next button as the default command."
-        if not self.engine.getprog():
+        wenn not self.engine.getprog():
             return
         self.find_again(self.text)
 
@@ -88,15 +88,15 @@ klasse SearchDialog(SearchDialogBase):
         Position the window to display the located occurrence in the
         text.
 
-        Return True if the search was successful and False otherwise.
+        Return True wenn the search was successful and False otherwise.
         """
-        if not self.engine.getpat():
+        wenn not self.engine.getpat():
             self.open(text)
             return False
-        if not self.engine.getprog():
+        wenn not self.engine.getprog():
             return False
         res = self.engine.search_text(text)
-        if res:
+        wenn res:
             line, m = res
             i, j = m.span()
             first = "%d.%d" % (line, i)
@@ -104,7 +104,7 @@ klasse SearchDialog(SearchDialogBase):
             try:
                 selfirst = text.index("sel.first")
                 sellast = text.index("sel.last")
-                if selfirst == first and sellast == last:
+                wenn selfirst == first and sellast == last:
                     self.bell()
                     return False
             except TclError:
@@ -114,7 +114,7 @@ klasse SearchDialog(SearchDialogBase):
             text.mark_set("insert", self.engine.isback() and first or last)
             text.see("insert")
             return True
-        else:
+        sonst:
             self.bell()
             return False
 
@@ -127,7 +127,7 @@ klasse SearchDialog(SearchDialogBase):
         the prior search phrase.
         """
         pat = text.get("sel.first", "sel.last")
-        if pat:
+        wenn pat:
             self.engine.setcookedpat(pat)
         return self.find_again(text)
 
@@ -157,7 +157,7 @@ def _search_dialog(parent):  # htest #
     button.pack()
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     from unittest import main
     main('idlelib.idle_test.test_search', verbosity=2, exit=False)
 

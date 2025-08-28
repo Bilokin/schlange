@@ -106,21 +106,21 @@ klasse TypeAnnotationTests(unittest.TestCase):
 
             @property
             def __annotations__(self):
-                if not hasattr(self, 'my_annotations'):
+                wenn not hasattr(self, 'my_annotations'):
                     self.my_annotations = {}
-                if not isinstance(self.my_annotations, dict):
+                wenn not isinstance(self.my_annotations, dict):
                     self.my_annotations = {}
                 return self.my_annotations
 
             @__annotations__.setter
             def __annotations__(self, value):
-                if not isinstance(value, dict):
+                wenn not isinstance(value, dict):
                     raise ValueError("can only set __annotations__ to a dict")
                 self.my_annotations = value
 
             @__annotations__.deleter
             def __annotations__(self):
-                if getattr(self, 'my_annotations', False) is None:
+                wenn getattr(self, 'my_annotations', False) is None:
                     raise AttributeError('__annotations__')
                 self.my_annotations = None
 
@@ -182,11 +182,11 @@ klasse TestSetupAnnotations(unittest.TestCase):
         code = textwrap.dedent(code)
         fuer scope in ("module", "class"):
             with self.subTest(scope=scope):
-                if scope == "class":
+                wenn scope == "class":
                     code = f"class C:\n{textwrap.indent(code, '    ')}"
                     ns = run_code(code)
                     annotations = ns["C"].__annotations__
-                else:
+                sonst:
                     annotations = build_module(code).__annotations__
                 self.assertEqual(annotations, {"x": int})
 
@@ -203,7 +203,7 @@ klasse TestSetupAnnotations(unittest.TestCase):
         self.check("""
             while False:
                 pass
-            else:
+            sonst:
                 x: int = 1
         """)
         self.check("""
@@ -213,7 +213,7 @@ klasse TestSetupAnnotations(unittest.TestCase):
         self.check("""
             fuer i in range(1):
                 pass
-            else:
+            sonst:
                 x: int = 1
         """)
 
@@ -229,7 +229,7 @@ klasse TestSetupAnnotations(unittest.TestCase):
                 pass
             except:
                 pass
-            else:
+            sonst:
                 x: int = 1
         """)
         self.check("""
@@ -259,7 +259,7 @@ klasse TestSetupAnnotations(unittest.TestCase):
                 pass
             except* Exception:
                 pass
-            else:
+            sonst:
                 x: int = 1
         """)
         self.check("""
@@ -510,18 +510,18 @@ klasse DeferredEvaluationTests(unittest.TestCase):
         fuer future in (False, True):
             fuer label, code in (("function", function_code), ("class", class_code)):
                 with self.subTest(future=future, label=label):
-                    if future:
+                    wenn future:
                         code = "from __future__ import annotations\n" + code
                     ns = run_code(code)
                     f = ns["f"]
-                    anno = "int" if future else int
+                    anno = "int" wenn future sonst int
                     self.assertEqual(f.__annotations__, {"x": anno})
 
                     f.__annotations__ = {"x": str}
                     self.assertEqual(f.__annotations__, {"x": str})
 
     def test_name_clash_with_format(self):
-        # this test would fail if __annotate__'s parameter was called "format"
+        # this test would fail wenn __annotate__'s parameter was called "format"
         # during symbol table construction
         code = """
         klasse format: pass
@@ -562,7 +562,7 @@ klasse DeferredEvaluationTests(unittest.TestCase):
         def outer():
             def f(x: format):
                 pass
-            if False:
+            wenn False:
                 klasse format: pass
             return f
         f = outer()
@@ -586,12 +586,12 @@ klasse ConditionalAnnotationTests(unittest.TestCase):
             ):
                 with self.subTest(scope=scope, cond=cond):
                     code_to_run = code.format(cond=cond)
-                    if scope == "class":
+                    wenn scope == "class":
                         code_to_run = "class Cls:\n" + textwrap.indent(textwrap.dedent(code_to_run), " " * 4)
                     ns = run_code(code_to_run)
-                    if scope == "class":
+                    wenn scope == "class":
                         self.assertEqual(ns["Cls"].__annotations__, expected)
-                    else:
+                    sonst:
                         self.assertEqual(ns["__annotate__"](annotationlib.Format.VALUE),
                                          expected)
 
@@ -605,7 +605,7 @@ klasse ConditionalAnnotationTests(unittest.TestCase):
                     return True
 
             with Swallower():
-                if {cond}:
+                wenn {cond}:
                     about_to_raise: int
                     raise Exception
                 in_with: "with"
@@ -614,20 +614,20 @@ klasse ConditionalAnnotationTests(unittest.TestCase):
 
     def test_simple_if(self):
         code = """
-            if {cond}:
+            wenn {cond}:
                 in_if: "if"
-            else:
+            sonst:
                 in_if: "else"
         """
         self.check_scopes(code, {"in_if": "if"}, {"in_if": "else"})
 
     def test_if_elif(self):
         code = """
-            if not len:
+            wenn not len:
                 in_if: "if"
-            elif {cond}:
+            sowenn {cond}:
                 in_elif: "elif"
-            else:
+            sonst:
                 in_else: "else"
         """
         self.check_scopes(
@@ -639,7 +639,7 @@ klasse ConditionalAnnotationTests(unittest.TestCase):
     def test_try(self):
         code = """
             try:
-                if {cond}:
+                wenn {cond}:
                     raise Exception
                 in_try: "try"
             except Exception:
@@ -656,7 +656,7 @@ klasse ConditionalAnnotationTests(unittest.TestCase):
     def test_try_star(self):
         code = """
             try:
-                if {cond}:
+                wenn {cond}:
                     raise Exception
                 in_try_star: "try"
             except* Exception:
@@ -675,7 +675,7 @@ klasse ConditionalAnnotationTests(unittest.TestCase):
             while {cond}:
                 in_while: "while"
                 break
-            else:
+            sonst:
                 in_else: "else"
         """
         self.check_scopes(
@@ -686,9 +686,9 @@ klasse ConditionalAnnotationTests(unittest.TestCase):
 
     def test_for(self):
         code = """
-            fuer _ in ([1] if {cond} else []):
+            fuer _ in ([1] wenn {cond} sonst []):
                 in_for: "for"
-            else:
+            sonst:
                 in_else: "else"
         """
         self.check_scopes(
@@ -713,9 +713,9 @@ klasse ConditionalAnnotationTests(unittest.TestCase):
 
     def test_nesting_override(self):
         code = """
-            if {cond}:
+            wenn {cond}:
                 x: "foo"
-                if {cond}:
+                wenn {cond}:
                     x: "bar"
         """
         self.check_scopes(
@@ -726,11 +726,11 @@ klasse ConditionalAnnotationTests(unittest.TestCase):
 
     def test_nesting_outer(self):
         code = """
-            if {cond}:
+            wenn {cond}:
                 outer_before: "outer_before"
-                if len:
+                wenn len:
                     inner_if: "inner_if"
-                else:
+                sonst:
                     inner_else: "inner_else"
                 outer_after: "outer_after"
         """
@@ -743,11 +743,11 @@ klasse ConditionalAnnotationTests(unittest.TestCase):
 
     def test_nesting_inner(self):
         code = """
-            if len:
+            wenn len:
                 outer_before: "outer_before"
-                if {cond}:
+                wenn {cond}:
                     inner_if: "inner_if"
-                else:
+                sonst:
                     inner_else: "inner_else"
                 outer_after: "outer_after"
         """
@@ -762,10 +762,10 @@ klasse ConditionalAnnotationTests(unittest.TestCase):
     def test_non_name_annotations(self):
         code = """
             before: "before"
-            if {cond}:
+            wenn {cond}:
                 a = "x"
                 a[0]: int
-            else:
+            sonst:
                 a = object()
                 a.b: str
             after: "after"
@@ -788,7 +788,7 @@ klasse RegressionTests(unittest.TestCase):
                     fuer unique_name_2 in 0
                     fuer () in (0 fuer unique_name_3 in unique_name_4 fuer unique_name_5 in name_1)
                 ).name_3 in {0: 0 fuer name_1 in unique_name_8}
-                if name_1
+                wenn name_1
             )
             """,
             """
@@ -796,11 +796,11 @@ klasse RegressionTests(unittest.TestCase):
             unique_name_1: {
                 0: 0
                 fuer unique_name_2 in [0 fuer name_0 in unique_name_4]
-                if {
+                wenn {
                     0: 0
                     fuer unique_name_5 in 0
-                    if name_0
-                    if ((name_0 fuer unique_name_8 in unique_name_9) fuer [] in 0)
+                    wenn name_0
+                    wenn ((name_0 fuer unique_name_8 in unique_name_9) fuer [] in 0)
                 }
             }
             """,
@@ -809,7 +809,7 @@ klasse RegressionTests(unittest.TestCase):
             unique_name_2: {
                 0: (lambda: name_0 fuer unique_name_4 in unique_name_5)
                 fuer unique_name_6 in ()
-                if name_0
+                wenn name_0
             }
             """,
         ]
@@ -825,7 +825,7 @@ klasse RegressionTests(unittest.TestCase):
             unique_name_2: {
                 0: (lambda: name_0 fuer unique_name_4 in unique_name_5)
                 fuer unique_name_6 in [1]
-                if name_0
+                wenn name_0
             }
         """
         mod = build_module(code)

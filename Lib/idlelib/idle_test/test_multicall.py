@@ -44,5 +44,5 @@ klasse MultiCallTest(unittest.TestCase):
         self.assertIs(mctext.yview.__func__, Text.yview)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main(verbosity=2)

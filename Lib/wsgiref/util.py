@@ -14,7 +14,7 @@ klasse FileWrapper:
     def __init__(self, filelike, blksize=8192):
         self.filelike = filelike
         self.blksize = blksize
-        if hasattr(filelike,'close'):
+        wenn hasattr(filelike,'close'):
             self.close = filelike.close
 
     def __iter__(self):
@@ -22,16 +22,16 @@ klasse FileWrapper:
 
     def __next__(self):
         data = self.filelike.read(self.blksize)
-        if data:
+        wenn data:
             return data
         raise StopIteration
 
 def guess_scheme(environ):
     """Return a guess fuer whether 'wsgi.url_scheme' should be 'http' or 'https'
     """
-    if environ.get("HTTPS") in ('yes','on','1'):
+    wenn environ.get("HTTPS") in ('yes','on','1'):
         return 'https'
-    else:
+    sonst:
         return 'http'
 
 def application_uri(environ):
@@ -39,16 +39,16 @@ def application_uri(environ):
     url = environ['wsgi.url_scheme']+'://'
     from urllib.parse import quote
 
-    if environ.get('HTTP_HOST'):
+    wenn environ.get('HTTP_HOST'):
         url += environ['HTTP_HOST']
-    else:
+    sonst:
         url += environ['SERVER_NAME']
 
-        if environ['wsgi.url_scheme'] == 'https':
-            if environ['SERVER_PORT'] != '443':
+        wenn environ['wsgi.url_scheme'] == 'https':
+            wenn environ['SERVER_PORT'] != '443':
                 url += ':' + environ['SERVER_PORT']
-        else:
-            if environ['SERVER_PORT'] != '80':
+        sonst:
+            wenn environ['SERVER_PORT'] != '80':
                 url += ':' + environ['SERVER_PORT']
 
     url += quote(environ.get('SCRIPT_NAME') or '/', encoding='latin1')
@@ -59,11 +59,11 @@ def request_uri(environ, include_query=True):
     url = application_uri(environ)
     from urllib.parse import quote
     path_info = quote(environ.get('PATH_INFO',''), safe='/;=,', encoding='latin1')
-    if not environ.get('SCRIPT_NAME'):
+    wenn not environ.get('SCRIPT_NAME'):
         url += path_info[1:]
-    else:
+    sonst:
         url += path_info
-    if include_query and environ.get('QUERY_STRING'):
+    wenn include_query and environ.get('QUERY_STRING'):
         url += '?' + environ['QUERY_STRING']
     return url
 
@@ -71,7 +71,7 @@ def shift_path_info(environ):
     """Shift a name from PATH_INFO to SCRIPT_NAME, returning it
 
     If there are no remaining path segments in PATH_INFO, return None.
-    Note: 'environ' is modified in-place; use a copy if you need to keep
+    Note: 'environ' is modified in-place; use a copy wenn you need to keep
     the original PATH_INFO or SCRIPT_NAME.
 
     Note: when PATH_INFO is just a '/', this returns '' and appends a trailing
@@ -81,19 +81,19 @@ def shift_path_info(environ):
     '/x' and '/x/' when traversing to objects.
     """
     path_info = environ.get('PATH_INFO','')
-    if not path_info:
+    wenn not path_info:
         return None
 
     path_parts = path_info.split('/')
-    path_parts[1:-1] = [p fuer p in path_parts[1:-1] if p and p != '.']
+    path_parts[1:-1] = [p fuer p in path_parts[1:-1] wenn p and p != '.']
     name = path_parts[1]
     del path_parts[1]
 
     script_name = environ.get('SCRIPT_NAME','')
     script_name = posixpath.normpath(script_name+'/'+name)
-    if script_name.endswith('/'):
+    wenn script_name.endswith('/'):
         script_name = script_name[:-1]
-    if not name and not script_name.endswith('/'):
+    wenn not name and not script_name.endswith('/'):
         script_name += '/'
 
     environ['SCRIPT_NAME'] = script_name
@@ -101,10 +101,10 @@ def shift_path_info(environ):
 
     # Special case: '/.' on PATH_INFO doesn't get stripped,
     # because we don't strip the last element of PATH_INFO
-    # if there's only one path part left.  Instead of fixing this
+    # wenn there's only one path part left.  Instead of fixing this
     # above, we fix it here so that PATH_INFO gets normalized to
     # an empty string in the environ.
-    if name=='.':
+    wenn name=='.':
         name = None
     return name
 
@@ -127,7 +127,7 @@ def setup_testing_defaults(environ):
     environ.setdefault('HTTP_HOST',environ['SERVER_NAME'])
     environ.setdefault('REQUEST_METHOD','GET')
 
-    if 'SCRIPT_NAME' not in environ and 'PATH_INFO' not in environ:
+    wenn 'SCRIPT_NAME' not in environ and 'PATH_INFO' not in environ:
         environ.setdefault('SCRIPT_NAME','')
         environ.setdefault('PATH_INFO','/')
 
@@ -141,9 +141,9 @@ def setup_testing_defaults(environ):
     environ.setdefault('wsgi.errors', StringIO())
     environ.setdefault('wsgi.url_scheme',guess_scheme(environ))
 
-    if environ['wsgi.url_scheme']=='http':
+    wenn environ['wsgi.url_scheme']=='http':
         environ.setdefault('SERVER_PORT', '80')
-    elif environ['wsgi.url_scheme']=='https':
+    sowenn environ['wsgi.url_scheme']=='https':
         environ.setdefault('SERVER_PORT', '443')
 
 
@@ -155,5 +155,5 @@ _hoppish = {
 }.__contains__
 
 def is_hop_by_hop(header_name):
-    """Return true if 'header_name' is an HTTP/1.1 "Hop-by-Hop" header"""
+    """Return true wenn 'header_name' is an HTTP/1.1 "Hop-by-Hop" header"""
     return _hoppish(header_name.lower())

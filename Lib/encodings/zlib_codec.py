@@ -31,10 +31,10 @@ klasse IncrementalEncoder(codecs.IncrementalEncoder):
         self.compressobj = zlib.compressobj()
 
     def encode(self, input, final=False):
-        if final:
+        wenn final:
             c = self.compressobj.compress(input)
             return c + self.compressobj.flush()
-        else:
+        sonst:
             return self.compressobj.compress(input)
 
     def reset(self):
@@ -47,10 +47,10 @@ klasse IncrementalDecoder(codecs.IncrementalDecoder):
         self.decompressobj = zlib.decompressobj()
 
     def decode(self, input, final=False):
-        if final:
+        wenn final:
             c = self.decompressobj.decompress(input)
             return c + self.decompressobj.flush()
-        else:
+        sonst:
             return self.decompressobj.decompress(input)
 
     def reset(self):

@@ -45,11 +45,11 @@ klasse PyCompileError(Exception):
 
     def __init__(self, exc_type, exc_value, file, msg=''):
         exc_type_name = exc_type.__name__
-        if exc_type is SyntaxError:
+        wenn exc_type is SyntaxError:
             tbtext = ''.join(traceback.format_exception_only(
                 exc_type, exc_value))
             errmsg = tbtext.replace('File "<string>"', 'File "%s"' % file)
-        else:
+        sonst:
             errmsg = "Sorry: %s: %s" % (exc_type_name,exc_value)
 
         Exception.__init__(self,msg or errmsg,exc_type_name,exc_value,file)
@@ -70,9 +70,9 @@ klasse PycInvalidationMode(enum.Enum):
 
 
 def _get_default_invalidation_mode():
-    if os.environ.get('SOURCE_DATE_EPOCH'):
+    wenn os.environ.get('SOURCE_DATE_EPOCH'):
         return PycInvalidationMode.CHECKED_HASH
-    else:
+    sonst:
         return PycInvalidationMode.TIMESTAMP
 
 
@@ -102,10 +102,10 @@ def compile(file, cfile=None, dfile=None, doraise=False, optimize=-1,
 
     Note that it isn't necessary to byte-compile Python modules for
     execution efficiency -- Python itself byte-compiles a module when
-    it is loaded, and if it can, writes out the bytecode to the
+    it is loaded, and wenn it can, writes out the bytecode to the
     corresponding .pyc file.
 
-    However, if a Python installation is shared between users, it is a
+    However, wenn a Python installation is shared between users, it is a
     good idea to byte-compile all modules upon installation, since
     other users may not be able to write in the source directories,
     and thus they won't be able to write the .pyc file, and then
@@ -116,27 +116,27 @@ def compile(file, cfile=None, dfile=None, doraise=False, optimize=-1,
     byte-compile all installed files (or all files in selected
     directories).
 
-    Do note that FileExistsError is raised if cfile ends up pointing at a
+    Do note that FileExistsError is raised wenn cfile ends up pointing at a
     non-regular file or symlink. Because the compilation uses a file renaming,
     the resulting file would be regular and thus not the same type of file as
     it was previously.
     """
-    if invalidation_mode is None:
+    wenn invalidation_mode is None:
         invalidation_mode = _get_default_invalidation_mode()
-    if cfile is None:
-        if optimize >= 0:
-            optimization = optimize if optimize >= 1 else ''
+    wenn cfile is None:
+        wenn optimize >= 0:
+            optimization = optimize wenn optimize >= 1 sonst ''
             cfile = importlib.util.cache_from_source(file,
                                                      optimization=optimization)
-        else:
+        sonst:
             cfile = importlib.util.cache_from_source(file)
-    if os.path.islink(cfile):
-        msg = ('{} is a symlink and will be changed into a regular file if '
+    wenn os.path.islink(cfile):
+        msg = ('{} is a symlink and will be changed into a regular file wenn '
                'import writes a byte-compiled file to it')
         raise FileExistsError(msg.format(cfile))
-    elif os.path.exists(cfile) and not os.path.isfile(cfile):
+    sowenn os.path.exists(cfile) and not os.path.isfile(cfile):
         msg = ('{} is a non-regular file and will be changed into a regular '
-               'one if import writes a byte-compiled file to it')
+               'one wenn import writes a byte-compiled file to it')
         raise FileExistsError(msg.format(cfile))
     loader = importlib.machinery.SourceFileLoader('<py_compile>', file)
     source_bytes = loader.get_data(file)
@@ -145,23 +145,23 @@ def compile(file, cfile=None, dfile=None, doraise=False, optimize=-1,
                                      _optimize=optimize)
     except Exception as err:
         py_exc = PyCompileError(err.__class__, err, dfile or file)
-        if quiet < 2:
-            if doraise:
+        wenn quiet < 2:
+            wenn doraise:
                 raise py_exc
-            else:
+            sonst:
                 sys.stderr.write(py_exc.msg + '\n')
         return
     try:
         dirname = os.path.dirname(cfile)
-        if dirname:
+        wenn dirname:
             os.makedirs(dirname)
     except FileExistsError:
         pass
-    if invalidation_mode == PycInvalidationMode.TIMESTAMP:
+    wenn invalidation_mode == PycInvalidationMode.TIMESTAMP:
         source_stats = loader.path_stats(file)
         bytecode = importlib._bootstrap_external._code_to_timestamp_pyc(
             code, source_stats['mtime'], source_stats['size'])
-    else:
+    sonst:
         source_hash = importlib.util.source_hash(source_bytes)
         bytecode = importlib._bootstrap_external._code_to_hash_pyc(
             code,
@@ -189,24 +189,24 @@ def main():
         help='Files to compile',
     )
     args = parser.parse_args()
-    if args.filenames == ['-']:
+    wenn args.filenames == ['-']:
         filenames = [filename.rstrip('\n') fuer filename in sys.stdin.readlines()]
-    else:
+    sonst:
         filenames = args.filenames
     fuer filename in filenames:
         try:
             compile(filename, doraise=True)
         except PyCompileError as error:
-            if args.quiet:
+            wenn args.quiet:
                 parser.exit(1)
-            else:
+            sonst:
                 parser.exit(1, error.msg)
         except OSError as error:
-            if args.quiet:
+            wenn args.quiet:
                 parser.exit(1)
-            else:
+            sonst:
                 parser.exit(1, str(error))
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     main()

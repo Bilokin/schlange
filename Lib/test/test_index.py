@@ -271,5 +271,5 @@ klasse OverflowTestCase(unittest.TestCase):
         self.assertRaises(OverflowError, lambda: "a" * self.neg)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

@@ -10,12 +10,12 @@ def unrepr(value):
 
 def parse_entries(entries, *, ignoresep=None):
     fuer entry in entries:
-        if ignoresep and ignoresep in entry:
+        wenn ignoresep and ignoresep in entry:
             subentries = [entry]
-        else:
+        sonst:
             subentries = entry.strip().replace(',', ' ').split()
         fuer item in subentries:
-            if item.startswith('+'):
+            wenn item.startswith('+'):
                 filename = item[1:]
                 try:
                     infile = open(filename)
@@ -25,18 +25,18 @@ def parse_entries(entries, *, ignoresep=None):
                 with infile:
                     # We read the entire file here to ensure the file
                     # gets closed sooner rather than later.  Note that
-                    # the file would stay open if this iterator is never
+                    # the file would stay open wenn this iterator is never
                     # exhausted.
                     lines = infile.read().splitlines()
                 fuer line in _iter_significant_lines(lines):
                     yield line, filename
-            else:
+            sonst:
                 yield item, None
 
 
 def _iter_significant_lines(lines):
     fuer line in lines:
         line = line.partition('#')[0]
-        if not line.strip():
+        wenn not line.strip():
             continue
         yield line

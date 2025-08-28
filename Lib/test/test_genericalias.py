@@ -144,17 +144,17 @@ klasse BaseTest(unittest.TestCase):
                      Template,
                      Interpolation,
                     ]
-    if ctypes is not None:
+    wenn ctypes is not None:
         generic_types.extend((ctypes.Array, ctypes.LibraryLoader, ctypes.py_object))
-    if ValueProxy is not None:
+    wenn ValueProxy is not None:
         generic_types.extend((ValueProxy, DictProxy, ListProxy, ApplyResult,
                               MPSimpleQueue, MPQueue, MPJoinableQueue))
-    if Event is not None:
+    wenn Event is not None:
         generic_types.append(Event)
 
     def test_subscriptable(self):
         fuer t in self.generic_types:
-            if t is None:
+            wenn t is None:
                 continue
             tname = t.__name__
             with self.subTest(f"Testing {tname}"):
@@ -176,16 +176,16 @@ klasse BaseTest(unittest.TestCase):
             with self.subTest(f"Testing {tname}"):
                 alias = t[int]
                 self.assertEqual(alias(), t())
-                if t is dict:
+                wenn t is dict:
                     self.assertEqual(alias(iter([('a', 1), ('b', 2)])), dict(a=1, b=2))
                     self.assertEqual(alias(a=1, b=2), dict(a=1, b=2))
-                elif t is defaultdict:
+                sowenn t is defaultdict:
                     def default():
                         return 'value'
                     a = alias(default)
                     d = defaultdict(default)
                     self.assertEqual(a['test'], d['test'])
-                else:
+                sonst:
                     self.assertEqual(alias(iter((1, 2, 3))), t((1, 2, 3)))
 
     def test_unbound_methods(self):
@@ -439,7 +439,7 @@ klasse BaseTest(unittest.TestCase):
 
     def test_weakref(self):
         fuer t in self.generic_types:
-            if t is None:
+            wenn t is None:
                 continue
             tname = t.__name__
             with self.subTest(f"Testing {tname}"):
@@ -571,5 +571,5 @@ klasse TypeIterationTests(unittest.TestCase):
             self.assertNotIsInstance(type_to_test, Iterable)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

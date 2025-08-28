@@ -31,16 +31,16 @@ klasse SymbolTableFactory:
         self.__memo = weakref.WeakValueDictionary()
 
     def new(self, table, filename):
-        if table.type == _symtable.TYPE_FUNCTION:
+        wenn table.type == _symtable.TYPE_FUNCTION:
             return Function(table, filename)
-        if table.type == _symtable.TYPE_CLASS:
+        wenn table.type == _symtable.TYPE_CLASS:
             return Class(table, filename)
         return SymbolTable(table, filename)
 
     def __call__(self, table, filename):
         key = table, filename
         obj = self.__memo.get(key, None)
-        if obj is None:
+        wenn obj is None:
             obj = self.__memo[key] = self.new(table, filename)
         return obj
 
@@ -65,14 +65,14 @@ klasse SymbolTable:
         self._symbols = {}
 
     def __repr__(self):
-        if self.__class__ == SymbolTable:
+        wenn self.__class__ == SymbolTable:
             kind = ""
-        else:
+        sonst:
             kind = "%s " % self.__class__.__name__
 
-        if self._table.name == "top":
+        wenn self._table.name == "top":
             return "<{0}SymbolTable fuer module {1}>".format(kind, self._filename)
-        else:
+        sonst:
             return "<{0}SymbolTable fuer {1} in {2}>".format(kind,
                                                             self._table.name,
                                                             self._filename)
@@ -83,19 +83,19 @@ klasse SymbolTable:
         The value returned is one of the values in
         the ``SymbolTableType`` enumeration.
         """
-        if self._table.type == _symtable.TYPE_MODULE:
+        wenn self._table.type == _symtable.TYPE_MODULE:
             return SymbolTableType.MODULE
-        if self._table.type == _symtable.TYPE_FUNCTION:
+        wenn self._table.type == _symtable.TYPE_FUNCTION:
             return SymbolTableType.FUNCTION
-        if self._table.type == _symtable.TYPE_CLASS:
+        wenn self._table.type == _symtable.TYPE_CLASS:
             return SymbolTableType.CLASS
-        if self._table.type == _symtable.TYPE_ANNOTATION:
+        wenn self._table.type == _symtable.TYPE_ANNOTATION:
             return SymbolTableType.ANNOTATION
-        if self._table.type == _symtable.TYPE_TYPE_ALIAS:
+        wenn self._table.type == _symtable.TYPE_TYPE_ALIAS:
             return SymbolTableType.TYPE_ALIAS
-        if self._table.type == _symtable.TYPE_TYPE_PARAMETERS:
+        wenn self._table.type == _symtable.TYPE_TYPE_PARAMETERS:
             return SymbolTableType.TYPE_PARAMETERS
-        if self._table.type == _symtable.TYPE_TYPE_VARIABLE:
+        wenn self._table.type == _symtable.TYPE_TYPE_VARIABLE:
             return SymbolTableType.TYPE_VARIABLE
         assert False, f"unexpected type: {self._table.type}"
 
@@ -108,7 +108,7 @@ klasse SymbolTable:
         """Return the table's name.
 
         This corresponds to the name of the class, function
-        or 'top' if the table is fuer a class, function or
+        or 'top' wenn the table is fuer a class, function or
         global respectively.
         """
         return self._table.name
@@ -120,18 +120,18 @@ klasse SymbolTable:
         return self._table.lineno
 
     def is_optimized(self):
-        """Return *True* if the locals in the table
+        """Return *True* wenn the locals in the table
         are optimizable.
         """
         return bool(self._table.type == _symtable.TYPE_FUNCTION)
 
     def is_nested(self):
-        """Return *True* if the block is a nested class
+        """Return *True* wenn the block is a nested class
         or function."""
         return bool(self._table.nested)
 
     def has_children(self):
-        """Return *True* if the block has nested namespaces.
+        """Return *True* wenn the block has nested namespaces.
         """
         return bool(self._table.children)
 
@@ -146,7 +146,7 @@ klasse SymbolTable:
         Returns a *Symbol* instance.
         """
         sym = self._symbols.get(name)
-        if sym is None:
+        wenn sym is None:
             flags = self._table.symbols[name]
             namespaces = self.__check_children(name)
             module_scope = (self._table.name == "top")
@@ -163,7 +163,7 @@ klasse SymbolTable:
     def __check_children(self, name):
         return [_newSymbolTable(st, self._filename)
                 fuer st in self._table.children
-                if st.name == name]
+                wenn st.name == name]
 
     def get_children(self):
         """Return a list of the nested symbol tables.
@@ -187,19 +187,19 @@ klasse Function(SymbolTable):
 
     def __idents_matching(self, test_func):
         return tuple(ident fuer ident in self.get_identifiers()
-                     if test_func(self._table.symbols[ident]))
+                     wenn test_func(self._table.symbols[ident]))
 
     def get_parameters(self):
         """Return a tuple of parameters to the function.
         """
-        if self.__params is None:
+        wenn self.__params is None:
             self.__params = self.__idents_matching(lambda x:x & DEF_PARAM)
         return self.__params
 
     def get_locals(self):
         """Return a tuple of locals in the function.
         """
-        if self.__locals is None:
+        wenn self.__locals is None:
             locs = (LOCAL, CELL)
             test = lambda x: _get_scope(x) in locs
             self.__locals = self.__idents_matching(test)
@@ -208,7 +208,7 @@ klasse Function(SymbolTable):
     def get_globals(self):
         """Return a tuple of globals in the function.
         """
-        if self.__globals is None:
+        wenn self.__globals is None:
             glob = (GLOBAL_IMPLICIT, GLOBAL_EXPLICIT)
             test = lambda x: _get_scope(x) in glob
             self.__globals = self.__idents_matching(test)
@@ -217,14 +217,14 @@ klasse Function(SymbolTable):
     def get_nonlocals(self):
         """Return a tuple of nonlocals in the function.
         """
-        if self.__nonlocals is None:
+        wenn self.__nonlocals is None:
             self.__nonlocals = self.__idents_matching(lambda x:x & DEF_NONLOCAL)
         return self.__nonlocals
 
     def get_frees(self):
         """Return a tuple of free variables in the function.
         """
-        if self.__frees is None:
+        wenn self.__frees is None:
             is_free = lambda x: _get_scope(x) == FREE
             self.__frees = self.__idents_matching(is_free)
         return self.__frees
@@ -243,7 +243,7 @@ klasse Class(SymbolTable):
                       f'and will be removed in Python 3.16.',
                       DeprecationWarning, stacklevel=2)
 
-        if self.__methods is None:
+        wenn self.__methods is None:
             d = {}
 
             def is_local_symbol(ident):
@@ -252,16 +252,16 @@ klasse Class(SymbolTable):
 
             fuer st in self._table.children:
                 # pick the function-like symbols that are local identifiers
-                if is_local_symbol(st.name):
+                wenn is_local_symbol(st.name):
                     match st.type:
                         case _symtable.TYPE_FUNCTION:
                             d[st.name] = 1
                         case _symtable.TYPE_TYPE_PARAMETERS:
                             # Get the function-def block in the annotation
-                            # scope 'st' with the same identifier, if any.
+                            # scope 'st' with the same identifier, wenn any.
                             scope_name = st.name
                             fuer c in st.children:
-                                if c.name == scope_name and c.type == _symtable.TYPE_FUNCTION:
+                                wenn c.name == scope_name and c.type == _symtable.TYPE_FUNCTION:
                                     d[scope_name] = 1
                                     break
             self.__methods = tuple(d)
@@ -286,7 +286,7 @@ klasse Symbol:
 
     def _flags_str(self):
         fuer flagname, flagvalue in _flags:
-            if self.__flags & flagvalue == flagvalue:
+            wenn self.__flags & flagvalue == flagvalue:
                 yield flagname
 
     def get_name(self):
@@ -295,80 +295,80 @@ klasse Symbol:
         return self.__name
 
     def is_referenced(self):
-        """Return *True* if the symbol is used in
+        """Return *True* wenn the symbol is used in
         its block.
         """
         return bool(self.__flags & USE)
 
     def is_parameter(self):
-        """Return *True* if the symbol is a parameter.
+        """Return *True* wenn the symbol is a parameter.
         """
         return bool(self.__flags & DEF_PARAM)
 
     def is_type_parameter(self):
-        """Return *True* if the symbol is a type parameter.
+        """Return *True* wenn the symbol is a type parameter.
         """
         return bool(self.__flags & DEF_TYPE_PARAM)
 
     def is_global(self):
-        """Return *True* if the symbol is global.
+        """Return *True* wenn the symbol is global.
         """
         return bool(self.__scope in (GLOBAL_IMPLICIT, GLOBAL_EXPLICIT)
                     or (self.__module_scope and self.__flags & DEF_BOUND))
 
     def is_nonlocal(self):
-        """Return *True* if the symbol is nonlocal."""
+        """Return *True* wenn the symbol is nonlocal."""
         return bool(self.__flags & DEF_NONLOCAL)
 
     def is_declared_global(self):
-        """Return *True* if the symbol is declared global
+        """Return *True* wenn the symbol is declared global
         with a global statement."""
         return bool(self.__scope == GLOBAL_EXPLICIT)
 
     def is_local(self):
-        """Return *True* if the symbol is local.
+        """Return *True* wenn the symbol is local.
         """
         return bool(self.__scope in (LOCAL, CELL)
                     or (self.__module_scope and self.__flags & DEF_BOUND))
 
     def is_annotated(self):
-        """Return *True* if the symbol is annotated.
+        """Return *True* wenn the symbol is annotated.
         """
         return bool(self.__flags & DEF_ANNOT)
 
     def is_free(self):
-        """Return *True* if a referenced symbol is
+        """Return *True* wenn a referenced symbol is
         not assigned to.
         """
         return bool(self.__scope == FREE)
 
     def is_free_class(self):
-        """Return *True* if a class-scoped symbol is free from
+        """Return *True* wenn a class-scoped symbol is free from
         the perspective of a method."""
         return bool(self.__flags & DEF_FREE_CLASS)
 
     def is_imported(self):
-        """Return *True* if the symbol is created from
+        """Return *True* wenn the symbol is created from
         an import statement.
         """
         return bool(self.__flags & DEF_IMPORT)
 
     def is_assigned(self):
-        """Return *True* if a symbol is assigned to."""
+        """Return *True* wenn a symbol is assigned to."""
         return bool(self.__flags & DEF_LOCAL)
 
     def is_comp_iter(self):
-        """Return *True* if the symbol is a comprehension iteration variable.
+        """Return *True* wenn the symbol is a comprehension iteration variable.
         """
         return bool(self.__flags & DEF_COMP_ITER)
 
     def is_comp_cell(self):
-        """Return *True* if the symbol is a cell in an inlined comprehension.
+        """Return *True* wenn the symbol is a cell in an inlined comprehension.
         """
         return bool(self.__flags & DEF_COMP_CELL)
 
     def is_namespace(self):
-        """Returns *True* if name binding introduces new namespace.
+        """Returns *True* wenn name binding introduces new namespace.
 
         If the name is used as the target of a function or class
         statement, this will be true.
@@ -387,19 +387,19 @@ klasse Symbol:
     def get_namespace(self):
         """Return the single namespace bound to this name.
 
-        Raises ValueError if the name is bound to multiple namespaces
+        Raises ValueError wenn the name is bound to multiple namespaces
         or no namespace.
         """
-        if len(self.__namespaces) == 0:
+        wenn len(self.__namespaces) == 0:
             raise ValueError("name is not bound to any namespaces")
-        elif len(self.__namespaces) > 1:
+        sowenn len(self.__namespaces) > 1:
             raise ValueError("name is bound to multiple namespaces")
-        else:
+        sonst:
             return self.__namespaces[0]
 
 
 _flags = [('USE', USE)]
-_flags.extend(kv fuer kv in globals().items() if kv[0].startswith('DEF_'))
+_flags.extend(kv fuer kv in globals().items() wenn kv[0].startswith('DEF_'))
 _scopes_names = ('FREE', 'LOCAL', 'GLOBAL_IMPLICIT', 'GLOBAL_EXPLICIT', 'CELL')
 _scopes_value_to_name = {globals()[n]: n fuer n in _scopes_names}
 
@@ -408,10 +408,10 @@ def main(args):
     import sys
     def print_symbols(table, level=0):
         indent = '    ' * level
-        nested = "nested " if table.is_nested() else ""
-        if table.get_type() == 'module':
+        nested = "nested " wenn table.is_nested() sonst ""
+        wenn table.get_type() == 'module':
             what = f'from file {table._filename!r}'
-        else:
+        sonst:
             what = f'{table.get_name()!r}'
         print(f'{indent}symbol table fuer {nested}{table.get_type()} {what}:')
         fuer ident in table.get_identifiers():
@@ -424,16 +424,16 @@ def main(args):
             print_symbols(table2, level + 1)
 
     fuer filename in args or ['-']:
-        if filename == '-':
+        wenn filename == '-':
             src = sys.stdin.read()
             filename = '<stdin>'
-        else:
+        sonst:
             with open(filename, 'rb') as f:
                 src = f.read()
         mod = symtable(src, filename, 'exec')
         print_symbols(mod)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     import sys
     main(sys.argv[1:])

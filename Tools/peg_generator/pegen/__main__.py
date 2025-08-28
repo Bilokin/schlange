@@ -36,12 +36,12 @@ def generate_c_code(
             verbose_tokenizer,
             verbose_parser,
             args.verbose,
-            keep_asserts_in_extension=False if args.optimized else True,
+            keep_asserts_in_extension=False wenn args.optimized sonst True,
             skip_actions=args.skip_actions,
         )
         return grammar, parser, tokenizer, gen
     except Exception as err:
-        if args.verbose:
+        wenn args.verbose:
             raise  # Show traceback
         traceback.print_exception(err.__class__, err, None)
         sys.stderr.write("For full traceback, use -v\n")
@@ -66,7 +66,7 @@ def generate_python_code(
         )
         return grammar, parser, tokenizer, gen
     except Exception as err:
-        if args.verbose:
+        wenn args.verbose:
             raise  # Show traceback
         traceback.print_exception(err.__class__, err, None)
         sys.stderr.write("For full traceback, use -v\n")
@@ -131,7 +131,7 @@ def main() -> None:
     from pegen.testutil import print_memstats
 
     args = argparser.parse_args()
-    if "func" not in args:
+    wenn "func" not in args:
         argparser.error("Must specify the target language mode ('c' or 'python')")
 
     t0 = time.time()
@@ -140,8 +140,8 @@ def main() -> None:
 
     validate_grammar(grammar)
 
-    if not args.quiet:
-        if args.verbose:
+    wenn not args.quiet:
+        wenn args.verbose:
             print("Raw Grammar:")
             fuer line in repr(grammar).splitlines():
                 print(" ", line)
@@ -150,45 +150,45 @@ def main() -> None:
         fuer line in str(grammar).splitlines():
             print(" ", line)
 
-    if args.verbose:
+    wenn args.verbose:
         print("First Graph:")
         fuer src, dsts in gen.first_graph.items():
             print(f"  {src} -> {', '.join(dsts)}")
         print("First SCCS:")
         fuer scc in gen.first_sccs:
             print(" ", scc, end="")
-            if len(scc) > 1:
+            wenn len(scc) > 1:
                 print(
                     "  # Indirectly left-recursive; leaders:",
-                    {name fuer name in scc if grammar.rules[name].leader},
+                    {name fuer name in scc wenn grammar.rules[name].leader},
                 )
-            else:
+            sonst:
                 name = next(iter(scc))
-                if name in gen.first_graph[name]:
+                wenn name in gen.first_graph[name]:
                     print("  # Left-recursive")
-                else:
+                sonst:
                     print()
 
-    if args.verbose:
+    wenn args.verbose:
         dt = t1 - t0
         diag = tokenizer.diagnose()
         nlines = diag.end[0]
-        if diag.type == token.ENDMARKER:
+        wenn diag.type == token.ENDMARKER:
             nlines -= 1
         print(f"Total time: {dt:.3f} sec; {nlines} lines", end="")
-        if dt:
+        wenn dt:
             print(f"; {nlines / dt:.0f} lines/sec")
-        else:
+        sonst:
             print()
         print("Caches sizes:")
         print(f"  token array : {len(tokenizer._tokens):10}")
         print(f"        cache : {len(parser._cache):10}")
-        if not print_memstats():
+        wenn not print_memstats():
             print("(Can't find psutil; install it fuer memory stats.)")
 
 
-if __name__ == "__main__":
-    if sys.version_info < (3, 8):
+wenn __name__ == "__main__":
+    wenn sys.version_info < (3, 8):
         print("ERROR: using pegen requires at least Python 3.8!", file=sys.stderr)
         sys.exit(1)
     main()

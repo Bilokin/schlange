@@ -63,7 +63,7 @@ klasse ParenMatchTest(unittest.TestCase):
 
                 pm.flash_paren_event('event')
                 self.assertIn('<<parenmatch-check-restore>>', text.event_info())
-                if style == 'parens':
+                wenn style == 'parens':
                     self.assertTupleEqual(text.tag_nextrange('paren', '1.0'),
                                           ('1.10', '1.11'))
                 self.assertTupleEqual(
@@ -108,5 +108,5 @@ klasse ParenMatchTest(unittest.TestCase):
         self.assertFalse(pm.restore_event.called)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main(verbosity=2)

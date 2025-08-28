@@ -44,15 +44,15 @@ def uu_decode(input, errors='strict'):
     # Find start of encoded data
     while 1:
         s = readline()
-        if not s:
+        wenn not s:
             raise ValueError('Missing "begin" line in input data')
-        if s[:5] == b'begin':
+        wenn s[:5] == b'begin':
             break
 
     # Decode
     while True:
         s = readline()
-        if not s or s == b'end\n':
+        wenn not s or s == b'end\n':
             break
         try:
             data = binascii.a2b_uu(s)
@@ -62,7 +62,7 @@ def uu_decode(input, errors='strict'):
             data = binascii.a2b_uu(s[:nbytes])
             #sys.stderr.write("Warning: %s\n" % str(v))
         write(data)
-    if not s:
+    wenn not s:
         raise ValueError('Truncated input data')
 
     return (outfile.getvalue(), len(input))

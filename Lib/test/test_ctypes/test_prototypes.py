@@ -34,7 +34,7 @@ testdll = CDLL(_ctypes_test.__file__)
 # Starting with Python 2.5, id(anything) is always non-negative, and
 # the ctypes addressof() inherits that via PyLong_FromVoidPtr().
 def positive_address(a):
-    if a >= 0:
+    wenn a >= 0:
         return a
     # View the bits in `a` as unsigned instead.
     import struct
@@ -66,7 +66,7 @@ klasse CharPointersTestCase(unittest.TestCase):
             func()
         except TypeError as details:
             self.assertEqual(str(details), "required argument 'input' missing")
-        else:
+        sonst:
             self.fail("TypeError not raised")
 
         self.assertEqual(func(None), None)
@@ -75,9 +75,9 @@ klasse CharPointersTestCase(unittest.TestCase):
 
     def test_int_pointer_arg(self):
         func = testdll._testfunc_p_p
-        if sizeof(c_longlong) == sizeof(c_void_p):
+        wenn sizeof(c_longlong) == sizeof(c_void_p):
             func.restype = c_longlong
-        else:
+        sonst:
             func.restype = c_long
         self.assertEqual(0, func(0))
 
@@ -222,5 +222,5 @@ klasse ArrayTest(unittest.TestCase):
         CFUNCTYPE(None, c_int * 3)(func)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

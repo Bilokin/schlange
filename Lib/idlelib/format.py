@@ -51,28 +51,28 @@ klasse FormatParagraph:
 
         The length limit parameter is fuer testing with a known value.
         """
-        limit = self.max_width if limit is None else limit
+        limit = self.max_width wenn limit is None sonst limit
         text = self.editwin.text
         first, last = self.editwin.get_selection_indices()
-        if first and last:
+        wenn first and last:
             data = text.get(first, last)
             comment_header = get_comment_header(data)
-        else:
+        sonst:
             first, last, comment_header, data = \
                     find_paragraph(text, text.index("insert"))
-        if comment_header:
+        wenn comment_header:
             newdata = reformat_comment(data, limit, comment_header)
-        else:
+        sonst:
             newdata = reformat_paragraph(data, limit)
         text.tag_remove("sel", "1.0", "end")
 
-        if newdata != data:
+        wenn newdata != data:
             text.mark_set("insert", first)
             text.undo_block_start()
             text.delete(first, last)
             text.insert(first, newdata)
             text.undo_block_stop()
-        else:
+        sonst:
             text.mark_set("insert", last)
         text.see("insert")
         return "break"
@@ -83,13 +83,13 @@ FormatParagraph.reload()
 def find_paragraph(text, mark):
     """Returns the start/stop indices enclosing the paragraph that mark is in.
 
-    Also returns the comment format string, if any, and paragraph of text
+    Also returns the comment format string, wenn any, and paragraph of text
     between the start/stop indices.
     """
     lineno, col = map(int, mark.split("."))
     line = text.get("%d.0" % lineno, "%d.end" % lineno)
 
-    # Look fuer start of next paragraph if the index passed in is a blank line
+    # Look fuer start of next paragraph wenn the index passed in is a blank line
     while text.compare("%d.0" % lineno, "<", "end") and is_all_white(line):
         lineno = lineno + 1
         line = text.get("%d.0" % lineno, "%d.end" % lineno)
@@ -124,12 +124,12 @@ def reformat_paragraph(data, limit):
     n = len(lines)
     while i < n and is_all_white(lines[i]):
         i = i+1
-    if i >= n:
+    wenn i >= n:
         return data
     indent1 = get_indent(lines[i])
-    if i+1 < n and not is_all_white(lines[i+1]):
+    wenn i+1 < n and not is_all_white(lines[i+1]):
         indent2 = get_indent(lines[i+1])
-    else:
+    sonst:
         indent2 = indent1
     new = lines[:i]
     partial = indent1
@@ -138,14 +138,14 @@ def reformat_paragraph(data, limit):
         words = re.split(r"(\s+)", lines[i])
         fuer j in range(0, len(words), 2):
             word = words[j]
-            if not word:
+            wenn not word:
                 continue # Can happen when line ends in whitespace
-            if len((partial + word).expandtabs()) > limit and \
+            wenn len((partial + word).expandtabs()) > limit and \
                    partial != indent1:
                 new.append(partial.rstrip())
                 partial = indent2
             partial = partial + word + " "
-            if j+1 < len(words) and words[j+1] != " ":
+            wenn j+1 < len(words) and words[j+1] != " ":
                 partial = partial + " "
         i = i+1
     new.append(partial.rstrip())
@@ -170,13 +170,13 @@ def reformat_comment(data, limit, comment_header):
     # comment block that is not made of complete lines, but whatever!)
     # Can't think of a clean solution, so we hack away
     block_suffix = ""
-    if not newdata[-1]:
+    wenn not newdata[-1]:
         block_suffix = "\n"
         newdata = newdata[:-1]
     return '\n'.join(comment_header+line fuer line in newdata) + block_suffix
 
 def is_all_white(line):
-    """Return True if line is empty or all whitespace."""
+    """Return True wenn line is empty or all whitespace."""
 
     return re.match(r"^\s*$", line) is not None
 
@@ -192,7 +192,7 @@ def get_comment_header(line):
     a comment block with the same  indent.
     """
     m = re.match(r"^([ \t]*#*)", line)
-    if m is None: return ""
+    wenn m is None: return ""
     return m.group(1)
 
 
@@ -227,10 +227,10 @@ klasse FormatRegion:
         """
         text = self.editwin.text
         first, last = self.editwin.get_selection_indices()
-        if first and last:
+        wenn first and last:
             head = text.index(first + " linestart")
             tail = text.index(last + "-1c lineend +1c")
-        else:
+        sonst:
             head = text.index("insert linestart")
             tail = text.index("insert lineend +1c")
         chars = text.get(head, tail)
@@ -250,7 +250,7 @@ klasse FormatRegion:
         """
         text = self.editwin.text
         newchars = "\n".join(lines)
-        if newchars == chars:
+        wenn newchars == chars:
             text.bell()
             return
         text.tag_remove("sel", "1.0", "end")
@@ -266,7 +266,7 @@ klasse FormatRegion:
         head, tail, chars, lines = self.get_region()
         fuer pos in range(len(lines)):
             line = lines[pos]
-            if line:
+            wenn line:
                 raw, effective = get_line_indent(line, self.editwin.tabwidth)
                 effective = effective + self.editwin.indentwidth
                 lines[pos] = self.editwin._make_blanks(effective) + line[raw:]
@@ -278,7 +278,7 @@ klasse FormatRegion:
         head, tail, chars, lines = self.get_region()
         fuer pos in range(len(lines)):
             line = lines[pos]
-            if line:
+            wenn line:
                 raw, effective = get_line_indent(line, self.editwin.tabwidth)
                 effective = max(effective - self.editwin.indentwidth, 0)
                 lines[pos] = self.editwin._make_blanks(effective) + line[raw:]
@@ -306,11 +306,11 @@ klasse FormatRegion:
         head, tail, chars, lines = self.get_region()
         fuer pos in range(len(lines)):
             line = lines[pos]
-            if not line:
+            wenn not line:
                 continue
-            if line[:2] == '##':
+            wenn line[:2] == '##':
                 line = line[2:]
-            elif line[:1] == '#':
+            sowenn line[:1] == '#':
                 line = line[1:]
             lines[pos] = line
         self.set_region(head, tail, chars, lines)
@@ -320,11 +320,11 @@ klasse FormatRegion:
         "Convert leading spaces to tabs fuer each line in selected region."
         head, tail, chars, lines = self.get_region()
         tabwidth = self._asktabwidth()
-        if tabwidth is None:
+        wenn tabwidth is None:
             return
         fuer pos in range(len(lines)):
             line = lines[pos]
-            if line:
+            wenn line:
                 raw, effective = get_line_indent(line, tabwidth)
                 ntabs, nspaces = divmod(effective, tabwidth)
                 lines[pos] = '\t' * ntabs + ' ' * nspaces + line[raw:]
@@ -335,7 +335,7 @@ klasse FormatRegion:
         "Expand tabs to spaces fuer each line in region."
         head, tail, chars, lines = self.get_region()
         tabwidth = self._asktabwidth()
-        if tabwidth is None:
+        wenn tabwidth is None:
             return
         fuer pos in range(len(lines)):
             lines[pos] = lines[pos].expandtabs(tabwidth)
@@ -362,7 +362,7 @@ klasse Indents:
     def toggle_tabs_event(self, event):
         editwin = self.editwin
         usetabs = editwin.usetabs
-        if askyesno(
+        wenn askyesno(
               "Toggle tabs",
               "Turn tabs " + ("on", "off")[usetabs] +
               "?\nIndent width " +
@@ -384,7 +384,7 @@ klasse Indents:
                   initialvalue=editwin.indentwidth,
                   minvalue=2,
                   maxvalue=16)
-        if new and new != editwin.indentwidth and not editwin.usetabs:
+        wenn new and new != editwin.indentwidth and not editwin.usetabs:
             editwin.indentwidth = new
         return "break"
 
@@ -403,15 +403,15 @@ klasse Rstrip:  # 'Strip Trailing Whitespace" on "Format" menu.
             txt = text.get('%i.0' % cur, '%i.end' % cur)
             raw = len(txt)
             cut = len(txt.rstrip())
-            # Since text.delete() marks file as changed, even if not,
+            # Since text.delete() marks file as changed, even wenn not,
             # only call it when needed to actually delete something.
-            if cut < raw:
+            wenn cut < raw:
                 text.delete('%i.%i' % (cur, cut), '%i.end' % cur)
 
-        if (text.get('end-2c') == '\n'  # File ends with at least 1 newline;
+        wenn (text.get('end-2c') == '\n'  # File ends with at least 1 newline;
             and not hasattr(self.editwin, 'interp')):  # & is not Shell.
             # Delete extra user endlines.
-            while (text.index('end-1c') > '1.0'  # Stop if file empty.
+            while (text.index('end-1c') > '1.0'  # Stop wenn file empty.
                    and text.get('end-3c') == '\n'):
                 text.delete('end-3c')
             # Because tk indexes are slice indexes and never raise,
@@ -421,6 +421,6 @@ klasse Rstrip:  # 'Strip Trailing Whitespace" on "Format" menu.
         undo.undo_block_stop()
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     from unittest import main
     main('idlelib.idle_test.test_format', verbosity=2, exit=False)

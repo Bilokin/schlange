@@ -41,7 +41,7 @@ klasse Generator:
         outfp is the output file-like object fuer writing the message to.  It
         must have a write() method.
 
-        Optional mangle_from_ is a flag that, when True (the default if policy
+        Optional mangle_from_ is a flag that, when True (the default wenn policy
         is not set), escapes From_ lines in the body of the message by putting
         a '>' in front of them.
 
@@ -59,8 +59,8 @@ klasse Generator:
 
         """
 
-        if mangle_from_ is None:
-            mangle_from_ = True if policy is None else policy.mangle_from_
+        wenn mangle_from_ is None:
+            mangle_from_ = True wenn policy is None sonst policy.mangle_from_
         self._fp = outfp
         self._mangle_from_ = mangle_from_
         self.maxheaderlen = maxheaderlen
@@ -83,7 +83,7 @@ klasse Generator:
 
         linesep specifies the characters used to indicate a new line in
         the output.  The default value is determined by the policy specified
-        when the Generator instance was created or, if none was specified,
+        when the Generator instance was created or, wenn none was specified,
         from the policy associated with the msg.
 
         """
@@ -91,10 +91,10 @@ klasse Generator:
         # from the msg, and _encoded_XXX constants fuer operating on data that
         # has already been converted (to bytes in the BytesGenerator) and
         # inserted into a temporary buffer.
-        policy = msg.policy if self.policy is None else self.policy
-        if linesep is not None:
+        policy = msg.policy wenn self.policy is None sonst self.policy
+        wenn linesep is not None:
             policy = policy.clone(linesep=linesep)
-        if self.maxheaderlen is not None:
+        wenn self.maxheaderlen is not None:
             policy = policy.clone(max_line_length=self.maxheaderlen)
         self._NL = policy.linesep
         self._encoded_NL = self._encode(self._NL)
@@ -109,9 +109,9 @@ klasse Generator:
         try:
             self.policy = policy
             msg.policy = policy
-            if unixfrom:
+            wenn unixfrom:
                 ufrom = msg.get_unixfrom()
-                if not ufrom:
+                wenn not ufrom:
                     ufrom = 'From nobody ' + time.ctime(time.time())
                 self.write(ufrom + self._NL)
             self._write(msg)
@@ -149,17 +149,17 @@ klasse Generator:
 
     def _write_lines(self, lines):
         # We have to transform the line endings.
-        if not lines:
+        wenn not lines:
             return
         lines = NLCRE.split(lines)
         fuer line in lines[:-1]:
             self.write(line)
             self.write(self._NL)
-        if lines[-1]:
+        wenn lines[-1]:
             self.write(lines[-1])
-        # XXX logic tells me this else should be needed, but the tests fail
+        # XXX logic tells me this sonst should be needed, but the tests fail
         # with it and pass without it.  (NLCRE.split ends with a blank element
-        # if and only if there was a trailing newline.)
+        # wenn and only wenn there was a trailing newline.)
         #else:
         #    self.write(self._NL)
 
@@ -185,20 +185,20 @@ klasse Generator:
             munge_cte = self._munge_cte
             del self._munge_cte
         # If we munged the cte, copy the message again and re-fix the CTE.
-        if munge_cte:
+        wenn munge_cte:
             msg = deepcopy(msg)
-            # Preserve the header order if the CTE header already exists.
-            if msg.get('content-transfer-encoding') is None:
+            # Preserve the header order wenn the CTE header already exists.
+            wenn msg.get('content-transfer-encoding') is None:
                 msg['Content-Transfer-Encoding'] = munge_cte[0]
-            else:
+            sonst:
                 msg.replace_header('content-transfer-encoding', munge_cte[0])
             msg.replace_header('content-type', munge_cte[1])
-        # Write the headers.  First we see if the message object wants to
+        # Write the headers.  First we see wenn the message object wants to
         # handle that itself.  If not, we'll do it generically.
         meth = getattr(msg, '_write_headers', None)
-        if meth is None:
+        wenn meth is None:
             self._write_headers(msg)
-        else:
+        sonst:
             meth(self)
         self._fp.write(sfp.getvalue())
 
@@ -211,10 +211,10 @@ klasse Generator:
         sub = msg.get_content_subtype()
         specific = UNDERSCORE.join((main, sub)).replace('-', '_')
         meth = getattr(self, '_handle_' + specific, None)
-        if meth is None:
+        wenn meth is None:
             generic = main.replace('-', '_')
             meth = getattr(self, '_handle_' + generic, None)
-            if meth is None:
+            wenn meth is None:
                 meth = self._writeBody
         meth(msg)
 
@@ -225,12 +225,12 @@ klasse Generator:
     def _write_headers(self, msg):
         fuer h, v in msg.raw_items():
             folded = self.policy.fold(h, v)
-            if self.policy.verify_generated_headers:
+            wenn self.policy.verify_generated_headers:
                 linesep = self.policy.linesep
-                if not folded.endswith(linesep):
+                wenn not folded.endswith(linesep):
                     raise HeaderWriteError(
                         f'folded header does not end with {linesep!r}: {folded!r}')
-                if NEWLINE_WITHOUT_FWSP.search(folded.removesuffix(linesep)):
+                wenn NEWLINE_WITHOUT_FWSP.search(folded.removesuffix(linesep)):
                     raise HeaderWriteError(
                         f'folded header contains newline: {folded!r}')
             self.write(folded)
@@ -243,13 +243,13 @@ klasse Generator:
 
     def _handle_text(self, msg):
         payload = msg.get_payload()
-        if payload is None:
+        wenn payload is None:
             return
-        if not isinstance(payload, str):
+        wenn not isinstance(payload, str):
             raise TypeError('string payload expected: %s' % type(payload))
-        if _has_surrogates(msg._payload):
+        wenn _has_surrogates(msg._payload):
             charset = msg.get_param('charset')
-            if charset is not None:
+            wenn charset is not None:
                 # XXX: This copy stuff is an ugly hack to avoid modifying the
                 # existing message.
                 msg = deepcopy(msg)
@@ -258,7 +258,7 @@ klasse Generator:
                 payload = msg.get_payload()
                 self._munge_cte = (msg['content-transfer-encoding'],
                                    msg['content-type'])
-        if self._mangle_from_:
+        wenn self._mangle_from_:
             payload = fcre.sub('>From ', payload)
         self._write_lines(payload)
 
@@ -271,13 +271,13 @@ klasse Generator:
         # present in the payload.
         msgtexts = []
         subparts = msg.get_payload()
-        if subparts is None:
+        wenn subparts is None:
             subparts = []
-        elif isinstance(subparts, str):
+        sowenn isinstance(subparts, str):
             # e.g. a non-strict parse of a message with no starting boundary.
             self.write(subparts)
             return
-        elif not isinstance(subparts, list):
+        sowenn not isinstance(subparts, list):
             # Scalar payload
             subparts = [subparts]
         fuer part in subparts:
@@ -287,24 +287,24 @@ klasse Generator:
             msgtexts.append(s.getvalue())
         # BAW: What about boundaries that are wrapped in double-quotes?
         boundary = msg.get_boundary()
-        if not boundary:
+        wenn not boundary:
             # Create a boundary that doesn't appear in any of the
             # message texts.
             alltext = self._encoded_NL.join(msgtexts)
             boundary = self._make_boundary(alltext)
             msg.set_boundary(boundary)
         # If there's a preamble, write it out, with a trailing CRLF
-        if msg.preamble is not None:
-            if self._mangle_from_:
+        wenn msg.preamble is not None:
+            wenn self._mangle_from_:
                 preamble = fcre.sub('>From ', msg.preamble)
-            else:
+            sonst:
                 preamble = msg.preamble
             self._write_lines(preamble)
             self.write(self._NL)
         # dash-boundary transport-padding CRLF
         self.write('--' + boundary + self._NL)
         # body-part
-        if msgtexts:
+        wenn msgtexts:
             self._fp.write(msgtexts.pop(0))
         # *encapsulation
         # --> delimiter transport-padding
@@ -316,10 +316,10 @@ klasse Generator:
             self._fp.write(body_part)
         # close-delimiter transport-padding
         self.write(self._NL + '--' + boundary + '--' + self._NL)
-        if msg.epilogue is not None:
-            if self._mangle_from_:
+        wenn msg.epilogue is not None:
+            wenn self._mangle_from_:
                 epilogue = fcre.sub('>From ', msg.epilogue)
-            else:
+            sonst:
                 epilogue = msg.epilogue
             self._write_lines(epilogue)
 
@@ -346,9 +346,9 @@ klasse Generator:
             text = s.getvalue()
             lines = text.split(self._encoded_NL)
             # Strip off the unnecessary trailing empty line
-            if lines and lines[-1] == self._encoded_EMPTY:
+            wenn lines and lines[-1] == self._encoded_EMPTY:
                 blocks.append(self._encoded_NL.join(lines[:-1]))
-            else:
+            sonst:
                 blocks.append(text)
         # Now join all the blocks with an empty line.  This has the lovely
         # effect of separating each block with an empty line, but not adding
@@ -368,10 +368,10 @@ klasse Generator:
         # Groupwise when forwarding unadorned messages.  (Issue 7970.)  So
         # in that case we just emit the string body.
         payload = msg._payload
-        if isinstance(payload, list):
+        wenn isinstance(payload, list):
             g.flatten(msg.get_payload(0), unixfrom=False, linesep=self._NL)
             payload = s.getvalue()
-        else:
+        sonst:
             payload = self._encode(payload)
         self._fp.write(payload)
 
@@ -386,13 +386,13 @@ klasse Generator:
         # boundary doesn't appear in the text.
         token = random.randrange(sys.maxsize)
         boundary = ('=' * 15) + (_fmt % token) + '=='
-        if text is None:
+        wenn text is None:
             return boundary
         b = boundary
         counter = 0
         while True:
             cre = cls._compile_re('^--' + re.escape(b) + '(--)?$', re.MULTILINE)
-            if not cre.search(text):
+            wenn not cre.search(text):
                 break
             b = boundary + '.' + str(counter)
             counter += 1
@@ -436,13 +436,13 @@ klasse BytesGenerator(Generator):
     def _handle_text(self, msg):
         # If the string has surrogates the original source was bytes, so
         # just write it back out.
-        if msg._payload is None:
+        wenn msg._payload is None:
             return
-        if _has_surrogates(msg._payload) and not self.policy.cte_type=='7bit':
-            if self._mangle_from_:
+        wenn _has_surrogates(msg._payload) and not self.policy.cte_type=='7bit':
+            wenn self._mangle_from_:
                 msg._payload = fcre.sub(">From ", msg._payload)
             self._write_lines(msg._payload)
-        else:
+        sonst:
             super(BytesGenerator,self)._handle_text(msg)
 
     # Default body handler
@@ -486,20 +486,20 @@ klasse DecodedGenerator(Generator):
         """
         Generator.__init__(self, outfp, mangle_from_, maxheaderlen,
                            policy=policy)
-        if fmt is None:
+        wenn fmt is None:
             self._fmt = _FMT
-        else:
+        sonst:
             self._fmt = fmt
 
     def _dispatch(self, msg):
         fuer part in msg.walk():
             maintype = part.get_content_maintype()
-            if maintype == 'text':
+            wenn maintype == 'text':
                 print(part.get_payload(decode=False), file=self)
-            elif maintype == 'multipart':
+            sowenn maintype == 'multipart':
                 # Just skip this
                 pass
-            else:
+            sonst:
                 print(self._fmt % {
                     'type'       : part.get_content_type(),
                     'maintype'   : part.get_content_maintype(),

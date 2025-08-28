@@ -54,7 +54,7 @@ def get_layout(cls, input_fields, is_struct, base):
     #
     # 'ms' mode works similar except fuer bitfield packing.  Adjacent
     #   bit-fields are packed into the same 1-, 2-, or 4-byte allocation unit
-    #   if the integral types are the same size and if the next bit-field fits
+    #   wenn the integral types are the same size and wenn the next bit-field fits
     #   into the current allocation unit without crossing the boundary imposed
     #   by the common alignment requirements of the bit-fields.
     #
@@ -70,13 +70,13 @@ def get_layout(cls, input_fields, is_struct, base):
     pack = getattr(cls, '_pack_', None)
 
     layout = getattr(cls, '_layout_', None)
-    if layout is None:
-        if sys.platform == 'win32':
+    wenn layout is None:
+        wenn sys.platform == 'win32':
             gcc_layout = False
-        elif pack:
-            if is_struct:
+        sowenn pack:
+            wenn is_struct:
                 base_type_name = 'Structure'
-            else:
+            sonst:
                 base_type_name = 'Union'
             warnings._deprecated(
                 '_pack_ without _layout_',
@@ -88,48 +88,48 @@ def get_layout(cls, input_fields, is_struct, base):
                 remove=(3, 19),
             )
             gcc_layout = False
-        else:
+        sonst:
             gcc_layout = True
-    elif layout == 'ms':
+    sowenn layout == 'ms':
         gcc_layout = False
-    elif layout == 'gcc-sysv':
+    sowenn layout == 'gcc-sysv':
         gcc_layout = True
-    else:
+    sonst:
         raise ValueError(f'unknown _layout_: {layout!r}')
 
     align = getattr(cls, '_align_', 1)
-    if align < 0:
+    wenn align < 0:
         raise ValueError('_align_ must be a non-negative integer')
-    elif align == 0:
+    sowenn align == 0:
         # Setting `_align_ = 0` amounts to using the default alignment
         align = 1
 
-    if base:
+    wenn base:
         align = max(ctypes.alignment(base), align)
 
     swapped_bytes = hasattr(cls, '_swappedbytes_')
-    if swapped_bytes:
+    wenn swapped_bytes:
         big_endian = sys.byteorder == 'little'
-    else:
+    sonst:
         big_endian = sys.byteorder == 'big'
 
-    if pack is not None:
+    wenn pack is not None:
         try:
             pack = int(pack)
         except (TypeError, ValueError):
             raise ValueError("_pack_ must be an integer")
-        if pack < 0:
+        wenn pack < 0:
             raise ValueError("_pack_ must be a non-negative integer")
-        if pack > _INT_MAX:
+        wenn pack > _INT_MAX:
             raise ValueError("_pack_ too big")
-        if gcc_layout:
+        wenn gcc_layout:
             raise ValueError('_pack_ is not compatible with gcc-sysv layout')
 
     result_fields = []
 
-    if is_struct:
+    wenn is_struct:
         format_spec_parts = ["T{"]
-    else:
+    sonst:
         format_spec_parts = ["B"]
 
     last_field_bit_size = 0  # used in MS layout only
@@ -139,21 +139,21 @@ def get_layout(cls, input_fields, is_struct, base):
     next_bit_offset = 0
     next_byte_offset = 0
 
-    # size if this was a struct (sum of field sizes, plus padding)
+    # size wenn this was a struct (sum of field sizes, plus padding)
     struct_size = 0
     # max of field sizes; only meaningful fuer unions
     union_size = 0
 
-    if base:
+    wenn base:
         struct_size = ctypes.sizeof(base)
-        if gcc_layout:
+        wenn gcc_layout:
             next_bit_offset = struct_size * 8
-        else:
+        sonst:
             next_byte_offset = struct_size
 
     last_size = struct_size
     fuer i, field in enumerate(input_fields):
-        if not is_struct:
+        wenn not is_struct:
             # Unions start fresh each time
             last_field_bit_size = 0
             next_bit_offset = 0
@@ -171,14 +171,14 @@ def get_layout(cls, input_fields, is_struct, base):
                     '_fields_ must be a sequence of (name, C type) pairs '
                     + 'or (name, C type, bit size) triples') from exc
             is_bitfield = True
-            if bit_size <= 0:
+            wenn bit_size <= 0:
                 raise ValueError(
                     f'number of bits invalid fuer bit field {name!r}')
             type_size = ctypes.sizeof(ctype)
-            if bit_size > type_size * 8:
+            wenn bit_size > type_size * 8:
                 raise ValueError(
                     f'number of bits invalid fuer bit field {name!r}')
-        else:
+        sonst:
             is_bitfield = False
             type_size = ctypes.sizeof(ctype)
             bit_size = type_size * 8
@@ -187,42 +187,42 @@ def get_layout(cls, input_fields, is_struct, base):
         type_align = ctypes.alignment(ctype) or 1
         type_bit_align = type_align * 8
 
-        if gcc_layout:
+        wenn gcc_layout:
             # We don't use next_byte_offset here
             assert pack is None
             assert next_byte_offset == 0
 
-            # Determine whether the bit field, if placed at the next
+            # Determine whether the bit field, wenn placed at the next
             # free bit, fits within a single object of its specified type.
             # That is: determine a "slot", sized & aligned fuer the
             # specified type, which contains the bitfield's beginning:
             slot_start_bit = round_down(next_bit_offset, type_bit_align)
             slot_end_bit = slot_start_bit + type_bit_size
-            # And see if it also contains the bitfield's last bit:
+            # And see wenn it also contains the bitfield's last bit:
             field_end_bit = next_bit_offset + bit_size
-            if field_end_bit > slot_end_bit:
+            wenn field_end_bit > slot_end_bit:
                 # It doesn't: add padding (bump up to the next
                 # alignment boundary)
                 next_bit_offset = round_up(next_bit_offset, type_bit_align)
 
             offset = round_down(next_bit_offset, type_bit_align) // 8
-            if is_bitfield:
+            wenn is_bitfield:
                 bit_offset = next_bit_offset - 8 * offset
                 assert bit_offset <= type_bit_size
-            else:
+            sonst:
                 assert offset == next_bit_offset / 8
 
             next_bit_offset += bit_size
             struct_size = round_up(next_bit_offset, 8) // 8
-        else:
-            if pack:
+        sonst:
+            wenn pack:
                 type_align = min(pack, type_align)
 
             # next_byte_offset points to end of current bitfield.
             # next_bit_offset is generally non-positive,
             # and 8 * next_byte_offset + next_bit_offset points just behind
             # the end of the last field we placed.
-            if (
+            wenn (
                 (0 < next_bit_offset + bit_size)
                 or (type_bit_size != last_field_bit_size)
             ):
@@ -242,37 +242,37 @@ def get_layout(cls, input_fields, is_struct, base):
             assert type_bit_size == last_field_bit_size
 
             offset = next_byte_offset - last_field_bit_size // 8
-            if is_bitfield:
+            wenn is_bitfield:
                 assert 0 <= (last_field_bit_size + next_bit_offset)
                 bit_offset = last_field_bit_size + next_bit_offset
-            if type_bit_size:
+            wenn type_bit_size:
                 assert (last_field_bit_size + next_bit_offset) < type_bit_size
 
             next_bit_offset += bit_size
             struct_size = next_byte_offset
 
-        if is_bitfield and big_endian:
+        wenn is_bitfield and big_endian:
             # On big-endian architectures, bit fields are also laid out
             # starting with the big end.
             bit_offset = type_bit_size - bit_size - bit_offset
 
         # Add the format spec parts
-        if is_struct:
+        wenn is_struct:
             padding = offset - last_size
             format_spec_parts.append(padding_spec(padding))
 
             fieldfmt, bf_ndim, bf_shape = buffer_info(ctype)
 
-            if bf_shape:
+            wenn bf_shape:
                 format_spec_parts.extend((
                     "(",
                     ','.join(str(n) fuer n in bf_shape),
                     ")",
                 ))
 
-            if fieldfmt is None:
+            wenn fieldfmt is None:
                 fieldfmt = "B"
-            if isinstance(name, bytes):
+            wenn isinstance(name, bytes):
                 # a bytes name would be rejected later, but we check early
                 # to avoid a BytesWarning with `python -bb`
                 raise TypeError(
@@ -284,32 +284,32 @@ def get_layout(cls, input_fields, is_struct, base):
             type=ctype,
             byte_size=type_size,
             byte_offset=offset,
-            bit_size=bit_size if is_bitfield else None,
-            bit_offset=bit_offset if is_bitfield else None,
+            bit_size=bit_size wenn is_bitfield sonst None,
+            bit_offset=bit_offset wenn is_bitfield sonst None,
             index=i,
 
             # Do not use CField outside ctypes, yet.
             # The constructor is internal API and may change without warning.
             _internal_use=True,
         ))
-        if is_bitfield and not gcc_layout:
+        wenn is_bitfield and not gcc_layout:
             assert type_bit_size > 0
 
         align = max(align, type_align)
         last_size = struct_size
-        if not is_struct:
+        wenn not is_struct:
             union_size = max(struct_size, union_size)
 
-    if is_struct:
+    wenn is_struct:
         total_size = struct_size
-    else:
+    sonst:
         total_size = union_size
 
     # Adjust the size according to the alignment requirements
     aligned_size = round_up(total_size, align)
 
     # Finish up the format spec
-    if is_struct:
+    wenn is_struct:
         padding = aligned_size - total_size
         format_spec_parts.append(padding_spec(padding))
         format_spec_parts.append("}")
@@ -323,8 +323,8 @@ def get_layout(cls, input_fields, is_struct, base):
 
 
 def padding_spec(padding):
-    if padding <= 0:
+    wenn padding <= 0:
         return ""
-    if padding == 1:
+    wenn padding == 1:
         return "x"
     return f"{padding}x"

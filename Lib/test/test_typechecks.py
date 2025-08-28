@@ -67,5 +67,5 @@ klasse TypeChecksTest(unittest.TestCase):
         self.assertEqual(isinstance(42, (SubInt,)), False)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

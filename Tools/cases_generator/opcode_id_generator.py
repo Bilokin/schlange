@@ -54,9 +54,9 @@ arg_parser.add_argument(
     "input", nargs=argparse.REMAINDER, help="Instruction definition file(s)"
 )
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     args = arg_parser.parse_args()
-    if len(args.input) == 0:
+    wenn len(args.input) == 0:
         args.input.append(DEFAULT_INPUT)
     data = analyze_files(args.input)
     with open(args.output, "w") as outfile:

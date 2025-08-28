@@ -24,11 +24,11 @@ klasse Percolator:
         self.text = None
 
     def insert(self, index, chars, tags=None):
-        # Could go away if inheriting from Delegator
+        # Could go away wenn inheriting from Delegator
         self.top.insert(index, chars, tags)
 
     def delete(self, index1, index2=None):
-        # Could go away if inheriting from Delegator
+        # Could go away wenn inheriting from Delegator
         self.top.delete(index1, index2)
 
     def insertfilter(self, filter):
@@ -58,10 +58,10 @@ klasse Percolator:
         assert isinstance(filter, Delegator)
         assert filter.delegate is not None
         f = self.top
-        if f is filter:
+        wenn f is filter:
             self.top = filter.delegate
             filter.setdelegate(None)
-        else:
+        sonst:
             while f.delegate is not filter:
                 assert f is not self.bottom
                 f.resetcache()
@@ -98,9 +98,9 @@ def _percolator(parent):  # htest #
     t2 = Tracer("t2")
 
     def toggle1():
-        (pin if var1.get() else pout)(t1)
+        (pin wenn var1.get() sonst pout)(t1)
     def toggle2():
-        (pin if var2.get() else pout)(t2)
+        (pin wenn var2.get() sonst pout)(t2)
 
     text.pack()
     text.focus_set()
@@ -112,7 +112,7 @@ def _percolator(parent):  # htest #
     cb2.pack()
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     from unittest import main
     main('idlelib.idle_test.test_percolator', verbosity=2, exit=False)
 

@@ -61,14 +61,14 @@ def _expect_failure(tc, parser, code, errmsg, *, filename=None, lineno=None,
     lineno: int, optional line number
     """
     code = dedent(code)
-    if strip:
+    wenn strip:
         code = code.strip()
     errmsg = re.escape(errmsg)
     with tc.assertRaisesRegex(ClinicError, errmsg) as cm:
         parser(code)
-    if filename is not None:
+    wenn filename is not None:
         tc.assertEqual(cm.exception.filename, filename)
-    if lineno is not None:
+    wenn lineno is not None:
         tc.assertEqual(cm.exception.lineno, lineno)
     return cm.exception
 
@@ -101,7 +101,7 @@ klasse ClinicWholeFileTest(TestCase):
     def test_eol(self):
         # regression test:
         # clinic's block parser didn't recognize
-        # the "end line" fuer the block if it
+        # the "end line" fuer the block wenn it
         # didn't end in "\n" (as in, the last)
         # byte of the file was '/'.
         # so it would spit out an end line fuer you.
@@ -1074,7 +1074,7 @@ klasse ClinicParserTest(TestCase):
         err = "Unsupported expression as default value"
         fuer bad_default_value in (
             "{1, 2, 3}",
-            "3 if bool() else 4",
+            "3 wenn bool() sonst 4",
             "[x fuer x in range(42)]"
         ):
             with self.subTest(bad_default=bad_default_value):
@@ -2228,7 +2228,7 @@ klasse ClinicParserTest(TestCase):
 
     def test_self_param_placement(self):
         err = (
-            "A 'self' parameter, if specified, must be the very first thing "
+            "A 'self' parameter, wenn specified, must be the very first thing "
             "in the parameter block."
         )
         block = """
@@ -2250,7 +2250,7 @@ klasse ClinicParserTest(TestCase):
 
     def test_defining_class_param_placement(self):
         err = (
-            "A 'defining_class' parameter, if specified, must either be the "
+            "A 'defining_class' parameter, wenn specified, must either be the "
             "first thing in the parameter block, or come just after 'self'."
         )
         block = """
@@ -2435,9 +2435,9 @@ klasse ClinicParserTest(TestCase):
 
                 # Now, check that we'll produce correct code.
                 decl = p.simple_declaration(in_parser=False)
-                if unused:
+                wenn unused:
                     self.assertIn("Py_UNUSED", decl)
-                else:
+                sonst:
                     self.assertNotIn("Py_UNUSED", decl)
 
                 # Make sure the Py_UNUSED macro is not used in the parser body.
@@ -2628,7 +2628,7 @@ klasse ClinicExternalTest(TestCase):
 
     def expect_success(self, *args):
         out, err, code = self.run_clinic(*args)
-        if code != 0:
+        wenn code != 0:
             self.fail("\n".join([f"Unexpected failure: {args=}", out, err]))
         self.assertEqual(err, "")
         return out
@@ -2655,7 +2655,7 @@ klasse ClinicExternalTest(TestCase):
         self.assertEqual(new_contents, orig_contents)
 
     def test_no_change(self):
-        # bpo-42398: Test that the destination file is left unchanged if the
+        # bpo-42398: Test that the destination file is left unchanged wenn the
         # content does not change. Moreover, check also that the file
         # modification time does not change in this case.
         code = dedent("""
@@ -2671,7 +2671,7 @@ klasse ClinicExternalTest(TestCase):
             self.expect_success(fn)
             post_mtime = os.stat(fn).st_mtime_ns
         # Don't change the file modification time
-        # if the content does not change
+        # wenn the content does not change
         self.assertEqual(pre_mtime, post_mtime)
 
     def test_cli_force(self):
@@ -2961,7 +2961,7 @@ except ImportError:
 @unittest.skipIf(ac_tester is None, "_testclinic is missing")
 klasse ClinicFunctionalTest(unittest.TestCase):
     locals().update((name, getattr(ac_tester, name))
-                    fuer name in dir(ac_tester) if name.startswith('test_'))
+                    fuer name in dir(ac_tester) wenn name.startswith('test_'))
 
     def check_depr(self, regex, fn, /, *args, **kwds):
         with self.assertWarnsRegex(DeprecationWarning, regex) as cm:
@@ -2972,9 +2972,9 @@ klasse ClinicFunctionalTest(unittest.TestCase):
         self.assertEqual(cm.lineno, lineno)
 
     def check_depr_star(self, pnames, fn, /, *args, name=None, **kwds):
-        if name is None:
+        wenn name is None:
             name = fn.__qualname__
-            if isinstance(fn, type):
+            wenn isinstance(fn, type):
                 name = f'{fn.__module__}.{name}'
         regex = (
             fr"Passing( more than)?( [0-9]+)? positional argument(s)? to "
@@ -2984,11 +2984,11 @@ klasse ClinicFunctionalTest(unittest.TestCase):
         self.check_depr(regex, fn, *args, **kwds)
 
     def check_depr_kwd(self, pnames, fn, *args, name=None, **kwds):
-        if name is None:
+        wenn name is None:
             name = fn.__qualname__
-            if isinstance(fn, type):
+            wenn isinstance(fn, type):
                 name = f'{fn.__module__}.{name}'
-        pl = 's' if ' ' in pnames else ''
+        pl = 's' wenn ' ' in pnames sonst ''
         regex = (
             fr"Passing keyword argument{pl} {pnames} to "
             fr"{re.escape(name)}\(\) is deprecated. Parameter{pl} {pnames} "
@@ -3423,7 +3423,7 @@ klasse ClinicFunctionalTest(unittest.TestCase):
             ac_tester.keyword_only_parameter(1)
         self.assertEqual(ac_tester.keyword_only_parameter(a=1), (1,))
 
-    if ac_tester is not None:
+    wenn ac_tester is not None:
         @repeat_fn(ac_tester.varpos,
                    ac_tester.varpos_array,
                    ac_tester.TestClass.varpos_no_fastcall,
@@ -3986,7 +3986,7 @@ except ImportError:
 @unittest.skipIf(_testclinic_limited is None, "_testclinic_limited is missing")
 klasse LimitedCAPIFunctionalTest(unittest.TestCase):
     locals().update((name, getattr(_testclinic_limited, name))
-                    fuer name in dir(_testclinic_limited) if name.startswith('test_'))
+                    fuer name in dir(_testclinic_limited) wenn name.startswith('test_'))
 
     def test_my_int_func(self):
         with self.assertRaises(TypeError):
@@ -4384,5 +4384,5 @@ klasse ClinicReprTests(unittest.TestCase):
         )
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

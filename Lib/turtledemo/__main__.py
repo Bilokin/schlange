@@ -67,7 +67,7 @@
    - In order to run mydemo.py by itself, such as during development,
      add the following at the end of the file:
 
-    if __name__ == '__main__':
+    wenn __name__ == '__main__':
         main()
         mainloop()  # keep window open
 
@@ -93,7 +93,7 @@ from idlelib.textview import view_text
 import turtle
 from turtledemo import __doc__ as about_turtledemo
 
-if sys.platform == 'win32':
+wenn sys.platform == 'win32':
     from idlelib.util import fix_win_hidpi
     fix_win_hidpi()
 
@@ -130,7 +130,7 @@ klasse DemoWindow(object):
         root.title('Python turtle-graphics examples')
         root.wm_protocol("WM_DELETE_WINDOW", self._destroy)
 
-        if darwin:
+        wenn darwin:
             import subprocess
             # Make sure we are the currently activated OS X application
             # so that our menu bar appears.
@@ -169,14 +169,14 @@ klasse DemoWindow(object):
         self.output_lbl = Label(root, height= 1, text=" --- ", bg="#ddf",
                                 font=("Arial", 16, 'normal'), borderwidth=2,
                                 relief=RIDGE)
-        if darwin:  # Leave Mac button colors alone - #44254.
+        wenn darwin:  # Leave Mac button colors alone - #44254.
             self.start_btn = Button(root, text=" START ", font=btnfont,
                                     fg='#00cc22', command=self.startDemo)
             self.stop_btn = Button(root, text=" STOP ", font=btnfont,
                                    fg='#00cc22', command=self.stopIt)
             self.clear_btn = Button(root, text=" CLEAR ", font=btnfont,
                                     fg='#00cc22', command = self.clearCanvas)
-        else:
+        sonst:
             self.start_btn = Button(root, text=" START ", font=btnfont,
                                     fg="white", disabledforeground = "#fed",
                                     command=self.startDemo)
@@ -194,7 +194,7 @@ klasse DemoWindow(object):
         Percolator(self.text).insertfilter(ColorDelegator())
         self.dirty = False
         self.exitflag = False
-        if filename:
+        wenn filename:
             self.loadfile(filename)
         self.configGUI(DISABLED, DISABLED, DISABLED,
                        "Choose example from menu", "black")
@@ -223,7 +223,7 @@ klasse DemoWindow(object):
         text['xscrollcommand'] = hbar.set
 
         text['font'] = tuple(txtfont)
-        shortcut = 'Command' if darwin else 'Control'
+        shortcut = 'Command' wenn darwin sonst 'Control'
         text.bind_all('<%s-minus>' % shortcut, self.decrease_size)
         text.bind_all('<%s-underscore>' % shortcut, self.decrease_size)
         text.bind_all('<%s-equal>' % shortcut, self.increase_size)
@@ -271,23 +271,23 @@ klasse DemoWindow(object):
     def update_mousewheel(self, event):
         # For wheel up, event.delta = 120 on Windows, -1 on darwin.
         # X-11 sends Control-Button-4 event instead.
-        if (event.delta < 0) == (not darwin):
+        wenn (event.delta < 0) == (not darwin):
             return self.decrease_size()
-        else:
+        sonst:
             return self.increase_size()
 
     def configGUI(self, start, stop, clear, txt="", color="blue"):
-        if darwin:  # Leave Mac button colors alone - #44254.
+        wenn darwin:  # Leave Mac button colors alone - #44254.
             self.start_btn.config(state=start)
             self.stop_btn.config(state=stop)
             self.clear_btn.config(state=clear)
-        else:
+        sonst:
             self.start_btn.config(state=start,
-                                  bg="#d00" if start == NORMAL else "#fca")
+                                  bg="#d00" wenn start == NORMAL sonst "#fca")
             self.stop_btn.config(state=stop,
-                                 bg="#d00" if stop == NORMAL else "#fca")
+                                 bg="#d00" wenn stop == NORMAL sonst "#fca")
             self.clear_btn.config(state=clear,
-                                  bg="#d00" if clear == NORMAL else "#fca")
+                                  bg="#d00" wenn clear == NORMAL sonst "#fca")
         self.output_lbl.config(text=txt, fg=color)
 
     def makeLoadDemoMenu(self, master):
@@ -302,9 +302,9 @@ klasse DemoWindow(object):
     def makeFontMenu(self, master):
         menu = Menu(master, tearoff=0)
         menu.add_command(label="Decrease", command=self.decrease_size,
-                         accelerator=f"{'Command' if darwin else 'Ctrl'}+-")
+                         accelerator=f"{'Command' wenn darwin sonst 'Ctrl'}+-")
         menu.add_command(label="Increase", command=self.increase_size,
-                         accelerator=f"{'Command' if darwin else 'Ctrl'}+=")
+                         accelerator=f"{'Command' wenn darwin sonst 'Ctrl'}+=")
         menu.add_separator()
 
         fuer size in font_sizes:
@@ -323,7 +323,7 @@ klasse DemoWindow(object):
         return menu
 
     def refreshCanvas(self):
-        if self.dirty:
+        wenn self.dirty:
             self.screen.clear()
             self.dirty=False
 
@@ -354,19 +354,19 @@ klasse DemoWindow(object):
 
         try:
             result = self.module.main()
-            if result == "EVENTLOOP":
+            wenn result == "EVENTLOOP":
                 self.state = EVENTDRIVEN
-            else:
+            sonst:
                 self.state = DONE
         except turtle.Terminator:
-            if self.root is None:
+            wenn self.root is None:
                 return
             self.state = DONE
             result = "stopped!"
-        if self.state == DONE:
+        wenn self.state == DONE:
             self.configGUI(NORMAL, DISABLED, NORMAL,
                            result)
-        elif self.state == EVENTDRIVEN:
+        sowenn self.state == EVENTDRIVEN:
             self.exitflag = True
             self.configGUI(DISABLED, NORMAL, DISABLED,
                            "use mouse/keys or STOP", "red")
@@ -378,7 +378,7 @@ klasse DemoWindow(object):
         self.configGUI(NORMAL, DISABLED, DISABLED)
 
     def stopIt(self):
-        if self.exitflag:
+        wenn self.exitflag:
             self.clearCanvas()
             self.exitflag = False
             self.configGUI(NORMAL, DISABLED, DISABLED,
@@ -395,5 +395,5 @@ def main():
     demo = DemoWindow()
     demo.root.mainloop()
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     main()

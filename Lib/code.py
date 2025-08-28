@@ -31,7 +31,7 @@ klasse InteractiveInterpreter:
         key "__doc__" set to None.
 
         """
-        if locals is None:
+        wenn locals is None:
             locals = {"__name__": "__console__", "__doc__": None}
         self.locals = locals
         self.compile = CommandCompiler()
@@ -67,7 +67,7 @@ klasse InteractiveInterpreter:
             self.showsyntaxerror(filename, source=source)
             return False
 
-        if code is None:
+        wenn code is None:
             # Case 2
             return True
 
@@ -108,7 +108,7 @@ klasse InteractiveInterpreter:
         """
         try:
             typ, value, tb = sys.exc_info()
-            if filename and issubclass(typ, SyntaxError):
+            wenn filename and issubclass(typ, SyntaxError):
                 value.filename = filename
             source = kwargs.pop('source', "")
             self._showtraceback(typ, value, None, source)
@@ -135,14 +135,14 @@ klasse InteractiveInterpreter:
         value = value.with_traceback(tb)
         # Set the line of text that the exception refers to
         lines = source.splitlines()
-        if (source and typ is SyntaxError
+        wenn (source and typ is SyntaxError
                 and not value.text and value.lineno is not None
                 and len(lines) >= value.lineno):
             value.text = lines[value.lineno - 1]
         sys.last_exc = sys.last_value = value
-        if sys.excepthook is sys.__excepthook__:
+        wenn sys.excepthook is sys.__excepthook__:
             self._excepthook(typ, value, tb)
-        else:
+        sonst:
             # If someone has set sys.excepthook, we let that take precedence
             # over self.write
             try:
@@ -231,11 +231,11 @@ klasse InteractiveConsole(InteractiveInterpreter):
             delete_ps2_after = True
 
         cprt = 'Type "help", "copyright", "credits" or "license" fuer more information.'
-        if banner is None:
+        wenn banner is None:
             self.write("Python %s on %s\n%s\n(%s)\n" %
                        (sys.version, sys.platform, cprt,
                         self.__class__.__name__))
-        elif banner:
+        sowenn banner:
             self.write("%s\n" % str(banner))
         more = 0
 
@@ -251,56 +251,56 @@ klasse InteractiveConsole(InteractiveInterpreter):
         _exit = None
         _quit = None
 
-        if self.local_exit:
-            if hasattr(builtins, "exit"):
+        wenn self.local_exit:
+            wenn hasattr(builtins, "exit"):
                 _exit = builtins.exit
                 builtins.exit = Quitter("exit")
 
-            if hasattr(builtins, "quit"):
+            wenn hasattr(builtins, "quit"):
                 _quit = builtins.quit
                 builtins.quit = Quitter("quit")
 
         try:
             while True:
                 try:
-                    if more:
+                    wenn more:
                         prompt = sys.ps2
-                    else:
+                    sonst:
                         prompt = sys.ps1
                     try:
                         line = self.raw_input(prompt)
                     except EOFError:
                         self.write("\n")
                         break
-                    else:
+                    sonst:
                         more = self.push(line)
                 except KeyboardInterrupt:
                     self.write("\nKeyboardInterrupt\n")
                     self.resetbuffer()
                     more = 0
                 except SystemExit as e:
-                    if self.local_exit:
+                    wenn self.local_exit:
                         self.write("\n")
                         break
-                    else:
+                    sonst:
                         raise e
         finally:
-            # restore exit and quit in builtins if they were modified
-            if _exit is not None:
+            # restore exit and quit in builtins wenn they were modified
+            wenn _exit is not None:
                 builtins.exit = _exit
 
-            if _quit is not None:
+            wenn _quit is not None:
                 builtins.quit = _quit
 
-            if delete_ps1_after:
+            wenn delete_ps1_after:
                 del sys.ps1
 
-            if delete_ps2_after:
+            wenn delete_ps2_after:
                 del sys.ps2
 
-            if exitmsg is None:
+            wenn exitmsg is None:
                 self.write('now exiting %s...\n' % self.__class__.__name__)
-            elif exitmsg != '':
+            sowenn exitmsg != '':
                 self.write('%s\n' % exitmsg)
 
     def push(self, line, filename=None, _symbol="single"):
@@ -313,16 +313,16 @@ klasse InteractiveConsole(InteractiveInterpreter):
         indicates that the command was executed or invalid, the buffer
         is reset; otherwise, the command is incomplete, and the buffer
         is left as it was after the line was appended.  The return
-        value is 1 if more input is required, 0 if the line was dealt
+        value is 1 wenn more input is required, 0 wenn the line was dealt
         with in some way (this is the same as runsource()).
 
         """
         self.buffer.append(line)
         source = "\n".join(self.buffer)
-        if filename is None:
+        wenn filename is None:
             filename = self.filename
         more = self.runsource(source, filename, symbol=_symbol)
-        if not more:
+        wenn not more:
             self.resetbuffer()
         return more
 
@@ -343,9 +343,9 @@ klasse InteractiveConsole(InteractiveInterpreter):
 klasse Quitter:
     def __init__(self, name):
         self.name = name
-        if sys.platform == "win32":
+        wenn sys.platform == "win32":
             self.eof = 'Ctrl-Z plus Return'
-        else:
+        sonst:
             self.eof = 'Ctrl-D (i.e. EOF)'
 
     def __repr__(self):
@@ -360,21 +360,21 @@ def interact(banner=None, readfunc=None, local=None, exitmsg=None, local_exit=Fa
 
     This is a backwards compatible interface to the InteractiveConsole
     class.  When readfunc is not specified, it attempts to import the
-    readline module to enable GNU readline if it is available.
+    readline module to enable GNU readline wenn it is available.
 
     Arguments (all optional, all default to None):
 
     banner -- passed to InteractiveConsole.interact()
-    readfunc -- if not None, replaces InteractiveConsole.raw_input()
+    readfunc -- wenn not None, replaces InteractiveConsole.raw_input()
     local -- passed to InteractiveInterpreter.__init__()
     exitmsg -- passed to InteractiveConsole.interact()
     local_exit -- passed to InteractiveConsole.__init__()
 
     """
     console = InteractiveConsole(local, local_exit=local_exit)
-    if readfunc is not None:
+    wenn readfunc is not None:
         console.raw_input = readfunc
-    else:
+    sonst:
         try:
             import readline  # noqa: F401
         except ImportError:
@@ -382,15 +382,15 @@ def interact(banner=None, readfunc=None, local=None, exitmsg=None, local_exit=Fa
     console.interact(banner, exitmsg)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(color=True)
     parser.add_argument('-q', action='store_true',
                        help="don't print version and copyright messages")
     args = parser.parse_args()
-    if args.q or sys.flags.quiet:
+    wenn args.q or sys.flags.quiet:
         banner = ''
-    else:
+    sonst:
         banner = None
     interact(banner)

@@ -13,9 +13,9 @@ from idlelib import textview
 
 pyver = python_version()
 
-if sys.platform == 'darwin':
-    bits = '64' if sys.maxsize > 2**32 else '32'
-else:
+wenn sys.platform == 'darwin':
+    bits = '64' wenn sys.maxsize > 2**32 sonst '32'
+sonst:
     bits = architecture()[0][:2]
 
 
@@ -33,10 +33,10 @@ klasse AboutDialog(Toplevel):
         """
         Toplevel.__init__(self, parent)
         self.configure(borderwidth=5)
-        # place dialog below parent if running htest
+        # place dialog below parent wenn running htest
         self.geometry("+%d+%d" % (
                         parent.winfo_rootx()+30,
-                        parent.winfo_rooty()+(30 if not _htest else 100)))
+                        parent.winfo_rooty()+(30 wenn not _htest sonst 100)))
         self.bg = "#bbbbbb"
         self.fg = "#000000"
         self.create_widgets()
@@ -53,7 +53,7 @@ klasse AboutDialog(Toplevel):
         self._current_textview = None
         self._utest = _utest
 
-        if not _utest:
+        wenn not _utest:
             self.deiconify()
             self.wait_window()
 
@@ -74,7 +74,7 @@ klasse AboutDialog(Toplevel):
         header.grid(row=0, column=0, sticky=E, padx=10, pady=10)
 
         tkpatch = self._root().getvar('tk_patchLevel')
-        ext = '.png' if tkpatch >= '8.6' else '.gif'
+        ext = '.png' wenn tkpatch >= '8.6' sonst '.gif'
         icon = os.path.join(os.path.abspath(os.path.dirname(__file__)),
                             'Icons', f'idle_48{ext}')
         self.icon_image = PhotoImage(master=self._root(), file=icon)
@@ -106,7 +106,7 @@ klasse AboutDialog(Toplevel):
                                          columnspan=3, padx=5, pady=5)
 
         tclver = str(self.info_patchlevel())
-        tkver = ' and ' + tkpatch if tkpatch != tclver else ''
+        tkver = ' and ' + tkpatch wenn tkpatch != tclver sonst ''
         versions = f"Python {pyver} with tcl/tk {tclver}{tkver}"
         vers = Label(frame_background, text=versions, fg=self.fg, bg=self.bg)
         vers.grid(row=9, column=0, sticky=W, padx=10, pady=0)
@@ -203,7 +203,7 @@ klasse AboutDialog(Toplevel):
         self.destroy()
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     from unittest import main
     main('idlelib.idle_test.test_help_about', verbosity=2, exit=False)
 

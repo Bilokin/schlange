@@ -75,15 +75,15 @@ klasse GetSelectionTest(unittest.TestCase):
         # fix text.index result when called in get_selection
         def sel(s):
             # select entire text, cursor irrelevant
-            if s == 'sel.first': return '1.0'
-            if s == 'sel.last': return '1.12'
+            wenn s == 'sel.first': return '1.0'
+            wenn s == 'sel.last': return '1.12'
             raise TclError
         text.index = sel  # replaces .tag_add('sel', '1.0, '1.12')
         self.assertEqual(se.get_selection(text), ('1.0', '1.12'))
 
         def mark(s):
             # no selection, cursor after 'Hello'
-            if s == 'insert': return '1.5'
+            wenn s == 'insert': return '1.5'
             raise TclError
         text.index = mark  # replaces .mark_set('insert', '1.5')
         self.assertEqual(se.get_selection(text), ('1.5', '1.5'))
@@ -238,7 +238,7 @@ klasse SearchTest(unittest.TestCase):
 
         def mark(s):
             # no selection, cursor after 'Hello'
-            if s == 'insert': return '1.5'
+            wenn s == 'insert': return '1.5'
             raise TclError
         text.index = mark
         Equal(search(text, pat), ('f', (text, pat, 1, 5, True, False)))
@@ -250,8 +250,8 @@ klasse SearchTest(unittest.TestCase):
         engine.backvar.set(False)
 
         def sel(s):
-            if s == 'sel.first': return '2.10'
-            if s == 'sel.last': return '2.16'
+            wenn s == 'sel.first': return '2.10'
+            wenn s == 'sel.last': return '2.16'
             raise TclError
         text.index = sel
         Equal(search(text, pat), ('f', (text, pat, 2, 16, True, False)))
@@ -291,7 +291,7 @@ klasse ForwardBackwardTest(unittest.TestCase):
         def search(pat, line, col, wrap, ok=0):
             res = func(self.text, pat, line, col, wrap, ok)
             # res is (line, matchobject) or None
-            return (res[0], res[1].span()) if res else res
+            return (res[0], res[1].span()) wenn res sonst res
         return search
 
     def test_search_forward(self):
@@ -328,5 +328,5 @@ klasse ForwardBackwardTest(unittest.TestCase):
         Equal(backward(self.emptypat, 2, 9, True), (2, (5, 9)))
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main(verbosity=2)

@@ -15,7 +15,7 @@ import codecs
 
 # Register a search function which knows about our codec
 def codec_search_function(encoding):
-    if encoding == 'testcodec':
+    wenn encoding == 'testcodec':
         from test import testcodec
         return tuple(testcodec.getregentry())
     return None
@@ -52,5 +52,5 @@ klasse CharmapCodecTest(unittest.TestCase):
     def test_maptoundefined(self):
         self.assertRaises(UnicodeError, str, b'abc\001', codecname)
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

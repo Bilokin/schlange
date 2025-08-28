@@ -505,7 +505,7 @@ klasse SpecSignatureTest(unittest.TestCase):
         klasse CrazyDescriptor(object):
 
             def __get__(self, obj, type_):
-                if obj is None:
+                wenn obj is None:
                     return lambda x: None
 
         klasse MyClass(object):
@@ -528,7 +528,7 @@ klasse SpecSignatureTest(unittest.TestCase):
                 return super(CrazyClass, self).__dir__()+['crazy']
 
             def __getattr__(self, item):
-                if item == 'crazy':
+                wenn item == 'crazy':
                     return lambda x: x
                 raise AttributeError(item)
 
@@ -767,7 +767,7 @@ klasse SpecSignatureTest(unittest.TestCase):
     def test_skip_attributeerrors(self):
         klasse Raiser(object):
             def __get__(self, obj, type=None):
-                if obj is None:
+                wenn obj is None:
                     raise AttributeError('Can only be accessed via an instance')
 
         klasse RaiserClass(object):
@@ -1263,5 +1263,5 @@ klasse TestCallablePredicate(unittest.TestCase):
         self.assertFalse(_callable(BadClassMethod.not_callable))
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

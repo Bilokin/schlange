@@ -16,7 +16,7 @@ So my basic strategy is:
   - The MSVC .dsp file fuer the extension.  The .c source file names
     are extracted from there.
   - Specific compiler/linker options
-  - Flag to indicate if Unicode compilation is expected.
+  - Flag to indicate wenn Unicode compilation is expected.
 
 At the moment the name and location of this INI file is hardcoded,
 but an obvious enhancement would be to provide command line options.
@@ -58,9 +58,9 @@ def checkextensions(unknown, extra_inis, prefix):
     # Create a table of frozen extensions
 
     defaultMapName = os.path.join( os.path.split(sys.argv[0])[0], "extensions_win32.ini")
-    if not os.path.isfile(defaultMapName):
+    wenn not os.path.isfile(defaultMapName):
         sys.stderr.write("WARNING: %s can not be found - standard extensions may not be found\n" % defaultMapName)
-    else:
+    sonst:
         # must go on end, so other inis can override.
         extra_inis.append(defaultMapName)
 
@@ -69,32 +69,32 @@ def checkextensions(unknown, extra_inis, prefix):
         fuer ini in extra_inis:
 #                       print "Looking for", mod, "in", win32api.GetFullPathName(ini),"...",
             defn = get_extension_defn( mod, ini, prefix )
-            if defn is not None:
+            wenn defn is not None:
 #                               print "Yay - found it!"
                 ret.append( defn )
                 break
 #                       print "Nope!"
-        else: # For not broken!
+        sonst: # For not broken!
             sys.stderr.write("No definition of module %s in any specified map file.\n" % (mod))
 
     return ret
 
 def get_extension_defn(moduleName, mapFileName, prefix):
-    if win32api is None: return None
+    wenn win32api is None: return None
     os.environ['PYTHONPREFIX'] = prefix
     dsp = win32api.GetProfileVal(moduleName, "dsp", "", mapFileName)
-    if dsp=="":
+    wenn dsp=="":
         return None
 
     # We allow environment variables in the file name
     dsp = win32api.ExpandEnvironmentStrings(dsp)
     # If the path to the .DSP file is not absolute, assume it is relative
     # to the description file.
-    if not os.path.isabs(dsp):
+    wenn not os.path.isabs(dsp):
         dsp = os.path.join( os.path.split(mapFileName)[0], dsp)
     # Parse it to extract the source files.
     sourceFiles = parse_dsp(dsp)
-    if sourceFiles is None:
+    wenn sourceFiles is None:
         return None
 
     module = CExtension(moduleName, sourceFiles)
@@ -103,13 +103,13 @@ def get_extension_defn(moduleName, mapFileName, prefix):
     os.environ['ini_path'] = os.path.split(mapFileName)[0]
 
     cl_options = win32api.GetProfileVal(moduleName, "cl", "", mapFileName)
-    if cl_options:
+    wenn cl_options:
         module.AddCompilerOption(win32api.ExpandEnvironmentStrings(cl_options))
 
     exclude = win32api.GetProfileVal(moduleName, "exclude", "", mapFileName)
     exclude = exclude.split()
 
-    if win32api.GetProfileVal(moduleName, "Unicode", 0, mapFileName):
+    wenn win32api.GetProfileVal(moduleName, "Unicode", 0, mapFileName):
         module.AddCompilerOption('/D UNICODE /D _UNICODE')
 
     libs = win32api.GetProfileVal(moduleName, "libs", "", mapFileName).split()
@@ -117,7 +117,7 @@ def get_extension_defn(moduleName, mapFileName, prefix):
         module.AddLinkerLib(win32api.ExpandEnvironmentStrings(lib))
 
     fuer exc in exclude:
-        if exc in module.sourceFiles:
+        wenn exc in module.sourceFiles:
             module.sourceFiles.remove(exc)
 
     return module
@@ -137,8 +137,8 @@ def parse_dsp(dsp):
         return None
     fuer line in lines:
         fields = line.strip().split("=", 2)
-        if fields[0]=="SOURCE":
-            if os.path.splitext(fields[1])[1].lower() in ['.cpp', '.c']:
+        wenn fields[0]=="SOURCE":
+            wenn os.path.splitext(fields[1])[1].lower() in ['.cpp', '.c']:
                 ret.append( win32api.GetFullPathName(os.path.join(dsp_path, fields[1] ) ) )
     return ret
 

@@ -39,7 +39,7 @@ from pegen.parser import memoize, memoize_left_rec, logger, Parser
 """
 MODULE_SUFFIX = """
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     from pegen.parser import simple_parser_main
     simple_parser_main({class_name})
 """
@@ -97,13 +97,13 @@ klasse PythonCallMakerVisitor(GrammarVisitor):
 
     def visit_NameLeaf(self, node: NameLeaf) -> Tuple[Optional[str], str]:
         name = node.value
-        if name == "SOFT_KEYWORD":
+        wenn name == "SOFT_KEYWORD":
             return "soft_keyword", "self.soft_keyword()"
-        if name in ("NAME", "NUMBER", "STRING", "OP", "TYPE_COMMENT",
+        wenn name in ("NAME", "NUMBER", "STRING", "OP", "TYPE_COMMENT",
             "FSTRING_END", "FSTRING_MIDDLE", "FSTRING_START"):
             name = name.lower()
             return name, f"self.{name}()"
-        if name in ("NEWLINE", "DEDENT", "INDENT", "ENDMARKER"):
+        wenn name in ("NEWLINE", "DEDENT", "INDENT", "ENDMARKER"):
             # Avoid using names that can be Python keywords
             return "_" + name.lower(), f"self.expect({name!r})"
         return name, f"self.{name}()"
@@ -113,7 +113,7 @@ klasse PythonCallMakerVisitor(GrammarVisitor):
 
     def visit_NamedItem(self, node: NamedItem) -> Tuple[Optional[str], str]:
         name, call = self.visit(node.item)
-        if node.name:
+        wenn node.name:
             name = node.name
         return name, call
 
@@ -137,9 +137,9 @@ klasse PythonCallMakerVisitor(GrammarVisitor):
         # Note trailing comma (the call may already have one comma
         # at the end, fuer example when rules have both repeat0 and optional
         # markers, e.g: [rule*])
-        if call.endswith(","):
+        wenn call.endswith(","):
             return "opt", call
-        else:
+        sonst:
             return "opt", f"{call},"
 
     def _generate_artificial_rule_call(
@@ -151,7 +151,7 @@ klasse PythonCallMakerVisitor(GrammarVisitor):
     ) -> Tuple[str, str]:
         node_str = f"{node}"
         key = f"{prefix}_{node_str}"
-        if key in self.cache:
+        wenn key in self.cache:
             return self.cache[key]
 
         name = rule_generation_func()
@@ -160,7 +160,7 @@ klasse PythonCallMakerVisitor(GrammarVisitor):
         return self.cache[key]
 
     def visit_Rhs(self, node: Rhs) -> Tuple[str, str]:
-        if len(node.alts) == 1 and len(node.alts[0].items) == 1:
+        wenn len(node.alts) == 1 and len(node.alts[0].items) == 1:
             return self.visit(node.alts[0].items[0])
 
         return self._generate_artificial_rule_call(
@@ -201,10 +201,10 @@ klasse PythonCallMakerVisitor(GrammarVisitor):
         return "cut", "True"
 
     def visit_Forced(self, node: Forced) -> Tuple[str, str]:
-        if isinstance(node.node, Group):
+        wenn isinstance(node.node, Group):
             _, val = self.visit(node.node.rhs)
             return "forced", f"self.expect_forced({val}, '''({node.node.rhs!s})''')"
-        else:
+        sonst:
             return (
                 "forced",
                 f"self.expect_forced(self.expect({node.node.value}), {node.node.value!r})",
@@ -234,11 +234,11 @@ klasse PythonParserGenerator(ParserGenerator, GrammarVisitor):
     def generate(self, filename: str) -> None:
         self.collect_rules()
         header = self.grammar.metas.get("header", MODULE_PREFIX)
-        if header is not None:
+        wenn header is not None:
             basename = os.path.basename(filename)
             self.print(header.rstrip("\n").format(filename=basename))
         subheader = self.grammar.metas.get("subheader", "")
-        if subheader:
+        wenn subheader:
             self.print(subheader)
         cls_name = self.grammar.metas.get("class", "GeneratedParser")
         self.print("# Keywords and soft keywords are listed at the end of the parser definition.")
@@ -254,15 +254,15 @@ klasse PythonParserGenerator(ParserGenerator, GrammarVisitor):
             self.print(f"SOFT_KEYWORDS = {tuple(self.soft_keywords)}")
 
         trailer = self.grammar.metas.get("trailer", MODULE_SUFFIX.format(class_name=cls_name))
-        if trailer is not None:
+        wenn trailer is not None:
             self.print(trailer.rstrip("\n"))
 
     def alts_uses_locations(self, alts: Sequence[Alt]) -> bool:
         fuer alt in alts:
-            if alt.action and "LOCATIONS" in alt.action:
+            wenn alt.action and "LOCATIONS" in alt.action:
                 return True
             fuer n in alt.items:
-                if isinstance(n.item, Group) and self.alts_uses_locations(n.item.rhs.alts):
+                wenn isinstance(n.item, Group) and self.alts_uses_locations(n.item.rhs.alts):
                     return True
         return False
 
@@ -270,44 +270,44 @@ klasse PythonParserGenerator(ParserGenerator, GrammarVisitor):
         is_loop = node.is_loop()
         is_gather = node.is_gather()
         rhs = node.flatten()
-        if node.left_recursive:
-            if node.leader:
+        wenn node.left_recursive:
+            wenn node.leader:
                 self.print("@memoize_left_rec")
-            else:
+            sonst:
                 # Non-leader rules in a cycle are not memoized,
                 # but they must still be logged.
                 self.print("@logger")
-        else:
+        sonst:
             self.print("@memoize")
         node_type = node.type or "Any"
         self.print(f"def {node.name}(self) -> Optional[{node_type}]:")
         with self.indent():
             self.print(f"# {node.name}: {rhs}")
             self.print("mark = self._mark()")
-            if self.alts_uses_locations(node.rhs.alts):
+            wenn self.alts_uses_locations(node.rhs.alts):
                 self.print("tok = self._tokenizer.peek()")
                 self.print("start_lineno, start_col_offset = tok.start")
-            if is_loop:
+            wenn is_loop:
                 self.print("children = []")
             self.visit(rhs, is_loop=is_loop, is_gather=is_gather)
-            if is_loop:
+            wenn is_loop:
                 self.print("return children")
-            else:
+            sonst:
                 self.print("return None")
 
     def visit_NamedItem(self, node: NamedItem) -> None:
         name, call = self.callmakervisitor.visit(node.item)
-        if node.name:
+        wenn node.name:
             name = node.name
-        if not name:
+        wenn not name:
             self.print(call)
-        else:
-            if name != "cut":
+        sonst:
+            wenn name != "cut":
                 name = self.dedupe(name)
             self.print(f"({name} := {call})")
 
     def visit_Rhs(self, node: Rhs, is_loop: bool = False, is_gather: bool = False) -> None:
-        if is_loop:
+        wenn is_loop:
             assert len(node.alts) == 1
         fuer alt in node.alts:
             self.visit(alt, is_loop=is_loop, is_gather=is_gather)
@@ -315,53 +315,53 @@ klasse PythonParserGenerator(ParserGenerator, GrammarVisitor):
     def visit_Alt(self, node: Alt, is_loop: bool, is_gather: bool) -> None:
         has_cut = any(isinstance(item.item, Cut) fuer item in node.items)
         with self.local_variable_context():
-            if has_cut:
+            wenn has_cut:
                 self.print("cut = False")
-            if is_loop:
+            wenn is_loop:
                 self.print("while (")
-            else:
+            sonst:
                 self.print("if (")
             with self.indent():
                 first = True
                 fuer item in node.items:
-                    if first:
+                    wenn first:
                         first = False
-                    else:
+                    sonst:
                         self.print("and")
                     self.visit(item)
-                    if is_gather:
+                    wenn is_gather:
                         self.print("is not None")
 
             self.print("):")
             with self.indent():
                 action = node.action
-                if not action:
-                    if is_gather:
+                wenn not action:
+                    wenn is_gather:
                         assert len(self.local_variable_names) == 2
                         action = (
                             f"[{self.local_variable_names[0]}] + {self.local_variable_names[1]}"
                         )
-                    else:
-                        if self.invalidvisitor.visit(node):
+                    sonst:
+                        wenn self.invalidvisitor.visit(node):
                             action = "UNREACHABLE"
-                        elif len(self.local_variable_names) == 1:
+                        sowenn len(self.local_variable_names) == 1:
                             action = f"{self.local_variable_names[0]}"
-                        else:
+                        sonst:
                             action = f"[{', '.join(self.local_variable_names)}]"
-                elif "LOCATIONS" in action:
+                sowenn "LOCATIONS" in action:
                     self.print("tok = self._tokenizer.get_last_non_whitespace_token()")
                     self.print("end_lineno, end_col_offset = tok.end")
                     action = action.replace("LOCATIONS", self.location_formatting)
 
-                if is_loop:
+                wenn is_loop:
                     self.print(f"children.append({action})")
                     self.print(f"mark = self._mark()")
-                else:
-                    if "UNREACHABLE" in action:
+                sonst:
+                    wenn "UNREACHABLE" in action:
                         action = action.replace("UNREACHABLE", self.unreachable_formatting)
                     self.print(f"return {action}")
 
             self.print("self._reset(mark)")
-            # Skip remaining alternatives if a cut was reached.
-            if has_cut:
+            # Skip remaining alternatives wenn a cut was reached.
+            wenn has_cut:
                 self.print("if cut: return None")

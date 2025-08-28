@@ -401,14 +401,14 @@ klasse BrowserRegistrationTest(unittest.TestCase):
         self.assertEqual(webbrowser._browsers, expected_browsers)
 
         instance = ExampleBrowser()
-        if preferred is not None:
+        wenn preferred is not None:
             webbrowser.register('example2', ExampleBrowser, instance,
                                 preferred=preferred)
-        else:
+        sonst:
             webbrowser.register('example2', ExampleBrowser, instance)
-        if preferred:
+        wenn preferred:
             expected_tryorder = ['example2', 'Example1']
-        else:
+        sonst:
             expected_tryorder = ['Example1', 'example2']
         expected_browsers['example2'] = [ExampleBrowser, instance]
         self.assertEqual(webbrowser._tryorder, expected_tryorder)
@@ -572,5 +572,5 @@ klasse CliTest(unittest.TestCase):
                 mock_open.assert_called_once_with(expected_url, expected_new_win)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

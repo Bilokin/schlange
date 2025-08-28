@@ -51,7 +51,7 @@ def updated_env(updates={}):
 
     env_diff = {}
     fuer key, value in environment.items():
-        if os.environ.get(key) != value:
+        wenn os.environ.get(key) != value:
             env_diff[key] = value
 
     print("🌎 Environment changes:")
@@ -68,18 +68,18 @@ def subdir(working_dir, *, clean_ok=False):
         def wrapper(context):
             nonlocal working_dir
 
-            if callable(working_dir):
+            wenn callable(working_dir):
                 working_dir = working_dir(context)
             try:
                 tput_output = subprocess.check_output(["tput", "cols"],
                                                       encoding="utf-8")
             except subprocess.CalledProcessError:
                 terminal_width = 80
-            else:
+            sonst:
                 terminal_width = int(tput_output.strip())
             print("⎯" * terminal_width)
             print("📁", working_dir)
-            if (clean_ok and getattr(context, "clean", False) and
+            wenn (clean_ok and getattr(context, "clean", False) and
                 working_dir.exists()):
                 print("🚮 Deleting directory (--clean)...")
                 shutil.rmtree(working_dir)
@@ -99,17 +99,17 @@ def call(command, *, context=None, quiet=False, logdir=None, **kwargs):
 
     If 'quiet' is true, then redirect stdout and stderr to a temporary file.
     """
-    if context is not None:
+    wenn context is not None:
         quiet = context.quiet
         logdir = context.logdir
-    elif quiet and logdir is None:
+    sowenn quiet and logdir is None:
         raise ValueError("When quiet is True, logdir must be specified")
 
     print("❯", " ".join(map(str, command)))
-    if not quiet:
+    wenn not quiet:
         stdout = None
         stderr = None
-    else:
+    sonst:
         stdout = tempfile.NamedTemporaryFile("w", encoding="utf-8",
                                              delete=False,
                                              dir=logdir,
@@ -124,9 +124,9 @@ def call(command, *, context=None, quiet=False, logdir=None, **kwargs):
 def build_python_path():
     """The path to the build Python binary."""
     binary = BUILD_DIR / "python"
-    if not binary.is_file():
+    wenn not binary.is_file():
         binary = binary.with_suffix(".exe")
-        if not binary.is_file():
+        wenn not binary.is_file():
             raise FileNotFoundError("Unable to find `python(.exe)` in "
                                     f"{BUILD_DIR}")
 
@@ -134,7 +134,7 @@ def build_python_path():
 
 
 def build_python_is_pydebug():
-    """Find out if the build Python is a pydebug build."""
+    """Find out wenn the build Python is a pydebug build."""
     test = "import sys, test.support; sys.exit(test.support.Py_DEBUG)"
     result = subprocess.run([build_python_path(), "-c", test],
                             stdout=subprocess.PIPE,
@@ -145,17 +145,17 @@ def build_python_is_pydebug():
 @subdir(BUILD_DIR, clean_ok=True)
 def configure_build_python(context, working_dir):
     """Configure the build/host Python."""
-    if LOCAL_SETUP.exists():
-        if LOCAL_SETUP.read_bytes() == LOCAL_SETUP_MARKER:
+    wenn LOCAL_SETUP.exists():
+        wenn LOCAL_SETUP.read_bytes() == LOCAL_SETUP_MARKER:
             print(f"👍 {LOCAL_SETUP} exists ...")
-        else:
+        sonst:
             print(f"⚠️ {LOCAL_SETUP} exists, but has unexpected contents")
-    else:
+    sonst:
         print(f"📝 Creating {LOCAL_SETUP} ...")
         LOCAL_SETUP.write_bytes(LOCAL_SETUP_MARKER)
 
     configure = [os.path.relpath(CHECKOUT / 'configure', working_dir)]
-    if context.args:
+    wenn context.args:
         configure.extend(context.args)
 
     call(configure, context=context)
@@ -178,7 +178,7 @@ def make_build_python(context, working_dir):
 
 def find_wasi_sdk():
     """Find the path to the WASI SDK."""
-    if wasi_sdk_path := os.environ.get("WASI_SDK_PATH"):
+    wenn wasi_sdk_path := os.environ.get("WASI_SDK_PATH"):
         return pathlib.Path(wasi_sdk_path)
 
     opt_path = pathlib.Path("/opt")
@@ -189,10 +189,10 @@ def find_wasi_sdk():
     # ``wasi-sdk-{WASI_SDK_VERSION}.0`` to e.g.
     # ``wasi-sdk-{WASI_SDK_VERSION}.0-x86_64-linux``.
     potential_sdks = [path fuer path in opt_path.glob(f"wasi-sdk-{WASI_SDK_VERSION}.0*")
-                      if path.is_dir()]
-    if len(potential_sdks) == 1:
+                      wenn path.is_dir()]
+    wenn len(potential_sdks) == 1:
         return potential_sdks[0]
-    elif (default_path := opt_path / "wasi-sdk").is_dir():
+    sowenn (default_path := opt_path / "wasi-sdk").is_dir():
         return default_path
 
 
@@ -206,7 +206,7 @@ def wasi_sdk_env(context):
     fuer env_var, binary_name in list(env.items()):
         env[env_var] = os.fsdecode(wasi_sdk_path / "bin" / binary_name)
 
-    if wasi_sdk_path != pathlib.Path("/opt/wasi-sdk"):
+    wenn wasi_sdk_path != pathlib.Path("/opt/wasi-sdk"):
         fuer compiler in ["CC", "CPP", "CXX"]:
             env[compiler] += f" --sysroot={sysroot}"
 
@@ -229,7 +229,7 @@ def wasi_sdk_env(context):
 @subdir(lambda context: CROSS_BUILD_DIR / context.host_triple, clean_ok=True)
 def configure_wasi_python(context, working_dir):
     """Configure the WASI/host build."""
-    if not context.wasi_sdk_path or not context.wasi_sdk_path.exists():
+    wenn not context.wasi_sdk_path or not context.wasi_sdk_path.exists():
         raise ValueError("WASI-SDK not found; "
                         "download from "
                         "https://github.com/WebAssembly/wasi-sdk and/or "
@@ -255,25 +255,25 @@ def configure_wasi_python(context, working_dir):
             "PYTHON_WASM": working_dir / "python.wasm"}
     # Check dynamically fuer wasmtime in case it was specified manually via
     # `--host-runner`.
-    if WASMTIME_HOST_RUNNER_VAR in context.host_runner:
-        if wasmtime := shutil.which("wasmtime"):
+    wenn WASMTIME_HOST_RUNNER_VAR in context.host_runner:
+        wenn wasmtime := shutil.which("wasmtime"):
             args[WASMTIME_VAR_NAME] = wasmtime
-        else:
+        sonst:
             raise FileNotFoundError("wasmtime not found; download from "
                                     "https://github.com/bytecodealliance/wasmtime")
     host_runner = context.host_runner.format_map(args)
     env_additions = {"CONFIG_SITE": config_site, "HOSTRUNNER": host_runner}
     build_python = os.fsdecode(build_python_path())
-    # The path to `configure` MUST be relative, else `python.wasm` is unable
+    # The path to `configure` MUST be relative, sonst `python.wasm` is unable
     # to find the stdlib due to Python not recognizing that it's being
     # executed from within a checkout.
     configure = [os.path.relpath(CHECKOUT / 'configure', working_dir),
                     f"--host={context.host_triple}",
                     f"--build={BUILD_DIR.name}",
                     f"--with-build-python={build_python}"]
-    if build_python_is_pydebug():
+    wenn build_python_is_pydebug():
         configure.append("--with-pydebug")
-    if context.args:
+    wenn context.args:
         configure.extend(context.args)
     call(configure,
          env=updated_env(env_additions | wasi_sdk_env(context)),
@@ -312,12 +312,12 @@ def build_all(context):
 
 def clean_contents(context):
     """Delete all files created by this script."""
-    if CROSS_BUILD_DIR.exists():
+    wenn CROSS_BUILD_DIR.exists():
         print(f"🧹 Deleting {CROSS_BUILD_DIR} ...")
         shutil.rmtree(CROSS_BUILD_DIR)
 
-    if LOCAL_SETUP.exists():
-        if LOCAL_SETUP.read_bytes() == LOCAL_SETUP_MARKER:
+    wenn LOCAL_SETUP.exists():
+        wenn LOCAL_SETUP.read_bytes() == LOCAL_SETUP_MARKER:
             print(f"🧹 Deleting generated {LOCAL_SETUP} ...")
 
 
@@ -395,5 +395,5 @@ def main():
     dispatch[context.subcommand](context)
 
 
-if  __name__ == "__main__":
+wenn  __name__ == "__main__":
     main()

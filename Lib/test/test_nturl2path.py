@@ -103,5 +103,5 @@ klasse NTURL2PathTest(unittest.TestCase):
             self.assertEqual(fn(nturl2path.pathname2url(path)), path)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

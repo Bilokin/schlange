@@ -30,7 +30,7 @@ klasse IterFunc:
     def __iter__(self):
         return self
     def __next__(self):
-        if self.i >= len(self.seqn): raise StopIteration
+        wenn self.i >= len(self.seqn): raise StopIteration
         v = self.seqn[self.i]
         self.i += 1
         return v
@@ -50,7 +50,7 @@ klasse IterNextOnly:
         self.seqn = seqn
         self.i = 0
     def __next__(self):
-        if self.i >= len(self.seqn): raise StopIteration
+        wenn self.i >= len(self.seqn): raise StopIteration
         v = self.seqn[self.i]
         self.i += 1
         return v
@@ -325,11 +325,11 @@ klasse CommonTest(unittest.TestCase):
             self.assertEqual(id(s), id(s*1))
 
     def test_bigrepeat(self):
-        if sys.maxsize <= 2147483647:
+        wenn sys.maxsize <= 2147483647:
             x = self.type2test([0])
             x *= 2**16
             self.assertRaises(MemoryError, x.__mul__, 2**16)
-            if hasattr(x, '__imul__'):
+            wenn hasattr(x, '__imul__'):
                 self.assertRaises(MemoryError, x.__imul__, 2**16)
 
     def test_subscript(self):
@@ -366,7 +366,7 @@ klasse CommonTest(unittest.TestCase):
 
         klasse BadCmp:
             def __eq__(self, other):
-                if other == 2:
+                wenn other == 2:
                     raise BadExc()
                 return False
 
@@ -399,7 +399,7 @@ klasse CommonTest(unittest.TestCase):
 
         klasse BadCmp:
             def __eq__(self, other):
-                if other == 2:
+                wenn other == 2:
                     raise BadExc()
                 return False
 

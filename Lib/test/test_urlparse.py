@@ -105,7 +105,7 @@ parse_qs_test_cases = [
 klasse UrlParseTestCase(unittest.TestCase):
 
     def checkRoundtrips(self, url, parsed, split, url2=None):
-        if url2 is None:
+        wenn url2 is None:
             url2 = url
         result = urllib.parse.urlparse(url)
         self.assertSequenceEqual(result, parsed)
@@ -161,7 +161,7 @@ klasse UrlParseTestCase(unittest.TestCase):
     def test_qsl(self, orig, expect):
         result = urllib.parse.parse_qsl(orig, keep_blank_values=True)
         self.assertEqual(result, expect)
-        expect_without_blanks = [v fuer v in expect if len(v[1])]
+        expect_without_blanks = [v fuer v in expect wenn len(v[1])]
         result = urllib.parse.parse_qsl(orig, keep_blank_values=False)
         self.assertEqual(result, expect_without_blanks)
 
@@ -170,7 +170,7 @@ klasse UrlParseTestCase(unittest.TestCase):
         result = urllib.parse.parse_qs(orig, keep_blank_values=True)
         self.assertEqual(result, expect)
         expect_without_blanks = {v: expect[v]
-                                 fuer v in expect if len(expect[v][0])}
+                                 fuer v in expect wenn len(expect[v][0])}
         result = urllib.parse.parse_qs(orig, keep_blank_values=False)
         self.assertEqual(result, expect_without_blanks)
 
@@ -267,8 +267,8 @@ klasse UrlParseTestCase(unittest.TestCase):
              ('', '', 'schème:path/to/file', '', '')),
             ])
     def test_roundtrips(self, bytes, url, parsed, split):
-        if bytes:
-            if not url.isascii():
+        wenn bytes:
+            wenn not url.isascii():
                 self.skipTest('non-ASCII bytes')
             url = str_encode(url)
             parsed = tuple_encode(parsed)
@@ -299,7 +299,7 @@ klasse UrlParseTestCase(unittest.TestCase):
              ('https', '', '/tmp/junk.txt', '', '')),
         ])
     def test_roundtrips_normalization(self, bytes, url, url2, parsed, split):
-        if bytes:
+        wenn bytes:
             url = str_encode(url)
             url2 = str_encode(url2)
             parsed = tuple_encode(parsed)
@@ -329,7 +329,7 @@ klasse UrlParseTestCase(unittest.TestCase):
         # urllib.parse.urlsplit treats 'http:' as an optimized special case,
         # so we test both 'http:' and 'https:' in all the following.
         # Three cheers fuer white box knowledge!
-        if bytes:
+        wenn bytes:
             scheme = str_encode(scheme)
             url = str_encode(url)
             parsed = tuple_encode(parsed)
@@ -347,7 +347,7 @@ klasse UrlParseTestCase(unittest.TestCase):
             expectedb = expected.encode('ascii')
             self.assertEqual(urllib.parse.urljoin(baseb, relurlb), expectedb)
 
-            if relroundtrip:
+            wenn relroundtrip:
                 relurl = urllib.parse.urlunsplit(urllib.parse.urlsplit(relurl))
                 self.assertEqual(urllib.parse.urljoin(base, relurl), expected)
                 relurlb = urllib.parse.urlunsplit(urllib.parse.urlsplit(relurlb))
@@ -356,7 +356,7 @@ klasse UrlParseTestCase(unittest.TestCase):
     @support.subTests('bytes', (False, True))
     @support.subTests('u', ['Python', './Python','x-newscheme://foo.com/stuff','x://y','x:/y','x:/','/',])
     def test_unparse_parse(self, bytes, u):
-        if bytes:
+        wenn bytes:
             u = str_encode(u)
         self.assertEqual(urllib.parse.urlunsplit(urllib.parse.urlsplit(u)), u)
         self.assertEqual(urllib.parse.urlunparse(urllib.parse.urlparse(u)), u)
@@ -586,7 +586,7 @@ klasse UrlParseTestCase(unittest.TestCase):
         self.checkJoin(RFC1808_BASE, '///w', 'http://a/w')
         self.checkJoin(RFC1808_BASE, '//v', 'http://v')
         # For backward compatibility with RFC1630, the scheme name is allowed
-        # to be present in a relative reference if it is the same as the base
+        # to be present in a relative reference wenn it is the same as the base
         # URI scheme.
         self.checkJoin(RFC1808_BASE, 'http:', 'http://a/b/c/d;p?q#f')
         self.checkJoin(RFC1808_BASE, 'http:#', 'http://a/b/c/d;p?q#', relroundtrip=False)
@@ -720,7 +720,7 @@ klasse UrlParseTestCase(unittest.TestCase):
              '::ffff:12.34.56.78', None),
             ])
     def test_RFC2732(self, bytes, url, hostname, port):
-        if bytes:
+        wenn bytes:
             url = str_encode(url)
             hostname = str_encode(hostname)
         urlparsed = urllib.parse.urlparse(url)
@@ -734,7 +734,7 @@ klasse UrlParseTestCase(unittest.TestCase):
                 'http://[::1/foo/bad]/bad',
                 'http://[::ffff:12.34.56.78'])
     def test_RFC2732_invalid(self, bytes, invalid_url):
-        if bytes:
+        wenn bytes:
             invalid_url = str_encode(invalid_url)
         self.assertRaises(ValueError, urllib.parse.urlparse, invalid_url)
 
@@ -765,12 +765,12 @@ klasse UrlParseTestCase(unittest.TestCase):
             ('://a/b/c;p?q#f', '://a/b/c;p?q', 'f'),
         ])
     def test_urldefrag(self, bytes, url, defrag, frag):
-        if bytes:
+        wenn bytes:
             url = str_encode(url)
             defrag = str_encode(defrag)
             frag = str_encode(frag)
         result = urllib.parse.urldefrag(url)
-        hash = '#' if isinstance(url, str) else b'#'
+        hash = '#' wenn isinstance(url, str) sonst b'#'
         self.assertEqual(result.geturl(), url.rstrip(hash))
         self.assertEqual(result, (defrag, frag))
         self.assertEqual(result.url, defrag)
@@ -981,8 +981,8 @@ klasse UrlParseTestCase(unittest.TestCase):
         """Check handling of invalid ports."""
         netloc = "www.example.net:" + port
         url = "http://" + netloc + "/"
-        if bytes:
-            if not (netloc.isascii() and port.isascii()):
+        wenn bytes:
+            wenn not (netloc.isascii() and port.isascii()):
                 self.skipTest('non-ASCII bytes')
             netloc = str_encode(netloc)
             url = str_encode(url)
@@ -997,12 +997,12 @@ klasse UrlParseTestCase(unittest.TestCase):
     def test_attributes_bad_scheme(self, bytes, parse, scheme):
         """Check handling of invalid schemes."""
         url = scheme + "://www.example.net"
-        if bytes:
-            if not url.isascii():
+        wenn bytes:
+            wenn not url.isascii():
                 self.skipTest('non-ASCII bytes')
             url = url.encode("ascii")
         p = parse(url)
-        self.assertEqual(p.scheme, b"" if bytes else "")
+        self.assertEqual(p.scheme, b"" wenn bytes sonst "")
 
     def test_attributes_without_netloc(self):
         # This example is straight from RFC 3261.  It looks like it
@@ -1143,7 +1143,7 @@ klasse UrlParseTestCase(unittest.TestCase):
     @support.subTests('func', (urllib.parse.urlparse, urllib.parse.urlsplit))
     def test_parse_fragments(self, url, attr, expected_frag, func):
         # Exercise the allow_fragments parameter of urlparse() and urlsplit()
-        if attr == "params" and func is urllib.parse.urlsplit:
+        wenn attr == "params" and func is urllib.parse.urlsplit:
             attr = "path"
         result = func(url, allow_fragments=False)
         self.assertEqual(result.fragment, "")
@@ -1488,10 +1488,10 @@ klasse UrlParseTestCase(unittest.TestCase):
             'ResultBase', 'clear_cache', 'to_bytes', 'unwrap',
         }
         fuer name in dir(urllib.parse):
-            if name.startswith('_') or name in undocumented:
+            wenn name.startswith('_') or name in undocumented:
                 continue
             object = getattr(urllib.parse, name)
-            if getattr(object, '__module__', None) == 'urllib.parse':
+            wenn getattr(object, '__module__', None) == 'urllib.parse':
                 expected.append(name)
         self.assertCountEqual(urllib.parse.__all__, expected)
 
@@ -1503,7 +1503,7 @@ klasse UrlParseTestCase(unittest.TestCase):
         hex_chars = {'{:04X}'.format(ord(c)) fuer c in illegal_chars}
         denorm_chars = [
             c fuer c in map(chr, range(128, sys.maxunicode))
-            if unicodedata.decomposition(c)
+            wenn unicodedata.decomposition(c)
             and (hex_chars & set(unicodedata.decomposition(c).split()))
             and c not in illegal_chars
         ]
@@ -1762,5 +1762,5 @@ def str_encode(s):
 def tuple_encode(t):
     return tuple(str_encode(x) fuer x in t)
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

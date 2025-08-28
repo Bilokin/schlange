@@ -37,26 +37,26 @@ def run_pty(script, input=b"dummy input\r", env=None):
         os.set_blocking(master, False)
         while True:
             fuer [_, events] in sel.select():
-                if events & selectors.EVENT_READ:
+                wenn events & selectors.EVENT_READ:
                     try:
                         chunk = os.read(master, 0x10000)
                     except OSError as err:
                         # Linux raises EIO when slave is closed (Issue 5380)
-                        if err.errno != EIO:
+                        wenn err.errno != EIO:
                             raise
                         chunk = b""
-                    if not chunk:
+                    wenn not chunk:
                         return output
                     output.extend(chunk)
-                if events & selectors.EVENT_WRITE:
+                wenn events & selectors.EVENT_WRITE:
                     try:
                         input = input[os.write(master, input):]
                     except OSError as err:
                         # Apparently EIO means the slave was closed
-                        if err.errno != EIO:
+                        wenn err.errno != EIO:
                             raise
                         input = b""  # Stop writing
-                    if not input:
+                    wenn not input:
                         sel.modify(master, selectors.EVENT_READ)
 
 

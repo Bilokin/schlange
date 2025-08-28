@@ -24,7 +24,7 @@ klasse SimpleTypesTestCase(unittest.TestCase):
             from _ctypes import set_conversion_mode
         except ImportError:
             pass
-        else:
+        sonst:
             self.prev_conv_mode = set_conversion_mode("ascii", "strict")
 
     def tearDown(self):
@@ -32,7 +32,7 @@ klasse SimpleTypesTestCase(unittest.TestCase):
             from _ctypes import set_conversion_mode
         except ImportError:
             pass
-        else:
+        sonst:
             set_conversion_mode(*self.prev_conv_mode)
 
     def test_subclasses(self):
@@ -107,7 +107,7 @@ klasse SimpleTypesTestCase(unittest.TestCase):
         self.assertEqual(str(cm.exception),
                          "a unicode character expected, not instance of int")
 
-        if sizeof(c_wchar) < 4:
+        wenn sizeof(c_wchar) < 4:
             with self.assertRaises(TypeError) as cm:
                 c_wchar.from_param('\U0001f40d')
             self.assertEqual(str(cm.exception),
@@ -125,7 +125,7 @@ klasse SimpleTypesTestCase(unittest.TestCase):
 
         self.assertEqual(LPINT.from_param(None), None)
 
-        if c_int != c_long:
+        wenn c_int != c_long:
             self.assertRaises(TypeError, LPINT.from_param, pointer(c_long(42)))
         self.assertRaises(TypeError, LPINT.from_param, pointer(c_uint(42)))
         self.assertRaises(TypeError, LPINT.from_param, pointer(c_short(42)))
@@ -138,7 +138,7 @@ klasse SimpleTypesTestCase(unittest.TestCase):
         LPINT.from_param(byref(c_int(42)))
 
         self.assertRaises(TypeError, LPINT.from_param, byref(c_short(22)))
-        if c_int != c_long:
+        wenn c_int != c_long:
             self.assertRaises(TypeError, LPINT.from_param, byref(c_long(22)))
         self.assertRaises(TypeError, LPINT.from_param, byref(c_uint(22)))
 
@@ -149,7 +149,7 @@ klasse SimpleTypesTestCase(unittest.TestCase):
         LPLPINT.from_param(byref(pointer(c_int(42))))
 
         self.assertRaises(TypeError, LPLPINT.from_param, byref(pointer(c_short(22))))
-        if c_int != c_long:
+        wenn c_int != c_long:
             self.assertRaises(TypeError, LPLPINT.from_param, byref(pointer(c_long(22))))
         self.assertRaises(TypeError, LPLPINT.from_param, byref(pointer(c_uint(22))))
 
@@ -241,7 +241,7 @@ klasse SimpleTypesTestCase(unittest.TestCase):
         self.assertRegex(repr(c_ulonglong.from_param(20000)), r"^<cparam '[LIQ]' \(20000\)>$")
         self.assertEqual(repr(c_float.from_param(1.5)), "<cparam 'f' (1.5)>")
         self.assertEqual(repr(c_double.from_param(1.5)), "<cparam 'd' (1.5)>")
-        if sys.float_repr_style == 'short':
+        wenn sys.float_repr_style == 'short':
             self.assertEqual(repr(c_double.from_param(1e300)), "<cparam 'd' (1e+300)>")
         self.assertRegex(repr(c_longdouble.from_param(1.5)), r"^<cparam ('d' \(1.5\)|'g' at 0x[A-Fa-f0-9]+)>$")
         self.assertRegex(repr(c_char_p.from_param(b'hihi')), r"^<cparam 'z' \(0x[A-Fa-f0-9]+\)>$")
@@ -298,5 +298,5 @@ klasse SimpleTypesTestCase(unittest.TestCase):
         self.assertEqual(trace, [1, 2, 3, 4, 5])
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

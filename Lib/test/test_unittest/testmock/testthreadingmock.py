@@ -197,5 +197,5 @@ klasse TestThreadingMock(unittest.TestCase):
         m.assert_called_once()
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

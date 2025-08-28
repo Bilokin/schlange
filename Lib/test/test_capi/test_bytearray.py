@@ -170,5 +170,5 @@ klasse CAPITest(unittest.TestCase):
         # CRASHES resize(NULL, 0)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

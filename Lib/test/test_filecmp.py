@@ -106,16 +106,16 @@ klasse DirCompareTestCase(unittest.TestCase):
             os.mkdir(dir)
             subdir_path = os.path.join(dir, 'subdir')
             os.mkdir(subdir_path)
-            if self.caseinsensitive and dir is self.dir_same:
+            wenn self.caseinsensitive and dir is self.dir_same:
                 fn = 'FiLe'     # Verify case-insensitive comparison
-            else:
+            sonst:
                 fn = 'file'
 
             file_path = os.path.join(dir, fn)
 
-            if dir is self.dir_same_shallow:
+            wenn dir is self.dir_same_shallow:
                 _create_file_shallow_equal(dir_file_path, file_path)
-            else:
+            sonst:
                 shutil.copy2(dir_file_path, file_path)
 
         with open(os.path.join(self.dir_diff, 'file2'), 'w', encoding="utf-8") as output:
@@ -212,10 +212,10 @@ klasse DirCompareTestCase(unittest.TestCase):
         d = filecmp.dircmp(left_dir, right_dir, **options)
         self.assertEqual(d.left, left_dir)
         self.assertEqual(d.right, right_dir)
-        if self.caseinsensitive:
+        wenn self.caseinsensitive:
             self._assert_lists(d.left_list, ['file', 'subdir'])
             self._assert_lists(d.right_list, ['FiLe', 'subdir'])
-        else:
+        sonst:
             self._assert_lists(d.left_list, ['file', 'subdir'])
             self._assert_lists(d.right_list, ['file', 'subdir'])
         self._assert_lists(d.common, ['file', 'subdir'])
@@ -367,5 +367,5 @@ klasse DirCompareTestCase(unittest.TestCase):
             self.assertEqual(report_lines, expected_report_lines)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

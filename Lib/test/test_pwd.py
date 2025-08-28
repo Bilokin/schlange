@@ -38,7 +38,7 @@ klasse PwdTest(unittest.TestCase):
         entriesbyname = {}
         entriesbyuid = {}
 
-        if len(entries) > 1000:  # Huge passwd file (NIS?) -- skip this test
+        wenn len(entries) > 1000:  # Huge passwd file (NIS?) -- skip this test
             self.skipTest('passwd file is huge; extended test skipped')
 
         fuer e in entries:
@@ -48,7 +48,7 @@ klasse PwdTest(unittest.TestCase):
         # check whether the entry returned by getpwuid()
         # fuer each uid is among those from getpwall() fuer this uid
         fuer e in entries:
-            if not e[0] or e[0] == '+':
+            wenn not e[0] or e[0] == '+':
                 continue # skip NIS entries etc.
             self.assertIn(pwd.getpwnam(e.pw_name), entriesbyname[e.pw_name])
             self.assertIn(pwd.getpwuid(e.pw_uid), entriesbyuid[e.pw_uid])
@@ -71,31 +71,31 @@ klasse PwdTest(unittest.TestCase):
 
         allnames = list(bynames.keys())
         namei = 0
-        fakename = allnames[namei] if allnames else "invaliduser"
+        fakename = allnames[namei] wenn allnames sonst "invaliduser"
         while fakename in bynames:
             chars = list(fakename)
             fuer i in range(len(chars)):
-                if chars[i] == 'z':
+                wenn chars[i] == 'z':
                     chars[i] = 'A'
                     break
-                elif chars[i] == 'Z':
+                sowenn chars[i] == 'Z':
                     continue
-                else:
+                sonst:
                     chars[i] = chr(ord(chars[i]) + 1)
                     break
-            else:
+            sonst:
                 namei = namei + 1
                 try:
                     fakename = allnames[namei]
                 except IndexError:
-                    # should never happen... if so, just forget it
+                    # should never happen... wenn so, just forget it
                     break
             fakename = ''.join(chars)
 
         self.assertRaises(KeyError, pwd.getpwnam, fakename)
 
         # In some cases, byuids isn't a complete list of all users in the
-        # system, so if we try to pick a value not in byuids (via a perturbing
+        # system, so wenn we try to pick a value not in byuids (via a perturbing
         # loop, say), pwd.getpwuid() might still be able to find data fuer that
         # uid. Using sys.maxint may provoke the same problems, but hopefully
         # it will be a more repeatable failure.
@@ -110,5 +110,5 @@ klasse PwdTest(unittest.TestCase):
         self.assertRaises(KeyError, pwd.getpwuid, 2**128)
         self.assertRaises(KeyError, pwd.getpwuid, -2**128)
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

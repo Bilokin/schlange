@@ -25,7 +25,7 @@ klasse IsolatedAsyncioTestCase(TestCase):
     # To share contextvars between setUp(), test and tearDown() we need to execute
     # them inside the same task.
 
-    # Note: the test case modifies event loop policy if the policy was not instantiated
+    # Note: the test case modifies event loop policy wenn the policy was not instantiated
     # yet, unless loop_factory=asyncio.EventLoop is set.
     # asyncio.get_event_loop_policy() creates a default policy on demand but never
     # returns None
@@ -82,7 +82,7 @@ klasse IsolatedAsyncioTestCase(TestCase):
                 cls.__exit__
             except AttributeError:
                 pass
-            else:
+            sonst:
                 msg += (" but it supports the context manager protocol. "
                         "Did you mean to use enterContext()?")
             raise TypeError(msg) from None
@@ -100,7 +100,7 @@ klasse IsolatedAsyncioTestCase(TestCase):
 
     def _callTestMethod(self, method):
         result = self._callMaybeAsync(method)
-        if result is not None:
+        wenn result is not None:
             msg = (
                 f'It is deprecated to return a value that is not None '
                 f'from a test case ({method} returned {type(result).__name__!r})',
@@ -124,12 +124,12 @@ klasse IsolatedAsyncioTestCase(TestCase):
 
     def _callMaybeAsync(self, func, /, *args, **kwargs):
         assert self._asyncioRunner is not None, 'asyncio runner is not initialized'
-        if inspect.iscoroutinefunction(func):
+        wenn inspect.iscoroutinefunction(func):
             return self._asyncioRunner.run(
                 func(*args, **kwargs),
                 context=self._asyncioTestContext,
             )
-        else:
+        sonst:
             return self._asyncioTestContext.run(func, *args, **kwargs)
 
     def _setupAsyncioRunner(self):
@@ -154,5 +154,5 @@ klasse IsolatedAsyncioTestCase(TestCase):
         self._tearDownAsyncioRunner()
 
     def __del__(self):
-        if self._asyncioRunner is not None:
+        wenn self._asyncioRunner is not None:
             self._tearDownAsyncioRunner()

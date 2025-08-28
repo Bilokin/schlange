@@ -32,8 +32,8 @@ def package_to_anchor(func):
 
     @functools.wraps(func)
     def wrapper(anchor=undefined, package=undefined):
-        if package is not undefined:
-            if anchor is not undefined:
+        wenn package is not undefined:
+            wenn anchor is not undefined:
                 return func(anchor, package)
             warnings.warn(
                 "First parameter to files is renamed to 'anchor'",
@@ -41,7 +41,7 @@ def package_to_anchor(func):
                 stacklevel=2,
             )
             return func(package)
-        elif anchor is undefined:
+        sowenn anchor is undefined:
             return func()
         return func(anchor)
 
@@ -58,7 +58,7 @@ def files(anchor: Optional[Anchor] = None) -> Traversable:
 
 def get_resource_reader(package: types.ModuleType) -> Optional[ResourceReader]:
     """
-    Return the package's loader if it's a ResourceReader.
+    Return the package's loader wenn it's a ResourceReader.
     """
     # We can't use
     # a issubclass() check here because apparently abc.'s __subclasscheck__()
@@ -67,7 +67,7 @@ def get_resource_reader(package: types.ModuleType) -> Optional[ResourceReader]:
     # TypeError.  That seems terrible.
     spec = package.__spec__
     reader = getattr(spec.loader, 'get_resource_reader', None)  # type: ignore[union-attr]
-    if reader is None:
+    wenn reader is None:
         return None
     return reader(spec.name)  # type: ignore[union-attr]
 
@@ -155,7 +155,7 @@ def _is_present_dir(path: Traversable) -> bool:
     exception (i.e. ``FileNotFoundError``) when the
     directory doesn't exist. This function wraps that call
     to always return a boolean and only return True
-    if there's a dir and it exists.
+    wenn there's a dir and it exists.
     """
     with contextlib.suppress(FileNotFoundError):
         return path.is_dir()
@@ -168,7 +168,7 @@ def as_file(path):
     Given a Traversable object, return that object as a
     path on the local file system in a context manager.
     """
-    return _temp_dir(path) if _is_present_dir(path) else _temp_file(path)
+    return _temp_dir(path) wenn _is_present_dir(path) sonst _temp_file(path)
 
 
 @as_file.register(pathlib.Path)
@@ -202,10 +202,10 @@ def _temp_dir(path):
 
 def _write_contents(target, source):
     child = target.joinpath(source.name)
-    if source.is_dir():
+    wenn source.is_dir():
         child.mkdir()
         fuer item in source.iterdir():
             _write_contents(child, item)
-    else:
+    sonst:
         child.write_bytes(source.read_bytes())
     return child

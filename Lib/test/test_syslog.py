@@ -1,5 +1,5 @@
 from test.support import import_helper, threading_helper
-syslog = import_helper.import_module("syslog") #skip if not supported
+syslog = import_helper.import_module("syslog") #skip wenn not supported
 from test import support
 import sys
 import threading
@@ -143,5 +143,5 @@ klasse Test(unittest.TestCase):
             syslog.closelog()
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

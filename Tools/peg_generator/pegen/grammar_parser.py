@@ -45,7 +45,7 @@ klasse GeneratedParser(Parser):
     def start(self) -> Optional[Grammar]:
         # start: grammar $
         mark = self._mark()
-        if (
+        wenn (
             (grammar := self.grammar())
             and
             (_endmarker := self.expect('ENDMARKER'))
@@ -58,14 +58,14 @@ klasse GeneratedParser(Parser):
     def grammar(self) -> Optional[Grammar]:
         # grammar: metas rules | rules
         mark = self._mark()
-        if (
+        wenn (
             (metas := self.metas())
             and
             (rules := self.rules())
         ):
             return Grammar ( rules , metas )
         self._reset(mark)
-        if (
+        wenn (
             (rules := self.rules())
         ):
             return Grammar ( rules , [] )
@@ -76,14 +76,14 @@ klasse GeneratedParser(Parser):
     def metas(self) -> Optional[MetaList]:
         # metas: meta metas | meta
         mark = self._mark()
-        if (
+        wenn (
             (meta := self.meta())
             and
             (metas := self.metas())
         ):
             return [meta] + metas
         self._reset(mark)
-        if (
+        wenn (
             (meta := self.meta())
         ):
             return [meta]
@@ -94,7 +94,7 @@ klasse GeneratedParser(Parser):
     def meta(self) -> Optional[MetaTuple]:
         # meta: "@" NAME NEWLINE | "@" NAME NAME NEWLINE | "@" NAME STRING NEWLINE
         mark = self._mark()
-        if (
+        wenn (
             (literal := self.expect("@"))
             and
             (name := self.name())
@@ -103,7 +103,7 @@ klasse GeneratedParser(Parser):
         ):
             return ( name . string , None )
         self._reset(mark)
-        if (
+        wenn (
             (literal := self.expect("@"))
             and
             (a := self.name())
@@ -114,7 +114,7 @@ klasse GeneratedParser(Parser):
         ):
             return ( a . string , b . string )
         self._reset(mark)
-        if (
+        wenn (
             (literal := self.expect("@"))
             and
             (name := self.name())
@@ -131,14 +131,14 @@ klasse GeneratedParser(Parser):
     def rules(self) -> Optional[RuleList]:
         # rules: rule rules | rule
         mark = self._mark()
-        if (
+        wenn (
             (rule := self.rule())
             and
             (rules := self.rules())
         ):
             return [rule] + rules
         self._reset(mark)
-        if (
+        wenn (
             (rule := self.rule())
         ):
             return [rule]
@@ -149,7 +149,7 @@ klasse GeneratedParser(Parser):
     def rule(self) -> Optional[Rule]:
         # rule: rulename memoflag? ":" alts NEWLINE INDENT more_alts DEDENT | rulename memoflag? ":" NEWLINE INDENT more_alts DEDENT | rulename memoflag? ":" alts NEWLINE
         mark = self._mark()
-        if (
+        wenn (
             (rulename := self.rulename())
             and
             (opt := self.memoflag(),)
@@ -168,7 +168,7 @@ klasse GeneratedParser(Parser):
         ):
             return Rule ( rulename [0] , rulename [1] , Rhs ( alts . alts + more_alts . alts ) , memo = opt )
         self._reset(mark)
-        if (
+        wenn (
             (rulename := self.rulename())
             and
             (opt := self.memoflag(),)
@@ -185,7 +185,7 @@ klasse GeneratedParser(Parser):
         ):
             return Rule ( rulename [0] , rulename [1] , more_alts , memo = opt )
         self._reset(mark)
-        if (
+        wenn (
             (rulename := self.rulename())
             and
             (opt := self.memoflag(),)
@@ -204,14 +204,14 @@ klasse GeneratedParser(Parser):
     def rulename(self) -> Optional[RuleName]:
         # rulename: NAME annotation | NAME
         mark = self._mark()
-        if (
+        wenn (
             (name := self.name())
             and
             (annotation := self.annotation())
         ):
             return ( name . string , annotation )
         self._reset(mark)
-        if (
+        wenn (
             (name := self.name())
         ):
             return ( name . string , None )
@@ -222,7 +222,7 @@ klasse GeneratedParser(Parser):
     def memoflag(self) -> Optional[str]:
         # memoflag: '(' "memo" ')'
         mark = self._mark()
-        if (
+        wenn (
             (literal := self.expect('('))
             and
             (literal_1 := self.expect("memo"))
@@ -237,7 +237,7 @@ klasse GeneratedParser(Parser):
     def alts(self) -> Optional[Rhs]:
         # alts: alt "|" alts | alt
         mark = self._mark()
-        if (
+        wenn (
             (alt := self.alt())
             and
             (literal := self.expect("|"))
@@ -246,7 +246,7 @@ klasse GeneratedParser(Parser):
         ):
             return Rhs ( [alt] + alts . alts )
         self._reset(mark)
-        if (
+        wenn (
             (alt := self.alt())
         ):
             return Rhs ( [alt] )
@@ -257,7 +257,7 @@ klasse GeneratedParser(Parser):
     def more_alts(self) -> Optional[Rhs]:
         # more_alts: "|" alts NEWLINE more_alts | "|" alts NEWLINE
         mark = self._mark()
-        if (
+        wenn (
             (literal := self.expect("|"))
             and
             (alts := self.alts())
@@ -268,7 +268,7 @@ klasse GeneratedParser(Parser):
         ):
             return Rhs ( alts . alts + more_alts . alts )
         self._reset(mark)
-        if (
+        wenn (
             (literal := self.expect("|"))
             and
             (alts := self.alts())
@@ -283,7 +283,7 @@ klasse GeneratedParser(Parser):
     def alt(self) -> Optional[Alt]:
         # alt: items '$' action | items '$' | items action | items
         mark = self._mark()
-        if (
+        wenn (
             (items := self.items())
             and
             (literal := self.expect('$'))
@@ -292,21 +292,21 @@ klasse GeneratedParser(Parser):
         ):
             return Alt ( items + [NamedItem ( None , NameLeaf ( 'ENDMARKER' ) )] , action = action )
         self._reset(mark)
-        if (
+        wenn (
             (items := self.items())
             and
             (literal := self.expect('$'))
         ):
             return Alt ( items + [NamedItem ( None , NameLeaf ( 'ENDMARKER' ) )] , action = None )
         self._reset(mark)
-        if (
+        wenn (
             (items := self.items())
             and
             (action := self.action())
         ):
             return Alt ( items , action = action )
         self._reset(mark)
-        if (
+        wenn (
             (items := self.items())
         ):
             return Alt ( items , action = None )
@@ -317,14 +317,14 @@ klasse GeneratedParser(Parser):
     def items(self) -> Optional[NamedItemList]:
         # items: named_item items | named_item
         mark = self._mark()
-        if (
+        wenn (
             (named_item := self.named_item())
             and
             (items := self.items())
         ):
             return [named_item] + items
         self._reset(mark)
-        if (
+        wenn (
             (named_item := self.named_item())
         ):
             return [named_item]
@@ -336,7 +336,7 @@ klasse GeneratedParser(Parser):
         # named_item: NAME annotation '=' ~ item | NAME '=' ~ item | item | forced_atom | lookahead
         mark = self._mark()
         cut = False
-        if (
+        wenn (
             (name := self.name())
             and
             (annotation := self.annotation())
@@ -349,9 +349,9 @@ klasse GeneratedParser(Parser):
         ):
             return NamedItem ( name . string , item , annotation )
         self._reset(mark)
-        if cut: return None
+        wenn cut: return None
         cut = False
-        if (
+        wenn (
             (name := self.name())
             and
             (literal := self.expect('='))
@@ -362,18 +362,18 @@ klasse GeneratedParser(Parser):
         ):
             return NamedItem ( name . string , item )
         self._reset(mark)
-        if cut: return None
-        if (
+        wenn cut: return None
+        wenn (
             (item := self.item())
         ):
             return NamedItem ( None , item )
         self._reset(mark)
-        if (
+        wenn (
             (forced := self.forced_atom())
         ):
             return NamedItem ( None , forced )
         self._reset(mark)
-        if (
+        wenn (
             (it := self.lookahead())
         ):
             return NamedItem ( None , it )
@@ -385,7 +385,7 @@ klasse GeneratedParser(Parser):
         # forced_atom: '&' '&' ~ atom
         mark = self._mark()
         cut = False
-        if (
+        wenn (
             (literal := self.expect('&'))
             and
             (literal_1 := self.expect('&'))
@@ -396,7 +396,7 @@ klasse GeneratedParser(Parser):
         ):
             return Forced ( atom )
         self._reset(mark)
-        if cut: return None
+        wenn cut: return None
         return None
 
     @memoize
@@ -404,7 +404,7 @@ klasse GeneratedParser(Parser):
         # lookahead: '&' ~ atom | '!' ~ atom | '~'
         mark = self._mark()
         cut = False
-        if (
+        wenn (
             (literal := self.expect('&'))
             and
             (cut := True)
@@ -413,9 +413,9 @@ klasse GeneratedParser(Parser):
         ):
             return PositiveLookahead ( atom )
         self._reset(mark)
-        if cut: return None
+        wenn cut: return None
         cut = False
-        if (
+        wenn (
             (literal := self.expect('!'))
             and
             (cut := True)
@@ -424,8 +424,8 @@ klasse GeneratedParser(Parser):
         ):
             return NegativeLookahead ( atom )
         self._reset(mark)
-        if cut: return None
-        if (
+        wenn cut: return None
+        wenn (
             (literal := self.expect('~'))
         ):
             return Cut ( )
@@ -437,7 +437,7 @@ klasse GeneratedParser(Parser):
         # item: '[' ~ alts ']' | atom '?' | atom '*' | atom '+' | atom '.' atom '+' | atom
         mark = self._mark()
         cut = False
-        if (
+        wenn (
             (literal := self.expect('['))
             and
             (cut := True)
@@ -448,29 +448,29 @@ klasse GeneratedParser(Parser):
         ):
             return Opt ( alts )
         self._reset(mark)
-        if cut: return None
-        if (
+        wenn cut: return None
+        wenn (
             (atom := self.atom())
             and
             (literal := self.expect('?'))
         ):
             return Opt ( atom )
         self._reset(mark)
-        if (
+        wenn (
             (atom := self.atom())
             and
             (literal := self.expect('*'))
         ):
             return Repeat0 ( atom )
         self._reset(mark)
-        if (
+        wenn (
             (atom := self.atom())
             and
             (literal := self.expect('+'))
         ):
             return Repeat1 ( atom )
         self._reset(mark)
-        if (
+        wenn (
             (sep := self.atom())
             and
             (literal := self.expect('.'))
@@ -481,7 +481,7 @@ klasse GeneratedParser(Parser):
         ):
             return Gather ( sep , node )
         self._reset(mark)
-        if (
+        wenn (
             (atom := self.atom())
         ):
             return atom
@@ -493,7 +493,7 @@ klasse GeneratedParser(Parser):
         # atom: '(' ~ alts ')' | NAME | STRING
         mark = self._mark()
         cut = False
-        if (
+        wenn (
             (literal := self.expect('('))
             and
             (cut := True)
@@ -504,13 +504,13 @@ klasse GeneratedParser(Parser):
         ):
             return Group ( alts )
         self._reset(mark)
-        if cut: return None
-        if (
+        wenn cut: return None
+        wenn (
             (name := self.name())
         ):
             return NameLeaf ( name . string )
         self._reset(mark)
-        if (
+        wenn (
             (string := self.string())
         ):
             return StringLeaf ( string . string )
@@ -522,7 +522,7 @@ klasse GeneratedParser(Parser):
         # action: "{" ~ target_atoms "}"
         mark = self._mark()
         cut = False
-        if (
+        wenn (
             (literal := self.expect("{"))
             and
             (cut := True)
@@ -533,7 +533,7 @@ klasse GeneratedParser(Parser):
         ):
             return target_atoms
         self._reset(mark)
-        if cut: return None
+        wenn cut: return None
         return None
 
     @memoize
@@ -541,7 +541,7 @@ klasse GeneratedParser(Parser):
         # annotation: "[" ~ target_atoms "]"
         mark = self._mark()
         cut = False
-        if (
+        wenn (
             (literal := self.expect("["))
             and
             (cut := True)
@@ -552,21 +552,21 @@ klasse GeneratedParser(Parser):
         ):
             return target_atoms
         self._reset(mark)
-        if cut: return None
+        wenn cut: return None
         return None
 
     @memoize
     def target_atoms(self) -> Optional[str]:
         # target_atoms: target_atom target_atoms | target_atom
         mark = self._mark()
-        if (
+        wenn (
             (target_atom := self.target_atom())
             and
             (target_atoms := self.target_atoms())
         ):
             return target_atom + " " + target_atoms
         self._reset(mark)
-        if (
+        wenn (
             (target_atom := self.target_atom())
         ):
             return target_atom
@@ -578,7 +578,7 @@ klasse GeneratedParser(Parser):
         # target_atom: "{" ~ target_atoms? "}" | "[" ~ target_atoms? "]" | NAME "*" | NAME | NUMBER | STRING | FSTRING_START | FSTRING_MIDDLE | FSTRING_END | "?" | ":" | !"}" !"]" OP
         mark = self._mark()
         cut = False
-        if (
+        wenn (
             (literal := self.expect("{"))
             and
             (cut := True)
@@ -589,9 +589,9 @@ klasse GeneratedParser(Parser):
         ):
             return "{" + ( atoms or "" ) + "}"
         self._reset(mark)
-        if cut: return None
+        wenn cut: return None
         cut = False
-        if (
+        wenn (
             (literal := self.expect("["))
             and
             (cut := True)
@@ -602,55 +602,55 @@ klasse GeneratedParser(Parser):
         ):
             return "[" + ( atoms or "" ) + "]"
         self._reset(mark)
-        if cut: return None
-        if (
+        wenn cut: return None
+        wenn (
             (name := self.name())
             and
             (literal := self.expect("*"))
         ):
             return name . string + "*"
         self._reset(mark)
-        if (
+        wenn (
             (name := self.name())
         ):
             return name . string
         self._reset(mark)
-        if (
+        wenn (
             (number := self.number())
         ):
             return number . string
         self._reset(mark)
-        if (
+        wenn (
             (string := self.string())
         ):
             return string . string
         self._reset(mark)
-        if (
+        wenn (
             (fstring_start := self.fstring_start())
         ):
             return fstring_start . string
         self._reset(mark)
-        if (
+        wenn (
             (fstring_middle := self.fstring_middle())
         ):
             return fstring_middle . string
         self._reset(mark)
-        if (
+        wenn (
             (fstring_end := self.fstring_end())
         ):
             return fstring_end . string
         self._reset(mark)
-        if (
+        wenn (
             (literal := self.expect("?"))
         ):
             return "?"
         self._reset(mark)
-        if (
+        wenn (
             (literal := self.expect(":"))
         ):
             return ":"
         self._reset(mark)
-        if (
+        wenn (
             self.negative_lookahead(self.expect, "}")
             and
             self.negative_lookahead(self.expect, "]")
@@ -665,6 +665,6 @@ klasse GeneratedParser(Parser):
     SOFT_KEYWORDS = ('memo',)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     from pegen.parser import simple_parser_main
     simple_parser_main(GeneratedParser)

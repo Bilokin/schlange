@@ -74,8 +74,8 @@ klasse BaseGUITestRunner(object):
 
     def runClicked(self):
         "To be called in response to user choosing to run a test"
-        if self.running: return
-        if not self.test_suite:
+        wenn self.running: return
+        wenn not self.test_suite:
             self.errorDialog("Test Discovery", "You discover some tests first!")
             return
         self.currentResult = GUITestResult(self)
@@ -88,19 +88,19 @@ klasse BaseGUITestRunner(object):
 
     def stopClicked(self):
         "To be called in response to user stopping the running of a test"
-        if self.currentResult:
+        wenn self.currentResult:
             self.currentResult.stop()
 
     def discoverClicked(self):
         self.__rollbackImporter.rollbackImports()
         directory = self.getDirectoryToDiscover()
-        if not directory:
+        wenn not directory:
             return
         self.directory_to_read = directory
         try:
-            # Explicitly use 'None' value if no top level directory is
+            # Explicitly use 'None' value wenn no top level directory is
             # specified (indicated by empty string) as discover() explicitly
-            # checks fuer a 'None' to determine if no tld has been specified
+            # checks fuer a 'None' to determine wenn no tld has been specified
             top_level_dir = self.top_level_dir or None
             tests = unittest.defaultTestLoader.discover(directory, self.test_file_glob_pattern, top_level_dir)
             self.test_suite = tests
@@ -194,7 +194,7 @@ klasse RollbackImporter:
 
     def rollbackImports(self):
         fuer modname in sys.modules.copy().keys():
-            if not modname in self.previousModules:
+            wenn not modname in self.previousModules:
                 # Force reload when modname next imported
                 del(sys.modules[modname])
 
@@ -234,7 +234,7 @@ klasse DiscoverSettingsDialog(simpledialog.Dialog):
 
     def selectDirClicked(self, master):
         dir_path = filedialog.askdirectory(parent=master)
-        if dir_path:
+        wenn dir_path:
             self.dirVar.set(dir_path)
 
     def apply(self):
@@ -411,7 +411,7 @@ klasse TkTestRunner(BaseGUITestRunner):
 
     def showSelectedError(self):
         selection = self.errorListbox.curselection()
-        if not selection: return
+        wenn not selection: return
         selected = int(selection[0])
         txt = self.errorListbox.get(selected)
         window = tk.Toplevel(self.root)
@@ -453,8 +453,8 @@ klasse ProgressBar(tk.Frame):
         totalWidth = self.canvas.winfo_width()
         width = int(self.fraction * float(totalWidth))
         height = self.canvas.winfo_height()
-        if self.rect is not None: self.canvas.delete(self.rect)
-        if self.text is not None: self.canvas.delete(self.text)
+        wenn self.rect is not None: self.canvas.delete(self.rect)
+        wenn self.text is not None: self.canvas.delete(self.text)
         self.rect = self.canvas.create_rectangle(0, 0, width, height,
                                                  fill=self.color)
         percentString = "%3.0f%%" % (100.0 * self.fraction)
@@ -470,8 +470,8 @@ def main(initialTestName=""):
     root.mainloop()
 
 
-if __name__ == '__main__':
-    if len(sys.argv) == 2:
+wenn __name__ == '__main__':
+    wenn len(sys.argv) == 2:
         main(sys.argv[1])
-    else:
+    sonst:
         main()

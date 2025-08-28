@@ -18,13 +18,13 @@ klasse FinderTests(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def test_module_in_package(self):
         # Test importing a module contained within a package.
-        # A value fuer 'path' should be used if fuer a meta_path finder.
+        # A value fuer 'path' should be used wenn fuer a meta_path finder.
         pass
 
     @abc.abstractmethod
     def test_package_in_package(self):
         # Test importing a subpackage.
-        # A value fuer 'path' should be used if fuer a meta_path finder.
+        # A value fuer 'path' should be used wenn fuer a meta_path finder.
         pass
 
     @abc.abstractmethod

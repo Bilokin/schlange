@@ -21,7 +21,7 @@ from . import util
 __all__ = ['stop']
 
 
-if sys.platform == 'win32':
+wenn sys.platform == 'win32':
     __all__ += ['DupSocket']
 
     klasse DupSocket(object):
@@ -39,7 +39,7 @@ if sys.platform == 'win32':
                 share = conn.recv_bytes()
                 return socket.fromshare(share)
 
-else:
+sonst:
     __all__ += ['DupFd']
 
     klasse DupFd(object):
@@ -72,7 +72,7 @@ klasse _ResourceSharer(object):
     def register(self, send, close):
         '''Register resource, returning an identifier.'''
         with self._lock:
-            if self._address is None:
+            wenn self._address is None:
                 self._start()
             self._key += 1
             self._cache[self._key] = (send, close)
@@ -91,13 +91,13 @@ klasse _ResourceSharer(object):
         '''Stop the background thread and clear registered resources.'''
         from .connection import Client
         with self._lock:
-            if self._address is not None:
+            wenn self._address is not None:
                 c = Client(self._address,
                            authkey=process.current_process().authkey)
                 c.send(None)
                 c.close()
                 self._thread.join(timeout)
-                if self._thread.is_alive():
+                wenn self._thread.is_alive():
                     util.sub_warning('_ResourceSharer thread did '
                                      'not stop when asked')
                 self._listener.close()
@@ -113,7 +113,7 @@ klasse _ResourceSharer(object):
             close()
         self._cache.clear()
         self._lock._at_fork_reinit()
-        if self._listener is not None:
+        wenn self._listener is not None:
             self._listener.close()
         self._listener = None
         self._address = None
@@ -131,13 +131,13 @@ klasse _ResourceSharer(object):
         self._thread = t
 
     def _serve(self):
-        if hasattr(signal, 'pthread_sigmask'):
+        wenn hasattr(signal, 'pthread_sigmask'):
             signal.pthread_sigmask(signal.SIG_BLOCK, signal.valid_signals())
         while 1:
             try:
                 with self._listener.accept() as conn:
                     msg = conn.recv()
-                    if msg is None:
+                    wenn msg is None:
                         break
                     key, destination_pid = msg
                     send, close = self._cache.pop(key)
@@ -146,7 +146,7 @@ klasse _ResourceSharer(object):
                     finally:
                         close()
             except:
-                if not util.is_exiting():
+                wenn not util.is_exiting():
                     sys.excepthook(*sys.exc_info())
 
 

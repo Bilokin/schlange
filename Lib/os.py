@@ -45,11 +45,11 @@ def _get_exports_list(module):
     try:
         return list(module.__all__)
     except AttributeError:
-        return [n fuer n in dir(module) if n[0] != '_']
+        return [n fuer n in dir(module) wenn n[0] != '_']
 
 # Any new dependencies of the os module and/or changes in path separator
 # requires updating importlib as well.
-if 'posix' in _names:
+wenn 'posix' in _names:
     name = 'posix'
     linesep = '\n'
     from posix import *
@@ -73,7 +73,7 @@ if 'posix' in _names:
     __all__.extend(_get_exports_list(posix))
     del posix
 
-elif 'nt' in _names:
+sowenn 'nt' in _names:
     name = 'nt'
     linesep = '\r\n'
     from nt import *
@@ -97,7 +97,7 @@ elif 'nt' in _names:
     except ImportError:
         pass
 
-else:
+sonst:
     raise ImportError('no os specific module found')
 
 sys.modules['os.path'] = path
@@ -107,10 +107,10 @@ from os.path import (curdir, pardir, sep, pathsep, defpath, extsep, altsep,
 del _names
 
 
-if _exists("_have_functions"):
+wenn _exists("_have_functions"):
     _globals = globals()
     def _add(str, fn):
-        if (fn in _globals) and (str in _have_functions):
+        wenn (fn in _globals) and (str in _have_functions):
             _set.add(_globals[fn])
 
     _set = set()
@@ -150,7 +150,7 @@ if _exists("_have_functions"):
     _add("HAVE_FUTIMENS",   "utime")
     _add("HAVE_FUTIMES",    "utime")
     _add("HAVE_FPATHCONF",  "pathconf")
-    if _exists("statvfs") and _exists("fstatvfs"): # mac os x10.3
+    wenn _exists("statvfs") and _exists("fstatvfs"): # mac os x10.3
         _add("HAVE_FSTATVFS", "statvfs")
     supports_fd = _set
 
@@ -182,7 +182,7 @@ if _exists("_have_functions"):
     _add("HAVE_LCHFLAGS",   "chflags")
     _add("HAVE_LCHMOD",     "chmod")
     _add("MS_WINDOWS",      "chmod")
-    if _exists("lchown"): # mac os x10.3
+    wenn _exists("lchown"): # mac os x10.3
         _add("HAVE_LCHOWN", "chown")
     _add("HAVE_LINKAT",     "link")
     _add("HAVE_LUTIMES",    "utime")
@@ -199,7 +199,7 @@ if _exists("_have_functions"):
 
 
 # Python uses fixed values fuer the SEEK_ constants; they are mapped
-# to native constants if necessary in posixmodule.c
+# to native constants wenn necessary in posixmodule.c
 # Other possible SEEK values are directly imported from posixmodule.c
 SEEK_SET = 0
 SEEK_CUR = 1
@@ -213,38 +213,38 @@ def makedirs(name, mode=0o777, exist_ok=False):
 
     Super-mkdir; create a leaf directory and all intermediate ones.  Works like
     mkdir, except that any intermediate path segment (not just the rightmost)
-    will be created if it does not exist. If the target directory already
-    exists, raise an OSError if exist_ok is False. Otherwise no exception is
+    will be created wenn it does not exist. If the target directory already
+    exists, raise an OSError wenn exist_ok is False. Otherwise no exception is
     raised.  This is recursive.
 
     """
     head, tail = path.split(name)
-    if not tail:
+    wenn not tail:
         head, tail = path.split(head)
-    if head and tail and not path.exists(head):
+    wenn head and tail and not path.exists(head):
         try:
             makedirs(head, exist_ok=exist_ok)
         except FileExistsError:
             # Defeats race condition when another thread created the path
             pass
         cdir = curdir
-        if isinstance(tail, bytes):
+        wenn isinstance(tail, bytes):
             cdir = bytes(curdir, 'ASCII')
-        if tail == cdir:           # xxx/newdir/. exists if xxx/newdir exists
+        wenn tail == cdir:           # xxx/newdir/. exists wenn xxx/newdir exists
             return
     try:
         mkdir(name, mode)
     except OSError:
         # Cannot rely on checking fuer EEXIST, since the operating system
         # could give priority to other errors like EACCES or EROFS
-        if not exist_ok or not path.isdir(name):
+        wenn not exist_ok or not path.isdir(name):
             raise
 
 def removedirs(name):
     """removedirs(name)
 
     Super-rmdir; remove a leaf directory and all empty intermediate
-    ones.  Works like rmdir except that, if the leaf directory is
+    ones.  Works like rmdir except that, wenn the leaf directory is
     successfully removed, directories corresponding to rightmost path
     segments will be pruned away until either the whole path is
     consumed or an error occurs.  Errors during this latter phase are
@@ -253,7 +253,7 @@ def removedirs(name):
     """
     rmdir(name)
     head, tail = path.split(name)
-    if not tail:
+    wenn not tail:
         head, tail = path.split(head)
     while head and tail:
         try:
@@ -273,16 +273,16 @@ def renames(old, new):
     whole path is consumed or a nonempty directory is found.
 
     Note: this function can fail with the new directory structure made
-    if you lack permissions needed to unlink the leaf directory or
+    wenn you lack permissions needed to unlink the leaf directory or
     file.
 
     """
     head, tail = path.split(new)
-    if head and tail and not path.exists(head):
+    wenn head and tail and not path.exists(head):
         makedirs(head)
     rename(old, new)
     head, tail = path.split(old)
-    if head and tail:
+    wenn head and tail:
         try:
             removedirs(head)
         except OSError:
@@ -337,7 +337,7 @@ def walk(top, topdown=True, onerror=None, followlinks=False):
     systems that support them.  In order to get this functionality, set the
     optional argument 'followlinks' to true.
 
-    Caution:  if you pass a relative pathname fuer top, don't change the
+    Caution:  wenn you pass a relative pathname fuer top, don't change the
     current working directory between resumptions of walk.  walk never
     changes the current directory, and assumes that the client doesn't
     either.
@@ -350,7 +350,7 @@ def walk(top, topdown=True, onerror=None, followlinks=False):
         print(root, "consumes ")
         print(sum(getsize(join(root, name)) fuer name in files), end=" ")
         print("bytes in", len(files), "non-directory files")
-        if '__pycache__' in dirs:
+        wenn '__pycache__' in dirs:
             dirs.remove('__pycache__')  # don't visit __pycache__ directories
 
     """
@@ -360,7 +360,7 @@ def walk(top, topdown=True, onerror=None, followlinks=False):
     islink, join = path.islink, path.join
     while stack:
         top = stack.pop()
-        if isinstance(top, tuple):
+        wenn isinstance(top, tuple):
             yield top
             continue
 
@@ -377,26 +377,26 @@ def walk(top, topdown=True, onerror=None, followlinks=False):
             with scandir(top) as entries:
                 fuer entry in entries:
                     try:
-                        if followlinks is _walk_symlinks_as_files:
+                        wenn followlinks is _walk_symlinks_as_files:
                             is_dir = entry.is_dir(follow_symlinks=False) and not entry.is_junction()
-                        else:
+                        sonst:
                             is_dir = entry.is_dir()
                     except OSError:
                         # If is_dir() raises an OSError, consider the entry not to
                         # be a directory, same behaviour as os.path.isdir().
                         is_dir = False
 
-                    if is_dir:
+                    wenn is_dir:
                         dirs.append(entry.name)
-                    else:
+                    sonst:
                         nondirs.append(entry.name)
 
-                    if not topdown and is_dir:
+                    wenn not topdown and is_dir:
                         # Bottom-up: traverse into sub-directory, but exclude
-                        # symlinks to directories if followlinks is False
-                        if followlinks:
+                        # symlinks to directories wenn followlinks is False
+                        wenn followlinks:
                             walk_into = True
-                        else:
+                        sonst:
                             try:
                                 is_symlink = entry.is_symlink()
                             except OSError:
@@ -406,15 +406,15 @@ def walk(top, topdown=True, onerror=None, followlinks=False):
                                 is_symlink = False
                             walk_into = not is_symlink
 
-                        if walk_into:
+                        wenn walk_into:
                             walk_dirs.append(entry.path)
         except OSError as error:
-            if onerror is not None:
+            wenn onerror is not None:
                 onerror(error)
             continue
 
-        if topdown:
-            # Yield before sub-directory traversal if going top down
+        wenn topdown:
+            # Yield before sub-directory traversal wenn going top down
             yield top, dirs, nondirs
             # Traverse into sub-directories
             fuer dirname in reversed(dirs):
@@ -423,10 +423,10 @@ def walk(top, topdown=True, onerror=None, followlinks=False):
                 # entry.is_symlink() result during the loop on os.scandir() because
                 # the caller can replace the directory entry during the "yield"
                 # above.
-                if followlinks or not islink(new_path):
+                wenn followlinks or not islink(new_path):
                     stack.append(new_path)
-        else:
-            # Yield after sub-directory traversal if going bottom up
+        sonst:
+            # Yield after sub-directory traversal wenn going bottom up
             stack.append((top, dirs, nondirs))
             # Traverse into sub-directories
             fuer new_path in reversed(walk_dirs):
@@ -434,7 +434,7 @@ def walk(top, topdown=True, onerror=None, followlinks=False):
 
 __all__.append("walk")
 
-if {open, stat} <= supports_dir_fd and {scandir, stat} <= supports_fd:
+wenn {open, stat} <= supports_dir_fd and {scandir, stat} <= supports_fd:
 
     def fwalk(top=".", topdown=True, onerror=None, *, follow_symlinks=False, dir_fd=None):
         """Directory tree generator.
@@ -455,7 +455,7 @@ if {open, stat} <= supports_dir_fd and {scandir, stat} <= supports_fd:
 
         Caution:
         Since fwalk() yields file descriptors, those are only valid until the
-        next iteration step, so you should dup() them if you want to keep them
+        next iteration step, so you should dup() them wenn you want to keep them
         fuer a longer period.
 
         Example:
@@ -466,7 +466,7 @@ if {open, stat} <= supports_dir_fd and {scandir, stat} <= supports_fd:
             print(sum(os.stat(name, dir_fd=rootfd).st_size fuer name in files),
                   end="")
             print("bytes in", len(files), "non-directory files")
-            if '__pycache__' in dirs:
+            wenn '__pycache__' in dirs:
                 dirs.remove('__pycache__')  # don't visit __pycache__ directories
         """
         sys.audit("os.fwalk", top, topdown, onerror, follow_symlinks, dir_fd)
@@ -480,7 +480,7 @@ if {open, stat} <= supports_dir_fd and {scandir, stat} <= supports_fd:
             # Close any file descriptors still on the stack.
             while stack:
                 action, value = stack.pop()
-                if action == _fwalk_close:
+                wenn action == _fwalk_close:
                     close(value)
 
     # Each item in the _fwalk() stack is a pair (action, args).
@@ -494,70 +494,70 @@ if {open, stat} <= supports_dir_fd and {scandir, stat} <= supports_fd:
         # #13734.
 
         action, value = stack.pop()
-        if action == _fwalk_close:
+        wenn action == _fwalk_close:
             close(value)
             return
-        elif action == _fwalk_yield:
+        sowenn action == _fwalk_yield:
             yield value
             return
         assert action == _fwalk_walk
         isroot, dirfd, toppath, topname, entry = value
         try:
-            if not follow_symlinks:
+            wenn not follow_symlinks:
                 # Note: To guard against symlink races, we use the standard
                 # lstat()/open()/fstat() trick.
-                if entry is None:
+                wenn entry is None:
                     orig_st = stat(topname, follow_symlinks=False, dir_fd=dirfd)
-                else:
+                sonst:
                     orig_st = entry.stat(follow_symlinks=False)
             topfd = open(topname, O_RDONLY | O_NONBLOCK, dir_fd=dirfd)
         except OSError as err:
-            if isroot:
+            wenn isroot:
                 raise
-            if onerror is not None:
+            wenn onerror is not None:
                 onerror(err)
             return
         stack.append((_fwalk_close, topfd))
-        if not follow_symlinks:
-            if isroot and not st.S_ISDIR(orig_st.st_mode):
+        wenn not follow_symlinks:
+            wenn isroot and not st.S_ISDIR(orig_st.st_mode):
                 return
-            if not path.samestat(orig_st, stat(topfd)):
+            wenn not path.samestat(orig_st, stat(topfd)):
                 return
 
         scandir_it = scandir(topfd)
         dirs = []
         nondirs = []
-        entries = None if topdown or follow_symlinks else []
+        entries = None wenn topdown or follow_symlinks sonst []
         fuer entry in scandir_it:
             name = entry.name
-            if isbytes:
+            wenn isbytes:
                 name = fsencode(name)
             try:
-                if entry.is_dir():
+                wenn entry.is_dir():
                     dirs.append(name)
-                    if entries is not None:
+                    wenn entries is not None:
                         entries.append(entry)
-                else:
+                sonst:
                     nondirs.append(name)
             except OSError:
                 try:
                     # Add dangling symlinks, ignore disappeared files
-                    if entry.is_symlink():
+                    wenn entry.is_symlink():
                         nondirs.append(name)
                 except OSError:
                     pass
 
-        if topdown:
+        wenn topdown:
             yield toppath, dirs, nondirs, topfd
-        else:
+        sonst:
             stack.append((_fwalk_yield, (toppath, dirs, nondirs, topfd)))
 
         toppath = path.join(toppath, toppath[:0])  # Add trailing slash.
-        if entries is None:
+        wenn entries is None:
             stack.extend(
                 (_fwalk_walk, (False, topfd, toppath + name, name, None))
                 fuer name in dirs[::-1])
-        else:
+        sonst:
             stack.extend(
                 (_fwalk_walk, (False, topfd, toppath + name, name, entry))
                 fuer name, entry in zip(dirs[::-1], entries[::-1]))
@@ -615,20 +615,20 @@ def execvpe(file, args, env):
 __all__.extend(["execl","execle","execlp","execlpe","execvp","execvpe"])
 
 def _execvpe(file, args, env=None):
-    if env is not None:
+    wenn env is not None:
         exec_func = execve
         argrest = (args, env)
-    else:
+    sonst:
         exec_func = execv
         argrest = (args,)
         env = environ
 
-    if path.dirname(file):
+    wenn path.dirname(file):
         exec_func(file, *argrest)
         return
     saved_exc = None
     path_list = get_exec_path(env)
-    if name != 'nt':
+    wenn name != 'nt':
         file = fsencode(file)
         path_list = map(fsencode, path_list)
     fuer dir in path_list:
@@ -639,9 +639,9 @@ def _execvpe(file, args, env=None):
             last_exc = e
         except OSError as e:
             last_exc = e
-            if saved_exc is None:
+            wenn saved_exc is None:
                 saved_exc = e
-    if saved_exc is not None:
+    wenn saved_exc is not None:
         raise saved_exc
     raise last_exc
 
@@ -658,7 +658,7 @@ def get_exec_path(env=None):
     # Python. It may also avoid a bootstrap issue.
     import warnings
 
-    if env is None:
+    wenn env is None:
         env = environ
 
     # {b'PATH': ...}.get('PATH') and {'PATH': ...}.get(b'PATH') emit a
@@ -671,21 +671,21 @@ def get_exec_path(env=None):
         except TypeError:
             path_list = None
 
-        if supports_bytes_environ:
+        wenn supports_bytes_environ:
             try:
                 path_listb = env[b'PATH']
             except (KeyError, TypeError):
                 pass
-            else:
-                if path_list is not None:
+            sonst:
+                wenn path_list is not None:
                     raise ValueError(
                         "env cannot contain 'PATH' and b'PATH' keys")
                 path_list = path_listb
 
-            if path_list is not None and isinstance(path_list, bytes):
+            wenn path_list is not None and isinstance(path_list, bytes):
                 path_list = fsdecode(path_list)
 
-    if path_list is None:
+    wenn path_list is None:
         path_list = defpath
     return path_list.split(pathsep)
 
@@ -744,7 +744,7 @@ klasse _Environ(MutableMapping):
         return dict(self)
 
     def setdefault(self, key, value):
-        if key not in self:
+        wenn key not in self:
             self[key] = value
         return self[key]
 
@@ -753,24 +753,24 @@ klasse _Environ(MutableMapping):
         return self
 
     def __or__(self, other):
-        if not isinstance(other, Mapping):
+        wenn not isinstance(other, Mapping):
             return NotImplemented
         new = dict(self)
         new.update(other)
         return new
 
     def __ror__(self, other):
-        if not isinstance(other, Mapping):
+        wenn not isinstance(other, Mapping):
             return NotImplemented
         new = dict(other)
         new.update(self)
         return new
 
 def _create_environ_mapping():
-    if name == 'nt':
+    wenn name == 'nt':
         # Where Env Var Names Must Be UPPERCASE
         def check_str(value):
-            if not isinstance(value, str):
+            wenn not isinstance(value, str):
                 raise TypeError("str expected, not %s" % type(value).__name__)
             return value
         encode = check_str
@@ -780,11 +780,11 @@ def _create_environ_mapping():
         data = {}
         fuer key, value in environ.items():
             data[encodekey(key)] = value
-    else:
+    sonst:
         # Where Env Var Names Can Be Mixed Case
         encoding = sys.getfilesystemencoding()
         def encode(value):
-            if not isinstance(value, str):
+            wenn not isinstance(value, str):
                 raise TypeError("str expected, not %s" % type(value).__name__)
             return value.encode(encoding, 'surrogateescape')
         def decode(value):
@@ -800,10 +800,10 @@ environ = _create_environ_mapping()
 del _create_environ_mapping
 
 
-if _exists("_create_environ"):
+wenn _exists("_create_environ"):
     def reload_environ():
         data = _create_environ()
-        if name == 'nt':
+        wenn name == 'nt':
             encodekey = environ.encodekey
             data = {encodekey(key): value
                     fuer key, value in data.items()}
@@ -815,7 +815,7 @@ if _exists("_create_environ"):
 
 
 def getenv(key, default=None):
-    """Get an environment variable, return None if it doesn't exist.
+    """Get an environment variable, return None wenn it doesn't exist.
     The optional second argument can specify an alternate default.
     key, default and the result are str."""
     return environ.get(key, default)
@@ -823,9 +823,9 @@ def getenv(key, default=None):
 supports_bytes_environ = (name != 'nt')
 __all__.extend(("getenv", "supports_bytes_environ"))
 
-if supports_bytes_environ:
+wenn supports_bytes_environ:
     def _check_bytes(value):
-        if not isinstance(value, bytes):
+        wenn not isinstance(value, bytes):
             raise TypeError("bytes expected, not %s" % type(value).__name__)
         return value
 
@@ -836,7 +836,7 @@ if supports_bytes_environ:
     del _check_bytes
 
     def getenvb(key, default=None):
-        """Get an environment variable, return None if it doesn't exist.
+        """Get an environment variable, return None wenn it doesn't exist.
         The optional second argument can specify an alternate default.
         key, default and the result are bytes."""
         return environb.get(key, default)
@@ -850,25 +850,25 @@ def _fscodec():
     def fsencode(filename):
         """Encode filename (an os.PathLike, bytes, or str) to the filesystem
         encoding with 'surrogateescape' error handler, return bytes unchanged.
-        On Windows, use 'strict' error handler if the file system encoding is
+        On Windows, use 'strict' error handler wenn the file system encoding is
         'mbcs' (which is the default encoding).
         """
         filename = fspath(filename)  # Does type-checking of `filename`.
-        if isinstance(filename, str):
+        wenn isinstance(filename, str):
             return filename.encode(encoding, errors)
-        else:
+        sonst:
             return filename
 
     def fsdecode(filename):
         """Decode filename (an os.PathLike, bytes, or str) from the filesystem
         encoding with 'surrogateescape' error handler, return str unchanged. On
-        Windows, use 'strict' error handler if the file system encoding is
+        Windows, use 'strict' error handler wenn the file system encoding is
         'mbcs' (which is the default encoding).
         """
         filename = fspath(filename)  # Does type-checking of `filename`.
-        if isinstance(filename, bytes):
+        wenn isinstance(filename, bytes):
             return filename.decode(encoding, errors)
-        else:
+        sonst:
             return filename
 
     return fsencode, fsdecode
@@ -877,7 +877,7 @@ fsencode, fsdecode = _fscodec()
 del _fscodec
 
 # Supply spawn*() (probably only fuer Unix)
-if _exists("fork") and not _exists("spawnv") and _exists("execv"):
+wenn _exists("fork") and not _exists("spawnv") and _exists("execv"):
 
     P_WAIT = 0
     P_NOWAIT = P_NOWAITO = 1
@@ -890,27 +890,27 @@ if _exists("fork") and not _exists("spawnv") and _exists("execv"):
 
     def _spawnvef(mode, file, args, env, func):
         # Internal helper; func is the exec*() function to use
-        if not isinstance(args, (tuple, list)):
+        wenn not isinstance(args, (tuple, list)):
             raise TypeError('argv must be a tuple or a list')
-        if not args or not args[0]:
+        wenn not args or not args[0]:
             raise ValueError('argv first element cannot be empty')
         pid = fork()
-        if not pid:
+        wenn not pid:
             # Child
             try:
-                if env is None:
+                wenn env is None:
                     func(file, args)
-                else:
+                sonst:
                     func(file, args, env)
             except:
                 _exit(127)
-        else:
+        sonst:
             # Parent
-            if mode == P_NOWAIT:
+            wenn mode == P_NOWAIT:
                 return pid # Caller is responsible fuer waiting!
             while 1:
                 wpid, sts = waitpid(pid, 0)
-                if WIFSTOPPED(sts):
+                wenn WIFSTOPPED(sts):
                     continue
 
                 return waitstatus_to_exitcode(sts)
@@ -920,7 +920,7 @@ if _exists("fork") and not _exists("spawnv") and _exists("execv"):
 
 Execute file with arguments from args in a subprocess.
 If mode == P_NOWAIT return the pid of the process.
-If mode == P_WAIT return the process's exit code if it exits normally;
+If mode == P_WAIT return the process's exit code wenn it exits normally;
 otherwise return -SIG, where SIG is the signal that killed it. """
         return _spawnvef(mode, file, args, None, execv)
 
@@ -930,7 +930,7 @@ otherwise return -SIG, where SIG is the signal that killed it. """
 Execute file with arguments from args in a subprocess with the
 specified environment.
 If mode == P_NOWAIT return the pid of the process.
-If mode == P_WAIT return the process's exit code if it exits normally;
+If mode == P_WAIT return the process's exit code wenn it exits normally;
 otherwise return -SIG, where SIG is the signal that killed it. """
         return _spawnvef(mode, file, args, env, execve)
 
@@ -942,7 +942,7 @@ otherwise return -SIG, where SIG is the signal that killed it. """
 Execute file (which is looked fuer along $PATH) with arguments from
 args in a subprocess.
 If mode == P_NOWAIT return the pid of the process.
-If mode == P_WAIT return the process's exit code if it exits normally;
+If mode == P_WAIT return the process's exit code wenn it exits normally;
 otherwise return -SIG, where SIG is the signal that killed it. """
         return _spawnvef(mode, file, args, None, execvp)
 
@@ -952,7 +952,7 @@ otherwise return -SIG, where SIG is the signal that killed it. """
 Execute file (which is looked fuer along $PATH) with arguments from
 args in a subprocess with the supplied environment.
 If mode == P_NOWAIT return the pid of the process.
-If mode == P_WAIT return the process's exit code if it exits normally;
+If mode == P_WAIT return the process's exit code wenn it exits normally;
 otherwise return -SIG, where SIG is the signal that killed it. """
         return _spawnvef(mode, file, args, env, execvpe)
 
@@ -960,7 +960,7 @@ otherwise return -SIG, where SIG is the signal that killed it. """
     __all__.extend(["spawnv", "spawnve", "spawnvp", "spawnvpe"])
 
 
-if _exists("spawnv"):
+wenn _exists("spawnv"):
     # These aren't supplied by the basic Windows code
     # but can be easily implemented in Python
 
@@ -969,7 +969,7 @@ if _exists("spawnv"):
 
 Execute file with arguments from args in a subprocess.
 If mode == P_NOWAIT return the pid of the process.
-If mode == P_WAIT return the process's exit code if it exits normally;
+If mode == P_WAIT return the process's exit code wenn it exits normally;
 otherwise return -SIG, where SIG is the signal that killed it. """
         return spawnv(mode, file, args)
 
@@ -979,7 +979,7 @@ otherwise return -SIG, where SIG is the signal that killed it. """
 Execute file with arguments from args in a subprocess with the
 supplied environment.
 If mode == P_NOWAIT return the pid of the process.
-If mode == P_WAIT return the process's exit code if it exits normally;
+If mode == P_WAIT return the process's exit code wenn it exits normally;
 otherwise return -SIG, where SIG is the signal that killed it. """
         env = args[-1]
         return spawnve(mode, file, args[:-1], env)
@@ -988,7 +988,7 @@ otherwise return -SIG, where SIG is the signal that killed it. """
     __all__.extend(["spawnl", "spawnle"])
 
 
-if _exists("spawnvp"):
+wenn _exists("spawnvp"):
     # At the moment, Windows doesn't implement spawnvp[e],
     # so it won't have spawnlp[e] either.
     def spawnlp(mode, file, *args):
@@ -997,7 +997,7 @@ if _exists("spawnvp"):
 Execute file (which is looked fuer along $PATH) with arguments from
 args in a subprocess with the supplied environment.
 If mode == P_NOWAIT return the pid of the process.
-If mode == P_WAIT return the process's exit code if it exits normally;
+If mode == P_WAIT return the process's exit code wenn it exits normally;
 otherwise return -SIG, where SIG is the signal that killed it. """
         return spawnvp(mode, file, args)
 
@@ -1007,7 +1007,7 @@ otherwise return -SIG, where SIG is the signal that killed it. """
 Execute file (which is looked fuer along $PATH) with arguments from
 args in a subprocess with the supplied environment.
 If mode == P_NOWAIT return the pid of the process.
-If mode == P_WAIT return the process's exit code if it exits normally;
+If mode == P_WAIT return the process's exit code wenn it exits normally;
 otherwise return -SIG, where SIG is the signal that killed it. """
         env = args[-1]
         return spawnvpe(mode, file, args[:-1], env)
@@ -1017,23 +1017,23 @@ otherwise return -SIG, where SIG is the signal that killed it. """
 
 # VxWorks has no user space shell provided. As a result, running
 # command in a shell can't be supported.
-if sys.platform != 'vxworks':
+wenn sys.platform != 'vxworks':
     # Supply os.popen()
     def popen(cmd, mode="r", buffering=-1):
-        if not isinstance(cmd, str):
+        wenn not isinstance(cmd, str):
             raise TypeError("invalid cmd type (%s, expected string)" % type(cmd))
-        if mode not in ("r", "w"):
+        wenn mode not in ("r", "w"):
             raise ValueError("invalid mode %r" % mode)
-        if buffering == 0 or buffering is None:
+        wenn buffering == 0 or buffering is None:
             raise ValueError("popen() does not support unbuffered streams")
         import subprocess
-        if mode == "r":
+        wenn mode == "r":
             proc = subprocess.Popen(cmd,
                                     shell=True, text=True,
                                     stdout=subprocess.PIPE,
                                     bufsize=buffering)
             return _wrap_close(proc.stdout, proc)
-        else:
+        sonst:
             proc = subprocess.Popen(cmd,
                                     shell=True, text=True,
                                     stdin=subprocess.PIPE,
@@ -1048,11 +1048,11 @@ if sys.platform != 'vxworks':
         def close(self):
             self._stream.close()
             returncode = self._proc.wait()
-            if returncode == 0:
+            wenn returncode == 0:
                 return None
-            if name == 'nt':
+            wenn name == 'nt':
                 return returncode
-            else:
+            sonst:
                 return returncode << 8  # Shift left to match old behavior
         def __enter__(self):
             return self
@@ -1067,10 +1067,10 @@ if sys.platform != 'vxworks':
 
 # Supply os.fdopen()
 def fdopen(fd, mode="r", buffering=-1, encoding=None, *args, **kwargs):
-    if not isinstance(fd, int):
+    wenn not isinstance(fd, int):
         raise TypeError("invalid fd type (%s, expected integer)" % type(fd))
     import io
-    if "b" not in mode:
+    wenn "b" not in mode:
         encoding = io.text_encoding(encoding)
     return io.open(fd, mode, buffering, encoding, *args, **kwargs)
 
@@ -1085,7 +1085,7 @@ def _fspath(path):
     path representation is not str or bytes, TypeError is raised. If the
     provided path is not str, bytes, or os.PathLike, TypeError is raised.
     """
-    if isinstance(path, (str, bytes)):
+    wenn isinstance(path, (str, bytes)):
         return path
 
     # Work from the object's type to match method resolution of other magic
@@ -1094,27 +1094,27 @@ def _fspath(path):
     try:
         path_repr = path_type.__fspath__(path)
     except AttributeError:
-        if hasattr(path_type, '__fspath__'):
+        wenn hasattr(path_type, '__fspath__'):
             raise
-        else:
+        sonst:
             raise TypeError("expected str, bytes or os.PathLike object, "
                             "not " + path_type.__name__)
     except TypeError:
-        if path_type.__fspath__ is None:
+        wenn path_type.__fspath__ is None:
             raise TypeError("expected str, bytes or os.PathLike object, "
                             "not " + path_type.__name__) from None
-        else:
+        sonst:
             raise
-    if isinstance(path_repr, (str, bytes)):
+    wenn isinstance(path_repr, (str, bytes)):
         return path_repr
-    else:
+    sonst:
         raise TypeError("expected {}.__fspath__() to return str or bytes, "
                         "not {}".format(path_type.__name__,
                                         type(path_repr).__name__))
 
 # If there is no C implementation, make the pure Python version the
 # implementation as transparently as possible.
-if not _exists('fspath'):
+wenn not _exists('fspath'):
     fspath = _fspath
     fspath.__name__ = "fspath"
 
@@ -1132,14 +1132,14 @@ klasse PathLike(abc.ABC):
 
     @classmethod
     def __subclasshook__(cls, subclass):
-        if cls is PathLike:
+        wenn cls is PathLike:
             return _check_methods(subclass, '__fspath__')
         return NotImplemented
 
     __class_getitem__ = classmethod(GenericAlias)
 
 
-if name == 'nt':
+wenn name == 'nt':
     klasse _AddedDllDirectory:
         def __init__(self, path, cookie, remove_dll_directory):
             self.path = path
@@ -1153,7 +1153,7 @@ if name == 'nt':
         def __exit__(self, *args):
             self.close()
         def __repr__(self):
-            if self.path:
+            wenn self.path:
                 return "<AddedDllDirectory({!r})>".format(self.path)
             return "<AddedDllDirectory()>"
 
@@ -1176,15 +1176,15 @@ if name == 'nt':
         )
 
 
-if _exists('sched_getaffinity') and sys._get_cpu_count_config() < 0:
+wenn _exists('sched_getaffinity') and sys._get_cpu_count_config() < 0:
     def process_cpu_count():
         """
         Get the number of CPUs of the current process.
 
         Return the number of logical CPUs usable by the calling thread of the
-        current process. Return None if indeterminable.
+        current process. Return None wenn indeterminable.
         """
         return len(sched_getaffinity(0))
-else:
+sonst:
     # Just an alias to cpu_count() (same docstring)
     process_cpu_count = cpu_count

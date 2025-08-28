@@ -362,7 +362,7 @@ klasse ReloadTests:
                 self.init.reload("typing")
             except TypeError as exc:
                 traceback.print_exception(exc, file=stdout)
-            else:
+            sonst:
                 self.fail("Expected TypeError to be raised")
         printed_traceback = stdout.getvalue()
         self.assertIn("TypeError", printed_traceback)
@@ -398,7 +398,7 @@ klasse InvalidateCacheTests:
         self.assertTrue(path_ins.called)
 
     def test_method_lacking(self):
-        # There should be no issues if the method is not defined.
+        # There should be no issues wenn the method is not defined.
         key = 'gobbledeegook'
         sys.path_importer_cache[key] = None
         self.addCleanup(lambda: sys.path_importer_cache.pop(key, None))
@@ -428,22 +428,22 @@ klasse StartupTests:
     def test_everyone_has___loader__(self):
         # Issue #17098: all modules should have __loader__ defined.
         fuer name, module in sys.modules.items():
-            if isinstance(module, types.ModuleType):
+            wenn isinstance(module, types.ModuleType):
                 with self.subTest(name=name):
                     self.assertHasAttr(module, '__loader__')
-                    if self.machinery.BuiltinImporter.find_spec(name):
+                    wenn self.machinery.BuiltinImporter.find_spec(name):
                         self.assertIsNot(module.__loader__, None)
-                    elif self.machinery.FrozenImporter.find_spec(name):
+                    sowenn self.machinery.FrozenImporter.find_spec(name):
                         self.assertIsNot(module.__loader__, None)
 
     def test_everyone_has___spec__(self):
         fuer name, module in sys.modules.items():
-            if isinstance(module, types.ModuleType):
+            wenn isinstance(module, types.ModuleType):
                 with self.subTest(name=name):
                     self.assertHasAttr(module, '__spec__')
-                    if self.machinery.BuiltinImporter.find_spec(name):
+                    wenn self.machinery.BuiltinImporter.find_spec(name):
                         self.assertIsNot(module.__spec__, None)
-                    elif self.machinery.FrozenImporter.find_spec(name):
+                    sowenn self.machinery.FrozenImporter.find_spec(name):
                         self.assertIsNot(module.__spec__, None)
 
 
@@ -504,5 +504,5 @@ klasse TestDeprecations(unittest.TestCase):
                     getattr(machinery, attr)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

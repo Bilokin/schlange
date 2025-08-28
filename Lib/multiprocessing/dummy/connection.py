@@ -57,9 +57,9 @@ klasse Connection(object):
         self.recv = self.recv_bytes = _in.get
 
     def poll(self, timeout=0.0):
-        if self._in.qsize() > 0:
+        wenn self._in.qsize() > 0:
             return True
-        if timeout <= 0.0:
+        wenn timeout <= 0.0:
             return False
         with self._in.not_empty:
             self._in.not_empty.wait(timeout)

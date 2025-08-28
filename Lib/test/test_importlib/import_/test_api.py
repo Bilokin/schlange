@@ -13,7 +13,7 @@ SUBMOD_NAME = 'fine.bogus'
 klasse BadSpecFinderLoader:
     @classmethod
     def find_spec(cls, fullname, path=None, target=None):
-        if fullname == SUBMOD_NAME:
+        wenn fullname == SUBMOD_NAME:
             spec = machinery.ModuleSpec(fullname, cls)
             return spec
 
@@ -23,14 +23,14 @@ klasse BadSpecFinderLoader:
 
     @staticmethod
     def exec_module(module):
-        if module.__name__ == SUBMOD_NAME:
+        wenn module.__name__ == SUBMOD_NAME:
             raise ImportError('I cannot be loaded!')
 
 
 klasse BadLoaderFinder:
     @classmethod
     def load_module(cls, fullname):
-        if fullname == SUBMOD_NAME:
+        wenn fullname == SUBMOD_NAME:
             raise ImportError('I cannot be loaded!')
 
 
@@ -44,7 +44,7 @@ klasse APITest:
             util.import_importlib('some module that does not exist')
 
     def test_name_requires_rparition(self):
-        # Raise TypeError if a non-string is passed in fuer the module name.
+        # Raise TypeError wenn a non-string is passed in fuer the module name.
         with self.assertRaises(TypeError):
             self.__import__(42)
 
@@ -141,5 +141,5 @@ klasse SpecAPITests(APITest):
  ) = util.test_both(SpecAPITests, __import__=util.__import__)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

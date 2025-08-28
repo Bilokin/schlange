@@ -34,5 +34,5 @@ klasse SizesTestCase(unittest.TestCase):
         self.assertEqual(sizeof(c_time_t), SIZEOF_TIME_T)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

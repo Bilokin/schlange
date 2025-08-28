@@ -2,7 +2,7 @@
 
 import sys
 
-if sys.platform != 'win32':  # pragma: no cover
+wenn sys.platform != 'win32':  # pragma: no cover
     raise ImportError('win32 only')
 
 import _winapi
@@ -35,23 +35,23 @@ def pipe(*, duplex=False, overlapped=(True, True), bufsize=BUFSIZE):
         prefix=r'\\.\pipe\python-pipe-{:d}-{:d}-'.format(
             os.getpid(), next(_mmap_counter)))
 
-    if duplex:
+    wenn duplex:
         openmode = _winapi.PIPE_ACCESS_DUPLEX
         access = _winapi.GENERIC_READ | _winapi.GENERIC_WRITE
         obsize, ibsize = bufsize, bufsize
-    else:
+    sonst:
         openmode = _winapi.PIPE_ACCESS_INBOUND
         access = _winapi.GENERIC_WRITE
         obsize, ibsize = 0, bufsize
 
     openmode |= _winapi.FILE_FLAG_FIRST_PIPE_INSTANCE
 
-    if overlapped[0]:
+    wenn overlapped[0]:
         openmode |= _winapi.FILE_FLAG_OVERLAPPED
 
-    if overlapped[1]:
+    wenn overlapped[1]:
         flags_and_attribs = _winapi.FILE_FLAG_OVERLAPPED
-    else:
+    sonst:
         flags_and_attribs = 0
 
     h1 = h2 = None
@@ -68,9 +68,9 @@ def pipe(*, duplex=False, overlapped=(True, True), bufsize=BUFSIZE):
         ov.GetOverlappedResult(True)
         return h1, h2
     except:
-        if h1 is not None:
+        wenn h1 is not None:
             _winapi.CloseHandle(h1)
-        if h2 is not None:
+        wenn h2 is not None:
             _winapi.CloseHandle(h2)
         raise
 
@@ -87,9 +87,9 @@ klasse PipeHandle:
         self._handle = handle
 
     def __repr__(self):
-        if self._handle is not None:
+        wenn self._handle is not None:
             handle = f'handle={self._handle!r}'
-        else:
+        sonst:
             handle = 'closed'
         return f'<{self.__class__.__name__} {handle}>'
 
@@ -98,17 +98,17 @@ klasse PipeHandle:
         return self._handle
 
     def fileno(self):
-        if self._handle is None:
+        wenn self._handle is None:
             raise ValueError("I/O operation on closed pipe")
         return self._handle
 
     def close(self, *, CloseHandle=_winapi.CloseHandle):
-        if self._handle is not None:
+        wenn self._handle is not None:
             CloseHandle(self._handle)
             self._handle = None
 
     def __del__(self, _warn=warnings.warn):
-        if self._handle is not None:
+        wenn self._handle is not None:
             _warn(f"unclosed {self!r}", ResourceWarning, source=self)
             self.close()
 
@@ -132,42 +132,42 @@ klasse Popen(subprocess.Popen):
         assert kwds.get('bufsize', 0) == 0
         stdin_rfd = stdout_wfd = stderr_wfd = None
         stdin_wh = stdout_rh = stderr_rh = None
-        if stdin == PIPE:
+        wenn stdin == PIPE:
             stdin_rh, stdin_wh = pipe(overlapped=(False, True), duplex=True)
             stdin_rfd = msvcrt.open_osfhandle(stdin_rh, os.O_RDONLY)
-        else:
+        sonst:
             stdin_rfd = stdin
-        if stdout == PIPE:
+        wenn stdout == PIPE:
             stdout_rh, stdout_wh = pipe(overlapped=(True, False))
             stdout_wfd = msvcrt.open_osfhandle(stdout_wh, 0)
-        else:
+        sonst:
             stdout_wfd = stdout
-        if stderr == PIPE:
+        wenn stderr == PIPE:
             stderr_rh, stderr_wh = pipe(overlapped=(True, False))
             stderr_wfd = msvcrt.open_osfhandle(stderr_wh, 0)
-        elif stderr == STDOUT:
+        sowenn stderr == STDOUT:
             stderr_wfd = stdout_wfd
-        else:
+        sonst:
             stderr_wfd = stderr
         try:
             super().__init__(args, stdin=stdin_rfd, stdout=stdout_wfd,
                              stderr=stderr_wfd, **kwds)
         except:
             fuer h in (stdin_wh, stdout_rh, stderr_rh):
-                if h is not None:
+                wenn h is not None:
                     _winapi.CloseHandle(h)
             raise
-        else:
-            if stdin_wh is not None:
+        sonst:
+            wenn stdin_wh is not None:
                 self.stdin = PipeHandle(stdin_wh)
-            if stdout_rh is not None:
+            wenn stdout_rh is not None:
                 self.stdout = PipeHandle(stdout_rh)
-            if stderr_rh is not None:
+            wenn stderr_rh is not None:
                 self.stderr = PipeHandle(stderr_rh)
         finally:
-            if stdin == PIPE:
+            wenn stdin == PIPE:
                 os.close(stdin_rfd)
-            if stdout == PIPE:
+            wenn stdout == PIPE:
                 os.close(stdout_wfd)
-            if stderr == PIPE:
+            wenn stderr == PIPE:
                 os.close(stderr_wfd)

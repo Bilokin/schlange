@@ -10,13 +10,13 @@ from ctypes.util import find_library
 klasse Test(unittest.TestCase):
     def test_open(self):
         libc_name = find_library("c")
-        if libc_name is None:
+        wenn libc_name is None:
             self.skipTest("Unable to find C library")
 
         libc = CDLL(libc_name, use_errno=True)
-        if os.name == "nt":
+        wenn os.name == "nt":
             libc_open = libc._open
-        else:
+        sonst:
             libc_open = libc.open
 
         libc_open.argtypes = c_char_p, c_int
@@ -31,9 +31,9 @@ klasse Test(unittest.TestCase):
             set_errno(0)
 
             libc = CDLL(libc_name, use_errno=False)
-            if os.name == "nt":
+            wenn os.name == "nt":
                 libc_open = libc._open
-            else:
+            sonst:
                 libc_open = libc.open
             libc_open.argtypes = c_char_p, c_int
             self.assertEqual(libc_open(b"", 0), -1)
@@ -77,5 +77,5 @@ klasse Test(unittest.TestCase):
         ctypes.set_last_error(0)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

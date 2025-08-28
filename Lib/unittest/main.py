@@ -32,10 +32,10 @@ def _convert_name(name):
     # Windows it is. Simpler to do a case insensitive match
     # a better check would be to check that the name is a
     # valid Python module name.
-    if os.path.isfile(name) and name.lower().endswith('.py'):
-        if os.path.isabs(name):
+    wenn os.path.isfile(name) and name.lower().endswith('.py'):
+        wenn os.path.isabs(name):
             rel_path = os.path.relpath(name, os.getcwd())
-            if os.path.isabs(rel_path) or rel_path.startswith(os.pardir):
+            wenn os.path.isabs(rel_path) or rel_path.startswith(os.pardir):
                 return name
             name = rel_path
         # on Windows both '\' and '/' are used as path
@@ -48,7 +48,7 @@ def _convert_names(names):
 
 
 def _convert_select_pattern(pattern):
-    if not '*' in pattern:
+    wenn not '*' in pattern:
         pattern = '*%s*' % pattern
     return pattern
 
@@ -68,13 +68,13 @@ klasse TestProgram(object):
                     exit=True, verbosity=1, failfast=None, catchbreak=None,
                     buffer=None, warnings=None, *, tb_locals=False,
                     durations=None):
-        if isinstance(module, str):
+        wenn isinstance(module, str):
             self.module = __import__(module)
             fuer part in module.split('.')[1:]:
                 self.module = getattr(self.module, part)
-        else:
+        sonst:
             self.module = module
-        if argv is None:
+        wenn argv is None:
             argv = sys.argv
 
         self.exit = exit
@@ -84,12 +84,12 @@ klasse TestProgram(object):
         self.buffer = buffer
         self.tb_locals = tb_locals
         self.durations = durations
-        if warnings is None and not sys.warnoptions:
-            # even if DeprecationWarnings are ignored by default
+        wenn warnings is None and not sys.warnoptions:
+            # even wenn DeprecationWarnings are ignored by default
             # print them anyway unless other warnings settings are
             # specified by the warnings arg or the -W python flag
             self.warnings = 'default'
-        else:
+        sonst:
             # here self.warnings is set either to the value passed
             # to the warnings args or to None.
             # If the user didn't pass a value self.warnings will
@@ -104,52 +104,52 @@ klasse TestProgram(object):
         self.runTests()
 
     def _print_help(self, *args, **kwargs):
-        if self.module is None:
+        wenn self.module is None:
             print(self._main_parser.format_help())
             print(MAIN_EXAMPLES % {'prog': self.progName})
             self._discovery_parser.print_help()
-        else:
+        sonst:
             print(self._main_parser.format_help())
             print(MODULE_EXAMPLES % {'prog': self.progName})
 
     def parseArgs(self, argv):
         self._initArgParsers()
-        if self.module is None:
-            if len(argv) > 1 and argv[1].lower() == 'discover':
+        wenn self.module is None:
+            wenn len(argv) > 1 and argv[1].lower() == 'discover':
                 self._do_discovery(argv[2:])
                 return
             self._main_parser.parse_args(argv[1:], self)
-            if not self.tests:
+            wenn not self.tests:
                 # this allows "python -m unittest -v" to still work for
                 # test discovery.
                 self._do_discovery([])
                 return
-        else:
+        sonst:
             self._main_parser.parse_args(argv[1:], self)
 
-        if self.tests:
+        wenn self.tests:
             self.testNames = _convert_names(self.tests)
-            if __name__ == '__main__':
+            wenn __name__ == '__main__':
                 # to support python -m unittest ...
                 self.module = None
-        elif self.defaultTest is None:
+        sowenn self.defaultTest is None:
             # createTests will load tests from self.module
             self.testNames = None
-        elif isinstance(self.defaultTest, str):
+        sowenn isinstance(self.defaultTest, str):
             self.testNames = (self.defaultTest,)
-        else:
+        sonst:
             self.testNames = list(self.defaultTest)
         self.createTests()
 
     def createTests(self, from_discovery=False, Loader=None):
-        if self.testNamePatterns:
+        wenn self.testNamePatterns:
             self.testLoader.testNamePatterns = self.testNamePatterns
-        if from_discovery:
-            loader = self.testLoader if Loader is None else Loader()
+        wenn from_discovery:
+            loader = self.testLoader wenn Loader is None sonst Loader()
             self.test = loader.discover(self.start, self.pattern, self.top)
-        elif self.testNames is None:
+        sowenn self.testNames is None:
             self.test = self.testLoader.loadTestsFromModule(self.module)
-        else:
+        sonst:
             self.test = self.testLoader.loadTestsFromNames(self.testNames,
                                                            self.module)
 
@@ -173,22 +173,22 @@ klasse TestProgram(object):
         parser.add_argument('--durations', dest='durations', type=int,
                             default=None, metavar="N",
                             help='Show the N slowest test cases (N=0 fuer all)')
-        if self.failfast is None:
+        wenn self.failfast is None:
             parser.add_argument('-f', '--failfast', dest='failfast',
                                 action='store_true',
                                 help='Stop on first fail or error')
             self.failfast = False
-        if self.catchbreak is None:
+        wenn self.catchbreak is None:
             parser.add_argument('-c', '--catch', dest='catchbreak',
                                 action='store_true',
                                 help='Catch Ctrl-C and display results so far')
             self.catchbreak = False
-        if self.buffer is None:
+        wenn self.buffer is None:
             parser.add_argument('-b', '--buffer', dest='buffer',
                                 action='store_true',
                                 help='Buffer stdout and stderr during tests')
             self.buffer = False
-        if self.testNamePatterns is None:
+        wenn self.testNamePatterns is None:
             parser.add_argument('-k', dest='testNamePatterns',
                                 action='append', type=_convert_select_pattern,
                                 help='Only run tests which match the given substring')
@@ -232,9 +232,9 @@ klasse TestProgram(object):
         self.start = '.'
         self.pattern = 'test*.py'
         self.top = None
-        if argv is not None:
+        wenn argv is not None:
             # handle command line args fuer test discovery
-            if self._discovery_parser is None:
+            wenn self._discovery_parser is None:
                 # fuer testing
                 self._initArgParsers()
             self._discovery_parser.parse_args(argv, self)
@@ -242,11 +242,11 @@ klasse TestProgram(object):
         self.createTests(from_discovery=True, Loader=Loader)
 
     def runTests(self):
-        if self.catchbreak:
+        wenn self.catchbreak:
             installHandler()
-        if self.testRunner is None:
+        wenn self.testRunner is None:
             self.testRunner = runner.TextTestRunner
-        if isinstance(self.testRunner, type):
+        wenn isinstance(self.testRunner, type):
             try:
                 try:
                     testRunner = self.testRunner(verbosity=self.verbosity,
@@ -264,16 +264,16 @@ klasse TestProgram(object):
             except TypeError:
                 # didn't accept the verbosity, buffer or failfast arguments
                 testRunner = self.testRunner()
-        else:
+        sonst:
             # it is assumed to be a TestRunner instance
             testRunner = self.testRunner
         self.result = testRunner.run(self.test)
-        if self.exit:
-            if self.result.testsRun == 0 and len(self.result.skipped) == 0:
+        wenn self.exit:
+            wenn self.result.testsRun == 0 and len(self.result.skipped) == 0:
                 sys.exit(_NO_TESTS_EXITCODE)
-            elif self.result.wasSuccessful():
+            sowenn self.result.wasSuccessful():
                 sys.exit(0)
-            else:
+            sonst:
                 sys.exit(1)
 
 

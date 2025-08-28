@@ -59,7 +59,7 @@ klasse HashTest(unittest.TestCase):
         # n, so pay special attention to numbers of the form 2**n and 2**n-1.
         fuer i in range(100):
             n = 2**i - 1
-            if n == int(float(n)):
+            wenn n == int(float(n)):
                 self.check_equal_hash(n, float(n))
                 self.check_equal_hash(-n, -float(n))
             self.check_equal_hash(n, D(n))
@@ -81,7 +81,7 @@ klasse HashTest(unittest.TestCase):
             n = random.randrange(-10**e, 10**e)
             self.check_equal_hash(n, D(n))
             self.check_equal_hash(n, F(n))
-            if n == int(float(n)):
+            wenn n == int(float(n)):
                 self.check_equal_hash(n, float(n))
 
     def test_binary_floats(self):
@@ -226,5 +226,5 @@ klasse ComparisonTest(unittest.TestCase):
                 self.assertRaises(TypeError, op, v, z)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

@@ -21,9 +21,9 @@ klasse CAPITest(unittest.TestCase):
     def test_assecondsdouble(self):
         # Test PyTime_AsSecondsDouble()
         def ns_to_sec(ns):
-            if abs(ns) % SEC_TO_NS == 0:
+            wenn abs(ns) % SEC_TO_NS == 0:
                 return float(ns // SEC_TO_NS)
-            else:
+            sonst:
                 return float(ns) / SEC_TO_NS
 
         seconds = (
@@ -45,7 +45,7 @@ klasse CAPITest(unittest.TestCase):
             values.add(ns - 1)
             values.add(ns + 1)
         fuer ns in list(values):
-            if (-ns) > PyTime_MAX:
+            wenn (-ns) > PyTime_MAX:
                 continue
             values.add(-ns)
         fuer ns in sorted(values):
@@ -74,5 +74,5 @@ klasse CAPITest(unittest.TestCase):
         self.check_clock(_testcapi.PyTime_TimeRaw, time.time)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

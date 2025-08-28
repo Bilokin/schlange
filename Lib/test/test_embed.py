@@ -16,7 +16,7 @@ import sysconfig
 import tempfile
 import textwrap
 
-if not support.has_subprocess_support:
+wenn not support.has_subprocess_support:
     raise unittest.SkipTest("test module requires subprocess")
 
 
@@ -31,9 +31,9 @@ PYMEM_ALLOCATOR_NOT_SET = 0
 PYMEM_ALLOCATOR_DEBUG = 2
 PYMEM_ALLOCATOR_MALLOC = 3
 PYMEM_ALLOCATOR_MIMALLOC = 7
-if support.Py_GIL_DISABLED:
+wenn support.Py_GIL_DISABLED:
     ALLOCATOR_FOR_CONFIG = PYMEM_ALLOCATOR_MIMALLOC
-else:
+sonst:
     ALLOCATOR_FOR_CONFIG = PYMEM_ALLOCATOR_MALLOC
 
 Py_STATS = hasattr(sys, '_stats_on')
@@ -48,24 +48,24 @@ API_ISOLATED = 3
 INIT_LOOPS = 4
 MAX_HASH_SEED = 4294967295
 
-ABI_THREAD = 't' if support.Py_GIL_DISABLED else ''
+ABI_THREAD = 't' wenn support.Py_GIL_DISABLED sonst ''
 # PLATSTDLIB_LANDMARK copied from Modules/getpath.py
-if os.name == 'nt':
+wenn os.name == 'nt':
     PLATSTDLIB_LANDMARK = f'{sys.platlibdir}'
-else:
+sonst:
     VERSION_MAJOR = sys.version_info.major
     VERSION_MINOR = sys.version_info.minor
     PLATSTDLIB_LANDMARK = (f'{sys.platlibdir}/python{VERSION_MAJOR}.'
                            f'{VERSION_MINOR}{ABI_THREAD}/lib-dynload')
 
-DEFAULT_THREAD_INHERIT_CONTEXT = 1 if support.Py_GIL_DISABLED else 0
-DEFAULT_CONTEXT_AWARE_WARNINGS = 1 if support.Py_GIL_DISABLED else 0
+DEFAULT_THREAD_INHERIT_CONTEXT = 1 wenn support.Py_GIL_DISABLED sonst 0
+DEFAULT_CONTEXT_AWARE_WARNINGS = 1 wenn support.Py_GIL_DISABLED sonst 0
 
 # If we are running from a build dir, but the stdlib has been installed,
 # some tests need to expect different results.
 STDLIB_INSTALL = os.path.join(sys.prefix, sys.platlibdir,
     f'python{sys.version_info.major}.{sys.version_info.minor}')
-if not os.path.isfile(os.path.join(STDLIB_INSTALL, 'os.py')):
+wenn not os.path.isfile(os.path.join(STDLIB_INSTALL, 'os.py')):
     STDLIB_INSTALL = None
 
 def debug_build(program):
@@ -78,7 +78,7 @@ def remove_python_envvars():
     env = dict(os.environ)
     # Remove PYTHON* environment variables to get deterministic environment
     fuer key in list(env):
-        if key.startswith('PYTHON'):
+        wenn key.startswith('PYTHON'):
             del env[key]
     return env
 
@@ -87,14 +87,14 @@ klasse EmbeddingTestsMixin:
     def setUp(self):
         exename = "_testembed"
         builddir = os.path.dirname(sys.executable)
-        if MS_WINDOWS:
-            ext = ("_d" if debug_build(sys.executable) else "") + ".exe"
+        wenn MS_WINDOWS:
+            ext = ("_d" wenn debug_build(sys.executable) sonst "") + ".exe"
             exename += ext
             exepath = builddir
-        else:
+        sonst:
             exepath = os.path.join(builddir, 'Programs')
         self.test_exe = exe = os.path.join(exepath, exename)
-        if not os.path.exists(exe):
+        wenn not os.path.exists(exe):
             self.skipTest("%r doesn't exist" % exe)
         # This is needed otherwise we get a fatal error:
         # "Py_Initialize: Unable to get the locale encoding
@@ -111,7 +111,7 @@ klasse EmbeddingTestsMixin:
         """Runs a test in the embedded interpreter"""
         cmd = [self.test_exe]
         cmd.extend(args)
-        if env is not None and MS_WINDOWS:
+        wenn env is not None and MS_WINDOWS:
             # Windows requires at least the SYSTEMROOT environment variable to
             # start Python.
             env = env.copy()
@@ -129,7 +129,7 @@ klasse EmbeddingTestsMixin:
             p.terminate()
             p.wait()
             raise
-        if p.returncode != returncode and support.verbose:
+        wenn p.returncode != returncode and support.verbose:
             print(f"--- {cmd} failed ---")
             print(f"stdout:\n{out}")
             print(f"stderr:\n{err}")
@@ -162,22 +162,22 @@ klasse EmbeddingTestsMixin:
         numloops = 1
         current_run = []
         fuer line in out.splitlines():
-            if line == "--- Pass {} ---".format(numloops):
+            wenn line == "--- Pass {} ---".format(numloops):
                 self.assertEqual(len(current_run), 0)
-                if support.verbose > 1:
+                wenn support.verbose > 1:
                     print(line)
                 numloops += 1
                 continue
 
             self.assertLess(len(current_run), 5)
             match = re.match(interp_pat, line)
-            if match is None:
+            wenn match is None:
                 self.assertRegex(line, interp_pat)
 
             # Parse the line from the loop.  The first line is the main
             # interpreter and the 3 afterward are subinterpreters.
             interp = Interp(*match.groups())
-            if support.verbose > 2:
+            wenn support.verbose > 2:
                 # 5 lines per pass is super-spammy, so limit that to -vvv
                 print(interp)
             self.assertTrue(interp.interp)
@@ -186,7 +186,7 @@ klasse EmbeddingTestsMixin:
             current_run.append(interp)
 
             # The last line in the loop should be the same as the first.
-            if len(current_run) == 5:
+            wenn len(current_run) == 5:
                 main = current_run[0]
                 self.assertEqual(interp, main)
                 yield current_run
@@ -214,7 +214,7 @@ klasse EmbeddingTests(EmbeddingTestsMixin, unittest.TestCase):
         fuer run in self.run_repeated_init_and_subinterpreters():
             main, *subs, _ = run
 
-            if '0x0' in main:
+            wenn '0x0' in main:
                 # XXX Fix on Windows (and other platforms): something
                 # is going on with the pointers in Programs/_testembed.c.
                 # interp.interp is 0x0 and interp.modules is the same
@@ -243,7 +243,7 @@ klasse EmbeddingTests(EmbeddingTestsMixin, unittest.TestCase):
         # Checks forced configuration of embedded interpreter IO streams
         env = dict(os.environ, PYTHONIOENCODING="utf-8:surrogateescape")
         out, err = self.run_embedded_interpreter("test_forced_io_encoding", env=env)
-        if support.verbose > 1:
+        wenn support.verbose > 1:
             print()
             print(out)
             print(err)
@@ -278,7 +278,7 @@ klasse EmbeddingTests(EmbeddingTestsMixin, unittest.TestCase):
                                 in_encoding=expected_stream_encoding,
                                 out_encoding=expected_stream_encoding,
                                 errors=expected_errors)
-        # This is useful if we ever trip over odd platform behaviour
+        # This is useful wenn we ever trip over odd platform behaviour
         self.maxDiff = None
         self.assertEqual(out.strip(), expected_output)
 
@@ -289,13 +289,13 @@ klasse EmbeddingTests(EmbeddingTestsMixin, unittest.TestCase):
         """
         env = dict(os.environ, PYTHONPATH=os.pathsep.join(sys.path))
         out, err = self.run_embedded_interpreter("test_pre_initialization_api", env=env)
-        if support.verbose > 1:
+        wenn support.verbose > 1:
             print()
             print(out)
             print(err)
-        if MS_WINDOWS:
+        wenn MS_WINDOWS:
             expected_path = self.test_exe
-        else:
+        sonst:
             expected_path = os.path.join(os.getcwd(), "_testembed")
         expected_output = f"sys.executable: {expected_path}\n"
         self.assertIn(expected_output, out)
@@ -310,7 +310,7 @@ klasse EmbeddingTests(EmbeddingTestsMixin, unittest.TestCase):
         env['PYTHONPATH'] = os.pathsep.join(sys.path)
         out, err = self.run_embedded_interpreter(
                         "test_pre_initialization_sys_options", env=env)
-        if support.verbose > 1:
+        wenn support.verbose > 1:
             print()
             print(out)
             print(err)
@@ -396,7 +396,7 @@ klasse EmbeddingTests(EmbeddingTestsMixin, unittest.TestCase):
             def is_specialized(f):
                 fuer instruction in dis.get_instructions(f, adaptive=True):
                     opname = instruction.opname
-                    if (
+                    wenn (
                         opname in opcode._specialized_opmap
                         # Exclude superinstructions:
                         and "__" not in opname
@@ -501,7 +501,7 @@ klasse EmbeddingTests(EmbeddingTestsMixin, unittest.TestCase):
                 import _ssl
             except ModuleNotFoundError:
                 _ssl = None
-            if _ssl is not None:
+            wenn _ssl is not None:
                 _ssl.txt2obj(txt='1.3')
             print('1')
 
@@ -528,7 +528,7 @@ def config_dev_mode(preconfig, config):
 @unittest.skipIf(_testinternalcapi is None, "requires _testinternalcapi")
 klasse InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
     maxDiff = 4096
-    UTF8_MODE_ERRORS = ('surrogatepass' if MS_WINDOWS else 'surrogateescape')
+    UTF8_MODE_ERRORS = ('surrogatepass' wenn MS_WINDOWS sonst 'surrogateescape')
 
     # Marker to read the default configuration: get_default_config()
     GET_DEFAULT_CONFIG = object()
@@ -545,7 +545,7 @@ klasse InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         'coerce_c_locale_warn': False,
         'utf8_mode': True,
     }
-    if MS_WINDOWS:
+    wenn MS_WINDOWS:
         PRE_CONFIG_COMPAT.update({
             'legacy_windows_fs_encoding': False,
         })
@@ -652,18 +652,18 @@ klasse InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         'safe_path': False,
         '_is_python_build': IGNORE_CONFIG,
     }
-    if Py_STATS:
+    wenn Py_STATS:
         CONFIG_COMPAT['_pystats'] = False
-    if support.Py_DEBUG:
+    wenn support.Py_DEBUG:
         CONFIG_COMPAT['run_presite'] = None
-    if support.Py_GIL_DISABLED:
+    wenn support.Py_GIL_DISABLED:
         CONFIG_COMPAT['enable_gil'] = -1
         CONFIG_COMPAT['tlbc_enabled'] = GET_DEFAULT_CONFIG
-    if MS_WINDOWS:
+    wenn MS_WINDOWS:
         CONFIG_COMPAT.update({
             'legacy_windows_stdio': False,
         })
-    if support.is_apple:
+    wenn support.is_apple:
         CONFIG_COMPAT['use_system_logger'] = False
 
     CONFIG_PYTHON = dict(CONFIG_COMPAT,
@@ -685,7 +685,7 @@ klasse InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         perf_profiling=0,
         pathconfig_warnings=False,
     )
-    if MS_WINDOWS:
+    wenn MS_WINDOWS:
         CONFIG_ISOLATED['legacy_windows_stdio'] = False
 
     # global config
@@ -717,7 +717,7 @@ klasse InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         ('Py_UnbufferedStdioFlag', 'buffered_stdio', True),
         ('Py_VerboseFlag', 'verbose'),
     ]
-    if MS_WINDOWS:
+    wenn MS_WINDOWS:
         COPY_GLOBAL_PRE_CONFIG.extend((
             ('Py_LegacyWindowsFSEncodingFlag', 'legacy_windows_fs_encoding'),
         ))
@@ -735,10 +735,10 @@ klasse InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
     def main_xoptions(self, xoptions_list):
         xoptions = {}
         fuer opt in xoptions_list:
-            if '=' in opt:
+            wenn '=' in opt:
                 key, value = opt.split('=', 1)
                 xoptions[key] = value
-            else:
+            sonst:
                 xoptions[opt] = True
         return xoptions
 
@@ -763,7 +763,7 @@ klasse InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         proc = subprocess.run(args, env=env,
                               stdout=subprocess.PIPE,
                               stderr=subprocess.PIPE)
-        if proc.returncode:
+        wenn proc.returncode:
             raise Exception(f"failed to get the default config: "
                             f"stdout={proc.stdout!r} stderr={proc.stderr!r}")
         stdout = proc.stdout.decode('utf-8')
@@ -775,7 +775,7 @@ klasse InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
 
     def _get_expected_config(self):
         cls = InitConfigTests
-        if cls.EXPECTED_CONFIG is None:
+        wenn cls.EXPECTED_CONFIG is None:
             cls.EXPECTED_CONFIG = self._get_expected_config_impl()
 
         # get a copy
@@ -783,7 +783,7 @@ klasse InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         fuer config_key, config_value in cls.EXPECTED_CONFIG.items():
             config = {}
             fuer key, value in config_value.items():
-                if isinstance(value, list):
+                wenn isinstance(value, list):
                     value = value.copy()
                 config[key] = value
             configs[config_key] = config
@@ -795,80 +795,80 @@ klasse InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
 
         pre_config = configs['pre_config']
         fuer key, value in expected_preconfig.items():
-            if value is self.GET_DEFAULT_CONFIG:
+            wenn value is self.GET_DEFAULT_CONFIG:
                 expected_preconfig[key] = pre_config[key]
 
-        if not expected_preconfig['configure_locale'] or api == API_COMPAT:
+        wenn not expected_preconfig['configure_locale'] or api == API_COMPAT:
             # there is no easy way to get the locale encoding before
             # setlocale(LC_CTYPE, "") is called: don't test encodings
             fuer key in ('filesystem_encoding', 'filesystem_errors',
                         'stdio_encoding', 'stdio_errors'):
                 expected[key] = self.IGNORE_CONFIG
 
-        if expected_preconfig['utf8_mode'] == 1:
-            if expected['filesystem_encoding'] is self.GET_DEFAULT_CONFIG:
+        wenn expected_preconfig['utf8_mode'] == 1:
+            wenn expected['filesystem_encoding'] is self.GET_DEFAULT_CONFIG:
                 expected['filesystem_encoding'] = 'utf-8'
-            if expected['filesystem_errors'] is self.GET_DEFAULT_CONFIG:
+            wenn expected['filesystem_errors'] is self.GET_DEFAULT_CONFIG:
                 expected['filesystem_errors'] = self.UTF8_MODE_ERRORS
-            if expected['stdio_encoding'] is self.GET_DEFAULT_CONFIG:
+            wenn expected['stdio_encoding'] is self.GET_DEFAULT_CONFIG:
                 expected['stdio_encoding'] = 'utf-8'
-            if expected['stdio_errors'] is self.GET_DEFAULT_CONFIG:
+            wenn expected['stdio_errors'] is self.GET_DEFAULT_CONFIG:
                 expected['stdio_errors'] = 'surrogateescape'
 
-        if MS_WINDOWS:
+        wenn MS_WINDOWS:
             default_executable = self.test_exe
-        elif expected['program_name'] is not self.GET_DEFAULT_CONFIG:
+        sowenn expected['program_name'] is not self.GET_DEFAULT_CONFIG:
             default_executable = os.path.abspath(expected['program_name'])
-        else:
+        sonst:
             default_executable = os.path.join(os.getcwd(), '_testembed')
-        if expected['executable'] is self.GET_DEFAULT_CONFIG:
+        wenn expected['executable'] is self.GET_DEFAULT_CONFIG:
             expected['executable'] = default_executable
-        if expected['base_executable'] is self.GET_DEFAULT_CONFIG:
+        wenn expected['base_executable'] is self.GET_DEFAULT_CONFIG:
             expected['base_executable'] = default_executable
-        if expected['program_name'] is self.GET_DEFAULT_CONFIG:
+        wenn expected['program_name'] is self.GET_DEFAULT_CONFIG:
             expected['program_name'] = './_testembed'
 
         config = configs['config']
         fuer key, value in expected.items():
-            if value is self.GET_DEFAULT_CONFIG:
+            wenn value is self.GET_DEFAULT_CONFIG:
                 expected[key] = config[key]
 
-        if expected['module_search_paths'] is not self.IGNORE_CONFIG:
+        wenn expected['module_search_paths'] is not self.IGNORE_CONFIG:
             pythonpath_env = expected['pythonpath_env']
-            if pythonpath_env is not None:
+            wenn pythonpath_env is not None:
                 paths = pythonpath_env.split(os.path.pathsep)
                 expected['module_search_paths'] = [*paths, *expected['module_search_paths']]
-            if modify_path_cb is not None:
+            wenn modify_path_cb is not None:
                 expected['module_search_paths'] = expected['module_search_paths'].copy()
                 modify_path_cb(expected['module_search_paths'])
 
         fuer key in self.COPY_PRE_CONFIG:
-            if key not in expected_preconfig:
+            wenn key not in expected_preconfig:
                 expected_preconfig[key] = expected[key]
 
     def check_pre_config(self, configs, expected):
         pre_config = dict(configs['pre_config'])
         fuer key, value in list(expected.items()):
-            if value is self.IGNORE_CONFIG:
+            wenn value is self.IGNORE_CONFIG:
                 pre_config.pop(key, None)
                 del expected[key]
         self.assertEqual(pre_config, expected)
 
     def check_config(self, configs, expected):
         config = dict(configs['config'])
-        if MS_WINDOWS:
+        wenn MS_WINDOWS:
             value = config.get(key := 'program_name')
-            if value and isinstance(value, str):
+            wenn value and isinstance(value, str):
                 value = value[:len(value.lower().removesuffix('.exe'))]
-                if debug_build(sys.executable):
+                wenn debug_build(sys.executable):
                     value = value[:len(value.lower().removesuffix('_d'))]
                 config[key] = value
         fuer key, value in list(expected.items()):
-            if value is self.IGNORE_CONFIG:
+            wenn value is self.IGNORE_CONFIG:
                 config.pop(key, None)
                 del expected[key]
             # Resolve bool/int mismatches to reduce noise in diffs
-            if isinstance(value, (bool, int)) and isinstance(config.get(key), (bool, int)):
+            wenn isinstance(value, (bool, int)) and isinstance(config.get(key), (bool, int)):
                 expected[key] = type(config[key])(expected[key])
         self.assertEqual(config, expected)
 
@@ -878,17 +878,17 @@ klasse InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
 
         expected = dict(self.DEFAULT_GLOBAL_CONFIG)
         fuer item in self.COPY_GLOBAL_CONFIG:
-            if len(item) == 3:
+            wenn len(item) == 3:
                 global_key, core_key, opposite = item
-                expected[global_key] = 0 if config[core_key] else 1
-            else:
+                expected[global_key] = 0 wenn config[core_key] sonst 1
+            sonst:
                 global_key, core_key = item
                 expected[global_key] = config[core_key]
         fuer item in self.COPY_GLOBAL_PRE_CONFIG:
-            if len(item) == 3:
+            wenn len(item) == 3:
                 global_key, core_key, opposite = item
-                expected[global_key] = 0 if pre_config[core_key] else 1
-            else:
+                expected[global_key] = 0 wenn pre_config[core_key] sonst 1
+            sonst:
                 global_key, core_key = item
                 expected[global_key] = pre_config[core_key]
 
@@ -900,30 +900,30 @@ klasse InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
                           stderr=None, *, api, preconfig_api=None,
                           env=None, ignore_stderr=False, cwd=None):
         new_env = remove_python_envvars()
-        if env is not None:
+        wenn env is not None:
             new_env.update(env)
         env = new_env
 
-        if preconfig_api is None:
+        wenn preconfig_api is None:
             preconfig_api = api
-        if preconfig_api == API_ISOLATED:
+        wenn preconfig_api == API_ISOLATED:
             default_preconfig = self.PRE_CONFIG_ISOLATED
-        elif preconfig_api == API_PYTHON:
+        sowenn preconfig_api == API_PYTHON:
             default_preconfig = self.PRE_CONFIG_PYTHON
-        else:
+        sonst:
             default_preconfig = self.PRE_CONFIG_COMPAT
-        if expected_preconfig is None:
+        wenn expected_preconfig is None:
             expected_preconfig = {}
         expected_preconfig = dict(default_preconfig, **expected_preconfig)
 
-        if expected_config is None:
+        wenn expected_config is None:
             expected_config = {}
 
-        if api == API_PYTHON:
+        wenn api == API_PYTHON:
             default_config = self.CONFIG_PYTHON
-        elif api == API_ISOLATED:
+        sowenn api == API_ISOLATED:
             default_config = self.CONFIG_ISOLATED
-        else:
+        sonst:
             default_config = self.CONFIG_COMPAT
         expected_config = dict(default_config, **expected_config)
 
@@ -934,9 +934,9 @@ klasse InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
 
         out, err = self.run_embedded_interpreter(testname,
                                                  env=env, cwd=cwd)
-        if stderr is None and not expected_config['verbose']:
+        wenn stderr is None and not expected_config['verbose']:
             stderr = ""
-        if stderr is not None and not ignore_stderr:
+        wenn stderr is not None and not ignore_stderr:
             self.assertEqual(err.rstrip(), stderr)
         try:
             configs = json.loads(out)
@@ -1043,7 +1043,7 @@ klasse InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
             'check_hash_pycs_mode': 'always',
             'pathconfig_warnings': False,
         }
-        if Py_STATS:
+        wenn Py_STATS:
             config['_pystats'] = 1
         self.check_all_configs("test_init_from_config", config, preconfig,
                                api=API_COMPAT)
@@ -1078,7 +1078,7 @@ klasse InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
             'int_max_str_digits': 4567,
             'perf_profiling': 1,
         }
-        if Py_STATS:
+        wenn Py_STATS:
             config['_pystats'] = 1
         self.check_all_configs("test_init_compat_env", config, preconfig,
                                api=API_COMPAT)
@@ -1114,7 +1114,7 @@ klasse InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
             'int_max_str_digits': 4567,
             'perf_profiling': 1,
         }
-        if Py_STATS:
+        wenn Py_STATS:
             config['_pystats'] = True
         self.check_all_configs("test_init_python_env", config, preconfig,
                                api=API_PYTHON)
@@ -1305,14 +1305,14 @@ klasse InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
                                api=API_PYTHON)
 
     def default_program_name(self, config):
-        if MS_WINDOWS:
+        wenn MS_WINDOWS:
             program_name = 'python'
             executable = self.test_exe
-        else:
+        sonst:
             program_name = 'python3'
-            if MACOS:
+            wenn MACOS:
                 executable = self.test_exe
-            else:
+            sonst:
                 executable = shutil.which(program_name) or ''
         config.update({
             'program_name': program_name,
@@ -1369,13 +1369,13 @@ klasse InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
 
     def module_search_paths(self, prefix=None, exec_prefix=None):
         config = self._get_expected_config()
-        if prefix is None:
+        wenn prefix is None:
             prefix = config['config']['prefix']
-        if exec_prefix is None:
+        wenn exec_prefix is None:
             exec_prefix = config['config']['prefix']
-        if MS_WINDOWS:
+        wenn MS_WINDOWS:
             return config['config']['module_search_paths']
-        else:
+        sonst:
             ver = sys.version_info
             return [
                 os.path.join(prefix, sys.platlibdir,
@@ -1394,16 +1394,16 @@ klasse InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
             # can be symbolic link. For example, /tmp can be a symbolic link
             # to /var/tmp. Call realpath() to resolve all symbolic links.
             tmpdir = os.path.realpath(tmpdir)
-            if subdir:
+            wenn subdir:
                 tmpdir = os.path.normpath(os.path.join(tmpdir, subdir))
                 os.makedirs(tmpdir)
 
-            if MS_WINDOWS:
+            wenn MS_WINDOWS:
                 # Copy pythonXY.dll (or pythonXY_d.dll)
                 import fnmatch
                 exedir = os.path.dirname(self.test_exe)
                 fuer f in os.listdir(exedir):
-                    if fnmatch.fnmatch(f, '*.dll'):
+                    wenn fnmatch.fnmatch(f, '*.dll'):
                         shutil.copyfile(os.path.join(exedir, f), os.path.join(tmpdir, f))
 
             # Copy Python program
@@ -1421,21 +1421,21 @@ klasse InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         paths_str = os.path.pathsep.join(paths)
 
         fuer path in paths:
-            if not os.path.isdir(path):
+            wenn not os.path.isdir(path):
                 continue
-            if os.path.exists(os.path.join(path, 'os.py')):
+            wenn os.path.exists(os.path.join(path, 'os.py')):
                 home = os.path.dirname(path)
                 break
-        else:
+        sonst:
             self.fail(f"Unable to find home in {paths!r}")
 
         prefix = exec_prefix = home
-        if MS_WINDOWS:
+        wenn MS_WINDOWS:
             stdlib = os.path.join(home, "Lib")
             # Because we are specifying 'home', module search paths
             # are fairly static
             expected_paths = [paths[0], os.path.join(home, 'DLLs'), stdlib]
-        else:
+        sonst:
             version = f'{sys.version_info.major}.{sys.version_info.minor}'
             stdlib = os.path.join(home, sys.platlibdir, f'python{version}{ABI_THREAD}')
             expected_paths = self.module_search_paths(prefix=home, exec_prefix=home)
@@ -1462,21 +1462,21 @@ klasse InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         paths_str = os.path.pathsep.join(paths)
 
         fuer path in paths:
-            if not os.path.isdir(path):
+            wenn not os.path.isdir(path):
                 continue
-            if os.path.exists(os.path.join(path, 'os.py')):
+            wenn os.path.exists(os.path.join(path, 'os.py')):
                 home = os.path.dirname(path)
                 break
-        else:
+        sonst:
             self.fail(f"Unable to find home in {paths!r}")
 
         prefix = exec_prefix = home
-        if MS_WINDOWS:
+        wenn MS_WINDOWS:
             stdlib = os.path.join(home, "Lib")
             # Because we are specifying 'home', module search paths
             # are fairly static
             expected_paths = [paths[0], os.path.join(home, 'DLLs'), stdlib]
-        else:
+        sonst:
             version = f'{sys.version_info.major}.{sys.version_info.minor}'
             stdlib = os.path.join(home, sys.platlibdir, f'python{version}{ABI_THREAD}')
             expected_paths = self.module_search_paths(prefix=home, exec_prefix=home)
@@ -1503,9 +1503,9 @@ klasse InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         config['_is_python_build'] = 1
         exedir = os.path.dirname(sys.executable)
         with open(os.path.join(exedir, 'pybuilddir.txt'), encoding='utf8') as f:
-            expected_paths[1 if MS_WINDOWS else 2] = os.path.normpath(
+            expected_paths[1 wenn MS_WINDOWS sonst 2] = os.path.normpath(
                 os.path.join(exedir, f'{f.read()}\n$'.splitlines()[0]))
-        if not MS_WINDOWS:
+        wenn not MS_WINDOWS:
             # PREFIX (default) is set when running in build directory
             prefix = exec_prefix = sys.prefix
             # stdlib calculation (/Lib) is not yet supported
@@ -1565,7 +1565,7 @@ klasse InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
 
         vpath = sysconfig.get_config_var("VPATH")
         subdir = r'PCbuild\arch'
-        if os.path.normpath(vpath).count(os.sep) == 2:
+        wenn os.path.normpath(vpath).count(os.sep) == 2:
             subdir = os.path.join(subdir, 'instrumented')
 
         with self.tmpdir_with_python(subdir) as tmpdir:
@@ -1608,17 +1608,17 @@ klasse InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
             ver = sys.version_info
             base_prefix = sysconfig.get_config_var("prefix")
 
-            # gh-128690: base_exec_prefix depends if PLATSTDLIB_LANDMARK exists
+            # gh-128690: base_exec_prefix depends wenn PLATSTDLIB_LANDMARK exists
             platstdlib = os.path.join(base_prefix, PLATSTDLIB_LANDMARK)
             change_exec_prefix = not os.path.isdir(platstdlib)
 
-            if not MS_WINDOWS:
+            wenn not MS_WINDOWS:
                 lib_dynload = os.path.join(pyvenv_home,
                                            sys.platlibdir,
                                            f'python{ver.major}.{ver.minor}{ABI_THREAD}',
                                            'lib-dynload')
                 os.makedirs(lib_dynload)
-            else:
+            sonst:
                 lib_folder = os.path.join(pyvenv_home, 'Lib')
                 os.makedirs(lib_folder)
                 # getpath.py uses Lib\os.py as the LANDMARK
@@ -1633,10 +1633,10 @@ klasse InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
                 print("include-system-site-packages = false", file=fp)
 
             paths = self.module_search_paths()
-            if not MS_WINDOWS:
-                if change_exec_prefix:
+            wenn not MS_WINDOWS:
+                wenn change_exec_prefix:
                     paths[-1] = lib_dynload
-            else:
+            sonst:
                 paths = [
                     os.path.join(tmpdir, os.path.basename(paths[0])),
                     pyvenv_home,
@@ -1653,13 +1653,13 @@ klasse InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
                 'executable': executable,
                 'module_search_paths': paths,
             }
-            if change_exec_prefix:
+            wenn change_exec_prefix:
                 config['base_exec_prefix'] = pyvenv_home
-            if MS_WINDOWS:
+            wenn MS_WINDOWS:
                 config['base_prefix'] = pyvenv_home
                 config['stdlib_dir'] = os.path.join(pyvenv_home, 'Lib')
                 config['use_frozen_modules'] = bool(not support.Py_DEBUG)
-            else:
+            sonst:
                 # cannot reliably assume stdlib_dir here because it
                 # depends too much on our build. But it ought to be found
                 config['stdlib_dir'] = self.IGNORE_CONFIG
@@ -1801,9 +1801,9 @@ klasse InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         }
         fuer raw, expected in tests:
             optval = f'frozen_modules{raw}'
-            if raw.startswith('='):
+            wenn raw.startswith('='):
                 xoption_value = raw[1:]
-            else:
+            sonst:
                 xoption_value = True
             config = {
                 'parse_argv': True,
@@ -1815,7 +1815,7 @@ klasse InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
                 'xoptions': {'frozen_modules': xoption_value},
                 'use_frozen_modules': expected,
             }
-            env = {'TESTFROZEN': raw[1:]} if raw else None
+            env = {'TESTFROZEN': raw[1:]} wenn raw sonst None
             with self.subTest(repr(raw)):
                 self.check_all_configs("test_init_use_frozen_modules", config,
                                        api=API_PYTHON, env=env)
@@ -1959,7 +1959,7 @@ klasse MiscTests(EmbeddingTestsMixin, unittest.TestCase):
             self.assertEqual(proc.returncode, 0)
             out = proc.stdout.rstrip()
             match = re.match(r'^\[(-?\d+) refs, (-?\d+) blocks\]', out)
-            if not match:
+            wenn not match:
                 self.fail(f"unexpected output: {out!a}")
             refs = int(match.group(1))
             blocks = int(match.group(2))
@@ -1987,5 +1987,5 @@ klasse MiscTests(EmbeddingTestsMixin, unittest.TestCase):
         self.assertIn("unique-python-message", out)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

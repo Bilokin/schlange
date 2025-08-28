@@ -239,11 +239,11 @@ klasse TestChainMap(unittest.TestCase):
         # Use a different map than a dict
         klasse lowerdict(dict):
             def __getitem__(self, key):
-                if isinstance(key, str):
+                wenn isinstance(key, str):
                     key = key.lower()
                 return dict.__getitem__(self, key)
             def __contains__(self, key):
-                if isinstance(key, str):
+                wenn isinstance(key, str):
                     key = key.lower()
                 return dict.__contains__(self, key)
 
@@ -731,7 +731,7 @@ klasse ABCTestCase(unittest.TestCase):
         C = type('C', (abc,), methodstubs)
         C()
 
-        # instantiation should fail if a required method is missing
+        # instantiation should fail wenn a required method is missing
         fuer name in names:
             stubs = methodstubs.copy()
             del stubs[name]
@@ -774,7 +774,7 @@ klasse ABCTestCase(unittest.TestCase):
             __rsub__ = __eq__
 
         fuer name, op in operators.items():
-            if not hasattr(instance, name):
+            wenn not hasattr(instance, name):
                 continue
             other = Other()
             op(instance, other)
@@ -1293,7 +1293,7 @@ klasse TestOneTrickPonyABCs(ABCTestCase):
                 try:
                     coro.send(None)
                 except StopIteration as ex:
-                    result = ex.args[0] if ex.args else None
+                    result = ex.args[0] wenn ex.args sonst None
                     break
             return result
 
@@ -1518,7 +1518,7 @@ klasse TestCollectionABCs(ABCTestCase):
         klasse MySet(MutableSet):
             __slots__=['__s']
             def __init__(self,items=None):
-                if items is None:
+                wenn items is None:
                     items=[]
                 self.__s=set(items)
             def __contains__(self,v):
@@ -1623,7 +1623,7 @@ klasse TestCollectionABCs(ABCTestCase):
         """Verify _from_iterable overridden to an instance method works."""
         klasse SetUsingInstanceFromIterable(MutableSet):
             def __init__(self, values, created_by):
-                if not created_by:
+                wenn not created_by:
                     raise ValueError('created_by must be specified')
                 self.created_by = created_by
                 self._values = set(values)
@@ -1669,7 +1669,7 @@ klasse TestCollectionABCs(ABCTestCase):
         self.assertEqual({1, 2, 4}, actual)
 
         # NOTE: ixor'ing with a list is important here: internally, __ixor__
-        # only calls _from_iterable if the other value isn't already a Set.
+        # only calls _from_iterable wenn the other value isn't already a Set.
         impl ^= [3, 4]
         self.assertIsInstance(impl, SetUsingInstanceFromIterable)
         self.assertEqual('test', impl.created_by)
@@ -1681,7 +1681,7 @@ klasse TestCollectionABCs(ABCTestCase):
             def __init__(self, elements=()):
                 self.data = []
                 fuer elem in elements:
-                    if elem not in self.data:
+                    wenn elem not in self.data:
                         self.data.append(elem)
             def __contains__(self, elem):
                 return elem in self.data
@@ -1917,7 +1917,7 @@ klasse TestCollectionABCs(ABCTestCase):
             except ValueError:
                 with self.assertRaises(ValueError):
                     seq2.index(*index_args)
-            else:
+            sonst:
                 actual = seq2.index(*index_args)
                 self.assertEqual(
                     actual, expected, '%r.index%s' % (seq1, index_args))
@@ -2129,7 +2129,7 @@ klasse TestCounter(unittest.TestCase):
         qs = 'abbcccdeefffhkkllllmmnno'
         order = {letter: i fuer i, letter in enumerate(dict.fromkeys(ps + qs))}
         def correctly_ordered(seq):
-            'Return true if the letters occur in the expected order'
+            'Return true wenn the letters occur in the expected order'
             positions = [order[letter] fuer letter in seq]
             return positions == sorted(positions)
 
@@ -2382,5 +2382,5 @@ def load_tests(loader, tests, pattern):
     return tests
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

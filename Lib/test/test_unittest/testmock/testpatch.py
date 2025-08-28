@@ -30,7 +30,7 @@ def _get_proxy(obj, get_only=True):
     klasse Proxy(object):
         def __getattr__(self, name):
             return getattr(obj, name)
-    if not get_only:
+    wenn not get_only:
         def __setattr__(self, name, value):
             setattr(obj, name, value)
         def __delattr__(self, name):
@@ -88,7 +88,7 @@ klasse PatchTest(unittest.TestCase):
 
     def assertNotCallable(self, obj, magic=True):
         MockClass = NonCallableMagicMock
-        if not magic:
+        wenn not magic:
             MockClass = NonCallableMock
 
         self.assertRaises(TypeError, obj)
@@ -788,7 +788,7 @@ klasse PatchTest(unittest.TestCase):
             self.assertEqual(patcher.is_local, True)
             self.assertIs(patcher.target, mock_bar)
             self.assertEqual(patcher.temp_original, mock_object)
-        # if changes are left intact, they may lead to disruption as shown below (it might be what someone needs though)
+        # wenn changes are left intact, they may lead to disruption as shown below (it might be what someone needs though)
         self.assertEqual(mock_bar.bar, mock_object)
         self.assertEqual(mock_object.bar, 'x')
 
@@ -1481,7 +1481,7 @@ klasse PatchTest(unittest.TestCase):
 
 
     def test_patch_multiple_spec_set(self):
-        # if spec_set works then we can assume that spec and autospec also
+        # wenn spec_set works then we can assume that spec and autospec also
         # work as the underlying machinery is the same
         patcher = patch.multiple(Foo, foo=DEFAULT, spec_set=['a', 'b'])
         result = patcher.start()
@@ -1850,7 +1850,7 @@ klasse PatchTest(unittest.TestCase):
             self.assertRaises(TypeError, p.start)
             self.assertRaises(NameError, lambda: doesnotexist)
 
-            # check that spec with create is innocuous if the original exists
+            # check that spec with create is innocuous wenn the original exists
             p = patch(MODNAME, create=True, **{kwarg: True})
             p.start()
             p.stop()
@@ -2101,5 +2101,5 @@ klasse PatchTest(unittest.TestCase):
         test()
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

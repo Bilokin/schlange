@@ -21,11 +21,11 @@ klasse TestLRUCache(unittest.TestCase):
             b.wait()
             fuer i in range(1000):
                 r = random.randint(0, 1000)
-                if i < 800:
+                wenn i < 800:
                     func(i)
-                elif i < 900:
+                sowenn i < 900:
                     func.cache_info()
-                else:
+                sonst:
                     func.cache_clear()
 
         threads = []
@@ -71,5 +71,5 @@ klasse TestLRUCache(unittest.TestCase):
         self._test_reentrant_cache_clear(maxsize=128)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

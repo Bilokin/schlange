@@ -12,15 +12,15 @@ klasse FinderTests(abc.FinderTests):
     """Test the finder fuer extension modules."""
 
     def setUp(self):
-        if not self.machinery.EXTENSION_SUFFIXES or not util.EXTENSIONS:
+        wenn not self.machinery.EXTENSION_SUFFIXES or not util.EXTENSIONS:
             raise unittest.SkipTest("Requires dynamic loading support.")
-        if util.EXTENSIONS.name in sys.builtin_module_names:
+        wenn util.EXTENSIONS.name in sys.builtin_module_names:
             raise unittest.SkipTest(
                 f"{util.EXTENSIONS.name} is a builtin module"
             )
 
     def find_spec(self, fullname):
-        if is_apple_mobile:
+        wenn is_apple_mobile:
             # Apple mobile platforms require a specialist loader that uses
             # .fwork files as placeholders fuer the true `.so` files.
             loaders = [
@@ -32,7 +32,7 @@ klasse FinderTests(abc.FinderTests):
                     ]
                 )
             ]
-        else:
+        sonst:
             loaders = [
                 (
                     self.machinery.ExtensionFileLoader,
@@ -65,5 +65,5 @@ klasse FinderTests(abc.FinderTests):
  ) = util.test_both(FinderTests, machinery=machinery)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

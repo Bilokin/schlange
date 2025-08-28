@@ -29,9 +29,9 @@ x, y = 1e16, 2.9999 # use temporary values to defeat peephole optimizer
 HAVE_DOUBLE_ROUNDING = (x + y == 1e16 + 4)
 
 # locate file with test values
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     file = sys.argv[0]
-else:
+sonst:
     file = __file__
 test_dir = os.path.dirname(file) or os.curdir
 math_testcases = os.path.join(test_dir, 'mathdata', 'math_testcases.txt')
@@ -50,7 +50,7 @@ def to_ulps(x):
     Note: 0.0 and -0.0 are converted to 0 and -1, respectively.
     """
     n = struct.unpack('<q', struct.pack('<d', x))[0]
-    if n < 0:
+    wenn n < 0:
         n = ~(n+2**63)
     return n
 
@@ -78,7 +78,7 @@ def to_ulps(x):
 
 def count_set_bits(n):
     """Number of '1' bits in binary expansion of a nonnnegative integer."""
-    return 1 + count_set_bits(n & n - 1) if n else 0
+    return 1 + count_set_bits(n & n - 1) wenn n sonst 0
 
 def partial_product(start, stop):
     """Product of integers in range(start, stop, 2), computed recursively.
@@ -86,11 +86,11 @@ def partial_product(start, stop):
 
     """
     numfactors = (stop - start) >> 1
-    if not numfactors:
+    wenn not numfactors:
         return 1
-    elif numfactors == 1:
+    sowenn numfactors == 1:
         return start
-    else:
+    sonst:
         mid = (start + numfactors) | 1
         return partial_product(start, mid) * partial_product(mid, stop)
 
@@ -115,10 +115,10 @@ def ulp_abs_check(expected, got, ulp_tol, abs_tol):
     ulp_error = abs(to_ulps(expected) - to_ulps(got))
     abs_error = abs(expected - got)
 
-    # Succeed if either abs_error <= abs_tol or ulp_error <= ulp_tol.
-    if abs_error <= abs_tol or ulp_error <= ulp_tol:
+    # Succeed wenn either abs_error <= abs_tol or ulp_error <= ulp_tol.
+    wenn abs_error <= abs_tol or ulp_error <= ulp_tol:
         return None
-    else:
+    sonst:
         fmt = ("error = {:.3g} ({:d} ulps); "
                "permitted error = {:.3g} or {:d} ulps")
         return fmt.format(abs_error, ulp_error, abs_tol, ulp_tol)
@@ -135,9 +135,9 @@ def parse_mtestfile(fname):
     with open(fname, encoding="utf-8") as fp:
         fuer line in fp:
             # strip comments, and skip blank lines
-            if '--' in line:
+            wenn '--' in line:
                 line = line[:line.index('--')]
-            if not line.strip():
+            wenn not line.strip():
                 continue
 
             lhs, rhs = line.split('->')
@@ -158,7 +158,7 @@ def parse_testfile(fname):
     with open(fname, encoding="utf-8") as fp:
         fuer line in fp:
             # skip comment lines and blank lines
-            if line.startswith('--') or not line.strip():
+            wenn line.startswith('--') or not line.strip():
                 continue
 
             lhs, rhs = line.split('->')
@@ -175,7 +175,7 @@ def parse_testfile(fname):
 
 def result_check(expected, got, ulp_tol=5, abs_tol=0.0):
     # Common logic of MathTests.(ftest, test_testcases, test_mtestcases)
-    """Compare arguments expected and got, as floats, if either
+    """Compare arguments expected and got, as floats, wenn either
     is a float, using a tolerance expressed in multiples of
     ulp(expected) or absolutely (if given and greater).
 
@@ -187,38 +187,38 @@ def result_check(expected, got, ulp_tol=5, abs_tol=0.0):
     """
 
     # Check exactly equal (applies also to strings representing exceptions)
-    if got == expected:
-        if not got and not expected:
-            if math.copysign(1, got) != math.copysign(1, expected):
+    wenn got == expected:
+        wenn not got and not expected:
+            wenn math.copysign(1, got) != math.copysign(1, expected):
                 return f"expected {expected}, got {got} (zero has wrong sign)"
         return None
 
     failure = "not equal"
 
     # Turn mixed float and int comparison (e.g. floor()) to all-float
-    if isinstance(expected, float) and isinstance(got, int):
+    wenn isinstance(expected, float) and isinstance(got, int):
         got = float(got)
-    elif isinstance(got, float) and isinstance(expected, int):
+    sowenn isinstance(got, float) and isinstance(expected, int):
         expected = float(expected)
 
-    if isinstance(expected, float) and isinstance(got, float):
-        if math.isnan(expected) and math.isnan(got):
+    wenn isinstance(expected, float) and isinstance(got, float):
+        wenn math.isnan(expected) and math.isnan(got):
             # Pass, since both nan
             failure = None
-        elif math.isinf(expected) or math.isinf(got):
+        sowenn math.isinf(expected) or math.isinf(got):
             # We already know they're not equal, drop through to failure
             pass
-        else:
+        sonst:
             # Both are finite floats (now). Are they close enough?
             failure = ulp_abs_check(expected, got, ulp_tol, abs_tol)
 
-    # arguments are not equal, and if numeric, are too far apart
-    if failure is not None:
+    # arguments are not equal, and wenn numeric, are too far apart
+    wenn failure is not None:
         fail_fmt = "expected {!r}, got {!r}"
         fail_msg = fail_fmt.format(expected, got)
         fail_msg += ' ({})'.format(failure)
         return fail_msg
-    else:
+    sonst:
         return None
 
 klasse FloatLike:
@@ -246,7 +246,7 @@ klasse BadDescr:
 klasse MathTests(unittest.TestCase):
 
     def ftest(self, name, got, expected, ulp_tol=5, abs_tol=0.0):
-        """Compare arguments expected and got, as floats, if either
+        """Compare arguments expected and got, as floats, wenn either
         is a float, using a tolerance expressed in multiples of
         ulp(expected) or absolutely, whichever is greater.
 
@@ -255,7 +255,7 @@ klasse MathTests(unittest.TestCase):
         in this function.
         """
         failure = result_check(expected, got, ulp_tol, abs_tol)
-        if failure is not None:
+        wenn failure is not None:
             self.fail("{}: {}".format(name, failure))
 
     def testConstants(self):
@@ -481,7 +481,7 @@ klasse MathTests(unittest.TestCase):
         self.assertRaises(TypeError, math.signbit, '1.0')
 
         # C11, §7.12.3.6 requires signbit() to return a nonzero value
-        # if and only if the sign of its argument value is negative,
+        # wenn and only wenn the sign of its argument value is negative,
         # but in practice, we are only interested in a boolean value.
         self.assertIsInstance(math.signbit(1.0), bool)
 
@@ -728,7 +728,7 @@ klasse MathTests(unittest.TestCase):
 
         def testfrexp(name, result, expected):
             (mant, exp), (emant, eexp) = result, expected
-            if abs(mant-emant) > eps or exp != eexp:
+            wenn abs(mant-emant) > eps or exp != eexp:
                 self.fail('%s returned %r, expected %r'%\
                           (name, result, expected))
 
@@ -770,10 +770,10 @@ klasse MathTests(unittest.TestCase):
             fuer x in iterable:
                 mant, exp = math.frexp(x)
                 mant, exp = int(math.ldexp(mant, mant_dig)), exp - mant_dig
-                if texp > exp:
+                wenn texp > exp:
                     tmant <<= texp-exp
                     texp = exp
-                else:
+                sonst:
                     mant <<= exp-texp
                 tmant += mant
             # Round tmant * 2**texp to a float.  The original recipe
@@ -781,7 +781,7 @@ klasse MathTests(unittest.TestCase):
             # a little unsafe because str -> float conversion can't be
             # relied upon to do correct rounding on all platforms.
             tail = max(len(bin(abs(tmant)))-2 - mant_dig, etiny - texp)
-            if tail > 0:
+            wenn tail > 0:
                 h = 1 << (tail-1)
                 tmant = tmant // (2*h) + bool(tmant & h and tmant & 3*h-1)
                 texp += tail
@@ -990,7 +990,7 @@ klasse MathTests(unittest.TestCase):
         # and on the compiler maintaining the specified order of operations.
         #
         # This test is known to succeed on most of our builds.  If it fails
-        # some build, we either need to add another skipIf if the cause is
+        # some build, we either need to add another skipIf wenn the cause is
         # identifiable; otherwise, we can remove this test entirely.
 
         hypot = math.hypot
@@ -1147,10 +1147,10 @@ klasse MathTests(unittest.TestCase):
         fuer p in itertools.product(values, repeat=3):
             fuer q in itertools.product(values, repeat=3):
                 diffs = [px - qx fuer px, qx in zip(p, q)]
-                if any(map(math.isinf, diffs)):
+                wenn any(map(math.isinf, diffs)):
                     # Any infinite difference gives positive infinity.
                     self.assertEqual(dist(p, q), INF)
-                elif any(map(math.isnan, diffs)):
+                sowenn any(map(math.isnan, diffs)):
                     # If no infinity, any NaN gives a NaN.
                     self.assertTrue(math.isnan(dist(p, q)))
 
@@ -1230,7 +1230,7 @@ klasse MathTests(unittest.TestCase):
 
     @support.bigmemtest(2**32, memuse=0.85)
     def test_isqrt_huge(self, size):
-        if size & 1:
+        wenn size & 1:
             size += 1
         v = 1 << size
         w = math.isqrt(v)
@@ -1666,7 +1666,7 @@ klasse MathTests(unittest.TestCase):
 
         def testmodf(name, result, expected):
             (v1, v2), (e1, e2) = result, expected
-            if abs(v1-e1) > eps or abs(v2-e2):
+            wenn abs(v1-e1) > eps or abs(v2-e2):
                 self.fail('%s returned %r, expected %r'%\
                           (name, result, expected))
 
@@ -1782,7 +1782,7 @@ klasse MathTests(unittest.TestCase):
         self.assertEqual(math.pow(-2.3, -0.), 1.)
         self.assertEqual(math.pow(NAN, -0.), 1.)
 
-        # pow(x, y) is invalid if x is negative and y is not integral
+        # pow(x, y) is invalid wenn x is negative and y is not integral
         self.assertRaises(ValueError, math.pow, -1., 2.3)
         self.assertRaises(ValueError, math.pow, -15., -3.1)
 
@@ -1852,7 +1852,7 @@ klasse MathTests(unittest.TestCase):
             # x - r should be an exact integer multiple of y
             n = (fx - fr) / fy
             self.assertEqual(n, int(n))
-            if abs(fr) == abs(fy/2):
+            wenn abs(fr) == abs(fy/2):
                 # If |r| == |y/2|, n should be even.
                 self.assertEqual(n/2, int(n/2))
 
@@ -1933,7 +1933,7 @@ klasse MathTests(unittest.TestCase):
         # by assuming that modulus/2 is exactly representable).
         tiny = float.fromhex('1p-1074')  # min +ve subnormal
         fuer n in range(-25, 25):
-            if n == 0:
+            wenn n == 0:
                 continue
             y = n * tiny
             fuer m in range(100):
@@ -2136,7 +2136,7 @@ klasse MathTests(unittest.TestCase):
             # we've got an fp format with huge dynamic range
             self.fail("underflowing exp() should not have raised "
                         "an exception")
-        if x != 0:
+        wenn x != 0:
             self.fail("underflowing exp() should have returned 0")
 
         # If this fails, probably using a strict IEEE-754 conforming libm, and x
@@ -2145,7 +2145,7 @@ klasse MathTests(unittest.TestCase):
             x = math.exp(1000000000)
         except OverflowError:
             pass
-        else:
+        sonst:
             self.fail("overflowing exp() didn't trigger OverflowError")
 
         # If this fails, it could be a puzzle.  One odd possibility is that
@@ -2156,7 +2156,7 @@ klasse MathTests(unittest.TestCase):
             x = math.sqrt(-1.0)
         except ValueError:
             pass
-        else:
+        sonst:
             self.fail("sqrt(-1) didn't raise ValueError")
 
     @requires_IEEE_754
@@ -2166,7 +2166,7 @@ klasse MathTests(unittest.TestCase):
         SKIP_ON_TIGER = {'tan0064'}
 
         osx_version = None
-        if sys.platform == 'darwin':
+        wenn sys.platform == 'darwin':
             version_txt = platform.mac_ver()[0]
             try:
                 osx_version = tuple(map(int, version_txt.split('.')))
@@ -2177,22 +2177,22 @@ klasse MathTests(unittest.TestCase):
 
         failures = []
         fuer id, fn, ar, ai, er, ei, flags in parse_testfile(test_file):
-            # Skip if either the input or result is complex
-            if ai != 0.0 or ei != 0.0:
+            # Skip wenn either the input or result is complex
+            wenn ai != 0.0 or ei != 0.0:
                 continue
-            if fn in ['rect', 'polar']:
+            wenn fn in ['rect', 'polar']:
                 # no real versions of rect, polar
                 continue
             # Skip certain tests on OS X 10.4.
-            if osx_version is not None and osx_version < (10, 5):
-                if id in SKIP_ON_TIGER:
+            wenn osx_version is not None and osx_version < (10, 5):
+                wenn id in SKIP_ON_TIGER:
                     continue
 
             func = getattr(math, fn)
 
-            if 'invalid' in flags or 'divide-by-zero' in flags:
+            wenn 'invalid' in flags or 'divide-by-zero' in flags:
                 er = 'ValueError'
-            elif 'overflow' in flags:
+            sowenn 'overflow' in flags:
                 er = 'OverflowError'
 
             try:
@@ -2206,20 +2206,20 @@ klasse MathTests(unittest.TestCase):
             # returned, unmodified.  On another hand, fuer csqrt: If z is ±0+0i,
             # the result is +0+0i.  Lets correct zero sign of er to follow
             # first convention.
-            if id in ['sqrt0002', 'sqrt0003', 'sqrt1001', 'sqrt1023']:
+            wenn id in ['sqrt0002', 'sqrt0003', 'sqrt1001', 'sqrt1023']:
                 er = math.copysign(er, ar)
 
             # Default tolerances
             ulp_tol, abs_tol = 5, 0.0
 
             failure = result_check(er, result, ulp_tol, abs_tol)
-            if failure is None:
+            wenn failure is None:
                 continue
 
             msg = fail_fmt.format(id, fn, ar, failure)
             failures.append(msg)
 
-        if failures:
+        wenn failures:
             self.fail('Failures in test_testfile:\n  ' +
                       '\n  '.join(failures))
 
@@ -2231,9 +2231,9 @@ klasse MathTests(unittest.TestCase):
         fuer id, fn, arg, expected, flags in parse_mtestfile(math_testcases):
             func = getattr(math, fn)
 
-            if 'invalid' in flags or 'divide-by-zero' in flags:
+            wenn 'invalid' in flags or 'divide-by-zero' in flags:
                 expected = 'ValueError'
-            elif 'overflow' in flags:
+            sowenn 'overflow' in flags:
                 expected = 'OverflowError'
 
             try:
@@ -2247,20 +2247,20 @@ klasse MathTests(unittest.TestCase):
             ulp_tol, abs_tol = 5, 0.0
 
             # Exceptions to the defaults
-            if fn == 'gamma':
+            wenn fn == 'gamma':
                 # Experimental results on one platform gave
                 # an accuracy of <= 10 ulps across the entire float
                 # domain. We weaken that to require 20 ulp accuracy.
                 ulp_tol = 20
 
-            elif fn == 'lgamma':
+            sowenn fn == 'lgamma':
                 # we use a weaker accuracy test fuer lgamma;
                 # lgamma only achieves an absolute error of
                 # a few multiples of the machine accuracy, in
                 # general.
                 abs_tol = 1e-15
 
-            elif fn == 'erfc' and arg >= 0.0:
+            sowenn fn == 'erfc' and arg >= 0.0:
                 # erfc has less-than-ideal accuracy fuer large
                 # arguments (x ~ 25 or so), mainly due to the
                 # error involved in computing exp(-x*x).
@@ -2272,21 +2272,21 @@ klasse MathTests(unittest.TestCase):
                 # 10 <= x < 20 : err <= 300 ulp
                 # 20 <= x      : < 600 ulp
                 #
-                if arg < 1.0:
+                wenn arg < 1.0:
                     ulp_tol = 10
-                elif arg < 10.0:
+                sowenn arg < 10.0:
                     ulp_tol = 100
-                else:
+                sonst:
                     ulp_tol = 1000
 
             failure = result_check(expected, got, ulp_tol, abs_tol)
-            if failure is None:
+            wenn failure is None:
                 continue
 
             msg = fail_fmt.format(id, fn, arg, failure)
             failures.append(msg)
 
-        if failures:
+        wenn failures:
             self.fail('Failures in test_mtestfile:\n  ' +
                       '\n  '.join(failures))
 
@@ -2395,9 +2395,9 @@ klasse MathTests(unittest.TestCase):
     def testPerm(self):
         perm = math.perm
         factorial = math.factorial
-        # Test if factorial definition is satisfied
+        # Test wenn factorial definition is satisfied
         fuer n in range(500):
-            fuer k in (range(n + 1) if n < 100 else range(30) if n < 200 else range(10)):
+            fuer k in (range(n + 1) wenn n < 100 sonst range(30) wenn n < 200 sonst range(10)):
                 self.assertEqual(perm(n, k),
                                  factorial(n) // factorial(n - k))
 
@@ -2417,7 +2417,7 @@ klasse MathTests(unittest.TestCase):
             self.assertEqual(perm(n), factorial(n))
             self.assertEqual(perm(n, None), factorial(n))
 
-        # Raises TypeError if any argument is non-integer or argument count is
+        # Raises TypeError wenn any argument is non-integer or argument count is
         # not 1 or 2
         self.assertRaises(TypeError, perm, 10, 1.0)
         self.assertRaises(TypeError, perm, 10, decimal.Decimal(1.0))
@@ -2430,13 +2430,13 @@ klasse MathTests(unittest.TestCase):
         self.assertRaises(TypeError, perm, 10, 1, 3)
         self.assertRaises(TypeError, perm)
 
-        # Raises Value error if not k or n are negative numbers
+        # Raises Value error wenn not k or n are negative numbers
         self.assertRaises(ValueError, perm, -1, 1)
         self.assertRaises(ValueError, perm, -2**1000, 1)
         self.assertRaises(ValueError, perm, 1, -1)
         self.assertRaises(ValueError, perm, 1, -2**1000)
 
-        # Returns zero if k is greater than n
+        # Returns zero wenn k is greater than n
         self.assertEqual(perm(1, 2), 0)
         self.assertEqual(perm(1, 2**1000), 0)
 
@@ -2444,7 +2444,7 @@ klasse MathTests(unittest.TestCase):
         self.assertEqual(perm(n, 0), 1)
         self.assertEqual(perm(n, 1), n)
         self.assertEqual(perm(n, 2), n * (n-1))
-        if support.check_impl_detail(cpython=True):
+        wenn support.check_impl_detail(cpython=True):
             self.assertRaises(OverflowError, perm, n, n)
 
         fuer n, k in (True, True), (True, False), (False, False):
@@ -2459,9 +2459,9 @@ klasse MathTests(unittest.TestCase):
     def testComb(self):
         comb = math.comb
         factorial = math.factorial
-        # Test if factorial definition is satisfied
+        # Test wenn factorial definition is satisfied
         fuer n in range(500):
-            fuer k in (range(n + 1) if n < 100 else range(30) if n < 200 else range(10)):
+            fuer k in (range(n + 1) wenn n < 100 sonst range(30) wenn n < 200 sonst range(10)):
                 self.assertEqual(comb(n, k), factorial(n)
                     // (factorial(k) * factorial(n - k)))
 
@@ -2484,7 +2484,7 @@ klasse MathTests(unittest.TestCase):
             fuer k in range(n // 2):
                 self.assertEqual(comb(n, k), comb(n, n - k))
 
-        # Raises TypeError if any argument is non-integer or argument count is
+        # Raises TypeError wenn any argument is non-integer or argument count is
         # not 2
         self.assertRaises(TypeError, comb, 10, 1.0)
         self.assertRaises(TypeError, comb, 10, decimal.Decimal(1.0))
@@ -2497,13 +2497,13 @@ klasse MathTests(unittest.TestCase):
         self.assertRaises(TypeError, comb, 10, 1, 3)
         self.assertRaises(TypeError, comb)
 
-        # Raises Value error if not k or n are negative numbers
+        # Raises Value error wenn not k or n are negative numbers
         self.assertRaises(ValueError, comb, -1, 1)
         self.assertRaises(ValueError, comb, -2**1000, 1)
         self.assertRaises(ValueError, comb, 1, -1)
         self.assertRaises(ValueError, comb, 1, -2**1000)
 
-        # Returns zero if k is greater than n
+        # Returns zero wenn k is greater than n
         self.assertEqual(comb(1, 2), 0)
         self.assertEqual(comb(1, 2**1000), 0)
 
@@ -2514,7 +2514,7 @@ klasse MathTests(unittest.TestCase):
         self.assertEqual(comb(n, n), 1)
         self.assertEqual(comb(n, n-1), n)
         self.assertEqual(comb(n, n-2), n * (n-1) // 2)
-        if support.check_impl_detail(cpython=True):
+        wenn support.check_impl_detail(cpython=True):
             self.assertRaises(OverflowError, comb, n, n//2)
 
         fuer n, k in (True, True), (True, False), (False, False):
@@ -2609,7 +2609,7 @@ klasse MathTests(unittest.TestCase):
                 self.assertEqual(math.ulp(-x), math.ulp(x))
 
     def test_issue39871(self):
-        # A SystemError should not be raised if the first arg to atan2(),
+        # A SystemError should not be raised wenn the first arg to atan2(),
         # copysign(), or remainder() cannot be converted to a float.
         klasse F:
             def __float__(self):
@@ -2675,7 +2675,7 @@ klasse MathTests(unittest.TestCase):
     # Custom assertions.
 
     def assertIsNaN(self, value):
-        if not math.isnan(value):
+        wenn not math.isnan(value):
             self.fail("Expected a NaN, got {!r}.".format(value))
 
     def assertEqualSign(self, x, y):
@@ -2707,7 +2707,7 @@ klasse IsCloseTests(unittest.TestCase):
             self.assertIsNotClose(a, b, *args, **kwargs)
 
     def test_negative_tolerances(self):
-        # ValueError should be raised if either tolerance is less than zero
+        # ValueError should be raised wenn either tolerance is less than zero
         with self.assertRaises(ValueError):
             self.assertIsClose(1, 1, rel_tol=-1e-100)
         with self.assertRaises(ValueError):
@@ -3066,5 +3066,5 @@ def load_tests(loader, tests, pattern):
     tests.addTest(DocFileSuite(os.path.join("mathdata", "ieee754.txt")))
     return tests
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

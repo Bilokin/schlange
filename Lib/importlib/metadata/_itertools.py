@@ -8,14 +8,14 @@ def unique_everseen(iterable, key=None):
     # unique_everseen('ABBCcAD', str.lower) --> A B C D
     seen = set()
     seen_add = seen.add
-    if key is None:
+    wenn key is None:
         fuer element in filterfalse(seen.__contains__, iterable):
             seen_add(element)
             yield element
-    else:
+    sonst:
         fuer element in iterable:
             k = key(element)
-            if k not in seen:
+            wenn k not in seen:
                 seen_add(k)
                 yield element
 
@@ -62,10 +62,10 @@ def always_iterable(obj, base_type=(str, bytes)):
         >>> list(always_iterable(obj, base_type=None))
         ['f', 'o', 'o']
     """
-    if obj is None:
+    wenn obj is None:
         return iter(())
 
-    if (base_type is not None) and isinstance(obj, base_type):
+    wenn (base_type is not None) and isinstance(obj, base_type):
         return iter((obj,))
 
     try:
@@ -118,14 +118,14 @@ klasse bucket:
         self._validator = validator or (lambda x: True)
 
     def __contains__(self, value):
-        if not self._validator(value):
+        wenn not self._validator(value):
             return False
 
         try:
             item = next(self[value])
         except StopIteration:
             return False
-        else:
+        sonst:
             self._cache[value].appendleft(item)
 
         return True
@@ -139,33 +139,33 @@ klasse bucket:
         while True:
             # If we've cached some items that match the target value, emit
             # the first one and evict it from the cache.
-            if self._cache[value]:
+            wenn self._cache[value]:
                 yield self._cache[value].popleft()
             # Otherwise we need to advance the parent iterator to search for
             # a matching item, caching the rest.
-            else:
+            sonst:
                 while True:
                     try:
                         item = next(self._it)
                     except StopIteration:
                         return
                     item_value = self._key(item)
-                    if item_value == value:
+                    wenn item_value == value:
                         yield item
                         break
-                    elif self._validator(item_value):
+                    sowenn self._validator(item_value):
                         self._cache[item_value].append(item)
 
     def __iter__(self):
         fuer item in self._it:
             item_value = self._key(item)
-            if self._validator(item_value):
+            wenn self._validator(item_value):
                 self._cache[item_value].append(item)
 
         yield from self._cache.keys()
 
     def __getitem__(self, value):
-        if not self._validator(value):
+        wenn not self._validator(value):
             return iter(())
 
         return self._get_values(value)

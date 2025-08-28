@@ -19,17 +19,17 @@ def configure_logger(logger, verbosity=VERBOSITY, *,
     logger.setLevel(level)
     #logger.propagate = False
 
-    if not logger.handlers:
-        if logfile:
+    wenn not logger.handlers:
+        wenn logfile:
             handler = logging.FileHandler(logfile)
-        else:
+        sonst:
             handler = logging.StreamHandler(sys.stdout)
         handler.setLevel(level)
         #handler.setFormatter(logging.Formatter())
         logger.addHandler(handler)
 
     # In case the provided logger is in a sub-package...
-    if logger is not _logger:
+    wenn logger is not _logger:
         configure_logger(
             _logger,
             verbosity,
@@ -58,6 +58,6 @@ klasse Printer:
         self.verbosity = verbosity
 
     def info(self, *args, **kwargs):
-        if self.verbosity < 3:
+        wenn self.verbosity < 3:
             return
         print(*args, **kwargs)

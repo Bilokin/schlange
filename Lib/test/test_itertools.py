@@ -88,9 +88,9 @@ klasse TestBasicOps(unittest.TestCase):
         """Test that an iterator is the same after pickling, also when part-consumed"""
         def expand(it, i=0):
             # Recursively expand iterables, within sensible bounds
-            if i > 10:
+            wenn i > 10:
                 raise RuntimeError("infinite recursion encountered")
-            if isinstance(it, str):
+            wenn isinstance(it, str):
                 return it
             try:
                 l = list(islice(it, stop))
@@ -104,7 +104,7 @@ klasse TestBasicOps(unittest.TestCase):
         self.assertEqual(type(it), type(i2))
         a, b = expand(it), expand(i2)
         self.assertEqual(a, b)
-        if compare:
+        wenn compare:
             c = expand(compare)
             self.assertEqual(a, c)
 
@@ -121,7 +121,7 @@ klasse TestBasicOps(unittest.TestCase):
         i4 = pickle.loads(dump)
         a, b = expand(i3), expand(i4)
         self.assertEqual(a, b)
-        if compare:
+        wenn compare:
             c = expand(compare[took:])
             self.assertEqual(a, c);
 
@@ -193,7 +193,7 @@ klasse TestBasicOps(unittest.TestCase):
                     # Each batch is an exact tuple
                     self.assertTrue(all(type(batch) is tuple fuer batch in batches))
                     # All but the last batch is of size n
-                    if batches:
+                    wenn batches:
                         last_batch = batches.pop()
                         self.assertTrue(all(len(batch) == n fuer batch in batches))
                         self.assertTrue(len(last_batch) <= n)
@@ -232,15 +232,15 @@ klasse TestBasicOps(unittest.TestCase):
             'Pure python version shown in the docs'
             pool = tuple(iterable)
             n = len(pool)
-            if r > n:
+            wenn r > n:
                 return
             indices = list(range(r))
             yield tuple(pool[i] fuer i in indices)
             while 1:
                 fuer i in reversed(range(r)):
-                    if indices[i] != i + n - r:
+                    wenn indices[i] != i + n - r:
                         break
-                else:
+                sonst:
                     return
                 indices[i] += 1
                 fuer j in range(i+1, r):
@@ -252,7 +252,7 @@ klasse TestBasicOps(unittest.TestCase):
             pool = tuple(iterable)
             n = len(pool)
             fuer indices in permutations(range(n), r):
-                if sorted(indices) == list(indices):
+                wenn sorted(indices) == list(indices):
                     yield tuple(pool[i] fuer i in indices)
 
         def combinations3(iterable, r):
@@ -260,14 +260,14 @@ klasse TestBasicOps(unittest.TestCase):
             pool = tuple(iterable)
             n = len(pool)
             fuer indices in combinations_with_replacement(range(n), r):
-                if len(set(indices)) == r:
+                wenn len(set(indices)) == r:
                     yield tuple(pool[i] fuer i in indices)
 
         fuer n in range(7):
             values = [5*x-12 fuer x in range(n)]
             fuer r in range(n+2):
                 result = list(combinations(values, r))
-                self.assertEqual(len(result), 0 if r>n else fact(n) / fact(r) / fact(n-r)) # right number of combs
+                self.assertEqual(len(result), 0 wenn r>n sonst fact(n) / fact(r) / fact(n-r)) # right number of combs
                 self.assertEqual(len(result), len(set(result)))         # no repeats
                 self.assertEqual(result, sorted(result))                # lexicographic order
                 fuer c in result:
@@ -276,7 +276,7 @@ klasse TestBasicOps(unittest.TestCase):
                     self.assertEqual(list(c), sorted(c))                # keep original ordering
                     self.assertTrue(all(e in values fuer e in c))           # elements taken from input iterable
                     self.assertEqual(list(c),
-                                     [e fuer e in values if e in c])      # comb is a subsequence of the input iterable
+                                     [e fuer e in values wenn e in c])      # comb is a subsequence of the input iterable
                 self.assertEqual(result, list(combinations1(values, r))) # matches first pure python version
                 self.assertEqual(result, list(combinations2(values, r))) # matches second pure python version
                 self.assertEqual(result, list(combinations3(values, r))) # matches second pure python version
@@ -304,15 +304,15 @@ klasse TestBasicOps(unittest.TestCase):
             # number items returned:  (n+r-1)! / r! / (n-1)! when n>0
             pool = tuple(iterable)
             n = len(pool)
-            if not n and r:
+            wenn not n and r:
                 return
             indices = [0] * r
             yield tuple(pool[i] fuer i in indices)
             while 1:
                 fuer i in reversed(range(r)):
-                    if indices[i] != n - 1:
+                    wenn indices[i] != n - 1:
                         break
-                else:
+                sonst:
                     return
                 indices[i:] = [indices[i] + 1] * (r - i)
                 yield tuple(pool[i] fuer i in indices)
@@ -322,12 +322,12 @@ klasse TestBasicOps(unittest.TestCase):
             pool = tuple(iterable)
             n = len(pool)
             fuer indices in product(range(n), repeat=r):
-                if sorted(indices) == list(indices):
+                wenn sorted(indices) == list(indices):
                     yield tuple(pool[i] fuer i in indices)
 
         def numcombs(n, r):
-            if not n:
-                return 0 if r else 1
+            wenn not n:
+                return 0 wenn r sonst 1
             return fact(n+r-1) / fact(r)/ fact(n-1)
 
         fuer n in range(7):
@@ -340,9 +340,9 @@ klasse TestBasicOps(unittest.TestCase):
                 self.assertEqual(result, sorted(result))                # lexicographic order
 
                 regular_combs = list(combinations(values, r))           # compare to combs without replacement
-                if n == 0 or r <= 1:
+                wenn n == 0 or r <= 1:
                     self.assertEqual(result, regular_combs)            # cases that should be identical
-                else:
+                sonst:
                     self.assertTrue(set(result) >= set(regular_combs))     # rest should be supersets of regular combs
 
                 fuer c in result:
@@ -352,7 +352,7 @@ klasse TestBasicOps(unittest.TestCase):
                     self.assertEqual(list(c), sorted(c))                # keep original ordering
                     self.assertTrue(all(e in values fuer e in c))           # elements taken from input iterable
                     self.assertEqual(noruns,
-                                     [e fuer e in values if e in c])     # comb is a subsequence of the input iterable
+                                     [e fuer e in values wenn e in c])     # comb is a subsequence of the input iterable
                 self.assertEqual(result, list(cwr1(values, r)))         # matches first pure python version
                 self.assertEqual(result, list(cwr2(values, r)))         # matches second pure python version
 
@@ -382,8 +382,8 @@ klasse TestBasicOps(unittest.TestCase):
             'Pure python version shown in the docs'
             pool = tuple(iterable)
             n = len(pool)
-            r = n if r is None else r
-            if r > n:
+            r = n wenn r is None sonst r
+            wenn r > n:
                 return
             indices = list(range(n))
             cycles = list(range(n-r+1, n+1))[::-1]
@@ -391,31 +391,31 @@ klasse TestBasicOps(unittest.TestCase):
             while n:
                 fuer i in reversed(range(r)):
                     cycles[i] -= 1
-                    if cycles[i] == 0:
+                    wenn cycles[i] == 0:
                         indices[i:] = indices[i+1:] + indices[i:i+1]
                         cycles[i] = n - i
-                    else:
+                    sonst:
                         j = cycles[i]
                         indices[i], indices[-j] = indices[-j], indices[i]
                         yield tuple(pool[i] fuer i in indices[:r])
                         break
-                else:
+                sonst:
                     return
 
         def permutations2(iterable, r=None):
             'Pure python version shown in the docs'
             pool = tuple(iterable)
             n = len(pool)
-            r = n if r is None else r
+            r = n wenn r is None sonst r
             fuer indices in product(range(n), repeat=r):
-                if len(set(indices)) == r:
+                wenn len(set(indices)) == r:
                     yield tuple(pool[i] fuer i in indices)
 
         fuer n in range(7):
             values = [5*x-12 fuer x in range(n)]
             fuer r in range(n+2):
                 result = list(permutations(values, r))
-                self.assertEqual(len(result), 0 if r>n else fact(n) / fact(n-r))      # right number of perms
+                self.assertEqual(len(result), 0 wenn r>n sonst fact(n) / fact(n-r))      # right number of perms
                 self.assertEqual(len(result), len(set(result)))         # no repeats
                 self.assertEqual(result, sorted(result))                # lexicographic order
                 fuer p in result:
@@ -424,7 +424,7 @@ klasse TestBasicOps(unittest.TestCase):
                     self.assertTrue(all(e in values fuer e in p))           # elements taken from input iterable
                 self.assertEqual(result, list(permutations1(values, r))) # matches first pure python version
                 self.assertEqual(result, list(permutations2(values, r))) # matches second pure python version
-                if r == n:
+                wenn r == n:
                     self.assertEqual(result, list(permutations(values, None))) # test r as None
                     self.assertEqual(result, list(permutations(values)))       # test default r
 
@@ -452,9 +452,9 @@ klasse TestBasicOps(unittest.TestCase):
 
                 # Check size
                 self.assertEqual(len(prod), n**r)
-                self.assertEqual(len(cwr), (fact(n+r-1) / fact(r)/ fact(n-1)) if n else (not r))
-                self.assertEqual(len(perm), 0 if r>n else fact(n) / fact(n-r))
-                self.assertEqual(len(comb), 0 if r>n else fact(n) / fact(r) / fact(n-r))
+                self.assertEqual(len(cwr), (fact(n+r-1) / fact(r)/ fact(n-1)) wenn n sonst (not r))
+                self.assertEqual(len(perm), 0 wenn r>n sonst fact(n) / fact(n-r))
+                self.assertEqual(len(comb), 0 wenn r>n sonst fact(n) / fact(r) / fact(n-r))
 
                 # Check lexicographic order without repeated tuples
                 self.assertEqual(prod, sorted(set(prod)))
@@ -463,10 +463,10 @@ klasse TestBasicOps(unittest.TestCase):
                 self.assertEqual(comb, sorted(set(comb)))
 
                 # Check interrelationships
-                self.assertEqual(cwr, [t fuer t in prod if sorted(t)==list(t)]) # cwr: prods which are sorted
-                self.assertEqual(perm, [t fuer t in prod if len(set(t))==r])    # perm: prods with no dups
-                self.assertEqual(comb, [t fuer t in perm if sorted(t)==list(t)]) # comb: perms that are sorted
-                self.assertEqual(comb, [t fuer t in cwr if len(set(t))==r])      # comb: cwrs without dups
+                self.assertEqual(cwr, [t fuer t in prod wenn sorted(t)==list(t)]) # cwr: prods which are sorted
+                self.assertEqual(perm, [t fuer t in prod wenn len(set(t))==r])    # perm: prods with no dups
+                self.assertEqual(comb, [t fuer t in perm wenn sorted(t)==list(t)]) # comb: perms that are sorted
+                self.assertEqual(comb, [t fuer t in cwr wenn len(set(t))==r])      # comb: cwrs without dups
                 self.assertEqual(comb, list(filter(set(cwr).__contains__, perm)))     # comb: perm that is a cwr
                 self.assertEqual(comb, list(filter(set(perm).__contains__, cwr)))     # comb: cwr that is a perm
                 self.assertEqual(comb, sorted(set(cwr) & set(perm)))            # comb: both a cwr and a perm
@@ -684,7 +684,7 @@ klasse TestBasicOps(unittest.TestCase):
         r = [k fuer k, g in groupby(sorted(s))]
         self.assertEqual(r, ['a', 'b', 'c', 'd', 'r'])
         # sort s | uniq -d
-        r = [k fuer k, g in groupby(sorted(s)) if list(islice(g,1,2))]
+        r = [k fuer k, g in groupby(sorted(s)) wenn list(islice(g,1,2))]
         self.assertEqual(r, ['a', 'b', 'r'])
         # sort s | uniq -c
         r = [(len(list(g)), k) fuer k, g in groupby(sorted(s))]
@@ -721,10 +721,10 @@ klasse TestBasicOps(unittest.TestCase):
 
         # keyfunc failure
         def keyfunc(obj):
-            if keyfunc.skip > 0:
+            wenn keyfunc.skip > 0:
                 keyfunc.skip -= 1
                 return obj
-            else:
+            sonst:
                 raise ExpectedError
 
         # keyfunc failure on outer object
@@ -802,7 +802,7 @@ klasse TestBasicOps(unittest.TestCase):
                 [range(1000), range(0), range(3000,3050), range(1200), range(1500)],
                 [range(1000), range(0), range(3000,3050), range(1200), range(1500), range(0)],
             ]:
-            target = [tuple([arg[i] if i < len(arg) else None fuer arg in args])
+            target = [tuple([arg[i] wenn i < len(arg) sonst None fuer arg in args])
                       fuer i in range(max(map(len, args)))]
             self.assertEqual(list(zip_longest(*args)), target)
             self.assertEqual(list(zip_longest(*args, **{})), target)
@@ -828,7 +828,7 @@ klasse TestBasicOps(unittest.TestCase):
                 eval(stmt, globals(), locals())
             except TypeError:
                 pass
-            else:
+            sonst:
                 self.fail('Did not raise Type in:  ' + stmt)
 
         self.assertEqual([tuple(list(pair)) fuer pair in zip_longest('abc', 'def')],
@@ -866,10 +866,10 @@ klasse TestBasicOps(unittest.TestCase):
             def __iter__(self): # its iterator is itself
                 return self
             def __next__(self):
-                if self.t > 0:
+                wenn self.t > 0:
                     self.t -= 1
                     return self.o
-                else:
+                sonst:
                     raise self.e
 
         # Formerly this code in would fail in debug mode
@@ -922,7 +922,7 @@ klasse TestBasicOps(unittest.TestCase):
                     return self
                 def __next__(self):
                     self.count +=1
-                    if self.count in reenter_at:
+                    wenn self.count in reenter_at:
                         return next(it)
                     return [self.count]  # new object
 
@@ -971,10 +971,10 @@ klasse TestBasicOps(unittest.TestCase):
                 def __iter__(self):
                     return self
                 def __next__(self):
-                    if self.count >= maxcount:
+                    wenn self.count >= maxcount:
                         raise StopIteration
                     self.count +=1
-                    if self.count == 1:
+                    wenn self.count == 1:
                         return next(it, None)
                     return [self.count]  # new object
 
@@ -1005,28 +1005,28 @@ klasse TestBasicOps(unittest.TestCase):
         def product1(*args, **kwds):
             pools = list(map(tuple, args)) * kwds.get('repeat', 1)
             n = len(pools)
-            if n == 0:
+            wenn n == 0:
                 yield ()
                 return
-            if any(len(pool) == 0 fuer pool in pools):
+            wenn any(len(pool) == 0 fuer pool in pools):
                 return
             indices = [0] * n
             yield tuple(pool[i] fuer pool, i in zip(pools, indices))
             while 1:
                 fuer i in reversed(range(n)):  # right to left
-                    if indices[i] == len(pools[i]) - 1:
+                    wenn indices[i] == len(pools[i]) - 1:
                         continue
                     indices[i] += 1
                     fuer j in range(i+1, n):
                         indices[j] = 0
                     yield tuple(pool[i] fuer pool, i in zip(pools, indices))
                     break
-                else:
+                sonst:
                     return
 
         def product2(*iterables, repeat=1):
             'Pure python version used in docs'
-            if repeat < 0:
+            wenn repeat < 0:
                 raise ValueError('repeat argument cannot be negative')
             pools = [tuple(pool) fuer pool in iterables] * repeat
 
@@ -1356,7 +1356,7 @@ klasse TestBasicOps(unittest.TestCase):
             def __next__(self):
                 first = self.first
                 self.first = False
-                if first:
+                wenn first:
                     return next(b)
 
         a, b = tee(I())
@@ -1583,7 +1583,7 @@ klasse TestPurePythonRoughEquivalents(unittest.TestCase):
         def batched_recipe(iterable, n):
             "Batch data into tuples of length n. The last batch may be shorter."
             # batched('ABCDEFG', 3) --> ABC DEF G
-            if n < 1:
+            wenn n < 1:
                 raise ValueError('n must be at least one')
             it = iter(iterable)
             while batch := tuple(islice(it, n)):
@@ -1613,7 +1613,7 @@ klasse TestPurePythonRoughEquivalents(unittest.TestCase):
             # [k fuer k, g in groupby('AAAABBBCCDAABBB')] → A B C D A B
             # [list(g) fuer k, g in groupby('AAAABBBCCD')] → AAAA BBB CC D
 
-            keyfunc = (lambda x: x) if key is None else key
+            keyfunc = (lambda x: x) wenn key is None sonst key
             iterator = iter(iterable)
             exhausted = False
 
@@ -1622,7 +1622,7 @@ klasse TestPurePythonRoughEquivalents(unittest.TestCase):
                 yield curr_value
                 fuer curr_value in iterator:
                     curr_key = keyfunc(curr_value)
-                    if curr_key != target_key:
+                    wenn curr_key != target_key:
                         return
                     yield curr_value
                 exhausted = True
@@ -1637,7 +1637,7 @@ klasse TestPurePythonRoughEquivalents(unittest.TestCase):
                 target_key = curr_key
                 curr_group = _grouper(target_key)
                 yield curr_key, curr_group
-                if curr_key == target_key:
+                wenn curr_key == target_key:
                     fuer _ in curr_group:
                         pass
 
@@ -1647,7 +1647,7 @@ klasse TestPurePythonRoughEquivalents(unittest.TestCase):
         self.assertEqual([], list(groupby([])))
         self.assertEqual([], list(groupby([], key=id)))
         self.assertRaises(TypeError, list, groupby('abc', []))
-        if False:
+        wenn False:
             # Test not applicable to the recipe
             self.assertRaises(TypeError, list, groupby('abc', None))
         self.assertRaises(TypeError, groupby, 'abc', lambda x:x, 10)
@@ -1697,7 +1697,7 @@ klasse TestPurePythonRoughEquivalents(unittest.TestCase):
         r = [k fuer k, g in groupby(sorted(s))]
         self.assertEqual(r, ['a', 'b', 'c', 'd', 'r'])
         # sort s | uniq -d
-        r = [k fuer k, g in groupby(sorted(s)) if list(islice(g,1,2))]
+        r = [k fuer k, g in groupby(sorted(s)) wenn list(islice(g,1,2))]
         self.assertEqual(r, ['a', 'b', 'r'])
         # sort s | uniq -c
         r = [(len(list(g)), k) fuer k, g in groupby(sorted(s))]
@@ -1734,10 +1734,10 @@ klasse TestPurePythonRoughEquivalents(unittest.TestCase):
 
         # keyfunc failure
         def keyfunc(obj):
-            if keyfunc.skip > 0:
+            wenn keyfunc.skip > 0:
                 keyfunc.skip -= 1
                 return obj
-            else:
+            sonst:
                 raise ExpectedError
 
         # keyfunc failure on outer object
@@ -1755,16 +1755,16 @@ klasse TestPurePythonRoughEquivalents(unittest.TestCase):
         # islice('ABCDEFG', 0, None, 2) → A C E G
 
         s = slice(*args)
-        start = 0 if s.start is None else s.start
+        start = 0 wenn s.start is None sonst s.start
         stop = s.stop
-        step = 1 if s.step is None else s.step
-        if start < 0 or (stop is not None and stop < 0) or step <= 0:
+        step = 1 wenn s.step is None sonst s.step
+        wenn start < 0 or (stop is not None and stop < 0) or step <= 0:
             raise ValueError
 
-        indices = count() if stop is None else range(max(start, stop))
+        indices = count() wenn stop is None sonst range(max(start, stop))
         next_i = start
         fuer i, element in zip(indices, iterable):
-            if i == next_i:
+            wenn i == next_i:
                 yield element
                 next_i += step
 
@@ -1791,9 +1791,9 @@ klasse TestPurePythonRoughEquivalents(unittest.TestCase):
         # Begin tee() recipe ###########################################
 
         def tee(iterable, n=2):
-            if n < 0:
+            wenn n < 0:
                 raise ValueError
-            if n == 0:
+            wenn n == 0:
                 return ()
             iterator = _tee(iterable)
             result = [iterator]
@@ -1805,10 +1805,10 @@ klasse TestPurePythonRoughEquivalents(unittest.TestCase):
 
             def __init__(self, iterable):
                 it = iter(iterable)
-                if isinstance(it, _tee):
+                wenn isinstance(it, _tee):
                     self.iterator = it.iterator
                     self.link = it.link
-                else:
+                sonst:
                     self.iterator = it
                     self.link = [None, None]
 
@@ -1817,7 +1817,7 @@ klasse TestPurePythonRoughEquivalents(unittest.TestCase):
 
             def __next__(self):
                 link = self.link
-                if link[1] is None:
+                wenn link[1] is None:
                     link[0] = next(self.iterator)
                     link[1] = [None, None]
                 value, self.link = link
@@ -1917,7 +1917,7 @@ klasse TestPurePythonRoughEquivalents(unittest.TestCase):
         long_ans = list(range(10000))
 
         # Tests not applicable to the tee() recipe
-        if False:
+        wenn False:
             # check copy
             a, b = tee('abc')
             self.assertEqual(list(copy.copy(a)), ans)
@@ -2081,7 +2081,7 @@ klasse I:
     def __iter__(self):
         return self
     def __next__(self):
-        if self.i >= len(self.seqn): raise StopIteration
+        wenn self.i >= len(self.seqn): raise StopIteration
         v = self.seqn[self.i]
         self.i += 1
         return v
@@ -2101,7 +2101,7 @@ klasse X:
         self.seqn = seqn
         self.i = 0
     def __next__(self):
-        if self.i >= len(self.seqn): raise StopIteration
+        wenn self.i >= len(self.seqn): raise StopIteration
         v = self.seqn[self.i]
         self.i += 1
         return v
@@ -2132,7 +2132,7 @@ klasse E2:
     def __iter__(self):
         return self
     def __next__(self):
-        if self.i == 2:
+        wenn self.i == 2:
             raise ZeroDivisionError
         v = self.seqn[self.i]
         self.i += 1
@@ -2225,7 +2225,7 @@ klasse TestVariousIteratorArgs(unittest.TestCase):
         fuer s in (range(10), range(0), range(1000), (7,11), range(2000,2200,5)):
             fuer g in (G, I, Ig, S, L, R):
                 self.assertEqual(list(filter(isEven, g(s))),
-                                 [x fuer x in g(s) if isEven(x)])
+                                 [x fuer x in g(s) wenn isEven(x)])
             self.assertRaises(TypeError, filter, isEven, X(s))
             self.assertRaises(TypeError, filter, isEven, N(s))
             self.assertRaises(ZeroDivisionError, list, filter(isEven, E(s)))
@@ -2234,7 +2234,7 @@ klasse TestVariousIteratorArgs(unittest.TestCase):
         fuer s in (range(10), range(0), range(1000), (7,11), range(2000,2200,5)):
             fuer g in (G, I, Ig, S, L, R):
                 self.assertEqual(list(filterfalse(isEven, g(s))),
-                                 [x fuer x in g(s) if isOdd(x)])
+                                 [x fuer x in g(s) wenn isOdd(x)])
             self.assertRaises(TypeError, filterfalse, isEven, X(s))
             self.assertRaises(TypeError, filterfalse, isEven, N(s))
             self.assertRaises(ZeroDivisionError, list, filterfalse(isEven, E(s)))
@@ -2302,7 +2302,7 @@ klasse TestVariousIteratorArgs(unittest.TestCase):
             fuer g in (G, I, Ig, S, L, R):
                 tgt = []
                 fuer elem in g(s):
-                    if not isEven(elem): break
+                    wenn not isEven(elem): break
                     tgt.append(elem)
                 self.assertEqual(list(takewhile(isEven, g(s))), tgt)
             self.assertRaises(TypeError, takewhile, isEven, X(s))
@@ -2314,7 +2314,7 @@ klasse TestVariousIteratorArgs(unittest.TestCase):
             fuer g in (G, I, Ig, S, L, R):
                 tgt = []
                 fuer elem in g(s):
-                    if not tgt and isOdd(elem): continue
+                    wenn not tgt and isOdd(elem): continue
                     tgt.append(elem)
                 self.assertEqual(list(dropwhile(isOdd, g(s))), tgt)
             self.assertRaises(TypeError, dropwhile, isOdd, X(s))
@@ -2354,7 +2354,7 @@ klasse RegressionTests(unittest.TestCase):
             # then calls f(t), then mutates t to be equal to tuple2
             # (needs len(tuple1) == len(tuple2)).
             def g(value, first=[1]):
-                if first:
+                wenn first:
                     del first[:]
                     f(next(z))
                 return value
@@ -2415,7 +2415,7 @@ klasse RegressionTests(unittest.TestCase):
 
     def test_issue30347_1(self):
         def f(n):
-            if n == 5:
+            wenn n == 5:
                 list(b)
             return n != 6
         fuer (k, b) in groupby(range(10), f):
@@ -2428,7 +2428,7 @@ klasse RegressionTests(unittest.TestCase):
             def __eq__(self, other):
                 nonlocal i
                 i += 1
-                if i == 1:
+                wenn i == 1:
                     next(g, None)
                 return True
         i = 0
@@ -2468,7 +2468,7 @@ klasse SubclassWithKwargsTest(unittest.TestCase):
             # Constructors of repeat, zip, map, compress accept keyword arguments.
             # Their subclasses need overriding __new__ to support new
             # keyword arguments.
-            if cls in [repeat, zip, map, compress]:
+            wenn cls in [repeat, zip, map, compress]:
                 continue
             with self.subTest(cls):
                 klasse subclass_with_init(cls):
@@ -2536,5 +2536,5 @@ def load_tests(loader, tests, pattern):
     return tests
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

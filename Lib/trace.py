@@ -66,33 +66,33 @@ PRAGMA_NOCOVER = "#pragma NO COVER"
 
 klasse _Ignore:
     def __init__(self, modules=None, dirs=None):
-        self._mods = set() if not modules else set(modules)
-        self._dirs = [] if not dirs else [os.path.normpath(d)
+        self._mods = set() wenn not modules sonst set(modules)
+        self._dirs = [] wenn not dirs sonst [os.path.normpath(d)
                                           fuer d in dirs]
         self._ignore = { '<string>': 1 }
 
     def names(self, filename, modulename):
-        if modulename in self._ignore:
+        wenn modulename in self._ignore:
             return self._ignore[modulename]
 
-        # haven't seen this one before, so see if the module name is
+        # haven't seen this one before, so see wenn the module name is
         # on the ignore list.
-        if modulename in self._mods:  # Identical names, so ignore
+        wenn modulename in self._mods:  # Identical names, so ignore
             self._ignore[modulename] = 1
             return 1
 
-        # check if the module is a proper submodule of something on
+        # check wenn the module is a proper submodule of something on
         # the ignore list
         fuer mod in self._mods:
             # Need to take some care since ignoring
             # "cmp" mustn't mean ignoring "cmpcache" but ignoring
             # "Spam" must also mean ignoring "Spam.Eggs".
-            if modulename.startswith(mod + '.'):
+            wenn modulename.startswith(mod + '.'):
                 self._ignore[modulename] = 1
                 return 1
 
         # Now check that filename isn't in one of the directories
-        if filename is None:
+        wenn filename is None:
             # must be a built-in, so we must ignore
             self._ignore[modulename] = 1
             return 1
@@ -106,7 +106,7 @@ klasse _Ignore:
             # or
             #  d = "/usr/local.py"
             #  filename = "/usr/local.py"
-            if filename.startswith(d + os.sep):
+            wenn filename.startswith(d + os.sep):
                 self._ignore[modulename] = 1
                 return 1
 
@@ -133,18 +133,18 @@ def _fullmodname(path):
     longest = ""
     fuer dir in sys.path:
         dir = os.path.normcase(dir)
-        if comparepath.startswith(dir) and comparepath[len(dir)] == os.sep:
-            if len(dir) > len(longest):
+        wenn comparepath.startswith(dir) and comparepath[len(dir)] == os.sep:
+            wenn len(dir) > len(longest):
                 longest = dir
 
-    if longest:
+    wenn longest:
         base = path[len(longest) + 1:]
-    else:
+    sonst:
         base = path
     # the drive letter is never part of the module name
     drive, base = os.path.splitdrive(base)
     base = base.replace(os.sep, ".")
-    if os.altsep:
+    wenn os.altsep:
         base = base.replace(os.altsep, ".")
     filename, ext = os.path.splitext(base)
     return filename.lstrip(".")
@@ -153,20 +153,20 @@ klasse CoverageResults:
     def __init__(self, counts=None, calledfuncs=None, infile=None,
                  callers=None, outfile=None):
         self.counts = counts
-        if self.counts is None:
+        wenn self.counts is None:
             self.counts = {}
         self.counter = self.counts.copy() # map (filename, lineno) to count
         self.calledfuncs = calledfuncs
-        if self.calledfuncs is None:
+        wenn self.calledfuncs is None:
             self.calledfuncs = {}
         self.calledfuncs = self.calledfuncs.copy()
         self.callers = callers
-        if self.callers is None:
+        wenn self.callers is None:
             self.callers = {}
         self.callers = self.callers.copy()
         self.infile = infile
         self.outfile = outfile
-        if self.infile:
+        wenn self.infile:
             # Try to merge existing counts file.
             try:
                 with open(self.infile, 'rb') as f:
@@ -177,7 +177,7 @@ klasse CoverageResults:
                                       % (self.infile, err)), file=sys.stderr)
 
     def is_ignored_filename(self, filename):
-        """Return True if the filename does not refer to a file
+        """Return True wenn the filename does not refer to a file
         we want to have reported.
         """
         return filename.startswith('<') and filename.endswith('>')
@@ -214,7 +214,7 @@ klasse CoverageResults:
                          exist are silently ignored. Otherwise, a missing file
                          will raise a FileNotFoundError.
         """
-        if self.calledfuncs:
+        wenn self.calledfuncs:
             print()
             print("functions called:")
             calls = self.calledfuncs
@@ -222,18 +222,18 @@ klasse CoverageResults:
                 print(("filename: %s, modulename: %s, funcname: %s"
                        % (filename, modulename, funcname)))
 
-        if self.callers:
+        wenn self.callers:
             print()
             print("calling relationships:")
             lastfile = lastcfile = ""
             fuer ((pfile, pmod, pfunc), (cfile, cmod, cfunc)) \
                     in sorted(self.callers):
-                if pfile != lastfile:
+                wenn pfile != lastfile:
                     print()
                     print("***", pfile, "***")
                     lastfile = pfile
                     lastcfile = ""
-                if cfile != pfile and lastcfile != cfile:
+                wenn cfile != pfile and lastcfile != cfile:
                     print("  -->", cfile)
                     lastcfile = cfile
                 print("    %s.%s -> %s.%s" % (pmod, pfunc, cmod, cfunc))
@@ -245,32 +245,32 @@ klasse CoverageResults:
             lines_hit = per_file[filename] = per_file.get(filename, {})
             lines_hit[lineno] = self.counts[(filename, lineno)]
 
-        # accumulate summary info, if needed
+        # accumulate summary info, wenn needed
         sums = {}
 
         fuer filename, count in per_file.items():
-            if self.is_ignored_filename(filename):
+            wenn self.is_ignored_filename(filename):
                 continue
 
-            if filename.endswith(".pyc"):
+            wenn filename.endswith(".pyc"):
                 filename = filename[:-1]
 
-            if ignore_missing_files and not os.path.isfile(filename):
+            wenn ignore_missing_files and not os.path.isfile(filename):
                 continue
 
-            if coverdir is None:
+            wenn coverdir is None:
                 dir = os.path.dirname(os.path.abspath(filename))
                 modulename = _modname(filename)
-            else:
+            sonst:
                 dir = coverdir
                 os.makedirs(dir, exist_ok=True)
                 modulename = _fullmodname(filename)
 
             # If desired, get a list of the line numbers which represent
             # executable content (returned as a dict fuer better lookup speed)
-            if show_missing:
+            wenn show_missing:
                 lnotab = _find_executable_linenos(filename)
-            else:
+            sonst:
                 lnotab = {}
             source = linecache.getlines(filename)
             coverpath = os.path.join(dir, modulename + ".cover")
@@ -278,16 +278,16 @@ klasse CoverageResults:
                 encoding, _ = tokenize.detect_encoding(fp.readline)
             n_hits, n_lines = self.write_results_file(coverpath, source,
                                                       lnotab, count, encoding)
-            if summary and n_lines:
+            wenn summary and n_lines:
                 sums[modulename] = n_lines, n_hits, modulename, filename
 
-        if summary and sums:
+        wenn summary and sums:
             print("lines   cov%   module   (path)")
             fuer m in sorted(sums):
                 n_lines, n_hits, modulename, filename = sums[m]
                 print(f"{n_lines:5d}   {n_hits/n_lines:.1%}   {modulename}   ({filename})")
 
-        if self.outfile:
+        wenn self.outfile:
             # try and store counts and module info into self.outfile
             try:
                 with open(self.outfile, 'wb') as f:
@@ -313,16 +313,16 @@ klasse CoverageResults:
             fuer lineno, line in enumerate(lines, 1):
                 # do the blank/comment match to try to mark more lines
                 # (help the reader find stuff that hasn't been covered)
-                if lineno in lines_hit:
+                wenn lineno in lines_hit:
                     outfile.write("%5d: " % lines_hit[lineno])
                     n_hits += 1
                     n_lines += 1
-                elif lineno in lnotab and not PRAGMA_NOCOVER in line:
+                sowenn lineno in lnotab and not PRAGMA_NOCOVER in line:
                     # Highlight never-executed lines, unless the line contains
                     # #pragma: NO COVER
                     outfile.write(">>>>>> ")
                     n_lines += 1
-                else:
+                sonst:
                     outfile.write("       ")
                 outfile.write(line.expandtabs(8))
 
@@ -333,7 +333,7 @@ def _find_lines_from_code(code, strs):
     linenos = {}
 
     fuer _, lineno in dis.findlinestarts(code):
-        if lineno not in strs:
+        wenn lineno not in strs:
             linenos[lineno] = 1
 
     return linenos
@@ -345,7 +345,7 @@ def _find_lines(code, strs):
 
     # and check the constants fuer references to other code objects
     fuer c in code.co_consts:
-        if inspect.iscode(c):
+        wenn inspect.iscode(c):
             # find another code object, so recurse into it
             linenos.update(_find_lines(c, strs))
     return linenos
@@ -364,8 +364,8 @@ def _find_strings(filename, encoding=None):
     with open(filename, encoding=encoding) as f:
         tok = tokenize.generate_tokens(f.readline)
         fuer ttype, tstr, start, end, line in tok:
-            if ttype == token.STRING:
-                if prev_ttype == token.INDENT:
+            wenn ttype == token.STRING:
+                wenn prev_ttype == token.INDENT:
                     sline, scol = start
                     eline, ecol = end
                     fuer i in range(sline, eline + 1):
@@ -419,22 +419,22 @@ klasse Trace:
         self._callers = {}
         self._caller_cache = {}
         self.start_time = None
-        if timing:
+        wenn timing:
             self.start_time = _time()
-        if countcallers:
+        wenn countcallers:
             self.globaltrace = self.globaltrace_trackcallers
-        elif countfuncs:
+        sowenn countfuncs:
             self.globaltrace = self.globaltrace_countfuncs
-        elif trace and count:
+        sowenn trace and count:
             self.globaltrace = self.globaltrace_lt
             self.localtrace = self.localtrace_trace_and_count
-        elif trace:
+        sowenn trace:
             self.globaltrace = self.globaltrace_lt
             self.localtrace = self.localtrace_trace
-        elif count:
+        sowenn count:
             self.globaltrace = self.globaltrace_lt
             self.localtrace = self.localtrace_count
-        else:
+        sonst:
             # Ahem -- do nothing?  Okay.
             self.donothing = 1
 
@@ -444,66 +444,66 @@ klasse Trace:
         self.runctx(cmd, dict, dict)
 
     def runctx(self, cmd, globals=None, locals=None):
-        if globals is None: globals = {}
-        if locals is None: locals = {}
-        if not self.donothing:
+        wenn globals is None: globals = {}
+        wenn locals is None: locals = {}
+        wenn not self.donothing:
             threading.settrace(self.globaltrace)
             sys.settrace(self.globaltrace)
         try:
             exec(cmd, globals, locals)
         finally:
-            if not self.donothing:
+            wenn not self.donothing:
                 sys.settrace(None)
                 threading.settrace(None)
 
     def runfunc(self, func, /, *args, **kw):
         result = None
-        if not self.donothing:
+        wenn not self.donothing:
             sys.settrace(self.globaltrace)
         try:
             result = func(*args, **kw)
         finally:
-            if not self.donothing:
+            wenn not self.donothing:
                 sys.settrace(None)
         return result
 
     def file_module_function_of(self, frame):
         code = frame.f_code
         filename = code.co_filename
-        if filename:
+        wenn filename:
             modulename = _modname(filename)
-        else:
+        sonst:
             modulename = None
 
         funcname = code.co_name
         clsname = None
-        if code in self._caller_cache:
-            if self._caller_cache[code] is not None:
+        wenn code in self._caller_cache:
+            wenn self._caller_cache[code] is not None:
                 clsname = self._caller_cache[code]
-        else:
+        sonst:
             self._caller_cache[code] = None
             ## use of gc.get_referrers() was suggested by Michael Hudson
             # all functions which refer to this code object
             funcs = [f fuer f in gc.get_referrers(code)
-                         if inspect.isfunction(f)]
+                         wenn inspect.isfunction(f)]
             # require len(func) == 1 to avoid ambiguity caused by calls to
             # new.function(): "In the face of ambiguity, refuse the
             # temptation to guess."
-            if len(funcs) == 1:
+            wenn len(funcs) == 1:
                 dicts = [d fuer d in gc.get_referrers(funcs[0])
-                             if isinstance(d, dict)]
-                if len(dicts) == 1:
+                             wenn isinstance(d, dict)]
+                wenn len(dicts) == 1:
                     classes = [c fuer c in gc.get_referrers(dicts[0])
-                                   if hasattr(c, "__bases__")]
-                    if len(classes) == 1:
+                                   wenn hasattr(c, "__bases__")]
+                    wenn len(classes) == 1:
                         # ditto fuer new.classobj()
                         clsname = classes[0].__name__
                         # cache the result - assumption is that new.* is
                         # not called later to disturb this relationship
-                        # _caller_cache could be flushed if functions in
+                        # _caller_cache could be flushed wenn functions in
                         # the new module get called.
                         self._caller_cache[code] = clsname
-        if clsname is not None:
+        wenn clsname is not None:
             funcname = "%s.%s" % (clsname, funcname)
 
         return filename, modulename, funcname
@@ -513,7 +513,7 @@ klasse Trace:
 
         Adds information about who called who to the self._callers dict.
         """
-        if why == 'call':
+        wenn why == 'call':
             # XXX Should do a better job of identifying methods
             this_func = self.file_module_function_of(frame)
             parent_func = self.file_module_function_of(frame.f_back)
@@ -524,7 +524,7 @@ klasse Trace:
 
         Adds (filename, modulename, funcname) to the self._calledfuncs dict.
         """
-        if why == 'call':
+        wenn why == 'call':
             this_func = self.file_module_function_of(frame)
             self._calledfuncs[this_func] = 1
 
@@ -532,63 +532,63 @@ klasse Trace:
         """Handler fuer call events.
 
         If the code block being entered is to be ignored, returns 'None',
-        else returns self.localtrace.
+        sonst returns self.localtrace.
         """
-        if why == 'call':
+        wenn why == 'call':
             code = frame.f_code
             filename = frame.f_globals.get('__file__', None)
-            if filename:
+            wenn filename:
                 # XXX _modname() doesn't work right fuer packages, so
                 # the ignore support won't work right fuer packages
                 modulename = _modname(filename)
-                if modulename is not None:
+                wenn modulename is not None:
                     ignore_it = self.ignore.names(filename, modulename)
-                    if not ignore_it:
-                        if self.trace:
+                    wenn not ignore_it:
+                        wenn self.trace:
                             print((" --- modulename: %s, funcname: %s"
                                    % (modulename, code.co_name)))
                         return self.localtrace
-            else:
+            sonst:
                 return None
 
     def localtrace_trace_and_count(self, frame, why, arg):
-        if why == "line":
+        wenn why == "line":
             # record the file name and line number of every trace
             filename = frame.f_code.co_filename
             lineno = frame.f_lineno
             key = filename, lineno
             self.counts[key] = self.counts.get(key, 0) + 1
 
-            if self.start_time:
+            wenn self.start_time:
                 print('%.2f' % (_time() - self.start_time), end=' ')
             bname = os.path.basename(filename)
             line = linecache.getline(filename, lineno)
             print("%s(%d)" % (bname, lineno), end='')
-            if line:
+            wenn line:
                 print(": ", line, end='')
-            else:
+            sonst:
                 print()
         return self.localtrace
 
     def localtrace_trace(self, frame, why, arg):
-        if why == "line":
+        wenn why == "line":
             # record the file name and line number of every trace
             filename = frame.f_code.co_filename
             lineno = frame.f_lineno
 
-            if self.start_time:
+            wenn self.start_time:
                 print('%.2f' % (_time() - self.start_time), end=' ')
             bname = os.path.basename(filename)
             line = linecache.getline(filename, lineno)
             print("%s(%d)" % (bname, lineno), end='')
-            if line:
+            wenn line:
                 print(": ", line, end='')
-            else:
+            sonst:
                 print()
         return self.localtrace
 
     def localtrace_count(self, frame, why, arg):
-        if why == "line":
+        wenn why == "line":
             filename = frame.f_code.co_filename
             lineno = frame.f_lineno
             key = filename, lineno
@@ -635,7 +635,7 @@ def main():
                  '--file=FILE')
     _grp.add_argument('-R', '--no-report', action='store_true',
             help='Do not generate the coverage report files. '
-                 'Useful if you want to accumulate over several runs.')
+                 'Useful wenn you want to accumulate over several runs.')
 
     grp.add_argument('-f', '--file',
             help='File to accumulate counts over several runs')
@@ -672,7 +672,7 @@ def main():
 
     opts = parser.parse_args()
 
-    if opts.ignore_dir:
+    wenn opts.ignore_dir:
         _prefix = sysconfig.get_path("stdlib")
         _exec_prefix = sysconfig.get_path("platstdlib")
 
@@ -686,23 +686,23 @@ def main():
     opts.ignore_dir = [parse_ignore_dir(s)
                        fuer i in opts.ignore_dir fuer s in i.split(os.pathsep)]
 
-    if opts.report:
-        if not opts.file:
+    wenn opts.report:
+        wenn not opts.file:
             parser.error('-r/--report requires -f/--file')
         results = CoverageResults(infile=opts.file, outfile=opts.file)
         return results.write_results(opts.missing, opts.summary, opts.coverdir)
 
-    if not any([opts.trace, opts.count, opts.listfuncs, opts.trackcalls]):
+    wenn not any([opts.trace, opts.count, opts.listfuncs, opts.trackcalls]):
         parser.error('must specify one of --trace, --count, --report, '
                      '--listfuncs, or --trackcalls')
 
-    if opts.listfuncs and (opts.count or opts.trace):
+    wenn opts.listfuncs and (opts.count or opts.trace):
         parser.error('cannot specify both --listfuncs and (--trace or --count)')
 
-    if opts.summary and not opts.count:
+    wenn opts.summary and not opts.count:
         parser.error('--summary can only be used with --count or --report')
 
-    if opts.progname is None:
+    wenn opts.progname is None:
         parser.error('progname is missing: required with the main options')
 
     t = Trace(opts.count, opts.trace, countfuncs=opts.listfuncs,
@@ -710,7 +710,7 @@ def main():
               ignoredirs=opts.ignore_dir, infile=opts.file,
               outfile=opts.file, timing=opts.timing)
     try:
-        if opts.module:
+        wenn opts.module:
             import runpy
             module_name = opts.progname
             mod_name, mod_spec, code = runpy._get_module_details(module_name)
@@ -723,7 +723,7 @@ def main():
                 '__spec__': mod_spec,
                 '__cached__': None,
             }
-        else:
+        sonst:
             sys.argv = [opts.progname, *opts.arguments]
             sys.path[0] = os.path.dirname(opts.progname)
 
@@ -744,8 +744,8 @@ def main():
 
     results = t.results()
 
-    if not opts.no_report:
+    wenn not opts.no_report:
         results.write_results(opts.missing, opts.summary, opts.coverdir)
 
-if __name__=='__main__':
+wenn __name__=='__main__':
     main()

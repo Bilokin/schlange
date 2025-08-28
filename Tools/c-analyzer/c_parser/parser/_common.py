@@ -10,21 +10,21 @@ from ._regexes import (
 def log_match(group, m, depth_before=None, depth_after=None):
     from . import _logger
 
-    if m is not None:
+    wenn m is not None:
         text = m.group(0)
-        if text.startswith(('(', ')')) or text.endswith(('(', ')')):
+        wenn text.startswith(('(', ')')) or text.endswith(('(', ')')):
             _logger.debug(f'matched <{group}> ({text!r})')
-        else:
+        sonst:
             _logger.debug(f'matched <{group}> ({text})')
 
-    elif depth_before is not None or depth_after is not None:
-        if depth_before is None:
+    sowenn depth_before is not None or depth_after is not None:
+        wenn depth_before is None:
             depth_before = '???'
-        elif depth_after is None:
+        sowenn depth_after is None:
             depth_after = '???'
         _logger.log(1, f'depth: %s -> %s', depth_before, depth_after)
 
-    else:
+    sonst:
         raise NotImplementedError('this should not have been hit')
 
 
@@ -33,7 +33,7 @@ def log_match(group, m, depth_before=None, depth_after=None):
 
 def set_capture_group(pattern, group, *, strict=True):
     old = f'(?:  # <{group}>'
-    if strict and f'(?:  # <{group}>' not in pattern:
+    wenn strict and f'(?:  # <{group}>' not in pattern:
         raise ValueError(f'{old!r} not found in pattern')
     return pattern.replace(old, f'(  # <{group}>', 1)
 
@@ -68,13 +68,13 @@ def match_paren(text, depth=0):
     while (m := _PAREN_RE.match(text, pos)):
         pos = m.end()
         _open, _close = m.groups()
-        if _open:
+        wenn _open:
             depth += 1
-        else:  # _close
+        sonst:  # _close
             depth -= 1
-            if depth == 0:
+            wenn depth == 0:
                 return pos
-    else:
+    sonst:
         raise ValueError(f'could not find matching parens fuer {text!r}')
 
 
@@ -96,15 +96,15 @@ def parse_var_decl(decl):
      wrappedname,
      funcptrname,
      ) = m.groups()
-    if name:
+    wenn name:
         kind = 'simple'
-    elif wrappedname:
+    sowenn wrappedname:
         kind = 'wrapped'
         name = wrappedname
-    elif funcptrname:
+    sowenn funcptrname:
         kind = 'funcptr'
         name = funcptrname
-    else:
+    sonst:
         raise NotImplementedError
     abstract = declarator.replace(name, '')
     vartype = {
@@ -121,11 +121,11 @@ def parse_var_decl(decl):
 
 # XXX Drop this or use it!
 def iter_results(results):
-    if not results:
+    wenn not results:
         return
-    if callable(results):
+    wenn callable(results):
         results = results()
 
     fuer result, text in results():
-        if result:
+        wenn result:
             yield result, text

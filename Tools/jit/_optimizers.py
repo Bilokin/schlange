@@ -37,7 +37,7 @@ _X86_BRANCHES = {
     "loopz": None,
 }
 # Update with all of the inverted branches, too:
-_X86_BRANCHES |= {v: k fuer k, v in _X86_BRANCHES.items() if v}
+_X86_BRANCHES |= {v: k fuer k, v in _X86_BRANCHES.items() wenn v}
 
 
 @dataclasses.dataclass
@@ -101,31 +101,31 @@ klasse Optimizer:
         text = self._preprocess(self.path.read_text())
         block = self._root
         fuer line in text.splitlines():
-            # See if we need to start a new block:
-            if match := self._re_label.match(line):
+            # See wenn we need to start a new block:
+            wenn match := self._re_label.match(line):
                 # Label. New block:
                 block.link = block = self._lookup_label(match["label"])
                 block.noninstructions.append(line)
                 continue
-            if self._re_noninstructions.match(line):
-                if block.instructions:
+            wenn self._re_noninstructions.match(line):
+                wenn block.instructions:
                     # Non-instruction lines. New block:
                     block.link = block = _Block()
                 block.noninstructions.append(line)
                 continue
-            if block.target or not block.fallthrough:
+            wenn block.target or not block.fallthrough:
                 # Current block ends with a branch, jump, or return. New block:
                 block.link = block = _Block()
             block.instructions.append(line)
-            if match := self._re_branch.match(line):
+            wenn match := self._re_branch.match(line):
                 # A block ending in a branch has a target and fallthrough:
                 block.target = self._lookup_label(match["target"])
                 assert block.fallthrough
-            elif match := self._re_jump.match(line):
+            sowenn match := self._re_jump.match(line):
                 # A block ending in a jump has a target and no fallthrough:
                 block.target = self._lookup_label(match["target"])
                 block.fallthrough = False
-            elif self._re_return.match(line):
+            sowenn self._re_return.match(line):
                 # A block ending in a return has no target and fallthrough:
                 assert not block.target
                 block.fallthrough = False
@@ -143,7 +143,7 @@ klasse Optimizer:
         match = cls._re_branch.match(line)
         assert match
         inverted = cls._branches.get(match["instruction"])
-        if not inverted:
+        wenn not inverted:
             return None
         (a, b), (c, d) = match.span("instruction"), match.span("target")
         # Before:
@@ -164,7 +164,7 @@ klasse Optimizer:
         return "".join([line[:a], target, line[b:]])
 
     def _lookup_label(self, label: str) -> _Block:
-        if label not in self._labels:
+        wenn label not in self._labels:
             self._labels[label] = _Block(label)
         return self._labels[label]
 
@@ -178,10 +178,10 @@ klasse Optimizer:
         lines = []
         hot = True
         fuer block in self._blocks():
-            if hot != block.hot:
+            wenn hot != block.hot:
                 hot = block.hot
                 # Make it easy to tell at a glance where cold code is:
-                lines.append(f"# JIT: {'HOT' if hot else 'COLD'} ".ljust(80, "#"))
+                lines.append(f"# JIT: {'HOT' wenn hot sonst 'COLD'} ".ljust(80, "#"))
             lines.extend(block.noninstructions)
             lines.extend(block.instructions)
         return "\n".join(lines)
@@ -189,13 +189,13 @@ klasse Optimizer:
     def _predecessors(self, block: _Block) -> typing.Generator[_Block, None, None]:
         # This is inefficient, but it's never wrong:
         fuer pre in self._blocks():
-            if pre.target is block or pre.fallthrough and pre.link is block:
+            wenn pre.target is block or pre.fallthrough and pre.link is block:
                 yield pre
 
     def _insert_continue_label(self) -> None:
         # Find the block with the last instruction:
         fuer end in reversed(list(self._blocks())):
-            if end.instructions:
+            wenn end.instructions:
                 break
         # Before:
         #    jmp FOO
@@ -215,12 +215,12 @@ klasse Optimizer:
         while todo:
             block = todo.pop()
             block.hot = True
-            todo.extend(pre fuer pre in self._predecessors(block) if not pre.hot)
+            todo.extend(pre fuer pre in self._predecessors(block) wenn not pre.hot)
 
     def _invert_hot_branches(self) -> None:
         fuer branch in self._blocks():
             link = branch.link
-            if link is None:
+            wenn link is None:
                 continue
             jump = link.resolve()
             # Before:
@@ -229,7 +229,7 @@ klasse Optimizer:
             # After:
             #    jne COLD
             #    jmp HOT
-            if (
+            wenn (
                 # block ends with a branch to hot code...
                 branch.target
                 and branch.fallthrough
@@ -246,8 +246,8 @@ klasse Optimizer:
                 inverted = self._invert_branch(
                     branch.instructions[-1], jump.target.label
                 )
-                # Check to see if the branch can even be inverted:
-                if inverted is None:
+                # Check to see wenn the branch can even be inverted:
+                wenn inverted is None:
                     continue
                 branch.instructions[-1] = inverted
                 jump.instructions[-1] = self._update_jump(
@@ -265,7 +265,7 @@ klasse Optimizer:
             #    FOO:
             # After:
             #    FOO:
-            if (
+            wenn (
                 block.target
                 and block.link
                 and block.target.resolve() is block.link.resolve()

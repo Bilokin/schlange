@@ -32,7 +32,7 @@ klasse TestList(TestCase):
                 count = len(l)
                 fuer i, x in enumerate(l):
                     self.assertEqual(x.v, i + OBJECT_COUNT)
-                if count == OBJECT_COUNT:
+                wenn count == OBJECT_COUNT:
                     break
 
         writer = Thread(target=writer_func, args=(l,))
@@ -62,7 +62,7 @@ klasse TestList(TestCase):
                 count = len(l)
                 fuer i, x in enumerate(l):
                     self.assertEqual(x.v, i + OBJECT_COUNT)
-                if count == OBJECT_COUNT:
+                wenn count == OBJECT_COUNT:
                     break
 
         writer = Thread(target=writer_func)
@@ -92,5 +92,5 @@ klasse TestList(TestCase):
             pass
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

@@ -54,20 +54,20 @@ def parsecodes(codes, len=len, range=range):
         Empty codes or illegal ones are returned as None.
 
     """
-    if not codes:
+    wenn not codes:
         return MISSING_CODE
     l = codes.split('+')
-    if len(l) == 1:
+    wenn len(l) == 1:
         return int(l[0],16)
     fuer i in range(len(l)):
         try:
             l[i] = int(l[i],16)
         except ValueError:
             l[i] = MISSING_CODE
-    l = [x fuer x in l if x != MISSING_CODE]
-    if len(l) == 1:
+    l = [x fuer x in l wenn x != MISSING_CODE]
+    wenn len(l) == 1:
         return l[0]
-    else:
+    sonst:
         return tuple(l)
 
 def readmap(filename):
@@ -88,32 +88,32 @@ def readmap(filename):
 
     fuer line in lines:
         line = line.strip()
-        if not line or line[0] == '#':
+        wenn not line or line[0] == '#':
             continue
         m = mapRE.match(line)
-        if not m:
+        wenn not m:
             #print '* not matched: %s' % repr(line)
             continue
         enc,uni,comment = m.groups()
         enc = parsecodes(enc)
         uni = parsecodes(uni)
-        if comment is None:
+        wenn comment is None:
             comment = ''
-        else:
+        sonst:
             comment = comment[1:].strip()
-        if not isinstance(enc, tuple) and enc < 256:
-            if enc in unmapped:
+        wenn not isinstance(enc, tuple) and enc < 256:
+            wenn enc in unmapped:
                 unmapped.remove(enc)
-            if enc == uni:
+            wenn enc == uni:
                 identity.append(enc)
             enc2uni[enc] = (uni,comment)
-        else:
+        sonst:
             enc2uni[enc] = (uni,comment)
 
     # If there are more identity-mapped entries than unmapped entries,
     # it pays to generate an identity dictionary first, and add explicit
     # mappings to None fuer the rest
-    if len(identity) >= len(unmapped):
+    wenn len(identity) >= len(unmapped):
         fuer enc in unmapped:
             enc2uni[enc] = (MISSING_CODE, "")
         enc2uni['IDENTITY'] = 256
@@ -122,7 +122,7 @@ def readmap(filename):
 
 def hexrepr(t, precision=4):
 
-    if t is None:
+    wenn t is None:
         return 'None'
     try:
         len(t)
@@ -139,14 +139,14 @@ def python_mapdef_code(varname, map, comments=1, precisions=(2, 4)):
 
     l = []
     append = l.append
-    if "IDENTITY" in map:
+    wenn "IDENTITY" in map:
         append("%s = codecs.make_identity_dict(range(%d))" %
                (varname, map["IDENTITY"]))
         append("%s.update({" % varname)
         splits = 1
         del map["IDENTITY"]
         identity = 1
-    else:
+    sonst:
         append("%s = {" % varname)
         splits = 0
         identity = 0
@@ -156,13 +156,13 @@ def python_mapdef_code(varname, map, comments=1, precisions=(2, 4)):
     key_precision, value_precision = precisions
     fuer mapkey, mapvalue in mappings:
         mapcomment = ''
-        if isinstance(mapkey, tuple):
+        wenn isinstance(mapkey, tuple):
             (mapkey, mapcomment) = mapkey
-        if isinstance(mapvalue, tuple):
+        wenn isinstance(mapvalue, tuple):
             (mapvalue, mapcomment) = mapvalue
-        if mapkey is None:
+        wenn mapkey is None:
             continue
-        if (identity and
+        wenn (identity and
             mapkey == mapvalue and
             mapkey < 256):
             # No need to include identity mappings, since these
@@ -170,24 +170,24 @@ def python_mapdef_code(varname, map, comments=1, precisions=(2, 4)):
             continue
         key = hexrepr(mapkey, key_precision)
         value = hexrepr(mapvalue, value_precision)
-        if mapcomment and comments:
+        wenn mapcomment and comments:
             append('    %s: %s,\t#  %s' % (key, value, mapcomment))
-        else:
+        sonst:
             append('    %s: %s,' % (key, value))
         i += 1
-        if i == 4096:
+        wenn i == 4096:
             # Split the definition into parts to that the Python
             # parser doesn't dump core
-            if splits == 0:
+            wenn splits == 0:
                 append('}')
-            else:
+            sonst:
                 append('})')
             append('%s.update({' % varname)
             i = 0
             splits = splits + 1
-    if splits == 0:
+    wenn splits == 0:
         append('}')
-    else:
+    sonst:
         append('})')
 
     return l
@@ -202,50 +202,50 @@ def python_tabledef_code(varname, map, comments=1, key_precision=2):
     mappings = sorted(map.items())
     table = {}
     maxkey = 255
-    if 'IDENTITY' in map:
+    wenn 'IDENTITY' in map:
         fuer key in range(256):
             table[key] = (key, '')
         del map['IDENTITY']
     fuer mapkey, mapvalue in mappings:
         mapcomment = ''
-        if isinstance(mapkey, tuple):
+        wenn isinstance(mapkey, tuple):
             (mapkey, mapcomment) = mapkey
-        if isinstance(mapvalue, tuple):
+        wenn isinstance(mapvalue, tuple):
             (mapvalue, mapcomment) = mapvalue
-        if mapkey == MISSING_CODE:
+        wenn mapkey == MISSING_CODE:
             continue
         table[mapkey] = (mapvalue, mapcomment)
-        if mapkey > maxkey:
+        wenn mapkey > maxkey:
             maxkey = mapkey
-    if maxkey > MAX_TABLE_SIZE:
+    wenn maxkey > MAX_TABLE_SIZE:
         # Table too large
         return None
 
     # Create table code
     maxchar = 0
     fuer key in range(maxkey + 1):
-        if key not in table:
+        wenn key not in table:
             mapvalue = MISSING_CODE
             mapcomment = 'UNDEFINED'
-        else:
+        sonst:
             mapvalue, mapcomment = table[key]
-        if mapvalue == MISSING_CODE:
+        wenn mapvalue == MISSING_CODE:
             mapchar = UNI_UNDEFINED
-        else:
-            if isinstance(mapvalue, tuple):
+        sonst:
+            wenn isinstance(mapvalue, tuple):
                 # 1-n mappings not supported
                 return None
-            else:
+            sonst:
                 mapchar = chr(mapvalue)
         maxchar = max(maxchar, ord(mapchar))
-        if mapcomment and comments:
+        wenn mapcomment and comments:
             append('    %a \t#  %s -> %s' % (mapchar,
                                             hexrepr(key, key_precision),
                                             mapcomment))
-        else:
+        sonst:
             append('    %a' % mapchar)
 
-    if maxchar < 256:
+    wenn maxchar < 256:
         append('    %a \t## Widen to UCS2 fuer optimization' % UNI_UNDEFINED)
     append(')')
     return l
@@ -254,7 +254,7 @@ def codegen(name, map, encodingname, comments=1):
 
     """ Returns Python source fuer the given map.
 
-        Comments are included in the source, if comments is true (default).
+        Comments are included in the source, wenn comments is true (default).
 
     """
     # Generate code
@@ -272,9 +272,9 @@ def codegen(name, map, encodingname, comments=1):
         comments=comments,
         precisions=(4, 2))
 
-    if decoding_table_code:
+    wenn decoding_table_code:
         suffix = 'table'
-    else:
+    sonst:
         suffix = 'map'
 
     l = [
@@ -327,24 +327,24 @@ def getregentry():
 ''' % encodingname.replace('_', '-'))
 
     # Add decoding table or map (with preference to the table)
-    if not decoding_table_code:
+    wenn not decoding_table_code:
         l.append('''
 ### Decoding Map
 ''')
         l.extend(decoding_map_code)
-    else:
+    sonst:
         l.append('''
 ### Decoding Table
 ''')
         l.extend(decoding_table_code)
 
     # Add encoding map
-    if decoding_table_code:
+    wenn decoding_table_code:
         l.append('''
 ### Encoding table
 encoding_table = codecs.charmap_build(decoding_table)
 ''')
-    else:
+    sonst:
         l.append('''
 ### Encoding Map
 ''')
@@ -374,7 +374,7 @@ def convertdir(dir, dirprefix='', nameprefix='', comments=1):
     mapnames = os.listdir(dir)
     fuer mapname in mapnames:
         mappathname = os.path.join(dir, mapname)
-        if not os.path.isfile(mappathname):
+        wenn not os.path.isfile(mappathname):
             continue
         name = os.path.split(mapname)[1]
         name = name.replace('-','_')
@@ -388,9 +388,9 @@ def convertdir(dir, dirprefix='', nameprefix='', comments=1):
                                               dirprefix + marshalfile))
         try:
             map = readmap(os.path.join(dir,mapname))
-            if not map:
+            wenn not map:
                 print('* map is empty; skipping')
-            else:
+            sonst:
                 pymap(mappathname, map, dirprefix + codefile,name,comments)
                 marshalmap(mappathname, map, dirprefix + marshalfile)
         except ValueError as why:
@@ -401,7 +401,7 @@ def rewritepythondir(dir, dirprefix='', comments=1):
 
     mapnames = os.listdir(dir)
     fuer mapname in mapnames:
-        if not mapname.endswith('.mapping'):
+        wenn not mapname.endswith('.mapping'):
             continue
         name = mapname[:-len('.mapping')]
         codefile = name + '.py'
@@ -410,17 +410,17 @@ def rewritepythondir(dir, dirprefix='', comments=1):
         try:
             with open(os.path.join(dir, mapname), 'rb') as f:
                 map = marshal.load(f)
-            if not map:
+            wenn not map:
                 print('* map is empty; skipping')
-            else:
+            sonst:
                 pymap(mapname, map, dirprefix + codefile,name,comments)
         except ValueError as why:
             print('* conversion failed: %s' % why)
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
 
     import sys
-    if 1:
+    wenn 1:
         convertdir(*sys.argv[1:])
-    else:
+    sonst:
         rewritepythondir(*sys.argv[1:])

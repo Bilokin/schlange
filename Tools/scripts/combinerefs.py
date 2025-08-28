@@ -31,7 +31,7 @@ or
 
     "[" ref_before "->" ref_after "]"
 
-if the refcount changed.
+wenn the refcount changed.
 
 typename is Py_TYPE(object)->tp_name, extracted from the second PYTHONDUMPREFS
 output block.
@@ -80,9 +80,9 @@ import sys
 # following it.
 def read(fileiter, pat, whilematch):
     fuer line in fileiter:
-        if bool(pat.match(line)) == whilematch:
+        wenn bool(pat.match(line)) == whilematch:
             yield line
-        else:
+        sonst:
             break
 
 def combinefile(f):
@@ -97,10 +97,10 @@ def combinefile(f):
     before = 0
     fuer line in read(fi, re.compile(r'^Remaining object addresses:$'), False):
         m = crack.match(line)
-        if m:
+        wenn m:
             addr, addr2rc[addr], addr2guts[addr] = m.groups()
             before += 1
-        else:
+        sonst:
             print('??? skipped:', line)
 
     after = 0
@@ -109,13 +109,13 @@ def combinefile(f):
         m = crack.match(line)
         assert m
         addr, rc, guts = m.groups() # guts is type name here
-        if addr not in addr2rc:
+        wenn addr not in addr2rc:
             print('??? new object created while tearing down:', line.rstrip())
             continue
         print(addr, end=' ')
-        if rc == addr2rc[addr]:
+        wenn rc == addr2rc[addr]:
             print('[%s]' % rc, end=' ')
-        else:
+        sonst:
             print('[%s->%s]' % (addr2rc[addr], rc), end=' ')
         print(guts, addr2guts[addr])
 
@@ -125,5 +125,5 @@ def combine(fname):
     with open(fname) as f:
         combinefile(f)
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     combine(sys.argv[1])

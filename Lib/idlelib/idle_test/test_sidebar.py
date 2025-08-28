@@ -68,7 +68,7 @@ klasse LineNumbersTest(unittest.TestCase):
                               "foreground": '#123456'}
         orig_idleConf_GetHighlight = idlelib.sidebar.idleConf.GetHighlight
         def mock_idleconf_GetHighlight(theme, element):
-            if element == 'linenumber':
+            wenn element == 'linenumber':
                 return self.highlight_cfg
             return orig_idleConf_GetHighlight(theme, element)
         GetHighlight_patcher = unittest.mock.patch.object(
@@ -414,7 +414,7 @@ klasse ShellSidebarTest(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        if cls.shell is not None:
+        wenn cls.shell is not None:
             cls.shell.executing = False
             cls.shell.close()
             cls.shell = None
@@ -442,14 +442,14 @@ klasse ShellSidebarTest(unittest.TestCase):
         # PyShell relies on overriding sys.stdout when run without a
         # sub-process (as done here; see setUpClass).
         self._saved_stdout = None
-        if sys.stdout != self.shell.stdout:
+        wenn sys.stdout != self.shell.stdout:
             self._saved_stdout = sys.stdout
             sys.stdout = self.shell.stdout
 
         self.reset_shell()
 
     def tearDown(self):
-        if self._saved_stdout is not None:
+        wenn self._saved_stdout is not None:
             sys.stdout = self._saved_stdout
 
     def get_sidebar_lines(self):
@@ -473,7 +473,7 @@ klasse ShellSidebarTest(unittest.TestCase):
         text = self.shell.text
         y_coords = []
         index = text.index("@0,0")
-        if index.split('.', 1)[1] != '0':
+        wenn index.split('.', 1)[1] != '0':
             index = text.index(f"{index} +1line linestart")
         while (lineinfo := text.dlineinfo(index)) is not None:
             y_coords.append(lineinfo[1])
@@ -496,7 +496,7 @@ klasse ShellSidebarTest(unittest.TestCase):
         shell = self.shell
         text = shell.text
         fuer line_index, line in enumerate(input.split('\n')):
-            if line_index > 0:
+            wenn line_index > 0:
                 text.event_generate('<<newline-and-indent>>')
             text.insert('insert', line, 'stdin')
 
@@ -524,7 +524,7 @@ klasse ShellSidebarTest(unittest.TestCase):
     def test_multi_line_statement(self):
         # Block statements are not indented because IDLE auto-indents.
         self.do_input(dedent('''\
-            if True:
+            wenn True:
             print(1)
 
             '''))
@@ -572,7 +572,7 @@ klasse ShellSidebarTest(unittest.TestCase):
         initial_sidebar_lines = self.get_sidebar_lines()
 
         self.do_input(dedent('''\
-            if True:
+            wenn True:
             print(1)
             '''))
         yield
@@ -652,7 +652,7 @@ klasse ShellSidebarTest(unittest.TestCase):
 
         orig_idleConf_GetHighlight = idlelib.sidebar.idleConf.GetHighlight
         def mock_idleconf_GetHighlight(theme, element):
-            if element in ['linenumber', 'console']:
+            wenn element in ['linenumber', 'console']:
                 return test_colors
             return orig_idleConf_GetHighlight(theme, element)
         GetHighlight_patcher = unittest.mock.patch.object(
@@ -691,20 +691,20 @@ klasse ShellSidebarTest(unittest.TestCase):
         self.assertIsNotNone(text.dlineinfo(text.index(f'{last_lineno}.0')))
 
         # Delta fuer <MouseWheel>, whose meaning is platform-dependent.
-        delta = 1 if sidebar.canvas._windowingsystem == 'aqua' else 120
+        delta = 1 wenn sidebar.canvas._windowingsystem == 'aqua' sonst 120
 
         # Scroll up.
-        if sidebar.canvas._windowingsystem == 'x11':
+        wenn sidebar.canvas._windowingsystem == 'x11':
             sidebar.canvas.event_generate('<Button-4>', x=0, y=0)
-        else:
+        sonst:
             sidebar.canvas.event_generate('<MouseWheel>', x=0, y=0, delta=delta)
         yield
         self.assertIsNone(text.dlineinfo(text.index(f'{last_lineno}.0')))
 
         # Scroll back down.
-        if sidebar.canvas._windowingsystem == 'x11':
+        wenn sidebar.canvas._windowingsystem == 'x11':
             sidebar.canvas.event_generate('<Button-5>', x=0, y=0)
-        else:
+        sonst:
             sidebar.canvas.event_generate('<MouseWheel>', x=0, y=0, delta=-delta)
         yield
         self.assertIsNotNone(text.dlineinfo(text.index(f'{last_lineno}.0')))
@@ -717,7 +717,7 @@ klasse ShellSidebarTest(unittest.TestCase):
         first_line = get_end_linenumber(text)
 
         self.do_input(dedent('''\
-            if True:
+            wenn True:
             print(1)
 
             '''))
@@ -741,7 +741,7 @@ klasse ShellSidebarTest(unittest.TestCase):
 
         first_line = get_end_linenumber(text)
         self.do_input(dedent('''\
-            if True:
+            wenn True:
                 print(1)
 
             '''))
@@ -758,7 +758,7 @@ klasse ShellSidebarTest(unittest.TestCase):
         expected_prompts = \
             ['>>>'] + ['...'] * (len(selected_lines) - 2) + [None]
         selected_text_with_prompts = '\n'.join(
-            line if prompt is None else prompt + ' ' + line
+            line wenn prompt is None sonst prompt + ' ' + line
             fuer prompt, line in zip(expected_prompts,
                                     selected_lines,
                                     strict=True)
@@ -771,5 +771,5 @@ klasse ShellSidebarTest(unittest.TestCase):
         self.assertEqual(copied_text, selected_text_with_prompts)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main(verbosity=2)

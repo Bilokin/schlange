@@ -378,7 +378,7 @@ klasse TestPath(unittest.TestCase):
     def test_suffix(self, alpharep):
         """
         The suffix of the root should be the suffix of the zipfile.
-        The suffix of each nested file is the final component's last suffix, if any.
+        The suffix of each nested file is the final component's last suffix, wenn any.
         Includes the leading period, just like pathlib.Path.
         """
         root = zipfile.Path(alpharep)
@@ -397,7 +397,7 @@ klasse TestPath(unittest.TestCase):
     def test_suffixes(self, alpharep):
         """
         The suffix of the root should be the suffix of the zipfile.
-        The suffix of each nested file is the final component's last suffix, if any.
+        The suffix of each nested file is the final component's last suffix, wenn any.
         Includes the leading period, just like pathlib.Path.
         """
         root = zipfile.Path(alpharep)

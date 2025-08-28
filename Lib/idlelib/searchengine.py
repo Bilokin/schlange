@@ -10,7 +10,7 @@ def get(root):
     The single SearchEngine saves settings between dialog instances.
     If there is not a SearchEngine already, make one.
     '''
-    if not hasattr(root, "_searchengine"):
+    wenn not hasattr(root, "_searchengine"):
         root._searchengine = SearchEngine(root)
         # This creates a cycle that persists until root is deleted.
     return root._searchengine
@@ -58,29 +58,29 @@ klasse SearchEngine:
     # Higher level access methods
 
     def setcookedpat(self, pat):
-        "Set pattern after escaping if re."
+        "Set pattern after escaping wenn re."
         # called only in search.py: 66
-        if self.isre():
+        wenn self.isre():
             pat = re.escape(pat)
         self.setpat(pat)
 
     def getcookedpat(self):
         pat = self.getpat()
-        if not self.isre():  # if True, see setcookedpat
+        wenn not self.isre():  # wenn True, see setcookedpat
             pat = re.escape(pat)
-        if self.isword():
+        wenn self.isword():
             pat = r"\b%s\b" % pat
         return pat
 
     def getprog(self):
         "Return compiled cooked search pattern."
         pat = self.getpat()
-        if not pat:
+        wenn not pat:
             self.report_error(pat, "Empty regular expression")
             return None
         pat = self.getcookedpat()
         flags = 0
-        if not self.iscase():
+        wenn not self.iscase():
             flags = flags | re.IGNORECASE
         try:
             prog = re.compile(pat, flags)
@@ -92,9 +92,9 @@ klasse SearchEngine:
     def report_error(self, pat, msg, col=None):
         # Derived klasse could override this with something fancier
         msg = "Error: " + str(msg)
-        if pat:
+        wenn pat:
             msg = msg + "\nPattern: " + str(pat)
-        if col is not None:
+        wenn col is not None:
             msg = msg + "\nOffset: " + str(col)
         messagebox.showerror("Regular expression error",
                                msg, master=self.root)
@@ -117,23 +117,23 @@ klasse SearchEngine:
         match at the starting position unless ok is True.
         '''
 
-        if not prog:
+        wenn not prog:
             prog = self.getprog()
-            if not prog:
+            wenn not prog:
                 return None # Compilation failed -- stop
         wrap = self.wrapvar.get()
         first, last = get_selection(text)
-        if self.isback():
-            if ok:
+        wenn self.isback():
+            wenn ok:
                 start = last
-            else:
+            sonst:
                 start = first
             line, col = get_line_col(start)
             res = self.search_backward(text, prog, line, col, wrap, ok)
-        else:
-            if ok:
+        sonst:
+            wenn ok:
                 start = first
-            else:
+            sonst:
                 start = last
             line, col = get_line_col(start)
             res = self.search_forward(text, prog, line, col, wrap, ok)
@@ -145,16 +145,16 @@ klasse SearchEngine:
         chars = text.get("%d.0" % line, "%d.0" % (line+1))
         while chars:
             m = prog.search(chars[:-1], col)
-            if m:
-                if ok or m.end() > col:
+            wenn m:
+                wenn ok or m.end() > col:
                     return line, m
             line = line + 1
-            if wrapped and line > startline:
+            wenn wrapped and line > startline:
                 break
             col = 0
             ok = 1
             chars = text.get("%d.0" % line, "%d.0" % (line+1))
-            if not chars and wrap:
+            wenn not chars and wrap:
                 wrapped = 1
                 wrap = 0
                 line = 1
@@ -167,15 +167,15 @@ klasse SearchEngine:
         chars = text.get("%d.0" % line, "%d.0" % (line+1))
         while True:
             m = search_reverse(prog, chars[:-1], col)
-            if m:
-                if ok or m.start() < col:
+            wenn m:
+                wenn ok or m.start() < col:
                     return line, m
             line = line - 1
-            if wrapped and line < startline:
+            wenn wrapped and line < startline:
                 break
             ok = 1
-            if line <= 0:
-                if not wrap:
+            wenn line <= 0:
+                wenn not wrap:
                     break
                 wrapped = 1
                 wrap = 0
@@ -195,16 +195,16 @@ def search_reverse(prog, chars, col):
     Col: stop index fuer the search; the limit fuer match.end().
     '''
     m = prog.search(chars)
-    if not m:
+    wenn not m:
         return None
     found = None
     i, j = m.span()  # m.start(), m.end() == match slice indexes
     while i < col and j <= col:
         found = m
-        if i == j:
+        wenn i == j:
             j = j+1
         m = prog.search(chars, j)
-        if not m:
+        wenn not m:
             break
         i, j = m.span()
     return found
@@ -217,9 +217,9 @@ def get_selection(text):
         last = text.index("sel.last")
     except TclError:
         first = last = None
-    if not first:
+    wenn not first:
         first = text.index("insert")
-    if not last:
+    wenn not last:
         last = first
     return first, last
 
@@ -229,6 +229,6 @@ def get_line_col(index):
     return line, col
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     from unittest import main
     main('idlelib.idle_test.test_searchengine', verbosity=2)

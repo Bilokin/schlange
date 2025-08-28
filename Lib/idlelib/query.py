@@ -58,11 +58,11 @@ klasse Query(Toplevel):
         self.withdraw()  # Hide while configuring, especially geometry.
         self.title(title)
         self.transient(parent)
-        if not _utest:  # Otherwise fail when directly run unittest.
+        wenn not _utest:  # Otherwise fail when directly run unittest.
             self.grab_set()
 
         _setup_dialog(self)
-        if self._windowingsystem == 'aqua':
+        wenn self._windowingsystem == 'aqua':
             self.bind("<Command-.>", self.cancel)
         self.bind('<Key-Escape>', self.cancel)
         self.protocol("WM_DELETE_WINDOW", self.cancel)
@@ -77,11 +77,11 @@ klasse Query(Toplevel):
                     (parent.winfo_width()/2 - self.winfo_reqwidth()/2),
                     parent.winfo_rooty() +
                     ((parent.winfo_height()/2 - self.winfo_reqheight()/2)
-                    if not _htest else 150)
+                    wenn not _htest sonst 150)
                 ) )
         self.resizable(height=False, width=False)
 
-        if not _utest:
+        wenn not _utest:
             self.deiconify()  # Unhide now that geometry set.
             self.entry.focus_set()
             self.wait_window()
@@ -131,7 +131,7 @@ klasse Query(Toplevel):
     def entry_ok(self):  # Example: usually replace.
         "Return non-blank entry or None."
         entry = self.entry.get().strip()
-        if not entry:
+        wenn not entry:
             self.showerror('blank line.')
             return None
         return entry
@@ -143,10 +143,10 @@ klasse Query(Toplevel):
         '''
         self.entry_error['text'] = ''
         entry = self.entry_ok()
-        if entry is not None:
+        wenn entry is not None:
             self.result = entry
             self.destroy()
-        else:
+        sonst:
             # [Ok] moves focus.  (<Return> does not.)  Move it back.
             self.entry.focus_set()
 
@@ -172,13 +172,13 @@ klasse SectionName(Query):
     def entry_ok(self):
         "Return sensible ConfigParser section name or None."
         name = self.entry.get().strip()
-        if not name:
+        wenn not name:
             self.showerror('no name specified.')
             return None
-        elif len(name)>30:
+        sowenn len(name)>30:
             self.showerror('name is longer than 30 characters.')
             return None
-        elif name in self.used_names:
+        sowenn name in self.used_names:
             self.showerror('name is already in use.')
             return None
         return name
@@ -196,7 +196,7 @@ klasse ModuleName(Query):
     def entry_ok(self):
         "Return entered module name as file path or None."
         name = self.entry.get().strip()
-        if not name:
+        wenn not name:
             self.showerror('no name specified.')
             return None
         # XXX Ought to insert current file's directory in front of path.
@@ -205,10 +205,10 @@ klasse ModuleName(Query):
         except (ValueError, ImportError) as msg:
             self.showerror(str(msg))
             return None
-        if spec is None:
+        wenn spec is None:
             self.showerror("module not found.")
             return None
-        if not isinstance(spec.loader, importlib.abc.SourceLoader):
+        wenn not isinstance(spec.loader, importlib.abc.SourceLoader):
             self.showerror("not a source-based module.")
             return None
         try:
@@ -236,7 +236,7 @@ klasse Goto(Query):
         except ValueError:
             self.showerror('not a base 10 integer.')
             return None
-        if lineno <= 0:
+        wenn lineno <= 0:
             self.showerror('not a positive integer.')
             return None
         return lineno
@@ -294,18 +294,18 @@ klasse HelpSource(Query):
             ("Text Files", "*.txt", "TEXT"),
             ("All Files", "*")]
         path = self.pathvar.get()
-        if path:
+        wenn path:
             dir, base = os.path.split(path)
-        else:
+        sonst:
             base = None
-            if platform[:3] == 'win':
+            wenn platform[:3] == 'win':
                 dir = os.path.join(os.path.dirname(executable), 'Doc')
-                if not os.path.isdir(dir):
+                wenn not os.path.isdir(dir):
                     dir = os.getcwd()
-            else:
+            sonst:
                 dir = os.getcwd()
         file = self.askfilename(filetypes, dir, base)
-        if file:
+        wenn file:
             self.pathvar.set(file)
 
     item_ok = SectionName.entry_ok  # localize fuer test override
@@ -313,17 +313,17 @@ klasse HelpSource(Query):
     def path_ok(self):
         "Simple validity check fuer menu file path"
         path = self.path.get().strip()
-        if not path: #no path specified
+        wenn not path: #no path specified
             self.showerror('no help file path specified.', self.path_error)
             return None
-        elif not path.startswith(('www.', 'http')):
-            if path[:5] == 'file:':
+        sowenn not path.startswith(('www.', 'http')):
+            wenn path[:5] == 'file:':
                 path = path[5:]
-            if not os.path.exists(path):
+            wenn not os.path.exists(path):
                 self.showerror('help file path does not exist.',
                                self.path_error)
                 return None
-            if platform == 'darwin':  # fuer Mac Safari
+            wenn platform == 'darwin':  # fuer Mac Safari
                 path =  "file://" + path
         return path
 
@@ -332,7 +332,7 @@ klasse HelpSource(Query):
         self.path_error['text'] = ''
         name = self.item_ok()
         path = self.path_ok()
-        return None if name is None or path is None else (name, path)
+        return None wenn name is None or path is None sonst (name, path)
 
 klasse CustomRun(Query):
     """Get settings fuer custom run of module.
@@ -368,7 +368,7 @@ klasse CustomRun(Query):
                              sticky='we')
 
     def cli_args_ok(self):
-        "Return command line arg list or None if error."
+        "Return command line arg list or None wenn error."
         cli_string = self.entry.get().strip()
         try:
             cli_args = shlex.split(cli_string, posix=True)
@@ -381,10 +381,10 @@ klasse CustomRun(Query):
         "Return apparently valid (cli_args, restart) or None."
         cli_args = self.cli_args_ok()
         restart = self.restartvar.get()
-        return None if cli_args is None else (cli_args, restart)
+        return None wenn cli_args is None sonst (cli_args, restart)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     from unittest import main
     main('idlelib.idle_test.test_query', verbosity=2, exit=False)
 

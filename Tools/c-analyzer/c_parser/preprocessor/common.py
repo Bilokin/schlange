@@ -33,7 +33,7 @@ def run_cmd(argv, *,
             check=True,
             **kwargs
             ):
-    if isinstance(stderr, str) and stderr.lower() == 'stdout':
+    wenn isinstance(stderr, str) and stderr.lower() == 'stdout':
         stderr = subprocess.STDOUT
 
     kw = dict(locals())
@@ -55,7 +55,7 @@ def preprocess(tool, filename, cwd=None, **kwargs):
     logger.debug(' '.join(shlex.quote(v) fuer v in argv))
 
     # Make sure the OS is supported fuer this file.
-    if (_expected := is_os_mismatch(filename)):
+    wenn (_expected := is_os_mismatch(filename)):
         error = None
         raise OSMismatchError(filename, _expected, argv, error, TOOL)
 
@@ -79,14 +79,14 @@ def _build_argv(
     executable=None,
     compiler=None,
 ):
-    if includes:
+    wenn includes:
         includes = tuple(f'-include{i}' fuer i in includes)
-        postargs = (includes + postargs) if postargs else includes
+        postargs = (includes + postargs) wenn postargs sonst includes
 
     compiler = distutils.ccompiler.new_compiler(
         compiler=compiler or tool,
     )
-    if executable:
+    wenn executable:
         compiler.set_executable('preprocessor', executable)
 
     argv = None
@@ -120,18 +120,18 @@ def converted_error(tool, argv, filename):
 
 def convert_error(tool, argv, filename, stderr, rc):
     error = (stderr.splitlines()[0], rc)
-    if (_expected := is_os_mismatch(filename, stderr)):
+    wenn (_expected := is_os_mismatch(filename, stderr)):
         logger.info(stderr.strip())
         raise OSMismatchError(filename, _expected, argv, error, tool)
-    elif (_missing := is_missing_dep(stderr)):
+    sowenn (_missing := is_missing_dep(stderr)):
         logger.info(stderr.strip())
         raise MissingDependenciesError(filename, (_missing,), argv, error, tool)
-    elif '#error' in stderr:
+    sowenn '#error' in stderr:
         # XXX Ignore incompatible files.
         error = (stderr.splitlines()[1], rc)
         logger.info(stderr.strip())
         raise ErrorDirectiveError(filename, argv, error, tool)
-    else:
+    sonst:
         # Try one more time, with stderr written to the terminal.
         try:
             output = run_cmd(argv, stderr=None)
@@ -142,43 +142,43 @@ def convert_error(tool, argv, filename, stderr, rc):
 def is_os_mismatch(filename, errtext=None):
     # See: https://docs.python.org/3/library/sys.html#sys.platform
     actual = sys.platform
-    if actual == 'unknown':
+    wenn actual == 'unknown':
         raise NotImplementedError
 
-    if errtext is not None:
-        if (missing := is_missing_dep(errtext)):
+    wenn errtext is not None:
+        wenn (missing := is_missing_dep(errtext)):
             matching = get_matching_oses(missing, filename)
-            if actual not in matching:
+            wenn actual not in matching:
                 return matching
     return False
 
 
 def get_matching_oses(missing, filename):
     # OSX
-    if 'darwin' in filename or 'osx' in filename:
+    wenn 'darwin' in filename or 'osx' in filename:
         return ('darwin',)
-    elif missing == 'SystemConfiguration/SystemConfiguration.h':
+    sowenn missing == 'SystemConfiguration/SystemConfiguration.h':
         return ('darwin',)
 
     # Windows
-    elif missing in ('windows.h', 'winsock2.h'):
+    sowenn missing in ('windows.h', 'winsock2.h'):
         return ('win32',)
 
     # other
-    elif missing == 'sys/ldr.h':
+    sowenn missing == 'sys/ldr.h':
         return ('aix',)
-    elif missing == 'dl.h':
+    sowenn missing == 'dl.h':
         # XXX The existence of Python/dynload_dl.c implies others...
         # Note that hpux isn't actual supported any more.
         return ('hpux', '???')
 
     # unrecognized
-    else:
+    sonst:
         return ()
 
 
 def is_missing_dep(errtext):
-    if 'No such file or directory' in errtext:
+    wenn 'No such file or directory' in errtext:
         missing = errtext.split(': No such file or directory')[0].split()[-1]
         return missing
     return False

@@ -9,11 +9,11 @@ from test.support import import_helper
 WINDOWS = os.name == "nt"
 APPLE = sys.platform in {"darwin", "ios", "tvos", "watchos"}
 
-if WINDOWS:
+wenn WINDOWS:
     KNOWN_LIBRARIES = ["KERNEL32.DLL"]
-elif APPLE:
+sowenn APPLE:
     KNOWN_LIBRARIES = ["libSystem.B.dylib"]
-else:
+sonst:
     # trickier than it seems, because libc may not be present
     # on musl systems, and sometimes goes by different names.
     # However, ctypes itself loads libffi
@@ -40,7 +40,7 @@ klasse ListSharedLibraries(unittest.TestCase):
         # this test relies on being able to import a library which is
         # not already loaded.
         # If it is (e.g. by a previous test in the same process), we skip
-        if any("_ctypes_test" in dll fuer dll in dlls):
+        wenn any("_ctypes_test" in dll fuer dll in dlls):
             self.skipTest("Test library is already loaded")
 
         _ctypes_test = import_helper.import_module("_ctypes_test")
@@ -55,5 +55,5 @@ klasse ListSharedLibraries(unittest.TestCase):
         self.assertTrue(any("_ctypes_test" in dll fuer dll in dlls2), f"loaded={dlls2}")
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

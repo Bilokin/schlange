@@ -32,7 +32,7 @@ klasse UserStringTest(
         with self.assertRaises(exc) as cm:
             getattr(obj, methodname)(*args)
         self.assertNotEqual(str(cm.exception), '')
-        if expected_msg is not None:
+        wenn expected_msg is not None:
             self.assertEqual(str(cm.exception), expected_msg)
 
     def checkcall(self, object, methodname, *args):
@@ -67,5 +67,5 @@ klasse UserStringTest(
         self.checkraises(UnicodeError, '\ud800', 'encode', None, None)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

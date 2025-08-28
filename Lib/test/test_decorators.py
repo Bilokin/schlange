@@ -29,7 +29,7 @@ def dbcheck(exprstr, globals=None, locals=None):
     def decorate(func):
         expr = compile(exprstr, "dbcheck-%s" % func.__name__, "eval")
         def check(*args, **kwds):
-            if not eval(expr, globals, locals):
+            wenn not eval(expr, globals, locals):
                 raise DbcheckError(exprstr, func, args, kwds)
             return func(*args, **kwds)
         return check
@@ -258,11 +258,11 @@ klasse TestDecorators(unittest.TestCase):
                 self.index = index
 
             def __getattr__(self, fname):
-                if fname == 'make_decorator':
+                wenn fname == 'make_decorator':
                     opname, res = ('evalname', make_decorator)
-                elif fname == 'arg':
+                sowenn fname == 'arg':
                     opname, res = ('evalargs', str(self.index))
-                else:
+                sonst:
                     assert False, "Unknown attrname %s" % fname
                 actions.append('%s%d' % (opname, self.index))
                 return res
@@ -337,5 +337,5 @@ klasse TestClassDecorators(unittest.TestCase):
         klasse C(object): pass
         self.assertEqual(C.extra, 'second')
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

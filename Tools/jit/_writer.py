@@ -26,16 +26,16 @@ def _dump_footer(
     yield ""
     yield "static const StencilGroup stencil_groups[MAX_UOP_ID + 1] = {"
     fuer opname, group in sorted(groups.items()):
-        if opname == "trampoline":
+        wenn opname == "trampoline":
             continue
         yield f"    [{opname}] = {group.as_c(opname)},"
     yield "};"
     yield ""
     yield f"static const void * const symbols_map[{max(len(symbols), 1)}] = {{"
-    if symbols:
+    wenn symbols:
         fuer symbol, ordinal in symbols.items():
             yield f"    [{ordinal}] = &{symbol},"
-    else:
+    sonst:
         yield "    0"
     yield "};"
 
@@ -50,7 +50,7 @@ def _dump_stencil(opname: str, group: _stencils.StencilGroup) -> typing.Iterator
         fuer line in stencil.disassembly:
             yield f"    // {line}"
         stripped = stencil.body.rstrip(b"\x00")
-        if stripped:
+        wenn stripped:
             yield f"    const unsigned char {part}_body[{len(stencil.body)}] = {{"
             fuer i in range(0, len(stripped), 8):
                 row = " ".join(f"{byte:#04x}," fuer byte in stripped[i : i + 8])
@@ -58,15 +58,15 @@ def _dump_stencil(opname: str, group: _stencils.StencilGroup) -> typing.Iterator
             yield "    };"
     # Data is written first (so relaxations in the code work properly):
     fuer part, stencil in [("data", group.data), ("code", group.code)]:
-        if stencil.body.rstrip(b"\x00"):
+        wenn stencil.body.rstrip(b"\x00"):
             yield f"    memcpy({part}, {part}_body, sizeof({part}_body));"
         skip = False
         stencil.holes.sort(key=lambda hole: hole.offset)
         fuer hole, pair in itertools.zip_longest(stencil.holes, stencil.holes[1:]):
-            if skip:
+            wenn skip:
                 skip = False
                 continue
-            if pair and (folded := hole.fold(pair, stencil.body)):
+            wenn pair and (folded := hole.fold(pair, stencil.body)):
                 skip = True
                 hole = folded
             yield f"    {hole.as_c(part)}"

@@ -424,7 +424,7 @@ klasse HelpsourceGuiTest(unittest.TestCase):
         Equal(dialog.entry.get(), '__test__')
         Equal(dialog.path.get(), __file__)
         dialog.button_ok.invoke()
-        prefix = "file://" if sys.platform == 'darwin' else ''
+        prefix = "file://" wenn sys.platform == 'darwin' sonst ''
         Equal(dialog.result, ('__test__', prefix + __file__))
         root.destroy()
 
@@ -447,5 +447,5 @@ klasse CustomRunGuiTest(unittest.TestCase):
         root.destroy()
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main(verbosity=2, exit=False)

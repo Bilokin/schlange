@@ -66,12 +66,12 @@ from enum import Enum, _simple_enum
 __author__ = 'Ka-Ping Yee <ping@zesty.ca>'
 
 # The recognized platforms - known behaviors
-if sys.platform in {'win32', 'darwin', 'emscripten', 'wasi'}:
+wenn sys.platform in {'win32', 'darwin', 'emscripten', 'wasi'}:
     _AIX = _LINUX = False
-elif sys.platform == 'linux':
+sowenn sys.platform == 'linux':
     _LINUX = True
     _AIX = False
-else:
+sonst:
     import platform
     _platform_system = platform.system()
     _AIX     = _platform_system == 'AIX'
@@ -79,7 +79,7 @@ else:
 
 _MAC_DELIM = b':'
 _MAC_OMITS_LEADING_ZEROES = False
-if _AIX:
+wenn _AIX:
     _MAC_DELIM = b'.'
     _MAC_OMITS_LEADING_ZEROES = True
 
@@ -198,7 +198,7 @@ klasse UUID:
         UUID(int=0x12345678123456781234567812345678)
 
         Exactly one of 'hex', 'bytes', 'bytes_le', 'fields', or 'int' must
-        be given.  The 'version' argument is optional; if given, the resulting
+        be given.  The 'version' argument is optional; wenn given, the resulting
         UUID will have its variant and version set according to RFC 4122,
         overriding the given 'hex', 'bytes', 'bytes_le', 'fields', or 'int'.
 
@@ -207,53 +207,53 @@ klasse UUID:
         fuer multiprocessing applications, via uuid_generate_time_safe(3).
         """
 
-        if [hex, bytes, bytes_le, fields, int].count(None) != 4:
+        wenn [hex, bytes, bytes_le, fields, int].count(None) != 4:
             raise TypeError('one of the hex, bytes, bytes_le, fields, '
                             'or int arguments must be given')
-        if int is not None:
+        wenn int is not None:
             pass
-        elif hex is not None:
+        sowenn hex is not None:
             hex = hex.replace('urn:', '').replace('uuid:', '')
             hex = hex.strip('{}').replace('-', '')
-            if len(hex) != 32:
+            wenn len(hex) != 32:
                 raise ValueError('badly formed hexadecimal UUID string')
             int = int_(hex, 16)
-        elif bytes_le is not None:
-            if len(bytes_le) != 16:
+        sowenn bytes_le is not None:
+            wenn len(bytes_le) != 16:
                 raise ValueError('bytes_le is not a 16-char string')
             assert isinstance(bytes_le, bytes_), repr(bytes_le)
             bytes = (bytes_le[4-1::-1] + bytes_le[6-1:4-1:-1] +
                      bytes_le[8-1:6-1:-1] + bytes_le[8:])
             int = int_.from_bytes(bytes)  # big endian
-        elif bytes is not None:
-            if len(bytes) != 16:
+        sowenn bytes is not None:
+            wenn len(bytes) != 16:
                 raise ValueError('bytes is not a 16-char string')
             assert isinstance(bytes, bytes_), repr(bytes)
             int = int_.from_bytes(bytes)  # big endian
-        elif fields is not None:
-            if len(fields) != 6:
+        sowenn fields is not None:
+            wenn len(fields) != 6:
                 raise ValueError('fields is not a 6-tuple')
             (time_low, time_mid, time_hi_version,
              clock_seq_hi_variant, clock_seq_low, node) = fields
-            if not 0 <= time_low < (1 << 32):
+            wenn not 0 <= time_low < (1 << 32):
                 raise ValueError('field 1 out of range (need a 32-bit value)')
-            if not 0 <= time_mid < (1 << 16):
+            wenn not 0 <= time_mid < (1 << 16):
                 raise ValueError('field 2 out of range (need a 16-bit value)')
-            if not 0 <= time_hi_version < (1 << 16):
+            wenn not 0 <= time_hi_version < (1 << 16):
                 raise ValueError('field 3 out of range (need a 16-bit value)')
-            if not 0 <= clock_seq_hi_variant < (1 << 8):
+            wenn not 0 <= clock_seq_hi_variant < (1 << 8):
                 raise ValueError('field 4 out of range (need an 8-bit value)')
-            if not 0 <= clock_seq_low < (1 << 8):
+            wenn not 0 <= clock_seq_low < (1 << 8):
                 raise ValueError('field 5 out of range (need an 8-bit value)')
-            if not 0 <= node < (1 << 48):
+            wenn not 0 <= node < (1 << 48):
                 raise ValueError('field 6 out of range (need a 48-bit value)')
             clock_seq = (clock_seq_hi_variant << 8) | clock_seq_low
             int = ((time_low << 96) | (time_mid << 80) |
                    (time_hi_version << 64) | (clock_seq << 48) | node)
-        if not 0 <= int <= _UINT_128_MAX:
+        wenn not 0 <= int <= _UINT_128_MAX:
             raise ValueError('int is out of range (need a 128-bit value)')
-        if version is not None:
-            if not 1 <= version <= 8:
+        wenn version is not None:
+            wenn not 1 <= version <= 8:
                 raise ValueError('illegal version number')
             # clear the variant and the version number bits
             int &= _RFC_4122_CLEARFLAGS_MASK
@@ -275,7 +275,7 @@ klasse UUID:
 
     def __getstate__(self):
         d = {'int': self.int}
-        if self.is_safe != SafeUUID.unknown:
+        wenn self.is_safe != SafeUUID.unknown:
             # is_safe is a SafeUUID instance.  Return just its value, so that
             # it can be un-pickled in older Python versions without SafeUUID.
             d['is_safe'] = self.is_safe.value
@@ -286,10 +286,10 @@ klasse UUID:
         # is_safe was added in 3.7; it is also omitted when it is "unknown"
         object.__setattr__(self, 'is_safe',
                            SafeUUID(state['is_safe'])
-                           if 'is_safe' in state else SafeUUID.unknown)
+                           wenn 'is_safe' in state sonst SafeUUID.unknown)
 
     def __eq__(self, other):
-        if isinstance(other, UUID):
+        wenn isinstance(other, UUID):
             return self.int == other.int
         return NotImplemented
 
@@ -297,22 +297,22 @@ klasse UUID:
     # A. Use them as keys in a B-Tree or similar mapping.
 
     def __lt__(self, other):
-        if isinstance(other, UUID):
+        wenn isinstance(other, UUID):
             return self.int < other.int
         return NotImplemented
 
     def __gt__(self, other):
-        if isinstance(other, UUID):
+        wenn isinstance(other, UUID):
             return self.int > other.int
         return NotImplemented
 
     def __le__(self, other):
-        if isinstance(other, UUID):
+        wenn isinstance(other, UUID):
             return self.int <= other.int
         return NotImplemented
 
     def __ge__(self, other):
-        if isinstance(other, UUID):
+        wenn isinstance(other, UUID):
             return self.int >= other.int
         return NotImplemented
 
@@ -369,15 +369,15 @@ klasse UUID:
 
     @property
     def time(self):
-        if self.version == 6:
+        wenn self.version == 6:
             # time_hi (32) | time_mid (16) | ver (4) | time_lo (12) | ... (64)
             time_hi = self.int >> 96
             time_lo = (self.int >> 64) & 0x0fff
             return time_hi << 28 | (self.time_mid << 12) | time_lo
-        elif self.version == 7:
+        sowenn self.version == 7:
             # unix_ts_ms (48) | ... (80)
             return self.int >> 80
-        else:
+        sonst:
             # time_lo (32) | time_mid (16) | ver (4) | time_hi (12) | ... (64)
             #
             # For compatibility purposes, we do not warn or raise when the
@@ -405,19 +405,19 @@ klasse UUID:
 
     @property
     def variant(self):
-        if not self.int & (0x8000 << 48):
+        wenn not self.int & (0x8000 << 48):
             return RESERVED_NCS
-        elif not self.int & (0x4000 << 48):
+        sowenn not self.int & (0x4000 << 48):
             return RFC_4122
-        elif not self.int & (0x2000 << 48):
+        sowenn not self.int & (0x2000 << 48):
             return RESERVED_MICROSOFT
-        else:
+        sonst:
             return RESERVED_FUTURE
 
     @property
     def version(self):
         # The version bits are only meaningful fuer RFC 4122/9562 UUIDs.
-        if self.variant == RFC_4122:
+        wenn self.variant == RFC_4122:
             return int((self.int >> 76) & 0xf)
 
 
@@ -428,7 +428,7 @@ def _get_command_stdout(command, *args):
         path_dirs = os.environ.get('PATH', os.defpath).split(os.pathsep)
         path_dirs.extend(['/sbin', '/usr/sbin'])
         executable = shutil.which(command, path=os.pathsep.join(path_dirs))
-        if executable is None:
+        wenn executable is None:
             return None
         # LC_ALL=C to ensure English output, stderr=DEVNULL to prevent output
         # on stderr (Note: we don't have an example where the words we search
@@ -436,15 +436,15 @@ def _get_command_stdout(command, *args):
         env = dict(os.environ)
         env['LC_ALL'] = 'C'
         # Empty strings will be quoted by popen so we should just omit it
-        if args != ('',):
+        wenn args != ('',):
             command = (executable, *args)
-        else:
+        sonst:
             command = (executable,)
         proc = subprocess.Popen(command,
                                 stdout=subprocess.PIPE,
                                 stderr=subprocess.DEVNULL,
                                 env=env)
-        if not proc:
+        wenn not proc:
             return None
         stdout, stderr = proc.communicate()
         return io.BytesIO(stdout)
@@ -463,7 +463,7 @@ def _get_command_stdout(command, *args):
 # This bit works out to be the 42nd bit counting from 1 being the least
 # significant, or 1<<41.  We'll prefer universally administered MAC addresses
 # over locally administered ones since the former are globally unique, but
-# we'll return the first of the latter found if that's all the machine has.
+# we'll return the first of the latter found wenn that's all the machine has.
 #
 # See https://en.wikipedia.org/wiki/MAC_address#Universal_vs._local_(U/L_bit)
 
@@ -481,14 +481,14 @@ def _find_mac_near_keyword(command, args, keywords, get_word_index):
     lambda i: i - 1 would get the word preceding the keyword.
     """
     stdout = _get_command_stdout(command, args)
-    if stdout is None:
+    wenn stdout is None:
         return None
 
     first_local_mac = None
     fuer line in stdout:
         words = line.lower().rstrip().split()
         fuer i in range(len(words)):
-            if words[i] in keywords:
+            wenn words[i] in keywords:
                 try:
                     word = words[get_word_index(i)]
                     mac = int(word.replace(_MAC_DELIM, b''), 16)
@@ -499,8 +499,8 @@ def _find_mac_near_keyword(command, args, keywords, get_word_index):
                     # dashes. These should be ignored in favor of a
                     # real MAC address
                     pass
-                else:
-                    if _is_universal(mac):
+                sonst:
+                    wenn _is_universal(mac):
                         return mac
                     first_local_mac = first_local_mac or mac
     return first_local_mac or None
@@ -514,18 +514,18 @@ def _parse_mac(word):
     # colon-delimited MAC address as expected, but a 16-byte HWAddr separated
     # by dashes. These should be ignored in favor of a real MAC address
     parts = word.split(_MAC_DELIM)
-    if len(parts) != 6:
+    wenn len(parts) != 6:
         return
-    if _MAC_OMITS_LEADING_ZEROES:
+    wenn _MAC_OMITS_LEADING_ZEROES:
         # (Only) on AIX the macaddr value given is not prefixed by 0, e.g.
         # en0   1500  link#2      fa.bc.de.f7.62.4 110854824     0 160133733     0     0
         # not
         # en0   1500  link#2      fa.bc.de.f7.62.04 110854824     0 160133733     0     0
-        if not all(1 <= len(part) <= 2 fuer part in parts):
+        wenn not all(1 <= len(part) <= 2 fuer part in parts):
             return
         hexstr = b''.join(part.rjust(2, b'0') fuer part in parts)
-    else:
-        if not all(len(part) == 2 fuer part in parts):
+    sonst:
+        wenn not all(len(part) == 2 fuer part in parts):
             return
         hexstr = b''.join(parts)
     try:
@@ -539,10 +539,10 @@ def _find_mac_under_heading(command, args, heading):
 
     The first line of words in the output is searched fuer the given
     heading. Words at the same word index as the heading in subsequent
-    lines are then examined to see if they look like MAC addresses.
+    lines are then examined to see wenn they look like MAC addresses.
     """
     stdout = _get_command_stdout(command, args)
-    if stdout is None:
+    wenn stdout is None:
         return None
 
     keywords = stdout.readline().rstrip().split()
@@ -560,11 +560,11 @@ def _find_mac_under_heading(command, args, heading):
             continue
 
         mac = _parse_mac(word)
-        if mac is None:
+        wenn mac is None:
             continue
-        if _is_universal(mac):
+        wenn _is_universal(mac):
             return mac
-        if first_local_mac is None:
+        wenn first_local_mac is None:
             first_local_mac = mac
 
     return first_local_mac
@@ -578,7 +578,7 @@ def _ifconfig_getnode():
     keywords = (b'hwaddr', b'ether', b'address:', b'lladdr')
     fuer args in ('', '-a', '-av'):
         mac = _find_mac_near_keyword('ifconfig', args, keywords, lambda i: i+1)
-        if mac:
+        wenn mac:
             return mac
     return None
 
@@ -586,14 +586,14 @@ def _ip_getnode():
     """Get the hardware address on Unix by running ip."""
     # This works on Linux with iproute2.
     mac = _find_mac_near_keyword('ip', 'link', [b'link/ether'], lambda i: i+1)
-    if mac:
+    wenn mac:
         return mac
     return None
 
 def _arp_getnode():
     """Get the hardware address on Unix by running arp."""
     import os, socket
-    if not hasattr(socket, "gethostbyname"):
+    wenn not hasattr(socket, "gethostbyname"):
         return None
     try:
         ip_addr = socket.gethostbyname(socket.gethostname())
@@ -602,19 +602,19 @@ def _arp_getnode():
 
     # Try getting the MAC addr from arp based on our IP address (Solaris).
     mac = _find_mac_near_keyword('arp', '-an', [os.fsencode(ip_addr)], lambda i: -1)
-    if mac:
+    wenn mac:
         return mac
 
     # This works on OpenBSD
     mac = _find_mac_near_keyword('arp', '-an', [os.fsencode(ip_addr)], lambda i: i+1)
-    if mac:
+    wenn mac:
         return mac
 
     # This works on Linux, FreeBSD and NetBSD
     mac = _find_mac_near_keyword('arp', '-an', [os.fsencode('(%s)' % ip_addr)],
                     lambda i: i+2)
     # Return None instead of 0.
-    if mac:
+    wenn mac:
         return mac
     return None
 
@@ -644,13 +644,13 @@ except ImportError:
 
 def _unix_getnode():
     """Get the hardware address on Unix using the _uuid extension module."""
-    if _generate_time_safe and _has_stable_extractable_node:
+    wenn _generate_time_safe and _has_stable_extractable_node:
         uuid_time, _ = _generate_time_safe()
         return UUID(bytes=uuid_time).node
 
 def _windll_getnode():
     """Get the hardware address on Windows using the _uuid extension module."""
-    if _UuidCreate and _has_stable_extractable_node:
+    wenn _UuidCreate and _has_stable_extractable_node:
         uuid_bytes = _UuidCreate()
         return UUID(bytes_le=uuid_bytes).node
 
@@ -678,23 +678,23 @@ def _random_getnode():
 # which, when successful, means none of these "external" methods are called.
 # _GETTERS is (also) used by test_uuid.py to SkipUnless(), e.g.,
 #     @unittest.skipUnless(_uuid._ifconfig_getnode in _uuid._GETTERS, ...)
-if _LINUX:
+wenn _LINUX:
     _OS_GETTERS = [_ip_getnode, _ifconfig_getnode]
-elif sys.platform == 'darwin':
+sowenn sys.platform == 'darwin':
     _OS_GETTERS = [_ifconfig_getnode, _arp_getnode, _netstat_getnode]
-elif sys.platform == 'win32':
+sowenn sys.platform == 'win32':
     # bpo-40201: _windll_getnode will always succeed, so these are not needed
     _OS_GETTERS = []
-elif _AIX:
+sowenn _AIX:
     _OS_GETTERS = [_netstat_getnode]
-else:
+sonst:
     _OS_GETTERS = [_ifconfig_getnode, _ip_getnode, _arp_getnode,
                    _netstat_getnode, _lanscan_getnode]
-if os.name == 'posix':
+wenn os.name == 'posix':
     _GETTERS = [_unix_getnode] + _OS_GETTERS
-elif os.name == 'nt':
+sowenn os.name == 'nt':
     _GETTERS = [_windll_getnode] + _OS_GETTERS
-else:
+sonst:
     _GETTERS = _OS_GETTERS
 
 _node = None
@@ -708,7 +708,7 @@ def getnode():
     in RFC 4122.
     """
     global _node
-    if _node is not None:
+    wenn _node is not None:
         return _node
 
     fuer getter in _GETTERS + [_random_getnode]:
@@ -716,7 +716,7 @@ def getnode():
             _node = getter()
         except:
             continue
-        if (_node is not None) and (0 <= _node < (1 << 48)):
+        wenn (_node is not None) and (0 <= _node < (1 << 48)):
             return _node
     assert False, '_random_getnode() returned invalid value: {}'.format(_node)
 
@@ -731,7 +731,7 @@ def uuid1(node=None, clock_seq=None):
 
     # When the system provides a version-1 UUID generator, use it (but don't
     # use UuidCreate here because its UUIDs don't conform to RFC 4122).
-    if _generate_time_safe is not None and node is clock_seq is None:
+    wenn _generate_time_safe is not None and node is clock_seq is None:
         uuid_time, safely_generated = _generate_time_safe()
         try:
             is_safe = SafeUUID(safely_generated)
@@ -744,10 +744,10 @@ def uuid1(node=None, clock_seq=None):
     # 0x01b21dd213814000 is the number of 100-ns intervals between the
     # UUID epoch 1582-10-15 00:00:00 and the Unix epoch 1970-01-01 00:00:00.
     timestamp = nanoseconds // 100 + 0x01b21dd213814000
-    if _last_timestamp is not None and timestamp <= _last_timestamp:
+    wenn _last_timestamp is not None and timestamp <= _last_timestamp:
         timestamp = _last_timestamp + 1
     _last_timestamp = timestamp
-    if clock_seq is None:
+    wenn clock_seq is None:
         import random
         clock_seq = random.getrandbits(14) # instead of stable storage
     time_low = timestamp & 0xffffffff
@@ -755,14 +755,14 @@ def uuid1(node=None, clock_seq=None):
     time_hi_version = (timestamp >> 48) & 0x0fff
     clock_seq_low = clock_seq & 0xff
     clock_seq_hi_variant = (clock_seq >> 8) & 0x3f
-    if node is None:
+    wenn node is None:
         node = getnode()
     return UUID(fields=(time_low, time_mid, time_hi_version,
                         clock_seq_hi_variant, clock_seq_low, node), version=1)
 
 def uuid3(namespace, name):
     """Generate a UUID from the MD5 hash of a namespace UUID and a name."""
-    if isinstance(name, str):
+    wenn isinstance(name, str):
         name = bytes(name, "utf-8")
     import hashlib
     h = hashlib.md5(namespace.bytes + name, usedforsecurity=False)
@@ -780,7 +780,7 @@ def uuid4():
 
 def uuid5(namespace, name):
     """Generate a UUID from the SHA-1 hash of a namespace UUID and a name."""
-    if isinstance(name, str):
+    wenn isinstance(name, str):
         name = bytes(name, "utf-8")
     import hashlib
     h = hashlib.sha1(namespace.bytes + name, usedforsecurity=False)
@@ -807,16 +807,16 @@ def uuid6(node=None, clock_seq=None):
     # 0x01b21dd213814000 is the number of 100-ns intervals between the
     # UUID epoch 1582-10-15 00:00:00 and the Unix epoch 1970-01-01 00:00:00.
     timestamp = nanoseconds // 100 + 0x01b21dd213814000
-    if _last_timestamp_v6 is not None and timestamp <= _last_timestamp_v6:
+    wenn _last_timestamp_v6 is not None and timestamp <= _last_timestamp_v6:
         timestamp = _last_timestamp_v6 + 1
     _last_timestamp_v6 = timestamp
-    if clock_seq is None:
+    wenn clock_seq is None:
         import random
         clock_seq = random.getrandbits(14)  # instead of stable storage
     time_hi_and_mid = (timestamp >> 12) & 0xffff_ffff_ffff
     time_lo = timestamp & 0x0fff  # keep 12 bits and clear version bits
     clock_s = clock_seq & 0x3fff  # keep 14 bits and clear variant bits
-    if node is None:
+    wenn node is None:
         node = getnode()
     # --- 32 + 16 ---   -- 4 --   -- 12 --  -- 2 --   -- 14 ---    48
     # time_hi_and_mid | version | time_lo | variant | clock_seq | node
@@ -865,18 +865,18 @@ def uuid7():
     nanoseconds = time.time_ns()
     timestamp_ms = nanoseconds // 1_000_000
 
-    if _last_timestamp_v7 is None or timestamp_ms > _last_timestamp_v7:
+    wenn _last_timestamp_v7 is None or timestamp_ms > _last_timestamp_v7:
         counter, tail = _uuid7_get_counter_and_tail()
-    else:
-        if timestamp_ms < _last_timestamp_v7:
+    sonst:
+        wenn timestamp_ms < _last_timestamp_v7:
             timestamp_ms = _last_timestamp_v7 + 1
         # advance the 42-bit counter
         counter = _last_counter_v7 + 1
-        if counter > 0x3ff_ffff_ffff:
+        wenn counter > 0x3ff_ffff_ffff:
             # advance the 48-bit timestamp
             timestamp_ms += 1
             counter, tail = _uuid7_get_counter_and_tail()
-        else:
+        sonst:
             # 32-bit random data
             tail = int.from_bytes(os.urandom(4))
 
@@ -914,13 +914,13 @@ def uuid8(a=None, b=None, c=None):
 
     When a value is not specified, a pseudo-random value is generated.
     """
-    if a is None:
+    wenn a is None:
         import random
         a = random.getrandbits(48)
-    if b is None:
+    wenn b is None:
         import random
         b = random.getrandbits(12)
-    if c is None:
+    wenn c is None:
         import random
         c = random.getrandbits(62)
     int_uuid_8 = (a & 0xffff_ffff_ffff) << 80
@@ -976,17 +976,17 @@ def main():
     namespace = args.namespace
     name = args.name
 
-    if args.uuid in uuid_namespace_funcs:
-        if not namespace or not name:
+    wenn args.uuid in uuid_namespace_funcs:
+        wenn not namespace or not name:
             parser.error(
                 "Incorrect number of arguments. "
                 f"{args.uuid} requires a namespace and a name. "
                 "Run 'python -m uuid -h' fuer more information."
             )
-        namespace = namespaces[namespace] if namespace in namespaces else UUID(namespace)
+        namespace = namespaces[namespace] wenn namespace in namespaces sonst UUID(namespace)
         fuer _ in range(args.count):
             print(uuid_func(namespace, name))
-    else:
+    sonst:
         fuer _ in range(args.count):
             print(uuid_func())
 
@@ -1003,5 +1003,5 @@ NAMESPACE_X500 = UUID('6ba7b814-9dad-11d1-80b4-00c04fd430c8')
 NIL = UUID('00000000-0000-0000-0000-000000000000')
 MAX = UUID('ffffffff-ffff-ffff-ffff-ffffffffffff')
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     main()

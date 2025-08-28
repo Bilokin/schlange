@@ -34,7 +34,7 @@ def _parse_makefile(filename, vars=None, keep_unresolved=True):
     """
     import re
 
-    if vars is None:
+    wenn vars is None:
         vars = {}
     done = {}
     notdone = {}
@@ -44,27 +44,27 @@ def _parse_makefile(filename, vars=None, keep_unresolved=True):
         lines = f.readlines()
 
     fuer line in lines:
-        if line.startswith('#') or line.strip() == '':
+        wenn line.startswith('#') or line.strip() == '':
             continue
         m = re.match(_variable_rx, line)
-        if m:
+        wenn m:
             n, v = m.group(1, 2)
             v = v.strip()
             # `$$' is a literal `$' in make
             tmpv = v.replace('$$', '')
 
-            if "$" in tmpv:
+            wenn "$" in tmpv:
                 notdone[n] = v
-            else:
+            sonst:
                 try:
-                    if n in _ALWAYS_STR:
+                    wenn n in _ALWAYS_STR:
                         raise ValueError
 
                     v = int(v)
                 except ValueError:
                     # insert literal `$'
                     done[n] = v.replace('$$', '$')
-                else:
+                sonst:
                     done[n] = v
 
     # do variable interpolation here
@@ -73,7 +73,7 @@ def _parse_makefile(filename, vars=None, keep_unresolved=True):
     # Variables with a 'PY_' prefix in the makefile. These need to
     # be made available without that prefix through sysconfig.
     # Special care is needed to ensure that variable expansion works, even
-    # if the expansion uses the name without a prefix.
+    # wenn the expansion uses the name without a prefix.
     renamed_variables = ('CFLAGS', 'LDFLAGS', 'CPPFLAGS')
 
     while len(variables) > 0:
@@ -81,63 +81,63 @@ def _parse_makefile(filename, vars=None, keep_unresolved=True):
             value = notdone[name]
             m1 = re.search(_findvar1_rx, value)
             m2 = re.search(_findvar2_rx, value)
-            if m1 and m2:
-                m = m1 if m1.start() < m2.start() else m2
-            else:
-                m = m1 if m1 else m2
-            if m is not None:
+            wenn m1 and m2:
+                m = m1 wenn m1.start() < m2.start() sonst m2
+            sonst:
+                m = m1 wenn m1 sonst m2
+            wenn m is not None:
                 n = m.group(1)
                 found = True
-                if n in done:
+                wenn n in done:
                     item = str(done[n])
-                elif n in notdone:
+                sowenn n in notdone:
                     # get it on a subsequent round
                     found = False
-                elif n in os.environ:
+                sowenn n in os.environ:
                     # do it like make: fall back to environment
                     item = os.environ[n]
 
-                elif n in renamed_variables:
-                    if (name.startswith('PY_') and
+                sowenn n in renamed_variables:
+                    wenn (name.startswith('PY_') and
                         name[3:] in renamed_variables):
                         item = ""
 
-                    elif 'PY_' + n in notdone:
+                    sowenn 'PY_' + n in notdone:
                         found = False
 
-                    else:
+                    sonst:
                         item = str(done['PY_' + n])
 
-                else:
+                sonst:
                     done[n] = item = ""
 
-                if found:
+                wenn found:
                     after = value[m.end():]
                     value = value[:m.start()] + item + after
-                    if "$" in after:
+                    wenn "$" in after:
                         notdone[name] = value
-                    else:
+                    sonst:
                         try:
-                            if name in _ALWAYS_STR:
+                            wenn name in _ALWAYS_STR:
                                 raise ValueError
                             value = int(value)
                         except ValueError:
                             done[name] = value.strip()
-                        else:
+                        sonst:
                             done[name] = value
                         variables.remove(name)
 
-                        if name.startswith('PY_') \
+                        wenn name.startswith('PY_') \
                         and name[3:] in renamed_variables:
 
                             name = name[3:]
-                            if name not in done:
+                            wenn name not in done:
                                 done[name] = value
 
-            else:
+            sonst:
                 # Adds unresolved variables to the done dict.
                 # This is disabled when called from distutils.sysconfig
-                if keep_unresolved:
+                wenn keep_unresolved:
                     done[name] = value
                 # bogus variable reference (e.g. "prefix=$/opt/python");
                 # just drop it since we can't deal
@@ -145,7 +145,7 @@ def _parse_makefile(filename, vars=None, keep_unresolved=True):
 
     # strip spurious spaces
     fuer k, v in done.items():
-        if isinstance(v, str):
+        wenn isinstance(v, str):
             done[k] = v.strip()
 
     # save the results in the global dictionary
@@ -162,7 +162,7 @@ def _print_config_dict(d, stream):
 
 def _get_pybuilddir():
     pybuilddir = f'build/lib.{get_platform()}-{get_python_version()}'
-    if get_config_var('Py_DEBUG') == '1':
+    wenn get_config_var('Py_DEBUG') == '1':
         pybuilddir += '-pydebug'
     return pybuilddir
 
@@ -182,7 +182,7 @@ def _generate_posix_vars():
         _parse_makefile(makefile, vars)
     except OSError as e:
         msg = f"invalid Python installation: unable to open {makefile}"
-        if hasattr(e, "strerror"):
+        wenn hasattr(e, "strerror"):
             msg = f"{msg} ({e.strerror})"
         raise OSError(msg)
     # load the installed pyconfig.h:
@@ -192,13 +192,13 @@ def _generate_posix_vars():
             parse_config_h(f, vars)
     except OSError as e:
         msg = f"invalid Python installation: unable to open {config_h}"
-        if hasattr(e, "strerror"):
+        wenn hasattr(e, "strerror"):
             msg = f"{msg} ({e.strerror})"
         raise OSError(msg)
     # On AIX, there are wrong paths to the linker scripts in the Makefile
     # -- these paths are relative to the Python source, but when installed
     # the scripts are in another directory.
-    if _PYTHON_BUILD:
+    wenn _PYTHON_BUILD:
         vars['BLDSHARED'] = vars['LDSHARED']
 
     name = _get_sysconfigdata_name()
@@ -210,7 +210,7 @@ def _generate_posix_vars():
     # _sysconfigdata.py module being constructed.  Unfortunately,
     # get_config_vars() eventually calls _init_posix(), which attempts
     # to import _sysconfigdata, which we won't have built yet.  In order
-    # fuer _init_posix() to work, if we're on Darwin, just mock up the
+    # fuer _init_posix() to work, wenn we're on Darwin, just mock up the
     # _sysconfigdata module manually and populate it with the build vars.
     # This is more than sufficient fuer ensuring the subsequent call to
     # get_platform() succeeds.
@@ -250,14 +250,14 @@ def _generate_posix_vars():
 
 def _print_dict(title, data):
     fuer index, (key, value) in enumerate(sorted(data.items())):
-        if index == 0:
+        wenn index == 0:
             print(f'{title}: ')
         print(f'\t{key} = "{value}"')
 
 
 def _main():
     """Display all information sysconfig detains."""
-    if '--generate-posix-vars' in sys.argv:
+    wenn '--generate-posix-vars' in sys.argv:
         _generate_posix_vars()
         return
     print(f'Platform: "{get_platform()}"')
@@ -269,7 +269,7 @@ def _main():
     _print_dict('Variables', get_config_vars())
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     try:
         _main()
     except BrokenPipeError:

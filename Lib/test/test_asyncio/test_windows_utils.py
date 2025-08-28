@@ -4,7 +4,7 @@ import sys
 import unittest
 import warnings
 
-if sys.platform != 'win32':
+wenn sys.platform != 'win32':
     raise unittest.SkipTest('Windows only')
 
 import _overlapped
@@ -36,7 +36,7 @@ klasse PipeTests(unittest.TestCase):
                 ov1.getresult()
             except OSError as e:
                 self.assertEqual(e.winerror, ERROR_IO_INCOMPLETE)
-            else:
+            sonst:
                 raise RuntimeError('expected ERROR_IO_INCOMPLETE')
 
             ov2 = _overlapped.Overlapped()
@@ -74,7 +74,7 @@ klasse PipeTests(unittest.TestCase):
             _winapi.CloseHandle(h)
         except OSError as e:
             self.assertEqual(e.winerror, 6)     # ERROR_INVALID_HANDLE
-        else:
+        sonst:
             raise RuntimeError('expected ERROR_INVALID_HANDLE')
 
 
@@ -129,5 +129,5 @@ klasse PopenTests(unittest.TestCase):
             pass
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

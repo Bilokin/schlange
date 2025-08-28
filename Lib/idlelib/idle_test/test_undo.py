@@ -131,5 +131,5 @@ klasse UndoDelegatorTest(unittest.TestCase):
             self.assertLessEqual(len(self.delegator.undolist), max_undo)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main(verbosity=2, exit=False)

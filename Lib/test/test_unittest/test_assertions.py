@@ -66,13 +66,13 @@ klasse Test_Assertions(unittest.TestCase):
             self.assertRaises(KeyError, lambda: None)
         except self.failureException as e:
             self.assertIn("KeyError not raised", str(e))
-        else:
+        sonst:
             self.fail("assertRaises() didn't fail")
         try:
             self.assertRaises(KeyError, _raise, ValueError)
         except ValueError:
             pass
-        else:
+        sonst:
             self.fail("assertRaises() didn't let exception pass through")
         with self.assertRaises(KeyError) as cm:
             try:
@@ -89,14 +89,14 @@ klasse Test_Assertions(unittest.TestCase):
                 pass
         except self.failureException as e:
             self.assertIn("KeyError not raised", str(e))
-        else:
+        sonst:
             self.fail("assertRaises() didn't fail")
         try:
             with self.assertRaises(KeyError):
                 raise ValueError
         except ValueError:
             pass
-        else:
+        sonst:
             self.fail("assertRaises() didn't let exception pass through")
 
     def test_assertRaises_frames_survival(self):
@@ -137,7 +137,7 @@ klasse Test_Assertions(unittest.TestCase):
             self.assertNotRegex('Ala ma kota', r'k.t', 'Message')
         except self.failureException as e:
             self.assertIn('Message', e.args[0])
-        else:
+        sonst:
             self.fail('assertNotRegex should have failed.')
 
 
@@ -174,7 +174,7 @@ klasse TestLongMessage(unittest.TestCase):
         self.assertEqual(self.testableTrue._formatMessage(None, "foo"), "foo")
         self.assertEqual(self.testableTrue._formatMessage("foo", "bar"), "bar : foo")
 
-        # This blows up if _formatMessage uses string concatenation
+        # This blows up wenn _formatMessage uses string concatenation
         self.testableTrue._formatMessage(object(), 'foo')
 
     def test_formatMessage_unicode_error(self):
@@ -193,9 +193,9 @@ klasse TestLongMessage(unittest.TestCase):
         """
         def getMethod(i):
             useTestableFalse  = i < 2
-            if useTestableFalse:
+            wenn useTestableFalse:
                 test = self.testableFalse
-            else:
+            sonst:
                 test = self.testableTrue
             return getattr(test, methodName)
 
@@ -203,7 +203,7 @@ klasse TestLongMessage(unittest.TestCase):
             testMethod = getMethod(i)
             kwargs = {}
             withMsg = i % 2
-            if withMsg:
+            wenn withMsg:
                 kwargs = {"msg": "oops"}
 
             with self.assertRaisesRegex(self.failureException,
@@ -413,5 +413,5 @@ klasse TestLongMessage(unittest.TestCase):
                                '^"regex" does not match "foo" : oops$'])
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

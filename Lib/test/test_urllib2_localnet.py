@@ -67,7 +67,7 @@ klasse LoopbackHttpServerThread(threading.Thread):
         self.port = self.httpd.server_port
 
     def stop(self):
-        """Stops the webserver if it's currently running."""
+        """Stops the webserver wenn it's currently running."""
 
         self._stop_server = True
 
@@ -117,9 +117,9 @@ klasse DigestAuthHandler:
         fuer part in parts:
             name, value = part.split("=")
             name = name.strip()
-            if value[0] == '"' and value[-1] == '"':
+            wenn value[0] == '"' and value[-1] == '"':
                 value = value[1:-1]
-            else:
+            sonst:
                 value = value.strip()
             auth_dict[name] = value
         return auth_dict
@@ -150,7 +150,7 @@ klasse DigestAuthHandler:
             'qop="%s",'
             'nonce="%s", ' % \
             (self._realm_name, self._qop, self._generate_nonce()))
-        # XXX: Not sure if we're supposed to add this next header or
+        # XXX: Not sure wenn we're supposed to add this next header or
         # not.
         #request_handler.send_header('Connection', 'close')
         request_handler.end_headers()
@@ -159,29 +159,29 @@ klasse DigestAuthHandler:
 
     def handle_request(self, request_handler):
         """Performs digest authentication on the given HTTP request
-        handler.  Returns True if authentication was successful, False
+        handler.  Returns True wenn authentication was successful, False
         otherwise.
 
         If no users have been set, then digest auth is effectively
         disabled and this method will always return True.
         """
 
-        if len(self._users) == 0:
+        wenn len(self._users) == 0:
             return True
 
-        if "Proxy-Authorization" not in request_handler.headers:
+        wenn "Proxy-Authorization" not in request_handler.headers:
             return self._return_auth_challenge(request_handler)
-        else:
+        sonst:
             auth_dict = self._create_auth_dict(
                 request_handler.headers["Proxy-Authorization"]
                 )
-            if auth_dict["username"] in self._users:
+            wenn auth_dict["username"] in self._users:
                 password = self._users[ auth_dict["username"] ]
-            else:
+            sonst:
                 return self._return_auth_challenge(request_handler)
-            if not auth_dict.get("nonce") in self._nonces:
+            wenn not auth_dict.get("nonce") in self._nonces:
                 return self._return_auth_challenge(request_handler)
-            else:
+            sonst:
                 self._nonces.remove(auth_dict["nonce"])
 
             auth_validated = False
@@ -191,13 +191,13 @@ klasse DigestAuthHandler:
             # either of them works here.
 
             fuer path in [request_handler.path, request_handler.short_path]:
-                if self._validate_auth(auth_dict,
+                wenn self._validate_auth(auth_dict,
                                        password,
                                        request_handler.command,
                                        path):
                     auth_validated = True
 
-            if not auth_validated:
+            wenn not auth_validated:
                 return self._return_auth_challenge(request_handler)
             return True
 
@@ -230,15 +230,15 @@ klasse BasicAuthHandler(http.server.BaseHTTPRequestHandler):
         self.end_headers()
 
     def do_GET(self):
-        if not self.headers.get("Authorization", ""):
+        wenn not self.headers.get("Authorization", ""):
             self.do_AUTHHEAD()
             self.wfile.write(b"No Auth header received")
-        elif self.headers.get(
+        sowenn self.headers.get(
                 "Authorization", "") == "Basic " + self.ENCODED_AUTH:
             self.send_response(200)
             self.end_headers()
             self.wfile.write(b"It works")
-        else:
+        sonst:
             # Request Unauthorized
             self.do_AUTHHEAD()
 
@@ -268,7 +268,7 @@ klasse FakeProxyHandler(http.server.BaseHTTPRequestHandler):
         (scm, netloc, path, params, query, fragment) = urllib.parse.urlparse(
             self.path, "http")
         self.short_path = path
-        if self.digest_auth_handler.handle_request(self):
+        wenn self.digest_auth_handler.handle_request(self):
             self.send_response(200, "OK")
             self.send_header("Content-Type", "text/html")
             self.end_headers()
@@ -389,11 +389,11 @@ klasse ProxyAuthTests(unittest.TestCase):
         try:
             result = self.opener.open(self.URL)
         except urllib.error.URLError:
-            # It's okay if we don't support auth-int, but we certainly
+            # It's okay wenn we don't support auth-int, but we certainly
             # shouldn't receive any kind of exception here other than
             # a URLError.
             pass
-        else:
+        sonst:
             with result:
                 while result.read():
                     pass
@@ -429,7 +429,7 @@ def GetRequestHandler(responses):
 
             fuer (header, value) in headers:
                 self.send_header(header, value % {'port':self.port})
-            if body:
+            wenn body:
                 self.send_header("Content-type", "text/plain")
                 self.end_headers()
                 return body
@@ -483,7 +483,7 @@ klasse TestUrlopen(unittest.TestCase):
         self.server = None
 
     def start_server(self, responses=None):
-        if responses is None:
+        wenn responses is None:
             responses = [(200, [], b"we don't care")]
         handler = GetRequestHandler(responses)
 
@@ -496,10 +496,10 @@ klasse TestUrlopen(unittest.TestCase):
         return handler
 
     def start_https_server(self, responses=None, **kwargs):
-        if not hasattr(urllib.request, 'HTTPSHandler'):
+        wenn not hasattr(urllib.request, 'HTTPSHandler'):
             self.skipTest('ssl support required')
         from test.ssl_servers import make_https_server
-        if responses is None:
+        wenn responses is None:
             responses = [(200, [], b"we care a bit")]
         handler = GetRequestHandler(responses)
         server = make_https_server(self, handler_class=handler, **kwargs)
@@ -542,7 +542,7 @@ klasse TestUrlopen(unittest.TestCase):
         except urllib.error.URLError as f:
             data = f.read()
             f.close()
-        else:
+        sonst:
             self.fail("404 should raise URLError")
 
         self.assertEqual(data, expected_response)
@@ -570,9 +570,9 @@ klasse TestUrlopen(unittest.TestCase):
         self.assertEqual(data, b"we care a bit")
 
     def test_https_sni(self):
-        if ssl is None:
+        wenn ssl is None:
             self.skipTest("ssl module required")
-        if not ssl.HAS_SNI:
+        wenn not ssl.HAS_SNI:
             self.skipTest("SNI support required in OpenSSL")
         sni_name = None
         def cb_sni(ssl_sock, server_name, initial_context):
@@ -671,5 +671,5 @@ def setUpModule():
     unittest.addModuleCleanup(threading_helper.threading_cleanup, *thread_info)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

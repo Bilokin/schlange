@@ -6,7 +6,7 @@ from test.support import import_helper
 from test.support import script_helper
 from test.support import warnings_helper
 from test.support.testcase import FloatsAreIdenticalMixin
-# Skip this test if the _testcapi module isn't available.
+# Skip this test wenn the _testcapi module isn't available.
 _testcapi = import_helper.import_module('_testcapi')
 from _testcapi import getargs_keywords, getargs_keyword_only
 
@@ -499,10 +499,10 @@ klasse Float_TestCase(unittest.TestCase, FloatsAreIdenticalMixin):
 
         fuer x in (FLT_MIN, -FLT_MIN, FLT_MAX, -FLT_MAX, INF, -INF):
             self.assertEqual(getargs_f(x), x)
-        if FLT_MAX < DBL_MAX:
+        wenn FLT_MAX < DBL_MAX:
             self.assertEqual(getargs_f(DBL_MAX), INF)
             self.assertEqual(getargs_f(-DBL_MAX), -INF)
-        if FLT_MIN > DBL_MIN:
+        wenn FLT_MIN > DBL_MIN:
             self.assertFloatsAreIdentical(getargs_f(DBL_MIN), 0.0)
             self.assertFloatsAreIdentical(getargs_f(-DBL_MIN), -0.0)
         self.assertFloatsAreIdentical(getargs_f(0.0), 0.0)
@@ -698,7 +698,7 @@ klasse Keywords_TestCase(unittest.TestCase):
         except TypeError as err:
             self.assertEqual(
                 str(err), "function missing required argument 'arg2' (pos 2)")
-        else:
+        sonst:
             self.fail('TypeError should have been raised')
 
     def test_too_many_args(self):
@@ -706,7 +706,7 @@ klasse Keywords_TestCase(unittest.TestCase):
             getargs_keywords((1,2),3,(4,(5,6)),(7,8,9),10,111)
         except TypeError as err:
             self.assertEqual(str(err), "function takes at most 5 arguments (6 given)")
-        else:
+        sonst:
             self.fail('TypeError should have been raised')
 
     def test_invalid_keyword(self):
@@ -715,7 +715,7 @@ klasse Keywords_TestCase(unittest.TestCase):
             getargs_keywords((1,2),3,arg5=10,arg666=666)
         except TypeError as err:
             self.assertEqual(str(err), "this function got an unexpected keyword argument 'arg666'")
-        else:
+        sonst:
             self.fail('TypeError should have been raised')
 
     def test_surrogate_keyword(self):
@@ -723,7 +723,7 @@ klasse Keywords_TestCase(unittest.TestCase):
             getargs_keywords((1,2), 3, (4,(5,6)), (7,8,9), **{'\uDC80': 10})
         except TypeError as err:
             self.assertEqual(str(err), "this function got an unexpected keyword argument '\udc80'")
-        else:
+        sonst:
             self.fail('TypeError should have been raised')
 
 klasse KeywordOnly_TestCase(unittest.TestCase):
@@ -1139,7 +1139,7 @@ klasse SkipitemTest(unittest.TestCase):
         checking to see that PyArg_ParseTupleAndKeywords() return consistent
         errors both when the unit is attempted to be used and when it is
         skipped.  If the format unit doesn't exist, we'll get one of two
-        specific error messages (one fuer used, one fuer skipped); if it does
+        specific error messages (one fuer used, one fuer skipped); wenn it does
         exist we *won't* get that error--we'll get either no error or some
         other error.  If we get the specific "does not exist" error fuer one
         test and not fuer the other, there's a mismatch, and the test fails.
@@ -1165,7 +1165,7 @@ klasse SkipitemTest(unittest.TestCase):
             # skip parentheses, the error reporting is inconsistent about them
             # skip 'e' and 'w', they're always two-character codes
             # skip '|' and '$', they don't represent arguments anyway
-            if c in '()ew|$':
+            wenn c in '()ew|$':
                 continue
 
             # test the format unit when not skipped
@@ -1209,9 +1209,9 @@ klasse SkipitemTest(unittest.TestCase):
                 f = c + c2
                 with self.subTest(format=f):
                     optional_format = "|" + f + "i"
-                    if f in supported:
+                    wenn f in supported:
                         parse(empty_tuple, dict_b, optional_format, keywords)
-                    else:
+                    sonst:
                         with self.assertRaisesRegex(SystemError,
                                     'impossible<bad format char>'):
                             parse(empty_tuple, dict_b, optional_format, keywords)
@@ -1220,9 +1220,9 @@ klasse SkipitemTest(unittest.TestCase):
             f = 'e' + c
             optional_format = "|" + f + "i"
             with self.subTest(format=f):
-                if c in 'st':
+                wenn c in 'st':
                     parse(empty_tuple, dict_b, optional_format, keywords)
-                else:
+                sonst:
                     with self.assertRaisesRegex(SystemError,
                                 'impossible<bad format char>'):
                         parse(empty_tuple, dict_b, optional_format, keywords)
@@ -1356,7 +1356,7 @@ klasse ParseTupleAndKeywords_Test(unittest.TestCase):
                             parse((), {name2: 1}, '|O', [name])
 
                 name2 = name.encode().decode('latin1')
-                if name2 != name:
+                wenn name2 != name:
                     with self.assertRaisesRegex(TypeError,
                             f"this function got an unexpected keyword argument '{name2}'"):
                         parse((), {name2: 1}, '|O', [name])
@@ -1449,7 +1449,7 @@ klasse ParseTupleAndKeywords_Test(unittest.TestCase):
             rc = support.run_in_subinterp_with_config(script, **config)
             assert rc == 0
 
-            # The crash is different if the interpreter was not destroyed first.
+            # The crash is different wenn the interpreter was not destroyed first.
             #interpid = _testinternalcapi.create_interpreter()
             #rc = _testinternalcapi.exec_interpreter(interpid, script)
             #assert rc == 0
@@ -1457,5 +1457,5 @@ klasse ParseTupleAndKeywords_Test(unittest.TestCase):
         self.assertEqual(rc, 0)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

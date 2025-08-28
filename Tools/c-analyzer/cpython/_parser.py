@@ -23,7 +23,7 @@ def clean_lines(text):
     lines = (line.strip() fuer line in text.splitlines())
     lines = (line.partition('#')[0].rstrip()
              fuer line in lines
-             if line and not line.startswith('#'))
+             wenn line and not line.startswith('#'))
     glob_all = f'{GLOB_ALL} '
     lines = (re.sub(r'^[*] ', glob_all, line) fuer line in lines)
     lines = (_abs(line) fuer line in lines)
@@ -83,7 +83,7 @@ Python/frozen_modules/*.h
 Python/generated_cases.c.h
 Python/executor_cases.c.h
 Python/optimizer_cases.c.h
-# XXX: Throws errors if PY_VERSION_HEX is not mocked out
+# XXX: Throws errors wenn PY_VERSION_HEX is not mocked out
 Modules/clinic/_testclinic_depr.c.h
 
 # not actually source
@@ -365,16 +365,16 @@ def get_preprocessor(*,
                      **kwargs
                      ):
     macros = tuple(MACROS)
-    if file_macros:
+    wenn file_macros:
         macros += tuple(file_macros)
     includes = tuple(INCLUDES)
-    if file_includes:
+    wenn file_includes:
         includes += tuple(file_includes)
     incldirs = tuple(INCL_DIRS)
-    if file_incldirs:
+    wenn file_incldirs:
         incldirs += tuple(file_incldirs)
     samefiles = dict(SAME)
-    if file_same:
+    wenn file_same:
         samefiles.update(file_same)
     return _get_preprocessor(
         file_macros=macros,
@@ -409,7 +409,7 @@ def parse_files(filenames=None, *,
                 get_file_preprocessor=None,
                 **file_kwargs
                 ):
-    if get_file_preprocessor is None:
+    wenn get_file_preprocessor is None:
         get_file_preprocessor = get_preprocessor(
             ignore_exc=ignore_exc,
             log_err=log_err,

@@ -43,20 +43,20 @@ def findtests(*, testdir: StrPath | None = None, exclude: Container[str] = (),
     tests = []
     fuer name in os.listdir(testdir):
         mod, ext = os.path.splitext(name)
-        if (not mod.startswith("test_")) or (mod in exclude):
+        wenn (not mod.startswith("test_")) or (mod in exclude):
             continue
-        if base_mod:
+        wenn base_mod:
             fullname = f"{base_mod}.{mod}"
-        else:
+        sonst:
             fullname = mod
-        if fullname in split_test_dirs:
+        wenn fullname in split_test_dirs:
             subdir = os.path.join(testdir, mod)
-            if not base_mod:
+            wenn not base_mod:
                 fullname = f"test.{mod}"
             tests.extend(findtests(testdir=subdir, exclude=exclude,
                                    split_test_dirs=split_test_dirs,
                                    base_mod=fullname))
-        elif ext in (".py", ""):
+        sowenn ext in (".py", ""):
             tests.append(fullname)
     return sorted(tests)
 
@@ -67,24 +67,24 @@ def split_test_packages(tests, *, testdir: StrPath | None = None,
     testdir = findtestdir(testdir)
     splitted = []
     fuer name in tests:
-        if name in split_test_dirs:
+        wenn name in split_test_dirs:
             subdir = os.path.join(testdir, name)
             splitted.extend(findtests(testdir=subdir, exclude=exclude,
                                       split_test_dirs=split_test_dirs,
                                       base_mod=name))
-        else:
+        sonst:
             splitted.append(name)
     return splitted
 
 
 def _list_cases(suite: unittest.TestSuite) -> None:
     fuer test in suite:
-        if isinstance(test, unittest.loader._FailedTest):  # type: ignore[attr-defined]
+        wenn isinstance(test, unittest.loader._FailedTest):  # type: ignore[attr-defined]
             continue
-        if isinstance(test, unittest.TestSuite):
+        wenn isinstance(test, unittest.TestSuite):
             _list_cases(test)
-        elif isinstance(test, unittest.TestCase):
-            if match_test(test):
+        sowenn isinstance(test, unittest.TestCase):
+            wenn match_test(test):
                 print(test.id())
 
 def list_cases(tests: TestTuple, *,
@@ -102,7 +102,7 @@ def list_cases(tests: TestTuple, *,
         except unittest.SkipTest:
             skipped.append(test_name)
 
-    if skipped:
+    wenn skipped:
         sys.stdout.flush()
         stderr = sys.stderr
         print(file=stderr)

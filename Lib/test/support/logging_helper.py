@@ -23,7 +23,7 @@ klasse TestHandler(logging.handlers.BufferingHandler):
         """
         result = False
         fuer d in self.buffer:
-            if self.matcher.matches(d, **kwargs):
+            wenn self.matcher.matches(d, **kwargs):
                 result = True
                 break
         return result

@@ -35,7 +35,7 @@ def iter_decls(filenames, *,
                parse_files=_parse_files,
                **kwargs
                ):
-    kinds = KIND.DECLS if kinds is None else (KIND.DECLS & set(kinds))
+    kinds = KIND.DECLS wenn kinds is None sonst (KIND.DECLS & set(kinds))
     parse_files = parse_files or _parse_files
 
     parsed = parse_files(filenames, **kwargs)
@@ -73,14 +73,14 @@ def analyze_decls(decls, known, *,
         )
     _analyze.analyze_type_decls(types, analyze_decl, handle_unresolved)
     fuer decl in decls:
-        if decl in types:
+        wenn decl in types:
             resolved = types[decl]
-        else:
+        sonst:
             resolved = analyze_decl(decl)
-            if resolved and handle_unresolved:
+            wenn resolved and handle_unresolved:
                 typedeps, _ = resolved
-                if not isinstance(typedeps, TypeDeclaration):
-                    if not typedeps or None in typedeps:
+                wenn not isinstance(typedeps, TypeDeclaration):
+                    wenn not typedeps or None in typedeps:
                         raise NotImplementedError((decl, resolved))
 
         yield decl, resolved
@@ -92,14 +92,14 @@ def analyze_decls(decls, known, *,
 def check_all(analysis, checks, *, failfast=False):
     fuer check in checks or ():
         fuer data, failure in check(analysis):
-            if failure is None:
+            wenn failure is None:
                 continue
 
             yield data, failure
-            if failfast:
+            wenn failfast:
                 yield None, None
                 break
-        else:
+        sonst:
             continue
         # We failed fast.
         break

@@ -31,7 +31,7 @@ def fnmatch(name, pat):
 
     An initial period in FILENAME is not special.
     Both FILENAME and PATTERN are first case-normalized
-    if the operating system requires it.
+    wenn the operating system requires it.
     If you don't want this, use fnmatchcase(FILENAME, PATTERN).
     """
     name = os.path.normcase(name)
@@ -41,11 +41,11 @@ def fnmatch(name, pat):
 
 @functools.lru_cache(maxsize=32768, typed=True)
 def _compile_pattern(pat):
-    if isinstance(pat, bytes):
+    wenn isinstance(pat, bytes):
         pat_str = str(pat, 'ISO-8859-1')
         res_str = translate(pat_str)
         res = bytes(res_str, 'ISO-8859-1')
-    else:
+    sonst:
         res = translate(pat)
     return re.compile(res).match
 
@@ -55,14 +55,14 @@ def filter(names, pat):
     result = []
     pat = os.path.normcase(pat)
     match = _compile_pattern(pat)
-    if os.path is posixpath:
+    wenn os.path is posixpath:
         # normcase on posix is NOP. Optimize it away from the loop.
         fuer name in names:
-            if match(name):
+            wenn match(name):
                 result.append(name)
-    else:
+    sonst:
         fuer name in names:
-            if match(os.path.normcase(name)):
+            wenn match(os.path.normcase(name)):
                 result.append(name)
     return result
 
@@ -71,13 +71,13 @@ def filterfalse(names, pat):
     """Construct a list from those elements of the iterable NAMES that do not match PAT."""
     pat = os.path.normcase(pat)
     match = _compile_pattern(pat)
-    if os.path is posixpath:
+    wenn os.path is posixpath:
         # normcase on posix is NOP. Optimize it away from the loop.
         return list(itertools.filterfalse(match, names))
 
     result = []
     fuer name in names:
-        if match(os.path.normcase(name)) is None:
+        wenn match(os.path.normcase(name)) is None:
             result.append(name)
     return result
 
@@ -115,47 +115,47 @@ def _translate(pat, star, question_mark):
     while i < n:
         c = pat[i]
         i = i+1
-        if c == '*':
+        wenn c == '*':
             # store the position of the wildcard
             star_indices.append(len(res))
             add(star)
             # compress consecutive `*` into one
             while i < n and pat[i] == '*':
                 i += 1
-        elif c == '?':
+        sowenn c == '?':
             add(question_mark)
-        elif c == '[':
+        sowenn c == '[':
             j = i
-            if j < n and pat[j] == '!':
+            wenn j < n and pat[j] == '!':
                 j = j+1
-            if j < n and pat[j] == ']':
+            wenn j < n and pat[j] == ']':
                 j = j+1
             while j < n and pat[j] != ']':
                 j = j+1
-            if j >= n:
+            wenn j >= n:
                 add('\\[')
-            else:
+            sonst:
                 stuff = pat[i:j]
-                if '-' not in stuff:
+                wenn '-' not in stuff:
                     stuff = stuff.replace('\\', r'\\')
-                else:
+                sonst:
                     chunks = []
-                    k = i+2 if pat[i] == '!' else i+1
+                    k = i+2 wenn pat[i] == '!' sonst i+1
                     while True:
                         k = pat.find('-', k, j)
-                        if k < 0:
+                        wenn k < 0:
                             break
                         chunks.append(pat[i:k])
                         i = k+1
                         k = k+3
                     chunk = pat[i:j]
-                    if chunk:
+                    wenn chunk:
                         chunks.append(chunk)
-                    else:
+                    sonst:
                         chunks[-1] += '-'
                     # Remove empty ranges -- invalid in RE.
                     fuer k in range(len(chunks)-1, 0, -1):
-                        if chunks[k-1][-1] > chunks[k][0]:
+                        wenn chunks[k-1][-1] > chunks[k][0]:
                             chunks[k-1] = chunks[k-1][:-1] + chunks[k][1:]
                             del chunks[k]
                     # Escape backslashes and hyphens fuer set difference (--).
@@ -163,28 +163,28 @@ def _translate(pat, star, question_mark):
                     stuff = '-'.join(s.replace('\\', r'\\').replace('-', r'\-')
                                      fuer s in chunks)
                 i = j+1
-                if not stuff:
+                wenn not stuff:
                     # Empty range: never match.
                     add('(?!)')
-                elif stuff == '!':
+                sowenn stuff == '!':
                     # Negated empty range: match any character.
                     add('.')
-                else:
+                sonst:
                     # Escape set operations (&&, ~~ and ||).
                     stuff = _re_setops_sub(r'\\\1', stuff)
-                    if stuff[0] == '!':
+                    wenn stuff[0] == '!':
                         stuff = '^' + stuff[1:]
-                    elif stuff[0] in ('^', '['):
+                    sowenn stuff[0] in ('^', '['):
                         stuff = '\\' + stuff
                     add(f'[{stuff}]')
-        else:
+        sonst:
             add(_re_escape(c))
     assert i == n
     return res, star_indices
 
 
 def _join_translated_parts(parts, star_indices):
-    if not star_indices:
+    wenn not star_indices:
         return fr'(?s:{"".join(parts)})\z'
     iter_star_indices = iter(star_indices)
     j = next(iter_star_indices)

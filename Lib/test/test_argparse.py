@@ -146,13 +146,13 @@ klasse ArgumentParserError(Exception):
 
 
 def stderr_to_parser_error(parse_args, *args, **kwargs):
-    # if this is being called recursively and stderr or stdout is already being
+    # wenn this is being called recursively and stderr or stdout is already being
     # redirected, simply call the function and let the enclosing function
     # catch the exception
-    if isinstance(sys.stderr, StdIOBuffer) or isinstance(sys.stdout, StdIOBuffer):
+    wenn isinstance(sys.stderr, StdIOBuffer) or isinstance(sys.stdout, StdIOBuffer):
         return parse_args(*args, **kwargs)
 
-    # if this is not being called recursively, redirect stderr and
+    # wenn this is not being called recursively, redirect stderr and
     # use it as the ArgumentParserError message
     old_stdout = sys.stdout
     old_stderr = sys.stderr
@@ -163,13 +163,13 @@ def stderr_to_parser_error(parse_args, *args, **kwargs):
             result = parse_args(*args, **kwargs)
             fuer key in list(vars(result)):
                 attr = getattr(result, key)
-                if attr is sys.stdout:
+                wenn attr is sys.stdout:
                     setattr(result, key, old_stdout)
-                elif attr is sys.stdout.buffer:
+                sowenn attr is sys.stdout.buffer:
                     setattr(result, key, getattr(old_stdout, 'buffer', BIN_STDOUT_SENTINEL))
-                elif attr is sys.stderr:
+                sowenn attr is sys.stderr:
                     setattr(result, key, old_stderr)
-                elif attr is sys.stderr.buffer:
+                sowenn attr is sys.stderr.buffer:
                     setattr(result, key, getattr(old_stderr, 'buffer', BIN_STDERR_SENTINEL))
             return result
         except SystemExit as e:
@@ -215,13 +215,13 @@ klasse ParserTesterMetaclass(type):
     """
 
     def __init__(cls, name, bases, bodydict):
-        if name == 'ParserTestCase':
+        wenn name == 'ParserTestCase':
             return
 
         # default parser signature is empty
-        if not hasattr(cls, 'parser_signature'):
+        wenn not hasattr(cls, 'parser_signature'):
             cls.parser_signature = Sig()
-        if not hasattr(cls, 'parser_class'):
+        wenn not hasattr(cls, 'parser_class'):
             cls.parser_class = ErrorRaisingArgumentParser
 
         # ---------------------------------------
@@ -301,7 +301,7 @@ klasse ParserTesterMetaclass(type):
             def test_successes(self, tester):
                 parser = self._get_parser(tester)
                 fuer args, expected_ns in tester.successes:
-                    if isinstance(args, str):
+                    wenn isinstance(args, str):
                         args = args.split()
                     with tester.subTest(args=args):
                         result_ns = self._parse_args(parser, args)
@@ -1742,14 +1742,14 @@ klasse TestArgumentsFromFile(TempDirMixin, ParserTestCase):
         ('X @recursive Z -a B', NS(a='B', x='X', y=[hello, 'Z'])),
         (["-a", "", "X", "Y"], NS(a='', x='X', y=['Y'])),
     ]
-    if os_helper.TESTFN_UNDECODABLE:
+    wenn os_helper.TESTFN_UNDECODABLE:
         undecodable = os_helper.TESTFN_UNDECODABLE.lstrip(b'@')
         decoded_undecodable = os.fsdecode(undecodable)
         successes += [
             ('@undecodable X', NS(a=None, x=decoded_undecodable, y=['X'])),
             ('X @undecodable', NS(a=None, x='X', y=[decoded_undecodable])),
         ]
-    else:
+    sonst:
         undecodable = b''
 
 
@@ -1769,7 +1769,7 @@ klasse TestArgumentsFromFileConverter(TempDirMixin, ParserTestCase):
 
         def convert_arg_line_to_args(self, arg_line):
             fuer arg in arg_line.split():
-                if not arg.strip():
+                wenn not arg.strip():
                     continue
                 yield arg
     parser_class = FromFileConverterArgumentParser
@@ -1839,11 +1839,11 @@ klasse StdStreamComparer:
         # so we use a sentinel simply to show that the tests do the right thing
         # fuer any buffer supporting object
         self.getattr = operator.attrgetter(attr)
-        if attr == 'stdout.buffer':
+        wenn attr == 'stdout.buffer':
             self.backupattr = BIN_STDOUT_SENTINEL
-        elif attr == 'stderr.buffer':
+        sowenn attr == 'stderr.buffer':
             self.backupattr = BIN_STDERR_SENTINEL
-        else:
+        sonst:
             self.backupattr = object() # Not equal to anything
 
     def __eq__(self, other):
@@ -1868,12 +1868,12 @@ klasse RFile(object):
         self.name = name
 
     def __eq__(self, other):
-        if other in self.seen:
+        wenn other in self.seen:
             text = self.seen[other]
-        else:
+        sonst:
             text = self.seen[other] = other.read()
             other.close()
-        if not isinstance(text, str):
+        wenn not isinstance(text, str):
             text = text.decode('ascii')
         return self.name == other.name == text
 
@@ -1948,9 +1948,9 @@ klasse WFile(object):
         self.name = name
 
     def __eq__(self, other):
-        if other not in self.seen:
+        wenn other not in self.seen:
             text = 'Check that file is writable.'
-            if 'b' in other.mode:
+            wenn 'b' in other.mode:
                 text = text.encode('ascii')
             other.write(text)
             other.close()
@@ -2056,7 +2056,7 @@ klasse TestFileTypeOpenArgs(TestCase):
 
 klasse TestFileTypeMissingInitialization(TestCase):
     """
-    Test that add_argument throws an error if FileType class
+    Test that add_argument throws an error wenn FileType class
     object was passed instead of instance of FileType
     """
 
@@ -2167,11 +2167,11 @@ klasse TestActionUserDefined(ParserTestCase):
                 # when option is before argument, badger=2, and when
                 # option is after argument, badger=<whatever was set>
                 expected_ns = NS(spam=0.25)
-                if value in [0.125, 0.625]:
+                wenn value in [0.125, 0.625]:
                     expected_ns.badger = 2
-                elif value in [2.0]:
+                sowenn value in [2.0]:
                     expected_ns.badger = 84
-                else:
+                sonst:
                     raise AssertionError('value: %s' % value)
                 assert expected_ns == namespace, ('expected %s, got %s' %
                                                   (expected_ns, namespace))
@@ -2190,13 +2190,13 @@ klasse TestActionUserDefined(ParserTestCase):
                 # when argument is before option, spam=0.25, and when
                 # option is after argument, spam=<whatever was set>
                 expected_ns = NS(badger=2)
-                if value in [42, 84]:
+                wenn value in [42, 84]:
                     expected_ns.spam = 0.25
-                elif value in [1]:
+                sowenn value in [1]:
                     expected_ns.spam = 0.625
-                elif value in [2]:
+                sowenn value in [2]:
                     expected_ns.spam = 0.125
-                else:
+                sonst:
                     raise AssertionError('value: %s' % value)
                 assert expected_ns == namespace, ('expected %s, got %s' %
                                                   (expected_ns, namespace))
@@ -2418,13 +2418,13 @@ klasse TestAddSubparsers(TestCase):
     def _get_parser(self, subparser_help=False, prefix_chars=None,
                     aliases=False, usage=None):
         # create a parser with a subparsers argument
-        if prefix_chars:
+        wenn prefix_chars:
             parser = ErrorRaisingArgumentParser(
                 prog='PROG', description='main description', usage=usage,
                 prefix_chars=prefix_chars)
             parser.add_argument(
                 prefix_chars[0] * 2 + 'foo', action='store_true', help='foo help')
-        else:
+        sonst:
             parser = ErrorRaisingArgumentParser(
                 prog='PROG', description='main description', usage=usage)
             parser.add_argument(
@@ -2434,10 +2434,10 @@ klasse TestAddSubparsers(TestCase):
 
         # check that only one subparsers argument can be added
         subparsers_kwargs = {'required': False}
-        if aliases:
+        wenn aliases:
             subparsers_kwargs['metavar'] = 'COMMAND'
             subparsers_kwargs['title'] = 'commands'
-        else:
+        sonst:
             subparsers_kwargs['help'] = 'command help'
         subparsers = parser.add_subparsers(**subparsers_kwargs)
         self.assertRaisesRegex(ValueError,
@@ -2446,9 +2446,9 @@ klasse TestAddSubparsers(TestCase):
 
         # add first sub-parser
         parser1_kwargs = dict(description='1 description')
-        if subparser_help:
+        wenn subparser_help:
             parser1_kwargs['help'] = '1 help'
-        if aliases:
+        wenn aliases:
             parser1_kwargs['aliases'] = ['1alias1', '1alias2']
         parser1 = subparsers.add_parser('1', **parser1_kwargs)
         parser1.add_argument('-w', type=int, help='w help')
@@ -2456,7 +2456,7 @@ klasse TestAddSubparsers(TestCase):
 
         # add second sub-parser
         parser2_kwargs = dict(description='2 description')
-        if subparser_help:
+        wenn subparser_help:
             parser2_kwargs['help'] = '2 help'
         parser2 = subparsers.add_parser('2', **parser2_kwargs)
         parser2.add_argument('-y', choices=['1', '2', '3'], help='y help')
@@ -2465,7 +2465,7 @@ klasse TestAddSubparsers(TestCase):
         # add third sub-parser
         parser3_kwargs = dict(description='3 description',
                               usage='PROG --foo bar 3 t ...')
-        if subparser_help:
+        wenn subparser_help:
             parser3_kwargs['help'] = '3 help'
         parser3 = subparsers.add_parser('3', **parser3_kwargs)
         parser3.add_argument('t', type=int, help='t help')
@@ -2706,7 +2706,7 @@ klasse TestAddSubparsers(TestCase):
             '''))
 
     def test_help_extra_prefix_chars(self):
-        # Make sure - is still used fuer help if it is a non-first prefix char
+        # Make sure - is still used fuer help wenn it is a non-first prefix char
         parser = self._get_parser(prefix_chars='+:-')
         self.assertEqual(parser.format_usage(),
                          'usage: PROG [-h] [++foo] bar {1,2,3} ...\n')
@@ -3992,7 +3992,7 @@ klasse TestNamespaceContainsSimple(TestCase):
 klasse TestHelpFormattingMetaclass(type):
 
     def __init__(cls, name, bases, bodydict):
-        if name == 'HelpTestCase':
+        wenn name == 'HelpTestCase':
             return
 
         klasse AddTests(object):
@@ -4029,7 +4029,7 @@ klasse TestHelpFormattingMetaclass(type):
                         group.add_argument(*argument_sig.args,
                                            **argument_sig.kwargs)
                 subparsers_sigs = getattr(tester, 'subparsers_signatures', [])
-                if subparsers_sigs:
+                wenn subparsers_sigs:
                     subparsers = parser.add_subparsers()
                     fuer subparser_sig in subparsers_sigs:
                         subparsers.add_parser(*subparser_sig.args,
@@ -5114,7 +5114,7 @@ klasse TestHelpNoHelpOptional(HelpTestCase):
 
 
 klasse TestHelpNone(HelpTestCase):
-    """Test that no errors occur if no help is specified"""
+    """Test that no errors occur wenn no help is specified"""
 
     parser_signature = Sig(prog='PROG')
     argument_signatures = [
@@ -5675,7 +5675,7 @@ klasse TestInvalidArgumentConstructors(TestCase):
         fuer action in ['store', 'append', 'extend']:
             with self.subTest(action=action):
                 # nargs=0 is disallowed
-                action_name = 'append' if action == 'extend' else action
+                action_name = 'append' wenn action == 'extend' sonst action
                 self.assertValueError('-x', nargs=0, action=action,
                     errmsg=f'nargs fuer {action_name} actions must be != 0')
                 self.assertValueError('spam', nargs=0, action=action,
@@ -5719,9 +5719,9 @@ klasse TestInvalidArgumentConstructors(TestCase):
                          const,
                          default,
                          required=False):
-                if dest == 'spam':
-                    if const is Success:
-                        if default is Success:
+                wenn dest == 'spam':
+                    wenn const is Success:
+                        wenn default is Success:
                             raise Success()
 
             def __call__(self, *args, **kwargs):
@@ -6791,7 +6791,7 @@ klasse TestAddArgumentMetavar(TestCase):
 klasse TestInvalidNargs(TestCase):
 
     EXPECTED_INVALID_MESSAGE = "invalid nargs value"
-    EXPECTED_RANGE_MESSAGE = ("nargs fuer store actions must be != 0; if you "
+    EXPECTED_RANGE_MESSAGE = ("nargs fuer store actions must be != 0; wenn you "
                               "have nothing to store, actions such as store "
                               "true or store const may be more appropriate")
 
@@ -6830,8 +6830,8 @@ klasse TestImportStar(TestCase):
         items = [
             name
             fuer name, value in vars(argparse).items()
-            if not (name.startswith("_") or name == 'ngettext')
-            if not inspect.ismodule(value)
+            wenn not (name.startswith("_") or name == 'ngettext')
+            wenn not inspect.ismodule(value)
         ]
         self.assertEqual(sorted(items), sorted(argparse.__all__))
 
@@ -7029,7 +7029,7 @@ klasse TestProgName(TestCase):
 
     def make_script(self, dirname, basename, *, compiled=False):
         script_name = script_helper.make_script(dirname, basename, self.source)
-        if not compiled:
+        wenn not compiled:
             return script_name
         py_compile.compile(script_name, doraise=True)
         os.remove(script_name)
@@ -7127,7 +7127,7 @@ klasse TestColorized(TestCase):
 
     def setUp(self):
         super().setUp()
-        # Ensure color even if ran with NO_COLOR=1
+        # Ensure color even wenn ran with NO_COLOR=1
         _colorize.can_colorize = lambda *args, **kwargs: True
         self.theme = _colorize.get_theme(force_color=True).argparse
 
@@ -7362,9 +7362,9 @@ def tearDownModule():
     WFile.seen = set()
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     # To regenerate translation snapshots
-    if len(sys.argv) > 1 and sys.argv[1] == '--snapshot-update':
+    wenn len(sys.argv) > 1 and sys.argv[1] == '--snapshot-update':
         update_translation_snapshots(argparse)
         sys.exit(0)
     unittest.main()

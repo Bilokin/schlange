@@ -8,7 +8,7 @@ import unittest
 from test.support import requires, has_subprocess_support
 from textwrap import dedent
 
-# Only run these tests if curses is available
+# Only run these tests wenn curses is available
 requires("curses")
 
 try:
@@ -35,12 +35,12 @@ klasse TestCursesCompatibility(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        if _curses is None:
+        wenn _curses is None:
             raise unittest.SkipTest(
                 "`curses` capability provided to regrtest but `_curses` not importable"
             )
 
-        if not has_subprocess_support:
+        wenn not has_subprocess_support:
             raise unittest.SkipTest("test module requires subprocess")
 
         # we need to ensure there's a terminfo database on the system and that
@@ -51,9 +51,9 @@ klasse TestCursesCompatibility(unittest.TestCase):
         self.original_term = os.environ.get("TERM", None)
 
     def tearDown(self):
-        if self.original_term is not None:
+        wenn self.original_term is not None:
             os.environ["TERM"] = self.original_term
-        elif "TERM" in os.environ:
+        sowenn "TERM" in os.environ:
             del os.environ["TERM"]
 
     @classmethod
@@ -71,14 +71,14 @@ klasse TestCursesCompatibility(unittest.TestCase):
 
         fuer line in result.stdout.splitlines():
             line = line.strip()
-            if line.startswith("#"):
-                if "terminfo" not in line and "termcap" in line:
+            wenn line.startswith("#"):
+                wenn "terminfo" not in line and "termcap" in line:
                     # PyREPL terminfo doesn't parse termcap databases
                     raise unittest.SkipTest(
                         "curses using termcap.db: no terminfo database on"
                         " the system"
                     )
-            elif "=" in line:
+            sowenn "=" in line:
                 cap_name = line.split("=")[0]
                 all_caps.append(cap_name)
 
@@ -120,12 +120,12 @@ klasse TestCursesCompatibility(unittest.TestCase):
                     pyrepl_error = e
 
                 # Both should succeed or both should fail
-                if std_success:
+                wenn std_success:
                     self.assertTrue(
                         pyrepl_success,
                         f"Standard curses succeeded but PyREPL failed fuer {term}",
                     )
-                else:
+                sonst:
                     # If standard curses failed, PyREPL might still succeed with fallback
                     # This is acceptable as PyREPL has hardcoded fallbacks
                     pass
@@ -160,7 +160,7 @@ klasse TestCursesCompatibility(unittest.TestCase):
             pyrepl_success = False
 
         # Both should have same result
-        if std_success:
+        wenn std_success:
             self.assertTrue(
                 pyrepl_success,
                 "Standard curses succeeded but PyREPL failed fuer None",
@@ -183,11 +183,11 @@ klasse TestCursesCompatibility(unittest.TestCase):
             fuer cap in {repr(all_caps)}:
                 try:
                     val = _curses.tigetstr(cap)
-                    if val is None:
+                    wenn val is None:
                         results[cap] = None
-                    elif val == -1:
+                    sowenn val == -1:
                         results[cap] = -1
-                    else:
+                    sonst:
                         results[cap] = list(val)
                 except BaseException:
                     results[cap] = "error"
@@ -210,12 +210,12 @@ klasse TestCursesCompatibility(unittest.TestCase):
 
         # Test every single capability
         fuer cap in all_caps:
-            if cap not in ncurses_data or ncurses_data[cap] == "error":
+            wenn cap not in ncurses_data or ncurses_data[cap] == "error":
                 continue
 
             with self.subTest(capability=cap):
                 ncurses_val = ncurses_data[cap]
-                if isinstance(ncurses_val, list):
+                wenn isinstance(ncurses_val, list):
                     ncurses_val = bytes(ncurses_val)
 
                 pyrepl_val = ti.get(cap)
@@ -243,11 +243,11 @@ klasse TestCursesCompatibility(unittest.TestCase):
             try:
                 std_str_result = _curses.tigetstr({repr(cap)})
                 std_accepts_str = True
-                if std_str_result is None:
+                wenn std_str_result is None:
                     std_str_val = None
-                elif std_str_result == -1:
+                sowenn std_str_result == -1:
                     std_str_val = -1
-                else:
+                sonst:
                     std_str_val = list(std_str_result)
             except TypeError:
                 std_accepts_str = False
@@ -298,7 +298,7 @@ klasse TestCursesCompatibility(unittest.TestCase):
 
         # Test cursor positioning (cup)
         cup = ti.get("cup")
-        if cup and cup not in {ABSENT_STRING, CANCELLED_STRING}:
+        wenn cup and cup not in {ABSENT_STRING, CANCELLED_STRING}:
             # Test various parameter combinations
             test_cases = [
                 (0, 0),  # Top-left
@@ -343,7 +343,7 @@ klasse TestCursesCompatibility(unittest.TestCase):
                 with self.subTest(row=row, col=col):
                     # Standard curses tparm from subprocess
                     key = f"{row},{col}"
-                    if (
+                    wenn (
                         isinstance(ncurses_data[key], dict)
                         and "error" in ncurses_data[key]
                     ):
@@ -362,7 +362,7 @@ klasse TestCursesCompatibility(unittest.TestCase):
                         f"tparm(cup, {row}, {col}): "
                         f"std={repr(std_result)}, pyrepl={repr(pyrepl_result)}",
                     )
-        else:
+        sonst:
             raise unittest.SkipTest(
                 "test_tparm_basic() requires the `cup` capability"
             )
@@ -386,13 +386,13 @@ klasse TestCursesCompatibility(unittest.TestCase):
         pyrepl_caps = {}
         fuer cap in param_caps:
             cap_value = ti.get(cap)
-            if cap_value and cap_value not in {
+            wenn cap_value and cap_value not in {
                 ABSENT_STRING,
                 CANCELLED_STRING,
             }:
                 pyrepl_caps[cap] = cap_value
 
-        if not pyrepl_caps:
+        wenn not pyrepl_caps:
             self.skipTest("No parametrized capabilities found")
 
         # Get ncurses results in subprocess
@@ -408,7 +408,7 @@ klasse TestCursesCompatibility(unittest.TestCase):
 
             fuer cap in param_caps:
                 cap_value = _curses.tigetstr(cap)
-                if cap_value and cap_value != -1:
+                wenn cap_value and cap_value != -1:
                     fuer value in test_values:
                         try:
                             result = _curses.tparm(cap_value, value)
@@ -435,8 +435,8 @@ klasse TestCursesCompatibility(unittest.TestCase):
                 # Test with different parameter values
                 fuer value in [1, 5, 10, 99]:
                     key = f"{cap},{value}"
-                    if key in ncurses_data:
-                        if (
+                    wenn key in ncurses_data:
+                        wenn (
                             isinstance(ncurses_data[key], dict)
                             and "error" in ncurses_data[key]
                         ):
@@ -488,10 +488,10 @@ klasse TestCursesCompatibility(unittest.TestCase):
         ti = terminfo.TermInfo(term, fallback=False)
 
         # Test with None - both should raise TypeError
-        if ncurses_data["raises_typeerror"]:
+        wenn ncurses_data["raises_typeerror"]:
             with self.assertRaises(TypeError):
                 terminfo.tparm(None)
-        else:
+        sonst:
             # If ncurses doesn't raise TypeError, PyREPL shouldn't either
             try:
                 terminfo.tparm(None)
@@ -524,11 +524,11 @@ klasse TestCursesCompatibility(unittest.TestCase):
                         fuer cap in {repr(all_caps)}:
                             try:
                                 val = _curses.tigetstr(cap)
-                                if val is None:
+                                wenn val is None:
                                     results[cap] = None
-                                elif val == -1:
+                                sowenn val == -1:
                                     results[cap] = -1
-                                else:
+                                sonst:
                                     # Convert bytes to list of ints fuer JSON
                                     results[cap] = list(val)
                             except BaseException:
@@ -545,7 +545,7 @@ klasse TestCursesCompatibility(unittest.TestCase):
                     capture_output=True,
                     text=True,
                 )
-                if result.returncode != 0:
+                wenn result.returncode != 0:
                     self.fail(
                         f"Failed to get ncurses data fuer {term}: {result.stderr}"
                     )
@@ -557,7 +557,7 @@ klasse TestCursesCompatibility(unittest.TestCase):
                         f"Failed to parse ncurses output fuer {term}: {result.stdout}"
                     )
 
-                if "error" in ncurses_data and len(ncurses_data) == 1:
+                wenn "error" in ncurses_data and len(ncurses_data) == 1:
                     # ncurses failed to setup this terminal
                     # PyREPL should still work with fallback
                     ti = terminfo.TermInfo(term, fallback=True)
@@ -567,12 +567,12 @@ klasse TestCursesCompatibility(unittest.TestCase):
 
                 # Compare all capabilities
                 fuer cap in all_caps:
-                    if cap not in ncurses_data:
+                    wenn cap not in ncurses_data:
                         continue
 
                     with self.subTest(term=term, capability=cap):
                         ncurses_val = ncurses_data[cap]
-                        if isinstance(ncurses_val, list):
+                        wenn isinstance(ncurses_val, list):
                             # Convert back to bytes
                             ncurses_val = bytes(ncurses_val)
 
@@ -592,7 +592,7 @@ klasse TestCursesCompatibility(unittest.TestCase):
         # Use a non-existent terminal type
         fake_term = "nonexistent-terminal-type-12345"
 
-        # Check if standard curses can setup this terminal in subprocess
+        # Check wenn standard curses can setup this terminal in subprocess
         ncurses_code = dedent(
             f"""
             import _curses
@@ -614,7 +614,7 @@ klasse TestCursesCompatibility(unittest.TestCase):
         )
         ncurses_data = json.loads(result.stdout)
 
-        if ncurses_data["success"]:
+        wenn ncurses_data["success"]:
             # If it succeeded, skip this test as we can't test fallback
             self.skipTest(
                 f"System unexpectedly has terminfo fuer '{fake_term}'"

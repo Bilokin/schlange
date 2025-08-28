@@ -19,14 +19,14 @@ klasse TkLoadTest(unittest.TestCase):
 
     def testLoadTkFailure(self):
         old_display = None
-        if sys.platform.startswith(('win', 'darwin', 'cygwin')):
+        wenn sys.platform.startswith(('win', 'darwin', 'cygwin')):
             # no failure possible on windows?
 
             # XXX Maybe on tk older than 8.4.13 it would be possible,
             # see tkinter.h.
             return
         with os_helper.EnvironmentVarGuard() as env:
-            if 'DISPLAY' in os.environ:
+            wenn 'DISPLAY' in os.environ:
                 del env['DISPLAY']
                 # on some platforms, deleting environment variables
                 # doesn't actually carry through to the process level
@@ -34,7 +34,7 @@ klasse TkLoadTest(unittest.TestCase):
                 # If that's the case, abort.
                 with os.popen('echo $DISPLAY') as pipe:
                     display = pipe.read().strip()
-                if display:
+                wenn display:
                     return
 
             tcl = Tcl()
@@ -42,5 +42,5 @@ klasse TkLoadTest(unittest.TestCase):
             self.assertRaises(TclError, tcl.loadtk)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

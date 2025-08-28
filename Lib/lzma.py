@@ -94,39 +94,39 @@ klasse LZMAFile(_streams.BaseStream):
         self._closefp = False
         self._mode = None
 
-        if mode in ("r", "rb"):
-            if check != -1:
+        wenn mode in ("r", "rb"):
+            wenn check != -1:
                 raise ValueError("Cannot specify an integrity check "
                                  "when opening a file fuer reading")
-            if preset is not None:
+            wenn preset is not None:
                 raise ValueError("Cannot specify a preset compression "
                                  "level when opening a file fuer reading")
-            if format is None:
+            wenn format is None:
                 format = FORMAT_AUTO
             mode_code = _MODE_READ
-        elif mode in ("w", "wb", "a", "ab", "x", "xb"):
-            if format is None:
+        sowenn mode in ("w", "wb", "a", "ab", "x", "xb"):
+            wenn format is None:
                 format = FORMAT_XZ
             mode_code = _MODE_WRITE
             self._compressor = LZMACompressor(format=format, check=check,
                                               preset=preset, filters=filters)
             self._pos = 0
-        else:
+        sonst:
             raise ValueError("Invalid mode: {!r}".format(mode))
 
-        if isinstance(filename, (str, bytes, os.PathLike)):
-            if "b" not in mode:
+        wenn isinstance(filename, (str, bytes, os.PathLike)):
+            wenn "b" not in mode:
                 mode += "b"
             self._fp = builtins.open(filename, mode)
             self._closefp = True
             self._mode = mode_code
-        elif hasattr(filename, "read") or hasattr(filename, "write"):
+        sowenn hasattr(filename, "read") or hasattr(filename, "write"):
             self._fp = filename
             self._mode = mode_code
-        else:
+        sonst:
             raise TypeError("filename must be a str, bytes, file or PathLike object")
 
-        if self._mode == _MODE_READ:
+        wenn self._mode == _MODE_READ:
             raw = _streams.DecompressReader(self._fp, LZMADecompressor,
                 trailing_error=LZMAError, format=format, filters=filters)
             self._buffer = io.BufferedReader(raw)
@@ -137,18 +137,18 @@ klasse LZMAFile(_streams.BaseStream):
         May be called more than once without error. Once the file is
         closed, any other operation on it will raise a ValueError.
         """
-        if self.closed:
+        wenn self.closed:
             return
         try:
-            if self._mode == _MODE_READ:
+            wenn self._mode == _MODE_READ:
                 self._buffer.close()
                 self._buffer = None
-            elif self._mode == _MODE_WRITE:
+            sowenn self._mode == _MODE_WRITE:
                 self._fp.write(self._compressor.flush())
                 self._compressor = None
         finally:
             try:
-                if self._closefp:
+                wenn self._closefp:
                     self._fp.close()
             finally:
                 self._fp = None
@@ -156,7 +156,7 @@ klasse LZMAFile(_streams.BaseStream):
 
     @property
     def closed(self):
-        """True if this file is closed."""
+        """True wenn this file is closed."""
         return self._fp is None
 
     @property
@@ -166,7 +166,7 @@ klasse LZMAFile(_streams.BaseStream):
 
     @property
     def mode(self):
-        return 'wb' if self._mode == _MODE_WRITE else 'rb'
+        return 'wb' wenn self._mode == _MODE_WRITE sonst 'rb'
 
     def fileno(self):
         """Return the file descriptor fuer the underlying file."""
@@ -202,7 +202,7 @@ klasse LZMAFile(_streams.BaseStream):
         """Read up to size uncompressed bytes from the file.
 
         If size is negative or omitted, read until EOF is reached.
-        Returns b"" if the file is already at EOF.
+        Returns b"" wenn the file is already at EOF.
         """
         self._check_can_read()
         return self._buffer.read(size)
@@ -210,12 +210,12 @@ klasse LZMAFile(_streams.BaseStream):
     def read1(self, size=-1):
         """Read up to size uncompressed bytes, while trying to avoid
         making multiple reads from the underlying stream. Reads up to a
-        buffer's worth of data if size is negative.
+        buffer's worth of data wenn size is negative.
 
-        Returns b"" if the file is at EOF.
+        Returns b"" wenn the file is at EOF.
         """
         self._check_can_read()
-        if size < 0:
+        wenn size < 0:
             size = io.DEFAULT_BUFFER_SIZE
         return self._buffer.read1(size)
 
@@ -224,7 +224,7 @@ klasse LZMAFile(_streams.BaseStream):
 
         The terminating newline (if present) is retained. If size is
         non-negative, no more than size bytes will be read (in which
-        case the line may be incomplete). Returns b'' if already at EOF.
+        case the line may be incomplete). Returns b'' wenn already at EOF.
         """
         self._check_can_read()
         return self._buffer.readline(size)
@@ -238,9 +238,9 @@ klasse LZMAFile(_streams.BaseStream):
         is called.
         """
         self._check_can_write()
-        if isinstance(data, (bytes, bytearray)):
+        wenn isinstance(data, (bytes, bytearray)):
             length = len(data)
-        else:
+        sonst:
             # accept any data that supports the buffer protocol
             data = memoryview(data)
             length = data.nbytes
@@ -271,7 +271,7 @@ klasse LZMAFile(_streams.BaseStream):
     def tell(self):
         """Return the current file position."""
         self._check_not_closed()
-        if self._mode == _MODE_READ:
+        wenn self._mode == _MODE_READ:
             return self._buffer.tell()
         return self._pos
 
@@ -302,25 +302,25 @@ def open(filename, mode="rb", *,
     handling behavior, and line ending(s).
 
     """
-    if "t" in mode:
-        if "b" in mode:
+    wenn "t" in mode:
+        wenn "b" in mode:
             raise ValueError("Invalid mode: %r" % (mode,))
-    else:
-        if encoding is not None:
+    sonst:
+        wenn encoding is not None:
             raise ValueError("Argument 'encoding' not supported in binary mode")
-        if errors is not None:
+        wenn errors is not None:
             raise ValueError("Argument 'errors' not supported in binary mode")
-        if newline is not None:
+        wenn newline is not None:
             raise ValueError("Argument 'newline' not supported in binary mode")
 
     lz_mode = mode.replace("t", "")
     binary_file = LZMAFile(filename, lz_mode, format=format, check=check,
                            preset=preset, filters=filters)
 
-    if "t" in mode:
+    wenn "t" in mode:
         encoding = io.text_encoding(encoding)
         return io.TextIOWrapper(binary_file, encoding, errors, newline)
-    else:
+    sonst:
         return binary_file
 
 
@@ -350,15 +350,15 @@ def decompress(data, format=FORMAT_AUTO, memlimit=None, filters=None):
         try:
             res = decomp.decompress(data)
         except LZMAError:
-            if results:
+            wenn results:
                 break  # Leftover data is not a valid LZMA/XZ stream; ignore it.
-            else:
+            sonst:
                 raise  # Error on the first iteration; bail out.
         results.append(res)
-        if not decomp.eof:
+        wenn not decomp.eof:
             raise LZMAError("Compressed data ended before the "
                             "end-of-stream marker was reached")
         data = decomp.unused_data
-        if not data:
+        wenn not data:
             break
     return b"".join(results)

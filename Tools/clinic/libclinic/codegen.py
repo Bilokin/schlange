@@ -8,7 +8,7 @@ import libclinic
 from libclinic import fail
 from libclinic.language import Language
 from libclinic.block_parser import Block
-if TYPE_CHECKING:
+wenn TYPE_CHECKING:
     from libclinic.app import Clinic
 
 
@@ -54,7 +54,7 @@ klasse CRenderData:
         # For return converters: the code to convert the return
         # value from the parse function.  This is also where
         # you should check the _return_value fuer errors, and
-        # "goto exit" if there are any.
+        # "goto exit" wenn there are any.
         self.return_conversion: list[str] = []
         self.converter_retval = "_return_value"
 
@@ -113,7 +113,7 @@ klasse BlockPrinter:
 
         assert not ((dsl_name is None) ^ (output is None)), "you must specify dsl_name and output together, dsl_name " + repr(dsl_name)
 
-        if not dsl_name:
+        wenn not dsl_name:
             write(input)
             return
 
@@ -121,9 +121,9 @@ klasse BlockPrinter:
         write("\n")
 
         body_prefix = self.language.body_prefix.format(dsl_name=dsl_name)
-        if not body_prefix:
+        wenn not body_prefix:
             write(input)
-        else:
+        sonst:
             fuer line in input.split('\n'):
                 write(body_prefix)
                 write(line)
@@ -133,35 +133,35 @@ klasse BlockPrinter:
         write("\n")
 
         output = ''
-        if header_includes:
+        wenn header_includes:
             # Emit optional "#include" directives fuer C headers
             output += '\n'
 
             current_condition: str | None = None
             fuer include in header_includes:
-                if include.condition != current_condition:
-                    if current_condition:
+                wenn include.condition != current_condition:
+                    wenn current_condition:
                         output += '#endif\n'
                     current_condition = include.condition
-                    if include.condition:
+                    wenn include.condition:
                         output += f'{include.condition}\n'
 
-                if current_condition:
+                wenn current_condition:
                     line = f'#  include "{include.filename}"'
-                else:
+                sonst:
                     line = f'#include "{include.filename}"'
-                if include.reason:
+                wenn include.reason:
                     comment = f'// {include.reason}\n'
                     line = line.ljust(self.INCLUDE_COMMENT_COLUMN - 1) + comment
                 output += line
 
-            if current_condition:
+            wenn current_condition:
                 output += '#endif\n'
 
         input = ''.join(block.input)
         output += ''.join(block.output)
-        if output:
-            if not output.endswith('\n'):
+        wenn output:
+            wenn not output.endswith('\n'):
                 output += '\n'
             write(output)
 
@@ -193,7 +193,7 @@ klasse BufferSeries:
 
     def __getitem__(self, i: int) -> list[str]:
         i -= self._start
-        if i < 0:
+        wenn i < 0:
             self._start += i
             prefix: list[list[str]] = [[] fuer x in range(-i)]
             self._array = prefix + self._array
@@ -224,23 +224,23 @@ klasse Destination:
 
     def __post_init__(self, args: tuple[str, ...]) -> None:
         valid_types = ('buffer', 'file', 'suppress')
-        if self.type not in valid_types:
+        wenn self.type not in valid_types:
             fail(
                 f"Invalid destination type {self.type!r} fuer {self.name}, "
                 f"must be {', '.join(valid_types)}"
             )
-        extra_arguments = 1 if self.type == "file" else 0
-        if len(args) < extra_arguments:
+        extra_arguments = 1 wenn self.type == "file" sonst 0
+        wenn len(args) < extra_arguments:
             fail(f"Not enough arguments fuer destination "
                  f"{self.name!r} new {self.type!r}")
-        if len(args) > extra_arguments:
+        wenn len(args) > extra_arguments:
             fail(f"Too many arguments fuer destination {self.name!r} new {self.type!r}")
-        if self.type =='file':
+        wenn self.type =='file':
             d = {}
             filename = self.clinic.filename
             d['path'] = filename
             dirname, basename = os.path.split(filename)
-            if not dirname:
+            wenn not dirname:
                 dirname = '.'
             d['dirname'] = dirname
             d['basename'] = basename
@@ -248,14 +248,14 @@ klasse Destination:
             self.filename = args[0].format_map(d)
 
     def __repr__(self) -> str:
-        if self.type == 'file':
+        wenn self.type == 'file':
             type_repr = f"type='file' file={self.filename!r}"
-        else:
+        sonst:
             type_repr = f"type={self.type!r}"
         return f"<clinic.Destination {self.name!r} {type_repr}>"
 
     def clear(self) -> None:
-        if self.type != 'buffer':
+        wenn self.type != 'buffer':
             fail(f"Can't clear destination {self.name!r}: it's not of type 'buffer'")
         self.buffers.clear()
 
@@ -274,7 +274,7 @@ klasse CodeGen:
         self._includes: dict[str, Include] = {}
 
     def add_ifndef_symbol(self, name: str) -> bool:
-        if name in self._ifndef_symbols:
+        wenn name in self._ifndef_symbols:
             return False
         self._ifndef_symbols.add(name)
         return True
@@ -285,12 +285,12 @@ klasse CodeGen:
             existing = self._includes[name]
         except KeyError:
             pass
-        else:
-            if existing.condition and not condition:
+        sonst:
+            wenn existing.condition and not condition:
                 # If the previous include has a condition and the new one is
                 # unconditional, override the include.
                 pass
-            else:
+            sonst:
                 # Already included, do nothing. Only mention a single reason,
                 # no need to list all of them.
                 return

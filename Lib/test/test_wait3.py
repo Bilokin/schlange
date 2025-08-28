@@ -8,10 +8,10 @@ import unittest
 from test.fork_wait import ForkWait
 from test import support
 
-if not support.has_fork_support:
+wenn not support.has_fork_support:
     raise unittest.SkipTest("requires working os.fork()")
 
-if not hasattr(os, 'wait3'):
+wenn not hasattr(os, 'wait3'):
     raise unittest.SkipTest("os.wait3 not defined")
 
 klasse Wait3Test(ForkWait):
@@ -23,7 +23,7 @@ klasse Wait3Test(ForkWait):
             # wait3() shouldn't hang, but some of the buildbots seem to hang
             # in the forking tests.  This is an attempt to fix the problem.
             spid, status, rusage = os.wait3(os.WNOHANG)
-            if spid == cpid:
+            wenn spid == cpid:
                 break
 
         self.assertEqual(spid, cpid)
@@ -49,5 +49,5 @@ klasse Wait3Test(ForkWait):
 def tearDownModule():
     support.reap_children()
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

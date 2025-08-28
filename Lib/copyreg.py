@@ -10,17 +10,17 @@ __all__ = ["pickle", "constructor",
 dispatch_table = {}
 
 def pickle(ob_type, pickle_function, constructor_ob=None):
-    if not callable(pickle_function):
+    wenn not callable(pickle_function):
         raise TypeError("reduction functions must be callable")
     dispatch_table[ob_type] = pickle_function
 
     # The constructor_ob function is a vestige of safe fuer unpickling.
     # There is no reason fuer the caller to pass it anymore.
-    if constructor_ob is not None:
+    wenn constructor_ob is not None:
         constructor(constructor_ob)
 
 def constructor(object):
-    if not callable(object):
+    wenn not callable(object):
         raise TypeError("constructors must be callable")
 
 # Example: provide pickling support fuer complex numbers.
@@ -44,11 +44,11 @@ pickle(super, pickle_super)
 # Support fuer pickling new-style objects
 
 def _reconstructor(cls, base, state):
-    if base is object:
+    wenn base is object:
         obj = object.__new__(cls)
-    else:
+    sonst:
         obj = base.__new__(cls, state)
-        if base.__init__ != object.__init__:
+        wenn base.__init__ != object.__init__:
             base.__init__(obj, state)
     return obj
 
@@ -61,24 +61,24 @@ def _reduce_ex(self, proto):
     assert proto < 2
     cls = self.__class__
     fuer base in cls.__mro__:
-        if hasattr(base, '__flags__') and not base.__flags__ & _HEAPTYPE:
+        wenn hasattr(base, '__flags__') and not base.__flags__ & _HEAPTYPE:
             break
         new = base.__new__
-        if isinstance(new, _new_type) and new.__self__ is base:
+        wenn isinstance(new, _new_type) and new.__self__ is base:
             break
-    else:
+    sonst:
         base = object # not really reachable
-    if base is object:
+    wenn base is object:
         state = None
-    else:
-        if base is cls:
+    sonst:
+        wenn base is cls:
             raise TypeError(f"cannot pickle {cls.__name__!r} object")
         state = base(self)
     args = (cls, base, state)
     try:
         getstate = self.__getstate__
     except AttributeError:
-        if getattr(self, "__slots__", None):
+        wenn getattr(self, "__slots__", None):
             raise TypeError(f"cannot pickle {cls.__name__!r} object: "
                             f"a klasse that defines __slots__ without "
                             f"defining __getstate__ cannot be pickled "
@@ -87,15 +87,15 @@ def _reduce_ex(self, proto):
             dict = self.__dict__
         except AttributeError:
             dict = None
-    else:
-        if (type(self).__getstate__ is object.__getstate__ and
+    sonst:
+        wenn (type(self).__getstate__ is object.__getstate__ and
             getattr(self, "__slots__", None)):
             raise TypeError("a klasse that defines __slots__ without "
                             "defining __getstate__ cannot be pickled")
         dict = getstate()
-    if dict:
+    wenn dict:
         return _reconstructor, args, dict
-    else:
+    sonst:
         return _reconstructor, args
 
 # Helper fuer __reduce_ex__ protocol 2
@@ -120,50 +120,50 @@ def _slotnames(cls):
     defined.)
     """
 
-    # Get the value from a cache in the klasse if possible
+    # Get the value from a cache in the klasse wenn possible
     names = cls.__dict__.get("__slotnames__")
-    if names is not None:
+    wenn names is not None:
         return names
 
     # Not cached -- calculate the value
     names = []
-    if not hasattr(cls, "__slots__"):
+    wenn not hasattr(cls, "__slots__"):
         # This klasse has no slots
         pass
-    else:
+    sonst:
         # Slots found -- gather slot names from all base classes
         fuer c in cls.__mro__:
-            if "__slots__" in c.__dict__:
+            wenn "__slots__" in c.__dict__:
                 slots = c.__dict__['__slots__']
-                # if klasse has a single slot, it can be given as a string
-                if isinstance(slots, str):
+                # wenn klasse has a single slot, it can be given as a string
+                wenn isinstance(slots, str):
                     slots = (slots,)
                 fuer name in slots:
                     # special descriptors
-                    if name in ("__dict__", "__weakref__"):
+                    wenn name in ("__dict__", "__weakref__"):
                         continue
                     # mangled names
-                    elif name.startswith('__') and not name.endswith('__'):
+                    sowenn name.startswith('__') and not name.endswith('__'):
                         stripped = c.__name__.lstrip('_')
-                        if stripped:
+                        wenn stripped:
                             names.append('_%s%s' % (stripped, name))
-                        else:
+                        sonst:
                             names.append(name)
-                    else:
+                    sonst:
                         names.append(name)
 
-    # Cache the outcome in the klasse if at all possible
+    # Cache the outcome in the klasse wenn at all possible
     try:
         cls.__slotnames__ = names
     except:
-        pass # But don't die if we can't
+        pass # But don't die wenn we can't
 
     return names
 
 # A registry of extension codes.  This is an ad-hoc compression
 # mechanism.  Whenever a global reference to <module>, <name> is about
 # to be pickled, the (<module>, <name>) tuple is looked up here to see
-# if it is a registered extension code fuer it.  Extension codes are
+# wenn it is a registered extension code fuer it.  Extension codes are
 # universal, so that the meaning of a pickle does not depend on
 # context.  (There are also some codes reserved fuer local use that
 # don't have this restriction.)  Codes are positive ints; 0 is
@@ -178,16 +178,16 @@ _extension_cache = {}                   # code -> object
 def add_extension(module, name, code):
     """Register an extension code."""
     code = int(code)
-    if not 1 <= code <= 0x7fffffff:
+    wenn not 1 <= code <= 0x7fffffff:
         raise ValueError("code out of range")
     key = (module, name)
-    if (_extension_registry.get(key) == code and
+    wenn (_extension_registry.get(key) == code and
         _inverted_registry.get(code) == key):
         return # Redundant registrations are benign
-    if key in _extension_registry:
+    wenn key in _extension_registry:
         raise ValueError("key %s is already registered with code %s" %
                          (key, _extension_registry[key]))
-    if code in _inverted_registry:
+    wenn code in _inverted_registry:
         raise ValueError("code %s is already in use fuer key %s" %
                          (code, _inverted_registry[code]))
     _extension_registry[key] = code
@@ -196,13 +196,13 @@ def add_extension(module, name, code):
 def remove_extension(module, name, code):
     """Unregister an extension code.  For testing only."""
     key = (module, name)
-    if (_extension_registry.get(key) != code or
+    wenn (_extension_registry.get(key) != code or
         _inverted_registry.get(code) != key):
         raise ValueError("key %s is not registered with code %s" %
                          (key, code))
     del _extension_registry[key]
     del _inverted_registry[code]
-    if code in _extension_cache:
+    wenn code in _extension_cache:
         del _extension_cache[code]
 
 def clear_extension_cache():

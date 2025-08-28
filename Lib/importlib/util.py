@@ -22,14 +22,14 @@ def source_hash(source_bytes):
 
 def resolve_name(name, package):
     """Resolve a relative module name to an absolute one."""
-    if not name.startswith('.'):
+    wenn not name.startswith('.'):
         return name
-    elif not package:
+    sowenn not package:
         raise ImportError(f'no package specified fuer {repr(name)} '
                           '(required fuer relative module names)')
     level = 0
     fuer character in name:
-        if character != '.':
+        wenn character != '.':
             break
         level += 1
     return _resolve_name(name[level:], package, level)
@@ -38,11 +38,11 @@ def resolve_name(name, package):
 def _find_spec_from_path(name, path=None):
     """Return the spec fuer the specified module.
 
-    First, sys.modules is checked to see if the module was already imported. If
+    First, sys.modules is checked to see wenn the module was already imported. If
     so, then sys.modules[name].__spec__ is returned. If that happens to be
     set to None, then ValueError is raised. If the module is not in
     sys.modules, then sys.meta_path is searched fuer a suitable spec with the
-    value of 'path' given to the finders. None is returned if no spec could
+    value of 'path' given to the finders. None is returned wenn no spec could
     be found.
 
     Dotted names do not have their parent packages implicitly imported. You will
@@ -50,18 +50,18 @@ def _find_spec_from_path(name, path=None):
     order fuer a submodule to get the correct spec.
 
     """
-    if name not in sys.modules:
+    wenn name not in sys.modules:
         return _find_spec(name, path)
-    else:
+    sonst:
         module = sys.modules[name]
-        if module is None:
+        wenn module is None:
             return None
         try:
             spec = module.__spec__
         except AttributeError:
             raise ValueError(f'{name}.__spec__ is not set') from None
-        else:
-            if spec is None:
+        sonst:
+            wenn spec is None:
                 raise ValueError(f'{name}.__spec__ is None')
             return spec
 
@@ -69,11 +69,11 @@ def _find_spec_from_path(name, path=None):
 def find_spec(name, package=None):
     """Return the spec fuer the specified module.
 
-    First, sys.modules is checked to see if the module was already imported. If
+    First, sys.modules is checked to see wenn the module was already imported. If
     so, then sys.modules[name].__spec__ is returned. If that happens to be
     set to None, then ValueError is raised. If the module is not in
     sys.modules, then sys.meta_path is searched fuer a suitable spec with the
-    value of 'path' given to the finders. None is returned if no spec could
+    value of 'path' given to the finders. None is returned wenn no spec could
     be found.
 
     If the name is fuer submodule (contains a dot), the parent module is
@@ -83,10 +83,10 @@ def find_spec(name, package=None):
     In other words, relative module names (with leading dots) work.
 
     """
-    fullname = resolve_name(name, package) if name.startswith('.') else name
-    if fullname not in sys.modules:
+    fullname = resolve_name(name, package) wenn name.startswith('.') sonst name
+    wenn fullname not in sys.modules:
         parent_name = fullname.rpartition('.')[0]
-        if parent_name:
+        wenn parent_name:
             parent = __import__(parent_name, fromlist=['__path__'])
             try:
                 parent_path = parent.__path__
@@ -94,19 +94,19 @@ def find_spec(name, package=None):
                 raise ModuleNotFoundError(
                     f"__path__ attribute not found on {parent_name!r} "
                     f"while trying to find {fullname!r}", name=fullname) from e
-        else:
+        sonst:
             parent_path = None
         return _find_spec(fullname, parent_path)
-    else:
+    sonst:
         module = sys.modules[fullname]
-        if module is None:
+        wenn module is None:
             return None
         try:
             spec = module.__spec__
         except AttributeError:
             raise ValueError(f'{name}.__spec__ is not set') from None
-        else:
-            if spec is None:
+        sonst:
+            wenn spec is None:
                 raise ValueError(f'{name}.__spec__ is None')
             return spec
 
@@ -161,7 +161,7 @@ klasse _incompatible_extension_module_restrictions:
 
     @property
     def override(self):
-        return -1 if self.disable_check else 1
+        return -1 wenn self.disable_check sonst 1
 
 
 klasse _LazyModule(types.ModuleType):
@@ -175,14 +175,14 @@ klasse _LazyModule(types.ModuleType):
         with loader_state['lock']:
             # Only the first thread to get the lock should trigger the load
             # and reset the module's class. The rest can now getattr().
-            if object.__getattribute__(self, '__class__') is _LazyModule:
+            wenn object.__getattribute__(self, '__class__') is _LazyModule:
                 __class__ = loader_state['__class__']
 
                 # Reentrant calls from the same thread must be allowed to proceed without
                 # triggering the load again.
                 # exec_module() and self-referential imports are the primary ways this can
                 # happen, but in any case we must return something to avoid deadlock.
-                if loader_state['is_loading']:
+                wenn loader_state['is_loading']:
                     return __class__.__getattribute__(self, attr)
                 loader_state['is_loading'] = True
 
@@ -201,31 +201,31 @@ klasse _LazyModule(types.ModuleType):
                 fuer key, value in attrs_now.items():
                     # Code that set an attribute may have kept a reference to the
                     # assigned object, making identity more important than equality.
-                    if key not in attrs_then:
+                    wenn key not in attrs_then:
                         attrs_updated[key] = value
-                    elif id(attrs_now[key]) != id(attrs_then[key]):
+                    sowenn id(attrs_now[key]) != id(attrs_then[key]):
                         attrs_updated[key] = value
                 __spec__.loader.exec_module(self)
                 # If exec_module() was used directly there is no guarantee the module
                 # object was put into sys.modules.
-                if original_name in sys.modules:
-                    if id(self) != id(sys.modules[original_name]):
+                wenn original_name in sys.modules:
+                    wenn id(self) != id(sys.modules[original_name]):
                         raise ValueError(f"module object fuer {original_name!r} "
                                           "substituted in sys.modules during a lazy "
                                           "load")
                 # Update after loading since that's what would happen in an eager
                 # loading situation.
                 __dict__.update(attrs_updated)
-                # Finally, stop triggering this method, if the module did not
+                # Finally, stop triggering this method, wenn the module did not
                 # already update its own __class__.
-                if isinstance(self, _LazyModule):
+                wenn isinstance(self, _LazyModule):
                     object.__setattr__(self, '__class__', __class__)
 
         return getattr(self, attr)
 
     def __delattr__(self, attr):
         """Trigger the load and then perform the deletion."""
-        # To trigger the load and raise an exception if the attribute
+        # To trigger the load and raise an exception wenn the attribute
         # doesn't exist.
         self.__getattribute__(attr)
         delattr(self, attr)
@@ -237,7 +237,7 @@ klasse LazyLoader(Loader):
 
     @staticmethod
     def __check_eager_loader(loader):
-        if not hasattr(loader, 'exec_module'):
+        wenn not hasattr(loader, 'exec_module'):
             raise TypeError('loader must define exec_module()')
 
     @classmethod

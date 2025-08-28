@@ -37,5 +37,5 @@ klasse SentinelTest(unittest.TestCase):
         self.assertIs(copy.deepcopy(sentinel.whatever), sentinel.whatever)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

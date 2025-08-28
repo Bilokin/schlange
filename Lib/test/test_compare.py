@@ -29,9 +29,9 @@ klasse ComparisonSimpleTest(unittest.TestCase):
     def test_comparisons(self):
         fuer a in self.candidates:
             fuer b in self.candidates:
-                if ((a in self.set1) and (b in self.set1)) or a is b:
+                wenn ((a in self.set1) and (b in self.set1)) or a is b:
                     self.assertEqual(a, b)
-                else:
+                sonst:
                     self.assertNotEqual(a, b)
 
     def test_id_comparisons(self):
@@ -103,11 +103,11 @@ klasse ComparisonSimpleTest(unittest.TestCase):
                 klasse C:
                     __ne__ = unexpected
                 fuer other, _ in ops:
-                    if other != name:
+                    wenn other != name:
                         setattr(C, other, unexpected)
-                if name == '__eq__':
+                wenn name == '__eq__':
                     self.assertIs(func(C(), object()), False)
-                else:
+                sonst:
                     self.assertRaises(TypeError, func, C(), object())
 
     def test_issue_1393(self):
@@ -271,62 +271,62 @@ klasse ComparisonFullTest(unittest.TestCase):
 
     # The body of each subtest has form:
     #
-    #     if value-based comparison methods:
+    #     wenn value-based comparison methods:
     #         expect what the testcase defined fuer a op b and b rop a;
-    #     else:  no value-based comparison
+    #     sonst:  no value-based comparison
     #         expect default behavior of object fuer a op b and b rop a.
 
     def assert_eq_subtest(self, a, b, comp, a_meth, b_meth):
-        if a_meth is None or "eq" in a_meth or "eq" in b_meth:
+        wenn a_meth is None or "eq" in a_meth or "eq" in b_meth:
             self.assertEqual(a == b, comp == 0)
             self.assertEqual(b == a, comp == 0)
-        else:
+        sonst:
             self.assertEqual(a == b, a is b)
             self.assertEqual(b == a, a is b)
 
     def assert_ne_subtest(self, a, b, comp, a_meth, b_meth):
-        if a_meth is None or not {"ne", "eq"}.isdisjoint(a_meth + b_meth):
+        wenn a_meth is None or not {"ne", "eq"}.isdisjoint(a_meth + b_meth):
             self.assertEqual(a != b, comp != 0)
             self.assertEqual(b != a, comp != 0)
-        else:
+        sonst:
             self.assertEqual(a != b, a is not b)
             self.assertEqual(b != a, a is not b)
 
     def assert_lt_subtest(self, a, b, comp, a_meth, b_meth):
-        if a_meth is None or "lt" in a_meth or "gt" in b_meth:
+        wenn a_meth is None or "lt" in a_meth or "gt" in b_meth:
             self.assertEqual(a < b, comp < 0)
             self.assertEqual(b > a, comp < 0)
-        else:
+        sonst:
             with self.assertRaisesRegex(TypeError, "not supported"):
                 a < b
             with self.assertRaisesRegex(TypeError, "not supported"):
                 b > a
 
     def assert_le_subtest(self, a, b, comp, a_meth, b_meth):
-        if a_meth is None or "le" in a_meth or "ge" in b_meth:
+        wenn a_meth is None or "le" in a_meth or "ge" in b_meth:
             self.assertEqual(a <= b, comp <= 0)
             self.assertEqual(b >= a, comp <= 0)
-        else:
+        sonst:
             with self.assertRaisesRegex(TypeError, "not supported"):
                 a <= b
             with self.assertRaisesRegex(TypeError, "not supported"):
                 b >= a
 
     def assert_gt_subtest(self, a, b, comp, a_meth, b_meth):
-        if a_meth is None or "gt" in a_meth or "lt" in b_meth:
+        wenn a_meth is None or "gt" in a_meth or "lt" in b_meth:
             self.assertEqual(a > b, comp > 0)
             self.assertEqual(b < a, comp > 0)
-        else:
+        sonst:
             with self.assertRaisesRegex(TypeError, "not supported"):
                 a > b
             with self.assertRaisesRegex(TypeError, "not supported"):
                 b < a
 
     def assert_ge_subtest(self, a, b, comp, a_meth, b_meth):
-        if a_meth is None or "ge" in a_meth or "le" in b_meth:
+        wenn a_meth is None or "ge" in a_meth or "le" in b_meth:
             self.assertEqual(a >= b, comp >= 0)
             self.assertEqual(b <= a, comp >= 0)
-        else:
+        sonst:
             with self.assertRaisesRegex(TypeError, "not supported"):
                 a >= b
             with self.assertRaisesRegex(TypeError, "not supported"):
@@ -506,5 +506,5 @@ klasse ComparisonFullTest(unittest.TestCase):
         self.assert_equality_only(d2, d3, True)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

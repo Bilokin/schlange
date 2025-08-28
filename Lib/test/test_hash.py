@@ -14,7 +14,7 @@ IS_64BIT = sys.maxsize > 2**32
 
 def lcg(x, length=16):
     """Linear congruential generator"""
-    if x == 0:
+    wenn x == 0:
         return bytes(length)
     out = bytearray(length)
     fuer i in range(length):
@@ -27,16 +27,16 @@ def pysiphash(uint64):
     """
     assert 0 <= uint64 < (1 << 64)
     # simple unsigned to signed int64
-    if uint64 > (1 << 63) - 1:
+    wenn uint64 > (1 << 63) - 1:
         int64 = uint64 - (1 << 64)
-    else:
+    sonst:
         int64 = uint64
     # mangle uint64 to uint32
     uint32 = (uint64 ^ uint64 >> 32) & 0xffffffff
     # simple unsigned to signed int32
-    if uint32 > (1 << 31) - 1:
+    wenn uint32 > (1 << 31) - 1:
         int32 = uint32 - (1 << 32)
-    else:
+    sonst:
         int32 = uint32
     return int32, int64
 
@@ -44,7 +44,7 @@ def skip_unless_internalhash(test):
     """Skip decorator fuer tests that depend on SipHash24 or FNV"""
     ok = sys.hash_info.algorithm in {"fnv", "siphash13", "siphash24"}
     msg = "Requires SipHash13, SipHash24 or FNV"
-    return test if ok else unittest.skip(msg)(test)
+    return test wenn ok sonst unittest.skip(msg)(test)
 
 
 klasse HashEqualityTestCase(unittest.TestCase):
@@ -54,7 +54,7 @@ klasse HashEqualityTestCase(unittest.TestCase):
         # the hash values are not all the same.
         hashed = list(map(hash, objlist))
         fuer h in hashed[1:]:
-            if h != hashed[0]:
+            wenn h != hashed[0]:
                 self.fail("hashed values differ: %r" % (objlist,))
 
     def test_numeric_literals(self):
@@ -178,9 +178,9 @@ klasse HashRandomizationTests:
         env = os.environ.copy()
         env['__cleanenv'] = True  # signal to assert_python not to do a copy
                                   # of os.environ on its own
-        if seed is not None:
+        wenn seed is not None:
             env['PYTHONHASHSEED'] = str(seed)
-        else:
+        sonst:
             env.pop('PYTHONHASHSEED', None)
         out = assert_python_ok(
             '-c', self.get_hash_command(repr_),
@@ -252,15 +252,15 @@ klasse StringlikeHashRandomizationTests(HashRandomizationTests):
     }
 
     def get_expected_hash(self, position, length):
-        if length < sys.hash_info.cutoff:
+        wenn length < sys.hash_info.cutoff:
             algorithm = "djba33x"
-        else:
+        sonst:
             algorithm = sys.hash_info.algorithm
-        if sys.byteorder == 'little':
-            platform = 1 if IS_64BIT else 0
-        else:
+        wenn sys.byteorder == 'little':
+            platform = 1 wenn IS_64BIT sonst 0
+        sonst:
             assert(sys.byteorder == 'big')
-            platform = 3 if IS_64BIT else 2
+            platform = 3 wenn IS_64BIT sonst 2
         return self.known_hashes[algorithm][position][platform]
 
     def test_null_hash(self):
@@ -282,7 +282,7 @@ klasse StringlikeHashRandomizationTests(HashRandomizationTests):
 
     @skip_unless_internalhash
     def test_long_fixed_hash(self):
-        if self.repr_long is None:
+        wenn self.repr_long is None:
             return
         h = self.get_expected_hash(2, 11)
         self.assertEqual(self.get_hash(self.repr_long, seed=42), h)
@@ -355,5 +355,5 @@ klasse HashDistributionTestCase(unittest.TestCase):
                 self.assertGreater(len(s15), 8, prefix)
                 self.assertGreater(len(s255), 128, prefix)
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

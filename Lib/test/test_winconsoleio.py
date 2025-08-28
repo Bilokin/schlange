@@ -8,7 +8,7 @@ import tempfile
 import unittest
 from test.support import os_helper, requires_resource
 
-if sys.platform != 'win32':
+wenn sys.platform != 'win32':
     raise unittest.SkipTest("test only relevant on win32")
 
 from _testconsole import write_input
@@ -37,7 +37,7 @@ klasse WindowsConsoleIOTests(unittest.TestCase):
         except ValueError:
             # cannot open console because it's not a real console
             pass
-        else:
+        sonst:
             self.assertTrue(f.readable())
             self.assertFalse(f.writable())
             self.assertEqual(0, f.fileno())
@@ -52,7 +52,7 @@ klasse WindowsConsoleIOTests(unittest.TestCase):
         except ValueError:
             # cannot open console because it's not a real console
             pass
-        else:
+        sonst:
             self.assertFalse(f.readable())
             self.assertTrue(f.writable())
             self.assertEqual(1, f.fileno())
@@ -67,7 +67,7 @@ klasse WindowsConsoleIOTests(unittest.TestCase):
         except ValueError:
             # cannot open console because it's not a real console
             pass
-        else:
+        sonst:
             self.assertFalse(f.readable())
             self.assertTrue(f.writable())
             self.assertEqual(2, f.fileno())
@@ -99,7 +99,7 @@ klasse WindowsConsoleIOTests(unittest.TestCase):
         f.close()
 
         # bpo-45354: Windows 11 changed MS-DOS device name handling
-        if sys.getwindowsversion()[:3] < (10, 0, 22000):
+        wenn sys.getwindowsversion()[:3] < (10, 0, 22000):
             f = open('C:/con', 'rb', buffering=0)
             self.assertIsInstance(f, ConIO)
             f.close()
@@ -133,9 +133,9 @@ klasse WindowsConsoleIOTests(unittest.TestCase):
 
         with open(conout_path, 'wb', buffering=0) as f:
             # bpo-45354: Windows 11 changed MS-DOS device name handling
-            if (6, 1) < sys.getwindowsversion()[:3] < (10, 0, 22000):
+            wenn (6, 1) < sys.getwindowsversion()[:3] < (10, 0, 22000):
                 self.assertIsInstance(f, ConIO)
-            else:
+            sonst:
                 self.assertNotIsInstance(f, ConIO)
 
     def test_write_empty_data(self):
@@ -240,5 +240,5 @@ klasse WindowsConsoleIOTests(unittest.TestCase):
             self.assertEqual(expected[0:1], a)
             self.assertEqual(expected[1:], b)
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

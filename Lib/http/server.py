@@ -52,13 +52,13 @@ XXX To do:
 # |        mm: minutes
 # |        ss: seconds
 # |        request: The first line of the HTTP request as sent by the client.
-# |        ddd: the status code returned by the server, - if not available.
+# |        ddd: the status code returned by the server, - wenn not available.
 # |        bbbb: the total number of bytes sent,
-# |              *not including the HTTP/1.0 header*, - if not available
+# |              *not including the HTTP/1.0 header*, - wenn not available
 # |
 # | You can determine the name of the file accessed through request.
 #
-# (Actually, the latter is only true if you know the server configuration
+# (Actually, the latter is only true wenn you know the server configuration
 # at the time the request was made!)
 
 __version__ = "0.6"
@@ -145,7 +145,7 @@ klasse HTTPSServer(HTTPServer):
         self.password = password
         # Support by default HTTP/1.1
         self.alpn_protocols = (
-            ["http/1.1"] if alpn_protocols is None else alpn_protocols
+            ["http/1.1"] wenn alpn_protocols is None sonst alpn_protocols
         )
 
         super().__init__(server_address,
@@ -309,13 +309,13 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
         requestline = requestline.rstrip('\r\n')
         self.requestline = requestline
         words = requestline.split()
-        if len(words) == 0:
+        wenn len(words) == 0:
             return False
 
-        if len(words) >= 3:  # Enough to determine protocol version
+        wenn len(words) >= 3:  # Enough to determine protocol version
             version = words[-1]
             try:
-                if not version.startswith('HTTP/'):
+                wenn not version.startswith('HTTP/'):
                     raise ValueError
                 base_version_number = version.split('/', 1)[1]
                 version_number = base_version_number.split(".")
@@ -325,11 +325,11 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
                 #   - HTTP/2.4 is a lower version than HTTP/2.13, which in
                 #      turn is lower than HTTP/12.3;
                 #   - Leading zeros MUST be ignored by recipients.
-                if len(version_number) != 2:
+                wenn len(version_number) != 2:
                     raise ValueError
-                if any(not component.isdigit() fuer component in version_number):
+                wenn any(not component.isdigit() fuer component in version_number):
                     raise ValueError("non digit in http version")
-                if any(len(component) > 10 fuer component in version_number):
+                wenn any(len(component) > 10 fuer component in version_number):
                     raise ValueError("unreasonable length http version")
                 version_number = int(version_number[0]), int(version_number[1])
             except (ValueError, IndexError):
@@ -337,24 +337,24 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
                     HTTPStatus.BAD_REQUEST,
                     "Bad request version (%r)" % version)
                 return False
-            if version_number >= (1, 1) and self.protocol_version >= "HTTP/1.1":
+            wenn version_number >= (1, 1) and self.protocol_version >= "HTTP/1.1":
                 self.close_connection = False
-            if version_number >= (2, 0):
+            wenn version_number >= (2, 0):
                 self.send_error(
                     HTTPStatus.HTTP_VERSION_NOT_SUPPORTED,
                     "Invalid HTTP version (%s)" % base_version_number)
                 return False
             self.request_version = version
 
-        if not 2 <= len(words) <= 3:
+        wenn not 2 <= len(words) <= 3:
             self.send_error(
                 HTTPStatus.BAD_REQUEST,
                 "Bad request syntax (%r)" % requestline)
             return False
         command, path = words[:2]
-        if len(words) == 2:
+        wenn len(words) == 2:
             self.close_connection = True
-            if command != 'GET':
+            wenn command != 'GET':
                 self.send_error(
                     HTTPStatus.BAD_REQUEST,
                     "Bad HTTP/0.9 request type (%r)" % command)
@@ -362,10 +362,10 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
         self.command, self.path = command, path
 
         # gh-87389: The purpose of replacing '//' with '/' is to protect
-        # against open redirect attacks possibly triggered if the path starts
+        # against open redirect attacks possibly triggered wenn the path starts
         # with '//' because http clients treat //path as an absolute URI
         # without scheme (similar to http://path) rather than a path.
-        if self.path.startswith('//'):
+        wenn self.path.startswith('//'):
             self.path = '/' + self.path.lstrip('/')  # Reduce to a single /
 
         # Examine the headers and look fuer a Connection directive.
@@ -387,17 +387,17 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
             return False
 
         conntype = self.headers.get('Connection', "")
-        if conntype.lower() == 'close':
+        wenn conntype.lower() == 'close':
             self.close_connection = True
-        elif (conntype.lower() == 'keep-alive' and
+        sowenn (conntype.lower() == 'keep-alive' and
               self.protocol_version >= "HTTP/1.1"):
             self.close_connection = False
         # Examine the headers and look fuer an Expect directive
         expect = self.headers.get('Expect', "")
-        if (expect.lower() == "100-continue" and
+        wenn (expect.lower() == "100-continue" and
                 self.protocol_version >= "HTTP/1.1" and
                 self.request_version >= "HTTP/1.1"):
-            if not self.handle_expect_100():
+            wenn not self.handle_expect_100():
                 return False
         return True
 
@@ -429,27 +429,27 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
         """
         try:
             self.raw_requestline = self.rfile.readline(65537)
-            if len(self.raw_requestline) > 65536:
+            wenn len(self.raw_requestline) > 65536:
                 self.requestline = ''
                 self.request_version = ''
                 self.command = ''
                 self.send_error(HTTPStatus.REQUEST_URI_TOO_LONG)
                 return
-            if not self.raw_requestline:
+            wenn not self.raw_requestline:
                 self.close_connection = True
                 return
-            if not self.parse_request():
+            wenn not self.parse_request():
                 # An error code has been sent, just exit
                 return
             mname = 'do_' + self.command
-            if not hasattr(self, mname):
+            wenn not hasattr(self, mname):
                 self.send_error(
                     HTTPStatus.NOT_IMPLEMENTED,
                     "Unsupported method (%r)" % self.command)
                 return
             method = getattr(self, mname)
             method()
-            self.wfile.flush() #actually send the response if not already done.
+            self.wfile.flush() #actually send the response wenn not already done.
         except TimeoutError as e:
             #a read or a write timed out.  Discard this connection
             self.log_error("Request timed out: %r", e)
@@ -457,7 +457,7 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
             return
 
     def handle(self):
-        """Handle multiple requests if necessary."""
+        """Handle multiple requests wenn necessary."""
         self.close_connection = True
 
         self.handle_one_request()
@@ -486,9 +486,9 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
             shortmsg, longmsg = self.responses[code]
         except KeyError:
             shortmsg, longmsg = '???', '???'
-        if message is None:
+        wenn message is None:
             message = shortmsg
-        if explain is None:
+        wenn explain is None:
             explain = longmsg
         self.log_error("code %d, message %s", code, message)
         self.send_response(code, message)
@@ -498,7 +498,7 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
         #  - RFC7230: 3.3. 1xx, 204(No Content), 304(Not Modified)
         #  - RFC7231: 6.3.6. 205(Reset Content)
         body = None
-        if (code >= 200 and
+        wenn (code >= 200 and
             code not in (HTTPStatus.NO_CONTENT,
                          HTTPStatus.RESET_CONTENT,
                          HTTPStatus.NOT_MODIFIED)):
@@ -514,7 +514,7 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
             self.send_header('Content-Length', str(len(body)))
         self.end_headers()
 
-        if self.command != 'HEAD' and body:
+        wenn self.command != 'HEAD' and body:
             self.wfile.write(body)
 
     def send_response(self, code, message=None):
@@ -532,13 +532,13 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
 
     def send_response_only(self, code, message=None):
         """Send the response header only."""
-        if self.request_version != 'HTTP/0.9':
-            if message is None:
-                if code in self.responses:
+        wenn self.request_version != 'HTTP/0.9':
+            wenn message is None:
+                wenn code in self.responses:
                     message = self.responses[code][0]
-                else:
+                sonst:
                     message = ''
-            if not hasattr(self, '_headers_buffer'):
+            wenn not hasattr(self, '_headers_buffer'):
                 self._headers_buffer = []
             self._headers_buffer.append(("%s %d %s\r\n" %
                     (self.protocol_version, code, message)).encode(
@@ -546,26 +546,26 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
 
     def send_header(self, keyword, value):
         """Send a MIME header to the headers buffer."""
-        if self.request_version != 'HTTP/0.9':
-            if not hasattr(self, '_headers_buffer'):
+        wenn self.request_version != 'HTTP/0.9':
+            wenn not hasattr(self, '_headers_buffer'):
                 self._headers_buffer = []
             self._headers_buffer.append(
                 ("%s: %s\r\n" % (keyword, value)).encode('latin-1', 'strict'))
 
-        if keyword.lower() == 'connection':
-            if value.lower() == 'close':
+        wenn keyword.lower() == 'connection':
+            wenn value.lower() == 'close':
                 self.close_connection = True
-            elif value.lower() == 'keep-alive':
+            sowenn value.lower() == 'keep-alive':
                 self.close_connection = False
 
     def end_headers(self):
         """Send the blank line ending the MIME headers."""
-        if self.request_version != 'HTTP/0.9':
+        wenn self.request_version != 'HTTP/0.9':
             self._headers_buffer.append(b"\r\n")
             self.flush_headers()
 
     def flush_headers(self):
-        if hasattr(self, '_headers_buffer'):
+        wenn hasattr(self, '_headers_buffer'):
             self.wfile.write(b"".join(self._headers_buffer))
             self._headers_buffer = []
 
@@ -575,7 +575,7 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
         This is called by send_response().
 
         """
-        if isinstance(code, HTTPStatus):
+        wenn isinstance(code, HTTPStatus):
             code = code.value
         self.log_message('"%s" %s %s',
                          self.requestline, str(code), str(size))
@@ -603,7 +603,7 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
         """Log an arbitrary message.
 
         This is used by all other logging functions.  Override
-        it if you have specific logging wishes.
+        it wenn you have specific logging wishes.
 
         The first argument, FORMAT, is a format string fuer the
         message to be logged.  If the format string contains
@@ -631,7 +631,7 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
 
     def date_time_string(self, timestamp=None):
         """Return the current date and time formatted fuer a message header."""
-        if timestamp is None:
+        wenn timestamp is None:
             timestamp = time.time()
         return email.utils.formatdate(timestamp, usegmt=True)
 
@@ -693,7 +693,7 @@ klasse SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
     }
 
     def __init__(self, *args, directory=None, **kwargs):
-        if directory is None:
+        wenn directory is None:
             directory = os.getcwd()
         self.directory = os.fspath(directory)
         super().__init__(*args, **kwargs)
@@ -701,7 +701,7 @@ klasse SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         """Serve a GET request."""
         f = self.send_head()
-        if f:
+        wenn f:
             try:
                 self.copyfile(f, self.wfile)
             finally:
@@ -710,7 +710,7 @@ klasse SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
     def do_HEAD(self):
         """Serve a HEAD request."""
         f = self.send_head()
-        if f:
+        wenn f:
             f.close()
 
     def send_head(self):
@@ -726,9 +726,9 @@ klasse SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         """
         path = self.translate_path(self.path)
         f = None
-        if os.path.isdir(path):
+        wenn os.path.isdir(path):
             parts = urllib.parse.urlsplit(self.path)
-            if not parts.path.endswith(('/', '%2f', '%2F')):
+            wenn not parts.path.endswith(('/', '%2f', '%2F')):
                 # redirect browser - doing basically what apache does
                 self.send_response(HTTPStatus.MOVED_PERMANENTLY)
                 new_parts = (parts[0], parts[1], parts[2] + '/',
@@ -740,10 +740,10 @@ klasse SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                 return None
             fuer index in self.index_pages:
                 index = os.path.join(path, index)
-                if os.path.isfile(index):
+                wenn os.path.isfile(index):
                     path = index
                     break
-            else:
+            sonst:
                 return self.list_directory(path)
         ctype = self.guess_type(path)
         # check fuer trailing "/" which should return 404. See Issue17324
@@ -751,7 +751,7 @@ klasse SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         # However, some OS platforms accept a trailingSlash as a filename
         # See discussion on python-dev and Issue34711 regarding
         # parsing and rejection of filenames with a trailing slash
-        if path.endswith("/"):
+        wenn path.endswith("/"):
             self.send_error(HTTPStatus.NOT_FOUND, "File not found")
             return None
         try:
@@ -762,8 +762,8 @@ klasse SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
 
         try:
             fs = os.fstat(f.fileno())
-            # Use browser cache if possible
-            if ("If-Modified-Since" in self.headers
+            # Use browser cache wenn possible
+            wenn ("If-Modified-Since" in self.headers
                     and "If-None-Match" not in self.headers):
                 # compare If-Modified-Since and time of last file modification
                 try:
@@ -772,19 +772,19 @@ klasse SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                 except (TypeError, IndexError, OverflowError, ValueError):
                     # ignore ill-formed values
                     pass
-                else:
-                    if ims.tzinfo is None:
+                sonst:
+                    wenn ims.tzinfo is None:
                         # obsolete format with no timezone, cf.
                         # https://tools.ietf.org/html/rfc7231#section-7.1.1.1
                         ims = ims.replace(tzinfo=datetime.timezone.utc)
-                    if ims.tzinfo is datetime.timezone.utc:
+                    wenn ims.tzinfo is datetime.timezone.utc:
                         # compare to UTC datetime of last modification
                         last_modif = datetime.datetime.fromtimestamp(
                             fs.st_mtime, datetime.timezone.utc)
                         # remove microseconds, like in If-Modified-Since
                         last_modif = last_modif.replace(microsecond=0)
 
-                        if last_modif <= ims:
+                        wenn last_modif <= ims:
                             self.send_response(HTTPStatus.NOT_MODIFIED)
                             self.end_headers()
                             f.close()
@@ -841,10 +841,10 @@ klasse SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             fullname = os.path.join(path, name)
             displayname = linkname = name
             # Append / fuer directories or @ fuer symbolic links
-            if os.path.isdir(fullname):
+            wenn os.path.isdir(fullname):
                 displayname = name + "/"
                 linkname = name + "/"
-            if os.path.islink(fullname):
+            wenn os.path.islink(fullname):
                 displayname = name + "@"
                 # Note: a link to a directory displays with @ and links with /
             r.append('<li><a href="%s">%s</a></li>'
@@ -884,11 +884,11 @@ klasse SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         words = filter(None, words)
         path = self.directory
         fuer word in words:
-            if os.path.dirname(word) or word in (os.curdir, os.pardir):
+            wenn os.path.dirname(word) or word in (os.curdir, os.pardir):
                 # Ignore components that are not a simple file/directory name
                 continue
             path = os.path.join(path, word)
-        if trailing_slash:
+        wenn trailing_slash:
             path += '/'
         return path
 
@@ -923,13 +923,13 @@ klasse SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
 
         """
         base, ext = posixpath.splitext(path)
-        if ext in self.extensions_map:
+        wenn ext in self.extensions_map:
             return self.extensions_map[ext]
         ext = ext.lower()
-        if ext in self.extensions_map:
+        wenn ext in self.extensions_map:
             return self.extensions_map[ext]
         guess, _ = mimetypes.guess_file_type(path)
-        if guess:
+        wenn guess:
             return guess
         return 'application/octet-stream'
 
@@ -939,7 +939,7 @@ nobody = None
 def nobody_uid():
     """Internal routine to get nobody's uid"""
     global nobody
-    if nobody:
+    wenn nobody:
         return nobody
     try:
         import pwd
@@ -979,16 +979,16 @@ def test(HandlerClass=BaseHTTPRequestHandler,
     ServerClass.address_family, addr = _get_best_family(bind, port)
     HandlerClass.protocol_version = protocol
 
-    if tls_cert:
+    wenn tls_cert:
         server = ServerClass(addr, HandlerClass, certfile=tls_cert,
                              keyfile=tls_key, password=tls_password)
-    else:
+    sonst:
         server = ServerClass(addr, HandlerClass)
 
     with server as httpd:
         host, port = httpd.socket.getsockname()[:2]
-        url_host = f'[{host}]' if ':' in host else host
-        protocol = 'HTTPS' if tls_cert else 'HTTP'
+        url_host = f'[{host}]' wenn ':' in host sonst host
+        protocol = 'HTTPS' wenn tls_cert sonst 'HTTP'
         print(
             f"Serving {protocol} on {host} port {port} "
             f"({protocol.lower()}://{url_host}:{port}/) ..."
@@ -1026,12 +1026,12 @@ def _main(args=None):
                              '(default: %(default)s)')
     args = parser.parse_args(args)
 
-    if not args.tls_cert and args.tls_key:
+    wenn not args.tls_cert and args.tls_key:
         parser.error("--tls-key requires --tls-cert to be set")
 
     tls_key_password = None
-    if args.tls_password_file:
-        if not args.tls_cert:
+    wenn args.tls_password_file:
+        wenn not args.tls_cert:
             parser.error("--tls-password-file requires --tls-cert to be set")
 
         try:
@@ -1059,7 +1059,7 @@ def _main(args=None):
     klasse HTTPSDualStackServer(DualStackServerMixin, ThreadingHTTPSServer):
         pass
 
-    ServerClass = HTTPSDualStackServer if args.tls_cert else HTTPDualStackServer
+    ServerClass = HTTPSDualStackServer wenn args.tls_cert sonst HTTPDualStackServer
 
     test(
         HandlerClass=SimpleHTTPRequestHandler,
@@ -1073,5 +1073,5 @@ def _main(args=None):
     )
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     _main()

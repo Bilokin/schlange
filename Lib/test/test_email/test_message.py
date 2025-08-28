@@ -354,7 +354,7 @@ klasse TestEmailMessageBase:
                 """)),
 
         # Same thing, but proving we only look at the root part, which is the
-        # first one if there isn't any start parameter.  That is, this is a
+        # first one wenn there isn't any start parameter.  That is, this is a
         # broken related.
         'mixed_related_alternative_plain_html_wrong_order': (
             (1, None, None),
@@ -451,7 +451,7 @@ klasse TestEmailMessageBase:
     def message_as_get_body(self, body_parts, attachments, parts, msg):
         m = self._str_msg(msg)
         allparts = list(m.walk())
-        expected = [None if n is None else allparts[n] fuer n in body_parts]
+        expected = [None wenn n is None sonst allparts[n] fuer n in body_parts]
         related = 0; html = 1; plain = 2
         self.assertEqual(m.get_body(), first(expected))
         self.assertEqual(m.get_body(preferencelist=(
@@ -493,7 +493,7 @@ klasse TestEmailMessageBase:
         m = self._str_msg(msg)
         allparts = list(m.walk())
         parts = [allparts[n] fuer n in parts]
-        iter_parts = list(m.iter_parts()) if _is_multipart_msg(msg) else []
+        iter_parts = list(m.iter_parts()) wenn _is_multipart_msg(msg) sonst []
         self.assertEqual(iter_parts, parts)
 
     klasse _TestContentManager:
@@ -551,7 +551,7 @@ klasse TestEmailMessageBase:
     # on multipart/subtype.  Blank outcome means it depends on xxx (add
     # succeeds, make raises).  Note: 'none' means there are content-type
     # headers but payload is None...this happening in practice would be very
-    # unusual, so treating it as if there were content seems reasonable.
+    # unusual, so treating it as wenn there were content seems reasonable.
     #    method          subtype           outcome
     subtype_params = (
         ('related',      'no_content',     'succeeds'),
@@ -581,14 +581,14 @@ klasse TestEmailMessageBase:
             ('To', 'foo@bar.com'),
             ('From', 'bar@foo.com'),
             ]
-        if subtype != 'no_content':
+        wenn subtype != 'no_content':
             ('content-shadow', 'Logrus'),
         msg_headers.append(('X-Random-Header', 'Corwin'))
-        if subtype == 'text':
+        wenn subtype == 'text':
             payload = ''
             msg_headers.append(('Content-Type', 'text/plain'))
             m.set_payload('')
-        elif subtype != 'no_content':
+        sowenn subtype != 'no_content':
             payload = []
             msg_headers.append(('Content-Type', 'multipart/' + subtype))
         msg_headers.append(('X-Trump', 'Random'))
@@ -607,14 +607,14 @@ klasse TestEmailMessageBase:
     def _check_make_multipart(self, m, msg_headers, payload):
         count = 0
         fuer name, value in msg_headers:
-            if not name.lower().startswith('content-'):
+            wenn not name.lower().startswith('content-'):
                 self.assertEqual(m[name], value)
                 count += 1
         self.assertEqual(len(m), count+1) # +1 fuer new Content-Type
         part = next(m.iter_parts())
         count = 0
         fuer name, value in msg_headers:
-            if name.lower().startswith('content-'):
+            wenn name.lower().startswith('content-'):
                 self.assertEqual(part[name], value)
                 count += 1
         self.assertEqual(len(part), count)
@@ -623,32 +623,32 @@ klasse TestEmailMessageBase:
     def subtype_as_make(self, method, subtype, outcome):
         m, msg_headers, payload = self._make_subtype_test_message(subtype)
         make_method = 'make_' + method
-        if outcome in ('', 'raises'):
+        wenn outcome in ('', 'raises'):
             self._check_disallowed_subtype_raises(m, method, subtype, make_method)
             return
         getattr(m, make_method)()
         self.assertEqual(m.get_content_maintype(), 'multipart')
         self.assertEqual(m.get_content_subtype(), method)
-        if subtype == 'no_content':
+        wenn subtype == 'no_content':
             self.assertEqual(len(m.get_payload()), 0)
             self.assertEqual(m.items(),
                              msg_headers + [('Content-Type',
                                              'multipart/'+method)])
-        else:
+        sonst:
             self.assertEqual(len(m.get_payload()), 1)
             self._check_make_multipart(m, msg_headers, payload)
 
     def subtype_as_make_with_boundary(self, method, subtype, outcome):
         # Doing all variation is a bit of overkill...
         m = self.message()
-        if outcome in ('', 'raises'):
+        wenn outcome in ('', 'raises'):
             m['Content-Type'] = 'multipart/' + subtype
             with self.assertRaises(ValueError) as cm:
                 getattr(m, 'make_' + method)()
             return
-        if subtype == 'plain':
+        wenn subtype == 'plain':
             m['Content-Type'] = 'text/plain'
-        elif subtype != 'no_content':
+        sowenn subtype != 'no_content':
             m['Content-Type'] = 'multipart/' + subtype
         getattr(m, 'make_' + method)(boundary="abc")
         self.assertTrue(m.is_multipart())
@@ -669,29 +669,29 @@ klasse TestEmailMessageBase:
     def subtype_as_add(self, method, subtype, outcome):
         m, msg_headers, payload = self._make_subtype_test_message(subtype)
         cm = self._TestSetContentManager()
-        add_method = 'add_attachment' if method=='mixed' else 'add_' + method
-        if outcome == 'raises':
+        add_method = 'add_attachment' wenn method=='mixed' sonst 'add_' + method
+        wenn outcome == 'raises':
             self._check_disallowed_subtype_raises(m, method, subtype, add_method)
             return
         getattr(m, add_method)('test', content_manager=cm)
         self.assertEqual(m.get_content_maintype(), 'multipart')
         self.assertEqual(m.get_content_subtype(), method)
-        if method == subtype or subtype == 'no_content':
+        wenn method == subtype or subtype == 'no_content':
             self.assertEqual(len(m.get_payload()), 1)
             fuer name, value in msg_headers:
                 self.assertEqual(m[name], value)
             part = m.get_payload()[0]
-        else:
+        sonst:
             self.assertEqual(len(m.get_payload()), 2)
             self._check_make_multipart(m, msg_headers, payload)
             part = m.get_payload()[1]
         self.assertEqual(part.get_content_type(), 'text/plain')
         self.assertEqual(part.get_payload(), 'test')
-        if method=='mixed':
+        wenn method=='mixed':
             self.assertEqual(part['Content-Disposition'], 'attachment')
-        elif method=='related':
+        sowenn method=='related':
             self.assertEqual(part['Content-Disposition'], 'inline')
-        else:
+        sonst:
             # Otherwise we don't guess.
             self.assertIsNone(part['Content-Disposition'])
 
@@ -720,7 +720,7 @@ klasse TestEmailMessageBase:
     def message_as_clear_content(self, body_parts, attachments, parts, msg):
         m = self._str_msg(msg)
         expected_headers = [h fuer h in m.keys()
-                            if not h.lower().startswith('content-')]
+                            wenn not h.lower().startswith('content-')]
         m.clear_content()
         self.assertEqual(list(m.keys()), expected_headers)
         self.assertIsNone(m.get_payload())
@@ -1067,7 +1067,7 @@ klasse TestEmailMessage(TestEmailMessageBase, TestEmailBase):
 
 klasse TestMIMEPart(TestEmailMessageBase, TestEmailBase):
     # Doing the full test run here may seem a bit redundant, since the two
-    # classes are almost identical.  But what if they drift apart?  So we do
+    # classes are almost identical.  But what wenn they drift apart?  So we do
     # the full tests so that any future drift doesn't introduce bugs.
     message = MIMEPart
 
@@ -1088,5 +1088,5 @@ klasse TestMIMEPart(TestEmailMessageBase, TestEmailBase):
         self.assertEqual(list(attachments), [])
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

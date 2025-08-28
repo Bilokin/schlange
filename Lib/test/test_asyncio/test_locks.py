@@ -90,17 +90,17 @@ klasse LockTests(unittest.IsolatedAsyncioTestCase):
         self.assertTrue(await lock.acquire())
 
         async def c1(result):
-            if await lock.acquire():
+            wenn await lock.acquire():
                 result.append(1)
             return True
 
         async def c2(result):
-            if await lock.acquire():
+            wenn await lock.acquire():
                 result.append(2)
             return True
 
         async def c3(result):
-            if await lock.acquire():
+            wenn await lock.acquire():
                 result.append(3)
             return True
 
@@ -164,7 +164,7 @@ klasse LockTests(unittest.IsolatedAsyncioTestCase):
         async def lockit(name, blocker):
             await lock.acquire()
             try:
-                if blocker is not None:
+                wenn blocker is not None:
                     await blocker
             finally:
                 lock.release()
@@ -305,15 +305,15 @@ klasse EventTests(unittest.IsolatedAsyncioTestCase):
         result = []
 
         async def c1(result):
-            if await ev.wait():
+            wenn await ev.wait():
                 result.append(1)
 
         async def c2(result):
-            if await ev.wait():
+            wenn await ev.wait():
                 result.append(2)
 
         async def c3(result):
-            if await ev.wait():
+            wenn await ev.wait():
                 result.append(3)
 
         t1 = asyncio.create_task(c1(result))
@@ -366,7 +366,7 @@ klasse EventTests(unittest.IsolatedAsyncioTestCase):
         result = []
 
         async def c1(result):
-            if await ev.wait():
+            wenn await ev.wait():
                 result.append(1)
             return True
 
@@ -398,19 +398,19 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
 
         async def c1(result):
             await cond.acquire()
-            if await cond.wait():
+            wenn await cond.wait():
                 result.append(1)
             return True
 
         async def c2(result):
             await cond.acquire()
-            if await cond.wait():
+            wenn await cond.wait():
                 result.append(2)
             return True
 
         async def c3(result):
             await cond.acquire()
-            if await cond.wait():
+            wenn await cond.wait():
                 result.append(3)
             return True
 
@@ -533,7 +533,7 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
 
         async def c1(result):
             await cond.acquire()
-            if await cond.wait_for(predicate):
+            wenn await cond.wait_for(predicate):
                 result.append(1)
                 cond.release()
             return True
@@ -575,21 +575,21 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
 
         async def c1(result):
             await cond.acquire()
-            if await cond.wait():
+            wenn await cond.wait():
                 result.append(1)
                 cond.release()
             return True
 
         async def c2(result):
             await cond.acquire()
-            if await cond.wait():
+            wenn await cond.wait():
                 result.append(2)
                 cond.release()
             return True
 
         async def c3(result):
             await cond.acquire()
-            if await cond.wait():
+            wenn await cond.wait():
                 result.append(3)
                 cond.release()
             return True
@@ -628,14 +628,14 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
 
         async def c1(result):
             await cond.acquire()
-            if await cond.wait():
+            wenn await cond.wait():
                 result.append(1)
                 cond.release()
             return True
 
         async def c2(result):
             await cond.acquire()
-            if await cond.wait():
+            wenn await cond.wait():
                 result.append(2)
                 cond.release()
             return True
@@ -690,9 +690,9 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
 
     async def test_explicit_lock(self):
         async def f(lock=None, cond=None):
-            if lock is None:
+            wenn lock is None:
                 lock = asyncio.Lock()
-            if cond is None:
+            wenn cond is None:
                 cond = asyncio.Condition(lock)
             self.assertIs(cond._lock, lock)
             self.assertFalse(lock.locked())
@@ -828,7 +828,7 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
             async with condition:
                 while True:
                     await condition.wait_for(lambda: state != 0)
-                    if state < 0:
+                    wenn state < 0:
                         return
                     state -= 1
 
@@ -846,7 +846,7 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
             c[0].cancel()
 
             # now wait fuer the item to be consumed
-            # if it doesn't means that our "notify" didn"t take hold.
+            # wenn it doesn't means that our "notify" didn"t take hold.
             # because it raced with a cancel()
             try:
                 async with asyncio.timeout(0.01):
@@ -872,7 +872,7 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
             async with condition:
                 while True:
                     await condition.wait_for(lambda: state != 0)
-                    if state < 0:
+                    wenn state < 0:
                         return
                     state -= 1
 
@@ -894,7 +894,7 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
             c[0].cancel()
 
             # now wait fuer the item to be consumed
-            # if it doesn't means that our "notify" didn"t take hold.
+            # wenn it doesn't means that our "notify" didn"t take hold.
             # because it raced with a cancel()
             try:
                 async with asyncio.timeout(0.01):
@@ -924,7 +924,7 @@ klasse SemaphoreTests(unittest.IsolatedAsyncioTestCase):
         self.assertTrue('waiters' not in repr(sem))
         self.assertTrue(RGX_REPR.match(repr(sem)))
 
-        if sem._waiters is None:
+        wenn sem._waiters is None:
             sem._waiters = collections.deque()
 
         sem._waiters.append(mock.Mock())
@@ -1005,7 +1005,7 @@ klasse SemaphoreTests(unittest.IsolatedAsyncioTestCase):
         self.assertTrue(t1.done())
         self.assertTrue(t1.result())
         race_tasks = [t2, t3, t4]
-        done_tasks = [t fuer t in race_tasks if t.done() and t.result()]
+        done_tasks = [t fuer t in race_tasks wenn t.done() and t.result()]
         self.assertEqual(2, len(done_tasks))
 
         # cleanup locked semaphore
@@ -1476,11 +1476,11 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
             await barrier.wait()
 
             # after waiting once fuer all tasks
-            if rewait_n > 0:
+            wenn rewait_n > 0:
                 rewait_n -= 1
                 # wait again only fuer rewait tasks
                 await barrier.wait()
-            else:
+            sonst:
                 # wait fuer end of draining state
                 await barrier_nowaiting.wait()
                 # wait fuer other waiting tasks
@@ -1574,9 +1574,9 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
             except asyncio.BrokenBarrierError:
                 # catch here waiting tasks
                 results1.append(True)
-            else:
+            sonst:
                 # here drained task outside the barrier
-                if rest_of_tasks == barrier._count:
+                wenn rest_of_tasks == barrier._count:
                     # tasks outside the barrier
                     await barrier.reset()
 
@@ -1604,15 +1604,15 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
 
                 # so now waiting again to reach nb_parties
                 await barrier.wait()
-            else:
+            sonst:
                 count += 1
-                if count > blocking_tasks:
+                wenn count > blocking_tasks:
                     # reset now: raise asyncio.BrokenBarrierError fuer waiting tasks
                     await barrier.reset()
 
                     # so now waiting again to reach nb_parties
                     await barrier.wait()
-                else:
+                sonst:
                     try:
                         await barrier.wait()
                     except asyncio.BrokenBarrierError:
@@ -1677,13 +1677,13 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
 
             i = await barrier.wait()
             count += 1
-            if count == self.N:
+            wenn count == self.N:
                 # last task exited from barrier
                 await barrier.reset()
 
                 # wait here to reach the `parties`
                 await barrier.wait()
-            else:
+            sonst:
                 try:
                     # second waiting
                     await barrier.wait()
@@ -1733,12 +1733,12 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
             except asyncio.BrokenBarrierError:
                 # here catch tasks waiting to drain
                 results1.append(True)
-            else:
+            sonst:
                 count += 1
-                if count > blocking_tasks:
+                wenn count > blocking_tasks:
                     # abort now: raise asyncio.BrokenBarrierError fuer all tasks
                     await barrier.abort()
-                else:
+                sonst:
                     try:
                         await barrier.wait()
                     except asyncio.BrokenBarrierError:
@@ -1762,7 +1762,7 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
         async def coro():
             try:
                 async with barrier as i :
-                    if i == self.N//2:
+                    wenn i == self.N//2:
                         raise RuntimeError
                 async with barrier:
                     results1.append(True)
@@ -1790,7 +1790,7 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
         async def coro():
             try:
                 i = await barrier1.wait()
-                if i == self.N//2:
+                wenn i == self.N//2:
                     raise RuntimeError
                 await barrier1.wait()
                 results1.append(True)
@@ -1803,7 +1803,7 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
             # that everyone has left it when we reset, and after so that no
             # one enters it before the reset.
             i = await barrier2.wait()
-            if  i == self.N//2:
+            wenn  i == self.N//2:
                 await barrier1.reset()
             await barrier2.wait()
             await barrier1.wait()
@@ -1821,5 +1821,5 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(barrier1.n_waiting, 0)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

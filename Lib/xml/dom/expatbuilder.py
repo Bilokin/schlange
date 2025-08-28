@@ -24,7 +24,7 @@ This avoids all the overhead of SAX and pulldom to gain performance.
 #
 #   -  Determining that a node exists is done using an identity comparison
 #      with None rather than a truth test; this avoids searching fuer and
-#      calling any methods on the node object if it exists.  (A rather
+#      calling any methods on the node object wenn it exists.  (A rather
 #      nice speedup is achieved this way as well!)
 
 from xml.dom import xmlbuilder, minidom, Node
@@ -73,11 +73,11 @@ klasse ElementInfo(object):
 
     def getAttributeType(self, aname):
         fuer info in self._attr_info:
-            if info[1] == aname:
+            wenn info[1] == aname:
                 t = info[-2]
-                if t[0] == "(":
+                wenn t[0] == "(":
                     return _typeinfo_map["ENUM"]
-                else:
+                sonst:
                     return _typeinfo_map[info[-2]]
         return minidom._no_type
 
@@ -85,22 +85,22 @@ klasse ElementInfo(object):
         return minidom._no_type
 
     def isElementContent(self):
-        if self._model:
+        wenn self._model:
             type = self._model[0]
             return type not in (expat.model.XML_CTYPE_ANY,
                                 expat.model.XML_CTYPE_MIXED)
-        else:
+        sonst:
             return False
 
     def isEmpty(self):
-        if self._model:
+        wenn self._model:
             return self._model[0] == expat.model.XML_CTYPE_EMPTY
-        else:
+        sonst:
             return False
 
     def isId(self, aname):
         fuer info in self._attr_info:
-            if info[1] == aname:
+            wenn info[1] == aname:
                 return info[-2] == "ID"
         return False
 
@@ -115,17 +115,17 @@ def _parse_ns_name(builder, name):
     assert ' ' in name
     parts = name.split(' ')
     intern = builder._intern_setdefault
-    if len(parts) == 3:
+    wenn len(parts) == 3:
         uri, localname, prefix = parts
         prefix = intern(prefix, prefix)
         qname = "%s:%s" % (prefix, localname)
         qname = intern(qname, qname)
         localname = intern(localname, localname)
-    elif len(parts) == 2:
+    sowenn len(parts) == 2:
         uri, localname = parts
         prefix = EMPTY_PREFIX
         qname = localname = intern(localname, localname)
-    else:
+    sonst:
         raise ValueError("Unsupported syntax: spaces in URIs not supported: %r" % name)
     return intern(uri, uri), localname, prefix, qname
 
@@ -135,12 +135,12 @@ klasse ExpatBuilder:
     instance."""
 
     def __init__(self, options=None):
-        if options is None:
+        wenn options is None:
             options = xmlbuilder.Options()
         self._options = options
-        if self._options.filter is not None:
+        wenn self._options.filter is not None:
             self._filter = FilterVisibilityController(self._options.filter)
-        else:
+        sonst:
             self._filter = None
             # This *really* doesn't do anything in this case, so
             # override it with something fast & minimal.
@@ -153,8 +153,8 @@ klasse ExpatBuilder:
         return expat.ParserCreate()
 
     def getParser(self):
-        """Return the parser object, creating a new one if needed."""
-        if not self._parser:
+        """Return the parser object, creating a new one wenn needed."""
+        wenn not self._parser:
             self._parser = self.createParser()
             self._intern_setdefault = self._parser.intern.setdefault
             self._parser.buffer_text = True
@@ -178,16 +178,16 @@ klasse ExpatBuilder:
         parser.StartElementHandler = self.first_element_handler
         parser.EndElementHandler = self.end_element_handler
         parser.ProcessingInstructionHandler = self.pi_handler
-        if self._options.entities:
+        wenn self._options.entities:
             parser.EntityDeclHandler = self.entity_decl_handler
         parser.NotationDeclHandler = self.notation_decl_handler
-        if self._options.comments:
+        wenn self._options.comments:
             parser.CommentHandler = self.comment_handler
-        if self._options.cdata_sections:
+        wenn self._options.cdata_sections:
             parser.StartCdataSectionHandler = self.start_cdata_section_handler
             parser.EndCdataSectionHandler = self.end_cdata_section_handler
             parser.CharacterDataHandler = self.character_data_handler_cdata
-        else:
+        sonst:
             parser.CharacterDataHandler = self.character_data_handler
         parser.ExternalEntityRefHandler = self.external_entity_ref_handler
         parser.XmlDeclHandler = self.xml_decl_handler
@@ -202,7 +202,7 @@ klasse ExpatBuilder:
         try:
             while buffer := file.read(16*1024):
                 parser.Parse(buffer, False)
-                if first_buffer and self.document.documentElement:
+                wenn first_buffer and self.document.documentElement:
                     self._setup_subset(buffer)
                 first_buffer = False
             parser.Parse(b"", True)
@@ -227,8 +227,8 @@ klasse ExpatBuilder:
         return doc
 
     def _setup_subset(self, buffer):
-        """Load the internal subset if there might be one."""
-        if self.document.doctype:
+        """Load the internal subset wenn there might be one."""
+        wenn self.document.doctype:
             extractor = InternalSubsetExtractor()
             extractor.parseString(buffer)
             subset = extractor.getSubset()
@@ -241,14 +241,14 @@ klasse ExpatBuilder:
         doctype.ownerDocument = self.document
         _append_child(self.document, doctype)
         self.document.doctype = doctype
-        if self._filter and self._filter.acceptNode(doctype) == FILTER_REJECT:
+        wenn self._filter and self._filter.acceptNode(doctype) == FILTER_REJECT:
             self.document.doctype = None
             del self.document.childNodes[-1]
             doctype = None
             self._parser.EntityDeclHandler = None
             self._parser.NotationDeclHandler = None
-        if has_internal_subset:
-            if doctype is not None:
+        wenn has_internal_subset:
+            wenn doctype is not None:
                 doctype.entities._seq = []
                 doctype.notations._seq = []
             self._parser.CommentHandler = None
@@ -256,33 +256,33 @@ klasse ExpatBuilder:
             self._parser.EndDoctypeDeclHandler = self.end_doctype_decl_handler
 
     def end_doctype_decl_handler(self):
-        if self._options.comments:
+        wenn self._options.comments:
             self._parser.CommentHandler = self.comment_handler
         self._parser.ProcessingInstructionHandler = self.pi_handler
-        if not (self._elem_info or self._filter):
+        wenn not (self._elem_info or self._filter):
             self._finish_end_element = id
 
     def pi_handler(self, target, data):
         node = self.document.createProcessingInstruction(target, data)
         _append_child(self.curNode, node)
-        if self._filter and self._filter.acceptNode(node) == FILTER_REJECT:
+        wenn self._filter and self._filter.acceptNode(node) == FILTER_REJECT:
             self.curNode.removeChild(node)
 
     def character_data_handler_cdata(self, data):
         childNodes = self.curNode.childNodes
-        if self._cdata:
-            if (  self._cdata_continue
+        wenn self._cdata:
+            wenn (  self._cdata_continue
                   and childNodes[-1].nodeType == CDATA_SECTION_NODE):
                 childNodes[-1].appendData(data)
                 return
             node = self.document.createCDATASection(data)
             self._cdata_continue = True
-        elif childNodes and childNodes[-1].nodeType == TEXT_NODE:
+        sowenn childNodes and childNodes[-1].nodeType == TEXT_NODE:
             node = childNodes[-1]
             value = node.data + data
             node.data = value
             return
-        else:
+        sonst:
             node = minidom.Text()
             node.data = data
             node.ownerDocument = self.document
@@ -290,7 +290,7 @@ klasse ExpatBuilder:
 
     def character_data_handler(self, data):
         childNodes = self.curNode.childNodes
-        if childNodes and childNodes[-1].nodeType == TEXT_NODE:
+        wenn childNodes and childNodes[-1].nodeType == TEXT_NODE:
             node = childNodes[-1]
             node.data = node.data + data
             return
@@ -301,32 +301,32 @@ klasse ExpatBuilder:
 
     def entity_decl_handler(self, entityName, is_parameter_entity, value,
                             base, systemId, publicId, notationName):
-        if is_parameter_entity:
+        wenn is_parameter_entity:
             # we don't care about parameter entities fuer the DOM
             return
-        if not self._options.entities:
+        wenn not self._options.entities:
             return
         node = self.document._create_entity(entityName, publicId,
                                             systemId, notationName)
-        if value is not None:
+        wenn value is not None:
             # internal entity
             # node *should* be readonly, but we'll cheat
             child = self.document.createTextNode(value)
             node.childNodes.append(child)
         self.document.doctype.entities._seq.append(node)
-        if self._filter and self._filter.acceptNode(node) == FILTER_REJECT:
+        wenn self._filter and self._filter.acceptNode(node) == FILTER_REJECT:
             del self.document.doctype.entities._seq[-1]
 
     def notation_decl_handler(self, notationName, base, systemId, publicId):
         node = self.document._create_notation(notationName, publicId, systemId)
         self.document.doctype.notations._seq.append(node)
-        if self._filter and self._filter.acceptNode(node) == FILTER_ACCEPT:
+        wenn self._filter and self._filter.acceptNode(node) == FILTER_ACCEPT:
             del self.document.doctype.notations._seq[-1]
 
     def comment_handler(self, data):
         node = self.document.createComment(data)
         _append_child(self.curNode, node)
-        if self._filter and self._filter.acceptNode(node) == FILTER_REJECT:
+        wenn self._filter and self._filter.acceptNode(node) == FILTER_REJECT:
             self.curNode.removeChild(node)
 
     def start_cdata_section_handler(self):
@@ -341,7 +341,7 @@ klasse ExpatBuilder:
         return 1
 
     def first_element_handler(self, name, attributes):
-        if self._filter is None and not self._elem_info:
+        wenn self._filter is None and not self._elem_info:
             self._finish_end_element = id
         self.getParser().StartElementHandler = self.start_element_handler
         self.start_element_handler(name, attributes)
@@ -351,7 +351,7 @@ klasse ExpatBuilder:
         _append_child(self.curNode, node)
         self.curNode = node
 
-        if attributes:
+        wenn attributes:
             fuer i in range(0, len(attributes), 2):
                 a = minidom.Attr(attributes[i], EMPTY_NAMESPACE,
                                  None, EMPTY_PREFIX)
@@ -360,24 +360,24 @@ klasse ExpatBuilder:
                 a.ownerDocument = self.document
                 _set_attribute_node(node, a)
 
-        if node is not self.document.documentElement:
+        wenn node is not self.document.documentElement:
             self._finish_start_element(node)
 
     def _finish_start_element(self, node):
-        if self._filter:
+        wenn self._filter:
             # To be general, we'd have to call isSameNode(), but this
             # is sufficient fuer minidom:
-            if node is self.document.documentElement:
+            wenn node is self.document.documentElement:
                 return
             filt = self._filter.startContainer(node)
-            if filt == FILTER_REJECT:
+            wenn filt == FILTER_REJECT:
                 # ignore this node & all descendents
                 Rejecter(self)
-            elif filt == FILTER_SKIP:
+            sowenn filt == FILTER_SKIP:
                 # ignore this node, but make it's children become
                 # children of the parent node
                 Skipper(self)
-            else:
+            sonst:
                 return
             self.curNode = node.parentNode
             node.parentNode.removeChild(node)
@@ -393,17 +393,17 @@ klasse ExpatBuilder:
 
     def _finish_end_element(self, curNode):
         info = self._elem_info.get(curNode.tagName)
-        if info:
+        wenn info:
             self._handle_white_text_nodes(curNode, info)
-        if self._filter:
-            if curNode is self.document.documentElement:
+        wenn self._filter:
+            wenn curNode is self.document.documentElement:
                 return
-            if self._filter.acceptNode(curNode) == FILTER_REJECT:
+            wenn self._filter.acceptNode(curNode) == FILTER_REJECT:
                 self.curNode.removeChild(curNode)
                 curNode.unlink()
 
     def _handle_white_text_nodes(self, node, info):
-        if (self._options.whitespace_in_element_content
+        wenn (self._options.whitespace_in_element_content
             or not info.isElementContent()):
             return
 
@@ -412,7 +412,7 @@ klasse ExpatBuilder:
         # whitespace.
         L = []
         fuer child in node.childNodes:
-            if child.nodeType == TEXT_NODE and not child.data.strip():
+            wenn child.nodeType == TEXT_NODE and not child.data.strip():
                 L.append(child)
 
         # Remove ignorable whitespace from the tree.
@@ -421,15 +421,15 @@ klasse ExpatBuilder:
 
     def element_decl_handler(self, name, model):
         info = self._elem_info.get(name)
-        if info is None:
+        wenn info is None:
             self._elem_info[name] = ElementInfo(name, model)
-        else:
+        sonst:
             assert info._model is None
             info._model = model
 
     def attlist_decl_handler(self, elem, name, type, default, required):
         info = self._elem_info.get(elem)
-        if info is None:
+        wenn info is None:
             info = ElementInfo(elem)
             self._elem_info[elem] = info
         info._attr_info.append(
@@ -439,10 +439,10 @@ klasse ExpatBuilder:
         self.document.version = version
         self.document.encoding = encoding
         # This is still a little ugly, thanks to the pyexpat API. ;-(
-        if standalone >= 0:
-            if standalone:
+        wenn standalone >= 0:
+            wenn standalone:
                 self.document.standalone = True
-            else:
+            sonst:
                 self.document.standalone = False
 
 
@@ -461,35 +461,35 @@ klasse FilterVisibilityController(object):
 
     def startContainer(self, node):
         mask = self._nodetype_mask[node.nodeType]
-        if self.filter.whatToShow & mask:
+        wenn self.filter.whatToShow & mask:
             val = self.filter.startContainer(node)
-            if val == FILTER_INTERRUPT:
+            wenn val == FILTER_INTERRUPT:
                 raise ParseEscape
-            if val not in _ALLOWED_FILTER_RETURNS:
+            wenn val not in _ALLOWED_FILTER_RETURNS:
                 raise ValueError(
                       "startContainer() returned illegal value: " + repr(val))
             return val
-        else:
+        sonst:
             return FILTER_ACCEPT
 
     def acceptNode(self, node):
         mask = self._nodetype_mask[node.nodeType]
-        if self.filter.whatToShow & mask:
+        wenn self.filter.whatToShow & mask:
             val = self.filter.acceptNode(node)
-            if val == FILTER_INTERRUPT:
+            wenn val == FILTER_INTERRUPT:
                 raise ParseEscape
-            if val == FILTER_SKIP:
+            wenn val == FILTER_SKIP:
                 # move all child nodes to the parent, and remove this node
                 parent = node.parentNode
                 fuer child in node.childNodes[:]:
                     parent.appendChild(child)
                 # node is handled by the caller
                 return FILTER_REJECT
-            if val not in _ALLOWED_FILTER_RETURNS:
+            wenn val not in _ALLOWED_FILTER_RETURNS:
                 raise ValueError(
                       "acceptNode() returned illegal value: " + repr(val))
             return val
-        else:
+        sonst:
             return FILTER_ACCEPT
 
     _nodetype_mask = {
@@ -539,13 +539,13 @@ klasse Rejecter(FilterCrutch):
         self._level = self._level + 1
 
     def end_element_handler(self, *args):
-        if self._level == 0:
+        wenn self._level == 0:
             # restore the old handlers
             parser = self._builder._parser
             self._builder.install(parser)
             parser.StartElementHandler = self._old_start
             parser.EndElementHandler = self._old_end
-        else:
+        sonst:
             self._level = self._level - 1
 
 klasse Skipper(FilterCrutch):
@@ -554,17 +554,17 @@ klasse Skipper(FilterCrutch):
     def start_element_handler(self, *args):
         node = self._builder.curNode
         self._old_start(*args)
-        if self._builder.curNode is not node:
+        wenn self._builder.curNode is not node:
             self._level = self._level + 1
 
     def end_element_handler(self, *args):
-        if self._level == 0:
+        wenn self._level == 0:
             # We're popping back out of the node we're skipping, so we
             # shouldn't need to do anything but reset the handlers.
             self._builder._parser.StartElementHandler = self._old_start
             self._builder._parser.EndElementHandler = self._old_end
             self._builder = None
-        else:
+        sonst:
             self._level = self._level - 1
             self._old_end(*args)
 
@@ -598,10 +598,10 @@ klasse FragmentBuilder(ExpatBuilder):
     """
 
     def __init__(self, context, options=None):
-        if context.nodeType == DOCUMENT_NODE:
+        wenn context.nodeType == DOCUMENT_NODE:
             self.originalDocument = context
             self.context = context
-        else:
+        sonst:
             self.originalDocument = context.ownerDocument
             self.context = context
         ExpatBuilder.__init__(self, options)
@@ -622,14 +622,14 @@ klasse FragmentBuilder(ExpatBuilder):
         parser = self.getParser()
         doctype = self.originalDocument.doctype
         ident = ""
-        if doctype:
+        wenn doctype:
             subset = doctype.internalSubset or self._getDeclarations()
-            if doctype.publicId:
+            wenn doctype.publicId:
                 ident = ('PUBLIC "%s" "%s"'
                          % (doctype.publicId, doctype.systemId))
-            elif doctype.systemId:
+            sowenn doctype.systemId:
                 ident = 'SYSTEM "%s"' % doctype.systemId
-        else:
+        sonst:
             subset = ""
         nsattrs = self._getNSattrs() # get ns decls from node's ancestors
         document = _FRAGMENT_BUILDER_TEMPLATE % (ident, subset, nsattrs)
@@ -646,35 +646,35 @@ klasse FragmentBuilder(ExpatBuilder):
     def _getDeclarations(self):
         """Re-create the internal subset from the DocumentType node.
 
-        This is only needed if we don't already have the
+        This is only needed wenn we don't already have the
         internalSubset as a string.
         """
         doctype = self.context.ownerDocument.doctype
         s = ""
-        if doctype:
+        wenn doctype:
             fuer i in range(doctype.notations.length):
                 notation = doctype.notations.item(i)
-                if s:
+                wenn s:
                     s = s + "\n  "
                 s = "%s<!NOTATION %s" % (s, notation.nodeName)
-                if notation.publicId:
+                wenn notation.publicId:
                     s = '%s PUBLIC "%s"\n             "%s">' \
                         % (s, notation.publicId, notation.systemId)
-                else:
+                sonst:
                     s = '%s SYSTEM "%s">' % (s, notation.systemId)
             fuer i in range(doctype.entities.length):
                 entity = doctype.entities.item(i)
-                if s:
+                wenn s:
                     s = s + "\n  "
                 s = "%s<!ENTITY %s" % (s, entity.nodeName)
-                if entity.publicId:
+                wenn entity.publicId:
                     s = '%s PUBLIC "%s"\n             "%s"' \
                         % (s, entity.publicId, entity.systemId)
-                elif entity.systemId:
+                sowenn entity.systemId:
                     s = '%s SYSTEM "%s"' % (s, entity.systemId)
-                else:
+                sonst:
                     s = '%s "%s"' % (s, entity.firstChild.data)
-                if entity.notationName:
+                wenn entity.notationName:
                     s = "%s NOTATION %s" % (s, entity.notationName)
                 s = s + ">"
         return s
@@ -683,7 +683,7 @@ klasse FragmentBuilder(ExpatBuilder):
         return ""
 
     def external_entity_ref_handler(self, context, base, systemId, publicId):
-        if systemId == _FRAGMENT_BUILDER_INTERNAL_SYSTEM_ID:
+        wenn systemId == _FRAGMENT_BUILDER_INTERNAL_SYSTEM_ID:
             # this entref is the one that we made to put the subtree
             # in; all of our given input is parsed in here.
             old_document = self.document
@@ -700,7 +700,7 @@ klasse FragmentBuilder(ExpatBuilder):
                 self.document = old_document
                 self._source = None
             return -1
-        else:
+        sonst:
             return ExpatBuilder.external_entity_ref_handler(
                 self, context, base, systemId, publicId)
 
@@ -722,7 +722,7 @@ klasse Namespaces:
     def install(self, parser):
         """Insert the namespace-handlers onto the parser."""
         ExpatBuilder.install(self, parser)
-        if self._options.namespace_declarations:
+        wenn self._options.namespace_declarations:
             parser.StartNamespaceDeclHandler = (
                 self.start_namespace_decl_handler)
 
@@ -731,9 +731,9 @@ klasse Namespaces:
         self._ns_ordered_prefixes.append((prefix, uri))
 
     def start_element_handler(self, name, attributes):
-        if ' ' in name:
+        wenn ' ' in name:
             uri, localname, prefix, qname = _parse_ns_name(self, name)
-        else:
+        sonst:
             uri = EMPTY_NAMESPACE
             qname = name
             localname = None
@@ -743,12 +743,12 @@ klasse Namespaces:
         _append_child(self.curNode, node)
         self.curNode = node
 
-        if self._ns_ordered_prefixes:
+        wenn self._ns_ordered_prefixes:
             fuer prefix, uri in self._ns_ordered_prefixes:
-                if prefix:
+                wenn prefix:
                     a = minidom.Attr(_intern(self, 'xmlns:' + prefix),
                                      XMLNS_NAMESPACE, prefix, "xmlns")
-                else:
+                sonst:
                     a = minidom.Attr("xmlns", XMLNS_NAMESPACE,
                                      "xmlns", EMPTY_PREFIX)
                 a.value = uri
@@ -756,19 +756,19 @@ klasse Namespaces:
                 _set_attribute_node(node, a)
             del self._ns_ordered_prefixes[:]
 
-        if attributes:
+        wenn attributes:
             node._ensure_attributes()
             _attrs = node._attrs
             _attrsNS = node._attrsNS
             fuer i in range(0, len(attributes), 2):
                 aname = attributes[i]
                 value = attributes[i+1]
-                if ' ' in aname:
+                wenn ' ' in aname:
                     uri, localname, prefix, qname = _parse_ns_name(self, aname)
                     a = minidom.Attr(qname, uri, localname, prefix)
                     _attrs[qname] = a
                     _attrsNS[(uri, localname)] = a
-                else:
+                sonst:
                     a = minidom.Attr(aname, EMPTY_NAMESPACE,
                                      aname, EMPTY_PREFIX)
                     _attrs[aname] = a
@@ -777,7 +777,7 @@ klasse Namespaces:
                 a.value = value
                 a.ownerElement = node
 
-    if __debug__:
+    wenn __debug__:
         # This only adds some asserts to the original
         # end_element_handler(), so we only define this when -O is not
         # used.  If changing one, be sure to check the other to see if
@@ -785,13 +785,13 @@ klasse Namespaces:
         #
         def end_element_handler(self, name):
             curNode = self.curNode
-            if ' ' in name:
+            wenn ' ' in name:
                 uri, localname, prefix, qname = _parse_ns_name(self, name)
                 assert (curNode.namespaceURI == uri
                         and curNode.localName == localname
                         and curNode.prefix == prefix), \
                         "element stack messed up! (namespace)"
-            else:
+            sonst:
                 assert curNode.nodeName == name, \
                        "element stack messed up - bad nodeName"
                 assert curNode.namespaceURI == EMPTY_NAMESPACE, \
@@ -827,19 +827,19 @@ klasse FragmentBuilderNS(Namespaces, FragmentBuilder):
         context = self.context
         L = []
         while context:
-            if hasattr(context, '_ns_prefix_uri'):
+            wenn hasattr(context, '_ns_prefix_uri'):
                 fuer prefix, uri in context._ns_prefix_uri.items():
                     # add every new NS decl from context to L and attrs string
-                    if prefix in L:
+                    wenn prefix in L:
                         continue
                     L.append(prefix)
-                    if prefix:
+                    wenn prefix:
                         declname = "xmlns:" + prefix
-                    else:
+                    sonst:
                         declname = "xmlns"
-                    if attrs:
+                    wenn attrs:
                         attrs = "%s\n    %s='%s'" % (attrs, declname, uri)
-                    else:
+                    sonst:
                         attrs = " %s='%s'" % (declname, uri)
             context = context.parentNode
         return attrs
@@ -876,12 +876,12 @@ klasse InternalSubsetExtractor(ExpatBuilder):
 
     def start_doctype_decl_handler(self, name, publicId, systemId,
                                    has_internal_subset):
-        if has_internal_subset:
+        wenn has_internal_subset:
             parser = self.getParser()
             self.subset = []
             parser.DefaultHandler = self.subset.append
             parser.EndDoctypeDeclHandler = self.end_doctype_decl_handler
-        else:
+        sonst:
             raise ParseEscape()
 
     def end_doctype_decl_handler(self):
@@ -898,15 +898,15 @@ def parse(file, namespaces=True):
 
     'file' may be either a file name or an open file object.
     """
-    if namespaces:
+    wenn namespaces:
         builder = ExpatBuilderNS()
-    else:
+    sonst:
         builder = ExpatBuilder()
 
-    if isinstance(file, str):
+    wenn isinstance(file, str):
         with open(file, 'rb') as fp:
             result = builder.parseFile(fp)
-    else:
+    sonst:
         result = builder.parseFile(file)
     return result
 
@@ -915,9 +915,9 @@ def parseString(string, namespaces=True):
     """Parse a document from a string, returning the resulting
     Document node.
     """
-    if namespaces:
+    wenn namespaces:
         builder = ExpatBuilderNS()
-    else:
+    sonst:
         builder = ExpatBuilder()
     return builder.parseString(string)
 
@@ -929,15 +929,15 @@ def parseFragment(file, context, namespaces=True):
 
     'file' may be either a file name or an open file object.
     """
-    if namespaces:
+    wenn namespaces:
         builder = FragmentBuilderNS(context)
-    else:
+    sonst:
         builder = FragmentBuilder(context)
 
-    if isinstance(file, str):
+    wenn isinstance(file, str):
         with open(file, 'rb') as fp:
             result = builder.parseFile(fp)
-    else:
+    sonst:
         result = builder.parseFile(file)
     return result
 
@@ -947,16 +947,16 @@ def parseFragmentString(string, context, namespaces=True):
     from which it was originally extracted.  context should be the
     parent of the node(s) which are in the fragment.
     """
-    if namespaces:
+    wenn namespaces:
         builder = FragmentBuilderNS(context)
-    else:
+    sonst:
         builder = FragmentBuilder(context)
     return builder.parseString(string)
 
 
 def makeBuilder(options):
     """Create a builder based on an Options object."""
-    if options.namespaces:
+    wenn options.namespaces:
         return ExpatBuilderNS(options)
-    else:
+    sonst:
         return ExpatBuilder(options)

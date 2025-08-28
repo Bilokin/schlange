@@ -45,7 +45,7 @@
             of the set methods added by test_bdb.Bdb: 'ignore', 'enable',
             'disable', 'clear', 'up', 'down'.
         sargs:
-            The arguments of the set method if any, packed in a tuple.
+            The arguments of the set method wenn any, packed in a tuple.
 """
 
 import bdb as _bdb
@@ -77,23 +77,23 @@ def reset_Breakpoint():
     _bdb.Breakpoint.clearBreakpoints()
 
 def info_breakpoints():
-    bp_list = [bp fuer  bp in _bdb.Breakpoint.bpbynumber if bp]
-    if not bp_list:
+    bp_list = [bp fuer  bp in _bdb.Breakpoint.bpbynumber wenn bp]
+    wenn not bp_list:
         return ''
 
     header_added = False
     fuer bp in bp_list:
-        if not header_added:
+        wenn not header_added:
             info = 'BpNum Temp Enb Hits Ignore Where\n'
             header_added = True
 
-        disp = 'yes ' if bp.temporary else 'no  '
-        enab = 'yes' if bp.enabled else 'no '
+        disp = 'yes ' wenn bp.temporary sonst 'no  '
+        enab = 'yes' wenn bp.enabled sonst 'no '
         info += ('%-5d %s %s %-4d %-6d at %s:%d' %
                     (bp.number, disp, enab, bp.hits, bp.ignore,
                      os.path.basename(bp.file), bp.line))
-        if bp.cond:
-            info += '\n\tstop only if %s' % (bp.cond,)
+        wenn bp.cond:
+            info += '\n\tstop only wenn %s' % (bp.cond,)
         info += '\n'
     return info
 
@@ -106,10 +106,10 @@ klasse Bdb(_bdb.Bdb):
 
     def set_break(self, filename, lineno, temporary=False, cond=None,
                   funcname=None):
-        if isinstance(funcname, str):
-            if filename == __file__:
+        wenn isinstance(funcname, str):
+            wenn filename == __file__:
                 globals_ = globals()
-            else:
+            sonst:
                 module = importlib.import_module(filename[:-3])
                 globals_ = module.__dict__
             func = eval(funcname, globals_)
@@ -120,7 +120,7 @@ klasse Bdb(_bdb.Bdb):
 
         res = super().set_break(filename, lineno, temporary=temporary,
                                  cond=cond, funcname=funcname)
-        if isinstance(res, str):
+        wenn isinstance(res, str):
             raise BdbError(res)
         return res
 
@@ -144,19 +144,19 @@ klasse Bdb(_bdb.Bdb):
 
     def set_clear(self, fname, lineno):
         err = self.clear_break(fname, lineno)
-        if err:
+        wenn err:
             raise BdbError(err)
 
     def set_up(self):
         """Move up in the frame stack."""
-        if not self.index:
+        wenn not self.index:
             raise BdbError('Oldest frame')
         self.index -= 1
         self.frame = self.stack[self.index][0]
 
     def set_down(self):
         """Move down in the frame stack."""
-        if self.index + 1 == len(self.stack):
+        wenn self.index + 1 == len(self.stack):
             raise BdbError('Newest frame')
         self.index += 1
         self.frame = self.stack[self.index][0]
@@ -169,7 +169,7 @@ klasse Tracer(Bdb):
         self.expect_set = expect_set
         self.dry_run = dry_run
         self.header = ('Dry-run results fuer %s:' % test_case if
-                       test_case is not None else None)
+                       test_case is not None sonst None)
         self.init_test()
 
     def init_test(self):
@@ -184,24 +184,24 @@ klasse Tracer(Bdb):
         # a BdbException raised by the Tracer instance, so we raise it on the
         # next trace_dispatch() call that occurs unless the set_quit() or
         # set_continue() method has been invoked on the 'exception' event.
-        if self.cur_except is not None:
+        wenn self.cur_except is not None:
             raise self.cur_except
 
-        if event == 'exception':
+        wenn event == 'exception':
             try:
                 res = super().trace_dispatch(frame, event, arg)
                 return res
             except BdbException as e:
                 self.cur_except = e
                 return self.trace_dispatch
-        else:
+        sonst:
             return super().trace_dispatch(frame, event, arg)
 
     def user_call(self, frame, argument_list):
         # Adopt the same behavior as pdb and, as a side effect, skip also the
         # first 'call' event when the Tracer is started with Tracer.runcall()
         # which may be possibly considered as a bug.
-        if not self.stop_here(frame):
+        wenn not self.stop_here(frame):
             return
         self.process_event('call', frame, argument_list)
         self.next_set_method()
@@ -209,7 +209,7 @@ klasse Tracer(Bdb):
     def user_line(self, frame):
         self.process_event('line', frame)
 
-        if self.dry_run and self.breakpoint_hits:
+        wenn self.dry_run and self.breakpoint_hits:
             info = info_breakpoints().strip('\n')
             # Indent each line.
             fuer line in info.split('\n'):
@@ -238,7 +238,7 @@ klasse Tracer(Bdb):
         self.breakpoint_hits = (bp_list, bp_list)
 
     def delete_temporaries(self):
-        if self.breakpoint_hits:
+        wenn self.breakpoint_hits:
             fuer n in self.breakpoint_hits[1]:
                 self.clear_bpbynumber(n)
 
@@ -256,34 +256,34 @@ klasse Tracer(Bdb):
         # Call get_stack() to enable walking the stack with set_up() and
         # set_down().
         tb = None
-        if event == 'exception':
+        wenn event == 'exception':
             tb = self.exc_info[2]
         self.get_stack(frame, tb)
 
         # A breakpoint has been hit and it is not a temporary.
-        if self.currentbp is not None and not self.breakpoint_hits:
+        wenn self.currentbp is not None and not self.breakpoint_hits:
             bp_list = [self.currentbp]
             self.breakpoint_hits = (bp_list, [])
 
         # Pop next event.
         self.event= event
         self.pop_next()
-        if self.dry_run:
+        wenn self.dry_run:
             self.print_state(self.header)
             return
 
         # Validate the expected results.
-        if self.expect:
+        wenn self.expect:
             self.check_equal(self.expect[0], event, 'Wrong event type')
             self.check_lno_name()
 
-        if event in ('call', 'return'):
+        wenn event in ('call', 'return'):
             self.check_expect_max_size(3)
-        elif len(self.expect) > 3:
-            if event == 'line':
+        sowenn len(self.expect) > 3:
+            wenn event == 'line':
                 bps, temporaries = self.expect[3]
                 bpnums = sorted(bps.keys())
-                if not self.breakpoint_hits:
+                wenn not self.breakpoint_hits:
                     self.raise_not_expected(
                         'No breakpoints hit at expect_set item %d' %
                         self.expect_set_no)
@@ -296,14 +296,14 @@ klasse Tracer(Bdb):
                 self.check_equal(sorted(temporaries), self.breakpoint_hits[1],
                     'Wrong temporary breakpoints')
 
-            elif event == 'exception':
-                if not isinstance(self.exc_info[1], self.expect[3]):
+            sowenn event == 'exception':
+                wenn not isinstance(self.exc_info[1], self.expect[3]):
                     self.raise_not_expected(
                         "Wrong exception at expect_set item %d, got '%s'" %
                         (self.expect_set_no, self.exc_info))
 
     def check_equal(self, expected, result, msg):
-        if expected == result:
+        wenn expected == result:
             return
         self.raise_not_expected("%s at expect_set item %d, got '%s'" %
                                 (msg, self.expect_set_no, result))
@@ -311,15 +311,15 @@ klasse Tracer(Bdb):
     def check_lno_name(self):
         """Check the line number and function co_name."""
         s = len(self.expect)
-        if s > 1:
+        wenn s > 1:
             lineno = self.lno_abs2rel()
             self.check_equal(self.expect[1], lineno, 'Wrong line number')
-        if s > 2:
+        wenn s > 2:
             self.check_equal(self.expect[2], self.frame.f_code.co_name,
                                                 'Wrong function name')
 
     def check_expect_max_size(self, size):
-        if len(self.expect) > size:
+        wenn len(self.expect) > size:
             raise BdbSyntaxError('Invalid size of the %s expect tuple: %s' %
                                  (self.event, self.expect))
 
@@ -327,33 +327,33 @@ klasse Tracer(Bdb):
         fname = self.canonic(self.frame.f_code.co_filename)
         lineno = self.frame.f_lineno
         return ((lineno - self.frame.f_code.co_firstlineno + 1)
-            if fname == self.canonic(__file__) else lineno)
+            wenn fname == self.canonic(__file__) sonst lineno)
 
     def lno_rel2abs(self, fname, lineno):
         return (self.frame.f_code.co_firstlineno + lineno - 1
-            if (lineno and self.canonic(fname) == self.canonic(__file__))
-            else lineno)
+            wenn (lineno and self.canonic(fname) == self.canonic(__file__))
+            sonst lineno)
 
     def get_state(self):
         lineno = self.lno_abs2rel()
         co_name = self.frame.f_code.co_name
         state = "('%s', %d, '%s'" % (self.event, lineno, co_name)
-        if self.breakpoint_hits:
+        wenn self.breakpoint_hits:
             bps = '{'
             fuer n in self.breakpoint_hits[0]:
-                if bps != '{':
+                wenn bps != '{':
                     bps += ', '
                 bps += '%s: %s' % (n, self.get_bpbynumber(n).hits)
             bps += '}'
             bps = '(' + bps + ', ' + str(self.breakpoint_hits[1]) + ')'
             state += ', ' + bps
-        elif self.event == 'exception':
+        sowenn self.event == 'exception':
             state += ', ' + self.exc_info[0].__name__
         state += '), '
         return state.ljust(32) + str(self.set_tuple) + ','
 
     def print_state(self, header=None):
-        if header is not None and self.expect_set_no == 1:
+        wenn header is not None and self.expect_set_no == 1:
             print()
             print(header)
         print('%d: %s' % (self.expect_set_no, self.get_state()))
@@ -366,19 +366,19 @@ klasse Tracer(Bdb):
 
     def next_set_method(self):
         set_type = self.set_tuple[0]
-        args = self.set_tuple[1] if len(self.set_tuple) == 2 else None
+        args = self.set_tuple[1] wenn len(self.set_tuple) == 2 sonst None
         set_method = getattr(self, 'set_' + set_type)
 
         # The following set methods give back control to the tracer.
-        if set_type in ('step', 'stepinstr', 'continue', 'quit'):
+        wenn set_type in ('step', 'stepinstr', 'continue', 'quit'):
             set_method()
             return
-        elif set_type in ('next', 'return'):
+        sowenn set_type in ('next', 'return'):
             set_method(self.frame)
             return
-        elif set_type == 'until':
+        sowenn set_type == 'until':
             lineno = None
-            if args:
+            wenn args:
                 lineno = self.lno_rel2abs(self.frame.f_code.co_filename,
                                           args[0])
             set_method(self.frame, lineno)
@@ -386,31 +386,31 @@ klasse Tracer(Bdb):
 
         # The following set methods do not give back control to the tracer and
         # next_set_method() is called recursively.
-        if (args and set_type in ('break', 'clear', 'ignore', 'enable',
+        wenn (args and set_type in ('break', 'clear', 'ignore', 'enable',
                                     'disable')) or set_type in ('up', 'down'):
-            if set_type in ('break', 'clear'):
+            wenn set_type in ('break', 'clear'):
                 fname, lineno, *remain = args
                 lineno = self.lno_rel2abs(fname, lineno)
                 args = [fname, lineno]
                 args.extend(remain)
                 set_method(*args)
-            elif set_type in ('ignore', 'enable', 'disable'):
+            sowenn set_type in ('ignore', 'enable', 'disable'):
                 set_method(*args)
-            elif set_type in ('up', 'down'):
+            sowenn set_type in ('up', 'down'):
                 set_method()
 
             # Process the next expect_set item.
             # It is not expected that a test may reach the recursion limit.
             self.event= None
             self.pop_next()
-            if self.dry_run:
+            wenn self.dry_run:
                 self.print_state()
-            else:
-                if self.expect:
+            sonst:
+                wenn self.expect:
                     self.check_lno_name()
                 self.check_expect_max_size(3)
             self.next_set_method()
-        else:
+        sonst:
             raise BdbSyntaxError('"%s" is an invalid set_tuple' %
                                  self.set_tuple)
 
@@ -435,30 +435,30 @@ klasse TracerRun():
         sys.settrace(self._original_tracer)
 
         not_empty = ''
-        if self.tracer.set_list:
+        wenn self.tracer.set_list:
             not_empty += 'All paired tuples have not been processed, '
             not_empty += ('the last one was number %d\n' %
                           self.tracer.expect_set_no)
             not_empty += repr(self.tracer.set_list)
 
         # Make a BdbNotExpectedError a unittest failure.
-        if type_ is not None and issubclass(BdbNotExpectedError, type_):
-            if isinstance(value, BaseException) and value.args:
+        wenn type_ is not None and issubclass(BdbNotExpectedError, type_):
+            wenn isinstance(value, BaseException) and value.args:
                 err_msg = value.args[0]
-                if not_empty:
+                wenn not_empty:
                     err_msg += '\n' + not_empty
-                if self.dry_run:
+                wenn self.dry_run:
                     print(err_msg)
                     return True
-                else:
+                sonst:
                     self.test_case.fail(err_msg)
-            else:
+            sonst:
                 assert False, 'BdbNotExpectedError with empty args'
 
-        if not_empty:
-            if self.dry_run:
+        wenn not_empty:
+            wenn self.dry_run:
                 print(not_empty)
-            else:
+            sonst:
                 self.test_case.fail(not_empty)
 
 def run_test(modules, set_list, skip=None):
@@ -737,7 +737,7 @@ klasse StateTestCase(BaseTestCase):
         sys.meta_path[:] = (
             item
             fuer item in sys.meta_path
-            if item.__module__.startswith('_frozen_importlib')
+            wenn item.__module__.startswith('_frozen_importlib')
         )
 
         code = """
@@ -1086,7 +1086,7 @@ klasse IssuesTestCase(BaseTestCase):
     def test_next_until_return_in_generator(self):
         # Issue #16596.
         # Check that set_next(), set_until() and set_return() do not treat the
-        # `yield` and `yield from` statements as if they were returns and stop
+        # `yield` and `yield from` statements as wenn they were returns and stop
         # instead in the current frame.
         code = """
             def test_gen():
@@ -1111,13 +1111,13 @@ klasse IssuesTestCase(BaseTestCase):
                         ('line', 3, 'test_gen', ({1:1}, [])), (set_type, ),
                     ]
 
-                    if set_type == 'return':
+                    wenn set_type == 'return':
                         self.expect_set.extend(
                             [('exception', 10, 'main', StopIteration), ('step',),
                              ('return', 10, 'main'),                   ('quit', ),
                             ]
                         )
-                    else:
+                    sonst:
                         self.expect_set.extend(
                             [('line', 4, 'test_gen'), ('quit', ),]
                         )
@@ -1238,5 +1238,5 @@ klasse TestRegressions(unittest.TestCase):
                       Bdb().format_stack_entry((sys._getframe(), None)))
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

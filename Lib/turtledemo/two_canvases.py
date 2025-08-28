@@ -49,6 +49,6 @@ def main():
     return "EVENTLOOP"
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     main()
     TK.mainloop()  # keep window open until user closes it

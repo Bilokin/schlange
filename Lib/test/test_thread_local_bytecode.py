@@ -7,7 +7,7 @@ from test.support import cpython_only, import_helper, requires_specialization_ft
 from test.support.script_helper import assert_python_ok
 from test.support.threading_helper import requires_working_threading
 
-# Skip this test if the _testinternalcapi module isn't available
+# Skip this test wenn the _testinternalcapi module isn't available
 _testinternalcapi = import_helper.import_module("_testinternalcapi")
 
 
@@ -28,7 +28,7 @@ klasse TLBCTests(unittest.TestCase):
             return {i.opname fuer i in dis._get_instructions_bytes(bc)}
 
         def f(a, b, q=None):
-            if q is not None:
+            wenn q is not None:
                 q.put(get_tlbc(f))
             return a + b
 
@@ -64,7 +64,7 @@ klasse TLBCTests(unittest.TestCase):
         def g(a, b, q=None):
             fuer _ in range(100):
                 f(a, b)
-            if q is not None:
+            wenn q is not None:
                 q.put(get_tlbc(f))
 
         # specialize in main thread
@@ -91,7 +91,7 @@ klasse TLBCTests(unittest.TestCase):
         from _testinternalcapi import get_tlbc_id
 
         def f(a, b, q=None):
-            if q is not None:
+            wenn q is not None:
                 q.put(get_tlbc_id(f))
             return a + b
 
@@ -117,7 +117,7 @@ klasse TLBCTests(unittest.TestCase):
         from _testinternalcapi import get_tlbc_id
 
         def f(a, b, q=None):
-            if q is not None:
+            wenn q is not None:
                 q.put(get_tlbc_id(f))
             return a + b
 
@@ -194,5 +194,5 @@ klasse TLBCTests(unittest.TestCase):
         assert_python_ok("-X", "tlbc=1", "-c", code)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

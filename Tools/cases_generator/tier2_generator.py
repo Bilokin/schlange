@@ -36,11 +36,11 @@ DEFAULT_OUTPUT = ROOT / "Python/executor_cases.c.h"
 def declare_variable(
     var: StackItem, uop: Uop, seen: set[str], out: CWriter
 ) -> None:
-    if not var.used or var.name in seen:
+    wenn not var.used or var.name in seen:
         return
     seen.add(var.name)
     type, null = type_and_null(var)
-    space = " " if type[-1].isalnum() else ""
+    space = " " wenn type[-1].isalnum() sonst ""
     out.emit(f"{type}{space}{var.name};\n")
 
 
@@ -66,7 +66,7 @@ klasse Tier2Emitter(Emitter):
 
     def goto_error(self, offset: int, storage: Storage) -> str:
         # To do: Add jump targets fuer popping values.
-        if offset != 0:
+        wenn offset != 0:
             storage.copy().flush(self.out)
         return f"JUMP_TO_ERROR();"
 
@@ -121,11 +121,11 @@ klasse Tier2Emitter(Emitter):
         storage: Storage,
         inst: Instruction | None,
     ) -> bool:
-        if not uop.name.endswith("_0") and not uop.name.endswith("_1"):
+        wenn not uop.name.endswith("_0") and not uop.name.endswith("_1"):
             self.emit(tkn)
             return True
         amp = next(tkn_iter)
-        if amp.text != "&":
+        wenn amp.text != "&":
             self.emit(tkn)
             self.emit(amp)
             return True
@@ -139,19 +139,19 @@ def write_uop(uop: Uop, emitter: Emitter, stack: Stack) -> Stack:
     locals: dict[str, Local] = {}
     try:
         emitter.out.start_line()
-        if uop.properties.oparg:
+        wenn uop.properties.oparg:
             emitter.emit("oparg = CURRENT_OPARG();\n")
             assert uop.properties.const_oparg < 0
-        elif uop.properties.const_oparg >= 0:
+        sowenn uop.properties.const_oparg >= 0:
             emitter.emit(f"oparg = {uop.properties.const_oparg};\n")
             emitter.emit(f"assert(oparg == CURRENT_OPARG());\n")
         storage = Storage.for_uop(stack, uop, emitter.out)
         idx = 0
         fuer cache in uop.caches:
-            if cache.name != "unused":
-                if cache.size == 4:
+            wenn cache.name != "unused":
+                wenn cache.size == 4:
                     type = cast = "PyObject *"
-                else:
+                sonst:
                     type = f"uint{cache.size*16}_t "
                     cast = f"uint{cache.size*16}_t"
                 emitter.emit(f"{type}{cache.name} = ({cast})CURRENT_OPERAND{idx}();\n")
@@ -181,12 +181,12 @@ def generate_tier2(
     emitter = Tier2Emitter(out, analysis.labels)
     out.emit("\n")
     fuer name, uop in analysis.uops.items():
-        if uop.properties.tier == 1:
+        wenn uop.properties.tier == 1:
             continue
-        if uop.is_super():
+        wenn uop.is_super():
             continue
         why_not_viable = uop.why_not_viable()
-        if why_not_viable is not None:
+        wenn why_not_viable is not None:
             out.emit(
                 f"/* {uop.name} is not a viable micro-op fuer tier 2 because it {why_not_viable} */\n\n"
             )
@@ -196,7 +196,7 @@ def generate_tier2(
         stack = Stack()
         stack = write_uop(uop, emitter, stack)
         out.start_line()
-        if not uop.properties.always_exits:
+        wenn not uop.properties.always_exits:
             out.emit("break;\n")
         out.start_line()
         out.emit("}")
@@ -221,9 +221,9 @@ arg_parser.add_argument(
     "input", nargs=argparse.REMAINDER, help="Instruction definition file(s)"
 )
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     args = arg_parser.parse_args()
-    if len(args.input) == 0:
+    wenn len(args.input) == 0:
         args.input.append(DEFAULT_INPUT)
     data = analyze_files(args.input)
     with open(args.output, "w") as outfile:

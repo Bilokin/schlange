@@ -112,7 +112,7 @@ klasse TestVariable(TestBase):
         self.assertTrue(v.side_effect)
 
     def test_trace_old(self):
-        if tcl_version >= (9, 0):
+        wenn tcl_version >= (9, 0):
             self.skipTest('requires Tcl version < 9.0')
         # Old interface
         v = Variable(self.root)
@@ -306,7 +306,7 @@ klasse TestBooleanVar(TestBase):
         self.assertIs(v.get(), True)
         self.root.globalsetvar("name", "0")
         self.assertIs(v.get(), False)
-        self.root.globalsetvar("name", 42 if self.root.wantobjects() else 1)
+        self.root.globalsetvar("name", 42 wenn self.root.wantobjects() sonst 1)
         self.assertIs(v.get(), True)
         self.root.globalsetvar("name", 0)
         self.assertIs(v.get(), False)
@@ -314,8 +314,8 @@ klasse TestBooleanVar(TestBase):
         self.assertIs(v.get(), True)
 
     def test_set(self):
-        true = 1 if self.root.wantobjects() else "1"
-        false = 0 if self.root.wantobjects() else "0"
+        true = 1 wenn self.root.wantobjects() sonst "1"
+        false = 0 wenn self.root.wantobjects() sonst "0"
         v = BooleanVar(self.root, name="name")
         v.set(True)
         self.assertEqual(self.root.globalgetvar("name"), true)
@@ -329,7 +329,7 @@ klasse TestBooleanVar(TestBase):
         self.assertEqual(self.root.globalgetvar("name"), true)
 
     def test_invalid_value_domain(self):
-        false = 0 if self.root.wantobjects() else "0"
+        false = 0 wenn self.root.wantobjects() sonst "0"
         v = BooleanVar(self.root, name="name")
         with self.assertRaises(TclError):
             v.set("value")
@@ -355,5 +355,5 @@ klasse DefaultRootTest(AbstractDefaultRootTest, unittest.TestCase):
         self.assertRaises(RuntimeError, Variable)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

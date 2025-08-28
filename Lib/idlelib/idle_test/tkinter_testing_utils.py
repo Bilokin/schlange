@@ -45,7 +45,7 @@ def run_in_tk_mainloop(delay=1):
                 except Exception as exc:
                     exception = exc
                     root.quit()
-                else:
+                sonst:
                     # Schedule the Tk mainloop to call this function again,
                     # using a robust method of ensuring that it gets a
                     # chance to process queued events before doing so.
@@ -54,7 +54,7 @@ def run_in_tk_mainloop(delay=1):
             root.after(0, root.after_idle, after_callback)
             root.mainloop()
 
-            if exception:
+            wenn exception:
                 raise exception
 
         return new_test_method

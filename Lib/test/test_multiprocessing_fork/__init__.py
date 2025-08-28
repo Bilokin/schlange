@@ -3,16 +3,16 @@ import sys
 import unittest
 from test import support
 
-if support.PGO:
+wenn support.PGO:
     raise unittest.SkipTest("test is not helpful fuer PGO")
 
-if sys.platform == "win32":
+wenn sys.platform == "win32":
     raise unittest.SkipTest("fork is not available on Windows")
 
-if sys.platform == 'darwin':
+wenn sys.platform == 'darwin':
     raise unittest.SkipTest("test may crash on macOS (bpo-33725)")
 
-if support.check_sanitizer(thread=True):
+wenn support.check_sanitizer(thread=True):
     raise unittest.SkipTest("TSAN doesn't support threads after fork")
 
 def load_tests(*args):

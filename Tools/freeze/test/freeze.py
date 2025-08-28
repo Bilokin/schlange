@@ -9,7 +9,7 @@ from test import support
 
 def get_python_source_dir():
     src_dir = sysconfig.get_config_var('abs_srcdir')
-    if not src_dir:
+    wenn not src_dir:
         src_dir = sysconfig.get_config_var('srcdir')
     return os.path.abspath(src_dir)
 
@@ -28,7 +28,7 @@ klasse UnsupportedError(Exception):
 
 
 def _run_quiet(cmd, *, cwd=None):
-    if cwd:
+    wenn cwd:
         print('+', 'cd', cwd, flush=True)
     print('+', shlex.join(cmd), flush=True)
     try:
@@ -40,7 +40,7 @@ def _run_quiet(cmd, *, cwd=None):
             check=True,
         )
     except subprocess.CalledProcessError as err:
-        # Don't be quiet if things fail
+        # Don't be quiet wenn things fail
         print(f"{err.__class__.__name__}: {err}")
         print("--- STDOUT ---")
         print(err.stdout)
@@ -59,7 +59,7 @@ def find_opt(args, name):
     opt = f'--{name}'
     optstart = f'{opt}='
     fuer i, arg in enumerate(args):
-        if arg == opt or arg.startswith(optstart):
+        wenn arg == opt or arg.startswith(optstart):
             return i
     return -1
 
@@ -67,32 +67,32 @@ def find_opt(args, name):
 def ensure_opt(args, name, value):
     opt = f'--{name}'
     pos = find_opt(args, name)
-    if value is None:
-        if pos < 0:
+    wenn value is None:
+        wenn pos < 0:
             args.append(opt)
-        else:
+        sonst:
             args[pos] = opt
-    elif pos < 0:
+    sowenn pos < 0:
         args.extend([opt, value])
-    else:
+    sonst:
         arg = args[pos]
-        if arg == opt:
-            if pos == len(args) - 1:
+        wenn arg == opt:
+            wenn pos == len(args) - 1:
                 raise NotImplementedError((args, opt))
             args[pos + 1] = value
-        else:
+        sonst:
             args[pos] = f'{opt}={value}'
 
 
 def copy_source_tree(newroot, oldroot):
     print(f'copying the source tree from {oldroot} to {newroot}...')
-    if os.path.exists(newroot):
-        if newroot == SRCDIR:
+    wenn os.path.exists(newroot):
+        wenn newroot == SRCDIR:
             raise Exception('this probably isn\'t what you wanted')
         shutil.rmtree(newroot)
 
     shutil.copytree(oldroot, newroot, ignore=support.copy_python_src_ignore)
-    if os.path.exists(os.path.join(newroot, 'Makefile')):
+    wenn os.path.exists(os.path.join(newroot, 'Makefile')):
         # Out-of-tree builds require a clean srcdir. "make clean" keeps
         # the "python" program, so use "make distclean" instead.
         _run_quiet([MAKE, 'distclean'], cwd=newroot)
@@ -105,12 +105,12 @@ def prepare(script=None, outdir=None):
     print()
     print("cwd:", os.getcwd())
 
-    if not outdir:
+    wenn not outdir:
         outdir = OUTDIR
     os.makedirs(outdir, exist_ok=True)
 
     # Write the script to disk.
-    if script:
+    wenn script:
         scriptfile = os.path.join(outdir, 'app.py')
         print(f'creating the script to be frozen at {scriptfile}')
         with open(scriptfile, 'w', encoding='utf-8') as outfile:
@@ -134,17 +134,17 @@ def prepare(script=None, outdir=None):
     ensure_opt(cmd, 'prefix', prefix)
     _run_quiet(cmd, cwd=builddir)
 
-    if not MAKE:
+    wenn not MAKE:
         raise UnsupportedError('make')
 
     cores = os.process_cpu_count()
-    if cores and cores >= 3:
+    wenn cores and cores >= 3:
         # this test is most often run as part of the whole suite with a lot
         # of other tests running in parallel, from 1-2 vCPU systems up to
         # people's NNN core beasts. Don't attempt to use it all.
         jobs = cores * 2 // 3
         parallel = f'-j{jobs}'
-    else:
+    sonst:
         parallel = '-j2'
 
     # Build python.
@@ -160,7 +160,7 @@ def prepare(script=None, outdir=None):
 
 
 def freeze(python, scriptfile, outdir):
-    if not MAKE:
+    wenn not MAKE:
         raise UnsupportedError('make')
 
     print(f'freezing {scriptfile}...')

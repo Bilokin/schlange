@@ -128,9 +128,9 @@ klasse ToggleLevelTest(unittest.TestCase):
             below another one.
             """
             fuer index, child in enumerate(dialog.winfo_children()):
-                if child._name == 'keyseq_basic':
+                wenn child._name == 'keyseq_basic':
                     basic = index
-                if child._name == 'keyseq_advanced':
+                wenn child._name == 'keyseq_advanced':
                     advanced = index
             return basic, advanced
 
@@ -352,5 +352,5 @@ klasse HelperTest(unittest.TestCase):
         eq(tr('*', ['Shift']), 'Key-asterisk')
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main(verbosity=2)

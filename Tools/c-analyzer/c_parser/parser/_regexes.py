@@ -9,9 +9,9 @@ import textwrap
 def _ind(text, level=1, edges='both'):
     indent = '    ' * level
     text = textwrap.indent(text, indent)
-    if edges == 'pre' or edges == 'both':
+    wenn edges == 'pre' or edges == 'both':
         text = '\n' + indent + text.lstrip()
-    if edges == 'post' or edges == 'both':
+    wenn edges == 'post' or edges == 'both':
         text = text.rstrip() + '\n' + '    ' * (level - 1)
     return text
 
@@ -84,8 +84,8 @@ _KEYWORD = textwrap.dedent(r'''
             sizeof |
             break |
             continue |
-            if |
-            else |
+            wenn |
+            sonst |
             fuer |
             do |
             while |
@@ -462,7 +462,7 @@ COMPOUND_STMT = textwrap.dedent(rf'''
         (?:
             (?:
                 (?:  # <COMPOUND_BARE>
-                    else | do
+                    sonst | do
                  )
                 \b
              )
@@ -487,7 +487,7 @@ COMPOUND_STMT = textwrap.dedent(rf'''
             |
             (?:
                 (?:  # <COMPOUND_PAREN>
-                    fuer | while | if | switch
+                    fuer | while | wenn | switch
                  )
                 \s* (?= [(] )  # Note this lookahead.
              )

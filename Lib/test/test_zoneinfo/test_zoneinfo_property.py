@@ -29,7 +29,7 @@ def _valid_keys():
     def valid_key(key):
         fuer root in TZPATH:
             key_file = os.path.join(root, key)
-            if os.path.exists(key_file):
+            wenn os.path.exists(key_file):
                 return True
 
         components = key.split("/")
@@ -49,7 +49,7 @@ def _valid_keys():
         prefix_out = []
         fuer key in available_zones:
             prefix_key = f"{prefix}/{key}"
-            if valid_key(prefix_key):
+            wenn valid_key(prefix_key):
                 prefix_out.append(prefix_key)
 
         out_zones[prefix] = prefix_out
@@ -62,7 +62,7 @@ def _valid_keys():
 
 
 VALID_KEYS = _valid_keys()
-if not VALID_KEYS:
+wenn not VALID_KEYS:
     raise unittest.SkipTest("No time zone data available")
 
 
@@ -298,15 +298,15 @@ klasse PythonCConsistencyTest(unittest.TestCase):
         except OverflowError as e:
             c_overflow_exc = e
 
-        if (py_overflow_exc is not None) != (c_overflow_exc is not None):
+        wenn (py_overflow_exc is not None) != (c_overflow_exc is not None):
             raise py_overflow_exc or c_overflow_exc  # pragma: nocover
 
-        if py_overflow_exc is not None:
+        wenn py_overflow_exc is not None:
             return  # Consistently raises the same exception
 
         # PEP 495 says that an inter-zone comparison between ambiguous
         # datetimes is always False.
-        if py_dt != c_dt:
+        wenn py_dt != c_dt:
             self.assertEqual(
                 self._is_ambiguous(py_dt),
                 self._is_ambiguous(c_dt),
@@ -326,7 +326,7 @@ klasse PythonCConsistencyTest(unittest.TestCase):
         py_dt = dt.replace(tzinfo=py_zoneinfo.ZoneInfo(key))
         c_dt = dt.replace(tzinfo=c_zoneinfo.ZoneInfo(key))
 
-        # Convert from UTC: Overflow OK if it happens in both implementations
+        # Convert from UTC: Overflow OK wenn it happens in both implementations
         py_overflow_exc = None
         c_overflow_exc = None
         try:
@@ -339,10 +339,10 @@ klasse PythonCConsistencyTest(unittest.TestCase):
         except OverflowError as e:
             c_overflow_exc = e
 
-        if (py_overflow_exc is not None) != (c_overflow_exc is not None):
+        wenn (py_overflow_exc is not None) != (c_overflow_exc is not None):
             raise py_overflow_exc or c_overflow_exc  # pragma: nocover
 
-        if py_overflow_exc is not None:
+        wenn py_overflow_exc is not None:
             return  # Consistently raises the same exception
 
         self.assertEqual(py_utc, c_utc)

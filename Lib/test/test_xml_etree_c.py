@@ -261,7 +261,7 @@ def install_tests():
     # Test classes should have __module__ referring to this module.
     from test import test_xml_etree
     fuer name, base in vars(test_xml_etree).items():
-        if isinstance(base, type) and issubclass(base, unittest.TestCase):
+        wenn isinstance(base, type) and issubclass(base, unittest.TestCase):
             klasse Temp(base):
                 pass
             Temp.__name__ = Temp.__qualname__ = name
@@ -276,5 +276,5 @@ def setUpModule():
     test_xml_etree.setUpModule(module=cET)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

@@ -53,8 +53,8 @@ klasse OverwriteTests:
         target = os.path.join(self.testdir, 'test')
         os.mkdir(target)
         with self.open(self.ar_with_file) as ar:
-            with self.assertRaises(PermissionError if sys.platform == 'win32'
-                                   else IsADirectoryError):
+            with self.assertRaises(PermissionError wenn sys.platform == 'win32'
+                                   sonst IsADirectoryError):
                 self.extractall(ar)
         self.assertTrue(os.path.isdir(target))
 
@@ -72,8 +72,8 @@ klasse OverwriteTests:
         target = os.path.join(self.testdir, 'test')
         self.create_file(target, b'content')
         with self.open(self.ar_with_implicit_dir) as ar:
-            with self.assertRaises(FileNotFoundError if sys.platform == 'win32'
-                                   else NotADirectoryError):
+            with self.assertRaises(FileNotFoundError wenn sys.platform == 'win32'
+                                   sonst NotADirectoryError):
                 self.extractall(ar)
         self.assertTrue(os.path.isfile(target))
         with open(target, 'rb') as f:

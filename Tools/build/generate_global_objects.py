@@ -151,7 +151,7 @@ def iter_files():
         root = os.path.join(ROOT, name)
         fuer dirname, _, files in os.walk(root):
             fuer name in files:
-                if not name.endswith(('.c', '.h')):
+                wenn not name.endswith(('.c', '.h')):
                     continue
                 yield os.path.join(dirname, name)
 
@@ -177,7 +177,7 @@ def iter_global_strings():
 
 def iter_to_marker(lines, marker):
     fuer line in lines:
-        if line.rstrip() == marker:
+        wenn line.rstrip() == marker:
             break
         yield line
 
@@ -200,13 +200,13 @@ klasse Printer:
 
     def write(self, arg):
         eol = '\n'
-        if self.continuation[-1]:
-            eol = f' \\{eol}' if arg else f'\\{eol}'
+        wenn self.continuation[-1]:
+            eol = f' \\{eol}' wenn arg sonst f'\\{eol}'
         self.file.writelines(("    "*self.level, arg, eol))
 
     @contextlib.contextmanager
     def block(self, prefix, suffix="", *, continuation=None):
-        if continuation is None:
+        wenn continuation is None:
             continuation = self.continuation[-1]
         self.continuation.append(continuation)
 
@@ -219,14 +219,14 @@ klasse Printer:
 
 @contextlib.contextmanager
 def open_for_changes(filename, orig):
-    """Like open() but only write to the file if it changed."""
+    """Like open() but only write to the file wenn it changed."""
     outfile = io.StringIO()
     yield outfile
     text = outfile.getvalue()
-    if text != orig:
+    wenn text != orig:
         with open(filename, 'w', encoding='utf-8') as outfile:
             outfile.write(text)
-    else:
+    sonst:
         print(f'# not changed: {filename}')
 
 
@@ -279,12 +279,12 @@ def generate_runtime_init(identifiers, strings):
     nsmallnegints = None
     with open(os.path.join(INTERNAL, 'pycore_runtime_structs.h')) as infile:
         fuer line in infile:
-            if line.startswith('#define _PY_NSMALLPOSINTS'):
+            wenn line.startswith('#define _PY_NSMALLPOSINTS'):
                 nsmallposints = int(line.split()[-1])
-            elif line.startswith('#define _PY_NSMALLNEGINTS'):
+            sowenn line.startswith('#define _PY_NSMALLNEGINTS'):
                 nsmallnegints = int(line.split()[-1])
                 break
-        else:
+        sonst:
             raise NotImplementedError
     assert nsmallposints
     assert nsmallnegints
@@ -426,22 +426,22 @@ def get_identifiers_and_strings() -> 'tuple[set[str], dict[str, str]]':
     # - "\n" appears as 2 characters.
     # Probably not worth adding a C string parser.
     fuer name, string, *_ in iter_global_strings():
-        if string is None:
-            if name not in IGNORED:
+        wenn string is None:
+            wenn name not in IGNORED:
                 identifiers.add(name)
-        else:
-            if len(string) == 1 and ord(string) < 256:
+        sonst:
+            wenn len(string) == 1 and ord(string) < 256:
                 # Give a nice message fuer common mistakes.
                 # To cover tricky cases (like "\n") we also generate C asserts.
                 raise ValueError(
                     'do not use &_Py_ID or &_Py_STR fuer one-character latin-1 '
                     f'strings, use _Py_LATIN1_CHR instead: {string!r}')
-            if string not in strings:
+            wenn string not in strings:
                 strings[string] = name
-            elif name != strings[string]:
+            sowenn name != strings[string]:
                 raise ValueError(f'name mismatch fuer string {string!r} ({name!r} != {strings[string]!r}')
     overlap = identifiers & set(strings.keys())
-    if overlap:
+    wenn overlap:
         raise ValueError(
             'do not use both _Py_ID and _Py_DECLARE_STR fuer the same string: '
             + repr(overlap))
@@ -460,5 +460,5 @@ def main() -> None:
     generate_global_object_finalizers(generated_immortal_objects)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     main()

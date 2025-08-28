@@ -21,7 +21,7 @@ klasse I:
     def __iter__(self):
         return self
     def __next__(self):
-        if self.i >= len(self.seqn): raise StopIteration
+        wenn self.i >= len(self.seqn): raise StopIteration
         v = self.seqn[self.i]
         self.i += 1
         return v
@@ -41,7 +41,7 @@ klasse X:
         self.seqn = seqn
         self.i = 0
     def __next__(self):
-        if self.i >= len(self.seqn): raise StopIteration
+        wenn self.i >= len(self.seqn): raise StopIteration
         v = self.seqn[self.i]
         self.i += 1
         return v
@@ -143,7 +143,7 @@ klasse EnumerateTestCase(unittest.TestCase, PickleTest):
     @support.cpython_only
     def test_tuple_reuse(self):
         # Tests an implementation detail where tuple is reused
-        # whenever nothing else holds a reference to it
+        # whenever nothing sonst holds a reference to it
         self.assertEqual(len(set(map(id, list(enumerate(self.seq))))), len(self.seq))
         self.assertEqual(len(set(map(id, enumerate(self.seq)))), min(1,len(self.seq)))
 
@@ -180,7 +180,7 @@ klasse TestReversed(unittest.TestCase, PickleTest):
     def test_simple(self):
         klasse A:
             def __getitem__(self, i):
-                if i < 5:
+                wenn i < 5:
                     return str(i)
                 raise StopIteration
             def __len__(self):
@@ -204,7 +204,7 @@ klasse TestReversed(unittest.TestCase, PickleTest):
         klasse SeqWithWeirdLen:
             called = False
             def __len__(self):
-                if not self.called:
+                wenn not self.called:
                     self.called = True
                     return 10
                 raise ZeroDivisionError
@@ -241,7 +241,7 @@ klasse TestReversed(unittest.TestCase, PickleTest):
                 reversed(f)
             except TypeError:
                 pass
-            else:
+            sonst:
                 self.fail("non-callable __reversed__ didn't raise!")
         self.assertEqual(rc, sys.getrefcount(r))
 
@@ -292,5 +292,5 @@ klasse TestLongStart(EnumerateStartTestCase):
                        (sys.maxsize+3,'c')]
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

@@ -281,15 +281,15 @@ klasse ExceptionGroupTestBase(unittest.TestCase):
             exception group, then template is a list of the
             templates of its nested exceptions.
         """
-        if exc_type is not None:
+        wenn exc_type is not None:
             self.assertIs(type(exc), exc_type)
 
-        if isinstance(exc, BaseExceptionGroup):
+        wenn isinstance(exc, BaseExceptionGroup):
             self.assertIsInstance(template, collections.abc.Sequence)
             self.assertEqual(len(exc.exceptions), len(template))
             fuer e, t in zip(exc.exceptions, template):
                 self.assertMatchesTemplate(e, None, t)
-        else:
+        sonst:
             self.assertIsInstance(template, BaseException)
             self.assertEqual(type(exc), type(template))
             self.assertEqual(exc.args, template.args)
@@ -412,11 +412,11 @@ klasse ExceptionGroupSplitTests(ExceptionGroupTestBase):
             self.assertEqual(match.message, eg.message)
             self.assertMatchesTemplate(
                 match, ExceptionGroup, match_template)
-            if rest_template is not None:
+            wenn rest_template is not None:
                 self.assertEqual(rest.message, eg.message)
                 self.assertMatchesTemplate(
                     rest, ExceptionGroup, rest_template)
-            else:
+            sonst:
                 self.assertIsNone(rest)
 
     def test_basics_split_by_predicate__passthrough(self):
@@ -451,7 +451,7 @@ klasse ExceptionGroupSplitTests(ExceptionGroupTestBase):
                 self.assertEqual(match.message, eg.message)
                 self.assertMatchesTemplate(
                     match, ExceptionGroup, match_template)
-                if rest_template is not None:
+                wenn rest_template is not None:
                     self.assertEqual(rest.message, eg.message)
                     self.assertMatchesTemplate(
                         rest, ExceptionGroup, rest_template)
@@ -480,13 +480,13 @@ klasse DeepRecursionInSplitAndSubgroup(unittest.TestCase):
 
 
 def leaf_generator(exc, tbs=None):
-    if tbs is None:
+    wenn tbs is None:
         tbs = []
     tbs.append(exc.__traceback__)
-    if isinstance(exc, BaseExceptionGroup):
+    wenn isinstance(exc, BaseExceptionGroup):
         fuer e in exc.exceptions:
             yield from leaf_generator(e, tbs)
-    else:
+    sonst:
         # exc is a leaf exception and its traceback
         # is the concatenation of the traceback
         # segments in tbs
@@ -587,7 +587,7 @@ klasse ExceptionGroupSplitTestBase(ExceptionGroupTestBase):
         match, rest = eg.split(types)
         sg = eg.subgroup(types)
 
-        if match is not None:
+        wenn match is not None:
             self.assertIsInstance(match, BaseExceptionGroup)
             fuer e,_ in leaf_generator(match):
                 self.assertIsInstance(e, types)
@@ -597,11 +597,11 @@ klasse ExceptionGroupSplitTestBase(ExceptionGroupTestBase):
             fuer e,_ in leaf_generator(sg):
                 self.assertIsInstance(e, types)
 
-        if rest is not None:
+        wenn rest is not None:
             self.assertIsInstance(rest, BaseExceptionGroup)
 
         def leaves(exc):
-            return [] if exc is None else [e fuer e,_ in leaf_generator(exc)]
+            return [] wenn exc is None sonst [e fuer e,_ in leaf_generator(exc)]
 
         # match and subgroup have the same leaves
         self.assertSequenceEqual(leaves(match), leaves(sg))
@@ -620,7 +620,7 @@ klasse ExceptionGroupSplitTestBase(ExceptionGroupTestBase):
 
         # message, cause and context, traceback and note equal to eg
         fuer part in [match, rest, sg]:
-            if part is not None:
+            wenn part is not None:
                 self.assertEqual(eg.message, part.message)
                 self.assertIs(eg.__cause__, part.__cause__)
                 self.assertIs(eg.__context__, part.__context__)
@@ -631,11 +631,11 @@ klasse ExceptionGroupSplitTestBase(ExceptionGroupTestBase):
 
         def tbs_for_leaf(leaf, eg):
             fuer e, tbs in leaf_generator(eg):
-                if e is leaf:
+                wenn e is leaf:
                     return tbs
 
         def tb_linenos(tbs):
-            return [tb.tb_lineno fuer tb in tbs if tb]
+            return [tb.tb_lineno fuer tb in tbs wenn tb]
 
         # full tracebacks match
         fuer part in [match, rest, sg]:
@@ -879,7 +879,7 @@ klasse NestedExceptionGroupSubclassSplitTest(ExceptionGroupSplitTestBase):
             def __new__(cls, message, excs, unused):
                 # The "unused" arg is here to show that split() doesn't call
                 # the actual klasse constructor from the default derive()
-                # implementation (it would fail on unused arg if so because
+                # implementation (it would fail on unused arg wenn so because
                 # it assumes the BaseExceptionGroup.__new__ signature).
                 return super().__new__(cls, message, excs)
 
@@ -973,5 +973,5 @@ klasse NestedExceptionGroupSubclassSplitTest(ExceptionGroupSplitTestBase):
         self.assertEqual(rest.code, 42)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

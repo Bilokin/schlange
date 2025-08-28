@@ -15,7 +15,7 @@ import unittest
 
 from unittest import mock, skipUnless
 try:
-    # compileall relies on ProcessPoolExecutor if ProcessPoolExecutor exists
+    # compileall relies on ProcessPoolExecutor wenn ProcessPoolExecutor exists
     # and it can function.
     from multiprocessing.util import _cleanup_tests as multiprocessing_cleanup_tests
     from concurrent.futures import ProcessPoolExecutor  # noqa: F401
@@ -34,7 +34,7 @@ from test.support.os_helper import FakePath
 
 
 def get_pyc(script, opt):
-    if not opt:
+    wenn not opt:
         # Replace None and 0 with ''
         opt = ''
     return importlib.util.cache_from_source(script, optimization=opt)
@@ -45,7 +45,7 @@ def get_pycs(script):
 
 
 def is_hardlink(filename1, filename2):
-    """Returns True if two files have the same inode (hardlink)"""
+    """Returns True wenn two files have the same inode (hardlink)"""
     inode1 = os.stat(filename1).st_ino
     inode2 = os.stat(filename2).st_ino
     return inode1 == inode2
@@ -93,7 +93,7 @@ klasse CompileallTestsBase:
             self.assertTrue(compileall.compile_file(self.source_path))
 
     def test_larger_than_32_bit_times(self):
-        # This is similar to the test above but we skip it if the OS doesn't
+        # This is similar to the test above but we skip it wenn the OS doesn't
         # support modification times larger than 32-bits.
         try:
             os.utime(self.source_path, (2**35, 2**35))
@@ -105,7 +105,7 @@ klasse CompileallTestsBase:
     def recreation_check(self, metadata):
         """Check that compileall recreates bytecode when the new metadata is
         used."""
-        if os.environ.get('SOURCE_DATE_EPOCH'):
+        wenn os.environ.get('SOURCE_DATE_EPOCH'):
             raise unittest.SkipTest('SOURCE_DATE_EPOCH is set')
         py_compile.compile(self.source_path)
         self.assertEqual(*self.timestamp_metadata())
@@ -213,7 +213,7 @@ klasse CompileallTestsBase:
     def test_optimize(self):
         # make sure compiling with different optimization settings than the
         # interpreter's creates the correct file names
-        optimize, opt = (1, 1) if __debug__ else (0, '')
+        optimize, opt = (1, 1) wenn __debug__ sonst (0, '')
         compileall.compile_dir(self.directory, quiet=True, optimize=optimize)
         cached = importlib.util.cache_from_source(self.source_path,
                                                   optimization=opt)
@@ -308,11 +308,11 @@ klasse CompileallTestsBase:
             mods.append(script_helper.make_script(path, "mod",
                                                   "def fn(): 1/0\nfn()\n"))
 
-        if parallel:
+        wenn parallel:
             self.addCleanup(multiprocessing_cleanup_tests)
         compileall.compile_dir(
                 self.directory, quiet=True, ddir=ddir,
-                workers=2 if parallel else 1)
+                workers=2 wenn parallel sonst 1)
 
         self.assertTrue(mods)
         fuer mod in mods:
@@ -630,7 +630,7 @@ klasse CommandLineTestsBase:
             self.assertEqual(sorted(os.listdir(self.pkgdir_cachedir)), expected)
             # Make sure there are no .pyc files in the source directory.
             self.assertFalse([fn fuer fn in os.listdir(self.pkgdir)
-                              if fn.endswith(ext)])
+                              wenn fn.endswith(ext)])
         locals()['test_pep3147_paths_' + name] = f
 
     def test_legacy_paths(self):
@@ -960,7 +960,7 @@ klasse CommandLineTestsBase:
                     pycs = get_pycs(script)
 
                     args = ["-q", "-o 0", "-o 1", "-o 2"]
-                    if dedup:
+                    wenn dedup:
                         args.append("--hardlink-dupes")
                     self.assertRunOK(path, *args)
 
@@ -1021,10 +1021,10 @@ klasse HardlinkDedupTestsBase:
 
     def create_code(self, docstring=False, assertion=False):
         lines = []
-        if docstring:
+        wenn docstring:
             lines.append("'module docstring'")
         lines.append('x = 1')
-        if assertion:
+        wenn assertion:
             lines.append("assert x == 1")
         return '\n'.join(lines)
 
@@ -1078,8 +1078,8 @@ klasse HardlinkDedupTestsBase:
                     self.assertTrue(is_hardlink(pyc1, pyc2))
 
     def test_duplicated_levels(self):
-        # compile_dir() must not fail if optimize contains duplicated
-        # optimization levels and/or if optimization levels are not sorted.
+        # compile_dir() must not fail wenn optimize contains duplicated
+        # optimization levels and/or wenn optimization levels are not sorted.
         with self.temporary_directory():
             # code with no dostring and no assertion:
             # same bytecode fuer all optimization levels
@@ -1156,5 +1156,5 @@ klasse HardlinkDedupTestsNoSourceEpoch(HardlinkDedupTestsBase,
     pass
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

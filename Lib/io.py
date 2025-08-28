@@ -4,7 +4,7 @@ builtin open function is defined in this module.
 At the top of the I/O hierarchy is the abstract base klasse IOBase. It
 defines the basic interface to a stream. Note, however, that there is no
 separation between reading and writing to streams; implementations are
-allowed to raise an OSError if they do not support a given operation.
+allowed to raise an OSError wenn they do not support a given operation.
 
 Extending IOBase is RawIOBase which deals simply with the reading and
 writing of raw bytes to a stream. FileIO subclasses RawIOBase to provide
@@ -94,7 +94,7 @@ try:
     from _io import _WindowsConsoleIO
 except ImportError:
     pass
-else:
+sonst:
     RawIOBase.register(_WindowsConsoleIO)
 
 #
@@ -122,7 +122,7 @@ klasse Reader(metaclass=abc.ABCMeta):
 
     @classmethod
     def __subclasshook__(cls, C):
-        if cls is Reader:
+        wenn cls is Reader:
             return _check_methods(C, "read")
         return NotImplemented
 
@@ -143,7 +143,7 @@ klasse Writer(metaclass=abc.ABCMeta):
 
     @classmethod
     def __subclasshook__(cls, C):
-        if cls is Writer:
+        wenn cls is Writer:
             return _check_methods(C, "write")
         return NotImplemented
 

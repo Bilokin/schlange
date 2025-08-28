@@ -151,8 +151,8 @@ Verify clearing of SF bug #733667
     >>> klasse Nothing():
     ...     def __len__(self): return 5
     ...     def __getitem__(self, i):
-    ...         if i<3: return i
-    ...         else: raise IndexError(i)
+    ...         wenn i<3: return i
+    ...         sonst: raise IndexError(i)
     ...
 
     >>> g(*Nothing())
@@ -162,7 +162,7 @@ Verify clearing of SF bug #733667
     ...     def __init__(self): self.c = 0
     ...     def __iter__(self): return self
     ...     def __next__(self):
-    ...         if self.c == 4:
+    ...         wenn self.c == 4:
     ...             raise StopIteration
     ...         c = self.c
     ...         self.c += 1
@@ -348,7 +348,7 @@ Test a kwargs mapping with duplicated keys.
     ...
     ...     def __getitem__(self, key):
     ...         fuer k, v in self._items:
-    ...             if k == key:
+    ...             wenn k == key:
     ...                 return v
     ...         raise KeyError(key)
     ...
@@ -433,7 +433,7 @@ Another helper function
 
 A PyCFunction that takes only positional parameters should allow an
 empty keyword dictionary to pass without a complaint, but raise a
-TypeError if te dictionary is not empty
+TypeError wenn te dictionary is not empty
 
     >>> try:
     ...     silence = id(1, *{})
@@ -550,5 +550,5 @@ def load_tests(loader, tests, pattern):
     return tests
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

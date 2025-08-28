@@ -529,5 +529,5 @@ klasse Test_TestSkipping(unittest.TestCase):
         self.assertEqual(events, ['setUp', 'subtest'])
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

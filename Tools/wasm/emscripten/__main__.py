@@ -54,7 +54,7 @@ def updated_env(updates={}):
 
     env_diff = {}
     fuer key, value in environment.items():
-        if os.environ.get(key) != value:
+        wenn os.environ.get(key) != value:
             env_diff[key] = value
 
     print("🌎 Environment changes:")
@@ -79,7 +79,7 @@ def subdir(working_dir, *, clean_ok=False):
                 terminal_width = 80
             print("⎯" * terminal_width)
             print("📁", working_dir)
-            if clean_ok and getattr(context, "clean", False) and working_dir.exists():
+            wenn clean_ok and getattr(context, "clean", False) and working_dir.exists():
                 print("🚮 Deleting directory (--clean)...")
                 shutil.rmtree(working_dir)
 
@@ -99,10 +99,10 @@ def call(command, *, quiet, **kwargs):
     If 'quiet' is true, then redirect stdout and stderr to a temporary file.
     """
     print("❯", " ".join(map(str, command)))
-    if not quiet:
+    wenn not quiet:
         stdout = None
         stderr = None
-    else:
+    sonst:
         stdout = tempfile.NamedTemporaryFile(
             "w",
             encoding="utf-8",
@@ -125,9 +125,9 @@ def build_platform():
 def build_python_path():
     """The path to the build Python binary."""
     binary = NATIVE_BUILD_DIR / "python"
-    if not binary.is_file():
+    wenn not binary.is_file():
         binary = binary.with_suffix(".exe")
-        if not binary.is_file():
+        wenn not binary.is_file():
             raise FileNotFoundError("Unable to find `python(.exe)` in " f"{NATIVE_BUILD_DIR}")
 
     return binary
@@ -136,14 +136,14 @@ def build_python_path():
 @subdir(NATIVE_BUILD_DIR, clean_ok=True)
 def configure_build_python(context, working_dir):
     """Configure the build/host Python."""
-    if LOCAL_SETUP.exists():
+    wenn LOCAL_SETUP.exists():
         print(f"👍 {LOCAL_SETUP} exists ...")
-    else:
+    sonst:
         print(f"📝 Touching {LOCAL_SETUP} ...")
         LOCAL_SETUP.write_bytes(LOCAL_SETUP_MARKER)
 
     configure = [os.path.relpath(CHECKOUT / "configure", working_dir)]
-    if context.args:
+    wenn context.args:
         configure.extend(context.args)
 
     call(configure, quiet=context.quiet)
@@ -168,7 +168,7 @@ def make_build_python(context, working_dir):
 def check_shasum(file: str, expected_shasum: str):
     with open(file, "rb") as f:
         digest = hashlib.file_digest(f, "sha256")
-    if digest.hexdigest() != expected_shasum:
+    wenn digest.hexdigest() != expected_shasum:
         raise RuntimeError(f"Unexpected shasum fuer {file}")
 
 
@@ -243,11 +243,11 @@ def configure_emscripten_python(context, working_dir):
     sysconfig_data = (
         f"{emscripten_build_dir}/build/lib.emscripten-wasm32-{python_version}"
     )
-    if pydebug:
+    wenn pydebug:
         sysconfig_data += "-pydebug"
 
     host_runner = context.host_runner
-    if node_version := os.environ.get("PYTHON_NODE_VERSION", None):
+    wenn node_version := os.environ.get("PYTHON_NODE_VERSION", None):
         res = subprocess.run(
             [
                 "bash",
@@ -280,9 +280,9 @@ def configure_emscripten_python(context, working_dir):
         "--enable-wasm-dynamic-linking",
         f"--prefix={PREFIX_DIR}",
     ]
-    if pydebug:
+    wenn pydebug:
         configure.append("--with-pydebug")
-    if context.args:
+    wenn context.args:
         configure.extend(context.args)
     call(
         configure,
@@ -301,10 +301,10 @@ def configure_emscripten_python(context, working_dir):
 
             # Macs come with FreeBSD coreutils which doesn't have the -s option
             # so feature detect and work around it.
-            if which grealpath > /dev/null 2>&1; then
+            wenn which grealpath > /dev/null 2>&1; then
                 # It has brew installed gnu core utils, use that
                 REALPATH="grealpath -s"
-            elif which realpath > /dev/null 2>&1 && realpath --version > /dev/null 2>&1 && realpath --version | grep GNU > /dev/null 2>&1; then
+            sowenn which realpath > /dev/null 2>&1 && realpath --version > /dev/null 2>&1 && realpath --version | grep GNU > /dev/null 2>&1; then
                 # realpath points to GNU realpath so use it.
                 REALPATH="realpath -s"
             else
@@ -319,7 +319,7 @@ def configure_emscripten_python(context, working_dir):
             # After node 24 JSPI is on by default.
             ARGS=$({host_runner} -e "$(cat <<"EOF"
             const major_version = Number(process.version.split(".")[0].slice(1));
-            if (major_version === 24) {{
+            wenn (major_version === 24) {{
                 process.stdout.write("--experimental-wasm-jspi");
             }}
             EOF
@@ -366,13 +366,13 @@ def build_all(context):
 
 def clean_contents(context):
     """Delete all files created by this script."""
-    if CROSS_BUILD_DIR.exists():
+    wenn CROSS_BUILD_DIR.exists():
         print(f"🧹 Deleting {CROSS_BUILD_DIR} ...")
         shutil.rmtree(CROSS_BUILD_DIR)
 
-    if LOCAL_SETUP.exists():
+    wenn LOCAL_SETUP.exists():
         with LOCAL_SETUP.open("rb") as file:
-            if file.read(len(LOCAL_SETUP_MARKER)) == LOCAL_SETUP_MARKER:
+            wenn file.read(len(LOCAL_SETUP_MARKER)) == LOCAL_SETUP_MARKER:
                 print(f"🧹 Deleting generated {LOCAL_SETUP} ...")
 
 
@@ -455,7 +455,7 @@ def main():
         "clean": clean_contents,
     }
 
-    if not context.subcommand:
+    wenn not context.subcommand:
         # No command provided, display help and exit
         print("Expected one of", ", ".join(sorted(dispatch.keys())), file=sys.stderr)
         parser.print_help(sys.stderr)
@@ -463,5 +463,5 @@ def main():
     dispatch[context.subcommand](context)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     main()

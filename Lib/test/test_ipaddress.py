@@ -24,7 +24,7 @@ klasse BaseTestCase(unittest.TestCase):
     # meant moving to a more systematic test structure that allows the
     # test structure to map more directly to the module structure
 
-    # Note that if the constructors are refactored so that addresses with
+    # Note that wenn the constructors are refactored so that addresses with
     # multiple problems get classified differently, that's OK - just
     # move the affected examples to the newly appropriate test case.
 
@@ -45,13 +45,13 @@ klasse BaseTestCase(unittest.TestCase):
 
         Wraps unittest.TestCase.assertRaisesRegex
         """
-        if args:
+        wenn args:
             details = details % args
         cm = self.assertRaisesRegex(exc_type, details)
         with cm as exc:
             yield exc
         # Ensure we produce clean tracebacks on failure
-        if exc.exception.__context__ is not None:
+        wenn exc.exception.__context__ is not None:
             self.assertTrue(exc.exception.__suppress_context__)
 
     def assertAddressError(self, details, *args):
@@ -625,7 +625,7 @@ klasse NetmaskTestMixin_v4(CommonTestMixin_v4):
             self.assertEqual(str(self.factory('0.0.0.0/0%d' % i)), net_str)
             # Generate and re-parse the expanded hostmask.  The ambiguous
             # cases (/0 and /32) are treated as netmasks.
-            if i in (32, 0):
+            wenn i in (32, 0):
                 net_str = '0.0.0.0/%d' % (32 - i)
             self.assertEqual(
                 str(self.factory('0.0.0.0/%s' % net.hostmask)), net_str)
@@ -944,7 +944,7 @@ klasse ComparisonTests(unittest.TestCase):
         # expose the right set of attributes to become "equal"
         fuer lhs in self.objects:
             fuer rhs in self.objects:
-                if lhs is rhs:
+                wenn lhs is rhs:
                     continue
                 self.assertNotEqual(lhs, rhs)
 
@@ -1003,7 +1003,7 @@ klasse ComparisonTests(unittest.TestCase):
     def test_mixed_type_ordering(self):
         fuer lhs in self.objects_with_scoped:
             fuer rhs in self.objects_with_scoped:
-                if isinstance(lhs, type(rhs)) or isinstance(rhs, type(lhs)):
+                wenn isinstance(lhs, type(rhs)) or isinstance(rhs, type(lhs)):
                     continue
                 self.assertRaises(TypeError, lambda: lhs < rhs)
                 self.assertRaises(TypeError, lambda: lhs > rhs)
@@ -2083,7 +2083,7 @@ klasse IpaddrUnitTest(unittest.TestCase):
 
         self.assertEqual(ip1.compare_networks(ip1), 0)
 
-        # if addresses are the same, sort by netmask
+        # wenn addresses are the same, sort by netmask
         self.assertEqual(ip1.compare_networks(ip2), -1)
         self.assertEqual(ip2.compare_networks(ip1), 1)
 
@@ -2821,5 +2821,5 @@ klasse IpaddrUnitTest(unittest.TestCase):
         )
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

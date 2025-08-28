@@ -21,7 +21,7 @@ with '_' and be lowercase.
 
 End the module with
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     <run unittest.main with 'exit=False'>
     from idlelib.idle_test.htest import run
     run(callable)  # There could be multiple comma-separated callables.
@@ -35,7 +35,7 @@ following:
 [report]
 exclude_lines =
     .*# htest #
-    if __name__ == .__main__.:
+    wenn __name__ == .__main__.:
 
 (The "." instead of "'" is intentional and necessary.)
 
@@ -52,7 +52,7 @@ callable_spec = {
 
 file (no .py): run() imports file.py.
 kwds: augmented with {'parent':root} and passed to X as **kwds.
-title: an example kwd; some widgets need this, delete line if not.
+title: an example kwd; some widgets need this, delete line wenn not.
 msg: master window hints about testing the widget.
 
 
@@ -160,7 +160,7 @@ GetKeysWindow_spec = {
            "<nothing> is invalid.\n"
            "No modifier key is invalid.\n"
            "Shift key with [a-z],[0-9], function key, move key, tab, space "
-           "is invalid.\nNo validity checking if advanced key binding "
+           "is invalid.\nNo validity checking wenn advanced key binding "
            "entry is used."
     }
 
@@ -216,7 +216,7 @@ _module_browser_spec = {
     'file': 'browser',
     'kwds': {},
     'msg': textwrap.dedent("""
-        "Inspect names of module, class(with superclass if applicable),
+        "Inspect names of module, class(with superclass wenn applicable),
         "methods and functions.  Toggle nested items.  Double clicking
         "on items prints a traceback fuer an exception that is ignored.""")
     }
@@ -382,14 +382,14 @@ def run(*tests):
     text.pack(side='left', fill='both', expand=True)
 
     test_list = [] # Make list of (spec, callable) tuples.
-    if tests:
+    wenn tests:
         fuer test in tests:
             test_spec = globals()[test.__name__ + '_spec']
             test_spec['name'] = test.__name__
             test_list.append((test_spec,  test))
-    else:
+    sonst:
         fuer key, dic in globals().items():
-            if key.endswith('_spec'):
+            wenn key.endswith('_spec'):
                 test_name = key[:-5]
                 test_spec = dic
                 test_spec['name'] = test_name
@@ -404,7 +404,7 @@ def run(*tests):
 
     def next_test():
         nonlocal test_name, callable_object, test_kwds
-        if len(test_list) == 1:
+        wenn len(test_list) == 1:
             next_button.pack_forget()
         test_spec, callable_object = test_list.pop()
         test_kwds = test_spec['kwds']
@@ -438,5 +438,5 @@ def run(*tests):
     root.mainloop()
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     run()

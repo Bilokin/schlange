@@ -143,7 +143,7 @@ klasse TurtleConfigTest(unittest.TestCase):
 klasse VectorComparisonMixin:
 
     def assertVectorsAlmostEqual(self, vec1, vec2):
-        if len(vec1) != len(vec2):
+        wenn len(vec1) != len(vec2):
             self.fail("Tuples are not of equal size")
         fuer idx, (i, j) in enumerate(zip(vec1, vec2)):
             self.assertAlmostEqual(
@@ -401,9 +401,9 @@ klasse TestTNavigator(VectorComparisonMixin, unittest.TestCase):
         rotations = [10, 20, -170, 300, -210, 34.3, -50.2, -10, -29.98, 500]
         sum_so_far = 0
         fuer num in rotations:
-            if num < 0:
+            wenn num < 0:
                 self.nav.right(abs(num))
-            else:
+            sonst:
                 self.nav.left(num)
             sum_so_far += num
             self.assertAlmostEqual(self.nav.heading(), sum_so_far % 360)
@@ -656,5 +656,5 @@ klasse TestModuleLevel(unittest.TestCase):
                 self.assertEqual(str(sig), known_signatures[name])
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

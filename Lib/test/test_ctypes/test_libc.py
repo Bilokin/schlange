@@ -11,7 +11,7 @@ lib = CDLL(_ctypes_test.__file__)
 
 
 def three_way_cmp(x, y):
-    """Return -1 if x < y, 0 if x == y and 1 if x > y"""
+    """Return -1 wenn x < y, 0 wenn x == y and 1 wenn x > y"""
     return (x > y) - (x < y)
 
 
@@ -60,5 +60,5 @@ klasse LibTest(unittest.TestCase):
         self.assertEqual(chars.raw, b"   ,,aaaadmmmnpppsss\x00")
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

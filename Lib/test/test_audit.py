@@ -9,7 +9,7 @@ from test.support import import_helper
 from test.support import os_helper
 
 
-if not hasattr(sys, "addaudithook") or not hasattr(sys, "audit"):
+wenn not hasattr(sys, "addaudithook") or not hasattr(sys, "audit"):
     raise unittest.SkipTest("test only relevant when sys.audit is available")
 
 AUDIT_TESTS_PY = support.findfile("audit-tests.py")
@@ -35,13 +35,13 @@ klasse AuditTest(unittest.TestCase):
 
         sys.stdout.write(stdout)
         sys.stderr.write(stderr)
-        if proc.returncode:
+        wenn proc.returncode:
             self.fail(stderr)
 
     def run_python(self, *args, expect_stderr=False):
         events = []
         proc, stdout, stderr = self.run_test_in_subprocess(*args)
-        if not expect_stderr or support.verbose:
+        wenn not expect_stderr or support.verbose:
             sys.stderr.write(stderr)
         return (
             proc.returncode,
@@ -90,7 +90,7 @@ klasse AuditTest(unittest.TestCase):
 
     def test_excepthook(self):
         returncode, events, stderr = self.run_python("test_excepthook")
-        if not returncode:
+        wenn not returncode:
             self.fail(f"Expected fatal exception\n{stderr}")
 
         self.assertSequenceEqual(
@@ -100,7 +100,7 @@ klasse AuditTest(unittest.TestCase):
     def test_unraisablehook(self):
         import_helper.import_module("_testcapi")
         returncode, events, stderr = self.run_python("test_unraisablehook")
-        if returncode:
+        wenn returncode:
             self.fail(stderr)
 
         self.assertEqual(events[0][0], "sys.unraisablehook")
@@ -112,7 +112,7 @@ klasse AuditTest(unittest.TestCase):
     def test_winreg(self):
         import_helper.import_module("winreg")
         returncode, events, stderr = self.run_python("test_winreg")
-        if returncode:
+        wenn returncode:
             self.fail(stderr)
 
         self.assertEqual(events[0][0], "winreg.OpenKey")
@@ -126,10 +126,10 @@ klasse AuditTest(unittest.TestCase):
     def test_socket(self):
         import_helper.import_module("socket")
         returncode, events, stderr = self.run_python("test_socket")
-        if returncode:
+        wenn returncode:
             self.fail(stderr)
 
-        if support.verbose:
+        wenn support.verbose:
             print(*events, sep='\n')
         self.assertEqual(events[0][0], "socket.gethostname")
         self.assertEqual(events[1][0], "socket.__new__")
@@ -138,10 +138,10 @@ klasse AuditTest(unittest.TestCase):
 
     def test_gc(self):
         returncode, events, stderr = self.run_python("test_gc")
-        if returncode:
+        wenn returncode:
             self.fail(stderr)
 
-        if support.verbose:
+        wenn support.verbose:
             print(*events, sep='\n')
         self.assertEqual(
             [event[0] fuer event in events],
@@ -153,30 +153,30 @@ klasse AuditTest(unittest.TestCase):
     def test_http(self):
         import_helper.import_module("http.client")
         returncode, events, stderr = self.run_python("test_http_client")
-        if returncode:
+        wenn returncode:
             self.fail(stderr)
 
-        if support.verbose:
+        wenn support.verbose:
             print(*events, sep='\n')
         self.assertEqual(events[0][0], "http.client.connect")
         self.assertEqual(events[0][2], "www.python.org 80")
         self.assertEqual(events[1][0], "http.client.send")
-        if events[1][2] != '[cannot send]':
+        wenn events[1][2] != '[cannot send]':
             self.assertIn('HTTP', events[1][2])
 
 
     def test_sqlite3(self):
         sqlite3 = import_helper.import_module("sqlite3")
         returncode, events, stderr = self.run_python("test_sqlite3")
-        if returncode:
+        wenn returncode:
             self.fail(stderr)
 
-        if support.verbose:
+        wenn support.verbose:
             print(*events, sep='\n')
         actual = [ev[0] fuer ev in events]
         expected = ["sqlite3.connect", "sqlite3.connect/handle"] * 2
 
-        if hasattr(sqlite3.Connection, "enable_load_extension"):
+        wenn hasattr(sqlite3.Connection, "enable_load_extension"):
             expected += [
                 "sqlite3.enable_load_extension",
                 "sqlite3.load_extension",
@@ -186,10 +186,10 @@ klasse AuditTest(unittest.TestCase):
 
     def test_sys_getframe(self):
         returncode, events, stderr = self.run_python("test_sys_getframe")
-        if returncode:
+        wenn returncode:
             self.fail(stderr)
 
-        if support.verbose:
+        wenn support.verbose:
             print(*events, sep='\n')
         actual = [(ev[0], ev[2]) fuer ev in events]
         expected = [("sys._getframe", "test_sys_getframe")]
@@ -198,10 +198,10 @@ klasse AuditTest(unittest.TestCase):
 
     def test_sys_getframemodulename(self):
         returncode, events, stderr = self.run_python("test_sys_getframemodulename")
-        if returncode:
+        wenn returncode:
             self.fail(stderr)
 
-        if support.verbose:
+        wenn support.verbose:
             print(*events, sep='\n')
         actual = [(ev[0], ev[2]) fuer ev in events]
         expected = [("sys._getframemodulename", "0")]
@@ -211,10 +211,10 @@ klasse AuditTest(unittest.TestCase):
 
     def test_threading(self):
         returncode, events, stderr = self.run_python("test_threading")
-        if returncode:
+        wenn returncode:
             self.fail(stderr)
 
-        if support.verbose:
+        wenn support.verbose:
             print(*events, sep='\n')
         actual = [(ev[0], ev[2]) fuer ev in events]
         expected = [
@@ -230,10 +230,10 @@ klasse AuditTest(unittest.TestCase):
     def test_wmi_exec_query(self):
         import_helper.import_module("_wmi")
         returncode, events, stderr = self.run_python("test_wmi_exec_query")
-        if returncode:
+        wenn returncode:
             self.fail(stderr)
 
-        if support.verbose:
+        wenn support.verbose:
             print(*events, sep='\n')
         actual = [(ev[0], ev[2]) fuer ev in events]
         expected = [("_wmi.exec_query", "SELECT * FROM Win32_OperatingSystem")]
@@ -244,10 +244,10 @@ klasse AuditTest(unittest.TestCase):
         syslog = import_helper.import_module("syslog")
 
         returncode, events, stderr = self.run_python("test_syslog")
-        if returncode:
+        wenn returncode:
             self.fail(stderr)
 
-        if support.verbose:
+        wenn support.verbose:
             print('Events:', *events, sep='\n  ')
 
         self.assertSequenceEqual(
@@ -265,15 +265,15 @@ klasse AuditTest(unittest.TestCase):
 
     def test_not_in_gc(self):
         returncode, _, stderr = self.run_python("test_not_in_gc")
-        if returncode:
+        wenn returncode:
             self.fail(stderr)
 
     def test_time(self):
         returncode, events, stderr = self.run_python("test_time", "print")
-        if returncode:
+        wenn returncode:
             self.fail(stderr)
 
-        if support.verbose:
+        wenn support.verbose:
             print(*events, sep='\n')
 
         actual = [(ev[0], ev[2]) fuer ev in events]
@@ -291,10 +291,10 @@ klasse AuditTest(unittest.TestCase):
 
     def test_sys_monitoring_register_callback(self):
         returncode, events, stderr = self.run_python("test_sys_monitoring_register_callback")
-        if returncode:
+        wenn returncode:
             self.fail(stderr)
 
-        if support.verbose:
+        wenn support.verbose:
             print(*events, sep='\n')
         actual = [(ev[0], ev[2]) fuer ev in events]
         expected = [("sys.monitoring.register_callback", "(None,)")]
@@ -306,10 +306,10 @@ klasse AuditTest(unittest.TestCase):
 
         pipe_name = r"\\.\pipe\LOCAL\test_winapi_createnamed_pipe"
         returncode, events, stderr = self.run_python("test_winapi_createnamedpipe", pipe_name)
-        if returncode:
+        wenn returncode:
             self.fail(stderr)
 
-        if support.verbose:
+        wenn support.verbose:
             print(*events, sep='\n')
         actual = [(ev[0], ev[2]) fuer ev in events]
         expected = [("_winapi.CreateNamedPipe", f"({pipe_name!r}, 3, 8)")]
@@ -319,7 +319,7 @@ klasse AuditTest(unittest.TestCase):
     def test_assert_unicode(self):
         # See gh-126018
         returncode, _, stderr = self.run_python("test_assert_unicode")
-        if returncode:
+        wenn returncode:
             self.fail(stderr)
 
     @support.support_remote_exec_only
@@ -328,8 +328,8 @@ klasse AuditTest(unittest.TestCase):
         returncode, events, stderr = self.run_python("test_sys_remote_exec")
         self.assertTrue(any(["sys.remote_exec" in event fuer event in events]))
         self.assertTrue(any(["cpython.remote_debugger_script" in event fuer event in events]))
-        if returncode:
+        wenn returncode:
             self.fail(stderr)
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

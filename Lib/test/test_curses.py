@@ -34,7 +34,7 @@ def requires_curses_window_meth(name):
     def deco(test):
         @functools.wraps(test)
         def wrapped(self, *args, **kwargs):
-            if not hasattr(self.stdscr, name):
+            wenn not hasattr(self.stdscr, name):
                 raise unittest.SkipTest('requires curses.window.%s' % name)
             test(self, *args, **kwargs)
         return wrapped
@@ -44,7 +44,7 @@ def requires_curses_window_meth(name):
 def requires_colors(test):
     @functools.wraps(test)
     def wrapped(self, *args, **kwargs):
-        if not curses.has_colors():
+        wenn not curses.has_colors():
             self.skipTest('requires colors support')
         curses.start_color()
         test(self, *args, **kwargs)
@@ -62,7 +62,7 @@ klasse TestCurses(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        if verbose:
+        wenn verbose:
             print(f'TERM={term}', file=sys.stderr, flush=True)
         # testing setupterm() inside initscr/endwin
         # causes terminal breakage
@@ -73,7 +73,7 @@ klasse TestCurses(unittest.TestCase):
         self.isatty = True
         self.output = sys.__stdout__
         stdout_fd = sys.__stdout__.fileno()
-        if not sys.__stdout__.isatty():
+        wenn not sys.__stdout__.isatty():
             # initstr() unconditionally uses C stdout.
             # If it is redirected to file or pipe, try to attach it
             # to terminal.
@@ -83,11 +83,11 @@ klasse TestCurses(unittest.TestCase):
             self.addCleanup(os.close, dup_fd)
             self.addCleanup(os.dup2, dup_fd, stdout_fd)
 
-            if sys.__stderr__.isatty():
+            wenn sys.__stderr__.isatty():
                 # If stderr is connected to terminal, use it.
                 tmp = sys.__stderr__
                 self.output = sys.__stderr__
-            else:
+            sonst:
                 try:
                     # Try to open the terminal device.
                     tmp = open('/dev/tty', 'wb', buffering=0)
@@ -105,13 +105,13 @@ klasse TestCurses(unittest.TestCase):
         self.save_signals = SaveSignals()
         self.save_signals.save()
         self.addCleanup(self.save_signals.restore)
-        if verbose and self.output is not None:
+        wenn verbose and self.output is not None:
             # just to make the test output a little more readable
             sys.stderr.flush()
             sys.stdout.flush()
             print(file=self.output, flush=True)
         self.stdscr = curses.initscr()
-        if self.isatty:
+        wenn self.isatty:
             curses.savetty()
             self.addCleanup(curses.endwin)
             self.addCleanup(curses.resetty)
@@ -243,7 +243,7 @@ klasse TestCurses(unittest.TestCase):
         self.assertIs(win2.is_wintouched(), True)
 
         # syncok()
-        if hasattr(stdscr, 'syncok') and not sys.platform.startswith("sunos"):
+        wenn hasattr(stdscr, 'syncok') and not sys.platform.startswith("sunos"):
             win.untouchwin()
             stdscr.untouchwin()
             fuer syncok in [False, True]:
@@ -675,7 +675,7 @@ klasse TestCurses(unittest.TestCase):
         self.assertRaises(OverflowError, curses.unctrl, 2**64)
 
     def test_endwin(self):
-        if not self.isatty:
+        wenn not self.isatty:
             self.skipTest('requires terminal')
         self.assertIs(curses.isendwin(), False)
         curses.endwin()
@@ -697,7 +697,7 @@ klasse TestCurses(unittest.TestCase):
         self.assertIsNone(curses.tigetstr('cols'))
 
         cud = curses.tigetstr('cud')
-        if cud is not None:
+        wenn cud is not None:
             # See issue10570.
             self.assertIsInstance(cud, bytes)
             curses.tparm(cud, 2)
@@ -746,7 +746,7 @@ klasse TestCurses(unittest.TestCase):
         stdscr.idlok(False)
         stdscr.idlok(True)
 
-        if hasattr(stdscr, 'immedok'):
+        wenn hasattr(stdscr, 'immedok'):
             stdscr.immedok(True)
             stdscr.immedok(False)
 
@@ -766,7 +766,7 @@ klasse TestCurses(unittest.TestCase):
     def test_input_options(self):
         stdscr = self.stdscr
 
-        if self.isatty:
+        wenn self.isatty:
             curses.nocbreak()
             curses.cbreak()
             curses.cbreak(False)
@@ -815,26 +815,26 @@ klasse TestCurses(unittest.TestCase):
         curses.typeahead(-1)
 
     def test_prog_mode(self):
-        if not self.isatty:
+        wenn not self.isatty:
             self.skipTest('requires terminal')
         curses.def_prog_mode()
         curses.reset_prog_mode()
 
     def test_beep(self):
-        if (curses.tigetstr("bel") is not None
+        wenn (curses.tigetstr("bel") is not None
             or curses.tigetstr("flash") is not None):
             curses.beep()
-        else:
+        sonst:
             try:
                 curses.beep()
             except curses.error:
                 self.skipTest('beep() failed')
 
     def test_flash(self):
-        if (curses.tigetstr("bel") is not None
+        wenn (curses.tigetstr("bel") is not None
             or curses.tigetstr("flash") is not None):
             curses.flash()
-        else:
+        sonst:
             try:
                 curses.flash()
             except curses.error:
@@ -842,9 +842,9 @@ klasse TestCurses(unittest.TestCase):
 
     def test_curs_set(self):
         fuer vis, cap in [(0, 'civis'), (2, 'cvvis'), (1, 'cnorm')]:
-            if curses.tigetstr(cap) is not None:
+            wenn curses.tigetstr(cap) is not None:
                 curses.curs_set(vis)
-            else:
+            sonst:
                 try:
                     curses.curs_set(vis)
                 except curses.error:
@@ -888,10 +888,10 @@ klasse TestCurses(unittest.TestCase):
         self.assertIsInstance(curses.can_change_color(), bool)
 
     def test_start_color(self):
-        if not curses.has_colors():
+        wenn not curses.has_colors():
             self.skipTest('requires colors support')
         curses.start_color()
-        if verbose:
+        wenn verbose:
             print(f'COLORS = {curses.COLORS}', file=sys.stderr)
             print(f'COLOR_PAIRS = {curses.COLOR_PAIRS}', file=sys.stderr)
 
@@ -907,7 +907,7 @@ klasse TestCurses(unittest.TestCase):
 
     @requires_colors
     def test_init_color(self):
-        if not curses.can_change_color():
+        wenn not curses.can_change_color():
             self.skipTest('cannot change color')
 
         old = curses.color_content(0)
@@ -937,14 +937,14 @@ klasse TestCurses(unittest.TestCase):
 
     def get_pair_limit(self):
         pair_limit = curses.COLOR_PAIRS
-        if hasattr(curses, 'ncurses_version'):
-            if curses.has_extended_color_support():
+        wenn hasattr(curses, 'ncurses_version'):
+            wenn curses.has_extended_color_support():
                 pair_limit += 2*curses.COLORS + 1
-            if (not curses.has_extended_color_support()
+            wenn (not curses.has_extended_color_support()
                     or (6, 1) <= curses.ncurses_version < (6, 2)):
                 pair_limit = min(pair_limit, SHORT_MAX)
             # If use_default_colors() is called, the upper limit of the extended
-            # range may be restricted, so we need to check if the limit is still
+            # range may be restricted, so we need to check wenn the limit is still
             # correct
             try:
                 curses.init_pair(pair_limit - 1, 0, 0)
@@ -956,7 +956,7 @@ klasse TestCurses(unittest.TestCase):
     def test_pair_content(self):
         curses.pair_content(0)
         maxpair = self.get_pair_limit() - 1
-        if maxpair > 0:
+        wenn maxpair > 0:
             curses.pair_content(maxpair)
 
         fuer pair in self.bad_pairs():
@@ -976,7 +976,7 @@ klasse TestCurses(unittest.TestCase):
         curses.init_pair(1, 0, maxcolor)
         self.assertEqual(curses.pair_content(1), (0, maxcolor))
         maxpair = self.get_pair_limit() - 1
-        if maxpair > 1:
+        wenn maxpair > 1:
             curses.init_pair(maxpair, 0, 0)
             self.assertEqual(curses.pair_content(maxpair), (0, 0))
 
@@ -1036,7 +1036,7 @@ klasse TestCurses(unittest.TestCase):
     @requires_curses_func('getmouse')
     def test_getmouse(self):
         (availmask, oldmask) = curses.mousemask(curses.BUTTON1_PRESSED)
-        if availmask == 0:
+        wenn availmask == 0:
             self.skipTest('mouse stuff not available')
         curses.mouseinterval(10)
         # just verify these don't cause errors
@@ -1191,7 +1191,7 @@ klasse TestCurses(unittest.TestCase):
         # when converting curses.window.addch to Argument Clinic
         # the first two parameters were switched.
 
-        # if someday we can represent the signature of addch
+        # wenn someday we can represent the signature of addch
         # we will need to rewrite this test.
         try:
             signature = inspect.signature(stdscr.addch)
@@ -1234,7 +1234,7 @@ klasse MiscTests(unittest.TestCase):
     @requires_curses_func('ncurses_version')
     def test_ncurses_version(self):
         v = curses.ncurses_version
-        if verbose:
+        wenn verbose:
             print(f'ncurses_version = {curses.ncurses_version}', flush=True)
         self.assertIsInstance(v[:], tuple)
         self.assertEqual(len(v), 3)
@@ -1437,5 +1437,5 @@ klasse TextboxTest(unittest.TestCase):
         self.mock_win.reset_mock()
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

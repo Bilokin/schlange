@@ -22,5 +22,5 @@ klasse TestCase(unittest.TestCase):
             del struct.foo
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

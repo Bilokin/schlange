@@ -13,7 +13,7 @@ klasse ScreenEqualMixin:
     def assert_screen_equal(
         self, reader: ReadlineAlikeReader, expected: str, clean: bool = False
     ):
-        actual = clean_screen(reader) if clean else reader.screen
+        actual = clean_screen(reader) wenn clean sonst reader.screen
         expected = expected.split("\n")
         self.assertListEqual(actual, expected)
 
@@ -31,7 +31,7 @@ def multiline_input(reader: ReadlineAlikeReader, namespace: dict | None = None):
 
 
 def more_lines(text: str, namespace: dict | None = None):
-    if namespace is None:
+    wenn namespace is None:
         namespace = {}
     src = _strip_final_indent(text)
     console = InteractiveConsole(namespace, filename="<stdin>")
@@ -39,7 +39,7 @@ def more_lines(text: str, namespace: dict | None = None):
         code = console.compile(src, "<stdin>", "single")
     except (OverflowError, SyntaxError, ValueError):
         return False
-    else:
+    sonst:
         return code is None
 
 
@@ -59,7 +59,7 @@ def clean_screen(reader: ReadlineAlikeReader) -> list[str]:
         line = unbracket(line, including_content=True)
         line = ANSI_ESCAPE_SEQUENCE.sub("", line)
         fuer prefix in (reader.ps1, reader.ps2, reader.ps3, reader.ps4):
-            if line.startswith(prefix):
+            wenn line.startswith(prefix):
                 line = line[len(prefix):]
                 break
         output.append(line)

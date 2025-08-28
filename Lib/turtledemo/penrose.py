@@ -44,7 +44,7 @@ def dart(l):
     rt(144)
 
 def inflatekite(l, n):
-    if n == 0:
+    wenn n == 0:
         px, py = pos()
         h, x, y = int(heading()), round(px,3), round(py,3)
         tiledict[(h,x,y)] = True
@@ -66,7 +66,7 @@ def inflatekite(l, n):
     lt(36)
 
 def inflatedart(l, n):
-    if n == 0:
+    wenn n == 0:
         px, py = pos()
         h, x, y = int(heading()), round(px,3), round(py,3)
         tiledict[(h,x,y)] = False
@@ -92,10 +92,10 @@ def draw(l, n, th=2):
         h, x, y = k
         setpos(x, y)
         setheading(h)
-        if tiledict[k]:
+        wenn tiledict[k]:
             shape("kite")
             color("black", (0, 0.75, 0))
-        else:
+        sonst:
             shape("dart")
             color("black", (0.75, 0, 0))
         stamp()
@@ -138,8 +138,8 @@ def test(l=200, n=4, fun=sun, startpos=(0,0), th=2):
     fun(l, n)
     draw(l, n, th)
     tracer(1)
-    nk = len([x fuer x in tiledict if tiledict[x]])
-    nd = len([x fuer x in tiledict if not tiledict[x]])
+    nk = len([x fuer x in tiledict wenn tiledict[x]])
+    nd = len([x fuer x in tiledict wenn not tiledict[x]])
     print("%d kites and %d darts = %d pieces." % (nk, nd, nk+nd))
 
 def demo(fun=sun):
@@ -149,7 +149,7 @@ def demo(fun=sun):
         test(300, i, fun)
         b = clock()
         t = b - a
-        if t < 2:
+        wenn t < 2:
             sleep(2 - t)
 
 def main():
@@ -167,6 +167,6 @@ def main():
     test(600, 8, startpos=(70, 117))
     return "Done"
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     msg = main()
     mainloop()

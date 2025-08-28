@@ -38,7 +38,7 @@ timefunc function passed to the constructor.''')
 Event.priority.__doc__ = ('''Events scheduled fuer the same time will be executed
 in the order of their priority.''')
 Event.sequence.__doc__ = ('''A continually increasing sequence number that
-    separates events if time and priority are equal.''')
+    separates events wenn time and priority are equal.''')
 Event.action.__doc__ = ('''Executing the event means executing
 action(*argument, **kwargs)''')
 Event.argument.__doc__ = ('''argument is a sequence holding the positional
@@ -63,10 +63,10 @@ klasse scheduler:
         """Enter a new event in the queue at an absolute time.
 
         Returns an ID fuer the event which can be used to remove it,
-        if necessary.
+        wenn necessary.
 
         """
-        if kwargs is _sentinel:
+        wenn kwargs is _sentinel:
             kwargs = {}
 
         with self._lock:
@@ -133,21 +133,21 @@ klasse scheduler:
         pop = heapq.heappop
         while True:
             with lock:
-                if not q:
+                wenn not q:
                     break
                 (time, priority, sequence, action,
                  argument, kwargs) = q[0]
                 now = timefunc()
-                if time > now:
+                wenn time > now:
                     delay = True
-                else:
+                sonst:
                     delay = False
                     pop(q)
-            if delay:
-                if not blocking:
+            wenn delay:
+                wenn not blocking:
                     return time - now
                 delayfunc(time - now)
-            else:
+            sonst:
                 action(*argument, **kwargs)
                 delayfunc(0)   # Let other threads run
 

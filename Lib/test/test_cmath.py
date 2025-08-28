@@ -68,7 +68,7 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
 
     def rAssertAlmostEqual(self, a, b, rel_err = 2e-15, abs_err = 5e-323,
                            msg=None):
-        """Fail if the two floating-point numbers are not almost equal.
+        """Fail wenn the two floating-point numbers are not almost equal.
 
         Determine whether floating-point values a and b are equal to within
         a (small) rounding error.  The default values fuer rel_err and
@@ -78,27 +78,27 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
         """
 
         # special values testing
-        if math.isnan(a):
-            if math.isnan(b):
+        wenn math.isnan(a):
+            wenn math.isnan(b):
                 return
             self.fail(msg or '{!r} should be nan'.format(b))
 
-        if math.isinf(a):
-            if a == b:
+        wenn math.isinf(a):
+            wenn a == b:
                 return
             self.fail(msg or 'finite result where infinity expected: '
                       'expected {!r}, got {!r}'.format(a, b))
 
-        # if both a and b are zero, check whether they have the same sign
+        # wenn both a and b are zero, check whether they have the same sign
         # (in theory there are examples where it would be legitimate fuer a
         # and b to have opposite signs; in practice these hardly ever
         # occur).
-        if not a and not b:
-            if math.copysign(1., a) != math.copysign(1., b):
+        wenn not a and not b:
+            wenn math.copysign(1., a) != math.copysign(1., b):
                 self.fail(msg or 'zero has wrong sign: expected {!r}, '
                           'got {!r}'.format(a, b))
 
-        # if a-b overflows, or b is infinite, return False.  Again, in
+        # wenn a-b overflows, or b is infinite, return False.  Again, in
         # theory there are examples where a is within a few ulps of the
         # max representable float, and then b could legitimately be
         # infinite.  In practice these examples are rare.
@@ -106,12 +106,12 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
             absolute_error = abs(b-a)
         except OverflowError:
             pass
-        else:
-            # test passes if either the absolute error or the relative
+        sonst:
+            # test passes wenn either the absolute error or the relative
             # error is sufficiently small.  The defaults amount to an
             # error of between 9 ulps and 19 ulps on an IEEE-754 compliant
             # machine.
-            if absolute_error <= max(abs_err, rel_err * abs(a)):
+            wenn absolute_error <= max(abs_err, rel_err * abs(a)):
                 return
         self.fail(msg or
                   '{!r} and {!r} are not sufficiently close'.format(a, b))
@@ -206,7 +206,7 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
             self.assertEqual(f(JustFloat()), f(flt_arg))
             self.assertEqual(f(Index()), f(int(Index())))
             # TypeError should be raised fuer classes not providing
-            # either __complex__ or __float__, even if they provide
+            # either __complex__ or __float__, even wenn they provide
             # __int__ or __index__:
             self.assertRaises(TypeError, f, NeitherComplexNorFloat())
             self.assertRaises(TypeError, f, MyInt())
@@ -283,7 +283,7 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
         SKIP_ON_TIGER = {'tan0064'}
 
         osx_version = None
-        if sys.platform == 'darwin':
+        wenn sys.platform == 'darwin':
             version_txt = platform.mac_ver()[0]
             try:
                 osx_version = tuple(map(int, version_txt.split('.')))
@@ -305,48 +305,48 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
             expected = complex(er, ei)
 
             # Skip certain tests on OS X 10.4.
-            if osx_version is not None and osx_version < (10, 5):
-                if id in SKIP_ON_TIGER:
+            wenn osx_version is not None and osx_version < (10, 5):
+                wenn id in SKIP_ON_TIGER:
                     continue
 
-            if fn == 'rect':
+            wenn fn == 'rect':
                 function = rect_complex
-            elif fn == 'polar':
+            sowenn fn == 'polar':
                 function = polar_complex
-            else:
+            sonst:
                 function = getattr(cmath, fn)
-            if 'divide-by-zero' in flags or 'invalid' in flags:
+            wenn 'divide-by-zero' in flags or 'invalid' in flags:
                 try:
                     actual = function(arg)
                 except ValueError:
                     continue
-                else:
+                sonst:
                     self.fail('ValueError not raised in test '
                           '{}: {}(complex({!r}, {!r}))'.format(id, fn, ar, ai))
 
-            if 'overflow' in flags:
+            wenn 'overflow' in flags:
                 try:
                     actual = function(arg)
                 except OverflowError:
                     continue
-                else:
+                sonst:
                     self.fail('OverflowError not raised in test '
                           '{}: {}(complex({!r}, {!r}))'.format(id, fn, ar, ai))
 
             actual = function(arg)
 
-            if 'ignore-real-sign' in flags:
+            wenn 'ignore-real-sign' in flags:
                 actual = complex(abs(actual.real), actual.imag)
                 expected = complex(abs(expected.real), expected.imag)
-            if 'ignore-imag-sign' in flags:
+            wenn 'ignore-imag-sign' in flags:
                 actual = complex(actual.real, abs(actual.imag))
                 expected = complex(expected.real, abs(expected.imag))
 
             # fuer the real part of the log function, we allow an
             # absolute error of up to 2e-15.
-            if fn in ('log', 'log10'):
+            wenn fn in ('log', 'log10'):
                 real_abs_err = 2e-15
-            else:
+            sonst:
                 real_abs_err = 5e-323
 
             error_message = (
@@ -479,7 +479,7 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
 
     def assertCEqual(self, a, b):
         eps = 1E-7
-        if abs(a.real - b[0]) > eps or abs(a.imag - b[1]) > eps:
+        wenn abs(a.real - b[0]) > eps or abs(a.imag - b[1]) > eps:
             self.fail((a ,b))
 
     def test_rect(self):
@@ -589,5 +589,5 @@ klasse IsCloseTests(test_math.IsCloseTests):
         self.assertIsNotClose(0, INF*1j)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

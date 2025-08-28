@@ -16,7 +16,7 @@ def function_4(**dummy):
 
 # CALL_FUNCTION_VAR_KW
 def function_5(dummy, dummy2, **dummy3):
-    if False:
+    wenn False:
         return 7
     return 8
 

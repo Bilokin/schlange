@@ -33,8 +33,8 @@ klasse TestPolicy(asyncio.events._AbstractEventLoopPolicy):
         return self.loop_factory()
 
     def set_event_loop(self, loop):
-        if loop is not None:
-            # we want to check if the loop is closed
+        wenn loop is not None:
+            # we want to check wenn the loop is closed
             # in BaseTest.tearDown
             self.loop = loop
 
@@ -65,7 +65,7 @@ klasse BaseTest(unittest.TestCase):
 
     def tearDown(self):
         policy = asyncio.events._get_event_loop_policy()
-        if policy.loop is not None:
+        wenn policy.loop is not None:
             self.assertTrue(policy.loop.is_closed())
             self.assertTrue(policy.loop.shutdown_ag_run)
 
@@ -275,9 +275,9 @@ klasse RunTests(BaseTest):
 
     def test_loop_factory_default_event_loop(self):
         async def main():
-            if sys.platform == "win32":
+            wenn sys.platform == "win32":
                 self.assertIsInstance(asyncio.get_running_loop(), asyncio.ProactorEventLoop)
-            else:
+            sonst:
                 self.assertIsInstance(asyncio.get_running_loop(), asyncio.SelectorEventLoop)
 
 
@@ -474,7 +474,7 @@ klasse RunnerTests(BaseTest):
                 runner.run(coro())
 
     def test_signal_install_not_supported_ok(self):
-        # signal.signal() can throw if the "main thread" doesn't have signals enabled
+        # signal.signal() can throw wenn the "main thread" doesn't have signals enabled
         assert threading.current_thread() is threading.main_thread()
 
         async def coro():
@@ -523,5 +523,5 @@ klasse RunnerTests(BaseTest):
         self.assertEqual(0, result.repr_count)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

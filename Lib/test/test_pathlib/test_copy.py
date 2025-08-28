@@ -43,7 +43,7 @@ klasse CopyTestBase:
         target = self.target_root / 'copyA'
         self.target_ground.create_file(target, b'this is a copy\n')
         with contextlib.ExitStack() as stack:
-            if isinstance(target, WritableZipPath):
+            wenn isinstance(target, WritableZipPath):
                 stack.enter_context(self.assertWarns(UserWarning))
             result = source.copy(target)
         self.assertEqual(result, target)
@@ -52,7 +52,7 @@ klasse CopyTestBase:
                          self.target_ground.readbytes(result))
 
     def test_copy_file_to_directory(self):
-        if isinstance(self.target_root, WritableZipPath):
+        wenn isinstance(self.target_root, WritableZipPath):
             self.skipTest('needs local target')
         source = self.source_root / 'fileA'
         target = self.target_root / 'copyA'
@@ -77,7 +77,7 @@ klasse CopyTestBase:
         self.assertEqual(self.target_ground.readtext(target / 'dirD' / 'fileD'), 'this is file D\n')
 
     def test_copy_dir_follow_symlinks_true(self):
-        if not self.source_ground.can_symlink:
+        wenn not self.source_ground.can_symlink:
             self.skipTest('needs symlink support on source')
         source = self.source_root / 'dirC'
         target = self.target_root / 'copyC'
@@ -95,9 +95,9 @@ klasse CopyTestBase:
         self.assertEqual(self.target_ground.readtext(target / 'linkD' / 'fileD'), 'this is file D\n')
 
     def test_copy_dir_follow_symlinks_false(self):
-        if not self.source_ground.can_symlink:
+        wenn not self.source_ground.can_symlink:
             self.skipTest('needs symlink support on source')
-        if not self.target_ground.can_symlink:
+        wenn not self.target_ground.can_symlink:
             self.skipTest('needs symlink support on target')
         source = self.source_root / 'dirC'
         target = self.target_root / 'copyC'
@@ -112,7 +112,7 @@ klasse CopyTestBase:
         self.assertEqual(self.target_ground.readlink(target / 'linkD'), 'dirD')
 
     def test_copy_dir_to_existing_directory(self):
-        if isinstance(self.target_root, WritableZipPath):
+        wenn isinstance(self.target_root, WritableZipPath):
             self.skipTest('needs local target')
         source = self.source_root / 'dirC'
         target = self.target_root / 'copyC'
@@ -152,7 +152,7 @@ klasse ZipToZipPathCopyTest(CopyTestBase, unittest.TestCase):
     target_ground = ZipPathGround(WritableZipPath)
 
 
-if not is_pypi:
+wenn not is_pypi:
     from pathlib import Path
 
     klasse ZipToLocalPathCopyTest(CopyTestBase, unittest.TestCase):
@@ -170,5 +170,5 @@ if not is_pypi:
         target_ground = LocalPathGround(Path)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

@@ -19,14 +19,14 @@ def main():
         ).read().decode("utf8"))
         upstream_version = data["info"]["version"]
 
-        if version != upstream_version:
+        wenn version != upstream_version:
             outofdate = True
             print("The latest version of {} on PyPI is {}, but ensurepip "
                   "has {}".format(project, upstream_version, version))
 
-    if outofdate:
+    wenn outofdate:
         sys.exit(1)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     main()

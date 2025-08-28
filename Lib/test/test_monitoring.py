@@ -113,7 +113,7 @@ klasse MonitoringBasicTest(unittest.TestCase):
         sys.monitoring.free_tool_id(TEST_TOOL)
         sys.monitoring.use_tool_id(TEST_TOOL, "MonitoringTest.Tool")
         f()
-        # the first f() should trigger a LINE event, and even if we use the
+        # the first f() should trigger a LINE event, and even wenn we use the
         # tool id immediately after freeing it, the second f() should not
         # trigger any event
         self.assertEqual(len(events), 1)
@@ -154,9 +154,9 @@ klasse MonitoringCountTest(MonitoringTestBase, unittest.TestCase):
 
         counter = Counter()
         sys.monitoring.register_callback(TEST_TOOL, event, counter)
-        if event == E.C_RETURN or event == E.C_RAISE:
+        wenn event == E.C_RETURN or event == E.C_RAISE:
             sys.monitoring.set_events(TEST_TOOL, E.CALL)
-        else:
+        sonst:
             sys.monitoring.set_events(TEST_TOOL, event)
         self.assertEqual(counter.count, 0)
         counter.count = 0
@@ -279,9 +279,9 @@ klasse MonitoringEventsBase(MonitoringTestBase):
                 events.append(event_name)
             sys.monitoring.register_callback(TEST_TOOL, event, record)
         def record_call(code, offset, obj, arg):
-            if isinstance(obj, PY_CALLABLES):
+            wenn isinstance(obj, PY_CALLABLES):
                 events.append("py_call")
-            else:
+            sonst:
                 events.append("c_call")
         sys.monitoring.register_callback(TEST_TOOL, E.CALL, record_call)
         sys.monitoring.set_events(TEST_TOOL, SIMPLE_EVENT_SET)
@@ -297,7 +297,7 @@ klasse MonitoringEventsBase(MonitoringTestBase):
 
     def check_events(self, func, expected=None):
         events = self.gather_events(func)
-        if expected is None:
+        wenn expected is None:
             expected = func.events
         self.assertEqual(events, expected)
 
@@ -343,18 +343,18 @@ klasse SimulateProfileTest(MonitoringEventsBase, unittest.TestCase):
         seen = set()
         def up(*args):
             frame = sys._getframe(1)
-            if not stack:
+            wenn not stack:
                 errors.append("empty")
-            else:
+            sonst:
                 expected = stack.pop()
-                if frame != expected:
+                wenn frame != expected:
                     errors.append(f" Popping {frame} expected {expected}")
         def down(*args):
             frame = sys._getframe(1)
             stack.append(frame)
             seen.add(frame.f_code)
         def call(code, offset, callable, arg):
-            if not isinstance(callable, PY_CALLABLES):
+            wenn not isinstance(callable, PY_CALLABLES):
                 stack.append(sys._getframe(1))
         fuer event in UP_EVENTS:
             sys.monitoring.register_callback(TEST_TOOL, event, up)
@@ -377,7 +377,7 @@ klasse CounterWithDisable:
 
     def __call__(self, *args):
         self.count += 1
-        if self.disable:
+        wenn self.disable:
             return sys.monitoring.DISABLE
 
 
@@ -389,7 +389,7 @@ klasse RecorderWithDisable:
 
     def __call__(self, code, event):
         self.events.append(event)
-        if self.disable:
+        wenn self.disable:
             return sys.monitoring.DISABLE
 
 
@@ -666,10 +666,10 @@ klasse LineMonitoringTest(MonitoringTestBase, unittest.TestCase):
 
     def test_branch(self):
         def func():
-            if "true".startswith("t"):
+            wenn "true".startswith("t"):
                 line = 2
                 line = 3
-            else:
+            sonst:
                 line = 5
             line = 6
 
@@ -712,9 +712,9 @@ klasse TestDisable(MonitoringTestBase, unittest.TestCase):
 
     def gen(self, cond):
         fuer i in range(10):
-            if cond:
+            wenn cond:
                 yield 1
-            else:
+            sonst:
                 yield 2
 
     def raise_handle_reraise(self):
@@ -876,7 +876,7 @@ klasse ExceptionMonitoringTest(CheckEvents):
     def test_implicit_stop_iteration(self):
         """Generators are documented as raising a StopIteration
            when they terminate.
-           However, we don't do that if we can avoid it, fuer speed.
+           However, we don't do that wenn we can avoid it, fuer speed.
            sys.monitoring handles that by injecting a STOP_ITERATION
            event when we would otherwise have skip the RAISE event.
            This test checks that both paths record an equivalent event.
@@ -887,7 +887,7 @@ klasse ExceptionMonitoringTest(CheckEvents):
             return 2
 
         def implicit_stop_iteration(iterator=None):
-            if iterator is None:
+            wenn iterator is None:
                 iterator = gen()
             fuer _ in iterator:
                 pass
@@ -1178,7 +1178,7 @@ klasse InstructionRecorder:
 
     def __call__(self, code, offset):
         # Filter out instructions in check_events to lower noise
-        if code.co_name != "get_events":
+        wenn code.co_name != "get_events":
             self.events.append(("instruction", code.co_name, offset))
 
 
@@ -1464,8 +1464,8 @@ klasse TestLocalEvents(MonitoringTestBase, unittest.TestCase):
 
 def line_from_offset(code, offset):
     fuer start, end, line in code.co_lines():
-        if start <= offset < end:
-            if line is None:
+        wenn start <= offset < end:
+            wenn line is None:
                 return f"[offset={offset}]"
             return line - code.co_firstlineno
     return -1
@@ -1536,9 +1536,9 @@ klasse TestBranchAndJumpEvents(CheckEvents):
         def func():
             x = 1
             fuer a in range(2):
-                if a:
+                wenn a:
                     x = 4
-                else:
+                sonst:
                     x = 6
             7
 
@@ -1712,9 +1712,9 @@ klasse TestBranchAndJumpEvents(CheckEvents):
 
     def test_callback_set_frame_lineno(self):
         def func(s: str) -> int:
-            if s.startswith("t"):
+            wenn s.startswith("t"):
                 return 1
-            else:
+            sonst:
                 return 0
 
         def callback(code, from_, to):
@@ -1735,7 +1735,7 @@ klasse TestBranchAndJumpEvents(CheckEvents):
 klasse TestBranchConsistency(MonitoringTestBase, unittest.TestCase):
 
     def check_branches(self, run_func, test_func=None, tool=TEST_TOOL, recorders=BRANCH_OFFSET_RECORDERS):
-        if test_func is None:
+        wenn test_func is None:
             test_func = run_func
         try:
             self.assertEqual(sys.monitoring._all_events(), {})
@@ -1757,9 +1757,9 @@ klasse TestBranchConsistency(MonitoringTestBase, unittest.TestCase):
                 rights.add((src, right))
             fuer event in event_list:
                 way, _, src, dest = event
-                if "left" in way:
+                wenn "left" in way:
                     self.assertIn((src, dest), lefts)
-                else:
+                sonst:
                     self.assertIn("right", way)
                     self.assertIn((src, dest), rights)
         finally:
@@ -1772,9 +1772,9 @@ klasse TestBranchConsistency(MonitoringTestBase, unittest.TestCase):
         def func():
             x = 1
             fuer a in range(2):
-                if a:
+                wenn a:
                     x = 4
-                else:
+                sonst:
                     x = 6
             7
 
@@ -1845,12 +1845,12 @@ klasse TestLoadSuperAttr(CheckEvents):
 
     def _exec_super(self, codestr, optimized=False):
         # The compiler checks fuer statically visible shadowing of the name
-        # `super`, and declines to emit `LOAD_SUPER_ATTR` if shadowing is found.
+        # `super`, and declines to emit `LOAD_SUPER_ATTR` wenn shadowing is found.
         # So inserting `super = super` prevents the compiler from emitting
         # `LOAD_SUPER_ATTR`, and allows us to test that monitoring events for
         # `LOAD_SUPER_ATTR` are equivalent to those we'd get from the
         # un-optimized `LOAD_GLOBAL super; CALL; LOAD_ATTR` form.
-        assignment = "x = 1" if optimized else "super = super"
+        assignment = "x = 1" wenn optimized sonst "super = super"
         codestr = f"{assignment}\n{textwrap.dedent(codestr)}"
         co = compile(codestr, "<string>", "exec")
         # validate that we really do have a LOAD_SUPER_ATTR, only when optimized
@@ -1859,7 +1859,7 @@ klasse TestLoadSuperAttr(CheckEvents):
 
     def _has_load_super_attr(self, co):
         has = any(instr.opname == "LOAD_SUPER_ATTR" fuer instr in dis.get_instructions(co))
-        if not has:
+        wenn not has:
             has = any(
                 isinstance(c, types.CodeType) and self._has_load_super_attr(c)
                 fuer c in co.co_consts
@@ -1931,7 +1931,7 @@ klasse TestLoadSuperAttr(CheckEvents):
                     return b.method(1)
                 except TypeError:
                     pass
-                else:
+                sonst:
                     assert False, "should have raised TypeError"
         """
         d = self._exec_super(codestr, optimized)
@@ -2009,7 +2009,7 @@ klasse TestLoadSuperAttr(CheckEvents):
         """)
 
         def get_expected(name, call_method, ns):
-            repr_arg = 0 if name == "int" else sys.monitoring.MISSING
+            repr_arg = 0 wenn name == "int" sonst sys.monitoring.MISSING
             return [
                 ('line', 'get_events', 10),
                 ('call', 'f', sys.monitoring.MISSING),
@@ -2022,7 +2022,7 @@ klasse TestLoadSuperAttr(CheckEvents):
                     [
                         ('call', '__repr__', repr_arg),
                         ('C return', '__repr__', repr_arg),
-                    ] if call_method else []
+                    ] wenn call_method sonst []
                 ),
                 ('line', 'get_events', 11),
                 ('call', 'set_events', 2),
@@ -2030,7 +2030,7 @@ klasse TestLoadSuperAttr(CheckEvents):
 
         fuer call_method in [True, False]:
             with self.subTest(call_method=call_method):
-                call_str = "()" if call_method else ""
+                call_str = "()" wenn call_method sonst ""
                 code_super = code_template.format(cls="super", call=call_str)
                 code_int = code_template.format(cls="int", call=call_str)
                 co_super = compile(code_super, '<string>', 'exec')
@@ -2125,7 +2125,7 @@ klasse TestRegressions(MonitoringTestBase, unittest.TestCase):
 
         klasse Foo:
             def __init__(self, set_event):
-                if set_event:
+                wenn set_event:
                     sys.monitoring.set_events(TEST_TOOL, E.PY_RESUME)
 
         def make_foo_optimized_then_set_event():
@@ -2293,7 +2293,7 @@ klasse TestCApiEventGeneration(MonitoringTestBase, unittest.TestCase):
 
             def __call__(self, *args):
                 self.count += 1
-                if self.callback_raises:
+                wenn self.callback_raises:
                     exc = self.callback_raises
                     self.callback_raises = None
                     raise exc
@@ -2301,9 +2301,9 @@ klasse TestCApiEventGeneration(MonitoringTestBase, unittest.TestCase):
         try:
             counter = Counter(callback_raises)
             sys.monitoring.register_callback(TEST_TOOL, event, counter)
-            if event == E.C_RETURN or event == E.C_RAISE:
+            wenn event == E.C_RETURN or event == E.C_RAISE:
                 sys.monitoring.set_events(TEST_TOOL, E.CALL)
-            else:
+            sonst:
                 sys.monitoring.set_events(TEST_TOOL, event)
             event_value = int(math.log2(event))
             with self.Scope(self.codelike, event_value):
@@ -2314,7 +2314,7 @@ klasse TestCApiEventGeneration(MonitoringTestBase, unittest.TestCase):
                     self.assertIsInstance(expected, ValueError)
                     self.assertEqual(str(e), str(expected))
                     return
-                else:
+                sonst:
                     self.assertEqual(counter.count, expected)
 
             prev = sys.monitoring.register_callback(TEST_TOOL, event, None)
@@ -2336,7 +2336,7 @@ klasse TestCApiEventGeneration(MonitoringTestBase, unittest.TestCase):
 
     def test_missing_exception(self):
         fuer _, event, function, *args in self.cases:
-            if event not in self.EXPECT_RAISED_EXCEPTION:
+            wenn event not in self.EXPECT_RAISED_EXCEPTION:
                 continue
             assert args and isinstance(args[-1], BaseException)
             offset = 0
@@ -2366,9 +2366,9 @@ klasse TestCApiEventGeneration(MonitoringTestBase, unittest.TestCase):
         try:
             counter = CounterWithDisable()
             sys.monitoring.register_callback(TEST_TOOL, event, counter)
-            if event == E.C_RETURN or event == E.C_RAISE:
+            wenn event == E.C_RETURN or event == E.C_RAISE:
                 sys.monitoring.set_events(TEST_TOOL, E.CALL)
-            else:
+            sonst:
                 sys.monitoring.set_events(TEST_TOOL, event)
             event_value = int(math.log2(event))
             with self.Scope(self.codelike, event_value):
@@ -2376,7 +2376,7 @@ klasse TestCApiEventGeneration(MonitoringTestBase, unittest.TestCase):
                 func(*args)
                 self.assertEqual(counter.count, expected)
                 counter.disable = True
-                if event in self.CANNOT_DISABLE:
+                wenn event in self.CANNOT_DISABLE:
                     # use try-except rather then assertRaises to avoid
                     # events from framework code
                     try:
@@ -2385,9 +2385,9 @@ klasse TestCApiEventGeneration(MonitoringTestBase, unittest.TestCase):
                         self.assertEqual(counter.count, expected)
                     except ValueError:
                         pass
-                    else:
+                    sonst:
                         self.Error("Expected a ValueError")
-                else:
+                sonst:
                     counter.count = 0
                     func(*args)
                     self.assertEqual(counter.count, expected)

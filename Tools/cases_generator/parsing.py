@@ -15,11 +15,11 @@ N = TypeVar("N", bound="Node")
 
 def contextual(func: Callable[[P], N | None]) -> Callable[[P], N | None]:
     # Decorator to wrap grammar methods.
-    # Resets position if `func` returns None.
+    # Resets position wenn `func` returns None.
     def contextual_wrapper(self: P) -> N | None:
         begin = self.getpos()
         res = func(self)
-        if res is None:
+        wenn res is None:
             self.setpos(begin)
             return None
         end = self.getpos()
@@ -48,14 +48,14 @@ klasse Node:
 
     def to_text(self, dedent: int = 0) -> str:
         context = self.context
-        if not context:
+        wenn not context:
             return ""
         return lx.to_text(self.tokens, dedent)
 
     @property
     def tokens(self) -> list[lx.Token]:
         context = self.context
-        if not context:
+        wenn not context:
             return []
         tokens = context.owner.tokens
         begin = context.begin
@@ -103,25 +103,25 @@ klasse IfStmt(Stmt):
         fuer tkn in self.condition:
             out.emit(tkn)
         self.body.print(out)
-        if self.else_ is not None:
+        wenn self.else_ is not None:
             out.emit(self.else_)
         self.body.print(out)
-        if self.else_body is not None:
+        wenn self.else_body is not None:
             self.else_body.print(out)
 
     def accept(self, visitor: Visitor) -> None:
         visitor(self)
         self.body.accept(visitor)
-        if self.else_body is not None:
+        wenn self.else_body is not None:
             self.else_body.accept(visitor)
 
     def tokens(self) -> Iterator[lx.Token]:
         yield self.if_
         yield from self.condition
         yield from self.body.tokens()
-        if self.else_ is not None:
+        wenn self.else_ is not None:
             yield self.else_
-        if self.else_body is not None:
+        wenn self.else_body is not None:
             yield from self.else_body.tokens()
 
 
@@ -181,7 +181,7 @@ klasse MacroIfStmt(Stmt):
         out.emit(self.condition)
         fuer stmt in self.body:
             stmt.print(out)
-        if self.else_body is not None:
+        wenn self.else_body is not None:
             out.emit("#else\n")
             fuer stmt in self.else_body:
                 stmt.print(out)
@@ -190,7 +190,7 @@ klasse MacroIfStmt(Stmt):
         visitor(self)
         fuer stmt in self.body:
             stmt.accept(visitor)
-        if self.else_body is not None:
+        wenn self.else_body is not None:
             fuer stmt in self.else_body:
                 stmt.accept(visitor)
 
@@ -198,7 +198,7 @@ klasse MacroIfStmt(Stmt):
         yield self.condition
         fuer stmt in self.body:
             yield from stmt.tokens()
-        if self.else_body is not None:
+        wenn self.else_body is not None:
             fuer stmt in self.else_body:
                 yield from stmt.tokens()
 
@@ -332,34 +332,34 @@ AstNode = InstDef | Macro | Pseudo | Family | LabelDef
 klasse Parser(PLexer):
     @contextual
     def definition(self) -> AstNode | None:
-        if macro := self.macro_def():
+        wenn macro := self.macro_def():
             return macro
-        if family := self.family_def():
+        wenn family := self.family_def():
             return family
-        if pseudo := self.pseudo_def():
+        wenn pseudo := self.pseudo_def():
             return pseudo
-        if inst := self.inst_def():
+        wenn inst := self.inst_def():
             return inst
-        if label := self.label_def():
+        wenn label := self.label_def():
             return label
         return None
 
     @contextual
     def label_def(self) -> LabelDef | None:
         spilled = False
-        if self.expect(lx.SPILLED):
+        wenn self.expect(lx.SPILLED):
             spilled = True
-        if self.expect(lx.LABEL):
-            if self.expect(lx.LPAREN):
-                if tkn := self.expect(lx.IDENTIFIER):
-                    if self.expect(lx.RPAREN):
+        wenn self.expect(lx.LABEL):
+            wenn self.expect(lx.LPAREN):
+                wenn tkn := self.expect(lx.IDENTIFIER):
+                    wenn self.expect(lx.RPAREN):
                         block = self.block()
                         return LabelDef(tkn.text, spilled, block)
         return None
 
     @contextual
     def inst_def(self) -> InstDef | None:
-        if hdr := self.inst_header():
+        wenn hdr := self.inst_header():
             block = self.block()
             return InstDef(
                 hdr.annotations,
@@ -377,49 +377,49 @@ klasse Parser(PLexer):
         # | annotation* op(NAME, (inputs -- outputs))
         annotations = []
         while anno := self.expect(lx.ANNOTATION):
-            if anno.text == "replicate":
+            wenn anno.text == "replicate":
                 self.require(lx.LPAREN)
                 stop = self.require(lx.NUMBER)
                 start_text = "0"
-                if self.expect(lx.COLON):
+                wenn self.expect(lx.COLON):
                     start_text = stop.text
                     stop = self.require(lx.NUMBER)
                 self.require(lx.RPAREN)
                 annotations.append(f"replicate({start_text}:{stop.text})")
-            else:
+            sonst:
                 annotations.append(anno.text)
         tkn = self.expect(lx.INST)
-        if not tkn:
+        wenn not tkn:
             tkn = self.expect(lx.OP)
-        if tkn:
+        wenn tkn:
             kind = cast(Literal["inst", "op"], tkn.text)
-            if self.expect(lx.LPAREN) and (tkn := self.expect(lx.IDENTIFIER)):
+            wenn self.expect(lx.LPAREN) and (tkn := self.expect(lx.IDENTIFIER)):
                 name = tkn.text
-                if self.expect(lx.COMMA):
+                wenn self.expect(lx.COMMA):
                     inp, outp = self.io_effect()
-                    if self.expect(lx.RPAREN):
-                        if (tkn := self.peek()) and tkn.kind == lx.LBRACE:
+                    wenn self.expect(lx.RPAREN):
+                        wenn (tkn := self.peek()) and tkn.kind == lx.LBRACE:
                             return InstHeader(annotations, kind, name, inp, outp)
         return None
 
     def io_effect(self) -> tuple[list[InputEffect], list[OutputEffect]]:
         # '(' [inputs] '--' [outputs] ')'
-        if self.expect(lx.LPAREN):
+        wenn self.expect(lx.LPAREN):
             inputs = self.inputs() or []
-            if self.expect(lx.MINUSMINUS):
+            wenn self.expect(lx.MINUSMINUS):
                 outputs = self.outputs() or []
-                if self.expect(lx.RPAREN):
+                wenn self.expect(lx.RPAREN):
                     return inputs, outputs
         raise self.make_syntax_error("Expected stack effect")
 
     def inputs(self) -> list[InputEffect] | None:
         # input (',' input)*
         here = self.getpos()
-        if inp := self.input():
+        wenn inp := self.input():
             inp = cast(InputEffect, inp)
             near = self.getpos()
-            if self.expect(lx.COMMA):
-                if rest := self.inputs():
+            wenn self.expect(lx.COMMA):
+                wenn rest := self.inputs():
                     return [inp] + rest
             self.setpos(near)
             return [inp]
@@ -433,10 +433,10 @@ klasse Parser(PLexer):
     def outputs(self) -> list[OutputEffect] | None:
         # output (, output)*
         here = self.getpos()
-        if outp := self.output():
+        wenn outp := self.output():
             near = self.getpos()
-            if self.expect(lx.COMMA):
-                if rest := self.outputs():
+            wenn self.expect(lx.COMMA):
+                wenn rest := self.outputs():
                     return [outp] + rest
             self.setpos(near)
             return [outp]
@@ -450,14 +450,14 @@ klasse Parser(PLexer):
     @contextual
     def cache_effect(self) -> CacheEffect | None:
         # IDENTIFIER '/' NUMBER
-        if tkn := self.expect(lx.IDENTIFIER):
-            if self.expect(lx.DIVIDE):
+        wenn tkn := self.expect(lx.IDENTIFIER):
+            wenn self.expect(lx.DIVIDE):
                 num = self.require(lx.NUMBER).text
                 try:
                     size = int(num)
                 except ValueError:
                     raise self.make_syntax_error(f"Expected integer, got {num!r}")
-                else:
+                sonst:
                     return CacheEffect(tkn.text, size)
         return None
 
@@ -465,10 +465,10 @@ klasse Parser(PLexer):
     def stack_effect(self) -> StackEffect | None:
         # IDENTIFIER [':' IDENTIFIER [TIMES]] ['if' '(' expression ')']
         # | IDENTIFIER '[' expression ']'
-        if tkn := self.expect(lx.IDENTIFIER):
+        wenn tkn := self.expect(lx.IDENTIFIER):
             size_text = ""
-            if self.expect(lx.LBRACKET):
-                if not (size := self.expression()):
+            wenn self.expect(lx.LBRACKET):
+                wenn not (size := self.expression()):
                     raise self.make_syntax_error("Expected expression")
                 self.require(lx.RBRACKET)
                 size_text = size.text.strip()
@@ -480,113 +480,113 @@ klasse Parser(PLexer):
         tokens: list[lx.Token] = []
         level = 1
         while tkn := self.peek():
-            if tkn.kind in (lx.LBRACKET, lx.LPAREN):
+            wenn tkn.kind in (lx.LBRACKET, lx.LPAREN):
                 level += 1
-            elif tkn.kind in (lx.RBRACKET, lx.RPAREN):
+            sowenn tkn.kind in (lx.RBRACKET, lx.RPAREN):
                 level -= 1
-                if level == 0:
+                wenn level == 0:
                     break
             tokens.append(tkn)
             self.next()
-        if not tokens:
+        wenn not tokens:
             return None
         return Expression(lx.to_text(tokens).strip())
 
     # def ops(self) -> list[OpName] | None:
-    #     if op := self.op():
+    #     wenn op := self.op():
     #         ops = [op]
     #         while self.expect(lx.PLUS):
-    #             if op := self.op():
+    #             wenn op := self.op():
     #                 ops.append(op)
     #         return ops
 
     @contextual
     def op(self) -> OpName | None:
-        if tkn := self.expect(lx.IDENTIFIER):
+        wenn tkn := self.expect(lx.IDENTIFIER):
             return OpName(tkn.text)
         return None
 
     @contextual
     def macro_def(self) -> Macro | None:
-        if tkn := self.expect(lx.MACRO):
-            if self.expect(lx.LPAREN):
-                if tkn := self.expect(lx.IDENTIFIER):
-                    if self.expect(lx.RPAREN):
-                        if self.expect(lx.EQUALS):
-                            if uops := self.uops():
+        wenn tkn := self.expect(lx.MACRO):
+            wenn self.expect(lx.LPAREN):
+                wenn tkn := self.expect(lx.IDENTIFIER):
+                    wenn self.expect(lx.RPAREN):
+                        wenn self.expect(lx.EQUALS):
+                            wenn uops := self.uops():
                                 self.require(lx.SEMI)
                                 res = Macro(tkn.text, uops)
                                 return res
         return None
 
     def uops(self) -> list[UOp] | None:
-        if uop := self.uop():
+        wenn uop := self.uop():
             uop = cast(UOp, uop)
             uops = [uop]
             while self.expect(lx.PLUS):
-                if uop := self.uop():
+                wenn uop := self.uop():
                     uop = cast(UOp, uop)
                     uops.append(uop)
-                else:
+                sonst:
                     raise self.make_syntax_error("Expected op name or cache effect")
             return uops
         return None
 
     @contextual
     def uop(self) -> UOp | None:
-        if tkn := self.expect(lx.IDENTIFIER):
-            if self.expect(lx.DIVIDE):
+        wenn tkn := self.expect(lx.IDENTIFIER):
+            wenn self.expect(lx.DIVIDE):
                 sign = 1
-                if negate := self.expect(lx.MINUS):
+                wenn negate := self.expect(lx.MINUS):
                     sign = -1
-                if num := self.expect(lx.NUMBER):
+                wenn num := self.expect(lx.NUMBER):
                     try:
                         size = sign * int(num.text)
                     except ValueError:
                         raise self.make_syntax_error(
                             f"Expected integer, got {num.text!r}"
                         )
-                    else:
+                    sonst:
                         return CacheEffect(tkn.text, size)
                 raise self.make_syntax_error("Expected integer")
-            else:
+            sonst:
                 return OpName(tkn.text)
         return None
 
     @contextual
     def family_def(self) -> Family | None:
-        if (tkn := self.expect(lx.IDENTIFIER)) and tkn.text == "family":
+        wenn (tkn := self.expect(lx.IDENTIFIER)) and tkn.text == "family":
             size = None
-            if self.expect(lx.LPAREN):
-                if tkn := self.expect(lx.IDENTIFIER):
-                    if self.expect(lx.COMMA):
-                        if not (size := self.expect(lx.IDENTIFIER)):
-                            if not (size := self.expect(lx.NUMBER)):
+            wenn self.expect(lx.LPAREN):
+                wenn tkn := self.expect(lx.IDENTIFIER):
+                    wenn self.expect(lx.COMMA):
+                        wenn not (size := self.expect(lx.IDENTIFIER)):
+                            wenn not (size := self.expect(lx.NUMBER)):
                                 raise self.make_syntax_error(
                                     "Expected identifier or number"
                                 )
-                    if self.expect(lx.RPAREN):
-                        if self.expect(lx.EQUALS):
-                            if not self.expect(lx.LBRACE):
+                    wenn self.expect(lx.RPAREN):
+                        wenn self.expect(lx.EQUALS):
+                            wenn not self.expect(lx.LBRACE):
                                 raise self.make_syntax_error("Expected {")
-                            if members := self.members():
-                                if self.expect(lx.RBRACE) and self.expect(lx.SEMI):
+                            wenn members := self.members():
+                                wenn self.expect(lx.RBRACE) and self.expect(lx.SEMI):
                                     return Family(
-                                        tkn.text, size.text if size else "", members
+                                        tkn.text, size.text wenn size sonst "", members
                                     )
         return None
 
     def flags(self) -> list[str]:
         here = self.getpos()
-        if self.expect(lx.LPAREN):
-            if tkn := self.expect(lx.IDENTIFIER):
+        wenn self.expect(lx.LPAREN):
+            wenn tkn := self.expect(lx.IDENTIFIER):
                 flags = [tkn.text]
                 while self.expect(lx.COMMA):
-                    if tkn := self.expect(lx.IDENTIFIER):
+                    wenn tkn := self.expect(lx.IDENTIFIER):
                         flags.append(tkn.text)
-                    else:
+                    sonst:
                         break
-                if not self.expect(lx.RPAREN):
+                wenn not self.expect(lx.RPAREN):
                     raise self.make_syntax_error("Expected comma or right paren")
                 return flags
         self.setpos(here)
@@ -594,28 +594,28 @@ klasse Parser(PLexer):
 
     @contextual
     def pseudo_def(self) -> Pseudo | None:
-        if (tkn := self.expect(lx.IDENTIFIER)) and tkn.text == "pseudo":
+        wenn (tkn := self.expect(lx.IDENTIFIER)) and tkn.text == "pseudo":
             size = None
-            if self.expect(lx.LPAREN):
-                if tkn := self.expect(lx.IDENTIFIER):
-                    if self.expect(lx.COMMA):
+            wenn self.expect(lx.LPAREN):
+                wenn tkn := self.expect(lx.IDENTIFIER):
+                    wenn self.expect(lx.COMMA):
                         inp, outp = self.io_effect()
-                        if self.expect(lx.COMMA):
+                        wenn self.expect(lx.COMMA):
                             flags = self.flags()
-                        else:
+                        sonst:
                             flags = []
-                        if self.expect(lx.RPAREN):
-                            if self.expect(lx.EQUALS):
-                                if self.expect(lx.LBRACE):
+                        wenn self.expect(lx.RPAREN):
+                            wenn self.expect(lx.EQUALS):
+                                wenn self.expect(lx.LBRACE):
                                     as_sequence = False
                                     closing = lx.RBRACE
-                                elif self.expect(lx.LBRACKET):
+                                sowenn self.expect(lx.LBRACKET):
                                     as_sequence = True
                                     closing = lx.RBRACKET
-                                else:
+                                sonst:
                                     raise self.make_syntax_error("Expected { or [")
-                                if members := self.members(allow_sequence=True):
-                                    if self.expect(closing) and self.expect(lx.SEMI):
+                                wenn members := self.members(allow_sequence=True):
+                                    wenn self.expect(closing) and self.expect(lx.SEMI):
                                         return Pseudo(
                                             tkn.text, inp, outp, flags, members, as_sequence
                                         )
@@ -623,18 +623,18 @@ klasse Parser(PLexer):
 
     def members(self, allow_sequence : bool=False) -> list[str] | None:
         here = self.getpos()
-        if tkn := self.expect(lx.IDENTIFIER):
+        wenn tkn := self.expect(lx.IDENTIFIER):
             members = [tkn.text]
             while self.expect(lx.COMMA):
-                if tkn := self.expect(lx.IDENTIFIER):
+                wenn tkn := self.expect(lx.IDENTIFIER):
                     members.append(tkn.text)
-                else:
+                sonst:
                     break
             peek = self.peek()
-            kinds = [lx.RBRACE, lx.RBRACKET] if allow_sequence else [lx.RBRACE]
-            if not peek or peek.kind not in kinds:
+            kinds = [lx.RBRACE, lx.RBRACKET] wenn allow_sequence sonst [lx.RBRACE]
+            wenn not peek or peek.kind not in kinds:
                 raise self.make_syntax_error(
-                    f"Expected comma or right paren{'/bracket' if allow_sequence else ''}")
+                    f"Expected comma or right paren{'/bracket' wenn allow_sequence sonst ''}")
             return members
         self.setpos(here)
         return None
@@ -647,26 +647,26 @@ klasse Parser(PLexer):
         return BlockStmt(open, stmts, close)
 
     def stmt(self) -> Stmt:
-        if tkn := self.expect(lx.IF):
+        wenn tkn := self.expect(lx.IF):
             return self.if_stmt(tkn)
-        elif self.expect(lx.LBRACE):
+        sowenn self.expect(lx.LBRACE):
             self.backup()
             return self.block()
-        elif tkn := self.expect(lx.FOR):
+        sowenn tkn := self.expect(lx.FOR):
             return self.for_stmt(tkn)
-        elif tkn := self.expect(lx.WHILE):
+        sowenn tkn := self.expect(lx.WHILE):
             return self.while_stmt(tkn)
-        elif tkn := self.expect(lx.CMACRO_IF):
+        sowenn tkn := self.expect(lx.CMACRO_IF):
             return self.macro_if(tkn)
-        elif tkn := self.expect(lx.CMACRO_ELSE):
+        sowenn tkn := self.expect(lx.CMACRO_ELSE):
             msg = "Unexpected #else"
             raise self.make_syntax_error(msg)
-        elif tkn := self.expect(lx.CMACRO_ENDIF):
+        sowenn tkn := self.expect(lx.CMACRO_ENDIF):
             msg = "Unexpected #endif"
             raise self.make_syntax_error(msg)
-        elif tkn := self.expect(lx.CMACRO_OTHER):
+        sowenn tkn := self.expect(lx.CMACRO_OTHER):
             return SimpleStmt([tkn])
-        elif tkn := self.expect(lx.SWITCH):
+        sowenn tkn := self.expect(lx.SWITCH):
             msg = "switch statements are not supported due to their complex flow control. Sorry."
             raise self.make_syntax_error(msg)
         tokens = self.consume_to(lx.SEMI)
@@ -678,10 +678,10 @@ klasse Parser(PLexer):
         body = self.block()
         else_body: Stmt | None = None
         else_: lx.Token | None = None
-        if else_ := self.expect(lx.ELSE):
-            if inner := self.expect(lx.IF):
+        wenn else_ := self.expect(lx.ELSE):
+            wenn inner := self.expect(lx.IF):
                 else_body = self.if_stmt(inner)
-            else:
+            sonst:
                 else_body = self.block()
         return IfStmt(if_, condition, body, else_, else_body)
 
@@ -691,15 +691,15 @@ klasse Parser(PLexer):
         else_body: list[Stmt] | None = None
         part = body
         while True:
-            if tkn := self.expect(lx.CMACRO_ENDIF):
+            wenn tkn := self.expect(lx.CMACRO_ENDIF):
                 return MacroIfStmt(cond, body, else_, else_body, tkn)
-            elif tkn := self.expect(lx.CMACRO_ELSE):
-                if part is else_body:
+            sowenn tkn := self.expect(lx.CMACRO_ELSE):
+                wenn part is else_body:
                     raise self.make_syntax_error("Multiple #else")
                 else_ = tkn
                 else_body = []
                 part = else_body
-            else:
+            sonst:
                 part.append(self.stmt())
 
     def for_stmt(self, for_: lx.Token) -> ForStmt:
@@ -715,23 +715,23 @@ klasse Parser(PLexer):
         return WhileStmt(while_, cond, body)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     import sys
     import pprint
 
-    if sys.argv[1:]:
+    wenn sys.argv[1:]:
         filename = sys.argv[1]
-        if filename == "-c" and sys.argv[2:]:
+        wenn filename == "-c" and sys.argv[2:]:
             src = sys.argv[2]
             filename = "<string>"
-        else:
+        sonst:
             with open(filename, "r") as f:
                 src = f.read()
             srclines = src.splitlines()
             begin = srclines.index("// BEGIN BYTECODES //")
             end = srclines.index("// END BYTECODES //")
             src = "\n".join(srclines[begin + 1 : end])
-    else:
+    sonst:
         filename = "<default>"
         src = "if (x) { x.foo; // comment\n}"
     parser = Parser(src, filename)

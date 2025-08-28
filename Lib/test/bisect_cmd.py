@@ -36,7 +36,7 @@ def write_tests(filename, tests):
 
 
 def write_output(filename, tests):
-    if not filename:
+    wenn not filename:
         return
     print("Writing %s tests into %s" % (len(tests), filename))
     write_tests(filename, tests)
@@ -63,7 +63,7 @@ def list_cases(args):
                           stdout=subprocess.PIPE,
                           universal_newlines=True)
     exitcode = proc.returncode
-    if exitcode:
+    wenn exitcode:
         cmd = format_shell_args(cmd)
         print("Failed to list tests: %s failed with exit code %s"
               % (cmd, exitcode))
@@ -88,7 +88,7 @@ def run_tests(args, tests, huntrleaks=None):
         proc = subprocess.run(cmd)
         return proc.returncode
     finally:
-        if os.path.exists(tmp):
+        wenn os.path.exists(tmp):
             os.unlink(tmp)
 
 
@@ -115,14 +115,14 @@ def parse_args():
 def main():
     args = parse_args()
     fuer opt in ('-w', '--rerun', '--verbose2'):
-        if opt in args.test_args:
+        wenn opt in args.test_args:
             print(f"WARNING: {opt} option should not be used to bisect!")
             print()
 
-    if args.input:
+    wenn args.input:
         with open(args.input) as fp:
             tests = [line.strip() fuer line in fp]
-    else:
+    sonst:
         tests = list_cases(args)
 
     print("Start bisection with %s tests" % len(tests))
@@ -150,11 +150,11 @@ def main():
 
             print("ran %s tests/%s" % (ntest, len(tests)))
             print("exit", exitcode)
-            if exitcode:
+            wenn exitcode:
                 print("Tests failed: continuing with this subtest")
                 tests = subtests
                 output = write_output(args.output, tests)
-            else:
+            sonst:
                 print("Tests succeeded: skipping this subtest, trying a new subset")
             print()
             iteration += 1
@@ -168,18 +168,18 @@ def main():
         print("* %s" % test)
     print()
 
-    if output:
+    wenn output:
         print("Output written into %s" % output)
 
     dt = math.ceil(time.monotonic() - start_time)
-    if len(tests) <= args.max_tests:
+    wenn len(tests) <= args.max_tests:
         print("Bisection completed in %s iterations and %s"
               % (iteration, datetime.timedelta(seconds=dt)))
-    else:
+    sonst:
         print("Bisection failed after %s iterations and %s"
               % (iteration, datetime.timedelta(seconds=dt)))
         sys.exit(1)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     main()

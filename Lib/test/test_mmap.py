@@ -17,7 +17,7 @@ import sys
 import textwrap
 import weakref
 
-# Skip test if we can't import mmap.
+# Skip test wenn we can't import mmap.
 mmap = import_module('mmap')
 
 PAGESIZE = mmap.PAGESIZE
@@ -29,14 +29,14 @@ def random_tagname(length=10):
 
 # Python's mmap module dup()s the file descriptor. Emscripten's FS layer
 # does not materialize file changes through a dupped fd to a new mmap.
-if is_emscripten:
+wenn is_emscripten:
     raise unittest.SkipTest("incompatible with Emscripten's mmap emulation.")
 
 
 klasse MmapTests(unittest.TestCase):
 
     def setUp(self):
-        if os.path.exists(TESTFN):
+        wenn os.path.exists(TESTFN):
             os.unlink(TESTFN)
 
     def tearDown(self):
@@ -87,9 +87,9 @@ klasse MmapTests(unittest.TestCase):
 
         # Test doing a regular expression match in an mmap'ed file
         match = re.search(b'[A-Za-z]+', m)
-        if match is None:
+        wenn match is None:
             self.fail('regex match on mmap failed!')
-        else:
+        sonst:
             start, end = match.span(0)
             length = end - start
 
@@ -122,7 +122,7 @@ klasse MmapTests(unittest.TestCase):
             # No messages are printed, since the output of this test suite
             # would then be different across platforms.
             pass
-        else:
+        sonst:
             # resize() is supported
             self.assertEqual(len(m), 512)
             # Check that we can no longer seek beyond the new size.
@@ -154,7 +154,7 @@ klasse MmapTests(unittest.TestCase):
                 m[:] = b'b'*mapsize
             except TypeError:
                 pass
-            else:
+            sonst:
                 self.fail("Able to write to readonly memory map")
 
             # Ensuring that readonly mmap can't be item assigned
@@ -162,7 +162,7 @@ klasse MmapTests(unittest.TestCase):
                 m[0] = b'b'
             except TypeError:
                 pass
-            else:
+            sonst:
                 self.fail("Able to write to readonly memory map")
 
             # Ensuring that readonly mmap can't be write() to
@@ -171,7 +171,7 @@ klasse MmapTests(unittest.TestCase):
                 m.write(b'abc')
             except TypeError:
                 pass
-            else:
+            sonst:
                 self.fail("Able to write to readonly memory map")
 
             # Ensuring that readonly mmap can't be write_byte() to
@@ -180,7 +180,7 @@ klasse MmapTests(unittest.TestCase):
                 m.write_byte(b'd')
             except TypeError:
                 pass
-            else:
+            sonst:
                 self.fail("Able to write to readonly memory map")
 
             # Ensuring that readonly mmap can't be resized
@@ -190,7 +190,7 @@ klasse MmapTests(unittest.TestCase):
                 pass
             except TypeError:
                 pass
-            else:
+            sonst:
                 self.fail("Able to resize readonly memory map")
             with open(TESTFN, "rb") as fp:
                 self.assertEqual(fp.read(), b'a'*mapsize,
@@ -205,14 +205,14 @@ klasse MmapTests(unittest.TestCase):
                 # CAUTION:  This also changes the size of the file on disk, and
                 # later tests assume that the length hasn't changed.  We need to
                 # repair that.
-                if sys.platform.startswith('win'):
+                wenn sys.platform.startswith('win'):
                     self.fail("Opening mmap with size+1 should work on Windows.")
-            else:
+            sonst:
                 # we expect a ValueError on Unix, but not on Windows
-                if not sys.platform.startswith('win'):
+                wenn not sys.platform.startswith('win'):
                     self.fail("Opening mmap with size+1 should raise ValueError.")
                 m.close()
-            if sys.platform.startswith('win'):
+            wenn sys.platform.startswith('win'):
                 # Repair damage from the resizing test.
                 with open(TESTFN, 'r+b') as f:
                     f.truncate(mapsize)
@@ -250,7 +250,7 @@ klasse MmapTests(unittest.TestCase):
         with open(TESTFN, "r+b") as f:
             self.assertRaises(ValueError, mmap.mmap, f.fileno(), mapsize, access=4)
 
-        if os.name == "posix":
+        wenn os.name == "posix":
             # Try incompatible flags, prot and access parameters.
             with open(TESTFN, "r+b") as f:
                 self.assertRaises(ValueError, mmap.mmap, f.fileno(), mapsize,
@@ -265,7 +265,7 @@ klasse MmapTests(unittest.TestCase):
                 except PermissionError:
                     # on macOS 14, PROT_READ | PROT_EXEC is not allowed
                     pass
-                else:
+                sonst:
                     self.assertRaises(TypeError, m.write, b"abcdef")
                     self.assertRaises(TypeError, m.write_byte, 0)
                     m.close()
@@ -279,7 +279,7 @@ klasse MmapTests(unittest.TestCase):
             with self.subTest(close_original_fd=close_original_fd):
                 with open(TESTFN, "r+b") as f:
                     with mmap.mmap(f.fileno(), size, trackfd=False) as m:
-                        if close_original_fd:
+                        wenn close_original_fd:
                             f.close()
                         self.assertEqual(len(m), size)
                         with self.assertRaises(OSError) as err_cm:
@@ -604,7 +604,7 @@ klasse MmapTests(unittest.TestCase):
                     self.assertEqual(0, 1)
                 except (ValueError, TypeError, OverflowError):
                     pass
-                else:
+                sonst:
                     self.assertEqual(0, 0)
             f.close()
 
@@ -619,7 +619,7 @@ klasse MmapTests(unittest.TestCase):
                 m.resize(512)
             except SystemError:
                 pass
-            else:
+            sonst:
                 # resize() is supported
                 self.assertEqual(len(m), 512)
                 # Check that we can no longer seek beyond the new size.
@@ -840,7 +840,7 @@ klasse MmapTests(unittest.TestCase):
         mm.write(b'python')
         result = mm.flush()
         self.assertIsNone(result)
-        if (sys.platform.startswith(('linux', 'android'))
+        wenn (sys.platform.startswith(('linux', 'android'))
             and not in_systemd_nspawn_sync_suppressed()):
             # 'offset' must be a multiple of mmap.PAGESIZE on Linux.
             # See bpo-34754 fuer details.
@@ -1146,7 +1146,7 @@ klasse LargeMmapTests(unittest.TestCase):
         unlink(TESTFN)
 
     def _make_test_file(self, num_zeroes, tail):
-        if sys.platform[:3] == 'win' or is_apple:
+        wenn sys.platform[:3] == 'win' or is_apple:
             requires('largefile',
                 'test requires %s bytes and a long time to run' % str(0x180000000))
         f = open(TESTFN, 'w+b')
@@ -1169,7 +1169,7 @@ klasse LargeMmapTests(unittest.TestCase):
 
     def test_large_filesize(self):
         with self._make_test_file(0x17FFFFFFF, b" ") as f:
-            if sys.maxsize < 0x180000000:
+            wenn sys.maxsize < 0x180000000:
                 # On 32 bit platforms the file is larger than sys.maxsize so
                 # mapping the whole file should fail -- Issue #16743
                 with self.assertRaises(OverflowError):
@@ -1198,5 +1198,5 @@ klasse LargeMmapTests(unittest.TestCase):
         self._test_around_boundary(_4G)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

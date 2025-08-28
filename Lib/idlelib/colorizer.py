@@ -43,7 +43,7 @@ def make_pat():
         r"))"
     )
     builtinlist = [str(name) fuer name in dir(builtins)
-                   if not name.startswith('_') and
+                   wenn not name.startswith('_') and
                    name not in keyword.kwlist]
     builtin = r"([^.'\"\\#]\b|^)" + any("BUILTIN", builtinlist) + r"\b"
     comment = any("COMMENT", [r"#[^\n]*"])
@@ -75,7 +75,7 @@ prog_group_name_to_tag = {
 
 def matched_named_groups(re_match):
     "Get only the non-empty named groups from an re.Match object."
-    return ((k, v) fuer (k, v) in re_match.groupdict().items() if v)
+    return ((k, v) fuer (k, v) in re_match.groupdict().items() wenn v)
 
 
 def color_config(text):
@@ -140,14 +140,14 @@ klasse ColorDelegator(Delegator):
 
         If there is a delegate, also start the colorizing process.
         """
-        if self.delegate is not None:
+        wenn self.delegate is not None:
             self.unbind("<<toggle-auto-coloring>>")
         Delegator.setdelegate(self, delegate)
-        if delegate is not None:
+        wenn delegate is not None:
             self.config_colors()
             self.bind("<<toggle-auto-coloring>>", self.toggle_colorize_event)
             self.notify_range("1.0", "end")
-        else:
+        sonst:
             # No delegate - stop any colorizing.
             self.stop_colorizing = True
             self.allow_colorizing = False
@@ -176,7 +176,7 @@ klasse ColorDelegator(Delegator):
             # non-modal alternative.
             "hit": idleConf.GetHighlight(theme, "hit"),
             }
-        if DEBUG: print('tagdefs', self.tagdefs)
+        wenn DEBUG: print('tagdefs', self.tagdefs)
 
     def insert(self, index, chars, tags=None):
         "Insert chars into widget at index and mark fuer colorizing."
@@ -191,24 +191,24 @@ klasse ColorDelegator(Delegator):
         self.notify_range(index1)
 
     def notify_range(self, index1, index2=None):
-        "Mark text changes fuer processing and restart colorizing, if active."
+        "Mark text changes fuer processing and restart colorizing, wenn active."
         self.tag_add("TODO", index1, index2)
-        if self.after_id:
-            if DEBUG: print("colorizing already scheduled")
+        wenn self.after_id:
+            wenn DEBUG: print("colorizing already scheduled")
             return
-        if self.colorizing:
+        wenn self.colorizing:
             self.stop_colorizing = True
-            if DEBUG: print("stop colorizing")
-        if self.allow_colorizing:
-            if DEBUG: print("schedule colorizing")
+            wenn DEBUG: print("stop colorizing")
+        wenn self.allow_colorizing:
+            wenn DEBUG: print("schedule colorizing")
             self.after_id = self.after(1, self.recolorize)
         return
 
     def close(self):
-        if self.after_id:
+        wenn self.after_id:
             after_id = self.after_id
             self.after_id = None
-            if DEBUG: print("cancel scheduled recolorizer")
+            wenn DEBUG: print("cancel scheduled recolorizer")
             self.after_cancel(after_id)
         self.allow_colorizing = False
         self.stop_colorizing = True
@@ -216,25 +216,25 @@ klasse ColorDelegator(Delegator):
     def toggle_colorize_event(self, event=None):
         """Toggle colorizing on and off.
 
-        When toggling off, if colorizing is scheduled or is in
+        When toggling off, wenn colorizing is scheduled or is in
         process, it will be cancelled and/or stopped.
 
         When toggling on, colorizing will be scheduled.
         """
-        if self.after_id:
+        wenn self.after_id:
             after_id = self.after_id
             self.after_id = None
-            if DEBUG: print("cancel scheduled recolorizer")
+            wenn DEBUG: print("cancel scheduled recolorizer")
             self.after_cancel(after_id)
-        if self.allow_colorizing and self.colorizing:
-            if DEBUG: print("stop colorizing")
+        wenn self.allow_colorizing and self.colorizing:
+            wenn DEBUG: print("stop colorizing")
             self.stop_colorizing = True
         self.allow_colorizing = not self.allow_colorizing
-        if self.allow_colorizing and not self.colorizing:
+        wenn self.allow_colorizing and not self.colorizing:
             self.after_id = self.after(1, self.recolorize)
-        if DEBUG:
+        wenn DEBUG:
             print("auto colorizing turned",
-                  "on" if self.allow_colorizing else "off")
+                  "on" wenn self.allow_colorizing sonst "off")
         return "break"
 
     def recolorize(self):
@@ -248,27 +248,27 @@ klasse ColorDelegator(Delegator):
         make sure that all the text has been colorized.
         """
         self.after_id = None
-        if not self.delegate:
-            if DEBUG: print("no delegate")
+        wenn not self.delegate:
+            wenn DEBUG: print("no delegate")
             return
-        if not self.allow_colorizing:
-            if DEBUG: print("auto colorizing is off")
+        wenn not self.allow_colorizing:
+            wenn DEBUG: print("auto colorizing is off")
             return
-        if self.colorizing:
-            if DEBUG: print("already colorizing")
+        wenn self.colorizing:
+            wenn DEBUG: print("already colorizing")
             return
         try:
             self.stop_colorizing = False
             self.colorizing = True
-            if DEBUG: print("colorizing...")
+            wenn DEBUG: print("colorizing...")
             t0 = time.perf_counter()
             self.recolorize_main()
             t1 = time.perf_counter()
-            if DEBUG: print("%.3f seconds" % (t1-t0))
+            wenn DEBUG: print("%.3f seconds" % (t1-t0))
         finally:
             self.colorizing = False
-        if self.allow_colorizing and self.tag_nextrange("TODO", "1.0"):
-            if DEBUG: print("reschedule colorizing")
+        wenn self.allow_colorizing and self.tag_nextrange("TODO", "1.0"):
+            wenn DEBUG: print("reschedule colorizing")
             self.after_id = self.after(1, self.recolorize)
 
     def recolorize_main(self):
@@ -277,7 +277,7 @@ klasse ColorDelegator(Delegator):
         while todo_tag_range := self.tag_nextrange("TODO", next):
             self.tag_remove("SYNC", todo_tag_range[0], todo_tag_range[1])
             sync_tag_range = self.tag_prevrange("SYNC", todo_tag_range[0])
-            head = sync_tag_range[1] if sync_tag_range else "1.0"
+            head = sync_tag_range[1] wenn sync_tag_range sonst "1.0"
 
             chars = ""
             next = head
@@ -291,18 +291,18 @@ klasse ColorDelegator(Delegator):
                 ok = "SYNC" in self.tag_names(next + "-1c")
                 line = self.get(mark, next)
                 ##print head, "get", mark, next, "->", repr(line)
-                if not line:
+                wenn not line:
                     return
                 fuer tag in self.tagdefs:
                     self.tag_remove(tag, mark, next)
                 chars += line
                 self._add_tags_in_section(chars, head)
-                if "SYNC" in self.tag_names(next + "-1c"):
+                wenn "SYNC" in self.tag_names(next + "-1c"):
                     head = next
                     chars = ""
-                else:
+                sonst:
                     ok = False
-                if not ok:
+                wenn not ok:
                     # We're in an inconsistent state, and the call to
                     # update may tell us to stop.  It may also change
                     # the correct value fuer "next" (since this is a
@@ -311,8 +311,8 @@ klasse ColorDelegator(Delegator):
                     # in case update tells us to leave.
                     self.tag_add("TODO", next)
                 self.update_idletasks()
-                if self.stop_colorizing:
-                    if DEBUG: print("colorizing stopped")
+                wenn self.stop_colorizing:
+                    wenn DEBUG: print("colorizing stopped")
                     return
 
     def _add_tag(self, start, end, head, matched_group_name):
@@ -344,8 +344,8 @@ klasse ColorDelegator(Delegator):
             fuer name, matched_text in matched_named_groups(m):
                 a, b = m.span(name)
                 self._add_tag(a, b, head, name)
-                if matched_text in ("def", "class"):
-                    if m1 := self.idprog.match(chars, b):
+                wenn matched_text in ("def", "class"):
+                    wenn m1 := self.idprog.match(chars, b):
                         a, b = m1.span(1)
                         self._add_tag(a, b, head, "DEFINITION")
 
@@ -376,7 +376,7 @@ def _color_delegator(parent):  # htest #
     p.insertfilter(d)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     from unittest import main
     main('idlelib.idle_test.test_colorizer', verbosity=2, exit=False)
 

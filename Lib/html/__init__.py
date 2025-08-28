@@ -19,7 +19,7 @@ def escape(s, quote=True):
     s = s.replace("&", "&amp;") # Must be done first!
     s = s.replace("<", "&lt;")
     s = s.replace(">", "&gt;")
-    if quote:
+    wenn quote:
         s = s.replace('"', "&quot;")
         s = s.replace('\'', "&#x27;")
     return s
@@ -90,28 +90,28 @@ _invalid_codepoints = {
 
 def _replace_charref(s):
     s = s.group(1)
-    if s[0] == '#':
+    wenn s[0] == '#':
         # numeric charref
-        if s[1] in 'xX':
+        wenn s[1] in 'xX':
             num = int(s[2:].rstrip(';'), 16)
-        else:
+        sonst:
             num = int(s[1:].rstrip(';'))
-        if num in _invalid_charrefs:
+        wenn num in _invalid_charrefs:
             return _invalid_charrefs[num]
-        if 0xD800 <= num <= 0xDFFF or num > 0x10FFFF:
+        wenn 0xD800 <= num <= 0xDFFF or num > 0x10FFFF:
             return '\uFFFD'
-        if num in _invalid_codepoints:
+        wenn num in _invalid_codepoints:
             return ''
         return chr(num)
-    else:
+    sonst:
         # named charref
-        if s in _html5:
+        wenn s in _html5:
             return _html5[s]
         # find the longest matching name (as defined by the standard)
         fuer x in range(len(s)-1, 1, -1):
-            if s[:x] in _html5:
+            wenn s[:x] in _html5:
                 return _html5[s[:x]] + s[x:]
-        else:
+        sonst:
             return '&' + s
 
 
@@ -127,6 +127,6 @@ def unescape(s):
     fuer both valid and invalid character references, and the list of
     HTML 5 named character references defined in html.entities.html5.
     """
-    if '&' not in s:
+    wenn '&' not in s:
         return s
     return _charref.sub(_replace_charref, s)

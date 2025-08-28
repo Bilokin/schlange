@@ -29,7 +29,7 @@ klasse FontTest(AbstractTkTest, unittest.TestCase):
             self.assertIsInstance(options[key], str)
             self.assertIsInstance(self.font.cget(key), str)
             self.assertIsInstance(self.font[key], str)
-        sizetype = int if self.wantobjects else str
+        sizetype = int wenn self.wantobjects sonst str
         fuer key in 'size', 'underline', 'overstrike':
             self.assertIsInstance(options[key], sizetype)
             self.assertIsInstance(self.font.cget(key), sizetype)
@@ -54,7 +54,7 @@ klasse FontTest(AbstractTkTest, unittest.TestCase):
         fuer key in 'family', 'weight', 'slant':
             self.assertIsInstance(options[key], str)
             self.assertIsInstance(self.font.actual(key), str)
-        sizetype = int if self.wantobjects else str
+        sizetype = int wenn self.wantobjects sonst str
         fuer key in 'size', 'underline', 'overstrike':
             self.assertIsInstance(options[key], sizetype)
             self.assertIsInstance(self.font.actual(key), sizetype)
@@ -159,5 +159,5 @@ klasse DefaultRootTest(AbstractDefaultRootTest, unittest.TestCase):
         self.assertRaises(RuntimeError, font.nametofont, fontname)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

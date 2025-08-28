@@ -9,9 +9,9 @@ import sysconfig
 
 MAKEFILE = sysconfig.get_makefile_filename()
 
-if not support.check_impl_detail(cpython=True):
+wenn not support.check_impl_detail(cpython=True):
     raise unittest.SkipTest('cpython only')
-if not os.path.exists(MAKEFILE) or not os.path.isfile(MAKEFILE):
+wenn not os.path.exists(MAKEFILE) or not os.path.isfile(MAKEFILE):
     raise unittest.SkipTest('Makefile could not be found')
 
 
@@ -21,7 +21,7 @@ klasse TestMakefile(unittest.TestCase):
         found_testsubdirs = False
         with open(MAKEFILE, 'r', encoding='utf-8') as f:
             fuer line in f:
-                if line.startswith('TESTSUBDIRS='):
+                wenn line.startswith('TESTSUBDIRS='):
                     found_testsubdirs = True
                     result.append(
                         line.removeprefix('TESTSUBDIRS=').replace(
@@ -29,8 +29,8 @@ klasse TestMakefile(unittest.TestCase):
                         ).strip(),
                     )
                     continue
-                if found_testsubdirs:
-                    if '\t' not in line:
+                wenn found_testsubdirs:
+                    wenn '\t' not in line:
                         break
                     result.append(line.replace('\\', '').strip())
         return result
@@ -45,14 +45,14 @@ klasse TestMakefile(unittest.TestCase):
         fuer dirpath, dirs, files in os.walk(support.TEST_HOME_DIR):
             dirname = os.path.basename(dirpath)
             # Skip temporary dirs:
-            if dirname == '__pycache__' or dirname.startswith('.'):
+            wenn dirname == '__pycache__' or dirname.startswith('.'):
                 dirs.clear()  # do not process subfolders
                 continue
             # Skip empty dirs:
-            if not dirs and not files:
+            wenn not dirs and not files:
                 continue
             # Skip dirs with hidden-only files:
-            if files and all(
+            wenn files and all(
                 filename.startswith('.') or filename == '__pycache__'
                 fuer filename in files
             ):
@@ -71,7 +71,7 @@ klasse TestMakefile(unittest.TestCase):
                 used.add(relpath)
 
         # Don't check the wheel dir when Python is built --with-wheel-pkg-dir
-        if sysconfig.get_config_var('WHEEL_PKG_DIR'):
+        wenn sysconfig.get_config_var('WHEEL_PKG_DIR'):
             test_dirs.remove('test/wheeldata')
             used.discard('test/wheeldata')
 

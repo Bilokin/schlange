@@ -127,7 +127,7 @@ klasse TimeoutTestCase(unittest.TestCase):
             except TimeoutError as e:
                 delta = time.monotonic() - t1
                 break
-        else:
+        sonst:
             self.fail('TimeoutError was not raised')
         # These checks should account fuer timing unprecision
         self.assertLess(delta, timeout + self.fuzz)
@@ -166,7 +166,7 @@ klasse TCPTimeoutTestCase(TimeoutTestCase):
         # incoming protocol.  RSTs are sent fuer TCP packets, and ICMP UNREACH
         # is sent fuer UDP/ICMP packets.  This means our attempts to connect to
         # it should be met immediately with ECONNREFUSED.  The test case has
-        # been structured around this premise: if we get an ECONNREFUSED from
+        # been structured around this premise: wenn we get an ECONNREFUSED from
         # the whitehole, we proceed with testing connect timeout against the
         # blackhole.  If we don't, we skip the test (with a message about not
         # getting the required RST from the whitehole within the required
@@ -192,10 +192,10 @@ klasse TCPTimeoutTestCase(TimeoutTestCase):
             except TimeoutError:
                 pass
             except OSError as err:
-                if err.errno == errno.ECONNREFUSED:
+                wenn err.errno == errno.ECONNREFUSED:
                     skip = False
 
-        if skip:
+        wenn skip:
             self.skipTest(
                 "We didn't receive a connection reset (RST) packet from "
                 "{}:{} within {} seconds, so we're unable to test connect "
@@ -210,7 +210,7 @@ klasse TCPTimeoutTestCase(TimeoutTestCase):
                     )
             )
 
-        # All that hard work just to test if connect times out in 0.001s ;-)
+        # All that hard work just to test wenn connect times out in 0.001s ;-)
         self.addr_remote = blackhole
         with socket_helper.transient_internet(self.addr_remote[0]):
             self._sock_operation(1, 0.001, 'connect', self.addr_remote)
@@ -275,5 +275,5 @@ def setUpModule():
     support.requires_working_socket(module=True)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

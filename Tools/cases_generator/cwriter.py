@@ -23,17 +23,17 @@ klasse CWriter:
         return CWriter(StringIO(), 0, False)
 
     def set_position(self, tkn: Token) -> None:
-        if self.last_token is not None:
-            if self.last_token.end_line < tkn.line:
+        wenn self.last_token is not None:
+            wenn self.last_token.end_line < tkn.line:
                 self.out.write("\n")
-            if self.last_token.line < tkn.line:
-                if self.line_directives:
+            wenn self.last_token.line < tkn.line:
+                wenn self.line_directives:
                     self.out.write(f'#line {tkn.line} "{tkn.filename}"\n')
                 self.out.write(" " * self.indents[-1])
-            else:
+            sonst:
                 gap = tkn.column - self.last_token.end_column
                 self.out.write(" " * gap)
-        elif self.newline:
+        sowenn self.newline:
             self.out.write(" " * self.indents[-1])
         self.last_token = tkn
         self.newline = False
@@ -45,31 +45,31 @@ klasse CWriter:
 
     def maybe_dedent(self, txt: str) -> None:
         parens = txt.count("(") - txt.count(")")
-        if parens < 0:
+        wenn parens < 0:
             self.indents.pop()
         braces = txt.count("{") - txt.count("}")
-        if braces < 0 or is_label(txt):
+        wenn braces < 0 or is_label(txt):
             self.indents.pop()
 
     def maybe_indent(self, txt: str) -> None:
         parens = txt.count("(") - txt.count(")")
-        if parens > 0:
-            if self.last_token:
+        wenn parens > 0:
+            wenn self.last_token:
                 offset = self.last_token.end_column - 1
-                if offset <= self.indents[-1] or offset > 40:
+                wenn offset <= self.indents[-1] or offset > 40:
                     offset = self.indents[-1] + 4
-            else:
+            sonst:
                 offset = self.indents[-1] + 4
             self.indents.append(offset)
-        if is_label(txt):
+        wenn is_label(txt):
             self.indents.append(self.indents[-1] + 4)
-        else:
+        sonst:
             braces = txt.count("{") - txt.count("}")
-            if braces > 0:
+            wenn braces > 0:
                 assert braces == 1
-                if 'extern "C"' in txt:
+                wenn 'extern "C"' in txt:
                     self.indents.append(self.indents[-1])
-                else:
+                sonst:
                     self.indents.append(self.indents[-1] + 4)
 
     def emit_text(self, txt: str) -> None:
@@ -81,72 +81,72 @@ klasse CWriter:
         first = True
         fuer line in lines:
             text = line.lstrip()
-            if first:
+            wenn first:
                 spaces = 0
-            else:
+            sonst:
                 spaces = self.indents[-1]
-                if text.startswith("*"):
+                wenn text.startswith("*"):
                     spaces += 1
-                else:
+                sonst:
                     spaces += 3
             first = False
             self.out.write(" " * spaces)
             self.out.write(text)
 
     def emit_token(self, tkn: Token) -> None:
-        if tkn.kind == "COMMENT" and "\n" in tkn.text:
+        wenn tkn.kind == "COMMENT" and "\n" in tkn.text:
             return self.emit_multiline_comment(tkn)
         self.maybe_dedent(tkn.text)
         self.set_position(tkn)
         self.emit_text(tkn.text)
-        if tkn.kind.startswith("CMACRO"):
+        wenn tkn.kind.startswith("CMACRO"):
             self.newline = True
         self.maybe_indent(tkn.text)
 
     def emit_str(self, txt: str) -> None:
         self.maybe_dedent(txt)
-        if self.newline and txt:
-            if txt[0] != "\n":
+        wenn self.newline and txt:
+            wenn txt[0] != "\n":
                 self.out.write(" " * self.indents[-1])
             self.newline = False
         self.emit_text(txt)
-        if txt.endswith("\n"):
+        wenn txt.endswith("\n"):
             self.newline = True
         self.maybe_indent(txt)
         self.last_token = None
 
     def emit(self, txt: str | Token) -> None:
         self.maybe_write_spill()
-        if isinstance(txt, Token):
+        wenn isinstance(txt, Token):
             self.emit_token(txt)
-        elif isinstance(txt, str):
+        sowenn isinstance(txt, str):
             self.emit_str(txt)
-        else:
+        sonst:
             assert False
 
     def start_line(self) -> None:
-        if not self.newline:
+        wenn not self.newline:
             self.out.write("\n")
         self.newline = True
         self.last_token = None
 
     def emit_spill(self) -> None:
-        if self.pending_reload:
+        wenn self.pending_reload:
             self.pending_reload = False
             return
         assert not self.pending_spill
         self.pending_spill = True
 
     def maybe_write_spill(self) -> None:
-        if self.pending_spill:
+        wenn self.pending_spill:
             self.pending_spill = False
             self.emit_str("_PyFrame_SetStackPointer(frame, stack_pointer);\n")
-        elif self.pending_reload:
+        sowenn self.pending_reload:
             self.pending_reload = False
             self.emit_str("stack_pointer = _PyFrame_GetStackPointer(frame);\n")
 
     def emit_reload(self) -> None:
-        if self.pending_spill:
+        wenn self.pending_spill:
             self.pending_spill = False
             return
         assert not self.pending_reload

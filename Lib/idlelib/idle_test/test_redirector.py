@@ -118,5 +118,5 @@ klasse WidgetRedirectorTest(unittest.TestCase):
         self.assertEqual(self.root.call(self.text._w, 'insert', 'boo'), '')
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main(verbosity=2)

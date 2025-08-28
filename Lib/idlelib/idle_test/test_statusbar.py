@@ -37,5 +37,5 @@ klasse Test(unittest.TestCase):
         self.assertEqual(bar.labels['right']['text'], 'correct text')
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main(verbosity=2)

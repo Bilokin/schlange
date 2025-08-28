@@ -35,7 +35,7 @@ def last_cb():
 klasse ReachableCode(Exception):
     """Exception to raise to indicate that some code was reached.
 
-    Use this exception if using mocks is not a good alternative.
+    Use this exception wenn using mocks is not a good alternative.
     """
 
 
@@ -47,7 +47,7 @@ klasse SimpleEvilEventLoop(asyncio.base_events.BaseEventLoop):
 
     def __del__(self):
         # Automatically close the evil event loop to avoid warnings.
-        if not self.is_closed() and not self.is_running():
+        wenn not self.is_closed() and not self.is_running():
             self.close()
 
 
@@ -61,7 +61,7 @@ klasse DuckFuture:
     __exception = None
 
     def cancel(self):
-        if self.done():
+        wenn self.done():
             return False
         self.__cancelled = True
         return True
@@ -76,7 +76,7 @@ klasse DuckFuture:
 
     def result(self):
         self.assertFalse(self.cancelled())
-        if self.__exception is not None:
+        wenn self.__exception is not None:
             raise self.__exception
         return self.__result
 
@@ -95,7 +95,7 @@ klasse DuckFuture:
         self.__exception = exception
 
     def __iter__(self):
-        if not self.done():
+        wenn not self.done():
             self._asyncio_future_blocking = True
             yield self
         self.assertTrue(self.done())
@@ -700,7 +700,7 @@ klasse BaseFutureTests:
             fi.send(None)
         except StopIteration as ex:
             result = ex.args[0]
-        else:
+        sonst:
             self.fail('StopIteration was expected')
         self.assertEqual(result, (1, 2))
 
@@ -1010,7 +1010,7 @@ klasse BaseFutureDoneCallbackTests():
             def __eq__(self, other):
                 nonlocal extra_cbs
                 extra_cbs += 1
-                if extra_cbs < max_extra_cbs:
+                wenn extra_cbs < max_extra_cbs:
                     fut.add_done_callback(id)
                 return False
 
@@ -1024,12 +1024,12 @@ klasse BaseFutureDoneCallbackTests():
 
         def evil_call_soon(*args, **kwargs):
             nonlocal called_on_fut_callback0
-            if called_on_fut_callback0:
+            wenn called_on_fut_callback0:
                 # Called when handling fut->fut_callbacks[0]
                 # and mutates the length fut->fut_callbacks.
                 fut.remove_done_callback(int)
                 fut.remove_done_callback(pad)
-            else:
+            sonst:
                 called_on_fut_callback0 = True
 
         fake_event_loop = SimpleEvilEventLoop()
@@ -1077,7 +1077,7 @@ klasse BaseFutureDoneCallbackTests():
 
             def __getattribute__(self, name):
                 nonlocal fut_callback_0
-                if name == 'call_soon':
+                wenn name == 'call_soon':
                     fut.remove_done_callback(fut_callback_0)
                     del fut_callback_0
                 return object.__getattribute__(self, name)
@@ -1100,7 +1100,7 @@ klasse BaseFutureDoneCallbackTests():
                 raise ReachableCode
 
             def __getattribute__(self, name):
-                if name == 'call_soon':
+                wenn name == 'call_soon':
                     # resets the future's event loop
                     fut.__init__(loop=SimpleEvilEventLoop())
                 return object.__getattribute__(self, name)
@@ -1186,5 +1186,5 @@ klasse CFutureInheritanceTests(BaseFutureInheritanceTests,
         return futures._CFuture
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

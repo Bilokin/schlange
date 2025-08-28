@@ -62,12 +62,12 @@ def main() -> None:
         all_keywords = sorted(list(gen.keywords.keys()))
         all_soft_keywords = sorted(gen.soft_keywords)
 
-        keywords = "" if not all_keywords else "    " + ",\n    ".join(map(repr, all_keywords))
+        keywords = "" wenn not all_keywords sonst "    " + ",\n    ".join(map(repr, all_keywords))
         soft_keywords = (
-            "" if not all_soft_keywords else "    " + ",\n    ".join(map(repr, all_soft_keywords))
+            "" wenn not all_soft_keywords sonst "    " + ",\n    ".join(map(repr, all_soft_keywords))
         )
         thefile.write(TEMPLATE.format(keywords=keywords, soft_keywords=soft_keywords))
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     main()

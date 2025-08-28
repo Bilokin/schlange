@@ -155,5 +155,5 @@ klasse StatsTestCase(unittest.TestCase):
         self.assertEqual(SortKey.FILENAME, 'filename')
         self.assertNotEqual(SortKey.FILENAME, SortKey.CALLS)
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

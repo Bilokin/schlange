@@ -31,7 +31,7 @@ klasse CallingOrder:
                 self.assertIs(self.__import__(mod_name), second.modules[mod_name])
 
     def test_empty(self):
-        # Raise an ImportWarning if sys.meta_path is empty.
+        # Raise an ImportWarning wenn sys.meta_path is empty.
         module_name = 'nothing'
         try:
             del sys.modules[module_name]
@@ -123,5 +123,5 @@ klasse CallSignaturePEP451(CallSignature):
  ) = util.test_both(CallSignaturePEP451, __import__=util.__import__)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

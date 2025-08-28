@@ -9,7 +9,7 @@ klasse ReturnValue:
     """The use of fromlist influences what import returns.
 
     If direct ``import ...`` statement is used, the root module or package is
-    returned [import return]. But if fromlist is set, then the specified module
+    returned [import return]. But wenn fromlist is set, then the specified module
     is actually returned (whether it is a relative import or not)
     [from return].
 
@@ -41,7 +41,7 @@ klasse HandlingFromlist:
     of it.
 
     If fromlist specifies an object on a module, nothing special happens
-    [object case]. This is even true if the object does not exist [bad object].
+    [object case]. This is even true wenn the object does not exist [bad object].
 
     If a package is being imported, then what is listed in fromlist may be
     treated as a module to be imported [module]. And this extends to what is
@@ -171,5 +171,5 @@ klasse HandlingFromlist:
  ) = util.test_both(HandlingFromlist, __import__=util.__import__)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

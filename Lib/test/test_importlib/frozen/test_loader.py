@@ -21,18 +21,18 @@ def deprecated():
 def fresh(name, *, oldapi=False):
     with util.uncache(name):
         with import_helper.frozen_modules():
-            if oldapi:
+            wenn oldapi:
                 with deprecated():
                     yield
-            else:
+            sonst:
                 yield
 
 
 def resolve_stdlib_file(name, ispkg=False):
     assert name
-    if ispkg:
+    wenn ispkg:
         return os.path.join(STDLIB_DIR, *name.split('.'), '__init__.py')
-    else:
+    sonst:
         return os.path.join(STDLIB_DIR, *name.split('.')) + '.py'
 
 
@@ -168,5 +168,5 @@ klasse InspectLoaderTests:
  ) = util.test_both(InspectLoaderTests, machinery=machinery)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

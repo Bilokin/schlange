@@ -75,9 +75,9 @@ def get_ld_header(p):
     # "nested-function, but placed at module level
     ld_header = None
     fuer line in p.stdout:
-        if line.startswith(('/', './', '../')):
+        wenn line.startswith(('/', './', '../')):
             ld_header = line
-        elif "INDEX" in line:
+        sowenn "INDEX" in line:
             return ld_header.rstrip('\n')
     return None
 
@@ -87,9 +87,9 @@ def get_ld_header_info(p):
     # these lines start with a digit
     info = []
     fuer line in p.stdout:
-        if re.match("[0-9]", line):
+        wenn re.match("[0-9]", line):
             info.append(line)
-        else:
+        sonst:
             # blank line (separator), consume line and end fuer loop
             break
     return info
@@ -125,7 +125,7 @@ def get_shared(ld_headers):
     fuer (line, _) in ld_headers:
         # potential member lines contain "["
         # otherwise, no processing needed
-        if "[" in line:
+        wenn "[" in line:
             # Strip off trailing colon (:)
             shared.append(line[line.index("["):-1])
     return shared
@@ -138,9 +138,9 @@ def get_one_match(expr, lines):
     # member names in the ld_headers output are between square brackets
     expr = rf'\[({expr})\]'
     matches = list(filter(None, (re.search(expr, line) fuer line in lines)))
-    if len(matches) == 1:
+    wenn len(matches) == 1:
         return matches[0].group(1)
-    else:
+    sonst:
         return None
 
 # additional processing to deal with AIX legacy names fuer 64-bit members
@@ -151,25 +151,25 @@ def get_legacy(members):
     e.g., in /usr/lib/libc.a the member name shr.o fuer 32-bit binary and
     shr_64.o fuer 64-bit binary.
     """
-    if AIX_ABI == 64:
+    wenn AIX_ABI == 64:
         # AIX 64-bit member is one of shr64.o, shr_64.o, or shr4_64.o
         expr = r'shr4?_?64\.o'
         member = get_one_match(expr, members)
-        if member:
+        wenn member:
             return member
-    else:
+    sonst:
         # 32-bit legacy names - both shr.o and shr4.o exist.
         # shr.o is the preferred name so we look fuer shr.o first
         #  i.e., shr4.o is returned only when shr.o does not exist
         fuer name in ['shr.o', 'shr4.o']:
             member = get_one_match(re.escape(name), members)
-            if member:
+            wenn member:
                 return member
     return None
 
 def get_version(name, members):
     """
-    Sort list of members and return highest numbered version - if it exists.
+    Sort list of members and return highest numbered version - wenn it exists.
     This function is called when an unversioned libFOO.a(libFOO.so) has
     not been found.
 
@@ -199,9 +199,9 @@ def get_version(name, members):
         versions = []
         fuer line in members:
             m = re.search(expr, line)
-            if m:
+            wenn m:
                 versions.append(m.group(0))
-        if versions:
+        wenn versions:
             return _last_version(versions, '.')
     return None
 
@@ -217,20 +217,20 @@ def get_member(name, members):
     # look first fuer a generic match - prepend lib and append .so
     expr = rf'lib{name}\.so'
     member = get_one_match(expr, members)
-    if member:
+    wenn member:
         return member
-    elif AIX_ABI == 64:
+    sowenn AIX_ABI == 64:
         expr = rf'lib{name}64\.so'
         member = get_one_match(expr, members)
-    if member:
+    wenn member:
         return member
     # since an exact match with .so as suffix was not found
     # look fuer a versioned name
     # If a versioned name is not found, look fuer AIX legacy member name
     member = get_version(name, members)
-    if member:
+    wenn member:
         return member
-    else:
+    sonst:
         return get_legacy(members)
 
 def get_libpaths():
@@ -239,23 +239,23 @@ def get_libpaths():
     as "loader header information".
     The command /usr/bin/dump -H extracts this info.
     Prefix searched libraries with LD_LIBRARY_PATH (preferred),
-    or LIBPATH if defined. These paths are appended to the paths
+    or LIBPATH wenn defined. These paths are appended to the paths
     to libraries the python executable is linked with.
     This mimics AIX dlopen() behavior.
     """
     libpaths = environ.get("LD_LIBRARY_PATH")
-    if libpaths is None:
+    wenn libpaths is None:
         libpaths = environ.get("LIBPATH")
-    if libpaths is None:
+    wenn libpaths is None:
         libpaths = []
-    else:
+    sonst:
         libpaths = libpaths.split(":")
     objects = get_ld_headers(executable)
     fuer (_, lines) in objects:
         fuer line in lines:
-            # the second (optional) argument is PATH if it includes a /
+            # the second (optional) argument is PATH wenn it includes a /
             path = line.split()[1]
-            if "/" in path:
+            wenn "/" in path:
                 libpaths.extend(path.split(":"))
     return libpaths
 
@@ -263,24 +263,24 @@ def find_shared(paths, name):
     """
     paths is a list of directories to search fuer an archive.
     name is the abbreviated name given to find_library().
-    Process: search "paths" fuer archive, and if an archive is found
+    Process: search "paths" fuer archive, and wenn an archive is found
     return the result of get_member().
     If an archive is not found then return None
     """
     fuer dir in paths:
         # /lib is a symbolic link to /usr/lib, skip it
-        if dir == "/lib":
+        wenn dir == "/lib":
             continue
         # "lib" is prefixed to emulate compiler name resolution,
         # e.g., -lc to libc
         base = f'lib{name}.a'
         archive = path.join(dir, base)
-        if path.exists(archive):
+        wenn path.exists(archive):
             members = get_shared(get_ld_headers(archive))
             member = get_member(re.escape(name), members)
-            if member is not None:
+            wenn member is not None:
                 return (base, member)
-            else:
+            sonst:
                 return (None, None)
     return (None, None)
 
@@ -303,7 +303,7 @@ def find_library(name):
 
     libpaths = get_libpaths()
     (base, member) = find_shared(libpaths, name)
-    if base is not None:
+    wenn base is not None:
         return f"{base}({member})"
 
     # To get here, a member in an archive has not been found
@@ -318,10 +318,10 @@ def find_library(name):
     soname = f"lib{name}.so"
     fuer dir in libpaths:
         # /lib is a symbolic link to /usr/lib, skip it
-        if dir == "/lib":
+        wenn dir == "/lib":
             continue
         shlib = path.join(dir, soname)
-        if path.exists(shlib):
+        wenn path.exists(shlib):
             return soname
-    # if we are here, we have not found anything plausible
+    # wenn we are here, we have not found anything plausible
     return None

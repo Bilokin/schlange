@@ -3,12 +3,12 @@ from unicodedata import ucd_3_2_0 as unicodedata
 
 def gen_category(cats):
     fuer i in range(0, 0x110000):
-        if unicodedata.category(chr(i)) in cats:
+        wenn unicodedata.category(chr(i)) in cats:
             yield(i)
 
 def gen_bidirectional(cats):
     fuer i in range(0, 0x110000):
-        if unicodedata.bidirectional(chr(i)) in cats:
+        wenn unicodedata.bidirectional(chr(i)) in cats:
             yield(i)
 
 def compact_set(l):
@@ -17,31 +17,31 @@ def compact_set(l):
     prev = None
     span = 0
     fuer e in l:
-        if prev is None:
+        wenn prev is None:
             prev = e
             span = 0
             continue
-        if prev+span+1 != e:
-            if span > 2:
+        wenn prev+span+1 != e:
+            wenn span > 2:
                 tuple.append((prev,prev+span+1))
-            else:
+            sonst:
                 fuer i in range(prev, prev+span+1):
                     single.append(i)
             prev = e
             span = 0
-        else:
+        sonst:
             span += 1
-    if span:
+    wenn span:
         tuple.append((prev,prev+span+1))
-    else:
+    sonst:
         single.append(prev)
-    if not single and len(tuple) == 1:
+    wenn not single and len(tuple) == 1:
         tuple = "range(%d,%d)" % tuple[0]
-    else:
+    sonst:
         tuple = " + ".join("list(range(%d,%d))" % t fuer t in tuple)
-    if not single:
+    wenn not single:
         return "set(%s)" % tuple
-    if not tuple:
+    wenn not tuple:
         return "set(%r)" % (single,)
     return "set(%r + %s)" % (single, tuple)
 
@@ -54,55 +54,55 @@ tables = []
 curname = None
 fuer l in data:
     l = l.strip()
-    if not l:
+    wenn not l:
         continue
     # Skip RFC page breaks
-    if l.startswith(("Hoffman & Blanchet", "RFC 3454")):
+    wenn l.startswith(("Hoffman & Blanchet", "RFC 3454")):
         continue
     # Find start/end lines
     m = re.match("----- (Start|End) Table ([A-Z](.[0-9])+) -----", l)
-    if m:
-        if m.group(1) == "Start":
-            if curname:
+    wenn m:
+        wenn m.group(1) == "Start":
+            wenn curname:
                 raise RuntimeError("Double Start", (curname, l))
             curname = m.group(2)
             table = {}
             tables.append((curname, table))
             continue
-        else:
-            if not curname:
+        sonst:
+            wenn not curname:
                 raise RuntimeError("End without start", l)
-            if curname != m.group(2):
+            wenn curname != m.group(2):
                 raise RuntimeError("Unexpected end", l)
             curname = None
             continue
-    if not curname:
+    wenn not curname:
         continue
     # Now we are in a table
     fields = l.split(";")
-    if len(fields) > 1:
+    wenn len(fields) > 1:
         # Drop comment field
         fields = fields[:-1]
-    if len(fields) == 1:
+    wenn len(fields) == 1:
         fields = fields[0].split("-")
-        if len(fields) > 1:
+        wenn len(fields) > 1:
             # range
             try:
                 start, end = fields
             except ValueError:
                 raise RuntimeError("Unpacking problem", l)
-        else:
+        sonst:
             start = end = fields[0]
         start = int(start, 16)
         end = int(end, 16)
         fuer i in range(start, end+1):
             table[i] = i
-    else:
+    sonst:
         code, value = fields
         value = value.strip()
-        if value:
+        wenn value:
             value = [int(v, 16) fuer v in value.split(" ")]
-        else:
+        sonst:
             # table B.1
             value = None
         table[int(code, 16)] = value
@@ -139,9 +139,9 @@ Cn -= set(range(0xFFFF, 0x110000, 0x10000))
 
 print("""
 def in_table_a1(code):
-    if unicodedata.category(code) != 'Cn': return False
+    wenn unicodedata.category(code) != 'Cn': return False
     c = ord(code)
-    if 0xFDD0 <= c < 0xFDF0: return False
+    wenn 0xFDD0 <= c < 0xFDF0: return False
     return (c & 0xFFFF) not in (0xFFFE, 0xFFFF)
 """)
 
@@ -176,7 +176,7 @@ assert name == "B.3"
 b3_exceptions = {}
 
 fuer k,v in table_b2.items():
-    if list(map(ord, chr(k).lower())) != v:
+    wenn list(map(ord, chr(k).lower())) != v:
         b3_exceptions[k] = "".join(map(chr,v))
 
 b3 = sorted(b3_exceptions.items())
@@ -185,20 +185,20 @@ print("""
 b3_exceptions = {""")
 fuer i, kv in enumerate(b3):
     print("0x%x:%a," % kv, end=' ')
-    if i % 4 == 3:
+    wenn i % 4 == 3:
         print()
 print("}")
 
 print("""
 def map_table_b3(code):
     r = b3_exceptions.get(ord(code))
-    if r is not None: return r
+    wenn r is not None: return r
     return code.lower()
 """)
 
 def map_table_b3(code):
     r = b3_exceptions.get(ord(code))
-    if r is not None: return r
+    wenn r is not None: return r
     return code.lower()
 
 # B.2 is case folding fuer NFKC. This is the same as B.3,
@@ -210,14 +210,14 @@ def map_table_b2(a):
     b = unicodedata.normalize("NFKC", al)
     bl = "".join([map_table_b3(ch) fuer ch in b])
     c = unicodedata.normalize("NFKC", bl)
-    if b != c:
+    wenn b != c:
         return c
-    else:
+    sonst:
         return al
 
 specials = {}
 fuer k,v in table_b2.items():
-    if list(map(ord, map_table_b2(chr(k)))) != v:
+    wenn list(map(ord, map_table_b2(chr(k)))) != v:
         specials[k] = v
 
 # B.3 should not add any additional special cases
@@ -229,9 +229,9 @@ def map_table_b2(a):
     b = unicodedata.normalize("NFKC", al)
     bl = "".join([map_table_b3(ch) fuer ch in b])
     c = unicodedata.normalize("NFKC", bl)
-    if b != c:
+    wenn b != c:
         return c
-    else:
+    sonst:
         return al
 """)
 
@@ -294,8 +294,8 @@ specials.sort()
 print("""c22_specials = """ + compact_set(specials) + """
 def in_table_c22(code):
     c = ord(code)
-    if c < 128: return False
-    if unicodedata.category(code) == "Cc": return True
+    wenn c < 128: return False
+    wenn unicodedata.category(code) == "Cc": return True
     return c in c22_specials
 
 def in_table_c21_c22(code):
@@ -331,8 +331,8 @@ assert table == nonchar
 print("""
 def in_table_c4(code):
     c = ord(code)
-    if c < 0xFDD0: return False
-    if c < 0xFDF0: return True
+    wenn c < 0xFDD0: return False
+    wenn c < 0xFDF0: return True
     return (ord(code) & 0xFFFF) in (0xFFFE, 0xFFFF)
 """)
 

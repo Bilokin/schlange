@@ -47,9 +47,9 @@ klasse ReturnFuncPtrTestCase(unittest.TestCase):
     def test_from_dll_refcount(self):
         klasse BadSequence(tuple):
             def __getitem__(self, key):
-                if key == 0:
+                wenn key == 0:
                     return "my_strchr"
-                if key == 1:
+                wenn key == 1:
                     return CDLL(_ctypes_test.__file__)
                 raise IndexError
 
@@ -63,5 +63,5 @@ klasse ReturnFuncPtrTestCase(unittest.TestCase):
         self.assertRaises(TypeError, strchr, b"abcdef")
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

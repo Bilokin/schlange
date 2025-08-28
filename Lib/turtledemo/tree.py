@@ -21,7 +21,7 @@ def tree(plist, l, a, f):
     a is half of the angle between 2 branches
     f is factor by which branch is shortened
     from level to level."""
-    if l > 3:
+    wenn l > 3:
         lst = []
         fuer p in plist:
             p.forward(l)
@@ -53,7 +53,7 @@ def main():
     b=clock()
     return "done: %.2f sec." % (b-a)
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     msg = main()
     print(msg)
     mainloop()

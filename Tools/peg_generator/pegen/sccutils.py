@@ -31,13 +31,13 @@ def strongly_connected_components(
         boundaries.append(index[v])
 
         fuer w in edges[v]:
-            if w not in index:
+            wenn w not in index:
                 yield from dfs(w)
-            elif w not in identified:
+            sowenn w not in identified:
                 while index[w] < boundaries[-1]:
                     boundaries.pop()
 
-        if boundaries[-1] == index[v]:
+        wenn boundaries[-1] == index[v]:
             boundaries.pop()
             scc = set(stack[index[v] :])
             del stack[index[v] :]
@@ -45,7 +45,7 @@ def strongly_connected_components(
             yield scc
 
     fuer v in vertices:
-        if v not in index:
+        wenn v not in index:
             yield from dfs(v)
 
 
@@ -89,11 +89,11 @@ def topsort(
     fuer item in set.union(*data.values()) - set(data.keys()):
         data[item] = set()
     while True:
-        ready = {item fuer item, dep in data.items() if not dep}
-        if not ready:
+        ready = {item fuer item, dep in data.items() wenn not dep}
+        wenn not ready:
             break
         yield ready
-        data = {item: (dep - ready) fuer item, dep in data.items() if item not in ready}
+        data = {item: (dep - ready) fuer item, dep in data.items() wenn item not in ready}
     assert not data, "A cyclic dependency exists amongst %r" % data
 
 
@@ -113,12 +113,12 @@ def find_cycles_in_scc(
     assert scc <= graph.keys(), scc - graph.keys()
 
     # Reduce the graph to nodes in the SCC.
-    graph = {src: {dst fuer dst in dsts if dst in scc} fuer src, dsts in graph.items() if src in scc}
+    graph = {src: {dst fuer dst in dsts wenn dst in scc} fuer src, dsts in graph.items() wenn src in scc}
     assert start in graph
 
     # Recursive helper that yields cycles.
     def dfs(node: str, path: List[str]) -> Iterator[List[str]]:
-        if node in path:
+        wenn node in path:
             yield path + [node]
             return
         path = path + [node]  # TODO: Make this not quadratic.

@@ -5,7 +5,7 @@
 # documentation "SQLite adds new keywords from time to time when it
 # takes on new features. So to prevent your code from being broken by
 # future enhancements, you should normally quote any identifier that
-# is an English language word, even if you do not have to."
+# is an English language word, even wenn you do not have to."
 
 def _quote_name(name):
     return '"{0}"'.format(name.replace('"', '""'))
@@ -27,17 +27,17 @@ def _iterdump(connection, *, filter=None):
     writeable_schema = False
     cu = connection.cursor()
     cu.row_factory = None  # Make sure we get predictable results.
-    # Disable foreign key constraints, if there is any foreign key violation.
+    # Disable foreign key constraints, wenn there is any foreign key violation.
     violations = cu.execute("PRAGMA foreign_key_check").fetchall()
-    if violations:
+    wenn violations:
         yield('PRAGMA foreign_keys=OFF;')
     yield('BEGIN TRANSACTION;')
 
-    if filter:
+    wenn filter:
         # Return database objects which match the filter pattern.
         filter_name_clause = 'AND "name" LIKE ?'
         params = [filter]
-    else:
+    sonst:
         filter_name_clause = ""
         params = []
     # sqlite_master table contains the SQL CREATE statements fuer the database.
@@ -52,7 +52,7 @@ def _iterdump(connection, *, filter=None):
     schema_res = cu.execute(q, params)
     sqlite_sequence = []
     fuer table_name, type, sql in schema_res.fetchall():
-        if table_name == 'sqlite_sequence':
+        wenn table_name == 'sqlite_sequence':
             rows = cu.execute('SELECT * FROM "sqlite_sequence";')
             sqlite_sequence = ['DELETE FROM "sqlite_sequence"']
             sqlite_sequence += [
@@ -60,12 +60,12 @@ def _iterdump(connection, *, filter=None):
                 fuer table_name, seq_value in rows.fetchall()
             ]
             continue
-        elif table_name == 'sqlite_stat1':
+        sowenn table_name == 'sqlite_stat1':
             yield('ANALYZE "sqlite_master";')
-        elif table_name.startswith('sqlite_'):
+        sowenn table_name.startswith('sqlite_'):
             continue
-        elif sql.startswith('CREATE VIRTUAL TABLE'):
-            if not writeable_schema:
+        sowenn sql.startswith('CREATE VIRTUAL TABLE'):
+            wenn not writeable_schema:
                 writeable_schema = True
                 yield('PRAGMA writable_schema=ON;')
             yield("INSERT INTO sqlite_master(type,name,tbl_name,rootpage,sql)"
@@ -73,7 +73,7 @@ def _iterdump(connection, *, filter=None):
                       _quote_value(table_name),
                       _quote_value(sql),
                   ))
-        else:
+        sonst:
             yield('{0};'.format(sql))
 
         # Build the insert statement fuer each row of the current table
@@ -102,7 +102,7 @@ def _iterdump(connection, *, filter=None):
     fuer name, type, sql in schema_res.fetchall():
         yield('{0};'.format(sql))
 
-    if writeable_schema:
+    wenn writeable_schema:
         yield('PRAGMA writable_schema=OFF;')
 
     # gh-79009: Yield statements concerning the sqlite_sequence table at the

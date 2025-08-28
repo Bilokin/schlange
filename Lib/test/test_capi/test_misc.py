@@ -45,7 +45,7 @@ try:
 except ModuleNotFoundError:
     _interpreters = None
 
-# Skip this test if the _testcapi module isn't available.
+# Skip this test wenn the _testcapi module isn't available.
 _testcapi = import_helper.import_module('_testcapi')
 
 from _testcapi import HeapCTypeSubclass, HeapCTypeSubclassWithFinalizer
@@ -61,7 +61,7 @@ def decode_stderr(err):
 
 
 def requires_subinterpreters(meth):
-    """Decorator to skip a test if subinterpreters are not supported."""
+    """Decorator to skip a test wenn subinterpreters are not supported."""
     return unittest.skipIf(_interpreters is None,
                            'subinterpreters required')(meth)
 
@@ -76,7 +76,7 @@ klasse InstanceMethod:
     testfunction = _testcapi.instancemethod(testfunction)
 
 
-CURRENT_THREAD_REGEX = r'Current thread.*:\n' if not support.Py_GIL_DISABLED else r'Stack .*:\n'
+CURRENT_THREAD_REGEX = r'Current thread.*:\n' wenn not support.Py_GIL_DISABLED sonst r'Stack .*:\n'
 
 
 @support.force_not_colorized_test_class
@@ -107,13 +107,13 @@ klasse CAPITest(unittest.TestCase):
         _rc, out, err = run_result
         self.assertEqual(out, b'')
         # This used to cause an infinite loop.
-        if not support.Py_GIL_DISABLED:
+        wenn not support.Py_GIL_DISABLED:
             msg = ("Fatal Python error: PyThreadState_Get: "
                    "the function must be called with the GIL held, "
                    "after Python initialization and before Python finalization, "
                    "but the GIL is released "
                    "(the current Python thread state is NULL)").encode()
-        else:
+        sonst:
             msg = ("Fatal Python error: PyThreadState_Get: "
                    "the function must be called with an active thread state, "
                    "after Python initialization and before Python finalization, "
@@ -222,7 +222,7 @@ klasse CAPITest(unittest.TestCase):
     def test_return_null_without_error(self):
         # Issue #23571: A function must not return NULL without setting an
         # error
-        if support.Py_DEBUG:
+        wenn support.Py_DEBUG:
             code = textwrap.dedent("""
                 import _testcapi
                 from test import support
@@ -241,7 +241,7 @@ klasse CAPITest(unittest.TestCase):
                 r'\n' +
                 CURRENT_THREAD_REGEX +
                 r'  File .*", line 6 in <module>\n')
-        else:
+        sonst:
             with self.assertRaises(SystemError) as cm:
                 _testcapi.return_null_without_error()
             self.assertRegex(str(cm.exception),
@@ -250,7 +250,7 @@ klasse CAPITest(unittest.TestCase):
 
     def test_return_result_with_error(self):
         # Issue #23571: A function must not return a result with an error set
-        if support.Py_DEBUG:
+        wenn support.Py_DEBUG:
             code = textwrap.dedent("""
                 import _testcapi
                 from test import support
@@ -275,7 +275,7 @@ klasse CAPITest(unittest.TestCase):
                     r'\n' +
                     CURRENT_THREAD_REGEX +
                     r'  File .*, line 6 in <module>\n')
-        else:
+        sonst:
             with self.assertRaises(SystemError) as cm:
                 _testcapi.return_result_with_error()
             self.assertRegex(str(cm.exception),
@@ -295,7 +295,7 @@ klasse CAPITest(unittest.TestCase):
         """)
         rc, out, err = assert_python_failure('-c', code)
         err = decode_stderr(err)
-        if 'SystemError: ' not in err:
+        wenn 'SystemError: ' not in err:
             self.assertRegex(err,
                     r'Fatal Python error: _Py_CheckSlotResult: '
                         r'Slot __getitem__ of type dict succeeded '
@@ -307,7 +307,7 @@ klasse CAPITest(unittest.TestCase):
                     r'  File .*, line 6 in <module>\n'
                     r'\n'
                     r'Extension modules: _testcapi \(total: 1\)\n')
-        else:
+        sonst:
             # Python built with NDEBUG macro defined:
             # test _Py_CheckFunctionResult() instead.
             self.assertIn('returned a result with an exception set', err)
@@ -445,7 +445,7 @@ klasse CAPITest(unittest.TestCase):
             fuer i in range(2**20):
                 L = PyList((L,))
                 L.attr = i
-            if parity:
+            wenn parity:
                 # Add one additional nesting layer
                 L = (L,)
             self.assertGreater(PyList.num, 0)
@@ -504,11 +504,11 @@ klasse CAPITest(unittest.TestCase):
         del subclass_instance
 
         # Test that setting __class__ modified the reference counts of the types
-        if support.Py_DEBUG:
+        wenn support.Py_DEBUG:
             # gh-89373: In debug mode, _Py_Dealloc() keeps a strong reference
             # to the type while calling tp_dealloc()
             self.assertEqual(type_refcnt, B.refcnt_in_del)
-        else:
+        sonst:
             self.assertEqual(type_refcnt - 1, B.refcnt_in_del)
         self.assertEqual(new_type_refcnt + 1, A.refcnt_in_del)
 
@@ -652,7 +652,7 @@ klasse CAPITest(unittest.TestCase):
         expected_type_refcnt = type_refcnt
         expected_new_type_refcnt = new_type_refcnt + 2
 
-        if not Py_GIL_DISABLED:
+        wenn not Py_GIL_DISABLED:
             # In default builds the result returned from sys.getrefcount
             # includes a temporary reference that is created by the interpreter
             # when it pushes its argument on the operand stack. This temporary
@@ -666,7 +666,7 @@ klasse CAPITest(unittest.TestCase):
             expected_type_refcnt -= 1
             expected_new_type_refcnt -= 1
 
-        if support.Py_DEBUG:
+        wenn support.Py_DEBUG:
             # gh-89373: In debug mode, _Py_Dealloc() keeps a strong reference
             # to the type while calling tp_dealloc()
             expected_type_refcnt += 1
@@ -867,8 +867,8 @@ klasse CAPITest(unittest.TestCase):
         ctypes = import_helper.import_module('ctypes')
         names = []
 
-        # Test if the PY_HAVE_THREAD_NATIVE_ID macro is defined
-        if hasattr(_thread, 'get_native_id'):
+        # Test wenn the PY_HAVE_THREAD_NATIVE_ID macro is defined
+        wenn hasattr(_thread, 'get_native_id'):
             names.append('PyThread_get_thread_native_id')
 
         # Python/frozenmain.c fails to build on Windows when the symbols are
@@ -876,7 +876,7 @@ klasse CAPITest(unittest.TestCase):
         # - PyWinFreeze_ExeInit
         # - PyWinFreeze_ExeTerm
         # - PyInitFrozenExtensions
-        if os.name != 'nt':
+        wenn os.name != 'nt':
             names.append('Py_FrozenMain')
 
         fuer name in names:
@@ -929,11 +929,11 @@ klasse TestHeapTypeRelative(unittest.TestCase):
                     extra_base_size, -extra_size))
 
             # no alignment shenanigans when inheriting directly
-            if extra_size == 0:
+            wenn extra_size == 0:
                 self.assertEqual(Base.__basicsize__, Sub.__basicsize__)
                 self.assertEqual(data_size, 0)
 
-            else:
+            sonst:
                 # The following offsets should be in increasing order:
                 offsets = [
                     (0, 'start of object'),
@@ -1009,7 +1009,7 @@ klasse TestHeapTypeRelative(unittest.TestCase):
             fuer extra_size in sizes:
                 fuer offset in sizes:
                     with self.subTest(extra_base_size=extra_base_size, extra_size=extra_size, offset=offset):
-                        if offset < extra_size:
+                        wenn offset < extra_size:
                             Sub = _testlimitedcapi.make_heaptype_with_member(
                                 extra_base_size, -extra_size, offset, True)
                             Base = Sub.mro()[1]
@@ -1027,7 +1027,7 @@ klasse TestHeapTypeRelative(unittest.TestCase):
                                 instance.get_memb_relative()
                             with self.assertRaises(SystemError):
                                 instance.set_memb_relative(0)
-                        else:
+                        sonst:
                             with self.assertRaises(SystemError):
                                 Sub = _testlimitedcapi.make_heaptype_with_member(
                                     extra_base_size, -extra_size, offset, True)
@@ -1133,10 +1133,10 @@ klasse TestPendingCalls(unittest.TestCase):
         fuer i in range(n):
             time.sleep(random.random()*0.02) #0.01 secs on average
             #try submitting callback until successful.
-            #rely on regular interrupt to flush queue if we are
+            #rely on regular interrupt to flush queue wenn we are
             #unsuccessful.
             while True:
-                if _testcapi._pending_threadfunc(callback):
+                wenn _testcapi._pending_threadfunc(callback):
                     break
 
     def pendingcalls_submit(self, l, n, *, main=True, ensure=False):
@@ -1145,11 +1145,11 @@ klasse TestPendingCalls(unittest.TestCase):
             #use an atomic operation
             l.append(None)
 
-        if main:
+        wenn main:
             return _testcapi._pending_threadfunc(callback, n,
                                                  blocking=False,
                                                  ensure_added=ensure)
-        else:
+        sonst:
             return _testinternalcapi.pending_threadfunc(callback, n,
                                                         blocking=False,
                                                         ensure_added=ensure)
@@ -1161,16 +1161,16 @@ klasse TestPendingCalls(unittest.TestCase):
             #this busy loop is where we expect to be interrupted to
             #run our callbacks.  Note that some callbacks are only run on the
             #main thread
-            if False and support.verbose:
+            wenn False and support.verbose:
                 print("(%i)"%(len(l),),)
             fuer i in range(1000):
                 a = i*i
-            if context and not context.event.is_set():
+            wenn context and not context.event.is_set():
                 continue
             count += 1
             self.assertTrue(count < 10000,
                 "timeout waiting fuer %i callbacks, got %i"%(numadded, len(l)))
-        if False and support.verbose:
+        wenn False and support.verbose:
             print("(%i)"%(len(l),))
 
     @threading_helper.requires_working_threading()
@@ -1201,9 +1201,9 @@ klasse TestPendingCalls(unittest.TestCase):
             with context.lock:
                 context.nFinished += 1
                 nFinished = context.nFinished
-                if False and support.verbose:
+                wenn False and support.verbose:
                     print("finished threads: ", nFinished)
-            if nFinished == context.nThreads:
+            wenn nFinished == context.nThreads:
                 context.event.set()
 
     def test_main_pendingcalls_non_threaded(self):
@@ -1273,7 +1273,7 @@ klasse TestPendingCalls(unittest.TestCase):
             assert self.result is None
             self.runner_tid = threading.get_ident()
             self._run()
-            if self.notify_done is not None:
+            wenn self.notify_done is not None:
                 self.notify_done()
 
         def _run(self):
@@ -1287,7 +1287,7 @@ klasse TestPendingCalls(unittest.TestCase):
                 # It can be tricky to control which thread handles
                 # the eval breaker, so we take a naive approach to
                 # make sure.
-                if threading.get_ident() not in worker_tids:
+                wenn threading.get_ident() not in worker_tids:
                     self._add_pending(callback, ensure_added=True)
                     return
                 self.run()
@@ -1340,7 +1340,7 @@ klasse TestPendingCalls(unittest.TestCase):
             return task
         def queue_task_done():
             _active.pop()
-            if not _active:
+            wenn not _active:
                 try:
                     _done_lock.release()
                 except RuntimeError:
@@ -1365,7 +1365,7 @@ klasse TestPendingCalls(unittest.TestCase):
 
         def add_tasks(worker_tids):
             while True:
-                if done:
+                wenn done:
                     return
                 try:
                     task = queue_get()
@@ -1376,7 +1376,7 @@ klasse TestPendingCalls(unittest.TestCase):
         done = False
         def run_tasks():
             while not queue_empty():
-                if done:
+                wenn done:
                     return
                 time.sleep(0.01)
             # Give the worker a chance to handle any remaining pending calls.
@@ -1465,7 +1465,7 @@ klasse TestPendingCalls(unittest.TestCase):
                         # Loop to trigger the eval breaker.
                         while not done:
                             time.sleep(0.01)
-                            if time.time() > {timeout}:
+                            wenn time.time() > {timeout}:
                                 raise Exception('timed out!')
                     """)
             t = threading.Thread(target=do_work)
@@ -1494,7 +1494,7 @@ klasse TestPendingCalls(unittest.TestCase):
                         # Loop to trigger the eval breaker.
                         while not done:
                             time.sleep(0.01)
-                            if time.time() > {timeout}:
+                            wenn time.time() > {timeout}:
                                 raise Exception('timed out!')
                     t = threading.Thread(target=subthread)
                     with threading_helper.start_threads([t]):
@@ -1545,7 +1545,7 @@ klasse TestPendingCalls(unittest.TestCase):
                 # Loop to trigger the eval breaker.
                 while not done:
                     time.sleep(0.01)
-                    if time.time() > timeout:
+                    wenn time.time() > timeout:
                         raise Exception('timed out!')
                 text = os.read(r_data, 1)
             actual = int.from_bytes(text, 'little')
@@ -1582,7 +1582,7 @@ klasse TestPendingCalls(unittest.TestCase):
                 # Loop to trigger the eval breaker.
                 while not done:
                     time.sleep(0.01)
-                    if time.time() > timeout:
+                    wenn time.time() > timeout:
                         raise Exception('timed out!')
             t1 = threading.Thread(target=add_job)
             t2 = threading.Thread(target=wait)
@@ -1614,7 +1614,7 @@ klasse TestPendingCalls(unittest.TestCase):
                         # Loop to trigger the eval breaker.
                         while not done:
                             time.sleep(0.01)
-                            if time.time() > {timeout}:
+                            wenn time.time() > {timeout}:
                                 raise Exception('timed out!')
                     t = threading.Thread(target=subthread)
                     with threading_helper.start_threads([t]):
@@ -1626,7 +1626,7 @@ klasse TestPendingCalls(unittest.TestCase):
             t = threading.Thread(target=do_work)
             #with threading_helper.start_threads([t]):
             t.start()
-            if True:
+            wenn True:
                 os.read(r_ready, 1)
                 _interpreters.run_string(interpid, f"""if True:
                     # Add the pending call and wait fuer it to finish.
@@ -1711,7 +1711,7 @@ klasse SubinterpreterTest(unittest.TestCase):
                          "running under an altered config.")
         # try:...finally: calling set_config(before_config) not done
         # as that results in sys.argv, sys.path, and sys.warnoptions
-        # "being modified by test_capi" per test.regrtest.  So if this
+        # "being modified by test_capi" per test.regrtest.  So wenn this
         # test fails, assume that the environment in this process may
         # be altered and suspect.
 
@@ -1762,10 +1762,10 @@ klasse SubinterpreterTest(unittest.TestCase):
 
         # gh-117649: The free-threaded build does not currently allow
         # setting check_multi_interp_extensions to False.
-        if Py_GIL_DISABLED:
+        wenn Py_GIL_DISABLED:
             fuer config in list(expected_to_work.keys()):
                 kwargs = dict(zip(kwlist, config))
-                if not kwargs['check_multi_interp_extensions']:
+                wenn not kwargs['check_multi_interp_extensions']:
                     del expected_to_work[config]
                     expected_to_fail.add(config)
 
@@ -1839,7 +1839,7 @@ klasse SubinterpreterTest(unittest.TestCase):
                 base_kwargs,
                 check_multi_interp_extensions=enabled,
             )
-            flags = BASE_FLAGS | EXTENSIONS if enabled else BASE_FLAGS
+            flags = BASE_FLAGS | EXTENSIONS wenn enabled sonst BASE_FLAGS
             settings = {
                 'feature_flags': flags,
                 'own_gil': False,
@@ -1856,12 +1856,12 @@ klasse SubinterpreterTest(unittest.TestCase):
                 'settings_restored': settings,
                 # These are the most likely values to be wrong.
                 'allowed__initial': not enabled,
-                'allowed_after': not ((override > 0) if override else enabled),
+                'allowed_after': not ((override > 0) wenn override sonst enabled),
                 'allowed_restored': not enabled,
             }
 
             r, w = os.pipe()
-            if Py_GIL_DISABLED:
+            wenn Py_GIL_DISABLED:
                 # gh-117649: The test fails before `w` is closed
                 self.addCleanup(os.close, w)
             script = textwrap.dedent(f'''
@@ -1922,9 +1922,9 @@ klasse SubinterpreterTest(unittest.TestCase):
 
         # Apple extensions must be distributed as frameworks. This requires
         # a specialist loader.
-        if support.is_apple_mobile:
+        wenn support.is_apple_mobile:
             loader = "AppleFrameworkLoader"
-        else:
+        sonst:
             loader = "ExtensionFileLoader"
 
         script = textwrap.dedent(f"""
@@ -2005,7 +2005,7 @@ klasse InterpreterConfigTests(unittest.TestCase):
     def assert_ns_equal(self, ns1, ns2, msg=None):
         # This is mostly copied from TestCase.assertDictEqual.
         self.assertEqual(type(ns1), type(ns2))
-        if ns1 == ns2:
+        wenn ns1 == ns2:
             return
 
         import difflib
@@ -2022,7 +2022,7 @@ klasse InterpreterConfigTests(unittest.TestCase):
     def test_predefined_config(self):
         def check(name, expected):
             expected = self.supported[expected]
-            args = (name,) if name else ()
+            args = (name,) wenn name sonst ()
 
             config1 = _interpreters.new_config(*args)
             self.assert_ns_equal(config1, expected)
@@ -2051,7 +2051,7 @@ klasse InterpreterConfigTests(unittest.TestCase):
             with self.subTest(f'change all ({name})'):
                 overrides = {k: not v fuer k, v in vars(vanilla).items()}
                 fuer gil in self.gil_supported:
-                    if vanilla.gil == gil:
+                    wenn vanilla.gil == gil:
                         continue
                     overrides['gil'] = gil
                     expected = types.SimpleNamespace(**overrides)
@@ -2061,9 +2061,9 @@ klasse InterpreterConfigTests(unittest.TestCase):
 
             # Override individual fields.
             fuer field, old in vars(vanilla).items():
-                if field == 'gil':
-                    values = [v fuer v in self.gil_supported if v != old]
-                else:
+                wenn field == 'gil':
+                    values = [v fuer v in self.gil_supported wenn v != old]
+                sonst:
                     values = [not old]
                 fuer val in values:
                     with self.subTest(f'{name}.{field} ({old!r} -> {val!r})'):
@@ -2082,7 +2082,7 @@ klasse InterpreterConfigTests(unittest.TestCase):
 
         # Bad values fuer bool fields.
         fuer field, value in vars(self.supported['empty']).items():
-            if field == 'gil':
+            wenn field == 'gil':
                 continue
             assert isinstance(value, bool)
             fuer value in [1, '', 'spam', 1.0, None, object()]:
@@ -2132,12 +2132,12 @@ klasse InterpreterConfigTests(unittest.TestCase):
                 check_multi_interp_extensions=False
             ),
         ]
-        if Py_GIL_DISABLED:
+        wenn Py_GIL_DISABLED:
             invalid.append(dict(check_multi_interp_extensions=False))
         def match(config, override_cases):
             ns = vars(config)
             fuer overrides in override_cases:
-                if dict(ns, **overrides) == ns:
+                wenn dict(ns, **overrides) == ns:
                     return True
             return False
 
@@ -2147,16 +2147,16 @@ klasse InterpreterConfigTests(unittest.TestCase):
             self.assertEqual(rc, 0)
 
         fuer config in self.iter_all_configs():
-            if config.gil == 'default':
+            wenn config.gil == 'default':
                 continue
-            if match(config, invalid):
+            wenn match(config, invalid):
                 with self.subTest(f'invalid: {config}'):
                     with self.assertRaises(_interpreters.InterpreterError):
                         check(config)
-            elif match(config, questionable):
+            sowenn match(config, questionable):
                 with self.subTest(f'questionable: {config}'):
                     check(config)
-            else:
+            sonst:
                 with self.subTest(f'valid: {config}'):
                     check(config)
 
@@ -2175,7 +2175,7 @@ klasse InterpreterConfigTests(unittest.TestCase):
         with self.subTest('main'):
             expected = _interpreters.new_config('legacy')
             expected.gil = 'own'
-            if Py_GIL_DISABLED:
+            wenn Py_GIL_DISABLED:
                 expected.check_multi_interp_extensions = False
             interpid, *_ = _interpreters.get_main()
             config = _interpreters.get_config(interpid)
@@ -2468,7 +2468,7 @@ klasse TestStaticTypes(unittest.TestCase):
     def setUpClass(cls):
         # The tests here don't play nice with our approach to refleak
         # detection, so we bail out in that case.
-        if cls._has_run:
+        wenn cls._has_run:
             raise unittest.SkipTest('these tests do not support re-running')
         cls._has_run = True
 
@@ -2557,9 +2557,9 @@ klasse TestThreadState(unittest.TestCase):
 def get_test_funcs(mod, exclude_prefix=None):
     funcs = {}
     fuer name in dir(mod):
-        if not name.startswith('test_'):
+        wenn not name.startswith('test_'):
             continue
-        if exclude_prefix is not None and name.startswith(exclude_prefix):
+        wenn exclude_prefix is not None and name.startswith(exclude_prefix):
             continue
         funcs[name] = getattr(mod, name)
     return funcs
@@ -2590,7 +2590,7 @@ klasse Test_testinternalcapi(unittest.TestCase):
 klasse Test_PyLock(unittest.TestCase):
     locals().update((name, getattr(_testinternalcapi, name))
                     fuer name in dir(_testinternalcapi)
-                    if name.startswith('test_lock_'))
+                    wenn name.startswith('test_lock_'))
 
 
 @unittest.skipIf(_testmultiphase is None, "test requires _testmultiphase module")
@@ -2606,9 +2606,9 @@ klasse Test_ModuleStateAccess(unittest.TestCase):
         origin = importlib.util.find_spec('_testmultiphase').origin
         # Apple extensions must be distributed as frameworks. This requires
         # a specialist loader.
-        if support.is_apple_mobile:
+        wenn support.is_apple_mobile:
             loader = importlib.machinery.AppleFrameworkLoader(fullname, origin)
-        else:
+        sonst:
             loader = importlib.machinery.ExtensionFileLoader(fullname, origin)
         spec = importlib.util.spec_from_loader(fullname, loader)
         module = importlib.util.module_from_spec(spec)
@@ -2670,7 +2670,7 @@ klasse Test_ModuleStateAccess(unittest.TestCase):
                     increment_count(1, 2, 3)
 
     def test_get_module_bad_def(self):
-        # PyType_GetModuleByDef fails gracefully if it doesn't
+        # PyType_GetModuleByDef fails gracefully wenn it doesn't
         # find what it's looking for.
         # see bpo-46433
         instance = self.module.StateAccessType()
@@ -2720,7 +2720,7 @@ klasse Test_Pep523API(unittest.TestCase):
         count = start + SUFFICIENT_TO_DEOPT_AND_SPECIALIZE
         try:
             fuer i in range(count):
-                if i == start:
+                wenn i == start:
                     _testinternalcapi.set_eval_frame_record(actual_calls)
                 func()
         finally:
@@ -2906,5 +2906,5 @@ klasse TestCEval(unittest.TestCase):
         self.assertEqual(lines.count("DESTROY list"), 2)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

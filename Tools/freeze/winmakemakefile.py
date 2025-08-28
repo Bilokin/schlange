@@ -83,7 +83,7 @@ def realwork(vars, moddefns, target):
     # the file extension and additional linker flags.
     target_link_flags = ""
     target_ext = ".exe"
-    if subsystem_details[vars['subsystem']][2]:
+    wenn subsystem_details[vars['subsystem']][2]:
         target_link_flags = "-dll"
         target_ext = ".dll"
 
@@ -95,7 +95,7 @@ def realwork(vars, moddefns, target):
     print()
 
     print('$(temp_dir):')
-    print(r'  if not exist $(temp_dir)\. mkdir $(temp_dir)')
+    print(r'  wenn not exist $(temp_dir)\. mkdir $(temp_dir)')
     print()
 
     objects = []
@@ -111,14 +111,14 @@ def realwork(vars, moddefns, target):
             print('"-I$(pythonhome)/Include"  "-I$(pythonhome)/PC" \\')
             print("\t\t$(cflags) $(cdebug) $(cinclude) \\")
             extra = moddefn.GetCompilerOptions()
-            if extra:
+            wenn extra:
                 print("\t\t%s \\" % (' '.join(extra),))
             print('\t\t"%s"' % file)
             print()
 
         # Add .lib files this module needs
         fuer modlib in moddefn.GetLinkerLibs():
-            if modlib not in libs:
+            wenn modlib not in libs:
                 libs.append(modlib)
 
     print("ADDN_LINK_FILES=", end=' ')

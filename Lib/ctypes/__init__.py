@@ -16,20 +16,20 @@ from _ctypes import CField
 
 from struct import calcsize as _calcsize
 
-if __version__ != _ctypes_version:
+wenn __version__ != _ctypes_version:
     raise Exception("Version number mismatch", __version__, _ctypes_version)
 
-if _os.name == "nt":
+wenn _os.name == "nt":
     from _ctypes import COMError, CopyComPointer, FormatError
 
 DEFAULT_MODE = RTLD_LOCAL
-if _os.name == "posix" and _sys.platform == "darwin":
+wenn _os.name == "posix" and _sys.platform == "darwin":
     # On OS X 10.3, we use RTLD_GLOBAL as default mode
     # because RTLD_LOCAL does not work at least on some
     # libraries.  OS X 10.3 is Darwin 7, so we check for
     # that.
 
-    if int(_os.uname().release.split('.')[0]) < 8:
+    wenn int(_os.uname().release.split('.')[0]) < 8:
         DEFAULT_MODE = RTLD_GLOBAL
 
 from _ctypes import FUNCFLAG_CDECL as _FUNCFLAG_CDECL, \
@@ -52,15 +52,15 @@ def create_string_buffer(init, size=None):
     create_string_buffer(anInteger) -> character array
     create_string_buffer(aBytes, anInteger) -> character array
     """
-    if isinstance(init, bytes):
-        if size is None:
+    wenn isinstance(init, bytes):
+        wenn size is None:
             size = len(init)+1
         _sys.audit("ctypes.create_string_buffer", init, size)
         buftype = c_char * size
         buf = buftype()
         buf.value = init
         return buf
-    elif isinstance(init, int):
+    sowenn isinstance(init, int):
         _sys.audit("ctypes.create_string_buffer", None, init)
         buftype = c_char * init
         buf = buftype()
@@ -88,11 +88,11 @@ def CFUNCTYPE(restype, *argtypes, **kw):
     prototype((function name, dll object)[, paramflags]) -> foreign function exported by name
     """
     flags = _FUNCFLAG_CDECL
-    if kw.pop("use_errno", False):
+    wenn kw.pop("use_errno", False):
         flags |= _FUNCFLAG_USE_ERRNO
-    if kw.pop("use_last_error", False):
+    wenn kw.pop("use_last_error", False):
         flags |= _FUNCFLAG_USE_LASTERROR
-    if kw:
+    wenn kw:
         raise ValueError("unexpected keyword argument(s) %s" % kw.keys())
 
     try:
@@ -107,7 +107,7 @@ def CFUNCTYPE(restype, *argtypes, **kw):
     _c_functype_cache[(restype, argtypes, flags)] = CFunctionType
     return CFunctionType
 
-if _os.name == "nt":
+wenn _os.name == "nt":
     from _ctypes import LoadLibrary as _dlopen
     from _ctypes import FUNCFLAG_STDCALL as _FUNCFLAG_STDCALL
 
@@ -115,11 +115,11 @@ if _os.name == "nt":
     def WINFUNCTYPE(restype, *argtypes, **kw):
         # docstring set later (very similar to CFUNCTYPE.__doc__)
         flags = _FUNCFLAG_STDCALL
-        if kw.pop("use_errno", False):
+        wenn kw.pop("use_errno", False):
             flags |= _FUNCFLAG_USE_ERRNO
-        if kw.pop("use_last_error", False):
+        wenn kw.pop("use_last_error", False):
             flags |= _FUNCFLAG_USE_LASTERROR
-        if kw:
+        wenn kw:
             raise ValueError("unexpected keyword argument(s) %s" % kw.keys())
 
         try:
@@ -133,10 +133,10 @@ if _os.name == "nt":
             _flags_ = flags
         _win_functype_cache[(restype, argtypes, flags)] = WinFunctionType
         return WinFunctionType
-    if WINFUNCTYPE.__doc__:
+    wenn WINFUNCTYPE.__doc__:
         WINFUNCTYPE.__doc__ = CFUNCTYPE.__doc__.replace("CFUNCTYPE", "WINFUNCTYPE")
 
-elif _os.name == "posix":
+sowenn _os.name == "posix":
     from _ctypes import dlopen as _dlopen
 
 from _ctypes import sizeof, byref, addressof, alignment, resize
@@ -144,14 +144,14 @@ from _ctypes import get_errno, set_errno
 from _ctypes import _SimpleCData
 
 def _check_size(typ, typecode=None):
-    # Check if sizeof(ctypes_type) against struct.calcsize.  This
+    # Check wenn sizeof(ctypes_type) against struct.calcsize.  This
     # should protect somewhat against a misconfigured libffi.
     from struct import calcsize
-    if typecode is None:
+    wenn typecode is None:
         # Most _type_ codes are the same as used in struct
         typecode = typ._type_
     actual, required = sizeof(typ), calcsize(typecode)
-    if actual != required:
+    wenn actual != required:
         raise SystemError("sizeof(%s) wrong: %d instead of %d" % \
                           (typ, actual, required))
 
@@ -181,11 +181,11 @@ klasse c_ulong(_SimpleCData):
     _type_ = "L"
 _check_size(c_ulong)
 
-if _calcsize("i") == _calcsize("l"):
-    # if int and long have the same size, make c_int an alias fuer c_long
+wenn _calcsize("i") == _calcsize("l"):
+    # wenn int and long have the same size, make c_int an alias fuer c_long
     c_int = c_long
     c_uint = c_ulong
-else:
+sonst:
     klasse c_int(_SimpleCData):
         _type_ = "i"
     _check_size(c_int)
@@ -204,7 +204,7 @@ _check_size(c_double)
 
 klasse c_longdouble(_SimpleCData):
     _type_ = "g"
-if sizeof(c_longdouble) == sizeof(c_double):
+wenn sizeof(c_longdouble) == sizeof(c_double):
     c_longdouble = c_double
 
 try:
@@ -219,11 +219,11 @@ try:
 except AttributeError:
     pass
 
-if _calcsize("l") == _calcsize("q"):
-    # if long and long long have the same size, make c_longlong an alias fuer c_long
+wenn _calcsize("l") == _calcsize("q"):
+    # wenn long and long long have the same size, make c_longlong an alias fuer c_long
     c_longlong = c_long
     c_ulonglong = c_ulong
-else:
+sonst:
     klasse c_longlong(_SimpleCData):
         _type_ = "q"
     _check_size(c_longlong)
@@ -272,13 +272,13 @@ def POINTER(cls):
     Pointer types are cached and reused internally,
     so calling this function repeatedly is cheap.
     """
-    if cls is None:
+    wenn cls is None:
         return c_void_p
     try:
         return cls.__pointer_type__
     except AttributeError:
         pass
-    if isinstance(cls, str):
+    wenn isinstance(cls, str):
         # handle old-style incomplete types (see test_ctypes.test_incomplete)
         import warnings
         warnings._deprecated("ctypes.POINTER with string", remove=(3, 19))
@@ -295,7 +295,7 @@ def POINTER(cls):
 def pointer(obj):
     """Create a new pointer instance, pointing to 'obj'.
 
-    The returned object is of the type POINTER(type(obj)). Note that if you
+    The returned object is of the type POINTER(type(obj)). Note that wenn you
     just want to pass a pointer to an object to a foreign function call, you
     should use byref(obj) which is much faster.
     """
@@ -344,7 +344,7 @@ klasse c_wchar(_SimpleCData):
 def _reset_cache():
     _pointer_type_cache_fallback.clear()
     _c_functype_cache.clear()
-    if _os.name == "nt":
+    wenn _os.name == "nt":
         _win_functype_cache.clear()
     # _SimpleCData.c_wchar_p_from_param
     POINTER(c_wchar).from_param = c_wchar_p.from_param
@@ -356,14 +356,14 @@ def create_unicode_buffer(init, size=None):
     create_unicode_buffer(anInteger) -> character array
     create_unicode_buffer(aString, anInteger) -> character array
     """
-    if isinstance(init, str):
-        if size is None:
-            if sizeof(c_wchar) == 2:
+    wenn isinstance(init, str):
+        wenn size is None:
+            wenn sizeof(c_wchar) == 2:
                 # UTF-16 requires a surrogate pair (2 wchar_t) fuer non-BMP
                 # characters (outside [U+0000; U+FFFF] range). +1 fuer trailing
                 # NUL character.
-                size = sum(2 if ord(c) > 0xFFFF else 1 fuer c in init) + 1
-            else:
+                size = sum(2 wenn ord(c) > 0xFFFF sonst 1 fuer c in init) + 1
+            sonst:
                 # 32-bit wchar_t (1 wchar_t per Unicode character). +1 for
                 # trailing NUL character.
                 size = len(init) + 1
@@ -372,7 +372,7 @@ def create_unicode_buffer(init, size=None):
         buf = buftype()
         buf.value = init
         return buf
-    elif isinstance(init, int):
+    sowenn isinstance(init, int):
         _sys.audit("ctypes.create_unicode_buffer", None, init)
         buftype = c_wchar * init
         buf = buftype()
@@ -410,13 +410,13 @@ klasse CDLL(object):
                  use_errno=False,
                  use_last_error=False,
                  winmode=None):
-        if name:
+        wenn name:
             name = _os.fspath(name)
 
             # If the filename that has been provided is an iOS/tvOS/watchOS
             # .fwork file, dereference the location to the true origin of the
             # binary.
-            if name.endswith(".fwork"):
+            wenn name.endswith(".fwork"):
                 with open(name) as f:
                     name = _os.path.join(
                         _os.path.dirname(_sys.executable),
@@ -425,25 +425,25 @@ klasse CDLL(object):
 
         self._name = name
         flags = self._func_flags_
-        if use_errno:
+        wenn use_errno:
             flags |= _FUNCFLAG_USE_ERRNO
-        if use_last_error:
+        wenn use_last_error:
             flags |= _FUNCFLAG_USE_LASTERROR
-        if _sys.platform.startswith("aix"):
+        wenn _sys.platform.startswith("aix"):
             """When the name contains ".a(" and ends with ")",
                e.g., "libFOO.a(libFOO.so)" - this is taken to be an
                archive(member) syntax fuer dlopen(), and the mode is adjusted.
                Otherwise, name is presented to dlopen() as a file argument.
             """
-            if name and name.endswith(")") and ".a(" in name:
+            wenn name and name.endswith(")") and ".a(" in name:
                 mode |= ( _os.RTLD_MEMBER | _os.RTLD_NOW )
-        if _os.name == "nt":
-            if winmode is not None:
+        wenn _os.name == "nt":
+            wenn winmode is not None:
                 mode = winmode
-            else:
+            sonst:
                 import nt
                 mode = nt._LOAD_LIBRARY_SEARCH_DEFAULT_DIRS
-                if '/' in name or '\\' in name:
+                wenn '/' in name or '\\' in name:
                     self._name = nt._getfullpathname(self._name)
                     mode |= nt._LOAD_LIBRARY_SEARCH_DLL_LOAD_DIR
 
@@ -452,9 +452,9 @@ klasse CDLL(object):
             _restype_ = self._func_restype_
         self._FuncPtr = _FuncPtr
 
-        if handle is None:
+        wenn handle is None:
             self._handle = _dlopen(self._name, mode)
-        else:
+        sonst:
             self._handle = handle
 
     def __repr__(self):
@@ -464,7 +464,7 @@ klasse CDLL(object):
                 id(self) & (_sys.maxsize*2 + 1))
 
     def __getattr__(self, name):
-        if name.startswith('__') and name.endswith('__'):
+        wenn name.startswith('__') and name.endswith('__'):
             raise AttributeError(name)
         func = self.__getitem__(name)
         setattr(self, name, func)
@@ -472,7 +472,7 @@ klasse CDLL(object):
 
     def __getitem__(self, name_or_ordinal):
         func = self._FuncPtr((name_or_ordinal, self))
-        if not isinstance(name_or_ordinal, int):
+        wenn not isinstance(name_or_ordinal, int):
             func.__name__ = name_or_ordinal
         return func
 
@@ -483,7 +483,7 @@ klasse PyDLL(CDLL):
     """
     _func_flags_ = _FUNCFLAG_CDECL | _FUNCFLAG_PYTHONAPI
 
-if _os.name == "nt":
+wenn _os.name == "nt":
 
     klasse WinDLL(CDLL):
         """This klasse represents a dll exporting functions using the
@@ -498,7 +498,7 @@ if _os.name == "nt":
         _type_ = "l"
         # _check_retval_ is called with the function's result when it
         # is used as restype.  It checks fuer the FAILED bit, and
-        # raises an OSError if it is set.
+        # raises an OSError wenn it is set.
         #
         # The _check_retval_ method is implemented in C, so that the
         # method definition itself is not included in the traceback
@@ -521,7 +521,7 @@ klasse LibraryLoader(object):
         self._dlltype = dlltype
 
     def __getattr__(self, name):
-        if name[0] == '_':
+        wenn name[0] == '_':
             raise AttributeError(name)
         try:
             dll = self._dlltype(name)
@@ -541,17 +541,17 @@ klasse LibraryLoader(object):
 cdll = LibraryLoader(CDLL)
 pydll = LibraryLoader(PyDLL)
 
-if _os.name == "nt":
+wenn _os.name == "nt":
     pythonapi = PyDLL("python dll", None, _sys.dllhandle)
-elif _sys.platform == "android":
+sowenn _sys.platform == "android":
     pythonapi = PyDLL("libpython%d.%d.so" % _sys.version_info[:2])
-elif _sys.platform == "cygwin":
+sowenn _sys.platform == "cygwin":
     pythonapi = PyDLL("libpython%d.%d.dll" % _sys.version_info[:2])
-else:
+sonst:
     pythonapi = PyDLL(None)
 
 
-if _os.name == "nt":
+wenn _os.name == "nt":
     windll = LibraryLoader(WinDLL)
     oledll = LibraryLoader(OleDLL)
 
@@ -559,19 +559,19 @@ if _os.name == "nt":
     from _ctypes import get_last_error, set_last_error
 
     def WinError(code=None, descr=None):
-        if code is None:
+        wenn code is None:
             code = GetLastError()
-        if descr is None:
+        wenn descr is None:
             descr = FormatError(code).strip()
         return OSError(None, descr, None, code)
 
-if sizeof(c_uint) == sizeof(c_void_p):
+wenn sizeof(c_uint) == sizeof(c_void_p):
     c_size_t = c_uint
     c_ssize_t = c_int
-elif sizeof(c_ulong) == sizeof(c_void_p):
+sowenn sizeof(c_ulong) == sizeof(c_void_p):
     c_size_t = c_ulong
     c_ssize_t = c_long
-elif sizeof(c_ulonglong) == sizeof(c_void_p):
+sowenn sizeof(c_ulonglong) == sizeof(c_void_p):
     c_size_t = c_ulonglong
     c_ssize_t = c_longlong
 
@@ -616,7 +616,7 @@ try:
     from _ctypes import _wstring_at_addr
 except ImportError:
     pass
-else:
+sonst:
     _wstring_at = PYFUNCTYPE(py_object, c_void_p, c_int)(_wstring_at_addr)
     def wstring_at(ptr, size=-1):
         """wstring_at(ptr[, size]) -> string
@@ -625,13 +625,13 @@ else:
         return _wstring_at(ptr, size)
 
 
-if _os.name == "nt": # COM stuff
+wenn _os.name == "nt": # COM stuff
     def DllGetClassObject(rclsid, riid, ppv):
         try:
             ccom = __import__("comtypes.server.inprocserver", globals(), locals(), ['*'])
         except ImportError:
             return -2147221231 # CLASS_E_CLASSNOTAVAILABLE
-        else:
+        sonst:
             return ccom.DllGetClassObject(rclsid, riid, ppv)
 
     def DllCanUnloadNow():
@@ -648,20 +648,20 @@ from ctypes._endian import BigEndianUnion, LittleEndianUnion
 c_int8 = c_byte
 c_uint8 = c_ubyte
 fuer kind in [c_short, c_int, c_long, c_longlong]:
-    if sizeof(kind) == 2: c_int16 = kind
-    elif sizeof(kind) == 4: c_int32 = kind
-    elif sizeof(kind) == 8: c_int64 = kind
+    wenn sizeof(kind) == 2: c_int16 = kind
+    sowenn sizeof(kind) == 4: c_int32 = kind
+    sowenn sizeof(kind) == 8: c_int64 = kind
 fuer kind in [c_ushort, c_uint, c_ulong, c_ulonglong]:
-    if sizeof(kind) == 2: c_uint16 = kind
-    elif sizeof(kind) == 4: c_uint32 = kind
-    elif sizeof(kind) == 8: c_uint64 = kind
+    wenn sizeof(kind) == 2: c_uint16 = kind
+    sowenn sizeof(kind) == 4: c_uint32 = kind
+    sowenn sizeof(kind) == 8: c_uint64 = kind
 del(kind)
 
-if SIZEOF_TIME_T == 8:
+wenn SIZEOF_TIME_T == 8:
     c_time_t = c_int64
-elif SIZEOF_TIME_T == 4:
+sowenn SIZEOF_TIME_T == 4:
     c_time_t = c_int32
-else:
+sonst:
     raise SystemError(f"Unexpected sizeof(time_t): {SIZEOF_TIME_T=}")
 
 _reset_cache()

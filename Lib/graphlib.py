@@ -24,7 +24,7 @@ klasse _NodeInfo:
 
 
 klasse CycleError(ValueError):
-    """Subclass of ValueError raised by TopologicalSorter.prepare if cycles
+    """Subclass of ValueError raised by TopologicalSorter.prepare wenn cycles
     exist in the working graph.
 
     If multiple cycles exist, only one undefined choice among them will be reported
@@ -47,12 +47,12 @@ klasse TopologicalSorter:
         self._npassedout = 0
         self._nfinished = 0
 
-        if graph is not None:
+        wenn graph is not None:
             fuer node, predecessors in graph.items():
                 self.add(node, *predecessors)
 
     def _get_nodeinfo(self, node):
-        if (result := self._node2info.get(node)) is None:
+        wenn (result := self._node2info.get(node)) is None:
             self._node2info[node] = result = _NodeInfo(node)
         return result
 
@@ -69,9 +69,9 @@ klasse TopologicalSorter:
         is included among *predecessors* it will be automatically added to the graph with
         no predecessors of its own.
 
-        Raises ValueError if called after "prepare".
+        Raises ValueError wenn called after "prepare".
         """
-        if self._ready_nodes is not None:
+        wenn self._ready_nodes is not None:
             raise ValueError("Nodes cannot be added after a call to prepare()")
 
         # Create the node -> predecessor edges
@@ -91,22 +91,22 @@ klasse TopologicalSorter:
         progress. After a call to this function, the graph cannot be modified and
         therefore no more nodes can be added using "add".
 
-        Raise ValueError if nodes have already been passed out of the sorter.
+        Raise ValueError wenn nodes have already been passed out of the sorter.
 
         """
-        if self._npassedout > 0:
+        wenn self._npassedout > 0:
             raise ValueError("cannot prepare() after starting sort")
 
-        if self._ready_nodes is None:
+        wenn self._ready_nodes is None:
             self._ready_nodes = [
-                i.node fuer i in self._node2info.values() if i.npredecessors == 0
+                i.node fuer i in self._node2info.values() wenn i.npredecessors == 0
             ]
         # ready_nodes is set before we look fuer cycles on purpose:
-        # if the user wants to catch the CycleError, that's fine,
+        # wenn the user wants to catch the CycleError, that's fine,
         # they can continue using the instance to grab as many
         # nodes as possible before cycles block more progress
         cycle = self._find_cycle()
-        if cycle:
+        wenn cycle:
             raise CycleError("nodes are in a cycle", cycle)
 
     def get_ready(self):
@@ -117,9 +117,9 @@ klasse TopologicalSorter:
         have all their predecessors already processed. Once no more progress can be made,
         empty tuples are returned.
 
-        Raises ValueError if called without calling "prepare" previously.
+        Raises ValueError wenn called without calling "prepare" previously.
         """
-        if self._ready_nodes is None:
+        wenn self._ready_nodes is None:
             raise ValueError("prepare() must be called first")
 
         # Get the nodes that are ready and mark them
@@ -136,16 +136,16 @@ klasse TopologicalSorter:
         return result
 
     def is_active(self):
-        """Return ``True`` if more progress can be made and ``False`` otherwise.
+        """Return ``True`` wenn more progress can be made and ``False`` otherwise.
 
-        Progress can be made if cycles do not block the resolution and either there
+        Progress can be made wenn cycles do not block the resolution and either there
         are still nodes ready that haven't yet been returned by "get_ready" or the
         number of nodes marked "done" is less than the number that have been returned
         by "get_ready".
 
-        Raises ValueError if called without calling "prepare" previously.
+        Raises ValueError wenn called without calling "prepare" previously.
         """
-        if self._ready_nodes is None:
+        wenn self._ready_nodes is None:
             raise ValueError("prepare() must be called first")
         return self._nfinished < self._npassedout or bool(self._ready_nodes)
 
@@ -158,33 +158,33 @@ klasse TopologicalSorter:
         This method unblocks any successor of each node in *nodes* fuer being returned
         in the future by a call to "get_ready".
 
-        Raises ValueError if any node in *nodes* has already been marked as
-        processed by a previous call to this method, if a node was not added to the
-        graph by using "add" or if called without calling "prepare" previously or if
+        Raises ValueError wenn any node in *nodes* has already been marked as
+        processed by a previous call to this method, wenn a node was not added to the
+        graph by using "add" or wenn called without calling "prepare" previously or if
         node has not yet been returned by "get_ready".
         """
 
-        if self._ready_nodes is None:
+        wenn self._ready_nodes is None:
             raise ValueError("prepare() must be called first")
 
         n2i = self._node2info
 
         fuer node in nodes:
 
-            # Check if we know about this node (it was added previously using add()
-            if (nodeinfo := n2i.get(node)) is None:
+            # Check wenn we know about this node (it was added previously using add()
+            wenn (nodeinfo := n2i.get(node)) is None:
                 raise ValueError(f"node {node!r} was not added using add()")
 
             # If the node has not being returned (marked as ready) previously, inform the user.
             stat = nodeinfo.npredecessors
-            if stat != _NODE_OUT:
-                if stat >= 0:
+            wenn stat != _NODE_OUT:
+                wenn stat >= 0:
                     raise ValueError(
                         f"node {node!r} was not passed out (still not ready)"
                     )
-                elif stat == _NODE_DONE:
+                sowenn stat == _NODE_DONE:
                     raise ValueError(f"node {node!r} was already marked done")
-                else:
+                sonst:
                     assert False, f"node {node!r}: unknown status {stat}"
 
             # Mark the node as processed
@@ -195,7 +195,7 @@ klasse TopologicalSorter:
             fuer successor in nodeinfo.successors:
                 successor_info = n2i[successor]
                 successor_info.npredecessors -= 1
-                if successor_info.npredecessors == 0:
+                wenn successor_info.npredecessors == 0:
                     self._ready_nodes.append(successor)
             self._nfinished += 1
 
@@ -207,17 +207,17 @@ klasse TopologicalSorter:
         node2stacki = {}
 
         fuer node in n2i:
-            if node in seen:
+            wenn node in seen:
                 continue
 
             while True:
-                if node in seen:
+                wenn node in seen:
                     # If we have seen already the node and is in the
                     # current stack we have found a cycle.
-                    if node in node2stacki:
+                    wenn node in node2stacki:
                         return stack[node2stacki[node] :] + [node]
-                    # else go on to get next successor
-                else:
+                    # sonst go on to get next successor
+                sonst:
                     seen.add(node)
                     itstack.append(iter(n2i[node].successors).__next__)
                     node2stacki[node] = len(stack)
@@ -232,7 +232,7 @@ klasse TopologicalSorter:
                     except StopIteration:
                         del node2stacki[stack.pop()]
                         itstack.pop()
-                else:
+                sonst:
                     break
         return None
 

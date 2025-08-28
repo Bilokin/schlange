@@ -97,7 +97,7 @@ klasse WinAPIBatchedWaitForMultipleObjectsTests(unittest.TestCase):
 klasse WinAPITests(unittest.TestCase):
     def test_getlongpathname(self):
         testfn = pathlib.Path(os.getenv("ProgramFiles")).parents[-1] / "PROGRA~1"
-        if not os.path.isdir(testfn):
+        wenn not os.path.isdir(testfn):
             raise unittest.SkipTest("require x:\\PROGRA~1 to test")
 
         # pathlib.Path will be rejected - only str is accepted
@@ -113,7 +113,7 @@ klasse WinAPITests(unittest.TestCase):
 
     def test_getshortpathname(self):
         testfn = pathlib.Path(os.getenv("ProgramFiles"))
-        if not os.path.isdir(testfn):
+        wenn not os.path.isdir(testfn):
             raise unittest.SkipTest("require '%ProgramFiles%' to test")
 
         # pathlib.Path will be rejected - only str is accepted

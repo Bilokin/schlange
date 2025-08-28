@@ -39,7 +39,7 @@ def _test():
     print(d.num)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     t = Button(None, {'text': 'Test',
                       'command': _test,
                       Pack: {}})

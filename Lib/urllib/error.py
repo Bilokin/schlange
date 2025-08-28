@@ -25,7 +25,7 @@ klasse URLError(OSError):
     def __init__(self, reason, filename=None):
         self.args = reason,
         self.reason = reason
-        if filename is not None:
+        wenn filename is not None:
             self.filename = filename
 
     def __str__(self):
@@ -42,7 +42,7 @@ klasse HTTPError(URLError, urllib.response.addinfourl):
         self.hdrs = hdrs
         self.fp = fp
         self.filename = url
-        if fp is None:
+        wenn fp is None:
             fp = io.BytesIO()
         self.__super_init(fp, hdrs, url, code)
 

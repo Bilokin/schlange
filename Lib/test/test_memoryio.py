@@ -386,7 +386,7 @@ klasse MemoryTestMixin:
 
     def test_instance_dict_leak(self):
         # Test case fuer issue #6242.
-        # This will be caught by regrtest.py -R if this leak.
+        # This will be caught by regrtest.py -R wenn this leak.
         fuer _ in range(100):
             memio = self.ioclass()
             memio.foo = 1
@@ -742,7 +742,7 @@ klasse PyStringIOTest(MemoryTestMixin, MemorySeekTestMixin,
 
 
 klasse PyStringIOPickleTest(TextIOTestMixin, unittest.TestCase):
-    """Test if pickle restores properly the internal state of StringIO.
+    """Test wenn pickle restores properly the internal state of StringIO.
     """
     buftype = str
     UnsupportedOperation = pyio.UnsupportedOperation
@@ -763,9 +763,9 @@ klasse CBytesIOTest(PyBytesIOTest):
         memio = self.ioclass()
         state = memio.__getstate__()
         self.assertEqual(len(state), 3)
-        bytearray(state[0]) # Check if state[0] supports the buffer interface.
+        bytearray(state[0]) # Check wenn state[0] supports the buffer interface.
         self.assertIsInstance(state[1], int)
-        if state[2] is not None:
+        wenn state[2] is not None:
             self.assertIsInstance(state[2], dict)
         memio.close()
         self.assertRaises(ValueError, memio.__getstate__)
@@ -867,7 +867,7 @@ klasse CStringIOTest(PyStringIOTest):
         self.assertIsInstance(state[0], str)
         self.assertIsInstance(state[1], str)
         self.assertIsInstance(state[2], int)
-        if state[3] is not None:
+        wenn state[3] is not None:
             self.assertIsInstance(state[3], dict)
         memio.close()
         self.assertRaises(ValueError, memio.__getstate__)
@@ -900,5 +900,5 @@ klasse CStringIOPickleTest(PyStringIOPickleTest):
             pass
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

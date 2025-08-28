@@ -13,7 +13,7 @@ from test.support.testcase import ExceptionIsLikeMixin
 
 from .test_misc import decode_stderr
 
-# Skip this test if the _testcapi module isn't available.
+# Skip this test wenn the _testcapi module isn't available.
 _testcapi = import_helper.import_module('_testcapi')
 
 NULL = None
@@ -43,7 +43,7 @@ klasse Test_Exceptions(unittest.TestCase):
             self.assertEqual(reset_sys_exception, orig_exception)
             self.assertEqual(new_exception, new_exc)
             self.assertEqual(new_sys_exception, new_exception)
-        else:
+        sonst:
             self.fail("Exception not raised")
 
     def test_exc_info(self):
@@ -66,7 +66,7 @@ klasse Test_Exceptions(unittest.TestCase):
             self.assertSequenceEqual(reset_sys_exc_info, orig_exc_info)
             self.assertSequenceEqual(new_exc_info, (new_exc.__class__, new_exc, None))
             self.assertSequenceEqual(new_sys_exc_info, new_exc_info)
-        else:
+        sonst:
             self.assertTrue(False)
 
     def test_warn_with_stacklevel(self):
@@ -121,7 +121,7 @@ klasse Test_FatalError(unittest.TestCase):
 
         match = re.search(r'^Extension modules:(.*) \(total: ([0-9]+)\)$',
                           err, re.MULTILINE)
-        if not match:
+        wenn not match:
             self.fail(f"Cannot find 'Extension modules:' in {err!r}")
         modules = set(match.group(1).strip().split(', '))
         total = int(match.group(2))
@@ -292,7 +292,7 @@ klasse Test_ErrSetAndRestore(unittest.TestCase):
             setfromerrnowithfilename(ENOENT, OSError, os.fsencode(TESTFN))
         self.assertEqual(e.exception.filename, TESTFN)
 
-        if TESTFN_UNDECODABLE:
+        wenn TESTFN_UNDECODABLE:
             with self.assertRaises(FileNotFoundError) as e:
                 setfromerrnowithfilename(ENOENT, OSError, TESTFN_UNDECODABLE)
             self.assertEqual(e.exception.filename,
@@ -663,5 +663,5 @@ klasse Test_PyUnstable_Exc_PrepReraiseStar(ExceptionIsLikeMixin, unittest.TestCa
                 self.assertExceptionIsLike(res, expected)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

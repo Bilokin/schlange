@@ -17,7 +17,7 @@ klasse ScrolledList:
         self.vbar.pack(side="right", fill="y")
         self.listbox = listbox = Listbox(frame, exportselection=0,
             background="white")
-        if options:
+        wenn options:
             listbox.configure(options)
         listbox.pack(expand=1, fill="both")
         # Tie listbox and scrollbar together
@@ -26,10 +26,10 @@ klasse ScrolledList:
         # Bind events to the list box
         listbox.bind("<ButtonRelease-1>", self.click_event)
         listbox.bind("<Double-ButtonRelease-1>", self.double_click_event)
-        if macosx.isAquaTk():
+        wenn macosx.isAquaTk():
             listbox.bind("<ButtonPress-2>", self.popup_event)
             listbox.bind("<Control-Button-1>", self.popup_event)
-        else:
+        sonst:
             listbox.bind("<ButtonPress-3>", self.popup_event)
         listbox.bind("<Key-Up>", self.up_event)
         listbox.bind("<Key-Down>", self.down_event)
@@ -45,7 +45,7 @@ klasse ScrolledList:
         self.listbox.insert("end", self.default)
 
     def append(self, item):
-        if self.empty:
+        wenn self.empty:
             self.listbox.delete(0, "end")
             self.empty = 0
         self.listbox.insert("end", str(item))
@@ -69,7 +69,7 @@ klasse ScrolledList:
     menu = None
 
     def popup_event(self, event):
-        if not self.menu:
+        wenn not self.menu:
             self.make_menu()
         menu = self.menu
         self.listbox.activate("@%d,%d" % (event.x, event.y))
@@ -85,26 +85,26 @@ klasse ScrolledList:
 
     def up_event(self, event):
         index = self.listbox.index("active")
-        if self.listbox.selection_includes(index):
+        wenn self.listbox.selection_includes(index):
             index = index - 1
-        else:
+        sonst:
             index = self.listbox.size() - 1
-        if index < 0:
+        wenn index < 0:
             self.listbox.bell()
-        else:
+        sonst:
             self.select(index)
             self.on_select(index)
         return "break"
 
     def down_event(self, event):
         index = self.listbox.index("active")
-        if self.listbox.selection_includes(index):
+        wenn self.listbox.selection_includes(index):
             index = index + 1
-        else:
+        sonst:
             index = 0
-        if index >= self.listbox.size():
+        wenn index >= self.listbox.size():
             self.listbox.bell()
-        else:
+        sonst:
             self.select(index)
             self.on_select(index)
         return "break"
@@ -143,7 +143,7 @@ def _scrolled_list(parent):  # htest #
         scrolled_list.append("Item %02d" % i)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     from unittest import main
     main('idlelib.idle_test.test_scrolledlist', verbosity=2, exit=False)
 

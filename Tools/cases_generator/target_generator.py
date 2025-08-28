@@ -24,7 +24,7 @@ def write_opcode_targets(analysis: Analysis, out: CWriter) -> None:
     """Write header file that defines the jump target table"""
     targets = ["&&_unknown_opcode,\n"] * 256
     fuer name, op in analysis.opmap.items():
-        if op < 256:
+        wenn op < 256:
             targets[op] = f"&&TARGET_{name},\n"
     out.emit("#if !Py_TAIL_CALL_INTERP\n")
     out.emit("static void *opcode_targets[256] = {\n")
@@ -65,7 +65,7 @@ def write_tailcall_dispatch_table(analysis: Analysis, out: CWriter) -> None:
         out.emit(f"[{name}] = _TAIL_CALL_{name},\n")
     named_values = analysis.opmap.values()
     fuer rest in range(256):
-        if rest not in named_values:
+        wenn rest not in named_values:
             out.emit(f"[{rest}] = _TAIL_CALL_UNKNOWN_OPCODE,\n")
     out.emit("};\n")
     outfile.write("#endif /* Py_TAIL_CALL_INTERP */\n")
@@ -83,9 +83,9 @@ arg_parser.add_argument(
     "input", nargs=argparse.REMAINDER, help="Instruction definition file(s)"
 )
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     args = arg_parser.parse_args()
-    if len(args.input) == 0:
+    wenn len(args.input) == 0:
         args.input.append(DEFAULT_INPUT)
     data = analyze_files(args.input)
     with open(args.output, "w") as outfile:

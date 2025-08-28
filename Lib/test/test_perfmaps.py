@@ -9,11 +9,11 @@ except ImportError:
 
 def supports_trampoline_profiling():
     perf_trampoline = sysconfig.get_config_var("PY_HAVE_PERF_TRAMPOLINE")
-    if not perf_trampoline:
+    wenn not perf_trampoline:
         return False
     return int(perf_trampoline) == 1
 
-if not supports_trampoline_profiling():
+wenn not supports_trampoline_profiling():
     raise unittest.SkipTest("perf trampoline profiling not supported")
 
 klasse TestPerfMapWriting(unittest.TestCase):

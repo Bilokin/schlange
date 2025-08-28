@@ -25,5 +25,5 @@ klasse CallTipWindowTest(unittest.TestCase):
     def test_init(self):
         self.assertEqual(self.calltip.anchor_widget, self.text)
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main(verbosity=2)

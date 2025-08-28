@@ -47,7 +47,7 @@ klasse TestingImporter(abc.MetaPathFinder, abc.Loader):
     source_code = 'attr = 42; __name__ = {!r}'.format(mutated_name)
 
     def find_spec(self, name, path, target=None):
-        if name != self.module_name:
+        wenn name != self.module_name:
             return None
         return util.spec_from_loader(name, util.LazyLoader(self))
 
@@ -66,14 +66,14 @@ klasse LazyLoaderTests(unittest.TestCase):
             util.LazyLoader(object)
 
     def new_module(self, source_code=None, loader=None):
-        if loader is None:
+        wenn loader is None:
             loader = TestingImporter()
-        if source_code is not None:
+        wenn source_code is not None:
             loader.source_code = source_code
         spec = util.spec_from_loader(TestingImporter.module_name,
                                      util.LazyLoader(loader))
         module = spec.loader.create_module(spec)
-        if module is None:
+        wenn module is None:
             module = types.ModuleType(TestingImporter.module_name)
         module.__spec__ = spec
         module.__loader__ = spec.loader
@@ -182,7 +182,7 @@ klasse LazyLoaderTests(unittest.TestCase):
         # Directory modules with submodules that reference the parent can attempt to access
         # the parent module during a load. Verify that this common pattern works with lazy loading.
         # json is a good example in the stdlib.
-        json_modules = [name fuer name in sys.modules if name.startswith('json')]
+        json_modules = [name fuer name in sys.modules wenn name.startswith('json')]
         with test_util.uncache(*json_modules):
             # Standard lazy loading, unwrapped
             spec = util.find_spec('json')
@@ -225,5 +225,5 @@ sys.modules[__name__].__class__ = ImmutableModule
             del module.CONSTANT
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

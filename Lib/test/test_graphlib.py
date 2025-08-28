@@ -35,7 +35,7 @@ klasse TestTopologicalSort(unittest.TestCase):
         except graphlib.CycleError as e:
             _, seq = e.args
             self.assertIn(" ".join(map(str, cycle)), " ".join(map(str, seq * 2)))
-        else:
+        sonst:
             raise
 
     def test_simple_cases(self):
@@ -260,5 +260,5 @@ klasse TestTopologicalSort(unittest.TestCase):
         self.assertNotEqual(run2, "")
         self.assertEqual(run1, run2)
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

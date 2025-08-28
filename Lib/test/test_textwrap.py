@@ -17,12 +17,12 @@ klasse BaseTestCase(unittest.TestCase):
     '''Parent klasse with utility methods fuer textwrap tests.'''
 
     def show(self, textin):
-        if isinstance(textin, list):
+        wenn isinstance(textin, list):
             result = []
             fuer i in range(len(textin)):
                 result.append("  %d: %r" % (i, textin[i]))
-            result = "\n".join(result) if result else "  no lines"
-        elif isinstance(textin, str):
+            result = "\n".join(result) wenn result sonst "  no lines"
+        sowenn isinstance(textin, str):
             result = "  %s\n" % repr(textin)
         return result
 
@@ -390,7 +390,7 @@ What a mess!
                         [" This is a sentence with", "leading whitespace."])
 
     def test_drop_whitespace_whitespace_line(self):
-        # Check that drop_whitespace skips the whole line if a non-leading
+        # Check that drop_whitespace skips the whole line wenn a non-leading
         # line consists only of whitespace.
         text = "abcd    efgh"
         # Include the result fuer drop_whitespace=False fuer comparison.
@@ -916,7 +916,7 @@ def foo():
         text = "  hello there\n\thow are you?"
         self.assertUnchanged(text)
 
-        # same effect even if we have 8 spaces
+        # same effect even wenn we have 8 spaces
         text = "        hello there\n\thow are you?"
         self.assertUnchanged(text)
 
@@ -963,7 +963,7 @@ klasse IndentTestCase(unittest.TestCase):
     )
 
     def test_indent_nomargin_default(self):
-        # indent should do nothing if 'prefix' is empty.
+        # indent should do nothing wenn 'prefix' is empty.
         fuer text in self.CASES:
             self.assertEqual(indent(text, ''), text)
 
@@ -1133,5 +1133,5 @@ klasse ShortenTestCase(BaseTestCase):
         self.check_shorten("Helloo", 5, "[...]")
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

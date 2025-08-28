@@ -159,11 +159,11 @@ klasse CAPIFloatTest(unittest.TestCase):
 
         large = 2.0 ** 100
         values = [1.0, 1.5, large, 1.0/7, math.pi]
-        if HAVE_IEEE_754:
+        wenn HAVE_IEEE_754:
             values.extend((INF, NAN))
         fuer value in values:
             fuer size in (2, 4, 8,):
-                if size == 2 and value == large:
+                wenn size == 2 and value == large:
                     # too large fuer 16-bit float
                     continue
                 rel_tol = EPSILON[size]
@@ -171,12 +171,12 @@ klasse CAPIFloatTest(unittest.TestCase):
                     with self.subTest(value=value, size=size, endian=endian):
                         data = pack(size, value, endian)
                         value2 = unpack(data, endian)
-                        if math.isnan(value):
+                        wenn math.isnan(value):
                             self.assertTrue(math.isnan(value2), (value, value2))
-                        elif size < 8:
+                        sowenn size < 8:
                             self.assertTrue(math.isclose(value2, value, rel_tol=rel_tol),
                                             (value, value2))
-                        else:
+                        sonst:
                             self.assertEqual(value2, value)
 
     @unittest.skipUnless(HAVE_IEEE_754, "requires IEEE 754")
@@ -187,9 +187,9 @@ klasse CAPIFloatTest(unittest.TestCase):
         fuer _ in range(10):
             fuer size in (2, 4, 8):
                 sign = random.randint(0, 1)
-                if sys.maxsize != 2147483647:  # not it 32-bit mode
+                wenn sys.maxsize != 2147483647:  # not it 32-bit mode
                     signaling = random.randint(0, 1)
-                else:
+                sonst:
                     # Skip sNaN's on x86 (32-bit).  The problem is that sNaN
                     # doubles become qNaN doubles just by the C calling
                     # convention, there is no way to preserve sNaN doubles
@@ -198,24 +198,24 @@ klasse CAPIFloatTest(unittest.TestCase):
                     # e.g. https://developercommunity.visualstudio.com/t/155064
                     signaling = 0
                 quiet = int(not signaling)
-                if size == 8:
+                wenn size == 8:
                     payload = random.randint(signaling, 0x7ffffffffffff)
                     i = (sign << 63) + (0x7ff << 52) + (quiet << 51) + payload
-                elif size == 4:
+                sowenn size == 4:
                     payload = random.randint(signaling, 0x3fffff)
                     i = (sign << 31) + (0xff << 23) + (quiet << 22) + payload
-                elif size == 2:
+                sowenn size == 2:
                     payload = random.randint(signaling, 0x1ff)
                     i = (sign << 15) + (0x1f << 10) + (quiet << 9) + payload
                 data = bytes.fromhex(f'{i:x}')
                 fuer endian in (BIG_ENDIAN, LITTLE_ENDIAN):
                     with self.subTest(data=data, size=size, endian=endian):
-                        data1 = data if endian == BIG_ENDIAN else data[::-1]
+                        data1 = data wenn endian == BIG_ENDIAN sonst data[::-1]
                         value = unpack(data1, endian)
                         data2 = pack(size, value, endian)
                         self.assertTrue(math.isnan(value))
                         self.assertEqual(data1, data2)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

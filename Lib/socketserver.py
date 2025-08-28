@@ -70,7 +70,7 @@ subclasses StreamRequestHandler or DatagramRequestHandler.
 
 Of course, you still have to use your head!
 
-For instance, it makes no sense to use a forking server if the service
+For instance, it makes no sense to use a forking server wenn the service
 contains state in memory that can be modified by requests (since the
 modifications in the child process would never reach the initial state
 kept in the parent process and passed to each child).  In this case,
@@ -78,10 +78,10 @@ you can use a threading server, but you will probably have to use
 locks to avoid two requests that come in nearly simultaneous to apply
 conflicting changes to the server state.
 
-On the other hand, if you are building e.g. an HTTP server, where all
+On the other hand, wenn you are building e.g. an HTTP server, where all
 data is stored externally (e.g. in the file system), a synchronous
 klasse will essentially render the service "deaf" while one request is
-being handled -- which may be fuer a very long time if a client is slow
+being handled -- which may be fuer a very long time wenn a client is slow
 to read all the data it has requested.  Here a threading or forking
 server is appropriate.
 
@@ -135,20 +135,20 @@ __all__ = ["BaseServer", "TCPServer", "UDPServer",
            "ThreadingUDPServer", "ThreadingTCPServer",
            "BaseRequestHandler", "StreamRequestHandler",
            "DatagramRequestHandler", "ThreadingMixIn"]
-if hasattr(os, "fork"):
+wenn hasattr(os, "fork"):
     __all__.extend(["ForkingUDPServer","ForkingTCPServer", "ForkingMixIn"])
-if hasattr(socket, "AF_UNIX"):
+wenn hasattr(socket, "AF_UNIX"):
     __all__.extend(["UnixStreamServer","UnixDatagramServer",
                     "ThreadingUnixStreamServer",
                     "ThreadingUnixDatagramServer"])
-    if hasattr(os, "fork"):
+    wenn hasattr(os, "fork"):
         __all__.extend(["ForkingUnixStreamServer", "ForkingUnixDatagramServer"])
 
 # poll/select have the advantage of not requiring any extra file descriptor,
 # contrarily to epoll/kqueue (also, they require a single syscall).
-if hasattr(selectors, 'PollSelector'):
+wenn hasattr(selectors, 'PollSelector'):
     _ServerSelector = selectors.PollSelector
-else:
+sonst:
     _ServerSelector = selectors.SelectSelector
 
 
@@ -161,7 +161,7 @@ klasse BaseServer:
     - __init__(server_address, RequestHandlerClass)
     - serve_forever(poll_interval=0.5)
     - shutdown()
-    - handle_request()  # if you do not use serve_forever()
+    - handle_request()  # wenn you do not use serve_forever()
     - fileno() -> int   # fuer selector
 
     Methods that may be overridden:
@@ -234,9 +234,9 @@ klasse BaseServer:
                 while not self.__shutdown_request:
                     ready = selector.select(poll_interval)
                     # bpo-35017: shutdown() called during select(), exit immediately.
-                    if self.__shutdown_request:
+                    wenn self.__shutdown_request:
                         break
-                    if ready:
+                    wenn ready:
                         self._handle_request_noblock()
 
                     self.service_actions()
@@ -281,11 +281,11 @@ klasse BaseServer:
         # Support people who used socket.settimeout() to escape
         # handle_request before self.timeout was available.
         timeout = self.socket.gettimeout()
-        if timeout is None:
+        wenn timeout is None:
             timeout = self.timeout
-        elif self.timeout is not None:
+        sowenn self.timeout is not None:
             timeout = min(timeout, self.timeout)
-        if timeout is not None:
+        wenn timeout is not None:
             deadline = time() + timeout
 
         # Wait until a request arrives or the timeout expires - the loop is
@@ -294,12 +294,12 @@ klasse BaseServer:
             selector.register(self, selectors.EVENT_READ)
 
             while True:
-                if selector.select(timeout):
+                wenn selector.select(timeout):
                     return self._handle_request_noblock()
-                else:
-                    if timeout is not None:
+                sonst:
+                    wenn timeout is not None:
                         timeout = deadline - time()
-                        if timeout < 0:
+                        wenn timeout < 0:
                             return self.handle_timeout()
 
     def _handle_request_noblock(self):
@@ -313,7 +313,7 @@ klasse BaseServer:
             request, client_address = self.get_request()
         except OSError:
             return
-        if self.verify_request(request, client_address):
+        wenn self.verify_request(request, client_address):
             try:
                 self.process_request(request, client_address)
             except Exception:
@@ -322,11 +322,11 @@ klasse BaseServer:
             except:
                 self.shutdown_request(request)
                 raise
-        else:
+        sonst:
             self.shutdown_request(request)
 
     def handle_timeout(self):
-        """Called if no new request arrives within self.timeout.
+        """Called wenn no new request arrives within self.timeout.
 
         Overridden by ForkingMixIn.
         """
@@ -335,7 +335,7 @@ klasse BaseServer:
     def verify_request(self, request, client_address):
         """Verify the request.  May be overridden.
 
-        Return True if we should proceed with this request.
+        Return True wenn we should proceed with this request.
 
         """
         return True
@@ -400,7 +400,7 @@ klasse TCPServer(BaseServer):
     - __init__(server_address, RequestHandlerClass, bind_and_activate=True)
     - serve_forever(poll_interval=0.5)
     - shutdown()
-    - handle_request()  # if you don't use serve_forever()
+    - handle_request()  # wenn you don't use serve_forever()
     - fileno() -> int   # fuer selector
 
     Methods that may be overridden:
@@ -452,7 +452,7 @@ klasse TCPServer(BaseServer):
         BaseServer.__init__(self, server_address, RequestHandlerClass)
         self.socket = socket.socket(self.address_family,
                                     self.socket_type)
-        if bind_and_activate:
+        wenn bind_and_activate:
             try:
                 self.server_bind()
                 self.server_activate()
@@ -466,11 +466,11 @@ klasse TCPServer(BaseServer):
         May be overridden.
 
         """
-        if self.allow_reuse_address and hasattr(socket, "SO_REUSEADDR"):
+        wenn self.allow_reuse_address and hasattr(socket, "SO_REUSEADDR"):
             self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         # Since Linux 6.12.9, SO_REUSEPORT is not allowed
         # on other address families than AF_INET/AF_INET6.
-        if (
+        wenn (
             self.allow_reuse_port and hasattr(socket, "SO_REUSEPORT")
             and self.address_family in (socket.AF_INET, socket.AF_INET6)
         ):
@@ -553,7 +553,7 @@ klasse UDPServer(TCPServer):
         # No need to close anything.
         pass
 
-if hasattr(os, "fork"):
+wenn hasattr(os, "fork"):
     klasse ForkingMixIn:
         """Mix-in klasse to handle each request in a new process."""
 
@@ -565,7 +565,7 @@ if hasattr(os, "fork"):
 
         def collect_children(self, *, blocking=False):
             """Internal routine to wait fuer children that have exited."""
-            if self.active_children is None:
+            wenn self.active_children is None:
                 return
 
             # If we're above the max number of children, wait and reap them until
@@ -587,13 +587,13 @@ if hasattr(os, "fork"):
             # Now reap all defunct children.
             fuer pid in self.active_children.copy():
                 try:
-                    flags = 0 if blocking else os.WNOHANG
+                    flags = 0 wenn blocking sonst os.WNOHANG
                     pid, _ = os.waitpid(pid, flags)
-                    # if the child hasn't exited yet, pid will be 0 and ignored by
+                    # wenn the child hasn't exited yet, pid will be 0 and ignored by
                     # discard() below
                     self.active_children.discard(pid)
                 except ChildProcessError:
-                    # someone else reaped it
+                    # someone sonst reaped it
                     self.active_children.discard(pid)
                 except OSError:
                     pass
@@ -615,14 +615,14 @@ if hasattr(os, "fork"):
         def process_request(self, request, client_address):
             """Fork a new subprocess to process the request."""
             pid = os.fork()
-            if pid:
+            wenn pid:
                 # Parent process
-                if self.active_children is None:
+                wenn self.active_children is None:
                     self.active_children = set()
                 self.active_children.add(pid)
                 self.close_request(request)
                 return
-            else:
+            sonst:
                 # Child process.
                 # This must never return, hence os._exit()!
                 status = 1
@@ -648,7 +648,7 @@ klasse _Threads(list):
     """
     def append(self, thread):
         self.reap()
-        if thread.daemon:
+        wenn thread.daemon:
             return
         super().append(thread)
 
@@ -661,7 +661,7 @@ klasse _Threads(list):
             thread.join()
 
     def reap(self):
-        self[:] = (thread fuer thread in self if thread.is_alive())
+        self[:] = (thread fuer thread in self wenn thread.is_alive())
 
 
 klasse _NoThreads:
@@ -702,7 +702,7 @@ klasse ThreadingMixIn:
 
     def process_request(self, request, client_address):
         """Start a new thread to process the request."""
-        if self.block_on_close:
+        wenn self.block_on_close:
             vars(self).setdefault('_threads', _Threads())
         t = threading.Thread(target = self.process_request_thread,
                              args = (request, client_address))
@@ -715,14 +715,14 @@ klasse ThreadingMixIn:
         self._threads.join()
 
 
-if hasattr(os, "fork"):
+wenn hasattr(os, "fork"):
     klasse ForkingUDPServer(ForkingMixIn, UDPServer): pass
     klasse ForkingTCPServer(ForkingMixIn, TCPServer): pass
 
 klasse ThreadingUDPServer(ThreadingMixIn, UDPServer): pass
 klasse ThreadingTCPServer(ThreadingMixIn, TCPServer): pass
 
-if hasattr(socket, 'AF_UNIX'):
+wenn hasattr(socket, 'AF_UNIX'):
 
     klasse UnixStreamServer(TCPServer):
         address_family = socket.AF_UNIX
@@ -734,7 +734,7 @@ if hasattr(socket, 'AF_UNIX'):
 
     klasse ThreadingUnixDatagramServer(ThreadingMixIn, UnixDatagramServer): pass
 
-    if hasattr(os, "fork"):
+    wenn hasattr(os, "fork"):
         klasse ForkingUnixStreamServer(ForkingMixIn, UnixStreamServer): pass
 
         klasse ForkingUnixDatagramServer(ForkingMixIn, UnixDatagramServer): pass
@@ -799,28 +799,28 @@ klasse StreamRequestHandler(BaseRequestHandler):
     rbufsize = -1
     wbufsize = 0
 
-    # A timeout to apply to the request socket, if not None.
+    # A timeout to apply to the request socket, wenn not None.
     timeout = None
 
-    # Disable nagle algorithm fuer this socket, if True.
+    # Disable nagle algorithm fuer this socket, wenn True.
     # Use only when wbufsize != 0, to avoid small packets.
     disable_nagle_algorithm = False
 
     def setup(self):
         self.connection = self.request
-        if self.timeout is not None:
+        wenn self.timeout is not None:
             self.connection.settimeout(self.timeout)
-        if self.disable_nagle_algorithm:
+        wenn self.disable_nagle_algorithm:
             self.connection.setsockopt(socket.IPPROTO_TCP,
                                        socket.TCP_NODELAY, True)
         self.rfile = self.connection.makefile('rb', self.rbufsize)
-        if self.wbufsize == 0:
+        wenn self.wbufsize == 0:
             self.wfile = _SocketWriter(self.connection)
-        else:
+        sonst:
             self.wfile = self.connection.makefile('wb', self.wbufsize)
 
     def finish(self):
-        if not self.wfile.closed:
+        wenn not self.wfile.closed:
             try:
                 self.wfile.flush()
             except socket.error:

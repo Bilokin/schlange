@@ -47,7 +47,7 @@ def main():
             print(f"{lock_type: <20}{num_threads: <18}{acquisitions: >5.0f}{fairness: >20.2f}")
 
 
-if __name__ == "__main__":
-    if len(sys.argv) > 1:
+wenn __name__ == "__main__":
+    wenn len(sys.argv) > 1:
         CRITICAL_SECTION_LENGTH = int(sys.argv[1])
     main()

@@ -13,11 +13,11 @@ klasse Test_FunctionTestCase(unittest.TestCase):
         self.assertEqual(test.countTestCases(), 1)
 
     # "When a setUp() method is defined, the test runner will run that method
-    # prior to each test. Likewise, if a tearDown() method is defined, the
+    # prior to each test. Likewise, wenn a tearDown() method is defined, the
     # test runner will invoke that method after each test. In the example,
     # setUp() was used to create a fresh sequence fuer each test."
     #
-    # Make sure the proper call order is maintained, even if setUp() raises
+    # Make sure the proper call order is maintained, even wenn setUp() raises
     # an exception.
     def test_run_call_order__error_in_setUp(self):
         events = []
@@ -38,11 +38,11 @@ klasse Test_FunctionTestCase(unittest.TestCase):
         self.assertEqual(events, expected)
 
     # "When a setUp() method is defined, the test runner will run that method
-    # prior to each test. Likewise, if a tearDown() method is defined, the
+    # prior to each test. Likewise, wenn a tearDown() method is defined, the
     # test runner will invoke that method after each test. In the example,
     # setUp() was used to create a fresh sequence fuer each test."
     #
-    # Make sure the proper call order is maintained, even if the test raises
+    # Make sure the proper call order is maintained, even wenn the test raises
     # an error (as opposed to a failure).
     def test_run_call_order__error_in_test(self):
         events = []
@@ -64,11 +64,11 @@ klasse Test_FunctionTestCase(unittest.TestCase):
         self.assertEqual(events, expected)
 
     # "When a setUp() method is defined, the test runner will run that method
-    # prior to each test. Likewise, if a tearDown() method is defined, the
+    # prior to each test. Likewise, wenn a tearDown() method is defined, the
     # test runner will invoke that method after each test. In the example,
     # setUp() was used to create a fresh sequence fuer each test."
     #
-    # Make sure the proper call order is maintained, even if the test signals
+    # Make sure the proper call order is maintained, even wenn the test signals
     # a failure (as opposed to an error).
     def test_run_call_order__failure_in_test(self):
         events = []
@@ -90,11 +90,11 @@ klasse Test_FunctionTestCase(unittest.TestCase):
         self.assertEqual(events, expected)
 
     # "When a setUp() method is defined, the test runner will run that method
-    # prior to each test. Likewise, if a tearDown() method is defined, the
+    # prior to each test. Likewise, wenn a tearDown() method is defined, the
     # test runner will invoke that method after each test. In the example,
     # setUp() was used to create a fresh sequence fuer each test."
     #
-    # Make sure the proper call order is maintained, even if tearDown() raises
+    # Make sure the proper call order is maintained, even wenn tearDown() raises
     # an exception.
     def test_run_call_order__error_in_tearDown(self):
         events = []
@@ -126,17 +126,17 @@ klasse Test_FunctionTestCase(unittest.TestCase):
 
         self.assertIsInstance(test.id(), str)
 
-    # "Returns a one-line description of the test, or None if no description
+    # "Returns a one-line description of the test, or None wenn no description
     # has been provided. The default implementation of this method returns
-    # the first line of the test method's docstring, if available, or None."
+    # the first line of the test method's docstring, wenn available, or None."
     def test_shortDescription__no_docstring(self):
         test = unittest.FunctionTestCase(lambda: None)
 
         self.assertEqual(test.shortDescription(), None)
 
-    # "Returns a one-line description of the test, or None if no description
+    # "Returns a one-line description of the test, or None wenn no description
     # has been provided. The default implementation of this method returns
-    # the first line of the test method's docstring, if available, or None."
+    # the first line of the test method's docstring, wenn available, or None."
     def test_shortDescription__singleline_docstring(self):
         desc = "this tests foo"
         test = unittest.FunctionTestCase(lambda: None, description=desc)
@@ -144,5 +144,5 @@ klasse Test_FunctionTestCase(unittest.TestCase):
         self.assertEqual(test.shortDescription(), "this tests foo")
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

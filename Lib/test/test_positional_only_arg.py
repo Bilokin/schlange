@@ -442,11 +442,11 @@ klasse PositionalOnlyTestCase(unittest.TestCase):
         # COMPARE_OP(is), IS_OP (0)
         # with constant folding we should expect a IS_OP (1)
         code_obj = next(const fuer const in g.__code__.co_consts
-                        if isinstance(const, types.CodeType) and const.co_name == "__annotate__")
+                        wenn isinstance(const, types.CodeType) and const.co_name == "__annotate__")
         codes = [(i.opname, i.argval) fuer i in dis.get_instructions(code_obj)]
         self.assertNotIn(('UNARY_NOT', None), codes)
         self.assertIn(('IS_OP', 1), codes)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

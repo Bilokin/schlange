@@ -6,7 +6,7 @@ def main():
     filenames, hashes, sizes = [], [], []
 
     fuer file in sys.argv[1:]:
-        if not os.path.isfile(file):
+        wenn not os.path.isfile(file):
             continue
 
         with open(file, 'rb') as f:
@@ -23,5 +23,5 @@ def main():
 
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     sys.exit(int(main() or 0))

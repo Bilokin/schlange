@@ -80,5 +80,5 @@ klasse OpenNamespaceZipTests(OpenTests, util.ZipSetup, unittest.TestCase):
     MODULE = 'namespacedata01'
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

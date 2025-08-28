@@ -30,7 +30,7 @@ klasse Slot:
         self.name = None
 
     def __set_name__(self, cls, name):
-        if self.name is not None:
+        wenn self.name is not None:
             raise TypeError('already used')
         self.name = name
         try:
@@ -41,29 +41,29 @@ klasse Slot:
         self._ensure___del__(cls, slotnames)
 
     def __get__(self, obj, cls):
-        if obj is None:  # called on the class
+        wenn obj is None:  # called on the class
             return self
         try:
             value = self.instances[id(obj)]
         except KeyError:
-            if self.initial is _NOT_SET:
+            wenn self.initial is _NOT_SET:
                 value = self.default
-            else:
+            sonst:
                 value = self.initial
             self.instances[id(obj)] = value
-        if value is _NOT_SET:
+        wenn value is _NOT_SET:
             raise AttributeError(self.name)
         # XXX Optionally make a copy?
         return value
 
     def __set__(self, obj, value):
-        if self.readonly:
+        wenn self.readonly:
             raise AttributeError(f'{self.name} is readonly')
         # XXX Optionally coerce?
         self.instances[id(obj)] = value
 
     def __delete__(self, obj):
-        if self.readonly:
+        wenn self.readonly:
             raise AttributeError(f'{self.name} is readonly')
         self.instances[id(obj)] = self.default  # XXX refleak?
 
@@ -72,8 +72,8 @@ klasse Slot:
             old___del__ = cls.__del__
         except AttributeError:
             old___del__ = (lambda s: None)
-        else:
-            if getattr(old___del__, '_slotted', False):
+        sonst:
+            wenn getattr(old___del__, '_slotted', False):
                 return
 
         def __del__(_self):
@@ -86,7 +86,7 @@ klasse Slot:
     def set(self, obj, value):
         """Update the cached value fuer an object.
 
-        This works even if the descriptor is read-only.  This is
+        This works even wenn the descriptor is read-only.  This is
         particularly useful when initializing the object (e.g. in
         its __new__ or __init__).
         """
@@ -106,12 +106,12 @@ klasse classonly:
         self.name = None
 
     def __set_name__(self, cls, name):
-        if self.name is not None:
+        wenn self.name is not None:
             raise TypeError('already used')
         self.name = name
 
     def __get__(self, obj, cls):
-        if obj is not None:
+        wenn obj is not None:
             raise AttributeError(self.name)
         # called on the class
         return self.getter(None, cls)

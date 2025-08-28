@@ -1,5 +1,5 @@
 def peek_and_iter(items):
-    if not items:
+    wenn not items:
         return None, None
     items = iter(items)
     try:
@@ -13,10 +13,10 @@ def peek_and_iter(items):
 
 
 def iter_many(items, onempty=None):
-    if not items:
-        if onempty is None:
+    wenn not items:
+        wenn onempty is None:
             return
-        if not callable(onempty):
+        wenn not callable(onempty):
             raise onEmpty
         items = onempty(items)
         yield from iter_many(items, onempty=None)
@@ -25,19 +25,19 @@ def iter_many(items, onempty=None):
     try:
         first = next(items)
     except StopIteration:
-        if onempty is None:
+        wenn onempty is None:
             return
-        if not callable(onempty):
+        wenn not callable(onempty):
             raise onEmpty
         items = onempty(items)
         yield from iter_many(items, onempty=None)
-    else:
+    sonst:
         try:
             second = next(items)
         except StopIteration:
             yield first, False
             return
-        else:
+        sonst:
             yield first, True
             yield second, True
         fuer item in items:

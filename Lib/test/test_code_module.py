@@ -24,7 +24,7 @@ klasse MockSys:
         self.stderr = stack.enter_context(mock.patch('code.sys.stderr'))
         prepatch = mock.patch('code.sys', wraps=code.sys, spec=code.sys)
         self.sysmod = stack.enter_context(prepatch)
-        if sys.excepthook is sys.__excepthook__:
+        wenn sys.excepthook is sys.__excepthook__:
             self.sysmod.excepthook = self.sysmod.__excepthook__
         del self.sysmod.ps1
         del self.sysmod.ps2
@@ -86,9 +86,9 @@ klasse TestInteractiveConsole(unittest.TestCase, MockSys):
         self.infunc.side_effect = ["'antioch'", "", EOFError('Finished')]
         self.console.interact()
         fuer call in list(self.stdout.method_calls):
-            if 'antioch' in ''.join(call[1]):
+            wenn 'antioch' in ''.join(call[1]):
                 break
-        else:
+        sonst:
             raise AssertionError("no console stdout")
 
     def test_syntax_error(self):
@@ -210,7 +210,7 @@ klasse TestInteractiveConsole(unittest.TestCase, MockSys):
         self.sysmod.excepthook = 1
         self.console.interact()
         self.assertEqual(['write', ('123', ), {}], self.stdout.method_calls[0])
-        error = "".join(call.args[0] fuer call in self.stderr.method_calls if call[0] == 'write')
+        error = "".join(call.args[0] fuer call in self.stderr.method_calls wenn call[0] == 'write')
         self.assertIn("Error in sys.excepthook:", error)
         self.assertEqual(error.count("'int' object is not callable"), 1)
         self.assertIn("Original exception was:", error)
@@ -224,7 +224,7 @@ klasse TestInteractiveConsole(unittest.TestCase, MockSys):
         self.sysmod.excepthook = raise_base
         self.console.interact()
         self.assertEqual(['write', ('123', ), {}], self.stdout.method_calls[0])
-        error = "".join(call.args[0] fuer call in self.stderr.method_calls if call[0] == 'write')
+        error = "".join(call.args[0] fuer call in self.stderr.method_calls wenn call[0] == 'write')
         self.assertIn("Error in sys.excepthook:", error)
         self.assertEqual(error.count("not so fast"), 1)
         self.assertIn("Original exception was:", error)
@@ -342,5 +342,5 @@ klasse TestInteractiveConsoleLocalExit(unittest.TestCase, MockSys):
         self.assertEqual(err_msg, ['write', (expected,), {}])
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

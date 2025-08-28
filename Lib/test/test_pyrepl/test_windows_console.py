@@ -1,7 +1,7 @@
 import sys
 import unittest
 
-if sys.platform != "win32":
+wenn sys.platform != "win32":
     raise unittest.SkipTest("test only relevant on win32")
 
 
@@ -552,7 +552,7 @@ klasse WindowsConsoleGetEventTests(TestCase):
     # virtual terminal tests
     # Note: wVirtualKeyCode, wVirtualScanCode and dwControlKeyState
     # are always zero in this case.
-    # "\r" and backspace are handled specially, everything else
+    # "\r" and backspace are handled specially, everything sonst
     # is handled in "elif self.__vt_support:" in WindowsConsole.get_event().
     # Hence, only one regular key ("m") and a terminal sequence
     # are sufficient to test here, the real tests happen in test_eventqueue
@@ -577,5 +577,5 @@ klasse WindowsConsoleGetEventTests(TestCase):
         self.assertEqual(self.mock.call_count, 3)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

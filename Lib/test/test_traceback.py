@@ -30,7 +30,7 @@ from functools import partial
 from pathlib import Path
 import _colorize
 
-MODULE_PREFIX = f'{__name__}.' if __name__ == '__main__' else ''
+MODULE_PREFIX = f'{__name__}.' wenn __name__ == '__main__' sonst ''
 
 test_code = namedtuple('code', ['co_filename', 'co_name'])
 test_code.co_positions = lambda _: iter([(6, 6, 0, 0)])
@@ -64,7 +64,7 @@ klasse TracebackCases(unittest.TestCase):
             func()
         except exc as value:
             return traceback.format_exception_only(exc, value)
-        else:
+        sonst:
             raise ValueError("call did not raise exception")
 
     def syntax_error_with_caret(self):
@@ -133,7 +133,7 @@ klasse TracebackCases(unittest.TestCase):
 
     @force_not_colorized
     def test_no_caret_with_no_debug_ranges_flag(self):
-        # Make sure that if `-X no_debug_ranges` is used, there are no carets
+        # Make sure that wenn `-X no_debug_ranges` is used, there are no carets
         # in the traceback.
         try:
             with open(TESTFN, 'w') as f:
@@ -227,9 +227,9 @@ klasse TracebackCases(unittest.TestCase):
         err = traceback.format_exception_only(X, X())
         self.assertEqual(len(err), 1)
         str_value = '<exception str() failed>'
-        if X.__module__ in ('__main__', 'builtins'):
+        wenn X.__module__ in ('__main__', 'builtins'):
             str_name = X.__qualname__
-        else:
+        sonst:
             str_name = '.'.join([X.__module__, X.__qualname__])
         self.assertEqual(err[0], "%s: %s\n" % (str_name, str_value))
 
@@ -399,10 +399,10 @@ klasse TracebackCases(unittest.TestCase):
             with self.subTest(exc=exc):
                 err = traceback.format_exception_only(exc, show_group=True)
                 # Should not raise an exception:
-                if exc.lineno is not None:
+                wenn exc.lineno is not None:
                     self.assertEqual(len(err), 2)
                     self.assertTrue(err[0].startswith('  File'))
-                else:
+                sonst:
                     self.assertEqual(len(err), 1)
                 self.assertEqual(err[-1], 'SyntaxError: error\n')
 
@@ -456,11 +456,11 @@ klasse TracebackCases(unittest.TestCase):
 
         do_test("", "foo", "ascii", 3)
         fuer charset in ("ascii", "iso-8859-1", "utf-8", "GBK"):
-            if charset == "ascii":
+            wenn charset == "ascii":
                 text = "foo"
-            elif charset == "GBK":
+            sowenn charset == "GBK":
                 text = "\u4E02\u5100"
-            else:
+            sonst:
                 text = "h\xe9 ho"
             do_test("# coding: {0}\n".format(charset),
                     text, charset, 4)
@@ -582,7 +582,7 @@ klasse PurePythonExceptionFormattingMixin:
             callable()
         except BaseException:
             return traceback.format_exc().splitlines()[slice_start:slice_end]
-        else:
+        sonst:
             self.fail("No exception thrown.")
 
     callable_line = get_exception.__code__.co_firstlineno + 2
@@ -615,7 +615,7 @@ klasse TracebackErrorLocationCaretTestBase:
         # NOTE: In caret tests, "if True:" is used as a way to force indicator
         #   display, since the raising expression spans only part of the line.
         def f():
-            if True: raise ValueError("basic caret tests")
+            wenn True: raise ValueError("basic caret tests")
 
         lineno_f = f.__code__.co_firstlineno
         expected_f = (
@@ -624,17 +624,17 @@ klasse TracebackErrorLocationCaretTestBase:
             '    callable()\n'
             '    ~~~~~~~~^^\n'
             f'  File "{__file__}", line {lineno_f+1}, in f\n'
-            '    if True: raise ValueError("basic caret tests")\n'
+            '    wenn True: raise ValueError("basic caret tests")\n'
             '             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n'
         )
         result_lines = self.get_exception(f)
         self.assertEqual(result_lines, expected_f.splitlines())
 
     def test_line_with_unicode(self):
-        # Make sure that even if a line contains multi-byte unicode characters
+        # Make sure that even wenn a line contains multi-byte unicode characters
         # the correct carets are printed.
         def f_with_unicode():
-            if True: raise ValueError("Ĥellö Wörld")
+            wenn True: raise ValueError("Ĥellö Wörld")
 
         lineno_f = f_with_unicode.__code__.co_firstlineno
         expected_f = (
@@ -643,7 +643,7 @@ klasse TracebackErrorLocationCaretTestBase:
             '    callable()\n'
             '    ~~~~~~~~^^\n'
             f'  File "{__file__}", line {lineno_f+1}, in f_with_unicode\n'
-            '    if True: raise ValueError("Ĥellö Wörld")\n'
+            '    wenn True: raise ValueError("Ĥellö Wörld")\n'
             '             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n'
         )
         result_lines = self.get_exception(f_with_unicode)
@@ -674,7 +674,7 @@ klasse TracebackErrorLocationCaretTestBase:
         # Make sure no carets are printed fuer expressions spanning multiple
         # lines.
         def f_with_multiline():
-            if True: raise ValueError(
+            wenn True: raise ValueError(
                 "error over multiple lines"
             )
 
@@ -685,7 +685,7 @@ klasse TracebackErrorLocationCaretTestBase:
             '    callable()\n'
             '    ~~~~~~~~^^\n'
             f'  File "{__file__}", line {lineno_f+1}, in f_with_multiline\n'
-            '    if True: raise ValueError(\n'
+            '    wenn True: raise ValueError(\n'
             '             ^^^^^^^^^^^^^^^^^\n'
             '        "error over multiple lines"\n'
             '        ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n'
@@ -1135,7 +1135,7 @@ klasse TracebackErrorLocationCaretTestBase:
     def test_many_lines(self):
         def f():
             x = 1
-            if True: x += (
+            wenn True: x += (
                 "a" +
                 "a"
             )  # test
@@ -1147,7 +1147,7 @@ klasse TracebackErrorLocationCaretTestBase:
             '    callable()\n'
             '    ~~~~~~~~^^\n'
             f'  File "{__file__}", line {lineno_f+2}, in f\n'
-            '    if True: x += (\n'
+            '    wenn True: x += (\n'
             '             ^^^^^^\n'
             '    ...<2 lines>...\n'
             '    )  # test\n'
@@ -1263,7 +1263,7 @@ klasse TracebackErrorLocationCaretTestBase:
         self.assertEqual(result_lines, expected_error.splitlines())
 
     def test_secondary_caret_not_elided(self):
-        # Always show a line's indicators if they include the secondary character.
+        # Always show a line's indicators wenn they include the secondary character.
         def f_with_subscript():
             some_dict = {'x': {'y': None}}
             some_dict['x']['y']['z']
@@ -1287,7 +1287,7 @@ klasse TracebackErrorLocationCaretTestBase:
         # The implementation must account fuer both "indent" and "margin" offsets.
 
         def exc():
-            if True: raise ExceptionGroup("eg", [ValueError(1), TypeError(2)])
+            wenn True: raise ExceptionGroup("eg", [ValueError(1), TypeError(2)])
 
         expected_error = (
              f'  + Exception Group Traceback (most recent call last):\n'
@@ -1295,7 +1295,7 @@ klasse TracebackErrorLocationCaretTestBase:
              f'  |     callable()\n'
              f'  |     ~~~~~~~~^^\n'
              f'  |   File "{__file__}", line {exc.__code__.co_firstlineno + 1}, in exc\n'
-             f'  |     if True: raise ExceptionGroup("eg", [ValueError(1), TypeError(2)])\n'
+             f'  |     wenn True: raise ExceptionGroup("eg", [ValueError(1), TypeError(2)])\n'
              f'  |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n'
              f'  | ExceptionGroup: eg (2 sub-exceptions)\n'
              f'  +-+---------------- 1 ----------------\n'
@@ -1829,10 +1829,10 @@ klasse TracebackFormatMixin:
         raise KeyError('blah')
 
     def _filter_debug_ranges(self, expected):
-        return [line fuer line in expected if not set(line.strip()) <= set("^~")]
+        return [line fuer line in expected wenn not set(line.strip()) <= set("^~")]
 
     def _maybe_filter_debug_ranges(self, expected):
-        if not self.DEBUG_RANGES:
+        wenn not self.DEBUG_RANGES:
             return self._filter_debug_ranges(expected)
         return expected
 
@@ -1843,7 +1843,7 @@ klasse TracebackFormatMixin:
             self.some_exception()
         except KeyError as e:
             tb = e.__traceback__
-            if cleanup_func is not None:
+            wenn cleanup_func is not None:
                 # Clear the inner frames, not this one
                 cleanup_func(tb.tb_next)
             traceback_fmt = 'Traceback (most recent call last):\n' + \
@@ -1866,7 +1866,7 @@ klasse TracebackFormatMixin:
             excfmt = traceback.format_exc()
             excfile = StringIO()
             traceback.print_exc(file=excfile)
-        else:
+        sonst:
             raise Error("unable to create test traceback string")
 
         # Make sure that Python and the traceback module format the same thing
@@ -1937,7 +1937,7 @@ klasse TracebackFormatMixin:
                 f()
             except RecursionError:
                 render_exc()
-            else:
+            sonst:
                 self.fail("no recursion occurred")
 
         lineno_f = f.__code__.co_firstlineno
@@ -1979,7 +1979,7 @@ klasse TracebackFormatMixin:
 
         # Check a known (limited) number of recursive invocations
         def g(count=10):
-            if count:
+            wenn count:
                 return g(count-1) + 1
             raise ValueError
 
@@ -1988,7 +1988,7 @@ klasse TracebackFormatMixin:
                 g()
             except ValueError:
                 render_exc()
-            else:
+            sonst:
                 self.fail("no value error was raised")
 
         lineno_g = g.__code__.co_firstlineno
@@ -2019,7 +2019,7 @@ klasse TracebackFormatMixin:
 
         # Check 2 different repetitive sections
         def h(count=10):
-            if count:
+            wenn count:
                 return h(count-1)
             g()
 
@@ -2028,7 +2028,7 @@ klasse TracebackFormatMixin:
                 h()
             except ValueError:
                 render_exc()
-            else:
+            sonst:
                 self.fail("no value error was raised")
 
         lineno_h = h.__code__.co_firstlineno
@@ -2058,7 +2058,7 @@ klasse TracebackFormatMixin:
                 g(traceback._RECURSIVE_CUTOFF)
             except ValueError:
                 render_exc()
-            else:
+            sonst:
                 self.fail("no error raised")
         result_g = (
             f'  File "{__file__}", line {lineno_g+2}, in g\n'
@@ -2090,7 +2090,7 @@ klasse TracebackFormatMixin:
                 g(traceback._RECURSIVE_CUTOFF + 1)
             except ValueError:
                 render_exc()
-            else:
+            sonst:
                 self.fail("no error raised")
         result_g = (
             f'  File "{__file__}", line {lineno_g+2}, in g\n'
@@ -2119,9 +2119,9 @@ klasse TracebackFormatMixin:
 
     @requires_debug_ranges()
     def test_recursive_traceback(self):
-        if self.DEBUG_RANGES:
+        wenn self.DEBUG_RANGES:
             self._check_recursive_traceback_display(traceback.print_exc)
-        else:
+        sonst:
             from _testcapi import exception_print
             def render_exc():
                 exception_print(sys.exception())
@@ -2248,7 +2248,7 @@ klasse TestFallbackTracebackFormat(unittest.TestCase, TracebackFormatMixin):
 klasse BaseExceptionReportingTests:
 
     def get_exception(self, exception_or_callable):
-        if isinstance(exception_or_callable, BaseException):
+        wenn isinstance(exception_or_callable, BaseException):
             return exception_or_callable
         try:
             exception_or_callable()
@@ -2262,10 +2262,10 @@ klasse BaseExceptionReportingTests:
 
     def check_zero_div(self, msg):
         lines = msg.splitlines()
-        if has_no_debug_ranges():
+        wenn has_no_debug_ranges():
             self.assertStartsWith(lines[-3], '  File')
             self.assertIn('1/0 # In zero_div', lines[-2])
-        else:
+        sonst:
             self.assertStartsWith(lines[-4], '  File')
             self.assertIn('1/0 # In zero_div', lines[-3])
         self.assertStartsWith(lines[-1], 'ZeroDivisionError')
@@ -2276,10 +2276,10 @@ klasse BaseExceptionReportingTests:
         except ZeroDivisionError as _:
             e = _
         lines = self.get_report(e).splitlines()
-        if has_no_debug_ranges():
+        wenn has_no_debug_ranges():
             self.assertEqual(len(lines), 4)
             self.assertStartsWith(lines[3], 'ZeroDivisionError')
-        else:
+        sonst:
             self.assertEqual(len(lines), 5)
             self.assertStartsWith(lines[4], 'ZeroDivisionError')
         self.assertStartsWith(lines[0], 'Traceback')
@@ -2424,14 +2424,14 @@ klasse BaseExceptionReportingTests:
             fuer add in [0, 2]:
                 text = " " * add + "text%d" % offset
                 expected = ['  File "file.py", line 1']
-                if offset < 1:
+                wenn offset < 1:
                     expected.append("    %s" % text.lstrip())
-                elif offset <= 6:
+                sowenn offset <= 6:
                     expected.append("    %s" % text.lstrip())
                     # Set the caret length to match the length of the text minus the offset.
                     caret_length = max(1, len(text.lstrip()) - offset + 1)
                     expected.append("    %s%s" % (" " * (offset - 1), "^" * caret_length))
-                else:
+                sonst:
                     caret_length = max(1, len(text.lstrip()) - 4)
                     expected.append("    %s" % text.lstrip())
                     expected.append("    %s%s" % (" " * 5, "^" * caret_length))
@@ -2506,7 +2506,7 @@ klasse BaseExceptionReportingTests:
         klasse BrokenException(Exception):
             broken = False
             def __getattr__(self, name):
-                if self.broken:
+                wenn self.broken:
                     raise ValueError(f'no {name}')
 
         e = BrokenException(123)
@@ -2562,9 +2562,9 @@ klasse BaseExceptionReportingTests:
             with self.subTest(modulename=modulename):
                 err = self.get_report(X())
                 str_value = 'I am X'
-                if modulename in ['builtins', '__main__']:
+                wenn modulename in ['builtins', '__main__']:
                     str_name = X.__qualname__
-                else:
+                sonst:
                     str_name = '.'.join([X.__module__, X.__qualname__])
                 exp = "%s: %s\n" % (str_name, str_value)
                 self.assertEqual(exp, err)
@@ -3409,7 +3409,7 @@ klasse TestStack(unittest.TestCase):
 
         klasse Skip_G(traceback.StackSummary):
             def format_frame_summary(self, frame_summary, colorize=False):
-                if frame_summary.name == 'g':
+                wenn frame_summary.name == 'g':
                     return None
                 return super().format_frame_summary(frame_summary)
 
@@ -3500,10 +3500,10 @@ klasse TestTracebackException(unittest.TestCase):
         klasse MyException(Exception):
             pass
 
-        if __name__ == '__main__':
+        wenn __name__ == '__main__':
             expected = ('TestTracebackException.'
                         'test_smoke_user_exception.<locals>.MyException')
-        else:
+        sonst:
             expected = ('test.test_traceback.TestTracebackException.'
                         'test_smoke_user_exception.<locals>.MyException')
         self.do_test_smoke(MyException('bad things happened'), expected)
@@ -3590,7 +3590,7 @@ klasse TestTracebackException(unittest.TestCase):
             f()
         except RecursionError as e:
             exc_obj = e
-        else:
+        sonst:
             self.fail("Exception not raised")
 
         te = traceback.TracebackException.from_exception(exc_obj)
@@ -3599,7 +3599,7 @@ klasse TestTracebackException(unittest.TestCase):
         # many ZeroDiv errors followed by the RecursionError
         self.assertGreater(len(res), sys.getrecursionlimit())
         self.assertGreater(
-            len([l fuer l in res if 'ZeroDivisionError:' in l]),
+            len([l fuer l in res wenn 'ZeroDivisionError:' in l]),
             sys.getrecursionlimit() * 0.5)
         self.assertIn(
             "RecursionError: maximum recursion depth exceeded", res[-1])
@@ -3752,9 +3752,9 @@ klasse TestTracebackException(unittest.TestCase):
 
     def test_limit(self):
         def recurse(n):
-            if n:
+            wenn n:
                 recurse(n-1)
-            else:
+            sonst:
                 1/0
         try:
             recurse(10)
@@ -3797,7 +3797,7 @@ klasse TestTracebackException(unittest.TestCase):
         self.assertEqual(exc.stack[0].locals, None)
 
     def test_traceback_header(self):
-        # do not print a traceback header if exc_traceback is None
+        # do not print a traceback header wenn exc_traceback is None
         # see issue #24695
         exc = traceback.TracebackException(Exception, Exception("haven"), None)
         self.assertEqual(list(exc.format()), ["Exception: haven\n"])
@@ -4068,10 +4068,10 @@ klasse SuggestionFormattingTestMixin:
     attr_function = getattr
 
     def get_suggestion(self, obj, attr_name=None):
-        if attr_name is not None:
+        wenn attr_name is not None:
             def callable():
                 self.attr_function(obj, attr_name)
-        else:
+        sonst:
             callable = obj
 
         result_lines = self.get_exception(
@@ -4374,7 +4374,7 @@ klasse SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
 
         obj = Outer()
         # Verify that 'inner' is indeed present but after position 20
-        attrs = [x fuer x in sorted(dir(obj)) if not x.startswith('_')]
+        attrs = [x fuer x in sorted(dir(obj)) wenn not x.startswith('_')]
         inner_position = attrs.index('inner')
         self.assertGreater(inner_position, 19, "inner should be after position 20 in sorted attributes")
 
@@ -4437,7 +4437,7 @@ klasse SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
         # Test that exceptions in hasattr don't crash the system
         klasse WeirdObject:
             def __getattr__(self, name):
-                if name == 'target':
+                wenn name == 'target':
                     raise RuntimeError("Can't check fuer target attribute")
                 raise AttributeError(f"No attribute {name}")
 
@@ -4825,9 +4825,9 @@ klasse SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
         # gh-132385
         klasse A:
             def __getattr__(self, key):
-                if key == 'foo':
+                wenn key == 'foo':
                     raise AttributeError('foo')
-                if key == 'spam':
+                wenn key == 'spam':
                     raise ValueError('spam')
 
             def bar(self):
@@ -4940,10 +4940,10 @@ klasse MiscTest(unittest.TestCase):
     def test_all(self):
         expected = set()
         fuer name in dir(traceback):
-            if name.startswith('_'):
+            wenn name.startswith('_'):
                 continue
             module_object = getattr(traceback, name)
-            if getattr(module_object, '__module__', None) == 'traceback':
+            wenn getattr(module_object, '__module__', None) == 'traceback':
                 expected.add(name)
         self.assertCountEqual(traceback.__all__, expected)
 
@@ -4978,7 +4978,7 @@ klasse MiscTest(unittest.TestCase):
 
     @support.requires_resource('cpu')
     def test_levenshtein_distance_short_circuit(self):
-        if not LEVENSHTEIN_DATA_FILE.is_file():
+        wenn not LEVENSHTEIN_DATA_FILE.is_file():
             self.fail(
                 f"{LEVENSHTEIN_DATA_FILE} is missing."
                 f" Run `make regen-test-levenshtein`"
@@ -5176,5 +5176,5 @@ klasse TestColorizedTraceback(unittest.TestCase):
         ]
         self.assertEqual(actual, expected(**colors))
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

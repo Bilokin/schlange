@@ -42,7 +42,7 @@ klasse BaseTests:
     def writeTmp(self, content, *, mode='w'):  # opening in text mode is the default
         fd, name = tempfile.mkstemp()
         self.addCleanup(os_helper.unlink, name)
-        encoding = None if "b" in mode else "utf-8"
+        encoding = None wenn "b" in mode sonst "utf-8"
         with open(fd, mode, encoding=encoding) as f:
             f.write(content)
         return name
@@ -73,11 +73,11 @@ klasse LineReader:
         size = 0
         while True:
             line = self.readline()
-            if not line:
+            wenn not line:
                 return lines
             lines.append(line)
             size += len(line)
-            if size >= hint:
+            wenn size >= hint:
                 return lines
 
     def close(self):
@@ -93,7 +93,7 @@ klasse BufferSizesTests(BaseTests, unittest.TestCase):
 
         pat = re.compile(r'LINE (\d+) OF FILE (\d+)')
 
-        if verbose:
+        wenn verbose:
             print('1. Simple iteration')
         fi = FileInput(files=(t1, t2, t3, t4), encoding="utf-8")
         lines = list(fi)
@@ -104,7 +104,7 @@ klasse BufferSizesTests(BaseTests, unittest.TestCase):
         self.assertEqual(fi.lineno(), 31)
         self.assertEqual(fi.filename(), t4)
 
-        if verbose:
+        wenn verbose:
             print('2. Status variables')
         fi = FileInput(files=(t1, t2, t3, t4), encoding="utf-8")
         s = "x"
@@ -116,14 +116,14 @@ klasse BufferSizesTests(BaseTests, unittest.TestCase):
         self.assertFalse(fi.isfirstline())
         self.assertFalse(fi.isstdin())
 
-        if verbose:
+        wenn verbose:
             print('3. Nextfile')
         fi.nextfile()
         self.assertEqual(fi.readline(), 'Line 1 of file 3\n')
         self.assertEqual(fi.lineno(), 22)
         fi.close()
 
-        if verbose:
+        wenn verbose:
             print('4. Stdin')
         fi = FileInput(files=(t1, t2, t3, t4, '-'), encoding="utf-8")
         savestdin = sys.stdin
@@ -137,7 +137,7 @@ klasse BufferSizesTests(BaseTests, unittest.TestCase):
         finally:
             sys.stdin = savestdin
 
-        if verbose:
+        wenn verbose:
             print('5. Boundary conditions')
         fi = FileInput(files=(t1, t2, t3, t4), encoding="utf-8")
         self.assertEqual(fi.lineno(), 0)
@@ -146,7 +146,7 @@ klasse BufferSizesTests(BaseTests, unittest.TestCase):
         self.assertEqual(fi.lineno(), 0)
         self.assertEqual(fi.filename(), None)
 
-        if verbose:
+        wenn verbose:
             print('6. Inplace')
         savestdout = sys.stdout
         try:
@@ -210,7 +210,7 @@ klasse FileInputTests(BaseTests, unittest.TestCase):
 ##         #     So is this needed?
 ##         t1 = self.writeTmp("A\nB")
 ##         encoding = sys.getfilesystemencoding()
-##         if encoding is None:
+##         wenn encoding is None:
 ##             encoding = 'ascii'
 ##         fi = FileInput(files=str(t1, encoding), encoding="utf-8")
 ##         lines = list(fi)
@@ -256,7 +256,7 @@ klasse FileInputTests(BaseTests, unittest.TestCase):
         try:
             # cannot use openhook and inplace mode
             fi = FileInput(inplace=True, openhook=lambda f, m: None)
-            self.fail("FileInput should raise if both inplace "
+            self.fail("FileInput should raise wenn both inplace "
                              "and openhook arguments are given")
         except ValueError:
             pass
@@ -631,7 +631,7 @@ klasse Test_fileinput_close(BaseFileInputGlobalMethodsTest):
     """Unit tests fuer fileinput.close()"""
 
     def test_state_is_None(self):
-        """Tests that fileinput.close() does nothing if fileinput._state
+        """Tests that fileinput.close() does nothing wenn fileinput._state
            is None"""
         fileinput._state = None
         fileinput.close()
@@ -1003,5 +1003,5 @@ klasse MiscTest(unittest.TestCase):
         support.check__all__(self, fileinput)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

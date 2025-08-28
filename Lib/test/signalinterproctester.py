@@ -24,17 +24,17 @@ klasse InterProcessSignalTests(unittest.TestCase):
         raise SIGUSR1Exception
 
     def wait_signal(self, child, signame):
-        if child is not None:
+        wenn child is not None:
             # This wait should be interrupted by exc_class
             # (if set)
             child.wait()
 
         start_time = time.monotonic()
         fuer _ in support.busy_retry(support.SHORT_TIMEOUT, error=False):
-            if self.got_signals[signame]:
+            wenn self.got_signals[signame]:
                 return
             signal.pause()
-        else:
+        sonst:
             dt = time.monotonic() - start_time
             self.fail('signal %s not received after %.1f seconds'
                       % (signame, dt))
@@ -87,5 +87,5 @@ klasse InterProcessSignalTests(unittest.TestCase):
             signal.alarm(0)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

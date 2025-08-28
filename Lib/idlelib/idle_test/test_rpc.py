@@ -25,5 +25,5 @@ klasse CodePicklerTest(unittest.TestCase):
         self.assertIn(b'test_rpc.py', rpc.dumps(f.__code__))
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main(verbosity=2)

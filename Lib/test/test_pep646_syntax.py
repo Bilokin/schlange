@@ -15,9 +15,9 @@ Setup
     ...        self._setitem_name = name
     ...        self._setitem_val = val
     ...    def __repr__(self):
-    ...        if self._setitem_name is not None:
+    ...        wenn self._setitem_name is not None:
     ...            return f"A[{self._setitem_name}]={self._setitem_val}"
-    ...        elif self._delitem_name is not None:
+    ...        sowenn self._delitem_name is not None:
     ...            return f"delA[{self._delitem_name}]"
     ...    def __getitem__(self, name):
     ...        return ParameterisedA(name)
@@ -325,5 +325,5 @@ def load_tests(loader, tests, pattern):
     return tests
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

@@ -175,7 +175,7 @@ klasse GettextBaseTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.addClassCleanup(os_helper.rmtree, os.path.split(LOCALEDIR)[0])
-        if not os.path.isdir(LOCALEDIR):
+        wenn not os.path.isdir(LOCALEDIR):
             os.makedirs(LOCALEDIR)
         with open(MOFILE, 'wb') as fp:
             fp.write(base64.decodebytes(GNU_MO_DATA))
@@ -377,10 +377,10 @@ klasse PluralFormsTests:
         self.assertEqual(cm.lineno, lineno + 5)
         self.assertEqual(x, tplural)
 
-        if numbers_only:
+        wenn numbers_only:
             with self.assertRaises(TypeError):
                 ngettext(singular, plural, None)
-        else:
+        sonst:
             with self.assertWarns(DeprecationWarning) as cm:
                 x = ngettext(singular, plural, None)
             self.assertEqual(x, tplural)
@@ -816,7 +816,7 @@ klasse FallbackTestCase(GettextBaseTest):
     def test_nested_fallbacks(self):
         klasse NestedFallback(gettext.NullTranslations):
             def gettext(self, message):
-                if message == 'foo':
+                wenn message == 'foo':
                     return 'fallback'
                 return super().gettext(message)
 
@@ -944,7 +944,7 @@ klasse TranslationFallbackTestCase(unittest.TestCase):
             self.assertIsInstance(t, gettext.NullTranslations)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()
 
 

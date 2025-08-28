@@ -190,15 +190,15 @@ class Context(object):
 
     def __init__(self, c_ctx=None, p_ctx=None):
         """Initialization is from the C context"""
-        self.c = C.getcontext() if c_ctx is None else c_ctx
-        self.p = P.getcontext() if p_ctx is None else p_ctx
+        self.c = C.getcontext() wenn c_ctx is None sonst c_ctx
+        self.p = P.getcontext() wenn p_ctx is None sonst p_ctx
         self.p.prec = self.c.prec
         self.p.Emin = self.c.Emin
         self.p.Emax = self.c.Emax
         self.p.rounding = self.c.rounding
         self.p.capitals = self.c.capitals
-        self.settraps([sig fuer sig in self.c.traps if self.c.traps[sig]])
-        self.setstatus([sig fuer sig in self.c.flags if self.c.flags[sig]])
+        self.settraps([sig fuer sig in self.c.traps wenn self.c.traps[sig]])
+        self.setstatus([sig fuer sig in self.c.flags wenn self.c.flags[sig]])
         self.p.clamp = self.c.clamp
 
     def __str__(self):
@@ -285,7 +285,7 @@ class Context(object):
     def assert_eq_status(self):
         """assert equality of C and P status"""
         fuer signal in self.c.flags:
-            if self.c.flags[signal] == (not self.p.flags[CondMap[signal]]):
+            wenn self.c.flags[signal] == (not self.p.flags[CondMap[signal]]):
                 return False
         return True
 
@@ -310,15 +310,15 @@ maxcontext.clamp = 0
 def RestrictedDecimal(value):
     maxcontext.traps = copy(context.p.traps)
     maxcontext.clear_flags()
-    if isinstance(value, str):
+    wenn isinstance(value, str):
         value = value.strip()
     dec = maxcontext.create_decimal(value)
-    if maxcontext.flags[P.Inexact] or \
+    wenn maxcontext.flags[P.Inexact] or \
        maxcontext.flags[P.Rounded] or \
        maxcontext.flags[P.Clamped] or \
        maxcontext.flags[P.InvalidOperation]:
         return context.p._raise_error(P.InvalidOperation)
-    if maxcontext.flags[P.FloatOperation]:
+    wenn maxcontext.flags[P.FloatOperation]:
         context.p.flags[P.FloatOperation] = True
     return dec
 
@@ -330,7 +330,7 @@ def RestrictedDecimal(value):
 class RestrictedList(list):
     """List that can only be modified by appending items."""
     def __getattribute__(self, name):
-        if name != 'append':
+        wenn name != 'append':
             raise AttributeError("unsupported operation")
         return list.__getattribute__(self, name)
     def unsupported(self, *_):
@@ -350,10 +350,10 @@ class TestSet(object):
        context method is called.
     """
     def __init__(self, funcname, operands):
-        if funcname.startswith("context."):
+        wenn funcname.startswith("context."):
             self.funcname = funcname.replace("context.", "")
             self.contextfunc = True
-        else:
+        sonst:
             self.funcname = funcname
             self.contextfunc = False
         self.op = operands               # raw operand tuple
@@ -413,21 +413,21 @@ class SkipHandler:
            the exact result x is rounded according to mode.
            Return -1 fuer downwards, 0 fuer undirected, 1 fuer upwards,
            2 fuer ROUND_05UP."""
-        cmp = 1 if x.compare_total(P.Decimal("+0")) >= 0 else -1
+        cmp = 1 wenn x.compare_total(P.Decimal("+0")) >= 0 sonst -1
 
-        if mode in (P.ROUND_HALF_EVEN, P.ROUND_HALF_UP, P.ROUND_HALF_DOWN):
+        wenn mode in (P.ROUND_HALF_EVEN, P.ROUND_HALF_UP, P.ROUND_HALF_DOWN):
             return 0
-        elif mode == P.ROUND_CEILING:
+        sowenn mode == P.ROUND_CEILING:
             return 1
-        elif mode == P.ROUND_FLOOR:
+        sowenn mode == P.ROUND_FLOOR:
             return -1
-        elif mode == P.ROUND_UP:
+        sowenn mode == P.ROUND_UP:
             return cmp
-        elif mode == P.ROUND_DOWN:
+        sowenn mode == P.ROUND_DOWN:
             return -cmp
-        elif mode == P.ROUND_05UP:
+        sowenn mode == P.ROUND_05UP:
             return 2
-        else:
+        sonst:
             raise ValueError("Unexpected rounding mode: %s" % mode)
 
     def check_ulpdiff(self, exact, rounded):
@@ -436,36 +436,36 @@ class SkipHandler:
 
         # Convert infinities to the largest representable number + 1.
         x = exact
-        if exact.is_infinite():
+        wenn exact.is_infinite():
             x = _dec_from_triple(exact._sign, '10', context.p.Emax)
         y = rounded
-        if rounded.is_infinite():
+        wenn rounded.is_infinite():
             y = _dec_from_triple(rounded._sign, '10', context.p.Emax)
 
         # err = (rounded - exact) / ulp(rounded)
         self.maxctx.prec = p * 2
         t = self.maxctx.subtract(y, x)
-        if context.c.flags[C.Clamped] or \
+        wenn context.c.flags[C.Clamped] or \
            context.c.flags[C.Underflow]:
             # The standard ulp does not work in Underflow territory.
             ulp = self.harrison_ulp(y)
-        else:
+        sonst:
             ulp = self.standard_ulp(y, p)
         # Error in ulps.
         err = self.maxctx.divide(t, ulp)
 
         dir = self.rounding_direction(x, context.p.rounding)
-        if dir == 0:
-            if P.Decimal("-0.6") < err < P.Decimal("0.6"):
+        wenn dir == 0:
+            wenn P.Decimal("-0.6") < err < P.Decimal("0.6"):
                 return True
-        elif dir == 1: # directed, upwards
-            if P.Decimal("-0.1") < err < P.Decimal("1.1"):
+        sowenn dir == 1: # directed, upwards
+            wenn P.Decimal("-0.1") < err < P.Decimal("1.1"):
                 return True
-        elif dir == -1: # directed, downwards
-            if P.Decimal("-1.1") < err < P.Decimal("0.1"):
+        sowenn dir == -1: # directed, downwards
+            wenn P.Decimal("-1.1") < err < P.Decimal("0.1"):
                 return True
-        else: # ROUND_05UP
-            if P.Decimal("-1.1") < err < P.Decimal("1.1"):
+        sonst: # ROUND_05UP
+            wenn P.Decimal("-1.1") < err < P.Decimal("1.1"):
                 return True
 
         print("ulp: %s  error: %s  exact: %s  c_rounded: %s"
@@ -473,19 +473,19 @@ class SkipHandler:
         return False
 
     def bin_resolve_ulp(self, t):
-        """Check if results of _decimal's power function are within the
+        """Check wenn results of _decimal's power function are within the
            allowed ulp ranges."""
         # NaNs are beyond repair.
-        if t.rc.is_nan() or t.rp.is_nan():
+        wenn t.rc.is_nan() or t.rp.is_nan():
             return False
 
         # "exact" result, double precision, half_even
         self.maxctx.prec = context.p.prec * 2
 
         op1, op2 = t.pop[0], t.pop[1]
-        if t.contextfunc:
+        wenn t.contextfunc:
             exact = getattr(self.maxctx, t.funcname)(op1, op2)
-        else:
+        sonst:
             exact = getattr(op1, t.funcname)(op2, context=self.maxctx)
 
         # _decimal's rounded result
@@ -504,9 +504,9 @@ class SkipHandler:
                    "0000000100000000000000000000000000000000000000000"
                    "0000000000000025").ln()
         """
-        if t.cresults != t.presults:
+        wenn t.cresults != t.presults:
             return False # Results must be identical.
-        if context.c.flags[C.Rounded] and \
+        wenn context.c.flags[C.Rounded] and \
            context.c.flags[C.Inexact] and \
            context.p.flags[P.Rounded] and \
            context.p.flags[P.Inexact]:
@@ -528,12 +528,12 @@ class SkipHandler:
     def __pow__(self, t):
         """Always calls the resolve function. C.Decimal does not have correct
            rounding fuer the power function."""
-        if context.c.flags[C.Rounded] and \
+        wenn context.c.flags[C.Rounded] and \
            context.c.flags[C.Inexact] and \
            context.p.flags[P.Rounded] and \
            context.p.flags[P.Inexact]:
             return self.bin_resolve_ulp(t)
-        else:
+        sonst:
             return False
     power = __rpow__ = __pow__
 
@@ -541,7 +541,7 @@ class SkipHandler:
     def __float__(self, t):
         """NaN comparison in the verify() function obviously gives an
            incorrect answer:  nan == nan -> False"""
-        if t.cop[0].is_nan() and t.pop[0].is_nan():
+        wenn t.cop[0].is_nan() and t.pop[0].is_nan():
             return True
         return False
     __complex__ = __float__
@@ -550,7 +550,7 @@ class SkipHandler:
         """decimal.py gives precedence to the first NaN; this is
            not important, as __radd__ will not be called for
            two decimal arguments."""
-        if t.rc.is_nan() and t.rp.is_nan():
+        wenn t.rc.is_nan() and t.rp.is_nan():
             return True
         return False
     __rmul__ = __radd__
@@ -559,7 +559,7 @@ class SkipHandler:
     def __round__(self, t):
         """Exception: Decimal('1').__round__(-100000000000000000000000000)
            Should it really be InvalidOperation?"""
-        if t.rc is None and t.rp.is_nan():
+        wenn t.rc is None and t.rp.is_nan():
             return True
         return False
 
@@ -577,14 +577,14 @@ class VerifyError(Exception):
     pass
 
 def function_as_string(t):
-    if t.contextfunc:
+    wenn t.contextfunc:
         cargs = t.cop
         pargs = t.pop
         maxargs = t.maxop
         cfunc = "c_func: %s(" % t.funcname
         pfunc = "p_func: %s(" % t.funcname
         maxfunc = "max_func: %s(" % t.funcname
-    else:
+    sonst:
         cself, cargs = t.cop[0], t.cop[1:]
         pself, pargs = t.pop[0], t.pop[1:]
         maxself, maxargs = t.maxop[0], t.maxop[1:]
@@ -604,7 +604,7 @@ def function_as_string(t):
     err = err.rstrip(", ")
     err += ")"
 
-    if t.with_maxcontext:
+    wenn t.with_maxcontext:
         err += "\n"
         err += maxfunc
         fuer arg in maxargs:
@@ -617,7 +617,7 @@ def function_as_string(t):
 def raise_error(t):
     global EXIT_STATUS
 
-    if skip_error(t):
+    wenn skip_error(t):
         return
     EXIT_STATUS = 1
 
@@ -626,21 +626,21 @@ def raise_error(t):
     err += function_as_string(t)
 
     err += "\n\nc_result: %s\np_result: %s\n" % (t.cresults, t.presults)
-    if t.with_maxcontext:
+    wenn t.with_maxcontext:
         err += "max_result: %s\n\n" % (t.maxresults)
-    else:
+    sonst:
         err += "\n"
 
     err += "c_exceptions: %s\np_exceptions: %s\n" % (t.cex, t.pex)
-    if t.with_maxcontext:
+    wenn t.with_maxcontext:
         err += "max_exceptions: %s\n\n" % t.maxex
-    else:
+    sonst:
         err += "\n"
 
     err += "%s\n" % str(t.context)
-    if t.with_maxcontext:
+    wenn t.with_maxcontext:
         err += "%s\n" % str(t.maxcontext)
-    else:
+    sonst:
         err += "\n"
 
     raise VerifyError(err)
@@ -653,7 +653,7 @@ def raise_error(t):
 #
 #   convert(t) -> Initialize the TestSet as necessary.
 #
-#                 Return 0 fuer early abortion (e.g. if a TypeError
+#                 Return 0 fuer early abortion (e.g. wenn a TypeError
 #                 occurs during conversion, there is nothing to test).
 #
 #                 Return 1 fuer continuing with the test case.
@@ -666,9 +666,9 @@ def raise_error(t):
 # ======================================================================
 
 def all_nan(a):
-    if isinstance(a, C.Decimal):
+    wenn isinstance(a, C.Decimal):
         return a.is_nan()
-    elif isinstance(a, tuple):
+    sowenn isinstance(a, tuple):
         return all(all_nan(v) fuer v in a)
     return False
 
@@ -688,12 +688,12 @@ def convert(t, convstr=True):
         context.clear_status()
         t.maxcontext.clear_flags()
 
-        if op in RoundModes:
+        wenn op in RoundModes:
             t.cop.append(op)
             t.pop.append(op)
             t.maxop.append(op)
 
-        elif not t.contextfunc and i == 0 or \
+        sowenn not t.contextfunc and i == 0 or \
              convstr and isinstance(op, str):
             try:
                 c = C.Decimal(op)
@@ -728,27 +728,27 @@ def convert(t, convstr=True):
             t.maxop.append(maxop)
             t.maxex.append(maxex)
 
-            if cex is pex:
-                if str(c) != str(p) or not context.assert_eq_status():
+            wenn cex is pex:
+                wenn str(c) != str(p) or not context.assert_eq_status():
                     raise_error(t)
-                if cex and pex:
+                wenn cex and pex:
                     # nothing to test
                     return 0
-            else:
+            sonst:
                 raise_error(t)
 
             # The exceptions in the maxcontext operation can legitimately
             # differ, only test that maxex implies cex:
-            if maxex is not None and cex is not maxex:
+            wenn maxex is not None and cex is not maxex:
                 raise_error(t)
 
-        elif isinstance(op, Context):
+        sowenn isinstance(op, Context):
             t.context = op
             t.cop.append(op.c)
             t.pop.append(op.p)
             t.maxop.append(t.maxcontext)
 
-        else:
+        sonst:
             t.cop.append(op)
             t.pop.append(op)
             t.maxop.append(op)
@@ -768,10 +768,10 @@ def callfuncs(t):
     t.maxcontext.clear_flags()
 
     try:
-        if t.contextfunc:
+        wenn t.contextfunc:
             cargs = t.cop
             t.rc = getattr(context.c, t.funcname)(*cargs)
-        else:
+        sonst:
             cself = t.cop[0]
             cargs = t.cop[1:]
             t.rc = getattr(cself, t.funcname)(*cargs)
@@ -781,10 +781,10 @@ def callfuncs(t):
         t.cex.append(e.__class__)
 
     try:
-        if t.contextfunc:
+        wenn t.contextfunc:
             pargs = t.pop
             t.rp = getattr(context.p, t.funcname)(*pargs)
-        else:
+        sonst:
             pself = t.pop[0]
             pargs = t.pop[1:]
             t.rp = getattr(pself, t.funcname)(*pargs)
@@ -796,20 +796,20 @@ def callfuncs(t):
     # If the above results are exact, unrounded, normal etc., repeat the
     # operation with a maxcontext to ensure that huge intermediate values
     # do not cause a MemoryError.
-    if (t.funcname not in MaxContextSkip and
+    wenn (t.funcname not in MaxContextSkip and
         not context.c.flags[C.InvalidOperation] and
         not context.c.flags[C.Inexact] and
         not context.c.flags[C.Rounded] and
         not context.c.flags[C.Subnormal] and
         not context.c.flags[C.Clamped] and
-        not context.clamp and # results are padded to context.prec if context.clamp==1.
+        not context.clamp and # results are padded to context.prec wenn context.clamp==1.
         not any(isinstance(v, C.Context) fuer v in t.cop)): # another context is used.
         t.with_maxcontext = True
         try:
-            if t.contextfunc:
+            wenn t.contextfunc:
                 maxargs = t.maxop
                 t.rmax = getattr(t.maxcontext, t.funcname)(*maxargs)
-            else:
+            sonst:
                 maxself = t.maxop[0]
                 maxargs = t.maxop[1:]
                 try:
@@ -836,10 +836,10 @@ def verify(t, stat):
     """
     t.cresults.append(str(t.rc))
     t.presults.append(str(t.rp))
-    if t.with_maxcontext:
+    wenn t.with_maxcontext:
         t.maxresults.append(str(t.rmax))
 
-    if isinstance(t.rc, C.Decimal) and isinstance(t.rp, P.Decimal):
+    wenn isinstance(t.rc, C.Decimal) and isinstance(t.rp, P.Decimal):
         # General case: both results are Decimals.
         t.cresults.append(t.rc.to_eng_string())
         t.cresults.append(t.rc.as_tuple())
@@ -850,7 +850,7 @@ def verify(t, stat):
         t.presults.append(str(t.rp.imag))
         t.presults.append(str(t.rp.real))
 
-        if t.with_maxcontext and isinstance(t.rmax, C.Decimal):
+        wenn t.with_maxcontext and isinstance(t.rmax, C.Decimal):
             t.maxresults.append(t.rmax.to_eng_string())
             t.maxresults.append(t.rmax.as_tuple())
             t.maxresults.append(str(t.rmax.imag))
@@ -858,38 +858,38 @@ def verify(t, stat):
 
         nc = t.rc.number_class().lstrip('+-s')
         stat[nc] += 1
-    else:
+    sonst:
         # Results from e.g. __divmod__ can only be compared as strings.
-        if not isinstance(t.rc, tuple) and not isinstance(t.rp, tuple):
-            if t.rc != t.rp:
+        wenn not isinstance(t.rc, tuple) and not isinstance(t.rp, tuple):
+            wenn t.rc != t.rp:
                 raise_error(t)
-            if t.with_maxcontext and not isinstance(t.rmax, tuple):
-                if t.rmax != t.rc:
+            wenn t.with_maxcontext and not isinstance(t.rmax, tuple):
+                wenn t.rmax != t.rc:
                     raise_error(t)
         stat[type(t.rc).__name__] += 1
 
     # The return value lists must be equal.
-    if t.cresults != t.presults:
+    wenn t.cresults != t.presults:
         raise_error(t)
     # The Python exception lists (TypeError, etc.) must be equal.
-    if t.cex != t.pex:
+    wenn t.cex != t.pex:
         raise_error(t)
     # The context flags must be equal.
-    if not t.context.assert_eq_status():
+    wenn not t.context.assert_eq_status():
         raise_error(t)
 
-    if t.with_maxcontext:
+    wenn t.with_maxcontext:
         # NaN payloads etc. depend on precision and clamp.
-        if all_nan(t.rc) and all_nan(t.rmax):
+        wenn all_nan(t.rc) and all_nan(t.rmax):
             return
         # The return value lists must be equal.
-        if t.maxresults != t.cresults:
+        wenn t.maxresults != t.cresults:
             raise_error(t)
         # The Python exception lists (TypeError, etc.) must be equal.
-        if t.maxex != t.cex:
+        wenn t.maxex != t.cex:
             raise_error(t)
         # The context flags must be equal.
-        if t.maxcontext.flags != t.context.c.flags:
+        wenn t.maxcontext.flags != t.context.c.flags:
             raise_error(t)
 
 
@@ -921,9 +921,9 @@ def verify(t, stat):
 # ======================================================================
 
 def log(fmt, args=None):
-    if args:
+    wenn args:
         sys.stdout.write(''.join((fmt, '\n')) % args)
-    else:
+    sonst:
         sys.stdout.write(''.join((str(fmt), '\n')))
     sys.stdout.flush()
 
@@ -932,28 +932,28 @@ def test_method(method, testspecs, testfunc):
     log("testing %s ...", method)
     stat = defaultdict(int)
     fuer spec in testspecs:
-        if 'samples' in spec:
+        wenn 'samples' in spec:
             spec['prec'] = sorted(random.sample(range(1, 101),
                                   spec['samples']))
         fuer prec in spec['prec']:
             context.prec = prec
             fuer expts in spec['expts']:
                 emin, emax = expts
-                if emin == 'rand':
+                wenn emin == 'rand':
                     context.Emin = random.randrange(-1000, 0)
                     context.Emax = random.randrange(prec, 1000)
-                else:
+                sonst:
                     context.Emin, context.Emax = emin, emax
-                if prec > context.Emax: continue
+                wenn prec > context.Emax: continue
                 log("    prec: %d  emin: %d  emax: %d",
                     (context.prec, context.Emin, context.Emax))
-                restr_range = 9999 if context.Emax > 9999 else context.Emax+99
+                restr_range = 9999 wenn context.Emax > 9999 sonst context.Emax+99
                 fuer rounding in RoundModes:
                     context.rounding = rounding
                     context.capitals = random.randrange(2)
-                    if spec['clamp'] == 'rand':
+                    wenn spec['clamp'] == 'rand':
                         context.clamp = random.randrange(2)
-                    else:
+                    sonst:
                         context.clamp = spec['clamp']
                     exprange = context.c.Emax
                     testfunc(method, prec, exprange, restr_range,
@@ -962,23 +962,23 @@ def test_method(method, testspecs, testfunc):
 
 def test_unary(method, prec, exp_range, restricted_range, itr, stat):
     """Iterate a unary function through many test cases."""
-    if method in UnaryRestricted:
+    wenn method in UnaryRestricted:
         exp_range = restricted_range
     fuer op in all_unary(prec, exp_range, itr):
         t = TestSet(method, op)
         try:
-            if not convert(t):
+            wenn not convert(t):
                 continue
             callfuncs(t)
             verify(t, stat)
         except VerifyError as err:
             log(err)
 
-    if not method.startswith('__'):
+    wenn not method.startswith('__'):
         fuer op in unary_optarg(prec, exp_range, itr):
             t = TestSet(method, op)
             try:
-                if not convert(t):
+                wenn not convert(t):
                     continue
                 callfuncs(t)
                 verify(t, stat)
@@ -987,23 +987,23 @@ def test_unary(method, prec, exp_range, restricted_range, itr, stat):
 
 def test_binary(method, prec, exp_range, restricted_range, itr, stat):
     """Iterate a binary function through many test cases."""
-    if method in BinaryRestricted:
+    wenn method in BinaryRestricted:
         exp_range = restricted_range
     fuer op in all_binary(prec, exp_range, itr):
         t = TestSet(method, op)
         try:
-            if not convert(t):
+            wenn not convert(t):
                 continue
             callfuncs(t)
             verify(t, stat)
         except VerifyError as err:
             log(err)
 
-    if not method.startswith('__'):
+    wenn not method.startswith('__'):
         fuer op in binary_optarg(prec, exp_range, itr):
             t = TestSet(method, op)
             try:
-                if not convert(t):
+                wenn not convert(t):
                     continue
                 callfuncs(t)
                 verify(t, stat)
@@ -1012,23 +1012,23 @@ def test_binary(method, prec, exp_range, restricted_range, itr, stat):
 
 def test_ternary(method, prec, exp_range, restricted_range, itr, stat):
     """Iterate a ternary function through many test cases."""
-    if method in TernaryRestricted:
+    wenn method in TernaryRestricted:
         exp_range = restricted_range
     fuer op in all_ternary(prec, exp_range, itr):
         t = TestSet(method, op)
         try:
-            if not convert(t):
+            wenn not convert(t):
                 continue
             callfuncs(t)
             verify(t, stat)
         except VerifyError as err:
             log(err)
 
-    if not method.startswith('__'):
+    wenn not method.startswith('__'):
         fuer op in ternary_optarg(prec, exp_range, itr):
             t = TestSet(method, op)
             try:
-                if not convert(t):
+                wenn not convert(t):
                     continue
                 callfuncs(t)
                 verify(t, stat)
@@ -1044,7 +1044,7 @@ def test_format(method, prec, exp_range, restricted_range, itr, stat):
             fmtop = (op[0], fmt)
             t = TestSet(method, fmtop)
             try:
-                if not convert(t, convstr=False):
+                wenn not convert(t, convstr=False):
                     continue
                 callfuncs(t)
                 verify(t, stat)
@@ -1057,7 +1057,7 @@ def test_format(method, prec, exp_range, restricted_range, itr, stat):
             fmtop = (op[0], fmt)
             t = TestSet(method, fmtop)
             try:
-                if not convert(t, convstr=False):
+                wenn not convert(t, convstr=False):
                     continue
                 callfuncs(t)
                 verify(t, stat)
@@ -1071,7 +1071,7 @@ def test_round(method, prec, exprange, restricted_range, itr, stat):
         roundop = (op[0], n)
         t = TestSet(method, roundop)
         try:
-            if not convert(t):
+            wenn not convert(t):
                 continue
             callfuncs(t)
             verify(t, stat)
@@ -1084,10 +1084,10 @@ def test_from_float(method, prec, exprange, restricted_range, itr, stat):
         context.rounding = rounding
         fuer i in range(1000):
             f = randfloat()
-            op = (f,) if method.startswith("context.") else ("sNaN", f)
+            op = (f,) wenn method.startswith("context.") sonst ("sNaN", f)
             t = TestSet(method, op)
             try:
-                if not convert(t):
+                wenn not convert(t):
                     continue
                 callfuncs(t)
                 verify(t, stat)
@@ -1098,7 +1098,7 @@ def randcontext(exprange):
     c = Context(C.Context(), P.Context())
     c.Emax = random.randrange(1, exprange+1)
     c.Emin = random.randrange(-exprange, 0)
-    maxprec = 100 if c.Emax >= 100 else c.Emax
+    maxprec = 100 wenn c.Emax >= 100 sonst c.Emax
     c.prec = random.randrange(1, maxprec+1)
     c.clamp = random.randrange(2)
     c.clear_traps()
@@ -1113,7 +1113,7 @@ def test_quantize_api(method, prec, exprange, restricted_range, itr, stat):
             quantizeop = (op[0], op[1], rounding, c)
             t = TestSet(method, quantizeop)
             try:
-                if not convert(t):
+                wenn not convert(t):
                     continue
                 callfuncs(t)
                 verify(t, stat)
@@ -1134,17 +1134,17 @@ def check_untested(funcdict, c_cls, p_cls):
     tested = set()
     fuer lst in funcdict.values():
         fuer v in lst:
-            v = v.replace("context.", "") if c_cls == C.Context else v
+            v = v.replace("context.", "") wenn c_cls == C.Context sonst v
             tested.add(v)
 
     funcdict['untested'] = tuple(sorted(intersect-tested))
 
     # fuer key in ('untested', 'c_only', 'p_only'):
-    #     s = 'Context' if c_cls == C.Context else 'Decimal'
+    #     s = 'Context' wenn c_cls == C.Context sonst 'Decimal'
     #     print("\n%s %s:\n%s" % (s, key, funcdict[key]))
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
 
     parser = argparse.ArgumentParser(prog="deccheck.py")
 
@@ -1160,7 +1160,7 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
     assert args.single is False or args.multicore is False
-    if args.single:
+    wenn args.single:
         args.single = args.single[0]
 
 
@@ -1168,7 +1168,7 @@ if __name__ == '__main__':
     # that determines the amount of different contexts that 'test_method'
     # will generate.
     base_expts = [(C.MIN_EMIN, C.MAX_EMAX)]
-    if C.MAX_EMAX == 999999999999999999:
+    wenn C.MAX_EMAX == 999999999999999999:
         base_expts.append((-999999999, 999999999))
 
     # Basic contexts.
@@ -1196,22 +1196,22 @@ if __name__ == '__main__':
         {'prec': [34], 'expts': [(-6143, 6144)], 'clamp': 1, 'iter': None}
     ]
 
-    if args.time == 'medium':
+    wenn args.time == 'medium':
         base['expts'].append(('rand', 'rand'))
         # 5 random precisions
         base['samples'] = 5
         testspecs = [small] + ieee + [base]
-    elif args.time == 'long':
+    sowenn args.time == 'long':
         base['expts'].append(('rand', 'rand'))
         # 10 random precisions
         base['samples'] = 10
         testspecs = [small] + ieee + [base]
-    elif args.time == 'all':
+    sowenn args.time == 'all':
         base['expts'].append(('rand', 'rand'))
         # All precisions in [1, 100]
         base['samples'] = 100
         testspecs = [small] + ieee + [base]
-    else: # --short
+    sonst: # --short
         rand_ieee = random.choice(ieee)
         base['iter'] = small['iter'] = rand_ieee['iter'] = 1
         # 1 random precision and exponent pair
@@ -1228,20 +1228,20 @@ if __name__ == '__main__':
     check_untested(ContextFunctions, C.Context, P.Context)
 
 
-    if args.multicore:
+    wenn args.multicore:
         q = Queue()
-    elif args.single:
+    sowenn args.single:
         log("Random seed: %d", RANDSEED)
-    else:
+    sonst:
         log("\n\nRandom seed: %d\n\n", RANDSEED)
 
 
     FOUND_METHOD = False
     def do_single(method, f):
         global FOUND_METHOD
-        if args.multicore:
+        wenn args.multicore:
             q.put(method)
-        elif not args.single or args.single == method:
+        sowenn not args.single or args.single == method:
             FOUND_METHOD = True
             f()
 
@@ -1254,7 +1254,7 @@ if __name__ == '__main__':
         do_single(method, lambda: test_method(method, testspecs, test_binary))
 
     fuer method in Functions['ternary'] + Functions['ternary_ctx']:
-        name = '__powmod__' if method == '__pow__' else method
+        name = '__powmod__' wenn method == '__pow__' sonst method
         do_single(name, lambda: test_method(method, testspecs, test_ternary))
 
     do_single('__format__', lambda: test_method('__format__', testspecs, test_format))
@@ -1270,19 +1270,19 @@ if __name__ == '__main__':
         do_single(method, lambda: test_method(method, testspecs, test_binary))
 
     fuer method in ContextFunctions['ternary']:
-        name = 'context.powmod' if method == 'context.power' else method
+        name = 'context.powmod' wenn method == 'context.power' sonst method
         do_single(name, lambda: test_method(method, testspecs, test_ternary))
 
     do_single('context.create_decimal_from_float',
               lambda: test_method('context.create_decimal_from_float',
                                    testspecs, test_from_float))
 
-    if args.multicore:
+    wenn args.multicore:
         error = Event()
         write_lock = Lock()
 
         def write_output(out, returncode):
-            if returncode != 0:
+            wenn returncode != 0:
                 error.set()
 
             with write_lock:
@@ -1311,12 +1311,12 @@ if __name__ == '__main__':
         fuer i in range(N):
             t[i].join()
 
-        sys.exit(1 if error.is_set() else 0)
+        sys.exit(1 wenn error.is_set() sonst 0)
 
-    elif args.single:
-        if not FOUND_METHOD:
+    sowenn args.single:
+        wenn not FOUND_METHOD:
             log("\nerror: cannot find method \"%s\"" % args.single)
             EXIT_STATUS = 1
         sys.exit(EXIT_STATUS)
-    else:
+    sonst:
         sys.exit(EXIT_STATUS)

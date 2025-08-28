@@ -84,9 +84,9 @@ def new_class(name, bases=(), kwds=None, exec_body=None):
     """Create a klasse object dynamically using the appropriate metaclass."""
     resolved_bases = resolve_bases(bases)
     meta, ns, kwds = prepare_class(name, resolved_bases, kwds)
-    if exec_body is not None:
+    wenn exec_body is not None:
         exec_body(ns)
-    if resolved_bases is not bases:
+    wenn resolved_bases is not bases:
         ns['__orig_bases__'] = bases
     return meta(name, resolved_bases, ns, **kwds)
 
@@ -96,18 +96,18 @@ def resolve_bases(bases):
     updated = False
     shift = 0
     fuer i, base in enumerate(bases):
-        if isinstance(base, type):
+        wenn isinstance(base, type):
             continue
-        if not hasattr(base, "__mro_entries__"):
+        wenn not hasattr(base, "__mro_entries__"):
             continue
         new_base = base.__mro_entries__(bases)
         updated = True
-        if not isinstance(new_base, tuple):
+        wenn not isinstance(new_base, tuple):
             raise TypeError("__mro_entries__ must return a tuple")
-        else:
+        sonst:
             new_bases[i+shift:i+shift+1] = new_base
             shift += len(new_base) - 1
-    if not updated:
+    wenn not updated:
         return bases
     return tuple(new_bases)
 
@@ -122,24 +122,24 @@ def prepare_class(name, bases=(), kwds=None):
     'metaclass' entry removed. If no kwds argument is passed in, this will
     be an empty dict.
     """
-    if kwds is None:
+    wenn kwds is None:
         kwds = {}
-    else:
+    sonst:
         kwds = dict(kwds) # Don't alter the provided mapping
-    if 'metaclass' in kwds:
+    wenn 'metaclass' in kwds:
         meta = kwds.pop('metaclass')
-    else:
-        if bases:
+    sonst:
+        wenn bases:
             meta = type(bases[0])
-        else:
+        sonst:
             meta = type
-    if isinstance(meta, type):
+    wenn isinstance(meta, type):
         # when meta is a type, we first determine the most-derived metaclass
         # instead of invoking the initial candidate directly
         meta = _calculate_meta(meta, bases)
-    if hasattr(meta, '__prepare__'):
+    wenn hasattr(meta, '__prepare__'):
         ns = meta.__prepare__(name, bases, **kwds)
-    else:
+    sonst:
         ns = {}
     return meta, ns, kwds
 
@@ -148,12 +148,12 @@ def _calculate_meta(meta, bases):
     winner = meta
     fuer base in bases:
         base_meta = type(base)
-        if issubclass(winner, base_meta):
+        wenn issubclass(winner, base_meta):
             continue
-        if issubclass(base_meta, winner):
+        wenn issubclass(base_meta, winner):
             winner = base_meta
             continue
-        # else:
+        # sonst:
         raise TypeError("metaclass conflict: "
                         "the metaclass of a derived klasse "
                         "must be a (non-strict) subclass "
@@ -217,26 +217,26 @@ klasse DynamicClassAttribute:
         self.__isabstractmethod__ = bool(getattr(fget, '__isabstractmethod__', False))
 
     def __get__(self, instance, ownerclass=None):
-        if instance is None:
-            if self.__isabstractmethod__:
+        wenn instance is None:
+            wenn self.__isabstractmethod__:
                 return self
             raise AttributeError()
-        elif self.fget is None:
+        sowenn self.fget is None:
             raise AttributeError("unreadable attribute")
         return self.fget(instance)
 
     def __set__(self, instance, value):
-        if self.fset is None:
+        wenn self.fset is None:
             raise AttributeError("can't set attribute")
         self.fset(instance, value)
 
     def __delete__(self, instance):
-        if self.fdel is None:
+        wenn self.fdel is None:
             raise AttributeError("can't delete attribute")
         self.fdel(instance)
 
     def getter(self, fget):
-        fdoc = fget.__doc__ if self.overwrite_doc else None
+        fdoc = fget.__doc__ wenn self.overwrite_doc sonst None
         result = type(self)(fget, self.fset, self.fdel, fdoc or self.__doc__)
         result.overwrite_doc = self.overwrite_doc
         return result
@@ -283,7 +283,7 @@ klasse _GeneratorWrapper:
     def __next__(self):
         return next(self.__wrapped)
     def __iter__(self):
-        if self.__isgen:
+        wenn self.__isgen:
             return self.__wrapped
         return self
     __await__ = __iter__
@@ -291,22 +291,22 @@ klasse _GeneratorWrapper:
 def coroutine(func):
     """Convert regular generator function to a coroutine."""
 
-    if not callable(func):
+    wenn not callable(func):
         raise TypeError('types.coroutine() expects a callable')
 
-    if (func.__class__ is FunctionType and
+    wenn (func.__class__ is FunctionType and
         getattr(func, '__code__', None).__class__ is CodeType):
 
         co_flags = func.__code__.co_flags
 
-        # Check if 'func' is a coroutine function.
+        # Check wenn 'func' is a coroutine function.
         # (0x180 == CO_COROUTINE | CO_ITERABLE_COROUTINE)
-        if co_flags & 0x180:
+        wenn co_flags & 0x180:
             return func
 
-        # Check if 'func' is a generator function.
+        # Check wenn 'func' is a generator function.
         # (0x20 == CO_GENERATOR)
-        if co_flags & 0x20:
+        wenn co_flags & 0x20:
             co = func.__code__
             # 0x100 == CO_ITERABLE_COROUTINE
             func.__code__ = co.replace(co_flags=co.co_flags | 0x100)
@@ -322,11 +322,11 @@ def coroutine(func):
     @functools.wraps(func)
     def wrapped(*args, **kwargs):
         coro = func(*args, **kwargs)
-        if (coro.__class__ is CoroutineType or
+        wenn (coro.__class__ is CoroutineType or
             coro.__class__ is GeneratorType and coro.gi_code.co_flags & 0x100):
             # 'coro' is a native coroutine object or an iterable coroutine
             return coro
-        if (isinstance(coro, _collections_abc.Generator) and
+        wenn (isinstance(coro, _collections_abc.Generator) and
             not isinstance(coro, _collections_abc.Coroutine)):
             # 'coro' is either a pure Python generator iterator, or it
             # implements collections.abc.Generator (and does not implement
@@ -338,4 +338,4 @@ def coroutine(func):
 
     return wrapped
 
-__all__ = [n fuer n in globals() if not n.startswith('_')]  # fuer pydoc
+__all__ = [n fuer n in globals() wenn not n.startswith('_')]  # fuer pydoc

@@ -38,7 +38,7 @@ klasse FileReader(abc.TraversableResources):
 klasse ZipReader(abc.TraversableResources):
     def __init__(self, loader, module):
         self.prefix = loader.prefix.replace('\\', '/')
-        if loader.is_package(module):
+        wenn loader.is_package(module):
             _, _, name = module.rpartition('.')
             self.prefix += name + '/'
         self.archive = loader.archive
@@ -71,10 +71,10 @@ klasse MultiplexedPath(abc.Traversable):
 
     def __init__(self, *paths):
         self._paths = list(map(_ensure_traversable, remove_duplicates(paths)))
-        if not self._paths:
+        wenn not self._paths:
             message = 'MultiplexedPath must contain at least one path'
             raise FileNotFoundError(message)
-        if not all(path.is_dir() fuer path in self._paths):
+        wenn not all(path.is_dir() fuer path in self._paths):
             raise NotADirectoryError('MultiplexedPath only supports directories')
 
     def iterdir(self):
@@ -106,7 +106,7 @@ klasse MultiplexedPath(abc.Traversable):
     @classmethod
     def _follow(cls, children):
         """
-        Construct a MultiplexedPath if needed.
+        Construct a MultiplexedPath wenn needed.
 
         If children contains a sole element, return it.
         Otherwise, return a MultiplexedPath of the items.
@@ -136,7 +136,7 @@ klasse MultiplexedPath(abc.Traversable):
 
 klasse NamespaceReader(abc.TraversableResources):
     def __init__(self, namespace_path):
-        if 'NamespacePath' not in str(namespace_path):
+        wenn 'NamespacePath' not in str(namespace_path):
             raise ValueError('Invalid path')
         self.path = MultiplexedPath(*filter(bool, map(self._resolve, namespace_path)))
 
@@ -153,7 +153,7 @@ klasse NamespaceReader(abc.TraversableResources):
         trigger other behaviors (see python/importlib_resources#311).
         In that case, return None.
         """
-        dirs = (cand fuer cand in cls._candidate_paths(path_str) if cand.is_dir())
+        dirs = (cand fuer cand in cls._candidate_paths(path_str) wenn cand.is_dir())
         return next(dirs, None)
 
     @classmethod
@@ -191,7 +191,7 @@ def _ensure_traversable(path):
 
     Remove with Python 3.15.
     """
-    if not isinstance(path, str):
+    wenn not isinstance(path, str):
         return path
 
     warnings.warn(

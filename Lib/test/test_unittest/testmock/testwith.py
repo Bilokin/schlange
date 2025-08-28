@@ -343,5 +343,5 @@ klasse TestMockOpen(unittest.TestCase):
         self.assertEqual(handle.readline(), 'bar')
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

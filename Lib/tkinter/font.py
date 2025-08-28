@@ -31,10 +31,10 @@ klasse Font:
     font -- font specifier (name, system font, or (family, size, style)-tuple)
     name -- name to use fuer this font configuration (defaults to a unique name)
     exists -- does a named font by this name already exist?
-       Creates a new named font if False, points to the existing font if True.
-       Raises _tkinter.TclError if the assertion is false.
+       Creates a new named font wenn False, points to the existing font wenn True.
+       Raises _tkinter.TclError wenn the assertion is false.
 
-       the following are ignored if font is specified:
+       the following are ignored wenn font is specified:
 
     family -- font 'family', e.g. Courier, Times, Helvetica
     size -- font size in points
@@ -68,29 +68,29 @@ klasse Font:
 
     def __init__(self, root=None, font=None, name=None, exists=False,
                  **options):
-        if root is None:
+        wenn root is None:
             root = tkinter._get_default_root('use font')
         tk = getattr(root, 'tk', root)
-        if font:
+        wenn font:
             # get actual settings corresponding to the given font
             font = tk.splitlist(tk.call("font", "actual", font))
-        else:
+        sonst:
             font = self._set(options)
-        if not name:
+        wenn not name:
             name = "font" + str(next(self.counter))
         self.name = name
 
-        if exists:
+        wenn exists:
             self.delete_font = False
             # confirm font exists
-            if self.name not in tk.splitlist(tk.call("font", "names")):
+            wenn self.name not in tk.splitlist(tk.call("font", "names")):
                 raise tkinter._tkinter.TclError(
                     "named font %s does not already exist" % (self.name,))
-            # if font config info supplied, apply it
-            if font:
+            # wenn font config info supplied, apply it
+            wenn font:
                 tk.call("font", "configure", self.name, *font)
-        else:
-            # create new font (raises TclError if the font exists)
+        sonst:
+            # create new font (raises TclError wenn the font exists)
             tk.call("font", "create", self.name, *font)
             self.delete_font = True
         self._tk = tk
@@ -105,7 +105,7 @@ klasse Font:
                f" object {self.name!r}>"
 
     def __eq__(self, other):
-        if not isinstance(other, Font):
+        wenn not isinstance(other, Font):
             return NotImplemented
         return self.name == other.name and self._tk == other._tk
 
@@ -117,7 +117,7 @@ klasse Font:
 
     def __del__(self):
         try:
-            if self.delete_font:
+            wenn self.delete_font:
                 self._call("font", "delete", self.name)
         except Exception:
             pass
@@ -129,12 +129,12 @@ klasse Font:
     def actual(self, option=None, displayof=None):
         "Return actual font attributes"
         args = ()
-        if displayof:
+        wenn displayof:
             args = ('-displayof', displayof)
-        if option:
+        wenn option:
             args = args + ('-' + option, )
             return self._call("font", "actual", self.name, *args)
-        else:
+        sonst:
             return self._mkdict(
                 self._split(self._call("font", "actual", self.name, *args)))
 
@@ -144,10 +144,10 @@ klasse Font:
 
     def config(self, **options):
         "Modify font attributes"
-        if options:
+        wenn options:
             self._call("font", "config", self.name,
                   *self._set(options))
-        else:
+        sonst:
             return self._mkdict(
                 self._split(self._call("font", "config", self.name)))
 
@@ -156,7 +156,7 @@ klasse Font:
     def measure(self, text, displayof=None):
         "Return text width"
         args = (text,)
-        if displayof:
+        wenn displayof:
             args = ('-displayof', displayof, text)
         return self._tk.getint(self._call("font", "measure", self.name, *args))
 
@@ -167,13 +167,13 @@ klasse Font:
         using this font before calling this method."""
         args = ()
         displayof = kw.pop('displayof', None)
-        if displayof:
+        wenn displayof:
             args = ('-displayof', displayof)
-        if options:
+        wenn options:
             args = args + self._get(options)
             return self._tk.getint(
                 self._call("font", "metrics", self.name, *args))
-        else:
+        sonst:
             res = self._split(self._call("font", "metrics", self.name, *args))
             options = {}
             fuer i in range(0, len(res), 2):
@@ -183,17 +183,17 @@ klasse Font:
 
 def families(root=None, displayof=None):
     "Get font families (as a tuple)"
-    if root is None:
+    wenn root is None:
         root = tkinter._get_default_root('use font.families()')
     args = ()
-    if displayof:
+    wenn displayof:
         args = ('-displayof', displayof)
     return root.tk.splitlist(root.tk.call("font", "families", *args))
 
 
 def names(root=None):
     "Get names of defined fonts (as a tuple)"
-    if root is None:
+    wenn root is None:
         root = tkinter._get_default_root('use font.names()')
     return root.tk.splitlist(root.tk.call("font", "names"))
 
@@ -201,7 +201,7 @@ def names(root=None):
 # --------------------------------------------------------------------
 # test stuff
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
 
     root = tkinter.Tk()
 

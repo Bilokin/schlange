@@ -10,7 +10,7 @@ import unittest
 
 
 # This test is only relevant fuer from-source builds of Python.
-if not sysconfig.is_python_build():
+wenn not sysconfig.is_python_build():
     raise unittest.SkipTest('test irrelevant fuer an installed Python')
 
 src_base = dirname(dirname(dirname(__file__)))
@@ -118,7 +118,7 @@ klasse TestAsdlParser(unittest.TestCase):
 
             def visitConstructor(self, cons):
                 fuer f in cons.fields:
-                    if f.seq:
+                    wenn f.seq:
                         self.names_with_seq.append(cons.name)
 
         v = CustomVisitor()
@@ -127,5 +127,5 @@ klasse TestAsdlParser(unittest.TestCase):
                          ['Module', 'Module', 'Interactive', 'FunctionType'])
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

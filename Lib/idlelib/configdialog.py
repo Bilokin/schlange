@@ -63,14 +63,14 @@ klasse ConfigDialog(Toplevel):
         """
         Toplevel.__init__(self, parent)
         self.parent = parent
-        if _htest:
+        wenn _htest:
             parent.instance_dict = {}
-        if not _utest:
+        wenn not _utest:
             self.withdraw()
 
         self.title(title or 'IDLE Preferences')
         x = parent.winfo_rootx() + 20
-        y = parent.winfo_rooty() + (30 if not _htest else 150)
+        y = parent.winfo_rooty() + (30 wenn not _htest sonst 150)
         self.geometry(f'+{x}+{y}')
         # Each theme element key is its display name.
         # The first value of the tuple is the sample area tag name.
@@ -88,7 +88,7 @@ klasse ConfigDialog(Toplevel):
         # Attach callbacks after loading config to avoid calling them.
         tracers.attach()
 
-        if not _utest:
+        wenn not _utest:
             self.grab_set()
             self.wm_deiconify()
             self.wait_window()
@@ -149,11 +149,11 @@ klasse ConfigDialog(Toplevel):
                     (no assignment): Button (help)
                 (no assignment): Frame
         """
-        if macosx.isAquaTk():
+        wenn macosx.isAquaTk():
             # Changing the default padding on OSX results in unreadable
             # text in the buttons.
             padding_args = {}
-        else:
+        sonst:
             padding_args = {'padding': (6, 3)}
         outer = Frame(self.frame, padding=2)
         buttons_frame = Frame(outer, padding=2)
@@ -431,7 +431,7 @@ klasse FontPage(Frame):
         Set font_name and example displays to selection.
         """
         font = self.fontlist.get(
-                ACTIVE if event.type.name == 'KeyRelease' else ANCHOR)
+                ACTIVE wenn event.type.name == 'KeyRelease' sonst ANCHOR)
         self.font_name.set(font.lower())
 
     def set_samples(self, event=None):
@@ -442,7 +442,7 @@ klasse FontPage(Frame):
         Updates font_sample and highlight page highlight_sample.
         """
         font_name = self.font_name.get()
-        font_weight = tkfont.BOLD if self.font_bold.get() else tkfont.NORMAL
+        font_weight = tkfont.BOLD wenn self.font_bold.get() sonst tkfont.NORMAL
         new_font = (font_name, self.font_size.get(), font_weight)
         self.font_sample['font'] = new_font
         self.highlight_sample['font'] = new_font
@@ -471,7 +471,7 @@ klasse HighPage(Frame):
         Function load_theme_cfg() initializes tk variables and theme
         lists and calls paint_theme_sample() and set_highlight_target()
         fuer the current theme.  Radiobuttons builtin_theme_on and
-        custom_theme_on toggle var theme_source, which controls if the
+        custom_theme_on toggle var theme_source, which controls wenn the
         current set of colors are from a builtin or custom theme.
         DynOptionMenus builtinlist and customlist contain lists of the
         builtin and custom themes, respectively, and the current item
@@ -500,7 +500,7 @@ klasse HighPage(Frame):
         and its colors to idleConf.userCfg['highlight'].
 
         Radiobuttons fg_on and bg_on toggle var fg_bg_toggle to control
-        if the current selected color fuer a tag is fuer the foreground or
+        wenn the current selected color fuer a tag is fuer the foreground or
         background.
 
         DynOptionMenu targetlist contains a readable description of the
@@ -724,7 +724,7 @@ klasse HighPage(Frame):
             theme_source: Set from idleConf.
             builtinlist: List of default themes from idleConf.
             customlist: List of custom themes from idleConf.
-            custom_theme_on: Disabled if there are no custom themes.
+            custom_theme_on: Disabled wenn there are no custom themes.
             custom_theme: Message with additional information.
             targetlist: Create menu from self.theme_elements.
 
@@ -739,18 +739,18 @@ klasse HighPage(Frame):
         # Set current theme.
         current_option = idleConf.CurrentTheme()
         # Load available theme option menus.
-        if self.theme_source.get():  # Default theme selected.
+        wenn self.theme_source.get():  # Default theme selected.
             item_list = idleConf.GetSectionList('default', 'highlight')
             item_list.sort()
             self.builtinlist.SetMenu(item_list, current_option)
             item_list = idleConf.GetSectionList('user', 'highlight')
             item_list.sort()
-            if not item_list:
+            wenn not item_list:
                 self.custom_theme_on.state(('disabled',))
                 self.custom_name.set('- no custom themes -')
-            else:
+            sonst:
                 self.customlist.SetMenu(item_list, item_list[0])
-        else:  # User theme selected.
+        sonst:  # User theme selected.
             item_list = idleConf.GetSectionList('user', 'highlight')
             item_list.sort()
             self.customlist.SetMenu(item_list, current_option)
@@ -772,12 +772,12 @@ klasse HighPage(Frame):
         """
         old_themes = ('IDLE Classic', 'IDLE New')
         value = self.builtin_name.get()
-        if value not in old_themes:
-            if idleConf.GetOption('main', 'Theme', 'name') not in old_themes:
+        wenn value not in old_themes:
+            wenn idleConf.GetOption('main', 'Theme', 'name') not in old_themes:
                 changes.add_option('main', 'Theme', 'name', old_themes[0])
             changes.add_option('main', 'Theme', 'name2', value)
             self.theme_message['text'] = 'New theme, see Help'
-        else:
+        sonst:
             changes.add_option('main', 'Theme', 'name', value)
             changes.add_option('main', 'Theme', 'name2', '')
             self.theme_message['text'] = ''
@@ -790,7 +790,7 @@ klasse HighPage(Frame):
         changed_items and apply the theme to the sample.
         """
         value = self.custom_name.get()
-        if value != '- no custom themes -':
+        wenn value != '- no custom themes -':
             changes.add_option('main', 'Theme', 'name', value)
             self.paint_theme_sample()
 
@@ -802,9 +802,9 @@ klasse HighPage(Frame):
         """
         value = self.theme_source.get()
         changes.add_option('main', 'Theme', 'default', value)
-        if value:
+        wenn value:
             self.var_changed_builtin_name()
-        else:
+        sonst:
             self.var_changed_custom_name()
 
     def var_changed_color(self, *params):
@@ -833,11 +833,11 @@ klasse HighPage(Frame):
             create_new
             load_theme_cfg
         """
-        if self.theme_source.get():
+        wenn self.theme_source.get():
             self.builtinlist['state'] = 'normal'
             self.customlist['state'] = 'disabled'
             self.button_delete_custom.state(('disabled',))
-        else:
+        sonst:
             self.builtinlist['state'] = 'disabled'
             self.custom_theme_on.state(('!disabled',))
             self.customlist['state'] = 'normal'
@@ -867,25 +867,25 @@ klasse HighPage(Frame):
         rgbTuplet, color_string = colorchooser.askcolor(
                 parent=self, title='Pick new color fuer : '+target,
                 initialcolor=prev_color)
-        if color_string and (color_string != prev_color):
+        wenn color_string and (color_string != prev_color):
             # User didn't cancel and they chose a new color.
-            if self.theme_source.get():  # Current theme is a built-in.
+            wenn self.theme_source.get():  # Current theme is a built-in.
                 message = ('Your changes will be saved as a new Custom Theme. '
                            'Enter a name fuer your new Custom Theme below.')
                 new_theme = self.get_new_theme_name(message)
-                if not new_theme:  # User cancelled custom theme creation.
+                wenn not new_theme:  # User cancelled custom theme creation.
                     return
-                else:  # Create new custom theme based on previously active theme.
+                sonst:  # Create new custom theme based on previously active theme.
                     self.create_new(new_theme)
                     self.color.set(color_string)
-            else:  # Current theme is user defined.
+            sonst:  # Current theme is user defined.
                 self.color.set(color_string)
 
     def on_new_color_set(self):
         "Display sample of new color selection on the dialog."
         new_color = self.color.get()
         self.style.configure('frame_color_set.TFrame', background=new_color)
-        plane = 'foreground' if self.fg_bg_toggle.get() else 'background'
+        plane = 'foreground' wenn self.fg_bg_toggle.get() sonst 'background'
         sample_element = self.theme_elements[self.highlight_target.get()]
         self.highlight_sample.tag_config(sample_element, **{plane: new_color})
         theme = self.custom_name.get()
@@ -908,7 +908,7 @@ klasse HighPage(Frame):
             create_new
         """
         new_theme_name = self.get_new_theme_name('New Theme Name:')
-        if new_theme_name:
+        wenn new_theme_name:
             self.create_new(new_theme_name)
 
     def create_new(self, new_theme_name):
@@ -930,15 +930,15 @@ klasse HighPage(Frame):
             save_new
             set_theme_type
         """
-        if self.theme_source.get():
+        wenn self.theme_source.get():
             theme_type = 'default'
             theme_name = self.builtin_name.get()
-        else:
+        sonst:
             theme_type = 'user'
             theme_name = self.custom_name.get()
         new_theme = idleConf.GetThemeDict(theme_type, theme_name)
         # Apply any of the old theme's unsaved changes to the new theme.
-        if theme_name in changes['highlight']:
+        wenn theme_name in changes['highlight']:
             theme_changes = changes['highlight'][theme_name]
             fuer element in theme_changes:
                 new_theme[element] = theme_changes[element]
@@ -969,11 +969,11 @@ klasse HighPage(Frame):
             var_changed_highlight_target
             load_theme_cfg
         """
-        if self.highlight_target.get() == 'Cursor':  # bg not possible
+        wenn self.highlight_target.get() == 'Cursor':  # bg not possible
             self.fg_on.state(('disabled',))
             self.bg_on.state(('disabled',))
             self.fg_bg_toggle.set(1)
-        else:  # Both fg and bg can be set.
+        sonst:  # Both fg and bg can be set.
             self.fg_on.state(('!disabled',))
             self.bg_on.state(('!disabled',))
             self.fg_bg_toggle.set(1)
@@ -1001,7 +1001,7 @@ klasse HighPage(Frame):
         """
         # Set the color sample area.
         tag = self.theme_elements[self.highlight_target.get()]
-        plane = 'foreground' if self.fg_bg_toggle.get() else 'background'
+        plane = 'foreground' wenn self.fg_bg_toggle.get() sonst 'background'
         color = self.highlight_sample.tag_cget(tag, plane)
         self.style.configure('frame_color_set.TFrame', background=color)
 
@@ -1025,22 +1025,22 @@ klasse HighPage(Frame):
             var_changed_custom_name
             load_theme_cfg
         """
-        if self.theme_source.get():  # Default theme
+        wenn self.theme_source.get():  # Default theme
             theme = self.builtin_name.get()
-        else:  # User theme
+        sonst:  # User theme
             theme = self.custom_name.get()
         fuer element_title in self.theme_elements:
             element = self.theme_elements[element_title]
             colors = idleConf.GetHighlight(theme, element)
-            if element == 'cursor':  # Cursor sample needs special painting.
+            wenn element == 'cursor':  # Cursor sample needs special painting.
                 colors['background'] = idleConf.GetHighlight(
                         theme, 'normal')['background']
             # Handle any unsaved changes to this theme.
-            if theme in changes['highlight']:
+            wenn theme in changes['highlight']:
                 theme_dict = changes['highlight'][theme]
-                if element + '-foreground' in theme_dict:
+                wenn element + '-foreground' in theme_dict:
                     colors['foreground'] = theme_dict[element + '-foreground']
-                if element + '-background' in theme_dict:
+                wenn element + '-background' in theme_dict:
                     colors['background'] = theme_dict[element + '-background']
             self.highlight_sample.tag_config(element, **colors)
         self.set_color_sample()
@@ -1084,7 +1084,7 @@ klasse HighPage(Frame):
         """
         theme_name = self.custom_name.get()
         delmsg = 'Are you sure you wish to delete the theme %r ?'
-        if not self.askyesno(
+        wenn not self.askyesno(
                 'Delete Theme',  delmsg % theme_name, parent=self):
             return
         self.cd.deactivate_current_config()
@@ -1093,10 +1093,10 @@ klasse HighPage(Frame):
         # Reload user theme list.
         item_list = idleConf.GetSectionList('user', 'highlight')
         item_list.sort()
-        if not item_list:
+        wenn not item_list:
             self.custom_theme_on.state(('disabled',))
             self.customlist.SetMenu(item_list, '- no custom themes -')
-        else:
+        sonst:
             self.customlist.SetMenu(item_list, item_list[0])
         # Revert to default theme.
         self.theme_source.set(idleConf.defaultCfg['main'].Get('Theme', 'default'))
@@ -1130,7 +1130,7 @@ klasse KeysPage(Frame):
         Function load_key_cfg() initializes tk variables and keyset
         lists and calls load_keys_list fuer the current keyset.
         Radiobuttons builtin_keyset_on and custom_keyset_on toggle var
-        keyset_source, which controls if the current set of keybindings
+        keyset_source, which controls wenn the current set of keybindings
         are from a builtin or custom keyset. DynOptionMenus builtinlist
         and customlist contain lists of the builtin and custom keysets,
         respectively, and the current item from each list is stored in
@@ -1160,7 +1160,7 @@ klasse KeysPage(Frame):
         is a builtin, function get_new_keys_name() will be called
         fuer input of a custom keyset name.  If no name is given, then the
         change to the keybinding will abort and no updates will be made.  If
-        a custom name is entered in the prompt or if the current keyset was
+        a custom name is entered in the prompt or wenn the current keyset was
         already custom (and thus didn't require a prompt), then
         idleConf.userCfg['keys'] is updated in function create_new_key_set()
         with the change to the event binding.  The item listing in bindingslist
@@ -1285,18 +1285,18 @@ klasse KeysPage(Frame):
         # Set current keys.
         current_option = idleConf.CurrentKeys()
         # Load available keyset option menus.
-        if self.keyset_source.get():  # Default theme selected.
+        wenn self.keyset_source.get():  # Default theme selected.
             item_list = idleConf.GetSectionList('default', 'keys')
             item_list.sort()
             self.builtinlist.SetMenu(item_list, current_option)
             item_list = idleConf.GetSectionList('user', 'keys')
             item_list.sort()
-            if not item_list:
+            wenn not item_list:
                 self.custom_keyset_on.state(('disabled',))
                 self.custom_name.set('- no custom keys -')
-            else:
+            sonst:
                 self.customlist.SetMenu(item_list, item_list[0])
-        else:  # User key set selected.
+        sonst:  # User key set selected.
             item_list = idleConf.GetSectionList('user', 'keys')
             item_list.sort()
             self.customlist.SetMenu(item_list, current_option)
@@ -1317,12 +1317,12 @@ klasse KeysPage(Frame):
             'IDLE Classic OSX',
         )
         value = self.builtin_name.get()
-        if value not in old_keys:
-            if idleConf.GetOption('main', 'Keys', 'name') not in old_keys:
+        wenn value not in old_keys:
+            wenn idleConf.GetOption('main', 'Keys', 'name') not in old_keys:
                 changes.add_option('main', 'Keys', 'name', old_keys[0])
             changes.add_option('main', 'Keys', 'name2', value)
             self.keys_message['text'] = 'New key set, see Help'
-        else:
+        sonst:
             changes.add_option('main', 'Keys', 'name', value)
             changes.add_option('main', 'Keys', 'name2', '')
             self.keys_message['text'] = ''
@@ -1331,7 +1331,7 @@ klasse KeysPage(Frame):
     def var_changed_custom_name(self, *params):
         "Process selection of custom key set."
         value = self.custom_name.get()
-        if value != '- no custom keys -':
+        wenn value != '- no custom keys -':
             changes.add_option('main', 'Keys', 'name', value)
             self.load_keys_list(value)
 
@@ -1339,9 +1339,9 @@ klasse KeysPage(Frame):
         "Process toggle between builtin key set and custom key set."
         value = self.keyset_source.get()
         changes.add_option('main', 'Keys', 'default', value)
-        if value:
+        wenn value:
             self.var_changed_builtin_name()
-        else:
+        sonst:
             self.var_changed_custom_name()
 
     def var_changed_keybinding(self, *params):
@@ -1349,20 +1349,20 @@ klasse KeysPage(Frame):
         value = self.keybinding.get()
         key_set = self.custom_name.get()
         event = self.bindingslist.get(ANCHOR).split()[0]
-        if idleConf.IsCoreBinding(event):
+        wenn idleConf.IsCoreBinding(event):
             changes.add_option('keys', key_set, event, value)
-        else:  # Event is an extension binding.
+        sonst:  # Event is an extension binding.
             ext_name = idleConf.GetExtnNameForEvent(event)
             ext_keybind_section = ext_name + '_cfgBindings'
             changes.add_option('extensions', ext_keybind_section, event, value)
 
     def set_keys_type(self):
         "Set available screen options based on builtin or custom key set."
-        if self.keyset_source.get():
+        wenn self.keyset_source.get():
             self.builtinlist['state'] = 'normal'
             self.customlist['state'] = 'disabled'
             self.button_delete_custom_keys.state(('disabled',))
-        else:
+        sonst:
             self.builtinlist['state'] = 'disabled'
             self.custom_keyset_on.state(('!disabled',))
             self.customlist['state'] = 'normal'
@@ -1380,35 +1380,35 @@ klasse KeysPage(Frame):
         list_index = self.bindingslist.index(ANCHOR)
         binding = self.bindingslist.get(list_index)
         bind_name = binding.split()[0]
-        if self.keyset_source.get():
+        wenn self.keyset_source.get():
             current_key_set_name = self.builtin_name.get()
-        else:
+        sonst:
             current_key_set_name = self.custom_name.get()
         current_bindings = idleConf.GetCurrentKeySet()
-        if current_key_set_name in changes['keys']:  # unsaved changes
+        wenn current_key_set_name in changes['keys']:  # unsaved changes
             key_set_changes = changes['keys'][current_key_set_name]
             fuer event in key_set_changes:
                 current_bindings[event] = key_set_changes[event].split()
         current_key_sequences = list(current_bindings.values())
         new_keys = GetKeysWindow(self, 'Get New Keys', bind_name,
                 current_key_sequences).result
-        if new_keys:
-            if self.keyset_source.get():  # Current key set is a built-in.
+        wenn new_keys:
+            wenn self.keyset_source.get():  # Current key set is a built-in.
                 message = ('Your changes will be saved as a new Custom Key Set.'
                            ' Enter a name fuer your new Custom Key Set below.')
                 new_keyset = self.get_new_keys_name(message)
-                if not new_keyset:  # User cancelled custom key set creation.
+                wenn not new_keyset:  # User cancelled custom key set creation.
                     self.bindingslist.select_set(list_index)
                     self.bindingslist.select_anchor(list_index)
                     return
-                else:  # Create new custom key set based on previously active key set.
+                sonst:  # Create new custom key set based on previously active key set.
                     self.create_new_key_set(new_keyset)
             self.bindingslist.delete(list_index)
             self.bindingslist.insert(list_index, bind_name+' - '+new_keys)
             self.bindingslist.select_set(list_index)
             self.bindingslist.select_anchor(list_index)
             self.keybinding.set(new_keys)
-        else:
+        sonst:
             self.bindingslist.select_set(list_index)
             self.bindingslist.select_anchor(list_index)
 
@@ -1423,7 +1423,7 @@ klasse KeysPage(Frame):
     def save_as_new_key_set(self):
         "Prompt fuer name of new key set and save changes using that name."
         new_keys_name = self.get_new_keys_name('New Key Set Name:')
-        if new_keys_name:
+        wenn new_keys_name:
             self.create_new_key_set(new_keys_name)
 
     def on_bindingslist_select(self, event):
@@ -1436,9 +1436,9 @@ klasse KeysPage(Frame):
         Copy the bindings/keys from the previously active keyset
         to the new keyset and activate the new custom keyset.
         """
-        if self.keyset_source.get():
+        wenn self.keyset_source.get():
             prev_key_set_name = self.builtin_name.get()
-        else:
+        sonst:
             prev_key_set_name = self.custom_name.get()
         prev_keys = idleConf.GetCoreKeys(prev_key_set_name)
         new_keys = {}
@@ -1447,7 +1447,7 @@ klasse KeysPage(Frame):
             binding = ' '.join(prev_keys[event])
             new_keys[event_name] = binding
         # Handle any unsaved changes to prev key set.
-        if prev_key_set_name in changes['keys']:
+        wenn prev_key_set_name in changes['keys']:
             key_set_changes = changes['keys'][prev_key_set_name]
             fuer event in key_set_changes:
                 new_keys[event] = key_set_changes[event]
@@ -1466,7 +1466,7 @@ klasse KeysPage(Frame):
         An action/key binding can be selected to change the key binding.
         """
         reselect = False
-        if self.bindingslist.curselection():
+        wenn self.bindingslist.curselection():
             reselect = True
             list_index = self.bindingslist.index(ANCHOR)
         keyset = idleConf.GetKeySet(keyset_name)
@@ -1477,12 +1477,12 @@ klasse KeysPage(Frame):
         fuer bind_name in bind_names:
             key = ' '.join(keyset[bind_name])
             bind_name = bind_name[2:-2]  # Trim double angle brackets.
-            if keyset_name in changes['keys']:
+            wenn keyset_name in changes['keys']:
                 # Handle any unsaved changes to this key set.
-                if bind_name in changes['keys'][keyset_name]:
+                wenn bind_name in changes['keys'][keyset_name]:
                     key = changes['keys'][keyset_name][bind_name]
             self.bindingslist.insert(END, bind_name+' - '+key)
-        if reselect:
+        wenn reselect:
             self.bindingslist.see(list_index)
             self.bindingslist.select_set(list_index)
             self.bindingslist.select_anchor(list_index)
@@ -1516,7 +1516,7 @@ klasse KeysPage(Frame):
         """
         keyset_name = self.custom_name.get()
         delmsg = 'Are you sure you wish to delete the key set %r ?'
-        if not self.askyesno(
+        wenn not self.askyesno(
                 'Delete Key Set',  delmsg % keyset_name, parent=self):
             return
         self.cd.deactivate_current_config()
@@ -1525,10 +1525,10 @@ klasse KeysPage(Frame):
         # Reload user key set list.
         item_list = idleConf.GetSectionList('user', 'keys')
         item_list.sort()
-        if not item_list:
+        wenn not item_list:
             self.custom_keyset_on.state(('disabled',))
             self.customlist.SetMenu(item_list, '- no custom keys -')
-        else:
+        sonst:
             self.customlist.SetMenu(item_list, item_list[0])
         # Revert to default key set.
         self.keyset_source.set(idleConf.defaultCfg['main']
@@ -1969,7 +1969,7 @@ klasse ExtPage(Frame):
 
             # Bring 'enable' options to the beginning of the list.
             enables = [opt_name fuer opt_name in opt_list
-                       if opt_name.startswith('enable')]
+                       wenn opt_name.startswith('enable')]
             fuer opt_name in enables:
                 opt_list.remove(opt_name)
             opt_list = enables + opt_list
@@ -2006,14 +2006,14 @@ klasse ExtPage(Frame):
     def extension_selected(self, event):
         "Handle selection of an extension from the list."
         newsel = self.extension_list.curselection()
-        if newsel:
+        wenn newsel:
             newsel = self.extension_list.get(newsel)
-        if newsel is None or newsel != self.current_extension:
-            if self.current_extension:
+        wenn newsel is None or newsel != self.current_extension:
+            wenn self.current_extension:
                 self.details_frame.config(text='')
                 self.config_frame[self.current_extension].grid_forget()
                 self.current_extension = None
-        if newsel:
+        wenn newsel:
             self.details_frame.config(text=newsel)
             self.config_frame[newsel].grid(column=0, row=0, sticky='nsew')
             self.current_extension = newsel
@@ -2029,23 +2029,23 @@ klasse ExtPage(Frame):
             label = Label(entry_area, text=opt['name'])
             label.grid(row=row, column=0, sticky=NW)
             var = opt['var']
-            if opt['type'] == 'bool':
+            wenn opt['type'] == 'bool':
                 Checkbutton(entry_area, variable=var,
                             onvalue='True', offvalue='False', width=8
                             ).grid(row=row, column=1, sticky=W, padx=7)
-            elif opt['type'] == 'int':
+            sowenn opt['type'] == 'int':
                 Entry(entry_area, textvariable=var, validate='key',
                       validatecommand=(self.is_int, '%P'), width=10
                       ).grid(row=row, column=1, sticky=NSEW, padx=7)
 
-            else:  # type == 'str'
+            sonst:  # type == 'str'
                 # Limit size to fit non-expanding space with larger font.
                 Entry(entry_area, textvariable=var, width=15
                       ).grid(row=row, column=1, sticky=NSEW, padx=7)
         return
 
     def set_extension_value(self, section, opt):
-        """Return True if the configuration was added or changed.
+        """Return True wenn the configuration was added or changed.
 
         If the value is the same as the default, then remove it
         from user config file.
@@ -2054,9 +2054,9 @@ klasse ExtPage(Frame):
         default = opt['default']
         value = opt['var'].get().strip() or default
         opt['var'].set(value)
-        # if self.defaultCfg.has_section(section):
-        # Currently, always true; if not, indent to return.
-        if (value == default):
+        # wenn self.defaultCfg.has_section(section):
+        # Currently, always true; wenn not, indent to return.
+        wenn (value == default):
             return self.ext_userCfg.RemoveOption(section, name)
         # Set the option.
         return self.ext_userCfg.SetOption(section, name, value)
@@ -2074,9 +2074,9 @@ klasse ExtPage(Frame):
         fuer ext_name in self.extensions:
             options = self.extensions[ext_name]
             fuer opt in options:
-                if self.set_extension_value(ext_name, opt):
+                wenn self.set_extension_value(ext_name, opt):
                     has_changes = True
-        if has_changes:
+        wenn has_changes:
             self.ext_userCfg.Save()
 
 
@@ -2143,14 +2143,14 @@ klasse HelpFrame(LabelFrame):
 
     def set_add_delete_state(self):
         "Toggle the state fuer the help list buttons based on list entries."
-        if self.helplist.size() < 1:  # No entries in list.
+        wenn self.helplist.size() < 1:  # No entries in list.
             self.button_helplist_edit.state(('disabled',))
             self.button_helplist_remove.state(('disabled',))
-        else:  # Some entries.
-            if self.helplist.curselection():  # There currently is a selection.
+        sonst:  # Some entries.
+            wenn self.helplist.curselection():  # There currently is a selection.
                 self.button_helplist_edit.state(('!disabled',))
                 self.button_helplist_remove.state(('!disabled',))
-            else:  # There currently is not a selection.
+            sonst:  # There currently is not a selection.
                 self.button_helplist_edit.state(('disabled',))
                 self.button_helplist_remove.state(('disabled',))
 
@@ -2161,7 +2161,7 @@ klasse HelpFrame(LabelFrame):
         them to the list.
         """
         help_source = HelpSource(self, 'New Help Source').result
-        if help_source:
+        wenn help_source:
             self.user_helplist.append(help_source)
             self.helplist.insert(END, help_source[0])
             self.update_help_changes()
@@ -2170,7 +2170,7 @@ klasse HelpFrame(LabelFrame):
         """Handle edit button fuer the help list.
 
         Query with existing help source information and update
-        config if the values are changed.
+        config wenn the values are changed.
         """
         item_index = self.helplist.index(ANCHOR)
         help_source = self.user_helplist[item_index]
@@ -2179,7 +2179,7 @@ klasse HelpFrame(LabelFrame):
                 menuitem=help_source[0],
                 filepath=help_source[1],
                 ).result
-        if new_help_source and new_help_source != help_source:
+        wenn new_help_source and new_help_source != help_source:
             self.user_helplist[item_index] = new_help_source
             self.helplist.delete(item_index)
             self.helplist.insert(item_index, new_help_source[0])
@@ -2247,7 +2247,7 @@ klasse VarTrace:
         Return:
             Tk variable instance.
         """
-        if isinstance(callback, tuple):
+        wenn isinstance(callback, tuple):
             callback = self.make_callback(var, callback)
         self.untraced.append((var, callback))
         return var
@@ -2305,13 +2305,13 @@ You can edit the font sample. Changes remain until IDLE is closed.
     'Highlights': '''
 Highlighting:
 The IDLE Dark color theme is new in October 2015.  It can only
-be used with older IDLE releases if it is saved as a custom
+be used with older IDLE releases wenn it is saved as a custom
 theme, with a different name.
 ''',
     'Keys': '''
 Keys:
 The IDLE Modern Unix key set is new in June 2016.  It can only
-be used with older IDLE releases if it is saved as a custom
+be used with older IDLE releases wenn it is saved as a custom
 key set, with a different name.
 ''',
      'General': '''
@@ -2327,7 +2327,7 @@ Use with paragraphs in both strings and comment blocks.
 ParenMatch: Style indicates what is highlighted when closer is entered:
 'opener' - opener '({[' corresponding to closer; 'parens' - both chars;
 'expression' (default) - also everything in between.  Flash-delay is how
-long to highlight if cursor is not moved (0 means forever).
+long to highlight wenn cursor is not moved (0 means forever).
 
 CodeContext: Maxlines is the maximum number of code context lines to
 display when Code Context is turned on fuer an editor window.
@@ -2341,14 +2341,14 @@ use an extension.  Enable indicates whether the extension is active or
 not; likewise enable_editor and enable_shell indicate which windows it
 will be active on.  For this extension, z-text is the text that will be
 inserted at or removed from the beginning of the lines of selected text,
-or the current line if no selection.
+or the current line wenn no selection.
 ''',
 }
 
 
 def is_int(s):
     "Return 's is blank or represents an int'"
-    if not s:
+    wenn not s:
         return True
     try:
         int(s)
@@ -2392,7 +2392,7 @@ klasse VerticalScrolledFrame(Frame):
         interior.bind('<Configure>', _configure_interior)
 
         def _configure_canvas(event):
-            if interior.winfo_reqwidth() != canvas.winfo_width():
+            wenn interior.winfo_reqwidth() != canvas.winfo_width():
                 # Update the inner frame's width to fill the canvas.
                 canvas.itemconfigure(interior_id, width=canvas.winfo_width())
         canvas.bind('<Configure>', _configure_canvas)
@@ -2400,7 +2400,7 @@ klasse VerticalScrolledFrame(Frame):
         return
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     from unittest import main
     main('idlelib.idle_test.test_configdialog', verbosity=2, exit=False)
 

@@ -46,9 +46,9 @@ klasse DirBrowserTreeItem(TreeItem):
         self.packages = packages
 
     def GetText(self):
-        if not self.packages:
+        wenn not self.packages:
             return self.dir
-        else:
+        sonst:
             return self.packages[-1] + ": package"
 
     def GetSubList(self):
@@ -59,7 +59,7 @@ klasse DirBrowserTreeItem(TreeItem):
         packages = []
         fuer name in names:
             file = os.path.join(self.dir, name)
-            if self.ispackagedir(file):
+            wenn self.ispackagedir(file):
                 nn = os.path.normcase(name)
                 packages.append((nn, name, file))
         packages.sort()
@@ -74,7 +74,7 @@ klasse DirBrowserTreeItem(TreeItem):
 
     def ispackagedir(self, file):
         " Return true fuer directories that are packages."
-        if not os.path.isdir(file):
+        wenn not os.path.isdir(file):
             return False
         init = os.path.join(file, "__init__.py")
         return os.path.exists(init)
@@ -89,9 +89,9 @@ klasse DirBrowserTreeItem(TreeItem):
             i = -len(suff)
             fuer name in allnames[:]:
                 normed_name = os.path.normcase(name)
-                if normed_name[i:] == suff:
+                wenn normed_name[i:] == suff:
                     mod_name = name[:i]
-                    if mod_name not in modules:
+                    wenn mod_name not in modules:
                         modules[mod_name] = None
                         sorted.append((normed_name, name))
                         allnames.remove(name)
@@ -99,7 +99,7 @@ klasse DirBrowserTreeItem(TreeItem):
         return sorted
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     from unittest import main
     main('idlelib.idle_test.test_pathbrowser', verbosity=2, exit=False)
 

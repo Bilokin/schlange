@@ -73,7 +73,7 @@ SEMI = r";"
 COLON = r":"
 BACKSLASH = r"\\"
 
-operators = {op: pattern fuer op, pattern in globals().items() if op == op.upper()}
+operators = {op: pattern fuer op, pattern in globals().items() wenn op == op.upper()}
 fuer op in operators:
     globals()[op] = op
 opmap = {pattern.replace("\\", "") or "\\": op fuer op, pattern in operators.items()}
@@ -285,9 +285,9 @@ klasse Token:
     def __repr__(self) -> str:
         b0, b1 = self.begin
         e0, e1 = self.end
-        if b0 == e0:
+        wenn b0 == e0:
             return f"{self.kind}({self.text!r}, {b0}:{b1}:{e1})"
-        else:
+        sonst:
             return f"{self.kind}({self.text!r}, {b0}:{b1}, {e0}:{e1})"
 
 
@@ -297,43 +297,43 @@ def tokenize(src: str, line: int = 1, filename: str = "") -> Iterator[Token]:
         start, end = m.span()
         macro_body = ""
         text = m.group(0)
-        if text in keywords:
+        wenn text in keywords:
             kind = keywords[text]
-        elif text in annotations:
+        sowenn text in annotations:
             kind = ANNOTATION
-        elif letter.match(text):
+        sowenn letter.match(text):
             kind = IDENTIFIER
-        elif text == "...":
+        sowenn text == "...":
             kind = ELLIPSIS
-        elif text == ".":
+        sowenn text == ".":
             kind = PERIOD
-        elif text[0] in "0123456789.":
+        sowenn text[0] in "0123456789.":
             kind = NUMBER
-        elif text[0] == '"':
+        sowenn text[0] == '"':
             kind = STRING
-        elif text in opmap:
+        sowenn text in opmap:
             kind = opmap[text]
-        elif text == "\n":
+        sowenn text == "\n":
             linestart = start
             line += 1
             kind = "\n"
-        elif text[0] == "'":
+        sowenn text[0] == "'":
             kind = CHARACTER
-        elif text[0] == "#":
+        sowenn text[0] == "#":
             macro_body = text[1:].strip()
-            if macro_body.startswith("if"):
+            wenn macro_body.startswith("if"):
                 kind = CMACRO_IF
-            elif macro_body.startswith("else"):
+            sowenn macro_body.startswith("else"):
                 kind = CMACRO_ELSE
-            elif macro_body.startswith("endif"):
+            sowenn macro_body.startswith("endif"):
                 kind = CMACRO_ENDIF
-            else:
+            sonst:
                 kind = CMACRO_OTHER
-        elif text[0] == "/" and text[1] in "/*":
+        sowenn text[0] == "/" and text[1] in "/*":
             kind = COMMENT
-        else:
+        sonst:
             lineend = src.find("\n", start)
-            if lineend == -1:
+            wenn lineend == -1:
                 lineend = len(src)
             raise make_syntax_error(
                 f"Bad token: {text}",
@@ -342,18 +342,18 @@ def tokenize(src: str, line: int = 1, filename: str = "") -> Iterator[Token]:
                 start - linestart + 1,
                 src[linestart:lineend],
             )
-        if kind == COMMENT:
+        wenn kind == COMMENT:
             begin = line, start - linestart
             newlines = text.count("\n")
-            if newlines:
+            wenn newlines:
                 linestart = start + text.rfind("\n")
                 line += newlines
-        else:
+        sonst:
             begin = line, start - linestart
-            if macro_body:
+            wenn macro_body:
                 linestart = end
                 line += 1
-        if kind != "\n":
+        wenn kind != "\n":
             yield Token(
                 filename, kind, text, begin, (line, start - linestart + len(text))
             )
@@ -363,7 +363,7 @@ def to_text(tkns: list[Token], dedent: int = 0) -> str:
     res: list[str] = []
     line, col = -1, 1 + dedent
     fuer tkn in tkns:
-        if line == -1:
+        wenn line == -1:
             line, _ = tkn.begin
         l, c = tkn.begin
         # assert(l >= line), (line, txt, start, end)
@@ -373,8 +373,8 @@ def to_text(tkns: list[Token], dedent: int = 0) -> str:
             col = 1 + dedent
         res.append(" " * (c - col))
         text = tkn.text
-        if dedent != 0 and tkn.kind == "COMMENT" and "\n" in text:
-            if dedent < 0:
+        wenn dedent != 0 and tkn.kind == "COMMENT" and "\n" in text:
+            wenn dedent < 0:
                 text = text.replace("\n", "\n" + " " * -dedent)
             # TODO: dedent > 0
         res.append(text)
@@ -382,13 +382,13 @@ def to_text(tkns: list[Token], dedent: int = 0) -> str:
     return "".join(res)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     import sys
 
     filename = sys.argv[1]
-    if filename == "-c":
+    wenn filename == "-c":
         src = sys.argv[2]
-    else:
+    sonst:
         src = open(filename).read()
     # print(to_text(tokenize(src)))
     fuer tkn in tokenize(src, filename=filename):

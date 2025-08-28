@@ -92,7 +92,7 @@ klasse TestImaplib(unittest.TestCase):
         self.assertIn(cm.exception.errno, expected_errnos)
 
 
-if ssl:
+wenn ssl:
     klasse SecureTCPServer(socketserver.TCPServer):
 
         def get_request(self):
@@ -104,7 +104,7 @@ if ssl:
 
     IMAP4_SSL = imaplib.IMAP4_SSL
 
-else:
+sonst:
 
     klasse SecureTCPServer:
         pass
@@ -123,7 +123,7 @@ klasse SimpleIMAPHandler(socketserver.StreamRequestHandler):
         self.server.logged = None
 
     def _send(self, message):
-        if verbose:
+        wenn verbose:
             print("SENT: %r" % message.strip())
         self.wfile.write(message)
 
@@ -147,19 +147,19 @@ klasse SimpleIMAPHandler(socketserver.StreamRequestHandler):
             while 1:
                 try:
                     part = self.rfile.read(1)
-                    if part == b'':
+                    wenn part == b'':
                         # Naked sockets return empty strings..
                         return
                     line += part
                 except OSError:
                     # ..but SSLSockets raise exceptions.
                     return
-                if line.endswith(b'\r\n'):
+                wenn line.endswith(b'\r\n'):
                     break
 
-            if verbose:
+            wenn verbose:
                 print('GOT: %r' % line.strip())
-            if self.continuation:
+            wenn self.continuation:
                 try:
                     self.continuation.send(line)
                 except StopIteration:
@@ -170,18 +170,18 @@ klasse SimpleIMAPHandler(socketserver.StreamRequestHandler):
             cmd = splitline[1]
             args = splitline[2:]
 
-            if hasattr(self, 'cmd_' + cmd):
+            wenn hasattr(self, 'cmd_' + cmd):
                 continuation = getattr(self, 'cmd_' + cmd)(tag, args)
-                if continuation:
+                wenn continuation:
                     self.continuation = continuation
                     next(continuation)
-            else:
+            sonst:
                 self._send_tagged(tag, 'BAD', cmd + ' unknown')
 
     def cmd_CAPABILITY(self, tag, args):
         caps = ('IMAP4rev1 ' + self.capabilities
-                if self.capabilities
-                else 'IMAP4rev1')
+                wenn self.capabilities
+                sonst 'IMAP4rev1')
         self._send_textline('* CAPABILITY ' + caps)
         self._send_tagged(tag, 'OK', 'CAPABILITY completed')
 
@@ -200,10 +200,10 @@ klasse SimpleIMAPHandler(socketserver.StreamRequestHandler):
         self._send_tagged(tag, 'OK', '[READ-WRITE] SELECT completed.')
 
     def cmd_UNSELECT(self, tag, args):
-        if self.server.is_selected:
+        wenn self.server.is_selected:
             self.server.is_selected = False
             self._send_tagged(tag, 'OK', 'Returned to authenticated state. (Success)')
-        else:
+        sonst:
             self._send_tagged(tag, 'BAD', 'No mailbox selected')
 
 
@@ -231,10 +231,10 @@ klasse IdleCmdHandler(SimpleIMAPHandler):
         time.sleep(1)
         self._send_line(b'* 1 RECENT')
         r = yield
-        if r == b'DONE\r\n':
+        wenn r == b'DONE\r\n':
             self._send_line(b'* 9 RECENT')
             self._send_tagged(tag, 'OK', 'Idle completed')
-        else:
+        sonst:
             self._send_tagged(tag, 'BAD', 'Expected DONE')
 
 
@@ -249,9 +249,9 @@ klasse IdleCmdDelayedPacketHandler(SimpleIMAPHandler):
         time.sleep(1)
         self._send(b'TS\r\n')
         r = yield
-        if r == b'DONE\r\n':
+        wenn r == b'DONE\r\n':
             self._send_tagged(tag, 'OK', 'Idle completed')
-        else:
+        sonst:
             self._send_tagged(tag, 'BAD', 'Expected DONE')
 
 
@@ -261,10 +261,10 @@ klasse AuthHandler_CRAM_MD5(SimpleIMAPHandler):
         self._send_textline('+ PDE4OTYuNjk3MTcwOTUyQHBvc3RvZmZpY2Uucm'
                             'VzdG9uLm1jaS5uZXQ=')
         r = yield
-        if (r == b'dGltIGYxY2E2YmU0NjRiOWVmYT'
+        wenn (r == b'dGltIGYxY2E2YmU0NjRiOWVmYT'
                  b'FjY2E2ZmZkNmNmMmQ5ZjMy\r\n'):
             self._send_tagged(tag, 'OK', 'CRAM-MD5 successful')
-        else:
+        sonst:
             self._send_tagged(tag, 'NO', 'No access')
 
 
@@ -275,13 +275,13 @@ klasse NewIMAPTestsMixin:
         """
         Sets up imap_handler fuer tests. imap_handler should inherit from either:
         - SimpleIMAPHandler - fuer testing IMAP commands,
-        - socketserver.StreamRequestHandler - if raw access to stream is needed.
+        - socketserver.StreamRequestHandler - wenn raw access to stream is needed.
         Returns (client, server).
         """
         klasse TestTCPServer(self.server_class):
             def handle_error(self, request, client_address):
                 """
-                End request and raise the error if one occurs.
+                End request and raise the error wenn one occurs.
                 """
                 self.close_request(request)
                 self.server_close()
@@ -299,7 +299,7 @@ klasse NewIMAPTestsMixin:
         self.thread.daemon = True  # In case this function raises.
         self.thread.start()
 
-        if connect:
+        wenn connect:
             self.client = self.imap_class(*self.server.server_address)
 
         return self.client, self.server
@@ -309,9 +309,9 @@ klasse NewIMAPTestsMixin:
         Cleans up the test server. This method should not be called manually,
         it is added to the cleanup queue in the _setup method already.
         """
-        # if logout was called already we'd raise an exception trying to
+        # wenn logout was called already we'd raise an exception trying to
         # shutdown the client once again
-        if self.client is not None and self.client.state != 'LOGOUT':
+        wenn self.client is not None and self.client.state != 'LOGOUT':
             self.client.shutdown()
         # cleanup the server
         self.server.shutdown()
@@ -476,12 +476,12 @@ klasse NewIMAPTestsMixin:
             def cmd_AUTHENTICATE(self, tag, args):
                 self._send_textline('+')
                 self.response = yield
-                if self.response == b'*\r\n':
+                wenn self.response == b'*\r\n':
                     self._send_tagged(
                         tag,
                         'NO',
                         '[AUTHENTICATIONFAILED] aborted')
-                else:
+                sonst:
                     self._send_tagged(tag, 'OK', 'MYAUTH successful')
         client, _ = self._setup(MyServer)
         with self.assertRaisesRegex(imaplib.IMAP4.error,
@@ -708,12 +708,12 @@ klasse ThreadedNetworkedTests(unittest.TestCase):
                 self.server_close()
                 raise
 
-        if verbose:
+        wenn verbose:
             print("creating server")
         server = MyServer(addr, hdlr)
         self.assertEqual(server.server_address, server.socket.getsockname())
 
-        if verbose:
+        wenn verbose:
             print("server created")
             print("ADDR =", addr)
             print("CLASS =", self.server_class)
@@ -728,17 +728,17 @@ klasse ThreadedNetworkedTests(unittest.TestCase):
             kwargs={'poll_interval': 0.01})
         t.daemon = True  # In case this function raises.
         t.start()
-        if verbose:
+        wenn verbose:
             print("server running")
         return server, t
 
     def reap_server(self, server, thread):
-        if verbose:
+        wenn verbose:
             print("waiting fuer server")
         server.shutdown()
         server.server_close()
         thread.join()
-        if verbose:
+        wenn verbose:
             print("done")
 
     @contextmanager
@@ -976,10 +976,10 @@ klasse ThreadedNetworkedTests(unittest.TestCase):
                 self._send_textline('+ PDE4OTYuNjk3MTcwOTUyQHBvc3RvZmZpY2Uucm'
                                     'VzdG9uLm1jaS5uZXQ=')
                 r = yield
-                if (r == b'dGltIGYxY2E2YmU0NjRiOWVmYT'
+                wenn (r == b'dGltIGYxY2E2YmU0NjRiOWVmYT'
                          b'FjY2E2ZmZkNmNmMmQ5ZjMy\r\n'):
                     self._send_tagged(tag, 'OK', 'CRAM-MD5 successful')
-                else:
+                sonst:
                     self._send_tagged(tag, 'NO', 'No access')
 
         with self.reaped_pair(AuthHandler) as (server, client):
@@ -1002,9 +1002,9 @@ klasse ThreadedNetworkedTests(unittest.TestCase):
                 self._send_textline('+')
                 self.response = yield
 
-                if self.response == b'*\r\n':
+                wenn self.response == b'*\r\n':
                     self._send_tagged(tag, 'NO', '[AUTHENTICATIONFAILED] aborted')
-                else:
+                sonst:
                     self._send_tagged(tag, 'OK', 'MYAUTH successful')
 
         with self.reaped_pair(MyServer) as (server, client):
@@ -1053,7 +1053,7 @@ klasse ThreadedNetworkedTests(unittest.TestCase):
 
     @threading_helper.reap_threads
     def test_with_statement_logout(self):
-        # what happens if already logout in the block?
+        # what happens wenn already logout in the block?
         with self.reaped_server(SimpleIMAPHandler) as server:
             with self.imap_class(*server.server_address) as imap:
                 imap.login('user', 'pass')
@@ -1064,7 +1064,7 @@ klasse ThreadedNetworkedTests(unittest.TestCase):
 
     @threading_helper.reap_threads
     @cpython_only
-    @unittest.skipUnless(__debug__, "Won't work if __debug__ is False")
+    @unittest.skipUnless(__debug__, "Won't work wenn __debug__ is False")
     def test_dump_ur(self):
         # See: http://bugs.python.org/issue26543
         untagged_resp_dict = {'READ-WRITE': [b'']}
@@ -1106,5 +1106,5 @@ klasse ThreadedNetworkedTestsSSL(ThreadedNetworkedTests):
             client.shutdown()
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

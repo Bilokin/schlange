@@ -26,17 +26,17 @@ from . import commands, input
 from .reader import Reader
 
 
-if False:
+wenn False:
     from .types import SimpleContextManager, KeySpec, CommandName
 
 
 isearch_keymap: tuple[tuple[KeySpec, CommandName], ...] = tuple(
-    [("\\%03o" % c, "isearch-end") fuer c in range(256) if chr(c) != "\\"]
-    + [(c, "isearch-add-character") fuer c in map(chr, range(32, 127)) if c != "\\"]
+    [("\\%03o" % c, "isearch-end") fuer c in range(256) wenn chr(c) != "\\"]
+    + [(c, "isearch-add-character") fuer c in map(chr, range(32, 127)) wenn c != "\\"]
     + [
         ("\\%03o" % c, "isearch-add-character")
         fuer c in range(256)
-        if chr(c).isalpha() and chr(c) != "\\"
+        wenn chr(c).isalpha() and chr(c) != "\\"
     ]
     + [
         ("\\\\", "self-insert"),
@@ -56,7 +56,7 @@ ISEARCH_DIRECTION_FORWARDS = "f"
 klasse next_history(commands.Command):
     def do(self) -> None:
         r = self.reader
-        if r.historyi == len(r.history):
+        wenn r.historyi == len(r.history):
             r.error("end of history list")
             return
         r.select_item(r.historyi + 1)
@@ -65,7 +65,7 @@ klasse next_history(commands.Command):
 klasse previous_history(commands.Command):
     def do(self) -> None:
         r = self.reader
-        if r.historyi == 0:
+        wenn r.historyi == 0:
             r.error("start of history list")
             return
         r.select_item(r.historyi - 1)
@@ -86,8 +86,8 @@ klasse history_search_forward(commands.Command):
 klasse restore_history(commands.Command):
     def do(self) -> None:
         r = self.reader
-        if r.historyi != len(r.history):
-            if r.get_unicode() != r.history[r.historyi]:
+        wenn r.historyi != len(r.history):
+            wenn r.get_unicode() != r.history[r.historyi]:
                 r.buffer = list(r.history[r.historyi])
                 r.pos = len(r.buffer)
                 r.dirty = True
@@ -111,24 +111,24 @@ klasse operate_and_get_next(commands.FinishCommand):
 klasse yank_arg(commands.Command):
     def do(self) -> None:
         r = self.reader
-        if r.last_command is self.__class__:
+        wenn r.last_command is self.__class__:
             r.yank_arg_i += 1
-        else:
+        sonst:
             r.yank_arg_i = 0
-        if r.historyi < r.yank_arg_i:
+        wenn r.historyi < r.yank_arg_i:
             r.error("beginning of history list")
             return
         a = r.get_arg(-1)
         # XXX how to split?
         words = r.get_item(r.historyi - r.yank_arg_i - 1).split()
-        if a < -len(words) or a >= len(words):
+        wenn a < -len(words) or a >= len(words):
             r.error("no such arg")
             return
         w = words[a]
         b = r.buffer
-        if r.yank_arg_i > 0:
+        wenn r.yank_arg_i > 0:
             o = len(r.yank_arg_yanked)
-        else:
+        sonst:
             o = 0
         b[r.pos - o : r.pos] = list(w)
         r.yank_arg_yanked = w
@@ -173,17 +173,17 @@ klasse isearch_add_character(commands.Command):
         r.isearch_term += self.event[-1]
         r.dirty = True
         p = r.pos + len(r.isearch_term) - 1
-        if b[p : p + 1] != [r.isearch_term[-1]]:
+        wenn b[p : p + 1] != [r.isearch_term[-1]]:
             r.isearch_next()
 
 
 klasse isearch_backspace(commands.Command):
     def do(self) -> None:
         r = self.reader
-        if len(r.isearch_term) > 0:
+        wenn len(r.isearch_term) > 0:
             r.isearch_term = r.isearch_term[:-1]
             r.dirty = True
-        else:
+        sonst:
             r.error("nothing to rubout")
 
 
@@ -274,7 +274,7 @@ klasse HistoricalReader(Reader):
     def select_item(self, i: int) -> None:
         self.transient_history[self.historyi] = self.get_unicode()
         buf = self.transient_history.get(i)
-        if buf is None:
+        wenn buf is None:
             buf = self.history[i].rstrip()
         self.buffer = list(buf)
         self.historyi = i
@@ -283,9 +283,9 @@ klasse HistoricalReader(Reader):
         self.last_refresh_cache.invalidated = True
 
     def get_item(self, i: int) -> str:
-        if i != len(self.history):
+        wenn i != len(self.history):
             return self.transient_history.get(i, self.history[i])
-        else:
+        sonst:
             return self.transient_history.get(i, self.get_unicode())
 
     @contextmanager
@@ -306,12 +306,12 @@ klasse HistoricalReader(Reader):
         super().prepare()
         try:
             self.transient_history = {}
-            if self.next_history is not None and self.next_history < len(self.history):
+            wenn self.next_history is not None and self.next_history < len(self.history):
                 self.historyi = self.next_history
                 self.buffer[:] = list(self.history[self.next_history])
                 self.pos = len(self.buffer)
                 self.transient_history[len(self.history)] = ""
-            else:
+            sonst:
                 self.historyi = len(self.history)
             self.next_history = None
         except:
@@ -319,10 +319,10 @@ klasse HistoricalReader(Reader):
             raise
 
     def get_prompt(self, lineno: int, cursor_on_line: bool) -> str:
-        if cursor_on_line and self.isearch_direction != ISEARCH_DIRECTION_NONE:
+        wenn cursor_on_line and self.isearch_direction != ISEARCH_DIRECTION_NONE:
             d = "rf"[self.isearch_direction == ISEARCH_DIRECTION_FORWARDS]
             return "(%s-search `%s') " % (d, self.isearch_term)
-        else:
+        sonst:
             return super().get_prompt(lineno, cursor_on_line)
 
     def search_next(self, *, forwards: bool) -> None:
@@ -342,37 +342,37 @@ klasse HistoricalReader(Reader):
 
         match_prefix = len(prefix)
         len_item = 0
-        if history_index < len(self.history):
+        wenn history_index < len(self.history):
             len_item = len(self.get_item(history_index))
-        if len_item and pos == len_item:
+        wenn len_item and pos == len_item:
             match_prefix = False
-        elif not pos:
+        sowenn not pos:
             match_prefix = False
 
         while 1:
-            if forwards:
+            wenn forwards:
                 out_of_bounds = history_index >= len(self.history) - 1
-            else:
+            sonst:
                 out_of_bounds = history_index == 0
-            if out_of_bounds:
-                if forwards and not match_prefix:
+            wenn out_of_bounds:
+                wenn forwards and not match_prefix:
                     self.pos = 0
                     self.buffer = []
                     self.dirty = True
-                else:
+                sonst:
                     self.error("not found")
                 return
 
-            history_index += 1 if forwards else -1
+            history_index += 1 wenn forwards sonst -1
             s = self.get_item(history_index)
 
-            if not match_prefix:
+            wenn not match_prefix:
                 self.select_item(history_index)
                 return
 
             len_acc = 0
             fuer i, line in enumerate(s.splitlines(keepends=True)):
-                if line.startswith(prefix):
+                wenn line.startswith(prefix):
                     self.select_item(history_index)
                     self.pos = pos + len_acc
                     return
@@ -385,23 +385,23 @@ klasse HistoricalReader(Reader):
         s = self.get_unicode()
         forwards = self.isearch_direction == ISEARCH_DIRECTION_FORWARDS
         while 1:
-            if forwards:
+            wenn forwards:
                 p = s.find(st, p + 1)
-            else:
+            sonst:
                 p = s.rfind(st, 0, p + len(st) - 1)
-            if p != -1:
+            wenn p != -1:
                 self.select_item(i)
                 self.pos = p
                 return
-            elif (forwards and i >= len(self.history) - 1) or (not forwards and i == 0):
+            sowenn (forwards and i >= len(self.history) - 1) or (not forwards and i == 0):
                 self.error("not found")
                 return
-            else:
-                if forwards:
+            sonst:
+                wenn forwards:
                     i += 1
                     s = self.get_item(i)
                     p = -1
-                else:
+                sonst:
                     i -= 1
                     s = self.get_item(i)
                     p = len(s)
@@ -410,9 +410,9 @@ klasse HistoricalReader(Reader):
         super().finish()
         ret = self.get_unicode()
         fuer i, t in self.transient_history.items():
-            if i < len(self.history) and i != self.historyi:
+            wenn i < len(self.history) and i != self.historyi:
                 self.history[i] = t
-        if ret and should_auto_add_history:
+        wenn ret and should_auto_add_history:
             self.history.append(ret)
 
 

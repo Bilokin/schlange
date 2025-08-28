@@ -14,9 +14,9 @@ Options:
 
 -P exec_prefix: Like -p but this is the 'exec_prefix', used to
                 install objects etc.  The default is whatever sys.exec_prefix
-                evaluates to, or the -p argument if given.
+                evaluates to, or the -p argument wenn given.
                 If -p points to the Python source tree, -P must point
-                to the build tree, if different.
+                to the build tree, wenn different.
 
 -e extension: A directory containing additional .o files that
               may be used to resolve modules.  This directory
@@ -43,12 +43,12 @@ Options:
 -h:           Print this help message.
 
 -x module     Exclude the specified module. It will still be imported
-              by the frozen binary if it exists on the host system.
+              by the frozen binary wenn it exists on the host system.
 
 -X module     Like -x, except the module can never be imported by
               the frozen binary.
 
--E:           Freeze will fail if any modules can't be found (that
+-E:           Freeze will fail wenn any modules can't be found (that
               were not excluded using -x or -X).
 
 -i filename:  Include a file with additional command line options.  Used
@@ -83,7 +83,7 @@ In order to use freeze successfully, you must have built Python and
 installed it ("make install").
 
 The script should not use modules provided only as shared libraries;
-if it does, the resulting binary is not self-contained.
+wenn it does, the resulting binary is not self-contained.
 """
 
 
@@ -124,7 +124,7 @@ def main():
     error_if_any_missing = 0
 
     # default the exclude list fuer each platform
-    if win: exclude = exclude + [
+    wenn win: exclude = exclude + [
         'dos', 'dospath', 'mac', 'macfs', 'MACFS', 'posix', ]
 
     fail_import = exclude[:]
@@ -136,7 +136,7 @@ def main():
     makefile = 'Makefile'
     subsystem = 'console'
 
-    if sys.platform == "darwin" and sysconfig.get_config_var("PYTHONFRAMEWORK"):
+    wenn sys.platform == "darwin" and sysconfig.get_config_var("PYTHONFRAMEWORK"):
         print(f"{sys.argv[0]} cannot be used with framework builds of Python", file=sys.stderr)
         sys.exit(1)
 
@@ -146,7 +146,7 @@ def main():
     pos = 1
     while pos < len(sys.argv)-1:
         # last option can not be "-i", so this ensures "pos+1" is in range!
-        if sys.argv[pos] == '-i':
+        wenn sys.argv[pos] == '-i':
             try:
                 with open(sys.argv[pos+1]) as infp:
                     options = infp.read().split()
@@ -166,57 +166,57 @@ def main():
 
     # process option arguments
     fuer o, a in opts:
-        if o == '-h':
+        wenn o == '-h':
             print(__doc__)
             return
-        if o == '-d':
+        wenn o == '-d':
             debug = debug + 1
-        if o == '-e':
+        wenn o == '-e':
             extensions.append(a)
-        if o == '-m':
+        wenn o == '-m':
             modargs = 1
-        if o == '-o':
+        wenn o == '-o':
             odir = a
-        if o == '-p':
+        wenn o == '-p':
             prefix = a
-        if o == '-P':
+        wenn o == '-P':
             exec_prefix = a
-        if o == '-q':
+        wenn o == '-q':
             debug = 0
-        if o == '-w':
+        wenn o == '-w':
             win = not win
-        if o == '-s':
-            if not win:
+        wenn o == '-s':
+            wenn not win:
                 usage("-s subsystem option only on Windows")
             subsystem = a
-        if o == '-x':
+        wenn o == '-x':
             exclude.append(a)
-        if o == '-X':
+        wenn o == '-X':
             exclude.append(a)
             fail_import.append(a)
-        if o == '-E':
+        wenn o == '-E':
             error_if_any_missing = 1
-        if o == '-l':
+        wenn o == '-l':
             addn_link.append(a)
-        if o == '-a':
+        wenn o == '-a':
             modulefinder.AddPackagePath(*a.split("=", 2))
-        if o == '-r':
+        wenn o == '-r':
             f,r = a.split("=", 2)
             replace_paths.append( (f,r) )
 
     # modules that are imported by the Python runtime
     implicits = []
     fuer module in ('site', 'warnings', 'encodings.utf_8', 'encodings.latin_1'):
-        if module not in exclude:
+        wenn module not in exclude:
             implicits.append(module)
 
     # default prefix and exec_prefix
-    if not exec_prefix:
-        if prefix:
+    wenn not exec_prefix:
+        wenn prefix:
             exec_prefix = prefix
-        else:
+        sonst:
             exec_prefix = sys.exec_prefix
-    if not prefix:
+    wenn not prefix:
         prefix = sys.prefix
 
     # determine whether -p points to the Python source tree
@@ -224,13 +224,13 @@ def main():
 
     # locations derived from options
     version = '%d.%d' % sys.version_info[:2]
-    if hasattr(sys, 'abiflags'):
+    wenn hasattr(sys, 'abiflags'):
         flagged_version = version + sys.abiflags
-    else:
+    sonst:
         flagged_version = version
-    if win:
+    wenn win:
         extensions_c = 'frozen_extensions.c'
-    if ishome:
+    wenn ishome:
         print("(Using Python source directory)")
         configdir = exec_prefix
         incldir = os.path.join(prefix, 'Include')
@@ -238,9 +238,9 @@ def main():
         config_c_in = os.path.join(prefix, 'Modules', 'config.c.in')
         frozenmain_c = os.path.join(prefix, 'Python', 'frozenmain.c')
         makefile_in = os.path.join(exec_prefix, 'Makefile')
-        if win:
+        wenn win:
             frozendllmain_c = os.path.join(exec_prefix, 'Pc\\frozen_dllmain.c')
-    else:
+    sonst:
         configdir = sysconfig.get_config_var('LIBPL')
         incldir = os.path.join(prefix, 'include', 'python%s' % flagged_version)
         config_h_dir = os.path.join(exec_prefix, 'include',
@@ -256,47 +256,47 @@ def main():
 
     # sanity check of directories and files
     check_dirs = [prefix, exec_prefix, configdir, incldir]
-    if not win:
+    wenn not win:
         # These are not directories on Windows.
         check_dirs = check_dirs + extensions
     fuer dir in check_dirs:
-        if not os.path.exists(dir):
+        wenn not os.path.exists(dir):
             usage('needed directory %s not found' % dir)
-        if not os.path.isdir(dir):
+        wenn not os.path.isdir(dir):
             usage('%s: not a directory' % dir)
-    if win:
+    wenn win:
         files = supp_sources + extensions # extensions are files on Windows.
-    else:
+    sonst:
         files = [config_c_in, makefile_in] + supp_sources
     fuer file in supp_sources:
-        if not os.path.exists(file):
+        wenn not os.path.exists(file):
             usage('needed file %s not found' % file)
-        if not os.path.isfile(file):
+        wenn not os.path.isfile(file):
             usage('%s: not a plain file' % file)
-    if not win:
+    wenn not win:
         fuer dir in extensions:
             setup = os.path.join(dir, 'Setup')
-            if not os.path.exists(setup):
+            wenn not os.path.exists(setup):
                 usage('needed file %s not found' % setup)
-            if not os.path.isfile(setup):
+            wenn not os.path.isfile(setup):
                 usage('%s: not a plain file' % setup)
 
     # check that enough arguments are passed
-    if not args:
+    wenn not args:
         usage('at least one filename argument required')
 
     # check that file arguments exist
     fuer arg in args:
-        if arg == '-m':
+        wenn arg == '-m':
             break
-        # if user specified -m on the command line before _any_
+        # wenn user specified -m on the command line before _any_
         # file names, then nothing should be checked (as the
         # very first file should be a module name)
-        if modargs:
+        wenn modargs:
             break
-        if not os.path.exists(arg):
+        wenn not os.path.exists(arg):
             usage('argument %s not found' % arg)
-        if not os.path.isfile(arg):
+        wenn not os.path.isfile(arg):
             usage('%s: not a plain file' % arg)
 
     # process non-option arguments
@@ -306,30 +306,30 @@ def main():
     # derive target name from script name
     base = os.path.basename(scriptfile)
     base, ext = os.path.splitext(base)
-    if base:
-        if base != scriptfile:
+    wenn base:
+        wenn base != scriptfile:
             target = base
-        else:
+        sonst:
             target = base + '.bin'
 
     # handle -o option
     base_frozen_c = frozen_c
     base_config_c = config_c
     base_target = target
-    if odir and not os.path.isdir(odir):
+    wenn odir and not os.path.isdir(odir):
         try:
             os.mkdir(odir)
             print("Created output directory", odir)
         except OSError as msg:
             usage('%s: mkdir failed (%s)' % (odir, str(msg)))
     base = ''
-    if odir:
+    wenn odir:
         base = os.path.join(odir, '')
         frozen_c = os.path.join(odir, frozen_c)
         config_c = os.path.join(odir, config_c)
         target = os.path.join(odir, target)
         makefile = os.path.join(odir, makefile)
-        if win: extensions_c = os.path.join(odir, extensions_c)
+        wenn win: extensions_c = os.path.join(odir, extensions_c)
 
     # Handle special entry point requirements
     # (on Windows, some frozen programs do not use __main__, but
@@ -337,7 +337,7 @@ def main():
     custom_entry_point = None  # Currently only used on Windows
     python_entry_is_main = 1   # Is the entry point called __main__?
     # handle -s option on Windows
-    if win:
+    wenn win:
         import winmakemakefile
         try:
             custom_entry_point, python_entry_is_main = \
@@ -353,7 +353,7 @@ def main():
     path[0] = dir
     mf = modulefinder.ModuleFinder(path, debug, exclude, replace_paths)
 
-    if win and subsystem=='service':
+    wenn win and subsystem=='service':
         # If a Windows service, then add the "built-in" module.
         mod = mf.add_module("servicemanager")
         mod.__file__="dummy.pyd" # really built-in to the resulting EXE
@@ -361,31 +361,31 @@ def main():
     fuer mod in implicits:
         mf.import_hook(mod)
     fuer mod in modules:
-        if mod == '-m':
+        wenn mod == '-m':
             modargs = 1
             continue
-        if modargs:
-            if mod[-2:] == '.*':
+        wenn modargs:
+            wenn mod[-2:] == '.*':
                 mf.import_hook(mod[:-2], None, ["*"])
-            else:
+            sonst:
                 mf.import_hook(mod)
-        else:
+        sonst:
             mf.load_file(mod)
 
     # Add the main script as either __main__, or the actual module name.
-    if python_entry_is_main:
+    wenn python_entry_is_main:
         mf.run_script(scriptfile)
-    else:
+    sonst:
         mf.load_file(scriptfile)
 
-    if debug > 0:
+    wenn debug > 0:
         mf.report()
         print()
     dict = mf.modules
 
-    if error_if_any_missing:
+    wenn error_if_any_missing:
         missing = mf.any_missing()
-        if missing:
+        wenn missing:
             sys.exit("There are some missing modules: %r" % missing)
 
     # generate output fuer frozen modules
@@ -397,26 +397,26 @@ def main():
     unknown = []
     mods = sorted(dict.keys())
     fuer mod in mods:
-        if dict[mod].__code__:
+        wenn dict[mod].__code__:
             continue
-        if not dict[mod].__file__:
+        wenn not dict[mod].__file__:
             builtins.append(mod)
-        else:
+        sonst:
             unknown.append(mod)
 
     # search fuer unknown modules in extensions directories (not on Windows)
     addfiles = []
     frozen_extensions = [] # Windows list of modules.
-    if unknown or (not win and builtins):
-        if not win:
+    wenn unknown or (not win and builtins):
+        wenn not win:
             addfiles, addmods = \
                       checkextensions.checkextensions(unknown+builtins,
                                                       extensions)
             fuer mod in addmods:
-                if mod in unknown:
+                wenn mod in unknown:
                     unknown.remove(mod)
                     builtins.append(mod)
-        else:
+        sonst:
             # Do the windows thang...
             import checkextensions_win32
             # Get a list of CExtension instances, each describing a module
@@ -427,12 +427,12 @@ def main():
                 unknown.remove(mod.name)
 
     # report unknown modules
-    if unknown:
+    wenn unknown:
         sys.stderr.write('Warning: unknown modules remain: %s\n' %
                          ' '.join(unknown))
 
     # windows gets different treatment
-    if win:
+    wenn win:
         # Taking a shortcut here...
         import winmakemakefile, checkextensions_win32
         checkextensions_win32.write_extension_table(extensions_c,
@@ -459,7 +459,7 @@ def main():
     libs = [os.path.join(libdir, '$(LDLIBRARY)')]
 
     somevars = {}
-    if os.path.exists(makefile_in):
+    wenn os.path.exists(makefile_in):
         makevars = parsesetup.getmakevars(makefile_in)
         fuer key in makevars:
             somevars[key] = makevars[key]
@@ -475,10 +475,10 @@ def main():
 
     # Done!
 
-    if odir:
+    wenn odir:
         print('Now run "make" in', odir, end=' ')
         print('to build the target:', base_target)
-    else:
+    sonst:
         print('Now run "make" to build the target:', base_target)
 
 

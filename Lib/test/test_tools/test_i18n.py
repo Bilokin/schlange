@@ -56,7 +56,7 @@ klasse Test_pygettext(unittest.TestCase):
         """ utility: return the header of a .po file as a dictionary """
         headers = {}
         fuer line in data.split('\n'):
-            if not line or line.startswith(('#', 'msgid', 'msgstr')):
+            wenn not line or line.startswith(('#', 'msgid', 'msgstr')):
                 continue
             line = line.strip('"')
             key, val = line.split(':', 1)
@@ -69,26 +69,26 @@ klasse Test_pygettext(unittest.TestCase):
         reading_msgid = False
         cur_msgid = []
         fuer line in data.split('\n'):
-            if reading_msgid:
-                if line.startswith('"'):
+            wenn reading_msgid:
+                wenn line.startswith('"'):
                     cur_msgid.append(line.strip('"'))
-                else:
+                sonst:
                     msgids.append('\n'.join(cur_msgid))
                     cur_msgid = []
                     reading_msgid = False
                     continue
-            if line.startswith('msgid '):
+            wenn line.startswith('msgid '):
                 line = line[len('msgid '):]
                 cur_msgid.append(line.strip('"'))
                 reading_msgid = True
-        else:
-            if reading_msgid:
+        sonst:
+            wenn reading_msgid:
                 msgids.append('\n'.join(cur_msgid))
 
         return msgids
 
     def assert_POT_equal(self, expected, actual):
-        """Check if two POT files are equal"""
+        """Check wenn two POT files are equal"""
         self.maxDiff = None
         self.assertEqual(normalize_POT_file(expected), normalize_POT_file(actual))
 
@@ -100,13 +100,13 @@ klasse Test_pygettext(unittest.TestCase):
             with open(filename, 'w', encoding='utf-8') as fp:
                 fp.write(module_content)
             res = assert_python_ok('-Xutf8', self.script, *args, filename)
-            if strict:
+            wenn strict:
                 self.assertEqual(res.err, b'')
             with open('messages.pot', encoding='utf-8') as fp:
                 data = fp.read()
-        if not raw:
+        wenn not raw:
             data = self.get_msgids(data)
-        if not with_stderr:
+        wenn not with_stderr:
             return data
         return data, res.err
 
@@ -137,7 +137,7 @@ klasse Test_pygettext(unittest.TestCase):
             self.assertIn("Content-Transfer-Encoding", header)
             self.assertIn("Generated-By", header)
 
-            # not clear if these should be required in POT (template) files
+            # not clear wenn these should be required in POT (template) files
             #self.assertIn("Report-Msgid-Bugs-To", header)
             #self.assertIn("Language", header)
 
@@ -156,10 +156,10 @@ klasse Test_pygettext(unittest.TestCase):
             creationDate = header['POT-Creation-Date']
 
             # peel off the escaped newline at the end of string
-            if creationDate.endswith('\\n'):
+            wenn creationDate.endswith('\\n'):
                 creationDate = creationDate[:-len('\\n')]
 
-            # This will raise if the date format does not exactly match.
+            # This will raise wenn the date format does not exactly match.
             datetime.strptime(creationDate, '%Y-%m-%d %H:%M%z')
 
     def test_output_option(self):
@@ -184,14 +184,14 @@ klasse Test_pygettext(unittest.TestCase):
         def foo(bar):
             b"""doc"""
         '''))
-        self.assertFalse([msgid fuer msgid in msgids if 'doc' in msgid])
+        self.assertFalse([msgid fuer msgid in msgids wenn 'doc' in msgid])
 
     def test_funcdocstring_fstring(self):
         msgids = self.extract_docstrings_from_str(dedent('''\
         def foo(bar):
             f"""doc"""
         '''))
-        self.assertFalse([msgid fuer msgid in msgids if 'doc' in msgid])
+        self.assertFalse([msgid fuer msgid in msgids wenn 'doc' in msgid])
 
     def test_classdocstring(self):
         fuer doc in ('"""doc"""', "r'''doc'''", "R'doc'", 'u"doc"'):
@@ -207,14 +207,14 @@ klasse Test_pygettext(unittest.TestCase):
         klasse C:
             b"""doc"""
         '''))
-        self.assertFalse([msgid fuer msgid in msgids if 'doc' in msgid])
+        self.assertFalse([msgid fuer msgid in msgids wenn 'doc' in msgid])
 
     def test_classdocstring_fstring(self):
         msgids = self.extract_docstrings_from_str(dedent('''\
         klasse C:
             f"""doc"""
         '''))
-        self.assertFalse([msgid fuer msgid in msgids if 'doc' in msgid])
+        self.assertFalse([msgid fuer msgid in msgids wenn 'doc' in msgid])
 
     def test_moduledocstring(self):
         fuer doc in ('"""doc"""', "r'''doc'''", "R'doc'", 'u"doc"'):
@@ -228,13 +228,13 @@ klasse Test_pygettext(unittest.TestCase):
         msgids = self.extract_docstrings_from_str(dedent('''\
         b"""doc"""
         '''))
-        self.assertFalse([msgid fuer msgid in msgids if 'doc' in msgid])
+        self.assertFalse([msgid fuer msgid in msgids wenn 'doc' in msgid])
 
     def test_moduledocstring_fstring(self):
         msgids = self.extract_docstrings_from_str(dedent('''\
         f"""doc"""
         '''))
-        self.assertFalse([msgid fuer msgid in msgids if 'doc' in msgid])
+        self.assertFalse([msgid fuer msgid in msgids wenn 'doc' in msgid])
 
     def test_msgid(self):
         msgids = self.extract_docstrings_from_str(
@@ -243,11 +243,11 @@ klasse Test_pygettext(unittest.TestCase):
 
     def test_msgid_bytes(self):
         msgids = self.extract_docstrings_from_str('_(b"""doc""")')
-        self.assertFalse([msgid fuer msgid in msgids if 'doc' in msgid])
+        self.assertFalse([msgid fuer msgid in msgids wenn 'doc' in msgid])
 
     def test_msgid_fstring(self):
         msgids = self.extract_docstrings_from_str('_(f"""doc""")')
-        self.assertFalse([msgid fuer msgid in msgids if 'doc' in msgid])
+        self.assertFalse([msgid fuer msgid in msgids wenn 'doc' in msgid])
 
     def test_funcdocstring_annotated_args(self):
         """ Test docstrings fuer functions with annotated args """
@@ -341,7 +341,7 @@ klasse Test_pygettext(unittest.TestCase):
         msgids = self.extract_docstrings_from_str(dedent('''\
         f"{_(f'foo {bar}')}"
         '''))
-        self.assertFalse([msgid fuer msgid in msgids if 'foo {bar}' in msgid])
+        self.assertFalse([msgid fuer msgid in msgids wenn 'foo {bar}' in msgid])
 
     def test_calls_in_fstrings_with_wrong_input_2(self):
         msgids = self.extract_docstrings_from_str(dedent('''\
@@ -613,11 +613,11 @@ def extract_from_snapshots():
     }
 
     fuer filename, args in snapshots.items():
-        if isinstance(filename, tuple):
+        wenn isinstance(filename, tuple):
             filename, output_file = filename
             output_file = DATA_DIR / output_file
             input_file = DATA_DIR / filename
-        else:
+        sonst:
             input_file = DATA_DIR / filename
             output_file = input_file.with_suffix('.pot')
         contents = input_file.read_bytes()
@@ -635,9 +635,9 @@ def update_POT_snapshots():
         output_file.write_text(output, encoding='utf-8')
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     # To regenerate POT files
-    if len(sys.argv) > 1 and sys.argv[1] == '--snapshot-update':
+    wenn len(sys.argv) > 1 and sys.argv[1] == '--snapshot-update':
         update_POT_snapshots()
         sys.exit(0)
     unittest.main()

@@ -56,5 +56,5 @@ klasse TestSJISX0213Map(multibytecodec_support.TestBase_Mapping,
     mapfileurl = 'http://www.pythontest.net/unicode/SHIFT_JISX0213.TXT'
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

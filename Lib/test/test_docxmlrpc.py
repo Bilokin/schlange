@@ -11,7 +11,7 @@ support.requires_working_socket(module=True)
 def make_request_and_skipIf(condition, reason):
     # If we skip the test, we have to make a request because
     # the server created in setUp blocks expecting one to come in.
-    if not condition:
+    wenn not condition:
         return lambda func: func
     def decorator(func):
         def make_request_and_skip(self):
@@ -95,7 +95,7 @@ klasse DocXMLRPCHTTPGETServer(unittest.TestCase):
         self.assertEqual(response.status, 200)
         self.assertEqual(response.getheader("Content-type"), "text/html; charset=UTF-8")
 
-        # Server raises an exception if we don't start to read the data
+        # Server raises an exception wenn we don't start to read the data
         response.read()
 
     def test_get_css(self):
@@ -105,7 +105,7 @@ klasse DocXMLRPCHTTPGETServer(unittest.TestCase):
         self.assertEqual(response.status, 200)
         self.assertEqual(response.getheader("Content-type"), "text/css; charset=UTF-8")
 
-        # Server raises an exception if we don't start to read the data
+        # Server raises an exception wenn we don't start to read the data
         response.read()
 
     def test_invalid_get_response(self):
@@ -197,7 +197,7 @@ klasse DocXMLRPCHTTPGETServer(unittest.TestCase):
         """ Test that annotations works as expected """
         self.client.request("GET", "/")
         response = self.client.getresponse()
-        docstring = (b'' if sys.flags.optimize >= 2 else
+        docstring = (b'' wenn sys.flags.optimize >= 2 sonst
                      b'<dd><tt>Use&nbsp;function&nbsp;annotations.</tt></dd>')
         self.assertIn(
             (b'<dl><dt><a name="-annotation"><strong>annotation</strong></a>'
@@ -222,5 +222,5 @@ klasse DocXMLRPCHTTPGETServer(unittest.TestCase):
         self.assertEqual('<p><tt>test_documentation&lt;script&gt;</tt></p>', documentation)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

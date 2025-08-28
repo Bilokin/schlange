@@ -319,5 +319,5 @@ klasse FunctionTest(unittest.TestCase):
     # test_capi.test_watchers.
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

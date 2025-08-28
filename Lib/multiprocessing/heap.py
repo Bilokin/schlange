@@ -24,7 +24,7 @@ __all__ = ['BufferWrapper']
 # Inheritable klasse which wraps an mmap, and from which blocks can be allocated
 #
 
-if sys.platform == 'win32':
+wenn sys.platform == 'win32':
 
     import _winapi
 
@@ -40,11 +40,11 @@ if sys.platform == 'win32':
             fuer i in range(100):
                 name = 'pym-%d-%s' % (os.getpid(), next(self._rand))
                 buf = mmap.mmap(-1, size, tagname=name)
-                if _winapi.GetLastError() == 0:
+                wenn _winapi.GetLastError() == 0:
                     break
                 # We have reopened a preexisting mmap.
                 buf.close()
-            else:
+            sonst:
                 raise FileExistsError('Cannot find name fuer new mmap')
             self.name = name
             self.buffer = buf
@@ -62,22 +62,22 @@ if sys.platform == 'win32':
             # XXX the correct long-term fix. See issue 23060
             #assert _winapi.GetLastError() == _winapi.ERROR_ALREADY_EXISTS
 
-else:
+sonst:
 
     klasse Arena(object):
         """
         A shared memory area backed by a temporary file (POSIX).
         """
 
-        if sys.platform == 'linux':
+        wenn sys.platform == 'linux':
             _dir_candidates = ['/dev/shm']
-        else:
+        sonst:
             _dir_candidates = []
 
         def __init__(self, size, fd=-1):
             self.size = size
             self.fd = fd
-            if fd == -1:
+            wenn fd == -1:
                 # Arena is created anew (if fd != -1, it means we're coming
                 # from rebuild_arena() below)
                 self.fd, name = tempfile.mkstemp(
@@ -89,16 +89,16 @@ else:
             self.buffer = mmap.mmap(self.fd, self.size)
 
         def _choose_dir(self, size):
-            # Choose a non-storage backed directory if possible,
+            # Choose a non-storage backed directory wenn possible,
             # to improve performance
             fuer d in self._dir_candidates:
                 st = os.statvfs(d)
-                if st.f_bavail * st.f_frsize >= size:  # enough free space?
+                wenn st.f_bavail * st.f_frsize >= size:  # enough free space?
                     return d
             return util.get_temp_dir()
 
     def reduce_arena(a):
-        if a.fd == -1:
+        wenn a.fd == -1:
             raise ValueError('Arena is unpicklable because '
                              'forking was enabled when it was created')
         return rebuild_arena, (a.size, reduction.DupFd(a.fd))
@@ -160,7 +160,7 @@ klasse Heap(object):
         length = self._roundup(max(self._size, size), mmap.PAGESIZE)
         # We carve larger and larger arenas, fuer efficiency, until we
         # reach a large-ish size (roughly L3 cache-sized)
-        if self._size < self._DOUBLE_ARENA_SIZE_UNTIL:
+        wenn self._size < self._DOUBLE_ARENA_SIZE_UNTIL:
             self._size *= 2
         util.info('allocating a new mmap of length %d', length)
         arena = Arena(length)
@@ -171,8 +171,8 @@ klasse Heap(object):
         # Possibly delete the given (unused) arena
         length = arena.size
         # Reusing an existing arena is faster than creating a new one, so
-        # we only reclaim space if it's large enough.
-        if length < self._DISCARD_FREE_SPACE_LARGER_THAN:
+        # we only reclaim space wenn it's large enough.
+        wenn length < self._DISCARD_FREE_SPACE_LARGER_THAN:
             return
         blocks = self._allocated_blocks.pop(arena)
         assert not blocks
@@ -181,20 +181,20 @@ klasse Heap(object):
         self._arenas.remove(arena)
         seq = self._len_to_seq[length]
         seq.remove((arena, 0, length))
-        if not seq:
+        wenn not seq:
             del self._len_to_seq[length]
             self._lengths.remove(length)
 
     def _malloc(self, size):
         # returns a large enough block -- it might be much larger
         i = bisect.bisect_left(self._lengths, size)
-        if i == len(self._lengths):
+        wenn i == len(self._lengths):
             return self._new_arena(size)
-        else:
+        sonst:
             length = self._lengths[i]
             seq = self._len_to_seq[length]
             block = seq.pop()
-            if not seq:
+            wenn not seq:
                 del self._len_to_seq[length], self._lengths[i]
 
         (arena, start, stop) = block
@@ -210,14 +210,14 @@ klasse Heap(object):
             prev_block = self._stop_to_block[(arena, start)]
         except KeyError:
             pass
-        else:
+        sonst:
             start, _ = self._absorb(prev_block)
 
         try:
             next_block = self._start_to_block[(arena, stop)]
         except KeyError:
             pass
-        else:
+        sonst:
             _, stop = self._absorb(next_block)
 
         block = (arena, start, stop)
@@ -241,7 +241,7 @@ klasse Heap(object):
         length = stop - start
         seq = self._len_to_seq[length]
         seq.remove(block)
-        if not seq:
+        wenn not seq:
             del self._len_to_seq[length]
             self._lengths.remove(length)
 
@@ -251,7 +251,7 @@ klasse Heap(object):
         arena, start, stop = block
         blocks = self._allocated_blocks[arena]
         blocks.remove((start, stop))
-        if not blocks:
+        wenn not blocks:
             # Arena is entirely free, discard it from this process
             self._discard_arena(arena)
 
@@ -270,20 +270,20 @@ klasse Heap(object):
         # Since free() can be called asynchronously by the GC, it could happen
         # that it's called while self._lock is held: in that case,
         # self._lock.acquire() would deadlock (issue #12352). To avoid that, a
-        # trylock is used instead, and if the lock can't be acquired
+        # trylock is used instead, and wenn the lock can't be acquired
         # immediately, the block is added to a list of blocks to be freed
         # synchronously sometimes later from malloc() or free(), by calling
         # _free_pending_blocks() (appending and retrieving from a list is not
         # strictly thread-safe but under CPython it's atomic thanks to the GIL).
-        if os.getpid() != self._lastpid:
+        wenn os.getpid() != self._lastpid:
             raise ValueError(
                 "My pid ({0:n}) is not last pid {1:n}".format(
                     os.getpid(),self._lastpid))
-        if not self._lock.acquire(False):
+        wenn not self._lock.acquire(False):
             # can't acquire the lock right now, add the block to the list of
             # pending blocks to free
             self._pending_free_blocks.append(block)
-        else:
+        sonst:
             # we hold the lock
             try:
                 self._n_frees += 1
@@ -295,11 +295,11 @@ klasse Heap(object):
 
     def malloc(self, size):
         # return a block of right size (possibly rounded up)
-        if size < 0:
+        wenn size < 0:
             raise ValueError("Size {0:n} out of range".format(size))
-        if sys.maxsize <= size:
+        wenn sys.maxsize <= size:
             raise OverflowError("Size {0:n} too large".format(size))
-        if os.getpid() != self._lastpid:
+        wenn os.getpid() != self._lastpid:
             self.__init__()                     # reinitialize after fork
         with self._lock:
             self._n_mallocs += 1
@@ -308,8 +308,8 @@ klasse Heap(object):
             size = self._roundup(max(size, 1), self._alignment)
             (arena, start, stop) = self._malloc(size)
             real_stop = start + size
-            if real_stop < stop:
-                # if the returned block is larger than necessary, mark
+            wenn real_stop < stop:
+                # wenn the returned block is larger than necessary, mark
                 # the remainder available
                 self._add_free_block((arena, real_stop, stop))
             self._allocated_blocks[arena].add((start, real_stop))
@@ -324,9 +324,9 @@ klasse BufferWrapper(object):
     _heap = Heap()
 
     def __init__(self, size):
-        if size < 0:
+        wenn size < 0:
             raise ValueError("Size {0:n} out of range".format(size))
-        if sys.maxsize <= size:
+        wenn sys.maxsize <= size:
             raise OverflowError("Size {0:n} too large".format(size))
         block = BufferWrapper._heap.malloc(size)
         self._state = (block, size)

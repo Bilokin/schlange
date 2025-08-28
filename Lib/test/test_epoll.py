@@ -29,13 +29,13 @@ import time
 import unittest
 from test import support
 
-if not hasattr(select, "epoll"):
+wenn not hasattr(select, "epoll"):
     raise unittest.SkipTest("test works only on Linux 2.6")
 
 try:
     select.epoll()
 except OSError as e:
-    if e.errno == errno.ENOSYS:
+    wenn e.errno == errno.ENOSYS:
         raise unittest.SkipTest("kernel doesn't support epoll()")
     raise
 
@@ -56,7 +56,7 @@ klasse TestEPoll(unittest.TestCase):
             client.connect(('127.0.0.1', self.serverSocket.getsockname()[1]))
         except OSError as e:
             self.assertEqual(e.args[0], errno.EINPROGRESS)
-        else:
+        sonst:
             raise AssertionError("Connect should have raised EINPROGRESS")
         server, addr = self.serverSocket.accept()
 
@@ -74,7 +74,7 @@ klasse TestEPoll(unittest.TestCase):
         self.assertTrue(ep.closed)
         self.assertRaises(ValueError, ep.fileno)
 
-        if hasattr(select, "EPOLL_CLOEXEC"):
+        wenn hasattr(select, "EPOLL_CLOEXEC"):
             select.epoll(-1, select.EPOLL_CLOEXEC).close()
             select.epoll(flags=select.EPOLL_CLOEXEC).close()
             select.epoll(flags=0).close()
@@ -91,7 +91,7 @@ klasse TestEPoll(unittest.TestCase):
         self.assertRaises(ValueError, select.epoll, -2)
         self.assertRaises(ValueError, select.epoll, sizehint=-2)
 
-        if hasattr(select, "EPOLL_CLOEXEC"):
+        wenn hasattr(select, "EPOLL_CLOEXEC"):
             self.assertRaises(OSError, select.epoll, flags=12356)
 
     def test_context_manager(self):
@@ -157,7 +157,7 @@ klasse TestEPoll(unittest.TestCase):
             ep2.poll(1, 4)
         except OSError as e:
             self.assertEqual(e.args[0], errno.EBADF, e)
-        else:
+        sonst:
             self.fail("epoll on closed fd didn't raise EBADF")
 
     def test_control_and_wait(self):
@@ -195,7 +195,7 @@ klasse TestEPoll(unittest.TestCase):
             events += ep.poll(1.0, 4)
             then = time.monotonic()
             self.assertFalse(then - now > 0.01)
-            if len(events) >= 2:
+            wenn len(events) >= 2:
                 break
 
         expected = [(client.fileno(), select.EPOLLIN | select.EPOLLOUT),
@@ -265,5 +265,5 @@ klasse TestEPoll(unittest.TestCase):
         self.assertEqual(os.get_inheritable(epoll.fileno()), False)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

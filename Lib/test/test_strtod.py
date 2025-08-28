@@ -7,7 +7,7 @@ import re
 import sys
 import test.support
 
-if getattr(sys, 'float_repr_style', '') != 'short':
+wenn getattr(sys, 'float_repr_style', '') != 'short':
     raise unittest.SkipTest('correctly-rounded string->float conversions '
                             'not available on this system')
 
@@ -33,7 +33,7 @@ def strtod(s, mant_dig=53, min_exp = -1021, max_exp = 1024):
     # parse string into a pair of integers 'a' and 'b' such that
     # abs(decimal value) = a/b, along with a boolean 'negative'.
     m = strtod_parser(s)
-    if m is None:
+    wenn m is None:
         raise ValueError('invalid numeric string')
     fraction = m.group('frac') or ''
     intpart = int(m.group('int') + fraction)
@@ -42,21 +42,21 @@ def strtod(s, mant_dig=53, min_exp = -1021, max_exp = 1024):
     a, b = intpart*10**max(exp, 0), 10**max(0, -exp)
 
     # quick return fuer zeros
-    if not a:
-        return '-0x0.0p+0' if negative else '0x0.0p+0'
+    wenn not a:
+        return '-0x0.0p+0' wenn negative sonst '0x0.0p+0'
 
     # compute exponent e fuer result; may be one too small in the case
     # that the rounded value of a/b lies in a different binade from a/b
     d = a.bit_length() - b.bit_length()
-    d += (a >> d if d >= 0 else a << -d) >= b
+    d += (a >> d wenn d >= 0 sonst a << -d) >= b
     e = max(d, min_exp) - mant_dig
 
-    # approximate a/b by number of the form q * 2**e; adjust e if necessary
+    # approximate a/b by number of the form q * 2**e; adjust e wenn necessary
     a, b = a << max(-e, 0), b << max(e, 0)
     q, r = divmod(a, b)
-    if 2*r > b or 2*r == b and q & 1:
+    wenn 2*r > b or 2*r == b and q & 1:
         q += 1
-        if q.bit_length() == mant_dig+1:
+        wenn q.bit_length() == mant_dig+1:
             q //= 2
             e += 1
 
@@ -65,17 +65,17 @@ def strtod(s, mant_dig=53, min_exp = -1021, max_exp = 1024):
     assert q.bit_length() == mant_dig or e == min_exp - mant_dig
 
     # check fuer overflow and underflow
-    if e + q.bit_length() > max_exp:
-        return '-inf' if negative else 'inf'
-    if not q:
-        return '-0x0.0p+0' if negative else '0x0.0p+0'
+    wenn e + q.bit_length() > max_exp:
+        return '-inf' wenn negative sonst 'inf'
+    wenn not q:
+        return '-0x0.0p+0' wenn negative sonst '0x0.0p+0'
 
     # fuer hex representation, shift so # bits after point is a multiple of 4
     hexdigs = 1 + (mant_dig-2)//4
     shift = 3 - (mant_dig-2)%4
     q, e = q << shift, e - shift
     return '{}0x{:x}.{:0{}x}p{:+d}'.format(
-        '-' if negative else '',
+        '-' wenn negative sonst '',
         q // 16**hexdigs,
         q % 16**hexdigs,
         hexdigs,
@@ -87,16 +87,16 @@ klasse StrtodTests(unittest.TestCase):
     def check_strtod(self, s):
         """Compare the result of Python's builtin correctly rounded
         string->float conversion (using float) to a pure Python
-        correctly rounded string->float implementation.  Fail if the
+        correctly rounded string->float implementation.  Fail wenn the
         two methods give different results."""
 
         try:
             fs = float(s)
         except OverflowError:
-            got = '-inf' if s[0] == '-' else 'inf'
+            got = '-inf' wenn s[0] == '-' sonst 'inf'
         except MemoryError:
             got = 'memory error'
-        else:
+        sonst:
             got = fs.hex()
         expected = strtod(s)
         self.assertEqual(expected, got,
@@ -110,7 +110,7 @@ klasse StrtodTests(unittest.TestCase):
             upper = -(-2**54//5**k)
             # lower = smallest odd number >= 2**53/5**k
             lower = -(-2**53//5**k)
-            if lower % 2 == 0:
+            wenn lower % 2 == 0:
                 lower += 1
             fuer i in range(TEST_SIZE):
                 # Select a random odd n in [2**53/5**k,
@@ -154,7 +154,7 @@ klasse StrtodTests(unittest.TestCase):
 
             # convert bit pattern to a number of the form m * 2**e
             e, m = divmod(bits, 2**52)
-            if e:
+            wenn e:
                 m, e = m + 2**52, e - 1
             e -= 1074
 
@@ -162,10 +162,10 @@ klasse StrtodTests(unittest.TestCase):
             m, e = 2*m + 1, e - 1
 
             # convert to a decimal string
-            if e >= 0:
+            wenn e >= 0:
                 digits = m << e
                 exponent = 0
-            else:
+            sonst:
                 # m * 2**e = (m * 5**-e) * 10**e
                 digits = m * 5**-e
                 exponent = e
@@ -224,28 +224,28 @@ klasse StrtodTests(unittest.TestCase):
                 s = random.choice(signs)
                 intpart_len = random.randrange(5)
                 s += ''.join(random.choice(digits) fuer _ in range(intpart_len))
-                if random.choice([True, False]):
+                wenn random.choice([True, False]):
                     s += '.'
                     fracpart_len = random.randrange(5)
                     s += ''.join(random.choice(digits)
                                  fuer _ in range(fracpart_len))
-                else:
+                sonst:
                     fracpart_len = 0
-                if random.choice([True, False]):
+                wenn random.choice([True, False]):
                     s += random.choice(['e', 'E'])
                     s += random.choice(signs)
                     exponent_len = random.randrange(1, 4)
                     s += ''.join(random.choice(digits)
                                  fuer _ in range(exponent_len))
 
-                if intpart_len + fracpart_len:
+                wenn intpart_len + fracpart_len:
                     self.check_strtod(s)
-                else:
+                sonst:
                     try:
                         float(s)
                     except ValueError:
                         pass
-                    else:
+                    sonst:
                         assert False, "expected ValueError"
 
     @test.support.bigmemtest(size=test.support._2G+10, memuse=3, dry_run=False)
@@ -429,5 +429,5 @@ klasse StrtodTests(unittest.TestCase):
         fuer s in test_strings:
             self.check_strtod(s)
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

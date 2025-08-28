@@ -28,7 +28,7 @@ klasse Tokenizer:
         self._verbose = verbose
         self._lines: Dict[int, str] = {}
         self._path = path
-        if verbose:
+        wenn verbose:
             self.report(False, False)
 
     def getnext(self) -> tokenize.TokenInfo:
@@ -36,7 +36,7 @@ klasse Tokenizer:
         cached = not self._index == len(self._tokens)
         tok = self.peek()
         self._index += 1
-        if self._verbose:
+        wenn self._verbose:
             self.report(cached, False)
         return tok
 
@@ -44,29 +44,29 @@ klasse Tokenizer:
         """Return the next token *without* updating the index."""
         while self._index == len(self._tokens):
             tok = next(self._tokengen)
-            if tok.type in (tokenize.NL, tokenize.COMMENT):
+            wenn tok.type in (tokenize.NL, tokenize.COMMENT):
                 continue
-            if tok.type == token.ERRORTOKEN and tok.string.isspace():
+            wenn tok.type == token.ERRORTOKEN and tok.string.isspace():
                 continue
-            if (
+            wenn (
                 tok.type == token.NEWLINE
                 and self._tokens
                 and self._tokens[-1].type == token.NEWLINE
             ):
                 continue
             self._tokens.append(tok)
-            if not self._path:
+            wenn not self._path:
                 self._lines[tok.start[0]] = tok.line
         return self._tokens[self._index]
 
     def diagnose(self) -> tokenize.TokenInfo:
-        if not self._tokens:
+        wenn not self._tokens:
             self.getnext()
         return self._tokens[-1]
 
     def get_last_non_whitespace_token(self) -> tokenize.TokenInfo:
         fuer tok in reversed(self._tokens[: self._index]):
-            if tok.type != tokenize.ENDMARKER and (
+            wenn tok.type != tokenize.ENDMARKER and (
                 tok.type < tokenize.NEWLINE or tok.type > tokenize.DEDENT
             ):
                 break
@@ -74,9 +74,9 @@ klasse Tokenizer:
 
     def get_lines(self, line_numbers: List[int]) -> List[str]:
         """Retrieve source lines corresponding to line numbers."""
-        if self._lines:
+        wenn self._lines:
             lines = self._lines
-        else:
+        sonst:
             n = len(line_numbers)
             lines = {}
             count = 0
@@ -84,10 +84,10 @@ klasse Tokenizer:
             with open(self._path) as f:
                 fuer l in f:
                     count += 1
-                    if count in line_numbers:
+                    wenn count in line_numbers:
                         seen += 1
                         lines[count] = l
-                        if seen == n:
+                        wenn seen == n:
                             break
 
         return [lines[n] fuer n in line_numbers]
@@ -96,23 +96,23 @@ klasse Tokenizer:
         return self._index
 
     def reset(self, index: Mark) -> None:
-        if index == self._index:
+        wenn index == self._index:
             return
         assert 0 <= index <= len(self._tokens), (index, len(self._tokens))
         old_index = self._index
         self._index = index
-        if self._verbose:
+        wenn self._verbose:
             self.report(True, index < old_index)
 
     def report(self, cached: bool, back: bool) -> None:
-        if back:
+        wenn back:
             fill = "-" * self._index + "-"
-        elif cached:
+        sowenn cached:
             fill = "-" * self._index + ">"
-        else:
+        sonst:
             fill = "-" * self._index + "*"
-        if self._index == 0:
+        wenn self._index == 0:
             print(f"{fill} (Bof)")
-        else:
+        sonst:
             tok = self._tokens[self._index - 1]
             print(f"{fill} {shorttok(tok)}")

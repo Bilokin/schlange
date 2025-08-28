@@ -31,11 +31,11 @@ from tkinter import _flatten, _join, _stringify, _splitdict
 
 def _format_optvalue(value, script=False):
     """Internal function."""
-    if script:
-        # if caller passes a Tcl script to tk.call, all the values need to
+    wenn script:
+        # wenn caller passes a Tcl script to tk.call, all the values need to
         # be grouped into words (arguments to a command in Tcl dialect)
         value = _stringify(value)
-    elif isinstance(value, (list, tuple)):
+    sowenn isinstance(value, (list, tuple)):
         value = _join(value)
     return value
 
@@ -48,9 +48,9 @@ def _format_optdict(optdict, script=False, ignore=None):
 
     opts = []
     fuer opt, value in optdict.items():
-        if not ignore or opt not in ignore:
+        wenn not ignore or opt not in ignore:
             opts.append("-%s" % opt)
-            if value is not None:
+            wenn value is not None:
                 opts.append(_format_optvalue(value, script))
 
     return _flatten(opts)
@@ -64,15 +64,15 @@ def _mapdict_values(items):
     #   ['active selected', 'grey', 'focus', [1, 2, 3, 4]]
     opt_val = []
     fuer *state, val in items:
-        if len(state) == 1:
-            # if it is empty (something that evaluates to False), then
+        wenn len(state) == 1:
+            # wenn it is empty (something that evaluates to False), then
             # format it to Tcl code to denote the "normal" state
             state = state[0] or ''
-        else:
+        sonst:
             # group multiple states
-            state = ' '.join(state) # raise TypeError if not str
+            state = ' '.join(state) # raise TypeError wenn not str
         opt_val.append(state)
-        if val is not None:
+        wenn val is not None:
             opt_val.append(val)
     return opt_val
 
@@ -97,43 +97,43 @@ def _format_elemcreate(etype, script=False, *args, **kw):
     """Formats args and kw according to the given element factory etype."""
     specs = ()
     opts = ()
-    if etype == "image": # define an element based on an image
+    wenn etype == "image": # define an element based on an image
         # first arg should be the default image name
         iname = args[0]
-        # next args, if any, are statespec/value pairs which is almost
+        # next args, wenn any, are statespec/value pairs which is almost
         # a mapdict, but we just need the value
         imagespec = (iname, *_mapdict_values(args[1:]))
-        if script:
+        wenn script:
             specs = (imagespec,)
-        else:
+        sonst:
             specs = (_join(imagespec),)
         opts = _format_optdict(kw, script)
 
-    if etype == "vsapi":
+    wenn etype == "vsapi":
         # define an element whose visual appearance is drawn using the
         # Microsoft Visual Styles API which is responsible fuer the
         # themed styles on Windows XP and Vista.
         # Availability: Tk 8.6, Windows XP and Vista.
-        if len(args) < 3:
+        wenn len(args) < 3:
             class_name, part_id = args
             statemap = (((), 1),)
-        else:
+        sonst:
             class_name, part_id, statemap = args
         specs = (class_name, part_id, tuple(_mapdict_values(statemap)))
         opts = _format_optdict(kw, script)
 
-    elif etype == "from": # clone an element
+    sowenn etype == "from": # clone an element
         # it expects a themename and optionally an element to clone from,
         # otherwise it will clone {} (empty element)
         specs = (args[0],) # theme name
-        if len(args) > 1: # elementfrom specified
+        wenn len(args) > 1: # elementfrom specified
             opts = (_format_optvalue(args[1], script),)
 
-    if script:
+    wenn script:
         specs = _join(specs)
         opts = ' '.join(opts)
         return specs, opts
-    else:
+    sonst:
         return *specs, opts
 
 
@@ -171,9 +171,9 @@ def _format_layoutlist(layout, indent=0, indent_size=2):
         elem, opts = layout_elem
         opts = opts or {}
         fopts = ' '.join(_format_optdict(opts, True, ("children",)))
-        head = "%s%s%s" % (' ' * indent, elem, (" %s" % fopts) if fopts else '')
+        head = "%s%s%s" % (' ' * indent, elem, (" %s" % fopts) wenn fopts sonst '')
 
-        if "children" in opts:
+        wenn "children" in opts:
             script.append(head + " -children {")
             indent += indent_size
             newscript, indent = _format_layoutlist(opts['children'], indent,
@@ -181,7 +181,7 @@ def _format_layoutlist(layout, indent=0, indent_size=2):
             script.append(newscript)
             indent -= indent_size
             script.append('%s}' % (' ' * indent))
-        else:
+        sonst:
             script.append(head)
 
     return '\n'.join(script), indent
@@ -195,22 +195,22 @@ def _script_from_settings(settings):
     # will then be evaluated by Tcl
     fuer name, opts in settings.items():
         # will format specific keys according to Tcl code
-        if opts.get('configure'): # format 'configure'
+        wenn opts.get('configure'): # format 'configure'
             s = ' '.join(_format_optdict(opts['configure'], True))
             script.append("ttk::style configure %s %s;" % (name, s))
 
-        if opts.get('map'): # format 'map'
+        wenn opts.get('map'): # format 'map'
             s = ' '.join(_format_mapdict(opts['map'], True))
             script.append("ttk::style map %s %s;" % (name, s))
 
-        if 'layout' in opts: # format 'layout' which may be empty
-            if not opts['layout']:
+        wenn 'layout' in opts: # format 'layout' which may be empty
+            wenn not opts['layout']:
                 s = 'null' # could be any other word, but this one makes sense
-            else:
+            sonst:
                 s, _ = _format_layoutlist(opts['layout'])
             script.append("ttk::style layout %s {\n%s\n}" % (name, s))
 
-        if opts.get('element create'): # format 'element create'
+        wenn opts.get('element create'): # format 'element create'
             eopts = opts['element create']
             etype = eopts[0]
 
@@ -220,7 +220,7 @@ def _script_from_settings(settings):
                 argc += 1
 
             elemargs = eopts[1:argc]
-            elemkw = eopts[argc] if argc < len(eopts) and eopts[argc] else {}
+            elemkw = eopts[argc] wenn argc < len(eopts) and eopts[argc] sonst {}
             specs, eopts = _format_elemcreate(etype, True, *elemargs, **elemkw)
 
             script.append("ttk::style element create %s %s %s %s" % (
@@ -231,18 +231,18 @@ def _script_from_settings(settings):
 def _list_from_statespec(stuple):
     """Construct a list from the given statespec tuple according to the
     accepted statespec accepted by _format_mapdict."""
-    if isinstance(stuple, str):
+    wenn isinstance(stuple, str):
         return stuple
     result = []
     it = iter(stuple)
     fuer state, val in zip(it, it):
-        if hasattr(state, 'typename'):  # this is a Tcl object
+        wenn hasattr(state, 'typename'):  # this is a Tcl object
             state = str(state).split()
-        elif isinstance(state, str):
+        sowenn isinstance(state, str):
             state = state.split()
-        elif not isinstance(state, (tuple, list)):
+        sowenn not isinstance(state, (tuple, list)):
             state = (state,)
-        if hasattr(val, 'typename'):
+        wenn hasattr(val, 'typename'):
             val = str(val)
         result.append((*state, val))
 
@@ -263,13 +263,13 @@ def _list_from_layouttuple(tk, ltuple):
 
         while indx < len(ltuple): # grab name's options
             opt, val = ltuple[indx:indx + 2]
-            if not opt.startswith('-'): # found next name
+            wenn not opt.startswith('-'): # found next name
                 break
 
             opt = opt[1:] # remove the '-' from the option
             indx += 2
 
-            if opt == 'children':
+            wenn opt == 'children':
                 val = _list_from_layouttuple(tk, val)
 
             opts[opt] = val
@@ -287,7 +287,7 @@ def _val_or_dict(tk, options, *args):
     options = _format_optdict(options)
     res = tk.call(*(args + options))
 
-    if len(options) % 2: # option specified without a value, return its value
+    wenn len(options) % 2: # option specified without a value, return its value
         return res
 
     return _splitdict(tk, res, conv=_tclobj_to_py)
@@ -303,25 +303,25 @@ def _convert_stringval(value):
     return value
 
 def _to_number(x):
-    if isinstance(x, str):
-        if '.' in x:
+    wenn isinstance(x, str):
+        wenn '.' in x:
             x = float(x)
-        else:
+        sonst:
             x = int(x)
     return x
 
 def _tclobj_to_py(val):
     """Return value converted from Tcl object to Python object."""
-    if val and hasattr(val, '__len__') and not isinstance(val, str):
-        if getattr(val[0], 'typename', None) == 'StateSpec':
+    wenn val and hasattr(val, '__len__') and not isinstance(val, str):
+        wenn getattr(val[0], 'typename', None) == 'StateSpec':
             val = _list_from_statespec(val)
-        else:
+        sonst:
             val = list(map(_convert_stringval, val))
 
-    elif hasattr(val, 'typename'): # some other (single) Tcl object
+    sowenn hasattr(val, 'typename'): # some other (single) Tcl object
         val = _convert_stringval(val)
 
-    if isinstance(val, tuple) and len(val) == 0:
+    wenn isinstance(val, tuple) and len(val) == 0:
         return ''
     return val
 
@@ -335,12 +335,12 @@ def tclobjs_to_py(adict):
 
 def setup_master(master=None):
     """If master is not None, itself is returned. If master is None,
-    the default master is returned if there is one, otherwise a new
+    the default master is returned wenn there is one, otherwise a new
     master is created and returned.
 
     If it is not allowed to use the default root and master is None,
     RuntimeError is raised."""
-    if master is None:
+    wenn master is None:
         master = tkinter._get_default_root()
     return master
 
@@ -362,10 +362,10 @@ klasse Style(object):
 
         Each key in kw is an option and each value is either a string or
         a sequence identifying the value fuer that option."""
-        if query_opt is not None:
+        wenn query_opt is not None:
             kw[query_opt] = None
         result = _val_or_dict(self.tk, kw, self._name, "configure", style)
-        if result or query_opt:
+        wenn result or query_opt:
             return result
 
 
@@ -375,9 +375,9 @@ klasse Style(object):
 
         Each key in kw is an option and each value should be a list or a
         tuple (usually) containing statespecs grouped in tuples, or list,
-        or something else of your preference. A statespec is compound of
+        or something sonst of your preference. A statespec is compound of
         one or more states and then a value."""
-        if query_opt is not None:
+        wenn query_opt is not None:
             result = self.tk.call(self._name, "map", style, '-%s' % query_opt)
             return _list_from_statespec(self.tk.splitlist(result))
 
@@ -392,7 +392,7 @@ klasse Style(object):
         If state is specified it is expected to be a sequence of one
         or more states. If the default argument is set, it is used as
         a fallback value in case no specification fuer option is found."""
-        state = ' '.join(state) if state else ''
+        state = ' '.join(state) wenn state sonst ''
 
         return self.tk.call(self._name, "lookup", style, '-%s' % option,
             state, default)
@@ -403,14 +403,14 @@ klasse Style(object):
         omitted, return the layout specification fuer given style.
 
         layoutspec is expected to be a list or an object different than
-        None that evaluates to False if you want to "turn off" that style.
+        None that evaluates to False wenn you want to "turn off" that style.
         If it is a list (or tuple, or something else), each item should be
         a tuple where the first item is the layout name and the second item
         should have the format described below:
 
         LAYOUTS
 
-            A layout can contain the value None, if takes no options, or
+            A layout can contain the value None, wenn takes no options, or
             a dict of options specifying how to arrange the element.
             The layout mechanism uses a simplified version of the pack
             geometry manager: given an initial cavity, each element is
@@ -431,9 +431,9 @@ klasse Style(object):
                     where the first item is the layout name, and the other
                     is a LAYOUT."""
         lspec = None
-        if layoutspec:
+        wenn layoutspec:
             lspec = _format_layoutlist(layoutspec)[0]
-        elif layoutspec is not None: # will disable the layout ({}, '', etc)
+        sowenn layoutspec is not None: # will disable the layout ({}, '', etc)
             lspec = "null" # could be any other word, but this may make sense
                            # when calling layout(style) later
 
@@ -463,16 +463,16 @@ klasse Style(object):
     def theme_create(self, themename, parent=None, settings=None):
         """Creates a new theme.
 
-        It is an error if themename already exists. If parent is
+        It is an error wenn themename already exists. If parent is
         specified, the new theme will inherit styles, elements and
         layouts from the specified parent theme. If settings are present,
         they are expected to have the same syntax used fuer theme_settings."""
-        script = _script_from_settings(settings) if settings else ''
+        script = _script_from_settings(settings) wenn settings sonst ''
 
-        if parent:
+        wenn parent:
             self.tk.call(self._name, "theme", "create", themename,
                 "-parent", parent, "-settings", script)
-        else:
+        sonst:
             self.tk.call(self._name, "theme", "create", themename,
                 "-settings", script)
 
@@ -498,7 +498,7 @@ klasse Style(object):
         """If themename is None, returns the theme in use, otherwise, set
         the current theme to themename, refreshes all widgets and emits
         a <<ThemeChanged>> event."""
-        if themename is None:
+        wenn themename is None:
             # Starting on Tk 8.6, checking this global is no longer needed
             # since it allows doing self.tk.call(self._name, "theme", "use")
             return self.tk.eval("return $ttk::currentTheme")
@@ -538,7 +538,7 @@ klasse Widget(tkinter.Widget):
 
     def identify(self, x, y):
         """Returns the name of the element at position x, y, or the empty
-        string if the point does not lie within any element.
+        string wenn the point does not lie within any element.
 
         x and y are pixel coordinates relative to the widget."""
         return self.tk.call(self._w, "identify", x, y)
@@ -547,13 +547,13 @@ klasse Widget(tkinter.Widget):
     def instate(self, statespec, callback=None, *args, **kw):
         """Test the widget's state.
 
-        If callback is not specified, returns True if the widget state
+        If callback is not specified, returns True wenn the widget state
         matches statespec and False otherwise. If callback is specified,
-        then it will be invoked with *args, **kw if the widget state
+        then it will be invoked with *args, **kw wenn the widget state
         matches statespec. statespec is expected to be a sequence."""
         ret = self.tk.getboolean(
                 self.tk.call(self._w, "instate", ' '.join(statespec)))
-        if ret and callback is not None:
+        wenn ret and callback is not None:
             return callback(*args, **kw)
 
         return ret
@@ -562,11 +562,11 @@ klasse Widget(tkinter.Widget):
     def state(self, statespec=None):
         """Modify or inquire widget state.
 
-        Widget state is returned if statespec is None, otherwise it is
+        Widget state is returned wenn statespec is None, otherwise it is
         set according to the statespec flags and then a new state spec
         is returned indicating which flags were changed. statespec is
         expected to be a sequence."""
-        if statespec is not None:
+        wenn statespec is not None:
             statespec = ' '.join(statespec)
 
         return self.tk.splitlist(str(self.tk.call(self._w, "state", statespec)))
@@ -656,14 +656,14 @@ klasse Entry(Widget, tkinter.Entry):
 
     def identify(self, x, y):
         """Returns the name of the element at position x, y, or the
-        empty string if the coordinates are outside the window."""
+        empty string wenn the coordinates are outside the window."""
         return self.tk.call(self._w, "identify", x, y)
 
 
     def validate(self):
         """Force revalidation, independent of the conditions specified
-        by the validate option. Returns False if validation fails, True
-        if it succeeds. Sets or clears the invalid state accordingly."""
+        by the validate option. Returns False wenn validation fails, True
+        wenn it succeeds. Sets or clears the invalid state accordingly."""
         return self.tk.getboolean(self.tk.call(self._w, "validate"))
 
 
@@ -690,10 +690,10 @@ klasse Combobox(Entry):
         """If newindex is supplied, sets the combobox value to the
         element at position newindex in the list of values. Otherwise,
         returns the index of the current value in the list of values
-        or -1 if the current value does not appear in the list."""
-        if newindex is None:
+        or -1 wenn the current value does not appear in the list."""
+        wenn newindex is None:
             res = self.tk.call(self._w, "current")
-            if res == '':
+            wenn res == '':
                 return -1
             return self.tk.getint(res)
         return self.tk.call(self._w, "current", newindex)
@@ -843,13 +843,13 @@ klasse Notebook(Widget):
 
     def identify(self, x, y):
         """Returns the name of the tab element at position x, y, or the
-        empty string if none."""
+        empty string wenn none."""
         return self.tk.call(self._w, "identify", x, y)
 
 
     def index(self, tab_id):
         """Returns the numeric index of the tab specified by tab_id, or
-        the total number of tabs if tab_id is the string "end"."""
+        the total number of tabs wenn tab_id is the string "end"."""
         return self.tk.getint(self.tk.call(self._w, "index", tab_id))
 
 
@@ -878,7 +878,7 @@ klasse Notebook(Widget):
         If kw is not given, returns a dict of the tab option values. If option
         is specified, returns the value of that option. Otherwise, sets the
         options to the corresponding values."""
-        if option is not None:
+        wenn option is not None:
             kw[option] = None
         return _val_or_dict(self.tk, kw, self._w, "tab", tab_id)
 
@@ -906,7 +906,7 @@ klasse Notebook(Widget):
 
         Multiple notebooks in a single toplevel may be enabled for
         traversal, including nested notebooks. However, notebook traversal
-        only works properly if all panes are direct children of the
+        only works properly wenn all panes are direct children of the
         notebook."""
         # The only, and good, difference I see is about mnemonics, which works
         # after calling this method. Control-Tab and Shift-Control-Tab always
@@ -955,7 +955,7 @@ klasse Panedwindow(Widget, tkinter.PanedWindow):
         If kw is not given, returns a dict of the pane option values. If
         option is specified then the value fuer that option is returned.
         Otherwise, sets the options to the corresponding values."""
-        if option is not None:
+        wenn option is not None:
             kw[option] = None
         return _val_or_dict(self.tk, kw, self._w, "pane", pane)
 
@@ -998,14 +998,14 @@ klasse Progressbar(Widget):
         """Begin autoincrement mode: schedules a recurring timer event
         that calls method step every interval milliseconds.
 
-        interval defaults to 50 milliseconds (20 steps/second) if omitted."""
+        interval defaults to 50 milliseconds (20 steps/second) wenn omitted."""
         self.tk.call(self._w, "start", interval)
 
 
     def step(self, amount=None):
         """Increments the value option by amount.
 
-        amount defaults to 1.0 if omitted."""
+        amount defaults to 1.0 wenn omitted."""
         self.tk.call(self._w, "step", amount)
 
 
@@ -1067,16 +1067,16 @@ klasse Scale(Widget, tkinter.Scale):
         Setting a value fuer any of the "from", "from_" or "to" options
         generates a <<RangeChanged>> event."""
         retval = Widget.configure(self, cnf, **kw)
-        if not isinstance(cnf, (type(None), str)):
+        wenn not isinstance(cnf, (type(None), str)):
             kw.update(cnf)
-        if any(['from' in kw, 'from_' in kw, 'to' in kw]):
+        wenn any(['from' in kw, 'from_' in kw, 'to' in kw]):
             self.event_generate('<<RangeChanged>>')
         return retval
 
 
     def get(self, x=None, y=None):
         """Get the current value of the value option, or the value
-        corresponding to the coordinates x, y if they are specified.
+        corresponding to the coordinates x, y wenn they are specified.
 
         x and y are pixel coordinates relative to the scale widget
         origin."""
@@ -1194,7 +1194,7 @@ klasse Treeview(Widget, tkinter.XView, tkinter.YView):
         window) of the specified item in the form x y width height.
 
         If column is specified, returns the bounding box of that cell.
-        If the item is not visible (i.e., if it is a descendant of a
+        If the item is not visible (i.e., wenn it is a descendant of a
         closed item or is scrolled offscreen), returns an empty string."""
         return self._getints(self.tk.call(self._w, "bbox", item, column)) or ''
 
@@ -1222,7 +1222,7 @@ klasse Treeview(Widget, tkinter.XView, tkinter.YView):
         If kw is not given, returns a dict of the column option values. If
         option is specified then the value fuer that option is returned.
         Otherwise, sets the options to the corresponding values."""
-        if option is not None:
+        wenn option is not None:
             kw[option] = None
         return _val_or_dict(self.tk, kw, self._w, "column", column)
 
@@ -1243,14 +1243,14 @@ klasse Treeview(Widget, tkinter.XView, tkinter.YView):
 
 
     def exists(self, item):
-        """Returns True if the specified item is present in the tree,
+        """Returns True wenn the specified item is present in the tree,
         False otherwise."""
         return self.tk.getboolean(self.tk.call(self._w, "exists", item))
 
 
     def focus(self, item=None):
         """If item is specified, sets the focus item to item. Otherwise,
-        returns the current focus item, or '' if there is none."""
+        returns the current focus item, or '' wenn there is none."""
         return self.tk.call(self._w, "focus", item)
 
 
@@ -1276,11 +1276,11 @@ klasse Treeview(Widget, tkinter.XView, tkinter.YView):
 
         To configure the tree column heading, call this with column = "#0" """
         cmd = kw.get('command')
-        if cmd and not isinstance(cmd, str):
+        wenn cmd and not isinstance(cmd, str):
             # callback not registered yet, do it now
             kw['command'] = self.master.register(cmd, self._substitute)
 
-        if option is not None:
+        wenn option is not None:
             kw[option] = None
 
         return _val_or_dict(self.tk, kw, self._w, 'heading', column)
@@ -1288,7 +1288,7 @@ klasse Treeview(Widget, tkinter.XView, tkinter.YView):
 
     def identify(self, component, x, y):
         """Returns a description of the specified component under the
-        point given by x and y, or the empty string if no such component
+        point given by x and y, or the empty string wenn no such component
         is present at that position."""
         return self.tk.call(self._w, "identify", component, x, y)
 
@@ -1338,16 +1338,16 @@ klasse Treeview(Widget, tkinter.XView, tkinter.YView):
         to create a new top-level item. index is an integer, or the value
         end, specifying where in the list of parent's children to insert
         the new item. If index is less than or equal to zero, the new node
-        is inserted at the beginning, if index is greater than or equal to
+        is inserted at the beginning, wenn index is greater than or equal to
         the current number of children, it is inserted at the end. If iid
         is specified, it is used as the item identifier, iid must not
         already exist in the tree. Otherwise, a new unique identifier
         is generated."""
         opts = _format_optdict(kw)
-        if iid is not None:
+        wenn iid is not None:
             res = self.tk.call(self._w, "insert", parent, index,
                 "-id", iid, *opts)
-        else:
+        sonst:
             res = self.tk.call(self._w, "insert", parent, index, *opts)
 
         return res
@@ -1360,7 +1360,7 @@ klasse Treeview(Widget, tkinter.XView, tkinter.YView):
         is returned. If option is specified then the value fuer that option
         is returned. Otherwise, sets the options to the corresponding
         values as given by kw."""
-        if option is not None:
+        wenn option is not None:
             kw[option] = None
         return _val_or_dict(self.tk, kw, self._w, "item", item)
 
@@ -1370,7 +1370,7 @@ klasse Treeview(Widget, tkinter.XView, tkinter.YView):
 
         It is illegal to move an item under one of its descendants. If
         index is less than or equal to zero, item is moved to the
-        beginning, if greater than or equal to the number of children,
+        beginning, wenn greater than or equal to the number of children,
         it is moved to the end. If item was detached it is reattached."""
         self.tk.call(self._w, "move", item, parent, index)
 
@@ -1378,13 +1378,13 @@ klasse Treeview(Widget, tkinter.XView, tkinter.YView):
 
 
     def next(self, item):
-        """Returns the identifier of item's next sibling, or '' if item
+        """Returns the identifier of item's next sibling, or '' wenn item
         is the last child of its parent."""
         return self.tk.call(self._w, "next", item)
 
 
     def parent(self, item):
-        """Returns the ID of the parent of item, or '' if item is at the
+        """Returns the ID of the parent of item, or '' wenn item is at the
         top level of the hierarchy."""
         return self.tk.call(self._w, "parent", item)
 
@@ -1399,7 +1399,7 @@ klasse Treeview(Widget, tkinter.XView, tkinter.YView):
         """Ensure that item is visible.
 
         Sets all of item's ancestors open option to True, and scrolls
-        the widget if necessary so that item is within the visible
+        the widget wenn necessary so that item is within the visible
         portion of the tree."""
         self.tk.call(self._w, "see", item)
 
@@ -1410,7 +1410,7 @@ klasse Treeview(Widget, tkinter.XView, tkinter.YView):
 
 
     def _selection(self, selop, items):
-        if len(items) == 1 and isinstance(items[0], (tuple, list)):
+        wenn len(items) == 1 and isinstance(items[0], (tuple, list)):
             items = items[0]
 
         self.tk.call(self._w, "selection", selop, items)
@@ -1444,10 +1444,10 @@ klasse Treeview(Widget, tkinter.XView, tkinter.YView):
         value of the specified column. With three arguments, set the
         value of given column in given item to the specified value."""
         res = self.tk.call(self._w, "set", item, column, value)
-        if column is None and value is None:
+        wenn column is None and value is None:
             return _splitdict(self.tk, res,
                               cut_minus=False, conv=_tclobj_to_py)
-        else:
+        sonst:
             return res
 
 
@@ -1465,7 +1465,7 @@ klasse Treeview(Widget, tkinter.XView, tkinter.YView):
         If option is specified, returns the value fuer that option fuer the
         specified tagname. Otherwise, sets the options to the corresponding
         values fuer the given tagname."""
-        if option is not None:
+        wenn option is not None:
             kw[option] = None
         return _val_or_dict(self.tk, kw, self._w, "tag", "configure",
             tagname)
@@ -1477,10 +1477,10 @@ klasse Treeview(Widget, tkinter.XView, tkinter.YView):
         all items which have the specified tag.
 
         * Availability: Tk 8.6"""
-        if item is None:
+        wenn item is None:
             return self.tk.splitlist(
                 self.tk.call(self._w, "tag", "has", tagname))
-        else:
+        sonst:
             return self.tk.getboolean(
                 self.tk.call(self._w, "tag", "has", tagname, item))
 
@@ -1517,14 +1517,14 @@ klasse LabeledScale(Frame):
         self.scale.bind('<<RangeChanged>>', self._adjust)
 
         # position scale and label according to the compound option
-        scale_side = 'bottom' if self._label_top else 'top'
-        label_side = 'top' if scale_side == 'bottom' else 'bottom'
+        scale_side = 'bottom' wenn self._label_top sonst 'top'
+        label_side = 'top' wenn scale_side == 'bottom' sonst 'bottom'
         self.scale.pack(side=scale_side, fill='x')
         # Dummy required to make frame correct height
         dummy = Label(self)
         dummy.pack(side=label_side)
         dummy.lower()
-        self.label.place(anchor='n' if label_side == 'top' else 's')
+        self.label.place(anchor='n' wenn label_side == 'top' sonst 's')
 
         # update the label as scale or variable changes
         self.__tracecb = self._variable.trace_add('write', self._adjust)
@@ -1538,7 +1538,7 @@ klasse LabeledScale(Frame):
             self._variable.trace_remove('write', self.__tracecb)
         except AttributeError:
             pass
-        else:
+        sonst:
             del self._variable
         super().destroy()
         self.label = None
@@ -1551,19 +1551,19 @@ klasse LabeledScale(Frame):
             self.update_idletasks() # "force" scale redraw
 
             x, y = self.scale.coords()
-            if self._label_top:
+            wenn self._label_top:
                 y = self.scale.winfo_y() - self.label.winfo_reqheight()
-            else:
+            sonst:
                 y = self.scale.winfo_reqheight() + self.label.winfo_reqheight()
 
             self.label.place_configure(x=x, y=y)
 
         from_ = _to_number(self.scale['from'])
         to = _to_number(self.scale['to'])
-        if to < from_:
+        wenn to < from_:
             from_, to = to, from_
         newval = self._variable.get()
-        if not from_ <= newval <= to:
+        wenn not from_ <= newval <= to:
             # value outside range, set value back to the last valid one
             self.value = self._last_valid
             return
@@ -1610,7 +1610,7 @@ klasse OptionMenu(Menubutton):
 
         self._variable = variable
         self._callback = kwargs.pop('command', None)
-        if kwargs:
+        wenn kwargs:
             raise tkinter.TclError('unknown option -%s' % (
                 next(iter(kwargs.keys()))))
 
@@ -1618,7 +1618,7 @@ klasse OptionMenu(Menubutton):
 
 
     def __getitem__(self, item):
-        if item == 'menu':
+        wenn item == 'menu':
             return self.nametowidget(Menubutton.__getitem__(self, item))
 
         return Menubutton.__getitem__(self, item)
@@ -1632,12 +1632,12 @@ klasse OptionMenu(Menubutton):
         fuer val in values:
             menu.add_radiobutton(label=val,
                 command=(
-                    None if self._callback is None
-                    else lambda val=val: self._callback(val)
+                    None wenn self._callback is None
+                    sonst lambda val=val: self._callback(val)
                 ),
                 variable=self._variable)
 
-        if default:
+        wenn default:
             self._variable.set(default)
 
 

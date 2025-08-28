@@ -34,7 +34,7 @@ def get_frames(nframe, lineno_delta):
         frames.append((code.co_filename, lineno))
         lineno_delta = 0
         frame = frame.f_back
-        if frame is None:
+        wenn frame is None:
             break
     return tuple(frames)
 
@@ -112,7 +112,7 @@ klasse TestTraceback(unittest.TestCase):
 
 klasse TestTracemallocEnabled(unittest.TestCase):
     def setUp(self):
-        if tracemalloc.is_tracing():
+        wenn tracemalloc.is_tracing():
             self.skipTest("tracemalloc must be stopped before the test")
 
         tracemalloc.start(1)
@@ -179,9 +179,9 @@ klasse TestTracemallocEnabled(unittest.TestCase):
 
     def find_trace(self, traces, traceback, size):
         # filter also by size to ignore the memory allocated by
-        # _PyRefchain_Trace() if Python is built with Py_TRACE_REFS.
+        # _PyRefchain_Trace() wenn Python is built with Py_TRACE_REFS.
         fuer trace in traces:
-            if trace[2] == traceback._frames and trace[1] == size:
+            wenn trace[2] == traceback._frames and trace[1] == size:
                 return trace
 
         self.fail("trace not found")
@@ -289,7 +289,7 @@ klasse TestTracemallocEnabled(unittest.TestCase):
         self.assertGreaterEqual(peak2, size2)
         self.assertLess(peak2, peak1)
 
-        # check that peak continue to be updated if new memory is allocated:
+        # check that peak continue to be updated wenn new memory is allocated:
         # peak3 > peak2
         obj_size = 1024 * 1024
         obj, obj_traceback = allocate_bytes(obj_size)
@@ -342,13 +342,13 @@ klasse TestTracemallocEnabled(unittest.TestCase):
         self.assertEqual(snapshot2.test_attr, "new")
 
     def fork_child(self):
-        if not tracemalloc.is_tracing():
+        wenn not tracemalloc.is_tracing():
             return 2
 
         obj_size = 12345
         obj, obj_traceback = allocate_bytes(obj_size)
         traceback = tracemalloc.get_object_traceback(obj)
-        if traceback is None:
+        wenn traceback is None:
             return 3
 
         # everything is fine
@@ -359,14 +359,14 @@ klasse TestTracemallocEnabled(unittest.TestCase):
     def test_fork(self):
         # check that tracemalloc is still working after fork
         pid = os.fork()
-        if not pid:
+        wenn not pid:
             # child
             exitcode = 1
             try:
                 exitcode = self.fork_child()
             finally:
                 os._exit(exitcode)
-        else:
+        sonst:
             support.wait_process(pid, exitcode=0)
 
     def test_no_incomplete_frames(self):
@@ -825,14 +825,14 @@ klasse TestFilters(unittest.TestCase):
         self.assertTrue(fnmatch('a.pyc', 'a.py'))
         self.assertTrue(fnmatch('a.py', 'a.pyc'))
 
-        if os.name == 'nt':
+        wenn os.name == 'nt':
             # case insensitive
             self.assertTrue(fnmatch('aBC', 'ABc'))
             self.assertTrue(fnmatch('aBcDe', 'Ab*dE'))
 
             self.assertTrue(fnmatch('a.pyc', 'a.PY'))
             self.assertTrue(fnmatch('a.py', 'a.PYC'))
-        else:
+        sonst:
             # case sensitive
             self.assertFalse(fnmatch('aBC', 'ABc'))
             self.assertFalse(fnmatch('aBcDe', 'Ab*dE'))
@@ -840,13 +840,13 @@ klasse TestFilters(unittest.TestCase):
             self.assertFalse(fnmatch('a.pyc', 'a.PY'))
             self.assertFalse(fnmatch('a.py', 'a.PYC'))
 
-        if os.name == 'nt':
+        wenn os.name == 'nt':
             # normalize alternate separator "/" to the standard separator "\"
             self.assertTrue(fnmatch(r'a/b', r'a\b'))
             self.assertTrue(fnmatch(r'a\b', r'a/b'))
             self.assertTrue(fnmatch(r'a/b\c', r'a\b/c'))
             self.assertTrue(fnmatch(r'a/b/c', r'a\b\c'))
-        else:
+        sonst:
             # there is no alternate separator
             self.assertFalse(fnmatch(r'a/b', r'a\b'))
             self.assertFalse(fnmatch(r'a\b', r'a/b'))
@@ -950,9 +950,9 @@ klasse TestCommandLine(unittest.TestCase):
                 '-c', 'pass',
                 PYTHONTRACEMALLOC=str(nframe))
 
-        if b'ValueError: the number of frames must be in range' in stderr:
+        wenn b'ValueError: the number of frames must be in range' in stderr:
             return
-        if b'PYTHONTRACEMALLOC: invalid number of frames' in stderr:
+        wenn b'PYTHONTRACEMALLOC: invalid number of frames' in stderr:
             return
         self.fail(f"unexpected output: {stderr!a}")
 
@@ -978,9 +978,9 @@ klasse TestCommandLine(unittest.TestCase):
         with support.SuppressCrashReport():
             ok, stdout, stderr = assert_python_failure(*args)
 
-        if b'ValueError: the number of frames must be in range' in stderr:
+        wenn b'ValueError: the number of frames must be in range' in stderr:
             return
-        if b'-X tracemalloc=NFRAME: invalid number of frames' in stderr:
+        wenn b'-X tracemalloc=NFRAME: invalid number of frames' in stderr:
             return
         self.fail(f"unexpected output: {stderr!a}")
 
@@ -1003,7 +1003,7 @@ klasse TestCAPI(unittest.TestCase):
     maxDiff = 80 * 20
 
     def setUp(self):
-        if tracemalloc.is_tracing():
+        wenn tracemalloc.is_tracing():
             self.skipTest("tracemalloc must be stopped before the test")
 
         self.domain = 5
@@ -1019,9 +1019,9 @@ klasse TestCAPI(unittest.TestCase):
 
     def get_traceback(self):
         frames = _testinternalcapi._PyTraceMalloc_GetTraceback(self.domain, self.ptr)
-        if frames is not None:
+        wenn frames is not None:
             return tracemalloc.Traceback(frames)
-        else:
+        sonst:
             return None
 
     def track(self, release_gil=False, nframe=1):
@@ -1144,5 +1144,5 @@ klasse TestCAPI(unittest.TestCase):
         assert_python_ok("-c", code)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

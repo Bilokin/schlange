@@ -24,19 +24,19 @@ klasse Reader(ResourceReader):
 
     def open_resource(self, path):
         self._path = path
-        if isinstance(self.file, Exception):
+        wenn isinstance(self.file, Exception):
             raise self.file
         return self.file
 
     def resource_path(self, path_):
         self._path = path_
-        if isinstance(self.path, Exception):
+        wenn isinstance(self.path, Exception):
             raise self.path
         return self.path
 
     def is_resource(self, path_):
         self._path = path_
-        if isinstance(self.path, Exception):
+        wenn isinstance(self.path, Exception):
             raise self.path
 
         def part(entry):
@@ -47,7 +47,7 @@ klasse Reader(ResourceReader):
         )
 
     def contents(self):
-        if isinstance(self.path, Exception):
+        wenn isinstance(self.path, Exception):
             raise self.path
         yield from self._contents
 
@@ -116,7 +116,7 @@ klasse CommonTestsBase(metaclass=abc.ABCMeta):
     def test_missing_path(self):
         """
         Attempting to open or read or request the path fuer a
-        non-existent path should succeed if open_resource
+        non-existent path should succeed wenn open_resource
         can return a viable data stream.
         """
         bytes_data = io.BytesIO(b'Hello, world!')

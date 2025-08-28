@@ -47,8 +47,8 @@ def preprocess(source, *,
 
     CWD should be the project root and "source" should be relative.
     """
-    if tool:
-        if not cwd:
+    wenn tool:
+        wenn not cwd:
             cwd = os.getcwd()
         logger.debug(f'CWD:       {cwd!r}')
         logger.debug(f'incldirs:  {incldirs!r}')
@@ -65,12 +65,12 @@ def preprocess(source, *,
                 samefiles,
                 cwd,
             ) or ()
-    else:
+    sonst:
         source, filename = _resolve_source(source, filename)
         # We ignore "includes", "macros", etc.
         return _pure.preprocess(source, filename, cwd)
 
-    # if _run() returns just the lines:
+    # wenn _run() returns just the lines:
 #    text = _run(source)
 #    lines = [line + os.linesep fuer line in text.splitlines()]
 #    lines[-1] = lines[-1].splitlines()[0]
@@ -92,40 +92,40 @@ def get_preprocessor(*,
                      log_err=None,
                      ):
     _preprocess = preprocess
-    if file_macros:
+    wenn file_macros:
         file_macros = tuple(_parse_macros(file_macros))
-    if file_includes:
+    wenn file_includes:
         file_includes = tuple(_parse_includes(file_includes))
-    if file_incldirs:
+    wenn file_incldirs:
         file_incldirs = tuple(_parse_incldirs(file_incldirs))
-    if file_same:
+    wenn file_same:
         file_same = dict(file_same or ())
-    if not callable(ignore_exc):
+    wenn not callable(ignore_exc):
         ignore_exc = (lambda exc, _ig=ignore_exc: _ig)
 
     def get_file_preprocessor(filename):
         filename = filename.strip()
-        if file_macros:
+        wenn file_macros:
             macros = list(_resolve_file_values(filename, file_macros))
-        if file_includes:
+        wenn file_includes:
             # There's a small chance we could need to filter out any
             # includes that import "filename".  It isn't clear that it's
             # a problem any longer.  If we do end up filtering then
             # it may make sense to use c_common.fsutil.match_path_tail().
             includes = [i fuer i, in _resolve_file_values(filename, file_includes)]
-        if file_incldirs:
+        wenn file_incldirs:
             incldirs = [v fuer v, in _resolve_file_values(filename, file_incldirs)]
-        if file_same:
+        wenn file_same:
             samefiles = _resolve_samefiles(filename, file_same)
 
         def preprocess(**kwargs):
-            if file_macros and 'macros' not in kwargs:
+            wenn file_macros and 'macros' not in kwargs:
                 kwargs['macros'] = macros
-            if file_includes and 'includes' not in kwargs:
+            wenn file_includes and 'includes' not in kwargs:
                 kwargs['includes'] = includes
-            if file_incldirs and 'incldirs' not in kwargs:
+            wenn file_incldirs and 'incldirs' not in kwargs:
                 kwargs['incldirs'] = incldirs
-            if file_same and 'samefiles' not in kwargs:
+            wenn file_same and 'samefiles' not in kwargs:
                 kwargs['samefiles'] = samefiles
             kwargs.setdefault('filename', filename)
             with handling_errors(ignore_exc, log_err=log_err):
@@ -137,7 +137,7 @@ def get_preprocessor(*,
 def _resolve_file_values(filename, file_values):
     # We expect the filename and all patterns to be absolute paths.
     fuer pattern, *value in file_values or ():
-        if _match_glob(filename, pattern):
+        wenn _match_glob(filename, pattern):
             yield value
 
 
@@ -154,7 +154,7 @@ def _parse_includes(includes):
 def _parse_incldirs(incldirs):
     fuer row, srcfile in _parse_table(incldirs, '\t', 'glob\tdirname', default=None):
         glob, dirname = row
-        if dirname is None:
+        wenn dirname is None:
             # Match all files.
             dirname = glob
             row = ('*', dirname.strip())
@@ -169,32 +169,32 @@ def _resolve_samefiles(filename, file_same):
     fuer patterns, in _resolve_file_values(filename, file_same.items()):
         fuer pattern in patterns:
             same = _resolve_samefile(filename, pattern, suffix)
-            if not same:
+            wenn not same:
                 continue
             samefiles.append(same)
     return samefiles
 
 
 def _resolve_samefile(filename, pattern, suffix):
-    if pattern == filename:
+    wenn pattern == filename:
         return None
-    if pattern.endswith(os.path.sep):
+    wenn pattern.endswith(os.path.sep):
         pattern += f'*{suffix}'
     assert os.path.normpath(pattern) == pattern, (pattern,)
-    if '*' in os.path.dirname(pattern):
+    wenn '*' in os.path.dirname(pattern):
         raise NotImplementedError((filename, pattern))
-    if '*' not in os.path.basename(pattern):
+    wenn '*' not in os.path.basename(pattern):
         return pattern
 
     common = os.path.commonpath([filename, pattern])
     relpattern = pattern[len(common) + len(os.path.sep):]
     relpatterndir = os.path.dirname(relpattern)
     relfile = filename[len(common) + len(os.path.sep):]
-    if os.path.basename(pattern) == '*':
+    wenn os.path.basename(pattern) == '*':
         return os.path.join(common, relpatterndir, relfile)
-    elif os.path.basename(relpattern) == '*' + suffix:
+    sowenn os.path.basename(relpattern) == '*' + suffix:
         return os.path.join(common, relpatterndir, relfile)
-    else:
+    sonst:
         raise NotImplementedError((filename, pattern))
 
 
@@ -203,21 +203,21 @@ def handling_errors(ignore_exc=None, *, log_err=None):
     try:
         yield
     except _errors.OSMismatchError as exc:
-        if not ignore_exc(exc):
+        wenn not ignore_exc(exc):
             raise  # re-raise
-        if log_err is not None:
+        wenn log_err is not None:
             log_err(f'<OS mismatch (expected {" or ".join(exc.expected)})>')
         return None
     except _errors.MissingDependenciesError as exc:
-        if not ignore_exc(exc):
+        wenn not ignore_exc(exc):
             raise  # re-raise
-        if log_err is not None:
+        wenn log_err is not None:
             log_err(f'<missing dependency {exc.missing}')
         return None
     except _errors.ErrorDirectiveError as exc:
-        if not ignore_exc(exc):
+        wenn not ignore_exc(exc):
             raise  # re-raise
-        if log_err is not None:
+        wenn log_err is not None:
             log_err(exc)
         return None
 
@@ -239,20 +239,20 @@ _COMPILERS = {
 
 
 def _get_default_compiler():
-    if re.match('cygwin.*', sys.platform) is not None:
+    wenn re.match('cygwin.*', sys.platform) is not None:
         return 'unix'
-    if os.name == 'nt':
+    wenn os.name == 'nt':
         return 'msvc'
-    if sys.platform == 'darwin' and 'clang' in platform.python_compiler():
+    wenn sys.platform == 'darwin' and 'clang' in platform.python_compiler():
         return 'clang'
     return 'unix'
 
 
 def _get_preprocessor(tool):
-    if tool is True:
+    wenn tool is True:
         tool = _get_default_compiler()
     preprocess = _COMPILERS.get(tool)
-    if preprocess is None:
+    wenn preprocess is None:
         raise ValueError(f'unsupported tool {tool}')
     return preprocess
 

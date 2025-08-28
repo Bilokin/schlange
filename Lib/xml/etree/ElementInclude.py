@@ -85,11 +85,11 @@ klasse LimitedRecursiveIncludeError(FatalIncludeError):
 # @throws OSError If the loader fails to load the resource.
 
 def default_loader(href, parse, encoding=None):
-    if parse == "xml":
+    wenn parse == "xml":
         with open(href, 'rb') as file:
             data = ElementTree.parse(file).getroot()
-    else:
-        if not encoding:
+    sonst:
+        wenn not encoding:
             encoding = 'UTF-8'
         with open(href, 'r', encoding=encoding) as file:
             data = file.read()
@@ -109,21 +109,21 @@ def default_loader(href, parse, encoding=None):
 #     Pass None to disable the limitation.
 # @throws LimitedRecursiveIncludeError If the {@link max_depth} was exceeded.
 # @throws FatalIncludeError If the function fails to include a given
-#     resource, or if the tree contains malformed XInclude elements.
+#     resource, or wenn the tree contains malformed XInclude elements.
 # @throws OSError If the function fails to load a given resource.
 # @throws ValueError If negative {@link max_depth} is passed.
 # @returns None. Modifies tree pointed by {@link elem}
 
 def include(elem, loader=None, base_url=None,
             max_depth=DEFAULT_MAX_INCLUSION_DEPTH):
-    if max_depth is None:
+    wenn max_depth is None:
         max_depth = -1
-    elif max_depth < 0:
+    sowenn max_depth < 0:
         raise ValueError("expected non-negative depth or None fuer 'max_depth', got %r" % max_depth)
 
-    if hasattr(elem, 'getroot'):
+    wenn hasattr(elem, 'getroot'):
         elem = elem.getroot()
-    if loader is None:
+    wenn loader is None:
         loader = default_loader
 
     _include(elem, loader, base_url, max_depth, set())
@@ -134,53 +134,53 @@ def _include(elem, loader, base_url, max_depth, _parent_hrefs):
     i = 0
     while i < len(elem):
         e = elem[i]
-        if e.tag == XINCLUDE_INCLUDE:
+        wenn e.tag == XINCLUDE_INCLUDE:
             # process xinclude directive
             href = e.get("href")
-            if base_url:
+            wenn base_url:
                 href = urljoin(base_url, href)
             parse = e.get("parse", "xml")
-            if parse == "xml":
-                if href in _parent_hrefs:
+            wenn parse == "xml":
+                wenn href in _parent_hrefs:
                     raise FatalIncludeError("recursive include of %s" % href)
-                if max_depth == 0:
+                wenn max_depth == 0:
                     raise LimitedRecursiveIncludeError(
                         "maximum xinclude depth reached when including file %s" % href)
                 _parent_hrefs.add(href)
                 node = loader(href, parse)
-                if node is None:
+                wenn node is None:
                     raise FatalIncludeError(
                         "cannot load %r as %r" % (href, parse)
                         )
                 node = copy.copy(node)  # FIXME: this makes little sense with recursive includes
                 _include(node, loader, href, max_depth - 1, _parent_hrefs)
                 _parent_hrefs.remove(href)
-                if e.tail:
+                wenn e.tail:
                     node.tail = (node.tail or "") + e.tail
                 elem[i] = node
-            elif parse == "text":
+            sowenn parse == "text":
                 text = loader(href, parse, e.get("encoding"))
-                if text is None:
+                wenn text is None:
                     raise FatalIncludeError(
                         "cannot load %r as %r" % (href, parse)
                         )
-                if e.tail:
+                wenn e.tail:
                     text += e.tail
-                if i:
+                wenn i:
                     node = elem[i-1]
                     node.tail = (node.tail or "") + text
-                else:
+                sonst:
                     elem.text = (elem.text or "") + text
                 del elem[i]
                 continue
-            else:
+            sonst:
                 raise FatalIncludeError(
                     "unknown parse type in xi:include tag (%r)" % parse
                 )
-        elif e.tag == XINCLUDE_FALLBACK:
+        sowenn e.tag == XINCLUDE_FALLBACK:
             raise FatalIncludeError(
                 "xi:fallback tag must be child of xi:include (%r)" % e.tag
                 )
-        else:
+        sonst:
             _include(e, loader, base_url, max_depth, _parent_hrefs)
         i += 1

@@ -32,30 +32,30 @@ klasse BytecodeTestCase(unittest.TestCase):
         return s.getvalue()
 
     def assertInBytecode(self, x, opname, argval=_UNSPECIFIED):
-        """Returns instr if opname is found, otherwise throws AssertionError"""
+        """Returns instr wenn opname is found, otherwise throws AssertionError"""
         self.assertIn(opname, dis.opmap)
         fuer instr in dis.get_instructions(x):
-            if instr.opname == opname:
-                if argval is _UNSPECIFIED or instr.argval == argval:
+            wenn instr.opname == opname:
+                wenn argval is _UNSPECIFIED or instr.argval == argval:
                     return instr
         disassembly = self.get_disassembly_as_string(x)
-        if argval is _UNSPECIFIED:
+        wenn argval is _UNSPECIFIED:
             msg = '%s not found in bytecode:\n%s' % (opname, disassembly)
-        else:
+        sonst:
             msg = '(%s,%r) not found in bytecode:\n%s'
             msg = msg % (opname, argval, disassembly)
         self.fail(msg)
 
     def assertNotInBytecode(self, x, opname, argval=_UNSPECIFIED):
-        """Throws AssertionError if opname is found"""
+        """Throws AssertionError wenn opname is found"""
         self.assertIn(opname, dis.opmap)
         fuer instr in dis.get_instructions(x):
-            if instr.opname == opname:
+            wenn instr.opname == opname:
                 disassembly = self.get_disassembly_as_string(x)
-                if argval is _UNSPECIFIED:
+                wenn argval is _UNSPECIFIED:
                     msg = '%s occurs in bytecode:\n%s' % (opname, disassembly)
                     self.fail(msg)
-                elif instr.argval == argval:
+                sowenn instr.argval == argval:
                     msg = '(%s,%r) occurs in bytecode:\n%s'
                     msg = msg % (opname, argval, disassembly)
                     self.fail(msg)
@@ -81,12 +81,12 @@ klasse CompilationStepTestCase(unittest.TestCase):
 
         # compare instructions
         fuer act, exp in zip(actual, expected):
-            if isinstance(act, int):
+            wenn isinstance(act, int):
                 self.assertEqual(exp, act)
                 continue
             self.assertIsInstance(exp, tuple)
             self.assertIsInstance(act, tuple)
-            idx = max([p[0] fuer p in enumerate(exp) if p[1] != -1])
+            idx = max([p[0] fuer p in enumerate(exp) wenn p[1] != -1])
             self.assertEqual(exp[:idx], act[:idx])
 
     def resolveAndRemoveLabels(self, insts):
@@ -94,29 +94,29 @@ klasse CompilationStepTestCase(unittest.TestCase):
         res = []
         fuer item in insts:
             assert isinstance(item, (self.Label, tuple))
-            if isinstance(item, self.Label):
+            wenn isinstance(item, self.Label):
                 item.value = idx
-            else:
+            sonst:
                 idx += 1
                 res.append(item)
 
         return res
 
     def seq_from_insts(self, insts):
-        labels = {item fuer item in insts if isinstance(item, self.Label)}
+        labels = {item fuer item in insts wenn isinstance(item, self.Label)}
         fuer i, lbl in enumerate(labels):
             lbl.value = i
 
         seq = _testinternalcapi.new_instruction_sequence()
         fuer item in insts:
-            if isinstance(item, self.Label):
+            wenn isinstance(item, self.Label):
                 seq.use_label(item.value)
-            else:
+            sonst:
                 op = item[0]
-                if isinstance(op, str):
+                wenn isinstance(op, str):
                     op = opcode.opmap[op]
                 arg, *loc = item[1:]
-                if isinstance(arg, self.Label):
+                wenn isinstance(arg, self.Label):
                     arg = arg.value
                 loc = loc + [-1] * (4 - len(loc))
                 seq.addop(op, arg or 0, *loc)
@@ -124,10 +124,10 @@ klasse CompilationStepTestCase(unittest.TestCase):
 
     def check_instructions(self, insts):
         fuer inst in insts:
-            if isinstance(inst, self.Label):
+            wenn isinstance(inst, self.Label):
                 continue
             op, arg, *loc = inst
-            if isinstance(op, str):
+            wenn isinstance(op, str):
                 op = opcode.opmap[op]
             self.assertEqual(op in opcode.hasarg,
                              arg is not None,

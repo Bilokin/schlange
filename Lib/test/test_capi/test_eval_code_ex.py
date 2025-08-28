@@ -6,7 +6,7 @@ from test.support import import_helper
 from test.support import swap_attr
 
 
-# Skip this test if the _testcapi module isn't available.
+# Skip this test wenn the _testcapi module isn't available.
 _testcapi = import_helper.import_module('_testcapi')
 
 NULL = None
@@ -122,5 +122,5 @@ klasse PyEval_EvalCodeExTests(unittest.TestCase):
         # CRASHES eval_code_ex(code, {}, {}, (), {}, (), {}, NULL), 1)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

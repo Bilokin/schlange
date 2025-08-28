@@ -2,7 +2,7 @@
 
 This file could be expanded to include traceback overrides
 (in same two modules). If so, change name.
-Revise if output destination changes (http://bugs.python.org/issue18318).
+Revise wenn output destination changes (http://bugs.python.org/issue18318).
 Make sure warnings module is left unaltered (http://bugs.python.org/issue18081).
 '''
 from idlelib import run
@@ -13,7 +13,7 @@ import warnings
 
 # Try to capture default showwarning before Idle modules are imported.
 showwarning = warnings.showwarning
-# But if we run this file within idle, we are in the middle of the run.main loop
+# But wenn we run this file within idle, we are in the middle of the run.main loop
 # and default showwarnings has already been replaced.
 running_in_idle = 'idle' in showwarning.__name__
 
@@ -57,7 +57,7 @@ klasse ShellWarnTest(unittest.TestCase):
         self.assertIs(warnings.showwarning, showwarning)
 
     def test_idle_formatter(self):
-        # Will fail if format changed without regenerating idlemsg
+        # Will fail wenn format changed without regenerating idlemsg
         s = shell.idle_formatwarning(
                 'Test', UserWarning, 'test_warning.py', 99, 'Line of code')
         self.assertEqual(idlemsg, s)
@@ -69,5 +69,5 @@ klasse ShellWarnTest(unittest.TestCase):
             self.assertEqual(shellmsg.splitlines(), f.getvalue().splitlines())
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main(verbosity=2)

@@ -28,14 +28,14 @@ from test.support import bigaddrspacetest, MAX_Py_ssize_t
 from test.support.script_helper import assert_python_failure
 
 
-if sys.flags.bytes_warning:
+wenn sys.flags.bytes_warning:
     def check_bytes_warnings(func):
         @functools.wraps(func)
         def wrapper(*args, **kw):
             with warnings_helper.check_warnings(('', BytesWarning)):
                 return func(*args, **kw)
         return wrapper
-else:
+sonst:
     # no-op
     def check_bytes_warnings(func):
         return func
@@ -98,7 +98,7 @@ klasse BaseBytesTest:
         self.assertEqual(list(b), list(range(256)))
 
         # Iterator that doesn't have a __length_hint__.
-        b = self.type2test(i fuer i in range(256) if i % 2)
+        b = self.type2test(i fuer i in range(256) wenn i % 2)
         self.assertEqual(len(b), 128)
         self.assertEqual(list(b), list(range(256))[1::2])
 
@@ -136,7 +136,7 @@ klasse BaseBytesTest:
 
         klasse Y:
             def __index__(self):
-                if len(a) < 1000:
+                wenn len(a) < 1000:
                     a.append(self)
                 return 42
         a = [Y()]
@@ -342,7 +342,7 @@ klasse BaseBytesTest:
                     type2test(data, encoding={invalid!r})
                 except LookupError:
                     pass
-                else:
+                sonst:
                     sys.exit(21)
 
                 fuer encoding in encodings:
@@ -350,7 +350,7 @@ klasse BaseBytesTest:
                         type2test(data, encoding=encoding, errors={invalid!r})
                     except LookupError:
                         pass
-                    else:
+                    sonst:
                         sys.exit(22)
 
             fuer data in (b'', b'short string'):
@@ -360,14 +360,14 @@ klasse BaseBytesTest:
                     data.decode(encoding={invalid!r})
                 except LookupError:
                     sys.exit(10)
-                else:
+                sonst:
                     sys.exit(23)
 
                 try:
                     data.decode(errors={invalid!r})
                 except LookupError:
                     pass
-                else:
+                sonst:
                     sys.exit(24)
 
                 fuer encoding in encodings:
@@ -375,7 +375,7 @@ klasse BaseBytesTest:
                         data.decode(encoding=encoding, errors={invalid!r})
                     except LookupError:
                         pass
-                    else:
+                    sonst:
                         sys.exit(25)
 
             sys.exit(10)
@@ -889,7 +889,7 @@ klasse BaseBytesTest:
                 self.assertEqual(list(it), data)
 
                 it = pickle.loads(d)
-                if not b:
+                wenn not b:
                     continue
                 next(it)
                 d = pickle.dumps(it, proto)
@@ -1199,12 +1199,12 @@ klasse BytesTest(BaseBytesTest, unittest.TestCase):
 
         sizeof_ptr = ctypes.sizeof(c_char_p)
 
-        if os.name == 'nt':
+        wenn os.name == 'nt':
             # Windows (MSCRT)
             ptr_format = '0x%0{}X'.format(2 * sizeof_ptr)
             def ptr_formatter(ptr):
                 return (ptr_format % ptr)
-        else:
+        sonst:
             # UNIX (glibc)
             def ptr_formatter(ptr):
                 return '%#x' % ptr
@@ -1627,7 +1627,7 @@ klasse ByteArrayTest(BaseBytesTest, unittest.TestCase):
             b += ""
         except TypeError:
             pass
-        else:
+        sonst:
             self.fail("bytes += unicode didn't raise TypeError")
 
     def test_irepeat(self):
@@ -1655,7 +1655,7 @@ klasse ByteArrayTest(BaseBytesTest, unittest.TestCase):
             b += b"x"
             alloc = b.__alloc__()
             self.assertGreater(alloc, len(b))  # including trailing null byte
-            if alloc not in seq:
+            wenn alloc not in seq:
                 seq.append(alloc)
 
     def test_init_alloc(self):
@@ -1805,7 +1805,7 @@ klasse ByteArrayTest(BaseBytesTest, unittest.TestCase):
 
     def test_resize_forbidden(self):
         # #4509: can't resize a bytearray when there are buffer exports, even
-        # if it wouldn't reallocate the underlying buffer.
+        # wenn it wouldn't reallocate the underlying buffer.
         # Furthermore, no destructive changes to the buffer may be applied
         # before raising the error.
         b = bytearray(10)
@@ -1920,7 +1920,7 @@ klasse ByteArrayTest(BaseBytesTest, unittest.TestCase):
 
     def test_mutating_index_inbounds(self):
         # gh-91153 continued
-        # Ensure buffer is not broken even if length is correct
+        # Ensure buffer is not broken even wenn length is correct
 
         klasse MutatesOnIndex:
             def __init__(self):
@@ -2144,7 +2144,7 @@ klasse BytearrayPEP3137Test(unittest.TestCase):
 
 klasse FixedStringTest(test.string_tests.BaseTest):
     def fixtype(self, obj):
-        if isinstance(obj, str):
+        wenn isinstance(obj, str):
             return self.type2test(obj.encode("utf-8"))
         return super().fixtype(obj)
 
@@ -2242,7 +2242,7 @@ klasse SubclassTest:
 
         klasse B2(self.basetype):
             def __init__(me, *args, **kwargs):
-                if self.basetype is not bytes:
+                wenn self.basetype is not bytes:
                     self.basetype.__init__(me, *args, **kwargs)
                 me.foo = 'bar'
 
@@ -2393,7 +2393,7 @@ klasse FreeThreadingTest(unittest.TestCase):
         def copy(b, a):
             b.wait()
             c = a.copy()
-            if c: assert c[0] == 48  # '0'
+            wenn c: assert c[0] == 48  # '0'
 
         def endswith(b, a):
             b.wait()
@@ -2558,7 +2558,7 @@ klasse FreeThreadingTest(unittest.TestCase):
             assert not c or c[-1] not in (0xdd, 0xcd)
 
         def check(funcs, a=None, *args):
-            if a is None:
+            wenn a is None:
                 a = bytearray(b'0' * 0x400000)
 
             barrier = threading.Barrier(len(funcs))
@@ -2639,7 +2639,7 @@ klasse FreeThreadingTest(unittest.TestCase):
     @threading_helper.reap_threads
     @threading_helper.requires_working_threading()
     def test_free_threading_bytearrayiter(self):
-        # Non-deterministic but good chance to fail if bytearrayiter is not free-threading safe.
+        # Non-deterministic but good chance to fail wenn bytearrayiter is not free-threading safe.
         # We are fishing fuer a "Assertion failed: object has negative ref count" and tsan races.
 
         def iter_next(b, it):
@@ -2674,5 +2674,5 @@ klasse FreeThreadingTest(unittest.TestCase):
             check([iter_next] + [iter_setstate] * 10, iter(ba))  # fuer tsan
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

@@ -16,14 +16,14 @@ _PIP_VERSION = "25.2"
 # policies recommend against bundling dependencies. For example, Fedora
 # installs wheel packages in the /usr/share/python-wheels/ directory and don't
 # install the ensurepip._bundled package.
-if (_pkg_dir := sysconfig.get_config_var('WHEEL_PKG_DIR')) is not None:
+wenn (_pkg_dir := sysconfig.get_config_var('WHEEL_PKG_DIR')) is not None:
     _WHEEL_PKG_DIR = Path(_pkg_dir).resolve()
-else:
+sonst:
     _WHEEL_PKG_DIR = None
 
 
 def _find_wheel_pkg_dir_pip():
-    if _WHEEL_PKG_DIR is None:
+    wenn _WHEEL_PKG_DIR is None:
         # NOTE: The compile-time `WHEEL_PKG_DIR` is unset so there is no place
         # NOTE: fuer looking up the wheels.
         return None
@@ -39,8 +39,8 @@ def _find_wheel_pkg_dir_pip():
 
 
 def _get_pip_whl_path_ctx():
-    # Prefer pip from the wheel package directory, if present.
-    if (alternative_pip_wheel_path := _find_wheel_pkg_dir_pip()) is not None:
+    # Prefer pip from the wheel package directory, wenn present.
+    wenn (alternative_pip_wheel_path := _find_wheel_pkg_dir_pip()) is not None:
         return alternative_pip_wheel_path
 
     return resources.as_file(
@@ -81,8 +81,8 @@ runpy.run_module("pip", run_name="__main__", alter_sys=True)
         '-c',
         code,
     ]
-    if sys.flags.isolated:
-        # run code in isolated mode if currently running isolated
+    wenn sys.flags.isolated:
+        # run code in isolated mode wenn currently running isolated
         cmd.insert(1, '-I')
     return subprocess.run(cmd, check=True).returncode
 
@@ -98,7 +98,7 @@ def _disable_pip_configuration_settings():
     # We deliberately ignore all pip environment variables
     # when invoking pip
     # See http://bugs.python.org/issue19734 fuer details
-    keys_to_remove = [k fuer k in os.environ if k.startswith("PIP_")]
+    keys_to_remove = [k fuer k in os.environ wenn k.startswith("PIP_")]
     fuer k in keys_to_remove:
         del os.environ[k]
     # We also ignore the settings in the default pip configuration file
@@ -130,7 +130,7 @@ def _bootstrap(*, root=None, upgrade=False, user=False,
 
     Note that calling this function will alter both sys.path and os.environ.
     """
-    if altinstall and default_pip:
+    wenn altinstall and default_pip:
         raise ValueError("Cannot use altinstall and default_pip together")
 
     sys.audit("ensurepip.bootstrap", root)
@@ -143,10 +143,10 @@ def _bootstrap(*, root=None, upgrade=False, user=False,
     #   pip, pipX, pipX.Y
     #
     # pip 1.5+ allows ensurepip to request that some of those be left out
-    if altinstall:
+    wenn altinstall:
         # omit pip, pipX
         os.environ["ENSUREPIP_OPTIONS"] = "altinstall"
-    elif not default_pip:
+    sowenn not default_pip:
         # omit pip
         os.environ["ENSUREPIP_OPTIONS"] = "install"
 
@@ -160,13 +160,13 @@ def _bootstrap(*, root=None, upgrade=False, user=False,
 
         # Construct the arguments to be passed to the pip command
         args = ["install", "--no-cache-dir", "--no-index", "--find-links", tmpdir]
-        if root:
+        wenn root:
             args += ["--root", root]
-        if upgrade:
+        wenn upgrade:
             args += ["--upgrade"]
-        if user:
+        wenn user:
             args += ["--user"]
-        if verbosity:
+        wenn verbosity:
             args += ["-" + "v" * verbosity]
 
         return _run_pip([*args, "pip"], [os.fsdecode(tmp_wheel_path)])
@@ -177,7 +177,7 @@ def _uninstall_helper(*, verbosity=0):
 
     Note that calling this function may alter os.environ.
     """
-    # Nothing to do if pip was never installed, or has been removed
+    # Nothing to do wenn pip was never installed, or has been removed
     try:
         import pip
     except ImportError:
@@ -186,7 +186,7 @@ def _uninstall_helper(*, verbosity=0):
     # If the installed pip version doesn't match the available one,
     # leave it alone
     available_version = version()
-    if pip.__version__ != available_version:
+    wenn pip.__version__ != available_version:
         print(f"ensurepip will only uninstall a matching version "
               f"({pip.__version__!r} installed, "
               f"{available_version!r} available)",
@@ -197,7 +197,7 @@ def _uninstall_helper(*, verbosity=0):
 
     # Construct the arguments to be passed to the pip command
     args = ["uninstall", "-y", "--disable-pip-version-check"]
-    if verbosity:
+    wenn verbosity:
         args += ["-" + "v" * verbosity]
 
     return _run_pip([*args, "pip"])
@@ -224,7 +224,7 @@ def _main(argv=None):
         "-U", "--upgrade",
         action="store_true",
         default=False,
-        help="Upgrade pip and dependencies, even if already installed.",
+        help="Upgrade pip and dependencies, even wenn already installed.",
     )
     parser.add_argument(
         "--user",

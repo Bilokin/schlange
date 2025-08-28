@@ -23,17 +23,17 @@ klasse BaseLocalizedTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        if sys.platform == 'darwin':
+        wenn sys.platform == 'darwin':
             import os
             tlocs = ("en_US.UTF-8", "en_US.ISO8859-1", "en_US")
-            if int(os.uname().release.split('.')[0]) < 10:
+            wenn int(os.uname().release.split('.')[0]) < 10:
                 # The locale test work fine on OSX 10.6, I (ronaldoussoren)
-                # haven't had time yet to verify if tests work on OSX 10.5
+                # haven't had time yet to verify wenn tests work on OSX 10.5
                 # (10.4 is known to be bad)
                 raise unittest.SkipTest("Locale support on MacOSX is minimal")
-        elif sys.platform.startswith("win"):
+        sowenn sys.platform.startswith("win"):
             tlocs = ("En", "English")
-        else:
+        sonst:
             tlocs = ("en_US.UTF-8", "en_US.ISO8859-1",
                      "en_US.US-ASCII", "en_US")
         try:
@@ -44,7 +44,7 @@ klasse BaseLocalizedTest(unittest.TestCase):
                 except locale.Error:
                     continue
                 break
-            else:
+            sonst:
                 raise unittest.SkipTest("Test locale not supported "
                                         "(tried %s)" % (', '.join(tlocs)))
             cls.enUS_locale = tloc
@@ -55,7 +55,7 @@ klasse BaseLocalizedTest(unittest.TestCase):
         oldlocale = locale.setlocale(self.locale_type)
         self.addCleanup(locale.setlocale, self.locale_type, oldlocale)
         locale.setlocale(self.locale_type, self.enUS_locale)
-        if verbose:
+        wenn verbose:
             print("testing with %r..." % self.enUS_locale, end=' ', flush=True)
 
 
@@ -173,7 +173,7 @@ klasse EnUSNumberFormatting(BaseFormattingTest):
 
     def test_grouping_and_padding(self):
         self._test_format_string("%20.f", -42, grouping=1, out='-42'.rjust(20))
-        if self.sep:
+        wenn self.sep:
             self._test_format_string("%+10.f", -4200, grouping=1,
                 out=('-4%s200' % self.sep).rjust(10))
             self._test_format_string("%-10.f", -4200, grouping=1,
@@ -210,17 +210,17 @@ klasse EnUSNumberFormatting(BaseFormattingTest):
         # Dots in formatting string
         self._test_format_string(".%f.", 1000.0, out='.1000.000000.')
         # Padding
-        if self.sep:
+        wenn self.sep:
             self._test_format_string("-->  %10.2f", 4200, grouping=1,
                 out='-->  ' + ('4%s200.00' % self.sep).rjust(10))
         # Asterisk formats
         self._test_format_string("%10.*f", (2, 1000), grouping=0,
             out='1000.00'.rjust(10))
-        if self.sep:
+        wenn self.sep:
             self._test_format_string("%*.*f", (10, 2, 1000), grouping=1,
                 out=('1%s000.00' % self.sep).rjust(10))
         # Test more-in-one
-        if self.sep:
+        wenn self.sep:
             self._test_format_string("int %i float %.2f str %s",
                 (1000, 1000.0, 'str'), grouping=1,
                 out='int 1%s000 float 1%s000.00 str str' %
@@ -349,9 +349,9 @@ klasse TestEnUSCollation(BaseLocalizedTest, TestCollation):
 
     def setUp(self):
         enc = codecs.lookup(locale.getencoding() or 'ascii').name
-        if enc not in ('utf-8', 'iso8859-1', 'cp1252'):
+        wenn enc not in ('utf-8', 'iso8859-1', 'cp1252'):
             raise unittest.SkipTest('encoding not suitable')
-        if enc != 'iso8859-1' and (sys.platform == 'darwin' or is_android or
+        wenn enc != 'iso8859-1' and (sys.platform == 'darwin' or is_android or
                                    sys.platform.startswith('freebsd')):
             raise unittest.SkipTest('wcscoll/wcsxfrm have known bugs')
         BaseLocalizedTest.setUp(self)
@@ -501,7 +501,7 @@ klasse TestRealLocales(unittest.TestCase):
             # Unsupported locale on this system
             self.skipTest('test needs Turkish locale')
         loc = locale.getlocale(locale.LC_CTYPE)
-        if verbose:
+        wenn verbose:
             print('testing with %a' % (loc,), end=' ', flush=True)
         try:
             locale.setlocale(locale.LC_CTYPE, loc)
@@ -644,10 +644,10 @@ klasse TestMiscellaneous(unittest.TestCase):
 
         self.assertEqual(locale._parse_localename('UTF-8'), (None, 'UTF-8'))
 
-        if hasattr(_locale, '_getdefaultlocale'):
+        wenn hasattr(_locale, '_getdefaultlocale'):
             orig_getlocale = _locale._getdefaultlocale
             del _locale._getdefaultlocale
-        else:
+        sonst:
             orig_getlocale = None
 
         try:
@@ -658,7 +658,7 @@ klasse TestMiscellaneous(unittest.TestCase):
                 with check_warnings(('', DeprecationWarning)):
                     self.assertEqual(locale.getdefaultlocale(), (None, 'UTF-8'))
         finally:
-            if orig_getlocale is not None:
+            wenn orig_getlocale is not None:
                 _locale._getdefaultlocale = orig_getlocale
 
     def test_getencoding(self):
@@ -681,7 +681,7 @@ klasse TestMiscellaneous(unittest.TestCase):
     def test_getpreferredencoding(self):
         # Invoke getpreferredencoding to make sure it does not cause exceptions.
         enc = locale.getpreferredencoding()
-        if enc:
+        wenn enc:
             # If encoding non-empty, make sure it is valid
             codecs.lookup(enc)
 
@@ -791,5 +791,5 @@ klasse TestfrFRLocalize(FrFRCookedTest, BaseLocalizeTest):
         self._test_localize('50000.00', '50 000,00', grouping=True)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

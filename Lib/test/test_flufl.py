@@ -36,7 +36,7 @@ klasse FLUFLTests(unittest.TestCase):
 
     def test_barry_as_bdfl_look_ma_with_no_compiler_flags(self):
         # Check that the future import is handled by the parser
-        # even if the compiler flags are not passed.
+        # even wenn the compiler flags are not passed.
         code = "from __future__ import barry_as_FLUFL;2 {0} 3"
         compile(code.format('<>'), '<BDFL test>', 'exec')
         with self.assertRaises(SyntaxError) as cm:
@@ -61,5 +61,5 @@ klasse FLUFLTests(unittest.TestCase):
 
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

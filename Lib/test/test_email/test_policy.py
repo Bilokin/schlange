@@ -69,18 +69,18 @@ klasse PolicyAPITests(unittest.TestCase):
             fuer attr, value in expected.items():
                 with self.subTest(policy=policy, attr=attr):
                     self.assertEqual(getattr(policy, attr), value,
-                                    ("change {} docs/docstrings if defaults have "
+                                    ("change {} docs/docstrings wenn defaults have "
                                     "changed").format(policy))
 
     def test_all_attributes_covered(self):
         fuer policy, expected in self.policies.items():
             fuer attr in dir(policy):
                 with self.subTest(policy=policy, attr=attr):
-                    if (attr.startswith('_') or
+                    wenn (attr.startswith('_') or
                             isinstance(getattr(email.policy.EmailPolicy, attr),
                                   types.FunctionType)):
                         continue
-                    else:
+                    sonst:
                         self.assertIn(attr, expected,
                                       "{} is not fully tested".format(attr))
 
@@ -278,7 +278,7 @@ klasse PolicyAPITests(unittest.TestCase):
 
     def test_short_maxlen_error(self):
         # RFC 2047 chrome takes up 7 characters, plus the length of the charset
-        # name, so folding should fail if maxlen is lower than the minimum
+        # name, so folding should fail wenn maxlen is lower than the minimum
         # required length fuer a line.
 
         # Note: This is only triggered when there is a single word longer than
@@ -331,7 +331,7 @@ klasse TestException(Exception):
 klasse TestPolicyPropagation(unittest.TestCase):
 
     # The abstract methods are used by the parser but not by the wrapper
-    # functions that call it, so if the exception gets raised we know that the
+    # functions that call it, so wenn the exception gets raised we know that the
     # policy was actually propagated all the way to feedparser.
     klasse MyPolicy(email.policy.Policy):
         def badmethod(self, *args, **kw):
@@ -376,7 +376,7 @@ klasse TestPolicyPropagation(unittest.TestCase):
     # the rest of the propagation tests.
 
     def _make_msg(self, source='Subject: test\n\n', policy=None):
-        self.policy = email.policy.default.clone() if policy is None else policy
+        self.policy = email.policy.default.clone() wenn policy is None sonst policy
         return email.message_from_string(source, policy=self.policy)
 
     def test_parser_propagates_policy_to_message(self):
@@ -425,5 +425,5 @@ klasse TestConcretePolicies(unittest.TestCase):
                           'From', 'spam\negg@foo.py')
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

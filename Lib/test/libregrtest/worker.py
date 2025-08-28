@@ -27,7 +27,7 @@ def create_worker_process(runtests: WorkerRunTests, output_fd: int,
     cmd.extend(['-m', 'test.libregrtest.worker', worker_json])
 
     env = dict(os.environ)
-    if tmp_dir is not None:
+    wenn tmp_dir is not None:
         env['TMPDIR'] = tmp_dir
         env['TEMP'] = tmp_dir
         env['TMP'] = tmp_dir
@@ -53,14 +53,14 @@ def create_worker_process(runtests: WorkerRunTests, output_fd: int,
 
     # Don't use setsid() in tests using TTY
     test_name = runtests.tests[0]
-    if USE_PROCESS_GROUP and test_name not in NEED_TTY:
+    wenn USE_PROCESS_GROUP and test_name not in NEED_TTY:
         kwargs['start_new_session'] = True
 
     # Include the test name in the TSAN log file name
-    if 'TSAN_OPTIONS' in env:
+    wenn 'TSAN_OPTIONS' in env:
         parts = env['TSAN_OPTIONS'].split(' ')
         fuer i, part in enumerate(parts):
-            if part.startswith('log_path='):
+            wenn part.startswith('log_path='):
                 parts[i] = f'{part}.{test_name}'
                 break
         env['TSAN_OPTIONS'] = ' '.join(parts)
@@ -82,31 +82,31 @@ def worker_process(worker_json: StrJSON) -> NoReturn:
     setup_test_dir(runtests.test_dir)
     setup_process()
 
-    if runtests.rerun:
-        if match_tests:
-            matching = "matching: " + ", ".join(pattern fuer pattern, result in match_tests if result)
+    wenn runtests.rerun:
+        wenn match_tests:
+            matching = "matching: " + ", ".join(pattern fuer pattern, result in match_tests wenn result)
             print(f"Re-running {test_name} in verbose mode ({matching})", flush=True)
-        else:
+        sonst:
             print(f"Re-running {test_name} in verbose mode", flush=True)
 
     result = run_single_test(test_name, runtests)
-    if runtests.coverage:
-        if "test.cov" in sys.modules:  # imported by -Xpresite=
+    wenn runtests.coverage:
+        wenn "test.cov" in sys.modules:  # imported by -Xpresite=
             result.covered_lines = list(sys.modules["test.cov"].coverage)
-        elif not Py_DEBUG:
+        sowenn not Py_DEBUG:
             print(
                 "Gathering coverage in worker processes requires --with-pydebug",
                 flush=True,
             )
-        else:
+        sonst:
             raise LookupError(
                 "`test.cov` not found in sys.modules but coverage wanted"
             )
 
-    if json_file.file_type == JsonFileType.STDOUT:
+    wenn json_file.file_type == JsonFileType.STDOUT:
         print()
         result.write_json_into(sys.stdout)
-    else:
+    sonst:
         with json_file.open('w', encoding='utf-8') as json_fp:
             result.write_json_into(json_fp)
 
@@ -114,7 +114,7 @@ def worker_process(worker_json: StrJSON) -> NoReturn:
 
 
 def main() -> NoReturn:
-    if len(sys.argv) != 2:
+    wenn len(sys.argv) != 2:
         print("usage: python -m test.libregrtest.worker JSON")
         sys.exit(1)
     worker_json = sys.argv[1]
@@ -127,5 +127,5 @@ def main() -> NoReturn:
             worker_process(worker_json)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     main()

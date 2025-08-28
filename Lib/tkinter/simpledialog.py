@@ -33,11 +33,11 @@ klasse SimpleDialog:
     def __init__(self, master,
                  text='', buttons=[], default=None, cancel=None,
                  title=None, class_=None):
-        if class_:
+        wenn class_:
             self.root = Toplevel(master, class_=class_)
-        else:
+        sonst:
             self.root = Toplevel(master)
-        if title:
+        wenn title:
             self.root.title(title)
             self.root.iconname(title)
 
@@ -55,7 +55,7 @@ klasse SimpleDialog:
             s = buttons[num]
             b = Button(self.frame, text=s,
                        command=(lambda self=self, num=num: self.done(num)))
-            if num == default:
+            wenn num == default:
                 b.config(relief=RIDGE, borderwidth=8)
             b.pack(side=LEFT, fill=BOTH, expand=1)
         self.root.protocol('WM_DELETE_WINDOW', self.wm_delete_window)
@@ -70,15 +70,15 @@ klasse SimpleDialog:
         return self.num
 
     def return_event(self, event):
-        if self.default is None:
+        wenn self.default is None:
             self.root.bell()
-        else:
+        sonst:
             self.done(self.default)
 
     def wm_delete_window(self):
-        if self.cancel is None:
+        wenn self.cancel is None:
             self.root.bell()
-        else:
+        sonst:
             self.done(self.cancel)
 
     def done(self, num):
@@ -103,19 +103,19 @@ klasse Dialog(Toplevel):
             title -- the dialog title
         '''
         master = parent
-        if master is None:
+        wenn master is None:
             master = _get_temp_root()
 
         Toplevel.__init__(self, master)
 
         self.withdraw() # remain invisible fuer now
         # If the parent is not viewable, don't
-        # make the child transient, or else it
+        # make the child transient, or sonst it
         # would be opened withdrawn
-        if parent is not None and parent.winfo_viewable():
+        wenn parent is not None and parent.winfo_viewable():
             self.transient(parent)
 
-        if title:
+        wenn title:
             self.title(title)
 
         _setup_dialog(self)
@@ -130,7 +130,7 @@ klasse Dialog(Toplevel):
 
         self.buttonbox()
 
-        if self.initial_focus is None:
+        wenn self.initial_focus is None:
             self.initial_focus = self
 
         self.protocol("WM_DELETE_WINDOW", self.cancel)
@@ -165,7 +165,7 @@ klasse Dialog(Toplevel):
     def buttonbox(self):
         '''add standard button box.
 
-        override if you do not want the standard buttons
+        override wenn you do not want the standard buttons
         '''
 
         box = Frame(self)
@@ -185,7 +185,7 @@ klasse Dialog(Toplevel):
 
     def ok(self, event=None):
 
-        if not self.validate():
+        wenn not self.validate():
             self.initial_focus.focus_set() # put focus back
             return
 
@@ -200,7 +200,7 @@ klasse Dialog(Toplevel):
     def cancel(self, event=None):
 
         # put focus back to the parent window
-        if self.parent is not None:
+        wenn self.parent is not None:
             self.parent.focus_set()
         self.destroy()
 
@@ -236,7 +236,7 @@ def _place_window(w, parent=None):
     minheight = w.winfo_reqheight()
     maxwidth = w.winfo_vrootwidth()
     maxheight = w.winfo_vrootheight()
-    if parent is not None and parent.winfo_ismapped():
+    wenn parent is not None and parent.winfo_ismapped():
         x = parent.winfo_rootx() + (parent.winfo_width() - minwidth) // 2
         y = parent.winfo_rooty() + (parent.winfo_height() - minheight) // 2
         vrootx = w.winfo_vrootx()
@@ -245,10 +245,10 @@ def _place_window(w, parent=None):
         x = max(x, vrootx)
         y = min(y, vrooty + maxheight - minheight)
         y = max(y, vrooty)
-        if w._windowingsystem == 'aqua':
+        wenn w._windowingsystem == 'aqua':
             # Avoid the native menu bar which sits on top of everything.
             y = max(y, 22)
-    else:
+    sonst:
         x = (w.winfo_screenwidth() - minwidth) // 2
         y = (w.winfo_screenheight() - minheight) // 2
 
@@ -258,10 +258,10 @@ def _place_window(w, parent=None):
 
 
 def _setup_dialog(w):
-    if w._windowingsystem == "aqua":
+    wenn w._windowingsystem == "aqua":
         w.tk.call("::tk::unsupported::MacWindowStyle", "style",
                   w, "moveableModal", "")
-    elif w._windowingsystem == "x11":
+    sowenn w._windowingsystem == "x11":
         w.wm_attributes(type="dialog")
 
 # --------------------------------------------------------------------
@@ -294,7 +294,7 @@ klasse _QueryDialog(Dialog):
         self.entry = Entry(master, name="entry")
         self.entry.grid(row=1, padx=5, sticky=W+E)
 
-        if self.initialvalue is not None:
+        wenn self.initialvalue is not None:
             self.entry.insert(0, self.initialvalue)
             self.entry.select_range(0, END)
 
@@ -311,7 +311,7 @@ klasse _QueryDialog(Dialog):
             )
             return 0
 
-        if self.minvalue is not None and result < self.minvalue:
+        wenn self.minvalue is not None and result < self.minvalue:
             messagebox.showwarning(
                 "Too small",
                 "The allowed minimum value is %s. "
@@ -320,7 +320,7 @@ klasse _QueryDialog(Dialog):
             )
             return 0
 
-        if self.maxvalue is not None and result > self.maxvalue:
+        wenn self.maxvalue is not None and result > self.maxvalue:
             messagebox.showwarning(
                 "Too large",
                 "The allowed maximum value is %s. "
@@ -380,16 +380,16 @@ def askfloat(title, prompt, **kw):
 
 klasse _QueryString(_QueryDialog):
     def __init__(self, *args, **kw):
-        if "show" in kw:
+        wenn "show" in kw:
             self.__show = kw["show"]
             del kw["show"]
-        else:
+        sonst:
             self.__show = None
         _QueryDialog.__init__(self, *args, **kw)
 
     def body(self, master):
         entry = _QueryDialog.body(self, master)
-        if self.__show is not None:
+        wenn self.__show is not None:
             entry.configure(show=self.__show)
         return entry
 
@@ -412,7 +412,7 @@ def askstring(title, prompt, **kw):
     return d.result
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
 
     def test():
         root = Tk()

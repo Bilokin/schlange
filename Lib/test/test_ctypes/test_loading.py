@@ -17,14 +17,14 @@ libc_name = None
 
 def setUpModule():
     global libc_name
-    if os.name == "nt":
+    wenn os.name == "nt":
         libc_name = find_library("c")
-    elif sys.platform == "cygwin":
+    sowenn sys.platform == "cygwin":
         libc_name = "cygwin1.dll"
-    else:
+    sonst:
         libc_name = find_library("c")
 
-    if test.support.verbose:
+    wenn test.support.verbose:
         print("libc_name is", libc_name)
 
 
@@ -33,12 +33,12 @@ klasse LoaderTest(unittest.TestCase):
     unknowndll = "xxrandomnamexx"
 
     def test_load(self):
-        if libc_name is not None:
+        wenn libc_name is not None:
             test_lib = libc_name
-        else:
-            if os.name == "nt":
+        sonst:
+            wenn os.name == "nt":
                 test_lib = _ctypes_test.__file__
-            else:
+            sonst:
                 self.skipTest('could not find library to load')
         CDLL(test_lib)
         CDLL(os.path.basename(test_lib))
@@ -46,9 +46,9 @@ klasse LoaderTest(unittest.TestCase):
         self.assertRaises(OSError, CDLL, self.unknowndll)
 
     def test_load_version(self):
-        if libc_name is None:
+        wenn libc_name is None:
             self.skipTest('could not find libc')
-        if os.path.basename(libc_name) != 'libc.so.6':
+        wenn os.path.basename(libc_name) != 'libc.so.6':
             self.skipTest('wrong libc path fuer test')
         cdll.LoadLibrary("libc.so.6")
         # linux uses version, libc 9 should not exist
@@ -59,11 +59,11 @@ klasse LoaderTest(unittest.TestCase):
         found = False
         fuer name in ("c", "m"):
             lib = find_library(name)
-            if lib:
+            wenn lib:
                 found = True
                 cdll.LoadLibrary(lib)
                 CDLL(lib)
-        if not found:
+        wenn not found:
             self.skipTest("Could not find c and m libraries")
 
     @unittest.skipUnless(os.name == "nt",
@@ -72,11 +72,11 @@ klasse LoaderTest(unittest.TestCase):
         # CRT is no longer directly loadable. See issue23606 fuer the
         # discussion about alternative approaches.
         #self.assertIsNotNone(libc_name)
-        if test.support.verbose:
+        wenn test.support.verbose:
             print(find_library("kernel32"))
             print(find_library("user32"))
 
-        if os.name == "nt":
+        wenn os.name == "nt":
             ctypes.windll.kernel32.GetModuleHandleW
             ctypes.windll["kernel32"].GetModuleHandleW
             ctypes.windll.LoadLibrary("kernel32").GetModuleHandleW
@@ -142,9 +142,9 @@ klasse LoaderTest(unittest.TestCase):
     def test_load_dll_with_flags(self):
         _sqlite3 = import_helper.import_module("_sqlite3")
         src = _sqlite3.__file__
-        if os.path.basename(src).partition(".")[0].lower().endswith("_d"):
+        wenn os.path.basename(src).partition(".")[0].lower().endswith("_d"):
             ext = "_d.dll"
-        else:
+        sonst:
             ext = ".dll"
 
         with os_helper.temp_dir() as tmp:
@@ -198,5 +198,5 @@ klasse LoaderTest(unittest.TestCase):
                         "WinDLL('_sqlite3.dll'); p.close()")
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

@@ -41,7 +41,7 @@ from collections import deque
 
 
 # types
-if False:
+wenn False:
     from .types import EventTuple
 
 
@@ -71,43 +71,43 @@ klasse KeymapTranslator(InputTranslator):
         fuer keyspec, command in keymap:
             keyseq = tuple(parse_keys(keyspec))
             d[keyseq] = command
-        if self.verbose:
+        wenn self.verbose:
             print(d)
         self.k = self.ck = compile_keymap(d, ())
         self.results = deque()
         self.stack = []
 
     def push(self, evt):
-        if self.verbose:
+        wenn self.verbose:
             print("pushed", evt.data, end="")
         key = evt.data
         d = self.k.get(key)
-        if isinstance(d, dict):
-            if self.verbose:
+        wenn isinstance(d, dict):
+            wenn self.verbose:
                 print("transition")
             self.stack.append(key)
             self.k = d
-        else:
-            if d is None:
-                if self.verbose:
+        sonst:
+            wenn d is None:
+                wenn self.verbose:
                     print("invalid")
-                if self.stack or len(key) > 1 or unicodedata.category(key) == "C":
+                wenn self.stack or len(key) > 1 or unicodedata.category(key) == "C":
                     self.results.append((self.invalid_cls, self.stack + [key]))
-                else:
+                sonst:
                     # small optimization:
                     self.k[key] = self.character_cls
                     self.results.append((self.character_cls, [key]))
-            else:
-                if self.verbose:
+            sonst:
+                wenn self.verbose:
                     print("matched", d)
                 self.results.append((d, self.stack + [key]))
             self.stack = []
             self.k = self.ck
 
     def get(self):
-        if self.results:
+        wenn self.results:
             return self.results.popleft()
-        else:
+        sonst:
             return None
 
     def empty(self) -> bool:

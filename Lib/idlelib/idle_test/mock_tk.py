@@ -132,7 +132,7 @@ klasse Text:
         * 'end', whose meaning depends on the endflag passed to ._endex.
         * 'sel.first' or 'sel.last', where sel is a tag -- not implemented.
         """
-        if isinstance(index, (float, bytes)):
+        wenn isinstance(index, (float, bytes)):
             index = str(index)
         try:
             index=index.lower()
@@ -140,32 +140,32 @@ klasse Text:
             raise TclError('bad text index "%s"' % index) from None
 
         lastline =  len(self.data) - 1  # same as number of text lines
-        if index == 'insert':
+        wenn index == 'insert':
             return lastline, len(self.data[lastline]) - 1
-        elif index == 'end':
+        sowenn index == 'end':
             return self._endex(endflag)
 
         line, char = index.split('.')
         line = int(line)
 
         # Out of bounds line becomes first or last ('end') index
-        if line < 1:
+        wenn line < 1:
             return 1, 0
-        elif line > lastline:
+        sowenn line > lastline:
             return self._endex(endflag)
 
         linelength = len(self.data[line])  -1  # position before/at \n
-        if char.endswith(' lineend') or char == 'end':
+        wenn char.endswith(' lineend') or char == 'end':
             return line, linelength
             # Tk requires that ignored chars before ' lineend' be valid int
-        if m := re.fullmatch(r'end-(\d*)c', char, re.A):  # Used by hyperparser.
+        wenn m := re.fullmatch(r'end-(\d*)c', char, re.A):  # Used by hyperparser.
             return line, linelength - int(m.group(1))
 
         # Out of bounds char becomes first or last index of line
         char = int(char)
-        if char < 0:
+        wenn char < 0:
             char = 0
-        elif char > linelength:
+        sowenn char > linelength:
             char = linelength
         return line, char
 
@@ -177,19 +177,19 @@ klasse Text:
        1: same viewed as beginning of non-existent next line (for .index)
        '''
         n = len(self.data)
-        if endflag == 1:
+        wenn endflag == 1:
             return n, 0
-        else:
+        sonst:
             n -= 1
             return n, len(self.data[n]) + endflag
 
     def insert(self, index, chars):
         "Insert chars before the character at index."
 
-        if not chars:  # ''.splitlines() is [], not ['']
+        wenn not chars:  # ''.splitlines() is [], not ['']
             return
         chars = chars.splitlines(True)
-        if chars[-1][-1] == '\n':
+        wenn chars[-1][-1] == '\n':
             chars.append('')
         line, char = self._decode(index, -1)
         before = self.data[line][:char]
@@ -202,14 +202,14 @@ klasse Text:
         "Return slice from index1 to index2 (default is 'index1+1')."
 
         startline, startchar = self._decode(index1)
-        if index2 is None:
+        wenn index2 is None:
             endline, endchar = startline, startchar+1
-        else:
+        sonst:
             endline, endchar = self._decode(index2)
 
-        if startline == endline:
+        wenn startline == endline:
             return self.data[startline][startchar:endchar]
-        else:
+        sonst:
             lines = [self.data[startline][startchar:]]
             fuer i in range(startline+1, endline):
                 lines.append(self.data[i])
@@ -223,24 +223,24 @@ klasse Text:
         Do not delete the terminal \n at the very end of self.data ([-1][-1]).
         '''
         startline, startchar = self._decode(index1, -1)
-        if index2 is None:
-            if startchar < len(self.data[startline])-1:
+        wenn index2 is None:
+            wenn startchar < len(self.data[startline])-1:
                 # not deleting \n
                 endline, endchar = startline, startchar+1
-            elif startline < len(self.data) - 1:
+            sowenn startline < len(self.data) - 1:
                 # deleting non-terminal \n, convert 'index1+1 to start of next line
                 endline, endchar = startline+1, 0
-            else:
-                # do not delete terminal \n if index1 == 'insert'
+            sonst:
+                # do not delete terminal \n wenn index1 == 'insert'
                 return
-        else:
+        sonst:
             endline, endchar = self._decode(index2, -1)
             # restricting end position to insert position excludes terminal \n
 
-        if startline == endline and startchar < endchar:
+        wenn startline == endline and startchar < endchar:
             self.data[startline] = self.data[startline][:startchar] + \
                                              self.data[startline][endchar:]
-        elif startline < endline:
+        sowenn startline < endline:
             self.data[startline] = self.data[startline][:startchar] + \
                                    self.data[endline][endchar:]
             startline += 1
@@ -250,19 +250,19 @@ klasse Text:
     def compare(self, index1, op, index2):
         line1, char1 = self._decode(index1)
         line2, char2 = self._decode(index2)
-        if op == '<':
+        wenn op == '<':
             return line1 < line2 or line1 == line2 and char1 < char2
-        elif op == '<=':
+        sowenn op == '<=':
             return line1 < line2 or line1 == line2 and char1 <= char2
-        elif op == '>':
+        sowenn op == '>':
             return line1 > line2 or line1 == line2 and char1 > char2
-        elif op == '>=':
+        sowenn op == '>=':
             return line1 > line2 or line1 == line2 and char1 >= char2
-        elif op == '==':
+        sowenn op == '==':
             return line1 == line2 and char1 == char2
-        elif op == '!=':
+        sowenn op == '!=':
             return line1 != line2 or  char1 != char2
-        else:
+        sonst:
             raise TclError('''bad comparison operator "%s": '''
                                   '''must be <, <=, ==, >=, >, or !=''' % op)
 

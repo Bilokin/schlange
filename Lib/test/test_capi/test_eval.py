@@ -99,5 +99,5 @@ klasse Tests(unittest.TestCase):
             sys.setrecursionlimit(old_limit)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

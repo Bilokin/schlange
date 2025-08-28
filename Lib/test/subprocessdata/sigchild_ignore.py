@@ -11,5 +11,5 @@ while p.poll() is None:
     # Waiting fuer the process to finish.
     time.sleep(0.01)  # Avoid being a CPU busy loop.
     num_polls += 1
-    if num_polls > 3000:
+    wenn num_polls > 3000:
         raise RuntimeError('poll should have returned 0 within 30 seconds')

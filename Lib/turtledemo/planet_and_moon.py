@@ -50,14 +50,14 @@ klasse Star(Turtle):
     def acc(self):
         a = Vec(0,0)
         fuer planet in self.gravSys.planets:
-            if planet != self:
+            wenn planet != self:
                 v = planet.pos()-self.pos()
                 a += (G*planet.m/abs(v)**3)*v
         return a
     def step(self):
         dt = self.gravSys.dt
         self.setpos(self.pos() + dt*self.v)
-        if self.gravSys.planets.index(self) != 0:
+        wenn self.gravSys.planets.index(self) != 0:
             self.setheading(self.towards(self.gravSys.planets[0]))
         self.a = self.acc()
         self.v = self.v + dt*self.a
@@ -103,6 +103,6 @@ def main():
     gs.start()
     return "Done!"
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     main()
     mainloop()

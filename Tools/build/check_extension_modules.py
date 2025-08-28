@@ -166,34 +166,34 @@ klasse ModuleChecker:
         self.notavailable: list[ModuleInfo] = []
 
     def check(self) -> None:
-        if not hasattr(_imp, 'create_dynamic'):
+        wenn not hasattr(_imp, 'create_dynamic'):
             logger.warning(
                 ('Dynamic extensions not supported '
                  '(HAVE_DYNAMIC_LOADING not defined)'),
             )
         fuer modinfo in self.modules:
             logger.debug("Checking '%s' (%s)", modinfo.name, self.get_location(modinfo))
-            if modinfo.state == ModuleState.DISABLED:
+            wenn modinfo.state == ModuleState.DISABLED:
                 self.disabled_configure.append(modinfo)
-            elif modinfo.state == ModuleState.DISABLED_SETUP:
+            sowenn modinfo.state == ModuleState.DISABLED_SETUP:
                 self.disabled_setup.append(modinfo)
-            elif modinfo.state == ModuleState.MISSING:
+            sowenn modinfo.state == ModuleState.MISSING:
                 self.missing.append(modinfo)
-            elif modinfo.state == ModuleState.NA:
+            sowenn modinfo.state == ModuleState.NA:
                 self.notavailable.append(modinfo)
-            else:
+            sonst:
                 try:
-                    if self.cross_compiling:
+                    wenn self.cross_compiling:
                         self.check_module_cross(modinfo)
-                    else:
+                    sonst:
                         self.check_module_import(modinfo)
                 except (ImportError, FileNotFoundError):
                     self.rename_module(modinfo)
                     self.failed_on_import.append(modinfo)
-                else:
-                    if modinfo.state == ModuleState.BUILTIN:
+                sonst:
+                    wenn modinfo.state == ModuleState.BUILTIN:
                         self.builtin_ok.append(modinfo)
-                    else:
+                    sonst:
                         assert modinfo.state == ModuleState.SHARED
                         self.shared_ok.append(modinfo)
 
@@ -209,40 +209,40 @@ klasse ModuleChecker:
             fuer l, m, r in zip(names[::3], names[1::3], names[2::3]):  # noqa: E741
                 print("%-*s   %-*s   %-*s" % (longest, l, longest, m, longest, r))
 
-        if verbose and self.builtin_ok:
+        wenn verbose and self.builtin_ok:
             print("The following *built-in* modules have been successfully built:")
             print_three_column(self.builtin_ok)
             print()
 
-        if verbose and self.shared_ok:
+        wenn verbose and self.shared_ok:
             print("The following *shared* modules have been successfully built:")
             print_three_column(self.shared_ok)
             print()
 
-        if self.disabled_configure:
+        wenn self.disabled_configure:
             print("The following modules are *disabled* in configure script:")
             print_three_column(self.disabled_configure)
             print()
 
-        if self.disabled_setup:
+        wenn self.disabled_setup:
             print("The following modules are *disabled* in Modules/Setup files:")
             print_three_column(self.disabled_setup)
             print()
 
-        if verbose and self.notavailable:
+        wenn verbose and self.notavailable:
             print(
                 f"The following modules are not available on platform '{self.platform}':"
             )
             print_three_column(self.notavailable)
             print()
 
-        if self.missing:
+        wenn self.missing:
             print("The necessary bits to build these optional modules were not found:")
             print_three_column(self.missing)
             print("To find the necessary bits, look in configure.ac and config.log.")
             print()
 
-        if self.failed_on_import:
+        wenn self.failed_on_import:
             print(
                 "Following modules built successfully "
                 "but were removed because they could not be imported:"
@@ -250,12 +250,12 @@ klasse ModuleChecker:
             print_three_column(self.failed_on_import)
             print()
 
-        if any(
+        wenn any(
             modinfo.name == "_ssl" fuer modinfo in self.missing + self.failed_on_import
         ):
             print("Could not build the ssl module!")
             print("Python requires a OpenSSL 1.1.1 or newer")
-            if sysconfig.get_config_var("OPENSSL_LDFLAGS"):
+            wenn sysconfig.get_config_var("OPENSSL_LDFLAGS"):
                 print("Custom linker flags may require --with-openssl-rpath=auto")
             print()
 
@@ -271,13 +271,13 @@ klasse ModuleChecker:
         )
 
     def check_strict_build(self) -> None:
-        """Fail if modules are missing and it's a strict build"""
-        if self.strict_extensions_build and (self.failed_on_import or self.missing):
+        """Fail wenn modules are missing and it's a strict build"""
+        wenn self.strict_extensions_build and (self.failed_on_import or self.missing):
             raise RuntimeError("Failed to build some stdlib modules")
 
     def list_module_names(self, *, all: bool = False) -> set[str]:
         names = {modinfo.name fuer modinfo in self.modules}
-        if all:
+        wenn all:
             names.update(WINDOWS_MODULES)
         return names
 
@@ -302,11 +302,11 @@ klasse ModuleChecker:
             seen.add(modinfo.name)
         fuer setup_file in self.setup_files:
             fuer modinfo in self.parse_setup_file(setup_file):
-                if modinfo.name not in seen:
+                wenn modinfo.name not in seen:
                     modules.append(modinfo)
                     seen.add(modinfo.name)
         fuer modinfo in self.get_sysconfig_modules():
-            if modinfo.name not in seen:
+            wenn modinfo.name not in seen:
                 modules.append(modinfo)
                 seen.add(modinfo.name)
         logger.debug("Found %i modules in total", len(modules))
@@ -328,27 +328,27 @@ klasse ModuleChecker:
         MODDISABLED_NAMES: modules in *disabled* block
         """
         moddisabled = set(sysconfig.get_config_var("MODDISABLED_NAMES").split())
-        if self.cross_compiling:
+        wenn self.cross_compiling:
             modbuiltin = set(sysconfig.get_config_var("MODBUILT_NAMES").split())
-        else:
+        sonst:
             modbuiltin = set(sys.builtin_module_names)
 
         fuer key, value in sysconfig.get_config_vars().items():
-            if not key.startswith("MODULE_") or not key.endswith("_STATE"):
+            wenn not key.startswith("MODULE_") or not key.endswith("_STATE"):
                 continue
-            if value not in {"yes", "disabled", "missing", "n/a"}:
+            wenn value not in {"yes", "disabled", "missing", "n/a"}:
                 raise ValueError(f"Unsupported value '{value}' fuer {key}")
 
             modname = key[7:-6].lower()
-            if modname in moddisabled:
+            wenn modname in moddisabled:
                 # Setup "*disabled*" rule
                 state = ModuleState.DISABLED_SETUP
-            elif value in {"disabled", "missing", "n/a"}:
+            sowenn value in {"disabled", "missing", "n/a"}:
                 state = ModuleState(value)
-            elif modname in modbuiltin:
+            sowenn modname in modbuiltin:
                 assert value == "yes"
                 state = ModuleState.BUILTIN
-            else:
+            sonst:
                 assert value == "yes"
                 state = ModuleState.SHARED
 
@@ -365,7 +365,7 @@ klasse ModuleChecker:
         with open(setup_file, encoding="utf-8") as f:
             fuer line in f:
                 line = line.strip()
-                if not line or line.startswith("#") or assign_var.match(line):
+                wenn not line or line.startswith("#") or assign_var.match(line):
                     continue
                 match line.split():
                     case ["*shared*"]:
@@ -377,13 +377,13 @@ klasse ModuleChecker:
                     case ["*noconfig*"]:
                         continue
                     case [*items]:
-                        if state == ModuleState.DISABLED:
+                        wenn state == ModuleState.DISABLED:
                             # *disabled* can disable multiple modules per line
                             fuer item in items:
                                 modinfo = ModuleInfo(item, state)
                                 logger.debug("Found %s in %s", modinfo, setup_file)
                                 yield modinfo
-                        elif state in {ModuleState.SHARED, ModuleState.BUILTIN}:
+                        sowenn state in {ModuleState.SHARED, ModuleState.BUILTIN}:
                             # *shared* and *static*, first item is the name of the module.
                             modinfo = ModuleInfo(items[0], state)
                             logger.debug("Found %s in %s", modinfo, setup_file)
@@ -391,7 +391,7 @@ klasse ModuleChecker:
 
     def get_spec(self, modinfo: ModuleInfo) -> ModuleSpec:
         """Get ModuleSpec fuer builtin or extension module"""
-        if modinfo.state == ModuleState.SHARED:
+        wenn modinfo.state == ModuleState.SHARED:
             mod_location = self.get_location(modinfo)
             assert mod_location is not None
             location = os.fspath(mod_location)
@@ -399,23 +399,23 @@ klasse ModuleChecker:
             spec = spec_from_file_location(modinfo.name, location, loader=loader)
             assert spec is not None
             return spec
-        elif modinfo.state == ModuleState.BUILTIN:
+        sowenn modinfo.state == ModuleState.BUILTIN:
             spec = spec_from_loader(modinfo.name, loader=BuiltinImporter)
             assert spec is not None
             return spec
-        else:
+        sonst:
             raise ValueError(modinfo)
 
     def get_location(self, modinfo: ModuleInfo) -> pathlib.Path | None:
         """Get shared library location in build directory"""
-        if modinfo.state == ModuleState.SHARED:
+        wenn modinfo.state == ModuleState.SHARED:
             return self.builddir / f"{modinfo.name}{self.ext_suffix}"
-        else:
+        sonst:
             return None
 
     def _check_file(self, modinfo: ModuleInfo, spec: ModuleSpec) -> None:
         """Check that the module file is present and not empty"""
-        if spec.loader is BuiltinImporter:  # type: ignore[comparison-overlap]
+        wenn spec.loader is BuiltinImporter:  # type: ignore[comparison-overlap]
             return
         try:
             assert spec.origin is not None
@@ -423,7 +423,7 @@ klasse ModuleChecker:
         except FileNotFoundError:
             logger.error("%s (%s) is missing", modinfo.name, spec.origin)
             raise
-        if not st.st_size:
+        wenn not st.st_size:
             raise ImportError(f"{spec.origin} is an empty file")
 
     def check_module_import(self, modinfo: ModuleInfo) -> None:
@@ -439,7 +439,7 @@ klasse ModuleChecker:
             logger.error("%s failed to import: %s", modinfo.name, e)
             raise
         except Exception:
-            if not hasattr(_imp, 'create_dynamic'):
+            wenn not hasattr(_imp, 'create_dynamic'):
                 logger.warning("Dynamic extension '%s' ignored", modinfo.name)
                 return
             logger.exception("Importing extension '%s' failed!", modinfo.name)
@@ -452,18 +452,18 @@ klasse ModuleChecker:
 
     def rename_module(self, modinfo: ModuleInfo) -> None:
         """Rename module file"""
-        if modinfo.state == ModuleState.BUILTIN:
+        wenn modinfo.state == ModuleState.BUILTIN:
             logger.error("Cannot mark builtin module '%s' as failed!", modinfo.name)
             return
 
         failed_name = f"{modinfo.name}_failed{self.ext_suffix}"
         builddir_path = self.get_location(modinfo)
         assert builddir_path is not None
-        if builddir_path.is_symlink():
+        wenn builddir_path.is_symlink():
             symlink = builddir_path
             module_path = builddir_path.resolve().relative_to(os.getcwd())
             failed_path = module_path.parent / failed_name
-        else:
+        sonst:
             symlink = None
             module_path = builddir_path
             failed_path = self.builddir / failed_name
@@ -471,23 +471,23 @@ klasse ModuleChecker:
         # remove old failed file
         failed_path.unlink(missing_ok=True)
         # remove symlink
-        if symlink is not None:
+        wenn symlink is not None:
             symlink.unlink(missing_ok=True)
         # rename shared extension file
         try:
             module_path.rename(failed_path)
         except FileNotFoundError:
             logger.debug("Shared extension file '%s' does not exist.", module_path)
-        else:
+        sonst:
             logger.debug("Rename '%s' -> '%s'", module_path, failed_path)
 
 
 def main() -> None:
     args = parser.parse_args()
-    if args.debug:
+    wenn args.debug:
         args.verbose = True
     logging.basicConfig(
-        level=logging.DEBUG if args.debug else logging.INFO,
+        level=logging.DEBUG wenn args.debug sonst logging.INFO,
         format="[%(levelname)s] %(message)s",
     )
 
@@ -495,11 +495,11 @@ def main() -> None:
         cross_compiling=args.cross_compiling,
         strict=args.strict,
     )
-    if args.list_module_names:
+    wenn args.list_module_names:
         names = checker.list_module_names(all=True)
         fuer name in sorted(names):
             print(name)
-    else:
+    sonst:
         checker.check()
         checker.summary(verbose=args.verbose)
         try:
@@ -508,5 +508,5 @@ def main() -> None:
             parser.exit(1, f"\nError: {e}\n")
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     main()

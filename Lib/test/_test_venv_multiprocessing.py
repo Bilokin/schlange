@@ -7,7 +7,7 @@ def fill_queue(queue, code):
 
 
 def drain_queue(queue, code):
-    if code != queue.get():
+    wenn code != queue.get():
         sys.exit(1)
 
 
@@ -36,5 +36,5 @@ def main():
     sys.exit(test_pool.exitcode)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     main()

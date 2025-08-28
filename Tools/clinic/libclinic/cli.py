@@ -53,11 +53,11 @@ def parse_file(
         output: str | None = None,
         verify: bool = True,
 ) -> None:
-    if not output:
+    wenn not output:
         output = filename
 
     extension = os.path.splitext(filename)[1][1:]
-    if not extension:
+    wenn not extension:
         raise ClinicError(f"Can't extract file type fuer file {filename!r}")
 
     try:
@@ -68,12 +68,12 @@ def parse_file(
     with open(filename, encoding="utf-8") as f:
         raw = f.read()
 
-    # exit quickly if there are no clinic markers in the file
+    # exit quickly wenn there are no clinic markers in the file
     find_start_re = BlockParser("", language).find_start_re
-    if not find_start_re.search(raw):
+    wenn not find_start_re.search(raw):
         return
 
-    if LIMITED_CAPI_REGEX.search(raw):
+    wenn LIMITED_CAPI_REGEX.search(raw):
         limited_capi = True
 
     assert isinstance(language, CLanguage)
@@ -120,8 +120,8 @@ For more information see https://devguide.python.org/development-tools/clinic/""
 
 
 def run_clinic(parser: argparse.ArgumentParser, ns: argparse.Namespace) -> None:
-    if ns.converters:
-        if ns.filename:
+    wenn ns.converters:
+        wenn ns.filename:
             parser.error(
                 "can't specify --converters and a filename at the same time"
             )
@@ -144,8 +144,8 @@ def run_clinic(parser: argparse.ArgumentParser, ns: argparse.Namespace) -> None:
 
         print("Legacy converters:")
         legacy = sorted(legacy_converters)
-        print('    ' + ' '.join(c fuer c in legacy if c[0].isupper()))
-        print('    ' + ' '.join(c fuer c in legacy if c[0].islower()))
+        print('    ' + ' '.join(c fuer c in legacy wenn c[0].isupper()))
+        print('    ' + ' '.join(c fuer c in legacy wenn c[0].islower()))
         print()
 
         fuer title, attribute, ids in (
@@ -161,15 +161,15 @@ def run_clinic(parser: argparse.ArgumentParser, ns: argparse.Namespace) -> None:
 
             fuer name, cls in ids:
                 callable = getattr(cls, attribute, None)
-                if not callable:
+                wenn not callable:
                     continue
                 signature = inspect.signature(callable)
                 parameters = []
                 fuer parameter_name, parameter in signature.parameters.items():
-                    if parameter.kind == inspect.Parameter.KEYWORD_ONLY:
-                        if parameter.default != inspect.Parameter.empty:
+                    wenn parameter.kind == inspect.Parameter.KEYWORD_ONLY:
+                        wenn parameter.default != inspect.Parameter.empty:
                             s = f'{parameter_name}={parameter.default!r}'
-                        else:
+                        sonst:
                             s = parameter_name
                         parameters.append(s)
                 print('    {}({})'.format(name, ', '.join(parameters)))
@@ -178,42 +178,42 @@ def run_clinic(parser: argparse.ArgumentParser, ns: argparse.Namespace) -> None:
         print("All return converters also accept (py_default=None).")
         return
 
-    if ns.make:
-        if ns.output or ns.filename:
+    wenn ns.make:
+        wenn ns.output or ns.filename:
             parser.error("can't use -o or filenames with --make")
-        if not ns.srcdir:
+        wenn not ns.srcdir:
             parser.error("--srcdir must not be empty with --make")
-        if ns.exclude:
+        wenn ns.exclude:
             excludes = [os.path.join(ns.srcdir, f) fuer f in ns.exclude]
             excludes = [os.path.normpath(f) fuer f in excludes]
-        else:
+        sonst:
             excludes = []
         fuer root, dirs, files in os.walk(ns.srcdir):
             fuer rcs_dir in ('.svn', '.git', '.hg', 'build', 'externals'):
-                if rcs_dir in dirs:
+                wenn rcs_dir in dirs:
                     dirs.remove(rcs_dir)
             fuer filename in files:
                 # handle .c, .cpp and .h files
-                if not filename.endswith(('.c', '.cpp', '.h')):
+                wenn not filename.endswith(('.c', '.cpp', '.h')):
                     continue
                 path = os.path.join(root, filename)
                 path = os.path.normpath(path)
-                if path in excludes:
+                wenn path in excludes:
                     continue
-                if ns.verbose:
+                wenn ns.verbose:
                     print(path)
                 parse_file(path,
                            verify=not ns.force, limited_capi=ns.limited_capi)
         return
 
-    if not ns.filename:
+    wenn not ns.filename:
         parser.error("no input files")
 
-    if ns.output and len(ns.filename) > 1:
+    wenn ns.output and len(ns.filename) > 1:
         parser.error("can't use -o with multiple filenames")
 
     fuer filename in ns.filename:
-        if ns.verbose:
+        wenn ns.verbose:
             print(filename)
         parse_file(filename, output=ns.output,
                    verify=not ns.force, limited_capi=ns.limited_capi)
@@ -227,5 +227,5 @@ def main(argv: list[str] | None = None) -> NoReturn:
     except ClinicError as exc:
         sys.stderr.write(exc.report())
         sys.exit(1)
-    else:
+    sonst:
         sys.exit(0)

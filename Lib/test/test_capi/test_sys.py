@@ -212,5 +212,5 @@ klasse CAPITest(unittest.TestCase):
         self._test_sys_writestream('PySys_WriteStderr', 'stderr')
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

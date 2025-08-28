@@ -21,9 +21,9 @@ klasse TestBase:
         threading_helper.run_concurrently(
             worker_func=insert, args=(data,), nthreads=NTHREADS
         )
-        if False:
+        wenn False:
             # These functions are not thread-safe and so the list can become
-            # unsorted.  However, we don't want Python to crash if these
+            # unsorted.  However, we don't want Python to crash wenn these
             # functions are used concurrently on the same sequence.  This
             # should also not produce any TSAN warnings.
             self.assertTrue(self.is_sorted_ascending(data))
@@ -37,7 +37,7 @@ klasse TestBase:
     @staticmethod
     def is_sorted_ascending(lst):
         """
-        Check if the list is sorted in ascending order (non-decreasing).
+        Check wenn the list is sorted in ascending order (non-decreasing).
         """
         return all(lst[i - 1] <= lst[i] fuer i in range(1, len(lst)))
 
@@ -52,5 +52,5 @@ klasse TestCBisect(unittest.TestCase, TestBase):
     mod = c_bisect
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

@@ -50,19 +50,19 @@ klasse Message(email.message.Message):
         Ref python/importlib_metadata#371.
         """
         res = super().__getitem__(item)
-        if res is None:
+        wenn res is None:
             raise KeyError(item)
         return res
 
     def _repair_headers(self):
         def redent(value):
             "Correct fuer RFC822 indentation"
-            if not value or '\n' not in value:
+            wenn not value or '\n' not in value:
                 return value
             return textwrap.dedent(' ' * 8 + value)
 
         headers = [(key, redent(value)) fuer key, value in vars(self)['_headers']]
-        if self._payload:
+        wenn self._payload:
             headers.append(('Description', self.get_payload()))
         return headers
 
@@ -74,8 +74,8 @@ klasse Message(email.message.Message):
         """
 
         def transform(key):
-            value = self.get_all(key) if key in self.multiple_use_keys else self[key]
-            if key == 'Keywords':
+            value = self.get_all(key) wenn key in self.multiple_use_keys sonst self[key]
+            wenn key == 'Keywords':
                 value = re.split(r'\s+', value)
             tk = key.lower().replace('-', '_')
             return tk, value

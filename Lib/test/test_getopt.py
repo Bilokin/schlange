@@ -241,9 +241,9 @@ def load_tests(loader, tests, pattern):
     return tests
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     # To regenerate translation snapshots
-    if len(sys.argv) > 1 and sys.argv[1] == '--snapshot-update':
+    wenn len(sys.argv) > 1 and sys.argv[1] == '--snapshot-update':
         update_translation_snapshots(getopt)
         sys.exit(0)
     unittest.main()

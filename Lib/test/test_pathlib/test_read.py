@@ -11,10 +11,10 @@ from .support import is_pypi
 from .support.local_path import ReadableLocalPath, LocalPathGround
 from .support.zip_path import ReadableZipPath, ZipPathGround
 
-if is_pypi:
+wenn is_pypi:
     from pathlib_abc import PathInfo, _ReadablePath
     from pathlib_abc._os import magic_open
-else:
+sonst:
     from pathlib.types import PathInfo, _ReadablePath
     from pathlib._os import magic_open
 
@@ -89,7 +89,7 @@ klasse ReadTestBase:
 
     def test_iterdir(self):
         expected = ['dirA', 'dirB', 'dirC', 'fileA']
-        if self.ground.can_symlink:
+        wenn self.ground.can_symlink:
             expected += ['linkA', 'linkB', 'brokenLink', 'brokenLinkLoop']
         expected = {self.root.joinpath(name) fuer name in expected}
         actual = set(self.root.iterdir())
@@ -105,14 +105,14 @@ klasse ReadTestBase:
             self.assertTrue(child.info.exists(follow_symlinks=False))
 
     def test_glob(self):
-        if not self.ground.can_symlink:
+        wenn not self.ground.can_symlink:
             self.skipTest("requires symlinks")
 
         p = self.root
         sep = self.root.parser.sep
         altsep = self.root.parser.altsep
         def check(pattern, expected):
-            if altsep:
+            wenn altsep:
                 expected = {name.replace(altsep, sep) fuer name in expected}
             expected = {p.joinpath(name) fuer name in expected}
             actual = set(p.glob(pattern, recurse_symlinks=True))
@@ -164,12 +164,12 @@ klasse ReadTestBase:
         self.assertEqual(path, self.root)
         self.assertEqual(dirnames, ['dirA', 'dirB', 'dirC'])
         self.assertEqual(filenames, ['brokenLink', 'brokenLinkLoop', 'fileA', 'linkA', 'linkB']
-                                    if self.ground.can_symlink else ['fileA'])
+                                    wenn self.ground.can_symlink sonst ['fileA'])
 
         path, dirnames, filenames = next(it)
         self.assertEqual(path, self.root / 'dirA')
         self.assertEqual(dirnames, [])
-        self.assertEqual(filenames, ['linkC'] if self.ground.can_symlink else [])
+        self.assertEqual(filenames, ['linkC'] wenn self.ground.can_symlink sonst [])
 
         path, dirnames, filenames = next(it)
         self.assertEqual(path, self.root / 'dirB')
@@ -194,14 +194,14 @@ klasse ReadTestBase:
         actual = set()
         fuer path, dirnames, filenames in self.root.walk():
             actual.add(path)
-            if path == self.root:
+            wenn path == self.root:
                 dirnames.remove('dirB')
         self.assertEqual(actual, expected)
 
     def test_walk_bottom_up(self):
         seen_root = seen_dira = seen_dirb = seen_dirc = seen_dird = False
         fuer path, dirnames, filenames in self.root.walk(top_down=False):
-            if path == self.root:
+            wenn path == self.root:
                 self.assertFalse(seen_root)
                 self.assertTrue(seen_dira)
                 self.assertTrue(seen_dirb)
@@ -209,35 +209,35 @@ klasse ReadTestBase:
                 self.assertEqual(sorted(dirnames), ['dirA', 'dirB', 'dirC'])
                 self.assertEqual(sorted(filenames),
                                  ['brokenLink', 'brokenLinkLoop', 'fileA', 'linkA', 'linkB']
-                                 if self.ground.can_symlink else ['fileA'])
+                                 wenn self.ground.can_symlink sonst ['fileA'])
                 seen_root = True
-            elif path == self.root / 'dirA':
+            sowenn path == self.root / 'dirA':
                 self.assertFalse(seen_root)
                 self.assertFalse(seen_dira)
                 self.assertEqual(dirnames, [])
-                self.assertEqual(filenames, ['linkC'] if self.ground.can_symlink else [])
+                self.assertEqual(filenames, ['linkC'] wenn self.ground.can_symlink sonst [])
                 seen_dira = True
-            elif path == self.root / 'dirB':
+            sowenn path == self.root / 'dirB':
                 self.assertFalse(seen_root)
                 self.assertFalse(seen_dirb)
                 self.assertEqual(dirnames, [])
                 self.assertEqual(filenames, ['fileB'])
                 seen_dirb = True
-            elif path == self.root / 'dirC':
+            sowenn path == self.root / 'dirC':
                 self.assertFalse(seen_root)
                 self.assertFalse(seen_dirc)
                 self.assertTrue(seen_dird)
                 self.assertEqual(dirnames, ['dirD'])
                 self.assertEqual(sorted(filenames), ['fileC', 'novel.txt'])
                 seen_dirc = True
-            elif path == self.root / 'dirC' / 'dirD':
+            sowenn path == self.root / 'dirC' / 'dirD':
                 self.assertFalse(seen_root)
                 self.assertFalse(seen_dirc)
                 self.assertFalse(seen_dird)
                 self.assertEqual(dirnames, [])
                 self.assertEqual(filenames, ['fileD'])
                 seen_dird = True
-            else:
+            sonst:
                 raise AssertionError(f"Unexpected path: {path}")
         self.assertTrue(seen_root)
 
@@ -250,7 +250,7 @@ klasse ReadTestBase:
         self.assertTrue((p / 'fileA').info.exists(follow_symlinks=False))
         self.assertFalse((p / 'non-existing').info.exists())
         self.assertFalse((p / 'non-existing').info.exists(follow_symlinks=False))
-        if self.ground.can_symlink:
+        wenn self.ground.can_symlink:
             self.assertTrue((p / 'linkA').info.exists())
             self.assertTrue((p / 'linkA').info.exists(follow_symlinks=False))
             self.assertTrue((p / 'linkB').info.exists())
@@ -272,7 +272,7 @@ klasse ReadTestBase:
         self.assertFalse((p / 'fileA').info.is_dir(follow_symlinks=False))
         self.assertFalse((p / 'non-existing').info.is_dir())
         self.assertFalse((p / 'non-existing').info.is_dir(follow_symlinks=False))
-        if self.ground.can_symlink:
+        wenn self.ground.can_symlink:
             self.assertFalse((p / 'linkA').info.is_dir())
             self.assertFalse((p / 'linkA').info.is_dir(follow_symlinks=False))
             self.assertTrue((p / 'linkB').info.is_dir())
@@ -294,7 +294,7 @@ klasse ReadTestBase:
         self.assertFalse((p / 'dirA').info.is_file(follow_symlinks=False))
         self.assertFalse((p / 'non-existing').info.is_file())
         self.assertFalse((p / 'non-existing').info.is_file(follow_symlinks=False))
-        if self.ground.can_symlink:
+        wenn self.ground.can_symlink:
             self.assertTrue((p / 'linkA').info.is_file())
             self.assertFalse((p / 'linkA').info.is_file(follow_symlinks=False))
             self.assertFalse((p / 'linkB').info.is_file())
@@ -313,7 +313,7 @@ klasse ReadTestBase:
         self.assertFalse((p / 'fileA').info.is_symlink())
         self.assertFalse((p / 'dirA').info.is_symlink())
         self.assertFalse((p / 'non-existing').info.is_symlink())
-        if self.ground.can_symlink:
+        wenn self.ground.can_symlink:
             self.assertTrue((p / 'linkA').info.is_symlink())
             self.assertTrue((p / 'linkB').info.is_symlink())
             self.assertTrue((p / 'brokenLink').info.is_symlink())
@@ -332,12 +332,12 @@ klasse LocalPathReadTest(ReadTestBase, unittest.TestCase):
     ground = LocalPathGround(ReadableLocalPath)
 
 
-if not is_pypi:
+wenn not is_pypi:
     from pathlib import Path
 
     klasse PathReadTest(ReadTestBase, unittest.TestCase):
         ground = LocalPathGround(Path)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

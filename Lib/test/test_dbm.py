@@ -114,7 +114,7 @@ klasse AnyDBMTestCase:
         f.close()
 
     def test_empty_value(self):
-        if getattr(dbm._defaultmod, 'library', None) == 'Berkeley DB':
+        wenn getattr(dbm._defaultmod, 'library', None) == 'Berkeley DB':
             self.skipTest("Berkeley DB doesn't distinguish the empty value "
                           "from the absent one")
         f = dbm.open(_fname, 'c')
@@ -139,7 +139,7 @@ klasse AnyDBMTestCase:
         self.init_db()
         with dbm.open(_fname, 'r') as d:
             # Early stopping.
-            if not hasattr(d, 'reorganize'):
+            wenn not hasattr(d, 'reorganize'):
                 self.skipTest("method reorganize not available this dbm submodule")
 
             self.assertRaises(dbm.error, lambda: d.reorganize())
@@ -148,7 +148,7 @@ klasse AnyDBMTestCase:
         self.init_db()
         with dbm.open(_fname, 'c') as d:
             # Early stopping.
-            if not hasattr(d, 'reorganize'):
+            wenn not hasattr(d, 'reorganize'):
                 self.skipTest("method reorganize not available this dbm submodule")
 
             keys_before = sorted(d.keys())
@@ -162,7 +162,7 @@ klasse AnyDBMTestCase:
     def test_anydbm_reorganize_decreased_size(self):
 
         def _calculate_db_size(db_path):
-            if os.path.isfile(db_path):
+            wenn os.path.isfile(db_path):
                 return os.path.getsize(db_path)
             total_size = 0
             fuer root, _, filenames in os.walk(db_path):
@@ -174,7 +174,7 @@ klasse AnyDBMTestCase:
         # This test requires relatively large databases to reliably show difference in size before and after reorganizing.
         with dbm.open(_fname, 'n') as f:
             # Early stopping.
-            if not hasattr(f, 'reorganize'):
+            wenn not hasattr(f, 'reorganize'):
                 self.skipTest("method reorganize not available this dbm submodule")
 
             fuer k in self._dict:
@@ -318,5 +318,5 @@ fuer mod in dbm_iterator():
                                {'module': mod})
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

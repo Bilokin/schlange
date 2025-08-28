@@ -41,9 +41,9 @@ def no_other_refs():
 
 def set_gc_state(enabled):
     was_enabled = gc.isenabled()
-    if enabled:
+    wenn enabled:
         gc.enable()
-    else:
+    sonst:
         gc.disable()
     return was_enabled
 
@@ -190,7 +190,7 @@ klasse BaseTestTaskGroup:
 
             NUM += 10
 
-        # The 3 foo1 sub tasks can be racy when the host is busy - if the
+        # The 3 foo1 sub tasks can be racy when the host is busy - wenn the
         # cancellation happens in the middle, we'll see partial sub errors here
         with self.assertRaises(ExceptionGroup) as cm:
             await asyncio.create_task(runner())
@@ -309,7 +309,7 @@ klasse BaseTestTaskGroup:
             await runner()
         except ExceptionGroup as t:
             self.assertEqual(get_error_types(t), {ZeroDivisionError})
-        else:
+        sonst:
             self.fail('ExceptionGroup was not raised')
 
         self.assertTrue(t1.cancelled())
@@ -338,7 +338,7 @@ klasse BaseTestTaskGroup:
             await runner()
         except ExceptionGroup as t:
             self.assertEqual(get_error_types(t), {ZeroDivisionError})
-        else:
+        sonst:
             self.fail('ExceptionGroup was not raised')
 
         self.assertTrue(t1.cancelled())
@@ -537,7 +537,7 @@ klasse BaseTestTaskGroup:
             await r
         except ExceptionGroup as t:
             self.assertEqual(get_error_types(t),{MyExc})
-        else:
+        sonst:
             self.fail('ExceptionGroup was not raised')
 
         self.assertEqual(NUM, 10)
@@ -563,7 +563,7 @@ klasse BaseTestTaskGroup:
             await r
         except ExceptionGroup as t:
             self.assertEqual(get_error_types(t), {MyExc, ZeroDivisionError})
-        else:
+        sonst:
             self.fail('TasgGroupError was not raised')
 
     async def test_taskgroup_20(self):
@@ -687,7 +687,7 @@ klasse BaseTestTaskGroup:
             fuer count in range(10):
                 await asyncio.sleep(0.1)
                 g.create_task(do_job(0.3))
-                if count == 5:
+                wenn count == 5:
                     self.assertLess(len(g._tasks), 5)
             await asyncio.sleep(1.35)
             self.assertEqual(len(g._tasks), 0)
@@ -802,7 +802,7 @@ klasse BaseTestTaskGroup:
                 self.assertEqual(task.cancelling(), 0)
                 self.assertEqual(len(err.exceptions), 2)
 
-            else:
+            sonst:
                 self.fail('CustomException not raised')
 
         await asyncio.create_task(main())
@@ -886,12 +886,12 @@ klasse BaseTestTaskGroup:
                         outer_tg.create_task(raise_after(0, ValueError))
                 except* RuntimeError:
                     pass
-                else:
+                sonst:
                     self.fail("RuntimeError not raised")
             self.assertEqual(asyncio.current_task().cancelling(), 1)
         except* ValueError:
             pass
-        else:
+        sonst:
             self.fail("ValueError not raised")
         self.assertEqual(asyncio.current_task().cancelling(), 0)
 
@@ -1093,10 +1093,10 @@ klasse BaseTestTaskGroup:
                 tg.create_task(throw_error())
         except* MyError:
             pass
-        else:
+        sonst:
             self.fail("should have raised one MyError in group")
 
-        # if this test fails this current task will be cancelled
+        # wenn this test fails this current task will be cancelled
         # outside the task group and inside unittest internals
         # we yield to the event loop with sleep(0) so that
         # cancellation happens here and error is more understandable
@@ -1114,5 +1114,5 @@ klasse TestEagerTaskTaskGroup(BaseTestTaskGroup, unittest.IsolatedAsyncioTestCas
         return loop
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

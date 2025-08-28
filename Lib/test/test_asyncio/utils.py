@@ -43,10 +43,10 @@ CLOCK_RES = 0.050
 
 def data_file(*filename):
     fullname = os.path.join(support.TEST_HOME_DIR, *filename)
-    if os.path.isfile(fullname):
+    wenn os.path.isfile(fullname):
         return fullname
     fullname = os.path.join(os.path.dirname(__file__), '..', *filename)
-    if os.path.isfile(fullname):
+    wenn os.path.isfile(fullname):
         return fullname
     raise FileNotFoundError(os.path.join(filename))
 
@@ -69,15 +69,15 @@ def simple_server_sslcontext():
 def simple_client_sslcontext(*, disable_verify=True):
     client_context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
     client_context.check_hostname = False
-    if disable_verify:
+    wenn disable_verify:
         client_context.verify_mode = ssl.CERT_NONE
     return client_context
 
 
 def dummy_ssl_context():
-    if ssl is None:
+    wenn ssl is None:
         return None
-    else:
+    sonst:
         return simple_client_sslcontext(disable_verify=True)
 
 
@@ -86,8 +86,8 @@ def run_briefly(loop):
         pass
     gen = once()
     t = loop.create_task(gen)
-    # Don't log a warning if the task is not done after run_until_complete().
-    # It occurs if the loop is stopped or if a task raises a BaseException.
+    # Don't log a warning wenn the task is not done after run_until_complete().
+    # It occurs wenn the loop is stopped or wenn a task raises a BaseException.
     t._log_destroy_pending = False
     try:
         loop.run_until_complete(t)
@@ -98,11 +98,11 @@ def run_briefly(loop):
 def run_until(loop, pred, timeout=support.SHORT_TIMEOUT):
     delay = 0.001
     fuer _ in support.busy_retry(timeout, error=False):
-        if pred():
+        wenn pred():
             break
         loop.run_until_complete(tasks.sleep(delay))
         delay = max(delay * 2, 1.0)
-    else:
+    sonst:
         raise TimeoutError()
 
 
@@ -145,7 +145,7 @@ klasse SSLWSGIServerMixin:
         # The relative location of our test directory (which
         # contains the ssl key and certificate files) differs
         # between the stdlib and stand-alone asyncio.
-        # Prefer our own if we can find it.
+        # Prefer our own wenn we can find it.
         context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
         context.load_cert_chain(ONLYCERT, ONLYKEY)
 
@@ -175,14 +175,14 @@ def _run_test_server(*, address, use_ssl=False, server_cls, server_ssl_cls):
         status = '200 OK'
         headers = [('Content-type', 'text/plain')]
         start_response(status, headers)
-        if environ['PATH_INFO'] == '/loop':
+        wenn environ['PATH_INFO'] == '/loop':
             return loop(environ)
-        else:
+        sonst:
             return [b'Test message']
 
     # Run the test WSGI server in a separate thread in order not to
     # interfere with event handling in the main thread
-    server_class = server_ssl_cls if use_ssl else server_cls
+    server_class = server_ssl_cls wenn use_ssl sonst server_cls
     httpd = server_class(address, SilentWSGIRequestHandler)
     httpd.set_app(app)
     httpd.address = httpd.server_address
@@ -197,7 +197,7 @@ def _run_test_server(*, address, use_ssl=False, server_cls, server_ssl_cls):
         server_thread.join()
 
 
-if hasattr(socket, 'AF_UNIX'):
+wenn hasattr(socket, 'AF_UNIX'):
 
     klasse UnixHTTPServer(socketserver.UnixStreamServer, HTTPServer):
 
@@ -271,10 +271,10 @@ def run_test_server(*, host='127.0.0.1', port=0, use_ssl=False):
 def echo_datagrams(sock):
     while True:
         data, addr = sock.recvfrom(4096)
-        if data == b'STOP':
+        wenn data == b'STOP':
             sock.close()
             break
-        else:
+        sonst:
             sock.sendto(data, addr)
 
 
@@ -301,7 +301,7 @@ def run_udp_echo_server(*, host='127.0.0.1', port=0):
 def make_test_protocol(base):
     dct = {}
     fuer name in dir(base):
-        if name.startswith('__') and name.endswith('__'):
+        wenn name.startswith('__') and name.endswith('__'):
             # skip magic names
             continue
         dct[name] = MockCallback(return_value=None)
@@ -350,11 +350,11 @@ klasse TestLoop(base_events.BaseEventLoop):
     def __init__(self, gen=None):
         super().__init__()
 
-        if gen is None:
+        wenn gen is None:
             def gen():
                 yield
             self._check_on_close = False
-        else:
+        sonst:
             self._check_on_close = True
 
         self._gen = gen()
@@ -375,17 +375,17 @@ klasse TestLoop(base_events.BaseEventLoop):
 
     def advance_time(self, advance):
         """Move test time forward."""
-        if advance:
+        wenn advance:
             self._time += advance
 
     def close(self):
         super().close()
-        if self._check_on_close:
+        wenn self._check_on_close:
             try:
                 self._gen.send(0)
             except StopIteration:
                 pass
-            else:  # pragma: no cover
+            sonst:  # pragma: no cover
                 raise AssertionError("Time generator is not finished")
 
     def _add_reader(self, fd, callback, *args):
@@ -393,25 +393,25 @@ klasse TestLoop(base_events.BaseEventLoop):
 
     def _remove_reader(self, fd):
         self.remove_reader_count[fd] += 1
-        if fd in self.readers:
+        wenn fd in self.readers:
             del self.readers[fd]
             return True
-        else:
+        sonst:
             return False
 
     def assert_reader(self, fd, callback, *args):
-        if fd not in self.readers:
+        wenn fd not in self.readers:
             raise AssertionError(f'fd {fd} is not registered')
         handle = self.readers[fd]
-        if handle._callback != callback:
+        wenn handle._callback != callback:
             raise AssertionError(
                 f'unexpected callback: {handle._callback} != {callback}')
-        if handle._args != args:
+        wenn handle._args != args:
             raise AssertionError(
                 f'unexpected callback args: {handle._args} != {args}')
 
     def assert_no_reader(self, fd):
-        if fd in self.readers:
+        wenn fd in self.readers:
             raise AssertionError(f'fd {fd} is registered')
 
     def _add_writer(self, fd, callback, *args):
@@ -419,23 +419,23 @@ klasse TestLoop(base_events.BaseEventLoop):
 
     def _remove_writer(self, fd):
         self.remove_writer_count[fd] += 1
-        if fd in self.writers:
+        wenn fd in self.writers:
             del self.writers[fd]
             return True
-        else:
+        sonst:
             return False
 
     def assert_writer(self, fd, callback, *args):
-        if fd not in self.writers:
+        wenn fd not in self.writers:
             raise AssertionError(f'fd {fd} is not registered')
         handle = self.writers[fd]
-        if handle._callback != callback:
+        wenn handle._callback != callback:
             raise AssertionError(f'{handle._callback!r} != {callback!r}')
-        if handle._args != args:
+        wenn handle._args != args:
             raise AssertionError(f'{handle._args!r} != {args!r}')
 
     def _ensure_fd_no_transport(self, fd):
-        if not isinstance(fd, int):
+        wenn not isinstance(fd, int):
             try:
                 fd = int(fd.fileno())
             except (AttributeError, TypeError, ValueError):
@@ -446,7 +446,7 @@ klasse TestLoop(base_events.BaseEventLoop):
             transport = self._transports[fd]
         except KeyError:
             pass
-        else:
+        sonst:
             raise RuntimeError(
                 'File descriptor {!r} is used by transport {!r}'.format(
                     fd, transport))
@@ -520,7 +520,7 @@ klasse MockInstanceOf:
 
 def get_function_source(func):
     source = format_helpers._get_function_source(func)
-    if source is None:
+    wenn source is None:
         raise ValueError("unable to get the source of %r" % (func,))
     return source
 
@@ -528,19 +528,19 @@ def get_function_source(func):
 klasse TestCase(unittest.TestCase):
     @staticmethod
     def close_loop(loop):
-        if loop._default_executor is not None:
-            if not loop.is_closed():
+        wenn loop._default_executor is not None:
+            wenn not loop.is_closed():
                 loop.run_until_complete(loop.shutdown_default_executor())
-            else:
+            sonst:
                 loop._default_executor.shutdown(wait=True)
         loop.close()
 
     def set_event_loop(self, loop, *, cleanup=True):
-        if loop is None:
+        wenn loop is None:
             raise AssertionError('loop is None')
         # ensure that the event loop is passed explicitly in asyncio
         events.set_event_loop(None)
-        if cleanup:
+        wenn cleanup:
             self.addCleanup(self.close_loop, loop)
 
     def new_test_loop(self, gen=None):
@@ -599,11 +599,11 @@ async def await_without_task(coro):
             exc = err
     asyncio.get_running_loop().call_soon(func)
     await asyncio.sleep(0)
-    if exc is not None:
+    wenn exc is not None:
         raise exc
 
 
-if sys.platform == 'win32':
+wenn sys.platform == 'win32':
     DefaultEventLoopPolicy = asyncio.windows_events._DefaultEventLoopPolicy
-else:
+sonst:
     DefaultEventLoopPolicy = asyncio.unix_events._DefaultEventLoopPolicy

@@ -61,7 +61,7 @@ klasse LiveDialogTest(unittest.TestCase):
                 button.invoke()
                 get = dialog._current_textview.viewframe.textframe.text.get
                 lines = printer._Printer__lines
-                if len(lines) < 2:
+                wenn len(lines) < 2:
                     self.fail(name + ' full text was not found')
                 self.assertEqual(lines[0], get('1.0', '1.end'))
                 self.assertEqual(lines[1], get('2.0', '2.end'))
@@ -178,5 +178,5 @@ klasse DisplayFileTest(unittest.TestCase):
                 self.assertEqual(self.view.called, True)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main(verbosity=2)

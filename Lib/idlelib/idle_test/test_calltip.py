@@ -44,10 +44,10 @@ get_spec = calltip.get_argspec
 
 
 klasse Get_argspecTest(unittest.TestCase):
-    # The get_spec function must return a string, even if blank.
+    # The get_spec function must return a string, even wenn blank.
     # Test a variety of objects to be sure that none cause it to raise
     # (quite aside from getting as correct an answer as possible).
-    # The tests of builtins may break if inspect or the docstrings change,
+    # The tests of builtins may break wenn inspect or the docstrings change,
     # but a red buildbot is better than a user crash (as has happened).
     # For a simple mismatch, change the expected output to the actual.
 
@@ -64,7 +64,7 @@ klasse Get_argspecTest(unittest.TestCase):
         # Simulate builtin with no docstring fuer default tip test
         klasse SB:  __call__ = None
 
-        if List.__doc__ is not None:
+        wenn List.__doc__ is not None:
             tiptest(List,
                     f'(iterable=(), /)'
                     f'\n{List.__doc__}')
@@ -92,7 +92,7 @@ klasse Get_argspecTest(unittest.TestCase):
 Return the string obtained by replacing the leftmost
 non-overlapping occurrences of the pattern in string by the
 replacement repl.  repl can be either a string or a callable;
-if a string, backslash escapes in it are processed.  If it is
+wenn a string, backslash escapes in it are processed.  If it is
 a callable, it's passed the Match object and must return''')
         tiptest(p.sub, '''\
 (repl, string, count=0)
@@ -100,7 +100,7 @@ Return the string obtained by replacing the leftmost \
 non-overlapping occurrences o...''')
 
     def test_signature_wrap(self):
-        if textwrap.TextWrapper.__doc__ is not None:
+        wenn textwrap.TextWrapper.__doc__ is not None:
             self.assertEqual(get_spec(textwrap.TextWrapper), '''\
 (width=70, initial_indent='', subsequent_indent='', expand_tabs=True,
     replace_whitespace=True, fix_sentence_endings=False, break_long_words=True,
@@ -181,13 +181,13 @@ bytes() -> empty bytes object''')
         def t5(a, b=None, *args, **kw): 'doc'
         t5.tip = "(a, b=None, *args, **kw)"
 
-        doc = '\ndoc' if t1.__doc__ is not None else ''
+        doc = '\ndoc' wenn t1.__doc__ is not None sonst ''
         fuer func in (t1, t2, t3, t4, t5, TC):
             with self.subTest(func=func):
                 self.assertEqual(get_spec(func), func.tip + doc)
 
     def test_methods(self):
-        doc = '\ndoc' if TC.__doc__ is not None else ''
+        doc = '\ndoc' wenn TC.__doc__ is not None sonst ''
         fuer meth in (TC.t1, TC.t2, TC.t3, TC.t4, TC.t5, TC.t6, TC.__call__):
             with self.subTest(meth=meth):
                 self.assertEqual(get_spec(meth), meth.tip + doc)
@@ -196,7 +196,7 @@ bytes() -> empty bytes object''')
 
     def test_bound_methods(self):
         # test that first parameter is correctly removed from argspec
-        doc = '\ndoc' if TC.__doc__ is not None else ''
+        doc = '\ndoc' wenn TC.__doc__ is not None sonst ''
         fuer meth, mtip  in ((tc.t1, "()"), (tc.t4, "(*args)"),
                             (tc.t6, "(self)"), (tc.__call__, '(ci)'),
                             (tc, '(ci)'), (TC.cm, "(a)"),):
@@ -301,7 +301,7 @@ klasse WrappedCalltip(calltip.Calltip):
         return mock_TipWindow()
 
     def remove_calltip_window(self, event=None):
-        if self.active_calltip:  # Setup to None.
+        wenn self.active_calltip:  # Setup to None.
             self.active_calltip = None
             self.tips_removed += 1  # Setup to 0.
 
@@ -368,5 +368,5 @@ klasse CalltipTest(unittest.TestCase):
         self.open_close(comment)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main(verbosity=2)

@@ -72,7 +72,7 @@ klasse CAPITest(unittest.TestCase):
 
     def test_run_fileexflags(self):
         # Test PyRun_FileExFlags().
-        filename = os.fsencode(TESTFN if os.name != 'nt' else TESTFN_ASCII)
+        filename = os.fsencode(TESTFN wenn os.name != 'nt' sonst TESTFN_ASCII)
         with open(filename, 'wb') as fp:
             fp.write(b'a\n')
         self.addCleanup(unlink, filename)
@@ -101,7 +101,7 @@ klasse CAPITest(unittest.TestCase):
         self.assertRaises(SystemError, run, UserDict(), {})
         self.assertRaises(SystemError, run, UserDict(), dict(a=1))
 
-    @unittest.skipUnless(TESTFN_UNDECODABLE, 'only works if there are undecodable paths')
+    @unittest.skipUnless(TESTFN_UNDECODABLE, 'only works wenn there are undecodable paths')
     @unittest.skipIf(os.name == 'nt', 'does not work on Windows')
     def test_run_fileexflags_with_undecodable_filename(self):
         run = _testcapi.run_fileexflags
@@ -114,5 +114,5 @@ klasse CAPITest(unittest.TestCase):
         self.assertIsNone(run(TESTFN_UNDECODABLE, Py_file_input, dict(a=1)))
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

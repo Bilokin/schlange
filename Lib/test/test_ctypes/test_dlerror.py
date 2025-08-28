@@ -39,7 +39,7 @@ klasse TestNullDlsym(unittest.TestCase):
     the C function that ctypes' CDLL uses to get the address
     of symbols, can return NULL.
 
-    The objective way of telling if an error during symbol
+    The objective way of telling wenn an error during symbol
     lookup happened is to call glibc's dlerror() and check
     fuer a non-NULL return value.
 
@@ -64,7 +64,7 @@ klasse TestNullDlsym(unittest.TestCase):
                                       stderr=subprocess.DEVNULL)
         except OSError:
             self.skipTest("gcc is missing")
-        if retcode != 0:
+        wenn retcode != 0:
             self.skipTest("gcc --version failed")
 
         pipe_r, pipe_w = os.pipe()
@@ -81,12 +81,12 @@ klasse TestNullDlsym(unittest.TestCase):
             args = ['gcc', '-fPIC', '-shared', '-o', dstname, srcname]
             p = subprocess.run(args, capture_output=True)
 
-            if p.returncode != 0:
+            wenn p.returncode != 0:
                 # IFUNC is not supported on all architectures.
-                if platform.machine() == 'x86_64':
-                    # It should be supported here. Something else went wrong.
+                wenn platform.machine() == 'x86_64':
+                    # It should be supported here. Something sonst went wrong.
                     p.check_returncode()
-                else:
+                sonst:
                     # IFUNC might not be supported on this machine.
                     self.skipTest(f"could not compile indirect function: {p}")
 
@@ -136,7 +136,7 @@ klasse TestLocalization(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.libc_filename = find_library("c")
-        if cls.libc_filename is None:
+        wenn cls.libc_filename is None:
             raise unittest.SkipTest('cannot find libc')
 
     @configure_locales
@@ -175,5 +175,5 @@ klasse TestLocalization(unittest.TestCase):
             _ctypes.dlsym(dll, 'this_name_does_not_exist')
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

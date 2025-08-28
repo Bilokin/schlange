@@ -22,7 +22,7 @@ klasse GlobTests(unittest.TestCase):
     def mktemp(self, *parts):
         filename = self.norm(*parts)
         base, file = os.path.split(filename)
-        if not os.path.exists(base):
+        wenn not os.path.exists(base):
             os.makedirs(base)
         create_empty_file(filename)
 
@@ -38,29 +38,29 @@ klasse GlobTests(unittest.TestCase):
         self.mktemp('EF')
         self.mktemp('a', 'bcd', 'EF')
         self.mktemp('a', 'bcd', 'efg', 'ha')
-        if can_symlink():
+        wenn can_symlink():
             os.symlink(self.norm('broken'), self.norm('sym1'))
             os.symlink('broken', self.norm('sym2'))
             os.symlink(os.path.join('a', 'bcd'), self.norm('sym3'))
         self.open_dirfd()
 
     def open_dirfd(self):
-        if self.dir_fd is not None:
+        wenn self.dir_fd is not None:
             os.close(self.dir_fd)
-        if {os.open, os.stat} <= os.supports_dir_fd and os.scandir in os.supports_fd:
+        wenn {os.open, os.stat} <= os.supports_dir_fd and os.scandir in os.supports_fd:
             self.dir_fd = os.open(self.tempdir, os.O_RDONLY | os.O_DIRECTORY)
-        else:
+        sonst:
             self.dir_fd = None
 
     def tearDown(self):
-        if self.dir_fd is not None:
+        wenn self.dir_fd is not None:
             os.close(self.dir_fd)
         shutil.rmtree(self.tempdir)
 
     def glob(self, *parts, **kwargs):
-        if len(parts) == 1:
+        wenn len(parts) == 1:
             pattern = parts[0]
-        else:
+        sonst:
             pattern = os.path.join(*parts)
         p = os.path.join(self.tempdir, pattern)
         res = glob.glob(p, **kwargs)
@@ -75,9 +75,9 @@ klasse GlobTests(unittest.TestCase):
             res2 = glob.glob(pattern, **kwargs)
             fuer x in res2:
                 self.assertFalse(os.path.isabs(x), x)
-            if pattern == '**' or pattern == '**' + os.sep:
+            wenn pattern == '**' or pattern == '**' + os.sep:
                 expected = res[1:]
-            else:
+            sonst:
                 expected = res
             self.assertCountEqual([os.path.join(self.tempdir, x) fuer x in res2],
                                   expected)
@@ -95,7 +95,7 @@ klasse GlobTests(unittest.TestCase):
         self.assertCountEqual(
             glob.iglob(bpattern, root_dir=btempdir, **kwargs), bres2)
 
-        if self.dir_fd is not None:
+        wenn self.dir_fd is not None:
             self.assertCountEqual(
                 glob.glob(pattern, dir_fd=self.dir_fd, **kwargs), res2)
             self.assertCountEqual(
@@ -150,10 +150,10 @@ klasse GlobTests(unittest.TestCase):
 
     def test_glob_nested_directory(self):
         eq = self.assertSequencesEqual_noorder
-        if os.path.normcase("abCD") == "abCD":
+        wenn os.path.normcase("abCD") == "abCD":
             # case-sensitive filesystem
             eq(self.glob('a', 'bcd', 'E*'), [self.norm('a', 'bcd', 'EF')])
-        else:
+        sonst:
             # case insensitive filesystem
             eq(self.glob('a', 'bcd', 'E*'), [self.norm('a', 'bcd', 'EF'),
                                              self.norm('a', 'bcd', 'efg')])
@@ -169,7 +169,7 @@ klasse GlobTests(unittest.TestCase):
                                     self.norm('aab', 'F')])
 
     def test_glob_directory_with_trailing_slash(self):
-        seps = (os.sep, os.altsep) if os.altsep else (os.sep,)
+        seps = (os.sep, os.altsep) wenn os.altsep sonst (os.sep,)
         fuer sep in seps:
             # Patterns ending with a slash shouldn't match non-dirs
             self.assertEqual(glob.glob(self.norm('Z*Z') + sep), [])
@@ -193,7 +193,7 @@ klasse GlobTests(unittest.TestCase):
     def test_glob_bytes_directory_with_trailing_slash(self):
         # Same as test_glob_directory_with_trailing_slash, but with a
         # bytes argument.
-        seps = (os.sep, os.altsep) if os.altsep else (os.sep,)
+        seps = (os.sep, os.altsep) wenn os.altsep sonst (os.sep,)
         fuer sep in seps:
             self.assertEqual(glob.glob(os.fsencode(self.norm('Z*Z') + sep)), [])
             self.assertEqual(glob.glob(os.fsencode(self.norm('ZZZ') + sep)), [])
@@ -288,7 +288,7 @@ klasse GlobTests(unittest.TestCase):
                 ('aaa',), ('aaa', 'zzzF'),
                 ('aab',), ('aab', 'F'),
                ]
-        if can_symlink():
+        wenn can_symlink():
             full += [('sym1',), ('sym2',),
                      ('sym3',),
                      ('sym3', 'EF'),
@@ -300,7 +300,7 @@ klasse GlobTests(unittest.TestCase):
             self.joins((os.curdir, ''), *((os.curdir,) + i fuer i in full)))
         dirs = [('a', ''), ('a', 'bcd', ''), ('a', 'bcd', 'efg', ''),
                 ('aaa', ''), ('aab', '')]
-        if can_symlink():
+        wenn can_symlink():
             dirs += [('sym3', ''), ('sym3', 'efg', '')]
         eq(self.rglob('**', ''), self.joins(('',), *dirs))
 
@@ -309,11 +309,11 @@ klasse GlobTests(unittest.TestCase):
             ('a', 'bcd', 'efg'), ('a', 'bcd', 'efg', 'ha')))
         eq(self.rglob('a**'), self.joins(('a',), ('aaa',), ('aab',)))
         expect = [('a', 'bcd', 'EF'), ('EF',)]
-        if can_symlink():
+        wenn can_symlink():
             expect += [('sym3', 'EF')]
         eq(self.rglob('**', 'EF'), self.joins(*expect))
         expect = [('a', 'bcd', 'EF'), ('aaa', 'zzzF'), ('aab', 'F'), ('EF',)]
-        if can_symlink():
+        wenn can_symlink():
             expect += [('sym3', 'EF')]
         eq(self.rglob('**', '*F'), self.joins(*expect))
         eq(self.rglob('**', '*F', ''), [])
@@ -338,7 +338,7 @@ klasse GlobTests(unittest.TestCase):
                 [join('aaa', 'zzzF')])
             eq(glob.glob('**zz*F', recursive=True), [])
             expect = [join('a', 'bcd', 'EF'), 'EF']
-            if can_symlink():
+            wenn can_symlink():
                 expect += [join('sym3', 'EF')]
             eq(glob.glob(join('**', 'EF'), recursive=True), expect)
 
@@ -483,5 +483,5 @@ klasse GlobTests(unittest.TestCase):
         self.assertEqual(fn('**/*'), r'(?s:(?:.+[/\\])?[^/\\]+)\z')
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

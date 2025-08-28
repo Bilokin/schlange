@@ -34,7 +34,7 @@ CLOCK_RES = 0.020
 
 @contextlib.contextmanager
 def kill_on_error(proc):
-    """Context manager killing the subprocess if a Python exception is raised."""
+    """Context manager killing the subprocess wenn a Python exception is raised."""
     with proc:
         try:
             yield proc
@@ -292,7 +292,7 @@ klasse SocketEINTRTest(EINTRBaseTest):
             while written < len(data):
                 sent = send_func(wr, memoryview(data)[written:])
                 # sendall() returns None
-                written += len(data) if sent is None else sent
+                written += len(data) wenn sent is None sonst sent
             self.assertEqual(proc.wait(), 0)
 
     def test_send(self):
@@ -550,5 +550,5 @@ klasse FCNTLEINTRTest(EINTRBaseTest):
         self._lock(fcntl.flock, "flock")
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

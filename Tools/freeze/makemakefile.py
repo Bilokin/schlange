@@ -13,7 +13,7 @@ def makemakefile(outfp, makevars, files, target):
     deps = []
     fuer i in range(len(files)):
         file = files[i]
-        if file[-2:] == '.c':
+        wenn file[-2:] == '.c':
             base = os.path.basename(file)
             dest = base[:-2] + '.o'
             outfp.write("%s: %s\n" % (dest, file))

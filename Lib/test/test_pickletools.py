@@ -75,7 +75,7 @@ klasse SimpleReader:
 
     def readline(self):
         nl = self.data.find(b'\n', self.pos) + 1
-        if not nl:
+        wenn not nl:
             nl = len(self.data)
         data = self.data[self.pos: nl]
         self.pos = nl
@@ -519,5 +519,5 @@ def load_tests(loader, tests, pattern):
     return tests
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

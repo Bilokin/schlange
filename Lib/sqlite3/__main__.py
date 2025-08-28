@@ -37,7 +37,7 @@ def execute(c, sql, suppress_errors=True, theme=theme_no_color):
         print(
             f"{t.type}{tp}{t.reset}: {t.message}{e}{t.reset}", file=sys.stderr
         )
-        if not suppress_errors:
+        wenn not suppress_errors:
             sys.exit(1)
 
 
@@ -53,15 +53,15 @@ klasse SqliteInteractiveConsole(InteractiveConsole):
     def runsource(self, source, filename="<input>", symbol="single"):
         """Override runsource, the core of the InteractiveConsole REPL.
 
-        Return True if more input is needed; buffering is done automatically.
-        Return False if input is a complete statement ready fuer execution.
+        Return True wenn more input is needed; buffering is done automatically.
+        Return False wenn input is a complete statement ready fuer execution.
         """
         theme = get_theme(force_no_color=not self._use_color)
 
-        if not source or source.isspace():
+        wenn not source or source.isspace():
             return False
         # Remember to update CLI_COMMANDS in _completer.py
-        if source[0] == ".":
+        wenn source[0] == ".":
             match source[1:].strip():
                 case "version":
                     print(sqlite3.sqlite_version)
@@ -79,8 +79,8 @@ klasse SqliteInteractiveConsole(InteractiveConsole):
                     t = theme.traceback
                     self.write(f'{t.type}Error{t.reset}: {t.message}unknown '
                                f'command: "{unknown}"{t.reset}\n')
-        else:
-            if not sqlite3.complete_statement(source):
+        sonst:
+            wenn not sqlite3.complete_statement(source):
                 return True
             execute(self._cur, source, theme=theme)
         return False
@@ -95,7 +95,7 @@ def main(*args):
         "filename", type=str, default=":memory:", nargs="?",
         help=(
             "SQLite database to open (defaults to ':memory:'). "
-            "A new database is created if the file does not previously exist."
+            "A new database is created wenn the file does not previously exist."
         ),
     )
     parser.add_argument(
@@ -112,15 +112,15 @@ def main(*args):
     )
     args = parser.parse_args(*args)
 
-    if args.filename == ":memory:":
+    wenn args.filename == ":memory:":
         db_name = "a transient in-memory database"
-    else:
+    sonst:
         db_name = repr(args.filename)
 
     # Prepare REPL banner and prompts.
-    if sys.platform == "win32" and "idlelib.run" not in sys.modules:
+    wenn sys.platform == "win32" and "idlelib.run" not in sys.modules:
         eofkey = "CTRL-Z"
-    else:
+    sonst:
         eofkey = "CTRL-D"
     banner = dedent(f"""
         sqlite3 shell, running on SQLite version {sqlite3.sqlite_version}
@@ -138,10 +138,10 @@ def main(*args):
 
     con = sqlite3.connect(args.filename, isolation_level=None)
     try:
-        if args.sql:
+        wenn args.sql:
             # SQL statement provided on the command-line; execute it directly.
             execute(con, args.sql, suppress_errors=False, theme=theme)
-        else:
+        sonst:
             # No SQL provided; start the REPL.
             with completer():
                 console = SqliteInteractiveConsole(con, use_color=True)
@@ -152,5 +152,5 @@ def main(*args):
     sys.exit(0)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     main(sys.argv[1:])

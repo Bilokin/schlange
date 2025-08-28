@@ -19,7 +19,7 @@ from pegen.tokenizer import Tokenizer
 ALL_TOKENS = token.tok_name
 EXACT_TOKENS = token.EXACT_TOKEN_TYPES
 NON_EXACT_TOKENS = {
-    name fuer index, name in token.tok_name.items() if index not in EXACT_TOKENS.values()
+    name fuer index, name in token.tok_name.items() wenn index not in EXACT_TOKENS.values()
 }
 
 
@@ -40,7 +40,7 @@ def run_parser(file: IO[bytes], parser_class: Type[Parser], *, verbose: bool = F
     tokenizer = Tokenizer(tokenize.generate_tokens(file.readline))  # type: ignore[arg-type] # typeshed issue #3515
     parser = parser_class(tokenizer, verbose=verbose)
     result = parser.start()
-    if result is None:
+    wenn result is None:
         raise parser.make_syntax_error("invalid syntax")
     return result
 
@@ -49,7 +49,7 @@ def parse_string(
     source: str, parser_class: Type[Parser], *, dedent: bool = True, verbose: bool = False
 ) -> Any:
     # Run the parser on a string.
-    if dedent:
+    wenn dedent:
         source = textwrap.dedent(source)
     file = io.StringIO(source)
     return run_parser(file, parser_class, verbose=verbose)  # type: ignore[arg-type] # typeshed issue #3515
@@ -125,16 +125,16 @@ def print_memstats() -> bool:
     res = {}
     res["rss"] = meminfo.rss / MiB
     res["vms"] = meminfo.vms / MiB
-    if sys.platform == "win32":
+    wenn sys.platform == "win32":
         res["maxrss"] = meminfo.peak_wset / MiB
-    else:
+    sonst:
         # See https://stackoverflow.com/questions/938733/total-memory-used-by-python-process
         import resource  # Since it doesn't exist on Windows.
 
         rusage = resource.getrusage(resource.RUSAGE_SELF)
-        if sys.platform == "darwin":
+        wenn sys.platform == "darwin":
             factor = 1
-        else:
+        sonst:
             factor = 1024  # Linux
         res["maxrss"] = rusage.ru_maxrss * factor / MiB
     fuer key, value in res.items():

@@ -54,7 +54,7 @@ klasse Profile(_lsprof.Profiler):
 
     def print_stats(self, sort=-1):
         import pstats
-        if not isinstance(sort, tuple):
+        wenn not isinstance(sort, tuple):
             sort = (sort,)
         pstats.Stats(self).strip_dirs().sort_stats(*sort).print_stats()
 
@@ -84,7 +84,7 @@ klasse Profile(_lsprof.Profiler):
             self.stats[func] = cc, nc, tt, ct, callers
         # subcall information
         fuer entry in entries:
-            if entry.calls:
+            wenn entry.calls:
                 func = label(entry.code)
                 fuer subentry in entry.calls:
                     try:
@@ -95,7 +95,7 @@ klasse Profile(_lsprof.Profiler):
                     cc = nc - subentry.reccallcount
                     tt = subentry.inlinetime
                     ct = subentry.totaltime
-                    if func in callers:
+                    wenn func in callers:
                         prev = callers[func]
                         nc += prev[0]
                         cc += prev[1]
@@ -137,9 +137,9 @@ klasse Profile(_lsprof.Profiler):
 # ____________________________________________________________
 
 def label(code):
-    if isinstance(code, str):
+    wenn isinstance(code, str):
         return ('~', 0, code)    # built-in functions ('~' sorts at the end)
-    else:
+    sonst:
         return (code.co_filename, code.co_firstlineno, code.co_name)
 
 # ____________________________________________________________
@@ -162,7 +162,7 @@ def main():
     parser.add_option('-m', dest="module", action="store_true",
         help="Profile a library module", default=False)
 
-    if not sys.argv[1:]:
+    wenn not sys.argv[1:]:
         parser.print_usage()
         sys.exit(2)
 
@@ -171,17 +171,17 @@ def main():
 
     # The script that we're profiling may chdir, so capture the absolute path
     # to the output file at startup.
-    if options.outfile is not None:
+    wenn options.outfile is not None:
         options.outfile = os.path.abspath(options.outfile)
 
-    if len(args) > 0:
-        if options.module:
+    wenn len(args) > 0:
+        wenn options.module:
             code = "run_module(modname, run_name='__main__')"
             globs = {
                 'run_module': runpy.run_module,
                 'modname': args[0]
             }
-        else:
+        sonst:
             progname = args[0]
             sys.path.insert(0, os.path.dirname(progname))
             with io.open_code(progname) as fp:
@@ -210,10 +210,10 @@ def main():
             # Prevent "Exception ignored" during interpreter shutdown.
             sys.stdout = None
             sys.exit(exc.errno)
-    else:
+    sonst:
         parser.print_usage()
     return parser
 
 # When invoked as main program, invoke the profiler on a script
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     main()

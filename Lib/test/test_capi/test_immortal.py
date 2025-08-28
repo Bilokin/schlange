@@ -38,5 +38,5 @@ klasse TestInternalCAPI(unittest.TestCase):
             self.assertFalse(_testinternalcapi.is_static_immortal(obj))
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

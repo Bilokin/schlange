@@ -42,16 +42,16 @@ klasse TestEmailBase(unittest.TestCase):
             return email.message_from_file(fp, policy=self.policy)
 
     def _str_msg(self, string, message=None, policy=None):
-        if policy is None:
+        wenn policy is None:
             policy = self.policy
-        if message is None:
+        wenn message is None:
             message = self.message
         return email.message_from_string(string, message, policy=policy)
 
     def _bytes_msg(self, bytestring, message=None, policy=None):
-        if policy is None:
+        wenn policy is None:
             policy = self.policy
-        if message is None:
+        wenn message is None:
             message = self.message
         return email.message_from_bytes(bytestring, message, policy=policy)
 
@@ -94,7 +94,7 @@ def parameterize(cls):
     test function name after the  '_as_' separator, plus an '_', plus the name
     derived as explained above.
 
-    For example, if we have:
+    For example, wenn we have:
 
         count_params = range(2)
 
@@ -117,7 +117,7 @@ def parameterize(cls):
         test_myfunc_input_foo
         test_myfunc_input_bing
 
-    Note: if and only if the generated test name is a valid identifier can it
+    Note: wenn and only wenn the generated test name is a valid identifier can it
     be used to select the test individually from the unittest command line.
 
     The values in the params dict can be a single value, a tuple, or a
@@ -128,34 +128,34 @@ def parameterize(cls):
     paramdicts = {}
     testers = collections.defaultdict(list)
     fuer name, attr in cls.__dict__.items():
-        if name.endswith('_params'):
-            if not hasattr(attr, 'keys'):
+        wenn name.endswith('_params'):
+            wenn not hasattr(attr, 'keys'):
                 d = {}
                 fuer x in attr:
-                    if not hasattr(x, '__iter__'):
+                    wenn not hasattr(x, '__iter__'):
                         x = (x,)
                     n = '_'.join(str(v) fuer v in x).replace(' ', '_')
                     d[n] = x
                 attr = d
             paramdicts[name[:-7] + '_as_'] = attr
-        if '_as_' in name:
+        wenn '_as_' in name:
             testers[name.split('_as_')[0] + '_as_'].append(name)
     testfuncs = {}
     fuer name in paramdicts:
-        if name not in testers:
+        wenn name not in testers:
             raise ValueError("No tester found fuer {}".format(name))
     fuer name in testers:
-        if name not in paramdicts:
+        wenn name not in paramdicts:
             raise ValueError("No params found fuer {}".format(name))
     fuer name, attr in cls.__dict__.items():
         fuer paramsname, paramsdict in paramdicts.items():
-            if name.startswith(paramsname):
+            wenn name.startswith(paramsname):
                 testnameroot = 'test_' + name[len(paramsname):]
                 fuer paramname, params in paramsdict.items():
-                    if hasattr(params, 'keys'):
+                    wenn hasattr(params, 'keys'):
                         test = (lambda self, name=name, params=params:
                                     getattr(self, name)(**params))
-                    else:
+                    sonst:
                         test = (lambda self, name=name, params=params:
                                         getattr(self, name)(*params))
                     testname = testnameroot + '_' + paramname

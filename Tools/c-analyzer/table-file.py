@@ -11,7 +11,7 @@ def iter_clean_lines(lines):
     lines = iter(lines)
     fuer rawline in lines:
         line = rawline.strip()
-        if line.startswith('#') and not rawline.startswith('##'):
+        wenn line.startswith('#') and not rawline.startswith('##'):
             continue
         yield line, rawline
 
@@ -22,36 +22,36 @@ def parse_table_lines(lines):
     group = None
     prev = ''
     fuer line, rawline in lines:
-        if line.startswith('## '):
+        wenn line.startswith('## '):
             assert not rawline.startswith(' '), (line, rawline)
-            if group:
+            wenn group:
                 assert prev, (line, rawline)
                 kind, after, _ = group
                 assert kind and kind != 'section-group', (group, line, rawline)
                 assert after is not None, (group, line, rawline)
-            else:
+            sonst:
                 assert not prev, (prev, line, rawline)
                 kind, after = group = ('section-group', None)
             title = line[3:].lstrip()
             assert title, (line, rawline)
-            if after is not None:
+            wenn after is not None:
                 try:
                     line, rawline = next(lines)
                 except StopIteration:
                     line = None
-                if line != after:
+                wenn line != after:
                     raise NotImplementedError((group, line, rawline))
             yield kind, title
             group = None
-        elif group:
+        sowenn group:
             raise NotImplementedError((group, line, rawline))
-        elif line.startswith('##---'):
+        sowenn line.startswith('##---'):
             assert line.rstrip('-') == '##', (line, rawline)
             group = ('section-minor', '', line)
-        elif line.startswith('#####'):
+        sowenn line.startswith('#####'):
             assert not line.strip('#'), (line, rawline)
             group = ('section-major', '', line)
-        elif line:
+        sowenn line:
             yield 'row', line
         prev = line
 
@@ -60,15 +60,15 @@ def iter_sections(lines):
     header = None
     section = []
     fuer kind, value in parse_table_lines(lines):
-        if kind == 'row':
-            if not section:
-                if header is None:
+        wenn kind == 'row':
+            wenn not section:
+                wenn header is None:
                     header = value
                     continue
                 raise NotImplementedError(repr(value))
             yield tuple(section), value
-        else:
-            if header is None:
+        sonst:
+            wenn header is None:
                 header = False
             start = KINDS.index(kind)
             section[start:] = [value]
@@ -77,9 +77,9 @@ def iter_sections(lines):
 def collect_sections(lines):
     sections = {}
     fuer section, row in iter_sections(lines):
-        if section not in sections:
+        wenn section not in sections:
             sections[section] = [row]
-        else:
+        sonst:
             sections[section].append(row)
     return sections
 
@@ -99,7 +99,7 @@ def collate_sections(lines):
                 totalrows = []
                 parent[name] = (child, secrows, totalrows)
             parent = child
-            if current == section:
+            wenn current == section:
                 secrows.extend(rows)
             totalrows.extend(rows)
     return collated
@@ -116,9 +116,9 @@ def cmd_count_by_section(lines):
         indent = '    ' * depth
         fuer name, data in root.items():
             subroot, rows, totalrows = data
-            sectotal = f'({len(totalrows)})' if totalrows != rows else ''
-            count = len(rows) if rows else ''
-            if depth == 0:
+            sectotal = f'({len(totalrows)})' wenn totalrows != rows sonst ''
+            count = len(rows) wenn rows sonst ''
+            wenn depth == 0:
                 yield div
             yield f'{sectotal:>7} {count:>4}  {indent}{name}'
             yield from render_tree(subroot, depth+1)
@@ -149,6 +149,6 @@ def main(filename):
             print(line)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     kwargs = parse_args()
     main(**kwargs)

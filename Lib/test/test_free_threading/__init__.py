@@ -4,7 +4,7 @@ import unittest
 from test import support
 
 
-if not support.Py_GIL_DISABLED:
+wenn not support.Py_GIL_DISABLED:
     raise unittest.SkipTest("GIL enabled")
 
 def load_tests(*args):

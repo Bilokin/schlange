@@ -19,7 +19,7 @@ from . import strategies
 
 def given(*_args, **_kwargs):
     def decorator(f):
-        if examples := getattr(f, "_examples", []):
+        wenn examples := getattr(f, "_examples", []):
 
             @functools.wraps(f)
             def test_function(self):
@@ -27,7 +27,7 @@ def given(*_args, **_kwargs):
                     with self.subTest(*example_args, **example_kwargs):
                         f(self, *example_args, **example_kwargs)
 
-        else:
+        sonst:
             # If we have found no examples, we must skip the test. If @example
             # is applied after @given, it will re-wrap the test to remove the
             # skip decorator.
@@ -43,17 +43,17 @@ def given(*_args, **_kwargs):
 
 
 def example(*args, **kwargs):
-    if bool(args) == bool(kwargs):
+    wenn bool(args) == bool(kwargs):
         raise ValueError("Must specify exactly one of *args or **kwargs")
 
     def decorator(f):
         base_func = getattr(f, "__wrapped__", f)
-        if not hasattr(base_func, "_examples"):
+        wenn not hasattr(base_func, "_examples"):
             base_func._examples = []
 
         base_func._examples.append((args, kwargs))
 
-        if getattr(f, "_given", False):
+        wenn getattr(f, "_given", False):
             # If the given decorator is below all the example decorators,
             # it would be erroneously skipped, so we need to re-wrap the new
             # base function.
@@ -65,7 +65,7 @@ def example(*args, **kwargs):
 
 
 def assume(condition):
-    if not condition:
+    wenn not condition:
         raise unittest.SkipTest("Unsatisfied assumption")
     return True
 

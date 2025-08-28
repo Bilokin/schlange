@@ -24,10 +24,10 @@ klasse ErrorcodeTests(unittest.TestCase):
 
     def test_attributes_in_errorcode(self):
         fuer attribute in errno.__dict__.keys():
-            if attribute.isupper():
+            wenn attribute.isupper():
                 self.assertIn(getattr(errno, attribute), errno.errorcode,
                               'no %s attr in errno.errorcode' % attribute)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

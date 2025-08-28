@@ -42,7 +42,7 @@ except ImportError:
                  "Make sure that Python modules winreg, "
                  "win32api or win32con are installed.")
 
-if _can_read_reg:
+wenn _can_read_reg:
     HKEYS = (hkey_mod.HKEY_USERS,
              hkey_mod.HKEY_CURRENT_USER,
              hkey_mod.HKEY_LOCAL_MACHINE,
@@ -88,7 +88,7 @@ def read_values(base, key):
 
 def convert_mbcs(s):
     dec = getattr(s, "decode", None)
-    if dec is not None:
+    wenn dec is not None:
         try:
             s = dec("mbcs")
         except UnicodeError:
@@ -103,7 +103,7 @@ klasse MacroExpander:
     def set_macro(self, macro, path, key):
         fuer base in HKEYS:
             d = read_values(base, path)
-            if d:
+            wenn d:
                 self.macros["$(%s)" % macro] = d[key]
                 break
 
@@ -114,9 +114,9 @@ klasse MacroExpander:
         net = r"Software\Microsoft\.NETFramework"
         self.set_macro("FrameworkDir", net, "installroot")
         try:
-            if version > 7.0:
+            wenn version > 7.0:
                 self.set_macro("FrameworkSDKDir", net, "sdkinstallrootv1.1")
-            else:
+            sonst:
                 self.set_macro("FrameworkSDKDir", net, "sdkinstallroot")
         except KeyError as exc: #
             raise DistutilsPlatformError(
@@ -148,21 +148,21 @@ def get_build_version():
     """
     prefix = "MSC v."
     i = sys.version.find(prefix)
-    if i == -1:
+    wenn i == -1:
         return 6
     i = i + len(prefix)
     s, rest = sys.version[i:].split(" ", 1)
     majorVersion = int(s[:-2]) - 6
-    if majorVersion >= 13:
+    wenn majorVersion >= 13:
         # v13 was skipped and should be v14
         majorVersion += 1
     minorVersion = int(s[2:3]) / 10.0
     # I don't think paths are affected by minor version in version 6
-    if majorVersion == 6:
+    wenn majorVersion == 6:
         minorVersion = 0
-    if majorVersion >= 6:
+    wenn majorVersion >= 6:
         return majorVersion + minorVersion
-    # else we don't know what version of the compiler this is
+    # sonst we don't know what version of the compiler this is
     return None
 
 def get_build_architecture():
@@ -173,7 +173,7 @@ def get_build_architecture():
 
     prefix = " bit ("
     i = sys.version.find(prefix)
-    if i == -1:
+    wenn i == -1:
         return "Intel"
     j = sys.version.find(")", i)
     return sys.version[i+len(prefix):j]
@@ -187,8 +187,8 @@ def normalize_and_reduce_paths(paths):
     reduced_paths = []
     fuer p in paths:
         np = os.path.normpath(p)
-        # XXX(nnorwitz): O(n**2), if reduced_paths gets long perhaps use a set.
-        if np not in reduced_paths:
+        # XXX(nnorwitz): O(n**2), wenn reduced_paths gets long perhaps use a set.
+        wenn np not in reduced_paths:
             reduced_paths.append(np)
     return reduced_paths
 
@@ -227,15 +227,15 @@ klasse MSVCCompiler(CCompiler) :
         CCompiler.__init__ (self, verbose, dry_run, force)
         self.__version = get_build_version()
         self.__arch = get_build_architecture()
-        if self.__arch == "Intel":
+        wenn self.__arch == "Intel":
             # x86
-            if self.__version >= 7:
+            wenn self.__version >= 7:
                 self.__root = r"Software\Microsoft\VisualStudio"
                 self.__macros = MacroExpander(self.__version)
-            else:
+            sonst:
                 self.__root = r"Software\Microsoft\Devstudio"
             self.__product = "Visual Studio version %s" % self.__version
-        else:
+        sonst:
             # Win64. Assume this was built with the platform SDK
             self.__product = "Microsoft SDK compiler %s" % (self.__version + 6)
 
@@ -257,13 +257,13 @@ klasse MSVCCompiler(CCompiler) :
         """
         fuer p in self.__paths:
             fn = os.path.join(os.path.abspath(p), exe)
-            if os.path.isfile(fn):
+            wenn os.path.isfile(fn):
                 return fn
 
         # didn't find it; try existing path
         fuer p in os.environ['Path'].split(';'):
             fn = os.path.join(os.path.abspath(p),exe)
-            if os.path.isfile(fn):
+            wenn os.path.isfile(fn):
                 return fn
 
         return exe
@@ -271,32 +271,32 @@ klasse MSVCCompiler(CCompiler) :
     def get_msvc_paths(self, path, platform='x86'):
         """Get a list of devstudio directories (include, lib or path).
 
-        Return a list of strings.  The list will be empty if unable to
+        Return a list of strings.  The list will be empty wenn unable to
         access the registry or appropriate registry keys not found.
         """
-        if not _can_read_reg:
+        wenn not _can_read_reg:
             return []
 
         path = path + " dirs"
-        if self.__version >= 7:
+        wenn self.__version >= 7:
             key = (r"%s\%0.1f\VC\VC_OBJECTS_PLATFORM_INFO\Win32\Directories"
                    % (self.__root, self.__version))
-        else:
+        sonst:
             key = (r"%s\6.0\Build System\Components\Platforms"
                    r"\Win32 (%s)\Directories" % (self.__root, platform))
 
         fuer base in HKEYS:
             d = read_values(base, key)
-            if d:
-                if self.__version >= 7:
+            wenn d:
+                wenn self.__version >= 7:
                     return self.__macros.sub(d[path]).split(";")
-                else:
+                sonst:
                     return d[path].split(";")
         # MSVC 6 seems to create the registry entries we need only when
         # the GUI is run.
-        if self.__version == 6:
+        wenn self.__version == 6:
             fuer base in HKEYS:
-                if read_values(base, r"%s\6.0" % self.__root) is not None:
+                wenn read_values(base, r"%s\6.0" % self.__root) is not None:
                     self.warn("It seems you have Visual Studio 6 installed, "
                         "but the expected registry settings are not present.\n"
                         "You must at least run the Visual Studio GUI once "
@@ -311,15 +311,15 @@ klasse MSVCCompiler(CCompiler) :
         commands.
         """
 
-        if name == "lib":
+        wenn name == "lib":
             p = self.get_msvc_paths("library")
-        else:
+        sonst:
             p = self.get_msvc_paths(name)
-        if p:
+        wenn p:
             os.environ[name] = ';'.join(p)
 
 
-if get_build_version() >= 8.0:
+wenn get_build_version() >= 8.0:
     log.debug("Importing new compiler from distutils.msvc9compiler")
     OldMSVCCompiler = MSVCCompiler
     from distutils.msvc9compiler import MSVCCompiler

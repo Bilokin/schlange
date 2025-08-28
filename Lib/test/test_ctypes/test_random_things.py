@@ -48,7 +48,7 @@ klasse CallbackTracbackTestCase(unittest.TestCase):
             yield
 
             self.assertIsInstance(cm.unraisable.exc_value, exc_type)
-            if exc_msg is not None:
+            wenn exc_msg is not None:
                 self.assertEqual(str(cm.unraisable.exc_value), exc_msg)
             self.assertEqual(cm.unraisable.err_msg,
                              f"Exception ignored while calling ctypes "
@@ -77,5 +77,5 @@ klasse CallbackTracbackTestCase(unittest.TestCase):
             cb(b"spam")
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

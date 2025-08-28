@@ -58,28 +58,28 @@ klasse WithComplex:
 klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
     def assertAlmostEqual(self, a, b):
-        if isinstance(a, complex):
-            if isinstance(b, complex):
+        wenn isinstance(a, complex):
+            wenn isinstance(b, complex):
                 unittest.TestCase.assertAlmostEqual(self, a.real, b.real)
                 unittest.TestCase.assertAlmostEqual(self, a.imag, b.imag)
-            else:
+            sonst:
                 unittest.TestCase.assertAlmostEqual(self, a.real, b)
                 unittest.TestCase.assertAlmostEqual(self, a.imag, 0.)
-        else:
-            if isinstance(b, complex):
+        sonst:
+            wenn isinstance(b, complex):
                 unittest.TestCase.assertAlmostEqual(self, a, b.real)
                 unittest.TestCase.assertAlmostEqual(self, 0., b.imag)
-            else:
+            sonst:
                 unittest.TestCase.assertAlmostEqual(self, a, b)
 
     def assertCloseAbs(self, x, y, eps=1e-9):
         """Return true iff floats x and y "are close"."""
         # put the one with larger magnitude second
-        if abs(x) > abs(y):
+        wenn abs(x) > abs(y):
             x, y = y, x
-        if y == 0:
+        wenn y == 0:
             return abs(x) < eps
-        if x == 0:
+        wenn x == 0:
             return abs(y) < eps
         # check that relative difference < eps
         self.assertTrue(abs((x-y)/y) < eps)
@@ -92,12 +92,12 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
     def check_div(self, x, y):
         """Compute complex z=x*y, and check that z/x==y and z/y==x."""
         z = x * y
-        if x != 0:
+        wenn x != 0:
             q = z / x
             self.assertClose(q, y)
             q = z.__truediv__(x)
             self.assertClose(q, y)
-        if y != 0:
+        wenn y != 0:
             q = z / y
             self.assertClose(q, x)
             q = z.__truediv__(y)
@@ -138,7 +138,7 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertComplexesAreIdentical(complex(INF, 1)/(0.0+1j),
                                          complex(NAN, -INF))
 
-        # test recover of infs if numerator has infs and denominator is finite
+        # test recover of infs wenn numerator has infs and denominator is finite
         self.assertComplexesAreIdentical(complex(INF, -INF)/(1+0j),
                                          complex(INF, -INF))
         self.assertComplexesAreIdentical(complex(INF, INF)/(0.0+1j),
@@ -148,7 +148,7 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertComplexesAreIdentical(complex(INF, NAN)/complex(2**1000, 2**-1000),
                                          complex(INF, -INF))
 
-        # test recover of zeros if denominator is infinite
+        # test recover of zeros wenn denominator is infinite
         self.assertComplexesAreIdentical((1+1j)/complex(INF, INF), (0.0+0j))
         self.assertComplexesAreIdentical((1+1j)/complex(INF, -INF), (0.0+0j))
         self.assertComplexesAreIdentical((1+1j)/complex(-INF, INF),
@@ -374,14 +374,14 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             0j ** a
         except ZeroDivisionError:
             pass
-        else:
+        sonst:
             self.fail("should fail 0.0 to negative or complex power")
 
         try:
             0j ** (3-2j)
         except ZeroDivisionError:
             pass
-        else:
+        sonst:
             self.fail("should fail 0.0 to negative or complex power")
 
         # The following is used to exercise certain code paths
@@ -620,7 +620,7 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                 return self
 
         klasse complex2(complex):
-            """Make sure that __complex__() calls fail if anything other than a
+            """Make sure that __complex__() calls fail wenn anything other than a
             complex is returned"""
             def __complex__(self):
                 return None
@@ -731,13 +731,13 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
     def test_underscores(self):
         # check underscores
         fuer lit in VALID_UNDERSCORE_LITERALS:
-            if not any(ch in lit fuer ch in 'xXoObB'):
+            wenn not any(ch in lit fuer ch in 'xXoObB'):
                 self.assertEqual(complex(lit), eval(lit))
                 self.assertEqual(complex(lit), complex(lit.replace('_', '')))
         fuer lit in INVALID_UNDERSCORE_LITERALS:
-            if lit in ('0_7', '09_99'):  # octals are not recognized here
+            wenn lit in ('0_7', '09_99'):  # octals are not recognized here
                 continue
-            if not any(ch in lit fuer ch in 'xXoObB'):
+            wenn not any(ch in lit fuer ch in 'xXoObB'):
                 self.assertRaises(ValueError, complex, lit)
 
     def test_from_number(self, cls=complex):
@@ -757,7 +757,7 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         x = cls.from_number(cNAN)
         self.assertTrue(x != x)
         self.assertIs(type(x), cls)
-        if cls is complex:
+        wenn cls is complex:
             self.assertIs(cls.from_number(cNAN), cNAN)
 
         self.assertRaises(TypeError, cls.from_number, '3.14')
@@ -886,7 +886,7 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                 roundtrip = complex(repr(z))
                 self.assertComplexesAreIdentical(z, roundtrip)
 
-        # if we predefine some constants, then eval(repr(z)) should
+        # wenn we predefine some constants, then eval(repr(z)) should
         # also work, except that it might change the sign of zeros
         inf, nan = float('inf'), float('nan')
         infj, nanj = complex(0.0, inf), complex(0.0, nan)
@@ -1022,5 +1022,5 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertEqual(format(complex(INF, -1), 'F'), 'INF-1.000000j')
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

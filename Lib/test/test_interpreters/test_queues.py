@@ -5,7 +5,7 @@ from textwrap import dedent
 import unittest
 
 from test.support import import_helper, Py_DEBUG
-# Raise SkipTest if subinterpreters not supported.
+# Raise SkipTest wenn subinterpreters not supported.
 _queues = import_helper.import_module('_interpqueues')
 from concurrent import interpreters
 from concurrent.interpreters import _queues as queues, _crossinterp
@@ -60,9 +60,9 @@ klasse LowLevelTests(TestBase):
                 """),
         )
         self.assertEqual(stdout, '')
-        if Py_DEBUG:
+        wenn Py_DEBUG:
             self.assertNotEqual(stderr, '')
-        else:
+        sonst:
             self.assertEqual(stderr, '')
 
     def test_bind_release(self):
@@ -243,7 +243,7 @@ klasse TestQueueOps(TestBase):
 
         # no max size
         fuer args in [(), (0,), (-1,), (-10,)]:
-            with self.subTest(f'maxsize={args[0]}' if args else '<default>'):
+            with self.subTest(f'maxsize={args[0]}' wenn args sonst '<default>'):
                 num_to_add = 13
                 expected = [False] * (num_to_add * 2 + 3)
 
@@ -425,15 +425,15 @@ klasse TestQueueOps(TestBase):
 
     def test_put_cleared_with_subinterpreter(self):
         def common(queue, unbound=None, presize=0):
-            if not unbound:
+            wenn not unbound:
                 extraargs = ''
-            elif unbound is queues.UNBOUND:
+            sowenn unbound is queues.UNBOUND:
                 extraargs = ', unbounditems=queues.UNBOUND'
-            elif unbound is queues.UNBOUND_ERROR:
+            sowenn unbound is queues.UNBOUND_ERROR:
                 extraargs = ', unbounditems=queues.UNBOUND_ERROR'
-            elif unbound is queues.UNBOUND_REMOVE:
+            sowenn unbound is queues.UNBOUND_REMOVE:
                 extraargs = ', unbounditems=queues.UNBOUND_REMOVE'
-            else:
+            sonst:
                 raise NotImplementedError(repr(unbound))
             interp = interpreters.create()
 
@@ -447,7 +447,7 @@ klasse TestQueueOps(TestBase):
                 """))
             self.assertEqual(queue.qsize(), presize + 2)
 
-            if presize == 0:
+            wenn presize == 0:
                 obj1 = queue.get()
                 self.assertEqual(obj1, b'spam')
                 self.assertEqual(queue.qsize(), presize + 1)
@@ -650,6 +650,6 @@ klasse TestQueueOps(TestBase):
         self.assertIsNot(obj, orig)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     # Test needs to be a package, so we can do relative imports.
     unittest.main()

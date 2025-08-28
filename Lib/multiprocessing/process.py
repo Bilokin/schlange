@@ -61,7 +61,7 @@ def parent_process():
 def _cleanup():
     # check fuer processes which have finished
     fuer p in list(_children):
-        if (child_popen := p._popen) and child_popen.poll() is not None:
+        wenn (child_popen := p._popen) and child_popen.poll() is not None:
             _children.discard(p)
 
 #
@@ -92,19 +92,19 @@ klasse BaseProcess(object):
         self._kwargs = dict(kwargs)
         self._name = name or type(self).__name__ + '-' + \
                      ':'.join(str(i) fuer i in self._identity)
-        if daemon is not None:
+        wenn daemon is not None:
             self.daemon = daemon
         _dangling.add(self)
 
     def _check_closed(self):
-        if self._closed:
+        wenn self._closed:
             raise ValueError("process object is closed")
 
     def run(self):
         '''
         Method to be run in sub-process; can be overridden in sub-class
         '''
-        if self._target:
+        wenn self._target:
             self._target(*self._args, **self._kwargs)
 
     def start(self):
@@ -120,7 +120,7 @@ klasse BaseProcess(object):
         _cleanup()
         self._popen = self._Popen(self)
         self._sentinel = self._popen.sentinel
-        # Avoid a refcycle if the target function holds an indirect
+        # Avoid a refcycle wenn the target function holds an indirect
         # reference to the process object (see bpo-30775)
         del self._target, self._args, self._kwargs
         _children.add(self)
@@ -154,7 +154,7 @@ klasse BaseProcess(object):
         assert self._parent_pid == os.getpid(), 'can only join a child process'
         assert self._popen is not None, 'can only join a started process'
         res = self._popen.wait(timeout)
-        if res is not None:
+        wenn res is not None:
             _children.discard(self)
 
     def is_alive(self):
@@ -162,17 +162,17 @@ klasse BaseProcess(object):
         Return whether process is alive
         '''
         self._check_closed()
-        if self is _current_process:
+        wenn self is _current_process:
             return True
         assert self._parent_pid == os.getpid(), 'can only test a child process'
 
-        if self._popen is None:
+        wenn self._popen is None:
             return False
 
         returncode = self._popen.poll()
-        if returncode is None:
+        wenn returncode is None:
             return True
-        else:
+        sonst:
             _children.discard(self)
             return False
 
@@ -181,10 +181,10 @@ klasse BaseProcess(object):
         Close the Process object.
 
         This method releases resources held by the Process object.  It is
-        an error to call this method if the child process is still running.
+        an error to call this method wenn the child process is still running.
         '''
-        if self._popen is not None:
-            if self._popen.poll() is None:
+        wenn self._popen is not None:
+            wenn self._popen.poll() is None:
                 raise ValueError("Cannot close a process while it is still running. "
                                  "You should first call join() or terminate().")
             self._popen.close()
@@ -231,22 +231,22 @@ klasse BaseProcess(object):
     @property
     def exitcode(self):
         '''
-        Return exit code of process or `None` if it has yet to stop
+        Return exit code of process or `None` wenn it has yet to stop
         '''
         self._check_closed()
-        if self._popen is None:
+        wenn self._popen is None:
             return self._popen
         return self._popen.poll()
 
     @property
     def ident(self):
         '''
-        Return identifier (PID) of process or `None` if it has yet to start
+        Return identifier (PID) of process or `None` wenn it has yet to start
         '''
         self._check_closed()
-        if self is _current_process:
+        wenn self is _current_process:
             return os.getpid()
-        else:
+        sonst:
             return self._popen and self._popen.pid
 
     pid = ident
@@ -265,30 +265,30 @@ klasse BaseProcess(object):
 
     def __repr__(self):
         exitcode = None
-        if self is _current_process:
+        wenn self is _current_process:
             status = 'started'
-        elif self._closed:
+        sowenn self._closed:
             status = 'closed'
-        elif self._parent_pid != os.getpid():
+        sowenn self._parent_pid != os.getpid():
             status = 'unknown'
-        elif self._popen is None:
+        sowenn self._popen is None:
             status = 'initial'
-        else:
+        sonst:
             exitcode = self._popen.poll()
-            if exitcode is not None:
+            wenn exitcode is not None:
                 status = 'stopped'
-            else:
+            sonst:
                 status = 'started'
 
         info = [type(self).__name__, 'name=%r' % self._name]
-        if self._popen is not None:
+        wenn self._popen is not None:
             info.append('pid=%s' % self._popen.pid)
         info.append('parent=%s' % self._parent_pid)
         info.append(status)
-        if exitcode is not None:
+        wenn exitcode is not None:
             exitcode = _exitcode_to_name.get(exitcode, exitcode)
             info.append('exitcode=%s' % exitcode)
-        if self.daemon:
+        wenn self.daemon:
             info.append('daemon')
         return '<%s>' % ' '.join(info)
 
@@ -299,7 +299,7 @@ klasse BaseProcess(object):
         global _current_process, _parent_process, _process_counter, _children
 
         try:
-            if self._start_method is not None:
+            wenn self._start_method is not None:
                 context._force_start_method(self._start_method)
             _process_counter = itertools.count(1)
             _children = set()
@@ -308,7 +308,7 @@ klasse BaseProcess(object):
             _current_process = self
             _parent_process = _ParentProcess(
                 self._parent_name, self._parent_pid, parent_sentinel)
-            if threading._HAVE_THREAD_NATIVE_ID:
+            wenn threading._HAVE_THREAD_NATIVE_ID:
                 threading.main_thread()._set_native_id()
             try:
                 self._after_fork()
@@ -320,11 +320,11 @@ klasse BaseProcess(object):
             self.run()
             exitcode = 0
         except SystemExit as e:
-            if e.code is None:
+            wenn e.code is None:
                 exitcode = 0
-            elif isinstance(e.code, int):
+            sowenn isinstance(e.code, int):
                 exitcode = e.code
-            else:
+            sonst:
                 sys.stderr.write(str(e.code) + '\n')
                 exitcode = 1
         except:
@@ -353,7 +353,7 @@ klasse BaseProcess(object):
 klasse AuthenticationString(bytes):
     def __reduce__(self):
         from .context import get_spawning_popen
-        if get_spawning_popen() is None:
+        wenn get_spawning_popen() is None:
             raise TypeError(
                 'Pickling an AuthenticationString object is '
                 'disallowed fuer security reasons'
@@ -435,7 +435,7 @@ del _MainProcess
 _exitcode_to_name = {}
 
 fuer name, signum in list(signal.__dict__.items()):
-    if name[:3]=='SIG' and '_' not in name:
+    wenn name[:3]=='SIG' and '_' not in name:
         _exitcode_to_name[-signum] = f'-{name}'
 del name, signum
 

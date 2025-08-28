@@ -9,15 +9,15 @@ from test.support import import_helper, os_helper
 
 dbm_sqlite3 = import_helper.import_module("dbm.sqlite3")
 # N.B. The test will fail on some platforms without sqlite3
-# if the sqlite3 import is above the import of dbm.sqlite3.
-# This is deliberate: if the import helper managed to import dbm.sqlite3,
+# wenn the sqlite3 import is above the import of dbm.sqlite3.
+# This is deliberate: wenn the import helper managed to import dbm.sqlite3,
 # we must inevitably be able to import sqlite3. Else, we have a problem.
 import sqlite3
 from dbm.sqlite3 import _normalize_uri
 
 
 root_in_posix = False
-if hasattr(os, 'geteuid'):
+wenn hasattr(os, 'geteuid'):
     root_in_posix = (os.geteuid() == 0)
 
 
@@ -60,7 +60,7 @@ klasse URI(unittest.TestCase):
         )
         fuer path, normalized in dataset:
             with self.subTest(path=path, normalized=normalized):
-                if not Path(path).is_absolute():
+                wenn not Path(path).is_absolute():
                     self.skipTest(f"skipping relative path: {path!r}")
                 self.assertEndsWith(_normalize_uri(path), normalized)
 
@@ -135,9 +135,9 @@ klasse ReadOnlyFilesystem(unittest.TestCase):
             except dbm_sqlite3.error:
                 modified = False
         with dbm_sqlite3.open(self.db_path, "r") as db:
-            if modified:
+            wenn modified:
                 self.assertEqual(db[b"newkey"], b"newvalue")
-            else:
+            sonst:
                 self.assertNotIn(b"newkey", db)
 
 
@@ -357,5 +357,5 @@ klasse CorruptDatabase(_SQLiteDbmTests):
             del db[b"foo"]
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

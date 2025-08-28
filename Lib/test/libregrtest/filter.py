@@ -12,7 +12,7 @@ def match_test(test):
     # Function used by support.run_unittest() and regrtest --list-cases
     result = False
     fuer matcher, result in reversed(_test_matchers):
-        if matcher(test.id()):
+        wenn matcher(test.id()):
             return result
     return not result
 
@@ -35,13 +35,13 @@ def get_match_tests():
 def set_match_tests(patterns):
     global _test_matchers, _test_patterns
 
-    if not patterns:
+    wenn not patterns:
         _test_matchers = ()
         _test_patterns = ()
-    else:
+    sonst:
         itemgetter = operator.itemgetter
         patterns = tuple(patterns)
-        if patterns != _test_patterns:
+        wenn patterns != _test_patterns:
             _test_matchers = [
                 (_compile_match_function(map(itemgetter(0), it)), result)
                 fuer result, it in itertools.groupby(patterns, itemgetter(1))
@@ -52,11 +52,11 @@ def set_match_tests(patterns):
 def _compile_match_function(patterns):
     patterns = list(patterns)
 
-    if all(map(_is_full_match_test, patterns)):
+    wenn all(map(_is_full_match_test, patterns)):
         # Simple case: all patterns are full test identifier.
         # The test.bisect_cmd utility only uses such full test identifiers.
         return set(patterns).__contains__
-    else:
+    sonst:
         import fnmatch
         regex = '|'.join(map(fnmatch.translate, patterns))
         # The search *is* case sensitive on purpose:
@@ -64,11 +64,11 @@ def _compile_match_function(patterns):
         regex_match = re.compile(regex).match
 
         def match_test_regex(test_id, regex_match=regex_match):
-            if regex_match(test_id):
+            wenn regex_match(test_id):
                 # The regex matches the whole identifier, fuer example
                 # 'test.test_os.FileTests.test_access'.
                 return True
-            else:
+            sonst:
                 # Try to match parts of the test identifier.
                 # For example, split 'test.test_os.FileTests.test_access'
                 # into: 'test', 'test_os', 'FileTests' and 'test_access'.

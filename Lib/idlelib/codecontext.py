@@ -36,7 +36,7 @@ def get_line_info(codeline):
     """
     spaces, firstword = get_spaces_firstword(codeline)
     indent = len(spaces)
-    if len(codeline) == indent or codeline[indent] == '#':
+    wenn len(codeline) == indent or codeline[indent] == '#':
         indent = INFINITY
     opener = firstword in BLOCKOPENERS and firstword
     return indent, codeline, opener
@@ -83,7 +83,7 @@ klasse CodeContext:
 
     def __del__(self):
         "Cancel scheduled events."
-        if self.t1 is not None:
+        wenn self.t1 is not None:
             try:
                 self.text.after_cancel(self.t1)
             except TclError:  # pragma: no cover
@@ -97,7 +97,7 @@ klasse CodeContext:
         window text (toggle on).  If it does exist, destroy it (toggle off).
         Return 'break' to complete the processing of the binding.
         """
-        if self.context is None:
+        wenn self.context is None:
             # Calculate the border width and horizontal padding required to
             # align the context with the text in the main Text widget.
             #
@@ -109,8 +109,8 @@ klasse CodeContext:
             border = 0
             fuer widget in widgets:
                 info = (widget.grid_info()
-                        if widget is self.editwin.text
-                        else widget.pack_info())
+                        wenn widget is self.editwin.text
+                        sonst widget.pack_info())
                 padx += widget.tk.getint(info['padx'])
                 padx += widget.tk.getint(widget.cget('padx'))
                 border += widget.tk.getint(widget.cget('border'))
@@ -134,7 +134,7 @@ klasse CodeContext:
                                         bg=line_number_colors['background'])
             self.cell00.grid(row=0, column=0, sticky=NSEW)
             menu_status = 'Hide'
-        else:
+        sonst:
             self.context.destroy()
             self.context = None
             self.cell00.destroy()
@@ -164,14 +164,14 @@ klasse CodeContext:
         fuer linenum in range(new_topvisible, stopline-1, -1):
             codeline = self.text.get(f'{linenum}.0', f'{linenum}.end')
             indent, text, opener = get_line_info(codeline)
-            if indent < lastindent:
+            wenn indent < lastindent:
                 lastindent = indent
-                if opener in ("else", "elif"):
-                    # Also show the if statement.
+                wenn opener in ("else", "elif"):
+                    # Also show the wenn statement.
                     lastindent += 1
-                if opener and linenum < new_topvisible and indent >= stopindent:
+                wenn opener and linenum < new_topvisible and indent >= stopindent:
                     lines.append((linenum, indent, text, opener))
-                if lastindent <= stopindent:
+                wenn lastindent <= stopindent:
                     break
         lines.reverse()
         return lines, lastindent
@@ -179,22 +179,22 @@ klasse CodeContext:
     def update_code_context(self):
         """Update context information and lines visible in the context pane.
 
-        No update is done if the text hasn't been scrolled.  If the text
+        No update is done wenn the text hasn't been scrolled.  If the text
         was scrolled, the lines that should be shown in the context will
         be retrieved and the context area will be updated with the code,
         up to the number of maxlines.
         """
         new_topvisible = self.editwin.getlineno("@0,0")
-        if self.topvisible == new_topvisible:      # Haven't scrolled.
+        wenn self.topvisible == new_topvisible:      # Haven't scrolled.
             return
-        if self.topvisible < new_topvisible:       # Scroll down.
+        wenn self.topvisible < new_topvisible:       # Scroll down.
             lines, lastindent = self.get_context(new_topvisible,
                                                  self.topvisible)
             # Retain only context info applicable to the region
             # between topvisible and new_topvisible.
             while self.info[-1][1] >= lastindent:
                 del self.info[-1]
-        else:  # self.topvisible > new_topvisible: # Scroll up.
+        sonst:  # self.topvisible > new_topvisible: # Scroll up.
             stopindent = self.info[-1][1] + 1
             # Retain only context info associated
             # with lines above new_topvisible.
@@ -208,7 +208,7 @@ klasse CodeContext:
         self.topvisible = new_topvisible
         # Last context_depth context lines.
         context_strings = [x[2] fuer x in self.info[-self.context_depth:]]
-        showfirst = 0 if context_strings[0] else 1
+        showfirst = 0 wenn context_strings[0] sonst 1
         # Update widget.
         self.context['height'] = len(context_strings) - showfirst
         self.context['state'] = 'normal'
@@ -226,9 +226,9 @@ klasse CodeContext:
             self.context.index("sel.first")
         except TclError:
             lines = len(self.info)
-            if lines == 1:  # No context lines are showing.
+            wenn lines == 1:  # No context lines are showing.
                 newtop = 1
-            else:
+            sonst:
                 # Line number clicked.
                 contextline = int(float(self.context.index('insert')))
                 # Lines not displayed due to maxlines.
@@ -239,22 +239,22 @@ klasse CodeContext:
 
     def timer_event(self):
         "Event on editor text widget triggered every UPDATEINTERVAL ms."
-        if self.context is not None:
+        wenn self.context is not None:
             self.update_code_context()
             self.t1 = self.text.after(self.UPDATEINTERVAL, self.timer_event)
 
     def update_font(self):
-        if self.context is not None:
+        wenn self.context is not None:
             font = idleConf.GetFont(self.text, 'main', 'EditorWindow')
             self.context['font'] = font
 
     def update_highlight_colors(self):
-        if self.context is not None:
+        wenn self.context is not None:
             colors = idleConf.GetHighlight(idleConf.CurrentTheme(), 'context')
             self.context['background'] = colors['background']
             self.context['foreground'] = colors['foreground']
 
-        if self.cell00 is not None:
+        wenn self.cell00 is not None:
             line_number_colors = idleConf.GetHighlight(idleConf.CurrentTheme(),
                                                        'linenumber')
             self.cell00.config(bg=line_number_colors['background'])
@@ -263,7 +263,7 @@ klasse CodeContext:
 CodeContext.reload()
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     from unittest import main
     main('idlelib.idle_test.test_codecontext', verbosity=2, exit=False)
 

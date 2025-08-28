@@ -10,5 +10,5 @@ klasse UtilTest(unittest.TestCase):
             self.assertIn(extension, util.py_extensions)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main(verbosity=2)

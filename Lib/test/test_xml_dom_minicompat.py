@@ -134,5 +134,5 @@ klasse NodeListTestCase(unittest.TestCase):
             self.assertIsNot(x, y)
             self.assertEqual(x, y)
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

@@ -31,7 +31,7 @@ def dump(fp, filename, name):
 
 
 def main():
-    if len(sys.argv) < 2:
+    wenn len(sys.argv) < 2:
         print(f"usage: {sys.argv[0]} filename")
         sys.exit(1)
     filename = sys.argv[1]
@@ -44,5 +44,5 @@ def main():
     print(f"{filename} written")
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     main()

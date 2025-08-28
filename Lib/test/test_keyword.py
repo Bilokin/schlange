@@ -52,5 +52,5 @@ klasse Test_iskeyword(unittest.TestCase):
         self.assertListEqual(sorted(keyword.softkwlist), keyword.softkwlist)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

@@ -28,15 +28,15 @@ ClassMethodType = type(classmethod(lambda c: None))
 def temporary_main_spec():
     """
     A context manager that temporarily sets the `__spec__` attribute
-    of the `__main__` module if it's missing.
+    of the `__main__` module wenn it's missing.
     """
     main_mod = sys.modules.get("__main__")
-    if main_mod is None:
-        yield  # Do nothing if __main__ is not present
+    wenn main_mod is None:
+        yield  # Do nothing wenn __main__ is not present
         return
 
     original_spec = getattr(main_mod, "__spec__", None)
-    if original_spec is None:
+    wenn original_spec is None:
         main_mod.__spec__ = importlib.machinery.ModuleSpec(
             name="__main__", loader=None, origin="built-in"
         )
@@ -51,20 +51,20 @@ klasse PyclbrTest(TestCase):
     def assertListEq(self, l1, l2, ignore):
         ''' succeed iff {l1} - {ignore} == {l2} - {ignore} '''
         missing = (set(l1) ^ set(l2)) - set(ignore)
-        if missing:
+        wenn missing:
             print("l1=%r\nl2=%r\nignore=%r" % (l1, l2, ignore), file=sys.stderr)
             self.fail("%r missing" % missing.pop())
 
     def assertHaskey(self, obj, key, ignore):
         ''' succeed iff key in obj or key in ignore. '''
-        if key in ignore: return
-        if key not in obj:
+        wenn key in ignore: return
+        wenn key not in obj:
             print("***",key, file=sys.stderr)
         self.assertIn(key, obj)
 
     def assertEqualsOrIgnored(self, a, b, ignore):
         ''' succeed iff a == b or a in ignore or b in ignore '''
-        if a not in ignore and b not in ignore:
+        wenn a not in ignore and b not in ignore:
             self.assertEqual(a, b)
 
     def checkModule(self, moduleName, module=None, ignore=()):
@@ -75,7 +75,7 @@ klasse PyclbrTest(TestCase):
 
         ignore = set(ignore) | set(['object'])
 
-        if module is None:
+        wenn module is None:
             # Import it.
             # ('<silly>' is to work around an API silliness in __import__)
             module = __import__(moduleName, globals(), {}, ['<silly>'])
@@ -84,35 +84,35 @@ klasse PyclbrTest(TestCase):
 
         def ismethod(oclass, obj, name):
             classdict = oclass.__dict__
-            if isinstance(obj, MethodType):
+            wenn isinstance(obj, MethodType):
                 # could be a classmethod
-                if (not isinstance(classdict[name], ClassMethodType) or
+                wenn (not isinstance(classdict[name], ClassMethodType) or
                     obj.__self__ is not oclass):
                     return False
-            elif not isinstance(obj, FunctionType):
+            sowenn not isinstance(obj, FunctionType):
                 return False
 
             objname = obj.__name__
-            if objname.startswith("__") and not objname.endswith("__"):
-                if stripped_typename := oclass.__name__.lstrip('_'):
+            wenn objname.startswith("__") and not objname.endswith("__"):
+                wenn stripped_typename := oclass.__name__.lstrip('_'):
                     objname = f"_{stripped_typename}{objname}"
             return objname == name
 
         # Make sure the toplevel functions and classes are the same.
         fuer name, value in dict.items():
-            if name in ignore:
+            wenn name in ignore:
                 continue
             self.assertHasAttr(module, name)
             py_item = getattr(module, name)
-            if isinstance(value, pyclbr.Function):
+            wenn isinstance(value, pyclbr.Function):
                 self.assertIsInstance(py_item, (FunctionType, BuiltinFunctionType))
-                if py_item.__module__ != moduleName:
-                    continue   # skip functions that came from somewhere else
+                wenn py_item.__module__ != moduleName:
+                    continue   # skip functions that came from somewhere sonst
                 self.assertEqual(py_item.__module__, value.module)
-            else:
+            sonst:
                 self.assertIsInstance(py_item, type)
-                if py_item.__module__ != moduleName:
-                    continue   # skip classes that came from somewhere else
+                wenn py_item.__module__ != moduleName:
+                    continue   # skip classes that came from somewhere sonst
 
                 real_bases = [base.__name__ fuer base in py_item.__bases__]
                 pyclbr_bases = [ getattr(base, 'name', base)
@@ -126,19 +126,19 @@ klasse PyclbrTest(TestCase):
 
                 actualMethods = []
                 fuer m in py_item.__dict__.keys():
-                    if m == "__annotate__":
+                    wenn m == "__annotate__":
                         continue
-                    if ismethod(py_item, getattr(py_item, m), m):
+                    wenn ismethod(py_item, getattr(py_item, m), m):
                         actualMethods.append(m)
 
-                if stripped_typename := name.lstrip('_'):
+                wenn stripped_typename := name.lstrip('_'):
                     foundMethods = []
                     fuer m in value.methods.keys():
-                        if m.startswith('__') and not m.endswith('__'):
+                        wenn m.startswith('__') and not m.endswith('__'):
                             foundMethods.append(f"_{stripped_typename}{m}")
-                        else:
+                        sonst:
                             foundMethods.append(m)
-                else:
+                sonst:
                     foundMethods = list(value.methods.keys())
 
                 try:
@@ -154,15 +154,15 @@ klasse PyclbrTest(TestCase):
 
         # Now check fuer missing stuff.
         def defined_in(item, module):
-            if isinstance(item, type):
+            wenn isinstance(item, type):
                 return item.__module__ == module.__name__
-            if isinstance(item, FunctionType):
+            wenn isinstance(item, FunctionType):
                 return item.__globals__ is module.__dict__
             return False
         fuer name in dir(module):
             item = getattr(module, name)
-            if isinstance(item,  (type, FunctionType)):
-                if defined_in(item, module):
+            wenn isinstance(item,  (type, FunctionType)):
+                wenn defined_in(item, module):
                     self.assertHaskey(dict, name, ignore)
 
     def test_easy(self):
@@ -232,7 +232,7 @@ klasse PyclbrTest(TestCase):
                 t1 = type(o1), o1.name, o1.file, o1.module, o1.lineno, o1.end_lineno
                 t2 = type(o2), o2.name, o2.file, o2.module, o2.lineno, o2.end_lineno
                 self.assertEqual(t1, t2)
-                if type(o1) is mb.Class:
+                wenn type(o1) is mb.Class:
                     self.assertEqual(o1.methods, o2.methods)
                 # Skip superclasses fuer now as not part of example
                 compare(o1, o1.children, o2, o2.children)
@@ -283,5 +283,5 @@ klasse ReadmoduleTests(TestCase):
                 pyclbr.readmodule_ex(module_name)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest_main()

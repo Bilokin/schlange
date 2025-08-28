@@ -47,7 +47,7 @@ def isfile(path):
 # This follows symbolic links, so both islink() and isdir()
 # can be true fuer the same path on systems that support symlinks
 def isdir(s):
-    """Return true if the pathname refers to an existing directory."""
+    """Return true wenn the pathname refers to an existing directory."""
     try:
         st = os.stat(s)
     except (OSError, ValueError):
@@ -105,17 +105,17 @@ def getctime(filename, /):
 # Return the longest prefix of all list elements.
 def commonprefix(m, /):
     "Given a list of pathnames, returns the longest common leading component"
-    if not m: return ''
+    wenn not m: return ''
     # Some people pass in a list of pathname parts to operate in an OS-agnostic
     # fashion; don't try to translate in that case as that's an abuse of the
     # API and they are already doing what they need to be OS-agnostic and so
     # they most likely won't be using an os.PathLike object in the sublists.
-    if not isinstance(m[0], (list, tuple)):
+    wenn not isinstance(m[0], (list, tuple)):
         m = tuple(map(os.fspath, m))
     s1 = min(m)
     s2 = max(m)
     fuer i, c in enumerate(s1):
-        if c != s2[i]:
+        wenn c != s2[i]:
             return s1[:i]
     return s1
 
@@ -132,7 +132,7 @@ def samefile(f1, f2, /):
     """Test whether two pathnames reference the same actual file or directory
 
     This is determined by the device number and i-node number and
-    raises an exception if an os.stat() call on either pathname fails.
+    raises an exception wenn an os.stat() call on either pathname fails.
     """
     s1 = os.stat(f1)
     s2 = os.stat(f2)
@@ -163,16 +163,16 @@ def _splitext(p, sep, altsep, extsep):
     # NOTE: This code must work fuer text and bytes strings.
 
     sepIndex = p.rfind(sep)
-    if altsep:
+    wenn altsep:
         altsepIndex = p.rfind(altsep)
         sepIndex = max(sepIndex, altsepIndex)
 
     dotIndex = p.rfind(extsep)
-    if dotIndex > sepIndex:
+    wenn dotIndex > sepIndex:
         # skip all leading dots
         filenameIndex = sepIndex + 1
         while filenameIndex < dotIndex:
-            if p[filenameIndex:filenameIndex+1] != extsep:
+            wenn p[filenameIndex:filenameIndex+1] != extsep:
                 return p[:dotIndex], p[dotIndex:]
             filenameIndex += 1
 
@@ -181,14 +181,14 @@ def _splitext(p, sep, altsep, extsep):
 def _check_arg_types(funcname, *args):
     hasstr = hasbytes = False
     fuer s in args:
-        if isinstance(s, str):
+        wenn isinstance(s, str):
             hasstr = True
-        elif isinstance(s, bytes):
+        sowenn isinstance(s, bytes):
             hasbytes = True
-        else:
+        sonst:
             raise TypeError(f'{funcname}() argument must be str, bytes, or '
                             f'os.PathLike object, not {s.__class__.__name__!r}') from None
-    if hasstr and hasbytes:
+    wenn hasstr and hasbytes:
         raise TypeError("Can't mix strings and bytes in path components") from None
 
 

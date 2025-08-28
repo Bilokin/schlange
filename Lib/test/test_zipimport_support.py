@@ -1,7 +1,7 @@
 # This test module covers support in various parts of the standard library
 # fuer working with modules located inside zipfiles
 # The tests are centralised in this fashion to make it easy to drop them
-# if a platform doesn't support zipimport
+# wenn a platform doesn't support zipimport
 import test.support
 import os
 import os.path
@@ -37,7 +37,7 @@ from test.test_doctest import (test_doctest,
 def _run_object_doctest(obj, module):
     finder = doctest.DocTestFinder(verbose=verbose, recurse=False)
     runner = doctest.DocTestRunner(verbose=verbose)
-    # Use the object's fully qualified name if it has one
+    # Use the object's fully qualified name wenn it has one
     # Otherwise, use the module's name
     try:
         name = "%s.%s" % (obj.__module__, obj.__qualname__)
@@ -46,9 +46,9 @@ def _run_object_doctest(obj, module):
     fuer example in finder.find(obj, name, module):
         runner.run(example)
     f, t = runner.failures, runner.tries
-    if f:
+    wenn f:
         raise test.support.TestFailed("%d of %d doctests failed" % (f, t))
-    if verbose:
+    wenn verbose:
         print ('doctest (%s) ... %d tests with zero failures' % (module.__name__, t))
     return f, t
 
@@ -127,7 +127,7 @@ klasse ZipSupportTests(unittest.TestCase):
             with zipfile.ZipFile(zip_name, 'a') as z:
                 fuer mod_name, src in sample_sources.items():
                     z.writestr(mod_name + ".py", src)
-            if verbose:
+            wenn verbose:
                 with zipfile.ZipFile(zip_name, 'r') as zip_file:
                     print ('Contents of %r:' % zip_name)
                     zip_file.printdir()
@@ -198,7 +198,7 @@ klasse ZipSupportTests(unittest.TestCase):
             script_name = make_script(d, 'script', test_src)
             rc, out, err = assert_python_ok(script_name)
             expected = pattern % (script_name, "__main__.Test")
-            if verbose:
+            wenn verbose:
                 print ("Expected line", expected)
                 print ("Got stdout:")
                 print (ascii(out))
@@ -207,7 +207,7 @@ klasse ZipSupportTests(unittest.TestCase):
                                                 script_name, '__main__.py')
             rc, out, err = assert_python_ok(zip_name)
             expected = pattern % (run_name, "__main__.Test")
-            if verbose:
+            wenn verbose:
                 print ("Expected line", expected)
                 print ("Got stdout:")
                 print (ascii(out))
@@ -240,5 +240,5 @@ klasse ZipSupportTests(unittest.TestCase):
 def tearDownModule():
     test.support.reap_children()
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

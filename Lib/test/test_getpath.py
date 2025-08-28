@@ -854,7 +854,7 @@ klasse MockGetPathTests(unittest.TestCase):
         self.assertEqual(expected, actual)
 
     def test_PYTHONHOME_in_venv(self):
-        "Make sure prefix/exec_prefix still point to the venv if PYTHONHOME was used."
+        "Make sure prefix/exec_prefix still point to the venv wenn PYTHONHOME was used."
         ns = MockPosixNamespace(
             argv0="/venv/bin/python",
             PREFIX="/usr",
@@ -947,9 +947,9 @@ klasse MockNTNamespace(dict):
         self["PYWINVER"] = "9.8-XY"
         self["VPATH"] = r"..\.."
         super().__init__(*a, **kw)
-        if argv0:
+        wenn argv0:
             self["config"]["orig_argv"] = [argv0]
-        if config:
+        wenn config:
             self["config"].update(config)
         self._files = {}
         self._links = {}
@@ -979,7 +979,7 @@ klasse MockNTNamespace(dict):
             raise KeyError(key) from None
 
     def abspath(self, path):
-        if self.isabs(path):
+        wenn self.isabs(path):
             return path
         return self.joinpath("C:\\Absolute", path)
 
@@ -988,7 +988,7 @@ klasse MockNTNamespace(dict):
 
     def dirname(self, path):
         name = path.rstrip("\\").rpartition("\\")[0]
-        if name[1:] == ":":
+        wenn name[1:] == ":":
             return name + "\\"
         return name
 
@@ -999,23 +999,23 @@ klasse MockNTNamespace(dict):
         return path[1:3] == ":\\"
 
     def isdir(self, path):
-        if verbose:
+        wenn verbose:
             print("Check if", path, "is a dir")
         return path.casefold() in self._dirs
 
     def isfile(self, path):
-        if verbose:
+        wenn verbose:
             print("Check if", path, "is a file")
         return path.casefold() in self._files
 
     def ismodule(self, path):
-        if verbose:
+        wenn verbose:
             print("Check if", path, "is a module")
         path = path.casefold()
         return path in self._files and path.rpartition(".")[2] == "py".casefold()
 
     def isxfile(self, path):
-        if verbose:
+        wenn verbose:
             print("Check if", path, "is a executable")
         path = path.casefold()
         return path in self._files and path.rpartition(".")[2] == "exe".casefold()
@@ -1030,22 +1030,22 @@ klasse MockNTNamespace(dict):
             raise FileNotFoundError(path) from None
 
     def realpath(self, path, _trail=None):
-        if verbose:
+        wenn verbose:
             print("Read link from", path)
         try:
             link = self._links[path.casefold()]
         except KeyError:
             return path
-        if _trail is None:
+        wenn _trail is None:
             _trail = set()
-        elif link.casefold() in _trail:
+        sowenn link.casefold() in _trail:
             raise OSError("circular link")
         _trail.add(link.casefold())
         return self.realpath(link, _trail)
 
     def warn(self, message):
         self._warnings.append(message)
-        if verbose:
+        wenn verbose:
             print(message)
 
 
@@ -1067,45 +1067,45 @@ klasse MockWinreg:
         return list(self.open)
 
     def OpenKeyEx(self, hkey, subkey):
-        if verbose:
+        wenn verbose:
             print(f"OpenKeyEx({hkey}, {subkey})")
         key = f"{hkey}\\{subkey}".casefold()
-        if key in self.keys:
+        wenn key in self.keys:
             self.open[key] = self.open.get(key, 0) + 1
             return key
         raise FileNotFoundError()
 
     def CloseKey(self, hkey):
-        if verbose:
+        wenn verbose:
             print(f"CloseKey({hkey})")
         hkey = hkey.casefold()
-        if hkey not in self.open:
+        wenn hkey not in self.open:
             raise RuntimeError("key is not open")
         self.open[hkey] -= 1
-        if not self.open[hkey]:
+        wenn not self.open[hkey]:
             del self.open[hkey]
 
     def EnumKey(self, hkey, i):
-        if verbose:
+        wenn verbose:
             print(f"EnumKey({hkey}, {i})")
         hkey = hkey.casefold()
-        if hkey not in self.open:
+        wenn hkey not in self.open:
             raise RuntimeError("key is not open")
         prefix = f'{hkey}\\'
-        subkeys = [k[len(prefix):] fuer k in sorted(self.keys) if k.startswith(prefix)]
-        subkeys[:] = [k fuer k in subkeys if '\\' not in k]
+        subkeys = [k[len(prefix):] fuer k in sorted(self.keys) wenn k.startswith(prefix)]
+        subkeys[:] = [k fuer k in subkeys wenn '\\' not in k]
         fuer j, n in enumerate(subkeys):
-            if j == i:
+            wenn j == i:
                 return n.removeprefix(prefix)
         raise OSError("end of enumeration")
 
     def QueryValue(self, hkey, subkey):
-        if verbose:
+        wenn verbose:
             print(f"QueryValue({hkey}, {subkey})")
         hkey = hkey.casefold()
-        if hkey not in self.open:
+        wenn hkey not in self.open:
             raise RuntimeError("key is not open")
-        if subkey:
+        wenn subkey:
             subkey = subkey.casefold()
             hkey = f'{hkey}\\{subkey}'
         try:
@@ -1122,9 +1122,9 @@ klasse MockPosixNamespace(dict):
         self["PLATLIBDIR"] = "lib"
         self["WITH_NEXT_FRAMEWORK"] = 0
         super().__init__(*a, **kw)
-        if argv0:
+        wenn argv0:
             self["config"]["orig_argv"] = [argv0]
-        if config:
+        wenn config:
             self["config"].update(config)
         self._files = {}
         self._xfiles = set()
@@ -1156,7 +1156,7 @@ klasse MockPosixNamespace(dict):
             raise KeyError(key) from None
 
     def abspath(self, path):
-        if self.isabs(path):
+        wenn self.isabs(path):
             return path
         return self.joinpath("/Absolute", path)
 
@@ -1173,22 +1173,22 @@ klasse MockPosixNamespace(dict):
         return path[0:1] == "/"
 
     def isdir(self, path):
-        if verbose:
+        wenn verbose:
             print("Check if", path, "is a dir")
         return path in self._dirs
 
     def isfile(self, path):
-        if verbose:
+        wenn verbose:
             print("Check if", path, "is a file")
         return path in self._files
 
     def ismodule(self, path):
-        if verbose:
+        wenn verbose:
             print("Check if", path, "is a module")
         return path in self._files and path.rpartition(".")[2] == "py"
 
     def isxfile(self, path):
-        if verbose:
+        wenn verbose:
             print("Check if", path, "is an xfile")
         return path in self._xfiles
 
@@ -1202,59 +1202,59 @@ klasse MockPosixNamespace(dict):
             raise FileNotFoundError(path) from None
 
     def realpath(self, path, _trail=None):
-        if verbose:
+        wenn verbose:
             print("Read link from", path)
         try:
             link = self._links[path]
         except KeyError:
             return path
-        if _trail is None:
+        wenn _trail is None:
             _trail = set()
-        elif link in _trail:
+        sowenn link in _trail:
             raise OSError("circular link")
         _trail.add(link)
         return self.realpath(link, _trail)
 
     def warn(self, message):
         self._warnings.append(message)
-        if verbose:
+        wenn verbose:
             print(message)
 
 
 def diff_dict(before, after, prefix="global"):
     diff = []
     fuer k in sorted(before):
-        if k[:2] == "__":
+        wenn k[:2] == "__":
             continue
-        if k == "config":
+        wenn k == "config":
             diff_dict(before[k], after[k], prefix="config")
             continue
-        if k in after and after[k] != before[k]:
+        wenn k in after and after[k] != before[k]:
             diff.append((k, before[k], after[k]))
-    if not diff:
+    wenn not diff:
         return
     max_k = max(len(k) fuer k, _, _ in diff)
     indent = " " * (len(prefix) + 1 + max_k)
-    if verbose:
+    wenn verbose:
         fuer k, b, a in diff:
-            if b:
+            wenn b:
                 print("{}.{} -{!r}\n{} +{!r}".format(prefix, k.ljust(max_k), b, indent, a))
-            else:
+            sonst:
                 print("{}.{} +{!r}".format(prefix, k.ljust(max_k), a))
 
 
 def dump_dict(before, after, prefix="global"):
-    if not verbose or not after:
+    wenn not verbose or not after:
         return
     max_k = max(len(k) fuer k in after)
     fuer k, v in sorted(after.items(), key=lambda i: i[0]):
-        if k[:2] == "__":
+        wenn k[:2] == "__":
             continue
-        if k == "config":
+        wenn k == "config":
             dump_dict(before[k], after[k], prefix="config")
             continue
         try:
-            if v != before[k]:
+            wenn v != before[k]:
                 print("{}.{} {!r} (was {!r})".format(prefix, k.ljust(max_k), v, before[k]))
                 continue
         except KeyError:
@@ -1269,9 +1269,9 @@ def getpath(ns, keys):
         exec(SOURCE, ns)
         failed = False
     finally:
-        if failed:
+        wenn failed:
             dump_dict(before, ns)
-        else:
+        sonst:
             diff_dict(before, ns)
     return {
         k: ns['config'].get(k, ns.get(k, ...))

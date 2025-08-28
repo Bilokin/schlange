@@ -6,5 +6,5 @@ klasse LongExpText(unittest.TestCase):
         l = eval("[" + "2," * REPS + "]")
         self.assertEqual(len(l), REPS)
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

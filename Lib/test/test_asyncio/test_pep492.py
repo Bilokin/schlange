@@ -208,5 +208,5 @@ klasse CoroutineTests(BaseTest):
             self.loop.run_until_complete(runner())
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

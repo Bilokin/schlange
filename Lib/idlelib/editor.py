@@ -41,9 +41,9 @@ def _sphinx_version():
     # TODO remove unneeded function since .chm no longer installed
     release = f'{major}{minor}'
     release += f'{micro}'
-    if level == 'candidate':
+    wenn level == 'candidate':
         release += f'rc{serial}'
-    elif level != 'final':
+    sowenn level != 'final':
         release += f'{level[0]}{serial}'
     return release
 
@@ -75,18 +75,18 @@ klasse EditorWindow:
         # Delay import: runscript imports pyshell imports EditorWindow.
         from idlelib.runscript import ScriptBinding
 
-        if EditorWindow.help_url is None:
+        wenn EditorWindow.help_url is None:
             dochome =  os.path.join(sys.base_prefix, 'Doc', 'index.html')
-            if sys.platform.count('linux'):
+            wenn sys.platform.count('linux'):
                 # look fuer html docs in a couple of standard places
                 pyver = 'python-docs-' + '%s.%s.%s' % sys.version_info[:3]
-                if os.path.isdir('/var/www/html/python/'):  # "python2" rpm
+                wenn os.path.isdir('/var/www/html/python/'):  # "python2" rpm
                     dochome = '/var/www/html/python/index.html'
-                else:
+                sonst:
                     basepath = '/usr/share/doc/'  # standard location
                     dochome = os.path.join(basepath, pyver,
                                            'Doc', 'index.html')
-            elif sys.platform[:3] == 'win':
+            sowenn sys.platform[:3] == 'win':
                 import winreg  # Windows only, block only executed once.
                 docfile = ''
                 KEY = (rf"Software\Python\PythonCore\{sys.winver}"
@@ -99,19 +99,19 @@ klasse EditorWindow:
                                                     KEY)
                     except FileNotFoundError:
                         pass
-                if os.path.isfile(docfile):
+                wenn os.path.isfile(docfile):
                     dochome = docfile
-            elif sys.platform == 'darwin':
+            sowenn sys.platform == 'darwin':
                 # documentation may be stored inside a python framework
                 dochome = os.path.join(sys.base_prefix,
                         'Resources/English.lproj/Documentation/index.html')
             dochome = os.path.normpath(dochome)
-            if os.path.isfile(dochome):
+            wenn os.path.isfile(dochome):
                 EditorWindow.help_url = dochome
-                if sys.platform == 'darwin':
+                wenn sys.platform == 'darwin':
                     # Safari requires real file:-URLs
                     EditorWindow.help_url = 'file://' + EditorWindow.help_url
-            else:
+            sonst:
                 EditorWindow.help_url = ("https://docs.python.org/%d.%d/"
                                          % sys.version_info[:2])
         self.flist = flist
@@ -119,12 +119,12 @@ klasse EditorWindow:
         self.root = root
         self.menubar = Menu(root)
         self.top = top = window.ListedToplevel(root, menu=self.menubar)
-        if flist:
+        wenn flist:
             self.tkinter_vars = flist.vars
             #self.top.instance_dict makes flist.inversedict available to
             #configdialog.py so it can access all EditorWindow instances
             self.top.instance_dict = flist.inversedict
-        else:
+        sonst:
             self.tkinter_vars = {}  # keys: Tkinter event names
                                     # values: Tkinter variable instances
             self.top.instance_dict = {}
@@ -153,7 +153,7 @@ klasse EditorWindow:
 
         self.top.protocol("WM_DELETE_WINDOW", self.close)
         self.top.bind("<<close-window>>", self.close_event)
-        if macosx.isAquaTk():
+        wenn macosx.isAquaTk():
             # Command-W on editor windows doesn't work without this.
             text.bind('<<close-window>>', self.close_event)
             # Some OS X systems have only one mouse button, so use
@@ -161,12 +161,12 @@ klasse EditorWindow:
             # buttons, AquaTk defines <2> as the right button, not <3>.
             text.bind("<Control-Button-1>",self.right_menu_event)
             text.bind("<2>", self.right_menu_event)
-        else:
+        sonst:
             # Elsewhere, use right-click fuer popup menus.
             text.bind("<3>",self.right_menu_event)
 
         text.bind('<MouseWheel>', wheel_event)
-        if text._windowingsystem == 'x11':
+        wenn text._windowingsystem == 'x11':
             text.bind('<Button-4>', wheel_event)
             text.bind('<Button-5>', wheel_event)
         text.bind('<Configure>', self.handle_winconfig)
@@ -208,9 +208,9 @@ klasse EditorWindow:
         text.bind("<<del-word-right>>", self.del_word_right)
         text.bind("<<beginning-of-line>>", self.home_callback)
 
-        if flist:
+        wenn flist:
             flist.inversedict[self] = key
-            if key:
+            wenn key:
                 flist.dict[key] = self
             text.bind("<<open-new-window>>", self.new_callback)
             text.bind("<<close-all-windows>>", self.flist.close_all_callback)
@@ -256,14 +256,14 @@ klasse EditorWindow:
         self.set_notabs_indentwidth()
 
         # Store the current value of the insertofftime now so we can restore
-        # it if needed.
-        if not hasattr(idleConf, 'blink_off_time'):
+        # it wenn needed.
+        wenn not hasattr(idleConf, 'blink_off_time'):
             idleConf.blink_off_time = self.text['insertofftime']
         self.update_cursor_blink()
 
         # When searching backwards fuer a reliable place to begin parsing,
         # first start num_context_lines[0] lines back, then
-        # num_context_lines[1] lines back if that didn't work, and so on.
+        # num_context_lines[1] lines back wenn that didn't work, and so on.
         # The last value should be huge (larger than the # of lines in a
         # conceivable file).
         # Making the initial values larger slows things down more often.
@@ -282,13 +282,13 @@ klasse EditorWindow:
         self.color = None # initialized below in self.ResetColorizer
         self.code_context = None # optionally initialized later below
         self.line_numbers = None # optionally initialized later below
-        if filename:
-            if os.path.exists(filename) and not os.path.isdir(filename):
-                if io.loadfile(filename):
+        wenn filename:
+            wenn os.path.exists(filename) and not os.path.isdir(filename):
+                wenn io.loadfile(filename):
                     self.good_load = True
                     is_py_src = self.ispythonsource(filename)
                     self.set_indentation_params(is_py_src)
-            else:
+            sonst:
                 io.set_filename(filename)
                 self.good_load = True
 
@@ -297,11 +297,11 @@ klasse EditorWindow:
         self.update_recent_files_list()
         self.load_extensions()
         menu = self.menudict.get('window')
-        if menu:
+        wenn menu:
             end = menu.index("end")
-            if end is None:
+            wenn end is None:
                 end = -1
-            if end >= 0:
+            wenn end >= 0:
                 menu.add_separator()
                 end = end + 1
             self.wmenu_end = end
@@ -347,19 +347,19 @@ klasse EditorWindow:
         text.bind("<<refresh-calltip>>", ctip.refresh_calltip_event)
         text.bind("<<force-open-calltip>>", ctip.force_open_calltip_event)
         text.bind("<<zoom-height>>", self.ZoomHeight(self).zoom_height_event)
-        if self.allow_code_context:
+        wenn self.allow_code_context:
             self.code_context = self.CodeContext(self)
             text.bind("<<toggle-code-context>>",
                       self.code_context.toggle_code_context_event)
-        else:
+        sonst:
             self.update_menu_state('options', '*ode*ontext', 'disabled')
-        if self.allow_line_numbers:
+        wenn self.allow_line_numbers:
             self.line_numbers = self.LineNumbers(self)
-            if idleConf.GetOption('main', 'EditorWindow',
+            wenn idleConf.GetOption('main', 'EditorWindow',
                                   'line-numbers-default', type='bool'):
                 self.toggle_line_numbers_event()
             text.bind("<<toggle-line-numbers>>", self.toggle_line_numbers_event)
-        else:
+        sonst:
             self.update_menu_state('options', '*ine*umbers', 'disabled')
 
     def handle_winconfig(self, event=None):
@@ -384,41 +384,41 @@ klasse EditorWindow:
         return "break"
 
     def home_callback(self, event):
-        if (event.state & 4) != 0 and event.keysym == "Home":
+        wenn (event.state & 4) != 0 and event.keysym == "Home":
             # state&4==Control. If <Control-Home>, use the Tk binding.
             return None
-        if self.text.index("iomark") and \
+        wenn self.text.index("iomark") and \
            self.text.compare("iomark", "<=", "insert lineend") and \
            self.text.compare("insert linestart", "<=", "iomark"):
             # In Shell on input line, go to just after prompt
             insertpt = int(self.text.index("iomark").split(".")[1])
-        else:
+        sonst:
             line = self.text.get("insert linestart", "insert lineend")
             fuer insertpt in range(len(line)):
-                if line[insertpt] not in (' ','\t'):
+                wenn line[insertpt] not in (' ','\t'):
                     break
-            else:
+            sonst:
                 insertpt=len(line)
         lineat = int(self.text.index("insert").split('.')[1])
-        if insertpt == lineat:
+        wenn insertpt == lineat:
             insertpt = 0
         dest = "insert linestart+"+str(insertpt)+"c"
-        if (event.state&1) == 0:
+        wenn (event.state&1) == 0:
             # shift was not pressed
             self.text.tag_remove("sel", "1.0", "end")
-        else:
-            if not self.text.index("sel.first"):
+        sonst:
+            wenn not self.text.index("sel.first"):
                 # there was no previous selection
                 self.text.mark_set("my_anchor", "insert")
-            else:
-                if self.text.compare(self.text.index("sel.first"), "<",
+            sonst:
+                wenn self.text.compare(self.text.index("sel.first"), "<",
                                      self.text.index("insert")):
                     self.text.mark_set("my_anchor", "sel.first") # extend back
-                else:
+                sonst:
                     self.text.mark_set("my_anchor", "sel.last") # extend forward
             first = self.text.index(dest)
             last = self.text.index("my_anchor")
-            if self.text.compare(first,">",last):
+            wenn self.text.compare(first,">",last):
                 first,last = last,first
             self.text.tag_remove("sel", "1.0", "end")
             self.text.tag_add("sel", first, last)
@@ -429,7 +429,7 @@ klasse EditorWindow:
     def set_status_bar(self):
         self.status_bar = self.MultiStatusBar(self.top)
         sep = Frame(self.top, height=1, borderwidth=1, background='grey75')
-        if sys.platform == "darwin":
+        wenn sys.platform == "darwin":
             # Insert some padding to avoid obscuring some of the statusbar
             # by the resize widget.
             self.status_bar.set_label('_padding1', '    ', side=RIGHT)
@@ -501,7 +501,7 @@ klasse EditorWindow:
             menudict[name] = menu = Menu(mbar, name=name, tearoff=0,
                                          postcommand=postcommand)
             mbar.add_cascade(label=label, menu=menu, underline=underline)
-        if macosx.isCarbonTk():
+        wenn macosx.isCarbonTk():
             # Insert the application menu
             menudict['application'] = menu = Menu(mbar, name='apple',
                                                   tearoff=0)
@@ -521,9 +521,9 @@ klasse EditorWindow:
         """
         menu = self.menudict['window']
         end = menu.index("end")
-        if end is None:
+        wenn end is None:
             end = -1
-        if end > self.wmenu_end:
+        wenn end > self.wmenu_end:
             menu.delete(self.wmenu_end+1, end)
         window.add_windows_to_menu(menu)
 
@@ -539,7 +539,7 @@ klasse EditorWindow:
 
     def handle_yview(self, event, *args):
         "Handle scrollbar."
-        if event == 'moveto':
+        wenn event == 'moveto':
             fraction = float(args[0])
             lines = (round(self.getlineno('end') * fraction) -
                      self.getlineno('@0,0'))
@@ -558,15 +558,15 @@ klasse EditorWindow:
                            text.compare(newdex, '<=',  'sel.last'))
         except TclError:
             in_selection = False
-        if not in_selection:
+        wenn not in_selection:
             text.tag_remove("sel", "1.0", "end")
             text.mark_set("insert", newdex)
-        if not self.rmenu:
+        wenn not self.rmenu:
             self.make_rmenu()
         rmenu = self.rmenu
         self.event = event
         iswin = sys.platform[:3] == 'win'
-        if iswin:
+        wenn iswin:
             text.config(cursor="arrow")
 
         fuer item in self.rmenu_specs:
@@ -575,13 +575,13 @@ klasse EditorWindow:
             except ValueError: # see issue1207589
                 continue
 
-            if verify_state is None:
+            wenn verify_state is None:
                 continue
             state = getattr(self, verify_state)()
             rmenu.entryconfigure(label, state=state)
 
         rmenu.tk_popup(event.x_root, event.y_root)
-        if iswin:
+        wenn iswin:
             self.text.config(cursor="ibeam")
         return "break"
 
@@ -594,11 +594,11 @@ klasse EditorWindow:
         rmenu = Menu(self.text, tearoff=0)
         fuer item in self.rmenu_specs:
             label, eventname = item[0], item[1]
-            if label is not None:
+            wenn label is not None:
                 def command(text=self.text, eventname=eventname):
                     text.event_generate(eventname)
                 rmenu.add_command(label=label, command=command)
-            else:
+            sonst:
                 rmenu.add_separator()
         self.rmenu = rmenu
 
@@ -610,15 +610,15 @@ klasse EditorWindow:
             indx = self.text.index('sel.first')
         except TclError:
             return 'disabled'
-        else:
-            return 'normal' if indx else 'disabled'
+        sonst:
+            return 'normal' wenn indx sonst 'disabled'
 
     def rmenu_check_paste(self):
         try:
             self.text.tk.call('tk::GetSelection', self.text, 'CLIPBOARD')
         except TclError:
             return 'disabled'
-        else:
+        sonst:
             return 'normal'
 
     def about_dialog(self, event=None):
@@ -636,21 +636,21 @@ klasse EditorWindow:
     def help_dialog(self, event=None):
         "Handle Help 'IDLE Help' event."
         # Synchronize with macosx.overrideRootMenu.help_dialog.
-        if self.root:
+        wenn self.root:
             parent = self.root
-        else:
+        sonst:
             parent = self.top
         help.show_idlehelp(parent)
         return "break"
 
     def python_docs(self, event=None):
-        if sys.platform[:3] == 'win':
+        wenn sys.platform[:3] == 'win':
             try:
                 os.startfile(self.help_url)
             except OSError as why:
                 messagebox.showerror(title='Document Start Failure',
                     message=str(why), parent=self.text)
-        else:
+        sonst:
             webbrowser.open(self.help_url)
         return "break"
 
@@ -659,7 +659,7 @@ klasse EditorWindow:
         return "break"
 
     def copy(self,event):
-        if not self.text.tag_ranges("sel"):
+        wenn not self.text.tag_ranges("sel"):
             # There is no selection, so do nothing and maybe interrupt.
             return None
         self.text.event_generate("<<Copy>>")
@@ -693,7 +693,7 @@ klasse EditorWindow:
         self_text_mark_set = self.text.mark_set
         edges_table = ("sel.first+1c", "sel.last-1c")
         def move_at_edge(event):
-            if (event.state & 5) == 0: # no shift(==1) or control(==4) pressed
+            wenn (event.state & 5) == 0: # no shift(==1) or control(==4) pressed
                 try:
                     self_text_index("sel.first")
                     self_text_mark_set("insert", edges_table[edge_index])
@@ -736,7 +736,7 @@ klasse EditorWindow:
                 "Enter a positive integer\n"
                 "('big' = end of file):"
                 ).result
-        if lineno is not None:
+        wenn lineno is not None:
             text.tag_remove("sel", "1.0", "end")
             text.mark_set("insert", f'{lineno}.0')
             text.see("insert")
@@ -760,10 +760,10 @@ klasse EditorWindow:
                 "Enter the name of a Python module\n"
                 "to search on sys.path and open:",
                 name).result
-        if file_path is not None:
-            if self.flist:
+        wenn file_path is not None:
+            wenn self.flist:
                 self.flist.open(file_path)
-            else:
+            sonst:
                 self.io.loadfile(file_path)
         return file_path
 
@@ -773,10 +773,10 @@ klasse EditorWindow:
 
     def open_module_browser(self, event=None):
         filename = self.io.filename
-        if not (self.__class__.__name__ == 'PyShellEditorWindow'
+        wenn not (self.__class__.__name__ == 'PyShellEditorWindow'
                 and filename):
             filename = self.open_module()
-            if filename is None:
+            wenn filename is None:
                 return "break"
         from idlelib import browser
         browser.ModuleBrowser(self.root, filename)
@@ -797,23 +797,23 @@ klasse EditorWindow:
         return "break"
 
     def gotoline(self, lineno):
-        if lineno is not None and lineno > 0:
+        wenn lineno is not None and lineno > 0:
             self.text.mark_set("insert", "%d.0" % lineno)
             self.text.tag_remove("sel", "1.0", "end")
             self.text.tag_add("sel", "insert", "insert +1l")
             self.center()
 
     def ispythonsource(self, filename):
-        if not filename or os.path.isdir(filename):
+        wenn not filename or os.path.isdir(filename):
             return True
         base, ext = os.path.splitext(os.path.basename(filename))
-        if os.path.normcase(ext) in py_extensions:
+        wenn os.path.normcase(ext) in py_extensions:
             return True
         line = self.text.get('1.0', '1.0 lineend')
         return line.startswith('#!') and 'python' in line
 
     def close_hook(self):
-        if self.flist:
+        wenn self.flist:
             self.flist.unregister_maybe_terminate(self)
             self.flist = None
 
@@ -821,23 +821,23 @@ klasse EditorWindow:
         self.close_hook = close_hook
 
     def filename_change_hook(self):
-        if self.flist:
+        wenn self.flist:
             self.flist.filename_changed_edit(self)
         self.saved_change_hook()
         self.top.update_windowlist_registry(self)
         self.ResetColorizer()
 
     def _addcolorizer(self):
-        if self.color:
+        wenn self.color:
             return
-        if self.ispythonsource(self.io.filename):
+        wenn self.ispythonsource(self.io.filename):
             self.color = self.ColorDelegator()
         # can add more colorizers here...
-        if self.color:
+        wenn self.color:
             self.per.insertfilterafter(filter=self.color, after=self.undo)
 
     def _rmcolorizer(self):
-        if not self.color:
+        wenn not self.color:
             return
         self.color.removecolors()
         self.per.removefilter(self.color)
@@ -850,10 +850,10 @@ klasse EditorWindow:
         self._addcolorizer()
         EditorWindow.color_config(self.text)
 
-        if self.code_context is not None:
+        wenn self.code_context is not None:
             self.code_context.update_highlight_colors()
 
-        if self.line_numbers is not None:
+        wenn self.line_numbers is not None:
             self.line_numbers.update_colors()
 
     IDENTCHARS = string.ascii_letters + string.digits + "_"
@@ -861,11 +861,11 @@ klasse EditorWindow:
     def colorize_syntax_error(self, text, pos):
         text.tag_add("ERROR", pos)
         char = text.get(pos)
-        if char and char in self.IDENTCHARS:
+        wenn char and char in self.IDENTCHARS:
             text.tag_add("ERROR", pos + " wordstart", pos)
-        if '\n' == text.get(pos):   # error at line end
+        wenn '\n' == text.get(pos):   # error at line end
             text.mark_set("insert", pos)
-        else:
+        sonst:
             text.mark_set("insert", pos + "+1c")
         text.see(pos)
 
@@ -873,23 +873,23 @@ klasse EditorWindow:
         "Update the cursor blink configuration."
         cursorblink = idleConf.GetOption(
                 'main', 'EditorWindow', 'cursor-blink', type='bool')
-        if not cursorblink:
+        wenn not cursorblink:
             self.text['insertofftime'] = 0
-        else:
+        sonst:
             # Restore the original value
             self.text['insertofftime'] = idleConf.blink_off_time
 
     def ResetFont(self):
-        "Update the text widgets' font if it is changed"
+        "Update the text widgets' font wenn it is changed"
         # Called from configdialog.py
 
         # Update the code context widget first, since its height affects
         # the height of the text widget.  This avoids double re-rendering.
-        if self.code_context is not None:
+        wenn self.code_context is not None:
             self.code_context.update_font()
         # Next, update the line numbers widget, since its width affects
         # the width of the text widget.
-        if self.line_numbers is not None:
+        wenn self.line_numbers is not None:
             self.line_numbers.update_font()
         # Finally, update the main text widget.
         new_font = idleConf.GetFont(self.root, 'main', 'EditorWindow')
@@ -907,7 +907,7 @@ klasse EditorWindow:
             self.text.event_delete(event, *keylist)
         fuer extensionName in self.get_standard_extension_names():
             xkeydefs = idleConf.GetExtensionBindings(extensionName)
-            if xkeydefs:
+            wenn xkeydefs:
                 fuer event, keylist in xkeydefs.items():
                     self.text.event_delete(event, *keylist)
 
@@ -921,7 +921,7 @@ klasse EditorWindow:
         self.apply_bindings()
         fuer extensionName in self.get_standard_extension_names():
             xkeydefs = idleConf.GetExtensionBindings(extensionName)
-            if xkeydefs:
+            wenn xkeydefs:
                 self.apply_bindings(xkeydefs)
 
         # Update menu accelerators.
@@ -929,32 +929,32 @@ klasse EditorWindow:
         fuer menu in self.mainmenu.menudefs:
             menuEventDict[menu[0]] = {}
             fuer item in menu[1]:
-                if item:
+                wenn item:
                     menuEventDict[menu[0]][prepstr(item[0])[1]] = item[1]
         fuer menubarItem in self.menudict:
             menu = self.menudict[menubarItem]
             end = menu.index(END)
-            if end is None:
+            wenn end is None:
                 # Skip empty menus
                 continue
             end += 1
             fuer index in range(0, end):
-                if menu.type(index) == 'command':
+                wenn menu.type(index) == 'command':
                     accel = menu.entrycget(index, 'accelerator')
-                    if accel:
+                    wenn accel:
                         itemName = menu.entrycget(index, 'label')
                         event = ''
-                        if menubarItem in menuEventDict:
-                            if itemName in menuEventDict[menubarItem]:
+                        wenn menubarItem in menuEventDict:
+                            wenn itemName in menuEventDict[menubarItem]:
                                 event = menuEventDict[menubarItem][itemName]
-                        if event:
+                        wenn event:
                             accel = get_accelerator(keydefs, event)
                             menu.entryconfig(index, accelerator=accel)
 
     def set_notabs_indentwidth(self):
-        "Update the indentwidth if changed and not using tabs in this window"
+        "Update the indentwidth wenn changed and not using tabs in this window"
         # Called from configdialog.py
-        if not self.usetabs:
+        wenn not self.usetabs:
             self.indentwidth = idleConf.GetOption('main', 'Indent','num-spaces',
                                                   type='int')
 
@@ -962,12 +962,12 @@ klasse EditorWindow:
         """Update the additional help entries on the Help menu."""
         help_list = idleConf.GetAllExtraHelpSourcesList()
         helpmenu = self.menudict['help']
-        # First delete the extra help entries, if any.
+        # First delete the extra help entries, wenn any.
         helpmenu_length = helpmenu.index(END)
-        if helpmenu_length > self.base_helpmenu_length:
+        wenn helpmenu_length > self.base_helpmenu_length:
             helpmenu.delete((self.base_helpmenu_length + 1), helpmenu_length)
         # Then rebuild them.
-        if help_list:
+        wenn help_list:
             helpmenu.add_separator()
             fuer entry in help_list:
                 cmd = self._extra_help_callback(entry[1])
@@ -978,15 +978,15 @@ klasse EditorWindow:
     def _extra_help_callback(self, resource):
         """Return a callback that loads resource (file or web page)."""
         def display_extra_help(helpfile=resource):
-            if not helpfile.startswith(('www', 'http')):
+            wenn not helpfile.startswith(('www', 'http')):
                 helpfile = os.path.normpath(helpfile)
-            if sys.platform[:3] == 'win':
+            wenn sys.platform[:3] == 'win':
                 try:
                     os.startfile(helpfile)
                 except OSError as why:
                     messagebox.showerror(title='Document Start Failure',
                         message=str(why), parent=self.text)
-            else:
+            sonst:
                 webbrowser.open(helpfile)
         return display_extra_help
 
@@ -995,30 +995,30 @@ klasse EditorWindow:
         # TODO: move to iomenu.
         rf_list = []
         file_path = self.recent_files_path
-        if file_path and os.path.exists(file_path):
+        wenn file_path and os.path.exists(file_path):
             with open(file_path,
                       encoding='utf_8', errors='replace') as rf_list_file:
                 rf_list = rf_list_file.readlines()
-        if new_file:
+        wenn new_file:
             new_file = os.path.abspath(new_file) + '\n'
-            if new_file in rf_list:
+            wenn new_file in rf_list:
                 rf_list.remove(new_file)  # move to top
             rf_list.insert(0, new_file)
         # clean and save the recent files list
         bad_paths = []
         fuer path in rf_list:
-            if '\0' in path or not os.path.exists(path[0:-1]):
+            wenn '\0' in path or not os.path.exists(path[0:-1]):
                 bad_paths.append(path)
-        rf_list = [path fuer path in rf_list if path not in bad_paths]
+        rf_list = [path fuer path in rf_list wenn path not in bad_paths]
         ulchars = "1234567890ABCDEFGHIJK"
         rf_list = rf_list[0:len(ulchars)]
-        if file_path:
+        wenn file_path:
             try:
                 with open(file_path, 'w',
                           encoding='utf_8', errors='replace') as rf_file:
                     rf_file.writelines(rf_list)
             except OSError as err:
-                if not getattr(self.root, "recentfiles_message", False):
+                wenn not getattr(self.root, "recentfiles_message", False):
                     self.root.recentfiles_message = True
                     messagebox.showwarning(title='IDLE Warning',
                         message="Cannot save Recent Files list to disk.\n"
@@ -1044,24 +1044,24 @@ klasse EditorWindow:
     def saved_change_hook(self):
         short = self.short_title()
         long = self.long_title()
-        if short and long and not macosx.isCocoaTk():
+        wenn short and long and not macosx.isCocoaTk():
             # Don't use both values on macOS because
             # that doesn't match platform conventions.
             title = short + " - " + long + _py_version
-        elif short:
+        sowenn short:
             title = short
-        elif long:
+        sowenn long:
             title = long
-        else:
+        sonst:
             title = "untitled"
         icon = short or long or title
-        if not self.get_saved():
+        wenn not self.get_saved():
             title = "*%s*" % title
             icon = "*%s" % icon
         self.top.wm_title(title)
         self.top.wm_iconname(icon)
 
-        if macosx.isCocoaTk():
+        wenn macosx.isCocoaTk():
             # Add a proxy icon to the window title
             self.top.wm_attributes("-titlepath", long)
 
@@ -1079,7 +1079,7 @@ klasse EditorWindow:
 
     def short_title(self):
         filename = self.io.filename
-        return os.path.basename(filename) if filename else "untitled"
+        return os.path.basename(filename) wenn filename sonst "untitled"
 
     def long_title(self):
         return self.io.filename or ""
@@ -1100,7 +1100,7 @@ klasse EditorWindow:
         text = self.text
         top = self.getlineno("@0,0")
         bot = self.getlineno("@0,65535")
-        if top == bot and text.winfo_height() == 1:
+        wenn top == bot and text.winfo_height() == 1:
             # Geometry manager hasn't run yet
             height = int(text['height'])
             bot = top + height - 1
@@ -1121,9 +1121,9 @@ klasse EditorWindow:
         return "break"
 
     def maybesave(self):
-        if self.io:
-            if not self.get_saved():
-                if self.top.state()!='normal':
+        wenn self.io:
+            wenn not self.get_saved():
+                wenn self.top.state()!='normal':
                     self.top.deiconify()
                 self.top.lower()
                 self.top.lift()
@@ -1132,21 +1132,21 @@ klasse EditorWindow:
     def close(self):
         try:
             reply = self.maybesave()
-            if str(reply) != "cancel":
+            wenn str(reply) != "cancel":
                 self._close()
             return reply
         except AttributeError:  # bpo-35379: close called twice
             pass
 
     def _close(self):
-        if self.io.filename:
+        wenn self.io.filename:
             self.update_recent_files_list(new_file=self.io.filename)
         window.unregister_callback(self.postwindowsmenu)
         self.unload_extensions()
         self.io.close()
         self.io = None
         self.undo = None
-        if self.color:
+        wenn self.color:
             self.color.close()
             self.color = None
         self.text = None
@@ -1154,8 +1154,8 @@ klasse EditorWindow:
         self.per.close()
         self.per = None
         self.top.destroy()
-        if self.close_hook:
-            # unless override: unregister from flist, terminate if last window
+        wenn self.close_hook:
+            # unless override: unregister from flist, terminate wenn last window
             self.close_hook()
 
     def load_extensions(self):
@@ -1164,7 +1164,7 @@ klasse EditorWindow:
 
     def unload_extensions(self):
         fuer ins in list(self.extensions.values()):
-            if hasattr(ins, "close"):
+            wenn hasattr(ins, "close"):
                 ins.close()
         self.extensions = {}
 
@@ -1195,11 +1195,11 @@ klasse EditorWindow:
             raise
         cls = getattr(mod, name)
         keydefs = idleConf.GetExtensionBindings(name)
-        if hasattr(cls, "menudefs"):
+        wenn hasattr(cls, "menudefs"):
             self.fill_menus(cls.menudefs, keydefs)
         ins = cls(self)
         self.extensions[name] = ins
-        if keydefs:
+        wenn keydefs:
             self.apply_bindings(keydefs)
             fuer vevent in keydefs:
                 methodname = vevent.replace("-", "_")
@@ -1208,17 +1208,17 @@ klasse EditorWindow:
                 while methodname[-1:] == '>':
                     methodname = methodname[:-1]
                 methodname = methodname + "_event"
-                if hasattr(ins, methodname):
+                wenn hasattr(ins, methodname):
                     self.text.bind(vevent, getattr(ins, methodname))
 
     def apply_bindings(self, keydefs=None):
         """Add events with keys to self.text."""
-        if keydefs is None:
+        wenn keydefs is None:
             keydefs = self.mainmenu.default_keydefs
         text = self.text
         text.keydefs = keydefs
         fuer event, keylist in keydefs.items():
-            if keylist:
+            wenn keylist:
                 text.event_add(event, *keylist)
 
     def fill_menus(self, menudefs=None, keydefs=None):
@@ -1227,58 +1227,58 @@ klasse EditorWindow:
         Items whose name begins with '!' become checkbuttons.
         Other names indicate commands.  None becomes a separator.
         """
-        if menudefs is None:
+        wenn menudefs is None:
             menudefs = self.mainmenu.menudefs
-        if keydefs is None:
+        wenn keydefs is None:
             keydefs = self.mainmenu.default_keydefs
         menudict = self.menudict
         text = self.text
         fuer mname, entrylist in menudefs:
             menu = menudict.get(mname)
-            if not menu:
+            wenn not menu:
                 continue
             fuer entry in entrylist:
-                if entry is None:
+                wenn entry is None:
                     menu.add_separator()
-                else:
+                sonst:
                     label, eventname = entry
                     checkbutton = (label[:1] == '!')
-                    if checkbutton:
+                    wenn checkbutton:
                         label = label[1:]
                     underline, label = prepstr(label)
                     accelerator = get_accelerator(keydefs, eventname)
                     def command(text=text, eventname=eventname):
                         text.event_generate(eventname)
-                    if checkbutton:
+                    wenn checkbutton:
                         var = self.get_var_obj(eventname, BooleanVar)
                         menu.add_checkbutton(label=label, underline=underline,
                             command=command, accelerator=accelerator,
                             variable=var)
-                    else:
+                    sonst:
                         menu.add_command(label=label, underline=underline,
                                          command=command,
                                          accelerator=accelerator)
 
     def getvar(self, name):
         var = self.get_var_obj(name)
-        if var:
+        wenn var:
             value = var.get()
             return value
-        else:
+        sonst:
             raise NameError(name)
 
     def setvar(self, name, value, vartype=None):
         var = self.get_var_obj(name, vartype)
-        if var:
+        wenn var:
             var.set(value)
-        else:
+        sonst:
             raise NameError(name)
 
     def get_var_obj(self, eventname, vartype=None):
         """Return a tkinter variable instance fuer the event.
         """
         var = self.tkinter_vars.get(eventname)
-        if not var and vartype:
+        wenn not var and vartype:
             # Create a Tkinter variable object.
             self.tkinter_vars[eventname] = var = vartype(self.text)
         return var
@@ -1293,12 +1293,12 @@ klasse EditorWindow:
     # platform's colorizer.
 
     def is_char_in_string(self, text_index):
-        if self.color:
+        wenn self.color:
             # Return true iff colorizer hasn't (re)gotten this far
             # yet, or the character is tagged as being in a string
             return self.text.tag_prevrange("TODO", text_index) or \
                    "STRING" in self.text.tag_names(text_index)
-        else:
+        sonst:
             # The colorizer is missing: assume the worst
             return 1
 
@@ -1323,7 +1323,7 @@ klasse EditorWindow:
 
     def set_tk_tabwidth(self, newtabwidth):
         text = self.text
-        if self.get_tk_tabwidth() != newtabwidth:
+        wenn self.get_tk_tabwidth() != newtabwidth:
             # Set text widget tab width
             pixels = text.tk.call("font", "measure", text["font"],
                                   "-displayof", text.master,
@@ -1333,36 +1333,36 @@ klasse EditorWindow:
 ### begin autoindent code ###  (configuration was moved to beginning of class)
 
     def set_indentation_params(self, is_py_src, guess=True):
-        if is_py_src and guess:
+        wenn is_py_src and guess:
             i = self.guess_indent()
-            if 2 <= i <= 8:
+            wenn 2 <= i <= 8:
                 self.indentwidth = i
-            if self.indentwidth != self.tabwidth:
+            wenn self.indentwidth != self.tabwidth:
                 self.usetabs = False
         self.set_tk_tabwidth(self.tabwidth)
 
     def smart_backspace_event(self, event):
         text = self.text
         first, last = self.get_selection_indices()
-        if first and last:
+        wenn first and last:
             text.delete(first, last)
             text.mark_set("insert", first)
             return "break"
         # Delete whitespace left, until hitting a real char or closest
         # preceding virtual tab stop.
         chars = text.get("insert linestart", "insert")
-        if chars == '':
-            if text.compare("insert", ">", "1.0"):
+        wenn chars == '':
+            wenn text.compare("insert", ">", "1.0"):
                 # easy: delete preceding newline
                 text.delete("insert-1c")
-            else:
+            sonst:
                 text.bell()     # at start of buffer
             return "break"
-        if  chars[-1] not in " \t":
+        wenn  chars[-1] not in " \t":
             # easy: delete preceding real char
             text.delete("insert-1c")
             return "break"
-        # Ick.  It may require *inserting* spaces if we back up over a
+        # Ick.  It may require *inserting* spaces wenn we back up over a
         # tab character!  This is written to be clear, not fast.
         tabwidth = self.tabwidth
         have = len(chars.expandtabs(tabwidth))
@@ -1374,42 +1374,42 @@ klasse EditorWindow:
             chars = chars[:-1]
             ncharsdeleted = ncharsdeleted + 1
             have = len(chars.expandtabs(tabwidth))
-            if have <= want or chars[-1] not in " \t":
+            wenn have <= want or chars[-1] not in " \t":
                 break
         text.undo_block_start()
         text.delete("insert-%dc" % ncharsdeleted, "insert")
-        if have < want:
+        wenn have < want:
             text.insert("insert", ' ' * (want - have),
                         self.user_input_insert_tags)
         text.undo_block_stop()
         return "break"
 
     def smart_indent_event(self, event):
-        # if intraline selection:
+        # wenn intraline selection:
         #     delete it
-        # elif multiline selection:
+        # sowenn multiline selection:
         #     do indent-region
-        # else:
+        # sonst:
         #     indent one level
         text = self.text
         first, last = self.get_selection_indices()
         text.undo_block_start()
         try:
-            if first and last:
-                if index2line(first) != index2line(last):
+            wenn first and last:
+                wenn index2line(first) != index2line(last):
                     return self.fregion.indent_region_event(event)
                 text.delete(first, last)
                 text.mark_set("insert", first)
             prefix = text.get("insert linestart", "insert")
             raw, effective = get_line_indent(prefix, self.tabwidth)
-            if raw == len(prefix):
+            wenn raw == len(prefix):
                 # only whitespace to the left
                 self.reindent_to(effective + self.indentwidth)
-            else:
+            sonst:
                 # tab to the next 'stop' within or to right of line's text:
-                if self.usetabs:
+                wenn self.usetabs:
                     pad = '\t'
-                else:
+                sonst:
                     effective = len(prefix.expandtabs(self.tabwidth))
                     n = self.indentwidth
                     pad = ' ' * (n - effective % n)
@@ -1423,7 +1423,7 @@ klasse EditorWindow:
         """Insert a newline and indentation after Enter keypress event.
 
         Properly position the cursor on the new line based on information
-        from the current line.  This takes into account if the current line
+        from the current line.  This takes into account wenn the current line
         is a shell prompt, is empty, has selected text, contains a block
         opener, contains a block closer, is a continuation line, or
         is inside a string.
@@ -1432,7 +1432,7 @@ klasse EditorWindow:
         first, last = self.get_selection_indices()
         text.undo_block_start()
         try:  # Close undo block and expose new line in finally clause.
-            if first and last:
+            wenn first and last:
                 text.delete(first, last)
                 text.mark_set("insert", first)
             line = text.get("insert linestart", "insert")
@@ -1441,7 +1441,7 @@ klasse EditorWindow:
             i, n = 0, len(line)
             while i < n and line[i] in " \t":
                 i += 1
-            if i == n:
+            wenn i == n:
                 # The cursor is in or at leading indentation in a continuation
                 # line; just inject an empty line at the start.
                 text.insert("insert linestart", '\n',
@@ -1454,7 +1454,7 @@ klasse EditorWindow:
             while line and line[-1] in " \t":
                 line = line[:-1]
                 i += 1
-            if i:
+            wenn i:
                 text.delete("insert - %d chars" % i, "insert")
 
             # Strip whitespace after insert point.
@@ -1468,7 +1468,7 @@ klasse EditorWindow:
             # First need to find the last statement.
             lno = index2line(text.index('insert'))
             y = pyparse.Parser(self.indentwidth, self.tabwidth)
-            if not self.prompt_last_line:
+            wenn not self.prompt_last_line:
                 fuer context in self.num_context_lines:
                     startat = max(lno - context, 1)
                     startatindex = repr(startat) + ".0"
@@ -1476,47 +1476,47 @@ klasse EditorWindow:
                     y.set_code(rawtext)
                     bod = y.find_good_parse_start(
                             self._build_char_in_string_func(startatindex))
-                    if bod is not None or startat == 1:
+                    wenn bod is not None or startat == 1:
                         break
                 y.set_lo(bod or 0)
-            else:
+            sonst:
                 r = text.tag_prevrange("console", "insert")
-                if r:
+                wenn r:
                     startatindex = r[1]
-                else:
+                sonst:
                     startatindex = "1.0"
                 rawtext = text.get(startatindex, "insert")
                 y.set_code(rawtext)
                 y.set_lo(0)
 
             c = y.get_continuation_type()
-            if c != pyparse.C_NONE:
+            wenn c != pyparse.C_NONE:
                 # The current statement hasn't ended yet.
-                if c == pyparse.C_STRING_FIRST_LINE:
+                wenn c == pyparse.C_STRING_FIRST_LINE:
                     # After the first line of a string do not indent at all.
                     pass
-                elif c == pyparse.C_STRING_NEXT_LINES:
+                sowenn c == pyparse.C_STRING_NEXT_LINES:
                     # Inside a string which started before this line;
                     # just mimic the current indent.
                     text.insert("insert", indent, self.user_input_insert_tags)
-                elif c == pyparse.C_BRACKET:
+                sowenn c == pyparse.C_BRACKET:
                     # Line up with the first (if any) element of the
-                    # last open bracket structure; else indent one
+                    # last open bracket structure; sonst indent one
                     # level beyond the indent of the line with the
                     # last open bracket.
                     self.reindent_to(y.compute_bracket_indent())
-                elif c == pyparse.C_BACKSLASH:
+                sowenn c == pyparse.C_BACKSLASH:
                     # If more than one line in this statement already, just
-                    # mimic the current indent; else if initial line
+                    # mimic the current indent; sonst wenn initial line
                     # has a start on an assignment stmt, indent to
-                    # beyond leftmost =; else to beyond first chunk of
+                    # beyond leftmost =; sonst to beyond first chunk of
                     # non-whitespace on initial line.
-                    if y.get_num_lines_in_stmt() > 1:
+                    wenn y.get_num_lines_in_stmt() > 1:
                         text.insert("insert", indent,
                                     self.user_input_insert_tags)
-                    else:
+                    sonst:
                         self.reindent_to(y.compute_backslash_indent())
-                else:
+                sonst:
                     assert 0, f"bogus continuation type {c!r}"
                 return "break"
 
@@ -1525,9 +1525,9 @@ klasse EditorWindow:
             # interesting statement.
             indent = y.get_base_indent_string()
             text.insert("insert", indent, self.user_input_insert_tags)
-            if y.is_block_opener():
+            wenn y.is_block_opener():
                 self.smart_indent_event(event)
-            elif indent and y.is_block_closer():
+            sowenn indent and y.is_block_closer():
                 self.smart_backspace_event(event)
             return "break"
         finally:
@@ -1548,7 +1548,7 @@ klasse EditorWindow:
     # XXX this isn't bound to anything -- see tabwidth comments
 ##     def change_tabwidth_event(self, event):
 ##         new = self._asktabwidth()
-##         if new != self.tabwidth:
+##         wenn new != self.tabwidth:
 ##             self.tabwidth = new
 ##             self.set_indentation_params(0, guess=0)
 ##         return "break"
@@ -1556,47 +1556,47 @@ klasse EditorWindow:
     # Make string that displays as n leading blanks.
 
     def _make_blanks(self, n):
-        if self.usetabs:
+        wenn self.usetabs:
             ntabs, nspaces = divmod(n, self.tabwidth)
             return '\t' * ntabs + ' ' * nspaces
-        else:
+        sonst:
             return ' ' * n
 
     # Delete from beginning of line to insert point, then reinsert
-    # column logical (meaning use tabs if appropriate) spaces.
+    # column logical (meaning use tabs wenn appropriate) spaces.
 
     def reindent_to(self, column):
         text = self.text
         text.undo_block_start()
-        if text.compare("insert linestart", "!=", "insert"):
+        wenn text.compare("insert linestart", "!=", "insert"):
             text.delete("insert linestart", "insert")
-        if column:
+        wenn column:
             text.insert("insert", self._make_blanks(column),
                         self.user_input_insert_tags)
         text.undo_block_stop()
 
     # Guess indentwidth from text content.
     # Return guessed indentwidth.  This should not be believed unless
-    # it's in a reasonable range (e.g., it will be 0 if no indented
+    # it's in a reasonable range (e.g., it will be 0 wenn no indented
     # blocks are found).
 
     def guess_indent(self):
         opener, indented = IndentSearcher(self.text).run()
-        if opener and indented:
+        wenn opener and indented:
             raw, indentsmall = get_line_indent(opener, self.tabwidth)
             raw, indentlarge = get_line_indent(indented, self.tabwidth)
-        else:
+        sonst:
             indentsmall = indentlarge = 0
         return indentlarge - indentsmall
 
     def toggle_line_numbers_event(self, event=None):
-        if self.line_numbers is None:
+        wenn self.line_numbers is None:
             return
 
-        if self.line_numbers.is_shown:
+        wenn self.line_numbers.is_shown:
             self.line_numbers.hide_sidebar()
             menu_label = "Show"
-        else:
+        sonst:
             self.line_numbers.show_sidebar()
             menu_label = "Hide"
         self.update_menu_label(menu='options', index='*ine*umbers',
@@ -1627,11 +1627,11 @@ klasse IndentSearcher:
         self.blkopenline = self.indentedline = None
 
     def readline(self):
-        if self.finished:
+        wenn self.finished:
             return ""
         i = self.i = self.i + 1
         mark = repr(i) + ".0"
-        if self.text.compare(mark, ">=", "end"):
+        wenn self.text.compare(mark, ">=", "end"):
             return ""
         return self.text.get(mark, mark + " lineend+1c")
 
@@ -1640,11 +1640,11 @@ klasse IndentSearcher:
                    NAME=tokenize.NAME,
                    OPENERS=('class', 'def', 'for', 'if', 'match', 'try',
                             'while', 'with')):
-        if self.finished:
+        wenn self.finished:
             pass
-        elif type == NAME and token in OPENERS:
+        sowenn type == NAME and token in OPENERS:
             self.blkopenline = line
-        elif type == INDENT and self.blkopenline:
+        sowenn type == INDENT and self.blkopenline:
             self.indentedline = line
             self.finished = 1
 
@@ -1677,7 +1677,7 @@ def prepstr(s):
         Tuple of (position of underscore, string without underscore).
     """
     i = s.find('_')
-    if i >= 0:
+    wenn i >= 0:
         s = s[:i] + s[i+1:]
     return i, s
 
@@ -1703,8 +1703,8 @@ def get_accelerator(keydefs, eventname):
     """
     keylist = keydefs.get(eventname)
     # issue10940: temporary workaround to prevent hang with OS X Cocoa Tk 8.5
-    # if not keylist:
-    if (not keylist) or (macosx.isCocoaTk() and eventname in {
+    # wenn not keylist:
+    wenn (not keylist) or (macosx.isCocoaTk() and eventname in {
                             "<<open-module>>",
                             "<<goto-line>>",
                             "<<change-indentwidth>>"}):
@@ -1741,12 +1741,12 @@ def fixwordbreaks(root):
 
 
 def _editor_window(parent):  # htest #
-    # error if close master window first - timer event, after script
+    # error wenn close master window first - timer event, after script
     root = parent
     fixwordbreaks(root)
-    if sys.argv[1:]:
+    wenn sys.argv[1:]:
         filename = sys.argv[1]
-    else:
+    sonst:
         filename = None
     macosx.setupApp(root, None)
     edit = EditorWindow(root=root, filename=filename)
@@ -1759,7 +1759,7 @@ def _editor_window(parent):  # htest #
     # edit.text.bind("<<close-window>>", edit.close_event)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     from unittest import main
     main('idlelib.idle_test.test_editor', verbosity=2, exit=False)
 

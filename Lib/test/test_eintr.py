@@ -17,5 +17,5 @@ klasse EINTRTests(unittest.TestCase):
         script_helper.run_test_script(script)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

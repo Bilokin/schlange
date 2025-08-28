@@ -17,17 +17,17 @@ from libclinic.function import (
     GETTER, SETTER, METHOD_INIT)
 from libclinic.converters import self_converter
 from libclinic.parse_args import ParseArgsCodeGen
-if TYPE_CHECKING:
+wenn TYPE_CHECKING:
     from libclinic.app import Clinic
 
 
 def c_id(name: str) -> str:
-    if len(name) == 1 and ord(name) < 256:
-        if name.isalnum():
+    wenn len(name) == 1 and ord(name) < 256:
+        wenn name.isalnum():
             return f"_Py_LATIN1_CHR('{name}')"
-        else:
+        sonst:
             return f'_Py_LATIN1_CHR({ord(name)})'
-    else:
+    sonst:
         return f'&_Py_ID({name})'
 
 
@@ -53,8 +53,8 @@ klasse CLanguage(Language):
         #endif
     """
     DEPRECATION_WARNING_PROTOTYPE: Final[str] = r"""
-        if ({condition}) {{{{{errcheck}
-            if (PyErr_WarnEx(PyExc_DeprecationWarning,
+        wenn ({condition}) {{{{{errcheck}
+            wenn (PyErr_WarnEx(PyExc_DeprecationWarning,
                     {message}, 1))
             {{{{
                 goto exit;
@@ -76,8 +76,8 @@ klasse CLanguage(Language):
     ) -> str:
         function = None
         fuer o in signatures:
-            if isinstance(o, Function):
-                if function:
+            wenn isinstance(o, Function):
+                wenn function:
                     fail("You may specify at most one function per block.\nFound a block containing at least two:\n\t" + repr(function) + " and " + repr(o))
                 function = o
         return self.render_function(clinic, function)
@@ -90,9 +90,9 @@ klasse CLanguage(Language):
         minversion: VersionTuple | None = None
         fuer p in parameters:
             fuer version in p.deprecated_positional, p.deprecated_keyword:
-                if version and (not minversion or minversion > version):
+                wenn version and (not minversion or minversion > version):
                     minversion = version
-        if not minversion:
+        wenn not minversion:
             return None
 
         # Format the preprocessor warning and error messages.
@@ -115,14 +115,14 @@ klasse CLanguage(Language):
         last_pos = next(reversed(params))
 
         # Format the deprecation message.
-        if len(params) == 1:
+        wenn len(params) == 1:
             condition = f"nargs == {first_pos+1}"
-            amount = f"{first_pos+1} " if first_pos else ""
+            amount = f"{first_pos+1} " wenn first_pos sonst ""
             pl = "s"
-        else:
+        sonst:
             condition = f"nargs > {first_pos} && nargs <= {last_pos+1}"
-            amount = f"more than {first_pos} " if first_pos else ""
-            pl = "s" if first_pos != 1 else ""
+            amount = f"more than {first_pos} " wenn first_pos sonst ""
+            pl = "s" wenn first_pos != 1 sonst ""
         message = (
             f"Passing {amount}positional argument{pl} to "
             f"{func.fulldisplayname}() is deprecated."
@@ -133,12 +133,12 @@ klasse CLanguage(Language):
         ):
             names = [repr(p.name) fuer p in group]
             pstr = libclinic.pprint_words(names)
-            if len(names) == 1:
+            wenn len(names) == 1:
                 message += (
                     f" Parameter {pstr} will become a keyword-only parameter "
                     f"in Python {major}.{minor}."
                 )
-            else:
+            sonst:
                 message += (
                     f" Parameters {pstr} will become keyword-only parameters "
                     f"in Python {major}.{minor}."
@@ -173,36 +173,36 @@ klasse CLanguage(Language):
         containscheck = ""
         conditions = []
         fuer i, p in params.items():
-            if p.is_optional():
-                if argname_fmt:
+            wenn p.is_optional():
+                wenn argname_fmt:
                     conditions.append(f"nargs < {i+1} && {argname_fmt % i}")
-                elif fastcall:
+                sowenn fastcall:
                     conditions.append(f"nargs < {i+1} && PySequence_Contains(kwnames, {c_id(p.name)})")
                     containscheck = "PySequence_Contains"
                     codegen.add_include('pycore_runtime.h', '_Py_ID()')
-                else:
+                sonst:
                     conditions.append(f"nargs < {i+1} && PyDict_Contains(kwargs, {c_id(p.name)})")
                     containscheck = "PyDict_Contains"
                     codegen.add_include('pycore_runtime.h', '_Py_ID()')
-            else:
+            sonst:
                 conditions = [f"nargs < {i+1}"]
         condition = ") || (".join(conditions)
-        if len(conditions) > 1:
+        wenn len(conditions) > 1:
             condition = f"(({condition}))"
-        if last_param.is_optional():
-            if fastcall:
-                if limited_capi:
+        wenn last_param.is_optional():
+            wenn fastcall:
+                wenn limited_capi:
                     condition = f"kwnames && PyTuple_Size(kwnames) && {condition}"
-                else:
+                sonst:
                     condition = f"kwnames && PyTuple_GET_SIZE(kwnames) && {condition}"
-            else:
-                if limited_capi:
+            sonst:
+                wenn limited_capi:
                     condition = f"kwargs && PyDict_Size(kwargs) && {condition}"
-                else:
+                sonst:
                     condition = f"kwargs && PyDict_GET_SIZE(kwargs) && {condition}"
         names = [repr(p.name) fuer p in params.values()]
         pstr = libclinic.pprint_words(names)
-        pl = 's' if len(params) != 1 else ''
+        pl = 's' wenn len(params) != 1 sonst ''
         message = (
             f"Passing keyword argument{pl} {pstr} to "
             f"{func.fulldisplayname}() is deprecated."
@@ -213,20 +213,20 @@ klasse CLanguage(Language):
         ):
             names = [repr(p.name) fuer p in group]
             pstr = libclinic.pprint_words(names)
-            pl = 's' if len(names) != 1 else ''
+            pl = 's' wenn len(names) != 1 sonst ''
             message += (
                 f" Parameter{pl} {pstr} will become positional-only "
                 f"in Python {major}.{minor}."
             )
 
-        if containscheck:
+        wenn containscheck:
             errcheck = f"""
-            if (PyErr_Occurred()) {{{{ // {containscheck}() above can fail
+            wenn (PyErr_Occurred()) {{{{ // {containscheck}() above can fail
                 goto exit;
             }}}}"""
-        else:
+        sonst:
             errcheck = ""
-        if argname_fmt:
+        wenn argname_fmt:
             # Append deprecation warning to docstring.
             docstring = textwrap.fill(f"Note: {message}")
             func.docstring += f"\n\n{docstring}\n"
@@ -249,7 +249,7 @@ klasse CLanguage(Language):
 
     @staticmethod
     def group_to_variable_name(group: int) -> str:
-        adjective = "left_" if group < 0 else "right_"
+        adjective = "left_" wenn group < 0 sonst "right_"
         return "group_" + adjective + str(abs(group))
 
     def render_option_group_parsing(
@@ -272,13 +272,13 @@ klasse CLanguage(Language):
         # Note that you need to count up on both sides.  For example,
         # you could have groups C+D, or C+D+E, or C+D+E+F.
         #
-        # What if the number of arguments leads us to an ambiguous result?
+        # What wenn the number of arguments leads us to an ambiguous result?
         # Clinic prefers groups on the left.  So in the above example,
         # five arguments would map to B+C, not C+D.
 
         out = []
         parameters = list(f.parameters.values())
-        if isinstance(parameters[0].converter, self_converter):
+        wenn isinstance(parameters[0].converter, self_converter):
             del parameters[0]
 
         group: list[Parameter] | None = None
@@ -289,14 +289,14 @@ klasse CLanguage(Language):
 
         fuer p in parameters:
             group_id = p.group
-            if group_id != last:
+            wenn group_id != last:
                 last = group_id
                 group = []
-                if group_id < 0:
+                wenn group_id < 0:
                     left.append(group)
-                elif group_id == 0:
+                sowenn group_id == 0:
                     group = required
-                else:
+                sonst:
                     right.append(group)
             assert group is not None
             group.append(p)
@@ -304,9 +304,9 @@ klasse CLanguage(Language):
         count_min = sys.maxsize
         count_max = -1
 
-        if limited_capi:
+        wenn limited_capi:
             nargs = 'PyTuple_Size(args)'
-        else:
+        sonst:
             nargs = 'PyTuple_GET_SIZE(args)'
         out.append(f"switch ({nargs}) {{\n")
         fuer subset in permute_optional_groups(left, required, right):
@@ -314,7 +314,7 @@ klasse CLanguage(Language):
             count_min = min(count_min, count)
             count_max = max(count_max, count)
 
-            if count == 0:
+            wenn count == 0:
                 out.append("""    case 0:
         break;
 """)
@@ -339,7 +339,7 @@ klasse CLanguage(Language):
 
             s = """\
     case {count}:
-        if (!PyArg_ParseTuple(args, "{format_units}:{name}", {parse_arguments})) {{
+        wenn (!PyArg_ParseTuple(args, "{format_units}:{name}", {parse_arguments})) {{
             goto exit;
         }}
         {group_booleans}
@@ -362,7 +362,7 @@ klasse CLanguage(Language):
         clinic: Clinic,
         f: Function | None
     ) -> str:
-        if f is None:
+        wenn f is None:
             return ""
 
         codegen = clinic.codegen
@@ -378,7 +378,7 @@ klasse CLanguage(Language):
         selfless = parameters[1:]
         assert isinstance(f_self.converter, self_converter), "No self parameter in " + repr(f.full_name) + "!"
 
-        if f.critical_section:
+        wenn f.critical_section:
             match len(f.target_critical_section):
                 case 0:
                     lock = 'Py_BEGIN_CRITICAL_SECTION({self_name});'
@@ -401,14 +401,14 @@ klasse CLanguage(Language):
         fuer i, p in enumerate(parameters, -1):
             c = p.converter
 
-            if (i != -1) and (p.default is not unspecified):
+            wenn (i != -1) and (p.default is not unspecified):
                 first_optional = min(first_optional, i)
 
             # insert group variable
             group = p.group
-            if last_group != group:
+            wenn last_group != group:
                 last_group = group
-                if group:
+                wenn group:
                     group_name = self.group_to_variable_name(group)
                     data.impl_arguments.append(group_name)
                     data.declarations.append("int " + group_name + " = 0;")
@@ -417,7 +417,7 @@ klasse CLanguage(Language):
 
             c.render(p, data)
 
-        if has_option_groups and (not positional):
+        wenn has_option_groups and (not positional):
             fail("You cannot use optional groups ('[' and ']') "
                  "unless all parameters are positional-only ('/').")
 
@@ -429,24 +429,24 @@ klasse CLanguage(Language):
         # as variables in the parsing function.  but since it's
         # METH_O, we have exactly one anyway, so we know exactly
         # where it is.
-        if ("METH_O" in templates['methoddef_define'] and
+        wenn ("METH_O" in templates['methoddef_define'] and
             '{parser_parameters}' in templates['parser_prototype']):
             data.declarations.pop(0)
 
         full_name = f.full_name
         template_dict = {'full_name': full_name}
         template_dict['name'] = f.displayname
-        if f.kind in {GETTER, SETTER}:
+        wenn f.kind in {GETTER, SETTER}:
             template_dict['getset_name'] = f.c_basename.upper()
             template_dict['getset_basename'] = f.c_basename
-            if f.kind is GETTER:
+            wenn f.kind is GETTER:
                 template_dict['c_basename'] = f.c_basename + "_get"
-            elif f.kind is SETTER:
+            sowenn f.kind is SETTER:
                 template_dict['c_basename'] = f.c_basename + "_set"
                 # Implicitly add the setter value parameter.
                 data.impl_parameters.append("PyObject *value")
                 data.impl_arguments.append("value")
-        else:
+        sonst:
             template_dict['methoddef_name'] = f.c_basename.upper() + "_METHODDEF"
             template_dict['c_basename'] = f.c_basename
 
@@ -456,7 +456,7 @@ klasse CLanguage(Language):
         fuer converter in converters:
             converter.set_template_dict(template_dict)
 
-        if f.kind not in {SETTER, METHOD_INIT}:
+        wenn f.kind not in {SETTER, METHOD_INIT}:
             f.return_converter.render(f, data)
         template_dict['impl_return_type'] = f.return_converter.type
 
@@ -465,14 +465,14 @@ klasse CLanguage(Language):
         template_dict['modifications'] = '\n\n'.join(data.modifications)
         template_dict['keywords_c'] = ' '.join('"' + k + '",'
                                                fuer k in data.keywords)
-        keywords = [k fuer k in data.keywords if k]
+        keywords = [k fuer k in data.keywords wenn k]
         template_dict['keywords_py'] = ' '.join(c_id(k) + ','
                                                 fuer k in keywords)
         template_dict['format_units'] = ''.join(data.format_units)
         template_dict['parse_arguments'] = ', '.join(data.parse_arguments)
-        if data.parse_arguments:
+        wenn data.parse_arguments:
             template_dict['parse_arguments_comma'] = ',';
-        else:
+        sonst:
             template_dict['parse_arguments_comma'] = '';
         template_dict['impl_parameters'] = ", ".join(data.impl_parameters)
         template_dict['parser_parameters'] = ", ".join(data.impl_parameters[1:])
@@ -492,14 +492,14 @@ klasse CLanguage(Language):
         template_dict['unpack_min'] = str(unpack_min)
         template_dict['unpack_max'] = str(unpack_max)
 
-        if has_option_groups:
+        wenn has_option_groups:
             self.render_option_group_parsing(f, template_dict,
                                              limited_capi=codegen.limited_capi)
 
         # buffers, not destination
         fuer name, destination in clinic.destination_buffers.items():
             template = templates[name]
-            if has_option_groups:
+            wenn has_option_groups:
                 template = libclinic.linear_format(template,
                         option_group_parsing=template_dict['option_group_parsing'])
             template = libclinic.linear_format(template,
@@ -514,20 +514,20 @@ klasse CLanguage(Language):
                 )
 
             # Only generate the "exit:" label
-            # if we have any gotos
-            label = "exit:" if "goto exit;" in template else ""
+            # wenn we have any gotos
+            label = "exit:" wenn "goto exit;" in template sonst ""
             template = libclinic.linear_format(template, exit_label=label)
 
             s = template.format_map(template_dict)
 
             # mild hack:
             # reflow long impl declarations
-            if name in {"impl_prototype", "impl_definition"}:
+            wenn name in {"impl_prototype", "impl_definition"}:
                 s = libclinic.wrap_declarations(s)
 
-            if clinic.line_prefix:
+            wenn clinic.line_prefix:
                 s = libclinic.indent_all_lines(s, clinic.line_prefix)
-            if clinic.line_suffix:
+            wenn clinic.line_suffix:
                 s = libclinic.suffix_all_lines(s, clinic.line_suffix)
 
             destination.append(s)

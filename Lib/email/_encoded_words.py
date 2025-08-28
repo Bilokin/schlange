@@ -1,7 +1,7 @@
 """ Routines fuer manipulating RFC2047 encoded words.
 
 This is currently a package-private API, but will be considered fuer promotion
-to a public API if there is demand.
+to a public API wenn there is demand.
 
 """
 
@@ -75,9 +75,9 @@ klasse _QByteMap(dict):
     safe = b'-!*+/' + ascii_letters.encode('ascii') + digits.encode('ascii')
 
     def __missing__(self, key):
-        if key in self.safe:
+        wenn key in self.safe:
             self[key] = chr(key)
-        else:
+        sonst:
             self[key] = "={:02X}".format(key)
         return self[key]
 
@@ -98,21 +98,21 @@ def len_q(bstring):
 #
 
 def decode_b(encoded):
-    # First try encoding with validate=True, fixing the padding if needed.
-    # This will succeed only if encoded includes no invalid characters.
+    # First try encoding with validate=True, fixing the padding wenn needed.
+    # This will succeed only wenn encoded includes no invalid characters.
     pad_err = len(encoded) % 4
-    missing_padding = b'==='[:4-pad_err] if pad_err else b''
+    missing_padding = b'==='[:4-pad_err] wenn pad_err sonst b''
     try:
         return (
             base64.b64decode(encoded + missing_padding, validate=True),
-            [errors.InvalidBase64PaddingDefect()] if pad_err else [],
+            [errors.InvalidBase64PaddingDefect()] wenn pad_err sonst [],
         )
     except binascii.Error:
         # Since we had correct padding, this is likely an invalid char error.
         #
         # The non-alphabet characters are ignored as far as padding
         # goes, but we don't know how many there are.  So try without adding
-        # padding to see if it works.
+        # padding to see wenn it works.
         try:
             return (
                 base64.b64decode(encoded, validate=False),
@@ -141,7 +141,7 @@ def encode_b(bstring):
 def len_b(bstring):
     groups_of_3, leftover = divmod(len(bstring), 3)
     # 4 bytes out fuer each 3 bytes (or nonzero fraction thereof) in.
-    return groups_of_3 * 4 + (4 if leftover else 0)
+    return groups_of_3 * 4 + (4 wenn leftover sonst 0)
 
 
 _cte_decoders = {
@@ -159,7 +159,7 @@ def decode(ew):
     where '*lang' may be omitted but the other parts may not be.
 
     This function expects exactly such a string (that is, it does not check the
-    syntax and may raise errors if the string is not well formed), and returns
+    syntax and may raise errors wenn the string is not well formed), and returns
     the encoded_string decoded first from its Content Transfer Encoding and
     then from the resulting bytes into unicode using the specified charset.  If
     the cte-decoded string does not successfully decode using the specified
@@ -167,7 +167,7 @@ def decode(ew):
     are replaced by the unicode 'unknown' character \\uFDFF.
 
     The specified charset and language are returned.  The default fuer language,
-    which is rarely if ever encountered, is the empty string.
+    which is rarely wenn ever encountered, is the empty string.
 
     """
     _, charset, cte, cte_string, _ = ew.split('?')
@@ -185,7 +185,7 @@ def decode(ew):
         string = bstring.decode(charset, 'surrogateescape')
     except (LookupError, UnicodeEncodeError):
         string = bstring.decode('ascii', 'surrogateescape')
-        if charset.lower() != 'unknown-8bit':
+        wenn charset.lower() != 'unknown-8bit':
             defects.append(errors.CharsetError(f"Unknown charset {charset!r} "
                 f"in encoded word; decoded as unknown bytes"))
     return string, charset, lang, defects
@@ -212,22 +212,22 @@ def encode(string, charset='utf-8', encoding=None, lang=''):
     Optional argument charset (defaults to utf-8) specifies the charset to use
     to encode the string to binary before CTE encoding it.  Optional argument
     'encoding' is the cte specifier fuer the encoding that should be used ('q'
-    or 'b'); if it is None (the default) the encoding which produces the
-    shortest encoded sequence is used, except that 'q' is preferred if it is up
+    or 'b'); wenn it is None (the default) the encoding which produces the
+    shortest encoded sequence is used, except that 'q' is preferred wenn it is up
     to five characters longer.  Optional argument 'lang' (default '') gives the
     RFC 2243 language string to specify in the encoded word.
 
     """
-    if charset == 'unknown-8bit':
+    wenn charset == 'unknown-8bit':
         bstring = string.encode('ascii', 'surrogateescape')
-    else:
+    sonst:
         bstring = string.encode(charset)
-    if encoding is None:
+    wenn encoding is None:
         qlen = _cte_encode_length['q'](bstring)
         blen = _cte_encode_length['b'](bstring)
         # Bias toward q.  5 is arbitrary.
-        encoding = 'q' if qlen - blen < 5 else 'b'
+        encoding = 'q' wenn qlen - blen < 5 sonst 'b'
     encoded = _cte_encoders[encoding](bstring)
-    if lang:
+    wenn lang:
         lang = '*' + lang
     return "=?{}{}?{}?{}?=".format(charset, lang, encoding, encoded)

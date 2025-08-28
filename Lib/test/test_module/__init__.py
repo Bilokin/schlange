@@ -148,7 +148,7 @@ a = A(destroyed)"""
         with self.assertRaises(TypeError):
             bad_getattr2.nope
         del sys.modules['test.test_module.bad_getattr']
-        if 'test.test_module.bad_getattr2' in sys.modules:
+        wenn 'test.test_module.bad_getattr2' in sys.modules:
             del sys.modules['test.test_module.bad_getattr2']
 
     def test_module_dir(self):
@@ -164,7 +164,7 @@ a = A(destroyed)"""
         with self.assertRaises(TypeError):
             dir(bad_getattr2)
         del sys.modules['test.test_module.bad_getattr']
-        if 'test.test_module.bad_getattr2' in sys.modules:
+        wenn 'test.test_module.bad_getattr2' in sys.modules:
             del sys.modules['test.test_module.bad_getattr2']
 
     def test_module_getattr_tricky(self):
@@ -174,7 +174,7 @@ a = A(destroyed)"""
             bad_getattr3.one
         with self.assertRaises(AttributeError):
             bad_getattr3.delgetattr
-        if 'test.test_module.bad_getattr3' in sys.modules:
+        wenn 'test.test_module.bad_getattr3' in sys.modules:
             del sys.modules['test.test_module.bad_getattr3']
 
     def test_module_repr_minimal(self):
@@ -326,9 +326,9 @@ a = A(destroyed)"""
             self.assertTrue("__annotations__" in foo.__dict__)
             self.assertEqual(foo.__annotations__, d)
             self.assertEqual(foo.__dict__['__annotations__'], d)
-            if i % 2:
+            wenn i % 2:
                 del foo.__annotations__
-            else:
+            sonst:
                 del foo.__dict__['__annotations__']
 
     def test_setting_annotations(self):
@@ -340,9 +340,9 @@ a = A(destroyed)"""
             self.assertTrue("__annotations__" in foo.__dict__)
             self.assertEqual(foo.__annotations__, d)
             self.assertEqual(foo.__dict__['__annotations__'], d)
-            if i % 2:
+            wenn i % 2:
                 del foo.__annotations__
-            else:
+            sonst:
                 del foo.__dict__['__annotations__']
 
     def test_annotations_getset_raises(self):
@@ -398,5 +398,5 @@ a = A(destroyed)"""
 
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

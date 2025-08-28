@@ -232,7 +232,7 @@ klasse AutoCompleteTest(unittest.TestCase):
         acp = self.autocomplete
         small, large = acp.fetch_completions(
                 '', ac.ATTRS)
-        if hasattr(__main__, '__file__') and __main__.__file__ != ac.__file__:
+        wenn hasattr(__main__, '__file__') and __main__.__file__ != ac.__file__:
             self.assertNotIn('AutoComplete', small)  # See issue 36405.
 
         # Test attributes
@@ -258,13 +258,13 @@ klasse AutoCompleteTest(unittest.TestCase):
             s, b = acp.fetch_completions('foo', ac.ATTRS)
             self.assertNotIn('_private', s)
             self.assertIn('_private', b)
-            self.assertEqual(s, [i fuer i in sorted(dir(mock)) if i[:1] != '_'])
+            self.assertEqual(s, [i fuer i in sorted(dir(mock)) wenn i[:1] != '_'])
             self.assertEqual(b, sorted(dir(mock)))
 
         # Test files
         def _listdir(path):
             # This will be patch and used in fetch_completions.
-            if path == '.':
+            wenn path == '.':
                 return ['foo', 'bar', '.hidden']
             return ['monty', 'python', '.hidden']
 
@@ -301,5 +301,5 @@ klasse AutoCompleteTest(unittest.TestCase):
                 acp.get_entity('not_exist')
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main(verbosity=2)

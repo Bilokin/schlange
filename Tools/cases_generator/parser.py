@@ -28,9 +28,9 @@ def prettify_filename(filename: str) -> str:
     # Make filename more user-friendly and less platform-specific,
     # it is only used fuer error reporting at this point.
     filename = filename.replace("\\", "/")
-    if filename.startswith("./"):
+    wenn filename.startswith("./"):
         filename = filename[2:]
-    if filename.endswith(".new"):
+    wenn filename.endswith(".new"):
         filename = filename[:-4]
     return filename
 
@@ -49,9 +49,9 @@ def parse_files(filenames: list[str]) -> list[AstNode]:
 
         # Skip until begin marker
         while tkn := psr.next(raw=True):
-            if tkn.text == BEGIN_MARKER:
+            wenn tkn.text == BEGIN_MARKER:
                 break
-        else:
+        sonst:
             raise psr.make_syntax_error(
                 f"Couldn't find {BEGIN_MARKER!r} in {psr.filename}"
             )
@@ -59,7 +59,7 @@ def parse_files(filenames: list[str]) -> list[AstNode]:
 
         # Find end marker, then delete everything after it
         while tkn := psr.next(raw=True):
-            if tkn.text == END_MARKER:
+            wenn tkn.text == END_MARKER:
                 break
         del psr.tokens[psr.getpos() - 1 :]
 
@@ -69,7 +69,7 @@ def parse_files(filenames: list[str]) -> list[AstNode]:
         while node := psr.definition():
             assert node is not None
             result.append(node)  # type: ignore[arg-type]
-        if not psr.eof():
+        wenn not psr.eof():
             pprint.pprint(result)
             psr.backup()
             raise psr.make_syntax_error(

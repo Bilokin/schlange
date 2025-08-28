@@ -255,7 +255,7 @@ klasse StructureTestCase(unittest.TestCase, StructCheckMixin):
 
         s = Test(1, 2, 3)
         # Test the StructUnionType_paramfunc() code path which copies the
-        # structure: if the structure is larger than sizeof(void*).
+        # structure: wenn the structure is larger than sizeof(void*).
         self.assertGreater(sizeof(s), sizeof(c_void_p))
 
         dll = CDLL(_ctypes_test.__file__)
@@ -302,12 +302,12 @@ klasse StructureTestCase(unittest.TestCase, StructCheckMixin):
     def _test_issue18060(self, Vector):
         # Regression tests fuer gh-62260
 
-        # The call to atan2() should succeed if the
+        # The call to atan2() should succeed wenn the
         # klasse fields were correctly cloned in the
         # subclasses. Otherwise, it will segfault.
-        if sys.platform == 'win32':
+        wenn sys.platform == 'win32':
             libm = CDLL(find_library('msvcrt.dll'))
-        else:
+        sonst:
             libm = CDLL(find_library('m'))
 
         libm.atan2.argtypes = [Vector]
@@ -495,7 +495,7 @@ klasse StructureTestCase(unittest.TestCase, StructCheckMixin):
             func = sut.cfunc2
             func.restype = sut.cls
             result = func()
-            # check if the default values have been set correctly
+            # check wenn the default values have been set correctly
             fuer i in range(sut.items):
                 self.assertEqual(result.data[i], float(i+1))
 
@@ -516,7 +516,7 @@ klasse StructureTestCase(unittest.TestCase, StructCheckMixin):
         u.f3[3] = 0xFEDCBA98
         f1 = [u.f1[i] fuer i in range(16)]
         f2 = [u.f2[i] fuer i in range(8)]
-        if sys.byteorder == 'little':
+        wenn sys.byteorder == 'little':
             self.assertEqual(f1, [0x67, 0x45, 0x23, 0x01,
                                   0xef, 0xcd, 0xab, 0x89,
                                   0x10, 0x32, 0x54, 0x76,
@@ -719,5 +719,5 @@ klasse StructureTestCase(unittest.TestCase, StructCheckMixin):
         self.assertIsNot(mid_ptr, vector_ptr)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

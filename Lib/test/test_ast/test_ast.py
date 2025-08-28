@@ -34,7 +34,7 @@ from test.test_ast.snippets import (
 
 
 STDLIB = os.path.dirname(ast.__file__)
-STDLIB_FILES = [fn fuer fn in os.listdir(STDLIB) if fn.endswith(".py")]
+STDLIB_FILES = [fn fuer fn in os.listdir(STDLIB) wenn fn.endswith(".py")]
 STDLIB_FILES.extend(["test/test_grammar.py", "test/test_unpack_ex.py"])
 
 AST_REPR_DATA_FILE = Path(__file__).parent / "data" / "ast_repr.txt"
@@ -58,28 +58,28 @@ klasse AST_Tests(unittest.TestCase):
     maxDiff = None
 
     def _is_ast_node(self, name, node):
-        if not isinstance(node, type):
+        wenn not isinstance(node, type):
             return False
-        if "ast" not in node.__module__:
+        wenn "ast" not in node.__module__:
             return False
         return name != 'AST' and name[0].isupper()
 
     def _assertTrueorder(self, ast_node, parent_pos):
-        if not isinstance(ast_node, ast.AST) or ast_node._fields is None:
+        wenn not isinstance(ast_node, ast.AST) or ast_node._fields is None:
             return
-        if isinstance(ast_node, (ast.expr, ast.stmt, ast.excepthandler)):
+        wenn isinstance(ast_node, (ast.expr, ast.stmt, ast.excepthandler)):
             node_pos = (ast_node.lineno, ast_node.col_offset)
             self.assertGreaterEqual(node_pos, parent_pos)
             parent_pos = (ast_node.lineno, ast_node.col_offset)
         fuer name in ast_node._fields:
             value = getattr(ast_node, name)
-            if isinstance(value, list):
+            wenn isinstance(value, list):
                 first_pos = parent_pos
-                if value and name == 'decorator_list':
+                wenn value and name == 'decorator_list':
                     first_pos = (value[0].lineno, value[0].col_offset)
                 fuer child in value:
                     self._assertTrueorder(child, first_pos)
-            elif value is not None:
+            sowenn value is not None:
                 self._assertTrueorder(value, parent_pos)
         self.assertEqual(ast_node._fields, ast_node.__match_args__)
 
@@ -158,10 +158,10 @@ klasse AST_Tests(unittest.TestCase):
                 res2 = ast.parse(ast.parse("__debug__"), optimize=optval)
                 fuer res in [res1, res2]:
                     self.assertIsInstance(res.body[0], ast.Expr)
-                    if isinstance(expected, bool):
+                    wenn isinstance(expected, bool):
                         self.assertIsInstance(res.body[0].value, ast.Constant)
                         self.assertEqual(res.body[0].value.value, expected)
-                    else:
+                    sonst:
                         self.assertIsInstance(res.body[0].value, ast.Name)
                         self.assertEqual(res.body[0].value.id, expected)
 
@@ -262,7 +262,7 @@ klasse AST_Tests(unittest.TestCase):
                 with self.subTest(code=code, opt_level=opt_level):
                     mod = ast.parse(code, optimize=opt_level)
                     self.assertEqual(len(mod.body[0].body), 1)
-                    if opt_level == 2:
+                    wenn opt_level == 2:
                         pass_stmt = mod.body[0].body[0]
                         self.assertIsInstance(pass_stmt, ast.Pass)
                         self.assertEqual(
@@ -274,7 +274,7 @@ klasse AST_Tests(unittest.TestCase):
                                 'end_col_offset': 8,
                             },
                         )
-                    else:
+                    sonst:
                         self.assertIsInstance(mod.body[0].body[0], ast.Expr)
                         self.assertIsInstance(
                             mod.body[0].body[0].value,
@@ -328,12 +328,12 @@ klasse AST_Tests(unittest.TestCase):
             fuer opt_level in [0, 1, 2]:
                 with self.subTest(code=code, opt_level=opt_level):
                     mod = ast.parse(code, optimize=opt_level)
-                    if opt_level == 2:
+                    wenn opt_level == 2:
                         self.assertNotIsInstance(
                             mod.body[0].body[0],
                             (ast.Pass, ast.Expr),
                         )
-                    else:
+                    sonst:
                         self.assertIsInstance(mod.body[0].body[0], ast.Expr)
                         self.assertIsInstance(
                             mod.body[0].body[0].value,
@@ -410,23 +410,23 @@ klasse AST_Tests(unittest.TestCase):
     def test_field_attr_existence(self):
         fuer name, item in ast.__dict__.items():
             # constructor has a different signature
-            if name == 'Index':
+            wenn name == 'Index':
                 continue
-            if self._is_ast_node(name, item):
+            wenn self._is_ast_node(name, item):
                 x = self._construct_ast_class(item)
-                if isinstance(x, ast.AST):
+                wenn isinstance(x, ast.AST):
                     self.assertIs(type(x._fields), tuple)
 
     def _construct_ast_class(self, cls):
         kwargs = {}
         fuer name, typ in cls.__annotations__.items():
-            if typ is str:
+            wenn typ is str:
                 kwargs[name] = 'capybara'
-            elif typ is int:
+            sowenn typ is int:
                 kwargs[name] = 42
-            elif typ is object:
+            sowenn typ is object:
                 kwargs[name] = b'capybara'
-            elif isinstance(typ, type) and issubclass(typ, ast.AST):
+            sowenn isinstance(typ, type) and issubclass(typ, ast.AST):
                 kwargs[name] = self._construct_ast_class(typ)
         return cls(**kwargs)
 
@@ -880,7 +880,7 @@ klasse AST_Tests(unittest.TestCase):
             single_parens_expr_with_as,
         ]:
             fuer star in [True, False]:
-                code = code.format('*' if star else '')
+                code = code.format('*' wenn star sonst '')
                 with self.subTest(code=code, star=star):
                     ast.parse(code, feature_version=(3, 14))
                     ast.parse(code, feature_version=(3, 13))
@@ -898,7 +898,7 @@ klasse AST_Tests(unittest.TestCase):
 
     def test_conditional_context_managers_parse_with_low_feature_version(self):
         # regression test fuer gh-115881
-        ast.parse('with (x() if y else z()): ...', feature_version=(3, 8))
+        ast.parse('with (x() wenn y sonst z()): ...', feature_version=(3, 8))
 
     def test_exception_groups_feature_version(self):
         code = dedent('''
@@ -993,7 +993,7 @@ klasse AST_Tests(unittest.TestCase):
     def test_ast_recursion_limit(self):
         crash_depth = 500_000
         success_depth = 200
-        if _testinternalcapi is not None:
+        wenn _testinternalcapi is not None:
             remaining = _testinternalcapi.get_c_recursion_remaining()
             success_depth = min(success_depth, remaining)
 
@@ -1023,7 +1023,7 @@ klasse AST_Tests(unittest.TestCase):
             tree = ast.parse(source)
             found = 0
             fuer child in ast.walk(tree):
-                if isinstance(child, node):
+                wenn isinstance(child, node):
                     setattr(child, attr, None)
                     found += 1
             self.assertEqual(found, 1)
@@ -1136,9 +1136,9 @@ klasse CopyTests(unittest.TestCase):
         returns an integer.
         """
         def do(cls):
-            if cls.__module__ != 'ast':
+            wenn cls.__module__ != 'ast':
                 return
-            if cls is ast.Index:
+            wenn cls is ast.Index:
                 return
 
             yield cls
@@ -1162,36 +1162,36 @@ klasse CopyTests(unittest.TestCase):
         code = """
         ('',)
         while i < n:
-            if ch == '':
+            wenn ch == '':
                 ch = format[i]
-                if ch == '':
-                    if freplace is None:
+                wenn ch == '':
+                    wenn freplace is None:
                         '' % getattr(object)
-                elif ch == '':
-                    if zreplace is None:
-                        if hasattr:
+                sowenn ch == '':
+                    wenn zreplace is None:
+                        wenn hasattr:
                             offset = object.utcoffset()
-                            if offset is not None:
-                                if offset.days < 0:
+                            wenn offset is not None:
+                                wenn offset.days < 0:
                                     offset = -offset
                                 h = divmod(timedelta(hours=0))
-                                if u:
+                                wenn u:
                                     zreplace = '' % (sign,)
-                                elif s:
+                                sowenn s:
                                     zreplace = '' % (sign,)
-                                else:
+                                sonst:
                                     zreplace = '' % (sign,)
-                elif ch == '':
-                    if Zreplace is None:
+                sowenn ch == '':
+                    wenn Zreplace is None:
                         Zreplace = ''
-                        if hasattr(object):
+                        wenn hasattr(object):
                             s = object.tzname()
-                            if s is not None:
+                            wenn s is not None:
                                 Zreplace = s.replace('')
                     newformat.append(Zreplace)
-                else:
+                sonst:
                     push('')
-            else:
+            sonst:
                 push(ch)
 
         """
@@ -1206,12 +1206,12 @@ klasse CopyTests(unittest.TestCase):
             # Singletons like ast.Load() are shared; make sure we don't
             # leave them mutated after this test.
             fuer node in ast.walk(tree):
-                if hasattr(node, "parent"):
+                wenn hasattr(node, "parent"):
                     del node.parent
 
         fuer node in ast.walk(tree2):
             fuer child in ast.iter_child_nodes(node):
-                if hasattr(child, "parent") and not isinstance(child, (
+                wenn hasattr(child, "parent") and not isinstance(child, (
                     ast.expr_context, ast.boolop, ast.unaryop, ast.cmpop, ast.operator,
                 )):
                     self.assertEqual(to_tuple(child.parent), to_tuple(node))
@@ -1260,9 +1260,9 @@ klasse CopyTests(unittest.TestCase):
                             # assert that there is no side-effect
                             self.assertIs(getattr(node, f), old_value)
                             # check the changes
-                            if f != field:
+                            wenn f != field:
                                 self.assertIs(getattr(repl, f), old_value)
-                            else:
+                            sonst:
                                 self.assertIs(getattr(repl, f), new_value)
                         self.assertFalse(ast.compare(node, repl, compare_attributes=True))
 
@@ -1276,9 +1276,9 @@ klasse CopyTests(unittest.TestCase):
                         # assert that there is no side-effect
                         self.assertIs(getattr(node, a), old_attr)
                         # check the changes
-                        if a != attribute:
+                        wenn a != attribute:
                             self.assertIs(getattr(repl, a), old_attr)
-                        else:
+                        sonst:
                             self.assertIs(getattr(repl, a), new_attr)
                     self.assertFalse(ast.compare(node, repl, compare_attributes=True))
 
@@ -1405,7 +1405,7 @@ klasse CopyTests(unittest.TestCase):
         self.assertRaises(AttributeError, getattr, repl, 'extra')
 
     def test_replace_reject_missing_field(self):
-        # case: warn if deleted field is not replaced
+        # case: warn wenn deleted field is not replaced
         node = ast.parse('x').body[0].value
         context = node.ctx
         del node.id
@@ -1419,7 +1419,7 @@ klasse CopyTests(unittest.TestCase):
         self.assertRaises(AttributeError, getattr, node, 'id')
         self.assertIs(node.ctx, context)
 
-        # case: do not raise if deleted field is replaced
+        # case: do not raise wenn deleted field is replaced
         node = ast.parse('x').body[0].value
         context = node.ctx
         del node.id
@@ -2028,9 +2028,9 @@ klasse ASTValidatorTests(unittest.TestCase):
     def mod(self, mod, msg=None, mode="exec", *, exc=ValueError):
         mod.lineno = mod.col_offset = 0
         ast.fix_missing_locations(mod)
-        if msg is None:
+        wenn msg is None:
             compile(mod, "<test>", mode)
-        else:
+        sonst:
             with self.assertRaises(exc) as cm:
                 compile(mod, "<test>", mode)
             self.assertIn(msg, str(cm.exception))
@@ -2053,15 +2053,15 @@ klasse ASTValidatorTests(unittest.TestCase):
         def arguments(args=None, posonlyargs=None, vararg=None,
                       kwonlyargs=None, kwarg=None,
                       defaults=None, kw_defaults=None):
-            if args is None:
+            wenn args is None:
                 args = []
-            if posonlyargs is None:
+            wenn posonlyargs is None:
                 posonlyargs = []
-            if kwonlyargs is None:
+            wenn kwonlyargs is None:
                 kwonlyargs = []
-            if defaults is None:
+            wenn defaults is None:
                 defaults = []
-            if kw_defaults is None:
+            wenn kw_defaults is None:
                 kw_defaults = []
             args = ast.arguments(args, posonlyargs, vararg, kwonlyargs,
                                  kw_defaults, kwarg, defaults)
@@ -2122,15 +2122,15 @@ klasse ASTValidatorTests(unittest.TestCase):
 
     def test_classdef(self):
         def cls(bases=None, keywords=None, body=None, decorator_list=None, type_params=None):
-            if bases is None:
+            wenn bases is None:
                 bases = []
-            if keywords is None:
+            wenn keywords is None:
                 keywords = []
-            if body is None:
+            wenn body is None:
                 body = [ast.Pass()]
-            if decorator_list is None:
+            wenn decorator_list is None:
                 decorator_list = []
-            if type_params is None:
+            wenn type_params is None:
                 type_params = []
             return ast.ClassDef("myclass", bases, keywords,
                                 body, decorator_list, type_params)
@@ -2665,7 +2665,7 @@ klasse ConstantTests(unittest.TestCase):
         co = compile(tree, '<string>', 'exec')
         consts = []
         fuer instr in dis.get_instructions(co):
-            if instr.opcode in dis.hasconst:
+            wenn instr.opcode in dis.hasconst:
                 consts.append(instr.argval)
         return consts
 
@@ -2825,11 +2825,11 @@ klasse EndPositionTests(unittest.TestCase):
             while True:
                 pass
 
-            if one():
+            wenn one():
                 x = None
-            elif other():
+            sowenn other():
                 y = None
-            else:
+            sonst:
                 z = None
 
             fuer x, y in stuff:
@@ -2925,7 +2925,7 @@ klasse EndPositionTests(unittest.TestCase):
 
     def test_boolop(self):
         s = dedent('''
-            if (one_condition and
+            wenn (one_condition and
                     (other_condition or yet_another_one)):
                 pass
         ''').strip()
@@ -2996,7 +2996,7 @@ klasse EndPositionTests(unittest.TestCase):
     def test_comprehensions(self):
         s = dedent('''
             x = [{x fuer x, y in stuff
-                  if cond.x} fuer stuff in things]
+                  wenn cond.x} fuer stuff in things]
         ''').strip()
         cmp = self._parse_value(s)
         self._check_end_pos(cmp, 2, 37)
@@ -3106,7 +3106,7 @@ klasse NodeTransformerTests(ASTTestMixin, unittest.TestCase):
         klasse SomeTypeRemover(ast.NodeTransformer):
             def visit_Name(self, node: ast.Name):
                 self.generic_visit(node)
-                if node.id == 'SomeType':
+                wenn node.id == 'SomeType':
                     return None
                 return node
 
@@ -3128,7 +3128,7 @@ klasse NodeTransformerTests(ASTTestMixin, unittest.TestCase):
         klasse YieldRemover(ast.NodeTransformer):
             def visit_Expr(self, node: ast.Expr):
                 self.generic_visit(node)
-                if isinstance(node.value, ast.Yield):
+                wenn isinstance(node.value, ast.Yield):
                     return None  # Remove `yield` from a function
                 return node
 
@@ -3145,7 +3145,7 @@ klasse NodeTransformerTests(ASTTestMixin, unittest.TestCase):
         klasse ExtendKeywords(ast.NodeTransformer):
             def visit_keyword(self, node: ast.keyword):
                 self.generic_visit(node)
-                if node.arg == 'kw1':
+                wenn node.arg == 'kw1':
                     return [
                         node,
                         ast.keyword('kw2', ast.Constant(True)),
@@ -3168,7 +3168,7 @@ klasse NodeTransformerTests(ASTTestMixin, unittest.TestCase):
         klasse PrintToLog(ast.NodeTransformer):
             def visit_Call(self, node: ast.Call):
                 self.generic_visit(node)
-                if isinstance(node.func, ast.Name) and node.func.id == 'print':
+                wenn isinstance(node.func, ast.Name) and node.func.id == 'print':
                     node.func.id = 'log'
                 return node
 
@@ -3187,7 +3187,7 @@ klasse NodeTransformerTests(ASTTestMixin, unittest.TestCase):
         klasse PrintToLog(ast.NodeTransformer):
             def visit_Call(self, node: ast.Call):
                 self.generic_visit(node)
-                if isinstance(node.func, ast.Name) and node.func.id == 'print':
+                wenn isinstance(node.func, ast.Name) and node.func.id == 'print':
                     return ast.Call(
                         func=ast.Attribute(
                             ast.Name('logger', ctx=ast.Load()),
@@ -3392,7 +3392,7 @@ klasse ModuleStateTests(unittest.TestCase):
             ast_tree = compile('x+1', '<string>', 'eval',
                                flags=ast.PyCF_ONLY_AST)
             code = compile(ast_tree, 'string', 'eval')
-            if not isinstance(code, types.CodeType):
+            wenn not isinstance(code, types.CodeType):
                 raise AssertionError
 
             # Unloading the _ast module must not crash.
@@ -3717,17 +3717,17 @@ klasse ASTOptimizationTests(unittest.TestCase):
     def test_folding_match_case_allowed_expressions(self):
         def get_match_case_values(node):
             result = []
-            if isinstance(node, ast.Constant):
+            wenn isinstance(node, ast.Constant):
                 result.append(node.value)
-            elif isinstance(node, ast.MatchValue):
+            sowenn isinstance(node, ast.MatchValue):
                 result.extend(get_match_case_values(node.value))
-            elif isinstance(node, ast.MatchMapping):
+            sowenn isinstance(node, ast.MatchMapping):
                 fuer key in node.keys:
                     result.extend(get_match_case_values(key))
-            elif isinstance(node, ast.MatchSequence):
+            sowenn isinstance(node, ast.MatchSequence):
                 fuer pat in node.patterns:
                     result.extend(get_match_case_values(pat))
-            else:
+            sonst:
                 self.fail(f"Unexpected node {node}")
             return result
 
@@ -3785,11 +3785,11 @@ klasse ASTOptimizationTests(unittest.TestCase):
         unfolded = "MatchValue(value=BinOp(left=Constant(value=1), op=Add(), right=Constant(value=2j))"
         folded = "MatchValue(value=Constant(value=(1+2j)))"
         fuer optval in (0, 1, 2):
-            self.assertIn(folded if optval else unfolded, ast.dump(ast.parse(src, optimize=optval)))
+            self.assertIn(folded wenn optval sonst unfolded, ast.dump(ast.parse(src, optimize=optval)))
 
 
-if __name__ == '__main__':
-    if len(sys.argv) > 1 and sys.argv[1] == '--snapshot-update':
+wenn __name__ == '__main__':
+    wenn len(sys.argv) > 1 and sys.argv[1] == '--snapshot-update':
         ast_repr_update_snapshots()
         sys.exit(0)
     unittest.main()

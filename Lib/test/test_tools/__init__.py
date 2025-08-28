@@ -7,7 +7,7 @@ from test import support
 from test.support import import_helper
 
 
-if not support.has_subprocess_support:
+wenn not support.has_subprocess_support:
     raise unittest.SkipTest("test module requires subprocess")
 
 
@@ -21,12 +21,12 @@ toolsdir = os.path.join(basepath, 'Tools')
 scriptsdir = os.path.join(toolsdir, 'scripts')
 
 def skip_if_missing(tool=None):
-    if tool:
+    wenn tool:
         tooldir = os.path.join(toolsdir, tool)
-    else:
+    sonst:
         tool = 'scripts'
         tooldir = scriptsdir
-    if not os.path.isdir(tooldir):
+    wenn not os.path.isdir(tooldir):
         raise unittest.SkipTest(f'{tool} directory could not be found')
 
 @contextlib.contextmanager

@@ -33,18 +33,18 @@ klasse BaseTest:
     # as str objects. fixtype() can be used to propagate
     # these arguments to the appropriate type
     def fixtype(self, obj):
-        if isinstance(obj, str):
+        wenn isinstance(obj, str):
             return self.__class__.type2test(obj)
-        elif isinstance(obj, list):
+        sowenn isinstance(obj, list):
             return [self.fixtype(x) fuer x in obj]
-        elif isinstance(obj, tuple):
+        sowenn isinstance(obj, tuple):
             return tuple([self.fixtype(x) fuer x in obj])
-        elif isinstance(obj, dict):
+        sowenn isinstance(obj, dict):
             return dict([
                (self.fixtype(key), self.fixtype(value))
                fuer (key, value) in obj.items()
             ])
-        else:
+        sonst:
             return obj
 
     def test_fixtype(self):
@@ -61,15 +61,15 @@ klasse BaseTest:
             result,
             realresult
         )
-        # if the original is returned make sure that
+        # wenn the original is returned make sure that
         # this doesn't happen with subclasses
-        if obj is realresult:
+        wenn obj is realresult:
             try:
                 klasse subtype(self.__class__.type2test):
                     pass
             except TypeError:
-                pass  # Skip this if we can't subclass
-            else:
+                pass  # Skip this wenn we can't subclass
+            sonst:
                 obj = subtype(obj)
                 realresult = getattr(obj, methodname)(*args)
                 self.assertIsNot(obj, realresult)
@@ -81,7 +81,7 @@ klasse BaseTest:
         with self.assertRaises(exc) as cm:
             getattr(obj, methodname)(*args)
         self.assertNotEqual(str(cm.exception), '')
-        if expected_msg is not None:
+        wenn expected_msg is not None:
             self.assertEqual(str(cm.exception), expected_msg)
 
     # call obj.method(*args) without any checks
@@ -122,9 +122,9 @@ klasse BaseTest:
 
         self.checkraises(TypeError, 'hello', 'count')
 
-        if self.contains_bytes:
+        wenn self.contains_bytes:
             self.checkequal(0, 'hello', 'count', 42)
-        else:
+        sonst:
             self.checkraises(TypeError, 'hello', 'count', 42)
 
         # For a variety of combinations,
@@ -145,12 +145,12 @@ klasse BaseTest:
             n = len(i)
             fuer j in teststrings:
                 r1 = i.count(j)
-                if j:
+                wenn j:
                     r2, rem = divmod(n - len(i.replace(j, self.fixtype(''))),
                                      len(j))
-                else:
+                sonst:
                     r2, rem = len(i)+1, 0
-                if rem or r1 != r2:
+                wenn rem or r1 != r2:
                     self.assertEqual(rem, 0, '%s != 0 fuer %s' % (rem, i))
                     self.assertEqual(r1, r2, '%s != %s fuer %s' % (r1, r2, i))
 
@@ -178,9 +178,9 @@ klasse BaseTest:
 
         self.checkraises(TypeError, 'hello', 'find')
 
-        if self.contains_bytes:
+        wenn self.contains_bytes:
             self.checkequal(-1, 'hello', 'find', 42)
-        else:
+        sonst:
             self.checkraises(TypeError, 'hello', 'find', 42)
 
         self.checkequal(0, '', 'find', '')
@@ -214,7 +214,7 @@ klasse BaseTest:
                 r1 = (loc != -1)
                 r2 = j in i
                 self.assertEqual(r1, r2)
-                if loc != -1:
+                wenn loc != -1:
                     self.assertEqual(i[loc:loc+len(j)], j)
 
     def test_rfind(self):
@@ -236,9 +236,9 @@ klasse BaseTest:
 
         self.checkraises(TypeError, 'hello', 'rfind')
 
-        if self.contains_bytes:
+        wenn self.contains_bytes:
             self.checkequal(-1, 'hello', 'rfind', 42)
-        else:
+        sonst:
             self.checkraises(TypeError, 'hello', 'rfind', 42)
 
         # For a variety of combinations,
@@ -261,7 +261,7 @@ klasse BaseTest:
                 r1 = (loc != -1)
                 r2 = j in i
                 self.assertEqual(r1, r2)
-                if loc != -1:
+                wenn loc != -1:
                     self.assertEqual(i[loc:loc+len(j)], j)
 
         # issue 7458
@@ -290,9 +290,9 @@ klasse BaseTest:
 
         self.checkraises(TypeError, 'hello', 'index')
 
-        if self.contains_bytes:
+        wenn self.contains_bytes:
             self.checkraises(ValueError, 'hello', 'index', 42)
-        else:
+        sonst:
             self.checkraises(TypeError, 'hello', 'index', 42)
 
     def test_rindex(self):
@@ -316,18 +316,18 @@ klasse BaseTest:
 
         self.checkraises(TypeError, 'hello', 'rindex')
 
-        if self.contains_bytes:
+        wenn self.contains_bytes:
             self.checkraises(ValueError, 'hello', 'rindex', 42)
-        else:
+        sonst:
             self.checkraises(TypeError, 'hello', 'rindex', 42)
 
     def test_find_periodic_pattern(self):
         """Cover the special path fuer periodic patterns."""
         def reference_find(p, s):
             fuer i in range(len(s)):
-                if s.startswith(p, i):
+                wenn s.startswith(p, i):
                     return i
-            if p == '' and s == '':
+            wenn p == '' and s == '':
                 return 0
             return -1
 
@@ -359,7 +359,7 @@ klasse BaseTest:
         fuer n, haystack1 in haystacks:
             haystack2 = haystack1[:-1]
             fuer m, needle in needles:
-                answer1 = 5 * (n - m) if m <= n else -1
+                answer1 = 5 * (n - m) wenn m <= n sonst -1
                 self.assertEqual(haystack1.find(needle), answer1, msg=(n,m))
                 self.assertEqual(haystack2.find(needle), -1, msg=(n,m))
 
@@ -438,7 +438,7 @@ klasse BaseTest:
 
         self.checkraises(TypeError, 'hello', 'expandtabs', 42, 42)
         # This test is only valid when sizeof(int) == sizeof(void*) == 4.
-        if sys.maxsize < (1 << 32) and struct.calcsize('P') == 4:
+        wenn sys.maxsize < (1 << 32) and struct.calcsize('P') == 4:
             self.checkraises(OverflowError,
                              '\ta\n\tb', 'expandtabs', sys.maxsize)
 
@@ -1340,9 +1340,9 @@ klasse StringLikeTest(BaseTest):
                 yield 4 + ""
             self.fixtype(' ').join(f())
         except TypeError as e:
-            if '+' not in str(e):
+            wenn '+' not in str(e):
                 self.fail('join() ate exception message')
-        else:
+        sonst:
             self.fail('exception not raised')
 
     def test_formatting(self):

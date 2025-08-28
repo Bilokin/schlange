@@ -16,7 +16,7 @@ klasse TestGeneratorBase:
     policy = policy.default
 
     def msgmaker(self, msg, policy=None):
-        policy = self.policy if policy is None else policy
+        policy = self.policy wenn policy is None sonst policy
         return self.msgfunc(msg, policy=policy)
 
     refold_long_expected = {
@@ -188,7 +188,7 @@ klasse TestGeneratorBase:
             (policy.default.clone(mangle_from_=True), True),
             )
         fuer p, mangle in variants:
-            expected = source.replace('From ', '>From ') if mangle else source
+            expected = source.replace('From ', '>From ') wenn mangle sonst source
             with self.subTest(policy=p, mangle_from_=mangle):
                 msg = self.msgmaker(self.typ(source))
                 s = self.ioclass()
@@ -473,5 +473,5 @@ klasse TestBytesGenerator(TestGeneratorBase, TestEmailBase):
         self.assertEqual(s.getvalue(), expected)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

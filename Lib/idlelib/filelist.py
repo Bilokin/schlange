@@ -18,7 +18,7 @@ klasse FileList:
     def open(self, filename, action=None):
         assert filename
         filename = self.canonize(filename)
-        if os.path.isdir(filename):
+        wenn os.path.isdir(filename):
             # This can happen when bad filename is passed on command line:
             messagebox.showerror(
                 "File Error",
@@ -26,24 +26,24 @@ klasse FileList:
                 master=self.root)
             return None
         key = os.path.normcase(filename)
-        if key in self.dict:
+        wenn key in self.dict:
             edit = self.dict[key]
             edit.top.wakeup()
             return edit
-        if action:
+        wenn action:
             # Don't create window, perform 'action', e.g. open in same window
             return action(filename)
-        else:
+        sonst:
             edit = self.EditorWindow(self, filename, key)
-            if edit.good_load:
+            wenn edit.good_load:
                 return edit
-            else:
+            sonst:
                 edit._close()
                 return None
 
     def gotofileline(self, filename, lineno=None):
         edit = self.open(filename)
-        if edit is not None and lineno is not None:
+        wenn edit is not None and lineno is not None:
             edit.gotoline(lineno)
 
     def new(self, filename=None):
@@ -52,7 +52,7 @@ klasse FileList:
     def close_all_callback(self, *args, **kwds):
         fuer edit in list(self.inversedict):
             reply = edit.close()
-            if reply == "cancel":
+            wenn reply == "cancel":
                 break
         return "break"
 
@@ -62,10 +62,10 @@ klasse FileList:
         except KeyError:
             print("Don't know this EditorWindow object.  (close)")
             return
-        if key:
+        wenn key:
             del self.dict[key]
         del self.inversedict[edit]
-        if not self.inversedict:
+        wenn not self.inversedict:
             self.root.quit()
 
     def filename_changed_edit(self, edit):
@@ -76,16 +76,16 @@ klasse FileList:
             print("Don't know this EditorWindow object.  (rename)")
             return
         filename = edit.io.filename
-        if not filename:
-            if key:
+        wenn not filename:
+            wenn key:
                 del self.dict[key]
             self.inversedict[edit] = None
             return
         filename = self.canonize(filename)
         newkey = os.path.normcase(filename)
-        if newkey == key:
+        wenn newkey == key:
             return
-        if newkey in self.dict:
+        wenn newkey in self.dict:
             conflict = self.dict[newkey]
             self.inversedict[conflict] = None
             messagebox.showerror(
@@ -94,19 +94,19 @@ klasse FileList:
                 master=self.root)
         self.dict[newkey] = edit
         self.inversedict[edit] = newkey
-        if key:
+        wenn key:
             try:
                 del self.dict[key]
             except KeyError:
                 pass
 
     def canonize(self, filename):
-        if not os.path.isabs(filename):
+        wenn not os.path.isabs(filename):
             try:
                 pwd = os.getcwd()
             except OSError:
                 pass
-            else:
+            sonst:
                 filename = os.path.join(pwd, filename)
         return os.path.normpath(filename)
 
@@ -121,11 +121,11 @@ def _test():  # TODO check and convert to htest
     root.withdraw()
     flist = FileList(root)
     flist.new()
-    if flist.inversedict:
+    wenn flist.inversedict:
         root.mainloop()
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     from unittest import main
     main('idlelib.idle_test.test_filelist', verbosity=2)
 

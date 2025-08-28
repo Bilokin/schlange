@@ -53,7 +53,7 @@
 ##
 # Implementation module fuer XPath support.  There's usually no reason
 # to import this module directly; the <b>ElementTree</b> does this for
-# you, if needed.
+# you, wenn needed.
 ##
 
 import re
@@ -72,32 +72,32 @@ xpath_tokenizer_re = re.compile(
     )
 
 def xpath_tokenizer(pattern, namespaces=None):
-    default_namespace = namespaces.get('') if namespaces else None
+    default_namespace = namespaces.get('') wenn namespaces sonst None
     parsing_attribute = False
     fuer token in xpath_tokenizer_re.findall(pattern):
         ttype, tag = token
-        if tag and tag[0] != "{":
-            if ":" in tag:
+        wenn tag and tag[0] != "{":
+            wenn ":" in tag:
                 prefix, uri = tag.split(":", 1)
                 try:
-                    if not namespaces:
+                    wenn not namespaces:
                         raise KeyError
                     yield ttype, "{%s}%s" % (namespaces[prefix], uri)
                 except KeyError:
                     raise SyntaxError("prefix %r not found in prefix map" % prefix) from None
-            elif default_namespace and not parsing_attribute:
+            sowenn default_namespace and not parsing_attribute:
                 yield ttype, "{%s}%s" % (default_namespace, tag)
-            else:
+            sonst:
                 yield token
             parsing_attribute = False
-        else:
+        sonst:
             yield token
             parsing_attribute = ttype == '@'
 
 
 def get_parent_map(context):
     parent_map = context.parent_map
-    if parent_map is None:
+    wenn parent_map is None:
         context.parent_map = parent_map = {}
         fuer p in context.root.iter():
             fuer e in p:
@@ -111,22 +111,22 @@ def _is_wildcard_tag(tag):
 
 def _prepare_tag(tag):
     _isinstance, _str = isinstance, str
-    if tag == '{*}*':
+    wenn tag == '{*}*':
         # Same as '*', but no comments or processing instructions.
         # It can be a surprise that '*' includes those, but there is no
         # justification fuer '{*}*' doing the same.
         def select(context, result):
             fuer elem in result:
-                if _isinstance(elem.tag, _str):
+                wenn _isinstance(elem.tag, _str):
                     yield elem
-    elif tag == '{}*':
+    sowenn tag == '{}*':
         # Any tag that is not in a namespace.
         def select(context, result):
             fuer elem in result:
                 el_tag = elem.tag
-                if _isinstance(el_tag, _str) and el_tag[0] != '{':
+                wenn _isinstance(el_tag, _str) and el_tag[0] != '{':
                     yield elem
-    elif tag[:3] == '{*}':
+    sowenn tag[:3] == '{*}':
         # The tag in any (or no) namespace.
         suffix = tag[2:]  # '}name'
         no_ns = slice(-len(suffix), None)
@@ -134,38 +134,38 @@ def _prepare_tag(tag):
         def select(context, result):
             fuer elem in result:
                 el_tag = elem.tag
-                if el_tag == tag or _isinstance(el_tag, _str) and el_tag[no_ns] == suffix:
+                wenn el_tag == tag or _isinstance(el_tag, _str) and el_tag[no_ns] == suffix:
                     yield elem
-    elif tag[-2:] == '}*':
+    sowenn tag[-2:] == '}*':
         # Any tag in the given namespace.
         ns = tag[:-1]
         ns_only = slice(None, len(ns))
         def select(context, result):
             fuer elem in result:
                 el_tag = elem.tag
-                if _isinstance(el_tag, _str) and el_tag[ns_only] == ns:
+                wenn _isinstance(el_tag, _str) and el_tag[ns_only] == ns:
                     yield elem
-    else:
+    sonst:
         raise RuntimeError(f"internal parser error, got {tag}")
     return select
 
 
 def prepare_child(next, token):
     tag = token[1]
-    if _is_wildcard_tag(tag):
+    wenn _is_wildcard_tag(tag):
         select_tag = _prepare_tag(tag)
         def select(context, result):
             def select_child(result):
                 fuer elem in result:
                     yield from elem
             return select_tag(context, select_child(result))
-    else:
-        if tag[:2] == '{}':
+    sonst:
+        wenn tag[:2] == '{}':
             tag = tag[2:]  # '{}tag' == 'tag'
         def select(context, result):
             fuer elem in result:
                 fuer e in elem:
-                    if e.tag == tag:
+                    wenn e.tag == tag:
                         yield e
     return select
 
@@ -185,41 +185,41 @@ def prepare_descendant(next, token):
         token = next()
     except StopIteration:
         return
-    if token[0] == "*":
+    wenn token[0] == "*":
         tag = "*"
-    elif not token[0]:
+    sowenn not token[0]:
         tag = token[1]
-    else:
+    sonst:
         raise SyntaxError("invalid descendant")
 
-    if _is_wildcard_tag(tag):
+    wenn _is_wildcard_tag(tag):
         select_tag = _prepare_tag(tag)
         def select(context, result):
             def select_child(result):
                 fuer elem in result:
                     fuer e in elem.iter():
-                        if e is not elem:
+                        wenn e is not elem:
                             yield e
             return select_tag(context, select_child(result))
-    else:
-        if tag[:2] == '{}':
+    sonst:
+        wenn tag[:2] == '{}':
             tag = tag[2:]  # '{}tag' == 'tag'
         def select(context, result):
             fuer elem in result:
                 fuer e in elem.iter(tag):
-                    if e is not elem:
+                    wenn e is not elem:
                         yield e
     return select
 
 def prepare_parent(next, token):
     def select(context, result):
-        # FIXME: raise error if .. is applied at toplevel?
+        # FIXME: raise error wenn .. is applied at toplevel?
         parent_map = get_parent_map(context)
         result_map = {}
         fuer elem in result:
-            if elem in parent_map:
+            wenn elem in parent_map:
                 parent = parent_map[elem]
-                if parent not in result_map:
+                wenn parent not in result_map:
                     result_map[parent] = None
                     yield parent
     return select
@@ -234,102 +234,102 @@ def prepare_predicate(next, token):
             token = next()
         except StopIteration:
             return
-        if token[0] == "]":
+        wenn token[0] == "]":
             break
-        if token == ('', ''):
+        wenn token == ('', ''):
             # ignore whitespace
             continue
-        if token[0] and token[0][:1] in "'\"":
+        wenn token[0] and token[0][:1] in "'\"":
             token = "'", token[0][1:-1]
         signature.append(token[0] or "-")
         predicate.append(token[1])
     signature = "".join(signature)
     # use signature to determine predicate type
-    if signature == "@-":
+    wenn signature == "@-":
         # [@attribute] predicate
         key = predicate[1]
         def select(context, result):
             fuer elem in result:
-                if elem.get(key) is not None:
+                wenn elem.get(key) is not None:
                     yield elem
         return select
-    if signature == "@-='" or signature == "@-!='":
+    wenn signature == "@-='" or signature == "@-!='":
         # [@attribute='value'] or [@attribute!='value']
         key = predicate[1]
         value = predicate[-1]
         def select(context, result):
             fuer elem in result:
-                if elem.get(key) == value:
+                wenn elem.get(key) == value:
                     yield elem
         def select_negated(context, result):
             fuer elem in result:
-                if (attr_value := elem.get(key)) is not None and attr_value != value:
+                wenn (attr_value := elem.get(key)) is not None and attr_value != value:
                     yield elem
-        return select_negated if '!=' in signature else select
-    if signature == "-" and not re.match(r"\-?\d+$", predicate[0]):
+        return select_negated wenn '!=' in signature sonst select
+    wenn signature == "-" and not re.match(r"\-?\d+$", predicate[0]):
         # [tag]
         tag = predicate[0]
         def select(context, result):
             fuer elem in result:
-                if elem.find(tag) is not None:
+                wenn elem.find(tag) is not None:
                     yield elem
         return select
-    if signature == ".='" or signature == ".!='" or (
+    wenn signature == ".='" or signature == ".!='" or (
             (signature == "-='" or signature == "-!='")
             and not re.match(r"\-?\d+$", predicate[0])):
         # [.='value'] or [tag='value'] or [.!='value'] or [tag!='value']
         tag = predicate[0]
         value = predicate[-1]
-        if tag:
+        wenn tag:
             def select(context, result):
                 fuer elem in result:
                     fuer e in elem.findall(tag):
-                        if "".join(e.itertext()) == value:
+                        wenn "".join(e.itertext()) == value:
                             yield elem
                             break
             def select_negated(context, result):
                 fuer elem in result:
                     fuer e in elem.iterfind(tag):
-                        if "".join(e.itertext()) != value:
+                        wenn "".join(e.itertext()) != value:
                             yield elem
                             break
-        else:
+        sonst:
             def select(context, result):
                 fuer elem in result:
-                    if "".join(elem.itertext()) == value:
+                    wenn "".join(elem.itertext()) == value:
                         yield elem
             def select_negated(context, result):
                 fuer elem in result:
-                    if "".join(elem.itertext()) != value:
+                    wenn "".join(elem.itertext()) != value:
                         yield elem
-        return select_negated if '!=' in signature else select
-    if signature == "-" or signature == "-()" or signature == "-()-":
+        return select_negated wenn '!=' in signature sonst select
+    wenn signature == "-" or signature == "-()" or signature == "-()-":
         # [index] or [last()] or [last()-index]
-        if signature == "-":
+        wenn signature == "-":
             # [index]
             index = int(predicate[0]) - 1
-            if index < 0:
+            wenn index < 0:
                 raise SyntaxError("XPath position >= 1 expected")
-        else:
-            if predicate[0] != "last":
+        sonst:
+            wenn predicate[0] != "last":
                 raise SyntaxError("unsupported function")
-            if signature == "-()-":
+            wenn signature == "-()-":
                 try:
                     index = int(predicate[2]) - 1
                 except ValueError:
                     raise SyntaxError("unsupported expression")
-                if index > -2:
+                wenn index > -2:
                     raise SyntaxError("XPath offset from last() must be negative")
-            else:
+            sonst:
                 index = -1
         def select(context, result):
             parent_map = get_parent_map(context)
             fuer elem in result:
                 try:
                     parent = parent_map[elem]
-                    # FIXME: what if the selector is "*" ?
+                    # FIXME: what wenn the selector is "*" ?
                     elems = list(parent.findall(elem.tag))
-                    if elems[index] is elem:
+                    wenn elems[index] is elem:
                         yield elem
                 except (IndexError, KeyError):
                     pass
@@ -359,19 +359,19 @@ klasse _SelectorContext:
 
 def iterfind(elem, path, namespaces=None):
     # compile selector pattern
-    if path[-1:] == "/":
+    wenn path[-1:] == "/":
         path = path + "*" # implicit all (FIXME: keep this?)
 
     cache_key = (path,)
-    if namespaces:
+    wenn namespaces:
         cache_key += tuple(sorted(namespaces.items()))
 
     try:
         selector = _cache[cache_key]
     except KeyError:
-        if len(_cache) > 100:
+        wenn len(_cache) > 100:
             _cache.clear()
-        if path[:1] == "/":
+        wenn path[:1] == "/":
             raise SyntaxError("cannot use absolute path on element")
         next = iter(xpath_tokenizer(path, namespaces)).__next__
         try:
@@ -386,7 +386,7 @@ def iterfind(elem, path, namespaces=None):
                 raise SyntaxError("invalid path") from None
             try:
                 token = next()
-                if token[0] == "/":
+                wenn token[0] == "/":
                     token = next()
             except StopIteration:
                 break
@@ -416,7 +416,7 @@ def findall(elem, path, namespaces=None):
 def findtext(elem, path, default=None, namespaces=None):
     try:
         elem = next(iterfind(elem, path, namespaces))
-        if elem.text is None:
+        wenn elem.text is None:
             return ""
         return elem.text
     except StopIteration:

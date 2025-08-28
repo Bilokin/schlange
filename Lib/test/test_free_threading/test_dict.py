@@ -73,10 +73,10 @@ klasse TestDict(TestCase):
         def writer_func(name):
             last = -1
             while True:
-                if CUR == last:
+                wenn CUR == last:
                     time.sleep(0.001)
                     continue
-                elif CUR == OBJECT_COUNT:
+                sowenn CUR == OBJECT_COUNT:
                     break
 
                 obj = objects[CUR]
@@ -175,10 +175,10 @@ klasse TestDict(TestCase):
 
             def writer_func(l):
                 fuer i in range(1000):
-                    if cyclic:
+                    wenn cyclic:
                         other_d = {}
                     d = MyDict({"foo": 100})
-                    if cyclic:
+                    wenn cyclic:
                         d["x"] = other_d
                         other_d["bar"] = d
                     l.append(weakref.ref(d))
@@ -220,7 +220,7 @@ klasse TestDict(TestCase):
             ids = set()
             fuer thread_list in lists:
                 fuer i, ref in enumerate(thread_list):
-                    if ref() is None:
+                    wenn ref() is None:
                         continue
                     count += 1
                     ids.add(id(ref()))
@@ -245,5 +245,5 @@ klasse TestDict(TestCase):
         with threading_helper.start_threads([t1, t2]):
             pass
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

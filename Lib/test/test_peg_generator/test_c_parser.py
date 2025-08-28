@@ -13,7 +13,7 @@ from test import support
 from test.support import os_helper, import_helper
 from test.support.script_helper import assert_python_ok
 
-if support.check_cflags_pgo():
+wenn support.check_cflags_pgo():
     raise unittest.SkipTest("peg_generator test disabled under PGO build")
 
 test_tools.skip_if_missing("peg_generator")
@@ -48,11 +48,11 @@ klasse Tests(unittest.TestCase):
         valid_cases = (),
         invalid_cases = (),
     ):
-        if valid_cases:
+        wenn valid_cases:
             fuer case in valid_cases:
                 parse.parse_string(case, mode=0)
 
-        if invalid_cases:
+        wenn invalid_cases:
             fuer case in invalid_cases:
                 with self.assertRaises(SyntaxError):
                     parse.parse_string(case, mode=0)
@@ -76,7 +76,7 @@ klasse TestCParser(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        if cls._has_run:
+        wenn cls._has_run:
             # Since gh-104798 (Use setuptools in peg-generator and reenable
             # tests), this test case has been producing ref leaks. Initial
             # debugging points to bug(s) in setuptools and/or importlib.
@@ -88,9 +88,9 @@ klasse TestCParser(unittest.TestCase):
         # as the current directory and watched fuer left-overs.
         # Reusing that as the base fuer temporary directories
         # ensures everything is cleaned up properly and
-        # cleans up afterwards if not (with warnings).
+        # cleans up afterwards wenn not (with warnings).
         cls.tmp_base = os.getcwd()
-        if os.path.samefile(cls.tmp_base, os_helper.SAVEDCWD):
+        wenn os.path.samefile(cls.tmp_base, os_helper.SAVEDCWD):
             cls.tmp_base = None
         # Create a directory fuer the reuseable static library part of
         # the pegen extension build process.  This greatly reduces the
@@ -111,7 +111,7 @@ klasse TestCParser(unittest.TestCase):
     def setUp(self):
         self._backup_config_vars = dict(sysconfig._CONFIG_VARS)
         cmd = support.missing_compiler_executable()
-        if cmd is not None:
+        wenn cmd is not None:
             self.skipTest("The %r command is not found" % cmd)
         self.old_cwd = os.getcwd()
         self.tmp_path = tempfile.mkdtemp(dir=self.tmp_base)
@@ -407,7 +407,7 @@ klasse TestCParser(unittest.TestCase):
         )
         """
         test_source = """
-        stmt = "[i fuer i in a if b]"
+        stmt = "[i fuer i in a wenn b]"
         self.verify_ast_generation(stmt)
         """
         self.run_test(grammar_source, test_source)
@@ -448,7 +448,7 @@ klasse TestCParser(unittest.TestCase):
         start: expr+ NEWLINE? ENDMARKER
         expr: NAME {PyTuple_New(-1)}
         """
-        # PyTuple_New raises SystemError if an invalid argument was passed.
+        # PyTuple_New raises SystemError wenn an invalid argument was passed.
         test_source = """
         with self.assertRaises(SystemError):
             parse.parse_string("a", mode=0)
@@ -479,7 +479,7 @@ klasse TestCParser(unittest.TestCase):
         expr: NAME
         """
         test_source = """
-        valid_cases = ["if if + if"]
+        valid_cases = ["if wenn + if"]
         invalid_cases = ["if if"]
         self.check_input_strings_for_grammar(valid_cases, invalid_cases)
         """
@@ -491,7 +491,7 @@ klasse TestCParser(unittest.TestCase):
         expr: NAME
         """
         test_source = """
-        valid_cases = ["if if + if"]
+        valid_cases = ["if wenn + if"]
         invalid_cases = ["if if"]
         self.check_input_strings_for_grammar(valid_cases, invalid_cases)
         """

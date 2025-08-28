@@ -175,7 +175,7 @@ klasse TestAsyncCase(unittest.TestCase):
             test.debug()
         except MyException:
             pass
-        else:
+        sonst:
             self.fail('Expected a MyException exception')
         self.assertEqual(events, ['asyncSetUp'])
         test.doCleanups()
@@ -211,7 +211,7 @@ klasse TestAsyncCase(unittest.TestCase):
             test.debug()
         except MyException:
             pass
-        else:
+        sonst:
             self.fail('Expected a MyException exception')
         self.assertEqual(events, ['asyncSetUp', 'test'])
         test.doCleanups()
@@ -247,7 +247,7 @@ klasse TestAsyncCase(unittest.TestCase):
             test.debug()
         except MyException:
             pass
-        else:
+        sonst:
             self.fail('Expected a MyException exception')
         self.assertEqual(events, ['asyncSetUp', 'test', 'asyncTearDown'])
         test.doCleanups()
@@ -290,7 +290,7 @@ klasse TestAsyncCase(unittest.TestCase):
             test.debug()
         except MyException:
             pass
-        else:
+        sonst:
             self.fail('Expected a MyException exception')
         self.assertEqual(events, ['asyncSetUp', 'test', 'asyncTearDown', 'cleanup2'])
         test.doCleanups()
@@ -446,7 +446,7 @@ klasse TestAsyncCase(unittest.TestCase):
 
             async def cleanup(self, fut):
                 try:
-                    # Raises an exception if in different loop
+                    # Raises an exception wenn in different loop
                     await asyncio.wait([fut])
                     events.append('cleanup')
                 except:
@@ -467,7 +467,7 @@ klasse TestAsyncCase(unittest.TestCase):
             test.debug()
         except MyException:
             pass
-        else:
+        sonst:
             self.fail('Expected a MyException exception')
         self.assertEqual(events, ['asyncSetUp', 'test'])
         test.doCleanups()
@@ -503,5 +503,5 @@ klasse TestAsyncCase(unittest.TestCase):
         self.assertTrue(result.wasSuccessful())
         self.assertIsNone(support.maybe_get_event_loop_policy())
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

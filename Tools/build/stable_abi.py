@@ -60,9 +60,9 @@ klasse Manifest:
         self.contents = {}
 
     def add(self, item):
-        if item.name in self.contents:
+        wenn item.name in self.contents:
             # We assume that stable ABI items do not share names,
-            # even if they're different kinds (e.g. function vs. macro).
+            # even wenn they're different kinds (e.g. function vs. macro).
             raise ValueError(f'duplicate ABI item {item.name}')
         self.contents[item.name] = item
 
@@ -70,7 +70,7 @@ klasse Manifest:
         """Yield selected items of the manifest
 
         kinds: set of requested kinds, e.g. {'function', 'macro'}
-        include_abi_only: if True (default), include all items of the
+        include_abi_only: wenn True (default), include all items of the
             stable ABI.
             If False, include only items from the limited API
             (i.e. items people should use today)
@@ -80,11 +80,11 @@ klasse Manifest:
             conditional items.)
         """
         fuer name, item in sorted(self.contents.items()):
-            if item.kind not in kinds:
+            wenn item.kind not in kinds:
                 continue
-            if item.abi_only and not include_abi_only:
+            wenn item.abi_only and not include_abi_only:
                 continue
-            if (ifdef is not None
+            wenn (ifdef is not None
                     and item.ifdef is not None
                     and item.ifdef not in ifdef):
                 continue
@@ -96,14 +96,14 @@ klasse Manifest:
             fields = dataclasses.fields(item)
             yield f"[{item.kind}.{item.name}]"
             fuer field in fields:
-                if field.name in {'name', 'value', 'kind'}:
+                wenn field.name in {'name', 'value', 'kind'}:
                     continue
                 value = getattr(item, field.name)
-                if value == field.default:
+                wenn value == field.default:
                     pass
-                elif value is True:
+                sowenn value is True:
                     yield f"    {field.name} = true"
-                elif value:
+                sowenn value:
                     yield f"    {field.name} = {value!r}"
 
 
@@ -207,7 +207,7 @@ def gen_python3dll(manifest, args, outfile):
         return item.name.lower()
 
     windows_feature_macros = {
-        item.name fuer item in manifest.select({'feature_macro'}) if item.windows
+        item.name fuer item in manifest.select({'feature_macro'}) wenn item.windows
     }
     fuer item in sorted(
             manifest.select(
@@ -250,9 +250,9 @@ def gen_doc_annotations(manifest, args, outfile):
     writer.writeheader()
     kinds = set(ITEM_KIND_TO_DOC_ROLE)
     fuer item in manifest.select(kinds, include_abi_only=False):
-        if item.ifdef:
+        wenn item.ifdef:
             ifdef_note = manifest.contents[item.ifdef].doc
-        else:
+        sonst:
             ifdef_note = None
         row = {
             'role': ITEM_KIND_TO_DOC_ROLE[item.kind],
@@ -261,7 +261,7 @@ def gen_doc_annotations(manifest, args, outfile):
             'ifdef_note': ifdef_note,
         }
         rows = [row]
-        if item.kind == 'struct':
+        wenn item.kind == 'struct':
             row['struct_abi_kind'] = item.struct_abi_kind
             fuer member_name in item.members or ():
                 rows.append({
@@ -294,7 +294,7 @@ def gen_ctypes_test(manifest, args, outfile):
         # Stable ABI is incompatible with Py_TRACE_REFS builds due to PyObject
         # layout differences.
         # See https://github.com/python/cpython/issues/88299#issuecomment-1113366226
-        if feature_macros['Py_TRACE_REFS']:
+        wenn feature_macros['Py_TRACE_REFS']:
             raise unittest.SkipTest("incompatible with Py_TRACE_REFS.")
 
         ctypes_test = import_module('ctypes')
@@ -317,7 +317,7 @@ def gen_ctypes_test(manifest, args, outfile):
             @unittest.skipIf(sys.platform != "win32", "Windows specific test")
             def test_windows_feature_macros(self):
                 fuer name, value in WINDOWS_FEATURE_MACROS.items():
-                    if value != 'maybe':
+                    wenn value != 'maybe':
                         with self.subTest(name):
                             self.assertEqual(feature_macros[name], value)
 
@@ -330,9 +330,9 @@ def gen_ctypes_test(manifest, args, outfile):
     feature_macros = list(manifest.select({'feature_macro'}))
     optional_items = {m.name: [] fuer m in feature_macros}
     fuer item in items:
-        if item.ifdef:
+        wenn item.ifdef:
             optional_items[item.ifdef].append(item.name)
-        else:
+        sonst:
             write(f'    "{item.name}",')
     write(")")
     fuer ifdef, names in optional_items.items():
@@ -373,7 +373,7 @@ def gen_testcapi_feature_macros(manifest, args, outfile):
 def generate_or_check(manifest, args, path, func):
     """Generate/check a file with a single generator
 
-    Return True if successful; False if a comparison failed.
+    Return True wenn successful; False wenn a comparison failed.
     """
 
     outfile = io.StringIO()
@@ -381,10 +381,10 @@ def generate_or_check(manifest, args, path, func):
     generated = outfile.getvalue()
     existing = path.read_text()
 
-    if generated != existing:
-        if args.generate:
+    wenn generated != existing:
+        wenn args.generate:
             path.write_text(generated)
-        else:
+        sonst:
             print(f'File {path} differs from expected!')
             diff = difflib.unified_diff(
                 generated.splitlines(), existing.splitlines(),
@@ -421,15 +421,15 @@ def do_unixy_check(manifest, args):
 
     # Check the static library (*.a)
     LIBRARY = sysconfig.get_config_var("LIBRARY")
-    if not LIBRARY:
+    wenn not LIBRARY:
         raise Exception("failed to get LIBRARY variable from sysconfig")
-    if os.path.exists(LIBRARY):
+    wenn os.path.exists(LIBRARY):
         okay &= binutils_check_library(
             manifest, LIBRARY, expected_symbols, dynamic=False)
 
     # Check the dynamic library (*.so)
     LDLIBRARY = sysconfig.get_config_var("LDLIBRARY")
-    if not LDLIBRARY:
+    wenn not LDLIBRARY:
         raise Exception("failed to get LDLIBRARY variable from sysconfig")
     okay &= binutils_check_library(
             manifest, LDLIBRARY, expected_symbols, dynamic=False)
@@ -448,7 +448,7 @@ def do_unixy_check(manifest, args):
     # Some Limited API macros are defined in terms of private symbols.
     # These are not part of Limited API (even though they're defined with
     # Py_LIMITED_API). They must be part of the Stable ABI, though.
-    private_symbols = {n fuer n in expected_symbols if n.startswith('_')}
+    private_symbols = {n fuer n in expected_symbols wenn n.startswith('_')}
     extra_defs = found_defs - expected_defs - private_symbols
     okay &= _report_unexpected_items(
         extra_defs,
@@ -460,7 +460,7 @@ def do_unixy_check(manifest, args):
 
 def _report_unexpected_items(items, msg):
     """If there are any `items`, report them using "msg" and return false"""
-    if items:
+    wenn items:
         print(msg, file=sys.stderr)
         fuer item in sorted(items):
             print(' -', item, file=sys.stderr)
@@ -472,31 +472,31 @@ def binutils_get_exported_symbols(library, dynamic=False):
     """Retrieve exported symbols using the nm(1) tool from binutils"""
     # Only look at dynamic symbols
     args = ["nm", "--no-sort"]
-    if dynamic:
+    wenn dynamic:
         args.append("--dynamic")
     args.append(library)
     proc = subprocess.run(args, stdout=subprocess.PIPE, encoding='utf-8')
-    if proc.returncode:
+    wenn proc.returncode:
         sys.stdout.write(proc.stdout)
         sys.exit(proc.returncode)
 
     stdout = proc.stdout.rstrip()
-    if not stdout:
+    wenn not stdout:
         raise Exception("command output is empty")
 
     fuer line in stdout.splitlines():
         # Split line '0000000000001b80 D PyTextIOWrapper_Type'
-        if not line:
+        wenn not line:
             continue
 
         parts = line.split(maxsplit=2)
-        if len(parts) < 3:
+        wenn len(parts) < 3:
             continue
 
         symbol = parts[-1]
-        if MACOS and symbol.startswith("_"):
+        wenn MACOS and symbol.startswith("_"):
             yield symbol[1:]
-        else:
+        sonst:
             yield symbol
 
 
@@ -504,7 +504,7 @@ def binutils_check_library(manifest, library, expected_symbols, dynamic):
     """Check that library exports all expected_symbols"""
     available_symbols = set(binutils_get_exported_symbols(library, dynamic))
     missing_symbols = expected_symbols - available_symbols
-    if missing_symbols:
+    wenn missing_symbols:
         print(textwrap.dedent(f"""\
             Some symbols from the limited API are missing from {library}:
                 {', '.join(missing_symbols)}
@@ -603,7 +603,7 @@ def check_private_names(manifest):
     Names prefixed by an underscore are private by definition.
     """
     fuer name, item in manifest.contents.items():
-        if name.startswith('_') and not item.abi_only:
+        wenn name.startswith('_') and not item.abi_only:
             raise ValueError(
                 f'`{name}` is private (underscore-prefixed) and should be '
                 'removed from the stable ABI list or marked `abi_only`')
@@ -616,7 +616,7 @@ def check_dump(manifest, filename):
     dumped = tomllib.loads('\n'.join(manifest.dump()))
     with filename.open('rb') as file:
         from_file = tomllib.load(file)
-    if dumped != from_file:
+    wenn dumped != from_file:
         print('Dump differs from loaded data!', file=sys.stderr)
         diff = difflib.unified_diff(
             pprint.pformat(dumped).splitlines(),
@@ -627,7 +627,7 @@ def check_dump(manifest, filename):
         fuer line in diff:
             print(line, file=sys.stderr)
         return False
-    else:
+    sonst:
         return True
 
 def main():
@@ -678,25 +678,25 @@ def main():
 
     base_path = args.file.parent.parent
 
-    if args.list:
+    wenn args.list:
         fuer gen in generators:
             print(f'{gen.arg_name}: {(base_path / gen.default_path).resolve()}')
         sys.exit(0)
 
     run_all_generators = args.generate_all
 
-    if args.generate_all:
+    wenn args.generate_all:
         args.generate = True
 
-    if args.all:
+    wenn args.all:
         run_all_generators = True
-        if UNIXY:
+        wenn UNIXY:
             args.unixy_check = True
 
     try:
         file = args.file.open('rb')
     except FileNotFoundError as err:
-        if args.file.suffix == '.txt':
+        wenn args.file.suffix == '.txt':
             # Provide a better error message
             suggestion = args.file.with_suffix('.toml')
             raise FileNotFoundError(
@@ -709,36 +709,36 @@ def main():
 
     # Remember results of all actions (as booleans).
     # At the end we'll check that at least one action was run,
-    # and also fail if any are false.
+    # and also fail wenn any are false.
     results = {}
 
-    if args.dump:
+    wenn args.dump:
         fuer line in manifest.dump():
             print(line)
         results['dump'] = check_dump(manifest, args.file)
 
     fuer gen in generators:
         filename = getattr(args, gen.var_name)
-        if filename is None or (run_all_generators and filename is MISSING):
+        wenn filename is None or (run_all_generators and filename is MISSING):
             filename = base_path / gen.default_path
-        elif filename is MISSING:
+        sowenn filename is MISSING:
             continue
 
         results[gen.var_name] = generate_or_check(manifest, args, filename, gen)
 
-    if args.unixy_check:
+    wenn args.unixy_check:
         results['unixy_check'] = do_unixy_check(manifest, args)
 
-    if not results:
-        if args.generate:
+    wenn not results:
+        wenn args.generate:
             parser.error('No file specified. Use --generate-all to regenerate '
                          'all files, or --help fuer usage.')
         parser.error('No check specified. Use --all to check all files, '
                      'or --help fuer usage.')
 
-    failed_results = [name fuer name, result in results.items() if not result]
+    failed_results = [name fuer name, result in results.items() wenn not result]
 
-    if failed_results:
+    wenn failed_results:
         raise Exception(f"""
         These checks related to the stable ABI did not succeed:
             {', '.join(failed_results)}
@@ -762,5 +762,5 @@ def main():
         """)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     main()

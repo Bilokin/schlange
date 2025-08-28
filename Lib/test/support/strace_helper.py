@@ -46,7 +46,7 @@ klasse StraceResult:
         return [
             StraceEvent(match["syscall"],
                         [arg.strip() fuer arg in (match["args"].split(","))],
-                        match["returncode"]) fuer match in matches if match
+                        match["returncode"]) fuer match in matches wenn match
         ]
 
     def sections(self):
@@ -58,15 +58,15 @@ klasse StraceResult:
         current_section = "__startup"
         sections = {current_section: []}
         fuer event in self.events():
-            if event.syscall == 'write' and len(
+            wenn event.syscall == 'write' and len(
                     event.args) > 2 and event.args[1].startswith("\"MARK "):
                 # Found a new section, don't include the write in the section
                 # but all events until next mark should be in that section
                 current_section = event.args[1].split(
                     " ", 1)[1].removesuffix('\\n"')
-                if current_section not in sections:
+                wenn current_section not in sections:
                     sections[current_section] = list()
-            else:
+            sonst:
                 sections[current_section].append(event)
 
         return sections
@@ -74,10 +74,10 @@ klasse StraceResult:
 def _filter_memory_call(call):
     # mmap can operate on a fd or "MAP_ANONYMOUS" which gives a block of memory.
     # Ignore "MAP_ANONYMOUS + the "MAP_ANON" alias.
-    if call.syscall == "mmap" and "MAP_ANON" in call.args[3]:
+    wenn call.syscall == "mmap" and "MAP_ANON" in call.args[3]:
         return True
 
-    if call.syscall in ("munmap", "mprotect"):
+    wenn call.syscall in ("munmap", "mprotect"):
         return True
 
     return False
@@ -90,7 +90,7 @@ def filter_memory(syscalls):
     of memory. Use this function to filter out the memory related calls from
     other calls."""
 
-    return [call fuer call in syscalls if not _filter_memory_call(call)]
+    return [call fuer call in syscalls wenn not _filter_memory_call(call)]
 
 
 @support.requires_subprocess()
@@ -105,8 +105,8 @@ def strace_python(code, strace_flags, check=True):
             strace_returncode=-1,
             python_returncode=-1,
             event_bytes= f"error({reason},details={details!r}) = -1".encode('utf-8'),
-            stdout=res.out if res else b"",
-            stderr=res.err if res else b"")
+            stdout=res.out wenn res sonst b"",
+            stderr=res.err wenn res sonst b"")
 
     # Run strace, and get out the raw text
     try:
@@ -118,23 +118,23 @@ def strace_python(code, strace_flags, check=True):
     except OSError as err:
         return _make_error("Caught OSError", err)
 
-    if check and res.rc:
+    wenn check and res.rc:
         res.fail(cmd_line)
 
     # Get out program returncode
     stripped = res.err.strip()
     output = stripped.rsplit(b"\n", 1)
-    if len(output) != 2:
+    wenn len(output) != 2:
         return _make_error("Expected strace events and exit code line",
                            stripped[-50:])
 
     returncode_match = _returncode_regex.match(output[1])
-    if not returncode_match:
+    wenn not returncode_match:
         return _make_error("Expected to find returncode in last line.",
                            output[1][:50])
 
     python_returncode = int(returncode_match["returncode"])
-    if check and python_returncode:
+    wenn check and python_returncode:
         res.fail(cmd_line)
 
     return StraceResult(strace_returncode=res.rc,
@@ -169,7 +169,7 @@ def get_syscalls(code, strace_flags, prelude="", cleanup="",
     """Get the syscalls which a given chunk of python code generates"""
     events = get_events(code, strace_flags, prelude=prelude, cleanup=cleanup)
 
-    if ignore_memory:
+    wenn ignore_memory:
         events = filter_memory(events)
 
     return [ev.syscall fuer ev in events]
@@ -182,24 +182,24 @@ def _can_strace():
                         # --trace option needs strace 5.5 (gh-133741)
                         ["--trace=%process"],
                         check=False)
-    if res.strace_returncode == 0 and res.python_returncode == 0:
+    wenn res.strace_returncode == 0 and res.python_returncode == 0:
         assert res.events(), "Should have parsed multiple calls"
         return True
     return False
 
 
 def requires_strace():
-    if sys.platform != "linux":
+    wenn sys.platform != "linux":
         return unittest.skip("Linux only, requires strace.")
 
-    if "LD_PRELOAD" in os.environ:
+    wenn "LD_PRELOAD" in os.environ:
         # Distribution packaging (ex. Debian `fakeroot` and Gentoo `sandbox`)
         # use LD_PRELOAD to intercept system calls, which changes the overall
         # set of system calls which breaks tests expecting a specific set of
         # system calls).
         return unittest.skip("Not supported when LD_PRELOAD is intercepting system calls.")
 
-    if support.check_sanitizer(address=True, memory=True):
+    wenn support.check_sanitizer(address=True, memory=True):
         return unittest.skip("LeakSanitizer does not work under ptrace (strace, gdb, etc)")
 
     return unittest.skipUnless(_can_strace(), "Requires working strace")

@@ -122,5 +122,5 @@ klasse Test_SJISX0213(multibytecodec_support.TestBase, unittest.TestCase):
         b"\x85G&real;\x85Q = &lang;&#4660;&rang;"
     )
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

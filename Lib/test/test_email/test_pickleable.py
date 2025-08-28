@@ -72,5 +72,5 @@ klasse TestPickleCopyMessage(TestEmailBase):
             self.assertEqual(msg2.as_string(), msg.as_string())
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

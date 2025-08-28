@@ -114,7 +114,7 @@ multipart/mixed
 
 def _testclasses():
     mod = sys.modules[__name__]
-    return [getattr(mod, name) fuer name in dir(mod) if name.startswith('Test')]
+    return [getattr(mod, name) fuer name in dir(mod) wenn name.startswith('Test')]
 
 
 def load_tests(loader, tests, pattern):
@@ -123,5 +123,5 @@ def load_tests(loader, tests, pattern):
         suite.addTest(loader.loadTestsFromTestCase(testclass))
     return suite
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

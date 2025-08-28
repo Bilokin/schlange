@@ -24,16 +24,16 @@ klasse DummyFloat(object):
     """Dummy float klasse fuer testing comparisons with Fractions"""
 
     def __init__(self, value):
-        if not isinstance(value, float):
+        wenn not isinstance(value, float):
             raise TypeError("DummyFloat can only be initialized from float")
         self.value = value
 
     def _richcmp(self, other, op):
-        if isinstance(other, numbers.Rational):
+        wenn isinstance(other, numbers.Rational):
             return op(F.from_float(self.value), other)
-        elif isinstance(other, DummyFloat):
+        sowenn isinstance(other, DummyFloat):
             return op(self.value, other.value)
-        else:
+        sonst:
             return NotImplemented
 
     def __eq__(self, other): return self._richcmp(other, operator.eq)
@@ -61,10 +61,10 @@ klasse DummyRational(object):
         self.den = den // g
 
     def __eq__(self, other):
-        if isinstance(other, fractions.Fraction):
+        wenn isinstance(other, fractions.Fraction):
             return (self.num == other._numerator and
                     self.den == other._denominator)
-        else:
+        sonst:
             return NotImplemented
 
     def __lt__(self, other):
@@ -102,31 +102,31 @@ klasse Symbolic:
     def __init__(self, value):
         self.value = value
     def __mul__(self, other):
-        if isinstance(other, F):
+        wenn isinstance(other, F):
             return NotImplemented
         return self.__class__(f'{self} * {other}')
     def __rmul__(self, other):
         return self.__class__(f'{other} * {self}')
     def __truediv__(self, other):
-        if isinstance(other, F):
+        wenn isinstance(other, F):
             return NotImplemented
         return self.__class__(f'{self} / {other}')
     def __rtruediv__(self, other):
         return self.__class__(f'{other} / {self}')
     def __mod__(self, other):
-        if isinstance(other, F):
+        wenn isinstance(other, F):
             return NotImplemented
         return self.__class__(f'{self} % {other}')
     def __rmod__(self, other):
         return self.__class__(f'{other} % {self}')
     def __pow__(self, other):
-        if isinstance(other, F):
+        wenn isinstance(other, F):
             return NotImplemented
         return self.__class__(f'{self} ** {other}')
     def __rpow__(self, other):
         return self.__class__(f'{other} ** {self}')
     def __eq__(self, other):
-        if other.__class__ != self.__class__:
+        wenn other.__class__ != self.__class__:
             return NotImplemented
         return self.value == other.value
     def __str__(self):
@@ -148,7 +148,7 @@ klasse Rat:
         self.numerator = n
         self.denominator = d
     def __mul__(self, other):
-        if isinstance(other, F):
+        wenn isinstance(other, F):
             return NotImplemented
         return self.__class__(self.numerator * other.numerator,
                               self.denominator * other.denominator)
@@ -156,7 +156,7 @@ klasse Rat:
         return self.__class__(other.numerator * self.numerator,
                               other.denominator * self.denominator)
     def __truediv__(self, other):
-        if isinstance(other, F):
+        wenn isinstance(other, F):
             return NotImplemented
         return self.__class__(self.numerator * other.denominator,
                               self.denominator * other.numerator)
@@ -164,7 +164,7 @@ klasse Rat:
         return self.__class__(other.numerator * self.denominator,
                               other.denominator * self.numerator)
     def __mod__(self, other):
-        if isinstance(other, F):
+        wenn isinstance(other, F):
             return NotImplemented
         d = self.denominator * other.numerator
         return self.__class__(self.numerator * other.denominator % d, d)
@@ -175,14 +175,14 @@ klasse Rat:
         return self.__class__(other.numerator / self.numerator,
                               other.denominator / self.denominator)
     def __pow__(self, other):
-        if isinstance(other, F):
+        wenn isinstance(other, F):
             return NotImplemented
         return self.__class__(self.numerator ** other,
                               self.denominator ** other)
     def __float__(self):
         return self.numerator / self.denominator
     def __eq__(self, other):
-        if self.__class__ != other.__class__:
+        wenn self.__class__ != other.__class__:
             return NotImplemented
         return (typed_approx_eq(self.numerator, other.numerator) and
                 typed_approx_eq(self.denominator, other.denominator))
@@ -196,25 +196,25 @@ klasse Root:
         self.base = v
         self.degree = n
     def __mul__(self, other):
-        if isinstance(other, F):
+        wenn isinstance(other, F):
             return NotImplemented
         return self.__class__(self.base * other**self.degree, self.degree)
     def __rmul__(self, other):
         return self.__class__(other**self.degree * self.base, self.degree)
     def __truediv__(self, other):
-        if isinstance(other, F):
+        wenn isinstance(other, F):
             return NotImplemented
         return self.__class__(self.base / other**self.degree, self.degree)
     def __rtruediv__(self, other):
         return self.__class__(other**self.degree / self.base, self.degree)
     def __pow__(self, other):
-        if isinstance(other, F):
+        wenn isinstance(other, F):
             return NotImplemented
         return self.__class__(self.base, self.degree / other)
     def __float__(self):
         return float(self.base) ** (1 / float(self.degree))
     def __eq__(self, other):
-        if self.__class__ != other.__class__:
+        wenn self.__class__ != other.__class__:
             return NotImplemented
         return typed_approx_eq(self.base, other.base) and typed_approx_eq(self.degree, other.degree)
     def __repr__(self):
@@ -227,23 +227,23 @@ klasse Polar:
         self.r = r
         self.phi = phi
     def __mul__(self, other):
-        if isinstance(other, F):
+        wenn isinstance(other, F):
             return NotImplemented
         return self.__class__(self.r * other, self.phi)
     def __rmul__(self, other):
         return self.__class__(other * self.r, self.phi)
     def __truediv__(self, other):
-        if isinstance(other, F):
+        wenn isinstance(other, F):
             return NotImplemented
         return self.__class__(self.r / other, self.phi)
     def __rtruediv__(self, other):
         return self.__class__(other / self.r, -self.phi)
     def __pow__(self, other):
-        if isinstance(other, F):
+        wenn isinstance(other, F):
             return NotImplemented
         return self.__class__(self.r ** other, self.phi * other)
     def __eq__(self, other):
-        if self.__class__ != other.__class__:
+        wenn self.__class__ != other.__class__:
             return NotImplemented
         return typed_approx_eq(self.r, other.r) and typed_approx_eq(self.phi, other.phi)
     def __repr__(self):
@@ -256,13 +256,13 @@ klasse Rect:
         self.x = x
         self.y = y
     def __mul__(self, other):
-        if isinstance(other, F):
+        wenn isinstance(other, F):
             return NotImplemented
         return self.__class__(self.x * other, self.y * other)
     def __rmul__(self, other):
         return self.__class__(other * self.x, other * self.y)
     def __truediv__(self, other):
-        if isinstance(other, F):
+        wenn isinstance(other, F):
             return NotImplemented
         return self.__class__(self.x / other, self.y / other)
     def __rtruediv__(self, other):
@@ -273,7 +273,7 @@ klasse Rect:
     def __complex__(self):
         return complex(self.x, self.y)
     def __eq__(self, other):
-        if self.__class__ != other.__class__:
+        wenn self.__class__ != other.__class__:
             return NotImplemented
         return typed_approx_eq(self.x, other.x) and typed_approx_eq(self.y, other.y)
     def __repr__(self):
@@ -309,7 +309,7 @@ klasse FractionTest(unittest.TestCase):
             callable(*args, **kwargs)
         except exc_type as e:
             self.assertEqual(message, str(e))
-        else:
+        sonst:
             self.fail("%s not raised" % exc_type.__name__)
 
     def testInit(self):
@@ -527,7 +527,7 @@ klasse FractionTest(unittest.TestCase):
         self.assertRaises(AttributeError, setattr, r, 'denominator', 6)
         self.assertEqual((7, 3), _components(r))
 
-        # But if you _really_ need to:
+        # But wenn you _really_ need to:
         r._numerator = 4
         r._denominator = 2
         self.assertEqual((4, 2), _components(r))
@@ -683,7 +683,7 @@ klasse FractionTest(unittest.TestCase):
 
     def testIntGuaranteesIntReturn(self):
         # Check that int(some_fraction) gives a result of exact type `int`
-        # even if the fraction is using some other Integral type fuer its
+        # even wenn the fraction is using some other Integral type fuer its
         # numerator and denominator.
 
         klasse CustomInt(int):
@@ -1349,7 +1349,7 @@ klasse FractionTest(unittest.TestCase):
             # Large precision (more than float can provide)
             (F(104348, 33215), '.50f',
              '3.14159265392142104470871594159265392142104470871594'),
-            # Precision defaults to 6 if not given
+            # Precision defaults to 6 wenn not given
             (F(22, 7), 'f', '3.142857'),
             (F(0), 'f', '0.000000'),
             (F(-22, 7), 'f', '-3.142857'),
@@ -1649,21 +1649,21 @@ klasse FractionTest(unittest.TestCase):
     def test_float_format_testfile(self):
         with open(format_testfile, encoding="utf-8") as testfile:
             fuer line in testfile:
-                if line.startswith('--'):
+                wenn line.startswith('--'):
                     continue
                 line = line.strip()
-                if not line:
+                wenn not line:
                     continue
 
                 lhs, rhs = map(str.strip, line.split('->'))
                 fmt, arg = lhs.split()
-                if fmt == '%r':
+                wenn fmt == '%r':
                     continue
                 fmt2 = fmt[1:]
                 with self.subTest(fmt=fmt, arg=arg):
                     f = F(float(arg))
                     self.assertEqual(format(f, fmt2), rhs)
-                    if f:  # skip negative zero
+                    wenn f:  # skip negative zero
                         self.assertEqual(format(-f, fmt2), '-' + rhs)
                     f = F(arg)
                     self.assertEqual(float(format(f, fmt2)), float(rhs))
@@ -1709,5 +1709,5 @@ klasse FractionTest(unittest.TestCase):
                                  pow, 3, 4, F(5))
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

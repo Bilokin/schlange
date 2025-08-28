@@ -189,7 +189,7 @@ klasse UserDictTest(mapping_tests.TestHashMappingProtocol):
             e[42]
         except RuntimeError as err:
             self.assertEqual(err.args, (42,))
-        else:
+        sonst:
             self.fail("e[42] didn't raise RuntimeError")
         klasse F(collections.UserDict):
             def __init__(self):
@@ -201,7 +201,7 @@ klasse UserDictTest(mapping_tests.TestHashMappingProtocol):
             f[42]
         except KeyError as err:
             self.assertEqual(err.args, (42,))
-        else:
+        sonst:
             self.fail("f[42] didn't raise KeyError")
         klasse G(collections.UserDict):
             pass
@@ -210,11 +210,11 @@ klasse UserDictTest(mapping_tests.TestHashMappingProtocol):
             g[42]
         except KeyError as err:
             self.assertEqual(err.args, (42,))
-        else:
+        sonst:
             self.fail("g[42] didn't raise KeyError")
 
     test_repr_deep = mapping_tests.TestHashMappingProtocol.test_repr_deep
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

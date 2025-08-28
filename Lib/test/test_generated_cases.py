@@ -9,13 +9,13 @@ from test import test_tools
 
 
 def skip_if_different_mount_drives():
-    if sys.platform != "win32":
+    wenn sys.platform != "win32":
         return
     ROOT = os.path.dirname(os.path.dirname(__file__))
     root_drive = os.path.splitroot(ROOT)[0]
     cwd_drive = os.path.splitroot(os.getcwd())[0]
-    if root_drive != cwd_drive:
-        # May raise ValueError if ROOT and the current working
+    wenn root_drive != cwd_drive:
+        # May raise ValueError wenn ROOT and the current working
         # different have different mount drives (on Windows).
         raise unittest.SkipTest(
             f"the current working directory and the Python source code "
@@ -38,9 +38,9 @@ with test_tools.imports_under_tool("cases_generator"):
 
 
 def handle_stderr():
-    if support.verbose > 1:
+    wenn support.verbose > 1:
         return contextlib.nullcontext()
-    else:
+    sonst:
         return support.captured_stderr()
 
 
@@ -326,7 +326,7 @@ klasse TestGeneratedCases(unittest.TestCase):
             _PyStackRef arg;
             _PyStackRef res;
             arg = stack_pointer[-1];
-            if (xxx) {
+            wenn (xxx) {
                 UPDATE_MISS_STATS(OP1);
                 assert(_PyOpcode_Deopt[opcode] == (OP1));
                 JUMP_TO_PREDICTED(OP1);
@@ -402,9 +402,9 @@ klasse TestGeneratedCases(unittest.TestCase):
     def test_pep7_condition(self):
         input = """
         inst(OP, (arg1 -- out)) {
-            if (arg1)
+            wenn (arg1)
                 out = 0;
-            else {
+            sonst {
                 out = 1;
             }
         }
@@ -428,7 +428,7 @@ klasse TestGeneratedCases(unittest.TestCase):
             frame->instr_ptr = next_instr;
             next_instr += 1;
             INSTRUCTION_STATS(OP);
-            if (cond) {
+            wenn (cond) {
                 JUMP_TO_LABEL(error);
             }
             DISPATCH();
@@ -451,7 +451,7 @@ klasse TestGeneratedCases(unittest.TestCase):
             frame->instr_ptr = next_instr;
             next_instr += 1;
             INSTRUCTION_STATS(OP);
-            if (cond) {
+            wenn (cond) {
                 JUMP_TO_LABEL(error);
             }
             DISPATCH();
@@ -483,7 +483,7 @@ klasse TestGeneratedCases(unittest.TestCase):
             right = stack_pointer[-1];
             left = stack_pointer[-2];
             SPAM(left, right);
-            if (cond) {
+            wenn (cond) {
                 JUMP_TO_LABEL(pop_2_error);
             }
             res = 0;
@@ -518,7 +518,7 @@ klasse TestGeneratedCases(unittest.TestCase):
             right = stack_pointer[-1];
             left = stack_pointer[-2];
             res = SPAM(left, right);
-            if (cond) {
+            wenn (cond) {
                 JUMP_TO_LABEL(pop_2_error);
             }
             stack_pointer[-2] = res;
@@ -916,7 +916,7 @@ klasse TestGeneratedCases(unittest.TestCase):
             _PyStackRef *values;
             values = &stack_pointer[-oparg];
             extra = stack_pointer[-1 - oparg];
-            if (oparg == 0) {
+            wenn (oparg == 0) {
                 stack_pointer += -1 - oparg;
                 assert(WITHIN_STACK_BOUNDS());
                 JUMP_TO_LABEL(error);
@@ -1320,7 +1320,7 @@ klasse TestGeneratedCases(unittest.TestCase):
             }
             // THIRD
             {
-                if (cond) {
+                wenn (cond) {
                     JUMP_TO_LABEL(pop_2_error);
                 }
             }
@@ -1364,7 +1364,7 @@ klasse TestGeneratedCases(unittest.TestCase):
             // SECOND
             {
                 b = 1;
-                if (cond) {
+                wenn (cond) {
                     stack_pointer[0] = a;
                     stack_pointer[1] = b;
                     stack_pointer += 2;
@@ -1715,7 +1715,7 @@ klasse TestGeneratedCases(unittest.TestCase):
         label(my_label) {
             // Comment
             do_thing();
-            if (complex) {
+            wenn (complex) {
                 goto other_label;
             }
             goto other_label2;
@@ -1736,7 +1736,7 @@ klasse TestGeneratedCases(unittest.TestCase):
             _PyFrame_SetStackPointer(frame, stack_pointer);
             do_thing();
             stack_pointer = _PyFrame_GetStackPointer(frame);
-            if (complex) {
+            wenn (complex) {
                 JUMP_TO_LABEL(other_label);
             }
             JUMP_TO_LABEL(other_label2);
@@ -2243,7 +2243,7 @@ klasse TestGeneratedAbstractCases(unittest.TestCase):
             JitOptRef foo;
             JitOptRef res;
             foo = stack_pointer[-1];
-            if (
+            wenn (
                 sym_is_safe_const(ctx, foo)
             ) {
                 JitOptRef foo_sym = foo;
@@ -2283,14 +2283,14 @@ klasse TestGeneratedAbstractCases(unittest.TestCase):
             JitOptRef foo;
             JitOptRef res;
             foo = stack_pointer[-1];
-            if (
+            wenn (
                 sym_is_safe_const(ctx, foo)
             ) {
                 JitOptRef foo_sym = foo;
                 _PyStackRef foo = sym_get_const_as_stackref(ctx, foo_sym);
                 _PyStackRef res_stackref;
                 /* Start of uop copied from bytecodes fuer constant evaluation */
-                if (PyStackRef_IsNull(foo)) {
+                wenn (PyStackRef_IsNull(foo)) {
                     ctx->done = true;
                     break;
                 }
@@ -2327,14 +2327,14 @@ klasse TestGeneratedAbstractCases(unittest.TestCase):
             JitOptRef foo;
             JitOptRef res;
             foo = stack_pointer[-1];
-            if (
+            wenn (
                 sym_is_safe_const(ctx, foo)
             ) {
                 JitOptRef foo_sym = foo;
                 _PyStackRef foo = sym_get_const_as_stackref(ctx, foo_sym);
                 _PyStackRef res_stackref;
                 /* Start of uop copied from bytecodes fuer constant evaluation */
-                if (PyStackRef_IsNull(foo)) {
+                wenn (PyStackRef_IsNull(foo)) {
                     goto error;
                 }
                 res_stackref = foo;
@@ -2354,10 +2354,10 @@ klasse TestGeneratedAbstractCases(unittest.TestCase):
     def test_replace_opcode_uop_body_copied_in_complex(self):
         input = """
         pure op(OP, (foo -- res)) {
-            if (foo) {
+            wenn (foo) {
                 res = PyStackRef_IsNone(foo);
             }
-            else {
+            sonst {
                 res = 1;
             }
         }
@@ -2373,17 +2373,17 @@ klasse TestGeneratedAbstractCases(unittest.TestCase):
             JitOptRef foo;
             JitOptRef res;
             foo = stack_pointer[-1];
-            if (
+            wenn (
                 sym_is_safe_const(ctx, foo)
             ) {
                 JitOptRef foo_sym = foo;
                 _PyStackRef foo = sym_get_const_as_stackref(ctx, foo_sym);
                 _PyStackRef res_stackref;
                 /* Start of uop copied from bytecodes fuer constant evaluation */
-                if (foo) {
+                wenn (foo) {
                     res_stackref = PyStackRef_IsNone(foo);
                 }
-                else {
+                sonst {
                     res_stackref = 1;
                 }
                 /* End of uop copied from bytecodes fuer constant evaluation */
@@ -2401,10 +2401,10 @@ klasse TestGeneratedAbstractCases(unittest.TestCase):
     def test_replace_opcode_escaping_uop_body_copied_in_complex(self):
         input = """
         pure op(OP, (foo -- res)) {
-            if (foo) {
+            wenn (foo) {
                 res = ESCAPING_CODE(foo);
             }
-            else {
+            sonst {
                 res = 1;
             }
         }
@@ -2420,17 +2420,17 @@ klasse TestGeneratedAbstractCases(unittest.TestCase):
             JitOptRef foo;
             JitOptRef res;
             foo = stack_pointer[-1];
-            if (
+            wenn (
                 sym_is_safe_const(ctx, foo)
             ) {
                 JitOptRef foo_sym = foo;
                 _PyStackRef foo = sym_get_const_as_stackref(ctx, foo_sym);
                 _PyStackRef res_stackref;
                 /* Start of uop copied from bytecodes fuer constant evaluation */
-                if (foo) {
+                wenn (foo) {
                     res_stackref = ESCAPING_CODE(foo);
                 }
-                else {
+                sonst {
                     res_stackref = 1;
                 }
                 /* End of uop copied from bytecodes fuer constant evaluation */
@@ -2448,10 +2448,10 @@ klasse TestGeneratedAbstractCases(unittest.TestCase):
     def test_replace_opocode_uop_reject_array_effects(self):
         input = """
         pure op(OP, (foo[2] -- res)) {
-            if (foo) {
+            wenn (foo) {
                 res = PyStackRef_IsNone(foo);
             }
-            else {
+            sonst {
                 res = 1;
             }
         }
@@ -2468,5 +2468,5 @@ klasse TestGeneratedAbstractCases(unittest.TestCase):
                                     "Pure evaluation cannot take array-like inputs"):
             self.run_cases_test(input, input2, output)
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

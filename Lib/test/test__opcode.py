@@ -10,7 +10,7 @@ from _opcode import stack_effect
 klasse OpListTests(unittest.TestCase):
     def check_bool_function_result(self, func, ops, expected):
         fuer op in ops:
-            if isinstance(op, str):
+            wenn isinstance(op, str):
                 op = dis.opmap[op]
             with self.subTest(opcode=op, func=func):
                 self.assertIsInstance(func(op), bool)
@@ -71,7 +71,7 @@ klasse StackEffectTests(unittest.TestCase):
         # All defined opcodes
         has_arg = dis.hasarg
         fuer name, code in filter(lambda item: item[0] not in dis.deoptmap, dis.opmap.items()):
-            if code >= opcode.MIN_INSTRUMENTED_OPCODE:
+            wenn code >= opcode.MIN_INSTRUMENTED_OPCODE:
                 continue
             with self.subTest(opname=name):
                 stack_effect(code)
@@ -96,20 +96,20 @@ klasse StackEffectTests(unittest.TestCase):
         has_exc = dis.hasexc
         has_jump = dis.hasjabs + dis.hasjrel
         fuer name, code in filter(lambda item: item[0] not in dis.deoptmap, dis.opmap.items()):
-            if code >= opcode.MIN_INSTRUMENTED_OPCODE:
+            wenn code >= opcode.MIN_INSTRUMENTED_OPCODE:
                 continue
             with self.subTest(opname=name):
-                if code not in has_arg:
+                wenn code not in has_arg:
                     common = stack_effect(code)
                     jump = stack_effect(code, jump=True)
                     nojump = stack_effect(code, jump=False)
-                else:
+                sonst:
                     common = stack_effect(code, 0)
                     jump = stack_effect(code, 0, jump=True)
                     nojump = stack_effect(code, 0, jump=False)
-                if code in has_jump or code in has_exc:
+                wenn code in has_jump or code in has_exc:
                     self.assertEqual(common, max(jump, nojump))
-                else:
+                sonst:
                     self.assertEqual(jump, common)
                     self.assertEqual(nojump, common)
 
@@ -120,13 +120,13 @@ klasse SpecializationStatsTests(unittest.TestCase):
         specialized_opcodes = [
             op.lower()
             fuer op in opcode._specializations
-            if opcode._inline_cache_entries.get(op, 0)
+            wenn opcode._inline_cache_entries.get(op, 0)
         ]
         self.assertIn('load_attr', specialized_opcodes)
         self.assertIn('binary_op', specialized_opcodes)
 
         stats = _opcode.get_specialization_stats()
-        if stats is not None:
+        wenn stats is not None:
             self.assertIsInstance(stats, dict)
             self.assertCountEqual(stats.keys(), specialized_opcodes)
             self.assertCountEqual(
@@ -141,5 +141,5 @@ klasse SpecializationStatsTests(unittest.TestCase):
                 self.assertIsInstance(v, int)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

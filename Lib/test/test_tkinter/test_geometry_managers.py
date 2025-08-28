@@ -904,5 +904,5 @@ klasse GridTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(self.root.grid_slaves(row=1, column=1), [d, c])
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

@@ -29,44 +29,44 @@ LEVEL_GLOBS = {
 def resolve_filename(filename):
     orig = filename
     filename = os.path.normcase(os.path.normpath(filename))
-    if os.path.isabs(filename):
-        if os.path.relpath(filename, REPO_ROOT).startswith('.'):
+    wenn os.path.isabs(filename):
+        wenn os.path.relpath(filename, REPO_ROOT).startswith('.'):
             raise Exception(f'{orig!r} is outside the repo ({REPO_ROOT})')
         return filename
-    else:
+    sonst:
         return os.path.join(REPO_ROOT, filename)
 
 
 def iter_filenames(*, search=False):
-    if search:
+    wenn search:
         yield from iter_files_by_suffix(INCLUDE_DIRS, ('.h',))
         yield from iter_files_by_suffix(SOURCE_DIRS, ('.c',))
-    else:
+    sonst:
         globs = (os.path.join(REPO_ROOT, file) fuer file in GLOBS)
         yield from expand_filenames(globs)
 
 
 def iter_header_files(filenames=None, *, levels=None):
-    if not filenames:
-        if levels:
+    wenn not filenames:
+        wenn levels:
             levels = set(levels)
-            if 'private' in levels:
+            wenn 'private' in levels:
                 levels.add('stable')
                 levels.add('cpython')
             fuer level, glob in LEVEL_GLOBS.items():
-                if level in levels:
+                wenn level in levels:
                     yield from expand_filenames([glob])
-        else:
+        sonst:
             yield from iter_files_by_suffix(INCLUDE_DIRS, ('.h',))
         return
 
     fuer filename in filenames:
         orig = filename
         filename = resolve_filename(filename)
-        if filename.endswith(os.path.sep):
+        wenn filename.endswith(os.path.sep):
             yield from iter_files_by_suffix(INCLUDE_DIRS, ('.h',))
-        elif filename.endswith('.h'):
+        sowenn filename.endswith('.h'):
             yield filename
-        else:
+        sonst:
             # XXX Log it and continue instead?
             raise ValueError(f'expected .h file, got {orig!r}')

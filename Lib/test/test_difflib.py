@@ -245,7 +245,7 @@ klasse TestSFpatches(unittest.TestCase):
             self.assertEqual(actual, fp.read())
 
     def test_recursion_limit(self):
-        # Check if the problem described in patch #1413711 exists.
+        # Check wenn the problem described in patch #1413711 exists.
         limit = sys.getrecursionlimit()
         old = [(i%2 and "K:%d" or "V:A:%d") % i fuer i in range(limit*2)]
         new = [(i%2 and "K:%d" or "V:B:%d") % i fuer i in range(limit*2)]
@@ -318,11 +318,11 @@ klasse TestOutputFormat(unittest.TestCase):
         # Per the diff spec at http://www.unix.org/single_unix_specification/
         spec = '''\
            Each <range> field shall be of the form:
-             %1d", <beginning line number>  if the range contains exactly one line,
+             %1d", <beginning line number>  wenn the range contains exactly one line,
            and:
             "%1d,%1d", <beginning line number>, <number of lines> otherwise.
            If a range is empty, its beginning line number shall be the number of
-           the line just before the range, or 0 if the empty range starts the file.
+           the line just before the range, or 0 wenn the empty range starts the file.
         '''
         fmt = difflib._format_range_unified
         self.assertEqual(fmt(3,3), '3,0')
@@ -335,15 +335,15 @@ klasse TestOutputFormat(unittest.TestCase):
         # Per the diff spec at http://www.unix.org/single_unix_specification/
         spec = '''\
            The range of lines in file1 shall be written in the following format
-           if the range contains two or more lines:
+           wenn the range contains two or more lines:
                "*** %d,%d ****\n", <beginning line number>, <ending line number>
            and the following format otherwise:
                "*** %d ****\n", <ending line number>
            The ending line number of an empty range shall be the number of the preceding line,
-           or 0 if the range is at the start of the file.
+           or 0 wenn the range is at the start of the file.
 
            Next, the range of lines in file2 shall be written in the following format
-           if the range contains two or more lines:
+           wenn the range contains two or more lines:
                "--- %d,%d ----\n", <beginning line number>, <ending line number>
            and the following format otherwise:
                "--- %d ----\n", <ending line number>
@@ -383,7 +383,7 @@ klasse TestBytes(unittest.TestCase):
                 "all lines of diff should be bytes, but got: %r" % line)
 
     def test_byte_content(self):
-        # if we receive byte strings, we return byte strings
+        # wenn we receive byte strings, we return byte strings
         a = [b'hello', b'andr\xe9']     # iso-8859-1 bytes
         b = [b'hello', b'andr\xc3\xa9'] # utf-8 bytes
 
@@ -506,7 +506,7 @@ klasse TestInputTypes(unittest.TestCase):
         self._assert_type_error(expect, difflib.diff_bytes, context, b, a)
 
     def test_mixed_types_filenames(self):
-        # cannot pass filenames as bytes if content is str (this may not be
+        # cannot pass filenames as bytes wenn content is str (this may not be
         # the right behaviour, but at least the test demonstrates how
         # things work)
         a = ['hello\n']
@@ -528,7 +528,7 @@ klasse TestInputTypes(unittest.TestCase):
             difflib.diff_bytes, difflib.unified_diff,
             a, b, b'a', b'b', datea, dateb)
 
-        # if input is str, non-ASCII dates are fine
+        # wenn input is str, non-ASCII dates are fine
         a = ['foo\n']
         b = ['bar\n']
         list(difflib.unified_diff(a, b, 'a', 'b', datea, dateb))
@@ -610,5 +610,5 @@ def load_tests(loader, tests, pattern):
     return tests
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

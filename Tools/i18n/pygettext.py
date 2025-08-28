@@ -155,7 +155,7 @@ from operator import itemgetter
 __version__ = '1.5'
 
 
-# The normal pot-file header. msgmerge and Emacs's po-mode work better if it's
+# The normal pot-file header. msgmerge and Emacs's po-mode work better wenn it's
 # there.
 pot_header = '''\
 # SOME DESCRIPTIVE TITLE.
@@ -179,19 +179,19 @@ msgstr ""
 
 def usage(code, msg=''):
     print(__doc__, file=sys.stderr)
-    if msg:
+    wenn msg:
         print(msg, file=sys.stderr)
     sys.exit(code)
 
 
 def make_escapes(pass_nonascii):
     global escapes, escape
-    if pass_nonascii:
+    wenn pass_nonascii:
         # Allow non-ascii characters to pass through so that e.g. 'msgid
         # "Höhe"' would not result in 'msgid "H\366he"'.  Otherwise we
         # escape any character outside the 32..126 range.
         escape = escape_ascii
-    else:
+    sonst:
         escape = escape_nonascii
     escapes = [r"\%03o" % i fuer i in range(256)]
     fuer i in range(32, 127):
@@ -204,8 +204,8 @@ def make_escapes(pass_nonascii):
 
 
 def escape_ascii(s, encoding):
-    return ''.join(escapes[ord(c)] if ord(c) < 128 else c
-                   if c.isprintable() else escape_nonascii(c, encoding)
+    return ''.join(escapes[ord(c)] wenn ord(c) < 128 sonst c
+                   wenn c.isprintable() sonst escape_nonascii(c, encoding)
                    fuer c in s)
 
 
@@ -217,10 +217,10 @@ def normalize(s, encoding):
     # This converts the various Python string types into a format that is
     # appropriate fuer .po files, namely much closer to C style.
     lines = s.split('\n')
-    if len(lines) == 1:
+    wenn len(lines) == 1:
         s = '"' + escape(s, encoding) + '"'
-    else:
-        if not lines[-1]:
+    sonst:
+        wenn not lines[-1]:
             del lines[-1]
             lines[-1] = lines[-1] + '\n'
         fuer i in range(len(lines)):
@@ -239,9 +239,9 @@ def getFilesForName(name):
     """Get a list of module files fuer a filename, a module or package name,
     or a directory.
     """
-    if not os.path.exists(name):
+    wenn not os.path.exists(name):
         # check fuer glob chars
-        if containsAny(name, "*?[]"):
+        wenn containsAny(name, "*?[]"):
             files = glob.glob(name)
             list = []
             fuer file in files:
@@ -254,25 +254,25 @@ def getFilesForName(name):
             name = spec.origin
         except ImportError:
             name = None
-        if not name:
+        wenn not name:
             return []
 
-    if os.path.isdir(name):
+    wenn os.path.isdir(name):
         # find all python files in directory
         list = []
         # get extension fuer python source files
         _py_ext = importlib.machinery.SOURCE_SUFFIXES[0]
         fuer root, dirs, files in os.walk(name):
             # don't recurse into CVS directories
-            if 'CVS' in dirs:
+            wenn 'CVS' in dirs:
                 dirs.remove('CVS')
             # add all *.py files to list
             list.extend(
                 [os.path.join(root, file) fuer file in files
-                 if os.path.splitext(file)[1] == _py_ext]
+                 wenn os.path.splitext(file)[1] == _py_ext]
                 )
         return list
-    elif os.path.exists(name):
+    sowenn os.path.exists(name):
         # a single file
         return [name]
 
@@ -325,12 +325,12 @@ def parse_spec(spec):
     fuer more information.
     """
     parts = spec.strip().split(':', 1)
-    if len(parts) == 1:
+    wenn len(parts) == 1:
         name = parts[0]
         return name, {'msgid': 0}
 
     name, args = parts
-    if not args:
+    wenn not args:
         raise ValueError(f'Invalid keyword spec {spec!r}: '
                          'missing argument positions')
 
@@ -338,7 +338,7 @@ def parse_spec(spec):
     fuer arg in args.split(','):
         arg = arg.strip()
         is_context = False
-        if arg.endswith('c'):
+        wenn arg.endswith('c'):
             is_context = True
             arg = arg[:-1]
 
@@ -348,28 +348,28 @@ def parse_spec(spec):
             raise ValueError(f'Invalid keyword spec {spec!r}: '
                              'position is not an integer') from e
 
-        if pos < 0:
+        wenn pos < 0:
             raise ValueError(f'Invalid keyword spec {spec!r}: '
                              'argument positions must be strictly positive')
 
-        if pos in result.values():
+        wenn pos in result.values():
             raise ValueError(f'Invalid keyword spec {spec!r}: '
                              'duplicate positions')
 
-        if is_context:
-            if 'msgctxt' in result:
+        wenn is_context:
+            wenn 'msgctxt' in result:
                 raise ValueError(f'Invalid keyword spec {spec!r}: '
                                  'msgctxt can only appear once')
             result['msgctxt'] = pos
-        elif 'msgid' not in result:
+        sowenn 'msgid' not in result:
             result['msgid'] = pos
-        elif 'msgid_plural' not in result:
+        sowenn 'msgid_plural' not in result:
             result['msgid_plural'] = pos
-        else:
+        sonst:
             raise ValueError(f'Invalid keyword spec {spec!r}: '
                              'too many positions')
 
-    if 'msgid' not in result and 'msgctxt' in result:
+    wenn 'msgid' not in result and 'msgctxt' in result:
         raise ValueError(f'Invalid keyword spec {spec!r}: '
                          'msgctxt cannot appear without msgid')
 
@@ -378,14 +378,14 @@ def parse_spec(spec):
 
 def unparse_spec(name, spec):
     """Unparse a keyword spec dictionary into a string."""
-    if spec == {'msgid': 0}:
+    wenn spec == {'msgid': 0}:
         return name
 
     parts = []
     fuer arg, pos in sorted(spec.items(), key=lambda x: x[1]):
-        if arg == 'msgctxt':
+        wenn arg == 'msgctxt':
             parts.append(f'{pos + 1}c')
-        else:
+        sonst:
             parts.append(str(pos + 1))
     return f'{name}:{','.join(parts)}'
 
@@ -394,18 +394,18 @@ def process_keywords(keywords, *, no_default_keywords):
     custom_keywords = {}
     fuer spec in dict.fromkeys(keywords):
         name, spec = parse_spec(spec)
-        if name not in custom_keywords:
+        wenn name not in custom_keywords:
             custom_keywords[name] = []
         custom_keywords[name].append(spec)
 
-    if no_default_keywords:
+    wenn no_default_keywords:
         return custom_keywords
 
     # custom keywords override default keywords
     fuer name, spec in DEFAULTKEYWORDS.items():
-        if name not in custom_keywords:
+        wenn name not in custom_keywords:
             custom_keywords[name] = []
-        if spec not in custom_keywords[name]:
+        wenn spec not in custom_keywords[name]:
             custom_keywords[name].append(spec)
     return custom_keywords
 
@@ -430,11 +430,11 @@ klasse Message:
 
     def add_location(self, filename, lineno, msgid_plural=None, *,
                      is_docstring=False, comments=None):
-        if self.msgid_plural is None:
+        wenn self.msgid_plural is None:
             self.msgid_plural = msgid_plural
         self.locations.add(Location(filename, lineno))
         self.is_docstring |= is_docstring
-        if comments:
+        wenn comments:
             self.comments.extend(comments)
 
 
@@ -445,7 +445,7 @@ def get_source_comments(source):
     """
     comments = {}
     fuer token in tokenize.tokenize(BytesIO(source).readline):
-        if token.type == tokenize.COMMENT:
+        wenn token.type == tokenize.COMMENT:
             # Remove any leading combination of '#' and whitespace
             comment = token.string.lstrip('# \t')
             comments[token.start[0]] = comment
@@ -467,7 +467,7 @@ klasse GettextVisitor(ast.NodeVisitor):
             return
 
         self.filename = filename
-        if self.options.comment_tags:
+        wenn self.options.comment_tags:
             self.comments = get_source_comments(source)
         self.visit(module_tree)
 
@@ -482,12 +482,12 @@ klasse GettextVisitor(ast.NodeVisitor):
         self.generic_visit(node)
 
     def _extract_docstring(self, node):
-        if (not self.options.docstrings or
+        wenn (not self.options.docstrings or
             self.options.nodocstrings.get(self.filename)):
             return
 
         docstring = ast.get_docstring(node)
-        if docstring is not None:
+        wenn docstring is not None:
             lineno = node.body[0].lineno  # The first statement is the docstring
             self._add_message(lineno, docstring, is_docstring=True)
 
@@ -497,16 +497,16 @@ klasse GettextVisitor(ast.NodeVisitor):
         specs = self.options.keywords.get(func_name, [])
         fuer spec in specs:
             err = self._extract_message_with_spec(node, spec)
-            if err is None:
+            wenn err is None:
                 return
             errors.append(err)
 
-        if not errors:
+        wenn not errors:
             return
-        if len(errors) == 1:
+        wenn len(errors) == 1:
             print(f'*** {self.filename}:{node.lineno}: {errors[0]}',
                   file=sys.stderr)
-        else:
+        sonst:
             # There are multiple keyword specs fuer the function name and
             # none of them could be extracted. Print a general error
             # message and list the errors fuer each keyword spec.
@@ -520,24 +520,24 @@ klasse GettextVisitor(ast.NodeVisitor):
     def _extract_message_with_spec(self, node, spec):
         """Extract a gettext call with the given spec.
 
-        Return None if the gettext call was successfully extracted,
+        Return None wenn the gettext call was successfully extracted,
         otherwise return an error message.
         """
         max_index = max(spec.values())
         has_var_positional = any(isinstance(arg, ast.Starred) for
                                  arg in node.args[:max_index+1])
-        if has_var_positional:
+        wenn has_var_positional:
             return ('Variable positional arguments are not '
                     'allowed in gettext calls')
 
-        if max_index >= len(node.args):
+        wenn max_index >= len(node.args):
             return (f'Expected at least {max_index + 1} positional '
                     f'argument(s) in gettext call, got {len(node.args)}')
 
         msg_data = {}
         fuer arg_type, position in spec.items():
             arg = node.args[position]
-            if not self._is_string_const(arg):
+            wenn not self._is_string_const(arg):
                 return (f'Expected a string constant fuer argument '
                         f'{position + 1}, got {ast.unparse(arg)}')
             msg_data[arg_type] = arg.value
@@ -553,7 +553,7 @@ klasse GettextVisitor(ast.NodeVisitor):
         start with one of the comment prefixes defined by
         --add-comments=TAG. See the tests fuer examples.
         """
-        if not self.options.comment_tags:
+        wenn not self.options.comment_tags:
             return []
 
         comments = []
@@ -562,7 +562,7 @@ klasse GettextVisitor(ast.NodeVisitor):
         # the line above the gettext call.
         while lineno >= 1:
             comment = self.comments.get(lineno)
-            if comment is None:
+            wenn comment is None:
                 break
             comments.append(comment)
             lineno -= 1
@@ -571,8 +571,8 @@ klasse GettextVisitor(ast.NodeVisitor):
         # return all comments starting from that comment.
         comments = comments[::-1]
         first_index = next((i fuer i, comment in enumerate(comments)
-                            if self._is_translator_comment(comment)), None)
-        if first_index is None:
+                            wenn self._is_translator_comment(comment)), None)
+        wenn first_index is None:
             return []
         return comments[first_index:]
 
@@ -582,15 +582,15 @@ klasse GettextVisitor(ast.NodeVisitor):
     def _add_message(
             self, lineno, msgid, msgid_plural=None, msgctxt=None, *,
             is_docstring=False, comments=None):
-        if msgid in self.options.toexclude:
+        wenn msgid in self.options.toexclude:
             return
 
-        if not comments:
+        wenn not comments:
             comments = []
 
         key = self._key_for(msgid, msgctxt)
         message = self.messages.get(key)
-        if message:
+        wenn message:
             message.add_location(
                 self.filename,
                 lineno,
@@ -598,7 +598,7 @@ klasse GettextVisitor(ast.NodeVisitor):
                 is_docstring=is_docstring,
                 comments=comments,
             )
-        else:
+        sonst:
             self.messages[key] = Message(
                 msgid=msgid,
                 msgid_plural=msgid_plural,
@@ -610,7 +610,7 @@ klasse GettextVisitor(ast.NodeVisitor):
 
     @staticmethod
     def _key_for(msgid, msgctxt=None):
-        if msgctxt is not None:
+        wenn msgctxt is not None:
             return (msgctxt, msgid)
         return msgid
 
@@ -628,7 +628,7 @@ klasse GettextVisitor(ast.NodeVisitor):
 
 def write_pot_file(messages, options, fp):
     timestamp = time.strftime('%Y-%m-%d %H:%M%z')
-    encoding = fp.encoding if fp.encoding else 'UTF-8'
+    encoding = fp.encoding wenn fp.encoding sonst 'UTF-8'
     print(pot_header % {'time': timestamp, 'version': __version__,
                         'charset': encoding,
                         'encoding': '8bit'}, file=fp)
@@ -649,37 +649,37 @@ def write_pot_file(messages, options, fp):
         fuer comment in msg.comments:
             print(f'#. {comment}', file=fp)
 
-        if options.writelocations:
+        wenn options.writelocations:
             # location comments are different b/w Solaris and GNU:
-            if options.locationstyle == options.SOLARIS:
+            wenn options.locationstyle == options.SOLARIS:
                 fuer location in locations:
                     print(f'# File: {location.filename}, line: {location.lineno}', file=fp)
-            elif options.locationstyle == options.GNU:
+            sowenn options.locationstyle == options.GNU:
                 # fit as many locations on one line, as long as the
                 # resulting line length doesn't exceed 'options.width'
                 locline = '#:'
                 fuer location in locations:
                     s = f' {location.filename}:{location.lineno}'
-                    if len(locline) + len(s) <= options.width:
+                    wenn len(locline) + len(s) <= options.width:
                         locline = locline + s
-                    else:
+                    sonst:
                         print(locline, file=fp)
                         locline = f'#:{s}'
-                if len(locline) > 2:
+                wenn len(locline) > 2:
                     print(locline, file=fp)
-        if msg.is_docstring:
+        wenn msg.is_docstring:
             # If the entry was gleaned out of a docstring, then add a
             # comment stating so.  This is to aid translators who may wish
             # to skip translating some unimportant docstrings.
             print('#, docstring', file=fp)
-        if msg.msgctxt is not None:
+        wenn msg.msgctxt is not None:
             print('msgctxt', normalize(msg.msgctxt, encoding), file=fp)
         print('msgid', normalize(msg.msgid, encoding), file=fp)
-        if msg.msgid_plural is not None:
+        wenn msg.msgid_plural is not None:
             print('msgid_plural', normalize(msg.msgid_plural, encoding), file=fp)
             print('msgstr[0] ""', file=fp)
             print('msgstr[1] ""\n', file=fp)
-        else:
+        sonst:
             print('msgstr ""\n', file=fp)
 
 
@@ -724,54 +724,54 @@ def main():
     no_default_keywords = False
     # parse options
     fuer opt, arg in opts:
-        if opt in ('-h', '--help'):
+        wenn opt in ('-h', '--help'):
             usage(0)
-        elif opt in ('-a', '--extract-all'):
+        sowenn opt in ('-a', '--extract-all'):
             print("DeprecationWarning: -a/--extract-all is not implemented and will be removed in a future version",
                   file=sys.stderr)
             options.extractall = 1
-        elif opt in ('-c', '--add-comments'):
+        sowenn opt in ('-c', '--add-comments'):
             options.comment_tags.add(arg)
-        elif opt in ('-d', '--default-domain'):
+        sowenn opt in ('-d', '--default-domain'):
             options.outfile = arg + '.pot'
-        elif opt in ('-E', '--escape'):
+        sowenn opt in ('-E', '--escape'):
             options.escape = 1
-        elif opt in ('-D', '--docstrings'):
+        sowenn opt in ('-D', '--docstrings'):
             options.docstrings = 1
-        elif opt in ('-k', '--keyword'):
+        sowenn opt in ('-k', '--keyword'):
             options.keywords.append(arg)
-        elif opt in ('-K', '--no-default-keywords'):
+        sowenn opt in ('-K', '--no-default-keywords'):
             no_default_keywords = True
-        elif opt in ('-n', '--add-location'):
+        sowenn opt in ('-n', '--add-location'):
             options.writelocations = 1
-        elif opt in ('--no-location',):
+        sowenn opt in ('--no-location',):
             options.writelocations = 0
-        elif opt in ('-S', '--style'):
+        sowenn opt in ('-S', '--style'):
             options.locationstyle = locations.get(arg.lower())
-            if options.locationstyle is None:
+            wenn options.locationstyle is None:
                 usage(1, f'Invalid value fuer --style: {arg}')
-        elif opt in ('-o', '--output'):
+        sowenn opt in ('-o', '--output'):
             options.outfile = arg
-        elif opt in ('-p', '--output-dir'):
+        sowenn opt in ('-p', '--output-dir'):
             options.outpath = arg
-        elif opt in ('-v', '--verbose'):
+        sowenn opt in ('-v', '--verbose'):
             options.verbose = 1
-        elif opt in ('-V', '--version'):
+        sowenn opt in ('-V', '--version'):
             print(f'pygettext.py (xgettext fuer Python) {__version__}')
             sys.exit(0)
-        elif opt in ('-w', '--width'):
+        sowenn opt in ('-w', '--width'):
             try:
                 options.width = int(arg)
             except ValueError:
                 usage(1, f'--width argument must be an integer: {arg}')
-        elif opt in ('-x', '--exclude-file'):
+        sowenn opt in ('-x', '--exclude-file'):
             options.excludefilename = arg
-        elif opt in ('-X', '--no-docstrings'):
+        sowenn opt in ('-X', '--no-docstrings'):
             fp = open(arg)
             try:
                 while 1:
                     line = fp.readline()
-                    if not line:
+                    wenn not line:
                         break
                     options.nodocstrings[line[:-1]] = 1
             finally:
@@ -792,7 +792,7 @@ def main():
         sys.exit(1)
 
     # initialize list of strings to exclude
-    if options.excludefilename:
+    wenn options.excludefilename:
         try:
             with open(options.excludefilename) as fp:
                 options.toexclude = fp.readlines()
@@ -800,27 +800,27 @@ def main():
             print(f"Can't read --exclude-file: {options.excludefilename}",
                   file=sys.stderr)
             sys.exit(1)
-    else:
+    sonst:
         options.toexclude = []
 
     # resolve args to module lists
     expanded = []
     fuer arg in args:
-        if arg == '-':
+        wenn arg == '-':
             expanded.append(arg)
-        else:
+        sonst:
             expanded.extend(getFilesForName(arg))
     args = expanded
 
     # slurp through all the files
     visitor = GettextVisitor(options)
     fuer filename in args:
-        if filename == '-':
-            if options.verbose:
+        wenn filename == '-':
+            wenn options.verbose:
                 print('Reading standard input')
             source = sys.stdin.buffer.read()
-        else:
-            if options.verbose:
+        sonst:
+            wenn options.verbose:
                 print(f'Working on {filename}')
             with open(filename, 'rb') as fp:
                 source = fp.read()
@@ -828,20 +828,20 @@ def main():
         visitor.visit_file(source, filename)
 
     # write the output
-    if options.outfile == '-':
+    wenn options.outfile == '-':
         fp = sys.stdout
         closep = 0
-    else:
-        if options.outpath:
+    sonst:
+        wenn options.outpath:
             options.outfile = os.path.join(options.outpath, options.outfile)
         fp = open(options.outfile, 'w')
         closep = 1
     try:
         write_pot_file(visitor.messages, options, fp)
     finally:
-        if closep:
+        wenn closep:
             fp.close()
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     main()

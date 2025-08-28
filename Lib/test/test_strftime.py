@@ -12,7 +12,7 @@ import unittest
 
 # helper functions
 def fixasctime(s):
-    if s[8] == ' ':
+    wenn s[8] == ' ':
         s = s[:8] + '0' + s[9:]
     return s
 
@@ -36,8 +36,8 @@ klasse StrftimeTest(unittest.TestCase):
         self.gmt = time.gmtime(now)
         now = time.localtime(now)
 
-        if now[3] < 12: self.ampm='(AM|am)'
-        else: self.ampm='(PM|pm)'
+        wenn now[3] < 12: self.ampm='(AM|am)'
+        sonst: self.ampm='(PM|pm)'
 
         jan1 = time.struct_time(
             (
@@ -56,14 +56,14 @@ klasse StrftimeTest(unittest.TestCase):
         self.jan1 = time.localtime(time.mktime(jan1))
 
         try:
-            if now[8]: self.tz = time.tzname[1]
-            else: self.tz = time.tzname[0]
+            wenn now[8]: self.tz = time.tzname[1]
+            sonst: self.tz = time.tzname[0]
         except AttributeError:
             self.tz = ''
 
-        if now[3] > 12: self.clock12 = now[3] - 12
-        elif now[3] > 0: self.clock12 = now[3]
-        else: self.clock12 = 12
+        wenn now[3] > 12: self.clock12 = now[3] - 12
+        sowenn now[3] > 0: self.clock12 = now[3]
+        sonst: self.clock12 = 12
 
         self.now = now
 
@@ -79,7 +79,7 @@ klasse StrftimeTest(unittest.TestCase):
         self.strftest1(now)
         self.strftest2(now)
 
-        if support.verbose:
+        wenn support.verbose:
             print("Strftime test, platform: %s, Python version: %s" % \
                   (sys.platform, sys.version.split()[0]))
 
@@ -91,7 +91,7 @@ klasse StrftimeTest(unittest.TestCase):
                 self.strftest2(arg)
 
     def strftest1(self, now):
-        if support.verbose:
+        wenn support.verbose:
             print("strftime test for", time.ctime(now))
         now = self.now
         # Make sure any characters that could be taken as regex syntax is
@@ -129,12 +129,12 @@ klasse StrftimeTest(unittest.TestCase):
                 result = time.strftime(e[0], now)
             except ValueError as error:
                 self.fail("strftime '%s' format gave error: %s" % (e[0], error))
-            if re.match(escapestr(e[1], self.ampm), result):
+            wenn re.match(escapestr(e[1], self.ampm), result):
                 continue
-            if not result or result[0] == '%':
+            wenn not result or result[0] == '%':
                 self.fail("strftime does not support standard '%s' format (%s)"
                           % (e[0], e[2]))
-            else:
+            sonst:
                 self.fail("Conflict fuer %s (%s): expected %s, but got %s"
                           % (e[0], e[2], e[1], result))
 
@@ -172,18 +172,18 @@ klasse StrftimeTest(unittest.TestCase):
             except ValueError as result:
                 msg = "Error fuer nonstandard '%s' format (%s): %s" % \
                       (e[0], e[2], str(result))
-                if support.verbose:
+                wenn support.verbose:
                     print(msg)
                 continue
-            if re.match(escapestr(e[1], self.ampm), result):
-                if support.verbose:
+            wenn re.match(escapestr(e[1], self.ampm), result):
+                wenn support.verbose:
                     print("Supports nonstandard '%s' format (%s)" % (e[0], e[2]))
-            elif not result or result[0] == '%':
-                if support.verbose:
+            sowenn not result or result[0] == '%':
+                wenn support.verbose:
                     print("Does not appear to support '%s' format (%s)" % \
                            (e[0], e[2]))
-            else:
-                if support.verbose:
+            sonst:
+                wenn support.verbose:
                     print("Conflict fuer nonstandard '%s' format (%s):" % \
                            (e[0], e[2]))
                     print("  Expected %s, but got %s" % (e[1], result))
@@ -197,10 +197,10 @@ klasse Y1900Tests(unittest.TestCase):
     def test_y_before_1900(self):
         # Issue #13674, #19634
         t = (1899, 1, 1, 0, 0, 0, 0, 0, 0)
-        if sys.platform.startswith(("aix", "sunos", "solaris")):
+        wenn sys.platform.startswith(("aix", "sunos", "solaris")):
             with self.assertRaises(ValueError):
                 time.strftime("%y", t)
-        else:
+        sonst:
             self.assertEqual(time.strftime("%y", t), "99")
 
     def test_y_1900(self):
@@ -211,5 +211,5 @@ klasse Y1900Tests(unittest.TestCase):
         self.assertEqual(
             time.strftime("%y", (2013, 1, 1, 0, 0, 0, 0, 0, 0)), "13")
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

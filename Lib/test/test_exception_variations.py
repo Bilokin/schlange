@@ -11,7 +11,7 @@ klasse ExceptTestCases(unittest.TestCase):
             raise Exception('nyaa!')
         except:
             hit_except = True
-        else:
+        sonst:
             hit_else = True
         finally:
             hit_finally = True
@@ -29,7 +29,7 @@ klasse ExceptTestCases(unittest.TestCase):
             pass
         except:
             hit_except = True
-        else:
+        sonst:
             hit_else = True
         finally:
             hit_finally = True
@@ -94,7 +94,7 @@ klasse ExceptTestCases(unittest.TestCase):
             raise Exception('foo!')
         except:
             hit_except = True
-        else:
+        sonst:
             hit_else = True
 
         self.assertFalse(hit_else)
@@ -108,7 +108,7 @@ klasse ExceptTestCases(unittest.TestCase):
             pass
         except:
             hit_except = True
-        else:
+        sonst:
             hit_else = True
 
         self.assertFalse(hit_except)
@@ -155,13 +155,13 @@ klasse ExceptTestCases(unittest.TestCase):
                 pass
             except:
                 hit_inner_except = True
-            else:
+            sonst:
                 hit_inner_else = True
 
             raise Exception('outer exception')
         except:
             hit_except = True
-        else:
+        sonst:
             hit_else = True
         finally:
             hit_finally = True
@@ -185,11 +185,11 @@ klasse ExceptTestCases(unittest.TestCase):
             except:
                 hit_inner_except = True
                 raise Exception('outer exception')
-            else:
+            sonst:
                 hit_inner_else = True
         except:
             hit_except = True
-        else:
+        sonst:
             hit_else = True
         finally:
             hit_finally = True
@@ -212,12 +212,12 @@ klasse ExceptTestCases(unittest.TestCase):
                 pass
             except:
                 hit_inner_except = True
-            else:
+            sonst:
                 hit_inner_else = True
                 raise Exception('outer exception')
         except:
             hit_except = True
-        else:
+        sonst:
             hit_else = True
         finally:
             hit_finally = True
@@ -241,14 +241,14 @@ klasse ExceptTestCases(unittest.TestCase):
                 pass
             except:
                 hit_inner_except = True
-            else:
+            sonst:
                 hit_inner_else = True
             finally:
                 hit_inner_finally = True
                 raise Exception('outer exception')
         except:
             hit_except = True
-        else:
+        sonst:
             hit_else = True
         finally:
             hit_finally = True
@@ -273,14 +273,14 @@ klasse ExceptTestCases(unittest.TestCase):
                 raise Exception('inner exception')
             except:
                 hit_inner_except = True
-            else:
+            sonst:
                 hit_inner_else = True
             finally:
                 hit_inner_finally = True
                 raise Exception('outer exception')
         except:
             hit_except = True
-        else:
+        sonst:
             hit_else = True
         finally:
             hit_finally = True
@@ -304,7 +304,7 @@ klasse ExceptStarTestCases(unittest.TestCase):
             raise Exception('nyaa!')
         except* BaseException:
             hit_except = True
-        else:
+        sonst:
             hit_else = True
         finally:
             hit_finally = True
@@ -322,7 +322,7 @@ klasse ExceptStarTestCases(unittest.TestCase):
             pass
         except* BaseException:
             hit_except = True
-        else:
+        sonst:
             hit_else = True
         finally:
             hit_finally = True
@@ -387,7 +387,7 @@ klasse ExceptStarTestCases(unittest.TestCase):
             raise Exception('foo!')
         except* BaseException:
             hit_except = True
-        else:
+        sonst:
             hit_else = True
 
         self.assertFalse(hit_else)
@@ -401,7 +401,7 @@ klasse ExceptStarTestCases(unittest.TestCase):
             pass
         except* BaseException:
             hit_except = True
-        else:
+        sonst:
             hit_else = True
 
         self.assertFalse(hit_except)
@@ -448,13 +448,13 @@ klasse ExceptStarTestCases(unittest.TestCase):
                 pass
             except* BaseException:
                 hit_inner_except = True
-            else:
+            sonst:
                 hit_inner_else = True
 
             raise Exception('outer exception')
         except* BaseException:
             hit_except = True
-        else:
+        sonst:
             hit_else = True
         finally:
             hit_finally = True
@@ -524,13 +524,13 @@ klasse ExceptStarTestCases(unittest.TestCase):
                 pass
             except* BaseException:
                 hit_inner_except = True
-            else:
+            sonst:
                 hit_inner_else = True
 
             raise Exception('outer exception')
         except:
             hit_except = True
-        else:
+        sonst:
             hit_else = True
         finally:
             hit_finally = True
@@ -553,13 +553,13 @@ klasse ExceptStarTestCases(unittest.TestCase):
                 pass
             except:
                 hit_inner_except = True
-            else:
+            sonst:
                 hit_inner_else = True
 
             raise Exception('outer exception')
         except* BaseException:
             hit_except = True
-        else:
+        sonst:
             hit_else = True
         finally:
             hit_finally = True
@@ -571,5 +571,5 @@ klasse ExceptStarTestCases(unittest.TestCase):
         self.assertTrue(hit_except)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

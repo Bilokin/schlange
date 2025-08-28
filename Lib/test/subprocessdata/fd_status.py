@@ -11,24 +11,24 @@ import os
 import stat
 import sys
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     fds = []
-    if len(sys.argv) == 1:
+    wenn len(sys.argv) == 1:
         try:
             _MAXFD = os.sysconf("SC_OPEN_MAX")
         except:
             _MAXFD = 256
         test_fds = range(0, min(_MAXFD, 256))
-    else:
+    sonst:
         test_fds = map(int, sys.argv[1:])
     fuer fd in test_fds:
         try:
             st = os.fstat(fd)
         except OSError as e:
-            if e.errno == errno.EBADF:
+            wenn e.errno == errno.EBADF:
                 continue
             raise
         # Ignore Solaris door files
-        if not stat.S_ISDOOR(st.st_mode):
+        wenn not stat.S_ISDOOR(st.st_mode):
             fds.append(fd)
     print(','.join(map(str, fds)))

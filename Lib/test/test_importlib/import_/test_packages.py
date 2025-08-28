@@ -106,5 +106,5 @@ klasse ParentModuleTests:
  ) = util.test_both(ParentModuleTests, __import__=util.__import__)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

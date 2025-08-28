@@ -33,38 +33,38 @@ def loadmap_jisx0213(fo):
     decmap3_pair = {} # maps to BMP-pair fuer level 3
     fuer line in fo:
         line = line.split('#', 1)[0].strip()
-        if not line or len(line.split()) < 2:
+        wenn not line or len(line.split()) < 2:
             continue
 
         row = line.split()
         loc = eval('0x' + row[0][2:])
         level = eval(row[0][0])
         m = None
-        if len(row[1].split('+')) == 2: # single unicode
+        wenn len(row[1].split('+')) == 2: # single unicode
             uni = eval('0x' + row[1][2:])
-            if level == 3:
-                if uni < 0x10000:
+            wenn level == 3:
+                wenn uni < 0x10000:
                     m = decmap3
-                elif 0x20000 <= uni < 0x30000:
+                sowenn 0x20000 <= uni < 0x30000:
                     uni -= 0x20000
                     m = decmap3_2
-            elif level == 4:
-                if uni < 0x10000:
+            sowenn level == 4:
+                wenn uni < 0x10000:
                     m = decmap4
-                elif 0x20000 <= uni < 0x30000:
+                sowenn 0x20000 <= uni < 0x30000:
                     uni -= 0x20000
                     m = decmap4_2
             m.setdefault((loc >> 8), {})
             m[(loc >> 8)][(loc & 0xff)] = uni
-        else: # pair
+        sonst: # pair
             uniprefix = eval('0x' + row[1][2:6]) # body
             uni = eval('0x' + row[1][7:11]) # modifier
-            if level != 3:
+            wenn level != 3:
                 raise ValueError("invalid map")
             decmap3_pair.setdefault(uniprefix, {})
             m = decmap3_pair[uniprefix]
 
-        if m is None:
+        wenn m is None:
             raise ValueError("invalid map")
         m.setdefault((loc >> 8), {})
         m[(loc >> 8)][(loc & 0xff)] = uni
@@ -86,7 +86,7 @@ def main():
     cp932decmap = loadmap(cp932file)
     jis3decmap, jis4decmap, jis3_2_decmap, jis4_2_decmap, jis3_pairdecmap = loadmap_jisx0213(jisx0213file)
 
-    if jis3decmap[0x21][0x24] != 0xff0c:
+    wenn jis3decmap[0x21][0x24] != 0xff0c:
         raise SystemExit('Please adjust your JIS X 0213 map using jisx0213-2000-std.txt.diff')
 
     sjisencmap, cp932encmap = {}, {}
@@ -98,13 +98,13 @@ def main():
     fuer c1, m in cp932decmap.items():
         fuer c2, code in m.items():
             cp932encmap.setdefault(code >> 8, {})
-            if (code & 0xff) not in cp932encmap[code >> 8]:
+            wenn (code & 0xff) not in cp932encmap[code >> 8]:
                 cp932encmap[code >> 8][code & 0xff] = c1 << 8 | c2
     fuer c1, m in cp932encmap.copy().items():
         fuer c2, code in m.copy().items():
-            if c1 in sjisencmap and c2 in sjisencmap[c1] and sjisencmap[c1][c2] == code:
+            wenn c1 in sjisencmap and c2 in sjisencmap[c1] and sjisencmap[c1][c2] == code:
                 del cp932encmap[c1][c2]
-                if not cp932encmap[c1]:
+                wenn not cp932encmap[c1]:
                     del cp932encmap[c1]
 
     jisx0213pairdecmap = {}
@@ -125,28 +125,28 @@ def main():
     fuer c1, m in jisx0212decmap.items():
         fuer c2, code in m.items():
             jisx0208_0212encmap.setdefault(code >> 8, {})
-            if (code & 0xff) in jisx0208_0212encmap[code >> 8]:
+            wenn (code & 0xff) in jisx0208_0212encmap[code >> 8]:
                 print("OOPS!!!", (code))
             jisx0208_0212encmap[code >> 8][code & 0xff] = 0x8000 | c1 << 8 | c2
 
     jisx0213bmpencmap = {}
     fuer c1, m in jis3decmap.copy().items():
         fuer c2, code in m.copy().items():
-            if c1 in jisx0208decmap and c2 in jisx0208decmap[c1]:
-                if code in jis3_pairdecmap:
+            wenn c1 in jisx0208decmap and c2 in jisx0208decmap[c1]:
+                wenn code in jis3_pairdecmap:
                     jisx0213bmpencmap[code >> 8][code & 0xff] = (0,) # pair
                     jisx0213pairencmap.append((code, 0, c1 << 8 | c2))
-                elif jisx0208decmap[c1][c2] == code:
+                sowenn jisx0208decmap[c1][c2] == code:
                     del jis3decmap[c1][c2]
-                    if not jis3decmap[c1]:
+                    wenn not jis3decmap[c1]:
                         del jis3decmap[c1]
-                else:
+                sonst:
                     raise ValueError("Difference between JIS X 0208 and JIS X 0213 Plane 1 is found.")
-            else:
+            sonst:
                 jisx0213bmpencmap.setdefault(code >> 8, {})
-                if code not in jis3_pairdecmap:
+                wenn code not in jis3_pairdecmap:
                     jisx0213bmpencmap[code >> 8][code & 0xff] = c1 << 8 | c2
-                else:
+                sonst:
                     jisx0213bmpencmap[code >> 8][code & 0xff] = (0,) # pair
                     jisx0213pairencmap.append((code, 0, c1 << 8 | c2))
 
@@ -247,5 +247,5 @@ static const struct pair_encodemap *jisx0213_pair_encmap;
 
     print("Done!")
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     main()

@@ -16,16 +16,16 @@ klasse BufferedFiller:
 
     def write(self, *data):
         fuer s in data:
-            if len(s) > self.column:
+            wenn len(s) > self.column:
                 raise ValueError("token is too long")
-            if len(s) + self.clen > self.column:
+            wenn len(s) + self.clen > self.column:
                 self.flush()
             self.clen += len(s)
             self.cline.append(s)
             self.count += 1
 
     def flush(self):
-        if not self.cline:
+        wenn not self.cline:
             return
         self.buffered.append(''.join(self.cline))
         self.clen = 0
@@ -54,11 +54,11 @@ klasse DecodeMapWriter:
         c2values = range(c2range[0], c2range[1] + 1)
 
         fuer c1 in range(c1range[0], c1range[1] + 1):
-            if c1 not in self.decode_map or (onlymask and c1 not in onlymask):
+            wenn c1 not in self.decode_map or (onlymask and c1 not in onlymask):
                 continue
             c2map = self.decode_map[c1]
-            rc2values = [n fuer n in c2values if n in c2map]
-            if not rc2values:
+            rc2values = [n fuer n in c2values wenn n in c2map]
+            wenn not rc2values:
                 continue
 
             c2map[self.prefix] = True
@@ -67,30 +67,30 @@ klasse DecodeMapWriter:
             c2map['midx'] = len(self.filler)
 
             fuer v in range(rc2values[0], rc2values[-1] + 1):
-                if v in c2map:
+                wenn v in c2map:
                     self.filler.write('%d,' % c2map[v])
-                else:
+                sonst:
                     self.filler.write('U,')
 
     def generate(self, wide=False):
-        if not wide:
+        wenn not wide:
             self.fp.write(f"static const ucs2_t __{self.prefix}_decmap[{len(self.filler)}] = {{\n")
-        else:
+        sonst:
             self.fp.write(f"static const Py_UCS4 __{self.prefix}_decmap[{len(self.filler)}] = {{\n")
 
         self.filler.printout(self.fp)
         self.fp.write("};\n\n")
 
-        if not wide:
+        wenn not wide:
             self.fp.write(f"static const struct dbcs_index {self.prefix}_decmap[256] = {{\n")
-        else:
+        sonst:
             self.fp.write(f"static const struct widedbcs_index {self.prefix}_decmap[256] = {{\n")
 
         fuer i in range(256):
-            if i in self.decode_map and self.prefix in self.decode_map[i]:
+            wenn i in self.decode_map and self.prefix in self.decode_map[i]:
                 m = self.decode_map
                 prefix = self.prefix
-            else:
+            sonst:
                 self.filler.write("{", "0,", "0,", "0", "},")
                 continue
 
@@ -117,12 +117,12 @@ klasse EncodeMapWriter:
 
     def buildmap(self):
         fuer c1 in range(0, 256):
-            if c1 not in self.encode_map:
+            wenn c1 not in self.encode_map:
                 continue
             c2map = self.encode_map[c1]
             rc2values = [k fuer k in c2map.keys()]
             rc2values.sort()
-            if not rc2values:
+            wenn not rc2values:
                 continue
 
             c2map[self.prefix] = True
@@ -131,13 +131,13 @@ klasse EncodeMapWriter:
             c2map['midx'] = len(self.filler)
 
             fuer v in range(rc2values[0], rc2values[-1] + 1):
-                if v not in c2map:
+                wenn v not in c2map:
                     self.write_nochar()
-                elif isinstance(c2map[v], int):
+                sowenn isinstance(c2map[v], int):
                     self.write_char(c2map[v])
-                elif isinstance(c2map[v], tuple):
+                sowenn isinstance(c2map[v], tuple):
                     self.write_multic(c2map[v])
-                else:
+                sonst:
                     raise ValueError
 
     def write_nochar(self):
@@ -156,12 +156,12 @@ klasse EncodeMapWriter:
         self.fp.write(f"static const {self.indextype} {self.prefix}_encmap[256] = {{\n")
 
         fuer i in range(256):
-            if i in self.encode_map and self.prefix in self.encode_map[i]:
+            wenn i in self.encode_map and self.prefix in self.encode_map[i]:
                 self.filler.write("{", "__%s_encmap" % self.prefix, "+",
                                   "%d" % self.encode_map[i]['midx'], ",",
                                   "%d," % self.encode_map[i]['min'],
                                   "%d" % self.encode_map[i]['max'], "},")
-            else:
+            sonst:
                 self.filler.write("{", "0,", "0,", "0", "},")
                 continue
         self.filler.printout(self.fp)
@@ -186,12 +186,12 @@ def loadmap(fo, natcol=0, unicol=1, sbcs=0):
     decmap = {}
     fuer line in fo:
         line = line.split('#', 1)[0].strip()
-        if not line or len(line.split()) < 2:
+        wenn not line or len(line.split()) < 2:
             continue
 
         row = [eval(e) fuer e in line.split()]
         loc, uni = row[natcol], row[unicol]
-        if loc >= 0x100 or sbcs:
+        wenn loc >= 0x100 or sbcs:
             decmap.setdefault((loc >> 8), {})
             decmap[(loc >> 8)][(loc & 0xff)] = uni
 

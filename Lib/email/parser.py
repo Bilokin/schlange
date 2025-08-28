@@ -47,7 +47,7 @@ klasse Parser:
         meaning it parses the entire contents of the file.
         """
         feedparser = FeedParser(self._class, policy=self.policy)
-        if headersonly:
+        wenn headersonly:
             feedparser._set_headersonly()
         while data := fp.read(8192):
             feedparser.feed(data)

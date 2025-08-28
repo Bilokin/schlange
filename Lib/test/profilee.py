@@ -38,10 +38,10 @@ def factorial(n):
     # 3 primitive calls, 130, 20 and 20 ticks total
     # including 116, 17, 17 ticks local
     global TICKS
-    if n > 0:
+    wenn n > 0:
         TICKS += n
         return mul(n, factorial(n-1))
-    else:
+    sonst:
         TICKS += 11
         return 1
 

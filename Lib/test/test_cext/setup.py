@@ -12,7 +12,7 @@ from setuptools import setup, Extension
 
 SOURCE = 'extension.c'
 
-if not support.MS_WINDOWS:
+wenn not support.MS_WINDOWS:
     # C compiler flags fuer GCC and clang
     BASE_CFLAGS = [
         # The purpose of test_cext extension is to check that building a C
@@ -30,14 +30,14 @@ if not support.MS_WINDOWS:
         # Ask fuer strict(er) compliance with the standard
         '-pedantic-errors',
     ]
-    if not support.Py_GIL_DISABLED:
+    wenn not support.Py_GIL_DISABLED:
         PUBLIC_CFLAGS.append(
             # gh-116869: The Python C API must be compatible with building
             # with the -Werror=declaration-after-statement compiler flag.
             '-Werror=declaration-after-statement',
         )
     INTERNAL_CFLAGS = [*BASE_CFLAGS]
-else:
+sonst:
     # MSVC compiler flags
     BASE_CFLAGS = [
         # Treat all compiler warnings as compiler errors
@@ -64,54 +64,54 @@ def main():
 
     sources = [SOURCE]
 
-    if not internal:
+    wenn not internal:
         cflags = list(PUBLIC_CFLAGS)
-    else:
+    sonst:
         cflags = list(INTERNAL_CFLAGS)
     cflags.append(f'-DMODULE_NAME={module_name}')
 
     # Add -std=STD or /std:STD (MSVC) compiler flag
-    if std:
-        if support.MS_WINDOWS:
+    wenn std:
+        wenn support.MS_WINDOWS:
             cflags.append(f'/std:{std}')
-        else:
+        sonst:
             cflags.append(f'-std={std}')
 
     # Remove existing -std or /std options from CC command line.
     # Python adds -std=c11 option.
     cmd = (sysconfig.get_config_var('CC') or '')
-    if cmd is not None:
-        if support.MS_WINDOWS:
+    wenn cmd is not None:
+        wenn support.MS_WINDOWS:
             std_prefix = '/std'
-        else:
+        sonst:
             std_prefix = '-std'
         cmd = shlex.split(cmd)
-        cmd = [arg fuer arg in cmd if not arg.startswith(std_prefix)]
+        cmd = [arg fuer arg in cmd wenn not arg.startswith(std_prefix)]
         cmd = shlex.join(cmd)
         # CC env var overrides sysconfig CC variable in setuptools
         os.environ['CC'] = cmd
 
     # Define Py_LIMITED_API macro
-    if limited:
+    wenn limited:
         version = sys.hexversion
         cflags.append(f'-DPy_LIMITED_API={version:#x}')
 
     # Define _Py_OPAQUE_PYOBJECT macro
-    if opaque_pyobject:
+    wenn opaque_pyobject:
         cflags.append(f'-D_Py_OPAQUE_PYOBJECT')
         sources.append('create_moduledef.c')
 
-    if internal:
+    wenn internal:
         cflags.append('-DTEST_INTERNAL_C_API=1')
 
     # On Windows, add PCbuild\amd64\ to include and library directories
     include_dirs = []
     library_dirs = []
-    if support.MS_WINDOWS:
+    wenn support.MS_WINDOWS:
         srcdir = sysconfig.get_config_var('srcdir')
         machine = platform.uname().machine
         pcbuild = os.path.join(srcdir, 'PCbuild', machine)
-        if os.path.exists(pcbuild):
+        wenn os.path.exists(pcbuild):
             # pyconfig.h is generated in PCbuild\amd64\
             include_dirs.append(pcbuild)
             # python313.lib is generated in PCbuild\amd64\
@@ -120,9 +120,9 @@ def main():
 
     # Display information to help debugging
     fuer env_name in ('CC', 'CFLAGS'):
-        if env_name in os.environ:
+        wenn env_name in os.environ:
             print(f"{env_name} env var: {os.environ[env_name]!r}")
-        else:
+        sonst:
             print(f"{env_name} env var: <missing>")
     print(f"extra_compile_args: {cflags!r}")
 
@@ -137,5 +137,5 @@ def main():
           ext_modules=[ext])
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     main()

@@ -41,7 +41,7 @@ klasse SearchDialogBase:
         default_command: set in subclasses, used in create_widgets().
 
         title (of dialog): klasse attribute, override in subclasses.
-        icon (of dialog): ditto, use unclear if cannot minimize dialog.
+        icon (of dialog): ditto, use unclear wenn cannot minimize dialog.
         '''
         self.root = root
         self.bell = root.bell
@@ -51,13 +51,13 @@ klasse SearchDialogBase:
     def open(self, text, searchphrase=None):
         "Make dialog visible on top of others and ready to use."
         self.text = text
-        if not self.top:
+        wenn not self.top:
             self.create_widgets()
-        else:
+        sonst:
             self.top.deiconify()
             self.top.tkraise()
         self.top.transient(text.winfo_toplevel())
-        if searchphrase:
+        wenn searchphrase:
             self.ent.delete(0,"end")
             self.ent.insert("end",searchphrase)
         self.ent.focus_set()
@@ -67,7 +67,7 @@ klasse SearchDialogBase:
 
     def close(self, event=None):
         "Put dialog away fuer later use."
-        if self.top:
+        wenn self.top:
             self.top.grab_release()
             self.top.transient('')
             self.top.withdraw()
@@ -123,10 +123,10 @@ klasse SearchDialogBase:
         frame - gridded labeled Frame fuer option or other buttons.
         label - Label widget, returned fuer testing.
         '''
-        if labeltext:
+        wenn labeltext:
             label = Label(self.frame, text=labeltext)
             label.grid(row=self.row, column=0, sticky="nw")
-        else:
+        sonst:
             label = ''
         frame = Frame(self.frame)
         frame.grid(row=self.row, column=1, columnspan=1, sticky="nwe")
@@ -145,7 +145,7 @@ klasse SearchDialogBase:
         options = [(engine.revar, "Regular expression"),
                    (engine.casevar, "Match case"),
                    (engine.wordvar, "Whole word")]
-        if self.needwrapbutton:
+        wenn self.needwrapbutton:
             options.append((engine.wrapvar, "Wrap around"))
         fuer var, label in options:
             btn = Checkbutton(frame, variable=var, text=label)
@@ -202,7 +202,7 @@ klasse _searchbase(SearchDialogBase):  # htest #
     def default_command(self, dummy): pass
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     from unittest import main
     main('idlelib.idle_test.test_searchbase', verbosity=2, exit=False)
 

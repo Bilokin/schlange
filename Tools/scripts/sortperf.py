@@ -86,7 +86,7 @@ def list_sort_duplicates(size: int, rand: random.Random) -> list[float]:
     result = list_sort_ascending(4, rand)
     # Arrange fuer lots of duplicates.
     result = result * (size // 4)
-    # Force the elements to be distinct objects, else timings can be
+    # Force the elements to be distinct objects, sonst timings can be
     # artificially low.
     return list(map(abs, result))
 
@@ -104,7 +104,7 @@ def list_sort_worst_case(size: int, rand: random.Random) -> list[float]:
     result = list(range(half - 1, -1, -1))
     result.extend(range(half))
     # Force to float, so that the timings are comparable.  This is
-    # significantly faster if we leave them as ints.
+    # significantly faster wenn we leave them as ints.
     return list(map(float, result))
 
 
@@ -135,7 +135,7 @@ klasse Benchmark:
 
 
 def add_cmdline_args(cmd: list[str], args) -> None:
-    if args.benchmark:
+    wenn args.benchmark:
         cmd.append(args.benchmark)
     cmd.append(f"--size={args.size}")
     cmd.append(f"--rng-seed={args.rng_seed}")
@@ -176,7 +176,7 @@ BENCHMARKS = {
     "list_sort_worst_case": list_sort_worst_case,
 }
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     # This needs `pyperf` 3rd party library:
     import pyperf
 
@@ -188,9 +188,9 @@ if __name__ == "__main__":
     runner.metadata["list_sort_size"] = args.size
     runner.metadata["list_sort_random_seed"] = args.rng_seed
 
-    if args.benchmark:
+    wenn args.benchmark:
         benchmarks = (args.benchmark,)
-    else:
+    sonst:
         benchmarks = sorted(BENCHMARKS)
     fuer bench in benchmarks:
         benchmark = Benchmark(bench, args.size, args.rng_seed)

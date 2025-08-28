@@ -40,12 +40,12 @@ The following group define certificate requirements that one side is
 allowing/requiring from the other side:
 
 CERT_NONE - no certificates from the other side are required (or will
-            be looked at if provided)
-CERT_OPTIONAL - certificates are not required, but if provided will be
-                validated, and if validation fails, the connection will
+            be looked at wenn provided)
+CERT_OPTIONAL - certificates are not required, but wenn provided will be
+                validated, and wenn validation fails, the connection will
                 also fail
 CERT_REQUIRED - certificates are required, and will be validated, and
-                if validation fails, the connection will also fail
+                wenn validation fails, the connection will also fail
 
 The following constants identify various SSL protocol variants:
 
@@ -97,7 +97,7 @@ from collections import namedtuple
 from enum import Enum as _Enum, IntEnum as _IntEnum, IntFlag as _IntFlag
 from enum import _simple_enum
 
-import _ssl             # if we can't import it, let the error propagate
+import _ssl             # wenn we can't import it, let the error propagate
 
 from _ssl import OPENSSL_VERSION_NUMBER, OPENSSL_VERSION_INFO, OPENSSL_VERSION
 from _ssl import _SSLContext, MemoryBIO, SSLSession
@@ -254,7 +254,7 @@ klasse _TLSMessageType:
     CHANGE_CIPHER_SPEC = 0x0101
 
 
-if sys.platform == "win32":
+wenn sys.platform == "win32":
     from _ssl import enum_certificates, enum_crls
 
 from socket import socket, SOCK_STREAM, create_connection
@@ -287,40 +287,40 @@ def _dnsname_match(dn, hostname):
       supported and a CertificateError is raised.
     - A wildcard must match at least one character.
     """
-    if not dn:
+    wenn not dn:
         return False
 
     wildcards = dn.count('*')
     # speed up common case w/o wildcards
-    if not wildcards:
+    wenn not wildcards:
         return dn.lower() == hostname.lower()
 
-    if wildcards > 1:
+    wenn wildcards > 1:
         raise CertificateError(
             "too many wildcards in certificate DNS name: {!r}.".format(dn))
 
     dn_leftmost, sep, dn_remainder = dn.partition('.')
 
-    if '*' in dn_remainder:
+    wenn '*' in dn_remainder:
         # Only match wildcard in leftmost segment.
         raise CertificateError(
             "wildcard can only be present in the leftmost label: "
             "{!r}.".format(dn))
 
-    if not sep:
+    wenn not sep:
         # no right side
         raise CertificateError(
             "sole wildcard without additional labels are not support: "
             "{!r}.".format(dn))
 
-    if dn_leftmost != '*':
+    wenn dn_leftmost != '*':
         # no partial wildcard matching
         raise CertificateError(
             "partial wildcards in leftmost label are not supported: "
             "{!r}.".format(dn))
 
     hostname_leftmost, sep, hostname_remainder = hostname.partition('.')
-    if not hostname_leftmost or not sep:
+    wenn not hostname_leftmost or not sep:
         # wildcard must match at least one char
         return False
     return dn_remainder.lower() == hostname_remainder.lower()
@@ -339,11 +339,11 @@ def _inet_paton(ipname):
     except OSError:
         # not an IPv4 address
         pass
-    else:
-        if _socket.inet_ntoa(addr) == ipname:
+    sonst:
+        wenn _socket.inet_ntoa(addr) == ipname:
             # only accept injective ipnames
             return addr
-        else:
+        sonst:
             # refuse fuer short IPv4 notation and additional trailing data
             raise ValueError(
                 "{!r} is not a quad-dotted IPv4 address.".format(ipname)
@@ -386,8 +386,8 @@ def get_default_verify_paths():
     cafile = os.environ.get(parts[0], parts[1])
     capath = os.environ.get(parts[2], parts[3])
 
-    return DefaultVerifyPaths(cafile if os.path.isfile(cafile) else None,
-                              capath if os.path.isdir(capath) else None,
+    return DefaultVerifyPaths(cafile wenn os.path.isfile(cafile) sonst None,
+                              capath wenn os.path.isdir(capath) sonst None,
                               *parts)
 
 
@@ -428,7 +428,7 @@ klasse SSLContext(_SSLContext):
     sslobject_class = None  # SSLObject is assigned later.
 
     def __new__(cls, protocol=None, *args, **kwargs):
-        if protocol is None:
+        wenn protocol is None:
             warnings.warn(
                 "ssl.SSLContext() without protocol argument is deprecated.",
                 category=DeprecationWarning,
@@ -439,11 +439,11 @@ klasse SSLContext(_SSLContext):
         return self
 
     def _encode_hostname(self, hostname):
-        if hostname is None:
+        wenn hostname is None:
             return None
-        elif isinstance(hostname, str):
+        sowenn isinstance(hostname, str):
             return hostname.encode('idna').decode('ascii')
-        else:
+        sonst:
             return hostname.decode('ascii')
 
     def wrap_socket(self, sock, server_side=False,
@@ -481,7 +481,7 @@ klasse SSLContext(_SSLContext):
         protos = bytearray()
         fuer protocol in npn_protocols:
             b = bytes(protocol, 'ascii')
-            if len(b) == 0 or len(b) > 255:
+            wenn len(b) == 0 or len(b) > 255:
                 raise SSLError('NPN protocols must be 1 to 255 in length')
             protos.append(len(b))
             protos.extend(b)
@@ -489,10 +489,10 @@ klasse SSLContext(_SSLContext):
         self._set_npn_protocols(protos)
 
     def set_servername_callback(self, server_name_callback):
-        if server_name_callback is None:
+        wenn server_name_callback is None:
             self.sni_callback = None
-        else:
-            if not callable(server_name_callback):
+        sonst:
+            wenn not callable(server_name_callback):
                 raise TypeError("not a callable object")
 
             def shim_cb(sslobj, servername, sslctx):
@@ -505,7 +505,7 @@ klasse SSLContext(_SSLContext):
         protos = bytearray()
         fuer protocol in alpn_protocols:
             b = bytes(protocol, 'ascii')
-            if len(b) == 0 or len(b) > 255:
+            wenn len(b) == 0 or len(b) > 255:
                 raise SSLError('ALPN protocols must be 1 to 255 in length')
             protos.append(len(b))
             protos.extend(b)
@@ -516,8 +516,8 @@ klasse SSLContext(_SSLContext):
         try:
             fuer cert, encoding, trust in enum_certificates(storename):
                 # CA certs are never PKCS#7 encoded
-                if encoding == "x509_asn":
-                    if trust is True or purpose.oid in trust:
+                wenn encoding == "x509_asn":
+                    wenn trust is True or purpose.oid in trust:
                         try:
                             self.load_verify_locations(cadata=cert)
                         except SSLError as exc:
@@ -526,21 +526,21 @@ klasse SSLContext(_SSLContext):
             warnings.warn("unable to enumerate Windows certificate store")
 
     def load_default_certs(self, purpose=Purpose.SERVER_AUTH):
-        if not isinstance(purpose, _ASN1Object):
+        wenn not isinstance(purpose, _ASN1Object):
             raise TypeError(purpose)
-        if sys.platform == "win32":
+        wenn sys.platform == "win32":
             fuer storename in self._windows_cert_stores:
                 self._load_windows_store_certs(storename, purpose)
         self.set_default_verify_paths()
 
-    if hasattr(_SSLContext, 'minimum_version'):
+    wenn hasattr(_SSLContext, 'minimum_version'):
         @property
         def minimum_version(self):
             return TLSVersion(super().minimum_version)
 
         @minimum_version.setter
         def minimum_version(self, value):
-            if value == TLSVersion.SSLv3:
+            wenn value == TLSVersion.SSLv3:
                 self.options &= ~Options.OP_NO_SSLv3
             super(SSLContext, SSLContext).minimum_version.__set__(self, value)
 
@@ -560,7 +560,7 @@ klasse SSLContext(_SSLContext):
     def options(self, value):
         super(SSLContext, SSLContext).options.__set__(self, value)
 
-    if hasattr(_ssl, 'HOSTFLAG_NEVER_CHECK_SUBJECT'):
+    wenn hasattr(_ssl, 'HOSTFLAG_NEVER_CHECK_SUBJECT'):
         @property
         def hostname_checks_common_name(self):
             ncs = self._host_flags & _ssl.HOSTFLAG_NEVER_CHECK_SUBJECT
@@ -568,11 +568,11 @@ klasse SSLContext(_SSLContext):
 
         @hostname_checks_common_name.setter
         def hostname_checks_common_name(self, value):
-            if value:
+            wenn value:
                 self._host_flags &= ~_ssl.HOSTFLAG_NEVER_CHECK_SUBJECT
-            else:
+            sonst:
                 self._host_flags |= _ssl.HOSTFLAG_NEVER_CHECK_SUBJECT
-    else:
+    sonst:
         @property
         def hostname_checks_common_name(self):
             return True
@@ -611,18 +611,18 @@ klasse SSLContext(_SSLContext):
             Raw, decrypted message content as bytes
         """
         inner = super()._msg_callback
-        if inner is not None:
+        wenn inner is not None:
             return inner.user_function
-        else:
+        sonst:
             return None
 
     @_msg_callback.setter
     def _msg_callback(self, callback):
-        if callback is None:
+        wenn callback is None:
             super(SSLContext, SSLContext)._msg_callback.__set__(self, None)
             return
 
-        if not hasattr(callback, '__call__'):
+        wenn not hasattr(callback, '__call__'):
             raise TypeError(f"{callback} is not callable.")
 
         def inner(conn, direction, version, content_type, msg_type, data):
@@ -636,11 +636,11 @@ klasse SSLContext(_SSLContext):
             except ValueError:
                 pass
 
-            if content_type == _TLSContentType.HEADER:
+            wenn content_type == _TLSContentType.HEADER:
                 msg_enum = _TLSContentType
-            elif content_type == _TLSContentType.ALERT:
+            sowenn content_type == _TLSContentType.ALERT:
                 msg_enum = _TLSAlertType
-            else:
+            sonst:
                 msg_enum = _TLSMessageType
             try:
                 msg_type = msg_enum(msg_type)
@@ -687,25 +687,25 @@ def create_default_context(purpose=Purpose.SERVER_AUTH, *, cafile=None,
           deprecation. The values represent a fair balance between maximum
           compatibility and security.
     """
-    if not isinstance(purpose, _ASN1Object):
+    wenn not isinstance(purpose, _ASN1Object):
         raise TypeError(purpose)
 
     # SSLContext sets OP_NO_SSLv2, OP_NO_SSLv3, OP_NO_COMPRESSION,
     # OP_CIPHER_SERVER_PREFERENCE, OP_SINGLE_DH_USE and OP_SINGLE_ECDH_USE
     # by default.
-    if purpose == Purpose.SERVER_AUTH:
+    wenn purpose == Purpose.SERVER_AUTH:
         # verify certs and host name in client mode
         context = SSLContext(PROTOCOL_TLS_CLIENT)
         context.verify_mode = CERT_REQUIRED
         context.check_hostname = True
-    elif purpose == Purpose.CLIENT_AUTH:
+    sowenn purpose == Purpose.CLIENT_AUTH:
         context = SSLContext(PROTOCOL_TLS_SERVER)
-    else:
+    sonst:
         raise ValueError(purpose)
 
     # `VERIFY_X509_PARTIAL_CHAIN` makes OpenSSL's chain building behave more
     # like RFC 3280 and 5280, which specify that chain building stops with the
-    # first trust anchor, even if that anchor is not self-signed.
+    # first trust anchor, even wenn that anchor is not self-signed.
     #
     # `VERIFY_X509_STRICT` makes OpenSSL more conservative about the
     # certificates it accepts, including "disabling workarounds for
@@ -713,17 +713,17 @@ def create_default_context(purpose=Purpose.SERVER_AUTH, *, cafile=None,
     context.verify_flags |= (_ssl.VERIFY_X509_PARTIAL_CHAIN |
                              _ssl.VERIFY_X509_STRICT)
 
-    if cafile or capath or cadata:
+    wenn cafile or capath or cadata:
         context.load_verify_locations(cafile, capath, cadata)
-    elif context.verify_mode != CERT_NONE:
+    sowenn context.verify_mode != CERT_NONE:
         # no explicit cafile, capath or cadata but the verify mode is
         # CERT_OPTIONAL or CERT_REQUIRED. Let's try to load default system
         # root CA certificates fuer the given purpose. This may fail silently.
         context.load_default_certs(purpose)
     # OpenSSL 1.1.1 keylog file
-    if hasattr(context, 'keylog_filename'):
+    wenn hasattr(context, 'keylog_filename'):
         keylogfile = os.environ.get('SSLKEYLOGFILE')
-        if keylogfile and not sys.flags.ignore_environment:
+        wenn keylogfile and not sys.flags.ignore_environment:
             context.keylog_filename = keylogfile
     return context
 
@@ -738,50 +738,50 @@ def _create_unverified_context(protocol=None, *, cert_reqs=CERT_NONE,
     is less restrict than create_default_context()'s to increase backward
     compatibility.
     """
-    if not isinstance(purpose, _ASN1Object):
+    wenn not isinstance(purpose, _ASN1Object):
         raise TypeError(purpose)
 
     # SSLContext sets OP_NO_SSLv2, OP_NO_SSLv3, OP_NO_COMPRESSION,
     # OP_CIPHER_SERVER_PREFERENCE, OP_SINGLE_DH_USE and OP_SINGLE_ECDH_USE
     # by default.
-    if purpose == Purpose.SERVER_AUTH:
+    wenn purpose == Purpose.SERVER_AUTH:
         # verify certs and host name in client mode
-        if protocol is None:
+        wenn protocol is None:
             protocol = PROTOCOL_TLS_CLIENT
-    elif purpose == Purpose.CLIENT_AUTH:
-        if protocol is None:
+    sowenn purpose == Purpose.CLIENT_AUTH:
+        wenn protocol is None:
             protocol = PROTOCOL_TLS_SERVER
-    else:
+    sonst:
         raise ValueError(purpose)
 
     context = SSLContext(protocol)
     context.check_hostname = check_hostname
-    if cert_reqs is not None:
+    wenn cert_reqs is not None:
         context.verify_mode = cert_reqs
-    if check_hostname:
+    wenn check_hostname:
         context.check_hostname = True
 
-    if keyfile and not certfile:
+    wenn keyfile and not certfile:
         raise ValueError("certfile must be specified")
-    if certfile or keyfile:
+    wenn certfile or keyfile:
         context.load_cert_chain(certfile, keyfile)
 
     # load CA root certs
-    if cafile or capath or cadata:
+    wenn cafile or capath or cadata:
         context.load_verify_locations(cafile, capath, cadata)
-    elif context.verify_mode != CERT_NONE:
+    sowenn context.verify_mode != CERT_NONE:
         # no explicit cafile, capath or cadata but the verify mode is
         # CERT_OPTIONAL or CERT_REQUIRED. Let's try to load default system
         # root CA certificates fuer the given purpose. This may fail silently.
         context.load_default_certs(purpose)
     # OpenSSL 1.1.1 keylog file
-    if hasattr(context, 'keylog_filename'):
+    wenn hasattr(context, 'keylog_filename'):
         keylogfile = os.environ.get('SSLKEYLOGFILE')
-        if keylogfile and not sys.flags.ignore_environment:
+        wenn keylogfile and not sys.flags.ignore_environment:
             context.keylog_filename = keylogfile
     return context
 
-# Used by http.client if no context is explicitly passed.
+# Used by http.client wenn no context is explicitly passed.
 _create_default_https_context = create_default_context
 
 
@@ -852,7 +852,7 @@ klasse SSLObject:
 
     @property
     def server_hostname(self):
-        """The currently set server hostname (for SNI), or ``None`` if no
+        """The currently set server hostname (for SNI), or ``None`` wenn no
         server hostname is set."""
         return self._sslobj.server_hostname
 
@@ -862,9 +862,9 @@ klasse SSLObject:
         If 'buffer' is provided, read into this buffer and return the number of
         bytes read.
         """
-        if buffer is not None:
+        wenn buffer is not None:
             v = self._sslobj.read(len, buffer)
-        else:
+        sonst:
             v = self._sslobj.read(len)
         return v
 
@@ -880,7 +880,7 @@ klasse SSLObject:
         """Returns a formatted version of the data in the certificate provided
         by the other end of the SSL channel.
 
-        Return None if no certificate was provided, {} if a certificate was
+        Return None wenn no certificate was provided, {} wenn a certificate was
         provided, but not validated.
         """
         return self._sslobj.getpeercert(binary_form)
@@ -894,7 +894,7 @@ klasse SSLObject:
         """
         chain = self._sslobj.get_verified_chain()
 
-        if chain is None:
+        wenn chain is None:
             return []
 
         return [cert.public_bytes(_ssl.ENCODING_DER) fuer cert in chain]
@@ -905,14 +905,14 @@ klasse SSLObject:
         """
         chain = self._sslobj.get_unverified_chain()
 
-        if chain is None:
+        wenn chain is None:
             return []
 
         return [cert.public_bytes(_ssl.ENCODING_DER) fuer cert in chain]
 
     def selected_npn_protocol(self):
         """Return the currently selected NPN protocol as a string, or ``None``
-        if a next protocol was not negotiated or if NPN is not supported by one
+        wenn a next protocol was not negotiated or wenn NPN is not supported by one
         of the peers."""
         warnings.warn(
             "ssl NPN is deprecated, use ALPN instead",
@@ -922,7 +922,7 @@ klasse SSLObject:
 
     def selected_alpn_protocol(self):
         """Return the currently selected ALPN protocol as a string, or ``None``
-        if a next protocol was not negotiated or if ALPN is not supported by one
+        wenn a next protocol was not negotiated or wenn ALPN is not supported by one
         of the peers."""
         return self._sslobj.selected_alpn_protocol()
 
@@ -937,7 +937,7 @@ klasse SSLObject:
 
     def shared_ciphers(self):
         """Return a list of ciphers shared by the client during the handshake or
-        None if this is not a valid server connection.
+        None wenn this is not a valid server connection.
         """
         return self._sslobj.shared_ciphers()
 
@@ -960,8 +960,8 @@ klasse SSLObject:
 
     def get_channel_binding(self, cb_type="tls-unique"):
         """Get channel binding data fuer current connection.  Raise ValueError
-        if the requested `cb_type` is not supported.  Return bytes of the data
-        or None if the data is not available (e.g. before the handshake)."""
+        wenn the requested `cb_type` is not supported.  Return bytes of the data
+        or None wenn the data is not available (e.g. before the handshake)."""
         return self._sslobj.get_channel_binding(cb_type)
 
     def version(self):
@@ -999,16 +999,16 @@ klasse SSLSocket(socket):
     def _create(cls, sock, server_side=False, do_handshake_on_connect=True,
                 suppress_ragged_eofs=True, server_hostname=None,
                 context=None, session=None):
-        if sock.getsockopt(SOL_SOCKET, SO_TYPE) != SOCK_STREAM:
+        wenn sock.getsockopt(SOL_SOCKET, SO_TYPE) != SOCK_STREAM:
             raise NotImplementedError("only stream sockets are supported")
-        if server_side:
-            if server_hostname:
+        wenn server_side:
+            wenn server_hostname:
                 raise ValueError("server_hostname can only be specified "
                                  "in client mode")
-            if session is not None:
+            wenn session is not None:
                 raise ValueError("session can only be specified in "
                                  "client mode")
-        if context.check_hostname and not server_hostname:
+        wenn context.check_hostname and not server_hostname:
             raise ValueError("check_hostname requires server_hostname")
 
         sock_timeout = sock.gettimeout()
@@ -1030,11 +1030,11 @@ klasse SSLSocket(socket):
             self.do_handshake_on_connect = do_handshake_on_connect
             self.suppress_ragged_eofs = suppress_ragged_eofs
 
-            # See if we are connected
+            # See wenn we are connected
             try:
                 self.getpeername()
             except OSError as e:
-                if e.errno != errno.ENOTCONN:
+                wenn e.errno != errno.ENOTCONN:
                     raise
                 connected = False
                 blocking = self.getblocking()
@@ -1047,11 +1047,11 @@ klasse SSLSocket(socket):
                     notconn_pre_handshake_data = self.recv(1)
                 except OSError as e:
                     # EINVAL occurs fuer recv(1) on non-connected on unix sockets.
-                    if e.errno not in (errno.ENOTCONN, errno.EINVAL):
+                    wenn e.errno not in (errno.ENOTCONN, errno.EINVAL):
                         raise
                     notconn_pre_handshake_data = b''
                 self.setblocking(blocking)
-                if notconn_pre_handshake_data:
+                wenn notconn_pre_handshake_data:
                     # This prevents pending data sent to the socket before it was
                     # closed from escaping to the caller who could otherwise
                     # presume it came through a successful TLS connection.
@@ -1065,20 +1065,20 @@ klasse SSLSocket(socket):
                     finally:
                         # Explicitly break the reference cycle.
                         notconn_pre_handshake_data_error = None
-            else:
+            sonst:
                 connected = True
 
             self.settimeout(sock_timeout)  # Must come after setblocking() calls.
             self._connected = connected
-            if connected:
+            wenn connected:
                 # create the SSL object
                 self._sslobj = self._context._wrap_socket(
                     self, server_side, self.server_hostname,
                     owner=self, session=self._session,
                 )
-                if do_handshake_on_connect:
+                wenn do_handshake_on_connect:
                     timeout = self.gettimeout()
-                    if timeout == 0.0:
+                    wenn timeout == 0.0:
                         # non-blocking
                         raise ValueError("do_handshake_on_connect should not be specified fuer non-blocking sockets")
                     self.do_handshake()
@@ -1103,19 +1103,19 @@ klasse SSLSocket(socket):
     @property
     @_sslcopydoc
     def session(self):
-        if self._sslobj is not None:
+        wenn self._sslobj is not None:
             return self._sslobj.session
 
     @session.setter
     def session(self, session):
         self._session = session
-        if self._sslobj is not None:
+        wenn self._sslobj is not None:
             self._sslobj.session = session
 
     @property
     @_sslcopydoc
     def session_reused(self):
-        if self._sslobj is not None:
+        wenn self._sslobj is not None:
             return self._sslobj.session_reused
 
     def dup(self):
@@ -1123,14 +1123,14 @@ klasse SSLSocket(socket):
                                   self.__class__.__name__)
 
     def _checkClosed(self, msg=None):
-        # raise an exception here if you wish to check fuer spurious closes
+        # raise an exception here wenn you wish to check fuer spurious closes
         pass
 
     def _check_connected(self):
-        if not self._connected:
-            # getpeername() will raise ENOTCONN if the socket is really
+        wenn not self._connected:
+            # getpeername() will raise ENOTCONN wenn the socket is really
             # not connected; note that we can be connected even without
-            # _connected being set, e.g. if connect() first returned
+            # _connected being set, e.g. wenn connect() first returned
             # EAGAIN.
             self.getpeername()
 
@@ -1139,20 +1139,20 @@ klasse SSLSocket(socket):
         Return zero-length string on EOF."""
 
         self._checkClosed()
-        if self._sslobj is None:
+        wenn self._sslobj is None:
             raise ValueError("Read on closed or unwrapped SSL socket.")
         try:
-            if buffer is not None:
+            wenn buffer is not None:
                 return self._sslobj.read(len, buffer)
-            else:
+            sonst:
                 return self._sslobj.read(len)
         except SSLError as x:
-            if x.args[0] == SSL_ERROR_EOF and self.suppress_ragged_eofs:
-                if buffer is not None:
+            wenn x.args[0] == SSL_ERROR_EOF and self.suppress_ragged_eofs:
+                wenn buffer is not None:
                     return 0
-                else:
+                sonst:
                     return b''
-            else:
+            sonst:
                 raise
 
     def write(self, data):
@@ -1160,7 +1160,7 @@ klasse SSLSocket(socket):
         number of bytes of DATA actually transmitted."""
 
         self._checkClosed()
-        if self._sslobj is None:
+        wenn self._sslobj is None:
             raise ValueError("Write on closed or unwrapped SSL socket.")
         return self._sslobj.write(data)
 
@@ -1174,7 +1174,7 @@ klasse SSLSocket(socket):
     def get_verified_chain(self):
         chain = self._sslobj.get_verified_chain()
 
-        if chain is None:
+        wenn chain is None:
             return []
 
         return [cert.public_bytes(_ssl.ENCODING_DER) fuer cert in chain]
@@ -1183,7 +1183,7 @@ klasse SSLSocket(socket):
     def get_unverified_chain(self):
         chain = self._sslobj.get_unverified_chain()
 
-        if chain is None:
+        wenn chain is None:
             return []
 
         return [cert.public_bytes(_ssl.ENCODING_DER) fuer cert in chain]
@@ -1201,74 +1201,74 @@ klasse SSLSocket(socket):
     @_sslcopydoc
     def selected_alpn_protocol(self):
         self._checkClosed()
-        if self._sslobj is None or not _ssl.HAS_ALPN:
+        wenn self._sslobj is None or not _ssl.HAS_ALPN:
             return None
-        else:
+        sonst:
             return self._sslobj.selected_alpn_protocol()
 
     @_sslcopydoc
     def cipher(self):
         self._checkClosed()
-        if self._sslobj is None:
+        wenn self._sslobj is None:
             return None
-        else:
+        sonst:
             return self._sslobj.cipher()
 
     @_sslcopydoc
     def group(self):
         self._checkClosed()
-        if self._sslobj is None:
+        wenn self._sslobj is None:
             return None
-        else:
+        sonst:
             return self._sslobj.group()
 
     @_sslcopydoc
     def shared_ciphers(self):
         self._checkClosed()
-        if self._sslobj is None:
+        wenn self._sslobj is None:
             return None
-        else:
+        sonst:
             return self._sslobj.shared_ciphers()
 
     @_sslcopydoc
     def compression(self):
         self._checkClosed()
-        if self._sslobj is None:
+        wenn self._sslobj is None:
             return None
-        else:
+        sonst:
             return self._sslobj.compression()
 
     def send(self, data, flags=0):
         self._checkClosed()
-        if self._sslobj is not None:
-            if flags != 0:
+        wenn self._sslobj is not None:
+            wenn flags != 0:
                 raise ValueError(
                     "non-zero flags not allowed in calls to send() on %s" %
                     self.__class__)
             return self._sslobj.write(data)
-        else:
+        sonst:
             return super().send(data, flags)
 
     def sendto(self, data, flags_or_addr, addr=None):
         self._checkClosed()
-        if self._sslobj is not None:
+        wenn self._sslobj is not None:
             raise ValueError("sendto not allowed on instances of %s" %
                              self.__class__)
-        elif addr is None:
+        sowenn addr is None:
             return super().sendto(data, flags_or_addr)
-        else:
+        sonst:
             return super().sendto(data, flags_or_addr, addr)
 
     def sendmsg(self, *args, **kwargs):
-        # Ensure programs don't send data unencrypted if they try to
+        # Ensure programs don't send data unencrypted wenn they try to
         # use this method.
         raise NotImplementedError("sendmsg not allowed on instances of %s" %
                                   self.__class__)
 
     def sendall(self, data, flags=0):
         self._checkClosed()
-        if self._sslobj is not None:
-            if flags != 0:
+        wenn self._sslobj is not None:
+            wenn flags != 0:
                 raise ValueError(
                     "non-zero flags not allowed in calls to sendall() on %s" %
                     self.__class__)
@@ -1278,21 +1278,21 @@ klasse SSLSocket(socket):
                 while count < amount:
                     v = self.send(byte_view[count:])
                     count += v
-        else:
+        sonst:
             return super().sendall(data, flags)
 
     def sendfile(self, file, offset=0, count=None):
         """Send a file, possibly by using an efficient sendfile() call if
         the system supports it.  Return the total number of bytes sent.
         """
-        if self._sslobj is None:
+        wenn self._sslobj is None:
             return super().sendfile(file, offset, count)
 
-        if not self._sslobj.uses_ktls_for_send():
+        wenn not self._sslobj.uses_ktls_for_send():
             return self._sendfile_use_send(file, offset, count)
 
         sendfile = getattr(self._sslobj, "sendfile", None)
-        if sendfile is None:
+        wenn sendfile is None:
             return self._sendfile_use_send(file, offset, count)
 
         try:
@@ -1304,48 +1304,48 @@ klasse SSLSocket(socket):
 
     def recv(self, buflen=1024, flags=0):
         self._checkClosed()
-        if self._sslobj is not None:
-            if flags != 0:
+        wenn self._sslobj is not None:
+            wenn flags != 0:
                 raise ValueError(
                     "non-zero flags not allowed in calls to recv() on %s" %
                     self.__class__)
             return self.read(buflen)
-        else:
+        sonst:
             return super().recv(buflen, flags)
 
     def recv_into(self, buffer, nbytes=None, flags=0):
         self._checkClosed()
-        if nbytes is None:
-            if buffer is not None:
+        wenn nbytes is None:
+            wenn buffer is not None:
                 with memoryview(buffer) as view:
                     nbytes = view.nbytes
-                if not nbytes:
+                wenn not nbytes:
                     nbytes = 1024
-            else:
+            sonst:
                 nbytes = 1024
-        if self._sslobj is not None:
-            if flags != 0:
+        wenn self._sslobj is not None:
+            wenn flags != 0:
                 raise ValueError(
                   "non-zero flags not allowed in calls to recv_into() on %s" %
                   self.__class__)
             return self.read(nbytes, buffer)
-        else:
+        sonst:
             return super().recv_into(buffer, nbytes, flags)
 
     def recvfrom(self, buflen=1024, flags=0):
         self._checkClosed()
-        if self._sslobj is not None:
+        wenn self._sslobj is not None:
             raise ValueError("recvfrom not allowed on instances of %s" %
                              self.__class__)
-        else:
+        sonst:
             return super().recvfrom(buflen, flags)
 
     def recvfrom_into(self, buffer, nbytes=None, flags=0):
         self._checkClosed()
-        if self._sslobj is not None:
+        wenn self._sslobj is not None:
             raise ValueError("recvfrom_into not allowed on instances of %s" %
                              self.__class__)
-        else:
+        sonst:
             return super().recvfrom_into(buffer, nbytes, flags)
 
     def recvmsg(self, *args, **kwargs):
@@ -1359,9 +1359,9 @@ klasse SSLSocket(socket):
     @_sslcopydoc
     def pending(self):
         self._checkClosed()
-        if self._sslobj is not None:
+        wenn self._sslobj is not None:
             return self._sslobj.pending()
-        else:
+        sonst:
             return 0
 
     def shutdown(self, how):
@@ -1371,18 +1371,18 @@ klasse SSLSocket(socket):
 
     @_sslcopydoc
     def unwrap(self):
-        if self._sslobj:
+        wenn self._sslobj:
             s = self._sslobj.shutdown()
             self._sslobj = None
             return s
-        else:
+        sonst:
             raise ValueError("No SSL wrapper around " + str(self))
 
     @_sslcopydoc
     def verify_client_post_handshake(self):
-        if self._sslobj:
+        wenn self._sslobj:
             return self._sslobj.verify_client_post_handshake()
-        else:
+        sonst:
             raise ValueError("No SSL wrapper around " + str(self))
 
     def _real_close(self):
@@ -1394,32 +1394,32 @@ klasse SSLSocket(socket):
         self._check_connected()
         timeout = self.gettimeout()
         try:
-            if timeout == 0.0 and block:
+            wenn timeout == 0.0 and block:
                 self.settimeout(None)
             self._sslobj.do_handshake()
         finally:
             self.settimeout(timeout)
 
     def _real_connect(self, addr, connect_ex):
-        if self.server_side:
+        wenn self.server_side:
             raise ValueError("can't connect in server-side mode")
         # Here we assume that the socket is client-side, and not
         # connected at the time of the call.  We connect it, then wrap it.
-        if self._connected or self._sslobj is not None:
+        wenn self._connected or self._sslobj is not None:
             raise ValueError("attempt to connect already-connected SSLSocket!")
         self._sslobj = self.context._wrap_socket(
             self, False, self.server_hostname,
             owner=self, session=self._session
         )
         try:
-            if connect_ex:
+            wenn connect_ex:
                 rc = super().connect_ex(addr)
-            else:
+            sonst:
                 rc = None
                 super().connect(addr)
-            if not rc:
+            wenn not rc:
                 self._connected = True
-                if self.do_handshake_on_connect:
+                wenn self.do_handshake_on_connect:
                     self.do_handshake()
             return rc
         except (OSError, ValueError):
@@ -1450,10 +1450,10 @@ klasse SSLSocket(socket):
 
     @_sslcopydoc
     def get_channel_binding(self, cb_type="tls-unique"):
-        if self._sslobj is not None:
+        wenn self._sslobj is not None:
             return self._sslobj.get_channel_binding(cb_type)
-        else:
-            if cb_type not in CHANNEL_BINDING_TYPES:
+        sonst:
+            wenn cb_type not in CHANNEL_BINDING_TYPES:
                 raise ValueError(
                     "{0} channel binding type not implemented".format(cb_type)
                 )
@@ -1461,9 +1461,9 @@ klasse SSLSocket(socket):
 
     @_sslcopydoc
     def version(self):
-        if self._sslobj is not None:
+        wenn self._sslobj is not None:
             return self._sslobj.version()
-        else:
+        sonst:
             return None
 
 
@@ -1497,7 +1497,7 @@ def cert_time_to_seconds(cert_time):
     except ValueError:
         raise ValueError('time data %r does not match '
                          'format "%%b%s"' % (cert_time, time_format))
-    else:
+    sonst:
         # found valid month
         tt = strptime(cert_time[3:], time_format)
         # return an integer, the previous mktime()-based implementation
@@ -1521,10 +1521,10 @@ def PEM_cert_to_DER_cert(pem_cert_string):
     """Takes a certificate in ASCII PEM format and returns the
     DER-encoded version of it as a byte sequence"""
 
-    if not pem_cert_string.startswith(PEM_HEADER):
+    wenn not pem_cert_string.startswith(PEM_HEADER):
         raise ValueError("Invalid PEM encoding; must start with %s"
                          % PEM_HEADER)
-    if not pem_cert_string.strip().endswith(PEM_FOOTER):
+    wenn not pem_cert_string.strip().endswith(PEM_FOOTER):
         raise ValueError("Invalid PEM encoding; must end with %s"
                          % PEM_FOOTER)
     d = pem_cert_string.strip()[len(PEM_HEADER):-len(PEM_FOOTER)]
@@ -1540,9 +1540,9 @@ def get_server_certificate(addr, ssl_version=PROTOCOL_TLS_CLIENT,
     """
 
     host, port = addr
-    if ca_certs is not None:
+    wenn ca_certs is not None:
         cert_reqs = CERT_REQUIRED
-    else:
+    sonst:
         cert_reqs = CERT_NONE
     context = _create_stdlib_context(ssl_version,
                                      cert_reqs=cert_reqs,

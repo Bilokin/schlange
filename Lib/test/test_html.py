@@ -99,5 +99,5 @@ klasse HtmlTests(unittest.TestCase):
         check('&co;', '&co;')
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

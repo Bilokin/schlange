@@ -38,8 +38,8 @@ klasse FileDialog:
 
         d = FileDialog(master)
         fname = d.go(dir_or_file, pattern, default, key)
-        if fname is None: ...canceled...
-        else: ...open file...
+        wenn fname is None: ...canceled...
+        sonst: ...open file...
 
     All arguments to go() are optional.
 
@@ -56,7 +56,7 @@ klasse FileDialog:
     title = "File Selection Dialog"
 
     def __init__(self, master, title=None):
-        if title is None: title = self.title
+        wenn title is None: title = self.title
         self.master = master
         self.directory = None
 
@@ -120,13 +120,13 @@ klasse FileDialog:
         self.top.bind('<Alt-W>', self.cancel_command)
 
     def go(self, dir_or_file=os.curdir, pattern="*", default="", key=None):
-        if key and key in dialogstates:
+        wenn key and key in dialogstates:
             self.directory, pattern = dialogstates[key]
-        else:
+        sonst:
             dir_or_file = os.path.expanduser(dir_or_file)
-            if os.path.isdir(dir_or_file):
+            wenn os.path.isdir(dir_or_file):
                 self.directory = dir_or_file
-            else:
+            sonst:
                 self.directory, default = os.path.split(dir_or_file)
         self.set_filter(self.directory, pattern)
         self.set_selection(default)
@@ -136,9 +136,9 @@ klasse FileDialog:
         self.top.grab_set()
         self.how = None
         self.master.mainloop()          # Exited by self.quit(how)
-        if key:
+        wenn key:
             directory, pattern = self.get_filter()
-            if self.how:
+            wenn self.how:
                 directory = os.path.dirname(self.how)
             dialogstates[key] = directory, pattern
         self.top.destroy()
@@ -184,9 +184,9 @@ klasse FileDialog:
         matchingfiles = []
         fuer name in names:
             fullname = os.path.join(dir, name)
-            if os.path.isdir(fullname):
+            wenn os.path.isdir(fullname):
                 subdirs.append(name)
-            elif fnmatch.fnmatch(name, pat):
+            sowenn fnmatch.fnmatch(name, pat):
                 matchingfiles.append(name)
         self.dirs.delete(0, END)
         fuer name in subdirs:
@@ -195,13 +195,13 @@ klasse FileDialog:
         fuer name in matchingfiles:
             self.files.insert(END, name)
         head, tail = os.path.split(self.get_selection())
-        if tail == os.curdir: tail = ''
+        wenn tail == os.curdir: tail = ''
         self.set_selection(tail)
 
     def get_filter(self):
         filter = self.filter.get()
         filter = os.path.expanduser(filter)
-        if filter[-1:] == os.sep or os.path.isdir(filter):
+        wenn filter[-1:] == os.sep or os.path.isdir(filter):
             filter = os.path.join(filter, "*")
         return os.path.split(filter)
 
@@ -214,12 +214,12 @@ klasse FileDialog:
         self.quit()
 
     def set_filter(self, dir, pat):
-        if not os.path.isabs(dir):
+        wenn not os.path.isabs(dir):
             try:
                 pwd = os.getcwd()
             except OSError:
                 pwd = None
-            if pwd:
+            wenn pwd:
                 dir = os.path.join(pwd, dir)
                 dir = os.path.normpath(dir)
         self.filter.delete(0, END)
@@ -238,9 +238,9 @@ klasse LoadFileDialog(FileDialog):
 
     def ok_command(self):
         file = self.get_selection()
-        if not os.path.isfile(file):
+        wenn not os.path.isfile(file):
             self.master.bell()
-        else:
+        sonst:
             self.quit(file)
 
 
@@ -252,8 +252,8 @@ klasse SaveFileDialog(FileDialog):
 
     def ok_command(self):
         file = self.get_selection()
-        if os.path.exists(file):
-            if os.path.isdir(file):
+        wenn os.path.exists(file):
+            wenn os.path.isdir(file):
                 self.master.bell()
                 return
             d = Dialog(self.top,
@@ -262,11 +262,11 @@ klasse SaveFileDialog(FileDialog):
                        bitmap='questhead',
                        default=1,
                        strings=("Yes", "Cancel"))
-            if d.num != 0:
+            wenn d.num != 0:
                 return
-        else:
+        sonst:
             head, tail = os.path.split(file)
-            if not os.path.isdir(head):
+            wenn not os.path.isdir(head):
                 self.master.bell()
                 return
         self.quit(file)
@@ -276,7 +276,7 @@ klasse SaveFileDialog(FileDialog):
 #
 # options (all have default values):
 #
-# - defaultextension: added to filename if not explicitly given
+# - defaultextension: added to filename wenn not explicitly given
 #
 # - filetypes: sequence of (label, pattern) tuples.  the same pattern
 #   may occur with several patterns.  use "*" as pattern to indicate
@@ -291,13 +291,13 @@ klasse SaveFileDialog(FileDialog):
 #
 # - title: dialog title
 #
-# - multiple: if true user may select more than one file
+# - multiple: wenn true user may select more than one file
 #
 # options fuer the directory chooser:
 #
 # - initialdir, parent, title: see above
 #
-# - mustexist: if true, user must pick an existing directory
+# - mustexist: wenn true, user must pick an existing directory
 #
 
 
@@ -311,7 +311,7 @@ klasse _Dialog(commondialog.Dialog):
             pass
 
     def _fixresult(self, widget, result):
-        if result:
+        wenn result:
             # keep directory and filename until next time
             # convert Tcl path objects to strings
             try:
@@ -335,15 +335,15 @@ klasse Open(_Dialog):
     command = "tk_getOpenFile"
 
     def _fixresult(self, widget, result):
-        if isinstance(result, tuple):
+        wenn isinstance(result, tuple):
             # multiple results:
             result = tuple([getattr(r, "string", r) fuer r in result])
-            if result:
+            wenn result:
                 path, file = os.path.split(result[0])
                 self.options["initialdir"] = path
                 # don't set initialfile or filename, as we have multiple of these
             return result
-        if not widget.tk.wantobjects() and "multiple" in self.options:
+        wenn not widget.tk.wantobjects() and "multiple" in self.options:
             # Need to split result explicitly
             return self._fixresult(widget, widget.tk.splitlist(result))
         return _Dialog._fixresult(self, widget, result)
@@ -362,7 +362,7 @@ klasse Directory(commondialog.Dialog):
     command = "tk_chooseDirectory"
 
     def _fixresult(self, widget, result):
-        if result:
+        wenn result:
             # convert Tcl path objects to strings
             try:
                 result = result.string
@@ -406,7 +406,7 @@ def askopenfile(mode = "r", **options):
     "Ask fuer a filename to open, and returned the opened file"
 
     filename = Open(**options).show()
-    if filename:
+    wenn filename:
         return open(filename, mode)
     return None
 
@@ -420,7 +420,7 @@ def askopenfiles(mode = "r", **options):
     """
 
     files = askopenfilenames(**options)
-    if files:
+    wenn files:
         ofiles=[]
         fuer filename in files:
             ofiles.append(open(filename, mode))
@@ -432,7 +432,7 @@ def asksaveasfile(mode = "w", **options):
     "Ask fuer a filename to save as, and returned the opened file"
 
     filename = SaveAs(**options).show()
-    if filename:
+    wenn filename:
         return open(filename, mode)
     return None
 
@@ -488,5 +488,5 @@ def test():
     print("saveas", saveasfilename.encode(enc))
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     test()

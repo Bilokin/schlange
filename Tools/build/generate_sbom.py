@@ -53,7 +53,7 @@ klasse PackageFiles(typing.NamedTuple):
 
 # SBOMS don't have a method to specify the sources of files
 # so we need to do that external to the SBOM itself. Add new
-# values to 'exclude' if we create new files within tracked
+# values to 'exclude' wenn we create new files within tracked
 # directories that aren't sourced from third-party packages.
 PACKAGE_TO_FILES = {
     "mpdecimal": PackageFiles(
@@ -92,15 +92,15 @@ def spdx_id(value: str) -> str:
 
 
 def error_if(value: bool, error_message: str) -> None:
-    """Prints an error if a comparison fails along with a link to the devguide"""
-    if value:
+    """Prints an error wenn a comparison fails along with a link to the devguide"""
+    wenn value:
         print(error_message)
         print("See 'https://devguide.python.org/developer-workflow/sbom' fuer more information.")
         sys.exit(1)
 
 
 def is_root_directory_git_index() -> bool:
-    """Checks if the root directory is a git index"""
+    """Checks wenn the root directory is a git index"""
     try:
         subprocess.check_call(
             ["git", "-C", str(CPYTHON_ROOT_DIR), "rev-parse"],
@@ -125,7 +125,7 @@ def filter_gitignored_paths(paths: list[str]) -> list[str]:
         '.gitignore:9:*.a    Tools/lib.a'
     """
     # No paths means no filtering to be done.
-    if not paths:
+    wenn not paths:
         return []
 
     # Filter out files in gitignore.
@@ -146,7 +146,7 @@ def filter_gitignored_paths(paths: list[str]) -> list[str]:
     git_check_ignore_lines = git_check_ignore_proc.stdout.decode().splitlines()
     git_check_not_ignored = []
     fuer line in git_check_ignore_lines:
-        if match := git_check_ignore_re.fullmatch(line):
+        wenn match := git_check_ignore_re.fullmatch(line):
             git_check_not_ignored.append(match.group(2) or match.group(3))
     return sorted(git_check_not_ignored)
 
@@ -173,11 +173,11 @@ def download_with_retries(download_location: str,
         try:
             resp = urllib.request.urlopen(download_location)
         except (urllib.error.URLError, ConnectionError) as ex:
-            if attempt == max_retries:
+            wenn attempt == max_retries:
                 msg = f"Download from {download_location} failed."
                 raise OSError(msg) from ex
             time.sleep(base_delay**attempt + random.uniform(0, max_jitter))
-        else:
+        sonst:
             return resp
 
 
@@ -193,7 +193,7 @@ def check_sbom_packages(sbom_data: dict[str, typing.Any]) -> None:
 
         # Verify that the checksum matches the expected value
         # and that the download URL is valid.
-        if "checksums" not in package or "CI" in os.environ:
+        wenn "checksums" not in package or "CI" in os.environ:
             download_location = package["downloadLocation"]
             resp = download_with_retries(download_location)
             error_if(resp.status != 200, f"Couldn't access URL: {download_location}'")
@@ -228,7 +228,7 @@ def check_sbom_packages(sbom_data: dict[str, typing.Any]) -> None:
         )
 
         # HACL* specifies its expected rev in a refresh script.
-        if package["name"] == "hacl-star":
+        wenn package["name"] == "hacl-star":
             hacl_refresh_sh = (CPYTHON_ROOT_DIR / "Modules/_hacl/refresh.sh").read_text()
             hacl_expected_rev_match = re.search(
                 r"expected_hacl_star_rev=([0-9a-f]{40})",
@@ -242,7 +242,7 @@ def check_sbom_packages(sbom_data: dict[str, typing.Any]) -> None:
             )
 
         # libexpat specifies its expected rev in a refresh script.
-        if package["name"] == "libexpat":
+        wenn package["name"] == "libexpat":
             libexpat_refresh_sh = (CPYTHON_ROOT_DIR / "Modules/expat/refresh.sh").read_text()
             libexpat_expected_version_match = re.search(
                 r"expected_libexpat_version=\"([0-9]+\.[0-9]+\.[0-9]+)\"",
@@ -313,14 +313,14 @@ def create_source_sbom() -> None:
                 path = str(PurePosixPath(PureWindowsPath(path)))
 
                 # Skip directories and excluded files
-                if not (CPYTHON_ROOT_DIR / path).is_file() or path in exclude:
+                wenn not (CPYTHON_ROOT_DIR / path).is_file() or path in exclude:
                     continue
 
                 # SPDX requires SHA1 to be used fuer files, but we provide SHA256 too.
                 data = (CPYTHON_ROOT_DIR / path).read_bytes()
                 # We normalize line-endings fuer consistent checksums.
                 # This is a rudimentary check fuer binary files.
-                if b"\x00" not in data:
+                wenn b"\x00" not in data:
                     data = data.replace(b"\r\n", b"\n")
                 checksum_sha1 = hashlib.sha1(data).hexdigest()
                 checksum_sha256 = hashlib.sha256(data).hexdigest()
@@ -373,7 +373,7 @@ def create_externals_sbom() -> None:
         # Update the version information in all the locations.
         package["versionInfo"] = package_version
         fuer external_ref in package["externalRefs"]:
-            if external_ref["referenceType"] != "cpe23Type":
+            wenn external_ref["referenceType"] != "cpe23Type":
                 continue
             # Version is the fifth field of a CPE.
             cpe23ref = external_ref["referenceLocator"]
@@ -390,7 +390,7 @@ def create_externals_sbom() -> None:
         package["downloadLocation"] = download_location
 
         # If the download URL has changed we want one to get recalulated.
-        if download_location_changed:
+        wenn download_location_changed:
             package.pop("checksums", None)
 
     check_sbom_packages(sbom_data)
@@ -400,8 +400,8 @@ def create_externals_sbom() -> None:
 
 
 def main() -> None:
-    # Don't regenerate the SBOM if we're not a git repository.
-    if not is_root_directory_git_index():
+    # Don't regenerate the SBOM wenn we're not a git repository.
+    wenn not is_root_directory_git_index():
         print("Skipping SBOM generation due to not being a git repository")
         return
 
@@ -409,5 +409,5 @@ def main() -> None:
     create_externals_sbom()
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     main()

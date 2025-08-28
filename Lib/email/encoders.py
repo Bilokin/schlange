@@ -47,7 +47,7 @@ def encode_quopri(msg):
 def encode_7or8bit(msg):
     """Set the Content-Transfer-Encoding header to 7bit or 8bit."""
     orig = msg.get_payload(decode=True)
-    if orig is None:
+    wenn orig is None:
         # There's no payload.  For backwards compatibility we use 7bit
         msg['Content-Transfer-Encoding'] = '7bit'
         return
@@ -57,7 +57,7 @@ def encode_7or8bit(msg):
         orig.decode('ascii')
     except UnicodeError:
         msg['Content-Transfer-Encoding'] = '8bit'
-    else:
+    sonst:
         msg['Content-Transfer-Encoding'] = '7bit'
 
 

@@ -69,7 +69,7 @@ klasse ImportTests(unittest.TestCase):
     def check_addmodule(self, add_module, accept_nonstr=False):
         # create a new module
         names = ['nonexistent']
-        if accept_nonstr:
+        wenn accept_nonstr:
             names.append(b'\xff')  # non-UTF-8
             # PyImport_AddModuleObject() accepts non-string names
             names.append(tuple(['hashable non-string']))
@@ -190,7 +190,7 @@ klasse ImportTests(unittest.TestCase):
         self.assertRaises(ModuleNotFoundError, importmodulelevel, 'nonexistent', NULL, NULL, NULL, 0)
         self.assertRaises(ValueError, importmodulelevel, '', NULL, NULL, NULL, 0)
 
-        if __package__:
+        wenn __package__:
             self.assertIs(importmodulelevel('test_import', globals(), NULL, NULL, 1),
                           sys.modules['test.test_capi.test_import'])
             self.assertIs(importmodulelevel('test_capi', globals(), NULL, NULL, 2),
@@ -258,7 +258,7 @@ klasse ImportTests(unittest.TestCase):
         self.assertEqual(origin, os.path.abspath(os.fsdecode(pathname)))
 
         pathname = os_helper.TESTFN_UNDECODABLE
-        if pathname:
+        wenn pathname:
             origin = self.check_executecodemodule(execcodemoduleex, pathname)
             self.assertEqual(origin, os.path.abspath(os.fsdecode(pathname)))
 
@@ -277,12 +277,12 @@ klasse ImportTests(unittest.TestCase):
         origin = self.check_executecodemodule(execute_code_func, pathname, NULL)
         self.assertEqual(origin, os.path.abspath(os.fsdecode(pathname)))
         origin = self.check_executecodemodule(execute_code_func, NULL, pathname)
-        if not object:
+        wenn not object:
             self.assertEqual(origin, os.path.abspath(os.fsdecode(pathname)))
 
         pathname = os_helper.TESTFN_UNDECODABLE
-        if pathname:
-            if object:
+        wenn pathname:
+            wenn object:
                 pathname = os.fsdecode(pathname)
             origin = self.check_executecodemodule(execute_code_func, pathname, NULL)
             self.assertEqual(origin, os.path.abspath(os.fsdecode(pathname)))
@@ -292,7 +292,7 @@ klasse ImportTests(unittest.TestCase):
         pyc_filename = importlib.util.cache_from_source(__file__)
         py_filename = importlib.util.source_from_cache(pyc_filename)
         origin = self.check_executecodemodule(execute_code_func, NULL, pyc_filename)
-        if not object:
+        wenn not object:
             self.assertEqual(origin, py_filename)
 
     def test_executecodemodulewithpathnames(self):
@@ -377,5 +377,5 @@ klasse ImportTests(unittest.TestCase):
     # PyImport_AppendInittab() is tested by test_embed
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

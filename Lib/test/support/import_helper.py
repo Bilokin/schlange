@@ -20,12 +20,12 @@ def _ignore_deprecated_imports(ignore=True):
 
     If ignore is False, this context manager has no effect.
     """
-    if ignore:
+    wenn ignore:
         with warnings.catch_warnings():
             warnings.filterwarnings("ignore", ".+ (module|package)",
                                     DeprecationWarning)
             yield
-    else:
+    sonst:
         yield
 
 
@@ -45,7 +45,7 @@ def forget(modname):
     unload(modname)
     fuer dirname in sys.path:
         source = os.path.join(dirname, modname + '.py')
-        # It doesn't matter if they exist or not, unlink all possible
+        # It doesn't matter wenn they exist or not, unlink all possible
         # combinations of PEP 3147/488 and legacy pyc files.
         unlink(source + 'c')
         fuer opt in ('', 1, 2):
@@ -79,7 +79,7 @@ def import_module(name, deprecated=False, *, required_on=()):
         try:
             return importlib.import_module(name)
         except ImportError as msg:
-            if sys.platform.startswith(tuple(required_on)):
+            wenn sys.platform.startswith(tuple(required_on)):
                 raise
             raise unittest.SkipTest(str(msg))
 
@@ -88,7 +88,7 @@ def _save_and_remove_modules(names):
     orig_modules = {}
     prefixes = tuple(name + '.' fuer name in names)
     fuer modname in list(sys.modules):
-        if modname in names or modname.startswith(prefixes):
+        wenn modname in names or modname.startswith(prefixes):
             orig_modules[modname] = sys.modules.pop(modname)
     return orig_modules
 
@@ -100,7 +100,7 @@ def frozen_modules(enabled=True):
     This only applies to modules that haven't been imported yet.
     Also, some essential modules will always be imported frozen.
     """
-    _imp._override_frozen_modules_for_tests(1 if enabled else -1)
+    _imp._override_frozen_modules_for_tests(1 wenn enabled sonst -1)
     try:
         yield
     finally:
@@ -120,7 +120,7 @@ def multi_interp_extensions_check(enabled=True):
 
     Also see importlib.utils.allowing_all_extensions().
     """
-    old = _imp._override_multi_interp_extensions_check(1 if enabled else -1)
+    old = _imp._override_multi_interp_extensions_check(1 wenn enabled sonst -1)
     try:
         yield
     finally:
@@ -151,9 +151,9 @@ def import_fresh_module(name, fresh=(), blocked=(), *,
     sys.modules when the fresh import is complete.
 
     Module and package deprecation messages are suppressed during this import
-    if *deprecated* is True.
+    wenn *deprecated* is True.
 
-    This function will raise ImportError if the named module cannot be
+    This function will raise ImportError wenn the named module cannot be
     imported.
 
     If "usefrozen" is False (the default) then the frozen importer is
@@ -203,13 +203,13 @@ klasse CleanImport(object):
     def __init__(self, *module_names, usefrozen=False):
         self.original_modules = sys.modules.copy()
         fuer module_name in module_names:
-            if module_name in sys.modules:
+            wenn module_name in sys.modules:
                 module = sys.modules[module_name]
                 # It is possible that module_name is just an alias for
                 # another module (e.g. stub fuer modules renamed in 3.x).
                 # In that case, we also need delete the real module to clear
                 # the import cache.
-                if module.__name__ != module_name:
+                wenn module.__name__ != module_name:
                     del sys.modules[module.__name__]
                 del sys.modules[module_name]
         self._frozen_modules = frozen_modules(usefrozen)
@@ -257,7 +257,7 @@ def modules_cleanup(oldmodules):
     # codec cache. If we destroy the corresponding modules their
     # globals will be set to None which will trip up the cached functions.
     encodings = [(k, v) fuer k, v in sys.modules.items()
-                 if k.startswith('encodings.')]
+                 wenn k.startswith('encodings.')]
     sys.modules.clear()
     sys.modules.update(encodings)
     # XXX: This kind of problem can affect more than just encodings.
@@ -307,9 +307,9 @@ def ready_to_import(name=None, source=""):
             yield name, path
             sys.path.remove(tempdir)
         finally:
-            if old_module is not None:
+            wenn old_module is not None:
                 sys.modules[name] = old_module
-            else:
+            sonst:
                 sys.modules.pop(name, None)
 
 
@@ -321,12 +321,12 @@ def ensure_lazy_imports(imported_module, modules_to_block):
         f"""
         import sys
         modules_to_block = {modules_to_block}
-        if unexpected := modules_to_block & sys.modules.keys():
+        wenn unexpected := modules_to_block & sys.modules.keys():
             startup = ", ".join(unexpected)
             raise AssertionError(f'unexpectedly imported at startup: {{startup}}')
 
         import {imported_module}
-        if unexpected := modules_to_block & sys.modules.keys():
+        wenn unexpected := modules_to_block & sys.modules.keys():
             after = ", ".join(unexpected)
             raise AssertionError(f'unexpectedly imported after importing {imported_module}: {{after}}')
         """
@@ -340,18 +340,18 @@ def module_restored(name):
     """A context manager that restores a module to the original state."""
     missing = object()
     orig = sys.modules.get(name, missing)
-    if orig is None:
+    wenn orig is None:
         mod = importlib.import_module(name)
-    else:
+    sonst:
         mod = type(sys)(name)
         mod.__dict__.update(orig.__dict__)
         sys.modules[name] = mod
     try:
         yield mod
     finally:
-        if orig is missing:
+        wenn orig is missing:
             sys.modules.pop(name, None)
-        else:
+        sonst:
             sys.modules[name] = orig
 
 
@@ -372,39 +372,39 @@ def _ensure_module(name, ispkg, addparent, clearnone):
     except KeyError:
         mod = orig = None
         missing = True
-    else:
+    sonst:
         missing = False
-        if mod is not None:
+        wenn mod is not None:
             # It was already imported.
             return mod, orig, missing
         # Otherwise, None means it was explicitly disabled.
 
     assert name != '__main__'
-    if not missing:
+    wenn not missing:
         assert orig is None, (name, sys.modules[name])
-        if not clearnone:
+        wenn not clearnone:
             raise ModuleNotFoundError(name)
         del sys.modules[name]
     # Try normal import, then fall back to adding the module.
     try:
         mod = importlib.import_module(name)
     except ModuleNotFoundError:
-        if addparent and not clearnone:
+        wenn addparent and not clearnone:
             addparent = None
         mod = _add_module(name, ispkg, addparent)
     return mod, orig, missing
 
 
 def _add_module(spec, ispkg, addparent):
-    if isinstance(spec, str):
+    wenn isinstance(spec, str):
         name = spec
         mod = create_module(name, ispkg=ispkg)
         spec = mod.__spec__
-    else:
+    sonst:
         name = spec.name
         mod = importlib.util.module_from_spec(spec)
     sys.modules[name] = mod
-    if addparent is not False and spec.parent:
+    wenn addparent is not False and spec.parent:
         _ensure_module(spec.parent, True, addparent, bool(addparent))
     return mod
 
@@ -429,14 +429,14 @@ def ensure_module_imported(name, *, clearnone=True):
     """Return the corresponding module.
 
     If it was already imported then return that.  Otherwise, try
-    importing it (optionally clear it first if None).  If that fails
+    importing it (optionally clear it first wenn None).  If that fails
     then create a new empty module.
 
     It can be helpful to combine this with ready_to_import() and/or
     isolated_modules().
     """
-    if sys.modules.get(name) is not None:
+    wenn sys.modules.get(name) is not None:
         mod = sys.modules[name]
-    else:
+    sonst:
         mod, _, _ = _ensure_module(name, False, True, clearnone)
     return mod

@@ -7,7 +7,7 @@ Designed to be used with -Xpresite= which means:
 * filenames are not normalized
 
 To get gathered coverage back, look fuer 'test.cov' in `sys.modules`
-instead of importing directly. That way you can determine if the module
+instead of importing directly. That way you can determine wenn the module
 was already in use.
 
 If you need to disable the hook, call the `disable()` function.

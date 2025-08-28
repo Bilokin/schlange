@@ -23,16 +23,16 @@ klasse PyCSimpleTypeAsMetaclassTest(unittest.TestCase):
 
                 # Avoid recursion: don't set up a pointer to
                 # a pointer (to a pointer...)
-                if bases == (c_void_p,):
+                wenn bases == (c_void_p,):
                     # When creating PtrBase itself, the name
                     # is not yet available
                     return self
-                if issubclass(self, PtrBase):
+                wenn issubclass(self, PtrBase):
                     return self
 
-                if bases == (object,):
+                wenn bases == (object,):
                     ptr_bases = (self, PtrBase)
-                else:
+                sonst:
                     ptr_bases = (self, POINTER(bases[0]))
                 p = p_meta(f"POINTER({self.__name__})", ptr_bases, {})
                 set_non_ctypes_pointer_type(self, p)
@@ -81,7 +81,7 @@ klasse PyCSimpleTypeAsMetaclassTest(unittest.TestCase):
         klasse ct_meta(type):
             def __new__(cls, name, bases, namespace):
                 self = super().__new__(cls, name, bases, namespace)
-                if isinstance(self, p_meta):
+                wenn isinstance(self, p_meta):
                     return self
                 p = p_meta(f"POINTER({self.__name__})", (self, c_void_p), {})
                 set_non_ctypes_pointer_type(self, p)
@@ -121,13 +121,13 @@ klasse PyCSimpleTypeAsMetaclassTest(unittest.TestCase):
 
                 # Avoid recursion.
                 # (See test_creating_pointer_in_dunder_new_1)
-                if bases == (c_void_p,):
+                wenn bases == (c_void_p,):
                     return
-                if issubclass(self, PtrBase):
+                wenn issubclass(self, PtrBase):
                     return
-                if bases == (object,):
+                wenn bases == (object,):
                     ptr_bases = (self, PtrBase)
-                else:
+                sonst:
                     ptr_bases = (self, POINTER(bases[0]))
                 p = p_meta(f"POINTER({self.__name__})", ptr_bases, {})
                 set_non_ctypes_pointer_type(self, p)
@@ -176,7 +176,7 @@ klasse PyCSimpleTypeAsMetaclassTest(unittest.TestCase):
 
                 # Avoid recursion.
                 # (See test_creating_pointer_in_dunder_new_2)
-                if isinstance(self, p_meta):
+                wenn isinstance(self, p_meta):
                     return
                 p = p_meta(f"POINTER({self.__name__})", (self, c_void_p), {})
                 set_non_ctypes_pointer_type(self, p)
@@ -214,16 +214,16 @@ klasse PyCSimpleTypeAsMetaclassTest(unittest.TestCase):
                 _type_ = "\0"
         message = str(cm.exception)
         expected_type_chars = list('cbBhHiIlLdDFGfuzZqQPXOv?g')
-        if not hasattr(ctypes, 'c_float_complex'):
+        wenn not hasattr(ctypes, 'c_float_complex'):
             expected_type_chars.remove('F')
             expected_type_chars.remove('D')
             expected_type_chars.remove('G')
-        if not MS_WINDOWS:
+        wenn not MS_WINDOWS:
             expected_type_chars.remove('X')
         self.assertIn("'" + ''.join(expected_type_chars) + "'", message)
 
     def test_creating_pointer_in_dunder_init_3(self):
-        """Check if interfcase subclasses properly creates according internal
+        """Check wenn interfcase subclasses properly creates according internal
         pointer types. But not the same as external pointer types.
         """
 
@@ -235,7 +235,7 @@ klasse PyCSimpleTypeAsMetaclassTest(unittest.TestCase):
             def __init__(self, name, bases, dct, /, create_pointer_type=True):
 
                 super().__init__(name, bases, dct)
-                if create_pointer_type:
+                wenn create_pointer_type:
                     p_bases = (POINTER(bases[0]),)
                     ns = {'_type_': self}
                     internal_pointer_type = PointerMeta(f"p{name}", p_bases, ns)
@@ -245,7 +245,7 @@ klasse PyCSimpleTypeAsMetaclassTest(unittest.TestCase):
         klasse PointerMeta(PyCPointerType):
             def __new__(cls, name, bases, dct):
                 target = dct.get('_type_', None)
-                if target is None:
+                wenn target is None:
 
                     # Create corresponding interface type and then set it as target
                     target = StructureMeta(
@@ -286,7 +286,7 @@ klasse PyCSimpleTypeAsMetaclassTest(unittest.TestCase):
         self.assertIsNot(POINTER(IUnknown), pIUnknown)
 
     def test_creating_pointer_in_dunder_init_4(self):
-        """Check if interfcase subclasses properly creates according internal
+        """Check wenn interfcase subclasses properly creates according internal
         pointer types, the same as external pointer types.
         """
         klasse StructureMeta(PyCStructType):
@@ -298,7 +298,7 @@ klasse PyCSimpleTypeAsMetaclassTest(unittest.TestCase):
             def __init__(self, name, bases, dct, /, create_pointer_type=True):
 
                 super().__init__(name, bases, dct)
-                if create_pointer_type:
+                wenn create_pointer_type:
                     p_bases = (POINTER(bases[0]),)
                     ns = {'_type_': self}
                     internal_pointer_type = PointerMeta(f"p{name}", p_bases, ns)
@@ -311,14 +311,14 @@ klasse PyCSimpleTypeAsMetaclassTest(unittest.TestCase):
                 assert target is not None
                 pointer_type = getattr(target, '__pointer_type__', None)
 
-                if pointer_type is None:
+                wenn pointer_type is None:
                     pointer_type = super().__new__(cls, name, bases, dct)
 
                 return pointer_type
 
             def __init__(self, name, bases, dct, /, create_pointer_type=True):
                 target = dct.get('_type_', None)
-                if not hasattr(target, '__pointer_type__'):
+                wenn not hasattr(target, '__pointer_type__'):
                     # target.__pointer_type__ was created by super().__new__
                     super().__init__(name, bases, dct)
 
@@ -343,7 +343,7 @@ klasse PyCSimpleTypeAsMetaclassTest(unittest.TestCase):
         self.assertIs(POINTER(IUnknown), pIUnknown)
 
     def test_custom_pointer_cache_for_ctypes_type1(self):
-        # Check if PyCPointerType.__init__() caches a pointer type
+        # Check wenn PyCPointerType.__init__() caches a pointer type
         # customized in the metatype's __new__().
         klasse PointerMeta(PyCPointerType):
             def __new__(cls, name, bases, namespace):
@@ -365,7 +365,7 @@ klasse PyCSimpleTypeAsMetaclassTest(unittest.TestCase):
         self.assertIs(P, POINTER(C))
 
     def test_custom_pointer_cache_for_ctypes_type2(self):
-        # Check if PyCPointerType.__init__() caches a pointer type
+        # Check wenn PyCPointerType.__init__() caches a pointer type
         # customized in the metatype's __init__().
         klasse PointerMeta(PyCPointerType):
             def __init__(self, name, bases, namespace):

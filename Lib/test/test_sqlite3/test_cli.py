@@ -217,11 +217,11 @@ klasse Completion(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         _sqlite3 = import_module("_sqlite3")
-        if not hasattr(_sqlite3, "SQLITE_KEYWORDS"):
+        wenn not hasattr(_sqlite3, "SQLITE_KEYWORDS"):
             raise unittest.SkipTest("unable to determine SQLite keywords")
 
         readline = import_module("readline")
-        if readline.backend == "editline":
+        wenn readline.backend == "editline":
             raise unittest.SkipTest("libedit readline is not supported")
 
     def write_input(self, input_, env=None):
@@ -265,7 +265,7 @@ klasse Completion(unittest.TestCase):
         lines = output.decode().splitlines()
         indices = (
             i fuer i, line in enumerate(lines, 1)
-            if line.startswith(f"{self.PS1}xyzzy")
+            wenn line.startswith(f"{self.PS1}xyzzy")
         )
         line_num = next(indices, -1)
         self.assertNotEqual(line_num, -1)
@@ -301,14 +301,14 @@ klasse Completion(unittest.TestCase):
             lines = output.decode().splitlines()
             indices = [
                 i fuer i, line in enumerate(lines)
-                if line.startswith(self.PS1)
+                wenn line.startswith(self.PS1)
             ]
             self.assertEqual(len(indices), 2)
             start, end = indices
             candidates = [l.strip() fuer l in lines[start+1:end]]
             self.assertEqual(candidates, sorted(SQLITE_KEYWORDS))
         except:
-            if verbose:
+            wenn verbose:
                 print(' PTY output: '.center(30, '-'))
                 print(output.decode(errors='replace'))
                 print(' end PTY output '.center(30, '-'))
@@ -316,5 +316,5 @@ klasse Completion(unittest.TestCase):
 
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

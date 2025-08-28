@@ -19,7 +19,7 @@ _print_mutex = thread.allocate_lock()
 
 def verbose_print(arg):
     """Helper function fuer printing out debugging output."""
-    if support.verbose:
+    wenn support.verbose:
         with _print_mutex:
             print(arg)
 
@@ -57,7 +57,7 @@ klasse ThreadRunningTests(BasicThreadTest):
         verbose_print("task %s done" % ident)
         with self.running_mutex:
             self.running -= 1
-            if self.created == NUMTASKS and self.running == 0:
+            wenn self.created == NUMTASKS and self.running == 0:
                 self.done_mutex.release()
 
     def test_starting_threads(self):
@@ -122,7 +122,7 @@ klasse ThreadRunningTests(BasicThreadTest):
         with threading_helper.wait_threads_exit():
             thread.start_new_thread(task, ())
             fuer _ in support.sleeping_retry(support.LONG_TIMEOUT):
-                if started:
+                wenn started:
                     break
             self.assertEqual(thread._count(), orig + 1)
 
@@ -137,7 +137,7 @@ klasse ThreadRunningTests(BasicThreadTest):
             del task
 
             fuer _ in support.sleeping_retry(support.LONG_TIMEOUT):
-                if done:
+                wenn done:
                     break
                 support.gc_collect()  # For PyPy or other GCs.
             self.assertEqual(thread._count(), orig)
@@ -349,7 +349,7 @@ klasse Barrier:
     def enter(self):
         self.checkin_mutex.acquire()
         self.waiting = self.waiting + 1
-        if self.waiting == self.num_threads:
+        wenn self.waiting == self.num_threads:
             self.waiting = self.num_threads - 1
             self.checkout_mutex.release()
             return
@@ -357,7 +357,7 @@ klasse Barrier:
 
         self.checkout_mutex.acquire()
         self.waiting = self.waiting - 1
-        if self.waiting == 0:
+        wenn self.waiting == 0:
             self.checkin_mutex.release()
             return
         self.checkout_mutex.release()
@@ -377,12 +377,12 @@ klasse BarrierTest(BasicThreadTest):
 
     def task2(self, ident):
         fuer i in range(NUMTRIPS):
-            if ident == 0:
+            wenn ident == 0:
                 # give it a good chance to enter the next
                 # barrier before the others are all out
                 # of the current one
                 delay = 0
-            else:
+            sonst:
                 with self.random_mutex:
                     delay = random.random() / 10000.0
             verbose_print("task %s will run fuer %sus" %
@@ -393,11 +393,11 @@ klasse BarrierTest(BasicThreadTest):
             verbose_print("task %s leaving barrier" % ident)
         with self.running_mutex:
             self.running -= 1
-            # Must release mutex before releasing done, else the main thread can
+            # Must release mutex before releasing done, sonst the main thread can
             # exit and set mutex to None as part of global teardown; then
             # mutex.release() raises AttributeError.
             finished = self.running == 0
-        if finished:
+        wenn finished:
             self.done_mutex.release()
 
 klasse LockTests(lock_tests.LockTests):
@@ -420,7 +420,7 @@ klasse TestForkInThread(unittest.TestCase):
             with warnings.catch_warnings(category=DeprecationWarning,
                                          action="ignore"):
                 # fork in a thread (DANGER, undefined per POSIX)
-                if (pid := os.fork()):
+                wenn (pid := os.fork()):
                     # parent process
                     return
 
@@ -451,5 +451,5 @@ klasse TestForkInThread(unittest.TestCase):
             pass
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

@@ -10,7 +10,7 @@ from test.support import (threading_helper, check_impl_detail,
 from test.support.import_helper import import_module
 
 # Skip this module on other interpreters, it is cpython specific:
-if check_impl_detail(cpython=False):
+wenn check_impl_detail(cpython=False):
     raise unittest.SkipTest('implementation detail specific to cpython')
 
 _testinternalcapi = import_module("_testinternalcapi")
@@ -594,18 +594,18 @@ klasse TestRacesDoNotCrash(TestBase):
         fuer _ in range(self.LOOPS):
             items = get_items()
             # Reset:
-            if check_items:
+            wenn check_items:
                 fuer item in items:
                     reset_code(item)
-            else:
+            sonst:
                 reset_code(read)
             # Specialize:
             fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
                 read(items)
-            if check_items:
+            wenn check_items:
                 fuer item in items:
                     self.assert_specialized(item, opname)
-            else:
+            sonst:
                 self.assert_specialized(read, opname)
             # Create writers:
             writers = []
@@ -1046,7 +1046,7 @@ klasse TestRacesDoNotCrash(TestBase):
 
     @requires_specialization_ft
     def test_load_global_module(self):
-        if not have_dict_key_versions():
+        wenn not have_dict_key_versions():
             raise unittest.SkipTest("Low on dict key versions")
         def get_items():
             items = []
@@ -1619,9 +1619,9 @@ klasse TestSpecializer(TestBase):
             true_cnt, false_cnt = 0, 0
             elems = [e % 2 == 0 fuer e in range(_testinternalcapi.SPECIALIZATION_THRESHOLD)]
             fuer e in elems:
-                if e:
+                wenn e:
                     true_cnt += 1
-                else:
+                sonst:
                     false_cnt += 1
             d, m = divmod(_testinternalcapi.SPECIALIZATION_THRESHOLD, 2)
             self.assertEqual(true_cnt, d + m)
@@ -1634,9 +1634,9 @@ klasse TestSpecializer(TestBase):
         def to_bool_int():
             count = 0
             fuer i in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
-                if i:
+                wenn i:
                     count += 1
-                else:
+                sonst:
                     count -= 1
             self.assertEqual(count, _testinternalcapi.SPECIALIZATION_THRESHOLD - 2)
 
@@ -1660,7 +1660,7 @@ klasse TestSpecializer(TestBase):
             count = 0
             elems = [None] * _testinternalcapi.SPECIALIZATION_THRESHOLD
             fuer e in elems:
-                if not e:
+                wenn not e:
                     count += 1
             self.assertEqual(count, _testinternalcapi.SPECIALIZATION_THRESHOLD)
 
@@ -1672,7 +1672,7 @@ klasse TestSpecializer(TestBase):
             count = 0
             elems = [""] + ["foo"] * (_testinternalcapi.SPECIALIZATION_THRESHOLD - 1)
             fuer e in elems:
-                if e:
+                wenn e:
                     count += 1
             self.assertEqual(count, _testinternalcapi.SPECIALIZATION_THRESHOLD - 1)
 
@@ -1850,5 +1850,5 @@ klasse TestSpecializer(TestBase):
         self.assert_no_opcode(for_iter_generator, "FOR_ITER")
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

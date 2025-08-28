@@ -25,13 +25,13 @@ klasse defaultdict(dict):
             return self.default
 
     def get(self, key, *args):
-        if not args:
+        wenn not args:
             args = (self.default,)
         return dict.get(self, key, *args)
 
     def merge(self, other):
         fuer key in other:
-            if key not in self:
+            wenn key not in self:
                 self[key] = other[key]
 
 test_1 = """
@@ -115,13 +115,13 @@ klasse defaultdict2(dict):
             return self.default
 
     def get(self, key, *args):
-        if not args:
+        wenn not args:
             args = (self.default,)
         return dict.get(self, key, *args)
 
     def merge(self, other):
         fuer key in other:
-            if key not in self:
+            wenn key not in self:
                 self[key] = other[key]
 
 test_2 = """
@@ -320,7 +320,7 @@ Attributes defined by get/set methods
     ...         return self.__get(inst)
     ...
     ...     def __set__(self, inst, value):
-    ...         if self.__set is None:
+    ...         wenn self.__set is None:
     ...             raise AttributeError("this attribute is read-only")
     ...         return self.__set(inst, value)
 
@@ -336,7 +336,7 @@ getx() and setx():
     ...         return self.__x
     ...
     ...     def setx(self, x):
-    ...         if x < 0: x = 0
+    ...         wenn x < 0: x = 0
     ...         self.__x = x
     ...
     ...     x = property(getx, setx)
@@ -364,7 +364,7 @@ Hmm -- property is builtin now, so let's try it that way too.
     ...     def getx(self):
     ...         return self.__x
     ...     def setx(self, x):
-    ...         if x < 0: x = 0
+    ...         wenn x < 0: x = 0
     ...         self.__x = x
     ...     x = property(getx, setx)
 
@@ -478,5 +478,5 @@ def load_tests(loader, tests, pattern):
     return tests
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

@@ -14,16 +14,16 @@ _CASE_COST = 1
 
 
 def _substitution_cost(ch_a, ch_b):
-    if ch_a == ch_b:
+    wenn ch_a == ch_b:
         return 0
-    if ch_a.lower() == ch_b.lower():
+    wenn ch_a.lower() == ch_b.lower():
         return _CASE_COST
     return _MOVE_COST
 
 
 @lru_cache(None)
 def levenshtein(a, b):
-    if not a or not b:
+    wenn not a or not b:
         return (len(a) + len(b)) * _MOVE_COST
     option1 = levenshtein(a[:-1], b[:-1]) + _substitution_cost(a[-1], b[-1])
     option2 = levenshtein(a[:-1], b) + _MOVE_COST
@@ -40,7 +40,7 @@ def main():
 
     args = parser.parse_args()
     output_path = os.path.realpath(args.output_path)
-    if not args.overwrite and os.path.isfile(output_path):
+    wenn not args.overwrite and os.path.isfile(output_path):
         print(f"{output_path} already exists, skipping regeneration.")
         print(
             "To force, add --overwrite to the invocation of this tool or"
@@ -65,5 +65,5 @@ def main():
         json.dump(sorted(examples), f, indent=2)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     main()

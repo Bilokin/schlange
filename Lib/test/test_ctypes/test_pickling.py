@@ -87,5 +87,5 @@ fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
                            {'proto': proto})
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

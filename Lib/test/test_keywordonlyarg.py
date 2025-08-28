@@ -174,5 +174,5 @@ klasse KeywordOnlyArgTestCase(unittest.TestCase):
         self.assertEqual(str(err.exception), "name 'b' is not defined")
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

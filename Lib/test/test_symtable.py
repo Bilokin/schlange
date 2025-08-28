@@ -173,7 +173,7 @@ klasse ComplexClass:
 
 def find_block(block, name):
     fuer ch in block.get_children():
-        if ch.get_name() == name:
+        wenn ch.get_name() == name:
             return ch
 
 
@@ -450,7 +450,7 @@ klasse SymtableTest(unittest.TestCase):
                 self.assertEqual(e.filename, "spam")
                 self.assertEqual(e.lineno, 1)
                 self.assertEqual(e.offset, offset)
-            else:
+            sonst:
                 self.fail("no SyntaxError fuer %r" % (brokencode,))
         checkfilename("def f(x): foo)(", 14)  # parse-time
         checkfilename("def f(x): global x", 11)  # symtable-build-time
@@ -598,7 +598,7 @@ klasse ComprehensionTests(unittest.TestCase):
                 st = symtable.symtable(comp, "?", "exec")
                 ids = []
                 self.get_identifiers_recursive(st, ids)
-                self.assertEqual(len([x fuer x in ids if x == 'x']), 1)
+                self.assertEqual(len([x fuer x in ids wenn x == 'x']), 1)
 
 
 klasse CommandLineTest(unittest.TestCase):
@@ -636,5 +636,5 @@ klasse CommandLineTest(unittest.TestCase):
         self.assertIn("symbol table fuer module from file '<stdin>':", lines)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

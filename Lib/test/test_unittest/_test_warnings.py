@@ -40,7 +40,7 @@ klasse TestWarnings(unittest.TestCase):
         warnings.warn('uw')
 
     # these warnings come from the same place; they will be printed
-    # only once by default or three times if the 'always' filter is used
+    # only once by default or three times wenn the 'always' filter is used
     def test_function(self):
 
         warnfun()
@@ -49,12 +49,12 @@ klasse TestWarnings(unittest.TestCase):
 
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     with warnings.catch_warnings(record=True) as ws:
-        # if an arg is provided pass it to unittest.main as 'warnings'
-        if len(sys.argv) == 2:
+        # wenn an arg is provided pass it to unittest.main as 'warnings'
+        wenn len(sys.argv) == 2:
             unittest.main(exit=False, warnings=sys.argv.pop())
-        else:
+        sonst:
             unittest.main(exit=False)
 
     # print all the warning messages collected

@@ -90,9 +90,9 @@ klasse TestFilemode:
     tearDown = setUp
 
     def get_mode(self, fname=TESTFN, lstat=True):
-        if lstat:
+        wenn lstat:
             st_mode = os.lstat(fname).st_mode
-        else:
+        sonst:
             st_mode = os.stat(fname).st_mode
         modestr = self.statmod.filemode(st_mode)
         return st_mode, modestr
@@ -105,20 +105,20 @@ klasse TestFilemode:
         testname = "S_IS" + name
         fuer funcname in self.format_funcs:
             func = getattr(self.statmod, funcname, None)
-            if func is None:
-                if funcname == testname:
+            wenn func is None:
+                wenn funcname == testname:
                     raise ValueError(funcname)
                 continue
-            if funcname == testname:
+            wenn funcname == testname:
                 self.assertTrue(func(mode))
-            else:
+            sonst:
                 self.assertFalse(func(mode))
 
     @os_helper.skip_unless_working_chmod
     def test_mode(self):
         with open(TESTFN, 'w'):
             pass
-        if os.name == 'posix':
+        wenn os.name == 'posix':
             os.chmod(TESTFN, 0o700)
             st_mode, modestr = self.get_mode()
             self.assertEqual(modestr, '-rwx------')
@@ -148,7 +148,7 @@ klasse TestFilemode:
             self.assertS_IS("REG", st_mode)
             self.assertEqual(modestr, '-r--r--r--')
             self.assertEqual(self.statmod.S_IMODE(st_mode), 0o444)
-        else:
+        sonst:
             os.chmod(TESTFN, 0o500)
             st_mode, modestr = self.get_mode()
             self.assertEqual(modestr[:3], '-r-')
@@ -169,9 +169,9 @@ klasse TestFilemode:
         os.chmod(TESTFN, 0o700)
         st_mode, modestr = self.get_mode()
         self.assertS_IS("DIR", st_mode)
-        if os.name == 'posix':
+        wenn os.name == 'posix':
             self.assertEqual(modestr, 'drwx------')
-        else:
+        sonst:
             self.assertEqual(modestr[0], 'd')
 
     @os_helper.skip_unless_symlink
@@ -180,16 +180,16 @@ klasse TestFilemode:
             os.symlink(os.getcwd(), TESTFN)
         except (OSError, NotImplementedError) as err:
             raise unittest.SkipTest(str(err))
-        else:
+        sonst:
             st_mode, modestr = self.get_mode()
             self.assertEqual(modestr[0], 'l')
             self.assertS_IS("LNK", st_mode)
 
     @unittest.skipUnless(hasattr(os, 'mkfifo'), 'os.mkfifo not available')
     def test_fifo(self):
-        if sys.platform == "vxworks":
+        wenn sys.platform == "vxworks":
             fifo_path = os.path.join("/fifos/", TESTFN)
-        else:
+        sonst:
             fifo_path = TESTFN
         self.addCleanup(os_helper.unlink, fifo_path)
         try:
@@ -202,13 +202,13 @@ klasse TestFilemode:
 
     @unittest.skipUnless(os.name == 'posix', 'requires Posix')
     def test_devices(self):
-        if os.path.exists(os.devnull):
+        wenn os.path.exists(os.devnull):
             st_mode, modestr = self.get_mode(os.devnull, lstat=False)
             self.assertEqual(modestr[0], 'c')
             self.assertS_IS("CHR", st_mode)
         # Linux block devices, BSD has no block devices anymore
         fuer blockdev in ("/dev/sda", "/dev/hda"):
-            if os.path.exists(blockdev):
+            wenn os.path.exists(blockdev):
                 st_mode, modestr = self.get_mode(blockdev, lstat=False)
                 self.assertEqual(modestr[0], 'b')
                 self.assertS_IS("BLK", st_mode)
@@ -244,12 +244,12 @@ klasse TestFilemode:
         self.assertFalse(self.statmod.UF_SETTABLE & self.statmod.SF_SETTABLE)
 
         fuer flag in self.file_flags:
-            if flag.startswith("UF"):
+            wenn flag.startswith("UF"):
                 self.assertTrue(getattr(self.statmod, flag) & self.statmod.UF_SETTABLE, f"{flag} not in UF_SETTABLE")
-            elif is_apple and self.statmod is c_stat and flag == 'SF_DATALESS':
+            sowenn is_apple and self.statmod is c_stat and flag == 'SF_DATALESS':
                 self.assertTrue(self.statmod.SF_DATALESS & self.statmod.SF_SYNTHETIC, "SF_DATALESS not in SF_SYNTHETIC")
                 self.assertFalse(self.statmod.SF_DATALESS & self.statmod.SF_SETTABLE, "SF_DATALESS in SF_SETTABLE")
-            else:
+            sonst:
                 self.assertTrue(getattr(self.statmod, flag) & self.statmod.SF_SETTABLE, f"{flag} notin SF_SETTABLE")
 
     @unittest.skipUnless(sys.platform == "win32",
@@ -272,11 +272,11 @@ klasse TestFilemode:
         self.assertEqual(self.statmod.UF_DATAVAULT, 0x00000080)
         self.assertEqual(self.statmod.UF_HIDDEN, 0x00008000)
 
-        if self.statmod is c_stat:
+        wenn self.statmod is c_stat:
             self.assertEqual(self.statmod.SF_SUPPORTED, 0x009f0000)
             self.assertEqual(self.statmod.SF_SETTABLE, 0x3fff0000)
             self.assertEqual(self.statmod.SF_SYNTHETIC, 0xc0000000)
-        else:
+        sonst:
             self.assertEqual(self.statmod.SF_SETTABLE, 0xffff0000)
         self.assertEqual(self.statmod.SF_ARCHIVED, 0x00010000)
         self.assertEqual(self.statmod.SF_IMMUTABLE, 0x00020000)
@@ -295,7 +295,7 @@ klasse TestFilemode:
         self.assertEqual(self.statmod.S_IFLNK, 0o120000)
         self.assertEqual(self.statmod.S_IFSOCK, 0o140000)
 
-        if self.statmod is c_stat:
+        wenn self.statmod is c_stat:
             self.assertEqual(self.statmod.S_IFWHT, 0o160000)
 
         self.assertEqual(self.statmod.S_IRWXU, 0o000700)
@@ -330,5 +330,5 @@ klasse TestFilemodePyStat(TestFilemode, unittest.TestCase):
     statmod = py_stat
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

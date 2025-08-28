@@ -59,13 +59,13 @@ klasse ContentHandler:
         locating the origin of document events.
 
         SAX parsers are strongly encouraged (though not absolutely
-        required) to supply a locator: if it does so, it must supply
+        required) to supply a locator: wenn it does so, it must supply
         the locator to the application by invoking this method before
         invoking any of the other methods in the DocumentHandler
         interface.
 
         The locator allows the application to determine the end
-        position of any document-related event, even if the parser is
+        position of any document-related event, even wenn the parser is
         not reporting an error. Typically, the application will use
         this information fuer reporting its own errors (such as
         character content that does not match an application's
@@ -171,7 +171,7 @@ klasse ContentHandler:
         Validating Parsers must use this method to report each chunk
         of ignorable whitespace (see the W3C XML 1.0 recommendation,
         section 2.10): non-validating parsers may also use this method
-        if they are capable of parsing and using content models.
+        wenn they are capable of parsing and using content models.
 
         SAX parsers may return all contiguous whitespace in a single
         chunk, or they may split it into several chunks; however, all
@@ -194,7 +194,7 @@ klasse ContentHandler:
         """Receive notification of a skipped entity.
 
         The Parser will invoke this method once fuer each entity
-        skipped. Non-validating processors may skip entities if they
+        skipped. Non-validating processors may skip entities wenn they
         have not seen the declarations (because, fuer example, the
         entity was declared in an external DTD subset). All processors
         may skip external entities, depending on the values of the
@@ -304,7 +304,7 @@ property_declaration_handler = "http://xml.org/sax/properties/declaration-handle
 
 property_dom_node = "http://xml.org/sax/properties/dom-node"
 # data type: org.w3c.dom.Node
-# description: When parsing, the current DOM node being visited if this is
+# description: When parsing, the current DOM node being visited wenn this is
 #              a DOM iterator; when not parsing, the root DOM node for
 #              iteration.
 # access: (parsing) read-only; (not parsing) read/write
@@ -362,7 +362,7 @@ klasse LexicalHandler:
         content is a string that holds the contents of the comment."""
 
     def startDTD(self, name, public_id, system_id):
-        """Report the start of the DTD declarations, if the document
+        """Report the start of the DTD declarations, wenn the document
         has an associated DTD.
 
         A startEntity event will be reported before declaration events
@@ -370,9 +370,9 @@ klasse LexicalHandler:
         used to infer from which subset DTD declarations derive.
 
         name is the name of the document element type, public_id the
-        public identifier of the DTD (or None if none were supplied)
+        public identifier of the DTD (or None wenn none were supplied)
         and system_id the system identifier of the external subset (or
-        None if none were supplied)."""
+        None wenn none were supplied)."""
 
     def endDTD(self):
         """Signals the end of DTD declarations."""

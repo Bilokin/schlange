@@ -88,13 +88,13 @@ klasse TestServerThread(threading.Thread):
         self.tls = tls
 
     def run(self):
-        if self.tls:
+        wenn self.tls:
             certfile, keyfile, password = self.tls
             self.server = create_https_server(
                 certfile, keyfile, password,
                 request_handler=self.request_handler,
             )
-        else:
+        sonst:
             self.server = HTTPServer(('localhost', 0), self.request_handler)
         self.test_object.HOST, self.test_object.PORT = self.server.socket.getsockname()
         self.test_object.server_started.set()
@@ -334,7 +334,7 @@ klasse BaseHTTPServerTestCase(BaseTestCase):
             self.assertEqual(code, res.status)
             self.assertEqual(None, res.getheader('Content-Length'))
             self.assertEqual(None, res.getheader('Content-Type'))
-            if code not in allow_transfer_encoding_codes:
+            wenn code not in allow_transfer_encoding_codes:
                 self.assertEqual(None, res.getheader('Transfer-Encoding'))
 
             data = res.read()
@@ -349,13 +349,13 @@ klasse BaseHTTPServerTestCase(BaseTestCase):
             self.con.request('HEAD', '/{}'.format(code))
             res = self.con.getresponse()
             self.assertEqual(code, res.status)
-            if code == HTTPStatus.OK:
+            wenn code == HTTPStatus.OK:
                 self.assertTrue(int(res.getheader('Content-Length')) > 0)
                 self.assertIn('text/html', res.getheader('Content-Type'))
-            else:
+            sonst:
                 self.assertEqual(None, res.getheader('Content-Length'))
                 self.assertEqual(None, res.getheader('Content-Type'))
-            if code not in allow_transfer_encoding_codes:
+            wenn code not in allow_transfer_encoding_codes:
                 self.assertEqual(None, res.getheader('Transfer-Encoding'))
 
             data = res.read()
@@ -502,7 +502,7 @@ klasse SimpleHTTPServerTestCase(BaseTestCase):
 
     def check_status_and_reason(self, response, status, data=None):
         def close_conn():
-            """Don't close reader yet so we can check if there was leftover
+            """Don't close reader yet so we can check wenn there was leftover
             buffered input"""
             nonlocal reader
             reader = response.fp
@@ -514,7 +514,7 @@ klasse SimpleHTTPServerTestCase(BaseTestCase):
         self.assertTrue(response)
         self.assertEqual(response.status, status)
         self.assertIsNotNone(response.reason)
-        if data:
+        wenn data:
             self.assertEqual(data, body)
         # Ensure the server has not set up a persistent connection, and has
         # not sent any extra data
@@ -533,7 +533,7 @@ klasse SimpleHTTPServerTestCase(BaseTestCase):
             self.skipTest(f'Can not create directory {dirname!a} '
                           f'on current file system')
 
-        if quotedname is None:
+        wenn quotedname is None:
             quotedname = urllib.parse.quote(dirname, errors='surrogatepass')
         response = self.request(self.base_url + '/' + quotedname + '/')
         body = self.check_status_and_reason(response, HTTPStatus.OK)
@@ -732,7 +732,7 @@ klasse SimpleHTTPServerTestCase(BaseTestCase):
 
         # chmod() doesn't work as expected on Windows, and filesystem
         # permissions are ignored by root on Unix.
-        if os.name == 'posix' and os.geteuid() != 0:
+        wenn os.name == 'posix' and os.geteuid() != 0:
             os.chmod(self.tempdir, 0)
             try:
                 response = self.request(self.base_url + '/')
@@ -779,7 +779,7 @@ klasse SimpleHTTPServerTestCase(BaseTestCase):
         self.check_status_and_reason(response, HTTPStatus.OK)
 
     def test_browser_cache_with_If_None_Match_header(self):
-        # if If-None-Match header is present, ignore If-Modified-Since
+        # wenn If-None-Match header is present, ignore If-Modified-Since
 
         headers = email.message.Message()
         headers['If-Modified-Since'] = self.last_modif_header
@@ -1217,10 +1217,10 @@ klasse MiscTestCase(unittest.TestCase):
         expected = []
         denylist = {'executable', 'nobody_uid', 'test'}
         fuer name in dir(server):
-            if name.startswith('_') or name in denylist:
+            wenn name.startswith('_') or name in denylist:
                 continue
             module_object = getattr(server, name)
-            if getattr(module_object, '__module__', None) == 'http.server':
+            wenn getattr(module_object, '__module__', None) == 'http.server':
                 expected.append(name)
         self.assertCountEqual(server.__all__, expected)
 
@@ -1316,8 +1316,8 @@ klasse CommandLineTestCase(unittest.TestCase):
         self.addCleanup(os_helper.unlink, self.tls_password_file)
 
     def invoke_httpd(self, *args, stdout=None, stderr=None):
-        stdout = StringIO() if stdout is None else stdout
-        stderr = StringIO() if stderr is None else stderr
+        stdout = StringIO() wenn stdout is None sonst stdout
+        stderr = StringIO() wenn stderr is None sonst stderr
         with contextlib.redirect_stdout(stdout), \
             contextlib.redirect_stderr(stderr):
             server._main(args)
@@ -1479,14 +1479,14 @@ klasse CommandLineRunTimeTestCase(unittest.TestCase):
 
     def parse_cli_output(self, output):
         match = re.search(r'Serving (HTTP|HTTPS) on (.+) port (\d+)', output)
-        if match is None:
+        wenn match is None:
             return None, None, None
         return match.group(1).lower(), match.group(2), int(match.group(3))
 
     def wait_for_server(self, proc, protocol, bind, port):
         """Check that the server has been successfully started."""
         line = proc.stdout.readline().strip()
-        if support.verbose:
+        wenn support.verbose:
             print()
             print('python -m http.server: ', line)
         return self.parse_cli_output(line) == (protocol, bind, port)
@@ -1526,5 +1526,5 @@ def setUpModule():
     unittest.addModuleCleanup(os.chdir, os.getcwd())
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

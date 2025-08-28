@@ -9,19 +9,19 @@ klasse ExceptionIsLikeMixin:
         an equality test: they only need to be the same type and contain equal
         `exc_obj.args`.
         """
-        if exc is None and template is None:
+        wenn exc is None and template is None:
             return
 
-        if template is None:
+        wenn template is None:
             self.fail(f"unexpected exception: {exc}")
 
-        if exc is None:
+        wenn exc is None:
             self.fail(f"expected an exception like {template!r}, got None")
 
-        if not isinstance(exc, ExceptionGroup):
+        wenn not isinstance(exc, ExceptionGroup):
             self.assertEqual(exc.__class__, template.__class__)
             self.assertEqual(exc.args[0], template.args[0])
-        else:
+        sonst:
             self.assertEqual(exc.message, template.message)
             self.assertEqual(len(exc.exceptions), len(template.exceptions))
             fuer e, t in zip(exc.exceptions, template.exceptions):
@@ -39,16 +39,16 @@ klasse FloatsAreIdenticalMixin:
         """
         msg = 'floats {!r} and {!r} are not identical'
 
-        if isnan(x) or isnan(y):
-            if isnan(x) and isnan(y):
+        wenn isnan(x) or isnan(y):
+            wenn isnan(x) and isnan(y):
                 return
-        elif x == y:
-            if x != 0.0:
+        sowenn x == y:
+            wenn x != 0.0:
                 return
             # both zero; check that signs match
-            elif copysign(1.0, x) == copysign(1.0, y):
+            sowenn copysign(1.0, x) == copysign(1.0, y):
                 return
-            else:
+            sonst:
                 msg += ': zeros have different signs'
         self.fail(msg.format(x, y))
 
@@ -57,7 +57,7 @@ klasse ComplexesAreIdenticalMixin(FloatsAreIdenticalMixin):
     def assertComplexesAreIdentical(self, x, y):
         """Fail unless complex numbers x and y have equal values and signs.
 
-        In particular, if x and y both have real (or imaginary) part
+        In particular, wenn x and y both have real (or imaginary) part
         zero, but the zeros have different signs, this test will fail.
 
         """

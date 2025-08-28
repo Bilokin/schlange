@@ -46,9 +46,9 @@ def warnings_state(module):
     except NameError:
         pass
     original_warnings = warning_tests.warnings
-    if module._use_context:
+    wenn module._use_context:
         saved_context, context = module._new_context()
-    else:
+    sonst:
         original_filters = module.filters
         module.filters = original_filters[:]
     try:
@@ -57,9 +57,9 @@ def warnings_state(module):
         yield
     finally:
         warning_tests.warnings = original_warnings
-        if module._use_context:
+        wenn module._use_context:
             module._set_context(saved_context)
-        else:
+        sonst:
             module.filters = original_filters
 
 
@@ -75,11 +75,11 @@ klasse BaseTest:
         self.old_unittest_module = unittest.case.warnings
         # The __warningregistry__ needs to be in a pristine state fuer tests
         # to work properly.
-        if '__warningregistry__' in globals():
+        wenn '__warningregistry__' in globals():
             del globals()['__warningregistry__']
-        if hasattr(warning_tests, '__warningregistry__'):
+        wenn hasattr(warning_tests, '__warningregistry__'):
             del warning_tests.__warningregistry__
-        if hasattr(sys, '__warningregistry__'):
+        wenn hasattr(sys, '__warningregistry__'):
             del sys.__warningregistry__
         # The 'warnings' module must be explicitly set so that the proper
         # interaction between _warnings and 'warnings' can be controlled.
@@ -206,12 +206,12 @@ klasse FilterTests(BaseTest):
             message = UserWarning("FilterTests.test_default")
             fuer x in range(2):
                 self.module.warn(message, UserWarning)
-                if x == 0:
+                wenn x == 0:
                     self.assertEqual(w[-1].message, message)
                     del w[:]
-                elif x == 1:
+                sowenn x == 1:
                     self.assertEqual(len(w), 0)
-                else:
+                sonst:
                     raise ValueError("loop variant unhandled")
 
     def test_module(self):
@@ -565,7 +565,7 @@ klasse WarnTests(BaseTest):
                 self.assertEqual(w[-1].filename, filename)
 
     def test_warn_explicit_type_errors(self):
-        # warn_explicit() should error out gracefully if it is given objects
+        # warn_explicit() should error out gracefully wenn it is given objects
         # of the wrong types.
         # lineno is expected to be an integer.
         self.assertRaises(TypeError, self.module.warn_explicit,
@@ -636,7 +636,7 @@ klasse WarnTests(BaseTest):
         self.assertEqual(str(w[0].message), 'eggs')
 
     def check_module_globals_error(self, module_globals, errmsg, errtype=ValueError):
-        if self.module is py_warnings:
+        wenn self.module is py_warnings:
             self.check_module_globals(module_globals)
             return
         with self.module.catch_warnings(record=True) as w:
@@ -648,7 +648,7 @@ klasse WarnTests(BaseTest):
         self.assertEqual(len(w), 0)
 
     def check_module_globals_deprecated(self, module_globals, msg):
-        if self.module is py_warnings:
+        wenn self.module is py_warnings:
             self.check_module_globals(module_globals)
             return
         with self.module.catch_warnings(record=True) as w:
@@ -801,7 +801,7 @@ klasse _WarningsTests(BaseTest, unittest.TestCase):
     module = c_warnings
 
     def test_filter(self):
-        # Everything should function even if 'filters' is not in warnings.
+        # Everything should function even wenn 'filters' is not in warnings.
         with self.module.catch_warnings() as w:
             self.module.filterwarnings("error", "", Warning, "", 0)
             self.assertRaises(UserWarning, self.module.warn,
@@ -877,7 +877,7 @@ klasse _WarningsTests(BaseTest, unittest.TestCase):
 
     def test_showwarning_missing(self):
         # Test that showwarning() missing is okay.
-        if self.module._use_context:
+        wenn self.module._use_context:
             # If _use_context is true, the warnings module does not
             # override/restore showwarning()
             return
@@ -947,7 +947,7 @@ klasse _WarningsTests(BaseTest, unittest.TestCase):
             self.module.showwarning = orig
 
     def test_filename_none(self):
-        # issue #12467: race condition if a warning is emitted at shutdown
+        # issue #12467: race condition wenn a warning is emitted at shutdown
         globals_dict = globals()
         oldfile = globals_dict['__file__']
         try:
@@ -1172,8 +1172,8 @@ klasse CatchWarningTests(BaseTest):
     """Test catch_warnings()."""
 
     def test_catch_warnings_restore(self):
-        if self.module._use_context:
-            return  # test disabled if using context vars
+        wenn self.module._use_context:
+            return  # test disabled wenn using context vars
         wmod = self.module
         orig_filters = wmod.filters
         orig_showwarning = wmod.showwarning
@@ -1232,7 +1232,7 @@ klasse CatchWarningTests(BaseTest):
             self.assertIs(wmod.showwarning, orig_showwarning)
             self.assertIsNot(wmod._get_filters(), orig_filters)
         self.assertIs(wmod._get_filters(), orig_filters)
-        if wmod is sys.modules['warnings']:
+        wenn wmod is sys.modules['warnings']:
             # Ensure the default module is this one
             with wmod.catch_warnings() as w:
                 self.assertIsNone(w)
@@ -1243,7 +1243,7 @@ klasse CatchWarningTests(BaseTest):
     def test_record_override_showwarning_before(self):
         # Issue #28835: If warnings.showwarning() was overridden, make sure
         # that catch_warnings(record=True) overrides it again.
-        if self.module._use_context:
+        wenn self.module._use_context:
             # If _use_context is true, the warnings module does not restore
             # showwarning()
             return
@@ -1272,7 +1272,7 @@ klasse CatchWarningTests(BaseTest):
     def test_record_override_showwarning_inside(self):
         # Issue #28835: It is possible to override warnings.showwarning()
         # in the catch_warnings(record=True) context manager.
-        if self.module._use_context:
+        wenn self.module._use_context:
             # If _use_context is true, the warnings module does not restore
             # showwarning()
             return
@@ -1296,7 +1296,7 @@ klasse CatchWarningTests(BaseTest):
     def test_check_warnings(self):
         # Explicit tests fuer the test.support convenience wrapper
         wmod = self.module
-        if wmod is not sys.modules['warnings']:
+        wenn wmod is not sys.modules['warnings']:
             self.skipTest('module to test is not loaded warnings module')
         with warnings_helper.check_warnings(quiet=False) as w:
             self.assertEqual(w.warnings, [])
@@ -1377,12 +1377,12 @@ klasse EnvironmentVariableTests(BaseTest):
 
     def test_default_filter_configuration(self):
         pure_python_api = self.module is py_warnings
-        if support.Py_DEBUG:
+        wenn support.Py_DEBUG:
             expected_default_filters = []
-        else:
-            if pure_python_api:
+        sonst:
+            wenn pure_python_api:
                 main_module_filter = re.compile("__main__")
-            else:
+            sonst:
                 main_module_filter = "__main__"
             expected_default_filters = [
                 ('default', None, DeprecationWarning, main_module_filter, 0),
@@ -1393,10 +1393,10 @@ klasse EnvironmentVariableTests(BaseTest):
             ]
         expected_output = [str(f).encode() fuer f in expected_default_filters]
 
-        if pure_python_api:
+        wenn pure_python_api:
             # Disable the warnings acceleration module in the subprocess
             code = "import sys; sys.modules.pop('warnings', None); sys.modules['_warnings'] = None; "
-        else:
+        sonst:
             code = ""
         code += "import warnings; [print(f) fuer f in warnings._get_filters()]"
 
@@ -1596,7 +1596,7 @@ klasse AsyncTests(BaseTest):
         async def run_child2():
             # This establishes a new catch_warnings() context.  The
             # run_child1() task should still be using the context from
-            # run_parent() if context-aware warnings are enabled.
+            # run_parent() wenn context-aware warnings are enabled.
             with self.module.catch_warnings(record=True) as w:
                 step1.set()
                 await step2.wait()
@@ -2072,5 +2072,5 @@ def setUpModule():
 
 tearDownModule = setUpModule
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

@@ -62,12 +62,12 @@ klasse _PathParents(Sequence):
         return len(self._tail)
 
     def __getitem__(self, idx):
-        if isinstance(idx, slice):
+        wenn isinstance(idx, slice):
             return tuple(self[i] fuer i in range(*idx.indices(len(self))))
 
-        if idx >= len(self) or idx < -len(self):
+        wenn idx >= len(self) or idx < -len(self):
             raise IndexError(idx)
-        if idx < 0:
+        wenn idx < 0:
             idx += len(self)
         return self._path._from_parsed_parts(self._drv, self._root,
                                              self._tail[:-idx - 1])
@@ -129,25 +129,25 @@ klasse PurePath:
         to yield a canonicalized path, which is incorporated into the
         new PurePath object.
         """
-        if cls is PurePath:
-            cls = PureWindowsPath if os.name == 'nt' else PurePosixPath
+        wenn cls is PurePath:
+            cls = PureWindowsPath wenn os.name == 'nt' sonst PurePosixPath
         return object.__new__(cls)
 
     def __init__(self, *args):
         paths = []
         fuer arg in args:
-            if isinstance(arg, PurePath):
-                if arg.parser is not self.parser:
+            wenn isinstance(arg, PurePath):
+                wenn arg.parser is not self.parser:
                     # GH-103631: Convert separators fuer backwards compatibility.
                     paths.append(arg.as_posix())
-                else:
+                sonst:
                     paths.extend(arg._raw_paths)
-            else:
+            sonst:
                 try:
                     path = os.fspath(arg)
                 except TypeError:
                     path = arg
-                if not isinstance(path, str):
+                wenn not isinstance(path, str):
                     raise TypeError(
                         "argument should be a str or an os.PathLike "
                         "object where __fspath__ returns a str, "
@@ -199,9 +199,9 @@ klasse PurePath:
         try:
             return self._str_normcase_cached
         except AttributeError:
-            if self.parser is posixpath:
+            wenn self.parser is posixpath:
                 self._str_normcase_cached = str(self)
-            else:
+            sonst:
                 self._str_normcase_cached = str(self).lower()
             return self._str_normcase_cached
 
@@ -213,7 +213,7 @@ klasse PurePath:
             return self._hash
 
     def __eq__(self, other):
-        if not isinstance(other, PurePath):
+        wenn not isinstance(other, PurePath):
             return NotImplemented
         return self._str_normcase == other._str_normcase and self.parser is other.parser
 
@@ -227,22 +227,22 @@ klasse PurePath:
             return self._parts_normcase_cached
 
     def __lt__(self, other):
-        if not isinstance(other, PurePath) or self.parser is not other.parser:
+        wenn not isinstance(other, PurePath) or self.parser is not other.parser:
             return NotImplemented
         return self._parts_normcase < other._parts_normcase
 
     def __le__(self, other):
-        if not isinstance(other, PurePath) or self.parser is not other.parser:
+        wenn not isinstance(other, PurePath) or self.parser is not other.parser:
             return NotImplemented
         return self._parts_normcase <= other._parts_normcase
 
     def __gt__(self, other):
-        if not isinstance(other, PurePath) or self.parser is not other.parser:
+        wenn not isinstance(other, PurePath) or self.parser is not other.parser:
             return NotImplemented
         return self._parts_normcase > other._parts_normcase
 
     def __ge__(self, other):
-        if not isinstance(other, PurePath) or self.parser is not other.parser:
+        wenn not isinstance(other, PurePath) or self.parser is not other.parser:
             return NotImplemented
         return self._parts_normcase >= other._parts_normcase
 
@@ -261,9 +261,9 @@ klasse PurePath:
 
     @classmethod
     def _format_parsed_parts(cls, drv, root, tail):
-        if drv or root:
+        wenn drv or root:
             return drv + root + cls.parser.sep.join(tail)
-        elif tail and cls.parser.splitdrive(tail[0])[0]:
+        sowenn tail and cls.parser.splitdrive(tail[0])[0]:
             tail = ['.'] + tail
         return cls.parser.sep.join(tail)
 
@@ -281,22 +281,22 @@ klasse PurePath:
 
     @classmethod
     def _parse_path(cls, path):
-        if not path:
+        wenn not path:
             return '', '', []
         sep = cls.parser.sep
         altsep = cls.parser.altsep
-        if altsep:
+        wenn altsep:
             path = path.replace(altsep, sep)
         drv, root, rel = cls.parser.splitroot(path)
-        if not root and drv.startswith(sep) and not drv.endswith(sep):
+        wenn not root and drv.startswith(sep) and not drv.endswith(sep):
             drv_parts = drv.split(sep)
-            if len(drv_parts) == 4 and drv_parts[2] not in '?.':
+            wenn len(drv_parts) == 4 and drv_parts[2] not in '?.':
                 # e.g. //server/share
                 root = sep
-            elif len(drv_parts) == 6:
+            sowenn len(drv_parts) == 6:
                 # e.g. //?/unc/server/share
                 root = sep
-        return drv, root, [x fuer x in rel.split(sep) if x and x != '.']
+        return drv, root, [x fuer x in rel.split(sep) wenn x and x != '.']
 
     @classmethod
     def _parse_pattern(cls, pattern):
@@ -304,21 +304,21 @@ klasse PurePath:
         _parse_path, except:
 
         - Rather than normalizing and returning the drive and root, we raise
-          NotImplementedError if either are present.
+          NotImplementedError wenn either are present.
         - If the path has no real parts, we raise ValueError.
         - If the path ends in a slash, then a final empty part is added.
         """
         drv, root, rel = cls.parser.splitroot(pattern)
-        if root or drv:
+        wenn root or drv:
             raise NotImplementedError("Non-relative patterns are unsupported")
         sep = cls.parser.sep
         altsep = cls.parser.altsep
-        if altsep:
+        wenn altsep:
             rel = rel.replace(altsep, sep)
-        parts = [x fuer x in rel.split(sep) if x and x != '.']
-        if not parts:
+        parts = [x fuer x in rel.split(sep) wenn x and x != '.']
+        wenn not parts:
             raise ValueError(f"Unacceptable pattern: {str(pattern)!r}")
-        elif rel.endswith(sep):
+        sowenn rel.endswith(sep):
             # GH-65238: preserve trailing slash in glob patterns.
             parts.append('')
         return parts
@@ -331,22 +331,22 @@ klasse PurePath:
     @property
     def _raw_path(self):
         paths = self._raw_paths
-        if len(paths) == 1:
+        wenn len(paths) == 1:
             return paths[0]
-        elif paths:
+        sowenn paths:
             # Join path segments from the initializer.
             path = self.parser.join(*paths)
             # Cache the joined path.
             paths.clear()
             paths.append(path)
             return path
-        else:
+        sonst:
             paths.append('')
             return ''
 
     @property
     def drive(self):
-        """The drive prefix (letter or UNC path), if any."""
+        """The drive prefix (letter or UNC path), wenn any."""
         try:
             return self._drv
         except AttributeError:
@@ -355,7 +355,7 @@ klasse PurePath:
 
     @property
     def root(self):
-        """The root of the path, if any."""
+        """The root of the path, wenn any."""
         try:
             return self._root
         except AttributeError:
@@ -379,9 +379,9 @@ klasse PurePath:
     def parts(self):
         """An object providing sequence-like access to the
         components in the filesystem path."""
-        if self.drive or self.root:
+        wenn self.drive or self.root:
             return (self.drive + self.root,) + tuple(self._tail)
-        else:
+        sonst:
             return tuple(self._tail)
 
     @property
@@ -390,7 +390,7 @@ klasse PurePath:
         drv = self.drive
         root = self.root
         tail = self._tail
-        if not tail:
+        wenn not tail:
             return self
         return self._from_parsed_parts(drv, root, tail[:-1])
 
@@ -403,19 +403,19 @@ klasse PurePath:
 
     @property
     def name(self):
-        """The final path component, if any."""
+        """The final path component, wenn any."""
         tail = self._tail
-        if not tail:
+        wenn not tail:
             return ''
         return tail[-1]
 
     def with_name(self, name):
         """Return a new path with the file name changed."""
         p = self.parser
-        if not name or p.sep in name or (p.altsep and p.altsep in name) or name == '.':
+        wenn not name or p.sep in name or (p.altsep and p.altsep in name) or name == '.':
             raise ValueError(f"Invalid name {name!r}")
         tail = self._tail.copy()
-        if not tail:
+        wenn not tail:
             raise ValueError(f"{self!r} has an empty name")
         tail[-1] = name
         return self._from_parsed_parts(self.drive, self.root, tail)
@@ -423,12 +423,12 @@ klasse PurePath:
     def with_stem(self, stem):
         """Return a new path with the stem changed."""
         suffix = self.suffix
-        if not suffix:
+        wenn not suffix:
             return self.with_name(stem)
-        elif not stem:
+        sowenn not stem:
             # If the suffix is non-empty, we can't make the stem empty.
             raise ValueError(f"{self!r} has a non-empty suffix")
-        else:
+        sonst:
             return self.with_name(stem + suffix)
 
     def with_suffix(self, suffix):
@@ -437,12 +437,12 @@ klasse PurePath:
         string, remove the suffix from the path.
         """
         stem = self.stem
-        if not stem:
+        wenn not stem:
             # If the stem is empty, we can't make the suffix non-empty.
             raise ValueError(f"{self!r} has an empty name")
-        elif suffix and not suffix.startswith('.'):
+        sowenn suffix and not suffix.startswith('.'):
             raise ValueError(f"Invalid suffix {suffix!r}")
-        else:
+        sonst:
             return self.with_name(stem + suffix)
 
     @property
@@ -450,30 +450,30 @@ klasse PurePath:
         """The final path component, minus its last suffix."""
         name = self.name
         i = name.rfind('.')
-        if i != -1:
+        wenn i != -1:
             stem = name[:i]
             # Stem must contain at least one non-dot character.
-            if stem.lstrip('.'):
+            wenn stem.lstrip('.'):
                 return stem
         return name
 
     @property
     def suffix(self):
         """
-        The final component's last suffix, if any.
+        The final component's last suffix, wenn any.
 
         This includes the leading period. For example: '.txt'
         """
         name = self.name.lstrip('.')
         i = name.rfind('.')
-        if i != -1:
+        wenn i != -1:
             return name[i:]
         return ''
 
     @property
     def suffixes(self):
         """
-        A list of the final component's suffixes, if any.
+        A list of the final component's suffixes, wenn any.
 
         These include the leading periods. For example: ['.tar', '.gz']
         """
@@ -487,34 +487,34 @@ klasse PurePath:
         The *walk_up* parameter controls whether `..` may be used to resolve
         the path.
         """
-        if not hasattr(other, 'with_segments'):
+        wenn not hasattr(other, 'with_segments'):
             other = self.with_segments(other)
         fuer step, path in enumerate(chain([other], other.parents)):
-            if path == self or path in self.parents:
+            wenn path == self or path in self.parents:
                 break
-            elif not walk_up:
+            sowenn not walk_up:
                 raise ValueError(f"{str(self)!r} is not in the subpath of {str(other)!r}")
-            elif path.name == '..':
+            sowenn path.name == '..':
                 raise ValueError(f"'..' segment in {str(other)!r} cannot be walked")
-        else:
+        sonst:
             raise ValueError(f"{str(self)!r} and {str(other)!r} have different anchors")
         parts = ['..'] * step + self._tail[len(path._tail):]
         return self._from_parsed_parts('', '', parts)
 
     def is_relative_to(self, other):
-        """Return True if the path is relative to another path or False.
+        """Return True wenn the path is relative to another path or False.
         """
-        if not hasattr(other, 'with_segments'):
+        wenn not hasattr(other, 'with_segments'):
             other = self.with_segments(other)
         return other == self or other in self.parents
 
     def is_absolute(self):
-        """True if the path is absolute (has both a root and, if applicable,
+        """True wenn the path is absolute (has both a root and, wenn applicable,
         a drive)."""
-        if self.parser is posixpath:
+        wenn self.parser is posixpath:
             # Optimization: work with raw paths on POSIX.
             fuer path in self._raw_paths:
-                if path.startswith('/'):
+                wenn path.startswith('/'):
                     return True
             return False
         return self.parser.isabs(self)
@@ -525,19 +525,19 @@ klasse PurePath:
         msg = ("pathlib.PurePath.as_uri() is deprecated and scheduled "
                "for removal in Python 3.19. Use pathlib.Path.as_uri().")
         warnings._deprecated("pathlib.PurePath.as_uri", msg, remove=(3, 19))
-        if not self.is_absolute():
+        wenn not self.is_absolute():
             raise ValueError("relative path can't be expressed as a file URI")
 
         drive = self.drive
-        if len(drive) == 2 and drive[1] == ':':
+        wenn len(drive) == 2 and drive[1] == ':':
             # It's a path on a local drive => 'file:///c:/a/b'
             prefix = 'file:///' + drive
             path = self.as_posix()[2:]
-        elif drive:
+        sowenn drive:
             # It's a path on a network drive => 'file://host/share/a/b'
             prefix = 'file:'
             path = self.as_posix()
-        else:
+        sonst:
             # It's a posix path => 'file:///etc/hosts'
             prefix = 'file://'
             path = str(self)
@@ -546,44 +546,44 @@ klasse PurePath:
 
     def full_match(self, pattern, *, case_sensitive=None):
         """
-        Return True if this path matches the given glob-style pattern. The
+        Return True wenn this path matches the given glob-style pattern. The
         pattern is matched against the entire path.
         """
-        if not hasattr(pattern, 'with_segments'):
+        wenn not hasattr(pattern, 'with_segments'):
             pattern = self.with_segments(pattern)
-        if case_sensitive is None:
+        wenn case_sensitive is None:
             case_sensitive = self.parser is posixpath
 
         # The string representation of an empty path is a single dot ('.'). Empty
         # paths shouldn't match wildcards, so we change it to the empty string.
-        path = str(self) if self.parts else ''
-        pattern = str(pattern) if pattern.parts else ''
+        path = str(self) wenn self.parts sonst ''
+        pattern = str(pattern) wenn pattern.parts sonst ''
         globber = _StringGlobber(self.parser.sep, case_sensitive, recursive=True)
         return globber.compile(pattern)(path) is not None
 
     def match(self, path_pattern, *, case_sensitive=None):
         """
-        Return True if this path matches the given pattern. If the pattern is
+        Return True wenn this path matches the given pattern. If the pattern is
         relative, matching is done from the right; otherwise, the entire path
         is matched. The recursive wildcard '**' is *not* supported by this
         method.
         """
-        if not hasattr(path_pattern, 'with_segments'):
+        wenn not hasattr(path_pattern, 'with_segments'):
             path_pattern = self.with_segments(path_pattern)
-        if case_sensitive is None:
+        wenn case_sensitive is None:
             case_sensitive = self.parser is posixpath
         path_parts = self.parts[::-1]
         pattern_parts = path_pattern.parts[::-1]
-        if not pattern_parts:
+        wenn not pattern_parts:
             raise ValueError("empty pattern")
-        if len(path_parts) < len(pattern_parts):
+        wenn len(path_parts) < len(pattern_parts):
             return False
-        if len(path_parts) > len(pattern_parts) and path_pattern.anchor:
+        wenn len(path_parts) > len(pattern_parts) and path_pattern.anchor:
             return False
         globber = _StringGlobber(self.parser.sep, case_sensitive)
         fuer path_part, pattern_part in zip(path_parts, pattern_parts):
             match = globber.compile(pattern_part)
-            if match(path_part) is None:
+            wenn match(path_part) is None:
                 return False
         return True
 
@@ -624,8 +624,8 @@ klasse Path(PurePath):
     __slots__ = ('_info',)
 
     def __new__(cls, *args, **kwargs):
-        if cls is Path:
-            cls = WindowsPath if os.name == 'nt' else PosixPath
+        wenn cls is Path:
+            cls = WindowsPath wenn os.name == 'nt' sonst PosixPath
         return object.__new__(cls)
 
     @property
@@ -649,7 +649,7 @@ klasse Path(PurePath):
 
     def lstat(self):
         """
-        Like stat(), except if the path points to a symlink, the symlink's
+        Like stat(), except wenn the path points to a symlink, the symlink's
         status information is returned, rather than its target's.
         """
         return os.lstat(self)
@@ -661,7 +661,7 @@ klasse Path(PurePath):
         This method normally follows symlinks; to check whether a symlink exists,
         add the argument follow_symlinks=False.
         """
-        if follow_symlinks:
+        wenn follow_symlinks:
             return os.path.exists(self)
         return os.path.lexists(self)
 
@@ -669,7 +669,7 @@ klasse Path(PurePath):
         """
         Whether this path is a directory.
         """
-        if follow_symlinks:
+        wenn follow_symlinks:
             return os.path.isdir(self)
         try:
             return S_ISDIR(self.stat(follow_symlinks=follow_symlinks).st_mode)
@@ -681,7 +681,7 @@ klasse Path(PurePath):
         Whether this path is a regular file (also True fuer symlinks pointing
         to regular files).
         """
-        if follow_symlinks:
+        wenn follow_symlinks:
             return os.path.isfile(self)
         try:
             return S_ISREG(self.stat(follow_symlinks=follow_symlinks).st_mode)
@@ -690,7 +690,7 @@ klasse Path(PurePath):
 
     def is_mount(self):
         """
-        Check if this path is a mount point
+        Check wenn this path is a mount point
         """
         return os.path.ismount(self)
 
@@ -760,7 +760,7 @@ klasse Path(PurePath):
         Open the file pointed to by this path and return a file object, as
         the built-in open() function does.
         """
-        if "b" not in mode:
+        wenn "b" not in mode:
             encoding = io.text_encoding(encoding)
         return io.open(self, mode, buffering, encoding, errors, newline)
 
@@ -797,7 +797,7 @@ klasse Path(PurePath):
         # Call io.text_encoding() here to ensure any warning is raised at an
         # appropriate stack level.
         encoding = io.text_encoding(encoding)
-        if not isinstance(data, str):
+        wenn not isinstance(data, str):
             raise TypeError('data must be str, not %s' %
                             data.__class__.__name__)
         with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
@@ -810,7 +810,7 @@ klasse Path(PurePath):
         sep = self.parser.sep
         anchor_len = len(self.anchor)
         fuer path_str in paths:
-            if len(path_str) > anchor_len and path_str[-1] == sep:
+            wenn len(path_str) > anchor_len and path_str[-1] == sep:
                 path_str = path_str[:-1]
             yield path_str
 
@@ -829,9 +829,9 @@ klasse Path(PurePath):
         root_dir = str(self)
         with os.scandir(root_dir) as scandir_it:
             entries = list(scandir_it)
-        if root_dir == '.':
+        wenn root_dir == '.':
             return (self._from_dir_entry(e, e.name) fuer e in entries)
-        else:
+        sonst:
             return (self._from_dir_entry(e, e.path) fuer e in entries)
 
     def glob(self, pattern, *, case_sensitive=None, recurse_symlinks=False):
@@ -839,27 +839,27 @@ klasse Path(PurePath):
         kind, including directories) matching the given relative pattern.
         """
         sys.audit("pathlib.Path.glob", self, pattern)
-        if case_sensitive is None:
+        wenn case_sensitive is None:
             case_sensitive = self.parser is posixpath
             case_pedantic = False
-        else:
+        sonst:
             # The user has expressed a case sensitivity choice, but we don't
             # know the case sensitivity of the underlying filesystem, so we
             # must use scandir() fuer everything, including non-wildcard parts.
             case_pedantic = True
         parts = self._parse_pattern(pattern)
-        recursive = True if recurse_symlinks else _no_recurse_symlinks
+        recursive = True wenn recurse_symlinks sonst _no_recurse_symlinks
         globber = _StringGlobber(self.parser.sep, case_sensitive, case_pedantic, recursive)
         select = globber.selector(parts[::-1])
         root = str(self)
         paths = select(self.parser.join(root, ''))
 
         # Normalize results
-        if root == '.':
+        wenn root == '.':
             paths = map(self._remove_leading_dot, paths)
-        if parts[-1] == '':
+        wenn parts[-1] == '':
             paths = map(self._remove_trailing_slash, paths)
-        elif parts[-1] == '**':
+        sowenn parts[-1] == '**':
             paths = self._filter_trailing_slash(paths)
         paths = map(self._from_parsed_string, paths)
         return paths
@@ -877,11 +877,11 @@ klasse Path(PurePath):
         """Walk the directory tree from this directory, similar to os.walk()."""
         sys.audit("pathlib.Path.walk", self, on_error, follow_symlinks)
         root_dir = str(self)
-        if not follow_symlinks:
+        wenn not follow_symlinks:
             follow_symlinks = os._walk_symlinks_as_files
         results = os.walk(root_dir, top_down, on_error, follow_symlinks)
         fuer path_str, dirnames, filenames in results:
-            if root_dir == '.':
+            wenn root_dir == '.':
                 path_str = path_str[2:]
             yield self._from_parsed_string(path_str), dirnames, filenames
 
@@ -891,17 +891,17 @@ klasse Path(PurePath):
 
         Use resolve() to resolve symlinks and remove '..' segments.
         """
-        if self.is_absolute():
+        wenn self.is_absolute():
             return self
-        if self.root:
+        wenn self.root:
             drive = os.path.splitroot(os.getcwd())[0]
             return self._from_parsed_parts(drive, self.root, self._tail)
-        if self.drive:
+        wenn self.drive:
             # There is a CWD on each drive-letter drive.
             cwd = os.path.abspath(self.drive)
-        else:
+        sonst:
             cwd = os.getcwd()
-        if not self._tail:
+        wenn not self._tail:
             # Fast path fuer "empty" paths, e.g. Path("."), Path("") or Path().
             # We pass only one argument to with_segments() to avoid the cost
             # of joining, and we exploit the fact that getcwd() returns a
@@ -909,7 +909,7 @@ klasse Path(PurePath):
             # implement Path.cwd().
             return self._from_parsed_string(cwd)
         drive, root, rel = os.path.splitroot(cwd)
-        if not rel:
+        wenn not rel:
             return self._from_parsed_parts(drive, root, self._tail)
         tail = rel.split(self.parser.sep)
         tail.extend(self._tail)
@@ -931,14 +931,14 @@ klasse Path(PurePath):
 
         return self.with_segments(os.path.realpath(self, strict=strict))
 
-    if pwd:
+    wenn pwd:
         def owner(self, *, follow_symlinks=True):
             """
             Return the login name of the file owner.
             """
             uid = self.stat(follow_symlinks=follow_symlinks).st_uid
             return pwd.getpwuid(uid).pw_name
-    else:
+    sonst:
         def owner(self, *, follow_symlinks=True):
             """
             Return the login name of the file owner.
@@ -946,14 +946,14 @@ klasse Path(PurePath):
             f = f"{type(self).__name__}.owner()"
             raise UnsupportedOperation(f"{f} is unsupported on this system")
 
-    if grp:
+    wenn grp:
         def group(self, *, follow_symlinks=True):
             """
             Return the group name of the file gid.
             """
             gid = self.stat(follow_symlinks=follow_symlinks).st_gid
             return grp.getgrgid(gid).gr_name
-    else:
+    sonst:
         def group(self, *, follow_symlinks=True):
             """
             Return the group name of the file gid.
@@ -961,13 +961,13 @@ klasse Path(PurePath):
             f = f"{type(self).__name__}.group()"
             raise UnsupportedOperation(f"{f} is unsupported on this system")
 
-    if hasattr(os, "readlink"):
+    wenn hasattr(os, "readlink"):
         def readlink(self):
             """
             Return the path to which the symbolic link points.
             """
             return self.with_segments(os.readlink(self))
-    else:
+    sonst:
         def readlink(self):
             """
             Return the path to which the symbolic link points.
@@ -977,10 +977,10 @@ klasse Path(PurePath):
 
     def touch(self, mode=0o666, exist_ok=True):
         """
-        Create this file with the given access mode, if it doesn't exist.
+        Create this file with the given access mode, wenn it doesn't exist.
         """
 
-        if exist_ok:
+        wenn exist_ok:
             # First try to bump modification time
             # Implementation note: GNU touch uses the UTIME_NOW option of
             # the utimensat() / futimens() functions.
@@ -989,10 +989,10 @@ klasse Path(PurePath):
             except OSError:
                 # Avoid exception chaining
                 pass
-            else:
+            sonst:
                 return
         flags = os.O_CREAT | os.O_WRONLY
-        if not exist_ok:
+        wenn not exist_ok:
             flags |= os.O_EXCL
         fd = os.open(self, flags, mode)
         os.close(fd)
@@ -1004,14 +1004,14 @@ klasse Path(PurePath):
         try:
             os.mkdir(self, mode)
         except FileNotFoundError:
-            if not parents or self.parent == self:
+            wenn not parents or self.parent == self:
                 raise
             self.parent.mkdir(parents=True, exist_ok=True)
             self.mkdir(mode, parents=False, exist_ok=exist_ok)
         except OSError:
             # Cannot rely on checking fuer EEXIST, since the operating system
             # could give priority to other errors like EACCES or EROFS
-            if not exist_ok or not self.is_dir():
+            wenn not exist_ok or not self.is_dir():
                 raise
 
     def chmod(self, mode, *, follow_symlinks=True):
@@ -1022,7 +1022,7 @@ klasse Path(PurePath):
 
     def lchmod(self, mode):
         """
-        Like chmod(), except if the path points to a symlink, the symlink's
+        Like chmod(), except wenn the path points to a symlink, the symlink's
         permissions are changed, rather than its target's.
         """
         self.chmod(mode, follow_symlinks=False)
@@ -1035,7 +1035,7 @@ klasse Path(PurePath):
         try:
             os.unlink(self)
         except FileNotFoundError:
-            if not missing_ok:
+            wenn not missing_ok:
                 raise
 
     def rmdir(self):
@@ -1048,13 +1048,13 @@ klasse Path(PurePath):
         """
         Delete this file or directory (including all sub-directories).
         """
-        if self.is_symlink() or self.is_junction():
+        wenn self.is_symlink() or self.is_junction():
             self.unlink()
-        elif self.is_dir():
+        sowenn self.is_dir():
             # Lazy import to improve module import time
             import shutil
             shutil.rmtree(self)
-        else:
+        sonst:
             self.unlink()
 
     def rename(self, target):
@@ -1068,13 +1068,13 @@ klasse Path(PurePath):
         Returns the new Path instance pointing to the target path.
         """
         os.rename(self, target)
-        if not hasattr(target, 'with_segments'):
+        wenn not hasattr(target, 'with_segments'):
             target = self.with_segments(target)
         return target
 
     def replace(self, target):
         """
-        Rename this path to the target path, overwriting if that path exists.
+        Rename this path to the target path, overwriting wenn that path exists.
 
         The target path may be absolute or relative. Relative paths are
         interpreted relative to the current working directory, *not* the
@@ -1083,7 +1083,7 @@ klasse Path(PurePath):
         Returns the new Path instance pointing to the target path.
         """
         os.replace(self, target)
-        if not hasattr(target, 'with_segments'):
+        wenn not hasattr(target, 'with_segments'):
             target = self.with_segments(target)
         return target
 
@@ -1091,7 +1091,7 @@ klasse Path(PurePath):
         """
         Recursively copy this file or directory tree to the given destination.
         """
-        if not hasattr(target, 'with_segments'):
+        wenn not hasattr(target, 'with_segments'):
             target = self.with_segments(target)
         ensure_distinct_paths(self, target)
         target._copy_from(self, **kwargs)
@@ -1102,11 +1102,11 @@ klasse Path(PurePath):
         Copy this file or directory tree into the given existing directory.
         """
         name = self.name
-        if not name:
+        wenn not name:
             raise ValueError(f"{self!r} has an empty name")
-        elif hasattr(target_dir, 'with_segments'):
+        sowenn hasattr(target_dir, 'with_segments'):
             target = target_dir / name
-        else:
+        sonst:
             target = self.with_segments(target_dir, name)
         return self.copy(target, **kwargs)
 
@@ -1114,17 +1114,17 @@ klasse Path(PurePath):
         """
         Recursively copy the given path to this path.
         """
-        if not follow_symlinks and source.info.is_symlink():
+        wenn not follow_symlinks and source.info.is_symlink():
             self._copy_from_symlink(source, preserve_metadata)
-        elif source.info.is_dir():
+        sowenn source.info.is_dir():
             children = source.iterdir()
             os.mkdir(self)
             fuer child in children:
                 self.joinpath(child.name)._copy_from(
                     child, follow_symlinks, preserve_metadata)
-            if preserve_metadata:
+            wenn preserve_metadata:
                 copy_info(source.info, self)
-        else:
+        sonst:
             self._copy_from_file(source, preserve_metadata)
 
     def _copy_from_file(self, source, preserve_metadata=False):
@@ -1132,10 +1132,10 @@ klasse Path(PurePath):
         with magic_open(source, 'rb') as source_f:
             with open(self, 'wb') as target_f:
                 copyfileobj(source_f, target_f)
-        if preserve_metadata:
+        wenn preserve_metadata:
             copy_info(source.info, self)
 
-    if copyfile2:
+    wenn copyfile2:
         # Use fast OS routine fuer local file copying where available.
         _copy_from_file_fallback = _copy_from_file
         def _copy_from_file(self, source, preserve_metadata=False):
@@ -1143,42 +1143,42 @@ klasse Path(PurePath):
                 source = os.fspath(source)
             except TypeError:
                 pass
-            else:
+            sonst:
                 copyfile2(source, str(self))
                 return
             self._copy_from_file_fallback(source, preserve_metadata)
 
-    if os.name == 'nt':
+    wenn os.name == 'nt':
         # If a directory-symlink is copied *before* its target, then
         # os.symlink() incorrectly creates a file-symlink on Windows. Avoid
         # this by passing *target_is_dir* to os.symlink() on Windows.
         def _copy_from_symlink(self, source, preserve_metadata=False):
             os.symlink(vfspath(source.readlink()), self, source.info.is_dir())
-            if preserve_metadata:
+            wenn preserve_metadata:
                 copy_info(source.info, self, follow_symlinks=False)
-    else:
+    sonst:
         def _copy_from_symlink(self, source, preserve_metadata=False):
             os.symlink(vfspath(source.readlink()), self)
-            if preserve_metadata:
+            wenn preserve_metadata:
                 copy_info(source.info, self, follow_symlinks=False)
 
     def move(self, target):
         """
         Recursively move this file or directory tree to the given destination.
         """
-        # Use os.replace() if the target is os.PathLike and on the same FS.
+        # Use os.replace() wenn the target is os.PathLike and on the same FS.
         try:
             target = self.with_segments(target)
         except TypeError:
             pass
-        else:
+        sonst:
             ensure_different_files(self, target)
             try:
                 os.replace(self, target)
             except OSError as err:
-                if err.errno != EXDEV:
+                wenn err.errno != EXDEV:
                     raise
-            else:
+            sonst:
                 return target.joinpath()  # Empty join to ensure fresh metadata.
         # Fall back to copy+delete.
         target = self.copy(target, follow_symlinks=False, preserve_metadata=True)
@@ -1190,22 +1190,22 @@ klasse Path(PurePath):
         Move this file or directory tree into the given existing directory.
         """
         name = self.name
-        if not name:
+        wenn not name:
             raise ValueError(f"{self!r} has an empty name")
-        elif hasattr(target_dir, 'with_segments'):
+        sowenn hasattr(target_dir, 'with_segments'):
             target = target_dir / name
-        else:
+        sonst:
             target = self.with_segments(target_dir, name)
         return self.move(target)
 
-    if hasattr(os, "symlink"):
+    wenn hasattr(os, "symlink"):
         def symlink_to(self, target, target_is_directory=False):
             """
             Make this path a symlink pointing to the target path.
             Note the order of arguments (link, target) is the reverse of os.symlink.
             """
             os.symlink(target, self, target_is_directory)
-    else:
+    sonst:
         def symlink_to(self, target, target_is_directory=False):
             """
             Make this path a symlink pointing to the target path.
@@ -1214,7 +1214,7 @@ klasse Path(PurePath):
             f = f"{type(self).__name__}.symlink_to()"
             raise UnsupportedOperation(f"{f} is unsupported on this system")
 
-    if hasattr(os, "link"):
+    wenn hasattr(os, "link"):
         def hardlink_to(self, target):
             """
             Make this path a hard link pointing to the same file as *target*.
@@ -1222,7 +1222,7 @@ klasse Path(PurePath):
             Note the order of arguments (self, target) is the reverse of os.link's.
             """
             os.link(target, self)
-    else:
+    sonst:
         def hardlink_to(self, target):
             """
             Make this path a hard link pointing to the same file as *target*.
@@ -1236,10 +1236,10 @@ klasse Path(PurePath):
         """ Return a new path with expanded ~ and ~user constructs
         (as returned by os.path.expanduser)
         """
-        if (not (self.drive or self.root) and
+        wenn (not (self.drive or self.root) and
             self._tail and self._tail[0][:1] == '~'):
             homedir = os.path.expanduser(self._tail[0])
-            if homedir[:1] == "~":
+            wenn homedir[:1] == "~":
                 raise RuntimeError("Could not determine home directory.")
             drv, root, tail = self._parse_path(homedir)
             return self._from_parsed_parts(drv, root, tail + self._tail[1:])
@@ -1251,13 +1251,13 @@ klasse Path(PurePath):
         """Return a new path pointing to expanduser('~').
         """
         homedir = os.path.expanduser("~")
-        if homedir == "~":
+        wenn homedir == "~":
             raise RuntimeError("Could not determine home directory.")
         return cls(homedir)
 
     def as_uri(self):
         """Return the path as a URI."""
-        if not self.is_absolute():
+        wenn not self.is_absolute():
             raise ValueError("relative paths can't be expressed as file URIs")
         from urllib.request import pathname2url
         return pathname2url(str(self), add_scheme=True)
@@ -1271,7 +1271,7 @@ klasse Path(PurePath):
             path = cls(url2pathname(uri, require_scheme=True))
         except URLError as exc:
             raise ValueError(exc.reason) from None
-        if not path.is_absolute():
+        wenn not path.is_absolute():
             raise ValueError(f"URI is not absolute: {uri!r}")
         return path
 
@@ -1283,7 +1283,7 @@ klasse PosixPath(Path, PurePosixPath):
     """
     __slots__ = ()
 
-    if os.name == 'nt':
+    wenn os.name == 'nt':
         def __new__(cls, *args, **kwargs):
             raise UnsupportedOperation(
                 f"cannot instantiate {cls.__name__!r} on your system")
@@ -1295,7 +1295,7 @@ klasse WindowsPath(Path, PureWindowsPath):
     """
     __slots__ = ()
 
-    if os.name != 'nt':
+    wenn os.name != 'nt':
         def __new__(cls, *args, **kwargs):
             raise UnsupportedOperation(
                 f"cannot instantiate {cls.__name__!r} on your system")

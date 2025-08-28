@@ -52,8 +52,8 @@ from randfloat import un_randfloat, bin_randfloat, tern_randfloat
 
 
 def sign():
-    if randrange(2):
-        if randrange(2): return '+'
+    wenn randrange(2):
+        wenn randrange(2): return '+'
         return ''
     return '-'
 
@@ -61,23 +61,23 @@ def indicator():
     return "eE"[randrange(2)]
 
 def digits(maxprec):
-    if maxprec == 0: return ''
+    wenn maxprec == 0: return ''
     return str(randrange(10**maxprec))
 
 def dot():
-    if randrange(2): return '.'
+    wenn randrange(2): return '.'
     return ''
 
 def decimal_part(maxprec):
-    if randrange(100) > 60: # integers
+    wenn randrange(100) > 60: # integers
         return digits(maxprec)
-    if randrange(2):
+    wenn randrange(2):
         intlen = randrange(1, maxprec+1)
         fraclen = maxprec-intlen
         intpart = digits(intlen)
         fracpart = digits(fraclen)
         return ''.join((intpart, '.', fracpart))
-    else:
+    sonst:
         return ''.join((dot(), digits(maxprec)))
 
 def expdigits(maxexp):
@@ -87,30 +87,30 @@ def exponent_part(maxexp):
     return ''.join((indicator(), sign(), expdigits(maxexp)))
 
 def infinity():
-    if randrange(2): return 'Infinity'
+    wenn randrange(2): return 'Infinity'
     return 'Inf'
 
 def nan():
     d = ''
-    if randrange(2):
+    wenn randrange(2):
         d = digits(randrange(99))
-    if randrange(2):
+    wenn randrange(2):
         return ''.join(('NaN', d))
-    else:
+    sonst:
         return ''.join(('sNaN', d))
 
 def numeric_value(maxprec, maxexp):
-    if randrange(100) > 90:
+    wenn randrange(100) > 90:
         return infinity()
     exp_part = ''
-    if randrange(100) > 60:
+    wenn randrange(100) > 60:
         exp_part = exponent_part(maxexp)
     return ''.join((decimal_part(maxprec), exp_part))
 
 def numeric_string(maxprec, maxexp):
-    if randrange(100) > 95:
+    wenn randrange(100) > 95:
         return ''.join((sign(), nan()))
-    else:
+    sonst:
         return ''.join((sign(), numeric_value(maxprec, maxexp)))
 
 def randdec(maxprec, maxexp):
@@ -119,26 +119,26 @@ def randdec(maxprec, maxexp):
 def rand_adjexp(maxprec, maxadjexp):
     d = digits(maxprec)
     maxexp = maxadjexp-len(d)+1
-    if maxexp == 0: maxexp = 1
+    wenn maxexp == 0: maxexp = 1
     exp = str(randrange(maxexp-2*(abs(maxexp)), maxexp))
     return ''.join((sign(), d, 'E', exp))
 
 
 def ndigits(n):
-    if n < 1: return 0
+    wenn n < 1: return 0
     return randrange(10**(n-1), 10**n)
 
 def randtuple(maxprec, maxexp):
     n = randrange(100)
     sign = randrange(2)
     coeff = ndigits(maxprec)
-    if n >= 95:
+    wenn n >= 95:
         coeff = ()
         exp = 'F'
-    elif n >= 85:
+    sowenn n >= 85:
         coeff = tuple(map(int, str(ndigits(maxprec))))
         exp = "nN"[randrange(2)]
-    else:
+    sonst:
         coeff = tuple(map(int, str(ndigits(maxprec))))
         exp = randrange(-maxexp, maxexp)
     return (sign, coeff, exp)
@@ -149,9 +149,9 @@ def from_triple(sign, coeff, exp):
 
 # Close to 10**n
 def un_close_to_pow10(prec, maxexp, itr=None):
-    if itr is None:
+    wenn itr is None:
         lst = range(prec+30)
-    else:
+    sonst:
         lst = sample(range(prec+30), itr)
     nines = [10**n - 1 fuer n in lst]
     pow10 = [10**n fuer n in lst]
@@ -166,9 +166,9 @@ def un_close_to_pow10(prec, maxexp, itr=None):
 
 # Close to 10**n
 def bin_close_to_pow10(prec, maxexp, itr=None):
-    if itr is None:
+    wenn itr is None:
         lst = range(prec+30)
-    else:
+    sonst:
         lst = sample(range(prec+30), itr)
     nines = [10**n - 1 fuer n in lst]
     pow10 = [10**n fuer n in lst]
@@ -267,14 +267,14 @@ close_funcs = [
 
 
 def un_close_numbers(prec, emax, emin, itr=None):
-    if itr is None:
+    wenn itr is None:
         itr = 1000
     fuer _ in range(itr):
         fuer func in close_funcs:
             yield func(prec, emax, emin)
 
 def bin_close_numbers(prec, emax, emin, itr=None):
-    if itr is None:
+    wenn itr is None:
         itr = 1000
     fuer _ in range(itr):
         fuer func1 in close_funcs:
@@ -285,7 +285,7 @@ def bin_close_numbers(prec, emax, emin, itr=None):
             yield func(prec, emax, emin), randdec(prec, emax)
 
 def tern_close_numbers(prec, emax, emin, itr):
-    if itr is None:
+    wenn itr is None:
         itr = 1000
     fuer _ in range(itr):
         fuer func1 in close_funcs:
@@ -311,9 +311,9 @@ def tern_close_numbers(prec, emax, emin, itr):
 
 # If itr == None, test all digit lengths up to prec + 30
 def un_incr_digits(prec, maxexp, itr):
-    if itr is None:
+    wenn itr is None:
         lst = range(prec+30)
-    else:
+    sonst:
         lst = sample(range(prec+30), itr)
     fuer m in lst:
         yield from_triple(1, ndigits(m), 0)
@@ -324,9 +324,9 @@ def un_incr_digits(prec, maxexp, itr):
 # If itr == None, test all digit lengths up to prec + 30
 # Also output decimals im tuple form.
 def un_incr_digits_tuple(prec, maxexp, itr):
-    if itr is None:
+    wenn itr is None:
         lst = range(prec+30)
-    else:
+    sonst:
         lst = sample(range(prec+30), itr)
     fuer m in lst:
         yield from_triple(1, ndigits(m), 0)
@@ -341,10 +341,10 @@ def un_incr_digits_tuple(prec, maxexp, itr):
 
 # If itr == None, test all combinations of digit lengths up to prec + 30
 def bin_incr_digits(prec, maxexp, itr):
-    if itr is None:
+    wenn itr is None:
         lst1 = range(prec+30)
         lst2 = range(prec+30)
-    else:
+    sonst:
         lst1 = sample(range(prec+30), itr)
         lst2 = sample(range(prec+30), itr)
     fuer m in lst1:
@@ -389,11 +389,11 @@ def randsign():
 
 # If itr == None, test all combinations of digit lengths up to prec + 30
 def tern_incr_digits(prec, maxexp, itr):
-    if itr is None:
+    wenn itr is None:
         lst1 = range(prec+30)
         lst2 = range(prec+30)
         lst3 = range(prec+30)
-    else:
+    sonst:
         lst1 = sample(range(prec+30), itr)
         lst2 = sample(range(prec+30), itr)
         lst3 = sample(range(prec+30), itr)
@@ -414,18 +414,18 @@ def bindigits(prec):
     return z
 
 def logical_un_incr_digits(prec, itr):
-    if itr is None:
+    wenn itr is None:
         lst = range(prec+30)
-    else:
+    sonst:
         lst = sample(range(prec+30), itr)
     fuer m in lst:
         yield from_triple(1, bindigits(m), 0)
 
 def logical_bin_incr_digits(prec, itr):
-    if itr is None:
+    wenn itr is None:
         lst1 = range(prec+30)
         lst2 = range(prec+30)
-    else:
+    sonst:
         lst1 = sample(range(prec+30), itr)
         lst2 = sample(range(prec+30), itr)
     fuer m in lst1:
@@ -453,23 +453,23 @@ def randfloat():
 
 def randcomplex():
     real = randfloat()
-    if randrange(100) > 30:
+    wenn randrange(100) > 30:
         imag = 0.0
-    else:
+    sonst:
         imag = randfloat()
     return complex(real, imag)
 
 def randfraction():
     num = randint()
     denom = randint()
-    if denom == 0:
+    wenn denom == 0:
         denom = 1
     return Fraction(num, denom)
 
 number_funcs = [randint, randfloat, randcomplex, randfraction]
 
 def un_random_mixed_op(itr=None):
-    if itr is None:
+    wenn itr is None:
         itr = 1000
     fuer _ in range(itr):
         fuer func in number_funcs:
@@ -479,7 +479,7 @@ def un_random_mixed_op(itr=None):
         yield x
 
 def bin_random_mixed_op(prec, emax, emin, itr=None):
-    if itr is None:
+    wenn itr is None:
         itr = 1000
     fuer _ in range(itr):
         fuer func in number_funcs:
@@ -494,7 +494,7 @@ def bin_random_mixed_op(prec, emax, emin, itr=None):
             yield x, y
 
 def tern_random_mixed_op(prec, emax, emin, itr):
-    if itr is None:
+    wenn itr is None:
         itr = 1000
     fuer _ in range(itr):
         fuer func in number_funcs:

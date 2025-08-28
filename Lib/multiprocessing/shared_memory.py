@@ -16,10 +16,10 @@ import struct
 import secrets
 import types
 
-if os.name == "nt":
+wenn os.name == "nt":
     import _winapi
     _USE_POSIX = False
-else:
+sonst:
     import _posixshmem
     _USE_POSIX = True
 
@@ -31,9 +31,9 @@ _O_CREX = os.O_CREAT | os.O_EXCL
 _SHM_SAFE_NAME_LENGTH = 14
 
 # Shared memory block name prefix
-if _USE_POSIX:
+wenn _USE_POSIX:
     _SHM_NAME_PREFIX = '/psm_'
-else:
+sonst:
     _SHM_NAME_PREFIX = 'wnsm_'
 
 
@@ -70,25 +70,25 @@ klasse SharedMemory:
     _buf = None
     _flags = os.O_RDWR
     _mode = 0o600
-    _prepend_leading_slash = True if _USE_POSIX else False
+    _prepend_leading_slash = True wenn _USE_POSIX sonst False
     _track = True
 
     def __init__(self, name=None, create=False, size=0, *, track=True):
-        if not size >= 0:
+        wenn not size >= 0:
             raise ValueError("'size' must be a positive integer")
-        if create:
+        wenn create:
             self._flags = _O_CREX | os.O_RDWR
-            if size == 0:
+            wenn size == 0:
                 raise ValueError("'size' must be a positive number different from zero")
-        if name is None and not self._flags & os.O_EXCL:
-            raise ValueError("'name' can only be None if create=True")
+        wenn name is None and not self._flags & os.O_EXCL:
+            raise ValueError("'name' can only be None wenn create=True")
 
         self._track = track
-        if _USE_POSIX:
+        wenn _USE_POSIX:
 
             # POSIX Shared Memory
 
-            if name is None:
+            wenn name is None:
                 while True:
                     name = _make_filename()
                     try:
@@ -101,8 +101,8 @@ klasse SharedMemory:
                         continue
                     self._name = name
                     break
-            else:
-                name = "/" + name if self._prepend_leading_slash else name
+            sonst:
+                name = "/" + name wenn self._prepend_leading_slash sonst name
                 self._fd = _posixshmem.shm_open(
                     name,
                     self._flags,
@@ -110,7 +110,7 @@ klasse SharedMemory:
                 )
                 self._name = name
             try:
-                if create and size:
+                wenn create and size:
                     os.ftruncate(self._fd, size)
                 stats = os.fstat(self._fd)
                 size = stats.st_size
@@ -118,16 +118,16 @@ klasse SharedMemory:
             except OSError:
                 self.unlink()
                 raise
-            if self._track:
+            wenn self._track:
                 resource_tracker.register(self._name, "shared_memory")
 
-        else:
+        sonst:
 
             # Windows Named Shared Memory
 
-            if create:
+            wenn create:
                 while True:
-                    temp_name = _make_filename() if name is None else name
+                    temp_name = _make_filename() wenn name is None sonst name
                     # Create and reserve shared memory block with this name
                     # until it can be attached to by mmap.
                     h_map = _winapi.CreateFileMapping(
@@ -140,15 +140,15 @@ klasse SharedMemory:
                     )
                     try:
                         last_error_code = _winapi.GetLastError()
-                        if last_error_code == _winapi.ERROR_ALREADY_EXISTS:
-                            if name is not None:
+                        wenn last_error_code == _winapi.ERROR_ALREADY_EXISTS:
+                            wenn name is not None:
                                 raise FileExistsError(
                                     errno.EEXIST,
                                     os.strerror(errno.EEXIST),
                                     name,
                                     _winapi.ERROR_ALREADY_EXISTS
                                 )
-                            else:
+                            sonst:
                                 continue
                         self._mmap = mmap.mmap(-1, size, tagname=temp_name)
                     finally:
@@ -156,7 +156,7 @@ klasse SharedMemory:
                     self._name = temp_name
                     break
 
-            else:
+            sonst:
                 self._name = name
                 # Dynamically determine the existing named shared memory
                 # block's size which is likely a multiple of mmap.PAGESIZE.
@@ -212,8 +212,8 @@ klasse SharedMemory:
     def name(self):
         "Unique name that identifies the shared memory block."
         reported_name = self._name
-        if _USE_POSIX and self._prepend_leading_slash:
-            if self._name.startswith("/"):
+        wenn _USE_POSIX and self._prepend_leading_slash:
+            wenn self._name.startswith("/"):
                 reported_name = self._name[1:]
         return reported_name
 
@@ -225,13 +225,13 @@ klasse SharedMemory:
     def close(self):
         """Closes access to the shared memory from this instance but does
         not destroy the shared memory block."""
-        if self._buf is not None:
+        wenn self._buf is not None:
             self._buf.release()
             self._buf = None
-        if self._mmap is not None:
+        wenn self._mmap is not None:
             self._mmap.close()
             self._mmap = None
-        if _USE_POSIX and self._fd >= 0:
+        wenn _USE_POSIX and self._fd >= 0:
             os.close(self._fd)
             self._fd = -1
 
@@ -239,7 +239,7 @@ klasse SharedMemory:
         """Requests that the underlying shared memory block be destroyed.
 
         Unlink should be called once (and only once) across all handles
-        which have access to the shared memory block, even if these
+        which have access to the shared memory block, even wenn these
         handles belong to different processes. Closing and unlinking may
         happen in any order, but trying to access data inside a shared
         memory block after unlinking may result in memory errors,
@@ -248,9 +248,9 @@ klasse SharedMemory:
         This method has no effect on Windows, where the only way to
         delete a shared memory block is to close all handles."""
 
-        if _USE_POSIX and self._name:
+        wenn _USE_POSIX and self._name:
             _posixshmem.shm_unlink(self._name)
-            if self._track:
+            wenn self._track:
                 resource_tracker.unregister(self._name, "shared_memory")
 
 
@@ -296,22 +296,22 @@ klasse ShareableList:
         """Used in concert with _back_transforms_mapping to convert values
         into the appropriate Python objects when retrieving them from
         the list as well as when storing them."""
-        if not isinstance(value, (str, bytes, None.__class__)):
+        wenn not isinstance(value, (str, bytes, None.__class__)):
             return 0
-        elif isinstance(value, str):
+        sowenn isinstance(value, str):
             return 1
-        elif isinstance(value, bytes):
+        sowenn isinstance(value, bytes):
             return 2
-        else:
+        sonst:
             return 3  # NoneType
 
     def __init__(self, sequence=None, *, name=None):
-        if name is None or sequence is not None:
+        wenn name is None or sequence is not None:
             sequence = sequence or ()
             _formats = [
                 self._types_mapping[type(item)]
-                    if not isinstance(item, (str, bytes))
-                    else self._types_mapping[type(item)] % (
+                    wenn not isinstance(item, (str, bytes))
+                    sonst self._types_mapping[type(item)] % (
                         self._alignment * (len(item) // self._alignment + 1),
                     )
                 fuer item in sequence
@@ -324,7 +324,7 @@ klasse ShareableList:
             # of the shared memory area).
             self._allocated_offsets = [0]
             fuer fmt in _formats:
-                offset += self._alignment if fmt[-1] != "s" else int(fmt[:-1])
+                offset += self._alignment wenn fmt[-1] != "s" sonst int(fmt[:-1])
                 self._allocated_offsets.append(offset)
             _recreation_codes = [
                 self._extract_recreation_code(item) fuer item in sequence
@@ -337,10 +337,10 @@ klasse ShareableList:
             )
 
             self.shm = SharedMemory(name, create=True, size=requested_size)
-        else:
+        sonst:
             self.shm = SharedMemory(name)
 
-        if sequence is not None:
+        wenn sequence is not None:
             _enc = _encoding
             struct.pack_into(
                 "q" + self._format_size_metainfo,
@@ -353,7 +353,7 @@ klasse ShareableList:
                 "".join(_formats),
                 self.shm.buf,
                 self._offset_data_start,
-                *(v.encode(_enc) if isinstance(v, str) else v fuer v in sequence)
+                *(v.encode(_enc) wenn isinstance(v, str) sonst v fuer v in sequence)
             )
             struct.pack_into(
                 self._format_packing_metainfo,
@@ -368,7 +368,7 @@ klasse ShareableList:
                 *(_recreation_codes)
             )
 
-        else:
+        sonst:
             self._list_len = len(self)  # Obtains size from offset 0 in buffer.
             self._allocated_offsets = list(
                 struct.unpack_from(
@@ -380,8 +380,8 @@ klasse ShareableList:
 
     def _get_packing_format(self, position):
         "Gets the packing format fuer a single value stored in the list."
-        position = position if position >= 0 else position + self._list_len
-        if (position >= self._list_len) or (self._list_len < 0):
+        position = position wenn position >= 0 sonst position + self._list_len
+        wenn (position >= self._list_len) or (self._list_len < 0):
             raise IndexError("Requested position out of range.")
 
         v = struct.unpack_from(
@@ -397,7 +397,7 @@ klasse ShareableList:
     def _get_back_transform(self, position):
         "Gets the back transformation function fuer a single value."
 
-        if (position >= self._list_len) or (self._list_len < 0):
+        wenn (position >= self._list_len) or (self._list_len < 0):
             raise IndexError("Requested position out of range.")
 
         transform_code = struct.unpack_from(
@@ -413,7 +413,7 @@ klasse ShareableList:
         """Sets the packing format and back transformation code fuer a
         single value in the list at the specified position."""
 
-        if (position >= self._list_len) or (self._list_len < 0):
+        wenn (position >= self._list_len) or (self._list_len < 0):
             raise IndexError("Requested position out of range.")
 
         struct.pack_into(
@@ -432,7 +432,7 @@ klasse ShareableList:
         )
 
     def __getitem__(self, position):
-        position = position if position >= 0 else position + self._list_len
+        position = position wenn position >= 0 sonst position + self._list_len
         try:
             offset = self._offset_data_start + self._allocated_offsets[position]
             (v,) = struct.unpack_from(
@@ -449,7 +449,7 @@ klasse ShareableList:
         return v
 
     def __setitem__(self, position, value):
-        position = position if position >= 0 else position + self._list_len
+        position = position wenn position >= 0 sonst position + self._list_len
         try:
             item_offset = self._allocated_offsets[position]
             offset = self._offset_data_start + item_offset
@@ -457,19 +457,19 @@ klasse ShareableList:
         except IndexError:
             raise IndexError("assignment index out of range")
 
-        if not isinstance(value, (str, bytes)):
+        wenn not isinstance(value, (str, bytes)):
             new_format = self._types_mapping[type(value)]
             encoded_value = value
-        else:
+        sonst:
             allocated_length = self._allocated_offsets[position + 1] - item_offset
 
             encoded_value = (value.encode(_encoding)
-                             if isinstance(value, str) else value)
-            if len(encoded_value) > allocated_length:
+                             wenn isinstance(value, str) sonst value)
+            wenn len(encoded_value) > allocated_length:
                 raise ValueError("bytes/str item exceeds available storage")
-            if current_format[-1] == "s":
+            wenn current_format[-1] == "s":
                 new_format = current_format
-            else:
+            sonst:
                 new_format = self._types_mapping[str] % (
                     allocated_length,
                 )
@@ -533,12 +533,12 @@ klasse ShareableList:
 
     def index(self, value):
         """L.index(value) -> integer -- return first index of value.
-        Raises ValueError if the value is not present."""
+        Raises ValueError wenn the value is not present."""
 
         fuer position, entry in enumerate(self):
-            if value == entry:
+            wenn value == entry:
                 return position
-        else:
+        sonst:
             raise ValueError("ShareableList.index(x): x not in list")
 
     __class_getitem__ = classmethod(types.GenericAlias)

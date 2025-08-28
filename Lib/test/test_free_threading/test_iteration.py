@@ -8,10 +8,10 @@ from test import support
 # free-threading. Overhead is much higher under ThreadSanitizer, but it's
 # also much better at detecting certain races, so we don't need as many
 # items/threads.
-if support.check_sanitizer(thread=True):
+wenn support.check_sanitizer(thread=True):
     NUMITEMS = 1000
     NUMTHREADS = 2
-else:
+sonst:
     NUMITEMS = 100000
     NUMTHREADS = 5
 NUMMUTATORS = 2

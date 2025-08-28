@@ -18,7 +18,7 @@ import mailbox
 import glob
 
 
-if not socket_helper.has_gethostname:
+wenn not socket_helper.has_gethostname:
     raise unittest.SkipTest("test requires gethostname()")
 
 
@@ -44,9 +44,9 @@ klasse TestBase:
 
     def _delete_recursively(self, target):
         # Delete a file or delete a directory recursively
-        if os.path.isdir(target):
+        wenn os.path.isdir(target):
             os_helper.rmtree(target)
-        elif os.path.exists(target):
+        sowenn os.path.exists(target):
             os_helper.unlink(target)
 
 
@@ -341,19 +341,19 @@ klasse TestMailbox(TestBase):
         fuer i in range(repetitions):
             keys.append(self._box.add(self._template % i))
             values.append(self._template % i)
-        if do_keys and not do_values:
+        wenn do_keys and not do_values:
             returned_keys = list(method())
-        elif do_values and not do_keys:
+        sowenn do_values and not do_keys:
             returned_values = list(method())
-        else:
+        sonst:
             returned_keys, returned_values = [], []
             fuer key, value in method():
                 returned_keys.append(key)
                 returned_values.append(value)
-        if do_keys:
+        wenn do_keys:
             self.assertEqual(len(keys), len(returned_keys))
             self.assertEqual(set(keys), set(returned_keys))
-        if do_values:
+        wenn do_values:
             count = 0
             fuer value in returned_values:
                 self.assertEqual(value['from'], 'foo')
@@ -533,7 +533,7 @@ klasse TestMailbox(TestBase):
         self._box.add(contents[2])
         oldbox = self._box
         method()
-        if should_call_close:
+        wenn should_call_close:
             self._box.close()
         self._box = self._factory(self._path)
         keys = self._box.keys()
@@ -601,7 +601,7 @@ klasse TestMaildir(TestMailbox, unittest.TestCase):
 
     def setUp(self):
         TestMailbox.setUp(self)
-        if (os.name == 'nt') or (sys.platform == 'cygwin'):
+        wenn (os.name == 'nt') or (sys.platform == 'cygwin'):
             self._box.colon = '!'
 
     def assertMailboxEmpty(self):
@@ -763,9 +763,9 @@ klasse TestMaildir(TestMailbox, unittest.TestCase):
     def test_create_tmp(self, repetitions=10):
         # Create files in tmp directory
         hostname = socket.gethostname()
-        if '/' in hostname:
+        wenn '/' in hostname:
             hostname = hostname.replace('/', r'\057')
-        if ':' in hostname:
+        wenn ':' in hostname:
             hostname = hostname.replace(':', r'\072')
         pid = os.getpid()
         pattern = re.compile(r"(?P<time>\d+)\.M(?P<M>\d{1,6})P(?P<P>\d+)"
@@ -780,11 +780,11 @@ klasse TestMaildir(TestMailbox, unittest.TestCase):
             match = pattern.match(tail)
             self.assertIsNotNone(match, "Invalid file name: '%s'" % tail)
             groups = match.groups()
-            if previous_groups is not None:
+            wenn previous_groups is not None:
                 self.assertGreaterEqual(int(groups[0]), int(previous_groups[0]),
                              "Non-monotonic seconds: '%s' before '%s'" %
                              (previous_groups[0], groups[0]))
-                if int(groups[0]) == int(previous_groups[0]):
+                wenn int(groups[0]) == int(previous_groups[0]):
                     self.assertGreaterEqual(int(groups[1]), int(previous_groups[1]),
                                 "Non-monotonic milliseconds: '%s' before '%s'" %
                                 (previous_groups[1], groups[1]))
@@ -837,7 +837,7 @@ klasse TestMaildir(TestMailbox, unittest.TestCase):
         # Emulate sleeping. Instead of sleeping fuer 2 seconds, use the
         # skew factor to make _refresh think that the filesystem
         # safety period has passed and re-reading the _toc is only
-        # required if mtimes differ.
+        # required wenn mtimes differ.
         self._box._skewfactor = -3
 
         self._box._refresh()
@@ -878,22 +878,22 @@ klasse TestMaildir(TestMailbox, unittest.TestCase):
         def check_info(oldinfo, newinfo):
             oldfilename = os.path.join(self._box._path, self._box._lookup(key))
             newsubpath = self._box._lookup(key).split(self._box.colon)[0]
-            if newinfo:
+            wenn newinfo:
                 newsubpath += self._box.colon + newinfo
             newfilename = os.path.join(self._box._path, newsubpath)
             # assert initial conditions
             self.assertEqual(self._box.get_info(key), oldinfo)
-            if not oldinfo:
+            wenn not oldinfo:
                 self.assertNotIn(self._box._lookup(key), self._box.colon)
             self.assertTrue(os.path.exists(oldfilename))
-            if oldinfo != newinfo:
+            wenn oldinfo != newinfo:
                 self.assertFalse(os.path.exists(newfilename))
             # do the rename
             self._box.set_info(key, newinfo)
             # assert post conditions
-            if not newinfo:
+            wenn not newinfo:
                 self.assertNotIn(self._box._lookup(key), self._box.colon)
-            if oldinfo != newinfo:
+            wenn oldinfo != newinfo:
                 self.assertFalse(os.path.exists(oldfilename))
             self.assertTrue(os.path.exists(newfilename))
             self.assertEqual(self._box.get_info(key), newinfo)
@@ -960,7 +960,7 @@ klasse TestMaildir(TestMailbox, unittest.TestCase):
         self.assertIs(folder1_alias._factory, dummy_factory)
 
     def test_directory_in_folder (self):
-        # Test that mailboxes still work if there's a stray extra directory
+        # Test that mailboxes still work wenn there's a stray extra directory
         # in a folder.
         fuer i in range(10):
             self._box.add(mailbox.Message(_sample_message))
@@ -1011,14 +1011,14 @@ klasse TestMaildir(TestMailbox, unittest.TestCase):
                      (time.time()-5,)*2)
 
         # Because mtime has a two second granularity in worst case (FAT), a
-        # refresh is done unconditionally if called fuer within
+        # refresh is done unconditionally wenn called fuer within
         # two-second-plus-a-bit of the last one, just in case the mbox has
         # changed; so now we have to wait fuer that interval to expire.
         #
         # Because this is a test, emulate sleeping. Instead of
         # sleeping fuer 2 seconds, use the skew factor to make _refresh
         # think that 2 seconds have passed and re-reading the _toc is
-        # only required if mtimes differ.
+        # only required wenn mtimes differ.
         self._box._skewfactor = -3
 
         # Re-reading causes the ._toc attribute to be assigned a new dictionary
@@ -1048,7 +1048,7 @@ klasse _TestSingleFile(TestMailbox):
         # When only adding messages, flush() should not rewrite the
         # mailbox file. See issue #9559.
 
-        # Inode number changes if the contents are written to another
+        # Inode number changes wenn the contents are written to another
         # file which is then renamed over the original file. So we
         # must check that the inode number doesn't change.
         inode_before = os.stat(self._path).st_ino
@@ -1090,17 +1090,17 @@ klasse _TestSingleFile(TestMailbox):
         st = os.stat(self._path)
 
         fuer e in pwd.getpwall():
-            if e.pw_uid != st.st_uid:
+            wenn e.pw_uid != st.st_uid:
                 other_uid = e.pw_uid
                 break
-        else:
+        sonst:
             self.skipTest("test needs more than one user")
 
         fuer e in grp.getgrall():
-            if e.gr_gid != st.st_gid:
+            wenn e.gr_gid != st.st_gid:
                 other_gid = e.gr_gid
                 break
-        else:
+        sonst:
             self.skipTest("test needs more than one group")
 
         try:
@@ -1223,7 +1223,7 @@ klasse _TestMboxMMDF(_TestSingleFile):
         self.addCleanup(p.close)
 
         pid = os.fork()
-        if pid == 0:
+        wenn pid == 0:
             # child
             try:
                 # lock the mailbox, and signal the parent it can proceed
@@ -1273,7 +1273,7 @@ klasse TestMbox(_TestMboxMMDF, unittest.TestCase):
     @unittest.skipUnless(hasattr(os, 'umask'), 'test needs os.umask()')
     def test_file_perms(self):
         # From bug #3228, we want to verify that the mailbox file isn't executable,
-        # even if the umask is set to something that would leave executable bits set.
+        # even wenn the umask is set to something that would leave executable bits set.
         # We only run this test on platforms that support umask.
         try:
             old_umask = os.umask(0o077)
@@ -1745,7 +1745,7 @@ klasse _TestMboxMMDFMessage:
 
     def _check_from(self, msg, sender=None):
         # Check contents of "From " line
-        if sender is None:
+        wenn sender is None:
             sender = "MAILER-DAEMON"
         self.assertIsNotNone(re.match(
                 sender + r" \w{3} \w{3} [\d ]\d [\d ]\d:\d{2}:\d{2} \d{4}",
@@ -1880,12 +1880,12 @@ klasse TestMessageConversion(TestBase, unittest.TestCase):
                         fuer class_ in self.all_mailbox_types}
         fuer class1 in self.all_mailbox_types:
             fuer class2 in self.all_mailbox_types:
-                if class1 is class2:
+                wenn class1 is class2:
                     continue
                 source = class1(_sample_message)
                 target = class2(source)
                 type_specific = [a fuer a in reference[class1]
-                                   if a not in reference[class2]]
+                                   wenn a not in reference[class2]]
                 fuer attr in type_specific:
                     self.assertNotIn(attr, target.__dict__,
                         "while converting {} to {}".format(class1, class2))
@@ -2315,9 +2315,9 @@ klasse MaildirTestCase(unittest.TestCase):
     def setUp(self):
         # create a new maildir mailbox to work with:
         self._dir = os_helper.TESTFN
-        if os.path.isdir(self._dir):
+        wenn os.path.isdir(self._dir):
             os_helper.rmtree(self._dir)
-        elif os.path.isfile(self._dir):
+        sowenn os.path.isfile(self._dir):
             os_helper.unlink(self._dir)
         os.mkdir(self._dir)
         os.mkdir(os.path.join(self._dir, "cur"))
@@ -2342,7 +2342,7 @@ klasse MaildirTestCase(unittest.TestCase):
         newname = os.path.join(self._dir, dir, filename)
         with open(tmpname, "w", encoding="utf-8") as fp:
             self._msgfiles.append(tmpname)
-            if mbox:
+            wenn mbox:
                 fp.write(FROM_)
             fp.write(DUMMY_MESSAGE)
         try:
@@ -2486,9 +2486,9 @@ klasse MiscTestCase(unittest.TestCase):
 def tearDownModule():
     support.reap_children()
     # reap_children may have re-populated caches:
-    if refleak_helper.hunting_for_refleaks():
+    wenn refleak_helper.hunting_for_refleaks():
         sys._clear_internal_caches()
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

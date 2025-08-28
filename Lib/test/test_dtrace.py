@@ -11,7 +11,7 @@ from test import support
 from test.support import findfile
 
 
-if not support.has_subprocess_support:
+wenn not support.has_subprocess_support:
     raise unittest.SkipTest("test module requires subprocess")
 
 
@@ -23,7 +23,7 @@ def normalize_trace_output(output):
     """Normalize DTrace output fuer comparison.
 
     DTrace keeps a per-CPU buffer, and when showing the fired probes, buffers
-    are concatenated. So if the operating system moves our thread around, the
+    are concatenated. So wenn the operating system moves our thread around, the
     straight result can be "non-causal". So we add timestamps to the probe
     firing, sort by that field, then strip it from the output"""
 
@@ -33,7 +33,7 @@ def normalize_trace_output(output):
         result = [
             row.split("\t")
             fuer row in output.splitlines()
-            if row and not row.startswith('#')
+            wenn row and not row.startswith('#')
         ]
         result.sort(key=lambda row: int(row[0]))
         result = [row[1] fuer row in result]
@@ -62,7 +62,7 @@ klasse TraceBackend:
 
     def generate_trace_command(self, script_file, subcommand=None):
         command = self.COMMAND + [script_file]
-        if subcommand:
+        wenn subcommand:
             command += ["-c", subcommand]
         return command
 
@@ -76,7 +76,7 @@ klasse TraceBackend:
 
     def trace_python(self, script_file, python_file, optimize_python=None):
         python_flags = []
-        if optimize_python:
+        wenn optimize_python:
             python_flags.extend(["-O"] * optimize_python)
         subcommand = " ".join([sys.executable] + python_flags + [python_file])
         return self.trace(script_file, subcommand)
@@ -87,7 +87,7 @@ klasse TraceBackend:
             output = output.strip()
         except (FileNotFoundError, NotADirectoryError, PermissionError) as fnfe:
             output = str(fnfe)
-        if output != "probe: success":
+        wenn output != "probe: success":
             raise unittest.SkipTest(
                 "{}(1) failed: {}".format(self.COMMAND[0], output)
             )
@@ -139,7 +139,7 @@ klasse TraceTests:
                            optimize=self.optimize_python)
 
             fuer c in code.co_consts:
-                if isinstance(c, types.CodeType) and c.co_name == funcname:
+                wenn isinstance(c, types.CodeType) and c.co_name == funcname:
                     return dis.get_instructions(c)
             return []
 
@@ -177,11 +177,11 @@ klasse SystemTapOptimizedTests(TraceTests, unittest.TestCase):
 klasse CheckDtraceProbes(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        if sysconfig.get_config_var('WITH_DTRACE'):
+        wenn sysconfig.get_config_var('WITH_DTRACE'):
             readelf_major_version, readelf_minor_version = cls.get_readelf_version()
-            if support.verbose:
+            wenn support.verbose:
                 print(f"readelf version: {readelf_major_version}.{readelf_minor_version}")
-        else:
+        sonst:
             raise unittest.SkipTest("CPython must be configured with the --with-dtrace option.")
 
 
@@ -198,7 +198,7 @@ klasse CheckDtraceProbes(unittest.TestCase):
             with proc:
                 version, stderr = proc.communicate()
 
-            if proc.returncode:
+            wenn proc.returncode:
                 raise Exception(
                     f"Command {' '.join(cmd)!r} failed "
                     f"with exit code {proc.returncode}: "
@@ -210,7 +210,7 @@ klasse CheckDtraceProbes(unittest.TestCase):
         # Regex to parse:
         # 'GNU readelf (GNU Binutils) 2.40.0\n' -> 2.40
         match = re.search(r"^(?:GNU) readelf.*?\b(\d+)\.(\d+)", version)
-        if match is None:
+        wenn match is None:
             raise unittest.SkipTest(f"Unable to parse readelf version: {version}")
 
         return int(match.group(1)), int(match.group(2))
@@ -256,5 +256,5 @@ klasse CheckDtraceProbes(unittest.TestCase):
                 self.assertIn(probe_name, readelf_output)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

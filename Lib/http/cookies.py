@@ -51,7 +51,7 @@ Most of the time you start by creating a cookie.
 
    >>> C = cookies.SimpleCookie()
 
-Once you've created your Cookie, you can add values just as if it were
+Once you've created your Cookie, you can add values just as wenn it were
 a dictionary.
 
    >>> C = cookies.SimpleCookie()
@@ -178,26 +178,26 @@ def _quote(str):
     string.  Otherwise, surround the string in doublequotes and quote
     (with a \) special characters.
     """
-    if str is None or _is_legal_key(str):
+    wenn str is None or _is_legal_key(str):
         return str
-    else:
+    sonst:
         return '"' + str.translate(_Translator) + '"'
 
 
 _unquote_sub = re.compile(r'\\(?:([0-3][0-7][0-7])|(.))').sub
 
 def _unquote_replace(m):
-    if m[1]:
+    wenn m[1]:
         return chr(int(m[1], 8))
-    else:
+    sonst:
         return m[2]
 
 def _unquote(str):
     # If there aren't any doublequotes,
     # then there can't be any special characters.  See RFC 2109.
-    if str is None or len(str) < 2:
+    wenn str is None or len(str) < 2:
         return str
-    if str[0] != '"' or str[-1] != '"':
+    wenn str[0] != '"' or str[-1] != '"':
         return str
 
     # We have to assume that we must decode this string.
@@ -292,18 +292,18 @@ klasse Morsel(dict):
 
     def __setitem__(self, K, V):
         K = K.lower()
-        if not K in self._reserved:
+        wenn not K in self._reserved:
             raise CookieError("Invalid attribute %r" % (K,))
         dict.__setitem__(self, K, V)
 
     def setdefault(self, key, val=None):
         key = key.lower()
-        if key not in self._reserved:
+        wenn key not in self._reserved:
             raise CookieError("Invalid attribute %r" % (key,))
         return dict.setdefault(self, key, val)
 
     def __eq__(self, morsel):
-        if not isinstance(morsel, Morsel):
+        wenn not isinstance(morsel, Morsel):
             return NotImplemented
         return (dict.__eq__(self, morsel) and
                 self._value == morsel._value and
@@ -322,7 +322,7 @@ klasse Morsel(dict):
         data = {}
         fuer key, val in dict(values).items():
             key = key.lower()
-            if key not in self._reserved:
+            wenn key not in self._reserved:
                 raise CookieError("Invalid attribute %r" % (key,))
             data[key] = val
         dict.update(self, data)
@@ -331,9 +331,9 @@ klasse Morsel(dict):
         return K.lower() in self._reserved
 
     def set(self, key, val, coded_val):
-        if key.lower() in self._reserved:
+        wenn key.lower() in self._reserved:
             raise CookieError('Attempt to set a reserved key %r' % (key,))
-        if not _is_legal_key(key):
+        wenn not _is_legal_key(key):
             raise CookieError('Illegal key %r' % (key,))
 
         # It's a good key, so save it.
@@ -381,24 +381,24 @@ klasse Morsel(dict):
         append("%s=%s" % (self.key, self.coded_value))
 
         # Now add any defined attributes
-        if attrs is None:
+        wenn attrs is None:
             attrs = self._reserved
         items = sorted(self.items())
         fuer key, value in items:
-            if value == "":
+            wenn value == "":
                 continue
-            if key not in attrs:
+            wenn key not in attrs:
                 continue
-            if key == "expires" and isinstance(value, int):
+            wenn key == "expires" and isinstance(value, int):
                 append("%s=%s" % (self._reserved[key], _getdate(value)))
-            elif key == "max-age" and isinstance(value, int):
+            sowenn key == "max-age" and isinstance(value, int):
                 append("%s=%d" % (self._reserved[key], value))
-            elif key == "comment" and isinstance(value, str):
+            sowenn key == "comment" and isinstance(value, str):
                 append("%s=%s" % (self._reserved[key], _quote(value)))
-            elif key in self._flags:
-                if value:
+            sowenn key in self._flags:
+                wenn value:
                     append(str(self._reserved[key]))
-            else:
+            sonst:
                 append("%s=%s" % (self._reserved[key], value))
 
         # Return the result
@@ -437,7 +437,7 @@ _CookiePattern = re.compile(r"""
     )?                             # End of optional value group
     \s*                            # Any number of spaces.
     (\s+|;|$)                      # Ending either at space, semicolon, or EOS.
-    """, re.ASCII | re.VERBOSE)    # re.ASCII may be removed if safe.
+    """, re.ASCII | re.VERBOSE)    # re.ASCII may be removed wenn safe.
 
 
 # At long last, here is the cookie class.  Using this klasse is almost just like
@@ -465,7 +465,7 @@ klasse BaseCookie(dict):
         return strval, strval
 
     def __init__(self, input=None):
-        if input:
+        wenn input:
             self.load(input)
 
     def __set(self, key, real_value, coded_value):
@@ -476,10 +476,10 @@ klasse BaseCookie(dict):
 
     def __setitem__(self, key, value):
         """Dictionary style assignment."""
-        if isinstance(value, Morsel):
+        wenn isinstance(value, Morsel):
             # allow assignment of constructed Morsels (e.g. fuer pickling)
             dict.__setitem__(self, key, value)
-        else:
+        sonst:
             rval, cval = self.value_encode(value)
             self.__set(key, rval, cval)
 
@@ -514,9 +514,9 @@ klasse BaseCookie(dict):
         is equivalent to calling:
             map(Cookie.__setitem__, d.keys(), d.values())
         """
-        if isinstance(rawdata, str):
+        wenn isinstance(rawdata, str):
             self.__parse_string(rawdata)
-        else:
+        sonst:
             # self.update() wouldn't call our custom __setitem__
             fuer key, value in rawdata.items():
                 self[key] = value
@@ -531,52 +531,52 @@ klasse BaseCookie(dict):
         TYPE_ATTRIBUTE = 1
         TYPE_KEYVALUE = 2
 
-        # We first parse the whole cookie string and reject it if it's
+        # We first parse the whole cookie string and reject it wenn it's
         # syntactically invalid (this helps avoid some classes of injection
         # attacks).
         while 0 <= i < n:
             # Start looking fuer a cookie
             match = patt.match(str, i)
-            if not match:
+            wenn not match:
                 # No more cookies
                 break
 
             key, value = match.group("key"), match.group("val")
             i = match.end(0)
 
-            if key[0] == "$":
-                if not morsel_seen:
+            wenn key[0] == "$":
+                wenn not morsel_seen:
                     # We ignore attributes which pertain to the cookie
                     # mechanism as a whole, such as "$Version".
                     # See RFC 2965. (Does anyone care?)
                     continue
                 parsed_items.append((TYPE_ATTRIBUTE, key[1:], value))
-            elif key.lower() in Morsel._reserved:
-                if not morsel_seen:
+            sowenn key.lower() in Morsel._reserved:
+                wenn not morsel_seen:
                     # Invalid cookie string
                     return
-                if value is None:
-                    if key.lower() in Morsel._flags:
+                wenn value is None:
+                    wenn key.lower() in Morsel._flags:
                         parsed_items.append((TYPE_ATTRIBUTE, key, True))
-                    else:
+                    sonst:
                         # Invalid cookie string
                         return
-                else:
+                sonst:
                     parsed_items.append((TYPE_ATTRIBUTE, key, _unquote(value)))
-            elif value is not None:
+            sowenn value is not None:
                 parsed_items.append((TYPE_KEYVALUE, key, self.value_decode(value)))
                 morsel_seen = True
-            else:
+            sonst:
                 # Invalid cookie string
                 return
 
         # The cookie string is valid, apply it.
         M = None         # current morsel
         fuer tp, key, value in parsed_items:
-            if tp == TYPE_ATTRIBUTE:
+            wenn tp == TYPE_ATTRIBUTE:
                 assert M is not None
                 M[key] = value
-            else:
+            sonst:
                 assert tp == TYPE_KEYVALUE
                 rval, cval = value
                 self.__set(key, rval, cval)

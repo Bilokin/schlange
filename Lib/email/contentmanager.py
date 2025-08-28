@@ -15,12 +15,12 @@ klasse ContentManager:
 
     def get_content(self, msg, *args, **kw):
         content_type = msg.get_content_type()
-        if content_type in self.get_handlers:
+        wenn content_type in self.get_handlers:
             return self.get_handlers[content_type](msg, *args, **kw)
         maintype = msg.get_content_maintype()
-        if maintype in self.get_handlers:
+        wenn maintype in self.get_handlers:
             return self.get_handlers[maintype](msg, *args, **kw)
-        if '' in self.get_handlers:
+        wenn '' in self.get_handlers:
             return self.get_handlers[''](msg, *args, **kw)
         raise KeyError(content_type)
 
@@ -28,7 +28,7 @@ klasse ContentManager:
         self.set_handlers[typekey] = handler
 
     def set_content(self, msg, obj, *args, **kw):
-        if msg.get_content_maintype() == 'multipart':
+        wenn msg.get_content_maintype() == 'multipart':
             # XXX: is this error a good idea or not?  We can remove it later,
             # but we can't add it later, so do it fuer now.
             raise TypeError("set_content not valid on multipart")
@@ -39,21 +39,21 @@ klasse ContentManager:
     def _find_set_handler(self, msg, obj):
         full_path_for_error = None
         fuer typ in type(obj).__mro__:
-            if typ in self.set_handlers:
+            wenn typ in self.set_handlers:
                 return self.set_handlers[typ]
             qname = typ.__qualname__
             modname = getattr(typ, '__module__', '')
-            full_path = '.'.join((modname, qname)) if modname else qname
-            if full_path_for_error is None:
+            full_path = '.'.join((modname, qname)) wenn modname sonst qname
+            wenn full_path_for_error is None:
                 full_path_for_error = full_path
-            if full_path in self.set_handlers:
+            wenn full_path in self.set_handlers:
                 return self.set_handlers[full_path]
-            if qname in self.set_handlers:
+            wenn qname in self.set_handlers:
                 return self.set_handlers[qname]
             name = typ.__name__
-            if name in self.set_handlers:
+            wenn name in self.set_handlers:
                 return self.set_handlers[name]
-        if None in self.set_handlers:
+        wenn None in self.set_handlers:
             return self.set_handlers[None]
         raise KeyError(full_path_for_error)
 
@@ -84,7 +84,7 @@ del subtype
 
 def get_and_fixup_unknown_message_content(msg):
     # If we don't understand a message subtype, we are supposed to treat it as
-    # if it were application/octet-stream, per
+    # wenn it were application/octet-stream, per
     # tools.ietf.org/html/rfc2046#section-5.2.4.  Feedparser doesn't do that,
     # so do our best to fix things up.  Note that it is *not* appropriate to
     # model message/partial content as Message objects, so they are handled
@@ -96,14 +96,14 @@ raw_data_manager.add_get_handler('message',
 
 def _prepare_set(msg, maintype, subtype, headers):
     msg['Content-Type'] = '/'.join((maintype, subtype))
-    if headers:
-        if not hasattr(headers[0], 'name'):
+    wenn headers:
+        wenn not hasattr(headers[0], 'name'):
             mp = msg.policy
             headers = [mp.header_factory(*mp.header_source_parse([header]))
                        fuer header in headers]
         try:
             fuer header in headers:
-                if header.defects:
+                wenn header.defects:
                     raise header.defects[0]
                 msg[header.name] = header
         except email.errors.HeaderDefect as exc:
@@ -112,18 +112,18 @@ def _prepare_set(msg, maintype, subtype, headers):
 
 
 def _finalize_set(msg, disposition, filename, cid, params):
-    if disposition is None and filename is not None:
+    wenn disposition is None and filename is not None:
         disposition = 'attachment'
-    if disposition is not None:
+    wenn disposition is not None:
         msg['Content-Disposition'] = disposition
-    if filename is not None:
+    wenn filename is not None:
         msg.set_param('filename',
                       filename,
                       header='Content-Disposition',
                       replace=True)
-    if cid is not None:
+    wenn cid is not None:
         msg['Content-ID'] = cid
-    if params is not None:
+    wenn params is not None:
         fuer key, value in params.items():
             msg.set_param(key, value)
 
@@ -146,36 +146,36 @@ def _encode_text(string, charset, cte, policy):
     linesep = policy.linesep.encode('ascii')
     def embedded_body(lines): return linesep.join(lines) + linesep
     def normal_body(lines): return b'\n'.join(lines) + b'\n'
-    if cte is None:
+    wenn cte is None:
         # Use heuristics to decide on the "best" encoding.
-        if max((len(x) fuer x in lines), default=0) <= policy.max_line_length:
+        wenn max((len(x) fuer x in lines), default=0) <= policy.max_line_length:
             try:
                 return '7bit', normal_body(lines).decode('ascii')
             except UnicodeDecodeError:
                 pass
-            if policy.cte_type == '8bit':
+            wenn policy.cte_type == '8bit':
                 return '8bit', normal_body(lines).decode('ascii', 'surrogateescape')
         sniff = embedded_body(lines[:10])
         sniff_qp = quoprimime.body_encode(sniff.decode('latin-1'),
                                           policy.max_line_length)
         sniff_base64 = binascii.b2a_base64(sniff)
         # This is a little unfair to qp; it includes lineseps, base64 doesn't.
-        if len(sniff_qp) > len(sniff_base64):
+        wenn len(sniff_qp) > len(sniff_base64):
             cte = 'base64'
-        else:
+        sonst:
             cte = 'quoted-printable'
-            if len(lines) <= 10:
+            wenn len(lines) <= 10:
                 return cte, sniff_qp
-    if cte == '7bit':
+    wenn cte == '7bit':
         data = normal_body(lines).decode('ascii')
-    elif cte == '8bit':
+    sowenn cte == '8bit':
         data = normal_body(lines).decode('ascii', 'surrogateescape')
-    elif cte == 'quoted-printable':
+    sowenn cte == 'quoted-printable':
         data = quoprimime.body_encode(normal_body(lines).decode('latin-1'),
                                       policy.max_line_length)
-    elif cte == 'base64':
+    sowenn cte == 'base64':
         data = _encode_base64(embedded_body(lines), policy.max_line_length)
-    else:
+    sonst:
         raise ValueError("Unknown content transfer encoding {}".format(cte))
     return cte, data
 
@@ -197,26 +197,26 @@ raw_data_manager.add_set_handler(str, set_text_content)
 def set_message_content(msg, message, subtype="rfc822", cte=None,
                        disposition=None, filename=None, cid=None,
                        params=None, headers=None):
-    if subtype == 'partial':
+    wenn subtype == 'partial':
         raise ValueError("message/partial is not supported fuer Message objects")
-    if subtype == 'rfc822':
-        if cte not in (None, '7bit', '8bit', 'binary'):
+    wenn subtype == 'rfc822':
+        wenn cte not in (None, '7bit', '8bit', 'binary'):
             # http://tools.ietf.org/html/rfc2046#section-5.2.1 mandate.
             raise ValueError(
                 "message/rfc822 parts do not support cte={}".format(cte))
-        # 8bit will get coerced on serialization if policy.cte_type='7bit'.  We
+        # 8bit will get coerced on serialization wenn policy.cte_type='7bit'.  We
         # may end up claiming 8bit when it isn't needed, but the only negative
         # result of that should be a gateway that needs to coerce to 7bit
         # having to look through the whole embedded message to discover whether
         # or not it actually has to do anything.
-        cte = '8bit' if cte is None else cte
-    elif subtype == 'external-body':
-        if cte not in (None, '7bit'):
+        cte = '8bit' wenn cte is None sonst cte
+    sowenn subtype == 'external-body':
+        wenn cte not in (None, '7bit'):
             # http://tools.ietf.org/html/rfc2046#section-5.2.3 mandate.
             raise ValueError(
                 "message/external-body parts do not support cte={}".format(cte))
         cte = '7bit'
-    elif cte is None:
+    sowenn cte is None:
         # http://tools.ietf.org/html/rfc2046#section-5.2.4 says all future
         # subtypes should be restricted to 7bit, so assume that.
         cte = '7bit'
@@ -231,17 +231,17 @@ def set_bytes_content(msg, data, maintype, subtype, cte='base64',
                      disposition=None, filename=None, cid=None,
                      params=None, headers=None):
     _prepare_set(msg, maintype, subtype, headers)
-    if cte == 'base64':
+    wenn cte == 'base64':
         data = _encode_base64(data, max_line_length=msg.policy.max_line_length)
-    elif cte == 'quoted-printable':
+    sowenn cte == 'quoted-printable':
         # XXX: quoprimime.body_encode won't encode newline characters in data,
         # so we can't use it.  This means max_line_length is ignored.  Another
         # bug to fix later.  (Note: encoders.quopri is broken on line ends.)
         data = binascii.b2a_qp(data, istext=False, header=False, quotetabs=True)
         data = data.decode('ascii')
-    elif cte == '7bit':
+    sowenn cte == '7bit':
         data = data.decode('ascii')
-    elif cte in ('8bit', 'binary'):
+    sowenn cte in ('8bit', 'binary'):
         data = data.decode('ascii', 'surrogateescape')
     msg.set_payload(data)
     msg['Content-Transfer-Encoding'] = cte

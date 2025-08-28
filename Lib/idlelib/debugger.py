@@ -38,7 +38,7 @@ klasse Idb(bdb.Bdb):
 
         Convert frame to a string and send it to gui.
         """
-        if _in_rpc_code(frame):
+        wenn _in_rpc_code(frame):
             self.set_step()
             return
         message = _frame2message(frame)
@@ -49,22 +49,22 @@ klasse Idb(bdb.Bdb):
 
     def user_exception(self, frame, exc_info):
         """Handle an the occurrence of an exception."""
-        if _in_rpc_code(frame):
+        wenn _in_rpc_code(frame):
             self.set_step()
             return
         message = _frame2message(frame)
         self.gui.interaction(message, frame, exc_info)
 
 def _in_rpc_code(frame):
-    "Determine if debugger is within RPC code."
-    if frame.f_code.co_filename.count('rpc.py'):
+    "Determine wenn debugger is within RPC code."
+    wenn frame.f_code.co_filename.count('rpc.py'):
         return True  # Skip this frame.
-    else:
+    sonst:
         prev_frame = frame.f_back
-        if prev_frame is None:
+        wenn prev_frame is None:
             return False
         prev_name = prev_frame.f_code.co_filename
-        if 'idlelib' in prev_name and 'debugger' in prev_name:
+        wenn 'idlelib' in prev_name and 'debugger' in prev_name:
             # catch both idlelib/debugger.py and idlelib/debugger_r.py
             # on both Posix and Windows
             return False
@@ -77,7 +77,7 @@ def _frame2message(frame):
     lineno = frame.f_lineno
     basename = os.path.basename(filename)
     message = f"{basename}:{lineno}"
-    if code.co_name != "?":
+    wenn code.co_name != "?":
         message = f"{message}: {code.co_name}()"
     return message
 
@@ -105,7 +105,7 @@ klasse Debugger:
         :param idb: An instance of the IDLE debugger (optional)
         :type  idb: :class:`idlelib.debugger.Idb`
         """
-        if idb is None:
+        wenn idb is None:
             idb = Idb(self)
         self.pyshell = pyshell
         self.idb = idb  # If passed, a proxy of remote instance.
@@ -145,7 +145,7 @@ klasse Debugger:
         # That leaves us back at the outer main event loop, at which point our
         # after event can fire, and we'll come back to this routine with a
         # clean stack.
-        if self.nesting_level > 0:
+        wenn self.nesting_level > 0:
             self.abort_loop()
             self.root.after(100, lambda: self.run(*args))
             return
@@ -161,13 +161,13 @@ klasse Debugger:
             self.quit()
         except Exception:
             pass
-        if self.interacting:
+        wenn self.interacting:
             self.top.bell()
             return
-        if self.stackviewer:
+        wenn self.stackviewer:
             self.stackviewer.close(); self.stackviewer = None
-        # Clean up pyshell if user clicked debugger control close widget.
-        # (Causes a harmless extra cycle through close_debugger() if user
+        # Clean up pyshell wenn user clicked debugger control close widget.
+        # (Causes a harmless extra cycle through close_debugger() wenn user
         # toggled debugger from pyshell Debug menu)
         self.pyshell.close_debugger()
         # Now close the debugger control window....
@@ -206,24 +206,24 @@ klasse Debugger:
         self.cframe = cframe = Frame(bframe)
         self.cframe.pack(side="left")
 
-        if not self.vstack:
+        wenn not self.vstack:
             self.__class__.vstack = BooleanVar(top)
             self.vstack.set(1)
         self.bstack = Checkbutton(cframe,
             text="Stack", command=self.show_stack, variable=self.vstack)
         self.bstack.grid(row=0, column=0)
-        if not self.vsource:
+        wenn not self.vsource:
             self.__class__.vsource = BooleanVar(top)
         self.bsource = Checkbutton(cframe,
             text="Source", command=self.show_source, variable=self.vsource)
         self.bsource.grid(row=0, column=1)
-        if not self.vlocals:
+        wenn not self.vlocals:
             self.__class__.vlocals = BooleanVar(top)
             self.vlocals.set(1)
         self.blocals = Checkbutton(cframe,
             text="Locals", command=self.show_locals, variable=self.vlocals)
         self.blocals.grid(row=1, column=0)
-        if not self.vglobals:
+        wenn not self.vglobals:
             self.__class__.vglobals = BooleanVar(top)
         self.bglobals = Checkbutton(cframe,
             text="Globals", command=self.show_globals, variable=self.vglobals)
@@ -242,44 +242,44 @@ klasse Debugger:
         self.fglobals = Frame(top, height=1)
         self.fglobals.pack(expand=1, fill="both")
 
-        if self.vstack.get():
+        wenn self.vstack.get():
             self.show_stack()
-        if self.vlocals.get():
+        wenn self.vlocals.get():
             self.show_locals()
-        if self.vglobals.get():
+        wenn self.vglobals.get():
             self.show_globals()
 
     def interaction(self, message, frame, info=None):
         self.frame = frame
         self.status.configure(text=message)
 
-        if info:
+        wenn info:
             type, value, tb = info
             try:
                 m1 = type.__name__
             except AttributeError:
                 m1 = "%s" % str(type)
-            if value is not None:
+            wenn value is not None:
                 try:
                    # TODO redo entire section, tries not needed.
                     m1 = f"{m1}: {value}"
                 except:
                     pass
             bg = "yellow"
-        else:
+        sonst:
             m1 = ""
             tb = None
             bg = self.errorbg
         self.error.configure(text=m1, background=bg)
 
         sv = self.stackviewer
-        if sv:
+        wenn sv:
             stack, i = self.idb.get_stack(self.frame, tb)
             sv.load_stack(stack, i)
 
         self.show_variables(1)
 
-        if self.vsource.get():
+        wenn self.vsource.get():
             self.sync_source_line()
 
         fuer b in self.buttons:
@@ -301,10 +301,10 @@ klasse Debugger:
 
     def sync_source_line(self):
         frame = self.frame
-        if not frame:
+        wenn not frame:
             return
         filename, lineno = self.__frame2fileline(frame)
-        if filename[:1] + filename[-1:] != "<>" and os.path.exists(filename):
+        wenn filename[:1] + filename[-1:] != "<>" and os.path.exists(filename):
             self.flist.gotofileline(filename, lineno)
 
     def __frame2fileline(self, frame):
@@ -337,20 +337,20 @@ klasse Debugger:
         self.root.tk.call('set', '::idledebugwait', '1')
 
     def show_stack(self):
-        if not self.stackviewer and self.vstack.get():
+        wenn not self.stackviewer and self.vstack.get():
             self.stackviewer = sv = StackViewer(self.fstack, self.flist, self)
-            if self.frame:
+            wenn self.frame:
                 stack, i = self.idb.get_stack(self.frame, None)
                 sv.load_stack(stack, i)
-        else:
+        sonst:
             sv = self.stackviewer
-            if sv and not self.vstack.get():
+            wenn sv and not self.vstack.get():
                 self.stackviewer = None
                 sv.close()
             self.fstack['height'] = 1
 
     def show_source(self):
-        if self.vsource.get():
+        wenn self.vsource.get():
             self.sync_source_line()
 
     def show_frame(self, stackitem):
@@ -359,11 +359,11 @@ klasse Debugger:
 
     def show_locals(self):
         lv = self.localsviewer
-        if self.vlocals.get():
-            if not lv:
+        wenn self.vlocals.get():
+            wenn not lv:
                 self.localsviewer = NamespaceViewer(self.flocals, "Locals")
-        else:
-            if lv:
+        sonst:
+            wenn lv:
                 self.localsviewer = None
                 lv.close()
                 self.flocals['height'] = 1
@@ -371,11 +371,11 @@ klasse Debugger:
 
     def show_globals(self):
         gv = self.globalsviewer
-        if self.vglobals.get():
-            if not gv:
+        wenn self.vglobals.get():
+            wenn not gv:
                 self.globalsviewer = NamespaceViewer(self.fglobals, "Globals")
-        else:
-            if gv:
+        sonst:
+            wenn gv:
                 self.globalsviewer = None
                 gv.close()
                 self.fglobals['height'] = 1
@@ -385,16 +385,16 @@ klasse Debugger:
         lv = self.localsviewer
         gv = self.globalsviewer
         frame = self.frame
-        if not frame:
+        wenn not frame:
             ldict = gdict = None
-        else:
+        sonst:
             ldict = frame.f_locals
             gdict = frame.f_globals
-            if lv and gv and ldict is gdict:
+            wenn lv and gv and ldict is gdict:
                 ldict = None
-        if lv:
+        wenn lv:
             lv.load_dict(ldict, force, self.pyshell.interp.rpcclt)
-        if gv:
+        wenn gv:
             gv.load_dict(gdict, force, self.pyshell.interp.rpcclt)
 
     def set_breakpoint(self, filename, lineno):
@@ -425,12 +425,12 @@ klasse StackViewer(ScrolledList):
     "Code stack viewer fuer debugger GUI."
 
     def __init__(self, master, flist, gui):
-        if macosx.isAquaTk():
+        wenn macosx.isAquaTk():
             # At least on with the stock AquaTk version on OSX 10.4 you'll
-            # get a shaking GUI that eventually kills IDLE if the width
+            # get a shaking GUI that eventually kills IDLE wenn the width
             # argument is specified.
             ScrolledList.__init__(self, master)
-        else:
+        sonst:
             ScrolledList.__init__(self, master, width=80)
         self.flist = flist
         self.gui = gui
@@ -451,20 +451,20 @@ klasse StackViewer(ScrolledList):
             import linecache
             sourceline = linecache.getline(filename, lineno)
             sourceline = sourceline.strip()
-            if funcname in ("?", "", None):
+            wenn funcname in ("?", "", None):
                 item = "%s, line %d: %s" % (modname, lineno, sourceline)
-            else:
+            sonst:
                 item = "%s.%s(), line %d: %s" % (modname, funcname,
                                                  lineno, sourceline)
-            if i == index:
+            wenn i == index:
                 item = "> " + item
             self.append(item)
-        if index is not None:
+        wenn index is not None:
             self.select(index)
 
     def popup_event(self, event):
         "Override base method."
-        if self.stack:
+        wenn self.stack:
             return ScrolledList.popup_event(self, event)
 
     def fill_menu(self):
@@ -477,7 +477,7 @@ klasse StackViewer(ScrolledList):
 
     def on_select(self, index):
         "Override base method."
-        if 0 <= index < len(self.stack):
+        wenn 0 <= index < len(self.stack):
             self.gui.show_frame(self.stack[index])
 
     def on_double(self, index):
@@ -490,18 +490,18 @@ klasse StackViewer(ScrolledList):
 
     def show_stack_frame(self):
         index = self.listbox.index("active")
-        if 0 <= index < len(self.stack):
+        wenn 0 <= index < len(self.stack):
             self.gui.show_frame(self.stack[index])
 
     def show_source(self, index):
-        if not (0 <= index < len(self.stack)):
+        wenn not (0 <= index < len(self.stack)):
             return
         frame, lineno = self.stack[index]
         code = frame.f_code
         filename = code.co_filename
-        if os.path.isfile(filename):
+        wenn os.path.isfile(filename):
             edit = self.flist.open(filename)
-            if edit:
+            wenn edit:
                 edit.gotoline(lineno)
 
 
@@ -511,7 +511,7 @@ klasse NamespaceViewer:
     def __init__(self, master, title, odict=None):  # XXX odict never passed.
         width = 0
         height = 40
-        if odict:
+        wenn odict:
             height = 20*len(odict) # XXX 20 == observed height of Entry widget
         self.master = master
         self.title = title
@@ -538,17 +538,17 @@ klasse NamespaceViewer:
     prev_odict = -1  # Needed fuer initial comparison below.
 
     def load_dict(self, odict, force=0, rpc_client=None):
-        if odict is self.prev_odict and not force:
+        wenn odict is self.prev_odict and not force:
             return
         subframe = self.subframe
         frame = self.frame
         fuer c in list(subframe.children.values()):
             c.destroy()
         self.prev_odict = None
-        if not odict:
+        wenn not odict:
             l = Label(subframe, text="None")
             l.grid(row=0, column=0)
-        else:
+        sonst:
             #names = sorted(dict)
             #
             # Because of (temporary) limitations on the dict_keys type (not yet
@@ -569,7 +569,7 @@ klasse NamespaceViewer:
                 svalue = self.repr.repr(value) # repr(value)
                 # Strip extra quotes caused by calling repr on the (already)
                 # repr'd value sent across the RPC interface:
-                if rpc_client:
+                wenn rpc_client:
                     svalue = svalue[1:-1]
                 l = Label(subframe, text=name)
                 l.grid(row=row, column=0, sticky="nw")
@@ -584,10 +584,10 @@ klasse NamespaceViewer:
         height = subframe.winfo_reqheight()
         canvas = self.canvas
         self.canvas["scrollregion"] = (0, 0, width, height)
-        if height > 300:
+        wenn height > 300:
             canvas["height"] = 300
             frame.pack(expand=1)
-        else:
+        sonst:
             canvas["height"] = height
             frame.pack(expand=0)
 
@@ -595,7 +595,7 @@ klasse NamespaceViewer:
         self.frame.destroy()
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     from unittest import main
     main('idlelib.idle_test.test_debugger', verbosity=2, exit=False)
 

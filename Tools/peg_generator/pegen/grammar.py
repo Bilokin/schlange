@@ -24,21 +24,21 @@ klasse GrammarVisitor:
         return visitor(node, *args, **kwargs)
 
     def generic_visit(self, node: Iterable[Any], *args: Any, **kwargs: Any) -> Any:
-        """Called if no explicit visitor function exists fuer a node."""
+        """Called wenn no explicit visitor function exists fuer a node."""
         fuer value in node:
-            if isinstance(value, list):
+            wenn isinstance(value, list):
                 fuer item in value:
                     self.visit(item, *args, **kwargs)
-            else:
+            sonst:
                 self.visit(value, *args, **kwargs)
 
 
 klasse Grammar:
     def __init__(self, rules: Iterable[Rule], metas: Iterable[Tuple[str, Optional[str]]]):
-        # Check if there are repeated rules in "rules"
+        # Check wenn there are repeated rules in "rules"
         all_rules = {}
         fuer rule in rules:
-            if rule.name in all_rules:
+            wenn rule.name in all_rules:
                 raise GrammarError(f"Repeated rule {rule.name!r}")
             all_rules[rule.name] = rule
         self.rules = all_rules
@@ -81,11 +81,11 @@ klasse Rule:
         return self.name.startswith("_gather")
 
     def __str__(self) -> str:
-        if SIMPLE_STR or self.type is None:
+        wenn SIMPLE_STR or self.type is None:
             res = f"{self.name}: {self.rhs}"
-        else:
+        sonst:
             res = f"{self.name}[{self.type}]: {self.rhs}"
-        if len(res) < 88:
+        wenn len(res) < 88:
             return res
         lines = [res.split(":")[0] + ":"]
         lines += [f"    | {alt}" fuer alt in self.rhs.alts]
@@ -100,7 +100,7 @@ klasse Rule:
     def flatten(self) -> Rhs:
         # If it's a single parenthesized group, flatten it.
         rhs = self.rhs
-        if (
+        wenn (
             not self.is_loop()
             and len(rhs.alts) == 1
             and len(rhs.alts[0].items) == 1
@@ -125,7 +125,7 @@ klasse NameLeaf(Leaf):
     """The value is the name."""
 
     def __str__(self) -> str:
-        if self.value == "ENDMARKER":
+        wenn self.value == "ENDMARKER":
             return "$"
         return super().__str__()
 
@@ -156,10 +156,10 @@ klasse Rhs:
 
     @property
     def can_be_inlined(self) -> bool:
-        if len(self.alts) != 1 or len(self.alts[0].items) != 1:
+        wenn len(self.alts) != 1 or len(self.alts[0].items) != 1:
             return False
         # If the alternative has an action we cannot inline
-        if getattr(self.alts[0], "action", None) is not None:
+        wenn getattr(self.alts[0], "action", None) is not None:
             return False
         return True
 
@@ -172,16 +172,16 @@ klasse Alt:
 
     def __str__(self) -> str:
         core = " ".join(str(item) fuer item in self.items)
-        if not SIMPLE_STR and self.action:
+        wenn not SIMPLE_STR and self.action:
             return f"{core} {{ {self.action} }}"
-        else:
+        sonst:
             return core
 
     def __repr__(self) -> str:
         args = [repr(self.items)]
-        if self.icut >= 0:
+        wenn self.icut >= 0:
             args.append(f"icut={self.icut}")
-        if self.action:
+        wenn self.action:
             args.append(f"action={self.action!r}")
         return f"Alt({', '.join(args)})"
 
@@ -196,9 +196,9 @@ klasse NamedItem:
         self.type = type
 
     def __str__(self) -> str:
-        if not SIMPLE_STR and self.name:
+        wenn not SIMPLE_STR and self.name:
             return f"{self.name}={self.item}"
-        else:
+        sonst:
             return str(self.item)
 
     def __repr__(self) -> str:
@@ -254,9 +254,9 @@ klasse Opt:
     def __str__(self) -> str:
         s = str(self.node)
         # TODO: Decide whether to use [X] or X? based on type of X
-        if " " in s:
+        wenn " " in s:
             return f"[{s}]"
-        else:
+        sonst:
             return f"{s}?"
 
     def __repr__(self) -> str:
@@ -281,9 +281,9 @@ klasse Repeat0(Repeat):
     def __str__(self) -> str:
         s = str(self.node)
         # TODO: Decide whether to use (X)* or X* based on type of X
-        if " " in s:
+        wenn " " in s:
             return f"({s})*"
-        else:
+        sonst:
             return f"{s}*"
 
     def __repr__(self) -> str:
@@ -294,9 +294,9 @@ klasse Repeat1(Repeat):
     def __str__(self) -> str:
         s = str(self.node)
         # TODO: Decide whether to use (X)+ or X+ based on type of X
-        if " " in s:
+        wenn " " in s:
             return f"({s})+"
-        else:
+        sonst:
             return f"{s}+"
 
     def __repr__(self) -> str:
@@ -343,7 +343,7 @@ klasse Cut:
         yield from ()
 
     def __eq__(self, other: object) -> bool:
-        if not isinstance(other, Cut):
+        wenn not isinstance(other, Cut):
             return NotImplemented
         return True
 

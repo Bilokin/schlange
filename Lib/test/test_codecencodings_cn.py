@@ -92,5 +92,5 @@ klasse Test_HZ(multibytecodec_support.TestBase, unittest.TestCase):
         (b'~{Dc~\n:C~}', 'strict', None), # ~\n only in ASCII mode
     )
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

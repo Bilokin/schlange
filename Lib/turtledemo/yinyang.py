@@ -41,6 +41,6 @@ def main():
     ht()
     return "Done!"
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     main()
     mainloop()

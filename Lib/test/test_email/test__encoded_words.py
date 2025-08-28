@@ -203,5 +203,5 @@ klasse TestEncode(TestEmailBase):
                          '=?unknown-8bit?q?foo=ACbar?=')
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

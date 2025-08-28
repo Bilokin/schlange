@@ -114,10 +114,10 @@ def _encode_result(obj, encoding=_implicit_encoding,
 
 def _decode_args(args, encoding=_implicit_encoding,
                        errors=_implicit_errors):
-    return tuple(x.decode(encoding, errors) if x else '' fuer x in args)
+    return tuple(x.decode(encoding, errors) wenn x sonst '' fuer x in args)
 
 def _coerce_args(*args):
-    # Invokes decode if necessary to create str args
+    # Invokes decode wenn necessary to create str args
     # and returns the coerced inputs along with
     # an appropriate result coercion function
     #   - noop fuer str inputs
@@ -126,9 +126,9 @@ def _coerce_args(*args):
     fuer arg in args[1:]:
         # We special-case the empty string to support the
         # "scheme=''" default argument to some functions
-        if arg and isinstance(arg, str) != str_input:
+        wenn arg and isinstance(arg, str) != str_input:
             raise TypeError("Cannot mix str and non-str arguments")
-    if str_input:
+    wenn str_input:
         return args + (_noop,)
     return _decode_args(args) + (_encode_result,)
 
@@ -164,23 +164,23 @@ klasse _NetlocResultMixinBase(object):
     @property
     def hostname(self):
         hostname = self._hostinfo[0]
-        if not hostname:
+        wenn not hostname:
             return None
         # Scoped IPv6 address may have zone info, which must not be lowercased
         # like http://[fe80::822a:a8ff:fe49:470c%tESt]:1234/keys
-        separator = '%' if isinstance(hostname, str) else b'%'
+        separator = '%' wenn isinstance(hostname, str) sonst b'%'
         hostname, percent, zone = hostname.partition(separator)
         return hostname.lower() + percent + zone
 
     @property
     def port(self):
         port = self._hostinfo[1]
-        if port is not None:
-            if port.isdigit() and port.isascii():
+        wenn port is not None:
+            wenn port.isdigit() and port.isascii():
                 port = int(port)
-            else:
+            sonst:
                 raise ValueError(f"Port could not be cast to integer value as {port!r}")
-            if not (0 <= port <= 65535):
+            wenn not (0 <= port <= 65535):
                 raise ValueError("Port out of range 0-65535")
         return port
 
@@ -194,11 +194,11 @@ klasse _NetlocResultMixinStr(_NetlocResultMixinBase, _ResultMixinStr):
     def _userinfo(self):
         netloc = self.netloc
         userinfo, have_info, hostinfo = netloc.rpartition('@')
-        if have_info:
+        wenn have_info:
             username, have_password, password = userinfo.partition(':')
-            if not have_password:
+            wenn not have_password:
                 password = None
-        else:
+        sonst:
             username = password = None
         return username, password
 
@@ -207,12 +207,12 @@ klasse _NetlocResultMixinStr(_NetlocResultMixinBase, _ResultMixinStr):
         netloc = self.netloc
         _, _, hostinfo = netloc.rpartition('@')
         _, have_open_br, bracketed = hostinfo.partition('[')
-        if have_open_br:
+        wenn have_open_br:
             hostname, _, port = bracketed.partition(']')
             _, _, port = port.partition(':')
-        else:
+        sonst:
             hostname, _, port = hostinfo.partition(':')
-        if not port:
+        wenn not port:
             port = None
         return hostname, port
 
@@ -224,11 +224,11 @@ klasse _NetlocResultMixinBytes(_NetlocResultMixinBase, _ResultMixinBytes):
     def _userinfo(self):
         netloc = self.netloc
         userinfo, have_info, hostinfo = netloc.rpartition(b'@')
-        if have_info:
+        wenn have_info:
             username, have_password, password = userinfo.partition(b':')
-            if not have_password:
+            wenn not have_password:
                 password = None
-        else:
+        sonst:
             username = password = None
         return username, password
 
@@ -237,12 +237,12 @@ klasse _NetlocResultMixinBytes(_NetlocResultMixinBase, _ResultMixinBytes):
         netloc = self.netloc
         _, _, hostinfo = netloc.rpartition(b'@')
         _, have_open_br, bracketed = hostinfo.partition(b'[')
-        if have_open_br:
+        wenn have_open_br:
             hostname, _, port = bracketed.partition(b']')
             _, _, port = port.partition(b':')
-        else:
+        sonst:
             hostname, _, port = hostinfo.partition(b':')
-        if not port:
+        wenn not port:
             port = None
         return hostname, port
 
@@ -323,9 +323,9 @@ ResultBase = _NetlocResultMixinStr
 klasse DefragResult(_DefragResultBase, _ResultMixinStr):
     __slots__ = ()
     def geturl(self):
-        if self.fragment:
+        wenn self.fragment:
             return self.url + '#' + self.fragment
-        else:
+        sonst:
             return self.url
 
 klasse SplitResult(_SplitResultBase, _NetlocResultMixinStr):
@@ -342,9 +342,9 @@ klasse ParseResult(_ParseResultBase, _NetlocResultMixinStr):
 klasse DefragResultBytes(_DefragResultBase, _ResultMixinBytes):
     __slots__ = ()
     def geturl(self):
-        if self.fragment:
+        wenn self.fragment:
             return self.url + b'#' + self.fragment
-        else:
+        sonst:
             return self.url
 
 klasse SplitResultBytes(_SplitResultBase, _NetlocResultMixinBytes):
@@ -398,18 +398,18 @@ def urlparse(url, scheme='', allow_fragments=True):
 
 def _urlparse(url, scheme=None, allow_fragments=True):
     scheme, netloc, url, query, fragment = _urlsplit(url, scheme, allow_fragments)
-    if (scheme or '') in uses_params and ';' in url:
+    wenn (scheme or '') in uses_params and ';' in url:
         url, params = _splitparams(url, allow_none=True)
-    else:
+    sonst:
         params = None
     return (scheme, netloc, url, params, query, fragment)
 
 def _splitparams(url, allow_none=False):
-    if '/'  in url:
+    wenn '/'  in url:
         i = url.find(';', url.rfind('/'))
-        if i < 0:
-            return url, None if allow_none else ''
-    else:
+        wenn i < 0:
+            return url, None wenn allow_none sonst ''
+    sonst:
         i = url.find(';')
     return url[:i], url[i+1:]
 
@@ -417,12 +417,12 @@ def _splitnetloc(url, start=0):
     delim = len(url)   # position of end of domain part of url, default is end
     fuer c in '/?#':    # look fuer delimiters; the order is NOT important
         wdelim = url.find(c, start)        # find first of this delim
-        if wdelim >= 0:                    # if found
+        wenn wdelim >= 0:                    # wenn found
             delim = min(delim, wdelim)     # use earliest delim position
     return url[start:delim], url[delim:]   # return (domain, rest)
 
 def _checknetloc(netloc):
-    if not netloc or netloc.isascii():
+    wenn not netloc or netloc.isascii():
         return
     # looking fuer characters like \u2100 that expand to 'a/c'
     # IDNA uses NFKC equivalence, so normalize fuer this check
@@ -432,10 +432,10 @@ def _checknetloc(netloc):
     n = n.replace('#', '')
     n = n.replace('?', '')
     netloc2 = unicodedata.normalize('NFKC', n)
-    if n == netloc2:
+    wenn n == netloc2:
         return
     fuer c in '/?#@:':
-        if c in netloc2:
+        wenn c in netloc2:
             raise ValueError("netloc '" + netloc + "' contains invalid " +
                              "characters under NFKC normalization")
 
@@ -444,27 +444,27 @@ def _check_bracketed_netloc(netloc):
     # done in NetlocResultMixins._hostinfo().
     hostname_and_port = netloc.rpartition('@')[2]
     before_bracket, have_open_br, bracketed = hostname_and_port.partition('[')
-    if have_open_br:
+    wenn have_open_br:
         # No data is allowed before a bracket.
-        if before_bracket:
+        wenn before_bracket:
             raise ValueError("Invalid IPv6 URL")
         hostname, _, port = bracketed.partition(']')
         # No data is allowed after the bracket but before the port delimiter.
-        if port and not port.startswith(":"):
+        wenn port and not port.startswith(":"):
             raise ValueError("Invalid IPv6 URL")
-    else:
+    sonst:
         hostname, _, port = hostname_and_port.partition(':')
     _check_bracketed_host(hostname)
 
 # Valid bracketed hosts are defined in
 # https://www.rfc-editor.org/rfc/rfc3986#page-49 and https://url.spec.whatwg.org/
 def _check_bracketed_host(hostname):
-    if hostname.startswith('v'):
-        if not re.match(r"\Av[a-fA-F0-9]+\..+\z", hostname):
+    wenn hostname.startswith('v'):
+        wenn not re.match(r"\Av[a-fA-F0-9]+\..+\z", hostname):
             raise ValueError(f"IPvFuture address is invalid")
-    else:
-        ip = ipaddress.ip_address(hostname) # Throws Value Error if not IPv6 or IPv4
-        if isinstance(ip, ipaddress.IPv4Address):
+    sonst:
+        ip = ipaddress.ip_address(hostname) # Throws Value Error wenn not IPv6 or IPv4
+        wenn isinstance(ip, ipaddress.IPv4Address):
             raise ValueError(f"An IPv4 address cannot be in brackets")
 
 # typed=True avoids BytesWarnings being emitted during cache key
@@ -502,7 +502,7 @@ def _urlsplit(url, scheme=None, allow_fragments=True):
     url = url.lstrip(_WHATWG_C0_CONTROL_OR_SPACE)
     fuer b in _UNSAFE_URL_BYTES_TO_REMOVE:
         url = url.replace(b, "")
-    if scheme is not None:
+    wenn scheme is not None:
         scheme = scheme.strip(_WHATWG_C0_CONTROL_OR_SPACE)
         fuer b in _UNSAFE_URL_BYTES_TO_REMOVE:
             scheme = scheme.replace(b, "")
@@ -510,39 +510,39 @@ def _urlsplit(url, scheme=None, allow_fragments=True):
     allow_fragments = bool(allow_fragments)
     netloc = query = fragment = None
     i = url.find(':')
-    if i > 0 and url[0].isascii() and url[0].isalpha():
+    wenn i > 0 and url[0].isascii() and url[0].isalpha():
         fuer c in url[:i]:
-            if c not in scheme_chars:
+            wenn c not in scheme_chars:
                 break
-        else:
+        sonst:
             scheme, url = url[:i].lower(), url[i+1:]
-    if url[:2] == '//':
+    wenn url[:2] == '//':
         netloc, url = _splitnetloc(url, 2)
-        if (('[' in netloc and ']' not in netloc) or
+        wenn (('[' in netloc and ']' not in netloc) or
                 (']' in netloc and '[' not in netloc)):
             raise ValueError("Invalid IPv6 URL")
-        if '[' in netloc and ']' in netloc:
+        wenn '[' in netloc and ']' in netloc:
             _check_bracketed_netloc(netloc)
-    if allow_fragments and '#' in url:
+    wenn allow_fragments and '#' in url:
         url, fragment = url.split('#', 1)
-    if '?' in url:
+    wenn '?' in url:
         url, query = url.split('?', 1)
     _checknetloc(netloc)
     return (scheme, netloc, url, query, fragment)
 
 def urlunparse(components):
     """Put a parsed URL back together again.  This may result in a
-    slightly different, but equivalent URL, if the URL that was parsed
+    slightly different, but equivalent URL, wenn the URL that was parsed
     originally had redundant delimiters, e.g. a ? with an empty query
     (the draft states that these are equivalent)."""
     scheme, netloc, url, params, query, fragment, _coerce_result = (
                                                   _coerce_args(*components))
-    if not netloc:
-        if scheme and scheme in uses_netloc and (not url or url[:1] == '/'):
+    wenn not netloc:
+        wenn scheme and scheme in uses_netloc and (not url or url[:1] == '/'):
             netloc = ''
-        else:
+        sonst:
             netloc = None
-    if params:
+    wenn params:
         url = "%s;%s" % (url, params)
     return _coerce_result(_urlunsplit(scheme or None, netloc, url,
                                       query or None, fragment or None))
@@ -550,39 +550,39 @@ def urlunparse(components):
 def urlunsplit(components):
     """Combine the elements of a tuple as returned by urlsplit() into a
     complete URL as a string. The data argument can be any five-item iterable.
-    This may result in a slightly different, but equivalent URL, if the URL that
+    This may result in a slightly different, but equivalent URL, wenn the URL that
     was parsed originally had unnecessary delimiters (for example, a ? with an
     empty query; the RFC states that these are equivalent)."""
     scheme, netloc, url, query, fragment, _coerce_result = (
                                           _coerce_args(*components))
-    if not netloc:
-        if scheme and scheme in uses_netloc and (not url or url[:1] == '/'):
+    wenn not netloc:
+        wenn scheme and scheme in uses_netloc and (not url or url[:1] == '/'):
             netloc = ''
-        else:
+        sonst:
             netloc = None
     return _coerce_result(_urlunsplit(scheme or None, netloc, url,
                                       query or None, fragment or None))
 
 def _urlunsplit(scheme, netloc, url, query, fragment):
-    if netloc is not None:
-        if url and url[:1] != '/': url = '/' + url
+    wenn netloc is not None:
+        wenn url and url[:1] != '/': url = '/' + url
         url = '//' + netloc + url
-    elif url[:2] == '//':
+    sowenn url[:2] == '//':
         url = '//' + url
-    if scheme:
+    wenn scheme:
         url = scheme + ':' + url
-    if query is not None:
+    wenn query is not None:
         url = url + '?' + query
-    if fragment is not None:
+    wenn fragment is not None:
         url = url + '#' + fragment
     return url
 
 def urljoin(base, url, allow_fragments=True):
     """Join a base URL and a possibly relative URL to form an absolute
     interpretation of the latter."""
-    if not base:
+    wenn not base:
         return url
-    if not url:
+    wenn not url:
         return base
 
     base, url, _coerce_result = _coerce_args(base, url)
@@ -591,35 +591,35 @@ def urljoin(base, url, allow_fragments=True):
     scheme, netloc, path, query, fragment = \
             _urlsplit(url, None, allow_fragments)
 
-    if scheme is None:
+    wenn scheme is None:
         scheme = bscheme
-    if scheme != bscheme or (scheme and scheme not in uses_relative):
+    wenn scheme != bscheme or (scheme and scheme not in uses_relative):
         return _coerce_result(url)
-    if not scheme or scheme in uses_netloc:
-        if netloc:
+    wenn not scheme or scheme in uses_netloc:
+        wenn netloc:
             return _coerce_result(_urlunsplit(scheme, netloc, path,
                                               query, fragment))
         netloc = bnetloc
 
-    if not path:
+    wenn not path:
         path = bpath
-        if query is None:
+        wenn query is None:
             query = bquery
-            if fragment is None:
+            wenn fragment is None:
                 fragment = bfragment
         return _coerce_result(_urlunsplit(scheme, netloc, path,
                                           query, fragment))
 
     base_parts = bpath.split('/')
-    if base_parts[-1] != '':
+    wenn base_parts[-1] != '':
         # the last item is not a directory, so will not be taken into account
         # in resolving the relative path
         del base_parts[-1]
 
     # fuer rfc3986, ignore all base path should the first character be root.
-    if path[:1] == '/':
+    wenn path[:1] == '/':
         segments = path.split('/')
-    else:
+    sonst:
         segments = base_parts + path.split('/')
         # filter out elements that would cause redundant slashes on re-joining
         # the resolved_path
@@ -628,20 +628,20 @@ def urljoin(base, url, allow_fragments=True):
     resolved_path = []
 
     fuer seg in segments:
-        if seg == '..':
+        wenn seg == '..':
             try:
                 resolved_path.pop()
             except IndexError:
                 # ignore any .. segments that would otherwise cause an IndexError
-                # when popped from resolved_path if resolving fuer rfc3986
+                # when popped from resolved_path wenn resolving fuer rfc3986
                 pass
-        elif seg == '.':
+        sowenn seg == '.':
             continue
-        else:
+        sonst:
             resolved_path.append(seg)
 
-    if segments[-1] in ('.', '..'):
-        # do some post-processing here. if the last segment was a relative dir,
+    wenn segments[-1] in ('.', '..'):
+        # do some post-processing here. wenn the last segment was a relative dir,
         # then we need to append the trailing '/'
         resolved_path.append('')
 
@@ -657,10 +657,10 @@ def urldefrag(url):
     empty string.
     """
     url, _coerce_result = _coerce_args(url)
-    if '#' in url:
+    wenn '#' in url:
         s, n, p, q, frag = _urlsplit(url)
         defrag = _urlunsplit(s, n, p, q, None)
-    else:
+    sonst:
         frag = ''
         defrag = url
     return _coerce_result(DefragResult(defrag, frag or ''))
@@ -673,23 +673,23 @@ def unquote_to_bytes(string):
     return bytes(_unquote_impl(string))
 
 def _unquote_impl(string: bytes | bytearray | str) -> bytes | bytearray:
-    # Note: strings are encoded as UTF-8. This is only an issue if it contains
+    # Note: strings are encoded as UTF-8. This is only an issue wenn it contains
     # unescaped non-ASCII characters, which URIs should not.
-    if not string:
+    wenn not string:
         # Is it a string-like object?
         string.split
         return b''
-    if isinstance(string, str):
+    wenn isinstance(string, str):
         string = string.encode('utf-8')
     bits = string.split(b'%')
-    if len(bits) == 1:
+    wenn len(bits) == 1:
         return string
     res = bytearray(bits[0])
     append = res.extend
     # Delay the initialization of the table to not waste memory
-    # if the function is never called
+    # wenn the function is never called
     global _hextobyte
-    if _hextobyte is None:
+    wenn _hextobyte is None:
         _hextobyte = {(a + b).encode(): bytes.fromhex(a + b)
                       fuer a in _hexdig fuer b in _hexdig}
     fuer item in bits[1:]:
@@ -723,15 +723,15 @@ def unquote(string, encoding='utf-8', errors='replace'):
 
     unquote('abc%20def') -> 'abc def'.
     """
-    if isinstance(string, bytes):
+    wenn isinstance(string, bytes):
         return _unquote_impl(string).decode(encoding, errors)
-    if '%' not in string:
+    wenn '%' not in string:
         # Is it a string-like object?
         string.split
         return string
-    if encoding is None:
+    wenn encoding is None:
         encoding = 'utf-8'
-    if errors is None:
+    wenn errors is None:
         errors = 'replace'
     return ''.join(_generate_unquoted_parts(string, encoding, errors))
 
@@ -748,7 +748,7 @@ def parse_qs(qs, keep_blank_values=False, strict_parsing=False,
             percent-encoded queries should be treated as blank strings.
             A true value indicates that blanks should be retained as
             blank strings.  The default false value indicates that
-            blank values are to be ignored and treated as if they were
+            blank values are to be ignored and treated as wenn they were
             not included.
 
         strict_parsing: flag indicating what to do with parsing errors.
@@ -758,7 +758,7 @@ def parse_qs(qs, keep_blank_values=False, strict_parsing=False,
         encoding and errors: specify how to decode percent-encoded sequences
             into Unicode characters, as accepted by the bytes.decode() method.
 
-        max_num_fields: int. If set, then throws a ValueError if there
+        max_num_fields: int. If set, then throws a ValueError wenn there
             are more than n fields read by parse_qsl().
 
         separator: str. The symbol to use fuer separating the query arguments.
@@ -772,9 +772,9 @@ def parse_qs(qs, keep_blank_values=False, strict_parsing=False,
                       max_num_fields=max_num_fields, separator=separator,
                       _stacklevel=2)
     fuer name, value in pairs:
-        if name in parsed_result:
+        wenn name in parsed_result:
             parsed_result[name].append(value)
-        else:
+        sonst:
             parsed_result[name] = [value]
     return parsed_result
 
@@ -791,7 +791,7 @@ def parse_qsl(qs, keep_blank_values=False, strict_parsing=False,
             percent-encoded queries should be treated as blank strings.
             A true value indicates that blanks should be retained as blank
             strings.  The default false value indicates that blank values
-            are to be ignored and treated as if they were  not included.
+            are to be ignored and treated as wenn they were  not included.
 
         strict_parsing: flag indicating what to do with parsing errors. If
             false (the default), errors are silently ignored. If true,
@@ -801,60 +801,60 @@ def parse_qsl(qs, keep_blank_values=False, strict_parsing=False,
             into Unicode characters, as accepted by the bytes.decode() method.
 
         max_num_fields: int. If set, then throws a ValueError
-            if there are more than n fields read by parse_qsl().
+            wenn there are more than n fields read by parse_qsl().
 
         separator: str. The symbol to use fuer separating the query arguments.
             Defaults to &.
 
         Returns a list, as G-d intended.
     """
-    if not separator or not isinstance(separator, (str, bytes)):
+    wenn not separator or not isinstance(separator, (str, bytes)):
         raise ValueError("Separator must be of type string or bytes.")
-    if isinstance(qs, str):
-        if not isinstance(separator, str):
+    wenn isinstance(qs, str):
+        wenn not isinstance(separator, str):
             separator = str(separator, 'ascii')
         eq = '='
         def _unquote(s):
             return unquote_plus(s, encoding=encoding, errors=errors)
-    elif qs is None:
+    sowenn qs is None:
         return []
-    else:
+    sonst:
         try:
             # Use memoryview() to reject integers and iterables,
             # acceptable by the bytes constructor.
             qs = bytes(memoryview(qs))
         except TypeError:
-            if not qs:
+            wenn not qs:
                 warnings.warn(f"Accepting {type(qs).__name__} objects with "
                               f"false value in urllib.parse.parse_qsl() is "
                               f"deprecated as of 3.14",
                               DeprecationWarning, stacklevel=_stacklevel + 1)
                 return []
             raise
-        if isinstance(separator, str):
+        wenn isinstance(separator, str):
             separator = bytes(separator, 'ascii')
         eq = b'='
         def _unquote(s):
             return unquote_to_bytes(s.replace(b'+', b' '))
 
-    if not qs:
+    wenn not qs:
         return []
 
     # If max_num_fields is defined then check that the number of fields
     # is less than max_num_fields. This prevents a memory exhaustion DOS
     # attack via post bodies with many fields.
-    if max_num_fields is not None:
+    wenn max_num_fields is not None:
         num_fields = 1 + qs.count(separator)
-        if max_num_fields < num_fields:
+        wenn max_num_fields < num_fields:
             raise ValueError('Max number of fields exceeded')
 
     r = []
     fuer name_value in qs.split(separator):
-        if name_value or strict_parsing:
+        wenn name_value or strict_parsing:
             name, has_eq, value = name_value.partition(eq)
-            if not has_eq and strict_parsing:
+            wenn not has_eq and strict_parsing:
                 raise ValueError("bad query field: %r" % (name_value,))
-            if value or keep_blank_values:
+            wenn value or keep_blank_values:
                 name = _unquote(name)
                 value = _unquote(value)
                 r.append((name, value))
@@ -893,7 +893,7 @@ klasse _Quoter(dict):
 
     def __missing__(self, b):
         # Handle a cache miss. Store quoted string in cache and return.
-        res = chr(b) if b in self.safe else '%{:02X}'.format(b)
+        res = chr(b) wenn b in self.safe sonst '%{:02X}'.format(b)
         self[b] = res
         return res
 
@@ -929,25 +929,25 @@ def quote(string, safe='/', encoding=None, errors=None):
     Now, "~" is included in the set of unreserved characters.
 
     string and safe may be either str or bytes objects. encoding and errors
-    must not be specified if string is a bytes object.
+    must not be specified wenn string is a bytes object.
 
     The optional encoding and errors parameters specify how to deal with
     non-ASCII characters, as accepted by the str.encode method.
     By default, encoding='utf-8' (characters are encoded with UTF-8), and
     errors='strict' (unsupported characters raise a UnicodeEncodeError).
     """
-    if isinstance(string, str):
-        if not string:
+    wenn isinstance(string, str):
+        wenn not string:
             return string
-        if encoding is None:
+        wenn encoding is None:
             encoding = 'utf-8'
-        if errors is None:
+        wenn errors is None:
             errors = 'strict'
         string = string.encode(encoding, errors)
-    else:
-        if encoding is not None:
+    sonst:
+        wenn encoding is not None:
             raise TypeError("quote() doesn't support 'encoding' fuer bytes")
-        if errors is not None:
+        wenn errors is not None:
             raise TypeError("quote() doesn't support 'errors' fuer bytes")
     return quote_from_bytes(string, safe)
 
@@ -956,14 +956,14 @@ def quote_plus(string, safe='', encoding=None, errors=None):
     HTML form values. Plus signs in the original string are escaped unless
     they are included in safe. It also does not have safe default to '/'.
     """
-    # Check if ' ' in string, where string may either be a str or bytes.  If
+    # Check wenn ' ' in string, where string may either be a str or bytes.  If
     # there are no spaces, the regular quote will produce the right answer.
-    if ((isinstance(string, str) and ' ' not in string) or
+    wenn ((isinstance(string, str) and ' ' not in string) or
         (isinstance(string, bytes) and b' ' not in string)):
         return quote(string, safe, encoding, errors)
-    if isinstance(safe, str):
+    wenn isinstance(safe, str):
         space = ' '
-    else:
+    sonst:
         space = b' '
     string = quote(string, safe + space, encoding, errors)
     return string.replace(' ', '+')
@@ -978,22 +978,22 @@ def quote_from_bytes(bs, safe='/'):
     not perform string-to-bytes encoding.  It always returns an ASCII string.
     quote_from_bytes(b'abc def\x3f') -> 'abc%20def%3f'
     """
-    if not isinstance(bs, (bytes, bytearray)):
+    wenn not isinstance(bs, (bytes, bytearray)):
         raise TypeError("quote_from_bytes() expected bytes")
-    if not bs:
+    wenn not bs:
         return ''
-    if isinstance(safe, str):
+    wenn isinstance(safe, str):
         # Normalize 'safe' by converting to bytes and removing non-ASCII chars
         safe = safe.encode('ascii', 'ignore')
-    else:
+    sonst:
         # List comprehensions are faster than generator expressions.
-        safe = bytes([c fuer c in safe if c < 128])
-    if not bs.rstrip(_ALWAYS_SAFE_BYTES + safe):
+        safe = bytes([c fuer c in safe wenn c < 128])
+    wenn not bs.rstrip(_ALWAYS_SAFE_BYTES + safe):
         return bs.decode()
     quoter = _byte_quoter_factory(safe)
-    if (bs_len := len(bs)) < 200_000:
+    wenn (bs_len := len(bs)) < 200_000:
         return ''.join(map(quoter, bs))
-    else:
+    sonst:
         # This saves memory - https://github.com/python/cpython/issues/95865
         chunk_size = math.isqrt(bs_len)
         chunks = [''.join(map(quoter, bs[i:i+chunk_size]))
@@ -1014,18 +1014,18 @@ def urlencode(query, doseq=False, safe='', encoding=None, errors=None,
     The components of a query arg may each be either a string or a bytes type.
 
     The safe, encoding, and errors parameters are passed down to the function
-    specified by quote_via (encoding and errors only if a component is a str).
+    specified by quote_via (encoding and errors only wenn a component is a str).
     """
 
-    if hasattr(query, "items"):
+    wenn hasattr(query, "items"):
         query = query.items()
-    else:
+    sonst:
         # It's a bother at times that strings and string-like objects are
         # sequences.
         try:
             # non-sequence items should not work with len()
             # non-empty strings will fail this
-            if len(query) and not isinstance(query[0], tuple):
+            wenn len(query) and not isinstance(query[0], tuple):
                 raise TypeError
             # Zero-length sequences of all types will get here and succeed,
             # but that's a minor nit.  Since the original implementation
@@ -1036,32 +1036,32 @@ def urlencode(query, doseq=False, safe='', encoding=None, errors=None,
                             "or mapping object") from err
 
     l = []
-    if not doseq:
+    wenn not doseq:
         fuer k, v in query:
-            if isinstance(k, bytes):
+            wenn isinstance(k, bytes):
                 k = quote_via(k, safe)
-            else:
+            sonst:
                 k = quote_via(str(k), safe, encoding, errors)
 
-            if isinstance(v, bytes):
+            wenn isinstance(v, bytes):
                 v = quote_via(v, safe)
-            else:
+            sonst:
                 v = quote_via(str(v), safe, encoding, errors)
             l.append(k + '=' + v)
-    else:
+    sonst:
         fuer k, v in query:
-            if isinstance(k, bytes):
+            wenn isinstance(k, bytes):
                 k = quote_via(k, safe)
-            else:
+            sonst:
                 k = quote_via(str(k), safe, encoding, errors)
 
-            if isinstance(v, bytes):
+            wenn isinstance(v, bytes):
                 v = quote_via(v, safe)
                 l.append(k + '=' + v)
-            elif isinstance(v, str):
+            sowenn isinstance(v, str):
                 v = quote_via(v, safe, encoding, errors)
                 l.append(k + '=' + v)
-            else:
+            sonst:
                 try:
                     # Is this a sufficient test fuer sequence-ness?
                     x = len(v)
@@ -1069,12 +1069,12 @@ def urlencode(query, doseq=False, safe='', encoding=None, errors=None,
                     # not a sequence
                     v = quote_via(str(v), safe, encoding, errors)
                     l.append(k + '=' + v)
-                else:
+                sonst:
                     # loop over the sequence
                     fuer elt in v:
-                        if isinstance(elt, bytes):
+                        wenn isinstance(elt, bytes):
                             elt = quote_via(elt, safe)
-                        else:
+                        sonst:
                             elt = quote_via(str(elt), safe, encoding, errors)
                         l.append(k + '=' + elt)
     return '&'.join(l)
@@ -1091,7 +1091,7 @@ def _to_bytes(url):
     # Most URL schemes require ASCII. If that changes, the conversion
     # can be relaxed.
     # XXX get rid of to_bytes()
-    if isinstance(url, str):
+    wenn isinstance(url, str):
         try:
             url = url.encode("ASCII").decode()
         except UnicodeError:
@@ -1103,12 +1103,12 @@ def _to_bytes(url):
 def unwrap(url):
     """Transform a string like '<URL:scheme://host/path>' into 'scheme://host/path'.
 
-    The string is returned unchanged if it's not a wrapped URL.
+    The string is returned unchanged wenn it's not a wrapped URL.
     """
     url = str(url).strip()
-    if url[:1] == '<' and url[-1:] == '>':
+    wenn url[:1] == '<' and url[-1:] == '>':
         url = url[1:-1].strip()
-    if url[:4] == 'URL:':
+    wenn url[:4] == 'URL:':
         url = url[4:].strip()
     return url
 
@@ -1124,11 +1124,11 @@ _typeprog = None
 def _splittype(url):
     """splittype('type:opaquestring') --> 'type', 'opaquestring'."""
     global _typeprog
-    if _typeprog is None:
+    wenn _typeprog is None:
         _typeprog = re.compile('([^/:]+):(.*)', re.DOTALL)
 
     match = _typeprog.match(url)
-    if match:
+    wenn match:
         scheme, data = match.groups()
         return scheme.lower(), data
     return None, url
@@ -1145,13 +1145,13 @@ _hostprog = None
 def _splithost(url):
     """splithost('//host[:port]/path') --> 'host[:port]', '/path'."""
     global _hostprog
-    if _hostprog is None:
+    wenn _hostprog is None:
         _hostprog = re.compile('//([^/#?]*)(.*)', re.DOTALL)
 
     match = _hostprog.match(url)
-    if match:
+    wenn match:
         host_port, path = match.groups()
-        if path and path[0] != '/':
+        wenn path and path[0] != '/':
             path = '/' + path
         return host_port, path
     return None, url
@@ -1167,7 +1167,7 @@ def splituser(host):
 def _splituser(host):
     """splituser('user[:passwd]@host[:port]') --> 'user[:passwd]', 'host[:port]'."""
     user, delim, host = host.rpartition('@')
-    return (user if delim else None), host
+    return (user wenn delim sonst None), host
 
 
 def splitpasswd(user):
@@ -1180,7 +1180,7 @@ def splitpasswd(user):
 def _splitpasswd(user):
     """splitpasswd('user:passwd') -> 'user', 'passwd'."""
     user, delim, passwd = user.partition(':')
-    return user, (passwd if delim else None)
+    return user, (passwd wenn delim sonst None)
 
 
 def splitport(host):
@@ -1195,13 +1195,13 @@ _portprog = None
 def _splitport(host):
     """splitport('host:port') --> 'host', 'port'."""
     global _portprog
-    if _portprog is None:
+    wenn _portprog is None:
         _portprog = re.compile('(.*):([0-9]*)', re.DOTALL)
 
     match = _portprog.fullmatch(host)
-    if match:
+    wenn match:
         host, port = match.groups()
-        if port:
+        wenn port:
             return host, port
     return host, None
 
@@ -1215,16 +1215,16 @@ def splitnport(host, defport=-1):
 
 def _splitnport(host, defport=-1):
     """Split host and port, returning numeric port.
-    Return given default port if no ':' found; defaults to -1.
-    Return numerical port if a valid number is found after ':'.
-    Return None if ':' but not a valid number."""
+    Return given default port wenn no ':' found; defaults to -1.
+    Return numerical port wenn a valid number is found after ':'.
+    Return None wenn ':' but not a valid number."""
     host, delim, port = host.rpartition(':')
-    if not delim:
+    wenn not delim:
         host = port
-    elif port:
-        if port.isdigit() and port.isascii():
+    sowenn port:
+        wenn port.isdigit() and port.isascii():
             nport = int(port)
-        else:
+        sonst:
             nport = None
         return host, nport
     return host, defport
@@ -1240,7 +1240,7 @@ def splitquery(url):
 def _splitquery(url):
     """splitquery('/path?query') --> '/path', 'query'."""
     path, delim, query = url.rpartition('?')
-    if delim:
+    wenn delim:
         return path, query
     return url, None
 
@@ -1255,7 +1255,7 @@ def splittag(url):
 def _splittag(url):
     """splittag('/path#tag') --> '/path', 'tag'."""
     path, delim, tag = url.rpartition('#')
-    if delim:
+    wenn delim:
         return path, tag
     return url, None
 
@@ -1284,4 +1284,4 @@ def splitvalue(attr):
 def _splitvalue(attr):
     """splitvalue('attr=value') --> 'attr', 'value'."""
     attr, delim, value = attr.partition('=')
-    return attr, (value if delim else None)
+    return attr, (value wenn delim sonst None)

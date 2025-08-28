@@ -35,7 +35,7 @@ klasse TestDiscovery(unittest.TestCase):
         name = loader._get_name_from_path('/foo/bar/baz.py')
         self.assertEqual(name, 'bar.baz')
 
-        if not __debug__:
+        wenn not __debug__:
             # asserts are off
             return
 
@@ -164,7 +164,7 @@ klasse TestDiscovery(unittest.TestCase):
             def __init__(self, path):
                 self.path = path
                 self.paths.append(path)
-                if os.path.basename(path) == 'test_directory':
+                wenn os.path.basename(path) == 'test_directory':
                     def load_tests(loader, tests, pattern):
                         self.load_tests_args.append((loader, tests, pattern))
                         return [self.path + ' load_tests']
@@ -238,7 +238,7 @@ klasse TestDiscovery(unittest.TestCase):
             def __init__(self, path):
                 self.path = path
                 self.paths.append(path)
-                if os.path.basename(path) == 'test_directory':
+                wenn os.path.basename(path) == 'test_directory':
                     def load_tests(loader, tests, pattern):
                         self.load_tests_args.append((loader, tests, pattern))
                         return [self.path + ' load_tests']
@@ -323,11 +323,11 @@ klasse TestDiscovery(unittest.TestCase):
             def __init__(self, path):
                 self.path = path
                 self.paths.append(path)
-                if path.endswith('test_module'):
+                wenn path.endswith('test_module'):
                     def load_tests(loader, tests, pattern):
                         self.load_tests_args.append((loader, tests, pattern))
                         return [self.path + ' load_tests']
-                else:
+                sonst:
                     def load_tests(loader, tests, pattern):
                         self.load_tests_args.append((loader, tests, pattern))
                         # top level directory cached on loader instance
@@ -555,7 +555,7 @@ klasse TestDiscovery(unittest.TestCase):
             pickle.loads(pickle.dumps(test, proto))
 
     def test_discover_with_module_that_raises_SkipTest_on_import(self):
-        if not unittest.BaseTestSuite._cleanup:
+        wenn not unittest.BaseTestSuite._cleanup:
             raise unittest.SkipTest("Suite cleanup is disabled")
 
         loader = unittest.TestLoader()
@@ -578,7 +578,7 @@ klasse TestDiscovery(unittest.TestCase):
             pickle.loads(pickle.dumps(suite, proto))
 
     def test_discover_with_init_module_that_raises_SkipTest_on_import(self):
-        if not unittest.BaseTestSuite._cleanup:
+        wenn not unittest.BaseTestSuite._cleanup:
             raise unittest.SkipTest("Suite cleanup is disabled")
 
         vfs = {abspath('/foo'): ['my_package'],
@@ -757,7 +757,7 @@ klasse TestDiscovery(unittest.TestCase):
             os.path.isdir = original_isdir
             os.path.realpath = original_realpath
             del sys.modules['foo']
-            if full_path in sys.path:
+            wenn full_path in sys.path:
                 sys.path.remove(full_path)
         self.addCleanup(cleanup)
 
@@ -770,7 +770,7 @@ klasse TestDiscovery(unittest.TestCase):
         os.listdir = listdir
         os.path.isfile = isfile
         os.path.isdir = isdir
-        if os.name == 'nt':
+        wenn os.name == 'nt':
             # ntpath.realpath may inject path prefixes when failing to
             # resolve real files, so we substitute abspath() here instead.
             os.path.realpath = os.path.abspath
@@ -803,7 +803,7 @@ klasse TestDiscovery(unittest.TestCase):
         self.addCleanup(cleanup)
 
         def realpath(path):
-            if path == os.path.join(mod_dir, 'foo.py'):
+            wenn path == os.path.join(mod_dir, 'foo.py'):
                 return os.path.join(expected_dir, 'foo.py')
             return path
         os.path.realpath = realpath
@@ -885,7 +885,7 @@ klasse TestDiscovery(unittest.TestCase):
         self.assertEqual(suite, ['/a/tests', '/b/tests'])
 
     def test_discovery_start_dir_is_namespace(self):
-        """Subdirectory discovery not affected if start_dir is a namespace pkg."""
+        """Subdirectory discovery not affected wenn start_dir is a namespace pkg."""
         loader = unittest.TestLoader()
         with (
             import_helper.DirsOnSysPath(os.path.join(os.path.dirname(__file__))),
@@ -893,7 +893,7 @@ klasse TestDiscovery(unittest.TestCase):
         ):
             suite = loader.discover('namespace_test_pkg')
         self.assertEqual(
-            {list(suite)[0]._tests[0].__module__ fuer suite in suite._tests if list(suite)},
+            {list(suite)[0]._tests[0].__module__ fuer suite in suite._tests wenn list(suite)},
             # files under namespace_test_pkg.noop not discovered.
             {'namespace_test_pkg.test_foo', 'namespace_test_pkg.bar.test_bar'},
         )
@@ -920,5 +920,5 @@ klasse TestDiscovery(unittest.TestCase):
                                      .format(package))
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

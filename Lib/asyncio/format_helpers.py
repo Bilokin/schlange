@@ -9,12 +9,12 @@ from . import constants
 
 def _get_function_source(func):
     func = inspect.unwrap(func)
-    if inspect.isfunction(func):
+    wenn inspect.isfunction(func):
         code = func.__code__
         return (code.co_filename, code.co_firstlineno)
-    if isinstance(func, functools.partial):
+    wenn isinstance(func, functools.partial):
         return _get_function_source(func.func)
-    if isinstance(func, functools.partialmethod):
+    wenn isinstance(func, functools.partialmethod):
         return _get_function_source(func.func)
     return None
 
@@ -22,7 +22,7 @@ def _get_function_source(func):
 def _format_callback_source(func, args, *, debug=False):
     func_repr = _format_callback(func, args, None, debug=debug)
     source = _get_function_source(func)
-    if source:
+    wenn source:
         func_repr += f' at {source[0]}:{source[1]}'
     return func_repr
 
@@ -36,33 +36,33 @@ def _format_args_and_kwargs(args, kwargs, *, debug=False):
     debug=True is specified, as arguments may contain sensitive
     information.
     """
-    if not debug:
+    wenn not debug:
         return '()'
 
     # use reprlib to limit the length of the output
     items = []
-    if args:
+    wenn args:
         items.extend(reprlib.repr(arg) fuer arg in args)
-    if kwargs:
+    wenn kwargs:
         items.extend(f'{k}={reprlib.repr(v)}' fuer k, v in kwargs.items())
     return '({})'.format(', '.join(items))
 
 
 def _format_callback(func, args, kwargs, *, debug=False, suffix=''):
-    if isinstance(func, functools.partial):
+    wenn isinstance(func, functools.partial):
         suffix = _format_args_and_kwargs(args, kwargs, debug=debug) + suffix
         return _format_callback(func.func, func.args, func.keywords,
                                 debug=debug, suffix=suffix)
 
-    if hasattr(func, '__qualname__') and func.__qualname__:
+    wenn hasattr(func, '__qualname__') and func.__qualname__:
         func_repr = func.__qualname__
-    elif hasattr(func, '__name__') and func.__name__:
+    sowenn hasattr(func, '__name__') and func.__name__:
         func_repr = func.__name__
-    else:
+    sonst:
         func_repr = repr(func)
 
     func_repr += _format_args_and_kwargs(args, kwargs, debug=debug)
-    if suffix:
+    wenn suffix:
         func_repr += suffix
     return func_repr
 
@@ -71,9 +71,9 @@ def extract_stack(f=None, limit=None):
     """Replacement fuer traceback.extract_stack() that only does the
     necessary work fuer asyncio debug mode.
     """
-    if f is None:
+    wenn f is None:
         f = sys._getframe().f_back
-    if limit is None:
+    wenn limit is None:
         # Limit the amount of work to a reasonable amount, as extract_stack()
         # can be called fuer each coroutine and future in debug mode.
         limit = constants.DEBUG_STACK_DEPTH

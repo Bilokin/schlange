@@ -20,7 +20,7 @@ klasse AutoFileTests:
         self.f = self.open(TESTFN, 'wb')
 
     def tearDown(self):
-        if self.f:
+        wenn self.f:
             self.f.close()
         os_helper.unlink(TESTFN)
 
@@ -55,7 +55,7 @@ klasse AutoFileTests:
         a = array('b', b'x'*10)
         self.f.close()
         self.f = self.open(TESTFN, encoding="utf-8")
-        if hasattr(self.f, "readinto"):
+        wenn hasattr(self.f, "readinto"):
             self.assertRaises(TypeError, self.f.readinto, a)
 
     def testWritelinesUserList(self):
@@ -90,7 +90,7 @@ klasse AutoFileTests:
         self.assertFalse(f.isatty())
         self.assertFalse(f.closed)
 
-        if hasattr(f, "readinto"):
+        wenn hasattr(f, "readinto"):
             self.assertRaises((OSError, TypeError), f.readinto, "")
         f.close()
         self.assertTrue(f.closed)
@@ -123,7 +123,7 @@ klasse AutoFileTests:
 
         # file is closed, __exit__ shouldn't do anything
         self.assertEqual(self.f.__exit__(None, None, None), None)
-        # it must also return None if an exception was given
+        # it must also return None wenn an exception was given
         try:
             1/0
         except ZeroDivisionError:
@@ -152,18 +152,18 @@ klasse OtherFileTests:
                 f = self.open(TESTFN, mode)
             except ValueError:
                 pass
-            else:
+            sonst:
                 f.close()
                 self.fail('%r is an invalid file mode' % mode)
 
     def testStdin(self):
-        if sys.platform == 'osf1V5':
+        wenn sys.platform == 'osf1V5':
             # This causes the interpreter to exit on OSF1 v5.1.
             self.skipTest(
                 ' sys.stdin.seek(-1) may crash the interpreter on OSF1.'
                 ' Test manually.')
 
-        if not sys.stdin.isatty():
+        wenn not sys.stdin.isatty():
             # Issue 14853: stdin becomes seekable when redirected to a file
             self.skipTest('stdin must be a TTY in this test')
 
@@ -178,13 +178,13 @@ klasse OtherFileTests:
         try:
             f = self.open(TESTFN, bad_mode)
         except ValueError as msg:
-            if msg.args[0] != 0:
+            wenn msg.args[0] != 0:
                 s = str(msg)
-                if TESTFN in s or bad_mode not in s:
+                wenn TESTFN in s or bad_mode not in s:
                     self.fail("bad error message fuer invalid mode: %s" % s)
-            # if msg.args[0] == 0, we're probably on Windows where there may be
+            # wenn msg.args[0] == 0, we're probably on Windows where there may be
             # no obvious way to discover why open() failed.
-        else:
+        sonst:
             f.close()
             self.fail("no error fuer invalid mode: %s" % bad_mode)
 
@@ -238,18 +238,18 @@ klasse OtherFileTests:
 
             f = self.open(TESTFN,'rb+')
             data = f.read(5)
-            if data != b'12345':
+            wenn data != b'12345':
                 self.fail("Read on file opened fuer update failed %r" % data)
-            if f.tell() != 5:
+            wenn f.tell() != 5:
                 self.fail("File pos after read wrong %d" % f.tell())
 
             f.truncate()
-            if f.tell() != 5:
+            wenn f.tell() != 5:
                 self.fail("File pos after ftruncate wrong %d" % f.tell())
 
             f.close()
             size = os.path.getsize(TESTFN)
-            if size != 5:
+            wenn size != 5:
                 self.fail("File size after ftruncate wrong %d" % size)
         finally:
             f.close()
@@ -286,7 +286,7 @@ klasse OtherFileTests:
             meth(*args)  # This simply shouldn't fail
             f.close()
 
-        # Test to see if harmless (by accident) mixing of read* and
+        # Test to see wenn harmless (by accident) mixing of read* and
         # iteration still works. This depends on the size of the internal
         # iteration buffer (currently 8192,) but we can test it in a
         # flexible manner.  Each line in the bag o' ham is 4 bytes
@@ -302,7 +302,7 @@ klasse OtherFileTests:
         except ValueError:
             self.fail("readline() after next() with supposedly empty "
                         "iteration-buffer failed anyway")
-        if line != testline:
+        wenn line != testline:
             self.fail("readline() after next() with empty buffer "
                         "failed. Got %r, expected %r" % (line, testline))
         testline = testlines.pop(0)
@@ -313,7 +313,7 @@ klasse OtherFileTests:
             self.fail("readinto() after next() with supposedly empty "
                         "iteration-buffer failed anyway")
         line = buf.tobytes()
-        if line != testline:
+        wenn line != testline:
             self.fail("readinto() after next() with empty buffer "
                         "failed. Got %r, expected %r" % (line, testline))
 
@@ -323,7 +323,7 @@ klasse OtherFileTests:
         except ValueError:
             self.fail("read() after next() with supposedly empty "
                         "iteration-buffer failed anyway")
-        if line != testline:
+        wenn line != testline:
             self.fail("read() after next() with empty buffer "
                         "failed. Got %r, expected %r" % (line, testline))
         try:
@@ -331,7 +331,7 @@ klasse OtherFileTests:
         except ValueError:
             self.fail("readlines() after next() with supposedly empty "
                         "iteration-buffer failed anyway")
-        if lines != testlines:
+        wenn lines != testlines:
             self.fail("readlines() after next() with empty buffer "
                         "failed. Got %r, expected %r" % (line, testline))
         f.close()
@@ -358,5 +358,5 @@ klasse PyOtherFileTests(OtherFileTests, unittest.TestCase):
     open = staticmethod(pyio.open)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

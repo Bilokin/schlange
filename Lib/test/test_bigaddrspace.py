@@ -92,7 +92,7 @@ klasse StrTest(unittest.TestCase):
             x = None
 
 
-if __name__ == '__main__':
-    if len(sys.argv) > 1:
+wenn __name__ == '__main__':
+    wenn len(sys.argv) > 1:
         support.set_memlimit(sys.argv[1])
     unittest.main()

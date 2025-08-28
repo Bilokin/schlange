@@ -9,9 +9,9 @@ XXX TO DO:
 - seems to contain a bug when updating...
 
 - reclaim free space (currently, space once occupied by deleted or expanded
-items is not reused exept if .reorganize() is called)
+items is not reused exept wenn .reorganize() is called)
 
-- support concurrent access (currently, if two processes take turns making
+- support concurrent access (currently, wenn two processes take turns making
 updates, they can mess up the index)
 
 - support efficient access to large databases (currently, the whole index
@@ -36,7 +36,7 @@ klasse _Database(collections.abc.MutableMapping):
     # inconsistent states fuer an arbitrarily long time (see comments
     # at the end of __setitem__).  This is only repaired when _commit()
     # gets called.  One place _commit() gets called is from __del__(),
-    # and if that occurs at program shutdown time, module globals may
+    # and wenn that occurs at program shutdown time, module globals may
     # already have gotten rebound to None.  Since it's crucial that
     # _commit() finish successfully, we can't ignore shutdown races
     # here, and _commit() must not reference any globals.
@@ -70,21 +70,21 @@ klasse _Database(collections.abc.MutableMapping):
         self._update(flag)
 
     def _create(self, flag):
-        if flag == 'n':
+        wenn flag == 'n':
             fuer filename in (self._datfile, self._bakfile, self._dirfile):
                 try:
                     _os.remove(filename)
                 except OSError:
                     pass
-        # Mod by Jack: create data file if needed
+        # Mod by Jack: create data file wenn needed
         try:
             f = _io.open(self._datfile, 'r', encoding="Latin-1")
         except OSError:
-            if flag not in ('c', 'n'):
+            wenn flag not in ('c', 'n'):
                 raise
             with _io.open(self._datfile, 'w', encoding="Latin-1") as f:
                 self._chmod(self._datfile)
-        else:
+        sonst:
             f.close()
 
     # Read directory file into the in-memory index dict.
@@ -94,11 +94,11 @@ klasse _Database(collections.abc.MutableMapping):
         try:
             f = _io.open(self._dirfile, 'r', encoding="Latin-1")
         except OSError:
-            if flag not in ('c', 'n'):
+            wenn flag not in ('c', 'n'):
                 raise
             with self._io.open(self._dirfile, 'w', encoding="Latin-1") as f:
                 self._chmod(self._dirfile)
-        else:
+        sonst:
             with f:
                 fuer line in f:
                     line = line.rstrip()
@@ -113,7 +113,7 @@ klasse _Database(collections.abc.MutableMapping):
         # CAUTION:  It's vital that _commit() succeed, and _commit() can
         # be called from __del__().  Therefore we must never reference a
         # global in this routine.
-        if self._index is None or not self._modified:
+        wenn self._index is None or not self._modified:
             return  # nothing to do
 
         try:
@@ -138,11 +138,11 @@ klasse _Database(collections.abc.MutableMapping):
     sync = _commit
 
     def _verify_open(self):
-        if self._index is None:
+        wenn self._index is None:
             raise error('DBM object has already been closed')
 
     def __getitem__(self, key):
-        if isinstance(key, str):
+        wenn isinstance(key, str):
             key = key.encode('utf-8')
         self._verify_open()
         pos, siz = self._index[key]     # may raise KeyError
@@ -185,29 +185,29 @@ klasse _Database(collections.abc.MutableMapping):
             f.write("%r, %r\n" % (key.decode("Latin-1"), pos_and_siz_pair))
 
     def __setitem__(self, key, val):
-        if self._readonly:
+        wenn self._readonly:
             raise error('The database is opened fuer reading only')
-        if isinstance(key, str):
+        wenn isinstance(key, str):
             key = key.encode('utf-8')
-        elif not isinstance(key, (bytes, bytearray)):
+        sowenn not isinstance(key, (bytes, bytearray)):
             raise TypeError("keys must be bytes or strings")
-        if isinstance(val, str):
+        wenn isinstance(val, str):
             val = val.encode('utf-8')
-        elif not isinstance(val, (bytes, bytearray)):
+        sowenn not isinstance(val, (bytes, bytearray)):
             raise TypeError("values must be bytes or strings")
         self._verify_open()
         self._modified = True
-        if key not in self._index:
+        wenn key not in self._index:
             self._addkey(key, self._addval(val))
-        else:
+        sonst:
             # See whether the new value is small enough to fit in the
             # (padded) space currently occupied by the old value.
             pos, siz = self._index[key]
             oldblocks = (siz + _BLOCKSIZE - 1) // _BLOCKSIZE
             newblocks = (len(val) + _BLOCKSIZE - 1) // _BLOCKSIZE
-            if newblocks <= oldblocks:
+            wenn newblocks <= oldblocks:
                 self._index[key] = self._setval(pos, val)
-            else:
+            sonst:
                 # The new value doesn't fit in the (padded) space used
                 # by the old value.  The blocks used by the old value are
                 # forever lost.
@@ -218,13 +218,13 @@ klasse _Database(collections.abc.MutableMapping):
             # file.  This also means that the on-disk directory and data
             # files are in a mutually inconsistent state, and they'll
             # remain that way until _commit() is called.  Note that this
-            # is a disaster (for the database) if the program crashes
+            # is a disaster (for the database) wenn the program crashes
             # (so that _commit() never gets called).
 
     def __delitem__(self, key):
-        if self._readonly:
+        wenn self._readonly:
             raise error('The database is opened fuer reading only')
-        if isinstance(key, str):
+        wenn isinstance(key, str):
             key = key.encode('utf-8')
         self._verify_open()
         self._modified = True
@@ -247,14 +247,14 @@ klasse _Database(collections.abc.MutableMapping):
         return [(key, self[key]) fuer key in self._index.keys()]
 
     def __contains__(self, key):
-        if isinstance(key, str):
+        wenn isinstance(key, str):
             key = key.encode('utf-8')
         try:
             return key in self._index
         except TypeError:
-            if self._index is None:
+            wenn self._index is None:
                 raise error('DBM object has already been closed') from None
-            else:
+            sonst:
                 raise
 
     def iterkeys(self):
@@ -288,7 +288,7 @@ klasse _Database(collections.abc.MutableMapping):
         self.close()
 
     def reorganize(self):
-        if self._readonly:
+        wenn self._readonly:
             raise error('The database is opened fuer reading only')
         self._verify_open()
         # Ensure all changes are committed before reorganizing.
@@ -322,7 +322,7 @@ def open(file, flag='c', mode=0o666):
     The flag argument, used to control how the database is opened in the
     other DBM implementations, supports only the semantics of 'c' and 'n'
     values.  Other values will default to the semantics of 'c' value:
-    the database will always opened fuer update and will be created if it
+    the database will always opened fuer update and will be created wenn it
     does not exist.
 
     The optional mode argument is the UNIX mode of the file, used only when
@@ -337,9 +337,9 @@ def open(file, flag='c', mode=0o666):
         _os.umask(um)
     except AttributeError:
         pass
-    else:
+    sonst:
         # Turn off any bits that are set in the umask
         mode = mode & (~um)
-    if flag not in ('r', 'w', 'c', 'n'):
+    wenn flag not in ('r', 'w', 'c', 'n'):
         raise ValueError("Flag must be one of 'r', 'w', 'c', or 'n'")
     return _Database(file, mode, flag=flag)

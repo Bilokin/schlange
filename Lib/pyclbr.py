@@ -22,17 +22,17 @@ has the following attributes:
     file    -- file in which the object is defined;
     lineno  -- line in the file where the object's definition starts;
     end_lineno -- line in the file where the object's definition ends;
-    parent  -- parent of this object, if any;
+    parent  -- parent of this object, wenn any;
     children -- nested objects contained in this object.
 The 'children' attribute is a dictionary mapping names to objects.
 
 Instances of Function describe functions with the attributes from _Object,
 plus the following:
-    is_async -- if a function is defined with an 'async' prefix
+    is_async -- wenn a function is defined with an 'async' prefix
 
 Instances of Class describe classes with the attributes from _Object,
 plus the following:
-    super   -- list of super classes (Class instances if possible);
+    super   -- list of super classes (Class instances wenn possible);
     methods -- mapping of method names to beginning line numbers.
 If the name of a super klasse is not recognized, the corresponding
 entry in the list of super classes is not a klasse instance but a
@@ -60,7 +60,7 @@ klasse _Object:
         self.end_lineno = end_lineno
         self.parent = parent
         self.children = {}
-        if parent is not None:
+        wenn parent is not None:
             parent.children[name] = self
 
 
@@ -71,7 +71,7 @@ klasse Function(_Object):
                  parent=None, is_async=False, *, end_lineno=None):
         super().__init__(module, name, file, lineno, end_lineno, parent)
         self.is_async = is_async
-        if isinstance(parent, Class):
+        wenn isinstance(parent, Class):
             parent.methods[name] = lineno
 
 
@@ -105,7 +105,7 @@ def readmodule(module, path=None):
 
     res = {}
     fuer key, value in _readmodule(module, path or []).items():
-        if isinstance(value, Class):
+        wenn isinstance(value, Class):
             res[key] = value
     return res
 
@@ -127,56 +127,56 @@ def _readmodule(module, path, inpackage=None):
     package search path; otherwise, we are searching fuer a top-level
     module, and path is combined with sys.path.
     """
-    # Compute the full module name (prepending inpackage if set).
-    if inpackage is not None:
+    # Compute the full module name (prepending inpackage wenn set).
+    wenn inpackage is not None:
         fullmodule = "%s.%s" % (inpackage, module)
-    else:
+    sonst:
         fullmodule = module
 
     # Check in the cache.
-    if fullmodule in _modules:
+    wenn fullmodule in _modules:
         return _modules[fullmodule]
 
     # Initialize the dict fuer this module's contents.
     tree = {}
 
-    # Check if it is a built-in module; we don't do much fuer these.
-    if module in sys.builtin_module_names and inpackage is None:
+    # Check wenn it is a built-in module; we don't do much fuer these.
+    wenn module in sys.builtin_module_names and inpackage is None:
         _modules[module] = tree
         return tree
 
     # Check fuer a dotted module name.
     i = module.rfind('.')
-    if i >= 0:
+    wenn i >= 0:
         package = module[:i]
         submodule = module[i+1:]
         parent = _readmodule(package, path, inpackage)
-        if inpackage is not None:
+        wenn inpackage is not None:
             package = "%s.%s" % (inpackage, package)
-        if not '__path__' in parent:
+        wenn not '__path__' in parent:
             raise ImportError('No package named {}'.format(package))
         return _readmodule(submodule, parent['__path__'], package)
 
     # Search the path fuer the module.
     f = None
-    if inpackage is not None:
+    wenn inpackage is not None:
         search_path = path
-    else:
+    sonst:
         search_path = path + sys.path
     spec = importlib.util._find_spec_from_path(fullmodule, search_path)
-    if spec is None:
+    wenn spec is None:
         raise ModuleNotFoundError(f"no module named {fullmodule!r}", name=fullmodule)
     _modules[fullmodule] = tree
     # Is module a package?
-    if spec.submodule_search_locations is not None:
+    wenn spec.submodule_search_locations is not None:
         tree['__path__'] = spec.submodule_search_locations
     try:
         source = spec.loader.get_source(fullmodule)
     except (AttributeError, ImportError):
         # If module is not Python source, we cannot do anything.
         return tree
-    else:
-        if source is None:
+    sonst:
+        wenn source is None:
             return tree
 
     fname = spec.loader.get_filename(fullmodule)
@@ -196,32 +196,32 @@ klasse _ModuleBrowser(ast.NodeVisitor):
         bases = []
         fuer base in node.bases:
             name = ast.unparse(base)
-            if name in self.tree:
+            wenn name in self.tree:
                 # We know this super class.
                 bases.append(self.tree[name])
-            elif len(names := name.split(".")) > 1:
+            sowenn len(names := name.split(".")) > 1:
                 # Super klasse form is module.class:
                 # look in module fuer class.
                 *_, module, class_ = names
-                if module in _modules:
+                wenn module in _modules:
                     bases.append(_modules[module].get(class_, name))
-            else:
+            sonst:
                 bases.append(name)
 
-        parent = self.stack[-1] if self.stack else None
+        parent = self.stack[-1] wenn self.stack sonst None
         class_ = Class(self.module, node.name, bases, self.file, node.lineno,
                        parent=parent, end_lineno=node.end_lineno)
-        if parent is None:
+        wenn parent is None:
             self.tree[node.name] = class_
         self.stack.append(class_)
         self.generic_visit(node)
         self.stack.pop()
 
     def visit_FunctionDef(self, node, *, is_async=False):
-        parent = self.stack[-1] if self.stack else None
+        parent = self.stack[-1] wenn self.stack sonst None
         function = Function(self.module, node.name, self.file, node.lineno,
                             parent, is_async, end_lineno=node.end_lineno)
-        if parent is None:
+        wenn parent is None:
             self.tree[node.name] = function
         self.stack.append(function)
         self.generic_visit(node)
@@ -231,7 +231,7 @@ klasse _ModuleBrowser(ast.NodeVisitor):
         self.visit_FunctionDef(node, is_async=True)
 
     def visit_Import(self, node):
-        if node.col_offset != 0:
+        wenn node.col_offset != 0:
             return
 
         fuer module in node.names:
@@ -246,22 +246,22 @@ klasse _ModuleBrowser(ast.NodeVisitor):
                 continue
 
     def visit_ImportFrom(self, node):
-        if node.col_offset != 0:
+        wenn node.col_offset != 0:
             return
         try:
             module = "." * node.level
-            if node.module:
+            wenn node.module:
                 module += node.module
             module = _readmodule(module, self.path, self.inpackage)
         except (ImportError, SyntaxError):
             return
 
         fuer name in node.names:
-            if name.name in module:
+            wenn name.name in module:
                 self.tree[name.asname or name.name] = module[name.name]
-            elif name.name == "*":
+            sowenn name.name == "*":
                 fuer import_name, import_value in module.items():
-                    if import_name.startswith("_"):
+                    wenn import_name.startswith("_"):
                         continue
                     self.tree[import_name] = import_value
 
@@ -279,12 +279,12 @@ def _main():
         mod = sys.argv[1]
     except:
         mod = __file__
-    if os.path.exists(mod):
+    wenn os.path.exists(mod):
         path = [os.path.dirname(mod)]
         mod = os.path.basename(mod)
-        if mod.lower().endswith(".py"):
+        wenn mod.lower().endswith(".py"):
             mod = mod[:-3]
-    else:
+    sonst:
         path = []
     tree = readmodule_ex(mod, path)
     lineno_key = lambda a: getattr(a, 'lineno', 0)
@@ -292,23 +292,23 @@ def _main():
     indent_level = 2
     while objs:
         obj = objs.pop()
-        if isinstance(obj, list):
+        wenn isinstance(obj, list):
             # Value is a __path__ key.
             continue
-        if not hasattr(obj, 'indent'):
+        wenn not hasattr(obj, 'indent'):
             obj.indent = 0
 
-        if isinstance(obj, _Object):
+        wenn isinstance(obj, _Object):
             new_objs = sorted(obj.children.values(),
                               key=lineno_key, reverse=True)
             fuer ob in new_objs:
                 ob.indent = obj.indent + indent_level
             objs.extend(new_objs)
-        if isinstance(obj, Class):
+        wenn isinstance(obj, Class):
             print("{}class {} {} {}"
                   .format(' ' * obj.indent, obj.name, obj.super, obj.lineno))
-        elif isinstance(obj, Function):
+        sowenn isinstance(obj, Function):
             print("{}def {} {}".format(' ' * obj.indent, obj.name, obj.lineno))
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     _main()

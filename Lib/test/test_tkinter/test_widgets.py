@@ -25,14 +25,14 @@ def float_round(x):
     return float(round(x))
 
 klasse AbstractToplevelTest(AbstractWidgetTest, PixelSizeTests):
-    if tk_version < (9, 0):
+    wenn tk_version < (9, 0):
         _no_round = {'padx', 'pady'}
-    else:
+    sonst:
         _no_round = {'borderwidth', 'height', 'highlightthickness', 'padx',
                      'pady', 'width'}
-    if tk_version < (9, 0):
+    wenn tk_version < (9, 0):
         _clipped = {'highlightthickness'}
-    else:
+    sonst:
         _clipped = {'borderwidth', 'height', 'highlightthickness', 'padx',
                     'pady', 'width'}
 
@@ -55,11 +55,11 @@ klasse AbstractToplevelTest(AbstractWidgetTest, PixelSizeTests):
 
     def test_configure_container(self):
         widget = self.create()
-        self.assertEqual(widget['container'], 0 if self.wantobjects else '0')
+        self.assertEqual(widget['container'], 0 wenn self.wantobjects sonst '0')
         self.checkInvalidParam(widget, 'container', 1,
                 errmsg="can't modify -container option after widget is created")
         widget2 = self.create(container=True)
-        self.assertEqual(widget2['container'], 1 if self.wantobjects else '1')
+        self.assertEqual(widget2['container'], 1 wenn self.wantobjects sonst '1')
 
     def test_configure_visual(self):
         widget = self.create()
@@ -91,7 +91,7 @@ klasse ToplevelTest(AbstractToplevelTest, unittest.TestCase):
 
     def test_configure_screen(self):
         widget = self.create()
-        if widget._windowingsystem != 'x11':
+        wenn widget._windowingsystem != 'x11':
             self.skipTest('Not using Tk fuer X11')
         self.assertEqual(widget['screen'], '')
         try:
@@ -121,9 +121,9 @@ klasse FrameTest(AbstractToplevelTest, unittest.TestCase):
         'highlightbackground', 'highlightcolor', 'highlightthickness',
         'padx', 'pady', 'relief', 'takefocus', 'tile', 'visual', 'width',
     )
-    if tk_version < (9, 0):
+    wenn tk_version < (9, 0):
         _no_round = {'padx', 'pady'}
-    else:
+    sonst:
         _no_round = {'borderwidth', 'height', 'highlightthickness', 'padx',
                      'pady', 'width'}
 
@@ -141,9 +141,9 @@ klasse LabelFrameTest(AbstractToplevelTest, unittest.TestCase):
         'labelanchor', 'labelwidget', 'padx', 'pady', 'relief',
         'takefocus', 'text', 'visual', 'width',
     )
-    if tk_version < (9, 0):
+    wenn tk_version < (9, 0):
         _no_round = {'padx', 'pady'}
-    else:
+    sonst:
         _no_round = {'borderwidth', 'height', 'highlightthickness', 'padx',
                      'pady', 'width'}
 
@@ -166,9 +166,9 @@ klasse LabelFrameTest(AbstractToplevelTest, unittest.TestCase):
 # Label, Button, Checkbutton, Radiobutton, MenuButton
 klasse AbstractLabelTest(AbstractWidgetTest, IntegerSizeTests):
     _rounds_pixels = False
-    if tk_version < (9, 0):
+    wenn tk_version < (9, 0):
         _clipped = {}
-    else:
+    sonst:
         _clipped = {'borderwidth', 'insertborderwidth', 'highlightthickness',
                     'padx', 'pady'}
 
@@ -300,9 +300,9 @@ klasse MenubuttonTest(AbstractLabelTest, unittest.TestCase):
         'underline', 'width', 'wraplength',
     )
     _rounds_pixels = (tk_version < (9, 0))
-    if tk_version < (9, 0):
+    wenn tk_version < (9, 0):
         _clipped = {'highlightthickness', 'padx', 'pady'}
-    else:
+    sonst:
         _clipped ={ 'insertborderwidth', 'highlightthickness', 'padx', 'pady'}
 
     def create(self, **kwargs):
@@ -321,17 +321,17 @@ klasse MenubuttonTest(AbstractLabelTest, unittest.TestCase):
         widget = self.create()
         image = tkinter.PhotoImage(master=self.root, name='image1')
         self.checkParam(widget, 'image', image, conv=str)
-        if tk_version < (9, 0):
+        wenn tk_version < (9, 0):
             errmsg = 'image "spam" doesn\'t exist'
-        else:
+        sonst:
             errmsg = 'image "spam" does not exist'
         with self.assertRaises(tkinter.TclError) as cm:
             widget['image'] = 'spam'
-        if errmsg is not None:
+        wenn errmsg is not None:
             self.assertEqual(str(cm.exception), errmsg)
         with self.assertRaises(tkinter.TclError) as cm:
             widget.configure({'image': 'spam'})
-        if errmsg is not None:
+        wenn errmsg is not None:
             self.assertEqual(str(cm.exception), errmsg)
 
     def test_configure_menu(self):
@@ -362,9 +362,9 @@ klasse OptionMenuTest(MenubuttonTest, unittest.TestCase):
 @add_configure_tests(IntegerSizeTests, StandardOptionsTests)
 klasse EntryTest(AbstractWidgetTest, unittest.TestCase):
     _rounds_pixels = (tk_version < (9, 0))
-    if tk_version < (9, 0):
+    wenn tk_version < (9, 0):
         _clipped = {'highlightthickness'}
-    else:
+    sonst:
         _clipped = {'highlightthickness', 'borderwidth', 'insertborderwidth',
                     'selectborderwidth'}
 
@@ -395,17 +395,17 @@ klasse EntryTest(AbstractWidgetTest, unittest.TestCase):
                               0, 1.3, 2.6, 6, '10p')
         self.checkParam(widget, 'insertborderwidth', -2)
         # insertborderwidth is bounded above by a half of insertwidth.
-        expected =  100 // 2 if tk_version < (9, 0) else 60
+        expected =  100 // 2 wenn tk_version < (9, 0) sonst 60
         self.checkParam(widget, 'insertborderwidth', 60, expected=expected)
 
     def test_configure_insertwidth(self):
         widget = self.create()
         self.checkPixelsParam(widget, 'insertwidth', 1.3, 3.6, '10p')
-        if tk_version < (9, 0):
+        wenn tk_version < (9, 0):
             self.checkParam(widget, 'insertwidth', 0.1, expected=2)
             self.checkParam(widget, 'insertwidth', -2, expected=2)
             self.checkParam(widget, 'insertwidth', 0.9, expected=1)
-        else:
+        sonst:
             self.checkParam(widget, 'insertwidth', 0.1)
             self.checkParam(widget, 'insertwidth', -2, expected=0)
             self.checkParam(widget, 'insertwidth', 0.9)
@@ -525,9 +525,9 @@ klasse SpinboxTest(EntryTest, unittest.TestCase):
         widget = self.create()
         self.checkParam(widget, 'to', 100.0)
         self.checkFloatParam(widget, 'from', -10, 10.2, 11.7)
-        if tk_version >= (8, 7):
+        wenn tk_version >= (8, 7):
             self.checkFloatParam(widget, 'from', 200, expected=100)
-        else:
+        sonst:
             self.checkInvalidParam(
                     widget, 'from', 200,
                     errmsg='-to value must be greater than -from value')
@@ -540,9 +540,9 @@ klasse SpinboxTest(EntryTest, unittest.TestCase):
         widget = self.create()
         self.checkParam(widget, 'from', -100.0)
         self.checkFloatParam(widget, 'to', -10, 10.2, 11.7)
-        if tk_version >= (8, 7):
+        wenn tk_version >= (8, 7):
             self.checkFloatParam(widget, 'to', -200, expected=-100)
-        else:
+        sonst:
             self.checkInvalidParam(
                     widget, 'to', -200,
                     errmsg='-to value must be greater than -from value')
@@ -650,9 +650,9 @@ klasse TextTest(AbstractWidgetTest, unittest.TestCase):
         widget = self.create()
         self.checkPixelsParam(widget, 'height', 100, 101.2, 102.6, '3c')
         self.checkParam(widget, 'height', -100,
-                            expected=1 if tk_version < (9, 0) else -100)
+                            expected=1 wenn tk_version < (9, 0) sonst -100)
         self.checkParam(widget, 'height', 0,
-                            expected=1 if tk_version < (9, 0) else 0 )
+                            expected=1 wenn tk_version < (9, 0) sonst 0 )
 
     def test_configure_maxundo(self):
         widget = self.create()
@@ -710,8 +710,8 @@ klasse TextTest(AbstractWidgetTest, unittest.TestCase):
         self.checkParam(widget, 'tabs', (10.2, 20.7, '1i', '2i'))
         self.checkParam(widget, 'tabs', '10.2 20.7 1i 2i',
                         expected=(10.2, 20.7, '1i', '2i')
-                                 if get_tk_patchlevel(self.root) >= (8, 6, 14)
-                                 else ('10.2', '20.7', '1i', '2i'))
+                                 wenn get_tk_patchlevel(self.root) >= (8, 6, 14)
+                                 sonst ('10.2', '20.7', '1i', '2i'))
         self.checkParam(widget, 'tabs', '2c left 4c 6c center',
                         expected=('2c', 'left', '4c', '6c', 'center'))
         self.checkInvalidParam(widget, 'tabs', 'spam',
@@ -760,10 +760,10 @@ klasse CanvasTest(AbstractWidgetTest, unittest.TestCase):
         'yscrollcommand', 'yscrollincrement', 'width',
     )
     _rounds_pixels = True
-    if tk_version < (9, 0):
+    wenn tk_version < (9, 0):
         _noround = {}
         _clipped = {'highlightthickness'}
-    else:
+    sonst:
         _no_round = {'borderwidth', 'height', 'highlightthickness', 'width',
                      'xscrollincrement', 'yscrollincrement'}
         _clipped = {'borderwidth', 'height', 'highlightthickness', 'width',
@@ -1022,9 +1022,9 @@ klasse ListboxTest(AbstractWidgetTest, unittest.TestCase):
         'takefocus', 'width', 'xscrollcommand', 'yscrollcommand',
     )
     _rounds_pixels = (tk_version < (9, 0))
-    if tk_version < (9, 0):
+    wenn tk_version < (9, 0):
         _clipped = {'highlightthickness'}
-    else:
+    sonst:
         _clipped = { 'borderwidth', 'highlightthickness', 'selectborderwidth'}
 
     def create(self, **kwargs):
@@ -1065,9 +1065,9 @@ klasse ListboxTest(AbstractWidgetTest, unittest.TestCase):
             widget.itemconfigure()
         with self.assertRaisesRegex(TclError, 'bad listbox index "red"'):
             widget.itemconfigure('red')
-        if get_tk_patchlevel(self.root) >= (8, 6, 14):
+        wenn get_tk_patchlevel(self.root) >= (8, 6, 14):
             prefix = ('background', '', '', '')
-        else:
+        sonst:
             prefix = ('background', 'background', 'Background', '')
         self.assertEqual(widget.itemconfigure(0, 'background'),
                          (*prefix, 'red'))
@@ -1080,7 +1080,7 @@ klasse ListboxTest(AbstractWidgetTest, unittest.TestCase):
         self.assertIsInstance(d, dict)
         fuer k, v in d.items():
             self.assertIn(len(v), (2, 5))
-            if len(v) == 5:
+            wenn len(v) == 5:
                 self.assertEqual(v, widget.itemconfigure(0, k))
                 self.assertEqual(v[4], widget.itemcget(0, k))
 
@@ -1180,7 +1180,7 @@ klasse ScaleTest(AbstractWidgetTest, unittest.TestCase):
 
     def test_configure_from(self):
         widget = self.create()
-        conv = float if get_tk_patchlevel(self.root) >= (8, 6, 10) else float_round
+        conv = float wenn get_tk_patchlevel(self.root) >= (8, 6, 10) sonst float_round
         self.checkFloatParam(widget, 'from', 100, 14.9, 15.1, conv=conv)
 
     def test_configure_label(self):
@@ -1234,12 +1234,12 @@ klasse ScrollbarTest(AbstractWidgetTest, unittest.TestCase):
         'takefocus', 'troughcolor', 'width',
     )
     _rounds_pixels = True
-    if tk_version >= (9, 0):
+    wenn tk_version >= (9, 0):
         _no_round = {'borderwidth', 'elementborderwidth', 'highlightthickness',
                      'width'}
-    if tk_version < (9, 0):
+    wenn tk_version < (9, 0):
         _clipped = {'highlightthickness'}
-    else:
+    sonst:
         _clipped = {'borderwidth', 'highlightthickness', 'width'}
     _stringify = True
     default_orient = 'vertical'
@@ -1250,7 +1250,7 @@ klasse ScrollbarTest(AbstractWidgetTest, unittest.TestCase):
     def test_configure_elementborderwidth(self):
         widget = self.create()
         self.checkPixelsParam(widget, 'elementborderwidth', 4.3, 5.6, '1m')
-        expected = self._default_pixels if tk_version >= (8, 7) else -2
+        expected = self._default_pixels wenn tk_version >= (8, 7) sonst -2
         self.checkParam(widget, 'elementborderwidth', -2, expected=expected)
 
     def test_configure_orient(self):
@@ -1290,10 +1290,10 @@ klasse PanedWindowTest(AbstractWidgetTest, unittest.TestCase):
         'showhandle', 'width',
     )
     _rounds_pixels = True
-    if tk_version < (9, 0):
+    wenn tk_version < (9, 0):
         _no_round = {'handlesize', 'height', 'proxyborderwidth', 'sashwidth',
                      'selectborderwidth', 'width'}
-    else:
+    sonst:
         _no_round = {'borderwidth', 'handlepad', 'handlesize', 'height',
                      'proxyborderwidth', 'sashpad', 'sashwidth',
                      'selectborderwidth', 'width'}
@@ -1384,7 +1384,7 @@ klasse PanedWindowTest(AbstractWidgetTest, unittest.TestCase):
             self.assertEqual(v[4], p.panecget(b, k))
 
     def check_paneconfigure(self, p, b, name, value, expected):
-        if not self.wantobjects:
+        wenn not self.wantobjects:
             expected = str(expected)
         p.paneconfigure(b, **{name: value})
         self.assertEqual(p.paneconfigure(b, name)[4], expected)
@@ -1426,13 +1426,13 @@ klasse PanedWindowTest(AbstractWidgetTest, unittest.TestCase):
 
     def test_paneconfigure_padx(self):
         p, b, c = self.create2()
-        self.check_paneconfigure(p, b, 'padx', 1.3, 1 if tk_version < (9, 0) else 1.3)
+        self.check_paneconfigure(p, b, 'padx', 1.3, 1 wenn tk_version < (9, 0) sonst 1.3)
         self.check_paneconfigure_bad(p, b, 'padx',
                 EXPECTED_SCREEN_DISTANCE_ERRMSG.format('badValue'))
 
     def test_paneconfigure_pady(self):
         p, b, c = self.create2()
-        self.check_paneconfigure(p, b, 'pady', 1.3, 1 if tk_version < (9, 0) else 1.3)
+        self.check_paneconfigure(p, b, 'pady', 1.3, 1 wenn tk_version < (9, 0) sonst 1.3)
         self.check_paneconfigure_bad(p, b, 'pady',
                 EXPECTED_SCREEN_DISTANCE_ERRMSG.format('badValue'))
 
@@ -1548,9 +1548,9 @@ klasse MessageTest(AbstractWidgetTest, unittest.TestCase):
     )
     _rounds_pixels = (tk_version < (9, 0))
     _no_round = {'padx', 'pady'}
-    if tk_version < (9, 0):
+    wenn tk_version < (9, 0):
         _clipped = {'highlightthickness'}
-    else:
+    sonst:
         _clipped = {'borderwidth', 'highlightthickness', 'padx', 'pady'}
 
     def create(self, **kwargs):
@@ -1563,19 +1563,19 @@ klasse MessageTest(AbstractWidgetTest, unittest.TestCase):
     def test_configure_padx(self):
         widget = self.create()
         self.checkPixelsParam(widget, 'padx', 3, 4.4, 5.6, '12m')
-        expected = -2 if tk_version < (9, 0) else self._default_pixels
+        expected = -2 wenn tk_version < (9, 0) sonst self._default_pixels
         self.checkParam(widget, 'padx', -2, expected=expected)
 
     def test_configure_pady(self):
         widget = self.create()
         self.checkPixelsParam(widget, 'pady', 3, 4.4, 5.6, '12m')
-        expected = -2 if tk_version < (9, 0) else self._default_pixels
+        expected = -2 wenn tk_version < (9, 0) sonst self._default_pixels
         self.checkParam(widget, 'pady', -2, expected=expected)
 
     def test_configure_width(self):
         widget = self.create()
         self.checkPixelsParam(widget, 'width', 402, 403.4, 404.6, 0, '5i')
-        expected = 0 if tk_version >= (8, 7) else -402
+        expected = 0 wenn tk_version >= (8, 7) sonst -402
         self.checkParam(widget, 'width', -402, expected=expected)
 
 
@@ -1588,5 +1588,5 @@ klasse DefaultRootTest(AbstractDefaultRootTest, unittest.TestCase):
         self._test_widget(tkinter.Label)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

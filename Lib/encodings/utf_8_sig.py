@@ -4,7 +4,7 @@ This work similar to UTF-8 with the following changes:
 * On encoding/writing a UTF-8 encoded BOM will be prepended/written as the
   first three bytes.
 
-* On decoding/reading if the first three bytes are a UTF-8 encoded BOM, these
+* On decoding/reading wenn the first three bytes are a UTF-8 encoded BOM, these
   bytes will be skipped.
 """
 import codecs
@@ -17,7 +17,7 @@ def encode(input, errors='strict'):
 
 def decode(input, errors='strict'):
     prefix = 0
-    if input[:3] == codecs.BOM_UTF8:
+    wenn input[:3] == codecs.BOM_UTF8:
         input = input[3:]
         prefix = 3
     (output, consumed) = codecs.utf_8_decode(input, errors, True)
@@ -29,11 +29,11 @@ klasse IncrementalEncoder(codecs.IncrementalEncoder):
         self.first = 1
 
     def encode(self, input, final=False):
-        if self.first:
+        wenn self.first:
             self.first = 0
             return codecs.BOM_UTF8 + \
                    codecs.utf_8_encode(input, self.errors)[0]
-        else:
+        sonst:
             return codecs.utf_8_encode(input, self.errors)[0]
 
     def reset(self):
@@ -52,17 +52,17 @@ klasse IncrementalDecoder(codecs.BufferedIncrementalDecoder):
         self.first = 1
 
     def _buffer_decode(self, input, errors, final):
-        if self.first:
-            if len(input) < 3:
-                if codecs.BOM_UTF8.startswith(input):
-                    # not enough data to decide if this really is a BOM
+        wenn self.first:
+            wenn len(input) < 3:
+                wenn codecs.BOM_UTF8.startswith(input):
+                    # not enough data to decide wenn this really is a BOM
                     # => try again on the next call
                     return ("", 0)
-                else:
+                sonst:
                     self.first = 0
-            else:
+            sonst:
                 self.first = 0
-                if input[:3] == codecs.BOM_UTF8:
+                wenn input[:3] == codecs.BOM_UTF8:
                     (output, consumed) = \
                        codecs.utf_8_decode(input[3:], errors, final)
                     return (output, consumed+3)
@@ -103,12 +103,12 @@ klasse StreamReader(codecs.StreamReader):
             pass
 
     def decode(self, input, errors='strict'):
-        if len(input) < 3:
-            if codecs.BOM_UTF8.startswith(input):
-                # not enough data to decide if this is a BOM
+        wenn len(input) < 3:
+            wenn codecs.BOM_UTF8.startswith(input):
+                # not enough data to decide wenn this is a BOM
                 # => try again on the next call
                 return ("", 0)
-        elif input[:3] == codecs.BOM_UTF8:
+        sowenn input[:3] == codecs.BOM_UTF8:
             self.decode = codecs.utf_8_decode
             (output, consumed) = codecs.utf_8_decode(input[3:],errors)
             return (output, consumed+3)

@@ -40,5 +40,5 @@ klasse DelegatorTest(unittest.TestCase):
         self.assertIs(mydel.delegate, float)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main(verbosity=2, exit=2)

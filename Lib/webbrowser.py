@@ -24,46 +24,46 @@ _os_preferred_browser = None    # The preferred browser
 def register(name, klass, instance=None, *, preferred=False):
     """Register a browser connector."""
     with _lock:
-        if _tryorder is None:
+        wenn _tryorder is None:
             register_standard_browsers()
         _browsers[name.lower()] = [klass, instance]
 
         # Preferred browsers go to the front of the list.
         # Need to match to the default browser returned by xdg-settings, which
         # may be of the form e.g. "firefox.desktop".
-        if preferred or (_os_preferred_browser and f'{name}.desktop' == _os_preferred_browser):
+        wenn preferred or (_os_preferred_browser and f'{name}.desktop' == _os_preferred_browser):
             _tryorder.insert(0, name)
-        else:
+        sonst:
             _tryorder.append(name)
 
 
 def get(using=None):
     """Return a browser launcher instance appropriate fuer the environment."""
-    if _tryorder is None:
+    wenn _tryorder is None:
         with _lock:
-            if _tryorder is None:
+            wenn _tryorder is None:
                 register_standard_browsers()
-    if using is not None:
+    wenn using is not None:
         alternatives = [using]
-    else:
+    sonst:
         alternatives = _tryorder
     fuer browser in alternatives:
-        if '%s' in browser:
+        wenn '%s' in browser:
             # User gave us a command line, split it into name and args
             browser = shlex.split(browser)
-            if browser[-1] == '&':
+            wenn browser[-1] == '&':
                 return BackgroundBrowser(browser[:-1])
-            else:
+            sonst:
                 return GenericBrowser(browser)
-        else:
+        sonst:
             # User gave us a browser name or path.
             try:
                 command = _browsers[browser.lower()]
             except KeyError:
                 command = _synthesize(browser)
-            if command[1] is not None:
+            wenn command[1] is not None:
                 return command[1]
-            elif command[0] is not None:
+            sowenn command[0] is not None:
                 return command[0]()
     raise Error("could not locate runnable browser")
 
@@ -84,13 +84,13 @@ def open(url, new=0, autoraise=True):
     If opening the browser succeeds, return True.
     If there is a problem, return False.
     """
-    if _tryorder is None:
+    wenn _tryorder is None:
         with _lock:
-            if _tryorder is None:
+            wenn _tryorder is None:
                 register_standard_browsers()
     fuer name in _tryorder:
         browser = get(name)
-        if browser.open(url, new, autoraise):
+        wenn browser.open(url, new, autoraise):
             return True
     return False
 
@@ -119,12 +119,12 @@ def _synthesize(browser, *, preferred=False):
     controller to operate using a specific installation of the desired
     browser in this way.
 
-    If we can't create a controller in this way, or if there is no
+    If we can't create a controller in this way, or wenn there is no
     executable fuer the requested browser, return [None, None].
 
     """
     cmd = browser.split()[0]
-    if not shutil.which(cmd):
+    wenn not shutil.which(cmd):
         return [None, None]
     name = os.path.basename(cmd)
     try:
@@ -133,7 +133,7 @@ def _synthesize(browser, *, preferred=False):
         return [None, None]
     # now attempt to clone to fit the new name:
     controller = command[1]
-    if controller and name.lower() == controller.basename:
+    wenn controller and name.lower() == controller.basename:
         import copy
         controller = copy.copy(controller)
         controller.name = browser
@@ -169,10 +169,10 @@ klasse GenericBrowser(BaseBrowser):
        and without remote functionality."""
 
     def __init__(self, name):
-        if isinstance(name, str):
+        wenn isinstance(name, str):
             self.name = name
             self.args = ["%s"]
-        else:
+        sonst:
             # name should be a list with arguments
             self.name = name[0]
             self.args = name[1:]
@@ -183,9 +183,9 @@ klasse GenericBrowser(BaseBrowser):
         cmdline = [self.name] + [arg.replace("%s", url)
                                  fuer arg in self.args]
         try:
-            if sys.platform[:3] == 'win':
+            wenn sys.platform[:3] == 'win':
                 p = subprocess.Popen(cmdline)
-            else:
+            sonst:
                 p = subprocess.Popen(cmdline, close_fds=True)
             return not p.wait()
         except OSError:
@@ -201,9 +201,9 @@ klasse BackgroundBrowser(GenericBrowser):
                                  fuer arg in self.args]
         sys.audit("webbrowser.open", url)
         try:
-            if sys.platform[:3] == 'win':
+            wenn sys.platform[:3] == 'win':
                 p = subprocess.Popen(cmdline)
-            else:
+            sonst:
                 p = subprocess.Popen(cmdline, close_fds=True,
                                      start_new_session=True)
             return p.poll() is None
@@ -230,64 +230,64 @@ klasse UnixBrowser(BaseBrowser):
 
     def _invoke(self, args, remote, autoraise, url=None):
         raise_opt = []
-        if remote and self.raise_opts:
+        wenn remote and self.raise_opts:
             # use autoraise argument only fuer remote invocation
             autoraise = int(autoraise)
             opt = self.raise_opts[autoraise]
-            if opt:
+            wenn opt:
                 raise_opt = [opt]
 
         cmdline = [self.name] + raise_opt + args
 
-        if remote or self.background:
+        wenn remote or self.background:
             inout = subprocess.DEVNULL
-        else:
+        sonst:
             # fuer TTY browsers, we need stdin/out
             inout = None
         p = subprocess.Popen(cmdline, close_fds=True, stdin=inout,
                              stdout=(self.redirect_stdout and inout or None),
                              stderr=inout, start_new_session=True)
-        if remote:
+        wenn remote:
             # wait at most five seconds. If the subprocess is not finished, the
             # remote invocation has (hopefully) started a new instance.
             try:
                 rc = p.wait(5)
-                # if remote call failed, open() will try direct invocation
+                # wenn remote call failed, open() will try direct invocation
                 return not rc
             except subprocess.TimeoutExpired:
                 return True
-        elif self.background:
-            if p.poll() is None:
+        sowenn self.background:
+            wenn p.poll() is None:
                 return True
-            else:
+            sonst:
                 return False
-        else:
+        sonst:
             return not p.wait()
 
     def open(self, url, new=0, autoraise=True):
         sys.audit("webbrowser.open", url)
-        if new == 0:
+        wenn new == 0:
             action = self.remote_action
-        elif new == 1:
+        sowenn new == 1:
             action = self.remote_action_newwin
-        elif new == 2:
-            if self.remote_action_newtab is None:
+        sowenn new == 2:
+            wenn self.remote_action_newtab is None:
                 action = self.remote_action_newwin
-            else:
+            sonst:
                 action = self.remote_action_newtab
-        else:
+        sonst:
             raise Error("Bad 'new' parameter to open(); "
                         f"expected 0, 1, or 2, got {new}")
 
         args = [arg.replace("%s", url).replace("%action", action)
                 fuer arg in self.remote_args]
-        args = [arg fuer arg in args if arg]
+        args = [arg fuer arg in args wenn arg]
         success = self._invoke(args, True, autoraise, url)
-        if not success:
+        wenn not success:
             # remote invocation failed, try straight way
             args = [arg.replace("%s", url) fuer arg in self.args]
             return self._invoke(args, False, False)
-        else:
+        sonst:
             return True
 
 
@@ -358,9 +358,9 @@ klasse Konqueror(BaseBrowser):
     def open(self, url, new=0, autoraise=True):
         sys.audit("webbrowser.open", url)
         # XXX Currently I know no way to prevent KFM from opening a new win.
-        if new == 2:
+        wenn new == 2:
             action = "newTab"
-        else:
+        sonst:
             action = "openURL"
 
         devnull = subprocess.DEVNULL
@@ -372,7 +372,7 @@ klasse Konqueror(BaseBrowser):
         except OSError:
             # fall through to next variant
             pass
-        else:
+        sonst:
             p.wait()
             # kfmclient's return code unfortunately has no meaning as it seems
             return True
@@ -385,8 +385,8 @@ klasse Konqueror(BaseBrowser):
         except OSError:
             # fall through to next variant
             pass
-        else:
-            if p.poll() is None:
+        sonst:
+            wenn p.poll() is None:
                 # Should be running now.
                 return True
 
@@ -397,7 +397,7 @@ klasse Konqueror(BaseBrowser):
                                  start_new_session=True)
         except OSError:
             return False
-        else:
+        sonst:
             return p.poll() is None
 
 
@@ -420,59 +420,59 @@ klasse Edge(UnixBrowser):
 
 def register_X_browsers():
 
-    # use xdg-open if around
-    if shutil.which("xdg-open"):
+    # use xdg-open wenn around
+    wenn shutil.which("xdg-open"):
         register("xdg-open", None, BackgroundBrowser("xdg-open"))
 
     # Opens an appropriate browser fuer the URL scheme according to
     # freedesktop.org settings (GNOME, KDE, XFCE, etc.)
-    if shutil.which("gio"):
+    wenn shutil.which("gio"):
         register("gio", None, BackgroundBrowser(["gio", "open", "--", "%s"]))
 
     xdg_desktop = os.getenv("XDG_CURRENT_DESKTOP", "").split(":")
 
     # The default GNOME3 browser
-    if (("GNOME" in xdg_desktop or
+    wenn (("GNOME" in xdg_desktop or
          "GNOME_DESKTOP_SESSION_ID" in os.environ) and
             shutil.which("gvfs-open")):
         register("gvfs-open", None, BackgroundBrowser("gvfs-open"))
 
     # The default KDE browser
-    if (("KDE" in xdg_desktop or
+    wenn (("KDE" in xdg_desktop or
          "KDE_FULL_SESSION" in os.environ) and
             shutil.which("kfmclient")):
         register("kfmclient", Konqueror, Konqueror("kfmclient"))
 
     # Common symbolic link fuer the default X11 browser
-    if shutil.which("x-www-browser"):
+    wenn shutil.which("x-www-browser"):
         register("x-www-browser", None, BackgroundBrowser("x-www-browser"))
 
     # The Mozilla browsers
     fuer browser in ("firefox", "iceweasel", "seamonkey", "mozilla-firefox",
                     "mozilla"):
-        if shutil.which(browser):
+        wenn shutil.which(browser):
             register(browser, None, Mozilla(browser))
 
     # Konqueror/kfm, the KDE browser.
-    if shutil.which("kfm"):
+    wenn shutil.which("kfm"):
         register("kfm", Konqueror, Konqueror("kfm"))
-    elif shutil.which("konqueror"):
+    sowenn shutil.which("konqueror"):
         register("konqueror", Konqueror, Konqueror("konqueror"))
 
     # Gnome's Epiphany
-    if shutil.which("epiphany"):
+    wenn shutil.which("epiphany"):
         register("epiphany", None, Epiphany("epiphany"))
 
     # Google Chrome/Chromium browsers
     fuer browser in ("google-chrome", "chrome", "chromium", "chromium-browser"):
-        if shutil.which(browser):
+        wenn shutil.which(browser):
             register(browser, None, Chrome(browser))
 
     # Opera, quite popular
-    if shutil.which("opera"):
+    wenn shutil.which("opera"):
         register("opera", None, Opera("opera"))
 
-    if shutil.which("microsoft-edge"):
+    wenn shutil.which("microsoft-edge"):
         register("microsoft-edge", None, Edge("microsoft-edge"))
 
 
@@ -480,7 +480,7 @@ def register_standard_browsers():
     global _tryorder
     _tryorder = []
 
-    if sys.platform == 'darwin':
+    wenn sys.platform == 'darwin':
         register("MacOSX", None, MacOSXOSAScript('default'))
         register("chrome", None, MacOSXOSAScript('google chrome'))
         register("firefox", None, MacOSXOSAScript('firefox'))
@@ -488,14 +488,14 @@ def register_standard_browsers():
         # macOS can use below Unix support (but we prefer using the macOS
         # specific stuff)
 
-    if sys.platform == "ios":
+    wenn sys.platform == "ios":
         register("iosbrowser", None, IOSBrowser(), preferred=True)
 
-    if sys.platform == "serenityos":
+    wenn sys.platform == "serenityos":
         # SerenityOS webbrowser, simply called "Browser".
         register("Browser", None, BackgroundBrowser("Browser"))
 
-    if sys.platform[:3] == "win":
+    wenn sys.platform[:3] == "win":
         # First try to use the default Windows browser
         register("windows-default", WindowsDefault)
 
@@ -508,18 +508,18 @@ def register_standard_browsers():
                               "Microsoft\\Edge\\Application\\msedge.exe")
         fuer browser in ("firefox", "seamonkey", "mozilla", "chrome",
                         "opera", edge64, edge32):
-            if shutil.which(browser):
+            wenn shutil.which(browser):
                 register(browser, None, BackgroundBrowser(browser))
-        if shutil.which("MicrosoftEdge.exe"):
+        wenn shutil.which("MicrosoftEdge.exe"):
             register("microsoft-edge", None, Edge("MicrosoftEdge.exe"))
-    else:
-        # Prefer X browsers if present
+    sonst:
+        # Prefer X browsers wenn present
         #
         # NOTE: Do not check fuer X11 browser on macOS,
         # XQuartz installation sets a DISPLAY environment variable and will
         # autostart when someone tries to access the display. Mac users in
         # general don't need an X11 browser.
-        if sys.platform != "darwin" and (os.environ.get("DISPLAY") or os.environ.get("WAYLAND_DISPLAY")):
+        wenn sys.platform != "darwin" and (os.environ.get("DISPLAY") or os.environ.get("WAYLAND_DISPLAY")):
             try:
                 cmd = "xdg-settings get default-web-browser".split()
                 raw_result = subprocess.check_output(cmd, stderr=subprocess.DEVNULL)
@@ -527,39 +527,39 @@ def register_standard_browsers():
             except (FileNotFoundError, subprocess.CalledProcessError,
                     PermissionError, NotADirectoryError):
                 pass
-            else:
+            sonst:
                 global _os_preferred_browser
                 _os_preferred_browser = result
 
             register_X_browsers()
 
         # Also try console browsers
-        if os.environ.get("TERM"):
+        wenn os.environ.get("TERM"):
             # Common symbolic link fuer the default text-based browser
-            if shutil.which("www-browser"):
+            wenn shutil.which("www-browser"):
                 register("www-browser", None, GenericBrowser("www-browser"))
             # The Links/elinks browsers <http://links.twibright.com/>
-            if shutil.which("links"):
+            wenn shutil.which("links"):
                 register("links", None, GenericBrowser("links"))
-            if shutil.which("elinks"):
+            wenn shutil.which("elinks"):
                 register("elinks", None, Elinks("elinks"))
             # The Lynx browser <https://lynx.invisible-island.net/>, <http://lynx.browser.org/>
-            if shutil.which("lynx"):
+            wenn shutil.which("lynx"):
                 register("lynx", None, GenericBrowser("lynx"))
             # The w3m browser <http://w3m.sourceforge.net/>
-            if shutil.which("w3m"):
+            wenn shutil.which("w3m"):
                 register("w3m", None, GenericBrowser("w3m"))
 
     # OK, now that we know what the default preference orders fuer each
     # platform are, allow user to override them with the BROWSER variable.
-    if "BROWSER" in os.environ:
+    wenn "BROWSER" in os.environ:
         userchoices = os.environ["BROWSER"].split(os.pathsep)
         userchoices.reverse()
 
-        # Treat choices in same way as if passed into get() but do register
+        # Treat choices in same way as wenn passed into get() but do register
         # and prepend to _tryorder
         fuer cmdline in userchoices:
-            if all(x not in cmdline fuer x in " \t"):
+            wenn all(x not in cmdline fuer x in " \t"):
                 # Assume this is the name of a registered command, use
                 # that unless it is a GenericBrowser.
                 try:
@@ -567,24 +567,24 @@ def register_standard_browsers():
                 except KeyError:
                     pass
 
-                else:
-                    if not isinstance(command[1], GenericBrowser):
+                sonst:
+                    wenn not isinstance(command[1], GenericBrowser):
                         _tryorder.insert(0, cmdline.lower())
                         continue
 
-            if cmdline != '':
+            wenn cmdline != '':
                 cmd = _synthesize(cmdline, preferred=True)
-                if cmd[1] is None:
+                wenn cmd[1] is None:
                     register(cmdline, None, GenericBrowser(cmdline), preferred=True)
 
-    # what to do if _tryorder is now empty?
+    # what to do wenn _tryorder is now empty?
 
 
 #
 # Platform support fuer Windows
 #
 
-if sys.platform[:3] == "win":
+wenn sys.platform[:3] == "win":
     klasse WindowsDefault(BaseBrowser):
         def open(self, url, new=0, autoraise=True):
             sys.audit("webbrowser.open", url)
@@ -594,14 +594,14 @@ if sys.platform[:3] == "win":
                 # [Error 22] No application is associated with the specified
                 # file fuer this operation: '<URL>'
                 return False
-            else:
+            sonst:
                 return True
 
 #
 # Platform support fuer macOS
 #
 
-if sys.platform == 'darwin':
+wenn sys.platform == 'darwin':
     klasse MacOSXOSAScript(BaseBrowser):
         def __init__(self, name='default'):
             super().__init__(name)
@@ -609,13 +609,13 @@ if sys.platform == 'darwin':
         def open(self, url, new=0, autoraise=True):
             sys.audit("webbrowser.open", url)
             url = url.replace('"', '%22')
-            if self.name == 'default':
+            wenn self.name == 'default':
                 proto, _sep, _rest = url.partition(":")
-                if _sep and proto.lower() in {"http", "https"}:
+                wenn _sep and proto.lower() in {"http", "https"}:
                     # default web URL, don't need to lookup browser
                     script = f'open location "{url}"'
-                else:
-                    # if not a web URL, need to lookup default browser to ensure a browser is launched
+                sonst:
+                    # wenn not a web URL, need to lookup default browser to ensure a browser is launched
                     # this should always work, but is overkill to lookup http handler
                     # before launching http
                     script = f"""
@@ -636,7 +636,7 @@ if sys.platform == 'darwin':
                             open location "{url}"
                         end tell
                     """
-            else:
+            sonst:
                 script = f'''
                    tell application "{self.name}"
                        activate
@@ -645,7 +645,7 @@ if sys.platform == 'darwin':
                    '''
 
             osapipe = os.popen("osascript", "w")
-            if osapipe is None:
+            wenn osapipe is None:
                 return False
 
             osapipe.write(script)
@@ -655,9 +655,9 @@ if sys.platform == 'darwin':
 #
 # Platform support fuer iOS
 #
-if sys.platform == "ios":
+wenn sys.platform == "ios":
     from _ios_support import objc
-    if objc:
+    wenn objc:
         # If objc exists, we know ctypes is also importable.
         from ctypes import c_void_p, c_char_p, c_ulong
 
@@ -665,7 +665,7 @@ if sys.platform == "ios":
         def open(self, url, new=0, autoraise=True):
             sys.audit("webbrowser.open", url)
             # If ctypes isn't available, we can't open a browser
-            if objc is None:
+            wenn objc is None:
                 return False
 
             # All the messages in this call return object references.
@@ -745,5 +745,5 @@ def main(arg_list: list[str] | None = None):
     print("\a")
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     main()

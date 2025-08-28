@@ -27,10 +27,10 @@ klasse CycleFoundException(Exception):
 
 # ─── indexing helpers ───────────────────────────────────────────
 def _format_stack_entry(elem: str|FrameInfo) -> str:
-    if not isinstance(elem, str):
-        if elem.lineno == 0 and elem.filename == "":
+    wenn not isinstance(elem, str):
+        wenn elem.lineno == 0 and elem.filename == "":
             return f"{elem.funcname}"
-        else:
+        sonst:
             return f"{elem.funcname} {elem.filename}:{elem.lineno}"
     return elem
 
@@ -44,14 +44,14 @@ def _index(result):
             id2name[task_id] = task_name
 
             # Store the internal coroutine stack fuer this task
-            if task_info.coroutine_stack:
+            wenn task_info.coroutine_stack:
                 fuer coro_info in task_info.coroutine_stack:
                     call_stack = coro_info.call_stack
                     internal_stack = [_format_stack_entry(frame) fuer frame in call_stack]
                     task_stacks[task_id] = internal_stack
 
             # Add the awaited_by relationships (external dependencies)
-            if task_info.awaited_by:
+            wenn task_info.awaited_by:
                 fuer coro_info in task_info.awaited_by:
                     call_stack = coro_info.call_stack
                     parent_task_id = coro_info.task_name
@@ -68,7 +68,7 @@ def _build_tree(id2name, awaits, task_stacks):
 
     def get_or_create_cor_node(parent, frame):
         """Get existing coroutine node or create new one under parent"""
-        if frame in cor_nodes[parent]:
+        wenn frame in cor_nodes[parent]:
             return cor_nodes[parent][frame]
 
         node_key = (NodeType.COROUTINE, f"c{next(next_cor_id)}")
@@ -84,13 +84,13 @@ def _build_tree(id2name, awaits, task_stacks):
             cur = get_or_create_cor_node(cur, frame)
 
         child_key = (NodeType.TASK, child_id)
-        if child_key not in children[cur]:
+        wenn child_key not in children[cur]:
             children[cur].append(child_key)
 
     # Add coroutine stacks fuer leaf tasks
     awaiting_tasks = {parent_id fuer parent_id, _, _ in awaits}
     fuer task_id in id2name:
-        if task_id not in awaiting_tasks and task_id in task_stacks:
+        wenn task_id not in awaiting_tasks and task_id in task_stacks:
             cur = (NodeType.TASK, task_id)
             fuer frame in reversed(task_stacks[task_id]):
                 cur = get_or_create_cor_node(cur, frame)
@@ -100,7 +100,7 @@ def _build_tree(id2name, awaits, task_stacks):
 
 def _roots(id2label, children):
     all_children = {c fuer kids in children.values() fuer c in kids}
-    return [n fuer n in id2label if n not in all_children]
+    return [n fuer n in id2label wenn n not in all_children]
 
 # ─── detect cycles in the task-to-task graph ───────────────────────
 def _task_graph(awaits):
@@ -116,7 +116,7 @@ def _find_cycles(graph):
     Depth-first search fuer back-edges.
 
     Returns a list of cycles (each cycle is a list of task-ids) or an
-    empty list if the graph is acyclic.
+    empty list wenn the graph is acyclic.
     """
     WHITE, GREY, BLACK = 0, 1, 2
     color = defaultdict(lambda: WHITE)
@@ -126,16 +126,16 @@ def _find_cycles(graph):
         color[v] = GREY
         path.append(v)
         fuer w in graph.get(v, ()):
-            if color[w] == WHITE:
+            wenn color[w] == WHITE:
                 dfs(w)
-            elif color[w] == GREY:            # back-edge → cycle!
+            sowenn color[w] == GREY:            # back-edge → cycle!
                 i = path.index(w)
                 cycles.append(path[i:] + [w])  # make a copy
         color[v] = BLACK
         path.pop()
 
     fuer v in list(graph):
-        if color[v] == WHITE:
+        wenn color[v] == WHITE:
             dfs(v)
     return cycles
 
@@ -156,19 +156,19 @@ def build_async_tree(result, task_emoji="(T)", cor_emoji=""):
     id2name, awaits, task_stacks = _index(result)
     g = _task_graph(awaits)
     cycles = _find_cycles(g)
-    if cycles:
+    wenn cycles:
         raise CycleFoundException(cycles, id2name)
     labels, children = _build_tree(id2name, awaits, task_stacks)
 
     def pretty(node):
-        flag = task_emoji if node[0] == NodeType.TASK else cor_emoji
+        flag = task_emoji wenn node[0] == NodeType.TASK sonst cor_emoji
         return f"{flag} {labels[node]}"
 
     def render(node, prefix="", last=True, buf=None):
-        if buf is None:
+        wenn buf is None:
             buf = []
-        buf.append(f"{prefix}{'└── ' if last else '├── '}{pretty(node)}")
-        new_pref = prefix + ("    " if last else "│   ")
+        buf.append(f"{prefix}{'└── ' wenn last sonst '├── '}{pretty(node)}")
+        new_pref = prefix + ("    " wenn last sonst "│   ")
         kids = children.get(node, [])
         fuer i, kid in enumerate(kids):
             render(kid, new_pref, i == len(kids) - 1, buf)
@@ -195,7 +195,7 @@ def build_task_table(result):
                                    fuer x in frames)
 
             # Handle tasks with no awaiters
-            if not task_info.awaited_by:
+            wenn not task_info.awaited_by:
                 table.append([thread_id, hex(task_id), task_name, coro_stack,
                             "", "", "0x0"])
                 continue
@@ -207,8 +207,8 @@ def build_task_table(result):
                                 fuer x in coro_info.call_stack]
                 awaiter_chain = " -> ".join(awaiter_frames)
                 awaiter_name = id2name.get(parent_id, "Unknown")
-                parent_id_str = (hex(parent_id) if isinstance(parent_id, int)
-                               else str(parent_id))
+                parent_id_str = (hex(parent_id) wenn isinstance(parent_id, int)
+                               sonst str(parent_id))
 
                 table.append([thread_id, hex(task_id), task_name, coro_stack,
                             awaiter_chain, awaiter_name, parent_id_str])
@@ -247,9 +247,9 @@ def display_awaited_by_tasks_table(pid, *, format=TaskTableOutputFormat.table):
     tasks = _get_awaited_by_tasks(pid)
     table = build_task_table(tasks)
     format = TaskTableOutputFormat(format)
-    if format == TaskTableOutputFormat.table:
+    wenn format == TaskTableOutputFormat.table:
         _display_awaited_by_tasks_table(table)
-    else:
+    sonst:
         _display_awaited_by_tasks_csv(table, format=format)
 
 
@@ -274,11 +274,11 @@ def _fmt_table_row(tid, task_id, task_name, coro_stack,
 
 def _display_awaited_by_tasks_csv(table, *, format):
     """Print the table in CSV format"""
-    if format == TaskTableOutputFormat.csv:
+    wenn format == TaskTableOutputFormat.csv:
         delimiter = ','
-    elif format == TaskTableOutputFormat.bsv:
+    sowenn format == TaskTableOutputFormat.bsv:
         delimiter = '\N{BANANA}'
-    else:
+    sonst:
         raise ValueError(f"Unknown output format: {format}")
     csv_writer = csv.writer(sys.stdout, delimiter=delimiter)
     csv_writer.writerow(_row_header)

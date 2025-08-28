@@ -61,7 +61,7 @@ from test.test_inspect import inspect_deferred_annotations
 #       zipimport in the test_zipimport_support test module.
 
 modfile = mod.__file__
-if modfile.endswith(('c', 'o')):
+wenn modfile.endswith(('c', 'o')):
     modfile = modfile[:-1]
 
 # Normalize file names: on Windows, the case of file names of compiled
@@ -84,7 +84,7 @@ def signatures_with_lexicographic_keyword_only_parameters():
         p = []
         bit = 1
         fuer j in range(len(parameters)):
-            if i & (bit << j):
+            wenn i & (bit << j):
                 p.append(parameters[j])
         fn_text = "def foo(*, " + ", ".join(p) + "): pass"
         symbols = {}
@@ -112,14 +112,14 @@ klasse IsTestBase(unittest.TestCase):
         self.assertTrue(predicate(obj), '%s(%s)' % (predicate.__name__, exp))
 
         fuer other in self.predicates - set([predicate]):
-            if (predicate == inspect.isgeneratorfunction or \
+            wenn (predicate == inspect.isgeneratorfunction or \
                predicate == inspect.isasyncgenfunction or \
                predicate == inspect.iscoroutinefunction) and \
                other == inspect.isfunction:
                 continue
-            if predicate == inspect.ispackage and other == inspect.ismodule:
+            wenn predicate == inspect.ispackage and other == inspect.ismodule:
                 self.assertTrue(predicate(obj), '%s(%s)' % (predicate.__name__, exp))
-            else:
+            sonst:
                 self.assertFalse(other(obj), 'not %s(%s)' % (other.__name__, exp))
 
     def test__all__(self):
@@ -162,10 +162,10 @@ klasse TestPredicates(IsTestBase):
             tb = e.__traceback__
             self.istest(inspect.isframe, 'tb.tb_frame')
             self.istest(inspect.istraceback, 'tb')
-            if hasattr(types, 'GetSetDescriptorType'):
+            wenn hasattr(types, 'GetSetDescriptorType'):
                 self.istest(inspect.isgetsetdescriptor,
                             'type(tb.tb_frame).f_locals')
-            else:
+            sonst:
                 self.assertFalse(inspect.isgetsetdescriptor(type(tb.tb_frame).f_locals))
         finally:
             # Clear traceback and all the frames and local variables hanging to it.
@@ -189,9 +189,9 @@ klasse TestPredicates(IsTestBase):
             self.istest(inspect.iscoroutine, 'coroutine_function_example(1)')
             self.istest(inspect.iscoroutinefunction, 'coroutine_function_example')
 
-        if hasattr(types, 'MemberDescriptorType'):
+        wenn hasattr(types, 'MemberDescriptorType'):
             self.istest(inspect.ismemberdescriptor, 'datetime.timedelta.days')
-        else:
+        sonst:
             self.assertFalse(inspect.ismemberdescriptor(datetime.timedelta.days))
         self.istest(inspect.ismethodwrapper, "object().__str__")
         self.istest(inspect.ismethodwrapper, "object().__eq__")
@@ -579,7 +579,7 @@ klasse GetSourceBase(unittest.TestCase):
 
     def sourcerange(self, top, bottom):
         lines = self.source.split("\n")
-        return "\n".join(lines[top-1:bottom]) + ("\n" if bottom else "")
+        return "\n".join(lines[top-1:bottom]) + ("\n" wenn bottom sonst "")
 
     def assertSourceEqual(self, obj, top, bottom):
         self.assertEqual(inspect.getsource(obj),
@@ -835,9 +835,9 @@ klasse TestRetrievingSourceCode(GetSourceBase):
         fn, source = '<test>', 'def x(): pass\n'
         getlines = linecache.getlines
         def monkey(filename, module_globals=None):
-            if filename == fn:
+            wenn filename == fn:
                 return source.splitlines(keepends=True)
-            else:
+            sonst:
                 return getlines(filename, module_globals)
         linecache.getlines = monkey
         try:
@@ -893,7 +893,7 @@ klasse TestGetsourceStdlib(unittest.TestCase):
             lines, lineno = inspect.getsourcelines(abc.ABCMeta)
         except OSError:
             pass
-        else:
+        sonst:
             self.assertEqual(lines[0], '    klasse ABCMeta(type):\n')
             self.assertEqual(src.splitlines(True), lines)
 
@@ -1396,10 +1396,10 @@ klasse TestClassesAndFunctions(unittest.TestCase):
         try:
             import _stat  # noqa: F401
         except ImportError:
-            # if the _stat extension is not available, stat.S_IMODE() is
+            # wenn the _stat extension is not available, stat.S_IMODE() is
             # implemented in Python, not in C
             pass
-        else:
+        sonst:
             tests.append((stat.S_IMODE, meth_o))
         fuer builtin, template in tests:
             with self.subTest(builtin):
@@ -1503,7 +1503,7 @@ klasse TestClassesAndFunctions(unittest.TestCase):
         # attributes classified.
         fuer name in dir(__builtins__):
             builtin = getattr(__builtins__, name)
-            if isinstance(builtin, type):
+            wenn isinstance(builtin, type):
                 inspect.classify_class_attrs(builtin)
 
         attrs = attrs_wo_objs(bool)
@@ -1521,7 +1521,7 @@ klasse TestClassesAndFunctions(unittest.TestCase):
     def test_classify_DynamicClassAttribute(self):
         klasse Meta(type):
             def __getattr__(self, name):
-                if name == 'ham':
+                wenn name == 'ham':
                     return 'spam'
                 return super().__getattr__(name)
         klasse VA(metaclass=Meta):
@@ -1563,7 +1563,7 @@ klasse TestClassesAndFunctions(unittest.TestCase):
             def __dir__(cls):
                 return ['__class__', '__module__', '__name__', 'BOOM']
             def __getattr__(self, name):
-                if name =='BOOM':
+                wenn name =='BOOM':
                     return 42
                 return super().__getattr(name)
         klasse Class(metaclass=Meta):
@@ -1576,14 +1576,14 @@ klasse TestClassesAndFunctions(unittest.TestCase):
             def __dir__(cls):
                 return ['__class__', '__module__', '__name__', 'one']
             def __getattr__(self, name):
-                if name =='one':
+                wenn name =='one':
                     return 1
                 return super().__getattr__(name)
         klasse Meta2(type):
             def __dir__(cls):
                 return ['__class__', '__module__', '__name__', 'two']
             def __getattr__(self, name):
-                if name =='two':
+                wenn name =='two':
                     return 2
                 return super().__getattr__(name)
         klasse Meta3(Meta1, Meta2):
@@ -1591,7 +1591,7 @@ klasse TestClassesAndFunctions(unittest.TestCase):
                 return list(sorted(set(['__class__', '__module__', '__name__', 'three'] +
                     Meta1.__dir__(cls) + Meta2.__dir__(cls))))
             def __getattr__(self, name):
-                if name =='three':
+                wenn name =='three':
                     return 3
                 return super().__getattr__(name)
         klasse Class1(metaclass=Meta1):
@@ -1626,7 +1626,7 @@ klasse TestClassesAndFunctions(unittest.TestCase):
             klasse Empty(object):
                 pass
             def wrapped(x):
-                if '__name__' in dir(x) and hasattr(Empty, x.__name__):
+                wenn '__name__' in dir(x) and hasattr(Empty, x.__name__):
                     return False
                 return pred(x)
             return wrapped
@@ -1678,7 +1678,7 @@ klasse TestClassesAndFunctions(unittest.TestCase):
 
     def test_getmembers_custom_broken_dir(self):
         # inspect.getmembers calls `dir()` on the passed object inside.
-        # if `__dir__` mentions some non-existent attribute,
+        # wenn `__dir__` mentions some non-existent attribute,
         # we still need to return others correctly.
         klasse BrokenDir:
             existing = 1
@@ -1711,7 +1711,7 @@ klasse TestClassesAndFunctions(unittest.TestCase):
     def test_getmembers_VirtualAttribute(self):
         klasse M(type):
             def __getattr__(cls, name):
-                if name == 'eggs':
+                wenn name == 'eggs':
                     return 'scrambled'
                 return super().__getattr__(name)
         klasse A(metaclass=M):
@@ -2087,14 +2087,14 @@ klasse TestGetcallargsFunctions(unittest.TestCase):
             eval('func(%s)' % call_param_string, None, locs)
         except Exception as e:
             ex1 = e
-        else:
+        sonst:
             self.fail('Exception not raised')
         try:
             eval('inspect.getcallargs(func, %s)' % call_param_string, None,
                  locs)
         except Exception as e:
             ex2 = e
-        else:
+        sonst:
             self.fail('Exception not raised')
         self.assertIs(type(ex1), type(ex2))
         self.assertEqual(str(ex1), str(ex2))
@@ -2430,7 +2430,7 @@ klasse TestGetattrStatic(unittest.TestCase):
 
         klasse OtherThing(Thing):
             pass
-        # it would be nice if this worked...
+        # it would be nice wenn this worked...
         # we get the descriptor instead of the instance attribute
         self.assertEqual(inspect.getattr_static(OtherThing(), 'x'), Thing.x)
 
@@ -2447,7 +2447,7 @@ klasse TestGetattrStatic(unittest.TestCase):
         foo.__dict__['d'] = 1
         self.assertEqual(inspect.getattr_static(foo, 'd'), 1)
 
-        # if the descriptor is a data-descriptor we should return the
+        # wenn the descriptor is a data-descriptor we should return the
         # descriptor
         descriptor.__set__ = lambda s, i, v: None
         self.assertEqual(inspect.getattr_static(foo, 'd'), Foo.__dict__['d'])
@@ -2701,7 +2701,7 @@ klasse TestGetGeneratorState(unittest.TestCase):
         def each(lst, a=None):
             b=(1, 2, 3)
             fuer v in lst:
-                if v == 3:
+                wenn v == 3:
                     c = 12
                 yield v
 
@@ -2878,7 +2878,7 @@ klasse TestGetAsyncGenState(unittest.IsolatedAsyncioTestCase):
         async def each(lst, a=None):
             b=(1, 2, 3)
             fuer v in lst:
-                if v == 3:
+                wenn v == 3:
                     c = 12
                 yield v
 
@@ -2936,13 +2936,13 @@ klasse TestSignatureObject(unittest.TestCase):
     def signature(func, **kw):
         sig = inspect.signature(func, **kw)
         return (tuple((param.name,
-                       (... if param.default is param.empty else param.default),
-                       (... if param.annotation is param.empty
-                                                        else param.annotation),
+                       (... wenn param.default is param.empty sonst param.default),
+                       (... wenn param.annotation is param.empty
+                                                        sonst param.annotation),
                        str(param.kind).lower())
                                     fuer param in sig.parameters.values()),
-                (... if sig.return_annotation is sig.empty
-                                            else sig.return_annotation))
+                (... wenn sig.return_annotation is sig.empty
+                                            sonst sig.return_annotation))
 
     def test_signature_object(self):
         S = inspect.Signature
@@ -3155,7 +3155,7 @@ klasse TestSignatureObject(unittest.TestCase):
             """Use this to test bound methods or normal callables (things that don't expect self)"""
             signature = inspect.signature(o)
             self.assertTrue(isinstance(signature, inspect.Signature))
-            if signature.parameters:
+            wenn signature.parameters:
                 self.assertNotEqual(list(signature.parameters.values())[0].name, 'self')
             return signature
 
@@ -3284,10 +3284,10 @@ klasse TestSignatureObject(unittest.TestCase):
         try:
             import _stat  # noqa: F401
         except ImportError:
-            # if the _stat extension is not available, stat.S_IMODE() is
+            # wenn the _stat extension is not available, stat.S_IMODE() is
             # implemented in Python, not in C
             pass
-        else:
+        sonst:
             tests.append((stat.S_IMODE, meth_o))
         fuer builtin, template in tests:
             with self.subTest(builtin):
@@ -3346,7 +3346,7 @@ klasse TestSignatureObject(unittest.TestCase):
         # Test with cython-like builtins:
         _orig_isdesc = inspect.ismethoddescriptor
         def _isdesc(obj):
-            if hasattr(obj, '_builtinmock'):
+            wenn hasattr(obj, '_builtinmock'):
                 return True
             return _orig_isdesc(obj)
 
@@ -3418,7 +3418,7 @@ klasse TestSignatureObject(unittest.TestCase):
                           int))
 
     def test_signature_on_classmethod(self):
-        if not support.MISSING_C_DOCSTRINGS:
+        wenn not support.MISSING_C_DOCSTRINGS:
             self.assertEqual(self.signature(classmethod),
                             ((('function', ..., ..., "positional_only"),),
                             ...))
@@ -3441,7 +3441,7 @@ klasse TestSignatureObject(unittest.TestCase):
                           ...))
 
     def test_signature_on_staticmethod(self):
-        if not support.MISSING_C_DOCSTRINGS:
+        wenn not support.MISSING_C_DOCSTRINGS:
             self.assertEqual(self.signature(staticmethod),
                             ((('function', ..., ..., "positional_only"),),
                             ...))
@@ -3961,7 +3961,7 @@ klasse TestSignatureObject(unittest.TestCase):
 
             self.assertEqual(C(3), 8)
             self.assertEqual(C(3, 7), 1)
-            if not support.MISSING_C_DOCSTRINGS:
+            wenn not support.MISSING_C_DOCSTRINGS:
                 # BUG: Returns '<Signature (b)>'
                 with self.assertRaises(AssertionError):
                     self.assertEqual(self.signature(C), self.signature((0).__pow__))
@@ -4399,7 +4399,7 @@ klasse TestSignatureObject(unittest.TestCase):
                 __call__ = (2).__pow__
 
             self.assertEqual(C()(3), 8)
-            if not support.MISSING_C_DOCSTRINGS:
+            wenn not support.MISSING_C_DOCSTRINGS:
                 self.assertEqual(self.signature(C()), self.signature((0).__pow__))
 
         with self.subTest('ClassMethodDescriptorType'):
@@ -4409,7 +4409,7 @@ klasse TestSignatureObject(unittest.TestCase):
             res = C()([1, 2], 3)
             self.assertEqual(res, {1: 3, 2: 3})
             self.assertEqual(type(res), C)
-            if not support.MISSING_C_DOCSTRINGS:
+            wenn not support.MISSING_C_DOCSTRINGS:
                 self.assertEqual(self.signature(C()), self.signature(dict.fromkeys))
 
         with self.subTest('MethodDescriptorType'):
@@ -4424,7 +4424,7 @@ klasse TestSignatureObject(unittest.TestCase):
                 __call__ = int.__pow__
 
             self.assertEqual(C(2)(3), 8)
-            if not support.MISSING_C_DOCSTRINGS:
+            wenn not support.MISSING_C_DOCSTRINGS:
                 self.assertEqual(self.signature(C()), self.signature((0).__pow__))
 
         with self.subTest('MemberDescriptorType'):
@@ -4443,7 +4443,7 @@ klasse TestSignatureObject(unittest.TestCase):
             def __call__(self, *args, **kwargs):
                 pass
 
-        if not support.MISSING_C_DOCSTRINGS:
+        wenn not support.MISSING_C_DOCSTRINGS:
             self.assertEqual(self.signature(C), ((), ...))
         self.assertEqual(self.signature(C()),
                          ((('a', ..., ..., "positional_only"),
@@ -4914,7 +4914,7 @@ klasse TestSignatureObject(unittest.TestCase):
                             par('c', PORK, annotation="'MyClass'"),
                         )))
 
-                if not MISSING_C_DOCSTRINGS:
+                wenn not MISSING_C_DOCSTRINGS:
                     self.assertEqual(signature_func(isa.UnannotatedClass), sig())
                 self.assertEqual(signature_func(isa.unannotated_function),
                     sig(
@@ -5708,20 +5708,20 @@ klasse TestSignatureDefinitions(unittest.TestCase):
         try:
             names = set(module.__all__)
         except AttributeError:
-            names = set(name fuer name in ns if self.is_public(name))
+            names = set(name fuer name in ns wenn self.is_public(name))
         fuer name, obj in sorted(ns.items()):
-            if name not in names:
+            wenn name not in names:
                 continue
-            if not callable(obj):
+            wenn not callable(obj):
                 continue
-            if (isinstance(obj, type) and
+            wenn (isinstance(obj, type) and
                 issubclass(obj, BaseException) and
                 name not in good_exceptions):
                 no_signature.add(name)
-            if name not in no_signature and name not in unsupported_signature:
+            wenn name not in no_signature and name not in unsupported_signature:
                 with self.subTest('supported', builtin=name):
                     self.assertIsNotNone(inspect.signature(obj))
-            if isinstance(obj, type):
+            wenn isinstance(obj, type):
                 with self.subTest(type=name):
                     self._test_builtin_methods_have_signatures(obj,
                             methods_no_signature.get(name, ()),
@@ -5745,9 +5745,9 @@ klasse TestSignatureDefinitions(unittest.TestCase):
         ns = vars(cls)
         fuer name in ns:
             obj = getattr(cls, name, None)
-            if not callable(obj) or isinstance(obj, type):
+            wenn not callable(obj) or isinstance(obj, type):
                 continue
-            if name not in no_signature and name not in unsupported_signature:
+            wenn name not in no_signature and name not in unsupported_signature:
                 with self.subTest('supported', method=name):
                     self.assertIsNotNone(inspect.signature(obj))
         fuer name in no_signature:
@@ -5801,7 +5801,7 @@ klasse TestSignatureDefinitions(unittest.TestCase):
     def test_sys_module_has_signatures(self):
         no_signature = {'getsizeof', 'set_asyncgen_hooks'}
         no_signature |= {name fuer name in ['getobjects']
-                         if hasattr(sys, name)}
+                         wenn hasattr(sys, name)}
         self._test_module_has_signatures(sys, no_signature)
 
     def test_abc_module_has_signatures(self):
@@ -5838,7 +5838,7 @@ klasse TestSignatureDefinitions(unittest.TestCase):
         self._test_module_has_signatures(collections.abc)
 
     def test_datetime_module_has_signatures(self):
-        # Only test if the C implementation is available.
+        # Only test wenn the C implementation is available.
         import_helper.import_module('_datetime')
         import datetime
         no_signature = {'tzinfo'}
@@ -5860,7 +5860,7 @@ klasse TestSignatureDefinitions(unittest.TestCase):
         import faulthandler
         unsupported_signature = {'dump_traceback', 'dump_traceback_later', 'enable', 'dump_c_stack'}
         unsupported_signature |= {name fuer name in ['register']
-                                  if hasattr(faulthandler, name)}
+                                  wenn hasattr(faulthandler, name)}
         self._test_module_has_signatures(faulthandler, unsupported_signature=unsupported_signature)
 
     def test_functools_module_has_signatures(self):
@@ -5901,7 +5901,7 @@ klasse TestSignatureDefinitions(unittest.TestCase):
         unsupported_signature |= {name fuer name in
             ['get_terminal_size', 'link', 'posix_spawn', 'posix_spawnp',
              'register_at_fork', 'startfile']
-            if hasattr(os, name)}
+            wenn hasattr(os, name)}
         self._test_module_has_signatures(os, unsupported_signature=unsupported_signature)
 
     def test_pwd_module_has_signatures(self):
@@ -5953,7 +5953,7 @@ klasse TestSignatureDefinitions(unittest.TestCase):
         no_signature |= {name fuer name in
             ['clock_getres', 'clock_settime', 'clock_settime_ns',
              'pthread_getcpuclockid']
-            if hasattr(time, name)}
+            wenn hasattr(time, name)}
         self._test_module_has_signatures(time, no_signature)
 
     def test_tokenize_module_has_signatures(self):
@@ -6037,9 +6037,9 @@ klasse NTimesUnwrappable:
 
     @property
     def __wrapped__(self):
-        if self.n <= 0:
+        wenn self.n <= 0:
             raise Exception("Unwrapped too many times")
-        if self._next is None:
+        wenn self._next is None:
             self._next = NTimesUnwrappable(self.n - 1)
         return self._next
 
@@ -6233,7 +6233,7 @@ klasse TestRepl(unittest.TestCase):
         process.stdin.write(source)
         output = kill_python(process)
 
-        if process.returncode != 0:
+        wenn process.returncode != 0:
             raise ValueError("Process didn't exit properly.")
         return output
 
@@ -6254,5 +6254,5 @@ klasse TestRepl(unittest.TestCase):
 
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

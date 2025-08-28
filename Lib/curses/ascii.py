@@ -46,9 +46,9 @@ controlnames = [
 ]
 
 def _ctoi(c):
-    if isinstance(c, str):
+    wenn isinstance(c, str):
         return ord(c)
-    else:
+    sonst:
         return c
 
 def isalnum(c): return isalpha(c) or isdigit(c)
@@ -69,31 +69,31 @@ def isctrl(c): return 0 <= _ctoi(c) < 32
 def ismeta(c): return _ctoi(c) > 127
 
 def ascii(c):
-    if isinstance(c, str):
+    wenn isinstance(c, str):
         return chr(_ctoi(c) & 0x7f)
-    else:
+    sonst:
         return _ctoi(c) & 0x7f
 
 def ctrl(c):
-    if isinstance(c, str):
+    wenn isinstance(c, str):
         return chr(_ctoi(c) & 0x1f)
-    else:
+    sonst:
         return _ctoi(c) & 0x1f
 
 def alt(c):
-    if isinstance(c, str):
+    wenn isinstance(c, str):
         return chr(_ctoi(c) | 0x80)
-    else:
+    sonst:
         return _ctoi(c) | 0x80
 
 def unctrl(c):
     bits = _ctoi(c)
-    if bits == 0x7f:
+    wenn bits == 0x7f:
         rep = "^?"
-    elif isprint(bits & 0x7f):
+    sowenn isprint(bits & 0x7f):
         rep = chr(bits & 0x7f)
-    else:
+    sonst:
         rep = "^" + chr(((bits & 0x7f) | 0x20) + 0x20)
-    if bits & 0x80:
+    wenn bits & 0x80:
         return "!" + rep
     return rep

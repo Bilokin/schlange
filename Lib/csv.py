@@ -104,7 +104,7 @@ klasse Dialect:
     quoting = None
 
     def __init__(self):
-        if self.__class__ != Dialect:
+        wenn self.__class__ != Dialect:
             self._valid = True
         self._validate()
 
@@ -144,7 +144,7 @@ register_dialect("unix", unix_dialect)
 klasse DictReader:
     def __init__(self, f, fieldnames=None, restkey=None, restval=None,
                  dialect="excel", *args, **kwds):
-        if fieldnames is not None and iter(fieldnames) is fieldnames:
+        wenn fieldnames is not None and iter(fieldnames) is fieldnames:
             fieldnames = list(fieldnames)
         self._fieldnames = fieldnames   # list of keys fuer the dict
         self.restkey = restkey          # key to catch long rows
@@ -158,7 +158,7 @@ klasse DictReader:
 
     @property
     def fieldnames(self):
-        if self._fieldnames is None:
+        wenn self._fieldnames is None:
             try:
                 self._fieldnames = next(self.reader)
             except StopIteration:
@@ -171,7 +171,7 @@ klasse DictReader:
         self._fieldnames = value
 
     def __next__(self):
-        if self.line_num == 0:
+        wenn self.line_num == 0:
             # Used only fuer its side effect.
             self.fieldnames
         row = next(self.reader)
@@ -185,9 +185,9 @@ klasse DictReader:
         d = dict(zip(self.fieldnames, row))
         lf = len(self.fieldnames)
         lr = len(row)
-        if lf < lr:
+        wenn lf < lr:
             d[self.restkey] = row[lf:]
-        elif lf > lr:
+        sowenn lf > lr:
             fuer key in self.fieldnames[lr:]:
                 d[key] = self.restval
         return d
@@ -198,12 +198,12 @@ klasse DictReader:
 klasse DictWriter:
     def __init__(self, f, fieldnames, restval="", extrasaction="raise",
                  dialect="excel", *args, **kwds):
-        if fieldnames is not None and iter(fieldnames) is fieldnames:
+        wenn fieldnames is not None and iter(fieldnames) is fieldnames:
             fieldnames = list(fieldnames)
         self.fieldnames = fieldnames    # list of keys fuer the dict
         self.restval = restval          # fuer writing short dicts
         extrasaction = extrasaction.lower()
-        if extrasaction not in ("raise", "ignore"):
+        wenn extrasaction not in ("raise", "ignore"):
             raise ValueError("extrasaction (%s) must be 'raise' or 'ignore'"
                              % extrasaction)
         self.extrasaction = extrasaction
@@ -214,9 +214,9 @@ klasse DictWriter:
         return self.writerow(header)
 
     def _dict_to_list(self, rowdict):
-        if self.extrasaction == "raise":
+        wenn self.extrasaction == "raise":
             wrong_fields = rowdict.keys() - self.fieldnames
-            if wrong_fields:
+            wenn wrong_fields:
                 raise ValueError("dict contains fields not in fieldnames: "
                                  + ", ".join([repr(x) fuer x in wrong_fields]))
         return (rowdict.get(key, self.restval) fuer key in self.fieldnames)
@@ -247,11 +247,11 @@ klasse Sniffer:
 
         quotechar, doublequote, delimiter, skipinitialspace = \
                    self._guess_quote_and_delimiter(sample, delimiters)
-        if not delimiter:
+        wenn not delimiter:
             delimiter, skipinitialspace = self._guess_delimiter(sample,
                                                                 delimiters)
 
-        if not delimiter:
+        wenn not delimiter:
             raise Error("Could not determine delimiter")
 
         klasse dialect(Dialect):
@@ -289,10 +289,10 @@ klasse Sniffer:
                       r'(?:^|\n)(?P<quote>["\']).*?(?P=quote)(?:$|\n)'):                            #  ".*?" (no delim, no space)
             regexp = re.compile(restr, re.DOTALL | re.MULTILINE)
             matches = regexp.findall(data)
-            if matches:
+            wenn matches:
                 break
 
-        if not matches:
+        wenn not matches:
             # (quotechar, doublequote, delimiter, skipinitialspace)
             return ('', False, None, 0)
         quotes = {}
@@ -302,35 +302,35 @@ klasse Sniffer:
         fuer m in matches:
             n = groupindex['quote'] - 1
             key = m[n]
-            if key:
+            wenn key:
                 quotes[key] = quotes.get(key, 0) + 1
             try:
                 n = groupindex['delim'] - 1
                 key = m[n]
             except KeyError:
                 continue
-            if key and (delimiters is None or key in delimiters):
+            wenn key and (delimiters is None or key in delimiters):
                 delims[key] = delims.get(key, 0) + 1
             try:
                 n = groupindex['space'] - 1
             except KeyError:
                 continue
-            if m[n]:
+            wenn m[n]:
                 spaces += 1
 
         quotechar = max(quotes, key=quotes.get)
 
-        if delims:
+        wenn delims:
             delim = max(delims, key=delims.get)
             skipinitialspace = delims[delim] == spaces
-            if delim == '\n': # most likely a file with a single column
+            wenn delim == '\n': # most likely a file with a single column
                 delim = ''
-        else:
+        sonst:
             # there is *no* delimiter, it's a single column of quoted data
             delim = ''
             skipinitialspace = 0
 
-        # if we see an extra quote between delimiters, we've got a
+        # wenn we see an extra quote between delimiters, we've got a
         # double quoted format
         dq_regexp = re.compile(
                                r"((%(delim)s)|^)\W*%(quote)s[^%(delim)s\n]*%(quote)s[^%(delim)s\n]*%(quote)s\W*((%(delim)s)|$)" % \
@@ -338,9 +338,9 @@ klasse Sniffer:
 
 
 
-        if dq_regexp.search(data):
+        wenn dq_regexp.search(data):
             doublequote = True
-        else:
+        sonst:
             doublequote = False
 
         return (quotechar, doublequote, delim, skipinitialspace)
@@ -381,7 +381,7 @@ klasse Sniffer:
             fuer line in data[start:end]:
                 fuer char in ascii:
                     metaFrequency = charFrequency.get(char, {})
-                    # must count even if frequency is 0
+                    # must count even wenn frequency is 0
                     freq = line.count(char)
                     # value is the mode
                     metaFrequency[freq] = metaFrequency.get(freq, 0) + 1
@@ -389,17 +389,17 @@ klasse Sniffer:
 
             fuer char in charFrequency.keys():
                 items = list(charFrequency[char].items())
-                if len(items) == 1 and items[0][0] == 0:
+                wenn len(items) == 1 and items[0][0] == 0:
                     continue
                 # get the mode of the frequencies
-                if len(items) > 1:
+                wenn len(items) > 1:
                     modes[char] = max(items, key=lambda x: x[1])
                     # adjust the mode - subtract the sum of all
                     # other frequencies
                     items.remove(modes[char])
                     modes[char] = (modes[char][0], modes[char][1]
                                    - sum(item[1] fuer item in items))
-                else:
+                sonst:
                     modes[char] = items[0]
 
             # build a list of possible delimiters
@@ -411,13 +411,13 @@ klasse Sniffer:
             threshold = 0.9
             while len(delims) == 0 and consistency >= threshold:
                 fuer k, v in modeList:
-                    if v[0] > 0 and v[1] > 0:
-                        if ((v[1]/total) >= consistency and
+                    wenn v[0] > 0 and v[1] > 0:
+                        wenn ((v[1]/total) >= consistency and
                             (delimiters is None or k in delimiters)):
                             delims[k] = v
                 consistency -= 0.01
 
-            if len(delims) == 1:
+            wenn len(delims) == 1:
                 delim = list(delims.keys())[0]
                 skipinitialspace = (data[0].count(delim) ==
                                     data[0].count("%c " % delim))
@@ -427,18 +427,18 @@ klasse Sniffer:
             start = end
             end += chunkLength
 
-        if not delims:
+        wenn not delims:
             return ('', 0)
 
-        # if there's more than one, fall back to a 'preferred' list
-        if len(delims) > 1:
+        # wenn there's more than one, fall back to a 'preferred' list
+        wenn len(delims) > 1:
             fuer d in self.preferred:
-                if d in delims.keys():
+                wenn d in delims.keys():
                     skipinitialspace = (data[0].count(d) ==
                                         data[0].count("%c " % d))
                     return (d, skipinitialspace)
 
-        # nothing else indicates a preference, pick the character that
+        # nothing sonst indicates a preference, pick the character that
         # dominates(?)
         items = [(v,k) fuer (k,v) in delims.items()]
         items.sort()
@@ -454,7 +454,7 @@ klasse Sniffer:
         # column is of a single type (say, integers), *except* fuer the first
         # row, then the first row is presumed to be labels. If the type
         # can't be determined, it is assumed to be a string in which case
-        # the length of the string is the determining factor: if all of the
+        # the length of the string is the determining factor: wenn all of the
         # rows except fuer the first are the same length, it's a header.
         # Finally, a 'vote' is taken at the end fuer each column, adding or
         # subtracting from the likelihood of the first row being a header.
@@ -470,11 +470,11 @@ klasse Sniffer:
         checked = 0
         fuer row in rdr:
             # arbitrary number of rows to check, to keep it sane
-            if checked > 20:
+            wenn checked > 20:
                 break
             checked += 1
 
-            if len(row) != columns:
+            wenn len(row) != columns:
                 continue # skip rows that have irregular number of columns
 
             fuer col in list(columnTypes.keys()):
@@ -485,10 +485,10 @@ klasse Sniffer:
                     # fallback to length of string
                     thisType = len(row[col])
 
-                if thisType != columnTypes[col]:
-                    if columnTypes[col] is None: # add new column type
+                wenn thisType != columnTypes[col]:
+                    wenn columnTypes[col] is None: # add new column type
                         columnTypes[col] = thisType
-                    else:
+                    sonst:
                         # type is inconsistent, remove column from
                         # consideration
                         del columnTypes[col]
@@ -497,17 +497,17 @@ klasse Sniffer:
         # on whether it's a header
         hasHeader = 0
         fuer col, colType in columnTypes.items():
-            if isinstance(colType, int): # it's a length
-                if len(header[col]) != colType:
+            wenn isinstance(colType, int): # it's a length
+                wenn len(header[col]) != colType:
                     hasHeader += 1
-                else:
+                sonst:
                     hasHeader -= 1
-            else: # attempt typecast
+            sonst: # attempt typecast
                 try:
                     colType(header[col])
                 except (ValueError, TypeError):
                     hasHeader += 1
-                else:
+                sonst:
                     hasHeader -= 1
 
         return hasHeader > 0

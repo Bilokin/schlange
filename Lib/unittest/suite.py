@@ -27,7 +27,7 @@ klasse BaseTestSuite(object):
         return "<%s tests=%s>" % (util.strclass(self.__class__), list(self))
 
     def __eq__(self, other):
-        if not isinstance(other, self.__class__):
+        wenn not isinstance(other, self.__class__):
             return NotImplemented
         return list(self) == list(other)
 
@@ -37,32 +37,32 @@ klasse BaseTestSuite(object):
     def countTestCases(self):
         cases = self._removed_tests
         fuer test in self:
-            if test:
+            wenn test:
                 cases += test.countTestCases()
         return cases
 
     def addTest(self, test):
         # sanity checks
-        if not callable(test):
+        wenn not callable(test):
             raise TypeError("{} is not callable".format(repr(test)))
-        if isinstance(test, type) and issubclass(test,
+        wenn isinstance(test, type) and issubclass(test,
                                                  (case.TestCase, TestSuite)):
             raise TypeError("TestCases and TestSuites must be instantiated "
                             "before passing them to addTest()")
         self._tests.append(test)
 
     def addTests(self, tests):
-        if isinstance(tests, str):
+        wenn isinstance(tests, str):
             raise TypeError("tests must be an iterable of tests, not a string")
         fuer test in tests:
             self.addTest(test)
 
     def run(self, result):
         fuer index, test in enumerate(self):
-            if result.shouldStop:
+            wenn result.shouldStop:
                 break
             test(result)
-            if self._cleanup:
+            wenn self._cleanup:
                 self._removeTestAtIndex(index)
         return result
 
@@ -73,10 +73,10 @@ klasse BaseTestSuite(object):
         except TypeError:
             # support fuer suite implementations that have overridden self._tests
             pass
-        else:
+        sonst:
             # Some unittest tests add non TestCase/TestSuite objects to
             # the suite.
-            if hasattr(test, 'countTestCases'):
+            wenn hasattr(test, 'countTestCases'):
                 self._removed_tests += test.countTestCases()
             self._tests[index] = None
 
@@ -101,32 +101,32 @@ klasse TestSuite(BaseTestSuite):
 
     def run(self, result, debug=False):
         topLevel = False
-        if getattr(result, '_testRunEntered', False) is False:
+        wenn getattr(result, '_testRunEntered', False) is False:
             result._testRunEntered = topLevel = True
 
         fuer index, test in enumerate(self):
-            if result.shouldStop:
+            wenn result.shouldStop:
                 break
 
-            if _isnotsuite(test):
+            wenn _isnotsuite(test):
                 self._tearDownPreviousClass(test, result)
                 self._handleModuleFixture(test, result)
                 self._handleClassSetUp(test, result)
                 result._previousTestClass = test.__class__
 
-                if (getattr(test.__class__, '_classSetupFailed', False) or
+                wenn (getattr(test.__class__, '_classSetupFailed', False) or
                     getattr(result, '_moduleSetUpFailed', False)):
                     continue
 
-            if not debug:
+            wenn not debug:
                 test(result)
-            else:
+            sonst:
                 test.debug()
 
-            if self._cleanup:
+            wenn self._cleanup:
                 self._removeTestAtIndex(index)
 
-        if topLevel:
+        wenn topLevel:
             self._tearDownPreviousClass(None, result)
             self._handleModuleTearDown(result)
             result._testRunEntered = False
@@ -142,11 +142,11 @@ klasse TestSuite(BaseTestSuite):
     def _handleClassSetUp(self, test, result):
         previousClass = getattr(result, '_previousTestClass', None)
         currentClass = test.__class__
-        if currentClass == previousClass:
+        wenn currentClass == previousClass:
             return
-        if result._moduleSetUpFailed:
+        wenn result._moduleSetUpFailed:
             return
-        if getattr(currentClass, "__unittest_skip__", False):
+        wenn getattr(currentClass, "__unittest_skip__", False):
             return
 
         failed = False
@@ -159,13 +159,13 @@ klasse TestSuite(BaseTestSuite):
 
         setUpClass = getattr(currentClass, 'setUpClass', None)
         doClassCleanups = getattr(currentClass, 'doClassCleanups', None)
-        if setUpClass is not None:
+        wenn setUpClass is not None:
             _call_if_exists(result, '_setupStdout')
             try:
                 try:
                     setUpClass()
                 except Exception as e:
-                    if isinstance(result, _DebugResult):
+                    wenn isinstance(result, _DebugResult):
                         raise
                     failed = True
                     try:
@@ -176,7 +176,7 @@ klasse TestSuite(BaseTestSuite):
                     self._createClassOrModuleLevelException(result, e,
                                                             'setUpClass',
                                                             className)
-                if failed and doClassCleanups is not None:
+                wenn failed and doClassCleanups is not None:
                     doClassCleanups()
                     fuer exc_info in currentClass.tearDown_exceptions:
                         self._createClassOrModuleLevelException(
@@ -188,7 +188,7 @@ klasse TestSuite(BaseTestSuite):
     def _get_previous_module(self, result):
         previousModule = None
         previousClass = getattr(result, '_previousTestClass', None)
-        if previousClass is not None:
+        wenn previousClass is not None:
             previousModule = previousClass.__module__
         return previousModule
 
@@ -196,7 +196,7 @@ klasse TestSuite(BaseTestSuite):
     def _handleModuleFixture(self, test, result):
         previousModule = self._get_previous_module(result)
         currentModule = test.__class__.__module__
-        if currentModule == previousModule:
+        wenn currentModule == previousModule:
             return
 
         self._handleModuleTearDown(result)
@@ -208,19 +208,19 @@ klasse TestSuite(BaseTestSuite):
         except KeyError:
             return
         setUpModule = getattr(module, 'setUpModule', None)
-        if setUpModule is not None:
+        wenn setUpModule is not None:
             _call_if_exists(result, '_setupStdout')
             try:
                 try:
                     setUpModule()
                 except Exception as e:
-                    if isinstance(result, _DebugResult):
+                    wenn isinstance(result, _DebugResult):
                         raise
                     result._moduleSetUpFailed = True
                     self._createClassOrModuleLevelException(result, e,
                                                             'setUpModule',
                                                             currentModule)
-                if result._moduleSetUpFailed:
+                wenn result._moduleSetUpFailed:
                     try:
                         case.doModuleCleanups()
                     except ExceptionGroup as eg:
@@ -244,19 +244,19 @@ klasse TestSuite(BaseTestSuite):
                                         info=None):
         error = _ErrorHolder(errorName)
         addSkip = getattr(result, 'addSkip', None)
-        if addSkip is not None and isinstance(exc, case.SkipTest):
+        wenn addSkip is not None and isinstance(exc, case.SkipTest):
             addSkip(error, str(exc))
-        else:
-            if not info:
+        sonst:
+            wenn not info:
                 result.addError(error, (type(exc), exc, exc.__traceback__))
-            else:
+            sonst:
                 result.addError(error, info)
 
     def _handleModuleTearDown(self, result):
         previousModule = self._get_previous_module(result)
-        if previousModule is None:
+        wenn previousModule is None:
             return
-        if result._moduleSetUpFailed:
+        wenn result._moduleSetUpFailed:
             return
 
         try:
@@ -267,11 +267,11 @@ klasse TestSuite(BaseTestSuite):
         _call_if_exists(result, '_setupStdout')
         try:
             tearDownModule = getattr(module, 'tearDownModule', None)
-            if tearDownModule is not None:
+            wenn tearDownModule is not None:
                 try:
                     tearDownModule()
                 except Exception as e:
-                    if isinstance(result, _DebugResult):
+                    wenn isinstance(result, _DebugResult):
                         raise
                     self._createClassOrModuleLevelException(result, e,
                                                             'tearDownModule',
@@ -279,14 +279,14 @@ klasse TestSuite(BaseTestSuite):
             try:
                 case.doModuleCleanups()
             except ExceptionGroup as eg:
-                if isinstance(result, _DebugResult):
+                wenn isinstance(result, _DebugResult):
                     raise
                 fuer e in eg.exceptions:
                     self._createClassOrModuleLevelException(result, e,
                                                             'tearDownModule',
                                                             previousModule)
             except Exception as e:
-                if isinstance(result, _DebugResult):
+                wenn isinstance(result, _DebugResult):
                     raise
                 self._createClassOrModuleLevelException(result, e,
                                                         'tearDownModule',
@@ -297,36 +297,36 @@ klasse TestSuite(BaseTestSuite):
     def _tearDownPreviousClass(self, test, result):
         previousClass = getattr(result, '_previousTestClass', None)
         currentClass = test.__class__
-        if currentClass == previousClass or previousClass is None:
+        wenn currentClass == previousClass or previousClass is None:
             return
-        if getattr(previousClass, '_classSetupFailed', False):
+        wenn getattr(previousClass, '_classSetupFailed', False):
             return
-        if getattr(result, '_moduleSetUpFailed', False):
+        wenn getattr(result, '_moduleSetUpFailed', False):
             return
-        if getattr(previousClass, "__unittest_skip__", False):
+        wenn getattr(previousClass, "__unittest_skip__", False):
             return
 
         tearDownClass = getattr(previousClass, 'tearDownClass', None)
         doClassCleanups = getattr(previousClass, 'doClassCleanups', None)
-        if tearDownClass is None and doClassCleanups is None:
+        wenn tearDownClass is None and doClassCleanups is None:
             return
 
         _call_if_exists(result, '_setupStdout')
         try:
-            if tearDownClass is not None:
+            wenn tearDownClass is not None:
                 try:
                     tearDownClass()
                 except Exception as e:
-                    if isinstance(result, _DebugResult):
+                    wenn isinstance(result, _DebugResult):
                         raise
                     className = util.strclass(previousClass)
                     self._createClassOrModuleLevelException(result, e,
                                                             'tearDownClass',
                                                             className)
-            if doClassCleanups is not None:
+            wenn doClassCleanups is not None:
                 doClassCleanups()
                 fuer exc_info in previousClass.tearDown_exceptions:
-                    if isinstance(result, _DebugResult):
+                    wenn isinstance(result, _DebugResult):
                         raise exc_info[1]
                     className = util.strclass(previousClass)
                     self._createClassOrModuleLevelException(result, exc_info[1],

@@ -25,7 +25,7 @@ NAN = float('nan')
 def iter_integer_formats(byteorders=byteorders):
     fuer code in integer_codes:
         fuer byteorder in byteorders:
-            if (byteorder not in ('', '@') and code in ('n', 'N')):
+            wenn (byteorder not in ('', '@') and code in ('n', 'N')):
                 continue
             yield code, byteorder
 
@@ -33,9 +33,9 @@ def string_reverse(s):
     return s[::-1]
 
 def bigendian_to_native(value):
-    if ISBIGENDIAN:
+    wenn ISBIGENDIAN:
         return value
-    else:
+    sonst:
         return string_reverse(value)
 
 klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
@@ -144,7 +144,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                 self.assertEqual(res, exp)
                 self.assertEqual(struct.calcsize(xfmt), len(res))
                 rev = struct.unpack(xfmt, res)[0]
-                if rev != arg:
+                wenn rev != arg:
                     self.assertTrue(asy)
 
     def test_calcsize(self):
@@ -191,20 +191,20 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                 self.format = format
                 self.code = format[-1]
                 self.byteorder = format[:-1]
-                if not self.byteorder in byteorders:
+                wenn not self.byteorder in byteorders:
                     raise ValueError("unrecognized packing byteorder: %s" %
                                      self.byteorder)
                 self.bytesize = struct.calcsize(format)
                 self.bitsize = self.bytesize * 8
-                if self.code in tuple('bhilqn'):
+                wenn self.code in tuple('bhilqn'):
                     self.signed = True
                     self.min_value = -(2**(self.bitsize-1))
                     self.max_value = 2**(self.bitsize-1) - 1
-                elif self.code in tuple('BHILQN'):
+                sowenn self.code in tuple('BHILQN'):
                     self.signed = False
                     self.min_value = 0
                     self.max_value = 2**self.bitsize - 1
-                else:
+                sonst:
                     raise ValueError("unrecognized format code: %s" %
                                      self.code)
 
@@ -213,19 +213,19 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                                   unhexlify=binascii.unhexlify):
 
                 format = self.format
-                if self.min_value <= x <= self.max_value:
+                wenn self.min_value <= x <= self.max_value:
                     expected = x
-                    if self.signed and x < 0:
+                    wenn self.signed and x < 0:
                         expected += 1 << self.bitsize
                     self.assertGreaterEqual(expected, 0)
                     expected = '%x' % expected
-                    if len(expected) & 1:
+                    wenn len(expected) & 1:
                         expected = "0" + expected
                     expected = expected.encode('ascii')
                     expected = unhexlify(expected)
                     expected = (b"\x00" * (self.bytesize - len(expected)) +
                                 expected)
-                    if (self.byteorder == '<' or
+                    wenn (self.byteorder == '<' or
                         self.byteorder in ('', '@', '=') and not ISBIGENDIAN):
                         expected = string_reverse(expected)
                     self.assertEqual(len(expected), self.bytesize)
@@ -241,7 +241,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                     # Adding any byte should cause a "too big" error.
                     self.assertRaises((struct.error, TypeError), unpack, format,
                                                                  b'\x01' + got)
-                else:
+                sonst:
                     # x is out of range -- verify pack realizes that.
                     self.assertRaises((OverflowError, ValueError, struct.error),
                                       pack, format, x)
@@ -520,7 +520,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
             self.assertEqual(len(packed), struct.calcsize(prefix+'?'))
 
-            if len(packed) != 1:
+            wenn len(packed) != 1:
                 self.assertFalse(prefix, msg='encoded bool is not one byte: %r'
                                              %packed)
 
@@ -528,7 +528,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                 struct.pack(prefix + '?', ExplodingBool())
             except OSError:
                 pass
-            else:
+            sonst:
                 self.fail("Expected OSError: struct.pack(%r, "
                           "ExplodingBool())" % (prefix + '?'))
 
@@ -730,10 +730,10 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         def test_error_msg(prefix, int_type, is_unsigned):
             fmt_str = prefix + int_type
             size = struct.calcsize(fmt_str)
-            if is_unsigned:
+            wenn is_unsigned:
                 max_ = 2 ** (size * 8) - 1
                 min_ = 0
-            else:
+            sonst:
                 max_ = 2 ** (size * 8 - 1) - 1
                 min_ = -2 ** (size * 8 - 1)
             error_msg = f"'{int_type}' format requires {min_} <= number <= {max_}"
@@ -894,10 +894,10 @@ klasse UnpackIteratorTest(unittest.TestCase):
             self.assertEqual(le_bits, struct.pack('<e', f))
             self.assertEqual(f, struct.unpack('>e', be_bits)[0])
             self.assertEqual(be_bits, struct.pack('>e', f))
-            if sys.byteorder == 'little':
+            wenn sys.byteorder == 'little':
                 self.assertEqual(f, struct.unpack('e', le_bits)[0])
                 self.assertEqual(le_bits, struct.pack('e', f))
-            else:
+            sonst:
                 self.assertEqual(f, struct.unpack('e', be_bits)[0])
                 self.assertEqual(be_bits, struct.pack('e', f))
 
@@ -970,12 +970,12 @@ klasse UnpackIteratorTest(unittest.TestCase):
 
         # Double rounding
         format_bits_float__doubleRoundingError_list = [
-            ('>e', b'\x67\xff', 0x1ffdffffff * 2**-26), # should be 2047, if double-rounded 64>32>16, becomes 2048
+            ('>e', b'\x67\xff', 0x1ffdffffff * 2**-26), # should be 2047, wenn double-rounded 64>32>16, becomes 2048
         ]
 
         fuer formatcode, bits, f in format_bits_float__doubleRoundingError_list:
             self.assertEqual(bits, struct.pack(formatcode, f))
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

@@ -10,7 +10,7 @@ from libclinic.block_parser import Block
 from libclinic.converter import CConverter, converters
 from libclinic.converters import buffer, robuffer, rwbuffer
 from libclinic.return_converters import CReturnConverter, return_converters
-if TYPE_CHECKING:
+wenn TYPE_CHECKING:
     from libclinic.app import Clinic
 
 

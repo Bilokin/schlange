@@ -61,7 +61,7 @@ over the two cells it tops, and we can trace the winner down the tree
 to see all opponents s/he had.  However, in many computer applications
 of such tournaments, we do not need to trace the history of a winner.
 To be more memory efficient, when a winner is promoted, we try to
-replace it by something else at a lower level, and the rule becomes
+replace it by something sonst at a lower level, and the rule becomes
 that a cell and the two cells it tops contain three different items,
 but the top cell "wins" over the two topped cells.
 
@@ -100,7 +100,7 @@ tournament, you replace and percolate items that happen to fit the
 current run, you'll produce runs which are twice the size of the
 memory fuer random input, and much better fuer input fuzzily ordered.
 
-Moreover, if you output the 0'th item on disk and get an input which
+Moreover, wenn you output the 0'th item on disk and get an input which
 may not fit in the current tournament (because the value "wins" over
 the last output value), it cannot fit in the heap, so the size of the
 heap decreases.  The freed memory could be cleverly reused immediately
@@ -137,8 +137,8 @@ def heappush(heap, item):
 
 def heappop(heap):
     """Pop the smallest item off the heap, maintaining the heap invariant."""
-    lastelt = heap.pop()    # raises appropriate IndexError if heap is empty
-    if heap:
+    lastelt = heap.pop()    # raises appropriate IndexError wenn heap is empty
+    wenn heap:
         returnitem = heap[0]
         heap[0] = lastelt
         _siftup(heap, 0)
@@ -153,17 +153,17 @@ def heapreplace(heap, item):
     returned may be larger than item!  That constrains reasonable uses of
     this routine unless written as part of a conditional replacement:
 
-        if item > heap[0]:
+        wenn item > heap[0]:
             item = heapreplace(heap, item)
     """
-    returnitem = heap[0]    # raises appropriate IndexError if heap is empty
+    returnitem = heap[0]    # raises appropriate IndexError wenn heap is empty
     heap[0] = item
     _siftup(heap, 0)
     return returnitem
 
 def heappushpop(heap, item):
     """Fast version of a heappush followed by a heappop."""
-    if heap and heap[0] < item:
+    wenn heap and heap[0] < item:
         item, heap[0] = heap[0], item
         _siftup(heap, 0)
     return item
@@ -181,8 +181,8 @@ def heapify(x):
 
 def heappop_max(heap):
     """Maxheap version of a heappop."""
-    lastelt = heap.pop()    # raises appropriate IndexError if heap is empty
-    if heap:
+    lastelt = heap.pop()    # raises appropriate IndexError wenn heap is empty
+    wenn heap:
         returnitem = heap[0]
         heap[0] = lastelt
         _siftup_max(heap, 0)
@@ -191,7 +191,7 @@ def heappop_max(heap):
 
 def heapreplace_max(heap, item):
     """Maxheap version of a heappop followed by a heappush."""
-    returnitem = heap[0]    # raises appropriate IndexError if heap is empty
+    returnitem = heap[0]    # raises appropriate IndexError wenn heap is empty
     heap[0] = item
     _siftup_max(heap, 0)
     return returnitem
@@ -203,7 +203,7 @@ def heappush_max(heap, item):
 
 def heappushpop_max(heap, item):
     """Maxheap fast version of a heappush followed by a heappop."""
-    if heap and item < heap[0]:
+    wenn heap and item < heap[0]:
         item, heap[0] = heap[0], item
         _siftup_max(heap, 0)
     return item
@@ -225,7 +225,7 @@ def _siftdown(heap, startpos, pos):
     while pos > startpos:
         parentpos = (pos - 1) >> 1
         parent = heap[parentpos]
-        if newitem < parent:
+        wenn newitem < parent:
             heap[pos] = parent
             pos = parentpos
             continue
@@ -280,7 +280,7 @@ def _siftup(heap, pos):
     while childpos < endpos:
         # Set childpos to index of smaller child.
         rightpos = childpos + 1
-        if rightpos < endpos and not heap[childpos] < heap[rightpos]:
+        wenn rightpos < endpos and not heap[childpos] < heap[rightpos]:
             childpos = rightpos
         # Move the smaller child up.
         heap[pos] = heap[childpos]
@@ -299,7 +299,7 @@ def _siftdown_max(heap, startpos, pos):
     while pos > startpos:
         parentpos = (pos - 1) >> 1
         parent = heap[parentpos]
-        if parent < newitem:
+        wenn parent < newitem:
             heap[pos] = parent
             pos = parentpos
             continue
@@ -316,7 +316,7 @@ def _siftup_max(heap, pos):
     while childpos < endpos:
         # Set childpos to index of larger child.
         rightpos = childpos + 1
-        if rightpos < endpos and not heap[rightpos] < heap[childpos]:
+        wenn rightpos < endpos and not heap[rightpos] < heap[childpos]:
             childpos = rightpos
         # Move the larger child up.
         heap[pos] = heap[childpos]
@@ -348,18 +348,18 @@ def merge(*iterables, key=None, reverse=False):
     h = []
     h_append = h.append
 
-    if reverse:
+    wenn reverse:
         _heapify = heapify_max
         _heappop = heappop_max
         _heapreplace = heapreplace_max
         direction = -1
-    else:
+    sonst:
         _heapify = heapify
         _heappop = heappop
         _heapreplace = heapreplace
         direction = 1
 
-    if key is None:
+    wenn key is None:
         fuer order, it in enumerate(map(iter, iterables)):
             try:
                 next = it.__next__
@@ -376,7 +376,7 @@ def merge(*iterables, key=None, reverse=False):
                     _heapreplace(h, s)      # restore heap condition
             except StopIteration:
                 _heappop(h)                 # remove empty iterator
-        if h:
+        wenn h:
             # fast case when only a single iterator remains
             value, order, next = h[0]
             yield value
@@ -402,7 +402,7 @@ def merge(*iterables, key=None, reverse=False):
                 _heapreplace(h, s)
         except StopIteration:
             _heappop(h)
-    if h:
+    wenn h:
         key_value, order, value, next = h[0]
         yield value
         yield from next.__self__
@@ -481,35 +481,35 @@ def nsmallest(n, iterable, key=None):
     """
 
     # Short-cut fuer n==1 is to use min()
-    if n == 1:
+    wenn n == 1:
         it = iter(iterable)
         sentinel = object()
         result = min(it, default=sentinel, key=key)
-        return [] if result is sentinel else [result]
+        return [] wenn result is sentinel sonst [result]
 
     # When n>=size, it's faster to use sorted()
     try:
         size = len(iterable)
     except (TypeError, AttributeError):
         pass
-    else:
-        if n >= size:
+    sonst:
+        wenn n >= size:
             return sorted(iterable, key=key)[:n]
 
     # When key is none, use simpler decoration
-    if key is None:
+    wenn key is None:
         it = iter(iterable)
         # put the range(n) first so that zip() doesn't
         # consume one too many elements from the iterator
         result = [(elem, i) fuer i, elem in zip(range(n), it)]
-        if not result:
+        wenn not result:
             return result
         heapify_max(result)
         top = result[0][0]
         order = n
         _heapreplace = heapreplace_max
         fuer elem in it:
-            if elem < top:
+            wenn elem < top:
                 _heapreplace(result, (elem, order))
                 top, _order = result[0]
                 order += 1
@@ -519,7 +519,7 @@ def nsmallest(n, iterable, key=None):
     # General case, slowest method
     it = iter(iterable)
     result = [(key(elem), i, elem) fuer i, elem in zip(range(n), it)]
-    if not result:
+    wenn not result:
         return result
     heapify_max(result)
     top = result[0][0]
@@ -527,7 +527,7 @@ def nsmallest(n, iterable, key=None):
     _heapreplace = heapreplace_max
     fuer elem in it:
         k = key(elem)
-        if k < top:
+        wenn k < top:
             _heapreplace(result, (k, order, elem))
             top, _order, _elem = result[0]
             order += 1
@@ -541,33 +541,33 @@ def nlargest(n, iterable, key=None):
     """
 
     # Short-cut fuer n==1 is to use max()
-    if n == 1:
+    wenn n == 1:
         it = iter(iterable)
         sentinel = object()
         result = max(it, default=sentinel, key=key)
-        return [] if result is sentinel else [result]
+        return [] wenn result is sentinel sonst [result]
 
     # When n>=size, it's faster to use sorted()
     try:
         size = len(iterable)
     except (TypeError, AttributeError):
         pass
-    else:
-        if n >= size:
+    sonst:
+        wenn n >= size:
             return sorted(iterable, key=key, reverse=True)[:n]
 
     # When key is none, use simpler decoration
-    if key is None:
+    wenn key is None:
         it = iter(iterable)
         result = [(elem, i) fuer i, elem in zip(range(0, -n, -1), it)]
-        if not result:
+        wenn not result:
             return result
         heapify(result)
         top = result[0][0]
         order = -n
         _heapreplace = heapreplace
         fuer elem in it:
-            if top < elem:
+            wenn top < elem:
                 _heapreplace(result, (elem, order))
                 top, _order = result[0]
                 order -= 1
@@ -577,7 +577,7 @@ def nlargest(n, iterable, key=None):
     # General case, slowest method
     it = iter(iterable)
     result = [(key(elem), i, elem) fuer i, elem in zip(range(0, -n, -1), it)]
-    if not result:
+    wenn not result:
         return result
     heapify(result)
     top = result[0][0]
@@ -585,7 +585,7 @@ def nlargest(n, iterable, key=None):
     _heapreplace = heapreplace
     fuer elem in it:
         k = key(elem)
-        if top < k:
+        wenn top < k:
             _heapreplace(result, (k, order, elem))
             top, _order, _elem = result[0]
             order -= 1
@@ -605,7 +605,7 @@ _heappush_max = heappush_max
 _heappushpop_max = heappushpop_max
 _heapify_max = heapify_max
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
 
     import doctest # pragma: no cover
     print(doctest.testmod()) # pragma: no cover

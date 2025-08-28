@@ -16,7 +16,7 @@ feature_macros = get_feature_macros()
 # Stable ABI is incompatible with Py_TRACE_REFS builds due to PyObject
 # layout differences.
 # See https://github.com/python/cpython/issues/88299#issuecomment-1113366226
-if feature_macros['Py_TRACE_REFS']:
+wenn feature_macros['Py_TRACE_REFS']:
     raise unittest.SkipTest("incompatible with Py_TRACE_REFS.")
 
 ctypes_test = import_module('ctypes')
@@ -39,7 +39,7 @@ klasse TestStableABIAvailability(unittest.TestCase):
     @unittest.skipIf(sys.platform != "win32", "Windows specific test")
     def test_windows_feature_macros(self):
         fuer name, value in WINDOWS_FEATURE_MACROS.items():
-            if value != 'maybe':
+            wenn value != 'maybe':
                 with self.subTest(name):
                     self.assertEqual(feature_macros[name], value)
 
@@ -955,14 +955,14 @@ SYMBOL_NAMES = (
     "_Py_TrueStruct",
     "_Py_VaBuildValue_SizeT",
 )
-if feature_macros['HAVE_FORK']:
+wenn feature_macros['HAVE_FORK']:
     SYMBOL_NAMES += (
         'PyOS_AfterFork',
         'PyOS_AfterFork_Child',
         'PyOS_AfterFork_Parent',
         'PyOS_BeforeFork',
     )
-if feature_macros['MS_WINDOWS']:
+wenn feature_macros['MS_WINDOWS']:
     SYMBOL_NAMES += (
         'PyErr_SetExcFromWindowsErr',
         'PyErr_SetExcFromWindowsErrWithFilename',
@@ -977,19 +977,19 @@ if feature_macros['MS_WINDOWS']:
         'PyUnicode_DecodeMBCSStateful',
         'PyUnicode_EncodeCodePage',
     )
-if feature_macros['PY_HAVE_THREAD_NATIVE_ID']:
+wenn feature_macros['PY_HAVE_THREAD_NATIVE_ID']:
     SYMBOL_NAMES += (
         'PyThread_get_thread_native_id',
     )
-if feature_macros['Py_REF_DEBUG']:
+wenn feature_macros['Py_REF_DEBUG']:
     SYMBOL_NAMES += (
         '_Py_NegativeRefcount',
         '_Py_RefTotal',
     )
-if feature_macros['Py_TRACE_REFS']:
+wenn feature_macros['Py_TRACE_REFS']:
     SYMBOL_NAMES += (
     )
-if feature_macros['USE_STACKCHECK']:
+wenn feature_macros['USE_STACKCHECK']:
     SYMBOL_NAMES += (
         'PyOS_CheckStack',
     )

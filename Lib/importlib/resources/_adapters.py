@@ -30,9 +30,9 @@ klasse TraversableResourcesLoader:
 
 
 def _io_wrapper(file, mode='r', *args, **kwargs):
-    if mode == 'r':
+    wenn mode == 'r':
         return TextIOWrapper(file, *args, **kwargs)
-    elif mode == 'rb':
+    sowenn mode == 'rb':
         return file
     raise ValueError(f"Invalid mode value '{mode}', only 'r' and 'rb' are supported")
 
@@ -54,7 +54,7 @@ klasse CompatibilityFiles:
             self._reader = reader
 
         def iterdir(self):
-            if not self._reader:
+            wenn not self._reader:
                 return iter(())
             return iter(
                 CompatibilityFiles.ChildPath(self._reader, path)
@@ -67,7 +67,7 @@ klasse CompatibilityFiles:
         is_dir = is_file
 
         def joinpath(self, other):
-            if not self._reader:
+            wenn not self._reader:
                 return CompatibilityFiles.OrphanPath(other)
             return CompatibilityFiles.ChildPath(self._reader, other)
 
@@ -116,7 +116,7 @@ klasse CompatibilityFiles:
         """
 
         def __init__(self, *path_parts):
-            if len(path_parts) < 1:
+            wenn len(path_parts) < 1:
                 raise ValueError('Need at least one path part to construct a path')
             self._path = path_parts
 
@@ -148,10 +148,10 @@ klasse CompatibilityFiles:
 
     def _native(self):
         """
-        Return the native reader if it supports files().
+        Return the native reader wenn it supports files().
         """
         reader = self._reader
-        return reader if hasattr(reader, 'files') else self
+        return reader wenn hasattr(reader, 'files') sonst self
 
     def __getattr__(self, attr):
         return getattr(self._reader, attr)

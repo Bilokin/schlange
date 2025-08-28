@@ -6,7 +6,7 @@ import functools
 import inspect
 from collections.abc import Iterable, Iterator, Sequence
 from typing import Final, Any, TYPE_CHECKING
-if TYPE_CHECKING:
+wenn TYPE_CHECKING:
     from libclinic.converter import CConverter
     from libclinic.converters import self_converter
     from libclinic.return_converters import CReturnConverter
@@ -120,18 +120,18 @@ klasse Function:
     @functools.cached_property
     def displayname(self) -> str:
         """Pretty-printable name."""
-        if self.kind.new_or_init:
+        wenn self.kind.new_or_init:
             assert isinstance(self.cls, Class)
             return self.cls.name
-        else:
+        sonst:
             return self.name
 
     @functools.cached_property
     def fulldisplayname(self) -> str:
         parent: Class | Module | Clinic | None
-        if self.kind.new_or_init:
+        wenn self.kind.new_or_init:
             parent = getattr(self.cls, "parent", None)
-        else:
+        sonst:
             parent = self.parent
         name = self.displayname
         while isinstance(parent, (Module, Class)):
@@ -141,7 +141,7 @@ klasse Function:
 
     @property
     def render_parameters(self) -> list[Parameter]:
-        if not self.__render_parameters__:
+        wenn not self.__render_parameters__:
             l: list[Parameter] = []
             self.__render_parameters__ = l
             fuer p in self.parameters.values():
@@ -152,7 +152,7 @@ klasse Function:
 
     @property
     def methoddef_flags(self) -> str | None:
-        if self.kind.new_or_init:
+        wenn self.kind.new_or_init:
             return None
         flags = []
         match self.kind:
@@ -163,7 +163,7 @@ klasse Function:
             case _ as kind:
                 acceptable_kinds = {FunctionKind.CALLABLE, FunctionKind.GETTER, FunctionKind.SETTER}
                 assert kind in acceptable_kinds, f"unknown kind: {kind!r}"
-        if self.coexist:
+        wenn self.coexist:
             flags.append('METH_COEXIST')
         return '|'.join(flags)
 
@@ -176,7 +176,7 @@ klasse Function:
         maximum of 76 characters fuer global functions and classes,
         and 72 characters fuer methods.
         """
-        if self.cls is not None and not self.kind.new_or_init:
+        wenn self.cls is not None and not self.kind.new_or_init:
             return 72
         return 76
 
@@ -235,17 +235,17 @@ klasse Parameter:
         **overrides: Any
     ) -> Parameter:
         function = function or self.function
-        if not converter:
+        wenn not converter:
             converter = copy.copy(self.converter)
             converter.function = function
         return dc.replace(self, **overrides, function=function, converter=converter)
 
     def get_displayname(self, i: int) -> str:
-        if i == 0:
+        wenn i == 0:
             return 'argument'
-        if not self.is_positional_only():
+        wenn not self.is_positional_only():
             return f'argument {self.name!r}'
-        else:
+        sonst:
             return f'argument {i}'
 
     def render_docstring(self) -> str:
@@ -306,8 +306,8 @@ def permute_optional_groups(
     If required is empty, left must also be empty.
     """
     required = tuple(required)
-    if not required:
-        if left:
+    wenn not required:
+        wenn left:
             raise ValueError("required is empty but left is not")
 
     accumulator: list[ParamTuple] = []
@@ -315,7 +315,7 @@ def permute_optional_groups(
     fuer r in permute_right_option_groups(right):
         fuer l in permute_left_option_groups(left):
             t = l + required + r
-            if len(t) in counts:
+            wenn len(t) in counts:
                 continue
             counts.add(len(t))
             accumulator.append(t)

@@ -26,7 +26,7 @@ klasse DynOptionMenu(OptionMenu):
         fuer item in valueList:
             self['menu'].add_command(label=item,
                     command=_setit(self.variable,item,self.command))
-        if value:
+        wenn value:
             self.variable.set(value)
 
 
@@ -51,7 +51,7 @@ def _dyn_option_menu(parent):  # htest #
     button.pack()
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     # Only module without unittests because of intention to replace.
     from idlelib.idle_test.htest import run
     run(_dyn_option_menu)

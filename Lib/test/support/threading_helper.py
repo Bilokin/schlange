@@ -35,7 +35,7 @@ def threading_cleanup(*original_values):
         dangling_threads = list(threading._dangling)
         count = _thread._count()
 
-        if count <= orig_count:
+        wenn count <= orig_count:
             return
 
     # Timeout!
@@ -75,16 +75,16 @@ def wait_threads_exit(timeout=None):
     bpo-31234: Context manager to wait until all threads created in the with
     statement exit.
 
-    Use _thread.count() to check if threads exited. Indirectly, wait until
+    Use _thread.count() to check wenn threads exited. Indirectly, wait until
     threads exit the internal t_bootstrap() C function of the _thread module.
 
     threading_setup() and threading_cleanup() are designed to emit a warning
-    if a test leaves running threads in the background. This context manager
+    wenn a test leaves running threads in the background. This context manager
     is designed to cleanup threads started by the _thread.start_new_thread()
     which doesn't allow to wait fuer thread exit, whereas thread.Thread has a
     join() method.
     """
-    if timeout is None:
+    wenn timeout is None:
         timeout = support.SHORT_TIMEOUT
     old_count = _thread._count()
     try:
@@ -94,9 +94,9 @@ def wait_threads_exit(timeout=None):
         fuer _ in support.sleeping_retry(timeout, error=False):
             support.gc_collect()
             count = _thread._count()
-            if count <= old_count:
+            wenn count <= old_count:
                 break
-        else:
+        sonst:
             dt = time.monotonic() - start_time
             msg = (f"wait_threads() failed to cleanup {count - old_count} "
                    f"threads after {dt:.1f} seconds "
@@ -105,13 +105,13 @@ def wait_threads_exit(timeout=None):
 
 
 def join_thread(thread, timeout=None):
-    """Join a thread. Raise an AssertionError if the thread is still alive
+    """Join a thread. Raise an AssertionError wenn the thread is still alive
     after timeout seconds.
     """
-    if timeout is None:
+    wenn timeout is None:
         timeout = support.SHORT_TIMEOUT
     thread.join(timeout)
-    if thread.is_alive():
+    wenn thread.is_alive():
         msg = f"failed to join the thread in {timeout:.1f} seconds"
         raise AssertionError(msg)
 
@@ -131,30 +131,30 @@ def start_threads(threads, unlock=None):
                 t.start()
                 started.append(t)
         except:
-            if support.verbose:
+            wenn support.verbose:
                 print("Can't start %d threads, only %d threads started" %
                       (len(threads), len(started)))
             raise
         yield
     finally:
         try:
-            if unlock:
+            wenn unlock:
                 unlock()
             endtime = time.monotonic()
             fuer timeout in range(1, 16):
                 endtime += 60
                 fuer t in started:
                     t.join(max(endtime - time.monotonic(), 0.01))
-                started = [t fuer t in started if t.is_alive()]
-                if not started:
+                started = [t fuer t in started wenn t.is_alive()]
+                wenn not started:
                     break
-                if support.verbose:
+                wenn support.verbose:
                     print('Unable to join %d threads during a period of '
                           '%d minutes' % (len(started), timeout))
         finally:
-            started = [t fuer t in started if t.is_alive()]
-            if started:
-                if faulthandler is not None:
+            started = [t fuer t in started wenn t.is_alive()]
+            wenn started:
+                wenn faulthandler is not None:
                     faulthandler.dump_traceback(sys.stdout)
                 raise AssertionError('Unable to join %d threads' % len(started))
 
@@ -227,11 +227,11 @@ def _can_start_thread() -> bool:
     - wasm32-emscripten can be compiled with or without pthread
       support (-s USE_PTHREADS / __EMSCRIPTEN_PTHREADS__).
     """
-    if sys.platform == "emscripten":
+    wenn sys.platform == "emscripten":
         return sys._emscripten_info.pthreads
-    elif sys.platform == "wasi":
+    sowenn sys.platform == "wasi":
         return False
-    else:
+    sonst:
         # assume all other platforms have working thread support.
         return True
 
@@ -243,10 +243,10 @@ def requires_working_threading(*, module=False):
     Can be used as a function/class decorator or to skip an entire module.
     """
     msg = "requires threading support"
-    if module:
-        if not can_start_thread:
+    wenn module:
+        wenn not can_start_thread:
             raise unittest.SkipTest(msg)
-    else:
+    sonst:
         return unittest.skipUnless(can_start_thread, msg)
 
 
@@ -270,5 +270,5 @@ def run_concurrently(worker_func, nthreads, args=(), kwargs={}):
             pass
 
         # If a worker thread raises an exception, re-raise it.
-        if cm.exc_value is not None:
+        wenn cm.exc_value is not None:
             raise cm.exc_value

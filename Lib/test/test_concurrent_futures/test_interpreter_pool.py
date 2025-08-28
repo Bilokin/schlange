@@ -27,12 +27,12 @@ WINDOWS = sys.platform.startswith('win')
 @contextlib.contextmanager
 def nonblocking(fd):
     blocking = os.get_blocking(fd)
-    if blocking:
+    wenn blocking:
         os.set_blocking(fd, False)
     try:
         yield
     finally:
-        if blocking:
+        wenn blocking:
             os.set_blocking(fd, blocking)
 
 
@@ -48,15 +48,15 @@ def read_file_with_timeout(fd, nbytes, timeout):
                 return os.read(fd, nbytes)
             except BlockingIOError:
                 continue
-        else:
+        sonst:
             raise TimeoutError('nothing to read')
 
 
-if not WINDOWS:
+wenn not WINDOWS:
     import select
     def read_file_with_timeout(fd, nbytes, timeout):
         r, _, _ = select.select([fd], [], [], timeout)
-        if fd not in r:
+        wenn fd not in r:
             raise TimeoutError('nothing to read')
         return os.read(fd, nbytes)
 
@@ -104,7 +104,7 @@ klasse InterpretersMixin(InterpreterPoolMixin):
 klasse PickleShenanigans:
     """Succeeds with pickle.dumps(), but fails with pickle.loads()"""
     def __init__(self, value):
-        if value == 1:
+        wenn value == 1:
             raise RuntimeError("gotcha")
 
     def __reduce__(self):
@@ -174,7 +174,7 @@ klasse InterpreterPoolExecutorTest(
             def get_init_status():
                 return INITIALIZER_STATUS
 
-            if __name__ == "__main__":
+            wenn __name__ == "__main__":
                 exe = InterpreterPoolExecutor(initializer=init,
                                               initargs=('initialized',))
                 fut = exe.submit(get_init_status)
@@ -363,7 +363,7 @@ klasse InterpreterPoolExecutorTest(
         # * a new worker thread, created when task A was just submitted,
         #   becoming non-idle when it picks up task A
         # * after task B is added to the queue, a new worker thread
-        #   is started only if there are no idle workers
+        #   is started only wenn there are no idle workers
         #   (the check in ThreadPoolExecutor._adjust_thread_count())
         #
         # That means we must not block waiting fuer *all* tasks to report
@@ -392,7 +392,7 @@ klasse InterpreterPoolExecutorTest(
                         ready.get(timeout=1)  # blocking
                     except interpreters.QueueEmpty:
                         pass
-                    else:
+                    sonst:
                         done += 1
                 pending -= done
                 # Unblock the workers.
@@ -427,7 +427,7 @@ klasse InterpreterPoolExecutorTest(
                         ready.get(timeout=1)  # blocking
                     except interpreters.QueueEmpty:
                         pass
-                    else:
+                    sonst:
                         done += 1
                 pending -= done
                 # Unblock the workers.
@@ -462,7 +462,7 @@ klasse InterpreterPoolExecutorTest(
 
     @support.requires_subprocess()
     def test_import_interpreter_pool_executor(self):
-        # Test the import behavior normally if _interpreters is unavailable.
+        # Test the import behavior normally wenn _interpreters is unavailable.
         code = textwrap.dedent("""
         import sys
         # Set it to None to emulate the case when _interpreter is unavailable.
@@ -473,7 +473,7 @@ klasse InterpreterPoolExecutorTest(
             futures.InterpreterPoolExecutor
         except AttributeError:
             pass
-        else:
+        sonst:
             print('AttributeError not raised!', file=sys.stderr)
             sys.exit(1)
 
@@ -481,13 +481,13 @@ klasse InterpreterPoolExecutorTest(
             from concurrent.futures import InterpreterPoolExecutor
         except ImportError:
             pass
-        else:
+        sonst:
             print('ImportError not raised!', file=sys.stderr)
             sys.exit(1)
 
         from concurrent.futures import *
 
-        if 'InterpreterPoolExecutor' in globals():
+        wenn 'InterpreterPoolExecutor' in globals():
             print('InterpreterPoolExecutor should not be imported!',
                   file=sys.stderr)
             sys.exit(1)
@@ -519,7 +519,7 @@ klasse AsyncioTest(InterpretersMixin, testasyncio_utils.TestCase):
     @classmethod
     def setUpClass(cls):
         # Most uses of asyncio will implicitly call set_event_loop_policy()
-        # with the default policy if a policy hasn't been set already.
+        # with the default policy wenn a policy hasn't been set already.
         # If that happens in a test, like here, we'll end up with a failure
         # when --fail-env-changed is used.  That's why the other tests that
         # use asyncio are careful to set the policy back to None and why
@@ -538,7 +538,7 @@ klasse AsyncioTest(InterpretersMixin, testasyncio_utils.TestCase):
         self.addCleanup(lambda: self.executor.shutdown())
 
     def tearDown(self):
-        if not self.loop.is_closed():
+        wenn not self.loop.is_closed():
             testasyncio_utils.run_briefly(self.loop)
 
         self.doCleanups()
@@ -589,5 +589,5 @@ def setUpModule():
     setup_module()
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

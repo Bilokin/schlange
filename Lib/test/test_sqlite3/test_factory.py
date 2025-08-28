@@ -172,7 +172,7 @@ klasse RowFactoryTests(MemoryDatabaseMixin, unittest.TestCase):
         self.assertEqual(row[3:0:-2], (4, 2))
 
     def test_sqlite_row_iter(self):
-        # Checks if the row object is iterable.
+        # Checks wenn the row object is iterable.
         row = self.con.execute("select 1 as a, 2 as b").fetchone()
 
         # Is iterable in correct order and produces valid results:
@@ -184,20 +184,20 @@ klasse RowFactoryTests(MemoryDatabaseMixin, unittest.TestCase):
         self.assertEqual(items, [1, 2])
 
     def test_sqlite_row_as_tuple(self):
-        # Checks if the row object can be converted to a tuple.
+        # Checks wenn the row object can be converted to a tuple.
         row = self.con.execute("select 1 as a, 2 as b").fetchone()
         t = tuple(row)
         self.assertEqual(t, (row['a'], row['b']))
 
     def test_sqlite_row_as_dict(self):
-        # Checks if the row object can be correctly converted to a dictionary.
+        # Checks wenn the row object can be correctly converted to a dictionary.
         row = self.con.execute("select 1 as a, 2 as b").fetchone()
         d = dict(row)
         self.assertEqual(d["a"], row["a"])
         self.assertEqual(d["b"], row["b"])
 
     def test_sqlite_row_hash_cmp(self):
-        # Checks if the row object compares and hashes correctly.
+        # Checks wenn the row object compares and hashes correctly.
         row_1 = self.con.execute("select 1 as a, 2 as b").fetchone()
         row_2 = self.con.execute("select 1 as a, 2 as b").fetchone()
         row_3 = self.con.execute("select 1 as a, 3 as b").fetchone()
@@ -230,7 +230,7 @@ klasse RowFactoryTests(MemoryDatabaseMixin, unittest.TestCase):
         self.assertEqual(hash(row_1), hash(row_2))
 
     def test_sqlite_row_as_sequence(self):
-        # Checks if the row object can act like a sequence.
+        # Checks wenn the row object can act like a sequence.
         row = self.con.execute("select 1 as a, 2 as b").fetchone()
 
         as_tuple = tuple(row)
@@ -238,7 +238,7 @@ klasse RowFactoryTests(MemoryDatabaseMixin, unittest.TestCase):
         self.assertIsInstance(row, Sequence)
 
     def test_sqlite_row_keys(self):
-        # Checks if the row object can return a list of columns as strings.
+        # Checks wenn the row object can return a list of columns as strings.
         row = self.con.execute("select 1 as a, 2 as b").fetchone()
         self.assertEqual(row.keys(), ['a', 'b'])
 
@@ -310,5 +310,5 @@ klasse TextFactoryTestsWithEmbeddedZeroBytes(unittest.TestCase):
         self.assertEqual(row[0], b"a\x00b")
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

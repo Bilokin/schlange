@@ -46,7 +46,7 @@ def make_default_syntax_table() -> dict[str, int]:
     st: dict[str, int] = {}
     fuer c in map(chr, range(256)):
         st[c] = SYNTAX_SYMBOL
-    fuer c in [a fuer a in map(chr, range(256)) if a.isalnum()]:
+    fuer c in [a fuer a in map(chr, range(256)) wenn a.isalnum()]:
         st[c] = SYNTAX_WORD
     st["\n"] = st[" "] = SYNTAX_WHITESPACE
     return st
@@ -55,7 +55,7 @@ def make_default_syntax_table() -> dict[str, int]:
 def make_default_commands() -> dict[CommandName, type[Command]]:
     result: dict[CommandName, type[Command]] = {}
     fuer v in vars(commands).values():
-        if isinstance(v, type) and issubclass(v, Command) and v.__name__[0].islower():
+        wenn isinstance(v, type) and issubclass(v, Command) and v.__name__[0].islower():
             result[v.__name__] = v
             result[v.__name__.replace("_", "-")] = v
     return result
@@ -81,7 +81,7 @@ default_keymap: tuple[tuple[KeySpec, CommandName], ...] = tuple(
         (r"\C-w", "unix-word-rubout"),
         (r"\C-x\C-u", "upcase-region"),
         (r"\C-y", "yank"),
-        *(() if sys.platform == "win32" else ((r"\C-z", "suspend"), )),
+        *(() wenn sys.platform == "win32" sonst ((r"\C-z", "suspend"), )),
         (r"\M-b", "backward-word"),
         (r"\M-c", "capitalize-word"),
         (r"\M-d", "kill-word"),
@@ -106,8 +106,8 @@ default_keymap: tuple[tuple[KeySpec, CommandName], ...] = tuple(
         (r"\x1b[200~", "perform-bracketed-paste"),
         (r"\x03", "ctrl-c"),
     ]
-    + [(c, "self-insert") fuer c in map(chr, range(32, 127)) if c != "\\"]
-    + [(c, "self-insert") fuer c in map(chr, range(128, 256)) if c.isalpha()]
+    + [(c, "self-insert") fuer c in map(chr, range(32, 127)) wenn c != "\\"]
+    + [(c, "self-insert") fuer c in map(chr, range(128, 256)) wenn c.isalpha()]
     + [
         (r"\<up>", "up"),
         (r"\<down>", "down"),
@@ -160,10 +160,10 @@ klasse Reader:
       * commands:
         Dictionary mapping command names to command classes.
       * arg:
-        The emacs-style prefix argument.  It will be None if no such
+        The emacs-style prefix argument.  It will be None wenn no such
         argument has been provided.
       * dirty:
-        True if we need to refresh the display.
+        True wenn we need to refresh the display.
       * kill_ring:
         The emacs-style kill-ring; manipulated with yank & yank-pop
       * ps1, ps2, ps3, ps4:
@@ -182,7 +182,7 @@ klasse Reader:
         overriding get_prompt() (and indeed some standard subclasses
         do).
       * finished:
-        handle1 will set this to a true value if a command signals
+        handle1 will set this to a true value wenn a command signals
         that we're done.
     """
 
@@ -239,24 +239,24 @@ klasse Reader:
             self.invalidated = False
 
         def valid(self, reader: Reader) -> bool:
-            if self.invalidated:
+            wenn self.invalidated:
                 return False
             dimensions = reader.console.width, reader.console.height
             dimensions_changed = dimensions != self.dimensions
             return not dimensions_changed
 
         def get_cached_location(self, reader: Reader) -> tuple[int, int]:
-            if self.invalidated:
+            wenn self.invalidated:
                 raise ValueError("Cache is invalidated")
             offset = 0
             earliest_common_pos = min(reader.pos, self.pos)
             num_common_lines = len(self.line_end_offsets)
             while num_common_lines > 0:
                 offset = self.line_end_offsets[num_common_lines - 1]
-                if earliest_common_pos > offset:
+                wenn earliest_common_pos > offset:
                     break
                 num_common_lines -= 1
-            else:
+            sonst:
                 offset = 0
             return offset, num_common_lines
 
@@ -294,7 +294,7 @@ klasse Reader:
         # entered or left paste mode (which changes prompts, causing reflowing).
         num_common_lines = 0
         offset = 0
-        if self.last_refresh_cache.valid(self):
+        wenn self.last_refresh_cache.valid(self):
             offset, num_common_lines = self.last_refresh_cache.get_cached_location(self)
 
         screen = self.last_refresh_cache.screen
@@ -311,9 +311,9 @@ klasse Reader:
 
         prompt_from_cache = (offset and self.buffer[offset - 1] != "\n")
 
-        if self.can_colorize:
+        wenn self.can_colorize:
             colors = list(gen_colors(self.get_unicode()))
-        else:
+        sonst:
             colors = None
         trace("colors = {colors}", colors=colors)
         lines = "".join(self.buffer[offset:]).split("\n")
@@ -321,20 +321,20 @@ klasse Reader:
         lines_beyond_cursor = 0
         fuer ln, line in enumerate(lines, num_common_lines):
             line_len = len(line)
-            if 0 <= pos <= line_len:
+            wenn 0 <= pos <= line_len:
                 self.lxy = pos, ln
                 cursor_found = True
-            elif cursor_found:
+            sowenn cursor_found:
                 lines_beyond_cursor += 1
-                if lines_beyond_cursor > self.console.height:
+                wenn lines_beyond_cursor > self.console.height:
                     # No need to keep formatting lines.
                     # The console can't show them.
                     break
-            if prompt_from_cache:
+            wenn prompt_from_cache:
                 # Only the first line's prompt can come from the cache
                 prompt_from_cache = False
                 prompt = ""
-            else:
+            sonst:
                 prompt = self.get_prompt(ln, line_len >= pos >= 0)
             while "\n" in prompt:
                 pre_prompt, _, prompt = prompt.partition("\n")
@@ -345,27 +345,27 @@ klasse Reader:
             prompt, prompt_len = self.process_prompt(prompt)
             chars, char_widths = disp_str(line, colors, offset)
             wrapcount = (sum(char_widths) + prompt_len) // self.console.width
-            if wrapcount == 0 or not char_widths:
+            wenn wrapcount == 0 or not char_widths:
                 offset += line_len + 1  # Takes all of the line plus the newline
                 last_refresh_line_end_offsets.append(offset)
                 screen.append(prompt + "".join(chars))
                 screeninfo.append((prompt_len, char_widths))
-            else:
+            sonst:
                 pre = prompt
                 prelen = prompt_len
                 fuer wrap in range(wrapcount + 1):
                     index_to_wrap_before = 0
                     column = 0
                     fuer char_width in char_widths:
-                        if column + char_width + prelen >= self.console.width:
+                        wenn column + char_width + prelen >= self.console.width:
                             break
                         index_to_wrap_before += 1
                         column += char_width
-                    if len(chars) > index_to_wrap_before:
+                    wenn len(chars) > index_to_wrap_before:
                         offset += index_to_wrap_before
                         post = "\\"
                         after = [1]
-                    else:
+                    sonst:
                         offset += index_to_wrap_before + 1  # Takes the newline
                         post = ""
                         after = []
@@ -380,7 +380,7 @@ klasse Reader:
                     prelen = 0
         self.screeninfo = screeninfo
         self.cxy = self.pos2xy()
-        if self.msg:
+        wenn self.msg:
             fuer mline in self.msg.split("\n"):
                 screen.append(mline)
                 screeninfo.append((0, []))
@@ -406,7 +406,7 @@ klasse Reader:
 
         p defaults to self.pos; word boundaries are determined using
         self.syntax_table."""
-        if p is None:
+        wenn p is None:
             p = self.pos
         st = self.syntax_table
         b = self.buffer
@@ -423,7 +423,7 @@ klasse Reader:
 
         p defaults to self.pos; word boundaries are determined using
         self.syntax_table."""
-        if p is None:
+        wenn p is None:
             p = self.pos
         st = self.syntax_table
         b = self.buffer
@@ -438,7 +438,7 @@ klasse Reader:
         immediately.
 
         p defaults to self.pos."""
-        if p is None:
+        wenn p is None:
             p = self.pos
         b = self.buffer
         p -= 1
@@ -451,7 +451,7 @@ klasse Reader:
         immediately.
 
         p defaults to self.pos."""
-        if p is None:
+        wenn p is None:
             p = self.pos
         b = self.buffer
         while p < len(b) and b[p] != "\n":
@@ -467,30 +467,30 @@ klasse Reader:
 
     def get_arg(self, default: int = 1) -> int:
         """Return any prefix argument that the user has supplied,
-        returning 'default' if there is None.  Defaults to 1.
+        returning 'default' wenn there is None.  Defaults to 1.
         """
-        if self.arg is None:
+        wenn self.arg is None:
             return default
         return self.arg
 
     def get_prompt(self, lineno: int, cursor_on_line: bool) -> str:
         """Return what should be in the left-hand margin fuer line
         'lineno'."""
-        if self.arg is not None and cursor_on_line:
+        wenn self.arg is not None and cursor_on_line:
             prompt = f"(arg: {self.arg}) "
-        elif self.paste_mode:
+        sowenn self.paste_mode:
             prompt = "(paste) "
-        elif "\n" in self.buffer:
-            if lineno == 0:
+        sowenn "\n" in self.buffer:
+            wenn lineno == 0:
                 prompt = self.ps2
-            elif self.ps4 and lineno == self.buffer.count("\n"):
+            sowenn self.ps4 and lineno == self.buffer.count("\n"):
                 prompt = self.ps4
-            else:
+            sonst:
                 prompt = self.ps3
-        else:
+        sonst:
             prompt = self.ps1
 
-        if self.can_colorize:
+        wenn self.can_colorize:
             t = THEME()
             prompt = f"{t.prompt}{prompt}{t.reset}"
         return prompt
@@ -510,16 +510,16 @@ klasse Reader:
             prompt_len, char_widths = self.screeninfo[i]
             offset = len(char_widths)
             in_wrapped_line = prompt_len + sum(char_widths) >= self.console.width
-            if in_wrapped_line:
+            wenn in_wrapped_line:
                 pos += offset - 1  # -1 cause backslash is not in buffer
-            else:
+            sonst:
                 pos += offset + 1  # +1 cause newline is in buffer
             i += 1
 
         j = 0
         cur_x = self.screeninfo[i][0]
         while cur_x < x:
-            if self.screeninfo[i][1][j] == 0:
+            wenn self.screeninfo[i][1][j] == 0:
                 j += 1  # prevent potential future infinite loop
                 continue
             cur_x += self.screeninfo[i][1][j]
@@ -537,7 +537,7 @@ klasse Reader:
         assert 0 <= pos <= len(self.buffer)
 
         # optimize fuer the common case: typing at the end of the buffer
-        if pos == len(self.buffer) and len(self.screeninfo) > 0:
+        wenn pos == len(self.buffer) and len(self.screeninfo) > 0:
             y = len(self.screeninfo) - 1
             prompt_len, char_widths = self.screeninfo[y]
             return prompt_len + sum(char_widths), y
@@ -545,13 +545,13 @@ klasse Reader:
         fuer prompt_len, char_widths in self.screeninfo:
             offset = len(char_widths)
             in_wrapped_line = prompt_len + sum(char_widths) >= self.console.width
-            if in_wrapped_line:
+            wenn in_wrapped_line:
                 offset -= 1  # need to remove line-wrapping backslash
 
-            if offset >= pos:
+            wenn offset >= pos:
                 break
 
-            if not in_wrapped_line:
+            wenn not in_wrapped_line:
                 offset += 1  # there's a newline in buffer
 
             pos -= offset
@@ -572,8 +572,8 @@ klasse Reader:
 
     def after_command(self, cmd: Command) -> None:
         """This function is called to allow post command cleanup."""
-        if getattr(cmd, "kills_digit_arg", True):
-            if self.arg is not None:
+        wenn getattr(cmd, "kills_digit_arg", True):
+            wenn self.arg is not None:
                 self.dirty = True
             self.arg = None
 
@@ -599,7 +599,7 @@ klasse Reader:
             self.do_cmd((cmd, []))
 
     def last_command_is(self, cls: type) -> bool:
-        if not self.last_command:
+        wenn not self.last_command:
             return False
         return issubclass(cls, self.last_command)
 
@@ -629,7 +629,7 @@ klasse Reader:
         self.console.beep()
 
     def update_screen(self) -> None:
-        if self.dirty:
+        wenn self.dirty:
             self.refresh()
 
     def refresh(self) -> None:
@@ -645,11 +645,11 @@ klasse Reader:
         of single-character strings."""
 
         trace("received command {cmd}", cmd=cmd)
-        if isinstance(cmd[0], str):
+        wenn isinstance(cmd[0], str):
             command_type = self.commands.get(cmd[0], commands.invalid_command)
-        elif isinstance(cmd[0], type):
+        sowenn isinstance(cmd[0], type):
             command_type = cmd[0]
-        else:
+        sonst:
             return  # nothing to do
 
         command = command_type(self, *cmd)  # type: ignore[arg-type]
@@ -657,43 +657,43 @@ klasse Reader:
 
         self.after_command(command)
 
-        if self.dirty:
+        wenn self.dirty:
             self.refresh()
-        else:
+        sonst:
             self.update_cursor()
 
-        if not isinstance(cmd, commands.digit_arg):
+        wenn not isinstance(cmd, commands.digit_arg):
             self.last_command = command_type
 
         self.finished = bool(command.finish)
-        if self.finished:
+        wenn self.finished:
             self.console.finish()
             self.finish()
 
     def run_hooks(self) -> None:
         threading_hook = self.threading_hook
-        if threading_hook is None and 'threading' in sys.modules:
+        wenn threading_hook is None and 'threading' in sys.modules:
             from ._threading_handler import install_threading_hook
             install_threading_hook(self)
-        if threading_hook is not None:
+        wenn threading_hook is not None:
             try:
                 threading_hook()
             except Exception:
                 pass
 
         input_hook = self.console.input_hook
-        if input_hook:
+        wenn input_hook:
             try:
                 input_hook()
             except Exception:
                 pass
 
     def handle1(self, block: bool = True) -> bool:
-        """Handle a single event.  Wait as long as it takes if block
-        is true (the default), otherwise return False if no event is
+        """Handle a single event.  Wait as long as it takes wenn block
+        is true (the default), otherwise return False wenn no event is
         pending."""
 
-        if self.msg:
+        wenn self.msg:
             self.msg = ""
             self.dirty = True
 
@@ -702,29 +702,29 @@ klasse Reader:
             self.run_hooks()
             self.console.wait(100)
             event = self.console.get_event(block=False)
-            if not event:
-                if block:
+            wenn not event:
+                wenn block:
                     continue
                 return False
 
             translate = True
 
-            if event.evt == "key":
+            wenn event.evt == "key":
                 self.input_trans.push(event)
-            elif event.evt == "scroll":
+            sowenn event.evt == "scroll":
                 self.refresh()
-            elif event.evt == "resize":
+            sowenn event.evt == "resize":
                 self.refresh()
-            else:
+            sonst:
                 translate = False
 
-            if translate:
+            wenn translate:
                 cmd = self.input_trans.get()
-            else:
+            sonst:
                 cmd = [event.evt, event.data]
 
-            if cmd is None:
-                if block:
+            wenn cmd is None:
+                wenn block:
                     continue
                 return False
 
@@ -737,11 +737,11 @@ klasse Reader:
 
     def readline(self, startup_hook: Callback | None = None) -> str:
         """Read a line.  The implementation of this method also shows
-        how to drive Reader if you want more control over the event
+        how to drive Reader wenn you want more control over the event
         loop."""
         self.prepare()
         try:
-            if startup_hook is not None:
+            wenn startup_hook is not None:
                 startup_hook()
             self.refresh()
             while not self.finished:

@@ -27,17 +27,17 @@ klasse Callbacks(unittest.TestCase):
     def check_type(self, typ, arg):
         PROTO = self.functype.__func__(typ, typ)
         result = PROTO(self.callback)(arg)
-        if typ == c_float:
+        wenn typ == c_float:
             self.assertAlmostEqual(result, arg, places=5)
-        else:
+        sonst:
             self.assertEqual(self.got_args, (arg,))
             self.assertEqual(result, arg)
 
         PROTO = self.functype.__func__(typ, c_byte, typ)
         result = PROTO(self.callback)(-3, arg)
-        if typ == c_float:
+        wenn typ == c_float:
             self.assertAlmostEqual(result, arg, places=5)
-        else:
+        sonst:
             self.assertEqual(self.got_args, (-3, arg))
             self.assertEqual(result, arg)
 
@@ -130,7 +130,7 @@ klasse Callbacks(unittest.TestCase):
             X()
         gc.collect()
         live = [x fuer x in gc.get_objects()
-                if isinstance(x, X)]
+                wenn isinstance(x, X)]
         self.assertEqual(len(live), 0)
 
     def test_issue12483(self):
@@ -154,7 +154,7 @@ klasse Callbacks(unittest.TestCase):
             self.assertEqual(dll._test_i38748_runCallback(callback, 5, 10), 15)
             self.assertEqual(out.getvalue(), "a=5, b=10, c=15\n")
 
-if hasattr(ctypes, 'WINFUNCTYPE'):
+wenn hasattr(ctypes, 'WINFUNCTYPE'):
     klasse StdcallCallbacks(Callbacks):
         functype = ctypes.WINFUNCTYPE
 
@@ -183,7 +183,7 @@ klasse SampleCallbacksTestCase(unittest.TestCase):
 
     def test_issue_8959_a(self):
         libc_path = find_library("c")
-        if not libc_path:
+        wenn not libc_path:
             self.skipTest('could not find libc')
         libc = CDLL(libc_path)
 
@@ -329,5 +329,5 @@ klasse SampleCallbacksTestCase(unittest.TestCase):
             self.assertIsNone(cm.unraisable.object)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

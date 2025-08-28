@@ -44,7 +44,7 @@ klasse FunctionCalls(unittest.TestCase):
         self.assertEqual(list(res.items()), expected)
 
     def test_frames_are_popped_after_failed_calls(self):
-        # GH-93252: stuff blows up if we don't pop the new frame after
+        # GH-93252: stuff blows up wenn we don't pop the new frame after
         # recovering from failed calls:
         def f():
             pass
@@ -493,7 +493,7 @@ klasse FastCallTests(unittest.TestCase):
     ]
 
     # Add all the calling conventions and variants of C callables
-    if _testcapi:
+    wenn _testcapi:
         _instance = _testcapi.MethInstance()
         fuer obj, expected_self in (
             (_testcapi, _testcapi),  # module-level function
@@ -532,8 +532,8 @@ klasse FastCallTests(unittest.TestCase):
             ])
 
     def check_result(self, result, expected):
-        if isinstance(expected, tuple) and expected[-1] is NULL_OR_EMPTY:
-            if result[-1] in ({}, None):
+        wenn isinstance(expected, tuple) and expected[-1] is NULL_OR_EMPTY:
+            wenn result[-1] in ({}, None):
                 expected = (*expected[:-1], result[-1])
         self.assertEqual(result, expected)
 
@@ -547,7 +547,7 @@ klasse FastCallTests(unittest.TestCase):
                 result = _testcapi.pyobject_fastcalldict(func, args, None)
                 self.check_result(result, expected)
 
-                if not args:
+                wenn not args:
                     # args=NULL, nargs=0, kwargs=NULL
                     result = _testcapi.pyobject_fastcalldict(func, None, None)
                     self.check_result(result, expected)
@@ -571,7 +571,7 @@ klasse FastCallTests(unittest.TestCase):
                 result = _testcapi.pyobject_vectorcall(func, args, ())
                 self.check_result(result, expected)
 
-                if not args:
+                wenn not args:
                     # kwnames=NULL
                     result = _testcapi.pyobject_vectorcall(func, None, None)
                     self.check_result(result, expected)
@@ -755,7 +755,7 @@ klasse TestPEP590(unittest.TestCase):
 
         fuer (func, args, kwargs, expected) in calls:
             with self.subTest(str(func)):
-                if not kwargs:
+                wenn not kwargs:
                     self.assertEqual(expected, pyvectorcall_call(func, args))
                 self.assertEqual(expected, pyvectorcall_call(func, args, kwargs))
 
@@ -790,7 +790,7 @@ klasse TestPEP590(unittest.TestCase):
                 args1 = args[1:]
                 meth = MethodType(func, args[0])
                 wrapped = partial(func)
-                if not kwargs:
+                wenn not kwargs:
                     self.assertEqual(expected, func(*args))
                     self.assertEqual(expected, pyobject_vectorcall(func, args, None))
                     self.assertEqual(expected, meth(*args1))
@@ -967,7 +967,7 @@ klasse TestErrorMessagesSuggestions(unittest.TestCase):
 
         fuer keyword, suggestion in cases:
             with self.subTest(keyword):
-                ctx = self.check_suggestion_includes(suggestion) if suggestion else self.check_suggestion_not_present()
+                ctx = self.check_suggestion_includes(suggestion) wenn suggestion sonst self.check_suggestion_not_present()
                 with ctx:
                     foo(**{keyword:None})
 
@@ -1046,21 +1046,21 @@ klasse TestRecursion(unittest.TestCase):
     def test_super_deep(self):
 
         def recurse(n):
-            if n:
+            wenn n:
                 recurse(n-1)
 
         def py_recurse(n, m):
-            if n:
+            wenn n:
                 py_recurse(n-1, m)
-            else:
+            sonst:
                 c_py_recurse(m-1)
 
         def c_recurse(n):
-            if n:
+            wenn n:
                 _testcapi.pyobject_vectorcall(c_recurse, (n-1,), ())
 
         def c_py_recurse(m):
-            if m:
+            wenn m:
                 _testcapi.pyobject_vectorcall(py_recurse, (1000, m), ())
 
         with set_recursion_limit(100_000):
@@ -1103,9 +1103,9 @@ klasse TestCAPI(unittest.TestCase):
         # PyCFunction_Call() was removed in Python 3.13 API, but was kept in
         # the stable ABI.
         def PyCFunction_Call(func, *args, **kwargs):
-            if kwargs:
+            wenn kwargs:
                 return _testcapi.pycfunction_call(func, args, kwargs)
-            else:
+            sonst:
                 return _testcapi.pycfunction_call(func, args)
 
         self.assertEqual(PyCFunction_Call(func), ((), {}))
@@ -1113,5 +1113,5 @@ klasse TestCAPI(unittest.TestCase):
         self.assertEqual(PyCFunction_Call(func, "arg", num=5), (("arg",), {'num': 5}))
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

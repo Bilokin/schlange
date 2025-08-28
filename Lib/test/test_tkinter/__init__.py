@@ -9,14 +9,14 @@ from test.support import (
     )
 
 
-if check_sanitizer(address=True, memory=True):
+wenn check_sanitizer(address=True, memory=True):
     # See gh-90791 fuer details
     raise unittest.SkipTest("Tests involving libX11 can SEGFAULT on ASAN/MSAN builds")
 
-# Skip test if _tkinter wasn't built.
+# Skip test wenn _tkinter wasn't built.
 import_helper.import_module('_tkinter')
 
-# Skip test if tk cannot be initialized.
+# Skip test wenn tk cannot be initialized.
 requires('gui')
 
 

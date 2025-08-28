@@ -49,7 +49,7 @@ def withpythonimplementation(testfunc):
         # Test default implementation
         testfunc(self)
         # Test Python implementation
-        if quopri.b2a_qp is not None or quopri.a2b_qp is not None:
+        wenn quopri.b2a_qp is not None or quopri.a2b_qp is not None:
             oldencode = quopri.b2a_qp
             olddecode = quopri.a2b_qp
             try:
@@ -209,5 +209,5 @@ zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz''')
         p = p.decode('latin-1')
         self.assertEqual(cout.splitlines(), p.splitlines())
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

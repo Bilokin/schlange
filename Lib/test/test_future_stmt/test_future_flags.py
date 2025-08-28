@@ -12,7 +12,7 @@ klasse FutureTest(unittest.TestCase):
         given_feature_names = features[:]
         fuer name in dir(__future__):
             obj = getattr(__future__, name, None)
-            if obj is not None and isinstance(obj, __future__._Feature):
+            wenn obj is not None and isinstance(obj, __future__._Feature):
                 self.assertTrue(
                     name in given_feature_names,
                     "%r should have been in all_feature_names" % name
@@ -44,7 +44,7 @@ klasse FutureTest(unittest.TestCase):
                 a(isinstance(serial, int), "%s serial isn't int" % name)
 
             check(optional, "optional")
-            if mandatory is not None:
+            wenn mandatory is not None:
                 check(mandatory, "mandatory")
                 a(optional < mandatory,
                        "optional not less than mandatory, and mandatory not None")
@@ -57,5 +57,5 @@ klasse FutureTest(unittest.TestCase):
                    ".compiler_flag isn't int")
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

@@ -10,11 +10,11 @@ klasse TestDefault:
 
     def test_bad_default(self):
         def default(obj):
-            if obj is NotImplemented:
+            wenn obj is NotImplemented:
                 raise ValueError
-            if obj is ...:
+            wenn obj is ...:
                 return NotImplemented
-            if obj is type:
+            wenn obj is type:
                 return collections
             return [...]
 

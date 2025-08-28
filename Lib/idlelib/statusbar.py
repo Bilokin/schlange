@@ -8,13 +8,13 @@ klasse MultiStatusBar(Frame):
         self.labels = {}
 
     def set_label(self, name, text='', side='left', width=0):
-        if name not in self.labels:
+        wenn name not in self.labels:
             label = Label(self, borderwidth=0, anchor='w')
             label.pack(side=side, pady=0, padx=4)
             self.labels[name] = label
-        else:
+        sonst:
             label = self.labels[name]
-        if width != 0:
+        wenn width != 0:
             label.config(width=width)
         label.config(text=text)
 
@@ -44,7 +44,7 @@ def _multistatus_bar(parent):  # htest #
     frame.pack()
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     from unittest import main
     main('idlelib.idle_test.test_statusbar', verbosity=2, exit=False)
 

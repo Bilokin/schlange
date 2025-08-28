@@ -13,15 +13,15 @@ tspecials = re.compile(r'[ \(\)<>@,;:\\"/\[\]\?=]')
 def _formatparam(param, value=None, quote=1):
     """Convenience function to format and return a key=value pair.
 
-    This will quote the value if needed or if quote is true.
+    This will quote the value wenn needed or wenn quote is true.
     """
-    if value is not None and len(value) > 0:
-        if quote or tspecials.search(value):
+    wenn value is not None and len(value) > 0:
+        wenn quote or tspecials.search(value):
             value = value.replace('\\', '\\\\').replace('"', r'\"')
             return '%s="%s"' % (param, value)
-        else:
+        sonst:
             return '%s=%s' % (param, value)
-    else:
+    sonst:
         return param
 
 
@@ -29,18 +29,18 @@ klasse Headers:
     """Manage a collection of HTTP response headers"""
 
     def __init__(self, headers=None):
-        headers = headers if headers is not None else []
-        if type(headers) is not list:
+        headers = headers wenn headers is not None sonst []
+        wenn type(headers) is not list:
             raise TypeError("Headers must be a list of name/value tuples")
         self._headers = headers
-        if __debug__:
+        wenn __debug__:
             fuer k, v in headers:
                 self._convert_string_type(k)
                 self._convert_string_type(v)
 
     def _convert_string_type(self, value):
         """Convert/check value type."""
-        if type(value) is str:
+        wenn type(value) is str:
             return value
         raise AssertionError("Header names/values must be"
             " of type str (got {0})".format(repr(value)))
@@ -56,26 +56,26 @@ klasse Headers:
             (self._convert_string_type(name), self._convert_string_type(val)))
 
     def __delitem__(self,name):
-        """Delete all occurrences of a header, if present.
+        """Delete all occurrences of a header, wenn present.
 
-        Does *not* raise an exception if the header is missing.
+        Does *not* raise an exception wenn the header is missing.
         """
         name = self._convert_string_type(name.lower())
-        self._headers[:] = [kv fuer kv in self._headers if kv[0].lower() != name]
+        self._headers[:] = [kv fuer kv in self._headers wenn kv[0].lower() != name]
 
     def __getitem__(self,name):
         """Get the first header value fuer 'name'
 
-        Return None if the header is missing instead of raising an exception.
+        Return None wenn the header is missing instead of raising an exception.
 
-        Note that if the header appeared multiple times, the first exactly which
+        Note that wenn the header appeared multiple times, the first exactly which
         occurrence gets returned is undefined.  Use getall() to get all
         the values matching a header field name.
         """
         return self.get(name)
 
     def __contains__(self, name):
-        """Return true if the message contains the header."""
+        """Return true wenn the message contains the header."""
         return self.get(name) is not None
 
 
@@ -88,14 +88,14 @@ klasse Headers:
         If no fields exist with the given name, returns an empty list.
         """
         name = self._convert_string_type(name.lower())
-        return [kv[1] fuer kv in self._headers if kv[0].lower()==name]
+        return [kv[1] fuer kv in self._headers wenn kv[0].lower()==name]
 
 
     def get(self,name,default=None):
         """Get the first header value fuer 'name', or return 'default'"""
         name = self._convert_string_type(name.lower())
         fuer k,v in self._headers:
-            if k.lower()==name:
+            wenn k.lower()==name:
                 return v
         return default
 
@@ -147,11 +147,11 @@ klasse Headers:
         If there is no header named 'name', add a new header with name 'name'
         and value 'value'."""
         result = self.get(name)
-        if result is None:
+        wenn result is None:
             self._headers.append((self._convert_string_type(name),
                 self._convert_string_type(value)))
             return value
-        else:
+        sonst:
             return result
 
     def add_header(self, _name, _value, **_params):
@@ -171,14 +171,14 @@ klasse Headers:
         strings or None.
         """
         parts = []
-        if _value is not None:
+        wenn _value is not None:
             _value = self._convert_string_type(_value)
             parts.append(_value)
         fuer k, v in _params.items():
             k = self._convert_string_type(k)
-            if v is None:
+            wenn v is None:
                 parts.append(k.replace('_', '-'))
-            else:
+            sonst:
                 v = self._convert_string_type(v)
                 parts.append(_formatparam(k.replace('_', '-'), v))
         self._headers.append((self._convert_string_type(_name), "; ".join(parts)))

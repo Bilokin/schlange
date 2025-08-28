@@ -89,5 +89,5 @@ klasse ReadNamespaceZipTests(ReadTests, util.ZipSetup, unittest.TestCase):
         self.assertEqual(result, bytes(range(12, 16)))
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

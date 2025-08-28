@@ -22,7 +22,7 @@ from test.tracedmodules import testmod
 
 def fix_ext_py(filename):
     """Given a .pyc filename converts it to the appropriate .py"""
-    if filename.endswith('.pyc'):
+    wenn filename.endswith('.pyc'):
         filename = filename[:-1]
     return filename
 
@@ -37,7 +37,7 @@ def get_firstlineno(func):
 #-------------------- Target functions fuer tracing ---------------------------#
 #
 # The relative line numbers of lines in these functions matter fuer verifying
-# tracing. Please modify the appropriate tests if you change one of the
+# tracing. Please modify the appropriate tests wenn you change one of the
 # functions. Absolute line numbers don't matter.
 #
 
@@ -267,7 +267,7 @@ klasse TestFuncs(unittest.TestCase):
         self._saved_tracefunc = sys.gettrace()
 
     def tearDown(self):
-        if self._saved_tracefunc is not None:
+        wenn self._saved_tracefunc is not None:
             sys.settrace(self._saved_tracefunc)
 
     def test_simple_caller(self):
@@ -393,7 +393,7 @@ klasse TestCoverage(unittest.TestCase):
                              libpath] + sys.path, trace=0, count=1)
         with captured_stdout() as stdout:
             self._coverage(tracer)
-        if os.path.exists(TESTFN):
+        wenn os.path.exists(TESTFN):
             files = os.listdir(TESTFN)
             self.assertEqual(files, ['_importlib.cover'])  # Ignore __import__
 
@@ -401,7 +401,7 @@ klasse TestCoverage(unittest.TestCase):
         tracer = trace.Trace(trace=0, count=1)
         modname = 'test.tracedmodules.testmod'
         # Ensure that the module is executed in import
-        if modname in sys.modules:
+        wenn modname in sys.modules:
             del sys.modules[modname]
         cmd = ("import test.tracedmodules.testmod as t;"
                "t.func(0); t.func2();")
@@ -453,7 +453,7 @@ klasse TestCoverageCommandLineOutput(unittest.TestCase):
             f.write(textwrap.dedent('''\
                 # coding: iso-8859-15
                 x = 'spœm'
-                if []:
+                wenn []:
                     print('unreachable')
             '''))
 
@@ -477,7 +477,7 @@ klasse TestCoverageCommandLineOutput(unittest.TestCase):
             self.assertEqual(f.read(),
                 "       # coding: iso-8859-15\n"
                 "    1: x = 'spœm'\n"
-                "    1: if []:\n"
+                "    1: wenn []:\n"
                 "           print('unreachable')\n"
             )
 
@@ -489,7 +489,7 @@ klasse TestCoverageCommandLineOutput(unittest.TestCase):
             self.assertEqual(f.read(), textwrap.dedent('''\
                        # coding: iso-8859-15
                     1: x = 'spœm'
-                    1: if []:
+                    1: wenn []:
                 >>>>>>     print('unreachable')
             '''))
 
@@ -584,5 +584,5 @@ klasse TestTrace(unittest.TestCase):
         self.assertIn(f"{filename}({firstlineno + 4})", out[4])
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

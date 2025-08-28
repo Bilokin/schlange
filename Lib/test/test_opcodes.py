@@ -19,7 +19,7 @@ klasse OpcodeTest(unittest.TestCase):
             try: pass
             finally: pass
             n = n+i
-        if n != 90:
+        wenn n != 90:
             self.fail('try inside for')
 
     def test_setup_annotations_line(self):
@@ -82,7 +82,7 @@ klasse OpcodeTest(unittest.TestCase):
             raise b
         except AClass as v:
             self.assertEqual(v, b)
-        else:
+        sonst:
             self.fail("no exception")
 
         # not enough arguments
@@ -93,7 +93,7 @@ klasse OpcodeTest(unittest.TestCase):
         try:  raise DClass(a)
         except DClass as v:
             self.assertIsInstance(v, DClass)
-        else:
+        sonst:
             self.fail("no exception")
 
     def test_compare_function_objects(self):
@@ -137,5 +137,5 @@ klasse OpcodeTest(unittest.TestCase):
         self.assertEqual(MyString() % 3, 42)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

@@ -37,7 +37,7 @@ klasse TestContentManager(TestEmailBase):
         cm = ContentManager()
         cm.add_get_handler(key, foo_getter)
         fuer precedence, key in self.get_key_params.values():
-            if precedence > order:
+            wenn precedence > order:
                 cm.add_get_handler(key, bar_getter)
         m = self._make_message()
         m['Content-Type'] = 'text/plain'
@@ -95,7 +95,7 @@ klasse TestContentManager(TestEmailBase):
         cm = ContentManager()
         cm.add_set_handler(key, foo_setter)
         fuer precedence, key in self.get_key_params.values():
-            if precedence > order:
+            wenn precedence > order:
                 cm.add_set_handler(key, bar_setter)
         m = self._make_message()
         msg_obj = self.Thing()
@@ -137,7 +137,7 @@ klasse TestRawDataManager(TestEmailBase):
     # Note: these tests are dependent on the order in which headers are added
     # to the message objects by the code.  There's no defined ordering in
     # RFC5322/MIME, so this makes the tests more fragile than the standards
-    # require.  However, if the header order changes it is best to understand
+    # require.  However, wenn the header order changes it is best to understand
     # *why*, and make sure it isn't a subtle bug in whatever change was
     # applied.
 
@@ -452,7 +452,7 @@ klasse TestRawDataManager(TestEmailBase):
 
     def test_set_text_11_lines_long_line_maximal_non_ascii_heuristics(self):
         # Yes, it chooses "wrong" here.  It's a heuristic.  So this result
-        # could change if we come up with a better heuristic.
+        # could change wenn we come up with a better heuristic.
         m = self._make_message()
         content = ('\n'*10 +
                    "áàäéèęöőáàäéèęöőáàäéèęöőáàäéèęöő"
@@ -615,7 +615,7 @@ klasse TestRawDataManager(TestEmailBase):
         # support a line length parameter, but we must use it to get newline
         # encoding.
         # XXX: what about that lack of tailing newline?  Do we actually handle
-        # that correctly in all cases?  That is, if the *source* has an
+        # that correctly in all cases?  That is, wenn the *source* has an
         # unencoded newline, do we add an extra newline to the returned payload
         # or not?  And can that actually be disambiguated based on the RFC?
         m = self._make_message()
@@ -827,10 +827,10 @@ klasse TestRawDataManager(TestEmailBase):
         m = self._make_message()
         params = {'foo': 'bár', 'abc': 'xyz'}
         m.set_content(obj, *mimetype, params=params)
-        if isinstance(obj, str):
+        wenn isinstance(obj, str):
             params['charset'] = 'utf-8'
         self.assertEqual(m['Content-Type'].params, params)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

@@ -112,35 +112,35 @@ KINDS = [
 
 def _parse_line(line, prev=None):
     last = line
-    if prev:
-        if not prev.endswith(os.linesep):
+    wenn prev:
+        wenn not prev.endswith(os.linesep):
             prev += os.linesep
         line = prev + line
     m = CAPI_RE.match(line)
-    if not m:
-        if not prev and line.startswith('static inline '):
+    wenn not m:
+        wenn not prev and line.startswith('static inline '):
             return line  # the new "prev"
         #if 'PyAPI_' in line or '#define ' in line or ' define ' in line:
         #    print(line)
         return None
     results = zip(KINDS, m.groups())
     fuer kind, name in results:
-        if name:
+        wenn name:
             clean = last.split('//')[0].rstrip()
-            if clean.endswith('*/'):
+            wenn clean.endswith('*/'):
                 clean = clean.split('/*')[0].rstrip()
 
-            if kind == 'macro' or kind == 'constant':
-                if not clean.endswith('\\'):
+            wenn kind == 'macro' or kind == 'constant':
+                wenn not clean.endswith('\\'):
                     return name, kind
-            elif kind == 'inline':
-                if clean.endswith('}'):
-                    if not prev or clean == '}':
+            sowenn kind == 'inline':
+                wenn clean.endswith('}'):
+                    wenn not prev or clean == '}':
                         return name, kind
-            elif kind == 'func' or kind == 'data':
-                if clean.endswith(';'):
+            sowenn kind == 'func' or kind == 'data':
+                wenn clean.endswith(';'):
                     return name, kind
-            else:
+            sonst:
                 # This should not be reached.
                 raise NotImplementedError
             return line  # the new "prev"
@@ -159,15 +159,15 @@ def _get_level(filename, name, *,
                _cpython=INCLUDE_CPYTHON + os.path.sep,
                _internal=INCLUDE_INTERNAL + os.path.sep,
                ):
-    if filename.startswith(_internal):
+    wenn filename.startswith(_internal):
         return 'internal'
-    elif name.startswith('_'):
+    sowenn name.startswith('_'):
         return 'private'
-    elif os.path.dirname(filename) == INCLUDE_ROOT:
+    sowenn os.path.dirname(filename) == INCLUDE_ROOT:
         return 'stable'
-    elif filename.startswith(_cpython):
+    sowenn filename.startswith(_cpython):
         return 'cpython'
-    else:
+    sonst:
         raise NotImplementedError
     #return '???'
 
@@ -183,17 +183,17 @@ klasse CAPIItem(namedtuple('CAPIItem', 'file lno name kind level')):
     @classmethod
     def from_line(cls, line, filename, lno, prev=None):
         parsed = _parse_line(line, prev)
-        if not parsed:
+        wenn not parsed:
             return None, None
-        if isinstance(parsed, str):
+        wenn isinstance(parsed, str):
             # incomplete
             return None, parsed
         name, kind = parsed
         level = _get_level(filename, name)
         self = cls(filename, lno, name, kind, level)
-        if prev:
+        wenn prev:
             self._text = (prev + line).rstrip().splitlines()
-        else:
+        sonst:
             self._text = [line.rstrip()]
         return self, None
 
@@ -208,67 +208,67 @@ klasse CAPIItem(namedtuple('CAPIItem', 'file lno name kind level')):
         except AttributeError:
             # XXX Actually ready the text from disk?.
             self._text = []
-            if self.kind == 'data':
+            wenn self.kind == 'data':
                 self._text = [
                     f'PyAPI_DATA(...) {self.name}',
                 ]
-            elif self.kind == 'func':
+            sowenn self.kind == 'func':
                 self._text = [
                     f'PyAPI_FUNC(...) {self.name}(...);',
                 ]
-            elif self.kind == 'inline':
+            sowenn self.kind == 'inline':
                 self._text = [
                     f'static inline {self.name}(...);',
                 ]
-            elif self.kind == 'macro':
+            sowenn self.kind == 'macro':
                 self._text = [
                     f'#define {self.name}(...) \\',
                     f'    ...',
                 ]
-            elif self.kind == 'constant':
+            sowenn self.kind == 'constant':
                 self._text = [
                     f'#define {self.name} ...',
                 ]
-            else:
+            sonst:
                 raise NotImplementedError
 
             return self._text
 
 
 def _parse_groupby(raw):
-    if not raw:
+    wenn not raw:
         raw = 'kind'
 
-    if isinstance(raw, str):
+    wenn isinstance(raw, str):
         groupby = raw.replace(',', ' ').strip().split()
-    else:
+    sonst:
         raise NotImplementedError
 
-    if not all(v in GROUPINGS fuer v in groupby):
+    wenn not all(v in GROUPINGS fuer v in groupby):
         raise ValueError(f'invalid groupby value {raw!r}')
     return groupby
 
 
 def _resolve_full_groupby(groupby):
-    if isinstance(groupby, str):
+    wenn isinstance(groupby, str):
         groupby = [groupby]
     groupings = []
     fuer grouping in groupby + list(GROUPINGS):
-        if grouping not in groupings:
+        wenn grouping not in groupings:
             groupings.append(grouping)
     return groupings
 
 
 def summarize(items, *, groupby='kind', includeempty=True, minimize=None):
-    if minimize is None:
-        if includeempty is None:
+    wenn minimize is None:
+        wenn includeempty is None:
             minimize = True
             includeempty = False
-        else:
+        sonst:
             minimize = includeempty
-    elif includeempty is None:
+    sowenn includeempty is None:
         includeempty = minimize
-    elif minimize and includeempty:
+    sowenn minimize and includeempty:
         raise ValueError(f'cannot minimize and includeempty at the same time')
 
     groupby = _parse_groupby(groupby)[0]
@@ -293,38 +293,38 @@ def summarize(items, *, groupby='kind', includeempty=True, minimize=None):
         summary['totals']['subs'][outer] += 1
         summary['totals']['bygroup'][outer][inner] += 1
 
-    if not includeempty:
+    wenn not includeempty:
         subtotals = summary['totals']['subs']
         bygroup = summary['totals']['bygroup']
         fuer outer in outers:
-            if subtotals[outer] == 0:
+            wenn subtotals[outer] == 0:
                 del subtotals[outer]
                 del bygroup[outer]
                 continue
 
             fuer inner in inners:
-                if bygroup[outer][inner] == 0:
+                wenn bygroup[outer][inner] == 0:
                     del bygroup[outer][inner]
-            if minimize:
-                if len(bygroup[outer]) == 1:
+            wenn minimize:
+                wenn len(bygroup[outer]) == 1:
                     del bygroup[outer]
 
     return summary
 
 
 def _parse_capi(lines, filename):
-    if isinstance(lines, str):
+    wenn isinstance(lines, str):
         lines = lines.splitlines()
     prev = None
     fuer lno, line in enumerate(lines, 1):
         parsed, prev = CAPIItem.from_line(line, filename, lno, prev)
-        if parsed:
+        wenn parsed:
             yield parsed
-    if prev:
+    wenn prev:
         parsed, prev = CAPIItem.from_line('', filename, lno, prev)
-        if parsed:
+        wenn parsed:
             yield parsed
-        if prev:
+        wenn prev:
             print('incomplete match:')
             print(filename)
             print(prev)
@@ -339,26 +339,26 @@ def iter_capi(filenames=None):
 
 
 def resolve_filter(ignored):
-    if not ignored:
+    wenn not ignored:
         return None
     ignored = set(_resolve_ignored(ignored))
     def filter(item, *, log=None):
-        if item.name not in ignored:
+        wenn item.name not in ignored:
             return True
-        if log is not None:
+        wenn log is not None:
             log(f'ignored {item.name!r}')
         return False
     return filter
 
 
 def _resolve_ignored(ignored):
-    if isinstance(ignored, str):
+    wenn isinstance(ignored, str):
         ignored = [ignored]
     fuer raw in ignored:
-        if isinstance(raw, str):
-            if raw.startswith('|'):
+        wenn isinstance(raw, str):
+            wenn raw.startswith('|'):
                 yield raw[1:]
-            elif raw.startswith('<') and raw.endswith('>'):
+            sowenn raw.startswith('<') and raw.endswith('>'):
                 filename = raw[1:-1]
                 try:
                     infile = open(filename)
@@ -368,19 +368,19 @@ def _resolve_ignored(ignored):
                 logger.log(1, f'reading ignored names from {filename!r}')
                 with infile:
                     fuer line in infile:
-                        if not line:
+                        wenn not line:
                             continue
-                        if line[0].isspace():
+                        wenn line[0].isspace():
                             continue
                         line = line.partition('#')[0].rstrip()
-                        if line:
+                        wenn line:
                             # XXX Recurse?
                             yield line
-            else:
+            sonst:
                 raw = raw.strip()
-                if raw:
+                wenn raw:
                     yield raw
-        else:
+        sonst:
             raise NotImplementedError
 
 
@@ -400,9 +400,9 @@ def _collate(items, groupby, includeempty):
         maxname = max(len(item.name), maxname)
         maxkind = max(len(item.kind), maxkind)
         maxlevel = max(len(item.level), maxlevel)
-    if not includeempty:
+    wenn not includeempty:
         fuer group in groups:
-            if not collated[group]:
+            wenn not collated[group]:
                 del collated[group]
     maxextra = {
         'kind': maxkind,
@@ -412,7 +412,7 @@ def _collate(items, groupby, includeempty):
 
 
 def _get_sortkey(sort, _groupby, _columns):
-    if sort is True or sort is None:
+    wenn sort is True or sort is None:
         # For now:
         def sortkey(item):
             return (
@@ -426,11 +426,11 @@ def _get_sortkey(sort, _groupby, _columns):
         return sortkey
 
         sortfields = 'not-private level kind dirname basename name'.split()
-    elif isinstance(sort, str):
+    sowenn isinstance(sort, str):
         sortfields = sort.replace(',', ' ').strip().split()
-    elif callable(sort):
+    sowenn callable(sort):
         return sort
-    else:
+    sonst:
         raise NotImplementedError
 
     # XXX Build a sortkey func from sortfields.
@@ -458,22 +458,22 @@ _MARKERS = {
 
 
 def resolve_format(format):
-    if not format:
+    wenn not format:
         return 'table'
-    elif isinstance(format, str) and format in _FORMATS:
+    sowenn isinstance(format, str) and format in _FORMATS:
         return format
-    else:
+    sonst:
         return resolve_columns(format)
 
 
 def get_renderer(format):
     format = resolve_format(format)
-    if isinstance(format, str):
+    wenn isinstance(format, str):
         try:
             return _FORMATS[format]
         except KeyError:
             raise ValueError(f'unsupported format {format!r}')
-    else:
+    sonst:
         def render(items, **kwargs):
             return render_table(items, columns=format, **kwargs)
         return render
@@ -486,12 +486,12 @@ def render_table(items, *,
                  showempty=False,
                  verbose=False,
                  ):
-    if groupby is None:
+    wenn groupby is None:
         groupby = 'kind'
-    if showempty is None:
+    wenn showempty is None:
         showempty = False
 
-    if groupby:
+    wenn groupby:
         (collated, groupby, maxfilename, maxname, maxextra,
          ) = _collate(items, groupby, showempty)
         fuer grouping in GROUPINGS:
@@ -502,28 +502,28 @@ def render_table(items, *,
         markers = {extra: _MARKERS[extra]}
 
         groups = GROUPINGS[groupby]
-    else:
+    sonst:
         # XXX Support no grouping?
         raise NotImplementedError
 
-    if columns:
+    wenn columns:
         def get_extra(item):
             return {extra: getattr(item, extra)
                     fuer extra in ('kind', 'level')}
-    else:
-        if verbose:
+    sonst:
+        wenn verbose:
             extracols = [f'{extra}:{maxextra[extra]}'
                          fuer extra in extras]
             def get_extra(item):
                 return {extra: getattr(item, extra)
                         fuer extra in extras}
-        elif len(extras) == 1:
+        sowenn len(extras) == 1:
             extra, = extras
             extracols = [f'{m}:1' fuer m in markers[extra]]
             def get_extra(item):
-                return {m: m if getattr(item, extra) == markers[extra][m] else ''
+                return {m: m wenn getattr(item, extra) == markers[extra][m] sonst ''
                         fuer m in markers[extra]}
-        else:
+        sonst:
             raise NotImplementedError
             #extracols = [[f'{m}:1' fuer m in markers[extra]]
             #             fuer extra in extras]
@@ -532,7 +532,7 @@ def render_table(items, *,
             #    fuer extra in extras:
             #        cur = markers[extra]
             #        fuer m in cur:
-            #            values[m] = m if getattr(item, m) == cur[m] else ''
+            #            values[m] = m wenn getattr(item, m) == cur[m] sonst ''
             #    return values
         columns = [
             f'filename:{maxfilename}',
@@ -541,20 +541,20 @@ def render_table(items, *,
         ]
     header, div, fmt = build_table(columns)
 
-    if sort:
+    wenn sort:
         sortkey = _get_sortkey(sort, groupby, columns)
 
     total = 0
     fuer group, grouped in collated.items():
-        if not showempty and group not in collated:
+        wenn not showempty and group not in collated:
             continue
         yield ''
         yield f' === {group} ==='
         yield ''
         yield header
         yield div
-        if grouped:
-            if sort:
+        wenn grouped:
+            wenn sort:
                 grouped = sorted(grouped, key=sortkey)
             fuer item in grouped:
                 yield fmt.format(
@@ -576,30 +576,30 @@ def render_full(items, *,
                 showempty=None,
                 verbose=False,
                 ):
-    if groupby is None:
+    wenn groupby is None:
         groupby = 'kind'
-    if showempty is None:
+    wenn showempty is None:
         showempty = False
 
-    if sort:
+    wenn sort:
         sortkey = _get_sortkey(sort, groupby, None)
 
-    if groupby:
+    wenn groupby:
         collated, groupby, _, _, _ = _collate(items, groupby, showempty)
         fuer group, grouped in collated.items():
             yield '#' * 25
             yield f'# {group} ({len(grouped)})'
             yield '#' * 25
             yield ''
-            if not grouped:
+            wenn not grouped:
                 continue
-            if sort:
+            wenn sort:
                 grouped = sorted(grouped, key=sortkey)
             fuer item in grouped:
                 yield from _render_item_full(item, groupby, verbose)
                 yield ''
-    else:
-        if sort:
+    sonst:
+        wenn sort:
             items = sorted(items, key=sortkey)
         fuer item in items:
             yield from _render_item_full(item, None, verbose)
@@ -611,7 +611,7 @@ def _render_item_full(item, groupby, verbose):
     yield f'  {"filename:":10} {item.relfile}'
     fuer extra in ('kind', 'level'):
         yield f'  {extra+":":10} {getattr(item, extra)}'
-    if verbose:
+    wenn verbose:
         print('  ---------------------------------------')
         fuer lno, line in enumerate(item.text, item.lno):
             print(f'  | {lno:3} {line}')
@@ -624,31 +624,31 @@ def render_summary(items, *,
                    showempty=None,
                    verbose=False,
                    ):
-    if groupby is None:
+    wenn groupby is None:
         groupby = 'kind'
     summary = summarize(
         items,
         groupby=groupby,
         includeempty=showempty,
-        minimize=None if showempty else not verbose,
+        minimize=None wenn showempty sonst not verbose,
     )
 
     subtotals = summary['totals']['subs']
     bygroup = summary['totals']['bygroup']
     fuer outer, subtotal in subtotals.items():
-        if bygroup:
+        wenn bygroup:
             subtotal = f'({subtotal})'
             yield f'{outer + ":":20} {subtotal:>8}'
-        else:
+        sonst:
             yield f'{outer + ":":10} {subtotal:>8}'
-        if outer in bygroup:
+        wenn outer in bygroup:
             fuer inner, count in bygroup[outer].items():
                 yield f'   {inner + ":":9} {count}'
     total = f'*{summary["totals"]["all"]}*'
     label = '*total*:'
-    if bygroup:
+    wenn bygroup:
         yield f'{label:20} {total:>8}'
-    else:
+    sonst:
         yield f'{label:10} {total:>9}'
 
 

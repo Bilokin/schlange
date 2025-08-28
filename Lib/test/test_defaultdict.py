@@ -43,7 +43,7 @@ klasse TestDefaultDict(unittest.TestCase):
             d2[15]
         except KeyError as err:
             self.assertEqual(err.args, (15,))
-        else:
+        sonst:
             self.fail("d2[15] didn't raise KeyError")
         self.assertRaises(TypeError, defaultdict, 1)
 
@@ -122,7 +122,7 @@ klasse TestDefaultDict(unittest.TestCase):
             d1[(1,)]
         except KeyError as err:
             self.assertEqual(err.args[0], (1,))
-        else:
+        sonst:
             self.fail("expected KeyError")
 
     def test_recursive_repr(self):
@@ -186,5 +186,5 @@ klasse TestDefaultDict(unittest.TestCase):
         with self.assertRaises(TypeError):
             i |= None
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

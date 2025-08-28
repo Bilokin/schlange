@@ -12,7 +12,7 @@ from contextlib import contextmanager
 __all__ = ["local"]
 
 # We need to use objects from the threading module, but the threading
-# module may also want to use our `local` class, if support fuer locals
+# module may also want to use our `local` class, wenn support fuer locals
 # isn't compiled in to the `thread` module.  This creates potential problems
 # with circular imports.  For that reason, we don't import `threading`
 # until the bottom of this file (a hack sufficient to worm around the
@@ -34,7 +34,7 @@ klasse _localimpl:
         self.dicts = {}
 
     def get_dict(self):
-        """Return the dict fuer the current thread. Raises KeyError if none
+        """Return the dict fuer the current thread. Raises KeyError wenn none
         defined."""
         thread = current_thread()
         return self.dicts[id(thread)][1]
@@ -48,15 +48,15 @@ klasse _localimpl:
         def local_deleted(_, key=key):
             # When the localimpl is deleted, remove the thread attribute.
             thread = wrthread()
-            if thread is not None:
+            wenn thread is not None:
                 del thread.__dict__[key]
         def thread_deleted(_, idt=idt):
             # When the thread is deleted, remove the local dict.
-            # Note that this is suboptimal if the thread object gets
+            # Note that this is suboptimal wenn the thread object gets
             # caught in a reference loop. We would like to be called
             # as soon as the OS-level thread ends instead.
             local = wrlocal()
-            if local is not None:
+            wenn local is not None:
                 dct = local.dicts.pop(idt)
         wrlocal = ref(self, local_deleted)
         wrthread = ref(thread, thread_deleted)
@@ -83,7 +83,7 @@ klasse local:
     __slots__ = '_local__impl', '__dict__'
 
     def __new__(cls, /, *args, **kw):
-        if (args or kw) and (cls.__init__ is object.__init__):
+        wenn (args or kw) and (cls.__init__ is object.__init__):
             raise TypeError("Initialization arguments are not supported")
         self = object.__new__(cls)
         impl = _localimpl()
@@ -101,7 +101,7 @@ klasse local:
             return object.__getattribute__(self, name)
 
     def __setattr__(self, name, value):
-        if name == '__dict__':
+        wenn name == '__dict__':
             raise AttributeError(
                 "%r object attribute '__dict__' is read-only"
                 % self.__class__.__name__)
@@ -109,7 +109,7 @@ klasse local:
             return object.__setattr__(self, name, value)
 
     def __delattr__(self, name):
-        if name == '__dict__':
+        wenn name == '__dict__':
             raise AttributeError(
                 "%r object attribute '__dict__' is read-only"
                 % self.__class__.__name__)

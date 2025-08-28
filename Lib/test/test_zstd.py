@@ -261,9 +261,9 @@ klasse CompressorTestCase(unittest.TestCase):
              CompressionParameter.checksum_flag : 1,
              CompressionParameter.dict_id_flag : 0,
 
-             CompressionParameter.nb_workers : 2 if SUPPORT_MULTITHREADING else 0,
-             CompressionParameter.job_size : 5*_1M if SUPPORT_MULTITHREADING else 0,
-             CompressionParameter.overlap_log : 9 if SUPPORT_MULTITHREADING else 0,
+             CompressionParameter.nb_workers : 2 wenn SUPPORT_MULTITHREADING sonst 0,
+             CompressionParameter.job_size : 5*_1M wenn SUPPORT_MULTITHREADING sonst 0,
+             CompressionParameter.overlap_log : 9 wenn SUPPORT_MULTITHREADING sonst 0,
              }
         ZstdCompressor(options=d)
 
@@ -295,7 +295,7 @@ klasse CompressorTestCase(unittest.TestCase):
                 CompressionParameter.compression_level: level_min-1})
 
         # zstd lib doesn't support MT compression
-        if not SUPPORT_MULTITHREADING:
+        wenn not SUPPORT_MULTITHREADING:
             with self.assertRaises(ValueError):
                 ZstdCompressor(options={CompressionParameter.nb_workers:4})
             with self.assertRaises(ValueError):
@@ -497,7 +497,7 @@ klasse CompressorTestCase(unittest.TestCase):
         with self.assertRaises(ZstdError):
             c.compress(b'extra', ZstdCompressor.FLUSH_FRAME)
 
-        # content size not set if content_size_flag == 0
+        # content size not set wenn content_size_flag == 0
         c = ZstdCompressor(options={CompressionParameter.content_size_flag: 0})
         c.set_pledged_input_size(10)
         dat1 = c.compress(b"hello")
@@ -749,16 +749,16 @@ klasse DecompressorTestCase(unittest.TestCase):
         bi = io.BytesIO(DAT)
         lst = []
         while True:
-            if d.needs_input:
+            wenn d.needs_input:
                 dat = bi.read(300)
-                if not dat:
+                wenn not dat:
                     break
-            else:
+            sonst:
                 raise Exception('should not get here')
 
             ret = d.decompress(dat)
             lst.append(ret)
-            if d.eof:
+            wenn d.eof:
                 break
 
         ret = b''.join(lst)
@@ -776,16 +776,16 @@ klasse DecompressorTestCase(unittest.TestCase):
         bi = io.BytesIO(DAT)
         lst = []
         while True:
-            if d.needs_input:
+            wenn d.needs_input:
                 dat = bi.read(3)
-                if not dat:
+                wenn not dat:
                     break
-            else:
+            sonst:
                 dat = b''
 
             ret = d.decompress(dat, 1)
             lst.append(ret)
-            if d.eof:
+            wenn d.eof:
                 break
 
         ret = b''.join(lst)
@@ -912,9 +912,9 @@ klasse DecompressorFlagsTestCase(unittest.TestCase):
 
         # doesn't match checksum
         checksum = DAT_130K_C[-4:]
-        if checksum[0] == 255:
+        wenn checksum[0] == 255:
             wrong_checksum = bytes([254]) + checksum[1:]
-        else:
+        sonst:
             wrong_checksum = bytes([checksum[0]+1]) + checksum[1:]
 
         dat = DAT_130K_C[:-4] + wrong_checksum
@@ -1452,7 +1452,7 @@ klasse ZstdDictTestCase(unittest.TestCase):
 
     def test_train_buffer_protocol_samples(self):
         def _nbytes(dat):
-            if isinstance(dat, (bytes, bytearray)):
+            wenn isinstance(dat, (bytes, bytearray)):
                 return len(dat)
             return memoryview(dat).nbytes
 
@@ -1493,7 +1493,7 @@ klasse ZstdDictTestCase(unittest.TestCase):
         # V2
         mid = len(V1) // 2
         V2 = V1[:mid] + \
-             (b'a' if V1[mid] != int.from_bytes(b'a') else b'b') + \
+             (b'a' wenn V1[mid] != int.from_bytes(b'a') sonst b'b') + \
              V1[mid+1:]
 
         # compress
@@ -1509,7 +1509,7 @@ klasse ZstdDictTestCase(unittest.TestCase):
             decompressed = decompress(dat, zd2.as_prefix)
         except ZstdError: # expected
             pass
-        else:
+        sonst:
             self.assertNotEqual(decompressed, V2)
 
         # read only attribute
@@ -1899,7 +1899,7 @@ klasse FileTestCase(unittest.TestCase):
             chunks = []
             while True:
                 result = f.read(10)
-                if not result:
+                wenn not result:
                     break
                 self.assertLessEqual(len(result), 10)
                 chunks.append(result)
@@ -1969,7 +1969,7 @@ klasse FileTestCase(unittest.TestCase):
             blocks = []
             while True:
                 result = f.read1()
-                if not result:
+                wenn not result:
                     break
                 blocks.append(result)
             self.assertEqual(b"".join(blocks), DAT_130K_D)
@@ -1984,7 +1984,7 @@ klasse FileTestCase(unittest.TestCase):
             blocks = []
             while True:
                 result = f.read1(10)
-                if not result:
+                wenn not result:
                     break
                 blocks.append(result)
             self.assertEqual(b"".join(blocks), DECOMPRESSED_DAT)
@@ -1995,7 +1995,7 @@ klasse FileTestCase(unittest.TestCase):
             blocks = []
             while True:
                 result = f.read1()
-                if not result:
+                wenn not result:
                     break
                 blocks.append(result)
             self.assertEqual(b"".join(blocks), DECOMPRESSED_100_PLUS_32KB * 5)
@@ -2131,7 +2131,7 @@ klasse FileTestCase(unittest.TestCase):
             f.flush(f.FLUSH_FRAME)
         self.assertEqual(bo.getvalue(), b'')
 
-        # if .write(b''), generate empty content frame
+        # wenn .write(b''), generate empty content frame
         bo = io.BytesIO()
         with ZstdFile(bo, 'w') as f:
             f.write(b'')
@@ -2309,7 +2309,7 @@ klasse FileTestCase(unittest.TestCase):
             while True:
                 self.assertEqual(f.tell(), pos)
                 result = f.read(random.randint(171, 189))
-                if not result:
+                wenn not result:
                     break
                 pos += len(result)
             self.assertEqual(f.tell(), len(DAT_130K_D))
@@ -2388,21 +2388,21 @@ klasse FileTestCase(unittest.TestCase):
                 method = random.randint(0, 2)
                 size = random.randint(0, 300)
 
-                if method == 0:
+                wenn method == 0:
                     dat = f.read(size)
-                    if not dat and size:
+                    wenn not dat and size:
                         break
                     lst.append(dat)
-                elif method == 1:
+                sowenn method == 1:
                     ba = bytearray(size)
                     read_size = f.readinto(ba)
-                    if read_size == 0 and size:
+                    wenn read_size == 0 and size:
                         break
                     lst.append(bytes(ba[:read_size]))
-                elif method == 2:
+                sowenn method == 2:
                     ba = bytearray(size)
                     read_size = f.readinto1(ba)
-                    if read_size == 0 and size:
+                    wenn read_size == 0 and size:
                         break
                     lst.append(bytes(ba[:read_size]))
         self.assertEqual(b''.join(lst), THIS_FILE_BYTES*5)
@@ -2608,9 +2608,9 @@ klasse OpenTestCase(unittest.TestCase):
         fuer mode in ("x", "xb", "xt"):
             os.remove(TESTFN)
 
-            if mode == "xt":
+            wenn mode == "xt":
                 encoding = "utf-8"
-            else:
+            sonst:
                 encoding = None
             with open(TESTFN, mode, encoding=encoding):
                 pass
@@ -2681,7 +2681,7 @@ klasse FreeThreadingMethodTests(unittest.TestCase):
         parts = [comp.compress(input, ZstdCompressor.FLUSH_BLOCK)]
         fuer _ in range(num_threads):
             res = comp.compress(input, ZstdCompressor.FLUSH_BLOCK)
-            if res:
+            wenn res:
                 parts.append(res)
         rest1 = comp.flush()
         expected = b''.join(parts) + rest1
@@ -2690,7 +2690,7 @@ klasse FreeThreadingMethodTests(unittest.TestCase):
         output = [comp.compress(input, ZstdCompressor.FLUSH_BLOCK)]
         def run_method(method, input_data, output_data):
             res = method(input_data, ZstdCompressor.FLUSH_BLOCK)
-            if res:
+            wenn res:
                 output_data.append(res)
         threads = []
 
@@ -2719,7 +2719,7 @@ klasse FreeThreadingMethodTests(unittest.TestCase):
         parts = []
         fuer _ in range(num_threads):
             res = decomp.decompress(input, window_size)
-            if res:
+            wenn res:
                 parts.append(res)
         expected = b''.join(parts)
 
@@ -2727,7 +2727,7 @@ klasse FreeThreadingMethodTests(unittest.TestCase):
         output = []
         def run_method(method, input_data, output_data):
             res = method(input_data, window_size)
-            if res:
+            wenn res:
                 output_data.append(res)
         threads = []
 
@@ -2797,5 +2797,5 @@ klasse FreeThreadingMethodTests(unittest.TestCase):
             pass
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

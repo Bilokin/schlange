@@ -82,7 +82,7 @@ klasse TestCopy(unittest.TestCase):
     def test_copy_cant(self):
         klasse C(object):
             def __getattribute__(self, name):
-                if name.startswith("__reduce"):
+                wenn name.startswith("__reduce"):
                     raise AttributeError(name)
                 return object.__getattribute__(self, name)
         x = C()
@@ -345,7 +345,7 @@ klasse TestCopy(unittest.TestCase):
     def test_deepcopy_cant(self):
         klasse C(object):
             def __getattribute__(self, name):
-                if name.startswith("__reduce"):
+                wenn name.startswith("__reduce"):
                     raise AttributeError(name)
                 return object.__getattribute__(self, name)
         x = C()
@@ -728,13 +728,13 @@ klasse TestCopy(unittest.TestCase):
     def test_deepcopy_dict_subclass(self):
         klasse C(dict):
             def __init__(self, d=None):
-                if not d:
+                wenn not d:
                     d = {}
                 self._keys = list(d.keys())
                 super().__init__(d)
             def __setitem__(self, key, item):
                 super().__setitem__(key, item)
-                if key not in self._keys:
+                wenn key not in self._keys:
                     self._keys.append(key)
         x = C(d={'foo':0})
         y = copy.deepcopy(x)
@@ -985,5 +985,5 @@ klasse MiscTestCase(unittest.TestCase):
 def global_foo(x, y): return x+y
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

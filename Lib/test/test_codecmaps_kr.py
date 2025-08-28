@@ -33,5 +33,5 @@ klasse TestJOHABMap(multibytecodec_support.TestBase_Mapping,
     pass_enctest = [(b'\\', '\u20a9')]
     pass_dectest = [(b'\\', '\u20a9')]
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

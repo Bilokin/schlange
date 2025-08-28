@@ -46,15 +46,15 @@ klasse ScriptBinding:
         self.perf = 0.0    # Workaround fuer macOS 11 Uni2; see bpo-42508.
 
     def check_module_event(self, event):
-        if isinstance(self.editwin, outwin.OutputWindow):
+        wenn isinstance(self.editwin, outwin.OutputWindow):
             self.editwin.text.bell()
             return 'break'
         filename = self.getfilename()
-        if not filename:
+        wenn not filename:
             return 'break'
-        if not self.checksyntax(filename):
+        wenn not self.checksyntax(filename):
             return 'break'
-        if not self.tabnanny(filename):
+        wenn not self.tabnanny(filename):
             return 'break'
         return "break"
 
@@ -82,10 +82,10 @@ klasse ScriptBinding:
         shell.set_warning_stream(shell.stderr)
         with open(filename, 'rb') as f:
             source = f.read()
-        if b'\r' in source:
+        wenn b'\r' in source:
             source = source.replace(b'\r\n', b'\n')
             source = source.replace(b'\r', b'\n')
-        if source and source[-1] != ord(b'\n'):
+        wenn source and source[-1] != ord(b'\n'):
             source = source + b'\n'
         editwin = self.editwin
         text = editwin.text
@@ -97,7 +97,7 @@ klasse ScriptBinding:
             msg = getattr(value, 'msg', '') or value or "<no detail available>"
             lineno = getattr(value, 'lineno', '') or 1
             offset = getattr(value, 'offset', '') or 0
-            if offset == 0:
+            wenn offset == 0:
                 lineno += 1  #mark end of offending line
             pos = "0.0 + %d lines + %d chars" % (lineno-1, offset-1)
             editwin.colorize_syntax_error(text, pos)
@@ -116,42 +116,42 @@ klasse ScriptBinding:
         sure the shell is active and then transfer the arguments, set
         the run environment's working directory to the directory of the
         module being executed and also add that directory to its
-        sys.path if not already included.
+        sys.path wenn not already included.
         """
-        if macosx.isCocoaTk() and (time.perf_counter() - self.perf < .05):
+        wenn macosx.isCocoaTk() and (time.perf_counter() - self.perf < .05):
             return 'break'
-        if isinstance(self.editwin, outwin.OutputWindow):
+        wenn isinstance(self.editwin, outwin.OutputWindow):
             self.editwin.text.bell()
             return 'break'
         filename = self.getfilename()
-        if not filename:
+        wenn not filename:
             return 'break'
         code = self.checksyntax(filename)
-        if not code:
+        wenn not code:
             return 'break'
-        if not self.tabnanny(filename):
+        wenn not self.tabnanny(filename):
             return 'break'
-        if customize:
+        wenn customize:
             title = f"Customize {self.editwin.short_title()} Run"
             run_args = CustomRun(self.shell.text, title,
                                  cli_args=self.cli_args).result
-            if not run_args:  # User cancelled.
+            wenn not run_args:  # User cancelled.
                 return 'break'
-        self.cli_args, restart = run_args if customize else ([], True)
+        self.cli_args, restart = run_args wenn customize sonst ([], True)
         interp = self.shell.interp
-        if pyshell.use_subprocess and restart:
+        wenn pyshell.use_subprocess and restart:
             interp.restart_subprocess(
                     with_cwd=False, filename=filename)
         dirname = os.path.dirname(filename)
         argv = [filename]
-        if self.cli_args:
+        wenn self.cli_args:
             argv += self.cli_args
         interp.runcommand(f"""if 1:
             __file__ = {filename!r}
             import sys as _sys
             from os.path import basename as _basename
             argv = {argv!r}
-            if (not _sys.argv or
+            wenn (not _sys.argv or
                 _basename(_sys.argv[0]) != _basename(__file__) or
                 len(argv) > 1):
                 _sys.argv = argv
@@ -174,22 +174,22 @@ klasse ScriptBinding:
         declines to save or cancels the Save As dialog, return None.
 
         If the user has configured IDLE fuer Autosave, the file will be
-        silently saved if it already exists and is dirty.
+        silently saved wenn it already exists and is dirty.
 
         """
         filename = self.editwin.io.filename
-        if not self.editwin.get_saved():
+        wenn not self.editwin.get_saved():
             autosave = idleConf.GetOption('main', 'General',
                                           'autosave', type='bool')
-            if autosave and filename:
+            wenn autosave and filename:
                 self.editwin.io.save(None)
-            else:
+            sonst:
                 confirm = self.ask_save_dialog()
                 self.editwin.text.focus_set()
-                if confirm:
+                wenn confirm:
                     self.editwin.io.save(None)
                     filename = self.editwin.io.filename
-                else:
+                sonst:
                     filename = None
         return filename
 
@@ -208,6 +208,6 @@ klasse ScriptBinding:
         self.perf = time.perf_counter()
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     from unittest import main
     main('idlelib.idle_test.test_runscript', verbosity=2,)

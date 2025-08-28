@@ -48,10 +48,10 @@ klasse Test(unittest.TestCase, StructCheckMixin):
             little.z = 24
 
     def test_endian_short(self):
-        if sys.byteorder == "little":
+        wenn sys.byteorder == "little":
             self.assertIs(c_short.__ctype_le__, c_short)
             self.assertIs(c_short.__ctype_be__.__ctype_le__, c_short)
-        else:
+        sonst:
             self.assertIs(c_short.__ctype_be__, c_short)
             self.assertIs(c_short.__ctype_le__.__ctype_be__, c_short)
         s = c_short.__ctype_be__(0x1234)
@@ -75,10 +75,10 @@ klasse Test(unittest.TestCase, StructCheckMixin):
         self.assertEqual(s.value, 0x1234)
 
     def test_endian_int(self):
-        if sys.byteorder == "little":
+        wenn sys.byteorder == "little":
             self.assertIs(c_int.__ctype_le__, c_int)
             self.assertIs(c_int.__ctype_be__.__ctype_le__, c_int)
-        else:
+        sonst:
             self.assertIs(c_int.__ctype_be__, c_int)
             self.assertIs(c_int.__ctype_le__.__ctype_be__, c_int)
 
@@ -103,10 +103,10 @@ klasse Test(unittest.TestCase, StructCheckMixin):
         self.assertEqual(s.value, 0x12345678)
 
     def test_endian_longlong(self):
-        if sys.byteorder == "little":
+        wenn sys.byteorder == "little":
             self.assertIs(c_longlong.__ctype_le__, c_longlong)
             self.assertIs(c_longlong.__ctype_be__.__ctype_le__, c_longlong)
-        else:
+        sonst:
             self.assertIs(c_longlong.__ctype_be__, c_longlong)
             self.assertIs(c_longlong.__ctype_le__.__ctype_be__, c_longlong)
 
@@ -131,10 +131,10 @@ klasse Test(unittest.TestCase, StructCheckMixin):
         self.assertEqual(s.value, 0x1234567890ABCDEF)
 
     def test_endian_float(self):
-        if sys.byteorder == "little":
+        wenn sys.byteorder == "little":
             self.assertIs(c_float.__ctype_le__, c_float)
             self.assertIs(c_float.__ctype_be__.__ctype_le__, c_float)
-        else:
+        sonst:
             self.assertIs(c_float.__ctype_be__, c_float)
             self.assertIs(c_float.__ctype_le__.__ctype_be__, c_float)
         s = c_float(math.pi)
@@ -149,10 +149,10 @@ klasse Test(unittest.TestCase, StructCheckMixin):
         self.assertEqual(bin(struct.pack(">f", math.pi)), bin(s))
 
     def test_endian_double(self):
-        if sys.byteorder == "little":
+        wenn sys.byteorder == "little":
             self.assertIs(c_double.__ctype_le__, c_double)
             self.assertIs(c_double.__ctype_be__.__ctype_le__, c_double)
-        else:
+        sonst:
             self.assertIs(c_double.__ctype_be__, c_double)
             self.assertIs(c_double.__ctype_le__.__ctype_be__, c_double)
         s = c_double(math.pi)
@@ -200,7 +200,7 @@ klasse Test(unittest.TestCase, StructCheckMixin):
         # these fields do not support different byte order:
         fuer typ in c_wchar, c_void_p, POINTER(c_int):
             with self.assertRaises(TypeError):
-                klasse T(BigEndianStructure if sys.byteorder == "little" else LittleEndianStructure):
+                klasse T(BigEndianStructure wenn sys.byteorder == "little" sonst LittleEndianStructure):
                     _fields_ = fields + [("x", typ)]
                 self.check_struct(T)
 
@@ -240,10 +240,10 @@ klasse Test(unittest.TestCase, StructCheckMixin):
         #
         # Unaligned accesses will crash Python (on those platforms that
         # don't allow it, like sparc solaris).
-        if sys.byteorder == "little":
+        wenn sys.byteorder == "little":
             base = BigEndianStructure
             fmt = ">bxhid"
-        else:
+        sonst:
             base = LittleEndianStructure
             fmt = "<bxhid"
 
@@ -259,10 +259,10 @@ klasse Test(unittest.TestCase, StructCheckMixin):
         self.assertEqual(bin(s1), bin(s2))
 
     def test_unaligned_nonnative_struct_fields(self):
-        if sys.byteorder == "little":
+        wenn sys.byteorder == "little":
             base = BigEndianStructure
             fmt = ">b h xi xd"
-        else:
+        sonst:
             base = LittleEndianStructure
             fmt = "<b h xi xd"
 
@@ -288,9 +288,9 @@ klasse Test(unittest.TestCase, StructCheckMixin):
         self.assertEqual(bin(s1), bin(s2))
 
     def test_unaligned_native_struct_fields(self):
-        if sys.byteorder == "little":
+        wenn sys.byteorder == "little":
             fmt = "<b h xi xd"
-        else:
+        sonst:
             base = LittleEndianStructure
             fmt = ">b h xi xd"
 
@@ -341,7 +341,7 @@ klasse Test(unittest.TestCase, StructCheckMixin):
         # these fields do not support different byte order:
         fuer typ in c_wchar, c_void_p, POINTER(c_int):
             with self.assertRaises(TypeError):
-                klasse T(BigEndianUnion if sys.byteorder == "little" else LittleEndianUnion):
+                klasse T(BigEndianUnion wenn sys.byteorder == "little" sonst LittleEndianUnion):
                     _fields_ = fields + [("x", typ)]
                 self.check_union(T)
 
@@ -376,10 +376,10 @@ klasse Test(unittest.TestCase, StructCheckMixin):
 
     def test_build_struct_union_opposite_system_byteorder(self):
         # gh-105102
-        if sys.byteorder == "little":
+        wenn sys.byteorder == "little":
             _Structure = BigEndianStructure
             _Union = BigEndianUnion
-        else:
+        sonst:
             _Structure = LittleEndianStructure
             _Union = LittleEndianUnion
 
@@ -396,5 +396,5 @@ klasse Test(unittest.TestCase, StructCheckMixin):
         self.check_struct(S2)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

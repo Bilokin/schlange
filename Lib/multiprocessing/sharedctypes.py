@@ -61,12 +61,12 @@ def RawArray(typecode_or_type, size_or_initializer):
     Returns a ctypes array allocated from shared memory
     '''
     type_ = typecode_to_type.get(typecode_or_type, typecode_or_type)
-    if isinstance(size_or_initializer, int):
+    wenn isinstance(size_or_initializer, int):
         type_ = type_ * size_or_initializer
         obj = _new_value(type_)
         ctypes.memset(ctypes.addressof(obj), 0, ctypes.sizeof(obj))
         return obj
-    else:
+    sonst:
         type_ = type_ * len(size_or_initializer)
         result = _new_value(type_)
         result.__init__(*size_or_initializer)
@@ -77,12 +77,12 @@ def Value(typecode_or_type, *args, lock=True, ctx=None):
     Return a synchronization wrapper fuer a Value
     '''
     obj = RawValue(typecode_or_type, *args)
-    if lock is False:
+    wenn lock is False:
         return obj
-    if lock in (True, None):
+    wenn lock in (True, None):
         ctx = ctx or get_context()
         lock = ctx.RLock()
-    if not hasattr(lock, 'acquire'):
+    wenn not hasattr(lock, 'acquire'):
         raise AttributeError("%r has no method 'acquire'" % lock)
     return synchronized(obj, lock, ctx=ctx)
 
@@ -91,12 +91,12 @@ def Array(typecode_or_type, size_or_initializer, *, lock=True, ctx=None):
     Return a synchronization wrapper fuer a RawArray
     '''
     obj = RawArray(typecode_or_type, size_or_initializer)
-    if lock is False:
+    wenn lock is False:
         return obj
-    if lock in (True, None):
+    wenn lock in (True, None):
         ctx = ctx or get_context()
         lock = ctx.RLock()
-    if not hasattr(lock, 'acquire'):
+    wenn not hasattr(lock, 'acquire'):
         raise AttributeError("%r has no method 'acquire'" % lock)
     return synchronized(obj, lock, ctx=ctx)
 
@@ -109,13 +109,13 @@ def synchronized(obj, lock=None, ctx=None):
     assert not isinstance(obj, SynchronizedBase), 'object already synchronized'
     ctx = ctx or get_context()
 
-    if isinstance(obj, ctypes._SimpleCData):
+    wenn isinstance(obj, ctypes._SimpleCData):
         return Synchronized(obj, lock, ctx)
-    elif isinstance(obj, ctypes.Array):
-        if obj._type_ is ctypes.c_char:
+    sowenn isinstance(obj, ctypes.Array):
+        wenn obj._type_ is ctypes.c_char:
             return SynchronizedString(obj, lock, ctx)
         return SynchronizedArray(obj, lock, ctx)
-    else:
+    sonst:
         cls = type(obj)
         try:
             scls = class_cache[cls]
@@ -132,13 +132,13 @@ def synchronized(obj, lock=None, ctx=None):
 
 def reduce_ctype(obj):
     assert_spawning(obj)
-    if isinstance(obj, ctypes.Array):
+    wenn isinstance(obj, ctypes.Array):
         return rebuild_ctype, (obj._type_, obj._wrapper, obj._length_)
-    else:
+    sonst:
         return rebuild_ctype, (type(obj), obj._wrapper, None)
 
 def rebuild_ctype(type_, wrapper, length):
-    if length is not None:
+    wenn length is not None:
         type_ = type_ * length
     _ForkingPickler.register(type_, reduce_ctype)
     buf = wrapper.create_memoryview()
@@ -186,9 +186,9 @@ klasse SynchronizedBase(object):
 
     def __init__(self, obj, lock=None, ctx=None):
         self._obj = obj
-        if lock:
+        wenn lock:
             self._lock = lock
-        else:
+        sonst:
             ctx = ctx or get_context(force=True)
             self._lock = ctx.RLock()
         self.acquire = self._lock.acquire

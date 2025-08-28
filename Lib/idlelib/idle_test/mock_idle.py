@@ -9,7 +9,7 @@ klasse Func:
     '''Record call, capture args, return/raise result set by test.
 
     When mock function is called, set or use attributes:
-    self.called - increment call number even if no args, kwds passed.
+    self.called - increment call number even wenn no args, kwds passed.
     self.args - capture positional arguments.
     self.kwds - capture keyword arguments.
     self.result - return or raise value set in __init__.
@@ -29,11 +29,11 @@ klasse Func:
         self.called += 1
         self.args = args
         self.kwds = kwds
-        if isinstance(self.result, BaseException):
+        wenn isinstance(self.result, BaseException):
             raise self.result
-        elif self.return_self:
+        sowenn self.return_self:
             return self
-        else:
+        sonst:
             return self.result
 
 

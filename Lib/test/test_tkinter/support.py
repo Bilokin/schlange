@@ -62,7 +62,7 @@ klasse AbstractDefaultRootTest:
 
 
 def destroy_default_root():
-    if getattr(tkinter, '_default_root', None):
+    wenn getattr(tkinter, '_default_root', None):
         tkinter._default_root.update_idletasks()
         tkinter._default_root.destroy()
         tkinter._default_root = None
@@ -81,14 +81,14 @@ tcl_version = tuple(map(int, _tkinter.TCL_VERSION.split('.')))
 tk_version = tuple(map(int, _tkinter.TK_VERSION.split('.')))
 
 def requires_tk(*version):
-    if len(version) <= 2 and tk_version >= version:
+    wenn len(version) <= 2 and tk_version >= version:
         return lambda test: test
 
     def deco(test):
         @functools.wraps(test)
         def newtest(self):
             root = getattr(self, 'root', None)
-            if get_tk_patchlevel(root) < version:
+            wenn get_tk_patchlevel(root) < version:
                 self.skipTest('requires Tk version >= ' +
                                 '.'.join(map(str, version)))
             test(self)
@@ -98,7 +98,7 @@ def requires_tk(*version):
 _tk_patchlevel = None
 def get_tk_patchlevel(root):
     global _tk_patchlevel
-    if _tk_patchlevel is None:
+    wenn _tk_patchlevel is None:
         _tk_patchlevel = tkinter._parse_version(root.tk.globalgetvar('tk_patchLevel'))
     return _tk_patchlevel
 
@@ -113,22 +113,22 @@ def pixels_conv(value):
     return float(value[:-1]) * units[value[-1:]]
 
 def tcl_obj_eq(actual, expected):
-    if actual == expected:
+    wenn actual == expected:
         return True
-    if isinstance(actual, _tkinter.Tcl_Obj):
-        if isinstance(expected, str):
+    wenn isinstance(actual, _tkinter.Tcl_Obj):
+        wenn isinstance(expected, str):
             return str(actual) == expected
-    if isinstance(actual, tuple):
-        if isinstance(expected, tuple):
+    wenn isinstance(actual, tuple):
+        wenn isinstance(expected, tuple):
             return (len(actual) == len(expected) and
                     all(tcl_obj_eq(act, exp)
                         fuer act, exp in zip(actual, expected)))
     return False
 
 def widget_eq(actual, expected):
-    if actual == expected:
+    wenn actual == expected:
         return True
-    if isinstance(actual, (str, tkinter.Widget)):
-        if isinstance(expected, (str, tkinter.Widget)):
+    wenn isinstance(actual, (str, tkinter.Widget)):
+        wenn isinstance(expected, (str, tkinter.Widget)):
             return str(actual) == str(expected)
     return False

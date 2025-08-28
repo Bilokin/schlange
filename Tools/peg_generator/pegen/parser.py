@@ -21,7 +21,7 @@ def logger(method: F) -> F:
     method_name = method.__name__
 
     def logger_wrapper(self: "Parser", *args: object) -> Any:
-        if not self._verbose:
+        wenn not self._verbose:
             return method(self, *args)
         argsr = ",".join(repr(arg) fuer arg in args)
         fill = "  " * self._level
@@ -44,7 +44,7 @@ def memoize(method: F) -> F:
         mark = self._mark()
         key = mark, method_name, args
         # Fast path: cache hit, and not verbose.
-        if key in self._cache and not self._verbose:
+        wenn key in self._cache and not self._verbose:
             tree, endmark = self._cache[key]
             self._reset(endmark)
             return tree
@@ -52,19 +52,19 @@ def memoize(method: F) -> F:
         verbose = self._verbose
         argsr = ",".join(repr(arg) fuer arg in args)
         fill = "  " * self._level
-        if key not in self._cache:
-            if verbose:
+        wenn key not in self._cache:
+            wenn verbose:
                 print(f"{fill}{method_name}({argsr}) ... (looking at {self.showpeek()})")
             self._level += 1
             tree = method(self, *args)
             self._level -= 1
-            if verbose:
+            wenn verbose:
                 print(f"{fill}... {method_name}({argsr}) -> {tree!s:.200}")
             endmark = self._mark()
             self._cache[key] = tree, endmark
-        else:
+        sonst:
             tree, endmark = self._cache[key]
-            if verbose:
+            wenn verbose:
                 print(f"{fill}{method_name}({argsr}) -> {tree!s:.200}")
             self._reset(endmark)
         return tree
@@ -83,15 +83,15 @@ def memoize_left_rec(
         mark = self._mark()
         key = mark, method_name, ()
         # Fast path: cache hit, and not verbose.
-        if key in self._cache and not self._verbose:
+        wenn key in self._cache and not self._verbose:
             tree, endmark = self._cache[key]
             self._reset(endmark)
             return tree
         # Slow path: no cache hit, or verbose.
         verbose = self._verbose
         fill = "  " * self._level
-        if key not in self._cache:
-            if verbose:
+        wenn key not in self._cache:
+            wenn verbose:
                 print(f"{fill}{method_name} ... (looking at {self.showpeek()})")
             self._level += 1
 
@@ -107,7 +107,7 @@ def memoize_left_rec(
             self._cache[key] = None, mark
             lastresult, lastmark = None, mark
             depth = 0
-            if verbose:
+            wenn verbose:
                 print(f"{fill}Recursive {method_name} at {mark} depth {depth}")
 
             while True:
@@ -119,16 +119,16 @@ def memoize_left_rec(
                     self.in_recursive_rule -= 1
                 endmark = self._mark()
                 depth += 1
-                if verbose:
+                wenn verbose:
                     print(
                         f"{fill}Recursive {method_name} at {mark} depth {depth}: {result!s:.200} to {endmark}"
                     )
-                if not result:
-                    if verbose:
+                wenn not result:
+                    wenn verbose:
                         print(f"{fill}Fail with {lastresult!s:.200} to {lastmark}")
                     break
-                if endmark <= lastmark:
-                    if verbose:
+                wenn endmark <= lastmark:
+                    wenn verbose:
                         print(f"{fill}Bailing with {lastresult!s:.200} to {lastmark}")
                     break
                 self._cache[key] = lastresult, lastmark = result, endmark
@@ -137,19 +137,19 @@ def memoize_left_rec(
             tree = lastresult
 
             self._level -= 1
-            if verbose:
+            wenn verbose:
                 print(f"{fill}{method_name}() -> {tree!s:.200} [cached]")
-            if tree:
+            wenn tree:
                 endmark = self._mark()
-            else:
+            sonst:
                 endmark = mark
                 self._reset(endmark)
             self._cache[key] = tree, endmark
-        else:
+        sonst:
             tree, endmark = self._cache[key]
-            if verbose:
+            wenn verbose:
                 print(f"{fill}{method_name}() -> {tree!s:.200} [fresh]")
-            if tree:
+            wenn tree:
                 self._reset(endmark)
         return tree
 
@@ -187,92 +187,92 @@ klasse Parser:
     @memoize
     def name(self) -> Optional[tokenize.TokenInfo]:
         tok = self._tokenizer.peek()
-        if tok.type == token.NAME and tok.string not in self.KEYWORDS:
+        wenn tok.type == token.NAME and tok.string not in self.KEYWORDS:
             return self._tokenizer.getnext()
         return None
 
     @memoize
     def number(self) -> Optional[tokenize.TokenInfo]:
         tok = self._tokenizer.peek()
-        if tok.type == token.NUMBER:
+        wenn tok.type == token.NUMBER:
             return self._tokenizer.getnext()
         return None
 
     @memoize
     def string(self) -> Optional[tokenize.TokenInfo]:
         tok = self._tokenizer.peek()
-        if tok.type == token.STRING:
+        wenn tok.type == token.STRING:
             return self._tokenizer.getnext()
         return None
 
     @memoize
     def fstring_start(self) -> Optional[tokenize.TokenInfo]:
         FSTRING_START = getattr(token, "FSTRING_START", None)
-        if not FSTRING_START:
+        wenn not FSTRING_START:
             return None
         tok = self._tokenizer.peek()
-        if tok.type == FSTRING_START:
+        wenn tok.type == FSTRING_START:
             return self._tokenizer.getnext()
         return None
 
     @memoize
     def fstring_middle(self) -> Optional[tokenize.TokenInfo]:
         FSTRING_MIDDLE = getattr(token, "FSTRING_MIDDLE", None)
-        if not FSTRING_MIDDLE:
+        wenn not FSTRING_MIDDLE:
             return None
         tok = self._tokenizer.peek()
-        if tok.type == FSTRING_MIDDLE:
+        wenn tok.type == FSTRING_MIDDLE:
             return self._tokenizer.getnext()
         return None
 
     @memoize
     def fstring_end(self) -> Optional[tokenize.TokenInfo]:
         FSTRING_END = getattr(token, "FSTRING_END", None)
-        if not FSTRING_END:
+        wenn not FSTRING_END:
             return None
         tok = self._tokenizer.peek()
-        if tok.type == FSTRING_END:
+        wenn tok.type == FSTRING_END:
             return self._tokenizer.getnext()
         return None
 
     @memoize
     def op(self) -> Optional[tokenize.TokenInfo]:
         tok = self._tokenizer.peek()
-        if tok.type == token.OP:
+        wenn tok.type == token.OP:
             return self._tokenizer.getnext()
         return None
 
     @memoize
     def type_comment(self) -> Optional[tokenize.TokenInfo]:
         tok = self._tokenizer.peek()
-        if tok.type == token.TYPE_COMMENT:
+        wenn tok.type == token.TYPE_COMMENT:
             return self._tokenizer.getnext()
         return None
 
     @memoize
     def soft_keyword(self) -> Optional[tokenize.TokenInfo]:
         tok = self._tokenizer.peek()
-        if tok.type == token.NAME and tok.string in self.SOFT_KEYWORDS:
+        wenn tok.type == token.NAME and tok.string in self.SOFT_KEYWORDS:
             return self._tokenizer.getnext()
         return None
 
     @memoize
     def expect(self, type: str) -> Optional[tokenize.TokenInfo]:
         tok = self._tokenizer.peek()
-        if tok.string == type:
+        wenn tok.string == type:
             return self._tokenizer.getnext()
-        if type in exact_token_types:
-            if tok.type == exact_token_types[type]:
+        wenn type in exact_token_types:
+            wenn tok.type == exact_token_types[type]:
                 return self._tokenizer.getnext()
-        if type in token.__dict__:
-            if tok.type == token.__dict__[type]:
+        wenn type in token.__dict__:
+            wenn tok.type == token.__dict__[type]:
                 return self._tokenizer.getnext()
-        if tok.type == token.OP and tok.string == type:
+        wenn tok.type == token.OP and tok.string == type:
             return self._tokenizer.getnext()
         return None
 
     def expect_forced(self, res: Any, expectation: str) -> Optional[tokenize.TokenInfo]:
-        if res is None:
+        wenn res is None:
             raise self.make_syntax_error(f"expected {expectation}")
         return res
 
@@ -315,10 +315,10 @@ def simple_parser_main(parser_class: Type[Parser]) -> None:
     t0 = time.time()
 
     filename = args.filename
-    if filename == "" or filename == "-":
+    wenn filename == "" or filename == "-":
         filename = "<stdin>"
         file = sys.stdin
-    else:
+    sonst:
         file = open(args.filename)
     try:
         tokengen = tokenize.generate_tokens(file.readline)
@@ -326,38 +326,38 @@ def simple_parser_main(parser_class: Type[Parser]) -> None:
         parser = parser_class(tokenizer, verbose=verbose_parser)
         tree = parser.start()
         try:
-            if file.isatty():
+            wenn file.isatty():
                 endpos = 0
-            else:
+            sonst:
                 endpos = file.tell()
         except IOError:
             endpos = 0
     finally:
-        if file is not sys.stdin:
+        wenn file is not sys.stdin:
             file.close()
 
     t1 = time.time()
 
-    if not tree:
+    wenn not tree:
         err = parser.make_syntax_error(filename)
         traceback.print_exception(err.__class__, err, None)
         sys.exit(1)
 
-    if not args.quiet:
+    wenn not args.quiet:
         print(tree)
 
-    if verbose:
+    wenn verbose:
         dt = t1 - t0
         diag = tokenizer.diagnose()
         nlines = diag.end[0]
-        if diag.type == token.ENDMARKER:
+        wenn diag.type == token.ENDMARKER:
             nlines -= 1
         print(f"Total time: {dt:.3f} sec; {nlines} lines", end="")
-        if endpos:
+        wenn endpos:
             print(f" ({endpos} bytes)", end="")
-        if dt:
+        wenn dt:
             print(f"; {nlines / dt:.0f} lines/sec")
-        else:
+        sonst:
             print()
         print("Caches sizes:")
         print(f"  token array : {len(tokenizer._tokens):10}")

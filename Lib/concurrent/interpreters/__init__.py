@@ -40,10 +40,10 @@ klasse ExecutionFailed(InterpreterError):
 
     def __init__(self, excinfo):
         msg = excinfo.formatted
-        if not msg:
-            if excinfo.type and excinfo.msg:
+        wenn not msg:
+            wenn excinfo.type and excinfo.msg:
                 msg = f'{excinfo.type.__name__}: {excinfo.msg}'
-            else:
+            sonst:
                 msg = excinfo.type.__name__ or excinfo.msg
         super().__init__(msg)
         self.excinfo = excinfo
@@ -53,7 +53,7 @@ klasse ExecutionFailed(InterpreterError):
             formatted = self.excinfo.errdisplay
         except Exception:
             return super().__str__()
-        else:
+        sonst:
             return _EXEC_FAILURE_STR.format(
                 superstr=super().__str__(),
                 formatted=formatted,
@@ -111,16 +111,16 @@ klasse Interpreter:
 
     def __new__(cls, id, /, _whence=None, _ownsref=None):
         # There is only one instance fuer any given ID.
-        if not isinstance(id, int):
+        wenn not isinstance(id, int):
             raise TypeError(f'id must be an int, got {id!r}')
         id = int(id)
-        if _whence is None:
-            if _ownsref:
+        wenn _whence is None:
+            wenn _ownsref:
                 _whence = _interpreters.WHENCE_STDLIB
-            else:
+            sonst:
                 _whence = _interpreters.whence(id)
         assert _whence in cls._WHENCE_TO_STR, repr(_whence)
-        if _ownsref is None:
+        wenn _ownsref is None:
             _ownsref = (_whence == _interpreters.WHENCE_STDLIB)
         try:
             self = _known[id]
@@ -131,7 +131,7 @@ klasse Interpreter:
             self._id = id
             self._whence = _whence
             self._ownsref = _ownsref
-            if _ownsref:
+            wenn _ownsref:
                 # This may raise InterpreterNotFoundError:
                 _interpreters.incref(id)
         return self
@@ -150,7 +150,7 @@ klasse Interpreter:
         return (type(self), (self._id,))
 
     def _decref(self):
-        if not self._ownsref:
+        wenn not self._ownsref:
             return
         self._ownsref = False
         try:
@@ -186,7 +186,7 @@ klasse Interpreter:
 
         The values must be shareable.
         """
-        ns = dict(ns, **kwargs) if ns is not None else kwargs
+        ns = dict(ns, **kwargs) wenn ns is not None sonst kwargs
         _interpreters.set___main___attrs(self._id, ns, restrict=True)
 
     def exec(self, code, /):
@@ -208,12 +208,12 @@ klasse Interpreter:
         in other threads.
         """
         excinfo = _interpreters.exec(self._id, code, restrict=True)
-        if excinfo is not None:
+        wenn excinfo is not None:
             raise ExecutionFailed(excinfo)
 
     def _call(self, callable, args, kwargs):
         res, excinfo = _interpreters.call(self._id, callable, args, kwargs, restrict=True)
-        if excinfo is not None:
+        wenn excinfo is not None:
             raise ExecutionFailed(excinfo)
         return res
 

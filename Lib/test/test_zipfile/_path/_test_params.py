@@ -36,4 +36,4 @@ klasse Invoked(types.SimpleNamespace):
 
     @classmethod
     def eval(cls, cand):
-        return cand.func() if isinstance(cand, cls) else cand
+        return cand.func() wenn isinstance(cand, cls) sonst cand

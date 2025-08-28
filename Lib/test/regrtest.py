@@ -26,9 +26,9 @@ def _main():
     mydir = os.path.abspath(os.path.normpath(os.path.dirname(sys.argv[0])))
     i = len(sys.path) - 1
     while i >= 0:
-        if os.path.abspath(os.path.normpath(sys.path[i])) == mydir:
+        wenn os.path.abspath(os.path.normpath(sys.path[i])) == mydir:
             del sys.path[i]
-        else:
+        sonst:
             i -= 1
 
     # findtestdir() gets the dirname out of __file__, so we have to make it
@@ -43,5 +43,5 @@ def _main():
     main()
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     _main()

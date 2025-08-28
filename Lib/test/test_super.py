@@ -250,7 +250,7 @@ klasse TestSuper(unittest.TestCase):
 
         # With zero-arg super() or an explicit __class__ reference, we expect
         # __build_class__ to raise a RuntimeError complaining that
-        # __class__ was not set, and asking if __classcell__ was propagated
+        # __class__ was not set, and asking wenn __classcell__ was propagated
         # to type.__new__.
         expected_error = '__class__ not set.*__classcell__ propagated'
         with self.assertRaisesRegex(RuntimeError, expected_error):
@@ -326,8 +326,8 @@ klasse TestSuper(unittest.TestCase):
         self.assertRaises(TypeError, X.meth, c)
 
     def test_super_init_leaks(self):
-        # Issue #26718: super.__init__ leaked memory if called multiple times.
-        # This will be caught by regrtest.py -R if this leak.
+        # Issue #26718: super.__init__ leaked memory wenn called multiple times.
+        # This will be caught by regrtest.py -R wenn this leak.
         # NOTE: Despite the use in the test a direct call of super.__init__
         # is not endorsed.
         sp = super(float, 1.0)
@@ -473,7 +473,7 @@ klasse TestSuper(unittest.TestCase):
                 pass
 
             def __init_subclass__(cls):
-                if "__new__" not in cls.__dict__:
+                wenn "__new__" not in cls.__dict__:
                     cls.__new__ = cls.__new__
 
         klasse B(A):
@@ -610,5 +610,5 @@ klasse TestSuper(unittest.TestCase):
         self.assertIs(u.__self_class__, E)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

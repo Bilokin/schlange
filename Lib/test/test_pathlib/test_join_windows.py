@@ -8,9 +8,9 @@ import unittest
 from .support import is_pypi
 from .support.lexical_path import LexicalWindowsPath
 
-if is_pypi:
+wenn is_pypi:
     from pathlib_abc import vfspath
-else:
+sonst:
     from pathlib._os import vfspath
 
 
@@ -23,7 +23,7 @@ klasse JoinTestBase:
         pp = p.joinpath('/x/y')
         self.assertEqual(pp, P('C:/x/y'))
         # Joining with a different drive => the first path is ignored, even
-        # if the second path is relative.
+        # wenn the second path is relative.
         pp = p.joinpath('D:x/y')
         self.assertEqual(pp, P('D:x/y'))
         pp = p.joinpath('D:/x/y')
@@ -59,7 +59,7 @@ klasse JoinTestBase:
         self.assertEqual(p / '/x/y', P('C:/x/y'))
         self.assertEqual(p / '/x' / 'y', P(r'C:/x\y'))
         # Joining with a different drive => the first path is ignored, even
-        # if the second path is relative.
+        # wenn the second path is relative.
         self.assertEqual(p / 'D:x/y', P('D:x/y'))
         self.assertEqual(p / 'D:' / 'x/y', P('D:x/y'))
         self.assertEqual(p / 'D:/x/y', P('D:/x/y'))
@@ -280,16 +280,16 @@ klasse LexicalWindowsPathJoinTest(JoinTestBase, unittest.TestCase):
     cls = LexicalWindowsPath
 
 
-if not is_pypi:
+wenn not is_pypi:
     from pathlib import PureWindowsPath, WindowsPath
 
     klasse PureWindowsPathJoinTest(JoinTestBase, unittest.TestCase):
         cls = PureWindowsPath
 
-    if os.name == 'nt':
+    wenn os.name == 'nt':
         klasse WindowsPathJoinTest(JoinTestBase, unittest.TestCase):
             cls = WindowsPath
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

@@ -33,18 +33,18 @@ klasse _AssertLogsContext(_BaseTestCaseContext):
     def __init__(self, test_case, logger_name, level, no_logs, formatter=None):
         _BaseTestCaseContext.__init__(self, test_case)
         self.logger_name = logger_name
-        if level:
+        wenn level:
             self.level = logging._nameToLevel.get(level, level)
-        else:
+        sonst:
             self.level = logging.INFO
         self.msg = None
         self.no_logs = no_logs
         self.formatter = formatter
 
     def __enter__(self):
-        if isinstance(self.logger_name, logging.Logger):
+        wenn isinstance(self.logger_name, logging.Logger):
             logger = self.logger = self.logger_name
-        else:
+        sonst:
             logger = self.logger = logging.getLogger(self.logger_name)
         formatter = self.formatter or logging.Formatter(self.LOGGING_FORMAT)
         handler = _CapturingHandler()
@@ -57,7 +57,7 @@ klasse _AssertLogsContext(_BaseTestCaseContext):
         logger.handlers = [handler]
         logger.setLevel(self.level)
         logger.propagate = False
-        if self.no_logs:
+        wenn self.no_logs:
             return
         return handler.watcher
 
@@ -66,22 +66,22 @@ klasse _AssertLogsContext(_BaseTestCaseContext):
         self.logger.propagate = self.old_propagate
         self.logger.setLevel(self.old_level)
 
-        if exc_type is not None:
+        wenn exc_type is not None:
             # let unexpected exceptions pass through
             return False
 
-        if self.no_logs:
+        wenn self.no_logs:
             # assertNoLogs
-            if len(self.watcher.records) > 0:
+            wenn len(self.watcher.records) > 0:
                 self._raiseFailure(
                     "Unexpected logs found: {!r}".format(
                         self.watcher.output
                     )
                 )
 
-        else:
+        sonst:
             # assertLogs
-            if len(self.watcher.records) == 0:
+            wenn len(self.watcher.records) == 0:
                 self._raiseFailure(
                     "no logs of level {} or higher triggered on {}"
                     .format(logging.getLevelName(self.level), self.logger.name))

@@ -25,7 +25,7 @@ klasse FutureTests:
             except TypeError as e:
                 tb = ''.join(traceback.format_tb(e.__traceback__))
                 self.assertEqual(tb.count("await future"), 1)
-            else:
+            sonst:
                 self.fail('TypeError was not raised')
 
     async def test_task_exc_handler_correct_context(self):
@@ -79,7 +79,7 @@ klasse PyFutureTests(FutureTests, unittest.IsolatedAsyncioTestCase):
 klasse FutureReprTests(unittest.IsolatedAsyncioTestCase):
 
     async def test_recursive_repr_for_pending_tasks(self):
-        # The call crashes if the guard fuer recursive call
+        # The call crashes wenn the guard fuer recursive call
         # in base_futures:_future_repr_info is absent
         # See Also: https://bugs.python.org/issue42183
 
@@ -91,5 +91,5 @@ klasse FutureReprTests(unittest.IsolatedAsyncioTestCase):
         self.assertIn('...', repr(waiter))
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

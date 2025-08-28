@@ -46,14 +46,14 @@ klasse EmailPolicy(Policy):
     In addition to the settable attributes listed above that apply to
     all Policies, this policy adds the following additional attributes:
 
-    utf8                -- if False (the default) message headers will be
+    utf8                -- wenn False (the default) message headers will be
                            serialized as ASCII, using encoded words to encode
                            any non-ASCII characters in the source strings.  If
                            True, the message headers will be serialized using
                            utf8 and will not contain encoded words (see RFC
                            6532 fuer more on this serialization format).
 
-    refold_source       -- if the value fuer a header in the Message object
+    refold_source       -- wenn the value fuer a header in the Message object
                            came from the parsing of some source, this attribute
                            indicates whether or not a generator should refold
                            that value when transforming the message back into
@@ -99,7 +99,7 @@ klasse EmailPolicy(Policy):
     def __init__(self, **kw):
         # Ensure that each new instance gets a unique header factory
         # (as opposed to clones, which share the factory).
-        if 'header_factory' not in kw:
+        wenn 'header_factory' not in kw:
             object.__setattr__(self, 'header_factory', HeaderRegistry())
         super().__init__(**kw)
 
@@ -140,14 +140,14 @@ klasse EmailPolicy(Policy):
         attribute and it matches the name ignoring case, the value is returned
         unchanged.  Otherwise the name and value are passed to header_factory
         method, and the resulting custom header object is returned as the
-        value.  In this case a ValueError is raised if the input value contains
+        value.  In this case a ValueError is raised wenn the input value contains
         CR or LF characters.
 
         """
         validate_header_name(name)
-        if hasattr(value, 'name') and value.name.lower() == name.lower():
+        wenn hasattr(value, 'name') and value.name.lower() == name.lower():
             return (name, value)
-        if isinstance(value, str) and len(value.splitlines())>1:
+        wenn isinstance(value, str) and len(value.splitlines())>1:
             # XXX this error message isn't quite right when we use splitlines
             # (see issue 22233), but I'm not sure what should happen here.
             raise ValueError("Header values may not contain linefeed "
@@ -163,7 +163,7 @@ klasse EmailPolicy(Policy):
         into the unicode unknown-character glyph.
 
         """
-        if hasattr(value, 'name'):
+        wenn hasattr(value, 'name'):
             return value
         # We can't use splitlines here because it splits on more than \r and \n.
         value = ''.join(linesep_splitter.split(value))
@@ -172,7 +172,7 @@ klasse EmailPolicy(Policy):
     def fold(self, name, value):
         """+
         Header folding is controlled by the refold_source policy setting.  A
-        value is considered to be a 'source value' if and only if it does not
+        value is considered to be a 'source value' wenn and only wenn it does not
         have a 'name' attribute (having a 'name' attribute means it is a header
         object of some sort).  If a source value needs to be refolded according
         to the policy, it is converted into a custom header object by passing
@@ -192,7 +192,7 @@ klasse EmailPolicy(Policy):
 
     def fold_binary(self, name, value):
         """+
-        The same as fold if cte_type is 7bit, except that the returned value is
+        The same as fold wenn cte_type is 7bit, except that the returned value is
         bytes.
 
         If cte_type is 8bit, non-ASCII binary data is converted back into
@@ -205,13 +205,13 @@ klasse EmailPolicy(Policy):
 
         """
         folded = self._fold(name, value, refold_binary=self.cte_type=='7bit')
-        charset = 'utf8' if self.utf8 else 'ascii'
+        charset = 'utf8' wenn self.utf8 sonst 'ascii'
         return folded.encode(charset, 'surrogateescape')
 
     def _fold(self, name, value, refold_binary=False):
-        if hasattr(value, 'name'):
+        wenn hasattr(value, 'name'):
             return value.fold(policy=self)
-        maxlen = self.max_line_length if self.max_line_length else sys.maxsize
+        maxlen = self.max_line_length wenn self.max_line_length sonst sys.maxsize
         # We can't use splitlines here because it splits on more than \r and \n.
         lines = linesep_splitter.split(value)
         refold = (self.refold_source == 'all' or
@@ -219,12 +219,12 @@ klasse EmailPolicy(Policy):
                     (lines and len(lines[0])+len(name)+2 > maxlen or
                      any(len(x) > maxlen fuer x in lines[1:])))
 
-        if not refold:
-            if not self.utf8:
+        wenn not refold:
+            wenn not self.utf8:
                 refold = not value.isascii()
-            elif refold_binary:
+            sowenn refold_binary:
                 refold = _has_surrogates(value)
-        if refold:
+        wenn refold:
             return self.header_factory(name, ''.join(lines)).fold(policy=self)
 
         return name + ': ' + self.linesep.join(lines) + self.linesep

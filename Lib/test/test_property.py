@@ -410,7 +410,7 @@ klasse PropertySubclassTests(unittest.TestCase):
         Property tries to provide the best docstring it finds fuer its instances.
         If a user-provided docstring is available, it is preserved on copies.
         If no docstring is available during property creation, the property
-        will utilize the docstring from the getter if available.
+        will utilize the docstring from the getter wenn available.
         """
         def getter1(self):
             return 1
@@ -598,5 +598,5 @@ klasse PropertyUnreachableAttributeNoName(_PropertyUnreachableAttribute, unittes
     cls.foo = property()
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

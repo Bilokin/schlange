@@ -16,11 +16,11 @@ object):
         d[key] = data   # store data at key (overwrites old data if
                         # using an existing key)
         data = d[key]   # retrieve a COPY of the data at key (raise
-                        # KeyError if no such key) -- NOTE that this
+                        # KeyError wenn no such key) -- NOTE that this
                         # access returns a *copy* of the entry!
         del d[key]      # delete data stored at key (raises KeyError
-                        # if no such key)
-        flag = key in d # true if the key exists
+                        # wenn no such key)
+        flag = key in d # true wenn the key exists
         list = d.keys() # a list of all existing keys (slow!)
 
         d.close()       # close it
@@ -29,7 +29,7 @@ Dependent on the implementation, closing a persistent dictionary may
 or may not be necessary to flush changes to disk.
 
 Normally, d[key] returns a COPY of the entry.  This needs care when
-mutable entries are mutated: fuer example, if d[key] is a list,
+mutable entries are mutated: fuer example, wenn d[key] is a list,
         d[key].append(anitem)
 does NOT modify the entry d[key] itself, as stored in the persistent
 mapping -- it only modifies the copy, which is then immediately
@@ -47,13 +47,13 @@ to the persistent mapping when you call d.close().  This ensures that
 such usage as d[key].append(anitem) works as intended.
 
 However, using keyword argument writeback=True may consume vast amount
-of memory fuer the cache, and it may make d.close() very slow, if you
+of memory fuer the cache, and it may make d.close() very slow, wenn you
 access many of d's entries after opening it in this way: d has no way to
 check which of the entries you access are mutable and/or which ones you
 actually mutate, so it must cache, and write back at close, all of the
 entries that you access.  You can call d.sync() to write back all the
 entries in the cache, and empty the cache (d.sync() also synchronizes
-the persistent dictionary on disk, if feasible).
+the persistent dictionary on disk, wenn feasible).
 """
 
 from pickle import DEFAULT_PROTOCOL, dumps, loads
@@ -89,20 +89,20 @@ klasse Shelf(collections.abc.MutableMapping):
     def __init__(self, dict, protocol=None, writeback=False,
                  keyencoding="utf-8", *, serializer=None, deserializer=None):
         self.dict = dict
-        if protocol is None:
+        wenn protocol is None:
             protocol = DEFAULT_PROTOCOL
         self._protocol = protocol
         self.writeback = writeback
         self.cache = {}
         self.keyencoding = keyencoding
 
-        if serializer is None and deserializer is None:
+        wenn serializer is None and deserializer is None:
             self.serializer = dumps
             self.deserializer = loads
-        elif (serializer is None) ^ (deserializer is None):
+        sowenn (serializer is None) ^ (deserializer is None):
             raise ShelveError("serializer and deserializer must be "
                               "defined together")
-        else:
+        sonst:
             self.serializer = serializer
             self.deserializer = deserializer
 
@@ -117,7 +117,7 @@ klasse Shelf(collections.abc.MutableMapping):
         return key.encode(self.keyencoding) in self.dict
 
     def get(self, key, default=None):
-        if key.encode(self.keyencoding) in self.dict:
+        wenn key.encode(self.keyencoding) in self.dict:
             return self[key]
         return default
 
@@ -127,12 +127,12 @@ klasse Shelf(collections.abc.MutableMapping):
         except KeyError:
             f = self.dict[key.encode(self.keyencoding)]
             value = self.deserializer(f)
-            if self.writeback:
+            wenn self.writeback:
                 self.cache[key] = value
         return value
 
     def __setitem__(self, key, value):
-        if self.writeback:
+        wenn self.writeback:
             self.cache[key] = value
         serialized_value = self.serializer(value, self._protocol)
         self.dict[key.encode(self.keyencoding)] = serialized_value
@@ -151,7 +151,7 @@ klasse Shelf(collections.abc.MutableMapping):
         self.close()
 
     def close(self):
-        if self.dict is None:
+        wenn self.dict is None:
             return
         try:
             self.sync()
@@ -168,25 +168,25 @@ klasse Shelf(collections.abc.MutableMapping):
                 self.dict = None
 
     def __del__(self):
-        if not hasattr(self, 'writeback'):
+        wenn not hasattr(self, 'writeback'):
             # __init__ didn't succeed, so don't bother closing
             # see http://bugs.python.org/issue1339007 fuer details
             return
         self.close()
 
     def sync(self):
-        if self.writeback and self.cache:
+        wenn self.writeback and self.cache:
             self.writeback = False
             fuer key, entry in self.cache.items():
                 self[key] = entry
             self.writeback = True
             self.cache = {}
-        if hasattr(self.dict, 'sync'):
+        wenn hasattr(self.dict, 'sync'):
             self.dict.sync()
 
     def reorganize(self):
         self.sync()
-        if hasattr(self.dict, 'reorganize'):
+        wenn hasattr(self.dict, 'reorganize'):
             self.dict.reorganize()
 
 

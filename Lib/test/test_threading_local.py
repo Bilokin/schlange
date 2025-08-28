@@ -44,17 +44,17 @@ klasse BaseLocalTest:
         self.assertEqual(len(weaklist), n)
 
         # XXX _threading_local keeps the local of the last stopped thread alive.
-        deadlist = [weak fuer weak in weaklist if weak() is None]
+        deadlist = [weak fuer weak in weaklist wenn weak() is None]
         self.assertIn(len(deadlist), (n-1, n))
 
         # Assignment to the same thread local frees it sometimes (!)
         local.someothervar = None
         support.gc_collect()  # For PyPy or other GCs.
-        deadlist = [weak fuer weak in weaklist if weak() is None]
+        deadlist = [weak fuer weak in weaklist wenn weak() is None]
         self.assertIn(len(deadlist), (n-1, n), (n, len(deadlist)))
 
     def test_derived(self):
-        # Issue 3088: if there is a threads switch inside the __init__
+        # Issue 3088: wenn there is a threads switch inside the __init__
         # of a threading.local derived class, the per-thread dictionary
         # is created but not correctly set on the object.
         # The first member set may be bogus.
@@ -142,7 +142,7 @@ klasse BaseLocalTest:
             except AttributeError:
                 # This is expected -- we haven't set obj.x in this thread yet!
                 self._failed = ""  # passed
-            else:
+            sonst:
                 self._failed = ('Incorrectly got value %r from klasse %r\n' %
                                 (foo, c))
                 sys.stderr.write(self._failed)
@@ -245,5 +245,5 @@ def load_tests(loader, tests, pattern):
     return tests
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

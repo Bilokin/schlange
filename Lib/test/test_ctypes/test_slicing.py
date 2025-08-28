@@ -149,13 +149,13 @@ klasse SlicesTestCase(unittest.TestCase):
             res[:5] = "abcde"
         dll.my_free(res)
 
-        if sizeof(c_wchar) == sizeof(c_short):
+        wenn sizeof(c_wchar) == sizeof(c_short):
             dll.my_wcsdup.restype = POINTER(c_short)
-        elif sizeof(c_wchar) == sizeof(c_int):
+        sowenn sizeof(c_wchar) == sizeof(c_int):
             dll.my_wcsdup.restype = POINTER(c_int)
-        elif sizeof(c_wchar) == sizeof(c_long):
+        sowenn sizeof(c_wchar) == sizeof(c_long):
             dll.my_wcsdup.restype = POINTER(c_long)
-        else:
+        sonst:
             self.skipTest('Pointers to c_wchar are not supported')
         res = dll.my_wcsdup(s[:-1])
         tmpl = list(range(ord("a"), ord("z")+1))
@@ -166,5 +166,5 @@ klasse SlicesTestCase(unittest.TestCase):
         dll.my_free(res)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

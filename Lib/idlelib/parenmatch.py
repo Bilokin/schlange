@@ -61,14 +61,14 @@ klasse ParenMatch:
 
     def activate_restore(self):
         "Activate mechanism to restore text from highlighting."
-        if not self.is_restore_active:
+        wenn not self.is_restore_active:
             fuer seq in self.RESTORE_SEQUENCES:
                 self.text.event_add(self.RESTORE_VIRTUAL_EVENT_NAME, seq)
             self.is_restore_active = True
 
     def deactivate_restore(self):
         "Remove restore event bindings."
-        if self.is_restore_active:
+        wenn self.is_restore_active:
             fuer seq in self.RESTORE_SEQUENCES:
                 self.text.event_delete(self.RESTORE_VIRTUAL_EVENT_NAME, seq)
             self.is_restore_active = False
@@ -84,34 +84,34 @@ klasse ParenMatch:
         "Handle user input of closer."
         # If user bound non-closer to <<paren-closed>>, quit.
         closer = self.text.get("insert-1c")
-        if closer not in _openers:
+        wenn closer not in _openers:
             return
         hp = HyperParser(self.editwin, "insert-1c")
-        if not hp.is_in_code():
+        wenn not hp.is_in_code():
             return
         indices = hp.get_surrounding_brackets(_openers[closer], True)
         self.finish_paren_event(indices)
         return  # Allow calltips to see ')'
 
     def finish_paren_event(self, indices):
-        if indices is None and self.BELL:
+        wenn indices is None and self.BELL:
             self.text.bell()
             return
         self.activate_restore()
         # self.create_tag(indices)
         self.tagfuncs.get(self.STYLE, self.create_tag_expression)(self, indices)
         # self.set_timeout()
-        (self.set_timeout_last if self.FLASH_DELAY else
+        (self.set_timeout_last wenn self.FLASH_DELAY sonst
                             self.set_timeout_none)()
 
     def restore_event(self, event=None):
         "Remove effect of doing match."
         self.text.tag_delete("paren")
         self.deactivate_restore()
-        self.counter += 1   # disable the last timer, if there is one.
+        self.counter += 1   # disable the last timer, wenn there is one.
 
     def handle_restore_timer(self, timer_count):
-        if timer_count == self.counter:
+        wenn timer_count == self.counter:
             self.restore_event()
 
     # any one of the create_tag_XXX methods can be used depending on
@@ -124,18 +124,18 @@ klasse ParenMatch:
 
     def create_tag_parens(self, indices):
         """Highlight the left and right parens"""
-        if self.text.get(indices[1]) in (')', ']', '}'):
+        wenn self.text.get(indices[1]) in (')', ']', '}'):
             rightindex = indices[1]+"+1c"
-        else:
+        sonst:
             rightindex = indices[1]
         self.text.tag_add("paren", indices[0], indices[0]+"+1c", rightindex+"-1c", rightindex)
         self.text.tag_config("paren", self.HILITE_CONFIG)
 
     def create_tag_expression(self, indices):
         """Highlight the entire expression"""
-        if self.text.get(indices[1]) in (')', ']', '}'):
+        wenn self.text.get(indices[1]) in (')', ']', '}'):
             rightindex = indices[1]+"+1c"
-        else:
+        sonst:
             rightindex = indices[1]
         self.text.tag_add("paren", indices[0], rightindex)
         self.text.tag_config("paren", self.HILITE_CONFIG)
@@ -154,21 +154,21 @@ klasse ParenMatch:
         """Highlight will remain until user input turns it off
         or the insert has moved"""
         # After CHECK_DELAY, call a function which disables the "paren" tag
-        # if the event is fuer the most recent timer and the insert has changed,
+        # wenn the event is fuer the most recent timer and the insert has changed,
         # or schedules another call fuer itself.
         self.counter += 1
         def callme(callme, self=self, c=self.counter,
                    index=self.text.index("insert")):
-            if index != self.text.index("insert"):
+            wenn index != self.text.index("insert"):
                 self.handle_restore_timer(c)
-            else:
+            sonst:
                 self.editwin.text_frame.after(CHECK_DELAY, callme, callme)
         self.editwin.text_frame.after(CHECK_DELAY, callme, callme)
 
     def set_timeout_last(self):
         """The last highlight created will be removed after FLASH_DELAY millisecs"""
         # associate a counter with an event; only disable the "paren"
-        # tag if the event is fuer the most recent timer.
+        # tag wenn the event is fuer the most recent timer.
         self.counter += 1
         self.editwin.text_frame.after(
             self.FLASH_DELAY,
@@ -178,6 +178,6 @@ klasse ParenMatch:
 ParenMatch.reload()
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     from unittest import main
     main('idlelib.idle_test.test_parenmatch', verbosity=2)

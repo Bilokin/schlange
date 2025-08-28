@@ -47,7 +47,7 @@ klasse WavePCM16Test(WaveTest, unittest.TestCase):
       EEDF1755 82061666 7FFF1446 80001296 499C0EB2 52BA0DB9 EFB70F5C CE400FBC \
       E4B50CEB 63440A5A 08CA0A1F 2BBA0B0B 51460E47 8BCB113C B6F50EEA 44150A59 \
       """)
-    if sys.byteorder != 'big':
+    wenn sys.byteorder != 'big':
         frames = wave._byteswap(frames, 2)
 
 
@@ -74,7 +74,7 @@ klasse WavePCM24Test(WaveTest, unittest.TestCase):
       E4B49C0CEA2D 6344A80A5A7C 08C8FE0A1FFE 2BB9860B0A0E \
       51486F0E44E1 8BCC64113B05 B6F4EC0EEB36 4413170A5B48 \
       """)
-    if sys.byteorder != 'big':
+    wenn sys.byteorder != 'big':
         frames = wave._byteswap(frames, 3)
 
 
@@ -101,7 +101,7 @@ klasse WavePCM24ExtTest(WaveTest, unittest.TestCase):
       E4B49C0CEA2D 6344A80A5A7C 08C8FE0A1FFE 2BB9860B0A0E \
       51486F0E44E1 8BCC64113B05 B6F4EC0EEB36 4413170A5B48 \
       """)
-    if sys.byteorder != 'big':
+    wenn sys.byteorder != 'big':
         frames = wave._byteswap(frames, 3)
 
 
@@ -128,7 +128,7 @@ klasse WavePCM32Test(WaveTest, unittest.TestCase):
       E4B49CC00CEA2D90 6344A8800A5A7CA0 08C8FE800A1FFEE0 2BB986C00B0A0E00 \
       51486F800E44E190 8BCC6480113B0580 B6F4EC000EEB3630 441317800A5B48A0 \
       """)
-    if sys.byteorder != 'big':
+    wenn sys.byteorder != 'big':
         frames = wave._byteswap(frames, 4)
 
 
@@ -206,5 +206,5 @@ klasse WaveLowLevelTest(unittest.TestCase):
             self.assertIsNone(cm.unraisable)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

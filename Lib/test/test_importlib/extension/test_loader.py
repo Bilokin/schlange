@@ -19,18 +19,18 @@ klasse LoaderTests:
     """Test ExtensionFileLoader."""
 
     def setUp(self):
-        if not self.machinery.EXTENSION_SUFFIXES or not util.EXTENSIONS:
+        wenn not self.machinery.EXTENSION_SUFFIXES or not util.EXTENSIONS:
             raise unittest.SkipTest("Requires dynamic loading support.")
-        if util.EXTENSIONS.name in sys.builtin_module_names:
+        wenn util.EXTENSIONS.name in sys.builtin_module_names:
             raise unittest.SkipTest(
                 f"{util.EXTENSIONS.name} is a builtin module"
             )
 
         # Apple extensions must be distributed as frameworks. This requires
         # a specialist loader.
-        if is_apple_mobile:
+        wenn is_apple_mobile:
             self.LoaderClass = self.machinery.AppleFrameworkLoader
-        else:
+        sonst:
             self.LoaderClass = self.machinery.ExtensionFileLoader
 
         self.loader = self.LoaderClass(util.EXTENSIONS.name, util.EXTENSIONS.file_path)
@@ -105,18 +105,18 @@ klasse SinglePhaseExtensionModuleTests(abc.LoaderTests):
     # Test loading extension modules without multi-phase initialization.
 
     def setUp(self):
-        if not self.machinery.EXTENSION_SUFFIXES or not util.EXTENSIONS:
+        wenn not self.machinery.EXTENSION_SUFFIXES or not util.EXTENSIONS:
             raise unittest.SkipTest("Requires dynamic loading support.")
 
         # Apple extensions must be distributed as frameworks. This requires
         # a specialist loader.
-        if is_apple_mobile:
+        wenn is_apple_mobile:
             self.LoaderClass = self.machinery.AppleFrameworkLoader
-        else:
+        sonst:
             self.LoaderClass = self.machinery.ExtensionFileLoader
 
         self.name = '_testsinglephase'
-        if self.name in sys.builtin_module_names:
+        wenn self.name in sys.builtin_module_names:
             raise unittest.SkipTest(
                 f"{self.name} is a builtin module"
             )
@@ -193,18 +193,18 @@ klasse MultiPhaseExtensionModuleTests(abc.LoaderTests):
     # Test loading extension modules with multi-phase initialization (PEP 489).
 
     def setUp(self):
-        if not self.machinery.EXTENSION_SUFFIXES or not util.EXTENSIONS:
+        wenn not self.machinery.EXTENSION_SUFFIXES or not util.EXTENSIONS:
             raise unittest.SkipTest("Requires dynamic loading support.")
 
         # Apple extensions must be distributed as frameworks. This requires
         # a specialist loader.
-        if is_apple_mobile:
+        wenn is_apple_mobile:
             self.LoaderClass = self.machinery.AppleFrameworkLoader
-        else:
+        sonst:
             self.LoaderClass = self.machinery.ExtensionFileLoader
 
         self.name = '_testmultiphase'
-        if self.name in sys.builtin_module_names:
+        wenn self.name in sys.builtin_module_names:
             raise unittest.SkipTest(
                 f"{self.name} is a builtin module"
             )
@@ -354,7 +354,7 @@ klasse MultiPhaseExtensionModuleTests(abc.LoaderTests):
 
                 # If there is an unreported exception, it should be chained
                 # with the `SystemError`.
-                if "unreported_exception" in name_base:
+                wenn "unreported_exception" in name_base:
                     self.assertIsNotNone(cm.exception.__cause__)
 
     def test_nonascii(self):
@@ -370,7 +370,7 @@ klasse MultiPhaseExtensionModuleTests(abc.LoaderTests):
             with self.subTest(name):
                 module = self.load_module_by_name(name)
                 self.assertEqual(module.__name__, name)
-                if not MISSING_C_DOCSTRINGS:
+                wenn not MISSING_C_DOCSTRINGS:
                     self.assertEqual(module.__doc__, "Module named in %s" % lang)
 
 
@@ -388,5 +388,5 @@ klasse NonModuleExtensionTests(unittest.TestCase):
         script_helper.run_test_script(script)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

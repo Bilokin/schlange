@@ -76,7 +76,7 @@ klasse APITests(
         fuer pkg_name, expect_content in tests:
             with self.subTest(pkg_name):
                 top_level = [
-                    path fuer path in files(pkg_name) if path.name == 'top_level.txt'
+                    path fuer path in files(pkg_name) wenn path.name == 'top_level.txt'
                 ][0]
                 self.assertEqual(top_level.read_text(), expect_content)
 
@@ -176,11 +176,11 @@ klasse APITests(
             assert not file.size or file.size >= 0
             assert file.locate().exists()
             assert isinstance(file.read_binary(), bytes)
-            if file.name.endswith('.py'):
+            wenn file.name.endswith('.py'):
                 file.read_text()
 
     def test_file_hash_repr(self):
-        util = [p fuer p in files('distinfo-pkg') if p.name == 'mod.py'][0]
+        util = [p fuer p in files('distinfo-pkg') wenn p.name == 'mod.py'][0]
         self.assertRegex(repr(util.hash), '<FileHash mode: sha256 value: .*>')
 
     def test_files_dist_info(self):

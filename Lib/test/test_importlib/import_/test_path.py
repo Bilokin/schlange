@@ -70,7 +70,7 @@ klasse FinderTests:
             self.assertIs(sys.path_importer_cache[path], importer)
 
     def test_empty_path_hooks(self):
-        # Test that if sys.path_hooks is empty a warning is raised,
+        # Test that wenn sys.path_hooks is empty a warning is raised,
         # sys.path_importer_cache gets None set, and PathFinder returns None.
         path_entry = 'bogus_path'
         with util.import_state(path_importer_cache={}, path_hooks=[],
@@ -114,7 +114,7 @@ klasse FinderTests:
                 module = self.importlib.import_module('email')
                 self.assertIsInstance(module, ModuleType)
         finally:
-            if email is not missing:
+            wenn email is not missing:
                 sys.modules['email'] = email
 
     def test_finder_with_find_spec(self):
@@ -216,7 +216,7 @@ klasse FinderTests:
 klasse FindModuleTests(FinderTests):
     def find(self, *args, **kwargs):
         spec = self.machinery.PathFinder.find_spec(*args, **kwargs)
-        return None if spec is None else spec.loader
+        return None wenn spec is None sonst spec.loader
 
     def check_found(self, found, importer):
         self.assertIs(found, importer)
@@ -245,7 +245,7 @@ klasse PathEntryFinderTests:
         klasse Finder:
             path_location = 'test_finder_with_find_spec'
             def __init__(self, path):
-                if path != self.path_location:
+                wenn path != self.path_location:
                     raise ImportError
 
             @staticmethod
@@ -265,5 +265,5 @@ klasse PathEntryFinderTests:
  ) = util.test_both(PathEntryFinderTests, machinery=machinery)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

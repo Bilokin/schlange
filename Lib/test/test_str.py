@@ -36,11 +36,11 @@ def search_function(encoding):
         return (42, 42) # no unicode
     def decode2(input, errors="strict"):
         return (42, 42) # no unicode
-    if encoding=="test.unicode1":
+    wenn encoding=="test.unicode1":
         return (encode1, decode1, None, None)
-    elif encoding=="test.unicode2":
+    sowenn encoding=="test.unicode2":
         return (encode2, decode2, None, None)
-    else:
+    sonst:
         return None
 
 def duplicate_string(text):
@@ -87,9 +87,9 @@ klasse StrTest(string_tests.StringLikeTest,
         self.assertEqual(realresult, result)
         self.assertTrue(type(realresult) is type(result))
 
-        # if the original is returned make sure that
+        # wenn the original is returned make sure that
         # this doesn't happen with subclasses
-        if realresult is object:
+        wenn realresult is object:
             klasse usub(str):
                 def __repr__(self):
                     return 'usub(%r)' % str.__repr__(self)
@@ -636,7 +636,7 @@ klasse StrTest(string_tests.StringLikeTest,
         self.assertTrue('abcd' > 'abc')
         self.assertTrue('abc' < 'abcd')
 
-        if 0:
+        wenn 0:
             # Move these tests to a Unicode collation module test...
             # Testing UTF-16 code point order comparisons...
 
@@ -1126,7 +1126,7 @@ klasse StrTest(string_tests.StringLikeTest,
             def __str__(self):
                 return "string is " + self.x
             def __format__(self, format_spec):
-                if format_spec == 'd':
+                wenn format_spec == 'd':
                     return 'G(' + self.x + ')'
                 return object.__format__(self, format_spec)
 
@@ -1692,7 +1692,7 @@ klasse StrTest(string_tests.StringLikeTest,
             subclass = StrSubclass(text)
             self.assertEqual(str(subclass), text)
             self.assertEqual(len(subclass), len(text))
-            if text == 'ascii':
+            wenn text == 'ascii':
                 self.assertEqual(subclass.encode('ascii'), b'ascii')
                 self.assertEqual(subclass.encode('utf-8'), b'ascii')
 
@@ -2054,7 +2054,7 @@ klasse StrTest(string_tests.StringLikeTest,
         E.g. in the sequence <F3 80 80>, F3 is the start byte of a 4-bytes
         sequence, but it's followed by only 2 valid continuation bytes and the
         last continuation bytes is missing.
-        Note: the continuation bytes must be all valid, if one of them is
+        Note: the continuation bytes must be all valid, wenn one of them is
         invalid another error will be raised.
         """
         sequences = [
@@ -2097,7 +2097,7 @@ klasse StrTest(string_tests.StringLikeTest,
         """
         Test that an 'invalid continuation byte' error is raised when the
         continuation byte(s) of a 3-bytes sequence are invalid.  When
-        errors='replace', if the first continuation byte is valid, the first
+        errors='replace', wenn the first continuation byte is valid, the first
         two bytes (start byte + 1st cb) are replaced by a single U+FFFD and the
         third byte is handled separately, otherwise only the start byte is
         replaced with a U+FFFD and the other continuation bytes are handled
@@ -2401,7 +2401,7 @@ klasse StrTest(string_tests.StringLikeTest,
         except UnicodeDecodeError as e:
             self.assertEqual(e.start, 0)
             self.assertEqual(e.end, 10)
-        else:
+        sonst:
             self.fail("Should have raised UnicodeDecodeError")
 
     def test_conversion(self):
@@ -2472,16 +2472,16 @@ klasse StrTest(string_tests.StringLikeTest,
 
         fuer char in ('a', '\xe9', '\u20ac', '\U0010ffff'):
             code = ord(char)
-            if code < 0x80:
+            wenn code < 0x80:
                 char_size = 1  # sizeof(Py_UCS1)
                 struct_size = ascii_struct_size
-            elif code < 0x100:
+            sowenn code < 0x100:
                 char_size = 1  # sizeof(Py_UCS1)
                 struct_size = compact_struct_size
-            elif code < 0x10000:
+            sowenn code < 0x10000:
                 char_size = 2  # sizeof(Py_UCS2)
                 struct_size = compact_struct_size
-            else:
+            sonst:
                 char_size = 4  # sizeof(Py_UCS4)
                 struct_size = compact_struct_size
             # Note: sys.maxsize is half of the actual max allocation because of
@@ -2550,7 +2550,7 @@ klasse StrTest(string_tests.StringLikeTest,
             self.assertEqual(text1 == text2, equal)
             self.assertEqual(text1 != text2, not equal)
 
-            if equal:
+            wenn equal:
                 self.assertTrue(text1 <= text2)
                 self.assertTrue(text1 >= text2)
 
@@ -2605,7 +2605,7 @@ klasse StrTest(string_tests.StringLikeTest,
 
     def test_free_after_iterating(self):
         support.check_free_after_iterating(self, iter, str)
-        if not support.Py_GIL_DISABLED:
+        wenn not support.Py_GIL_DISABLED:
             support.check_free_after_iterating(self, reversed, str)
 
     def test_check_encoding_errors(self):
@@ -2622,14 +2622,14 @@ klasse StrTest(string_tests.StringLikeTest,
                     str(data, encoding={invalid!r})
                 except LookupError:
                     pass
-                else:
+                sonst:
                     sys.exit(21)
 
                 try:
                     str(data, errors={invalid!r})
                 except LookupError:
                     pass
-                else:
+                sonst:
                     sys.exit(22)
 
                 fuer encoding in encodings:
@@ -2637,7 +2637,7 @@ klasse StrTest(string_tests.StringLikeTest,
                         str(data, encoding, errors={invalid!r})
                     except LookupError:
                         pass
-                    else:
+                    sonst:
                         sys.exit(22)
 
             fuer data in ('', 'short string'):
@@ -2645,14 +2645,14 @@ klasse StrTest(string_tests.StringLikeTest,
                     data.encode(encoding={invalid!r})
                 except LookupError:
                     pass
-                else:
+                sonst:
                     sys.exit(23)
 
                 try:
                     data.encode(errors={invalid!r})
                 except LookupError:
                     pass
-                else:
+                sonst:
                     sys.exit(24)
 
                 fuer encoding in encodings:
@@ -2660,7 +2660,7 @@ klasse StrTest(string_tests.StringLikeTest,
                         data.encode(encoding, errors={invalid!r})
                     except LookupError:
                         pass
-                    else:
+                    sonst:
                         sys.exit(24)
 
             sys.exit(10)
@@ -2785,5 +2785,5 @@ klasse StringModuleTest(unittest.TestCase):
         self.assertEqual(list(o.__dict__), [name, name2])
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

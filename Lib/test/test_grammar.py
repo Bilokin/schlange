@@ -47,7 +47,7 @@ klasse TokenTests(unittest.TestCase):
         # "0x" is not a valid literal
         self.assertRaises(SyntaxError, eval, "0x")
         from sys import maxsize
-        if maxsize == 2147483647:
+        wenn maxsize == 2147483647:
             self.assertEqual(-2147483647-1, -0o20000000000)
             # XXX -2147483648
             self.assertTrue(0o37777777777 > 0)
@@ -59,7 +59,7 @@ klasse TokenTests(unittest.TestCase):
                     x = eval(s)
                 except OverflowError:
                     self.fail("OverflowError on huge integer literal %r" % s)
-        elif maxsize == 9223372036854775807:
+        sowenn maxsize == 9223372036854775807:
             self.assertEqual(-9223372036854775807-1, -0o1000000000000000000000)
             self.assertTrue(0o1777777777777777777777 > 0)
             self.assertTrue(0xffffffffffffffff > 0)
@@ -71,7 +71,7 @@ klasse TokenTests(unittest.TestCase):
                     x = eval(s)
                 except OverflowError:
                     self.fail("OverflowError on huge integer literal %r" % s)
-        else:
+        sonst:
             self.fail('Weird maxsize value %r' % maxsize)
 
     def test_long_integers(self):
@@ -102,9 +102,9 @@ klasse TokenTests(unittest.TestCase):
         # See issue 21642.
         with warnings.catch_warnings():
             warnings.simplefilter('ignore', SyntaxWarning)
-            self.assertEqual(eval("1 if 1else 0"), 1)
-            self.assertEqual(eval("1 if 0else 0"), 0)
-        self.assertRaises(SyntaxError, eval, "0 if 1Else 0")
+            self.assertEqual(eval("1 wenn 1else 0"), 1)
+            self.assertEqual(eval("1 wenn 0else 0"), 0)
+        self.assertRaises(SyntaxError, eval, "0 wenn 1Else 0")
 
     def test_underscore_literals(self):
         fuer lit in VALID_UNDERSCORE_LITERALS:
@@ -139,13 +139,13 @@ klasse TokenTests(unittest.TestCase):
     def test_end_of_numerical_literals(self):
         def check(test, error=False):
             with self.subTest(expr=test):
-                if error:
+                wenn error:
                     with warnings.catch_warnings(record=True) as w:
                         with self.assertRaisesRegex(SyntaxError,
                                     r'invalid \w+ literal'):
                             compile(test, "<testcase>", "eval")
                     self.assertEqual(w,  [])
-                else:
+                sonst:
                     self.check_syntax_warning(test,
                             errtext=r'invalid \w+ literal')
 
@@ -155,8 +155,8 @@ klasse TokenTests(unittest.TestCase):
             check(f"{num}or x", error=(num == "0"))
             check(f"{num}in x")
             check(f"{num}not in x")
-            check(f"{num}if x else y")
-            check(f"x if {num}else y", error=(num == "0xf"))
+            check(f"{num}if x sonst y")
+            check(f"x wenn {num}else y", error=(num == "0xf"))
             check(f"[{num}for x in ()]")
             check(f"{num}spam", error=True)
 
@@ -564,7 +564,7 @@ klasse GrammarTests(unittest.TestCase):
                 str('x', **{b'foo':1 })
             except TypeError:
                 pass
-            else:
+            sonst:
                 self.fail('Bytes should not work as keyword argument names')
         # keyword only argument tests
         def pos0key1(*, key): return key
@@ -820,7 +820,7 @@ klasse GrammarTests(unittest.TestCase):
                 msg = "continue failed to continue inside try"
             except:
                 msg = "continue inside try called except block"
-        if msg != "ok":
+        wenn msg != "ok":
             self.fail(msg)
 
         msg = ""
@@ -830,7 +830,7 @@ klasse GrammarTests(unittest.TestCase):
                 continue
             finally:
                 msg = "ok"
-        if msg != "ok":
+        wenn msg != "ok":
             self.fail(msg)
 
     def test_break_continue_loop(self):
@@ -848,14 +848,14 @@ klasse GrammarTests(unittest.TestCase):
             while big_hippo:
                 count += 1
                 try:
-                    if extra_burning_oil and big_hippo == 1:
+                    wenn extra_burning_oil and big_hippo == 1:
                         extra_burning_oil -= 1
                         break
                     big_hippo -= 1
                     continue
                 except:
                     raise
-            if count > 2 or big_hippo != 1:
+            wenn count > 2 or big_hippo != 1:
                 self.fail("continue then break in try/except in loop broken!")
         test_inner()
 
@@ -1091,7 +1091,7 @@ klasse GrammarTests(unittest.TestCase):
                         try:
                             return count + count2
                         finally:
-                            if x:
+                            wenn x:
                                 break
                 return 'end', count, count2
 
@@ -1111,7 +1111,7 @@ klasse GrammarTests(unittest.TestCase):
                         try:
                             return count + count2
                         finally:
-                            if x:
+                            wenn x:
                                 break
                 return 'end', count, count2
 
@@ -1132,7 +1132,7 @@ klasse GrammarTests(unittest.TestCase):
                     try:
                         return count
                     finally:
-                        if x:
+                        wenn x:
                             continue
                 return 'end', count
 
@@ -1150,7 +1150,7 @@ klasse GrammarTests(unittest.TestCase):
                     try:
                         return count
                     finally:
-                        if x:
+                        wenn x:
                             continue
                 return 'end', count
 
@@ -1207,7 +1207,7 @@ klasse GrammarTests(unittest.TestCase):
         check = self.check_syntax_error
         check("def g(): [(yield x) fuer x in ()]",
               "'yield' inside list comprehension")
-        check("def g(): [x fuer x in () if not (yield x)]",
+        check("def g(): [x fuer x in () wenn not (yield x)]",
               "'yield' inside list comprehension")
         check("def g(): [y fuer x in () fuer y in [(yield x)]]",
               "'yield' inside list comprehension")
@@ -1278,25 +1278,25 @@ klasse GrammarTests(unittest.TestCase):
             self.fail("'assert True, msg' should not have "
                       "raised an AssertionError")
 
-    # these tests fail if python is run with -O, so check __debug__
-    @unittest.skipUnless(__debug__, "Won't work if __debug__ is False")
+    # these tests fail wenn python is run with -O, so check __debug__
+    @unittest.skipUnless(__debug__, "Won't work wenn __debug__ is False")
     def test_assert_failures(self):
         try:
             assert 0, "msg"
         except AssertionError as e:
             self.assertEqual(e.args[0], "msg")
-        else:
+        sonst:
             self.fail("AssertionError not raised by assert 0")
 
         try:
             assert False
         except AssertionError as e:
             self.assertEqual(len(e.args), 0)
-        else:
+        sonst:
             self.fail("AssertionError not raised by 'assert False'")
 
     def test_assert_syntax_warnings(self):
-        # Ensure that we warn users if they provide a non-zero length tuple as
+        # Ensure that we warn users wenn they provide a non-zero length tuple as
         # the assertion test.
         self.check_syntax_warning('assert(x, "msg")',
                                   'assertion is always true')
@@ -1332,29 +1332,29 @@ klasse GrammarTests(unittest.TestCase):
 
     def test_if(self):
         # 'if' test ':' suite ('elif' test ':' suite)* ['else' ':' suite]
-        if 1: pass
-        if 1: pass
-        else: pass
-        if 0: pass
-        elif 0: pass
-        if 0: pass
-        elif 0: pass
-        elif 0: pass
-        elif 0: pass
-        else: pass
+        wenn 1: pass
+        wenn 1: pass
+        sonst: pass
+        wenn 0: pass
+        sowenn 0: pass
+        wenn 0: pass
+        sowenn 0: pass
+        sowenn 0: pass
+        sowenn 0: pass
+        sonst: pass
 
     def test_while(self):
         # 'while' test ':' suite ['else' ':' suite]
         while 0: pass
         while 0: pass
-        else: pass
+        sonst: pass
 
         # Issue1920: "while 0" is optimized away,
         # ensure that the "else" clause is still present.
         x = 0
         while 0:
             x = 1
-        else:
+        sonst:
             x = 2
         self.assertEqual(x, 2)
 
@@ -1362,14 +1362,14 @@ klasse GrammarTests(unittest.TestCase):
         # 'for' exprlist 'in' exprlist ':' suite ['else' ':' suite]
         fuer i in 1, 2, 3: pass
         fuer i, j, k in (): pass
-        else: pass
+        sonst: pass
         klasse Squares:
             def __init__(self, max):
                 self.max = max
                 self.sofar = []
             def __len__(self): return len(self.sofar)
             def __getitem__(self, i):
-                if not 0 <= i < self.max: raise IndexError
+                wenn not 0 <= i < self.max: raise IndexError
                 n = len(self.sofar)
                 while n <= i:
                     self.sofar.append(n*n)
@@ -1377,7 +1377,7 @@ klasse GrammarTests(unittest.TestCase):
                 return self.sofar[i]
         n = 0
         fuer x in Squares(10): n = n+x
-        if n != 285:
+        wenn n != 285:
             self.fail('for over growing sequence')
 
         result = []
@@ -1399,13 +1399,13 @@ klasse GrammarTests(unittest.TestCase):
             1/0
         except ZeroDivisionError:
             pass
-        else:
+        sonst:
             pass
         try: 1/0
         except EOFError: pass
         except TypeError as msg: pass
         except: pass
-        else: pass
+        sonst: pass
         try: 1/0
         except (EOFError, TypeError, ZeroDivisionError): pass
         try: 1/0
@@ -1425,12 +1425,12 @@ klasse GrammarTests(unittest.TestCase):
             1/0
         except* ZeroDivisionError:
             pass
-        else:
+        sonst:
             pass
         try: 1/0
         except* EOFError: pass
         except* ZeroDivisionError as msg: pass
-        else: pass
+        sonst: pass
         try: 1/0
         except* (EOFError, TypeError, ZeroDivisionError): pass
         try: 1/0
@@ -1446,10 +1446,10 @@ klasse GrammarTests(unittest.TestCase):
 
     def test_suite(self):
         # simple_stmt | NEWLINE INDENT NEWLINE* (stmt NEWLINE*)+ DEDENT
-        if 1: pass
-        if 1:
+        wenn 1: pass
+        wenn 1:
             pass
-        if 1:
+        wenn 1:
             #
             #
             #
@@ -1463,29 +1463,29 @@ klasse GrammarTests(unittest.TestCase):
         ### and_test ('or' and_test)*
         ### and_test: not_test ('and' not_test)*
         ### not_test: 'not' not_test | comparison
-        if not 1: pass
-        if 1 and 1: pass
-        if 1 or 1: pass
-        if not not not 1: pass
-        if not 1 and 1 and 1: pass
-        if 1 and 1 or 1 and 1 and 1 or not 1 and 1: pass
+        wenn not 1: pass
+        wenn 1 and 1: pass
+        wenn 1 or 1: pass
+        wenn not not not 1: pass
+        wenn not 1 and 1 and 1: pass
+        wenn 1 and 1 or 1 and 1 and 1 or not 1 and 1: pass
 
     def test_comparison(self):
         ### comparison: expr (comp_op expr)*
         ### comp_op: '<'|'>'|'=='|'>='|'<='|'!='|'in'|'not' 'in'|'is'|'is' 'not'
-        if 1: pass
+        wenn 1: pass
         x = (1 == 1)
-        if 1 == 1: pass
-        if 1 != 1: pass
-        if 1 < 1: pass
-        if 1 > 1: pass
-        if 1 <= 1: pass
-        if 1 >= 1: pass
-        if x is x: pass
-        if x is not x: pass
-        if 1 in (): pass
-        if 1 not in (): pass
-        if 1 < 1 > 1 == 1 >= 1 <= 1 != 1 in 1 not in x is x is not x: pass
+        wenn 1 == 1: pass
+        wenn 1 != 1: pass
+        wenn 1 < 1: pass
+        wenn 1 > 1: pass
+        wenn 1 <= 1: pass
+        wenn 1 >= 1: pass
+        wenn x is x: pass
+        wenn x is not x: pass
+        wenn 1 in (): pass
+        wenn 1 not in (): pass
+        wenn 1 < 1 > 1 == 1 >= 1 <= 1 != 1 in 1 not in x is x is not x: pass
 
     def test_comparison_is_literal(self):
         def check(test, msg):
@@ -1746,14 +1746,14 @@ klasse GrammarTests(unittest.TestCase):
 
         self.assertEqual([s.strip() fuer s in spcs], ['Apple', 'Banana', 'Coco  nut'])
         self.assertEqual([3 * x fuer x in nums], [3, 6, 9, 12, 15])
-        self.assertEqual([x fuer x in nums if x > 2], [3, 4, 5])
+        self.assertEqual([x fuer x in nums wenn x > 2], [3, 4, 5])
         self.assertEqual([(i, s) fuer i in nums fuer s in strs],
                          [(1, 'Apple'), (1, 'Banana'), (1, 'Coconut'),
                           (2, 'Apple'), (2, 'Banana'), (2, 'Coconut'),
                           (3, 'Apple'), (3, 'Banana'), (3, 'Coconut'),
                           (4, 'Apple'), (4, 'Banana'), (4, 'Coconut'),
                           (5, 'Apple'), (5, 'Banana'), (5, 'Coconut')])
-        self.assertEqual([(i, s) fuer i in nums fuer s in [f fuer f in strs if "n" in f]],
+        self.assertEqual([(i, s) fuer i in nums fuer s in [f fuer f in strs wenn "n" in f]],
                          [(1, 'Banana'), (1, 'Coconut'), (2, 'Banana'), (2, 'Coconut'),
                           (3, 'Banana'), (3, 'Coconut'), (4, 'Banana'), (4, 'Coconut'),
                           (5, 'Banana'), (5, 'Coconut')])
@@ -1761,7 +1761,7 @@ klasse GrammarTests(unittest.TestCase):
                          [[1], [1, 1], [1, 2, 4], [1, 3, 9, 27], [1, 4, 16, 64, 256]])
 
         def test_in_func(l):
-            return [0 < x < 3 fuer x in l if x > 2]
+            return [0 < x < 3 fuer x in l wenn x > 2]
 
         self.assertEqual(test_in_func(nums), [False, False, False])
 
@@ -1772,7 +1772,7 @@ klasse GrammarTests(unittest.TestCase):
         test_nested_front()
 
         check_syntax_error(self, "[i, s fuer i in nums fuer s in strs]")
-        check_syntax_error(self, "[x if y]")
+        check_syntax_error(self, "[x wenn y]")
 
         suppliers = [
           (1, "Boeing"),
@@ -1795,7 +1795,7 @@ klasse GrammarTests(unittest.TestCase):
             fuer (sno, sname) in suppliers
               fuer (pno, pname) in parts
                 fuer (sp_sno, sp_pno) in suppart
-                  if sno == sp_sno and pno == sp_pno
+                  wenn sno == sp_sno and pno == sp_pno
         ]
 
         self.assertEqual(x, [('Boeing', 'Airliner'), ('Boeing', 'Engine'), ('Ford', 'Engine'),
@@ -1827,12 +1827,12 @@ klasse GrammarTests(unittest.TestCase):
         self.assertEqual(sum(b), sum([x fuer x in range(10)]))
 
         self.assertEqual(sum(x**2 fuer x in range(10)), sum([x**2 fuer x in range(10)]))
-        self.assertEqual(sum(x*x fuer x in range(10) if x%2), sum([x*x fuer x in range(10) if x%2]))
+        self.assertEqual(sum(x*x fuer x in range(10) wenn x%2), sum([x*x fuer x in range(10) wenn x%2]))
         self.assertEqual(sum(x fuer x in (y fuer y in range(10))), sum([x fuer x in range(10)]))
         self.assertEqual(sum(x fuer x in (y fuer y in (z fuer z in range(10)))), sum([x fuer x in range(10)]))
         self.assertEqual(sum(x fuer x in [y fuer y in (z fuer z in range(10))]), sum([x fuer x in range(10)]))
-        self.assertEqual(sum(x fuer x in (y fuer y in (z fuer z in range(10) if True)) if True), sum([x fuer x in range(10)]))
-        self.assertEqual(sum(x fuer x in (y fuer y in (z fuer z in range(10) if True) if False) if True), 0)
+        self.assertEqual(sum(x fuer x in (y fuer y in (z fuer z in range(10) wenn True)) wenn True), sum([x fuer x in range(10)]))
+        self.assertEqual(sum(x fuer x in (y fuer y in (z fuer z in range(10) wenn True) wenn False) wenn True), 0)
         check_syntax_error(self, "foo(x fuer x in range(10), 100)")
         check_syntax_error(self, "foo(100, x fuer x in range(10))")
 
@@ -1842,14 +1842,14 @@ klasse GrammarTests(unittest.TestCase):
         self.assertEqual(len(list(g)), 10)
 
         # This should hold, since we're only precomputing outmost iterable.
-        x = 10; t = False; g = ((i,j) fuer i in range(x) if t fuer j in range(x))
+        x = 10; t = False; g = ((i,j) fuer i in range(x) wenn t fuer j in range(x))
         x = 5; t = True;
         self.assertEqual([(i,j) fuer i in range(10) fuer j in range(5)], list(g))
 
         # Grammar allows multiple adjacent 'if's in listcomps and genexps,
         # even though it's silly. Make sure it works (ifelse broke this.)
-        self.assertEqual([ x fuer x in range(10) if x % 2 if x % 3 ], [1, 5, 7])
-        self.assertEqual(list(x fuer x in range(10) if x % 2 if x % 3), [1, 5, 7])
+        self.assertEqual([ x fuer x in range(10) wenn x % 2 wenn x % 3 ], [1, 5, 7])
+        self.assertEqual(list(x fuer x in range(10) wenn x % 2 wenn x % 3), [1, 5, 7])
 
         # verify unpacking single element tuples in listcomp/genexp.
         self.assertEqual([x fuer x, in [(4,), (5,), (6,)]], [4, 5, 6])
@@ -1931,24 +1931,24 @@ klasse GrammarTests(unittest.TestCase):
             return ret
 
         # the next line is not allowed anymore
-        #self.assertEqual([ x() fuer x in lambda: True, lambda: False if x() ], [True])
-        self.assertEqual([ x() fuer x in (lambda: True, lambda: False) if x() ], [True])
-        self.assertEqual([ x(False) fuer x in (lambda x: False if x else True, lambda x: True if x else False) if x(False) ], [True])
-        self.assertEqual((5 if 1 else _checkeval("check 1", 0)), 5)
-        self.assertEqual((_checkeval("check 2", 0) if 0 else 5), 5)
-        self.assertEqual((5 and 6 if 0 else 1), 1)
-        self.assertEqual(((5 and 6) if 0 else 1), 1)
-        self.assertEqual((5 and (6 if 1 else 1)), 6)
-        self.assertEqual((0 or _checkeval("check 3", 2) if 0 else 3), 3)
-        self.assertEqual((1 or _checkeval("check 4", 2) if 1 else _checkeval("check 5", 3)), 1)
-        self.assertEqual((0 or 5 if 1 else _checkeval("check 6", 3)), 5)
-        self.assertEqual((not 5 if 1 else 1), False)
-        self.assertEqual((not 5 if 0 else 1), 1)
-        self.assertEqual((6 + 1 if 1 else 2), 7)
-        self.assertEqual((6 - 1 if 1 else 2), 5)
-        self.assertEqual((6 * 2 if 1 else 4), 12)
-        self.assertEqual((6 / 2 if 1 else 3), 3)
-        self.assertEqual((6 < 4 if 0 else 2), 2)
+        #self.assertEqual([ x() fuer x in lambda: True, lambda: False wenn x() ], [True])
+        self.assertEqual([ x() fuer x in (lambda: True, lambda: False) wenn x() ], [True])
+        self.assertEqual([ x(False) fuer x in (lambda x: False wenn x sonst True, lambda x: True wenn x sonst False) wenn x(False) ], [True])
+        self.assertEqual((5 wenn 1 sonst _checkeval("check 1", 0)), 5)
+        self.assertEqual((_checkeval("check 2", 0) wenn 0 sonst 5), 5)
+        self.assertEqual((5 and 6 wenn 0 sonst 1), 1)
+        self.assertEqual(((5 and 6) wenn 0 sonst 1), 1)
+        self.assertEqual((5 and (6 wenn 1 sonst 1)), 6)
+        self.assertEqual((0 or _checkeval("check 3", 2) wenn 0 sonst 3), 3)
+        self.assertEqual((1 or _checkeval("check 4", 2) wenn 1 sonst _checkeval("check 5", 3)), 1)
+        self.assertEqual((0 or 5 wenn 1 sonst _checkeval("check 6", 3)), 5)
+        self.assertEqual((not 5 wenn 1 sonst 1), False)
+        self.assertEqual((not 5 wenn 0 sonst 1), 1)
+        self.assertEqual((6 + 1 wenn 1 sonst 2), 7)
+        self.assertEqual((6 - 1 wenn 1 sonst 2), 5)
+        self.assertEqual((6 * 2 wenn 1 sonst 4), 12)
+        self.assertEqual((6 / 2 wenn 1 sonst 3), 3)
+        self.assertEqual((6 < 4 wenn 0 sonst 2), 2)
 
     def test_paren_evaluation(self):
         self.assertEqual(16 // (4 // 2), 8)
@@ -1978,7 +1978,7 @@ klasse GrammarTests(unittest.TestCase):
         async def test():
             def sum():
                 pass
-            if 1:
+            wenn 1:
                 await someobj()
 
         self.assertEqual(test.__name__, 'test')
@@ -2011,7 +2011,7 @@ klasse GrammarTests(unittest.TestCase):
                 pass
             async fuer i in AIter():
                 pass
-            else:
+            sonst:
                 pass
             raise Done
 
@@ -2058,5 +2058,5 @@ klasse GrammarTests(unittest.TestCase):
         self.assertEqual(test2(), "")
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

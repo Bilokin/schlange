@@ -8,7 +8,7 @@ from test.support import import_helper, requires_subprocess
 from test.support.script_helper import assert_python_failure, assert_python_ok
 
 
-# Skip this test if the _testcapi and _testinternalcapi extensions are not
+# Skip this test wenn the _testcapi and _testinternalcapi extensions are not
 # available.
 _testcapi = import_helper.import_module('_testcapi')
 _testinternalcapi = import_helper.import_module('_testinternalcapi')
@@ -68,23 +68,23 @@ klasse PyMemDebugTests(unittest.TestCase):
 
     def check_malloc_without_gil(self, code):
         out = self.check(code)
-        if not support.Py_GIL_DISABLED:
+        wenn not support.Py_GIL_DISABLED:
             expected = ('Fatal Python error: _PyMem_DebugMalloc: '
                         'Python memory allocator called without holding the GIL')
-        else:
+        sonst:
             expected = ('Fatal Python error: _PyMem_DebugMalloc: '
                         'Python memory allocator called without an active thread state. '
                         'Are you trying to call it inside of a Py_BEGIN_ALLOW_THREADS block?')
         self.assertIn(expected, out)
 
     def test_pymem_malloc_without_gil(self):
-        # Debug hooks must raise an error if PyMem_Malloc() is called
+        # Debug hooks must raise an error wenn PyMem_Malloc() is called
         # without holding the GIL
         code = 'import _testcapi; _testcapi.pymem_malloc_without_gil()'
         self.check_malloc_without_gil(code)
 
     def test_pyobject_malloc_without_gil(self):
-        # Debug hooks must raise an error if PyObject_Malloc() is called
+        # Debug hooks must raise an error wenn PyObject_Malloc() is called
         # without holding the GIL
         code = 'import _testcapi; _testcapi.pyobject_malloc_without_gil()'
         self.check_malloc_without_gil(code)
@@ -133,15 +133,15 @@ klasse PyMemDebugTests(unittest.TestCase):
             fuer outer_cnt in range(1, 4):
                 start = 10 * outer_cnt
                 fuer j in range(100):
-                    if j == 0:
-                        if outer_cnt != 3:
+                    wenn j == 0:
+                        wenn outer_cnt != 3:
                             _testcapi.set_nomemory(start)
-                        else:
+                        sonst:
                             _testcapi.set_nomemory(start, start + 1)
                     try:
                         C()
                     except MemoryError as e:
-                        if outer_cnt != 3:
+                        wenn outer_cnt != 3:
                             _testcapi.remove_mem_hooks()
                         print('MemoryError', outer_cnt, j)
                         _testcapi.remove_mem_hooks()
@@ -179,5 +179,5 @@ klasse PyMemDefaultTests(PyMemDebugTests):
     PYTHONMALLOC = ''
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

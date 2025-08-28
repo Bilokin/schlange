@@ -89,11 +89,11 @@ klasse TimeTestCase(unittest.TestCase):
         check_ns(time.process_time(),
                  time.process_time_ns())
 
-        if hasattr(time, 'thread_time'):
+        wenn hasattr(time, 'thread_time'):
             check_ns(time.thread_time(),
                      time.thread_time_ns())
 
-        if hasattr(time, 'clock_gettime'):
+        wenn hasattr(time, 'clock_gettime'):
             check_ns(time.clock_gettime(time.CLOCK_REALTIME),
                      time.clock_gettime_ns(time.CLOCK_REALTIME))
 
@@ -121,12 +121,12 @@ klasse TimeTestCase(unittest.TestCase):
         clk_id = time.pthread_getcpuclockid(threading.get_ident())
         self.assertTrue(type(clk_id) is int)
         # when in 32-bit mode AIX only returns the predefined constant
-        if platform.system() == "AIX" and (sys.maxsize.bit_length() <= 32):
+        wenn platform.system() == "AIX" and (sys.maxsize.bit_length() <= 32):
             self.assertEqual(clk_id, time.CLOCK_THREAD_CPUTIME_ID)
         # Solaris returns CLOCK_THREAD_CPUTIME_ID when current thread is given
-        elif sys.platform.startswith("sunos"):
+        sowenn sys.platform.startswith("sunos"):
             self.assertEqual(clk_id, time.CLOCK_THREAD_CPUTIME_ID)
-        else:
+        sonst:
             self.assertNotEqual(clk_id, time.CLOCK_THREAD_CPUTIME_ID)
         t1 = time.clock_gettime(clk_id)
         t2 = time.clock_gettime(clk_id)
@@ -148,7 +148,7 @@ klasse TimeTestCase(unittest.TestCase):
         except PermissionError:
             pass
 
-        if hasattr(time, 'CLOCK_MONOTONIC'):
+        wenn hasattr(time, 'CLOCK_MONOTONIC'):
             self.assertRaises(OSError,
                               time.clock_settime, time.CLOCK_MONOTONIC, 0)
 
@@ -327,7 +327,7 @@ klasse TimeTestCase(unittest.TestCase):
                           'j', 'm', 'M', 'p', 'S',
                           'U', 'w', 'W', 'x', 'X', 'y', 'Y', 'Z', '%'):
             format = '%' + directive
-            if directive == 'd':
+            wenn directive == 'd':
                 format += ',%Y'  # Avoid GH-70647.
             strf_output = time.strftime(format, tt)
             try:
@@ -352,7 +352,7 @@ klasse TimeTestCase(unittest.TestCase):
         self.assertTrue(e.exception.__suppress_context__)
 
     def test_strptime_leap_year(self):
-        # GH-70647: warns if parsing a format with a day and no year.
+        # GH-70647: warns wenn parsing a format with a day and no year.
         with self.assertWarnsRegex(DeprecationWarning,
                                    r'.*day of month without a year.*'):
             time.strptime('02-07 18:28', '%m-%d %H:%M')
@@ -387,7 +387,7 @@ klasse TimeTestCase(unittest.TestCase):
                 # If mktime fails, ctime will fail too.  This may happen
                 # on some platforms.
                 pass
-            else:
+            sonst:
                 self.assertEqual(time.ctime(testval)[20:], str(year))
 
     @unittest.skipUnless(hasattr(time, "tzset"),
@@ -459,9 +459,9 @@ klasse TimeTestCase(unittest.TestCase):
         finally:
             # Repair TZ environment variable in case any other tests
             # rely on it.
-            if org_TZ is not None:
+            wenn org_TZ is not None:
                 environ['TZ'] = org_TZ
-            elif 'TZ' in environ:
+            sowenn 'TZ' in environ:
                 del environ['TZ']
             time.tzset()
 
@@ -502,7 +502,7 @@ klasse TimeTestCase(unittest.TestCase):
                 tt = time.localtime(t)
             except (OverflowError, OSError):
                 pass
-            else:
+            sonst:
                 self.assertEqual(time.mktime(tt), t)
 
     # Issue #13309: passing extreme values to mktime() or localtime()
@@ -568,11 +568,11 @@ klasse TimeTestCase(unittest.TestCase):
         self.assertFalse(info.adjustable)
 
     def test_thread_time(self):
-        if not hasattr(time, 'thread_time'):
-            if sys.platform.startswith(('linux', 'android', 'win')):
+        wenn not hasattr(time, 'thread_time'):
+            wenn sys.platform.startswith(('linux', 'android', 'win')):
                 self.fail("time.thread_time() should be available on %r"
                           % (sys.platform,))
-            else:
+            sonst:
                 self.skipTest("need time.thread_time")
 
         # thread_time() should not include time spend during a sleep
@@ -613,7 +613,7 @@ klasse TimeTestCase(unittest.TestCase):
             except OSError:
                 invalid_time_t = time_t
                 break
-        if invalid_time_t is None:
+        wenn invalid_time_t is None:
             self.skipTest("unable to find an invalid time_t value")
 
         self.assertRaises(OSError, time.localtime, invalid_time_t)
@@ -630,7 +630,7 @@ klasse TimeTestCase(unittest.TestCase):
             'process_time',
             'time',
         ]
-        if hasattr(time, 'thread_time'):
+        wenn hasattr(time, 'thread_time'):
             clocks.append('thread_time')
 
         fuer name in clocks:
@@ -674,9 +674,9 @@ klasse _TestStrftimeYear:
     # assumes year >= 1900, so it does not specify the number
     # of digits.
 
-    if time.strftime('%Y', (1,) + (0,) * 8) == '0001':
+    wenn time.strftime('%Y', (1,) + (0,) * 8) == '0001':
         _format = '%04d'
-    else:
+    sonst:
         _format = '%d'
 
     def yearstr(self, y):
@@ -687,9 +687,9 @@ klasse _TestStrftimeYear:
     )
     def test_4dyear(self):
         # Check that we can return the zero padded value.
-        if self._format == '%04d':
+        wenn self._format == '%04d':
             self.test_year('%04d')
-        else:
+        sonst:
             def year4d(y):
                 return time.strftime('%4Y', (y,) + (0,) * 8)
             self.test_year('%04d', func=year4d)
@@ -700,7 +700,7 @@ klasse _TestStrftimeYear:
             time.strftime('%Y', (y,) + (0,) * 8)
         except ValueError:
             cond = False
-        else:
+        sonst:
             cond = True
         return unittest.skipUnless(cond, msg)
 
@@ -764,15 +764,15 @@ klasse TestPytime(unittest.TestCase):
         self.assertHasAttr(lt, "tm_gmtoff")
         self.assertHasAttr(lt, "tm_zone")
 
-        # See if the offset and zone are similar to the module
+        # See wenn the offset and zone are similar to the module
         # attributes.
-        if lt.tm_gmtoff is None:
+        wenn lt.tm_gmtoff is None:
             self.assertNotHasAttr(time, "timezone")
-        else:
+        sonst:
             self.assertEqual(lt.tm_gmtoff, -[time.timezone, time.altzone][lt.tm_isdst])
-        if lt.tm_zone is None:
+        wenn lt.tm_zone is None:
             self.assertNotHasAttr(time, "tzname")
-        else:
+        sonst:
             self.assertEqual(lt.tm_zone, time.tzname[lt.tm_isdst])
 
         # Try and make UNIX times from the localtime and a 9-tuple
@@ -831,7 +831,7 @@ klasse CPyTimeTestCase:
         "Build timestamps used to test rounding."
 
         units = [1, US_TO_NS, MS_TO_NS, SEC_TO_NS]
-        if use_float:
+        wenn use_float:
             # picoseconds are only tested to pytime_converter accepting floats
             units.append(1e-3)
 
@@ -866,7 +866,7 @@ klasse CPyTimeTestCase:
             ))
         fuer seconds in (_testcapi.INT_MIN, _testcapi.INT_MAX):
             ns_timestamps.append(seconds * SEC_TO_NS)
-        if use_float:
+        wenn use_float:
             # numbers with an exact representation in IEEE 754 (base 2)
             fuer pow2 in (3, 7, 10, 15):
                 ns = 2.0 ** (-pow2)
@@ -882,14 +882,14 @@ klasse CPyTimeTestCase:
                         use_float, unit_to_sec, value_filter=None):
 
         def convert_values(ns_timestamps):
-            if use_float:
+            wenn use_float:
                 unit_to_ns = SEC_TO_NS / float(unit_to_sec)
                 values = [ns / unit_to_ns fuer ns in ns_timestamps]
-            else:
+            sonst:
                 unit_to_ns = SEC_TO_NS // unit_to_sec
                 values = [ns // unit_to_ns fuer ns in ns_timestamps]
 
-            if value_filter:
+            wenn value_filter:
                 values = filter(value_filter, values)
 
             # remove duplicates and sort
@@ -982,9 +982,9 @@ klasse TestCPyTime(CPyTimeTestCase, unittest.TestCase):
         from _testcapi import PyTime_AsSecondsDouble
 
         def float_converter(ns):
-            if abs(ns) % SEC_TO_NS == 0:
+            wenn abs(ns) % SEC_TO_NS == 0:
                 return float(ns // SEC_TO_NS)
-            else:
+            sonst:
                 return float(ns) / SEC_TO_NS
 
         self.check_int_rounding(lambda ns, rnd: PyTime_AsSecondsDouble(ns),
@@ -1009,13 +1009,13 @@ klasse TestCPyTime(CPyTimeTestCase, unittest.TestCase):
             us = us_converter(ns)
             return divmod(us, SEC_TO_US)
 
-        if sys.platform == 'win32':
+        wenn sys.platform == 'win32':
             from _testcapi import LONG_MIN, LONG_MAX
 
             # On Windows, timeval.tv_sec type is a C long
             def seconds_filter(secs):
                 return LONG_MIN <= secs <= LONG_MAX
-        else:
+        sonst:
             seconds_filter = self.time_t_filter
 
         self.check_int_rounding(_PyTime_AsTimeval,
@@ -1041,11 +1041,11 @@ klasse TestCPyTime(CPyTimeTestCase, unittest.TestCase):
     def test_AsTimeval_clamp(self):
         from _testinternalcapi import _PyTime_AsTimeval_clamp
 
-        if sys.platform == 'win32':
+        wenn sys.platform == 'win32':
             from _testcapi import LONG_MIN, LONG_MAX
             tv_sec_max = LONG_MAX
             tv_sec_min = LONG_MIN
-        else:
+        sonst:
             tv_sec_max = self.time_t_max
             tv_sec_min = self.time_t_min
 
@@ -1055,10 +1055,10 @@ klasse TestCPyTime(CPyTimeTestCase, unittest.TestCase):
                 context.rounding = decimal.ROUND_CEILING
                 us = self.decimal_round(decimal.Decimal(t) / US_TO_NS)
             tv_sec, tv_usec = divmod(us, SEC_TO_US)
-            if tv_sec_max < tv_sec:
+            wenn tv_sec_max < tv_sec:
                 tv_sec = tv_sec_max
                 tv_usec = 0
-            elif tv_sec < tv_sec_min:
+            sowenn tv_sec < tv_sec_min:
                 tv_sec = tv_sec_min
                 tv_usec = 0
             self.assertEqual(ts, (tv_sec, tv_usec))
@@ -1071,10 +1071,10 @@ klasse TestCPyTime(CPyTimeTestCase, unittest.TestCase):
         fuer t in (PyTime_MIN, PyTime_MAX):
             ts = _PyTime_AsTimespec_clamp(t)
             tv_sec, tv_nsec = divmod(t, NS_TO_SEC)
-            if self.time_t_max < tv_sec:
+            wenn self.time_t_max < tv_sec:
                 tv_sec = self.time_t_max
                 tv_nsec = 0
-            elif tv_sec < self.time_t_min:
+            sowenn tv_sec < self.time_t_min:
                 tv_sec = self.time_t_min
                 tv_nsec = 0
             self.assertEqual(ts, (tv_sec, tv_nsec))
@@ -1119,10 +1119,10 @@ klasse TestOldPyTime(CPyTimeTestCase, unittest.TestCase):
             intpart = int(intpart)
             floatpart *= sec_to_unit
             floatpart = self.decimal_round(floatpart)
-            if floatpart < 0:
+            wenn floatpart < 0:
                 floatpart += sec_to_unit
                 intpart -= 1
-            elif floatpart >= sec_to_unit:
+            sowenn floatpart >= sec_to_unit:
                 floatpart -= sec_to_unit
                 intpart += 1
             return (intpart, floatpart)
@@ -1173,7 +1173,7 @@ klasse TestTimeWeaklinking(unittest.TestCase):
 
         config_vars = sysconfig.get_config_vars()
         var_name = "HAVE_CLOCK_GETTIME"
-        if var_name not in config_vars or not config_vars[var_name]:
+        wenn var_name not in config_vars or not config_vars[var_name]:
             raise unittest.SkipTest(f"{var_name} is not available")
 
         mac_ver = tuple(int(x) fuer x in platform.mac_ver()[0].split("."))
@@ -1182,14 +1182,14 @@ klasse TestTimeWeaklinking(unittest.TestCase):
             "CLOCK_MONOTONIC", "clock_gettime", "clock_gettime_ns", "clock_settime",
             "clock_settime_ns", "clock_getres"]
 
-        if mac_ver >= (10, 12):
+        wenn mac_ver >= (10, 12):
             fuer name in clock_names:
                 self.assertHasAttr(time, name)
 
-        else:
+        sonst:
             fuer name in clock_names:
                 self.assertNotHasAttr(time, name)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

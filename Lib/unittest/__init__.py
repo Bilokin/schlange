@@ -19,7 +19,7 @@ Simple usage:
             self.assertEqual((0 * 10), 0)
             self.assertEqual((5 * 8), 40)
 
-    if __name__ == '__main__':
+    wenn __name__ == '__main__':
         unittest.main()
 
 Further information is available in the bundled documentation, and from
@@ -73,7 +73,7 @@ def __dir__():
     return globals().keys() | {'IsolatedAsyncioTestCase'}
 
 def __getattr__(name):
-    if name == 'IsolatedAsyncioTestCase':
+    wenn name == 'IsolatedAsyncioTestCase':
         global IsolatedAsyncioTestCase
         from .async_case import IsolatedAsyncioTestCase
         return IsolatedAsyncioTestCase

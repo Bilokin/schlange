@@ -44,7 +44,7 @@ klasse SomethingElse(object):
 
     @property
     def instance(self):
-        if not self._instance:
+        wenn not self._instance:
             self._instance = 'object'
         return self._instance
 
@@ -61,7 +61,7 @@ def something(a): pass
 klasse MockTest(unittest.TestCase):
 
     def test_all(self):
-        # if __all__ is badly defined then import * will raise an error
+        # wenn __all__ is badly defined then import * will raise an error
         # We have to exec it because you can't import * inside a method
         # in Python 3
         exec("from unittest.mock import *")
@@ -264,7 +264,7 @@ klasse MockTest(unittest.TestCase):
                 mock.mock_open()  # should still be valid with open() mocked
 
     def test_create_autospec_wraps_class(self):
-        """Autospec a klasse with wraps & test if the call is passed to the
+        """Autospec a klasse with wraps & test wenn the call is passed to the
         wrapped object."""
         result = "real result"
 
@@ -280,7 +280,7 @@ klasse MockTest(unittest.TestCase):
         self.assertEqual(class_mock.get_result._mock_wraps, Result.get_result)
 
     def test_create_autospec_instance_wraps_class(self):
-        """Autospec a klasse instance with wraps & test if the call is passed
+        """Autospec a klasse instance with wraps & test wenn the call is passed
         to the wrapped object."""
         result = "real result"
 
@@ -301,7 +301,7 @@ klasse MockTest(unittest.TestCase):
         self.assertEqual(instance_mock.get_result._mock_wraps, Result.get_result)
 
     def test_create_autospec_wraps_function_type(self):
-        """Autospec a function or a method with wraps & test if the call is
+        """Autospec a function or a method with wraps & test wenn the call is
         passed to the wrapped object."""
         result = "real result"
 
@@ -475,7 +475,7 @@ klasse MockTest(unittest.TestCase):
         mock = Mock()
         mock()
 
-        # Will raise an exception if it fails
+        # Will raise an exception wenn it fails
         mock.assert_called_with()
         self.assertRaises(AssertionError, mock.assert_called_with, 1)
 
@@ -540,7 +540,7 @@ klasse MockTest(unittest.TestCase):
         mock = Mock()
         mock()
 
-        # Will raise an exception if it fails
+        # Will raise an exception wenn it fails
         mock.assert_called_once_with()
 
         mock()
@@ -704,7 +704,7 @@ klasse MockTest(unittest.TestCase):
         # trigger its descriptor ("NonCallableMock.__set_return_value") so
         # the default "return_value" should always be "sentinel.DEFAULT".
         self.assertEqual(mock.return_value, DEFAULT)
-        # It will not be "sentinel.DEFAULT" if the mock is not wrapping any
+        # It will not be "sentinel.DEFAULT" wenn the mock is not wrapping any
         # object.
         self.assertNotEqual(real.return_value, DEFAULT)
         self.assertEqual(mock(), real())
@@ -1054,7 +1054,7 @@ klasse MockTest(unittest.TestCase):
     def test_dir(self):
         mock = Mock()
         attrs = set(dir(mock))
-        type_attrs = set([m fuer m in dir(Mock) if not m.startswith('_')])
+        type_attrs = set([m fuer m in dir(Mock) wenn not m.startswith('_')])
 
         # all public attributes from the type are included
         self.assertEqual(set(), type_attrs - attrs)
@@ -1371,7 +1371,7 @@ klasse MockTest(unittest.TestCase):
         fuer mock in mocks:
             assert_attrs(mock)
 
-            if callable(mock):
+            wenn callable(mock):
                 mock()
                 mock(1, 2)
                 mock(a=3)
@@ -1539,7 +1539,7 @@ klasse MockTest(unittest.TestCase):
                     these = kalls[i:i+step]
                     mock.assert_has_calls(these)
 
-                    if len(these) > 1:
+                    wenn len(these) > 1:
                         self.assertRaises(
                             AssertionError,
                             mock.assert_has_calls,
@@ -1929,7 +1929,7 @@ klasse MockTest(unittest.TestCase):
                         self.assertRaises(
                             AttributeError, getattr, mock, 'three'
                         )
-                        if 'spec_set' in kwargs:
+                        wenn 'spec_set' in kwargs:
                             self.assertRaises(
                                 AttributeError, setattr, mock, 'three', None
                             )
@@ -1942,7 +1942,7 @@ klasse MockTest(unittest.TestCase):
                         self.assertRaises(
                             AttributeError, getattr, mock, 'three'
                         )
-                        if 'spec_set' in kwargs:
+                        wenn 'spec_set' in kwargs:
                             self.assertRaises(
                                 AttributeError, setattr, mock, 'three', None
                             )
@@ -2363,7 +2363,7 @@ klasse MockTest(unittest.TestCase):
         klasse Foo():
             one = 'one'
         # patch, patch.object and create_autospec need to check fuer misspelled
-        # arguments explicitly and throw a RuntimeError if found.
+        # arguments explicitly and throw a RuntimeError wenn found.
         with self.assertRaises(RuntimeError):
             with patch(f'{__name__}.Something.meth', autospect=True): pass
         with self.assertRaises(RuntimeError):
@@ -2426,5 +2426,5 @@ klasse MockTest(unittest.TestCase):
         fuer m in (mock.method, mock.class_method, mock.static_method):
             self.assertIsInstance(m, AsyncMock)
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

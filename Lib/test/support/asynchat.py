@@ -104,9 +104,9 @@ klasse async_chat(asyncore.dispatcher):
 
         Can be a fixed string of any length, an integer, or None.
         """
-        if isinstance(term, str) and self.use_encoding:
+        wenn isinstance(term, str) and self.use_encoding:
             term = bytes(term, self.encoding)
-        elif isinstance(term, int) and term < 0:
+        sowenn isinstance(term, int) and term < 0:
             raise ValueError('the number of received bytes must be positive')
         self.terminator = term
 
@@ -116,7 +116,7 @@ klasse async_chat(asyncore.dispatcher):
     # grab some more data from the socket,
     # throw it to the collector method,
     # check fuer the terminator,
-    # if found, transition to the next state.
+    # wenn found, transition to the next state.
 
     def handle_read(self):
 
@@ -128,7 +128,7 @@ klasse async_chat(asyncore.dispatcher):
             self.handle_error()
             return
 
-        if isinstance(data, str) and self.use_encoding:
+        wenn isinstance(data, str) and self.use_encoding:
             data = bytes(str, self.encoding)
         self.ac_in_buffer = self.ac_in_buffer + data
 
@@ -140,23 +140,23 @@ klasse async_chat(asyncore.dispatcher):
         while self.ac_in_buffer:
             lb = len(self.ac_in_buffer)
             terminator = self.get_terminator()
-            if not terminator:
+            wenn not terminator:
                 # no terminator, collect it all
                 self.collect_incoming_data(self.ac_in_buffer)
                 self.ac_in_buffer = b''
-            elif isinstance(terminator, int):
+            sowenn isinstance(terminator, int):
                 # numeric terminator
                 n = terminator
-                if lb < n:
+                wenn lb < n:
                     self.collect_incoming_data(self.ac_in_buffer)
                     self.ac_in_buffer = b''
                     self.terminator = self.terminator - lb
-                else:
+                sonst:
                     self.collect_incoming_data(self.ac_in_buffer[:n])
                     self.ac_in_buffer = self.ac_in_buffer[n:]
                     self.terminator = 0
                     self.found_terminator()
-            else:
+            sonst:
                 # 3 cases:
                 # 1) end of buffer matches terminator exactly:
                 #    collect data, transition
@@ -166,26 +166,26 @@ klasse async_chat(asyncore.dispatcher):
                 #    collect data
                 terminator_len = len(terminator)
                 index = self.ac_in_buffer.find(terminator)
-                if index != -1:
+                wenn index != -1:
                     # we found the terminator
-                    if index > 0:
+                    wenn index > 0:
                         # don't bother reporting the empty string
                         # (source of subtle bugs)
                         self.collect_incoming_data(self.ac_in_buffer[:index])
                     self.ac_in_buffer = self.ac_in_buffer[index+terminator_len:]
-                    # This does the Right Thing if the terminator
+                    # This does the Right Thing wenn the terminator
                     # is changed here.
                     self.found_terminator()
-                else:
+                sonst:
                     # check fuer a prefix of the terminator
                     index = find_prefix_at_end(self.ac_in_buffer, terminator)
-                    if index:
-                        if index != lb:
+                    wenn index:
+                        wenn index != lb:
                             # we found a prefix, collect up to the prefix
                             self.collect_incoming_data(self.ac_in_buffer[:-index])
                             self.ac_in_buffer = self.ac_in_buffer[-index:]
                         break
-                    else:
+                    sonst:
                         # no prefix, collect it all
                         self.collect_incoming_data(self.ac_in_buffer)
                         self.ac_in_buffer = b''
@@ -197,14 +197,14 @@ klasse async_chat(asyncore.dispatcher):
         self.close()
 
     def push(self, data):
-        if not isinstance(data, (bytes, bytearray, memoryview)):
+        wenn not isinstance(data, (bytes, bytearray, memoryview)):
             raise TypeError('data argument must be byte-ish (%r)',
                             type(data))
         sabs = self.ac_out_buffer_size
-        if len(data) > sabs:
+        wenn len(data) > sabs:
             fuer i in range(0, len(data), sabs):
                 self.producer_fifo.append(data[i:i+sabs])
-        else:
+        sonst:
             self.producer_fifo.append(data)
         self.initiate_send()
 
@@ -232,9 +232,9 @@ klasse async_chat(asyncore.dispatcher):
         while self.producer_fifo and self.connected:
             first = self.producer_fifo[0]
             # handle empty string/buffer or None entry
-            if not first:
+            wenn not first:
                 del self.producer_fifo[0]
-                if first is None:
+                wenn first is None:
                     self.handle_close()
                     return
 
@@ -244,13 +244,13 @@ klasse async_chat(asyncore.dispatcher):
                 data = first[:obs]
             except TypeError:
                 data = first.more()
-                if data:
+                wenn data:
                     self.producer_fifo.appendleft(data)
-                else:
+                sonst:
                     del self.producer_fifo[0]
                 continue
 
-            if isinstance(data, str) and self.use_encoding:
+            wenn isinstance(data, str) and self.use_encoding:
                 data = bytes(data, self.encoding)
 
             # send the data
@@ -260,10 +260,10 @@ klasse async_chat(asyncore.dispatcher):
                 self.handle_error()
                 return
 
-            if num_sent:
-                if num_sent < len(data) or obs < len(first):
+            wenn num_sent:
+                wenn num_sent < len(data) or obs < len(first):
                     self.producer_fifo[0] = first[num_sent:]
-                else:
+                sonst:
                     del self.producer_fifo[0]
             # we tried to send some actual data
             return
@@ -282,17 +282,17 @@ klasse simple_producer:
         self.buffer_size = buffer_size
 
     def more(self):
-        if len(self.data) > self.buffer_size:
+        wenn len(self.data) > self.buffer_size:
             result = self.data[:self.buffer_size]
             self.data = self.data[self.buffer_size:]
             return result
-        else:
+        sonst:
             result = self.data
             self.data = b''
             return result
 
 
-# Given 'haystack', see if any prefix of 'needle' is at its end.  This
+# Given 'haystack', see wenn any prefix of 'needle' is at its end.  This
 # assumes an exact match has already been checked.  Return the number of
 # characters matched.
 # fuer example:

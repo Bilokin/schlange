@@ -32,7 +32,7 @@ klasse BinASCIITest(unittest.TestCase):
         self.assertIsInstance(original, bytes)
         self.assertIsInstance(converted, bytes)
         self.assertIsInstance(restored, bytes)
-        if converted:
+        wenn converted:
             self.assertLess(max(converted), 128)
         self.assertEqual(original, restored, msg=f'{self.type2test=} {kwargs=}')
 
@@ -93,16 +93,16 @@ klasse BinASCIITest(unittest.TestCase):
         fillers = bytearray()
         valid = b"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/"
         fuer i in range(256):
-            if i not in valid:
+            wenn i not in valid:
                 fillers.append(i)
         def addnoise(line):
             noise = fillers
             ratio = len(line) // len(noise)
             res = bytearray()
             while line and noise:
-                if len(line) // len(noise) > ratio:
+                wenn len(line) // len(noise) > ratio:
                     c, line = line[0], line[1:]
-                else:
+                sonst:
                     c, noise = noise[0], noise[1:]
                 res.append(c)
             return res + noise + line
@@ -320,7 +320,7 @@ klasse BinASCIITest(unittest.TestCase):
             a2b_qp(b"", **{1:1})
         except TypeError:
             pass
-        else:
+        sonst:
             self.fail("binascii.a2b_qp(**{1:1}) didn't raise TypeError")
 
         self.assertEqual(a2b_qp(type2test(b"=")), b"")
@@ -429,7 +429,7 @@ klasse BinASCIITest(unittest.TestCase):
         # A test fuer SF bug #1022953.  Make sure SystemError is not raised.
         empty = self.type2test(b'')
         fuer func in all_functions:
-            if func == 'crc_hqx':
+            wenn func == 'crc_hqx':
                 # crc_hqx needs 2 arguments
                 binascii.crc_hqx(empty, 0)
                 continue
@@ -517,5 +517,5 @@ klasse ChecksumBigBufferTestCase(unittest.TestCase):
         self.assertEqual(binascii.crc32(data), 1044521549)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

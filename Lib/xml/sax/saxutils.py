@@ -27,7 +27,7 @@ def escape(data, entities={}):
     data = data.replace("&", "&amp;")
     data = data.replace(">", "&gt;")
     data = data.replace("<", "&lt;")
-    if entities:
+    wenn entities:
         data = __dict_replace(data, entities)
     return data
 
@@ -40,7 +40,7 @@ def unescape(data, entities={}):
     """
     data = data.replace("&lt;", "<")
     data = data.replace("&gt;", ">")
-    if entities:
+    wenn entities:
         data = __dict_replace(data, entities)
     # must do ampersand last
     return data.replace("&amp;", "&")
@@ -58,31 +58,31 @@ def quoteattr(data, entities={}):
     """
     entities = {**entities, '\n': '&#10;', '\r': '&#13;', '\t':'&#9;'}
     data = escape(data, entities)
-    if '"' in data:
-        if "'" in data:
+    wenn '"' in data:
+        wenn "'" in data:
             data = '"%s"' % data.replace('"', "&quot;")
-        else:
+        sonst:
             data = "'%s'" % data
-    else:
+    sonst:
         data = '"%s"' % data
     return data
 
 
 def _gettextwriter(out, encoding):
-    if out is None:
+    wenn out is None:
         import sys
         return sys.stdout
 
-    if isinstance(out, io.TextIOBase):
+    wenn isinstance(out, io.TextIOBase):
         # use a text writer as is
         return out
 
-    if isinstance(out, (codecs.StreamWriter, codecs.StreamReaderWriter)):
+    wenn isinstance(out, (codecs.StreamWriter, codecs.StreamReaderWriter)):
         # use a codecs stream writer as is
         return out
 
     # wrap a binary writer with TextIOWrapper
-    if isinstance(out, io.RawIOBase):
+    wenn isinstance(out, io.RawIOBase):
         # Keep the original file open when the TextIOWrapper is
         # destroyed
         klasse _wrapper:
@@ -91,7 +91,7 @@ def _gettextwriter(out, encoding):
                 return getattr(out, name)
         buffer = _wrapper()
         buffer.close = lambda: None
-    else:
+    sonst:
         # This is to handle passed objects that aren't in the
         # IOBase hierarchy, but just have a write method
         buffer = io.BufferedIOBase()
@@ -99,7 +99,7 @@ def _gettextwriter(out, encoding):
         buffer.write = out.write
         try:
             # TextIOWrapper uses this methods to determine
-            # if BOM (for UTF-16, etc) should be added
+            # wenn BOM (for UTF-16, etc) should be added
             buffer.seekable = out.seekable
             buffer.tell = out.tell
         except AttributeError:
@@ -125,23 +125,23 @@ klasse XMLGenerator(handler.ContentHandler):
 
     def _qname(self, name):
         """Builds a qualified name from a (ns_url, localname) pair"""
-        if name[0]:
+        wenn name[0]:
             # Per http://www.w3.org/XML/1998/namespace, The 'xml' prefix is
             # bound by definition to http://www.w3.org/XML/1998/namespace.  It
             # does not need to be declared and will not usually be found in
             # self._current_context.
-            if 'http://www.w3.org/XML/1998/namespace' == name[0]:
+            wenn 'http://www.w3.org/XML/1998/namespace' == name[0]:
                 return 'xml:' + name[1]
             # The name is in a non-empty namespace
             prefix = self._current_context[name[0]]
-            if prefix:
+            wenn prefix:
                 # If it is not the default namespace, prepend the prefix
                 return prefix + ":" + name[1]
         # Return the unqualified name
         return name[1]
 
     def _finish_pending_start_element(self,endElement=False):
-        if self._pending_start_element:
+        wenn self._pending_start_element:
             self._write('>')
             self._pending_start_element = False
 
@@ -168,16 +168,16 @@ klasse XMLGenerator(handler.ContentHandler):
         self._write('<' + name)
         fuer (name, value) in attrs.items():
             self._write(' %s=%s' % (name, quoteattr(value)))
-        if self._short_empty_elements:
+        wenn self._short_empty_elements:
             self._pending_start_element = True
-        else:
+        sonst:
             self._write(">")
 
     def endElement(self, name):
-        if self._pending_start_element:
+        wenn self._pending_start_element:
             self._write('/>')
             self._pending_start_element = False
-        else:
+        sonst:
             self._write('</%s>' % name)
 
     def startElementNS(self, name, qname, attrs):
@@ -185,37 +185,37 @@ klasse XMLGenerator(handler.ContentHandler):
         self._write('<' + self._qname(name))
 
         fuer prefix, uri in self._undeclared_ns_maps:
-            if prefix:
+            wenn prefix:
                 self._write(' xmlns:%s="%s"' % (prefix, uri))
-            else:
+            sonst:
                 self._write(' xmlns="%s"' % uri)
         self._undeclared_ns_maps = []
 
         fuer (name, value) in attrs.items():
             self._write(' %s=%s' % (self._qname(name), quoteattr(value)))
-        if self._short_empty_elements:
+        wenn self._short_empty_elements:
             self._pending_start_element = True
-        else:
+        sonst:
             self._write(">")
 
     def endElementNS(self, name, qname):
-        if self._pending_start_element:
+        wenn self._pending_start_element:
             self._write('/>')
             self._pending_start_element = False
-        else:
+        sonst:
             self._write('</%s>' % self._qname(name))
 
     def characters(self, content):
-        if content:
+        wenn content:
             self._finish_pending_start_element()
-            if not isinstance(content, str):
+            wenn not isinstance(content, str):
                 content = str(content, self._encoding)
             self._write(escape(content))
 
     def ignorableWhitespace(self, content):
-        if content:
+        wenn content:
             self._finish_pending_start_element()
-            if not isinstance(content, str):
+            wenn not isinstance(content, str):
                 content = str(content, self._encoding)
             self._write(content)
 
@@ -339,28 +339,28 @@ def prepare_input_source(source, base=""):
     """This function takes an InputSource and an optional base URL and
     returns a fully resolved InputSource object ready fuer reading."""
 
-    if isinstance(source, os.PathLike):
+    wenn isinstance(source, os.PathLike):
         source = os.fspath(source)
-    if isinstance(source, str):
+    wenn isinstance(source, str):
         source = xmlreader.InputSource(source)
-    elif hasattr(source, "read"):
+    sowenn hasattr(source, "read"):
         f = source
         source = xmlreader.InputSource()
-        if isinstance(f.read(0), str):
+        wenn isinstance(f.read(0), str):
             source.setCharacterStream(f)
-        else:
+        sonst:
             source.setByteStream(f)
-        if hasattr(f, "name") and isinstance(f.name, str):
+        wenn hasattr(f, "name") and isinstance(f.name, str):
             source.setSystemId(f.name)
 
-    if source.getCharacterStream() is None and source.getByteStream() is None:
+    wenn source.getCharacterStream() is None and source.getByteStream() is None:
         sysid = source.getSystemId()
         basehead = os.path.dirname(os.path.normpath(base))
         sysidfilename = os.path.join(basehead, sysid)
-        if os.path.isfile(sysidfilename):
+        wenn os.path.isfile(sysidfilename):
             source.setSystemId(sysidfilename)
             f = open(sysidfilename, "rb")
-        else:
+        sonst:
             source.setSystemId(urllib.parse.urljoin(base, sysid))
             f = urllib.request.urlopen(source.getSystemId())
 

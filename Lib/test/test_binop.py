@@ -17,7 +17,7 @@ def isint(x):
 def isnum(x):
     """Test whether an object is an instance of a built-in numeric type."""
     fuer T in int, float, complex:
-        if isinstance(x, T):
+        wenn isinstance(x, T):
             return 1
     return 0
 
@@ -35,12 +35,12 @@ klasse Rat(object):
         """Constructor: Rat([num[, den]]).
 
         The arguments must be ints, and default to (0, 1)."""
-        if not isint(num):
+        wenn not isint(num):
             raise TypeError("Rat numerator must be int (%r)" % num)
-        if not isint(den):
+        wenn not isint(den):
             raise TypeError("Rat denominator must be int (%r)" % den)
         # But the zero is always on
-        if den == 0:
+        wenn den == 0:
             raise ZeroDivisionError("zero denominator")
         g = gcd(den, num)
         self.__num = int(num//g)
@@ -70,7 +70,7 @@ klasse Rat(object):
 
     def __int__(self):
         """Convert a Rat to an int; self.den must be 1."""
-        if self.__den == 1:
+        wenn self.__den == 1:
             try:
                 return int(self.__num)
             except OverflowError:
@@ -80,12 +80,12 @@ klasse Rat(object):
 
     def __add__(self, other):
         """Add two Rats, or a Rat and a number."""
-        if isint(other):
+        wenn isint(other):
             other = Rat(other)
-        if isRat(other):
+        wenn isRat(other):
             return Rat(self.__num*other.__den + other.__num*self.__den,
                        self.__den*other.__den)
-        if isnum(other):
+        wenn isnum(other):
             return float(self) + other
         return NotImplemented
 
@@ -93,33 +93,33 @@ klasse Rat(object):
 
     def __sub__(self, other):
         """Subtract two Rats, or a Rat and a number."""
-        if isint(other):
+        wenn isint(other):
             other = Rat(other)
-        if isRat(other):
+        wenn isRat(other):
             return Rat(self.__num*other.__den - other.__num*self.__den,
                        self.__den*other.__den)
-        if isnum(other):
+        wenn isnum(other):
             return float(self) - other
         return NotImplemented
 
     def __rsub__(self, other):
         """Subtract two Rats, or a Rat and a number (reversed args)."""
-        if isint(other):
+        wenn isint(other):
             other = Rat(other)
-        if isRat(other):
+        wenn isRat(other):
             return Rat(other.__num*self.__den - self.__num*other.__den,
                        self.__den*other.__den)
-        if isnum(other):
+        wenn isnum(other):
             return other - float(self)
         return NotImplemented
 
     def __mul__(self, other):
         """Multiply two Rats, or a Rat and a number."""
-        if isRat(other):
+        wenn isRat(other):
             return Rat(self.__num*other.__num, self.__den*other.__den)
-        if isint(other):
+        wenn isint(other):
             return Rat(self.__num*other, self.__den)
-        if isnum(other):
+        wenn isnum(other):
             return float(self)*other
         return NotImplemented
 
@@ -127,29 +127,29 @@ klasse Rat(object):
 
     def __truediv__(self, other):
         """Divide two Rats, or a Rat and a number."""
-        if isRat(other):
+        wenn isRat(other):
             return Rat(self.__num*other.__den, self.__den*other.__num)
-        if isint(other):
+        wenn isint(other):
             return Rat(self.__num, self.__den*other)
-        if isnum(other):
+        wenn isnum(other):
             return float(self) / other
         return NotImplemented
 
     def __rtruediv__(self, other):
         """Divide two Rats, or a Rat and a number (reversed args)."""
-        if isRat(other):
+        wenn isRat(other):
             return Rat(other.__num*self.__den, other.__den*self.__num)
-        if isint(other):
+        wenn isint(other):
             return Rat(other*self.__den, self.__num)
-        if isnum(other):
+        wenn isnum(other):
             return other / float(self)
         return NotImplemented
 
     def __floordiv__(self, other):
         """Divide two Rats, returning the floored result."""
-        if isint(other):
+        wenn isint(other):
             other = Rat(other)
-        elif not isRat(other):
+        sowenn not isRat(other):
             return NotImplemented
         x = self/other
         return x.__num // x.__den
@@ -161,18 +161,18 @@ klasse Rat(object):
 
     def __divmod__(self, other):
         """Divide two Rats, returning quotient and remainder."""
-        if isint(other):
+        wenn isint(other):
             other = Rat(other)
-        elif not isRat(other):
+        sowenn not isRat(other):
             return NotImplemented
         x = self//other
         return (x, self - other * x)
 
     def __rdivmod__(self, other):
         """Divide two Rats, returning quotient and remainder (reversed args)."""
-        if isint(other):
+        wenn isint(other):
             other = Rat(other)
-        elif not isRat(other):
+        sowenn not isRat(other):
             return NotImplemented
         return divmod(other, self)
 
@@ -186,11 +186,11 @@ klasse Rat(object):
 
     def __eq__(self, other):
         """Compare two Rats fuer equality."""
-        if isint(other):
+        wenn isint(other):
             return self.__den == 1 and self.__num == other
-        if isRat(other):
+        wenn isRat(other):
             return self.__num == other.__num and self.__den == other.__den
-        if isnum(other):
+        wenn isnum(other):
             return float(self) == other
         return NotImplemented
 
@@ -232,20 +232,20 @@ klasse RatTestCase(unittest.TestCase):
             a = Rat(1, 0)
         except ZeroDivisionError:
             pass
-        else:
+        sonst:
             self.fail("Rat(1, 0) didn't raise ZeroDivisionError")
         fuer bad in "0", 0.0, 0j, (), [], {}, None, Rat, unittest:
             try:
                 a = Rat(bad)
             except TypeError:
                 pass
-            else:
+            sonst:
                 self.fail("Rat(%r) didn't raise TypeError" % bad)
             try:
                 a = Rat(1, bad)
             except TypeError:
                 pass
-            else:
+            sonst:
                 self.fail("Rat(1, %r) didn't raise TypeError" % bad)
 
     def test_add(self):
@@ -436,5 +436,5 @@ klasse FallbackBlockingTests(unittest.TestCase):
         self.assertFalse(e != xn)
         self.assertRaises(TypeError, ne, xn, e)
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

@@ -31,30 +31,30 @@ def generate_names_and_flags(analysis: Analysis, out: CWriter) -> None:
     out.emit("#ifdef NEED_OPCODE_METADATA\n")
     out.emit("const uint16_t _PyUop_Flags[MAX_UOP_ID+1] = {\n")
     fuer uop in analysis.uops.values():
-        if uop.is_viable() and uop.properties.tier != 1:
+        wenn uop.is_viable() and uop.properties.tier != 1:
             out.emit(f"[{uop.name}] = {cflags(uop.properties)},\n")
 
     out.emit("};\n\n")
     out.emit("const ReplicationRange _PyUop_Replication[MAX_UOP_ID+1] = {\n")
     fuer uop in analysis.uops.values():
-        if uop.replicated:
+        wenn uop.replicated:
             assert(uop.replicated.step == 1)
             out.emit(f"[{uop.name}] = {{ {uop.replicated.start}, {uop.replicated.stop} }},\n")
 
     out.emit("};\n\n")
     out.emit("const char *const _PyOpcode_uop_name[MAX_UOP_ID+1] = {\n")
     fuer uop in sorted(analysis.uops.values(), key=lambda t: t.name):
-        if uop.is_viable() and uop.properties.tier != 1:
+        wenn uop.is_viable() and uop.properties.tier != 1:
             out.emit(f'[{uop.name}] = "{uop.name}",\n')
     out.emit("};\n")
     out.emit("int _PyUop_num_popped(int opcode, int oparg)\n{\n")
     out.emit("switch(opcode) {\n")
     null = CWriter.null()
     fuer uop in analysis.uops.values():
-        if uop.is_viable() and uop.properties.tier != 1:
+        wenn uop.is_viable() and uop.properties.tier != 1:
             stack = Stack()
             fuer var in reversed(uop.stack.inputs):
-                if var.peek:
+                wenn var.peek:
                     break
                 stack.pop(var, null)
             popped = (-stack.base_offset).to_c()
@@ -91,9 +91,9 @@ arg_parser.add_argument(
     "input", nargs=argparse.REMAINDER, help="Instruction definition file(s)"
 )
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     args = arg_parser.parse_args()
-    if len(args.input) == 0:
+    wenn len(args.input) == 0:
         args.input.append(DEFAULT_INPUT)
     data = analyze_files(args.input)
     with open(args.output, "w") as outfile:

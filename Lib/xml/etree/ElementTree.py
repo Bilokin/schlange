@@ -119,7 +119,7 @@ klasse ParseError(SyntaxError):
 
 
 def iselement(element):
-    """Return True if *element* appears to be an Element."""
+    """Return True wenn *element* appears to be an Element."""
     return hasattr(element, 'tag')
 
 
@@ -128,8 +128,8 @@ klasse Element:
 
     This klasse is the reference implementation of the Element interface.
 
-    An element's length is its number of subelements.  That means if you
-    want to check if an element is truly empty, you should check BOTH
+    An element's length is its number of subelements.  That means wenn you
+    want to check wenn an element is truly empty, you should check BOTH
     its length AND its text attribute.
 
     The element tag, attribute names, and attribute values can be either
@@ -153,7 +153,7 @@ klasse Element:
     text = None
     """
     Text before first subelement. This is either a string or the value None.
-    Note that if there is no text, this attribute may be either
+    Note that wenn there is no text, this attribute may be either
     None or the empty string, depending on the parser.
 
     """
@@ -161,14 +161,14 @@ klasse Element:
     tail = None
     """
     Text after this element's end tag, but before the next sibling element's
-    start tag.  This is either a string or the value None.  Note that if there
+    start tag.  This is either a string or the value None.  Note that wenn there
     was no text, this attribute may be either None or an empty string,
     depending on the parser.
 
     """
 
     def __init__(self, tag, attrib={}, **extra):
-        if not isinstance(attrib, dict):
+        wenn not isinstance(attrib, dict):
             raise TypeError("attrib must be dict, not %s" % (
                 attrib.__class__.__name__,))
         self.tag = tag
@@ -212,10 +212,10 @@ klasse Element:
         return self._children[index]
 
     def __setitem__(self, index, element):
-        if isinstance(index, slice):
+        wenn isinstance(index, slice):
             fuer elt in element:
                 self._assert_is_element(elt)
-        else:
+        sonst:
             self._assert_is_element(element)
         self._children[index] = element
 
@@ -226,7 +226,7 @@ klasse Element:
         """Add *subelement* to the end of this element.
 
         The new element will appear in document order after the last existing
-        subelement (or directly after the text, if it's the first subelement),
+        subelement (or directly after the text, wenn it's the first subelement),
         but before the end tag fuer this element.
 
         """
@@ -251,7 +251,7 @@ klasse Element:
     def _assert_is_element(self, e):
         # Need to refer to the actual Python implementation, not the
         # shadowing C implementation.
-        if not isinstance(e, _Element_Py):
+        wenn not isinstance(e, _Element_Py):
             raise TypeError('expected an Element, not %s' % type(e).__name__)
 
     def remove(self, subelement):
@@ -263,7 +263,7 @@ klasse Element:
         select what elements to keep, and then use slice assignment to update
         the parent element.
 
-        ValueError is raised if a matching element could not be found.
+        ValueError is raised wenn a matching element could not be found.
 
         """
         # assert iselement(element)
@@ -279,7 +279,7 @@ klasse Element:
         *path* is a string having either an element tag or an XPath,
         *namespaces* is an optional mapping from namespace prefix to full name.
 
-        Return the first matching element, or None if no element was found.
+        Return the first matching element, or None wenn no element was found.
 
         """
         return ElementPath.find(self, path, namespaces)
@@ -288,11 +288,11 @@ klasse Element:
         """Find text fuer first matching element by tag name or path.
 
         *path* is a string having either an element tag or an XPath,
-        *default* is the value to return if the element was not found,
+        *default* is the value to return wenn the element was not found,
         *namespaces* is an optional mapping from namespace prefix to full name.
 
         Return text content of first matching element, or default value if
-        none was found.  Note that if an element is found having no text
+        none was found.  Note that wenn an element is found having no text
         content, the empty string is returned.
 
         """
@@ -336,7 +336,7 @@ klasse Element:
 
         Equivalent to attrib.get, but some implementations may handle this a
         bit more efficiently.  *key* is what attribute to look for, and
-        *default* is what to return if the attribute was not found.
+        *default* is what to return wenn the attribute was not found.
 
         Returns a string containing the attribute value, or the default if
         attribute was not found.
@@ -389,9 +389,9 @@ klasse Element:
         Return an iterator containing all the matching elements.
 
         """
-        if tag == "*":
+        wenn tag == "*":
             tag = None
-        if tag is None or self.tag == tag:
+        wenn tag is None or self.tag == tag:
             yield self
         fuer e in self._children:
             yield from e.iter(tag)
@@ -404,15 +404,15 @@ klasse Element:
 
         """
         tag = self.tag
-        if not isinstance(tag, str) and tag is not None:
+        wenn not isinstance(tag, str) and tag is not None:
             return
         t = self.text
-        if t:
+        wenn t:
             yield t
         fuer e in self:
             yield from e.itertext()
             t = e.tail
-            if t:
+            wenn t:
                 yield t
 
 
@@ -455,12 +455,12 @@ def ProcessingInstruction(target, text=None):
     serializes as an XML comment.
 
     *target* is a string containing the processing instruction, *text* is a
-    string containing the processing instruction contents, if any.
+    string containing the processing instruction contents, wenn any.
 
     """
     element = Element(ProcessingInstruction)
     element.text = target
-    if text:
+    wenn text:
         element.text = element.text + " " + text
     return element
 
@@ -474,15 +474,15 @@ klasse QName:
     proper namespace handing on output.
 
     *text_or_uri* is a string containing the QName value either in the form
-    {uri}local, or if the tag argument is given, the URI part of a QName.
+    {uri}local, or wenn the tag argument is given, the URI part of a QName.
 
-    *tag* is an optional argument which if given, will make the first
+    *tag* is an optional argument which wenn given, will make the first
     argument (text_or_uri) be interpreted as a URI, and this argument (tag)
     be interpreted as a local name.
 
     """
     def __init__(self, text_or_uri, tag=None):
-        if tag:
+        wenn tag:
             text_or_uri = "{%s}%s" % (text_or_uri, tag)
         self.text = text_or_uri
     def __str__(self):
@@ -492,23 +492,23 @@ klasse QName:
     def __hash__(self):
         return hash(self.text)
     def __le__(self, other):
-        if isinstance(other, QName):
+        wenn isinstance(other, QName):
             return self.text <= other.text
         return self.text <= other
     def __lt__(self, other):
-        if isinstance(other, QName):
+        wenn isinstance(other, QName):
             return self.text < other.text
         return self.text < other
     def __ge__(self, other):
-        if isinstance(other, QName):
+        wenn isinstance(other, QName):
             return self.text >= other.text
         return self.text >= other
     def __gt__(self, other):
-        if isinstance(other, QName):
+        wenn isinstance(other, QName):
             return self.text > other.text
         return self.text > other
     def __eq__(self, other):
-        if isinstance(other, QName):
+        wenn isinstance(other, QName):
             return self.text == other.text
         return self.text == other
 
@@ -527,11 +527,11 @@ klasse ElementTree:
 
     """
     def __init__(self, element=None, file=None):
-        if element is not None and not iselement(element):
+        wenn element is not None and not iselement(element):
             raise TypeError('expected an Element, not %s' %
                             type(element).__name__)
         self._root = element # first node
-        if file:
+        wenn file:
             self.parse(file)
 
     def getroot(self):
@@ -545,7 +545,7 @@ klasse ElementTree:
         with the given element.  Use with care!
 
         """
-        if not iselement(element):
+        wenn not iselement(element):
             raise TypeError('expected an Element, not %s'
                             % type(element).__name__)
         self._root = element
@@ -556,20 +556,20 @@ klasse ElementTree:
         *source* is a file name or file object, *parser* is an optional parser
         instance that defaults to XMLParser.
 
-        ParseError is raised if the parser fails to parse the document.
+        ParseError is raised wenn the parser fails to parse the document.
 
         Returns the root element of the given source document.
 
         """
         close_source = False
-        if not hasattr(source, "read"):
+        wenn not hasattr(source, "read"):
             source = open(source, "rb")
             close_source = True
         try:
-            if parser is None:
+            wenn parser is None:
                 # If no parser was specified, create a default XMLParser
                 parser = XMLParser()
-                if hasattr(parser, '_parse_whole'):
+                wenn hasattr(parser, '_parse_whole'):
                     # The default XMLParser, when it comes from an accelerator,
                     # can define an internal _parse_whole API fuer efficiency.
                     # It can be used to parse the whole source without feeding
@@ -581,7 +581,7 @@ klasse ElementTree:
             self._root = parser.close()
             return self._root
         finally:
-            if close_source:
+            wenn close_source:
                 source.close()
 
     def iter(self, tag=None):
@@ -604,11 +604,11 @@ klasse ElementTree:
         *path* is a string having either an element tag or an XPath,
         *namespaces* is an optional mapping from namespace prefix to full name.
 
-        Return the first matching element, or None if no element was found.
+        Return the first matching element, or None wenn no element was found.
 
         """
         # assert self._root is not None
-        if path[:1] == "/":
+        wenn path[:1] == "/":
             path = "." + path
             warnings.warn(
                 "This search is broken in 1.3 and earlier, and will be "
@@ -626,11 +626,11 @@ klasse ElementTree:
         *path* is a string having either an element tag or an XPath,
         *namespaces* is an optional mapping from namespace prefix to full name.
 
-        Return the first matching element, or None if no element was found.
+        Return the first matching element, or None wenn no element was found.
 
         """
         # assert self._root is not None
-        if path[:1] == "/":
+        wenn path[:1] == "/":
             path = "." + path
             warnings.warn(
                 "This search is broken in 1.3 and earlier, and will be "
@@ -652,7 +652,7 @@ klasse ElementTree:
 
         """
         # assert self._root is not None
-        if path[:1] == "/":
+        wenn path[:1] == "/":
             path = "." + path
             warnings.warn(
                 "This search is broken in 1.3 and earlier, and will be "
@@ -674,7 +674,7 @@ klasse ElementTree:
 
         """
         # assert self._root is not None
-        if path[:1] == "/":
+        wenn path[:1] == "/":
             path = "." + path
             warnings.warn(
                 "This search is broken in 1.3 and earlier, and will be "
@@ -697,9 +697,9 @@ klasse ElementTree:
 
           *encoding* -- the output encoding (default: US-ASCII)
 
-          *xml_declaration* -- bool indicating if an XML declaration should be
+          *xml_declaration* -- bool indicating wenn an XML declaration should be
                                added to the output. If None, an XML declaration
-                               is added if encoding IS NOT either of:
+                               is added wenn encoding IS NOT either of:
                                US-ASCII, UTF-8, or Unicode
 
           *default_namespace* -- sets the default XML namespace (for "xmlns")
@@ -713,27 +713,27 @@ klasse ElementTree:
                                     of start/end tags
 
         """
-        if self._root is None:
+        wenn self._root is None:
             raise TypeError('ElementTree not initialized')
-        if not method:
+        wenn not method:
             method = "xml"
-        elif method not in _serialize:
+        sowenn method not in _serialize:
             raise ValueError("unknown method %r" % method)
-        if not encoding:
-            if method == "c14n":
+        wenn not encoding:
+            wenn method == "c14n":
                 encoding = "utf-8"
-            else:
+            sonst:
                 encoding = "us-ascii"
         with _get_writer(file_or_filename, encoding) as (write, declared_encoding):
-            if method == "xml" and (xml_declaration or
+            wenn method == "xml" and (xml_declaration or
                     (xml_declaration is None and
                      encoding.lower() != "unicode" and
                      declared_encoding.lower() not in ("utf-8", "us-ascii"))):
                 write("<?xml version='1.0' encoding='%s'?>\n" % (
                     declared_encoding,))
-            if method == "text":
+            wenn method == "text":
                 _serialize_text(write, self._root)
-            else:
+            sonst:
                 qnames, namespaces = _namespaces(self._root, default_namespace)
                 serialize = _serialize[method]
                 serialize(write, self._root, qnames, namespaces,
@@ -753,28 +753,28 @@ def _get_writer(file_or_filename, encoding):
         write = file_or_filename.write
     except AttributeError:
         # file_or_filename is a file name
-        if encoding.lower() == "unicode":
+        wenn encoding.lower() == "unicode":
             encoding="utf-8"
         with open(file_or_filename, "w", encoding=encoding,
                   errors="xmlcharrefreplace") as file:
             yield file.write, encoding
-    else:
+    sonst:
         # file_or_filename is a file-like object
-        # encoding determines if it is a text or binary writer
-        if encoding.lower() == "unicode":
+        # encoding determines wenn it is a text or binary writer
+        wenn encoding.lower() == "unicode":
             # use a text writer as is
             yield write, getattr(file_or_filename, "encoding", None) or "utf-8"
-        else:
+        sonst:
             # wrap a binary writer with TextIOWrapper
             with contextlib.ExitStack() as stack:
-                if isinstance(file_or_filename, io.BufferedIOBase):
+                wenn isinstance(file_or_filename, io.BufferedIOBase):
                     file = file_or_filename
-                elif isinstance(file_or_filename, io.RawIOBase):
+                sowenn isinstance(file_or_filename, io.RawIOBase):
                     file = io.BufferedWriter(file_or_filename)
                     # Keep the original file open when the BufferedWriter is
                     # destroyed
                     stack.callback(file.detach)
-                else:
+                sonst:
                     # This is to handle passed objects that aren't in the
                     # IOBase hierarchy, but just have a write method
                     file = io.BufferedIOBase()
@@ -782,7 +782,7 @@ def _get_writer(file_or_filename, encoding):
                     file.write = write
                     try:
                         # TextIOWrapper uses this methods to determine
-                        # if BOM (for UTF-16, etc) should be added
+                        # wenn BOM (for UTF-16, etc) should be added
                         file.seekable = file_or_filename.seekable
                         file.tell = file_or_filename.tell
                     except AttributeError:
@@ -804,27 +804,27 @@ def _namespaces(elem, default_namespace=None):
 
     # maps uri:s to prefixes
     namespaces = {}
-    if default_namespace:
+    wenn default_namespace:
         namespaces[default_namespace] = ""
 
     def add_qname(qname):
         # calculate serialized qname representation
         try:
-            if qname[:1] == "{":
+            wenn qname[:1] == "{":
                 uri, tag = qname[1:].rsplit("}", 1)
                 prefix = namespaces.get(uri)
-                if prefix is None:
+                wenn prefix is None:
                     prefix = _namespace_map.get(uri)
-                    if prefix is None:
+                    wenn prefix is None:
                         prefix = "ns%d" % len(namespaces)
-                    if prefix != "xml":
+                    wenn prefix != "xml":
                         namespaces[uri] = prefix
-                if prefix:
+                wenn prefix:
                     qnames[qname] = "%s:%s" % (prefix, tag)
-                else:
+                sonst:
                     qnames[qname] = tag # default element
-            else:
-                if default_namespace:
+            sonst:
+                wenn default_namespace:
                     # FIXME: can this be handled in XML 1.0?
                     raise ValueError(
                         "cannot use non-qualified names with "
@@ -837,23 +837,23 @@ def _namespaces(elem, default_namespace=None):
     # populate qname and namespaces table
     fuer elem in elem.iter():
         tag = elem.tag
-        if isinstance(tag, QName):
-            if tag.text not in qnames:
+        wenn isinstance(tag, QName):
+            wenn tag.text not in qnames:
                 add_qname(tag.text)
-        elif isinstance(tag, str):
-            if tag not in qnames:
+        sowenn isinstance(tag, str):
+            wenn tag not in qnames:
                 add_qname(tag)
-        elif tag is not None and tag is not Comment and tag is not PI:
+        sowenn tag is not None and tag is not Comment and tag is not PI:
             _raise_serialization_error(tag)
         fuer key, value in elem.items():
-            if isinstance(key, QName):
+            wenn isinstance(key, QName):
                 key = key.text
-            if key not in qnames:
+            wenn key not in qnames:
                 add_qname(key)
-            if isinstance(value, QName) and value.text not in qnames:
+            wenn isinstance(value, QName) and value.text not in qnames:
                 add_qname(value.text)
         text = elem.text
-        if isinstance(text, QName) and text.text not in qnames:
+        wenn isinstance(text, QName) and text.text not in qnames:
             add_qname(text.text)
     return qnames, namespaces
 
@@ -861,50 +861,50 @@ def _serialize_xml(write, elem, qnames, namespaces,
                    short_empty_elements, **kwargs):
     tag = elem.tag
     text = elem.text
-    if tag is Comment:
+    wenn tag is Comment:
         write("<!--%s-->" % text)
-    elif tag is ProcessingInstruction:
+    sowenn tag is ProcessingInstruction:
         write("<?%s?>" % text)
-    else:
+    sonst:
         tag = qnames[tag]
-        if tag is None:
-            if text:
+        wenn tag is None:
+            wenn text:
                 write(_escape_cdata(text))
             fuer e in elem:
                 _serialize_xml(write, e, qnames, None,
                                short_empty_elements=short_empty_elements)
-        else:
+        sonst:
             write("<" + tag)
             items = list(elem.items())
-            if items or namespaces:
-                if namespaces:
+            wenn items or namespaces:
+                wenn namespaces:
                     fuer v, k in sorted(namespaces.items(),
                                        key=lambda x: x[1]):  # sort on prefix
-                        if k:
+                        wenn k:
                             k = ":" + k
                         write(" xmlns%s=\"%s\"" % (
                             k,
                             _escape_attrib(v)
                             ))
                 fuer k, v in items:
-                    if isinstance(k, QName):
+                    wenn isinstance(k, QName):
                         k = k.text
-                    if isinstance(v, QName):
+                    wenn isinstance(v, QName):
                         v = qnames[v.text]
-                    else:
+                    sonst:
                         v = _escape_attrib(v)
                     write(" %s=\"%s\"" % (qnames[k], v))
-            if text or len(elem) or not short_empty_elements:
+            wenn text or len(elem) or not short_empty_elements:
                 write(">")
-                if text:
+                wenn text:
                     write(_escape_cdata(text))
                 fuer e in elem:
                     _serialize_xml(write, e, qnames, None,
                                    short_empty_elements=short_empty_elements)
                 write("</" + tag + ">")
-            else:
+            sonst:
                 write(" />")
-    if elem.tail:
+    wenn elem.tail:
         write(_escape_cdata(elem.tail))
 
 HTML_EMPTY = {"area", "base", "basefont", "br", "col", "embed", "frame", "hr",
@@ -914,57 +914,57 @@ HTML_EMPTY = {"area", "base", "basefont", "br", "col", "embed", "frame", "hr",
 def _serialize_html(write, elem, qnames, namespaces, **kwargs):
     tag = elem.tag
     text = elem.text
-    if tag is Comment:
+    wenn tag is Comment:
         write("<!--%s-->" % _escape_cdata(text))
-    elif tag is ProcessingInstruction:
+    sowenn tag is ProcessingInstruction:
         write("<?%s?>" % _escape_cdata(text))
-    else:
+    sonst:
         tag = qnames[tag]
-        if tag is None:
-            if text:
+        wenn tag is None:
+            wenn text:
                 write(_escape_cdata(text))
             fuer e in elem:
                 _serialize_html(write, e, qnames, None)
-        else:
+        sonst:
             write("<" + tag)
             items = list(elem.items())
-            if items or namespaces:
-                if namespaces:
+            wenn items or namespaces:
+                wenn namespaces:
                     fuer v, k in sorted(namespaces.items(),
                                        key=lambda x: x[1]):  # sort on prefix
-                        if k:
+                        wenn k:
                             k = ":" + k
                         write(" xmlns%s=\"%s\"" % (
                             k,
                             _escape_attrib(v)
                             ))
                 fuer k, v in items:
-                    if isinstance(k, QName):
+                    wenn isinstance(k, QName):
                         k = k.text
-                    if isinstance(v, QName):
+                    wenn isinstance(v, QName):
                         v = qnames[v.text]
-                    else:
+                    sonst:
                         v = _escape_attrib_html(v)
                     # FIXME: handle boolean attributes
                     write(" %s=\"%s\"" % (qnames[k], v))
             write(">")
             ltag = tag.lower()
-            if text:
-                if ltag == "script" or ltag == "style":
+            wenn text:
+                wenn ltag == "script" or ltag == "style":
                     write(text)
-                else:
+                sonst:
                     write(_escape_cdata(text))
             fuer e in elem:
                 _serialize_html(write, e, qnames, None)
-            if ltag not in HTML_EMPTY:
+            wenn ltag not in HTML_EMPTY:
                 write("</" + tag + ">")
-    if elem.tail:
+    wenn elem.tail:
         write(_escape_cdata(elem.tail))
 
 def _serialize_text(write, elem):
     fuer part in elem.itertext():
         write(part)
-    if elem.tail:
+    wenn elem.tail:
         write(elem.tail)
 
 _serialize = {
@@ -983,15 +983,15 @@ def register_namespace(prefix, uri):
     given prefix or the namespace URI will be removed.
 
     *prefix* is the namespace prefix, *uri* is a namespace uri. Tags and
-    attributes in this namespace will be serialized with prefix if possible.
+    attributes in this namespace will be serialized with prefix wenn possible.
 
-    ValueError is raised if prefix is reserved or is invalid.
+    ValueError is raised wenn prefix is reserved or is invalid.
 
     """
-    if re.match(r"ns\d+$", prefix):
+    wenn re.match(r"ns\d+$", prefix):
         raise ValueError("Prefix format reserved fuer internal use")
     fuer k, v in list(_namespace_map.items()):
-        if k == uri or v == prefix:
+        wenn k == uri or v == prefix:
             del _namespace_map[k]
     _namespace_map[uri] = prefix
 
@@ -1021,11 +1021,11 @@ def _escape_cdata(text):
         # it's worth avoiding do-nothing calls fuer strings that are
         # shorter than 500 characters, or so.  assume that's, by far,
         # the most common case in most applications.
-        if "&" in text:
+        wenn "&" in text:
             text = text.replace("&", "&amp;")
-        if "<" in text:
+        wenn "<" in text:
             text = text.replace("<", "&lt;")
-        if ">" in text:
+        wenn ">" in text:
             text = text.replace(">", "&gt;")
         return text
     except (TypeError, AttributeError):
@@ -1034,13 +1034,13 @@ def _escape_cdata(text):
 def _escape_attrib(text):
     # escape attribute value
     try:
-        if "&" in text:
+        wenn "&" in text:
             text = text.replace("&", "&amp;")
-        if "<" in text:
+        wenn "<" in text:
             text = text.replace("<", "&lt;")
-        if ">" in text:
+        wenn ">" in text:
             text = text.replace(">", "&gt;")
-        if "\"" in text:
+        wenn "\"" in text:
             text = text.replace("\"", "&quot;")
         # Although section 2.11 of the XML specification states that CR or
         # CR LN should be replaced with just LN, it applies only to EOLNs
@@ -1049,11 +1049,11 @@ def _escape_attrib(text):
         # http://www.w3.org/TR/REC-xml/#sec-line-ends
         # The current solution, contained in following six lines, was
         # discussed in issue 17582 and 39011.
-        if "\r" in text:
+        wenn "\r" in text:
             text = text.replace("\r", "&#13;")
-        if "\n" in text:
+        wenn "\n" in text:
             text = text.replace("\n", "&#10;")
-        if "\t" in text:
+        wenn "\t" in text:
             text = text.replace("\t", "&#09;")
         return text
     except (TypeError, AttributeError):
@@ -1062,11 +1062,11 @@ def _escape_attrib(text):
 def _escape_attrib_html(text):
     # escape attribute value
     try:
-        if "&" in text:
+        wenn "&" in text:
             text = text.replace("&", "&amp;")
-        if ">" in text:
+        wenn ">" in text:
             text = text.replace(">", "&gt;")
-        if "\"" in text:
+        wenn "\"" in text:
             text = text.replace("\"", "&quot;")
         return text
     except (TypeError, AttributeError):
@@ -1090,7 +1090,7 @@ def tostring(element, encoding=None, method=None, *,
     Returns an (optionally) encoded string containing the XML data.
 
     """
-    stream = io.StringIO() if encoding == 'unicode' else io.BytesIO()
+    stream = io.StringIO() wenn encoding == 'unicode' sonst io.BytesIO()
     ElementTree(element).write(stream, encoding,
                                xml_declaration=xml_declaration,
                                default_namespace=default_namespace,
@@ -1139,11 +1139,11 @@ def dump(elem):
 
     """
     # debugging
-    if not isinstance(elem, ElementTree):
+    wenn not isinstance(elem, ElementTree):
         elem = ElementTree(elem)
     elem.write(sys.stdout, encoding="unicode")
     tail = elem.getroot().tail
-    if not tail or tail[-1] != "\n":
+    wenn not tail or tail[-1] != "\n":
         sys.stdout.write("\n")
 
 
@@ -1162,11 +1162,11 @@ def indent(tree, space="  ", level=0):
     value than 0 can be used fuer indenting subtrees that are more deeply
     nested inside of a document.
     """
-    if isinstance(tree, ElementTree):
+    wenn isinstance(tree, ElementTree):
         tree = tree.getroot()
-    if level < 0:
+    wenn level < 0:
         raise ValueError(f"Initial indentation level must be >= 0, got {level}")
-    if not len(tree):
+    wenn not len(tree):
         return
 
     # Reduce the memory consumption by reusing indentation strings.
@@ -1181,17 +1181,17 @@ def indent(tree, space="  ", level=0):
             child_indentation = indentations[level] + space
             indentations.append(child_indentation)
 
-        if not elem.text or not elem.text.strip():
+        wenn not elem.text or not elem.text.strip():
             elem.text = child_indentation
 
         fuer child in elem:
-            if len(child):
+            wenn len(child):
                 _indent_children(child, child_level)
-            if not child.tail or not child.tail.strip():
+            wenn not child.tail or not child.tail.strip():
                 child.tail = child_indentation
 
         # Dedent after the last child by overwriting the previous indentation.
-        if not child.tail.strip():
+        wenn not child.tail.strip():
             child.tail = indentations[level]
 
     _indent_children(tree, 0)
@@ -1234,10 +1234,10 @@ def iterparse(source, events=None, parser=None):
     # parser argument of iterparse is removed, this can be killed.
     pullparser = XMLPullParser(events=events, _parser=parser)
 
-    if not hasattr(source, "read"):
+    wenn not hasattr(source, "read"):
         source = open(source, "rb")
         close_source = True
-    else:
+    sonst:
         close_source = False
 
     def iterator(source):
@@ -1246,30 +1246,30 @@ def iterparse(source, events=None, parser=None):
                 yield from pullparser.read_events()
                 # load event buffer
                 data = source.read(16 * 1024)
-                if not data:
+                wenn not data:
                     break
                 pullparser.feed(data)
             root = pullparser._close_and_return_root()
             yield from pullparser.read_events()
             it = wr()
-            if it is not None:
+            wenn it is not None:
                 it.root = root
         finally:
-            if close_source:
+            wenn close_source:
                 source.close()
 
     gen = iterator(source)
     klasse IterParseIterator(collections.abc.Iterator):
         __next__ = gen.__next__
         def close(self):
-            if close_source:
+            wenn close_source:
                 source.close()
             gen.close()
 
         def __del__(self):
-            # TODO: Emit a ResourceWarning if it was not explicitly closed.
+            # TODO: Emit a ResourceWarning wenn it was not explicitly closed.
             # (When the close() method will be supported in all maintained Python versions.)
-            if close_source:
+            wenn close_source:
                 source.close()
 
     it = IterParseIterator()
@@ -1288,15 +1288,15 @@ klasse XMLPullParser:
         self._events_queue = collections.deque()
         self._parser = _parser or XMLParser(target=TreeBuilder())
         # wire up the parser fuer event reporting
-        if events is None:
+        wenn events is None:
             events = ("end",)
         self._parser._setevents(self._events_queue, events)
 
     def feed(self, data):
         """Feed encoded data to parser."""
-        if self._parser is None:
+        wenn self._parser is None:
             raise ValueError("feed() called after end of stream")
-        if data:
+        wenn data:
             try:
                 self._parser.feed(data)
             except SyntaxError as exc:
@@ -1325,13 +1325,13 @@ klasse XMLPullParser:
         events = self._events_queue
         while events:
             event = events.popleft()
-            if isinstance(event, Exception):
+            wenn isinstance(event, Exception):
                 raise event
-            else:
+            sonst:
                 yield event
 
     def flush(self):
-        if self._parser is None:
+        wenn self._parser is None:
             raise ValueError("flush() called after end of stream")
         self._parser.flush()
 
@@ -1347,7 +1347,7 @@ def XML(text, parser=None):
     Returns an Element instance.
 
     """
-    if not parser:
+    wenn not parser:
         parser = XMLParser(target=TreeBuilder())
     parser.feed(text)
     return parser.close()
@@ -1363,14 +1363,14 @@ def XMLID(text, parser=None):
     dict maps element id:s to elements.
 
     """
-    if not parser:
+    wenn not parser:
         parser = XMLParser(target=TreeBuilder())
     parser.feed(text)
     tree = parser.close()
     ids = {}
     fuer elem in tree.iter():
         id = elem.get("id")
-        if id:
+        wenn id:
             ids[id] = elem
     return tree, ids
 
@@ -1386,7 +1386,7 @@ def fromstringlist(sequence, parser=None):
     Returns an Element instance.
 
     """
-    if not parser:
+    wenn not parser:
         parser = XMLParser(target=TreeBuilder())
     fuer text in sequence:
         parser.feed(text)
@@ -1422,16 +1422,16 @@ klasse TreeBuilder:
         self._elem = [] # element stack
         self._last = None # last element
         self._root = None # root element
-        self._tail = None # true if we're after an end tag
-        if comment_factory is None:
+        self._tail = None # true wenn we're after an end tag
+        wenn comment_factory is None:
             comment_factory = Comment
         self._comment_factory = comment_factory
         self.insert_comments = insert_comments
-        if pi_factory is None:
+        wenn pi_factory is None:
             pi_factory = ProcessingInstruction
         self._pi_factory = pi_factory
         self.insert_pis = insert_pis
-        if element_factory is None:
+        wenn element_factory is None:
             element_factory = Element
         self._factory = element_factory
 
@@ -1442,13 +1442,13 @@ klasse TreeBuilder:
         return self._root
 
     def _flush(self):
-        if self._data:
-            if self._last is not None:
+        wenn self._data:
+            wenn self._last is not None:
                 text = "".join(self._data)
-                if self._tail:
+                wenn self._tail:
                     assert self._last.tail is None, "internal error (tail)"
                     self._last.tail = text
-                else:
+                sonst:
                     assert self._last.text is None, "internal error (text)"
                     self._last.text = text
             self._data = []
@@ -1466,9 +1466,9 @@ klasse TreeBuilder:
         """
         self._flush()
         self._last = elem = self._factory(tag, attrs)
-        if self._elem:
+        wenn self._elem:
             self._elem[-1].append(elem)
-        elif self._root is None:
+        sowenn self._root is None:
             self._root = elem
         self._elem.append(elem)
         self._tail = 0
@@ -1507,10 +1507,10 @@ klasse TreeBuilder:
 
     def _handle_single(self, factory, insert, *args):
         elem = factory(*args)
-        if insert:
+        wenn insert:
             self._flush()
             self._last = elem
-            if self._elem:
+            wenn self._elem:
                 self._elem[-1].append(elem)
             self._tail = 1
         return elem
@@ -1522,7 +1522,7 @@ klasse XMLParser:
 
     *target* is an optional target object which defaults to an instance of the
     standard TreeBuilder class, *encoding* is an optional encoding string
-    which if given, overrides the encoding specified in the XML file:
+    which wenn given, overrides the encoding specified in the XML file:
     http://www.iana.org/assignments/character-sets
 
     """
@@ -1538,7 +1538,7 @@ klasse XMLParser:
                     "No module named expat; use SimpleXMLTreeBuilder instead"
                     )
         parser = expat.ParserCreate(encoding, "}")
-        if target is None:
+        wenn target is None:
             target = TreeBuilder()
         # underscored names are provided fuer compatibility only
         self.parser = self._parser = parser
@@ -1547,20 +1547,20 @@ klasse XMLParser:
         self._names = {} # name memo cache
         # main callbacks
         parser.DefaultHandlerExpand = self._default
-        if hasattr(target, 'start'):
+        wenn hasattr(target, 'start'):
             parser.StartElementHandler = self._start
-        if hasattr(target, 'end'):
+        wenn hasattr(target, 'end'):
             parser.EndElementHandler = self._end
-        if hasattr(target, 'start_ns'):
+        wenn hasattr(target, 'start_ns'):
             parser.StartNamespaceDeclHandler = self._start_ns
-        if hasattr(target, 'end_ns'):
+        wenn hasattr(target, 'end_ns'):
             parser.EndNamespaceDeclHandler = self._end_ns
-        if hasattr(target, 'data'):
+        wenn hasattr(target, 'data'):
             parser.CharacterDataHandler = target.data
         # miscellaneous callbacks
-        if hasattr(target, 'comment'):
+        wenn hasattr(target, 'comment'):
             parser.CommentHandler = target.comment
-        if hasattr(target, 'pi'):
+        wenn hasattr(target, 'pi'):
             parser.ProcessingInstructionHandler = target.pi
         # Configure pyexpat: buffering, new-style attribute handling.
         parser.buffer_text = 1
@@ -1582,47 +1582,47 @@ klasse XMLParser:
         parser = self._parser
         append = events_queue.append
         fuer event_name in events_to_report:
-            if event_name == "start":
+            wenn event_name == "start":
                 parser.ordered_attributes = 1
                 def handler(tag, attrib_in, event=event_name, append=append,
                             start=self._start):
                     append((event, start(tag, attrib_in)))
                 parser.StartElementHandler = handler
-            elif event_name == "end":
+            sowenn event_name == "end":
                 def handler(tag, event=event_name, append=append,
                             end=self._end):
                     append((event, end(tag)))
                 parser.EndElementHandler = handler
-            elif event_name == "start-ns":
+            sowenn event_name == "start-ns":
                 # TreeBuilder does not implement .start_ns()
-                if hasattr(self.target, "start_ns"):
+                wenn hasattr(self.target, "start_ns"):
                     def handler(prefix, uri, event=event_name, append=append,
                                 start_ns=self._start_ns):
                         append((event, start_ns(prefix, uri)))
-                else:
+                sonst:
                     def handler(prefix, uri, event=event_name, append=append):
                         append((event, (prefix or '', uri or '')))
                 parser.StartNamespaceDeclHandler = handler
-            elif event_name == "end-ns":
+            sowenn event_name == "end-ns":
                 # TreeBuilder does not implement .end_ns()
-                if hasattr(self.target, "end_ns"):
+                wenn hasattr(self.target, "end_ns"):
                     def handler(prefix, event=event_name, append=append,
                                 end_ns=self._end_ns):
                         append((event, end_ns(prefix)))
-                else:
+                sonst:
                     def handler(prefix, event=event_name, append=append):
                         append((event, None))
                 parser.EndNamespaceDeclHandler = handler
-            elif event_name == 'comment':
+            sowenn event_name == 'comment':
                 def handler(text, event=event_name, append=append, self=self):
                     append((event, self.target.comment(text)))
                 parser.CommentHandler = handler
-            elif event_name == 'pi':
+            sowenn event_name == 'pi':
                 def handler(pi_target, data, event=event_name, append=append,
                             self=self):
                     append((event, self.target.pi(pi_target, data)))
                 parser.ProcessingInstructionHandler = handler
-            else:
+            sonst:
                 raise ValueError("unknown event %r" % event_name)
 
     def _raiseerror(self, value):
@@ -1632,12 +1632,12 @@ klasse XMLParser:
         raise err
 
     def _fixname(self, key):
-        # expand qname, and convert name string to ascii, if possible
+        # expand qname, and convert name string to ascii, wenn possible
         try:
             name = self._names[key]
         except KeyError:
             name = key
-            if "}" in name:
+            wenn "}" in name:
                 name = "{" + name
             self._names[key] = name
         return name
@@ -1655,7 +1655,7 @@ klasse XMLParser:
         fixname = self._fixname
         tag = fixname(tag)
         attrib = {}
-        if attr_list:
+        wenn attr_list:
             fuer i in range(0, len(attr_list), 2):
                 attrib[fixname(attr_list[i])] = attr_list[i+1]
         return self.target.start(tag, attrib)
@@ -1665,7 +1665,7 @@ klasse XMLParser:
 
     def _default(self, text):
         prefix = text[:1]
-        if prefix == "&":
+        wenn prefix == "&":
             # deal with undefined entities
             try:
                 data_handler = self.target.data
@@ -1684,32 +1684,32 @@ klasse XMLParser:
                 err.lineno = self.parser.ErrorLineNumber
                 err.offset = self.parser.ErrorColumnNumber
                 raise err
-        elif prefix == "<" and text[:9] == "<!DOCTYPE":
+        sowenn prefix == "<" and text[:9] == "<!DOCTYPE":
             self._doctype = [] # inside a doctype declaration
-        elif self._doctype is not None:
+        sowenn self._doctype is not None:
             # parse doctype contents
-            if prefix == ">":
+            wenn prefix == ">":
                 self._doctype = None
                 return
             text = text.strip()
-            if not text:
+            wenn not text:
                 return
             self._doctype.append(text)
             n = len(self._doctype)
-            if n > 2:
+            wenn n > 2:
                 type = self._doctype[1]
-                if type == "PUBLIC" and n == 4:
+                wenn type == "PUBLIC" and n == 4:
                     name, type, pubid, system = self._doctype
-                    if pubid:
+                    wenn pubid:
                         pubid = pubid[1:-1]
-                elif type == "SYSTEM" and n == 3:
+                sowenn type == "SYSTEM" and n == 3:
                     name, type, system = self._doctype
                     pubid = None
-                else:
+                sonst:
                     return
-                if hasattr(self.target, "doctype"):
+                wenn hasattr(self.target, "doctype"):
                     self.target.doctype(name, pubid, system[1:-1])
-                elif hasattr(self, "doctype"):
+                sowenn hasattr(self, "doctype"):
                     warnings.warn(
                         "The doctype() method of XMLParser is ignored.  "
                         "Define doctype() method on the TreeBuilder target.",
@@ -1734,7 +1734,7 @@ klasse XMLParser:
             close_handler = self.target.close
         except AttributeError:
             pass
-        else:
+        sonst:
             return close_handler()
         finally:
             # get rid of circular references
@@ -1767,21 +1767,21 @@ def canonicalize(xml_data=None, *, out=None, from_file=None, **options):
 
     The configuration options are the same as fuer the ``C14NWriterTarget``.
     """
-    if xml_data is None and from_file is None:
+    wenn xml_data is None and from_file is None:
         raise ValueError("Either 'xml_data' or 'from_file' must be provided as input")
     sio = None
-    if out is None:
+    wenn out is None:
         sio = out = io.StringIO()
 
     parser = XMLParser(target=C14NWriterTarget(out.write, **options))
 
-    if xml_data is not None:
+    wenn xml_data is not None:
         parser.feed(xml_data)
         parser.close()
-    elif from_file is not None:
+    sowenn from_file is not None:
         parse(from_file, parser=parser)
 
-    return sio.getvalue() if sio is not None else None
+    return sio.getvalue() wenn sio is not None sonst None
 
 
 _looks_like_prefix_name = re.compile(r'^\w+:\w+$', re.UNICODE).match
@@ -1817,17 +1817,17 @@ klasse C14NWriterTarget:
         self._data = []
         self._with_comments = with_comments
         self._strip_text = strip_text
-        self._exclude_attrs = set(exclude_attrs) if exclude_attrs else None
-        self._exclude_tags = set(exclude_tags) if exclude_tags else None
+        self._exclude_attrs = set(exclude_attrs) wenn exclude_attrs sonst None
+        self._exclude_tags = set(exclude_tags) wenn exclude_tags sonst None
 
         self._rewrite_prefixes = rewrite_prefixes
-        if qname_aware_tags:
+        wenn qname_aware_tags:
             self._qname_aware_tags = set(qname_aware_tags)
-        else:
+        sonst:
             self._qname_aware_tags = None
-        if qname_aware_attrs:
+        wenn qname_aware_attrs:
             self._find_qname_aware_attrs = set(qname_aware_attrs).intersection
-        else:
+        sonst:
             self._find_qname_aware_attrs = None
 
         # Stack with globally and newly declared namespaces as (uri, prefix) pairs.
@@ -1836,7 +1836,7 @@ klasse C14NWriterTarget:
         ]]
         # Stack with user declared namespace prefixes as (uri, prefix) pairs.
         self._ns_stack = []
-        if not rewrite_prefixes:
+        wenn not rewrite_prefixes:
             self._ns_stack.append(list(_namespace_map.items()))
         self._ns_stack.append([])
         self._prefix_map = {}
@@ -1848,47 +1848,47 @@ klasse C14NWriterTarget:
 
     def _iter_namespaces(self, ns_stack, _reversed=reversed):
         fuer namespaces in _reversed(ns_stack):
-            if namespaces:  # almost no element declares new namespaces
+            wenn namespaces:  # almost no element declares new namespaces
                 yield from namespaces
 
     def _resolve_prefix_name(self, prefixed_name):
         prefix, name = prefixed_name.split(':', 1)
         fuer uri, p in self._iter_namespaces(self._ns_stack):
-            if p == prefix:
+            wenn p == prefix:
                 return f'{{{uri}}}{name}'
         raise ValueError(f'Prefix {prefix} of QName "{prefixed_name}" is not declared in scope')
 
     def _qname(self, qname, uri=None):
-        if uri is None:
-            uri, tag = qname[1:].rsplit('}', 1) if qname[:1] == '{' else ('', qname)
-        else:
+        wenn uri is None:
+            uri, tag = qname[1:].rsplit('}', 1) wenn qname[:1] == '{' sonst ('', qname)
+        sonst:
             tag = qname
 
         prefixes_seen = set()
         fuer u, prefix in self._iter_namespaces(self._declared_ns_stack):
-            if u == uri and prefix not in prefixes_seen:
-                return f'{prefix}:{tag}' if prefix else tag, tag, uri
+            wenn u == uri and prefix not in prefixes_seen:
+                return f'{prefix}:{tag}' wenn prefix sonst tag, tag, uri
             prefixes_seen.add(prefix)
 
         # Not declared yet => add new declaration.
-        if self._rewrite_prefixes:
-            if uri in self._prefix_map:
+        wenn self._rewrite_prefixes:
+            wenn uri in self._prefix_map:
                 prefix = self._prefix_map[uri]
-            else:
+            sonst:
                 prefix = self._prefix_map[uri] = f'n{len(self._prefix_map)}'
             self._declared_ns_stack[-1].append((uri, prefix))
             return f'{prefix}:{tag}', tag, uri
 
-        if not uri and '' not in prefixes_seen:
+        wenn not uri and '' not in prefixes_seen:
             # No default namespace declared => no prefix needed.
             return tag, tag, uri
 
         fuer u, prefix in self._iter_namespaces(self._ns_stack):
-            if u == uri:
+            wenn u == uri:
                 self._declared_ns_stack[-1].append((uri, prefix))
-                return f'{prefix}:{tag}' if prefix else tag, tag, uri
+                return f'{prefix}:{tag}' wenn prefix sonst tag, tag, uri
 
-        if not uri:
+        wenn not uri:
             # As soon as a default namespace is defined,
             # anything that has no namespace (and thus, no prefix) goes there.
             return tag, tag, uri
@@ -1896,70 +1896,70 @@ klasse C14NWriterTarget:
         raise ValueError(f'Namespace "{uri}" is not declared in scope')
 
     def data(self, data):
-        if not self._ignored_depth:
+        wenn not self._ignored_depth:
             self._data.append(data)
 
     def _flush(self, _join_text=''.join):
         data = _join_text(self._data)
         del self._data[:]
-        if self._strip_text and not self._preserve_space[-1]:
+        wenn self._strip_text and not self._preserve_space[-1]:
             data = data.strip()
-        if self._pending_start is not None:
+        wenn self._pending_start is not None:
             args, self._pending_start = self._pending_start, None
-            qname_text = data if data and _looks_like_prefix_name(data) else None
+            qname_text = data wenn data and _looks_like_prefix_name(data) sonst None
             self._start(*args, qname_text)
-            if qname_text is not None:
+            wenn qname_text is not None:
                 return
-        if data and self._root_seen:
+        wenn data and self._root_seen:
             self._write(_escape_cdata_c14n(data))
 
     def start_ns(self, prefix, uri):
-        if self._ignored_depth:
+        wenn self._ignored_depth:
             return
         # we may have to resolve qnames in text content
-        if self._data:
+        wenn self._data:
             self._flush()
         self._ns_stack[-1].append((uri, prefix))
 
     def start(self, tag, attrs):
-        if self._exclude_tags is not None and (
+        wenn self._exclude_tags is not None and (
                 self._ignored_depth or tag in self._exclude_tags):
             self._ignored_depth += 1
             return
-        if self._data:
+        wenn self._data:
             self._flush()
 
         new_namespaces = []
         self._declared_ns_stack.append(new_namespaces)
 
-        if self._qname_aware_tags is not None and tag in self._qname_aware_tags:
-            # Need to parse text first to see if it requires a prefix declaration.
+        wenn self._qname_aware_tags is not None and tag in self._qname_aware_tags:
+            # Need to parse text first to see wenn it requires a prefix declaration.
             self._pending_start = (tag, attrs, new_namespaces)
             return
         self._start(tag, attrs, new_namespaces)
 
     def _start(self, tag, attrs, new_namespaces, qname_text=None):
-        if self._exclude_attrs is not None and attrs:
-            attrs = {k: v fuer k, v in attrs.items() if k not in self._exclude_attrs}
+        wenn self._exclude_attrs is not None and attrs:
+            attrs = {k: v fuer k, v in attrs.items() wenn k not in self._exclude_attrs}
 
         qnames = {tag, *attrs}
         resolved_names = {}
 
         # Resolve prefixes in attribute and tag text.
-        if qname_text is not None:
+        wenn qname_text is not None:
             qname = resolved_names[qname_text] = self._resolve_prefix_name(qname_text)
             qnames.add(qname)
-        if self._find_qname_aware_attrs is not None and attrs:
+        wenn self._find_qname_aware_attrs is not None and attrs:
             qattrs = self._find_qname_aware_attrs(attrs)
-            if qattrs:
+            wenn qattrs:
                 fuer attr_name in qattrs:
                     value = attrs[attr_name]
-                    if _looks_like_prefix_name(value):
+                    wenn _looks_like_prefix_name(value):
                         qname = resolved_names[value] = self._resolve_prefix_name(value)
                         qnames.add(qname)
-            else:
+            sonst:
                 qattrs = None
-        else:
+        sonst:
             qattrs = None
 
         # Assign prefixes in lexicographical order of used URIs.
@@ -1968,50 +1968,50 @@ klasse C14NWriterTarget:
             qnames, key=lambda n: n.split('}', 1))}
 
         # Write namespace declarations in prefix order ...
-        if new_namespaces:
+        wenn new_namespaces:
             attr_list = [
-                ('xmlns:' + prefix if prefix else 'xmlns', uri)
+                ('xmlns:' + prefix wenn prefix sonst 'xmlns', uri)
                 fuer uri, prefix in new_namespaces
             ]
             attr_list.sort()
-        else:
+        sonst:
             # almost always empty
             attr_list = []
 
         # ... followed by attributes in URI+name order
-        if attrs:
+        wenn attrs:
             fuer k, v in sorted(attrs.items()):
-                if qattrs is not None and k in qattrs and v in resolved_names:
+                wenn qattrs is not None and k in qattrs and v in resolved_names:
                     v = parsed_qnames[resolved_names[v]][0]
                 attr_qname, attr_name, uri = parsed_qnames[k]
                 # No prefix fuer attributes in default ('') namespace.
-                attr_list.append((attr_qname if uri else attr_name, v))
+                attr_list.append((attr_qname wenn uri sonst attr_name, v))
 
         # Honour xml:space attributes.
         space_behaviour = attrs.get('{http://www.w3.org/XML/1998/namespace}space')
         self._preserve_space.append(
-            space_behaviour == 'preserve' if space_behaviour
-            else self._preserve_space[-1])
+            space_behaviour == 'preserve' wenn space_behaviour
+            sonst self._preserve_space[-1])
 
         # Write the tag.
         write = self._write
         write('<' + parsed_qnames[tag][0])
-        if attr_list:
+        wenn attr_list:
             write(''.join([f' {k}="{_escape_attrib_c14n(v)}"' fuer k, v in attr_list]))
         write('>')
 
         # Write the resolved qname text content.
-        if qname_text is not None:
+        wenn qname_text is not None:
             write(_escape_cdata_c14n(parsed_qnames[resolved_names[qname_text]][0]))
 
         self._root_seen = True
         self._ns_stack.append([])
 
     def end(self, tag):
-        if self._ignored_depth:
+        wenn self._ignored_depth:
             self._ignored_depth -= 1
             return
-        if self._data:
+        wenn self._data:
             self._flush()
         self._write(f'</{self._qname(tag)[0]}>')
         self._preserve_space.pop()
@@ -2020,28 +2020,28 @@ klasse C14NWriterTarget:
         self._ns_stack.pop()
 
     def comment(self, text):
-        if not self._with_comments:
+        wenn not self._with_comments:
             return
-        if self._ignored_depth:
+        wenn self._ignored_depth:
             return
-        if self._root_done:
+        wenn self._root_done:
             self._write('\n')
-        elif self._root_seen and self._data:
+        sowenn self._root_seen and self._data:
             self._flush()
         self._write(f'<!--{_escape_cdata_c14n(text)}-->')
-        if not self._root_seen:
+        wenn not self._root_seen:
             self._write('\n')
 
     def pi(self, target, data):
-        if self._ignored_depth:
+        wenn self._ignored_depth:
             return
-        if self._root_done:
+        wenn self._root_done:
             self._write('\n')
-        elif self._root_seen and self._data:
+        sowenn self._root_seen and self._data:
             self._flush()
         self._write(
-            f'<?{target} {_escape_cdata_c14n(data)}?>' if data else f'<?{target}?>')
-        if not self._root_seen:
+            f'<?{target} {_escape_cdata_c14n(data)}?>' wenn data sonst f'<?{target}?>')
+        wenn not self._root_seen:
             self._write('\n')
 
 
@@ -2051,13 +2051,13 @@ def _escape_cdata_c14n(text):
         # it's worth avoiding do-nothing calls fuer strings that are
         # shorter than 500 character, or so.  assume that's, by far,
         # the most common case in most applications.
-        if '&' in text:
+        wenn '&' in text:
             text = text.replace('&', '&amp;')
-        if '<' in text:
+        wenn '<' in text:
             text = text.replace('<', '&lt;')
-        if '>' in text:
+        wenn '>' in text:
             text = text.replace('>', '&gt;')
-        if '\r' in text:
+        wenn '\r' in text:
             text = text.replace('\r', '&#xD;')
         return text
     except (TypeError, AttributeError):
@@ -2067,17 +2067,17 @@ def _escape_cdata_c14n(text):
 def _escape_attrib_c14n(text):
     # escape attribute value
     try:
-        if '&' in text:
+        wenn '&' in text:
             text = text.replace('&', '&amp;')
-        if '<' in text:
+        wenn '<' in text:
             text = text.replace('<', '&lt;')
-        if '"' in text:
+        wenn '"' in text:
             text = text.replace('"', '&quot;')
-        if '\t' in text:
+        wenn '\t' in text:
             text = text.replace('\t', '&#x9;')
-        if '\n' in text:
+        wenn '\n' in text:
             text = text.replace('\n', '&#xA;')
-        if '\r' in text:
+        wenn '\r' in text:
             text = text.replace('\r', '&#xD;')
         return text
     except (TypeError, AttributeError):
@@ -2098,5 +2098,5 @@ try:
     from _elementtree import _set_factories
 except ImportError:
     pass
-else:
+sonst:
     _set_factories(Comment, ProcessingInstruction)

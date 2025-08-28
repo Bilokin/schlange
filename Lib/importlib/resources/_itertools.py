@@ -28,7 +28,7 @@ def only(iterable, default=None, too_long=None):
         second_value = next(it)
     except StopIteration:
         pass
-    else:
+    sonst:
         msg = (
             'Expected exactly one item in iterable, but got {!r}, {!r}, '
             'and perhaps more.'.format(first_value, second_value)

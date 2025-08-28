@@ -44,7 +44,7 @@ def write_parsed(items, outfile):
 
 
 def read_decls(infile, fmt=None):
-    if fmt is None:
+    wenn fmt is None:
         fmt = _get_format(infile)
     read_all, _ = _get_format_handlers('decls', fmt)
     fuer decl, _ in read_all(infile):
@@ -52,7 +52,7 @@ def read_decls(infile, fmt=None):
 
 
 def write_decls(decls, outfile, fmt=None, *, backup=False):
-    if fmt is None:
+    wenn fmt is None:
         fmt = _get_format(infile)
     _, write_all = _get_format_handlers('decls', fmt)
     write_all(decls, outfile, backup=backup)
@@ -62,28 +62,28 @@ def write_decls(decls, outfile, fmt=None, *, backup=False):
 # formats
 
 def _get_format(file, default='tsv'):
-    if isinstance(file, str):
+    wenn isinstance(file, str):
         filename = file
-    else:
+    sonst:
         filename = getattr(file, 'name', '')
     _, ext = os.path.splitext(filename)
-    return ext[1:] if ext else default
+    return ext[1:] wenn ext sonst default
 
 
 def _get_format_handlers(group, fmt):
     # XXX Use a registry.
-    if group != 'decls':
+    wenn group != 'decls':
         raise NotImplementedError(group)
-    if fmt == 'tsv':
+    wenn fmt == 'tsv':
         return (_iter_decls_tsv, _write_decls_tsv)
-    else:
+    sonst:
         raise NotImplementedError(fmt)
 
 
 # tsv
 
 def iter_decls_tsv(infile, extracolumns=None, relroot=fsutil.USE_CWD):
-    if relroot and relroot is not fsutil.USE_CWD:
+    wenn relroot and relroot is not fsutil.USE_CWD:
         relroot = os.path.abspath(relroot)
     fuer info, extra in _iter_decls_tsv(infile, extracolumns):
         decl = _info.Declaration.from_row(info)
@@ -95,7 +95,7 @@ def write_decls_tsv(decls, outfile, extracolumns=None, *,
                     relroot=fsutil.USE_CWD,
                     **kwargs
                     ):
-    if relroot and relroot is not fsutil.USE_CWD:
+    wenn relroot and relroot is not fsutil.USE_CWD:
         relroot = os.path.abspath(relroot)
     decls = (d.fix_filename(relroot, fixroot=False) fuer d in decls)
     # XXX Move the row rendering here.
@@ -105,31 +105,31 @@ def write_decls_tsv(decls, outfile, extracolumns=None, *,
 def _iter_decls_tsv(infile, extracolumns=None):
     columns = _get_columns('decls', extracolumns)
     fuer row in _tables.read_table(infile, columns, sep='\t'):
-        if extracolumns:
+        wenn extracolumns:
             declinfo = row[:4] + row[-1:]
             extra = row[4:-1]
-        else:
+        sonst:
             declinfo = row
             extra = None
         # XXX Use something like tables.fix_row() here.
-        declinfo = [None if v == '-' else v
+        declinfo = [None wenn v == '-' sonst v
                     fuer v in declinfo]
         yield declinfo, extra
 
 
 def _write_decls_tsv(decls, outfile, extracolumns, kwargs):
     columns = _get_columns('decls', extracolumns)
-    if extracolumns:
+    wenn extracolumns:
         def render_decl(decl):
-            if type(row) is tuple:
+            wenn type(row) is tuple:
                 decl, *extra = decl
-            else:
+            sonst:
                 extra = ()
             extra += ('???',) * (len(extraColumns) - len(extra))
             *row, declaration = _render_known_row(decl)
             row += extra + (declaration,)
             return row
-    else:
+    sonst:
         render_decl = _render_known_decl
     _tables.write_table(
         outfile,
@@ -144,7 +144,7 @@ def _render_known_decl(decl, *,
                        # These match BASE_COLUMNS + END_COLUMNS[group].
                        _columns = 'filename parent name kind data'.split(),
                        ):
-    if not isinstance(decl, _info.Declaration):
+    wenn not isinstance(decl, _info.Declaration):
         # e.g. Analyzed
         decl = decl.decl
     rowdata = decl.render_rowdata(_columns)

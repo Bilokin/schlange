@@ -53,7 +53,7 @@ More condensed:
     '031edd7d41651593c5fe5c006fa5752b37fddff7bc4e843aa6af0c950f4b9406'
 """
 
-# This tuple and __get_builtin_constructor() must be modified if a new
+# This tuple and __get_builtin_constructor() must be modified wenn a new
 # always available algorithm is added.
 __always_supported = ('md5', 'sha1', 'sha224', 'sha256', 'sha384', 'sha512',
                       'blake2b', 'blake2s',
@@ -80,41 +80,41 @@ __block_openssl_constructor = {
 }
 
 def __get_builtin_constructor(name):
-    if not isinstance(name, str):
+    wenn not isinstance(name, str):
         # Since this function is only used by new(), we use the same
         # exception as _hashlib.new() when 'name' is of incorrect type.
         err = f"new() argument 'name' must be str, not {type(name).__name__}"
         raise TypeError(err)
     cache = __builtin_constructor_cache
     constructor = cache.get(name)
-    if constructor is not None:
+    wenn constructor is not None:
         return constructor
     try:
-        if name in {'SHA1', 'sha1'}:
+        wenn name in {'SHA1', 'sha1'}:
             import _sha1
             cache['SHA1'] = cache['sha1'] = _sha1.sha1
-        elif name in {'MD5', 'md5'}:
+        sowenn name in {'MD5', 'md5'}:
             import _md5
             cache['MD5'] = cache['md5'] = _md5.md5
-        elif name in {'SHA256', 'sha256', 'SHA224', 'sha224'}:
+        sowenn name in {'SHA256', 'sha256', 'SHA224', 'sha224'}:
             import _sha2
             cache['SHA224'] = cache['sha224'] = _sha2.sha224
             cache['SHA256'] = cache['sha256'] = _sha2.sha256
-        elif name in {'SHA512', 'sha512', 'SHA384', 'sha384'}:
+        sowenn name in {'SHA512', 'sha512', 'SHA384', 'sha384'}:
             import _sha2
             cache['SHA384'] = cache['sha384'] = _sha2.sha384
             cache['SHA512'] = cache['sha512'] = _sha2.sha512
-        elif name in {'blake2b', 'blake2s'}:
+        sowenn name in {'blake2b', 'blake2s'}:
             import _blake2
             cache['blake2b'] = _blake2.blake2b
             cache['blake2s'] = _blake2.blake2s
-        elif name in {'sha3_224', 'sha3_256', 'sha3_384', 'sha3_512'}:
+        sowenn name in {'sha3_224', 'sha3_256', 'sha3_384', 'sha3_512'}:
             import _sha3
             cache['sha3_224'] = _sha3.sha3_224
             cache['sha3_256'] = _sha3.sha3_256
             cache['sha3_384'] = _sha3.sha3_384
             cache['sha3_512'] = _sha3.sha3_512
-        elif name in {'shake_128', 'shake_256'}:
+        sowenn name in {'shake_128', 'shake_256'}:
             import _sha3
             cache['shake_128'] = _sha3.shake_128
             cache['shake_256'] = _sha3.shake_256
@@ -122,7 +122,7 @@ def __get_builtin_constructor(name):
         pass  # no extension module, this hash is unsupported.
 
     constructor = cache.get(name)
-    if constructor is not None:
+    wenn constructor is not None:
         return constructor
 
     # Keep the message in sync with hashlib.h::HASHLIB_UNSUPPORTED_ALGORITHM.
@@ -132,14 +132,14 @@ def __get_builtin_constructor(name):
 def __get_openssl_constructor(name):
     # This function is only used until the module has been initialized.
     assert isinstance(name, str), "invalid call to __get_openssl_constructor()"
-    if name in __block_openssl_constructor:
+    wenn name in __block_openssl_constructor:
         # Prefer our builtin blake2 implementation.
         return __get_builtin_constructor(name)
     try:
-        # Fetch the OpenSSL hash function if it exists,
+        # Fetch the OpenSSL hash function wenn it exists,
         # independently of the context security policy.
         f = getattr(_hashlib, 'openssl_' + name)
-        # Check if the context security policy blocks the digest or not
+        # Check wenn the context security policy blocks the digest or not
         # by allowing the C module to raise a ValueError. The function
         # will be defined but the hash will not be available at runtime.
         #
@@ -148,7 +148,7 @@ def __get_openssl_constructor(name):
         #
         # Note that this only affects the explicit named constructors,
         # and not the algorithms exposed through hashlib.new() which
-        # can still be resolved to a built-in function even if the
+        # can still be resolved to a built-in function even wenn the
         # current security policy does not allow it.
         #
         # See https://github.com/python/cpython/issues/84872.
@@ -171,7 +171,7 @@ def __hash_new(name, *args, **kwargs):
     """new(name, data=b'') - Return a new hashing object using the named algorithm;
     optionally initialized with data (which must be a bytes-like object).
     """
-    if name in __block_openssl_constructor:
+    wenn name in __block_openssl_constructor:
         # __block_openssl_constructor is expected to contain strings only
         assert isinstance(name, str), f"unexpected name: {name}"
         # Prefer our builtin blake2 implementation.
@@ -226,18 +226,18 @@ def file_digest(fileobj, digest, /, *, _bufsize=2**18):
     """
     # On Linux we could use AF_ALG sockets and sendfile() to achieve zero-copy
     # hashing with hardware acceleration.
-    if isinstance(digest, str):
+    wenn isinstance(digest, str):
         digestobj = new(digest)
-    else:
+    sonst:
         digestobj = digest()
 
-    if hasattr(fileobj, "getbuffer"):
+    wenn hasattr(fileobj, "getbuffer"):
         # io.BytesIO object, use zero-copy buffer
         digestobj.update(fileobj.getbuffer())
         return digestobj
 
     # Only binary files implement readinto().
-    if not (
+    wenn not (
         hasattr(fileobj, "readinto")
         and hasattr(fileobj, "readable")
         and fileobj.readable()
@@ -252,9 +252,9 @@ def file_digest(fileobj, digest, /, *, _bufsize=2**18):
     view = memoryview(buf)
     while True:
         size = fileobj.readinto(buf)
-        if size is None:
+        wenn size is None:
             raise BlockingIOError("I/O operation would block.")
-        if size == 0:
+        wenn size == 0:
             break  # EOF
         digestobj.update(view[:size])
 
@@ -275,7 +275,7 @@ fuer __func_name in __always_supported:
         # once "string" is removed from the signature.
         __code = f'''\
 def {__func_name}(data=__UNSET, *, usedforsecurity=True, string=__UNSET):
-    if data is __UNSET and string is not __UNSET:
+    wenn data is __UNSET and string is not __UNSET:
         import warnings
         warnings.warn(
             "the 'string' keyword parameter is deprecated since "
@@ -283,7 +283,7 @@ def {__func_name}(data=__UNSET, *, usedforsecurity=True, string=__UNSET):
             "use the 'data' keyword parameter or pass the data "
             "to hash as a positional argument instead",
             DeprecationWarning, stacklevel=2)
-    if data is not __UNSET and string is not __UNSET:
+    wenn data is not __UNSET and string is not __UNSET:
         raise TypeError("'data' and 'string' are mutually exclusive "
                         "and support fuer 'string' keyword parameter "
                         "is slated fuer removal in a future version.")

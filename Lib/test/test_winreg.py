@@ -8,7 +8,7 @@ import unittest
 from platform import machine, win32_edition
 from test.support import cpython_only, import_helper
 
-# Do this first so test will be skipped if module doesn't exist
+# Do this first so test will be skipped wenn module doesn't exist
 import_helper.import_module('winreg', required_on=['win'])
 # Now import everything
 from winreg import *
@@ -21,13 +21,13 @@ except (IndexError, ValueError):
 # tuple of (major, minor)
 WIN_VER = sys.getwindowsversion()[:2]
 # Some tests should only run on 64-bit architectures where WOW64 will be.
-WIN64_MACHINE = True if machine() == "AMD64" else False
+WIN64_MACHINE = True wenn machine() == "AMD64" sonst False
 
 # Starting with Windows 7 and Windows Server 2008 R2, WOW64 no longer uses
 # registry reflection and formerly reflected keys are shared instead.
 # Windows 7 and Windows Server 2008 R2 are version 6.1. Due to this, some
 # tests are only valid up until 6.1
-HAS_REFLECTION = True if WIN_VER < (6, 1) else False
+HAS_REFLECTION = True wenn WIN_VER < (6, 1) sonst False
 
 # Use a per-process key to prevent concurrent test runs (buildbot!) from
 # stomping on each other.
@@ -251,7 +251,7 @@ klasse LocalWinregTests(BaseWinregTests):
         self.assertEqual(r, os.environ["windir"] + "\\test")
 
     def test_context_manager(self):
-        # ensure that the handle is closed if an exception occurs
+        # ensure that the handle is closed wenn an exception occurs
         try:
             with ConnectRegistry(None, HKEY_LOCAL_MACHINE) as h:
                 self.assertNotEqual(h.handle, 0)
@@ -271,7 +271,7 @@ klasse LocalWinregTests(BaseWinregTests):
                     use_short = True
                     long_string = 'x'*2000
                     while not done:
-                        s = 'x' if use_short else long_string
+                        s = 'x' wenn use_short sonst long_string
                         use_short = not use_short
                         SetValue(key, 'changing_value', REG_SZ, s)
 
@@ -311,7 +311,7 @@ klasse LocalWinregTests(BaseWinregTests):
         try:
             EnumValue(HKEY_PERFORMANCE_DATA, 0)
         except OSError as e:
-            if e.errno in (errno.EPERM, errno.EACCES):
+            wenn e.errno in (errno.EPERM, errno.EACCES):
                 self.skipTest("access denied to registry key "
                               "(are you running in a non-interactive session?)")
             raise
@@ -518,8 +518,8 @@ klasse Win64WinregTests(BaseWinregTests):
             QueryValue(HKEY_CLASSES_ROOT, 'some_value_that_does_not_exist')
 
 
-if __name__ == "__main__":
-    if not REMOTE_NAME:
+wenn __name__ == "__main__":
+    wenn not REMOTE_NAME:
         print("Remote registry calls can be tested using",
               "'test_winreg.py --remote \\\\machine_name'")
     unittest.main()

@@ -122,11 +122,11 @@ klasse urlopenNetworkTests(unittest.TestCase):
         # TLDs are likely to remain invalid, so this seems to
         # be the best choice. The trailing '.' prevents a
         # related problem: The normal DNS resolver appends
-        # the domain names from the search path if there is
-        # no '.' the end and, and if one of those domains
+        # the domain names from the search path wenn there is
+        # no '.' the end and, and wenn one of those domains
         # implements a '*' rule a result is returned.
         # However, none of this will prevent the test from
-        # failing if the ISP hijacks all invalid domain
+        # failing wenn the ISP hijacks all invalid domain
         # requests.  The real solution would be to be able to
         # parameterize the framework with a mock resolver.
         bogus_domain = "sadflkjsasf.i.nvali.d."
@@ -137,7 +137,7 @@ klasse urlopenNetworkTests(unittest.TestCase):
             # fail with EAI_SYSTEM and ETIMEDOUT (seen on Ubuntu 13.04),
             # i.e. Python's TimeoutError.
             pass
-        else:
+        sonst:
             # This happens with some overzealous DNS providers such as OpenDNS
             self.skipTest("%r should not resolve fuer test to work" % bogus_domain)
         failure_explanation = ('opening an invalid URL did not raise OSError; '
@@ -227,5 +227,5 @@ klasse urlretrieveNetworkTests(unittest.TestCase):
                                 " >= total size in %s" % records_repr)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

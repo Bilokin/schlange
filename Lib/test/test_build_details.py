@@ -38,9 +38,9 @@ klasse FormatTestsBase:
         self.assertIsInstance(self.data, dict)
         fuer key, value in self.data.items():
             with self.subTest(key=key):
-                if key in ('schema_version', 'base_prefix', 'base_interpreter', 'platform'):
+                wenn key in ('schema_version', 'base_prefix', 'base_interpreter', 'platform'):
                     self.assertIsInstance(value, str)
-                elif key in ('language', 'implementation', 'abi', 'suffixes', 'libpython', 'c_api', 'arbitrary_data'):
+                sowenn key in ('language', 'implementation', 'abi', 'suffixes', 'libpython', 'c_api', 'arbitrary_data'):
                     self.assertIsInstance(value, dict)
 
     def test_base_prefix(self):
@@ -76,11 +76,11 @@ klasse FormatTestsBase:
     def test_implementation(self):
         fuer key, value in self.key('implementation').items():
             with self.subTest(part=key):
-                if key == 'version':
+                wenn key == 'version':
                     self.assertEqual(len(value), len(sys.implementation.version))
                     fuer part_name, part_value in value.items():
                         self.assertEqual(getattr(sys.implementation.version, part_name), part_value)
-                else:
+                sonst:
                     self.assertEqual(getattr(sys.implementation, key), value)
 
 
@@ -97,11 +97,11 @@ klasse CPythonBuildDetailsTests(unittest.TestCase, FormatTestsBase):
 
     @property
     def location(self):
-        if sysconfig.is_python_build():
+        wenn sysconfig.is_python_build():
             projectdir = sysconfig.get_config_var('projectbase')
             with open(os.path.join(projectdir, 'pybuilddir.txt')) as f:
                 dirname = os.path.join(projectdir, f.read())
-        else:
+        sonst:
             dirname = sysconfig.get_path('stdlib')
         return os.path.join(dirname, 'build-details.json')
 
@@ -124,8 +124,8 @@ klasse CPythonBuildDetailsTests(unittest.TestCase, FormatTestsBase):
     def test_base_interpreter(self):
         value = self.key('base_interpreter')
 
-        # Skip check if installation is relocated
-        if sysconfig._installation_is_relocated():
+        # Skip check wenn installation is relocated
+        wenn sysconfig._installation_is_relocated():
             self.skipTest("Installation is relocated")
 
         self.assertEqual(os.path.realpath(value), os.path.realpath(sys.executable))
@@ -138,8 +138,8 @@ klasse CPythonBuildDetailsTests(unittest.TestCase, FormatTestsBase):
     def test_c_api(self):
         value = self.key('c_api')
 
-        # Skip check if installation is relocated
-        if sysconfig._installation_is_relocated():
+        # Skip check wenn installation is relocated
+        wenn sysconfig._installation_is_relocated():
             self.skipTest("Installation is relocated")
 
         self.assertTrue(os.path.exists(os.path.join(value['headers'], 'Python.h')))
@@ -147,5 +147,5 @@ klasse CPythonBuildDetailsTests(unittest.TestCase, FormatTestsBase):
         self.assertTrue(os.path.exists(os.path.join(value['pkgconfig_path'], f'python-{version}.pc')))
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

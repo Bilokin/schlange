@@ -62,5 +62,5 @@ klasse ToThreadTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(result, 'parrot')
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

@@ -29,79 +29,79 @@ klasse Analyzed:
 
     @classonly
     def is_target(cls, raw):
-        if isinstance(raw, HighlevelParsedItem):
+        wenn isinstance(raw, HighlevelParsedItem):
             return True
-        else:
+        sonst:
             return False
 
     @classonly
     def from_raw(cls, raw, **extra):
-        if isinstance(raw, cls):
-            if extra:
+        wenn isinstance(raw, cls):
+            wenn extra:
                 # XXX ?
                 raise NotImplementedError((raw, extra))
                 #return cls(raw.item, raw.typedecl, **raw._extra, **extra)
-            else:
+            sonst:
                 return info
-        elif cls.is_target(raw):
+        sowenn cls.is_target(raw):
             return cls(raw, **extra)
-        else:
+        sonst:
             raise NotImplementedError((raw, extra))
 
     @classonly
     def from_resolved(cls, item, resolved, **extra):
-        if isinstance(resolved, TypeDeclaration):
+        wenn isinstance(resolved, TypeDeclaration):
             return cls(item, typedecl=resolved, **extra)
-        else:
+        sonst:
             typedeps, extra = cls._parse_raw_resolved(item, resolved, extra)
-            if item.kind is KIND.ENUM:
-                if typedeps:
+            wenn item.kind is KIND.ENUM:
+                wenn typedeps:
                     raise NotImplementedError((item, resolved, extra))
-            elif not typedeps:
+            sowenn not typedeps:
                 raise NotImplementedError((item, resolved, extra))
             return cls(item, typedeps, **extra or {})
 
     @classonly
     def _parse_raw_resolved(cls, item, resolved, extra_extra):
-        if resolved in (UNKNOWN, IGNORED):
+        wenn resolved in (UNKNOWN, IGNORED):
             return resolved, None
         try:
             typedeps, extra = resolved
         except (TypeError, ValueError):
             typedeps = extra = None
-        if extra:
+        wenn extra:
             # The resolved data takes precedence.
             extra = dict(extra_extra, **extra)
-        if isinstance(typedeps, TypeDeclaration):
+        wenn isinstance(typedeps, TypeDeclaration):
             return typedeps, extra
-        elif typedeps in (None, UNKNOWN):
+        sowenn typedeps in (None, UNKNOWN):
             # It is still effectively unresolved.
             return UNKNOWN, extra
-        elif None in typedeps or UNKNOWN in typedeps:
+        sowenn None in typedeps or UNKNOWN in typedeps:
             # It is still effectively unresolved.
             return typedeps, extra
-        elif any(not isinstance(td, TypeDeclaration) fuer td in typedeps):
+        sowenn any(not isinstance(td, TypeDeclaration) fuer td in typedeps):
             raise NotImplementedError((item, typedeps, extra))
         return typedeps, extra
 
     def __init__(self, item, typedecl=None, **extra):
         assert item is not None
         self.item = item
-        if typedecl in (UNKNOWN, IGNORED):
+        wenn typedecl in (UNKNOWN, IGNORED):
             pass
-        elif item.kind is KIND.STRUCT or item.kind is KIND.UNION:
-            if isinstance(typedecl, TypeDeclaration):
+        sowenn item.kind is KIND.STRUCT or item.kind is KIND.UNION:
+            wenn isinstance(typedecl, TypeDeclaration):
                 raise NotImplementedError(item, typedecl)
-            elif typedecl is None:
+            sowenn typedecl is None:
                 typedecl = UNKNOWN
-            else:
-                typedecl = [UNKNOWN if d is None else d fuer d in typedecl]
-        elif typedecl is None:
+            sonst:
+                typedecl = [UNKNOWN wenn d is None sonst d fuer d in typedecl]
+        sowenn typedecl is None:
             typedecl = UNKNOWN
-        elif typedecl and not isinstance(typedecl, TypeDeclaration):
+        sowenn typedecl and not isinstance(typedecl, TypeDeclaration):
             # All the other decls have a single type decl.
             typedecl, = typedecl
-            if typedecl is None:
+            wenn typedecl is None:
                 typedecl = UNKNOWN
         self.typedecl = typedecl
         self._extra = extra
@@ -113,13 +113,13 @@ klasse Analyzed:
         item = self.item
         extra = self._extra
         # Check item.
-        if not isinstance(item, HighlevelParsedItem):
+        wenn not isinstance(item, HighlevelParsedItem):
             raise ValueError(f'"item" must be a high-level parsed item, got {item!r}')
         # Check extra.
         fuer key, value in extra.items():
-            if key.startswith('_'):
+            wenn key.startswith('_'):
                 raise ValueError(f'extra items starting with {"_"!r} not allowed, got {extra!r}')
-            if hasattr(item, key) and not callable(getattr(item, key)):
+            wenn hasattr(item, key) and not callable(getattr(item, key)):
                 raise ValueError(f'extra cannot override item, got {value!r} fuer key {key!r}')
 
     def __repr__(self):
@@ -141,23 +141,23 @@ klasse Analyzed:
         return hash(self.item)
 
     def __eq__(self, other):
-        if isinstance(other, Analyzed):
+        wenn isinstance(other, Analyzed):
             return self.item == other.item
-        elif isinstance(other, HighlevelParsedItem):
+        sowenn isinstance(other, HighlevelParsedItem):
             return self.item == other
-        elif type(other) is tuple:
+        sowenn type(other) is tuple:
             return self.item == other
-        else:
+        sonst:
             return NotImplemented
 
     def __gt__(self, other):
-        if isinstance(other, Analyzed):
+        wenn isinstance(other, Analyzed):
             return self.item > other.item
-        elif isinstance(other, HighlevelParsedItem):
+        sowenn isinstance(other, HighlevelParsedItem):
             return self.item > other
-        elif type(other) is tuple:
+        sowenn type(other) is tuple:
             return self.item > other
-        else:
+        sonst:
             return NotImplemented
 
     def __dir__(self):
@@ -167,39 +167,39 @@ klasse Analyzed:
         return sorted(names)
 
     def __getattr__(self, name):
-        if name.startswith('_'):
+        wenn name.startswith('_'):
             raise AttributeError(name)
-        # The item takes precedence over the extra data (except if callable).
+        # The item takes precedence over the extra data (except wenn callable).
         try:
             value = getattr(self.item, name)
-            if callable(value):
+            wenn callable(value):
                 raise AttributeError(name)
         except AttributeError:
             try:
                 value = self._extra[name]
             except KeyError:
                 pass
-            else:
+            sonst:
                 # Speed things up the next time.
                 self.__dict__[name] = value
                 return value
             raise  # re-raise
-        else:
+        sonst:
             return value
 
     def __setattr__(self, name, value):
-        if self._locked and name != '_str':
+        wenn self._locked and name != '_str':
             raise AttributeError(f'readonly ({name})')
         super().__setattr__(name, value)
 
     def __delattr__(self, name):
-        if self._locked:
+        wenn self._locked:
             raise AttributeError(f'readonly ({name})')
         super().__delattr__(name)
 
     @property
     def decl(self):
-        if not isinstance(self.item, Declaration):
+        wenn not isinstance(self.item, Declaration):
             raise AttributeError('decl')
         return self.item
 
@@ -214,11 +214,11 @@ klasse Analyzed:
 
     @property
     def is_known(self):
-        if self.typedecl in (UNKNOWN, IGNORED):
+        wenn self.typedecl in (UNKNOWN, IGNORED):
             return False
-        elif isinstance(self.typedecl, TypeDeclaration):
+        sowenn isinstance(self.typedecl, TypeDeclaration):
             return True
-        else:
+        sonst:
             return UNKNOWN not in self.typedecl
 
     def fix_filename(self, relroot=fsutil.USE_CWD, **kwargs):
@@ -234,33 +234,33 @@ klasse Analyzed:
         return self.item.render_rowdata(columns)
 
     def render(self, fmt='line', *, itemonly=False):
-        if fmt == 'raw':
+        wenn fmt == 'raw':
             yield repr(self)
             return
         rendered = self.item.render(fmt)
-        if itemonly or not self._extra:
+        wenn itemonly or not self._extra:
             yield from rendered
             return
         extra = self._render_extra(fmt)
-        if not extra:
+        wenn not extra:
             yield from rendered
-        elif fmt in ('brief', 'line'):
+        sowenn fmt in ('brief', 'line'):
             rendered, = rendered
             extra, = extra
             yield f'{rendered}\t{extra}'
-        elif fmt == 'summary':
+        sowenn fmt == 'summary':
             raise NotImplementedError(fmt)
-        elif fmt == 'full':
+        sowenn fmt == 'full':
             yield from rendered
             fuer line in extra:
                 yield f'\t{line}'
-        else:
+        sonst:
             raise NotImplementedError(fmt)
 
     def _render_extra(self, fmt):
-        if fmt in ('brief', 'line'):
+        wenn fmt in ('brief', 'line'):
             yield str(self._extra)
-        else:
+        sonst:
             raise NotImplementedError(fmt)
 
 
@@ -270,9 +270,9 @@ klasse Analysis:
 
     @classonly
     def build_item(cls, info, resolved=None, **extra):
-        if resolved is None:
+        wenn resolved is None:
             return cls._item_class.from_raw(info, **extra)
-        else:
+        sonst:
             return cls._item_class.from_resolved(info, resolved, **extra)
 
     @classmethod
@@ -299,17 +299,17 @@ klasse Analysis:
         return len(self._analyzed)
 
     def __getitem__(self, key):
-        if type(key) is int:
+        wenn type(key) is int:
             fuer i, val in enumerate(self._analyzed):
-                if i == key:
+                wenn i == key:
                     return val
-            else:
+            sonst:
                 raise IndexError(key)
-        else:
+        sonst:
             return self._analyzed[key]
 
     def fix_filenames(self, relroot=fsutil.USE_CWD, **kwargs):
-        if relroot and relroot is not fsutil.USE_CWD:
+        wenn relroot and relroot is not fsutil.USE_CWD:
             relroot = os.path.abspath(relroot)
         fuer item in self._analyzed:
             item.fix_filename(relroot, fixroot=False, **kwargs)

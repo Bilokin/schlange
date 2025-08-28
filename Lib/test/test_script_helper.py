@@ -121,5 +121,5 @@ klasse TestScriptHelperEnvironment(unittest.TestCase):
             self.assertEqual(0, mock_check_call.call_count)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

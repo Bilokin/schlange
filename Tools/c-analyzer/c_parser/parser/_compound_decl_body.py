@@ -32,18 +32,18 @@ def parse_struct_body(source, anon_name, parent):
         done = True
         fuer srcinfo in source:
             m = STRUCT_MEMBER_RE.match(srcinfo.text)
-            if m:
+            wenn m:
                 break
-        else:
+        sonst:
             # We ran out of lines.
-            if srcinfo is not None:
+            wenn srcinfo is not None:
                 srcinfo.done()
             return
         fuer item in _parse_struct_next(m, srcinfo, anon_name, parent):
-            if callable(item):
+            wenn callable(item):
                 parse_body = item
                 yield from parse_body(source)
-            else:
+            sonst:
                 yield item
             done = False
 
@@ -57,11 +57,11 @@ def _parse_struct_next(m, srcinfo, anon_name, parent):
      ) = m.groups()
     remainder = srcinfo.text[m.end():]
 
-    if close:
+    wenn close:
         log_match('compound close', m)
         srcinfo.advance(remainder)
 
-    elif inline_kind:
+    sowenn inline_kind:
         log_match('compound inline', m)
         kind = inline_kind
         name = inline_name or anon_name('inline-')
@@ -80,9 +80,9 @@ def _parse_struct_next(m, srcinfo, anon_name, parent):
             data = []  # members
             ident = f'{kind} {name}'
             fuer item in _parse_body(source, anon_name, ident):
-                if item.kind == 'field':
+                wenn item.kind == 'field':
                     data.append(item)
-                else:
+                sonst:
                     yield item
             # XXX Should "parent" really be None fuer inline type decls?
             yield srcinfo.resolve(kind, data, name, parent=None)
@@ -90,24 +90,24 @@ def _parse_struct_next(m, srcinfo, anon_name, parent):
             srcinfo.resume()
         yield parse_body
 
-    else:
+    sonst:
         # not inline (member)
         log_match('compound member', m)
-        if qualspec:
+        wenn qualspec:
             _, name, data = parse_var_decl(f'{qualspec} {declarator}')
-            if not name:
+            wenn not name:
                 name = anon_name('struct-field-')
-            if size:
+            wenn size:
 #                data = (data, size)
-                data['size'] = int(size) if size.isdigit() else size
-        else:
+                data['size'] = int(size) wenn size.isdigit() sonst size
+        sonst:
             # This shouldn't happen (we expect each field to have a name).
             raise NotImplementedError
             name = sized_name or anon_name('struct-field-')
             data = int(size)
 
         yield srcinfo.resolve('field', data, name, parent)  # XXX Restart?
-        if ending == ',':
+        wenn ending == ',':
             remainder = rf'{qualspec} {remainder}'
         srcinfo.advance(remainder)
 
@@ -129,11 +129,11 @@ def parse_enum_body(source, _anon_name, _parent):
     while ending != '}':
         fuer srcinfo in source:
             m = ENUM_MEMBER_RE.match(srcinfo.text)
-            if m:
+            wenn m:
                 break
-        else:
+        sonst:
             # We ran out of lines.
-            if srcinfo is not None:
+            wenn srcinfo is not None:
                 srcinfo.done()
             return
         remainder = srcinfo.text[m.end():]
@@ -141,9 +141,9 @@ def parse_enum_body(source, _anon_name, _parent):
         (close,
          name, init, ending,
          ) = m.groups()
-        if close:
+        wenn close:
             ending = '}'
-        else:
+        sonst:
             data = init
             yield srcinfo.resolve('field', data, name, _parent)
         srcinfo.advance(remainder)

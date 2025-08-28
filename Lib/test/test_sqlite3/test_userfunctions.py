@@ -226,7 +226,7 @@ klasse FunctionTests(unittest.TestCase):
         cur.execute("select returnfloat()")
         val = cur.fetchone()[0]
         self.assertEqual(type(val), float)
-        if val < 3.139 or val > 3.141:
+        wenn val < 3.139 or val > 3.141:
             self.fail("wrong value")
 
     def test_func_return_null(self):
@@ -365,7 +365,7 @@ klasse FunctionTests(unittest.TestCase):
 
     def test_function_destructor_via_gc(self):
         # See bpo-44304: The destructor of the user function can
-        # crash if is called without the GIL from the gc functions
+        # crash wenn is called without the GIL from the gc functions
         def md5sum(t):
             return
 
@@ -727,9 +727,9 @@ klasse AggregateTests(unittest.TestCase):
 klasse AuthorizerTests(unittest.TestCase):
     @staticmethod
     def authorizer_cb(action, arg1, arg2, dbname, source):
-        if action != sqlite.SQLITE_SELECT:
+        wenn action != sqlite.SQLITE_SELECT:
             return sqlite.SQLITE_DENY
-        if arg2 == 'c2' or arg1 == 't2':
+        wenn arg2 == 'c2' or arg1 == 't2':
             return sqlite.SQLITE_DENY
         return sqlite.SQLITE_OK
 
@@ -774,9 +774,9 @@ klasse AuthorizerTests(unittest.TestCase):
 klasse AuthorizerRaiseExceptionTests(AuthorizerTests):
     @staticmethod
     def authorizer_cb(action, arg1, arg2, dbname, source):
-        if action != sqlite.SQLITE_SELECT:
+        wenn action != sqlite.SQLITE_SELECT:
             raise ValueError
-        if arg2 == 'c2' or arg1 == 't2':
+        wenn arg2 == 'c2' or arg1 == 't2':
             raise ValueError
         return sqlite.SQLITE_OK
 
@@ -791,21 +791,21 @@ klasse AuthorizerRaiseExceptionTests(AuthorizerTests):
 klasse AuthorizerIllegalTypeTests(AuthorizerTests):
     @staticmethod
     def authorizer_cb(action, arg1, arg2, dbname, source):
-        if action != sqlite.SQLITE_SELECT:
+        wenn action != sqlite.SQLITE_SELECT:
             return 0.0
-        if arg2 == 'c2' or arg1 == 't2':
+        wenn arg2 == 'c2' or arg1 == 't2':
             return 0.0
         return sqlite.SQLITE_OK
 
 klasse AuthorizerLargeIntegerTests(AuthorizerTests):
     @staticmethod
     def authorizer_cb(action, arg1, arg2, dbname, source):
-        if action != sqlite.SQLITE_SELECT:
+        wenn action != sqlite.SQLITE_SELECT:
             return 2**32
-        if arg2 == 'c2' or arg1 == 't2':
+        wenn arg2 == 'c2' or arg1 == 't2':
             return 2**32
         return sqlite.SQLITE_OK
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

@@ -41,5 +41,5 @@ klasse TestCase(unittest.TestCase):
         startfile(name, arguments="-V", cwd=cwd)
         startfile(name, arguments="-V", cwd=cwd, show_cmd=0)
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

@@ -38,11 +38,11 @@ klasse PdbTestInput(object):
     def __enter__(self):
         self.real_stdin = sys.stdin
         sys.stdin = FakeInput(self.input)
-        self.orig_trace = sys.gettrace() if hasattr(sys, 'gettrace') else None
+        self.orig_trace = sys.gettrace() wenn hasattr(sys, 'gettrace') sonst None
 
     def __exit__(self, *exc):
         sys.stdin = self.real_stdin
-        if self.orig_trace:
+        wenn self.orig_trace:
             sys.settrace(self.orig_trace)
 
 
@@ -297,7 +297,7 @@ def test_pdb_breakpoint_commands():
     (Pdb) break
     Num Type         Disp Enb   Where
     1   breakpoint   keep no    at <doctest test.test_pdb.test_pdb_breakpoint_commands[0]>:3
-            stop only if 1 < 2
+            stop only wenn 1 < 2
             ignore next 10 hits
     2   breakpoint   keep yes   at <doctest test.test_pdb.test_pdb_breakpoint_commands[0]>:4
     3   breakpoint   keep yes   at <doctest test.test_pdb.test_pdb_breakpoint_commands[0]>:4
@@ -306,7 +306,7 @@ def test_pdb_breakpoint_commands():
     (Pdb) break
     Num Type         Disp Enb   Where
     1   breakpoint   keep no    at <doctest test.test_pdb.test_pdb_breakpoint_commands[0]>:3
-            stop only if 1 < 2
+            stop only wenn 1 < 2
             ignore next 10 hits
     2   breakpoint   keep yes   at <doctest test.test_pdb.test_pdb_breakpoint_commands[0]>:4
     (Pdb) condition 1
@@ -1120,9 +1120,9 @@ def test_pdb_commands_with_set_trace():
     """
 
 
-# skip this test if sys.flags.no_site = True;
+# skip this test wenn sys.flags.no_site = True;
 # exit() isn't defined unless there's a site module.
-if not sys.flags.no_site:
+wenn not sys.flags.no_site:
     def test_pdb_interact_command():
         """Test interact command
 
@@ -1570,7 +1570,7 @@ def test_post_mortem_single_no_stack():
     ...        test_function()
     ...    except ValueError as e:
     ...        print(e)
-    A valid traceback must be passed if no exception is being handled
+    A valid traceback must be passed wenn no exception is being handled
     """
 
 def test_post_mortem_complex():
@@ -1614,9 +1614,9 @@ def test_post_mortem_complex():
     ...     try:
     ...         raise ValueError(f"Context Leaf {n}")
     ...     except Exception as e:
-    ...         if n == 0:
+    ...         wenn n == 0:
     ...             raise ValueError(f"With Context {n}") from e
-    ...         else:
+    ...         sonst:
     ...             context(n - 1)
     ...
 
@@ -1741,7 +1741,7 @@ def test_post_mortem():
 
 
 def test_pdb_return_to_different_file():
-    """When pdb returns to a different file, it should not skip if f_trace is
+    """When pdb returns to a different file, it should not skip wenn f_trace is
        not already set
 
     >>> import pprint
@@ -2069,11 +2069,11 @@ def test_pdb_next_command_for_generator():
     ...     import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
     ...     it = test_gen()
     ...     try:
-    ...         if next(it) != 0:
+    ...         wenn next(it) != 0:
     ...             raise AssertionError
     ...         next(it)
     ...     except StopIteration as ex:
-    ...         if ex.value != 1:
+    ...         wenn ex.value != 1:
     ...             raise AssertionError
     ...     print("finished")
 
@@ -2097,7 +2097,7 @@ def test_pdb_next_command_for_generator():
     -> try:
     (Pdb) step
     > <doctest test.test_pdb.test_pdb_next_command_for_generator[1]>(5)test_function()
-    -> if next(it) != 0:
+    -> wenn next(it) != 0:
     (Pdb) step
     --Call--
     > <doctest test.test_pdb.test_pdb_next_command_for_generator[0]>(1)test_gen()
@@ -2120,8 +2120,8 @@ def test_pdb_next_command_for_generator():
     finished
     """
 
-if not SKIP_CORO_TESTS:
-    if has_socket_support:
+wenn not SKIP_CORO_TESTS:
+    wenn has_socket_support:
         def test_pdb_asynctask():
             """Testing $_asynctask is accessible in async context
 
@@ -2450,11 +2450,11 @@ def test_pdb_return_command_for_generator():
     ...     import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
     ...     it = test_gen()
     ...     try:
-    ...         if next(it) != 0:
+    ...         wenn next(it) != 0:
     ...             raise AssertionError
     ...         next(it)
     ...     except StopIteration as ex:
-    ...         if ex.value != 1:
+    ...         wenn ex.value != 1:
     ...             raise AssertionError
     ...     print("finished")
 
@@ -2477,7 +2477,7 @@ def test_pdb_return_command_for_generator():
     -> try:
     (Pdb) step
     > <doctest test.test_pdb.test_pdb_return_command_for_generator[1]>(5)test_function()
-    -> if next(it) != 0:
+    -> wenn next(it) != 0:
     (Pdb) step
     --Call--
     > <doctest test.test_pdb.test_pdb_return_command_for_generator[0]>(1)test_gen()
@@ -2491,12 +2491,12 @@ def test_pdb_return_command_for_generator():
     -> except StopIteration as ex:
     (Pdb) step
     > <doctest test.test_pdb.test_pdb_return_command_for_generator[1]>(9)test_function()
-    -> if ex.value != 1:
+    -> wenn ex.value != 1:
     (Pdb) continue
     finished
     """
 
-if not SKIP_CORO_TESTS:
+wenn not SKIP_CORO_TESTS:
     def test_pdb_return_command_for_coroutine():
         """Testing no unwinding stack on yield fuer coroutines fuer "return" command
 
@@ -2542,7 +2542,7 @@ if not SKIP_CORO_TESTS:
 
 def test_pdb_until_command_for_generator():
     """Testing no unwinding stack on yield fuer generators
-       fuer "until" command if target breakpoint is not reached
+       fuer "until" command wenn target breakpoint is not reached
 
     >>> def test_gen():
     ...     yield 0
@@ -2588,10 +2588,10 @@ def test_pdb_until_command_for_generator():
     finished
     """
 
-if not SKIP_CORO_TESTS:
+wenn not SKIP_CORO_TESTS:
     def test_pdb_until_command_for_coroutine():
         """Testing no unwinding stack fuer coroutines
-        fuer "until" command if target breakpoint is not reached
+        fuer "until" command wenn target breakpoint is not reached
 
         >>> from test.support import run_yielding_async_fn, async_yield
 
@@ -2787,7 +2787,7 @@ def test_pdb_multiline_statement():
     ...     return x * 2
     ...
     (Pdb) val = 2
-    (Pdb) if val > 0:
+    (Pdb) wenn val > 0:
     ...     val = f(val)
     ...
     (Pdb)
@@ -2814,9 +2814,9 @@ def test_pdb_closure():
     ...     'global g; (lambda: g)()',
     ...     '(lambda: x)()',
     ...     '(lambda: g)()',
-    ...     'lst = [n fuer n in range(10) if (n % x) == 0]',
+    ...     'lst = [n fuer n in range(10) wenn (n % x) == 0]',
     ...     'lst',
-    ...     'sum(n fuer n in lst if n > x)',
+    ...     'sum(n fuer n in lst wenn n > x)',
     ...     'x = 1; raise Exception()',
     ...     'x',
     ...     'def f():',
@@ -2842,10 +2842,10 @@ def test_pdb_closure():
     2
     (Pdb) (lambda: g)()
     3
-    (Pdb) lst = [n fuer n in range(10) if (n % x) == 0]
+    (Pdb) lst = [n fuer n in range(10) wenn (n % x) == 0]
     (Pdb) lst
     [0, 2, 4, 6, 8]
-    (Pdb) sum(n fuer n in lst if n > x)
+    (Pdb) sum(n fuer n in lst wenn n > x)
     18
     (Pdb) x = 1; raise Exception()
     *** Exception
@@ -3235,7 +3235,7 @@ def test_pdb_issue_gh_127321():
 def test_pdb_issue_gh_80731():
     """See GH-80731
 
-    pdb should correctly print exception info if in an except block.
+    pdb should correctly print exception info wenn in an except block.
 
     >>> with PdbTestInput([  # doctest: +ELLIPSIS
     ...     'import sys',
@@ -3285,14 +3285,14 @@ def test_pdb_ambiguous_statements():
 def test_pdb_f_trace_lines():
     """GH-80675
 
-    pdb should work even if f_trace_lines is set to False on some frames.
+    pdb should work even wenn f_trace_lines is set to False on some frames.
 
     >>> def test_function():
     ...     import sys
     ...     frame = sys._getframe()
     ...     frame.f_trace_lines = False
     ...     import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
-    ...     if frame.f_trace_lines != False:
+    ...     wenn frame.f_trace_lines != False:
     ...         print("f_trace_lines is not reset after continue!")
 
     >>> with PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
@@ -3399,7 +3399,7 @@ def test_pdb_function_break():
 def test_pdb_issue_gh_65052():
     """See GH-65052
 
-    args, retval and display should not crash if the object is not displayable
+    args, retval and display should not crash wenn the object is not displayable
     >>> klasse A:
     ...     def __new__(cls):
     ...         import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
@@ -3461,9 +3461,9 @@ klasse PdbTestCase(unittest.TestCase):
                  extra_env=None):
         self.addCleanup(os_helper.rmtree, '__pycache__')
         cmd = [sys.executable, '-m', 'pdb'] + pdb_args
-        if extra_env is not None:
+        wenn extra_env is not None:
             env = os.environ | extra_env
-        else:
+        sonst:
             env = os.environ
         with subprocess.Popen(
                 cmd,
@@ -3473,8 +3473,8 @@ klasse PdbTestCase(unittest.TestCase):
                 env = {**env, 'PYTHONIOENCODING': 'utf-8'}
         ) as proc:
             stdout, stderr = proc.communicate(str.encode(commands))
-        stdout = bytes.decode(stdout) if isinstance(stdout, bytes) else stdout
-        stderr = bytes.decode(stderr) if isinstance(stderr, bytes) else stderr
+        stdout = bytes.decode(stdout) wenn isinstance(stdout, bytes) sonst stdout
+        stderr = bytes.decode(stderr) wenn isinstance(stderr, bytes) sonst stderr
         self.assertEqual(
             proc.returncode,
             expected_returncode,
@@ -3493,16 +3493,16 @@ klasse PdbTestCase(unittest.TestCase):
         with open(filename, 'w') as f:
             f.write(textwrap.dedent(script))
 
-        if pdbrc is not None:
+        wenn pdbrc is not None:
             with open('.pdbrc', 'w') as f:
                 f.write(textwrap.dedent(pdbrc))
             self.addCleanup(os_helper.unlink, '.pdbrc')
         self.addCleanup(os_helper.unlink, filename)
 
         with os_helper.EnvironmentVarGuard() as env:
-            if remove_home:
+            wenn remove_home:
                 env.unset('HOME')
-            if script_args is None:
+            wenn script_args is None:
                 script_args = []
             stdout, stderr = self._run_pdb([filename] + script_args, commands, expected_returncode, extra_env)
         return stdout, stderr
@@ -3525,7 +3525,7 @@ klasse PdbTestCase(unittest.TestCase):
         with open(os_helper.TESTFN, 'wb') as f:
             f.write(file_content)
 
-        expected = None if not expected else (
+        expected = None wenn not expected sonst (
             expected[0], os_helper.TESTFN, expected[1])
         self.assertEqual(
             expected, pdb.find_function(func_name, os_helper.TESTFN))
@@ -3960,7 +3960,7 @@ def bœr():
 
     def test_module_is_run_as_main(self):
         script = """
-            if __name__ == '__main__':
+            wenn __name__ == '__main__':
                 print("SUCCESS")
         """
         commands = """
@@ -3997,7 +3997,7 @@ def bœr():
 
     def test_breakpoint(self):
         script = """
-            if __name__ == '__main__':
+            wenn __name__ == '__main__':
                 pass
                 print("SUCCESS")
                 pass
@@ -4422,7 +4422,7 @@ def bœr():
             with open('gh93696.py') as f:
                 src = f.read()
 
-            # this function has a co_filename as if it were in a frozen module
+            # this function has a co_filename as wenn it were in a frozen module
             dummy_mod = compile(src, "<frozen gh93696>", "exec")
             func_code = dummy_mod.co_consts[0]
 
@@ -4481,7 +4481,7 @@ def bœr():
     def test_non_utf8_encoding(self):
         script_dir = os.path.join(os.path.dirname(__file__), 'encoded_modules')
         fuer filename in os.listdir(script_dir):
-            if filename.endswith(".py"):
+            wenn filename.endswith(".py"):
                 self._run_pdb([os.path.join(script_dir, filename)], 'q')
 
     def test_zipapp(self):
@@ -4593,9 +4593,9 @@ klasse PdbTestInline(unittest.TestCase):
         commands = textwrap.dedent(commands)
 
         cmd = [sys.executable, 'main.py']
-        if extra_env is not None:
+        wenn extra_env is not None:
             env = os.environ | extra_env
-        else:
+        sonst:
             env = os.environ
         with subprocess.Popen(
                 cmd,
@@ -4605,8 +4605,8 @@ klasse PdbTestInline(unittest.TestCase):
                 env = {**env, 'PYTHONIOENCODING': 'utf-8'}
         ) as proc:
             stdout, stderr = proc.communicate(str.encode(commands))
-        stdout = bytes.decode(stdout) if isinstance(stdout, bytes) else stdout
-        stderr = bytes.decode(stderr) if isinstance(stderr, bytes) else stderr
+        stdout = bytes.decode(stdout) wenn isinstance(stdout, bytes) sonst stdout
+        stderr = bytes.decode(stderr) wenn isinstance(stderr, bytes) sonst stderr
         self.assertEqual(
             proc.returncode,
             expected_returncode,
@@ -4755,7 +4755,7 @@ klasse PdbTestReadline(unittest.TestCase):
         # Ensure that the readline module is loaded
         # If this fails, the test is skipped because SkipTest will be raised
         readline = import_module('readline')
-        if readline.backend == "editline":
+        wenn readline.backend == "editline":
             raise unittest.SkipTest("libedit readline is not supported fuer pdb")
 
     def test_basic_completion(self):
@@ -4899,7 +4899,7 @@ klasse PdbTestReadline(unittest.TestCase):
 
         # \t should always complete a 4-space indent
         # This piece of code will raise an IndentationError or a SyntaxError
-        # if the completion is not working as expected
+        # wenn the completion is not working as expected
         input = textwrap.dedent("""\
             def func():
             a = 1
@@ -4974,7 +4974,7 @@ def load_tests(loader, tests, pattern):
         bdb.Breakpoint.clearBreakpoints()
 
         # Stop tracing and clear the pdb instance cache
-        if pdb.Pdb._last_pdb_instance:
+        wenn pdb.Pdb._last_pdb_instance:
             pdb.Pdb._last_pdb_instance.stop_trace()
             pdb.Pdb._last_pdb_instance = None
 
@@ -4999,5 +4999,5 @@ def load_tests(loader, tests, pattern):
     return tests
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

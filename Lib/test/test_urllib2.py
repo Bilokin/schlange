@@ -60,9 +60,9 @@ klasse TrivialTests(unittest.TestCase):
         # XXX Name hacking to get this to work on Windows.
         fname = os.path.abspath(urllib.request.__file__).replace(os.sep, '/')
 
-        if os.name == 'nt':
+        wenn os.name == 'nt':
             file_url = "file:///%s" % fname
-        else:
+        sonst:
             file_url = "file://%s" % fname
 
         with urllib.request.urlopen(file_url) as f:
@@ -365,22 +365,22 @@ klasse MockHTTPClass:
     def set_tunnel(self, host, port=None, headers=None):
         self._tunnel_host = host
         self._tunnel_port = port
-        if headers:
+        wenn headers:
             self._tunnel_headers = headers
-        else:
+        sonst:
             self._tunnel_headers.clear()
 
     def request(self, method, url, body=None, headers=None, *,
                 encode_chunked=False):
         self.method = method
         self.selector = url
-        if headers is not None:
+        wenn headers is not None:
             self.req_headers += headers.items()
         self.req_headers.sort()
-        if body:
+        wenn body:
             self.data = body
         self.encode_chunked = encode_chunked
-        if self.raise_on_endheaders:
+        wenn self.raise_on_endheaders:
             raise OSError()
 
     def getresponse(self):
@@ -400,25 +400,25 @@ klasse MockHandler:
 
     def _define_methods(self, methods):
         fuer spec in methods:
-            if len(spec) == 2:
+            wenn len(spec) == 2:
                 name, action = spec
-            else:
+            sonst:
                 name, action = spec, None
             meth = FakeMethod(name, action, self.handle)
             setattr(self.__class__, name, meth)
 
     def handle(self, fn_name, action, *args, **kwds):
         self.parent.calls.append((self, fn_name, args, kwds))
-        if action is None:
+        wenn action is None:
             return None
-        elif action == "return self":
+        sowenn action == "return self":
             return self
-        elif action == "return response":
+        sowenn action == "return response":
             res = MockResponse(200, "OK", {}, "")
             return res
-        elif action == "return request":
+        sowenn action == "return request":
             return Request("http://blah/")
-        elif action.startswith("error"):
+        sowenn action.startswith("error"):
             code = action[action.rfind(" ")+1:]
             try:
                 code = int(code)
@@ -426,7 +426,7 @@ klasse MockHandler:
                 pass
             res = MockResponse(200, "OK", {}, "")
             return self.parent.error("http", args[0], res, code, "", {})
-        elif action == "raise":
+        sowenn action == "raise":
             raise urllib.error.URLError("blah")
         assert False
 
@@ -438,7 +438,7 @@ klasse MockHandler:
         self.parent.calls = []
 
     def __lt__(self, other):
-        if not hasattr(other, "handler_order"):
+        wenn not hasattr(other, "handler_order"):
             # No handler_order, leave in original order.  Yuck.
             return True
         return self.handler_order < other.handler_order
@@ -512,19 +512,19 @@ klasse MockHTTPHandlerRedirect(urllib.request.BaseHandler):
     def http_open(self, req):
         import email, copy
         self.requests.append(copy.deepcopy(req))
-        if self._count == 0:
+        wenn self._count == 0:
             self._count = self._count + 1
             name = http.client.responses[self.code]
             msg = email.message_from_string(self.headers)
             return self.parent.error(
                 "http", req, MockFile(), self.code, name, msg)
-        else:
+        sonst:
             self.req = req
             msg = email.message_from_string("\r\n\r\n")
             return MockResponse(200, "OK", msg, "", req.get_full_url())
 
 
-if hasattr(http.client, 'HTTPSConnection'):
+wenn hasattr(http.client, 'HTTPSConnection'):
     klasse MockHTTPSHandler(urllib.request.HTTPSHandler):
         # Useful fuer testing the Proxy-Authorization request by verifying the
         # properties of httpcon
@@ -540,7 +540,7 @@ if hasattr(http.client, 'HTTPSConnection'):
 klasse MockHTTPHandlerCheckAuth(urllib.request.BaseHandler):
     # useful fuer testing auth
     # sends supplied code response
-    # checks if auth header is specified in request
+    # checks wenn auth header is specified in request
     def __init__(self, code):
         self.code = code
         self.has_auth_header = False
@@ -549,7 +549,7 @@ klasse MockHTTPHandlerCheckAuth(urllib.request.BaseHandler):
         self.has_auth_header = False
 
     def http_open(self, req):
-        if req.has_header('Authorization'):
+        wenn req.has_header('Authorization'):
             self.has_auth_header = True
         name = http.client.responses[self.code]
         return MockResponse(self.code, name, MockFile(), "", req.get_full_url())
@@ -698,19 +698,19 @@ klasse OpenerDirectorTests(unittest.TestCase):
             (handlers[0], "http_response"), (handlers[1], "http_response")]
 
         fuer i, (handler, name, args, kwds) in enumerate(o.calls):
-            if i < 2:
+            wenn i < 2:
                 # *_request
                 self.assertEqual((handler, name), calls[i])
                 self.assertEqual(len(args), 1)
                 self.assertIsInstance(args[0], Request)
-            else:
+            sonst:
                 # *_response
                 self.assertEqual((handler, name), calls[i])
                 self.assertEqual(len(args), 2)
                 self.assertIsInstance(args[0], Request)
                 # response from opener.open is None, because there's no
                 # handler that defines http_open to handle it
-                if args[1] is not None:
+                wenn args[1] is not None:
                     self.assertIsInstance(args[1], MockResponse)
 
 
@@ -799,7 +799,7 @@ klasse HandlerTests(unittest.TestCase):
         except urllib.error.URLError as raised:
             self.assertEqual(raised.reason,
                              f"ftp error: {exception.args[0]}")
-        else:
+        sonst:
             self.fail("Did not raise ftplib exception")
 
     def test_file(self):
@@ -811,7 +811,7 @@ klasse HandlerTests(unittest.TestCase):
         towrite = b"hello, world\n"
         canonurl = urllib.request.pathname2url(os.path.abspath(TESTFN), add_scheme=True)
         parsed = urlsplit(canonurl)
-        if parsed.netloc:
+        wenn parsed.netloc:
             raise unittest.SkipTest("non-local working directory")
         urls = [
             canonurl,
@@ -822,7 +822,7 @@ klasse HandlerTests(unittest.TestCase):
             localaddr = socket.gethostbyname(socket.gethostname())
         except socket.gaierror:
             localaddr = ''
-        if localaddr:
+        wenn localaddr:
             urls.append(parsed._replace(netloc=localaddr).geturl())
 
         fuer url in urls:
@@ -892,7 +892,7 @@ klasse HandlerTests(unittest.TestCase):
                 h.file_open(req)
             except urllib.error.URLError:
                 self.assertFalse(ftp)
-            else:
+            sonst:
                 self.assertIs(o.req, req)
                 self.assertEqual(req.type, "ftp")
             self.assertEqual(req.type == "ftp", ftp)
@@ -941,10 +941,10 @@ klasse HandlerTests(unittest.TestCase):
             req = Request("http://example.com/", data)
             r = MockResponse(200, "OK", {}, "")
             newreq = h.do_request_(req)
-            if data is None:  # GET
+            wenn data is None:  # GET
                 self.assertNotIn("Content-length", req.unredirected_hdrs)
                 self.assertNotIn("Content-type", req.unredirected_hdrs)
-            else:  # POST
+            sonst:  # POST
                 self.assertEqual(req.unredirected_hdrs["Content-length"], "0")
                 self.assertEqual(req.unredirected_hdrs["Content-type"],
                              "application/x-www-form-urlencoded")
@@ -1026,11 +1026,11 @@ klasse HandlerTests(unittest.TestCase):
             with subprocess.Popen(cmd, stdout=subprocess.PIPE) as proc:
                 req = Request("http://example.com/", proc.stdout, headers)
                 newreq = h.do_request_(req)
-                if not headers:
+                wenn not headers:
                     self.assertEqual(newreq.get_header('Content-length'), None)
                     self.assertEqual(newreq.get_header('Transfer-encoding'),
                                      'chunked')
-                else:
+                sonst:
                     self.assertEqual(int(newreq.get_header('Content-length')),
                                      30)
 
@@ -1047,11 +1047,11 @@ klasse HandlerTests(unittest.TestCase):
         fuer headers in {}, {"Content-Length": 11}:
             req = Request("http://example.com/", iterable_body(), headers)
             newreq = h.do_request_(req)
-            if not headers:
+            wenn not headers:
                 self.assertEqual(newreq.get_header('Content-length'), None)
                 self.assertEqual(newreq.get_header('Transfer-encoding'),
                                  'chunked')
-            else:
+            sonst:
                 self.assertEqual(int(newreq.get_header('Content-length')), 11)
 
     def test_http_body_empty_seq(self):
@@ -1125,11 +1125,11 @@ klasse HandlerTests(unittest.TestCase):
         fuer ds_url in ds_urls:
             ds_req = Request(ds_url, data)
 
-            # Check whether host is determined correctly if there is no proxy
+            # Check whether host is determined correctly wenn there is no proxy
             np_ds_req = h.do_request_(ds_req)
             self.assertEqual(np_ds_req.unredirected_hdrs["Host"], "example.com")
 
-            # Check whether host is determined correctly if there is a proxy
+            # Check whether host is determined correctly wenn there is a proxy
             ds_req.set_proxy("someproxy:3128", None)
             p_ds_req = h.do_request_(ds_req)
             self.assertEqual(p_ds_req.unredirected_hdrs["Host"], "example.com")
@@ -1202,7 +1202,7 @@ klasse HandlerTests(unittest.TestCase):
         newr = h.http_response(req, r)
         self.assertIs(r, newr)
         self.assertNotHasAttr(o, "proto")  # o.error not called
-        # anything else calls o.error (and MockOpener returns None, here)
+        # anything sonst calls o.error (and MockOpener returns None, here)
         r = MockResponse(502, "Bad gateway", {}, "", url)
         self.assertIsNone(h.http_response(req, r))
         self.assertEqual(o.proto, "http")  # o.error called
@@ -1238,7 +1238,7 @@ klasse HandlerTests(unittest.TestCase):
                 req = Request(from_url, data)
                 req.timeout = socket._GLOBAL_DEFAULT_TIMEOUT
                 req.add_header("Nonsense", "viking=withhold")
-                if data is not None:
+                wenn data is not None:
                     req.add_header("Content-Length", str(len(data)))
                 req.add_unredirected_header("Spam", "spam")
                 try:
@@ -1646,7 +1646,7 @@ klasse HandlerTests(unittest.TestCase):
                               )
 
     def test_basic_and_digest_auth_handlers(self):
-        # HTTPDigestAuthHandler raised an exception if it couldn't handle a 40*
+        # HTTPDigestAuthHandler raised an exception wenn it couldn't handle a 40*
         # response (https://bugs.python.org/issue1479302), where it should instead
         # return None to allow another handler (especially
         # HTTPBasicAuthHandler) to handle the response.
@@ -1744,7 +1744,7 @@ klasse HandlerTests(unittest.TestCase):
                          auth_hdr_value)
         self.assertEqual(http_handler.requests[1].unredirected_hdrs[auth_header],
                          auth_hdr_value)
-        # if the password manager can't find a password, the handler won't
+        # wenn the password manager can't find a password, the handler won't
         # handle the HTTP auth error
         password_manager.user = password_manager.password = None
         http_handler.reset()
@@ -1753,7 +1753,7 @@ klasse HandlerTests(unittest.TestCase):
         self.assertFalse(http_handler.requests[0].has_header(auth_header))
 
     def test_basic_prior_auth_auto_send(self):
-        # Assume already authenticated if is_authenticated=True
+        # Assume already authenticated wenn is_authenticated=True
         # fuer APIs like Github that don't return 401
 
         user, password = "wile", "coyote"
@@ -2034,7 +2034,7 @@ klasse RequestTests(unittest.TestCase):
         self.assertEqual("POST", self.get.get_method())
 
     # issue 16464
-    # if we change data we need to remove content-length header
+    # wenn we change data we need to remove content-length header
     # (cause it's most probably calculated fuer previous value)
     def test_setting_data_should_remove_content_length(self):
         self.assertNotIn("Content-length", self.get.unredirected_hdrs)
@@ -2102,5 +2102,5 @@ klasse RequestTests(unittest.TestCase):
             self.assertEqual(req.get_full_url(), req.full_url)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

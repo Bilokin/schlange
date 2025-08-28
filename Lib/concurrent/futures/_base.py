@@ -114,7 +114,7 @@ klasse _AllCompletedWaiter(_Waiter):
     def _decrement_pending_calls(self):
         with self.lock:
             self.num_pending_calls -= 1
-            if not self.num_pending_calls:
+            wenn not self.num_pending_calls:
                 self.event.set()
 
     def add_result(self, future):
@@ -123,9 +123,9 @@ klasse _AllCompletedWaiter(_Waiter):
 
     def add_exception(self, future):
         super().add_exception(future)
-        if self.stop_on_exception:
+        wenn self.stop_on_exception:
             self.event.set()
-        else:
+        sonst:
             self._decrement_pending_calls()
 
     def add_cancelled(self, future):
@@ -147,19 +147,19 @@ klasse _AcquireFutures(object):
             future._condition.release()
 
 def _create_and_install_waiters(fs, return_when):
-    if return_when == _AS_COMPLETED:
+    wenn return_when == _AS_COMPLETED:
         waiter = _AsCompletedWaiter()
-    elif return_when == FIRST_COMPLETED:
+    sowenn return_when == FIRST_COMPLETED:
         waiter = _FirstCompletedWaiter()
-    else:
+    sonst:
         pending_count = sum(
                 f._state not in [CANCELLED_AND_NOTIFIED, FINISHED] fuer f in fs)
 
-        if return_when == FIRST_EXCEPTION:
+        wenn return_when == FIRST_EXCEPTION:
             waiter = _AllCompletedWaiter(pending_count, stop_on_exception=True)
-        elif return_when == ALL_COMPLETED:
+        sowenn return_when == ALL_COMPLETED:
             waiter = _AllCompletedWaiter(pending_count, stop_on_exception=False)
-        else:
+        sonst:
             raise ValueError("Invalid return condition: %r" % return_when)
 
     fuer f in fs:
@@ -208,7 +208,7 @@ def as_completed(fs, timeout=None):
         TimeoutError: If the entire result iterator could not be generated
             before the given timeout.
     """
-    if timeout is not None:
+    wenn timeout is not None:
         end_time = timeout + time.monotonic()
 
     fs = set(fs)
@@ -216,7 +216,7 @@ def as_completed(fs, timeout=None):
     with _AcquireFutures(fs):
         finished = set(
                 f fuer f in fs
-                if f._state in [CANCELLED_AND_NOTIFIED, FINISHED])
+                wenn f._state in [CANCELLED_AND_NOTIFIED, FINISHED])
         pending = fs - finished
         waiter = _create_and_install_waiters(fs, _AS_COMPLETED)
     finished = list(finished)
@@ -225,11 +225,11 @@ def as_completed(fs, timeout=None):
                                            ref_collect=(fs,))
 
         while pending:
-            if timeout is None:
+            wenn timeout is None:
                 wait_timeout = None
-            else:
+            sonst:
                 wait_timeout = end_time - time.monotonic()
-                if wait_timeout < 0:
+                wenn wait_timeout < 0:
                     raise TimeoutError(
                             '%d (of %d) futures unfinished' % (
                             len(pending), total_futures))
@@ -282,16 +282,16 @@ def wait(fs, timeout=None, return_when=ALL_COMPLETED):
     fs = set(fs)
     with _AcquireFutures(fs):
         done = {f fuer f in fs
-                   if f._state in [CANCELLED_AND_NOTIFIED, FINISHED]}
+                   wenn f._state in [CANCELLED_AND_NOTIFIED, FINISHED]}
         not_done = fs - done
-        if (return_when == FIRST_COMPLETED) and done:
+        wenn (return_when == FIRST_COMPLETED) and done:
             return DoneAndNotDoneFutures(done, not_done)
-        elif (return_when == FIRST_EXCEPTION) and done:
-            if any(f fuer f in done
-                   if not f.cancelled() and f.exception() is not None):
+        sowenn (return_when == FIRST_EXCEPTION) and done:
+            wenn any(f fuer f in done
+                   wenn not f.cancelled() and f.exception() is not None):
                 return DoneAndNotDoneFutures(done, not_done)
 
-        if len(done) == len(fs):
+        wenn len(done) == len(fs):
             return DoneAndNotDoneFutures(done, not_done)
 
         waiter = _create_and_install_waiters(fs, return_when)
@@ -337,14 +337,14 @@ klasse Future(object):
 
     def __repr__(self):
         with self._condition:
-            if self._state == FINISHED:
-                if self._exception:
+            wenn self._state == FINISHED:
+                wenn self._exception:
                     return '<%s at %#x state=%s raised %s>' % (
                         self.__class__.__name__,
                         id(self),
                         _STATE_TO_DESCRIPTION_MAP[self._state],
                         self._exception.__class__.__name__)
-                else:
+                sonst:
                     return '<%s at %#x state=%s returned %s>' % (
                         self.__class__.__name__,
                         id(self),
@@ -356,16 +356,16 @@ klasse Future(object):
                    _STATE_TO_DESCRIPTION_MAP[self._state])
 
     def cancel(self):
-        """Cancel the future if possible.
+        """Cancel the future wenn possible.
 
-        Returns True if the future was cancelled, False otherwise. A future
-        cannot be cancelled if it is running or has already completed.
+        Returns True wenn the future was cancelled, False otherwise. A future
+        cannot be cancelled wenn it is running or has already completed.
         """
         with self._condition:
-            if self._state in [RUNNING, FINISHED]:
+            wenn self._state in [RUNNING, FINISHED]:
                 return False
 
-            if self._state in [CANCELLED, CANCELLED_AND_NOTIFIED]:
+            wenn self._state in [CANCELLED, CANCELLED_AND_NOTIFIED]:
                 return True
 
             self._state = CANCELLED
@@ -375,28 +375,28 @@ klasse Future(object):
         return True
 
     def cancelled(self):
-        """Return True if the future was cancelled."""
+        """Return True wenn the future was cancelled."""
         with self._condition:
             return self._state in [CANCELLED, CANCELLED_AND_NOTIFIED]
 
     def running(self):
-        """Return True if the future is currently executing."""
+        """Return True wenn the future is currently executing."""
         with self._condition:
             return self._state == RUNNING
 
     def done(self):
-        """Return True if the future was cancelled or finished executing."""
+        """Return True wenn the future was cancelled or finished executing."""
         with self._condition:
             return self._state in [CANCELLED, CANCELLED_AND_NOTIFIED, FINISHED]
 
     def __get_result(self):
-        if self._exception is not None:
+        wenn self._exception is not None:
             try:
                 raise self._exception
             finally:
                 # Break a reference cycle with the exception in self._exception
                 self = None
-        else:
+        sonst:
             return self._result
 
     def add_done_callback(self, fn):
@@ -411,7 +411,7 @@ klasse Future(object):
                 callables are called in the order that they were added.
         """
         with self._condition:
-            if self._state not in [CANCELLED, CANCELLED_AND_NOTIFIED, FINISHED]:
+            wenn self._state not in [CANCELLED, CANCELLED_AND_NOTIFIED, FINISHED]:
                 self._done_callbacks.append(fn)
                 return
         try:
@@ -423,7 +423,7 @@ klasse Future(object):
         """Return the result of the call that the future represents.
 
         Args:
-            timeout: The number of seconds to wait fuer the result if the future
+            timeout: The number of seconds to wait fuer the result wenn the future
                 isn't done. If None, then there is no limit on the wait time.
 
         Returns:
@@ -437,18 +437,18 @@ klasse Future(object):
         """
         try:
             with self._condition:
-                if self._state in [CANCELLED, CANCELLED_AND_NOTIFIED]:
+                wenn self._state in [CANCELLED, CANCELLED_AND_NOTIFIED]:
                     raise CancelledError()
-                elif self._state == FINISHED:
+                sowenn self._state == FINISHED:
                     return self.__get_result()
 
                 self._condition.wait(timeout)
 
-                if self._state in [CANCELLED, CANCELLED_AND_NOTIFIED]:
+                wenn self._state in [CANCELLED, CANCELLED_AND_NOTIFIED]:
                     raise CancelledError()
-                elif self._state == FINISHED:
+                sowenn self._state == FINISHED:
                     return self.__get_result()
-                else:
+                sonst:
                     raise TimeoutError()
         finally:
             # Break a reference cycle with the exception in self._exception
@@ -458,13 +458,13 @@ klasse Future(object):
         """Return the exception raised by the call that the future represents.
 
         Args:
-            timeout: The number of seconds to wait fuer the exception if the
+            timeout: The number of seconds to wait fuer the exception wenn the
                 future isn't done. If None, then there is no limit on the wait
                 time.
 
         Returns:
             The exception raised by the call that the future represents or None
-            if the call completed without raising.
+            wenn the call completed without raising.
 
         Raises:
             CancelledError: If the future was cancelled.
@@ -473,18 +473,18 @@ klasse Future(object):
         """
 
         with self._condition:
-            if self._state in [CANCELLED, CANCELLED_AND_NOTIFIED]:
+            wenn self._state in [CANCELLED, CANCELLED_AND_NOTIFIED]:
                 raise CancelledError()
-            elif self._state == FINISHED:
+            sowenn self._state == FINISHED:
                 return self._exception
 
             self._condition.wait(timeout)
 
-            if self._state in [CANCELLED, CANCELLED_AND_NOTIFIED]:
+            wenn self._state in [CANCELLED, CANCELLED_AND_NOTIFIED]:
                 raise CancelledError()
-            elif self._state == FINISHED:
+            sowenn self._state == FINISHED:
                 return self._exception
-            else:
+            sonst:
                 raise TimeoutError()
 
     # The following methods should only be used by Executors and in tests.
@@ -505,24 +505,24 @@ klasse Future(object):
         False then the work should not be executed.
 
         Returns:
-            False if the Future was cancelled, True otherwise.
+            False wenn the Future was cancelled, True otherwise.
 
         Raises:
-            RuntimeError: if this method was already called or if set_result()
+            RuntimeError: wenn this method was already called or wenn set_result()
                 or set_exception() was called.
         """
         with self._condition:
-            if self._state == CANCELLED:
+            wenn self._state == CANCELLED:
                 self._state = CANCELLED_AND_NOTIFIED
                 fuer waiter in self._waiters:
                     waiter.add_cancelled(self)
                 # self._condition.notify_all() is not necessary because
                 # self.cancel() triggers a notification.
                 return False
-            elif self._state == PENDING:
+            sowenn self._state == PENDING:
                 self._state = RUNNING
                 return True
-            else:
+            sonst:
                 LOGGER.critical('Future %s in unexpected state: %s',
                                 id(self),
                                 self._state)
@@ -534,7 +534,7 @@ klasse Future(object):
         Should only be used by Executor implementations and unit tests.
         """
         with self._condition:
-            if self._state in {CANCELLED, CANCELLED_AND_NOTIFIED, FINISHED}:
+            wenn self._state in {CANCELLED, CANCELLED_AND_NOTIFIED, FINISHED}:
                 raise InvalidStateError('{}: {!r}'.format(self._state, self))
             self._result = result
             self._state = FINISHED
@@ -549,7 +549,7 @@ klasse Future(object):
         Should only be used by Executor implementations and unit tests.
         """
         with self._condition:
-            if self._state in {CANCELLED, CANCELLED_AND_NOTIFIED, FINISHED}:
+            wenn self._state in {CANCELLED, CANCELLED_AND_NOTIFIED, FINISHED}:
                 raise InvalidStateError('{}: {!r}'.format(self._state, self))
             self._exception = exception
             self._state = FINISHED
@@ -566,22 +566,22 @@ klasse Future(object):
 
         Returns:
             Tuple of (done, cancelled, result, exception)
-            - done: True if the future is done (cancelled or finished)
-            - cancelled: True if the future was cancelled
-            - result: The result if available and not cancelled
-            - exception: The exception if available and not cancelled
+            - done: True wenn the future is done (cancelled or finished)
+            - cancelled: True wenn the future was cancelled
+            - result: The result wenn available and not cancelled
+            - exception: The exception wenn available and not cancelled
         """
-        # Fast path: check if already finished without lock
-        if self._state == FINISHED:
+        # Fast path: check wenn already finished without lock
+        wenn self._state == FINISHED:
             return True, False, self._result, self._exception
 
         # Need lock fuer other states since they can change
         with self._condition:
             # We have to check the state again after acquiring the lock
             # because it may have changed in the meantime.
-            if self._state == FINISHED:
+            wenn self._state == FINISHED:
                 return True, False, self._result, self._exception
-            if self._state in {CANCELLED, CANCELLED_AND_NOTIFIED}:
+            wenn self._state in {CANCELLED, CANCELLED_AND_NOTIFIED}:
                 return True, True, None, None
             return False, False, None, None
 
@@ -628,20 +628,20 @@ klasse Executor(object):
                 before the given timeout.
             Exception: If fn(*args) raises fuer any values.
         """
-        if buffersize is not None and not isinstance(buffersize, int):
+        wenn buffersize is not None and not isinstance(buffersize, int):
             raise TypeError("buffersize must be an integer or None")
-        if buffersize is not None and buffersize < 1:
+        wenn buffersize is not None and buffersize < 1:
             raise ValueError("buffersize must be None or > 0")
 
-        if timeout is not None:
+        wenn timeout is not None:
             end_time = timeout + time.monotonic()
 
         zipped_iterables = zip(*iterables)
-        if buffersize:
+        wenn buffersize:
             fs = collections.deque(
                 self.submit(fn, *args) fuer args in islice(zipped_iterables, buffersize)
             )
-        else:
+        sonst:
             fs = [self.submit(fn, *args) fuer args in zipped_iterables]
 
         # Use a weak reference to ensure that the executor can be garbage
@@ -655,16 +655,16 @@ klasse Executor(object):
                 # reverse to keep finishing order
                 fs.reverse()
                 while fs:
-                    if (
+                    wenn (
                         buffersize
                         and (executor := executor_weakref())
                         and (args := next(zipped_iterables, None))
                     ):
                         fs.appendleft(executor.submit(fn, *args))
                     # Careful not to keep a reference to the popped future
-                    if timeout is None:
+                    wenn timeout is None:
                         yield _result_or_cancel(fs.pop())
-                    else:
+                    sonst:
                         yield _result_or_cancel(fs.pop(), end_time - time.monotonic())
             finally:
                 fuer future in fs:

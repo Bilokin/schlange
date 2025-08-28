@@ -122,7 +122,7 @@ klasse MimeTypesTestCase(unittest.TestCase):
 
     def test_filename_with_url_delimiters(self):
         # bpo-38449: URL delimiters cases should be handled also.
-        # They would have different mime types if interpreted as URL as
+        # They would have different mime types wenn interpreted as URL as
         # compared to when interpreted as filename because of the semicolon.
         eq = self.assertEqual
         gzip_expected = ('application/x-tar', 'gzip')
@@ -142,7 +142,7 @@ klasse MimeTypesTestCase(unittest.TestCase):
                 with self.subTest(path=path):
                     eq(self.db.guess_file_type(path), gzip_expected)
                     eq(self.db.guess_type(path), gzip_expected)
-            expected = (None, None) if os.name == 'nt' else gzip_expected
+            expected = (None, None) wenn os.name == 'nt' sonst gzip_expected
             fuer prefix in ('//', '\\\\', '//share/', '\\\\share\\'):
                 path = prefix + name
                 with self.subTest(path=path):
@@ -153,7 +153,7 @@ klasse MimeTypesTestCase(unittest.TestCase):
 
         eq(self.db.guess_file_type(r'foo/.tar.gz'), (None, 'gzip'))
         eq(self.db.guess_type(r'foo/.tar.gz'), (None, 'gzip'))
-        expected = (None, 'gzip') if os.name == 'nt' else gzip_expected
+        expected = (None, 'gzip') wenn os.name == 'nt' sonst gzip_expected
         eq(self.db.guess_file_type(r'foo\.tar.gz'), expected)
         eq(self.db.guess_type(r'foo\.tar.gz'), expected)
         eq(self.db.guess_type(r'scheme:foo\.tar.gz'), gzip_expected)
@@ -506,5 +506,5 @@ klasse CommandLineTest(unittest.TestCase):
                 self.assertEqual(result, expected)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

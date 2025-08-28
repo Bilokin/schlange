@@ -9,7 +9,7 @@ klasse NetrcTestCase(unittest.TestCase):
     def make_nrc(self, test_data):
         test_data = textwrap.dedent(test_data)
         mode = 'w'
-        if sys.platform != 'cygwin':
+        wenn sys.platform != 'cygwin':
             mode += 't'
         with open(temp_filename, mode, encoding="utf-8") as fp:
             fp.write(test_data)
@@ -92,11 +92,11 @@ klasse NetrcTestCase(unittest.TestCase):
 
     def _test_token_x(self, nrc, token, value):
         nrc = self.make_nrc(nrc)
-        if token == 'login':
+        wenn token == 'login':
             self.assertEqual(nrc.hosts['host.domain.com'], (value, 'acct', 'pass'))
-        elif token == 'account':
+        sowenn token == 'account':
             self.assertEqual(nrc.hosts['host.domain.com'], ('log', value, 'pass'))
-        elif token == 'password':
+        sowenn token == 'password':
             self.assertEqual(nrc.hosts['host.domain.com'], ('log', 'acct', value))
 
     def test_token_value_quotes(self):
@@ -310,5 +310,5 @@ klasse NetrcTestCase(unittest.TestCase):
                              ('anonymous', '', 'pass'))
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

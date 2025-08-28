@@ -49,7 +49,7 @@ klasse ForkServer(object):
             self._stop_unlocked()
 
     def _stop_unlocked(self):
-        if self._forkserver_pid is None:
+        wenn self._forkserver_pid is None:
             return
 
         # close the "alive" file descriptor asks the server to stop
@@ -59,21 +59,21 @@ klasse ForkServer(object):
         os.waitpid(self._forkserver_pid, 0)
         self._forkserver_pid = None
 
-        if not util.is_abstract_socket_namespace(self._forkserver_address):
+        wenn not util.is_abstract_socket_namespace(self._forkserver_address):
             os.unlink(self._forkserver_address)
         self._forkserver_address = None
         self._forkserver_authkey = None
 
     def set_forkserver_preload(self, modules_names):
         '''Set list of module names to try to load in forkserver process.'''
-        if not all(type(mod) is str fuer mod in modules_names):
+        wenn not all(type(mod) is str fuer mod in modules_names):
             raise TypeError('module_names must be a list of strings')
         self._preload_modules = modules_names
 
     def get_inherited_fds(self):
         '''Return list of fds inherited from parent process.
 
-        This returns None if the current process was not started by fork
+        This returns None wenn the current process was not started by fork
         server.
         '''
         return self._inherited_fds
@@ -88,7 +88,7 @@ klasse ForkServer(object):
         '''
         self.ensure_running()
         assert self._forkserver_authkey
-        if len(fds) + 4 >= MAXFDS_TO_SEND:
+        wenn len(fds) + 4 >= MAXFDS_TO_SEND:
             raise ValueError('too many fds')
         with socket.socket(socket.AF_UNIX) as client:
             client.connect(self._forkserver_address)
@@ -129,10 +129,10 @@ klasse ForkServer(object):
         '''
         with self._lock:
             resource_tracker.ensure_running()
-            if self._forkserver_pid is not None:
+            wenn self._forkserver_pid is not None:
                 # forkserver was launched before, is it still running?
                 pid, status = os.waitpid(self._forkserver_pid, os.WNOHANG)
-                if not pid:
+                wenn not pid:
                     # still alive
                     return
                 # dead, launch it again
@@ -145,17 +145,17 @@ klasse ForkServer(object):
             cmd = ('from multiprocessing.forkserver import main; ' +
                    'main(%d, %d, %r, **%r)')
 
-            if self._preload_modules:
+            wenn self._preload_modules:
                 desired_keys = {'main_path', 'sys_path'}
                 data = spawn.get_preparation_data('ignore')
-                main_kws = {x: y fuer x, y in data.items() if x in desired_keys}
-            else:
+                main_kws = {x: y fuer x, y in data.items() wenn x in desired_keys}
+            sonst:
                 main_kws = {}
 
             with socket.socket(socket.AF_UNIX) as listener:
                 address = connection.arbitrary_address('AF_UNIX')
                 listener.bind(address)
-                if not util.is_abstract_socket_namespace(address):
+                wenn not util.is_abstract_socket_namespace(address):
                     os.chmod(address, 0o600)
                 listener.listen()
 
@@ -198,19 +198,19 @@ klasse ForkServer(object):
 def main(listener_fd, alive_r, preload, main_path=None, sys_path=None,
          *, authkey_r=None):
     """Run forkserver."""
-    if authkey_r is not None:
+    wenn authkey_r is not None:
         try:
             authkey = os.read(authkey_r, _AUTHKEY_LEN)
             assert len(authkey) == _AUTHKEY_LEN, f'{len(authkey)} < {_AUTHKEY_LEN}'
         finally:
             os.close(authkey_r)
-    else:
+    sonst:
         authkey = b''
 
-    if preload:
-        if sys_path is not None:
+    wenn preload:
+        wenn sys_path is not None:
             sys.path[:] = sys_path
-        if '__main__' in preload and main_path is not None:
+        wenn '__main__' in preload and main_path is not None:
             process.current_process()._inheriting = True
             try:
                 spawn.import_main_path(main_path)
@@ -263,15 +263,15 @@ def main(listener_fd, alive_r, preload, main_path=None, sys_path=None,
             try:
                 while True:
                     rfds = [key.fileobj fuer (key, events) in selector.select()]
-                    if rfds:
+                    wenn rfds:
                         break
 
-                if alive_r in rfds:
+                wenn alive_r in rfds:
                     # EOF because no more client processes left
                     assert os.read(alive_r, 1) == b'', "Not at EOF?"
                     raise SystemExit
 
-                if sig_r in rfds:
+                wenn sig_r in rfds:
                     # Got SIGCHLD
                     os.read(sig_r, 65536)  # exhaust
                     while True:
@@ -280,10 +280,10 @@ def main(listener_fd, alive_r, preload, main_path=None, sys_path=None,
                             pid, sts = os.waitpid(-1, os.WNOHANG)
                         except ChildProcessError:
                             break
-                        if pid == 0:
+                        wenn pid == 0:
                             break
                         child_w = pid_to_fd.pop(pid, None)
-                        if child_w is not None:
+                        wenn child_w is not None:
                             returncode = os.waitstatus_to_exitcode(sts)
 
                             # Send exit code to client process
@@ -293,16 +293,16 @@ def main(listener_fd, alive_r, preload, main_path=None, sys_path=None,
                                 # client vanished
                                 pass
                             os.close(child_w)
-                        else:
+                        sonst:
                             # This shouldn't happen really
                             warnings.warn('forkserver: waitpid returned '
                                           'unexpected pid %d' % pid)
 
-                if listener in rfds:
+                wenn listener in rfds:
                     # Incoming fork request
                     with listener.accept()[0] as s:
                         try:
-                            if authkey:
+                            wenn authkey:
                                 wrapped_s = connection.Connection(s.fileno())
                                 # The other side of this exchange happens in
                                 # in connect_to_new_process().
@@ -319,14 +319,14 @@ def main(listener_fd, alive_r, preload, main_path=None, sys_path=None,
                         except (EOFError, BrokenPipeError, AuthenticationError):
                             s.close()
                             continue
-                        if len(fds) > MAXFDS_TO_SEND:
+                        wenn len(fds) > MAXFDS_TO_SEND:
                             raise RuntimeError(
                                 "Too many ({0:n}) fds to send".format(
                                     len(fds)))
                         child_r, child_w, *fds = fds
                         s.close()
                         pid = os.fork()
-                        if pid == 0:
+                        wenn pid == 0:
                             # Child
                             code = 1
                             try:
@@ -345,7 +345,7 @@ def main(listener_fd, alive_r, preload, main_path=None, sys_path=None,
                             finally:
                                 atexit._run_exitfuncs()
                                 os._exit(code)
-                        else:
+                        sonst:
                             # Send pid to client process
                             try:
                                 write_signed(child_w, pid)
@@ -358,7 +358,7 @@ def main(listener_fd, alive_r, preload, main_path=None, sys_path=None,
                                 os.close(fd)
 
             except OSError as e:
-                if e.errno != errno.ECONNABORTED:
+                wenn e.errno != errno.ECONNABORTED:
                     raise
 
 
@@ -390,7 +390,7 @@ def read_signed(fd):
     unread = memoryview(data)
     while unread:
         count = os.readinto(fd, unread)
-        if count == 0:
+        wenn count == 0:
             raise EOFError('unexpected EOF')
         unread = unread[count:]
 
@@ -400,7 +400,7 @@ def write_signed(fd, n):
     msg = SIGNED_STRUCT.pack(n)
     while msg:
         nbytes = os.write(fd, msg)
-        if nbytes == 0:
+        wenn nbytes == 0:
             raise RuntimeError('should not get here')
         msg = msg[nbytes:]
 

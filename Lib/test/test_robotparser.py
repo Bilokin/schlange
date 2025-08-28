@@ -22,7 +22,7 @@ klasse BaseRobotTest:
         self.parser.parse(lines)
 
     def get_agent_and_url(self, url):
-        if isinstance(url, tuple):
+        wenn isinstance(url, tuple):
             agent, url = url
             return agent, url
         return self.agent, url
@@ -111,7 +111,7 @@ klasse BaseRequestRateTest(BaseRobotTest):
 
                 parsed_request_rate = parser.request_rate(agent)
                 self.assertEqual(parsed_request_rate, self.request_rate)
-                if self.request_rate is not None:
+                wenn self.request_rate is not None:
                     self.assertIsInstance(
                         parsed_request_rate,
                         urllib.robotparser.RequestRate
@@ -361,7 +361,7 @@ klasse NetworkTestCase(unittest.TestCase):
 
     def url(self, path):
         return '{}{}{}'.format(
-            self.base_url, path, '/' if not os.path.splitext(path)[1] else ''
+            self.base_url, path, '/' wenn not os.path.splitext(path)[1] sonst ''
         )
 
     def test_basic(self):
@@ -388,5 +388,5 @@ klasse NetworkTestCase(unittest.TestCase):
         self.assertIsNone(parser.crawl_delay('*'))
         self.assertIsNone(parser.request_rate('*'))
 
-if __name__=='__main__':
+wenn __name__=='__main__':
     unittest.main()

@@ -73,7 +73,7 @@ klasse CAPITest(unittest.TestCase):
                 fuer start in [*range(7), PY_SSIZE_T_MAX]:
                     fuer length in [*range(-1, 7 - start), PY_SSIZE_T_MIN, PY_SSIZE_T_MAX]:
                         filled = max(min(length, 5 - start), 0)
-                        if filled == 5 and to != strings[idx]:
+                        wenn filled == 5 and to != strings[idx]:
                             # narrow -> wide
                             # Tests omitted since this creates invalid strings.
                             continue
@@ -106,10 +106,10 @@ klasse CAPITest(unittest.TestCase):
         chars = [0x78, 0xa9, 0x20ac, 0x1f638, 0x110000]
         fuer i, s in enumerate(strings):
             fuer j, c in enumerate(chars):
-                if j <= i:
+                wenn j <= i:
                     self.assertEqual(writechar(s, 1, c),
                                      (s[:1] + chr(c) + s[2:], 0))
-                else:
+                sonst:
                     self.assertRaises(ValueError, writechar, s, 1, c)
 
         self.assertRaises(IndexError, writechar, 'abc', 3, 0x78)
@@ -258,10 +258,10 @@ klasse CAPITest(unittest.TestCase):
         enc1 = 'latin1'
         fuer s in strings[:2]:
             self.assertEqual(fromkindanddata(1, s.encode(enc1)), s)
-        enc2 = 'utf-16le' if sys.byteorder == 'little' else 'utf-16be'
+        enc2 = 'utf-16le' wenn sys.byteorder == 'little' sonst 'utf-16be'
         fuer s in strings[:3]:
             self.assertEqual(fromkindanddata(2, s.encode(enc2)), s)
-        enc4 = 'utf-32le' if sys.byteorder == 'little' else 'utf-32be'
+        enc4 = 'utf-32le' wenn sys.byteorder == 'little' sonst 'utf-32be'
         fuer s in strings:
             self.assertEqual(fromkindanddata(4, s.encode(enc4)), s)
         self.assertEqual(fromkindanddata(2, '\U0001f600'.encode(enc2)),
@@ -376,7 +376,7 @@ klasse CAPITest(unittest.TestCase):
 
         def PyUnicode_FromFormat(format, *args):
             cargs = tuple(
-                py_object(arg) if isinstance(arg, str) else arg
+                py_object(arg) wenn isinstance(arg, str) sonst arg
                 fuer arg in args)
             return _PyUnicode_FromFormat(format, *cargs)
 
@@ -549,10 +549,10 @@ klasse CAPITest(unittest.TestCase):
             (b'X', False, 0xabc, 'ABC'),
         ]:
             fuer mod, ctype in [
-                (b'', c_int if signed else c_uint),
-                (b'l', c_long if signed else c_ulong),
-                (b'll', c_longlong if signed else c_ulonglong),
-                (b'z', c_ssize_t if signed else c_size_t),
+                (b'', c_int wenn signed sonst c_uint),
+                (b'l', c_long wenn signed sonst c_ulong),
+                (b'll', c_longlong wenn signed sonst c_ulonglong),
+                (b'z', c_ssize_t wenn signed sonst c_size_t),
             ]:
                 with self.subTest(format=b'%' + mod + conv):
                     check_format(expected,
@@ -669,9 +669,9 @@ klasse CAPITest(unittest.TestCase):
         check_format('  \U0001f4bb+\U0001f40d',
                      b'%5ls', c_wchar_p('\U0001f4bb+\U0001f40d'))
         check_format('\u4eba', b'%.1ls', c_wchar_p('\u4eba\u6c11'))
-        check_format('\U0001f4bb' if sizeof(c_wchar) > 2 else '\ud83d',
+        check_format('\U0001f4bb' wenn sizeof(c_wchar) > 2 sonst '\ud83d',
                      b'%.1ls', c_wchar_p('\U0001f4bb+\U0001f40d'))
-        check_format('\U0001f4bb+' if sizeof(c_wchar) > 2 else '\U0001f4bb',
+        check_format('\U0001f4bb+' wenn sizeof(c_wchar) > 2 sonst '\U0001f4bb',
                      b'%.2ls', c_wchar_p('\U0001f4bb+\U0001f40d'))
 
         # test %lV
@@ -691,9 +691,9 @@ klasse CAPITest(unittest.TestCase):
                      b'%5lV', None, c_wchar_p('\U0001f4bb+\U0001f40d'))
         check_format('\u4eba',
                      b'%.1lV', None, c_wchar_p('\u4eba\u6c11'))
-        check_format('\U0001f4bb' if sizeof(c_wchar) > 2 else '\ud83d',
+        check_format('\U0001f4bb' wenn sizeof(c_wchar) > 2 sonst '\ud83d',
                      b'%.1lV', None, c_wchar_p('\U0001f4bb+\U0001f40d'))
-        check_format('\U0001f4bb+' if sizeof(c_wchar) > 2 else '\U0001f4bb',
+        check_format('\U0001f4bb+' wenn sizeof(c_wchar) > 2 sonst '\U0001f4bb',
                      b'%.2lV', None, c_wchar_p('\U0001f4bb+\U0001f40d'))
 
         # test %T
@@ -824,10 +824,10 @@ klasse CAPITest(unittest.TestCase):
         from _testlimitedcapi import unicode_fromwidechar as fromwidechar
         from _testcapi import SIZEOF_WCHAR_T
 
-        if SIZEOF_WCHAR_T == 2:
-            encoding = 'utf-16le' if sys.byteorder == 'little' else 'utf-16be'
-        elif SIZEOF_WCHAR_T == 4:
-            encoding = 'utf-32le' if sys.byteorder == 'little' else 'utf-32be'
+        wenn SIZEOF_WCHAR_T == 2:
+            encoding = 'utf-16le' wenn sys.byteorder == 'little' sonst 'utf-16be'
+        sowenn SIZEOF_WCHAR_T == 4:
+            encoding = 'utf-32le' wenn sys.byteorder == 'little' sonst 'utf-32be'
 
         fuer s in '', 'abc', '\xa1\xa2', '\u4f60', '\U0001f600':
             b = s.encode(encoding)
@@ -839,7 +839,7 @@ klasse CAPITest(unittest.TestCase):
             self.assertEqual(fromwidechar(b + b'\0'*SIZEOF_WCHAR_T, -1), s)
 
         self.assertEqual(fromwidechar('abc'.encode(encoding), 2), 'ab')
-        if SIZEOF_WCHAR_T == 2:
+        wenn SIZEOF_WCHAR_T == 2:
             self.assertEqual(fromwidechar('a\U0001f600'.encode(encoding), 2), 'a\ud83d')
 
         self.assertRaises(MemoryError, fromwidechar, b'', PY_SSIZE_T_MAX)
@@ -884,9 +884,9 @@ klasse CAPITest(unittest.TestCase):
         self.assertEqual(unicode_aswidechar_null('abc\0def', 20), 8)
 
         nonbmp = chr(0x10ffff)
-        if SIZEOF_WCHAR_T == 2:
+        wenn SIZEOF_WCHAR_T == 2:
             nchar = 2
-        else: # SIZEOF_WCHAR_T == 4
+        sonst: # SIZEOF_WCHAR_T == 4
             nchar = 1
         wchar, size = unicode_aswidechar(nonbmp, 10)
         self.assertEqual(size, nchar)
@@ -919,9 +919,9 @@ klasse CAPITest(unittest.TestCase):
         self.assertRaises(ValueError, unicode_aswidecharstring_null, 'abc\0def')
 
         nonbmp = chr(0x10ffff)
-        if SIZEOF_WCHAR_T == 2:
+        wenn SIZEOF_WCHAR_T == 2:
             nchar = 2
-        else: # SIZEOF_WCHAR_T == 4
+        sonst: # SIZEOF_WCHAR_T == 4
             nchar = 1
         wchar, size = unicode_aswidecharstring(nonbmp)
         self.assertEqual(size, nchar)
@@ -1918,7 +1918,7 @@ klasse PyUnicodeWriterFormatTest(unittest.TestCase):
         _PyUnicodeWriter_Format.argtypes = (c_void_p, c_char_p,)
         _PyUnicodeWriter_Format.restype = c_int
 
-        if _PyUnicodeWriter_Format(writer.get_pointer(), *args) < 0:
+        wenn _PyUnicodeWriter_Format(writer.get_pointer(), *args) < 0:
             raise ValueError("PyUnicodeWriter_Format failed")
 
     def test_format(self):
@@ -1976,5 +1976,5 @@ klasse PyUnicodeWriterFormatTest(unittest.TestCase):
         # CRASHES unicode_equal(NULL, "abc")
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

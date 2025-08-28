@@ -286,9 +286,9 @@ Test setting attributes with a non-base type in mro() (gh-127773).
 import sys
 
 # Trace function introduces __locals__ which causes various tests to fail.
-if hasattr(sys, 'gettrace') and sys.gettrace():
+wenn hasattr(sys, 'gettrace') and sys.gettrace():
     __test__ = {}
-else:
+sonst:
     __test__ = {'doctests' : doctests}
 
 def load_tests(loader, tests, pattern):
@@ -296,7 +296,7 @@ def load_tests(loader, tests, pattern):
     return tests
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     # set __name__ to match doctest expectations
     __name__ = "test.test_metaclass"
     unittest.main()

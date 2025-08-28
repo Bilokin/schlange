@@ -41,5 +41,5 @@ klasse ListedToplevelTest(unittest.TestCase):
         self.assertEqual(win.focused_widget, win)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main(verbosity=2)

@@ -7,7 +7,7 @@ doctests = """
 
 Test simple loop with conditional
 
-    >>> sum(i*i fuer i in range(100) if i&1 == 1)
+    >>> sum(i*i fuer i in range(100) wenn i&1 == 1)
     166650
 
 Test simple nesting
@@ -89,7 +89,7 @@ Test running gen when defining function is out of scope
     >>> list(f(4))
     [(0, 0), (0, 1), (0, 2), (0, 3), (1, 0), (1, 1), (1, 2), (1, 3), (2, 0), (2, 1), (2, 2), (2, 3)]
     >>> def f(n):
-    ...     return ((i,j) fuer i in range(3) fuer j in range(4) if j in range(n))
+    ...     return ((i,j) fuer i in range(3) fuer j in range(4) wenn j in range(n))
     >>> list(f(4))
     [(0, 0), (0, 1), (0, 2), (0, 3), (1, 0), (1, 1), (1, 2), (1, 3), (2, 0), (2, 1), (2, 2), (2, 3)]
     >>> list(f(2))
@@ -126,7 +126,7 @@ Verify early binding fuer the outermost for-expression
 Verify late binding fuer the outermost if-expression
 
     >>> include = (2,4,6,8)
-    >>> g = (i*i fuer i in range(10) if i in include)
+    >>> g = (i*i fuer i in range(10) wenn i in include)
     >>> include = (1,3,5,7,9)
     >>> list(g)
     [1, 9, 25, 49, 81]
@@ -230,11 +230,11 @@ Check that generator attributes are present
 
     >>> g = (i*i fuer i in range(3))
     >>> expected = set(['gi_frame', 'gi_running'])
-    >>> set(attr fuer attr in dir(g) if not attr.startswith('__')) >= expected
+    >>> set(attr fuer attr in dir(g) wenn not attr.startswith('__')) >= expected
     True
 
     >>> from test.support import HAVE_DOCSTRINGS
-    >>> print(g.__next__.__doc__ if HAVE_DOCSTRINGS else 'Implement next(self).')
+    >>> print(g.__next__.__doc__ wenn HAVE_DOCSTRINGS sonst 'Implement next(self).')
     Implement next(self).
     >>> import types
     >>> isinstance(g, types.GeneratorType)
@@ -271,9 +271,9 @@ Verify that genexps are weakly referencable
 """
 
 # Trace function can throw off the tuple reuse test.
-if hasattr(sys, 'gettrace') and sys.gettrace():
+wenn hasattr(sys, 'gettrace') and sys.gettrace():
     __test__ = {}
-else:
+sonst:
     __test__ = {'doctests' : doctests}
 
 def load_tests(loader, tests, pattern):
@@ -281,5 +281,5 @@ def load_tests(loader, tests, pattern):
     return tests
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

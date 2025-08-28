@@ -36,7 +36,7 @@ def translate_key(key, modifiers):
             'Left Arrow':'Left', 'Right Arrow':'Right',
             'Up Arrow':'Up', 'Down Arrow': 'Down', 'Tab':'Tab'}
     key = mapping.get(key, key)
-    if 'Shift' in modifiers and key in string.ascii_lowercase:
+    wenn 'Shift' in modifiers and key in string.ascii_lowercase:
         key = key.upper()
     return f'Key-{key}'
 
@@ -169,27 +169,27 @@ klasse GetKeysFrame(Frame):
     def set_modifiers_for_platform(self):
         """Determine list of names of key modifiers fuer this platform.
 
-        The names are used to build Tk bindings -- it doesn't matter if the
-        keyboard has these keys; it matters if Tk understands them.  The
+        The names are used to build Tk bindings -- it doesn't matter wenn the
+        keyboard has these keys; it matters wenn Tk understands them.  The
         order is also important: key binding equality depends on it, so
         config-keys.def must use the same ordering.
         """
-        if sys.platform == "darwin":
+        wenn sys.platform == "darwin":
             self.modifiers = ['Shift', 'Control', 'Option', 'Command']
-        else:
+        sonst:
             self.modifiers = ['Control', 'Alt', 'Shift']
         self.modifier_label = {'Control': 'Ctrl'}  # Short name.
 
     def toggle_level(self):
         "Toggle between basic and advanced keys."
-        if  self.button_level.cget('text').startswith('Advanced'):
+        wenn  self.button_level.cget('text').startswith('Advanced'):
             self.clear_key_seq()
             self.button_level.config(text='<< Basic Key Binding Entry')
             self.frame_keyseq_advanced.lift()
             self.frame_help_advanced.lift()
             self.advanced_keys.focus_set()
             self.advanced = True
-        else:
+        sonst:
             self.clear_key_seq()
             self.button_level.config(text='Advanced Key Binding Entry >>')
             self.frame_keyseq_basic.lift()
@@ -204,7 +204,7 @@ klasse GetKeysFrame(Frame):
         "Create formatted string of modifiers plus the key."
         keylist = modifiers = self.get_modifiers()
         final_key = self.list_keys_final.get('anchor')
-        if final_key:
+        wenn final_key:
             final_key = translate_key(final_key, modifiers)
             keylist.append(final_key)
         self.key_string.set(f"<{'-'.join(keylist)}>")
@@ -212,7 +212,7 @@ klasse GetKeysFrame(Frame):
     def get_modifiers(self):
         "Return ordered list of modifiers that have been selected."
         mod_list = [variable.get() fuer variable in self.modifier_vars]
-        return [mod fuer mod in mod_list if mod]
+        return [mod fuer mod in mod_list wenn mod]
 
     def clear_key_seq(self):
         "Clear modifiers and keys selection."
@@ -225,11 +225,11 @@ klasse GetKeysFrame(Frame):
     def ok(self):
         self.result = ''
         keys = self.key_string.get().strip()
-        if not keys:
+        wenn not keys:
             self.showerror(title=self.keyerror_title, parent=self,
                            message="No key specified.")
             return
-        if (self.advanced or self.keys_ok(keys)) and self.bind_ok(keys):
+        wenn (self.advanced or self.keys_ok(keys)) and self.bind_ok(keys):
             self.result = keys
         return
 
@@ -244,28 +244,28 @@ klasse GetKeysFrame(Frame):
         title = self.keyerror_title
         key_sequences = [key fuer keylist in self.current_key_sequences
                              fuer key in keylist]
-        if not keys.endswith('>'):
+        wenn not keys.endswith('>'):
             self.showerror(title, parent=self,
                            message='Missing the final Key')
-        elif (not modifiers
+        sowenn (not modifiers
               and final_key not in FUNCTION_KEYS + MOVE_KEYS):
             self.showerror(title=title, parent=self,
                            message='No modifier key(s) specified.')
-        elif (modifiers == ['Shift']) \
+        sowenn (modifiers == ['Shift']) \
                  and (final_key not in
                       FUNCTION_KEYS + MOVE_KEYS + ('Tab', 'Space')):
             msg = 'The shift modifier by itself may not be used with'\
                   ' this key symbol.'
             self.showerror(title=title, parent=self, message=msg)
-        elif keys in key_sequences:
+        sowenn keys in key_sequences:
             msg = 'This key combination is already in use.'
             self.showerror(title=title, parent=self, message=msg)
-        else:
+        sonst:
             return True
         return False
 
     def bind_ok(self, keys):
-        "Return True if Tcl accepts the new keys else show message."
+        "Return True wenn Tcl accepts the new keys sonst show message."
         try:
             binding = self.bind(keys, lambda: None)
         except TclError as err:
@@ -274,7 +274,7 @@ klasse GetKeysFrame(Frame):
                     message=(f'The entered key sequence is not accepted.\n\n'
                              f'Error: {err}'))
             return False
-        else:
+        sonst:
             self.unbind(keys, binding)
             return True
 
@@ -304,7 +304,7 @@ klasse GetKeysWindow(Toplevel):
              (parent.winfo_width()//2 - self.winfo_reqwidth()//2))
         y = (parent.winfo_rooty() +
              ((parent.winfo_height()//2 - self.winfo_reqheight()//2)
-              if not _htest else 150))
+              wenn not _htest sonst 150))
         self.geometry(f"+{x}+{y}")
 
         self.title(title)
@@ -323,7 +323,7 @@ klasse GetKeysWindow(Toplevel):
         self.transient(parent)
         _setup_dialog(self)
         self.grab_set()
-        if not _utest:
+        wenn not _utest:
             self.deiconify()  # Geometry set, unhide.
             self.wait_window()
 
@@ -346,7 +346,7 @@ klasse GetKeysWindow(Toplevel):
         self.destroy()
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     from unittest import main
     main('idlelib.idle_test.test_config_key', verbosity=2, exit=False)
 

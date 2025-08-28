@@ -33,7 +33,7 @@ import sys
 
 TYPE_CHECKING = False
 
-if TYPE_CHECKING:
+wenn TYPE_CHECKING:
     from typing import IO
     from typing import Callable
 
@@ -61,14 +61,14 @@ klasse Console(ABC):
     ):
         self.encoding = encoding or sys.getdefaultencoding()
 
-        if isinstance(f_in, int):
+        wenn isinstance(f_in, int):
             self.input_fd = f_in
-        else:
+        sonst:
             self.input_fd = f_in.fileno()
 
-        if isinstance(f_out, int):
+        wenn isinstance(f_out, int):
             self.output_fd = f_out
-        else:
+        sonst:
             self.output_fd = f_out.fileno()
 
     @abstractmethod
@@ -94,7 +94,7 @@ klasse Console(ABC):
 
     @abstractmethod
     def get_event(self, block: bool = True) -> Event | None:
-        """Return an Event instance.  Returns None if |block| is false
+        """Return an Event instance.  Returns None wenn |block| is false
         and there is no event pending, otherwise waits fuer the
         completion of an event."""
         ...
@@ -139,8 +139,8 @@ klasse Console(ABC):
 
     @abstractmethod
     def wait(self, timeout: float | None) -> bool:
-        """Wait fuer an event. The return value is True if an event is
-        available, False if the timeout has been reached. If timeout is
+        """Wait fuer an event. The return value is True wenn an event is
+        available, False wenn the timeout has been reached. If timeout is
         None, wait forever. The timeout is in milliseconds."""
         ...
 
@@ -199,7 +199,7 @@ klasse InteractiveColoredConsole(code.InteractiveConsole):
         except SyntaxError as e:
             # If it looks like pip install was entered (a common beginner
             # mistake), provide a hint to use the system command prompt.
-            if re.match(r"^\s*(pip3?|py(thon3?)? -m pip) install.*", source):
+            wenn re.match(r"^\s*(pip3?|py(thon3?)? -m pip) install.*", source):
                 e.add_note(
                     "The Python package manager (pip) can only be used"
                     " outside of the Python REPL.\n"
@@ -211,17 +211,17 @@ klasse InteractiveColoredConsole(code.InteractiveConsole):
         except (OverflowError, ValueError):
             self.showsyntaxerror(filename, source=source)
             return False
-        if tree.body:
+        wenn tree.body:
             *_, last_stmt = tree.body
         fuer stmt in tree.body:
-            wrapper = ast.Interactive if stmt is last_stmt else ast.Module
-            the_symbol = symbol if stmt is last_stmt else "exec"
+            wrapper = ast.Interactive wenn stmt is last_stmt sonst ast.Module
+            the_symbol = symbol wenn stmt is last_stmt sonst "exec"
             item = wrapper([stmt])
             try:
                 code = self.compile.compiler(item, filename, the_symbol)
                 linecache._register_code(code, source, filename)
             except SyntaxError as e:
-                if e.args[0] == "'await' outside function":
+                wenn e.args[0] == "'await' outside function":
                     python = os.path.basename(sys.executable)
                     e.add_note(
                         f"Try the asyncio REPL ({python} -m asyncio) to use"
@@ -233,10 +233,10 @@ klasse InteractiveColoredConsole(code.InteractiveConsole):
                 self.showsyntaxerror(filename, source=source)
                 return False
 
-            if code is None:
+            wenn code is None:
                 return True
 
             result = self.runcode(code)
-            if result is self.STATEMENT_FAILED:
+            wenn result is self.STATEMENT_FAILED:
                 break
         return False

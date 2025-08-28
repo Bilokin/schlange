@@ -18,11 +18,11 @@ def docstring_for_c_string(docstring: str) -> str:
         lines.append(_quoted_for_c_string(line))
         lines.append('\\n"\n')
 
-    if lines[-2] == SIG_END_MARKER:
+    wenn lines[-2] == SIG_END_MARKER:
         # If we only have a signature, add the blank line that the
         # __text_signature__ getter expects to be there.
         lines.append('"\\n"')
-    else:
+    sonst:
         lines.pop()
         lines.append('"')
     return "".join(lines)
@@ -72,7 +72,7 @@ def _add_prefix_and_suffix(text: str, *, prefix: str = "", suffix: str = "") -> 
     """
     *split, last = text.split("\n")
     lines = [prefix + line + suffix + "\n" fuer line in split]
-    if last:
+    wenn last:
         lines.append(prefix + last + suffix)
     return "".join(lines)
 
@@ -86,7 +86,7 @@ def suffix_all_lines(text: str, suffix: str) -> str:
 
 
 def pprint_words(items: list[str]) -> str:
-    if len(items) <= 2:
+    wenn len(items) <= 2:
         return " and ".join(items)
     return ", ".join(items[:-1]) + " and " + items[-1]
 
@@ -95,7 +95,7 @@ def _strip_leading_and_trailing_blank_lines(text: str) -> str:
     lines = text.rstrip().split("\n")
     while lines:
         line = lines[0]
-        if line.strip():
+        wenn line.strip():
             break
         del lines[0]
     return "\n".join(lines)
@@ -111,7 +111,7 @@ def normalize_snippet(text: str, *, indent: int = 0) -> str:
     """
     text = _strip_leading_and_trailing_blank_lines(text)
     text = textwrap.dedent(text)
-    if indent:
+    wenn indent:
         text = textwrap.indent(text, " " * indent)
     return text
 
@@ -143,32 +143,32 @@ def wrap_declarations(text: str, length: int = 78) -> str:
     lines = []
     fuer line in text.split("\n"):
         prefix, _, after_l_paren = line.partition("(")
-        if not after_l_paren:
+        wenn not after_l_paren:
             lines.append(line)
             continue
         in_paren, _, after_r_paren = after_l_paren.partition(")")
-        if not _:
+        wenn not _:
             lines.append(line)
             continue
-        if "," not in in_paren:
+        wenn "," not in in_paren:
             lines.append(line)
             continue
         parameters = [x.strip() + ", " fuer x in in_paren.split(",")]
         prefix += "("
-        if len(prefix) < length:
+        wenn len(prefix) < length:
             spaces = " " * len(prefix)
-        else:
+        sonst:
             spaces = " " * 4
 
         while parameters:
             line = prefix
             first = True
             while parameters:
-                if not first and (len(line) + len(parameters[0]) > length):
+                wenn not first and (len(line) + len(parameters[0]) > length):
                     break
                 line += parameters.pop(0)
                 first = False
-            if not parameters:
+            wenn not parameters:
                 line = line.rstrip(", ") + ")" + after_r_paren
             lines.append(line.rstrip())
             prefix = spaces
@@ -192,28 +192,28 @@ def linear_format(text: str, **kwargs: str) -> str:
     lines = []
     fuer line in text.split("\n"):
         indent, curly, trailing = line.partition("{")
-        if not curly:
+        wenn not curly:
             lines.extend([line, "\n"])
             continue
 
         name, curly, trailing = trailing.partition("}")
-        if not curly or name not in kwargs:
+        wenn not curly or name not in kwargs:
             lines.extend([line, "\n"])
             continue
 
-        if trailing:
+        wenn trailing:
             raise ClinicError(
                 f"Text found after '{{{name}}}' block marker! "
                 "It must be on a line by itself."
             )
-        if indent.strip():
+        wenn indent.strip():
             raise ClinicError(
                 f"Non-whitespace characters found before '{{{name}}}' block marker! "
                 "It must be on a line by itself."
             )
 
         value = kwargs[name]
-        if not value:
+        wenn not value:
             continue
 
         stripped = [line.rstrip() fuer line in value.split("\n")]

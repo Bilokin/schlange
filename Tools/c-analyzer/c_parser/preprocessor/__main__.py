@@ -24,7 +24,7 @@ FAIL = {
     'deps': _errors.MissingDependenciesError,
     'os': _errors.OSMismatchError,
 }
-FAIL_DEFAULT = tuple(v fuer v in FAIL if v != 'os')
+FAIL_DEFAULT = tuple(v fuer v in FAIL wenn v != 'os')
 
 
 logger = logging.getLogger(__name__)
@@ -63,7 +63,7 @@ def _iter_preprocessed(filename, *,
                        ):
     preprocess = get_preprocessor(filename)
     fuer line in preprocess(tool=not pure) or ():
-        if match_kind is not None and not match_kind(line.kind):
+        wenn match_kind is not None and not match_kind(line.kind):
             continue
         yield line
 
@@ -91,23 +91,23 @@ def cmd_preprocess(filenames, *,
                    iter_filenames=None,
                    **kwargs
                    ):
-    if 'get_file_preprocessor' not in kwargs:
+    wenn 'get_file_preprocessor' not in kwargs:
         kwargs['get_file_preprocessor'] = _get_preprocessor()
-    if raw:
+    wenn raw:
         def show_file(filename, lines):
             fuer line in lines:
                 print(line)
                 #print(line.raw)
-    else:
+    sonst:
         def show_file(filename, lines):
             fuer line in lines:
                 linefile = ''
-                if line.filename != filename:
+                wenn line.filename != filename:
                     linefile = f' ({line.filename})'
                 text = line.data
-                if line.kind == 'comment':
+                wenn line.kind == 'comment':
                     text = '/* ' + line.data.splitlines()[0]
-                    text += ' */' if '\n' in line.data else r'\n... */'
+                    text += ' */' wenn '\n' in line.data sonst r'\n... */'
                 print(f' {line.lno:>4} {line.kind:10} | {text}')
 
     filenames = main_for_filenames(filenames, iter_filenames)
@@ -189,7 +189,7 @@ def main(cmd, cmd_kwargs):
     run_cmd(**cmd_kwargs)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     cmd, cmd_kwargs, verbosity, traceback_cm = parse_args()
     configure_logger(verbosity)
     with traceback_cm:

@@ -50,9 +50,9 @@ klasse TestRareEventCounters(unittest.TestCase):
 
     def test_builtin_dict(self):
         orig_counter = _testinternalcapi.get_rare_event_counters()["builtin_dict"]
-        if isinstance(__builtins__, types.ModuleType):
+        wenn isinstance(__builtins__, types.ModuleType):
             builtins = __builtins__.__dict__
-        else:
+        sonst:
             builtins = __builtins__
         builtins["FOO"] = 42
         self.assertEqual(
@@ -86,5 +86,5 @@ klasse TestOptimizerSymbols(unittest.TestCase):
         _testinternalcapi.uop_symbols_test()
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

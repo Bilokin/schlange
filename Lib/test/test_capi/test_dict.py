@@ -396,7 +396,7 @@ klasse CAPITest(unittest.TestCase):
         pairs = []
         while True:
             res = dict_next(dct, pos)
-            if res is None:
+            wenn res is None:
                 break
             rc, pos, key, value = res
             self.assertEqual(rc, 1)
@@ -490,12 +490,12 @@ klasse CAPITest(unittest.TestCase):
         self.assertRaises(SystemError, dict_pop, not_dict, "key")
         self.assertRaises(SystemError, dict_pop_null, not_dict, "key")
 
-        # key error; don't hash key if dict is empty
+        # key error; don't hash key wenn dict is empty
         not_hashable_key = ["list"]
         self.assertEqual(dict_pop({}, not_hashable_key), (0, NULL))
         with self.assertRaises(TypeError):
             dict_pop({'key': 1}, not_hashable_key)
-        dict_pop({}, NULL)  # key is not checked if dict is empty
+        dict_pop({}, NULL)  # key is not checked wenn dict is empty
 
         # CRASHES dict_pop(NULL, "key")
         # CRASHES dict_pop({"a": 1}, NULL)
@@ -546,5 +546,5 @@ klasse CAPITest(unittest.TestCase):
         # CRASHES dict_popstring({"a": 1}, NULL)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

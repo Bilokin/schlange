@@ -103,29 +103,29 @@ klasse Timer:
         """Constructor.  See klasse doc string."""
         self.timer = timer
         local_ns = {}
-        global_ns = _globals() if globals is None else globals
+        global_ns = _globals() wenn globals is None sonst globals
         init = ''
-        if isinstance(setup, str):
+        wenn isinstance(setup, str):
             # Check that the code can be compiled outside a function
             compile(setup, dummy_src_name, "exec")
             stmtprefix = setup + '\n'
             setup = reindent(setup, 4)
-        elif callable(setup):
+        sowenn callable(setup):
             local_ns['_setup'] = setup
             init += ', _setup=_setup'
             stmtprefix = ''
             setup = '_setup()'
-        else:
+        sonst:
             raise ValueError("setup is neither a string nor callable")
-        if isinstance(stmt, str):
+        wenn isinstance(stmt, str):
             # Check that the code can be compiled outside a function
             compile(stmtprefix + stmt, dummy_src_name, "exec")
             stmt = reindent(stmt, 8)
-        elif callable(stmt):
+        sowenn callable(stmt):
             local_ns['_stmt'] = stmt
             init += ', _stmt=_stmt'
             stmt = '_stmt()'
-        else:
+        sonst:
             raise ValueError("stmt is neither a string nor callable")
         src = template.format(stmt=stmt, setup=setup, init=init)
         self.src = src  # Save fuer traceback display
@@ -151,12 +151,12 @@ klasse Timer:
         sent; it defaults to sys.stderr.
         """
         import linecache, traceback
-        if self.src is not None:
+        wenn self.src is not None:
             linecache.cache[dummy_src_name] = (len(self.src),
                                                None,
                                                self.src.split("\n"),
                                                dummy_src_name)
-        # else the source is already stored somewhere else
+        # sonst the source is already stored somewhere sonst
 
         traceback.print_exc(file=file)
 
@@ -165,7 +165,7 @@ klasse Timer:
 
         To be precise, this executes the setup statement once, and
         then returns the time it takes to execute the main statement
-        a number of times, as float seconds if using the default timer.   The
+        a number of times, as float seconds wenn using the default timer.   The
         argument is the number of times through the loop, defaulting
         to one million.  The main statement, the setup statement and
         the timer function to be used are passed to the constructor.
@@ -176,7 +176,7 @@ klasse Timer:
         try:
             timing = self.inner(it, self.timer)
         finally:
-            if gcold:
+            wenn gcold:
                 gc.enable()
         return timing
 
@@ -221,9 +221,9 @@ klasse Timer:
             fuer j in 1, 2, 5:
                 number = i * j
                 time_taken = self.timeit(number)
-                if callback:
+                wenn callback:
                     callback(number, time_taken)
-                if time_taken >= 0.2:
+                wenn time_taken >= 0.2:
                     return (number, time_taken)
             i *= 10
 
@@ -257,7 +257,7 @@ def main(args=None, *, _wrap_timer=None):
     is not None, it must be a callable that accepts a timer function
     and returns another timer function (used fuer unit testing).
     """
-    if args is None:
+    wenn args is None:
         args = sys.argv[1:]
     import getopt
     try:
@@ -279,28 +279,28 @@ def main(args=None, *, _wrap_timer=None):
     units = {"nsec": 1e-9, "usec": 1e-6, "msec": 1e-3, "sec": 1.0}
     precision = 3
     fuer o, a in opts:
-        if o in ("-n", "--number"):
+        wenn o in ("-n", "--number"):
             number = int(a)
-        if o in ("-s", "--setup"):
+        wenn o in ("-s", "--setup"):
             setup.append(a)
-        if o in ("-u", "--unit"):
-            if a in units:
+        wenn o in ("-u", "--unit"):
+            wenn a in units:
                 time_unit = a
-            else:
+            sonst:
                 print("Unrecognized unit. Please select nsec, usec, msec, or sec.",
                       file=sys.stderr)
                 return 2
-        if o in ("-r", "--repeat"):
+        wenn o in ("-r", "--repeat"):
             repeat = int(a)
-            if repeat <= 0:
+            wenn repeat <= 0:
                 repeat = 1
-        if o in ("-p", "--process"):
+        wenn o in ("-p", "--process"):
             timer = time.process_time
-        if o in ("-v", "--verbose"):
-            if verbose:
+        wenn o in ("-v", "--verbose"):
+            wenn verbose:
                 precision += 1
             verbose += 1
-        if o in ("-h", "--help"):
+        wenn o in ("-h", "--help"):
             print(__doc__, end="")
             return 0
     setup = "\n".join(setup) or "pass"
@@ -310,18 +310,18 @@ def main(args=None, *, _wrap_timer=None):
     # directory)
     import os
     sys.path.insert(0, os.curdir)
-    if _wrap_timer is not None:
+    wenn _wrap_timer is not None:
         timer = _wrap_timer(timer)
 
     t = Timer(stmt, setup, timer)
-    if number == 0:
+    wenn number == 0:
         # determine number so that 0.2 <= total time < 2.0
         callback = None
-        if verbose:
+        wenn verbose:
             def callback(number, time_taken):
                 msg = "{num} loop{s} -> {secs:.{prec}g} secs"
                 plural = (number != 1)
-                print(msg.format(num=number, s='s' if plural else '',
+                print(msg.format(num=number, s='s' wenn plural sonst '',
                                  secs=time_taken, prec=precision))
         try:
             number, _ = t.autorange(callback)
@@ -329,7 +329,7 @@ def main(args=None, *, _wrap_timer=None):
             t.print_exc()
             return 1
 
-        if verbose:
+        wenn verbose:
             print()
 
     try:
@@ -341,30 +341,30 @@ def main(args=None, *, _wrap_timer=None):
     def format_time(dt):
         unit = time_unit
 
-        if unit is not None:
+        wenn unit is not None:
             scale = units[unit]
-        else:
+        sonst:
             scales = [(scale, unit) fuer unit, scale in units.items()]
             scales.sort(reverse=True)
             fuer scale, unit in scales:
-                if dt >= scale:
+                wenn dt >= scale:
                     break
 
         return "%.*g %s" % (precision, dt / scale, unit)
 
-    if verbose:
+    wenn verbose:
         print("raw times: %s" % ", ".join(map(format_time, raw_timings)))
         print()
     timings = [dt / number fuer dt in raw_timings]
 
     best = min(timings)
     print("%d loop%s, best of %d: %s per loop"
-          % (number, 's' if number != 1 else '',
+          % (number, 's' wenn number != 1 sonst '',
              repeat, format_time(best)))
 
     best = min(timings)
     worst = max(timings)
-    if worst >= best * 4:
+    wenn worst >= best * 4:
         import warnings
         warnings.warn_explicit("The test results are likely unreliable. "
                                "The worst time (%s) was more than four times "
@@ -374,5 +374,5 @@ def main(args=None, *, _wrap_timer=None):
     return None
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     sys.exit(main())

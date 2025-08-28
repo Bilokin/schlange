@@ -268,7 +268,7 @@ klasse ArrayTestCase(unittest.TestCase):
         c_char * size
 
     @threading_helper.requires_working_threading()
-    @unittest.skipUnless(Py_GIL_DISABLED, "only meaningful if the GIL is disabled")
+    @unittest.skipUnless(Py_GIL_DISABLED, "only meaningful wenn the GIL is disabled")
     def test_thread_safety(self):
         from threading import Thread
 
@@ -284,9 +284,9 @@ klasse ArrayTestCase(unittest.TestCase):
             with threading_helper.start_threads(threads):
                 pass
 
-            if cm.exc_value:
+            wenn cm.exc_value:
                 raise cm.exc_value
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

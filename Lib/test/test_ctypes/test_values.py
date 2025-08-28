@@ -72,22 +72,22 @@ klasse PythonValuesTestCase(unittest.TestCase):
                 # This is dangerous. We *can* iterate over a pointer, but
                 # the loop will not terminate (maybe with an access
                 # violation;-) because the pointer instance has no size.
-                if entry.name is None:
+                wenn entry.name is None:
                     break
                 modname = entry.name.decode("ascii")
                 modules.append(modname)
                 with self.subTest(modname):
-                    if entry.size != 0:
+                    wenn entry.size != 0:
                         # Do a sanity check on entry.size and entry.code.
                         self.assertGreater(abs(entry.size), 10)
                         self.assertTrue([entry.code[i] fuer i in range(abs(entry.size))])
                     # Check the module's package-ness.
                     with import_helper.frozen_modules():
                         spec = importlib.util.find_spec(modname)
-                    if entry.is_package:
+                    wenn entry.is_package:
                         # It's a package.
                         self.assertIsNotNone(spec.submodule_search_locations)
-                    else:
+                    sonst:
                         self.assertIsNone(spec.submodule_search_locations)
 
         with import_helper.frozen_modules():
@@ -102,5 +102,5 @@ klasse PythonValuesTestCase(unittest.TestCase):
                           "Undefined_Symbol")
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

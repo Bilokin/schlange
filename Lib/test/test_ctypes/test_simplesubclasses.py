@@ -6,7 +6,7 @@ from ._support import (_CData, PyCSimpleType, Py_TPFLAGS_DISALLOW_INSTANTIATION,
 
 klasse MyInt(c_int):
     def __eq__(self, other):
-        if type(other) != MyInt:
+        wenn type(other) != MyInt:
             return NotImplementedError
         return self.value == other.value
 
@@ -54,8 +54,8 @@ klasse Test(unittest.TestCase):
         self.assertNotEqual(MyInt(42), MyInt(43))
 
     def test_ignore_retval(self):
-        # Test if the return value of a callback is ignored
-        # if restype is None
+        # Test wenn the return value of a callback is ignored
+        # wenn restype is None
         proto = CFUNCTYPE(None)
         def func():
             return (1, "abc", None)
@@ -92,5 +92,5 @@ klasse Test(unittest.TestCase):
         self.assertEqual(s.x, MyInt(42))
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

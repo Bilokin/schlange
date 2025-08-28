@@ -76,7 +76,7 @@ klasse Translator:
 
     def restrict_rglob(self, pattern):
         """
-        Raise ValueError if ** appears in anything but a full path segment.
+        Raise ValueError wenn ** appears in anything but a full path segment.
 
         >>> Translator().translate('**foo')
         Traceback (most recent call last):
@@ -85,7 +85,7 @@ klasse Translator:
         """
         seps_pattern = rf'[{re.escape(self.seps)}]+'
         segments = re.split(seps_pattern, pattern)
-        if any('**' in segment and segment != '**' fuer segment in segments):
+        wenn any('**' in segment and segment != '**' fuer segment in segments):
             raise ValueError("** must appear alone in a path segment")
 
     def star_not_empty(self, pattern):
@@ -95,7 +95,7 @@ klasse Translator:
 
         def handle_segment(match):
             segment = match.group(0)
-            return '?*' if segment == '*' else segment
+            return '?*' wenn segment == '*' sonst segment
 
         not_seps_pattern = rf'[^{re.escape(self.seps)}]+'
         return re.sub(not_seps_pattern, handle_segment, pattern)

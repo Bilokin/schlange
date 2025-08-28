@@ -429,5 +429,5 @@ klasse ExecRuncodeTest(unittest.TestCase):
         self.assertTrue(isinstance(e.__context__, ZeroDivisionError))
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main(verbosity=2)

@@ -28,10 +28,10 @@ klasse UTF8ModeTests(unittest.TestCase):
 
     def get_output(self, *args, failure=False, **kw):
         kw = dict(self.DEFAULT_ENV, **kw)
-        if failure:
+        wenn failure:
             out = assert_python_failure(*args, **kw)
             out = out[2]
-        else:
+        sonst:
             out = assert_python_ok(*args, **kw)
             out = out[1]
         return out.decode().rstrip("\n\r")
@@ -58,7 +58,7 @@ klasse UTF8ModeTests(unittest.TestCase):
         out = self.get_output('-X', 'utf8=0', '-c', code)
         self.assertEqual(out, '0')
 
-        if MS_WINDOWS:
+        wenn MS_WINDOWS:
             # PYTHONLEGACYWINDOWSFSENCODING disables the UTF-8 Mode
             # and has the priority over -X utf8
             out = self.get_output('-X', 'utf8', '-c', code,
@@ -78,7 +78,7 @@ klasse UTF8ModeTests(unittest.TestCase):
         out = self.get_output('-X', 'utf8=0', '-c', code, PYTHONUTF8='1')
         self.assertEqual(out, '0')
 
-        if MS_WINDOWS:
+        wenn MS_WINDOWS:
             # PYTHONLEGACYWINDOWSFSENCODING disables the UTF-8 mode
             # and has the priority over PYTHONUTF8
             out = self.get_output('-X', 'utf8', '-c', code, PYTHONUTF8='1',
@@ -87,8 +87,8 @@ klasse UTF8ModeTests(unittest.TestCase):
 
         # Cannot test with the POSIX locale, since the POSIX locale enables
         # the UTF-8 mode
-        if not self.posix_locale():
-            # PYTHONUTF8 should be ignored if -E is used
+        wenn not self.posix_locale():
+            # PYTHONUTF8 should be ignored wenn -E is used
             out = self.get_output('-E', '-c', code, PYTHONUTF8='0')
             self.assertEqual(out, '1')
 
@@ -104,15 +104,15 @@ klasse UTF8ModeTests(unittest.TestCase):
                                  sys.getfilesystemencodeerrors()))
         ''')
 
-        if MS_WINDOWS:
+        wenn MS_WINDOWS:
             expected = 'utf-8/surrogatepass'
-        else:
+        sonst:
             expected = 'utf-8/surrogateescape'
 
         out = self.get_output('-X', 'utf8', '-c', code)
         self.assertEqual(out, expected)
 
-        if MS_WINDOWS:
+        wenn MS_WINDOWS:
             # PYTHONLEGACYWINDOWSFSENCODING disables the UTF-8 mode
             # and has the priority over -X utf8 and PYTHONUTF8
             out = self.get_output('-X', 'utf8', '-c', code,
@@ -167,9 +167,9 @@ klasse UTF8ModeTests(unittest.TestCase):
 
         # Encoding explicitly set
         args = []
-        if encoding:
+        wenn encoding:
             args.append(f'encoding={encoding!r}')
-        if errors:
+        wenn errors:
             args.append(f'errors={errors!r}')
         code = textwrap.dedent('''
             import sys
@@ -181,9 +181,9 @@ klasse UTF8ModeTests(unittest.TestCase):
         out = self.get_output('-c', code, filename,
                               PYTHONUTF8='1')
 
-        if not encoding:
+        wenn not encoding:
             encoding = 'utf-8'
-        if not errors:
+        wenn not errors:
             errors = 'strict'
         self.assertEqual(out.lower(), f'{encoding}/{errors}')
 
@@ -226,11 +226,11 @@ klasse UTF8ModeTests(unittest.TestCase):
             with self.subTest(LC_ALL=loc):
                 check('utf8', [arg_utf8], LC_ALL=loc)
 
-        if sys.platform == 'darwin' or support.is_android or VXWORKS:
+        wenn sys.platform == 'darwin' or support.is_android or VXWORKS:
             c_arg = arg_utf8
-        elif sys.platform.startswith("aix"):
+        sowenn sys.platform.startswith("aix"):
             c_arg = arg.decode('iso-8859-1')
-        else:
+        sonst:
             c_arg = arg_ascii
         fuer loc in POSIX_LOCALES:
             with self.subTest(LC_ALL=loc):
@@ -257,7 +257,7 @@ klasse UTF8ModeTests(unittest.TestCase):
     @support.requires_subprocess()
     def test_device_encoding(self):
         # Use stdout as TTY
-        if not sys.stdout.isatty():
+        wenn not sys.stdout.isatty():
             self.skipTest("sys.stdout is not a TTY")
 
         filename = 'out.txt'
@@ -272,11 +272,11 @@ klasse UTF8ModeTests(unittest.TestCase):
         proc = subprocess.run(cmd, text=True)
         self.assertEqual(proc.returncode, 0, proc)
 
-        # In UTF-8 Mode, device_encoding(fd) returns "UTF-8" if fd is a TTY
+        # In UTF-8 Mode, device_encoding(fd) returns "UTF-8" wenn fd is a TTY
         with open(filename, encoding="utf8") as fp:
             out = fp.read().rstrip()
         self.assertEqual(out, 'True utf-8')
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

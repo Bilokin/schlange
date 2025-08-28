@@ -15,7 +15,7 @@ DEFAULT_REPEAT = 5
 
 # XXX: some tests are commented out that would improve the coverage but take a
 # long time to run because they test the default number of loops, which is
-# large.  The tests could be enabled if there was a way to override the default
+# large.  The tests could be enabled wenn there was a way to override the default
 # number of loops during testing, but this would require changing the signature
 # of some functions that use the default as a default argument.
 
@@ -110,9 +110,9 @@ klasse TestTimeit(unittest.TestCase):
         t = timeit.Timer(stmt=stmt, setup=setup, timer=self.fake_timer,
                 globals=globals)
         kwargs = {}
-        if number is None:
+        wenn number is None:
             number = DEFAULT_NUMBER
-        else:
+        sonst:
             kwargs['number'] = number
         delta_time = t.timeit(**kwargs)
         self.assertEqual(self.fake_timer.setup_calls, 1)
@@ -165,13 +165,13 @@ klasse TestTimeit(unittest.TestCase):
         self.fake_timer = FakeTimer()
         t = timeit.Timer(stmt=stmt, setup=setup, timer=self.fake_timer)
         kwargs = {}
-        if repeat is None:
+        wenn repeat is None:
             repeat = DEFAULT_REPEAT
-        else:
+        sonst:
             kwargs['repeat'] = repeat
-        if number is None:
+        wenn number is None:
             number = DEFAULT_NUMBER
-        else:
+        sonst:
             kwargs['number'] = number
         delta_times = t.repeat(**kwargs)
         self.assertEqual(self.fake_timer.setup_calls, repeat)
@@ -237,11 +237,11 @@ klasse TestTimeit(unittest.TestCase):
     MAIN_DEFAULT_OUTPUT = "1 loop, best of 5: 1 sec per loop\n"
 
     def run_main(self, seconds_per_increment=1.0, switches=None, timer=None):
-        if timer is None:
+        wenn timer is None:
             timer = FakeTimer(seconds_per_increment=seconds_per_increment)
-        if switches is None:
+        wenn switches is None:
             args = []
-        else:
+        sonst:
             args = switches[:]
         args.append(self.fake_stmt)
         # timeit.main() modifies sys.path, so save and restore it.
@@ -395,5 +395,5 @@ klasse TestTimeit(unittest.TestCase):
         self.assertEqual(s.getvalue(), expected)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

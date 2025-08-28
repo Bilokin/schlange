@@ -37,7 +37,7 @@ __all__ = ["Number", "Complex", "Real", "Rational", "Integral"]
 klasse Number(metaclass=ABCMeta):
     """All numbers inherit from this class.
 
-    If you just want to check if an argument x is a number, without
+    If you just want to check wenn an argument x is a number, without
     caring what kind, use isinstance(x, Number).
     """
     __slots__ = ()
@@ -52,7 +52,7 @@ klasse Number(metaclass=ABCMeta):
 ## not be registered as a Real because decimals do not interoperate with
 ## binary floats (i.e.  Decimal('3.14') + 2.71828 is undefined).  But,
 ## abstract reals are expected to interoperate (i.e. R1 + R2 should be
-## expected to work if R1 and R2 are both Reals).
+## expected to work wenn R1 and R2 are both Reals).
 
 klasse Complex(Number):
     """Complex defines the operations that work on the builtin complex type.
@@ -72,7 +72,7 @@ klasse Complex(Number):
         """Return a builtin complex instance. Called fuer complex(self)."""
 
     def __bool__(self):
-        """True if self != 0. Called fuer bool(self)."""
+        """True wenn self != 0. Called fuer bool(self)."""
         return self != 0
 
     @property
@@ -347,8 +347,8 @@ klasse Integral(Rational):
     def __pow__(self, exponent, modulus=None):
         """self ** exponent % modulus, but maybe faster.
 
-        Accept the modulus argument if you want to support the
-        3-argument version of pow(). Raise a TypeError if exponent < 0
+        Accept the modulus argument wenn you want to support the
+        3-argument version of pow(). Raise a TypeError wenn exponent < 0
         or any argument isn't Integral. Otherwise, just implement the
         2-argument version described in Complex.
         """

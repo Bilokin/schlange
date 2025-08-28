@@ -38,7 +38,7 @@ klasse GetpassGetuserTest(unittest.TestCase):
     def test_username_falls_back_to_pwd(self, environ):
         expected_name = 'some_name'
         environ.get.return_value = None
-        if pwd:
+        wenn pwd:
             with mock.patch('os.getuid') as uid, \
                     mock.patch('pwd.getpwuid') as getpw:
                 uid.return_value = 42
@@ -46,7 +46,7 @@ klasse GetpassGetuserTest(unittest.TestCase):
                 self.assertEqual(expected_name,
                                  getpass.getuser())
                 getpw.assert_called_once_with(42)
-        else:
+        sonst:
             self.assertRaises(OSError, getpass.getuser)
 
 
@@ -103,7 +103,7 @@ klasse UnixGetpassTest(unittest.TestCase):
                 mock.patch('io.TextIOWrapper') as textio:
             # By setting open's return value to None the implementation will
             # skip code we don't care about in this test.  We can mock this out
-            # fully if an alternate implementation works differently.
+            # fully wenn an alternate implementation works differently.
             open.return_value = None
             getpass.unix_getpass()
             open.assert_called_once_with('/dev/tty',
@@ -201,5 +201,5 @@ klasse UnixGetpassTest(unittest.TestCase):
         self.assertEqual('Password: *******\x08 \x08', mock_output.getvalue())
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

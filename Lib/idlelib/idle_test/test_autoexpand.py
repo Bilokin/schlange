@@ -31,7 +31,7 @@ klasse AutoExpandTest(unittest.TestCase):
 ##            from idlelib.idle_test.mock_tk import Text
 ##            cls.text = Text()
 ##            cls.text.bell = lambda: None
-##        else:
+##        sonst:
 ##            from tkinter import Tk, Text
 ##            cls.tk = Tk()
 ##            cls.text = Text(cls.tk)
@@ -39,7 +39,7 @@ klasse AutoExpandTest(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         del cls.text, cls.auto_expand
-        if hasattr(cls, 'tk'):
+        wenn hasattr(cls, 'tk'):
             cls.tk.destroy()
             del cls.tk
 
@@ -151,5 +151,5 @@ klasse AutoExpandTest(unittest.TestCase):
         self.assertNotEqual(initial_state, new_state)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main(verbosity=2)

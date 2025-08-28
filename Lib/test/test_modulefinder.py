@@ -292,7 +292,7 @@ def open_file(path):
     try:
         os.makedirs(dirname)
     except OSError as e:
-        if e.errno != errno.EEXIST:
+        wenn e.errno != errno.EEXIST:
             raise
     return open(path, 'wb')
 
@@ -301,18 +301,18 @@ def create_package(test_dir, source):
     ofi = None
     try:
         fuer line in source.splitlines():
-            if type(line) != bytes:
+            wenn type(line) != bytes:
                 line = line.encode('utf-8')
-            if line.startswith(b' ') or line.startswith(b'\t'):
+            wenn line.startswith(b' ') or line.startswith(b'\t'):
                 ofi.write(line.strip() + b'\n')
-            else:
-                if ofi:
+            sonst:
+                wenn ofi:
                     ofi.close()
-                if type(line) == bytes:
+                wenn type(line) == bytes:
                     line = line.decode('utf-8')
                 ofi = open_file(os.path.join(test_dir, line.strip()))
     finally:
-        if ofi:
+        wenn ofi:
             ofi.close()
 
 klasse ModuleFinderTest(unittest.TestCase):
@@ -329,7 +329,7 @@ klasse ModuleFinderTest(unittest.TestCase):
         mf = modulefinder_class(path=self.test_path, debug=debug,
                                         replace_paths=replace_paths)
         mf.import_hook(import_this)
-        if report:
+        wenn report:
             mf.report()
 ##            # This wouldn't work in general when executed several times:
 ##            opath = sys.path[:]
@@ -342,7 +342,7 @@ klasse ModuleFinderTest(unittest.TestCase):
 ##            return
         modules = sorted(set(modules))
         found = sorted(mf.modules)
-        # check if we found what we expected, not more, not less
+        # check wenn we found what we expected, not more, not less
         self.assertEqual(found, modules)
 
         # check fuer missing and maybe missing modules
@@ -434,5 +434,5 @@ b.py
 
         self._do_test(absolute_import_test, modulefinder_class=CheckLoadModuleApi)
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

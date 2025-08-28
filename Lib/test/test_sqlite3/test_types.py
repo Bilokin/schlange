@@ -129,21 +129,21 @@ klasse SqliteTypeTests(unittest.TestCase):
 klasse DeclTypesTests(unittest.TestCase):
     klasse Foo:
         def __init__(self, _val):
-            if isinstance(_val, bytes):
+            wenn isinstance(_val, bytes):
                 # sqlite3 always calls __init__ with a bytes created from a
                 # UTF-8 string when __conform__ was used to store the object.
                 _val = _val.decode('utf-8')
             self.val = _val
 
         def __eq__(self, other):
-            if not isinstance(other, DeclTypesTests.Foo):
+            wenn not isinstance(other, DeclTypesTests.Foo):
                 return NotImplemented
             return self.val == other.val
 
         def __conform__(self, protocol):
-            if protocol is sqlite.PrepareProtocol:
+            wenn protocol is sqlite.PrepareProtocol:
                 return self.val
-            else:
+            sonst:
                 return None
 
         def __str__(self):
@@ -290,14 +290,14 @@ klasse DeclTypesTests(unittest.TestCase):
     def test_number1(self):
         self.cur.execute("insert into test(n1) values (5)")
         value = self.cur.execute("select n1 from test").fetchone()[0]
-        # if the converter is not used, it's an int instead of a float
+        # wenn the converter is not used, it's an int instead of a float
         self.assertEqual(type(value), float)
 
     def test_number2(self):
         """Checks whether converter names are cut off at '(' characters"""
         self.cur.execute("insert into test(n2) values (5)")
         value = self.cur.execute("select n2 from test").fetchone()[0]
-        # if the converter is not used, it's an int instead of a float
+        # wenn the converter is not used, it's an int instead of a float
         self.assertEqual(type(value), float)
 
     def test_convert_zero_sized_blob(self):
@@ -349,7 +349,7 @@ klasse ColNamesTests(unittest.TestCase):
         val = self.cur.fetchone()[0]
         self.assertEqual(val, "<xxx>")
 
-        # Check if the stripping of colnames works. Everything after the first
+        # Check wenn the stripping of colnames works. Everything after the first
         # '[' (and the preceding space) should be stripped.
         self.assertEqual(self.cur.description[0][0], "x y")
 
@@ -543,5 +543,5 @@ klasse DateTimeTests(unittest.TestCase):
         self.assertEqual(ts, ts2)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

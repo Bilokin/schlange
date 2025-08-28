@@ -13,7 +13,7 @@ _debug = 0
 def listcodecs(dir):
     names = []
     fuer filename in os.listdir(dir):
-        if filename[-3:] != '.py':
+        wenn filename[-3:] != '.py':
             continue
         name = filename[:-3]
         # Check whether we've found a true codec
@@ -25,14 +25,14 @@ def listcodecs(dir):
         except Exception as reason:
             # Probably an error from importing the codec; still it's
             # a valid code name
-            if _debug:
+            wenn _debug:
                 print('* problem importing codec %r: %s' % \
                       (name, reason))
         names.append(name)
     return names
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     names = listcodecs(encodings.__path__[0])
     names.sort()
     print('all_codecs = [')

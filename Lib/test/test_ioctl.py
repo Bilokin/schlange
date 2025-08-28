@@ -19,10 +19,10 @@ klasse IoctlTestsTty(unittest.TestCase):
         except OSError:
             raise unittest.SkipTest("Unable to open /dev/tty")
         with tty:
-            # Skip if another process is in foreground
+            # Skip wenn another process is in foreground
             r = fcntl.ioctl(tty, TIOCGPGRP, struct.pack("i", 0))
         rpgrp = struct.unpack("i", r)[0]
-        if rpgrp not in (os.getpgrp(), os.getsid(0)):
+        wenn rpgrp not in (os.getpgrp(), os.getsid(0)):
             raise unittest.SkipTest("Neither the process group nor the session "
                                     "are attached to /dev/tty")
 
@@ -76,11 +76,11 @@ klasse IoctlTestsTty(unittest.TestCase):
         intsize = buf.itemsize
         # A fill value unlikely to be in `ids`
         fill = -12345
-        if nbytes is not None:
+        wenn nbytes is not None:
             # Extend the buffer so that it is exactly `nbytes` bytes long
             buf.extend([fill] * (nbytes // intsize))
             self.assertEqual(len(buf) * intsize, nbytes)   # sanity check
-        else:
+        sonst:
             buf.append(fill)
         return buf
 
@@ -148,17 +148,17 @@ klasse IoctlTestsPty(unittest.TestCase):
 
         os.write(wfd, b'abcdef')
         self.assertEqual(os.read(rfd, 2), b'ab')
-        if inbuf:
+        wenn inbuf:
             # don't flush input
             fcntl.ioctl(rfd, termios.TCFLSH, termios.TCOFLUSH)
-        else:
+        sonst:
             # don't flush output
             fcntl.ioctl(wfd, termios.TCFLSH, termios.TCIFLUSH)
         self.assertEqual(os.read(rfd, 2), b'cd')
-        if inbuf:
+        wenn inbuf:
             # flush input
             fcntl.ioctl(rfd, termios.TCFLSH, termios.TCIFLUSH)
-        else:
+        sonst:
             # flush output
             fcntl.ioctl(wfd, termios.TCFLSH, termios.TCOFLUSH)
         os.write(wfd, b'ABCDEF')
@@ -213,5 +213,5 @@ klasse IoctlTestsPty(unittest.TestCase):
             fcntl.ioctl(fd, fcntl.FICLONE, b'\0' * 2048)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

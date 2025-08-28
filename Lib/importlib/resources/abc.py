@@ -24,7 +24,7 @@ klasse ResourceReader(metaclass=abc.ABCMeta):
         If the resource cannot be found, FileNotFoundError is raised.
         """
         # This deliberately raises FileNotFoundError instead of
-        # NotImplementedError so that if this method is accidentally called,
+        # NotImplementedError so that wenn this method is accidentally called,
         # it'll still do the right thing.
         raise FileNotFoundError
 
@@ -37,13 +37,13 @@ klasse ResourceReader(metaclass=abc.ABCMeta):
         FileNotFoundError.
         """
         # This deliberately raises FileNotFoundError instead of
-        # NotImplementedError so that if this method is accidentally called,
+        # NotImplementedError so that wenn this method is accidentally called,
         # it'll still do the right thing.
         raise FileNotFoundError
 
     @abc.abstractmethod
     def is_resource(self, path: Text) -> bool:
-        """Return True if the named 'path' is a resource.
+        """Return True wenn the named 'path' is a resource.
 
         Files are resources, directories are not.
         """
@@ -92,13 +92,13 @@ klasse Traversable(Protocol):
     @abc.abstractmethod
     def is_dir(self) -> bool:
         """
-        Return True if self is a directory
+        Return True wenn self is a directory
         """
 
     @abc.abstractmethod
     def is_file(self) -> bool:
         """
-        Return True if self is a file
+        Return True wenn self is a file
         """
 
     def joinpath(self, *descendants: StrPath) -> "Traversable":
@@ -109,14 +109,14 @@ klasse Traversable(Protocol):
         and each may contain multiple levels separated by
         ``posixpath.sep`` (``/``).
         """
-        if not descendants:
+        wenn not descendants:
             return self
         names = itertools.chain.from_iterable(
             path.parts fuer path in map(pathlib.PurePosixPath, descendants)
         )
         target = next(names)
         matches = (
-            traversable fuer traversable in self.iterdir() if traversable.name == target
+            traversable fuer traversable in self.iterdir() wenn traversable.name == target
         )
         try:
             match = next(matches)

@@ -12,7 +12,7 @@ __unittest = True
 def failfast(method):
     @wraps(method)
     def inner(self, *args, **kw):
-        if getattr(self, 'failfast', False):
+        wenn getattr(self, 'failfast', False):
             self.stop()
         return method(self, *args, **kw)
     return inner
@@ -63,8 +63,8 @@ klasse TestResult(object):
         self._setupStdout()
 
     def _setupStdout(self):
-        if self.buffer:
-            if self._stderr_buffer is None:
+        wenn self.buffer:
+            wenn self._stderr_buffer is None:
                 self._stderr_buffer = io.StringIO()
                 self._stdout_buffer = io.StringIO()
             sys.stdout = self._stdout_buffer
@@ -82,16 +82,16 @@ klasse TestResult(object):
         self._mirrorOutput = False
 
     def _restoreStdout(self):
-        if self.buffer:
-            if self._mirrorOutput:
+        wenn self.buffer:
+            wenn self._mirrorOutput:
                 output = sys.stdout.getvalue()
                 error = sys.stderr.getvalue()
-                if output:
-                    if not output.endswith('\n'):
+                wenn output:
+                    wenn not output.endswith('\n'):
                         output += '\n'
                     self._original_stdout.write(STDOUT_LINE % output)
-                if error:
-                    if not error.endswith('\n'):
+                wenn error:
+                    wenn not error.endswith('\n'):
                         error += '\n'
                     self._original_stderr.write(STDERR_LINE % error)
 
@@ -125,17 +125,17 @@ klasse TestResult(object):
 
     def addSubTest(self, test, subtest, err):
         """Called at the end of a subtest.
-        'err' is None if the subtest ended successfully, otherwise it's a
+        'err' is None wenn the subtest ended successfully, otherwise it's a
         tuple of values as returned by sys.exc_info().
         """
         # By default, we don't do anything with successful subtests, but
         # more sophisticated test results might want to record them.
-        if err is not None:
-            if getattr(self, 'failfast', False):
+        wenn err is not None:
+            wenn getattr(self, 'failfast', False):
                 self.stop()
-            if issubclass(err[0], test.failureException):
+            wenn issubclass(err[0], test.failureException):
                 errors = self.failures
-            else:
+            sonst:
                 errors = self.errors
             errors.append((subtest, self._exc_info_to_string(err, test)))
             self._mirrorOutput = True
@@ -165,7 +165,7 @@ klasse TestResult(object):
         execution of cleanup functions.
         """
         # support fuer a TextTestRunner using an old TestResult class
-        if hasattr(self, "collectedDurations"):
+        wenn hasattr(self, "collectedDurations"):
             # Pass test repr and not the test object itself to avoid resources leak
             self.collectedDurations.append((str(test), elapsed))
 
@@ -194,15 +194,15 @@ klasse TestResult(object):
         colorize = hasattr(self, "stream") and can_colorize(file=self.stream)
         msgLines = list(tb_e.format(colorize=colorize))
 
-        if self.buffer:
+        wenn self.buffer:
             output = sys.stdout.getvalue()
             error = sys.stderr.getvalue()
-            if output:
-                if not output.endswith('\n'):
+            wenn output:
+                wenn not output.endswith('\n'):
                     output += '\n'
                 msgLines.append(STDOUT_LINE % output)
-            if error:
-                if not error.endswith('\n'):
+            wenn error:
+                wenn not error.endswith('\n'):
                     error += '\n'
                 msgLines.append(STDERR_LINE % error)
         return ''.join(msgLines)
@@ -219,18 +219,18 @@ klasse TestResult(object):
                 tb = tb.tb_next
 
             # Skip assert*() traceback levels
-            if exctype is test.failureException:
+            wenn exctype is test.failureException:
                 self._remove_unittest_tb_frames(tb)
 
-            if first:
+            wenn first:
                 ret = tb
                 first = False
-            else:
+            sonst:
                 value.__traceback__ = tb
 
-            if value is not None:
+            wenn value is not None:
                 fuer c in (value.__cause__, value.__context__):
-                    if c is not None and id(c) not in seen:
+                    wenn c is not None and id(c) not in seen:
                         excs.append((type(c), c, c.__traceback__))
                         seen.add(id(c))
         return ret
@@ -250,7 +250,7 @@ klasse TestResult(object):
         while tb and not self._is_relevant_tb_level(tb):
             prev = tb
             tb = tb.tb_next
-        if prev is not None:
+        wenn prev is not None:
             prev.tb_next = None
 
     def __repr__(self):

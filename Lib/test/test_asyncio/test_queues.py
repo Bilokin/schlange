@@ -14,7 +14,7 @@ klasse QueueBasicTests(unittest.IsolatedAsyncioTestCase):
     async def _test_repr_or_str(self, fn, expect_id):
         """Test Queue's repr or str.
 
-        fn is repr or str. expect_id is True if we expect the Queue's id to
+        fn is repr or str. expect_id is True wenn we expect the Queue's id to
         appear in fn(Queue()).
         """
         q = asyncio.Queue()
@@ -267,7 +267,7 @@ klasse QueuePutTests(unittest.IsolatedAsyncioTestCase):
             await reader
 
         result = reader.result()
-        # if we get 2, it means 1 got dropped!
+        # wenn we get 2, it means 1 got dropped!
         self.assertEqual(1, result)
 
     async def test_get_cancel_drop_many_pending_readers(self):
@@ -496,7 +496,7 @@ klasse _QueueJoinTestMixin:
     async def test_join_empty_queue(self):
         q = self.q_class()
 
-        # Test that a queue join()s successfully, and before anything else
+        # Test that a queue join()s successfully, and before anything sonst
         # (done twice fuer insurance).
 
         await q.join()
@@ -721,5 +721,5 @@ klasse PriorityQueueShutdownTests(
     q_class = asyncio.PriorityQueue
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

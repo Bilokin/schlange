@@ -268,7 +268,7 @@ def loop_overhead(trials=trials):
         pass
 
 
-if __name__=='__main__':
+wenn __name__=='__main__':
 
     from timeit import Timer
 
@@ -289,7 +289,7 @@ if __name__=='__main__':
             list_append_pop, deque_append_pop, deque_append_popleft,
             '\nTiming loop overhead:',
             loop_overhead]:
-        if isinstance(f, str):
+        wenn isinstance(f, str):
             print(f)
             continue
         timing = min(Timer(f).repeat(7, 1000))

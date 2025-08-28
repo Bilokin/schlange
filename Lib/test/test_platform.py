@@ -108,7 +108,7 @@ klasse PlatformTest(unittest.TestCase):
             platform.freedesktop_os_release()
         except OSError:
             self.assertIsNone(platform._os_release_cache)
-        else:
+        sonst:
             self.assertIsNotNone(platform._os_release_cache)
 
         with self.subTest('clear platform caches'):
@@ -237,12 +237,12 @@ klasse PlatformTest(unittest.TestCase):
         fuer (version_tag, scm, sys_platform), info in \
                 sys_versions.items():
             sys.version = version_tag
-            if scm is None:
-                if hasattr(sys, "_git"):
+            wenn scm is None:
+                wenn hasattr(sys, "_git"):
                     del sys._git
-            else:
+            sonst:
                 sys._git = scm
-            if sys_platform is not None:
+            wenn sys_platform is not None:
                 sys.platform = sys_platform
             self.assertEqual(platform.python_implementation(), info[0])
             self.assertEqual(platform.python_version(), info[1])
@@ -278,26 +278,26 @@ klasse PlatformTest(unittest.TestCase):
         self.assertEqual(res[-1], res.processor)
         self.assertEqual(len(res), 6)
 
-        if os.name == "posix":
+        wenn os.name == "posix":
             uname = os.uname()
             self.assertEqual(res.node, uname.nodename)
             self.assertEqual(res.version, uname.version)
             self.assertEqual(res.machine, uname.machine)
 
-            if sys.platform == "android":
+            wenn sys.platform == "android":
                 self.assertEqual(res.system, "Android")
                 self.assertEqual(res.release, platform.android_ver().release)
-            elif sys.platform == "ios":
+            sowenn sys.platform == "ios":
                 # Platform module needs ctypes fuer full operation. If ctypes
                 # isn't available, there's no ObjC module, and dummy values are
                 # returned.
-                if _ctypes:
+                wenn _ctypes:
                     self.assertIn(res.system, {"iOS", "iPadOS"})
                     self.assertEqual(res.release, platform.ios_ver().release)
-                else:
+                sonst:
                     self.assertEqual(res.system, "")
                     self.assertEqual(res.release, "")
-            else:
+            sonst:
                 self.assertEqual(res.system, uname.sysname)
                 self.assertEqual(res.release, uname.release)
 
@@ -375,7 +375,7 @@ klasse PlatformTest(unittest.TestCase):
     @unittest.skipUnless(sys.platform.startswith('win'), "windows only test")
     def test_uname_win32_ARCHITEW6432(self):
         # Issue 7860: make sure we get architecture from the correct variable
-        # on 64 bit Windows: if PROCESSOR_ARCHITEW6432 exists we should be
+        # on 64 bit Windows: wenn PROCESSOR_ARCHITEW6432 exists we should be
         # using it, per
         # http://blogs.msdn.com/david.wang/archive/2006/03/26/HOWTO-Detect-Process-Bitness.aspx
 
@@ -405,23 +405,23 @@ klasse PlatformTest(unittest.TestCase):
         res = platform.win32_ver(release1, version1, csd1, ptype1)
         self.assertEqual(len(res), 4)
         release, version, csd, ptype = res
-        if release:
+        wenn release:
             # Currently, release names always come from internal dicts,
             # but this could change over time. For now, we just check that
             # release is something different from what we have passed.
             self.assertNotEqual(release, release1)
-        if version:
+        wenn version:
             # It is rather hard to test explicit version without
             # going deep into the details.
             self.assertIn('.', version)
             fuer v in version.split('.'):
                 int(v)  # should not fail
-        if csd:
+        wenn csd:
             self.assertStartsWith(csd, 'SP')
-        if ptype:
-            if os.cpu_count() > 1:
+        wenn ptype:
+            wenn os.cpu_count() > 1:
                 self.assertIn('Multiprocessor', ptype)
-            else:
+            sonst:
                 self.assertIn('Uniprocessor', ptype)
 
     @unittest.skipIf(support.MS_WINDOWS, 'This test only makes sense on non Windows')
@@ -433,26 +433,26 @@ klasse PlatformTest(unittest.TestCase):
     def test_mac_ver(self):
         res = platform.mac_ver()
 
-        if platform.uname().system == 'Darwin':
+        wenn platform.uname().system == 'Darwin':
             # We are on a macOS system, check that the right version
             # information is returned
             output = subprocess.check_output(['sw_vers'], text=True)
             fuer line in output.splitlines():
-                if line.startswith('ProductVersion:'):
+                wenn line.startswith('ProductVersion:'):
                     real_ver = line.strip().split()[-1]
                     break
-            else:
+            sonst:
                 self.fail(f"failed to parse sw_vers output: {output!r}")
 
             result_list = res[0].split('.')
             expect_list = real_ver.split('.')
             len_diff = len(result_list) - len(expect_list)
             # On Snow Leopard, sw_vers reports 10.6.0 as 10.6
-            if len_diff > 0:
+            wenn len_diff > 0:
                 expect_list.extend(['0'] * len_diff)
             # For compatibility with older binaries, macOS 11.x may report
             # itself as '10.16' rather than '11.x.y'.
-            if result_list != ['10', '16']:
+            wenn result_list != ['10', '16']:
                 self.assertEqual(result_list, expect_list)
 
             # res[1] claims to contain
@@ -460,9 +460,9 @@ klasse PlatformTest(unittest.TestCase):
             # That information is no longer available
             self.assertEqual(res[1], ('', '', ''))
 
-            if sys.byteorder == 'little':
+            wenn sys.byteorder == 'little':
                 self.assertIn(res[2], ('i386', 'x86_64', 'arm64'))
-            else:
+            sonst:
                 self.assertEqual(res[2], 'PowerPC')
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
@@ -473,12 +473,12 @@ klasse PlatformTest(unittest.TestCase):
         # This test checks that the fix fuer that issue works.
         #
         pid = os.fork()
-        if pid == 0:
+        wenn pid == 0:
             # child
             info = platform.mac_ver()
             os._exit(0)
 
-        else:
+        sonst:
             # parent
             support.wait_process(pid, exitcode=0)
 
@@ -486,7 +486,7 @@ klasse PlatformTest(unittest.TestCase):
         result = platform.ios_ver()
 
         # ios_ver is only fully available on iOS where ctypes is available.
-        if sys.platform == "ios" and _ctypes:
+        wenn sys.platform == "ios" and _ctypes:
             system, release, model, is_simulator = result
             # Result is a namedtuple
             self.assertEqual(result.system, system)
@@ -508,16 +508,16 @@ klasse PlatformTest(unittest.TestCase):
             # If this is a simulator, we get a high level device descriptor
             # with no identifying model number. If this is a physical device,
             # we get a model descriptor like "iPhone13,1"
-            if is_simulator:
+            wenn is_simulator:
                 self.assertIn(model, {"iPhone", "iPad"})
-            else:
+            sonst:
                 self.assertTrue(
                     (model.startswith("iPhone") or model.startswith("iPad"))
                     and "," in model
                 )
 
             self.assertEqual(type(is_simulator), bool)
-        else:
+        sonst:
             # On non-iOS platforms, calling ios_ver doesn't fail; you get
             # default values
             self.assertEqual(result.system, "")
@@ -535,16 +535,16 @@ klasse PlatformTest(unittest.TestCase):
     @unittest.skipIf(support.is_emscripten, "Does not apply to Emscripten")
     def test_libc_ver(self):
         # check that libc_ver(executable) doesn't raise an exception
-        if os.path.isdir(sys.executable) and \
+        wenn os.path.isdir(sys.executable) and \
            os.path.exists(sys.executable+'.exe'):
             # Cygwin horror
             executable = sys.executable + '.exe'
-        elif sys.platform == "win32" and not os.path.exists(sys.executable):
+        sowenn sys.platform == "win32" and not os.path.exists(sys.executable):
             # App symlink appears to not exist, but we want the
             # real executable here anyway
             import _winapi
             executable = _winapi.GetModuleFileName(0)
-        else:
+        sonst:
             executable = sys.executable
         platform.libc_ver(executable)
 
@@ -571,13 +571,13 @@ klasse PlatformTest(unittest.TestCase):
                     fp.write(b'[xxx%sxxx]' % data)
                     fp.flush()
 
-                # os.confstr() must not be used if executable is set
+                # os.confstr() must not be used wenn executable is set
                 self.assertEqual(platform.libc_ver(executable=filename),
                                  expected)
 
         # binary containing multiple versions: get the most recent,
         # make sure that eg 1.9 is seen as older than 1.23.4, and that
-        # the arguments don't count even if they are set.
+        # the arguments don't count even wenn they are set.
         chunksize = 200
         fuer data, expected in (
                 (b'GLIBC_1.23.4\0GLIBC_1.9\0GLIBC_1.21\0', ('glibc', '1.23.4')),
@@ -606,7 +606,7 @@ klasse PlatformTest(unittest.TestCase):
         self.assertEqual(res, (res.release, res.api_level, res.manufacturer,
                                res.model, res.device, res.is_emulator))
 
-        if sys.platform == "android":
+        wenn sys.platform == "android":
             fuer name in ["release", "manufacturer", "model", "device"]:
                 with self.subTest(name):
                     value = getattr(res, name)
@@ -619,7 +619,7 @@ klasse PlatformTest(unittest.TestCase):
             self.assertIsInstance(res.is_emulator, bool)
 
         # When not running on Android, it should return the default values.
-        else:
+        sonst:
             self.assertEqual(res.release, "")
             self.assertEqual(res.api_level, 0)
             self.assertEqual(res.manufacturer, "")
@@ -706,7 +706,7 @@ klasse PlatformTest(unittest.TestCase):
         self.addCleanup(self.clear_caches)
         self.clear_caches()
 
-        if any(os.path.isfile(fn) fuer fn in platform._os_release_candidates):
+        wenn any(os.path.isfile(fn) fuer fn in platform._os_release_candidates):
             info = platform.freedesktop_os_release()
             self.assertIn("NAME", info)
             self.assertIn("ID", info)
@@ -716,7 +716,7 @@ klasse PlatformTest(unittest.TestCase):
                 "CPYTHON_TEST",
                 platform.freedesktop_os_release()
             )
-        else:
+        sonst:
             with self.assertRaises(OSError):
                 platform.freedesktop_os_release()
 
@@ -812,5 +812,5 @@ klasse CommandLineTest(unittest.TestCase):
         self.assertStartsWith(output.getvalue(), "usage:")
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

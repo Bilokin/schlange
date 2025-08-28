@@ -24,10 +24,10 @@ def needsquoting(c, quotetabs, header):
     RFC 1521.
     """
     assert isinstance(c, bytes)
-    if c in b' \t':
+    wenn c in b' \t':
         return quotetabs
-    # if header, we have to escape _ because _ is used to escape space
-    if c == b'_':
+    # wenn header, we have to escape _ because _ is used to escape space
+    wenn c == b'_':
         return header
     return c == ESCAPE or not (b' ' <= c <= b'~')
 
@@ -48,7 +48,7 @@ def encode(input, output, quotetabs, header=False):
     The 'header' flag indicates whether we are encoding spaces as _ as per RFC
     1522."""
 
-    if b2a_qp is not None:
+    wenn b2a_qp is not None:
         data = input.read()
         odata = b2a_qp(data, quotetabs=quotetabs, header=header)
         output.write(odata)
@@ -57,11 +57,11 @@ def encode(input, output, quotetabs, header=False):
     def write(s, output=output, lineEnd=b'\n'):
         # RFC 1521 requires that the line ending in a space or tab must have
         # that trailing character encoded.
-        if s and s[-1:] in b' \t':
+        wenn s and s[-1:] in b' \t':
             output.write(s[:-1] + quote(s[-1:]) + lineEnd)
-        elif s == b'.':
+        sowenn s == b'.':
             output.write(quote(s) + lineEnd)
-        else:
+        sonst:
             output.write(s + lineEnd)
 
     prevline = None
@@ -69,22 +69,22 @@ def encode(input, output, quotetabs, header=False):
         outline = []
         # Strip off any readline induced trailing newline
         stripped = b''
-        if line[-1:] == b'\n':
+        wenn line[-1:] == b'\n':
             line = line[:-1]
             stripped = b'\n'
         # Calculate the un-length-limited encoded line
         fuer c in line:
             c = bytes((c,))
-            if needsquoting(c, quotetabs, header):
+            wenn needsquoting(c, quotetabs, header):
                 c = quote(c)
-            if header and c == b' ':
+            wenn header and c == b' ':
                 outline.append(b'_')
-            else:
+            sonst:
                 outline.append(c)
         # First, write out the previous line
-        if prevline is not None:
+        wenn prevline is not None:
             write(prevline)
-        # Now see if we need any soft line breaks because of RFC-imposed
+        # Now see wenn we need any soft line breaks because of RFC-imposed
         # length limitations.  Then do the thisline->prevline dance.
         thisline = EMPTYSTRING.join(outline)
         while len(thisline) > MAXLINESIZE:
@@ -95,11 +95,11 @@ def encode(input, output, quotetabs, header=False):
         # Write out the current line
         prevline = thisline
     # Write out the last line, without a trailing newline
-    if prevline is not None:
+    wenn prevline is not None:
         write(prevline, lineEnd=stripped)
 
 def encodestring(s, quotetabs=False, header=False):
-    if b2a_qp is not None:
+    wenn b2a_qp is not None:
         return b2a_qp(s, quotetabs=quotetabs, header=header)
     from io import BytesIO
     infp = BytesIO(s)
@@ -114,7 +114,7 @@ def decode(input, output, header=False):
     'input' and 'output' are binary file objects.
     If 'header' is true, decode underscore as space (per RFC 1522)."""
 
-    if a2b_qp is not None:
+    wenn a2b_qp is not None:
         data = input.read()
         odata = a2b_qp(data, header=header)
         output.write(odata)
@@ -123,35 +123,35 @@ def decode(input, output, header=False):
     new = b''
     while line := input.readline():
         i, n = 0, len(line)
-        if n > 0 and line[n-1:n] == b'\n':
+        wenn n > 0 and line[n-1:n] == b'\n':
             partial = 0; n = n-1
             # Strip trailing whitespace
             while n > 0 and line[n-1:n] in b" \t\r":
                 n = n-1
-        else:
+        sonst:
             partial = 1
         while i < n:
             c = line[i:i+1]
-            if c == b'_' and header:
+            wenn c == b'_' and header:
                 new = new + b' '; i = i+1
-            elif c != ESCAPE:
+            sowenn c != ESCAPE:
                 new = new + c; i = i+1
-            elif i+1 == n and not partial:
+            sowenn i+1 == n and not partial:
                 partial = 1; break
-            elif i+1 < n and line[i+1:i+2] == ESCAPE:
+            sowenn i+1 < n and line[i+1:i+2] == ESCAPE:
                 new = new + ESCAPE; i = i+2
-            elif i+2 < n and ishex(line[i+1:i+2]) and ishex(line[i+2:i+3]):
+            sowenn i+2 < n and ishex(line[i+1:i+2]) and ishex(line[i+2:i+3]):
                 new = new + bytes((unhex(line[i+1:i+3]),)); i = i+3
-            else: # Bad escape sequence -- leave it in
+            sonst: # Bad escape sequence -- leave it in
                 new = new + c; i = i+1
-        if not partial:
+        wenn not partial:
             output.write(new + b'\n')
             new = b''
-    if new:
+    wenn new:
         output.write(new)
 
 def decodestring(s, header=False):
-    if a2b_qp is not None:
+    wenn a2b_qp is not None:
         return a2b_qp(s, header=header)
     from io import BytesIO
     infp = BytesIO(s)
@@ -163,7 +163,7 @@ def decodestring(s, header=False):
 
 # Other helper functions
 def ishex(c):
-    """Return true if the byte ordinal 'c' is a hexadecimal digit in ASCII."""
+    """Return true wenn the byte ordinal 'c' is a hexadecimal digit in ASCII."""
     assert isinstance(c, bytes)
     return b'0' <= c <= b'9' or b'a' <= c <= b'f' or b'A' <= c <= b'F'
 
@@ -172,13 +172,13 @@ def unhex(s):
     bits = 0
     fuer c in s:
         c = bytes((c,))
-        if b'0' <= c <= b'9':
+        wenn b'0' <= c <= b'9':
             i = ord('0')
-        elif b'a' <= c <= b'f':
+        sowenn b'a' <= c <= b'f':
             i = ord('a')-10
-        elif b'A' <= c <= b'F':
+        sowenn b'A' <= c <= b'F':
             i = ord(b'A')-10
-        else:
+        sonst:
             assert False, "non-hex digit "+repr(c)
         bits = bits*16 + (ord(c) - i)
     return bits
@@ -200,18 +200,18 @@ def main():
     deco = False
     tabs = False
     fuer o, a in opts:
-        if o == '-t': tabs = True
-        if o == '-d': deco = True
-    if tabs and deco:
+        wenn o == '-t': tabs = True
+        wenn o == '-d': deco = True
+    wenn tabs and deco:
         sys.stdout = sys.stderr
         print("-t and -d are mutually exclusive")
         sys.exit(2)
-    if not args: args = ['-']
+    wenn not args: args = ['-']
     sts = 0
     fuer file in args:
-        if file == '-':
+        wenn file == '-':
             fp = sys.stdin.buffer
-        else:
+        sonst:
             try:
                 fp = open(file, "rb")
             except OSError as msg:
@@ -219,17 +219,17 @@ def main():
                 sts = 1
                 continue
         try:
-            if deco:
+            wenn deco:
                 decode(fp, sys.stdout.buffer)
-            else:
+            sonst:
                 encode(fp, sys.stdout.buffer, tabs)
         finally:
-            if file != '-':
+            wenn file != '-':
                 fp.close()
-    if sts:
+    wenn sts:
         sys.exit(sts)
 
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     main()

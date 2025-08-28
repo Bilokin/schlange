@@ -13,7 +13,7 @@ Usage::
 import json.tool
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     try:
         json.tool.main()
     except BrokenPipeError as exc:

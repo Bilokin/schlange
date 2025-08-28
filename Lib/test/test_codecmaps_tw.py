@@ -23,5 +23,5 @@ klasse TestCP950Map(multibytecodec_support.TestBase_Mapping,
         (b"\xFFxy", "replace",  "\ufffdxy"),
     )
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

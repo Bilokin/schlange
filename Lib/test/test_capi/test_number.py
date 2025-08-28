@@ -21,9 +21,9 @@ klasse BadDescr:
 
 klasse WithDunder:
     def _meth(self, *args):
-        if self.val:
+        wenn self.val:
             return self.val
-        if self.exc:
+        wenn self.exc:
             raise self.exc
     @classmethod
     def with_val(cls, val):
@@ -106,7 +106,7 @@ klasse CAPITest(unittest.TestCase):
                     op(x)
                 except TypeError:
                     self.assertRaises(TypeError, func, x)
-                else:
+                sonst:
                     self.assertEqual(func(x), op(x))
 
     def test_binary_ops(self):
@@ -154,7 +154,7 @@ klasse CAPITest(unittest.TestCase):
                     op(x, y)
                 except (TypeError, ValueError, ZeroDivisionError) as exc:
                     self.assertRaises(exc.__class__, func, x, y)
-                else:
+                sonst:
                     self.assertEqual(func(x, y), op(x, y))
 
             # CRASHES func(NULL, object())
@@ -348,5 +348,5 @@ klasse CAPITest(unittest.TestCase):
         self.assertRaises(SystemError, asssizet, NULL, TypeError)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

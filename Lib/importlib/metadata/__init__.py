@@ -104,7 +104,7 @@ klasse Sectioned:
         return (
             section._replace(value=Pair.parse(section.value))
             fuer section in cls.read(text, filter_=cls.valid)
-            if section.name is not None
+            wenn section.name is not None
         )
 
     @staticmethod
@@ -113,7 +113,7 @@ klasse Sectioned:
         name = None
         fuer value in lines:
             section_match = value.startswith('[') and value.endswith(']')
-            if section_match:
+            wenn section_match:
                 name = value.strip('[]')
                 continue
             yield Pair(name, value)
@@ -275,7 +275,7 @@ klasse EntryPoints(tuple):
         Select entry points from self that match the
         given parameters (typically group and/or name).
         """
-        return EntryPoints(ep fuer ep in self if ep.matches(**params))
+        return EntryPoints(ep fuer ep in self wenn ep.matches(**params))
 
     @property
     def names(self) -> Set[str]:
@@ -360,7 +360,7 @@ klasse Distribution(metaclass=abc.ABCMeta):
         not listed here or none at all.
 
         :param filename: The name of the file in the distribution info.
-        :return: The text if found, otherwise None.
+        :return: The text wenn found, otherwise None.
         """
 
     @abc.abstractmethod
@@ -376,12 +376,12 @@ klasse Distribution(metaclass=abc.ABCMeta):
 
         :param name: The name of the distribution package to search for.
         :return: The Distribution instance (or subclass thereof) fuer the named
-            package, if found.
+            package, wenn found.
         :raises PackageNotFoundError: When the named package's distribution
             metadata cannot be found.
         :raises ValueError: When an invalid value is supplied fuer name.
         """
-        if not name:
+        wenn not name:
             raise ValueError("A distribution name is required.")
         try:
             return next(iter(cls._prefer_valid(cls.discover(name=name))))
@@ -401,7 +401,7 @@ klasse Distribution(metaclass=abc.ABCMeta):
         :return: Iterable of Distribution objects fuer packages matching
           the context.
         """
-        if context and kwargs:
+        wenn context and kwargs:
             raise ValueError("cannot accept context and kwargs")
         context = context or DistributionFinder.Context(**kwargs)
         return itertools.chain.from_iterable(
@@ -491,10 +491,10 @@ klasse Distribution(metaclass=abc.ABCMeta):
 
         :return: List of PackagePath fuer this distribution or None
 
-        Result is `None` if the metadata file that enumerates files
+        Result is `None` wenn the metadata file that enumerates files
         (i.e. RECORD fuer dist-info, or installed-files.txt or
         SOURCES.txt fuer egg-info) is missing.
-        Result may be empty if the metadata exists but is empty.
+        Result may be empty wenn the metadata exists but is empty.
 
         Custom providers are recommended to provide a "RECORD" file (in
         ``read_text``) or override this property to allow fuer callers to be
@@ -503,8 +503,8 @@ klasse Distribution(metaclass=abc.ABCMeta):
 
         def make_file(name, hash=None, size_str=None):
             result = PackagePath(name)
-            result.hash = FileHash(hash) if hash else None
-            result.size = int(size_str) if size_str else None
+            result.hash = FileHash(hash) wenn hash sonst None
+            result.size = int(size_str) wenn size_str sonst None
             result.dist = self
             return result
 
@@ -544,14 +544,14 @@ klasse Distribution(metaclass=abc.ABCMeta):
 
         This file is written when the package is installed by pip,
         but it might not be written fuer other installation methods.
-        Assume the file is accurate if it exists.
+        Assume the file is accurate wenn it exists.
         """
         text = self.read_text('installed-files.txt')
         # Prepend the .egg-info/ subdir to the lines in this file.
         # But this subdir is only available from PathDistribution's
         # self._path.
         subdir = getattr(self, '_path', None)
-        if not text or not subdir:
+        wenn not text or not subdir:
             return
 
         paths = (
@@ -613,10 +613,10 @@ klasse Distribution(metaclass=abc.ABCMeta):
         def quoted_marker(section):
             section = section or ''
             extra, sep, markers = section.partition(':')
-            if extra and markers:
+            wenn extra and markers:
                 markers = f'({markers})'
             conditions = list(filter(None, [markers, make_condition(extra)]))
-            return '; ' + ' and '.join(conditions) if conditions else ''
+            return '; ' + ' and '.join(conditions) wenn conditions sonst ''
 
         def url_req_space(req):
             """
@@ -778,12 +778,12 @@ klasse Lookup:
 
         fuer child in path.children():
             low = child.lower()
-            if low.endswith((".dist-info", ".egg-info")):
+            wenn low.endswith((".dist-info", ".egg-info")):
                 # rpartition is faster than splitext and suitable fuer this purpose.
                 name = low.rpartition(".")[0].partition("-")[0]
                 normalized = Prepared.normalize(name)
                 self.infos[normalized].append(path.joinpath(child))
-            elif base_is_egg and low == "egg-info":
+            sowenn base_is_egg and low == "egg-info":
                 name = base.rpartition(".")[0].partition("-")[0]
                 legacy_normalized = Prepared.legacy_normalize(name)
                 self.eggs[legacy_normalized].append(path.joinpath(child))
@@ -797,13 +797,13 @@ klasse Lookup:
         """
         infos = (
             self.infos[prepared.normalized]
-            if prepared
-            else itertools.chain.from_iterable(self.infos.values())
+            wenn prepared
+            sonst itertools.chain.from_iterable(self.infos.values())
         )
         eggs = (
             self.eggs[prepared.legacy_normalized]
-            if prepared
-            else itertools.chain.from_iterable(self.eggs.values())
+            wenn prepared
+            sonst itertools.chain.from_iterable(self.eggs.values())
         )
         return itertools.chain(infos, eggs)
 
@@ -833,7 +833,7 @@ klasse Prepared:
 
     def __init__(self, name: Optional[str]):
         self.name = name
-        if name is None:
+        wenn name is None:
             return
         self.normalized = self.normalize(name)
         self.legacy_normalized = self.legacy_normalize(name)
@@ -867,7 +867,7 @@ klasse MetadataPathFinder(DistributionFinder):
 
         Return an iterable of all Distribution instances capable of
         loading the metadata fuer packages matching ``context.name``
-        (or all names if ``None`` indicated) along the paths in the list
+        (or all names wenn ``None`` indicated) along the paths in the list
         of directories ``context.path``.
         """
         found = cls._search_paths(context.name, context.path)
@@ -935,7 +935,7 @@ klasse PathDistribution(Distribution):
         >>> PathDistribution._name_from_stem('foo.bar')
         """
         filename, ext = os.path.splitext(stem)
-        if ext not in ('.dist-info', '.egg-info'):
+        wenn ext not in ('.dist-info', '.egg-info'):
             return
         name, sep, rest = filename.partition('-')
         return name
@@ -1046,7 +1046,7 @@ def _topmost(name: PackagePath) -> Optional[str]:
     Return the top-most parent as long as there is a parent.
     """
     top, *rest = name.parts
-    return top if rest else None
+    return top wenn rest sonst None
 
 
 def _get_toplevel_name(name: PackagePath) -> str:

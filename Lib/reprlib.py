@@ -14,7 +14,7 @@ def recursive_repr(fillvalue='...'):
 
         def wrapper(self):
             key = id(self), get_ident()
-            if key in repr_running:
+            wenn key in repr_running:
                 return fillvalue
             repr_running.add(key)
             try:
@@ -74,30 +74,30 @@ klasse Repr:
         cls = type(x)
         typename = cls.__name__
 
-        if ' ' in typename:
+        wenn ' ' in typename:
             parts = typename.split()
             typename = '_'.join(parts)
 
         method = getattr(self, 'repr_' + typename, None)
-        if method:
+        wenn method:
             # not defined in this class
-            if typename not in self._lookup:
+            wenn typename not in self._lookup:
                 return method(x, level)
             module = getattr(cls, '__module__', None)
             # defined in this klasse and is the module intended
-            if module == self._lookup[typename]:
+            wenn module == self._lookup[typename]:
                 return method(x, level)
 
         return self.repr_instance(x, level)
 
     def _join(self, pieces, level):
-        if self.indent is None:
+        wenn self.indent is None:
             return ', '.join(pieces)
-        if not pieces:
+        wenn not pieces:
             return ''
         indent = self.indent
-        if isinstance(indent, int):
-            if indent < 0:
+        wenn isinstance(indent, int):
+            wenn indent < 0:
                 raise ValueError(
                     f'Repr.indent cannot be negative int (was {indent!r})'
                 )
@@ -112,16 +112,16 @@ klasse Repr:
 
     def _repr_iterable(self, x, level, left, right, maxiter, trail=''):
         n = len(x)
-        if level <= 0 and n:
+        wenn level <= 0 and n:
             s = self.fillvalue
-        else:
+        sonst:
             newlevel = level - 1
             repr1 = self.repr1
             pieces = [repr1(elem, newlevel) fuer elem in islice(x, maxiter)]
-            if n > maxiter:
+            wenn n > maxiter:
                 pieces.append(self.fillvalue)
             s = self._join(pieces, level)
-            if n == 1 and trail and self.indent is None:
+            wenn n == 1 and trail and self.indent is None:
                 right = trail + right
         return '%s%s%s' % (left, s, right)
 
@@ -132,19 +132,19 @@ klasse Repr:
         return self._repr_iterable(x, level, '[', ']', self.maxlist)
 
     def repr_array(self, x, level):
-        if not x:
+        wenn not x:
             return "array('%s')" % x.typecode
         header = "array('%s', [" % x.typecode
         return self._repr_iterable(x, level, header, '])', self.maxarray)
 
     def repr_set(self, x, level):
-        if not x:
+        wenn not x:
             return 'set()'
         x = _possibly_sorted(x)
         return self._repr_iterable(x, level, '{', '}', self.maxset)
 
     def repr_frozenset(self, x, level):
-        if not x:
+        wenn not x:
             return 'frozenset()'
         x = _possibly_sorted(x)
         return self._repr_iterable(x, level, 'frozenset({', '})',
@@ -155,9 +155,9 @@ klasse Repr:
 
     def repr_dict(self, x, level):
         n = len(x)
-        if n == 0:
+        wenn n == 0:
             return '{}'
-        if level <= 0:
+        wenn level <= 0:
             return '{' + self.fillvalue + '}'
         newlevel = level - 1
         repr1 = self.repr1
@@ -166,14 +166,14 @@ klasse Repr:
             keyrepr = repr1(key, newlevel)
             valrepr = repr1(x[key], newlevel)
             pieces.append('%s: %s' % (keyrepr, valrepr))
-        if n > self.maxdict:
+        wenn n > self.maxdict:
             pieces.append(self.fillvalue)
         s = self._join(pieces, level)
         return '{%s}' % (s,)
 
     def repr_str(self, x, level):
         s = builtins.repr(x[:self.maxstring])
-        if len(s) > self.maxstring:
+        wenn len(s) > self.maxstring:
             i = max(0, (self.maxstring-3)//2)
             j = max(0, self.maxstring-3-i)
             s = builtins.repr(x[:i] + x[len(x)-j:])
@@ -197,7 +197,7 @@ klasse Repr:
             max_digits = sys.get_int_max_str_digits()
             return (f'<{x.__class__.__name__} instance with roughly {k} '
                     f'digits (limit at {max_digits}) at 0x{id(x):x}>')
-        if len(s) > self.maxlong:
+        wenn len(s) > self.maxlong:
             i = max(0, (self.maxlong-3)//2)
             j = max(0, self.maxlong-3-i)
             s = s[:i] + self.fillvalue + s[len(s)-j:]
@@ -210,7 +210,7 @@ klasse Repr:
             # exceptions -- then make up something
         except Exception:
             return '<%s instance at %#x>' % (x.__class__.__name__, id(x))
-        if len(s) > self.maxother:
+        wenn len(s) > self.maxother:
             i = max(0, (self.maxother-3)//2)
             j = max(0, self.maxother-3-i)
             s = s[:i] + self.fillvalue + s[len(s)-j:]

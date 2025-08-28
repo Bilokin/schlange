@@ -11,5 +11,5 @@ klasse TestBig5HKSCSMap(multibytecodec_support.TestBase_Mapping,
     encoding = 'big5hkscs'
     mapfileurl = 'http://www.pythontest.net/unicode/BIG5HKSCS-2004.TXT'
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

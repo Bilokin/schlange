@@ -28,7 +28,7 @@ from idlelib import macosx
 def count_lines_with_wrapping(s, linewidth=80):
     """Count the number of lines in a given string.
 
-    Lines are counted as if the string was wrapped so that lines are never over
+    Lines are counted as wenn the string was wrapped so that lines are never over
     linewidth characters long.
 
     Tabs are considered tabwidth characters long.
@@ -45,25 +45,25 @@ def count_lines_with_wrapping(s, linewidth=80):
         current_column += numchars
 
         # Deal with tab or newline.
-        if s[pos] == '\n':
+        wenn s[pos] == '\n':
             # Avoid the `current_column == 0` edge-case, and while we're
             # at it, don't bother adding 0.
-            if current_column > linewidth:
+            wenn current_column > linewidth:
                 # If the current column was exactly linewidth, divmod
                 # would give (1,0), even though a new line hadn't yet
-                # been started. The same is true if length is any exact
+                # been started. The same is true wenn length is any exact
                 # multiple of linewidth. Therefore, subtract 1 before
                 # dividing a non-empty line.
                 linecount += (current_column - 1) // linewidth
             linecount += 1
             current_column = 0
-        else:
+        sonst:
             assert s[pos] == '\t'
             current_column += tabwidth - (current_column % tabwidth)
 
             # If a tab passes the end of the line, consider the entire
             # tab as being on the next line.
-            if current_column > linewidth:
+            wenn current_column > linewidth:
                 linecount += 1
                 current_column = tabwidth
 
@@ -72,9 +72,9 @@ def count_lines_with_wrapping(s, linewidth=80):
     # Process remaining chars (no more tabs or newlines).
     current_column += len(s) - pos
     # Avoid divmod(-1, linewidth).
-    if current_column > 0:
+    wenn current_column > 0:
         linecount += (current_column - 1) // linewidth
-    else:
+    sonst:
         # Text ended with newline; don't count an extra line after it.
         linecount -= 1
 
@@ -102,7 +102,7 @@ klasse ExpandingButton(tk.Button):
         # The base Text widget is needed to change text before iomark.
         self.base_text = editwin.per.bottom
 
-        line_plurality = "lines" if numoflines != 1 else "line"
+        line_plurality = "lines" wenn numoflines != 1 sonst "line"
         button_text = f"Squeezed text ({numoflines} {line_plurality})."
         tk.Button.__init__(self, text, text=button_text,
                            background="#FFFFC0", activebackground="#FFFFE0")
@@ -113,10 +113,10 @@ klasse ExpandingButton(tk.Button):
         Hovertip(self, button_tooltip_text, hover_delay=80)
 
         self.bind("<Double-Button-1>", self.expand)
-        if macosx.isAquaTk():
+        wenn macosx.isAquaTk():
             # AquaTk defines <2> as the right button, not <3>.
             self.bind("<Button-2>", self.context_menu_event)
-        else:
+        sonst:
             self.bind("<Button-3>", self.context_menu_event)
         self.selection_handle(  # X windows only.
             lambda offset, length: s[int(offset):int(offset) + int(length)])
@@ -144,9 +144,9 @@ klasse ExpandingButton(tk.Button):
         If the original text is dangerously long, i.e. expanding it could
         cause a performance degradation, ask the user fuer confirmation.
         """
-        if self.is_dangerous is None:
+        wenn self.is_dangerous is None:
             self.set_is_dangerous()
-        if self.is_dangerous:
+        wenn self.is_dangerous:
             confirm = messagebox.askokcancel(
                 title="Expand huge output?",
                 message="\n\n".join([
@@ -157,7 +157,7 @@ klasse ExpandingButton(tk.Button):
                 ]) % (self.numoflines, len(self.s)),
                 default=messagebox.CANCEL,
                 parent=self.text)
-            if not confirm:
+            wenn not confirm:
                 return "break"
 
         index = self.text.index(self)
@@ -244,18 +244,18 @@ klasse Squeezer:
         # which inserts an ExpandingButton instead of a long text.
         def mywrite(s, tags=(), write=editwin.write):
             # Only auto-squeeze text which has just the "stdout" tag.
-            if tags != "stdout":
+            wenn tags != "stdout":
                 return write(s, tags)
 
             # Only auto-squeeze text with at least the minimum
             # configured number of lines.
             auto_squeeze_min_lines = self.auto_squeeze_min_lines
             # First, a very quick check to skip very short texts.
-            if len(s) < auto_squeeze_min_lines:
+            wenn len(s) < auto_squeeze_min_lines:
                 return write(s, tags)
             # Now the full line-count check.
             numoflines = self.count_lines(s)
-            if numoflines < auto_squeeze_min_lines:
+            wenn numoflines < auto_squeeze_min_lines:
                 return write(s, tags)
 
             # Create an ExpandingButton instance.
@@ -280,7 +280,7 @@ klasse Squeezer:
         Before calculation, the tab width and line length of the text are
         fetched, so that up-to-date values are used.
 
-        Lines are counted as if the string was wrapped so that lines are never
+        Lines are counted as wenn the string was wrapped so that lines are never
         over linewidth characters long.
 
         Tabs are considered tabwidth characters long.
@@ -296,9 +296,9 @@ klasse Squeezer:
         # Set tag_name to the first valid tag found on the "insert" cursor.
         tag_names = self.text.tag_names(tk.INSERT)
         fuer tag_name in ("stdout", "stderr"):
-            if tag_name in tag_names:
+            wenn tag_name in tag_names:
                 break
-        else:
+        sonst:
             # The insert cursor doesn't have a "stdout" or "stderr" tag.
             self.text.bell()
             return "break"
@@ -308,7 +308,7 @@ klasse Squeezer:
         s = self.text.get(start, end)
 
         # If the last char is a newline, remove it from the range.
-        if len(s) > 0 and s[-1] == '\n':
+        wenn len(s) > 0 and s[-1] == '\n':
             end = self.text.index("%s-1c" % end)
             s = s[:-1]
 
@@ -338,7 +338,7 @@ klasse Squeezer:
 Squeezer.reload()
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     from unittest import main
     main('idlelib.idle_test.test_squeezer', verbosity=2, exit=False)
 

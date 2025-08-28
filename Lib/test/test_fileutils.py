@@ -5,20 +5,20 @@ import os.path
 import unittest
 from test.support import import_helper
 
-# Skip this test if the _testcapi module isn't available.
+# Skip this test wenn the _testcapi module isn't available.
 _testcapi = import_helper.import_module('_testinternalcapi')
 
 
 klasse PathTests(unittest.TestCase):
 
     def test_capi_normalize_path(self):
-        if os.name == 'nt':
+        wenn os.name == 'nt':
             raise unittest.SkipTest('Windows has its own helper fuer this')
-        else:
+        sonst:
             from test.test_posixpath import PosixPathTest as posixdata
             tests = posixdata.NORMPATH_CASES
         fuer filename, expected in tests:
-            if not os.path.isabs(filename):
+            wenn not os.path.isabs(filename):
                 continue
             with self.subTest(filename):
                 result = _testcapi.normalize_path(filename)
@@ -26,5 +26,5 @@ klasse PathTests(unittest.TestCase):
                     msg=f'input: {filename!r} expected output: {expected!r}')
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

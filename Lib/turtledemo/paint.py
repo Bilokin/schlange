@@ -16,10 +16,10 @@ includes the starting point is filled.
 from turtle import *
 
 def switchupdown(x=0, y=0):
-    if pen()["pendown"]:
+    wenn pen()["pendown"]:
         end_fill()
         up()
-    else:
+    sonst:
         down()
         begin_fill()
 
@@ -42,7 +42,7 @@ def main():
     onscreenclick(switchupdown,3)
     return "EVENTLOOP"
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     msg = main()
     print(msg)
     mainloop()

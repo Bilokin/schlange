@@ -10,7 +10,7 @@ SCRIPT_NAME = 'Tools/build/generate_re_casefix.py'
 def update_file(file, content):
     try:
         with open(file, encoding='utf-8') as fobj:
-            if fobj.read() == content:
+            wenn fobj.read() == content:
                 return False
     except (OSError, ValueError):
         pass
@@ -37,7 +37,7 @@ klasse hexint(int):
 
 def alpha(i):
     c = chr(i)
-    return c if c.isalpha() else ascii(c)[1:-1]
+    return c wenn c.isalpha() sonst ascii(c)[1:-1]
 
 
 def main(outfile='Lib/re/_casefix.py'):
@@ -45,25 +45,25 @@ def main(outfile='Lib/re/_casefix.py'):
     equivalent_chars = collections.defaultdict(str)
     fuer c in map(chr, range(sys.maxunicode + 1)):
         equivalent_chars[c.upper()] += c
-    equivalent_chars = [t fuer t in equivalent_chars.values() if len(t) > 1]
+    equivalent_chars = [t fuer t in equivalent_chars.values() wenn len(t) > 1]
 
     # List of codes of lowercased characters which have the same uppercase.
     equivalent_lower_codes = [sorted(t)
                               fuer s in equivalent_chars
                               fuer t in [{ord(c.lower()) fuer c in s}]
-                              if len(t) > 1]
+                              wenn len(t) > 1]
 
     bad_codes = []
     fuer t in equivalent_lower_codes:
         fuer i in t:
-            if i > 0xffff:
+            wenn i > 0xffff:
                 bad_codes.extend(t)
                 try:
                     bad_codes.append(ord(chr(i).upper()))
                 except (ValueError, TypeError):
                     pass
                 break
-    if bad_codes:
+    wenn bad_codes:
         print('Case-insensitive matching may not work correctly fuer character:',
               file=sys.stderr)
         fuer i in sorted(bad_codes):
@@ -71,7 +71,7 @@ def main(outfile='Lib/re/_casefix.py'):
                   file=sys.stderr)
         sys.exit(1)
 
-    mapping = {i: tuple(j fuer j in t if i != j)
+    mapping = {i: tuple(j fuer j in t wenn i != j)
                fuer t in equivalent_lower_codes
                fuer i in t}
 
@@ -91,6 +91,6 @@ def main(outfile='Lib/re/_casefix.py'):
     update_file(outfile, re_casefix_template % '\n'.join(items))
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     import sys
     main(*sys.argv[1:])

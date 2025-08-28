@@ -44,7 +44,7 @@ klasse TestsWithSourceFile(unittest.TestCase):
             fuer num in range(filecount):
                 zipfp.writestr("testfn%d" % num, self.data)
                 # Print still working message since this test can be really slow
-                if next_time <= time.monotonic():
+                wenn next_time <= time.monotonic():
                     next_time = time.monotonic() + _PRINT_WORKING_MSG_INTERVAL
                     print((
                     '  zipTest still writing %d of %d, be patient...' %
@@ -56,7 +56,7 @@ klasse TestsWithSourceFile(unittest.TestCase):
             fuer num in range(filecount):
                 self.assertEqual(zipfp.read("testfn%d" % num), self.data)
                 # Print still working message since this test can be really slow
-                if next_time <= time.monotonic():
+                wenn next_time <= time.monotonic():
                     next_time = time.monotonic() + _PRINT_WORKING_MSG_INTERVAL
                     print((
                     '  zipTest still reading %d of %d, be patient...' %
@@ -140,5 +140,5 @@ klasse OtherTests(unittest.TestCase):
         os_helper.unlink(TESTFN)
         os_helper.unlink(TESTFN2)
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

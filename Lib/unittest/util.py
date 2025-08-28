@@ -17,14 +17,14 @@ assert _MIN_DIFF_LEN >= 0
 
 def _shorten(s, prefixlen, suffixlen):
     skip = len(s) - prefixlen - suffixlen
-    if skip > _PLACEHOLDER_LEN:
+    wenn skip > _PLACEHOLDER_LEN:
         s = '%s[%d chars]%s' % (s[:prefixlen], skip, s[len(s) - suffixlen:])
     return s
 
 def _common_shorten_repr(*args):
     args = tuple(map(safe_repr, args))
     maxlen = max(map(len, args))
-    if maxlen <= _MAX_LENGTH:
+    wenn maxlen <= _MAX_LENGTH:
         return args
 
     prefix = commonprefix(args)
@@ -32,7 +32,7 @@ def _common_shorten_repr(*args):
 
     common_len = _MAX_LENGTH - \
                  (maxlen - prefixlen + _MIN_BEGIN_LEN + _PLACEHOLDER_LEN)
-    if common_len > _MIN_COMMON_LEN:
+    wenn common_len > _MIN_COMMON_LEN:
         assert _MIN_BEGIN_LEN + _PLACEHOLDER_LEN + _MIN_COMMON_LEN + \
                (maxlen - prefixlen) < _MAX_LENGTH
         prefix = _shorten(prefix, _MIN_BEGIN_LEN, common_len)
@@ -47,7 +47,7 @@ def safe_repr(obj, short=False):
         result = repr(obj)
     except Exception:
         result = object.__repr__(obj)
-    if not short or len(result) < _MAX_LENGTH:
+    wenn not short or len(result) < _MAX_LENGTH:
         return result
     return result[:_MAX_LENGTH] + ' [truncated]...'
 
@@ -69,17 +69,17 @@ def sorted_list_difference(expected, actual):
         try:
             e = expected[i]
             a = actual[j]
-            if e < a:
+            wenn e < a:
                 missing.append(e)
                 i += 1
                 while expected[i] == e:
                     i += 1
-            elif e > a:
+            sowenn e > a:
                 unexpected.append(a)
                 j += 1
                 while actual[j] == a:
                     j += 1
-            else:
+            sonst:
                 i += 1
                 try:
                     while expected[i] == e:
@@ -113,7 +113,7 @@ def unorderable_list_difference(expected, actual):
     return missing, actual
 
 def three_way_cmp(x, y):
-    """Return -1 if x < y, 0 if x == y and 1 if x > y"""
+    """Return -1 wenn x < y, 0 wenn x == y and 1 wenn x > y"""
     return (x > y) - (x < y)
 
 _Mismatch = namedtuple('Mismatch', 'actual expected value')
@@ -126,27 +126,27 @@ def _count_diff_all_purpose(actual, expected):
     NULL = object()
     result = []
     fuer i, elem in enumerate(s):
-        if elem is NULL:
+        wenn elem is NULL:
             continue
         cnt_s = cnt_t = 0
         fuer j in range(i, m):
-            if s[j] == elem:
+            wenn s[j] == elem:
                 cnt_s += 1
                 s[j] = NULL
         fuer j, other_elem in enumerate(t):
-            if other_elem == elem:
+            wenn other_elem == elem:
                 cnt_t += 1
                 t[j] = NULL
-        if cnt_s != cnt_t:
+        wenn cnt_s != cnt_t:
             diff = _Mismatch(cnt_s, cnt_t, elem)
             result.append(diff)
 
     fuer i, elem in enumerate(t):
-        if elem is NULL:
+        wenn elem is NULL:
             continue
         cnt_t = 0
         fuer j in range(i, n):
-            if t[j] == elem:
+            wenn t[j] == elem:
                 cnt_t += 1
                 t[j] = NULL
         diff = _Mismatch(0, cnt_t, elem)
@@ -160,11 +160,11 @@ def _count_diff_hashable(actual, expected):
     result = []
     fuer elem, cnt_s in s.items():
         cnt_t = t.get(elem, 0)
-        if cnt_s != cnt_t:
+        wenn cnt_s != cnt_t:
             diff = _Mismatch(cnt_s, cnt_t, elem)
             result.append(diff)
     fuer elem, cnt_t in t.items():
-        if elem not in s:
+        wenn elem not in s:
             diff = _Mismatch(0, cnt_t, elem)
             result.append(diff)
     return result

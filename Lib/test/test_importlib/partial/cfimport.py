@@ -26,7 +26,7 @@ def main():
     fuer j in range(NLOOPS):
         threads = []
         fuer i in range(NTHREADS):
-            threads.append(threading.Thread(target=t2 if i % 1 else t1))
+            threads.append(threading.Thread(target=t2 wenn i % 1 sonst t1))
         fuer thread in threads:
             thread.start()
         fuer thread in threads:
@@ -34,5 +34,5 @@ def main():
         sys.modules.pop('concurrent.futures', None)
         sys.modules.pop('concurrent.futures.thread', None)
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     main()

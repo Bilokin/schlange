@@ -14,13 +14,13 @@ argparser.add_argument("filename", help="Grammar description")
 klasse ASTGrammarPrinter:
     def children(self, node: Rule) -> Iterator[Any]:
         fuer value in node:
-            if isinstance(value, list):
+            wenn isinstance(value, list):
                 yield from value
-            else:
+            sonst:
                 yield value
 
     def name(self, node: Rule) -> str:
-        if not list(self.children(node)):
+        wenn not list(self.children(node)):
             return repr(node)
         return node.__class__.__name__
 
@@ -32,10 +32,10 @@ klasse ASTGrammarPrinter:
         children = list(self.children(node))
         value = self.name(node)
 
-        line = prefix + ("└──" if istail else "├──") + value + "\n"
-        sufix = "   " if istail else "│  "
+        line = prefix + ("└──" wenn istail sonst "├──") + value + "\n"
+        sufix = "   " wenn istail sonst "│  "
 
-        if not children:
+        wenn not children:
             return line
 
         *children, last = children
@@ -59,5 +59,5 @@ def main() -> None:
     visitor.print_grammar_ast(grammar)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     main()

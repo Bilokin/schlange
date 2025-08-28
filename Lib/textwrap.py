@@ -41,7 +41,7 @@ klasse TextWrapper:
         'expand_tabs' is false.
       replace_whitespace (default: true)
         Replace all whitespace characters in the input text by spaces
-        after tab expansion.  Note that if expand_tabs is false and
+        after tab expansion.  Note that wenn expand_tabs is false and
         replace_whitespace is true, every tab will be converted to a
         single space!
       fix_sentence_endings (default: false)
@@ -147,9 +147,9 @@ klasse TextWrapper:
         whitespace characters to spaces.  Eg. " foo\\tbar\\n\\nbaz"
         becomes " foo    bar  baz".
         """
-        if self.expand_tabs:
+        wenn self.expand_tabs:
             text = text.expandtabs(self.tabsize)
-        if self.replace_whitespace:
+        wenn self.replace_whitespace:
             text = text.translate(self.unicode_whitespace_trans)
         return text
 
@@ -164,16 +164,16 @@ klasse TextWrapper:
         breaks into the following chunks:
           'Look,', ' ', 'goof-', 'ball', ' ', '--', ' ',
           'use', ' ', 'the', ' ', '-b', ' ', 'option!'
-        if break_on_hyphens is True, or in:
+        wenn break_on_hyphens is True, or in:
           'Look,', ' ', 'goof-ball', ' ', '--', ' ',
           'use', ' ', 'the', ' ', '-b', ' ', option!'
         otherwise.
         """
-        if self.break_on_hyphens is True:
+        wenn self.break_on_hyphens is True:
             chunks = self.wordsep_re.split(text)
-        else:
+        sonst:
             chunks = self.wordsep_simple_re.split(text)
-        chunks = [c fuer c in chunks if c]
+        chunks = [c fuer c in chunks wenn c]
         return chunks
 
     def _fix_sentence_endings(self, chunks):
@@ -188,10 +188,10 @@ klasse TextWrapper:
         i = 0
         patsearch = self.sentence_end_re.search
         while i < len(chunks)-1:
-            if chunks[i+1] == " " and patsearch(chunks[i]):
+            wenn chunks[i+1] == " " and patsearch(chunks[i]):
                 chunks[i+1] = "  "
                 i += 2
-            else:
+            sonst:
                 i += 1
 
     def _handle_long_word(self, reversed_chunks, cur_line, cur_len, width):
@@ -204,29 +204,29 @@ klasse TextWrapper:
         """
         # Figure out when indent is larger than the specified width, and make
         # sure at least one character is stripped off on every pass
-        if width < 1:
+        wenn width < 1:
             space_left = 1
-        else:
+        sonst:
             space_left = width - cur_len
 
         # If we're allowed to break long words, then do so: put as much
         # of the next chunk onto the current line as will fit.
-        if self.break_long_words:
+        wenn self.break_long_words:
             end = space_left
             chunk = reversed_chunks[-1]
-            if self.break_on_hyphens and len(chunk) > space_left:
-                # break after last hyphen, but only if there are
+            wenn self.break_on_hyphens and len(chunk) > space_left:
+                # break after last hyphen, but only wenn there are
                 # non-hyphens before it
                 hyphen = chunk.rfind('-', 0, space_left)
-                if hyphen > 0 and any(c != '-' fuer c in chunk[:hyphen]):
+                wenn hyphen > 0 and any(c != '-' fuer c in chunk[:hyphen]):
                     end = hyphen + 1
             cur_line.append(chunk[:end])
             reversed_chunks[-1] = chunk[end:]
 
         # Otherwise, we have to preserve the long word intact.  Only add
-        # it to the current line if there's nothing already there --
+        # it to the current line wenn there's nothing already there --
         # that minimizes how much we violate the width constraint.
-        elif not cur_line:
+        sowenn not cur_line:
             cur_line.append(reversed_chunks.pop())
 
         # If we're not allowed to break long words, and there's already
@@ -249,14 +249,14 @@ klasse TextWrapper:
         lines, but apart from that whitespace is preserved.
         """
         lines = []
-        if self.width <= 0:
+        wenn self.width <= 0:
             raise ValueError("invalid width %r (must be > 0)" % self.width)
-        if self.max_lines is not None:
-            if self.max_lines > 1:
+        wenn self.max_lines is not None:
+            wenn self.max_lines > 1:
                 indent = self.subsequent_indent
-            else:
+            sonst:
                 indent = self.initial_indent
-            if len(indent) + len(self.placeholder.lstrip()) > self.width:
+            wenn len(indent) + len(self.placeholder.lstrip()) > self.width:
                 raise ValueError("placeholder too large fuer max width")
 
         # Arrange in reverse order so items can be efficiently popped
@@ -271,9 +271,9 @@ klasse TextWrapper:
             cur_len = 0
 
             # Figure out which static string will prefix this line.
-            if lines:
+            wenn lines:
                 indent = self.subsequent_indent
-            else:
+            sonst:
                 indent = self.initial_indent
 
             # Maximum width fuer this line.
@@ -281,34 +281,34 @@ klasse TextWrapper:
 
             # First chunk on line is whitespace -- drop it, unless this
             # is the very beginning of the text (ie. no lines started yet).
-            if self.drop_whitespace and chunks[-1].strip() == '' and lines:
+            wenn self.drop_whitespace and chunks[-1].strip() == '' and lines:
                 del chunks[-1]
 
             while chunks:
                 l = len(chunks[-1])
 
                 # Can at least squeeze this chunk onto the current line.
-                if cur_len + l <= width:
+                wenn cur_len + l <= width:
                     cur_line.append(chunks.pop())
                     cur_len += l
 
                 # Nope, this line is full.
-                else:
+                sonst:
                     break
 
             # The current line is full, and the next chunk is too big to
             # fit on *any* line (not just this one).
-            if chunks and len(chunks[-1]) > width:
+            wenn chunks and len(chunks[-1]) > width:
                 self._handle_long_word(chunks, cur_line, cur_len, width)
                 cur_len = sum(map(len, cur_line))
 
             # If the last chunk on this line is all whitespace, drop it.
-            if self.drop_whitespace and cur_line and cur_line[-1].strip() == '':
+            wenn self.drop_whitespace and cur_line and cur_line[-1].strip() == '':
                 cur_len -= len(cur_line[-1])
                 del cur_line[-1]
 
-            if cur_line:
-                if (self.max_lines is None or
+            wenn cur_line:
+                wenn (self.max_lines is None or
                     len(lines) + 1 < self.max_lines or
                     (not chunks or
                      self.drop_whitespace and
@@ -317,19 +317,19 @@ klasse TextWrapper:
                     # Convert current line back to a string and store it in
                     # list of all lines (return value).
                     lines.append(indent + ''.join(cur_line))
-                else:
+                sonst:
                     while cur_line:
-                        if (cur_line[-1].strip() and
+                        wenn (cur_line[-1].strip() and
                             cur_len + len(self.placeholder) <= width):
                             cur_line.append(self.placeholder)
                             lines.append(indent + ''.join(cur_line))
                             break
                         cur_len -= len(cur_line[-1])
                         del cur_line[-1]
-                    else:
-                        if lines:
+                    sonst:
+                        wenn lines:
                             prev_line = lines[-1].rstrip()
-                            if (len(prev_line) + len(self.placeholder) <=
+                            wenn (len(prev_line) + len(self.placeholder) <=
                                     self.width):
                                 lines[-1] = prev_line + self.placeholder
                                 break
@@ -354,7 +354,7 @@ klasse TextWrapper:
         converted to space.
         """
         chunks = self._split_chunks(text)
-        if self.fix_sentence_endings:
+        wenn self.fix_sentence_endings:
             self._fix_sentence_endings(chunks)
         return self._wrap_chunks(chunks)
 
@@ -433,15 +433,15 @@ def dedent(text):
         raise TypeError(msg) from None
 
     # Get length of leading whitespace, inspired by ``os.path.commonprefix()``.
-    non_blank_lines = [l fuer l in lines if l and not l.isspace()]
+    non_blank_lines = [l fuer l in lines wenn l and not l.isspace()]
     l1 = min(non_blank_lines, default='')
     l2 = max(non_blank_lines, default='')
     margin = 0
     fuer margin, c in enumerate(l1):
-        if c != l2[margin] or c not in ' \t':
+        wenn c != l2[margin] or c not in ' \t':
             break
 
-    return '\n'.join([l[margin:] if not l.isspace() else '' fuer l in lines])
+    return '\n'.join([l[margin:] wenn not l.isspace() sonst '' fuer l in lines])
 
 
 def indent(text, prefix, predicate=None):
@@ -453,23 +453,23 @@ def indent(text, prefix, predicate=None):
     consist solely of whitespace characters.
     """
     prefixed_lines = []
-    if predicate is None:
+    wenn predicate is None:
         # str.splitlines(keepends=True) doesn't produce the empty string,
         # so we need to use `str.isspace()` rather than a truth test.
         # Inlining the predicate leads to a ~30% performance improvement.
         fuer line in text.splitlines(True):
-            if not line.isspace():
+            wenn not line.isspace():
                 prefixed_lines.append(prefix)
             prefixed_lines.append(line)
-    else:
+    sonst:
         fuer line in text.splitlines(True):
-            if predicate(line):
+            wenn predicate(line):
                 prefixed_lines.append(prefix)
             prefixed_lines.append(line)
     return ''.join(prefixed_lines)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     #print dedent("\tfoo\n\tbar")
     #print dedent("  \thello there\n  \t  how are you?")
     print(dedent("Hello there.\n  This is indented."))

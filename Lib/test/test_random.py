@@ -98,7 +98,7 @@ klasse TestBasicOps:
         fuer (seq, shuffled_seq) in zip(seqs, shuffled_seqs):
             self.assertEqual(len(seq), len(shuffled_seq))
             self.assertEqual(set(seq), set(shuffled_seq))
-        # The above tests all would pass if the shuffle was a
+        # The above tests all would pass wenn the shuffle was a
         # no-op. The following non-deterministic test covers that.  It
         # asserts that the shuffled sequence of 1000 distinct elements
         # must be different from the original one. Although there is
@@ -150,7 +150,7 @@ klasse TestBasicOps:
             self.assertEqual(len(uniq), k)
             self.assertTrue(uniq <= set(population))
         self.assertEqual(self.gen.sample([], 0), [])  # test edge case N==k==0
-        # Exception raised if size of sample exceeds that of population
+        # Exception raised wenn size of sample exceeds that of population
         self.assertRaises(ValueError, self.gen.sample, population, N+1)
         self.assertRaises(ValueError, self.gen.sample, [], -1)
         self.assertRaises(TypeError, self.gen.sample, population, 1.0)
@@ -166,9 +166,9 @@ klasse TestBasicOps:
             perms = {}
             fuer i in range(trials):
                 perms[tuple(self.gen.sample(pop, k))] = None
-                if len(perms) == expected:
+                wenn len(perms) == expected:
                     break
-            else:
+            sonst:
                 self.fail()
 
     def test_sample_inputs(self):
@@ -432,7 +432,7 @@ klasse TestBasicOps:
         fuer i in [40,80, 160, 200, 211, 250, 375, 512, 550]:
             start = self.gen.randrange(2 ** (i-2))
             stop = self.gen.randrange(2 ** i)
-            if stop <= start:
+            wenn stop <= start:
                 continue
             self.assertTrue(start <= self.gen.randrange(start, stop) < stop)
 
@@ -602,7 +602,7 @@ try:
     random.SystemRandom().random()
 except NotImplementedError:
     SystemRandom_available = False
-else:
+sonst:
     SystemRandom_available = True
 
 @unittest.skipUnless(SystemRandom_available, "random.SystemRandom not available")
@@ -765,7 +765,7 @@ klasse MersenneTwister_TestBasicOps(TestBasicOps, unittest.TestCase):
         #         init_by_array(init, length);
         #         fuer (i=0; i<2000; i++) {
         #           printf("%.15f ", genrand_res53());
-        #           if (i%5==4) printf("\n");
+        #           wenn (i%5==4) printf("\n");
         #         }
         #     }
         expected = [0.45839803073713259,
@@ -1007,7 +1007,7 @@ klasse MersenneTwister_TestBasicOps(TestBasicOps, unittest.TestCase):
 
 def gamma(z, sqrt2pi=(2.0*pi)**0.5):
     # Reflection to right half of complex plane
-    if z < 0.5:
+    wenn z < 0.5:
         return pi / sin(pi*z) / gamma(1.0-z)
     # Lanczos approximation with g=7
     az = z + (7.0 - 0.5)
@@ -1231,15 +1231,15 @@ klasse TestDistributions(unittest.TestCase):
         #     u = random()
         #     b = (_e + alpha)/_e
         #     p = b*u
-        #     if p <= 1.0: # <=== (A)
+        #     wenn p <= 1.0: # <=== (A)
         #         x = p ** (1.0/alpha)
-        #     else: # <=== (B)
+        #     sonst: # <=== (B)
         #         x = -_log((b-p)/alpha)
         #     u1 = random()
-        #     if p > 1.0: # <=== (C)
-        #         if u1 <= x ** (alpha - 1.0): # <=== (D)
+        #     wenn p > 1.0: # <=== (C)
+        #         wenn u1 <= x ** (alpha - 1.0): # <=== (D)
         #             break
-        #     elif u1 <= _exp(-x): # <=== (E)
+        #     sowenn u1 <= _exp(-x): # <=== (E)
         #         break
         # return x * beta
         #
@@ -1248,7 +1248,7 @@ klasse TestDistributions(unittest.TestCase):
         # r1 = random() <= 1.0 / b
         #
         # We now get to the second if-else branch, and here, since p <= 1.0,
-        # (C) is False and we take the elif branch, (E). For it to be True,
+        # (C) is False and we take the sowenn branch, (E). For it to be True,
         # so that the break is executed, we need that:
         # r2 = random() <= _exp(-x)
         # r2 <= _exp(-(p ** (1.0/alpha)))
@@ -1274,7 +1274,7 @@ klasse TestDistributions(unittest.TestCase):
 
         # Let's now make (A) be False. If this is the case, when we get to the
         # second if-else 'p' is greater than 1, so (C) evaluates to True. We
-        # now encounter a second if statement, (D), which in order to execute
+        # now encounter a second wenn statement, (D), which in order to execute
         # must satisfy the following condition:
         # r2 <= x ** (alpha - 1.0)
         # r2 <= (-_log((b-p)/alpha)) ** (alpha - 1.0)
@@ -1407,7 +1407,7 @@ klasse TestModule(unittest.TestCase):
         # Test the global Random instance gets reseeded in child
         r, w = os.pipe()
         pid = os.fork()
-        if pid == 0:
+        wenn pid == 0:
             # child process
             try:
                 val = random.getrandbits(128)
@@ -1415,7 +1415,7 @@ klasse TestModule(unittest.TestCase):
                     f.write(str(val))
             finally:
                 os._exit(0)
-        else:
+        sonst:
             # parent process
             os.close(w)
             val = random.getrandbits(128)
@@ -1469,5 +1469,5 @@ klasse CommandLineTest(unittest.TestCase):
             self.assertEqual(random.main(shlex.split(command)), expected)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

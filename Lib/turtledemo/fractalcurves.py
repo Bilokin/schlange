@@ -17,7 +17,7 @@ klasse CurvesTurtle(Pen):
     # by Harold Abelson and Andrea diSessa
     # p. 96-98
     def hilbert(self, size, level, parity):
-        if level == 0:
+        wenn level == 0:
             return
         # rotate and draw first subcurve with opposite parity to big curve
         self.left(parity * 90)
@@ -44,8 +44,8 @@ klasse CurvesTurtle(Pen):
     def fractalgon(self, n, rad, lev, dir):
         import math
 
-        # if dir = 1 turn outward
-        # if dir = -1 turn inward
+        # wenn dir = 1 turn outward
+        # wenn dir = -1 turn inward
         edge = 2 * rad * math.sin(math.pi / n)
         self.pu()
         self.fd(rad)
@@ -61,7 +61,7 @@ klasse CurvesTurtle(Pen):
 
     # p. 146
     def fractal(self, dist, depth, dir):
-        if depth < 1:
+        wenn depth < 1:
             self.fd(dist)
             return
         self.fractal(dist / 3, depth - 1, dir)
@@ -129,7 +129,7 @@ def main():
     res +=  "Koch: %.2fsec." % (tb-ta)
     return res
 
-if __name__  == '__main__':
+wenn __name__  == '__main__':
     msg = main()
     print(msg)
     mainloop()

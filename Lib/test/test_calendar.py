@@ -377,7 +377,7 @@ klasse OutputTestCase(unittest.TestCase):
         lines = []
         fuer line in s.splitlines(keepends=False):
             # Drop texts, as they are locale dependent
-            if line and not filter(neitherspacenordigit, line):
+            wenn line and not filter(neitherspacenordigit, line):
                 lines.append(line)
         return lines
 
@@ -707,13 +707,13 @@ klasse CalendarTestCase(unittest.TestCase):
     def test_locale_calendar_short_weekday_names(self):
         names = (datetime.date(2001, 1, i+1).strftime('%A') fuer i in range(7))
         max_length = max(map(len, names))
-        if max_length >= 9:
+        wenn max_length >= 9:
             self.skipTest('weekday names are too long')
 
         def get_weekday_names(width):
             return calendar.TextCalendar().formatweekheader(width).split()
 
-        # Weekday names should not be abbreviated if the width is sufficient
+        # Weekday names should not be abbreviated wenn the width is sufficient
         self.assertEqual(
             get_weekday_names(max_length),
             get_weekday_names(max_length + 10)
@@ -738,9 +738,9 @@ klasse CalendarTestCase(unittest.TestCase):
         abbrev_names = (datetime.date(2001, 1, i+1).strftime('%a') fuer i in range(7))
         abbrev_max_length = max(map(len, abbrev_names))
 
-        if max_length <= 9:
+        wenn max_length <= 9:
             self.skipTest('weekday names are too short')
-        if abbrev_max_length >= 9:
+        wenn abbrev_max_length >= 9:
             self.skipTest('abbreviated weekday names are too long')
 
         def get_weekday_names(width):
@@ -1265,5 +1265,5 @@ klasse TestSubClassingCase(unittest.TestCase):
         self.assertIn('<tr><th colspan="%d" class="%s">%s</th></tr>' % (
             3, self.cal.cssclass_year_head, 2017), self.cal.formatyear(2017))
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

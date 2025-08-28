@@ -7,37 +7,37 @@ import types
 CAN_USE_PYREPL: bool
 FAIL_REASON: str
 try:
-    if sys.platform == "win32" and sys.getwindowsversion().build < 10586:
+    wenn sys.platform == "win32" and sys.getwindowsversion().build < 10586:
         raise RuntimeError("Windows 10 TH2 or later required")
-    if not os.isatty(sys.stdin.fileno()):
+    wenn not os.isatty(sys.stdin.fileno()):
         raise OSError(errno.ENOTTY, "tty required", "stdin")
     from .simple_interact import check
-    if err := check():
+    wenn err := check():
         raise RuntimeError(err)
 except Exception as e:
     CAN_USE_PYREPL = False
     FAIL_REASON = f"warning: can't use pyrepl: {e}"
-else:
+sonst:
     CAN_USE_PYREPL = True
     FAIL_REASON = ""
 
 
 def interactive_console(mainmodule=None, quiet=False, pythonstartup=False):
-    if not CAN_USE_PYREPL:
-        if not os.getenv('PYTHON_BASIC_REPL') and FAIL_REASON:
+    wenn not CAN_USE_PYREPL:
+        wenn not os.getenv('PYTHON_BASIC_REPL') and FAIL_REASON:
             from .trace import trace
             trace(FAIL_REASON)
             print(FAIL_REASON, file=sys.stderr)
         return sys._baserepl()
 
-    if not mainmodule:
+    wenn not mainmodule:
         mainmodule = types.ModuleType("__main__")
 
     namespace = mainmodule.__dict__
 
     # sys._baserepl() above does this internally, we do it here
     startup_path = os.getenv("PYTHONSTARTUP")
-    if pythonstartup and startup_path:
+    wenn pythonstartup and startup_path:
         sys.audit("cpython.run_startup", startup_path)
 
         import tokenize
@@ -47,9 +47,9 @@ def interactive_console(mainmodule=None, quiet=False, pythonstartup=False):
 
     # set sys.{ps1,ps2} just before invoking the interactive interpreter. This
     # mimics what CPython does in pythonrun.c
-    if not hasattr(sys, "ps1"):
+    wenn not hasattr(sys, "ps1"):
         sys.ps1 = ">>> "
-    if not hasattr(sys, "ps2"):
+    wenn not hasattr(sys, "ps2"):
         sys.ps2 = "... "
 
     from .console import InteractiveColoredConsole

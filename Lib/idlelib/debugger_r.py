@@ -44,9 +44,9 @@ def wrap_frame(frame):
 
 def wrap_info(info):
     "replace info[2], a traceback instance, by its ID"
-    if info is None:
+    wenn info is None:
         return None
-    else:
+    sonst:
         traceback = info[2]
         assert isinstance(traceback, types.TracebackType)
         traceback_id = id(traceback)
@@ -93,9 +93,9 @@ klasse IdbAdapter:
 
     def get_stack(self, fid, tbid):
         frame = frametable[fid]
-        if tbid is None:
+        wenn tbid is None:
             tb = None
-        else:
+        sonst:
             tb = tracebacktable[tbid]
         stack, i = self.idb.get_stack(frame, tb)
         stack = [(wrap_frame(frame2), k) fuer frame2, k in stack]
@@ -204,13 +204,13 @@ klasse FrameProxy:
         self._dictcache = {}
 
     def __getattr__(self, name):
-        if name[:1] == "_":
+        wenn name[:1] == "_":
             raise AttributeError(name)
-        if name == "f_code":
+        wenn name == "f_code":
             return self._get_f_code()
-        if name == "f_globals":
+        wenn name == "f_globals":
             return self._get_f_globals()
-        if name == "f_locals":
+        wenn name == "f_locals":
             return self._get_f_locals()
         return self._conn.remotecall(self._oid, "frame_attr",
                                      (self._fid, name), {})
@@ -230,7 +230,7 @@ klasse FrameProxy:
         return self._get_dict_proxy(did)
 
     def _get_dict_proxy(self, did):
-        if did in self._dictcache:
+        wenn did in self._dictcache:
             return self._dictcache[did]
         dp = DictProxy(self._conn, self._oid, did)
         self._dictcache[did] = dp
@@ -245,10 +245,10 @@ klasse CodeProxy:
         self._cid = cid
 
     def __getattr__(self, name):
-        if name == "co_name":
+        wenn name == "co_name":
             return self._conn.remotecall(self._oid, "code_name",
                                          (self._cid,), {})
-        if name == "co_filename":
+        wenn name == "co_filename":
             return self._conn.remotecall(self._oid, "code_filename",
                                          (self._cid,), {})
 
@@ -385,6 +385,6 @@ def restart_subprocess_debugger(rpcclt):
     assert idb_adap_oid_ret == idb_adap_oid, 'Idb restarted with different oid'
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     from unittest import main
     main('idlelib.idle_test.test_debugger_r', verbosity=2, exit=False)

@@ -11,7 +11,7 @@ import sys
 
 # Modified keyword list is used in fetch_completions.
 completion_kwds = [s fuer s in keyword.kwlist
-                     if s not in {'True', 'False', 'None'}]  # In builtins.
+                     wenn s not in {'True', 'False', 'None'}]  # In builtins.
 completion_kwds.extend(('match', 'case'))  # Context keywords.
 completion_kwds.sort()
 
@@ -32,14 +32,14 @@ TRY_F = False,    False,    False,   FILES  # '/' in quotes fuer file name.
 # TODO Update this here and elsewhere.
 ID_CHARS = string.ascii_letters + string.digits + "_"
 
-SEPS = f"{os.sep}{os.altsep if os.altsep else ''}"
+SEPS = f"{os.sep}{os.altsep wenn os.altsep sonst ''}"
 TRIGGERS = f".{SEPS}"
 
 klasse AutoComplete:
 
     def __init__(self, editwin=None, tags=None):
         self.editwin = editwin
-        if editwin is not None:   # not in subprocess or no-gui test
+        wenn editwin is not None:   # not in subprocess or no-gui test
             self.text = editwin.text
         self.tags = tags
         self.autocompletewindow = None
@@ -58,68 +58,68 @@ klasse AutoComplete:
         return autocomplete_w.AutoCompleteWindow(self.text, tags=self.tags)
 
     def _remove_autocomplete_window(self, event=None):
-        if self.autocompletewindow:
+        wenn self.autocompletewindow:
             self.autocompletewindow.hide_window()
             self.autocompletewindow = None
 
     def force_open_completions_event(self, event):
-        "(^space) Open completion list, even if a function call is needed."
+        "(^space) Open completion list, even wenn a function call is needed."
         self.open_completions(FORCE)
         return "break"
 
     def autocomplete_event(self, event):
-        "(tab) Complete word or open list if multiple options."
-        if hasattr(event, "mc_state") and event.mc_state or\
+        "(tab) Complete word or open list wenn multiple options."
+        wenn hasattr(event, "mc_state") and event.mc_state or\
                 not self.text.get("insert linestart", "insert").strip():
             # A modifier was pressed along with the tab or
             # there is only previous whitespace on this line, so tab.
             return None
-        if self.autocompletewindow and self.autocompletewindow.is_active():
+        wenn self.autocompletewindow and self.autocompletewindow.is_active():
             self.autocompletewindow.complete()
             return "break"
-        else:
+        sonst:
             opened = self.open_completions(TAB)
-            return "break" if opened else None
+            return "break" wenn opened sonst None
 
     def try_open_completions_event(self, event=None):
         "(./) Open completion list after pause with no movement."
         lastchar = self.text.get("insert-1c")
-        if lastchar in TRIGGERS:
-            args = TRY_A if lastchar == "." else TRY_F
+        wenn lastchar in TRIGGERS:
+            args = TRY_A wenn lastchar == "." sonst TRY_F
             self._delayed_completion_index = self.text.index("insert")
-            if self._delayed_completion_id is not None:
+            wenn self._delayed_completion_id is not None:
                 self.text.after_cancel(self._delayed_completion_id)
             self._delayed_completion_id = self.text.after(
                 self.popupwait, self._delayed_open_completions, args)
 
     def _delayed_open_completions(self, args):
-        "Call open_completions if index unchanged."
+        "Call open_completions wenn index unchanged."
         self._delayed_completion_id = None
-        if self.text.index("insert") == self._delayed_completion_index:
+        wenn self.text.index("insert") == self._delayed_completion_index:
             self.open_completions(args)
 
     def open_completions(self, args):
         """Find the completions and create the AutoCompleteWindow.
-        Return True if successful (no syntax error or so found).
-        If complete is True, then if there's nothing to complete and no
+        Return True wenn successful (no syntax error or so found).
+        If complete is True, then wenn there's nothing to complete and no
         start of completion, won't open completions and return False.
         If mode is given, will open a completion list only in this mode.
         """
         evalfuncs, complete, wantwin, mode = args
-        # Cancel another delayed call, if it exists.
-        if self._delayed_completion_id is not None:
+        # Cancel another delayed call, wenn it exists.
+        wenn self._delayed_completion_id is not None:
             self.text.after_cancel(self._delayed_completion_id)
             self._delayed_completion_id = None
 
         hp = HyperParser(self.editwin, "insert")
         curline = self.text.get("insert linestart", "insert")
         i = j = len(curline)
-        if hp.is_in_string() and (not mode or mode==FILES):
+        wenn hp.is_in_string() and (not mode or mode==FILES):
             # Find the beginning of the string.
             # fetch_completions will look at the file system to determine
             # whether the string value constitutes an actual file name
             # XXX could consider raw strings here and unescape the string
-            # value if it's not raw.
+            # value wenn it's not raw.
             self._remove_autocomplete_window()
             mode = FILES
             # Find last separator or string start
@@ -131,27 +131,27 @@ klasse AutoComplete:
             while i and curline[i-1] not in "'\"":
                 i -= 1
             comp_what = curline[i:j]
-        elif hp.is_in_code() and (not mode or mode==ATTRS):
+        sowenn hp.is_in_code() and (not mode or mode==ATTRS):
             self._remove_autocomplete_window()
             mode = ATTRS
             while i and (curline[i-1] in ID_CHARS or ord(curline[i-1]) > 127):
                 i -= 1
             comp_start = curline[i:j]
-            if i and curline[i-1] == '.':  # Need object with attributes.
+            wenn i and curline[i-1] == '.':  # Need object with attributes.
                 hp.set_index("insert-%dc" % (len(curline)-(i-1)))
                 comp_what = hp.get_expression()
-                if (not comp_what or
+                wenn (not comp_what or
                    (not evalfuncs and comp_what.find('(') != -1)):
                     return None
-            else:
+            sonst:
                 comp_what = ""
-        else:
+        sonst:
             return None
 
-        if complete and not comp_what and not comp_start:
+        wenn complete and not comp_what and not comp_start:
             return None
         comp_lists = self.fetch_completions(comp_what, mode)
-        if not comp_lists[0]:
+        wenn not comp_lists[0]:
             return None
         self.autocompletewindow = self._make_autocomplete_window()
         return not self.autocompletewindow.show_window(
@@ -168,51 +168,51 @@ klasse AutoComplete:
 
         The subprocess environment is that of the most recently run script.  If
         two unrelated modules are being edited some calltips in the current
-        module may be inoperative if the module was not the last to run.
+        module may be inoperative wenn the module was not the last to run.
         """
         try:
             rpcclt = self.editwin.flist.pyshell.interp.rpcclt
         except:
             rpcclt = None
-        if rpcclt:
+        wenn rpcclt:
             return rpcclt.remotecall("exec", "get_the_completion_list",
                                      (what, mode), {})
-        else:
-            if mode == ATTRS:
-                if what == "":  # Main module names.
+        sonst:
+            wenn mode == ATTRS:
+                wenn what == "":  # Main module names.
                     namespace = {**__main__.__builtins__.__dict__,
                                  **__main__.__dict__}
                     bigl = eval("dir()", namespace)
                     bigl.extend(completion_kwds)
                     bigl.sort()
-                    if "__all__" in bigl:
+                    wenn "__all__" in bigl:
                         smalll = sorted(eval("__all__", namespace))
-                    else:
-                        smalll = [s fuer s in bigl if s[:1] != '_']
-                else:
+                    sonst:
+                        smalll = [s fuer s in bigl wenn s[:1] != '_']
+                sonst:
                     try:
                         entity = self.get_entity(what)
                         bigl = dir(entity)
                         bigl.sort()
-                        if "__all__" in bigl:
+                        wenn "__all__" in bigl:
                             smalll = sorted(entity.__all__)
-                        else:
-                            smalll = [s fuer s in bigl if s[:1] != '_']
+                        sonst:
+                            smalll = [s fuer s in bigl wenn s[:1] != '_']
                     except:
                         return [], []
 
-            elif mode == FILES:
-                if what == "":
+            sowenn mode == FILES:
+                wenn what == "":
                     what = "."
                 try:
                     expandedpath = os.path.expanduser(what)
                     bigl = os.listdir(expandedpath)
                     bigl.sort()
-                    smalll = [s fuer s in bigl if s[:1] != '.']
+                    smalll = [s fuer s in bigl wenn s[:1] != '.']
                 except OSError:
                     return [], []
 
-            if not smalll:
+            wenn not smalll:
                 smalll = bigl
             return smalll, bigl
 
@@ -223,6 +223,6 @@ klasse AutoComplete:
 
 AutoComplete.reload()
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     from unittest import main
     main('idlelib.idle_test.test_autocomplete', verbosity=2)

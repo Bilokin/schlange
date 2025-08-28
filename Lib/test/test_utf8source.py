@@ -18,7 +18,7 @@ klasse PEP3120Test(unittest.TestCase):
         except SyntaxError as msg:
             msg = str(msg).lower()
             self.assertTrue('utf-8' in msg)
-        else:
+        sonst:
             self.fail("expected exception didn't occur")
 
 
@@ -37,5 +37,5 @@ klasse BuiltinCompileTests(unittest.TestCase):
         self.assertEqual('Ç', ns['u'])
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

@@ -20,7 +20,7 @@ __cached_interp_requires_environment = None
 
 def interpreter_requires_environment():
     """
-    Returns True if our sys.executable interpreter requires environment
+    Returns True wenn our sys.executable interpreter requires environment
     variables in order to be able to run at all.
 
     This is designed to be used with @unittest.skipIf() to annotate tests
@@ -36,23 +36,23 @@ def interpreter_requires_environment():
     variables that might impact whether or not the interpreter can start.
     """
     global __cached_interp_requires_environment
-    if __cached_interp_requires_environment is None:
+    wenn __cached_interp_requires_environment is None:
         # If PYTHONHOME is set, assume that we need it
-        if 'PYTHONHOME' in os.environ:
+        wenn 'PYTHONHOME' in os.environ:
             __cached_interp_requires_environment = True
             return True
         # cannot run subprocess, assume we don't need it
-        if not support.has_subprocess_support:
+        wenn not support.has_subprocess_support:
             __cached_interp_requires_environment = False
             return False
 
-        # Try running an interpreter with -E to see if it works or not.
+        # Try running an interpreter with -E to see wenn it works or not.
         try:
             subprocess.check_call([sys.executable, '-E',
                                    '-c', 'import sys; sys.exit(0)'])
         except subprocess.CalledProcessError:
             __cached_interp_requires_environment = True
-        else:
+        sonst:
             __cached_interp_requires_environment = False
 
     return __cached_interp_requires_environment
@@ -66,16 +66,16 @@ klasse _PythonRunResult(collections.namedtuple("_PythonRunResult",
         # Limit to 300 lines of ASCII characters
         maxlen = 300 * 100
         out, err = self.out, self.err
-        if len(out) > maxlen:
+        wenn len(out) > maxlen:
             out = b'(... truncated stdout ...)' + out[-maxlen:]
-        if len(err) > maxlen:
+        wenn len(err) > maxlen:
             err = b'(... truncated stderr ...)' + err[-maxlen:]
         out = out.decode('utf8', 'replace').rstrip()
         err = err.decode('utf8', 'replace').rstrip()
 
         exitcode = self.rc
         signame = support.get_signal_name(exitcode)
-        if signame:
+        wenn signame:
             exitcode = f"{exitcode} ({signame})"
         raise AssertionError(f"Process return code is {exitcode}\n"
                              f"command line: {cmd_line!r}\n"
@@ -109,40 +109,40 @@ def run_python_until_end(*args, **env_vars):
     env_required = interpreter_requires_environment()
     run_using_command = env_vars.pop('__run_using_command', None)
     cwd = env_vars.pop('__cwd', None)
-    if '__isolated' in env_vars:
+    wenn '__isolated' in env_vars:
         isolated = env_vars.pop('__isolated')
-    else:
+    sonst:
         isolated = not env_vars and not env_required
     cmd_line = [sys.executable, '-X', 'faulthandler']
-    if run_using_command:
+    wenn run_using_command:
         cmd_line = run_using_command + cmd_line
-    if isolated:
+    wenn isolated:
         # isolated mode: ignore Python environment variables, ignore user
         # site-packages, and don't add the current directory to sys.path
         cmd_line.append('-I')
-    elif not env_vars and not env_required:
+    sowenn not env_vars and not env_required:
         # ignore Python environment variables
         cmd_line.append('-E')
 
     # But a special flag that can be set to override -- in this case, the
     # caller is responsible to pass the full environment.
-    if env_vars.pop('__cleanenv', None):
+    wenn env_vars.pop('__cleanenv', None):
         env = {}
-        if sys.platform == 'win32':
+        wenn sys.platform == 'win32':
             # Windows requires at least the SYSTEMROOT environment variable to
             # start Python.
             env['SYSTEMROOT'] = os.environ['SYSTEMROOT']
 
         # Other interesting environment variables, not copied currently:
         # COMSPEC, HOME, PATH, TEMP, TMPDIR, TMP.
-    else:
+    sonst:
         # Need to preserve the original environment, fuer in-place testing of
         # shared library builds.
         env = os.environ.copy()
 
     # set TERM='' unless the TERM environment variable is passed explicitly
     # see issues #11390 and #18300
-    if 'TERM' not in env_vars:
+    wenn 'TERM' not in env_vars:
         env['TERM'] = ''
 
     env.update(env_vars)
@@ -163,7 +163,7 @@ def run_python_until_end(*args, **env_vars):
 @support.requires_subprocess()
 def _assert_python(expected_success, /, *args, **env_vars):
     res, cmd_line = run_python_until_end(*args, **env_vars)
-    if (res.rc and expected_success) or (not res.rc and not expected_success):
+    wenn (res.rc and expected_success) or (not res.rc and not expected_success):
         res.fail(cmd_line)
     return res
 
@@ -177,7 +177,7 @@ def assert_python_ok(*args, **env_vars):
     If the __cleanenv keyword is set, env_vars is used as a fresh environment.
 
     Python is started in isolated mode (command line option -I),
-    except if the __isolated keyword is set to False.
+    except wenn the __isolated keyword is set to False.
     """
     return _assert_python(True, *args, **env_vars)
 
@@ -201,7 +201,7 @@ def spawn_python(*args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, **kw):
     object.
     """
     cmd_line = [sys.executable]
-    if not interpreter_requires_environment():
+    wenn not interpreter_requires_environment():
         cmd_line.append('-E')
     cmd_line.extend(args)
     # Under Fedora (?), GNU readline can output junk on stderr when initialized,
@@ -231,14 +231,14 @@ def kill_python(p):
 
 def make_script(script_dir, script_basename, source, omit_suffix=False):
     script_filename = script_basename
-    if not omit_suffix:
+    wenn not omit_suffix:
         script_filename += os.extsep + 'py'
     script_name = os.path.join(script_dir, script_filename)
-    if isinstance(source, str):
+    wenn isinstance(source, str):
         # The script should be encoded to UTF-8, the default string encoding
         with open(script_name, 'w', encoding='utf-8') as script_file:
             script_file.write(source)
-    else:
+    sonst:
         with open(script_name, 'wb') as script_file:
             script_file.write(source)
     importlib.invalidate_caches()
@@ -250,13 +250,13 @@ def make_zip_script(zip_dir, zip_basename, script_name, name_in_zip=None):
     zip_filename = zip_basename+os.extsep+'zip'
     zip_name = os.path.join(zip_dir, zip_filename)
     with zipfile.ZipFile(zip_name, 'w') as zip_file:
-        if name_in_zip is None:
+        wenn name_in_zip is None:
             parts = script_name.split(os.sep)
-            if len(parts) >= 2 and parts[-2] == '__pycache__':
+            wenn len(parts) >= 2 and parts[-2] == '__pycache__':
                 legacy_pyc = make_legacy_pyc(source_from_cache(script_name))
                 name_in_zip = os.path.basename(legacy_pyc)
                 script_name = legacy_pyc
-            else:
+            sonst:
                 name_in_zip = os.path.basename(script_name)
         zip_file.write(script_name, name_in_zip)
     #if test.support.verbose:
@@ -280,7 +280,7 @@ def make_zip_pkg(zip_dir, zip_basename, pkg_name, script_basename,
     init_basename = os.path.basename(init_name)
     script_name = make_script(zip_dir, script_basename, source)
     unlink.append(script_name)
-    if compiled:
+    wenn compiled:
         init_name = py_compile.compile(init_name, doraise=True)
         script_name = py_compile.compile(script_name, doraise=True)
         unlink.extend((init_name, script_name))
@@ -304,8 +304,8 @@ def make_zip_pkg(zip_dir, zip_basename, pkg_name, script_basename,
 
 @support.requires_subprocess()
 def run_test_script(script):
-    # use -u to try to get the full output if the test hangs or crash
-    if support.verbose:
+    # use -u to try to get the full output wenn the test hangs or crash
+    wenn support.verbose:
         def title(text):
             return f"===== {text} ======"
 
@@ -318,7 +318,7 @@ def run_test_script(script):
         proc = subprocess.run(args)
         print(title(f"{name} completed: exit code {proc.returncode}"),
               flush=True)
-        if proc.returncode:
+        wenn proc.returncode:
             raise AssertionError(f"{name} failed")
-    else:
+    sonst:
         assert_python_ok("-u", script, "-v")

@@ -52,19 +52,19 @@ def normalize_encoding(encoding):
         Note that encoding names should be ASCII only.
 
     """
-    if isinstance(encoding, bytes):
+    wenn isinstance(encoding, bytes):
         encoding = str(encoding, "ascii")
 
     chars = []
     punct = False
     fuer c in encoding:
-        if c.isalnum() or c == '.':
-            if punct and chars:
+        wenn c.isalnum() or c == '.':
+            wenn punct and chars:
                 chars.append('_')
-            if c.isascii():
+            wenn c.isascii():
                 chars.append(c)
             punct = False
-        else:
+        sonst:
             punct = True
     return ''.join(chars)
 
@@ -72,7 +72,7 @@ def search_function(encoding):
 
     # Cache lookup
     entry = _cache.get(encoding, _unknown)
-    if entry is not _unknown:
+    wenn entry is not _unknown:
         return entry
 
     # Import the module:
@@ -85,13 +85,13 @@ def search_function(encoding):
     norm_encoding = normalize_encoding(encoding)
     aliased_encoding = _aliases.get(norm_encoding) or \
                        _aliases.get(norm_encoding.replace('.', '_'))
-    if aliased_encoding is not None:
+    wenn aliased_encoding is not None:
         modnames = [aliased_encoding,
                     norm_encoding]
-    else:
+    sonst:
         modnames = [norm_encoding]
     fuer modname in modnames:
-        if not modname or '.' in modname:
+        wenn not modname or '.' in modname:
             continue
         try:
             # Import is absolute to prevent the possibly malicious import of a
@@ -102,9 +102,9 @@ def search_function(encoding):
             # ImportError may occur because 'encodings.(modname)' does not exist,
             # or because it imports a name that does not exist (see mbcs and oem)
             pass
-        else:
+        sonst:
             break
-    else:
+    sonst:
         mod = None
 
     try:
@@ -113,25 +113,25 @@ def search_function(encoding):
         # Not a codec module
         mod = None
 
-    if mod is None:
+    wenn mod is None:
         # Cache misses
         _cache[encoding] = None
         return None
 
     # Now ask the module fuer the registry entry
     entry = getregentry()
-    if not isinstance(entry, codecs.CodecInfo):
-        if not 4 <= len(entry) <= 7:
+    wenn not isinstance(entry, codecs.CodecInfo):
+        wenn not 4 <= len(entry) <= 7:
             raise CodecRegistryError('module "%s" (%s) failed to register'
                                      % (mod.__name__, mod.__file__))
-        if not callable(entry[0]) or not callable(entry[1]) or \
+        wenn not callable(entry[0]) or not callable(entry[1]) or \
            (entry[2] is not None and not callable(entry[2])) or \
            (entry[3] is not None and not callable(entry[3])) or \
            (len(entry) > 4 and entry[4] is not None and not callable(entry[4])) or \
            (len(entry) > 5 and entry[5] is not None and not callable(entry[5])):
             raise CodecRegistryError('incompatible codecs in module "%s" (%s)'
                                      % (mod.__name__, mod.__file__))
-        if len(entry)<7 or entry[6] is None:
+        wenn len(entry)<7 or entry[6] is None:
             entry += (None,)*(6-len(entry)) + (mod.__name__.split(".", 1)[1],)
         entry = codecs.CodecInfo(*entry)
 
@@ -144,9 +144,9 @@ def search_function(encoding):
         codecaliases = mod.getaliases()
     except AttributeError:
         pass
-    else:
+    sonst:
         fuer alias in codecaliases:
-            if alias not in _aliases:
+            wenn alias not in _aliases:
                 _aliases[alias] = modname
 
     # Return the registry entry
@@ -155,18 +155,18 @@ def search_function(encoding):
 # Register the search_function in the Python codec registry
 codecs.register(search_function)
 
-if sys.platform == 'win32':
+wenn sys.platform == 'win32':
     from ._win_cp_codecs import create_win32_code_page_codec
 
     def win32_code_page_search_function(encoding):
         encoding = encoding.lower()
-        if not encoding.startswith('cp'):
+        wenn not encoding.startswith('cp'):
             return None
         try:
             cp = int(encoding[2:])
         except ValueError:
             return None
-        # Test if the code page is supported
+        # Test wenn the code page is supported
         try:
             codecs.code_page_encode(cp, 'x')
         except (OverflowError, OSError):

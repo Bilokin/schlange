@@ -222,7 +222,7 @@ klasse Test_IncrementalEncoder(unittest.TestCase):
             text = %r
             encoder = codecs.getincrementalencoder(encoding)()
             text2 = encoder.encode(text).decode(encoding)
-            if text2 != text:
+            wenn text2 != text:
                 raise ValueError(f"encoding issue: {text2!a} != {text!a}")
         """) % (encoding, text)
         res = _testcapi.run_in_subinterp(code)
@@ -407,5 +407,5 @@ klasse TestHZStateful(TestStateful):
     expected_reset = expected + reset
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

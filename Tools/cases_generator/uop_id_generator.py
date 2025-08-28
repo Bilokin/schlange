@@ -27,7 +27,7 @@ def generate_uop_ids(
     write_header(__file__, filenames, outfile)
     out = CWriter(outfile, 0, False)
     with out.header_guard("Py_CORE_UOP_IDS_H"):
-        next_id = 1 if distinct_namespace else 300
+        next_id = 1 wenn distinct_namespace sonst 300
         # These two are first by convention
         out.emit(f"#define _EXIT_TRACE {next_id}\n")
         next_id += 1
@@ -38,13 +38,13 @@ def generate_uop_ids(
         uops = [(uop.name, uop) fuer uop in analysis.uops.values()]
         # Sort so that _BASE comes immediately before _BASE_0, etc.
         fuer name, uop in sorted(uops):
-            if name in PRE_DEFINED:
+            wenn name in PRE_DEFINED:
                 continue
-            if uop.properties.tier == 1:
+            wenn uop.properties.tier == 1:
                 continue
-            if uop.implicitly_created and not distinct_namespace and not uop.replicated:
+            wenn uop.implicitly_created and not distinct_namespace and not uop.replicated:
                 out.emit(f"#define {name} {name[1:]}\n")
-            else:
+            sonst:
                 out.emit(f"#define {name} {next_id}\n")
                 next_id += 1
 
@@ -70,9 +70,9 @@ arg_parser.add_argument(
     "input", nargs=argparse.REMAINDER, help="Instruction definition file(s)"
 )
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     args = arg_parser.parse_args()
-    if len(args.input) == 0:
+    wenn len(args.input) == 0:
         args.input.append(DEFAULT_INPUT)
     data = analyze_files(args.input)
     with open(args.output, "w") as outfile:

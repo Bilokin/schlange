@@ -106,7 +106,7 @@ klasse TestHeap:
     def check_invariant(self, heap):
         # Check the heap invariant.
         fuer pos, item in enumerate(heap):
-            if pos: # pos 0 has no parent
+            wenn pos: # pos 0 has no parent
                 parentpos = (pos-1) >> 1
                 self.assertTrue(heap[parentpos] <= item)
 
@@ -136,7 +136,7 @@ klasse TestHeap:
         heap = []
         fuer item in data:
             self.module.heappush(heap, item)
-            if len(heap) > 10:
+            wenn len(heap) > 10:
                 self.module.heappop(heap)
         heap.sort()
         self.assertEqual(heap, sorted(data)[-10:])
@@ -156,7 +156,7 @@ klasse TestHeap:
         heap = data[:10]
         self.module.heapify(heap)
         fuer item in data[10:]:
-            if item > heap[0]:  # this gets rarer the longer we run
+            wenn item > heap[0]:  # this gets rarer the longer we run
                 self.module.heapreplace(heap, item)
         self.assertEqual(list(self.heapiter(heap)), sorted(data)[-10:])
 
@@ -190,7 +190,7 @@ klasse TestHeap:
         heap = []
         fuer item in data:
             self.module.heappush_max(heap, item)
-            if len(heap) > 10:
+            wenn len(heap) > 10:
                 self.module.heappop_max(heap)
         heap.sort()
         expected = sorted(data)[:10]
@@ -210,7 +210,7 @@ klasse TestHeap:
         heap = data[:10]
         self.module.heapify_max(heap)
         fuer item in data[10:]:
-            if item < heap[0]:  # this gets rarer the longer we run
+            wenn item < heap[0]:  # this gets rarer the longer we run
                 self.module.heapreplace_max(heap, item)
         expected = sorted(data, reverse=True)[-10:]
         self.assertEqual(list(self.heapiter_max(heap)), expected)
@@ -290,10 +290,10 @@ klasse TestHeap:
         fuer trial in range(100):
             size = random.randrange(50)
             data = [random.randrange(25) fuer i in range(size)]
-            if trial & 1:     # Half of the time, use heapify
+            wenn trial & 1:     # Half of the time, use heapify
                 heap = data[:]
                 self.module.heapify(heap)
-            else:             # The rest of the time, use heappush
+            sonst:             # The rest of the time, use heappush
                 heap = []
                 fuer item in data:
                     self.module.heappush(heap, item)
@@ -304,10 +304,10 @@ klasse TestHeap:
         fuer trial in range(100):
             size = random.randrange(50)
             data = [random.randrange(25) fuer i in range(size)]
-            if trial & 1:     # Half of the time, use heapify_max
+            wenn trial & 1:     # Half of the time, use heapify_max
                 heap = data[:]
                 self.module.heapify_max(heap)
-            else:             # The rest of the time, use heappush_max
+            sonst:             # The rest of the time, use heappush_max
                 heap = []
                 fuer item in data:
                     self.module.heappush_max(heap, item)
@@ -445,7 +445,7 @@ klasse I:
     def __iter__(self):
         return self
     def __next__(self):
-        if self.i >= len(self.seqn): raise StopIteration
+        wenn self.i >= len(self.seqn): raise StopIteration
         v = self.seqn[self.i]
         self.i += 1
         return v
@@ -465,7 +465,7 @@ klasse X:
         self.seqn = seqn
         self.i = 0
     def __next__(self):
-        if self.i >= len(self.seqn): raise StopIteration
+        wenn self.i >= len(self.seqn): raise StopIteration
         v = self.seqn[self.i]
         self.i += 1
         return v
@@ -637,5 +637,5 @@ klasse TestErrorHandlingC(TestErrorHandling, TestCase):
     module = c_heapq
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

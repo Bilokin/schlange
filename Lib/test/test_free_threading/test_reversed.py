@@ -35,5 +35,5 @@ klasse TestReversed(unittest.TestCase):
                 pass
             barrier.reset()
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

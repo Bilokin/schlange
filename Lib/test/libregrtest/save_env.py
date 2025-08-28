@@ -28,9 +28,9 @@ klasse saved_test_environment:
         with saved_test_environment(test_name, verbose, quiet):
             #stuff
 
-    Unless quiet is True, a warning is printed to stderr if any of
+    Unless quiet is True, a warning is printed to stderr wenn any of
     the saved items was changed by the test. The support.environment_altered
-    attribute is set to True if a change is detected.
+    attribute is set to True wenn a change is detected.
 
     If verbose is more than 1, the before and after state of changed
     items is also printed.
@@ -47,7 +47,7 @@ klasse saved_test_environment:
     # return the value to be saved and compared against a second call to the
     # get function when test execution completes.  restore_XXX should accept
     # the saved value and restore the resource using it.  It will be called if
-    # and only if a change in the value is detected.
+    # and only wenn a change in the value is detected.
     #
     # Note: XXX will have any '.' replaced with '_' characters when determining
     # the corresponding method names.
@@ -168,7 +168,7 @@ klasse saved_test_environment:
         return asyncore and asyncore.socket_map.copy() or {}
     def restore_asyncore_socket_map(self, saved_map):
         asyncore = sys.modules.get('test.support.asyncore')
-        if asyncore is not None:
+        wenn asyncore is not None:
             asyncore.close_all(ignore_all=True)
             asyncore.socket_map.update(saved_map)
 
@@ -260,19 +260,19 @@ klasse saved_test_environment:
 
     def get_files(self):
         # XXX: Maybe add an allow-list here?
-        return sorted(fn + ('/' if os.path.isdir(fn) else '')
+        return sorted(fn + ('/' wenn os.path.isdir(fn) sonst '')
                       fuer fn in os.listdir()
-                      if not fn.startswith(".hypothesis"))
+                      wenn not fn.startswith(".hypothesis"))
     def restore_files(self, saved_value):
         fn = os_helper.TESTFN
-        if fn not in saved_value and (fn + '/') not in saved_value:
-            if os.path.isfile(fn):
+        wenn fn not in saved_value and (fn + '/') not in saved_value:
+            wenn os.path.isfile(fn):
                 os_helper.unlink(fn)
-            elif os.path.isdir(fn):
+            sowenn os.path.isdir(fn):
                 os_helper.rmtree(fn)
 
     _lc = [getattr(locale, lc) fuer lc in dir(locale)
-           if lc.startswith('LC_')]
+           wenn lc.startswith('LC_')]
     def get_locale(self):
         pairings = []
         fuer lc in self._lc:
@@ -320,10 +320,10 @@ klasse saved_test_environment:
         fuer name, get, restore, original in saved_values:
             current = get()
             # Check fuer changes to the resource's value
-            if current != original:
+            wenn current != original:
                 support.environment_altered = True
                 restore(original)
-                if not self.quiet and not self.pgo:
+                wenn not self.quiet and not self.pgo:
                     print_warning(
                         f"{name} was modified by {self.test_name}\n"
                         f"  Before: {original}\n"

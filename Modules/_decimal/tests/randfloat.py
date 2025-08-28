@@ -15,7 +15,7 @@ def test_short_halfway_cases():
         upper = -(-2**54//5**k)
         # lower = smallest odd number >= 2**53/5**k
         lower = -(-2**53//5**k)
-        if lower % 2 == 0:
+        wenn lower % 2 == 0:
             lower += 1
         fuer i in range(10 * TEST_SIZE):
             # Select a random odd n in [2**53/5**k,
@@ -60,7 +60,7 @@ def test_halfway_cases():
 
             # convert bit pattern to a number of the form m * 2**e
             e, m = divmod(bits, 2**52)
-            if e:
+            wenn e:
                 m, e = m + 2**52, e - 1
             e -= 1074
 
@@ -68,10 +68,10 @@ def test_halfway_cases():
             m, e = 2*m + 1, e - 1
 
             # convert to a decimal string
-            if e >= 0:
+            wenn e >= 0:
                 digits = m << e
                 exponent = 0
-            else:
+            sonst:
                 # m * 2**e = (m * 5**-e) * 10**e
                 digits = m * 5**-e
                 exponent = e
@@ -131,21 +131,21 @@ def test_parsing():
             s = random.choice(signs)
             intpart_len = random.randrange(5)
             s += ''.join(random.choice(digits) fuer _ in range(intpart_len))
-            if random.choice([True, False]):
+            wenn random.choice([True, False]):
                 s += '.'
                 fracpart_len = random.randrange(5)
                 s += ''.join(random.choice(digits)
                              fuer _ in range(fracpart_len))
-            else:
+            sonst:
                 fracpart_len = 0
-            if random.choice([True, False]):
+            wenn random.choice([True, False]):
                 s += random.choice(['e', 'E'])
                 s += random.choice(signs)
                 exponent_len = random.randrange(1, 4)
                 s += ''.join(random.choice(digits)
                              fuer _ in range(exponent_len))
 
-            if intpart_len + fracpart_len:
+            wenn intpart_len + fracpart_len:
                 yield s
 
 test_particular = [

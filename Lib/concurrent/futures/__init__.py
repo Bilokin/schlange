@@ -39,7 +39,7 @@ try:
 except ImportError:
     _interpreters = None
 
-if _interpreters:
+wenn _interpreters:
     __all__.append('InterpreterPoolExecutor')
 
 
@@ -50,15 +50,15 @@ def __dir__():
 def __getattr__(name):
     global ProcessPoolExecutor, ThreadPoolExecutor, InterpreterPoolExecutor
 
-    if name == 'ProcessPoolExecutor':
+    wenn name == 'ProcessPoolExecutor':
         from .process import ProcessPoolExecutor
         return ProcessPoolExecutor
 
-    if name == 'ThreadPoolExecutor':
+    wenn name == 'ThreadPoolExecutor':
         from .thread import ThreadPoolExecutor
         return ThreadPoolExecutor
 
-    if _interpreters and name == 'InterpreterPoolExecutor':
+    wenn _interpreters and name == 'InterpreterPoolExecutor':
         from .interpreter import InterpreterPoolExecutor
         return InterpreterPoolExecutor
 

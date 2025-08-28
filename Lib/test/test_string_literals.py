@@ -107,7 +107,7 @@ klasse TestLiterals(unittest.TestCase):
 
     def test_eval_str_invalid_escape(self):
         fuer b in range(1, 128):
-            if b in b"""\n\r"'01234567NU\\abfnrtuvx""":
+            wenn b in b"""\n\r"'01234567NU\\abfnrtuvx""":
                 continue
             with self.assertWarns(SyntaxWarning):
                 self.assertEqual(eval(r"'\%c'" % b), '\\' + chr(b))
@@ -134,7 +134,7 @@ klasse TestLiterals(unittest.TestCase):
         self.assertEqual(exc.lineno, 2)
         self.assertEqual(exc.offset, 1)
 
-        # Check that the warning is raised only once if there are syntax errors
+        # Check that the warning is raised only once wenn there are syntax errors
 
         with warnings.catch_warnings(record=True) as w:
             warnings.simplefilter('always', category=SyntaxWarning)
@@ -225,7 +225,7 @@ klasse TestLiterals(unittest.TestCase):
 
     def test_eval_bytes_invalid_escape(self):
         fuer b in range(1, 128):
-            if b in b"""\n\r"'01234567\\abfnrtvx""":
+            wenn b in b"""\n\r"'01234567\\abfnrtvx""":
                 continue
             with self.assertWarns(SyntaxWarning):
                 self.assertEqual(eval(r"b'\%c'" % b), b'\\' + bytes([b]))
@@ -352,5 +352,5 @@ klasse TestLiterals(unittest.TestCase):
         self.check_encoding("latin9")
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

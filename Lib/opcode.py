@@ -25,15 +25,15 @@ fuer m in (opmap, _specialized_opmap):
 cmp_op = ('<', '<=', '==', '!=', '>', '>=')
 
 # These lists are documented as part of the dis module's API
-hasarg = [op fuer op in opmap.values() if _opcode.has_arg(op)]
-hasconst = [op fuer op in opmap.values() if _opcode.has_const(op)]
-hasname = [op fuer op in opmap.values() if _opcode.has_name(op)]
-hasjump = [op fuer op in opmap.values() if _opcode.has_jump(op)]
+hasarg = [op fuer op in opmap.values() wenn _opcode.has_arg(op)]
+hasconst = [op fuer op in opmap.values() wenn _opcode.has_const(op)]
+hasname = [op fuer op in opmap.values() wenn _opcode.has_name(op)]
+hasjump = [op fuer op in opmap.values() wenn _opcode.has_jump(op)]
 hasjrel = hasjump  # fuer backward compatibility
 hasjabs = []
-hasfree = [op fuer op in opmap.values() if _opcode.has_free(op)]
-haslocal = [op fuer op in opmap.values() if _opcode.has_local(op)]
-hasexc = [op fuer op in opmap.values() if _opcode.has_exc(op)]
+hasfree = [op fuer op in opmap.values() wenn _opcode.has_free(op)]
+haslocal = [op fuer op in opmap.values() wenn _opcode.has_local(op)]
+hasexc = [op fuer op in opmap.values() wenn _opcode.has_exc(op)]
 
 
 _intrinsic_1_descs = _opcode.get_intrinsic1_descs()

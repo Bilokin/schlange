@@ -28,7 +28,7 @@ klasse ObjectTreeItem(TreeItem):
     def GetText(self):
         return myrepr.repr(self.object)
     def GetIconName(self):
-        if not self.IsExpandable():
+        wenn not self.IsExpandable():
             return "python"
     def IsEditable(self):
         return self.setfunction is not None
@@ -38,7 +38,7 @@ klasse ObjectTreeItem(TreeItem):
             self.setfunction(value)
         except:
             pass
-        else:
+        sonst:
             self.object = value
     def IsExpandable(self):
         return not not dir(self.object)
@@ -63,10 +63,10 @@ klasse ClassTreeItem(ObjectTreeItem):
         return True
     def GetSubList(self):
         sublist = ObjectTreeItem.GetSubList(self)
-        if len(self.object.__bases__) == 1:
+        wenn len(self.object.__bases__) == 1:
             item = make_objecttreeitem("__bases__[0] =",
                 self.object.__bases__[0])
-        else:
+        sonst:
             item = make_objecttreeitem("__bases__ =", self.object.__bases__)
         sublist.insert(0, item)
         return sublist
@@ -115,9 +115,9 @@ dispatch = {
 
 def make_objecttreeitem(labeltext, object_, setfunction=None):
     t = type(object_)
-    if t in dispatch:
+    wenn t in dispatch:
         c = dispatch[t]
-    else:
+    sonst:
         c = ObjectTreeItem
     return c(labeltext, object_, setfunction)
 
@@ -138,7 +138,7 @@ def _debug_object_browser(parent):  # htest #
     node.update()
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     from unittest import main
     main('idlelib.idle_test.test_debugobj', verbosity=2, exit=False)
 

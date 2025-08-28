@@ -36,16 +36,16 @@ klasse LexicalPosixPathJoinTest(JoinTestBase, unittest.TestCase):
     cls = LexicalPosixPath
 
 
-if not is_pypi:
+wenn not is_pypi:
     from pathlib import PurePosixPath, PosixPath
 
     klasse PurePosixPathJoinTest(JoinTestBase, unittest.TestCase):
         cls = PurePosixPath
 
-    if os.name != 'nt':
+    wenn os.name != 'nt':
         klasse PosixPathJoinTest(JoinTestBase, unittest.TestCase):
             cls = PosixPath
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

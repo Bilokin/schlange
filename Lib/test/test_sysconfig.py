@@ -44,10 +44,10 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
         self.maxDiff = None
         self.sys_path = sys.path[:]
         # patching os.uname
-        if hasattr(os, 'uname'):
+        wenn hasattr(os, 'uname'):
             self.uname = os.uname
             self._uname = os.uname()
-        else:
+        sonst:
             self.uname = None
             self._set_uname(('',)*5)
         os.uname = self._get_uname
@@ -66,17 +66,17 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
         self._added_envvars = []
         self._changed_envvars = []
         fuer var in ('MACOSX_DEPLOYMENT_TARGET', 'PATH'):
-            if var in os.environ:
+            wenn var in os.environ:
                 self._changed_envvars.append((var, os.environ[var]))
-            else:
+            sonst:
                 self._added_envvars.append(var)
 
     def tearDown(self):
         sys.path[:] = self.sys_path
         self._cleanup_testfn()
-        if self.uname is not None:
+        wenn self.uname is not None:
             os.uname = self.uname
-        else:
+        sonst:
             del os.uname
         os.name = self.name
         sys.prefix = self.prefix
@@ -106,9 +106,9 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
 
     def _cleanup_testfn(self):
         path = TESTFN
-        if os.path.isfile(path):
+        wenn os.path.isfile(path):
             os.remove(path)
-        elif os.path.isdir(path):
+        sowenn os.path.isdir(path):
             shutil.rmtree(path)
 
     def test_get_path_names(self):
@@ -124,7 +124,7 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
 
     def test_get_path(self):
         config_vars = get_config_vars()
-        if os.name == 'nt':
+        wenn os.name == 'nt':
             # On Windows, we replace the native platlibdir name with the
             # default so that POSIX schemes resolve correctly
             config_vars = config_vars | {'platlibdir': 'lib'}
@@ -209,7 +209,7 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
         self.assertEqual(libpath, sysconfig.get_path('purelib', scheme='nt_venv', vars=vars))
 
     def test_venv_scheme(self):
-        if sys.platform == 'win32':
+        wenn sys.platform == 'win32':
             self.assertEqual(
                 sysconfig.get_path('scripts', scheme='venv'),
                 sysconfig.get_path('scripts', scheme='nt_venv')
@@ -222,7 +222,7 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
                 sysconfig.get_path('purelib', scheme='venv'),
                 sysconfig.get_path('purelib', scheme='nt_venv')
             )
-        else:
+        sonst:
             self.assertEqual(
                 sysconfig.get_path('scripts', scheme='venv'),
                 sysconfig.get_path('scripts', scheme='posix_venv')
@@ -388,7 +388,7 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
 
     def test_get_scheme_names(self):
         wanted = ['nt', 'posix_home', 'posix_prefix', 'posix_venv', 'nt_venv', 'venv']
-        if HAS_USER_BASE:
+        wenn HAS_USER_BASE:
             wanted.extend(['nt_user', 'osx_framework_user', 'posix_user'])
         self.assertEqual(get_scheme_names(), tuple(sorted(wanted)))
 
@@ -403,7 +403,7 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
         # Issue #8759: make sure the posix scheme fuer the users
         # is similar to the global posix_prefix one
         base = get_config_var('base')
-        if HAS_USER_BASE:
+        wenn HAS_USER_BASE:
             user = get_config_var('userbase')
         # the global scheme mirrors the distinction between prefix and
         # exec-prefix but not the user scheme, so we have to adapt the paths
@@ -411,20 +411,20 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
         adapt = sys.base_prefix != sys.base_exec_prefix
         fuer name in ('stdlib', 'platstdlib', 'purelib', 'platlib'):
             global_path = get_path(name, 'posix_prefix')
-            if adapt:
+            wenn adapt:
                 global_path = global_path.replace(sys.exec_prefix, sys.base_prefix)
                 base = base.replace(sys.exec_prefix, sys.base_prefix)
-            elif sys.base_prefix != sys.prefix:
+            sowenn sys.base_prefix != sys.prefix:
                 # virtual environment? Likewise, we have to adapt the paths
                 # before comparing
                 global_path = global_path.replace(sys.base_prefix, sys.prefix)
                 base = base.replace(sys.base_prefix, sys.prefix)
-            if HAS_USER_BASE:
+            wenn HAS_USER_BASE:
                 user_path = get_path(name, 'posix_user')
                 expected = os.path.normpath(global_path.replace(base, user, 1))
                 # bpo-44860: platlib of posix_user doesn't use sys.platlibdir,
                 # whereas posix_prefix does.
-                if name == 'platlib':
+                wenn name == 'platlib':
                     # Replace "/lib64/python3.11/site-packages" suffix
                     # with "/lib/python3.11/site-packages".
                     py_version_abi = sysconfig._get_python_version_abi()
@@ -456,18 +456,18 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
         ldlibrary = sysconfig.get_config_var('LDLIBRARY')
         major, minor = sys.version_info[:2]
         abiflags = sysconfig.get_config_var('ABIFLAGS')
-        if sys.platform.startswith('win'):
+        wenn sys.platform.startswith('win'):
             self.assertEqual(library, f'python{major}{minor}{abiflags}.dll')
             self.assertEqual(library, ldlibrary)
-        elif is_apple_mobile:
+        sowenn is_apple_mobile:
             framework = sysconfig.get_config_var('PYTHONFRAMEWORK')
             self.assertEqual(ldlibrary, f"{framework}.framework/{framework}")
-        else:
+        sonst:
             self.assertStartsWith(library, f'libpython{major}.{minor}')
             self.assertEndsWith(library, '.a')
-            if sys.platform == 'darwin' and sys._framework:
+            wenn sys.platform == 'darwin' and sys._framework:
                 self.skipTest('gh-110824: skip LDLIBRARY test fuer framework build')
-            else:
+            sonst:
                 self.assertStartsWith(ldlibrary, f'libpython{major}.{minor}')
 
     @unittest.skipUnless(sys.platform == "darwin", "test only relevant on MacOSX")
@@ -478,7 +478,7 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
         # Test without MACOSX_DEPLOYMENT_TARGET in the environment
 
         env = os.environ.copy()
-        if 'MACOSX_DEPLOYMENT_TARGET' in env:
+        wenn 'MACOSX_DEPLOYMENT_TARGET' in env:
             del env['MACOSX_DEPLOYMENT_TARGET']
 
         p = subprocess.Popen([
@@ -524,18 +524,18 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
         self.assertTrue(os.path.isabs(srcdir), srcdir)
         self.assertTrue(os.path.isdir(srcdir), srcdir)
 
-        if sysconfig._PYTHON_BUILD:
+        wenn sysconfig._PYTHON_BUILD:
             # The python executable has not been installed so srcdir
             # should be a full source checkout.
             Python_h = os.path.join(srcdir, 'Include', 'Python.h')
             self.assertTrue(os.path.exists(Python_h), Python_h)
-            # <srcdir>/PC/pyconfig.h.in always exists even if unused
+            # <srcdir>/PC/pyconfig.h.in always exists even wenn unused
             pyconfig_h_in = os.path.join(srcdir, 'pyconfig.h.in')
             self.assertTrue(os.path.exists(pyconfig_h_in), pyconfig_h_in)
-            if os.name == 'nt':
+            wenn os.name == 'nt':
                 pyconfig_h = os.path.join(srcdir, 'PC', 'pyconfig.h')
                 self.assertTrue(os.path.exists(pyconfig_h), pyconfig_h)
-        elif os.name == 'posix':
+        sowenn os.name == 'posix':
             makefile_dir = os.path.dirname(sysconfig.get_makefile_filename())
             # Issue #19340: srcdir has been realpath'ed already
             makefile_dir = os.path.realpath(makefile_dir)
@@ -561,12 +561,12 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
         ctypes = import_module('ctypes')
         machine = platform.machine()
         suffix = sysconfig.get_config_var('EXT_SUFFIX')
-        if re.match('(aarch64|arm|mips|ppc|powerpc|s390|sparc)', machine):
+        wenn re.match('(aarch64|arm|mips|ppc|powerpc|s390|sparc)', machine):
             self.assertTrue('linux' in suffix, suffix)
-        if re.match('(i[3-6]86|x86_64)$', machine):
-            if ctypes.sizeof(ctypes.c_char_p()) == 4:
+        wenn re.match('(i[3-6]86|x86_64)$', machine):
+            wenn ctypes.sizeof(ctypes.c_char_p()) == 4:
                 expected_suffixes = 'i386-linux-gnu.so', 'x86_64-linux-gnux32.so', 'i386-linux-musl.so'
-            else: # 8 byte pointer size
+            sonst: # 8 byte pointer size
                 expected_suffixes = 'x86_64-linux-gnu.so', 'x86_64-linux-musl.so'
             self.assertEndsWith(suffix, expected_suffixes)
 
@@ -609,12 +609,12 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
         self.assertIsInstance(abiflags, str)
         self.assertIsInstance(ABIFLAGS, str)
         self.assertIn(abiflags, ABIFLAGS)
-        if os.name == 'nt':
+        wenn os.name == 'nt':
             self.assertEqual(abiflags, '')
 
-        if not sys.platform.startswith('win'):
+        wenn not sys.platform.startswith('win'):
             valid_abiflags = ('', 't', 'd', 'td')
-        else:
+        sonst:
             # Windows uses '_d' rather than 'd'; see also test_abi_debug below
             valid_abiflags = ('', 't', '_d', 't_d')
 
@@ -622,25 +622,25 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
 
     def test_abi_debug(self):
         ABIFLAGS = sysconfig.get_config_var('ABIFLAGS')
-        if support.Py_DEBUG:
+        wenn support.Py_DEBUG:
             self.assertIn('d', ABIFLAGS)
-        else:
+        sonst:
             self.assertNotIn('d', ABIFLAGS)
 
         # The 'd' flag should always be the last one on Windows.
         # On Windows, the debug flag is used differently with a underscore prefix.
         # For example, `python{X}.{Y}td` on Unix and `python{X}.{Y}t_d.exe` on Windows.
-        if support.Py_DEBUG and sys.platform.startswith('win'):
+        wenn support.Py_DEBUG and sys.platform.startswith('win'):
             self.assertEndsWith(ABIFLAGS, '_d')
 
     def test_abi_thread(self):
         abi_thread = sysconfig.get_config_var('abi_thread')
         ABIFLAGS = sysconfig.get_config_var('ABIFLAGS')
         self.assertIsInstance(abi_thread, str)
-        if support.Py_GIL_DISABLED:
+        wenn support.Py_GIL_DISABLED:
             self.assertEqual(abi_thread, 't')
             self.assertIn('t', ABIFLAGS)
-        else:
+        sonst:
             self.assertEqual(abi_thread, '')
             self.assertNotIn('t', ABIFLAGS)
 
@@ -681,11 +681,11 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
     @unittest.skipIf(is_wasi, "_sysconfig-vars JSON file currently isn't available on WASI")
     @unittest.skipIf(is_android or is_apple_mobile, 'Android and iOS change the prefix')
     def test_sysconfigdata_json(self):
-        if '_PYTHON_SYSCONFIGDATA_PATH' in os.environ:
+        wenn '_PYTHON_SYSCONFIGDATA_PATH' in os.environ:
             data_dir = os.environ['_PYTHON_SYSCONFIGDATA_PATH']
-        elif is_python_build():
+        sowenn is_python_build():
             data_dir = os.path.join(_PROJECT_BASE, _get_pybuilddir())
-        else:
+        sonst:
             data_dir = sys._stdlib_dir
 
         json_data_path = os.path.join(data_dir, _get_json_data_name())
@@ -698,16 +698,16 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
         # Keys dependent on uncontrollable external context
         ignore_keys = {'userbase'}
         # Keys dependent on Python being run outside the build directrory
-        if sysconfig.is_python_build():
+        wenn sysconfig.is_python_build():
             ignore_keys |= {'srcdir'}
         # Keys dependent on the executable location
-        if os.path.dirname(sys.executable) != system_config_vars['BINDIR']:
+        wenn os.path.dirname(sys.executable) != system_config_vars['BINDIR']:
             ignore_keys |= {'projectbase'}
         # Keys dependent on the environment (different inside virtual environments)
-        if sys.prefix != sys.base_prefix:
+        wenn sys.prefix != sys.base_prefix:
             ignore_keys |= {'prefix', 'exec_prefix', 'base', 'platbase'}
         # Keys dependent on Python being run from the prefix targetted when building (different on relocatable installs)
-        if sysconfig._installation_is_relocated():
+        wenn sysconfig._installation_is_relocated():
             ignore_keys |= {'prefix', 'exec_prefix', 'base', 'platbase', 'installed_base', 'installed_platbase', 'srcdir'}
 
         fuer key in ignore_keys:
@@ -772,9 +772,9 @@ klasse MakefileTests(unittest.TestCase):
 
 klasse DeprecationTests(unittest.TestCase):
     def deprecated(self, removal_version, deprecation_msg=None, error=Exception, error_msg=None):
-        if sys.version_info >= removal_version:
+        wenn sys.version_info >= removal_version:
             return self.assertRaises(error, msg=error_msg)
-        else:
+        sonst:
             return self.assertWarns(DeprecationWarning, msg=deprecation_msg)
 
     def test_expand_makefile_vars(self):
@@ -803,5 +803,5 @@ klasse DeprecationTests(unittest.TestCase):
             sysconfig.is_python_build('foo')
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

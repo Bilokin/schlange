@@ -61,13 +61,13 @@ klasse ZzDummy:
         This is bound to the <<z-out>> virtual event when the extensions
         are loaded.
         """
-        zlength = 0 if not line.startswith(self.ztext) else len(self.ztext)
+        zlength = 0 wenn not line.startswith(self.ztext) sonst len(self.ztext)
         return line[zlength:]
 
 
 ZzDummy.reload()
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     import unittest
     unittest.main('idlelib.idle_test.test_zzdummy', verbosity=2, exit=False)

@@ -425,11 +425,11 @@ klasse C1:
         self.b = b
 
     def compare(self):
-        if a > b:
+        wenn a > b:
             return a
-        elif a < b:
+        sowenn a < b:
             return b
-        else:
+        sonst:
             return None
 """
 
@@ -442,7 +442,7 @@ klasse C1:
         text.tag_add('sel', '7.0', '10.0')
         expected_lines = ['',
                           '    def compare(self):',
-                          '        if a > b:',
+                          '        wenn a > b:',
                           '']
         eq(get(), ('7.0', '10.0', '\n'.join(expected_lines), expected_lines))
 
@@ -493,7 +493,7 @@ klasse C1:
         text.tag_add('sel', '7.0', '10.0')
         indent()
         # Blank lines aren't affected by indent.
-        eq(text.get('7.0', '10.0'), ('\n        def compare(self):\n            if a > b:\n'))
+        eq(text.get('7.0', '10.0'), ('\n        def compare(self):\n            wenn a > b:\n'))
 
     def test_dedent_region_event(self):
         dedent = self.formatter.dedent_region_event
@@ -503,7 +503,7 @@ klasse C1:
         text.tag_add('sel', '7.0', '10.0')
         dedent()
         # Blank lines aren't affected by dedent.
-        eq(text.get('7.0', '10.0'), ('\ndef compare(self):\n    if a > b:\n'))
+        eq(text.get('7.0', '10.0'), ('\ndef compare(self):\n    wenn a > b:\n'))
 
     def test_comment_region_event(self):
         comment = self.formatter.comment_region_event
@@ -512,7 +512,7 @@ klasse C1:
 
         text.tag_add('sel', '7.0', '10.0')
         comment()
-        eq(text.get('7.0', '10.0'), ('##\n##    def compare(self):\n##        if a > b:\n'))
+        eq(text.get('7.0', '10.0'), ('##\n##    def compare(self):\n##        wenn a > b:\n'))
 
     def test_uncomment_region_event(self):
         comment = self.formatter.comment_region_event
@@ -523,7 +523,7 @@ klasse C1:
         text.tag_add('sel', '7.0', '10.0')
         comment()
         uncomment()
-        eq(text.get('7.0', '10.0'), ('\n    def compare(self):\n        if a > b:\n'))
+        eq(text.get('7.0', '10.0'), ('\n    def compare(self):\n        wenn a > b:\n'))
 
         # Only remove comments at the beginning of a line.
         text.tag_remove('sel', '1.0', 'end')
@@ -548,7 +548,7 @@ klasse C1:
 
         _asktabwidth.return_value = 3
         self.assertIsNotNone(tabify())
-        eq(text.get('7.0', '10.0'), ('\n\t def compare(self):\n\t\t  if a > b:\n'))
+        eq(text.get('7.0', '10.0'), ('\n\t def compare(self):\n\t\t  wenn a > b:\n'))
 
     @mock.patch.object(ft.FormatRegion, "_asktabwidth")
     def test_untabify_region_event(self, _asktabwidth):
@@ -565,7 +565,7 @@ klasse C1:
         self.formatter.tabify_region_event()
         _asktabwidth.return_value = 3
         self.assertIsNotNone(untabify())
-        eq(text.get('7.0', '10.0'), ('\n      def compare(self):\n            if a > b:\n'))
+        eq(text.get('7.0', '10.0'), ('\n      def compare(self):\n            wenn a > b:\n'))
 
     @mock.patch.object(ft, "askinteger")
     def test_ask_tabwidth(self, askinteger):
@@ -664,5 +664,5 @@ klasse RstripTest(unittest.TestCase):
                 self.assertEqual(text.get('1.0','end-1c'), 'a\n')
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main(verbosity=2, exit=2)

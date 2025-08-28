@@ -35,13 +35,13 @@ klasse FuncAttrsTest(unittest.TestCase):
             setattr(obj, name, value)
         except exceptions:
             pass
-        else:
+        sonst:
             self.fail("shouldn't be able to set %s to %r" % (name, value))
         try:
             delattr(obj, name)
         except exceptions:
             pass
-        else:
+        sonst:
             self.fail("shouldn't be able to del %s" % name)
 
 
@@ -80,7 +80,7 @@ klasse FunctionPropertiesTest(FuncAttrsTest):
 
         fuer src in [A, B, C, D]:
             fuer dst in [A, B, C, D]:
-                if src == dst:
+                wenn src == dst:
                     continue
 
                 assert src.__code__.co_flags != dst.__code__.co_flags
@@ -99,9 +99,9 @@ klasse FunctionPropertiesTest(FuncAttrsTest):
                              (AttributeError, TypeError))
 
     def test___builtins__(self):
-        if __name__ == "__main__":
+        wenn __name__ == "__main__":
             builtins_dict = __builtins__.__dict__
-        else:
+        sonst:
             builtins_dict = __builtins__
 
         self.assertIs(self.b.__builtins__, builtins_dict)
@@ -159,7 +159,7 @@ klasse FunctionPropertiesTest(FuncAttrsTest):
             f.__closure__[0].cell_contents
         except ValueError:
             pass
-        else:
+        sonst:
             self.fail("shouldn't be able to read an empty cell")
         a = 12
 
@@ -176,7 +176,7 @@ klasse FunctionPropertiesTest(FuncAttrsTest):
             c[0].cell_contents
         except ValueError:
             pass
-        else:
+        sonst:
             self.fail("shouldn't be able to read an empty cell")
         with self.assertRaises(NameError):
             f()
@@ -192,7 +192,7 @@ klasse FunctionPropertiesTest(FuncAttrsTest):
         # __name__ and __name__ must be a string
         self.cannot_set_attr(self.b, '__name__', 7, TypeError)
         # __name__ must be available when in restricted mode. Exec will raise
-        # AttributeError if __name__ is not available on f.
+        # AttributeError wenn __name__ is not available on f.
         s = """def f(): pass\nf.__name__"""
         exec(s, {'__builtins__': {}})
         # Test on methods, too
@@ -255,14 +255,14 @@ klasse FunctionPropertiesTest(FuncAttrsTest):
             b.__code__ = c.__code__
         except ValueError:
             pass
-        else:
+        sonst:
             self.fail("__code__ with different numbers of free vars should "
                       "not be possible")
         try:
             e.__code__ = d.__code__
         except ValueError:
             pass
-        else:
+        sonst:
             self.fail("__code__ with different numbers of free vars should "
                       "not be possible")
 
@@ -289,7 +289,7 @@ klasse FunctionPropertiesTest(FuncAttrsTest):
             second_func()
         except TypeError:
             pass
-        else:
+        sonst:
             self.fail("__defaults__ does not update; deleting it does not "
                       "remove requirement")
 
@@ -318,7 +318,7 @@ klasse InstancemethodAttrTest(FuncAttrsTest):
             self.fi.id.unknown_attr
         except AttributeError:
             pass
-        else:
+        sonst:
             self.fail("using unknown attributes should raise AttributeError")
         # Test assignment and deletion
         self.cannot_set_attr(self.fi.id, 'unknown_attr', 2, AttributeError)
@@ -332,7 +332,7 @@ klasse ArbitraryFunctionAttrTest(FuncAttrsTest):
             self.fi.a.known_attr = 7
         except AttributeError:
             pass
-        else:
+        sonst:
             self.fail("setting attributes on methods should raise error")
 
     def test_delete_unknown_attr(self):
@@ -340,7 +340,7 @@ klasse ArbitraryFunctionAttrTest(FuncAttrsTest):
             del self.b.unknown_attr
         except AttributeError:
             pass
-        else:
+        sonst:
             self.fail("deleting unknown attribute should raise TypeError")
 
     def test_unset_attr(self):
@@ -349,7 +349,7 @@ klasse ArbitraryFunctionAttrTest(FuncAttrsTest):
                 func.non_existent_attr
             except AttributeError:
                 pass
-            else:
+            sonst:
                 self.fail("using unknown attributes should raise "
                           "AttributeError")
 
@@ -382,7 +382,7 @@ klasse FunctionDictsTest(FuncAttrsTest):
             del self.b.__dict__
         except TypeError:
             pass
-        else:
+        sonst:
             self.fail("deleting function dictionary should raise TypeError")
 
     def test_unassigned_dict(self):
@@ -425,7 +425,7 @@ def empty_cell(empty=True):
     # the intent of the following line is simply "if False:";  it's
     # spelt this way to avoid the danger that a future optimization
     # might simply remove an "if False:" code block.
-    if not empty:
+    wenn not empty:
         a = 1729
     return f.__closure__[0]
 
@@ -507,5 +507,5 @@ klasse BuiltinFunctionPropertiesTest(unittest.TestCase):
         self.assertIsNone(None.__repr__.__self__)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

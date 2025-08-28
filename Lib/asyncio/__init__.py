@@ -41,10 +41,10 @@ __all__ = (base_events.__all__ +
            timeouts.__all__ +
            transports.__all__)
 
-if sys.platform == 'win32':  # pragma: no cover
+wenn sys.platform == 'win32':  # pragma: no cover
     from .windows_events import *
     __all__ += windows_events.__all__
-else:
+sonst:
     from .unix_events import *  # pragma: no cover
     __all__ += unix_events.__all__
 
@@ -57,16 +57,16 @@ def __getattr__(name: str):
             return events._AbstractEventLoopPolicy
         case "DefaultEventLoopPolicy":
             warnings._deprecated(f"asyncio.{name}", remove=(3, 16))
-            if sys.platform == 'win32':
+            wenn sys.platform == 'win32':
                 return windows_events._DefaultEventLoopPolicy
             return unix_events._DefaultEventLoopPolicy
         case "WindowsSelectorEventLoopPolicy":
-            if sys.platform == 'win32':
+            wenn sys.platform == 'win32':
                 warnings._deprecated(f"asyncio.{name}", remove=(3, 16))
                 return windows_events._WindowsSelectorEventLoopPolicy
             # Else fall through to the AttributeError below.
         case "WindowsProactorEventLoopPolicy":
-            if sys.platform == 'win32':
+            wenn sys.platform == 'win32':
                 warnings._deprecated(f"asyncio.{name}", remove=(3, 16))
                 return windows_events._WindowsProactorEventLoopPolicy
             # Else fall through to the AttributeError below.

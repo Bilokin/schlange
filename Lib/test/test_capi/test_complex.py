@@ -295,5 +295,5 @@ klasse CAPIComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertEqual(_py_c_abs(complex(*[DBL_MAX]*2))[1], errno.ERANGE)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

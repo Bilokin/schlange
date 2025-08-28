@@ -345,7 +345,7 @@ klasse CommonTest(seq_tests.CommonTest):
 
         klasse BadCmp:
             def __eq__(self, other):
-                if other == 2:
+                wenn other == 2:
                     raise BadExc()
                 return False
 
@@ -454,11 +454,11 @@ klasse CommonTest(seq_tests.CommonTest):
         self.assertRaises(TypeError, u.sort, 42, 42)
 
         def revcmp(a, b):
-            if a == b:
+            wenn a == b:
                 return 0
-            elif a < b:
+            sowenn a < b:
                 return 1
-            else: # a > b
+            sonst: # a > b
                 return -1
         u.sort(key=cmp_to_key(revcmp))
         self.assertEqual(u, self.type2test([2,1,0,-1,-2]))
@@ -466,11 +466,11 @@ klasse CommonTest(seq_tests.CommonTest):
         # The following dumps core in unpatched Python 1.5:
         def myComparison(x,y):
             xmod, ymod = x%3, y%7
-            if xmod == ymod:
+            wenn xmod == ymod:
                 return 0
-            elif xmod < ymod:
+            sowenn xmod < ymod:
                 return -1
-            else: # xmod > ymod
+            sonst: # xmod > ymod
                 return 1
         z = self.type2test(range(12))
         z.sort(key=cmp_to_key(myComparison))
@@ -479,11 +479,11 @@ klasse CommonTest(seq_tests.CommonTest):
 
         def selfmodifyingComparison(x,y):
             z.append(1)
-            if x == y:
+            wenn x == y:
                 return 0
-            elif x < y:
+            sowenn x < y:
                 return -1
-            else: # x > y
+            sonst: # x > y
                 return 1
         self.assertRaises(ValueError, z.sort,
                           key=cmp_to_key(selfmodifyingComparison))

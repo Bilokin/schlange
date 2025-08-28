@@ -67,7 +67,7 @@ klasse XMLReader:
         """Allow an application to set the locale fuer errors and warnings.
 
         SAX parsers are not required to provide localization fuer errors
-        and warnings; if they cannot support the requested locale,
+        and warnings; wenn they cannot support the requested locale,
         however, they must raise a SAX exception. Applications may
         request a locale change in the middle of a parse."""
         raise SAXNotSupportedException("Locale support not implemented")
@@ -118,7 +118,7 @@ klasse IncrementalParser(XMLReader):
 
         self.prepareParser(source)
         file = source.getCharacterStream()
-        if file is None:
+        wenn file is None:
             file = source.getByteStream()
         while buffer := file.read(self._bufsize):
             self.feed(buffer)
@@ -229,7 +229,7 @@ klasse InputSource:
         The encoding must be a string acceptable fuer an XML encoding
         declaration (see section 4.3.3 of the XML recommendation).
 
-        The encoding attribute of the InputSource is ignored if the
+        The encoding attribute of the InputSource is ignored wenn the
         InputSource also contains a character stream."""
         self.__encoding = encoding
 
@@ -242,7 +242,7 @@ klasse InputSource:
         not perform byte-to-character conversion) fuer this input
         source.
 
-        The SAX parser will ignore this if there is also a character
+        The SAX parser will ignore this wenn there is also a character
         stream specified, but it will use a byte stream in preference
         to opening a URI connection itself.
 
@@ -254,7 +254,7 @@ klasse InputSource:
         """Get the byte stream fuer this input source.
 
         The getEncoding method will return the character encoding for
-        this byte stream, or None if unknown."""
+        this byte stream, or None wenn unknown."""
         return self.__bytefile
 
     def setCharacterStream(self, charfile):
@@ -294,12 +294,12 @@ klasse AttributesImpl:
         return self._attrs[name]
 
     def getNameByQName(self, name):
-        if name not in self._attrs:
+        wenn name not in self._attrs:
             raise KeyError(name)
         return name
 
     def getQNameByName(self, name):
-        if name not in self._attrs:
+        wenn name not in self._attrs:
             raise KeyError(name)
         return name
 
@@ -347,14 +347,14 @@ klasse AttributesNSImpl(AttributesImpl):
 
     def getValueByQName(self, name):
         fuer (nsname, qname) in self._qnames.items():
-            if qname == name:
+            wenn qname == name:
                 return self._attrs[nsname]
 
         raise KeyError(name)
 
     def getNameByQName(self, name):
         fuer (nsname, qname) in self._qnames.items():
-            if qname == name:
+            wenn qname == name:
                 return nsname
 
         raise KeyError(name)
@@ -374,5 +374,5 @@ def _test():
     IncrementalParser()
     Locator()
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     _test()

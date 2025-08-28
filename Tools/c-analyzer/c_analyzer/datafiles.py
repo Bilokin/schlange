@@ -21,7 +21,7 @@ def get_known(known, extracolumns=None, *,
               handle_unresolved=True,
               relroot=fsutil.USE_CWD,
               ):
-    if isinstance(known, str):
+    wenn isinstance(known, str):
         known = read_known(known, extracolumns, relroot)
     return analyze_known(
         known,
@@ -32,7 +32,7 @@ def get_known(known, extracolumns=None, *,
 
 def read_known(infile, extracolumns=None, relroot=fsutil.USE_CWD):
     extracolumns = EXTRA_COLUMNS + (
-        list(extracolumns) if extracolumns else []
+        list(extracolumns) wenn extracolumns sonst []
     )
     known = {}
     fuer decl, extra in _parser.iter_decls_tsv(infile, extracolumns, relroot):
@@ -66,7 +66,7 @@ def write_known(rows, outfile, extracolumns=None, *,
                 backup=True,
                 ):
     extracolumns = EXTRA_COLUMNS + (
-        list(extracolumns) if extracolumns else []
+        list(extracolumns) wenn extracolumns sonst []
     )
     _parser.write_decls_tsv(
         rows,
@@ -94,15 +94,15 @@ def read_ignored(infile, relroot=fsutil.USE_CWD):
 
 
 def _iter_ignored(infile, relroot):
-    if relroot and relroot is not fsutil.USE_CWD:
+    wenn relroot and relroot is not fsutil.USE_CWD:
         relroot = os.path.abspath(relroot)
     bogus = {_tables.EMPTY, _tables.UNKNOWN}
     fuer row in _tables.read_table(infile, IGNORED_HEADER, sep='\t'):
         *varidinfo, reason = row
-        if _tables.EMPTY in varidinfo or _tables.UNKNOWN in varidinfo:
-            varidinfo = tuple(None if v in bogus else v
+        wenn _tables.EMPTY in varidinfo or _tables.UNKNOWN in varidinfo:
+            varidinfo = tuple(None wenn v in bogus sonst v
                               fuer v in varidinfo)
-        if reason in bogus:
+        wenn reason in bogus:
             reason = None
         try:
             varid = _info.DeclID.from_row(varidinfo)
@@ -116,7 +116,7 @@ def _iter_ignored(infile, relroot):
 
 def write_ignored(variables, outfile, relroot=fsutil.USE_CWD):
     raise NotImplementedError
-    if relroot and relroot is not fsutil.USE_CWD:
+    wenn relroot and relroot is not fsutil.USE_CWD:
         relroot = os.path.abspath(relroot)
     reason = '???'
     #if not isinstance(varid, DeclID):

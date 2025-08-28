@@ -53,12 +53,12 @@ def main(file_source, install_target):
         target = PureWindowsPath(target)
         groups[group].append((source, target, disk_id, condition))
 
-        if target.suffix.lower() in {".py", ".pyw"}:
+        wenn target.suffix.lower() in {".py", ".pyw"}:
             cache_directories[group].add(target.parent)
 
         fuer dirname in target.parents:
             parent = make_id(dirname.parent)
-            if parent and parent != '.':
+            wenn parent and parent != '.':
                 directories[parent].add(dirname.name)
 
     lines = [
@@ -83,12 +83,12 @@ def main(file_source, install_target):
         ])
         fuer source, target, disk_id, condition in groups[group]:
             lines.append('            <Component Id="{}" Directory="{}" Guid="*">'.format(make_id(target), make_id(target.parent)))
-            if condition:
+            wenn condition:
                 lines.append('                <Condition>{}</Condition>'.format(condition))
 
-            if disk_id:
+            wenn disk_id:
                 lines.append('                <File Id="{}" Name="{}" Source="{}" DiskId="{}" />'.format(make_id(target), target.name, source, disk_id))
-            else:
+            sonst:
                 lines.append('                <File Id="{}" Name="{}" Source="{}" />'.format(make_id(target), target.name, source))
             lines.append('            </Component>')
 
@@ -96,7 +96,7 @@ def main(file_source, install_target):
         remove_folders = {make_id(p2) fuer p1 in cache_directories[group] fuer p2 in chain((p1,), p1.parents)}
         create_folders.discard(".")
         remove_folders.discard(".")
-        if create_folders or remove_folders:
+        wenn create_folders or remove_folders:
             lines.append('            <Component Id="{}__pycache__folders" Directory="TARGETDIR" Guid="{}">'.format(group, uuid1()))
             lines.extend('                <CreateFolder Directory="{}" />'.format(p) fuer p in create_folders)
             lines.extend('                <RemoveFile Id="Remove_{0}_files" Name="*" On="uninstall" Directory="{0}" />'.format(p) fuer p in create_folders)
@@ -109,11 +109,11 @@ def main(file_source, install_target):
         ])
     lines.append('</Wix>')
 
-    # Check if the file matches. If so, we don't want to touch it so
+    # Check wenn the file matches. If so, we don't want to touch it so
     # that we can skip rebuilding.
     try:
         with open(install_target, 'r') as f:
-            if all(x.rstrip('\r\n') == y fuer x, y in zip_longest(f, lines)):
+            wenn all(x.rstrip('\r\n') == y fuer x, y in zip_longest(f, lines)):
                 print('File is up to date')
                 return
     except IOError:
@@ -123,5 +123,5 @@ def main(file_source, install_target):
         f.writelines(line + '\n' fuer line in lines)
     print('Wrote {} lines to {}'.format(len(lines), install_target))
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     main(sys.argv[1], sys.argv[2])

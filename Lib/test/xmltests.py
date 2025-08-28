@@ -9,7 +9,7 @@ test.support.verbose = 0
 def runtest(name):
     __import__(name)
     module = sys.modules[name]
-    if hasattr(module, "test_main"):
+    wenn hasattr(module, "test_main"):
         module.test_main()
 
 runtest("test.test_minidom")

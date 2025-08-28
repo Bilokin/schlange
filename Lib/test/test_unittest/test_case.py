@@ -126,7 +126,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
             Test('testfoo')
         except ValueError:
             pass
-        else:
+        sonst:
             self.fail("Failed to raise ValueError")
 
     # "Return the number of tests represented by the this test object. For
@@ -150,11 +150,11 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         self.assertEqual(type(result), unittest.TestResult)
 
     # "When a setUp() method is defined, the test runner will run that method
-    # prior to each test. Likewise, if a tearDown() method is defined, the
+    # prior to each test. Likewise, wenn a tearDown() method is defined, the
     # test runner will invoke that method after each test. In the example,
     # setUp() was used to create a fresh sequence fuer each test."
     #
-    # Make sure the proper call order is maintained, even if setUp() raises
+    # Make sure the proper call order is maintained, even wenn setUp() raises
     # an exception.
     def test_run_call_order__error_in_setUp(self):
         events = []
@@ -187,11 +187,11 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         self.assertEqual(events, expected)
 
     # "When a setUp() method is defined, the test runner will run that method
-    # prior to each test. Likewise, if a tearDown() method is defined, the
+    # prior to each test. Likewise, wenn a tearDown() method is defined, the
     # test runner will invoke that method after each test. In the example,
     # setUp() was used to create a fresh sequence fuer each test."
     #
-    # Make sure the proper call order is maintained, even if the test raises
+    # Make sure the proper call order is maintained, even wenn the test raises
     # an error (as opposed to a failure).
     def test_run_call_order__error_in_test(self):
         events = []
@@ -226,11 +226,11 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         self.assertEqual(events, expected)
 
     # "When a setUp() method is defined, the test runner will run that method
-    # prior to each test. Likewise, if a tearDown() method is defined, the
+    # prior to each test. Likewise, wenn a tearDown() method is defined, the
     # test runner will invoke that method after each test. In the example,
     # setUp() was used to create a fresh sequence fuer each test."
     #
-    # Make sure the proper call order is maintained, even if the test signals
+    # Make sure the proper call order is maintained, even wenn the test signals
     # a failure (as opposed to an error).
     def test_run_call_order__failure_in_test(self):
         events = []
@@ -263,11 +263,11 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         self.assertEqual(events, expected)
 
     # "When a setUp() method is defined, the test runner will run that method
-    # prior to each test. Likewise, if a tearDown() method is defined, the
+    # prior to each test. Likewise, wenn a tearDown() method is defined, the
     # test runner will invoke that method after each test. In the example,
     # setUp() was used to create a fresh sequence fuer each test."
     #
-    # Make sure the proper call order is maintained, even if tearDown() raises
+    # Make sure the proper call order is maintained, even wenn tearDown() raises
     # an exception.
     def test_run_call_order__error_in_tearDown(self):
         events = []
@@ -371,11 +371,11 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
                 super(Foo, self).test()
                 fuer i in [1, 2, 3]:
                     with self.subTest(i=i):
-                        if i == 1:
+                        wenn i == 1:
                             self.fail('failure')
                         fuer j in [2, 3]:
                             with self.subTest(j=j):
-                                if i * j == 6:
+                                wenn i * j == 6:
                                     raise RuntimeError('raised by Foo.test')
                 1 / 0
 
@@ -691,7 +691,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         self.addTypeEqualityFunc(SadSnake, AllSnakesCreatedEqual)
         self.assertEqual(s1, s2)
         # No this doesn't clean up and remove the SadSnake equality func
-        # from this TestCase instance but since it's local nothing else
+        # from this TestCase instance but since it's local nothing sonst
         # will ever notice that.
 
     def testAssertIs(self):
@@ -961,7 +961,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
             self.assertSequenceEqual(seq1, seq2)
         except self.failureException as e:
             msg = e.args[0]
-        else:
+        sonst:
             self.fail('assertSequenceEqual did not fail.')
         self.assertLess(len(msg), len(diff))
         self.assertIn(omitted, msg)
@@ -971,7 +971,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
             self.assertSequenceEqual(seq1, seq2)
         except self.failureException as e:
             msg = e.args[0]
-        else:
+        sonst:
             self.fail('assertSequenceEqual did not fail.')
         self.assertGreater(len(msg), len(diff))
         self.assertNotIn(omitted, msg)
@@ -981,7 +981,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
             self.assertSequenceEqual(seq1, seq2)
         except self.failureException as e:
             msg = e.args[0]
-        else:
+        sonst:
             self.fail('assertSequenceEqual did not fail.')
         self.assertGreater(len(msg), len(diff))
         self.assertNotIn(omitted, msg)
@@ -1009,7 +1009,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
             test.assertDictEqual({}, {1: 0})
         except self.failureException as e:
             self.assertEqual(str(e), 'foo')
-        else:
+        sonst:
             self.fail('assertDictEqual did not fail')
 
     def testAssertMultiLineEqualTruncates(self):
@@ -1021,7 +1021,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
             test.assertMultiLineEqual('foo', 'bar')
         except self.failureException as e:
             self.assertEqual(str(e), 'foo')
-        else:
+        sonst:
             self.fail('assertMultiLineEqual did not fail')
 
     def testAssertEqual_diffThreshold(self):
@@ -1044,7 +1044,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
 
         # over the threshold: diff not used and marker (^) not in error message
         s = 'x' * (2**6)
-        # if the path that uses difflib is taken, _truncateMessage will be
+        # wenn the path that uses difflib is taken, _truncateMessage will be
         # called -- replace it with explodingTruncation to verify that this
         # doesn't happen
         def explodingTruncation(message, diff):
@@ -1279,7 +1279,7 @@ test case
             # need to remove the first line of the error message
             error = str(e).split('\n', 1)[1]
             self.assertEqual(sample_text_error, error)
-        else:
+        sonst:
             self.fail(f'{self.failureException} not raised')
 
     def testAssertEqualSingleLine(self):
@@ -1297,7 +1297,7 @@ test case
             # need to remove the first line of the error message
             error = str(e).split('\n', 1)[1]
             self.assertEqual(sample_text_error, error)
-        else:
+        sonst:
             self.fail(f'{self.failureException} not raised')
 
     def testAssertEqualwithEmptyString(self):
@@ -1316,7 +1316,7 @@ test case
             # need to remove the first line of the error message
             error = str(e).split('\n', 1)[1]
             self.assertEqual(sample_text_error, error)
-        else:
+        sonst:
             self.fail(f'{self.failureException} not raised')
 
     def testAssertEqualMultipleLinesMissingNewlineTerminator(self):
@@ -1338,7 +1338,7 @@ test case
             # need to remove the first line of the error message
             error = str(e).split('\n', 1)[1]
             self.assertEqual(sample_text_error, error)
-        else:
+        sonst:
             self.fail(f'{self.failureException} not raised')
 
     def testAssertEqualMultipleLinesMismatchedNewlinesTerminators(self):
@@ -1363,15 +1363,15 @@ test case
             # need to remove the first line of the error message
             error = str(e).split('\n', 1)[1]
             self.assertEqual(sample_text_error, error)
-        else:
+        sonst:
             self.fail(f'{self.failureException} not raised')
 
     def testEqualityBytesWarning(self):
-        if sys.flags.bytes_warning:
+        wenn sys.flags.bytes_warning:
             def bytes_warning():
                 return self.assertWarnsRegex(BytesWarning,
                             'Comparison between bytes and string')
-        else:
+        sonst:
             def bytes_warning():
                 return contextlib.ExitStack()
 
@@ -2341,5 +2341,5 @@ test case
             self.assertEqual(MyException.ninstance, 0)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

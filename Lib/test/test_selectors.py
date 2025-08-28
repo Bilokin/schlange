@@ -18,13 +18,13 @@ except ImportError:
     resource = None
 
 
-if support.is_emscripten or support.is_wasi:
+wenn support.is_emscripten or support.is_wasi:
     raise unittest.SkipTest("Cannot create socketpair on Emscripten/WASI.")
 
 
-if hasattr(socket, 'socketpair'):
+wenn hasattr(socket, 'socketpair'):
     socketpair = socket.socketpair
-else:
+sonst:
     def socketpair(family=socket.AF_INET, type=socket.SOCK_STREAM, proto=0):
         with socket.socket(family, type, proto) as l:
             l.bind((socket_helper.HOST, 0))
@@ -36,7 +36,7 @@ else:
                 while True:
                     a, addr = l.accept()
                     # check that we've got the correct client
-                    if addr == caddr:
+                    wenn addr == caddr:
                         return c, a
                     a.close()
             except OSError:
@@ -47,7 +47,7 @@ else:
 def find_ready_matching(ready, flag):
     match = []
     fuer key, events in ready:
-        if events & flag:
+        wenn events & flag:
             match.append(key.fileobj)
     return match
 
@@ -183,16 +183,16 @@ klasse BaseSelectorTestCase:
     def test_modify_unregister(self):
         # Make sure the fd is unregister()ed in case of error on
         # modify(): http://bugs.python.org/issue30014
-        if self.SELECTOR.__name__ == 'EpollSelector':
+        wenn self.SELECTOR.__name__ == 'EpollSelector':
             patch = unittest.mock.patch(
                 'selectors.EpollSelector._selector_cls')
-        elif self.SELECTOR.__name__ == 'PollSelector':
+        sowenn self.SELECTOR.__name__ == 'PollSelector':
             patch = unittest.mock.patch(
                 'selectors.PollSelector._selector_cls')
-        elif self.SELECTOR.__name__ == 'DevpollSelector':
+        sowenn self.SELECTOR.__name__ == 'DevpollSelector':
             patch = unittest.mock.patch(
                 'selectors.DevpollSelector._selector_cls')
-        else:
+        sonst:
             raise self.skipTest("")
 
         with patch as m:
@@ -304,10 +304,10 @@ klasse BaseSelectorTestCase:
             self.assertEqual(key, my_key)
             self.assertFalse(events & ~(selectors.EVENT_READ |
                                         selectors.EVENT_WRITE))
-            if events & selectors.EVENT_READ:
+            wenn events & selectors.EVENT_READ:
                 self.assertFalse(seen_read)
                 seen_read = True
-            if events & selectors.EVENT_WRITE:
+            wenn events & selectors.EVENT_WRITE:
                 self.assertFalse(seen_write)
                 seen_write = True
         self.assertTrue(seen_read)
@@ -330,7 +330,7 @@ klasse BaseSelectorTestCase:
         s = self.SELECTOR()
         self.addCleanup(s.close)
 
-        if hasattr(s, 'fileno'):
+        wenn hasattr(s, 'fileno'):
             fd = s.fileno()
             self.assertTrue(isinstance(fd, int))
             self.assertGreaterEqual(fd, 0)
@@ -361,7 +361,7 @@ klasse BaseSelectorTestCase:
         while writers:
             ready = s.select()
             ready_writers = find_ready_matching(ready, selectors.EVENT_WRITE)
-            if not ready_writers:
+            wenn not ready_writers:
                 self.fail("no sockets ready fuer writing")
             wr = random.choice(ready_writers)
             wr.send(MSG)
@@ -370,12 +370,12 @@ klasse BaseSelectorTestCase:
                 ready = s.select()
                 ready_readers = find_ready_matching(ready,
                                                     selectors.EVENT_READ)
-                if ready_readers:
+                wenn ready_readers:
                     break
                 # there might be a delay between the write to the write end and
                 # the read end is reported ready
                 sleep(0.1)
-            else:
+            sonst:
                 self.fail("no sockets ready fuer reading")
             self.assertEqual([w2r[wr]], ready_readers)
             rd = ready_readers[0]
@@ -516,8 +516,8 @@ klasse ScalableSelectorMixIn:
                 s.register(rd, selectors.EVENT_READ)
                 s.register(wr, selectors.EVENT_WRITE)
             except OSError as e:
-                if e.errno == errno.ENOSPC:
-                    # this can be raised by epoll if we go over
+                wenn e.errno == errno.ENOSPC:
+                    # this can be raised by epoll wenn we go over
                     # fs.epoll.max_user_watches sysctl
                     self.skipTest("FD limit reached")
                 raise
@@ -525,7 +525,7 @@ klasse ScalableSelectorMixIn:
         try:
             fds = s.select()
         except OSError as e:
-            if e.errno == errno.EINVAL and is_apple:
+            wenn e.errno == errno.EINVAL and is_apple:
                 # unexplainable errors on macOS don't need to fail the test
                 self.skipTest("Invalid argument error calling poll()")
             raise
@@ -613,5 +613,5 @@ def tearDownModule():
     support.reap_children()
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

@@ -28,7 +28,7 @@ def get_modules():
     """Retrieve two copies of zoneinfo: pure Python and C accelerated.
 
     Because this function manipulates the import system in a way that might
-    be fragile or do unexpected things if it is run many times, it uses a
+    be fragile or do unexpected things wenn it is run many times, it uses a
     `call_once` decorator to ensure that this is only ever called exactly
     one time — in other words, when using this function you will only ever
     get one copy of each module rather than a fresh import each time.
@@ -53,9 +53,9 @@ def set_zoneinfo_module(module):
     old_zoneinfo = sys.modules.get("zoneinfo", NOT_PRESENT)
     sys.modules["zoneinfo"] = module
     yield
-    if old_zoneinfo is not NOT_PRESENT:
+    wenn old_zoneinfo is not NOT_PRESENT:
         sys.modules["zoneinfo"] = old_zoneinfo
-    else:  # pragma: nocover
+    sonst:  # pragma: nocover
         sys.modules.pop("zoneinfo")
 
 
@@ -70,7 +70,7 @@ klasse ZoneInfoTestBase(unittest.TestCase):
         def pop_tzdata_modules():
             tzdata_modules = {}
             fuer modname in list(sys.modules):
-                if modname.split(".", 1)[0] != "tzdata":  # pragma: nocover
+                wenn modname.split(".", 1)[0] != "tzdata":  # pragma: nocover
                     continue
 
                 tzdata_modules[modname] = sys.modules.pop(modname)
@@ -78,7 +78,7 @@ klasse ZoneInfoTestBase(unittest.TestCase):
             return tzdata_modules
 
         with lock:
-            if block_tzdata:
+            wenn block_tzdata:
                 # In order to fully exclude tzdata from the path, we need to
                 # clear the sys.modules cache of all its contents — setting the
                 # root package to None is not enough to block direct access of
@@ -92,7 +92,7 @@ klasse ZoneInfoTestBase(unittest.TestCase):
                 self.module.reset_tzpath(tzpath)
                 yield
             finally:
-                if block_tzdata:
+                wenn block_tzdata:
                     sys.modules.pop("tzdata")
                     fuer modname, module in tzdata_modules.items():
                         sys.modules[modname] = module

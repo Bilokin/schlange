@@ -65,7 +65,7 @@ klasse CaseSensitivityTest(util.CASEOKTestBase):
 klasse CaseSensitivityTestPEP451(CaseSensitivityTest):
     def find(self, finder):
         found = finder.find_spec(self.name)
-        return found.loader if found is not None else found
+        return found.loader wenn found is not None sonst found
 
 
 (Frozen_CaseSensitivityTestPEP451,
@@ -74,5 +74,5 @@ klasse CaseSensitivityTestPEP451(CaseSensitivityTest):
                     machinery=machinery)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

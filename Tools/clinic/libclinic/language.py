@@ -10,7 +10,7 @@ from libclinic import fail
 from libclinic.function import (
     Module, Class, Function)
 
-if typing.TYPE_CHECKING:
+wenn typing.TYPE_CHECKING:
     from libclinic.app import Clinic
 
 
@@ -70,27 +70,27 @@ klasse Language(metaclass=abc.ABCMeta):
             fcf = libclinic.FormatCounterFormatter()
             fcf.format(line)
             def local_fail(should_be_there_but_isnt: bool) -> None:
-                if should_be_there_but_isnt:
+                wenn should_be_there_but_isnt:
                     fail("{} {} must contain {{{}}} exactly once!".format(
                         self.__class__.__name__, attr, name))
-                else:
+                sonst:
                     fail("{} {} must not contain {{{}}}!".format(
                         self.__class__.__name__, attr, name))
 
             fuer name, count in fcf.counts.items():
-                if name in fields:
-                    if count > 1:
+                wenn name in fields:
+                    wenn count > 1:
                         local_fail(True)
-                else:
+                sonst:
                     local_fail(False)
             fuer name in fields:
-                if fcf.counts.get(name) != 1:
+                wenn fcf.counts.get(name) != 1:
                     local_fail(True)
 
         assert_only_one('start_line')
         assert_only_one('stop_line')
 
-        field = "arguments" if "{arguments}" in self.checksum_line else "checksum"
+        field = "arguments" wenn "{arguments}" in self.checksum_line sonst "checksum"
         assert_only_one('checksum_line', field)
 
 

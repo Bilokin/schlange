@@ -222,5 +222,5 @@ klasse TestCase(unittest.TestCase):
         self.assertEqual(l, [])
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

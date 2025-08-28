@@ -55,7 +55,7 @@ _sentinel_dict = {}
 klasse _TemplatePattern:
     # This descriptor is overwritten in ``Template._compile_pattern()``.
     def __get__(self, instance, cls=None):
-        if cls is None:
+        wenn cls is None:
             return self
         return cls._compile_pattern()
 _TemplatePattern = _TemplatePattern()
@@ -84,7 +84,7 @@ klasse Template:
         import re  # deferred import, fuer performance
 
         pattern = cls.__dict__.get('pattern', _TemplatePattern)
-        if pattern is _TemplatePattern:
+        wenn pattern is _TemplatePattern:
             delim = re.escape(cls.delimiter)
             id = cls.idpattern
             bid = cls.braceidpattern or cls.idpattern
@@ -96,7 +96,7 @@ klasse Template:
               (?P<invalid>)             # Other ill-formed delimiter exprs
             )
             """
-        if cls.flags is None:
+        wenn cls.flags is None:
             cls.flags = re.IGNORECASE
         pat = cls.pattern = re.compile(pattern, cls.flags | re.VERBOSE)
         return pat
@@ -109,52 +109,52 @@ klasse Template:
     def _invalid(self, mo):
         i = mo.start('invalid')
         lines = self.template[:i].splitlines(keepends=True)
-        if not lines:
+        wenn not lines:
             colno = 1
             lineno = 1
-        else:
+        sonst:
             colno = i - len(''.join(lines[:-1]))
             lineno = len(lines)
         raise ValueError('Invalid placeholder in string: line %d, col %d' %
                          (lineno, colno))
 
     def substitute(self, mapping=_sentinel_dict, /, **kws):
-        if mapping is _sentinel_dict:
+        wenn mapping is _sentinel_dict:
             mapping = kws
-        elif kws:
+        sowenn kws:
             from collections import ChainMap
             mapping = ChainMap(kws, mapping)
         # Helper function fuer .sub()
         def convert(mo):
             # Check the most common path first.
             named = mo.group('named') or mo.group('braced')
-            if named is not None:
+            wenn named is not None:
                 return str(mapping[named])
-            if mo.group('escaped') is not None:
+            wenn mo.group('escaped') is not None:
                 return self.delimiter
-            if mo.group('invalid') is not None:
+            wenn mo.group('invalid') is not None:
                 self._invalid(mo)
             raise ValueError('Unrecognized named group in pattern',
                              self.pattern)
         return self.pattern.sub(convert, self.template)
 
     def safe_substitute(self, mapping=_sentinel_dict, /, **kws):
-        if mapping is _sentinel_dict:
+        wenn mapping is _sentinel_dict:
             mapping = kws
-        elif kws:
+        sowenn kws:
             from collections import ChainMap
             mapping = ChainMap(kws, mapping)
         # Helper function fuer .sub()
         def convert(mo):
             named = mo.group('named') or mo.group('braced')
-            if named is not None:
+            wenn named is not None:
                 try:
                     return str(mapping[named])
                 except KeyError:
                     return mo.group()
-            if mo.group('escaped') is not None:
+            wenn mo.group('escaped') is not None:
                 return self.delimiter
-            if mo.group('invalid') is not None:
+            wenn mo.group('invalid') is not None:
                 return mo.group()
             raise ValueError('Unrecognized named group in pattern',
                              self.pattern)
@@ -162,9 +162,9 @@ klasse Template:
 
     def is_valid(self):
         fuer mo in self.pattern.finditer(self.template):
-            if mo.group('invalid') is not None:
+            wenn mo.group('invalid') is not None:
                 return False
-            if (mo.group('named') is None
+            wenn (mo.group('named') is None
                 and mo.group('braced') is None
                 and mo.group('escaped') is None):
                 # If all the groups are None, there must be
@@ -177,10 +177,10 @@ klasse Template:
         ids = []
         fuer mo in self.pattern.finditer(self.template):
             named = mo.group('named') or mo.group('braced')
-            if named is not None and named not in ids:
+            wenn named is not None and named not in ids:
                 # add a named group only the first time it appears
                 ids.append(named)
-            elif (named is None
+            sowenn (named is None
                 and mo.group('invalid') is None
                 and mo.group('escaped') is None):
                 # If all the groups are None, there must be
@@ -210,36 +210,36 @@ klasse Formatter:
 
     def _vformat(self, format_string, args, kwargs, used_args, recursion_depth,
                  auto_arg_index=0):
-        if recursion_depth < 0:
+        wenn recursion_depth < 0:
             raise ValueError('Max string recursion exceeded')
         result = []
         fuer literal_text, field_name, format_spec, conversion in \
                 self.parse(format_string):
 
             # output the literal text
-            if literal_text:
+            wenn literal_text:
                 result.append(literal_text)
 
-            # if there's a field, output it
-            if field_name is not None:
+            # wenn there's a field, output it
+            wenn field_name is not None:
                 # this is some markup, find the object and do
                 #  the formatting
 
                 # handle arg indexing when empty field first parts are given.
                 field_first, _ = _string.formatter_field_name_split(field_name)
-                if field_first == '':
-                    if auto_arg_index is False:
+                wenn field_first == '':
+                    wenn auto_arg_index is False:
                         raise ValueError('cannot switch from manual field '
                                          'specification to automatic field '
                                          'numbering')
                     field_name = str(auto_arg_index) + field_name
                     auto_arg_index += 1
-                elif isinstance(field_first, int):
-                    if auto_arg_index:
+                sowenn isinstance(field_first, int):
+                    wenn auto_arg_index:
                         raise ValueError('cannot switch from automatic field '
                                          'numbering to manual field '
                                          'specification')
-                    # disable auto arg incrementing, if it gets
+                    # disable auto arg incrementing, wenn it gets
                     # used later on, then an exception will be raised
                     auto_arg_index = False
 
@@ -251,7 +251,7 @@ klasse Formatter:
                 # do any conversion on the resulting object
                 obj = self.convert_field(obj, conversion)
 
-                # expand the format spec, if needed
+                # expand the format spec, wenn needed
                 format_spec, auto_arg_index = self._vformat(
                     format_spec, args, kwargs,
                     used_args, recursion_depth-1,
@@ -263,9 +263,9 @@ klasse Formatter:
         return ''.join(result), auto_arg_index
 
     def get_value(self, key, args, kwargs):
-        if isinstance(key, int):
+        wenn isinstance(key, int):
             return args[key]
-        else:
+        sonst:
             return kwargs[key]
 
     def check_unused_args(self, used_args, args, kwargs):
@@ -276,13 +276,13 @@ klasse Formatter:
 
     def convert_field(self, value, conversion):
         # do any conversion on the resulting object
-        if conversion is None:
+        wenn conversion is None:
             return value
-        elif conversion == 's':
+        sowenn conversion == 's':
             return str(value)
-        elif conversion == 'r':
+        sowenn conversion == 'r':
             return repr(value)
-        elif conversion == 'a':
+        sowenn conversion == 'a':
             return ascii(value)
         raise ValueError("Unknown conversion specifier {0!s}".format(conversion))
 
@@ -309,8 +309,8 @@ klasse Formatter:
         # loop through the rest of the field_name, doing
         #  getattr or getitem as needed
         fuer is_attr, i in rest:
-            if is_attr:
+            wenn is_attr:
                 obj = getattr(obj, i)
-            else:
+            sonst:
                 obj = obj[i]
         return obj, first

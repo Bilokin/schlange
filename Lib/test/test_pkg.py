@@ -13,16 +13,16 @@ def cleanout(root):
     names = os.listdir(root)
     fuer name in names:
         fullname = os.path.join(root, name)
-        if os.path.isdir(fullname) and not os.path.islink(fullname):
+        wenn os.path.isdir(fullname) and not os.path.islink(fullname):
             cleanout(fullname)
-        else:
+        sonst:
             os.remove(fullname)
     os.rmdir(root)
 
 def fixdir(lst):
-    if "__builtins__" in lst:
+    wenn "__builtins__" in lst:
         lst.remove("__builtins__")
-    if "__initializing__" in lst:
+    wenn "__initializing__" in lst:
         lst.remove("__initializing__")
     return lst
 
@@ -54,15 +54,15 @@ klasse TestPkg(unittest.TestCase):
     def tearDown(self):
         sys.path[:] = self.syspath
         fuer modulename in self.modules_to_cleanup:
-            if modulename in sys.modules:
+            wenn modulename in sys.modules:
                 del sys.modules[modulename]
-        if self.root: # Only clean if the test was actually run
+        wenn self.root: # Only clean wenn the test was actually run
             cleanout(self.root)
 
         # delete all modules concerning the tested hierarchy
-        if self.pkgname:
+        wenn self.pkgname:
             modules = [name fuer name in sys.modules
-                       if self.pkgname in name.split('.')]
+                       wenn self.pkgname in name.split('.')]
             fuer name in modules:
                 del sys.modules[name]
 
@@ -72,7 +72,7 @@ klasse TestPkg(unittest.TestCase):
     def mkhier(self, descr):
         root = tempfile.mkdtemp()
         sys.path.insert(0, root)
-        if not os.path.isdir(root):
+        wenn not os.path.isdir(root):
             os.mkdir(root)
         fuer name, contents in descr:
             comps = name.split()
@@ -80,12 +80,12 @@ klasse TestPkg(unittest.TestCase):
             fullname = root
             fuer c in comps:
                 fullname = os.path.join(fullname, c)
-            if contents is None:
+            wenn contents is None:
                 os.mkdir(fullname)
-            else:
+            sonst:
                 with open(fullname, "w") as f:
                     f.write(contents)
-                    if not contents.endswith('\n'):
+                    wenn not contents.endswith('\n'):
                         f.write('\n')
         self.root = root
         # package name is the name of the first item
@@ -291,5 +291,5 @@ klasse TestPkg(unittest.TestCase):
         import t8
         self.assertEqual(t8.__doc__, "doc fuer t8")
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

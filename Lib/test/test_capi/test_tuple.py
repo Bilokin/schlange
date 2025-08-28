@@ -265,7 +265,7 @@ klasse CAPITest(unittest.TestCase):
 
         def referrer_tuples():
             return [x fuer x in gc.get_referrers(TAG)
-                if isinstance(x, tuple)]
+                wenn isinstance(x, tuple)]
 
         def my_iter():
             nonlocal tuples
@@ -280,5 +280,5 @@ klasse CAPITest(unittest.TestCase):
         self.assertEqual(tuples, [])
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

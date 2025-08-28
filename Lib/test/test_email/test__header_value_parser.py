@@ -25,7 +25,7 @@ klasse TestParserMixin:
         self.assertEqual(tl.value, value)
         self.assertDefectsEqual(tl.all_defects, defects)
         self.assertEqual(rest, remainder)
-        if comments is not None:
+        wenn comments is not None:
             self.assertEqual(tl.comments, comments)
 
     def _test_get_x(self, method, source, string, value, defects,
@@ -3255,5 +3255,5 @@ klasse TestFolding(TestEmailBase):
             " filename*1*=_TEST_TES.txt\n",
             )
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

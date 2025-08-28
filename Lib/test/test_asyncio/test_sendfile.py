@@ -31,21 +31,21 @@ klasse MySendfileProto(asyncio.Protocol):
         self.transport = None
         self.state = 'INITIAL'
         self.nbytes = 0
-        if loop is not None:
+        wenn loop is not None:
             self.connected = loop.create_future()
             self.done = loop.create_future()
         self.data = bytearray()
         self.close_after = close_after
 
     def _assert_state(self, *expected):
-        if self.state not in expected:
+        wenn self.state not in expected:
             raise AssertionError(f'state: {self.state!r}, expected: {expected!r}')
 
     def connection_made(self, transport):
         self.transport = transport
         self._assert_state('INITIAL')
         self.state = 'CONNECTED'
-        if self.connected:
+        wenn self.connected:
             self.connected.set_result(None)
 
     def eof_received(self):
@@ -55,7 +55,7 @@ klasse MySendfileProto(asyncio.Protocol):
     def connection_lost(self, exc):
         self._assert_state('CONNECTED', 'EOF')
         self.state = 'CLOSED'
-        if self.done:
+        wenn self.done:
             self.done.set_result(None)
 
     def data_received(self, data):
@@ -63,7 +63,7 @@ klasse MySendfileProto(asyncio.Protocol):
         self.nbytes += len(data)
         self.data.extend(data)
         super().data_received(data)
-        if self.close_after and self.nbytes >= self.close_after:
+        wenn self.close_after and self.nbytes >= self.close_after:
             self.transport.close()
 
 
@@ -122,8 +122,8 @@ klasse SendfileBase:
         super().setUp()
 
     def tearDown(self):
-        # just in case if we have transport close callbacks
-        if not self.loop.is_closed():
+        # just in case wenn we have transport close callbacks
+        wenn not self.loop.is_closed():
             test_utils.run_briefly(self.loop)
 
         self.doCleanups()
@@ -150,7 +150,7 @@ klasse SockSendfileMixin(SendfileBase):
     def make_socket(self, cleanup=True):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.setblocking(False)
-        if cleanup:
+        wenn cleanup:
             self.addCleanup(sock.close)
         return sock
 
@@ -166,7 +166,7 @@ klasse SockSendfileMixin(SendfileBase):
         # should be called after the socket is connected.
         sock.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, self.BUF_SIZE)
 
-        if transport is not None:
+        wenn transport is not None:
             transport.set_write_buffer_limits(high=self.BUF_SIZE)
 
     def prepare_socksendfile(self):
@@ -183,8 +183,8 @@ klasse SockSendfileMixin(SendfileBase):
         self.reduce_send_buffer_size(sock)
 
         def cleanup():
-            if proto.transport is not None:
-                # can be None if the task was cancelled before
+            wenn proto.transport is not None:
+                # can be None wenn the task was cancelled before
                 # connection_made callback
                 proto.transport.close()
                 self.run_loop(proto.wait_closed())
@@ -251,12 +251,12 @@ klasse SendfileMixin(SendfileBase):
         port = socket_helper.find_unused_port()
         srv_proto = MySendfileProto(loop=self.loop,
                                     close_after=close_after)
-        if is_ssl:
-            if not ssl:
+        wenn is_ssl:
+            wenn not ssl:
                 self.skipTest("No ssl module")
             srv_ctx = test_utils.simple_server_sslcontext()
             cli_ctx = test_utils.simple_client_sslcontext()
-        else:
+        sonst:
             srv_ctx = None
             cli_ctx = None
         srv_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -265,9 +265,9 @@ klasse SendfileMixin(SendfileBase):
             lambda: srv_proto, sock=srv_sock, ssl=srv_ctx))
         self.reduce_receive_buffer_size(srv_sock)
 
-        if is_ssl:
+        wenn is_ssl:
             server_hostname = socket_helper.HOST
-        else:
+        sonst:
             server_hostname = None
         cli_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         cli_sock.connect((socket_helper.HOST, port))
@@ -336,8 +336,8 @@ klasse SendfileMixin(SendfileBase):
         self.assertEqual(self.file.tell(), len(self.DATA))
 
     def test_sendfile_force_unsupported_native(self):
-        if sys.platform == 'win32':
-            if isinstance(self.loop, asyncio.ProactorEventLoop):
+        wenn sys.platform == 'win32':
+            wenn isinstance(self.loop, asyncio.ProactorEventLoop):
                 self.skipTest("Fails on proactor event loop")
         srv_proto, cli_proto = self.prepare_sendfile()
 
@@ -467,7 +467,7 @@ klasse SendfileMixin(SendfileBase):
 
         self.assertTrue(1024 <= srv_proto.nbytes < len(self.DATA),
                         srv_proto.nbytes)
-        if not (sys.platform == 'win32'
+        wenn not (sys.platform == 'win32'
                 and isinstance(self.loop, asyncio.ProactorEventLoop)):
             # On Windows, Proactor uses transmitFile, which does not update tell()
             self.assertTrue(1024 <= self.file.tell() < len(self.DATA),
@@ -491,9 +491,9 @@ klasse SendfileMixin(SendfileBase):
             except OSError as e:
                 # macOS may raise OSError of EPROTOTYPE when writing to a
                 # socket that is in the process of closing down.
-                if e.errno == errno.EPROTOTYPE and sys.platform == "darwin":
+                wenn e.errno == errno.EPROTOTYPE and sys.platform == "darwin":
                     raise ConnectionError
-                else:
+                sonst:
                     raise
 
         self.run_loop(srv_proto.done)
@@ -534,7 +534,7 @@ klasse SendfileTestsBase(SendfileMixin, SockSendfileMixin):
     pass
 
 
-if sys.platform == 'win32':
+wenn sys.platform == 'win32':
 
     klasse SelectEventLoopTests(SendfileTestsBase,
                                test_utils.TestCase):
@@ -548,10 +548,10 @@ if sys.platform == 'win32':
         def create_event_loop(self):
             return asyncio.ProactorEventLoop()
 
-else:
+sonst:
     import selectors
 
-    if hasattr(selectors, 'KqueueSelector'):
+    wenn hasattr(selectors, 'KqueueSelector'):
         klasse KqueueEventLoopTests(SendfileTestsBase,
                                    test_utils.TestCase):
 
@@ -559,14 +559,14 @@ else:
                 return asyncio.SelectorEventLoop(
                     selectors.KqueueSelector())
 
-    if hasattr(selectors, 'EpollSelector'):
+    wenn hasattr(selectors, 'EpollSelector'):
         klasse EPollEventLoopTests(SendfileTestsBase,
                                   test_utils.TestCase):
 
             def create_event_loop(self):
                 return asyncio.SelectorEventLoop(selectors.EpollSelector())
 
-    if hasattr(selectors, 'PollSelector'):
+    wenn hasattr(selectors, 'PollSelector'):
         klasse PollEventLoopTests(SendfileTestsBase,
                                  test_utils.TestCase):
 
@@ -581,5 +581,5 @@ else:
             return asyncio.SelectorEventLoop(selectors.SelectSelector())
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

@@ -195,10 +195,10 @@ klasse TestHeapq(unittest.TestCase):
 
             barrier.wait()
             fuer i in range(n):
-                if x % 2:
+                wenn x % 2:
                     heapq.heappush(l, 1)
                     heapq.heappop(l)
-                else:
+                sonst:
                     try:
                         l[0]
                     except IndexError:
@@ -209,14 +209,14 @@ klasse TestHeapq(unittest.TestCase):
     @staticmethod
     def is_sorted_ascending(lst):
         """
-        Check if the list is sorted in ascending order (non-decreasing).
+        Check wenn the list is sorted in ascending order (non-decreasing).
         """
         return all(lst[i - 1] <= lst[i] fuer i in range(1, len(lst)))
 
     @staticmethod
     def is_sorted_descending(lst):
         """
-        Check if the list is sorted in descending order (non-increasing).
+        Check wenn the list is sorted in descending order (non-increasing).
         """
         return all(lst[i - 1] >= lst[i] fuer i in range(1, len(lst)))
 
@@ -228,9 +228,9 @@ klasse TestHeapq(unittest.TestCase):
         """
         heap = list(range(OBJECT_COUNT))
         shuffle(heap)
-        if heap_kind == Heap.MIN:
+        wenn heap_kind == Heap.MIN:
             heapq.heapify(heap)
-        else:
+        sonst:
             heapq.heapify_max(heap)
 
         return heap
@@ -243,5 +243,5 @@ klasse TestHeapq(unittest.TestCase):
         return [randint(-a, b) fuer _ in range(size)]
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

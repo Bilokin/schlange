@@ -7,7 +7,7 @@ from unittest import mock
 try:
     make_parser()
 except SAXReaderNotAvailable:
-    # don't try to test this module if we cannot create a parser
+    # don't try to test this module wenn we cannot create a parser
     raise unittest.SkipTest("no XML parsers available")
 from xml.sax.saxutils import XMLGenerator, escape, unescape, quoteattr, \
                              XMLFilterBase, prepare_input_source
@@ -38,7 +38,7 @@ except UnicodeEncodeError:
     raise unittest.SkipTest("filename is not encodable to utf8")
 
 supports_nonascii_filenames = True
-if not os.path.supports_unicode_filenames:
+wenn not os.path.supports_unicode_filenames:
     try:
         os_helper.TESTFN_UNICODE.encode(sys.getfilesystemencoding())
     except (UnicodeError, TypeError):
@@ -105,17 +105,17 @@ klasse XmlTestBase(unittest.TestCase):
 
 
 def xml_str(doc, encoding=None):
-    if encoding is None:
+    wenn encoding is None:
         return doc
     return '<?xml version="1.0" encoding="%s"?>\n%s' % (encoding, doc)
 
 def xml_bytes(doc, encoding, decl_encoding=...):
-    if decl_encoding is ...:
+    wenn decl_encoding is ...:
         decl_encoding = encoding
     return xml_str(doc, decl_encoding).encode(encoding, 'xmlcharrefreplace')
 
 def make_xml_file(doc, encoding, decl_encoding=...):
-    if decl_encoding is ...:
+    wenn decl_encoding is ...:
         decl_encoding = encoding
     with open(TESTFN, 'w', encoding=encoding, errors='xmlcharrefreplace') as f:
         f.write(xml_str(doc, decl_encoding))
@@ -1250,7 +1250,7 @@ klasse ExpatReaderTest(XmlTestBase):
         fuer chunk in ("<doc", ">"):
             parser.feed(chunk)
 
-        if pyexpat.version_info >= (2, 6, 0):
+        wenn pyexpat.version_info >= (2, 6, 0):
             parser._parser.SetReparseDeferralEnabled(False)
             self.assertEqual(result.getvalue(), start)  # i.e. no elements started
 
@@ -1538,7 +1538,7 @@ klasse CDATAHandlerTest(unittest.TestCase):
                 self.test_harness = test_harness
 
             def characters(self, content):
-                if content != '\n':
+                wenn content != '\n':
                     h = self.test_harness
                     t = h.specified_chars[h.char_index]
                     h.assertEqual(t[0], content)
@@ -1573,5 +1573,5 @@ klasse TestModuleAll(unittest.TestCase):
         check__all__(self, sax, extra=extra)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

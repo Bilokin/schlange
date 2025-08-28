@@ -46,12 +46,12 @@ def _dump_script(text):
 
 def _close_file(file):
     try:
-        if hasattr(file, 'close'):
+        wenn hasattr(file, 'close'):
             file.close()
-        else:
+        sonst:
             os.close(file)
     except OSError as exc:
-        if exc.errno != 9:
+        wenn exc.errno != 9:
             raise  # re-raise
         # It was closed already.
 
@@ -68,7 +68,7 @@ def unpack_exception(packed):
         data = json.loads(packed)
     except json.decoder.JSONDecodeError as e:
         logging.getLogger(__name__).warning('incomplete exception data', exc_info=e)
-        print(packed if isinstance(packed, str) else packed.decode('utf-8'))
+        print(packed wenn isinstance(packed, str) sonst packed.decode('utf-8'))
         return None
     exc = types.SimpleNamespace(**data)
     exc.type = types.SimpleNamespace(**exc.type)
@@ -115,7 +115,7 @@ klasse CapturingResults:
         wrapped = script
 
         # Handle exc.
-        if exc:
+        wenn exc:
             exc = os.pipe()
             r_exc, w_exc = exc
             indented = wrapped.replace('\n', '\n        ')
@@ -123,11 +123,11 @@ klasse CapturingResults:
                 w_pipe=w_exc,
                 indented=indented,
             )
-        else:
+        sonst:
             exc = None
 
         # Handle stdout.
-        if stdout:
+        wenn stdout:
             imports.extend([
                 'import contextlib, io',
             ])
@@ -139,14 +139,14 @@ klasse CapturingResults:
                 indented=indented,
                 stream='out',
             )
-        else:
+        sonst:
             stdout = None
 
         # Handle stderr.
-        if stderr == 'stdout':
+        wenn stderr == 'stdout':
             stderr = None
-        elif stderr:
-            if not stdout:
+        sowenn stderr:
+            wenn not stdout:
                 imports.extend([
                     'import contextlib, io',
                 ])
@@ -158,12 +158,12 @@ klasse CapturingResults:
                 indented=indented,
                 stream='err',
             )
-        else:
+        sonst:
             stderr = None
 
-        if wrapped == script:
+        wenn wrapped == script:
             raise NotImplementedError
-        else:
+        sonst:
             fuer line in imports:
                 wrapped = f'{line}{os.linesep}{wrapped}'
 
@@ -178,17 +178,17 @@ klasse CapturingResults:
         self._w_err = None
         self._w_exc = None
 
-        if out is not None:
+        wenn out is not None:
             r_out, w_out = out
             self._rf_out = open(r_out, 'rb', buffering=0)
             self._w_out = w_out
 
-        if err is not None:
+        wenn err is not None:
             r_err, w_err = err
             self._rf_err = open(r_err, 'rb', buffering=0)
             self._w_err = w_err
 
-        if exc is not None:
+        wenn exc is not None:
             r_exc, w_exc = exc
             self._rf_exc = open(r_exc, 'rb', buffering=0)
             self._w_exc = w_exc
@@ -211,46 +211,46 @@ klasse CapturingResults:
         return self._closed
 
     def close(self):
-        if self._closed:
+        wenn self._closed:
             return
         self._closed = True
 
-        if self._w_out is not None:
+        wenn self._w_out is not None:
             _close_file(self._w_out)
             self._w_out = None
-        if self._w_err is not None:
+        wenn self._w_err is not None:
             _close_file(self._w_err)
             self._w_err = None
-        if self._w_exc is not None:
+        wenn self._w_exc is not None:
             _close_file(self._w_exc)
             self._w_exc = None
 
         self._capture()
 
-        if self._rf_out is not None:
+        wenn self._rf_out is not None:
             _close_file(self._rf_out)
             self._rf_out = None
-        if self._rf_err is not None:
+        wenn self._rf_err is not None:
             _close_file(self._rf_err)
             self._rf_err = None
-        if self._rf_exc is not None:
+        wenn self._rf_exc is not None:
             _close_file(self._rf_exc)
             self._rf_exc = None
 
     def _capture(self):
         # Ideally this is called only after the script finishes
         # (and thus has closed the write end of the pipe.
-        if self._rf_out is not None:
+        wenn self._rf_out is not None:
             chunk = self._rf_out.read(100)
             while chunk:
                 self._buf_out += chunk
                 chunk = self._rf_out.read(100)
-        if self._rf_err is not None:
+        wenn self._rf_err is not None:
             chunk = self._rf_err.read(100)
             while chunk:
                 self._buf_err += chunk
                 chunk = self._rf_err.read(100)
-        if self._rf_exc is not None:
+        wenn self._rf_exc is not None:
             chunk = self._rf_exc.read(100)
             while chunk:
                 self._buf_exc += chunk
@@ -263,27 +263,27 @@ klasse CapturingResults:
         return self._buf_err.decode('utf-8')
 
     def _unpack_exc(self):
-        if self._exc is not None:
+        wenn self._exc is not None:
             return self._exc
-        if not self._buf_exc:
+        wenn not self._buf_exc:
             return None
         self._exc = unpack_exception(self._buf_exc)
         return self._exc
 
     def stdout(self):
-        if self.closed:
+        wenn self.closed:
             return self.final().stdout
         self._capture()
         return self._unpack_stdout()
 
     def stderr(self):
-        if self.closed:
+        wenn self.closed:
             return self.final().stderr
         self._capture()
         return self._unpack_stderr()
 
     def exc(self):
-        if self.closed:
+        wenn self.closed:
             return self.final().exc
         self._capture()
         return self._unpack_exc()
@@ -292,10 +292,10 @@ klasse CapturingResults:
         try:
             return self._final
         except AttributeError:
-            if not self._closed:
-                if not force:
+            wenn not self._closed:
+                wenn not force:
                     raise Exception('no final results available yet')
-                else:
+                sonst:
                     return CapturedResults.Proxy(self)
             self._final = CapturedResults(
                 self._unpack_stdout(),
@@ -311,7 +311,7 @@ klasse CapturedResults(namedtuple('CapturedResults', 'stdout stderr exc')):
         def __init__(self, capturing):
             self._capturing = capturing
         def _finish(self):
-            if self._capturing is None:
+            wenn self._capturing is None:
                 return
             self._final = self._capturing.final()
             self._capturing = None
@@ -323,12 +323,12 @@ klasse CapturedResults(namedtuple('CapturedResults', 'stdout stderr exc')):
             return len(self._final)
         def __getattr__(self, name):
             self._finish()
-            if name.startswith('_'):
+            wenn name.startswith('_'):
                 raise AttributeError(name)
             return getattr(self._final, name)
 
     def raise_if_failed(self):
-        if self.exc is not None:
+        wenn self.exc is not None:
             raise interpreters.ExecutionFailed(self.exc)
 
 
@@ -343,7 +343,7 @@ def _captured_script(script, *, stdout=True, stderr=False, exc=False):
 
 def clean_up_interpreters():
     fuer interp in interpreters.list_all():
-        if interp.id == 0:  # main
+        wenn interp.id == 0:  # main
             continue
         try:
             interp.close()
@@ -354,7 +354,7 @@ def clean_up_interpreters():
 def _run_output(interp, request, init=None):
     script, results = _captured_script(request)
     with results:
-        if init:
+        wenn init:
             interp.prepare_main(init)
         interp.exec(script)
     return results.stdout()
@@ -416,9 +416,9 @@ klasse TestBase(unittest.TestCase):
             threading.excepthook = orig_excepthook
 
     def make_script(self, filename, dirname=None, text=None):
-        if text:
+        wenn text:
             text = dedent(text)
-        if dirname is None:
+        wenn dirname is None:
             dirname = self.temp_dir()
         filename = os.path.join(dirname, filename)
 
@@ -428,25 +428,25 @@ klasse TestBase(unittest.TestCase):
         return filename
 
     def make_module(self, name, pathentry=None, text=None):
-        if text:
+        wenn text:
             text = dedent(text)
-        if pathentry is None:
+        wenn pathentry is None:
             pathentry = self.temp_dir()
-        else:
+        sonst:
             os.makedirs(pathentry, exist_ok=True)
         *subnames, basename = name.split('.')
 
         dirname = pathentry
         fuer subname in subnames:
             dirname = os.path.join(dirname, subname)
-            if os.path.isdir(dirname):
+            wenn os.path.isdir(dirname):
                 pass
-            elif os.path.exists(dirname):
+            sowenn os.path.exists(dirname):
                 raise Exception(dirname)
-            else:
+            sonst:
                 os.mkdir(dirname)
             initfile = os.path.join(dirname, '__init__.py')
-            if not os.path.exists(initfile):
+            wenn not os.path.exists(initfile):
                 with open(initfile, 'w'):
                     pass
         filename = os.path.join(dirname, basename + '.py')
@@ -477,7 +477,7 @@ klasse TestBase(unittest.TestCase):
     def assert_ns_equal(self, ns1, ns2, msg=None):
         # This is mostly copied from TestCase.assertDictEqual.
         self.assertEqual(type(ns1), type(ns2))
-        if ns1 == ns2:
+        wenn ns1 == ns2:
             return
 
         import difflib
@@ -495,19 +495,19 @@ klasse TestBase(unittest.TestCase):
         wrapped, results = _captured_script(script, exc=False)
         #_dump_script(wrapped)
         with results:
-            if isinstance(interp, interpreters.Interpreter):
+            wenn isinstance(interp, interpreters.Interpreter):
                 interp.exec(script)
-            else:
+            sonst:
                 err = _interpreters.run_string(interp, wrapped)
-                if err is not None:
+                wenn err is not None:
                     return None, err
         return results.stdout(), None
 
     def run_and_capture(self, interp, script):
         text, err = self._run_string(interp, script)
-        if err is not None:
+        wenn err is not None:
             raise interpreters.ExecutionFailed(err)
-        else:
+        sonst:
             return text
 
     def interp_exists(self, interpid):
@@ -515,31 +515,31 @@ klasse TestBase(unittest.TestCase):
             _interpreters.whence(interpid)
         except _interpreters.InterpreterNotFoundError:
             return False
-        else:
+        sonst:
             return True
 
     @requires_test_modules
     @contextlib.contextmanager
     def interpreter_from_capi(self, config=None, whence=None):
-        if config is False:
-            if whence is None:
+        wenn config is False:
+            wenn whence is None:
                 whence = _interpreters.WHENCE_LEGACY_CAPI
-            else:
+            sonst:
                 assert whence in (_interpreters.WHENCE_LEGACY_CAPI,
                                   _interpreters.WHENCE_UNKNOWN), repr(whence)
             config = None
-        elif config is True:
+        sowenn config is True:
             config = _interpreters.new_config('default')
-        elif config is None:
-            if whence not in (
+        sowenn config is None:
+            wenn whence not in (
                 _interpreters.WHENCE_LEGACY_CAPI,
                 _interpreters.WHENCE_UNKNOWN,
             ):
                 config = _interpreters.new_config('legacy')
-        elif isinstance(config, str):
+        sowenn isinstance(config, str):
             config = _interpreters.new_config(config)
 
-        if whence is None:
+        wenn whence is None:
             whence = _interpreters.WHENCE_XI
 
         interpid = _testinternalcapi.create_interpreter(config, whence=whence)
@@ -600,7 +600,7 @@ klasse TestBase(unittest.TestCase):
             except BrokenPipeError:
                 pass
             except OSError as exc:
-                if exc.errno != 9:
+                wenn exc.errno != 9:
                     raise  # re-raise
                 # It was closed already.
             """)
@@ -622,7 +622,7 @@ klasse TestBase(unittest.TestCase):
             assert token2 == token, (token2, token)
         except OSError:
             t.join()
-            if failed is not None:
+            wenn failed is not None:
                 raise failed
 
         # CM __exit__()
@@ -635,18 +635,18 @@ klasse TestBase(unittest.TestCase):
         finally:
             close()
             t.join()
-            if failed is not None:
+            wenn failed is not None:
                 raise failed
 
     @contextlib.contextmanager
     def running(self, interp):
-        if isinstance(interp, int):
+        wenn isinstance(interp, int):
             interpid = interp
             def exec_interp(script):
                 exc = _interpreters.exec(interpid, script)
                 assert exc is None, exc
             run_interp = exec_interp
-        else:
+        sonst:
             def run_interp(script):
                 text = self.run_and_capture(interp, script)
                 assert text == '', repr(text)
@@ -669,15 +669,15 @@ klasse TestBase(unittest.TestCase):
 
     @requires_test_modules
     def run_temp_from_capi(self, script, config='legacy'):
-        if config is False:
+        wenn config is False:
             # Force using Py_NewInterpreter().
             run_in_interp = (lambda s, c: _testcapi.run_in_subinterp(s))
             config = None
-        else:
+        sonst:
             run_in_interp = _testinternalcapi.run_in_subinterp_with_config
-            if config is True:
+            wenn config is True:
                 config = 'default'
-            if isinstance(config, str):
+            wenn isinstance(config, str):
                 config = _interpreters.new_config(config)
         with self.capturing(script) as (wrapped, results):
             rc = run_in_interp(wrapped, config)

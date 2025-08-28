@@ -25,7 +25,7 @@ klasse TestFunctions(unittest.TestCase):
         # Some versions of Android return EACCES when calling termios functions
         # on a regular file.
         errs = [err]
-        if sys.platform == 'android' and err == errno.ENOTTY:
+        wenn sys.platform == 'android' and err == errno.ENOTTY:
             errs.append(errno.EACCES)
 
         with self.assertRaises(termios.error) as cm:
@@ -42,10 +42,10 @@ klasse TestFunctions(unittest.TestCase):
         self.assertIsInstance(cc, list)
         self.assertEqual(len(cc), termios.NCCS)
         fuer i, x in enumerate(cc):
-            if ((lflag & termios.ICANON) == 0 and
+            wenn ((lflag & termios.ICANON) == 0 and
                 (i == termios.VMIN or i == termios.VTIME)):
                 self.assertIsInstance(x, int)
-            else:
+            sonst:
                 self.assertIsInstance(x, bytes)
                 self.assertEqual(len(x), 1)
         self.assertEqual(termios.tcgetattr(self.stream), attrs)
@@ -104,7 +104,7 @@ klasse TestFunctions(unittest.TestCase):
         try:
             termios.tcsendbreak(self.fd, 1)
         except termios.error as exc:
-            if exc.args[0] == errno.ENOTTY and sys.platform.startswith(('freebsd', "netbsd")):
+            wenn exc.args[0] == errno.ENOTTY and sys.platform.startswith(('freebsd', "netbsd")):
                 self.skipTest('termios.tcsendbreak() is not supported '
                               'with pseudo-terminals (?) on this platform')
             raise
@@ -158,17 +158,17 @@ klasse TestFunctions(unittest.TestCase):
 
         os.write(wfd, b'abcdef')
         self.assertEqual(os.read(rfd, 2), b'ab')
-        if inbuf:
+        wenn inbuf:
             # don't flush input
             termios.tcflush(rfd, termios.TCOFLUSH)
-        else:
+        sonst:
             # don't flush output
             termios.tcflush(wfd, termios.TCIFLUSH)
         self.assertEqual(os.read(rfd, 2), b'cd')
-        if inbuf:
+        wenn inbuf:
             # flush input
             termios.tcflush(rfd, termios.TCIFLUSH)
-        else:
+        sonst:
             # flush output
             termios.tcflush(wfd, termios.TCOFLUSH)
         os.write(wfd, b'ABCDEF')
@@ -283,7 +283,7 @@ klasse TestModule(unittest.TestCase):
     def test_ioctl_constants(self):
         # gh-119770: ioctl() constants must be positive
         fuer name in dir(termios):
-            if not name.startswith('TIO'):
+            wenn not name.startswith('TIO'):
                 continue
             value = getattr(termios, name)
             with self.subTest(name=name):
@@ -294,5 +294,5 @@ klasse TestModule(unittest.TestCase):
         self.assertNotIsSubclass(termios.error, OSError)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

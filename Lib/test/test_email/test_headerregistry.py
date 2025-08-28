@@ -133,9 +133,9 @@ klasse TestUnstructuredHeader(TestHeaderBase):
                         decoded,
                         *args):
         l = len(args)
-        defects = args[0] if l>0 else []
-        header = 'Subject:' + (' ' if source else '')
-        folded = header + (args[1] if l>1 else source) + '\n'
+        defects = args[0] wenn l>0 sonst []
+        header = 'Subject:' + (' ' wenn source sonst '')
+        folded = header + (args[1] wenn l>1 sonst source) + '\n'
         h = self.make_header('Subject', source)
         self.assertEqual(h, decoded)
         self.assertDefectsEqual(h.defects, defects)
@@ -242,11 +242,11 @@ klasse TestContentTypeHeader(TestHeaderBase):
                               subtype,
                               *args):
         l = len(args)
-        parmdict = args[0] if l>0 else {}
-        defects =  args[1] if l>1 else []
-        decoded =  args[2] if l>2 and args[2] is not DITTO else source
-        header = 'Content-Type:' + ' ' if source else ''
-        folded = args[3] if l>3 else header + decoded + '\n'
+        parmdict = args[0] wenn l>0 sonst {}
+        defects =  args[1] wenn l>1 sonst []
+        decoded =  args[2] wenn l>2 and args[2] is not DITTO sonst source
+        header = 'Content-Type:' + ' ' wenn source sonst ''
+        folded = args[3] wenn l>3 sonst header + decoded + '\n'
         h = self.make_header('Content-Type', source)
         self.assertEqual(h.content_type, content_type)
         self.assertEqual(h.maintype, maintype)
@@ -326,7 +326,7 @@ klasse TestContentTypeHeader(TestHeaderBase):
         # by not doing so we make ourselves future proof.  The fact that they
         # are unknown will be detectable by the fact that they don't appear in
         # the mime_registry...and the application is free to extend that list
-        # to handle them even if the core library doesn't.
+        # to handle them even wenn the core library doesn't.
 
         'unknown_content_type': (
             'bad/names',
@@ -575,7 +575,7 @@ klasse TestContentTypeHeader(TestHeaderBase):
             'text/plain; name="This is ***fun*** is it not.pdf"',
             ),
 
-        # Make sure we also handle it if there are spurious double quotes.
+        # Make sure we also handle it wenn there are spurious double quotes.
         'rfc2231_encoded_with_double_quotes': (
             ("text/plain;"
                 '\tname*0*="us-ascii\'\'This%20is%20even%20more%20";'
@@ -740,7 +740,7 @@ klasse TestContentTypeHeader(TestHeaderBase):
             ),
 
         # My reading of the RFC is that this is an invalid header.  The RFC
-        # says that if charset and language information is given, the first
+        # says that wenn charset and language information is given, the first
         # segment *must* be encoded.
         'rfc2231_unencoded_then_encoded_segments': (
             ('application/x-foo;'
@@ -761,7 +761,7 @@ klasse TestContentTypeHeader(TestHeaderBase):
         # old parser decodes this just like the previous case, which may be the
         # better Postel rule, but could equally result in borking headers that
         # intentionally have quoted quotes in them.  We could get this 98%
-        # right if we treat it as a quoted string *unless* it matches the
+        # right wenn we treat it as a quoted string *unless* it matches the
         # charset'lang'value pattern exactly *and* there is at least one
         # encoded segment.  Implementing that algorithm will require some
         # refactoring, so I haven't done it (yet).
@@ -808,10 +808,10 @@ klasse TestContentTransferEncoding(TestHeaderBase):
                      cte,
                      *args):
         l = len(args)
-        defects =  args[0] if l>0 else []
-        decoded =  args[1] if l>1 and args[1] is not DITTO else source
-        header = 'Content-Transfer-Encoding:' + ' ' if source else ''
-        folded = args[2] if l>2 else header + source + '\n'
+        defects =  args[0] wenn l>0 sonst []
+        decoded =  args[1] wenn l>1 and args[1] is not DITTO sonst source
+        header = 'Content-Transfer-Encoding:' + ' ' wenn source sonst ''
+        folded = args[2] wenn l>2 sonst header + source + '\n'
         h = self.make_header('Content-Transfer-Encoding', source)
         self.assertEqual(h.cte, cte)
         self.assertDefectsEqual(h.defects, defects)
@@ -853,11 +853,11 @@ klasse TestContentDisposition(TestHeaderBase):
                               content_disposition,
                               *args):
         l = len(args)
-        parmdict = args[0] if l>0 else {}
-        defects =  args[1] if l>1 else []
-        decoded =  args[2] if l>2 and args[2] is not DITTO else source
-        header = 'Content-Disposition:' + ' ' if source else ''
-        folded = args[3] if l>3 else header + source + '\n'
+        parmdict = args[0] wenn l>0 sonst {}
+        defects =  args[1] wenn l>1 sonst []
+        decoded =  args[2] wenn l>2 and args[2] is not DITTO sonst source
+        header = 'Content-Disposition:' + ' ' wenn source sonst ''
+        folded = args[3] wenn l>3 sonst header + source + '\n'
         h = self.make_header('Content-Disposition', source)
         self.assertEqual(h.content_disposition, content_disposition)
         self.assertEqual(h.params, parmdict)
@@ -944,7 +944,7 @@ klasse TestMIMEVersionHeader(TestHeaderBase):
         self.assertEqual(h.major, major)
         self.assertEqual(h.minor, minor)
         self.assertDefectsEqual(h.defects, defects)
-        if source:
+        wenn source:
             source = ' ' + source
         self.assertEqual(h.fold(policy=policy.default),
                          'MIME-Version:' + source + '\n')
@@ -1288,7 +1288,7 @@ klasse TestAddressHeader(TestHeaderBase):
     def example_as_group(self, source, defects, decoded, display_name,
                          addr_spec, username, domain, comment):
         source = 'foo: {};'.format(source)
-        gdecoded = 'foo: {};'.format(decoded) if decoded else 'foo:;'
+        gdecoded = 'foo: {};'.format(decoded) wenn decoded sonst 'foo:;'
         h = self.make_header('to', source)
         self.assertEqual(h, gdecoded)
         self.assertDefectsEqual(h.defects, defects)
@@ -1806,11 +1806,11 @@ klasse TestFolding(TestHeaderBase):
             'Message-ID: <ईमेल@wők.com>\n')
 
         # Test message-id is folded without breaking the msg-id token into
-        # encoded words, *even* if they don't fit into max_line_length.
+        # encoded words, *even* wenn they don't fit into max_line_length.
         h = self.make_header('Message-ID', '<ईमेलfromMessage@wők.com>')
         self.assertEqual(
             h.fold(policy=policy.default.clone(max_line_length=20)),
             'Message-ID:\n <ईमेलfromMessage@wők.com>\n')
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

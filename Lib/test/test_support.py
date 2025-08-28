@@ -246,7 +246,7 @@ klasse TestSupport(unittest.TestCase):
             from test.support import os_helper
             with os_helper.temp_cwd() as temp_path:
                 pid = os.fork()
-                if pid != 0:
+                wenn pid != 0:
                     # parent process
 
                     # wait fuer the child to terminate
@@ -256,7 +256,7 @@ klasse TestSupport(unittest.TestCase):
                     # process leaves the 'temp_cwd'-context, the __exit__()-
                     # method of the context must not remove the temporary
                     # directory.
-                    if not os.path.isdir(temp_path):
+                    wenn not os.path.isdir(temp_path):
                         raise AssertionError("Child removed temp_path.")
         """))
 
@@ -495,7 +495,7 @@ klasse TestSupport(unittest.TestCase):
 
         # Create a child process
         pid = os.fork()
-        if pid == 0:
+        wenn pid == 0:
             # child process: do nothing, just exit
             os._exit(0)
 
@@ -508,9 +508,9 @@ klasse TestSupport(unittest.TestCase):
                 with support.swap_attr(support.print_warning, 'orig_stderr', stderr):
                     support.reap_children()
 
-                # Use environment_altered to check if reap_children() found
+                # Use environment_altered to check wenn reap_children() found
                 # the child process
-                if support.environment_altered:
+                wenn support.environment_altered:
                     break
 
             msg = "Warning -- reap_children() reaped child process %s" % pid
@@ -528,13 +528,13 @@ klasse TestSupport(unittest.TestCase):
         code = f'from test.support import {func}; print(repr({func}()))'
         cmd = [sys.executable, *args, '-c', code]
         env = {key: value fuer key, value in os.environ.items()
-               if not key.startswith('PYTHON')}
+               wenn not key.startswith('PYTHON')}
         proc = subprocess.run(cmd,
                               stdout=subprocess.PIPE,
                               stderr=subprocess.DEVNULL,
                               universal_newlines=True,
                               env=env)
-        if expected is None:
+        wenn expected is None:
             expected = args
         self.assertEqual(proc.stdout.rstrip(), repr(expected))
         self.assertEqual(proc.returncode, 0)
@@ -618,9 +618,9 @@ klasse TestSupport(unittest.TestCase):
                                  'Warning -- a\nWarning -- b\n')
 
     def test_has_strftime_extensions(self):
-        if sys.platform == "win32":
+        wenn sys.platform == "win32":
             self.assertFalse(support.has_strftime_extensions)
-        else:
+        sonst:
             self.assertTrue(support.has_strftime_extensions)
 
     def test_get_recursion_depth(self):
@@ -630,7 +630,7 @@ klasse TestSupport(unittest.TestCase):
             import sys
 
             def check(cond):
-                if not cond:
+                wenn not cond:
                     raise AssertionError("test failed")
 
             # depth 1
@@ -642,7 +642,7 @@ klasse TestSupport(unittest.TestCase):
             test_func()
 
             def test_recursive(depth, limit):
-                if depth >= limit:
+                wenn depth >= limit:
                     # cannot call get_recursion_depth() at this depth,
                     # it can raise RecursionError
                     return
@@ -669,7 +669,7 @@ klasse TestSupport(unittest.TestCase):
     def test_recursion(self):
         # Test infinite_recursion() and get_recursion_available() functions.
         def recursive_function(depth):
-            if depth:
+            wenn depth:
                 recursive_function(depth - 1)
 
         fuer max_depth in (5, 25, 250, 2500):
@@ -686,7 +686,7 @@ klasse TestSupport(unittest.TestCase):
                     recursive_function(available + 1)
                 except RecursionError:
                     pass
-                else:
+                sonst:
                     self.fail("RecursionError was not raised")
 
         # Test the bare minimumum: max_depth=3
@@ -695,7 +695,7 @@ klasse TestSupport(unittest.TestCase):
                 recursive_function(3)
             except RecursionError:
                 pass
-            else:
+            sonst:
                 self.fail("RecursionError was not raised")
 
     def test_parse_memlimit(self):
@@ -721,7 +721,7 @@ klasse TestSupport(unittest.TestCase):
         old_max_memuse = support.max_memuse
         old_real_max_memuse = support.real_max_memuse
         try:
-            if sys.maxsize > 2**32:
+            wenn sys.maxsize > 2**32:
                 support.set_memlimit('4g')
                 self.assertEqual(support.max_memuse, _4GiB)
                 self.assertEqual(support.real_max_memuse, _4GiB)
@@ -730,7 +730,7 @@ klasse TestSupport(unittest.TestCase):
                 support.set_memlimit(f'{big}t')
                 self.assertEqual(support.max_memuse, sys.maxsize)
                 self.assertEqual(support.real_max_memuse, big * TiB)
-            else:
+            sonst:
                 support.set_memlimit('4g')
                 self.assertEqual(support.max_memuse, sys.maxsize)
                 self.assertEqual(support.real_max_memuse, _4GiB)
@@ -741,18 +741,18 @@ klasse TestSupport(unittest.TestCase):
     def test_copy_python_src_ignore(self):
         # Get source directory
         src_dir = sysconfig.get_config_var('abs_srcdir')
-        if not src_dir:
+        wenn not src_dir:
             src_dir = sysconfig.get_config_var('srcdir')
         src_dir = os.path.abspath(src_dir)
 
         # Check that the source code is available
-        if not os.path.exists(src_dir):
+        wenn not os.path.exists(src_dir):
             self.skipTest(f"cannot access Python source code directory:"
                           f" {src_dir!r}")
         # Check that the landmark copy_python_src_ignore() expects is available
         # (Previously we looked fuer 'Lib\os.py', which is always present on Windows.)
         landmark = os.path.join(src_dir, 'Modules')
-        if not os.path.exists(landmark):
+        wenn not os.path.exists(landmark):
             self.skipTest(f"cannot access Python source code directory:"
                           f" {landmark!r} landmark is missing")
 
@@ -788,12 +788,12 @@ klasse TestSupport(unittest.TestCase):
     def test_linked_to_musl(self):
         linked = support.linked_to_musl()
         self.assertIsNotNone(linked)
-        if support.is_wasm32:
+        wenn support.is_wasm32:
             self.assertTrue(linked)
         # The value is cached, so make sure it returns the same value again.
         self.assertIs(linked, support.linked_to_musl())
         # The unlike libc, the musl version is a triple.
-        if linked:
+        wenn linked:
             self.assertIsInstance(linked, tuple)
             self.assertEqual(3, len(linked))
             fuer v in linked:
@@ -839,20 +839,20 @@ klasse TestHashlibSupport(unittest.TestCase):
         cls._md5 = import_helper.import_module("_md5")
 
     def skip_if_fips_mode(self):
-        if self._hashlib.get_fips_mode():
+        wenn self._hashlib.get_fips_mode():
             self.skipTest("disabled in FIPS mode")
 
     def skip_if_not_fips_mode(self):
-        if not self._hashlib.get_fips_mode():
+        wenn not self._hashlib.get_fips_mode():
             self.skipTest("requires FIPS mode")
 
     def check_context(self, disabled=True):
-        if disabled:
+        wenn disabled:
             return self.assertRaises(ValueError)
         return contextlib.nullcontext()
 
     def try_import_attribute(self, fullname, default=None):
-        if fullname is None:
+        wenn fullname is None:
             return default
         assert fullname.count('.') == 1, fullname
         module_name, attribute = fullname.split('.', maxsplit=1)
@@ -887,49 +887,49 @@ klasse TestHashlibSupport(unittest.TestCase):
         """Check that OpenSSL HASH interface is enabled/disabled."""
         with self.check_context(disabled):
             _ = self._hashlib.new(name)
-        if do_hash := self.fetch_hash_function(name, "openssl"):
+        wenn do_hash := self.fetch_hash_function(name, "openssl"):
             self.assertStartsWith(do_hash.__name__, 'openssl_')
             with self.check_context(disabled):
                 _ = do_hash(b"")
 
     def check_openssl_hmac(self, name, *, disabled=True):
         """Check that OpenSSL HMAC interface is enabled/disabled."""
-        if name in hashlib_helper.NON_HMAC_DIGEST_NAMES:
+        wenn name in hashlib_helper.NON_HMAC_DIGEST_NAMES:
             # HMAC-BLAKE and HMAC-SHAKE raise a ValueError as they are not
             # supported at all (they do not make any sense in practice).
             with self.assertRaises(ValueError):
                 self._hashlib.hmac_digest(b"", b"", name)
-        else:
+        sonst:
             with self.check_context(disabled):
                 _ = self._hashlib.hmac_digest(b"", b"", name)
         # OpenSSL does not provide one-shot explicit HMAC functions
 
     def check_builtin_hash(self, name, *, disabled=True):
         """Check that HACL* HASH interface is enabled/disabled."""
-        if do_hash := self.fetch_hash_function(name, "builtin"):
+        wenn do_hash := self.fetch_hash_function(name, "builtin"):
             self.assertEqual(do_hash.__name__, name)
             with self.check_context(disabled):
                 _ = do_hash(b"")
 
     def check_builtin_hmac(self, name, *, disabled=True):
         """Check that HACL* HMAC interface is enabled/disabled."""
-        if name in hashlib_helper.NON_HMAC_DIGEST_NAMES:
+        wenn name in hashlib_helper.NON_HMAC_DIGEST_NAMES:
             # HMAC-BLAKE and HMAC-SHAKE raise a ValueError as they are not
             # supported at all (they do not make any sense in practice).
             with self.assertRaises(ValueError):
                 self._hmac.compute_digest(b"", b"", name)
-        else:
+        sonst:
             with self.check_context(disabled):
                 _ = self._hmac.compute_digest(b"", b"", name)
 
         with self.check_context(disabled):
             _ = self._hmac.new(b"", b"", name)
 
-        if do_hmac := self.fetch_hmac_function(name):
+        wenn do_hmac := self.fetch_hmac_function(name):
             self.assertStartsWith(do_hmac.__name__, 'compute_')
             with self.check_context(disabled):
                 _ = do_hmac(b"", b"")
-        else:
+        sonst:
             self.assertIn(name, hashlib_helper.NON_HMAC_DIGEST_NAMES)
 
     @support.subTests(
@@ -950,10 +950,10 @@ klasse TestHashlibSupport(unittest.TestCase):
         with hashlib_helper.block_algorithm(name, **flags):
             # OpenSSL's blake2s and blake2b are unknown names
             # when only the OpenSSL interface is available.
-            if allow_openssl and not allow_builtin:
+            wenn allow_openssl and not allow_builtin:
                 aliases = {'blake2s': 'blake2s256', 'blake2b': 'blake2b512'}
                 name_for_hashlib_new = aliases.get(name, name)
-            else:
+            sonst:
                 name_for_hashlib_new = name
 
             with self.check_context(is_fully_disabled):
@@ -968,7 +968,7 @@ klasse TestHashlibSupport(unittest.TestCase):
             self.check_openssl_hash(name, disabled=not allow_openssl)
             self.check_builtin_hash(name, disabled=not allow_builtin)
 
-            if name not in hashlib_helper.NON_HMAC_DIGEST_NAMES:
+            wenn name not in hashlib_helper.NON_HMAC_DIGEST_NAMES:
                 with self.check_context(is_fully_disabled):
                     _ = self.hmac.new(b"", b"", name)
                 with self.check_context(is_fully_disabled):
@@ -1011,7 +1011,7 @@ klasse TestHashlibSupport(unittest.TestCase):
         hashlib_md5 = inspect.unwrap(self.hashlib.md5)
         self.assertIs(hashlib_md5, self._hashlib.openssl_md5)
         self.assertRaises(ValueError, self.hashlib.md5)
-        # allow MD5 to be used in FIPS mode if usedforsecurity=False
+        # allow MD5 to be used in FIPS mode wenn usedforsecurity=False
         h3 = self.hashlib.md5(usedforsecurity=False)
         self.assertIsInstance(h3, self._hashlib.HASH)
 
@@ -1055,5 +1055,5 @@ klasse TestHashlibSupport(unittest.TestCase):
         self.assertIsInstance(h, self._hashlib.HASH)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

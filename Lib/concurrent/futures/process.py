@@ -30,7 +30,7 @@ Executor.submit() called:
 
 Local worker thread:
 - reads work ids from the "Work Ids" queue and looks up the corresponding
-  WorkItem from the "Work Items" dict: if the work item has been cancelled then
+  WorkItem from the "Work Items" dict: wenn the work item has been cancelled then
   it is simply removed from the dict, otherwise it is repackaged as a
   _CallItem and put in the "Call Q". New _CallItems are put in the "Call Q"
   until "Call Q" is full. NOTE: the size of the "Call Q" is kept small because
@@ -75,21 +75,21 @@ klasse _ThreadWakeup:
         # Please note that we do not take the self._lock when
         # calling clear() (to avoid deadlocking) so this method can
         # only be called safely from the same thread as all calls to
-        # clear() even if you hold the lock. Otherwise we
+        # clear() even wenn you hold the lock. Otherwise we
         # might try to read from the closed pipe.
         with self._lock:
-            if not self._closed:
+            wenn not self._closed:
                 self._closed = True
                 self._writer.close()
                 self._reader.close()
 
     def wakeup(self):
         with self._lock:
-            if not self._closed:
+            wenn not self._closed:
                 self._writer.send_bytes(b"")
 
     def clear(self):
-        if self._closed:
+        wenn self._closed:
             raise RuntimeError('operation on closed _ThreadWakeup')
         while self._reader.poll():
             self._reader.recv_bytes()
@@ -177,17 +177,17 @@ klasse _SafeQueue(Queue):
         super().__init__(max_size, ctx=ctx)
 
     def _on_queue_feeder_error(self, e, obj):
-        if isinstance(obj, _CallItem):
+        wenn isinstance(obj, _CallItem):
             tb = format_exception(type(e), e, e.__traceback__)
             e.__cause__ = _RemoteTraceback('\n"""\n{}"""'.format(''.join(tb)))
             work_item = self.pending_work_items.pop(obj.work_id, None)
             self.thread_wakeup.wakeup()
-            # work_item can be None if another process terminated. In this
+            # work_item can be None wenn another process terminated. In this
             # case, the executor_manager_thread fails all work_items
             # with BrokenProcessPool
-            if work_item is not None:
+            wenn work_item is not None:
                 work_item.future.set_exception(e)
-        else:
+        sonst:
             super()._on_queue_feeder_error(e, obj)
 
 
@@ -228,7 +228,7 @@ def _process_worker(call_queue, result_queue, initializer, initargs, max_tasks=N
         initializer: A callable initializer, or None
         initargs: A tuple of args fuer the initializer
     """
-    if initializer is not None:
+    wenn initializer is not None:
         try:
             initializer(*initargs)
         except BaseException:
@@ -240,14 +240,14 @@ def _process_worker(call_queue, result_queue, initializer, initargs, max_tasks=N
     exit_pid = None
     while True:
         call_item = call_queue.get(block=True)
-        if call_item is None:
+        wenn call_item is None:
             # Wake up queue management thread
             result_queue.put(os.getpid())
             return
 
-        if max_tasks is not None:
+        wenn max_tasks is not None:
             num_tasks += 1
-            if num_tasks >= max_tasks:
+            wenn num_tasks >= max_tasks:
                 exit_pid = os.getpid()
 
         try:
@@ -256,7 +256,7 @@ def _process_worker(call_queue, result_queue, initializer, initargs, max_tasks=N
             exc = _ExceptionWithTraceback(e, e.__traceback__)
             _sendback_result(result_queue, call_item.work_id, exception=exc,
                              exit_pid=exit_pid)
-        else:
+        sonst:
             _sendback_result(result_queue, call_item.work_id, result=r,
                              exit_pid=exit_pid)
             del r
@@ -265,7 +265,7 @@ def _process_worker(call_queue, result_queue, initializer, initargs, max_tasks=N
         # open files or shared memory that is not needed anymore
         del call_item
 
-        if exit_pid is not None:
+        wenn exit_pid is not None:
             return
 
 
@@ -290,11 +290,11 @@ klasse _ExecutorManagerThread(threading.Thread):
         self.shutdown_lock = executor._shutdown_lock
 
         # A weakref.ref to the ProcessPoolExecutor that owns this thread. Used
-        # to determine if the ProcessPoolExecutor has been garbage collected
+        # to determine wenn the ProcessPoolExecutor has been garbage collected
         # and that the manager can exit.
         # When the executor gets garbage collected, the weakref callback
         # will wake up the queue management thread so that it can terminate
-        # if there is no pending work item.
+        # wenn there is no pending work item.
         def weakref_cb(_,
                        thread_wakeup=self.thread_wakeup,
                        mp_util_debug=mp.util.debug):
@@ -342,14 +342,14 @@ klasse _ExecutorManagerThread(threading.Thread):
 
             result_item, is_broken, cause = self.wait_result_broken_or_wakeup()
 
-            if is_broken:
+            wenn is_broken:
                 self.terminate_broken(cause)
                 return
-            if result_item is not None:
+            wenn result_item is not None:
                 self.process_result_item(result_item)
 
                 process_exited = result_item.exit_pid is not None
-                if process_exited:
+                wenn process_exited:
                     p = self.processes.pop(result_item.exit_pid)
                     p.join()
 
@@ -357,15 +357,15 @@ klasse _ExecutorManagerThread(threading.Thread):
                 # while waiting on new results.
                 del result_item
 
-                if executor := self.executor_reference():
-                    if process_exited:
+                wenn executor := self.executor_reference():
+                    wenn process_exited:
                         with self.shutdown_lock:
                             executor._adjust_process_count()
-                    else:
+                    sonst:
                         executor._idle_worker_semaphore.release()
                     del executor
 
-            if self.is_shutting_down():
+            wenn self.is_shutting_down():
                 self.flag_executor_shutting_down()
 
                 # When only canceled futures remain in pending_work_items, our
@@ -374,8 +374,8 @@ klasse _ExecutorManagerThread(threading.Thread):
                 self.add_call_item_to_queue()
 
                 # Since no new work items can be added, it is safe to shutdown
-                # this thread if there are no pending work items.
-                if not self.pending_work_items:
+                # this thread wenn there are no pending work items.
+                wenn not self.pending_work_items:
                     self.join_executor_internals()
                     return
 
@@ -383,22 +383,22 @@ klasse _ExecutorManagerThread(threading.Thread):
         # Fills call_queue with _WorkItems from pending_work_items.
         # This function never blocks.
         while True:
-            if self.call_queue.full():
+            wenn self.call_queue.full():
                 return
             try:
                 work_id = self.work_ids_queue.get(block=False)
             except queue.Empty:
                 return
-            else:
+            sonst:
                 work_item = self.pending_work_items[work_id]
 
-                if work_item.future.set_running_or_notify_cancel():
+                wenn work_item.future.set_running_or_notify_cancel():
                     self.call_queue.put(_CallItem(work_id,
                                                   work_item.fn,
                                                   work_item.args,
                                                   work_item.kwargs),
                                         block=True)
-                else:
+                sonst:
                     del self.pending_work_items[work_id]
                     continue
 
@@ -418,14 +418,14 @@ klasse _ExecutorManagerThread(threading.Thread):
         cause = None
         is_broken = True
         result_item = None
-        if result_reader in ready:
+        wenn result_reader in ready:
             try:
                 result_item = result_reader.recv()
                 is_broken = False
             except BaseException as exc:
                 cause = format_exception(exc)
 
-        elif wakeup_reader in ready:
+        sowenn wakeup_reader in ready:
             is_broken = False
 
         self.thread_wakeup.clear()
@@ -438,11 +438,11 @@ klasse _ExecutorManagerThread(threading.Thread):
 
         # Received a _ResultItem so mark the future as completed.
         work_item = self.pending_work_items.pop(result_item.work_id, None)
-        # work_item can be None if another process terminated (see above)
-        if work_item is not None:
-            if result_item.exception is not None:
+        # work_item can be None wenn another process terminated (see above)
+        wenn work_item is not None:
+            wenn result_item.exception is not None:
                 work_item.future.set_exception(result_item.exception)
-            else:
+            sonst:
                 work_item.future.set_result(result_item.result)
 
     def is_shutting_down(self):
@@ -462,7 +462,7 @@ klasse _ExecutorManagerThread(threading.Thread):
 
         # Mark the process pool broken so that submits fail right now.
         executor = self.executor_reference()
-        if executor is not None:
+        wenn executor is not None:
             executor._broken = ('A child process terminated '
                                 'abruptly, the process pool is not '
                                 'usable anymore')
@@ -474,7 +474,7 @@ klasse _ExecutorManagerThread(threading.Thread):
         bpe = BrokenProcessPool("A process in the process pool was "
                                 "terminated abruptly while the future was "
                                 "running or pending.")
-        if cause is not None:
+        wenn cause is not None:
             bpe.__cause__ = _RemoteTraceback(
                 f"\n'''\n{''.join(cause)}'''")
 
@@ -483,9 +483,9 @@ klasse _ExecutorManagerThread(threading.Thread):
             try:
                 work_item.future.set_exception(bpe)
             except _base.InvalidStateError:
-                # set_exception() fails if the future is cancelled: ignore it.
-                # Trying to check if the future is cancelled before calling
-                # set_exception() would leave a race condition if the future is
+                # set_exception() fails wenn the future is cancelled: ignore it.
+                # Trying to check wenn the future is cancelled before calling
+                # set_exception() would leave a race condition wenn the future is
                 # cancelled between the check and set_exception().
                 pass
             # Delete references to object. See issue16284
@@ -508,17 +508,17 @@ klasse _ExecutorManagerThread(threading.Thread):
 
     def flag_executor_shutting_down(self):
         # Flag the executor as shutting down and cancel remaining tasks if
-        # requested as early as possible if it is not gc-ed yet.
+        # requested as early as possible wenn it is not gc-ed yet.
         executor = self.executor_reference()
-        if executor is not None:
+        wenn executor is not None:
             executor._shutdown_thread = True
-            # Cancel pending work items if requested.
-            if executor._cancel_pending_futures:
+            # Cancel pending work items wenn requested.
+            wenn executor._cancel_pending_futures:
                 # Cancel all pending futures and update pending_work_items
                 # to only have futures that are currently running.
                 new_pending_work_items = {}
                 fuer work_id, work_item in self.pending_work_items.items():
-                    if not work_item.future.cancel():
+                    wenn not work_item.future.cancel():
                         new_pending_work_items[work_id] = work_item
                 self.pending_work_items = new_pending_work_items
                 # Drain work_ids_queue since we no longer need to
@@ -552,7 +552,7 @@ klasse _ExecutorManagerThread(threading.Thread):
 
     def _join_executor_internals(self, broken=False):
         # If broken, call_queue was closed and so can no longer be used.
-        if not broken:
+        wenn not broken:
             self.shutdown_workers()
 
         # Release the queue's resources as soon as possible.
@@ -563,7 +563,7 @@ klasse _ExecutorManagerThread(threading.Thread):
         # If .join() is not called on the created processes then
         # some ctx.Queue methods may deadlock on Mac OS X.
         fuer p in self.processes.values():
-            if broken:
+            wenn broken:
                 p.terminate()
             p.join()
 
@@ -578,8 +578,8 @@ _system_limited = None
 
 def _check_system_limits():
     global _system_limits_checked, _system_limited
-    if _system_limits_checked:
-        if _system_limited:
+    wenn _system_limits_checked:
+        wenn _system_limited:
             raise NotImplementedError(_system_limited)
     _system_limits_checked = True
     try:
@@ -595,11 +595,11 @@ def _check_system_limits():
     except (AttributeError, ValueError):
         # sysconf not available or setting not available
         return
-    if nsems_max == -1:
+    wenn nsems_max == -1:
         # indetermined limit, assume that limit is determined
         # by available memory only
         return
-    if nsems_max >= 256:
+    wenn nsems_max >= 256:
         # minimum number of semaphores available
         # according to POSIX
         return
@@ -653,30 +653,30 @@ klasse ProcessPoolExecutor(_base.Executor):
                 can complete before it will exit and be replaced with a fresh
                 worker process. The default of None means worker process will
                 live as long as the executor. Requires a non-'fork' mp_context
-                start method. When given, we default to using 'spawn' if no
+                start method. When given, we default to using 'spawn' wenn no
                 mp_context is supplied.
         """
         _check_system_limits()
 
-        if max_workers is None:
+        wenn max_workers is None:
             self._max_workers = os.process_cpu_count() or 1
-            if sys.platform == 'win32':
+            wenn sys.platform == 'win32':
                 self._max_workers = min(_MAX_WINDOWS_WORKERS,
                                         self._max_workers)
-        else:
-            if max_workers <= 0:
+        sonst:
+            wenn max_workers <= 0:
                 raise ValueError("max_workers must be greater than 0")
-            elif (sys.platform == 'win32' and
+            sowenn (sys.platform == 'win32' and
                 max_workers > _MAX_WINDOWS_WORKERS):
                 raise ValueError(
                     f"max_workers must be <= {_MAX_WINDOWS_WORKERS}")
 
             self._max_workers = max_workers
 
-        if mp_context is None:
-            if max_tasks_per_child is not None:
+        wenn mp_context is None:
+            wenn max_tasks_per_child is not None:
                 mp_context = mp.get_context("spawn")
-            else:
+            sonst:
                 mp_context = mp.get_context()
         self._mp_context = mp_context
 
@@ -684,17 +684,17 @@ klasse ProcessPoolExecutor(_base.Executor):
         self._safe_to_dynamically_spawn_children = (
                 self._mp_context.get_start_method(allow_none=False) != "fork")
 
-        if initializer is not None and not callable(initializer):
+        wenn initializer is not None and not callable(initializer):
             raise TypeError("initializer must be a callable")
         self._initializer = initializer
         self._initargs = initargs
 
-        if max_tasks_per_child is not None:
-            if not isinstance(max_tasks_per_child, int):
+        wenn max_tasks_per_child is not None:
+            wenn not isinstance(max_tasks_per_child, int):
                 raise TypeError("max_tasks_per_child must be an integer")
-            elif max_tasks_per_child <= 0:
+            sowenn max_tasks_per_child <= 0:
                 raise ValueError("max_tasks_per_child must be >= 1")
-            if self._mp_context.get_start_method(allow_none=False) == "fork":
+            wenn self._mp_context.get_start_method(allow_none=False) == "fork":
                 # https://github.com/python/cpython/issues/90622
                 raise ValueError("max_tasks_per_child is incompatible with"
                                  " the 'fork' multiprocessing start method;"
@@ -720,7 +720,7 @@ klasse ProcessPoolExecutor(_base.Executor):
         # of the main loop of executor_manager_thread from another thread (e.g.
         # when calling executor.submit or executor.shutdown). We do not use the
         # _result_queue to send wakeup signals to the executor_manager_thread
-        # as it could result in a deadlock if a worker process dies with the
+        # as it could result in a deadlock wenn a worker process dies with the
         # _result_queue write lock still acquired.
         #
         # Care must be taken to only call clear and close from the
@@ -745,9 +745,9 @@ klasse ProcessPoolExecutor(_base.Executor):
         self._work_ids = queue.Queue()
 
     def _start_executor_manager_thread(self):
-        if self._executor_manager_thread is None:
+        wenn self._executor_manager_thread is None:
             # Start the processes so that their sentinels are known.
-            if not self._safe_to_dynamically_spawn_children:  # ie, using fork.
+            wenn not self._safe_to_dynamically_spawn_children:  # ie, using fork.
                 self._launch_processes()
             self._executor_manager_thread = _ExecutorManagerThread(self)
             self._executor_manager_thread.start()
@@ -757,15 +757,15 @@ klasse ProcessPoolExecutor(_base.Executor):
     def _adjust_process_count(self):
         # gh-132969: avoid error when state is reset and executor is still running,
         # which will happen when shutdown(wait=False) is called.
-        if self._processes is None:
+        wenn self._processes is None:
             return
 
-        # if there's an idle process, we don't need to spawn a new one.
-        if self._idle_worker_semaphore.acquire(blocking=False):
+        # wenn there's an idle process, we don't need to spawn a new one.
+        wenn self._idle_worker_semaphore.acquire(blocking=False):
             return
 
         process_count = len(self._processes)
-        if process_count < self._max_workers:
+        wenn process_count < self._max_workers:
             # Assertion disabled as this codepath is also used to replace a
             # worker that unexpectedly dies, even when using the 'fork' start
             # method. That means there is still a potential deadlock bug. If a
@@ -795,11 +795,11 @@ klasse ProcessPoolExecutor(_base.Executor):
 
     def submit(self, fn, /, *args, **kwargs):
         with self._shutdown_lock:
-            if self._broken:
+            wenn self._broken:
                 raise BrokenProcessPool(self._broken)
-            if self._shutdown_thread:
+            wenn self._shutdown_thread:
                 raise RuntimeError('cannot schedule new futures after shutdown')
-            if _global_shutdown:
+            wenn _global_shutdown:
                 raise RuntimeError('cannot schedule new futures after '
                                    'interpreter shutdown')
 
@@ -812,7 +812,7 @@ klasse ProcessPoolExecutor(_base.Executor):
             # Wake up queue management thread
             self._executor_manager_thread_wakeup.wakeup()
 
-            if self._safe_to_dynamically_spawn_children:
+            wenn self._safe_to_dynamically_spawn_children:
                 self._adjust_process_count()
             self._start_executor_manager_thread()
             return f
@@ -844,7 +844,7 @@ klasse ProcessPoolExecutor(_base.Executor):
                 before the given timeout.
             Exception: If fn(*args) raises fuer any values.
         """
-        if chunksize < 1:
+        wenn chunksize < 1:
             raise ValueError("chunksize must be >= 1.")
 
         results = super().map(partial(_process_chunk, fn),
@@ -857,17 +857,17 @@ klasse ProcessPoolExecutor(_base.Executor):
         with self._shutdown_lock:
             self._cancel_pending_futures = cancel_futures
             self._shutdown_thread = True
-            if self._executor_manager_thread_wakeup is not None:
+            wenn self._executor_manager_thread_wakeup is not None:
                 # Wake up queue management thread
                 self._executor_manager_thread_wakeup.wakeup()
 
-        if self._executor_manager_thread is not None and wait:
+        wenn self._executor_manager_thread is not None and wait:
             self._executor_manager_thread.join()
         # To reduce the risk of opening too many files, remove references to
         # objects that use file descriptors.
         self._executor_manager_thread = None
         self._call_queue = None
-        if self._result_queue is not None and wait:
+        wenn self._result_queue is not None and wait:
             self._result_queue.close()
         self._result_queue = None
         self._processes = None
@@ -878,39 +878,39 @@ klasse ProcessPoolExecutor(_base.Executor):
     def _force_shutdown(self, operation):
         """Attempts to terminate or kill the executor's workers based off the
         given operation. Iterates through all of the current processes and
-        performs the relevant task if the process is still alive.
+        performs the relevant task wenn the process is still alive.
 
         After terminating workers, the pool will be in a broken state
         and no longer usable (for instance, new tasks should not be
         submitted).
         """
-        if operation not in _SHUTDOWN_CALLBACK_OPERATION:
+        wenn operation not in _SHUTDOWN_CALLBACK_OPERATION:
             raise ValueError(f"Unsupported operation: {operation!r}")
 
         processes = {}
-        if self._processes:
+        wenn self._processes:
             processes = self._processes.copy()
 
         # shutdown will invalidate ._processes, so we copy it right before
-        # calling. If we waited here, we would deadlock if a process decides not
+        # calling. If we waited here, we would deadlock wenn a process decides not
         # to exit.
         self.shutdown(wait=False, cancel_futures=True)
 
-        if not processes:
+        wenn not processes:
             return
 
         fuer proc in processes.values():
             try:
-                if not proc.is_alive():
+                wenn not proc.is_alive():
                     continue
             except ValueError:
                 # The process is already exited/closed out.
                 continue
 
             try:
-                if operation == _TERMINATE:
+                wenn operation == _TERMINATE:
                     proc.terminate()
-                elif operation == _KILL:
+                sowenn operation == _KILL:
                     proc.kill()
             except ProcessLookupError:
                 # The process just ended before our signal

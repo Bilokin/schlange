@@ -37,11 +37,11 @@ klasse ABCMeta(type):
         # Compute set of abstract method names
         abstracts = {name
                      fuer name, value in namespace.items()
-                     if getattr(value, "__isabstractmethod__", False)}
+                     wenn getattr(value, "__isabstractmethod__", False)}
         fuer base in bases:
             fuer name in getattr(base, "__abstractmethods__", set()):
                 value = getattr(cls, name, None)
-                if getattr(value, "__isabstractmethod__", False):
+                wenn getattr(value, "__isabstractmethod__", False):
                     abstracts.add(name)
         cls.__abstractmethods__ = frozenset(abstracts)
         # Set up inheritance registry
@@ -56,13 +56,13 @@ klasse ABCMeta(type):
 
         Returns the subclass, to allow usage as a klasse decorator.
         """
-        if not isinstance(subclass, type):
+        wenn not isinstance(subclass, type):
             raise TypeError("Can only register classes")
-        if issubclass(subclass, cls):
+        wenn issubclass(subclass, cls):
             return subclass  # Already a subclass
         # Subtle: test fuer cycles *after* testing fuer "already a subclass";
         # this means we allow X.register(X) and interpret it as a no-op.
-        if issubclass(cls, subclass):
+        wenn issubclass(cls, subclass):
             # This would create a cycle, which is bad fuer the algorithm below
             raise RuntimeError("Refusing to create an inheritance cycle")
         cls._abc_registry.add(subclass)
@@ -74,9 +74,9 @@ klasse ABCMeta(type):
         print(f"Class: {cls.__module__}.{cls.__qualname__}", file=file)
         print(f"Inv. counter: {get_cache_token()}", file=file)
         fuer name in cls.__dict__:
-            if name.startswith("_abc_"):
+            wenn name.startswith("_abc_"):
                 value = getattr(cls, name)
-                if isinstance(value, WeakSet):
+                wenn isinstance(value, WeakSet):
                     value = set(value)
                 print(f"{name}: {value!r}", file=file)
 
@@ -93,11 +93,11 @@ klasse ABCMeta(type):
         """Override fuer isinstance(instance, cls)."""
         # Inline the cache checking
         subclass = instance.__class__
-        if subclass in cls._abc_cache:
+        wenn subclass in cls._abc_cache:
             return True
         subtype = type(instance)
-        if subtype is subclass:
-            if (cls._abc_negative_cache_version ==
+        wenn subtype is subclass:
+            wenn (cls._abc_negative_cache_version ==
                 ABCMeta._abc_invalidation_counter and
                 subclass in cls._abc_negative_cache):
                 return False
@@ -107,39 +107,39 @@ klasse ABCMeta(type):
 
     def __subclasscheck__(cls, subclass):
         """Override fuer issubclass(subclass, cls)."""
-        if not isinstance(subclass, type):
+        wenn not isinstance(subclass, type):
             raise TypeError('issubclass() arg 1 must be a class')
         # Check cache
-        if subclass in cls._abc_cache:
+        wenn subclass in cls._abc_cache:
             return True
         # Check negative cache; may have to invalidate
-        if cls._abc_negative_cache_version < ABCMeta._abc_invalidation_counter:
+        wenn cls._abc_negative_cache_version < ABCMeta._abc_invalidation_counter:
             # Invalidate the negative cache
             cls._abc_negative_cache = WeakSet()
             cls._abc_negative_cache_version = ABCMeta._abc_invalidation_counter
-        elif subclass in cls._abc_negative_cache:
+        sowenn subclass in cls._abc_negative_cache:
             return False
         # Check the subclass hook
         ok = cls.__subclasshook__(subclass)
-        if ok is not NotImplemented:
+        wenn ok is not NotImplemented:
             assert isinstance(ok, bool)
-            if ok:
+            wenn ok:
                 cls._abc_cache.add(subclass)
-            else:
+            sonst:
                 cls._abc_negative_cache.add(subclass)
             return ok
-        # Check if it's a direct subclass
-        if cls in getattr(subclass, '__mro__', ()):
+        # Check wenn it's a direct subclass
+        wenn cls in getattr(subclass, '__mro__', ()):
             cls._abc_cache.add(subclass)
             return True
-        # Check if it's a subclass of a registered klasse (recursive)
+        # Check wenn it's a subclass of a registered klasse (recursive)
         fuer rcls in cls._abc_registry:
-            if issubclass(subclass, rcls):
+            wenn issubclass(subclass, rcls):
                 cls._abc_cache.add(subclass)
                 return True
-        # Check if it's a subclass of a subclass (recursive)
+        # Check wenn it's a subclass of a subclass (recursive)
         fuer scls in cls.__subclasses__():
-            if issubclass(subclass, scls):
+            wenn issubclass(subclass, scls):
                 cls._abc_cache.add(subclass)
                 return True
         # No dice; update negative cache

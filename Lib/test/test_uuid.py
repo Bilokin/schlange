@@ -341,9 +341,9 @@ klasse BaseTestUUID:
                     fuer ii in [[], [('int', i)]]:
                         fuer ff in [[], [('fields', f)]]:
                             args = dict(hh + bb + bble + ii + ff)
-                            if len(args) != 0:
+                            wenn len(args) != 0:
                                 badtype(lambda: self.uuid.UUID(h, **args))
-                            if len(args) != 1:
+                            wenn len(args) != 1:
                                 badtype(lambda: self.uuid.UUID(**args))
 
         # Immutability.
@@ -579,10 +579,10 @@ klasse BaseTestUUID:
             import _uuid
         except ImportError:
             has_uuid_generate_time_safe = False
-        else:
+        sonst:
             has_uuid_generate_time_safe = _uuid.has_uuid_generate_time_safe
 
-        if not has_uuid_generate_time_safe or not self.uuid._generate_time_safe:
+        wenn not has_uuid_generate_time_safe or not self.uuid._generate_time_safe:
             self.skipTest('requires uuid_generate_time_safe(3)')
 
         u = self.uuid.uuid1()
@@ -596,10 +596,10 @@ klasse BaseTestUUID:
         """
         Mock uuid._generate_time_safe() to return a given *safe_value*.
         """
-        if os.name != 'posix':
+        wenn os.name != 'posix':
             self.skipTest('POSIX-only test')
         f = self.uuid._generate_time_safe
-        if f is None:
+        wenn f is None:
             self.skipTest('need uuid._generate_time_safe')
         with mock.patch.object(self.uuid, '_generate_time_safe',
                                lambda: (f()[0], safe_value)):
@@ -607,7 +607,7 @@ klasse BaseTestUUID:
 
     @unittest.skipUnless(os.name == 'posix', 'POSIX-only test')
     def test_uuid1_unknown(self):
-        # Even if the platform has uuid_generate_time_safe(), let's mock it to
+        # Even wenn the platform has uuid_generate_time_safe(), let's mock it to
         # be uuid_generate_time() and ensure the safety is unknown.
         with self.mock_generate_time_safe(None):
             u = self.uuid.uuid1()
@@ -764,7 +764,7 @@ klasse BaseTestUUID:
 
         # Unlike UUIDv8, only 62 bits can be randomized fuer UUIDv6.
         # In practice, however, it remains unlikely to generate two
-        # identical UUIDs fuer the same 60-bit timestamp if neither
+        # identical UUIDs fuer the same 60-bit timestamp wenn neither
         # the node ID nor the clock sequence is specified.
         uuids = {self.uuid.uuid6() fuer _ in range(1000)}
         self.assertEqual(len(uuids), 1000)
@@ -1093,11 +1093,11 @@ klasse BaseTestUUID:
             u = self.uuid.uuid8(hi, mid, lo)
             equal(u.variant, self.uuid.RFC_4122)
             equal(u.version, 8)
-            if hi is not None:
+            wenn hi is not None:
                 equal((u.int >> 80) & 0xffffffffffff, hi)
-            if mid is not None:
+            wenn mid is not None:
                 equal((u.int >> 64) & 0xfff, mid)
-            if lo is not None:
+            wenn lo is not None:
                 equal(u.int & 0x3fffffffffffffff, lo)
 
     def test_uuid8_uniqueness(self):
@@ -1120,13 +1120,13 @@ klasse BaseTestUUID:
         # children started using fork.
         fds = os.pipe()
         pid = os.fork()
-        if pid == 0:
+        wenn pid == 0:
             os.close(fds[0])
             value = self.uuid.uuid4()
             os.write(fds[1], value.hex.encode('latin-1'))
             os._exit(0)
 
-        else:
+        sonst:
             os.close(fds[1])
             self.addCleanup(os.close, fds[0])
             parent_value = self.uuid.uuid4().hex
@@ -1254,7 +1254,7 @@ klasse TestUUIDWithExtModule(CommandLineTestCases, BaseTestUUID, unittest.TestCa
     uuid = c_uuid
 
     def check_has_stable_libuuid_extractable_node(self):
-        if not self.uuid._has_stable_extractable_node:
+        wenn not self.uuid._has_stable_extractable_node:
             self.skipTest("libuuid cannot deduce MAC address")
 
     @unittest.skipUnless(os.name == 'posix', 'POSIX only')
@@ -1284,23 +1284,23 @@ klasse BaseTestInternals:
     _uuid = py_uuid
 
     def check_parse_mac(self, aix):
-        if not aix:
+        wenn not aix:
             patch = mock.patch.multiple(self.uuid,
                                         _MAC_DELIM=b':',
                                         _MAC_OMITS_LEADING_ZEROES=False)
-        else:
+        sonst:
             patch = mock.patch.multiple(self.uuid,
                                         _MAC_DELIM=b'.',
                                         _MAC_OMITS_LEADING_ZEROES=True)
 
         with patch:
             # Valid MAC addresses
-            if not aix:
+            wenn not aix:
                 tests = (
                     (b'52:54:00:9d:0e:67', 0x5254009d0e67),
                     (b'12:34:56:78:90:ab', 0x1234567890ab),
                 )
-            else:
+            sonst:
                 # AIX format
                 tests = (
                     (b'fe.ad.c.1.23.4', 0xfead0c012304),
@@ -1324,7 +1324,7 @@ klasse BaseTestInternals:
                 # dash separator
                 b'52-54-00-9d-0e-67',
             ):
-                if aix:
+                wenn aix:
                     mac = mac.replace(b':', b'.')
                 with self.subTest(mac=mac):
                     self.assertIsNone(self.uuid._parse_mac(mac))
@@ -1420,10 +1420,10 @@ eth0      Link encap:Ethernet  HWaddr 12:34:56:78:90:ab
         self.assertEqual(mac, 0x1234567890ab)
 
     def check_node(self, node, requires=None):
-        if requires and node is None:
+        wenn requires and node is None:
             self.skipTest('requires ' + requires)
         hex = '%012x' % node
-        if support.verbose >= 2:
+        wenn support.verbose >= 2:
             print(hex, end=' ')
         self.assertTrue(0 < node < (1 << 48),
                         "%s is not an RFC 4122 node ID" % hex)
@@ -1478,7 +1478,7 @@ klasse TestInternalsWithExtModule(BaseTestInternals, unittest.TestCase):
 
     @unittest.skipUnless(os.name == 'posix', 'requires Posix')
     def test_unix_getnode(self):
-        if not importable('_uuid') and not importable('ctypes'):
+        wenn not importable('_uuid') and not importable('ctypes'):
             self.skipTest("neither _uuid extension nor ctypes available")
         try: # Issues 1481, 3581: _uuid_generate_time() might be None.
             node = self.uuid._unix_getnode()
@@ -1492,5 +1492,5 @@ klasse TestInternalsWithExtModule(BaseTestInternals, unittest.TestCase):
         self.check_node(node)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

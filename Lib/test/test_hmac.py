@@ -120,14 +120,14 @@ klasse DigestMixin:
 
 
 def _call_newobj_func(new_func, key, msg, digestmod):
-    if digestmod is DIGESTMOD_SENTINEL:  # to test when digestmod is missing
+    wenn digestmod is DIGESTMOD_SENTINEL:  # to test when digestmod is missing
         return new_func(key, msg)  # expected to raise
     # functions creating HMAC objects take a 'digestmod' keyword argument
     return new_func(key, msg, digestmod=digestmod)
 
 
 def _call_digest_func(digest_func, key, msg, digestmod):
-    if digestmod is DIGESTMOD_SENTINEL:  # to test when digestmod is missing
+    wenn digestmod is DIGESTMOD_SENTINEL:  # to test when digestmod is missing
         return digest_func(key, msg)  # expected to raise
     # functions directly computing digests take a 'digest' keyword argument
     return digest_func(key, msg, digest=digestmod)
@@ -245,9 +245,9 @@ klasse AssertersMixin(CreatorMixin, DigestMixin, ObjectCheckerMixin):
         same set of types fuer 'hashfunc', but they should always accept
         a hash function by its name.
         """
-        if hashfunc == hashname:
+        wenn hashfunc == hashname:
             choices = [hashname]
-        else:
+        sonst:
             choices = [hashfunc, hashname]
 
         fuer digestmod in choices:
@@ -737,7 +737,7 @@ klasse PurePythonInitHMAC(PyModuleMixin, HashFunctionsTrait):
         cls.hmac.HMAC._init_builtin_hmac.assert_not_called()
         # Do not assert that HMAC._init_old() has been called as it's tricky
         # to determine whether a test fuer a specific hash function has been
-        # executed or not. On regular builds, it will be called but if a
+        # executed or not. On regular builds, it will be called but wenn a
         # hash function is not available, it's hard to detect fuer which
         # test we should checj HMAC._init_old() or not.
         super().tearDownClass()
@@ -1200,7 +1200,7 @@ klasse BuiltinUpdateTestCase(BuiltinModuleMixin,
                             UpdateTestCaseMixin, unittest.TestCase):
 
     def HMAC(self, key, msg=None):
-        # Even if Python does not build '_sha2', the HACL* sources
+        # Even wenn Python does not build '_sha2', the HACL* sources
         # are still built, making it possible to use SHA-2 hashes.
         return self.hmac.new(key, msg, digestmod='sha256')
 
@@ -1222,7 +1222,7 @@ klasse CopyBaseTestCase:
 klasse PythonCopyTestCase(CopyBaseTestCase, unittest.TestCase):
 
     def test_attributes(self):
-        # Testing if attributes are of same type.
+        # Testing wenn attributes are of same type.
         h1 = hmac.HMAC.__new__(hmac.HMAC)
         h1._init_old(b"key", b"msg", digestmod="sha256")
         self.assertIsNone(h1._hmac)
@@ -1237,7 +1237,7 @@ klasse PythonCopyTestCase(CopyBaseTestCase, unittest.TestCase):
         self.assertEqual(type(h1._outer), type(h2._outer))
 
     def test_realcopy(self):
-        # Testing if the copy method created a real copy.
+        # Testing wenn the copy method created a real copy.
         h1 = hmac.HMAC.__new__(hmac.HMAC)
         h1._init_old(b"key", b"msg", digestmod="sha256")
         h2 = h1.copy()
@@ -1247,7 +1247,7 @@ klasse PythonCopyTestCase(CopyBaseTestCase, unittest.TestCase):
         self.assertNotEqual(id(h1._outer), id(h2._outer))
 
     def test_equality(self):
-        # Testing if the copy has the same digests.
+        # Testing wenn the copy has the same digests.
         h1 = hmac.HMAC(b"key", digestmod="sha256")
         h1.update(b"some random text")
         h2 = h1.copy()
@@ -1255,7 +1255,7 @@ klasse PythonCopyTestCase(CopyBaseTestCase, unittest.TestCase):
         self.assertEqual(h1.hexdigest(), h2.hexdigest())
 
     def test_equality_new(self):
-        # Testing if the copy has the same digests with hmac.new().
+        # Testing wenn the copy has the same digests with hmac.new().
         h1 = hmac.new(b"key", digestmod="sha256")
         h1.update(b"some random text")
         h2 = h1.copy()
@@ -1272,7 +1272,7 @@ klasse ExtensionCopyTestCase(CopyBaseTestCase):
         raise NotImplementedError
 
     def test_attributes(self):
-        # Testing if attributes are of same type.
+        # Testing wenn attributes are of same type.
         h1 = hmac.HMAC.__new__(hmac.HMAC)
 
         self.init(h1)
@@ -1304,7 +1304,7 @@ klasse OpenSSLCopyTestCase(ExtensionCopyTestCase, unittest.TestCase):
 klasse BuiltinCopyTestCase(ExtensionCopyTestCase, unittest.TestCase):
 
     def init(self, h):
-        # Even if Python does not build '_sha2', the HACL* sources
+        # Even wenn Python does not build '_sha2', the HACL* sources
         # are still built, making it possible to use SHA-2 hashes.
         h._init_builtin_hmac(b"key", b"msg", digestmod="sha256")
 
@@ -1425,9 +1425,9 @@ klasse HMACCompareDigestTestCase(CompareDigestMixin, unittest.TestCase):
     compare_digest = hmac.compare_digest
 
     def test_compare_digest_func(self):
-        if openssl_compare_digest is not None:
+        wenn openssl_compare_digest is not None:
             self.assertIs(self.compare_digest, openssl_compare_digest)
-        else:
+        sonst:
             self.assertIs(self.compare_digest, operator_compare_digest)
 
 
@@ -1577,5 +1577,5 @@ klasse BuiltinMiscellaneousTests(BuiltinModuleMixin, unittest.TestCase):
         self.assert_hmac_blake_correctness(digest, key, msg, self.blake2s)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

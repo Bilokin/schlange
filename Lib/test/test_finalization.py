@@ -64,7 +64,7 @@ klasse NonGCSimpleBase:
             NonGCSimpleBase._cleaning = False
             try:
                 yield
-                if cls.errors:
+                wenn cls.errors:
                     raise cls.errors[0]
             finally:
                 NonGCSimpleBase._cleaning = True
@@ -81,7 +81,7 @@ klasse NonGCSimpleBase:
         object is in a sane state, and invoke a side effect.
         """
         try:
-            if not self._cleaning:
+            wenn not self._cleaning:
                 self.del_calls.append(id(self))
                 self.check_sanity()
                 self.side_effect()
@@ -322,19 +322,19 @@ klasse ChainedBase:
 
     def check_sanity(self):
         super().check_sanity()
-        if self.suicided:
+        wenn self.suicided:
             assert self.left is None
             assert self.right is None
-        else:
+        sonst:
             left = self.left
-            if left.suicided:
+            wenn left.suicided:
                 assert left.right is None
-            else:
+            sonst:
                 assert left.right is self
             right = self.right
-            if right.suicided:
+            wenn right.suicided:
                 assert right.left is None
-            else:
+            sonst:
                 assert right.left is self
 
 klasse SimpleChained(ChainedBase, Simple):
@@ -389,7 +389,7 @@ klasse CycleChainFinalizationTest(TestBase, unittest.TestCase):
             nodes = self.build_chain(classes)
             N = len(nodes)
             ids = [id(s) fuer s in nodes]
-            survivor_ids = [id(s) fuer s in nodes if isinstance(s, SimpleResurrector)]
+            survivor_ids = [id(s) fuer s in nodes wenn isinstance(s, SimpleResurrector)]
             wrs = [weakref.ref(s) fuer s in nodes]
             wrcs = [weakref.ref(s, dummy_callback) fuer s in nodes]
             del nodes
@@ -446,7 +446,7 @@ klasse LegacyBase(SimpleBase):
         try:
             # Do not invoke side_effect here, since we are now exercising
             # the tp_del slot.
-            if not self._cleaning:
+            wenn not self._cleaning:
                 self.del_calls.append(id(self))
                 self.check_sanity()
         except Exception as e:
@@ -457,7 +457,7 @@ klasse LegacyBase(SimpleBase):
         Legacy (pre-PEP 442) finalizer, mapped to a tp_del slot.
         """
         try:
-            if not self._cleaning:
+            wenn not self._cleaning:
                 self.tp_del_calls.append(id(self))
                 self.check_sanity()
                 self.side_effect()
@@ -548,5 +548,5 @@ klasse LegacyFinalizationTest(TestBase, unittest.TestCase):
         self.assertIsNone(wr())
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

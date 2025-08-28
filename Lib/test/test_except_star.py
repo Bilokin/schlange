@@ -71,7 +71,7 @@ klasse TestBreakContinueReturnInExceptStarBlock(unittest.TestCase):
                 try:
                     pass
                 except* Exception as e:
-                    if i == 2:
+                    wenn i == 2:
                         break
             """)
 
@@ -81,7 +81,7 @@ klasse TestBreakContinueReturnInExceptStarBlock(unittest.TestCase):
                 try:
                     pass
                 except* Exception as e:
-                    if i == 2:
+                    wenn i == 2:
                         break
                 finally:
                     pass
@@ -105,7 +105,7 @@ klasse TestBreakContinueReturnInExceptStarBlock(unittest.TestCase):
                 try:
                     pass
                 except* Exception as e:
-                    if i == 2:
+                    wenn i == 2:
                         continue
             """)
 
@@ -115,7 +115,7 @@ klasse TestBreakContinueReturnInExceptStarBlock(unittest.TestCase):
                 try:
                     pass
                 except* Exception as e:
-                    if i == 2:
+                    wenn i == 2:
                         continue
                 finally:
                     pass
@@ -149,9 +149,9 @@ klasse TestBreakContinueReturnInExceptStarBlock(unittest.TestCase):
         except* Exception as e:
             count = 0
             fuer i in range(5):
-                if i == 0:
+                wenn i == 0:
                     continue
-                if i == 4:
+                wenn i == 4:
                     break
                 count += 1
 
@@ -174,17 +174,17 @@ klasse TestBreakContinueReturnInExceptStarBlock(unittest.TestCase):
 
 klasse ExceptStarTest(ExceptionIsLikeMixin, unittest.TestCase):
     def assertMetadataEqual(self, e1, e2):
-        if e1 is None or e2 is None:
+        wenn e1 is None or e2 is None:
             self.assertTrue(e1 is None and e2 is None)
-        else:
+        sonst:
             self.assertEqual(e1.__context__, e2.__context__)
             self.assertEqual(e1.__cause__, e2.__cause__)
             self.assertEqual(e1.__traceback__, e2.__traceback__)
 
     def assertMetadataNotEqual(self, e1, e2):
-        if e1 is None or e2 is None:
+        wenn e1 is None or e2 is None:
             self.assertNotEqual(e1, e2)
-        else:
+        sonst:
             return not (e1.__context__ == e2.__context__
                         and e1.__cause__ == e2.__cause__
                         and e1.__traceback__ == e2.__traceback__)
@@ -216,8 +216,8 @@ klasse TestExceptStarSplitSemantics(ExceptStarTest):
                 raise exc
             except* T:
                 sys_exception = match = sys.exception()
-            else:
-                if rest_template:
+            sonst:
+                wenn rest_template:
                     self.fail("Exception not raised")
         except BaseException as e:
             rest = e
@@ -380,7 +380,7 @@ klasse TestExceptStarSplitSemantics(ExceptStarTest):
         except* OSError as e:
             self.assertExceptionIsLike(e,
                 ExceptionGroup("mmn", [OSError("os")]))
-        else:
+        sonst:
             self.fail("Exception not raised")
 
     def test_multiple_matches_unnamed(self):
@@ -394,7 +394,7 @@ klasse TestExceptStarSplitSemantics(ExceptStarTest):
             e = sys.exception()
             self.assertExceptionIsLike(e,
                 ExceptionGroup("mmu", [OSError("os")]))
-        else:
+        sonst:
             self.fail("Exception not raised")
 
     def test_first_match_wins_named(self):
@@ -405,7 +405,7 @@ klasse TestExceptStarSplitSemantics(ExceptStarTest):
                 ExceptionGroup("fst", [BlockingIOError("io")]))
         except* BlockingIOError:
             self.fail("Should have been matched as OSError")
-        else:
+        sonst:
             self.fail("Exception not raised")
 
     def test_first_match_wins_unnamed(self):
@@ -417,7 +417,7 @@ klasse TestExceptStarSplitSemantics(ExceptStarTest):
                 ExceptionGroup("fstu", [BlockingIOError("io")]))
         except* BlockingIOError:
             pass
-        else:
+        sonst:
             self.fail("Exception not raised")
 
     def test_nested_except_stars(self):
@@ -428,12 +428,12 @@ klasse TestExceptStarSplitSemantics(ExceptStarTest):
                 raise ExceptionGroup("n", [ValueError("io")])
             except* ValueError:
                 pass
-            else:
+            sonst:
                 self.fail("Exception not raised")
             e = sys.exception()
             self.assertExceptionIsLike(e,
                  ExceptionGroup("n", [BlockingIOError("io")]))
-        else:
+        sonst:
             self.fail("Exception not raised")
 
     def test_nested_in_loop(self):
@@ -442,7 +442,7 @@ klasse TestExceptStarSplitSemantics(ExceptStarTest):
                 raise ExceptionGroup("nl", [BlockingIOError("io")])
             except* BlockingIOError:
                 pass
-            else:
+            sonst:
                 self.fail("Exception not raised")
 
 
@@ -1216,5 +1216,5 @@ klasse TestExceptStar_WeirdExceptionGroupSubclass(ExceptStarTest):
                                BadEG("nested", [OSError(4)])]))
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

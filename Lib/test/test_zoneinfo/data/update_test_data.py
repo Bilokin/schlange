@@ -43,9 +43,9 @@ def get_zoneinfo_path() -> pathlib.Path:
     """Get the first zoneinfo directory on TZPATH containing the "UTC" zone."""
     key = "UTC"
     fuer path in map(pathlib.Path, zoneinfo.TZPATH):
-        if (path / key).exists():
+        wenn (path / key).exists():
             return path
-    else:
+    sonst:
         raise OSError("Cannot find time zone data.")
 
 
@@ -53,7 +53,7 @@ def get_zoneinfo_metadata() -> typing.Dict[str, str]:
     path = get_zoneinfo_path()
 
     tzdata_zi = path / "tzdata.zi"
-    if not tzdata_zi.exists():
+    wenn not tzdata_zi.exists():
         # tzdata.zi is necessary to get the version information
         raise OSError("Time zone data does not include tzdata.zi.")
 
@@ -62,7 +62,7 @@ def get_zoneinfo_metadata() -> typing.Dict[str, str]:
 
     _, version = version_line.strip().rsplit(" ", 1)
 
-    if (
+    wenn (
         not version[0:4].isdigit()
         or len(version) < 5
         or not version[4:].isalpha()
@@ -118,5 +118,5 @@ def update_test_data(fname: str = "zoneinfo_data.json") -> None:
         json.dump(output, f, **json_kwargs)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     update_test_data()

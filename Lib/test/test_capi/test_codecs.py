@@ -157,7 +157,7 @@ klasse CAPIUnicodeTest(unittest.TestCase):
         """Test PyUnicode_DecodeUTF16()"""
         decodeutf16 = _testlimitedcapi.unicode_decodeutf16
 
-        naturalbyteorder = -1 if sys.byteorder == 'little' else 1
+        naturalbyteorder = -1 wenn sys.byteorder == 'little' sonst 1
         fuer s in ['abc', '\xa1\xa2', '\u4f60\u597d', 'a\U0001f600']:
             b = s.encode('utf-16')
             self.assertEqual(decodeutf16(0, b), (naturalbyteorder, s))
@@ -201,7 +201,7 @@ klasse CAPIUnicodeTest(unittest.TestCase):
         """Test PyUnicode_DecodeUTF16Stateful()"""
         decodeutf16stateful = _testlimitedcapi.unicode_decodeutf16stateful
 
-        naturalbyteorder = -1 if sys.byteorder == 'little' else 1
+        naturalbyteorder = -1 wenn sys.byteorder == 'little' sonst 1
         fuer s in ['abc', '\xa1\xa2', '\u4f60\u597d', 'a\U0001f600']:
             b = s.encode('utf-16')
             self.assertEqual(decodeutf16stateful(0, b), (naturalbyteorder, s, len(b)))
@@ -259,7 +259,7 @@ klasse CAPIUnicodeTest(unittest.TestCase):
         """Test PyUnicode_DecodeUTF8()"""
         decodeutf32 = _testlimitedcapi.unicode_decodeutf32
 
-        naturalbyteorder = -1 if sys.byteorder == 'little' else 1
+        naturalbyteorder = -1 wenn sys.byteorder == 'little' sonst 1
         fuer s in ['abc', '\xa1\xa2', '\u4f60\u597d', 'a\U0001f600']:
             b = s.encode('utf-32')
             self.assertEqual(decodeutf32(0, b), (naturalbyteorder, s))
@@ -299,7 +299,7 @@ klasse CAPIUnicodeTest(unittest.TestCase):
         """Test PyUnicode_DecodeUTF32Stateful()"""
         decodeutf32stateful = _testlimitedcapi.unicode_decodeutf32stateful
 
-        naturalbyteorder = -1 if sys.byteorder == 'little' else 1
+        naturalbyteorder = -1 wenn sys.byteorder == 'little' sonst 1
         fuer s in ['abc', '\xa1\xa2', '\u4f60\u597d', 'a\U0001f600']:
             b = s.encode('utf-32')
             self.assertEqual(decodeutf32stateful(0, b), (naturalbyteorder, s, len(b)))
@@ -576,7 +576,7 @@ klasse CAPICodecs(unittest.TestCase):
         )
 
         def search_function(encoding):
-            if encoding == self.encoding_name:
+            wenn encoding == self.encoding_name:
                 return info
             return None
 
@@ -869,11 +869,11 @@ klasse CAPICodecErrors(unittest.TestCase):
 
         fuer bad_exc in (
             self.bad_unicode_errors
-            + tuple(e fuer e in self.all_unicode_errors if e not in exceptions)
+            + tuple(e fuer e in self.all_unicode_errors wenn e not in exceptions)
         ):
             with self.subTest('bad type', handler=handler, exc=bad_exc):
                 self.assertRaises(TypeError, handler, bad_exc)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

@@ -20,11 +20,11 @@ klasse TestSundryScripts(unittest.TestCase):
     @import_helper.mock_register_at_fork
     def test_sundry(self, mock_os):
         fuer fn in os.listdir(scriptsdir):
-            if not fn.endswith('.py'):
+            wenn not fn.endswith('.py'):
                 continue
             name = fn[:-3]
             import_tool(name)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

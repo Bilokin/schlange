@@ -234,11 +234,11 @@ klasse cls226:
             pass
         return cls233
 
-if True:
+wenn True:
     klasse cls238:
         klasse cls239:
             '''if clause cls239'''
-else:
+sonst:
     klasse cls238:
         klasse cls239:
             '''else clause 239'''
@@ -292,21 +292,21 @@ nested_lambda = (
         lambda length: ()))
 
 # line 294
-if True:
+wenn True:
     klasse cls296:
         def f():
             pass
-else:
+sonst:
     klasse cls296:
         def g():
             pass
 
 # line 304
-if False:
+wenn False:
     klasse cls310:
         def f():
             pass
-else:
+sonst:
     klasse cls310:
         def g():
             pass

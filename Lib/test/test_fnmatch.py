@@ -14,11 +14,11 @@ NORMSEP = os.path.normcase('\\') == os.path.normcase('/')
 klasse FnmatchTestCase(unittest.TestCase):
 
     def check_match(self, filename, pattern, should_match=True, fn=fnmatch):
-        if should_match:
+        wenn should_match:
             self.assertTrue(fn(filename, pattern),
                          "expected %r to match pattern %r"
                          % (filename, pattern))
-        else:
+        sonst:
             self.assertFalse(fn(filename, pattern),
                          "expected %r not to match pattern %r"
                          % (filename, pattern))
@@ -53,7 +53,7 @@ klasse FnmatchTestCase(unittest.TestCase):
     def test_slow_fnmatch(self):
         check = self.check_match
         check('a' * 50, '*a*a*a*a*a*a*a*a*a*a')
-        # The next "takes forever" if the regexp translation is
+        # The next "takes forever" wenn the regexp translation is
         # straightforward.  See bpo-40480.
         check('a' * 50 + 'b', '*a*a*a*a*a*a*a*a*a*a', False)
 
@@ -143,7 +143,7 @@ klasse FnmatchTestCase(unittest.TestCase):
             check(c, '[!-#]', c not in '-#')
             check(c, '[!--.]', c not in '-.')
             check(c, '[^-`]', c in '^_`')
-            if not (NORMSEP and c == '/'):
+            wenn not (NORMSEP and c == '/'):
                 check(c, '[[-^]', c in r'[\]^')
                 check(c, r'[\-^]', c in r'\]^')
             check(c, '[b-]', c in '-b')
@@ -159,7 +159,7 @@ klasse FnmatchTestCase(unittest.TestCase):
             check(c, '[d-bx-z]', c in 'xyz')
             check(c, '[!d-bx-z]', c not in 'xyz')
             check(c, '[d-b^-`]', c in '^_`')
-            if not (NORMSEP and c == '/'):
+            wenn not (NORMSEP and c == '/'):
                 check(c, '[d-b[-^]', c in r'[\]^')
 
     def test_sep_in_char_set(self):
@@ -330,15 +330,15 @@ klasse FilterTestCase(unittest.TestCase):
 
     def test_case(self):
         self.assertEqual(filter(['Test.py', 'Test.rb', 'Test.PL'], '*.p*'),
-                         ['Test.py', 'Test.PL'] if IGNORECASE else ['Test.py'])
+                         ['Test.py', 'Test.PL'] wenn IGNORECASE sonst ['Test.py'])
         self.assertEqual(filter(['Test.py', 'Test.rb', 'Test.PL'], '*.P*'),
-                         ['Test.py', 'Test.PL'] if IGNORECASE else ['Test.PL'])
+                         ['Test.py', 'Test.PL'] wenn IGNORECASE sonst ['Test.PL'])
 
     def test_sep(self):
         self.assertEqual(filter(['usr/bin', 'usr', 'usr\\lib'], 'usr/*'),
-                         ['usr/bin', 'usr\\lib'] if NORMSEP else ['usr/bin'])
+                         ['usr/bin', 'usr\\lib'] wenn NORMSEP sonst ['usr/bin'])
         self.assertEqual(filter(['usr/bin', 'usr', 'usr\\lib'], 'usr\\*'),
-                         ['usr/bin', 'usr\\lib'] if NORMSEP else ['usr\\lib'])
+                         ['usr/bin', 'usr\\lib'] wenn NORMSEP sonst ['usr\\lib'])
 
 
 klasse FilterFalseTestCase(unittest.TestCase):
@@ -355,16 +355,16 @@ klasse FilterFalseTestCase(unittest.TestCase):
 
     def test_case(self):
         self.assertEqual(filterfalse(['Test.py', 'Test.rb', 'Test.PL'], '*.p*'),
-                         ['Test.rb'] if IGNORECASE else ['Test.rb', 'Test.PL'])
+                         ['Test.rb'] wenn IGNORECASE sonst ['Test.rb', 'Test.PL'])
         self.assertEqual(filterfalse(['Test.py', 'Test.rb', 'Test.PL'], '*.P*'),
-                         ['Test.rb'] if IGNORECASE else ['Test.py', 'Test.rb',])
+                         ['Test.rb'] wenn IGNORECASE sonst ['Test.py', 'Test.rb',])
 
     def test_sep(self):
         self.assertEqual(filterfalse(['usr/bin', 'usr', 'usr\\lib'], 'usr/*'),
-                         ['usr'] if NORMSEP else ['usr', 'usr\\lib'])
+                         ['usr'] wenn NORMSEP sonst ['usr', 'usr\\lib'])
         self.assertEqual(filterfalse(['usr/bin', 'usr', 'usr\\lib'], 'usr\\*'),
-                         ['usr'] if NORMSEP else ['usr/bin', 'usr'])
+                         ['usr'] wenn NORMSEP sonst ['usr/bin', 'usr'])
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

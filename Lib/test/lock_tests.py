@@ -53,7 +53,7 @@ klasse Bunch(object):
         finally:
             self.finished.append(tid)
             fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
-                if self._can_exit:
+                wenn self._can_exit:
                     break
 
     def __enter__(self):
@@ -68,14 +68,14 @@ klasse Bunch(object):
             raise
 
         fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
-            if len(self.started) >= self.nthread:
+            wenn len(self.started) >= self.nthread:
                 break
 
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):
         fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
-            if len(self.finished) >= self.nthread:
+            wenn len(self.finished) >= self.nthread:
                 break
 
         # Wait until threads completely exit according to _thread._count()
@@ -84,7 +84,7 @@ klasse Bunch(object):
         # Break reference cycle
         exceptions = self.exceptions
         self.exceptions = None
-        if exceptions:
+        wenn exceptions:
             raise ExceptionGroup(f"{self.func} threads raised exceptions",
                                  exceptions)
 
@@ -116,7 +116,7 @@ klasse BaseLockTests(BaseTestCase):
 
     def wait_phase(self, phase, expected):
         fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
-            if len(phase) >= expected:
+            wenn len(phase) >= expected:
                 break
         self.assertEqual(len(phase), expected)
 
@@ -193,7 +193,7 @@ klasse BaseLockTests(BaseTestCase):
 
         def with_lock(err=None):
             with lock:
-                if err is not None:
+                wenn err is not None:
                     raise err
 
         # Acquire the lock, do nothing, with releases the lock
@@ -209,7 +209,7 @@ klasse BaseLockTests(BaseTestCase):
             with lock:
                 raise TypeError
 
-        # Check that the lock is unacquired even if after an exception
+        # Check that the lock is unacquired even wenn after an exception
         # was raised in the previous "with lock:" block
         with Bunch(f, 1):
             pass
@@ -229,7 +229,7 @@ klasse BaseLockTests(BaseTestCase):
 
     def test_timeout(self):
         lock = self.locktype()
-        # Can't set timeout if not blocking
+        # Can't set timeout wenn not blocking
         self.assertRaises(ValueError, lock.acquire, False, 1)
         # Invalid timeout values
         self.assertRaises(ValueError, lock.acquire, timeout=-100)
@@ -666,7 +666,7 @@ klasse ConditionTests(BaseTestCase):
             # first wait, to ensure all workers settle into cond.wait() before
             # we continue. See issues #8799 and #30727.
             fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
-                if len(ready) >= N:
+                wenn len(ready) >= N:
                     break
 
             ready.clear()
@@ -682,7 +682,7 @@ klasse ConditionTests(BaseTestCase):
             phase_num = 1
             cond.release()
             fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
-                if len(results1) >= count1:
+                wenn len(results1) >= count1:
                     break
 
             self.assertEqual(results1, [(True, 1)] * count1)
@@ -690,7 +690,7 @@ klasse ConditionTests(BaseTestCase):
 
             # Wait until awaken workers are blocked on cond.wait()
             fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
-                if len(ready) >= count1 :
+                wenn len(ready) >= count1 :
                     break
 
             # Notify 5 threads: they might be in their first or second wait
@@ -702,7 +702,7 @@ klasse ConditionTests(BaseTestCase):
             phase_num = 2
             cond.release()
             fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
-                if len(results1) + len(results2) >= (N + count1):
+                wenn len(results1) + len(results2) >= (N + count1):
                     break
 
             count2 = N - count1
@@ -711,7 +711,7 @@ klasse ConditionTests(BaseTestCase):
 
             # Make sure all workers settle into cond.wait()
             fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
-                if len(ready) >= N:
+                wenn len(ready) >= N:
                     break
 
             # Notify all threads: they are all in their second wait
@@ -723,7 +723,7 @@ klasse ConditionTests(BaseTestCase):
             phase_num = 3
             cond.release()
             fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
-                if len(results2) >= N:
+                wenn len(results2) >= N:
                     break
             self.assertEqual(results1, [(True, 1)] * count1 + [(True, 2)] * count2)
             self.assertEqual(results2, [(True, 2)] * count1 + [(True, 3)] * count2)
@@ -754,7 +754,7 @@ klasse ConditionTests(BaseTestCase):
         fuer dt, result in results:
             self.assertTimeout(dt, timeout)
             # Note that conceptually (that"s the condition variable protocol)
-            # a wait() may succeed even if no one notifies us and before any
+            # a wait() may succeed even wenn no one notifies us and before any
             # timeout occurs.  Spurious wakeups can occur.
             # This makes it hard to verify the result value.
             # In practice, this implementation has no spurious wakeups.
@@ -843,7 +843,7 @@ klasse BaseSemaphoreTests(BaseTestCase):
 
         def wait_count(count):
             fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
-                if len(results1) + len(results2) >= count:
+                wenn len(results1) + len(results2) >= count:
                     break
 
         N = 10
@@ -897,7 +897,7 @@ klasse BaseSemaphoreTests(BaseTestCase):
 
         def wait_count(count):
             fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
-                if len(results1) + len(results2) >= count:
+                wenn len(results1) + len(results2) >= count:
                     break
 
         with Bunch(func, 10):
@@ -986,7 +986,7 @@ klasse BaseSemaphoreTests(BaseTestCase):
                 sem.release()
                 with sem:
                     self.assertFalse(sem.acquire(False))
-                    if err:
+                    wenn err:
                         raise err
         _with()
         self.assertTrue(sem.acquire(False))
@@ -1122,7 +1122,7 @@ klasse BarrierTests(BaseTestCase):
         def f():
             try:
                 i = self.barrier.wait()
-                if i == self.N//2:
+                wenn i == self.N//2:
                     raise RuntimeError
                 self.barrier.wait()
                 results1.append(True)
@@ -1146,13 +1146,13 @@ klasse BarrierTests(BaseTestCase):
         results3 = []
         def f():
             i = self.barrier.wait()
-            if i == self.N//2:
+            wenn i == self.N//2:
                 # Wait until the other threads are all in the barrier.
                 fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
-                    if self.barrier.n_waiting >= (self.N - 1):
+                    wenn self.barrier.n_waiting >= (self.N - 1):
                         break
                 self.barrier.reset()
-            else:
+            sonst:
                 try:
                     self.barrier.wait()
                     results1.append(True)
@@ -1179,7 +1179,7 @@ klasse BarrierTests(BaseTestCase):
         def f():
             try:
                 i = self.barrier.wait()
-                if i == self.N//2:
+                wenn i == self.N//2:
                     raise RuntimeError
                 self.barrier.wait()
                 results1.append(True)
@@ -1191,7 +1191,7 @@ klasse BarrierTests(BaseTestCase):
             # Synchronize and reset the barrier.  Must synchronize first so
             # that everyone has left it when we reset, and after so that no
             # one enters it before the reset.
-            if barrier2.wait() == self.N//2:
+            wenn barrier2.wait() == self.N//2:
                 self.barrier.reset()
             barrier2.wait()
             self.barrier.wait()
@@ -1208,7 +1208,7 @@ klasse BarrierTests(BaseTestCase):
         """
         def f():
             i = self.barrier.wait()
-            if i == self.N // 2:
+            wenn i == self.N // 2:
                 # One thread is late!
                 time.sleep(self.defaultTimeout / 2)
             # Default timeout is 2.0, so this is shorter.
@@ -1248,7 +1248,7 @@ klasse BarrierTests(BaseTestCase):
         with Bunch(f, N):
             # Threads blocked on barrier.wait()
             fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
-                if barrier.n_waiting >= N:
+                wenn barrier.n_waiting >= N:
                     break
             self.assertRegex(repr(barrier),
                              r"<\w+\.Barrier at .*: waiters=2/3>")

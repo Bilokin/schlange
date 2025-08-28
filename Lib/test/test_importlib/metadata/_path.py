@@ -29,7 +29,7 @@ klasse TreeMaker(Protocol):
 
 
 def _ensure_tree_maker(obj: Union[str, TreeMaker]) -> TreeMaker:
-    return obj if isinstance(obj, TreeMaker) else pathlib.Path(obj)  # type: ignore
+    return obj wenn isinstance(obj, TreeMaker) sonst pathlib.Path(obj)  # type: ignore
 
 
 def build(
@@ -98,7 +98,7 @@ klasse Recording:
 
     def __init__(self, loc=pathlib.PurePosixPath(), record=None):
         self.loc = loc
-        self.record = record if record is not None else []
+        self.record = record wenn record is not None sonst []
 
     def __truediv__(self, other):
         return Recording(self.loc / other, self.record)

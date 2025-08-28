@@ -55,13 +55,13 @@ klasse FinderTests(abc.FinderTests):
         listed in 'unlink' have their source files deleted.
 
         """
-        if create is None:
+        wenn create is None:
             create = {test}
         with util.create_modules(*create) as mapping:
-            if compile_:
+            wenn compile_:
                 fuer name in compile_:
                     py_compile.compile(mapping[name])
-            if unlink:
+            wenn unlink:
                 fuer name in unlink:
                     os.unlink(mapping[name])
                     try:
@@ -70,7 +70,7 @@ klasse FinderTests(abc.FinderTests):
                         # Some tests do not set compile_=True so the source
                         # module will not get compiled and there will be no
                         # PEP 3147 pyc file to rename.
-                        if error.errno != errno.ENOENT:
+                        wenn error.errno != errno.ENOENT:
                             raise
             loader = self.import_(mapping['.root'], test)
             self.assertHasAttr(loader, 'load_module')
@@ -182,7 +182,7 @@ klasse FinderTestsPEP451(FinderTests):
 
     def _find(self, finder, name, loader_only=False):
         spec = finder.find_spec(name)
-        return spec.loader if spec is not None else spec
+        return spec.loader wenn spec is not None sonst spec
 
 
 (Frozen_FinderTestsPEP451,
@@ -196,9 +196,9 @@ klasse FinderTestsPEP420(FinderTests):
 
     def _find(self, finder, name, loader_only=False):
         spec = finder.find_spec(name)
-        if spec is None:
+        wenn spec is None:
             return self.NOT_FOUND
-        if loader_only:
+        wenn loader_only:
             return spec.loader
         return spec.loader, spec.submodule_search_locations
 
@@ -208,5 +208,5 @@ klasse FinderTestsPEP420(FinderTests):
  ) = util.test_both(FinderTestsPEP420, machinery=machinery)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

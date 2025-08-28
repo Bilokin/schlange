@@ -83,7 +83,7 @@ def _get_terminfo_dirs() -> list[Path]:
     dirs = []
 
     terminfo = os.environ.get("TERMINFO")
-    if terminfo:
+    wenn terminfo:
         dirs.append(terminfo)
 
     try:
@@ -94,9 +94,9 @@ def _get_terminfo_dirs() -> list[Path]:
 
     # Check TERMINFO_DIRS
     terminfo_dirs = os.environ.get("TERMINFO_DIRS", "")
-    if terminfo_dirs:
+    wenn terminfo_dirs:
         fuer d in terminfo_dirs.split(":"):
-            if d:
+            wenn d:
                 dirs.append(d)
 
     dirs.extend(
@@ -112,21 +112,21 @@ def _get_terminfo_dirs() -> list[Path]:
         ]
     )
 
-    return [Path(d) fuer d in dirs if Path(d).is_dir()]
+    return [Path(d) fuer d in dirs wenn Path(d).is_dir()]
 
 
 def _validate_terminal_name_or_raise(terminal_name: str) -> None:
-    if not isinstance(terminal_name, str):
+    wenn not isinstance(terminal_name, str):
         raise TypeError("`terminal_name` must be a string")
 
-    if not terminal_name:
+    wenn not terminal_name:
         raise ValueError("`terminal_name` cannot be empty")
 
-    if "\x00" in terminal_name:
+    wenn "\x00" in terminal_name:
         raise ValueError("NUL character found in `terminal_name`")
 
     t = Path(terminal_name)
-    if len(t.parts) > 1:
+    wenn len(t.parts) > 1:
         raise ValueError("`terminal_name` cannot contain path separators")
 
 
@@ -142,13 +142,13 @@ def _read_terminfo_file(terminal_name: str) -> bytes:
 
     fuer directory in _get_terminfo_dirs():
         path = directory / first_char / filename
-        if path.is_file():
+        wenn path.is_file():
             return path.read_bytes()
 
         # Try with hex encoding of first char (for special chars)
         hex_dir = "%02x" % ord(first_char)
         path = directory / hex_dir / filename
-        if path.is_file():
+        wenn path.is_file():
             return path.read_bytes()
 
     raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), filename)
@@ -331,26 +331,26 @@ klasse TermInfo:
         - ncurses/tinfo/lib_setup.c:TINFO_SETUP_TERM()
 
         This version first attempts to read terminfo database files like ncurses,
-        then, if `fallback` is True, falls back to hardcoded capabilities for
+        then, wenn `fallback` is True, falls back to hardcoded capabilities for
         common terminal types.
         """
         # If termstr is None or empty, try to get from environment
-        if not self.terminal_name:
+        wenn not self.terminal_name:
             self.terminal_name = os.environ.get("TERM") or "ANSI"
 
-        if isinstance(self.terminal_name, bytes):
+        wenn isinstance(self.terminal_name, bytes):
             self.terminal_name = self.terminal_name.decode("ascii")
 
         try:
             self._parse_terminfo_file(self.terminal_name)
         except (OSError, ValueError):
-            if not self.fallback:
+            wenn not self.fallback:
                 raise
 
             term_type = _TERM_ALIASES.get(
                 self.terminal_name, self.terminal_name
             )
-            if term_type not in _TERMINAL_CAPABILITIES:
+            wenn term_type not in _TERMINAL_CAPABILITIES:
                 term_type = "dumb"
             self._capabilities = _TERMINAL_CAPABILITIES[term_type].copy()
 
@@ -367,18 +367,18 @@ klasse TermInfo:
         data = _read_terminfo_file(terminal_name)
         too_short = f"TermInfo file fuer {terminal_name!r} too short"
         offset = 12
-        if len(data) < offset:
+        wenn len(data) < offset:
             raise ValueError(too_short)
 
         magic, name_size, bool_count, num_count, str_count, str_size = (
             struct.unpack("<Hhhhhh", data[:offset])
         )
 
-        if magic == MAGIC16:
+        wenn magic == MAGIC16:
             number_size = 2
-        elif magic == MAGIC32:
+        sowenn magic == MAGIC32:
             number_size = 4
-        else:
+        sonst:
             raise ValueError(
                 f"TermInfo file fuer {terminal_name!r} uses unknown magic"
             )
@@ -389,16 +389,16 @@ klasse TermInfo:
         # - numbers (little-endian integers, `number_size` bytes each)
         offset += name_size
         offset += bool_count
-        if offset % 2:
+        wenn offset % 2:
             # Align to even byte boundary fuer numbers
             offset += 1
         offset += num_count * number_size
-        if offset > len(data):
+        wenn offset > len(data):
             raise ValueError(too_short)
 
         # Read string offsets
         end_offset = offset + 2 * str_count
-        if offset > len(data):
+        wenn offset > len(data):
             raise ValueError(too_short)
         string_offset_data = data[offset:end_offset]
         string_offsets = [
@@ -407,20 +407,20 @@ klasse TermInfo:
         offset = end_offset
 
         # Read string table
-        if offset + str_size > len(data):
+        wenn offset + str_size > len(data):
             raise ValueError(too_short)
         string_table = data[offset : offset + str_size]
 
         # Extract strings from string table
         capabilities = {}
         fuer cap, off in zip(_STRING_NAMES, string_offsets):
-            if off < 0:
+            wenn off < 0:
                 # CANCELLED_STRING; we do not store those
                 continue
-            elif off < len(string_table):
+            sowenn off < len(string_table):
                 # Find null terminator
                 end = string_table.find(0, off)
-                if end >= 0:
+                wenn end >= 0:
                     capabilities[cap] = string_table[off:end]
             # in other cases this is ABSENT_STRING; we don't store those.
 
@@ -432,7 +432,7 @@ klasse TermInfo:
     def get(self, cap: str) -> bytes | None:
         """Get terminal capability string by name.
         """
-        if not isinstance(cap, str):
+        wenn not isinstance(cap, str):
             raise TypeError(f"`cap` must be a string, not {type(cap)}")
 
         return self._capabilities.get(cap)
@@ -452,22 +452,22 @@ def tparm(cap_bytes: bytes, *params: int) -> bytes:
     - %p[1-9]%d (parameter substitution)
     - %p[1-9]%{n}%+%d (parameter plus constant)
     """
-    if not isinstance(cap_bytes, bytes):
+    wenn not isinstance(cap_bytes, bytes):
         raise TypeError(f"`cap` must be bytes, not {type(cap_bytes)}")
 
     result = cap_bytes
 
     # %i - increment parameters (1-based instead of 0-based)
     increment = b"%i" in result
-    if increment:
+    wenn increment:
         result = result.replace(b"%i", b"")
 
     # Replace %p1%d, %p2%d, etc. with actual parameter values
     fuer i in range(len(params)):
         pattern = b"%%p%d%%d" % (i + 1)
-        if pattern in result:
+        wenn pattern in result:
             value = params[i]
-            if increment:
+            wenn increment:
                 value += 1
             result = result.replace(pattern, str(value).encode("ascii"))
 

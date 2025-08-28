@@ -24,7 +24,7 @@ choice = _sysrand.choice
 
 def randbelow(exclusive_upper_bound):
     """Return a random int in the range [0, n)."""
-    if exclusive_upper_bound <= 0:
+    wenn exclusive_upper_bound <= 0:
         raise ValueError("Upper bound must be positive.")
     return _sysrand._randbelow(exclusive_upper_bound)
 
@@ -40,7 +40,7 @@ def token_bytes(nbytes=None):
     b'\\xebr\\x17D*t\\xae\\xd4\\xe3S\\xb6\\xe2\\xebP1\\x8b'
 
     """
-    if nbytes is None:
+    wenn nbytes is None:
         nbytes = DEFAULT_ENTROPY
     return _sysrand.randbytes(nbytes)
 

@@ -31,7 +31,7 @@ klasse StreamTests(test_utils.TestCase):
         self.set_event_loop(self.loop)
 
     def tearDown(self):
-        # just in case if we have transport close callbacks
+        # just in case wenn we have transport close callbacks
         test_utils.run_briefly(self.loop)
 
         # set_event_loop() takes care of closing self.loop in a safe way
@@ -478,7 +478,7 @@ klasse StreamTests(test_utils.TestCase):
         self.assertEqual(b'line 2\r', data)
         self.assertEqual(b'', stream._buffer)
 
-        # First end position matches, even if that's a longer match
+        # First end position matches, even wenn that's a longer match
         stream.feed_data(b'ABCDEFG')
         data = self.loop.run_until_complete(stream.readuntil((b'DEF', b'BCDE')))
         self.assertEqual(b'ABCDE', data)
@@ -611,7 +611,7 @@ klasse StreamTests(test_utils.TestCase):
         test_utils.run_briefly(self.loop)
         t.cancel()
         test_utils.run_briefly(self.loop)
-        # The following line fails if set_exception() isn't careful.
+        # The following line fails wenn set_exception() isn't careful.
         stream.set_exception(RuntimeError('message'))
         test_utils.run_briefly(self.loop)
         self.assertIs(stream._waiter, None)
@@ -652,7 +652,7 @@ klasse StreamTests(test_utils.TestCase):
                 return addr
 
             def stop(self):
-                if self.server is not None:
+                wenn self.server is not None:
                     self.server.close()
                     self.loop.run_until_complete(self.server.wait_closed())
                     self.server = None
@@ -718,7 +718,7 @@ klasse StreamTests(test_utils.TestCase):
                 self.server = self.loop.run_until_complete(start)
 
             def stop(self):
-                if self.server is not None:
+                wenn self.server is not None:
                     self.server.close()
                     self.loop.run_until_complete(self.server.wait_closed())
                     self.server = None
@@ -787,7 +787,7 @@ klasse StreamTests(test_utils.TestCase):
                 return sock.getsockname()
 
             def stop(self):
-                if self.server is not None:
+                wenn self.server is not None:
                     self.server.close()
                     self.loop.run_until_complete(self.server.wait_closed())
                     self.server = None
@@ -825,7 +825,7 @@ klasse StreamTests(test_utils.TestCase):
 
     def test_streamreader_constructor_use_running_loop(self):
         # asyncio issue #184: Ensure that StreamReaderProtocol constructor
-        # retrieves the current loop if the loop parameter is not set
+        # retrieves the current loop wenn the loop parameter is not set
         async def test():
             return asyncio.StreamReader()
 
@@ -834,7 +834,7 @@ klasse StreamTests(test_utils.TestCase):
 
     def test_streamreader_constructor_use_global_loop(self):
         # asyncio issue #184: Ensure that StreamReaderProtocol constructor
-        # retrieves the current loop if the loop parameter is not set
+        # retrieves the current loop wenn the loop parameter is not set
         # Deprecated in 3.10, undeprecated in 3.12
         self.addCleanup(asyncio.set_event_loop, None)
         asyncio.set_event_loop(self.loop)
@@ -849,7 +849,7 @@ klasse StreamTests(test_utils.TestCase):
 
     def test_streamreaderprotocol_constructor_use_running_loop(self):
         # asyncio issue #184: Ensure that StreamReaderProtocol constructor
-        # retrieves the current loop if the loop parameter is not set
+        # retrieves the current loop wenn the loop parameter is not set
         reader = mock.Mock()
         async def test():
             return asyncio.StreamReaderProtocol(reader)
@@ -858,7 +858,7 @@ klasse StreamTests(test_utils.TestCase):
 
     def test_streamreaderprotocol_constructor_use_global_loop(self):
         # asyncio issue #184: Ensure that StreamReaderProtocol constructor
-        # retrieves the current loop if the loop parameter is not set
+        # retrieves the current loop wenn the loop parameter is not set
         # Deprecated in 3.10, undeprecated in 3.12
         self.addCleanup(asyncio.set_event_loop, None)
         asyncio.set_event_loop(self.loop)
@@ -1216,5 +1216,5 @@ klasse StreamTests(test_utils.TestCase):
         asyncio.run(main_coro)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

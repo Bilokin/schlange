@@ -18,9 +18,9 @@ from idlelib.hyperparser import HyperParser
 klasse Calltip:
 
     def __init__(self, editwin=None):
-        if editwin is None:  # subprocess and test
+        wenn editwin is None:  # subprocess and test
             self.editwin = None
-        else:
+        sonst:
             self.editwin = editwin
             self.text = editwin.text
             self.active_calltip = None
@@ -34,7 +34,7 @@ klasse Calltip:
         return calltip_w.CalltipWindow(self.text)
 
     def remove_calltip_window(self, event=None):
-        if self.active_calltip:
+        wenn self.active_calltip:
             self.active_calltip.hidetip()
             self.active_calltip = None
 
@@ -51,7 +51,7 @@ klasse Calltip:
         self.open_calltip(False)
 
     def refresh_calltip_event(self, event):
-        if self.active_calltip and self.active_calltip.tipwindow:
+        wenn self.active_calltip and self.active_calltip.tipwindow:
             self.open_calltip(False)
 
     def open_calltip(self, evalfuncs):
@@ -63,15 +63,15 @@ klasse Calltip:
         sur_paren = hp.get_surrounding_brackets('(')
 
         # If not inside parentheses, no calltip.
-        if not sur_paren:
+        wenn not sur_paren:
             self.remove_calltip_window()
             return
 
         # If a calltip is shown fuer the current parentheses, do
         # nothing.
-        if self.active_calltip:
+        wenn self.active_calltip:
             opener_line, opener_col = map(int, sur_paren[0].split('.'))
-            if (
+            wenn (
                 (opener_line, opener_col) ==
                 (self.active_calltip.parenline, self.active_calltip.parencol)
             ):
@@ -82,7 +82,7 @@ klasse Calltip:
             expression = hp.get_expression()
         except ValueError:
             expression = None
-        if not expression:
+        wenn not expression:
             # No expression before the opening parenthesis, e.g.
             # because it's in a string or the opener fuer a tuple:
             # Do nothing.
@@ -96,11 +96,11 @@ klasse Calltip:
 
         # Simple, fast heuristic: If the preceding expression includes
         # an opening parenthesis, it likely includes a function call.
-        if not evalfuncs and (expression.find('(') != -1):
+        wenn not evalfuncs and (expression.find('(') != -1):
             return
 
         argspec = self.fetch_tip(expression)
-        if not argspec:
+        wenn not argspec:
             return
         self.active_calltip = self._calltip_window()
         self.active_calltip.showtip(argspec, sur_paren[0], sur_paren[1])
@@ -114,7 +114,7 @@ klasse Calltip:
 
         The subprocess environment is that of the most recently run script.  If
         two unrelated modules are being edited some calltips in the current
-        module may be inoperative if the module was not the last to run.
+        module may be inoperative wenn the module was not the last to run.
 
         To find methods, fetch_tip must be fed a fully qualified name.
 
@@ -123,10 +123,10 @@ klasse Calltip:
             rpcclt = self.editwin.flist.pyshell.interp.rpcclt
         except AttributeError:
             rpcclt = None
-        if rpcclt:
+        wenn rpcclt:
             return rpcclt.remotecall("exec", "get_the_calltip",
                                      (expression,), {})
-        else:
+        sonst:
             return get_argspec(get_entity(expression))
 
 
@@ -134,13 +134,13 @@ def get_entity(expression):
     """Return the object corresponding to expression evaluated
     in a namespace spanning sys.modules and __main.dict__.
     """
-    if expression:
+    wenn expression:
         namespace = {**sys.modules, **__main__.__dict__}
         try:
             return eval(expression, namespace)  # Only protect user code.
         except BaseException:
             # An uncaught exception closes idle, and eval can raise any
-            # exception, especially if user classes are involved.
+            # exception, especially wenn user classes are involved.
             return None
 
 # The following are used in get_argspec and some in tests
@@ -166,33 +166,33 @@ def get_argspec(ob):
     except BaseException:  # Buggy user object could raise anything.
         return ''  # No popup fuer non-callables.
     # For Get_argspecTest.test_buggy_getattr_class, CallA() & CallB().
-    fob = ob_call if isinstance(ob_call, types.MethodType) else ob
+    fob = ob_call wenn isinstance(ob_call, types.MethodType) sonst ob
 
     # Initialize argspec and wrap it to get lines.
     try:
         argspec = str(inspect.signature(fob))
     except Exception as err:
         msg = str(err)
-        if msg.startswith(_invalid_method):
+        wenn msg.startswith(_invalid_method):
             return _invalid_method
-        else:
+        sonst:
             argspec = ''
 
-    if isinstance(fob, type) and argspec == '()':
+    wenn isinstance(fob, type) and argspec == '()':
         # If fob has no argument, use default callable argspec.
         argspec = _default_callable_argspec
 
     lines = (textwrap.wrap(argspec, _MAX_COLS, subsequent_indent=_INDENT)
-             if len(argspec) > _MAX_COLS else [argspec] if argspec else [])
+             wenn len(argspec) > _MAX_COLS sonst [argspec] wenn argspec sonst [])
 
-    # Augment lines from docstring, if any, and join to get argspec.
+    # Augment lines from docstring, wenn any, and join to get argspec.
     doc = inspect.getdoc(ob)
-    if doc:
+    wenn doc:
         fuer line in doc.split('\n', _MAX_LINES)[:_MAX_LINES]:
             line = line.strip()
-            if not line:
+            wenn not line:
                 break
-            if len(line) > _MAX_COLS:
+            wenn len(line) > _MAX_COLS:
                 line = line[: _MAX_COLS - 3] + '...'
             lines.append(line)
     argspec = '\n'.join(lines)
@@ -200,6 +200,6 @@ def get_argspec(ob):
     return argspec or _default_callable_argspec
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     from unittest import main
     main('idlelib.idle_test.test_calltip', verbosity=2)

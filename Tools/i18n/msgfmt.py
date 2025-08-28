@@ -41,7 +41,7 @@ MESSAGES = {}
 
 def usage(code, msg=''):
     print(__doc__, file=sys.stderr)
-    if msg:
+    wenn msg:
         print(msg, file=sys.stderr)
     sys.exit(code)
 
@@ -49,10 +49,10 @@ def usage(code, msg=''):
 def add(ctxt, id, str, fuzzy):
     "Add a non-fuzzy translation to the dictionary."
     global MESSAGES
-    if not fuzzy and str:
-        if ctxt is None:
+    wenn not fuzzy and str:
+        wenn ctxt is None:
             MESSAGES[id] = str
-        else:
+        sonst:
             MESSAGES[b"%b\x04%b" % (ctxt, id)] = str
 
 
@@ -103,11 +103,11 @@ def make(filename, outfile):
     CTXT = 3
 
     # Compute .mo name from .po name and arguments
-    if filename.endswith('.po'):
+    wenn filename.endswith('.po'):
         infile = filename
-    else:
+    sonst:
         infile = filename + '.po'
-    if outfile is None:
+    wenn outfile is None:
         outfile = os.path.splitext(infile)[0] + '.mo'
 
     try:
@@ -117,7 +117,7 @@ def make(filename, outfile):
         print(msg, file=sys.stderr)
         sys.exit(1)
 
-    if lines[0].startswith(codecs.BOM_UTF8):
+    wenn lines[0].startswith(codecs.BOM_UTF8):
         print(
             f"The file {infile} starts with a UTF-8 BOM which is not allowed in .po files.\n"
             "Please save the file without a BOM and try again.",
@@ -138,35 +138,35 @@ def make(filename, outfile):
         l = l.decode(encoding)
         lno += 1
         # If we get a comment line after a msgstr, this is a new entry
-        if l[0] == '#' and section == STR:
+        wenn l[0] == '#' and section == STR:
             add(msgctxt, msgid, msgstr, fuzzy)
             section = msgctxt = None
             fuzzy = 0
         # Record a fuzzy mark
-        if l[:2] == '#,' and 'fuzzy' in l:
+        wenn l[:2] == '#,' and 'fuzzy' in l:
             fuzzy = 1
         # Skip comments
-        if l[0] == '#':
+        wenn l[0] == '#':
             continue
         # Now we are in a msgid or msgctxt section, output previous section
-        if l.startswith('msgctxt'):
-            if section == STR:
+        wenn l.startswith('msgctxt'):
+            wenn section == STR:
                 add(msgctxt, msgid, msgstr, fuzzy)
             section = CTXT
             l = l[7:]
             msgctxt = b''
-        elif l.startswith('msgid') and not l.startswith('msgid_plural'):
-            if section == STR:
-                if not msgid:
+        sowenn l.startswith('msgid') and not l.startswith('msgid_plural'):
+            wenn section == STR:
+                wenn not msgid:
                     # Filter out POT-Creation-Date
                     # See issue #131852
                     msgstr = b''.join(line fuer line in msgstr.splitlines(True)
-                                      if not line.startswith(b'POT-Creation-Date:'))
+                                      wenn not line.startswith(b'POT-Creation-Date:'))
 
                     # See whether there is an encoding declaration
                     p = HeaderParser()
                     charset = p.parsestr(msgstr.decode(encoding)).get_content_charset()
-                    if charset:
+                    wenn charset:
                         encoding = charset
                 add(msgctxt, msgid, msgstr, fuzzy)
                 msgctxt = None
@@ -175,8 +175,8 @@ def make(filename, outfile):
             msgid = msgstr = b''
             is_plural = False
         # This is a message with plural forms
-        elif l.startswith('msgid_plural'):
-            if section != ID:
+        sowenn l.startswith('msgid_plural'):
+            wenn section != ID:
                 print('msgid_plural not preceded by msgid on %s:%d' % (infile, lno),
                       file=sys.stderr)
                 sys.exit(1)
@@ -184,40 +184,40 @@ def make(filename, outfile):
             msgid += b'\0' # separator of singular and plural
             is_plural = True
         # Now we are in a msgstr section
-        elif l.startswith('msgstr'):
+        sowenn l.startswith('msgstr'):
             section = STR
-            if l.startswith('msgstr['):
-                if not is_plural:
+            wenn l.startswith('msgstr['):
+                wenn not is_plural:
                     print('plural without msgid_plural on %s:%d' % (infile, lno),
                           file=sys.stderr)
                     sys.exit(1)
                 l = l.split(']', 1)[1]
-                if msgstr:
+                wenn msgstr:
                     msgstr += b'\0' # Separator of the various plural forms
-            else:
-                if is_plural:
+            sonst:
+                wenn is_plural:
                     print('indexed msgstr required fuer plural on  %s:%d' % (infile, lno),
                           file=sys.stderr)
                     sys.exit(1)
                 l = l[6:]
         # Skip empty lines
         l = l.strip()
-        if not l:
+        wenn not l:
             continue
         l = ast.literal_eval(l)
-        if section == CTXT:
+        wenn section == CTXT:
             msgctxt += l.encode(encoding)
-        elif section == ID:
+        sowenn section == ID:
             msgid += l.encode(encoding)
-        elif section == STR:
+        sowenn section == STR:
             msgstr += l.encode(encoding)
-        else:
+        sonst:
             print('Syntax error on %s:%d' % (infile, lno), \
                   'before:', file=sys.stderr)
             print(l, file=sys.stderr)
             sys.exit(1)
     # Add last entry
-    if section == STR:
+    wenn section == STR:
         add(msgctxt, msgid, msgstr, fuzzy)
 
     # Compute output
@@ -240,15 +240,15 @@ def main():
     outfile = None
     # parse options
     fuer opt, arg in opts:
-        if opt in ('-h', '--help'):
+        wenn opt in ('-h', '--help'):
             usage(0)
-        elif opt in ('-V', '--version'):
+        sowenn opt in ('-V', '--version'):
             print("msgfmt.py", __version__)
             sys.exit(0)
-        elif opt in ('-o', '--output-file'):
+        sowenn opt in ('-o', '--output-file'):
             outfile = arg
     # do it
-    if not args:
+    wenn not args:
         print('No input file given', file=sys.stderr)
         print("Try `msgfmt --help' fuer more information.", file=sys.stderr)
         return
@@ -257,5 +257,5 @@ def main():
         make(filename, outfile)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     main()

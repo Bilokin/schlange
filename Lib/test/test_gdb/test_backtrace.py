@@ -89,7 +89,7 @@ id(42)
     #  "Cannot find new threads: generic error"
     # unless we add LD_PRELOAD=PATH-TO-libpthread.so.1 as a workaround
     def test_gc(self):
-        'Verify that "py-bt" indicates if a thread is garbage-collecting'
+        'Verify that "py-bt" indicates wenn a thread is garbage-collecting'
         cmd = ('from gc import collect\n'
                'id(42)\n'
                'def foo():\n'
@@ -121,7 +121,7 @@ id(42)
             l = MyList()
         ''')
         cmds_after_breakpoint = ['break wrapper_call', 'continue']
-        if CET_PROTECTION:
+        wenn CET_PROTECTION:
             # bpo-32962: same case as in get_stack_trace():
             # we need an additional 'next' command in order to read
             # arguments of the innermost function of the call stack.

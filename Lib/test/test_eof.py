@@ -167,5 +167,5 @@ klasse EOFTestCase(unittest.TestCase):
             self.assertEqual(err[-4][-8:], ', line 1', err)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

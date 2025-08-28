@@ -160,22 +160,22 @@ _capability_names = {
     }
 
 def has_key(ch):
-    if isinstance(ch, str):
+    wenn isinstance(ch, str):
         ch = ord(ch)
 
     # Figure out the correct capability name fuer the keycode.
     capability_name = _capability_names.get(ch)
-    if capability_name is None:
+    wenn capability_name is None:
         return False
 
     #Check the current terminal description fuer that capability;
-    #if present, return true, else return false.
-    if _curses.tigetstr( capability_name ):
+    #if present, return true, sonst return false.
+    wenn _curses.tigetstr( capability_name ):
         return True
-    else:
+    sonst:
         return False
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     # Compare the output of this implementation and the ncurses has_key,
     # on platforms where has_key is already available
     try:
@@ -184,7 +184,7 @@ if __name__ == '__main__':
         fuer key in _capability_names.keys():
             system = _curses.has_key(key)
             python = has_key(key)
-            if system != python:
+            wenn system != python:
                 L.append( 'Mismatch fuer key %s, system=%i, Python=%i'
                           % (_curses.keyname( key ), system, python) )
     finally:

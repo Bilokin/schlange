@@ -205,14 +205,14 @@ klasse DuplicateSectionError(Error):
 
     def __init__(self, section, source=None, lineno=None):
         msg = [repr(section), " already exists"]
-        if source is not None:
+        wenn source is not None:
             message = ["While reading from ", repr(source)]
-            if lineno is not None:
+            wenn lineno is not None:
                 message.append(" [line {0:2d}]".format(lineno))
             message.append(": section ")
             message.extend(msg)
             msg = message
-        else:
+        sonst:
             msg.insert(0, "Section ")
         Error.__init__(self, "".join(msg))
         self.section = section
@@ -231,14 +231,14 @@ klasse DuplicateOptionError(Error):
     def __init__(self, section, option, source=None, lineno=None):
         msg = [repr(option), " in section ", repr(section),
                " already exists"]
-        if source is not None:
+        wenn source is not None:
             message = ["While reading from ", repr(source)]
-            if lineno is not None:
+            wenn lineno is not None:
                 message.append(" [line {0:2d}]".format(lineno))
             message.append(": option ")
             message.extend(msg)
             msg = message
-        else:
+        sonst:
             msg.insert(0, "Option ")
         Error.__init__(self, "".join(msg))
         self.section = section
@@ -310,7 +310,7 @@ klasse ParsingError(Error):
         self.source = source
         self.errors = []
         self.args = (source, )
-        if args:
+        wenn args:
             self.append(*args)
 
     def append(self, lineno, line):
@@ -433,7 +433,7 @@ klasse BasicInterpolation(Interpolation):
     def before_set(self, parser, section, option, value):
         tmp_value = value.replace('%%', '') # escaped percent signs
         tmp_value = self._KEYCRE.sub('', tmp_value) # valid syntax
-        if '%' in tmp_value:
+        wenn '%' in tmp_value:
             raise ValueError("invalid interpolation syntax in %r at "
                              "position %d" % (value, tmp_value.find('%')))
         return value
@@ -441,24 +441,24 @@ klasse BasicInterpolation(Interpolation):
     def _interpolate_some(self, parser, option, accum, rest, section, map,
                           depth):
         rawval = parser.get(section, option, raw=True, fallback=rest)
-        if depth > MAX_INTERPOLATION_DEPTH:
+        wenn depth > MAX_INTERPOLATION_DEPTH:
             raise InterpolationDepthError(option, section, rawval)
         while rest:
             p = rest.find("%")
-            if p < 0:
+            wenn p < 0:
                 accum.append(rest)
                 return
-            if p > 0:
+            wenn p > 0:
                 accum.append(rest[:p])
                 rest = rest[p:]
             # p is no longer used
             c = rest[1:2]
-            if c == "%":
+            wenn c == "%":
                 accum.append("%")
                 rest = rest[2:]
-            elif c == "(":
+            sowenn c == "(":
                 m = self._KEYCRE.match(rest)
-                if m is None:
+                wenn m is None:
                     raise InterpolationSyntaxError(option, section,
                         "bad interpolation variable reference %r" % rest)
                 var = parser.optionxform(m.group(1))
@@ -468,12 +468,12 @@ klasse BasicInterpolation(Interpolation):
                 except KeyError:
                     raise InterpolationMissingOptionError(
                         option, section, rawval, var) from None
-                if "%" in v:
+                wenn "%" in v:
                     self._interpolate_some(parser, option, accum, v,
                                            section, map, depth + 1)
-                else:
+                sonst:
                     accum.append(v)
-            else:
+            sonst:
                 raise InterpolationSyntaxError(
                     option, section,
                     "'%%' must be followed by '%%' or '(', "
@@ -494,7 +494,7 @@ klasse ExtendedInterpolation(Interpolation):
     def before_set(self, parser, section, option, value):
         tmp_value = value.replace('$$', '') # escaped dollar signs
         tmp_value = self._KEYCRE.sub('', tmp_value) # valid syntax
-        if '$' in tmp_value:
+        wenn '$' in tmp_value:
             raise ValueError("invalid interpolation syntax in %r at "
                              "position %d" % (value, tmp_value.find('$')))
         return value
@@ -502,24 +502,24 @@ klasse ExtendedInterpolation(Interpolation):
     def _interpolate_some(self, parser, option, accum, rest, section, map,
                           depth):
         rawval = parser.get(section, option, raw=True, fallback=rest)
-        if depth > MAX_INTERPOLATION_DEPTH:
+        wenn depth > MAX_INTERPOLATION_DEPTH:
             raise InterpolationDepthError(option, section, rawval)
         while rest:
             p = rest.find("$")
-            if p < 0:
+            wenn p < 0:
                 accum.append(rest)
                 return
-            if p > 0:
+            wenn p > 0:
                 accum.append(rest[:p])
                 rest = rest[p:]
             # p is no longer used
             c = rest[1:2]
-            if c == "$":
+            wenn c == "$":
                 accum.append("$")
                 rest = rest[2:]
-            elif c == "{":
+            sowenn c == "{":
                 m = self._KEYCRE.match(rest)
-                if m is None:
+                wenn m is None:
                     raise InterpolationSyntaxError(option, section,
                         "bad interpolation variable reference %r" % rest)
                 path = m.group(1).split(':')
@@ -527,29 +527,29 @@ klasse ExtendedInterpolation(Interpolation):
                 sect = section
                 opt = option
                 try:
-                    if len(path) == 1:
+                    wenn len(path) == 1:
                         opt = parser.optionxform(path[0])
                         v = map[opt]
-                    elif len(path) == 2:
+                    sowenn len(path) == 2:
                         sect = path[0]
                         opt = parser.optionxform(path[1])
                         v = parser.get(sect, opt, raw=True)
-                    else:
+                    sonst:
                         raise InterpolationSyntaxError(
                             option, section,
                             "More than one ':' found: %r" % (rest,))
                 except (KeyError, NoSectionError, NoOptionError):
                     raise InterpolationMissingOptionError(
                         option, section, rawval, ":".join(path)) from None
-                if v is None:
+                wenn v is None:
                     continue
-                if "$" in v:
+                wenn "$" in v:
                     self._interpolate_some(parser, opt, accum, v, sect,
                                            dict(parser.items(sect, raw=True)),
                                            depth + 1)
-                else:
+                sonst:
                     accum.append(v)
-            else:
+            sonst:
                 raise InterpolationSyntaxError(
                     option, section,
                     "'$' must be followed by '$' or '{', "
@@ -629,7 +629,7 @@ klasse RawConfigParser(MutableMapping):
                                            # space/tab
         (?P<value>.*))?$                   # everything up to eol
         """
-    # Interpolation algorithm to be used if the user does not specify another
+    # Interpolation algorithm to be used wenn the user does not specify another
     _DEFAULT_INTERPOLATION = Interpolation()
     # Compiled regular expression fuer matching sections
     SECTCRE = re.compile(_SECT_TMPL, re.VERBOSE)
@@ -659,14 +659,14 @@ klasse RawConfigParser(MutableMapping):
         self._proxies = self._dict()
         self._proxies[default_section] = SectionProxy(self, default_section)
         self._delimiters = tuple(delimiters)
-        if delimiters == ('=', ':'):
-            self._optcre = self.OPTCRE_NV if allow_no_value else self.OPTCRE
-        else:
+        wenn delimiters == ('=', ':'):
+            self._optcre = self.OPTCRE_NV wenn allow_no_value sonst self.OPTCRE
+        sonst:
             d = "|".join(re.escape(d) fuer d in delimiters)
-            if allow_no_value:
+            wenn allow_no_value:
                 self._optcre = re.compile(self._OPT_NV_TMPL.format(delim=d),
                                           re.VERBOSE)
-            else:
+            sonst:
                 self._optcre = re.compile(self._OPT_TMPL.format(delim=d),
                                           re.VERBOSE)
         self._comments = _CommentSpec(comment_prefixes or (), inline_comment_prefixes or ())
@@ -675,18 +675,18 @@ klasse RawConfigParser(MutableMapping):
         self._empty_lines_in_values = empty_lines_in_values
         self.default_section=default_section
         self._interpolation = interpolation
-        if self._interpolation is _UNSET:
+        wenn self._interpolation is _UNSET:
             self._interpolation = self._DEFAULT_INTERPOLATION
-        if self._interpolation is None:
+        wenn self._interpolation is None:
             self._interpolation = Interpolation()
-        if not isinstance(self._interpolation, Interpolation):
+        wenn not isinstance(self._interpolation, Interpolation):
             raise TypeError(
                 f"interpolation= must be None or an instance of Interpolation;"
                 f" got an object of type {type(self._interpolation)}"
             )
-        if converters is not _UNSET:
+        wenn converters is not _UNSET:
             self._converters.update(converters)
-        if defaults:
+        wenn defaults:
             self._read_defaults(defaults)
         self._allow_unnamed_section = allow_unnamed_section
 
@@ -701,17 +701,17 @@ klasse RawConfigParser(MutableMapping):
     def add_section(self, section):
         """Create a new section in the configuration.
 
-        Raise DuplicateSectionError if a section by the specified name
-        already exists. Raise ValueError if name is DEFAULT.
+        Raise DuplicateSectionError wenn a section by the specified name
+        already exists. Raise ValueError wenn name is DEFAULT.
         """
-        if section == self.default_section:
+        wenn section == self.default_section:
             raise ValueError('Invalid section name: %r' % section)
 
-        if section is UNNAMED_SECTION:
-            if not self._allow_unnamed_section:
+        wenn section is UNNAMED_SECTION:
+            wenn not self._allow_unnamed_section:
                 raise UnnamedSectionDisabledError
 
-        if section in self._sections:
+        wenn section in self._sections:
             raise DuplicateSectionError(section)
         self._sections[section] = self._dict()
         self._proxies[section] = SectionProxy(self, section)
@@ -744,7 +744,7 @@ klasse RawConfigParser(MutableMapping):
 
         Return list of successfully read files.
         """
-        if isinstance(filenames, (str, bytes, os.PathLike)):
+        wenn isinstance(filenames, (str, bytes, os.PathLike)):
             filenames = [filenames]
         encoding = io.text_encoding(encoding)
         read_ok = []
@@ -754,7 +754,7 @@ klasse RawConfigParser(MutableMapping):
                     self._read(fp, filename)
             except OSError:
                 continue
-            if isinstance(filename, os.PathLike):
+            wenn isinstance(filename, os.PathLike):
                 filename = os.fspath(filename)
             read_ok.append(filename)
         return read_ok
@@ -767,7 +767,7 @@ klasse RawConfigParser(MutableMapping):
         file being read. If not given, it is taken from f.name. If `f` has no
         `name` attribute, `<???>` is used.
         """
-        if source is None:
+        wenn source is None:
             try:
                 source = f.name
             except AttributeError:
@@ -798,14 +798,14 @@ klasse RawConfigParser(MutableMapping):
             try:
                 self.add_section(section)
             except (DuplicateSectionError, ValueError):
-                if self._strict and section in elements_added:
+                wenn self._strict and section in elements_added:
                     raise
             elements_added.add(section)
             fuer key, value in keys.items():
                 key = self.optionxform(str(key))
-                if value is not None:
+                wenn value is not None:
                     value = str(value)
-                if self._strict and (section, key) in elements_added:
+                wenn self._strict and (section, key) in elements_added:
                     raise DuplicateOptionError(section, key, source)
                 elements_added.add((section, key))
                 self.set(section, key, value)
@@ -828,22 +828,22 @@ klasse RawConfigParser(MutableMapping):
         try:
             d = self._unify_values(section, vars)
         except NoSectionError:
-            if fallback is _UNSET:
+            wenn fallback is _UNSET:
                 raise
-            else:
+            sonst:
                 return fallback
         option = self.optionxform(option)
         try:
             value = d[option]
         except KeyError:
-            if fallback is _UNSET:
+            wenn fallback is _UNSET:
                 raise NoOptionError(option, section)
-            else:
+            sonst:
                 return fallback
 
-        if raw or value is None:
+        wenn raw or value is None:
             return value
-        else:
+        sonst:
             return self._interpolation.before_get(self, section, option, value,
                                                   d)
 
@@ -856,7 +856,7 @@ klasse RawConfigParser(MutableMapping):
             return self._get(section, conv, option, raw=raw, vars=vars,
                              **kwargs)
         except (NoSectionError, NoOptionError):
-            if fallback is _UNSET:
+            wenn fallback is _UNSET:
                 raise
             return fallback
 
@@ -887,22 +887,22 @@ klasse RawConfigParser(MutableMapping):
 
         The section DEFAULT is special.
         """
-        if section is _UNSET:
+        wenn section is _UNSET:
             return super().items()
         d = self._defaults.copy()
         try:
             d.update(self._sections[section])
         except KeyError:
-            if section != self.default_section:
+            wenn section != self.default_section:
                 raise NoSectionError(section)
         orig_keys = list(d.keys())
         # Update with the entry specific variables
-        if vars:
+        wenn vars:
             fuer key, value in vars.items():
                 d[self.optionxform(key)] = value
         value_getter = lambda option: self._interpolation.before_get(self,
             section, option, d[option], d)
-        if raw:
+        wenn raw:
             value_getter = lambda option: d[option]
         return [(option, value_getter(option)) fuer option in orig_keys]
 
@@ -926,24 +926,24 @@ klasse RawConfigParser(MutableMapping):
         """Check fuer the existence of a given option in a given section.
         If the specified `section` is None or an empty string, DEFAULT is
         assumed. If the specified `section` does not exist, returns False."""
-        if not section or section == self.default_section:
+        wenn not section or section == self.default_section:
             option = self.optionxform(option)
             return option in self._defaults
-        elif section not in self._sections:
+        sowenn section not in self._sections:
             return False
-        else:
+        sonst:
             option = self.optionxform(option)
             return (option in self._sections[section]
                     or option in self._defaults)
 
     def set(self, section, option, value=None):
         """Set an option."""
-        if value:
+        wenn value:
             value = self._interpolation.before_set(self, section, option,
                                                    value)
-        if not section or section == self.default_section:
+        wenn not section or section == self.default_section:
             sectdict = self._defaults
-        else:
+        sonst:
             try:
                 sectdict = self._sections[section]
             except KeyError:
@@ -959,82 +959,82 @@ klasse RawConfigParser(MutableMapping):
         Please note that comments in the original configuration file are not
         preserved when writing the configuration back.
         """
-        if space_around_delimiters:
+        wenn space_around_delimiters:
             d = " {} ".format(self._delimiters[0])
-        else:
+        sonst:
             d = self._delimiters[0]
-        if self._defaults:
+        wenn self._defaults:
             self._write_section(fp, self.default_section,
                                     self._defaults.items(), d)
-        if UNNAMED_SECTION in self._sections and self._sections[UNNAMED_SECTION]:
+        wenn UNNAMED_SECTION in self._sections and self._sections[UNNAMED_SECTION]:
             self._write_section(fp, UNNAMED_SECTION, self._sections[UNNAMED_SECTION].items(), d, unnamed=True)
 
         fuer section in self._sections:
-            if section is UNNAMED_SECTION:
+            wenn section is UNNAMED_SECTION:
                 continue
             self._write_section(fp, section,
                                 self._sections[section].items(), d)
 
     def _write_section(self, fp, section_name, section_items, delimiter, unnamed=False):
         """Write a single section to the specified 'fp'."""
-        if not unnamed:
+        wenn not unnamed:
             fp.write("[{}]\n".format(section_name))
         fuer key, value in section_items:
             self._validate_key_contents(key)
             value = self._interpolation.before_write(self, section_name, key,
                                                      value)
-            if value is not None or not self._allow_no_value:
+            wenn value is not None or not self._allow_no_value:
                 value = delimiter + str(value).replace('\n', '\n\t')
-            else:
+            sonst:
                 value = ""
             fp.write("{}{}\n".format(key, value))
         fp.write("\n")
 
     def remove_option(self, section, option):
         """Remove an option."""
-        if not section or section == self.default_section:
+        wenn not section or section == self.default_section:
             sectdict = self._defaults
-        else:
+        sonst:
             try:
                 sectdict = self._sections[section]
             except KeyError:
                 raise NoSectionError(section) from None
         option = self.optionxform(option)
         existed = option in sectdict
-        if existed:
+        wenn existed:
             del sectdict[option]
         return existed
 
     def remove_section(self, section):
         """Remove a file section."""
         existed = section in self._sections
-        if existed:
+        wenn existed:
             del self._sections[section]
             del self._proxies[section]
         return existed
 
     def __getitem__(self, key):
-        if key != self.default_section and not self.has_section(key):
+        wenn key != self.default_section and not self.has_section(key):
             raise KeyError(key)
         return self._proxies[key]
 
     def __setitem__(self, key, value):
         # To conform with the mapping protocol, overwrites existing values in
         # the section.
-        if key in self and self[key] is value:
+        wenn key in self and self[key] is value:
             return
-        # XXX this is not atomic if read_dict fails at any point. Then again,
+        # XXX this is not atomic wenn read_dict fails at any point. Then again,
         # no update method in configparser is atomic in this implementation.
-        if key == self.default_section:
+        wenn key == self.default_section:
             self._defaults.clear()
-        elif key in self._sections:
+        sowenn key in self._sections:
             self._sections[key].clear()
         self.read_dict({key: value})
 
     def __delitem__(self, key):
-        if key == self.default_section:
+        wenn key == self.default_section:
             raise ValueError("Cannot remove the default section.")
-        if not self.has_section(key):
+        wenn not self.has_section(key):
             raise KeyError(key)
         self.remove_section(key)
 
@@ -1074,24 +1074,24 @@ klasse RawConfigParser(MutableMapping):
         st = _ReadState()
 
         fuer st.lineno, line in enumerate(map(self._comments.wrap, fp), start=1):
-            if not line.clean:
-                if self._empty_lines_in_values:
-                    # add empty line to the value, but only if there was no
+            wenn not line.clean:
+                wenn self._empty_lines_in_values:
+                    # add empty line to the value, but only wenn there was no
                     # comment on the line
-                    if (not line.has_comments and
+                    wenn (not line.has_comments and
                         st.cursect is not None and
                         st.optname and
                         st.cursect[st.optname] is not None):
                         st.cursect[st.optname].append('') # newlines added at join
-                else:
+                sonst:
                     # empty line marks end of value
                     st.indent_level = sys.maxsize
                 continue
 
             first_nonspace = self.NONSPACECRE.search(line)
-            st.cur_indent_level = first_nonspace.start() if first_nonspace else 0
+            st.cur_indent_level = first_nonspace.start() wenn first_nonspace sonst 0
 
-            if self._handle_continuation_line(st, line, fpname):
+            wenn self._handle_continuation_line(st, line, fpname):
                 continue
 
             self._handle_rest(st, line, fpname)
@@ -1102,37 +1102,37 @@ klasse RawConfigParser(MutableMapping):
         # continuation line?
         is_continue = (st.cursect is not None and st.optname and
             st.cur_indent_level > st.indent_level)
-        if is_continue:
-            if st.cursect[st.optname] is None:
+        wenn is_continue:
+            wenn st.cursect[st.optname] is None:
                 raise MultilineContinuationError(fpname, st.lineno, line)
             st.cursect[st.optname].append(line.clean)
         return is_continue
 
     def _handle_rest(self, st, line, fpname):
         # a section header or option header?
-        if self._allow_unnamed_section and st.cursect is None:
+        wenn self._allow_unnamed_section and st.cursect is None:
             self._handle_header(st, UNNAMED_SECTION, fpname)
 
         st.indent_level = st.cur_indent_level
         # is it a section header?
         mo = self.SECTCRE.match(line.clean)
 
-        if not mo and st.cursect is None:
+        wenn not mo and st.cursect is None:
             raise MissingSectionHeaderError(fpname, st.lineno, line)
 
-        self._handle_header(st, mo.group('header'), fpname) if mo else self._handle_option(st, line, fpname)
+        self._handle_header(st, mo.group('header'), fpname) wenn mo sonst self._handle_option(st, line, fpname)
 
     def _handle_header(self, st, sectname, fpname):
         st.sectname = sectname
-        if st.sectname in self._sections:
-            if self._strict and st.sectname in st.elements_added:
+        wenn st.sectname in self._sections:
+            wenn self._strict and st.sectname in st.elements_added:
                 raise DuplicateSectionError(st.sectname, fpname,
                                             st.lineno)
             st.cursect = self._sections[st.sectname]
             st.elements_added.add(st.sectname)
-        elif st.sectname == self.default_section:
+        sowenn st.sectname == self.default_section:
             st.cursect = self._defaults
-        else:
+        sonst:
             st.cursect = self._dict()
             self._sections[st.sectname] = st.cursect
             self._proxies[st.sectname] = SectionProxy(self, st.sectname)
@@ -1145,7 +1145,7 @@ klasse RawConfigParser(MutableMapping):
         st.indent_level = st.cur_indent_level
 
         mo = self._optcre.match(line.clean)
-        if not mo:
+        wenn not mo:
             # a non-fatal parsing error occurred. set up the
             # exception but keep going. the exception will be
             # raised at the end of the file and will contain a
@@ -1154,20 +1154,20 @@ klasse RawConfigParser(MutableMapping):
             return
 
         st.optname, vi, optval = mo.group('option', 'vi', 'value')
-        if not st.optname:
+        wenn not st.optname:
             st.errors.append(ParsingError(fpname, st.lineno, line))
         st.optname = self.optionxform(st.optname.rstrip())
-        if (self._strict and
+        wenn (self._strict and
             (st.sectname, st.optname) in st.elements_added):
             raise DuplicateOptionError(st.sectname, st.optname,
                                     fpname, st.lineno)
         st.elements_added.add((st.sectname, st.optname))
         # This check is fine because the OPTCRE cannot
-        # match if it would set optval to None
-        if optval is not None:
+        # match wenn it would set optval to None
+        wenn optval is not None:
             optval = optval.strip()
             st.cursect[st.optname] = [optval]
-        else:
+        sonst:
             # valueless option handling
             st.cursect[st.optname] = None
 
@@ -1177,7 +1177,7 @@ klasse RawConfigParser(MutableMapping):
                                        self._sections.items())
         fuer section, options in all_sections:
             fuer name, val in options.items():
-                if isinstance(val, list):
+                wenn isinstance(val, list):
                     val = '\n'.join(val).rstrip()
                 options[name] = self._interpolation.before_read(self,
                                                                 section,
@@ -1198,32 +1198,32 @@ klasse RawConfigParser(MutableMapping):
         try:
             sectiondict = self._sections[section]
         except KeyError:
-            if section != self.default_section:
+            wenn section != self.default_section:
                 raise NoSectionError(section) from None
         # Update with the entry specific variables
         vardict = {}
-        if vars:
+        wenn vars:
             fuer key, value in vars.items():
-                if value is not None:
+                wenn value is not None:
                     value = str(value)
                 vardict[self.optionxform(key)] = value
         return _ChainMap(vardict, sectiondict, self._defaults)
 
     def _convert_to_boolean(self, value):
-        """Return a boolean value translating from other types if necessary.
+        """Return a boolean value translating from other types wenn necessary.
         """
-        if value.lower() not in self.BOOLEAN_STATES:
+        wenn value.lower() not in self.BOOLEAN_STATES:
             raise ValueError('Not a boolean: %s' % value)
         return self.BOOLEAN_STATES[value.lower()]
 
     def _validate_key_contents(self, key):
         """Raises an InvalidWriteError fuer any keys containing
         delimiters or that begins with the section header pattern"""
-        if re.match(self.SECTCRE, key):
+        wenn re.match(self.SECTCRE, key):
             raise InvalidWriteError(
                 f"Cannot write key {key}; begins with section pattern")
         fuer delim in self._delimiters:
-            if delim in key:
+            wenn delim in key:
                 raise InvalidWriteError(
                     f"Cannot write key {key}; contains delimiter {delim}")
 
@@ -1237,15 +1237,15 @@ klasse RawConfigParser(MutableMapping):
         fuer RawConfigParsers. It is invoked in every case fuer mapping protocol
         access and in ConfigParser.set().
         """
-        if section is UNNAMED_SECTION:
-            if not self._allow_unnamed_section:
+        wenn section is UNNAMED_SECTION:
+            wenn not self._allow_unnamed_section:
                 raise UnnamedSectionDisabledError
-        elif not isinstance(section, str):
+        sowenn not isinstance(section, str):
             raise TypeError("section names must be strings or UNNAMED_SECTION")
-        if not isinstance(option, str):
+        wenn not isinstance(option, str):
             raise TypeError("option keys must be strings")
-        if not self._allow_no_value or value:
-            if not isinstance(value, str):
+        wenn not self._allow_no_value or value:
+            wenn not isinstance(value, str):
                 raise TypeError("option values must be strings")
 
     @property
@@ -1266,7 +1266,7 @@ klasse ConfigParser(RawConfigParser):
 
     def add_section(self, section):
         """Create a new section in the configuration.  Extends
-        RawConfigParser.add_section by validating if the section name is
+        RawConfigParser.add_section by validating wenn the section name is
         a string."""
         self._validate_value_types(section=section)
         super().add_section(section)
@@ -1301,7 +1301,7 @@ klasse SectionProxy(MutableMapping):
         return '<Section: {}>'.format(self._name)
 
     def __getitem__(self, key):
-        if not self._parser.has_option(self._name, key):
+        wenn not self._parser.has_option(self._name, key):
             raise KeyError(key)
         return self._parser.get(self._name, key)
 
@@ -1310,7 +1310,7 @@ klasse SectionProxy(MutableMapping):
         return self._parser.set(self._name, key, value)
 
     def __delitem__(self, key):
-        if not (self._parser.has_option(self._name, key) and
+        wenn not (self._parser.has_option(self._name, key) and
                 self._parser.remove_option(self._name, key)):
             raise KeyError(key)
 
@@ -1324,9 +1324,9 @@ klasse SectionProxy(MutableMapping):
         return self._options().__iter__()
 
     def _options(self):
-        if self._name != self._parser.default_section:
+        wenn self._name != self._parser.default_section:
             return self._parser.options(self._name)
-        else:
+        sonst:
             return self._parser.defaults()
 
     @property
@@ -1343,13 +1343,13 @@ klasse SectionProxy(MutableMapping):
             _impl=None, **kwargs):
         """Get an option value.
 
-        Unless `fallback` is provided, `None` will be returned if the option
+        Unless `fallback` is provided, `None` will be returned wenn the option
         is not found.
 
         """
         # If `_impl` is provided, it should be a getter method on the parser
         # object that provides the desired type conversion.
-        if not _impl:
+        wenn not _impl:
             _impl = self._parser.get
         return _impl(self._name, option, raw=raw, vars=vars,
                      fallback=fallback, **kwargs)
@@ -1370,7 +1370,7 @@ klasse ConverterMapping(MutableMapping):
         self._data = {}
         fuer getter in dir(self._parser):
             m = self.GETTERCRE.match(getter)
-            if not m or not callable(getattr(self._parser, getter)):
+            wenn not m or not callable(getattr(self._parser, getter)):
                 continue
             self._data[m.group('name')] = None   # See klasse docstring.
 
@@ -1383,7 +1383,7 @@ klasse ConverterMapping(MutableMapping):
         except TypeError:
             raise ValueError('Incompatible key: {} (type: {})'
                              ''.format(key, type(key)))
-        if k == 'get':
+        wenn k == 'get':
             raise ValueError('Incompatible key: cannot use "" as a name')
         self._data[key] = value
         func = functools.partial(self._parser._get_conv, conv=value)

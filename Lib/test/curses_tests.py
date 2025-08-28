@@ -13,9 +13,9 @@ from curses import textpad
 def test_textpad(stdscr, insert_mode=False):
     ncols, nlines = 8, 3
     uly, ulx = 3, 2
-    if insert_mode:
+    wenn insert_mode:
         mode = 'insert mode'
-    else:
+    sonst:
         mode = 'overwrite mode'
 
     stdscr.addstr(uly-3, ulx, "Use Ctrl-G to end editing (%s)." % mode)
@@ -42,5 +42,5 @@ def main(stdscr):
     test_textpad(stdscr, True)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     curses.wrapper(main)

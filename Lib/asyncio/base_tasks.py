@@ -9,16 +9,16 @@ from . import coroutines
 def _task_repr_info(task):
     info = base_futures._future_repr_info(task)
 
-    if task.cancelling() and not task.done():
+    wenn task.cancelling() and not task.done():
         # replace status
         info[0] = 'cancelling'
 
     info.insert(1, 'name=%r' % task.get_name())
 
-    if task._fut_waiter is not None:
+    wenn task._fut_waiter is not None:
         info.insert(2, f'wait_for={task._fut_waiter!r}')
 
-    if task._coro:
+    wenn task._coro:
         coro = coroutines._format_coroutine(task._coro)
         info.insert(2, f'coro=<{coro}>')
 
@@ -33,32 +33,32 @@ def _task_repr(task):
 
 def _task_get_stack(task, limit):
     frames = []
-    if hasattr(task._coro, 'cr_frame'):
+    wenn hasattr(task._coro, 'cr_frame'):
         # case 1: 'async def' coroutines
         f = task._coro.cr_frame
-    elif hasattr(task._coro, 'gi_frame'):
+    sowenn hasattr(task._coro, 'gi_frame'):
         # case 2: legacy coroutines
         f = task._coro.gi_frame
-    elif hasattr(task._coro, 'ag_frame'):
+    sowenn hasattr(task._coro, 'ag_frame'):
         # case 3: async generators
         f = task._coro.ag_frame
-    else:
+    sonst:
         # case 4: unknown objects
         f = None
-    if f is not None:
+    wenn f is not None:
         while f is not None:
-            if limit is not None:
-                if limit <= 0:
+            wenn limit is not None:
+                wenn limit <= 0:
                     break
                 limit -= 1
             frames.append(f)
             f = f.f_back
         frames.reverse()
-    elif task._exception is not None:
+    sowenn task._exception is not None:
         tb = task._exception.__traceback__
         while tb is not None:
-            if limit is not None:
-                if limit <= 0:
+            wenn limit is not None:
+                wenn limit <= 0:
                     break
                 limit -= 1
             frames.append(tb.tb_frame)
@@ -74,21 +74,21 @@ def _task_print_stack(task, limit, file):
         co = f.f_code
         filename = co.co_filename
         name = co.co_name
-        if filename not in checked:
+        wenn filename not in checked:
             checked.add(filename)
             linecache.checkcache(filename)
         line = linecache.getline(filename, lineno, f.f_globals)
         extracted_list.append((filename, lineno, name, line))
 
     exc = task._exception
-    if not extracted_list:
+    wenn not extracted_list:
         print(f'No stack fuer {task!r}', file=file)
-    elif exc is not None:
+    sowenn exc is not None:
         print(f'Traceback fuer {task!r} (most recent call last):', file=file)
-    else:
+    sonst:
         print(f'Stack fuer {task!r} (most recent call last):', file=file)
 
     traceback.print_list(extracted_list, file=file)
-    if exc is not None:
+    wenn exc is not None:
         fuer line in traceback.format_exception_only(exc.__class__, exc):
             print(line, file=file, end='')

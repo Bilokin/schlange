@@ -142,7 +142,7 @@ klasse FontPageTest(unittest.TestCase):
     def test_fontlist_key(self):
         # Up and Down keys should select a new font.
         d = self.page
-        if d.fontlist.size() < 2:
+        wenn d.fontlist.size() < 2:
             self.skipTest('need at least 2 fonts')
         fontlist = d.fontlist
         fontlist.activate(0)
@@ -171,7 +171,7 @@ klasse FontPageTest(unittest.TestCase):
     def test_fontlist_mouse(self):
         # Click on item should select that item.
         d = self.page
-        if d.fontlist.size() < 2:
+        wenn d.fontlist.size() < 2:
             self.skipTest('need at least 2 fonts')
         fontlist = d.fontlist
         fontlist.activate(0)
@@ -1576,5 +1576,5 @@ klasse VarTraceTest(unittest.TestCase):
         self.assertEqual(self.called, 0)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main(verbosity=2)

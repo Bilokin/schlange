@@ -11,9 +11,9 @@ def insort_right(a, x, lo=0, hi=None, *, key=None):
 
     A custom key function can be supplied to customize the sort order.
     """
-    if key is None:
+    wenn key is None:
         lo = bisect_right(a, x, lo, hi)
-    else:
+    sonst:
         lo = bisect_right(a, key(x), lo, hi, key=key)
     a.insert(lo, x)
 
@@ -22,7 +22,7 @@ def bisect_right(a, x, lo=0, hi=None, *, key=None):
     """Return the index where to insert item x in list a, assuming a is sorted.
 
     The return value i is such that all e in a[:i] have e <= x, and all e in
-    a[i:] have e > x.  So if x already appears in the list, a.insert(i, x) will
+    a[i:] have e > x.  So wenn x already appears in the list, a.insert(i, x) will
     insert just after the rightmost x already there.
 
     Optional args lo (default 0) and hi (default len(a)) bound the
@@ -31,25 +31,25 @@ def bisect_right(a, x, lo=0, hi=None, *, key=None):
     A custom key function can be supplied to customize the sort order.
     """
 
-    if lo < 0:
+    wenn lo < 0:
         raise ValueError('lo must be non-negative')
-    if hi is None:
+    wenn hi is None:
         hi = len(a)
     # Note, the comparison uses "<" to match the
     # __lt__() logic in list.sort() and in heapq.
-    if key is None:
+    wenn key is None:
         while lo < hi:
             mid = (lo + hi) // 2
-            if x < a[mid]:
+            wenn x < a[mid]:
                 hi = mid
-            else:
+            sonst:
                 lo = mid + 1
-    else:
+    sonst:
         while lo < hi:
             mid = (lo + hi) // 2
-            if x < key(a[mid]):
+            wenn x < key(a[mid]):
                 hi = mid
-            else:
+            sonst:
                 lo = mid + 1
     return lo
 
@@ -65,9 +65,9 @@ def insort_left(a, x, lo=0, hi=None, *, key=None):
     A custom key function can be supplied to customize the sort order.
     """
 
-    if key is None:
+    wenn key is None:
         lo = bisect_left(a, x, lo, hi)
-    else:
+    sonst:
         lo = bisect_left(a, key(x), lo, hi, key=key)
     a.insert(lo, x)
 
@@ -75,7 +75,7 @@ def bisect_left(a, x, lo=0, hi=None, *, key=None):
     """Return the index where to insert item x in list a, assuming a is sorted.
 
     The return value i is such that all e in a[:i] have e < x, and all e in
-    a[i:] have e >= x.  So if x already appears in the list, a.insert(i, x) will
+    a[i:] have e >= x.  So wenn x already appears in the list, a.insert(i, x) will
     insert just before the leftmost x already there.
 
     Optional args lo (default 0) and hi (default len(a)) bound the
@@ -84,25 +84,25 @@ def bisect_left(a, x, lo=0, hi=None, *, key=None):
     A custom key function can be supplied to customize the sort order.
     """
 
-    if lo < 0:
+    wenn lo < 0:
         raise ValueError('lo must be non-negative')
-    if hi is None:
+    wenn hi is None:
         hi = len(a)
     # Note, the comparison uses "<" to match the
     # __lt__() logic in list.sort() and in heapq.
-    if key is None:
+    wenn key is None:
         while lo < hi:
             mid = (lo + hi) // 2
-            if a[mid] < x:
+            wenn a[mid] < x:
                 lo = mid + 1
-            else:
+            sonst:
                 hi = mid
-    else:
+    sonst:
         while lo < hi:
             mid = (lo + hi) // 2
-            if key(a[mid]) < x:
+            wenn key(a[mid]) < x:
                 lo = mid + 1
-            else:
+            sonst:
                 hi = mid
     return lo
 

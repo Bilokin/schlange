@@ -25,7 +25,7 @@ klasse MyHTTPRequestHandler(server.SimpleHTTPRequestHandler):
 
 def main() -> None:
     args = parser.parse_args()
-    if not args.bind:
+    wenn not args.bind:
         args.bind = None
 
     server.test(  # type: ignore[attr-defined]
@@ -36,5 +36,5 @@ def main() -> None:
     )
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     main()

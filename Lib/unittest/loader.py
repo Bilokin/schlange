@@ -27,7 +27,7 @@ klasse _FailedTest(case.TestCase):
         super(_FailedTest, self).__init__(method_name)
 
     def __getattr__(self, name):
-        if name != self._testMethodName:
+        wenn name != self._testMethodName:
             return super(_FailedTest, self).__getattr__(name)
         def testFailure():
             raise self._exception
@@ -80,16 +80,16 @@ klasse TestLoader(object):
 
     def loadTestsFromTestCase(self, testCaseClass):
         """Return a suite of all test cases contained in testCaseClass"""
-        if issubclass(testCaseClass, suite.TestSuite):
+        wenn issubclass(testCaseClass, suite.TestSuite):
             raise TypeError("Test cases should not be derived from "
                             "TestSuite. Maybe you meant to derive from "
                             "TestCase?")
-        if testCaseClass in (case.TestCase, case.FunctionTestCase):
+        wenn testCaseClass in (case.TestCase, case.FunctionTestCase):
             # We don't load any tests from base types that should not be loaded.
             testCaseNames = []
-        else:
+        sonst:
             testCaseNames = self.getTestCaseNames(testCaseClass)
-            if not testCaseNames and hasattr(testCaseClass, 'runTest'):
+            wenn not testCaseNames and hasattr(testCaseClass, 'runTest'):
                 testCaseNames = ['runTest']
         loaded_suite = self.suiteClass(map(testCaseClass, testCaseNames))
         return loaded_suite
@@ -99,7 +99,7 @@ klasse TestLoader(object):
         tests = []
         fuer name in dir(module):
             obj = getattr(module, name)
-            if (
+            wenn (
                 isinstance(obj, type)
                 and issubclass(obj, case.TestCase)
                 and obj not in (case.TestCase, case.FunctionTestCase)
@@ -108,7 +108,7 @@ klasse TestLoader(object):
 
         load_tests = getattr(module, 'load_tests', None)
         tests = self.suiteClass(tests)
-        if load_tests is not None:
+        wenn load_tests is not None:
             try:
                 return load_tests(self, tests, pattern)
             except Exception as e:
@@ -129,7 +129,7 @@ klasse TestLoader(object):
         """
         parts = name.split('.')
         error_case, error_message = None, None
-        if module is None:
+        wenn module is None:
             parts_copy = parts[:]
             while parts_copy:
                 try:
@@ -138,10 +138,10 @@ klasse TestLoader(object):
                     break
                 except ImportError:
                     next_attribute = parts_copy.pop()
-                    # Last error so we can give it to the user if needed.
+                    # Last error so we can give it to the user wenn needed.
                     error_case, error_message = _make_failed_import_test(
                         next_attribute, self.suiteClass)
-                    if not parts_copy:
+                    wenn not parts_copy:
                         # Even the top level import failed: report that error.
                         self.errors.append(error_message)
                         return error_case
@@ -152,7 +152,7 @@ klasse TestLoader(object):
                 parent, obj = obj, getattr(obj, part)
             except AttributeError as e:
                 # We can't traverse some part of the name.
-                if (getattr(obj, '__path__', None) is not None
+                wenn (getattr(obj, '__path__', None) is not None
                     and error_case is not None):
                     # This is a package (no __path__ per importlib docs), and we
                     # encountered an error importing something. We cannot tell
@@ -161,7 +161,7 @@ klasse TestLoader(object):
                     # ImportError - it is more informative.
                     self.errors.append(error_message)
                     return error_case
-                else:
+                sonst:
                     # Otherwise, we signal that an AttributeError has occurred.
                     error_case, error_message = _make_failed_test(
                         part, e, self.suiteClass,
@@ -170,34 +170,34 @@ klasse TestLoader(object):
                     self.errors.append(error_message)
                     return error_case
 
-        if isinstance(obj, types.ModuleType):
+        wenn isinstance(obj, types.ModuleType):
             return self.loadTestsFromModule(obj)
-        elif (
+        sowenn (
             isinstance(obj, type)
             and issubclass(obj, case.TestCase)
             and obj not in (case.TestCase, case.FunctionTestCase)
         ):
             return self.loadTestsFromTestCase(obj)
-        elif (isinstance(obj, types.FunctionType) and
+        sowenn (isinstance(obj, types.FunctionType) and
               isinstance(parent, type) and
               issubclass(parent, case.TestCase)):
             name = parts[-1]
             inst = parent(name)
             # static methods follow a different path
-            if not isinstance(getattr(inst, name), types.FunctionType):
+            wenn not isinstance(getattr(inst, name), types.FunctionType):
                 return self.suiteClass([inst])
-        elif isinstance(obj, suite.TestSuite):
+        sowenn isinstance(obj, suite.TestSuite):
             return obj
-        if callable(obj):
+        wenn callable(obj):
             test = obj()
-            if isinstance(test, suite.TestSuite):
+            wenn isinstance(test, suite.TestSuite):
                 return test
-            elif isinstance(test, case.TestCase):
+            sowenn isinstance(test, case.TestCase):
                 return self.suiteClass([test])
-            else:
+            sonst:
                 raise TypeError("calling %s returned %s, not a test" %
                                 (obj, test))
-        else:
+        sonst:
             raise TypeError("don't know how to make test from: %s" % obj)
 
     def loadTestsFromNames(self, names, module=None):
@@ -211,10 +211,10 @@ klasse TestLoader(object):
         """Return a sorted sequence of method names found within testCaseClass
         """
         def shouldIncludeMethod(attrname):
-            if not attrname.startswith(self.testMethodPrefix):
+            wenn not attrname.startswith(self.testMethodPrefix):
                 return False
             testFunc = getattr(testCaseClass, attrname)
-            if not callable(testFunc):
+            wenn not callable(testFunc):
                 return False
             fullName = f'%s.%s.%s' % (
                 testCaseClass.__module__, testCaseClass.__qualname__, attrname
@@ -222,7 +222,7 @@ klasse TestLoader(object):
             return self.testNamePatterns is None or \
                 any(fnmatchcase(fullName, pattern) fuer pattern in self.testNamePatterns)
         testFnNames = list(filter(shouldIncludeMethod, dir(testCaseClass)))
-        if self.sortTestMethodsUsing:
+        wenn self.sortTestMethodsUsing:
             testFnNames.sort(key=functools.cmp_to_key(self.sortTestMethodsUsing))
         return testFnNames
 
@@ -256,16 +256,16 @@ klasse TestLoader(object):
         """
         original_top_level_dir = self._top_level_dir
         set_implicit_top = False
-        if top_level_dir is None and self._top_level_dir is not None:
-            # make top_level_dir optional if called from load_tests in a package
+        wenn top_level_dir is None and self._top_level_dir is not None:
+            # make top_level_dir optional wenn called from load_tests in a package
             top_level_dir = self._top_level_dir
-        elif top_level_dir is None:
+        sowenn top_level_dir is None:
             set_implicit_top = True
             top_level_dir = start_dir
 
         top_level_dir = os.path.abspath(top_level_dir)
 
-        if not top_level_dir in sys.path:
+        wenn not top_level_dir in sys.path:
             # all test modules must be importable from the top level directory
             # should we *unconditionally* put the start directory in first
             # in sys.path to minimise likelihood of conflicts between installed
@@ -276,64 +276,64 @@ klasse TestLoader(object):
         is_not_importable = False
         is_namespace = False
         tests = []
-        if os.path.isdir(os.path.abspath(start_dir)):
+        wenn os.path.isdir(os.path.abspath(start_dir)):
             start_dir = os.path.abspath(start_dir)
-            if start_dir != top_level_dir:
+            wenn start_dir != top_level_dir:
                 is_not_importable = not os.path.isfile(os.path.join(start_dir, '__init__.py'))
-        else:
+        sonst:
             # support fuer discovery from dotted module names
             try:
                 __import__(start_dir)
             except ImportError:
                 is_not_importable = True
-            else:
+            sonst:
                 the_module = sys.modules[start_dir]
-                if not hasattr(the_module, "__file__") or the_module.__file__ is None:
+                wenn not hasattr(the_module, "__file__") or the_module.__file__ is None:
                     # look fuer namespace packages
                     try:
                         spec = the_module.__spec__
                     except AttributeError:
                         spec = None
 
-                    if spec and spec.submodule_search_locations is not None:
+                    wenn spec and spec.submodule_search_locations is not None:
                         is_namespace = True
 
                         fuer path in the_module.__path__:
-                            if (not set_implicit_top and
+                            wenn (not set_implicit_top and
                                 not path.startswith(top_level_dir)):
                                 continue
                             self._top_level_dir = \
                                 (path.split(the_module.__name__
                                         .replace(".", os.path.sep))[0])
                             tests.extend(self._find_tests(path, pattern, namespace=True))
-                    elif the_module.__name__ in sys.builtin_module_names:
+                    sowenn the_module.__name__ in sys.builtin_module_names:
                         # builtin module
                         raise TypeError('Can not use builtin modules '
                                         'as dotted module names') from None
-                    else:
+                    sonst:
                         raise TypeError(
                             f"don't know how to discover from {the_module!r}"
                             ) from None
 
-                else:
+                sonst:
                     top_part = start_dir.split('.')[0]
                     start_dir = os.path.abspath(os.path.dirname((the_module.__file__)))
 
-                if set_implicit_top:
-                    if not is_namespace:
-                        if sys.modules[top_part].__file__ is None:
+                wenn set_implicit_top:
+                    wenn not is_namespace:
+                        wenn sys.modules[top_part].__file__ is None:
                             self._top_level_dir = os.path.dirname(the_module.__file__)
-                            if self._top_level_dir not in sys.path:
+                            wenn self._top_level_dir not in sys.path:
                                 sys.path.insert(0, self._top_level_dir)
-                        else:
+                        sonst:
                             self._top_level_dir = \
                                 self._get_directory_containing_module(top_part)
                     sys.path.remove(top_level_dir)
 
-        if is_not_importable:
+        wenn is_not_importable:
             raise ImportError('Start directory is not importable: %r' % start_dir)
 
-        if not is_namespace:
+        wenn not is_namespace:
             tests = list(self._find_tests(start_dir, pattern))
 
         self._top_level_dir = original_top_level_dir
@@ -343,16 +343,16 @@ klasse TestLoader(object):
         module = sys.modules[module_name]
         full_path = os.path.abspath(module.__file__)
 
-        if os.path.basename(full_path).lower().startswith('__init__.py'):
+        wenn os.path.basename(full_path).lower().startswith('__init__.py'):
             return os.path.dirname(os.path.dirname(full_path))
-        else:
+        sonst:
             # here we have been given a module rather than a package - so
             # all we can do is search the *same* directory the module is in
             # should an exception be raised instead
             return os.path.dirname(full_path)
 
     def _get_name_from_path(self, path):
-        if path == self._top_level_dir:
+        wenn path == self._top_level_dir:
             return '.'
         path = _splitext(os.path.normpath(path))
 
@@ -377,14 +377,14 @@ klasse TestLoader(object):
         name = self._get_name_from_path(start_dir)
         # name is '.' when start_dir == top_level_dir (and top_level_dir is by
         # definition not a package).
-        if name != '.' and name not in self._loading_packages:
+        wenn name != '.' and name not in self._loading_packages:
             # name is in self._loading_packages while we have called into
             # loadTestsFromModule with name.
             tests, should_recurse = self._find_test_path(
                 start_dir, pattern, namespace)
-            if tests is not None:
+            wenn tests is not None:
                 yield tests
-            if not should_recurse:
+            wenn not should_recurse:
                 # Either an error occurred, or load_tests was used by the
                 # package.
                 return
@@ -394,9 +394,9 @@ klasse TestLoader(object):
             full_path = os.path.join(start_dir, path)
             tests, should_recurse = self._find_test_path(
                 full_path, pattern, False)
-            if tests is not None:
+            wenn tests is not None:
                 yield tests
-            if should_recurse:
+            wenn should_recurse:
                 # we found a package that didn't use load_tests.
                 name = self._get_name_from_path(full_path)
                 self._loading_packages.add(name)
@@ -414,13 +414,13 @@ klasse TestLoader(object):
         Returns a tuple (None_or_tests_from_file, should_recurse).
         """
         basename = os.path.basename(full_path)
-        if os.path.isfile(full_path):
-            if not VALID_MODULE_NAME.match(basename):
+        wenn os.path.isfile(full_path):
+            wenn not VALID_MODULE_NAME.match(basename):
                 # valid Python identifiers only
                 return None, False
-            if not self._match_path(basename, full_path, pattern):
+            wenn not self._match_path(basename, full_path, pattern):
                 return None, False
-            # if the test file matches, load it
+            # wenn the test file matches, load it
             name = self._get_name_from_path(full_path)
             try:
                 module = self._get_module_from_name(name)
@@ -431,14 +431,14 @@ klasse TestLoader(object):
                     _make_failed_import_test(name, self.suiteClass)
                 self.errors.append(error_message)
                 return error_case, False
-            else:
+            sonst:
                 mod_file = os.path.abspath(
                     getattr(module, '__file__', full_path))
                 realpath = _splitext(
                     os.path.realpath(mod_file))
                 fullpath_noext = _splitext(
                     os.path.realpath(full_path))
-                if realpath.lower() != fullpath_noext.lower():
+                wenn realpath.lower() != fullpath_noext.lower():
                     module_dir = os.path.dirname(realpath)
                     mod_name = _splitext(
                         os.path.basename(full_path))
@@ -448,8 +448,8 @@ klasse TestLoader(object):
                     raise ImportError(
                         msg % (mod_name, module_dir, expected_dir))
                 return self.loadTestsFromModule(module, pattern=pattern), False
-        elif os.path.isdir(full_path):
-            if (not namespace and
+        sowenn os.path.isdir(full_path):
+            wenn (not namespace and
                 not os.path.isfile(os.path.join(full_path, '__init__.py'))):
                 return None, False
 
@@ -465,19 +465,19 @@ klasse TestLoader(object):
                     _make_failed_import_test(name, self.suiteClass)
                 self.errors.append(error_message)
                 return error_case, False
-            else:
+            sonst:
                 load_tests = getattr(package, 'load_tests', None)
                 # Mark this package as being in load_tests (possibly ;))
                 self._loading_packages.add(name)
                 try:
                     tests = self.loadTestsFromModule(package, pattern=pattern)
-                    if load_tests is not None:
+                    wenn load_tests is not None:
                         # loadTestsFromModule(package) has loaded tests fuer us.
                         return tests, False
                     return tests, True
                 finally:
                     self._loading_packages.discard(name)
-        else:
+        sonst:
             return None, False
 
 

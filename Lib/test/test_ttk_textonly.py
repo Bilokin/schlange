@@ -1,6 +1,6 @@
 from test.support import import_helper
 
-# Skip this test if _tkinter does not exist.
+# Skip this test wenn _tkinter does not exist.
 import_helper.import_module('_tkinter')
 
 import unittest
@@ -10,7 +10,7 @@ from tkinter import ttk
 klasse MockTkApp:
 
     def splitlist(self, arg):
-        if isinstance(arg, tuple):
+        wenn isinstance(arg, tuple):
             return arg
         return arg.split(':')
 
@@ -44,7 +44,7 @@ klasse InternalFunctionsTest(unittest.TestCase):
         def check_against(fmt_opts, result):
             fuer i in range(0, len(fmt_opts), 2):
                 self.assertEqual(result.pop(fmt_opts[i]), fmt_opts[i + 1])
-            if result:
+            wenn result:
                 self.fail("result still got elements: %s" % result)
 
         # passing an empty dict should return an empty object (tuple here)
@@ -79,7 +79,7 @@ klasse InternalFunctionsTest(unittest.TestCase):
 
         opts = {'αβγ': True, 'á': False}
         orig_opts = opts.copy()
-        # check if giving unicode keys is fine
+        # check wenn giving unicode keys is fine
         check_against(ttk._format_optdict(opts), {'-αβγ': True, '-á': False})
         # opts should remain unchanged
         self.assertEqual(opts, orig_opts)
@@ -419,9 +419,9 @@ klasse InternalFunctionsTest(unittest.TestCase):
 
     def test_val_or_dict(self):
         def func(res, opt=None, val=None):
-            if opt is None:
+            wenn opt is None:
                 return res
-            if val is None:
+            wenn val is None:
                 return "test val"
             return (opt, val)
 
@@ -477,5 +477,5 @@ klasse TclObjsToPyTest(unittest.TestCase):
             {'text': 'some text'})
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

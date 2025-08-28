@@ -6,7 +6,7 @@ import unittest
 import time
 
 from test.support import import_helper
-# Raise SkipTest if subinterpreters not supported.
+# Raise SkipTest wenn subinterpreters not supported.
 _channels = import_helper.import_module('_interpchannels')
 from concurrent import interpreters
 from test.support import channels
@@ -378,15 +378,15 @@ klasse TestSendRecv(TestBase):
 
     def test_send_cleared_with_subinterpreter(self):
         def common(rch, sch, unbound=None, presize=0):
-            if not unbound:
+            wenn not unbound:
                 extraargs = ''
-            elif unbound is channels.UNBOUND:
+            sowenn unbound is channels.UNBOUND:
                 extraargs = ', unbounditems=channels.UNBOUND'
-            elif unbound is channels.UNBOUND_ERROR:
+            sowenn unbound is channels.UNBOUND_ERROR:
                 extraargs = ', unbounditems=channels.UNBOUND_ERROR'
-            elif unbound is channels.UNBOUND_REMOVE:
+            sowenn unbound is channels.UNBOUND_REMOVE:
                 extraargs = ', unbounditems=channels.UNBOUND_REMOVE'
-            else:
+            sonst:
                 raise NotImplementedError(repr(unbound))
             interp = interpreters.create()
 
@@ -403,7 +403,7 @@ klasse TestSendRecv(TestBase):
                 presize + 2,
             )
 
-            if presize == 0:
+            wenn presize == 0:
                 obj1 = rch.recv()
                 self.assertEqual(obj1, b'spam')
                 self.assertEqual(
@@ -599,6 +599,6 @@ klasse TestSendRecv(TestBase):
         self.assertEqual(_channels.get_count(rch.id), 0)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     # Test needs to be a package, so we can do relative imports.
     unittest.main()

@@ -26,5 +26,5 @@ klasse Test(unittest.TestCase):
         self.assertTrue(True)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main(verbosity=2)

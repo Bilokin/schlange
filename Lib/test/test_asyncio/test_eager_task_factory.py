@@ -25,7 +25,7 @@ klasse EagerTaskFactoryLoopTests:
         Helper method to run the `coro` coroutine in the test event loop.
         It helps with making sure the event loop is running before starting
         to execute `coro`. This is important fuer testing the eager step
-        functionality, since an eager step is taken only if the event loop
+        functionality, since an eager step is taken only wenn the event loop
         is already running.
         """
 
@@ -366,14 +366,14 @@ klasse AsyncTaskCounter:
         self.task_count = 0
 
         def CountingTask(*args, eager_start=False, **kwargs):
-            if not eager_start:
+            wenn not eager_start:
                 self.task_count += 1
             kwargs["eager_start"] = eager_start
             return task_class(*args, **kwargs)
 
-        if eager:
+        wenn eager:
             factory = asyncio.create_eager_task_factory(CountingTask)
-        else:
+        sonst:
             def factory(loop, coro, **kwargs):
                 return CountingTask(coro, loop=loop, **kwargs)
         loop.set_task_factory(factory)
@@ -383,13 +383,13 @@ klasse AsyncTaskCounter:
 
 
 async def awaitable_chain(depth):
-    if depth == 0:
+    wenn depth == 0:
         return 0
     return 1 + await awaitable_chain(depth - 1)
 
 
 async def recursive_taskgroups(width, depth):
-    if depth == 0:
+    wenn depth == 0:
         return
 
     async with asyncio.TaskGroup() as tg:
@@ -400,7 +400,7 @@ async def recursive_taskgroups(width, depth):
 
 
 async def recursive_gather(width, depth):
-    if depth == 0:
+    wenn depth == 0:
         return
 
     await asyncio.gather(
@@ -423,7 +423,7 @@ klasse BaseTaskCountingTests:
     def test_awaitables_chain(self):
         observed_depth = self.loop.run_until_complete(awaitable_chain(100))
         self.assertEqual(observed_depth, 100)
-        self.assertEqual(self.counter.get(), 0 if self.eager else 1)
+        self.assertEqual(self.counter.get(), 0 wenn self.eager sonst 1)
 
     def test_recursive_taskgroups(self):
         num_tasks = self.loop.run_until_complete(recursive_taskgroups(5, 4))
@@ -542,5 +542,5 @@ klasse DefaultTaskFactoryEagerStart(test_utils.TestCase):
 
         asyncio.run(main(), loop_factory=asyncio.EventLoop)
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

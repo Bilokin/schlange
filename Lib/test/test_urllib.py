@@ -22,14 +22,14 @@ import tempfile
 import collections
 
 
-if not socket_helper.has_gethostname:
+wenn not socket_helper.has_gethostname:
     raise unittest.SkipTest("test requires gethostname()")
 
 
 def hexescape(char):
     """Escape char as RFC 2396 specifies"""
     hex_repr = hex(ord(char))[2:].upper()
-    if len(hex_repr) == 1:
+    wenn len(hex_repr) == 1:
         hex_repr = "0%s" % hex_repr
     return "%" + hex_repr
 
@@ -46,18 +46,18 @@ def fakehttp(fakedata, mock_close=False):
             return self
 
         def read(self, amt=None):
-            if self.closed:
+            wenn self.closed:
                 return b""
             return io.BytesIO.read(self, amt)
 
         def readline(self, length=None):
-            if self.closed:
+            wenn self.closed:
                 return b""
             return io.BytesIO.readline(self, length)
 
         def close(self):
             self.io_refs -= 1
-            if self.io_refs == 0:
+            wenn self.io_refs == 0:
                 io.BytesIO.close(self)
 
     klasse FakeHTTPConnection(http.client.HTTPConnection):
@@ -69,7 +69,7 @@ def fakehttp(fakedata, mock_close=False):
             self.sock = FakeSocket(self.fakedata)
             type(self).fakesock = self.sock
 
-        if mock_close:
+        wenn mock_close:
             # bpo-36918: HTTPConnection destructor calls close() which calls
             # flush(). Problem: flush() calls self.fp.flush() which raises
             # "ValueError: I/O operation on closed file" which is logged as an
@@ -186,9 +186,9 @@ klasse urlopen_FileTests(unittest.TestCase):
         url = 'file://pythontest.net/foo/bar'
         with self.assertRaises(urllib.error.URLError) as e:
             urllib.request.urlopen(url)
-        if os.name == 'nt':
+        wenn os.name == 'nt':
             self.assertEqual(e.exception.filename, r'\\pythontest.net\foo\bar')
-        else:
+        sonst:
             self.assertEqual(e.exception.reason, 'file:// scheme is supported only on localhost')
 
 
@@ -199,7 +199,7 @@ klasse ProxyTests(unittest.TestCase):
         self.env = self.enterContext(os_helper.EnvironmentVarGuard())
         # Delete all proxy related env vars
         fuer k in list(os.environ):
-            if 'proxy' in k.lower():
+            wenn 'proxy' in k.lower():
                 self.env.unset(k)
 
     def test_getproxies_environment_keep_no_proxies(self):
@@ -467,7 +467,7 @@ Connection: close
                 self.unfakehttp()
 
     def test_empty_socket(self):
-        # urlopen() raises OSError if the underlying socket does not send any
+        # urlopen() raises OSError wenn the underlying socket does not send any
         # data. (#1680230)
         self.fakehttp(b'')
         try:
@@ -786,10 +786,10 @@ klasse QuotingTests(unittest.TestCase):
     The various character sets specified are:
 
     Reserved characters : ";/?:@&=+$,"
-        Have special meaning in URIs and must be escaped if not being used for
+        Have special meaning in URIs and must be escaped wenn not being used for
         their special meaning
     Data characters : letters, digits, and "-_.!~*'()"
-        Unreserved and do not need to be escaped; can be, though, if desired
+        Unreserved and do not need to be escaped; can be, though, wenn desired
     Control characters : 0x00 - 0x1F, 0x7F
         Have no use in URIs so must be escaped
     space : 0x20
@@ -1687,5 +1687,5 @@ klasse RequestTests(unittest.TestCase):
         self.assertEqual(request.get_method(), 'HEAD')
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

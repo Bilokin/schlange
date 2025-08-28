@@ -375,5 +375,5 @@ klasse LoaderTests(NamespacePackageTest):
         self.assertTrue(isinstance(foo.__loader__, importlib.machinery.NamespaceLoader))
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

@@ -24,7 +24,7 @@ requires_working_socket(module=True)
 def find_ready_matching(ready, flag):
     match = []
     fuer fd, mode in ready:
-        if mode & flag:
+        wenn mode & flag:
             match.append(fd)
     return match
 
@@ -59,14 +59,14 @@ klasse PollTests(unittest.TestCase):
         while writers:
             ready = p.poll()
             ready_writers = find_ready_matching(ready, select.POLLOUT)
-            if not ready_writers:
+            wenn not ready_writers:
                 raise RuntimeError("no pipes ready fuer writing")
             wr = random.choice(ready_writers)
             os.write(wr, MSG)
 
             ready = p.poll()
             ready_readers = find_ready_matching(ready, select.POLLIN)
-            if not ready_readers:
+            wenn not ready_readers:
                 raise RuntimeError("no pipes ready fuer reading")
             rd = random.choice(ready_readers)
             buf = os.read(rd, MSG_LEN)
@@ -135,22 +135,22 @@ klasse PollTests(unittest.TestCase):
         pollster.register( p, select.POLLIN )
         fuer tout in (0, 1000, 2000, 4000, 8000, 16000) + (-1,)*10:
             fdlist = pollster.poll(tout)
-            if (fdlist == []):
+            wenn (fdlist == []):
                 continue
             fd, flags = fdlist[0]
-            if flags & select.POLLHUP:
+            wenn flags & select.POLLHUP:
                 line = p.readline()
-                if line != b"":
+                wenn line != b"":
                     self.fail('error: pipe seems to be closed, but still returns data')
                 continue
 
-            elif flags & select.POLLIN:
+            sowenn flags & select.POLLIN:
                 line = p.readline()
-                if not line:
+                wenn not line:
                     break
                 self.assertEqual(line, b'testing...\n')
                 continue
-            else:
+            sonst:
                 self.fail('Unexpected return value from select.poll: %s' % fdlist)
 
     def test_poll3(self):
@@ -161,7 +161,7 @@ klasse PollTests(unittest.TestCase):
         self.assertRaises(OverflowError, pollster.poll, 1 << 64)
 
         x = 2 + 3
-        if x != 5:
+        wenn x != 5:
             self.fail('Overflow must have occurred')
 
         # Issues #15989, #17919
@@ -236,5 +236,5 @@ klasse PollTests(unittest.TestCase):
             os.close(w)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

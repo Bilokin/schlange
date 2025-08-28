@@ -63,5 +63,5 @@ klasse ProtocolsAbsTests(unittest.TestCase):
         self.assertNotHasAttr(sp, '__dict__')
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main()

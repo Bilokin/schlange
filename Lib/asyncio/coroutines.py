@@ -19,7 +19,7 @@ _is_coroutine = object()
 
 def iscoroutinefunction(func):
     import warnings
-    """Return True if func is a decorated coroutine function."""
+    """Return True wenn func is a decorated coroutine function."""
     warnings._deprecated("asyncio.iscoroutinefunction",
                          f"{warnings._DEPRECATED_MSG}; "
                          "use inspect.iscoroutinefunction() instead",
@@ -39,18 +39,18 @@ _iscoroutine_typecache = set()
 
 
 def iscoroutine(obj):
-    """Return True if obj is a coroutine object."""
-    if type(obj) in _iscoroutine_typecache:
+    """Return True wenn obj is a coroutine object."""
+    wenn type(obj) in _iscoroutine_typecache:
         return True
 
-    if isinstance(obj, _COROUTINE_TYPES):
+    wenn isinstance(obj, _COROUTINE_TYPES):
         # Just in case we don't want to cache more than 100
         # positive types.  That shouldn't ever happen, unless
         # someone stressing the system on purpose.
-        if len(_iscoroutine_typecache) < 100:
+        wenn len(_iscoroutine_typecache) < 100:
             _iscoroutine_typecache.add(type(obj))
         return True
-    else:
+    sonst:
         return False
 
 
@@ -62,11 +62,11 @@ def _format_coroutine(coro):
         # proper __qualname__ or __name__.  While that is a bug
         # in Cython, asyncio shouldn't crash with an AttributeError
         # in its __repr__ functions.
-        if hasattr(coro, '__qualname__') and coro.__qualname__:
+        wenn hasattr(coro, '__qualname__') and coro.__qualname__:
             coro_name = coro.__qualname__
-        elif hasattr(coro, '__name__') and coro.__name__:
+        sowenn hasattr(coro, '__name__') and coro.__name__:
             coro_name = coro.__name__
-        else:
+        sonst:
             # Stop masking Cython bugs, expose them in a friendly way.
             coro_name = f'<{type(coro).__name__} without __name__>'
         return f'{coro_name}()'
@@ -81,24 +81,24 @@ def _format_coroutine(coro):
                 return False
 
     coro_code = None
-    if hasattr(coro, 'cr_code') and coro.cr_code:
+    wenn hasattr(coro, 'cr_code') and coro.cr_code:
         coro_code = coro.cr_code
-    elif hasattr(coro, 'gi_code') and coro.gi_code:
+    sowenn hasattr(coro, 'gi_code') and coro.gi_code:
         coro_code = coro.gi_code
 
     coro_name = get_name(coro)
 
-    if not coro_code:
+    wenn not coro_code:
         # Built-in types might not have __qualname__ or __name__.
-        if is_running(coro):
+        wenn is_running(coro):
             return f'{coro_name} running'
-        else:
+        sonst:
             return coro_name
 
     coro_frame = None
-    if hasattr(coro, 'gi_frame') and coro.gi_frame:
+    wenn hasattr(coro, 'gi_frame') and coro.gi_frame:
         coro_frame = coro.gi_frame
-    elif hasattr(coro, 'cr_frame') and coro.cr_frame:
+    sowenn hasattr(coro, 'cr_frame') and coro.cr_frame:
         coro_frame = coro.cr_frame
 
     # If Cython's coroutine has a fake code object without proper
@@ -107,11 +107,11 @@ def _format_coroutine(coro):
 
     lineno = 0
 
-    if coro_frame is not None:
+    wenn coro_frame is not None:
         lineno = coro_frame.f_lineno
         coro_repr = f'{coro_name} running at {filename}:{lineno}'
 
-    else:
+    sonst:
         lineno = coro_code.co_firstlineno
         coro_repr = f'{coro_name} done, defined at {filename}:{lineno}'
 

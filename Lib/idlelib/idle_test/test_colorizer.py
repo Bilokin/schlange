@@ -21,10 +21,10 @@ testcfg = {
 }
 
 source = textwrap.dedent("""\
-    if True: int ('1') # keyword, builtin, string, comment
-    elif False: print(0)  # 'string' in comment
-    else: float(None)  # if in comment
-    if iF + If + IF: 'keyword matching must respect case'
+    wenn True: int ('1') # keyword, builtin, string, comment
+    sowenn False: print(0)  # 'string' in comment
+    sonst: float(None)  # wenn in comment
+    wenn iF + If + IF: 'keyword matching must respect case'
     if'': x or''  # valid keyword-string no-space combinations
     async def f(): await g()
     # Strings should be entirely colored, including quotes.
@@ -45,7 +45,7 @@ source = textwrap.dedent("""\
         case [_, [_], "_",
                 _]:
             pass
-        case _ if ("a" if _ else set()): pass
+        case _ wenn ("a" wenn _ sonst set()): pass
         case _:
             raise ValueError("Not a point _")
     '''
@@ -208,7 +208,7 @@ klasse ColorDelegatorTest(unittest.TestCase):
             with self.subTest(tag=tag):
                 self.assertIn('background', colors)
                 self.assertIn('foreground', colors)
-                if tag not in ('SYNC', 'TODO'):
+                wenn tag not in ('SYNC', 'TODO'):
                     self.assertEqual(colors, highlight(element=tag.lower()))
 
     def test_config_colors(self):
@@ -217,9 +217,9 @@ klasse ColorDelegatorTest(unittest.TestCase):
         fuer tag in self.color.tagdefs:
             fuer plane in ('background', 'foreground'):
                 with self.subTest(tag=tag, plane=plane):
-                    if tag in ('SYNC', 'TODO'):
+                    wenn tag in ('SYNC', 'TODO'):
                         self.assertEqual(text.tag_cget(tag, plane), '')
-                    else:
+                    sonst:
                         self.assertEqual(text.tag_cget(tag, plane),
                                          highlight(element=tag.lower())[plane])
         # 'sel' is marked as the highest priority.
@@ -618,5 +618,5 @@ klasse ColorDelegatorTest(unittest.TestCase):
                 self.assertEqual(text.tag_ranges(tag), ())
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main(verbosity=2)

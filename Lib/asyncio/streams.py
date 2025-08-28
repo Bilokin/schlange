@@ -8,7 +8,7 @@ import sys
 import warnings
 import weakref
 
-if hasattr(socket, 'AF_UNIX'):
+wenn hasattr(socket, 'AF_UNIX'):
     __all__ += ('open_unix_connection', 'start_unix_server')
 
 from . import coroutines
@@ -59,7 +59,7 @@ async def start_server(client_connected_cb, host=None, port=None, *,
     client_reader, client_writer.  client_reader is a StreamReader
     object, while client_writer is a StreamWriter object.  This
     parameter can either be a plain callback function or a coroutine;
-    if it is a coroutine, it will be automatically converted into a
+    wenn it is a coroutine, it will be automatically converted into a
     Task.
 
     The rest of the arguments are all the usual arguments to
@@ -84,7 +84,7 @@ async def start_server(client_connected_cb, host=None, port=None, *,
     return await loop.create_server(factory, host, port, **kwds)
 
 
-if hasattr(socket, 'AF_UNIX'):
+wenn hasattr(socket, 'AF_UNIX'):
     # UNIX Domain Sockets are supported on this platform
 
     async def open_unix_connection(path=None, *,
@@ -124,9 +124,9 @@ klasse FlowControlMixin(protocols.Protocol):
     """
 
     def __init__(self, loop=None):
-        if loop is None:
+        wenn loop is None:
             self._loop = events.get_event_loop()
-        else:
+        sonst:
             self._loop = loop
         self._paused = False
         self._drain_waiters = collections.deque()
@@ -135,36 +135,36 @@ klasse FlowControlMixin(protocols.Protocol):
     def pause_writing(self):
         assert not self._paused
         self._paused = True
-        if self._loop.get_debug():
+        wenn self._loop.get_debug():
             logger.debug("%r pauses writing", self)
 
     def resume_writing(self):
         assert self._paused
         self._paused = False
-        if self._loop.get_debug():
+        wenn self._loop.get_debug():
             logger.debug("%r resumes writing", self)
 
         fuer waiter in self._drain_waiters:
-            if not waiter.done():
+            wenn not waiter.done():
                 waiter.set_result(None)
 
     def connection_lost(self, exc):
         self._connection_lost = True
-        # Wake up the writer(s) if currently paused.
-        if not self._paused:
+        # Wake up the writer(s) wenn currently paused.
+        wenn not self._paused:
             return
 
         fuer waiter in self._drain_waiters:
-            if not waiter.done():
-                if exc is None:
+            wenn not waiter.done():
+                wenn exc is None:
                     waiter.set_result(None)
-                else:
+                sonst:
                     waiter.set_exception(exc)
 
     async def _drain_helper(self):
-        if self._connection_lost:
+        wenn self._connection_lost:
             raise ConnectionResetError('Connection lost')
-        if not self._paused:
+        wenn not self._paused:
             return
         waiter = self._loop.create_future()
         self._drain_waiters.append(waiter)
@@ -190,12 +190,12 @@ klasse StreamReaderProtocol(FlowControlMixin, protocols.Protocol):
 
     def __init__(self, stream_reader, client_connected_cb=None, loop=None):
         super().__init__(loop=loop)
-        if stream_reader is not None:
+        wenn stream_reader is not None:
             self._stream_reader_wr = weakref.ref(stream_reader)
             self._source_traceback = stream_reader._source_traceback
-        else:
+        sonst:
             self._stream_reader_wr = None
-        if client_connected_cb is not None:
+        wenn client_connected_cb is not None:
             # This is a stream created by the `create_server()` function.
             # Keep a strong reference to the reader until a connection
             # is established.
@@ -209,7 +209,7 @@ klasse StreamReaderProtocol(FlowControlMixin, protocols.Protocol):
 
     @property
     def _stream_reader(self):
-        if self._stream_reader_wr is None:
+        wenn self._stream_reader_wr is None:
             return None
         return self._stream_reader_wr()
 
@@ -219,32 +219,32 @@ klasse StreamReaderProtocol(FlowControlMixin, protocols.Protocol):
         self._over_ssl = transport.get_extra_info('sslcontext') is not None
 
     def connection_made(self, transport):
-        if self._reject_connection:
+        wenn self._reject_connection:
             context = {
                 'message': ('An open stream was garbage collected prior to '
                             'establishing network connection; '
                             'call "stream.close()" explicitly.')
             }
-            if self._source_traceback:
+            wenn self._source_traceback:
                 context['source_traceback'] = self._source_traceback
             self._loop.call_exception_handler(context)
             transport.abort()
             return
         self._transport = transport
         reader = self._stream_reader
-        if reader is not None:
+        wenn reader is not None:
             reader.set_transport(transport)
         self._over_ssl = transport.get_extra_info('sslcontext') is not None
-        if self._client_connected_cb is not None:
+        wenn self._client_connected_cb is not None:
             writer = StreamWriter(transport, self, reader, self._loop)
             res = self._client_connected_cb(reader, writer)
-            if coroutines.iscoroutine(res):
+            wenn coroutines.iscoroutine(res):
                 def callback(task):
-                    if task.cancelled():
+                    wenn task.cancelled():
                         transport.close()
                         return
                     exc = task.exception()
-                    if exc is not None:
+                    wenn exc is not None:
                         self._loop.call_exception_handler({
                             'message': 'Unhandled exception in client_connected_cb',
                             'exception': exc,
@@ -259,15 +259,15 @@ klasse StreamReaderProtocol(FlowControlMixin, protocols.Protocol):
 
     def connection_lost(self, exc):
         reader = self._stream_reader
-        if reader is not None:
-            if exc is None:
+        wenn reader is not None:
+            wenn exc is None:
                 reader.feed_eof()
-            else:
+            sonst:
                 reader.set_exception(exc)
-        if not self._closed.done():
-            if exc is None:
+        wenn not self._closed.done():
+            wenn exc is None:
                 self._closed.set_result(None)
-            else:
+            sonst:
                 self._closed.set_exception(exc)
         super().connection_lost(exc)
         self._stream_reader_wr = None
@@ -276,14 +276,14 @@ klasse StreamReaderProtocol(FlowControlMixin, protocols.Protocol):
 
     def data_received(self, data):
         reader = self._stream_reader
-        if reader is not None:
+        wenn reader is not None:
             reader.feed_data(data)
 
     def eof_received(self):
         reader = self._stream_reader
-        if reader is not None:
+        wenn reader is not None:
             reader.feed_eof()
-        if self._over_ssl:
+        wenn self._over_ssl:
             # Prevent a warning in SSLProtocol.eof_received:
             # "returning true from eof_received()
             # has no effect when using ssl"
@@ -300,8 +300,8 @@ klasse StreamReaderProtocol(FlowControlMixin, protocols.Protocol):
             closed = self._closed
         except AttributeError:
             pass  # failed constructor
-        else:
-            if closed.done() and not closed.cancelled():
+        sonst:
+            wenn closed.done() and not closed.cancelled():
                 closed.exception()
 
 
@@ -327,7 +327,7 @@ klasse StreamWriter:
 
     def __repr__(self):
         info = [self.__class__.__name__, f'transport={self._transport!r}']
-        if self._reader is not None:
+        wenn self._reader is not None:
             info.append(f'reader={self._reader!r}')
         return '<{}>'.format(' '.join(info))
 
@@ -367,13 +367,13 @@ klasse StreamWriter:
           w.write(data)
           await w.drain()
         """
-        if self._reader is not None:
+        wenn self._reader is not None:
             exc = self._reader.exception()
-            if exc is not None:
+            wenn exc is not None:
                 raise exc
-        if self._transport.is_closing():
+        wenn self._transport.is_closing():
             # Wait fuer protocol.connection_lost() call
-            # Raise connection closing error if any,
+            # Raise connection closing error wenn any,
             # ConnectionResetError otherwise
             # Yield to the event loop so connection_lost() may be
             # called.  Without this, _drain_helper() would return
@@ -401,10 +401,10 @@ klasse StreamWriter:
         protocol._replace_transport(new_transport)
 
     def __del__(self, warnings=warnings):
-        if not self._transport.is_closing():
-            if self._loop.is_closed():
+        wenn not self._transport.is_closing():
+            wenn self._loop.is_closed():
                 warnings.warn("loop is closed", ResourceWarning)
-            else:
+            sonst:
                 self.close()
                 warnings.warn(f"unclosed {self!r}", ResourceWarning)
 
@@ -416,13 +416,13 @@ klasse StreamReader:
         # The line length limit is  a security feature;
         # it also doubles as half the buffer limit.
 
-        if limit <= 0:
+        wenn limit <= 0:
             raise ValueError('Limit cannot be <= 0')
 
         self._limit = limit
-        if loop is None:
+        wenn loop is None:
             self._loop = events.get_event_loop()
-        else:
+        sonst:
             self._loop = loop
         self._buffer = bytearray()
         self._eof = False    # Whether we're done.
@@ -430,25 +430,25 @@ klasse StreamReader:
         self._exception = None
         self._transport = None
         self._paused = False
-        if self._loop.get_debug():
+        wenn self._loop.get_debug():
             self._source_traceback = format_helpers.extract_stack(
                 sys._getframe(1))
 
     def __repr__(self):
         info = ['StreamReader']
-        if self._buffer:
+        wenn self._buffer:
             info.append(f'{len(self._buffer)} bytes')
-        if self._eof:
+        wenn self._eof:
             info.append('eof')
-        if self._limit != _DEFAULT_LIMIT:
+        wenn self._limit != _DEFAULT_LIMIT:
             info.append(f'limit={self._limit}')
-        if self._waiter:
+        wenn self._waiter:
             info.append(f'waiter={self._waiter!r}')
-        if self._exception:
+        wenn self._exception:
             info.append(f'exception={self._exception!r}')
-        if self._transport:
+        wenn self._transport:
             info.append(f'transport={self._transport!r}')
-        if self._paused:
+        wenn self._paused:
             info.append('paused')
         return '<{}>'.format(' '.join(info))
 
@@ -459,17 +459,17 @@ klasse StreamReader:
         self._exception = exc
 
         waiter = self._waiter
-        if waiter is not None:
+        wenn waiter is not None:
             self._waiter = None
-            if not waiter.cancelled():
+            wenn not waiter.cancelled():
                 waiter.set_exception(exc)
 
     def _wakeup_waiter(self):
         """Wakeup read*() functions waiting fuer data or EOF."""
         waiter = self._waiter
-        if waiter is not None:
+        wenn waiter is not None:
             self._waiter = None
-            if not waiter.cancelled():
+            wenn not waiter.cancelled():
                 waiter.set_result(None)
 
     def set_transport(self, transport):
@@ -477,7 +477,7 @@ klasse StreamReader:
         self._transport = transport
 
     def _maybe_resume_transport(self):
-        if self._paused and len(self._buffer) <= self._limit:
+        wenn self._paused and len(self._buffer) <= self._limit:
             self._paused = False
             self._transport.resume_reading()
 
@@ -486,19 +486,19 @@ klasse StreamReader:
         self._wakeup_waiter()
 
     def at_eof(self):
-        """Return True if the buffer is empty and 'feed_eof' was called."""
+        """Return True wenn the buffer is empty and 'feed_eof' was called."""
         return self._eof and not self._buffer
 
     def feed_data(self, data):
         assert not self._eof, 'feed_data after feed_eof'
 
-        if not data:
+        wenn not data:
             return
 
         self._buffer.extend(data)
         self._wakeup_waiter()
 
-        if (self._transport is not None and
+        wenn (self._transport is not None and
                 not self._paused and
                 len(self._buffer) > 2 * self._limit):
             try:
@@ -508,7 +508,7 @@ klasse StreamReader:
                 # We'll just have to buffer all data.
                 # Forget the transport so we don't keep trying.
                 self._transport = None
-            else:
+            sonst:
                 self._paused = True
 
     async def _wait_for_data(self, func_name):
@@ -520,7 +520,7 @@ klasse StreamReader:
         # to a read coroutine. Running two read coroutines at the same time
         # would have an unexpected behaviour. It would not possible to know
         # which coroutine would get the next data.
-        if self._waiter is not None:
+        wenn self._waiter is not None:
             raise RuntimeError(
                 f'{func_name}() called while another coroutine is '
                 f'already waiting fuer incoming data')
@@ -529,7 +529,7 @@ klasse StreamReader:
 
         # Waiting fuer data while paused will make deadlock, so prevent it.
         # This is essential fuer readexactly(n) fuer case when n > self._limit.
-        if self._paused:
+        wenn self._paused:
             self._paused = False
             self._transport.resume_reading()
 
@@ -562,9 +562,9 @@ klasse StreamReader:
         except exceptions.IncompleteReadError as e:
             return e.partial
         except exceptions.LimitOverrunError as e:
-            if self._buffer.startswith(sep, e.consumed):
+            wenn self._buffer.startswith(sep, e.consumed):
                 del self._buffer[:e.consumed + seplen]
-            else:
+            sonst:
                 self._buffer.clear()
             self._maybe_resume_transport()
             raise ValueError(e.args[0])
@@ -596,19 +596,19 @@ klasse StreamReader:
         the shortest possible separator is considered to be the one that
         matched.
         """
-        if isinstance(separator, tuple):
+        wenn isinstance(separator, tuple):
             # Makes sure shortest matches wins
             separator = sorted(separator, key=len)
-        else:
+        sonst:
             separator = [separator]
-        if not separator:
+        wenn not separator:
             raise ValueError('Separator should contain at least one element')
         min_seplen = len(separator[0])
         max_seplen = len(separator[-1])
-        if min_seplen == 0:
+        wenn min_seplen == 0:
             raise ValueError('Separator should be at least one-byte string')
 
-        if self._exception is not None:
+        wenn self._exception is not None:
             raise self._exception
 
         # Consume whole buffer except last bytes, which length is
@@ -637,28 +637,28 @@ klasse StreamReader:
         while True:
             buflen = len(self._buffer)
 
-            # Check if we now have enough data in the buffer fuer shortest
+            # Check wenn we now have enough data in the buffer fuer shortest
             # separator to fit.
-            if buflen - offset >= min_seplen:
+            wenn buflen - offset >= min_seplen:
                 match_start = None
                 match_end = None
                 fuer sep in separator:
                     isep = self._buffer.find(sep, offset)
 
-                    if isep != -1:
+                    wenn isep != -1:
                         # `separator` is in the buffer. `match_start` and
                         # `match_end` will be used later to retrieve the
                         # data.
                         end = isep + len(sep)
-                        if match_end is None or end < match_end:
+                        wenn match_end is None or end < match_end:
                             match_end = end
                             match_start = isep
-                if match_end is not None:
+                wenn match_end is not None:
                     break
 
                 # see upper comment fuer explanation.
                 offset = max(0, buflen + 1 - max_seplen)
-                if offset > self._limit:
+                wenn offset > self._limit:
                     raise exceptions.LimitOverrunError(
                         'Separator is not found, and chunk exceed the limit',
                         offset)
@@ -667,15 +667,15 @@ klasse StreamReader:
             # even when EOF flag is set. This may happen when the last chunk
             # adds data which makes separator be found. That's why we check for
             # EOF *after* inspecting the buffer.
-            if self._eof:
+            wenn self._eof:
                 chunk = bytes(self._buffer)
                 self._buffer.clear()
                 raise exceptions.IncompleteReadError(chunk, None)
 
-            # _wait_for_data() will resume reading if stream was paused.
+            # _wait_for_data() will resume reading wenn stream was paused.
             await self._wait_for_data('readuntil')
 
-        if match_start > self._limit:
+        wenn match_start > self._limit:
             raise exceptions.LimitOverrunError(
                 'Separator is found, but chunk is longer than limit', match_start)
 
@@ -706,29 +706,29 @@ klasse StreamReader:
         needed.
         """
 
-        if self._exception is not None:
+        wenn self._exception is not None:
             raise self._exception
 
-        if n == 0:
+        wenn n == 0:
             return b''
 
-        if n < 0:
+        wenn n < 0:
             # This used to just loop creating a new waiter hoping to
             # collect everything in self._buffer, but that would
-            # deadlock if the subprocess sends more than self.limit
+            # deadlock wenn the subprocess sends more than self.limit
             # bytes.  So just call self.read(self._limit) until EOF.
             blocks = []
             while True:
                 block = await self.read(self._limit)
-                if not block:
+                wenn not block:
                     break
                 blocks.append(block)
             return b''.join(blocks)
 
-        if not self._buffer and not self._eof:
+        wenn not self._buffer and not self._eof:
             await self._wait_for_data('read')
 
-        # This will work right even if buffer is less than n bytes
+        # This will work right even wenn buffer is less than n bytes
         data = bytes(memoryview(self._buffer)[:n])
         del self._buffer[:n]
 
@@ -738,11 +738,11 @@ klasse StreamReader:
     async def readexactly(self, n):
         """Read exactly `n` bytes.
 
-        Raise an IncompleteReadError if EOF is reached before `n` bytes can be
+        Raise an IncompleteReadError wenn EOF is reached before `n` bytes can be
         read. The IncompleteReadError.partial attribute of the exception will
         contain the partial read bytes.
 
-        if n is zero, return empty bytes object.
+        wenn n is zero, return empty bytes object.
 
         Returned value is not limited with limit, configured at stream
         creation.
@@ -750,27 +750,27 @@ klasse StreamReader:
         If stream was paused, this function will automatically resume it if
         needed.
         """
-        if n < 0:
+        wenn n < 0:
             raise ValueError('readexactly size can not be less than zero')
 
-        if self._exception is not None:
+        wenn self._exception is not None:
             raise self._exception
 
-        if n == 0:
+        wenn n == 0:
             return b''
 
         while len(self._buffer) < n:
-            if self._eof:
+            wenn self._eof:
                 incomplete = bytes(self._buffer)
                 self._buffer.clear()
                 raise exceptions.IncompleteReadError(incomplete, n)
 
             await self._wait_for_data('readexactly')
 
-        if len(self._buffer) == n:
+        wenn len(self._buffer) == n:
             data = bytes(self._buffer)
             self._buffer.clear()
-        else:
+        sonst:
             data = bytes(memoryview(self._buffer)[:n])
             del self._buffer[:n]
         self._maybe_resume_transport()
@@ -781,6 +781,6 @@ klasse StreamReader:
 
     async def __anext__(self):
         val = await self.readline()
-        if val == b'':
+        wenn val == b'':
             raise StopAsyncIteration
         return val

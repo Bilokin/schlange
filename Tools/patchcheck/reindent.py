@@ -7,7 +7,7 @@
 -d (--dryrun)   Dry run.   Analyze, but don't make any changes to, files.
 -r (--recurse)  Recurse.   Search fuer all .py files in subdirectories too.
 -n (--nobackup) No backup. Does not make a ".bak" file before reindenting.
--v (--verbose)  Verbose.   Print informative msgs; else no output.
+-v (--verbose)  Verbose.   Print informative msgs; sonst no output.
    (--newline)  Newline.   Specify the newline character to use (CRLF, LF).
                            Default is the same as the original file.
 -h (--help)     Help.      Print this usage information and exit.
@@ -22,7 +22,7 @@ source to standard output.  In this case, the -d, -r and -v flags are
 ignored.
 
 You can pass one or more file and/or directory paths.  When a directory
-path, all .py files within the directory will be examined, and, if the -r
+path, all .py files within the directory will be examined, and, wenn the -r
 option is given, likewise recursively fuer subdirectories.
 
 If output is not to standard output, reindent overwrites files in place,
@@ -57,7 +57,7 @@ spec_newline = None
 
 
 def usage(msg=None):
-    if msg is None:
+    wenn msg is None:
         msg = __doc__
     print(msg, file=sys.stderr)
 
@@ -76,23 +76,23 @@ def main():
         usage(msg)
         return
     fuer o, a in opts:
-        if o in ('-d', '--dryrun'):
+        wenn o in ('-d', '--dryrun'):
             dryrun = True
-        elif o in ('-r', '--recurse'):
+        sowenn o in ('-r', '--recurse'):
             recurse = True
-        elif o in ('-n', '--nobackup'):
+        sowenn o in ('-n', '--nobackup'):
             makebackup = False
-        elif o in ('-v', '--verbose'):
+        sowenn o in ('-v', '--verbose'):
             verbose = True
-        elif o in ('--newline',):
-            if not a.upper() in ('CRLF', 'LF'):
+        sowenn o in ('--newline',):
+            wenn not a.upper() in ('CRLF', 'LF'):
                 usage()
                 return
             spec_newline = dict(CRLF='\r\n', LF='\n')[a.upper()]
-        elif o in ('-h', '--help'):
+        sowenn o in ('-h', '--help'):
             usage()
             return
-    if not args:
+    wenn not args:
         r = Reindenter(sys.stdin)
         r.run()
         r.write(sys.stdout)
@@ -102,20 +102,20 @@ def main():
 
 
 def check(file):
-    if os.path.isdir(file) and not os.path.islink(file):
-        if verbose:
+    wenn os.path.isdir(file) and not os.path.islink(file):
+        wenn verbose:
             print("listing directory", file)
         names = os.listdir(file)
         fuer name in names:
             fullname = os.path.join(file, name)
-            if ((recurse and os.path.isdir(fullname) and
+            wenn ((recurse and os.path.isdir(fullname) and
                  not os.path.islink(fullname) and
                  not os.path.split(fullname)[1].startswith("."))
                 or name.lower().endswith(".py")):
                 check(fullname)
         return
 
-    if verbose:
+    wenn verbose:
         print("checking", file, "...", end=' ')
     with open(file, 'rb') as f:
         try:
@@ -130,29 +130,29 @@ def check(file):
         errprint("%s: I/O Error: %s" % (file, str(msg)))
         return
 
-    newline = spec_newline if spec_newline else r.newlines
-    if isinstance(newline, tuple):
+    newline = spec_newline wenn spec_newline sonst r.newlines
+    wenn isinstance(newline, tuple):
         errprint("%s: mixed newlines detected; cannot continue without --newline" % file)
         return
 
-    if r.run():
-        if verbose:
+    wenn r.run():
+        wenn verbose:
             print("changed.")
-            if dryrun:
+            wenn dryrun:
                 print("But this is a dry run, so leaving it alone.")
-        if not dryrun:
+        wenn not dryrun:
             bak = file + ".bak"
-            if makebackup:
+            wenn makebackup:
                 shutil.copyfile(file, bak)
-                if verbose:
+                wenn verbose:
                     print("backed up", file, "to", bak)
             with open(file, "w", encoding=encoding, newline=newline) as f:
                 r.write(f)
-            if verbose:
+            wenn verbose:
                 print("wrote new", file)
         return True
-    else:
-        if verbose:
+    sonst:
+        wenn verbose:
             print("unchanged.")
         return False
 
@@ -222,49 +222,49 @@ klasse Reindenter:
             nextstmt = stats[i + 1][0]
             have = getlspace(lines[thisstmt])
             want = thislevel * 4
-            if want < 0:
+            wenn want < 0:
                 # A comment line.
-                if have:
+                wenn have:
                     # An indented comment line.  If we saw the same
                     # indentation before, reuse what it most recently
                     # mapped to.
                     want = have2want.get(have, -1)
-                    if want < 0:
+                    wenn want < 0:
                         # Then it probably belongs to the next real stmt.
                         fuer j in range(i + 1, len(stats) - 1):
                             jline, jlevel = stats[j]
-                            if jlevel >= 0:
-                                if have == getlspace(lines[jline]):
+                            wenn jlevel >= 0:
+                                wenn have == getlspace(lines[jline]):
                                     want = jlevel * 4
                                 break
-                    if want < 0:           # Maybe it's a hanging
+                    wenn want < 0:           # Maybe it's a hanging
                                            # comment like this one,
                         # in which case we should shift it like its base
                         # line got shifted.
                         fuer j in range(i - 1, -1, -1):
                             jline, jlevel = stats[j]
-                            if jlevel >= 0:
+                            wenn jlevel >= 0:
                                 want = have + (getlspace(after[jline - 1]) -
                                                getlspace(lines[jline]))
                                 break
-                    if want < 0:
+                    wenn want < 0:
                         # Still no luck -- leave it alone.
                         want = have
-                else:
+                sonst:
                     want = 0
             assert want >= 0
             have2want[have] = want
             diff = want - have
-            if diff == 0 or have == 0:
+            wenn diff == 0 or have == 0:
                 after.extend(lines[thisstmt:nextstmt])
-            else:
+            sonst:
                 fuer line in lines[thisstmt:nextstmt]:
-                    if diff > 0:
-                        if line == "\n":
+                    wenn diff > 0:
+                        wenn line == "\n":
                             after.append(line)
-                        else:
+                        sonst:
                             after.append(" " * diff + line)
-                    else:
+                    sonst:
                         remove = min(getlspace(line), -diff)
                         after.append(line[remove:])
         return self.raw != self.after
@@ -274,9 +274,9 @@ klasse Reindenter:
 
     # Line-getter fuer tokenize.
     def getline(self):
-        if self.index >= len(self.lines):
+        wenn self.index >= len(self.lines):
             line = ""
-        else:
+        sonst:
             line = self.lines[self.index]
             self.index += 1
         return line
@@ -289,35 +289,35 @@ klasse Reindenter:
                    COMMENT=tokenize.COMMENT,
                    NL=tokenize.NL):
 
-        if type == NEWLINE:
+        wenn type == NEWLINE:
             # A program statement, or ENDMARKER, will eventually follow,
             # after some (possibly empty) run of tokens of the form
             #     (NL | COMMENT)* (INDENT | DEDENT+)?
             self.find_stmt = 1
 
-        elif type == INDENT:
+        sowenn type == INDENT:
             self.find_stmt = 1
             self.level += 1
 
-        elif type == DEDENT:
+        sowenn type == DEDENT:
             self.find_stmt = 1
             self.level -= 1
 
-        elif type == COMMENT:
-            if self.find_stmt:
+        sowenn type == COMMENT:
+            wenn self.find_stmt:
                 self.stats.append((slinecol[0], -1))
                 # but we're still looking fuer a new stmt, so leave
                 # find_stmt alone
 
-        elif type == NL:
+        sowenn type == NL:
             pass
 
-        elif self.find_stmt:
+        sowenn self.find_stmt:
             # This is the first "real token" following a NEWLINE, so it
             # must be the first token of the next program statement, or an
             # ENDMARKER.
             self.find_stmt = 0
-            if line:   # not endmarker
+            wenn line:   # not endmarker
                 self.stats.append((slinecol[0], self.level))
 
 
@@ -329,5 +329,5 @@ def getlspace(line):
     return i
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     main()

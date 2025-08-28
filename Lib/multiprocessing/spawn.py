@@ -26,28 +26,28 @@ __all__ = ['_main', 'freeze_support', 'set_executable', 'get_executable',
 # People embedding Python want to modify it.
 #
 
-if sys.platform != 'win32':
+wenn sys.platform != 'win32':
     WINEXE = False
     WINSERVICE = False
-else:
+sonst:
     WINEXE = getattr(sys, 'frozen', False)
     WINSERVICE = sys.executable and sys.executable.lower().endswith("pythonservice.exe")
 
 def set_executable(exe):
     global _python_exe
-    if exe is None:
+    wenn exe is None:
         _python_exe = exe
-    elif sys.platform == 'win32':
+    sowenn sys.platform == 'win32':
         _python_exe = os.fsdecode(exe)
-    else:
+    sonst:
         _python_exe = os.fsencode(exe)
 
 def get_executable():
     return _python_exe
 
-if WINSERVICE:
+wenn WINSERVICE:
     set_executable(os.path.join(sys.exec_prefix, 'python.exe'))
-else:
+sonst:
     set_executable(sys.executable)
 
 #
@@ -58,23 +58,23 @@ def is_forking(argv):
     '''
     Return whether commandline indicates we are forking
     '''
-    if len(argv) >= 2 and argv[1] == '--multiprocessing-fork':
+    wenn len(argv) >= 2 and argv[1] == '--multiprocessing-fork':
         return True
-    else:
+    sonst:
         return False
 
 
 def freeze_support():
     '''
-    Run code fuer process object if this in not the main process
+    Run code fuer process object wenn this in not the main process
     '''
-    if is_forking(sys.argv):
+    wenn is_forking(sys.argv):
         kwds = {}
         fuer arg in sys.argv[2:]:
             name, value = arg.split('=')
-            if value == 'None':
+            wenn value == 'None':
                 kwds[name] = None
-            else:
+            sonst:
                 kwds[name] = int(value)
         spawn_main(**kwds)
         sys.exit()
@@ -84,10 +84,10 @@ def get_command_line(**kwds):
     '''
     Returns prefix of command line used fuer spawning a child process
     '''
-    if getattr(sys, 'frozen', False):
+    wenn getattr(sys, 'frozen', False):
         return ([sys.executable, '--multiprocessing-fork'] +
                 ['%s=%r' % item fuer item in kwds.items()])
-    else:
+    sonst:
         prog = 'from multiprocessing.spawn import spawn_main; spawn_main(%s)'
         prog %= ', '.join('%s=%r' % item fuer item in kwds.items())
         opts = util._args_from_interpreter_flags()
@@ -100,21 +100,21 @@ def spawn_main(pipe_handle, parent_pid=None, tracker_fd=None):
     Run code specified by data received over pipe
     '''
     assert is_forking(sys.argv), "Not forking"
-    if sys.platform == 'win32':
+    wenn sys.platform == 'win32':
         import msvcrt
         import _winapi
 
-        if parent_pid is not None:
+        wenn parent_pid is not None:
             source_process = _winapi.OpenProcess(
                 _winapi.SYNCHRONIZE | _winapi.PROCESS_DUP_HANDLE,
                 False, parent_pid)
-        else:
+        sonst:
             source_process = None
         new_handle = reduction.duplicate(pipe_handle,
                                          source_process=source_process)
         fd = msvcrt.open_osfhandle(new_handle, os.O_RDONLY)
         parent_sentinel = source_process
-    else:
+    sonst:
         from . import resource_tracker
         resource_tracker._resource_tracker._fd = tracker_fd
         fd = pipe_handle
@@ -136,7 +136,7 @@ def _main(fd, parent_sentinel):
 
 
 def _check_not_importing_main():
-    if getattr(process.current_process(), '_inheriting', False):
+    wenn getattr(process.current_process(), '_inheriting', False):
         raise RuntimeError('''
         An attempt has been made to start a new process before the
         current process has finished its bootstrapping phase.
@@ -145,11 +145,11 @@ def _check_not_importing_main():
         child processes and you have forgotten to use the proper idiom
         in the main module:
 
-            if __name__ == '__main__':
+            wenn __name__ == '__main__':
                 freeze_support()
                 ...
 
-        The "freeze_support()" line can be omitted if the program
+        The "freeze_support()" line can be omitted wenn the program
         is not going to be frozen to produce an executable.
 
         To fix this issue, refer to the "Safe importing of main module"
@@ -167,7 +167,7 @@ def get_preparation_data(name):
         authkey=process.current_process().authkey,
         )
 
-    if util._logger is not None:
+    wenn util._logger is not None:
         d['log_level'] = util._logger.getEffectiveLevel()
 
     sys_path=sys.path.copy()
@@ -175,7 +175,7 @@ def get_preparation_data(name):
         i = sys_path.index('')
     except ValueError:
         pass
-    else:
+    sonst:
         sys_path[i] = process.ORIGINAL_DIR
 
     d.update(
@@ -191,12 +191,12 @@ def get_preparation_data(name):
     # or through direct execution (or to leave it alone entirely)
     main_module = sys.modules['__main__']
     main_mod_name = getattr(main_module.__spec__, "name", None)
-    if main_mod_name is not None:
+    wenn main_mod_name is not None:
         d['init_main_from_name'] = main_mod_name
-    elif sys.platform != 'win32' or (not WINEXE and not WINSERVICE):
+    sowenn sys.platform != 'win32' or (not WINEXE and not WINSERVICE):
         main_path = getattr(main_module, '__file__', None)
-        if main_path is not None:
-            if (not os.path.isabs(main_path) and
+        wenn main_path is not None:
+            wenn (not os.path.isabs(main_path) and
                         process.ORIGINAL_DIR is not None):
                 main_path = os.path.join(process.ORIGINAL_DIR, main_path)
             d['init_main_from_path'] = os.path.normpath(main_path)
@@ -213,36 +213,36 @@ def prepare(data):
     '''
     Try to get current process ready to unpickle process object
     '''
-    if 'name' in data:
+    wenn 'name' in data:
         process.current_process().name = data['name']
 
-    if 'authkey' in data:
+    wenn 'authkey' in data:
         process.current_process().authkey = data['authkey']
 
-    if 'log_to_stderr' in data and data['log_to_stderr']:
+    wenn 'log_to_stderr' in data and data['log_to_stderr']:
         util.log_to_stderr()
 
-    if 'log_level' in data:
+    wenn 'log_level' in data:
         util.get_logger().setLevel(data['log_level'])
 
-    if 'sys_path' in data:
+    wenn 'sys_path' in data:
         sys.path = data['sys_path']
 
-    if 'sys_argv' in data:
+    wenn 'sys_argv' in data:
         sys.argv = data['sys_argv']
 
-    if 'dir' in data:
+    wenn 'dir' in data:
         os.chdir(data['dir'])
 
-    if 'orig_dir' in data:
+    wenn 'orig_dir' in data:
         process.ORIGINAL_DIR = data['orig_dir']
 
-    if 'start_method' in data:
+    wenn 'start_method' in data:
         set_start_method(data['start_method'], force=True)
 
-    if 'init_main_from_name' in data:
+    wenn 'init_main_from_name' in data:
         _fixup_main_from_name(data['init_main_from_name'])
-    elif 'init_main_from_path' in data:
+    sowenn 'init_main_from_path' in data:
         _fixup_main_from_path(data['init_main_from_path'])
 
 # Multiprocessing module helpers to fix up the main module in
@@ -253,11 +253,11 @@ def _fixup_main_from_name(mod_name):
     # populate anything in __main__, nor do we make any changes to
     # __main__ attributes
     current_main = sys.modules['__main__']
-    if mod_name == "__main__" or mod_name.endswith(".__main__"):
+    wenn mod_name == "__main__" or mod_name.endswith(".__main__"):
         return
 
     # If this process was forked, __main__ may already be populated
-    if getattr(current_main.__spec__, "name", None) == mod_name:
+    wenn getattr(current_main.__spec__, "name", None) == mod_name:
         return
 
     # Otherwise, __main__ may contain some non-main code where we need to
@@ -281,12 +281,12 @@ def _fixup_main_from_path(main_path):
     # by treating it like a __main__.py file
     # See https://github.com/ipython/ipython/issues/4698
     main_name = os.path.splitext(os.path.basename(main_path))[0]
-    if main_name == 'ipython':
+    wenn main_name == 'ipython':
         return
 
-    # Otherwise, if __file__ already has the setting we expect,
+    # Otherwise, wenn __file__ already has the setting we expect,
     # there's nothing more to do
-    if getattr(current_main, '__file__', None) == main_path:
+    wenn getattr(current_main, '__file__', None) == main_path:
         return
 
     # If the parent process has sent a path through rather than a module

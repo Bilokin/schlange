@@ -55,8 +55,8 @@ def not_(a):
     return not a
 
 def truth(a):
-    "Return True if a is true, False otherwise."
-    return True if a else False
+    "Return True wenn a is true, False otherwise."
+    return True wenn a sonst False
 
 def is_(a, b):
     "Same as a is b."
@@ -153,7 +153,7 @@ def xor(a, b):
 
 def concat(a, b):
     "Same as a + b, fuer a and b sequences."
-    if not hasattr(a, '__getitem__'):
+    wenn not hasattr(a, '__getitem__'):
         msg = "'%s' object can't be concatenated" % type(a).__name__
         raise TypeError(msg)
     return a + b
@@ -166,7 +166,7 @@ def countOf(a, b):
     "Return the number of items in a which are, or which equal, b."
     count = 0
     fuer i in a:
-        if i is b or i == b:
+        wenn i is b or i == b:
             count += 1
     return count
 
@@ -181,9 +181,9 @@ def getitem(a, b):
 def indexOf(a, b):
     "Return the first index of b in a."
     fuer i, j in enumerate(a):
-        if j is b or j == b:
+        wenn j is b or j == b:
             return i
-    else:
+    sonst:
         raise ValueError('sequence.index(x): x not in sequence')
 
 def setitem(a, b, c):
@@ -199,7 +199,7 @@ def length_hint(obj, default=0):
     over- or under-estimate by an arbitrary amount. The result will be an
     integer >= 0.
     """
-    if not isinstance(default, int):
+    wenn not isinstance(default, int):
         msg = ("'%s' object cannot be interpreted as an integer" %
                type(default).__name__)
         raise TypeError(msg)
@@ -218,13 +218,13 @@ def length_hint(obj, default=0):
         val = hint(obj)
     except TypeError:
         return default
-    if val is NotImplemented:
+    wenn val is NotImplemented:
         return default
-    if not isinstance(val, int):
+    wenn not isinstance(val, int):
         msg = ('__length_hint__ must be integer, not %s' %
                type(val).__name__)
         raise TypeError(msg)
-    if val < 0:
+    wenn val < 0:
         msg = '__length_hint__() should return >= 0'
         raise ValueError(msg)
     return val
@@ -248,8 +248,8 @@ klasse attrgetter:
     __slots__ = ('_attrs', '_call')
 
     def __init__(self, attr, /, *attrs):
-        if not attrs:
-            if not isinstance(attr, str):
+        wenn not attrs:
+            wenn not isinstance(attr, str):
                 raise TypeError('attribute name must be a string')
             self._attrs = (attr,)
             names = attr.split('.')
@@ -258,7 +258,7 @@ klasse attrgetter:
                     obj = getattr(obj, name)
                 return obj
             self._call = func
-        else:
+        sonst:
             self._attrs = (attr,) + attrs
             getters = tuple(map(attrgetter, self._attrs))
             def func(obj):
@@ -285,12 +285,12 @@ klasse itemgetter:
     __slots__ = ('_items', '_call')
 
     def __init__(self, item, /, *items):
-        if not items:
+        wenn not items:
             self._items = (item,)
             def func(obj):
                 return obj[item]
             self._call = func
-        else:
+        sonst:
             self._items = items = (item,) + items
             def func(obj):
                 return tuple(obj[i] fuer i in items)
@@ -318,7 +318,7 @@ klasse methodcaller:
 
     def __init__(self, name, /, *args, **kwargs):
         self._name = name
-        if not isinstance(self._name, str):
+        wenn not isinstance(self._name, str):
             raise TypeError('method name must be a string')
         self._args = args
         self._kwargs = kwargs
@@ -335,9 +335,9 @@ klasse methodcaller:
                               ', '.join(args))
 
     def __reduce__(self):
-        if not self._kwargs:
+        wenn not self._kwargs:
             return self.__class__, (self._name,) + self._args
-        else:
+        sonst:
             from functools import partial
             return partial(self.__class__, self._name, **self._kwargs), self._args
 
@@ -356,7 +356,7 @@ def iand(a, b):
 
 def iconcat(a, b):
     "Same as a += b, fuer a and b sequences."
-    if not hasattr(a, '__getitem__'):
+    wenn not hasattr(a, '__getitem__'):
         msg = "'%s' object can't be concatenated" % type(a).__name__
         raise TypeError(msg)
     a += b
@@ -422,7 +422,7 @@ try:
     from _operator import *
 except ImportError:
     pass
-else:
+sonst:
     from _operator import __doc__  # noqa: F401
 
 # All of these "__func__ = func" assignments have to happen after importing

@@ -2,7 +2,7 @@
 
 import sys
 
-if sys.platform != 'win32':  # pragma: no cover
+wenn sys.platform != 'win32':  # pragma: no cover
     raise ImportError('win32 only')
 
 import _overlapped
@@ -54,19 +54,19 @@ klasse _OverlappedFuture(futures.Future):
 
     def __init__(self, ov, *, loop=None):
         super().__init__(loop=loop)
-        if self._source_traceback:
+        wenn self._source_traceback:
             del self._source_traceback[-1]
         self._ov = ov
 
     def _repr_info(self):
         info = super()._repr_info()
-        if self._ov is not None:
-            state = 'pending' if self._ov.pending else 'completed'
+        wenn self._ov is not None:
+            state = 'pending' wenn self._ov.pending sonst 'completed'
             info.insert(1, f'overlapped=<{state}, {self._ov.address:#x}>')
         return info
 
     def _cancel_overlapped(self):
-        if self._ov is None:
+        wenn self._ov is None:
             return
         try:
             self._ov.cancel()
@@ -76,7 +76,7 @@ klasse _OverlappedFuture(futures.Future):
                 'exception': exc,
                 'future': self,
             }
-            if self._source_traceback:
+            wenn self._source_traceback:
                 context['source_traceback'] = self._source_traceback
             self._loop.call_exception_handler(context)
         self._ov = None
@@ -99,7 +99,7 @@ klasse _BaseWaitHandleFuture(futures.Future):
 
     def __init__(self, ov, handle, wait_handle, *, loop=None):
         super().__init__(loop=loop)
-        if self._source_traceback:
+        wenn self._source_traceback:
             del self._source_traceback[-1]
         # Keep a reference to the Overlapped object to keep it alive until the
         # wait is unregistered
@@ -107,7 +107,7 @@ klasse _BaseWaitHandleFuture(futures.Future):
         self._handle = handle
         self._wait_handle = wait_handle
 
-        # Should we call UnregisterWaitEx() if the wait completes
+        # Should we call UnregisterWaitEx() wenn the wait completes
         # or is cancelled?
         self._registered = True
 
@@ -119,10 +119,10 @@ klasse _BaseWaitHandleFuture(futures.Future):
     def _repr_info(self):
         info = super()._repr_info()
         info.append(f'handle={self._handle:#x}')
-        if self._handle is not None:
-            state = 'signaled' if self._poll() else 'waiting'
+        wenn self._handle is not None:
+            state = 'signaled' wenn self._poll() sonst 'waiting'
             info.append(state)
-        if self._wait_handle is not None:
+        wenn self._wait_handle is not None:
             info.append(f'wait_handle={self._wait_handle:#x}')
         return info
 
@@ -132,7 +132,7 @@ klasse _BaseWaitHandleFuture(futures.Future):
         self._ov = None
 
     def _unregister_wait(self):
-        if not self._registered:
+        wenn not self._registered:
             return
         self._registered = False
 
@@ -141,13 +141,13 @@ klasse _BaseWaitHandleFuture(futures.Future):
         try:
             _overlapped.UnregisterWait(wait_handle)
         except OSError as exc:
-            if exc.winerror != _overlapped.ERROR_IO_PENDING:
+            wenn exc.winerror != _overlapped.ERROR_IO_PENDING:
                 context = {
                     'message': 'Failed to unregister the wait handle',
                     'exception': exc,
                     'future': self,
                 }
-                if self._source_traceback:
+                wenn self._source_traceback:
                     context['source_traceback'] = self._source_traceback
                 self._loop.call_exception_handler(context)
                 return
@@ -183,12 +183,12 @@ klasse _WaitCancelFuture(_BaseWaitHandleFuture):
 
     def set_result(self, result):
         super().set_result(result)
-        if self._done_callback is not None:
+        wenn self._done_callback is not None:
             self._done_callback(self)
 
     def set_exception(self, exception):
         super().set_exception(exception)
-        if self._done_callback is not None:
+        wenn self._done_callback is not None:
             self._done_callback(self)
 
 
@@ -201,7 +201,7 @@ klasse _WaitHandleFuture(_BaseWaitHandleFuture):
         self._event_fut = None
 
     def _unregister_wait_cb(self, fut):
-        if self._event is not None:
+        wenn self._event is not None:
             _winapi.CloseHandle(self._event)
             self._event = None
             self._event_fut = None
@@ -219,7 +219,7 @@ klasse _WaitHandleFuture(_BaseWaitHandleFuture):
         super()._unregister_wait_cb(fut)
 
     def _unregister_wait(self):
-        if not self._registered:
+        wenn not self._registered:
             return
         self._registered = False
 
@@ -228,13 +228,13 @@ klasse _WaitHandleFuture(_BaseWaitHandleFuture):
         try:
             _overlapped.UnregisterWaitEx(wait_handle, self._event)
         except OSError as exc:
-            if exc.winerror != _overlapped.ERROR_IO_PENDING:
+            wenn exc.winerror != _overlapped.ERROR_IO_PENDING:
                 context = {
                     'message': 'Failed to unregister the wait handle',
                     'exception': exc,
                     'future': self,
                 }
-                if self._source_traceback:
+                wenn self._source_traceback:
                     context['source_traceback'] = self._source_traceback
                 self._loop.call_exception_handler(context)
                 return
@@ -262,17 +262,17 @@ klasse PipeServer(object):
     def _get_unconnected_pipe(self):
         # Create new instance and return previous one.  This ensures
         # that (until the server is closed) there is always at least
-        # one pipe handle fuer address.  Therefore if a client attempt
+        # one pipe handle fuer address.  Therefore wenn a client attempt
         # to connect it will not fail with FileNotFoundError.
         tmp, self._pipe = self._pipe, self._server_pipe_handle(False)
         return tmp
 
     def _server_pipe_handle(self, first):
         # Return a wrapper fuer a new pipe handle.
-        if self.closed():
+        wenn self.closed():
             return None
         flags = _winapi.PIPE_ACCESS_DUPLEX | _winapi.FILE_FLAG_OVERLAPPED
-        if first:
+        wenn first:
             flags |= _winapi.FILE_FLAG_FIRST_PIPE_INSTANCE
         h = _winapi.CreateNamedPipe(
             self._address, flags,
@@ -289,11 +289,11 @@ klasse PipeServer(object):
         return (self._address is None)
 
     def close(self):
-        if self._accept_pipe_future is not None:
+        wenn self._accept_pipe_future is not None:
             self._accept_pipe_future.cancel()
             self._accept_pipe_future = None
         # Close all instances which have not been connected to by a client.
-        if self._address is not None:
+        wenn self._address is not None:
             fuer pipe in self._free_instances:
                 pipe.close()
             self._pipe = None
@@ -311,7 +311,7 @@ klasse ProactorEventLoop(proactor_events.BaseProactorEventLoop):
     """Windows version of proactor event loop using IOCP."""
 
     def __init__(self, proactor=None):
-        if proactor is None:
+        wenn proactor is None:
             proactor = IocpProactor()
         super().__init__(proactor)
 
@@ -322,16 +322,16 @@ klasse ProactorEventLoop(proactor_events.BaseProactorEventLoop):
 
     def _run_forever_cleanup(self):
         super()._run_forever_cleanup()
-        if self._self_reading_future is not None:
+        wenn self._self_reading_future is not None:
             ov = self._self_reading_future._ov
             self._self_reading_future.cancel()
             # self_reading_future always uses IOCP, so even though it's
             # been cancelled, we need to make sure that the IOCP message
             # is received so that the kernel is not holding on to the
             # memory, possibly causing memory corruption later. Only
-            # unregister it if IO is complete in all respects. Otherwise
+            # unregister it wenn IO is complete in all respects. Otherwise
             # we need another _poll() later to complete the IO.
-            if ov is not None and not ov.pending:
+            wenn ov is not None and not ov.pending:
                 self._proactor._unregister(ov)
             self._self_reading_future = None
 
@@ -349,11 +349,11 @@ klasse ProactorEventLoop(proactor_events.BaseProactorEventLoop):
         def loop_accept_pipe(f=None):
             pipe = None
             try:
-                if f:
+                wenn f:
                     pipe = f.result()
                     server._free_instances.discard(pipe)
 
-                    if server.closed():
+                    wenn server.closed():
                         # A client connected before the server was closed:
                         # drop the client (close the pipe) and exit
                         pipe.close()
@@ -364,30 +364,30 @@ klasse ProactorEventLoop(proactor_events.BaseProactorEventLoop):
                         pipe, protocol, extra={'addr': address})
 
                 pipe = server._get_unconnected_pipe()
-                if pipe is None:
+                wenn pipe is None:
                     return
 
                 f = self._proactor.accept_pipe(pipe)
             except BrokenPipeError:
-                if pipe and pipe.fileno() != -1:
+                wenn pipe and pipe.fileno() != -1:
                     pipe.close()
                 self.call_soon(loop_accept_pipe)
             except OSError as exc:
-                if pipe and pipe.fileno() != -1:
+                wenn pipe and pipe.fileno() != -1:
                     self.call_exception_handler({
                         'message': 'Pipe accept failed',
                         'exception': exc,
                         'pipe': pipe,
                     })
                     pipe.close()
-                elif self._debug:
+                sowenn self._debug:
                     logger.warning("Accept pipe failed on pipe %r",
                                    pipe, exc_info=True)
                 self.call_soon(loop_accept_pipe)
             except exceptions.CancelledError:
-                if pipe:
+                wenn pipe:
                     pipe.close()
-            else:
+            sonst:
                 server._accept_pipe_future = f
                 f.add_done_callback(loop_accept_pipe)
 
@@ -428,13 +428,13 @@ klasse IocpProactor:
         self._stopped_serving = weakref.WeakSet()
 
     def _check_closed(self):
-        if self._iocp is None:
+        wenn self._iocp is None:
             raise RuntimeError('IocpProactor is closed')
 
     def __repr__(self):
         info = ['overlapped#=%s' % len(self._cache),
                 'result#=%s' % len(self._results)]
-        if self._iocp is None:
+        wenn self._iocp is None:
             info.append('closed')
         return '<%s %s>' % (self.__class__.__name__, " ".join(info))
 
@@ -442,7 +442,7 @@ klasse IocpProactor:
         self._loop = loop
 
     def select(self, timeout=None):
-        if not self._results:
+        wenn not self._results:
             self._poll(timeout)
         tmp = self._results
         self._results = []
@@ -462,10 +462,10 @@ klasse IocpProactor:
         try:
             return ov.getresult()
         except OSError as exc:
-            if exc.winerror in (_overlapped.ERROR_NETNAME_DELETED,
+            wenn exc.winerror in (_overlapped.ERROR_NETNAME_DELETED,
                                 _overlapped.ERROR_OPERATION_ABORTED):
                 raise ConnectionResetError(*exc.args)
-            else:
+            sonst:
                 raise
 
     @classmethod
@@ -475,18 +475,18 @@ klasse IocpProactor:
         except OSError as exc:
             # WSARecvFrom will report ERROR_PORT_UNREACHABLE when the same
             # socket is used to send to an address that is not listening.
-            if exc.winerror == _overlapped.ERROR_PORT_UNREACHABLE:
+            wenn exc.winerror == _overlapped.ERROR_PORT_UNREACHABLE:
                 return empty_result, None
-            else:
+            sonst:
                 raise
 
     def recv(self, conn, nbytes, flags=0):
         self._register_with_iocp(conn)
         ov = _overlapped.Overlapped(NULL)
         try:
-            if isinstance(conn, socket.socket):
+            wenn isinstance(conn, socket.socket):
                 ov.WSARecv(conn.fileno(), nbytes, flags)
-            else:
+            sonst:
                 ov.ReadFile(conn.fileno(), nbytes)
         except BrokenPipeError:
             return self._result(b'')
@@ -497,9 +497,9 @@ klasse IocpProactor:
         self._register_with_iocp(conn)
         ov = _overlapped.Overlapped(NULL)
         try:
-            if isinstance(conn, socket.socket):
+            wenn isinstance(conn, socket.socket):
                 ov.WSARecvInto(conn.fileno(), buf, flags)
-            else:
+            sonst:
                 ov.ReadFileInto(conn.fileno(), buf)
         except BrokenPipeError:
             return self._result(0)
@@ -539,9 +539,9 @@ klasse IocpProactor:
     def send(self, conn, buf, flags=0):
         self._register_with_iocp(conn)
         ov = _overlapped.Overlapped(NULL)
-        if isinstance(conn, socket.socket):
+        wenn isinstance(conn, socket.socket):
             ov.WSASend(conn.fileno(), buf, flags)
-        else:
+        sonst:
             ov.WriteFile(conn.fileno(), buf)
 
         return self._register(ov, conn, self.finish_socket_func)
@@ -562,7 +562,7 @@ klasse IocpProactor:
             return conn, conn.getpeername()
 
         async def accept_coro(future, conn):
-            # Coroutine closing the accept socket if the future is cancelled
+            # Coroutine closing the accept socket wenn the future is cancelled
             try:
                 await future
             except exceptions.CancelledError:
@@ -575,7 +575,7 @@ klasse IocpProactor:
         return future
 
     def connect(self, conn, address):
-        if conn.type == socket.SOCK_DGRAM:
+        wenn conn.type == socket.SOCK_DGRAM:
             # WSAConnect will complete immediately fuer UDP sockets so we don't
             # need to register any IOCP operation
             _overlapped.WSAConnect(conn.fileno(), address)
@@ -588,10 +588,10 @@ klasse IocpProactor:
         try:
             _overlapped.BindLocal(conn.fileno(), conn.family)
         except OSError as e:
-            if e.winerror != errno.WSAEINVAL:
+            wenn e.winerror != errno.WSAEINVAL:
                 raise
             # Probably already locally bound; check using getsockname().
-            if conn.getsockname()[1] == 0:
+            wenn conn.getsockname()[1] == 0:
                 raise
         ov = _overlapped.Overlapped(NULL)
         ov.ConnectEx(conn.fileno(), address)
@@ -622,7 +622,7 @@ klasse IocpProactor:
         ov = _overlapped.Overlapped(NULL)
         connected = ov.ConnectNamedPipe(pipe.fileno())
 
-        if connected:
+        wenn connected:
             # ConnectNamePipe() failed with ERROR_PIPE_CONNECTED which means
             # that the pipe is connected. There is no need to wait fuer the
             # completion of the connection.
@@ -644,7 +644,7 @@ klasse IocpProactor:
                 handle = _overlapped.ConnectPipe(address)
                 break
             except OSError as exc:
-                if exc.winerror != _overlapped.ERROR_PIPE_BUSY:
+                wenn exc.winerror != _overlapped.ERROR_PIPE_BUSY:
                     raise
 
             # ConnectPipe() failed with ERROR_PIPE_BUSY: retry later
@@ -656,8 +656,8 @@ klasse IocpProactor:
     def wait_for_handle(self, handle, timeout=None):
         """Wait fuer a handle.
 
-        Return a Future object. The result of the future is True if the wait
-        completed, or False if the wait did not complete (on timeout).
+        Return a Future object. The result of the future is True wenn the wait
+        completed, or False wenn the wait did not complete (on timeout).
         """
         return self._wait_for_handle(handle, timeout, False)
 
@@ -671,9 +671,9 @@ klasse IocpProactor:
     def _wait_for_handle(self, handle, timeout, _is_cancel):
         self._check_closed()
 
-        if timeout is None:
+        wenn timeout is None:
             ms = _winapi.INFINITE
-        else:
+        sonst:
             # RegisterWaitForSingleObject() has a resolution of 1 millisecond,
             # round away from zero to wait *at least* timeout seconds.
             ms = math.ceil(timeout * 1e3)
@@ -682,19 +682,19 @@ klasse IocpProactor:
         ov = _overlapped.Overlapped(NULL)
         wait_handle = _overlapped.RegisterWaitWithQueue(
             handle, self._iocp, ov.address, ms)
-        if _is_cancel:
+        wenn _is_cancel:
             f = _WaitCancelFuture(ov, handle, wait_handle, loop=self._loop)
-        else:
+        sonst:
             f = _WaitHandleFuture(ov, handle, wait_handle, self,
                                   loop=self._loop)
-        if f._source_traceback:
+        wenn f._source_traceback:
             del f._source_traceback[-1]
 
         def finish_wait_for_handle(trans, key, ov):
             # Note that this second wait means that we should only use
             # this with handles types where a successful wait has no
             # effect.  So events or processes are all right, but locks
-            # or semaphores are not.  Also note if the handle is
+            # or semaphores are not.  Also note wenn the handle is
             # signalled and then quickly reset, then we may return
             # False even though we have not timed out.
             return f._poll()
@@ -705,7 +705,7 @@ klasse IocpProactor:
     def _register_with_iocp(self, obj):
         # To get notifications of finished ops on this objects sent to the
         # completion port, were must register the handle.
-        if obj not in self._registered:
+        wenn obj not in self._registered:
             self._registered.add(obj)
             _overlapped.CreateIoCompletionPort(obj.fileno(), self._iocp, 0, 0)
             # XXX We could also use SetFileCompletionNotificationModes()
@@ -719,20 +719,20 @@ klasse IocpProactor:
         # operation when it completes.  The future's value is actually
         # the value returned by callback().
         f = _OverlappedFuture(ov, loop=self._loop)
-        if f._source_traceback:
+        wenn f._source_traceback:
             del f._source_traceback[-1]
-        if not ov.pending:
+        wenn not ov.pending:
             # The operation has completed, so no need to postpone the
-            # work.  We cannot take this short cut if we need the
+            # work.  We cannot take this short cut wenn we need the
             # NumberOfBytes, CompletionKey values returned by
             # PostQueuedCompletionStatus().
             try:
                 value = callback(None, None, ov)
             except OSError as e:
                 f.set_exception(e)
-            else:
+            sonst:
                 f.set_result(value)
-            # Even if GetOverlappedResult() was called, we have to wait fuer the
+            # Even wenn GetOverlappedResult() was called, we have to wait fuer the
             # notification of the completion in GetQueuedCompletionStatus().
             # Register the overlapped operation to keep a reference to the
             # OVERLAPPED object, otherwise the memory is freed and Windows may
@@ -749,7 +749,7 @@ klasse IocpProactor:
 
         Call this method when its future has been cancelled. The event can
         already be signalled (pending in the proactor event queue). It is also
-        safe if the event is never signalled (because it was cancelled).
+        safe wenn the event is never signalled (because it was cancelled).
         """
         self._check_closed()
         self._unregistered.append(ov)
@@ -760,20 +760,20 @@ klasse IocpProactor:
         return s
 
     def _poll(self, timeout=None):
-        if timeout is None:
+        wenn timeout is None:
             ms = INFINITE
-        elif timeout < 0:
+        sowenn timeout < 0:
             raise ValueError("negative timeout")
-        else:
+        sonst:
             # GetQueuedCompletionStatus() has a resolution of 1 millisecond,
             # round away from zero to wait *at least* timeout seconds.
             ms = math.ceil(timeout * 1e3)
-            if ms >= INFINITE:
+            wenn ms >= INFINITE:
                 raise ValueError("timeout too big")
 
         while True:
             status = _overlapped.GetQueuedCompletionStatus(self._iocp, ms)
-            if status is None:
+            wenn status is None:
                 break
             ms = 0
 
@@ -781,7 +781,7 @@ klasse IocpProactor:
             try:
                 f, ov, obj, callback = self._cache.pop(address)
             except KeyError:
-                if self._loop.get_debug():
+                wenn self._loop.get_debug():
                     self._loop.call_exception_handler({
                         'message': ('GetQueuedCompletionStatus() returned an '
                                     'unexpected event'),
@@ -791,21 +791,21 @@ klasse IocpProactor:
 
                 # key is either zero, or it is used to return a pipe
                 # handle which should be closed to avoid a leak.
-                if key not in (0, _overlapped.INVALID_HANDLE_VALUE):
+                wenn key not in (0, _overlapped.INVALID_HANDLE_VALUE):
                     _winapi.CloseHandle(key)
                 continue
 
-            if obj in self._stopped_serving:
+            wenn obj in self._stopped_serving:
                 f.cancel()
-            # Don't call the callback if _register() already read the result or
-            # if the overlapped has been cancelled
-            elif not f.done():
+            # Don't call the callback wenn _register() already read the result or
+            # wenn the overlapped has been cancelled
+            sowenn not f.done():
                 try:
                     value = callback(transferred, key, ov)
                 except OSError as e:
                     f.set_exception(e)
                     self._results.append(f)
-                else:
+                sonst:
                     f.set_result(value)
                     self._results.append(f)
                 finally:
@@ -823,40 +823,40 @@ klasse IocpProactor:
         self._stopped_serving.add(obj)
 
     def close(self):
-        if self._iocp is None:
+        wenn self._iocp is None:
             # already closed
             return
 
         # Cancel remaining registered operations.
         fuer fut, ov, obj, callback in list(self._cache.values()):
-            if fut.cancelled():
+            wenn fut.cancelled():
                 # Nothing to do with cancelled futures
                 pass
-            elif isinstance(fut, _WaitCancelFuture):
+            sowenn isinstance(fut, _WaitCancelFuture):
                 # _WaitCancelFuture must not be cancelled
                 pass
-            else:
+            sonst:
                 try:
                     fut.cancel()
                 except OSError as exc:
-                    if self._loop is not None:
+                    wenn self._loop is not None:
                         context = {
                             'message': 'Cancelling a future failed',
                             'exception': exc,
                             'future': fut,
                         }
-                        if fut._source_traceback:
+                        wenn fut._source_traceback:
                             context['source_traceback'] = fut._source_traceback
                         self._loop.call_exception_handler(context)
 
         # Wait until all cancelled overlapped complete: don't exit with running
-        # overlapped to prevent a crash. Display progress every second if the
+        # overlapped to prevent a crash. Display progress every second wenn the
         # loop is still running.
         msg_update = 1.0
         start_time = time.monotonic()
         next_msg = start_time + msg_update
         while self._cache:
-            if next_msg <= time.monotonic():
+            wenn next_msg <= time.monotonic():
                 logger.debug('%r is running after closing fuer %.1f seconds',
                              self, time.monotonic() - start_time)
                 next_msg = time.monotonic() + msg_update

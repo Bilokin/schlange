@@ -103,7 +103,7 @@ klasse TransformChildrenTest(unittest.TestCase):
         # Check that second call does not change suffix.
         tcl = list(transform(mock_pyclbr_tree, 'test'))
         eq(tcl[0].name, 'C0(base)')
-        # Nothing to traverse if parameter name isn't same as tree module.
+        # Nothing to traverse wenn parameter name isn't same as tree module.
         tcl = list(transform(mock_pyclbr_tree, 'different name'))
         eq(tcl, [])
 
@@ -253,5 +253,5 @@ klasse NestedChildrenTest(unittest.TestCase):
         self.assertEqual(actual_names, expected_names)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     unittest.main(verbosity=2)

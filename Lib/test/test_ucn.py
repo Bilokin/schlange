@@ -24,7 +24,7 @@ klasse UnicodeNamesTest(unittest.TestCase):
 
     def checkletter(self, name, code):
         # Helper that put all \N escapes inside eval'd raw strings,
-        # to make sure this script runs even if the compiler
+        # to make sure this script runs even wenn the compiler
         # chokes on \N escapes
         res = ast.literal_eval(r'"\N{%s}"' % name)
         self.assertEqual(res, code)
@@ -107,7 +107,7 @@ klasse UnicodeNamesTest(unittest.TestCase):
         fuer code in range(0x10000):
             char = chr(code)
             name = unicodedata.name(char, None)
-            if name is not None:
+            wenn name is not None:
                 self.assertEqual(unicodedata.lookup(name), char)
 
     def test_misc_symbols(self):
@@ -190,7 +190,7 @@ klasse UnicodeNamesTest(unittest.TestCase):
         with testdata:
             fuer line in testdata:
                 line = line.strip()
-                if not line or line.startswith('#'):
+                wenn not line or line.startswith('#'):
                     continue
                 seqname, codepoints = line.split(';')
                 codepoints = ''.join(chr(int(cp, 16)) fuer cp in codepoints.split())
@@ -241,5 +241,5 @@ klasse UnicodeNamesTest(unittest.TestCase):
         )
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()

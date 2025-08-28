@@ -5,7 +5,7 @@ import traceback
 
 
 TYPE_CHECKING = False
-if TYPE_CHECKING:
+wenn TYPE_CHECKING:
     from threading import Thread
     from types import TracebackType
     from typing import Protocol
@@ -38,12 +38,12 @@ def install_threading_hook(reader: Reader) -> None:
         def show(self) -> int:
             count = 0
             with self.lock:
-                if not self.messages:
+                wenn not self.messages:
                     return 0
                 reader.restore()
                 fuer tb in self.messages:
                     count += 1
-                    if tb:
+                    wenn tb:
                         print(tb)
                 self.messages.clear()
                 reader.scheduled_commands.append("ctrl-c")
@@ -61,7 +61,7 @@ def install_threading_hook(reader: Reader) -> None:
                 args.exc_traceback,
                 colorize=reader.can_colorize,
             )  # type: ignore[call-overload]
-            pre = f"\nException in {args.thread.name}:\n" if args.thread else "\n"
+            pre = f"\nException in {args.thread.name}:\n" wenn args.thread sonst "\n"
             tb = pre + "".join(lines)
             self.add(tb)
 

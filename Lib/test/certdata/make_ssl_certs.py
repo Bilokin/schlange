@@ -140,17 +140,17 @@ def make_cert_key(cmdlineargs, hostname, sign=False, extra_san='',
         args = ['req', '-new', '-nodes', '-days', cmdlineargs.days,
                 '-newkey', key, '-keyout', key_file,
                 '-config', req_file]
-        if sign:
+        wenn sign:
             with tempfile.NamedTemporaryFile(delete=False) as f:
                 tempnames.append(f.name)
                 reqfile = f.name
             args += ['-out', reqfile ]
 
-        else:
+        sonst:
             args += ['-extensions', ext, '-x509', '-out', cert_file ]
         check_call(['openssl'] + args)
 
-        if sign:
+        wenn sign:
             args = [
                 'ca',
                 '-config', req_file,
@@ -230,7 +230,7 @@ def write_cert_reference(path):
         print(refdata, file=f)
 
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Make the custom certificate and private key files used by test_ssl and friends.')
     parser.add_argument('--days', default=days_default)
     parser.add_argument('--enddate', default=enddate_default)

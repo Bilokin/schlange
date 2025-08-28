@@ -41,33 +41,33 @@ klasse _netrclex:
 
     def _read_char(self):
         ch = self.instream.read(1)
-        if ch == "\n":
+        wenn ch == "\n":
             self.lineno += 1
         return ch
 
     def get_token(self):
-        if self.pushback:
+        wenn self.pushback:
             return self.pushback.pop(0)
         token = ""
         fiter = iter(self._read_char, "")
         fuer ch in fiter:
-            if ch in self.whitespace:
+            wenn ch in self.whitespace:
                 continue
-            if ch == '"':
+            wenn ch == '"':
                 fuer ch in fiter:
-                    if ch == '"':
+                    wenn ch == '"':
                         return token
-                    elif ch == "\\":
+                    sowenn ch == "\\":
                         ch = self._read_char()
                     token += ch
-            else:
-                if ch == "\\":
+            sonst:
+                wenn ch == "\\":
                     ch = self._read_char()
                 token += ch
                 fuer ch in fiter:
-                    if ch in self.whitespace:
+                    wenn ch in self.whitespace:
                         return token
-                    elif ch == "\\":
+                    sowenn ch == "\\":
                         ch = self._read_char()
                     token += ch
         return token
@@ -79,7 +79,7 @@ klasse _netrclex:
 klasse netrc:
     def __init__(self, file=None):
         default_netrc = file is None
-        if file is None:
+        wenn file is None:
             file = os.path.join(os.path.expanduser("~"), ".netrc")
         self.hosts = {}
         self.macros = {}
@@ -96,37 +96,37 @@ klasse netrc:
             # Look fuer a machine, default, or macdef top-level keyword
             saved_lineno = lexer.lineno
             toplevel = tt = lexer.get_token()
-            if not tt:
+            wenn not tt:
                 break
-            elif tt[0] == '#':
-                if lexer.lineno == saved_lineno and len(tt) == 1:
+            sowenn tt[0] == '#':
+                wenn lexer.lineno == saved_lineno and len(tt) == 1:
                     lexer.instream.readline()
                 continue
-            elif tt == 'machine':
+            sowenn tt == 'machine':
                 entryname = lexer.get_token()
-            elif tt == 'default':
+            sowenn tt == 'default':
                 entryname = 'default'
-            elif tt == 'macdef':
+            sowenn tt == 'macdef':
                 entryname = lexer.get_token()
                 self.macros[entryname] = []
                 while 1:
                     line = lexer.instream.readline()
-                    if not line:
+                    wenn not line:
                         raise NetrcParseError(
                             "Macro definition missing null line terminator.",
                             file, lexer.lineno)
-                    if line == '\n':
+                    wenn line == '\n':
                         # a macro definition finished with consecutive new-line
                         # characters. The first \n is encountered by the
                         # readline() method and this is the second \n.
                         break
                     self.macros[entryname].append(line)
                 continue
-            else:
+            sonst:
                 raise NetrcParseError(
                     "bad toplevel token %r" % tt, file, lexer.lineno)
 
-            if not entryname:
+            wenn not entryname:
                 raise NetrcParseError("missing %r name" % tt, file, lexer.lineno)
 
             # We're looking at start of an entry fuer a named machine or default.
@@ -135,36 +135,36 @@ klasse netrc:
             while 1:
                 prev_lineno = lexer.lineno
                 tt = lexer.get_token()
-                if tt.startswith('#'):
-                    if lexer.lineno == prev_lineno:
+                wenn tt.startswith('#'):
+                    wenn lexer.lineno == prev_lineno:
                         lexer.instream.readline()
                     continue
-                if tt in {'', 'machine', 'default', 'macdef'}:
+                wenn tt in {'', 'machine', 'default', 'macdef'}:
                     self.hosts[entryname] = (login, account, password)
                     lexer.push_token(tt)
                     break
-                elif tt == 'login' or tt == 'user':
+                sowenn tt == 'login' or tt == 'user':
                     login = lexer.get_token()
-                elif tt == 'account':
+                sowenn tt == 'account':
                     account = lexer.get_token()
-                elif tt == 'password':
+                sowenn tt == 'password':
                     password = lexer.get_token()
-                else:
+                sonst:
                     raise NetrcParseError("bad follower token %r" % tt,
                                           file, lexer.lineno)
             self._security_check(fp, default_netrc, self.hosts[entryname][0])
 
     def _security_check(self, fp, default_netrc, login):
-        if _can_security_check() and default_netrc and login != "anonymous":
+        wenn _can_security_check() and default_netrc and login != "anonymous":
             prop = os.fstat(fp.fileno())
             current_user_id = os.getuid()
-            if prop.st_uid != current_user_id:
+            wenn prop.st_uid != current_user_id:
                 fowner = _getpwuid(prop.st_uid)
                 user = _getpwuid(current_user_id)
                 raise NetrcParseError(
                     f"~/.netrc file owner ({fowner}) does not match"
                     f" current user ({user})")
-            if (prop.st_mode & (stat.S_IRWXG | stat.S_IRWXO)):
+            wenn (prop.st_mode & (stat.S_IRWXG | stat.S_IRWXO)):
                 raise NetrcParseError(
                     "~/.netrc access too permissive: access"
                     " permissions must restrict access to only"
@@ -172,11 +172,11 @@ klasse netrc:
 
     def authenticators(self, host):
         """Return a (user, account, password) tuple fuer given host."""
-        if host in self.hosts:
+        wenn host in self.hosts:
             return self.hosts[host]
-        elif 'default' in self.hosts:
+        sowenn 'default' in self.hosts:
             return self.hosts['default']
-        else:
+        sonst:
             return None
 
     def __repr__(self):
@@ -185,7 +185,7 @@ klasse netrc:
         fuer host in self.hosts.keys():
             attrs = self.hosts[host]
             rep += f"machine {host}\n\tlogin {attrs[0]}\n"
-            if attrs[1]:
+            wenn attrs[1]:
                 rep += f"\taccount {attrs[1]}\n"
             rep += f"\tpassword {attrs[2]}\n"
         fuer macro in self.macros.keys():
@@ -195,5 +195,5 @@ klasse netrc:
             rep += "\n"
         return rep
 
-if __name__ == '__main__':
+wenn __name__ == '__main__':
     print(netrc())

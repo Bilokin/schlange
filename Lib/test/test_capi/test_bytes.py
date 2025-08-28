@@ -158,7 +158,7 @@ klasse CAPITest(unittest.TestCase):
 
     def test_concat(self, concat=None):
         """Test PyBytes_Concat()"""
-        if concat is None:
+        wenn concat is None:
             concat = _testlimitedcapi.bytes_concat
 
         self.assertEqual(concat(b'abc', b'def'), b'abcdef')
@@ -299,5 +299,5 @@ klasse CAPITest(unittest.TestCase):
             bytes_join(b'', NULL)
 
 
-if __name__ == "__main__":
+wenn __name__ == "__main__":
     unittest.main()
