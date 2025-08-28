@@ -1,5 +1,5 @@
-This is Python version 3.15.0 alpha 0
-=====================================
+This is Schlange version 0.1 (Python v3.15.0 alpha 0)
+=====================================================
 
 .. image:: https://github.com/python/cpython/actions/workflows/build.yml/badge.svg?branch=main&event=push
    :alt: CPython build status on GitHub Actions
@@ -50,10 +50,9 @@ Build Instructions
 
 On Unix, Linux, BSD, macOS, and Cygwin::
 
-    ./configure
+    ./configure  --prefix=your/build/folder/ --with-ensurepip=no
     make
-    make test
-    sudo make install
+    make install
 
 This will install Python as ``python3``.
 
