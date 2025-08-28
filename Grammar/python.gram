@@ -137,7 +137,7 @@ simple_stmt[stmt_ty] (memo):
 compound_stmt[stmt_ty]:
     | &('def' | '@' | 'async') function_def
     | &'if' if_stmt
-    | &('class' | '@') class_def
+    | &('klasse' | '@') class_def
     | &('with' | 'async') with_stmt
     | &('for' | 'async') for_stmt
     | &'try' try_stmt

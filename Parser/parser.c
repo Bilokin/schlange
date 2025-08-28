@@ -52,8 +52,8 @@ static KeywordToken *reserved_keywords[] = {
         {"yield", 588},
         {"break", 528},
         {"async", 703},
-        {"class", 706},
         {"while", 694},
+        {"class", 706},
         {"False", 625},
         {"await", 598},
         {NULL, -1},
@@ -63,6 +63,7 @@ static KeywordToken *reserved_keywords[] = {
         {"import", 639},
         {"assert", 533},
         {"global", 530},
+        {"klasse", 515},
         {"except", 682},
         {"lambda", 622},
         {NULL, -1},
@@ -1893,7 +1894,7 @@ simple_stmt_rule(Parser *p)
 // compound_stmt:
 //     | &('def' | '@' | 'async') function_def
 //     | &'if' if_stmt
-//     | &('class' | '@') class_def
+//     | &('klasse' | '@') class_def
 //     | &('with' | 'async') with_stmt
 //     | &('for' | 'async') for_stmt
 //     | &'try' try_stmt
@@ -1953,12 +1954,12 @@ compound_stmt_rule(Parser *p)
         D(fprintf(stderr, "%*c%s compound_stmt[%d-%d]: %s failed!\n", p->level, ' ',
                   p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "&'if' if_stmt"));
     }
-    { // &('class' | '@') class_def
+    { // &('klasse' | '@') class_def
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> compound_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "&('class' | '@') class_def"));
+        D(fprintf(stderr, "%*c> compound_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "&('klasse' | '@') class_def"));
         stmt_ty class_def_var;
         if (
             _PyPegen_lookahead(1, _tmp_7_rule, p)
@@ -1966,13 +1967,13 @@ compound_stmt_rule(Parser *p)
             (class_def_var = class_def_rule(p))  // class_def
         )
         {
-            D(fprintf(stderr, "%*c+ compound_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "&('class' | '@') class_def"));
+            D(fprintf(stderr, "%*c+ compound_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "&('klasse' | '@') class_def"));
             _res = class_def_var;
             goto done;
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s compound_stmt[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "&('class' | '@') class_def"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "&('klasse' | '@') class_def"));
     }
     { // &('with' | 'async') with_stmt
         if (p->error_indicator) {
@@ -27792,7 +27793,7 @@ _tmp_6_rule(Parser *p)
     return _res;
 }
 
-// _tmp_7: 'class' | '@'
+// _tmp_7: 'klasse' | '@'
 static void *
 _tmp_7_rule(Parser *p)
 {
@@ -27805,24 +27806,24 @@ _tmp_7_rule(Parser *p)
     }
     void * _res = NULL;
     int _mark = p->mark;
-    { // 'class'
+    { // 'klasse'
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> _tmp_7[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'class'"));
+        D(fprintf(stderr, "%*c> _tmp_7[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'klasse'"));
         Token * _keyword;
         if (
-            (_keyword = _PyPegen_expect_token(p, 706))  // token='class'
+            (_keyword = _PyPegen_expect_token(p, 515))  // token='klasse'
         )
         {
-            D(fprintf(stderr, "%*c+ _tmp_7[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'class'"));
+            D(fprintf(stderr, "%*c+ _tmp_7[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'klasse'"));
             _res = _keyword;
             goto done;
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s _tmp_7[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'class'"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'klasse'"));
     }
     { // '@'
         if (p->error_indicator) {
